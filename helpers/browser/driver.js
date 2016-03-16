@@ -40,7 +40,7 @@ class ChromeProtocol {
     this._instance = null;
 
     this.evaluateScript = this.evaluateScript.bind(this);
-    this.subscribeToServiceWorkerDetails = this.subscribeToServiceWorkerDetails.bind(this);
+    this.getServiceWorkerRegistrations = this.getServiceWorkerRegistrations.bind(this);
     this.beginTrace = this.beginTrace.bind(this);
     this.endTrace = this.endTrace.bind(this);
   }
@@ -77,12 +77,12 @@ class ChromeProtocol {
     }, 15000);
   }
 
-  subscribeToServiceWorkerDetails(cb) {
+  getServiceWorkerRegistrations() {
     return this.instance.then(chrome => {
       return new Promise((resolve, reject) => {
         chrome.ServiceWorker.enable();
         chrome.on("ServiceWorker.workerVersionUpdated", data => {
-          cb(data, resolve);
+          resolve(data);
         });
       });
     });
