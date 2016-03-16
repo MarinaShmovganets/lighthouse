@@ -18,9 +18,7 @@
 
 let TestLoader = require('./helpers/test-loader');
 let RemoteFileLoader = require('./helpers/remote-file-loader');
-let https = require('https');
-let ChromeDriver = require('./helpers/browser/driver');
-
+let ChromeProtocol = require('./helpers/browser/driver');
 let processor = require('./lib/processor');
 
 class TestRunner {
@@ -40,111 +38,49 @@ class TestRunner {
   }
 
   test(url) {
-    let testNames = Object.keys(this.tests_);
-    let testResponses = [];
+    const driver = new ChromeProtocol();
 
-    testNames.forEach(testName => {
-      let testInfo = this.tests_[testName];
-      let test = require(testInfo.main);
+    return driver.gotoURL(url)
+        .then(() => {
+          const testNames = Object.keys(this.tests_);
+          const testResponses = [];
 
-      testResponses.push(
-        this.buildInputsForTest(url, testInfo.inputs)
-            .then(inputs => test.run(inputs))
-            .then(result => {
-              return {testName, result};
-            })
-      );
-    });
+          testNames.forEach(testName => {
+            const testInfo = this.tests_[testName];
+            const test = require(testInfo.main);
 
-    return Promise.all(testResponses).then(results => {
-      if (this.driver_ !== null) {
-        if (typeof this.driver_.browser !== 'undefined') {
-          this.driver_.browser.quit();
-        }
-      }
-      return results;
-    });
-  }
+            console.log(`Running ${testName}`);
 
-  buildInputsForTest(url, inputs) {
-    let collatedOutputs = {
-      loader: this.loader_
-    };
-    let outputPromises = [];
-    let outputPromise;
-
-    inputs.forEach(input => {
-      input = input.toLowerCase();
-
-      switch (input) {
-        case 'html':
-          outputPromise = new Promise((resolve, reject) => {
-            https.get(url, res => {
-              let body = '';
-              res.on('data', data => {
-                body += data;
-              });
-              res.on('end', () => {
-                collatedOutputs.html = body;
-                resolve();
-              });
-            });
+            testResponses
+                .push(test.run({
+                  url: url,
+                  driver: driver
+                })
+                .then(result => {
+                  return {testName, result};
+                })
+            );
           });
-          break;
 
-        case 'dom':
-          outputPromise = new Promise((resolve, reject) => {
-            // shut up
-            return resolve();
-            // TODO(paulirish):
-            // https.get(url, (res) => {
-            //   let body = '';
-            //   res.on('data', data => body += data);
-            //   res.on('end', () => {
-            //     try {
-            //       collatedOutputs.dom = DOMParser.parse(body);
-            //     } catch (e){
-            //       reject(e);
-            //     }
-            //     resolve();
-            //   });
-            // });
-          });
-          break;
-
-        case 'chrome':
-          outputPromise = new Promise((resolve, reject) => {
-            if (this.driver_ === null) {
-              this.driver_ = new ChromeDriver();
+          return Promise.all(testResponses);
+        })
+        .then(results => {
+          if (this.driver_ !== null) {
+            if (typeof this.driver_.browser !== 'undefined') {
+              this.driver_.browser.quit();
             }
+          }
 
-            collatedOutputs.driver = this.driver_;
-            resolve();
-          });
-          break;
-
-        case 'url':
-          collatedOutputs.url = url;
-          outputPromise = Promise.resolve();
-          break;
-
-        default:
-          console.warn('Unknown input type: ' + input);
-          break;
-      }
-
-      outputPromises.push(outputPromise);
-    });
-
-    return Promise.all(outputPromises).then(() => collatedOutputs);
+          return results;
+        });
   }
-
 }
 
 TestRunner.get()
     .then(testRunner => testRunner.test('https://voice-memos.appspot.com/'))
     .then(results => {
       console.log(results);
+      process.exit(0);
     }, err => {
       console.error(err);
     });

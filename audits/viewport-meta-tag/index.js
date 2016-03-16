@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* global document */
+
 'use strict';
 
 class ViewportMetaTagTest {
@@ -24,26 +26,34 @@ class ViewportMetaTagTest {
    * @return {Number} A score. 1 = viewport meta tag present; 0 = not found.
    */
   run(inputs) {
-    if (typeof inputs === 'undefined') {
-      return Promise.reject('No data provided.');
-    }
 
-    if (typeof inputs.dom !== 'function') {
-      return Promise.reject('No DOM Parser provided.');
-    }
+    const driver = inputs.driver;
 
-    let domParser = inputs.dom;
-    let viewport = domParser('meta[name="viewport"]');
+    // Must be defined as a standalone function expression to be stringified successfully.
+    const findMetaViewport = function() {
+      return document.head.querySelector('meta[name="viewport"]');
+    };
 
-    // If there's a viewport return a score of 1.
-    // TODO(paullewis): make this test more nuanced.
-    if (typeof viewport !== 'undefined' && viewport !== null) {
-      return Promise.resolve(true);
-    }
+    // Load the page.
+    return driver.gotoURL(inputs.url, driver.WAIT_FOR_LOAD)
 
-    // Else zero.
-    return Promise.resolve(false);
+      // Run the meta find script.
+      .then(_ => driver.evaluateScript(findMetaViewport))
+
+      // Test the result for validity.
+      .then(obj => {
+        const hasValidViewport =
+            obj.type === "object" &&
+            obj.subtype === 'node' &&
+            obj.props.content.includes('width=');
+
+        return Promise.resolve(hasValidViewport);
+      })
+      .catch(err => {
+        throw err;
+      });
   }
+
 }
 
 module.exports = new ViewportMetaTagTest();

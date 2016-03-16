@@ -23,14 +23,7 @@ class MinifyHTMLTest {
    * @param  {*} inputs The test inputs.
    * @return {Number} A score. 1 = 100% minified; 0 = 0% minified.
    */
-  run(inputs) {
-    if (typeof inputs === 'undefined') {
-      return Promise.reject('No data provided.');
-    }
-
-    if (typeof inputs.html !== 'string') {
-      return Promise.reject('No HTML provided.');
-    }
+  run (inputs) {
 
     let html = inputs.html;
 

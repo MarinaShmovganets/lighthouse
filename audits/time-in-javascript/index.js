@@ -16,34 +16,36 @@
 
 'use strict';
 
-let traceProcessor = require('../../lib/processor');
+const traceProcessor = require('../../lib/processor');
 
 class TimeInJavaScriptTest {
 
-  run(inputs) {
-    if (inputs.length < 1) {
-      return Promise.reject('No data provided.');
-    }
-
-    if (typeof inputs.driver !== 'object') {
-      return Promise.reject('No Driver provided.');
-    }
-
-    if (typeof inputs.url !== 'string') {
-      return Promise.reject('No URL provided.');
-    }
-
+  run (inputs) {
     return new Promise((resolve, reject) => {
-      let driver = inputs.driver;
+      const driver = inputs.driver;
 
-      driver
-        .requestTab(inputs.url)
-        .then(driver.profilePageLoad.bind(driver))
+      driver.disableCaching()
+
+        // Fire up the trace.
+        .then(driver.beginTrace)
+
+        // Go to the URL.
+        .then(() => driver.gotoURL(inputs.url, driver.WAIT_FOR_LOAD))
+
+        // Stop the trace, which captures the records.
+        .then(driver.endTrace)
+
+        // Analyze them.
         .then(contents => traceProcessor.analyzeTrace(contents))
+
         .then(results => {
           resolve(results[0].extendedInfo.javaScript);
+        }, err => {
+          console.error(err);
+          throw err;
         }).catch(err => {
           console.error(err);
+          throw err;
         });
     });
   }

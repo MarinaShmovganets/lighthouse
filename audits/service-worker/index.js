@@ -19,22 +19,11 @@
 class ServiceWorkerTest {
 
   run(inputs) {
-    if (inputs.length < 1) {
-      return Promise.reject('No data provided.');
-    }
-
-    if (typeof inputs.driver !== 'object') {
-      return Promise.reject('No Driver provided.');
-    }
-
-    if (typeof inputs.url !== 'string') {
-      return Promise.reject('No URL provided.');
-    }
 
     this.url = inputs.url;
 
     return new Promise((resolve, reject) => {
-      let driver = inputs.driver;
+      const driver = inputs.driver;
 
       // hacky settimeout to delay SW work from page loading
       setTimeout(_ => {
