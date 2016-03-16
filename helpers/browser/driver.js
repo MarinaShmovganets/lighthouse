@@ -39,6 +39,7 @@ class ChromeProtocol {
     this._currentURL = null;
     this._instance = null;
 
+    this.getPageHTML = this.getPageHTML.bind(this);
     this.evaluateScript = this.evaluateScript.bind(this);
     this.getServiceWorkerRegistrations = this.getServiceWorkerRegistrations.bind(this);
     this.beginTrace = this.beginTrace.bind(this);
@@ -83,6 +84,30 @@ class ChromeProtocol {
         chrome.ServiceWorker.enable();
         chrome.on("ServiceWorker.workerVersionUpdated", data => {
           resolve(data);
+        });
+      });
+    });
+  }
+
+  getPageHTML() {
+    return this.instance.then(chrome => {
+      return new Promise((resolve, reject) => {
+        chrome.send('DOM.getDocument', null, (docErr, docResult) => {
+          if (docErr) {
+            return reject(docErr);
+          }
+
+          const nodeId = {
+            nodeId: docResult.root.nodeId
+          };
+
+          chrome.send('DOM.getOuterHTML', nodeId, (htmlErr, htmlResult) => {
+            if (htmlErr) {
+              return reject(htmlErr);
+            }
+
+            resolve(htmlResult.outerHTML);
+          });
         });
       });
     });

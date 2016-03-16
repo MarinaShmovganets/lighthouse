@@ -25,20 +25,26 @@ class MinifyHTMLTest {
    */
   run (inputs) {
 
-    let html = inputs.html;
+    const driver = inputs.driver;
 
-    // See how compressed the HTML _could_ be if whitespace was removed.
-    // This could be a lot more aggressive.
-    let htmlNoWhiteSpaces = html
-        .replace(/\n/igm, '')
-        .replace(/\t/igm, '')
-        .replace(/\s+/igm, ' ');
+    return driver.gotoURL(inputs.url, driver.WAIT_FOR_LOAD)
+        .then(driver.getPageHTML)
+        .then(html => {
+          return new Promise((resolve, reject) => {
+            // See how compressed the HTML _could_ be if whitespace was removed.
+            // This could be a lot more aggressive.
+            const htmlNoWhiteSpaces = html
+                .replace(/\n/igm, '')
+                .replace(/\t/igm, '')
+                .replace(/\s+/igm, ' ');
 
-    let htmlLen = Math.max(1, html.length);
-    let htmlNoWhiteSpacesLen = htmlNoWhiteSpaces.length;
-    let ratio = Math.min(1, (htmlNoWhiteSpacesLen / htmlLen));
+            const htmlLen = Math.max(1, html.length);
+            const htmlNoWhiteSpacesLen = htmlNoWhiteSpaces.length;
+            const ratio = Math.min(1, (htmlNoWhiteSpacesLen / htmlLen));
 
-    return Promise.resolve(ratio);
+            resolve(ratio);
+          })
+        });
   }
 }
 
