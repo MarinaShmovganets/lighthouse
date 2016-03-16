@@ -16,135 +16,58 @@
 
 'use strict';
 
-let TestLoader = require('./helpers/test-loader');
-let RemoteFileLoader = require('./helpers/remote-file-loader');
-let https = require('https');
-let ChromeDriver = require('./helpers/browser/driver');
-
+let AuditLoader = require('./helpers/audit-loader');
+let ChromeProtocol = require('./helpers/browser/driver');
 let processor = require('./lib/processor');
 
-class TestRunner {
+class AuditRunner {
 
   static get() {
     return new Promise((resolve, reject) => {
-      TestLoader.getTests('audits').then(tests => {
-        resolve(new TestRunner(tests));
+      AuditLoader.getAudits('audits').then(audits => {
+        resolve(new AuditRunner(audits));
       });
     });
   }
 
-  constructor(tests) {
-    this.tests_ = tests;
+  constructor(audits) {
+    this.audits_ = audits;
     this.driver_ = null;
-    this.loader_ = new RemoteFileLoader();
   }
 
-  test(url) {
-    let testNames = Object.keys(this.tests_);
-    let testResponses = [];
+  audit(url) {
+    const driver = new ChromeProtocol();
 
-    testNames.forEach(testName => {
-      let testInfo = this.tests_[testName];
-      let test = require(testInfo.main);
+    return driver.gotoURL(url)
+        .then(() => {
+          const auditNames = Object.keys(this.audits_);
+          const auditResponses = [];
 
-      testResponses.push(
-        this.buildInputsForTest(url, testInfo.inputs)
-            .then(inputs => test.run(inputs))
-            .then(result => {
-              return {testName, result};
-            })
-      );
-    });
+          auditNames.forEach(auditName => {
+            const auditInfo = this.audits_[auditName];
+            const audit = require(auditInfo.main);
 
-    return Promise.all(testResponses).then(results => {
-      if (this.driver_ !== null) {
-        if (typeof this.driver_.browser !== 'undefined') {
-          this.driver_.browser.quit();
-        }
-      }
-      return results;
-    });
+            auditResponses
+                .push(audit.run({
+                  url: url,
+                  driver: driver
+                })
+                .then(result => {
+                  return {auditName, result};
+                })
+            );
+          });
+
+          return Promise.all(auditResponses);
+        });
   }
-
-  buildInputsForTest(url, inputs) {
-    let collatedOutputs = {
-      loader: this.loader_
-    };
-    let outputPromises = [];
-    let outputPromise;
-
-    inputs.forEach(input => {
-      input = input.toLowerCase();
-
-      switch (input) {
-        case 'html':
-          outputPromise = new Promise((resolve, reject) => {
-            https.get(url, res => {
-              let body = '';
-              res.on('data', data => {
-                body += data;
-              });
-              res.on('end', () => {
-                collatedOutputs.html = body;
-                resolve();
-              });
-            });
-          });
-          break;
-
-        case 'dom':
-          outputPromise = new Promise((resolve, reject) => {
-            // shut up
-            return resolve();
-            // TODO(paulirish):
-            // https.get(url, (res) => {
-            //   let body = '';
-            //   res.on('data', data => body += data);
-            //   res.on('end', () => {
-            //     try {
-            //       collatedOutputs.dom = DOMParser.parse(body);
-            //     } catch (e){
-            //       reject(e);
-            //     }
-            //     resolve();
-            //   });
-            // });
-          });
-          break;
-
-        case 'chrome':
-          outputPromise = new Promise((resolve, reject) => {
-            if (this.driver_ === null) {
-              this.driver_ = new ChromeDriver();
-            }
-
-            collatedOutputs.driver = this.driver_;
-            resolve();
-          });
-          break;
-
-        case 'url':
-          collatedOutputs.url = url;
-          outputPromise = Promise.resolve();
-          break;
-
-        default:
-          console.warn('Unknown input type: ' + input);
-          break;
-      }
-
-      outputPromises.push(outputPromise);
-    });
-
-    return Promise.all(outputPromises).then(() => collatedOutputs);
-  }
-
 }
 
-TestRunner.get()
-    .then(testRunner => testRunner.test('https://voice-memos.appspot.com/'))
+AuditRunner.get()
+    .then(runner => runner.audit('https://voice-memos.appspot.com/'))
     .then(results => {
       console.log(results);
+      process.exit(0);
     }, err => {
       console.error(err);
     });

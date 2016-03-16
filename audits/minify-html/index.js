@@ -23,29 +23,28 @@ class MinifyHTMLTest {
    * @param  {*} inputs The test inputs.
    * @return {Number} A score. 1 = 100% minified; 0 = 0% minified.
    */
-  run(inputs) {
-    if (typeof inputs === 'undefined') {
-      return Promise.reject('No data provided.');
-    }
+  run (inputs) {
 
-    if (typeof inputs.html !== 'string') {
-      return Promise.reject('No HTML provided.');
-    }
+    const driver = inputs.driver;
 
-    let html = inputs.html;
+    return driver.gotoURL(inputs.url, driver.WAIT_FOR_LOAD)
+        .then(driver.getPageHTML)
+        .then(html => {
+          return new Promise((resolve, reject) => {
+            // See how compressed the HTML _could_ be if whitespace was removed.
+            // This could be a lot more aggressive.
+            const htmlNoWhiteSpaces = html
+                .replace(/\n/igm, '')
+                .replace(/\t/igm, '')
+                .replace(/\s+/igm, ' ');
 
-    // See how compressed the HTML _could_ be if whitespace was removed.
-    // This could be a lot more aggressive.
-    let htmlNoWhiteSpaces = html
-        .replace(/\n/igm, '')
-        .replace(/\t/igm, '')
-        .replace(/\s+/igm, ' ');
+            const htmlLen = Math.max(1, html.length);
+            const htmlNoWhiteSpacesLen = htmlNoWhiteSpaces.length;
+            const ratio = Math.min(1, (htmlNoWhiteSpacesLen / htmlLen));
 
-    let htmlLen = Math.max(1, html.length);
-    let htmlNoWhiteSpacesLen = htmlNoWhiteSpaces.length;
-    let ratio = Math.min(1, (htmlNoWhiteSpacesLen / htmlLen));
-
-    return Promise.resolve(ratio);
+            resolve(ratio);
+          })
+        });
   }
 }
 

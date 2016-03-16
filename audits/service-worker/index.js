@@ -19,54 +19,26 @@
 class ServiceWorkerTest {
 
   run(inputs) {
-    if (inputs.length < 1) {
-      return Promise.reject('No data provided.');
-    }
-
-    if (typeof inputs.driver !== 'object') {
-      return Promise.reject('No Driver provided.');
-    }
-
-    if (typeof inputs.url !== 'string') {
-      return Promise.reject('No URL provided.');
-    }
 
     this.url = inputs.url;
 
     return new Promise((resolve, reject) => {
-      let driver = inputs.driver;
+      const driver = inputs.driver;
 
-      // hacky settimeout to delay SW work from page loading
-      setTimeout(_ => {
-        driver
-          .requestTab(this.url)
-          .then(_ => {
-            driver.subscribeToServiceWorkerDetails(this.swVersionUpdated.bind(this), resolve);
+      driver.gotoURL(this.url, driver.WAIT_FOR_LOAD)
+          .then(driver.getServiceWorkerRegistrations)
+
+          // Test the result for validity.
+          .then(registrations => {
+
+            const activatedRegistrations =
+                registrations.versions.filter(reg => reg.status === 'activated');
+
+            resolve(activatedRegistrations.length > 0);
+
           });
-      }, 5 * 1000);
     });
   }
-
-  swVersionUpdated(data, resolve) {
-    var swObj = data.versions.filter(sw => sw.scriptURL.includes(this.url)).pop();
-    resolve(swObj);
-  }
-
-  hasFetchRegistered(fileContents) {
-      // Get the Service Worker JS. We need a nicer way to do this!
-          // return inputs.loader.load(serviceWorkerPath)
-          //     .then(fileContents => {
-          //       result.fetch = this.hasFetchRegistered(fileContents);
-          //       return resolve(result);
-          //     });
-
-    let matchSelfFetch = /self\.onfetch/igm;
-    let matchAddEventListener = /self\.addEventListener\s?\(\s?'fetch'/igm;
-
-    return (matchSelfFetch.test(fileContents) ||
-        matchAddEventListener.test(fileContents));
-  }
-
 }
 
 module.exports = new ServiceWorkerTest();

@@ -20,12 +20,12 @@ let walk = require('walk');
 let path = require('path');
 let fs = require('fs');
 
-let tests = {};
+let audits = {};
 
 module.exports = {
-  getTests: function(filePath) {
-    if (typeof tests[filePath] !== 'undefined') {
-      return tests[filePath];
+  getAudits: function(filePath) {
+    if (typeof audits[filePath] !== 'undefined') {
+      return audits[filePath];
     }
 
     let fullFilePath = path.join(__dirname, '../', filePath);
@@ -42,11 +42,9 @@ module.exports = {
             return next();
           }
 
-          let test = JSON.parse(data);
-          tests[test.name] = {
-            main: root + '/' + test.main,
-            inputs: test.inputs,
-            outputs: test.outputs
+          let audit = JSON.parse(data);
+          audits[audit.name] = {
+            main: root + '/' + audit.main
           };
 
           next();
@@ -54,7 +52,7 @@ module.exports = {
       });
 
       walker.on('end', () => {
-        resolve(tests);
+        resolve(audits);
       });
     });
   }
