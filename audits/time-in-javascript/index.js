@@ -30,7 +30,7 @@ class TimeInJavaScriptTest {
         .then(driver.beginTrace)
 
         // Go to the URL.
-        .then(() => driver.gotoURL(inputs.url, driver.WAIT_FOR_LOAD))
+        .then(_ => driver.gotoURL(inputs.url, driver.WAIT_FOR_LOAD))
 
         // Stop the trace, which captures the records.
         .then(driver.endTrace)
