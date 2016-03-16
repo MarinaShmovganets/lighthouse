@@ -16,68 +16,55 @@
 
 'use strict';
 
-let TestLoader = require('./helpers/test-loader');
-let RemoteFileLoader = require('./helpers/remote-file-loader');
+let AuditLoader = require('./helpers/audit-loader');
 let ChromeProtocol = require('./helpers/browser/driver');
 let processor = require('./lib/processor');
 
-class TestRunner {
+class AuditRunner {
 
   static get() {
     return new Promise((resolve, reject) => {
-      TestLoader.getTests('audits').then(tests => {
-        resolve(new TestRunner(tests));
+      AuditLoader.getAudits('audits').then(audits => {
+        resolve(new AuditRunner(audits));
       });
     });
   }
 
-  constructor(tests) {
-    this.tests_ = tests;
+  constructor(audits) {
+    this.audits_ = audits;
     this.driver_ = null;
-    this.loader_ = new RemoteFileLoader();
   }
 
-  test(url) {
+  audit(url) {
     const driver = new ChromeProtocol();
 
     return driver.gotoURL(url)
         .then(() => {
-          const testNames = Object.keys(this.tests_);
-          const testResponses = [];
+          const auditNames = Object.keys(this.audits_);
+          const auditResponses = [];
 
-          testNames.forEach(testName => {
-            const testInfo = this.tests_[testName];
-            const test = require(testInfo.main);
+          auditNames.forEach(auditName => {
+            const auditInfo = this.audits_[auditName];
+            const audit = require(auditInfo.main);
 
-            console.log(`Running ${testName}`);
-
-            testResponses
-                .push(test.run({
+            auditResponses
+                .push(audit.run({
                   url: url,
                   driver: driver
                 })
                 .then(result => {
-                  return {testName, result};
+                  return {auditName, result};
                 })
             );
           });
 
-          return Promise.all(testResponses);
-        })
-        .then(results => {
-          if (this.driver_ !== null) {
-            if (typeof this.driver_.browser !== 'undefined') {
-              this.driver_.browser.quit();
-            }
-          }
-
-          return results;
+          return Promise.all(auditResponses);
         });
   }
 }
 
-TestRunner.get()
-    .then(testRunner => testRunner.test('https://voice-memos.appspot.com/'))
+AuditRunner.get()
+    .then(runner => runner.audit('https://voice-memos.appspot.com/'))
     .then(results => {
       console.log(results);
       process.exit(0);
