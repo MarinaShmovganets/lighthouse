@@ -15,34 +15,34 @@
  */
 'use strict';
 
-class Viewport {
+class ThemeColor {
 
   static get tags() {
-    return ['Mobile Friendly'];
+    return ['HTML'];
   }
 
   static get description() {
-    return 'Site has a viewport meta tag';
+    return 'Site has a theme-color meta tag';
   }
 
   static audit(inputs) {
-    let hasViewport = false;
+    let hasThemeColor = false;
     if (inputs.window) {
-      const viewportElements =
-        inputs.window.document.querySelectorAll('head meta[name="viewport"]');
+      const themeColorElements =
+        inputs.window.document.querySelectorAll('head meta[name="theme-color"]');
 
-      if (viewportElements.length === 1 &&
-        viewportElements[0].getAttribute('content').indexOf('width=') !== -1) {
-        hasViewport = true;
+      if (themeColorElements.length === 1 &&
+        themeColorElements[0].getAttribute('content').length > 0) {
+        hasThemeColor = true;
       }
     }
 
     return {
-      value: hasViewport,
-      tags: Viewport.tags,
-      description: Viewport.description
+      value: hasThemeColor,
+      tags: ThemeColor.tags,
+      description: ThemeColor.description
     };
   }
 }
 
-module.exports = Viewport;
+module.exports = ThemeColor;

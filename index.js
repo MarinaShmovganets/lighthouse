@@ -42,7 +42,8 @@ const audits = [
   require('./audits/manifest/icons-192'),
   require('./audits/manifest/name'),
   require('./audits/manifest/short-name'),
-  require('./audits/manifest/start-url')
+  require('./audits/manifest/start-url'),
+  require('./audits/html/theme-color')
 ];
 
 module.exports = function(opts) {
