@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "test": "npm run lint --silent && npm run unit",
     "unit": "mocha $(find ./test -name '*.js') --timeout 60000",
-    "start": "node ."
+    "start": "node .",
+    "chrome": "/Applications/Google\\ Chrome\\ Canary.app/Contents/MacOS/Google\\ Chrome\\ Canary --remote-debugging-port=9222 --no-first-run --enable-gpu-benchmarking --user-data-dir=\"/tmp/lighthouse-profile\" \"about:blank\""
   },
   "repository": "googlechrome/lighthouse",
   "keywords": [
