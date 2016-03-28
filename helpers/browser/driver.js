@@ -176,7 +176,7 @@ class ChromeProtocol {
     };
 
     this.on('Tracing.dataCollected', data => {
-      this._traceEvents.push(...data.value);
+      this._traceEvents.push(data.value);
     });
 
     return this.connect()
