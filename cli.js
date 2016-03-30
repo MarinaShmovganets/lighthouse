@@ -67,6 +67,8 @@ lighthouse({
   } else {
     prettyPrint(results);
   }
+}).catch(function () {
+  process.exit();
 });
 
 if (cli.flags.verbose) {
