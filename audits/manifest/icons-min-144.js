@@ -47,18 +47,22 @@ class ManifestIconsMin144 extends Audit {
    */
   static audit(artifacts) {
     let hasIcons = false;
+    let hasIconAbove144 = false;
     const manifest = artifacts.manifest;
 
     if (manifest && manifest.icons.value) {
-      const icons144 = manifest.icons.value.find(icon => {
+      manifest.icons.value.find(icon => {
         const sizesArray = icon.value.sizes.value;
-        console.log('hi', sizesArray);
-        return !!sizesArray && sizesArray.indexOf('144x144') !== -1;
+        !!sizesArray && sizesArray.forEach( size => {
+          const pair = size.split(/x/i);
+          if (pair[0] && parseFloat(pair[0]) > 144) {
+            hasIconAbove144 = true;
+          }
+        });
       });
-      hasIcons = (!!icons144);
     }
 
-    return ManifestIconsMin144.generateAuditResult(hasIcons);
+    return ManifestIconsMin144.generateAuditResult(hasIconAbove144);
   }
 }
 
