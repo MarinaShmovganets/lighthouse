@@ -35,15 +35,13 @@ class AddToHomescreen extends Aggregate {
    *   - valid short_name
    *   - icon of size >= 144x144 and png (either type `image/png` or filename ending in `.png`
    * More details: https://github.com/GoogleChrome/lighthouse/issues/23
-   *
-   * TODO: We should allow icons >=144, rather than >= 192
    */
   static get criteria() {
     const serviceWorker = require('../../audits/offline/service-worker').name;
     const manifestExists = require('../../audits/manifest/exists').name;
     const manifestStartUrl = require('../../audits/manifest/start-url').name;
     const manifestIcons = require('../../audits/manifest/icons').name;
-    const manifestIcons192 = require('../../audits/manifest/icons-192').name;
+    const manifestIconsMin144 = require('../../audits/manifest/icons-min-144').name;
     const manifestShortName = require('../../audits/manifest/short-name').name;
 
     const criteria = {};
@@ -67,7 +65,7 @@ class AddToHomescreen extends Aggregate {
       weight: 1
     };
 
-    criteria[manifestIcons192] = {
+    criteria[manifestIconsMin144] = {
       value: true,
       weight: 1
     };
