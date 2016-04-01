@@ -38,7 +38,7 @@ class ManifestIconsMin144 extends Audit {
    * @override
    */
   static get description() {
-    return 'Manifest contains 144px icons';
+    return 'Manifest contains icons at least 144px';
   }
 
   /**
@@ -46,23 +46,23 @@ class ManifestIconsMin144 extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    let hasIcons = false;
-    let hasIconAbove144 = false;
-    const manifest = artifacts.manifest;
+    let hasIconAtLeast144 = false;
+    const manifest = artifacts.manifest.value;
 
-    if (manifest && manifest.icons.value) {
-      manifest.icons.value.find(icon => {
-        const sizesArray = icon.value.sizes.value;
-        !!sizesArray && sizesArray.forEach( size => {
-          const pair = size.split(/x/i);
-          if (pair[0] && parseFloat(pair[0]) > 144) {
-            hasIconAbove144 = true;
-          }
-        });
-      });
+    if (!manifest || !manifest.icons.value) {
+      return ManifestIconsMin144.generateAuditResult(false);
     }
 
-    return ManifestIconsMin144.generateAuditResult(hasIconAbove144);
+    manifest.icons.value.forEach(icon => {
+      const sizesArray = icon.value.sizes.value;
+      !!sizesArray && sizesArray.forEach(size => {
+        const pair = size.split(/x/i);
+        if (pair[0] && parseFloat(pair[0]) >= 144) {
+          hasIconAtLeast144 = true;
+        }
+      });
+    });
+    return ManifestIconsMin144.generateAuditResult(hasIconAtLeast144);
   }
 }
 
