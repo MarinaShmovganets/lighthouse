@@ -19,6 +19,7 @@
 
 const Audit = require('../audit');
 const iconsAudit = require('./icons');
+const iconsAtLeast = require('../../helpers/icons-at-least');
 
 class ManifestIconsMin144 extends Audit {
   /**
@@ -52,16 +53,7 @@ class ManifestIconsMin144 extends Audit {
       return ManifestIconsMin144.generateAuditResult(false);
     }
 
-    const iconValues = artifacts.manifest.value.icons;
-    const nestedSizes = iconValues.value.map(icon => icon.value.sizes.value);
-    const flattenedSizes = [].concat.apply([], nestedSizes);
-
-    const matchingIcons = flattenedSizes
-        .filter(size => typeof size === "string")
-        .map(size => size.split(/x/i))
-        .map(pairStr => [parseFloat(pairStr[0]), parseFloat(pairStr[1])])
-        .filter(pair => pair[0] >= 144)
-        .filter(pair => pair[1] >= 144);
+    const matchingIcons = iconsAtLeast(144, artifacts.manifest);
 
     return ManifestIconsMin144.generateAuditResult(!!matchingIcons.length);
   }
