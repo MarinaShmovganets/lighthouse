@@ -47,37 +47,25 @@ class ManifestIconsMin144 extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    let hasIconAtLeast144 = false;
-    let debugString = '';
 
-    if (iconsAudit.audit(artifacts).value == false) {
+    if (iconsAudit.audit(artifacts).value === false) {
       return ManifestIconsMin144.generateAuditResult(false);
     }
 
-    let iconSizes = [];
-    artifacts.manifest.value.icons.value.forEach(icon => {
-      iconSizes.push(...icon.value.sizes.value);
-    });
+    const iconValues = artifacts.manifest.value.icons;
+    const nestedSizes = iconValues.value.map(icon => icon.value.sizes.value);
+    const flattenedSizes = [].concat.apply([], nestedSizes);
 
-    iconSizes
+    const matchingIcons = flattenedSizes
+        .filter(size => typeof size === "string")
         .map(size => size.split(/x/i))
         .map(pairStr => [parseFloat(pairStr[0]), parseFloat(pairStr[1])])
         .filter(pair => pair[0] >= 144)
-        .filter(pair => pair[1] >= 144)
-        .forEach(pair => {
-          if (pair[0] === pair[0]) {
+        .filter(pair => pair[1] >= 144);
 
-          }
-        })
-
-    return ManifestIconsMin144.generateAuditResult(hasIconAtLeast144);
+    return ManifestIconsMin144.generateAuditResult(!!matchingIcons.length);
   }
 }
 
 module.exports = ManifestIconsMin144;
 
-
-      // if (!sizesArray) {
-      //   debugString = `Sizes property not found for ${icon.value.src.raw}`;
-      //   return ManifestIconsMin144.generateAuditResult(hasIconAtLeast144, false, debugString);
-      // }

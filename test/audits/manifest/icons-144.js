@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const Audit = require('../../../audits/manifest/icons-192.js');
+const Audit = require('../../../audits/manifest/icons-min-144.js');
 const assert = require('assert');
 const manifestParser = require('../../../helpers/manifest-parser');
 
 /* global describe, it*/
 
-describe('Manifest: icons-192 audit', () => {
+describe('Manifest: icons-144 audit', () => {
   it('fails when no manifest present', () => {
     return assert.equal(Audit.audit({manifest: {
       value: undefined
@@ -47,7 +47,7 @@ describe('Manifest: icons-192 audit', () => {
     return assert.equal(Audit.audit({manifest}).value, false);
   });
 
-  it('fails when a manifest contains an icon with no 192x192 within its sizes', () => {
+  it('succeeds when a manifest contains an icon with multiple sizes, one being larger than 144x144', () => {
     const manifestSrc = JSON.stringify({
       icons: [{
         src: 'icon.png',
@@ -56,21 +56,22 @@ describe('Manifest: icons-192 audit', () => {
     });
     const manifest = manifestParser(manifestSrc);
 
-    return assert.equal(Audit.audit({manifest}).value, false);
+    return assert.equal(Audit.audit({manifest}).value, true);
   });
 
-  it('succeeds when a manifest contains a 192x192 icon', () => {
+  it('succeeds when a manifest contains an icon that\s 192x192', () => {
+    // stub manifest contains a 192 icon
     const manifestSrc = JSON.stringify(require('./manifest.json'));
     const manifest = manifestParser(manifestSrc);
 
     return assert.equal(Audit.audit({manifest}).value, true);
   });
 
-  it('succeeds when a manifest contains an icon with 192x192 within its sizes', () => {
+  it('succeeds when a manifest contains an icon with 144x144 within its sizes', () => {
     const manifestSrc = JSON.stringify({
       icons: [{
         src: 'icon.png',
-        sizes: '96x96 128x128 192x192 256x256'
+        sizes: '96x96 128x128 144x144 256x256'
       }]
     });
     const manifest = manifestParser(manifestSrc);
