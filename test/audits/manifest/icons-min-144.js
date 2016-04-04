@@ -47,7 +47,7 @@ describe('Manifest: icons-144 audit', () => {
     return assert.equal(Audit.audit({manifest}).value, false);
   });
 
-  it('succeeds when a manifest contains an icon with multiple sizes, one being larger than 144x144', () => {
+  it('succeeds when a manifest contains an icon with multiple sizes, one being > 144x144', () => {
     const manifestSrc = JSON.stringify({
       icons: [{
         src: 'icon.png',
