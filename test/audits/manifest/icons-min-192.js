@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const Audit = require('../../../audits/manifest/icons-192.js');
+const Audit = require('../../../audits/manifest/icons-min-192.js');
 const assert = require('assert');
 const manifestParser = require('../../../helpers/manifest-parser');
 
