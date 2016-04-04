@@ -47,7 +47,7 @@ describe('Manifest: icons-192 audit', () => {
     return assert.equal(Audit.audit({manifest}).value, false);
   });
 
-  it('fails when a manifest contains an icon with no 192x192 within its sizes', () => {
+  it('succeeds when a manifest contains an icon with no 192x192, but contains one larger', () => {
     const manifestSrc = JSON.stringify({
       icons: [{
         src: 'icon.png',
@@ -56,7 +56,7 @@ describe('Manifest: icons-192 audit', () => {
     });
     const manifest = manifestParser(manifestSrc);
 
-    return assert.equal(Audit.audit({manifest}).value, false);
+    return assert.equal(Audit.audit({manifest}).value, true);
   });
 
   it('succeeds when a manifest contains a 192x192 icon', () => {
