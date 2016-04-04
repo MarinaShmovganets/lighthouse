@@ -56,12 +56,13 @@ header h2 {
   font-weight: 300;
 }
 
-header::after {
-  content: 'BETA';
+header a {
+  text-decoration: none;
+  text-transform: uppercase;
+  display: block;
   position: absolute;
   top: 0;
   right: 0;
-  transform-origin: 50% 50%;
   height: 32px;
   font-size: 14px;
   background: linear-gradient(to bottom, #D0021B 0%, #B30419 100%);
@@ -71,6 +72,8 @@ header::after {
   line-height: 32px;
   text-align: center;
   width: 140px;
+  outline: none;
+  transform-origin: 50% 50%;
   transform: translate(36px, 20px) rotate(45deg);
 }
 
