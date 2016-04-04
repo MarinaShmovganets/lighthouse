@@ -19,6 +19,7 @@
 
 var manifestParser = require('../helpers/manifest-parser');
 var assert = require('assert');
+const manifestStub = require('./audits/manifest/manifest.json');
 
 describe('Manifest Parser', function() {
   it('should not parse empty string input', function() {
@@ -53,6 +54,29 @@ describe('Manifest Parser', function() {
     assert.equal(parsedManifest.value.orientation.value, undefined);
     assert.equal(parsedManifest.value.theme_color.value, undefined);
     assert.equal(parsedManifest.value.background_color.value, undefined);
+  });
+
+  describe('icon parsing', function() {
+    it('it parses basic string', function() {
+      let parsedManifest = manifestParser('{"icons": [{"src": "192.png", "sizes": "192x192"}]}');
+      assert(!parsedManifest.debugString);
+      assert(!parsedManifest.value.icons.debugString);
+      assert(!parsedManifest.value.icons.value[0].value.sizes.debugString);
+      assert.equal(parsedManifest.value.icons.value.length, 1);
+    });
+
+    it('it warns if unequal sizes are presented', function() {
+      let parsedManifest = manifestParser('{"icons": [{"src": "logo.png", "sizes": "200x192"}]}');
+      assert(!!parsedManifest.value.icons.value[0].value.sizes.debugString);
+      assert.equal(parsedManifest.value.icons.value.length, 1);
+    });
+
+    it('it finds three icons in the stub manifest', function() {
+      let parsedManifest = manifestParser(JSON.stringify(manifestStub));
+      assert(!parsedManifest.debugString);
+      assert(!parsedManifest.value.icons.value[0].value.sizes.debugString);
+      assert.equal(parsedManifest.value.icons.value.length, 3);
+    });
   });
 
   describe('name parsing', function() {

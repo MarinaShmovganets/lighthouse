@@ -50,7 +50,8 @@ class ManifestIconsMin144 extends Audit {
   static audit(artifacts) {
 
     if (iconsAudit.audit(artifacts).value === false) {
-      return ManifestIconsMin144.generateAuditResult(false);
+      return ManifestIconsMin144.generateAuditResult(false, undefined,
+        'WARNING: No icons found in the manifest');
     }
 
     const matchingIcons = iconsAtLeast(144, artifacts.manifest);
