@@ -18,8 +18,10 @@
 'use strict';
 
 const Audit = require('../audit');
+const iconsAudit = require('./icons');
+const iconsAtLeast = require('../../helpers/icons-at-least');
 
-class ManifestIcons192 extends Audit {
+class ManifestIconsMin192 extends Audit {
   /**
    * @override
    */
@@ -31,14 +33,14 @@ class ManifestIcons192 extends Audit {
    * @override
    */
   static get name() {
-    return 'manifest-icons-192';
+    return 'manifest-icons-min192';
   }
 
   /**
    * @override
    */
   static get description() {
-    return 'Manifest contains 192px icons';
+    return 'Manifest contains icons at least 192px';
   }
 
   /**
@@ -46,19 +48,15 @@ class ManifestIcons192 extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    let hasIcons = false;
-    const manifest = artifacts.manifest.value;
 
-    if (manifest && manifest.icons.value) {
-      const icons192 = manifest.icons.value.find(icon => {
-        const sizesArray = icon.value.sizes.value;
-        return !!sizesArray && sizesArray.indexOf('192x192') !== -1;
-      });
-      hasIcons = (!!icons192);
+    if (iconsAudit.audit(artifacts).value === false) {
+      return ManifestIconsMin192.generateAuditResult(false);
     }
 
-    return ManifestIcons192.generateAuditResult(hasIcons);
+    const matchingIcons = iconsAtLeast(192, artifacts.manifest);
+
+    return ManifestIconsMin192.generateAuditResult(!!matchingIcons.length);
   }
 }
 
-module.exports = ManifestIcons192;
+module.exports = ManifestIconsMin192;
