@@ -17,11 +17,11 @@
 'use strict';
 
 /**
- * @param  {Number} sizePx
- * @param  {any} manifest
+ * @param {number} sizePx
+ * @param {!Manifest} manifestValue
  */
-module.exports = function iconsAtLeast(sizePx, manifest) {
-  const iconValues = manifest.value.icons;
+module.exports = function iconsAtLeast(sizePx, manifestValue) {
+  const iconValues = manifestValue.icons;
   const nestedSizes = iconValues.value.map(icon => icon.value.sizes.value);
   const flattenedSizes = [].concat.apply([], nestedSizes);
 

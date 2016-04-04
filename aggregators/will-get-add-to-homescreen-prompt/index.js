@@ -40,7 +40,6 @@ class AddToHomescreen extends Aggregate {
     const serviceWorker = require('../../audits/offline/service-worker').name;
     const manifestExists = require('../../audits/manifest/exists').name;
     const manifestStartUrl = require('../../audits/manifest/start-url').name;
-    const manifestIcons = require('../../audits/manifest/icons').name;
     const manifestIconsMin144 = require('../../audits/manifest/icons-min-144').name;
     const manifestShortName = require('../../audits/manifest/short-name').name;
 
@@ -56,11 +55,6 @@ class AddToHomescreen extends Aggregate {
     };
 
     criteria[manifestStartUrl] = {
-      value: true,
-      weight: 1
-    };
-
-    criteria[manifestIcons] = {
       value: true,
       weight: 1
     };

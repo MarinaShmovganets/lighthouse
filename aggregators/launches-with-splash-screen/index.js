@@ -42,7 +42,6 @@ class SplashScreen extends Aggregate {
     const manifestName = require('../../audits/manifest/name').name;
     const manifestBackgroundColor = require('../../audits/manifest/background-color').name;
     const manifestThemeColor = require('../../audits/manifest/theme-color').name;
-    const manifestIcons = require('../../audits/manifest/icons').name;
     const manifestIcons192 = require('../../audits/manifest/icons-min-192').name;
 
     const criteria = {};
@@ -65,11 +64,6 @@ class SplashScreen extends Aggregate {
     criteria[manifestThemeColor] = {
       value: true,
       weight: 0
-    };
-
-    criteria[manifestIcons] = {
-      value: true,
-      weight: 1
     };
 
     criteria[manifestIcons192] = {
