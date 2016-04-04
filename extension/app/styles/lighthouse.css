@@ -71,7 +71,7 @@ header::after {
   line-height: 32px;
   text-align: center;
   width: 140px;
-  transform:  translate(36px, 20px) rotate(45deg);
+  transform: translate(36px, 20px) rotate(45deg);
 }
 
 .results {
