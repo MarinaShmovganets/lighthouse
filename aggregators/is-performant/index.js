@@ -19,6 +19,9 @@
 
 const Aggregate = require('../aggregate');
 
+/** @type {string} */
+const firstMeaningfulPaint = require('../../audits/performance/first-meaningful-paint').name;
+
 class IsPerformant extends Aggregate {
 
   static get name() {
@@ -26,7 +29,6 @@ class IsPerformant extends Aggregate {
   }
 
   static get criteria() {
-    const firstMeaningfulPaint = require('../../audits/performance/first-meaningful-paint').name;
     const criteria = {};
     criteria[firstMeaningfulPaint] = {
       value: 100,

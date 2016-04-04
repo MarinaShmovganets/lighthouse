@@ -19,6 +19,15 @@
 
 const Aggregate = require('../aggregate');
 
+/** @type {string} */
+const manifestExists = require('../../audits/manifest/exists').name;
+
+/** @type {string} */
+const manifestThemeColor = require('../../audits/manifest/theme-color').name;
+
+/** @type {string} */
+const metaThemeColor = require('../../audits/html/meta-theme-color').name;
+
 class OmniboxThemeColor extends Aggregate {
 
   static get name() {
@@ -38,10 +47,6 @@ class OmniboxThemeColor extends Aggregate {
    * More details: https://github.com/GoogleChrome/lighthouse/issues/25
    */
   static get criteria() {
-    const manifestExists = require('../../audits/manifest/exists').name;
-    const manifestThemeColor = require('../../audits/manifest/theme-color').name;
-    const metaThemeColor = require('../../audits/html/meta-theme-color').name;
-
     const criteria = {};
     criteria[manifestExists] = {
       value: true,

@@ -15,28 +15,36 @@
  * limitations under the License.
  */
 
-'use strict';
+/**
+ * Typing externs file for collected output of the artifact gatherers stage.
+ * @externs
+ */
 
-const Aggregate = require('../aggregate');
+/**
+ * @struct
+ * @record
+ */
+function Aggregation() {}
 
-/** @type {string} */
-const viewport = require('../../audits/mobile-friendly/viewport').name;
+/** @type {number} */
+Aggregation.prototype.overall;
 
-class MobileFriendly extends Aggregate {
+/** @type {!Array<!Object>} */
+Aggregation.prototype.subItems;
 
-  static get name() {
-    return 'Is Mobile Friendly';
-  }
+/**
+ * @struct
+ * @record
+ */
+function Criterion() {}
 
-  static get criteria() {
-    const criteria = {};
-    criteria[viewport] = {
-      value: true,
-      weight: 1
-    };
+/** @type {?} */
+Criterion.prototype.value;
 
-    return criteria;
-  }
-}
+/** @type {number} */
+Criterion.prototype.weight;
 
-module.exports = MobileFriendly;
+/**
+ * @type {Object<string, Criterion>}
+ */
+var Criteria = {};

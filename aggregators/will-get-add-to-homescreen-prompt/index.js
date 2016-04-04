@@ -19,6 +19,24 @@
 
 const Aggregate = require('../aggregate');
 
+/** @type {string} */
+const serviceWorker = require('../../audits/offline/service-worker').name;
+
+/** @type {string} */
+const manifestExists = require('../../audits/manifest/exists').name;
+
+/** @type {string} */
+const manifestStartUrl = require('../../audits/manifest/start-url').name;
+
+/** @type {string} */
+const manifestIcons = require('../../audits/manifest/icons').name;
+
+/** @type {string} */
+const manifestIcons192 = require('../../audits/manifest/icons-192').name;
+
+/** @type {string} */
+const manifestShortName = require('../../audits/manifest/short-name').name;
+
 class AddToHomescreen extends Aggregate {
 
   static get name() {
@@ -39,13 +57,6 @@ class AddToHomescreen extends Aggregate {
    * TODO: We should allow icons >=144, rather than >= 192
    */
   static get criteria() {
-    const serviceWorker = require('../../audits/offline/service-worker').name;
-    const manifestExists = require('../../audits/manifest/exists').name;
-    const manifestStartUrl = require('../../audits/manifest/start-url').name;
-    const manifestIcons = require('../../audits/manifest/icons').name;
-    const manifestIcons192 = require('../../audits/manifest/icons-192').name;
-    const manifestShortName = require('../../audits/manifest/short-name').name;
-
     const criteria = {};
     criteria[serviceWorker] = {
       value: true,

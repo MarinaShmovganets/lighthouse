@@ -19,6 +19,24 @@
 
 const Aggregate = require('../aggregate');
 
+/** @type {string} */
+const manifestExists = require('../../audits/manifest/exists').name;
+
+/** @type {string} */
+const manifestName = require('../../audits/manifest/name').name;
+
+/** @type {string} */
+const manifestBackgroundColor = require('../../audits/manifest/background-color').name;
+
+/** @type {string} */
+const manifestThemeColor = require('../../audits/manifest/theme-color').name;
+
+/** @type {string} */
+const manifestIcons = require('../../audits/manifest/icons').name;
+
+/** @type {string} */
+const manifestIcons192 = require('../../audits/manifest/icons-192').name;
+
 class SplashScreen extends Aggregate {
 
   static get name() {
@@ -38,13 +56,6 @@ class SplashScreen extends Aggregate {
    * More details: https://github.com/GoogleChrome/lighthouse/issues/24
    */
   static get criteria() {
-    const manifestExists = require('../../audits/manifest/exists').name;
-    const manifestName = require('../../audits/manifest/name').name;
-    const manifestBackgroundColor = require('../../audits/manifest/background-color').name;
-    const manifestThemeColor = require('../../audits/manifest/theme-color').name;
-    const manifestIcons = require('../../audits/manifest/icons').name;
-    const manifestIcons192 = require('../../audits/manifest/icons-192').name;
-
     const criteria = {};
 
     criteria[manifestExists] = {
