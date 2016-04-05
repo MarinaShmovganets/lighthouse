@@ -20,32 +20,8 @@ const manifestParser = require('../../../helpers/manifest-parser');
 /* global describe, it*/
 
 describe('Manifest: icons-192 audit', () => {
-  it('fails when no manifest present', () => {
-    return assert.equal(Audit.audit({manifest: {
-      value: undefined
-    }}).value, false);
-  });
 
-  it('fails when a manifest contains no icons', () => {
-    const inputs = {
-      manifest: {
-        icons: {}
-      }
-    };
 
-    return assert.equal(Audit.audit(inputs).value, false);
-  });
-
-  it('fails when a manifest contains an icon with no size', () => {
-    const manifestSrc = JSON.stringify({
-      icons: [{
-        src: 'icon.png'
-      }]
-    });
-    const manifest = manifestParser(manifestSrc);
-
-    return assert.equal(Audit.audit({manifest}).value, false);
-  });
 
   it('succeeds when a manifest contains an icon with no 192x192, but contains one larger', () => {
     const manifestSrc = JSON.stringify({
