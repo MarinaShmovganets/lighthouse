@@ -18,6 +18,7 @@
 'use strict';
 
 const Audit = require('../audit');
+const iconsExist = require('../../helpers/icons-exist');
 const iconsAtLeast = require('../../helpers/icons-at-least');
 
 class ManifestIconsMin192 extends Audit {
@@ -32,7 +33,7 @@ class ManifestIconsMin192 extends Audit {
    * @override
    */
   static get name() {
-    return 'manifest-icons-min192';
+    return 'manifest-icons-min-192';
   }
 
   /**
@@ -49,7 +50,7 @@ class ManifestIconsMin192 extends Audit {
   static audit(artifacts) {
     const manifest = artifacts.manifest.value;
 
-    if (manifest && manifest.icons.value && manifest.icons.value.length === 0) {
+    if (iconsExist(manifest) === false) {
       return ManifestIconsMin192.generateAuditResult(false, undefined,
               'WARNING: No icons found in the manifest');
     }
