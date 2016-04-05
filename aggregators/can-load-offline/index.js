@@ -19,14 +19,26 @@
 
 const Aggregate = require('../aggregate');
 
+/**
+ * @type {string}
+ */
+const serviceWorker = require('../../audits/offline/service-worker').name;
+
 class WorksOffline extends Aggregate {
 
+  /**
+   * @override
+   * @return {string}
+   */
   static get name() {
     return 'Works Offline';
   }
 
+  /**
+   * @override
+   * @return {!AggregationCriteria}
+   */
   static get criteria() {
-    const serviceWorker = require('../../audits/offline/service-worker').name;
     const criteria = {};
     criteria[serviceWorker] = {
       value: true,
