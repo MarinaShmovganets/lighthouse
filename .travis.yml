@@ -16,4 +16,5 @@ before_script:
   - start-stop-daemon --start --background --exec $(pwd)/launch-chrome.sh -- --disable-setuid-sandbox
   - sleep 5
 script:
+  - npm run test
   - (cd extension && gulp build)
