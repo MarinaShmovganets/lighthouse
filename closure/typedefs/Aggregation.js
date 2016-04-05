@@ -24,27 +24,40 @@
  * @struct
  * @record
  */
-function Aggregation() {}
+function AggregationItem() {}
 
 /** @type {number} */
-Aggregation.prototype.overall;
+AggregationItem.prototype.overall;
 
-/** @type {!Array<!Object>} */
-Aggregation.prototype.subItems;
+/** @type {!Array<!AuditResult>} */
+AggregationItem.prototype.subItems;
 
 /**
  * @struct
  * @record
  */
-function Criterion() {}
+function Aggregation() {}
 
-/** @type {?} */
-Criterion.prototype.value;
+/** @type {string} */
+Aggregation.prototype.name;
 
-/** @type {number} */
-Criterion.prototype.weight;
+/** @type {AggregationItem} */
+Aggregation.prototype.score;
 
 /**
- * @type {Object<string, Criterion>}
+ * @struct
+ * @record
  */
-var Criteria = {};
+function AggregationCriterion() {}
+
+/** @type {(boolean|number|undefined)} */
+AggregationCriterion.prototype.value;
+
+/** @type {number} */
+AggregationCriterion.prototype.weight;
+
+/**
+ * @struct
+ * @type {!Object<string, !AggregationCriterion>}
+ */
+var AggregationCriteria = {};

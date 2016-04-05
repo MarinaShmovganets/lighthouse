@@ -39,6 +39,10 @@ const manifestIcons192 = require('../../audits/manifest/icons-192').name;
 
 class SplashScreen extends Aggregate {
 
+  /**
+   * @override
+   * @return {string}
+   */
   static get name() {
     return 'Will Launch With A Splash Screen';
   }
@@ -53,7 +57,10 @@ class SplashScreen extends Aggregate {
    *   - manifest has valid theme_color
    *   - icon of size >= 192x192
    *     - while optional, icons at 256, 384 and 512 will be used when appropriate
-   * More details: https://github.com/GoogleChrome/lighthouse/issues/24
+   * @see https://github.com/GoogleChrome/lighthouse/issues/24
+   *
+   * @override
+   * @return {!AggregationCriteria}
    */
   static get criteria() {
     const criteria = {};

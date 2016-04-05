@@ -24,10 +24,18 @@ const firstMeaningfulPaint = require('../../audits/performance/first-meaningful-
 
 class IsPerformant extends Aggregate {
 
+  /**
+   * @override
+   * @return {string}
+   */
   static get name() {
     return 'Is Performant';
   }
 
+  /**
+   * @override
+   * @return {!AggregationCriteria}
+   */
   static get criteria() {
     const criteria = {};
     criteria[firstMeaningfulPaint] = {

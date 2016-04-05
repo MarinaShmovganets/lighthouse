@@ -24,10 +24,18 @@ const viewport = require('../../audits/mobile-friendly/viewport').name;
 
 class MobileFriendly extends Aggregate {
 
+  /**
+   * @override
+   * @return {string}
+   */
   static get name() {
     return 'Is Mobile Friendly';
   }
 
+  /**
+   * @override
+   * @return {!AggregationCriteria}
+   */
   static get criteria() {
     const criteria = {};
     criteria[viewport] = {

@@ -30,6 +30,10 @@ const metaThemeColor = require('../../audits/html/meta-theme-color').name;
 
 class OmniboxThemeColor extends Aggregate {
 
+  /**
+   * @override
+   * @return {string}
+   */
   static get name() {
     return 'Omnibox Matches Brand Colors';
   }
@@ -44,7 +48,9 @@ class OmniboxThemeColor extends Aggregate {
    * manifest. Once fetched, the manifest theme_color will be used unless a <meta>
    * overrides it.
    *
-   * More details: https://github.com/GoogleChrome/lighthouse/issues/25
+   * @see https://github.com/GoogleChrome/lighthouse/issues/25
+   * @override
+   * @return {!AggregationCriteria}
    */
   static get criteria() {
     const criteria = {};
