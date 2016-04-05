@@ -49,14 +49,15 @@ class ManifestIconsMin192 extends Audit {
   static audit(artifacts) {
     const manifest = artifacts.manifest.value;
 
-    if (manifest && manifest.icons.value && manifest.icons.value.length > 0) {
+    if (manifest && manifest.icons.value && manifest.icons.value.length === 0) {
       return ManifestIconsMin192.generateAuditResult(false, undefined,
               'WARNING: No icons found in the manifest');
     }
 
     const matchingIcons = iconsAtLeast(192, artifacts.manifest.value);
 
-    return ManifestIconsMin192.generateAuditResult(!!matchingIcons.length);
+    return ManifestIconsMin192.generateAuditResult(!!matchingIcons.length, undefined,
+      `Found icons of sizes: ${matchingIcons}`);
   }
 }
 

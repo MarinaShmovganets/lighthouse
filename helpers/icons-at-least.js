@@ -29,6 +29,5 @@ module.exports = function iconsAtLeast(sizePx, manifestValue) {
       .filter(size => typeof size === 'string')
       .map(size => size.split(/x/i))
       .map(pairStr => [parseFloat(pairStr[0]), parseFloat(pairStr[1])])
-      .filter(pair => pair[0] >= sizePx)
-      .filter(pair => pair[1] >= sizePx);
+      .filter(pair => (pair[0] >= sizePx) && (pair[1] >= sizePx));
 };
