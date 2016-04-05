@@ -23,10 +23,10 @@ const manifestParser = require('../../../helpers/manifest-parser');
 /* global describe, it*/
 
 describe('Manifest: icons audits', () => {
-  describe('do icons exist?', () => {
+  describe('icons exist check', () => {
     it('fails when a manifest contains no icons array', () => {
       const manifestSrc = JSON.stringify({
-        'short_name': 'NoIconsHere'
+        name: 'NoIconsHere'
       });
       const manifest = manifestParser(manifestSrc);
       assert.equal(Audit144.audit({manifest}).value, false);
@@ -43,7 +43,7 @@ describe('Manifest: icons audits', () => {
     });
   });
 
-  describe('are icons at least X size?', () => {
+  describe('icons at least X size check', () => {
     it('fails when a manifest contains an icon with no size', () => {
       const manifestSrc = JSON.stringify({
         icons: [{
@@ -56,7 +56,7 @@ describe('Manifest: icons audits', () => {
       assert.equal(Audit192.audit({manifest}).value, false);
     });
 
-    it('succeeds when a manifest contains validly sized icons', () => {
+    it('succeeds when a manifest contains icons that are large enough', () => {
       // stub manifest contains a 192 icon
       const manifestSrc = JSON.stringify(require('./manifest.json'));
       const manifest = manifestParser(manifestSrc);
@@ -64,7 +64,7 @@ describe('Manifest: icons audits', () => {
       assert.equal(Audit192.audit({manifest}).value, true);
     });
 
-    it('succeeds when a manifest contains an icon with multiple sizes, one being valid', () => {
+    it('succeeds when there\'s one icon with multiple sizes, and one is valid', () => {
       const manifestSrc = JSON.stringify({
         icons: [{
           src: 'icon.png',
@@ -77,7 +77,7 @@ describe('Manifest: icons audits', () => {
       assert.equal(Audit192.audit({manifest}).value, true);
     });
 
-    it('succeeds when a manifest contains two icons, one without any sizes and the other with a valid size', () => {
+    it('succeeds when there\'s two icons, one without sizes; the other with a valid size', () => {
       const manifestSrc = JSON.stringify({
         icons: [{
           src: 'icon.png'
@@ -91,7 +91,7 @@ describe('Manifest: icons audits', () => {
       assert.equal(Audit192.audit({manifest}).value, true);
     });
 
-    it('succeeds when a manifest icon has a valid size, though it\'s non-square.', () => {
+    it('succeeds when an icon has a valid size, though it\'s non-square.', () => {
       // See also: https://code.google.com/p/chromium/codesearch#chromium/src/chrome/browser/banners/app_banner_data_fetcher_unittest.cc&sq=package:chromium&type=cs&q=%22Non-square%20is%20okay%22%20file:%5Esrc/chrome/browser/banners/
       const manifestSrc = JSON.stringify({
         icons: [{
