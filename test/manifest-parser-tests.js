@@ -57,7 +57,7 @@ describe('Manifest Parser', function() {
   });
 
   describe('icon parsing', function() {
-    it('it parses basic string', function() {
+    it('parses basic string', function() {
       let parsedManifest = manifestParser('{"icons": [{"src": "192.png", "sizes": "192x192"}]}');
       assert(!parsedManifest.debugString);
       assert(!parsedManifest.value.icons.debugString);
@@ -65,13 +65,13 @@ describe('Manifest Parser', function() {
       assert.equal(parsedManifest.value.icons.value.length, 1);
     });
 
-    it('it warns if unequal sizes are presented', function() {
+    it('warns if unequal sizes are presented', function() {
       let parsedManifest = manifestParser('{"icons": [{"src": "logo.png", "sizes": "200x192"}]}');
       assert(!!parsedManifest.value.icons.value[0].value.sizes.debugString);
       assert.equal(parsedManifest.value.icons.value.length, 1);
     });
 
-    it('it finds three icons in the stub manifest', function() {
+    it('finds three icons in the stub manifest', function() {
       let parsedManifest = manifestParser(JSON.stringify(manifestStub));
       assert(!parsedManifest.debugString);
       assert(!parsedManifest.value.icons.value[0].value.sizes.debugString);
@@ -80,13 +80,13 @@ describe('Manifest Parser', function() {
   });
 
   describe('name parsing', function() {
-    it('it parses basic string', function() {
+    it('parses basic string', function() {
       let parsedManifest = manifestParser('{"name":"foo"}');
       assert(!parsedManifest.debugString);
       assert.equal(parsedManifest.value.name.value, 'foo');
     });
 
-    it('it trims whitespaces', function() {
+    it('trims whitespaces', function() {
       let parsedManifest = manifestParser('{"name":" foo "}');
       assert(!parsedManifest.debugString);
       assert.equal(parsedManifest.value.name.value, 'foo');
@@ -104,13 +104,13 @@ describe('Manifest Parser', function() {
   });
 
   describe('short_name parsing', function() {
-    it('it parses basic string', function() {
+    it('parses basic string', function() {
       let parsedManifest = manifestParser('{"short_name":"foo"}');
       assert(!parsedManifest.debugString);
       assert.equal(parsedManifest.value.short_name.value, 'foo');
     });
 
-    it('it trims whitespaces', function() {
+    it('trims whitespaces', function() {
       let parsedManifest = manifestParser('{"short_name":" foo "}');
       assert(!parsedManifest.debugString);
       assert.equal(parsedManifest.value.short_name.value, 'foo');
