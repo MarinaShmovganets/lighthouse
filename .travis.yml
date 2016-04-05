@@ -14,3 +14,9 @@ before_script:
   - ./test/download-chrome.sh
   - start-stop-daemon --start --background --exec $(pwd)/launch-chrome.sh -- --disable-setuid-sandbox
   - sleep 5
+before_script:
+  - cd extension
+  - npm install
+script:
+  - cd extension
+  - gulp build
