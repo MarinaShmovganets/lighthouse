@@ -16,11 +16,32 @@
  */
 'use strict';
 
+module.exports = {
+  iconsExist: iconsExist,
+  iconsAtLeast: iconsAtLeast
+};
+
+/**
+ * @param {!Manifest} manifest
+ */
+function iconsExist(manifest) {
+  if (!manifest.icons) {
+    return false;
+  }
+  if (!manifest.icons.value) {
+    return false;
+  }
+  if (manifest.icons.value.length === 0) {
+    return false;
+  }
+  return true;
+}
+
 /**
  * @param {number} sizeRequirement
  * @param {!Manifest} manifestValue
  */
-module.exports = function iconsAtLeast(sizeRequirement, manifestValue) {
+function iconsAtLeast(sizeRequirement, manifestValue) {
   // An icon can be provided for a single size, or for multiple sizes.
   // To handle both, we flatten all found sizes into a single array.
   const iconValues = manifestValue.icons;
@@ -38,4 +59,4 @@ module.exports = function iconsAtLeast(sizeRequirement, manifestValue) {
         // Only keep sizes that are as big as our required size
         return sizeNums[0] >= sizeRequirement && sizeNums[1] >= sizeRequirement;
       });
-};
+}
