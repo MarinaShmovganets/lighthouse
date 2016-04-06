@@ -65,12 +65,6 @@ describe('Manifest Parser', function() {
       assert.equal(parsedManifest.value.icons.value.length, 1);
     });
 
-    it('warns if unequal sizes are presented', function() {
-      let parsedManifest = manifestParser('{"icons": [{"src": "logo.png", "sizes": "200x192"}]}');
-      assert(!!parsedManifest.value.icons.value[0].value.sizes.debugString);
-      assert.equal(parsedManifest.value.icons.value.length, 1);
-    });
-
     it('finds three icons in the stub manifest', function() {
       let parsedManifest = manifestParser(JSON.stringify(manifestStub));
       assert(!parsedManifest.debugString);

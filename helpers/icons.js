@@ -17,14 +17,14 @@
 'use strict';
 
 module.exports = {
-  doExist: iconsExist,
-  sizeAtLeast: iconsAtLeast
+  doExist: doExist,
+  sizeAtLeast: sizeAtLeast
 };
 
 /**
  * @param {!Manifest} manifest
  */
-function iconsExist(manifest) {
+function doExist(manifest) {
   if (!manifest.icons) {
     return false;
   }
@@ -41,7 +41,7 @@ function iconsExist(manifest) {
  * @param {number} sizeRequirement
  * @param {!Manifest} manifest
  */
-function iconsAtLeast(sizeRequirement, manifest) {
+function sizeAtLeast(sizeRequirement, manifest) {
   // An icon can be provided for a single size, or for multiple sizes.
   // To handle both, we flatten all found sizes into a single array.
   const iconValues = manifest.icons;

@@ -91,7 +91,7 @@ describe('Manifest: icons audits', () => {
       assert.equal(Audit192.audit({manifest}).value, true);
     });
 
-    it('succeeds when an icon has a valid size, though it\'s non-square.', () => {
+    it('fails when an icon has a valid size, though it\'s non-square.', () => {
       // See also: https://code.google.com/p/chromium/codesearch#chromium/src/chrome/browser/banners/app_banner_data_fetcher_unittest.cc&sq=package:chromium&type=cs&q=%22Non-square%20is%20okay%22%20file:%5Esrc/chrome/browser/banners/
       const manifestSrc = JSON.stringify({
         icons: [{
@@ -100,8 +100,8 @@ describe('Manifest: icons audits', () => {
         }]
       });
       const manifest = manifestParser(manifestSrc);
-      assert.equal(Audit144.audit({manifest}).value, true);
-      assert.equal(Audit192.audit({manifest}).value, true);
+      assert.equal(Audit144.audit({manifest}).value, false);
+      assert.equal(Audit192.audit({manifest}).value, false);
     });
   });
 });
