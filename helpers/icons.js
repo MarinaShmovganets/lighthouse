@@ -16,13 +16,8 @@
  */
 'use strict';
 
-module.exports = {
-  doExist: doExist,
-  sizeAtLeast: sizeAtLeast
-};
-
 /**
- * @param {!Manifest} manifest
+ * @param {!Manifest=} manifest
  */
 function doExist(manifest) {
   if (!manifest || !manifest.icons) {
@@ -64,3 +59,8 @@ function sizeAtLeast(sizeRequirement, manifest) {
         return areIconsBigEnough && areIconsSquare;
       });
 }
+
+module.exports = {
+  doExist: doExist,
+  sizeAtLeast: sizeAtLeast
+};

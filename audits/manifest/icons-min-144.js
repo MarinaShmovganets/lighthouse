@@ -51,13 +51,14 @@ class ManifestIconsMin144 extends Audit {
 
     if (icons.doExist(manifest) === false) {
       return ManifestIconsMin144.generateAuditResult(false, undefined,
-              'WARNING: No icons found in the manifest');
+          'WARNING: No icons found in the manifest');
     }
 
-    const matchingIcons = icons.sizeAtLeast(144, manifest);
-
+    const matchingIcons = icons.sizeAtLeast(144, /** @type {!Manifest} */ (manifest));
+    const foundSizesDebug = matchingIcons.length ?
+        `Found icons of sizes: ${matchingIcons}` : undefined;
     return ManifestIconsMin144.generateAuditResult(!!matchingIcons.length, undefined,
-      !!matchingIcons.length && `Found icons of sizes: ${matchingIcons}`);
+        foundSizesDebug);
   }
 }
 
