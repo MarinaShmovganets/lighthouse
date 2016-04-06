@@ -60,7 +60,6 @@ class SplashScreen extends Aggregate {
    * @return {!AggregationCriteria}
    */
   static get criteria() {
-
     const criteria = {};
 
     criteria[manifestExists] = {
