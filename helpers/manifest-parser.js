@@ -139,13 +139,7 @@ function parseIcon(raw) {
   let sizes = parseString(raw.sizes);
   if (sizes.value !== undefined) {
     let set = new Set();
-    sizes.value.split(/\s/).forEach(size => {
-      const pair = size.split(/x/i);
-      if (pair[0] !== pair[1]) {
-        sizes.debugString = 'WARNING: icon sizes are not equal, expect the unexpected!';
-      }
-      set.add(size.toLowerCase());
-    });
+    sizes.value.trim().split(/\s+/).forEach(size => set.add(size.toLowerCase()));
     sizes.value = set.size > 0 ? Array.from(set) : undefined;
   }
 

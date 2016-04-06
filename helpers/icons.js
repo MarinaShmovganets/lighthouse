@@ -17,8 +17,8 @@
 'use strict';
 
 module.exports = {
-  iconsExist: iconsExist,
-  iconsAtLeast: iconsAtLeast
+  doExist: iconsExist,
+  sizeAtLeast: iconsAtLeast
 };
 
 /**
@@ -39,24 +39,28 @@ function iconsExist(manifest) {
 
 /**
  * @param {number} sizeRequirement
- * @param {!Manifest} manifestValue
+ * @param {!Manifest} manifest
  */
-function iconsAtLeast(sizeRequirement, manifestValue) {
+function iconsAtLeast(sizeRequirement, manifest) {
   // An icon can be provided for a single size, or for multiple sizes.
   // To handle both, we flatten all found sizes into a single array.
-  const iconValues = manifestValue.icons;
+  const iconValues = manifest.icons;
   const nestedSizes = iconValues.value.map(icon => icon.value.sizes.value);
   const flattenedSizes = [].concat.apply([], nestedSizes);
 
   return flattenedSizes
       // First, filter out any undefined values, in case an icon was defined without a size
       .filter(size => typeof size === 'string')
+      // discard sizes that are not AAxBB (eg. "any")
+      .filter(size => /\d+x\d+/.test(size))
       .filter(size => {
         // Split the '24x24' strings into ['24','24'] arrays
         const sizeStrs = size.split(/x/i);
         // Cast the ['24','24'] strings into [24,24] numbers
         const sizeNums = [parseFloat(sizeStrs[0]), parseFloat(sizeStrs[1])];
         // Only keep sizes that are as big as our required size
-        return sizeNums[0] >= sizeRequirement && sizeNums[1] >= sizeRequirement;
+        const areIconsBigEnough = sizeNums[0] >= sizeRequirement && sizeNums[1] >= sizeRequirement;
+        const areIconsSquare = sizeNums[0] === sizeNums[1];
+        return areIconsBigEnough && areIconsSquare;
       });
 }
