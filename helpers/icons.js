@@ -55,6 +55,7 @@ function sizeAtLeast(sizeRequirement, manifest) {
         const sizeNums = [parseFloat(sizeStrs[0]), parseFloat(sizeStrs[1])];
         // Only keep sizes that are as big as our required size
         const areIconsBigEnough = sizeNums[0] >= sizeRequirement && sizeNums[1] >= sizeRequirement;
+        // Square is required: https://code.google.com/p/chromium/codesearch#chromium/src/chrome/browser/manifest/manifest_icon_selector.cc&q=ManifestIconSelector::IconSizesContainsBiggerThanMinimumSize&sq=package:chromium
         const areIconsSquare = sizeNums[0] === sizeNums[1];
         return areIconsBigEnough && areIconsSquare;
       });
