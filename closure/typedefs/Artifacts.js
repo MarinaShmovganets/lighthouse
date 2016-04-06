@@ -54,4 +54,4 @@ Artifacts.prototype.url;
 Artifacts.prototype.viewport;
 
 /** @type {number} */
-Artifacts.prototype.responseCode
+Artifacts.prototype.responseCode;

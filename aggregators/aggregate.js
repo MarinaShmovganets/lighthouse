@@ -64,7 +64,7 @@ class Aggregate {
   /**
    * @private
    * @param {!Array<!AuditResult>} results
-   * @return {!Object}
+   * @return {!Object<!AuditResult>}
    */
   static _remapResultsByName(results) {
     const remapped = {};
@@ -146,7 +146,7 @@ class Aggregate {
    * Compares the set of audit results to the expected values.
    * @param {!Array<!AuditResult>} results The audit results.
    * @param {!AggregationCriteria} expected The aggregation's expected values and weighting.
-   * @return {AggregationItem} The aggregation score.
+   * @return {!AggregationItem} The aggregation score.
    */
   static compare(results, expected) {
     const expectedNames = Object.keys(expected);

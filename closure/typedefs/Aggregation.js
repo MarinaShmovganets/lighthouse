@@ -41,7 +41,7 @@ function Aggregation() {}
 /** @type {string} */
 Aggregation.prototype.name;
 
-/** @type {AggregationItem} */
+/** @type {!AggregationItem} */
 Aggregation.prototype.score;
 
 /**
@@ -57,7 +57,6 @@ AggregationCriterion.prototype.value;
 AggregationCriterion.prototype.weight;
 
 /**
- * @struct
- * @type {!Object<string, !AggregationCriterion>}
+ * @typedef {!Object<!AggregationCriterion>}
  */
-var AggregationCriteria = {};
+var AggregationCriteria;
