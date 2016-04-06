@@ -20,7 +20,6 @@
 const Audit = require('../audit');
 const icons = require('../../helpers/icons');
 
-
 class ManifestIconsMin144 extends Audit {
   /**
    * @override

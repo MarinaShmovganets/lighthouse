@@ -52,9 +52,7 @@ describe('Icons helper', () => {
     });
   });
 
-
   describe('icons at least X size check', () => {
-
     it('succeeds when a manifest icon that equals the requirements', () => {
       const manifestSrc = JSON.stringify({
         icons: [{
@@ -146,7 +144,6 @@ describe('Icons helper', () => {
       const manifest = manifestParser(manifestSrc);
       assert.equal(icons.sizeAtLeast(192, manifest.value).length, 0);
     });
-
 
     it('fails when an icon uses an invalid string for its size', () => {
       const manifestSrc = JSON.stringify({
