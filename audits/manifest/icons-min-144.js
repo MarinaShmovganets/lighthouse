@@ -57,7 +57,7 @@ class ManifestIconsMin144 extends Audit {
     const matchingIcons = icons.sizeAtLeast(144, manifest);
 
     return ManifestIconsMin144.generateAuditResult(!!matchingIcons.length, undefined,
-      `Found icons of sizes: ${matchingIcons}`);
+      !!matchingIcons.length && `Found icons of sizes: ${matchingIcons}`);
   }
 }
 

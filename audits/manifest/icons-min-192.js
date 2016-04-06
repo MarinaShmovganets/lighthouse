@@ -57,7 +57,7 @@ class ManifestIconsMin192 extends Audit {
     const matchingIcons = icons.sizeAtLeast(192, artifacts.manifest.value);
 
     return ManifestIconsMin192.generateAuditResult(!!matchingIcons.length, undefined,
-      `Found icons of sizes: ${matchingIcons}`);
+      !!matchingIcons.length && `Found icons of sizes: ${matchingIcons}`);
   }
 }
 

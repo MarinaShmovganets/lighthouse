@@ -25,7 +25,7 @@ module.exports = {
  * @param {!Manifest} manifest
  */
 function doExist(manifest) {
-  if (!manifest.icons) {
+  if (!manifest || !manifest.icons) {
     return false;
   }
   if (!manifest.icons.value) {

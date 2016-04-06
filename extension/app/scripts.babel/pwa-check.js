@@ -39,7 +39,6 @@ const audits = [
   require('../../../audits/manifest/exists'),
   require('../../../audits/manifest/background-color'),
   require('../../../audits/manifest/theme-color'),
-  require('../../../audits/manifest/icons'),
   require('../../../audits/manifest/icons-min-192'),
   require('../../../audits/manifest/icons-min-144'),
   require('../../../audits/manifest/name'),
