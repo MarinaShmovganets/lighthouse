@@ -19,8 +19,27 @@
 
 const Aggregate = require('../aggregate');
 
+/** @type {string} */
+const serviceWorker = require('../../audits/offline/service-worker').name;
+
+/** @type {string} */
+const manifestExists = require('../../audits/manifest/exists').name;
+
+/** @type {string} */
+const manifestStartUrl = require('../../audits/manifest/start-url').name;
+
+/** @type {string} */
+const manifestIconsMin144 = require('../../audits/manifest/icons-192').name;
+
+/** @type {string} */
+const manifestShortName = require('../../audits/manifest/short-name').name;
+
 class AddToHomescreen extends Aggregate {
 
+  /**
+   * @override
+   * @return {string}
+   */
   static get name() {
     return 'Will Get Add to Homescreen Prompt';
   }
@@ -34,15 +53,13 @@ class AddToHomescreen extends Aggregate {
    *   - valid name
    *   - valid short_name
    *   - icon of size >= 144x144 and png (either type `image/png` or filename ending in `.png`
-   * More details: https://github.com/GoogleChrome/lighthouse/issues/23
+   * @see https://github.com/GoogleChrome/lighthouse/issues/23
+   *
+
+   * @override
+   * @return {!AggregationCriteria}
    */
   static get criteria() {
-    const serviceWorker = require('../../audits/offline/service-worker').name;
-    const manifestExists = require('../../audits/manifest/exists').name;
-    const manifestStartUrl = require('../../audits/manifest/start-url').name;
-    const manifestIconsMin144 = require('../../audits/manifest/icons-min-144').name;
-    const manifestShortName = require('../../audits/manifest/short-name').name;
-
     const criteria = {};
     criteria[serviceWorker] = {
       value: true,
