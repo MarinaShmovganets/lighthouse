@@ -39,8 +39,8 @@ function doExist(manifest) {
 function sizeAtLeast(sizeRequirement, manifest) {
   // An icon can be provided for a single size, or for multiple sizes.
   // To handle both, we flatten all found sizes into a single array.
-  const iconValues = manifest.icons;
-  const nestedSizes = iconValues.value.map(icon => icon.value.sizes.value);
+  const iconValues = /** @type {!Array<!ManifestImageNode>} */ (manifest.icons.value);
+  const nestedSizes = iconValues.map(icon => icon.value.sizes.value);
   const flattenedSizes = [].concat.apply([], nestedSizes);
 
   return flattenedSizes
