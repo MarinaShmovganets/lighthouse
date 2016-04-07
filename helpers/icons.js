@@ -18,6 +18,7 @@
 
 /**
  * @param {!Manifest=} manifest
+ * @return {boolean} Does the manifest have any icons?
  */
 function doExist(manifest) {
   if (!manifest || !manifest.icons) {
@@ -35,6 +36,7 @@ function doExist(manifest) {
 /**
  * @param {number} sizeRequirement
  * @param {!Manifest} manifest
+ * @return {!Array<string>} Value of satisfactory sizes (eg. ['192x192', '256x256'])
  */
 function sizeAtLeast(sizeRequirement, manifest) {
   // An icon can be provided for a single size, or for multiple sizes.

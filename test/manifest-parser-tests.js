@@ -60,16 +60,27 @@ describe('Manifest Parser', function() {
     it('parses basic string', function() {
       let parsedManifest = manifestParser('{"icons": [{"src": "192.png", "sizes": "192x192"}]}');
       assert(!parsedManifest.debugString);
-      assert(!parsedManifest.value.icons.debugString);
-      assert(!parsedManifest.value.icons.value[0].value.sizes.debugString);
-      assert.equal(parsedManifest.value.icons.value.length, 1);
+      let icons = parsedManifest.value.icons;
+      assert(!icons.debugString);
+      let icon192 = icons.value[0];
+      assert(!icon192.value.sizes.debugString);
+      assert.equal(icons.value.length, 1);
     });
 
     it('finds three icons in the stub manifest', function() {
       let parsedManifest = manifestParser(JSON.stringify(manifestStub));
       assert(!parsedManifest.debugString);
-      assert(!parsedManifest.value.icons.value[0].value.sizes.debugString);
       assert.equal(parsedManifest.value.icons.value.length, 3);
+    });
+
+    it('parses icons with extra whitespace', function() {
+      let manifest = '{"icons": [{"src": "192.png", "sizes": " 192x192   256x256"}]}';
+      let parsedManifest = manifestParser(manifest);
+      let icons = parsedManifest.value.icons;
+      let icon192 = icons.value[0];
+      let icon192Sizes = icon192.value.sizes.value;
+      assert.equal(icon192Sizes[0], '192x192');
+      assert.equal(icon192Sizes[1], '256x256');
     });
   });
 
