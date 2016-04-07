@@ -21,14 +21,20 @@ const NetworkManager = require('./web-inspector').NetworkManager;
 const REQUEST_FINISHED = NetworkManager.EventTypes.RequestFinished;
 
 class NetworkRecorder {
-  constructor(recordArray) {
+  constructor(recordArray, requestListener) {
     this._records = recordArray;
+
+    this._listener = requestListener;
 
     this.networkManager = NetworkManager.createWithFakeTarget();
 
     // TODO(bckenny): loadingFailed calls are not recorded in REQUEST_FINISHED.
     this.networkManager.addEventListener(REQUEST_FINISHED, request => {
       this._records.push(request);
+
+      if (this._listener) {
+        this._listener(request.data);
+      }
     });
 
     this.onRequestWillBeSent = this.onRequestWillBeSent.bind(this);

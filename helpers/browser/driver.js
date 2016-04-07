@@ -227,11 +227,14 @@ class ChromeProtocol {
     });
   }
 
-  beginNetworkCollect() {
+  /**
+   * @param {function(!Object)=} requestListener Optional callback for every finished request.
+   */
+  beginNetworkCollect(requestListener) {
     return this.connect().then(_ => {
       return new Promise((resolve, reject) => {
         this._networkRecords = [];
-        this._networkRecorder = new NetworkRecorder(this._networkRecords);
+        this._networkRecorder = new NetworkRecorder(this._networkRecords, requestListener);
 
         this.on('Network.requestWillBeSent', this._networkRecorder.onRequestWillBeSent);
         this.on('Network.requestServedFromCache', this._networkRecorder.onRequestServedFromCache);

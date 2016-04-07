@@ -16,34 +16,18 @@
  */
 'use strict';
 
-/* global window, fetch */
-
+const MANIFEST_LOAD_TIMEOUT = 10000;
 const Gather = require('./gather');
 const manifestParser = require('../helpers/manifest-parser');
 
 class Manifest extends Gather {
-
-  static _loadFromURL(options, manifestURL) {
-    if (typeof window !== 'undefined' && 'fetch' in window) {
-      const finalURL = (new window.URL(options.driver.url).origin) + '/' + manifestURL;
-      return fetch(finalURL).then(response => response.text());
-    }
-
-    return new Promise((resolve, reject) => {
-      const url = require('url');
-      const request = require('request');
-      const finalURL = url.resolve(options.url, manifestURL);
-
-      request(finalURL, function(err, response, body) {
-        if (err || response.statusCode >= 400) {
-          return reject(`${response.statusCode}: ${response.statusMessage}`);
-        }
-
-        resolve(body);
-      });
-    });
-  }
-
+  /**
+   * Create an empty ManifestNode artifact with a debugString for manifest
+   * gathering error states.
+   * @param {string} errorString
+   * @return {!ManifestNode<undefined>}
+   * @private
+   */
   static _errorManifest(errorString) {
     return {
       manifest: {
@@ -54,34 +38,87 @@ class Manifest extends Gather {
     };
   }
 
+  /**
+   * @private
+   */
+  static _createDeferred() {
+    let resolve;
+    let reject;
+    const promise = new Promise((internalResolve, internalReject) => {
+      resolve = internalResolve;
+      reject = internalReject;
+    });
+
+    return {
+      promise,
+      resolve,
+      reject
+    };
+  }
+
+  /**
+   * Creates a listener for manifests in network requests, a load timeout, and
+   * a promise they resolve when complete.
+   * @private
+   */
+  static _resolveOnManifest() {
+    const manifestDeferred = Manifest._createDeferred();
+
+    setTimeout(_ => manifestDeferred.resolve(null), MANIFEST_LOAD_TIMEOUT);
+
+    const manifestListener = function(request) {
+      const resourceType = request.resourceType();
+      if (resourceType && resourceType.name() === 'manifest') {
+        manifestDeferred.resolve(request);
+      }
+    };
+
+    return {
+      listener: manifestListener,
+      promise: manifestDeferred.promise
+    };
+  }
+
   static gather(options) {
     const driver = options.driver;
-    /**
-     * This re-fetches the manifest separately, which could
-     * potentially lead to a different asset. Using the original manifest
-     * resource is tracked in issue #83
-     */
-    return driver.querySelector('head link[rel="manifest"]')
-      .then(node => {
-        if (!node) {
-          return this._errorManifest('No <link rel="manifest"> found in DOM.');
+
+    const manifestLoad = Manifest._resolveOnManifest();
+
+    return driver.beginNetworkCollect(manifestLoad.listener)
+      // Trigger a fetch of the manifest by Chrome.
+      .then(_ => driver.sendCommand('Page.requestAppBanner'))
+
+      // Wait on grabbing the finished manifest network request (or timing out).
+      .then(_ => manifestLoad.promise)
+
+      .then(manifestRequest => {
+        if (!manifestRequest) {
+          return Manifest._errorManifest('Timed out waiting for manifest to load.');
+        }
+        if (manifestRequest.statusCode >= 400) {
+          const reason = `${manifestRequest.statusCode}: ${manifestRequest.statusText}`;
+          return Manifest._errorManifest(
+              `Unable to fetch manifest at '${manifestRequest.url}' (${reason}).`);
         }
 
-        return node.getAttribute('href').then(manifestURL => {
-          if (!manifestURL) {
-            return this._errorManifest('No href found on <link rel="manifest">.');
-          }
+        // On successful request, grab the manifest request body for parsing.
+        return driver.sendCommand('Network.getResponseBody', {
+          requestId: manifestRequest.requestId
+        })
+          .then(response => {
+            return {
+              manifest: manifestParser(response.body)
+            };
+          })
+          .catch(_ => {
+            return Manifest._errorManifest('Network recorder unable to find request for ' +
+                `'${manifestRequest.url}' with id ${manifestRequest.requestId}.`);
+          });
 
-          return Manifest._loadFromURL(options, manifestURL)
-            .then(manifestContent => {
-              return {
-                manifest: manifestParser(manifestContent)
-              };
-            })
-            .catch(reason => {
-              return this._errorManifest(`Unable to fetch manifest at ${manifestURL}: ${reason}.`);
-            });
-        });
+      // Shut down network collect before returning artifact.
+      }).then(manifestArtifact => {
+        return driver.endNetworkCollect()
+          .then(_ => manifestArtifact);
       });
   }
 }
