@@ -63,4 +63,7 @@ function sizeAtLeast(sizeRequirement, manifest) {
       });
 }
 
-module.exports = {doExist, sizeAtLeast};
+module.exports = {
+  doExist,
+  sizeAtLeast
+};

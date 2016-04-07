@@ -92,4 +92,8 @@ function enableNetworkThrottling(driver) {
   return driver.sendCommand('Network.emulateNetworkConditions', TYPICAL_MOBILE_THROTTLING_METRICS);
 }
 
-module.exports = {enableNexus5X, enableNetworkThrottling, disableCache};
+module.exports = {
+  enableNexus5X,
+  enableNetworkThrottling,
+  disableCache
+};
