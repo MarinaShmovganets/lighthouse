@@ -70,10 +70,7 @@ class GatherScheduler {
           {traceContents: tracingData.traceContents}
         );
       })
-      .then(_ => artifacts)
-      .catch(err => {
-        throw err;
-      });
+      .then(_ => artifacts);
   }
 }
 
