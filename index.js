@@ -29,6 +29,8 @@ const gathererClasses = [
   require('./gatherers/service-worker'),
   require('./gatherers/viewport'),
   require('./gatherers/theme-color'),
+  require('./gatherers/sandboxed-iframes'),
+  require('./gatherers/objects'),
   require('./gatherers/html'),
   require('./gatherers/manifest'),
   require('./gatherers/offline')
@@ -51,7 +53,8 @@ const audits = [
   require('./audits/manifest/short-name'),
   require('./audits/manifest/short-name-length'),
   require('./audits/manifest/start-url'),
-  require('./audits/html/meta-theme-color')
+  require('./audits/html/meta-theme-color'),
+  require('./audits/ux/no-plugins')
 ];
 
 const aggregators = [
@@ -61,7 +64,8 @@ const aggregators = [
   require('./aggregators/can-load-offline'),
   require('./aggregators/is-secure'),
   require('./aggregators/is-performant'),
-  require('./aggregators/is-sized-for-mobile-screen')
+  require('./aggregators/is-sized-for-mobile-screen'),
+  require('./aggregators/has-no-plugins')
 ];
 
 module.exports = function(opts) {

@@ -24,6 +24,15 @@
  * @struct
  * @record
  */
+function NetworkRecord() {}
+
+/** @type {?} */
+NetworkRecord.prototype.data;
+
+/**
+ * @struct
+ * @record
+ */
 function Artifacts() {}
 
 /** @type {string} */
@@ -32,7 +41,7 @@ Artifacts.prototype.html;
 /** @type {boolean} */
 Artifacts.prototype.https;
 
-/** @type {!Array<!Object>} */
+/** @type {!Array<!NetworkRecord>} */
 Artifacts.prototype.networkRecords;
 
 /** @type {?} */

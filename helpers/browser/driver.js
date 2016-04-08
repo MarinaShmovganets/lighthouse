@@ -191,6 +191,25 @@ class ChromeProtocol {
       });
   }
 
+  /**
+   * @param {string} selector Selector to find in the DOM
+   * @return {!Promise<Element>} The found element, or null, resolved in a promise
+   */
+  querySelectorAll(selector) {
+    return this.sendCommand('DOM.getDocument')
+      .then(result => result.root.nodeId)
+      .then(nodeId => this.sendCommand('DOM.querySelectorAll', {
+        nodeId,
+        selector
+      }))
+      .then(elements => {
+        if (elements.nodeIds.length === 0) {
+          return [];
+        }
+        return elements.nodeIds.map(element => new Element(element, this));
+      });
+  }
+
   _resetFailureTimeout(reject) {
     if (this.timeoutID) {
       clearTimeout(this.timeoutID);
