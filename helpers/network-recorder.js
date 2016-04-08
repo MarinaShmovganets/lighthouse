@@ -16,19 +16,25 @@
  */
 'use strict';
 
+const EventEmitter = require('events');
+
 const NetworkManager = require('./web-inspector').NetworkManager;
 
 const REQUEST_FINISHED = NetworkManager.EventTypes.RequestFinished;
 
-class NetworkRecorder {
-  constructor(recordArray) {
-    this._records = recordArray;
+class NetworkRecorder extends EventEmitter {
+  constructor() {
+    super();
+
+    this._records = [];
 
     this.networkManager = NetworkManager.createWithFakeTarget();
 
     // TODO(bckenny): loadingFailed calls are not recorded in REQUEST_FINISHED.
-    this.networkManager.addEventListener(REQUEST_FINISHED, request => {
-      this._records.push(request);
+    this.networkManager.addEventListener(REQUEST_FINISHED, requestEvent => {
+      this._records.push(requestEvent.data);
+
+      this.emit(REQUEST_FINISHED, requestEvent.data);
     });
 
     this.onRequestWillBeSent = this.onRequestWillBeSent.bind(this);
@@ -37,6 +43,10 @@ class NetworkRecorder {
     this.onDataReceived = this.onDataReceived.bind(this);
     this.onLoadingFinished = this.onLoadingFinished.bind(this);
     this.onLoadingFailed = this.onLoadingFailed.bind(this);
+  }
+
+  getNetworkRecords() {
+    return this._records;
   }
 
   // There are a few differences between the debugging protocol naming and

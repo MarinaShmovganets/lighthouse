@@ -16,35 +16,20 @@
  */
 'use strict';
 
-/* global window, fetch */
-
 const Gather = require('./gather');
 const manifestParser = require('../helpers/manifest-parser');
 
-class Manifest extends Gather {
+const MANIFEST_LOAD_TIMEOUT = 10000;
 
-  static _loadFromURL(options, manifestURL) {
-    if (typeof window !== 'undefined' && 'fetch' in window) {
-      const finalURL = (new window.URL(options.driver.url).origin) + '/' + manifestURL;
-      return fetch(finalURL).then(response => response.text());
-    }
+class ManifestGather extends Gather {
+  constructor() {
+    super();
 
-    return new Promise((resolve, reject) => {
-      const url = require('url');
-      const request = require('request');
-      const finalURL = url.resolve(options.url, manifestURL);
-
-      request(finalURL, function(err, response, body) {
-        if (err || response.statusCode >= 400) {
-          return reject(`${response.statusCode}: ${response.statusMessage}`);
-        }
-
-        resolve(body);
-      });
-    });
+    this._validManifestRequestPromise = null;
+    this._manifestListener = null;
   }
 
-  static _errorManifest(errorString) {
+  _errorManifest(errorString) {
     return {
       manifest: {
         raw: undefined,
@@ -54,40 +39,117 @@ class Manifest extends Gather {
     };
   }
 
+  _isManifestRequest(request) {
+    const resourceType = request.resourceType();
+    return resourceType && resourceType.name() === 'manifest';
+  }
+
+  _isValidRequest(request) {
+    return request.statusCode === 200;
+  }
+
+  /**
+   * Sets up a network request listener to check if a manifest is received.
+   */
+  setup(options) {
+    const driver = options.driver;
+    const networkRecorder = driver.getNetworkRecorder();
+
+    // A promise that resolves as soon as the network recorder receives a manifest.
+    this._validManifestRequestPromise = new Promise((resolve, reject) => {
+      this._manifestListener = request => {
+        if (this._isManifestRequest(request) && this._isValidRequest(request)) {
+          resolve();
+        }
+      };
+
+      networkRecorder.on('RequestFinished', this._manifestListener);
+    });
+  }
+
+  /**
+   * If a manifest has not been received yet, forces Chrome to request one,
+   * stopping when either a manifest is received or a time limit is reached.
+   */
   afterPageLoad(options) {
     const driver = options.driver;
-    /**
-     * This re-fetches the manifest separately, which could
-     * potentially lead to a different asset. Using the original manifest
-     * resource is tracked in issue #83
-     */
+    const networkRecorder = driver.getNetworkRecorder();
+
+    // First check the DOM to skip all effort if there's no manifest.
     return driver.querySelector('head link[rel="manifest"]')
       .then(node => {
         if (!node) {
           this.artifact = this._errorManifest('No <link rel="manifest"> found in DOM.');
+          networkRecorder.removeListener('RequestFinished', this._manifestListener);
           return;
         }
 
-        return node.getAttribute('href').then(manifestURL => {
-          if (!manifestURL) {
-            this.artifact = this._errorManifest('No href found on <link rel="manifest">.');
-            return;
-          }
-
-          return Manifest._loadFromURL(options, manifestURL)
-            .then(manifestContent => {
-              this.artifact = {
-                manifest: manifestParser(manifestContent)
-              };
-            })
-            .catch(reason => {
-              this.artifact = this._errorManifest(
-                `Unable to fetch manifest at ${manifestURL}: ${reason}.`
-              );
-            });
+        // Add a timeout to the active manifest listener.
+        let timeoutId;
+        const manifestOrBust = Promise.race([
+          this._validManifestRequestPromise,
+          new Promise((resolve, reject) => {
+            timeoutId = setTimeout(resolve, MANIFEST_LOAD_TIMEOUT);
+          })
+        ]).then(_ => {
+          // Clean up.
+          networkRecorder.removeListener('RequestFinished', this._manifestListener);
+          this.manifestListener = null;
+          clearTimeout(timeoutId);
         });
+
+        // Trigger a fetch of the manifest by Chrome and wait on response/timeout.
+        return driver.sendCommand('Page.requestAppBanner')
+          .then(_ => manifestOrBust);
+      });
+  }
+
+  /**
+   * Sifts through network record to find manifest. If a valid one is found,
+   * parses it and returns the result. If not, an appropriate error is returned.
+   */
+  afterTraceCollected(options, tracingData) {
+    if (this.artifact.manifest) {
+      // Already gathered.
+      return;
+    }
+
+    const networkRecords = tracingData.networkRecords;
+    const manifestRequests = networkRecords.filter(this._isManifestRequest);
+
+    if (manifestRequests.length === 0) {
+      this.artifact = this._errorManifest('Timed out waiting for manifest to load.');
+      return;
+    }
+
+    // Get valid manifest out of network records.
+    const validManifestRequest = manifestRequests.find(this._isValidRequest);
+
+    // If no valid request, choose the last erroneous manifest and report on it.
+    if (!validManifestRequest) {
+      const lastManifestRequest = manifestRequests[manifestRequests.length - 1];
+      const reason = `${lastManifestRequest.statusCode}: ${lastManifestRequest.statusText}`;
+      this.artifact = this._errorManifest(
+          `Unable to fetch manifest at '${lastManifestRequest.url}' (${reason}).`);
+      return;
+    }
+
+    // On successful request, grab the manifest request body for parsing.
+    return options.driver.sendCommand('Network.getResponseBody', {
+      requestId: validManifestRequest.requestId
+    })
+      .then(response => {
+        this.artifact = {
+          manifest: manifestParser(response.body)
+        };
+        return;
+      }, _ => {
+        // TODO: should be a fault.
+        this.artifact = this._errorManifest('Manifest fetched but unable to retrieve request ' +
+          `body for '${validManifestRequest.url}' with id ${validManifestRequest.requestId}.`);
+        return;
       });
   }
 }
 
-module.exports = Manifest;
+module.exports = ManifestGather;
