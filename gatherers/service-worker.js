@@ -23,10 +23,16 @@ class ServiceWorker extends Gather {
     this.artifactsResolved = new Promise((res, _) => {
       options.driver.on(
           'ServiceWorker.workerVersionUpdated', data => {
-            this.artifact = {serviceWorkers: data};
-            res();
+            if (ServiceWorker.getActivatedServiceWorker(data.versions) !== undefined) {
+              this.artifact = {serviceWorkers: data};
+              res();
+            }
           });
     });
+  }
+
+  static getActivatedServiceWorker(versions) {
+    return versions.find(v => v.status === 'activated');
   }
 
   beforePageLoad(options) {
