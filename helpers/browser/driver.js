@@ -49,6 +49,7 @@ class ChromeProtocol {
     ];
 
     this.timeoutID = null;
+    this._networkRecorder = new NetworkRecorder();
   }
 
   get url() {
@@ -235,9 +236,6 @@ class ChromeProtocol {
   beginNetworkCollect() {
     return this.connect().then(_ => {
       return new Promise((resolve, reject) => {
-        this._networkRecords = [];
-        this._networkRecorder = new NetworkRecorder(this._networkRecords);
-
         this.on('Network.requestWillBeSent', this._networkRecorder.onRequestWillBeSent);
         this.on('Network.requestServedFromCache', this._networkRecorder.onRequestServedFromCache);
         this.on('Network.responseReceived', this._networkRecorder.onResponseReceived);
@@ -252,6 +250,10 @@ class ChromeProtocol {
     });
   }
 
+  getNetworkRecorder() {
+    return this._networkRecorder;
+  }
+
   endNetworkCollect() {
     return this.connect().then(_ => {
       return new Promise((resolve, reject) => {
@@ -262,11 +264,9 @@ class ChromeProtocol {
         this.off('Network.loadingFinished', this._networkRecorder.onLoadingFinished);
         this.off('Network.loadingFailed', this._networkRecorder.onLoadingFailed);
 
-        this.sendCommand('Network.disable').then(_ => {
-          resolve(this._networkRecords);
-          this._networkRecorder = null;
-          this._networkRecords = [];
-        });
+        resolve(this._networkRecorder.getNetworkRecords());
+        this._networkRecorder.removeAllListeners();
+        this._networkRecorder = new NetworkRecorder();
       });
     });
   }
