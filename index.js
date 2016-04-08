@@ -26,6 +26,7 @@ const driver = new ChromeProtocol();
 const gatherers = [
   require('./gatherers/url'),
   require('./gatherers/load'),
+  require('./gatherers/blocking-resources'),
   require('./gatherers/https'),
   require('./gatherers/service-worker'),
   require('./gatherers/viewport'),

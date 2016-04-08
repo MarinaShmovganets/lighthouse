@@ -24,6 +24,18 @@
  * @struct
  * @record
  */
+function AuditRecommendedAction() {}
+
+/** @type {string} */
+AuditRecommendedAction.prototype.title;
+
+/** @type {!Array<!string>} */
+AuditRecommendedAction.prototype.details;
+
+/**
+ * @struct
+ * @record
+ */
 function AuditResult() {}
 
 /** @type {(boolean|number|string)} */
@@ -34,6 +46,9 @@ AuditResult.prototype.rawValue;
 
 /** @type {(string|undefined)} */
 AuditResult.prototype.debugString;
+
+/** @type {(Array<!AuditRecommendedAction>|undefined)} */
+AuditResult.prototype.recommendedActions;
 
 /** @type {string} */
 AuditResult.prototype.name;

@@ -42,13 +42,16 @@ class Audit {
    * @param {(boolean|number|string)} value
    * @param {?(boolean|number|string)=} rawValue
    * @param {string=} debugString Optional string to describe any error condition encountered.
+   * @param {Array<!AuditRecommendedAction>=} recommendedActions The actions you should take to
+   *     improve your score.
    * @return {!AuditResult}
    */
-  static generateAuditResult(value, rawValue, debugString) {
+  static generateAuditResult(value, rawValue, debugString, recommendedActions) {
     return {
       value,
       rawValue,
       debugString,
+      recommendedActions,
       name: this.name,
       tags: this.tags,
       description: this.description

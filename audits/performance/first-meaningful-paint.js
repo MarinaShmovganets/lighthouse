@@ -81,8 +81,57 @@ class FirstMeaningfulPaint extends Audit {
           };
         })
         .then(result => {
-          return FirstMeaningfulPaint.generateAuditResult(result.score, result.duration);
+          return FirstMeaningfulPaint.generateAuditResult(
+              result.score, result.duration, undefined,
+              this.generateRecommendedActions(result.score, artifacts)
+          );
         });
+  }
+
+  /**
+   * Generates some recommended actions for FMP.
+   * @param {number} score The score to determine if we need to bother.
+   * @param {!Artifacts} artifacts The artifacts from the gather phase.
+   * @return {Array<!AuditRecommendedAction>|undefined}
+   */
+  static generateRecommendedActions(score, artifacts) {
+    // If there is a score of 100 no further action is required.
+    if (score === 100) {
+      return undefined;
+    }
+
+    if (!artifacts.blockingResources) {
+      return undefined;
+    }
+
+    // Attempt to figure out what the blocking resources are in the page.
+    const recommendedActions = artifacts.blockingResources
+        .map(resource => {
+          let suggestion = '';
+
+          switch (resource.data._resourceType._name) {
+            case 'script':
+              suggestion = 'should have either async or defer attribute';
+              break;
+
+            case 'stylesheet':
+              suggestion = 'should be moved inline to the HTML';
+              break;
+
+            default:
+              suggestion = 'should be removed';
+              break;
+          }
+
+          return {
+            title: `${resource.data.url} ${suggestion}`,
+            details: [
+              `blocks for ${(resource.data.endTime - resource.data.startTime).toFixed(2)}ms`
+            ]
+          };
+        });
+
+    return recommendedActions;
   }
 }
 

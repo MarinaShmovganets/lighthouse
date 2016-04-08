@@ -20,13 +20,16 @@ class Gatherer {
 
   static gather(gatherers, options) {
     const driver = options.driver;
-    const artifacts = [];
+    const artifacts = {};
+
+    // Add in the artifacts to the options. This creates a running order dependency.
+    Object.assign(options, {artifacts});
 
     // Execute gatherers sequentially and return results array when complete.
     return gatherers.reduce((chain, gatherer) => {
       return chain
         .then(_ => gatherer.gather(options))
-        .then(artifact => artifacts.push(artifact));
+        .then(artifact => Object.assign(artifacts, artifact));
     }, driver.connect())
       .then(_ => driver.disconnect())
       .then(_ => artifacts);

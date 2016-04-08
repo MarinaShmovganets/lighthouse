@@ -36,6 +36,15 @@ const Printer = {
         if (subitem.debugString) {
           output.log(`    ${subitem.debugString}`);
         }
+        if (subitem.recommendedActions) {
+          output.log('    Recommended actions:');
+          subitem.recommendedActions.forEach(recommendedAction => {
+            output.log(`    -- ${recommendedAction.title}`);
+            recommendedAction.details.forEach(recommendedActionDetail => {
+              output.log(`       ${recommendedActionDetail}`);
+            });
+          });
+        }
       });
 
       output.log('');

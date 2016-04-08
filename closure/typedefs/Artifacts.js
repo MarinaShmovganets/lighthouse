@@ -24,6 +24,36 @@
  * @struct
  * @record
  */
+function NetworkRecordResourceType() {}
+
+/** @type {!Object} */
+NetworkRecordResourceType.prototype._resourceType;
+
+/** @type {string} */
+NetworkRecordResourceType.prototype._name;
+
+/** @type {string} */
+NetworkRecordResourceType.prototype.url;
+
+/** @type {number} */
+NetworkRecordResourceType.prototype.startTime;
+
+/** @type {number} */
+NetworkRecordResourceType.prototype.endTime;
+
+/**
+ * @struct
+ * @record
+ */
+function NetworkRecord() {}
+
+/** @type {!NetworkRecordResourceType} */
+NetworkRecord.prototype.data;
+
+/**
+ * @struct
+ * @record
+ */
 function Artifacts() {}
 
 /** @type {string} */
@@ -37,6 +67,9 @@ Artifacts.prototype.networkRecords;
 
 /** @type {?} */
 Artifacts.prototype.traceContents;
+
+/** @type {!Array<!NetworkRecord>} */
+Artifacts.prototype.blockingResources;
 
 /** @type {!ManifestNode<(!Manifest|undefined)>} */
 Artifacts.prototype.manifest;
