@@ -6,7 +6,7 @@
 </p>
 
 
-[![Build Status](https://travis-ci.org/GoogleChrome/lighthouse.svg?branch=master)](https://travis-ci.org/GoogleChrome/lighthouse)
+[![Build Status](https://travis-ci.org/boopathi/lighthouse.svg?branch=master)](https://travis-ci.org/boopathi/lighthouse)
 
 _status: early. sorta working_
 
@@ -31,7 +31,7 @@ lighthouse https://airhorner.com/
 # see flags and options
 lighthouse --help
 ```
- 
+
 
 ## Chrome Extension
 
@@ -65,7 +65,7 @@ _It's a moving target, but here's a recent attempt at capturing..._
 
 ### Protocol
 
-* _Interacting with Chrome:_ The Chrome protocol connection maintained via  [chrome-remote-interface](https://github.com/cyrus-and/chrome-remote-interface) for the CLI and [`chrome.debuggger` API](https://developer.chrome.com/extensions/debugger) when in the Chrome extension. 
+* _Interacting with Chrome:_ The Chrome protocol connection maintained via  [chrome-remote-interface](https://github.com/cyrus-and/chrome-remote-interface) for the CLI and [`chrome.debuggger` API](https://developer.chrome.com/extensions/debugger) when in the Chrome extension.
 * _Event binding & domains_: Some domains must be `enable()`d so they issue events. Once enabled, they flush any events that represent state. As such, network events will only issue after the domain is enabled. All the protocol agents resolve their `Domain.enable()` callback _after_ they have flushed any pending events. See example:
 
 ```js
@@ -81,7 +81,7 @@ driver.sendCommand('Security.enable');
 
 ### Gatherers
 
-* _Reading the DOM:_ We prefer reading the DOM right from the browser (See #77). The driver exposes a `querySelector` method that can be used along with a `getAttribute` method to read values. 
+* _Reading the DOM:_ We prefer reading the DOM right from the browser (See #77). The driver exposes a `querySelector` method that can be used along with a `getAttribute` method to read values.
 
 ### Audits
 
@@ -93,15 +93,15 @@ Promise.resolve({
   tags: ['what have you'],
   description: 'whatnot',
   // value: The score. Typically a boolean, but can be number 0-100
-  value: 0, 
-  // rawValue: Could be anything, as long as it can easily be stringified and displayed, 
+  value: 0,
+  // rawValue: Could be anything, as long as it can easily be stringified and displayed,
   //   e.g. 'your score is bad because you wrote ${rawValue}'
-  rawValue: {}, 
-  // debugString: Some *specific* error string for helping the user figure out why they failed here. 
+  rawValue: {},
+  // debugString: Some *specific* error string for helping the user figure out why they failed here.
   //   The reporter can handle *general* feedback on how to fix, e.g. links to the docs
-  debugString: 'Your manifest 404ed' 
-  // fault:  Optional argument when the audit doesn't cover whatever it is you're doing, 
-  //   e.g. we can't parse your particular corner case out of a trace yet. 
+  debugString: 'Your manifest 404ed'
+  // fault:  Optional argument when the audit doesn't cover whatever it is you're doing,
+  //   e.g. we can't parse your particular corner case out of a trace yet.
   //   Whatever is in `rawValue` and `score` would be N/A in these cases
   fault: 'some reason the audit has failed you, Anakin'
 });
