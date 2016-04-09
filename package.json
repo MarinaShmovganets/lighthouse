@@ -7,10 +7,10 @@
     "node": ">=5"
   },
   "scripts": {
-    "closure": "closure/closure-type-checking.js",
+    "closure": "closure/closure-type-checking.js; test",
     "lint": "eslint .",
     "test": "npm run lint --silent && npm run unit && npm run closure",
-    "unit": "mocha $(find ./test -name '*.js') --timeout 60000; test",
+    "unit": "mocha $(find ./test -name '*.js') --timeout 60000",
     "chrome": "./launch-chrome.sh",
     "start": "node cli.js"
   },
