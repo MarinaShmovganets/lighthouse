@@ -8,9 +8,9 @@
   },
   "scripts": {
     "closure": "closure/closure-type-checking.js",
-    "lint": "eslint .",
-    "test": "npm run lint --silent && npm run unit && npm run closure",
-    "unit": "mocha $(find ./test -name '*.js') --timeout 60000",
+    "lint": "eslint .; test",
+    "test": "npm run lint --silent && npm run unit && npm run closure; test",
+    "unit": "mocha $(find ./test -name '*.js') --timeout 60000; test",
     "chrome": "./launch-chrome.sh",
     "start": "node cli.js"
   },
