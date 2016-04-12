@@ -24,7 +24,7 @@ const Gather = require('./gather');
 const requestPage = `
   (function () {
     const oReq = new XMLHttpRequest();
-    oReq.onload = e => window._offlineRequestStatus = e.currentTarget.status;
+    oReq.onload = oReq.onerror = e => window._offlineRequestStatus = e.currentTarget.status;
     oReq.open('GET', '');
     oReq.send();
   })();
