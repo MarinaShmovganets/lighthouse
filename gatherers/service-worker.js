@@ -19,20 +19,31 @@
 const Gather = require('./gather');
 
 class ServiceWorker extends Gather {
-
-  static gather(options) {
+  setup(options) {
     const driver = options.driver;
+    this.resolved = false;
 
-    return new Promise((resolve, reject) => {
-      // Register for the event.
-      driver.on('ServiceWorker.workerVersionUpdated', data => {
-        resolve({
-          serviceWorkers: data
-        });
-      });
-
-      driver.sendCommand('ServiceWorker.enable');
+    this.artifactsResolved = new Promise((res, _) => {
+      driver.on(
+          'ServiceWorker.workerVersionUpdated', data => {
+            if (ServiceWorker.getActivatedServiceWorker(data.versions) !== undefined &&
+                !this.resolved) {
+              this.artifact = {serviceWorkers: data};
+              this.resolved = true;
+              res();
+            }});
     });
+  }
+
+  static getActivatedServiceWorker(versions) {
+    return versions.find(v => v.status === 'activated');
+  }
+
+  beforePageLoad(options) {
+    const driver = options.driver;
+    driver.sendCommand('ServiceWorker.enable');
+
+    return this.artifactsResolved;
   }
 }
 

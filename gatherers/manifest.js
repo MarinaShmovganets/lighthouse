@@ -16,33 +16,36 @@
  */
 'use strict';
 
-/* global window, fetch */
-
 const Gather = require('./gather');
 const manifestParser = require('../helpers/manifest-parser');
 
-class Manifest extends Gather {
+/* global document, XMLHttpRequest */
 
-  static _loadFromURL(options, manifestURL) {
-    if (typeof window !== 'undefined' && 'fetch' in window) {
-      const finalURL = (new window.URL(options.driver.url).origin) + '/' + manifestURL;
-      return fetch(finalURL).then(response => response.text());
-    }
-
-    return new Promise((resolve, reject) => {
-      const url = require('url');
-      const request = require('request');
-      const finalURL = url.resolve(options.url, manifestURL);
-
-      request(finalURL, function(err, response, body) {
-        if (err || response.statusCode >= 400) {
-          return reject(`${response.statusCode}: ${response.statusMessage}`);
-        }
-
-        resolve(body);
-      });
-    });
+function getManifestContent() {
+  const manifestNode = document.querySelector('link[rel=manifest]');
+  if (!manifestNode) {
+    return {error: 'No <link rel="manifest"> found in DOM.'};
   }
+
+  const manifestURL = manifestNode.href;
+  if (!manifestURL) {
+    return {error: 'No href found on <link rel="manifest">.'};
+  }
+
+  const req = new XMLHttpRequest();
+  req.open('GET', manifestURL, false);
+  req.send();
+  if (req.status >= 400) {
+    return {
+      error: `Unable to fetch manifest at \
+        ${manifestURL}: ${req.status} - ${req.statusText}`
+    };
+  }
+
+  return {manifestContent: req.response};
+}
+
+class Manifest extends Gather {
 
   static _errorManifest(errorString) {
     return {
@@ -54,35 +57,37 @@ class Manifest extends Gather {
     };
   }
 
-  static gather(options) {
+  afterPageLoad(options) {
     const driver = options.driver;
     /**
      * This re-fetches the manifest separately, which could
      * potentially lead to a different asset. Using the original manifest
      * resource is tracked in issue #83
      */
-    return driver.querySelector('head link[rel="manifest"]')
-      .then(node => {
-        if (!node) {
-          return this._errorManifest('No <link rel="manifest"> found in DOM.');
-        }
+    return driver.sendCommand('Runtime.evaluate', {
+      expression: `(${getManifestContent.toString()}())`,
+      returnByValue: true
+    }).then(returnedData => {
+      if (returnedData.result.value === undefined ||
+          returnedData.result.value === null ||
+          returnedData.result.value === {}) {
+       // The returned object from Runtime.evaluate is an enigma
+       // Sometimes if the returned object is not easily serializable,
+       // it sets value = {}
+        throw new Error('Manifest gather error: ' +
+          'Failed to get proper result from runtime eval');
+      }
 
-        return node.getAttribute('href').then(manifestURL => {
-          if (!manifestURL) {
-            return this._errorManifest('No href found on <link rel="manifest">.');
-          }
+      const returnedValue = returnedData.result.value;
 
-          return Manifest._loadFromURL(options, manifestURL)
-            .then(manifestContent => {
-              return {
-                manifest: manifestParser(manifestContent)
-              };
-            })
-            .catch(reason => {
-              return this._errorManifest(`Unable to fetch manifest at ${manifestURL}: ${reason}.`);
-            });
-        });
-      });
+      if (returnedValue.error) {
+        this.artifact = Manifest._errorManifest(returnedValue.error);
+      } else {
+        this.artifact = {
+          manifest: manifestParser(returnedValue.manifestContent)
+        };
+      }
+    });
   }
 }
 

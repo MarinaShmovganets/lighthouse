@@ -18,14 +18,18 @@
 
 const Gather = require('./gather');
 
-// Request the current page by issuing a sync request to ''.
+// *WARNING* do not use fetch.. due to it requiring window focus to fire.
+// Request the current page by issuing a XMLHttpRequest request to ''
+// and storing the status code on the window.
 const requestPage = `
-  (function() {
-    var request = new XMLHttpRequest();
-    request.open('GET', '', false);
-    request.send(null);
-    return request.status;
-  })();
+  const oReq = new XMLHttpRequest();
+  oReq.onload = e => window._offlineRequestStatus = e.currentTarget.status;
+  oReq.open('GET', '');
+  oReq.send();
+`;
+
+const unsetPageStatusVar = `
+  delete window._offlineRequestStatus
 `;
 
 class Offline extends Gather {
@@ -49,13 +53,45 @@ class Offline extends Gather {
     });
   }
 
-  static getOfflinePageStatus(driver) {
+  static pollForOfflineResponseStatus(driver, retryCount) {
     return driver.sendCommand('Runtime.evaluate', {
-      expression: requestPage
+      expression: 'window._offlineRequestStatus'
+    }).then(r => {
+      if (r.result.type !== 'undefined' || retryCount > 9) {
+        return r;
+      }
+
+      // Wait for 1.5 seconds and retry
+      return new Promise((res, _) => {
+        setTimeout(_ => {
+          res(Offline.pollForOfflineResponseStatus(driver, retryCount + 1));
+        }, 1500);
+      });
     });
   }
 
-  static gather(options) {
+  static _unsetOfflineValue(driver) {
+    return driver.sendCommand('Runtime.evaluate', {
+      expression: unsetPageStatusVar});
+  }
+
+  static getOfflinePageStatus(driver) {
+    /**
+     * Phases to check if we are offline:
+     * 1. Issue fetch request for current url and set the status code in a var.
+     * 2. Poll the window for that var to be set (since async).
+     * 3. Unset the var (so things are reentrant) and return the val.
+     */
+    return driver.sendCommand('Runtime.evaluate', {
+      expression: requestPage
+    }).then(_ => {
+      return Offline.pollForOfflineResponseStatus(driver, 0);
+    }).then(ret => {
+      return Offline._unsetOfflineValue(driver).then(_ => ret);
+    });
+  }
+
+  afterTraceCollected(options) {
     const driver = options.driver;
 
     // TODO eventually we will want to walk all network
@@ -63,11 +99,14 @@ class Offline extends Gather {
     return Offline.goOffline(driver).then(_ => {
       let responseCode;
 
-      return Offline.getOfflinePageStatus(driver).then(ret => {
-        responseCode = ret.result.value;
-      }).then(_ => Offline.goOnline(driver)).then(_ => {
-        return {responseCode};
-      });
+      return Offline.getOfflinePageStatus(driver)
+        .then(ret => {
+          responseCode = ret.result.value;
+        })
+        .then(_ => Offline.goOnline(driver))
+        .then(_ => {
+          this.artifact = {responseCode};
+        });
     });
   }
 }
