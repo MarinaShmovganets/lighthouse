@@ -18,7 +18,7 @@
 
 const DevtoolsTimelineModel = require('devtools-timeline-model');
 
-const FAILURE_ERROR = new Error('Navigation and first paint timings not found');
+const FAILURE_MESSAGE = 'Navigation and first paint timings not found.';
 
 class FirstMeaningfulPaint {
 
@@ -28,7 +28,7 @@ class FirstMeaningfulPaint {
   static parse(traceData) {
     return new Promise((resolve, reject) => {
       if (!traceData || !Array.isArray(traceData)) {
-        return reject(FAILURE_ERROR);
+        return reject(new Error(FAILURE_MESSAGE));
       }
 
       const model = new DevtoolsTimelineModel(traceData);
@@ -37,15 +37,14 @@ class FirstMeaningfulPaint {
       // Identify the frameID of the main frame
       const startedInPage = model.tracingModel().devToolsMetadataEvents()
         .filter(e => e.name === 'TracingStartedInPage')
-        .sort((a, b) => a.startTime - b.startTime)
-        .slice(-1);
+        .sort((a, b) => b.startTime - a.startTime);
       const frameID = startedInPage[0].args.data.page;
 
       // Find the start of navigation and our meaningful paint
       const userTiming = events
         .filter(e => e.categoriesString.includes('blink.user_timing'))
-        // Events can be unsorted, so we put in ascending order.
-        .sort((a, b) => a.startTime - b.startTime);
+        // Events can be unsorted, so we put in descending order.
+        .sort((a, b) => b.startTime - a.startTime);
 
       // navigationStart == the network begins fetching the page URL
       // CommitLoad == the first bytes of HTML are returned and Chrome considers
@@ -53,25 +52,25 @@ class FirstMeaningfulPaint {
       //   However, that flag may be incorrect now, so we're ignoring it.
       const navStart = userTiming.filter(e => {
         return e.name === 'navigationStart' && e.args.frame === frameID;
-      }).slice(-1);
+      })[0];
 
       // firstContentfulPaint == the first time that text or image content was
       // painted. See src/third_party/WebKit/Source/core/paint/PaintTiming.h
       const conPaint = userTiming.filter(e => {
         return e.name === 'firstContentfulPaint' && e.args.frame === frameID;
-      }).slice(-1);
+      })[0];
 
       // report the raw numbers
-      if (conPaint.length && navStart.length) {
-        const navigationStart = navStart[0].startTime;
-        const firstMeaningfulPaint = conPaint[0].startTime;
+      if (conPaint && navStart) {
+        const navigationStart = navStart.startTime;
+        const firstMeaningfulPaint = conPaint.startTime;
 
         return resolve({
           navigationStart,
           firstMeaningfulPaint
         });
       }
-      return reject(FAILURE_ERROR);
+      return reject(new Error(FAILURE_MESSAGE));
     });
   }
 }

@@ -73,7 +73,7 @@ class ChromeProtocol {
 
         this.beginEmulation()
           .then(_ => this.cleanCaches())
-          .then(_ => resolve());
+          .then(resolve);
       }).on('error', e => reject(e));
     });
   }

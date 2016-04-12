@@ -70,14 +70,12 @@ class FirstMeaningfulPaint extends Audit {
             duration: `${firstMeaningfulPaint.toFixed(2)}ms`,
             score: Math.round(score)
           };
-        }, err => {
+        }).catch(err => {
           // Recover from trace parsing failures.
-          if (err instanceof Error) {
-            return {
-              score: -1,
-              debugString: err.message
-            };
-          }
+          return {
+            score: -1,
+            debugString: err.message
+          };
         })
         .then(result => {
           return FirstMeaningfulPaint.generateAuditResult(result.score,
