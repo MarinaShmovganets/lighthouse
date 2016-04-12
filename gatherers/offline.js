@@ -92,9 +92,9 @@ class Offline extends Gather {
       // Account for execution errors.
       return {
         result: {
-          description: '0',
+          description: '-1',
           type: 'number',
-          value: 0
+          value: -1
         }
       };
     }).then(ret => {
