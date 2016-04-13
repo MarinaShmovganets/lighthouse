@@ -16,13 +16,6 @@
  */
 'use strict';
 
-function hostOfURL(url){
-  if (typeof process !== 'undefined' && 'version' in process) {
-    return require('url').parse(url).hostname;
-  }
-  return new window.URL(window.location.href).hostname;
-}
-
 class GatherScheduler {
 
   static _runPhase(gatherers, gatherFun) {
@@ -97,20 +90,12 @@ class GatherScheduler {
       .then(_ => driver.endTrace())
       .then(traceContents => {
         tracingData.traceContents = traceContents;
-
-        if (saveTrace) {
-          let date = new Date();
-          let dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-          let file = ('lh-' + hostOfURL(url) + '_' + dateStr + '.trace.json')
-              .replace(/[\/\?<>\\:\*\|":]/g, '-');
-          require('fs').writeFileSync(file, JSON.stringify(traceContents, null, 2));
-          console.log('Trace file: ' + file);
-        }
       })
+      .then(_ => this.saveAssets(saveTrace, tracingData, url))
 
       // Gather: afterTraceCollected phase.
       .then(_ => this._runPhase(gatherers,
-          gatherer => gatherer.afterTraceCollected(options, tracingData)))
+          gatherer => gatherer.afterTraceCollected(options, tracingData, url)))
 
       // Disconnect the driver.
       .then(_ => driver.disconnect())
@@ -128,6 +113,24 @@ class GatherScheduler {
         );
       })
       .then(_ => artifacts);
+  }
+
+  static saveAssets(saveTrace, tracingData, url) {
+    /* globals window */
+    function hostOfURL(url) {
+      if (typeof process !== 'undefined' && 'version' in process) {
+        return require('url').parse(url).hostname;
+      }
+      return new window.URL(window.location.href).hostname;
+    }
+
+    if (saveTrace) {
+      let date = new Date();
+      let file = ('lh-' + hostOfURL(url) + '_' + date.toISOString() + '.trace.json')
+          .replace(/[\/\?<>\\:\*\|":]/g, '-');
+      require('fs').writeFileSync(file, JSON.stringify(tracingData.traceContents, null, 2));
+      console.log('Trace file: ' + file);
+    }
   }
 }
 
