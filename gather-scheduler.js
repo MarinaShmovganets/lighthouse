@@ -16,6 +16,13 @@
  */
 'use strict';
 
+function hostOfURL(url){
+  if (typeof process !== 'undefined' && 'version' in process) {
+    return require('url').parse(url).hostname;
+  }
+  return new window.URL(window.location.href).hostname;
+}
+
 class GatherScheduler {
 
   static _runPhase(gatherers, gatherFun) {
@@ -30,6 +37,7 @@ class GatherScheduler {
     const url = options.url;
     const loadPage = options.flags.loadPage;
     const emulateMobileDevice = options.flags.mobile;
+    const saveTrace = options.flags.saveTrace;
     const tracingData = {};
     const artifacts = [];
 
@@ -89,6 +97,15 @@ class GatherScheduler {
       .then(_ => driver.endTrace())
       .then(traceContents => {
         tracingData.traceContents = traceContents;
+
+        if (saveTrace) {
+          let date = new Date();
+          let dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+          let file = ('lh-' + hostOfURL(url) + '_' + dateStr + '.trace.json')
+              .replace(/[\/\?<>\\:\*\|":]/g, '-');
+          require('fs').writeFileSync(file, JSON.stringify(traceContents, null, 2));
+          console.log('Trace file: ' + file);
+        }
       })
 
       // Gather: afterTraceCollected phase.
