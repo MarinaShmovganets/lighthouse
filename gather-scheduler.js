@@ -91,7 +91,7 @@ class GatherScheduler {
       .then(traceContents => {
         tracingData.traceContents = traceContents;
       })
-      .then(_ => this.saveAssets(saveTrace, tracingData, url))
+      .then(_ => saveTrace && this.saveAssets(tracingData, url))
 
       // Gather: afterTraceCollected phase.
       .then(_ => this._runPhase(gatherers,
@@ -115,22 +115,14 @@ class GatherScheduler {
       .then(_ => artifacts);
   }
 
-  static saveAssets(saveTrace, tracingData, url) {
-    /* globals window */
-    function hostOfURL(url) {
-      if (typeof process !== 'undefined' && 'version' in process) {
-        return require('url').parse(url).hostname;
-      }
-      return new window.URL(window.location.href).hostname;
-    }
+  static saveAssets(tracingData, url) {
+    const date = new Date();
+    const hostname = url.match(/^.*?\/\/(.*?)(:?\/|$)/)[1]
+    const filename = (hostname + '_' + date.toISOString() + '.trace.json')
+        .replace(/[\/\?<>\\:\*\|":]/g, '-');
+    require('fs').writeFileSync(filename, JSON.stringify(tracingData.traceContents, null, 2));
+    console.log('Trace file: ' + filename);
 
-    if (saveTrace) {
-      const date = new Date();
-      const file = ('lh-' + hostOfURL(url) + '_' + date.toISOString() + '.trace.json')
-          .replace(/[\/\?<>\\:\*\|":]/g, '-');
-      require('fs').writeFileSync(file, JSON.stringify(tracingData.traceContents, null, 2));
-      console.log('Trace file: ' + file);
-    }
   }
 }
 

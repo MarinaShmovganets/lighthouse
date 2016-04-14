@@ -97,7 +97,7 @@ gulp.task('babel', () => {
       presets: ['es2015']
     }))
     .pipe(browserify({
-      ignore: ['npmlog', 'url']
+      ignore: ['npmlog']
     }))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('app/scripts'))
