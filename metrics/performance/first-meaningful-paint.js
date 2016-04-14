@@ -59,8 +59,8 @@ class FirstMeaningfulPaint {
       // report the raw numbers
       if (firstContentfulPaint && navigationStart) {
         return resolve({
-          navigationStart: navigationStart.startTime,
-          firstMeaningfulPaint: firstContentfulPaint.startTime
+          navigationStart: /** @type {number} */ (navigationStart.startTime),
+          firstMeaningfulPaint: /** @type {number} */ (firstContentfulPaint.startTime)
         });
       }
       return reject(new Error(FAILURE_MESSAGE));
