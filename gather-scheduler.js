@@ -125,8 +125,8 @@ class GatherScheduler {
     }
 
     if (saveTrace) {
-      let date = new Date();
-      let file = ('lh-' + hostOfURL(url) + '_' + date.toISOString() + '.trace.json')
+      const date = new Date();
+      const file = ('lh-' + hostOfURL(url) + '_' + date.toISOString() + '.trace.json')
           .replace(/[\/\?<>\\:\*\|":]/g, '-');
       require('fs').writeFileSync(file, JSON.stringify(tracingData.traceContents, null, 2));
       console.log('Trace file: ' + file);
