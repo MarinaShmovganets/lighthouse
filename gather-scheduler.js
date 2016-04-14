@@ -117,12 +117,11 @@ class GatherScheduler {
 
   static saveAssets(tracingData, url) {
     const date = new Date();
-    const hostname = url.match(/^.*?\/\/(.*?)(:?\/|$)/)[1]
+    const hostname = url.match(/^.*?\/\/(.*?)(:?\/|$)/)[1];
     const filename = (hostname + '_' + date.toISOString() + '.trace.json')
         .replace(/[\/\?<>\\:\*\|":]/g, '-');
     require('fs').writeFileSync(filename, JSON.stringify(tracingData.traceContents, null, 2));
     console.log('Trace file: ' + filename);
-
   }
 }
 
