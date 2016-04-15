@@ -19,25 +19,28 @@ document.addEventListener('DOMContentLoaded', _ => {
   const background = chrome.extension.getBackgroundPage();
   const siteNameEl = window.document.querySelector('header h2');
   const resultsEl = document.body.querySelector('.results');
-  const reloadPage = document.body.querySelector('.reload-all');
+  const generateFullReportEl = document.body.querySelector('.generate-full-report');
 
   background.runAudits({
     flags: {
       mobile: false,
       loadPage: false
     }
-  }).then(ret => {
-    resultsEl.innerHTML = ret;
+  })
+  .then(results => background.createResultsHTML(results))
+  .then(resultsHTML => {
+    resultsEl.innerHTML = resultsHTML;
   });
 
-  reloadPage.addEventListener('click', () => {
+  generateFullReportEl.addEventListener('click', () => {
     background.runAudits({
       flags: {
         mobile: true,
         loadPage: true
       }
-    }).then(ret => {
-      resultsEl.innerHTML = ret;
+    })
+    .then(results => {
+      background.createPageAndPopulate(results);
     });
   });
 
