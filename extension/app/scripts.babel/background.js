@@ -21,6 +21,15 @@ const ExtensionProtocol = require('../../../helpers/extension/driver.js');
 const runner = require('../../../runner');
 const NO_SCORE_PROVIDED = '-1';
 
+window.createPageAndPopulate = function(results) {
+  const tabURL = chrome.extension.getURL('/pages/report.html');
+  chrome.tabs.create({url: tabURL}, tab => {
+    setTimeout(_ => {
+      chrome.tabs.sendMessage(tab.id, results);
+    }, 1000);
+  });
+};
+
 window.runAudits = function(options) {
   const driver = new ExtensionProtocol();
 
@@ -29,7 +38,6 @@ window.runAudits = function(options) {
         // Add in the URL to the options.
         return runner(driver, Object.assign({}, options, {url}));
       })
-      .then(results => createResultsHTML(results))
       .catch(returnError);
 };
 
@@ -46,7 +54,7 @@ function escapeHTML(str) {
     .replace(/`/g, '&#96;');
 }
 
-function createResultsHTML(results) {
+window.createResultsHTML = function(results) {
   let resultsHTML = '';
 
   results.forEach(item => {
@@ -82,7 +90,7 @@ function createResultsHTML(results) {
   });
 
   return resultsHTML;
-}
+};
 
 chrome.runtime.onInstalled.addListener(details => {
   console.log('previousVersion', details.previousVersion);
