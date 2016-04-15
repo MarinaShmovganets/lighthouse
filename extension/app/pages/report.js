@@ -64,8 +64,10 @@ function createResultsHTML(results) {
   return resultsHTML;
 }
 
-chrome.runtime.onMessage.addListener(
-function(msg, sender, _) {
-  document.querySelector('.content').innerHTML = createResultsHTML(msg);
-  console.log(msg);
-});
+if (chrome && chrome.runtime && chrome.runtime.onMessage) {
+  chrome.runtime.onMessage.addListener(
+  function(msg, sender, _) {
+    document.querySelector('.content').innerHTML = createResultsHTML(msg);
+    console.log(msg);
+  });
+}
