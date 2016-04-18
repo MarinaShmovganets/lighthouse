@@ -15,35 +15,7 @@
  * limitations under the License.
  */
 
-'use strict';
-
-const ExtensionProtocol = require('../../../helpers/extension/driver.js');
-const runner = require('../../../runner');
-const NO_SCORE_PROVIDED = '-1';
-
-window.createPageAndPopulate = function(results) {
-  const tabURL = chrome.extension.getURL('/pages/report.html');
-  chrome.tabs.create({url: tabURL}, tab => {
-    setTimeout(_ => {
-      chrome.tabs.sendMessage(tab.id, results);
-    }, 1000);
-  });
-};
-
-window.runAudits = function(options) {
-  const driver = new ExtensionProtocol();
-
-  return driver.getCurrentTabURL()
-      .then(url => {
-        // Add in the URL to the options.
-        return runner(driver, Object.assign({}, options, {url}));
-      })
-      .catch(returnError);
-};
-
-function returnError(err) {
-  return `<div class="error">Unable to audit page: ${escapeHTML(err.message)}</div>`;
-}
+var NO_SCORE_PROVIDED = '-1';
 
 function escapeHTML(str) {
   return str.replace(/&/g, '&amp;')
@@ -54,7 +26,7 @@ function escapeHTML(str) {
     .replace(/`/g, '&#96;');
 }
 
-window.createResultsHTML = function(results) {
+function createResultsHTML(results) {
   let resultsHTML = '';
 
   results.forEach(item => {
@@ -90,8 +62,10 @@ window.createResultsHTML = function(results) {
   });
 
   return resultsHTML;
-};
+}
 
-chrome.runtime.onInstalled.addListener(details => {
-  console.log('previousVersion', details.previousVersion);
+chrome.runtime.onMessage.addListener(
+function(msg, sender, _) {
+  document.querySelector('.content').innerHTML = createResultsHTML(msg);
+  console.log(msg);
 });
