@@ -18,11 +18,13 @@
 
 'use strict';
 
+const fs = require('fs');
 const meow = require('meow');
 const lighthouse = require('./');
 const log = require('npmlog');
 const semver = require('semver');
 const Printer = require('./cli/printer');
+const Report = require('./report/browser/report');
 const cli = meow(`
   Usage
     lighthouse [url]
@@ -35,6 +37,7 @@ const cli = meow(`
     --json         Output results as JSON
     --mobile       Emulates a Nexus 5X (default=true)
     --load-page    Loads the page (default=true)
+    --output       Outputs an HTML report to the specified path
 `);
 
 const defaultUrl = 'https://operasoftware.github.io/pwa-list/';
@@ -49,7 +52,16 @@ lighthouse({
   url: url,
   flags: cli.flags
 }).then(results => {
-  Printer[cli.flags.json ? 'json' : 'prettyPrint'](log, console, url, results);
+  // Write out an HTML report if requested.
+  if (cli.flags.output) {
+    const report = new Report();
+
+    report.generateHTML(results).then(html => {
+      fs.writeFileSync(cli.flags.output, html);
+    });
+  }
+
+  Printer[cli.flags.json ? 'json' : 'prettyPrint'](log, console, url, results.aggregations);
 }).catch(err => {
   if (err.code === 'ECONNREFUSED') {
     console.error('Unable to connect to Chrome. Did you run ./launch-chrome.sh?');
