@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,45 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+'use strict';
 
-* {
-  box-sizing: border-box;
+const Report = require('../report');
+const fs = require('fs');
+
+class BrowserReport extends Report {
+
+  getFile(filePath) {
+    return new Promise((resolve, reject) => {
+      fs.readFile(filePath, 'utf8', (err, source) => {
+        if (err) {
+          return reject(err);
+        }
+
+        resolve(source);
+      });
+    });
+  }
+
+  getReportHTML() {
+    return this.getFile('./report/templates/report.html');
+  }
+
+  getReportCSS() {
+    return this.getFile('./report/styles/report.css');
+  }
 }
 
-html, body {
-  padding: 0;
-  margin: 0;
-  background: #FAFAFA;
-  color: #444;
-  font-family: Arial, sans-serif;
-}
-
-body {
-  min-width: 600px;
-  padding: 0 16px;
-}
-
-a {
-  color: #57A0A8;
-}
-
-.spinner-container {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  pointer-events: none;
-}
-
-.spinner {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: url(../images/spinner.png) center center no-repeat;
-  background-size: 34px 34px;
-  will-change: transform;
-}
+module.exports = BrowserReport;

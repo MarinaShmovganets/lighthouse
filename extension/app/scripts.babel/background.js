@@ -57,7 +57,7 @@ function escapeHTML(str) {
 window.createResultsHTML = function(results) {
   let resultsHTML = '';
 
-  results.forEach(item => {
+  results.aggregations.forEach(item => {
     const score = (item.score.overall * 100).toFixed(0);
     const groupHasErrors = (score < 100);
     const groupClass = 'group ' +
