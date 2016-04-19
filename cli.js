@@ -34,10 +34,9 @@ const cli = meow(`
     --version      Current version of package
     --verbose      Displays verbose logging
     --quiet        Displays no progress or debug logs
-    --json         Output results as JSON
     --mobile       Emulates a Nexus 5X (default=true)
     --load-page    Loads the page (default=true)
-    --output       Outputs an HTML report to the specified path
+    --output       How to output the page(default=pretty)
 `);
 
 const defaultUrl = 'https://operasoftware.github.io/pwa-list/';
@@ -52,16 +51,24 @@ lighthouse({
   url: url,
   flags: cli.flags
 }).then(results => {
-  // Write out an HTML report if requested.
-  if (cli.flags.output) {
-    const report = new Report();
+  const output = cli.flags.output;
+  const report = new Report();
 
-    report.generateHTML(results).then(html => {
-      fs.writeFileSync(cli.flags.output, html);
-    });
+  switch (output) {
+    case 'html':
+      report.generateHTML(results).then(html => {
+        fs.writeFileSync(cli.flags.output, html);
+      });
+      break;
+
+    case 'json':
+      Printer.json(log, console, results);
+      break;
+
+    default:
+      Printer.prettyPrint(log, console, results);
+      break;
   }
-
-  Printer[cli.flags.json ? 'json' : 'prettyPrint'](log, console, url, results.aggregations);
 }).catch(err => {
   if (err.code === 'ECONNREFUSED') {
     console.error('Unable to connect to Chrome. Did you run ./launch-chrome.sh?');
