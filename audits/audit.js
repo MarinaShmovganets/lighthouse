@@ -39,7 +39,7 @@ class Audit {
   }
 
   /**
-   * @return {boolean|number|string|undefined}
+   * @return {?(boolean|number|string|undefined)}
    */
   static get optimalValue() {
     return undefined;
