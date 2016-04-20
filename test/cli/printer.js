@@ -21,7 +21,7 @@ const assert = require('assert');
 const fs = require('fs');
 const sampleResults = require('../results/sample.json');
 
-/* global describe, it, beforeEach, afterEach */
+/* global describe, it, beforeEach */
 
 describe('Printer', () => {
   beforeEach(() => {
