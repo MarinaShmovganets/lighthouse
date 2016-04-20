@@ -18,13 +18,11 @@
 
 'use strict';
 
-const fs = require('fs');
 const meow = require('meow');
 const lighthouse = require('./');
 const log = require('npmlog');
 const semver = require('semver');
 const Printer = require('./cli/printer');
-const Report = require('./report/browser/report');
 const cli = meow(`
   Usage
     lighthouse [url]
@@ -38,6 +36,7 @@ const cli = meow(`
     --load-page    Loads the page (default=true)
     --save-trace   Save the trace contents to disk
     --output       How to output the page(default=pretty)
+    --output-path  The location to output the response(default=stdout)
 `);
 
 const defaultUrl = 'https://operasoftware.github.io/pwa-list/';
@@ -52,25 +51,20 @@ lighthouse({
   url: url,
   flags: cli.flags
 }).then(results => {
-  const output = cli.flags.output;
-  const report = new Report();
+  const output = cli.flags.output || 'pretty';
+  const outputPath = cli.flags.outputPath || 'stdout';
+  const printer = new Printer();
 
-  switch (output) {
-    case 'html':
-      report.generateHTML(results).then(html => {
-        fs.writeFileSync(cli.flags.output, html);
-      });
-      break;
-
-    case 'json':
-      Printer.json(log, console, results);
-      break;
-
-    default:
-      Printer.prettyPrint(log, console, results);
-      break;
+  printer.outputMode = output;
+  printer.outputPath = outputPath;
+  return printer.write(results);
+})
+.then(status => {
+  if (status) {
+    log.info('printer', status);
   }
-}).catch(err => {
+})
+.catch(err => {
   if (err.code === 'ECONNREFUSED') {
     console.error('Unable to connect to Chrome. Did you run ./launch-chrome.sh?');
   } else {
