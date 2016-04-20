@@ -19,15 +19,15 @@
 
 const ExtensionProtocol = require('../../../helpers/extension/driver.js');
 const runner = require('../../../runner');
-const driver = new ExtensionProtocol();
 const NO_SCORE_PROVIDED = '-1';
 
 window.runAudits = function(options) {
+  const driver = new ExtensionProtocol();
+
   return driver.getCurrentTabURL()
       .then(url => {
         // Add in the URL to the options.
-        Object.assign(options, {url});
-        return runner(driver, options);
+        return runner(driver, Object.assign({}, options, {url}));
       })
       .then(results => createResultsHTML(results))
       .catch(returnError);
@@ -64,11 +64,11 @@ function createResultsHTML(results) {
     item.score.subItems.forEach(subitem => {
       const debugString = subitem.debugString ? ` title="${escapeHTML(subitem.debugString)}"` : '';
 
-      // TODO: make this work with numeric values.
       const status = subitem.value ?
           `<span class="pass" ${debugString}>Pass</span>` :
           `<span class="fail" ${debugString}>Fail</span>`;
-      groupHTML += `<li>${escapeHTML(subitem.description)}: ${status}</li>`;
+      const rawValue = subitem.rawValue ? `(${escapeHTML(subitem.rawValue)})` : '';
+      groupHTML += `<li>${escapeHTML(subitem.description)}: ${status} ${rawValue}</li>`;
     });
 
     resultsHTML +=

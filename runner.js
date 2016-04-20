@@ -1,3 +1,21 @@
+/**
+ * @license
+ * Copyright 2016 Google Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+'use strict';
+
 const Auditor = require('./auditor');
 const GatherScheduler = require('./gather-scheduler');
 const Aggregator = require('./aggregator');
@@ -13,13 +31,12 @@ const gathererClasses = [
   require('./gatherers/offline')
 ];
 
-const gatherers = gathererClasses.map(G => new G());
-
 const audits = [
   require('./audits/security/is-on-https'),
   require('./audits/offline/service-worker'),
   require('./audits/offline/works-offline'),
   require('./audits/mobile-friendly/viewport'),
+  require('./audits/mobile-friendly/display'),
   require('./audits/performance/first-meaningful-paint'),
   require('./audits/manifest/exists'),
   require('./audits/manifest/background-color'),
@@ -54,8 +71,10 @@ module.exports = function(driver, opts) {
     opts.flags.loadPage = true;
   }
 
+  const gatherers = gathererClasses.map(G => new G());
+
   return GatherScheduler
-      .run(gatherers, Object.assign(opts, {driver}))
+      .run(gatherers, Object.assign({}, opts, {driver}))
       .then(artifacts => Auditor.audit(artifacts, audits))
       .then(results => Aggregator.aggregate(aggregators, results));
 };

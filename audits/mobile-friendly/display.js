@@ -19,7 +19,7 @@
 
 const Audit = require('../audit');
 
-class ManifestShortNameLength extends Audit {
+class ManifestDisplay extends Audit {
   /**
    * @override
    */
@@ -31,14 +31,22 @@ class ManifestShortNameLength extends Audit {
    * @override
    */
   static get name() {
-    return 'manifest-short-name-length';
+    return 'manifest-display';
   }
 
   /**
    * @override
    */
   static get description() {
-    return 'App short_name won\'t be truncated';
+    return 'Manifest has suggested display property';
+  }
+
+  /**
+   * @param {string|null} val
+   * @return {boolean}
+   */
+  static hasRecommendedValue(val) {
+    return (val === 'fullscreen' || val === 'standalone');
   }
 
   /**
@@ -46,27 +54,17 @@ class ManifestShortNameLength extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    let isShortNameShortEnough = false;
-    let debugString;
     const manifest = artifacts.manifest.value;
-    const suggestedLength = 12;
+    const displayValue = (!manifest || !manifest.display) ? undefined : manifest.display.value;
 
-    if (manifest && manifest.short_name && manifest.short_name.value) {
-      // Historically, Chrome recommended 12 chars as the maximum length to prevent truncation.
-      // See #69 for more discussion.
-      isShortNameShortEnough = (manifest.short_name.value.length <= suggestedLength);
-      if (!isShortNameShortEnough) {
-        debugString = `${suggestedLength} chars is the suggested maximum homescreen label length`;
-        debugString += ` (Found: ${manifest.short_name.value.length} chars).`;
-      }
-    }
+    const hasRecommendedValue = ManifestDisplay.hasRecommendedValue(displayValue);
 
-    return ManifestShortNameLength.generateAuditResult(
-      isShortNameShortEnough,
-      undefined,
-      debugString
+    return ManifestDisplay.generateAuditResult(
+      hasRecommendedValue,
+      displayValue,
+      'Manifest display property should be standalone or fullscreen.'
     );
   }
 }
 
-module.exports = ManifestShortNameLength;
+module.exports = ManifestDisplay;
