@@ -19,6 +19,8 @@
 /* global Intl */
 
 const Handlebars = require('handlebars');
+const fs = require('fs');
+const path = require('path');
 
 class Report {
 
@@ -81,11 +83,11 @@ class Report {
   }
 
   getReportHTML() {
-    throw new Error('getReportHTML should be overridden');
+    return fs.readFileSync(path.join(__dirname, './templates/report.html'), 'utf8');
   }
 
   getReportCSS() {
-    throw new Error('getReportCSS should be overridden');
+    return fs.readFileSync(path.join(__dirname, './styles/report.css'), 'utf8');
   }
 
   generateHTML(results) {

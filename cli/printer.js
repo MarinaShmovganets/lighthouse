@@ -18,7 +18,7 @@
 'use strict';
 
 const fs = require('fs');
-const Report = require('../report/browser/report');
+const Report = require('../report/report');
 
 class Printer {
 
