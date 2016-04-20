@@ -27,9 +27,8 @@ document.addEventListener('DOMContentLoaded', _ => {
       loadPage: false
     }
   })
-  .then(results => background.createResultsHTML(results))
-  .then(resultsHTML => {
-    resultsEl.innerHTML = resultsHTML;
+  .then(results => {
+    resultsEl.innerHTML = background.createResultsHTML(results);
   });
 
   generateFullReportEl.addEventListener('click', () => {
