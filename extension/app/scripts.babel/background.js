@@ -24,6 +24,9 @@ const NO_SCORE_PROVIDED = '-1';
 window.createPageAndPopulate = function(results) {
   const tabURL = chrome.extension.getURL('/pages/report.html');
   chrome.tabs.create({url: tabURL}, tab => {
+    // Have a timeout here so that the receiving side has time to load
+    // and register an event listener for onMessage. Otherwise the
+    // message sent with the results will be lost.
     setTimeout(_ => {
       chrome.tabs.sendMessage(tab.id, results);
     }, 1000);
