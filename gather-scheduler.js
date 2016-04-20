@@ -143,7 +143,7 @@ class GatherScheduler {
     const filename = (hostname + '_' + date.toISOString() + '.trace.json')
         .replace(/[\/\?<>\\:\*\|":]/g, '-');
     require('fs').writeFileSync(filename, JSON.stringify(tracingData.traceContents, null, 2));
-    log('Trace file: ' + filename);
+    log('info', 'trace file saved to disk', filename);
   }
 }
 
