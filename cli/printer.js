@@ -95,7 +95,7 @@ class Printer {
   /**
    * Writes the results.
    *
-   * @param {!Object} results
+   * @param {{url: string, aggregations: !Array<*>}} results
    * @return {Promise}
    */
   write(results) {
@@ -111,7 +111,7 @@ class Printer {
   /**
    * Creates the output based on the mode.
    *
-   * @param {!Object} results
+   * @param {{url: string, aggregations: !Array<*>}} results
    * @return {Promise}
    */
   createOutput(results) {
