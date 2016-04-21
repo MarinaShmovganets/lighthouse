@@ -151,7 +151,7 @@ class ExtensionProtocol extends ChromeProtocol {
           return reject(chrome.runtime.lastError);
         }
         this._debuggerConnected = true;
-
+        this.handleUnexpectedDetach();
         resolve(tabId);
       });
     });
@@ -166,6 +166,13 @@ class ExtensionProtocol extends ChromeProtocol {
 
         resolve(tabId);
       });
+    });
+  }
+
+  handleUnexpectedDetach() {
+    chrome.debugger.onDetach.addListener((debuggee, detachReason) => {
+      this._debuggerConnected = false;
+      throw new Error('Lighthouse detached from browser', detachReason);
     });
   }
 
