@@ -21,90 +21,72 @@ const assert = require('assert');
 const fs = require('fs');
 const sampleResults = require('../results/sample.json');
 
-/* global describe, it, beforeEach */
+/* global describe, it */
 
 describe('Printer', () => {
-  beforeEach(() => {
-    this.printer = new Printer();
-  });
-
-  it('has valid output modes', () => {
-    assert.ok(Printer._outputModes.indexOf('html') !== -1);
-    assert.ok(Printer._outputModes.indexOf('json') !== -1);
-    assert.ok(Printer._outputModes.indexOf('pretty') !== -1);
-  });
-
   it('accepts valid output modes', () => {
-    this.printer.outputMode = 'json';
-    assert.ok(this.printer.outputMode === 'json');
+    const mode = 'json';
+    assert.equal(Printer.checkOutputMode(mode), mode);
   });
 
   it('rejects invalid output modes', () => {
-    this.printer.outputMode = 'bacon';
-    assert.ok(this.printer.outputMode !== 'bacon');
+    const mode = 'bacon';
+    assert.notEqual(Printer.checkOutputMode(mode), mode);
   });
 
   it('accepts valid output paths', () => {
-    this.printer.outputPath = '/path/to/output';
-    assert.ok(this.printer.outputPath === '/path/to/output');
+    const path = '/path/to/output';
+    assert.equal(Printer.checkOutputPath(path), path);
   });
 
   it('rejects invalid output paths', () => {
-    this.printer.outputMode = undefined;
-    assert.ok(this.printer.outputMode !== undefined);
+    const path = undefined;
+    assert.notEqual(Printer.checkOutputPath(path), path);
   });
 
   it('creates JSON for results', () => {
-    this.printer.outputMode = 'json';
-    return this.printer.createOutput(sampleResults).then(json => {
-      assert.doesNotThrow(_ => JSON.parse(json));
-    });
+    const mode = 'json';
+    const jsonOutput = Printer.createOutput(sampleResults, mode);
+    assert.doesNotThrow(_ => JSON.parse(jsonOutput));
   });
 
   it('creates Pretty Printed results', () => {
-    this.printer.outputMode = 'pretty';
-    return this.printer.createOutput(sampleResults).then(text => {
-      // Just check there's no HTML / JSON there.
-      assert.throws(_ => JSON.parse(text));
-      assert.notEqual(/<!doctype/gim.test(text), true);
-    });
+    const mode = 'pretty';
+    const prettyOutput = Printer.createOutput(sampleResults, mode);
+
+    // Just check there's no HTML / JSON there.
+    assert.throws(_ => JSON.parse(prettyOutput));
+    assert.equal(/<!doctype/gim.test(prettyOutput), false);
   });
 
   it('creates HTML for results', () => {
-    this.printer.outputMode = 'html';
-    return this.printer.createOutput(sampleResults).then(html => {
-      assert.ok(/<!doctype/gim.test(html));
-    });
+    const mode = 'html';
+    const htmlOutput = Printer.createOutput(sampleResults, mode);
+    assert(/<!doctype/gim.test(htmlOutput));
   });
 
   it('writes file for results', () => {
-    let html = '';
-    this.printer.outputMode = 'html';
-    this.printer.outputPath = './file.html';
+    const mode = 'html';
+    const path = './.test-file.html';
+    const htmlOutput = Printer.createOutput(sampleResults, mode);
 
-    this.printer.createOutput(sampleResults)
-      .then(output => {
-        html = output;
-      })
-      .then(_ => {
-        // Now do a second pass where the file is written out.
-        return this.printer.write(sampleResults).then(_ => {
-          const fileContents = fs.readFileSync('./file.html');
-          fs.unlinkSync('./file.html');
-          assert.ok(fileContents === html);
-        });
-      });
+    // Now do a second pass where the file is written out.
+    return Printer.write(sampleResults, mode, path).then(_ => {
+      const fileContents = fs.readFileSync(path);
+      fs.unlinkSync(path);
+      assert.equal(fileContents, htmlOutput);
+    });
   });
 
   it('throws for invalid paths', () => {
-    this.printer.outputMode = 'html';
-    this.printer.outputPath = '!/#@.html';
-    return this.printer.write(sampleResults).then(_ => {
+    const mode = 'html';
+    const path = '!/#@.html';
+    return Printer.write(sampleResults, mode, path).then(_ => {
       // If the then is called, something went askew.
-      assert.ok(false);
+      assert(false);
     })
     .catch(err => {
-      assert.ok(err.code === 'ENOENT');
+      assert(err.code === 'ENOENT');
     });
   });
 });

@@ -91,24 +91,19 @@ class Report {
   }
 
   generateHTML(results) {
-    return Promise.all([
-      this.getReportHTML(),
-      this.getReportCSS()
-    ])
-    .then(reportTemplate => {
-      const totalScore =
-          (results.aggregations.reduce((prev, aggregation) => {
-            return prev + aggregation.score.overall;
-          }, 0) /
-          results.aggregations.length);
+    const totalScore =
+        (results.aggregations.reduce((prev, aggregation) => {
+          return prev + aggregation.score.overall;
+        }, 0) /
+        results.aggregations.length);
 
-      const template = Handlebars.compile(reportTemplate[0]);
-      return template({
-        url: results.url,
-        totalScore: Math.round(totalScore * 100),
-        css: reportTemplate[1],
-        aggregations: results.aggregations
-      });
+    const template = Handlebars.compile(this.getReportHTML());
+    // TODO(bckenny): is this async?
+    return template({
+      url: results.url,
+      totalScore: Math.round(totalScore * 100),
+      css: this.getReportCSS(),
+      aggregations: results.aggregations
     });
   }
 }

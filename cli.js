@@ -51,13 +51,9 @@ lighthouse({
   url: url,
   flags: cli.flags
 }).then(results => {
-  const output = cli.flags.output || 'pretty';
+  const outputMode = cli.flags.output || 'pretty';
   const outputPath = cli.flags.outputPath || 'stdout';
-  const printer = new Printer();
-
-  printer.outputMode = output;
-  printer.outputPath = outputPath;
-  return printer.write(results);
+  return Printer.write(results, outputMode, outputPath);
 })
 .then(status => {
   if (status) {
