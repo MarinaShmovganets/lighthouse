@@ -30,6 +30,7 @@ class ExtensionProtocol extends ChromeProtocol {
     this._tabId = null;
     this._debuggerConnected = false;
     chrome.debugger.onEvent.addListener(this._onEvent.bind(this));
+    this.handleUnexpectedDetach();
   }
 
   connect() {
@@ -151,7 +152,6 @@ class ExtensionProtocol extends ChromeProtocol {
           return reject(chrome.runtime.lastError);
         }
         this._debuggerConnected = true;
-        this.handleUnexpectedDetach();
         resolve(tabId);
       });
     });
