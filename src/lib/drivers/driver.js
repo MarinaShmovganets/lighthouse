@@ -23,10 +23,6 @@ const Element = require('../element.js');
 
 class DriverBase {
 
-  get WAIT_FOR_LOAD() {
-    return true;
-  }
-
   constructor() {
     this._url = null;
     this.PAUSE_AFTER_LOAD = 3000;
@@ -90,7 +86,8 @@ class DriverBase {
     return Promise.reject(new Error('Not implemented'));
   }
 
-  gotoURL(url, waitForLoad) {
+  gotoURL(url, options) {
+    const waitForLoad = options.waitForLoad || false;
     return this.sendCommand('Page.enable')
     .then(_ => this.sendCommand('Page.getNavigationHistory'))
     .then(navHistory => {
