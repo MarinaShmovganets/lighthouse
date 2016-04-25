@@ -87,7 +87,7 @@ class DriverBase {
   }
 
   gotoURL(url, options) {
-    const waitForLoad = options.waitForLoad || false;
+    const waitForLoad = (options && options.waitForLoad) || false;
     return this.sendCommand('Page.enable')
     .then(_ => this.sendCommand('Page.getNavigationHistory'))
     .then(navHistory => {
