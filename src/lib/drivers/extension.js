@@ -108,9 +108,6 @@ class ExtensionDriver extends Driver {
     listenersCopy.forEach(cb => {
       cb(params);
     });
-
-    // Reset the listeners;
-    this._listeners[method].length = 0;
   }
 
   /**
