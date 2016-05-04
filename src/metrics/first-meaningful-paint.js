@@ -36,7 +36,7 @@ class FMP {
 
       let mainFrameID;
       let navigationStart;
-      let firstContentfulPaint;
+      let firstContentfulPaintEvt;
       let layouts = new Map();
       let paints = [];
 
@@ -62,7 +62,7 @@ class FMP {
         // firstContentfulPaint == the first time that text or image content was
         // painted. See src/third_party/WebKit/Source/core/paint/PaintTiming.h
         if (event.name === 'firstContentfulPaint' && event.args.frame === mainFrameID) {
-          firstContentfulPaint = event;
+          firstContentfulPaintEvt = event;
         }
         // FIXME: frame argument currently unimplemented. needs upstream fix.
         if (event.name === 'FrameView::performLayout' && event.args.frame === mainFrameID) {
@@ -73,6 +73,10 @@ class FMP {
           paints.push(event);
         }
       });
+
+      function firstContentfulPaint() {
+        return (firstContentfulPaintEvt.ts - navigationStart.ts) / 1000;
+      }
 
       function firstMeaningfulPaint(heuristics) {
         let layoutTime = 0;
@@ -101,7 +105,7 @@ class FMP {
           }
         });
         paintTime = paints.find(e => e.ts > layoutTime).ts;
-        return paintTime - navigationStart.ts;
+        return (paintTime - navigationStart.ts) / 1000;
       }
 
       function heightRatio(counters) {
@@ -110,13 +114,15 @@ class FMP {
         return (ratioBefore + ratioAfter) / 2;
       }
 
+      /* eslint-disable key-spacing */
       var results = {
-        fcp:            firstContentfulPaint.ts - navigationStart.ts,
+        fcp:            firstContentfulPaint(),
         fmpBasic:       firstMeaningfulPaint(),
         fmpPageHeight:  firstMeaningfulPaint({pageHeight: true}),
         fmpWebFont:     firstMeaningfulPaint({webFont: true}),
         fmpFull:        firstMeaningfulPaint({pageHeight: true, webFont: true})
-      }
+      };
+      /* eslint-enable key-spacing */
       console.log('EFF EMM PEE', results);
 
       return resolve(results);
