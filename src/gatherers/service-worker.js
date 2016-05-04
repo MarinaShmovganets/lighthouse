@@ -16,6 +16,8 @@
  */
 'use strict';
 
+/* global window */
+
 const Gather = require('./gather');
 
 class ServiceWorker extends Gather {
@@ -41,8 +43,18 @@ class ServiceWorker extends Gather {
     });
   }
 
+  static getOrigin(url) {
+    if (typeof window.URL === 'function') {
+      return new window.URL(url).origin;
+    }
+
+    const parsedURL = require('url').parse(url);
+    return `${parsedURL.protocol}//${parsedURL.hostname}`;
+  }
+
   static getActivatedServiceWorker(versions, url) {
-    return versions.find(v => v.status === 'activated' && v.scriptURL.startsWith(url));
+    const origin = this.getOrigin(url);
+    return versions.find(v => v.status === 'activated' && v.scriptURL.startsWith(origin));
   }
 
   beforeReloadPageLoad(options) {
