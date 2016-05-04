@@ -65,10 +65,8 @@ class Offline extends Gather {
         .then(_ => {
           return driver
               .evaluateAsync(`(${requestPage.toString()}())`)
-              .then(responseCode => {
-                this.artifact = {
-                  offlineResponseCode: responseCode
-                };
+              .then(offlineResponseCode => {
+                this.artifact = {offlineResponseCode};
               });
         })
         .then(_ => {
