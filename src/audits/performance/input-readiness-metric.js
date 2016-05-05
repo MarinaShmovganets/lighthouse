@@ -82,7 +82,7 @@ class InputReadinessMetric extends Audit {
       const readinessScore = 100 - (values.numeric.value * 100);
 
       return InputReadinessMetric.generateAuditResult(readinessScore,
-          values.numeric.value, undefined, this.optimalValue);
+          values.numeric.value.toFixed(4), undefined, this.optimalValue);
     } catch (err) {
       return InputReadinessMetric.generateAuditResult(-1, undefined,
           'Unable to parse trace contents');
