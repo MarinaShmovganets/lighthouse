@@ -44,10 +44,6 @@ class ServiceWorker extends Gather {
   }
 
   static getOrigin(url) {
-    if (typeof window.URL === 'function') {
-      return new window.URL(url).origin;
-    }
-
     const parsedURL = require('url').parse(url);
     return `${parsedURL.protocol}//${parsedURL.hostname}`;
   }
