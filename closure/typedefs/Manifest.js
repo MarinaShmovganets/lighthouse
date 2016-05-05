@@ -34,7 +34,7 @@ ManifestNode.prototype.raw;
 ManifestNode.prototype.value;
 
 /** @type {string} */
-ManifestNode.prototype.debugString;
+ManifestNode.prototype.extendedInfo;
 
 /**
  * @struct

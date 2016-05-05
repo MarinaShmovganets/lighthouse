@@ -42,7 +42,7 @@ describe('Manifest: short_name_length audit', () => {
     const manifest = manifestParser(manifestSrc);
     const out = Audit.audit({manifest});
     assert.equal(out.value, false);
-    assert.notEqual(out.debugString, undefined);
+    assert.notEqual(out.extendedInfo, undefined);
   });
 
   it('succeeds when a manifest contains a short_name', () => {

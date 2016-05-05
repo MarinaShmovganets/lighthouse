@@ -22,9 +22,20 @@ const Handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
 
+// These have to be explicitly listed by filename because of brfs.
+const axePartial =
+    fs.readFileSync(path.join(__dirname, 'templates/extended-info/axe.html'), 'utf8');
+const partials = {
+  'aria-valid-attr': axePartial
+};
+
 class Report {
 
   constructor() {
+    Handlebars.registerHelper('hasExtendedInfoPartial', (name, options) => {
+      return partials[name] ? options.fn({name}) : '';
+    });
+
     Handlebars.registerHelper('generated', _ => {
       const options = {
         day: 'numeric', month: 'numeric', year: 'numeric',
@@ -100,6 +111,27 @@ class Report {
           return prev + aggregation.score.overall;
         }, 0) /
         results.aggregations.length);
+
+    // Let each audit declare its own handler for the extended information it carries.
+    results.aggregations.forEach(aggregation => {
+      aggregation.score.subItems.forEach(subItem => {
+        if (!subItem.extendedInfo) {
+          return;
+        }
+
+        // If no partial handler is found...
+        if (!partials[subItem.name]) {
+          // Just go direct for any string; ignore others.
+          if (typeof subItem.extendedInfo !== 'string') {
+            return;
+          }
+
+          partials[subItem.name] = '{{ this }}';
+        }
+
+        Handlebars.registerPartial(subItem.name, partials[subItem.name]);
+      });
+    });
 
     const template = Handlebars.compile(this.getReportHTML());
     return template({

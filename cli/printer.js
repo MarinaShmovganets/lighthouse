@@ -90,14 +90,18 @@ function createOutput(results, outputMode) {
     let score = (item.score.overall * 100).toFixed(0);
     output += `${item.name}: ${score}%\n`;
 
-    item.score.subItems.forEach(subitem => {
-      let lineItem = ` -- ${subitem.description}: ${subitem.value}`;
-      if (subitem.rawValue) {
-        lineItem += ` (${subitem.rawValue})`;
+    item.score.subItems.forEach(subItem => {
+      let lineItem = ` -- ${subItem.description}: ${subItem.value}`;
+      if (subItem.rawValue) {
+        lineItem += ` (${subItem.rawValue})`;
       }
       output += `${lineItem}\n`;
-      if (subitem.debugString) {
-        output += `    ${subitem.debugString}\n`;
+      if (subItem.extendedInfo) {
+        const extendedInfoType = typeof subItem.extendedInfo;
+        if (extendedInfoType === 'string') {
+          output += `    ${subItem.extendedInfo}\n`;
+        }
+        // TODO: pretty print more complex extended info.
       }
     });
 

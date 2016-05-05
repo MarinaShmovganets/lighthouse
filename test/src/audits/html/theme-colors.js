@@ -24,7 +24,7 @@ describe('HTML: theme-color audit', () => {
     const emptyAudit = Audit.audit({});
 
     assert.equal(emptyAudit.value, false);
-    assert(emptyAudit.debugString);
+    assert(emptyAudit.extendedInfo);
   });
 
   it('fails and warns when no value given', () => {
@@ -33,7 +33,7 @@ describe('HTML: theme-color audit', () => {
     });
 
     assert.equal(nullColorAudit.value, false);
-    assert(nullColorAudit.debugString);
+    assert(nullColorAudit.extendedInfo);
   });
 
   it('fails and warns when theme-color has an invalid CSS color', () => {
@@ -42,7 +42,7 @@ describe('HTML: theme-color audit', () => {
     });
 
     assert.equal(invalidColorAudit.value, false);
-    assert(invalidColorAudit.debugString);
+    assert(invalidColorAudit.extendedInfo);
   });
 
   it('succeeds when theme-color present in the html', () => {

@@ -38,7 +38,7 @@ class ARIAValidAttr extends Audit {
    * @override
    */
   static get description() {
-    return 'Ensures attributes that begin with aria- are valid ARIA attributes';
+    return 'Attributes that begin with aria- are valid ARIA attributes';
   }
 
   /**
@@ -52,19 +52,8 @@ class ARIAValidAttr extends Audit {
     return ARIAValidAttr.generateAuditResult(
       typeof rule === 'undefined',
       undefined,
-      this.createDebugString(rule)
+      rule
     );
-  }
-
-  static createDebugString(rule) {
-    if (typeof rule === 'undefined') {
-      return '';
-    }
-
-    return rule.help + ' (Failed on ' +
-      rule.nodes.reduce((prev, node) => {
-        return prev + `"${node.target.join(', ')}"`;
-      }, '') + ')';
   }
 }
 

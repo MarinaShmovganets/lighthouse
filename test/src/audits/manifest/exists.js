@@ -32,13 +32,13 @@ describe('Manifest: exists audit', () => {
   });
 
   it('correctly passes through debug strings', () => {
-    const debugString = 'No href found on <link rel="manifest">.';
+    const extendedInfo = 'No href found on <link rel="manifest">.';
 
     assert.equal(Audit.audit({
       manifest: {
         value: {},
-        debugString
+        extendedInfo
       }
-    }).debugString, debugString);
+    }).extendedInfo, extendedInfo);
   });
 });

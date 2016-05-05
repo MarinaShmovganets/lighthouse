@@ -48,15 +48,15 @@ class Audit {
   /**
    * @param {(boolean|number|string)} value
    * @param {?(boolean|number|string)=} rawValue
-   * @param {string=} debugString Optional string to describe any error condition encountered.
+   * @param {(string|Object)=} extendedInfo Additional information to help developer diagnosis & insight.
    * @param {?(boolean|number|string)=} optimalValue
    * @return {!AuditResult}
    */
-  static generateAuditResult(value, rawValue, debugString, optimalValue) {
+  static generateAuditResult(value, rawValue, extendedInfo, optimalValue) {
     return {
       value,
       rawValue,
-      debugString,
+      extendedInfo,
       optimalValue,
       name: this.name,
       tags: this.tags,
