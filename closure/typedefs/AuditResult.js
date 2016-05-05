@@ -29,13 +29,13 @@ function AuditResultInput() {}
 /** @type {(boolean|number|string)} */
 AuditResultInput.prototype.value;
 
-/** @type {?(boolean|number|string)} */
+/** @type {(boolean|number|string|undefined|null)} */
 AuditResultInput.prototype.rawValue;
 
-/** @type {string} */
+/** @type {(string|undefined)} */
 AuditResultInput.prototype.debugString;
 
-/** @type {?(boolean|number|string)} */
+/** @type {(boolean|number|string|undefined|null)} */
 AuditResultInput.prototype.optimalValue;
 
 
@@ -53,6 +53,9 @@ AuditResult.prototype.rawValue;
 
 /** @type {(string|undefined)} */
 AuditResult.prototype.debugString;
+
+/** @type {(boolean|number|string|undefined|null)} */
+AuditResultInput.prototype.optimalValue;
 
 /** @type {string} */
 AuditResult.prototype.name;
