@@ -80,6 +80,9 @@ gulp.task('browserify', () => {
       file.contents = browserify(file.path, {
         transform: ['brfs']
       })
+      .transform('./dtm-transform.js', {
+        global: true
+      })
       .ignore('npmlog')
       .ignore('chrome-remote-interface')
       .bundle();
