@@ -62,16 +62,11 @@ class Offline extends Gather {
     // requests that the page initially made and retry them.
     return Offline
         .goOffline(driver)
-        .then(_ => {
-          return driver
-              .evaluateAsync(`(${requestPage.toString()}())`)
-              .then(offlineResponseCode => {
-                this.artifact = {offlineResponseCode};
-              });
+        .then(_ => driver.evaluateAsync(`(${requestPage.toString()}())`))
+        .then(offlineResponseCode => {
+          this.artifact = {offlineResponseCode};
         })
-        .then(_ => {
-          return Offline.goOnline(driver);
-        });
+        .then(_ => Offline.goOnline(driver));
   }
 }
 
