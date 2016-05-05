@@ -16,8 +16,6 @@
  */
 'use strict';
 
-/* global window */
-
 const Gather = require('./gather');
 
 class ServiceWorker extends Gather {
