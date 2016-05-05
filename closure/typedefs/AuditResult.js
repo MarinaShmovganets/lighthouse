@@ -24,6 +24,25 @@
  * @struct
  * @record
  */
+function AuditResultInput() {}
+
+/** @type {(boolean|number|string)} */
+AuditResultInput.prototype.value;
+
+/** @type {?(boolean|number|string)} */
+AuditResultInput.prototype.rawValue;
+
+/** @type {string} */
+AuditResultInput.prototype.debugString;
+
+/** @type {?(boolean|number|string)} */
+AuditResultInput.prototype.optimalValue;
+
+
+/**
+ * @struct
+ * @record
+ */
 function AuditResult() {}
 
 /** @type {(boolean|number|string)} */
