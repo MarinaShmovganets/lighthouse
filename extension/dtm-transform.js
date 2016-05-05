@@ -20,6 +20,11 @@
 const through = require('through2');
 const path = require('path');
 
+/**
+ * This is a browserify transform that looks for requires to devtools-timeline-model
+ * and replaces them for the local version in Lighthouse. This is just for the extension
+ * since by default it doesn't browserify properly.
+ */
 module.exports = function() {
   const fileContents = [];
   return through(function(part, enc, next) {
