@@ -117,8 +117,8 @@ class ReportGenerator {
           return;
         }
 
-        const formatter = Formatter.getByName(subItem.extendedInfo.formatter);
-        Handlebars.registerPartial(subItem.name, formatter.getHTMLFormatter());
+        const formatter = Formatter.getByName(subItem.extendedInfo.formatter).getHTMLFormatter();
+        Handlebars.registerPartial(subItem.name, formatter);
       });
     });
 
