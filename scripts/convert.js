@@ -14,13 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * Usage:
+ *   node scripts/convert.js
+ */
 const fs = require('fs');
 const jsdom = require('jsdom');
 const mkdirp = require('mkdirp');
 const path = require('path');
 const paths = {};
 
-function process(src) {
+function convertImport(src) {
+  console.log('Reading:', src);
   const html = fs.readFileSync(src);
   const license = /<!--(.*\n)+-->/im;
   let dest = src.replace(/\.html$/, '.js');
@@ -45,7 +51,7 @@ function process(src) {
 
       for (var i = 0; i < imports.length; i++) {
         let importPath = imports[i].getAttribute('href');
-        importPath = importPath.replace(/^\//, './third_party/');
+        importPath = importPath.replace(/^\//, './third_party/src/catapult/tracing/');
 
         const from = path.dirname(dest);
         const to = importPath.replace(/html$/, 'js');
@@ -63,7 +69,7 @@ function process(src) {
         }
 
         paths[importPath] = true;
-        process(importPath);
+        convertImport(importPath);
       }
 
       for (let s = 0; s < scripts.length; s++) {
@@ -77,8 +83,8 @@ function process(src) {
         scriptsContent += script;
       }
 
-      dest = dest.replace(/\.\/third_party\/tracing/, '');
-      dest = path.resolve('./third_party/tracing-js-converted/' + dest);
+      dest = dest.replace(/\.\/third_party\/src\/catapult\/tracing\/tracing/, '');
+      dest = path.resolve('./third_party/traceviewer-js/' + dest);
 
       const destFolder = path.dirname(dest);
       mkdirp(destFolder, function(err) {
@@ -86,10 +92,11 @@ function process(src) {
           throw new Error(`Failed to create folder: ${destFolder}`);
         }
 
+        console.log('Writing:', dest)
         fs.writeFile(dest, scriptsContent, 'utf8');
       });
     }
   });
 }
 
-process('convert-start.html');
+convertImport(require.resolve('./convert-start.html'));
