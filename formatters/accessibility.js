@@ -25,12 +25,13 @@ const html = fs.readFileSync(path.join(__dirname, 'partials/accessibility.html')
 class Accessibilty extends Formatter {
   static getPrettyFormatter() {
     return function(info) {
-      let output = `    - Rating: ${info.impact}\n`;
-      output += `    - See: ${info.helpUrl}\n`;
-      output += `    - Nodes:\n`;
-      info.nodes.forEach(node => {
-        output += `      - ${node.target}\n`;
-      });
+      let output = `      - Rating: ${info.impact}
+      - See: ${info.helpUrl}
+      - Nodes:\n`;
+
+      info.nodes.reduce((prev, node) => {
+        return prev + `      - ${node.target}\n`;
+      }, '');
 
       return output;
     };
