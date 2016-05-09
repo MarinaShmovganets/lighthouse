@@ -22,8 +22,8 @@ const assert = require('assert');
 /* global describe, it */
 
 describe('Formatter', () => {
-  it('returns formats', () => {
-    assert.notEqual(Formatter.FORMATS, undefined);
+  it('returns supported formats', () => {
+    assert.notEqual(Formatter.SUPPORTED_FORMATS, undefined);
   });
 
   it('throws when invalid format is provided', () => {

@@ -54,7 +54,7 @@ class ARIAValidAttr extends Audit {
       value: typeof rule === 'undefined',
       debugString: this.createDebugString(rule),
       extendedInfo: {
-        formatter: Formatter.FORMATS.ACCESSIBILITY,
+        formatter: Formatter.SUPPORTED_FORMATS.ACCESSIBILITY,
         value: rule
       }
     });

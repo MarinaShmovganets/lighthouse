@@ -18,35 +18,37 @@
 'use strict';
 
 class Formatter {
-  static get FORMATS() {
+  static get SUPPORTED_FORMATS() {
+    // Get the available formatters if they don't already exist.
     if (!this._formatters) {
-      this._processFormatters();
+      this._getFormatters();
     }
 
-    if (!this._formats) {
-      this._processFormats();
+    // From the formatters we can establish a master list of supported format names.
+    if (!this._supportedFormatsNames) {
+      this._generateSupportedFormats();
     }
 
-    return this._formats;
+    return this._supportedFormatsNames;
   }
 
-  static _processFormatters() {
+  static _getFormatters() {
     this._formatters = {
       accessibility: require('./accessibility')
     };
   }
 
-  static _processFormats() {
+  static _generateSupportedFormats() {
     const formatNames = Object.keys(this._formatters);
-    this._formats = {};
-    formatNames.forEach(format => {
-      this._formats[format.toUpperCase()] = format;
-    });
+    this._supportedFormatsNames = formatNames.reduce((prev, format) => {
+      prev[format.toUpperCase()] = format;
+      return prev;
+    }, {});
   }
 
   static getByName(name) {
     if (!this._formatters) {
-      this._processFormatters();
+      this._getFormatters();
     }
 
     if (!this._formatters[name]) {
