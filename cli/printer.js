@@ -101,7 +101,7 @@ function createOutput(results, outputMode) {
         output += `    ${subitem.debugString}\n`;
       }
 
-      if (subitem.extendedInfo) {
+      if (subitem.extendedInfo && subitem.extendedInfo.value) {
         const formatter = Formatter.getByName(subitem.extendedInfo.formatter).getPrettyFormatter();
         output += `${formatter(subitem.extendedInfo.value)}`;
       }
