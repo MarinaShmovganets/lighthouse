@@ -81,13 +81,11 @@ limitations under the License.
                     <span class="report-section__item-value report-section__item-value--{{ getItemRating this.value }}">{{ getItemValue this.value }}</span>
                     <span class="report-section__item-raw-value">{{{ getItemRawValue this }}}</span>
                   </div>
-                  <div class="report-section__item-extended-info">
                   {{#if this.extendedInfo}}
                     <div class="report-section__item-extended-info">
                     {{> (lookup . 'name') this.extendedInfo.value }}
                     </div>
                   {{/if}}
-                  </div>
                 </li>
               {{/each}}
             </ul>
