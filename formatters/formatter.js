@@ -58,12 +58,8 @@ class Formatter {
     return this._formatters[name];
   }
 
-  static getPrettyFormatter() {
+  static getFormatter() {
     throw new Error('Formatter must implement getPrettyFormatter()');
-  }
-
-  static getHTMLFormatter() {
-    throw new Error('Formatter must implement getHTMLFormatter()');
   }
 }
 

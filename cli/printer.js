@@ -102,7 +102,8 @@ function createOutput(results, outputMode) {
       }
 
       if (subitem.extendedInfo && subitem.extendedInfo.value) {
-        const formatter = Formatter.getByName(subitem.extendedInfo.formatter).getPrettyFormatter();
+        const formatter =
+            Formatter.getByName(subitem.extendedInfo.formatter).getFormatter('pretty');
         output += `${formatter(subitem.extendedInfo.value)}`;
       }
     });

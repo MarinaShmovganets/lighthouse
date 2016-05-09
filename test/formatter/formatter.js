@@ -30,11 +30,7 @@ describe('Formatter', () => {
     assert.throws(_ => Formatter.getByName('invalid-format'), Error);
   });
 
-  it('throws when getPrettyFormatter is called directly', () => {
-    assert.throws(_ => Formatter.getPrettyFormatter(), Error);
-  });
-
-  it('throws when getHTMLFormatter is called directly', () => {
-    assert.throws(_ => Formatter.getHTMLFormatter(), Error);
+  it('throws when getFormatter is called directly', () => {
+    assert.throws(_ => Formatter.getFormatter(), Error);
   });
 });

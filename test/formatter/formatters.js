@@ -39,18 +39,26 @@ const walkTree = new Promise((resolve, reject) => {
 /* global describe, it*/
 
 describe('Formatters', () => {
-  it('has no formatters failing when getPrettyFormatter is called', () => {
+  it('has no formatters failing when getFormatter("html") is called', () => {
     return walkTree.then(formatters => {
       formatters.forEach(formatter => {
-        assert.doesNotThrow(_ => formatter.getPrettyFormatter());
+        assert.doesNotThrow(_ => formatter.getFormatter('html'));
       });
     });
   });
 
-  it('has no formatters failing when getHTMLFormatter is called', () => {
+  it('has no formatters failing when getFormatter("pretty") is called', () => {
     return walkTree.then(formatters => {
       formatters.forEach(formatter => {
-        assert.doesNotThrow(_ => formatter.getHTMLFormatter());
+        assert.doesNotThrow(_ => formatter.getFormatter('pretty'));
+      });
+    });
+  });
+
+  it('has no formatters succeeding when getFormatter("invalid-formatter") is called', () => {
+    return walkTree.then(formatters => {
+      formatters.forEach(formatter => {
+        assert.throws(_ => formatter.getFormatter('invalid-formatter'));
       });
     });
   });

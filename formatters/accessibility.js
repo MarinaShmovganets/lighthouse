@@ -23,23 +23,28 @@ const Formatter = require('./formatter');
 const html = fs.readFileSync(path.join(__dirname, 'partials/accessibility.html'), 'utf8');
 
 class Accessibilty extends Formatter {
-  static getPrettyFormatter() {
-    return function(info) {
-      let output = `      - Rating: ${info.impact}
-      - See: ${info.helpUrl}
-      - Nodes:\n`;
+  static getFormatter(type) {
+    switch (type) {
+      case 'pretty':
+        return function(info) {
+          let output = `      - Rating: ${info.impact}\n` +
+          `      - See: ${info.helpUrl}\n` +
+          '      - Nodes:\n';
 
-      info.nodes.reduce((prev, node) => {
-        return prev + `      - ${node.target}\n`;
-      }, '');
+          info.nodes.reduce((prev, node) => {
+            return prev + `      - ${node.target}\n`;
+          }, '');
 
-      return output;
-    };
-  }
+          return output;
+        };
 
-  static getHTMLFormatter() {
-    // Returns a handlebars string to be used by the Report.
-    return html;
+      case 'html':
+        // Returns a handlebars string to be used by the Report.
+        return html;
+
+      default:
+        throw new Error('Unknown formatter type');
+    }
   }
 }
 
