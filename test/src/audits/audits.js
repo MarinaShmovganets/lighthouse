@@ -50,7 +50,6 @@ describe('Audits', () => {
   it('has audits returning strings for their tag', () => {
     return walkTree.then(audits => {
       audits.forEach(audit => {
-        console.log(audit);
         assert.equal(typeof audit.tag, 'string');
       });
     });
