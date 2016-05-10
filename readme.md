@@ -33,7 +33,9 @@ lighthouse --help
 ```sh
 git clone https://github.com/GoogleChrome/lighthouse
 cd lighthouse
+
 git submodule update --init
+node scripts/build-traceviewer-module.js
 
 npm install
 npm link

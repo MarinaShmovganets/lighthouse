@@ -25,7 +25,7 @@ const mkdirp = require('mkdirp');
 const path = require('path');
 const paths = {};
 
-const INITIAL_IMPORT = 'scripts/convert-start';
+const INITIAL_IMPORT = 'scripts/traceviewer-module-index';
 
 function convertImport(src) {
   console.log('Reading:', src);
