@@ -45,7 +45,7 @@ class IsPerformant extends Aggregate {
 
   /**
    * @override
-   * @return {boolean}
+   * @return {AggregationType}
    */
   static get type() {
     return Aggregate.VALID_TYPES.PWA;
