@@ -22,8 +22,8 @@ class Viewport extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Mobile Friendly'];
+  static get tag() {
+    return 'Mobile Friendly';
   }
 
   /**

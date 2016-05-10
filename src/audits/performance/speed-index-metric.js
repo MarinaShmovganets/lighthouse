@@ -26,8 +26,8 @@ class SpeedIndexMetric extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Performance'];
+  static get tag() {
+    return 'Performance';
   }
 
   /**

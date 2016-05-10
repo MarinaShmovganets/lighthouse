@@ -23,8 +23,8 @@ class ManifestBackgroundColor extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Manifest'];
+  static get tag() {
+    return 'Manifest';
   }
 
   /**
