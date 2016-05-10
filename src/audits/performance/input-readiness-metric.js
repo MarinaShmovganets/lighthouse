@@ -17,19 +17,32 @@
 
 'use strict';
 
+
+const Audit = require('../audit');
+
+window.global = window;
+
+// we need gl-matrix and jszip for traceviewer
+// since it has internal forks for isNode and they get mixed up during
+// browserify, we require them locally here and global-ize them.
+// from catapult/tracing/tracing/base/math.html
+var glMatrixModule = require('gl-matrix');
+Object.keys(glMatrixModule).forEach(exportName => {
+  global[exportName] = glMatrixModule[exportName];
+});
+// from catapult/tracing/tracing/extras/importer/jszip.html
+global.JSZip = require('jszip/dist/jszip.min.js');
+
 global.HTMLImportsLoader = {};
 global.HTMLImportsLoader.hrefToAbsolutePath = function(path) {
   if (path === '/gl-matrix-min.js') {
-    return require.resolve('gl-matrix');
+    return 'empty-module';
   }
   if (path === '/jszip.min.js') {
-    return require.resolve('jszip/dist/jszip.min.js');
+    return 'jszip/dist/jszip.min.js';
   }
 };
 
-// console.log( require('gl-matrix'))
-
-const Audit = require('../audit');
 require('../../../third_party/traceviewer-js/');
 const traceviewer = global.tr;
 
@@ -102,7 +115,7 @@ class InputReadinessMetric extends Audit {
     } catch (err) {
       return InputReadinessMetric.generateAuditResult({
         value: -1,
-        debugString: 'Unable to parse trace contents'
+        debugString: 'Unable to parse trace contents: ' + err.message
       });
     }
   }

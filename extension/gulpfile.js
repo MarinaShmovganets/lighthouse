@@ -88,9 +88,11 @@ gulp.task('browserify', () => {
   ], {read: false})
     .pipe(tap(file => {
       file.contents = browserify(file.path, {
-        fullPaths: true
+        fullPaths: true,
+        transform: ['brfs']
       })
-      .transform('brfs')
+      // explicitly require a few things traceviewer will need
+      .require(['gl-matrix', 'jszip/dist/jszip.min.js'])
       // Do the additional transform to convert references to devtools-timeline-model
       // to the modified version internal to Lighthouse.
       .transform('./dtm-transform.js', {
