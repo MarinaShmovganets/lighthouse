@@ -72,24 +72,6 @@ class ReportGenerator {
 
       return rating;
     });
-
-    Handlebars.registerHelper('convertToPercentage', value => {
-      return Math.floor(value * 100);
-    });
-
-    Handlebars.registerHelper('getItemRawValue', subItem => {
-      let value = '';
-      if (typeof subItem.rawValue !== 'undefined') {
-        let optimalValue = '';
-        if (typeof subItem.optimalValue !== 'undefined') {
-          optimalValue = ` / ${subItem.optimalValue}`;
-        }
-
-        value = `&nbsp;(${subItem.rawValue}${optimalValue})`;
-      }
-
-      return value;
-    });
   }
 
   getReportHTML() {
@@ -183,7 +165,6 @@ class ReportGenerator {
       css: this.getReportCSS(inline),
       script: this.getReportJS(inline),
       aggregations: results.aggregations,
-      sections: this._createSections(results.aggregations),
       auditsByTag: this._createPWAAuditsByTag(results.aggregations)
     });
   }
