@@ -19,6 +19,8 @@
  * Usage:
  *   node scripts/convert.js
  */
+'use strict';
+
 const fs = require('fs');
 const jsdom = require('jsdom');
 const mkdirp = require('mkdirp');
@@ -32,6 +34,7 @@ function convertImport(src) {
   const html = fs.readFileSync(src);
   const license = /<!--(.*\n)+-->/im;
   let dest = src.replace(/\.html$/, '.js');
+  dest = dest.replace(INITIAL_IMPORT, 'index');
 
   jsdom.env({
     html: html,
@@ -89,7 +92,6 @@ function convertImport(src) {
 
       dest = dest.replace('./third_party/src/catapult/tracing/tracing/', '');
       dest = path.resolve('./third_party/traceviewer-js/' + dest);
-      dest = dest.replace(INITIAL_IMPORT, 'index');
 
       const destFolder = path.dirname(dest);
       mkdirp(destFolder, function(err) {
