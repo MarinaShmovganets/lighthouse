@@ -25,11 +25,15 @@ const mkdirp = require('mkdirp');
 const path = require('path');
 const paths = {};
 
+const INITIAL_IMPORT = 'scripts/convert-start';
+
 function convertImport(src) {
   console.log('Reading:', src);
   const html = fs.readFileSync(src);
   const license = /<!--(.*\n)+-->/im;
   let dest = src.replace(/\.html$/, '.js');
+      dest = dest.replace(INITIAL_IMPORT, 'index');
+
 
   jsdom.env({
     html: html,
@@ -45,8 +49,8 @@ function convertImport(src) {
 
       if (licenseContent) {
         scriptsContent += licenseContent[0]
-            .replace(/<!--/, '/**')
-            .replace(/-->/, '**/\n\n');
+            .replace(/<!--/g, '/**')
+            .replace(/-->/g, '**/\n\n');
       }
 
       for (var i = 0; i < imports.length; i++) {
@@ -61,6 +65,7 @@ function convertImport(src) {
           relativePath = './' + relativePath;
         }
 
+        relativePath = relativePath.replace('./third_party/src/catapult/tracing/tracing', '.');
         scriptsContent += 'require("' + relativePath + '");\n';
 
         // Recursively process each import.
@@ -80,10 +85,11 @@ function convertImport(src) {
         script = script.replace(/tr\.exportTo/, 'global.tr.exportTo');
         script = script.replace(/var global = this;/, '');
         script = script.replace(/this.tr =/, 'global.tr =');
+        script = script.replace(/\(function\(global\)\s?\{/, '(function() {');
         scriptsContent += script;
       }
 
-      dest = dest.replace(/\.\/third_party\/src\/catapult\/tracing\/tracing/, '');
+      dest = dest.replace('./third_party/src/catapult/tracing/tracing/', '');
       dest = path.resolve('./third_party/traceviewer-js/' + dest);
 
       const destFolder = path.dirname(dest);
@@ -99,4 +105,4 @@ function convertImport(src) {
   });
 }
 
-convertImport(require.resolve('./convert-start.html'));
+convertImport('./' + INITIAL_IMPORT + '.html');
