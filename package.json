@@ -38,8 +38,7 @@
     "meow": "^3.7.0",
     "npmlog": "^2.0.3",
     "semver": "^5.1.0",
-    "speedline": "^0.1.2",
-    "traceviewer": "^1.0.9"
+    "speedline": "^0.1.2"
   },
   "devDependencies": {
     "eslint": "^2.4.0",
@@ -49,6 +48,8 @@
     "gulp": "^3.9.1",
     "gulp-replace": "^0.5.4",
     "gulp-util": "^3.0.7",
+    "jsdom": "^9.0.0",
+    "mkdirp": "^0.5.1",
     "mocha": "^2.3.3",
     "request": "^2.69.0",
     "walk": "^2.3.9"
