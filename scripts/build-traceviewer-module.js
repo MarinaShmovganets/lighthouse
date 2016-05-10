@@ -123,5 +123,4 @@ function convertImport(src) {
   });
 }
 
-
 convertImport('./' + INITIAL_IMPORT + '.html');

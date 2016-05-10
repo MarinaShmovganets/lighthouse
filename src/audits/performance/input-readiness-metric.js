@@ -17,9 +17,9 @@
 
 'use strict';
 
-
 const Audit = require('../audit');
 
+/* global window */
 window.global = window;
 
 // we need gl-matrix and jszip for traceviewer
