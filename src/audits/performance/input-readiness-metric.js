@@ -23,7 +23,7 @@ global.HTMLImportsLoader.hrefToAbsolutePath = function(path) {
     return require.resolve('gl-matrix');
   }
   if (path === '/jszip.min.js') {
-    return 'empty-module';
+    return require.resolve('jszip/dist/jszip.min.js');
   }
 };
 
@@ -95,7 +95,7 @@ class InputReadinessMetric extends Audit {
       const readinessScore = 100 - (values.numeric.value * 100);
 
       return InputReadinessMetric.generateAuditResult({
-        value: readinessScore,
+        value: Math.round(readinessScore),
         rawValue: values.numeric.value.toFixed(4),
         optimalValue: this.optimalValue
       });
