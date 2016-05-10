@@ -93,33 +93,29 @@ class ReportGenerator {
     return '<script src="/pages/scripts/lighthouse-report.js"></script>';
   }
 
-  _createSections(aggregations) {
-    return aggregations.reduce((menu, aggregation) => {
-      if (menu.indexOf(aggregation.type.name) === -1) {
-        menu.push(aggregation.type.name);
-      }
-      return menu;
-    }, []);
-  }
-
-  _createPWAAuditsByTag(aggregations) {
+  /**
+   * Refactors the PWA audits into their respective tech categories, i.e. offline, manifest, etc
+   * because the report itself supports viewing them by user feature (default), or by category.
+   */
+  _createPWAAuditsByCategory(aggregations) {
     const items = {};
 
     aggregations.forEach(aggregation => {
-      // We only regroup the PWA aggregations around so ignore
-      if (aggregation.type.name !== Aggregate.VALID_TYPES.PWA.name) {
+      // We only regroup the PWA aggregations around so ignore any
+      // that don't match that name, i.e. Best Practices, metrics.
+      if (aggregation.type.name !== Aggregate.TYPES.PWA.name) {
         return;
       }
 
       aggregation.score.subItems.forEach(subItem => {
-        // Create a space for the tag.
-        if (!items[subItem.tag]) {
-          items[subItem.tag] = {};
+        // Create a space for the category.
+        if (!items[subItem.category]) {
+          items[subItem.category] = {};
         }
 
         // Then use the name to de-dupe the same audit from different aggregations.
-        if (!items[subItem.tag][subItem.name]) {
-          items[subItem.tag][subItem.name] = subItem;
+        if (!items[subItem.category][subItem.name]) {
+          items[subItem.category][subItem.name] = subItem;
         }
       });
     });
@@ -165,7 +161,7 @@ class ReportGenerator {
       css: this.getReportCSS(inline),
       script: this.getReportJS(inline),
       aggregations: results.aggregations,
-      auditsByTag: this._createPWAAuditsByTag(results.aggregations)
+      auditsByCategory: this._createPWAAuditsByCategory(results.aggregations)
     });
   }
 }

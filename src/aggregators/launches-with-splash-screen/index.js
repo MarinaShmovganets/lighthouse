@@ -56,10 +56,10 @@ class SplashScreen extends Aggregate {
 
   /**
    * @override
-   * @return {AggregationType}
+   * @return {!AggregationType}
    */
   static get type() {
-    return Aggregate.VALID_TYPES.PWA;
+    return Aggregate.TYPES.PWA;
   }
 
   /**

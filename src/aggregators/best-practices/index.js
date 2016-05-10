@@ -49,10 +49,10 @@ class IsAccessible extends Aggregate {
 
   /**
    * @override
-   * @return {AggregationType}
+   * @return {!AggregationType}
    */
   static get type() {
-    return Aggregate.VALID_TYPES.BEST_PRACTICE;
+    return Aggregate.TYPES.BEST_PRACTICE;
   }
 
   /**

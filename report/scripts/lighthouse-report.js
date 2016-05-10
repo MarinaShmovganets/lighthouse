@@ -77,11 +77,11 @@ LighthouseReport.prototype = {
 
   updateView: function() {
     if (this.toggleViewUser.checked) {
-      this.viewUserFeature.classList.remove('hidden');
-      this.viewTechnology.classList.add('hidden');
+      this.viewUserFeature.removeAttribute('hidden');
+      this.viewTechnology.setAttribute('hidden', 'hidden');
     } else if (this.toggleViewTechnology.checked) {
-      this.viewUserFeature.classList.add('hidden');
-      this.viewTechnology.classList.remove('hidden');
+      this.viewUserFeature.setAttribute('hidden', 'hidden');
+      this.viewTechnology.removeAttribute('hidden');
     }
   },
 

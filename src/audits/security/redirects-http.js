@@ -22,7 +22,7 @@ class RedirectsHTTP extends Audit {
   /**
    * @override
    */
-  static get tag() {
+  static get category() {
     return 'Security';
   }
 

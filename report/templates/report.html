@@ -96,10 +96,6 @@ limitations under the License.
                   <li class="report-section__item">
                     <div class="report-section__item-details">
                       <span class="report-section__item-description">
-                        {{#if aggregation.type.report.tags }}
-                          {{ subItem.tags }}:
-                        {{/if}}
-
                         {{ subItem.description }}
                         {{#if subItem.optimalValue }}
                         (target: {{ subItem.optimalValue }})
@@ -123,8 +119,8 @@ limitations under the License.
           {{/each}}
         </div>
 
-        <div class="js-report-by-technology hidden">
-          {{#each auditsByTag as |tag| }}
+        <div class="js-report-by-technology" hidden="hidden">
+          {{#each auditsByCategory }}
             <section class="report-body__breakdown-item">
               <h1 class="report-section__subtitle">{{ @key }}</h1>
 
@@ -135,7 +131,7 @@ limitations under the License.
                       <span class="report-section__item-description">
                         {{ subItem.description }}
                         {{#if subItem.optimalValue }}
-                        (target: {{ subItem.optimalValue }})
+                        (target value: {{ subItem.optimalValue }} )
                         {{/if}}
                       </span>
                       <span class="report-section__item-value report-section__item-value--{{ getItemRating subItem.value }}">{{ getItemValue subItem.value }}</span>
@@ -169,11 +165,7 @@ limitations under the License.
                 <li class="report-section__item">
                   <div class="report-section__item-details">
                     <span class="report-section__item-description">
-                      {{#if aggregation.type.report.tag }}
-                        {{ subItem.tag }}:
-                      {{/if}}
-
-                      {{ subItem.description }}
+                      {{ subItem.category }}: {{ subItem.description }}
                       {{#if subItem.optimalValue }}
                       (target: {{ subItem.optimalValue }})
                       {{/if}}

@@ -39,18 +39,18 @@ const walkTree = new Promise((resolve, reject) => {
 /* global describe, it*/
 
 describe('Audits', () => {
-  it('has no audits failing when tag is called', () => {
+  it('has no audits failing when category is called', () => {
     return walkTree.then(audits => {
       audits.forEach(audit => {
-        assert.doesNotThrow(_ => audit.tag);
+        assert.doesNotThrow(_ => audit.category);
       });
     });
   });
 
-  it('has audits returning strings for their tag', () => {
+  it('has audits returning strings for their category', () => {
     return walkTree.then(audits => {
       audits.forEach(audit => {
-        assert.equal(typeof audit.tag, 'string');
+        assert.equal(typeof audit.category, 'string');
       });
     });
   });

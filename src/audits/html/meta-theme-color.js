@@ -23,7 +23,7 @@ class ThemeColor extends Audit {
   /**
    * @override
    */
-  static get tag() {
+  static get category() {
     return 'HTML';
   }
 

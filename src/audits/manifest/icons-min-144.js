@@ -24,7 +24,7 @@ class ManifestIconsMin144 extends Audit {
   /**
    * @override
    */
-  static get tag() {
+  static get category() {
     return 'Manifest';
   }
 
