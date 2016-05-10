@@ -26,7 +26,7 @@ window.global = window;
 // since it has internal forks for isNode and they get mixed up during
 // browserify, we require them locally here and global-ize them.
 // from catapult/tracing/tracing/base/math.html
-var glMatrixModule = require('gl-matrix');
+const glMatrixModule = require('gl-matrix');
 Object.keys(glMatrixModule).forEach(exportName => {
   global[exportName] = glMatrixModule[exportName];
 });
