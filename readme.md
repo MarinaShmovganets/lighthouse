@@ -34,9 +34,6 @@ lighthouse --help
 git clone https://github.com/GoogleChrome/lighthouse
 cd lighthouse
 
-
-node scripts/build-traceviewer-module.js
-
 npm install
 npm link
 ```
@@ -125,14 +122,21 @@ Promise.resolve({
 
 The `.eslintrc` defines all.
 
-#### Code documentation
-
 We're using [JSDoc](http://usejsdoc.org/) along with [closure annotations](https://developers.google.com/closure/compiler/docs/js-for-compiler). Annotations encouraged for all contributions.
-
-#### Variable declarations
 
 `const` > `let` > `var`.  Use `const` wherever possible. Save `var` for emergencies only.
 
 ## Trace processing
 
 The traceviewer-based trace processor from [node-big-rig](https://github.com/GoogleChrome/node-big-rig/tree/master/lib) was forked into Lighthouse. Additionally, the [DevTools' Timeline Model](https://github.com/paulirish/devtools-timeline-model) is available as well. There may be advantages for using one model over another.
+
+**To update traceviewer source:**
+
+```sh
+# if not already there, clone catapult
+git clone --depth=1 https://github.com/catapult-project/catapult.git third_party/src/catapult
+# pull for latest
+git -C "./third_party/src/catapult/" pull
+# run our conversion script
+node scripts/build-traceviewer-module.js
+```
