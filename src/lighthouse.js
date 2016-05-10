@@ -79,6 +79,11 @@ module.exports = function(driver, opts) {
 
   const gatherers = gathererClasses.map(G => new G());
 
+  if (opts.flags.useNetDepGraph) {
+    const CriticalChainClass = require('./gatherers/critical-network-chains');
+    gatherers.push(new CriticalChainClass());
+  }
+
   return Scheduler
       .run(gatherers, Object.assign({}, opts, {driver}))
       .then(artifacts => Auditor.audit(artifacts, audits))
