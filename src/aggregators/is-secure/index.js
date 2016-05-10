@@ -32,15 +32,23 @@ class IsSecure extends Aggregate {
    * @return {string}
    */
   static get name() {
-    return 'Is Secure';
+    return 'Network connection is secure';
   }
 
   /**
    * @override
    * @return {string}
    */
-  static get shortName() {
-    return 'Secure';
+  static get description() {
+    return '';
+  }
+
+  /**
+   * @override
+   * @return {boolean}
+   */
+  static get type() {
+    return Aggregate.VALID_TYPES.PWA;
   }
 
   /**

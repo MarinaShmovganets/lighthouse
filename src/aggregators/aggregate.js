@@ -20,6 +20,28 @@
 class Aggregate {
 
   /**
+   * The valid types of aggregation supported by Lighthouse.
+   */
+  static get VALID_TYPES() {
+    return {
+      PWA: {
+        name: 'Progressive Web App',
+        contributesToScore: true,
+        report: {
+          tag: false
+        }
+      },
+      BEST_PRACTICE: {
+        name: 'Best Practices',
+        contributesToScore: false,
+        report: {
+          tag: true
+        }
+      }
+    };
+  }
+
+  /**
    * @throws {Error}
    * @return {string} The name for this aggregation.
    */
@@ -31,8 +53,16 @@ class Aggregate {
    * @throws {Error}
    * @return {string} The short name for this aggregation.
    */
-  static get shortName() {
-    throw new Error('Aggregate shortName must be overridden');
+  static get description() {
+    throw new Error('Aggregate description must be overridden');
+  }
+
+  /**
+   * @throws {Error}
+   * @return {Object} The type of aggregation.
+   */
+  static get type() {
+    throw new Error('Aggregate type must be overridden');
   }
 
   /**
@@ -197,6 +227,8 @@ class Aggregate {
     return {
       name: this.name,
       shortName: this.shortName,
+      description: this.description,
+      type: this.type,
       score: Aggregate.compare(results, this.criteria)
     };
   }
