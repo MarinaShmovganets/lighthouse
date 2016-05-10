@@ -22,6 +22,9 @@ global.HTMLImportsLoader.hrefToAbsolutePath = function(path) {
   if (path === '/gl-matrix-min.js') {
     return require.resolve('gl-matrix');
   }
+  if (path === '/jszip.min.js') {
+    return 'empty-module';
+  }
 };
 
 // console.log( require('gl-matrix'))
