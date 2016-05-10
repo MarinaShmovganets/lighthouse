@@ -78,7 +78,7 @@ class SpeedIndexMetric extends Audit {
 
       return {
         score: Math.round(score),
-        rawValue: `${Math.round(results.speedIndex)}`
+        rawValue: Math.round(results.speedIndex)
       };
     }).catch(err => {
       // Recover from trace parsing failures.

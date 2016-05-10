@@ -27,8 +27,8 @@ function LighthouseReport() {
   this.menu = document.querySelector('.js-menu');
   this.menuContainer = document.querySelector('.js-menu-container');
   this.printButton = document.querySelector('.js-print');
-  this.toggleViewUser = document.querySelector('.js-toggle-user');
-  this.toggleViewTechnology = document.querySelector('.js-toggle-technology');
+  this.radioButtonToggleViewUser = document.querySelector('.js-toggle-user');
+  this.radioButtonToggleViewTechnology = document.querySelector('.js-toggle-technology');
   this.viewUserFeature = document.querySelector('.js-report-by-user-feature');
   this.viewTechnology = document.querySelector('.js-report-by-technology');
 
@@ -76,10 +76,10 @@ LighthouseReport.prototype = {
   },
 
   updateView: function() {
-    if (this.toggleViewUser.checked) {
+    if (this.radioButtonToggleViewUser.checked) {
       this.viewUserFeature.removeAttribute('hidden');
       this.viewTechnology.setAttribute('hidden', 'hidden');
-    } else if (this.toggleViewTechnology.checked) {
+    } else if (this.radioButtonToggleViewTechnology.checked) {
       this.viewUserFeature.setAttribute('hidden', 'hidden');
       this.viewTechnology.removeAttribute('hidden');
     }
@@ -89,8 +89,8 @@ LighthouseReport.prototype = {
     window.addEventListener('scroll', this.onScroll);
     window.addEventListener('resize', this.onResize);
     this.printButton.addEventListener('click', this.onPrint);
-    this.toggleViewUser.addEventListener('change', this.updateView);
-    this.toggleViewTechnology.addEventListener('change', this.updateView);
+    this.radioButtonToggleViewUser.addEventListener('change', this.updateView);
+    this.radioButtonToggleViewTechnology.addEventListener('change', this.updateView);
   }
 };
 
