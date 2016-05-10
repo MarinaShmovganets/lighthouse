@@ -46,11 +46,11 @@ function convertImport(src) {
       const scripts = window.document.querySelectorAll('script');
       let scriptsContent = '';
 
-      convertLicenseComments(html, scriptsContent);
+      convertLicenseComments(html);
 
       // traverse and rewrite the imports
       for (var i = 0; i < imports.length; i++) {
-        const importPath = importToRequire(imports[i], dest, scriptsContent);
+        const importPath = importToRequire(imports[i], dest);
 
         // Recursively process each import.
         if (paths[importPath]) {
@@ -62,65 +62,66 @@ function convertImport(src) {
 
       // adjust the javascript
       for (let s = 0; s < scripts.length; s++) {
-        rewriteGlobals(scripts[s], scriptsContent);
+        rewriteGlobals(scripts[s]);
       }
 
       writeNewFile(dest, scriptsContent);
+
+      function convertLicenseComments(html) {
+        const license = /<!--(.*\n)+-->/im;
+        const licenseContent = license.exec(html);
+        if (licenseContent) {
+          scriptsContent += licenseContent[0]
+            .replace(/<!--/g, '/**')
+            .replace(/-->/g, '**/\n\n');
+        }
+      }
+
+      function importToRequire(importElem, dest) {
+        let importPath = importElem.getAttribute('href');
+        importPath = importPath.replace(/^\//, './third_party/src/catapult/tracing/');
+
+        const from = path.dirname(dest);
+        const to = importPath.replace(/html$/, 'js');
+        let relativePath = path.relative(from, to);
+
+        if (relativePath[0] !== '.') {
+          relativePath = './' + relativePath;
+        }
+
+        relativePath = relativePath.replace('./third_party/src/catapult/tracing/tracing', '.');
+        scriptsContent += 'require("' + relativePath + '");\n';
+
+        return importPath;
+      }
+
+      function rewriteGlobals(script) {
+        script = script.textContent;
+
+        script = script.replace(/tr\.exportTo/, 'global.tr.exportTo');
+        script = script.replace(/var global = this;/, '');
+        script = script.replace(/this.tr =/, 'global.tr =');
+        script = script.replace(/\(function\(global\)\s?\{/, '(function() {');
+        scriptsContent += script;
+      }
+
+      function writeNewFile(dest, scriptsContent) {
+        dest = dest.replace('./third_party/src/catapult/tracing/tracing/', '');
+        dest = path.resolve('./third_party/traceviewer-js/' + dest);
+
+        const destFolder = path.dirname(dest);
+        mkdirp(destFolder, function(err) {
+          if (err) {
+            throw new Error(`Failed to create folder: ${destFolder}`);
+          }
+
+          console.log('Writing:', dest);
+          fs.writeFile(dest, scriptsContent, 'utf8');
+        });
+      }
     }
   });
 }
 
-function convertLicenseComments(html, scriptsContent) {
-  const license = /<!--(.*\n)+-->/im;
-  const licenseContent = license.exec(html);
-  if (licenseContent) {
-    scriptsContent += licenseContent[0]
-      .replace(/<!--/g, '/**')
-      .replace(/-->/g, '**/\n\n');
-  }
-}
-
-function importToRequire(importElem, dest, scriptsContent) {
-  let importPath = importElem.getAttribute('href');
-  importPath = importPath.replace(/^\//, './third_party/src/catapult/tracing/');
-
-  const from = path.dirname(dest);
-  const to = importPath.replace(/html$/, 'js');
-  let relativePath = path.relative(from, to);
-
-  if (relativePath[0] !== '.') {
-    relativePath = './' + relativePath;
-  }
-
-  relativePath = relativePath.replace('./third_party/src/catapult/tracing/tracing', '.');
-  scriptsContent += 'require("' + relativePath + '");\n';
-
-  return importPath;
-}
-
-function rewriteGlobals(script, scriptsContent) {
-  script = script.textContent;
-
-  script = script.replace(/tr\.exportTo/, 'global.tr.exportTo');
-  script = script.replace(/var global = this;/, '');
-  script = script.replace(/this.tr =/, 'global.tr =');
-  script = script.replace(/\(function\(global\)\s?\{/, '(function() {');
-  scriptsContent += script;
-}
-
-function writeNewFile(dest, scriptsContent) {
-  dest = dest.replace('./third_party/src/catapult/tracing/tracing/', '');
-  dest = path.resolve('./third_party/traceviewer-js/' + dest);
-
-  const destFolder = path.dirname(dest);
-  mkdirp(destFolder, function(err) {
-    if (err) {
-      throw new Error(`Failed to create folder: ${destFolder}`);
-    }
-
-    console.log('Writing:', dest);
-    fs.writeFile(dest, scriptsContent, 'utf8');
-  });
-}
 
 convertImport('./' + INITIAL_IMPORT + '.html');
