@@ -33,7 +33,6 @@ const Audit = require('../audit');
 require('../../../third_party/traceviewer-js/');
 const traceviewer = global.tr;
 
-
 class InputReadinessMetric extends Audit {
   /**
    * @override

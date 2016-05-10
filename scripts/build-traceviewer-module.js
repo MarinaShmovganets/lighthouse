@@ -32,8 +32,6 @@ function convertImport(src) {
   const html = fs.readFileSync(src);
   const license = /<!--(.*\n)+-->/im;
   let dest = src.replace(/\.html$/, '.js');
-      dest = dest.replace(INITIAL_IMPORT, 'index');
-
 
   jsdom.env({
     html: html,
@@ -91,6 +89,7 @@ function convertImport(src) {
 
       dest = dest.replace('./third_party/src/catapult/tracing/tracing/', '');
       dest = path.resolve('./third_party/traceviewer-js/' + dest);
+      dest = dest.replace(INITIAL_IMPORT, 'index');
 
       const destFolder = path.dirname(dest);
       mkdirp(destFolder, function(err) {
@@ -98,7 +97,7 @@ function convertImport(src) {
           throw new Error(`Failed to create folder: ${destFolder}`);
         }
 
-        console.log('Writing:', dest)
+        console.log('Writing:', dest);
         fs.writeFile(dest, scriptsContent, 'utf8');
       });
     }
