@@ -22,8 +22,8 @@ class Aggregate {
   /**
    * The types of aggregation supported by Lighthouse. These are used by the HTML Report
    * to broadly classify the outputs. Most of the audits will be included in aggregations
-   * that are of TYPES.PWA, but any non-PWA best practices should be in aggregators of that
-   * BEST_PRACTICE.
+   * that are of TYPES.PWA, but any non-PWA best practices should be in aggregators of
+   * TYPES.BEST_PRACTICE.
    */
   static get TYPES() {
     return {

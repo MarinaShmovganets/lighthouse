@@ -44,8 +44,6 @@ class ReportGenerator {
       if (a === b) {
         return opts.fn(this);
       }
-
-      return;
     });
 
     // Helper for either saying 'yes' or 'no' for booleans, or simply returning the value if it's
@@ -116,7 +114,7 @@ class ReportGenerator {
     const items = {};
 
     aggregations.forEach(aggregation => {
-      // We only regroup the PWA aggregations around so ignore any
+      // We only regroup the PWA aggregations so ignore any
       // that don't match that name, i.e. Best Practices, metrics.
       if (aggregation.type.name !== Aggregate.TYPES.PWA.name) {
         return;
