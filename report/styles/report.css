@@ -55,10 +55,6 @@ a {
   color: #57A0A8;
 }
 
-.hidden {
-  display: none !important;
-}
-
 .report {
   width: 100%;
   margin: 16px auto 100px auto;
