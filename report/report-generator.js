@@ -18,6 +18,7 @@
 
 /* global Intl */
 
+const Aggregate = require('../src/aggregators/aggregate');
 const Formatter = require('../formatters/formatter');
 const Handlebars = require('handlebars');
 const fs = require('fs');
@@ -34,6 +35,14 @@ class ReportGenerator {
       };
       const formatter = new Intl.DateTimeFormat('en-US', options);
       return formatter.format(new Date());
+    });
+
+    Handlebars.registerHelper('matches', (a, b, opts) => {
+      if (a === b) {
+        return opts.fn(this);
+      }
+
+      return;
     });
 
     Handlebars.registerHelper('generateAnchor', shortName => {
@@ -102,13 +111,58 @@ class ReportGenerator {
     return '<script src="/pages/scripts/lighthouse-report.js"></script>';
   }
 
+  _createSections(aggregations) {
+    return aggregations.reduce((menu, aggregation) => {
+      if (menu.indexOf(aggregation.type.name) === -1) {
+        menu.push(aggregation.type.name);
+      }
+      return menu;
+    }, []);
+  }
+
+  _createPWAAuditsByTag(aggregations) {
+    const items = {};
+
+    aggregations.forEach(aggregation => {
+      // We only regroup the PWA aggregations around so ignore
+      if (aggregation.type.name !== Aggregate.VALID_TYPES.PWA.name) {
+        return;
+      }
+
+      aggregation.score.subItems.forEach(subItem => {
+        // Create a space for the tag.
+        if (!items[subItem.tag]) {
+          items[subItem.tag] = {};
+        }
+
+        // Then use the name to de-dupe the same audit from different aggregations.
+        if (!items[subItem.tag][subItem.name]) {
+          items[subItem.tag][subItem.name] = subItem;
+        }
+      });
+    });
+
+    return items;
+  }
+
   generateHTML(results, options) {
     const inline = (options && options.inline) || false;
+    const totalAggregations = results.aggregations.reduce((total, aggregation) => {
+      if (!aggregation.type.contributesToScore) {
+        return total;
+      }
+
+      return ++total;
+    }, 0);
     const totalScore =
         (results.aggregations.reduce((prev, aggregation) => {
+          // Only include the score if the aggregation type says to do so.
+          if (!aggregation.type.contributesToScore) {
+            return prev;
+          }
+
           return prev + aggregation.score.overall;
-        }, 0) /
-        results.aggregations.length);
+        }, 0) / totalAggregations);
 
     // Ensure the formatter for each extendedInfo is registered.
     results.aggregations.forEach(aggregation => {
@@ -128,7 +182,9 @@ class ReportGenerator {
       totalScore: Math.round(totalScore * 100),
       css: this.getReportCSS(inline),
       script: this.getReportJS(inline),
-      aggregations: results.aggregations
+      aggregations: results.aggregations,
+      sections: this._createSections(results.aggregations),
+      auditsByTag: this._createPWAAuditsByTag(results.aggregations)
     });
   }
 }
