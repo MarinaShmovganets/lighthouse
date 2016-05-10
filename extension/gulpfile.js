@@ -88,8 +88,9 @@ gulp.task('browserify', () => {
   ], {read: false})
     .pipe(tap(file => {
       file.contents = browserify(file.path, {
-        transform: ['brfs']
+        fullPaths: true
       })
+      .transform('brfs')
       // Do the additional transform to convert references to devtools-timeline-model
       // to the modified version internal to Lighthouse.
       .transform('./dtm-transform.js', {
