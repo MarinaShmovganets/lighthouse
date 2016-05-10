@@ -17,8 +17,19 @@
 
 'use strict';
 
-const traceviewer = require('traceviewer');
+global.HTMLImportsLoader = {};
+global.HTMLImportsLoader.hrefToAbsolutePath = function(path) {
+  if (path === '/gl-matrix-min.js') {
+    return require.resolve('gl-matrix');
+  }
+};
+
+// console.log( require('gl-matrix'))
+
 const Audit = require('../audit');
+require('../../../third_party/traceviewer-js/');
+const traceviewer = global.tr;
+
 
 class InputReadinessMetric extends Audit {
   /**
@@ -81,11 +92,16 @@ class InputReadinessMetric extends Audit {
       const values = valueList.valueDicts[0];
       const readinessScore = 100 - (values.numeric.value * 100);
 
-      return InputReadinessMetric.generateAuditResult(readinessScore,
-          values.numeric.value.toFixed(4), undefined, this.optimalValue);
+      return InputReadinessMetric.generateAuditResult({
+        value: readinessScore,
+        rawValue: values.numeric.value.toFixed(4),
+        optimalValue: this.optimalValue
+      });
     } catch (err) {
-      return InputReadinessMetric.generateAuditResult(-1, undefined,
-          'Unable to parse trace contents');
+      return InputReadinessMetric.generateAuditResult({
+        value: -1,
+        debugString: 'Unable to parse trace contents'
+      });
     }
   }
 }
