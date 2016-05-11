@@ -76,8 +76,8 @@ class InputReadinessMetric extends Audit {
   }
 
   /**
-   * Audits the page to give a score for First Meaningful Paint.
-   * @see  https://github.com/GoogleChrome/lighthouse/issues/26
+   * Audits the page to give a score for Input Readiness.
+   * @see https://github.com/GoogleChrome/lighthouse/issues/26
    * @param {!Artifacts} artifacts The artifacts from the gather phase.
    * @return {!AuditResult} The score from the audit, ranging from 0-100.
    */

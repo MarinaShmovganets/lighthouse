@@ -17,7 +17,7 @@
 
 /**
  * Usage:
- *   node scripts/convert.js
+ *   node scripts/build-traceviewer-module.js
  */
 'use strict';
 
@@ -46,11 +46,12 @@ function convertImport(src) {
       const scripts = window.document.querySelectorAll('script');
       let scriptsContent = '';
 
-      convertLicenseComments(html);
+      scriptsContent += convertLicenseComments(html);
 
       // traverse and rewrite the imports
       for (var i = 0; i < imports.length; i++) {
-        const importPath = importToRequire(imports[i], dest);
+        const importPath = importToPath(imports[i]);
+        scriptsContent += importToRequire(importPath, dest);
 
         // Recursively process each import.
         if (paths[importPath]) {
@@ -62,7 +63,7 @@ function convertImport(src) {
 
       // adjust the javascript
       for (let s = 0; s < scripts.length; s++) {
-        rewriteGlobals(scripts[s]);
+        scriptsContent += rewriteGlobals(scripts[s]);
       }
 
       writeNewFile(dest, scriptsContent);
@@ -71,16 +72,22 @@ function convertImport(src) {
         const license = /<!--(.*\n)+-->/im;
         const licenseContent = license.exec(html);
         if (licenseContent) {
-          scriptsContent += licenseContent[0]
+          return licenseContent[0]
             .replace(/<!--/g, '/**')
             .replace(/-->/g, '**/\n\n');
         }
+
+        return '';
       }
 
-      function importToRequire(importElem, dest) {
+      function importToPath(importElem) {
         let importPath = importElem.getAttribute('href');
         importPath = importPath.replace(/^\//, './third_party/src/catapult/tracing/');
 
+        return importPath;
+      }
+
+      function importToRequire(importPath, dest) {
         const from = path.dirname(dest);
         const to = importPath.replace(/html$/, 'js');
         let relativePath = path.relative(from, to);
@@ -90,9 +97,7 @@ function convertImport(src) {
         }
 
         relativePath = relativePath.replace('./third_party/src/catapult/tracing/tracing', '.');
-        scriptsContent += 'require("' + relativePath + '");\n';
-
-        return importPath;
+        return 'require("' + relativePath + '");\n';
       }
 
       function rewriteGlobals(script) {
@@ -102,7 +107,7 @@ function convertImport(src) {
         script = script.replace(/var global = this;/, '');
         script = script.replace(/this.tr =/, 'global.tr =');
         script = script.replace(/\(function\(global\)\s?\{/, '(function() {');
-        scriptsContent += script;
+        return script;
       }
 
       function writeNewFile(dest, scriptsContent) {
