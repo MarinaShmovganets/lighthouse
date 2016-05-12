@@ -41,7 +41,7 @@ const audits = [
   require('./audits/offline/works-offline'),
   require('./audits/mobile-friendly/viewport'),
   require('./audits/mobile-friendly/display'),
-  require('./audits/performance/first-meaningful-paint'),
+  require('./audits/performance/first-contentful-paint'),
   require('./audits/performance/speed-index-metric'),
   require('./audits/performance/input-readiness-metric'),
   require('./audits/manifest/exists'),

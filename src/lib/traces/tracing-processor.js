@@ -475,6 +475,16 @@ class TraceProcessor {
 
     return timeRanges;
   }
+
+  /**
+   * Uses traceviewer's statistics package to create a log-normal distribution.
+   * @param {number} location
+   * @param {number} shape
+   * @return {!Statistics.LogNormalDistribution}
+   */
+  static getLogNormalDistribution(location, shape) {
+    return new traceviewer.b.Statistics.LogNormalDistribution(location, shape);
+  }
 }
 
-module.exports = new TraceProcessor();
+module.exports = TraceProcessor;

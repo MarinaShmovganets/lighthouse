@@ -19,7 +19,10 @@
 
 const speedline = require('speedline');
 const Audit = require('../audit');
+const TracingProcessor = require('../../lib/traces/tracing-processor');
 
+const SCORE_LOCATION = 8.6125;
+const SCORE_SHAPE = 0.7;
 const FAILURE_MESSAGE = 'Navigation and first paint timings not found.';
 
 class SpeedIndexMetric extends Audit {
@@ -64,13 +67,15 @@ class SpeedIndexMetric extends Audit {
       }
       return speedline(trace);
     }).then(results => {
-      // Roughly an exponential curve.
-      //   < 1000ms: penalty=0
-      //   3000ms: penalty=90
-      //   >= 5000ms: penalty=100
-      const power = (results.speedIndex - 1000) * 0.001 * 0.5;
-      const penalty = power > 0 ? Math.pow(10, power) : 0;
-      let score = 100 - penalty;
+      // Use the CDF of a log-normal distribution for scoring.
+      //  10th Percentile = 2,240
+      //  25th Percentile = 3,430
+      //  Median = 5,500
+      //  75th Percentile = 8,820
+      //  95th Percentile = 17,400
+      const distribution =
+          TracingProcessor.getLogNormalDistribution(SCORE_LOCATION, SCORE_SHAPE);
+      let score = 100 * distribution.computeComplementaryPercentile(results.speedIndex);
 
       // Clamp the score to 0 <= x <= 100.
       score = Math.min(100, score);
