@@ -50,6 +50,7 @@ Run Configuration:
     --load-page        Loads the page (default=true)
     --save-trace       Save the trace contents to disk
     --save-artifacts   Generate network dependency graph
+    --save-screenshots Oh yeah!
 
 Output:
     --output           Reporter for the results

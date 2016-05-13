@@ -20,6 +20,7 @@
 const Gather = require('./gather');
 const DevtoolsTimelineModel = require('../lib/traces/devtools-timeline-model');
 const fs = require('fs');
+const log = require('../lib/log.js');
 
 const starthtml = `<body>
 <script>
@@ -61,8 +62,11 @@ class ScreenshotFilmstrip extends Gather {
 
   postProfiling(options, tracingData) {
     return this.getScreenshots(tracingData.traceContents).then(screenshots => {
-      // const artifactsFilename = 'screenshots.html';
-      // fs.writeFileSync(artifactsFilename, starthtml + JSON.stringify(screenshots) + endhtml);
+      if (options.flags.saveScreenshots) {
+        const filename = 'screenshots.html';
+        fs.writeFileSync(filename, starthtml + JSON.stringify(screenshots) + endhtml);
+        log.log('info', 'screenshots saved to disk', filename);
+      }
       this.artifact = {screenshots};
     });
   }
