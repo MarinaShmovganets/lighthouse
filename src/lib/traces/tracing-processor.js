@@ -18,8 +18,9 @@
 'use strict';
 const URL = require('url');
 
-/* global window */
-window.global = window;
+if (typeof global.window === 'undefined') {
+  global.window = global;
+}
 
 // we need gl-matrix and jszip for traceviewer
 // since it has internal forks for isNode and they get mixed up during
