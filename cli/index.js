@@ -59,7 +59,7 @@ Output:
                          lighthouse --output=html --output-path=./results.html
 `);
 
-const url = cli.input[0] || 'https://pwa.rocks/';
+const url = cli.input[0] || 'https://platform-status.mozilla.org/';
 const outputMode = cli.flags.output || Printer.OUTPUT_MODE.pretty;
 const outputPath = cli.flags.outputPath || 'stdout';
 const flags = cli.flags;

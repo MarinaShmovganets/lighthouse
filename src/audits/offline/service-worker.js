@@ -46,7 +46,7 @@ class ServiceWorker extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    if (!artifacts.serviceWorkers) {
+    if (artifacts.serviceWorkers === undefined) {
       return ServiceWorker.generateAuditResult({value: 'audit not run'});
     }
 
