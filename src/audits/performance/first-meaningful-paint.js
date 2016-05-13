@@ -56,42 +56,51 @@ class FirstMeaningfulPaint extends Audit {
    * @return {!AuditResult} The score from the audit, ranging from 0-100.
    */
   static audit(artifacts) {
-    return FMPMetric.parse(artifacts.traceContents)
-        .then(fmp => {
-          // The fundamental Time To fMP metric
-          const firstMeaningfulPaint = fmp.firstMeaningfulPaint - fmp.navigationStart;
+    const traceData = artifacts.traceContents;
+    return FMPMetric.parse(traceData).then(data => {
+      // there are a few candidates for fMP; some considering page height and in-flight fonts
+      const fmpCandidates = [data.fMPbasic, data.fMPpageheight, data.fMPwebfont, data.fMPfull];
+      // we're interested in the last of the bunch.
+      const lastfMP = fmpCandidates
+        .map(e => e.ts)
+        .reduce((mx, c) => Math.max(mx, c));
 
-          // Roughly an exponential curve.
-          //   < 1000ms: penalty=0
-          //   3000ms: penalty=90
-          //   >= 5000ms: penalty=100
-          const power = (firstMeaningfulPaint - 1000) * 0.001 * 0.5;
-          const penalty = power > 0 ? Math.pow(10, power) : 0;
-          let score = 100 - penalty;
+      // First paint of content
+      const fCP = (data.firstContentfulPaint.ts - data.navigationStart.ts) / 1000;
+      // First meaningful paint (following most significant layout)
+      const fMP = (lastfMP - data.navigationStart.ts) / 1000;
 
-          // Clamp the score to 0 <= x <= 100.
-          score = Math.min(100, score);
-          score = Math.max(0, score);
+      // Roughly an exponential curve.
+      //   < 1000ms: penalty=0
+      //   3000ms: penalty=90
+      //   >= 5000ms: penalty=100
+      const power = (firstMeaningfulPaint - 1000) * 0.001 * 0.5;
+      const penalty = power > 0 ? Math.pow(10, power) : 0;
+      let score = 100 - penalty;
 
-          return {
-            duration: `${firstMeaningfulPaint.toFixed(2)}ms`,
-            score: Math.round(score)
-          };
-        }).catch(err => {
-          // Recover from trace parsing failures.
-          return {
-            score: -1,
-            debugString: err.message
-          };
-        })
-        .then(result => {
-          return FirstMeaningfulPaint.generateAuditResult({
-            value: result.score,
-            rawValue: result.duration,
-            debugString: result.debugString,
-            optimalValue: this.optimalValue
-          });
-        });
+      // Clamp the score to 0 <= x <= 100.
+      score = Math.min(100, score);
+      score = Math.max(0, score);
+
+      return {
+        duration: `${firstMeaningfulPaint.toFixed(2)}ms`,
+        score: Math.round(score)
+      };
+    }).catch(err => {
+      // Recover from trace parsing failures.
+      return {
+        score: -1,
+        debugString: err.message
+      };
+    })
+    .then(result => {
+      return FirstMeaningfulPaint.generateAuditResult({
+        value: result.score,
+        rawValue: result.duration,
+        debugString: result.debugString,
+        optimalValue: this.optimalValue
+      });
+    });
   }
 }
 
