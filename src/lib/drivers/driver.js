@@ -37,7 +37,7 @@ class DriverBase {
       'blink.user_timing',
       'benchmark',
       'devtools.timeline',
-      'blink.debug.layout',
+      'disabled-by-default-blink.debug.layout',
       'disabled-by-default-devtools.timeline',
       'disabled-by-default-devtools.timeline.frame',
       'disabled-by-default-devtools.timeline.stack',

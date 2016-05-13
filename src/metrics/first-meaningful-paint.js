@@ -64,8 +64,9 @@ class FMP {
         if (event.name === 'firstContentfulPaint' && event.args.frame === mainFrameID) {
           firstContentfulPaintEvt = event;
         }
-        // FIXME: frame argument currently unimplemented. needs upstream fix.
-        if (event.name === 'FrameView::performLayout' && event.args.frame === mainFrameID) {
+        // COMPAT: frame argument requires Chrome 52 (r390306)
+        // codereview.chromium.org/1922823003
+        if (event.name === 'FrameView::performLayout' && event.args.counters && event.args.counters.frame === mainFrameID) {
           layouts.set(event, event.args.counters);
         }
 
@@ -91,7 +92,7 @@ class FMP {
 
           layouts = counters['LayoutObjectsThatHadNeverHadLayout'] || 0;
 
-          significance = ('pageHeight' in heuristics) ? layouts / heightRatio(counters) : layouts;
+          significance = ('pageHeight' in heuristics) ? (layouts / heightRatio(counters)) : layouts;
 
           if ('webFont' in heuristics && counters['hasBlankText']) {
             pending += significance;
@@ -109,23 +110,25 @@ class FMP {
       }
 
       function heightRatio(counters) {
-        const ratioBefore = Math.max(1, counters['contentsHeightBefore'].to_f / counters['visibleHeight']);
-        const ratioAfter = Math.max(1, counters['contentsHeightAfter'].to_f / counters['visibleHeight']);
+        const ratioBefore = Math.max(1, counters['contentsHeightBeforeLayout'].to_f / counters['visibleHeight']);
+        const ratioAfter = Math.max(1, counters['contentsHeightAfterLayout'].to_f / counters['visibleHeight']);
         return (ratioBefore + ratioAfter) / 2;
       }
 
       /* eslint-disable key-spacing */
-      var results = {
-        fcp:            firstContentfulPaint(),
-        fmpBasic:       firstMeaningfulPaint(),
-        fmpPageHeight:  firstMeaningfulPaint({pageHeight: true}),
-        fmpWebFont:     firstMeaningfulPaint({webFont: true}),
-        fmpFull:        firstMeaningfulPaint({pageHeight: true, webFont: true})
-      };
+
+      const fcp =           firstContentfulPaint();
+      const fmpBasic =      firstMeaningfulPaint();
+      const fmpPageHeight = firstMeaningfulPaint({ pageHeight: true });
+      const fmpWebFont = firstMeaningfulPaint({ webFont: true });
+      const fmpFull = firstMeaningfulPaint({ pageHeight: true, webFont: true });
+      var results = {};
       /* eslint-enable key-spacing */
       console.log('EFF EMM PEE', results);
 
-      return resolve(results);
+      return resolve(function () {
+
+      });
     });
   }
 }
