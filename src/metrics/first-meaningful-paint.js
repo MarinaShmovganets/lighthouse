@@ -34,7 +34,8 @@ class FMP {
       const evts = this.collectEvents(traceData);
 
       /* eslint-disable no-multi-spaces  */
-      const fCP =           this.firstContentfulPaint(evts);
+      const navStart =      evts.navigationStart;
+      const fCP =           evts.firstContentfulPaint;
       const fMPbasic =      this.firstMeaningfulPaint(evts, {});
       const fMPpageheight = this.firstMeaningfulPaint(evts, {pageHeight: true});
       const fMPwebfont =    this.firstMeaningfulPaint(evts, {webFont: true});
@@ -42,11 +43,14 @@ class FMP {
       /* eslint-enable no-multi-spaces */
 
       var results = {
-        fCP,
-        fMPbasic,
-        fMPpageheight,
-        fMPwebfont,
-        fMPfull
+        navStart,
+        fmpCandidates: [
+          fCP,
+          fMPbasic,
+          fMPpageheight,
+          fMPwebfont,
+          fMPfull
+        ]
       };
       return resolve(results);
     });
@@ -149,7 +153,7 @@ class FMP {
     });
 
     const paintAfterMSLayout = evts.paints.find(e => e.ts > mostSignificantLayout.ts);
-    return (paintAfterMSLayout.ts - evts.navigationStart.ts) / 1000;
+    return paintAfterMSLayout;
   }
 }
 

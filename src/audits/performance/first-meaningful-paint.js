@@ -32,14 +32,14 @@ class FirstMeaningfulPaint extends Audit {
    * @override
    */
   static get name() {
-    return 'first-contentful-paint';
+    return 'first-meaningful-paint';
   }
 
   /**
    * @override
    */
   static get description() {
-    return 'First paint of content';
+    return 'First meaningful paint';
   }
 
   /**
@@ -51,24 +51,28 @@ class FirstMeaningfulPaint extends Audit {
 
   /**
    * Audits the page to give a score for First Meaningful Paint.
-   * @see  https://github.com/GoogleChrome/lighthouse/issues/26
+   * @see https://github.com/GoogleChrome/lighthouse/issues/26
+   * @see https://docs.google.com/document/d/1BR94tJdZLsin5poeet0XoTW60M0SjvOJQttKT-JK8HI/view
    * @param {!Artifacts} artifacts The artifacts from the gather phase.
    * @return {!AuditResult} The score from the audit, ranging from 0-100.
    */
   static audit(artifacts) {
     const traceData = artifacts.traceContents;
     return FMPMetric.parse(traceData).then(data => {
-      // there are a few candidates for fMP; some considering page height and in-flight fonts
-      const fmpCandidates = [data.fMPbasic, data.fMPpageheight, data.fMPwebfont, data.fMPfull];
-      // we're interested in the last of the bunch.
-      const lastfMP = fmpCandidates
+      // there are a few candidates for fMP:
+      // * firstContentfulPaint: the first time that text or image content was painted.
+      // * fMP basic: paint after most significant layout
+      // * fMP page height: basic + scaling sigificance to page height
+      // * fMP webfont: basic + waiting for in-flight webfonts to paint
+      // * fMP full: considerig both page height + webfont heuristics
+
+      // We're interested in the last of these
+      const lastfMPts = data.fmpCandidates
         .map(e => e.ts)
         .reduce((mx, c) => Math.max(mx, c));
 
-      // First paint of content
-      const fCP = (data.firstContentfulPaint.ts - data.navigationStart.ts) / 1000;
       // First meaningful paint (following most significant layout)
-      const fMP = (lastfMP - data.navigationStart.ts) / 1000;
+      const firstMeaningfulPaint = (lastfMPts - data.navStart.ts) / 1000;
 
       // Roughly an exponential curve.
       //   < 1000ms: penalty=0
