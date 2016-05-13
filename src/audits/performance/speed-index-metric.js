@@ -21,9 +21,12 @@ const speedline = require('speedline');
 const Audit = require('../audit');
 const TracingProcessor = require('../../lib/traces/tracing-processor');
 
-const SCORE_LOCATION = 8.6125;
-const SCORE_SHAPE = 0.7;
 const FAILURE_MESSAGE = 'Navigation and first paint timings not found.';
+
+// Parameters for log-normal CDF scoring. To see the curve:
+// https://www.desmos.com/calculator/y9qrjhj4e9
+const SCORE_LOCATION = Math.log(5500);
+const SCORE_SHAPE = 0.7;
 
 class SpeedIndexMetric extends Audit {
   /**

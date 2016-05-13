@@ -21,7 +21,9 @@ const FMPMetric = require('../../metrics/first-meaningful-paint');
 const Audit = require('../audit');
 const TracingProcessor = require('../../lib/traces/tracing-processor');
 
-const SCORE_LOCATION = 8.3;
+// Parameters for log-normal CDF scoring. To see the curve:
+// https://www.desmos.com/calculator/r7t7qfaaih
+const SCORE_LOCATION = Math.log(4000);
 const SCORE_SHAPE = 0.5;
 
 class FirstContentfulPaint extends Audit {
