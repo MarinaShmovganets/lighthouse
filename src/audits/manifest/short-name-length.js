@@ -23,8 +23,8 @@ class ManifestShortNameLength extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Manifest'];
+  static get category() {
+    return 'Manifest';
   }
 
   /**
@@ -38,7 +38,7 @@ class ManifestShortNameLength extends Audit {
    * @override
    */
   static get description() {
-    return 'App short_name won\'t be truncated';
+    return 'Manifest\'s short_name won\'t be truncated when displayed on homescreen';
   }
 
   /**
@@ -61,11 +61,10 @@ class ManifestShortNameLength extends Audit {
       }
     }
 
-    return ManifestShortNameLength.generateAuditResult(
-      isShortNameShortEnough,
-      undefined,
+    return ManifestShortNameLength.generateAuditResult({
+      value: isShortNameShortEnough,
       debugString
-    );
+    });
   }
 }
 

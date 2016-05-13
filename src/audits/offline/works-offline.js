@@ -22,8 +22,8 @@ class WorksOffline extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Offline'];
+  static get category() {
+    return 'Offline';
   }
 
   /**
@@ -45,7 +45,9 @@ class WorksOffline extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    return WorksOffline.generateAuditResult(artifacts.responseCode === 200);
+    return WorksOffline.generateAuditResult({
+      value: artifacts.offlineResponseCode === 200
+    });
   }
 }
 

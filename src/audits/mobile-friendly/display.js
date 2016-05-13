@@ -23,8 +23,8 @@ class ManifestDisplay extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Manifest'];
+  static get category() {
+    return 'Manifest';
   }
 
   /**
@@ -38,7 +38,8 @@ class ManifestDisplay extends Audit {
    * @override
    */
   static get description() {
-    return 'Manifest has suggested display property';
+    return `Manifest's display property set to standalone/fullscreen to
+            allow launching without address bar`;
   }
 
   /**
@@ -59,11 +60,11 @@ class ManifestDisplay extends Audit {
 
     const hasRecommendedValue = ManifestDisplay.hasRecommendedValue(displayValue);
 
-    return ManifestDisplay.generateAuditResult(
-      hasRecommendedValue,
-      displayValue,
-      'Manifest display property should be standalone or fullscreen.'
-    );
+    return ManifestDisplay.generateAuditResult({
+      value: hasRecommendedValue,
+      rawValue: displayValue,
+      debugString: 'Manifest display property should be standalone or fullscreen.'
+    });
   }
 }
 

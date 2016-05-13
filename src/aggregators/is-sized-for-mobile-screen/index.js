@@ -22,9 +22,6 @@ const Aggregate = require('../aggregate');
 /** @type {string} */
 const viewport = require('../../audits/mobile-friendly/viewport').name;
 
-/** @type {string} */
-const display = require('../../audits/mobile-friendly/display').name;
-
 class MobileFriendly extends Aggregate {
 
   /**
@@ -32,15 +29,24 @@ class MobileFriendly extends Aggregate {
    * @return {string}
    */
   static get name() {
-    return 'Is Mobile Friendly';
+    return 'Design is mobile-friendly';
   }
 
   /**
    * @override
    * @return {string}
    */
-  static get shortName() {
-    return 'Mobile Friendly';
+  static get description() {
+    return `Users increasingly experience your app on mobile devices, so it's important to
+            ensure that the experience can adapt to smaller screens.`;
+  }
+
+  /**
+   * @override
+   * @return {!AggregationType}
+   */
+  static get type() {
+    return Aggregate.TYPES.PWA;
   }
 
   /**
@@ -52,11 +58,6 @@ class MobileFriendly extends Aggregate {
     criteria[viewport] = {
       value: true,
       weight: 1
-    };
-
-    criteria[display] = {
-      value: true,
-      weight: 0
     };
 
     return criteria;

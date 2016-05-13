@@ -24,8 +24,8 @@ class FirstMeaningfulPaint extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Performance'];
+  static get category() {
+    return 'Performance';
   }
 
   /**
@@ -39,7 +39,7 @@ class FirstMeaningfulPaint extends Audit {
    * @override
    */
   static get description() {
-    return 'Fast first paint of content';
+    return 'First paint of content';
   }
 
   /**
@@ -85,8 +85,12 @@ class FirstMeaningfulPaint extends Audit {
           };
         })
         .then(result => {
-          return FirstMeaningfulPaint.generateAuditResult(result.score,
-              result.duration, result.debugString, this.optimalValue);
+          return FirstMeaningfulPaint.generateAuditResult({
+            value: result.score,
+            rawValue: result.duration,
+            debugString: result.debugString,
+            optimalValue: this.optimalValue
+          });
         });
   }
 }

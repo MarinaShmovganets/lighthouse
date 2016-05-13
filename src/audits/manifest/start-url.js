@@ -23,8 +23,8 @@ class ManifestStartUrl extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Manifest'];
+  static get category() {
+    return 'Manifest';
   }
 
   /**
@@ -53,7 +53,9 @@ class ManifestStartUrl extends Audit {
       hasStartUrl = (!!manifest.start_url.value);
     }
 
-    return ManifestStartUrl.generateAuditResult(hasStartUrl);
+    return ManifestStartUrl.generateAuditResult({
+      value: hasStartUrl
+    });
   }
 }
 

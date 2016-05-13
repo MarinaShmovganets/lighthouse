@@ -23,8 +23,8 @@ class ManifestBackgroundColor extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Manifest'];
+  static get category() {
+    return 'Manifest';
   }
 
   /**
@@ -59,7 +59,9 @@ class ManifestBackgroundColor extends Audit {
     const hasBackgroundColor = ManifestBackgroundColor
         .hasBackgroundColorValue(artifacts.manifest.value);
 
-    return ManifestBackgroundColor.generateAuditResult(hasBackgroundColor);
+    return ManifestBackgroundColor.generateAuditResult({
+      value: hasBackgroundColor
+    });
   }
 }
 

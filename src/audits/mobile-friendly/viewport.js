@@ -22,8 +22,8 @@ class Viewport extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Mobile Friendly'];
+  static get category() {
+    return 'Mobile Friendly';
   }
 
   /**
@@ -47,7 +47,9 @@ class Viewport extends Audit {
   static audit(artifacts) {
     const hasMobileViewport = typeof artifacts.viewport === 'string' &&
         artifacts.viewport.includes('width=');
-    return Viewport.generateAuditResult(!!hasMobileViewport);
+    return Viewport.generateAuditResult({
+      value: !!hasMobileViewport
+    });
   }
 }
 

@@ -17,7 +17,6 @@
 'use strict';
 
 const fs = require('fs');
-
 const log = require('./lib/log.js');
 
 function loadPage(driver, gatherers, options) {
@@ -115,8 +114,8 @@ function run(gatherers, options) {
   const driver = options.driver;
   const tracingData = {};
 
-  if (options.url === undefined || options.url === null) {
-    throw new Error('You must provide a url to scheduler');
+  if (typeof options.url !== 'string' || options.url.length === 0) {
+    return Promise.reject(new Error('You must provide a url to scheduler'));
   }
 
   const runPhase = phaseRunner(gatherers);
@@ -139,6 +138,10 @@ function run(gatherers, options) {
     .then(_ => runPhase(gatherer => gatherer.beforeReloadPageLoad(options)))
     .then(_ => reloadPage(driver, options))
     .then(_ => runPhase(gatherer => gatherer.afterReloadPageLoad(options)))
+
+    // Reload page again for HTTPS redirect
+    .then(_ => reloadPage(driver, options))
+    .then(_ => runPhase(gatherer => gatherer.afterSecondReloadPageLoad(options)))
 
     // Finish and teardown.
     .then(_ => driver.disconnect())

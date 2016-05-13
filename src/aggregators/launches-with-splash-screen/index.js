@@ -41,15 +41,25 @@ class SplashScreen extends Aggregate {
    * @return {string}
    */
   static get name() {
-    return 'Will Launch With A Splash Screen';
+    return 'Installed web app will launch with custom splash screen';
   }
 
   /**
    * @override
    * @return {string}
    */
-  static get shortName() {
-    return 'Splash Screen';
+  static get description() {
+    return `A default splash screen will be constructed, but meeting these requirements guarantee a
+            high-quality and customizable <a href="https://developers.google.com/web/updates/2015/10/splashscreen?hl=en">splash screen</a>
+            the user sees between tapping the home screen icon and your app’s first paint.`;
+  }
+
+  /**
+   * @override
+   * @return {!AggregationType}
+   */
+  static get type() {
+    return Aggregate.TYPES.PWA;
   }
 
   /**
@@ -60,7 +70,7 @@ class SplashScreen extends Aggregate {
    *   - manifest has valid name
    *   - manifest has valid background_color
    *   - manifest has valid theme_color
-   *   - icon of size >= 192x192
+   *   - icon of size >= 192x192 (technically minimum is 48dp and ideal/non-scaled is 128dp)
    *     - while optional, icons at 256, 384 and 512 will be used when appropriate
    * @see https://github.com/GoogleChrome/lighthouse/issues/24
    *

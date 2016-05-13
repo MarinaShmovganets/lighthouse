@@ -12,11 +12,13 @@ const eslint = require('gulp-eslint');
 const livereload = require('gulp-livereload');
 const tap = require('gulp-tap');
 const zip = require('gulp-zip');
+const rename = require('gulp-rename');
 
 gulp.task('extras', () => {
   return gulp.src([
     'app/*.*',
     'app/_locales/**',
+    'app/pages/**',
     '!app/src',
     '!app/.DS_Store',
     '!app/*.json',
@@ -26,6 +28,15 @@ gulp.task('extras', () => {
     dot: true
   })
   .pipe(debug({title: 'copying to dist:'}))
+  .pipe(gulp.dest('dist'));
+});
+
+gulp.task('copyReportScripts', () => {
+  return gulp.src([
+    '../report/scripts/lighthouse-report.js'
+  ])
+  .pipe(rename('pages/scripts/lighthouse-report.js'))
+  .pipe(gulp.dest('app'))
   .pipe(gulp.dest('dist'));
 });
 
@@ -55,7 +66,7 @@ gulp.task('html', () => {
 
 gulp.task('chromeManifest', () => {
   var manifestOpts = {
-    buildnumber: true,
+    buildnumber: false,
     background: {
       target: 'scripts/lighthouse-background.js',
       exclude: [
@@ -73,11 +84,16 @@ gulp.task('browserify', () => {
     'app/src/popup.js',
     'app/src/chromereload.js',
     'app/src/lighthouse-background.js',
-    'app/src/report.js'
+    'app/src/report-loader.js'
   ], {read: false})
     .pipe(tap(file => {
       file.contents = browserify(file.path, {
         transform: ['brfs']
+      })
+      // Do the additional transform to convert references to devtools-timeline-model
+      // to the modified version internal to Lighthouse.
+      .transform('./dtm-transform.js', {
+        global: true
       })
       .ignore('npmlog')
       .ignore('chrome-remote-interface')
@@ -93,7 +109,7 @@ gulp.task('clean', () => {
   );
 });
 
-gulp.task('watch', ['lint', 'browserify', 'html'], () => {
+gulp.task('watch', ['lint', 'browserify', 'html', 'copyReportScripts'], () => {
   livereload.listen();
 
   gulp.watch([
@@ -121,7 +137,7 @@ gulp.task('package', function() {
 gulp.task('build', cb => {
   runSequence(
     'lint', 'browserify', 'chromeManifest',
-    ['html', 'images', 'css', 'extras'], cb);
+    ['html', 'images', 'css', 'extras', 'copyReportScripts'], cb);
 });
 
 gulp.task('default', ['clean'], cb => {

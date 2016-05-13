@@ -23,23 +23,27 @@ const Aggregator = require('./aggregator');
 const gathererClasses = [
   require('./gatherers/url'),
   require('./gatherers/https'),
+  require('./gatherers/http-redirect'),
   require('./gatherers/service-worker'),
   require('./gatherers/viewport'),
   require('./gatherers/theme-color'),
   require('./gatherers/html'),
   require('./gatherers/manifest'),
   require('./gatherers/accessibility'),
-  require('./gatherers/offline')
+  require('./gatherers/offline'),
+  require('./gatherers/critical-network-chains')
 ];
 
 const audits = [
   require('./audits/security/is-on-https'),
+  require('./audits/security/redirects-http'),
   require('./audits/offline/service-worker'),
   require('./audits/offline/works-offline'),
   require('./audits/mobile-friendly/viewport'),
   require('./audits/mobile-friendly/display'),
   require('./audits/performance/first-meaningful-paint'),
   require('./audits/performance/speed-index-metric'),
+  require('./audits/performance/input-readiness-metric'),
   require('./audits/manifest/exists'),
   require('./audits/manifest/background-color'),
   require('./audits/manifest/theme-color'),
@@ -54,14 +58,14 @@ const audits = [
 ];
 
 const aggregators = [
+  require('./aggregators/can-load-offline'),
+  require('./aggregators/is-performant'),
+  require('./aggregators/is-secure'),
   require('./aggregators/will-get-add-to-homescreen-prompt'),
   require('./aggregators/launches-with-splash-screen'),
-  require('./aggregators/omnibox-is-themed'),
-  require('./aggregators/can-load-offline'),
-  require('./aggregators/is-secure'),
-  require('./aggregators/is-performant'),
+  require('./aggregators/address-bar-is-themed'),
   require('./aggregators/is-sized-for-mobile-screen'),
-  require('./aggregators/is-accessible')
+  require('./aggregators/best-practices')
 ];
 
 module.exports = function(driver, opts) {

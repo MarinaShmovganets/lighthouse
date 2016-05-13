@@ -55,6 +55,14 @@ class DriverBase {
     this._url = _url;
   }
 
+  enableRuntimeEvents() {
+    return this.sendCommand('Runtime.enable');
+  }
+
+  enableSecurityEvents() {
+    return this.sendCommand('Security.enable');
+  }
+
   /**
    * @return {!Promise<null>}
    */
@@ -74,6 +82,14 @@ class DriverBase {
   }
 
   /**
+   * Bind a one-time listener for protocol events. Listener is removed once it
+   * has been called.
+   */
+  once() {
+    return Promise.reject(new Error('Not implemented'));
+  }
+
+  /**
    * Unbind event listeners
    */
   off() {
@@ -86,6 +102,61 @@ class DriverBase {
    */
   sendCommand() {
     return Promise.reject(new Error('Not implemented'));
+  }
+
+  evaluateAsync(asyncExpression) {
+    return new Promise((resolve, reject) => {
+      let asyncTimeout;
+
+      // Inject the call to capture inspection.
+      const expression = `(function() {
+        const __inspect = inspect;
+        const __returnResults = function(results) {
+          __inspect(JSON.stringify(results));
+        };
+        ${asyncExpression}
+      })()`;
+
+      const inspectHandler = value => {
+        if (asyncTimeout !== undefined) {
+          clearTimeout(asyncTimeout);
+        }
+
+        // If the returned object doesn't meet the expected pattern, bail with an undefined.
+        if (value === undefined ||
+            value.object === undefined ||
+            value.object.value === undefined) {
+          return resolve();
+        }
+
+        return resolve(JSON.parse(value.object.value));
+      };
+
+      // COMPAT: Chrome 52 is when Runtime.inspectRequested became available
+      //   https://codereview.chromium.org/1866213002
+      // Previously, a similar-looking Inspector.inspect event was available, but unfortunately
+      // it will not fire in this scenario.
+      this.once('Runtime.inspectRequested', inspectHandler);
+
+      this.sendCommand('Runtime.evaluate', {
+        expression,
+        includeCommandLineAPI: true
+      });
+
+      // If this gets to 15s and it hasn't been resolved, reject the Promise.
+      asyncTimeout = setTimeout(reject, 15000);
+    });
+  }
+
+  getSecurityState() {
+    return new Promise((resolve, reject) => {
+      this.once('Security.securityStateChanged', data => {
+        this.sendCommand('Security.disable');
+        resolve(data);
+      });
+
+      this.sendCommand('Security.enable');
+    });
   }
 
   gotoURL(url, options) {
@@ -169,10 +240,11 @@ class DriverBase {
 
   _readTraceFromStream(streamHandle) {
     return new Promise((resolve, reject) => {
-      // With our stream we can read a bunch, and if its taking too long,
-      // take a break to the next event cycle and then go again.
-      let isEOF = false;
-      let result = '';
+      // COMPAT: We've found `result` not retaining its value in this scenario when it's
+      // declared with `let`. Observed in Chrome 50 and 52. While investigating the V8 bug
+      // further, we'll use a plain `var` declaration.
+      var isEOF = false;
+      var result = '';
 
       const readArguments = {
         handle: streamHandle.stream
@@ -187,7 +259,7 @@ class DriverBase {
 
         if (response.eof) {
           isEOF = true;
-          resolve(JSON.parse(result));
+          return resolve(JSON.parse(result));
         }
 
         return this.sendCommand('IO.read', readArguments).then(onChunkRead);
@@ -210,6 +282,7 @@ class DriverBase {
       this.on('Network.dataReceived', this._networkRecorder.onDataReceived);
       this.on('Network.loadingFinished', this._networkRecorder.onLoadingFinished);
       this.on('Network.loadingFailed', this._networkRecorder.onLoadingFailed);
+      this.on('Network.resourceChangedPriority', this._networkRecorder.onResourceChangedPriority);
 
       this.sendCommand('Network.enable').then(_ => {
         resolve();
@@ -225,6 +298,7 @@ class DriverBase {
       this.off('Network.dataReceived', this._networkRecorder.onDataReceived);
       this.off('Network.loadingFinished', this._networkRecorder.onLoadingFinished);
       this.off('Network.loadingFailed', this._networkRecorder.onLoadingFailed);
+      this.off('Network.resourceChangedPriority', this._networkRecorder.onResourceChangedPriority);
 
       resolve({
         networkRecords: this._networkRecords,
@@ -273,6 +347,8 @@ class DriverBase {
   }
 
   forceUpdateServiceWorkers() {
+    // COMPAT: This command will trigger this registrationId error in Chrome 50 (51 undetermined):
+    //   "{"code":-32602,"message":"Missing or invalid 'registrationId' parameter"}"
     return this.sendCommand('ServiceWorker.setForceUpdateOnPageLoad', {
       forceUpdateOnPageLoad: true
     });

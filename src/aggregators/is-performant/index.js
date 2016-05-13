@@ -25,6 +25,9 @@ const firstMeaningfulPaint = require('../../audits/performance/first-meaningful-
 /** @type {string} */
 const speedIndexMetric = require('../../audits/performance/speed-index-metric').name;
 
+/** @type {string} */
+const inputReadinessMetric = require('../../audits/performance/input-readiness-metric').name;
+
 class IsPerformant extends Aggregate {
 
   /**
@@ -32,15 +35,24 @@ class IsPerformant extends Aggregate {
    * @return {string}
    */
   static get name() {
-    return 'Is Performant';
+    return 'Page load performance is fast';
   }
 
   /**
    * @override
    * @return {string}
    */
-  static get shortName() {
-    return 'Performance';
+  static get description() {
+    return `Users notice if sites and apps don't perform well. These top-level metrics capture
+            the most important perceived performance concerns.`;
+  }
+
+  /**
+   * @override
+   * @return {!AggregationType}
+   */
+  static get type() {
+    return Aggregate.TYPES.PWA;
   }
 
   /**
@@ -54,6 +66,10 @@ class IsPerformant extends Aggregate {
       weight: 1
     };
     criteria[speedIndexMetric] = {
+      value: 100,
+      weight: 1
+    };
+    criteria[inputReadinessMetric] = {
       value: 100,
       weight: 1
     };

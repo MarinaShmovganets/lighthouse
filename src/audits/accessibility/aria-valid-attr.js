@@ -18,13 +18,14 @@
 'use strict';
 
 const Audit = require('../audit');
+const Formatter = require('../../../formatters/formatter');
 
 class ARIAValidAttr extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Accessibility'];
+  static get category() {
+    return 'Accessibility';
   }
 
   /**
@@ -38,7 +39,7 @@ class ARIAValidAttr extends Audit {
    * @override
    */
   static get description() {
-    return 'Ensures attributes that begin with aria- are valid ARIA attributes';
+    return 'Element aria-* attributes are valid ARIA attributes';
   }
 
   /**
@@ -49,11 +50,14 @@ class ARIAValidAttr extends Audit {
     const rule =
         artifacts.accessibility.violations.find(result => result.id === 'aria-valid-attr');
 
-    return ARIAValidAttr.generateAuditResult(
-      typeof rule === 'undefined',
-      undefined,
-      this.createDebugString(rule)
-    );
+    return ARIAValidAttr.generateAuditResult({
+      value: typeof rule === 'undefined',
+      debugString: this.createDebugString(rule),
+      extendedInfo: {
+        formatter: Formatter.SUPPORTED_FORMATS.ACCESSIBILITY,
+        value: rule
+      }
+    });
   }
 
   static createDebugString(rule) {

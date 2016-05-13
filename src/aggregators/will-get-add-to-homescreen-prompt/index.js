@@ -34,9 +34,6 @@ const manifestIconsMin144 = require('../../audits/manifest/icons-min-144').name;
 /** @type {string} */
 const manifestShortName = require('../../audits/manifest/short-name').name;
 
-/** @type {string} */
-const manifestShortNameLength = require('../../audits/manifest/short-name-length').name;
-
 class AddToHomescreen extends Aggregate {
 
   /**
@@ -44,15 +41,27 @@ class AddToHomescreen extends Aggregate {
    * @return {string}
    */
   static get name() {
-    return 'Will Get Add to Homescreen Prompt';
+    return 'User can be prompted to Add to Homescreen';
   }
 
   /**
    * @override
    * @return {string}
    */
-  static get shortName() {
-    return 'Add to Homescreen';
+  static get description() {
+    return `While users can manually add your site to their homescreen in the browser menu, the
+            <a href="https://developers.google.com/web/updates/2015/03/increasing-engagement-with-app-install-banners-in-chrome-for-android?hl=en">prompt
+            (aka app install banner)</a> will proactively prompt the user to install the
+            app if the below requirements are met and the user has visited your site at
+            least twice (with at least five minutes between visits).`;
+  }
+
+  /**
+   * @override
+   * @return {!AggregationType}
+   */
+  static get type() {
+    return Aggregate.TYPES.PWA;
   }
 
   /**
@@ -64,9 +73,13 @@ class AddToHomescreen extends Aggregate {
    *   - valid name
    *   - valid short_name
    *   - short_name of reasonable length
-   *   - icon of size >= 144x144 and png (either type `image/png` or filename ending in `.png`
+   *   - icon of size >= 144x144 (technically 48dp)
+   *       and png (either type `image/png` or filename ending in `.png`
    * @see https://github.com/GoogleChrome/lighthouse/issues/23
-   *
+
+   * If you'd like to provide native rendering of icon for homescreen and
+   * splashscreen across supported screen densities, provide in these sizes:
+   *   72, 96, 144, 192, 256, 384, 512
 
    * @override
    * @return {!AggregationCriteria}
@@ -94,11 +107,6 @@ class AddToHomescreen extends Aggregate {
     };
 
     criteria[manifestShortName] = {
-      value: true,
-      weight: 0
-    };
-
-    criteria[manifestShortNameLength] = {
       value: true,
       weight: 0
     };

@@ -23,8 +23,8 @@ class ManifestName extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Manifest'];
+  static get category() {
+    return 'Manifest';
   }
 
   /**
@@ -53,7 +53,9 @@ class ManifestName extends Audit {
       hasName = (!!manifest.name.value);
     }
 
-    return ManifestName.generateAuditResult(hasName);
+    return ManifestName.generateAuditResult({
+      value: hasName
+    });
   }
 }
 

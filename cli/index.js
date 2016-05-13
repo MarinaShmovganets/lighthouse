@@ -23,8 +23,7 @@ const log = require('../src/lib/log.js');
 const semver = require('semver');
 const Printer = require('./printer');
 
-const ChromeProtocol = require('../src/lib/drivers/cri.js');
-const lighthouse = require('../src/lighthouse');
+const lighthouse = require('../');
 
 // node 5.x required due to use of ES2015 features
 if (semver.lt(process.version, '5.0.0')) {
@@ -32,39 +31,54 @@ if (semver.lt(process.version, '5.0.0')) {
   process.exit(1);
 }
 
+const formatOptions = Object.values(Printer.OUTPUT_MODE).join(', ');
+
 const cli = meow(`
-  Usage
+Usage:
     lighthouse [url]
 
-  Options
-    --help            Show this help
-    --version         Current version of package
-    --verbose         Displays verbose logging
-    --quiet           Displays no progress or debug logs
-    --mobile          Emulates a Nexus 5X (default=true)
-    --load-page       Loads the page (default=true)
-    --save-trace      Save the trace contents to disk
-    --save-artifacts  Generate network dependency graph
-    --output          How to output the page(default=pretty)
-    --output-path     The location to output the response(default=stdout)
+Basic:
+    --help             Show this help
+    --version          Current version of package
+
+Logging:
+    --verbose          Displays verbose logging
+    --quiet            Displays no progress or debug logs
+
+Run Configuration:
+    --mobile           Emulates a Nexus 5X (default=true)
+    --load-page        Loads the page (default=true)
+    --save-trace       Save the trace contents to disk
+    --save-artifacts   Generate network dependency graph
+
+Output:
+    --output           Reporter for the results
+                       Reporter options: ${formatOptions}  (default=pretty)
+    --output-path      The file path to output the results (default=stdout)
+                       Example: --output-path=./lighthouse-results.html
 `);
 
 const url = cli.input[0] || 'https://pwa.rocks/';
-const outputMode = cli.flags.output || 'pretty';
+const outputMode = cli.flags.output || Printer.OUTPUT_MODE.pretty;
 const outputPath = cli.flags.outputPath || 'stdout';
 const flags = cli.flags;
 
-const driver = new ChromeProtocol();
+// If the URL isn't https or localhost complain to the user.
+if (url.indexOf('https') !== 0 && url.indexOf('http://localhost') !== 0) {
+  log.warn('Lighthouse', 'The URL provided should be on HTTPS');
+  log.warn('Lighthouse', 'Performance stats will be skewed redirecting from HTTP to HTTPS.');
+}
 
 // set logging preferences
+flags.logLevel = 'info';
 if (cli.flags.verbose) {
-  log.level = 'verbose';
+  flags.logLevel = 'verbose';
 } else if (cli.flags.quiet) {
-  log.level = 'error';
+  flags.logLevel = 'error';
 }
 
 // kick off a lighthouse run
-lighthouse(driver, {url, flags})
+lighthouse(url, flags)
   .then(results => {
     return Printer.write(results, outputMode, outputPath);
   })

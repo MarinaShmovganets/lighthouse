@@ -23,8 +23,8 @@ class ManifestThemeColor extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Manifest'];
+  static get category() {
+    return 'Manifest';
   }
 
   /**
@@ -53,7 +53,9 @@ class ManifestThemeColor extends Audit {
       hasThemeColor = (!!manifest.theme_color.value);
     }
 
-    return ManifestThemeColor.generateAuditResult(hasThemeColor);
+    return ManifestThemeColor.generateAuditResult({
+      value: hasThemeColor
+    });
   }
 }
 

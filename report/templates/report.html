@@ -20,69 +20,166 @@ limitations under the License.
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Lighthouse report</title>
+  <title>Lighthouse report: {{ url }}</title>
   <style>
   {{{ css }}}
   </style>
 </head>
 <body>
 <div class="js-report report">
-  <header class="header">
-    <div class="header-titles">
-      <h1 class="header-titles__main">Lighthouse</h1>
-      <h2 class="header-titles__url">{{ url }}</h2>
-    </div>
-
-    <aside class="header__score">
-      <div class="score-container">
-        <span class="score-container__overall-score">{{ totalScore }}</span>
-        <span class="score-container__max-score">/&nbsp;100</span>
-      </div>
-    </aside>
-
-  </header>
 
   <section class="report-body">
     <div class="report-body__header">
+      <div class="toggle">
+        <h1 class="toggle__title">Toggle view:</h1>
+
+        <label class="toggle__label" for="user-feature" aria-label="User feature">
+          <input name="view-toggle" class="js-toggle-view toggle-view" id="user-feature" type="checkbox" value="toggle">
+          <div role="presentation" class="toggle__display" data-on="Technology" data-off="User feature">
+            <div aria-hidden class="toggle__slider"></div>
+          </div>
+          <div role="presentation" class="toggle__focus-ring"></div>
+        </label>
+      </div>
+
       <button class="print js-print"></button>
     </div>
     <div class="report-body__content">
-      <div class="js-menu-container report-body__menu-container">
-        <div class="js-menu menu">
+      <div class="report-body__menu-container">
+        <div class="menu">
           <div class="menu__header">
-            In this report:
+            <h1 class="menu__header-title">Lighthouse</h1>
+            <h2 class="menu__header-url">{{ url }}</h2>
           </div>
           <ul class="menu__nav">
-            {{#each aggregations}}
             <li class="menu__nav-item">
-              <a class="menu__link" href="#{{ generateAnchor this.shortName }}">
-                <span class="menu__link-label">{{ this.shortName }}</span>
-                <span class="menu__link-score menu__link-score--{{ getItemRating this.score.overall }}">{{ convertToPercentage this.score.overall }}</span>
+              <a class="menu__link" href="#progressive-web-app">
+                Progressive Web App
               </a>
             </li>
-            {{/each}}
+
+            <li class="menu__nav-item">
+              <a class="menu__link" href="#best-practices">
+                Best Practices
+              </a>
+            </li>
           </ul>
         </div>
       </div>
       <div class="js-breakdown report-body__breakdown">
-        {{#each aggregations}}
-          <section class="report-body__breakdown-item" id="{{ generateAnchor this.shortName }}">
-            <h1 class="report-section__title">
-              <span class="report-section__label">{{ this.name }}</span>
-              <span class="report-section__score report-section__score--{{ getItemRating this.score.overall }}">{{ convertToPercentage this.score.overall }}</span>
-            </h1>
+        <h1 class="report-section__title" id="progressive-web-app">
+          <span class="report-section__title-main">Progressive Web App</span>
+          <span class="report-section__title-score">
+            <span class="report-section__title-score-total report-section__title-score-total--{{ getTotalScoreRating totalScore }}">{{ totalScore }}</span>
+            <span class="report-section__title-score-max"> / 100</span>
+          </span>
+        </h1>
+        <p class="report-section__description">
+          These audits validate the aspects of a Progressive Web App.
+        </p>
 
-            <h2 class="report-section__subtitle">Individual results:</h2>
+        <div class="js-report-by-user-feature">
+          {{#each aggregations as |aggregation|}}
+            {{#matches aggregation.type.name "Progressive Web App" }}
+              <section class="report-body__breakdown-item">
+
+              <h1 class="report-section__subtitle">{{ aggregation.name }}</h1>
+              <p class="report-section__aggregation-description">{{{ aggregation.description }}}</p>
+
+              <ul class="report-section__individual-results">
+                {{#each aggregation.score.subItems as |subItem| }}
+                  <li class="report-section__item">
+                    <div class="report-section__item-details">
+                      <span class="report-section__item-description">
+                        {{ subItem.description }}
+                        {{#if subItem.optimalValue }}
+                        (target value: {{ subItem.optimalValue }})
+                        {{/if}}
+                      </span>
+                      <span class="report-section__item-value report-section__item-value--{{ getItemRating subItem.value }}">{{ getItemValue subItem.value }}</span>
+                      {{#if subItem.rawValue }}
+                      <span class="report-section__item-raw-value">&nbsp;({{ subItem.rawValue }})</span>
+                      {{/if }}
+                    </div>
+                    {{#if subItem.extendedInfo.value}}
+                      <div class="report-section__item-extended-info">
+                      {{> (lookup . 'name') subItem.extendedInfo.value }}
+                      </div>
+                    {{/if}}
+                  </li>
+                {{/each}}
+              </ul>
+            </section>
+            {{/matches}}
+          {{/each}}
+        </div>
+
+        <div class="js-report-by-technology" hidden="hidden">
+          {{#each auditsByCategory }}
+            <section class="report-body__breakdown-item">
+              <h1 class="report-section__subtitle">{{ @key }}</h1>
+
+              <ul class="report-section__individual-results">
+                {{#each this as |subItem| }}
+                  <li class="report-section__item">
+                    <div class="report-section__item-details">
+                      <span class="report-section__item-description">
+                        {{ subItem.description }}
+                        {{#if subItem.optimalValue }}
+                        (target value: {{ subItem.optimalValue }} )
+                        {{/if}}
+                      </span>
+                      <span class="report-section__item-value report-section__item-value--{{ getItemRating subItem.value }}">{{ getItemValue subItem.value }}</span>
+                      {{#if subItem.rawValue }}
+                      <span class="report-section__item-raw-value">&nbsp;({{ subItem.rawValue }})</span>
+                      {{/if }}
+                    </div>
+                    {{#if subItem.extendedInfo.value}}
+                      <div class="report-section__item-extended-info">
+                      {{> (lookup . 'name') subItem.extendedInfo.value }}
+                      </div>
+                    {{/if}}
+                  </li>
+                {{/each}}
+              </ul>
+            </section>
+          {{/each}}
+        </div>
+
+        <h1 class="report-section__title" id="best-practices">Best Practices</h1>
+        <p class="report-section__description">
+          These audits do not affect your score but are worth a look.
+        </p>
+
+        {{#each aggregations as |aggregation|}}
+          {{#matches aggregation.type.name "Best Practices" }}
+            <section class="report-body__breakdown-item">
+
             <ul class="report-section__individual-results">
-              {{#each this.score.subItems }}
+              {{#each aggregation.score.subItems as |subItem| }}
                 <li class="report-section__item">
-                  <span class="report-section__item-description">{{ this.description }}</span>
-                  <span class="report-section__item-value report-section__item-value--{{ getItemRating this.value }}">{{ getItemValue this.value }}</span>
-                  <span class="report-section__item-raw-value">{{{ getItemRawValue this }}}</span>
+                  <div class="report-section__item-details">
+                    <span class="report-section__item-description">
+                      <!-- <span class="report-section__item-category">{{ subItem.category }}:</span> --> {{ subItem.description }}
+                      {{#if subItem.optimalValue }}
+                      (target: {{ subItem.optimalValue }})
+                      {{/if}}
+                    </span>
+                    <span class="report-section__item-value report-section__item-value--{{ getItemRating subItem.value }}">{{ getItemValue subItem.value aggregation.type.name }}</span>
+                    {{#if subItem.rawValue }}
+                    <span class="report-section__item-raw-value">&nbsp;({{ subItem.rawValue }})</span>
+                    {{/if }}
+                  </div>
+                  {{#if subItem.extendedInfo.value}}
+                    <div class="report-section__item-extended-info">
+                    {{> (lookup . 'name') subItem.extendedInfo.value }}
+                    </div>
+                  {{/if}}
                 </li>
               {{/each}}
             </ul>
           </section>
+          {{/matches}}
         {{/each}}
       </div>
     </div>
@@ -92,6 +189,6 @@ limitations under the License.
     </footer>
   </section>
 </div>
-<script>{{{ script }}}</script>
+{{{ script }}}
 </body>
 </html>

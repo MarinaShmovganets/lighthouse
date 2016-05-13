@@ -22,6 +22,9 @@ const Aggregate = require('../aggregate');
 /** @type {string} */
 const isOnHTTPS = require('../../audits/security/is-on-https').name;
 
+/** @type {string} */
+const redirectsHTTP = require('../../audits/security/redirects-http').name;
+
 class IsSecure extends Aggregate {
 
   /**
@@ -29,15 +32,24 @@ class IsSecure extends Aggregate {
    * @return {string}
    */
   static get name() {
-    return 'Is Secure';
+    return 'Network connection is secure';
   }
 
   /**
    * @override
    * @return {string}
    */
-  static get shortName() {
-    return 'Secure';
+  static get description() {
+    return `Security is an important part of the web for both developers and users. Moving forward,
+            Transport Layer Security (TLS) support will be required for many APIs.`;
+  }
+
+  /**
+   * @override
+   * @return {!AggregationType}
+   */
+  static get type() {
+    return Aggregate.TYPES.PWA;
   }
 
   /**
@@ -47,6 +59,11 @@ class IsSecure extends Aggregate {
   static get criteria() {
     const criteria = {};
     criteria[isOnHTTPS] = {
+      value: true,
+      weight: 1
+    };
+
+    criteria[redirectsHTTP] = {
       value: true,
       weight: 1
     };

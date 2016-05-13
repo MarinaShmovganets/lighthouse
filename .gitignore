@@ -2,7 +2,8 @@ node_modules
 *.pyc
 .DS_Store
 dist
-init.sh
+third_party/src
+extension/pages/scripts/lighthouse-report.js
 npm-debug.log
 artifacts.log
 clovis-trace.log

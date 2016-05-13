@@ -18,7 +18,8 @@
 'use strict';
 
 const fs = require('fs');
-const Report = require('../report/report');
+const ReportGenerator = require('../report/report-generator');
+const Formatter = require('../formatters/formatter');
 
 const log = require('../src/lib/log.js');
 
@@ -72,11 +73,11 @@ function checkOutputPath(path) {
  * @return {string}
  */
 function createOutput(results, outputMode) {
-  const report = new Report();
+  const reportGenerator = new ReportGenerator();
 
   // HTML report.
   if (outputMode === 'html') {
-    return report.generateHTML(results);
+    return reportGenerator.generateHTML(results, {inline: true});
   }
 
   // JSON report.
@@ -92,12 +93,18 @@ function createOutput(results, outputMode) {
 
     item.score.subItems.forEach(subitem => {
       let lineItem = ` -- ${subitem.description}: ${subitem.value}`;
-      if (subitem.rawValue) {
+      if (typeof subitem.rawValue !== 'undefined') {
         lineItem += ` (${subitem.rawValue})`;
       }
       output += `${lineItem}\n`;
       if (subitem.debugString) {
         output += `    ${subitem.debugString}\n`;
+      }
+
+      if (subitem.extendedInfo && subitem.extendedInfo.value) {
+        const formatter =
+            Formatter.getByName(subitem.extendedInfo.formatter).getFormatter('pretty');
+        output += `${formatter(subitem.extendedInfo.value)}`;
       }
     });
 
@@ -162,5 +169,6 @@ module.exports = {
   checkOutputMode,
   checkOutputPath,
   createOutput,
-  write
+  write,
+  OUTPUT_MODE
 };

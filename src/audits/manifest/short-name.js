@@ -23,8 +23,8 @@ class ManifestShortName extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Manifest'];
+  static get category() {
+    return 'Manifest';
   }
 
   /**
@@ -53,7 +53,9 @@ class ManifestShortName extends Audit {
       hasShortName = (!!manifest.short_name.value);
     }
 
-    return ManifestShortName.generateAuditResult(hasShortName);
+    return ManifestShortName.generateAuditResult({
+      value: hasShortName
+    });
   }
 }
 

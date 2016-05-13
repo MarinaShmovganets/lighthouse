@@ -23,8 +23,8 @@ class ServiceWorker extends Audit {
   /**
    * @override
    */
-  static get tags() {
-    return ['Offline'];
+  static get category() {
+    return 'Offline';
   }
 
   /**
@@ -46,13 +46,11 @@ class ServiceWorker extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const registrations = artifacts.serviceWorkers.versions;
-    const activatedRegistrations = registrations.filter(reg => {
-      return reg.status === 'activated' &&
-          reg.scriptURL.startsWith(artifacts.url);
-    });
+    const activatedRegistrations = artifacts.serviceWorkers.versions;
 
-    return ServiceWorker.generateAuditResult(activatedRegistrations.length > 0);
+    return ServiceWorker.generateAuditResult({
+      value: activatedRegistrations.length > 0
+    });
   }
 }
 
