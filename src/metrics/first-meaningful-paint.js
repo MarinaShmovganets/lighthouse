@@ -66,7 +66,8 @@ class FMP {
         }
         // COMPAT: frame argument requires Chrome 52 (r390306)
         // codereview.chromium.org/1922823003
-        if (event.name === 'FrameView::performLayout' && event.args.counters && event.args.counters.frame === mainFrameID) {
+        if (event.name === 'FrameView::performLayout' && event.args.counters &&
+            event.args.counters.frame === mainFrameID) {
           layouts.set(event, event.args.counters);
         }
 
@@ -80,55 +81,60 @@ class FMP {
       }
 
       function firstMeaningfulPaint(heuristics) {
-        let layoutTime = 0;
-        let maxSoFar = 0;
-        let pending = 0;
-        let paintTime;
+        let mostSignificantLayout = 0;
+        let paintAfterMSLayout;
         let significance;
-        layouts.forEach((counters, layoutEvent) => {
-          if (!counters['host'] || counters['visibleHeight'] === 0) {
+        let maxSignificanceSoFar = 0;
+        let pending = 0;
+
+        layouts.forEach((countersObj, layoutEvent) => {
+          const counter = val => countersObj[val];
+
+          function heightRatio() {
+            const ratioBefore = counter('contentsHeightBeforeLayout') / counter('visibleHeight');
+            const ratioAfter = counter('contentsHeightAfterLayout') / counter('visibleHeight');
+            return (Math.max(1, ratioBefore) + Math.max(1, ratioAfter)) / 2;
+          }
+
+          if (!counter('host') || counter('visibleHeight') === 0) {
             return;
           }
 
-          layouts = counters['LayoutObjectsThatHadNeverHadLayout'] || 0;
+          const layoutCount = counter('LayoutObjectsThatHadNeverHadLayout') || 0;
+          significance = (heuristics.pageHeight) ? (layoutCount / heightRatio()) : layoutCount;
 
-          significance = ('pageHeight' in heuristics) ? (layouts / heightRatio(counters)) : layouts;
-
-          if ('webFont' in heuristics && counters['hasBlankText']) {
+          if (heuristics.webFont && counter('hasBlankText')) {
             pending += significance;
           } else {
             significance += pending;
             pending = 0;
-            if (significance > maxSoFar) {
-              maxSoFar = significance;
-              layoutTime = layoutEvent.ts;
+            if (significance > maxSignificanceSoFar) {
+              maxSignificanceSoFar = significance;
+              mostSignificantLayout = layoutEvent;
             }
           }
         });
-        paintTime = paints.find(e => e.ts > layoutTime).ts;
-        return (paintTime - navigationStart.ts) / 1000;
+        paintAfterMSLayout = paints.find(e => e.ts > mostSignificantLayout.ts);
+        return (paintAfterMSLayout.ts - navigationStart.ts) / 1000;
       }
 
-      function heightRatio(counters) {
-        const ratioBefore = Math.max(1, counters['contentsHeightBeforeLayout'].to_f / counters['visibleHeight']);
-        const ratioAfter = Math.max(1, counters['contentsHeightAfterLayout'].to_f / counters['visibleHeight']);
-        return (ratioBefore + ratioAfter) / 2;
-      }
+      /* eslint-disable no-multi-spaces  */
+      const fCP =           firstContentfulPaint();
+      const fMPbasic =      firstMeaningfulPaint({});
+      const fMPpageheight = firstMeaningfulPaint({pageHeight: true});
+      const fMPwebfont =    firstMeaningfulPaint({webFont: true});
+      const fMPfull =       firstMeaningfulPaint({pageHeight: true, webFont: true});
+      /* eslint-enable no-multi-spaces */
 
-      /* eslint-disable key-spacing */
-
-      const fcp =           firstContentfulPaint();
-      const fmpBasic =      firstMeaningfulPaint();
-      const fmpPageHeight = firstMeaningfulPaint({ pageHeight: true });
-      const fmpWebFont = firstMeaningfulPaint({ webFont: true });
-      const fmpFull = firstMeaningfulPaint({ pageHeight: true, webFont: true });
-      var results = {};
-      /* eslint-enable key-spacing */
+      var results = {
+        fCP,
+        fMPbasic,
+        fMPpageheight,
+        fMPwebfont,
+        fMPfull
+      };
       console.log('EFF EMM PEE', results);
-
-      return resolve(function () {
-
-      });
+      return resolve(results);
     });
   }
 }
