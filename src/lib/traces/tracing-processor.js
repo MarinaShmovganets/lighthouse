@@ -479,11 +479,25 @@ class TraceProcessor {
 
   /**
    * Uses traceviewer's statistics package to create a log-normal distribution.
-   * @param {number} location
-   * @param {number} shape
+   * Specified by providing the median value, at which the score will be 0.5,
+   * and the falloff, the initial point of diminishing returns where any
+   * improvement in value will yield increasingly smaller gains in score. Both
+   * values should be in the same units (e.g. milliseconds). See
+   *   https://www.desmos.com/calculator/tx1wcjk8ch
+   * for an interactive view of the relationship between these parameters and
+   * the typical parameterization (location and shape) of the log-normal
+   * distribution.
+   * @param {number} median
+   * @param {number} falloff
    * @return {!Statistics.LogNormalDistribution}
    */
-  static getLogNormalDistribution(location, shape) {
+  static getLogNormalDistribution(median, falloff) {
+    const location = Math.log(median);
+
+    const logRatio = Math.log(falloff / median);
+    const shape = 0.5 * Math.sqrt(1 - 3 * logRatio -
+        Math.sqrt((logRatio - 3) * (logRatio - 3) - 8));
+
     return new traceviewer.b.Statistics.LogNormalDistribution(location, shape);
   }
 }
