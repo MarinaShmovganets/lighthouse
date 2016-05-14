@@ -45,10 +45,6 @@ class RedirectsHTTP extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    if (artifacts.redirectsHTTP === undefined) {
-      return RedirectsHTTP.generateAuditResult({value: 'audit not run'});
-    }
-
     return RedirectsHTTP.generateAuditResult({
       value: artifacts.redirectsHTTP.value,
       debugString: artifacts.redirectsHTTP.debugString

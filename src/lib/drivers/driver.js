@@ -189,7 +189,7 @@ class DriverBase {
         this.on('Page.loadEventFired', response => {
           setTimeout(_ => {
             resolve(response);
-          }, options.fast ? 0 : this.PAUSE_AFTER_LOAD);
+          }, this.PAUSE_AFTER_LOAD);
         });
       });
     });

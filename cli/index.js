@@ -40,7 +40,6 @@ Usage:
 Basic:
     --help             Show this help
     --version          Current version of package
-    --fast             Do a fast run, skipping extra page reloads
 
 Logging:
     --verbose          Displays verbose logging
@@ -53,10 +52,10 @@ Run Configuration:
     --save-artifacts   Generate network dependency graph
 
 Output:
-    --output           Reporter for the results. Options:
-                         ${formatOptions}  (default=pretty)
-    --output-path      The file path to output the results. Example:
-                         lighthouse --output=html --output-path=./results.html
+    --output           Reporter for the results
+                       Reporter options: ${formatOptions}  (default=pretty)
+    --output-path      The file path to output the results (default=stdout)
+                       Example: --output-path=./lighthouse-results.html
 `);
 
 const url = cli.input[0] || 'https://platform-status.mozilla.org/';
