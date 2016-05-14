@@ -17,7 +17,6 @@
 
 'use strict';
 
-const FMPMetric = require('../../metrics/first-meaningful-paint');
 const Audit = require('../audit');
 const TracingProcessor = require('../../lib/traces/tracing-processor');
 
@@ -25,6 +24,8 @@ const TracingProcessor = require('../../lib/traces/tracing-processor');
 // https://www.desmos.com/calculator/r7t7qfaaih
 const SCORE_LOCATION = Math.log(4000);
 const SCORE_SHAPE = 0.5;
+
+const FAILURE_MESSAGE = 'Navigation and first paint timings not found.';
 
 class FirstMeaningfulPaint extends Audit {
   /**
@@ -63,51 +64,181 @@ class FirstMeaningfulPaint extends Audit {
    * @return {!AuditResult} The score from the audit, ranging from 0-100.
    */
   static audit(artifacts) {
-    const traceData = artifacts.traceContents;
-    return FMPMetric.parse(traceData).then(data => {
-      // there are a few candidates for fMP:
-      // * firstContentfulPaint: the first time that text or image content was painted.
-      // * fMP basic: paint after most significant layout
-      // * fMP page height: basic + scaling sigificance to page height
-      // * fMP webfont: basic + waiting for in-flight webfonts to paint
-      // * fMP full: considerig both page height + webfont heuristics
+    if (!artifacts.traceContents || !Array.isArray(artifacts.traceContents)) {
+      throw new Error(FAILURE_MESSAGE);
+    }
 
-      // We're interested in the last of these
-      const lastfMPts = data.fmpCandidates
-        .map(e => e.ts)
-        .reduce((mx, c) => Math.max(mx, c));
+    try {
+      const evts = this.collectEvents(artifacts.traceContents);
 
-      // First meaningful paint (following most significant layout)
-      const firstMeaningfulPaint = (lastfMPts - data.navStart.ts) / 1000;
+      /* eslint-disable no-multi-spaces  */
+      const navStart = evts.navigationStart;
+      const fCP = evts.firstContentfulPaint;
+      const fMPbasic = this.findFirstMeaningfulPaint(evts, {});
+      const fMPpageheight = this.findFirstMeaningfulPaint(evts, {pageHeight: true});
+      const fMPwebfont = this.findFirstMeaningfulPaint(evts, {webFont: true});
+      const fMPfull = this.findFirstMeaningfulPaint(evts, {pageHeight: true, webFont: true});
+      /* eslint-enable no-multi-spaces */
 
-      // Use the CDF of a log-normal distribution for scoring.
-      //   < 1100ms: score≈100
-      //   4000ms: score≈50
-      //   >= 14000ms: score≈0
-      const distribution =
-          TracingProcessor.getLogNormalDistribution(SCORE_LOCATION, SCORE_SHAPE);
-      let score = 100 * distribution.computeComplementaryPercentile(firstMeaningfulPaint);
-
-      return {
-        duration: `${firstMeaningfulPaint.toFixed(2)}ms`,
-        score: Math.round(score)
+      var data = {
+        navStart,
+        fmpCandidates: [
+          fCP,
+          fMPbasic,
+          fMPpageheight,
+          fMPwebfont,
+          fMPfull
+        ]
       };
-    }).catch(err => {
-      // Recover from trace parsing failures.
-      return {
-        score: -1,
-        debugString: err.message
-      };
-    })
-    .then(result => {
+
+      const result = this.calculateScore(data);
+
       return FirstMeaningfulPaint.generateAuditResult({
         value: result.score,
         rawValue: result.duration,
         debugString: result.debugString,
         optimalValue: this.optimalValue
       });
+
+    // Recover from trace parsing failures.
+    } catch (err) {
+      return FirstMeaningfulPaint.generateAuditResult({
+        score: -1,
+        debugString: err.message
+      });
+    }
+  }
+
+  static calculateScore(data) {
+    // there are a few candidates for fMP:
+    // * firstContentfulPaint: the first time that text or image content was painted.
+    // * fMP basic: paint after most significant layout
+    // * fMP page height: basic + scaling sigificance to page height
+    // * fMP webfont: basic + waiting for in-flight webfonts to paint
+    // * fMP full: considerig both page height + webfont heuristics
+
+    // We're interested in the last of these
+    const lastfMPts = data.fmpCandidates
+      .map(e => e.ts)
+      .reduce((mx, c) => Math.max(mx, c));
+
+    // First meaningful paint (following most significant layout)
+    const firstMeaningfulPaint = (lastfMPts - data.navStart.ts) / 1000;
+
+    // Use the CDF of a log-normal distribution for scoring.
+    //   < 1100ms: score≈100
+    //   4000ms: score≈50
+    //   >= 14000ms: score≈0
+    const distribution =
+        TracingProcessor.getLogNormalDistribution(SCORE_LOCATION, SCORE_SHAPE);
+    let score = 100 * distribution.computeComplementaryPercentile(firstMeaningfulPaint);
+
+    return {
+      duration: `${firstMeaningfulPaint.toFixed(2)}ms`,
+      score: Math.round(score)
+    };
+  }
+
+  /**
+   * @param {!Array<!Object>} traceData
+   */
+  static collectEvents(traceData) {
+    let mainFrameID;
+    let navigationStart;
+    let firstContentfulPaint;
+    let layouts = new Map();
+    let paints = [];
+
+    // const model = new DevtoolsTimelineModel(traceData);
+    // const events = model.timelineModel().mainThreadEvents();
+    const events = traceData;
+
+    // Parse the trace for our key events
+    events.filter(e => {
+      return e.cat.includes('blink.user_timing') ||
+        e.name === 'FrameView::performLayout' ||
+        e.name === 'Paint';
+    }).forEach(event => {
+      // navigationStart == the network begins fetching the page URL
+      if (event.name === 'navigationStart' && !navigationStart) {
+        mainFrameID = event.args.frame;
+        navigationStart = event;
+      }
+      // firstContentfulPaint == the first time that text or image content was
+      // painted. See src/third_party/WebKit/Source/core/paint/PaintTiming.h
+      if (event.name === 'firstContentfulPaint' && event.args.frame === mainFrameID) {
+        firstContentfulPaint = event;
+      }
+      // COMPAT: frame property requires Chrome 52 (r390306)
+      // https://codereview.chromium.org/1922823003
+      if (event.name === 'FrameView::performLayout' && event.args.counters &&
+          event.args.counters.frame === mainFrameID) {
+        layouts.set(event, event.args.counters);
+      }
+
+      if (event.name === 'Paint' && event.args.data.frame === mainFrameID) {
+        paints.push(event);
+      }
     });
+
+    return {
+      navigationStart,
+      firstContentfulPaint,
+      layouts,
+      paints
+    };
+  }
+
+  /**
+   * @param  {any} evts
+   * @param  {any} heuristics
+   */
+  static findFirstMeaningfulPaint(evts, heuristics) {
+    let mostSignificantLayout;
+    let significance = 0;
+    let maxSignificanceSoFar = 0;
+    let pending = 0;
+
+    evts.layouts.forEach((countersObj, layoutEvent) => {
+      const counter = val => countersObj[val];
+
+      function heightRatio() {
+        const ratioBefore = counter('contentsHeightBeforeLayout') / counter('visibleHeight');
+        const ratioAfter = counter('contentsHeightAfterLayout') / counter('visibleHeight');
+        return (max(1, ratioBefore) + max(1, ratioAfter)) / 2;
+      }
+
+      if (!counter('host') || counter('visibleHeight') === 0) {
+        return;
+      }
+
+      const layoutCount = counter('LayoutObjectsThatHadNeverHadLayout') || 0;
+      // layout significance = number of layout objects added / max(1, page height / screen height)
+      significance = (heuristics.pageHeight) ? (layoutCount / heightRatio()) : layoutCount;
+
+      if (heuristics.webFont && counter('hasBlankText')) {
+        pending += significance;
+      } else {
+        significance += pending;
+        pending = 0;
+        if (significance > maxSignificanceSoFar) {
+          maxSignificanceSoFar = significance;
+          mostSignificantLayout = layoutEvent;
+        }
+      }
+    });
+
+    const paintAfterMSLayout = evts.paints.find(e => e.ts > mostSignificantLayout.ts);
+    return paintAfterMSLayout;
   }
 }
 
 module.exports = FirstMeaningfulPaint;
+
+/**
+ * Math.max, but with NaN values removed
+ */
+function max() {
+  const args = [...arguments].filter(val => !isNaN(val));
+  return Math.max.apply(Math, args);
+}
