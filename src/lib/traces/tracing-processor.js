@@ -18,8 +18,9 @@
 'use strict';
 const URL = require('url');
 
-/* global window */
-window.global = window;
+if (typeof global.window === 'undefined') {
+  global.window = global;
+}
 
 // we need gl-matrix and jszip for traceviewer
 // since it has internal forks for isNode and they get mixed up during
@@ -475,6 +476,16 @@ class TraceProcessor {
 
     return timeRanges;
   }
+
+  /**
+   * Uses traceviewer's statistics package to create a log-normal distribution.
+   * @param {number} location
+   * @param {number} shape
+   * @return {!Statistics.LogNormalDistribution}
+   */
+  static getLogNormalDistribution(location, shape) {
+    return new traceviewer.b.Statistics.LogNormalDistribution(location, shape);
+  }
 }
 
-module.exports = new TraceProcessor();
+module.exports = TraceProcessor;
