@@ -20,7 +20,7 @@
 const Aggregate = require('../aggregate');
 
 /** @type {string} */
-const firstContentfulPaint = require('../../audits/performance/first-contentful-paint').name;
+const firstMeaningfulPaint = require('../../audits/performance/first-meaningful-paint').name;
 
 /** @type {string} */
 const speedIndexMetric = require('../../audits/performance/speed-index-metric').name;
@@ -61,7 +61,7 @@ class IsPerformant extends Aggregate {
    */
   static get criteria() {
     const criteria = {};
-    criteria[firstContentfulPaint] = {
+    criteria[firstMeaningfulPaint] = {
       value: 100,
       weight: 1
     };

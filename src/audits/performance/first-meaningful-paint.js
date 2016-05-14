@@ -26,7 +26,7 @@ const TracingProcessor = require('../../lib/traces/tracing-processor');
 const SCORE_LOCATION = Math.log(4000);
 const SCORE_SHAPE = 0.5;
 
-class FirstContentfulPaint extends Audit {
+class FirstMeaningfulPaint extends Audit {
   /**
    * @override
    */
@@ -38,7 +38,7 @@ class FirstContentfulPaint extends Audit {
    * @override
    */
   static get name() {
-    return 'first-contentful-paint';
+    return 'first-meaningful-paint';
   }
 
   /**
@@ -56,7 +56,7 @@ class FirstContentfulPaint extends Audit {
   }
 
   /**
-   * Audits the page to give a score for First Contentful Paint.
+   * Audits the page to give a score for First Meaningful Paint.
    * @see  https://github.com/GoogleChrome/lighthouse/issues/26
    * @param {!Artifacts} artifacts The artifacts from the gather phase.
    * @return {!AuditResult} The score from the audit, ranging from 0-100.
@@ -65,7 +65,7 @@ class FirstContentfulPaint extends Audit {
     return FMPMetric.parse(artifacts.traceContents)
         .then(fmp => {
           // The fundamental Time To fMP metric
-          const firstContentfulPaint = fmp.firstMeaningfulPaint - fmp.navigationStart;
+          const firstMeaningfulPaint = fmp.firstMeaningfulPaint - fmp.navigationStart;
 
           // Use the CDF of a log-normal distribution for scoring.
           //   < 1100ms: score≈100
@@ -73,14 +73,14 @@ class FirstContentfulPaint extends Audit {
           //   >= 14000ms: score≈0
           const distribution =
               TracingProcessor.getLogNormalDistribution(SCORE_LOCATION, SCORE_SHAPE);
-          let score = 100 * distribution.computeComplementaryPercentile(firstContentfulPaint);
+          let score = 100 * distribution.computeComplementaryPercentile(firstMeaningfulPaint);
 
           // Clamp the score to 0 <= x <= 100.
           score = Math.min(100, score);
           score = Math.max(0, score);
 
           return {
-            duration: `${firstContentfulPaint.toFixed(2)}ms`,
+            duration: `${firstMeaningfulPaint.toFixed(2)}ms`,
             score: Math.round(score)
           };
         }).catch(err => {
@@ -91,7 +91,7 @@ class FirstContentfulPaint extends Audit {
           };
         })
         .then(result => {
-          return FirstContentfulPaint.generateAuditResult({
+          return FirstMeaningfulPaint.generateAuditResult({
             value: result.score,
             rawValue: result.duration,
             debugString: result.debugString,
@@ -101,4 +101,4 @@ class FirstContentfulPaint extends Audit {
   }
 }
 
-module.exports = FirstContentfulPaint;
+module.exports = FirstMeaningfulPaint;

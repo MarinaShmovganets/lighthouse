@@ -15,11 +15,11 @@
  */
 'use strict';
 
-const Audit = require('../../../../src/audits/performance/first-contentful-paint.js');
+const Audit = require('../../../../src/audits/performance/first-meaningful-paint.js');
 const assert = require('assert');
 
 /* eslint-env mocha */
-describe('Performance: first-contentful-paint audit', () => {
+describe('Performance: first-meaningful-paint audit', () => {
   it('scores a -1 when no trace data is present', () => {
     return Audit.audit({}).then(response => {
       return assert.equal(response.value, -1);
@@ -32,28 +32,28 @@ describe('Performance: first-contentful-paint audit', () => {
     });
   });
 
-  it('scores a 100 when FCP is 500ms', () => {
+  it('scores a 100 when FMP is 500ms', () => {
     const traceData = require('./trace-500ms.json');
     return Audit.audit({traceContents: traceData}).then(response => {
       return assert.equal(response.value, 100);
     });
   });
 
-  it('scores a 100 when FCP is 1,000ms', () => {
+  it('scores a 100 when FMP is 1,000ms', () => {
     const traceData = require('./trace-1000ms.json');
     return Audit.audit({traceContents: traceData}).then(response => {
       return assert.equal(response.value, 100);
     });
   });
 
-  it('scores a 50 when FCP is 4,000ms', () => {
+  it('scores a 50 when FMP is 4,000ms', () => {
     const traceData = require('./trace-4000ms.json');
     return Audit.audit({traceContents: traceData}).then(response => {
       return assert.equal(response.value, 50);
     });
   });
 
-  it('scores a 0 when FCP is 15,000ms', () => {
+  it('scores a 0 when FMP is 15,000ms', () => {
     const traceData = require('./trace-15000ms.json');
     return Audit.audit({traceContents: traceData}).then(response => {
       return assert.equal(response.value, 0);
