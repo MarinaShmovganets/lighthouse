@@ -21,10 +21,11 @@ const log = require('./lib/log.js');
 
 function loadPage(driver, gatherers, options) {
   const loadPage = options.flags.loadPage;
+  const fastRun = options.flags.fast;
   const url = options.url;
 
   if (loadPage) {
-    return driver.gotoURL(url, {waitForLoad: true});
+    return driver.gotoURL(url, {waitForLoad: true, fast: fastRun});
   }
 
   return Promise.resolve();
@@ -119,6 +120,7 @@ function run(gatherers, options) {
   }
 
   const runPhase = phaseRunner(gatherers);
+  const fast = options.flags.fast;
 
   return driver.connect()
     // Initial prep before the page load.
@@ -134,14 +136,14 @@ function run(gatherers, options) {
     .then(_ => runPhase(gatherer => gatherer.postProfiling(options, tracingData)))
 
     // Reload page for SW, etc.
-    .then(_ => runPhase(gatherer => gatherer.reloadSetup(options)))
-    .then(_ => runPhase(gatherer => gatherer.beforeReloadPageLoad(options)))
-    .then(_ => reloadPage(driver, options))
-    .then(_ => runPhase(gatherer => gatherer.afterReloadPageLoad(options)))
+    .then(_ => !fast && runPhase(gatherer => gatherer.reloadSetup(options)))
+    .then(_ => !fast && runPhase(gatherer => gatherer.beforeReloadPageLoad(options)))
+    .then(_ => !fast && reloadPage(driver, options))
+    .then(_ => !fast && runPhase(gatherer => gatherer.afterReloadPageLoad(options)))
 
     // Reload page again for HTTPS redirect
-    .then(_ => reloadPage(driver, options))
-    .then(_ => runPhase(gatherer => gatherer.afterSecondReloadPageLoad(options)))
+    .then(_ => !fast && reloadPage(driver, options))
+    .then(_ => !fast && runPhase(gatherer => gatherer.afterSecondReloadPageLoad(options)))
 
     // Finish and teardown.
     .then(_ => driver.disconnect())

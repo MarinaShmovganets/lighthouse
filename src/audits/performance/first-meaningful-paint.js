@@ -19,6 +19,12 @@
 
 const FMPMetric = require('../../metrics/first-meaningful-paint');
 const Audit = require('../audit');
+const TracingProcessor = require('../../lib/traces/tracing-processor');
+
+// Parameters for log-normal CDF scoring. To see the curve:
+// https://www.desmos.com/calculator/r7t7qfaaih
+const SCORE_LOCATION = Math.log(4000);
+const SCORE_SHAPE = 0.5;
 
 class FirstMeaningfulPaint extends Audit {
   /**
@@ -74,17 +80,13 @@ class FirstMeaningfulPaint extends Audit {
       // First meaningful paint (following most significant layout)
       const firstMeaningfulPaint = (lastfMPts - data.navStart.ts) / 1000;
 
-      // Roughly an exponential curve.
-      //   < 1000ms: penalty=0
-      //   3000ms: penalty=90
-      //   >= 5000ms: penalty=100
-      const power = (firstMeaningfulPaint - 1000) * 0.001 * 0.5;
-      const penalty = power > 0 ? Math.pow(10, power) : 0;
-      let score = 100 - penalty;
-
-      // Clamp the score to 0 <= x <= 100.
-      score = Math.min(100, score);
-      score = Math.max(0, score);
+      // Use the CDF of a log-normal distribution for scoring.
+      //   < 1100ms: score≈100
+      //   4000ms: score≈50
+      //   >= 14000ms: score≈0
+      const distribution =
+          TracingProcessor.getLogNormalDistribution(SCORE_LOCATION, SCORE_SHAPE);
+      let score = 100 * distribution.computeComplementaryPercentile(firstMeaningfulPaint);
 
       return {
         duration: `${firstMeaningfulPaint.toFixed(2)}ms`,
