@@ -16,18 +16,37 @@
  */
 'use strict';
 
-const Gather = require('./gather');
+const Audit = require('../audit');
 
-class HTTPS extends Gather {
-  beforePageLoad(options) {
-    const driver = options.driver;
-    driver.on('Security.securityStateChanged', data => {
-      options.artifacts.https =
-          (data.securityState === 'secure' && data.schemeIsCryptographic);
-    });
+class StartURLWorksOffline extends Audit {
+  /**
+   * @override
+   */
+  static get tags() {
+    return ['Offline'];
+  }
 
-    driver.enableSecurityEvents();
+  /**
+   * @override
+   */
+  static get name() {
+    return 'start-url-works-offline';
+  }
+
+  /**
+   * @override
+   */
+  static get description() {
+    return 'Start URL responds with a 200 when offline';
+  }
+
+  /**
+   * @param {!Artifacts} artifacts
+   * @return {!AuditResult}
+   */
+  static audit(artifacts) {
+    return StartURLWorksOffline.generateAuditResult(artifacts.startURLResponseCode === 200);
   }
 }
 
-module.exports = HTTPS;
+module.exports = StartURLWorksOffline;

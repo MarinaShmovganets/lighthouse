@@ -30,7 +30,7 @@ class Viewport extends Gather {
     return driver.querySelector('head meta[name="viewport"]')
       .then(node => node && node.getAttribute('content'))
       .then(viewport => {
-        this.artifact = {viewport};
+        options.artifacts.viewport = viewport;
       });
   }
 }

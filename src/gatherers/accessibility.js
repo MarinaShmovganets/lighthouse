@@ -35,11 +35,9 @@ class Accessibility extends Gather {
 
   static _errorAccessibility(errorString) {
     return {
-      accessibility: {
-        raw: undefined,
-        value: undefined,
-        debugString: errorString
-      }
+      raw: undefined,
+      value: undefined,
+      debugString: errorString
     };
   }
 
@@ -50,16 +48,15 @@ class Accessibility extends Gather {
         .evaluateAsync(`${axe};(${runA11yChecks.toString()}())`)
         .then(returnedValue => {
           if (!returnedValue) {
-            this.artifact = Accessibility._errorAccessibility('Unable to parse axe results');
+            options.artifacts.accessibility =
+                Accessibility._errorAccessibility('Unable to parse axe results');
             return;
           }
 
           if (returnedValue.error) {
-            this.artifact = Accessibility._errorAccessibility(returnedValue.error);
+            options.artifacts = Accessibility._errorAccessibility(returnedValue.error);
           } else {
-            this.artifact = {
-              accessibility: returnedValue
-            };
+            options.artifacts.accessibility = returnedValue;
           }
         });
   }

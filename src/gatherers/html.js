@@ -29,7 +29,7 @@ class HTML extends Gather {
           nodeId: nodeId
         }))
         .then(nodeHTML => {
-          this.artifact = {html: nodeHTML.outerHTML};
+          options.artifacts.html = nodeHTML.outerHTML;
         });
   }
 }

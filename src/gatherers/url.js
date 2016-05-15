@@ -20,7 +20,7 @@ const Gather = require('./gather');
 
 class URL extends Gather {
   setup(options) {
-    this.artifact = {url: options.url || options.driver.url};
+    options.artifacts.url = options.url || options.driver.url;
   }
 }
 

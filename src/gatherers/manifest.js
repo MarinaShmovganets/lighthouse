@@ -56,11 +56,9 @@ class Manifest extends Gather {
 
   static _errorManifest(errorString) {
     return {
-      manifest: {
-        raw: undefined,
-        value: undefined,
-        debugString: errorString
-      }
+      raw: undefined,
+      value: undefined,
+      debugString: errorString
     };
   }
 
@@ -75,16 +73,14 @@ class Manifest extends Gather {
 
     .then(returnedValue => {
       if (!returnedValue) {
-        this.artifact = Manifest._errorManifest('Unable to retrieve manifest');
+        options.artifacts.manifest = Manifest._errorManifest('Unable to retrieve manifest');
         return;
       }
 
       if (returnedValue.error) {
-        this.artifact = Manifest._errorManifest(returnedValue.error);
+        options.artifacts.manifest = Manifest._errorManifest(returnedValue.error);
       } else {
-        this.artifact = {
-          manifest: manifestParser(returnedValue.manifestContent)
-        };
+        options.artifacts.manifest = manifestParser(returnedValue.manifestContent);
       }
     });
   }

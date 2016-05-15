@@ -29,12 +29,10 @@ class ServiceWorker extends Gather {
           const controlledClients =
               ServiceWorker.getActivatedServiceWorker(data.versions, options.url);
 
-          this.artifact = {
-            serviceWorkers: {
-              versions: controlledClients ? [controlledClients] : []
-            }
+          options.artifacts.serviceWorkers = {
+            versions: controlledClients ? [controlledClients] : []
           };
-          this.resolved = (typeof this.artifact.serviceWorkers.versions !== 'undefined');
+          this.resolved = (typeof options.artifacts.serviceWorkers.versions !== 'undefined');
           res();
         }
       });

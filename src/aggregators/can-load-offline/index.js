@@ -29,6 +29,11 @@ const serviceWorker = require('../../audits/offline/service-worker').name;
  */
 const worksOffline = require('../../audits/offline/works-offline').name;
 
+/**
+ * @type {string}
+ */
+const startURLWorksOffline = require('../../audits/offline/start-url-works-offline').name;
+
 class WorksOffline extends Aggregate {
 
   /**
@@ -69,6 +74,11 @@ class WorksOffline extends Aggregate {
     };
 
     criteria[worksOffline] = {
+      value: true,
+      weight: 1
+    };
+
+    criteria[startURLWorksOffline] = {
       value: true,
       weight: 1
     };
