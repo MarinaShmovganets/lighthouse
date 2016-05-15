@@ -25,7 +25,7 @@ const FAILURE_MESSAGE = 'Navigation and first paint timings not found.';
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 // https://www.desmos.com/calculator/mdgjzchijg
-const SCORING_FALLOFF = 1250;
+const SCORING_POINT_OF_DIMINISHING_RETURNS = 1250;
 const SCORING_MEDIAN = 5500;
 
 class SpeedIndexMetric extends Audit {
@@ -76,8 +76,8 @@ class SpeedIndexMetric extends Audit {
       //  Median = 5,500
       //  75th Percentile = 8,820
       //  95th Percentile = 17,400
-      const distribution =
-          TracingProcessor.getLogNormalDistribution(SCORING_MEDIAN, SCORING_FALLOFF);
+      const distribution = TracingProcessor.getLogNormalDistribution(SCORING_MEDIAN,
+          SCORING_POINT_OF_DIMINISHING_RETURNS);
       let score = 100 * distribution.computeComplementaryPercentile(results.speedIndex);
 
       // Clamp the score to 0 <= x <= 100.

@@ -23,7 +23,7 @@ const TracingProcessor = require('../../lib/traces/tracing-processor');
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 // https://www.desmos.com/calculator/joz3pqttdq
-const SCORING_FALLOFF = 1600;
+const SCORING_POINT_OF_DIMINISHING_RETURNS = 1600;
 const SCORING_MEDIAN = 4000;
 
 class FirstMeaningfulPaint extends Audit {
@@ -71,8 +71,8 @@ class FirstMeaningfulPaint extends Audit {
           //   < 1100ms: score≈100
           //   4000ms: score=50
           //   >= 14000ms: score≈0
-          const distribution =
-              TracingProcessor.getLogNormalDistribution(SCORING_MEDIAN, SCORING_FALLOFF);
+          const distribution = TracingProcessor.getLogNormalDistribution(SCORING_MEDIAN,
+              SCORING_POINT_OF_DIMINISHING_RETURNS);
           let score = 100 * distribution.computeComplementaryPercentile(firstMeaningfulPaint);
 
           // Clamp the score to 0 <= x <= 100.
