@@ -23,10 +23,10 @@ const TracingProcessor = require('../../lib/traces/tracing-processor');
 
 const FAILURE_MESSAGE = 'Navigation and first paint timings not found.';
 
-// Parameters for log-normal CDF scoring. To see the curve:
-// https://www.desmos.com/calculator/y9qrjhj4e9
-const SCORE_LOCATION = Math.log(5500);
-const SCORE_SHAPE = 0.7;
+// Parameters (in ms) for log-normal CDF scoring. To see the curve:
+// https://www.desmos.com/calculator/mdgjzchijg
+const SCORING_FALLOFF = 1250;
+const SCORING_MEDIAN = 5500;
 
 class SpeedIndexMetric extends Audit {
   /**
@@ -77,7 +77,7 @@ class SpeedIndexMetric extends Audit {
       //  75th Percentile = 8,820
       //  95th Percentile = 17,400
       const distribution =
-          TracingProcessor.getLogNormalDistribution(SCORE_LOCATION, SCORE_SHAPE);
+          TracingProcessor.getLogNormalDistribution(SCORING_MEDIAN, SCORING_FALLOFF);
       let score = 100 * distribution.computeComplementaryPercentile(results.speedIndex);
 
       // Clamp the score to 0 <= x <= 100.
