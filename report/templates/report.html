@@ -95,6 +95,9 @@ limitations under the License.
                         {{#if subItem.optimalValue }}
                         (target value: {{ subItem.optimalValue }})
                         {{/if}}
+                        {{#if subItem.comingSoon}}
+                        (Coming soon)
+                        {{/if}}
                       </span>
                       <span class="report-section__item-value report-section__item-value--{{ getItemRating subItem.value }}">{{ getItemValue subItem.value }}</span>
                       {{#if subItem.rawValue }}
@@ -127,6 +130,9 @@ limitations under the License.
                         {{ subItem.description }}
                         {{#if subItem.optimalValue }}
                         (target value: {{ subItem.optimalValue }} )
+                        {{/if}}
+                        {{#if subItem.comingSoon}}
+                        (Coming soon)
                         {{/if}}
                       </span>
                       <span class="report-section__item-value report-section__item-value--{{ getItemRating subItem.value }}">{{ getItemValue subItem.value }}</span>
@@ -163,6 +169,9 @@ limitations under the License.
                       <!-- <span class="report-section__item-category">{{ subItem.category }}:</span> --> {{ subItem.description }}
                       {{#if subItem.optimalValue }}
                       (target: {{ subItem.optimalValue }})
+                      {{/if}}
+                      {{#if subItem.comingSoon}}
+                      (Coming soon)
                       {{/if}}
                     </span>
                     <span class="report-section__item-value report-section__item-value--{{ getItemRating subItem.value }}">{{ getItemValue subItem.value aggregation.type.name }}</span>

@@ -489,6 +489,10 @@ a {
   font-style: italic;
 }
 
+.coming-soon .report-section__item-value {
+  font-size: 70%;
+}
+
 @media print {
   .report {
     box-shadow: none;

@@ -201,7 +201,7 @@ class Aggregate {
       // TODO(paullewis): Remove once coming soon audits have landed.
       if (expected[e].comingSoon) {
         subItems.push({
-          value: 'Coming Soon',
+          value: String.raw`¯\_(ツ)_/¯`,
           name: 'coming-soon',
           category: expected[e].category,
           description: expected[e].description,
