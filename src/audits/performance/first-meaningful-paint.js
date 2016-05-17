@@ -22,10 +22,8 @@ const TracingProcessor = require('../../lib/traces/tracing-processor');
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 // https://www.desmos.com/calculator/joz3pqttdq
-const SCORING_FALLOFF = 1600;
+const SCORING_POINT_OF_DIMINISHING_RETURNS = 1600;
 const SCORING_MEDIAN = 4000;
-
-const FAILURE_MESSAGE = 'Navigation and first paint timings not found.';
 
 class FirstMeaningfulPaint extends Audit {
   /**
@@ -122,15 +120,15 @@ class FirstMeaningfulPaint extends Audit {
       .map(e => e.ts)
       .reduce((mx, c) => Math.max(mx, c));
 
-    // First meaningful paint (following most significant layout)
+    // First meaningful paint
     const firstMeaningfulPaint = (lastfMPts - data.navStart.ts) / 1000;
 
     // Use the CDF of a log-normal distribution for scoring.
-    //     < 1100ms: score≈100
-    //       4000ms: score=50
+    //   < 1100ms: score≈100
+    //   4000ms: score=50
     //   >= 14000ms: score≈0
-    const distribution =
-        TracingProcessor.getLogNormalDistribution(SCORING_MEDIAN, SCORING_FALLOFF);
+    const distribution = TracingProcessor.getLogNormalDistribution(SCORING_MEDIAN,
+        SCORING_POINT_OF_DIMINISHING_RETURNS);
     let score = 100 * distribution.computeComplementaryPercentile(firstMeaningfulPaint);
 
     // Clamp the score to 0 <= x <= 100.

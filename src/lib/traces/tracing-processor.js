@@ -139,7 +139,8 @@ class TraceProcessor {
 
   getInputReadiness(model) {
     // Now set up the user expectations model.
-    // TODO(paullewis) confirm these values are meaningful.
+    // this fake idle Interaction Record is used to grab the readiness out of
+    // TODO(paullewis) start the idle at firstPaint/fCP and end it at end of recording
     const idle = new traceviewer.model.um.IdleExpectation(model, 'test', 0, 10000);
     model.userModel.expectations.push(idle);
 
@@ -148,7 +149,8 @@ class TraceProcessor {
     //   https://github.com/GoogleChrome/lighthouse/pull/284#issuecomment-217263964
     const valueList = new traceviewer.metrics.ValueList();
     traceviewer.metrics.sh.hazardMetric(valueList, model);
-    const metricValue = valueList.valueDicts[0];
+    // grab last item, as it matches the fake idle we push()'d into the model'
+    const metricValue = valueList.valueDicts[valueList.valueDicts.length - 1];
     return metricValue;
   }
 
@@ -494,6 +496,9 @@ class TraceProcessor {
   static getLogNormalDistribution(median, falloff) {
     const location = Math.log(median);
 
+    // The "falloff" value specified the location of the smaller of the positive
+    // roots of the third derivative of the log-normal CDF. Calculate the shape
+    // parameter in terms of that value and the median.
     const logRatio = Math.log(falloff / median);
     const shape = 0.5 * Math.sqrt(1 - 3 * logRatio -
         Math.sqrt((logRatio - 3) * (logRatio - 3) - 8));
