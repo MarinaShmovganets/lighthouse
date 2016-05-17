@@ -484,6 +484,11 @@ a {
   transform: translateX(96px);
 }
 
+.coming-soon, .coming-soon * {
+  color: #AAA;
+  font-style: italic;
+}
+
 @media print {
   .report {
     box-shadow: none;
