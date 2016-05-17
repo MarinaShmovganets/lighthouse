@@ -96,7 +96,7 @@ class IsAccessible extends Aggregate {
       value: true,
       weight: 0,
       comingSoon: true,
-      description: 'Payment forms marked up for with [autocomplete] attributes',
+      description: 'Payment forms marked up with [autocomplete] attributes',
       category: 'UX'
     };
 
