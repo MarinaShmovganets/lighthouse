@@ -494,6 +494,9 @@ class TraceProcessor {
   static getLogNormalDistribution(median, falloff) {
     const location = Math.log(median);
 
+    // The "falloff" value specified the location of the smaller of the positive
+    // roots of the third derivative of the log-normal CDF. Calculate the shape
+    // parameter in terms of that value and the median.
     const logRatio = Math.log(falloff / median);
     const shape = 0.5 * Math.sqrt(1 - 3 * logRatio -
         Math.sqrt((logRatio - 3) * (logRatio - 3) - 8));
