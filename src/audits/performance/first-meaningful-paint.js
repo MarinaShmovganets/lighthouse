@@ -20,6 +20,8 @@
 const Audit = require('../audit');
 const TracingProcessor = require('../../lib/traces/tracing-processor');
 
+const FAILURE_MESSAGE = 'Navigation and first paint timings not found.';
+
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 // https://www.desmos.com/calculator/joz3pqttdq
 const SCORING_POINT_OF_DIMINISHING_RETURNS = 1600;
@@ -62,21 +64,19 @@ class FirstMeaningfulPaint extends Audit {
    * @return {!AuditResult} The score from the audit, ranging from 0-100.
    */
   static audit(artifacts) {
-    if (!artifacts.traceContents || !Array.isArray(artifacts.traceContents)) {
-      throw new Error(FAILURE_MESSAGE);
-    }
+    return new Promise((resolve, reject) => {
+      if (!artifacts.traceContents || !Array.isArray(artifacts.traceContents)) {
+        throw new Error(FAILURE_MESSAGE);
+      }
 
-    try {
       const evts = this.collectEvents(artifacts.traceContents);
 
-      /* eslint-disable no-multi-spaces  */
       const navStart = evts.navigationStart;
       const fCP = evts.firstContentfulPaint;
       const fMPbasic = this.findFirstMeaningfulPaint(evts, {});
       const fMPpageheight = this.findFirstMeaningfulPaint(evts, {pageHeight: true});
       const fMPwebfont = this.findFirstMeaningfulPaint(evts, {webFont: true});
       const fMPfull = this.findFirstMeaningfulPaint(evts, {pageHeight: true, webFont: true});
-      /* eslint-enable no-multi-spaces */
 
       var data = {
         navStart,
@@ -91,20 +91,19 @@ class FirstMeaningfulPaint extends Audit {
 
       const result = this.calculateScore(data);
 
-      return FirstMeaningfulPaint.generateAuditResult({
+      resolve(FirstMeaningfulPaint.generateAuditResult({
         value: result.score,
         rawValue: result.duration,
         debugString: result.debugString,
         optimalValue: this.optimalValue
-      });
-
-    // Recover from trace parsing failures.
-    } catch (err) {
+      }));
+    }).catch(err => {
+      // Recover from trace parsing failures.
       return FirstMeaningfulPaint.generateAuditResult({
-        score: -1,
+        value: -1,
         debugString: err.message
       });
-    }
+    });
   }
 
   static calculateScore(data) {
@@ -113,7 +112,7 @@ class FirstMeaningfulPaint extends Audit {
     // * fMP basic: paint after most significant layout
     // * fMP page height: basic + scaling sigificance to page height
     // * fMP webfont: basic + waiting for in-flight webfonts to paint
-    // * fMP full: considerig both page height + webfont heuristics
+    // * fMP full: considering both page height + webfont heuristics
 
     // We're interested in the last of these
     const lastfMPts = data.fmpCandidates
@@ -191,10 +190,6 @@ class FirstMeaningfulPaint extends Audit {
     };
   }
 
-  /**
-   * @param  {any} evts
-   * @param  {any} heuristics
-   */
   static findFirstMeaningfulPaint(evts, heuristics) {
     let mostSignificantLayout;
     let significance = 0;

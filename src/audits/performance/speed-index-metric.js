@@ -25,11 +25,7 @@ const FAILURE_MESSAGE = 'Navigation and first paint timings not found.';
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 // https://www.desmos.com/calculator/mdgjzchijg
-<<<<<<< HEAD
-const SCORING_FALLOFF = 1250;
-=======
 const SCORING_POINT_OF_DIMINISHING_RETURNS = 1250;
->>>>>>> master
 const SCORING_MEDIAN = 5500;
 
 class SpeedIndexMetric extends Audit {

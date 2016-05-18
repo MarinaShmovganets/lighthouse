@@ -89,7 +89,7 @@ describe('Module Tests', function() {
 
   it('should be able to run lighthouse with just a url and options', function() {
     const lighthouse = require('../..');
-    return lighthouse(VALID_TEST_URL, {fast: true})
+    return lighthouse(VALID_TEST_URL, {})
     .then(results => {
       assert.ok(results);
     });
