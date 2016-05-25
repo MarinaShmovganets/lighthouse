@@ -18,7 +18,7 @@
 
 const fs = require('fs');
 const log = require('./lib/log.js');
-const screenshotDump = require('./lib/screenshot-page.js')
+const screenshotDump = require('./lib/screenshot-page.js');
 
 function loadPage(driver, gatherers, options) {
   const loadPage = options.flags.loadPage;
@@ -105,7 +105,7 @@ function getAssetFilename(assetName, url) {
   const date = new Date();
   const hostname = url.match(/^.*?\/\/(.*?)(:?\/|$)/)[1];
   const filenamePrefix = hostname + '_' + date.toISOString();
-  return (filenamePrefix + assetName).replace(/[\/\?<>\\:\*\|":]/g, '-')
+  return (filenamePrefix + assetName).replace(/[\/\?<>\\:\*\|":]/g, '-');
 }
 
 function saveAssets(options, artifacts) {

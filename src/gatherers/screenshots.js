@@ -19,21 +19,6 @@
 
 const Gather = require('./gather');
 const DevtoolsTimelineModel = require('../lib/traces/devtools-timeline-model');
-const fs = require('fs');
-const log = require('../lib/log.js');
-
-const starthtml = `<body>
-<script>
-var shots = `;
-const endhtml = `
-shots.forEach(s => {
-  var i = document.createElement('img');
-  i.src = s.datauri;
-  i.title = s.timestamp;
-  document.body.appendChild(i);
-});
-</script>
-`;
 
 class ScreenshotFilmstrip extends Gather {
 
