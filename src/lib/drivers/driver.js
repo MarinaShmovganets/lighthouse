@@ -32,7 +32,9 @@ class DriverBase {
       'toplevel',
       'blink.console',
       'blink.user_timing',
+      'benchmark',
       'devtools.timeline',
+      'disabled-by-default-blink.debug.layout',
       'disabled-by-default-devtools.timeline',
       'disabled-by-default-devtools.timeline.frame',
       'disabled-by-default-devtools.timeline.stack',
@@ -136,8 +138,11 @@ class DriverBase {
         includeCommandLineAPI: true
       });
 
-      // If this gets to 15s and it hasn't been resolved, reject the Promise.
-      asyncTimeout = setTimeout(reject, 15000);
+      // If this gets to 60s and it hasn't been resolved, reject the Promise.
+      asyncTimeout = setTimeout(
+        (_ => reject(new Error('The asynchronous expression exceeded the allotted time of 60s'))),
+        60000
+      );
     });
   }
 

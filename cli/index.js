@@ -23,7 +23,7 @@ const log = require('../src/lib/log.js');
 const semver = require('semver');
 const Printer = require('./printer');
 
-const lighthouse = require('../module');
+const lighthouse = require('../');
 
 // node 5.x required due to use of ES2015 features
 if (semver.lt(process.version, '5.0.0')) {
@@ -58,7 +58,7 @@ Output:
                        Example: --output-path=./lighthouse-results.html
 `);
 
-const url = cli.input[0] || 'https://pwa.rocks/';
+const url = cli.input[0] || 'https://platform-status.mozilla.org/';
 const outputMode = cli.flags.output || Printer.OUTPUT_MODE.pretty;
 const outputPath = cli.flags.outputPath || 'stdout';
 const flags = cli.flags;
@@ -87,7 +87,7 @@ lighthouse(url, flags)
   })
   .catch(err => {
     if (err.code === 'ECONNREFUSED') {
-      console.error('Unable to connect to Chrome. Did you run ./launch-chrome.sh?');
+      console.error('Unable to connect to Chrome. Did you run ./scripts/launch-chrome.sh ?');
     } else {
       console.error('Runtime error encountered:', err);
       console.error(err.stack);

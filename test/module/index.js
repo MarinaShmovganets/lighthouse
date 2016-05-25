@@ -89,53 +89,54 @@ describe('Module Tests', function() {
 
   it('should be able to run lighthouse with just a url and options', function() {
     const lighthouse = require('../..');
-    return lighthouse(VALID_TEST_URL, {})
+    return lighthouse(VALID_TEST_URL, {
+      // Prevent regression of github.com/GoogleChrome/lighthouse/issues/345
+      saveArtifacts: true
+    })
     .then(results => {
       assert.ok(results);
+    }).then(_ => {
+      fs.unlinkSync('artifacts.log');
     });
   });
 
   it('should throw an error when the first parameter is not defined', function() {
     const lighthouse = require('../..');
     return lighthouse()
-    .then(() => {
-      assert.error(new Error('Should not have resolved when first arg is not a string'));
-    })
-    .catch(err => {
-      assert.ok(err);
-    });
+      .then(() => {
+        throw new Error('Should not have resolved when first arg is not a string');
+      }, err => {
+        assert.ok(err);
+      });
   });
 
   it('should throw an error when the first parameter is an empty string', function() {
     const lighthouse = require('../..');
-    return lighthouse()
-    .then(() => {
-      assert.error(new Error('Should not have resolved when first arg is not a string'));
-    })
-    .catch(err => {
-      assert.ok(err);
-    });
+    return lighthouse('')
+      .then(() => {
+        throw new Error('Should not have resolved when first arg is an empty string');
+      }, err => {
+        assert.ok(err);
+      });
   });
 
   it('should throw an error when the first parameter is not a string', function() {
     const lighthouse = require('../..');
     return lighthouse({})
-    .then(() => {
-      assert.error(new Error('Should not have resolved when first arg is not a string'));
-    })
-    .catch(err => {
-      assert.ok(err);
-    });
+      .then(() => {
+        throw new Error('Should not have resolved when first arg is not a string');
+      }, err => {
+        assert.ok(err);
+      });
   });
 
   it('should throw an error when the second parameter is not an object', function() {
     const lighthouse = require('../..');
-    return lighthouse(VALID_TEST_URL, [])
-    .then(() => {
-      assert.error(new Error('Should not have resolved when first arg is not a string'));
-    })
-    .catch(err => {
-      assert.ok(err);
-    });
+    return lighthouse(VALID_TEST_URL, 'flags')
+      .then(() => {
+        throw new Error('Should not have resolved when second arg is not an object');
+      }, err => {
+        assert.ok(err);
+      });
   });
 });

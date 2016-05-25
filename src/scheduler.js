@@ -71,7 +71,7 @@ function endPassiveCollection(options, tracingData) {
   }).then(traceContents => {
     tracingData.traceContents = traceContents;
   }).then(_ => {
-    return saveTrace && this.saveAssets(tracingData, options.url);
+    return saveTrace && saveAssets(tracingData, options.url);
   });
 }
 
@@ -91,7 +91,10 @@ function flattenArtifacts(artifacts) {
 
 function saveArtifacts(artifacts) {
   const artifactsFilename = 'artifacts.log';
-  fs.writeFileSync(artifactsFilename, JSON.stringify(artifacts));
+  // The _target property of NetworkRequest is circular.
+  // We skip it when stringifying.
+  const replacer = (key, value) => key === '_target' ? undefined : value;
+  fs.writeFileSync(artifactsFilename, JSON.stringify(artifacts, replacer));
   log.log('info', 'artifacts file saved to disk', artifactsFilename);
 }
 
@@ -134,6 +137,9 @@ function run(gatherers, options) {
     .then(_ => runPhase(gatherer => gatherer.afterReloadPageLoad(options)))
 
     // Reload page again for HTTPS redirect
+    .then(_ => {
+      options.url = options.url.replace(/^https/, 'http');
+    })
     .then(_ => reloadPage(driver, options))
     .then(_ => runPhase(gatherer => gatherer.afterSecondReloadPageLoad(options)))
 
