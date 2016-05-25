@@ -164,11 +164,17 @@ class FirstMeaningfulPaint extends Audit {
     events.filter(e => {
       return e.cat.includes('blink.user_timing') ||
         e.name === 'FrameView::performLayout' ||
-        e.name === 'Paint';
+        e.name === 'Paint' ||
+        e.name === 'TracingStartedInPage';
     }).forEach(event => {
-      // navigationStart == the network begins fetching the page URL
-      if (event.name === 'navigationStart' && !navigationStart) {
-        mainFrameID = event.args.frame;
+      // Grab the page's ID from TracingStartedInPage
+      if (event.name === 'TracingStartedInPage') {
+        mainFrameID = event.args.data.page;
+      }
+
+      // Record the navigationStart, but only once TracingStartedInPage has started
+      // which is when mainFrameID exists
+      if (event.name === 'navigationStart' && !!mainFrameID && !navigationStart) {
         navigationStart = event;
       }
       // firstContentfulPaint == the first time that text or image content was
