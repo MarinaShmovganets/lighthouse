@@ -40,7 +40,7 @@ class ScreenshotFilmstrip extends Gather {
   fetchScreenshot(frame) {
     return frame
       .imageDataPromise()
-      .then(data => Promise.resolve('data:image/jpg;base64,' + data));
+      .then(data => 'data:image/jpg;base64,' + data);
   }
 
   /**
@@ -62,11 +62,6 @@ class ScreenshotFilmstrip extends Gather {
 
   postProfiling(options, tracingData) {
     return this.getScreenshots(tracingData.traceContents).then(screenshots => {
-      if (options.flags.saveScreenshots) {
-        const filename = 'screenshots.html';
-        fs.writeFileSync(filename, starthtml + JSON.stringify(screenshots) + endhtml);
-        log.log('info', 'screenshots saved to disk', filename);
-      }
       this.artifact = {screenshots};
     });
   }

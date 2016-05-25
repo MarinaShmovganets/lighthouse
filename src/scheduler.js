@@ -18,6 +18,7 @@
 
 const fs = require('fs');
 const log = require('./lib/log.js');
+const screenshotDump = require('./lib/screenshot-page.js')
 
 function loadPage(driver, gatherers, options) {
   const loadPage = options.flags.loadPage;
@@ -64,7 +65,6 @@ function beginPassiveCollection(driver) {
 
 function endPassiveCollection(options, tracingData) {
   const driver = options.driver;
-  const saveTrace = options.flags.saveTrace;
   return driver.endNetworkCollect().then(networkData => {
     tracingData.networkRecords = networkData.networkRecords;
     tracingData.rawNetworkEvents = networkData.rawNetworkEvents;
@@ -72,12 +72,9 @@ function endPassiveCollection(options, tracingData) {
     return driver.endTrace();
   }).then(traceContents => {
     tracingData.traceContents = traceContents;
-  }).then(_ => {
     return driver.endFrameLoadCollect();
   }).then(frameLoadEvents => {
     tracingData.frameLoadEvents = frameLoadEvents;
-  }).then(_ => {
-    return saveTrace && this.saveAssets(tracingData, options.url);
   });
 }
 
@@ -101,13 +98,24 @@ function saveArtifacts(artifacts) {
   log.log('info', 'artifacts file saved to disk', artifactsFilename);
 }
 
-function saveAssets(tracingData, url) {
+function getAssetFilename(assetName, url) {
   const date = new Date();
   const hostname = url.match(/^.*?\/\/(.*?)(:?\/|$)/)[1];
-  const filename = (hostname + '_' + date.toISOString() + '.trace.json')
-      .replace(/[\/\?<>\\:\*\|":]/g, '-');
-  fs.writeFileSync(filename, JSON.stringify(tracingData.traceContents, null, 2));
-  log.log('info', 'trace file saved to disk', filename);
+  const filenamePrefix = hostname + '_' + date.toISOString();
+  return (filenamePrefix + assetName).replace(/[\/\?<>\\:\*\|":]/g, '-')
+}
+
+function saveAssets(options, artifacts) {
+  const url = options.url;
+  const traceFilename = getAssetFilename('.trace.json', url);
+
+  fs.writeFileSync(traceFilename, JSON.stringify(artifacts.traceContents, null, 2));
+  log.log('info', 'trace file saved to disk', traceFilename);
+
+  const screenshotsFilename = getAssetFilename('.screenshots.html', url);
+  const html = screenshotDump(screenshotsFilename, artifacts.screenshots);
+  fs.writeFileSync(screenshotsFilename, html);
+  log.log('info', 'screenshots saved to disk', screenshotsFilename);
 }
 
 function run(gatherers, options) {
@@ -159,6 +167,9 @@ function run(gatherers, options) {
       if (options.flags.saveArtifacts) {
         saveArtifacts(artifacts);
       }
+      if (options.flags.saveAssets) {
+        saveAssets(options, artifacts);
+      }
 
       return artifacts;
     });
@@ -171,6 +182,5 @@ module.exports = {
   beginPassiveCollection,
   endPassiveCollection,
   phaseRunner,
-  run,
-  saveAssets
+  run
 };
