@@ -144,7 +144,10 @@ class DriverBase {
       });
 
       // If this gets to 15s and it hasn't been resolved, reject the Promise.
-      asyncTimeout = setTimeout(reject, 15000);
+      asyncTimeout = setTimeout(
+        _ => reject(new Error('The asynchronous expression exceeded the allotted time of 15s')),
+        15000
+      );
     });
   }
 

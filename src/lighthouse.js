@@ -29,7 +29,6 @@ const gathererClasses = [
   require('./gatherers/theme-color'),
   require('./gatherers/html'),
   require('./gatherers/manifest'),
-  require('./gatherers/accessibility'),
   require('./gatherers/offline'),
   require('./gatherers/critical-network-chains')
 ];
@@ -54,7 +53,14 @@ const audits = [
   require('./audits/manifest/short-name'),
   require('./audits/manifest/short-name-length'),
   require('./audits/manifest/start-url'),
-  require('./audits/html/meta-theme-color'),
+  require('./audits/html/meta-theme-color')
+];
+
+// a11y gatheres and audits that can be added on demand (defalut)
+const a11yGatherers = [
+  require('./gatherers/accessibility')
+];
+const a11yAudits = [
   require('./audits/accessibility/aria-valid-attr'),
   require('./audits/accessibility/aria-allowed-attr'),
   require('./audits/accessibility/color-contrast'),
@@ -77,6 +83,9 @@ const aggregators = [
 module.exports = function(driver, opts) {
   // Default mobile emulation and page loading to true.
   // The extension will switch these off initially.
+  let test1;
+  let test2;
+
   if (typeof opts.flags.mobile === 'undefined') {
     opts.flags.mobile = true;
   }
@@ -85,11 +94,19 @@ module.exports = function(driver, opts) {
     opts.flags.loadPage = true;
   }
 
-  const gatherers = gathererClasses.map(G => new G());
+  // Include a11y gatherers and audits if the --a11y flag is set to true (default)
+  if (typeof opts.flags.a11y === 'undefined' ||
+              opts.flags.a11y === true) {
+    test1 = gathererClasses.concat(a11yGatherers);
+    test2 = audits.concat(a11yAudits);
+    console.log(test2);
+  }
+
+  const gatherers = test1.map(G => new G());
 
   return Scheduler
       .run(gatherers, Object.assign({}, opts, {driver}))
-      .then(artifacts => Auditor.audit(artifacts, audits))
+      .then(artifacts => Auditor.audit(artifacts, test2))
       .then(results => Aggregator.aggregate(aggregators, results))
       .then(aggregations => {
         return {

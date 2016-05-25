@@ -46,6 +46,7 @@ Logging:
     --quiet            Displays no progress or debug logs
 
 Run Configuration:
+    --a11y             Includes accessibility tests (default=true)
     --mobile           Emulates a Nexus 5X (default=true)
     --load-page        Loads the page (default=true)
     --save-trace       Save the trace contents to disk
