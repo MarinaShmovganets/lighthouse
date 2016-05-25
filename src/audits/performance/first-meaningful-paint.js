@@ -27,6 +27,8 @@ const FAILURE_MESSAGE = 'Navigation and first paint timings not found.';
 const SCORING_POINT_OF_DIMINISHING_RETURNS = 1600;
 const SCORING_MEDIAN = 4000;
 
+const BLOCK_FIRST_MEANINGFUL_PAINT_IF_BLANK_CHARACTERS_MORE_THAN = 200;
+
 class FirstMeaningfulPaint extends Audit {
   /**
    * @override
@@ -80,13 +82,13 @@ class FirstMeaningfulPaint extends Audit {
 
       var data = {
         navStart,
-        fmpCandidates: [
+        fmpCandidates: {
           fCP,
           fMPbasic,
           fMPpageheight,
           fMPwebfont,
           fMPfull
-        ]
+        }
       };
 
       const result = this.calculateScore(data);
@@ -95,7 +97,8 @@ class FirstMeaningfulPaint extends Audit {
         value: result.score,
         rawValue: result.duration,
         debugString: result.debugString,
-        optimalValue: this.optimalValue
+        optimalValue: this.optimalValue,
+        extendedInfo: result.extendedInfo
       }));
     }).catch(err => {
       // Recover from trace parsing failures.
@@ -114,13 +117,15 @@ class FirstMeaningfulPaint extends Audit {
     // * fMP webfont: basic + waiting for in-flight webfonts to paint
     // * fMP full: considering both page height + webfont heuristics
 
-    // We're interested in the last of these
-    const lastfMPts = data.fmpCandidates
-      .map(e => e.ts)
-      .reduce((mx, c) => Math.max(mx, c));
+    // Calculate the difference from navigation and save all candidates
+    let timings = {};
+    Object.keys(data.fmpCandidates).forEach(name => {
+      const evt = data.fmpCandidates[name];
+      timings[name] = evt && ((evt.ts - data.navStart.ts) / 1000);
+    });
 
-    // First meaningful paint
-    const firstMeaningfulPaint = (lastfMPts - data.navStart.ts) / 1000;
+    // First meaningful paint is the last timestamp observed from the candidates
+    const firstMeaningfulPaint = Object.values(timings).reduce((mx, c) => max(mx, c));
 
     // Use the CDF of a log-normal distribution for scoring.
     //   < 1100ms: score≈100
@@ -136,7 +141,8 @@ class FirstMeaningfulPaint extends Audit {
 
     return {
       duration: `${firstMeaningfulPaint.toFixed(2)}ms`,
-      score: Math.round(score)
+      score: Math.round(score),
+      extendedInfo: {timings}
     };
   }
 
@@ -205,6 +211,11 @@ class FirstMeaningfulPaint extends Audit {
         return (max(1, ratioBefore) + max(1, ratioAfter)) / 2;
       }
 
+      function hasTooManyBlankCharactersToBeMeaningful() {
+        return counter('approximateBlankCharacterCount') >
+            BLOCK_FIRST_MEANINGFUL_PAINT_IF_BLANK_CHARACTERS_MORE_THAN;
+      }
+
       if (!counter('host') || counter('visibleHeight') === 0) {
         return;
       }
@@ -213,7 +224,7 @@ class FirstMeaningfulPaint extends Audit {
       // layout significance = number of layout objects added / max(1, page height / screen height)
       significance = (heuristics.pageHeight) ? (layoutCount / heightRatio()) : layoutCount;
 
-      if (heuristics.webFont && counter('hasBlankText')) {
+      if (heuristics.webFont && hasTooManyBlankCharactersToBeMeaningful()) {
         pending += significance;
       } else {
         significance += pending;
