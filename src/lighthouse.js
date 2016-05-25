@@ -44,7 +44,8 @@ const audits = [
   require('./audits/mobile-friendly/display'),
   require('./audits/performance/first-meaningful-paint'),
   require('./audits/performance/speed-index-metric'),
-  require('./audits/performance/input-readiness-metric'),
+  // TODO: https://github.com/GoogleChrome/lighthouse/issues/336
+  // require('./audits/performance/input-readiness-metric'),
   require('./audits/manifest/exists'),
   require('./audits/manifest/background-color'),
   require('./audits/manifest/theme-color'),
@@ -55,7 +56,12 @@ const audits = [
   require('./audits/manifest/short-name-length'),
   require('./audits/manifest/start-url'),
   require('./audits/html/meta-theme-color'),
-  require('./audits/accessibility/aria-valid-attr')
+  require('./audits/accessibility/aria-valid-attr'),
+  require('./audits/accessibility/aria-allowed-attr'),
+  require('./audits/accessibility/color-contrast'),
+  require('./audits/accessibility/image-alt'),
+  require('./audits/accessibility/label'),
+  require('./audits/accessibility/tabindex')
 ];
 
 const aggregators = [
