@@ -119,13 +119,15 @@ class FirstMeaningfulPaint extends Audit {
 
     // Calculate the difference from navigation and save all candidates
     let timings = {};
+    let timingsArr = [];
     Object.keys(data.fmpCandidates).forEach(name => {
       const evt = data.fmpCandidates[name];
       timings[name] = evt && ((evt.ts - data.navStart.ts) / 1000);
+      timingsArr.push(timings[name]);
     });
 
     // First meaningful paint is the last timestamp observed from the candidates
-    const firstMeaningfulPaint = Object.values(timings).reduce((mx, c) => max(mx, c));
+    const firstMeaningfulPaint = timingsArr.reduce((maxTimestamp, curr) => max(maxTimestamp, curr));
 
     // Use the CDF of a log-normal distribution for scoring.
     //   < 1100ms: score≈100
@@ -217,6 +219,11 @@ class FirstMeaningfulPaint extends Audit {
         return (max(1, ratioBefore) + max(1, ratioAfter)) / 2;
       }
 
+      // If there are loading fonts when layout happened, the layout change accounting is postponed
+      // until the font is displayed. However, icon fonts shouldn't block first meaningful paint.
+      // We use a threshold that only web fonts that laid out more than 200 characters
+      // should block first meaningful paint.
+      //   https://docs.google.com/document/d/1BR94tJdZLsin5poeet0XoTW60M0SjvOJQttKT-JK8HI/edit#heading=h.wjx8tsc9m27r
       function hasTooManyBlankCharactersToBeMeaningful() {
         return counter('approximateBlankCharacterCount') >
             BLOCK_FIRST_MEANINGFUL_PAINT_IF_BLANK_CHARACTERS_MORE_THAN;
