@@ -168,7 +168,7 @@ class FirstMeaningfulPaint extends Audit {
         e.name === 'TracingStartedInPage';
     }).forEach(event => {
       // Grab the page's ID from TracingStartedInPage
-      if (event.name === 'TracingStartedInPage') {
+      if (event.name === 'TracingStartedInPage' && !mainFrameID) {
         mainFrameID = event.args.data.page;
       }
 
