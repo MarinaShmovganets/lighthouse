@@ -64,3 +64,6 @@ Artifacts.prototype.redirectsHTTP;
 
 /** @type {!Accessibility} */
 Artifacts.prototype.accessibility;
+
+/** @type {!Object<!Object>} */
+Artifacts.prototype.criticalRequestChains;

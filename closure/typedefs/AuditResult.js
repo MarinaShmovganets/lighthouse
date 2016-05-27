@@ -83,3 +83,6 @@ AuditResult.prototype.category;
 
 /** @type {(string|undefined)} */
 AuditResult.prototype.description;
+
+/** @type {(boolean|undefined)} */
+AuditResult.prototype.contributesToScore;
