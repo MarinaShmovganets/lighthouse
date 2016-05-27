@@ -50,6 +50,13 @@ class CriticalRequestChains extends Audit {
   }
 
   /**
+   * @return {!Array<string>}
+   */
+  static requiredArtifacts() {
+    return ['criticalRequestChains'];
+  }
+
+  /**
    * Audits the page to give a score for First Meaningful Paint.
    * @param {!Artifacts} artifacts The artifacts from the gather phase.
    * @return {!AuditResult} The score from the audit, ranging from 0-100.

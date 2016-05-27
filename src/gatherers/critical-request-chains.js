@@ -22,6 +22,9 @@ const Gather = require('./gather');
 const includes = (arr, elm) => arr.indexOf(elm) > -1;
 
 class CriticalRequestChains extends Gather {
+  get name() {
+    return 'criticalRequestChains';
+  }
 
   /** @return {String} */
   get criticalPriorities() {
@@ -134,9 +137,7 @@ class CriticalRequestChains extends Gather {
       };
     }
 
-    this.artifact = {
-      criticalRequestChains
-    };
+    this.artifact = criticalRequestChains;
   }
 
 }
