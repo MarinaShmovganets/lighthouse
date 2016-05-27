@@ -25,6 +25,14 @@ const log = require('../log.js');
 class CriDriver extends Driver {
 
   /**
+   * @override
+   */
+  constructor() {
+    super();
+    this._commands = [];
+  }
+
+  /**
    * @return {!Promise<null>}
    */
   connect() {
@@ -130,6 +138,15 @@ class CriDriver extends Driver {
   }
 
   /**
+   * Logs unique commands made, in alphabetical order.
+   */
+  logUniqueCommands() {
+    this._commands
+        .sort()
+        .forEach(command => _log('info', 'command', {method: '', params: command}));
+  }
+
+  /**
    * Call protocol methods
    * @param {!string} command
    * @param {!Object} params
@@ -138,6 +155,10 @@ class CriDriver extends Driver {
   sendCommand(command, params) {
     if (this._chrome === null) {
       throw new Error('connect() must be called before attempting to send a command.');
+    }
+
+    if (this._commands.indexOf(command) === -1) {
+      this._commands.push(command);
     }
 
     return new Promise((resolve, reject) => {

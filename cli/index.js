@@ -44,6 +44,7 @@ Basic:
 Logging:
     --verbose          Displays verbose logging
     --quiet            Displays no progress or debug logs
+    --log-commands     Displays all the Remote Debugger calls made
 
 Run Configuration:
     --mobile           Emulates a Nexus 5X (default=true)

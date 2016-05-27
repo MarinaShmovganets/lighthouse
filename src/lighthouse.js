@@ -94,6 +94,10 @@ module.exports = function(driver, opts) {
       .then(artifacts => Auditor.audit(artifacts, audits))
       .then(results => Aggregator.aggregate(aggregators, results))
       .then(aggregations => {
+        if (typeof opts.flags.logCommands !== 'undefined') {
+          driver.logUniqueCommands();
+        }
+
         return {
           url: opts.url,
           aggregations
