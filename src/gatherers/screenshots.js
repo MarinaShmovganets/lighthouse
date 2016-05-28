@@ -21,6 +21,9 @@ const Gather = require('./gather');
 const DevtoolsTimelineModel = require('../lib/traces/devtools-timeline-model');
 
 class ScreenshotFilmstrip extends Gather {
+  get name() {
+    return 'screenshots';
+  }
 
   fetchScreenshot(frame) {
     return frame
