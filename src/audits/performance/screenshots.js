@@ -58,7 +58,9 @@ class Screenshots extends Audit {
     return Screenshots.generateAuditResult({
       value: screenshots.length || 0,
       extendedInfo: {
-        value: screenshots
+        value: {
+          screenshots
+        }
       }
     });
   }
