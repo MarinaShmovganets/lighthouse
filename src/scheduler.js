@@ -23,7 +23,6 @@ const screenshotDump = require('./lib/screenshot-page.js');
 const Gather = require('./gatherers/gather.js');
 const stringify = require('json-stringify-safe');
 
-
 function loadPage(driver, gatherers, options) {
   const loadPage = options.flags.loadPage;
   const url = options.url;
@@ -67,7 +66,6 @@ function beginPassiveCollection(driver) {
   return driver.beginTrace()
     .then(_ => driver.beginNetworkCollect());
 }
-
 
 function endPassiveCollection(options, tracingData) {
   const driver = options.driver;
