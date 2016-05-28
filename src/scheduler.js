@@ -21,6 +21,8 @@ const fs = require('fs');
 const log = require('./lib/log.js');
 const screenshotDump = require('./lib/screenshot-page.js');
 const Gather = require('./gatherers/gather.js');
+const stringify = require('json-stringify-safe');
+
 
 function loadPage(driver, gatherers, options) {
   const loadPage = options.flags.loadPage;
@@ -88,10 +90,7 @@ function phaseRunner(gatherers) {
 
 function saveArtifacts(artifacts) {
   const artifactsFilename = 'artifacts.log';
-  // The _target property of NetworkRequest is circular.
-  // We skip it when stringifying.
-  const replacer = (key, value) => key === '_target' ? undefined : value;
-  fs.writeFileSync(artifactsFilename, JSON.stringify(artifacts, replacer));
+  fs.writeFileSync(artifactsFilename, stringify(artifacts));
   log.log('info', 'artifacts file saved to disk', artifactsFilename);
 }
 
@@ -106,7 +105,7 @@ function saveAssets(options, artifacts) {
   const url = options.url;
   const traceFilename = getAssetFilename('.trace.json', url);
 
-  fs.writeFileSync(traceFilename, JSON.stringify(artifacts.traceContents, null, 2));
+  fs.writeFileSync(traceFilename, stringify(artifacts.traceContents, null, 2));
   log.log('info', 'trace file saved to disk', traceFilename);
 
   const screenshotsFilename = getAssetFilename('.screenshots.html', url);
