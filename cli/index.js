@@ -59,7 +59,13 @@ Output:
                        Reporter options: ${formatOptions}  (default=pretty)
     --output-path      The file path to output the results (default=stdout)
                        Example: --output-path=./lighthouse-results.html
-`);
+`, {
+  // These options do not have a value
+  boolean: [
+    'save-assets', 'save-artifacts', 'list-all-audits',
+    'verbose', 'quiet', 'help', 'version'
+  ]
+});
 
 if (cli.flags.listAllAudits) {
   log.info('All lighthouse audits:', lighthouse.getAuditList().join(', '));
