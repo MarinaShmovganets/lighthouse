@@ -50,7 +50,7 @@ class ScreenshotFilmstrip extends Gather {
 
   postProfiling(options, tracingData) {
     return this.getScreenshots(tracingData.traceContents).then(screenshots => {
-      this.artifact = {screenshots};
+      this.artifact = screenshots;
     });
   }
 }
