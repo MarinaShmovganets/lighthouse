@@ -43,6 +43,13 @@ class ManifestDisplay extends Audit {
   }
 
   /**
+   * @return {!Array<string>}
+   */
+  static get requiredArtifacts() {
+    return ['manifest'];
+  }
+
+  /**
    * @param {string|null} val
    * @return {boolean}
    */

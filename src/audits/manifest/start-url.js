@@ -42,6 +42,13 @@ class ManifestStartUrl extends Audit {
   }
 
   /**
+   * @return {!Array<string>}
+   */
+  static get requiredArtifacts() {
+    return ['manifest'];
+  }
+
+  /**
    * @param {!Artifacts} artifacts
    * @return {!AuditResult}
    */

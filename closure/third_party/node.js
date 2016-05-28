@@ -14,18 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
 
-const Gather = require('./gather');
+/**
+ * @externs
+ */
 
-class URL extends Gather {
-  get name() {
-    return 'url';
-  }
+/** @type {string} */
+var __dirname = '';
 
-  setup(options) {
-    this.artifact = options.url || options.driver.url;
-  }
-}
+/** @type {!Object} */
+var global = {};
 
-module.exports = URL;

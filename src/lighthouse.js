@@ -20,7 +20,7 @@ const Auditor = require('./auditor');
 const Scheduler = require('./scheduler');
 const Aggregator = require('./aggregator');
 
-const gathererClasses = [
+const GATHERER_CLASSES = [
   require('./gatherers/url'),
   require('./gatherers/https'),
   require('./gatherers/http-redirect'),
@@ -32,10 +32,10 @@ const gathererClasses = [
   require('./gatherers/accessibility'),
   require('./gatherers/screenshots'),
   require('./gatherers/offline'),
-  require('./gatherers/critical-network-chains')
+  require('./gatherers/critical-request-chains')
 ];
 
-const audits = [
+const AUDITS = [
   require('./audits/security/is-on-https'),
   require('./audits/security/redirects-http'),
   require('./audits/offline/service-worker'),
@@ -44,8 +44,10 @@ const audits = [
   require('./audits/mobile-friendly/display'),
   require('./audits/performance/first-meaningful-paint'),
   require('./audits/performance/speed-index-metric'),
+  require('./audits/performance/user-timings'),
   // TODO: https://github.com/GoogleChrome/lighthouse/issues/336
   // require('./audits/performance/input-readiness-metric'),
+  require('./audits/performance/critical-request-chains'),
   require('./audits/manifest/exists'),
   require('./audits/manifest/background-color'),
   require('./audits/manifest/theme-color'),
@@ -64,7 +66,7 @@ const audits = [
   require('./audits/accessibility/tabindex')
 ];
 
-const aggregators = [
+const AGGREGATORS = [
   require('./aggregators/can-load-offline'),
   require('./aggregators/is-performant'),
   require('./aggregators/is-secure'),
@@ -72,7 +74,8 @@ const aggregators = [
   require('./aggregators/launches-with-splash-screen'),
   require('./aggregators/address-bar-is-themed'),
   require('./aggregators/is-sized-for-mobile-screen'),
-  require('./aggregators/best-practices')
+  require('./aggregators/best-practices'),
+  require('./aggregators/performance-metrics')
 ];
 
 module.exports = function(driver, opts) {
@@ -86,16 +89,38 @@ module.exports = function(driver, opts) {
     opts.flags.loadPage = true;
   }
 
-  const gatherers = gathererClasses.map(G => new G());
+  // Discard any audits not whitelisted.
+  let audits = AUDITS;
+  if (opts.flags.auditWhitelist) {
+    const whitelist = opts.flags.auditWhitelist;
+    audits = audits.filter(audit => whitelist.has(audit.name));
+  }
+
+  // Collate all artifacts required by audits to be run.
+  const auditArtifacts = audits.map(audit => audit.requiredArtifacts);
+  const requiredArtifacts = new Set([].concat(...auditArtifacts));
+
+  // Instantiate gatherers and discard any not needed by requested audits.
+  // For now, the trace and network records are assumed to be required.
+  const gatherers = GATHERER_CLASSES.map(G => new G())
+    .filter(gatherer => requiredArtifacts.has(gatherer.name));
 
   return Scheduler
       .run(gatherers, Object.assign({}, opts, {driver}))
       .then(artifacts => Auditor.audit(artifacts, audits))
-      .then(results => Aggregator.aggregate(aggregators, results))
+      .then(results => Aggregator.aggregate(AGGREGATORS, results))
       .then(aggregations => {
         return {
           url: opts.url,
           aggregations
         };
       });
+};
+
+/**
+ * Returns list of audit names for external querying.
+ * @return {!Array<string>}
+ */
+module.exports.getAuditList = function() {
+  return AUDITS.map(audit => audit.name);
 };

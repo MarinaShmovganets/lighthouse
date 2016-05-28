@@ -17,8 +17,10 @@
 'use strict';
 
 const fs = require('fs');
+
 const log = require('./lib/log.js');
 const screenshotDump = require('./lib/screenshot-page.js');
+const Gather = require('./gatherers/gather.js');
 
 function loadPage(driver, gatherers, options) {
   const loadPage = options.flags.loadPage;
@@ -36,6 +38,8 @@ function reloadPage(driver, options) {
   // navigate away and then come back to reload. We do not `waitForLoad` on
   // about:blank since a page load event is never fired on it.
   return driver.gotoURL('about:blank')
+    // Wait one second for about:blank to "take hold" before switching back to the page.
+    .then(_ => new Promise((resolve, reject) => setTimeout(resolve, 300)))
     .then(_ => driver.gotoURL(options.url, {waitForLoad: true}));
 }
 
@@ -59,22 +63,18 @@ function setupDriver(driver, gatherers, options) {
 // Enable tracing and network record collection.
 function beginPassiveCollection(driver) {
   return driver.beginTrace()
-    .then(_ => driver.beginNetworkCollect())
-    .then(_ => driver.beginFrameLoadCollect());
+    .then(_ => driver.beginNetworkCollect());
 }
+
 
 function endPassiveCollection(options, tracingData) {
   const driver = options.driver;
-  return driver.endNetworkCollect().then(networkData => {
-    tracingData.networkRecords = networkData.networkRecords;
-    tracingData.rawNetworkEvents = networkData.rawNetworkEvents;
+  return driver.endNetworkCollect().then(networkRecords => {
+    tracingData.networkRecords = networkRecords;
   }).then(_ => {
     return driver.endTrace();
   }).then(traceContents => {
     tracingData.traceContents = traceContents;
-    return driver.endFrameLoadCollect();
-  }).then(frameLoadEvents => {
-    tracingData.frameLoadEvents = frameLoadEvents;
   });
 }
 
@@ -84,12 +84,6 @@ function phaseRunner(gatherers) {
       return chain.then(_ => gatherFun(gatherer));
     }, Promise.resolve());
   };
-}
-
-function flattenArtifacts(artifacts) {
-  return artifacts.reduce(function(prev, curr) {
-    return Object.assign(prev, curr);
-  }, {});
 }
 
 function saveArtifacts(artifacts) {
@@ -121,6 +115,54 @@ function saveAssets(options, artifacts) {
   log.log('info', 'screenshots saved to disk', screenshotsFilename);
 }
 
+function shouldRunPass(gatherers, phases) {
+  return phases.reduce((shouldRun, phase) => {
+    return shouldRun || gatherers.some(gatherer => gatherer[phase] !== Gather.prototype[phase]);
+  }, false);
+}
+
+function firstPass(driver, gatherers, options, tracingData) {
+  const runPhase = phaseRunner(gatherers);
+
+  return runPhase(gatherer => gatherer.setup(options))
+    .then(_ => beginPassiveCollection(driver))
+    .then(_ => runPhase(gatherer => gatherer.beforePageLoad(options)))
+
+    // Load page, gather from browser, stop profilers.
+    .then(_ => loadPage(driver, gatherers, options))
+    .then(_ => runPhase(gatherer => gatherer.profiledPostPageLoad(options)))
+    .then(_ => endPassiveCollection(options, tracingData))
+    .then(_ => runPhase(gatherer => gatherer.postProfiling(options, tracingData)));
+}
+
+function secondPass(driver, gatherers, options) {
+  const phases = ['reloadSetup', 'beforeReloadPageLoad', 'afterReloadPageLoad'];
+  if (!shouldRunPass(gatherers, phases)) {
+    return Promise.resolve();
+  }
+
+  const runPhase = phaseRunner(gatherers);
+
+  // Reload page for SW, etc.
+  return runPhase(gatherer => gatherer.reloadSetup(options))
+    .then(_ => runPhase(gatherer => gatherer.beforeReloadPageLoad(options)))
+    .then(_ => reloadPage(driver, options))
+    .then(_ => runPhase(gatherer => gatherer.afterReloadPageLoad(options)));
+}
+
+function thirdPass(driver, gatherers, options) {
+  if (!shouldRunPass(gatherers, ['afterSecondReloadPageLoad'])) {
+    return Promise.resolve();
+  }
+
+  const runPhase = phaseRunner(gatherers);
+
+  // Reload page again for HTTPS redirect
+  options.url = options.url.replace(/^https/, 'http');
+  return reloadPage(driver, options)
+    .then(_ => runPhase(gatherer => gatherer.afterSecondReloadPageLoad(options)));
+}
+
 function run(gatherers, options) {
   const driver = options.driver;
   const tracingData = {};
@@ -132,43 +174,24 @@ function run(gatherers, options) {
   const runPhase = phaseRunner(gatherers);
 
   return driver.connect()
-    // Initial prep before the page load.
     .then(_ => setupDriver(driver, gatherers, options))
-    .then(_ => runPhase(gatherer => gatherer.setup(options)))
-    .then(_ => beginPassiveCollection(driver))
-    .then(_ => runPhase(gatherer => gatherer.beforePageLoad(options)))
 
-    // Load page, gather from browser, stop profilers.
-    .then(_ => loadPage(driver, gatherers, options))
-    .then(_ => runPhase(gatherer => gatherer.profiledPostPageLoad(options)))
-    .then(_ => endPassiveCollection(options, tracingData))
-    .then(_ => runPhase(gatherer => gatherer.postProfiling(options, tracingData)))
-
-    // Reload page for SW, etc.
-    .then(_ => runPhase(gatherer => gatherer.reloadSetup(options)))
-    .then(_ => runPhase(gatherer => gatherer.beforeReloadPageLoad(options)))
-    .then(_ => reloadPage(driver, options))
-    .then(_ => runPhase(gatherer => gatherer.afterReloadPageLoad(options)))
-
-    // Reload page again for HTTPS redirect
-    .then(_ => {
-      options.url = options.url.replace(/^https/, 'http');
-    })
-    .then(_ => reloadPage(driver, options))
-    .then(_ => runPhase(gatherer => gatherer.afterSecondReloadPageLoad(options)))
+    .then(_ => firstPass(driver, gatherers, options, tracingData))
+    .then(_ => secondPass(driver, gatherers, options))
+    .then(_ => thirdPass(driver, gatherers, options))
 
     // Finish and teardown.
     .then(_ => driver.disconnect())
     .then(_ => runPhase(gatherer => gatherer.tearDown(options)))
     .then(_ => {
       // Collate all the gatherer results.
-      const unflattenedArtifacts = gatherers.map(g => g.artifact).concat(
-          {networkRecords: tracingData.networkRecords},
-          {rawNetworkEvents: tracingData.rawNetworkEvents},
-          {traceContents: tracingData.traceContents},
-          {frameLoadEvents: tracingData.frameLoadEvents});
-
-      const artifacts = flattenArtifacts(unflattenedArtifacts);
+      const artifacts = gatherers.reduce((artifacts, gatherer) => {
+        artifacts[gatherer.name] = gatherer.artifact;
+        return artifacts;
+      }, {
+        networkRecords: tracingData.networkRecords,
+        traceContents: tracingData.traceContents
+      });
 
       if (options.flags.saveArtifacts) {
         saveArtifacts(artifacts);

@@ -242,21 +242,25 @@ describe('Aggregate', () => {
 
     const results = [{
       name: 'test',
-      value: false
+      value: false,
+      contributesToScore: true
     }, {
       name: 'alternate-test',
-      value: 50
+      value: 50,
+      contributesToScore: true
     }];
-
-    return assert.deepEqual(Aggregate.compare(results, expected), {
+    const aggregationType = {contributesToScore: true};
+    return assert.deepEqual(Aggregate.compare(results, expected, aggregationType), {
       overall: 0.375,
       subItems: [{
         name: 'test',
-        value: false
+        value: false,
+        contributesToScore: true
       },
       {
         name: 'alternate-test',
-        value: 50
+        value: 50,
+        contributesToScore: true
       }]
     });
   });
@@ -271,10 +275,11 @@ describe('Aggregate', () => {
 
     const results = [{
       name: 'test',
-      value: true
+      value: true,
+      contributesToScore: true
     }];
-
-    return assert.equal(Aggregate.compare(results, expected).overall, 1);
+    const aggregationType = {contributesToScore: true};
+    return assert.equal(Aggregate.compare(results, expected, aggregationType).overall, 1);
   });
 
   it('outputs subitems', () => {
@@ -290,6 +295,7 @@ describe('Aggregate', () => {
       value: true
     }];
 
-    return assert.ok(Array.isArray(Aggregate.compare(results, expected).subItems));
+    const aggregationType = {contributesToScore: true};
+    return assert.ok(Array.isArray(Aggregate.compare(results, expected, aggregationType).subItems));
   });
 });

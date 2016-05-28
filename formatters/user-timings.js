@@ -17,21 +17,20 @@
 
 'use strict';
 
+const Formatter = require('./formatter');
 const path = require('path');
 const fs = require('fs');
-const Formatter = require('./formatter');
-const html = fs.readFileSync(path.join(__dirname, 'partials/accessibility.html'), 'utf8');
+const html = fs.readFileSync(path.join(__dirname, 'partials/user-timings.html'), 'utf8');
 
-class Accessibilty extends Formatter {
+class UserTimings extends Formatter {
   static getFormatter(type) {
     switch (type) {
       case 'pretty':
-        return function(info) {
-          let output = `      - Rating: ${info.impact}\n` +
-          `      - See: ${info.helpUrl}\n` +
-          '      - Nodes:\n' +
-          info.nodes.reduce((prev, node) => {
-            return prev + `        - ${node.target}\n`;
+        return events => {
+          let output = `    - performance.measure events created by the site\n` +
+          events.reduce((prev, event) => {
+            return prev + `      - Measure: ${event.name}\n` +
+            '        - Duration: ' + event.duration + '\n';
           }, '');
 
           return output;
@@ -47,4 +46,4 @@ class Accessibilty extends Formatter {
   }
 }
 
-module.exports = Accessibilty;
+module.exports = UserTimings;

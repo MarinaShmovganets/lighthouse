@@ -41,6 +41,13 @@ class WorksOffline extends Audit {
   }
 
   /**
+   * @return {!Array<string>}
+   */
+  static get requiredArtifacts() {
+    return ['offlineResponseCode'];
+  }
+
+  /**
    * @param {!Artifacts} artifacts
    * @return {!AuditResult}
    */

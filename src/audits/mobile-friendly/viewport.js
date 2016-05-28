@@ -41,6 +41,13 @@ class Viewport extends Audit {
   }
 
   /**
+   * @return {!Array<string>}
+   */
+  static get requiredArtifacts() {
+    return ['viewport'];
+  }
+
+  /**
    * @param {!Artifacts} artifacts
    * @return {!AuditResult}
    */

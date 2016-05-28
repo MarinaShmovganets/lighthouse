@@ -21,6 +21,7 @@
 const Aggregate = require('../src/aggregators/aggregate');
 const Formatter = require('../formatters/formatter');
 const Handlebars = require('handlebars');
+const log = require('../src/lib/log.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -178,9 +179,18 @@ class ReportGenerator {
         if (!subItem.extendedInfo) {
           return;
         }
+        if (!subItem.extendedInfo.formatter) {
+          log.log('warn', 'HTML formatter not provided', JSON.stringify(subItem.extendedInfo));
+          return;
+        }
 
-        const formatter = Formatter.getByName(subItem.extendedInfo.formatter).getFormatter('html');
-        Handlebars.registerPartial(subItem.name, formatter);
+        const formatter = Formatter.getByName(subItem.extendedInfo.formatter);
+        const helpers = formatter.getHelpers();
+        if (helpers) {
+          Handlebars.registerHelper(helpers);
+        }
+
+        Handlebars.registerPartial(subItem.name, formatter.getFormatter('html'));
       });
     });
 

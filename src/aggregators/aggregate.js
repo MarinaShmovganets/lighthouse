@@ -34,6 +34,10 @@ class Aggregate {
       BEST_PRACTICE: {
         name: 'Best Practices',
         contributesToScore: false
+      },
+      PERFORMANCE_METRICS: {
+        name: 'Performance Metrics',
+        contributesToScore: false
       }
     };
   }
@@ -78,7 +82,7 @@ class Aggregate {
    */
   static _filterResultsByAuditNames(results, expected) {
     const expectedNames = Object.keys(expected);
-    return results.filter(r => expectedNames.indexOf(r.name) !== -1);
+    return results.filter(r => expectedNames.indexOf(/** @type {string} */ (r.name)) !== -1);
   }
 
   /**
@@ -181,9 +185,10 @@ class Aggregate {
    * Compares the set of audit results to the expected values.
    * @param {!Array<!AuditResult>} results The audit results.
    * @param {!AggregationCriteria} expected The aggregation's expected values and weighting.
+   * @param {!AggregationType} aggregationType The type of aggregator we have (e.g. PWA, Best Practices, etc.)
    * @return {!AggregationItem} The aggregation score.
    */
-  static compare(results, expected) {
+  static compare(results, expected, aggregationType) {
     const expectedNames = Object.keys(expected);
 
     // Filter down and remap the results to something more comparable to
@@ -196,12 +201,13 @@ class Aggregate {
     const subItems = [];
     let overallScore = 0;
 
-    // Step through each item in the expected results
+    // Step through each item in the expected results, and add them
+    // to the overall score and add each to the subItems list.
     expectedNames.forEach(e => {
       // TODO(paullewis): Remove once coming soon audits have landed.
       if (expected[e].comingSoon) {
         subItems.push({
-          value: String.raw`¯\_(ツ)_/¯`,
+          value: '¯\\_(ツ)_/¯', // TODO(samthor): Patch going to Closure, String.raw is badly typed
           name: 'coming-soon',
           category: expected[e].category,
           description: expected[e].description,
@@ -215,11 +221,17 @@ class Aggregate {
         return;
       }
 
+      subItems.push(filteredAndRemappedResults[e]);
+
+      // Only add to the score if this aggregation contributes to the
+      // overall score.
+      if (!aggregationType.contributesToScore) {
+        return;
+      }
+
       overallScore += Aggregate._convertToWeight(
           filteredAndRemappedResults[e],
           expected[e]);
-
-      subItems.push(filteredAndRemappedResults[e]);
     });
 
     return {
@@ -239,7 +251,7 @@ class Aggregate {
       shortName: this.shortName,
       description: this.description,
       type: this.type,
-      score: Aggregate.compare(results, this.criteria)
+      score: Aggregate.compare(results, this.criteria, this.type)
     };
   }
 }

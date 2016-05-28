@@ -43,6 +43,13 @@ class ImageAlt extends Audit {
   }
 
   /**
+   * @return {!Array<string>}
+   */
+  static get requiredArtifacts() {
+    return ['accessibility'];
+  }
+
+  /**
    * @param {!Artifacts} artifacts
    * @return {!AuditResult}
    */
@@ -65,10 +72,8 @@ class ImageAlt extends Audit {
       return '';
     }
 
-    return rule.help + ' (Failed on ' +
-      rule.nodes.reduce((prev, node) => {
-        return prev + `"${node.target.join(', ')}"`;
-      }, '') + ')';
+    const elementsStr = rule.nodes.length === 1 ? 'element' : 'elements';
+    return `${rule.help} (Failed on ${rule.nodes.length} ${elementsStr})`;
   }
 }
 

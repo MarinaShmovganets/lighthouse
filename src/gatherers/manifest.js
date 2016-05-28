@@ -21,6 +21,7 @@ const manifestParser = require('../lib/manifest-parser');
 
 /* global document, XMLHttpRequest, __returnResults */
 
+/* istanbul ignore next */
 function getManifestContent() {
   function post(response) {
     // __returnResults is magically inserted by driver.evaluateAsync
@@ -53,14 +54,15 @@ function getManifestContent() {
 }
 
 class Manifest extends Gather {
+  get name() {
+    return 'manifest';
+  }
 
   static _errorManifest(errorString) {
     return {
-      manifest: {
-        raw: undefined,
-        value: undefined,
-        debugString: errorString
-      }
+      raw: undefined,
+      value: undefined,
+      debugString: errorString
     };
   }
 
@@ -82,10 +84,11 @@ class Manifest extends Gather {
       if (returnedValue.error) {
         this.artifact = Manifest._errorManifest(returnedValue.error);
       } else {
-        this.artifact = {
-          manifest: manifestParser(returnedValue.manifestContent)
-        };
+        this.artifact = manifestParser(returnedValue.manifestContent);
       }
+    }, _ => {
+      this.artifact = Manifest._errorManifest('Unable to retrieve manifest');
+      return;
     });
   }
 }
