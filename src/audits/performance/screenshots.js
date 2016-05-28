@@ -56,7 +56,7 @@ class Screenshots extends Audit {
     const screenshots = artifacts.screenshots;
 
     return Screenshots.generateAuditResult({
-      value: screenshots.length,
+      value: screenshots.length || 0,
       extendedInfo: {
         value: screenshots
       }
