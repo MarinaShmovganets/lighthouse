@@ -359,6 +359,8 @@ describe('Aggregate', () => {
   });
 
   it('aggregates', () => {
+    'use strict';
+
     // Make a fake aggregation and test it.
     class AggregateTest extends Aggregate {
       static get name() {
