@@ -94,6 +94,11 @@ module.exports = function(driver, opts) {
   // Discard any audits not whitelisted.
   let audits = AUDITS;
   let rejected;
+
+  // Testing this will require exposing the functionality at the module level, which
+  // isn't really necessary (and probably confusing for people using Lighthouse), so we'll
+  // skip this when testing coverage.
+  /* istanbul ignore if */
   if (opts.flags.auditWhitelist) {
     const whitelist = opts.flags.auditWhitelist;
     rejected = audits.filter(audit => !whitelist.has(audit.name));
