@@ -118,6 +118,9 @@ module.exports = function(driver, opts) {
   const gatherers = GATHERER_CLASSES.map(G => new G())
     .filter(gatherer => requiredArtifacts.has(gatherer.name));
 
+  // The runs of Lighthouse should be tested in integration / smoke tests, so testing for coverage
+  // here, at least from a unit test POV, is relatively low merit.
+  /* istanbul ignore next */
   return Scheduler
       .run(gatherers, Object.assign({}, opts, {driver}))
       .then(artifacts => Auditor.audit(artifacts, audits))
