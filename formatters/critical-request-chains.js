@@ -32,7 +32,8 @@ class CriticalRequestChains extends Formatter {
     switch (type) {
       case 'pretty':
         return function(info) {
-          if (typeof info === 'undefined') {
+          if (info === null ||
+              typeof info === 'undefined') {
             return '';
           }
 

@@ -55,6 +55,13 @@ const extendedInfo = {
 /* global describe, it */
 
 describe('CRC Formatter', () => {
+  it('copes with invalid input', () => {
+    const formatter = criticalRequestChainFormatter.getFormatter('pretty');
+    formatter();
+    formatter(null);
+    formatter({});
+  });
+
   it('generates valid pretty output', () => {
     const formatter = criticalRequestChainFormatter.getFormatter('pretty');
     const output = formatter(extendedInfo);

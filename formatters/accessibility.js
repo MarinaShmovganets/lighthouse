@@ -27,7 +27,8 @@ class Accessibilty extends Formatter {
     switch (type) {
       case 'pretty':
         return function(info) {
-          if (typeof info === 'undefined' ||
+          if (info === null ||
+              typeof info === 'undefined' ||
               typeof info.impact === 'undefined' ||
               typeof info.helpUrl === 'undefined' ||
               typeof info.nodes === 'undefined' ||
