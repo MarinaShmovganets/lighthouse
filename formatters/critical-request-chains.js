@@ -32,6 +32,10 @@ class CriticalRequestChains extends Formatter {
     switch (type) {
       case 'pretty':
         return function(info) {
+          if (typeof info === 'undefined') {
+            return '';
+          }
+
           const longestChain = CriticalRequestChains._getLongestChainLength(info);
           const longestDuration = CriticalRequestChains._getLongestChainDuration(info);
           const urlTree = CriticalRequestChains._createURLTreeOutput(info);
