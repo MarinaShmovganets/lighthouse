@@ -32,7 +32,7 @@ class UserTimings extends Gather {
     return new Promise((resolve, reject) => {
       setTimeout(_ => {
         resolve();
-      }, options.flags.trace * 1000);
+      }, options.flags.pageDwellTime * 1000);
     });
   }
 
