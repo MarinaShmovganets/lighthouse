@@ -47,6 +47,8 @@ class Gather {
 
   afterSecondReloadPageLoad(options) { }
 
+  afterThirdReloadPageLoad(options) { }
+
   tearDown(options, tracingData) { }
 
   /* eslint-enable no-unused-vars */

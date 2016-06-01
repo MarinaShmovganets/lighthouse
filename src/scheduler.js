@@ -37,7 +37,7 @@ function reloadPage(driver, options) {
   return driver.gotoURL('about:blank')
     // Wait a bit for about:blank to "take hold" before switching back to the page.
     .then(_ => new Promise((resolve, reject) => setTimeout(resolve, 300)))
-    .then(_ => driver.gotoURL(options.url, {waitForLoad: true}));
+    .then(_ => driver.gotoURL(options.url, {waitForLoad: true, disableJavaScript: !!options.disableJavaScript}));
 }
 
 function setupDriver(driver, gatherers, options) {
@@ -130,6 +130,19 @@ function thirdPass(driver, gatherers, options) {
     .then(_ => runPhase(gatherer => gatherer.afterSecondReloadPageLoad(options)));
 }
 
+function fourthPass(driver, gatherers, options) {
+  if (!shouldRunPass(gatherers, ['afterThirdReloadPageLoad'])) {
+    return Promise.resolve();
+  }
+
+  const runPhase = phaseRunner(gatherers);
+
+  // Reload page again with JavaScript disabled
+  options.disableJavaScript = true;
+  return reloadPage(driver, options)
+    .then(_ => runPhase(gatherer => gatherer.afterThirdReloadPageLoad(options)));
+}
+
 function run(gatherers, options) {
   const driver = options.driver;
   const tracingData = {};
@@ -146,6 +159,7 @@ function run(gatherers, options) {
     .then(_ => firstPass(driver, gatherers, options, tracingData))
     .then(_ => secondPass(driver, gatherers, options))
     .then(_ => thirdPass(driver, gatherers, options))
+    .then(_ => fourthPass(driver, gatherers, options))
 
     // Finish and teardown.
     .then(_ => driver.disconnect())
