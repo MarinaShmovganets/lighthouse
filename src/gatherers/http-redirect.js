@@ -56,6 +56,12 @@ class HTTPRedirect extends Gather {
           };
 
           resolve();
+        }, _ => {
+          this.artifact = {
+            value: -1
+          };
+
+          reject();
         });
     });
   }
