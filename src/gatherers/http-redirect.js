@@ -30,6 +30,7 @@ class HTTPRedirect extends Gather {
 
   afterSecondReloadPageLoad(options) {
     const driver = options.driver;
+    const timeout = options.timeout || 10000;
 
     return new Promise((resolve, reject) => {
       // Set up a timeout for ten seconds in case we don't get any
@@ -41,7 +42,7 @@ class HTTPRedirect extends Gather {
         };
 
         resolve();
-      }, 10000);
+      }, timeout);
 
       driver.getSecurityState()
         .then(state => {
@@ -58,7 +59,7 @@ class HTTPRedirect extends Gather {
           resolve();
         }, _ => {
           this.artifact = {
-            value: -1
+            value: false
           };
 
           reject();

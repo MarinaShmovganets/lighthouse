@@ -51,7 +51,28 @@ describe('HTTP Redirect gatherer', () => {
     }).then(_ => {
       assert(false);
     }).catch(_ => {
-      assert.equal(httpRedirectGather.artifact.value, -1);
+      assert.equal(httpRedirectGather.artifact.value, false);
+      assert.ok(typeof httpRedirectGather.artifact.debugString === 'string');
+    });
+  });
+
+  it('handles driver timeout', () => {
+    return httpRedirectGather.afterSecondReloadPageLoad({
+      driver: {
+        getSecurityState() {
+          return new Promise((resolve, reject) => {
+            // Resolve after a second, which should be after the timeout for waiting on
+            // the security state has fired.
+            setTimeout(resolve, 1000);
+          });
+        }
+      },
+
+      timeout: 250
+    }).then(_ => {
+      assert(false);
+    }).catch(_ => {
+      assert.equal(httpRedirectGather.artifact.value, false);
     });
   });
 });
