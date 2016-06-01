@@ -59,7 +59,8 @@ class HTTPRedirect extends Gather {
           resolve();
         }, _ => {
           this.artifact = {
-            value: false
+            value: false,
+            debugString: 'Error requesting security state'
           };
 
           reject();
