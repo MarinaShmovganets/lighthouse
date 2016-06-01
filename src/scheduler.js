@@ -37,7 +37,9 @@ function reloadPage(driver, options) {
   return driver.gotoURL('about:blank')
     // Wait a bit for about:blank to "take hold" before switching back to the page.
     .then(_ => new Promise((resolve, reject) => setTimeout(resolve, 300)))
-    .then(_ => driver.gotoURL(options.url, {waitForLoad: true, disableJavaScript: !!options.disableJavaScript}));
+    .then(_ => driver.gotoURL(options.url, {
+      waitForLoad: true, disableJavaScript: !!options.disableJavaScript
+    }));
 }
 
 function setupDriver(driver, gatherers, options) {
@@ -125,7 +127,10 @@ function thirdPass(driver, gatherers, options) {
   const runPhase = phaseRunner(gatherers);
 
   // Reload page again for HTTPS redirect
-  return reloadPage(driver, Object.assign({}, options, {url: options.url.replace(/^https/, 'http')}))
+  let redirectedOptions = Object.assign({}, options, {
+    url: options.url.replace(/^https/, 'http')
+  });
+  return reloadPage(driver, redirectedOptions)
     .then(_ => runPhase(gatherer => gatherer.afterSecondReloadPageLoad(options)));
 }
 

@@ -33,7 +33,7 @@ class HTMLWithoutJavaScript extends HTML {
         .then(result => result.root.nodeId)
         .then(nodeId => driver.sendCommand('DOM.querySelector', {
           nodeId: nodeId,
-          selector: "body"
+          selector: 'body'
         }))
         .then(result => result.nodeId)
         .then(nodeId => driver.sendCommand('DOM.getOuterHTML', {
@@ -44,10 +44,11 @@ class HTMLWithoutJavaScript extends HTML {
         })
         .then(_ => driver.sendCommand('Runtime.evaluate', {
           // note: we use innerText, not textContent, because textContent includes the content of <script> elements!
-          expression: 'document.querySelector("body") ? document.querySelector("body").innerText : ""'
+          expression: 'document.querySelector("body") ? ' +
+            'document.querySelector("body").innerText : ""'
         }))
         .then(result => {
-          this.artifact.text = result.result.value
+          this.artifact.text = result.result.value;
         })
         .catch(_ => {
           this.artifact = {

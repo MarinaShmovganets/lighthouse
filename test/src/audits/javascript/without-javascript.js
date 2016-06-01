@@ -18,14 +18,16 @@ const assert = require('assert');
 
 /* global describe, it*/
 
+/* eslint-disable no-script-url */
 describe('JavaScript: scripting audit', () => {
   it('fails when the js-less body is empty', () => {
-    return assert.equal(Audit.audit({htmlWithoutJavaScript: {text: ""}}).value, false);
+    return assert.equal(Audit.audit({htmlWithoutJavaScript: {text: ''}}).value, false);
   });
   it('fails when the js-less body is whitespace', () => {
-    return assert.equal(Audit.audit({htmlWithoutJavaScript: {text: "        "}}).value, false);
+    return assert.equal(Audit.audit({htmlWithoutJavaScript: {text: '        '}}).value, false);
   });
   it('succeeds when the js-less body contains some content', () => {
-    return assert.equal(Audit.audit({htmlWithoutJavaScript: {text: "test"}}).value, true);
+    return assert.equal(Audit.audit({htmlWithoutJavaScript: {text: 'test'}}).value, true);
   });
 });
+/* eslint-enable */

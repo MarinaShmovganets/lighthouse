@@ -47,12 +47,12 @@ describe('HTML without JavaScript gatherer', () => {
 
             case 'DOM.getOuterHTML':
               return Promise.resolve({
-                outerHTML: '<body>Hello!</body>',
+                outerHTML: '<body>Hello!</body>'
               });
 
             case 'Runtime.evaluate':
               return Promise.resolve({
-                result: {value: 'Hello!'},
+                result: {value: 'Hello!'}
               });
 
             default:
