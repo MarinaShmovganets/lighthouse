@@ -21,7 +21,7 @@ const Audit = require('../audit');
 
 class ServiceWorker extends Audit {
   /**
-   * @override
+   * @return {!AuditMeta}
    */
   static get meta() {
     return {
@@ -38,7 +38,8 @@ class ServiceWorker extends Audit {
    */
   static audit(artifacts) {
     if (!artifacts.serviceWorkers ||
-        !artifacts.serviceWorkers.versions) {
+        !artifacts.serviceWorkers.versions ||
+        !Array.isArray(artifacts.serviceWorkers.versions)) {
       return ServiceWorker.generateAuditResult({value: false});
     }
 
