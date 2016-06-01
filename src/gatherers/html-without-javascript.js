@@ -30,19 +30,19 @@ class HTMLWithoutJavaScript extends HTML {
 
     this.artifact = {};
     return driver.sendCommand('Runtime.evaluate', {
-          // note: we use innerText, not textContent, because textContent includes the content of <script> elements!
-          expression: 'document.querySelector("body") ? ' +
-            'document.querySelector("body").innerText : ""'
-        })
-        .then(evaluation => {
-          this.artifact = evaluation.result.value;
-        })
-        .catch(_ => {
-          this.artifact = {
-            value: -1,
-            debugString: 'Unable to get document body innerText'
-          };
-        });
+      // note: we use innerText, not textContent, because textContent includes the content of <script> elements!
+      expression: 'document.querySelector("body") ? ' +
+          'document.querySelector("body").innerText : ""'
+    })
+    .then(evaluation => {
+      this.artifact = evaluation.result.value;
+    })
+    .catch(_ => {
+      this.artifact = {
+        value: -1,
+        debugString: 'Unable to get document body innerText'
+      };
+    });
   }
 }
 
