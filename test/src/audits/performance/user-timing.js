@@ -17,11 +17,34 @@
 
 const Audit = require('../../../../src/audits/performance/user-timings.js');
 const assert = require('assert');
+const userTimings = [
+  {
+    name: 'mark_test',
+    isMark: true,
+    args: {},
+    startTime: '273.85ms'
+  },
+  {
+    name: 'measure_test',
+    isMark: false,
+    args: {},
+    startTime: '0.00ms',
+    duration: '273.88ms',
+    endTime: '273.88ms'
+  }
+];
 
 /* eslint-env mocha */
 describe('Performance: user-timings audit', () => {
   it('fails gracefully', () => {
     const output = Audit.audit({});
     assert.equal(output.value, -1);
+  });
+
+  it('evaluates valid input correctly', () => {
+    const output = Audit.audit({userTimings});
+
+    assert.equal(output.value, 2);
+    assert.deepEqual(output.extendedInfo.value, userTimings);
   });
 });
