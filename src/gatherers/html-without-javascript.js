@@ -28,6 +28,7 @@ class HTMLWithoutJavaScript extends HTML {
   afterThirdReloadPageLoad(options) {
     const driver = options.driver;
 
+    this.artifact = {};
     return driver.sendCommand('DOM.getDocument')
         .then(result => result.root.nodeId)
         .then(nodeId => driver.sendCommand('DOM.querySelector', {
@@ -39,8 +40,16 @@ class HTMLWithoutJavaScript extends HTML {
           nodeId: nodeId
         }))
         .then(nodeHTML => {
-          this.artifact = nodeHTML.outerHTML;
-        }).catch(_ => {
+          this.artifact.html = nodeHTML.outerHTML;
+        })
+        .then(_ => driver.sendCommand('Runtime.evaluate', {
+          // note: we use innerText, not textContent, because textContent includes the content of <script> elements!
+          expression: 'document.querySelector("body") ? document.querySelector("body").innerText : ""'
+        }))
+        .then(result => {
+          this.artifact.text = result.result.value
+        })
+        .catch(_ => {
           this.artifact = {
             value: -1,
             debugString: 'Unable to get document body HTML'

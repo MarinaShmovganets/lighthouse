@@ -40,13 +40,7 @@ class WithoutJavaScript extends Audit {
 
     let bodyHasContent = true;
     let debugString;
-    if (artifacts.htmlWithoutJavaScript.trim() === "") {
-      bodyHasContent = false;
-      debugString = `The page body should render some content if its scripts are not available.`
-    }
-
-    let text = artifacts.htmlWithoutJavaScript.replace(/\n/g, '').replace(/<.*?>/g, ''); // tony the pony! he comes!
-    if (text.trim() === "") {
+    if (artifacts.htmlWithoutJavaScript.text.trim() === "") {
       bodyHasContent = false;
       debugString = `The page body should render some content if its scripts are not available.`
     }

@@ -50,15 +50,24 @@ describe('HTML without JavaScript gatherer', () => {
                 outerHTML: '<body>Hello!</body>',
               });
 
+            case 'Runtime.evaluate':
+              return Promise.resolve({
+                result: {value: 'Hello!'},
+              });
+
             default:
               throw new Error('Unsupported command');
           }
         }
       }
     }).then(_ => {
-      assert.ok(typeof htmlWithoutJavaScriptGather.artifact === 'string');
-      assert.ok(/<body/gim.test(htmlWithoutJavaScriptGather.artifact));
-      assert.ok(/Hello/gim.test(htmlWithoutJavaScriptGather.artifact));
+      assert.ok(typeof htmlWithoutJavaScriptGather.artifact === 'object');
+      assert.ok(typeof htmlWithoutJavaScriptGather.artifact.html === 'string');
+      assert.ok(typeof htmlWithoutJavaScriptGather.artifact.text === 'string');
+      assert.ok(/<body/gim.test(htmlWithoutJavaScriptGather.artifact.html));
+      assert.ok(/Hello/gim.test(htmlWithoutJavaScriptGather.artifact.html));
+      assert.ok(/Hello/gim.test(htmlWithoutJavaScriptGather.artifact.text));
+      assert.ok(!/body/gim.test(htmlWithoutJavaScriptGather.artifact.text));
     });
   });
 

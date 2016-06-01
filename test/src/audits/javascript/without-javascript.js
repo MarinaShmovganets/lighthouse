@@ -20,18 +20,12 @@ const assert = require('assert');
 
 describe('JavaScript: scripting audit', () => {
   it('fails when the js-less body is empty', () => {
-    return assert.equal(Audit.audit({htmlWithoutJavaScript: ""}).value, false);
+    return assert.equal(Audit.audit({htmlWithoutJavaScript: {text: ""}}).value, false);
   });
   it('fails when the js-less body is whitespace', () => {
-    return assert.equal(Audit.audit({htmlWithoutJavaScript: "        "}).value, false);
-  });
-  it('fails when the js-less body contains no textual content', () => {
-    return assert.equal(Audit.audit({htmlWithoutJavaScript: "<div><p></p></div>"}).value, false);
-  });
-  it('fails when the js-less body contains no textual content and has newlines inside tags', () => {
-    return assert.equal(Audit.audit({htmlWithoutJavaScript: "<div\n><p\n>\n</p></div>"}).value, false);
+    return assert.equal(Audit.audit({htmlWithoutJavaScript: {text: "        "}}).value, false);
   });
   it('succeeds when the js-less body contains some content', () => {
-    return assert.equal(Audit.audit({htmlWithoutJavaScript: "<div><p>test</p></div>"}).value, true);
+    return assert.equal(Audit.audit({htmlWithoutJavaScript: {text: "test"}}).value, true);
   });
 });
