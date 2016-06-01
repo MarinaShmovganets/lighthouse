@@ -29,11 +29,6 @@ class UserTimings extends Gather {
   // in the current page, specifically to allow time for user_timing
   // events created by the site to be fired
   profiledPostPageLoad(options) {
-    if (typeof options.flags.trace === 'undefined' ||
-          options.flags.trace < 0) {
-      return;
-    }
-
     return new Promise((resolve, reject) => {
       setTimeout(_ => {
         resolve();
