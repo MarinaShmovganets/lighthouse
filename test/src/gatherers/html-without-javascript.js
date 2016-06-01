@@ -33,23 +33,6 @@ describe('HTML without JavaScript gatherer', () => {
       driver: {
         sendCommand(cmd) {
           switch (cmd) {
-            case 'DOM.getDocument':
-              return Promise.resolve({
-                root: {
-                  nodeId: 1
-                }
-              });
-
-            case 'DOM.querySelector':
-              return Promise.resolve({
-                nodeId: 1
-              });
-
-            case 'DOM.getOuterHTML':
-              return Promise.resolve({
-                outerHTML: '<body>Hello!</body>'
-              });
-
             case 'Runtime.evaluate':
               return Promise.resolve({
                 result: {value: 'Hello!'}
@@ -61,13 +44,8 @@ describe('HTML without JavaScript gatherer', () => {
         }
       }
     }).then(_ => {
-      assert.ok(typeof htmlWithoutJavaScriptGather.artifact === 'object');
-      assert.ok(typeof htmlWithoutJavaScriptGather.artifact.html === 'string');
-      assert.ok(typeof htmlWithoutJavaScriptGather.artifact.text === 'string');
-      assert.ok(/<body/gim.test(htmlWithoutJavaScriptGather.artifact.html));
-      assert.ok(/Hello/gim.test(htmlWithoutJavaScriptGather.artifact.html));
-      assert.ok(/Hello/gim.test(htmlWithoutJavaScriptGather.artifact.text));
-      assert.ok(!/body/gim.test(htmlWithoutJavaScriptGather.artifact.text));
+      assert.ok(typeof htmlWithoutJavaScriptGather.artifact === 'string');
+      assert.ok(/Hello/gim.test(htmlWithoutJavaScriptGather.artifact));
     });
   });
 

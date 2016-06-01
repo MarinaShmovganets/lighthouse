@@ -16,7 +16,7 @@
  */
 'use strict';
 
-/* Note that this returns the outerHTML of the <body> element, not the documentElement. */
+/* Note that this returns the innerText of the <body> element, not the HTML. */
 
 const HTML = require('./html');
 
@@ -29,31 +29,18 @@ class HTMLWithoutJavaScript extends HTML {
     const driver = options.driver;
 
     this.artifact = {};
-    return driver.sendCommand('DOM.getDocument')
-        .then(result => result.root.nodeId)
-        .then(nodeId => driver.sendCommand('DOM.querySelector', {
-          nodeId: nodeId,
-          selector: 'body'
-        }))
-        .then(result => result.nodeId)
-        .then(nodeId => driver.sendCommand('DOM.getOuterHTML', {
-          nodeId: nodeId
-        }))
-        .then(nodeHTML => {
-          this.artifact.html = nodeHTML.outerHTML;
-        })
-        .then(_ => driver.sendCommand('Runtime.evaluate', {
+    return driver.sendCommand('Runtime.evaluate', {
           // note: we use innerText, not textContent, because textContent includes the content of <script> elements!
           expression: 'document.querySelector("body") ? ' +
             'document.querySelector("body").innerText : ""'
-        }))
-        .then(result => {
-          this.artifact.text = result.result.value;
+        })
+        .then(evaluation => {
+          this.artifact = evaluation.result.value;
         })
         .catch(_ => {
           this.artifact = {
             value: -1,
-            debugString: 'Unable to get document body HTML'
+            debugString: 'Unable to get document body innerText'
           };
         });
   }
