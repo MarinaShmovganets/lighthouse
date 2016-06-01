@@ -23,12 +23,6 @@ describe('Security: HTTPS audit', () => {
     return assert.equal(Audit.audit({}).value, false);
   });
 
-  it('fails when invalid HTML given', () => {
-    return assert.equal(Audit.audit({
-      html: null
-    }).value, false);
-  });
-
   it('fails when not on HTTPS', () => {
     return assert.equal(Audit.audit({
       https: false
