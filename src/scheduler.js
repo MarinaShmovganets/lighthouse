@@ -125,8 +125,7 @@ function thirdPass(driver, gatherers, options) {
   const runPhase = phaseRunner(gatherers);
 
   // Reload page again for HTTPS redirect
-  options.url = options.url.replace(/^https/, 'http');
-  return reloadPage(driver, options)
+  return reloadPage(driver, Object.assign({}, options, {url: options.url.replace(/^https/, 'http')}))
     .then(_ => runPhase(gatherer => gatherer.afterSecondReloadPageLoad(options)));
 }
 
@@ -138,8 +137,7 @@ function fourthPass(driver, gatherers, options) {
   const runPhase = phaseRunner(gatherers);
 
   // Reload page again with JavaScript disabled
-  options.disableJavaScript = true;
-  return reloadPage(driver, options)
+  return reloadPage(driver, Object.assign({}, options, {disableJavaScript: true}))
     .then(_ => runPhase(gatherer => gatherer.afterThirdReloadPageLoad(options)));
 }
 
