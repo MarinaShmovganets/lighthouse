@@ -19,9 +19,6 @@
 
 const Audit = require('../audit');
 const Formatter = require('../../../formatters/formatter');
-const TimelineModel = require('../../lib/traces/devtools-timeline-model');
-
-const FAILURE_MESSAGE = 'Trace data not found.';
 
 class UserTimings extends Audit {
   /**
@@ -32,7 +29,7 @@ class UserTimings extends Audit {
       category: 'Performance',
       name: 'user-timings',
       description: 'User Timing measures',
-      requiredArtifacts: ['traceContents']
+      requiredArtifacts: ['userTimings']
     };
   }
 
@@ -41,77 +38,18 @@ class UserTimings extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    if (!artifacts.traceContents || !Array.isArray(artifacts.traceContents)) {
+    if (typeof artifacts.userTimings === 'undefined' ||
+      !Array.isArray(artifacts.userTimings)) {
       return UserTimings.generateAuditResult({
-        value: -1,
-        debugString: FAILURE_MESSAGE
+        value: -1
       });
     }
 
-    let timingsCount = 0;
-    let navigationStart;
-    let measureEventMap = {};
-    let traceStart = false;
-    // Fetch blink.user_timing events from the tracing data
-    const timelineModel = new TimelineModel(artifacts.traceContents);
-    const modeledTraceData = timelineModel.timelineModel();
-    let userTimings = [];
-    modeledTraceData.mainThreadEvents().filter(
-      // Get all blink.user_timing events
-      ut => ut.hasCategory('blink.user_timing') || ut.name === 'TracingStartedInPage'
-    ).forEach(ut => {
-        if (ut.phase === 'R' || ut.phase === 'I') {
-          // Mark event
-          if (ut.name === 'TracingStartedInPage' && !traceStart) {
-            traceStart = true;
-            return;
-          }
-          if (ut.name === 'navigationStart' && traceStart & !navigationStart) {
-            navigationStart = ut.startTime;
-          }
-
-          userTimings.push({
-            name: ut.name,
-            isMark: true,        // defines type of performance metric
-            args: ut.args,
-            startTime: ut.startTime
-          });
-        } else if (ut.phase === 'b') {
-          // Beginning of measure event
-          measureEventMap[ut.name] = ut.startTime;
-        } else if (ut.phase === 'e') {
-          // End of measure event
-          userTimings.push({
-            name: ut.name,
-            isMark: false,
-            args: ut.args,
-            startTime: measureEventMap[ut.name],
-            duration: ut.startTime - measureEventMap[ut.name],
-            endTime: ut.startTime
-          });
-        } else {
-          // End
-          console.log("Got a strange event:");
-          console.log(ut);
-        }
-      }
-    );
-
-    userTimings.forEach(ut => {
-      ut.startTime = (ut.startTime - navigationStart).toFixed(2) + 'ms';
-      if (!ut.isMark) {
-        ut.endTime = (ut.endTime - navigationStart).toFixed(2) + 'ms';
-        ut.duration = ut.duration.toFixed(2) + 'ms';
-      }
-    });
-
-    timingsCount = userTimings.length;
-
     return UserTimings.generateAuditResult({
-      value: timingsCount,
+      value: artifacts.userTimings.length,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.USER_TIMINGS,
-        value: userTimings
+        value: artifacts.userTimings
       }
     });
   }

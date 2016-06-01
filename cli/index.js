@@ -49,6 +49,7 @@ Logging:
 Run Configuration:
     --mobile           Emulates a Nexus 5X (default=true)
     --load-page        Loads the page (default=true)
+    --trace            Specifies how long (in seconds) to let the page last, for the trace
     --save-assets      Save the trace contents & screenshots to disk
     --save-artifacts   Save all gathered artifacts to disk
     --audit-whitelist  Comma separated list of audits to run (default=all)
