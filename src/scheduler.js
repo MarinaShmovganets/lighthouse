@@ -127,7 +127,7 @@ function thirdPass(driver, gatherers, options) {
   const runPhase = phaseRunner(gatherers);
 
   // Reload page again for HTTPS redirect
-  let redirectedOptions = Object.assign({}, options, {
+  const redirectedOptions = Object.assign({}, options, {
     url: options.url.replace(/^https/, 'http')
   });
   return reloadPage(driver, redirectedOptions)
