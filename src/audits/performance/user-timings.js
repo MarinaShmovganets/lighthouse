@@ -49,35 +49,69 @@ class UserTimings extends Audit {
     }
 
     let timingsCount = 0;
-
+    let navigationStart;
+    let measureEventMap = {};
+    let traceStart = false;
     // Fetch blink.user_timing events from the tracing data
     const timelineModel = new TimelineModel(artifacts.traceContents);
     const modeledTraceData = timelineModel.timelineModel();
-    const key = [...modeledTraceData.mainThreadAsyncEvents().keys()].find(
-      key => key.title === 'User Timing'
-    );
-    let userTimings = modeledTraceData.mainThreadAsyncEvents().get(key);
+    let userTimings = [];
+    modeledTraceData.mainThreadEvents().filter(
+      // Get all blink.user_timing events
+      ut => ut.hasCategory('blink.user_timing') || ut.name === 'TracingStartedInPage'
+    ).forEach(ut => {
+        if (ut.phase === 'R' || ut.phase === 'I') {
+          // Mark event
+          if (ut.name === 'TracingStartedInPage' && !traceStart) {
+            traceStart = true;
+            return;
+          }
+          if (ut.name === 'navigationStart' && traceStart & !navigationStart) {
+            navigationStart = ut.startTime;
+          }
 
-    // Reduce events to record only useful information
-    if (typeof userTimings !== 'undefined') {
-      timingsCount = userTimings.length;
-      userTimings = userTimings.map(ut => {
-        return {
-          name: ut.name,
-          startTime: ut.startTime,
-          endTime: ut.endTime,
-          duration: ut.duration.toFixed(2) + 'ms',
-          args: ut.args
-        };
-      });
-    }
+          userTimings.push({
+            name: ut.name,
+            isMark: true,        // defines type of performance metric
+            args: ut.args,
+            startTime: ut.startTime
+          });
+        } else if (ut.phase === 'b') {
+          // Beginning of measure event
+          measureEventMap[ut.name] = ut.startTime;
+        } else if (ut.phase === 'e') {
+          // End of measure event
+          userTimings.push({
+            name: ut.name,
+            isMark: false,
+            args: ut.args,
+            startTime: measureEventMap[ut.name],
+            duration: ut.startTime - measureEventMap[ut.name],
+            endTime: ut.startTime
+          });
+        } else {
+          // End
+          console.log("Got a strange event:");
+          console.log(ut);
+        }
+      }
+    );
+
+    userTimings.forEach(ut => {
+      ut.startTime = (ut.startTime - navigationStart).toFixed(2) + 'ms';
+      if (!ut.isMark) {
+        ut.endTime = (ut.endTime - navigationStart).toFixed(2) + 'ms';
+        ut.duration = ut.duration.toFixed(2) + 'ms';
+      }
+    });
+
+    timingsCount = userTimings.length;
 
     return UserTimings.generateAuditResult({
       value: timingsCount,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.USER_TIMINGS,
-        /* Pass empty array rather than undefined */
-        value: userTimings || []
+        value: userTimings
       }
     });
   }
