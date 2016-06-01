@@ -127,23 +127,13 @@ function thirdPass(driver, gatherers, options) {
   const runPhase = phaseRunner(gatherers);
 
   // Reload page again for HTTPS redirect
+  // Also, disable JavaScript on this run
   const redirectedOptions = Object.assign({}, options, {
-    url: options.url.replace(/^https/, 'http')
+    url: options.url.replace(/^https/, 'http'),
+    disableJavaScript: true
   });
   return reloadPage(driver, redirectedOptions)
     .then(_ => runPhase(gatherer => gatherer.afterSecondReloadPageLoad(options)));
-}
-
-function fourthPass(driver, gatherers, options) {
-  if (!shouldRunPass(gatherers, ['afterThirdReloadPageLoad'])) {
-    return Promise.resolve();
-  }
-
-  const runPhase = phaseRunner(gatherers);
-
-  // Reload page again with JavaScript disabled
-  return reloadPage(driver, Object.assign({}, options, {disableJavaScript: true}))
-    .then(_ => runPhase(gatherer => gatherer.afterThirdReloadPageLoad(options)));
 }
 
 function run(gatherers, options) {
@@ -162,7 +152,6 @@ function run(gatherers, options) {
     .then(_ => firstPass(driver, gatherers, options, tracingData))
     .then(_ => secondPass(driver, gatherers, options))
     .then(_ => thirdPass(driver, gatherers, options))
-    .then(_ => fourthPass(driver, gatherers, options))
 
     // Finish and teardown.
     .then(_ => driver.disconnect())

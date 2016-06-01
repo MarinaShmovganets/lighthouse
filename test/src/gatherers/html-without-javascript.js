@@ -17,7 +17,6 @@
 
 /* eslint-env mocha */
 
-/* NB: this is identical to the html test; it just checks afterThirdReloadPageLoad, not postProfiling */
 const HTMLWithoutJavaScriptGather = require('../../../src/gatherers/html-without-javascript');
 const assert = require('assert');
 let htmlWithoutJavaScriptGather;
@@ -29,7 +28,7 @@ describe('HTML without JavaScript gatherer', () => {
   });
 
   it('returns an artifact', () => {
-    return htmlWithoutJavaScriptGather.afterThirdReloadPageLoad({
+    return htmlWithoutJavaScriptGather.afterSecondReloadPageLoad({
       driver: {
         sendCommand(cmd) {
           switch (cmd) {
@@ -50,7 +49,7 @@ describe('HTML without JavaScript gatherer', () => {
   });
 
   it('handles driver failure', () => {
-    return htmlWithoutJavaScriptGather.afterThirdReloadPageLoad({
+    return htmlWithoutJavaScriptGather.afterSecondReloadPageLoad({
       driver: {
         sendCommand() {
           return Promise.reject('such a fail');

@@ -25,7 +25,7 @@ class HTMLWithoutJavaScript extends HTML {
     return 'htmlWithoutJavaScript';
   }
 
-  afterThirdReloadPageLoad(options) {
+  afterSecondReloadPageLoad(options) {
     const driver = options.driver;
 
     this.artifact = {};

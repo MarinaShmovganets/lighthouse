@@ -58,21 +58,6 @@ class TestGathererThree extends Gather {
   }
 }
 
-class TestGathererFour extends Gather {
-  constructor() {
-    super();
-    this.afterThirdReloadPageLoadCalled = false;
-  }
-
-  get name() {
-    return 'TestGathererFour';
-  }
-
-  afterThirdReloadPageLoad() {
-    this.afterThirdReloadPageLoadCalled = true;
-  }
-}
-
 class TestScreenshotGatherer extends Gather {
   constructor() {
     super();
@@ -340,32 +325,16 @@ describe('Scheduler', function() {
         });
   });
 
-  it('does a fourth pass when required', () => {
-    const origReloadSetup = Gather.prototype.reloadSetup;
-    const tgFour = new TestGathererFour();
-    const gatherers = [tgFour];
-
-    return scheduler.run(gatherers, {driver: fakeDriver, url: 'https://example.com', flags: {}})
-        .then(_ => {
-          assert.equal(tgFour.afterThirdReloadPageLoadCalled, true);
-
-          // Reset.
-          Gather.prototype.reloadSetup = origReloadSetup;
-        });
-  });
-
-  it('does all four passes when required', () => {
+  it('does all three passes when required', () => {
     const tgOne = new TestGathererOne();
     const tgTwo = new TestGathererTwo();
     const tgThree = new TestGathererThree();
-    const tgFour = new TestGathererFour();
-    const gatherers = [tgOne, tgTwo, tgThree, tgFour];
+    const gatherers = [tgOne, tgTwo, tgThree];
 
     return scheduler.run(gatherers, {driver: fakeDriver, url: 'https://example.com', flags: {}})
         .then(_ => {
           assert.equal(tgTwo.reloadSetupCalled, true);
           assert.equal(tgThree.afterSecondReloadPageLoadCalled, true);
-          assert.equal(tgFour.afterThirdReloadPageLoadCalled, true);
         });
   });
 
