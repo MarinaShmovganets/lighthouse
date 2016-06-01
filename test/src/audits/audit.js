@@ -18,13 +18,21 @@ const assert = require('assert');
 
 /* eslint-env mocha */
 
-// Extend the Audit class but fail to implement meta and see
-// what happens
+// Extend the Audit class but fail to implement meta. It should throw errors.
 class A extends Audit {}
+class B extends Audit {
+  static get meta() {
+    return {};
+  }
+}
 
 describe('Audit', () => {
   it('throws if an audit does not override the meta', () => {
     assert.throws(_ => A.meta);
+  });
+
+  it('does not throw if an audit overrides the meta', () => {
+    assert.doesNotThrow(_ => B.meta);
   });
 
   it('throws if an audit does generate a result with a value', () => {
