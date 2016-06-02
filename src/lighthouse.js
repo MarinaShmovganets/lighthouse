@@ -92,11 +92,6 @@ module.exports = function(driver, opts) {
     opts.flags.loadPage = true;
   }
 
-  if (typeof opts.flags.pageDwellTime === 'undefined' ||
-      opts.flags.pageDwellTime < 0) {
-    opts.flags.pageDwellTime = 0;
-  }
-
   // Discard any audits not whitelisted.
   let audits = AUDITS;
   let rejected;
