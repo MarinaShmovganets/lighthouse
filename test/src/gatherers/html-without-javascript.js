@@ -30,16 +30,8 @@ describe('HTML without JavaScript gatherer', () => {
   it('returns an artifact', () => {
     return htmlWithoutJavaScriptGather.afterSecondReloadPageLoad({
       driver: {
-        sendCommand(cmd) {
-          switch (cmd) {
-            case 'Runtime.evaluate':
-              return Promise.resolve({
-                result: {value: 'Hello!'}
-              });
-
-            default:
-              throw new Error('Unsupported command');
-          }
+        evaluateAsync() {
+          return Promise.resolve('Hello!');
         }
       }
     }).then(_ => {
@@ -51,7 +43,7 @@ describe('HTML without JavaScript gatherer', () => {
   it('handles driver failure', () => {
     return htmlWithoutJavaScriptGather.afterSecondReloadPageLoad({
       driver: {
-        sendCommand() {
+        evaluateAsync() {
           return Promise.reject('such a fail');
         }
       }

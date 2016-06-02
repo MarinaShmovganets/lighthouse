@@ -119,6 +119,7 @@ function secondPass(driver, gatherers, options) {
     .then(_ => runPhase(gatherer => gatherer.afterReloadPageLoad(options)));
 }
 
+// Another pass to check for HTTPS redirect, and with JS disabled
 function thirdPass(driver, gatherers, options) {
   if (!shouldRunPass(gatherers, ['afterSecondReloadPageLoad'])) {
     return Promise.resolve();
@@ -126,8 +127,6 @@ function thirdPass(driver, gatherers, options) {
 
   const runPhase = phaseRunner(gatherers);
 
-  // Reload page again for HTTPS redirect
-  // Also, disable JavaScript on this run
   const redirectedOptions = Object.assign({}, options, {
     url: options.url.replace(/^https/, 'http'),
     disableJavaScript: true
