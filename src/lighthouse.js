@@ -34,7 +34,8 @@ const GATHERER_CLASSES = [
   require('./gatherers/accessibility'),
   require('./gatherers/screenshots'),
   require('./gatherers/offline'),
-  require('./gatherers/critical-request-chains')
+  require('./gatherers/critical-request-chains'),
+  require('./gatherers/user-timings')
 ];
 
 const AUDITS = [
@@ -92,6 +93,11 @@ module.exports = function(driver, opts) {
 
   if (typeof opts.flags.loadPage === 'undefined') {
     opts.flags.loadPage = true;
+  }
+
+  if (typeof opts.flags.pageDwellTime === 'undefined' ||
+      opts.flags.pageDwellTime < 0) {
+    opts.flags.pageDwellTime = 0;
   }
 
   // Discard any audits not whitelisted.

@@ -33,8 +33,14 @@ class UserTimings extends Formatter {
 
           const output = `    - performance.measure events created by the site\n` +
           events.reduce((prev, event) => {
-            return prev + `      - Measure: ${event.name}\n` +
-            '        - Duration: ' + event.duration + '\n';
+            let output = prev + `      - ${event.isMark ? 'Mark' : 'Measure'}: ${event.name}\n` +
+            '        - Start Time: ' + event.startTime + '\n';
+            if (!event.isMark) {
+              output += '        - End Time: ' + event.endTime + '\n' +
+              '        - Duration: ' + event.duration + '\n';
+            }
+
+            return output;
           }, '');
 
           return output;

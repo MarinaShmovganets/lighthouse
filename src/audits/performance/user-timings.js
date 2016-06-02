@@ -19,9 +19,6 @@
 
 const Audit = require('../audit');
 const Formatter = require('../../../formatters/formatter');
-const TimelineModel = require('../../lib/traces/devtools-timeline-model');
-
-const FAILURE_MESSAGE = 'Trace data not found.';
 
 class UserTimings extends Audit {
   /**
@@ -32,7 +29,7 @@ class UserTimings extends Audit {
       category: 'Performance',
       name: 'user-timings',
       description: 'User Timing measures',
-      requiredArtifacts: ['traceContents']
+      requiredArtifacts: ['userTimings']
     };
   }
 
@@ -41,43 +38,18 @@ class UserTimings extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    if (!artifacts.traceContents || !Array.isArray(artifacts.traceContents)) {
+    if (typeof artifacts.userTimings === 'undefined' ||
+      !Array.isArray(artifacts.userTimings)) {
       return UserTimings.generateAuditResult({
-        value: -1,
-        debugString: FAILURE_MESSAGE
-      });
-    }
-
-    let timingsCount = 0;
-
-    // Fetch blink.user_timing events from the tracing data
-    const timelineModel = new TimelineModel(artifacts.traceContents);
-    const modeledTraceData = timelineModel.timelineModel();
-    const key = [...modeledTraceData.mainThreadAsyncEvents().keys()].find(
-      key => key.title === 'User Timing'
-    );
-    let userTimings = modeledTraceData.mainThreadAsyncEvents().get(key);
-
-    // Reduce events to record only useful information
-    if (typeof userTimings !== 'undefined') {
-      timingsCount = userTimings.length;
-      userTimings = userTimings.map(ut => {
-        return {
-          name: ut.name,
-          startTime: ut.startTime,
-          endTime: ut.endTime,
-          duration: ut.duration.toFixed(2) + 'ms',
-          args: ut.args
-        };
+        value: -1
       });
     }
 
     return UserTimings.generateAuditResult({
-      value: timingsCount,
+      value: artifacts.userTimings.length,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.USER_TIMINGS,
-        /* Pass empty array rather than undefined */
-        value: userTimings || []
+        value: artifacts.userTimings
       }
     });
   }

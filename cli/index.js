@@ -49,6 +49,8 @@ Logging:
 Run Configuration:
     --mobile           Emulates a Nexus 5X (default=true)
     --load-page        Loads the page (default=true)
+    --page-dwell-time  Specifies how long (in seconds) to dwell on the first load of the page.
+                       (default=0)
     --save-assets      Save the trace contents & screenshots to disk
     --save-artifacts   Save all gathered artifacts to disk
     --audit-whitelist  Comma separated list of audits to run (default=all)

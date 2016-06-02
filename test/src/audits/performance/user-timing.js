@@ -17,7 +17,22 @@
 
 const Audit = require('../../../../src/audits/performance/user-timings.js');
 const assert = require('assert');
-const traceContents = require('./trace-user-timings.json');
+const userTimings = [
+  {
+    name: 'mark_test',
+    isMark: true,
+    args: {},
+    startTime: '273.85ms'
+  },
+  {
+    name: 'measure_test',
+    isMark: false,
+    args: {},
+    startTime: '0.00ms',
+    duration: '273.88ms',
+    endTime: '273.88ms'
+  }
+];
 
 /* eslint-env mocha */
 describe('Performance: user-timings audit', () => {
@@ -26,15 +41,10 @@ describe('Performance: user-timings audit', () => {
     assert.equal(output.value, -1);
   });
 
-  it('processes a trace file for user timing data', () => {
-    const output = Audit.audit({traceContents});
-    assert.equal(output.value, 1);
-    assert.equal(output.extendedInfo.value[0].name, 'elapsed');
-  });
+  it('evaluates valid input correctly', () => {
+    const output = Audit.audit({userTimings});
 
-  it('handles valid traces with no user timing data', () => {
-    const output = Audit.audit({traceContents: traceContents.slice(0, 1)});
-    assert.equal(output.value, 0);
-    assert.equal(output.extendedInfo.value.length, 0);
+    assert.equal(output.value, 2);
+    assert.deepEqual(output.extendedInfo.value, userTimings);
   });
 });
