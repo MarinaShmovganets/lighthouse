@@ -28,7 +28,7 @@ class WithoutJavaScript extends Audit {
       category: 'JavaScript',
       name: 'without-javascript',
       description: 'Page contains some content when its scripts are not available',
-      requiredArtifacts: ['html', 'htmlWithoutJavaScript']
+      requiredArtifacts: ['htmlWithoutJavaScript']
     };
   }
 

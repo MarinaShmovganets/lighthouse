@@ -24,6 +24,7 @@ const HTML = require('./html');
 
 /* istanbul ignore next */
 function getBodyText() {
+  // note: we use innerText, not textContent, because textContent includes the content of <script> elements!
   const body = document.querySelector('body');
   // __returnResults is magically inserted by driver.evaluateAsync
   __returnResults(body ? body.innerText : '');
@@ -38,7 +39,6 @@ class HTMLWithoutJavaScript extends HTML {
     const driver = options.driver;
 
     this.artifact = {};
-    // note: we use innerText, not textContent, because textContent includes the content of <script> elements!
     return driver.evaluateAsync(`(${getBodyText.toString()}())`)
     .then(result => {
       this.artifact = result;
