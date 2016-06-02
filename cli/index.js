@@ -93,9 +93,16 @@ if (cli.flags.verbose) {
 
 // Normalize audit whitelist.
 if (!flags.auditWhitelist || flags.auditWhitelist === 'all') {
-  flags.auditWhitelist = null;
+  flags.auditWhitelist = new Set();
 } else {
   flags.auditWhitelist = new Set(flags.auditWhitelist.split(','));
+}
+
+// Normalize user scripts.
+if (!flags.scripts) {
+  flags.scripts == new Set([]);
+} else {
+  flags.scripts = new Set(flags.scripts.split(','));
 }
 
 // kick off a lighthouse run

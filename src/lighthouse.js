@@ -34,7 +34,8 @@ const GATHERER_CLASSES = [
   require('./gatherers/screenshots'),
   require('./gatherers/offline'),
   require('./gatherers/critical-request-chains'),
-  require('./gatherers/user-timings')
+  require('./gatherers/user-timings'),
+  require('./gatherers/user-scripts')
 ];
 
 const AUDITS = [
@@ -111,8 +112,9 @@ module.exports = function(driver, opts) {
   }
 
   // Collate all artifacts required by audits to be run.
+  // userScripts is required by default
   const auditArtifacts = audits.map(audit => audit.meta.requiredArtifacts);
-  const requiredArtifacts = new Set([].concat(...auditArtifacts));
+  const requiredArtifacts = new Set(['userScripts'].concat(...auditArtifacts));
 
   // Instantiate gatherers and discard any not needed by requested audits.
   // For now, the trace and network records are assumed to be required.
