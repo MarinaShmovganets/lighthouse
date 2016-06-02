@@ -29,11 +29,13 @@ const GATHERER_CLASSES = [
   require('./gatherers/viewport'),
   require('./gatherers/theme-color'),
   require('./gatherers/html'),
+  require('./gatherers/html-without-javascript'),
   require('./gatherers/manifest'),
   require('./gatherers/accessibility'),
   require('./gatherers/screenshots'),
   require('./gatherers/offline'),
-  require('./gatherers/critical-request-chains')
+  require('./gatherers/critical-request-chains'),
+  require('./gatherers/speedline')
 ];
 
 const AUDITS = [
@@ -43,6 +45,7 @@ const AUDITS = [
   require('./audits/offline/works-offline'),
   require('./audits/mobile-friendly/viewport'),
   require('./audits/mobile-friendly/display'),
+  require('./audits/javascript/without-javascript'),
   require('./audits/performance/first-meaningful-paint'),
   require('./audits/performance/speed-index-metric'),
   require('./audits/performance/user-timings'),
@@ -71,6 +74,7 @@ const AUDITS = [
 const AGGREGATORS = [
   require('./aggregators/can-load-offline'),
   require('./aggregators/is-performant'),
+  require('./aggregators/is-progressive'),
   require('./aggregators/is-secure'),
   require('./aggregators/will-get-add-to-homescreen-prompt'),
   require('./aggregators/launches-with-splash-screen'),
@@ -101,11 +105,11 @@ module.exports = function(driver, opts) {
   /* istanbul ignore if */
   if (opts.flags.auditWhitelist) {
     const whitelist = opts.flags.auditWhitelist;
-    rejected = audits.filter(audit => !whitelist.has(audit.name));
-    audits = audits.filter(audit => whitelist.has(audit.name));
+    rejected = audits.filter(audit => !whitelist.has(audit.meta.name));
+    audits = audits.filter(audit => whitelist.has(audit.meta.name));
     if (rejected.length) {
-      log.log('info', 'Running these audits:', `${audits.map(a => a.name).join(', ')}`);
-      log.log('info', 'Skipping these audits:', `${rejected.map(a => a.name).join(', ')}`);
+      log.log('info', 'Running these audits:', `${audits.map(a => a.meta.name).join(', ')}`);
+      log.log('info', 'Skipping these audits:', `${rejected.map(a => a.meta.name).join(', ')}`);
     }
   }
 
@@ -138,5 +142,5 @@ module.exports = function(driver, opts) {
  * @return {!Array<string>}
  */
 module.exports.getAuditList = function() {
-  return AUDITS.map(audit => audit.name);
+  return AUDITS.map(audit => audit.meta.name);
 };

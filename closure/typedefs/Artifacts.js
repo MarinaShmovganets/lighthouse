@@ -29,6 +29,9 @@ function Artifacts() {}
 /** @type {string} */
 Artifacts.prototype.html;
 
+/** @type {string} */
+Artifacts.prototype.htmlWithoutJavaScript;
+
 /** @type {boolean} */
 Artifacts.prototype.https;
 
@@ -70,3 +73,6 @@ Artifacts.prototype.screenshots;
 
 /** @type {!Object<!Object>} */
 Artifacts.prototype.criticalRequestChains;
+
+/** @type {{first: number, complete: number, duration: number, frames: !Array<!Object>, debugString: (string|undefined)}} */
+Artifacts.prototype.speedline;
