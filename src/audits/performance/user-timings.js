@@ -19,6 +19,9 @@
 
 const Audit = require('../audit');
 const Formatter = require('../../../formatters/formatter');
+const TimelineModel = require('../../lib/traces/devtools-timeline-model');
+
+const FAILURE_MESSAGE = 'Trace data not found.';
 
 class UserTimings extends Audit {
   /**
@@ -28,8 +31,8 @@ class UserTimings extends Audit {
     return {
       category: 'Performance',
       name: 'user-timings',
-      description: 'User Timing measures',
-      requiredArtifacts: ['userTimings']
+      description: 'User Timing marks and measures',
+      requiredArtifacts: ['traceContents']
     };
   }
 
@@ -38,18 +41,75 @@ class UserTimings extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    if (typeof artifacts.userTimings === 'undefined' ||
-      !Array.isArray(artifacts.userTimings)) {
+    if (!artifacts.traceContents || !Array.isArray(artifacts.traceContents)) {
       return UserTimings.generateAuditResult({
-        value: -1
+        value: -1,
+        debugString: FAILURE_MESSAGE
       });
     }
 
+    let userTimings = [];
+    let navigationStartTime;
+    let measuresStartTimes = {};
+    let traceStart = false;
+
+    // Fetch blink.user_timing events from the tracing data
+    const timelineModel = new TimelineModel(artifacts.traceContents);
+    const modeledTraceData = timelineModel.timelineModel();
+
+    modeledTraceData.mainThreadEvents().filter(
+      // Get all blink.user_timing events
+      ut => ut.hasCategory('blink.user_timing') || ut.name === 'TracingStartedInPage'
+    ).forEach(ut => {
+      if (ut.phase === 'R' || ut.phase === 'I') {
+        // Mark event
+        if (ut.name === 'TracingStartedInPage' && !traceStart) {
+          traceStart = true;
+          return;
+        }
+        if (ut.name === 'navigationStart' && traceStart & !navigationStartTime) {
+          navigationStartTime = ut.startTime;
+        }
+
+        if (!ut.args.hasOwnProperty('frame') && ut.name !== 'requestStart') {
+          userTimings.push({
+            name: ut.name,
+            isMark: true,        // defines type of performance metric
+            args: ut.args,
+            startTime: ut.startTime
+          });
+        }
+      } else if (ut.phase === 'b') {
+        // Beginning of measure event
+        measuresStartTimes[ut.name] = ut.startTime;
+      } else if (ut.phase === 'e') {
+        // End of measure event
+        if (!ut.args.hasOwnProperty('frame') && ut.name !== 'requestStart') {
+          userTimings.push({
+            name: ut.name,
+            isMark: false,
+            args: ut.args,
+            startTime: measuresStartTimes[ut.name],
+            duration: ut.startTime - measuresStartTimes[ut.name],
+            endTime: ut.startTime
+          });
+        }
+      }
+    });
+
+    userTimings.forEach(ut => {
+      ut.startTime = (ut.startTime - navigationStartTime).toFixed(2);
+      if (!ut.isMark) {
+        ut.endTime = (ut.endTime - navigationStartTime).toFixed(2);
+        ut.duration = ut.duration.toFixed(2);
+      }
+    });
+
     return UserTimings.generateAuditResult({
-      value: artifacts.userTimings.length,
+      value: userTimings.length,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.USER_TIMINGS,
-        value: artifacts.userTimings
+        value: userTimings
       }
     });
   }

@@ -70,6 +70,3 @@ Artifacts.prototype.screenshots;
 
 /** @type {!Object<!Object>} */
 Artifacts.prototype.criticalRequestChains;
-
-/** @type {!Array<!Object>} */
-Artifacts.prototype.userTimings;
