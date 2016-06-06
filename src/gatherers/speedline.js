@@ -24,7 +24,7 @@ class Speedline extends Gather {
     return 'speedline';
   }
 
-  postProfiling(options, tracingData) {
+  afterPass(options, tracingData) {
     return speedline(tracingData.traceContents).then(results => {
       this.artifact = results;
     }).catch(err => {

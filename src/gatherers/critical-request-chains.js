@@ -55,7 +55,7 @@ class CriticalRequestChains extends Gather {
     }
   }
 
-  postProfiling(options, tracingData) {
+  afterPass(options, tracingData) {
     const networkRecords = tracingData.networkRecords;
 
     // Build a map of requestID -> Node.

@@ -20,7 +20,7 @@ const Gather = require('./gather');
 
 class ServiceWorker extends Gather {
   get name() {
-    return 'serviceWorker';
+    return 'serviceWorkers';
   }
 
   /**
@@ -42,7 +42,7 @@ class ServiceWorker extends Gather {
     return versions.find(v => v.status === 'activated' && this.getOrigin(v.scriptURL) === origin);
   }
 
-  afterReloadPageLoad(options) {
+  beforePass(options) {
     const driver = options.driver;
     return driver
       .getServiceWorkerVersions()

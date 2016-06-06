@@ -23,7 +23,7 @@ class URL extends Gather {
     return 'url';
   }
 
-  setup(options) {
+  beforePass(options) {
     this.artifact = options.url || options.driver.url;
   }
 }

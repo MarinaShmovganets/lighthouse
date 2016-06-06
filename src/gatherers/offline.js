@@ -60,7 +60,7 @@ class Offline extends Gather {
     });
   }
 
-  afterReloadPageLoad(options) {
+  afterPass(options) {
     const driver = options.driver;
 
     // TODO eventually we will want to walk all network

@@ -23,7 +23,7 @@ class HTML extends Gather {
     return 'html';
   }
 
-  postProfiling(options) {
+  afterPass(options) {
     const driver = options.driver;
 
     return driver.sendCommand('DOM.getDocument')

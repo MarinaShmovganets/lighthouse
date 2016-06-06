@@ -122,11 +122,21 @@ module.exports = function(driver, opts) {
   const gatherers = GATHERER_CLASSES.map(G => new G())
     .filter(gatherer => requiredArtifacts.has(gatherer.name));
 
+  const passes = require('../config/default.json').passes.map(pass => {
+    pass.gatherers = pass.gatherers.map(gathererName => {
+      const gatherer = GATHERER_CLASSES.map(G => new G())
+        .find(gatherer => gatherer.name === gathererName);
+      return gatherer;
+    });
+
+    return pass;
+  });
+
   // The runs of Lighthouse should be tested in integration / smoke tests, so testing for coverage
   // here, at least from a unit test POV, is relatively low merit.
   /* istanbul ignore next */
   return Scheduler
-      .run(gatherers, Object.assign({}, opts, {driver}))
+      .run(passes, Object.assign({}, opts, {driver}))
       .then(artifacts => Auditor.audit(artifacts, audits))
       .then(results => Aggregator.aggregate(AGGREGATORS, results))
       .then(aggregations => {

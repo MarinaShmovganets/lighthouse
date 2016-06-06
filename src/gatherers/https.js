@@ -28,7 +28,7 @@ class HTTPS extends Gather {
     this._noSecurityChangesTimeout = undefined;
   }
 
-  postProfiling(options) {
+  afterPass(options) {
     const driver = options.driver;
     const timeout = options.timeout || 10000;
 

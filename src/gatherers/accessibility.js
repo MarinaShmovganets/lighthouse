@@ -46,7 +46,7 @@ class Accessibility extends Gather {
     };
   }
 
-  postProfiling(options) {
+  afterPass(options) {
     const driver = options.driver;
 
     return driver

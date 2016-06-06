@@ -66,7 +66,7 @@ class Manifest extends Gather {
     };
   }
 
-  postProfiling(options) {
+  afterPass(options) {
     const driver = options.driver;
     /**
      * This re-fetches the manifest separately, which could

@@ -35,7 +35,14 @@ class HTMLWithoutJavaScript extends HTML {
     return 'htmlWithoutJavaScript';
   }
 
-  afterSecondReloadPageLoad(options) {
+  beforePass(options) {
+    options.disableJavaScript = true;
+  }
+
+  afterPass(options) {
+    // Reset the JS disable.
+    options.disableJavaScript = false;
+
     const driver = options.driver;
 
     this.artifact = {};
