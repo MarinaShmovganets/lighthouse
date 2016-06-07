@@ -52,7 +52,7 @@ var AggregationCriteria;
  */
 function AggregationItem() {}
 
-/** @type {!Array<AggregationCriterion>} */
+/** @type {!Object<!AggregationCriterion>} */
 AggregationItem.prototype.criteria;
 
 /** @type {string} */
@@ -98,7 +98,7 @@ AggregationResultItem.prototype.name;
 AggregationResultItem.prototype.description;
 
 /** @type {!Array<!AuditResult>} */
-AggregationItem.prototype.subItems;
+AggregationResultItem.prototype.subItems;
 
 /**
  * @struct
@@ -107,16 +107,16 @@ AggregationItem.prototype.subItems;
 function AggregationResult() {}
 
 /** @type {string} */
-Aggregation.prototype.name;
+AggregationResult.prototype.name;
 
 /** @type {string} */
-Aggregation.prototype.description;
+AggregationResult.prototype.description;
 
 /** @type {boolean} */
-Aggregation.prototype.scored;
+AggregationResult.prototype.scored;
 
 /** @type {boolean} */
-Aggregation.prototype.categorizable;
+AggregationResult.prototype.categorizable;
 
 /** @type {!Array<!AggregationResultItem>} */
-Aggregation.prototype.score;
+AggregationResult.prototype.score;

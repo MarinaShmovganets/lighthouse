@@ -129,9 +129,9 @@ class Aggregate {
   /**
    * Compares the set of audit results to the expected values.
    * @param {!Array<!AuditResult>} results The audit results.
-   * @param {!AggregationCriteria} items The aggregation's expected values and weighting.
+   * @param {!Array<!AggregationItem>} items The aggregation's expected values and weighting.
    * @param {!boolean} aggregationIsScored Whether or not the aggregation is scored.
-   * @return {!AggregationItem} The aggregation score.
+   * @return {!Array<!AggregationResultItem>} The aggregation score.
    */
   static compare(results, items, aggregationIsScored) {
     return items.map(item => {
