@@ -2,32 +2,102 @@
   "passes": [{
     "network": true,
     "trace": true,
+    "loadDataName": "first-pass",
     "loadPage": true,
     "gatherers": [
       "url",
       "https",
       "viewport",
-      "themeColorMeta",
+      "theme-color",
       "html",
       "manifest",
       "accessibility",
       "screenshots",
-      "criticalRequestChains",
+      "critical-request-chains",
       "speedline"
     ]
   },
   {
     "loadPage": true,
     "gatherers": [
-      "serviceWorkers",
-      "offlineResponseCode"
+      "service-worker",
+      "offline"
     ]
   },
   {
     "loadPage": true,
     "gatherers": [
-      "redirectsHTTP",
-      "htmlWithoutJavaScript"
+      "http-redirect",
+      "html-without-javascript"
     ]
-  }]
+  }],
+
+  "audits": [
+    "is-on-https",
+    "redirects-http",
+    "service-worker",
+    "works-offline",
+    "viewport",
+    "manifest-display",
+    "without-javascript",
+    "first-meaningful-paint",
+    "speed-index-metric",
+    "user-timings",
+    "screenshots",
+    "critical-request-chains",
+    "manifest-exists",
+    "manifest-background-color",
+    "manifest-theme-color",
+    "manifest-icons-min-192",
+    "manifest-icons-min-144",
+    "manifest-name",
+    "manifest-short-name",
+    "manifest-short-name-length",
+    "manifest-start-url",
+    "meta-theme-color",
+    "aria-valid-attr",
+    "aria-allowed-attr",
+    "color-contrast",
+    "image-alt",
+    "label",
+    "tabindex"
+  ],
+
+  "aggregations": [{
+      "name": "Progressive Web App",
+      "description": "These audits validate the aspects of a Progressive Web App.",
+      "scored": true,
+      "categorizable": true,
+      "items": [{
+        "name": "Page load performance is fast",
+        "description": "Users notice if sites and apps don't perform well. These top-level metrics capture the most important perceived performance concerns.",
+        "criteria": {
+          "first-meaningful-paint": {
+            "value": 100,
+            "weight": 1
+          },
+          "speed-index-metric": {
+            "value": 100,
+            "weight": 1
+          }
+        }
+      }, {
+        "name": "Address bar matches brand colors",
+        "description": "The browser address bar can be themed to match your site. A theme-color <a href=\"https://developers.google.com/web/updates/2014/11/Support-for-theme-color-in-Chrome-39-for-Android\">meta tag</a> will upgrade the address bar when a user browses the site, and the <a href=\"https://developers.google.com/web/updates/2015/08/using-manifest-to-set-sitewide-theme-color\">manifest theme-color</a> will apply the same theme site-wide once it's been added to homescreen.",
+        "criteria": {
+          "manifest-exists": {
+            "value": true,
+            "weight": 1
+          },
+          "theme-color-meta": {
+            "value": true,
+            "weight": 1
+          },
+          "manifest-theme-color": {
+            "value": true,
+            "weight": 1
+          }
+        }
+      }]
+    }]
 }
