@@ -176,28 +176,7 @@ class ReportGenerator {
   }
 
   generateHTML(results, options) {
-    // console.log(JSON.stringify(results, null, 2));
-
     const inline = (options && options.inline) || false;
-    // const totalAggregations = results.aggregations.reduce((total, aggregation) => {
-    //   // This is just to account for Best Practices, which don't affect the overall scoring.
-    //   // As such we only want to count aggregations for which contributesToScore is true.
-    //   if (!aggregation.type.contributesToScore) {
-    //     return total;
-    //   }
-
-    //   return ++total;
-    // }, 0);
-    // const totalScore =
-    //     (results.aggregations.reduce((prev, aggregation) => {
-    //       // Only include the score if the aggregation type says to do so, which for
-    //       // Best Practices is a 'no'.
-    //       if (!aggregation.type.contributesToScore) {
-    //         return prev;
-    //       }
-
-    //       return prev + aggregation.score.overall;
-    //     }, 0) / totalAggregations);
 
     // Ensure the formatter for each extendedInfo is registered.
     results.aggregations.forEach(aggregation => {
@@ -220,8 +199,6 @@ class ReportGenerator {
         });
       });
     });
-
-    console.log(this._createPWAAuditsByCategory(results.aggregations));
 
     const template = Handlebars.compile(this.getReportHTML());
     return template({
