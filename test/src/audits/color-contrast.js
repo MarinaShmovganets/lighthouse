@@ -36,7 +36,7 @@ describe('Accessibility: color-contrast audit', () => {
 
   it('generates an audit output', () => {
     const artifacts = {
-      accessibility: {
+      Accessibility: {
         violations: [{
           id: 'color-contrast',
           nodes: [],
@@ -52,7 +52,7 @@ describe('Accessibility: color-contrast audit', () => {
 
   it('generates an audit output (single node)', () => {
     const artifacts = {
-      accessibility: {
+      Accessibility: {
         violations: [{
           id: 'color-contrast',
           nodes: [{}],

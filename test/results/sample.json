@@ -654,7 +654,13 @@
               "value": 0,
               "extendedInfo": {
                 "formatter": "userTimings",
-                "value": []
+                "value": [{
+                  "name": "one",
+                  "duration": 1000
+                }, {
+                  "name": "two",
+                  "duration": 2000
+                }]
               },
               "name": "user-timings",
               "category": "Performance",

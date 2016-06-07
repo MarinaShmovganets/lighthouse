@@ -29,7 +29,7 @@ describe('HTML: theme-color audit', () => {
 
   it('fails and warns when no value given', () => {
     const nullColorAudit = Audit.audit({
-      themeColorMeta: null
+      ThemeColor: null
     });
 
     assert.equal(nullColorAudit.value, false);
@@ -38,7 +38,7 @@ describe('HTML: theme-color audit', () => {
 
   it('fails and warns when theme-color has an invalid CSS color', () => {
     const invalidColorAudit = Audit.audit({
-      themeColorMeta: '#1234567'
+      ThemeColor: '#1234567'
     });
 
     assert.equal(invalidColorAudit.value, false);
@@ -47,13 +47,13 @@ describe('HTML: theme-color audit', () => {
 
   it('succeeds when theme-color present in the html', () => {
     assert.equal(Audit.audit({
-      themeColorMeta: '#fafa33'
+      ThemeColor: '#fafa33'
     }).value, true);
   });
 
   it('succeeds when theme-color has a CSS nickname content value', () => {
     assert.equal(Audit.audit({
-      themeColorMeta: 'red'
+      ThemeColor: 'red'
     }).value, true);
   });
 });

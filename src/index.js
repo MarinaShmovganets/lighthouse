@@ -33,11 +33,12 @@ module.exports = function(url, flags, config) {
     if (!url) {
       return reject(new Error('Lighthouse requires a URL'));
     }
-    config = config || {};
     flags = flags || {};
 
     // Override the default config with any user config.
-    config = Object.assign(defaultConfig, config);
+    if (!config) {
+      config = defaultConfig;
+    }
 
     const driver = new ChromeProtocol();
 

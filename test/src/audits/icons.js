@@ -28,18 +28,18 @@ describe('Manifest: icons audits', () => {
       const manifestSrc = JSON.stringify({
         name: 'NoIconsHere'
       });
-      const manifest = manifestParser(manifestSrc);
-      assert.equal(Audit144.audit({manifest}).value, false);
-      assert.equal(Audit192.audit({manifest}).value, false);
+      const Manifest = manifestParser(manifestSrc);
+      assert.equal(Audit144.audit({Manifest}).value, false);
+      assert.equal(Audit192.audit({Manifest}).value, false);
     });
 
     it('fails when a manifest contains no icons', () => {
       const manifestSrc = JSON.stringify({
         icons: []
       });
-      const manifest = manifestParser(manifestSrc);
-      assert.equal(Audit144.audit({manifest}).value, false);
-      assert.equal(Audit192.audit({manifest}).value, false);
+      const Manifest = manifestParser(manifestSrc);
+      assert.equal(Audit144.audit({Manifest}).value, false);
+      assert.equal(Audit192.audit({Manifest}).value, false);
     });
   });
 
@@ -50,18 +50,18 @@ describe('Manifest: icons audits', () => {
           src: 'icon.png'
         }]
       });
-      const manifest = manifestParser(manifestSrc);
+      const Manifest = manifestParser(manifestSrc);
 
-      assert.equal(Audit144.audit({manifest}).value, false);
-      assert.equal(Audit192.audit({manifest}).value, false);
+      assert.equal(Audit144.audit({Manifest}).value, false);
+      assert.equal(Audit192.audit({Manifest}).value, false);
     });
 
     it('succeeds when a manifest contains icons that are large enough', () => {
       // stub manifest contains a 192 icon
       const manifestSrc = JSON.stringify(require('../../fixtures/manifest.json'));
-      const manifest = manifestParser(manifestSrc);
-      assert.equal(Audit144.audit({manifest}).value, true);
-      assert.equal(Audit192.audit({manifest}).value, true);
+      const Manifest = manifestParser(manifestSrc);
+      assert.equal(Audit144.audit({Manifest}).value, true);
+      assert.equal(Audit192.audit({Manifest}).value, true);
     });
 
     it('succeeds when there\'s one icon with multiple sizes, and one is valid', () => {
@@ -71,10 +71,10 @@ describe('Manifest: icons audits', () => {
           sizes: '72x72 96x96 128x128 256x256'
         }]
       });
-      const manifest = manifestParser(manifestSrc);
+      const Manifest = manifestParser(manifestSrc);
 
-      assert.equal(Audit144.audit({manifest}).value, true);
-      assert.equal(Audit192.audit({manifest}).value, true);
+      assert.equal(Audit144.audit({Manifest}).value, true);
+      assert.equal(Audit192.audit({Manifest}).value, true);
     });
 
     it('succeeds when there\'s two icons, one without sizes; the other with a valid size', () => {
@@ -86,9 +86,9 @@ describe('Manifest: icons audits', () => {
           sizes: '256x256'
         }]
       });
-      const manifest = manifestParser(manifestSrc);
-      assert.equal(Audit144.audit({manifest}).value, true);
-      assert.equal(Audit192.audit({manifest}).value, true);
+      const Manifest = manifestParser(manifestSrc);
+      assert.equal(Audit144.audit({Manifest}).value, true);
+      assert.equal(Audit192.audit({Manifest}).value, true);
     });
 
     it('fails when an icon has a valid size, though it\'s non-square.', () => {
@@ -99,9 +99,9 @@ describe('Manifest: icons audits', () => {
           sizes: '200x220'
         }]
       });
-      const manifest = manifestParser(manifestSrc);
-      assert.equal(Audit144.audit({manifest}).value, false);
-      assert.equal(Audit192.audit({manifest}).value, false);
+      const Manifest = manifestParser(manifestSrc);
+      assert.equal(Audit144.audit({Manifest}).value, false);
+      assert.equal(Audit192.audit({Manifest}).value, false);
     });
   });
 });

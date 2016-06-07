@@ -44,8 +44,8 @@ class RedirectsHTTP extends Audit {
     }
 
     return RedirectsHTTP.generateAuditResult({
-      value: artifacts.redirectsHTTP.value,
-      debugString: artifacts.redirectsHTTP.debugString
+      value: artifacts.HTTPRedirect.value,
+      debugString: artifacts.HTTPRedirect.debugString
     });
   }
 }

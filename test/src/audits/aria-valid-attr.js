@@ -36,7 +36,7 @@ describe('Accessibility: aria-valid-attr audit', () => {
 
   it('generates an audit output', () => {
     const artifacts = {
-      accessibility: {
+      Accessibility: {
         violations: [{
           id: 'aria-valid-attr',
           nodes: [],
@@ -52,7 +52,7 @@ describe('Accessibility: aria-valid-attr audit', () => {
 
   it('generates an audit output (single node)', () => {
     const artifacts = {
-      accessibility: {
+      Accessibility: {
         violations: [{
           id: 'aria-valid-attr',
           nodes: [{}],

@@ -51,13 +51,6 @@ class ReportGenerator {
       return formatter.format(new Date());
     });
 
-    // Simple equality check because Handlebars doesn't have a built-in one.
-    Handlebars.registerHelper('matches', (a, b, opts) => {
-      if (a === b) {
-        return opts.fn(this);
-      }
-    });
-
     // Helper for either saying 'yes' or 'no' for booleans, or simply returning the value if it's
     // of any other type.
     Handlebars.registerHelper('getItemValue', value => {

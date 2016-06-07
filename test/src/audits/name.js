@@ -23,18 +23,18 @@ const manifest = manifestParser(manifestSrc);
 
 describe('Manifest: name audit', () => {
   it('fails when no manifest present', () => {
-    return assert.equal(Audit.audit({manifest: {
+    return assert.equal(Audit.audit({Manifest: {
       value: undefined
     }}).value, false);
   });
 
   it('fails when an empty manifest is present', () => {
-    return assert.equal(Audit.audit({manifest: {}}).value, false);
+    return assert.equal(Audit.audit({Manifest: {}}).value, false);
   });
 
   it('fails when a manifest contains no name', () => {
     const inputs = {
-      manifest: {
+      Manifest: {
         name: null
       }
     };
@@ -43,6 +43,6 @@ describe('Manifest: name audit', () => {
   });
 
   it('succeeds when a manifest contains a name', () => {
-    return assert.equal(Audit.audit({manifest: manifest}).value, true);
+    return assert.equal(Audit.audit({Manifest: manifest}).value, true);
   });
 });

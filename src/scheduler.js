@@ -168,6 +168,8 @@ function run(passes, options) {
         });
       });
 
+      // We don't expose this at present so ignore for testing.
+      /* istanbul ignore next */
       if (options.flags.saveArtifacts) {
         assetSaver.saveArtifacts(artifacts);
       }

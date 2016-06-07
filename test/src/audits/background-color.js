@@ -22,13 +22,13 @@ const assert = require('assert');
 /* eslint-disable camelcase */
 describe('Manifest: background color audit', () => {
   it('fails when no manifest present', () => {
-    return assert.equal(Audit.audit({manifest: {
+    return assert.equal(Audit.audit({Manifest: {
       value: undefined
     }}).value, false);
   });
 
   it('fails when no background color present', () => {
-    return assert.equal(Audit.audit({manifest: {
+    return assert.equal(Audit.audit({Manifest: {
       value: {
         foo: 1
       }
@@ -36,7 +36,7 @@ describe('Manifest: background color audit', () => {
   });
 
   it('fails when no background color value present', () => {
-    return assert.equal(Audit.audit({manifest: {
+    return assert.equal(Audit.audit({Manifest: {
       value: {
         background_color: 'no'
       }
@@ -44,7 +44,7 @@ describe('Manifest: background color audit', () => {
   });
 
   it('passes when color is present', () => {
-    return assert.equal(Audit.audit({manifest: {
+    return assert.equal(Audit.audit({Manifest: {
       value: {
         background_color: {value: 'black'}
       }

@@ -94,6 +94,54 @@ describe('Module Tests', function() {
       });
   });
 
+  it('should throw an error when the config is invalid', function() {
+    const lighthouse = require('../..');
+    return lighthouse('SOME_URL', {}, {})
+      .then(() => {
+        throw new Error('Should not have resolved when second arg is not an object');
+      }, err => {
+        assert.ok(err);
+      });
+  });
+
+  it('should throw an error when the config contains incorrect gatherers', function() {
+    const lighthouse = require('../..');
+    return lighthouse('SOME_URL', {}, {
+      passes: [{
+        gatherers: [
+          'fluff'
+        ]
+      }],
+      audits: [],
+      aggregations: []
+    })
+      .then(() => {
+        throw new Error('Should not have resolved');
+      }, err => {
+        assert.ok(err.message.includes('fluff'));
+      });
+  });
+
+  it('should throw an error when the config contains incorrect audits', function() {
+    const lighthouse = require('../..');
+    return lighthouse('SOME_URL', {}, {
+      passes: [{
+        gatherers: [
+          'url'
+        ]
+      }],
+      audits: [
+        'fluff'
+      ],
+      aggregations: []
+    })
+      .then(() => {
+        throw new Error('Should not have resolved');
+      }, err => {
+        assert.ok(err.message.includes('fluff'));
+      });
+  });
+
   it('should return a list of audits', function() {
     const lighthouseModule = require('../../src/lighthouse');
     assert.ok(Array.isArray(lighthouseModule.getAuditList()));

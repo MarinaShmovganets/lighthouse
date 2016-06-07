@@ -17,19 +17,19 @@ const Audit = require('../../../src/audits/manifest-short-name.js');
 const assert = require('assert');
 const manifestSrc = JSON.stringify(require('../../fixtures/manifest.json'));
 const manifestParser = require('../../../src/lib/manifest-parser');
-const manifest = manifestParser(manifestSrc);
+const Manifest = manifestParser(manifestSrc);
 
 /* global describe, it*/
 
 describe('Manifest: short_name audit', () => {
   it('fails when no manifest present', () => {
-    return assert.equal(Audit.audit({manifest: {
+    return assert.equal(Audit.audit({Manifest: {
       value: undefined
     }}).value, false);
   });
 
   it('fails when an empty manifest is present', () => {
-    return assert.equal(Audit.audit({manifest: {}}).value, false);
+    return assert.equal(Audit.audit({Manifest: {}}).value, false);
   });
 
   // Need to disable camelcase check for dealing with short_name.
@@ -39,9 +39,9 @@ describe('Manifest: short_name audit', () => {
       name: null,
       short_name: null
     });
-    const manifest = manifestParser(inputs);
+    const Manifest = manifestParser(inputs);
 
-    return assert.equal(Audit.audit({manifest}).value, false);
+    return assert.equal(Audit.audit({Manifest}).value, false);
   });
 
   it('succeeds when a manifest contains no short_name but a name', () => {
@@ -49,13 +49,13 @@ describe('Manifest: short_name audit', () => {
       short_name: undefined,
       name: 'Example App'
     });
-    const manifest = manifestParser(inputs);
+    const Manifest = manifestParser(inputs);
 
-    return assert.equal(Audit.audit({manifest}).value, true);
+    return assert.equal(Audit.audit({Manifest}).value, true);
   });
   /* eslint-enable camelcase */
 
   it('succeeds when a manifest contains a short_name', () => {
-    return assert.equal(Audit.audit({manifest: manifest}).value, true);
+    return assert.equal(Audit.audit({Manifest}).value, true);
   });
 });

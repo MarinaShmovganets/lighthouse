@@ -27,7 +27,7 @@ extension, which is relatively minor stuff.
 describe('Report', () => {
   it('generates extension HTML', () => {
     const reportGenerator = new ReportGenerator();
-    const html = reportGenerator.generateHTML(sampleResults, {inline: true});
+    const html = reportGenerator.generateHTML(sampleResults);
 
     return assert(/<!doctype/gim.test(html));
   });

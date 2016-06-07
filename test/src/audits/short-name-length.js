@@ -21,16 +21,16 @@ const manifestParser = require('../../../src/lib/manifest-parser');
 
 describe('Manifest: short_name_length audit', () => {
   it('fails when an empty manifest is present', () => {
-    const manifest = manifestParser('{}');
-    return assert.equal(Audit.audit({manifest}).value, false);
+    const Manifest = manifestParser('{}');
+    return assert.equal(Audit.audit({Manifest}).value, false);
   });
 
   it('fails when a manifest contains no short_name and too long name', () => {
     const manifestSrc = JSON.stringify({
       name: 'i\'m much longer than the recommended size'
     });
-    const manifest = manifestParser(manifestSrc);
-    const out = Audit.audit({manifest});
+    const Manifest = manifestParser(manifestSrc);
+    const out = Audit.audit({Manifest});
     assert.equal(out.value, false);
     assert.notEqual(out.debugString, undefined);
   });
@@ -41,8 +41,8 @@ describe('Manifest: short_name_length audit', () => {
     const manifestSrc = JSON.stringify({
       short_name: 'i\'m much longer than the recommended size'
     });
-    const manifest = manifestParser(manifestSrc);
-    const out = Audit.audit({manifest});
+    const Manifest = manifestParser(manifestSrc);
+    const out = Audit.audit({Manifest});
     assert.equal(out.value, false);
     assert.notEqual(out.debugString, undefined);
   });
@@ -51,8 +51,8 @@ describe('Manifest: short_name_length audit', () => {
     const manifestSrc = JSON.stringify({
       short_name: 'Lighthouse'
     });
-    const manifest = manifestParser(manifestSrc);
-    return assert.equal(Audit.audit({manifest}).value, true);
+    const Manifest = manifestParser(manifestSrc);
+    return assert.equal(Audit.audit({Manifest}).value, true);
   });
   /* eslint-enable camelcase */
 });

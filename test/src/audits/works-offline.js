@@ -26,13 +26,13 @@ describe('Offline: works-offline audit', () => {
   });
 
   it('correctly audits a 200 code', () => {
-    const output = Audit.audit({offlineResponseCode: 200});
+    const output = Audit.audit({Offline: 200});
 
     return assert.equal(output.value, true);
   });
 
   it('correctly audits a non-200 code', () => {
-    const output = Audit.audit({offlineResponseCode: 203});
+    const output = Audit.audit({Offline: 203});
 
     return assert.equal(output.value, false);
   });

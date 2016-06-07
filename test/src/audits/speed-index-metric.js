@@ -33,14 +33,14 @@ describe('Performance: speed-index-metric audit', () => {
 
   it('passes on errors from gatherer', () => {
     const debugString = 'Real emergency here.';
-    return Audit.audit({speedline: {debugString}}).then(response => {
+    return Audit.audit({Speedline: {debugString}}).then(response => {
       assert.equal(response.value, -1);
       assert.equal(response.debugString, debugString);
     });
   });
 
   it('gives error string if no frames', () => {
-    const artifacts = {speedline: {frames: []}};
+    const artifacts = {Speedline: {frames: []}};
     return Audit.audit(artifacts).then(response => {
       assert.equal(response.value, -1);
       assert(response.debugString);
@@ -48,7 +48,7 @@ describe('Performance: speed-index-metric audit', () => {
   });
 
   it('gives error string if too few frames to determine speed index', () => {
-    const artifacts = {speedline: {frames: [frame()]}};
+    const artifacts = {Speedline: {frames: [frame()]}};
     return Audit.audit(artifacts).then(response => {
       assert.equal(response.value, -1);
       assert(response.debugString);
@@ -56,24 +56,24 @@ describe('Performance: speed-index-metric audit', () => {
   });
 
   it('gives error string if speed index of 0', () => {
-    const speedline = {
+    const Speedline = {
       frames: [frame(), frame(), frame()],
       speedIndex: 0
     };
 
-    return Audit.audit({speedline}).then(response => {
+    return Audit.audit({Speedline}).then(response => {
       assert.equal(response.value, -1);
       assert(response.debugString);
     });
   });
 
   it('scores speed index of 831 as 100', () => {
-    const speedline = {
+    const Speedline = {
       frames: [frame(), frame(), frame()],
       speedIndex: 831
     };
 
-    return Audit.audit({speedline}).then(response => {
+    return Audit.audit({Speedline}).then(response => {
       assert.equal(response.rawValue, 831);
       assert.equal(response.value, 100);
     });

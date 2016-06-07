@@ -20,6 +20,13 @@ const Auditor = require('./auditor');
 const Scheduler = require('./scheduler');
 const Aggregator = require('./aggregator');
 
+// TODO: make this a more robust check for the config.
+function isValidConfig(config) {
+  return (typeof config.passes !== 'undefined' &&
+      typeof config.audits !== 'undefined' &&
+      typeof config.aggregations);
+}
+
 module.exports = function(driver, opts) {
   // Default mobile emulation and page loading to true.
   // The extension will switch these off initially.
@@ -32,8 +39,8 @@ module.exports = function(driver, opts) {
   }
 
   const config = opts.config;
-  if (!config) {
-    throw new Error('Config is not defined; did you override the default config correctly?');
+  if (!isValidConfig(config)) {
+    throw new Error('Config is invalid. Did you define passes, audits, and aggregations?');
   }
 
   const passes = config.passes.map(pass => {

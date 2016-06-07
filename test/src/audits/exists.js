@@ -20,13 +20,13 @@ const assert = require('assert');
 
 describe('Manifest: exists audit', () => {
   it('fails when no manifest present', () => {
-    return assert.equal(Audit.audit({manifest: {
+    return assert.equal(Audit.audit({Manifest: {
       value: undefined
     }}).value, false);
   });
 
   it('succeeds when a manifest is present', () => {
-    return assert.equal(Audit.audit({manifest: {
+    return assert.equal(Audit.audit({Manifest: {
       value: {}
     }}).value, true);
   });
@@ -35,7 +35,7 @@ describe('Manifest: exists audit', () => {
     const debugString = 'No href found on <link rel="manifest">.';
 
     assert.equal(Audit.audit({
-      manifest: {
+      Manifest: {
         value: {},
         debugString
       }

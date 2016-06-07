@@ -25,13 +25,13 @@ describe('Mobile-friendly: viewport audit', () => {
 
   it('fails when HTML does not contain a viewport meta tag', () => {
     return assert.equal(Audit.audit({
-      viewport: ''
+      Viewport: ''
     }).value, false);
   });
 
   it('passes when a viewport is provided', () => {
     return assert.equal(Audit.audit({
-      viewport: 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1'
+      Viewport: 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1'
     }).value, true);
   });
 });

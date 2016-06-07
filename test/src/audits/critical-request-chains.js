@@ -17,7 +17,7 @@
 
 const Audit = require('../../../src/audits/critical-request-chains.js');
 const assert = require('assert');
-const criticalRequestChains = {
+const CriticalRequestChains = {
   0: {
     request: {
       endTime: 1,
@@ -52,7 +52,7 @@ const criticalRequestChains = {
 /* eslint-env mocha */
 describe('Performance: critical-request-chains audit', () => {
   it('calculates the correct chain length', () => {
-    const output = Audit.audit({criticalRequestChains});
+    const output = Audit.audit({CriticalRequestChains});
     assert.equal(output.value, 2);
   });
 });

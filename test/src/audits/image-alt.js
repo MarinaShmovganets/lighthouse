@@ -36,7 +36,7 @@ describe('Accessibility: image-alt audit', () => {
 
   it('generates an audit output', () => {
     const artifacts = {
-      accessibility: {
+      Accessibility: {
         violations: [{
           id: 'image-alt',
           nodes: [],
@@ -52,7 +52,7 @@ describe('Accessibility: image-alt audit', () => {
 
   it('generates an audit output (single node)', () => {
     const artifacts = {
-      accessibility: {
+      Accessibility: {
         violations: [{
           id: 'image-alt',
           nodes: [{}],

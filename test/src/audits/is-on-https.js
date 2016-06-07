@@ -25,13 +25,13 @@ describe('Security: HTTPS audit', () => {
 
   it('fails when not on HTTPS', () => {
     return assert.equal(Audit.audit({
-      https: false
+      HTTPS: false
     }).value, false);
   });
 
   it('passes when on HTTPS', () => {
     return assert.equal(Audit.audit({
-      https: true
+      HTTPS: true
     }).value, true);
   });
 });

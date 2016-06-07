@@ -17,26 +17,26 @@ const Audit = require('../../../src/audits/manifest-theme-color.js');
 const assert = require('assert');
 const manifestSrc = JSON.stringify(require('../../fixtures/manifest.json'));
 const manifestParser = require('../../../src/lib/manifest-parser');
-const manifest = manifestParser(manifestSrc);
+const Manifest = manifestParser(manifestSrc);
 
 /* global describe, it*/
 
 describe('Manifest: theme_color audit', () => {
   it('fails when no manifest present', () => {
-    return assert.equal(Audit.audit({manifest: {
+    return assert.equal(Audit.audit({Manifest: {
       value: undefined
     }}).value, false);
   });
 
   it('fails when an empty manifest is present', () => {
-    return assert.equal(Audit.audit({manifest: {}}).value, false);
+    return assert.equal(Audit.audit({Manifest: {}}).value, false);
   });
 
   // Need to disable camelcase check for dealing with theme_color.
   /* eslint-disable camelcase */
   it('fails when a manifest contains no theme_color', () => {
     const inputs = {
-      manifest: {
+      Manifest: {
         theme_color: null
       }
     };
@@ -47,6 +47,6 @@ describe('Manifest: theme_color audit', () => {
   /* eslint-enable camelcase */
 
   it('succeeds when a manifest contains a theme_color', () => {
-    return assert.equal(Audit.audit({manifest: manifest}).value, true);
+    return assert.equal(Audit.audit({Manifest}).value, true);
   });
 });

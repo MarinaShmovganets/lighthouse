@@ -25,7 +25,7 @@ describe('Security: HTTP->HTTPS audit', () => {
 
   it('fails when no redirect detected', () => {
     return assert.equal(Audit.audit({
-      redirectsHTTP: {
+      HTTPRedirect: {
         value: false
       }
     }).value, false);
@@ -33,7 +33,7 @@ describe('Security: HTTP->HTTPS audit', () => {
 
   it('passes when redirect detected', () => {
     return assert.equal(Audit.audit({
-      redirectsHTTP: {
+      HTTPRedirect: {
         value: true
       }
     }).value, true);
