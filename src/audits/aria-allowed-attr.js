@@ -17,8 +17,8 @@
 
 'use strict';
 
-const Audit = require('../audit');
-const Formatter = require('../../../formatters/formatter');
+const Audit = require('./audit');
+const Formatter = require('../../formatters/formatter');
 
 class ARIAAllowedAttr extends Audit {
   /**

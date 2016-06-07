@@ -17,17 +17,17 @@
 
 'use strict';
 
-const Audit = require('../audit');
+const Audit = require('./audit');
 
-class ManifestName extends Audit {
+class ManifestThemeColor extends Audit {
   /**
    * @return {!AuditMeta}
    */
   static get meta() {
     return {
       category: 'Manifest',
-      name: 'manifest-name',
-      description: 'Manifest contains name',
+      name: 'manifest-theme-color',
+      description: 'Manifest contains theme_color',
       requiredArtifacts: ['manifest']
     };
   }
@@ -37,17 +37,17 @@ class ManifestName extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    let hasName = false;
+    let hasThemeColor = false;
     const manifest = artifacts.manifest.value;
 
-    if (manifest && manifest.name) {
-      hasName = (!!manifest.name.value);
+    if (manifest && manifest.theme_color) {
+      hasThemeColor = (!!manifest.theme_color.value);
     }
 
-    return ManifestName.generateAuditResult({
-      value: hasName
+    return ManifestThemeColor.generateAuditResult({
+      value: hasThemeColor
     });
   }
 }
 
-module.exports = ManifestName;
+module.exports = ManifestThemeColor;

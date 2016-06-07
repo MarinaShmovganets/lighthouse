@@ -17,8 +17,8 @@
 
 'use strict';
 
-const Audit = require('../audit');
-const TracingProcessor = require('../../lib/traces/tracing-processor');
+const Audit = require('./audit');
+const TracingProcessor = require('../lib/traces/tracing-processor');
 
 const FAILURE_MESSAGE = 'Navigation and first paint timings not found.';
 

@@ -17,20 +17,28 @@
 
 'use strict';
 
-const Audit = require('../audit');
-const icons = require('../../lib/icons');
+const Audit = require('./audit');
 
-class ManifestIconsMin144 extends Audit {
+class ManifestDisplay extends Audit {
   /**
    * @return {!AuditMeta}
    */
   static get meta() {
     return {
       category: 'Manifest',
-      name: 'manifest-icons-min-144',
-      description: 'Manifest contains icons at least 144px',
+      name: 'manifest-display',
+      description: 'Manifest\'s display property set to standalone/fullscreen to ' +
+            'allow launching without address bar',
       requiredArtifacts: ['manifest']
     };
+  }
+
+  /**
+   * @param {string|undefined} val
+   * @return {boolean}
+   */
+  static hasRecommendedValue(val) {
+    return (val === 'fullscreen' || val === 'standalone');
   }
 
   /**
@@ -39,23 +47,16 @@ class ManifestIconsMin144 extends Audit {
    */
   static audit(artifacts) {
     const manifest = artifacts.manifest.value;
+    const displayValue = (!manifest || !manifest.display) ? undefined : manifest.display.value;
 
-    if (icons.doExist(manifest) === false) {
-      return ManifestIconsMin144.generateAuditResult({
-        value: false,
-        debugString: 'WARNING: No icons found in the manifest'
-      });
-    }
+    const hasRecommendedValue = ManifestDisplay.hasRecommendedValue(displayValue);
 
-    const matchingIcons = icons.sizeAtLeast(144, /** @type {!Manifest} */ (manifest));
-    const foundSizesDebug = matchingIcons.length ?
-        `Found icons of sizes: ${matchingIcons}` : undefined;
-    return ManifestIconsMin144.generateAuditResult({
-      value: !!matchingIcons.length,
-      debugString: foundSizesDebug
+    return ManifestDisplay.generateAuditResult({
+      value: hasRecommendedValue,
+      rawValue: displayValue,
+      debugString: 'Manifest display property should be standalone or fullscreen.'
     });
   }
 }
 
-module.exports = ManifestIconsMin144;
-
+module.exports = ManifestDisplay;

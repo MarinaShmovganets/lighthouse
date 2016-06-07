@@ -17,9 +17,9 @@
 
 'use strict';
 
-const Audit = require('../audit');
-const Formatter = require('../../../formatters/formatter');
-const TimelineModel = require('../../lib/traces/devtools-timeline-model');
+const Audit = require('./audit');
+const Formatter = require('../../formatters/formatter');
+const TimelineModel = require('../lib/traces/devtools-timeline-model');
 
 const FAILURE_MESSAGE = 'Trace data not found.';
 

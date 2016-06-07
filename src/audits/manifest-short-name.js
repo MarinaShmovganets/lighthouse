@@ -17,29 +17,19 @@
 
 'use strict';
 
-const Audit = require('../audit');
+const Audit = require('./audit');
 
-class ManifestBackgroundColor extends Audit {
+class ManifestShortName extends Audit {
   /**
    * @return {!AuditMeta}
    */
   static get meta() {
     return {
       category: 'Manifest',
-      name: 'manifest-background-color',
-      description: 'Manifest contains background_color',
+      name: 'manifest-short-name',
+      description: 'Manifest contains short_name',
       requiredArtifacts: ['manifest']
     };
-  }
-
-  /**
-   * @param {!Manifest=} manifest
-   * @return {boolean}
-   */
-  static hasBackgroundColorValue(manifest) {
-    return manifest !== undefined &&
-      manifest.background_color !== undefined &&
-      manifest.background_color.value !== undefined;
   }
 
   /**
@@ -47,13 +37,17 @@ class ManifestBackgroundColor extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const hasBackgroundColor = ManifestBackgroundColor
-        .hasBackgroundColorValue(artifacts.manifest.value);
+    let hasShortName = false;
+    const manifest = artifacts.manifest.value;
 
-    return ManifestBackgroundColor.generateAuditResult({
-      value: hasBackgroundColor
+    if (manifest) {
+      hasShortName = !!(manifest.short_name.value || manifest.name.value);
+    }
+
+    return ManifestShortName.generateAuditResult({
+      value: hasShortName
     });
   }
 }
 
-module.exports = ManifestBackgroundColor;
+module.exports = ManifestShortName;

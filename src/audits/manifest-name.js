@@ -17,28 +17,19 @@
 
 'use strict';
 
-const Audit = require('../audit');
+const Audit = require('./audit');
 
-class ManifestDisplay extends Audit {
+class ManifestName extends Audit {
   /**
    * @return {!AuditMeta}
    */
   static get meta() {
     return {
       category: 'Manifest',
-      name: 'manifest-display',
-      description: 'Manifest\'s display property set to standalone/fullscreen to ' +
-            'allow launching without address bar',
+      name: 'manifest-name',
+      description: 'Manifest contains name',
       requiredArtifacts: ['manifest']
     };
-  }
-
-  /**
-   * @param {string|undefined} val
-   * @return {boolean}
-   */
-  static hasRecommendedValue(val) {
-    return (val === 'fullscreen' || val === 'standalone');
   }
 
   /**
@@ -46,17 +37,17 @@ class ManifestDisplay extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
+    let hasName = false;
     const manifest = artifacts.manifest.value;
-    const displayValue = (!manifest || !manifest.display) ? undefined : manifest.display.value;
 
-    const hasRecommendedValue = ManifestDisplay.hasRecommendedValue(displayValue);
+    if (manifest && manifest.name) {
+      hasName = (!!manifest.name.value);
+    }
 
-    return ManifestDisplay.generateAuditResult({
-      value: hasRecommendedValue,
-      rawValue: displayValue,
-      debugString: 'Manifest display property should be standalone or fullscreen.'
+    return ManifestName.generateAuditResult({
+      value: hasName
     });
   }
 }
 
-module.exports = ManifestDisplay;
+module.exports = ManifestName;

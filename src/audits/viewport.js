@@ -16,7 +16,7 @@
  */
 'use strict';
 
-const Audit = require('../audit');
+const Audit = require('./audit');
 
 class Viewport extends Audit {
   /**
