@@ -65,7 +65,7 @@ limitations under the License.
 
       {{#each aggregations}}
       <div class="js-breakdown report-body__breakdown">
-        <h1 class="report-section__title" id="progressive-web-app">
+        <h1 class="report-section__title" id="{{nameToLink this.name}}">
           <span class="report-section__title-main">{{ this.name }}</span>
           {{#if this.scored}}
           <span class="report-section__title-score">
@@ -82,14 +82,25 @@ limitations under the License.
           {{#each this.score as |aggregation|}}
             <section class="report-body__breakdown-item">
 
+            {{#if aggregation.name }}
             <h1 class="report-section__subtitle">{{ aggregation.name }}</h1>
+            {{/if}}
+
+            {{#if aggregation.description }}
             <p class="report-section__aggregation-description">{{{ aggregation.description }}}</p>
+            {{/if}}
 
             <ul class="report-section__individual-results">
               {{#each aggregation.subItems as |subItem| }}
                 <li class="report-section__item {{#if subItem.comingSoon}}coming-soon{{/if}}">
                   <div class="report-section__item-details">
                     <span class="report-section__item-description">
+                      {{#unless ../../scored }}
+                        <span class="report-section__item-category">
+                          {{ subItem.category }}:
+                        </span>
+                      {{/unless}}
+
                       {{ subItem.description }}
                       {{#if subItem.optimalValue }}
                         <small>
