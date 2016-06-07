@@ -167,7 +167,7 @@ function run(passes, options) {
         });
       });
 
-      // We don't expose this at present so ignore for testing.
+      // Ignoring these two flags since this functionality is not exposed by the module.
       /* istanbul ignore next */
       if (options.flags.saveArtifacts) {
         assetSaver.saveArtifacts(artifacts);
