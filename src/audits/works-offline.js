@@ -25,7 +25,7 @@ class WorksOffline extends Audit {
   static get meta() {
     return {
       category: 'Offline',
-      name: 'works offline',
+      name: 'works-offline',
       description: 'URL responds with a 200 when offline',
       requiredArtifacts: ['offlineResponseCode']
     };
