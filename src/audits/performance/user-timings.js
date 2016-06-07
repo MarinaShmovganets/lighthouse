@@ -57,11 +57,14 @@ class UserTimings extends Audit {
     const timelineModel = new TimelineModel(artifacts.traceContents);
     const modeledTraceData = timelineModel.timelineModel();
 
-    modeledTraceData.mainThreadEvents().filter(
-      // Get all blink.user_timing events
-      ut => ut.hasCategory('blink.user_timing') || ut.name === 'TracingStartedInPage'
-    ).forEach(ut => {
-      if (ut.phase === 'R' || ut.phase === 'I') {
+    // Get all blink.user_timing events
+    // The event phases we are interested in are mark and instant events (R, i, I)
+    // and duration events which correspond to measures (B, b, E, e).
+    // @see https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview#
+    modeledTraceData.mainThreadEvents()
+    .filter(ut => ut.hasCategory('blink.user_timing') || ut.name === 'TracingStartedInPage')
+    .forEach(ut => {
+      if (ut.phase === 'R' || ut.phase.toUpperCase() === 'I') {
         // Mark event
         if (ut.name === 'TracingStartedInPage' && !traceStart) {
           traceStart = true;
@@ -79,10 +82,10 @@ class UserTimings extends Audit {
             startTime: ut.startTime
           });
         }
-      } else if (ut.phase === 'b') {
+      } else if (ut.phase.toLowerCase() === 'b') {
         // Beginning of measure event
         measuresStartTimes[ut.name] = ut.startTime;
-      } else if (ut.phase === 'e') {
+      } else if (ut.phase.toLowerCase() === 'e') {
         // End of measure event
         if (!ut.args.hasOwnProperty('frame') && ut.name !== 'requestStart') {
           userTimings.push({
