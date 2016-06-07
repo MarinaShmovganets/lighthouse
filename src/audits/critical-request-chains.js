@@ -63,7 +63,7 @@ class CriticalRequestChains extends Audit {
       optimalValue: this.meta.optimalValue,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.CRITICAL_REQUEST_CHAINS,
-        value: artifacts.criticalRequestChains
+        value: artifacts.CriticalRequestChains
       }
     });
   }
