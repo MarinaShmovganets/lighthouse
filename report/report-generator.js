@@ -34,7 +34,7 @@ class ReportGenerator {
       return Math.round(totalScore * 100);
     };
 
-    // Converts a name to a
+    // Converts a name to a link.
     Handlebars.registerHelper('nameToLink', name => {
       return name.toLowerCase().replace(/\s/, '-');
     });
