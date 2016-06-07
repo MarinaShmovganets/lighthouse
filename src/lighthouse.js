@@ -19,70 +19,6 @@
 const Auditor = require('./auditor');
 const Scheduler = require('./scheduler');
 const Aggregator = require('./aggregator');
-const log = require('./lib/log.js');
-
-const GATHERER_CLASSES = [
-  require('./gatherers/url'),
-  require('./gatherers/https'),
-  require('./gatherers/http-redirect'),
-  require('./gatherers/service-worker'),
-  require('./gatherers/viewport'),
-  require('./gatherers/theme-color'),
-  require('./gatherers/html'),
-  require('./gatherers/html-without-javascript'),
-  require('./gatherers/manifest'),
-  require('./gatherers/accessibility'),
-  require('./gatherers/screenshots'),
-  require('./gatherers/offline'),
-  require('./gatherers/critical-request-chains'),
-  require('./gatherers/speedline')
-];
-
-const AUDITS = [
-  require('./audits/security/is-on-https'),
-  require('./audits/security/redirects-http'),
-  require('./audits/offline/service-worker'),
-  require('./audits/offline/works-offline'),
-  require('./audits/mobile-friendly/viewport'),
-  require('./audits/mobile-friendly/display'),
-  require('./audits/javascript/without-javascript'),
-  require('./audits/performance/first-meaningful-paint'),
-  require('./audits/performance/speed-index-metric'),
-  require('./audits/performance/user-timings'),
-  require('./audits/performance/screenshots'),
-  // TODO: https://github.com/GoogleChrome/lighthouse/issues/336
-  // require('./audits/performance/input-readiness-metric'),
-  require('./audits/performance/critical-request-chains'),
-  require('./audits/manifest/exists'),
-  require('./audits/manifest/background-color'),
-  require('./audits/manifest/theme-color'),
-  require('./audits/manifest/icons-min-192'),
-  require('./audits/manifest/icons-min-144'),
-  require('./audits/manifest/name'),
-  require('./audits/manifest/short-name'),
-  require('./audits/manifest/short-name-length'),
-  require('./audits/manifest/start-url'),
-  require('./audits/html/meta-theme-color'),
-  require('./audits/accessibility/aria-valid-attr'),
-  require('./audits/accessibility/aria-allowed-attr'),
-  require('./audits/accessibility/color-contrast'),
-  require('./audits/accessibility/image-alt'),
-  require('./audits/accessibility/label'),
-  require('./audits/accessibility/tabindex')
-];
-
-const AGGREGATORS = [
-  require('./aggregators/can-load-offline'),
-  require('./aggregators/is-performant'),
-  require('./aggregators/is-progressive'),
-  require('./aggregators/is-secure'),
-  require('./aggregators/will-get-add-to-homescreen-prompt'),
-  require('./aggregators/launches-with-splash-screen'),
-  require('./aggregators/address-bar-is-themed'),
-  require('./aggregators/is-sized-for-mobile-screen'),
-  require('./aggregators/best-practices'),
-  require('./aggregators/performance-metrics')
-];
 
 module.exports = function(driver, opts) {
   // Default mobile emulation and page loading to true.
@@ -95,42 +31,41 @@ module.exports = function(driver, opts) {
     opts.flags.loadPage = true;
   }
 
-  // Discard any audits not whitelisted.
-  let audits = AUDITS;
-  let rejected;
-
-  // Testing this will require exposing the functionality at the module level, which
-  // isn't really necessary (and probably confusing for people using Lighthouse), so we'll
-  // skip this when testing coverage.
-  /* istanbul ignore if */
-  if (opts.flags.auditWhitelist) {
-    const whitelist = opts.flags.auditWhitelist;
-    rejected = audits.filter(audit => !whitelist.has(audit.meta.name));
-    audits = audits.filter(audit => whitelist.has(audit.meta.name));
-    if (rejected.length) {
-      log.log('info', 'Running these audits:', `${audits.map(a => a.meta.name).join(', ')}`);
-      log.log('info', 'Skipping these audits:', `${rejected.map(a => a.meta.name).join(', ')}`);
-    }
+  const config = opts.config;
+  if (!config) {
+    throw new Error('Config is not defined; did you override the default config correctly?');
   }
 
-  // Collate all artifacts required by audits to be run.
-  const auditArtifacts = audits.map(audit => audit.meta.requiredArtifacts);
-  const requiredArtifacts = new Set([].concat(...auditArtifacts));
-
-  // Instantiate gatherers and discard any not needed by requested audits.
-  // For now, the trace and network records are assumed to be required.
-  const gatherers = GATHERER_CLASSES.map(G => new G())
-    .filter(gatherer => requiredArtifacts.has(gatherer.name));
-
-  const passes = require('../config/default.json').passes.map(pass => {
-    pass.gatherers = pass.gatherers.map(gathererName => {
-      const gatherer = GATHERER_CLASSES.map(G => new G())
-        .find(gatherer => gatherer.name === gathererName);
-      return gatherer;
+  const passes = config.passes.map(pass => {
+    pass.gatherers = pass.gatherers.map(gatherer => {
+      try {
+        const GathererClass = require(`./gatherers/${gatherer}`);
+        return new GathererClass();
+      } catch (requireError) {
+        throw new Error(`Unable to locate gatherer: ${gatherer}`);
+      }
     });
 
     return pass;
   });
+
+  const audits = config.audits.map(audit => {
+    try {
+      return require(`./audits/${audit}`);
+    } catch (requireError) {
+      throw new Error(`Unable to locate audit: ${audit}`);
+    }
+  });
+
+  const results = require('/Users/paullewis/Projects/lighthouse/rawdata.json');
+
+  return Aggregator.aggregate(config.aggregations, results)
+      .then(aggregations => {
+        return {
+          url: opts.url,
+          aggregations
+        };
+      });
 
   // The runs of Lighthouse should be tested in integration / smoke tests, so testing for coverage
   // here, at least from a unit test POV, is relatively low merit.
@@ -138,7 +73,7 @@ module.exports = function(driver, opts) {
   return Scheduler
       .run(passes, Object.assign({}, opts, {driver}))
       .then(artifacts => Auditor.audit(artifacts, audits))
-      .then(results => Aggregator.aggregate(AGGREGATORS, results))
+      .then(results => Aggregator.aggregate(config.aggregators, results))
       .then(aggregations => {
         return {
           url: opts.url,
@@ -152,5 +87,6 @@ module.exports = function(driver, opts) {
  * @return {!Array<string>}
  */
 module.exports.getAuditList = function() {
-  return AUDITS.map(audit => audit.meta.name);
+  // FIXME: Should glob the require path for actual audits.
+  return []; //AUDITS.map(audit => audit.meta.name);
 };
