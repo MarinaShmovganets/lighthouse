@@ -94,7 +94,10 @@ function createOutput(results, outputMode) {
 
     aggregation.score.forEach(item => {
       let score = (item.overall * 100).toFixed(0);
-      output += `${item.name}: ${score}%\n`;
+
+      if (item.name) {
+        output += `${item.name}: ${score}%\n`;
+      }
 
       item.subItems.forEach(subitem => {
         let lineItem = ` -- ${subitem.description}: ${subitem.value}`;
