@@ -18,7 +18,6 @@
 
 /* global Intl */
 
-const Aggregate = require('../src/aggregators/aggregate');
 const Formatter = require('../formatters/formatter');
 const Handlebars = require('handlebars');
 const fs = require('fs');
@@ -33,7 +32,7 @@ class ReportGenerator {
       }, 0) / aggregation.score.length;
 
       return Math.round(totalScore * 100);
-    }
+    };
 
     // Converts a name to a
     Handlebars.registerHelper('nameToLink', name => {

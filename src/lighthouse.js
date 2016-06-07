@@ -77,6 +77,7 @@ module.exports = function(driver, opts) {
  * @return {!Array<string>}
  */
 module.exports.getAuditList = function() {
+  // AUDITS.map(audit => audit.meta.name);
   // FIXME: Should glob the require path for actual audits.
-  return []; //AUDITS.map(audit => audit.meta.name);
+  return [];
 };
