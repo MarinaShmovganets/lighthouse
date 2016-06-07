@@ -158,7 +158,6 @@ function run(passes, options) {
 
      // Finish and teardown.
     .then(_ => driver.disconnect())
-    // .then(_ => runPhase(gatherer => gatherer.tearDown(options)))
     .then(_ => {
       // Collate all the gatherer results.
       const artifacts = Object.assign({}, tracingData);
