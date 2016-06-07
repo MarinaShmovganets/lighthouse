@@ -19,9 +19,6 @@
 const Gather = require('./gather');
 
 class ThemeColor extends Gather {
-  get name() {
-    return 'themeColorMeta';
-  }
 
   afterPass(options) {
     const driver = options.driver;

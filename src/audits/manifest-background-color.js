@@ -48,7 +48,7 @@ class ManifestBackgroundColor extends Audit {
    */
   static audit(artifacts) {
     const hasBackgroundColor = ManifestBackgroundColor
-        .hasBackgroundColorValue(artifacts.manifest.value);
+        .hasBackgroundColorValue(artifacts.Manifest.value);
 
     return ManifestBackgroundColor.generateAuditResult({
       value: hasBackgroundColor

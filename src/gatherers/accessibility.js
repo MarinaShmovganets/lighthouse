@@ -34,10 +34,6 @@ function runA11yChecks() {
 }
 
 class Accessibility extends Gather {
-  get name() {
-    return 'accessibility';
-  }
-
   static _errorAccessibility(errorString) {
     return {
       raw: undefined,

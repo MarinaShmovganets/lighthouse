@@ -19,9 +19,6 @@
 const Gather = require('./gather');
 
 class HTTPRedirect extends Gather {
-  get name() {
-    return 'redirectsHTTP';
-  }
 
   constructor() {
     super();

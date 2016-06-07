@@ -19,9 +19,6 @@
 const Gather = require('./gather');
 
 class Viewport extends Gather {
-  get name() {
-    return 'viewport';
-  }
 
   /**
    * @param {!{driver: !Object}} options Run options

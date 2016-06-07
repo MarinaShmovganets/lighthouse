@@ -19,9 +19,6 @@
 const Gather = require('./gather');
 
 class ServiceWorker extends Gather {
-  get name() {
-    return 'serviceWorkers';
-  }
 
   /**
    * @param {string} url

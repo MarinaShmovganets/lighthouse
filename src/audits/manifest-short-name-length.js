@@ -39,7 +39,7 @@ class ManifestShortNameLength extends Audit {
   static audit(artifacts) {
     let isShortNameShortEnough = false;
     let debugString;
-    const manifest = artifacts.manifest.value;
+    const manifest = artifacts.Manifest.value;
     const suggestedLength = 12;
 
     if (manifest) {

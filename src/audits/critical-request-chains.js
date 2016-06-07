@@ -56,7 +56,7 @@ class CriticalRequestChains extends Audit {
       }, '');
     }
 
-    walk(artifacts.criticalRequestChains, 0);
+    walk(artifacts.CriticalRequestChains, 0);
 
     return CriticalRequestChains.generateAuditResult({
       value: chainCount,

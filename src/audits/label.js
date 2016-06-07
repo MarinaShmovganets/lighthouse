@@ -39,7 +39,7 @@ class Label extends Audit {
    */
   static audit(artifacts) {
     const rule =
-        artifacts.accessibility.violations.find(result => result.id === 'label');
+        artifacts.Accessibility.violations.find(result => result.id === 'label');
 
     return Label.generateAuditResult({
       value: typeof rule === 'undefined',

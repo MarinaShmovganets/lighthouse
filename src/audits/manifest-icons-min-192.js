@@ -38,7 +38,7 @@ class ManifestIconsMin192 extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const manifest = artifacts.manifest.value;
+    const manifest = artifacts.Manifest.value;
 
     if (icons.doExist(manifest) === false) {
       return ManifestIconsMin192.generateAuditResult({

@@ -38,7 +38,7 @@ class ManifestStartUrl extends Audit {
    */
   static audit(artifacts) {
     let hasStartUrl = false;
-    const manifest = artifacts.manifest.value;
+    const manifest = artifacts.Manifest.value;
 
     if (manifest && manifest.start_url) {
       hasStartUrl = (!!manifest.start_url.value);

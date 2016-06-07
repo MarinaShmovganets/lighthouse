@@ -48,7 +48,7 @@ class SpeedIndexMetric extends Audit {
    */
   static audit(artifacts) {
     return new Promise((resolve, reject) => {
-      const speedline = artifacts.speedline;
+      const speedline = artifacts.Speedline;
 
       // Speedline gather failed; pass on error condition.
       if (speedline.debugString) {

@@ -26,7 +26,7 @@ class Gather {
    * @return {string}
    */
   get name() {
-    throw new Error('Gather name must be overridden.');
+    return this.constructor.name;
   }
 
   /* eslint-disable no-unused-vars */

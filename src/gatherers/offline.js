@@ -37,9 +37,6 @@ const requestPage = function() {
 };
 
 class Offline extends Gather {
-  get name() {
-    return 'offlineResponseCode';
-  }
 
   static goOffline(driver) {
     return driver.sendCommand('Network.emulateNetworkConditions', {

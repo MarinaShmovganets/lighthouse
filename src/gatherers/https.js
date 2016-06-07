@@ -19,9 +19,6 @@
 const Gather = require('./gather');
 
 class HTTPS extends Gather {
-  get name() {
-    return 'https';
-  }
 
   constructor() {
     super();

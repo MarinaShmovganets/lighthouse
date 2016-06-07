@@ -37,7 +37,7 @@ class ThemeColor extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const themeColorMeta = artifacts.themeColorMeta;
+    const themeColorMeta = artifacts.ThemeColor;
     if (!themeColorMeta) {
       return ThemeColor.generateAuditResult({
         value: false,

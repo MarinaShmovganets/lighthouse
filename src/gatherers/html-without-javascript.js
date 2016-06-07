@@ -31,9 +31,6 @@ function getBodyText() {
 }
 
 class HTMLWithoutJavaScript extends HTML {
-  get name() {
-    return 'htmlWithoutJavaScript';
-  }
 
   beforePass(options) {
     options.disableJavaScript = true;
