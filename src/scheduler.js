@@ -53,11 +53,11 @@ function setup(options) {
   const gatherers = config.gatherers;
   let pass = Promise.resolve();
 
-  if (config.network) {
+  if (config.trace) {
     pass = pass.then(_ => driver.beginTrace());
   }
 
-  if (config.trace) {
+  if (config.network) {
     pass = pass.then(_ => driver.beginNetworkCollect());
   }
 
@@ -99,13 +99,13 @@ function afterPass(options) {
   const loadData = {};
   let pass = Promise.resolve();
 
-  if (config.network) {
+  if (config.trace) {
     pass = pass.then(_ => driver.endTrace().then(traceContents => {
       loadData.traceContents = traceContents;
     }));
   }
 
-  if (config.trace) {
+  if (config.network) {
     pass = pass.then(_ => driver.endNetworkCollect().then(networkRecords => {
       loadData.networkRecords = networkRecords;
     }));
@@ -168,13 +168,10 @@ function run(passes, options) {
         });
       });
 
-      // Ignoring these two flags since this functionality is not exposed by the module.
-      /* istanbul ignore if */
       if (options.flags.saveArtifacts) {
         assetSaver.saveArtifacts(artifacts);
       }
 
-      /* istanbul ignore if */
       if (options.flags.saveAssets) {
         assetSaver.saveAssets(options, artifacts);
       }
@@ -184,5 +181,9 @@ function run(passes, options) {
 }
 
 module.exports = {
-  run
+  run,
+  loadPage,
+  setupDriver,
+  setup,
+  afterPass
 };

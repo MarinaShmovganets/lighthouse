@@ -28,7 +28,7 @@ describe('HTML without JavaScript gatherer', () => {
   });
 
   it('returns an artifact', () => {
-    return htmlWithoutJavaScriptGather.afterSecondReloadPageLoad({
+    return htmlWithoutJavaScriptGather.afterPass({
       driver: {
         evaluateAsync() {
           return Promise.resolve('Hello!');
@@ -41,7 +41,7 @@ describe('HTML without JavaScript gatherer', () => {
   });
 
   it('handles driver failure', () => {
-    return htmlWithoutJavaScriptGather.afterSecondReloadPageLoad({
+    return htmlWithoutJavaScriptGather.afterPass({
       driver: {
         evaluateAsync() {
           return Promise.reject('such a fail');

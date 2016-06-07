@@ -57,23 +57,13 @@ module.exports = function(driver, opts) {
     }
   });
 
-  const results = require('/Users/paullewis/Projects/lighthouse/rawdata.json');
-
-  return Aggregator.aggregate(config.aggregations, results)
-      .then(aggregations => {
-        return {
-          url: opts.url,
-          aggregations
-        };
-      });
-
   // The runs of Lighthouse should be tested in integration / smoke tests, so testing for coverage
   // here, at least from a unit test POV, is relatively low merit.
   /* istanbul ignore next */
   return Scheduler
       .run(passes, Object.assign({}, opts, {driver}))
       .then(artifacts => Auditor.audit(artifacts, audits))
-      .then(results => Aggregator.aggregate(config.aggregators, results))
+      .then(results => Aggregator.aggregate(config.aggregations, results))
       .then(aggregations => {
         return {
           url: opts.url,

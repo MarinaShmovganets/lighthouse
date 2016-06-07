@@ -28,22 +28,35 @@ describe('Service Worker gatherer', () => {
   });
 
   it('obtains the active service worker registration', () => {
+    let callback;
     const url = 'https://example.com/';
     const versions = [{
       status: 'activated',
       scriptURL: url
     }];
 
-    return serviceWorkerGatherer.afterReloadPageLoad({
+    serviceWorkerGatherer.setup({
       driver: {
-        getServiceWorkerVersions() {
-          return Promise.resolve({versions});
+        on(evtName, cb) {
+          callback = cb;
         }
       },
       url
+    });
+
+    return serviceWorkerGatherer.beforePass({
+      driver: {
+        sendCommand() {
+          callback({
+            versions,
+            url
+          });
+          return Promise.resolve();
+        }
+      }
     }).then(_ => {
-      assert(serviceWorkerGatherer.artifact.version);
-      assert.deepEqual(serviceWorkerGatherer.artifact.version, {
+      assert.equal(serviceWorkerGatherer.artifact.versions.length, 1);
+      assert.deepEqual(serviceWorkerGatherer.artifact.versions[0], {
         status: 'activated',
         scriptURL: url
       });
@@ -51,35 +64,48 @@ describe('Service Worker gatherer', () => {
   });
 
   it('discards service worker registrations for other origins', () => {
+    let callback;
     const url = 'https://example.com/';
     const versions = [{
       status: 'activated',
       scriptURL: 'https://other-example.com'
     }];
 
-    return serviceWorkerGatherer.afterReloadPageLoad({
+    serviceWorkerGatherer.setup({
       driver: {
-        getServiceWorkerVersions() {
-          return Promise.resolve({versions});
+        on(evtName, cb) {
+          callback = cb;
         }
       },
       url
+    });
+
+    return serviceWorkerGatherer.beforePass({
+      driver: {
+        sendCommand() {
+          callback({
+            versions,
+            url
+          });
+          return Promise.resolve();
+        }
+      }
     }).then(_ => {
-      assert(!serviceWorkerGatherer.artifact.version);
-      assert(serviceWorkerGatherer.artifact.debugString);
+      assert.equal(serviceWorkerGatherer.artifact.versions.length, 0);
     });
   });
 
   it('handles driver failure', () => {
-    return serviceWorkerGatherer.afterReloadPageLoad({
+    return serviceWorkerGatherer.beforePass({
       driver: {
-        getServiceWorkerVersions() {
+        sendCommand() {
           return Promise.reject('fail');
         }
       }
     }).then(_ => {
-      assert(!serviceWorkerGatherer.artifact.version);
-      assert(serviceWorkerGatherer.artifact.debugString);
+      assert(false);
+    }).catch(_ => {
+      assert.equal(serviceWorkerGatherer.artifact.versions, -1);
     });
   });
 });

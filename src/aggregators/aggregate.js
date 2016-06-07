@@ -129,7 +129,7 @@ class Aggregate {
   /**
    * Compares the set of audit results to the expected values.
    * @param {!Array<!AuditResult>} results The audit results.
-   * @param {!AggregationCriteria} expected The aggregation's expected values and weighting.
+   * @param {!AggregationCriteria} items The aggregation's expected values and weighting.
    * @param {!boolean} aggregationIsScored Whether or not the aggregation is scored.
    * @return {!AggregationItem} The aggregation score.
    */
@@ -192,6 +192,7 @@ class Aggregate {
 
   /**
    * Aggregates all the results.
+   * @param {!Aggregation} aggregation
    * @param {!Array<!AuditResult>} results
    * @return {!Aggregation}
    */

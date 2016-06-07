@@ -28,7 +28,7 @@ describe('HTTP Redirect gatherer', () => {
   });
 
   it('returns an artifact', () => {
-    return httpRedirectGather.afterSecondReloadPageLoad({
+    return httpRedirectGather.afterPass({
       driver: {
         getSecurityState() {
           return Promise.resolve({
@@ -42,7 +42,7 @@ describe('HTTP Redirect gatherer', () => {
   });
 
   it('handles driver failure', () => {
-    return httpRedirectGather.afterSecondReloadPageLoad({
+    return httpRedirectGather.afterPass({
       driver: {
         getSecurityState() {
           return Promise.reject('such a fail');
@@ -57,7 +57,7 @@ describe('HTTP Redirect gatherer', () => {
   });
 
   it('handles driver timeout', () => {
-    return httpRedirectGather.afterSecondReloadPageLoad({
+    return httpRedirectGather.afterPass({
       driver: {
         getSecurityState() {
           return new Promise((resolve, reject) => {
