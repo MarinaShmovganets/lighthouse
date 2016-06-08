@@ -28,7 +28,6 @@ describe('Performance: user-timings audit', () => {
 
   it('evaluates valid input correctly', () => {
     const output = Audit.audit({traceContents});
-    console.log(output);
     assert.equal(output.value, 2);
   });
 });
