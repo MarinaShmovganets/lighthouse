@@ -44,7 +44,7 @@ Artifacts.prototype.traceContents;
 /** @type {!ManifestNode<(!Manifest|undefined)>} */
 Artifacts.prototype.Manifest;
 
-/** @type {!ServiceWorkerVersions} */
+/** @type {!ServiceWorkerVersion} */
 Artifacts.prototype.ServiceWorker;
 
 /** @type {?string} */

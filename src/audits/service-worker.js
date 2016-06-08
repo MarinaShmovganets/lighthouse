@@ -37,16 +37,9 @@ class ServiceWorker extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    if (!artifacts.ServiceWorker ||
-        !artifacts.ServiceWorker.versions ||
-        !Array.isArray(artifacts.ServiceWorker.versions)) {
-      return ServiceWorker.generateAuditResult({value: false});
-    }
-
-    const activatedRegistrations = artifacts.ServiceWorker.versions;
-
     return ServiceWorker.generateAuditResult({
-      value: activatedRegistrations.length > 0
+      value: !!artifacts.ServiceWorker.version,
+      debugString: artifacts.ServiceWorker.debugString
     });
   }
 }

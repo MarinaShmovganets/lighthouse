@@ -656,9 +656,13 @@
                 "formatter": "userTimings",
                 "value": [{
                   "name": "one",
+                  "startTime": 100,
+                  "endTime": 1100,
                   "duration": 1000
                 }, {
                   "name": "two",
+                  "startTime": 100,
+                  "endTime": 2100,
                   "duration": 2000
                 }]
               },

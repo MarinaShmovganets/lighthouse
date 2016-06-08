@@ -24,7 +24,7 @@ describe('Offline: Service Worker audit', () => {
   it('creates an output when given no Service Worker version', () => {
     const debugString = 'Error string';
     const output = Audit.audit({
-      serviceWorker: {
+      ServiceWorker: {
         version: undefined,
         debugString
       }
@@ -36,7 +36,7 @@ describe('Offline: Service Worker audit', () => {
 
   it('creates an output when given an array of versions', () => {
     const output = Audit.audit({
-      serviceWorker: {
+      ServiceWorker: {
         version: {}
       }
     });
