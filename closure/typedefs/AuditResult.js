@@ -72,10 +72,10 @@ UserTimingsExtendedInfo.prototype.args;
 /** @type {!number} */
 UserTimingsExtendedInfo.prototype.startTime;
 
-/** @type {?number} */
+/** @type {(number|undefined)} */
 UserTimingsExtendedInfo.prototype.endTime;
 
-/** @type {?number} */
+/** @type {(number|undefined)} */
 UserTimingsExtendedInfo.prototype.duration;
 
 

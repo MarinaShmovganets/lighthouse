@@ -24,7 +24,7 @@ const TimelineModel = require('../../lib/traces/devtools-timeline-model');
 const FAILURE_MESSAGE = 'Trace data not found.';
 
 /**
- * @param {!Array<Object>} traceData
+ * @param {!Array<!Object>} traceData
  * @return {!Array<!UserTimingsExtendedInfo>}
  */
 function filterTrace(traceData) {
@@ -68,7 +68,7 @@ function filterTrace(traceData) {
       // Once TraceingStartedInPage has begun, the next navigationStart event
       // marks the start of navigation
       // Make sure to not record such events hereafter
-      if (ut.name === 'navigationStart' && traceStartFound & !navigationStartTime) {
+      if (ut.name === 'navigationStart' && traceStartFound && !navigationStartTime) {
         navigationStartTime = ut.startTime;
       }
 

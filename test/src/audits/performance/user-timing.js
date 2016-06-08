@@ -29,5 +29,11 @@ describe('Performance: user-timings audit', () => {
   it('evaluates valid input correctly', () => {
     const output = Audit.audit({traceContents});
     assert.equal(output.value, 2);
+    assert.ok(!Number.isNaN(output.extendedInfo.value[0].startTime));
+    assert.ok(typeof output.extendedInfo.value[0].endTime == 'undefined');
+    assert.ok(typeof output.extendedInfo.value[0].duration == 'undefined');
+    assert.ok(!Number.isNaN(output.extendedInfo.value[1].startTime));
+    assert.ok(!Number.isNaN(output.extendedInfo.value[1].endTime));
+    assert.ok(!Number.isNaN(output.extendedInfo.value[1].duration));
   });
 });
