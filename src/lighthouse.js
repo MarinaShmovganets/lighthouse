@@ -29,6 +29,63 @@ function isValidConfig(config) {
       typeof config.aggregations);
 }
 
+function filterAndExpandAudits(audits, whitelist) {
+  return audits.filter(a => {
+        // If there is no whitelist, assume all.
+    if (!whitelist) {
+      return true;
+    }
+
+    return whitelist.has(a.toLowerCase());
+  })
+
+  // Remap the audits to its actual class.
+  .map(audit => {
+    try {
+      return require(`./audits/${audit}`);
+    } catch (requireError) {
+      throw new Error(`Unable to locate audit: ${audit}`);
+    }
+  });
+}
+
+function getGatherersNeededByAudits(audits) {
+  return audits.reduce((list, audit) => {
+    audit.meta.requiredArtifacts.forEach(artifact => list.add(artifact));
+    return list;
+  }, new Set());
+}
+
+function expandPasses(audits, passes) {
+  const requiredGatherers = getGatherersNeededByAudits(audits);
+
+  return passes.map(pass => {
+    pass.gatherers = pass.gatherers
+        // Make sure we only have the gatherers that are needed by the audits
+        // that have been listed in the config.
+        .filter(gatherer => {
+          try {
+            const GathererClass = require(`./gatherers/${gatherer}`);
+            const gathererNecessary = requiredGatherers.has(GathererClass.name);
+            return gathererNecessary;
+          } catch (requireError) {
+            throw new Error(`Unable to locate gatherer: ${gatherer}`);
+          }
+        })
+
+        // Take each one and instantiate it.
+        .map(gatherer => {
+          const GathererClass = require(`./gatherers/${gatherer}`);
+          return new GathererClass();
+        });
+
+    return pass;
+  })
+
+  // Make sure that any passes that have zero gatherers left are excluded from the run.
+  .filter(p => p.gatherers.length > 0);
+}
+
 module.exports = function(driver, opts) {
   // Default mobile emulation and page loading to true.
   // The extension will switch these off initially.
@@ -45,39 +102,8 @@ module.exports = function(driver, opts) {
     throw new Error('Config is invalid. Did you define passes, audits, and aggregations?');
   }
 
-  const passes = config.passes.map(pass => {
-    pass.gatherers = pass.gatherers.map(gatherer => {
-      try {
-        const GathererClass = require(`./gatherers/${gatherer}`);
-        return new GathererClass();
-      } catch (requireError) {
-        throw new Error(`Unable to locate gatherer: ${gatherer}`);
-      }
-    });
-
-    return pass;
-  });
-
-  const whitelist = opts.flags.auditWhitelist;
-  const audits = config.audits
-    // Remove any audits not in the whitelist.
-    .filter(a => {
-      // If there is no whitelist, assume all.
-      if (!whitelist) {
-        return true;
-      }
-
-      return whitelist.has(a.toLowerCase());
-    })
-
-    // Remap the audits to its actual class.
-    .map(audit => {
-      try {
-        return require(`./audits/${audit}`);
-      } catch (requireError) {
-        throw new Error(`Unable to locate audit: ${audit}`);
-      }
-    });
+  const audits = filterAndExpandAudits(config.audits, opts.flags.auditWhitelist);
+  const passes = expandPasses(audits, config.passes);
 
   // The runs of Lighthouse should be tested in integration / smoke tests, so testing for coverage
   // here, at least from a unit test POV, is relatively low merit.
@@ -103,3 +129,8 @@ module.exports.getAuditList = function() {
       .readdirSync(path.join(__dirname, './audits'))
       .filter(f => /\.js$/.test(f));
 };
+
+// Expose these for testing.
+module.exports.filterAndExpandAudits = filterAndExpandAudits;
+module.exports.getGatherersNeededByAudits = getGatherersNeededByAudits;
+module.exports.expandPasses = expandPasses;
