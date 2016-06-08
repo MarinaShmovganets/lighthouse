@@ -28,7 +28,7 @@ class ManifestExists extends Audit {
       category: 'Manifest',
       name: 'manifest-exists',
       description: 'Manifest exists',
-      requiredArtifacts: ['manifest']
+      requiredArtifacts: ['Manifest']
     };
   }
 

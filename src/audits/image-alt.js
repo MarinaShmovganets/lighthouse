@@ -29,7 +29,7 @@ class ImageAlt extends Audit {
       category: 'Accessibility',
       name: 'image-alt',
       description: 'Every image element has an alt attribute',
-      requiredArtifacts: ['accessibility']
+      requiredArtifacts: ['Accessibility']
     };
   }
 

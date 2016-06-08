@@ -29,7 +29,7 @@ class Screenshots extends Audit {
       category: 'Performance',
       name: 'screenshots',
       description: 'Screenshots of all captured frames',
-      requiredArtifacts: ['screenshots']
+      requiredArtifacts: ['ScreenshotFilmstrip']
     };
   }
 

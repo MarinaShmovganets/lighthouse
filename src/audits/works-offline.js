@@ -27,7 +27,7 @@ class WorksOffline extends Audit {
       category: 'Offline',
       name: 'works-offline',
       description: 'URL responds with a 200 when offline',
-      requiredArtifacts: ['offlineResponseCode']
+      requiredArtifacts: ['Offline']
     };
   }
 

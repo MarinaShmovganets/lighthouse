@@ -28,7 +28,7 @@ class ManifestShortNameLength extends Audit {
       category: 'Manifest',
       name: 'manifest-short-name-length',
       description: 'Manifest\'s short_name won\'t be truncated when displayed on homescreen',
-      requiredArtifacts: ['manifest']
+      requiredArtifacts: ['Manifest']
     };
   }
 

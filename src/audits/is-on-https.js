@@ -27,7 +27,7 @@ class HTTPS extends Audit {
       category: 'Security',
       name: 'is-on-https',
       description: 'Site is on HTTPS',
-      requiredArtifacts: ['https']
+      requiredArtifacts: ['HTTPS']
     };
   }
 

@@ -29,7 +29,7 @@ class ManifestIconsMin192 extends Audit {
       category: 'Manifest',
       name: 'manifest-icons-min-192',
       description: 'Manifest contains icons at least 192px',
-      requiredArtifacts: ['manifest']
+      requiredArtifacts: ['Manifest']
     };
   }
 

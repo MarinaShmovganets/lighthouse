@@ -28,7 +28,7 @@ class ManifestName extends Audit {
       category: 'Manifest',
       name: 'manifest-name',
       description: 'Manifest contains name',
-      requiredArtifacts: ['manifest']
+      requiredArtifacts: ['Manifest']
     };
   }
 

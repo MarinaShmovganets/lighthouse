@@ -28,7 +28,7 @@ class ManifestThemeColor extends Audit {
       category: 'Manifest',
       name: 'manifest-theme-color',
       description: 'Manifest contains theme_color',
-      requiredArtifacts: ['manifest']
+      requiredArtifacts: ['Manifest']
     };
   }
 

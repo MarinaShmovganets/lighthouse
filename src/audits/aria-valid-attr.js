@@ -29,7 +29,7 @@ class ARIAValidAttr extends Audit {
       category: 'Accessibility',
       name: 'aria-valid-attr',
       description: 'Element aria-* attributes are valid ARIA attributes',
-      requiredArtifacts: ['accessibility']
+      requiredArtifacts: ['Accessibility']
     };
   }
 

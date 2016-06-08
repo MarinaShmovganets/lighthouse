@@ -29,7 +29,7 @@ class ColorContrast extends Audit {
       category: 'Accessibility',
       name: 'color-contrast',
       description: 'Background and foreground colors have a sufficient contrast ratio',
-      requiredArtifacts: ['accessibility']
+      requiredArtifacts: ['Accessibility']
     };
   }
 

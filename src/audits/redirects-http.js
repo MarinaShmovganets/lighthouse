@@ -27,7 +27,7 @@ class RedirectsHTTP extends Audit {
       category: 'Security',
       name: 'redirects-http',
       description: 'Site redirects HTTP traffic to HTTPS',
-      requiredArtifacts: ['redirectsHTTP']
+      requiredArtifacts: ['HTTPRedirect']
     };
   }
 

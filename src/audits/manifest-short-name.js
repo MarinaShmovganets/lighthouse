@@ -28,7 +28,7 @@ class ManifestShortName extends Audit {
       category: 'Manifest',
       name: 'manifest-short-name',
       description: 'Manifest contains short_name',
-      requiredArtifacts: ['manifest']
+      requiredArtifacts: ['Manifest']
     };
   }
 

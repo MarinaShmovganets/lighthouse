@@ -36,7 +36,7 @@ class SpeedIndexMetric extends Audit {
       name: 'speed-index-metric',
       description: 'Speed Index',
       optimalValue: SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString(),
-      requiredArtifacts: ['speedline']
+      requiredArtifacts: ['Speedline']
     };
   }
 

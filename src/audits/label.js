@@ -29,7 +29,7 @@ class Label extends Audit {
       category: 'Accessibility',
       name: 'label',
       description: 'Every form element has a label',
-      requiredArtifacts: ['accessibility']
+      requiredArtifacts: ['Accessibility']
     };
   }
 

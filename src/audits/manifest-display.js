@@ -29,7 +29,7 @@ class ManifestDisplay extends Audit {
       name: 'manifest-display',
       description: 'Manifest\'s display property set to standalone/fullscreen to ' +
             'allow launching without address bar',
-      requiredArtifacts: ['manifest']
+      requiredArtifacts: ['Manifest']
     };
   }
 

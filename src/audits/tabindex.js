@@ -29,7 +29,7 @@ class TabIndex extends Audit {
       category: 'Accessibility',
       name: 'tab-index',
       description: 'No element has a tabindex attribute greater than 0',
-      requiredArtifacts: ['accessibility']
+      requiredArtifacts: ['Accessibility']
     };
   }
 

@@ -27,7 +27,7 @@ class Viewport extends Audit {
       category: 'Mobile Friendly',
       name: 'viewport',
       description: 'HTML has a viewport <meta>',
-      requiredArtifacts: ['viewport']
+      requiredArtifacts: ['Viewport']
     };
   }
 

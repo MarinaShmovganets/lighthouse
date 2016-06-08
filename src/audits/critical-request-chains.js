@@ -30,7 +30,7 @@ class CriticalRequestChains extends Audit {
       name: 'critical-request-chains',
       description: 'Critical Request Chains',
       optimalValue: 0,
-      requiredArtifacts: ['criticalRequestChains']
+      requiredArtifacts: ['CriticalRequestChains']
     };
   }
 

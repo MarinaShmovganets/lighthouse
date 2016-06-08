@@ -29,7 +29,7 @@ class ARIAAllowedAttr extends Audit {
       category: 'Accessibility',
       name: 'aria-allowed-attr',
       description: 'Element aria-* roles are valid',
-      requiredArtifacts: ['accessibility']
+      requiredArtifacts: ['Accessibility']
     };
   }
 

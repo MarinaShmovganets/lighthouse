@@ -28,7 +28,7 @@ class ServiceWorker extends Audit {
       category: 'Offline',
       name: 'service-worker',
       description: 'Has a registered Service Worker',
-      requiredArtifacts: ['serviceWorker']
+      requiredArtifacts: ['ServiceWorker']
     };
   }
 
@@ -37,9 +37,16 @@ class ServiceWorker extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
+    if (!artifacts.ServiceWorker ||
+        !artifacts.ServiceWorker.versions ||
+        !Array.isArray(artifacts.ServiceWorker.versions)) {
+      return ServiceWorker.generateAuditResult({value: false});
+    }
+
+    const activatedRegistrations = artifacts.ServiceWorker.versions;
+
     return ServiceWorker.generateAuditResult({
-      value: !!artifacts.serviceWorker.version,
-      debugString: artifacts.serviceWorker.debugString
+      value: activatedRegistrations.length > 0
     });
   }
 }
