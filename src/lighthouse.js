@@ -19,6 +19,8 @@
 const Auditor = require('./auditor');
 const Scheduler = require('./scheduler');
 const Aggregator = require('./aggregator');
+const fs = require('fs');
+const path = require('path');
 
 // TODO: make this a more robust check for the config.
 function isValidConfig(config) {
@@ -56,13 +58,26 @@ module.exports = function(driver, opts) {
     return pass;
   });
 
-  const audits = config.audits.map(audit => {
-    try {
-      return require(`./audits/${audit}`);
-    } catch (requireError) {
-      throw new Error(`Unable to locate audit: ${audit}`);
-    }
-  });
+  const whitelist = opts.flags.auditWhitelist;
+  const audits = config.audits
+    // Remove any audits not in the whitelist.
+    .filter(a => {
+      // If there is no whitelist, assume all.
+      if (!whitelist) {
+        return true;
+      }
+
+      return whitelist.has(a.toLowerCase());
+    })
+
+    // Remap the audits to its actual class.
+    .map(audit => {
+      try {
+        return require(`./audits/${audit}`);
+      } catch (requireError) {
+        throw new Error(`Unable to locate audit: ${audit}`);
+      }
+    });
 
   // The runs of Lighthouse should be tested in integration / smoke tests, so testing for coverage
   // here, at least from a unit test POV, is relatively low merit.
@@ -84,7 +99,7 @@ module.exports = function(driver, opts) {
  * @return {!Array<string>}
  */
 module.exports.getAuditList = function() {
-  // AUDITS.map(audit => audit.meta.name);
-  // FIXME: Should glob the require path for actual audits.
-  return [];
+  return fs
+      .readdirSync(path.join(__dirname, './audits'))
+      .filter(f => /\.js$/.test(f));
 };
