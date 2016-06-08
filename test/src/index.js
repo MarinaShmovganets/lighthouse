@@ -104,24 +104,6 @@ describe('Module Tests', function() {
       });
   });
 
-  it('should throw an error when the config contains incorrect gatherers', function() {
-    const lighthouse = require('../..');
-    return lighthouse('SOME_URL', {}, {
-      passes: [{
-        gatherers: [
-          'fluff'
-        ]
-      }],
-      audits: [],
-      aggregations: []
-    })
-      .then(() => {
-        throw new Error('Should not have resolved');
-      }, err => {
-        assert.ok(err.message.includes('fluff'));
-      });
-  });
-
   it('should throw an error when the config contains incorrect audits', function() {
     const lighthouse = require('../..');
     return lighthouse('SOME_URL', {}, {
@@ -140,6 +122,27 @@ describe('Module Tests', function() {
       }, err => {
         assert.ok(err.message.includes('fluff'));
       });
+  });
+
+  it('should filter and expand audits', function() {
+    const lighthouse = require('../../src/lighthouse');
+    const audits = ['color-contrast', 'is-on-http'];
+    const whitelist = new Set(['color-contrast']);
+    const auditList = lighthouse.filterAndExpandAudits(audits, whitelist);
+
+    assert.equal(auditList.length, 1);
+  });
+
+  it('should throw if given an unknown gatherer', function() {
+    const lighthouse = require('../../src/lighthouse');
+    const audits = lighthouse.filterAndExpandAudits(
+      ['color-contrast', 'is-on-http'], new Set(['color-contrast']));
+
+    assert.throws(_ => lighthouse.expandPasses(audits, [{
+      gatherers: [
+        'fluff'
+      ]
+    }]));
   });
 
   it('should return a list of audits', function() {
