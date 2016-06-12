@@ -60,7 +60,9 @@ function expandPasses(audits, passes) {
   const requiredGatherers = getGatherersNeededByAudits(audits);
 
   return passes.map(pass => {
-    pass.gatherers = pass.gatherers
+    const newPass = Object.assign({}, pass);
+
+    newPass.gatherers = pass.gatherers
         // Make sure we only have the gatherers that are needed by the audits
         // that have been listed in the config.
         .filter(gatherer => {
@@ -79,7 +81,7 @@ function expandPasses(audits, passes) {
           return new GathererClass();
         });
 
-    return pass;
+    return newPass;
   })
 
   // Make sure that any passes that have zero gatherers left are excluded from the run.
