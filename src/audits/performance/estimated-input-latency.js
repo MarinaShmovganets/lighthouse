@@ -14,48 +14,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
 const Audit = require('../audit');
 const TracingProcessor = require('../../lib/traces/tracing-processor');
+const Formatter = require('../../../formatters/formatter');
 
-class InputReadinessMetric extends Audit {
+class EstimatedInputLatency extends Audit {
   /**
    * @return {!AuditMeta}
    */
   static get meta() {
     return {
       category: 'Performance',
-      name: 'input-readiness',
-      description: 'Input readiness - main thread availability',
-      optimalValue: '100',  // SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString()
-      requiredArtifacts: ['traceContents']
+      name: 'estimated-input-latency',
+      description: 'Estimated Input Latency',
+      optimalValue: '50ms',
+      requiredArtifacts: ['traceContents', 'speedline']
     };
   }
 
   /**
-   * Audits the page to give a score for Input Readiness.
-   * @see https://github.com/GoogleChrome/lighthouse/issues/26
+   * Audits the page to estimate input latency.
+   * @see https://github.com/GoogleChrome/lighthouse/issues/28
    * @param {!Artifacts} artifacts The artifacts from the gather phase.
    * @return {!AuditResult} The score from the audit, ranging from 0-100.
    */
   static audit(artifacts) {
     try {
-      const tracingProcessor = new TracingProcessor();
-      const model = tracingProcessor.init(artifacts.traceContents);
-      const hazardMetric = tracingProcessor.getInputReadiness(model);
+      // Use speedline's first paint as start of range for input readiness check.
+      const startTime = artifacts.speedline.first;
 
-      const readinessScore = Math.round(100 - (hazardMetric.numeric.value * 100));
-      const rawValue = hazardMetric.numeric.value.toFixed(4);
+      const readiness = TracingProcessor.getRiskToResponsiveness(artifacts.traceContents,
+          startTime);
 
-      return InputReadinessMetric.generateAuditResult({
-        value: readinessScore,
-        rawValue: rawValue,
-        optimalValue: this.meta.optimalValue
+      const median = readiness.find(result => result.percentile === 0.5);
+      const rawValue = median.time.toFixed(1) + 'ms';
+
+      return EstimatedInputLatency.generateAuditResult({
+        value: 0,
+        optimalValue: this.meta.optimalValue,
+        rawValue,
+        extendedInfo: {
+          value: readiness,
+          formatter: Formatter.SUPPORTED_FORMATS.ESTIMATED_INPUT_LATENCY
+        }
       });
     } catch (err) {
-      return InputReadinessMetric.generateAuditResult({
+      return EstimatedInputLatency.generateAuditResult({
         value: -1,
         debugString: 'Unable to parse trace contents: ' + err.message
       });
@@ -63,4 +69,4 @@ class InputReadinessMetric extends Audit {
   }
 }
 
-module.exports = InputReadinessMetric;
+module.exports = EstimatedInputLatency;

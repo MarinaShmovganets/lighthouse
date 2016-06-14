@@ -20,7 +20,7 @@
 const Aggregate = require('../aggregate');
 const firstMeaningfulPaint = require('../../audits/performance/first-meaningful-paint');
 const speedIndexMetric = require('../../audits/performance/speed-index-metric');
-const inputReadinessMetric = require('../../audits/performance/input-readiness-metric');
+const inputReadinessMetric = require('../../audits/performance/estimated-input-latency');
 
 class IsPerformant extends Aggregate {
 
