@@ -59,8 +59,8 @@ class Core {
     });
 
     if (rejected.length) {
-      log.log('info', 'Running these audits:', `${filteredAudits.join(', ')}`);
-      log.log('info', 'Skipping these audits:', `${rejected.join(', ')}`);
+      log.log('Running these audits:', `${filteredAudits.join(', ')}`);
+      log.log('Skipping these audits:', `${rejected.join(', ')}`);
     }
 
     return filteredAudits;
