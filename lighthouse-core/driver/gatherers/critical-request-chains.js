@@ -33,6 +33,9 @@ class CriticalRequestChains extends Gather {
   }
 
   isCritical(request) {
+    if (request._resourceType._category === WebInspector.resourceTypes.XHR._category) {
+      return false;
+    }
     // TODO(deepanjanroy): When possible, chanage
     // initialPriority -> CurrentPriority
     return includes(this.criticalPriorities, request.initialPriority());
