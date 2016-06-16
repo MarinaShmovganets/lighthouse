@@ -18,7 +18,7 @@
 'use strict';
 
 const Gather = require('./gather');
-const WebInspector = require('../lib/web-inspector');
+const WebInspector = require('../../lib/web-inspector');
 
 const includes = (arr, elm) => arr.indexOf(elm) > -1;
 
