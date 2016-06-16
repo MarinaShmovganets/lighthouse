@@ -285,7 +285,7 @@ class CriticalRequestChains extends Formatter {
         });
       },
 
-      createGlobalContext(tree, opts) {
+      createTreeRenderContext(tree, opts) {
         const transferSize = 0;
         let startTime = 0;
         const rootNodes = Object.keys(tree);
