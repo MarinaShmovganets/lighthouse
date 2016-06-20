@@ -45,13 +45,14 @@ Logging:
     --quiet            Displays no progress or debug logs
 
 Run Configuration:
-    --mobile           Emulates a Nexus 5X (default=true)
-    --load-page        Loads the page (default=true)
-    --save-assets      Save the trace contents & screenshots to disk
-    --save-artifacts   Save all gathered artifacts to disk
-    --audit-whitelist  Comma separated list of audits to run (default=all)
-    --list-all-audits  Prints a list of all available audits and exits
-    --config-path      The path to the config JSON.
+    --mobile                Emulates a Nexus 5X (default=true)
+    --load-page             Loads the page (default=true)
+    --save-assets           Save the trace contents & screenshots to disk
+    --save-artifacts        Save all gathered artifacts to disk
+    --audit-whitelist       Comma separated list of audits to run (default=all)
+    --list-all-audits       Prints a list of all available audits and exits
+    --config-path           The path to the config JSON.
+    --list-trace-categories Prints all required trace categories and exits
 
 Output:
     --output           Reporter for the results
@@ -78,8 +79,7 @@ if (cli.flags.listAllAudits) {
 }
 
 if (cli.flags.listTraceCategories) {
-  const categories = lighthouse
-    .getTraceCategories();
+  const categories = lighthouse.traceCategories;
 
   log.info('All trace categories required by lighthouse:', categories.join(', '));
   process.exit(0);
