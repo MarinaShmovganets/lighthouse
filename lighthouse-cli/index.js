@@ -77,6 +77,14 @@ if (cli.flags.listAllAudits) {
   process.exit(0);
 }
 
+if (cli.flags.listTraceCategories) {
+  const categories = lighthouse
+    .getTraceCategories();
+
+  log.info('All trace categories required by lighthouse:', categories.join(', '));
+  process.exit(0);
+}
+
 const url = cli.input[0] || 'https://m.aliexpress.com/';
 const outputMode = cli.flags.output || Printer.OUTPUT_MODE.pretty;
 const outputPath = cli.flags.outputPath || 'stdout';
