@@ -89,7 +89,14 @@ class Runner {
         // Finally set up the driver to gather.
         run = run.then(_ => Driver.run(filteredPasses, Object.assign({}, opts, {driver})));
       } else if (validArtifactsAndAudits) {
-        run = run.then(_ => config.artifacts);
+        let artifacts = config.artifacts;
+        for (let prop in artifacts) {
+          if (typeof artifacts[prop] === 'string') {
+            artifacts[prop] = require(path.resolve(artifacts[prop]));
+          }
+        }
+
+        run = run.then(_ => artifacts);
       }
 
       // Ignoring these two flags since this functionality is not exposed by the module.
