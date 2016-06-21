@@ -20,10 +20,25 @@ const Core = require('./core');
 const Driver = require('./driver');
 const Aggregator = require('./aggregator');
 const assetSaver = require('./lib/asset-saver');
+const NetworkRecorder = require('./lib/network-recorder');
+const CriticalRequestChainsGatherer = require('./driver/gatherers/critical-request-chains');
 const fs = require('fs');
 const path = require('path');
 
 class Runner {
+  static parsePerformanceLog(logs) {
+    const networkRecords = [];
+    const networkRecorder = new NetworkRecorder(networkRecords);
+    const networkEvents = logs.filter(log => log.method.startsWith('Network.'));
+    networkEvents.forEach(networkEvent => {
+      const func = 'on' + networkEvent.method.charAt(8).toUpperCase() + networkEvent.method.slice(9);
+      networkRecorder[func](networkEvent.params);
+    });
+    const criticalRequestChainsGatherer = new CriticalRequestChainsGatherer();
+    criticalRequestChainsGatherer.afterPass({}, { networkRecords });
+    return criticalRequestChainsGatherer.artifact;
+  }
+
   static getGatherersNeededByAudits(audits) {
     // It's possible we didn't get given any audits (but existing audit results), in which case
     // there is no need to do any work here.
@@ -93,6 +108,10 @@ class Runner {
         for (let prop in artifacts) {
           if (typeof artifacts[prop] === 'string') {
             artifacts[prop] = require(artifacts[prop]);
+          }
+
+          if (prop === 'performance_log') {
+            artifacts.CriticalRequestChains = this.parsePerformanceLog(artifacts[prop]);
           }
         }
 
