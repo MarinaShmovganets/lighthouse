@@ -92,7 +92,7 @@ class Runner {
         let artifacts = config.artifacts;
         for (let prop in artifacts) {
           if (typeof artifacts[prop] === 'string') {
-            artifacts[prop] = require(path.resolve(artifacts[prop]));
+            artifacts[prop] = require(artifacts[prop]);
           }
         }
 
