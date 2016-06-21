@@ -23,6 +23,7 @@ const log = require('../lighthouse-core/lib/log.js');
 const semver = require('semver');
 const Printer = require('./printer');
 const lighthouse = require('../lighthouse-core');
+const path = require('path');
 
 // node 5.x required due to use of ES2015 features
 if (semver.lt(process.version, '5.0.0')) {
@@ -81,7 +82,7 @@ const url = cli.input[0] || 'https://m.aliexpress.com/';
 const outputMode = cli.flags.output || Printer.OUTPUT_MODE.pretty;
 const outputPath = cli.flags.outputPath || 'stdout';
 const flags = cli.flags;
-const config = (cli.flags.configPath && require(cli.flags.configPath)) || null;
+const config = (cli.flags.configPath && require(path.resolve(cli.flags.configPath))) || null;
 
 // If the URL isn't https or localhost complain to the user.
 if (url.indexOf('https') !== 0 && url.indexOf('http://localhost') !== 0) {

@@ -128,6 +128,29 @@ describe('Runner', () => {
     return assert.doesNotThrow(_ => Runner.run(fakeDriver, {url, config, flags}));
   });
 
+  it('accepts paths for artifacts and outputs appropriate data', () => {
+    const url = 'https://example.com';
+    const flags = {
+      auditWhitelist: null
+    };
+    const artifactFile = '/Users/mgerakis/Projects/lighthouse/lighthouse-core/' +
+      'test/fixtures/traces/trace-user-timings.json';
+    const config = {
+      audits: [
+        'user-timings'
+      ],
+
+      artifacts: {
+        traceContents: artifactFile
+      }
+    };
+
+    return Runner.run(fakeDriver, {url, config, flags}).then(results => {
+      assert.equal(results[0].value, 2);
+      assert.equal(results[0].name, 'user-timings');
+    });
+  });
+
   it('throws when given neither audits nor auditResults', () => {
     const url = 'https://example.com';
     const flags = {
