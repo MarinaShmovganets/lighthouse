@@ -22,12 +22,12 @@ const Element = require('../../lib/element');
 
 class DriverBase {
 
-  constructor(traceCategories) {
+  constructor() {
     this._url = null;
     this.PAUSE_AFTER_LOAD = 500;
     this._chrome = null;
     this._traceEvents = [];
-    this._traceCategories = traceCategories;
+    this._traceCategories = this.traceCategories;
   }
 
   get url() {
@@ -36,6 +36,22 @@ class DriverBase {
 
   set url(_url) {
     this._url = _url;
+  }
+
+  static get traceCategories() {
+    return [
+      '-*', // exclude default
+      'toplevel',
+      'blink.console',
+      'blink.user_timing',
+      'benchmark',
+      'devtools.timeline',
+      'disabled-by-default-blink.debug.layout',
+      'disabled-by-default-devtools.timeline',
+      'disabled-by-default-devtools.timeline.frame',
+      'disabled-by-default-devtools.timeline.stack',
+      'disabled-by-default-devtools.screenshot'
+    ];
   }
 
   enableRuntimeEvents() {
@@ -336,3 +352,4 @@ class DriverBase {
 }
 
 module.exports = DriverBase;
+

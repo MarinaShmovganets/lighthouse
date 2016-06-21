@@ -22,19 +22,6 @@ const Runner = require('../runner');
 const log = require('../lib/log.js');
 const ChromeProtocol = require('../driver/drivers/cri.js');
 const defaultConfig = require('../config/default.json');
-const traceCategories = [
-  '-*', // exclude default
-  'toplevel',
-  'blink.console',
-  'blink.user_timing',
-  'benchmark',
-  'devtools.timeline',
-  'disabled-by-default-blink.debug.layout',
-  'disabled-by-default-devtools.timeline',
-  'disabled-by-default-devtools.timeline.frame',
-  'disabled-by-default-devtools.timeline.stack',
-  'disabled-by-default-devtools.screenshot'
-];
 
 // node 5.x required due to use of ES2015 features
 if (semver.lt(process.version, '5.0.0')) {
@@ -53,7 +40,7 @@ module.exports = function(url, flags, config) {
       config = defaultConfig;
     }
 
-    const driver = new ChromeProtocol(traceCategories);
+    const driver = new ChromeProtocol();
 
     // set logging preferences, assume quiet
     log.level = 'error';
@@ -65,12 +52,9 @@ module.exports = function(url, flags, config) {
     }
 
     // kick off a lighthouse run
-    resolve(Runner.run(driver, {url, flags, config, traceCategories}));
+    resolve(Runner.run(driver, {url, flags, config}));
   });
 };
 
 module.exports.getAuditList = Runner.getAuditList;
-
-// Required categories for a trace
-module.exports.traceCategories = traceCategories;
-
+module.exports.traceCategories = require('../driver/drivers/driver').traceCategories;

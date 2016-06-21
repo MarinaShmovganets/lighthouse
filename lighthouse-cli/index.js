@@ -81,7 +81,7 @@ if (cli.flags.listAllAudits) {
 if (cli.flags.listTraceCategories) {
   const categories = lighthouse.traceCategories;
 
-  log.info('All trace categories required by lighthouse:', categories.join(', '));
+  process.stdout.write(JSON.stringify({ traceCategories: categories}));
   process.exit(0);
 }
 
