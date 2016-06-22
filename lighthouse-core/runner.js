@@ -27,15 +27,20 @@ const path = require('path');
 
 class Runner {
   static parsePerformanceLog(logs) {
+    // Parse logs for network events and throw them into the network recorder
     const networkRecords = [];
     const networkRecorder = new NetworkRecorder(networkRecords);
-    const networkEvents = logs.filter(log => log.method.startsWith('Network.'));
-    networkEvents.forEach(networkEvent => {
-      const func = 'on' + networkEvent.method.charAt(8).toUpperCase() + networkEvent.method.slice(9);
-      networkRecorder[func](networkEvent.params);
-    });
+    logs.filter(log => log.method.startsWith('Network.'))
+      .forEach(networkEvent => {
+        const func = 'on' + networkEvent.method.charAt(8).toUpperCase() +
+          networkEvent.method.slice(9);
+        networkRecorder[func](networkEvent.params);
+      });
+
+    // User critical request chains gatherer to create the critical request chains artifact
     const criticalRequestChainsGatherer = new CriticalRequestChainsGatherer();
-    criticalRequestChainsGatherer.afterPass({}, { networkRecords });
+    criticalRequestChainsGatherer.afterPass({}, {networkRecords});
+
     return criticalRequestChainsGatherer.artifact;
   }
 
@@ -110,7 +115,7 @@ class Runner {
             artifacts[prop] = require(path.resolve(artifacts[prop]));
           }
 
-          if (prop === 'performance_log') {
+          if (prop === 'performanceLog') {
             artifacts.CriticalRequestChains = this.parsePerformanceLog(artifacts[prop]);
           }
         }
