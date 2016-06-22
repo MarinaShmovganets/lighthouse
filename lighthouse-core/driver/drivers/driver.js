@@ -27,7 +27,7 @@ class DriverBase {
     this.PAUSE_AFTER_LOAD = 500;
     this._chrome = null;
     this._traceEvents = [];
-    this._traceCategories = this.traceCategories;
+    this._traceCategories = DriverBase.traceCategories;
   }
 
   get url() {
