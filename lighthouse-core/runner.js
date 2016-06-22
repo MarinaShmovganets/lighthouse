@@ -20,10 +20,30 @@ const Core = require('./core');
 const Driver = require('./driver');
 const Aggregator = require('./aggregator');
 const assetSaver = require('./lib/asset-saver');
+const NetworkRecorder = require('./lib/network-recorder');
+const CriticalRequestChainsGatherer = require('./driver/gatherers/critical-request-chains');
 const fs = require('fs');
 const path = require('path');
 
 class Runner {
+  static parsePerformanceLog(logs) {
+    // Parse logs for network events and throw them into the network recorder
+    const networkRecords = [];
+    const networkRecorder = new NetworkRecorder(networkRecords);
+    logs.filter(log => log.method.startsWith('Network.'))
+      .forEach(networkEvent => {
+        const func = 'on' + networkEvent.method.charAt(8).toUpperCase() +
+          networkEvent.method.slice(9);
+        networkRecorder[func](networkEvent.params);
+      });
+
+    // User critical request chains gatherer to create the critical request chains artifact
+    const criticalRequestChainsGatherer = new CriticalRequestChainsGatherer();
+    criticalRequestChainsGatherer.afterPass({}, {networkRecords});
+
+    return criticalRequestChainsGatherer.artifact;
+  }
+
   static getGatherersNeededByAudits(audits) {
     // It's possible we didn't get given any audits (but existing audit results), in which case
     // there is no need to do any work here.
@@ -89,7 +109,18 @@ class Runner {
         // Finally set up the driver to gather.
         run = run.then(_ => Driver.run(filteredPasses, Object.assign({}, opts, {driver})));
       } else if (validArtifactsAndAudits) {
-        run = run.then(_ => config.artifacts);
+        let artifacts = config.artifacts;
+        for (let prop in artifacts) {
+          if (typeof artifacts[prop] === 'string') {
+            artifacts[prop] = require(artifacts[prop]);
+          }
+
+          if (prop === 'performanceLog') {
+            artifacts.CriticalRequestChains = this.parsePerformanceLog(artifacts[prop]);
+          }
+        }
+
+        run = run.then(_ => artifacts);
       }
 
       // Ignoring these two flags since this functionality is not exposed by the module.
