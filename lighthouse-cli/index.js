@@ -33,9 +33,10 @@ if (semver.lt(process.version, '5.0.0')) {
 const cli = yargs
   .help('help')
   .version()
+  .showHelpOnFail(false, 'Specify --help for available options')
 
   .usage('$0 url')
-  .demand(1, 'Please provide an url')
+  .demand(1, 'Please provide a url')
 
   // List of options
   .group([
@@ -54,6 +55,7 @@ const cli = yargs
     'save-artifacts',
     'audit-whitelist',
     'list-all-audits',
+    'list-trace-categories',
     'config-path'
   ], 'Configuration:')
   .describe({
@@ -63,7 +65,8 @@ const cli = yargs
     'save-artifacts': 'Save all gathered artifacts to disk',
     'audit-whitelist': 'Comma separated list of audits to run',
     'list-all-audits': 'Prints a list of all available audits and exits',
-    'config-path': 'The path to the config JSON.'
+    'list-trace-categories': 'Prints a list of all required trace categories and exits',
+    'config-path': 'The absolute path to the config JSON.'
   })
 
   .group([
@@ -81,6 +84,7 @@ Example: --output-path=./lighthouse-results.html`
     'save-assets',
     'save-artifacts',
     'list-all-audits',
+    'list-trace-categories',
     'verbose',
     'quiet',
     'help',
@@ -104,7 +108,14 @@ if (cli.listAllAudits) {
         return i.replace(/\.js$/, '');
       });
 
-  log.info('All lighthouse audits:', audits.join(', '));
+  process.stdout.write(JSON.stringify({audits}));
+  process.exit(0);
+}
+
+if (cli.listTraceCategories) {
+  const categories = lighthouse.traceCategories;
+
+  process.stdout.write(JSON.stringify({traceCategories: categories}));
   process.exit(0);
 }
 
