@@ -18,17 +18,19 @@
 
 /* eslint-env mocha */
 const assert = require('assert');
-const child_process = require('child_process');
+const childProcess = require('child_process');
 
 describe('CLI Tests', function() {
   it('should list all audits and exit immediately after', () => {
-    const output = JSON.parse(child_process.execSync('node lighthouse-cli/index.js --list-all-audits').toString());
+    const output = JSON.parse(childProcess.execSync(
+          'node lighthouse-cli/index.js --list-all-audits').toString());
     assert(Array.isArray(output.audits));
     assert(output.audits.length > 0);
   });
 
-  it('should print trace categories with --list-trace-categories flag and exit immediately after', () => {
-    const output = JSON.parse(child_process.execSync('node lighthouse-cli/index.js --list-trace-categories').toString());
+  it('should print trace categories list-trace-categories flag and exit immediately after', () => {
+    const output = JSON.parse(childProcess.execSync(
+          'node lighthouse-cli/index.js --list-trace-categories').toString());
     assert(Array.isArray(output.traceCategories));
     assert(output.traceCategories.length > 0);
   });
