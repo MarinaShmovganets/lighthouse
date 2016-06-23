@@ -18,10 +18,10 @@
 'use strict';
 
 const semver = require('semver');
-const Runner = require('../runner');
-const log = require('../lib/log.js');
-const ChromeProtocol = require('../driver/drivers/cri.js');
-const defaultConfig = require('../config/default.json');
+const Runner = require('./runner');
+const log = require('./lib/log.js');
+const ChromeProtocol = require('./driver/drivers/cri.js');
+const defaultConfig = require('./config/default.json');
 
 // node 5.x required due to use of ES2015 features
 if (semver.lt(process.version, '5.0.0')) {
