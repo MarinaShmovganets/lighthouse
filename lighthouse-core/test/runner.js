@@ -16,6 +16,7 @@
 const Runner = require('../runner');
 const IsOnHTTPS = require('../audits/is-on-https');
 const HTTPSGatherer = require('../driver/gatherers/https');
+const parsePerformanceLog = require('../config').parsePerformanceLog;
 const fakeDriver = require('./driver/fake-driver');
 const assert = require('assert');
 const path = require('path');
@@ -129,7 +130,7 @@ describe('Runner', () => {
     return assert.doesNotThrow(_ => Runner.run(fakeDriver, {url, config, flags}));
   });
 
-  it('accepts trace artifacts and outputs appropriate data', () => {
+  it('accepts trace artifacts as paths and outputs appropriate data', () => {
     const url = 'https://example.com';
     const flags = {
       auditWhitelist: null
@@ -143,29 +144,6 @@ describe('Runner', () => {
       artifacts: {
         traceContents: require(path.join(__dirname,
                            '/fixtures/traces/trace-user-timings.json'))
-      }
-    };
-
-    return Runner.run(fakeDriver, {url, config, flags}).then(results => {
-      assert.equal(results[0].value, 2);
-      assert.equal(results[0].name, 'user-timings');
-    });
-  });
-
-  it('accepts paths for trace artifacts and outputs appropriate data', () => {
-    const url = 'https://example.com';
-    const flags = {
-      auditWhitelist: null
-    };
-
-    const config = {
-      audits: [
-        'user-timings'
-      ],
-
-      artifacts: {
-        traceContents: path.join(__dirname,
-                           '/fixtures/traces/trace-user-timings.json')
       }
     };
 
@@ -196,40 +174,26 @@ describe('Runner', () => {
     });
   });
 
-  it('accepts performance logs as artifacts', () => {
+  it('accepts performance logs as an artifact', () => {
     const url = 'https://example.com';
     const flags = {
       auditWhitelist: null
     };
+    const performanceLog = require(path.join(__dirname, '/fixtures/perflog.json'));
     const config = {
       audits: [
         'critical-request-chains'
       ],
 
       artifacts: {
-        performanceLog: require(path.join(__dirname, '/fixtures/perflog.json'))
+        CriticalRequestChains: parsePerformanceLog(performanceLog)
       }
     };
 
-    return assert.doesNotThrow(_ => Runner.run(fakeDriver, {url, config, flags}));
-  });
-
-  it('accepts a path for performance logs', () => {
-    const url = 'https://example.com';
-    const flags = {
-      auditWhitelist: null
-    };
-    const config = {
-      audits: [
-        'critical-request-chains'
-      ],
-
-      artifacts: {
-        performanceLog: path.join(__dirname, '/fixtures/perflog.json')
-      }
-    };
-
-    return assert.doesNotThrow(_ => Runner.run(fakeDriver, {url, config, flags}));
+    return Runner.run(fakeDriver, {url, config, flags}).then(results => {
+      assert.equal(results[0].value, 9);
+      assert.equal(results[0].name, 'critical-request-chains');
+    });
   });
 
   it('throws when given neither audits nor auditResults', () => {

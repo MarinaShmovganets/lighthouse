@@ -21,7 +21,7 @@ const semver = require('semver');
 const Runner = require('../runner');
 const log = require('../lib/log.js');
 const ChromeProtocol = require('../driver/drivers/cri.js');
-const defaultConfig = require('../config/default.json');
+const ConfigParser = require('../config');
 
 // node 5.x required due to use of ES2015 features
 if (semver.lt(process.version, '5.0.0')) {
@@ -35,10 +35,8 @@ module.exports = function(url, flags, config) {
     }
     flags = flags || {};
 
-    // Override the default config with any user config.
-    if (!config) {
-      config = defaultConfig;
-    }
+    // Use ConfigParser to generate a valid config file
+    config = ConfigParser.parse(config);
 
     const driver = new ChromeProtocol();
 
