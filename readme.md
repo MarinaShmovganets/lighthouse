@@ -79,7 +79,7 @@ npm run unit
 
 ## Chrome Extension
 
-The same audits are run against from a Chrome extension. See [./extension](https://github.com/GoogleChrome/lighthouse/tree/master/extension).
+The same audits are run against from a Chrome extension. See [./extension](https://github.com/GoogleChrome/lighthouse/tree/master/lighthouse-extension).
 
 
 ## Architecture
@@ -94,6 +94,18 @@ _Some incomplete notes_
 * **Metrics** - Performance metrics summarizing the UX
 * **Diagnoses** - The perf problems that affect those metrics
 * **Aggregators** - Pulling audit results, grouping into user-facing components (eg. `install_to_homescreen`) and applying weighting and overall scoring.
+
+Moreover…
+
+* `/core.js` does the gathering, auditing and aggregation
+* `/runner.js` is the shared handler (for both module & extension) that needs to be given a driver, and sets up the core to do its job
+* `/module/index` is the require('lighthouse') file so you can use it in Node, and it uses the runner
+
+```
+module/index \
+              ----- Runner ----- Core [Gather / Audit / Aggregate] 
+extension    /
+```
 
 ### Protocol
 

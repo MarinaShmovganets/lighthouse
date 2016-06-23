@@ -43,9 +43,7 @@ class CriticalRequestChains extends Gather {
       return false;
     }
 
-    // TODO(deepanjanroy): When devtools-frontend module is updated,
-    // change `initialPriority -> CurrentPriority`
-    return includes(['VeryHigh', 'High', 'Medium'], request.initialPriority());
+    return includes(['VeryHigh', 'High', 'Medium'], request.priority());
   }
 
   afterPass(options, tracingData) {
