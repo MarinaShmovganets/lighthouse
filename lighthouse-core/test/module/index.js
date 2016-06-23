@@ -129,23 +129,10 @@ describe('Module Tests', function() {
     assert.ok(Array.isArray(lighthouseModule.getAuditList()));
   });
 
-  it('should return a list of audits', function() {
+  it('should return a list of trace categories required by the driver', function() {
     const lighthouseModule = require('../..');
     const lighthouseTraceCategories = lighthouseModule.traceCategories;
-    const requiredTraceCategories = [
-      '-*', // exclude default
-      'toplevel',
-      'blink.console',
-      'blink.user_timing',
-      'benchmark',
-      'devtools.timeline',
-      'disabled-by-default-blink.debug.layout',
-      'disabled-by-default-devtools.timeline',
-      'disabled-by-default-devtools.timeline.frame',
-      'disabled-by-default-devtools.timeline.stack',
-      'disabled-by-default-devtools.screenshot'
-    ];
     assert.ok(Array.isArray(lighthouseTraceCategories));
-    assert.deepEqual(lighthouseTraceCategories, requiredTraceCategories);
+    assert.notEqual(lighthouseTraceCategories.length, 0);
   });
 });

@@ -74,7 +74,7 @@ if (cli.flags.listAllAudits) {
         return i.replace(/\.js$/, '');
       });
 
-  log.info('All lighthouse audits:', audits.join(', '));
+  process.stdout.write(JSON.stringify({audits}));
   process.exit(0);
 }
 
