@@ -130,7 +130,7 @@ describe('Module Tests', function() {
   });
 
   it('should return a list of trace categories required by the driver', function() {
-    const lighthouseModule = require('../..');
+    const lighthouseModule = require('..');
     const lighthouseTraceCategories = lighthouseModule.traceCategories;
     assert.ok(Array.isArray(lighthouseTraceCategories));
     assert.notEqual(lighthouseTraceCategories.length, 0);
