@@ -18,10 +18,10 @@
 'use strict';
 
 const semver = require('semver');
-const Runner = require('../runner');
-const log = require('../lib/log.js');
-const ChromeProtocol = require('../driver/drivers/cri.js');
-const ConfigParser = require('../config');
+const Runner = require('./runner');
+const log = require('./lib/log.js');
+const ChromeProtocol = require('./driver/drivers/cri.js');
+const ConfigParser = require('./config');
 
 // node 5.x required due to use of ES2015 features
 if (semver.lt(process.version, '5.0.0')) {
@@ -55,4 +55,4 @@ module.exports = function(url, flags, config) {
 };
 
 module.exports.getAuditList = Runner.getAuditList;
-module.exports.traceCategories = require('../driver/drivers/driver').traceCategories;
+module.exports.traceCategories = require('./driver/drivers/driver').traceCategories;

@@ -16,6 +16,21 @@
  */
 'use strict';
 
+/**
+ * The relationship between these root modules:
+ *
+ *   core.js   - the gathering, auditing and aggregation
+ *   runner.js - the shared handler (for both module & extension) that needs to be given a driver,
+ *               and sets up the core to do its job
+ *   index.js  - the require('lighthouse') hook for Node modules (including the CLI)
+ *
+ *   lighthouse-cli \
+ *                   -- index.js  \
+ *                                 ----- runner.js ----> core.js [Gather / Audit / Aggregate]
+ *           lighthouse-extension /
+ *
+ */
+
 class Core {
   static audit(artifacts, audits) {
     return Promise.all(audits.map(audit => audit.audit(artifacts)));
