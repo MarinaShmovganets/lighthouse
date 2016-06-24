@@ -36,7 +36,7 @@ module.exports = function(url, flags, config) {
     flags = flags || {};
 
     // Use ConfigParser to generate a valid config file
-    config = ConfigParser.parse(config);
+    config = ConfigParser.parse(config, flags.auditWhitelist);
 
     const driver = new ChromeProtocol();
 

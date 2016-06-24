@@ -16,68 +16,10 @@
  */
 'use strict';
 
-const log = require('./lib/log');
-
 class Core {
   static audit(artifacts, audits) {
-    audits = this.expandAudits(audits);
-
     return Promise.all(audits.map(audit => audit.audit(artifacts)));
-  }
-
-  static expandAudits(audits) {
-    // It's possible we didn't get given any audits (but existing audit results), in which case
-    // there is no need to do any expansion work.
-    if (!audits) {
-      return;
-    }
-
-    return audits.map(audit => {
-      // If this is already instantiated, don't do anything else.
-      if (typeof audit !== 'string') {
-        return audit;
-      }
-
-      try {
-        return require(`./audits/${audit}`);
-      } catch (requireError) {
-        throw new Error(`Unable to locate audit: ${audit}`);
-      }
-    });
-  }
-
-  static filterAudits(audits, whitelist) {
-    // It's possible we didn't get given any audits (but existing audit results), in which case
-    // there is no need to do any filter work.
-    if (!audits) {
-      return;
-    }
-
-    const rejected = [];
-    const filteredAudits = audits.filter(a => {
-      // If there is no whitelist, assume all.
-      if (!whitelist) {
-        return true;
-      }
-
-      const auditName = a.toLowerCase();
-      const inWhitelist = whitelist.has(auditName);
-
-      if (!inWhitelist) {
-        rejected.push(auditName);
-      }
-
-      return inWhitelist;
-    });
-
-    if (rejected.length) {
-      log.log('info', 'Running these audits:', `${filteredAudits.join(', ')}`);
-      log.log('info', 'Skipping these audits:', `${rejected.join(', ')}`);
-    }
-
-    return filteredAudits;
   }
 }
 
 module.exports = Core;
-

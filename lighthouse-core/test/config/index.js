@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+'use strict';
 
 const ConfigParser = require('../../config');
 const defaultConfig = require('../../config/default.json');
+const IsOnHTTPS = require('../../audits/is-on-https');
 const assert = require('assert');
 const path = require('path');
 
@@ -23,8 +25,78 @@ const path = require('path');
 
 describe('ConfigParser', () => {
   it('returns default config', () => {
-    const config = ConfigParser.parse();
+    const config = ConfigParser.parse(undefined);
     assert.deepEqual(config, defaultConfig);
+  });
+
+  it('gets gatherers needed by audits', () => {
+    const requiredGatherers = ConfigParser.getGatherersNeededByAudits({audits: [IsOnHTTPS]});
+    assert.ok(requiredGatherers.has('HTTPS'));
+  });
+
+  it('returns an empty set for required gatherers when no audits are specified', () => {
+    const requiredGatherers = ConfigParser.getGatherersNeededByAudits({});
+    assert.equal(requiredGatherers.size, 0);
+  });
+
+  it('throws for unknown gatherers', () => {
+    const config = {
+      passes: [{
+        gatherers: ['fuzz']
+      }],
+      audits: [
+        'is-on-https'
+      ]
+    };
+
+    return assert.throws(_ => ConfigParser.parse(config),
+        /Unable to locate/);
+  });
+
+  it('handles non-existent audits when expanding', () => {
+    const modifiedResults = ConfigParser.expandAudits();
+
+    return assert.equal(modifiedResults, undefined);
+  });
+
+  it('expands audits', () => {
+    const modifiedResults = ConfigParser.expandAudits(['is-on-https']);
+
+    assert.ok(Array.isArray(modifiedResults));
+    assert.equal(modifiedResults.length, 1);
+    return assert.equal(typeof modifiedResults[0], 'function');
+  });
+
+  it('handles non-existent audits when filtering', () => {
+    const modifiedResults = ConfigParser.filterAudits(undefined, ['a']);
+
+    return assert.equal(modifiedResults, undefined);
+  });
+
+  it('returns unfiltered audits when no whitelist is given', () => {
+    const modifiedResults = ConfigParser.filterAudits(['is-on-https']);
+
+    assert.ok(Array.isArray(modifiedResults));
+    assert.equal(modifiedResults.length, 1);
+    return assert.equal(modifiedResults[0], 'is-on-https');
+  });
+
+  it('returns filtered audits when a whitelist is given', () => {
+    const modifiedResults = ConfigParser.filterAudits(['is-on-https'], new Set(['b']));
+
+    assert.ok(Array.isArray(modifiedResults));
+    return assert.equal(modifiedResults.length, 0);
+  });
+
+  it('expands audits in the config', () => {
+    const config = {
+      audits: ['user-timings']
+    };
+
+    ConfigParser.parse(config);
+    assert.ok(Array.isArray(config.audits));
+    assert.equal(config.audits.length, 1);
+    return assert.equal(typeof config.audits[0], 'function');
   });
 
   it('expands trace contents', () => {
@@ -49,7 +121,7 @@ describe('ConfigParser', () => {
 
   it('parses performance logs', () => {
     const perflog = require('../fixtures/perflog.json');
-    const crc = ConfigParser.parsePerformanceLog(perflog);
+    const crc = ConfigParser.parsePerformanceLog(perflog, {});
     assert.ok(crc['93149.1']);
     assert.ok(crc['93149.1'].request);
     assert.ok(crc['93149.1'].children);

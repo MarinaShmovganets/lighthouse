@@ -23,7 +23,6 @@ const log = require('../lighthouse-core/lib/log.js');
 const semver = require('semver');
 const Printer = require('./printer');
 const lighthouse = require('../lighthouse-core');
-const path = require('path');
 
 // node 5.x required due to use of ES2015 features
 if (semver.lt(process.version, '5.0.0')) {
@@ -114,9 +113,9 @@ if (cli.listAllAudits) {
 }
 
 if (cli.listTraceCategories) {
-  const categories = lighthouse.traceCategories;
+  const traceCategories = lighthouse.traceCategories;
 
-  process.stdout.write(JSON.stringify({traceCategories: categories}));
+  process.stdout.write(JSON.stringify({traceCategories}));
   process.exit(0);
 }
 

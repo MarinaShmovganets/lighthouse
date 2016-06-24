@@ -19,23 +19,130 @@
 const defaultConfig = require('./default.json');
 const recordsFromLogs = require('../lib/network-recorder').recordsFromLogs;
 const CriticalRequestChainsGatherer = require('../driver/gatherers/critical-request-chains');
+const Driver = require('../driver');
+const log = require('../lib/log');
 
 class ConfigParser {
+  static filterAudits(audits, whitelist) {
+    // It's possible we didn't get given any audits (but existing audit results), in which case
+    // there is no need to do any filter work.
+    if (!audits) {
+      return;
+    }
+
+    const rejected = [];
+    const filteredAudits = audits.filter(a => {
+      // If there is no whitelist, assume all.
+      if (!whitelist) {
+        return true;
+      }
+
+      const auditName = a.toLowerCase();
+      const inWhitelist = whitelist.has(auditName);
+
+      if (!inWhitelist) {
+        rejected.push(auditName);
+      }
+
+      return inWhitelist;
+    });
+
+    if (rejected.length) {
+      log.log('info', 'Running these audits:', `${filteredAudits.join(', ')}`);
+      log.log('info', 'Skipping these audits:', `${rejected.join(', ')}`);
+    }
+
+    return filteredAudits;
+  }
+
+  static expandAudits(audits) {
+    // It's possible we didn't get given any audits (but existing audit results), in which case
+    // there is no need to do any expansion work.
+    if (!audits) {
+      return;
+    }
+
+    return audits.map(audit => {
+      // If this is already instantiated, don't do anything else.
+      if (typeof audit !== 'string') {
+        return audit;
+      }
+
+      try {
+        return require(`../audits/${audit}`);
+      } catch (requireError) {
+        throw new Error(`Unable to locate audit: ${audit}`);
+      }
+    });
+  }
+
+  static getGatherersNeededByAudits(config) {
+    // It's possible we didn't get given any audits (but existing audit results), in which case
+    // there is no need to do any work here.
+    if (!config.audits) {
+      return new Set();
+    }
+
+    return config.audits.reduce((list, audit) => {
+      audit.meta.requiredArtifacts.forEach(artifact => list.add(artifact));
+      return list;
+    }, new Set());
+  }
+
+  static filterPasses(config) {
+    const requiredGatherers = ConfigParser.getGatherersNeededByAudits(config);
+
+    // Make sure we only have the gatherers that are needed by the audits
+    // that have been listed in the config.
+    const filteredPasses = config.passes.map(pass => {
+      pass.gatherers = pass.gatherers.filter(gatherer => {
+        if (typeof gatherer !== 'string') {
+          return requiredGatherers.has(gatherer.name);
+        }
+
+        try {
+          const GathererClass = Driver.getGathererClass(gatherer);
+          return requiredGatherers.has(GathererClass.name);
+        } catch (requireError) {
+          throw new Error(`Unable to locate gatherer: ${gatherer}`);
+        }
+      });
+
+      return pass;
+    })
+
+    // Now remove any passes which no longer have gatherers.
+    .filter(p => p.gatherers.length > 0);
+    return filteredPasses;
+  }
+
   static parsePerformanceLog(logs) {
     // Parse logs for network events
     const networkRecords = recordsFromLogs(logs);
 
-    // User critical request chains gatherer to create the critical request chains artifact
+    // Use critical request chains gatherer to create the critical request chains artifact
     const criticalRequestChainsGatherer = new CriticalRequestChainsGatherer();
     criticalRequestChainsGatherer.afterPass({}, {networkRecords});
 
     return criticalRequestChainsGatherer.artifact;
   }
 
-  static parse(config) {
+  static parse(config, auditWhitelist) {
     if (!config) {
-      return defaultConfig;
+      config = defaultConfig;
     }
+
+    // Filter out audits by the whitelist
+    if (config.audits) {
+      config.audits = ConfigParser.expandAudits(
+          ConfigParser.filterAudits(config.audits, auditWhitelist)
+        );
+    }
+
+    if (config.passes) {
+      config.passes = ConfigParser.filterPasses(config);
+    }
+
     if (config.artifacts) {
       // currently only trace logs and performance logs should be imported
       if (config.artifacts.traceContents) {

@@ -14,39 +14,28 @@
  * limitations under the License.
  */
 const Runner = require('../runner');
-const IsOnHTTPS = require('../audits/is-on-https');
 const HTTPSGatherer = require('../driver/gatherers/https');
-const parsePerformanceLog = require('../config').parsePerformanceLog;
 const fakeDriver = require('./driver/fake-driver');
+const ConfigParser = require('../config');
 const assert = require('assert');
 const path = require('path');
 
 /* global describe, it*/
 
 describe('Runner', () => {
-  it('gets gatherers needed by audits', () => {
-    const requiredGatherers = Runner.getGatherersNeededByAudits([IsOnHTTPS]);
-    assert.ok(requiredGatherers.has('HTTPS'));
-  });
-
-  it('returns an empty set for required gatherers when no audits are specified', () => {
-    const requiredGatherers = Runner.getGatherersNeededByAudits();
-    assert.equal(requiredGatherers.size, 0);
-  });
-
   it('expands gatherers', () => {
     const url = 'https://example.com';
     const flags = {
       auditWhitelist: null
     };
-    const config = {
+    const config = ConfigParser.parse({
       passes: [{
         gatherers: ['https']
       }],
       audits: [
         'is-on-https'
       ]
-    };
+    });
 
     return Runner.run(fakeDriver, {url, config, flags}).then(_ => {
       assert.ok(typeof config.passes[0].gatherers[0] === 'object');
@@ -60,14 +49,14 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const config = {
+    const config = ConfigParser.parse({
       passes: [{
         gatherers: [new HTTPSGatherer()]
       }],
       audits: [
         'is-on-https'
       ]
-    };
+    }, flags.auditWhitelist);
 
     let run;
     assert.doesNotThrow(_ => {
@@ -79,34 +68,16 @@ describe('Runner', () => {
     });
   });
 
-  it('throws for unknown gatherers', () => {
-    const url = 'https://example.com';
-    const flags = {
-      auditWhitelist: null
-    };
-    const config = {
-      passes: [{
-        gatherers: ['fuzz']
-      }],
-      audits: [
-        'is-on-https'
-      ]
-    };
-
-    return assert.throws(_ => Runner.run(fakeDriver, {url, config, flags}),
-        /Unable to locate/);
-  });
-
   it('throws when given neither passes nor artifacts', () => {
     const url = 'https://example.com';
     const flags = {
       auditWhitelist: null
     };
-    const config = {
+    const config = ConfigParser.parse({
       audits: [
         'is-on-https'
       ]
-    };
+    }, flags.auditWhitelist);
 
     return assert.throws(_ => Runner.run(fakeDriver, {url, config, flags}),
         /The config must provide passes/);
@@ -117,7 +88,7 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const config = {
+    const config = ConfigParser.parse({
       audits: [
         'is-on-https'
       ],
@@ -125,7 +96,7 @@ describe('Runner', () => {
       artifacts: {
         HTTPS: true
       }
-    };
+    }, flags.auditWhitelist);
 
     return assert.doesNotThrow(_ => Runner.run(fakeDriver, {url, config, flags}));
   });
@@ -136,16 +107,16 @@ describe('Runner', () => {
       auditWhitelist: null
     };
 
-    const config = {
+    const config = ConfigParser.parse({
       audits: [
         'user-timings'
       ],
 
       artifacts: {
-        traceContents: require(path.join(__dirname,
-                           '/fixtures/traces/trace-user-timings.json'))
+        traceContents: path.join(__dirname,
+                           '/fixtures/traces/trace-user-timings.json')
       }
-    };
+    }, flags.auditWhitelist);
 
     return Runner.run(fakeDriver, {url, config, flags}).then(results => {
       assert.equal(results[0].value, 2);
@@ -159,14 +130,14 @@ describe('Runner', () => {
       auditWhitelist: null
     };
 
-    const config = {
+    const config = ConfigParser.parse({
       audits: [
         'user-timings'
       ],
 
       artifacts: {
       }
-    };
+    }, flags.auditWhitelist);
 
     return Runner.run(fakeDriver, {url, config, flags}).then(results => {
       assert.equal(results[0].value, -1);
@@ -180,15 +151,15 @@ describe('Runner', () => {
       auditWhitelist: null
     };
     const performanceLog = require(path.join(__dirname, '/fixtures/perflog.json'));
-    const config = {
+    const config = ConfigParser.parse({
       audits: [
         'critical-request-chains'
       ],
 
       artifacts: {
-        CriticalRequestChains: parsePerformanceLog(performanceLog)
+        CriticalRequestChains: ConfigParser.parsePerformanceLog(performanceLog)
       }
-    };
+    }, flags.auditWhitelist);
 
     return Runner.run(fakeDriver, {url, config, flags}).then(results => {
       assert.equal(results[0].value, 9);
@@ -201,11 +172,11 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const config = {
+    const config = ConfigParser.parse({
       passes: [{
         gatherers: ['https']
       }]
-    };
+    }, flags.auditWhitelist);
 
     return assert.throws(_ => Runner.run(fakeDriver, {url, config, flags}),
         /The config must provide passes/);
@@ -216,7 +187,7 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const config = {
+    const config = ConfigParser.parse({
       auditResults: {
         HTTPS: true
       },
@@ -237,7 +208,7 @@ describe('Runner', () => {
           }
         }]
       }]
-    };
+    }, flags.auditWhitelist);
 
     return assert.doesNotThrow(_ => Runner.run(fakeDriver, {url, config, flags}));
   });
@@ -247,7 +218,7 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const config = {
+    const config = ConfigParser.parse({
       auditResults: [{
         name: 'is-on-https',
         value: true
@@ -269,7 +240,7 @@ describe('Runner', () => {
           }
         }]
       }]
-    };
+    }, flags.auditWhitelist);
 
     return Runner.run(fakeDriver, {url, config, flags}).then(results => {
       assert.equal(results.url, url);

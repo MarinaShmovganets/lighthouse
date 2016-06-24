@@ -21,45 +21,10 @@ const assert = require('assert');
 describe('Core', () => {
   it('maps all audits to an array of Promises', () => {
     return Core
-      .audit([{}], ['is-on-https'])
+      .audit([{}], [require('../audits/is-on-https')])
       .then(modifiedResults => {
         assert.ok(Array.isArray(modifiedResults));
         assert.equal(modifiedResults.length, 1);
       });
-  });
-
-  it('handles non-existent audits when expanding', () => {
-    const modifiedResults = Core.expandAudits();
-
-    return assert.equal(modifiedResults, undefined);
-  });
-
-  it('expands audits', () => {
-    const modifiedResults = Core.expandAudits(['is-on-https']);
-
-    assert.ok(Array.isArray(modifiedResults));
-    assert.equal(modifiedResults.length, 1);
-    return assert.equal(typeof modifiedResults[0], 'function');
-  });
-
-  it('handles non-existent audits when filtering', () => {
-    const modifiedResults = Core.filterAudits(undefined, ['a']);
-
-    return assert.equal(modifiedResults, undefined);
-  });
-
-  it('returns unfiltered audits when no whitelist is given', () => {
-    const modifiedResults = Core.filterAudits(['is-on-https']);
-
-    assert.ok(Array.isArray(modifiedResults));
-    assert.equal(modifiedResults.length, 1);
-    return assert.equal(modifiedResults[0], 'is-on-https');
-  });
-
-  it('returns filtered audits when a whitelist is given', () => {
-    const modifiedResults = Core.filterAudits(['is-on-https'], new Set(['b']));
-
-    assert.ok(Array.isArray(modifiedResults));
-    return assert.equal(modifiedResults.length, 0);
   });
 });
