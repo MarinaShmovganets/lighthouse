@@ -55,3 +55,4 @@ module.exports = function(url, flags, config) {
 };
 
 module.exports.getAuditList = Runner.getAuditList;
+module.exports.traceCategories = require('../driver/drivers/driver').traceCategories;
