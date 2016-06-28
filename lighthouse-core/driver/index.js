@@ -191,6 +191,19 @@ class Driver {
               .then(_ => this.afterPass(runOptions))
               .then(loadData => {
                 Object.assign(tracingData, loadData);
+
+                if (!config.traceName) {
+                  return;
+                }
+                tracingData[config.traceName] = {};
+                if (config.trace) {
+                  tracingData[config.traceName].traceContents =
+                    loadData.traceContents;
+                }
+                if (config.network) {
+                  tracingData[config.traceName].networkRecords =
+                    loadData.networkRecords;
+                }
               })
               .then(_ => this.tearDown(runOptions));
         }, Promise.resolve());
@@ -212,7 +225,6 @@ class Driver {
             artifacts[gatherer.name] = gatherer.artifact;
           });
         });
-
         return artifacts;
       });
   }
