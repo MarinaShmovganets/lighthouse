@@ -155,7 +155,7 @@ class Driver {
 
   static run(passes, options) {
     const driver = options.driver;
-    const tracingData = {};
+    const tracingData = {traces: {}};
 
     if (typeof options.url !== 'string' || options.url.length === 0) {
       return Promise.reject(new Error('You must provide a url to the driver'));
@@ -195,13 +195,13 @@ class Driver {
                 if (!config.traceName) {
                   return;
                 }
-                tracingData[config.traceName] = {};
+                tracingData.traces[config.traceName] = {};
                 if (config.trace) {
-                  tracingData[config.traceName].traceContents =
+                  tracingData.traces[config.traceName].traceContents =
                     loadData.traceContents;
                 }
                 if (config.network) {
-                  tracingData[config.traceName].networkRecords =
+                  tracingData.traces[config.traceName].networkRecords =
                     loadData.networkRecords;
                 }
               })
