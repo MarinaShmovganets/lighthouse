@@ -38,7 +38,7 @@ describe('Performance: first-meaningful-paint audit', () => {
     it('processes a valid trace file', done => {
       const traceData = require('../fixtures/traces/progressive-app.json');
       assert.doesNotThrow(_ => {
-        Audit.audit({firstPass: {traceContents: traceData}}).then(response => {
+        Audit.audit({traces: {firstPass: {traceContents: traceData}}}).then(response => {
           fmpResult = response;
           done();
         });
