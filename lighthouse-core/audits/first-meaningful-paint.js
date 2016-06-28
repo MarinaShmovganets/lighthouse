@@ -30,6 +30,8 @@ const SCORING_MEDIAN = 4000;
 
 const BLOCK_FIRST_MEANINGFUL_PAINT_IF_BLANK_CHARACTERS_MORE_THAN = 200;
 
+const TRACE_NAME = 'firstPass';
+
 class FirstMeaningfulPaint extends Audit {
   /**
    * @return {!AuditMeta}
@@ -53,11 +55,12 @@ class FirstMeaningfulPaint extends Audit {
    */
   static audit(artifacts) {
     return new Promise((resolve, reject) => {
-      if (!artifacts.traceContents || !Array.isArray(artifacts.traceContents)) {
+      const traceContents = artifacts[TRACE_NAME].traceContents;
+      if (!traceContents || !Array.isArray(traceContents)) {
         throw new Error(FAILURE_MESSAGE);
       }
 
-      const evts = this.collectEvents(artifacts.traceContents);
+      const evts = this.collectEvents(traceContents);
 
       const navStart = evts.navigationStart;
       const fCP = evts.firstContentfulPaint;
