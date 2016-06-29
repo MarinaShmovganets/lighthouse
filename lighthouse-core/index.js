@@ -23,6 +23,21 @@ const log = require('./lib/log.js');
 const ChromeProtocol = require('./driver/drivers/cri.js');
 const ConfigParser = require('./config');
 
+/**
+ * The relationship between these root modules:
+ *
+ *   index.js  - the require('lighthouse') hook for Node modules (including the CLI)
+ *
+ *   runner.js - marshalls the actions that must be taken (Gather / Audit / Aggregate)
+ *               config file is used to determine which of these actions are needed
+ *
+ *   lighthouse-cli \
+ *                   -- index.js  \
+ *                                 ----- runner.js ----> [Gather / Audit / Aggregate]
+ *           lighthouse-extension /
+ *
+ */
+
 // node 5.x required due to use of ES2015 features
 if (semver.lt(process.version, '5.0.0')) {
   throw new Error('Lighthouse requires node version 5.0 or newer');

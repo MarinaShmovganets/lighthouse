@@ -16,7 +16,6 @@
  */
 'use strict';
 
-const Core = require('./core');
 const Driver = require('./driver');
 const Aggregator = require('./aggregator');
 const assetSaver = require('./lib/asset-saver');
@@ -68,7 +67,7 @@ class Runner {
       }
 
       // Now run the audits.
-      run = run.then(artifacts => Core.audit(artifacts, config.audits));
+      run = run.then(artifacts => Promise.all(config.audits.map(audit => audit.audit(artifacts))));
     } else if (config.auditResults) {
       // If there are existing audit results, surface those here.
       run = run.then(_ => config.auditResults);
