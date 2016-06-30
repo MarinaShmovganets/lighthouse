@@ -21,7 +21,7 @@ const semver = require('semver');
 const Runner = require('./runner');
 const log = require('./lib/log.js');
 const ChromeProtocol = require('./driver/drivers/cri.js');
-const ConfigParser = require('./config');
+const Config = require('./config');
 
 /**
  * The relationship between these root modules:
@@ -43,7 +43,7 @@ if (semver.lt(process.version, '5.0.0')) {
   throw new Error('Lighthouse requires node version 5.0 or newer');
 }
 
-module.exports = function(url, flags, config) {
+module.exports = function(url, flags, configJSON) {
   return new Promise((resolve, reject) => {
     if (!url) {
       return reject(new Error('Lighthouse requires a URL'));
@@ -51,7 +51,7 @@ module.exports = function(url, flags, config) {
     flags = flags || {};
 
     // Use ConfigParser to generate a valid config file
-    config = ConfigParser.parse(config, flags.auditWhitelist);
+    const config = new Config(configJSON, flags.auditWhitelist);
 
     const driver = new ChromeProtocol();
 

@@ -27,14 +27,10 @@ class Runner {
     const config = opts.config;
 
     // Check that there are passes & audits...
-    const validPassesAndAudits = (
-        typeof config.passes !== 'undefined' &&
-        typeof config.audits !== 'undefined');
+    const validPassesAndAudits = config.passes && config.audits;
 
     // ... or that there are artifacts & audits.
-    const validArtifactsAndAudits = (
-        typeof config.artifacts !== 'undefined' &&
-        typeof config.audits !== 'undefined');
+    const validArtifactsAndAudits = config.artifacts && config.audits;
 
     // Make a run, which can be .then()'d with whatever needs to run (based on the config).
     let run = Promise.resolve();

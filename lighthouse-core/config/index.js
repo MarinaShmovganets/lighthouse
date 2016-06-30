@@ -22,140 +22,141 @@ const CriticalRequestChainsGatherer = require('../driver/gatherers/critical-requ
 const Driver = require('../driver');
 const log = require('../lib/log');
 
-class ConfigParser {
-  static filterAudits(audits, whitelist) {
-    // It's possible we didn't get given any audits (but existing audit results), in which case
-    // there is no need to do any filter work.
-    if (!audits) {
-      return;
-    }
+function filterPasses(passes, audits) {
+  const requiredGatherers = getGatherersNeededByAudits(audits);
 
-    const rejected = [];
-    const filteredAudits = audits.filter(a => {
-      // If there is no whitelist, assume all.
-      if (!whitelist) {
-        return true;
-      }
-
-      const auditName = a.toLowerCase();
-      const inWhitelist = whitelist.has(auditName);
-
-      if (!inWhitelist) {
-        rejected.push(auditName);
-      }
-
-      return inWhitelist;
-    });
-
-    if (rejected.length) {
-      log.log('info', 'Running these audits:', `${filteredAudits.join(', ')}`);
-      log.log('info', 'Skipping these audits:', `${rejected.join(', ')}`);
-    }
-
-    return filteredAudits;
-  }
-
-  static expandAudits(audits) {
-    // It's possible we didn't get given any audits (but existing audit results), in which case
-    // there is no need to do any expansion work.
-    if (!audits) {
-      return;
-    }
-
-    return audits.map(audit => {
-      // If this is already instantiated, don't do anything else.
-      if (typeof audit !== 'string') {
-        return audit;
-      }
-
+  // Make sure we only have the gatherers that are needed by the audits
+  // that have been listed in the config.
+  const filteredPasses = passes.map(pass => {
+    pass.gatherers = pass.gatherers.filter(gatherer => {
       try {
-        return require(`../audits/${audit}`);
+        const GathererClass = Driver.getGathererClass(gatherer);
+        return requiredGatherers.has(GathererClass.name);
       } catch (requireError) {
-        throw new Error(`Unable to locate audit: ${audit}`);
+        throw new Error(`Unable to locate gatherer: ${gatherer}`);
       }
     });
+
+    return pass;
+  })
+
+  // Now remove any passes which no longer have gatherers.
+  .filter(p => p.gatherers.length > 0);
+  return filteredPasses;
+}
+
+function getGatherersNeededByAudits(audits) {
+  // It's possible we didn't get given any audits (but existing audit results), in which case
+  // there is no need to do any work here.
+  if (!audits) {
+    return new Set();
   }
 
-  static getGatherersNeededByAudits(config) {
-    // It's possible we didn't get given any audits (but existing audit results), in which case
-    // there is no need to do any work here.
-    if (!config.audits) {
-      return new Set();
+  return audits.reduce((list, audit) => {
+    audit.meta.requiredArtifacts.forEach(artifact => list.add(artifact));
+    return list;
+  }, new Set());
+}
+
+function filterAudits(audits, whitelist) {
+  // If there is no whitelist, assume all.
+  if (!whitelist) {
+    return Array.from(audits);
+  }
+
+  const rejected = [];
+  const filteredAudits = audits.filter(a => {
+    const auditName = a.toLowerCase();
+    const inWhitelist = whitelist.has(auditName);
+
+    if (!inWhitelist) {
+      rejected.push(auditName);
     }
 
-    return config.audits.reduce((list, audit) => {
-      audit.meta.requiredArtifacts.forEach(artifact => list.add(artifact));
-      return list;
-    }, new Set());
+    return inWhitelist;
+  });
+
+  if (rejected.length) {
+    log.log('info', 'Running these audits:', `${filteredAudits.join(', ')}`);
+    log.log('info', 'Skipping these audits:', `${rejected.join(', ')}`);
   }
 
-  static filterPasses(config) {
-    const requiredGatherers = ConfigParser.getGatherersNeededByAudits(config);
+  return filteredAudits;
+}
 
-    // Make sure we only have the gatherers that are needed by the audits
-    // that have been listed in the config.
-    const filteredPasses = config.passes.map(pass => {
-      pass.gatherers = pass.gatherers.filter(gatherer => {
-        if (typeof gatherer !== 'string') {
-          return requiredGatherers.has(gatherer.name);
-        }
+function expandAudits(audits) {
+  return audits.map(audit => {
+    try {
+      return require(`../audits/${audit}`);
+    } catch (requireError) {
+      throw new Error(`Unable to locate audit: ${audit}`);
+    }
+  });
+}
 
-        try {
-          const GathererClass = Driver.getGathererClass(gatherer);
-          return requiredGatherers.has(GathererClass.name);
-        } catch (requireError) {
-          throw new Error(`Unable to locate gatherer: ${gatherer}`);
-        }
-      });
+function expandArtifacts(artifacts) {
+  const expandedArtifacts = Object.assign({}, artifacts);
 
-      return pass;
-    })
-
-    // Now remove any passes which no longer have gatherers.
-    .filter(p => p.gatherers.length > 0);
-    return filteredPasses;
+  // currently only trace logs and performance logs should be imported
+  if (expandedArtifacts.traceContents) {
+    expandedArtifacts.traceContents = require(artifacts.traceContents);
+  }
+  if (expandedArtifacts.performanceLog) {
+    expandedArtifacts.CriticalRequestChains =
+      parsePerformanceLog(require(artifacts.performanceLog));
   }
 
-  static parsePerformanceLog(logs) {
-    // Parse logs for network events
-    const networkRecords = recordsFromLogs(logs);
+  return expandedArtifacts;
+}
 
-    // Use critical request chains gatherer to create the critical request chains artifact
-    const criticalRequestChainsGatherer = new CriticalRequestChainsGatherer();
-    criticalRequestChainsGatherer.afterPass({}, {networkRecords});
+function parsePerformanceLog(logs) {
+  // Parse logs for network events
+  const networkRecords = recordsFromLogs(logs);
 
-    return criticalRequestChainsGatherer.artifact;
-  }
+  // Use critical request chains gatherer to create the critical request chains artifact
+  const criticalRequestChainsGatherer = new CriticalRequestChainsGatherer();
+  criticalRequestChainsGatherer.afterPass({}, {networkRecords});
 
-  static parse(config, auditWhitelist) {
+  return criticalRequestChainsGatherer.artifact;
+}
+
+/**
+ * @return {!Config}
+ */
+class Config {
+  constructor(config, whitelist) {
     if (!config) {
       config = defaultConfig;
     }
 
-    // Filter out audits by the whitelist
-    if (config.audits) {
-      config.audits = ConfigParser.expandAudits(
-          ConfigParser.filterAudits(config.audits, auditWhitelist)
-        );
-    }
+    // Make sure everything is a new object and not a reference
+    this._audits = config.audits ? expandAudits(filterAudits(config.audits, whitelist)) : null;
+    // filterPasses expects audits to have been expanded
+    this._passes = config.passes ? filterPasses(config.passes, this._audits) : null;
+    this._auditResults = config.auditResults ? Array.from(config.auditResults) : null;
+    this._artifacts = config.artifacts ? expandArtifacts(config.artifacts) : null;
+    this._aggregations = config.aggregations ? Array.from(config.aggregations) : null;
+  }
 
-    if (config.passes) {
-      config.passes = ConfigParser.filterPasses(config);
-    }
+  get passes() {
+    return this._passes;
+  }
 
-    if (config.artifacts) {
-      // currently only trace logs and performance logs should be imported
-      if (config.artifacts.traceContents) {
-        config.artifacts.traceContents = require(config.artifacts.traceContents);
-      }
-      if (config.artifacts.performanceLog) {
-        config.artifacts.CriticalRequestChains =
-          ConfigParser.parsePerformanceLog(require(config.artifacts.performanceLog));
-      }
-    }
+  get audits() {
+    return this._audits;
+  }
 
-    return config;
+  get auditResults() {
+    return this._auditResults;
+  }
+
+  get artifacts() {
+    return this._artifacts;
+  }
+
+  get aggregations() {
+    return this._aggregations;
   }
 }
 
-module.exports = ConfigParser;
+module.exports = Config;

@@ -15,28 +15,20 @@
  */
 'use strict';
 
-const ConfigParser = require('../../config');
-const defaultConfig = require('../../config/default.json');
-const IsOnHTTPS = require('../../audits/is-on-https');
+const Config = require('../../config');
 const assert = require('assert');
 const path = require('path');
+const defaultConfig = require('../../config/default.json');
 
 /* global describe, it*/
 
-describe('ConfigParser', () => {
-  it('returns default config', () => {
-    const config = ConfigParser.parse(undefined);
-    assert.deepEqual(config, defaultConfig);
-  });
-
-  it('gets gatherers needed by audits', () => {
-    const requiredGatherers = ConfigParser.getGatherersNeededByAudits({audits: [IsOnHTTPS]});
-    assert.ok(requiredGatherers.has('HTTPS'));
-  });
-
-  it('returns an empty set for required gatherers when no audits are specified', () => {
-    const requiredGatherers = ConfigParser.getGatherersNeededByAudits({});
-    assert.equal(requiredGatherers.size, 0);
+describe('Config', () => {
+  it('returns new object', () => {
+    const config = {
+      audits: ['is-on-https']
+    };
+    const newConfig = new Config(config);
+    assert.notEqual(config, newConfig);
   });
 
   it('throws for unknown gatherers', () => {
@@ -49,82 +41,67 @@ describe('ConfigParser', () => {
       ]
     };
 
-    return assert.throws(_ => ConfigParser.parse(config),
+    return assert.throws(_ => new Config(config),
         /Unable to locate/);
   });
 
-  it('handles non-existent audits when expanding', () => {
-    const modifiedResults = ConfigParser.expandAudits();
+  it('contains new copies of auditResults and aggregations', () => {
+    const configJSON = defaultConfig;
+    configJSON.auditResults = [{
+      value: 1,
+      rawValue: 1.0,
+      optimalValue: 1.0,
+      name: 'Test Audit',
+      extendedInfo: {
+        formatter: 'Supported formatter',
+        value: {
+          a: 1
+        }
+      }
+    }];
 
-    return assert.equal(modifiedResults, undefined);
-  });
-
-  it('expands audits', () => {
-    const modifiedResults = ConfigParser.expandAudits(['is-on-https']);
-
-    assert.ok(Array.isArray(modifiedResults));
-    assert.equal(modifiedResults.length, 1);
-    return assert.equal(typeof modifiedResults[0], 'function');
-  });
-
-  it('handles non-existent audits when filtering', () => {
-    const modifiedResults = ConfigParser.filterAudits(undefined, ['a']);
-
-    return assert.equal(modifiedResults, undefined);
-  });
-
-  it('returns unfiltered audits when no whitelist is given', () => {
-    const modifiedResults = ConfigParser.filterAudits(['is-on-https']);
-
-    assert.ok(Array.isArray(modifiedResults));
-    assert.equal(modifiedResults.length, 1);
-    return assert.equal(modifiedResults[0], 'is-on-https');
+    const config = new Config(configJSON);
+    assert.notEqual(config, configJSON);
+    assert.ok(config.aggregations);
+    assert.ok(config.auditResults);
+    assert.deepStrictEqual(config.aggregations, configJSON.aggregations);
+    assert.notEqual(config.aggregations, configJSON.aggregations);
+    assert.notEqual(config.auditResults, configJSON.auditResults);
+    assert.deepStrictEqual(config.auditResults, configJSON.auditResults);
   });
 
   it('returns filtered audits when a whitelist is given', () => {
-    const modifiedResults = ConfigParser.filterAudits(['is-on-https'], new Set(['b']));
+    const config = new Config({
+      audits: ['is-on-https']
+    }, new Set(['b']));
 
-    assert.ok(Array.isArray(modifiedResults));
-    return assert.equal(modifiedResults.length, 0);
+    assert.ok(Array.isArray(config.audits));
+    return assert.equal(config.audits.length, 0);
   });
 
-  it('expands audits in the config', () => {
-    const config = {
+  it('expands audits', () => {
+    const config = new Config({
       audits: ['user-timings']
-    };
+    });
 
-    ConfigParser.parse(config);
     assert.ok(Array.isArray(config.audits));
     assert.equal(config.audits.length, 1);
     return assert.equal(typeof config.audits[0], 'function');
   });
 
-  it('expands trace contents', () => {
-    const config = ConfigParser.parse({
+  it('expands artifacts', () => {
+    const config = new Config({
       artifacts: {
-        traceContents: path.resolve(__dirname, '../fixtures/traces/trace-user-timings.json')
-      }
-    });
-    const traceUserTimings = require('../fixtures/traces/trace-user-timings.json');
-    assert.deepEqual(config.artifacts.traceContents, traceUserTimings);
-  });
-
-  it('expands performance logs', () => {
-    const config = ConfigParser.parse({
-      artifacts: {
+        traceContents: path.resolve(__dirname, '../fixtures/traces/trace-user-timings.json'),
         performanceLog: path.resolve(__dirname, '../fixtures/perflog.json')
       }
     });
-
+    const traceUserTimings = require('../fixtures/traces/trace-user-timings.json');
+    assert.deepStrictEqual(config.artifacts.traceContents, traceUserTimings);
     assert.ok(config.artifacts.CriticalRequestChains);
-  });
-
-  it('parses performance logs', () => {
-    const perflog = require('../fixtures/perflog.json');
-    const crc = ConfigParser.parsePerformanceLog(perflog, {});
-    assert.ok(crc['93149.1']);
-    assert.ok(crc['93149.1'].request);
-    assert.ok(crc['93149.1'].children);
+    assert.ok(config.artifacts.CriticalRequestChains['93149.1']);
+    assert.ok(config.artifacts.CriticalRequestChains['93149.1'].request);
+    assert.ok(config.artifacts.CriticalRequestChains['93149.1'].children);
   });
 });
 

@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 const Runner = require('../runner');
-const HTTPSGatherer = require('../driver/gatherers/https');
 const fakeDriver = require('./driver/fake-driver');
-const ConfigParser = require('../config');
+const Config = require('../config');
 const assert = require('assert');
 const path = require('path');
 
@@ -28,7 +27,7 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const config = ConfigParser.parse({
+    const config = new Config({
       passes: [{
         gatherers: ['https']
       }],
@@ -49,9 +48,9 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const config = ConfigParser.parse({
+    const config = new Config({
       passes: [{
-        gatherers: [new HTTPSGatherer()]
+        gatherers: ['https']
       }],
       audits: [
         'is-on-https'
@@ -73,7 +72,7 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const config = ConfigParser.parse({
+    const config = new Config({
       audits: [
         'is-on-https'
       ]
@@ -88,7 +87,7 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const config = ConfigParser.parse({
+    const config = new Config({
       audits: [
         'is-on-https'
       ],
@@ -107,7 +106,7 @@ describe('Runner', () => {
       auditWhitelist: null
     };
 
-    const config = ConfigParser.parse({
+    const config = new Config({
       audits: [
         'user-timings'
       ],
@@ -130,7 +129,7 @@ describe('Runner', () => {
       auditWhitelist: null
     };
 
-    const config = ConfigParser.parse({
+    const config = new Config({
       audits: [
         'user-timings'
       ],
@@ -150,14 +149,13 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const performanceLog = require(path.join(__dirname, '/fixtures/perflog.json'));
-    const config = ConfigParser.parse({
+    const config = new Config({
       audits: [
         'critical-request-chains'
       ],
 
       artifacts: {
-        CriticalRequestChains: ConfigParser.parsePerformanceLog(performanceLog)
+        performanceLog: path.join(__dirname, '/fixtures/perflog.json')
       }
     }, flags.auditWhitelist);
 
@@ -172,7 +170,7 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const config = ConfigParser.parse({
+    const config = new Config({
       passes: [{
         gatherers: ['https']
       }]
@@ -187,7 +185,7 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const config = ConfigParser.parse({
+    const config = new Config({
       auditResults: {
         HTTPS: true
       },
@@ -218,7 +216,7 @@ describe('Runner', () => {
     const flags = {
       auditWhitelist: null
     };
-    const config = ConfigParser.parse({
+    const config = new Config({
       auditResults: [{
         name: 'is-on-https',
         value: true
