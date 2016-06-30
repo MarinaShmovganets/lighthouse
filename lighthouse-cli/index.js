@@ -19,7 +19,6 @@
 'use strict';
 
 const yargs = require('yargs');
-const log = require('../lighthouse-core/lib/log.js');
 const semver = require('semver');
 const Printer = require('./printer');
 const lighthouse = require('../lighthouse-core');
@@ -36,7 +35,6 @@ const cli = yargs
   .showHelpOnFail(false, 'Specify --help for available options')
 
   .usage('$0 url')
-  .demand(1, 'Please provide a url')
 
   // List of options
   .group([
@@ -99,6 +97,15 @@ Example: --output-path=./lighthouse-results.html`
   .default('audit-whitelist', 'all')
   .default('output', Printer.OUTPUT_MODE.pretty)
   .default('output-path', 'stdout')
+  .check(argv => {
+    // Make sure lighthouse has been passed a url, or at least one of --list-all-audits
+    // or --list-trace-categories. If not, stop the program and ask for a url
+    if (!argv.listAllAudits && !argv.listTraceCategories && argv._.length === 0) {
+      throw new Error('Please provide a url');
+    }
+
+    return true;
+  })
   .argv;
 
 if (cli.listAllAudits) {
@@ -124,12 +131,6 @@ const outputMode = cli.output;
 const outputPath = cli.outputPath;
 const flags = cli;
 const config = (cli.configPath && require(cli.configPath)) || null;
-
-// If the URL isn't https or localhost complain to the user.
-if (url.indexOf('https') !== 0 && url.indexOf('http://localhost') !== 0) {
-  log.warn('Lighthouse', 'The URL provided should be on HTTPS');
-  log.warn('Lighthouse', 'Performance stats will be skewed redirecting from HTTP to HTTPS.');
-}
 
 // set logging preferences
 flags.logLevel = 'info';
