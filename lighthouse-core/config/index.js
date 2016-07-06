@@ -28,7 +28,9 @@ function filterPasses(passes, audits) {
   // Make sure we only have the gatherers that are needed by the audits
   // that have been listed in the config.
   const filteredPasses = passes.map(pass => {
-    pass.gatherers = pass.gatherers.filter(gatherer => {
+    const freshPass = Object.assign({}, pass);
+
+    freshPass.gatherers = freshPass.gatherers.filter(gatherer => {
       try {
         const GathererClass = Driver.getGathererClass(gatherer);
         return requiredGatherers.has(GathererClass.name);
@@ -37,7 +39,7 @@ function filterPasses(passes, audits) {
       }
     });
 
-    return pass;
+    return freshPass;
   })
 
   // Now remove any passes which no longer have gatherers.
@@ -58,16 +60,16 @@ function getGatherersNeededByAudits(audits) {
   }, new Set());
 }
 
-function filterAudits(audits, whitelist) {
+function filterAudits(audits, auditWhitelist) {
   // If there is no whitelist, assume all.
-  if (!whitelist) {
+  if (!auditWhitelist) {
     return Array.from(audits);
   }
 
   const rejected = [];
   const filteredAudits = audits.filter(a => {
     const auditName = a.toLowerCase();
-    const inWhitelist = whitelist.has(auditName);
+    const inWhitelist = auditWhitelist.has(auditName);
 
     if (!inWhitelist) {
       rejected.push(auditName);
@@ -98,10 +100,10 @@ function expandArtifacts(artifacts) {
   const expandedArtifacts = Object.assign({}, artifacts);
 
   // currently only trace logs and performance logs should be imported
-  if (expandedArtifacts.traceContents) {
+  if (artifacts.traceContents) {
     expandedArtifacts.traceContents = require(artifacts.traceContents);
   }
-  if (expandedArtifacts.performanceLog) {
+  if (artifacts.performanceLog) {
     expandedArtifacts.CriticalRequestChains =
       parsePerformanceLog(require(artifacts.performanceLog));
   }
@@ -124,36 +126,46 @@ function parsePerformanceLog(logs) {
  * @return {!Config}
  */
 class Config {
-  constructor(config, whitelist) {
-    if (!config) {
-      config = defaultConfig;
+  /**
+   * @constructor
+   * @param{Object} config
+   */
+  constructor(configJSON, auditWhitelist) {
+    if (!configJSON) {
+      configJSON = defaultConfig;
     }
 
-    // Make sure everything is a new object and not a reference
-    this._audits = config.audits ? expandAudits(filterAudits(config.audits, whitelist)) : null;
+    this._audits = configJSON.audits ? expandAudits(
+        filterAudits(configJSON.audits, auditWhitelist)
+        ) : null;
     // filterPasses expects audits to have been expanded
-    this._passes = config.passes ? filterPasses(config.passes, this._audits) : null;
-    this._auditResults = config.auditResults ? Array.from(config.auditResults) : null;
-    this._artifacts = config.artifacts ? expandArtifacts(config.artifacts) : null;
-    this._aggregations = config.aggregations ? Array.from(config.aggregations) : null;
+    this._passes = configJSON.passes ? filterPasses(configJSON.passes, this._audits) : null;
+    this._auditResults = configJSON.auditResults ? Array.from(configJSON.auditResults) : null;
+    this._artifacts = configJSON.artifacts ? expandArtifacts(configJSON.artifacts) : null;
+    this._aggregations = configJSON.aggregations ? Array.from(configJSON.aggregations) : null;
   }
 
+  /** @type {Array<!Pass>} */
   get passes() {
     return this._passes;
   }
 
+  /** @type {Array<!Audit>} */
   get audits() {
     return this._audits;
   }
 
+  /** @type {Array<!AuditResult>} */
   get auditResults() {
     return this._auditResults;
   }
 
+  /** @type {Array<!Artifacts>} */
   get artifacts() {
     return this._artifacts;
   }
 
+  /** @type {Array<!Aggregation>} */
   get aggregations() {
     return this._aggregations;
   }

@@ -41,32 +41,6 @@ describe('Runner', () => {
     });
   });
 
-  it('ignores expanded gatherers', () => {
-    'use strict';
-
-    const url = 'https://example.com';
-    const flags = {
-      auditWhitelist: null
-    };
-    const config = new Config({
-      passes: [{
-        gatherers: ['https']
-      }],
-      audits: [
-        'is-on-https'
-      ]
-    }, flags.auditWhitelist);
-
-    let run;
-    assert.doesNotThrow(_ => {
-      run = Runner.run(fakeDriver, {url, config, flags});
-    });
-
-    return run.then(_ => {
-      assert.ok(typeof config.passes[0].gatherers[0] === 'object');
-    });
-  });
-
   it('throws when given neither passes nor artifacts', () => {
     const url = 'https://example.com';
     const flags = {
@@ -97,7 +71,7 @@ describe('Runner', () => {
       }
     }, flags.auditWhitelist);
 
-    return assert.doesNotThrow(_ => Runner.run(fakeDriver, {url, config, flags}));
+    return assert.doesNotThrow(_ => Runner.run({}, {url, config, flags}));
   });
 
   it('accepts trace artifacts as paths and outputs appropriate data', () => {
@@ -117,13 +91,13 @@ describe('Runner', () => {
       }
     }, flags.auditWhitelist);
 
-    return Runner.run(fakeDriver, {url, config, flags}).then(results => {
+    return Runner.run({}, {url, config, flags}).then(results => {
       assert.equal(results[0].value, 2);
       assert.equal(results[0].name, 'user-timings');
     });
   });
 
-  it('fails gracefully when trace artifacts are not provided but artifacts are present', () => {
+  it('fails gracefully with empty artifacts object', () => {
     const url = 'https://example.com';
     const flags = {
       auditWhitelist: null
@@ -138,7 +112,7 @@ describe('Runner', () => {
       }
     }, flags.auditWhitelist);
 
-    return Runner.run(fakeDriver, {url, config, flags}).then(results => {
+    return Runner.run({}, {url, config, flags}).then(results => {
       assert.equal(results[0].value, -1);
       assert(results[0].debugString);
     });
@@ -159,7 +133,7 @@ describe('Runner', () => {
       }
     }, flags.auditWhitelist);
 
-    return Runner.run(fakeDriver, {url, config, flags}).then(results => {
+    return Runner.run({}, {url, config, flags}).then(results => {
       assert.equal(results[0].value, 9);
       assert.equal(results[0].name, 'critical-request-chains');
     });

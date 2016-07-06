@@ -21,45 +21,24 @@
  */
 
 /**
- * @constructor
- * @param{Object} config
- */
-var Config = function(config) {};
-
-/** @type {Array<!Object>} */
-Config.prototype.audits;
-
-/** @type {Array<!Pass>} */
-Config.prototype.passes;
-
-/** @type {Array<!AuditResult>} */
-Config.prototype.auditResults;
-
-/** @type {Array<!Artifacts>} */
-Config.prototype.artifacts;
-
-/** @type {Array<!Aggregation>} */
-Config.prototype.aggregations;
-
-/**
  * @struct
  * @record
  */
-var Pass = function() {};
+var PassConfig = function() {};
 
 /** type {boolean} */
-Pass.prototype.network;
+PassConfig.prototype.network;
 
 /** type {boolean} */
-Pass.prototype.trace;
+PassConfig.prototype.trace;
 
 /** type {string} */
-Pass.prototype.loadDataName;
+PassConfig.prototype.loadDataName;
 
 /** type {!boolean} */
-Pass.prototype.loadPage;
+PassConfig.prototype.loadPage;
 
 /** type {!Array<!string>} */
-Pass.prototype.gatherers;
+PassConfig.prototype.gatherers;
 
 

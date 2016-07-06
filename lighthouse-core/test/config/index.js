@@ -20,7 +20,7 @@ const assert = require('assert');
 const path = require('path');
 const defaultConfig = require('../../config/default.json');
 
-/* global describe, it*/
+/* eslint-env mocha */
 
 describe('Config', () => {
   it('returns new object', () => {
@@ -29,6 +29,12 @@ describe('Config', () => {
     };
     const newConfig = new Config(config);
     assert.notEqual(config, newConfig);
+  });
+
+  it('uses the default config when no config is provided', () => {
+    const config = new Config();
+    assert.deepStrictEqual(defaultConfig.aggregations, config.aggregations);
+    assert.equal(defaultConfig.audits.length, config.audits.length);
   });
 
   it('throws for unknown gatherers', () => {
@@ -43,6 +49,38 @@ describe('Config', () => {
 
     return assert.throws(_ => new Config(config),
         /Unable to locate/);
+  });
+
+  it('filters gatherers from passes when no audits require them', () => {
+    const config = new Config({
+      passes: [{
+        gatherers: [
+          'url',
+          'html',
+          'critical-request-chains'
+        ]
+      }],
+
+      audits: ['critical-request-chains']
+    });
+
+    assert.equal(config.passes[0].gatherers.length, 1);
+  });
+
+  it('doesn\'t mutate old gatherers when filtering passes', () => {
+    const configJSON = {
+      passes: [{
+        gatherers: [
+          'url',
+          'https',
+          'viewport'
+        ]
+      }],
+      audits: ['is-on-https']
+    };
+
+    const _ = new Config(configJSON);
+    assert.equal(configJSON.passes[0].gatherers.length, 3);
   });
 
   it('contains new copies of auditResults and aggregations', () => {
