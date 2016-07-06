@@ -192,17 +192,8 @@ class Driver {
               .then(loadData => {
                 Object.assign(tracingData, loadData);
 
-                if (!config.traceName) {
-                  return;
-                }
-                tracingData.traces[config.traceName] = {};
-                if (config.trace) {
-                  tracingData.traces[config.traceName].traceContents =
-                    loadData.traceContents;
-                }
-                if (config.network) {
-                  tracingData.traces[config.traceName].networkRecords =
-                    loadData.networkRecords;
+                if (config.traceName) {
+                  tracingData.traces[config.traceName] = loadData;
                 }
               })
               .then(_ => this.tearDown(runOptions));
