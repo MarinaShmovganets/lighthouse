@@ -24,7 +24,9 @@
     "// test",
     "test": "npm run lint --silent && npm run unit && npm run closure",
     "cli-unit": "mocha $(find lighthouse-cli/test -name '*.js') --timeout 60000",
+    "cli-unit:harmony": "mocha --harmony $(find lighthouse-cli/test -name '*.js') --timeout 60000",
     "unit": "npm run cli-unit && npm --prefix ./lighthouse-core run unit",
+    "unit:harmony": "npm run cli-unit:harmony && npm --prefix ./lighthouse-core run unit:harmony",
     "//":
     "// passing through tasks to core",
     "closure": "npm --prefix ./lighthouse-core run closure",
