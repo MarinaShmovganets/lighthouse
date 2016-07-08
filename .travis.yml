@@ -19,9 +19,10 @@ before_script:
   - sleep 5
 script:
   - npm run lint
-  - test $(node -v) =~ "^v4.*" && npm run unit:harmony || npm run unit
+  - if [[ $(node -v) =~ ^v4.* ]]; then npm run unit:harmony; else npm run unit; fi
   - npm run closure
-  - test $(node -v) =~ "^v4.*" && npm run coveralls:harmony || npm run coveralls
+  - if [[ $(node -v) =~ ^v4.* ]]; then npm run coveralls:harmony; else npm run coveralls; fi
+
   - npm run smoke
   - cd lighthouse-extension
   - gulp build
