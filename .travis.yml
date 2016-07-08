@@ -21,7 +21,7 @@ script:
   - npm run lint
   - test $(node -v) =~ "^v4.*" && npm run unit:harmony || npm run unit
   - npm run closure
-  - npm run coveralls
+  - test $(node -v) =~ "^v4.*" && npm run coveralls:harmony || npm run coveralls
   - npm run smoke
   - cd lighthouse-extension
   - gulp build
