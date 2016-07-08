@@ -19,13 +19,14 @@
 /* eslint-env mocha */
 const assert = require('assert');
 const childProcess = require('child_process');
-const expected_output = 'harmony\n';
+const expectedOutput = 'harmony\n';
 let node = 'node';
 
 describe('CLI Tests', function() {
   before(() => {
-    var output = childProcess.execSync('if [[ $(node -v) =~ ^v4.* ]]; then echo harmony; fi').toString();
-    if (output === expected_output) {
+    var output = childProcess.execSync(
+        'if [[ $(node -v) =~ ^v4.* ]]; then echo harmony; fi').toString();
+    if (output === expectedOutput) {
       node = 'node --harmony';
     }
   });
