@@ -9,7 +9,7 @@
   },
   "scripts": {
     "//": "// passing through tasks to core",
-    "postinstall": "_install_deps.js",
+    "postinstall": "node _install_deps.js",
     "lint": "eslint .",
     "smoke": "lighthouse-cli/scripts/run-smoke-tests.sh",
     "coverage": "istanbul cover -x \"**/third_party/**\" _mocha -- $(find */test -name '*.js') --timeout 60000",
