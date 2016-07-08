@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,29 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const Audit = require('../../audits/redirects-http.js');
-const assert = require('assert');
 
-/* global describe, it*/
+/**
+ * Typing externs file for config class.
+ * @externs
+ */
 
-describe('Security: HTTP->HTTPS audit', () => {
-  it('fails when no input present', () => {
-    return assert.equal(Audit.audit({}).rawValue, false);
-  });
+/**
+ * @struct
+ * @record
+ */
+var PassConfig = function() {};
 
-  it('fails when no redirect detected', () => {
-    return assert.equal(Audit.audit({
-      HTTPRedirect: {
-        value: false
-      }
-    }).rawValue, false);
-  });
+/** type {boolean} */
+PassConfig.prototype.network;
 
-  it('passes when redirect detected', () => {
-    return assert.equal(Audit.audit({
-      HTTPRedirect: {
-        value: true
-      }
-    }).rawValue, true);
-  });
-});
+/** type {boolean} */
+PassConfig.prototype.trace;
+
+/** type {string} */
+PassConfig.prototype.loadDataName;
+
+/** type {!boolean} */
+PassConfig.prototype.loadPage;
+
+/** type {!Array<!string>} */
+PassConfig.prototype.gatherers;
+
+

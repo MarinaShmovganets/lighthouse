@@ -1,6 +1,6 @@
 {
   "name": "lighthouse",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Lighthouse",
   "main": "./lighthouse-core/module/index.js",
   "bin": "./lighthouse-cli/index.js",
@@ -8,20 +8,14 @@
     "node": ">=5"
   },
   "scripts": {
-    "//":
-    "// dependency installation",
     "postinstall": "npm run core-install && npm run extension-install",
     "core-install": "npm --prefix ./lighthouse-core install ./lighthouse-core",
     "extension-install": "npm --prefix ./lighthouse-extension install ./lighthouse-extension",
-    "//":
-    "// global tasks",
     "lint": "eslint .",
     "smoke": "lighthouse-cli/scripts/run-smoke-tests.sh",
     "coverage": "istanbul cover -x \"**/third_party/**\" _mocha -- $(find */test -name '*.js') --timeout 60000",
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | coveralls",
     "start": "node ./lighthouse-cli/index.js",
-    "//":
-    "// test",
     "test": "npm run lint --silent && npm run unit && npm run closure",
     "cli-unit": "mocha $(find lighthouse-cli/test -name '*.js') --timeout 60000",
     "cli-unit:harmony": "mocha --harmony $(find lighthouse-cli/test -name '*.js') --timeout 60000",
