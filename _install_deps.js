@@ -1,6 +1,5 @@
 const exec = require('child_process').exec;
 
-
 const corePath = './lighthouse-core';
 const extPath = './lighthouse-extension';
 const cmd = `npm --prefix ${corePath} install ${corePath} && npm --prefix ${extPath} install ${extPath}`;
@@ -8,8 +7,9 @@ const cmd = `npm --prefix ${corePath} install ${corePath} && npm --prefix ${extP
 console.log(cmd);
 console.log('...');
 
-
 console.log(process.cwd());
+console.log(process.pwd());
+
 exec(cmd,
   function(error, stdout) {
     console.log(stdout);
