@@ -25,7 +25,7 @@ const isExpectedOutput = artifact => {
   return 'raw' in artifact && 'value' in artifact;
 };
 
-describe('Accessibility gatherer', () => {
+describe('Cache Contents gatherer', () => {
   // Reset the Gatherer before each test.
   beforeEach(() => {
     cacheContentGather = new CacheContentGather();
