@@ -4,7 +4,7 @@ cd lighthouse-cli/test/fixtures && python -m SimpleHTTPServer 9999 &
 
 NODE=$([ $(node -v | grep -E "v4") ] && echo "node --harmony" || echo "node")
 config="$PWD/lighthouse-cli/test/fixtures/smoketest-config.json"
-flags="--audit-whitelist=works-offline,viewport --config-path=$config"
+flags="--config-path=$config"
 
 offline200result="URL responds with a 200 when offline"
 
