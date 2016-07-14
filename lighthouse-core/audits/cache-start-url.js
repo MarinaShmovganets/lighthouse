@@ -55,7 +55,7 @@ class CacheStartUrl extends Audit {
     const baseURL = artifacts.URL;
 
     // Remove any UTM strings.
-    const startURL = url.resolve(baseURL, manifest.start_url.raw).toString()
+    const startURL = url.resolve(baseURL, manifest.start_url.raw).toString();
     const altStartURL = startURL
         .replace(/\?utm_([^=]*)=([^&]|$)*/, '')
         .replace(/\?$/, '');
