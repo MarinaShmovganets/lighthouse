@@ -55,9 +55,9 @@ class CacheStartUrl extends Audit {
     const baseURL = artifacts.URL;
 
     // Remove any UTM strings.
-    const startURL = url.resolve(baseURL, manifest.start_url.raw)
-        .toString()
-        .replace(/\?utm_source=([^&]|$)*/, '')
+    const startURL = url.resolve(baseURL, manifest.start_url.raw).toString()
+    const altStartURL = startURL
+        .replace(/\?utm_([^=]*)=([^&]|$)*/, '')
         .replace(/\?$/, '');
 
     // Now find the start_url in the cacheContents. This test is less than ideal since the Service
@@ -66,7 +66,7 @@ class CacheStartUrl extends Audit {
     // URL. However that would also necessitate the cache contents gatherer relying on the manifest
     // gather rather than being independent of it.
     cacheHasStartUrl = cacheContents.find(req => {
-      return startURL === req;
+      return (startURL === req || altStartURL === req);
     });
 
     return CacheStartUrl.generateAuditResult({
