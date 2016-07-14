@@ -20,6 +20,7 @@ const manifestParser = require('../../lib/manifest-parser');
 const Manifest = manifestParser(manifestSrc);
 const CacheContents = ['https://another.example.com/', 'https://example.com/'];
 const URL = 'https://example.com';
+const AltURL = 'https://example.com/?utm_source=http203';
 
 /* global describe, it*/
 
@@ -61,6 +62,14 @@ describe('Cache: start_url audit', () => {
       Manifest,
       CacheContents,
       URL
+    }).rawValue, true);
+  });
+
+  it('handles URLs with utm params', () => {
+    return assert.equal(Audit.audit({
+      Manifest,
+      CacheContents,
+      URL: AltURL
     }).rawValue, true);
   });
 });
