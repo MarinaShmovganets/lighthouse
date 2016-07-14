@@ -40,7 +40,7 @@ function collectGeoState() {
 class Geolocation extends Gather {
 
   beforePass(options) {
-    return options.driver.executeScriptAfterPage(`(${overrideGeo.toString()}())`);
+    return options.driver.evaluateScriptOnLoad(`(${overrideGeo.toString()}())`);
   }
 
   afterPass(options) {

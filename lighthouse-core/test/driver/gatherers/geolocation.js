@@ -30,7 +30,7 @@ describe('Geolocation gatherer', () => {
   it('returns an artifact', () => {
     return geolocationGatherer.beforePass({
       driver: {
-        executeScriptAfterPage() {
+        evaluateScriptOnLoad() {
           return Promise.resolve();
         }
       }
@@ -49,7 +49,7 @@ describe('Geolocation gatherer', () => {
   it('handles driver failure', () => {
     return geolocationGatherer.beforePass({
       driver: {
-        executeScriptAfterPage() {
+        evaluateScriptOnLoad() {
           return Promise.resolve();
         }
       }
