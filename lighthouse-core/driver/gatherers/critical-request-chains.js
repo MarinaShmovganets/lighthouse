@@ -43,6 +43,13 @@ class CriticalRequestChains extends Gather {
       return false;
     }
 
+    // Favicons don't necessarily have x-icon as their mime type, but they will be requested as an
+    // image with an initiator of 'other'.
+    if (request.initiator().type === 'other' &&
+        resourceTypeCategory === WebInspector.resourceTypes.Image._category) {
+      return false;
+    }
+
     return includes(['VeryHigh', 'High', 'Medium'], request.priority());
   }
 
