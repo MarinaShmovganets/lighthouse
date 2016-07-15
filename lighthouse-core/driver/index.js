@@ -17,9 +17,9 @@
 'use strict';
 
 const log = require('../lib/log.js');
+const Audit = require('../audits/audit');
 
 class Driver {
-
   static loadPage(driver, options) {
     // Since a Page.reload command does not let a service worker take over, we
     // navigate away and then come back to reload. We do not `waitForLoad` on
@@ -191,10 +191,7 @@ class Driver {
               .then(_ => this.afterPass(runOptions))
               .then(loadData => {
                 Object.assign(tracingData, loadData);
-
-                if (config.traceName) {
-                  tracingData.traces[config.traceName] = loadData;
-                }
+                tracingData.traces[config.traceName || Audit.DEFAULT_TRACE] = loadData;
               })
               .then(_ => this.tearDown(runOptions));
         }, Promise.resolve());

@@ -29,7 +29,7 @@ describe('Performance: user-timings audit', () => {
   });
 
   it('evaluates valid input correctly', () => {
-    return Audit.audit({traces: {firstPass: {traceContents}}})
+    return Audit.audit({traces: {[Audit.DEFAULT_TRACE]: {traceContents}}})
       .then(response => {
         assert.equal(response.score, 2);
         assert.ok(!Number.isNaN(response.extendedInfo.value[0].startTime));
