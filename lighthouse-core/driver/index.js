@@ -17,9 +17,9 @@
 'use strict';
 
 const log = require('../lib/log.js');
+const Audit = require('../audits/audit');
 
 class Driver {
-
   static loadPage(driver, options) {
     // Since a Page.reload command does not let a service worker take over, we
     // navigate away and then come back to reload. We do not `waitForLoad` on
@@ -107,15 +107,19 @@ class Driver {
     const driver = options.driver;
     const config = options.config;
     const gatherers = config.gatherers;
-    const loadData = {};
+    const loadData = {traces: {}};
     let pass = Promise.resolve();
 
     if (config.trace) {
       pass = pass.then(_ => {
-        log.log('status', 'Gathering: trace');
+        let traceName = Audit.DEFAULT_TRACE;
+        if (config.traceName) {
+          traceName = config.traceName;
+        }
+        log.log('status', `Gathering: trace "${traceName}"`);
         return driver.endTrace().then(traceContents => {
-          loadData.traceContents = traceContents;
-          log.log('statusEnd', 'Gathering: trace');
+          loadData.traces[traceName] = {traceContents};
+          log.log('statusEnd', `Gathering: trace "${traceName}"`);
         });
       });
     }
@@ -191,10 +195,7 @@ class Driver {
               .then(_ => this.afterPass(runOptions))
               .then(loadData => {
                 Object.assign(tracingData, loadData);
-
-                if (config.traceName) {
-                  tracingData.traces[config.traceName] = loadData;
-                }
+                tracingData.traces[config.traceName || Audit.DEFAULT_TRACE] = loadData;
               })
               .then(_ => this.tearDown(runOptions));
         }, Promise.resolve());

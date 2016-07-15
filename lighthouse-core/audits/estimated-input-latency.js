@@ -24,7 +24,6 @@ const Formatter = require('../formatters/formatter');
 // https://www.desmos.com/calculator/srv0hqhf7d
 const SCORING_POINT_OF_DIMINISHING_RETURNS = 50;
 const SCORING_MEDIAN = 100;
-const TRACE_NAME = 'firstPass';
 
 class EstimatedInputLatency extends Audit {
   /**
@@ -51,7 +50,8 @@ class EstimatedInputLatency extends Audit {
       // Use speedline's first paint as start of range for input latency check.
       const startTime = artifacts.Speedline.first;
 
-      const trace = artifacts.traces[TRACE_NAME] && artifacts.traces[TRACE_NAME].traceContents;
+      const trace = artifacts.traces[this.DEFAULT_TRACE] &&
+        artifacts.traces[this.DEFAULT_TRACE].traceContents;
       const tracingProcessor = new TracingProcessor();
       const model = tracingProcessor.init(trace);
       const latencyPercentiles = TracingProcessor.getRiskToResponsiveness(model, trace, startTime);

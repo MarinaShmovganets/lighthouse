@@ -18,6 +18,7 @@
 'use strict';
 
 const Gather = require('./gather');
+const Audit = require('../../audits/audit');
 const DevtoolsTimelineModel = require('../../lib/traces/devtools-timeline-model');
 
 class ScreenshotFilmstrip extends Gather {
@@ -46,7 +47,7 @@ class ScreenshotFilmstrip extends Gather {
   }
 
   afterPass(options, tracingData) {
-    return this.getScreenshots(tracingData.traceContents)
+    return this.getScreenshots(tracingData.traces[Audit.DEFAULT_TRACE].traceContents)
       .then(screenshots => {
         this.artifact = screenshots;
       });
