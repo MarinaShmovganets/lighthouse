@@ -19,6 +19,7 @@
 const Driver = require('./driver');
 const Aggregator = require('./aggregator');
 const assetSaver = require('./lib/asset-saver');
+const log = require('./lib/log');
 const fs = require('fs');
 const path = require('path');
 
@@ -64,6 +65,7 @@ class Runner {
 
       // Now run the audits.
       run = run.then(artifacts => Promise.all(config.audits.map(audit => {
+        log.log('status', `Evaluating: ${audit.meta.description}`);
         return audit.audit(artifacts);
       })));
     } else if (config.auditResults) {

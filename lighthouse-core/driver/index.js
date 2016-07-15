@@ -16,6 +16,8 @@
  */
 'use strict';
 
+const log = require('../lib/log.js');
+
 class Driver {
 
   static loadPage(driver, options) {
@@ -32,6 +34,7 @@ class Driver {
   }
 
   static setupDriver(driver, gatherers, options) {
+    log.log('status', 'Initializing…');
     return new Promise((resolve, reject) => {
       // Enable emulation.
       if (options.flags.mobile) {
@@ -82,10 +85,14 @@ class Driver {
     const driver = options.driver;
     const config = options.config;
     const gatherers = config.gatherers;
+    const gatherernames = gatherers.map(g => g.name).join(', ');
     let pass = Promise.resolve();
 
     if (config.loadPage) {
-      pass = pass.then(_ => this.loadPage(driver, options));
+      pass = pass.then(_ => {
+        log.log('status', 'Loading page & waiting for onload', gatherernames);
+        return this.loadPage(driver, options);
+      });
     }
 
     return gatherers.reduce((chain, gatherer) => {
@@ -101,20 +108,29 @@ class Driver {
     let pass = Promise.resolve();
 
     if (config.trace) {
-      pass = pass.then(_ => driver.endTrace().then(traceContents => {
-        loadData.traceContents = traceContents;
-      }));
+      pass = pass.then(_ => {
+        log.log('status', 'Gathering: trace');
+        driver.endTrace().then(traceContents => {
+          loadData.traceContents = traceContents;
+        });
+      });
     }
 
     if (config.network) {
-      pass = pass.then(_ => driver.endNetworkCollect().then(networkRecords => {
-        loadData.networkRecords = networkRecords;
-      }));
+      pass = pass.then(_ => {
+        log.log('status', 'Gathering: network records');
+        return driver.endNetworkCollect().then(networkRecords => {
+          loadData.networkRecords = networkRecords;
+        });
+      });
     }
 
     return gatherers
         .reduce((chain, gatherer) => {
-          return chain.then(_ => gatherer.afterPass(options, loadData));
+          return chain.then(_ => {
+            log.log('status', `Gathering: ${gatherer.name}`);
+            return gatherer.afterPass(options, loadData);
+          });
         }, pass)
         .then(_ => loadData);
   }
@@ -171,7 +187,10 @@ class Driver {
       })
 
       // Reload the page to remove any side-effects of Lighthouse (like disabling JavaScript).
-      .then(_ => this.loadPage(driver, options))
+      .then(_ => {
+        log.log('status', 'Reloading page to reset state');
+        return this.loadPage(driver, options);
+      })
 
        // Finish and teardown.
       .then(_ => driver.disconnect())
