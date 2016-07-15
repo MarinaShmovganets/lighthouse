@@ -86,8 +86,12 @@ describe('Runner', () => {
       ],
 
       artifacts: {
-        traceContents: path.join(__dirname,
+        traces: {
+          firstPass: {
+            traceContents: path.join(__dirname,
                            '/fixtures/traces/trace-user-timings.json')
+          }
+        }
       }
     }, flags.auditWhitelist);
 
