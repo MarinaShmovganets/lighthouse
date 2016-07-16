@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', _ => {
     statusEl.classList.remove('status--visible');
   };
 
-  const logstatus = ([ ,message, details]) => {
+  const logstatus = ([, message, details]) => {
     statusMessageEl.textContent = message;
     statusDetailsMessageEl.textContent = details;
   };
@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', _ => {
       }
       feedbackEl.textContent = message;
       stopSpinner();
+      background.console.error(err);
     });
   });
 

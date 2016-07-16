@@ -54,7 +54,7 @@ window.runAudits = function(options) {
 };
 
 window.listenForStatus = function(callback) {
-  log.addListener('status', callback);
+  log.events.addListener('status', callback);
 };
 
 chrome.runtime.onInstalled.addListener(details => {

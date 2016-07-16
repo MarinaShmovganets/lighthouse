@@ -136,9 +136,10 @@ class Driver {
           return chain.then(_ => {
             const status = `Gathering: ${gatherer.name}`;
             log.log('status', status);
-            const p = gatherer.afterPass(options, loadData);
-            log.log('statusEnd', status);
-            return p;
+            return Promise.resolve(gatherer.afterPass(options, loadData)).then(ret => {
+              log.log('statusEnd', status);
+              return ret;
+            });
           });
         }, pass)
         .then(_ => loadData);
