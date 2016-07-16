@@ -65,8 +65,11 @@ class Runner {
 
       // Now run the audits.
       run = run.then(artifacts => Promise.all(config.audits.map(audit => {
-        log.log('status', `Evaluating: ${audit.meta.description}`);
-        return audit.audit(artifacts);
+        const status = `Evaluating: ${audit.meta.description}`;
+        log.log('status', status);
+        const p = audit.audit(artifacts);
+        log.log('statusEnd', status);
+        return p;
       })));
     } else if (config.auditResults) {
       // If there are existing audit results, surface those here.

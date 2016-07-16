@@ -90,8 +90,11 @@ class Driver {
 
     if (config.loadPage) {
       pass = pass.then(_ => {
-        log.log('status', 'Loading page & waiting for onload', gatherernames);
-        return this.loadPage(driver, options);
+        const status = 'Loading page & waiting for onload';
+        log.log('status', status, gatherernames);
+        return this.loadPage(driver, options).then(_ => {
+          log.log('statusEnd', status);
+        });
       });
     }
 
@@ -112,15 +115,18 @@ class Driver {
         log.log('status', 'Gathering: trace');
         driver.endTrace().then(traceContents => {
           loadData.traceContents = traceContents;
+          log.log('statusEnd', 'Gathering: trace');
         });
       });
     }
 
     if (config.network) {
       pass = pass.then(_ => {
-        log.log('status', 'Gathering: network records');
+        const status = 'Gathering: network records';
+        log.log('status', status);
         return driver.endNetworkCollect().then(networkRecords => {
           loadData.networkRecords = networkRecords;
+          log.log('statusEnd', status);
         });
       });
     }
@@ -128,8 +134,11 @@ class Driver {
     return gatherers
         .reduce((chain, gatherer) => {
           return chain.then(_ => {
-            log.log('status', `Gathering: ${gatherer.name}`);
-            return gatherer.afterPass(options, loadData);
+            const status = `Gathering: ${gatherer.name}`;
+            log.log('status', status);
+            const p = gatherer.afterPass(options, loadData);
+            log.log('statusEnd', status);
+            return p;
           });
         }, pass)
         .then(_ => loadData);
@@ -188,8 +197,11 @@ class Driver {
 
       // Reload the page to remove any side-effects of Lighthouse (like disabling JavaScript).
       .then(_ => {
-        log.log('status', 'Reloading page to reset state');
-        return this.loadPage(driver, options);
+        const status = 'Reloading page to reset state';
+        log.log('status', status);
+        return this.loadPage(driver, options).then(_ => {
+          log.log('statusEnd', status);
+        });
       })
 
        // Finish and teardown.
