@@ -38,7 +38,6 @@ function _log(title, logargs) {
   return loggers[title](...args);
 }
 
-
 class Emitter extends EventEmitter { }
 const events = new Emitter();
 
