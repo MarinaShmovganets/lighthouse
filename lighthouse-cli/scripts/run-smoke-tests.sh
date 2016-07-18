@@ -29,9 +29,9 @@ if ! grep -q "$offline200result: false" results; then
   exit 1
 fi
 
-sleep 1s
-
 # SKIP this test for now until the flakiness is addressed.
+# sleep 1s
+#
 # # test mojibrush which should pass the offline test
 # $NODE lighthouse-cli $flags https://www.moji-brush.com > results
 # 
