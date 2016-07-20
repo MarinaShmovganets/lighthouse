@@ -31,7 +31,7 @@ describe('Performance: time-to-interactive audit', () => {
         first: 500
       }
     }).then(output => {
-      assert.equal(output.value, -1);
+      assert.equal(output.rawValue, -1);
       assert(output.debugString);
     });
   });
@@ -43,9 +43,7 @@ describe('Performance: time-to-interactive audit', () => {
     return speedlineGather.afterPass({}, artifacts).then(_ => {
       artifacts.Speedline = speedlineGather.artifact;
       return Audit.audit(artifacts).then(output => {
-        assert.equal(output.rawValue, '1105.8ms');
-        assert.equal(output.value, 100);
-
+        assert.equal(output.rawValue, '1105.8');
         assert.equal(output.extendedInfo.value.expectedLatencyAtTTI, '20.72');
         assert.equal(output.extendedInfo.value.timings.fMP, '1099.5');
         assert.equal(output.extendedInfo.value.timings.mainThreadAvail, '1105.8');
