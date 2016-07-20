@@ -50,19 +50,31 @@ const extendedInfo = {
           transferSize: 1
         },
         children: {}
+      },
+      3: {
+        request: {
+          endTime: 18,
+          responseReceivedTime: 16,
+          startTime: 13,
+          url: 'about:blank',
+          transferSize: 1
+        },
+        children: {}
       }
     }
   }
 };
 
-/* global describe, it */
+/* eslint-env mocha */
 
 describe('CRC Formatter', () => {
   it('copes with invalid input', () => {
     const formatter = criticalRequestChainFormatter.getFormatter('pretty');
-    formatter();
-    formatter(null);
-    formatter({});
+    assert.doesNotThrow(_ => {
+      formatter();
+      formatter(null);
+      formatter({});
+    });
   });
 
   it('generates valid pretty output', () => {
@@ -74,6 +86,7 @@ describe('CRC Formatter', () => {
     assert.ok(/┗━┳ \/ \(example.com\)/im.test(output));
     assert.ok(/┣━━ \/b.js \(example.com\) - 5000.00ms/im.test(output));
     assert.ok(truncatedURLRegExp.test(output));
+    assert.ok(/about:blank/.test(output));
   });
 
   it('generates valid HTML output', () => {

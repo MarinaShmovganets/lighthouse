@@ -27,10 +27,13 @@
 function AuditResultInput() {}
 
 /** @type {(boolean|number|string)} */
-AuditResultInput.prototype.value;
+AuditResultInput.prototype.score;
 
-/** @type {(boolean|number|string|undefined|null)} */
+/** @type {(boolean|number|undefined)} */
 AuditResultInput.prototype.rawValue;
+
+/** @type {(string)} */
+AuditResultInput.prototype.displayValue;
 
 /** @type {(string|undefined)} */
 AuditResultInput.prototype.debugString;
@@ -117,7 +120,7 @@ FirstMeaningfulPaintTimings.prototype.navStart;
 function AuditResult() {}
 
 /** @type {(boolean|number|string)} */
-AuditResult.prototype.value;
+AuditResult.prototype.score;
 
 /** @type {(boolean|number|string|undefined|null)} */
 AuditResult.prototype.rawValue;
