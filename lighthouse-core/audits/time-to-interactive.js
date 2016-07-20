@@ -59,7 +59,7 @@ class TTIMetric extends Audit {
   static audit(artifacts) {
     // We start looking at Math.Max(FMPMetric, visProgress[0.85])
     return FMPMetric.audit(artifacts).then(fmpResult => {
-      if (fmpResult.value === -1) {
+      if (fmpResult.rawValue === -1) {
         return generateError(fmpResult.debugString);
       }
       const fmpTiming = parseFloat(fmpResult.rawValue);
