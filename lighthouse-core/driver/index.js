@@ -169,12 +169,15 @@ class Driver {
               .then(_ => this.tearDown(runOptions));
         }, Promise.resolve());
       })
-
-      // Reload the page to remove any side-effects of Lighthouse (like disabling JavaScript).
-      .then(_ => this.loadPage(driver, options))
-
-       // Finish and teardown.
-      .then(_ => driver.disconnect())
+      .then(_ => {
+        // Reload the page to remove any side-effects (like disabling JavaScript).
+        this.loadPage(driver, options)
+          // Then, finish and teardown.
+          .then(_ => driver.disconnect());
+        // But we dont want to hold up the reporting for the reload,
+        // so they proceed in parallel
+        return undefined;
+      })
       .then(_ => {
         // Collate all the gatherer results.
         const artifacts = Object.assign({}, tracingData);
