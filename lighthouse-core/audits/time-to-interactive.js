@@ -78,11 +78,17 @@ class TTIMetric extends Audit {
       const fMPts = timings.fMPfull + timings.navStart;
 
       // look at speedline results for 85% starting at FMP
-      const eightyFivePctVC = artifacts.Speedline.frames.find(frame => {
+      let eightyFivePctVC = artifacts.Speedline.frames.find(frame => {
         return frame.getTimeStamp() >= fMPts && frame.getProgress() >= 85;
       });
+
+      // Check to avoid closure compiler null dereferencing errors
+      if (eightyFivePctVC === undefined) {
+        eightyFivePctVC = 0;
+      }
+
       // TODO CHECK these units are the same
-      const visuallyReadyTiming = eightyFivePctVC.getTimeStamp() - timings.navStart;
+      const visuallyReadyTiming = (eightyFivePctVC.getTimeStamp() - timings.navStart) || 0;
 
       // Find first 500ms window where Est Input Latency is <50ms at the 90% percentile.
       let startTime = Math.max(fmpTiming, visuallyReadyTiming) - 50;
