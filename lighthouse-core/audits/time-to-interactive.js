@@ -145,8 +145,9 @@ class TTIMetric extends Audit {
       // console.log('TTI exendedInfo', extendedInfo);
 
       return TTIMetric.generateAuditResult({
-        value: score,
-        rawValue: `${timeToInteractive}ms`,
+        score,
+        rawValue: timeToInteractive,
+        displayValue: `${timeToInteractive}ms`,
         optimalValue: this.meta.optimalValue,
         extendedInfo: {
           value: extendedInfo,
