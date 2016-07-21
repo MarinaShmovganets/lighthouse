@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const Audit = require('../../audits/geolocation.js');
+const Audit = require('../../audits/geolocation-on-start.js');
 const assert = require('assert');
 
 /* global describe, it*/
@@ -23,15 +23,21 @@ describe('UX: geolocation audit', () => {
     return assert.equal(Audit.audit({}).rawValue, false);
   });
 
+  it('fails when no input present', () => {
+    return assert.equal(Audit.audit({
+      GeolocationOnStart: -1
+    }).rawValue, false);
+  });
+
   it('fails when geolocation has been automatically requested', () => {
     return assert.equal(Audit.audit({
-      Geolocation: false
+      GeolocationOnStart: false
     }).rawValue, false);
   });
 
   it('passes when geolocation has not been automatically requested', () => {
     return assert.equal(Audit.audit({
-      Geolocation: true
+      GeolocationOnStart: true
     }).rawValue, true);
   });
 });

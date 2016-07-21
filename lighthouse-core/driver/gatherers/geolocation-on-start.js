@@ -18,6 +18,14 @@
 
 const Gather = require('./gather');
 
+/**
+ * @fileoverview Tests whether the page attempts to request geolocation on page load. This often
+ * represents a poor user experience, since it lacks context. As such, if the page requests
+ * geolocation the gatherer will intercept the call and mark a boolean flag to true. The audit that
+ * corresponds with this gatherer then checks for the flag.
+ * @author Paul Lewis
+ */
+
 /* global navigator, window, __returnResults */
 
 /* istanbul ignore next */
@@ -34,10 +42,10 @@ function collectGeoState() {
   // Wait a little time then post back the results.
   setTimeout(function() {
     __returnResults(window.__didNotCallGeo);
-  }, 1000);
+  }, 500);
 }
 
-class Geolocation extends Gather {
+class GeolocationOnStart extends Gather {
 
   beforePass(options) {
     return options.driver.evaluateScriptOnLoad(`(${overrideGeo.toString()}())`);
@@ -54,4 +62,4 @@ class Geolocation extends Gather {
   }
 }
 
-module.exports = Geolocation;
+module.exports = GeolocationOnStart;

@@ -80,5 +80,5 @@ Artifacts.prototype.ContentWidth;
 /** @type {!Array<string>} */
 Artifacts.prototype.CacheContents;
 
-/** @type {boolean} */
-Artifacts.prototype.Geolocation;
+/** @type {boolean|number} */
+Artifacts.prototype.GeolocationOnStart;

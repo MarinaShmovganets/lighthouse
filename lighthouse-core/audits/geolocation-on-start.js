@@ -19,7 +19,7 @@
 
 const Audit = require('./audit');
 
-class Geolocation extends Audit {
+class GeolocationOnStart extends Audit {
   /**
    * @return {!AuditMeta}
    */
@@ -28,7 +28,7 @@ class Geolocation extends Audit {
       category: 'UX',
       name: 'geolocation',
       description: 'Page does not automatically request geolocation',
-      requiredArtifacts: ['Geolocation']
+      requiredArtifacts: ['GeolocationOnStart']
     };
   }
 
@@ -37,17 +37,18 @@ class Geolocation extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    if (typeof artifacts.Geolocation === 'undefined') {
-      return Geolocation.generateAuditResult({
+    if (typeof artifacts.GeolocationOnStart === 'undefined' ||
+        artifacts.GeolocationOnStart === -1) {
+      return GeolocationOnStart.generateAuditResult({
         rawValue: false,
         debugString: 'Unable to get geolocation values.'
       });
     }
 
-    return Geolocation.generateAuditResult({
-      rawValue: artifacts.Geolocation
+    return GeolocationOnStart.generateAuditResult({
+      rawValue: artifacts.GeolocationOnStart
     });
   }
 }
 
-module.exports = Geolocation;
+module.exports = GeolocationOnStart;

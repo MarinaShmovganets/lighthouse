@@ -17,7 +17,7 @@
       "speedline",
       "content-width",
       "cache-contents",
-      "geolocation"
+      "geolocation-on-start"
     ]
   },
   {
@@ -67,7 +67,7 @@
     "tabindex",
     "content-width",
     "cache-start-url",
-    "geolocation"
+    "geolocation-on-start"
   ],
 
   "aggregations": [{
@@ -274,7 +274,7 @@
           "rawValue": true,
           "weight": 1
         },
-        "geolocation": {
+        "geolocation-on-start": {
           "rawValue": true,
           "weight": 1
         },
