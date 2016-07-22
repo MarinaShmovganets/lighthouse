@@ -26,7 +26,7 @@ class TTIMetric extends Audit {
     return {
       category: 'Performance',
       name: 'time-to-interactive',
-      description: 'Time To Interactive',
+      description: 'Time To Interactive (alpha)',
       optimalValue: SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString(),
       requiredArtifacts: ['traceContents', 'speedline']
     };
