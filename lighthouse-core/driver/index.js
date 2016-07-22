@@ -196,18 +196,12 @@ class Driver {
         }, Promise.resolve());
       })
       .then(_ => {
-        // Reload the page to remove any side-effects (like disabling JavaScript).
-        const status = 'Reloading page to reset state';
-        log.log('status', status);
-        this.loadPage(driver, options)
-          // Then, finish and teardown.
-          .then(_ => {
-            log.log('statusEnd', status);
-            log.log('status', 'Disconnecting from browser...');
-            driver.disconnect()
-          });
-        // But we dont want to hold up the reporting for the reload,
-        // so they proceed in parallel
+        // We dont need to hold up the reporting for the reload/disconnect,
+        // so we will not return a promise in here.
+        driver.reloadForCleanStateIfNeeded(options).then(_ => {
+          log.log('status', 'Disconnecting from browser...');
+          driver.disconnect();
+        });
         return undefined;
       })
       .then(_ => {
