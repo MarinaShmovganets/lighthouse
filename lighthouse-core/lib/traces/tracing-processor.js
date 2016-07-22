@@ -225,6 +225,7 @@ class TraceProcessor {
     let clippedLength = 0;
     mainThread.sliceGroup.topLevelSlices.forEach(slice => {
       // Discard slices outside range.
+
       if (slice.end <= startTime || slice.start >= endTime) {
         return;
       }
@@ -245,6 +246,8 @@ class TraceProcessor {
       durations.push(duration);
     });
     durations.sort((a, b) => a - b);
+    // console.log(durations)
+    // console.log()
 
     // Actual calculation of percentiles done in _riskPercentiles.
     return TraceProcessor._riskPercentiles(durations, totalTime, percentiles, clippedLength);
