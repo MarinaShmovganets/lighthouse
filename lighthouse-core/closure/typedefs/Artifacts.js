@@ -76,3 +76,6 @@ Artifacts.prototype.ContentWidth;
 
 /** @type {!Array<string>} */
 Artifacts.prototype.CacheContents;
+
+/** @type {(!Array<!Object>|number)} */
+Artifacts.prototype.MediaSized;
