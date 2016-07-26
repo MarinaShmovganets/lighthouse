@@ -39,7 +39,8 @@ class CriticalRequestChains extends Gather {
 
     // Treat favicons as non-critical resources
     if (request.mimeType === 'image/x-icon' ||
-        (request.parsedURL && request.parsedURL.lastPathComponent === 'favicon.ico')) {
+        // any URL with filename including ".ico"
+        (request.parsedURL && request.parsedURL.lastPathComponent.includes('.ico'))) {
       return false;
     }
 
