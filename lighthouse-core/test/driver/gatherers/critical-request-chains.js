@@ -34,10 +34,7 @@ function mockTracingData(prioritiesList, edges) {
           _category: 'fake'
         },
         priority: () => priority,
-        initiatorRequest: () => null,
-        initiator: () => ({
-          type: 'fake'
-        })
+        initiatorRequest: () => null
       }));
 
   // add mock initiator information
