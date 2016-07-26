@@ -39,10 +39,7 @@ function overrideGeo() {
 }
 
 function collectGeoState() {
-  // Wait a little time then post back the results.
-  setTimeout(function() {
-    __returnResults(window.__didNotCallGeo);
-  }, 500);
+  __returnResults(window.__didNotCallGeo);
 }
 
 class GeolocationOnStart extends Gather {
