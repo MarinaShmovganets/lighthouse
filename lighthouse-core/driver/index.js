@@ -197,8 +197,10 @@ class Driver {
               .then(_ => this.pass(runOptions))
               .then(_ => this.afterPass(runOptions))
               .then(loadData => {
+                // Need to manually merge traces property before
+                // merging loadDat into tracingData to avoid data loss.
+                Object.assign(loadData.traces, tracingData.traces);
                 Object.assign(tracingData, loadData);
-                tracingData.traces[config.traceName || Audit.DEFAULT_TRACE] = loadData;
               })
               .then(_ => this.tearDown(runOptions));
         }, Promise.resolve());
