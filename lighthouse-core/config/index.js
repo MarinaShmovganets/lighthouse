@@ -183,17 +183,24 @@ function expandArtifacts(artifacts, includeSpeedline) {
   const expandedArtifacts = Object.assign({}, artifacts);
 
   // currently only trace logs and performance logs should be imported
-  if (artifacts.traceContents) {
-    const trace = require(artifacts.traceContents);
-    log.log('info', 'Normalizng trace contents into expected state...');
+  if (artifacts.traces) {
+    let trace;
+    Object.keys(artifacts.traces).forEach(key => {
+      if (artifacts.traces[key].traceContents) {
+        log.log('info', 'Normalizng trace contents into expected state...');
+        trace = require(artifacts.traces[key].traceContents);
 
-    expandedArtifacts.traceContents = cleanTrace(trace.traceEvents || trace);
-    if (includeSpeedline) {
-      const speedline = new SpeedlineGatherer();
-      speedline.afterPass({}, {traceContents: expandedArtifacts.traceContents});
-      expandedArtifacts.Speedline = speedline.artifact;
-    }
+        expandedArtifacts.traces[key].traceContents = cleanTrace(trace.traceEvents || trace);
+      }
+    });
   }
+
+  if (includeSpeedline) {
+    const speedline = new SpeedlineGatherer();
+    speedline.afterPass({}, {traceContents: expandedArtifacts.traces.defaultPass.traceContents});
+    expandedArtifacts.Speedline = speedline.artifact;
+  }
+
   if (artifacts.performanceLog) {
     expandedArtifacts.CriticalRequestChains =
       parsePerformanceLog(require(artifacts.performanceLog));

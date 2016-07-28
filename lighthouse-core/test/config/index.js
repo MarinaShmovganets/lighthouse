@@ -130,12 +130,16 @@ describe('Config', () => {
   it('expands artifacts', () => {
     const config = new Config({
       artifacts: {
-        traceContents: path.resolve(__dirname, '../fixtures/traces/trace-user-timings.json'),
+        traces: {
+          defaultPass: {
+            traceContents: path.resolve(__dirname, '../fixtures/traces/trace-user-timings.json')
+          }
+        },
         performanceLog: path.resolve(__dirname, '../fixtures/perflog.json')
       }
     });
     const traceUserTimings = require('../fixtures/traces/trace-user-timings.json');
-    assert.deepStrictEqual(config.artifacts.traceContents, traceUserTimings);
+    assert.deepStrictEqual(config.artifacts.traces.defaultPass.traceContents, traceUserTimings);
     assert.ok(config.artifacts.CriticalRequestChains);
     assert.ok(config.artifacts.CriticalRequestChains['93149.1']);
     assert.ok(config.artifacts.CriticalRequestChains['93149.1'].request);
@@ -145,25 +149,34 @@ describe('Config', () => {
   it('handles traces with no TracingStartedInPage events', () => {
     const config = new Config({
       artifacts: {
-        traceContents: path.resolve(__dirname,
-                           '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json'),
+        traces: {
+          defaultPass: {
+            traceContents: path.resolve(__dirname,
+                               '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json')
+          }
+        },
         performanceLog: path.resolve(__dirname, '../fixtures/perflog.json')
       }
     });
 
-    assert.ok(config.artifacts.traceContents.find(e => e.name === 'TracingStartedInPage' &&
-                                                          e.args.data.page === '0xhad00p'));
+    assert.ok(config.artifacts.traces.defaultPass.traceContents.find(
+          e => e.name === 'TracingStartedInPage' && e.args.data.page === '0xhad00p'));
   });
 
   it('doesnt add speedline artifact to tests without tti audit', () => {
     const config = new Config({
       artifacts: {
-        traceContents: path.resolve(__dirname,
-                           '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json'),
+        traces: {
+          defaultPass: {
+            traceContents: path.resolve(__dirname,
+                               '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json')
+          }
+        },
         performanceLog: path.resolve(__dirname, '../fixtures/perflog.json')
       },
       audits: [
         'first-meaningful-paint'
+
       ]
     });
 
@@ -173,8 +186,12 @@ describe('Config', () => {
   it('does add speedline artifact to tests without tti audit', () => {
     const config = new Config({
       artifacts: {
-        traceContents: path.resolve(__dirname,
-                           '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json'),
+        traces: {
+          defaultPass: {
+            traceContents: path.resolve(__dirname,
+                               '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json')
+          }
+        },
         performanceLog: path.resolve(__dirname, '../fixtures/perflog.json')
       },
       audits: [
