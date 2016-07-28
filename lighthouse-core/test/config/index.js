@@ -154,5 +154,36 @@ describe('Config', () => {
     assert.ok(config.artifacts.traceContents.find(e => e.name === 'TracingStartedInPage' &&
                                                           e.args.data.page === '0xhad00p'));
   });
+
+  it('doesnt add speedline artifact to tests without tti audit', () => {
+    const config = new Config({
+      artifacts: {
+        traceContents: path.resolve(__dirname,
+                           '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json'),
+        performanceLog: path.resolve(__dirname, '../fixtures/perflog.json')
+      },
+      audits: [
+        'first-meaningful-paint'
+      ]
+    });
+
+    assert.equal(config.artifacts.Speedline, undefined);
+  });
+
+  it('does add speedline artifact to tests without tti audit', () => {
+    const config = new Config({
+      artifacts: {
+        traceContents: path.resolve(__dirname,
+                           '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json'),
+        performanceLog: path.resolve(__dirname, '../fixtures/perflog.json')
+      },
+      audits: [
+        'first-meaningful-paint',
+        'time-to-interactive'
+      ]
+    });
+
+    assert.notEqual(config.artifacts.Speedline, undefined);
+  });
 });
 

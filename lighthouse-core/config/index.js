@@ -54,9 +54,8 @@ function cleanTrace(traceContents) {
       traceStartEvents.push(idx);
     }
 
-    frame = evt.args && evt.args.frame;
     data = evt.args && (evt.args.data || evt.args.beginData || evt.args.counters);
-    frame = frame || data && (data.frame || data.page);
+    frame = (evt.args && evt.args.frame) || data && (data.frame || data.page);
 
     if (!frame) {
       return;
@@ -81,6 +80,10 @@ function cleanTrace(traceContents) {
   threads.sort((a, b) => b.count - a.count);
   const mostActiveFrame = threads[0];
 
+  // Remove all current TracingStartedIn* events, storing
+  // the first events ts.
+  const ts = traceContents[traceStartEvents[0]] && traceContents[traceStartEvents[0]].ts;
+  // account for offset after removing items
   let i = 0;
   for (let dup of traceStartEvents) {
     traceContents.splice(dup - i, 1);
@@ -89,8 +92,7 @@ function cleanTrace(traceContents) {
 
   // Add a new TracingStartedInPage event based on most active thread
   // and using TS of first found TracingStartedIn* event
-  traceContents.unshift(makeMockEvent(mostActiveFrame,
-                        traceContents[traceStartEvents[0]]));
+  traceContents.unshift(makeMockEvent(mostActiveFrame, ts));
 
   return traceContents;
 }
@@ -222,8 +224,8 @@ class Config {
     this._auditResults = configJSON.auditResults ? Array.from(configJSON.auditResults) : null;
     this._artifacts = configJSON.artifacts ?
       expandArtifacts(configJSON.artifacts,
-          // If time-to-interactive is present, use the speedline gatherer
-          this.audits && this.audits.find(a => a.meta.name === 'time-to-interactive')) :
+          // If time-to-interactive is present, add the speedline artifact
+          configJSON.audits && configJSON.audits.includes('time-to-interactive')) :
       null;
     this._aggregations = configJSON.aggregations ? Array.from(configJSON.aggregations) : null;
   }
