@@ -141,5 +141,18 @@ describe('Config', () => {
     assert.ok(config.artifacts.CriticalRequestChains['93149.1'].request);
     assert.ok(config.artifacts.CriticalRequestChains['93149.1'].children);
   });
+
+  it('handles traces with no TracingStartedInPage events', () => {
+    const config = new Config({
+      artifacts: {
+        traceContents: path.resolve(__dirname,
+                           '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json'),
+        performanceLog: path.resolve(__dirname, '../fixtures/perflog.json')
+      }
+    });
+
+    assert.ok(config.artifacts.traceContents.find(e => e.name === 'TracingStartedInPage' &&
+                                                          e.args.data.page === '0xhad00p'));
+  });
 });
 

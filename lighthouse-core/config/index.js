@@ -19,8 +19,81 @@
 const defaultConfig = require('./default.json');
 const recordsFromLogs = require('../lib/network-recorder').recordsFromLogs;
 const CriticalRequestChainsGatherer = require('../driver/gatherers/critical-request-chains');
+const SpeedlineGatherer = require('../driver/gatherers/speedline');
 const Driver = require('../driver');
 const log = require('../lib/log');
+
+function cleanTrace(traceContents) {
+  const threads = [];
+  const countsByThread = {};
+  const traceStartEvents = [];
+  const makeMockEvent = (evt, ts) => {
+    return {
+      pid: evt.pid,
+      tid: evt.tid,
+      ts: ts || 0,  // default to 0 for now
+      ph: 'I',
+      cat: 'disabled-by-default-devtools.timeline',
+      name: 'TracingStartedInPage',
+      args: {
+        data: {
+          page: evt.frame
+        }
+      },
+      s: 't'
+    };
+  };
+
+  let frame;
+  let data;
+  let name;
+  let counter;
+
+  traceContents.forEach((evt, idx) => {
+    if (evt.name.startsWith('TracingStartedIn')) {
+      traceStartEvents.push(idx);
+    }
+
+    frame = evt.args && evt.args.frame;
+    data = evt.args && (evt.args.data || evt.args.beginData || evt.args.counters);
+    frame = frame || data && (data.frame || data.page);
+
+    if (!frame) {
+      return;
+    }
+
+    name = `pid${evt.pid}-tid${evt.tid}-frame${frame}`;
+    counter = countsByThread[name];
+    if (!counter) {
+      counter = {
+        pid: evt.pid,
+        tid: evt.tid,
+        frame: frame,
+        count: 0
+      };
+      countsByThread[name] = counter;
+      threads.push(counter);
+    }
+    counter.count++;
+  });
+
+  // find most active thread (and frame)
+  threads.sort((a, b) => b.count - a.count);
+  const mostActiveFrame = threads[0];
+
+  let i = 0;
+  for (let dup of traceStartEvents) {
+    traceContents.splice(dup - i, 1);
+    i++;
+  }
+
+  // Add a new TracingStartedInPage event based on most active thread
+  // and using TS of first found TracingStartedIn* event
+  traceContents.unshift(makeMockEvent(mostActiveFrame,
+                        traceContents[traceStartEvents[0]]));
+
+  return traceContents;
+}
 
 function filterPasses(passes, audits) {
   const requiredGatherers = getGatherersNeededByAudits(audits);
@@ -96,12 +169,18 @@ function expandAudits(audits) {
   });
 }
 
-function expandArtifacts(artifacts) {
+function expandArtifacts(artifacts, includeSpeedline) {
   const expandedArtifacts = Object.assign({}, artifacts);
 
   // currently only trace logs and performance logs should be imported
   if (artifacts.traceContents) {
-    expandedArtifacts.traceContents = require(artifacts.traceContents);
+    const trace = require(artifacts.traceContents);
+    expandedArtifacts.traceContents = cleanTrace(trace.traceEvents || trace);
+    if (includeSpeedline) {
+      const speedline = new SpeedlineGatherer();
+      speedline.afterPass({}, {traceContents: expandedArtifacts.traceContents});
+      expandedArtifacts.Speedline = speedline.artifact;
+    }
   }
   if (artifacts.performanceLog) {
     expandedArtifacts.CriticalRequestChains =
@@ -141,7 +220,11 @@ class Config {
     // filterPasses expects audits to have been expanded
     this._passes = configJSON.passes ? filterPasses(configJSON.passes, this._audits) : null;
     this._auditResults = configJSON.auditResults ? Array.from(configJSON.auditResults) : null;
-    this._artifacts = configJSON.artifacts ? expandArtifacts(configJSON.artifacts) : null;
+    this._artifacts = configJSON.artifacts ?
+      expandArtifacts(configJSON.artifacts,
+          // If time-to-interactive is present, use the speedline gatherer
+          this.audits && this.audits.find(a => a.meta.name === 'time-to-interactive')) :
+      null;
     this._aggregations = configJSON.aggregations ? Array.from(configJSON.aggregations) : null;
   }
 
