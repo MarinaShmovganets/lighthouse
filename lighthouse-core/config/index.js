@@ -83,6 +83,7 @@ function cleanTrace(traceContents) {
   // Remove all current TracingStartedIn* events, storing
   // the first events ts.
   const ts = traceContents[traceStartEvents[0]] && traceContents[traceStartEvents[0]].ts;
+
   // account for offset after removing items
   let i = 0;
   for (let dup of traceStartEvents) {
