@@ -226,7 +226,7 @@ class Config {
     this._artifacts = configJSON.artifacts ?
       expandArtifacts(configJSON.artifacts,
           // If time-to-interactive is present, add the speedline artifact
-          configJSON.audits && configJSON.audits.includes('time-to-interactive')) :
+          configJSON.audits && configJSON.audits.find(a => a === 'time-to-interactive')) :
       null;
     this._aggregations = configJSON.aggregations ? Array.from(configJSON.aggregations) : null;
   }
