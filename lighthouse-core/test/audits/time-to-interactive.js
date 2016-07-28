@@ -41,15 +41,13 @@ describe('Performance: time-to-interactive audit', () => {
   });
 
   it('evaluates valid input correctly', () => {
-    let artifacts = {
-      traces: {
-        [Audit.DEFAULT_TRACE]: {
-          traceContents: traceContents
-        }
-      }
-    };
+    let artifacts = {traceContents};
     return speedlineGather.afterPass({}, artifacts).then(_ => {
       artifacts.Speedline = speedlineGather.artifact;
+      // This is usually done by the driver
+      artifacts.traces = {
+        [Audit.DEFAULT_TRACE]: {traceContents}
+      };
       return Audit.audit(artifacts).then(output => {
         assert.equal(output.rawValue, '1105.8');
         assert.equal(output.extendedInfo.value.expectedLatencyAtTTI, '20.72');

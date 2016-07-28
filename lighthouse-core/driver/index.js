@@ -109,13 +109,13 @@ class Driver {
     const gatherers = config.gatherers;
     const loadData = {traces: {}};
     let pass = Promise.resolve();
+    let traceName = Audit.DEFAULT_TRACE;
+    if (config.traceName) {
+      traceName = config.traceName;
+    }
 
     if (config.trace) {
       pass = pass.then(_ => {
-        let traceName = Audit.DEFAULT_TRACE;
-        if (config.traceName) {
-          traceName = config.traceName;
-        }
         log.log('status', `Gathering: trace "${traceName}"`);
         return driver.endTrace().then(traceContents => {
           loadData.traces[traceName] = {traceContents};
@@ -140,6 +140,9 @@ class Driver {
           return chain.then(_ => {
             const status = `Gathering: ${gatherer.name}`;
             log.log('status', status);
+            if (config.trace) {
+              loadData.traceContents = loadData.traces[traceName].traceContents;
+            }
             return Promise.resolve(gatherer.afterPass(options, loadData)).then(ret => {
               log.log('statusEnd', status);
               return ret;
