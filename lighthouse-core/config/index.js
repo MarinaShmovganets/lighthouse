@@ -23,7 +23,12 @@ const SpeedlineGatherer = require('../driver/gatherers/speedline');
 const Driver = require('../driver');
 const log = require('../lib/log');
 
+// cleanTrace is run to remove duplicate TracingStartedInPage events,
+// and to change TracingStartedInBrowser events into TracingStartedInPage.
+// This is done by searching for most occuring threads and basing new events
+// off of those.
 function cleanTrace(traceContents) {
+  // Keep track of most occuring threads
   const threads = [];
   const countsByThread = {};
   const traceStartEvents = [];
@@ -54,6 +59,7 @@ function cleanTrace(traceContents) {
       traceStartEvents.push(idx);
     }
 
+    // find the event's frame
     data = evt.args && (evt.args.data || evt.args.beginData || evt.args.counters);
     frame = (evt.args && evt.args.frame) || data && (data.frame || data.page);
 
@@ -61,6 +67,7 @@ function cleanTrace(traceContents) {
       return;
     }
 
+    // Increase occurences count of the frame
     name = `pid${evt.pid}-tid${evt.tid}-frame${frame}`;
     counter = countsByThread[name];
     if (!counter) {
@@ -178,6 +185,8 @@ function expandArtifacts(artifacts, includeSpeedline) {
   // currently only trace logs and performance logs should be imported
   if (artifacts.traceContents) {
     const trace = require(artifacts.traceContents);
+    log.log('info', 'Normalizng trace contents into expected state...');
+
     expandedArtifacts.traceContents = cleanTrace(trace.traceEvents || trace);
     if (includeSpeedline) {
       const speedline = new SpeedlineGatherer();
@@ -223,11 +232,12 @@ class Config {
     // filterPasses expects audits to have been expanded
     this._passes = configJSON.passes ? filterPasses(configJSON.passes, this._audits) : null;
     this._auditResults = configJSON.auditResults ? Array.from(configJSON.auditResults) : null;
-    this._artifacts = configJSON.artifacts ?
-      expandArtifacts(configJSON.artifacts,
+    this._artifacts = null;
+    if (configJSON.artifacts) {
+      this._artifacts = expandArtifacts(configJSON.artifacts,
           // If time-to-interactive is present, add the speedline artifact
-          configJSON.audits && configJSON.audits.find(a => a === 'time-to-interactive')) :
-      null;
+          configJSON.audits && configJSON.audits.find(a => a === 'time-to-interactive'));
+    }
     this._aggregations = configJSON.aggregations ? Array.from(configJSON.aggregations) : null;
   }
 
