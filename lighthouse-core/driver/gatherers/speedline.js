@@ -20,15 +20,15 @@ const Gather = require('./gather');
 const speedline = require('speedline');
 
 class Speedline extends Gather {
+
   afterPass(options, tracingData) {
-    return speedline(tracingData.traceContents)
-      .then(results => {
-        this.artifact = results;
-      }).catch(err => {
-        this.artifact = {
-          debugString: err.message
-        };
-      });
+    return speedline(tracingData.traceContents).then(results => {
+      this.artifact = results;
+    }).catch(err => {
+      this.artifact = {
+        debugString: err.message
+      };
+    });
   }
 }
 

@@ -24,9 +24,7 @@ describe('Speedline gatherer', () => {
   it('returns an error debugString on faulty trace data', done => {
     const speedlineGather = new SpeedlineGather();
 
-    speedlineGather.afterPass({}, {
-      traceContents: {boo: 'ya'}
-    }).then(_ => {
+    speedlineGather.afterPass({}, {traceContents: {boo: 'ya'}}).then(_ => {
       assert.ok(speedlineGather.artifact.debugString);
       assert.ok(speedlineGather.artifact.debugString.length);
       done();
