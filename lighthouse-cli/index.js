@@ -21,6 +21,7 @@
 const environment = require('../lighthouse-core/lib/environment.js');
 if (!environment.checkNodeCompatibility()) {
   console.warn('Compatibility error', 'Lighthouse requires node 5+ or 4 with --harmony');
+  process.exit(1);
 }
 
 const yargs = require('yargs');

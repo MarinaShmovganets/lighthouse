@@ -20,6 +20,7 @@
 const environment = require('../lighthouse-core/lib/environment');
 if (!environment.checkNodeCompatibility()) {
   console.warn('Compatibility error', 'Lighthouse requires node 5+ or 4 with --harmony');
+  process.exit(1);
 }
 
 const Runner = require('./runner');
