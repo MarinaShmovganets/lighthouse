@@ -75,7 +75,8 @@ class Driver {
   formattedLog(prefix, data, level) {
     const columns = (!process || process.browser) ? Infinity : process.stdout.columns;
     const maxLength = columns - data.method.length - prefix.length - 18;
-    const snippet = data.params ? JSON.stringify(data.params).substr(0, maxLength) : '';
+    const snippet = (data.params && data.method !== "IO.read") ?
+        JSON.stringify(data.params).substr(0, maxLength) : '';
     log[level ? level : 'log'](prefix, data.method, snippet);
   }
 
@@ -101,7 +102,7 @@ class Driver {
     }
 
     // log event listeners being bound
-    this.formattedLog('listen for event =>', {method: eventName});
+    this.formattedLog('listen for event =>', {method: eventName}, 'verbose');
     this._eventEmitter.on(eventName, cb);
   }
 
@@ -116,7 +117,7 @@ class Driver {
       throw new Error('connect() must be called before attempting to listen to events.');
     }
     // log event listeners being bound
-    this.formattedLog('listen once for event =>', {method: eventName});
+    this.formattedLog('listen once for event =>', {method: eventName}, 'verbose');
     this._eventEmitter.once(eventName, cb);
   }
 

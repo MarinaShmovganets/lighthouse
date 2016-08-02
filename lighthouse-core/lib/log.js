@@ -38,16 +38,20 @@ function _log(title, logargs) {
   return loggers[title](...args);
 }
 
-class Emitter extends EventEmitter { }
+class Emitter extends EventEmitter {
+  issueStatus(title, args) {
+    if (title === 'status' || title === 'statusEnd') {
+      this.emit(title, args);
+    }
+  }
+}
 const events = new Emitter();
 
 module.exports = {
   setLevel,
   events,
   log(title) {
-    if (title === 'status' || title === 'statusEnd') {
-      events.emit(title, arguments);
-    }
+    events.issueStatus(title, arguments);
     return _log(title, arguments);
   },
 
@@ -60,6 +64,7 @@ module.exports = {
   },
 
   verbose(title) {
+    events.issueStatus(title, arguments);
     return _log(`${title}:verbose`, arguments);
   }
 };
