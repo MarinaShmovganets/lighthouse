@@ -75,7 +75,7 @@ class Driver {
   formattedLog(prefix, data, level) {
     const columns = (!process || process.browser) ? Infinity : process.stdout.columns;
     const maxLength = columns - data.method.length - prefix.length - 18;
-    const snippet = (data.params && data.method !== "IO.read") ?
+    const snippet = (data.params && data.method !== 'IO.read') ?
         JSON.stringify(data.params).substr(0, maxLength) : '';
     log[level ? level : 'log'](prefix, data.method, snippet);
   }
