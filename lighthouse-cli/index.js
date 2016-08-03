@@ -126,7 +126,7 @@ if (cli.listTraceCategories) {
 
 const url = cli._[0];
 const outputMode = cli.output;
-const outputPath = cli.outputPath;
+const outputPath = cli['output-path'];
 const flags = cli;
 const config = (cli.configPath && require(cli.configPath)) || null;
 
