@@ -66,9 +66,8 @@ class Runner {
       // Now run the audits.
       run = run.then(artifacts => Promise.all(config.audits.map(audit => {
         const status = `Evaluating: ${audit.meta.description}`;
-        return Promise.resolve().then(_ => {
-          log.log('status', status);
-          const ret = audit.audit(artifacts);
+        log.log('status', status);
+        return Promise.resolve(audit.audit(artifacts)).then(ret => {
           log.verbose('statusEnd', status);
           return ret;
         });

@@ -39,19 +39,20 @@ function _log(title, logargs) {
 }
 
 class Emitter extends EventEmitter {
+  // issueStatus fires off all status updates
+  // listen with `require('lib/log').events.addListener('status', callback)`
   issueStatus(title, args) {
     if (title === 'status' || title === 'statusEnd') {
       this.emit(title, args);
     }
   }
 }
-const events = new Emitter();
 
 module.exports = {
   setLevel,
-  events,
+  events: new Emitter(),
   log(title) {
-    events.issueStatus(title, arguments);
+    this.events.issueStatus(title, arguments);
     return _log(title, arguments);
   },
 
@@ -64,7 +65,7 @@ module.exports = {
   },
 
   verbose(title) {
-    events.issueStatus(title, arguments);
+    this.events.issueStatus(title, arguments);
     return _log(`${title}:verbose`, arguments);
   }
 };
