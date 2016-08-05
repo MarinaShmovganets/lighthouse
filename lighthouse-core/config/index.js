@@ -192,7 +192,10 @@ function expandArtifacts(artifacts, includeSpeedline) {
       // an array of trace events. After this point, trace is an object with a
       // traceEvents property. Normalize to new format.
 
-      expandedArtifacts.traces[key] = {traceEvents: cleanTrace(trace.traceEvents || trace)};
+      expandedArtifacts.traces[key] = {
+        traceEvents: cleanTrace(trace.traceEvents || trace),
+        metaData: trace.metaData
+      };
     });
   }
 
