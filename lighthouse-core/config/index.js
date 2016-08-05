@@ -191,14 +191,8 @@ function expandArtifacts(artifacts, includeSpeedline) {
       // Before Chrome 54.0.2816 (codereview.chromium.org/2161583004), trace was
       // an array of trace events. After this point, trace is an object with a
       // traceEvents property. Normalize to new format.
-      if (Array.isArray(trace)) {
-        trace = {
-          traceEvents: trace
-        };
-      }
-      cleanTrace(trace.traceEvents);
 
-      expandedArtifacts.traces[key] = trace;
+      expandedArtifacts.traces[key] = {traceEvents: cleanTrace(trace.traceEvents || trace)};
     });
   }
 
