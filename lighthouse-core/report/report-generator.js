@@ -172,6 +172,7 @@ class ReportGenerator {
 
     // Ensure the formatter for each extendedInfo is registered.
     Object.keys(results.audits).forEach(audit => {
+      // Use value rather than key for audit.
       audit = results.audits[audit];
 
       if (!audit.extendedInfo) {
@@ -192,6 +193,8 @@ class ReportGenerator {
 
     results.aggregations.forEach(aggregation => {
       aggregation.score.forEach(score => {
+        // Map subItem strings to auditResults from results.audits.
+        // Coming soon events are not in auditResults, but rather still in subItems.
         score.subItems = score.subItems.map(subItem => results.audits[subItem] || subItem);
       });
     });
