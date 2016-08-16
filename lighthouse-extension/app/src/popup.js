@@ -15,24 +15,12 @@
  * limitations under the License.
  */
 
-const configJSON = require('../../../lighthouse-core/config/default.json');
 const _flatten = arr => [].concat.apply([], arr);
-
-const aggregations = _flatten(
-  configJSON.aggregations.map(aggregation => {
-    if (aggregation.items.length > 1) {
-      return aggregation.items;
-    }
-
-    return {
-      name: aggregation.name,
-      criteria: aggregation.items[0].criteria,
-    };
-  })
-);
 
 document.addEventListener('DOMContentLoaded', _ => {
   const background = chrome.extension.getBackgroundPage();
+  const aggregations = background.getListOfAudits();
+
   const siteNameEl = window.document.querySelector('header h2');
   const generateReportEl = document.getElementById('generate-report');
   const subpageVisibleClass = 'subpage--visible';
@@ -71,15 +59,13 @@ document.addEventListener('DOMContentLoaded', _ => {
     statusDetailsMessageEl.textContent = details;
   };
 
-  const getAuditsOfName = name => {
-    let aggregation = aggregations.filter(aggregation => aggregation.name === name);
-
-    return Object.keys(aggregation[0].criteria);
-  };
-
-  const createOptionItem = text => {
+  const createOptionItem = (text, isChecked) => {
     const input = document.createElement('input');
-    const attributes = [['type', 'checkbox'], ['checked', 'checked'], ['value', text]];
+    const attributes = [['type', 'checkbox'], ['value', text]];
+    if (isChecked) {
+      attributes.push(['checked', 'checked']);
+    }
+
     attributes.forEach(attr => input.setAttribute.apply(input, attr));
 
     const label = document.createElement('label');
@@ -91,34 +77,42 @@ document.addEventListener('DOMContentLoaded', _ => {
     return listItem;
   };
 
-  const generateOptionsList = list => {
+  const generateOptionsList = (list, selectedAudits) => {
     const frag = document.createDocumentFragment();
 
     aggregations.forEach(aggregation => {
-      frag.appendChild(createOptionItem(aggregation.name));
+      frag.appendChild(createOptionItem(aggregation.name, selectedAudits.indexOf(aggregation.name) > -1));
     });
 
     list.appendChild(frag);
   };
 
+  const getAuditsFromCategory = audits => _flatten(
+    audits.map(audit => {
+      const aggregation = aggregations.filter(aggregation => aggregation.name === audit);
+
+      return Object.keys(aggregation[0].criteria);
+    })
+  );
+
   background.listenForStatus(logstatus);
-  generateOptionsList(optionsList);
+  background.fetchAudits().then(audits => {
+    generateOptionsList(optionsList, audits);
+  })
 
   generateReportEl.addEventListener('click', () => {
     startSpinner();
     feedbackEl.textContent = '';
 
-    const audits = _flatten(
-      Array.from(optionsEl.querySelectorAll(':checked'))
-        .map(input => getAuditsOfName(input.value))
-    );
-
-    background.runAudits({
-      flags: {
-        mobile: true,
-        loadPage: true
-      }
-    }, audits)
+    background.fetchAudits()
+    .then(getAuditsFromCategory)
+    .then(audits => background.runAudits({
+        flags: {
+          mobile: true,
+          loadPage: true
+        }
+      }, audits)
+    )
     .then(results => {
       background.createPageAndPopulate(results);
     })
@@ -139,6 +133,10 @@ document.addEventListener('DOMContentLoaded', _ => {
   });
 
   okButton.addEventListener('click', () => {
+    const checkedAudits = Array.from(optionsEl.querySelectorAll(':checked'))
+        .map(input => input.value);
+    background.saveAudits(checkedAudits);
+
     optionsEl.classList.remove(subpageVisibleClass);
   });
 

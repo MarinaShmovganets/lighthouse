@@ -22,6 +22,8 @@ const Runner = require('../../../lighthouse-core/runner');
 const Config = require('../../../lighthouse-core/config');
 const configJSON = require('../../../lighthouse-core/config/default.json');
 const log = require('../../../lighthouse-core/lib/log');
+const STORAGE_KEY = 'lighthouse_audits';
+const _flatten = arr => [].concat.apply([], arr);
 
 window.createPageAndPopulate = function(results) {
   const tabURL = chrome.extension.getURL('/pages/report.html');
@@ -40,7 +42,6 @@ window.createPageAndPopulate = function(results) {
 window.runAudits = function(options, audits) {
   // Default to 'info' logging level.
   log.setLevel('info');
-
   const driver = new ExtensionProtocol();
 
   return driver.getCurrentTabURL()
@@ -54,6 +55,42 @@ window.runAudits = function(options, audits) {
         console.error(e);
         throw e;
       });
+};
+
+window.getListOfAudits = function() {
+  return _flatten(
+    configJSON.aggregations.map(aggregation => {
+      if (aggregation.items.length > 1) {
+        return aggregation.items;
+      }
+
+      return {
+        name: aggregation.name,
+        criteria: aggregation.items[0].criteria,
+      };
+    })
+  );
+};
+
+window.saveAudits = function(audits) {
+  const storage = {};
+  storage[STORAGE_KEY] = audits;
+
+  chrome.storage.local.set(storage);
+};
+
+window.fetchAudits = function() {
+  return new Promise(resolve => {
+    chrome.storage.local.get(STORAGE_KEY, function(result) {
+      let audits = result[STORAGE_KEY];
+
+      if (!audits) {
+        audits = window.getListOfAudits().map(aggregation => aggregation.name);
+      }
+
+      resolve(audits);
+    });
+  });
 };
 
 window.listenForStatus = function(callback) {
