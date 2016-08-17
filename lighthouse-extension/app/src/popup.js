@@ -81,15 +81,15 @@ document.addEventListener('DOMContentLoaded', _ => {
     const frag = document.createDocumentFragment();
 
     aggregations.forEach(aggregation => {
-      frag.appendChild(createOptionItem(aggregation.name, selectedAudits.indexOf(aggregation.name) > -1));
+      frag.appendChild(createOptionItem(aggregation.name, selectedAudits[aggregation.name]));
     });
 
     list.appendChild(frag);
   };
 
   const getAuditsFromCategory = audits => _flatten(
-    audits.map(audit => {
-      const auditsInCategory = aggregations.find(aggregation => aggregation.name === audit).criteria
+    Object.keys(audits).filter(audit => audits[audit]).map(audit => {
+      const auditsInCategory = aggregations.find(aggregation => aggregation.name === audit).criteria;
 
       return Object.keys(auditsInCategory);
     })
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', _ => {
   background.listenForStatus(logstatus);
   background.fetchAudits().then(audits => {
     generateOptionsList(optionsList, audits);
-  })
+  });
 
   generateReportEl.addEventListener('click', () => {
     startSpinner();
@@ -107,12 +107,11 @@ document.addEventListener('DOMContentLoaded', _ => {
     background.fetchAudits()
     .then(getAuditsFromCategory)
     .then(audits => background.runAudits({
-        flags: {
-          mobile: true,
-          loadPage: true
-        }
-      }, audits)
-    )
+      flags: {
+        mobile: true,
+        loadPage: true
+      }
+    }, audits))
     .then(results => {
       background.createPageAndPopulate(results);
     })

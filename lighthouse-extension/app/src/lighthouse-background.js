@@ -73,22 +73,34 @@ window.getListOfAudits = function() {
 };
 
 window.saveAudits = function(audits) {
-  const storage = {};
-  storage[STORAGE_KEY] = audits;
+  const listOfAudits = window.getListOfAudits().map(aggregation => aggregation.name);
+  let storage = {};
+  storage[STORAGE_KEY] = {};
+
+  window.getListOfAudits().forEach(audit => {
+    storage[STORAGE_KEY][audit.name] = audits.indexOf(audit.name) > -1;
+  });
 
   chrome.storage.local.set(storage);
 };
 
 window.fetchAudits = function() {
   return new Promise(resolve => {
-    chrome.storage.local.get(STORAGE_KEY, function(result) {
-      let audits = result[STORAGE_KEY];
+    chrome.storage.local.get(STORAGE_KEY, result => {
+      const audits = result[STORAGE_KEY];
 
-      if (!audits) {
-        audits = window.getListOfAudits().map(aggregation => aggregation.name);
-      }
+      // create list of default audits
+      const listOfAudits = window.getListOfAudits().map(aggregation => aggregation.name);
+      const defaultAudits = listOfAudits.reduce((obj, audit) => {
+        obj[audit] = true;
 
-      resolve(audits);
+        return obj;
+      }, {});
+
+      // merge default and saved audits together so we always have the latest list of audits
+      resolve(
+        Object.assign({}, defaultAudits, audits)
+      );
     });
   });
 };
