@@ -20,7 +20,7 @@
 const URLGather = require('../../../gather/gatherers/url');
 const assert = require('assert');
 
-describe.only('URL gatherer', () => {
+describe('URL gatherer', () => {
   it('returns the correct URL from options', () => {
     const urlGather = new URLGather();
     const url = 'https://example.com';
