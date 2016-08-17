@@ -89,9 +89,9 @@ document.addEventListener('DOMContentLoaded', _ => {
 
   const getAuditsFromCategory = audits => _flatten(
     audits.map(audit => {
-      const aggregation = aggregations.filter(aggregation => aggregation.name === audit);
+      const auditsInCategory = aggregations.find(aggregation => aggregation.name === audit).criteria
 
-      return Object.keys(aggregation[0].criteria);
+      return Object.keys(auditsInCategory);
     })
   );
 

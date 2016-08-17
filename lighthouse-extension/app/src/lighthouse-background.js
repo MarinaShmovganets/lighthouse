@@ -60,14 +60,14 @@ window.runAudits = function(options, audits) {
 window.getListOfAudits = function() {
   return _flatten(
     configJSON.aggregations.map(aggregation => {
-      if (aggregation.items.length > 1) {
-        return aggregation.items;
+      if (aggregation.items.length === 1) {
+        return {
+          name: aggregation.name,
+          criteria: aggregation.items[0].criteria,
+        };
       }
 
-      return {
-        name: aggregation.name,
-        criteria: aggregation.items[0].criteria,
-      };
+      return aggregation.items;
     })
   );
 };
