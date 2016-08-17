@@ -105,7 +105,6 @@ class Driver {
 
     // log event listeners being bound
     this.formattedLog('listen for event =>', {method: eventName}, 'verbose');
-    this._eventEmitter.on(eventName, cb);
     this._eventEmitter.on(eventName, data => {
       log.verbose('<=', eventName, data);
       cb(data);
@@ -394,10 +393,10 @@ class Driver {
   unregisterServiceWorker(pageUrl) {
     // first, get data about active SW versions and registrations
     const getVersions = new Promise(resolve => {
-      this.once('ServiceWorker.workerVersionUpdated', data => resolve(data));
+      this.once('ServiceWorker.workerVersionUpdated', resolve);
     });
     const getRegistrations = new Promise(resolve => {
-      this.once('ServiceWorker.workerRegistrationUpdated', data => resolve(data));
+      this.once('ServiceWorker.workerRegistrationUpdated', resolve);
     });
 
     this.sendCommand('ServiceWorker.enable');
