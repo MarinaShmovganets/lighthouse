@@ -16,10 +16,10 @@
  */
 'use strict';
 
+const parseURL = require('url').parse;
 const NetworkRecorder = require('../../lib/network-recorder');
 const emulation = require('../../lib/emulation');
 const Element = require('../../lib/element');
-const URL = require('../../lib/url');
 
 const log = require('../../lib/log.js');
 
@@ -391,7 +391,7 @@ class Driver {
     return this.sendCommand('Network.setCacheDisabled', {cacheDisabled: true});
   }
 
-  unregisterServiceWorker(url) {
+  unregisterServiceWorker(pageUrl) {
     // first, get data about active SW versions and registrations
     const getVersions = new Promise(resolve => {
       this.once('ServiceWorker.workerVersionUpdated', data => resolve(data));
@@ -413,7 +413,7 @@ class Driver {
         // CAVEAT: this will not match if a redirect changes domain.com to m.domain.com
         //  it will also not match a www.domain.com if the scopeURL is set to domain.com
         .filter(reg => !reg.isDeleted)
-        .filter(reg => URL.getHostname(reg.scopeURL) === URL.getHostname(url))
+        .filter(reg => parseURL(reg.scopeURL).hostname === parseURL(pageUrl).hostname)
         .forEach(reg => {
           // Select the workers to stop.
           versions
