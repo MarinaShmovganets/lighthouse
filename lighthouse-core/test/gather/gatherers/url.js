@@ -19,18 +19,13 @@
 
 const URLGather = require('../../../gather/gatherers/url');
 const assert = require('assert');
-let urlGather;
 
-describe('URL gatherer', () => {
-  // Reset the Gatherer before each test.
-  beforeEach(() => {
-    urlGather = new URLGather();
-  });
-
+describe.only('URL gatherer', () => {
   it('returns the correct URL from options', () => {
+    const urlGather = new URLGather();
     const url = 'https://example.com';
-    urlGather.beforePass({
-      url
+    urlGather.afterPass({
+      url: url
     });
 
     return assert.equal(urlGather.artifact, url);
