@@ -30,7 +30,7 @@ module.exports = {
   },
 
   cleanAndDisableBrowserCaches() {},
-  forceUpdateServiceWorkers() {},
+  unregisterServiceWorker() {},
   reloadForCleanStateIfNeeded() {
     return Promise.resolve();
   },
