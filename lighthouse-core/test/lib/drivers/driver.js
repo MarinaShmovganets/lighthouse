@@ -37,7 +37,7 @@ driverStub.sendCommand = function(command, params) {
   }
 };
 
-// mock redirects to test out updateUrlIfRedirected
+// mock redirects to test out enableUrlUpdateIfRedirected
 const req1 = {
   url: 'http://aliexpress.com/'
 };
@@ -68,7 +68,7 @@ describe('Browser Driver', () => {
   it('will update the options.url through redirects', () => {
     const networkRecorder = driverStub._networkRecorder = new NetworkRecorder([]);
     let opts = {url: req1.url};
-    driverStub.updateUrlIfRedirected(opts);
+    driverStub.enableUrlUpdateIfRedirected(opts);
 
     // Fake some reqFinished events
     const networkManager = networkRecorder.networkManager;
@@ -76,7 +76,7 @@ describe('Browser Driver', () => {
       networkManager.dispatchEventToListeners(networkRecorder.EventTypes.RequestFinished, request);
     });
 
-    // The above event is handled synchronously by updateUrlIfRedirected and will be all set
+    // The above event is handled synchronously by enableUrlUpdateIfRedirected and will be all set
     assert.notEqual(opts.url, req1.url, 'opts.url changed after the redirects');
     assert.equal(opts.url, req3.url, 'opts.url matches the last redirect');
   });

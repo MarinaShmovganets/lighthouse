@@ -216,7 +216,7 @@ class Driver {
    *
    * Caveat: only works when network recording enabled for a pass
    */
-  updateUrlIfRedirected(opts) {
+  enableUrlUpdateIfRedirected(opts) {
     const networkManager = this._networkRecorder.networkManager;
     networkManager.addEventListener(this._networkRecorder.EventTypes.RequestFinished, request => {
       // Quit if this is not a redirected request
@@ -345,7 +345,7 @@ class Driver {
     return new Promise((resolve, reject) => {
       this._networkRecords = [];
       this._networkRecorder = new NetworkRecorder(this._networkRecords);
-      this.updateUrlIfRedirected(opts);
+      this.enableUrlUpdateIfRedirected(opts);
 
       this.on('Network.requestWillBeSent', this._networkRecorder.onRequestWillBeSent);
       this.on('Network.requestServedFromCache', this._networkRecorder.onRequestServedFromCache);

@@ -199,24 +199,19 @@ class GatherRunner {
         // If the main document redirects, we'll update this to keep track
         let urlAfterRedirects;
         return passes.reduce((chain, config, passIndex) => {
-          let runOptions;
+          const runOptions = Object.assign({}, options, {config});
           return chain
-              .then(_ => {
-                runOptions = Object.assign({}, options, {config});
-              })
-              .then(_ => GatherRunner.beforePass(runOptions))
-              .then(_ => GatherRunner.pass(runOptions))
-              .then(_ => GatherRunner.afterPass(runOptions))
-              .then(loadData => {
-                // Merge pass trace and network data into tracingData.
-                config.trace && Object.assign(tracingData.traces, loadData.traces);
-                config.network && (tracingData.networkRecords = loadData.networkRecords);
-              })
-              .then(_ => {
-                if (passIndex === 0) {
-                  urlAfterRedirects = runOptions.url;
-                }
-              });
+            .then(_ => GatherRunner.beforePass(runOptions))
+            .then(_ => GatherRunner.pass(runOptions))
+            .then(_ => GatherRunner.afterPass(runOptions))
+            .then(loadData => {
+              // Merge pass trace and network data into tracingData.
+              config.trace && Object.assign(tracingData.traces, loadData.traces);
+              config.network && (tracingData.networkRecords = loadData.networkRecords);
+              if (passIndex === 0) {
+                urlAfterRedirects = runOptions.url;
+              }
+            });
         }, Promise.resolve()).then(_ => {
           options.url = urlAfterRedirects;
         });
