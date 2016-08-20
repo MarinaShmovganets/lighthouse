@@ -217,14 +217,12 @@ class Driver {
    * Caveat: only works when network recording enabled for a pass
    */
   enableUrlUpdateIfRedirected(opts) {
-    const networkManager = this._networkRecorder.networkManager;
-    networkManager.addEventListener(this._networkRecorder.EventTypes.RequestFinished, request => {
+    this._networkRecorder.on('requestloaded', redirectRequest => {
       // Quit if this is not a redirected request
-      if (!request.data.redirectSource) {
+      if (!redirectRequest.redirectSource) {
         return;
       }
-      const earlierRequest = request.data.redirectSource;
-      const redirectRequest = request.data;
+      const earlierRequest = redirectRequest.redirectSource;
       if (earlierRequest.url === opts.url) {
         opts.url = redirectRequest.url;
       }
