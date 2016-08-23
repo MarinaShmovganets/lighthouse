@@ -137,33 +137,10 @@ function getGatherersNeededByAudits(audits) {
   }, new Set());
 }
 
-function filterAudits(audits, auditWhitelist) {
-  // If there is no whitelist, assume all.
-  if (!auditWhitelist) {
-    return Array.from(audits);
+function requireAudits(audits, rootPath) {
+  if (!audits) {
+    return null;
   }
-
-  const rejected = [];
-  const filteredAudits = audits.filter(a => {
-    const auditName = a.toLowerCase();
-    const inWhitelist = auditWhitelist.has(auditName);
-
-    if (!inWhitelist) {
-      rejected.push(auditName);
-    }
-
-    return inWhitelist;
-  });
-
-  if (rejected.length) {
-    log.log('info', 'Running these audits:', `${filteredAudits.join(', ')}`);
-    log.log('info', 'Skipping these audits:', `${rejected.join(', ')}`);
-  }
-
-  return filteredAudits;
-}
-
-function expandAudits(audits, rootPath) {
   const Runner = require('../runner');
 
   return audits.map(audit => {
