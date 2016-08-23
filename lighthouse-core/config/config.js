@@ -106,29 +106,20 @@ function cleanTrace(trace) {
   return trace;
 }
 
-function filterPasses(passes, audits, rootPath) {
+function validatePasses(passes, audits, rootPath) {
   const requiredGatherers = getGatherersNeededByAudits(audits);
 
-  // Make sure we only have the gatherers that are needed by the audits
-  // that have been listed in the config.
-  const filteredPasses = passes.map(pass => {
-    const freshPass = Object.assign({}, pass);
-
-    freshPass.gatherers = freshPass.gatherers.filter(gatherer => {
+  // Note if we are running gathers that are not needed by the audits listed in the config
+  passes.forEach(pass => {
+    pass.gatherers.forEach(gatherer => {
       const GathererClass = GatherRunner.getGathererClass(gatherer, rootPath);
       const isGatherRequiredByAudits = requiredGatherers.has(GathererClass.name);
       if (isGatherRequiredByAudits === false) {
-        log.warn('config', `Skipping ${GathererClass.name} gatherer as no audit requires it.`);
+        log.warn('config', `${GathererClass.name} is included, however no audit requires it.`);
       }
-      return isGatherRequiredByAudits;
     });
-
-    return freshPass;
-  })
-
-  // Now remove any passes which no longer have gatherers.
-  .filter(p => p.gatherers.length > 0);
-  return filteredPasses;
+  });
+  return passes;
 }
 
 function getGatherersNeededByAudits(audits) {
@@ -294,9 +285,9 @@ class Config {
     this._audits = configJSON.audits ? expandAudits(
         filterAudits(configJSON.audits, auditWhitelist), this._configDir
         ) : null;
-    // filterPasses expects audits to have been expanded
+    // validatePasses expects audits to have been expanded
     this._passes = configJSON.passes ?
-        filterPasses(configJSON.passes, this._audits, this._configDir) :
+        validatePasses(configJSON.passes, this._audits, this._configDir) :
         null;
     this._auditResults = configJSON.auditResults ? Array.from(configJSON.auditResults) : null;
     this._artifacts = null;

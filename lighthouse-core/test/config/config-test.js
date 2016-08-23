@@ -51,22 +51,6 @@ describe('Config', () => {
         /Unable to locate/);
   });
 
-  it('filters gatherers from passes when no audits require them', () => {
-    const config = new Config({
-      passes: [{
-        gatherers: [
-          'url',
-          'html',
-          'viewport'
-        ]
-      }],
-
-      audits: ['viewport']
-    });
-
-    assert.equal(config.passes[0].gatherers.length, 1);
-  });
-
   it('doesn\'t mutate old gatherers when filtering passes', () => {
     const configJSON = {
       passes: [{
