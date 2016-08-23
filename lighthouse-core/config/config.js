@@ -107,9 +107,12 @@ function cleanTrace(trace) {
 }
 
 function validatePasses(passes, audits, rootPath) {
+  if (!Array.isArray(passes)) {
+    return;
+  }
   const requiredGatherers = getGatherersNeededByAudits(audits);
 
-  // Note if we are running gathers that are not needed by the audits listed in the config
+  // Log if we are running gathers that are not needed by the audits listed in the config
   passes.forEach(pass => {
     pass.gatherers.forEach(gatherer => {
       const GathererClass = GatherRunner.getGathererClass(gatherer, rootPath);
@@ -119,7 +122,6 @@ function validatePasses(passes, audits, rootPath) {
       }
     });
   });
-  return passes;
 }
 
 function getGatherersNeededByAudits(audits) {
@@ -282,13 +284,14 @@ class Config {
     // Store the directory of the config path, if one was provided.
     this._configDir = configPath ? path.dirname(configPath) : undefined;
 
-    this._audits = configJSON.audits ? expandAudits(
-        filterAudits(configJSON.audits, auditWhitelist), this._configDir
-        ) : null;
+    this._audits = null;
+    if (configJSON.audits) {
+      this._audits = expandAudits(filterAudits(configJSON.audits, auditWhitelist), this._configDir);
+    }
     // validatePasses expects audits to have been expanded
-    this._passes = configJSON.passes ?
-        validatePasses(configJSON.passes, this._audits, this._configDir) :
-        null;
+    validatePasses(configJSON.passes, this._audits, this._configDir);
+    this._passes = configJSON.passes ? Array.from(configJSON.passes) : null;
+
     this._auditResults = configJSON.auditResults ? Array.from(configJSON.auditResults) : null;
     this._artifacts = null;
     if (configJSON.artifacts) {
