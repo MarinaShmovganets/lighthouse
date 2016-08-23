@@ -240,32 +240,32 @@ function assertValidAudit(audit, auditDefinition) {
 }
 
 function expandArtifacts(artifacts) {
-  const expandedArtifacts = Object.assign({}, artifacts);
-
   // currently only trace logs and performance logs should be imported
-  if (artifacts.traces) {
-    Object.keys(artifacts.traces).forEach(key => {
-      log.log('info', 'Normalizng trace contents into expected state...');
-      let trace = require(artifacts.traces[key]);
-      // Before Chrome 54.0.2816 (codereview.chromium.org/2161583004), trace was
-      // an array of trace events. After this point, trace is an object with a
-      // traceEvents property. Normalize to new format.
-      if (Array.isArray(trace)) {
-        trace = {
-          traceEvents: trace
-        };
-      }
-      trace = cleanTrace(trace);
-
-      expandedArtifacts.traces[key] = trace;
-    });
+  if (!artifacts.traces) {
+    return null;
   }
+
+  Object.keys(artifacts.traces).forEach(key => {
+    log.log('info', 'Normalizng trace contents into expected state...');
+    let trace = require(artifacts.traces[key]);
+    // Before Chrome 54.0.2816 (codereview.chromium.org/2161583004), trace was
+    // an array of trace events. After this point, trace is an object with a
+    // traceEvents property. Normalize to new format.
+    if (Array.isArray(trace)) {
+      trace = {
+        traceEvents: trace
+      };
+    }
+    trace = cleanTrace(trace);
+
+    artifacts.traces[key] = trace;
+  });
 
   if (artifacts.performanceLog) {
-    expandedArtifacts.networkRecords = recordsFromLogs(require(artifacts.performanceLog));
+    artifacts.networkRecords = recordsFromLogs(require(artifacts.performanceLog));
   }
 
-  return expandedArtifacts;
+  return artifacts;
 }
 
 /**
@@ -276,28 +276,24 @@ class Config {
    * @constructor
    * @param{Object} config
    */
-  constructor(configJSON, auditWhitelist, configPath) {
+  constructor(configJSON, configPath) {
     if (!configJSON) {
       configJSON = defaultConfig;
     }
-
+    // We don't want to mutate the original config object
+    configJSON = JSON.parse(JSON.stringify(configJSON));
     // Store the directory of the config path, if one was provided.
     this._configDir = configPath ? path.dirname(configPath) : undefined;
 
-    this._audits = null;
-    if (configJSON.audits) {
-      this._audits = expandAudits(filterAudits(configJSON.audits, auditWhitelist), this._configDir);
-    }
-    // validatePasses expects audits to have been expanded
-    validatePasses(configJSON.passes, this._audits, this._configDir);
-    this._passes = configJSON.passes ? Array.from(configJSON.passes) : null;
+    this._passes = configJSON.passes || null;
+    this._auditResults = configJSON.auditResults || null;
+    this._aggregations = configJSON.aggregations || null;
 
-    this._auditResults = configJSON.auditResults ? Array.from(configJSON.auditResults) : null;
-    this._artifacts = null;
-    if (configJSON.artifacts) {
-      this._artifacts = expandArtifacts(configJSON.artifacts);
-    }
-    this._aggregations = configJSON.aggregations ? Array.from(configJSON.aggregations) : null;
+    this._audits = requireAudits(configJSON.audits, this._configDir);
+    this._artifacts = expandArtifacts(configJSON.artifacts);
+
+    // validatePasses must follow after audits
+    validatePasses(configJSON.passes, this._audits, this._configDir);
   }
 
   /** @type {string} */
