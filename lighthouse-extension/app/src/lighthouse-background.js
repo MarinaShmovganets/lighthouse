@@ -90,12 +90,10 @@ window.fetchAudits = function() {
       const audits = result[STORAGE_KEY];
 
       // create list of default audits
-      const listOfAudits = window.getListOfAudits().map(aggregation => aggregation.name);
-      const defaultAudits = listOfAudits.reduce((obj, audit) => {
-        obj[audit] = true;
-
-        return obj;
-      }, {});
+      let defaultAudits = {};
+      window.getListOfAudits().forEach((audit) => {
+        defaultAudits[audit.name] = true;
+      });
 
       // merge default and saved audits together so we always have the latest list of audits
       resolve(
