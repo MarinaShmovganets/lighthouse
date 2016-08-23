@@ -217,27 +217,27 @@ function assertValidAudit(audit, auditDefinition) {
 }
 
 function expandArtifacts(artifacts) {
-  // currently only trace logs and performance logs should be imported
-  if (!artifacts.traces) {
+  if (!artifacts) {
     return null;
   }
+  // currently only trace logs and performance logs should be imported
+  if (artifacts.traces) {
+    Object.keys(artifacts.traces).forEach(key => {
+      log.log('info', 'Normalizng trace contents into expected state...');
+      let trace = require(artifacts.traces[key]);
+      // Before Chrome 54.0.2816 (codereview.chromium.org/2161583004), trace was
+      // an array of trace events. After this point, trace is an object with a
+      // traceEvents property. Normalize to new format.
+      if (Array.isArray(trace)) {
+        trace = {
+          traceEvents: trace
+        };
+      }
+      trace = cleanTrace(trace);
 
-  Object.keys(artifacts.traces).forEach(key => {
-    log.log('info', 'Normalizng trace contents into expected state...');
-    let trace = require(artifacts.traces[key]);
-    // Before Chrome 54.0.2816 (codereview.chromium.org/2161583004), trace was
-    // an array of trace events. After this point, trace is an object with a
-    // traceEvents property. Normalize to new format.
-    if (Array.isArray(trace)) {
-      trace = {
-        traceEvents: trace
-      };
-    }
-    trace = cleanTrace(trace);
-
-    artifacts.traces[key] = trace;
-  });
-
+      artifacts.traces[key] = trace;
+    });
+  }
   if (artifacts.performanceLog) {
     artifacts.networkRecords = recordsFromLogs(require(artifacts.performanceLog));
   }
@@ -269,7 +269,7 @@ class Config {
     this._audits = requireAudits(configJSON.audits, this._configDir);
     this._artifacts = expandArtifacts(configJSON.artifacts);
 
-    // validatePasses must follow after audits
+    // validatePasses must follow after audits are required
     validatePasses(configJSON.passes, this._audits, this._configDir);
   }
 
