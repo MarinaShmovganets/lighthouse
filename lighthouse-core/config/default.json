@@ -13,6 +13,7 @@
       "accessibility",
       "content-width",
       "cache-contents",
+      "interstitial",
       "geolocation-on-start"
     ]
   },
@@ -64,6 +65,7 @@
     "tabindex",
     "content-width",
     "cache-start-url",
+    "interstitial",
     "geolocation-on-start"
   ],
 
@@ -232,6 +234,10 @@
         },
         "content-width": {
           "rawValue": true,
+          "weight": 1
+        },
+        "interstitial": {
+          "value": true,
           "weight": 1
         }
       }
