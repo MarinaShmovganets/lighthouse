@@ -21,6 +21,9 @@ const ManifestGather = require('../../../gather/gatherers/manifest');
 const assert = require('assert');
 let manifestGather;
 
+const EXAMPLE_MANIFEST_URL = 'https://example.com/manifest.json';
+const EXAMPLE_DOC_URL = 'https://example.com/index.html';
+
 const isExpectedOutput = artifact => {
   return 'raw' in artifact && 'value' in artifact;
 };
@@ -35,9 +38,14 @@ describe('Manifest gatherer', () => {
     return manifestGather.afterPass({
       driver: {
         sendCommand() {
-          return Promise.resolve({data: '', errors: [], url: 'https://example.com/manifest.json'});
+          return Promise.resolve({
+            data: '{}',
+            errors: [],
+            url: EXAMPLE_MANIFEST_URL
+          });
         }
-      }
+      },
+      url: EXAMPLE_DOC_URL
     }).then(_ => {
       assert.ok(typeof manifestGather.artifact === 'object');
     });
@@ -68,7 +76,23 @@ describe('Manifest gatherer', () => {
         }
       }
     }).then(_ => {
-      assert.ok(manifestGather.artifact.debugString === error);
+      assert.notStrictEqual(manifestGather.artifact.debugString.indexOf(error), -1);
+    });
+  });
+
+  it('emits an error when there was no manifest', () => {
+    return manifestGather.afterPass({
+      driver: {
+        sendCommand() {
+          return Promise.resolve({
+            data: '',
+            errors: [],
+            url: ''
+          });
+        }
+      }
+    }).then(_ => {
+      assert.ok(manifestGather.artifact.debugString);
     });
   });
 
@@ -81,10 +105,12 @@ describe('Manifest gatherer', () => {
         sendCommand() {
           return Promise.resolve({
             errors: [],
-            data
+            data,
+            url: EXAMPLE_MANIFEST_URL
           });
         }
-      }
+      },
+      url: EXAMPLE_DOC_URL
     }).then(_ => {
       assert.ok(typeof manifestGather.artifact.value === 'object');
     });
