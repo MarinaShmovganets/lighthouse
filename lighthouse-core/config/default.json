@@ -26,6 +26,14 @@
     ]
   },
   {
+    "trace": true,
+    "loadPage": true,
+    "traceName": "scrolling",
+    "gatherers": [
+      "scrolling"
+    ]
+  },
+  {
     "loadPage": true,
     "gatherers": [
       "http-redirect",
@@ -66,7 +74,8 @@
     "tabindex",
     "content-width",
     "cache-start-url",
-    "geolocation-on-start"
+    "geolocation-on-start",
+    "smooth-scrolling"
   ],
 
   "aggregations": [{
@@ -331,6 +340,10 @@
         },
         "user-timings": {
           "rawValue": 0,
+          "weight": 1
+        },
+        "smooth-scrolling": {
+          "value": 1,
           "weight": 1
         }
       }
