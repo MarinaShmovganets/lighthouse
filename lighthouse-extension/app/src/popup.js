@@ -131,10 +131,15 @@ document.addEventListener('DOMContentLoaded', _ => {
     })
     .catch(err => {
       let {message} = err;
-      if (err.message.toLowerCase().startsWith('another debugger')) {
+      if (message.toLowerCase().startsWith('another debugger')) {
         message = 'You probably have DevTools open.' +
           ' Close DevTools to use lighthouse';
       }
+      if (message.toLowerCase().startsWith('unable to kill')) {
+        message = 'You probably have multiple tabs open.' +
+          ' Close the other tabs to use lighthouse.';
+      }
+
       feedbackEl.textContent = message;
       stopSpinner();
       background.console.error(err);

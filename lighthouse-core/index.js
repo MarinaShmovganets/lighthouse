@@ -44,7 +44,7 @@ const Config = require('./config/config');
  */
 
 module.exports = function(url, flags, configJSON) {
-  return new Promise((resolve, reject) => {
+  return (new Promise((resolve, reject) => {
     if (!url) {
       return reject(new Error('Lighthouse requires a URL'));
     }
@@ -62,6 +62,13 @@ module.exports = function(url, flags, configJSON) {
 
     // kick off a lighthouse run
     resolve(Runner.run(driver, {url, flags, config}));
+  })).catch(err => {
+    if (err.message.toLowerCase().startsWith('unable to kill')) {
+      log.error('Multiple tabs', err.message);
+      return Promise.reject('');
+    }
+
+    throw err;
   });
 };
 
