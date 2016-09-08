@@ -31,6 +31,10 @@ module.exports = {
     return Promise.resolve();
   },
 
+  checkForMultipleServiceWorkers() {
+    return Promise.resolve();
+  },
+
   cleanAndDisableBrowserCaches() {},
   clearDataForOrigin() {},
   reloadForCleanStateIfNeeded() {

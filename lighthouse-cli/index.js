@@ -196,6 +196,13 @@ function lighthouseRun(addresses) {
       }
 
       return lighthouseRun(addresses);
+    })
+    .catch(err => {
+      if (err.code === 'ECONNREFUSED') {
+        showConnectionError();
+      } else if (err) {
+        showRuntimeError(err);
+      }
     });
 }
 

@@ -214,6 +214,42 @@ class Driver {
   }
 
   /**
+   * Checks all serviceworkes and see if any duplications are running
+   * @param {string} pageUrl
+   */
+  checkForMultipleServiceWorkers(pageUrl) {
+    // Get necessary information of serviceWorkers
+    const getRegistrations = new Promise(resolve => {
+      this.once('ServiceWorker.workerRegistrationUpdated', resolve);
+    });
+    const getVersions = this.getServiceWorkerVersions();
+
+    return Promise.all([getRegistrations, getVersions]).then(res => {
+      const registrations = res[0].registrations;
+      const versions = res[1].versions;
+
+      let activeServiceWorkers = [];
+      registrations
+        .filter(reg => !reg.isDeleted)
+        .filter(reg => parseURL(reg.scopeURL).hostname === parseURL(pageUrl).hostname)
+        .forEach(reg => {
+          activeServiceWorkers = activeServiceWorkers.concat(versions
+             .filter(ver => ver.registrationId === reg.registrationId)
+          );
+        });
+
+      if (activeServiceWorkers.length > 1) {
+        const activeSW = activeServiceWorkers[0].scriptURL;
+        throw new Error(
+           `Unable to kill ServiceWorker(${activeSW}).`
+        );
+      }
+
+      return res;
+    });
+  }
+
+  /**
    * If our main document URL redirects, we will update options.url accordingly
    * As such, options.url will always represent the post-redirected URL.
    * options.initialUrl is the pre-redirect URL that things started with

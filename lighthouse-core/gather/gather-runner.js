@@ -30,6 +30,8 @@ const path = require('path');
  *     i. beginEmulation
  *     ii. cleanAndDisableBrowserCaches
  *     iii. clearDataForOrigin
+ *     iiii. checkForMultipleServiceWorkers
+ *     iiiii. forceUpdateServiceWorkers
  *
  * 2. For each pass in the config:
  *   A. GatherRunner.beforePass()
@@ -217,6 +219,10 @@ class GatherRunner {
     passes = this.instantiateGatherers(passes, options.config.configDir);
 
     return driver.connect()
+      .then(_ => {
+        // Check Service Workers running
+        return driver.checkForMultipleServiceWorkers(options.url);
+      })
       .then(_ => GatherRunner.setupDriver(driver, options))
 
       // Run each pass

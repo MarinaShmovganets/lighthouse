@@ -32,6 +32,9 @@ driverStub.sendCommand = function(command, params) {
       return Promise.resolve({
         nodeId: params.selector === 'invalid' ? 0 : 231
       });
+    case 'ServiceWorker.enable':
+    case 'ServiceWorker.disable':
+      return Promise.resolve();
     default:
       throw Error(`Stub not implemented: ${command}`);
   }
@@ -80,4 +83,93 @@ describe('Browser Driver', () => {
     assert.notEqual(opts.url, req1.url, 'opts.url changed after the redirects');
     assert.equal(opts.url, req3.url, 'opts.url matches the last redirect');
   });
+
+  it('will fail when multiple tabs are found with the same active serviceworker', () => {
+    const pageUrl = 'https://example.com/';
+    const swUrl = `${pageUrl}sw.js`;
+    const registrations = [1, 2].map(i =>
+      createSWRegistration(i, pageUrl));
+    const versions = [1, 2].map(i =>
+      createActiveWorker(i, swUrl));
+
+    driverStub.once = createOnceStub({
+      'ServiceWorker.workerRegistrationUpdated': {
+        registrations
+      },
+      'ServiceWorker.workerVersionUpdated': {
+        versions
+      }
+    });
+
+    const errorMsg = `Unable to kill ServiceWorker(${swUrl}).`;
+    return driverStub.checkForMultipleServiceWorkers(pageUrl)
+      .catch(err => {
+        assert.equal(err.message, errorMsg);
+      });
+  });
+
+  it('will will succeed when old sw are deleted', () => {
+    const pageUrl = 'https://example.com/';
+    const swUrl = `${pageUrl}sw.js`;
+    const registrations = [1, 2].map(i =>
+      createSWRegistration(i, pageUrl, i === 1));
+    const versions = [1, 2].map(i =>
+      createActiveWorker(i, swUrl));
+
+    driverStub.once = createOnceStub({
+      'ServiceWorker.workerRegistrationUpdated': {
+        registrations
+      },
+      'ServiceWorker.workerVersionUpdated': {
+        versions
+      }
+    });
+
+    const errorMsg = new RegExp(`Unable to kill ServiceWorker(${swUrl}).`);
+    assert.doesNotThrow(() => driverStub.checkForMultipleServiceWorkers(pageUrl), errorMsg);
+  });
+
+  it('will will succeed when only one sw loaded', () => {
+    const pageUrl = 'https://example.com/';
+    const swUrl = `${pageUrl}sw.js`;
+    const registrations = [createSWRegistration(1, pageUrl)];
+    const versions = [createSWRegistration(1, swUrl)];
+
+    driverStub.once = createOnceStub({
+      'ServiceWorker.workerRegistrationUpdated': {
+        registrations
+      },
+      'ServiceWorker.workerVersionUpdated': {
+        versions
+      }
+    });
+
+    const errorMsg = new RegExp(`Unable to kill ServiceWorker(${swUrl}).`);
+    assert.doesNotThrow(() => driverStub.checkForMultipleServiceWorkers(pageUrl), errorMsg);
+  });
 });
+
+function createOnceStub(events) {
+  return (eventName, cb) => {
+    if (events[eventName]) {
+      cb(events[eventName]);
+    }
+
+    throw Error(`Stub not implemented: ${eventName}`);
+  };
+}
+
+function createSWRegistration(id, url, isDeleted) {
+  return {
+    isDeleted: !!isDeleted,
+    registrationId: id,
+    scopeURL: url,
+  };
+}
+
+function createActiveWorker(id, url) {
+  return {
+    registrationId: id,
+    scriptURL: url,
+  };
+}
