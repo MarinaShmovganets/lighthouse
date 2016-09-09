@@ -63,8 +63,8 @@ module.exports = function(url, flags, configJSON) {
     // kick off a lighthouse run
     resolve(Runner.run(driver, {url, flags, config}));
   })).catch(err => {
-    if (err.message.toLowerCase().startsWith('unable to kill')) {
-      log.error('Multiple tabs', err.message);
+    if (err.message.toLowerCase().includes('multiple tabs')) {
+      log.error('status', err.message);
       return Promise.reject('');
     }
 

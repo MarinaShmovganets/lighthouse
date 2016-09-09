@@ -30,8 +30,7 @@ const path = require('path');
  *     i. beginEmulation
  *     ii. cleanAndDisableBrowserCaches
  *     iii. clearDataForOrigin
- *     iiii. checkForMultipleServiceWorkers
- *     iiiii. forceUpdateServiceWorkers
+ *     iiii. checkForMultipleTabsAttached
  *
  * 2. For each pass in the config:
  *   A. GatherRunner.beforePass()
@@ -94,6 +93,9 @@ class GatherRunner {
       }).then(_ => {
         // Clears storage for origin.
         return driver.clearDataForOrigin(options.url);
+      }).then(_ => {
+        // Check Service Workers running
+        return driver.checkForMultipleTabsAttached(options.url);
       });
   }
 
@@ -221,7 +223,7 @@ class GatherRunner {
     return driver.connect()
       .then(_ => {
         // Check Service Workers running
-        return driver.checkForMultipleServiceWorkers(options.url);
+        return driver.checkForMultipleTabsAttached(options.url);
       })
       .then(_ => GatherRunner.setupDriver(driver, options))
 

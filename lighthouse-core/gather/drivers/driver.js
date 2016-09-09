@@ -216,8 +216,9 @@ class Driver {
   /**
    * Checks all serviceworkes and see if any duplications are running
    * @param {string} pageUrl
+   * @return {Promise}
    */
-  checkForMultipleServiceWorkers(pageUrl) {
+  checkForMultipleTabsAttached(pageUrl) {
     // Get necessary information of serviceWorkers
     const getRegistrations = new Promise(resolve => {
       this.once('ServiceWorker.workerRegistrationUpdated', resolve);
@@ -239,9 +240,8 @@ class Driver {
         });
 
       if (activeServiceWorkers.length > 1) {
-        const activeSW = activeServiceWorkers[0].scriptURL;
         throw new Error(
-           `Unable to kill ServiceWorker(${activeSW}).`
+          'You probably have multiple tabs open.'
         );
       }
 

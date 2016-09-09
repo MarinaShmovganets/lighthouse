@@ -31,7 +31,7 @@ module.exports = {
     return Promise.resolve();
   },
 
-  checkForMultipleServiceWorkers() {
+  checkForMultipleTabsAttached() {
     return Promise.resolve();
   },
 

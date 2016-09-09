@@ -101,14 +101,11 @@ describe('Browser Driver', () => {
       }
     });
 
-    const errorMsg = `Unable to kill ServiceWorker(${swUrl}).`;
-    return driverStub.checkForMultipleServiceWorkers(pageUrl)
-      .catch(err => {
-        assert.equal(err.message, errorMsg);
-      });
+    return driverStub.checkForMultipleTabsAttached(pageUrl)
+      .then(_ => assert.ok(false), _ => assert.ok(true));
   });
 
-  it('will will succeed when old sw are deleted', () => {
+  it('will succeed when old sw are deleted', () => {
     const pageUrl = 'https://example.com/';
     const swUrl = `${pageUrl}sw.js`;
     const registrations = [1, 2].map(i =>
@@ -125,11 +122,11 @@ describe('Browser Driver', () => {
       }
     });
 
-    const errorMsg = new RegExp(`Unable to kill ServiceWorker(${swUrl}).`);
-    assert.doesNotThrow(() => driverStub.checkForMultipleServiceWorkers(pageUrl), errorMsg);
+    return driverStub.checkForMultipleTabsAttached(pageUrl)
+      .then(_ => assert.ok(true), _ => assert.ok(false));
   });
 
-  it('will will succeed when only one sw loaded', () => {
+  it('will succeed when only one sw loaded', () => {
     const pageUrl = 'https://example.com/';
     const swUrl = `${pageUrl}sw.js`;
     const registrations = [createSWRegistration(1, pageUrl)];
@@ -144,8 +141,8 @@ describe('Browser Driver', () => {
       }
     });
 
-    const errorMsg = new RegExp(`Unable to kill ServiceWorker(${swUrl}).`);
-    assert.doesNotThrow(() => driverStub.checkForMultipleServiceWorkers(pageUrl), errorMsg);
+    return driverStub.checkForMultipleTabsAttached(pageUrl)
+      .then(_ => assert.ok(true), _ => assert.ok(false));
   });
 });
 

@@ -85,8 +85,7 @@ describe('GatherRunner', function() {
       },
       cleanAndDisableBrowserCaches() {},
       clearDataForOrigin() {},
-      checkForMultipleServiceWorkers() {},
-      forceUpdateServiceWorkers() {}
+      checkForMultipleTabsAttached() {}
     };
 
     return GatherRunner.setupDriver(driver, {
@@ -106,8 +105,7 @@ describe('GatherRunner', function() {
       },
       cleanAndDisableBrowserCaches() {},
       clearDataForOrigin() {},
-      checkForMultipleServiceWorkers() {},
-      forceUpdateServiceWorkers() {}
+      checkForMultipleTabsAttached() {}
     };
 
     return GatherRunner.setupDriver(driver, {
