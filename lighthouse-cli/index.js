@@ -141,7 +141,7 @@ if (cli.verbose) {
 
 function runLighthouse(addresses) {
   // Process URLs once at a time
-  let address = addresses.shift();
+  const address = addresses.shift();
   if (!address) {
     return;
   }
