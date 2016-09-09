@@ -119,7 +119,7 @@ if (cli.listTraceCategories) {
   process.exit(0);
 }
 
-const url = cli._[0];
+const urls = cli._;
 const outputMode = cli.output;
 const outputPath = cli['output-path'];
 const flags = cli;
@@ -139,22 +139,32 @@ if (cli.verbose) {
   flags.logLevel = 'error';
 }
 
+function runLighthouse(addresses) {
+  // Process URLs once at a time
+  let address = addresses.shift();
+  if (address) {
+    lighthouse(address, flags, config)
+      .then(results => Printer.write(results, outputMode, outputPath))
+      .then(results => {
+        if (outputMode !== 'html') {
+          Printer.write(results, 'html', './last-run-results-' + Math.random() + '.html');
+        }
+        runLighthouse(addresses);
+        return;
+      })
+      .catch(err => {
+        if (err.code === 'ECONNREFUSED') {
+          console.error('Unable to connect to Chrome.');
+          console.error('Please run Chrome w/ debugging port 9222 open:');
+          console.error('npm run chrome');
+        } else {
+          console.error('Runtime error encountered:', err);
+          console.error(err.stack);
+        }
+        process.exit(1);
+      });
+  }
+}
+
 // kick off a lighthouse run
-lighthouse(url, flags, config)
-  .then(results => Printer.write(results, outputMode, outputPath))
-  .then(results => {
-    if (outputMode !== 'html') {
-      Printer.write(results, 'html', './last-run-results.html');
-    }
-    return;
-  })
-  .catch(err => {
-    if (err.code === 'ECONNREFUSED') {
-      console.error('Unable to connect to Chrome. Please run Chrome w/ debugging port 9222 open:');
-      console.error('    npm explore -g lighthouse -- npm run chrome');
-    } else {
-      console.error('Runtime error encountered:', err);
-      console.error(err.stack);
-    }
-    process.exit(1);
-  });
+runLighthouse(urls);
