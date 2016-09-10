@@ -116,6 +116,10 @@ class CriDriver extends Driver {
       });
     });
   }
+
+  getCurrentTabId() {
+    return Promise.resolve(this._tab.id);
+  }
 }
 
 module.exports = CriDriver;

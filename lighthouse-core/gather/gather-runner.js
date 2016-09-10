@@ -221,10 +221,6 @@ class GatherRunner {
     passes = this.instantiateGatherers(passes, options.config.configDir);
 
     return driver.connect()
-      .then(_ => {
-        // Check Service Workers running
-        return driver.checkForMultipleTabsAttached(options.url);
-      })
       .then(_ => GatherRunner.setupDriver(driver, options))
 
       // Run each pass

@@ -138,6 +138,14 @@ class Driver {
     return Promise.reject(new Error('Not implemented'));
   }
 
+  /**
+   * Get current tab id
+   * @return {!Promise<string>}
+   */
+  getCurrentTabId() {
+    return Promise.reject(new Error('Not implemented'));
+  }
+
   evaluateScriptOnLoad(scriptSource) {
     return this.sendCommand('Page.addScriptToEvaluateOnLoad', {
       scriptSource
@@ -213,33 +221,58 @@ class Driver {
     });
   }
 
+  getServiceWorkerRegistrations() {
+    return new Promise(resolve => {
+      this.once('ServiceWorker.workerRegistrationUpdated', data => {
+        this.sendCommand('ServiceWorker.disable');
+        resolve(data);
+      });
+
+      this.sendCommand('ServiceWorker.enable');
+    });
+  }
+
   /**
    * Checks all serviceworkes and see if any duplications are running
-   * @param {string} pageUrl
-   * @return {Promise}
+   * @param {!string} pageUrl
+   * @return {!Promise}
    */
   checkForMultipleTabsAttached(pageUrl) {
     // Get necessary information of serviceWorkers
-    const getRegistrations = new Promise(resolve => {
-      this.once('ServiceWorker.workerRegistrationUpdated', resolve);
-    });
+    const getRegistrations = this.getServiceWorkerRegistrations();
     const getVersions = this.getServiceWorkerVersions();
+    const getActiveTabId = this.getCurrentTabId();
 
-    return Promise.all([getRegistrations, getVersions]).then(res => {
+    return Promise.all([getRegistrations, getVersions, getActiveTabId]).then(res => {
       const registrations = res[0].registrations;
       const versions = res[1].versions;
+      const activePageId = res[2];
+      const parsedURL = parseURL(pageUrl);
+      const origin = `${parsedURL.protocol}//${parsedURL.hostname}` +
+      (parsedURL.port ? `:${parsedURL.port}` : '');
 
-      let activeServiceWorkers = [];
+      let swHasMoreThanOneClient = false;
       registrations
         .filter(reg => !reg.isDeleted)
-        .filter(reg => parseURL(reg.scopeURL).hostname === parseURL(pageUrl).hostname)
+        .filter(reg => {
+          const parsedURL = parseURL(reg.scopeURL);
+          const swOrigin = `${parsedURL.protocol}//${parsedURL.hostname}` +
+            (parsedURL.port ? `:${parsedURL.port}` : '');
+
+          return origin === swOrigin;
+        })
         .forEach(reg => {
-          activeServiceWorkers = activeServiceWorkers.concat(versions
-             .filter(ver => ver.registrationId === reg.registrationId)
-          );
+          // Check if any of the service workers are the same (registration id)
+          // Check if the controlledClients are bigger than 1 and it's not the active tab
+          swHasMoreThanOneClient = !!versions.find(ver => {
+            return ver.registrationId === reg.registrationId &&
+            ver.controlledClients && (ver.controlledClients.length > 1 ||
+              (ver.controlledClients.length === 1 &&
+                !ver.controlledClients.find(sw => sw === activePageId)));
+          });
         });
 
-      if (activeServiceWorkers.length > 1) {
+      if (swHasMoreThanOneClient) {
         throw new Error(
           'You probably have multiple tabs open.'
         );

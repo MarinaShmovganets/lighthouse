@@ -87,11 +87,14 @@ describe('Browser Driver', () => {
   it('will fail when multiple tabs are found with the same active serviceworker', () => {
     const pageUrl = 'https://example.com/';
     const swUrl = `${pageUrl}sw.js`;
-    const registrations = [1, 2].map(i =>
-      createSWRegistration(i, pageUrl));
-    const versions = [1, 2].map(i =>
-      createActiveWorker(i, swUrl));
+    const registrations = [
+      createSWRegistration(1, pageUrl),
+    ];
+    const versions = [
+      createActiveWorker(1, swUrl, ['unique'])
+    ];
 
+    driverStub.getCurrentTabId = () => Promise.resolve('unique2');
     driverStub.once = createOnceStub({
       'ServiceWorker.workerRegistrationUpdated': {
         registrations
@@ -105,14 +108,42 @@ describe('Browser Driver', () => {
       .then(_ => assert.ok(false), _ => assert.ok(true));
   });
 
+  it('will succeed when service worker is already registered on current tab', () => {
+    const pageUrl = 'https://example.com/';
+    const swUrl = `${pageUrl}sw.js`;
+    const registrations = [
+      createSWRegistration(1, pageUrl),
+    ];
+    const versions = [
+      createActiveWorker(1, swUrl, ['unique'])
+    ];
+
+    driverStub.getCurrentTabId = () => Promise.resolve('unique');
+    driverStub.once = createOnceStub({
+      'ServiceWorker.workerRegistrationUpdated': {
+        registrations
+      },
+      'ServiceWorker.workerVersionUpdated': {
+        versions
+      }
+    });
+
+    return driverStub.checkForMultipleTabsAttached(pageUrl)
+      .then(_ => assert.ok(true), _ => assert.ok(false));
+  });
+
   it('will succeed when old sw are deleted', () => {
     const pageUrl = 'https://example.com/';
     const swUrl = `${pageUrl}sw.js`;
-    const registrations = [1, 2].map(i =>
-      createSWRegistration(i, pageUrl, i === 1));
-    const versions = [1, 2].map(i =>
-      createActiveWorker(i, swUrl));
+    const registrations = [
+      createSWRegistration(1, pageUrl, true),
+      createSWRegistration(1, pageUrl),
+    ];
+    const versions = [
+      createActiveWorker(1, swUrl, [])
+    ];
 
+    driverStub.getCurrentTabId = () => Promise.resolve('unique');
     driverStub.once = createOnceStub({
       'ServiceWorker.workerRegistrationUpdated': {
         registrations
@@ -130,8 +161,9 @@ describe('Browser Driver', () => {
     const pageUrl = 'https://example.com/';
     const swUrl = `${pageUrl}sw.js`;
     const registrations = [createSWRegistration(1, pageUrl)];
-    const versions = [createSWRegistration(1, swUrl)];
+    const versions = [createActiveWorker(1, swUrl, [])];
 
+    driverStub.getCurrentTabId = () => Promise.resolve('unique');
     driverStub.once = createOnceStub({
       'ServiceWorker.workerRegistrationUpdated': {
         registrations
@@ -164,9 +196,10 @@ function createSWRegistration(id, url, isDeleted) {
   };
 }
 
-function createActiveWorker(id, url) {
+function createActiveWorker(id, url, controlledClients) {
   return {
     registrationId: id,
     scriptURL: url,
+    controlledClients,
   };
 }
