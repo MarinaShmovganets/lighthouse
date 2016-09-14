@@ -160,6 +160,7 @@ function runLighthouse(addresses) {
         console.error('Unable to connect to Chrome.');
         console.error('Please run Chrome w/ debugging port 9222 open:');
         console.error('npm run chrome');
+        console.error('    npm explore -g lighthouse -- npm run chrome');
       } else {
         console.error('Runtime error encountered:', err);
         console.error(err.stack);
