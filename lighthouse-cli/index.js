@@ -28,6 +28,7 @@ const path = require('path');
 const yargs = require('yargs');
 const Printer = require('./printer');
 const lighthouse = require('../lighthouse-core');
+const assetSaver = require('../lighthouse-core/lib/asset-saver.js');
 
 const cli = yargs
   .help('help')
@@ -150,7 +151,8 @@ function runLighthouse(addresses) {
     .then(results => Printer.write(results, outputMode, outputPath))
     .then(results => {
       if (outputMode !== 'html') {
-        Printer.write(results, 'html', './last-run-results-' + Math.random() + '.html');
+        const filename = './' + assetSaver.getFilenamePrefix({url: address}) + '.html';
+        Printer.write(results, 'html', filename);
       }
       runLighthouse(addresses);
       return;
@@ -159,7 +161,6 @@ function runLighthouse(addresses) {
       if (err.code === 'ECONNREFUSED') {
         console.error('Unable to connect to Chrome.');
         console.error('Please run Chrome w/ debugging port 9222 open:');
-        console.error('npm run chrome');
         console.error('    npm explore -g lighthouse -- npm run chrome');
       } else {
         console.error('Runtime error encountered:', err);
