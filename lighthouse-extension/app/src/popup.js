@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', _ => {
       }, selectedAudits);
     })
     .catch(err => {
-      let {message} = err;
+      let message = err.message;
       if (message.toLowerCase().startsWith('another debugger')) {
         message = 'You probably have DevTools open.' +
           ' Close DevTools to use lighthouse';
