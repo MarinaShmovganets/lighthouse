@@ -265,10 +265,19 @@ class Driver {
           // Check if any of the service workers are the same (registration id)
           // Check if the controlledClients are bigger than 1 and it's not the active tab
           swHasMoreThanOneClient = !!versions.find(ver => {
-            return ver.registrationId === reg.registrationId &&
-            ver.controlledClients && (ver.controlledClients.length > 1 ||
-              (ver.controlledClients.length === 1 &&
-                !ver.controlledClients.find(sw => sw === activePageId)));
+            if (ver.registrationId !== reg.registrationId) {
+              return false;
+            }
+
+            if (!ver.controlledClients || ver.controlledClients.length === 0) {
+              return false;
+            }
+
+            const multipleTabsAttached = ver.controlledClients.length > 1;
+            const oneInactiveTabIsAttached = ver.controlledClients.length === 1 &&
+              !ver.controlledClients.find(sw => sw === activePageId);
+
+            return multipleTabsAttached || oneInactiveTabIsAttached;
           });
         });
 
