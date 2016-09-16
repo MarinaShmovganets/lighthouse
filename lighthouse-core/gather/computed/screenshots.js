@@ -33,7 +33,7 @@ class ScreenshotFilmstrip extends ComputedArtifact {
   }
 
   /**
-   * @param {!Array<!Object>} trace
+   * @param {{traceEvents: !Array}} trace
    * @return {!Promise}
   */
   getScreenshots(trace) {
