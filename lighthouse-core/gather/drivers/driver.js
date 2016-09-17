@@ -246,7 +246,7 @@ class Driver {
     return Promise.all([getRegistrations, getVersions, getActiveTabId]).then(res => {
       const registrations = res[0].registrations;
       const versions = res[1].versions;
-      const activePageId = res[2];
+      const activeTabId = res[2];
       const parsedURL = parseURL(pageUrl);
       const origin = `${parsedURL.protocol}//${parsedURL.hostname}` +
       (parsedURL.port ? `:${parsedURL.port}` : '');
@@ -275,7 +275,7 @@ class Driver {
 
             const multipleTabsAttached = ver.controlledClients.length > 1;
             const oneInactiveTabIsAttached = ver.controlledClients.length === 1 &&
-              !ver.controlledClients.find(sw => sw === activePageId);
+              !ver.controlledClients.find(client => client === activeTabId);
 
             return multipleTabsAttached || oneInactiveTabIsAttached;
           });
@@ -283,7 +283,7 @@ class Driver {
 
       if (swHasMoreThanOneClient) {
         throw new Error(
-          'You probably have multiple tabs open.'
+          'You probably have multiple tabs open to the same origin.'
         );
       }
 

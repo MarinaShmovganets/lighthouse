@@ -161,13 +161,13 @@ class ExtensionDriver extends Driver {
     return new Promise((resolve, reject) => {
       this.queryCurrentTab_().then(currentTab => {
         chrome.debugger.getTargets(targets => {
-          const tab = targets.find(tab => tab.tabId === currentTab.id);
+          const target = targets.find(target => target.tabId === currentTab.id);
 
-          if (!tab) {
+          if (!target) {
             reject(new Error('We can\'t find a target id.'));
           }
 
-          resolve(tab.id);
+          resolve(target.id);
         });
       });
     });

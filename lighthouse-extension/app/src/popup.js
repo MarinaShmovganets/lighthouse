@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', _ => {
         message = 'You probably have DevTools open.' +
           ' Close DevTools to use lighthouse';
       }
-      if (message.toLowerCase().startsWith('unable to kill')) {
-        message = 'You probably have multiple tabs open.' +
+      if (message.toLowerCase().includes('multiple tabs')) {
+        message = 'You probably have multiple tabs open to the same origin.' +
           ' Close the other tabs to use lighthouse.';
       }
 
