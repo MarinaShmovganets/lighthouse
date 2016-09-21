@@ -19,7 +19,7 @@ global.tr.exportTo('tr.b', function() {
     this.isEmpty_ = true;
     this.min_ = undefined;
     this.max_ = undefined;
-  };
+  }
 
   Range.prototype = {
     __proto__: Object.prototype,
@@ -264,6 +264,9 @@ global.tr.exportTo('tr.b', function() {
 
     return 0;
   };
+
+  Range.PERCENT_RANGE = Range.fromExplicitRange(0, 1);
+  Object.freeze(Range.PERCENT_RANGE);
 
   return {
     Range: Range

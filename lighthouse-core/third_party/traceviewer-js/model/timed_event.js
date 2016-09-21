@@ -5,8 +5,8 @@ found in the LICENSE file.
 **/
 
 require("../base/guid.js");
+require("../base/time_display_modes.js");
 require("./event.js");
-require("../value/time_display_mode.js");
 
 'use strict';
 
@@ -44,7 +44,7 @@ global.tr.exportTo('tr.model', function() {
     // event.
     bounds: function(that, opt_precisionUnit) {
       if (opt_precisionUnit === undefined)
-        opt_precisionUnit = tr.v.TimeDisplayModes.ms;
+        opt_precisionUnit = tr.b.TimeDisplayModes.ms;
 
       var startsBefore = opt_precisionUnit.roundedLess(that.start, this.start);
       var endsAfter = opt_precisionUnit.roundedLess(this.end, that.end);

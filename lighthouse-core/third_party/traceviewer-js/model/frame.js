@@ -84,9 +84,7 @@ global.tr.exportTo('tr.model', function() {
       Frame,
       {
         name: 'frame',
-        pluralName: 'frames',
-        singleViewElementName: 'tr-ui-a-single-frame-sub-view',
-        multiViewElementName: 'tr-ui-a-multi-frame-sub-view'
+        pluralName: 'frames'
       });
 
   return {

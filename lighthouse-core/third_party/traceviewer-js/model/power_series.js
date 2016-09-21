@@ -6,6 +6,7 @@ found in the LICENSE file.
 
 require("../base/range.js");
 require("../base/sorted_array_utils.js");
+require("../base/unit_scale.js");
 require("./event_container.js");
 require("./power_sample.js");
 
@@ -58,10 +59,10 @@ global.tr.exportTo('tr.model', function() {
      * Returns the total energy (in Joules) consumed between the specified
      * start and end timestamps (in milliseconds).
      */
-    getEnergyConsumed: function(start, end) {
+    getEnergyConsumedInJ: function(start, end) {
       var measurementRange = tr.b.Range.fromExplicitRange(start, end);
 
-      var energyConsumed = 0;
+      var energyConsumedInJ = 0;
       var startIndex = tr.b.findLowIndexInSortedArray(
           this.samples, x => x.start, start) - 1;
       var endIndex = tr.b.findLowIndexInSortedArray(
@@ -78,15 +79,16 @@ global.tr.exportTo('tr.model', function() {
         sampleRange.addValue(sample.start);
         sampleRange.addValue(nextSample ? nextSample.start : sample.start);
 
-        var timeIntersection = measurementRange.findIntersection(sampleRange);
+        var intersectionRangeInMs = measurementRange.findIntersection(
+            sampleRange);
 
-        // Divide by 1000 to convert milliseconds to seconds.
-        var durationInSeconds = timeIntersection.duration / 1000;
+        var durationInS = tr.b.convertUnit(intersectionRangeInMs.duration,
+            tr.b.UnitScale.Metric.MILLI, tr.b.UnitScale.Metric.NONE);
 
-        energyConsumed += durationInSeconds * sample.power;
+        energyConsumedInJ += durationInS * sample.powerInW;
       }
 
-      return energyConsumed;
+      return energyConsumedInJ;
     },
 
     getSamplesWithinRange: function(start, end) {

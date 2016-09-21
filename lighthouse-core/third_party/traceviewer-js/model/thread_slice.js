@@ -57,9 +57,7 @@ global.tr.exportTo('tr.model', function() {
       ThreadSlice,
       {
         name: 'slice',
-        pluralName: 'slices',
-        singleViewElementName: 'tr-ui-a-single-thread-slice-sub-view',
-        multiViewElementName: 'tr-ui-a-multi-thread-slice-sub-view'
+        pluralName: 'slices'
       });
 
   return {

@@ -4,8 +4,8 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
+require("../base/unit.js");
 require("./timed_event.js");
-require("../value/unit.js");
 
 'use strict';
 
@@ -22,6 +22,9 @@ global.tr.exportTo('tr.model', function() {
   function Slice(category, title, colorId, start, args, opt_duration,
                  opt_cpuStart, opt_cpuDuration, opt_argsStripped,
                  opt_bind_id) {
+    if (new.target) {
+      throw new Error("Can't instantiate pure virtual class Slice");
+    }
     tr.model.TimedEvent.call(this, start);
 
     this.category = category || '';
@@ -71,7 +74,7 @@ global.tr.exportTo('tr.model', function() {
 
     get userFriendlyName() {
       return 'Slice ' + this.title + ' at ' +
-          tr.v.Unit.byName.timeStampInMs.format(this.start);
+          tr.b.Unit.byName.timeStampInMs.format(this.start);
     },
 
     get stableId() {

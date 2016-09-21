@@ -4,16 +4,16 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
-require("../base/event.js");
-require("../base/event_target.js");
-require("../base/iteration_helpers.js");
-require("./time_display_mode.js");
+require("./event.js");
+require("./event_target.js");
+require("./iteration_helpers.js");
+require("./time_display_modes.js");
 require("./unit_scale.js");
 
 'use strict';
 
-global.tr.exportTo('tr.v', function() {
-  var TimeDisplayModes = tr.v.TimeDisplayModes;
+global.tr.exportTo('tr.b', function() {
+  var TimeDisplayModes = tr.b.TimeDisplayModes;
 
   var PLUS_MINUS_SIGN = String.fromCharCode(177);
 
@@ -33,9 +33,11 @@ global.tr.exportTo('tr.v', function() {
   };
 
   /** @constructor */
-  function Unit(unitName, jsonName, isDelta, improvementDirection, formatSpec) {
+  function Unit(unitName, jsonName, basePrefix, isDelta, improvementDirection,
+      formatSpec) {
     this.unitName = unitName;
     this.jsonName = jsonName;
+    this.basePrefix = basePrefix;
     this.isDelta = isDelta;
     this.improvementDirection = improvementDirection;
     this.formatSpec_ = formatSpec;
@@ -94,7 +96,10 @@ global.tr.exportTo('tr.v', function() {
             selectedPrefix = unitPrefix;
           }
           unitString += selectedPrefix.symbol || '';
-          value /= selectedPrefix.value;
+          value = tr.b.convertUnit(value, this.basePrefix, selectedPrefix);
+        } else {
+          value = tr.b.convertUnit(value, this.basePrefix,
+              tr.b.UnitScale.Metric.NONE);
         }
         unitString += formatSpec.unit;
       }
@@ -132,11 +137,8 @@ global.tr.exportTo('tr.v', function() {
   };
 
   Unit.timestampFromUs = function(us) {
-    return us / 1000;
-  };
-
-  Unit.maybeTimestampFromUs = function(us) {
-    return us === undefined ? undefined : us / 1000;
+    return tr.b.convertUnit(us, tr.b.UnitScale.Metric.MICRO,
+        tr.b.UnitScale.Metric.MILLI);
   };
 
   Object.defineProperty(Unit, 'currentTimeDisplayMode', {
@@ -243,8 +245,10 @@ global.tr.exportTo('tr.v', function() {
     if (Unit.byJSONName[jsonName] !== undefined)
       throw new Error('JSON unit \'' + jsonName + '\' alread exists');
 
-    var unit = new Unit(
-        unitName, jsonName, isDelta, improvementDirection, params.formatSpec);
+    var basePrefix = params.basePrefix ?
+        params.basePrefix : tr.b.UnitScale.Metric.NONE;
+    var unit = new Unit(unitName, jsonName, basePrefix,
+        isDelta, improvementDirection, params.formatSpec);
     Unit.byName[unitName] = unit;
     Unit.byJSONName[jsonName] = unit;
 
@@ -260,6 +264,7 @@ global.tr.exportTo('tr.v', function() {
   Unit.define({
     baseUnitName: 'timeDurationInMs',
     baseJsonName: 'ms',
+    basePrefix: tr.b.UnitScale.Metric.MILLI,
     formatSpec: function() {
       return Unit.currentTimeDisplayMode_.formatSpec;
     }
@@ -268,6 +273,7 @@ global.tr.exportTo('tr.v', function() {
   Unit.define({
     baseUnitName: 'timeStampInMs',
     baseJsonName: 'tsMs',
+    basePrefix: tr.b.UnitScale.Metric.MILLI,
     formatSpec: function() {
       return Unit.currentTimeDisplayMode_.formatSpec;
     }
@@ -290,7 +296,7 @@ global.tr.exportTo('tr.v', function() {
     baseJsonName: 'sizeInBytes',
     formatSpec: {
       unit: 'B',
-      unitPrefix: tr.v.UnitScale.Binary.AUTO,
+      unitPrefix: tr.b.UnitScale.Binary.AUTO,
       minimumFractionDigits: 1,
       maximumFractionDigits: 1
     }

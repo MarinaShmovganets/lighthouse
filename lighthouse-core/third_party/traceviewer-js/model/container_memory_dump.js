@@ -32,8 +32,9 @@ global.tr.exportTo('tr.model', function() {
    * @enum
    */
   ContainerMemoryDump.LevelOfDetail = {
-    LIGHT: 0,
-    DETAILED: 1
+    BACKGROUND: 0,
+    LIGHT: 1,
+    DETAILED: 2
   };
 
   ContainerMemoryDump.prototype = {

@@ -7,14 +7,10 @@ found in the LICENSE file.
 require("../metric_registry.js");
 require("./long_tasks_metric.js");
 require("../../value/numeric.js");
-require("../../value/value.js");
 
 'use strict';
 
 global.tr.exportTo('tr.metrics.sh', function() {
-  var normalizedPercentage_smallerIsBetter =
-    tr.v.Unit.byName.normalizedPercentage_smallerIsBetter;
-
   // The following math is easier if the units are seconds rather than ms,
   // so durations will be converted from ms to s.
   var MS_PER_S = 1000;
@@ -125,9 +121,10 @@ global.tr.exportTo('tr.metrics.sh', function() {
     if (overallHazard === undefined)
       overallHazard = 0;
 
-    values.addValue(new tr.v.NumericValue(
-        'hazard', new tr.v.ScalarNumeric(
-            normalizedPercentage_smallerIsBetter, overallHazard)));
+    var hist = new tr.v.Histogram('hazard',
+        tr.b.Unit.byName.normalizedPercentage_smallerIsBetter);
+    hist.addSample(overallHazard);
+    values.addHistogram(hist);
   }
 
   tr.metrics.MetricRegistry.register(hazardMetric);

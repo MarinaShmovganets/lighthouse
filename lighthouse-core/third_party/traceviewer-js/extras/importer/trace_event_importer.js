@@ -7,6 +7,7 @@ found in the LICENSE file.
 require("../../base/base64.js");
 require("../../base/color_scheme.js");
 require("../../base/range.js");
+require("../../base/unit.js");
 require("../../base/utils.js");
 require("./trace_code_entry.js");
 require("./trace_code_map.js");
@@ -30,7 +31,6 @@ require("../../model/slice_group.js");
 require("../../model/vm_region.js");
 require("../../model/x_marker_annotation.js");
 require("../../value/numeric.js");
-require("../../value/unit.js");
 
 'use strict';
 
@@ -52,18 +52,19 @@ global.tr.exportTo('tr.e.importer', function() {
     }
   }
 
-  var timestampFromUs = tr.v.Unit.timestampFromUs;
-  var maybeTimestampFromUs = tr.v.Unit.maybeTimestampFromUs;
-
   var PRODUCER = 'producer';
   var CONSUMER = 'consumer';
   var STEP = 'step';
 
+  var BACKGROUND = tr.model.ContainerMemoryDump.LevelOfDetail.BACKGROUND;
   var LIGHT = tr.model.ContainerMemoryDump.LevelOfDetail.LIGHT;
   var DETAILED = tr.model.ContainerMemoryDump.LevelOfDetail.DETAILED;
-  var MEMORY_DUMP_LEVEL_OF_DETAIL_ORDER = [undefined, LIGHT, DETAILED];
+  var MEMORY_DUMP_LEVEL_OF_DETAIL_ORDER = [undefined, BACKGROUND, LIGHT,
+                                           DETAILED];
 
   var GLOBAL_MEMORY_ALLOCATOR_DUMP_PREFIX = 'global/';
+
+  var ASYNC_CLOCK_SYNC_EVENT_TITLE_PREFIX = 'ClockSyncEvent.';
 
   // Map from raw memory dump byte stat names to model byte stat names. See
   // //base/trace_event/process_memory_maps.cc in Chromium.
@@ -129,6 +130,7 @@ global.tr.exportTo('tr.e.importer', function() {
     this.eventsWereFromString_ = false;
     this.softwareMeasuredCpuCount_ = undefined;
 
+
     this.allAsyncEvents_ = [];
     this.allFlowEvents_ = [];
     this.allObjectEvents_ = [];
@@ -141,6 +143,11 @@ global.tr.exportTo('tr.e.importer', function() {
     this.v8ProcessRootStackFrame_ = {};
     this.v8SamplingData_ = [];
 
+    // For tracking async events that is used to create back-compat clock sync
+    // event.
+    this.asyncClockSyncStart_ = undefined;
+    this.asyncClockSyncFinish_ = undefined;
+
     // Dump ID -> PID -> [process memory dump events].
     this.allMemoryDumpEvents_ = {};
 
@@ -150,6 +157,9 @@ global.tr.exportTo('tr.e.importer', function() {
     // For old Chrome traces with no clock domain metadata, just use a
     // placeholder clock domain.
     this.clockDomainId_ = tr.model.ClockDomainId.UNKNOWN_CHROME_LEGACY;
+    // A function able to transform timestamps in |clockDomainId| to timestamps
+    // in the model clock domain.
+    this.toModelTime_ = undefined;
 
     if (typeof(eventData) === 'string' || eventData instanceof String) {
       eventData = eventData.trim();
@@ -191,7 +201,7 @@ global.tr.exportTo('tr.e.importer', function() {
       // Some implementations specify displayTimeUnit
       if (container.displayTimeUnit) {
         var unitName = container.displayTimeUnit;
-        var unit = tr.v.TimeDisplayModes[unitName];
+        var unit = tr.b.TimeDisplayModes[unitName];
         if (unit === undefined) {
           throw new Error('Unit ' + unitName + ' is not supported.');
         }
@@ -316,14 +326,14 @@ global.tr.exportTo('tr.e.importer', function() {
      * 'C' phase events.
      */
     processCounterEvent: function(event) {
-      var ctr_name;
+      var ctrName;
       if (event.id !== undefined)
-        ctr_name = event.name + '[' + event.id + ']';
+        ctrName = event.name + '[' + event.id + ']';
       else
-        ctr_name = event.name;
+        ctrName = event.name;
 
       var ctr = this.model_.getOrCreateProcess(event.pid)
-          .getOrCreateCounter(event.cat, ctr_name);
+          .getOrCreateCounter(event.cat, ctrName);
       var reservedColorId = event.cname ? getEventColor(event) : undefined;
 
       // Initialize the counter's series fields if needed.
@@ -347,7 +357,7 @@ global.tr.exportTo('tr.e.importer', function() {
         }
       }
 
-      var ts = timestampFromUs(event.ts);
+      var ts = this.toModelTimeFromUs_(event.ts);
       ctr.series.forEach(function(series) {
         var val = event.args[series.name] ? event.args[series.name] : 0;
         series.addCounterSample(ts, val);
@@ -412,7 +422,7 @@ global.tr.exportTo('tr.e.importer', function() {
     processDurationEvent: function(event) {
       var thread = this.model_.getOrCreateProcess(event.pid)
         .getOrCreateThread(event.tid);
-      var ts = timestampFromUs(event.ts);
+      var ts = this.toModelTimeFromUs_(event.ts);
       if (!thread.sliceGroup.isTimestampValidForBeginOrEnd(ts)) {
         this.model_.importWarning({
           type: 'duration_parse_error',
@@ -423,9 +433,9 @@ global.tr.exportTo('tr.e.importer', function() {
 
       if (event.ph === 'B') {
         var slice = thread.sliceGroup.beginSlice(
-            event.cat, event.name, timestampFromUs(event.ts),
+            event.cat, event.name, this.toModelTimeFromUs_(event.ts),
             this.deepCopyIfNeeded_(event.args),
-            timestampFromUs(event.tts), event.argsStripped,
+            this.toModelTimeFromUs_(event.tts), event.argsStripped,
             getEventColor(event));
         slice.startStackFrame = this.getStackFrameForEvent_(event);
         this.setContextsFromThread_(thread, slice);
@@ -434,13 +444,14 @@ global.tr.exportTo('tr.e.importer', function() {
           throw new Error('This should never happen');
 
         thread.sliceGroup.beginSlice(event.cat, event.name,
-                                     timestampFromUs(event.ts),
+                                     this.toModelTimeFromUs_(event.ts),
                                      this.deepCopyIfNeeded_(event.args),
-                                     timestampFromUs(event.tts),
+                                     this.toModelTimeFromUs_(event.tts),
                                      event.argsStripped,
                                      getEventColor(event));
-        var slice = thread.sliceGroup.endSlice(timestampFromUs(event.ts),
-                                   timestampFromUs(event.tts));
+        var slice = thread.sliceGroup.endSlice(
+            this.toModelTimeFromUs_(event.ts),
+            this.toModelTimeFromUs_(event.tts));
         slice.startStackFrame = this.getStackFrameForEvent_(event);
         slice.endStackFrame = undefined;
       } else {
@@ -452,9 +463,10 @@ global.tr.exportTo('tr.e.importer', function() {
           return;
         }
 
-        var slice = thread.sliceGroup.endSlice(timestampFromUs(event.ts),
-                                               timestampFromUs(event.tts),
-                                               getEventColor(event));
+        var slice = thread.sliceGroup.endSlice(
+            this.toModelTimeFromUs_(event.ts),
+            this.toModelTimeFromUs_(event.tts),
+            getEventColor(event));
         if (event.name && slice.title != event.name) {
           this.model_.importWarning({
             type: 'title_match_error',
@@ -504,10 +516,11 @@ global.tr.exportTo('tr.e.importer', function() {
       }
 
       var slice = thread.sliceGroup.pushCompleteSlice(event.cat, event.name,
-          timestampFromUs(event.ts),
-          maybeTimestampFromUs(event.dur),
-          maybeTimestampFromUs(event.tts),
-          maybeTimestampFromUs(event.tdur),
+
+          this.toModelTimeFromUs_(event.ts),
+          this.maybeToModelTimeFromUs_(event.dur),
+          this.maybeToModelTimeFromUs_(event.tts),
+          this.maybeToModelTimeFromUs_(event.tdur),
           this.deepCopyIfNeeded_(event.args),
           event.argsStripped,
           getEventColor(event),
@@ -637,7 +650,7 @@ global.tr.exportTo('tr.e.importer', function() {
       }
 
       var instantEvent = new constructor(event.cat, event.name,
-          getEventColor(event), timestampFromUs(event.ts),
+          getEventColor(event), this.toModelTimeFromUs_(event.ts),
           this.deepCopyIfNeeded_(event.args));
 
       switch (instantEvent.type) {
@@ -733,7 +746,7 @@ global.tr.exportTo('tr.e.importer', function() {
 
       var sample = new tr.model.Sample(
           undefined /* cpu */, thread, 'V8 Sample',
-          timestampFromUs(event.ts), lastStackFrame, 1 /* weight */,
+          this.toModelTimeFromUs_(event.ts), lastStackFrame, 1 /* weight */,
           this.deepCopyIfNeeded_(event.args));
       this.model_.samples.push(sample);
     },
@@ -763,7 +776,7 @@ global.tr.exportTo('tr.e.importer', function() {
 
       var sample = new tr.model.Sample(
           undefined, thread, 'Trace Event Sample',
-          timestampFromUs(event.ts), stackFrame, 1,
+          this.toModelTimeFromUs_(event.ts), stackFrame, 1,
           this.deepCopyIfNeeded_(event.args));
       this.setContextsFromThread_(thread, sample);
       this.model_.samples.push(sample);
@@ -836,8 +849,9 @@ global.tr.exportTo('tr.e.importer', function() {
         //     ...
         //   }
         this.model_.clockSyncManager.addClockSyncMarker(
-            this.clockDomainId_, syncId, timestampFromUs(event.args.issue_ts),
-            timestampFromUs(event.ts));
+            this.clockDomainId_, syncId,
+            tr.b.Unit.timestampFromUs(event.args.issue_ts),
+            tr.b.Unit.timestampFromUs(event.ts));
       } else {
         // When Chrome is a tracing agent and is the recipient of the clock
         // sync request, the clock sync event looks like:
@@ -849,7 +863,7 @@ global.tr.exportTo('tr.e.importer', function() {
         //     ...
         //   }
         this.model_.clockSyncManager.addClockSyncMarker(
-            this.clockDomainId_, syncId, timestampFromUs(event.ts));
+            this.clockDomainId_, syncId, tr.b.Unit.timestampFromUs(event.ts));
       }
     },
 
@@ -876,9 +890,56 @@ global.tr.exportTo('tr.e.importer', function() {
       }
     },
 
+    initBackcompatClockSyncEventTracker_: function(event) {
+      if (event.name !== undefined &&
+          event.name.startsWith(ASYNC_CLOCK_SYNC_EVENT_TITLE_PREFIX) &&
+          event.ph === 'S')
+        this.asyncClockSyncStart_ = event;
+
+      if (event.name !== undefined &&
+          event.name.startsWith(ASYNC_CLOCK_SYNC_EVENT_TITLE_PREFIX) &&
+          event.ph === 'F')
+          this.asyncClockSyncFinish_ = event;
+      if (this.asyncClockSyncStart_ == undefined ||
+          this.asyncClockSyncFinish_ == undefined)
+        return;
+
+      // Older version of Chrome doesn't support clock sync API, hence
+      // telemetry get around it by marking the clock sync events with
+      // console.time & console.timeEnd. When we encounter async events
+      // with named started with 'ClockSyncEvent.' prefix, create a
+      // synthetic clock sync events based on their timestamps.
+      var syncId =
+          this.asyncClockSyncStart_.name.substring(
+              ASYNC_CLOCK_SYNC_EVENT_TITLE_PREFIX.length);
+      if (syncId !==
+          this.asyncClockSyncFinish_.name.substring(
+              ASYNC_CLOCK_SYNC_EVENT_TITLE_PREFIX.length)) {
+         throw new Error('Inconsistent clock sync id of async clock sync ' +
+                         'events.');
+      }
+      var clockSyncEvent = {
+          ph: 'c',
+          args: {
+            sync_id: syncId,
+            issue_ts: this.asyncClockSyncStart_.ts
+          },
+          ts: this.asyncClockSyncFinish_.ts,
+      };
+      this.asyncClockSyncStart_ = undefined;
+      this.asyncClockSyncFinish_ = undefined;
+      return clockSyncEvent;
+    },
+
     importClockSyncMarkers: function() {
+      var asyncClockSyncStart, asyncClockSyncFinish;
       for (var i = 0; i < this.events_.length; i++) {
         var event = this.events_[i];
+
+        var possibleBackCompatClockSyncEvent =
+            this.initBackcompatClockSyncEventTracker_(event);
+        if (possibleBackCompatClockSyncEvent)
+            this.processClockSyncEvent(possibleBackCompatClockSyncEvent);
 
         if (event.ph !== 'c')
           continue;
@@ -1213,7 +1274,7 @@ global.tr.exportTo('tr.e.importer', function() {
         var sample = new tr.model.Sample(
             cpu, thread,
             event.name,
-            timestampFromUs(event.ts),
+            this.toModelTimeFromUs_(event.ts),
             stackFrame,
             event.weight);
         m.samples.push(sample);
@@ -1372,17 +1433,17 @@ global.tr.exportTo('tr.e.importer', function() {
           if (event.ph === 'F') {
             // Create a slice from start to end.
             var asyncSliceConstructor =
-               tr.model.AsyncSlice.getConstructor(
+               tr.model.AsyncSlice.subTypes.getConstructor(
                   events[0].event.cat,
                   name);
             var slice = new asyncSliceConstructor(
                 events[0].event.cat,
                 name,
                 getEventColor(events[0].event),
-                timestampFromUs(events[0].event.ts),
+                this.toModelTimeFromUs_(events[0].event.ts),
                 tr.b.concatenateObjects(events[0].event.args,
                                       events[events.length - 1].event.args),
-                timestampFromUs(event.ts - events[0].event.ts),
+                this.toModelTimeFromUs_(event.ts - events[0].event.ts),
                 true, undefined, undefined, events[0].event.argsStripped);
             slice.startThread = events[0].thread;
             slice.endThread = asyncEventState.thread;
@@ -1429,16 +1490,16 @@ global.tr.exportTo('tr.e.importer', function() {
                 subName = subName + ':' + events[j].event.args.step;
 
               var asyncSliceConstructor =
-                 tr.model.AsyncSlice.getConstructor(
+                 tr.model.AsyncSlice.subTypes.getConstructor(
                     events[0].event.cat,
                     subName);
               var subSlice = new asyncSliceConstructor(
                   events[0].event.cat,
                   subName,
                   getEventColor(event, subName + j),
-                  timestampFromUs(events[startIndex].event.ts),
+                  this.toModelTimeFromUs_(events[startIndex].event.ts),
                   this.deepCopyIfNeeded_(events[j].event.args),
-                  timestampFromUs(
+                  this.toModelTimeFromUs_(
                     events[endIndex].event.ts - events[startIndex].event.ts),
                       undefined, undefined,
                       events[startIndex].event.argsStripped);
@@ -1559,17 +1620,17 @@ global.tr.exportTo('tr.e.importer', function() {
 
           var isTopLevel = (eventStateEntry.parentEntry === undefined);
           var asyncSliceConstructor =
-              tr.model.AsyncSlice.getConstructor(
+              tr.model.AsyncSlice.subTypes.getConstructor(
                 eventStateEntry.event.cat,
                 eventStateEntry.event.name);
 
-          var thread_start = undefined;
-          var thread_duration = undefined;
+          var threadStart = undefined;
+          var threadDuration = undefined;
           if (startState.event.tts && startState.event.use_async_tts) {
-            thread_start = timestampFromUs(startState.event.tts);
+            threadStart = this.toModelTimeFromUs_(startState.event.tts);
             if (endState.event.tts) {
-              var thread_end = timestampFromUs(endState.event.tts);
-              thread_duration = thread_end - thread_start;
+              var threadEnd = this.toModelTimeFromUs_(endState.event.tts);
+              threadDuration = threadEnd - threadStart;
             }
           }
 
@@ -1577,12 +1638,12 @@ global.tr.exportTo('tr.e.importer', function() {
             eventStateEntry.event.cat,
             eventStateEntry.event.name,
             getEventColor(endState.event),
-            timestampFromUs(startState.event.ts),
+            this.toModelTimeFromUs_(startState.event.ts),
             sliceArgs,
-            timestampFromUs(endState.event.ts - startState.event.ts),
+            this.toModelTimeFromUs_(endState.event.ts - startState.event.ts),
             isTopLevel,
-            thread_start,
-            thread_duration,
+            threadStart,
+            threadDuration,
             startState.event.argsStripped);
 
           slice.startThread = startState.thread;
@@ -1665,17 +1726,17 @@ global.tr.exportTo('tr.e.importer', function() {
         return false;
       }
 
-      function createFlowEvent(thread, event, opt_slice) {
+      var createFlowEvent = function(thread, event, opt_slice) {
         var startSlice, flowId, flowStartTs;
 
         if (event.bind_id) {
           // Support Flow API v2.
           startSlice = opt_slice;
           flowId = event.bind_id;
-          flowStartTs = timestampFromUs(event.ts + event.dur);
+          flowStartTs = this.toModelTimeFromUs_(event.ts + event.dur);
         } else {
           // Support Flow API v1.
-          var ts = timestampFromUs(event.ts);
+          var ts = this.toModelTimeFromUs_(event.ts);
           startSlice = thread.sliceGroup.findSliceAtTs(ts);
           if (startSlice === undefined)
             return undefined;
@@ -1695,10 +1756,10 @@ global.tr.exportTo('tr.e.importer', function() {
         flowEvent.endStackFrame = undefined;
         startSlice.outFlowEvents.push(flowEvent);
         return flowEvent;
-      }
+      }.bind(this);
 
-      function finishFlowEventWith(flowEvent, thread, event,
-                                   refGuid, bindToParent, opt_slice) {
+      var finishFlowEventWith = function(
+          flowEvent, thread, event, refGuid, bindToParent, opt_slice) {
         var endSlice;
 
         if (event.bind_id) {
@@ -1706,7 +1767,7 @@ global.tr.exportTo('tr.e.importer', function() {
           endSlice = opt_slice;
         } else {
           // Support Flow API v1.
-          var ts = timestampFromUs(event.ts);
+          var ts = this.toModelTimeFromUs_(event.ts);
           if (bindToParent) {
             endSlice = thread.sliceGroup.findSliceAtTs(ts);
           } else {
@@ -1718,14 +1779,15 @@ global.tr.exportTo('tr.e.importer', function() {
 
         endSlice.inFlowEvents.push(flowEvent);
         flowEvent.endSlice = endSlice;
-        flowEvent.duration = timestampFromUs(event.ts) - flowEvent.start;
+        flowEvent.duration =
+            this.toModelTimeFromUs_(event.ts) - flowEvent.start;
         flowEvent.endStackFrame = that.getStackFrameForEvent_(event);
         that.mergeArgsInto_(flowEvent.args, event.args, flowEvent.title);
         return true;
-      }
+      }.bind(this);
 
-      function processFlowConsumer(flowIdToEvent, sliceGuidToEvent, event,
-          slice) {
+      function processFlowConsumer(
+          flowIdToEvent, sliceGuidToEvent, event, slice) {
         var flowEvent = flowIdToEvent[event.bind_id];
         if (flowEvent === undefined) {
           that.model_.importWarning({
@@ -1776,8 +1838,6 @@ global.tr.exportTo('tr.e.importer', function() {
           return false;
         }
         flowIdToEvent[event.bind_id] = flowEvent;
-
-        return;
       }
 
       // Actual import.
@@ -1908,7 +1968,7 @@ global.tr.exportTo('tr.e.importer', function() {
       if (this.allObjectEvents_.length === 0)
         return;
 
-      function processEvent(objectEventState) {
+      var processEvent = function(objectEventState) {
         var event = objectEventState.event;
         var scopedId = this.scopedIdForEvent_(event);
         var thread = objectEventState.thread;
@@ -1928,7 +1988,7 @@ global.tr.exportTo('tr.e.importer', function() {
           });
         }
         var process = thread.parent;
-        var ts = timestampFromUs(event.ts);
+        var ts = this.toModelTimeFromUs_(event.ts);
         var instance;
         if (event.ph === 'N') {
           try {
@@ -1998,7 +2058,7 @@ global.tr.exportTo('tr.e.importer', function() {
 
         if (instance)
           instance.colorId = getEventColor(event, instance.typeName);
-      }
+      }.bind(this);
 
       this.allObjectEvents_.sort(function(x, y) {
         var d = x.event.ts - y.event.ts;
@@ -2156,7 +2216,7 @@ global.tr.exportTo('tr.e.importer', function() {
       for (var pid in dumpIdEvents) {
         var processEvents = dumpIdEvents[pid];
         for (var i = 0; i < processEvents.length; i++)
-          globalRange.addValue(timestampFromUs(processEvents[i].ts));
+          globalRange.addValue(this.toModelTimeFromUs_(processEvents[i].ts));
       }
       if (globalRange.isEmpty)
         throw new Error('Internal error: Global memory dump without events');
@@ -2206,7 +2266,7 @@ global.tr.exportTo('tr.e.importer', function() {
       // Calculate the range of the process memory dump.
       var processRange = new tr.b.Range();
       for (var i = 0; i < processEvents.length; i++)
-        processRange.addValue(timestampFromUs(processEvents[i].ts));
+        processRange.addValue(this.toModelTimeFromUs_(processEvents[i].ts));
       if (processRange.isEmpty)
         throw new Error('Internal error: Process memory dump without events');
 
@@ -2256,7 +2316,7 @@ global.tr.exportTo('tr.e.importer', function() {
       if (levelsOfDetail.process === undefined) {
         // Infer level of detail from the presence of VM regions in legacy
         // traces (where raw process memory dump events don't contain the
-        // level_of_detail field).
+        // level_of_detail field). These traces will not have BACKGROUND mode.
         levelsOfDetail.process = processMemoryDump.vmRegions ? DETAILED : LIGHT;
       }
       if (!this.updateMemoryDumpLevelOfDetail_(
@@ -2585,6 +2645,9 @@ global.tr.exportTo('tr.e.importer', function() {
       var rawLevelOfDetail = dumps.level_of_detail;
       var level;
       switch (rawLevelOfDetail) {
+        case 'background':
+          level = BACKGROUND;
+          break;
         case 'light':
           level = LIGHT;
           break;
@@ -2757,8 +2820,8 @@ global.tr.exportTo('tr.e.importer', function() {
                 break;
               }
               var unit = attrArgs.units === 'bytes' ?
-                  tr.v.Unit.byName.sizeInBytes_smallerIsBetter :
-                  tr.v.Unit.byName.unitlessNumber_smallerIsBetter;
+                  tr.b.Unit.byName.sizeInBytes_smallerIsBetter :
+                  tr.b.Unit.byName.unitlessNumber_smallerIsBetter;
               var value = parseInt(attrValue, 16);
               allocatorDump.addNumeric(attrName,
                   new tr.v.ScalarNumeric(unit, value));
@@ -2975,6 +3038,31 @@ global.tr.exportTo('tr.e.importer', function() {
           }
         }
       }
+    },
+
+    /**
+     * Converts |ts| (in microseconds) to a timestamp in the model clock domain
+     * (in milliseconds).
+     */
+    toModelTimeFromUs_: function(ts) {
+      if (!this.toModelTime_) {
+        this.toModelTime_ =
+            this.model_.clockSyncManager.getModelTimeTransformer(
+                this.clockDomainId_);
+      }
+
+      return this.toModelTime_(tr.b.Unit.timestampFromUs(ts));
+    },
+
+    /**
+     * Converts |ts| (in microseconds) to a timestamp in the model clock domain
+     * (in milliseconds). If |ts| is undefined, undefined is returned.
+     */
+    maybeToModelTimeFromUs_: function(ts) {
+      if (ts === undefined)
+        return undefined;
+
+      return this.toModelTimeFromUs_(ts);
     }
   };
 

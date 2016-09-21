@@ -19,7 +19,6 @@ require("./thread_slice.js");
 global.tr.exportTo('tr.model', function() {
   var AsyncSlice = tr.model.AsyncSlice;
   var AsyncSliceGroup = tr.model.AsyncSliceGroup;
-  var Slice = tr.model.Slice;
   var SliceGroup = tr.model.SliceGroup;
   var ThreadSlice = tr.model.ThreadSlice;
   var ThreadTimeSlice = tr.model.ThreadTimeSlice;

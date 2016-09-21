@@ -10,6 +10,8 @@ require("../base/interval_tree.js");
 require("../base/quad.js");
 require("../base/range.js");
 require("../base/task.js");
+require("../base/time_display_modes.js");
+require("../base/unit.js");
 require("../core/auditor.js");
 require("../core/filter.js");
 require("./alert.js");
@@ -30,8 +32,6 @@ require("./sample.js");
 require("./stack_frame.js");
 require("./user_model/user_expectation.js");
 require("./user_model/user_model.js");
-require("../value/time_display_mode.js");
-require("../value/unit.js");
 
 'use strict';
 
@@ -194,7 +194,7 @@ global.tr.exportTo('tr', function() {
     convertTimestampToModelTime: function(sourceClockDomainName, ts) {
       if (sourceClockDomainName !== 'traceEventClock')
         throw new Error('Only traceEventClock is supported.');
-      return tr.v.Unit.timestampFromUs(ts) +
+      return tr.b.Unit.timestampFromUs(ts) +
         this.timestampShiftToZeroAmount_;
     },
 
@@ -366,7 +366,7 @@ global.tr.exportTo('tr', function() {
      */
     get intrinsicTimeUnit() {
       if (this.intrinsicTimeUnit_ === undefined)
-        return tr.v.TimeDisplayModes.ms;
+        return tr.b.TimeDisplayModes.ms;
       return this.intrinsicTimeUnit_;
     },
 

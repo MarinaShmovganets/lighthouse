@@ -4,10 +4,10 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
+require("../base/unit.js");
 require("./event_info.js");
 require("./event_set.js");
 require("./timed_event.js");
-require("../value/unit.js");
 
 'use strict';
 
@@ -36,7 +36,7 @@ global.tr.exportTo('tr.model', function() {
 
     get userFriendlyName() {
       return 'Alert ' + this.title + ' at ' +
-          tr.v.Unit.byName.timeStampInMs.format(this.start);
+          tr.b.Unit.byName.timeStampInMs.format(this.start);
     }
   };
 
@@ -44,9 +44,7 @@ global.tr.exportTo('tr.model', function() {
       Alert,
       {
         name: 'alert',
-        pluralName: 'alerts',
-        singleViewElementName: 'tr-ui-a-alert-sub-view',
-        multiViewElementName: 'tr-ui-a-alert-sub-view'
+        pluralName: 'alerts'
       });
 
   return {

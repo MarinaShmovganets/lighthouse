@@ -7,42 +7,40 @@ found in the LICENSE file.
 require("../../base/iteration_helpers.js");
 require("../../base/multi_dimensional_view.js");
 require("../../base/range.js");
+require("../../base/unit.js");
 require("../metric_registry.js");
 require("../../model/container_memory_dump.js");
 require("../../model/helpers/chrome_model_helper.js");
 require("../../model/memory_allocator_dump.js");
-require("../../value/numeric.js");
-require("../../value/unit.js");
-require("../../value/value.js");
+require("../../value/histogram.js");
 
 'use strict';
 
 global.tr.exportTo('tr.metrics.sh', function() {
+  var BACKGROUND = tr.model.ContainerMemoryDump.LevelOfDetail.BACKGROUND;
   var LIGHT = tr.model.ContainerMemoryDump.LevelOfDetail.LIGHT;
   var DETAILED = tr.model.ContainerMemoryDump.LevelOfDetail.DETAILED;
-  var ScalarNumeric = tr.v.ScalarNumeric;
   var sizeInBytes_smallerIsBetter =
-      tr.v.Unit.byName.sizeInBytes_smallerIsBetter;
+      tr.b.Unit.byName.sizeInBytes_smallerIsBetter;
   var unitlessNumber_smallerIsBetter =
-      tr.v.Unit.byName.unitlessNumber_smallerIsBetter;
+      tr.b.Unit.byName.unitlessNumber_smallerIsBetter;
   var DISPLAYED_SIZE_NUMERIC_NAME =
       tr.model.MemoryAllocatorDump.DISPLAYED_SIZE_NUMERIC_NAME;
 
   var LEVEL_OF_DETAIL_NAMES = new Map();
+  LEVEL_OF_DETAIL_NAMES.set(BACKGROUND, 'background');
   LEVEL_OF_DETAIL_NAMES.set(LIGHT, 'light');
   LEVEL_OF_DETAIL_NAMES.set(DETAILED, 'detailed');
 
-  var MEMORY_NUMERIC_BUILDER_MAP = new WeakMap();
+  var BOUNDARIES_FOR_UNIT_MAP = new WeakMap();
   // For unitless numerics (process counts), we use 20 linearly scaled bins
   // from 0 to 20.
-  MEMORY_NUMERIC_BUILDER_MAP.set(unitlessNumber_smallerIsBetter,
-      tr.v.NumericBuilder.createLinear(
-          tr.v.Unit.byName.unitlessNumber_smallerIsBetter,
-          tr.b.Range.fromExplicitRange(0, 20), 20));
+  BOUNDARIES_FOR_UNIT_MAP.set(unitlessNumber_smallerIsBetter,
+      tr.v.HistogramBinBoundaries.createLinear(0, 20, 20));
   // For size numerics (subsystem and vm stats), we use 1 bin from 0 B to
   // 1 KiB and 4*24 exponentially scaled bins from 1 KiB to 16 GiB (=2^24 KiB).
-  MEMORY_NUMERIC_BUILDER_MAP.set(sizeInBytes_smallerIsBetter,
-      new tr.v.NumericBuilder(sizeInBytes_smallerIsBetter, 0)
+  BOUNDARIES_FOR_UNIT_MAP.set(sizeInBytes_smallerIsBetter,
+      new tr.v.HistogramBinBoundaries(0)
           .addBinBoundary(1024 /* 1 KiB */)
           .addExponentialBins(16 * 1024 * 1024 * 1024 /* 16 GiB */, 4 * 24));
 
@@ -119,7 +117,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
 
   function canonicalizeName(name) {
     return name.toLowerCase().replace(' ', '_');
-  };
+  }
 
   var USER_FRIENDLY_BROWSER_NAMES = {
     'chrome': 'Chrome',
@@ -229,7 +227,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
    *     memory:{chrome, webview}:
    *         {browser_process, renderer_processes, ..., all_processes}:
    *         process_count
-   *     type: tr.v.Numeric (histogram over all matching global memory dumps)
+   *     type: tr.v.Histogram (over all matching global memory dumps)
    *     unit: unitlessNumber_smallerIsBetter
    *
    *   * MEMORY USAGE REPORTED BY CHROME
@@ -237,7 +235,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
    *         {browser_process, renderer_processes, ..., all_processes}:
    *         reported_by_chrome[:{v8, malloc, ...}]:
    *         {effective_size, allocated_objects_size, locked_size}
-   *     type: tr.v.Numeric (histogram over all matching global memory dumps)
+   *     type: tr.v.Histogram (over all matching global memory dumps)
    *     unit: sizeInBytes_smallerIsBetter
    */
   function addGeneralMemoryDumpValues(browserNameToGlobalDumps, values) {
@@ -251,6 +249,21 @@ global.tr.exportTo('tr.metrics.sh', function() {
             unit: unitlessNumber_smallerIsBetter,
             descriptionPrefixBuilder: buildProcessCountDescriptionPrefix
           });
+
+          if (processDump.totals !== undefined) {
+            tr.b.iterItems(SYSTEM_TOTAL_VALUE_PROPERTIES,
+                function(propertyName, propertySpec) {
+                  addProcessScalar({
+                    source: 'reported_by_os',
+                    property: propertyName,
+                    component: ['system_memory'],
+                    value: propertySpec.getPropertyFunction(processDump),
+                    unit: sizeInBytes_smallerIsBetter,
+                    descriptionPrefixBuilder:
+                        propertySpec.descriptionPrefixBuilder
+                  });
+                });
+          }
 
           // Add memory:<browser-name>:<process-name>:reported_by_chrome:...
           // values.
@@ -267,48 +280,29 @@ global.tr.exportTo('tr.metrics.sh', function() {
                     descriptionPrefixBuilder: descriptionPrefixBuilder
                   });
                 });
-          });
-          // Add memory:<browser-name>:<process-name>:reported_by_chrome:v8:
-          // allocated_by_malloc:effective_size when available.
-          var v8Dump = processDump.getMemoryAllocatorDumpByFullName('v8');
-          if (v8Dump !== undefined) {
-            var allocatedByMalloc = 0;
-            var peakAllocatedByMalloc = 0;
-            var hasMallocDump = false;
-            v8Dump.children.forEach(function(isolateDump) {
-              var mallocDump =
-                  isolateDump.getDescendantDumpByFullName('malloc');
-              if (mallocDump === undefined)
-                return;
-              if (mallocDump.numerics['effective_size'] !== undefined) {
-                allocatedByMalloc +=
-                    mallocDump.numerics['effective_size'].value;
+            // Some dump providers add allocated objects size as
+            // "allocated_objects" child dump.
+            if (rootAllocatorDump.numerics['allocated_objects_size'] ===
+                    undefined) {
+              var allocatedObjectsDump =
+                  rootAllocatorDump.getDescendantDumpByFullName(
+                      'allocated_objects');
+              if (allocatedObjectsDump !== undefined) {
+                addProcessScalar({
+                  source: 'reported_by_chrome',
+                  component: [rootAllocatorDump.name],
+                  property: 'allocated_objects_size',
+                  value: allocatedObjectsDump.numerics['size'],
+                  descriptionPrefixBuilder:
+                      CHROME_VALUE_PROPERTIES['allocated_objects_size']
+                });
               }
-              if (mallocDump.numerics['peak_size'] !== undefined)
-                peakAllocatedByMalloc += mallocDump.numerics['peak_size'].value;
-              hasMallocDump = true;
-            });
-            if (hasMallocDump) {
-              addProcessScalar({
-                source: 'reported_by_chrome',
-                component: ['v8', 'allocated_by_malloc'],
-                property: 'effective_size',
-                value: allocatedByMalloc,
-                unit: sizeInBytes_smallerIsBetter,
-                descriptionPrefixBuilder:
-                    CHROME_VALUE_PROPERTIES['effective_size']
-              });
-              addProcessScalar({
-                source: 'reported_by_chrome',
-                component: ['v8', 'allocated_by_malloc'],
-                property: 'peak_size',
-                value: peakAllocatedByMalloc,
-                unit: sizeInBytes_smallerIsBetter,
-                descriptionPrefixBuilder:
-                    CHROME_VALUE_PROPERTIES['peak_size']
-              });
             }
-          }
+          });
+
+          // Add memory:<browser-name>:<process-name>:reported_by_chrome:v8:
+          //     {heap, allocated_by_malloc}:...
+          addV8MemoryDumpValues(processDump, addProcessScalar);
         },
         function(componentTree) {
           // Subtract memory:<browser-name>:<process-name>:reported_by_chrome:
@@ -320,6 +314,79 @@ global.tr.exportTo('tr.metrics.sh', function() {
           for (var i = 0; i < componentTree.values.length; i++)
             componentTree.values[i].total -= tracingNode.values[i].total;
         }, values);
+  }
+
+  /**
+   * Add memory dump values calculated from V8 components excluding
+   * 'heap_spaces/other_spaces'.
+   *
+   * @param {!tr.model.ProcessMemoryDump} processDump The process memory dump.
+   * @param {!function} addProcessScalar The callback for adding a scalar value.
+   */
+  function addV8MemoryDumpValues(processDump, addProcessScalar) {
+    var v8Dump = processDump.getMemoryAllocatorDumpByFullName('v8');
+    if (v8Dump === undefined)
+      return;
+    v8Dump.children.forEach(function(isolateDump) {
+      // v8:allocated_by_malloc:...
+      var mallocDump = isolateDump.getDescendantDumpByFullName('malloc');
+      if (mallocDump !== undefined) {
+        addV8ComponentValues(mallocDump, ['v8', 'allocated_by_malloc'],
+                             addProcessScalar);
+      }
+      // v8:heap:...
+      var heapDump = isolateDump.getDescendantDumpByFullName('heap_spaces');
+      if (heapDump !== undefined) {
+        addV8ComponentValues(heapDump, ['v8', 'heap'], addProcessScalar);
+        heapDump.children.forEach(function(spaceDump) {
+          if (spaceDump.name === 'other_spaces')
+            return;
+          addV8ComponentValues(spaceDump, ['v8', 'heap', spaceDump.name],
+                               addProcessScalar);
+        });
+      }
+    });
+
+    // V8 generates bytecode when interpreting and code objects when
+    // compiling the javascript. Total code size includes the size
+    // of code and bytecode objects.
+    addProcessScalar({
+      source: 'reported_by_chrome',
+      component: ['v8'],
+      property: 'code_and_metadata_size',
+      value: v8Dump.numerics['code_and_metadata_size'],
+      descriptionPrefixBuilder:
+          buildCodeAndMetadataSizeValueDescriptionPrefix
+    });
+    addProcessScalar({
+      source: 'reported_by_chrome',
+      component: ['v8'],
+      property: 'code_and_metadata_size',
+      value: v8Dump.numerics['bytecode_and_metadata_size'],
+      descriptionPrefixBuilder:
+          buildCodeAndMetadataSizeValueDescriptionPrefix
+    });
+  }
+
+  /**
+   * Add memory dump values calculated from the specified V8 component.
+   *
+   * @param {!tr.model.MemoryAllocatorDump} v8Dump The V8 memory dump.
+   * @param {!Array<string>} componentPath The component path for reporting.
+   * @param {!function} addProcessScalar The callback for adding a scalar value.
+   */
+  function addV8ComponentValues(componentDump, componentPath,
+                                addProcessScalar) {
+      tr.b.iterItems(CHROME_VALUE_PROPERTIES,
+          function(propertyName, descriptionPrefixBuilder) {
+            addProcessScalar({
+              source: 'reported_by_chrome',
+              component: componentPath,
+              property: propertyName,
+              value: componentDump.numerics[propertyName],
+              descriptionPrefixBuilder: descriptionPrefixBuilder
+            });
+          });
   }
 
   /**
@@ -421,6 +488,23 @@ global.tr.exportTo('tr.metrics.sh', function() {
     }),
   };
 
+  var SYSTEM_TOTAL_VALUE_PROPERTIES = {
+    'resident_size': {
+      getPropertyFunction: function(processDump) {
+        return processDump.totals.residentBytes;
+      },
+      descriptionPrefixBuilder: buildOsValueDescriptionPrefix.bind(
+          undefined, 'resident set size (RSS)')
+    },
+    'peak_resident_size': {
+      getPropertyFunction: function(processDump) {
+        return processDump.totals.peakResidentBytes;
+      },
+      descriptionPrefixBuilder: buildOsValueDescriptionPrefix.bind(
+          undefined, 'peak resident set size')
+    }
+  };
+
   /**
    * Add heavy memory dump values calculated from heavy global memory dumps to
    * |values|. In particular, this function adds the following values:
@@ -434,14 +518,14 @@ global.tr.exportTo('tr.metrics.sh', function() {
    *         {browser_process, renderer_processes, ..., all_processes}:
    *         reported_by_os:gpu_memory:[{gl, graphics, ...}:]
    *         proportional_resident_size
-   *     type: tr.v.Numeric (histogram over matching heavy global memory dumps)
+   *     type: tr.v.Histogram (over matching heavy global memory dumps)
    *     unit: sizeInBytes_smallerIsBetter
    *
    *   * MEMORY USAGE REPORTED BY CHROME
    *     memory:{chrome, webview}:
    *         {browser_process, renderer_processes, ..., all_processes}:
    *         reported_by_chrome:v8:code_and_metadata_size
-   *     type: tr.v.Numeric (histogram over matching heavy global memory dumps)
+   *     type: tr.v.Histogram (over matching heavy global memory dumps)
    *     unit: sizeInBytes_smallerIsBetter
    */
   function addDetailedMemoryDumpValues(browserNameToGlobalDumps, values) {
@@ -491,31 +575,6 @@ global.tr.exportTo('tr.metrics.sh', function() {
                 value: memtrackChildDump.numerics['memtrack_pss'],
                 descriptionPrefixBuilder: descriptionPrefixBuilder
               });
-            });
-          }
-
-          // Add memory:<browser-name>:<process-name>:reported_by_chrome:v8:
-          // code_and_metadata_size when available.
-          var v8Dump = processDump.getMemoryAllocatorDumpByFullName('v8');
-          if (v8Dump !== undefined) {
-            // V8 generates bytecode when interpreting and code objects when
-            // compiling the javascript. Total code size includes the size
-            // of code and bytecode objects.
-            addProcessScalar({
-              source: 'reported_by_chrome',
-              component: ['v8'],
-              property: 'code_and_metadata_size',
-              value: v8Dump.numerics['code_and_metadata_size'],
-              descriptionPrefixBuilder:
-                  buildCodeAndMetadataSizeValueDescriptionPrefix
-            });
-            addProcessScalar({
-              source: 'reported_by_chrome',
-              component: ['v8'],
-              property: 'code_and_metadata_size',
-              value: v8Dump.numerics['bytecode_and_metadata_size'],
-              descriptionPrefixBuilder:
-                  buildCodeAndMetadataSizeValueDescriptionPrefix
             });
           }
         }, function(componentTree) {}, values);
@@ -656,11 +715,11 @@ global.tr.exportTo('tr.metrics.sh', function() {
    *
    *   * DUMP COUNTS
    *     memory:{chrome, webview}:all_processes:dump_count[:{light, detailed}]
-   *     type: tr.v.ScalarNumeric (scalar over the whole trace)
+   *     type: tr.v.Histogram
    *     unit: unitlessNumber_smallerIsBetter
    *
    * Note that unlike all other values generated by the memory metric, the
-   * global memory dump counts are NOT instances of tr.v.Numeric (histogram)
+   * global memory dump counts are NOT instances of tr.v.Histogram
    * because it doesn't make sense to aggregate them (they are already counts
    * over all global dumps associated with the relevant browser).
    */
@@ -695,7 +754,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
   }
 
   /**
-   * Add a tr.v.ScalarNumeric value to |values| reporting that the number of
+   * Add a tr.v.Histogram value to |values| reporting that the number of
    * |levelOfDetailName| memory dumps added by |browserName| was
    * |levelOfDetailCount|.
    */
@@ -707,22 +766,22 @@ global.tr.exportTo('tr.metrics.sh', function() {
       nameParts.push(levelOfDetailName);
     var name = nameParts.join(':');
 
-    // Build the underlying numeric for the memory value.
-    var numeric = new ScalarNumeric(
-        unitlessNumber_smallerIsBetter, levelOfDetailDumpCount);
+    // Build the underlying histogram for the memory value.
+    var histogram = new tr.v.Histogram(name, unitlessNumber_smallerIsBetter,
+        BOUNDARIES_FOR_UNIT_MAP.get(unitlessNumber_smallerIsBetter));
+    histogram.addSample(levelOfDetailDumpCount);
 
     // Build the options for the memory value.
-    var description = [
+    histogram.description = [
       'total number of',
       levelOfDetailName || 'all',
       'memory dumps added by',
       convertBrowserNameToUserFriendlyName(browserName),
       'to the trace'
     ].join(' ');
-    var options = { description: description };
 
     // Report the memory value.
-    values.addValue(new tr.v.NumericValue(name, numeric, options));
+    values.addHistogram(histogram);
   }
 
   /**
@@ -758,35 +817,35 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * memory dump, the following values will be reported (for Chrome):
    *
    *    memory:chrome:browser_process:source:X:A:proportional_resident_size :
-   *        Numeric aggregated over [
+   *        Histogram aggregated over [
    *          sum of X:A in all 'browser' process dumps in global dump 1,
    *          ...
    *          sum of X:A in all 'browser' process dumps in global dump N
    *        ]
    *
    *    memory:chrome:browser_process:source:X:B:proportional_resident_size :
-   *        Numeric aggregated over [
+   *        Histogram aggregated over [
    *          sum of X:B in all 'browser' process dumps in global dump 1,
    *          ...
    *          sum of X:B in all 'browser' process dumps in global dump N
    *        ]
    *
    *    memory:chrome:browser_process:source:X:proportional_resident_size :
-   *        Numeric aggregated over [
+   *        Histogram aggregated over [
    *          sum of X:A+X:B in all 'browser' process dumps in global dump 1,
    *          ...
    *          sum of X:A+X:B in all 'browser' process dumps in global dump N
    *        ]
    *
    *    memory:chrome:browser_process:source:Y:proportional_resident_size :
-   *        Numeric aggregated over [
+   *        Histogram aggregated over [
    *          sum of Y in all 'browser' process dumps in global dump 1,
    *          ...
    *          sum of Y in all 'browser' process dumps in global dump N
    *        ]
    *
    *    memory:chrome:browser_process:source:proportional_resident_size :
-   *        Numeric aggregated over [
+   *        Histogram aggregated over [
    *          sum of X:A+X:B+Y in all 'browser' process dumps in global dump 1,
    *          ...
    *          sum of X:A+X:B+Y in all 'browser' process dumps in global dump N
@@ -795,35 +854,35 @@ global.tr.exportTo('tr.metrics.sh', function() {
    *    ...
    *
    *    memory:chrome:all_processes:source:X:A:proportional_resident_size :
-   *        Numeric aggregated over [
+   *        Histogram aggregated over [
    *          sum of X:A in all process dumps in global dump 1,
    *          ...
    *          sum of X:A in all process dumps in global dump N,
    *    ]
    *
    *    memory:chrome:all_processes:source:X:B:proportional_resident_size :
-   *        Numeric aggregated over [
+   *        Histogram aggregated over [
    *          sum of X:B in all process dumps in global dump 1,
    *          ...
    *          sum of X:B in all process dumps in global dump N,
    *    ]
    *
    *    memory:chrome:all_processes:source:X:proportional_resident_size :
-   *        Numeric aggregated over [
+   *        Histogram aggregated over [
    *          sum of X:A+X:B in all process dumps in global dump 1,
    *          ...
    *          sum of X:A+X:B in all process dumps in global dump N,
    *    ]
    *
    *    memory:chrome:all_processes:source:Y:proportional_resident_size :
-   *        Numeric aggregated over [
+   *        Histogram aggregated over [
    *          sum of Y in all process dumps in global dump 1,
    *          ...
    *          sum of Y in all process dumps in global dump N
    *    ]
    *
    *    memory:chrome:all_processes:source:proportional_resident_size :
-   *        Numeric aggregated over [
+   *        Histogram aggregated over [
    *          sum of X:A+X:B+Y in all process dumps in global dump 1,
    *          ...
    *          sum of X:A+X:B+Y in all process dumps in global dump N
@@ -844,8 +903,8 @@ global.tr.exportTo('tr.metrics.sh', function() {
    *         source: string,
    *         componentPath: (!Array<string>|undefined),
    *         propertyName: (string|undefined),
-   *         value: (!tr.v.ScalarNumeric|number|undefined),
-   *         unit: (!tr.v.Unit|undefined),
+   *         value: (!tr.v.Histogram|number|undefined),
+   *         unit: (!tr.b.Unit|undefined),
    *         descriptionPrefixBuilder: (!function(!Array<string>): string)
    *     }))}
    *     customProcessDumpValueExtractor Callback for extracting values from a
@@ -927,11 +986,11 @@ global.tr.exportTo('tr.metrics.sh', function() {
           }
 
           var value, unit;
-          if (spec.value instanceof ScalarNumeric) {
+          if (spec.value instanceof tr.v.ScalarNumeric) {
             value = spec.value.value;
             unit = spec.value.unit;
             if (spec.unit !== undefined) {
-              throw new Error('ScalarNumeric value for ' +
+              throw new Error('Histogram value for ' +
                   createDetailsForErrorMessage() + ' already specifies a unit');
             }
           } else {
@@ -1013,7 +1072,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
   /**
    * For the given |browserName| (e.g. 'chrome'), |processName|
    * (e.g. 'gpu_process'), |propertyName| (e.g. 'effective_size'),
-   * |componentPath| (e.g. ['v8']), add a tr.v.Numeric with |unit| aggregating
+   * |componentPath| (e.g. ['v8']), add a tr.v.Histogram with |unit| aggregating
    * the total values of the associated |componentNode| across all timestamps
    * (corresponding to global memory dumps associated with the given browser)
    * to |values|.
@@ -1031,18 +1090,17 @@ global.tr.exportTo('tr.metrics.sh', function() {
     var name = nameParts.join(':');
 
     // Build the underlying numeric for the memory value.
-    var numeric = buildMemoryNumericFromNode(componentNode, unit);
+    var numeric = buildMemoryNumericFromNode(name, componentNode, unit);
 
     // Build the options for the memory value.
-    var description = [
+    numeric.description = [
       descriptionPrefixBuilder(componentPath, processName),
       'in',
       convertBrowserNameToUserFriendlyName(browserName)
     ].join(' ');
-    var options = { description: description };
 
     // Report the memory value.
-    values.addValue(new tr.v.NumericValue(name, numeric, options));
+    values.addHistogram(numeric);
 
     // Recursively report memory values for sub-components.
     var depth = componentPath.length;
@@ -1057,13 +1115,14 @@ global.tr.exportTo('tr.metrics.sh', function() {
   }
 
   /**
-   * Create a memory tr.v.Numeric (histogram) with |unit| and add all total
-   * values in |node| to it.
+   * Create a memory tr.v.Histogram with |unit| and add all total values in
+   * |node| to it.
    */
-  function buildMemoryNumericFromNode(node, unit) {
-    var numeric = MEMORY_NUMERIC_BUILDER_MAP.get(unit).build();
-    node.values.forEach(v => numeric.add(v.total));
-    return numeric;
+  function buildMemoryNumericFromNode(name, node, unit) {
+    var histogram = new tr.v.Histogram(
+        name, unit, BOUNDARIES_FOR_UNIT_MAP.get(unit));
+    node.values.forEach(v => histogram.addSample(v.total));
+    return histogram;
   }
 
   tr.metrics.MetricRegistry.register(memoryMetric, {

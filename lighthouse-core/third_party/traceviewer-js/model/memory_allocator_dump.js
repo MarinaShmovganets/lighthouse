@@ -5,8 +5,8 @@ found in the LICENSE file.
 **/
 
 require("../base/iteration_helpers.js");
+require("../base/unit.js");
 require("../value/numeric.js");
-require("../value/unit.js");
 
 'use strict';
 
@@ -57,7 +57,7 @@ global.tr.exportTo('tr.model', function() {
 
     // For debugging purposes.
     this.guid = opt_guid;
-  };
+  }
 
   /**
    * Size numeric names. Please refer to the Memory Dump Graph Metric
@@ -140,7 +140,7 @@ global.tr.exportTo('tr.model', function() {
     }
   };
 
-  // TODO(petrcermak): Consider moving this to tr.v.Numeric.
+  // TODO(petrcermak): Consider moving this to tr.v.Histogram.
   MemoryAllocatorDump.aggregateNumerics = function(numerics, opt_model) {
     var shouldLogWarning = !!opt_model;
     var aggregatedUnit = undefined;
@@ -165,7 +165,7 @@ global.tr.exportTo('tr.model', function() {
         }
         // Use the most generic unit when the numerics don't agree (best
         // effort).
-        aggregatedUnit = tr.v.Unit.byName.unitlessNumber_smallerIsBetter;
+        aggregatedUnit = tr.b.Unit.byName.unitlessNumber_smallerIsBetter;
       }
 
       aggregatedValue += numeric.value;

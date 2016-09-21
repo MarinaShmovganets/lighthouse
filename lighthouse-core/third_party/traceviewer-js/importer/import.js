@@ -9,6 +9,7 @@ require("../base/timing.js");
 require("./empty_importer.js");
 require("./importer.js");
 require("./user_model_builder.js");
+require("../ui/base/overlay.js");
 
 'use strict';
 

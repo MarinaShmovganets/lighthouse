@@ -27,9 +27,7 @@ global.tr.exportTo('tr.model.um', function() {
     },
 
     sortExpectations: function() {
-      Array.prototype.sort.call(this.expectations_, function(x, y) {
-        return x.start - y.start;
-      });
+      this.expectations_.sortEvents((x, y) => (x.start - y.start));
     },
 
     get expectations() {

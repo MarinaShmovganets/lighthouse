@@ -47,7 +47,7 @@ global.tr.exportTo('tr.model', function() {
 
     createObjectInstance_: function(
         parent, scopedId, category, name, creationTs, opt_baseTypeName) {
-      var constructor = tr.model.ObjectInstance.getConstructor(
+      var constructor = tr.model.ObjectInstance.subTypes.getConstructor(
           category, name);
       var instance = new constructor(
           parent, scopedId, category, name, creationTs, opt_baseTypeName);

@@ -4,9 +4,8 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
-require("../base/extension_registry.js");
+require("../base/unit.js");
 require("./event.js");
-require("../value/unit.js");
 
 'use strict';
 
@@ -73,7 +72,7 @@ global.tr.exportTo('tr.model', function() {
       return 'Snapshot of ' +
              this.objectInstance.typeName + ' ' +
              this.objectInstance.id + ' @ ' +
-             tr.v.Unit.byName.timeStampInMs.format(this.ts);
+             tr.b.Unit.byName.timeStampInMs.format(this.ts);
     }
   };
 
@@ -81,16 +80,8 @@ global.tr.exportTo('tr.model', function() {
       ObjectSnapshot,
       {
         name: 'objectSnapshot',
-        pluralName: 'objectSnapshots',
-        singleViewElementName: 'tr-ui-a-single-object-snapshot-sub-view',
-        multiViewElementName: 'tr-ui-a-multi-object-sub-view'
+        pluralName: 'objectSnapshots'
       });
-
-  var options = new tr.b.ExtensionRegistryOptions(
-      tr.b.TYPE_BASED_REGISTRY_MODE);
-  options.mandatoryBaseClass = ObjectSnapshot;
-  options.defaultConstructor = ObjectSnapshot;
-  tr.b.decorateExtensionRegistry(ObjectSnapshot, options);
 
   return {
     ObjectSnapshot: ObjectSnapshot

@@ -4,8 +4,7 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
-require("../base/base.js");
-require("../value/unit.js");
+require("../base/unit.js");
 
 'use strict';
 
@@ -45,7 +44,7 @@ global.tr.exportTo('tr.model', function() {
       eventStats.numEvents++;
 
       var timeIntervalKey = Math.floor(
-          tr.v.Unit.timestampFromUs(ts) / this.TIME_INTERVAL_SIZE_IN_MS);
+          tr.b.Unit.timestampFromUs(ts) / this.TIME_INTERVAL_SIZE_IN_MS);
       var eventStatsByTimeInverval =
           this.traceEventStatsInTimeIntervals_.get(timeIntervalKey);
       if (eventStatsByTimeInverval === undefined) {

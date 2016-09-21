@@ -92,8 +92,8 @@ global.tr.exportTo('tr.e.cc', function() {
       if (!this.typeName_)
         throw 'Unable to determine typeName';
       var found = false;
-      for (var type_name in INPUT_EVENT_TYPE_NAMES) {
-        if (this.typeName === INPUT_EVENT_TYPE_NAMES[type_name]) {
+      for (var typeName in INPUT_EVENT_TYPE_NAMES) {
+        if (this.typeName === INPUT_EVENT_TYPE_NAMES[typeName]) {
           found = true;
           break;
         }
@@ -422,14 +422,14 @@ global.tr.exportTo('tr.e.cc', function() {
         return;
 
       var rasterWorkerThreads = rendererHelper.rasterWorkerThreads;
-      var prepare_tile_id = prepareTiles.args.prepare_tiles_id;
+      var prepareTileId = prepareTiles.args.prepare_tiles_id;
       var pendingEventQueue = [];
 
       // Collect all the rasterizer tasks. Return the cached copy if possible.
       if (sortedRasterizerSlices.length === 0)
         this.sortRasterizerSlices(rasterWorkerThreads, sortedRasterizerSlices);
 
-      // TODO(yuhao): Once TaskSetFinishedTaskImpl also get the prepare_tile_id
+      // TODO(yuhao): Once TaskSetFinishedTaskImpl also get the prepareTileId
       // we can simply track by checking id rather than counting.
       var numFinishedTasks = 0;
       var RASTER_TASK_TITLE = 'RasterizerTaskImpl::RunOnWorkerThread';
@@ -441,7 +441,7 @@ global.tr.exportTo('tr.e.cc', function() {
 
         if (task.title === RASTER_TASK_TITLE ||
             task.title === IMAGEDECODE_TASK_TITLE) {
-          if (task.args.source_prepare_tiles_id === prepare_tile_id)
+          if (task.args.source_prepare_tiles_id === prepareTileId)
             this.addEntireSliceHierarchy(task.mostTopLevelSlice);
         } else if (task.title === FINISHED_TASK_TITLE) {
           if (task.start > prepareTiles.start) {
@@ -612,7 +612,7 @@ global.tr.exportTo('tr.e.cc', function() {
     allTypeNames.push('InputLatency::' + eventTypeName);
   });
 
-  AsyncSlice.register(
+  AsyncSlice.subTypes.register(
     InputLatencyAsyncSlice,
     {
       typeNames: allTypeNames,

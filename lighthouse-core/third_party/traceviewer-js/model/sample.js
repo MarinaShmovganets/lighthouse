@@ -4,8 +4,8 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
+require("../base/unit.js");
 require("./timed_event.js");
-require("../value/unit.js");
 
 'use strict';
 
@@ -47,7 +47,7 @@ global.tr.exportTo('tr.model', function() {
     },
 
     get userFriendlyName() {
-      return 'Sample at ' + tr.v.Unit.byName.timeStampInMs.format(this.start);
+      return 'Sample at ' + tr.b.Unit.byName.timeStampInMs.format(this.start);
     }
   };
 
@@ -55,9 +55,7 @@ global.tr.exportTo('tr.model', function() {
       Sample,
       {
         name: 'sample',
-        pluralName: 'samples',
-        singleViewElementName: 'tr-ui-a-single-sample-sub-view',
-        multiViewElementName: 'tr-ui-a-multi-sample-sub-view'
+        pluralName: 'samples'
       });
 
   return {

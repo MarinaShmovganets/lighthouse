@@ -35,7 +35,7 @@ global.tr.exportTo('tr.model.um', function() {
     }
   };
 
-  tr.model.um.UserExpectation.register(AnimationExpectation, {
+  tr.model.um.UserExpectation.subTypes.register(AnimationExpectation, {
     stageTitle: 'Animation',
     colorId: tr.b.ColorScheme.getColorIdForReservedName('rail_animation')
   });

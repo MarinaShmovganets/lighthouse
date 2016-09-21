@@ -6,10 +6,10 @@ found in the LICENSE file.
 
 require("../../base/range_utils.js");
 require("../../base/statistics.js");
+require("../../base/unit.js");
 require("../compound_event_selection_state.js");
 require("../event_set.js");
 require("../timed_event.js");
-require("../../value/unit.js");
 
 'use strict';
 
@@ -63,7 +63,7 @@ global.tr.exportTo('tr.model.um', function() {
 
     get userFriendlyName() {
       return this.title + ' User Expectation at ' +
-          tr.v.Unit.byName.timeStampInMs.format(this.start);
+          tr.b.Unit.byName.timeStampInMs.format(this.start);
     },
 
     get stableId() {
@@ -71,8 +71,10 @@ global.tr.exportTo('tr.model.um', function() {
     },
 
     get typeInfo() {
-      if (!this.typeInfo_)
-        this.typeInfo_ = UserExpectation.findTypeInfo(this.constructor);
+      if (!this.typeInfo_) {
+        this.typeInfo_ = UserExpectation.subTypes.findTypeInfo(
+            this.constructor);
+      }
 
       // If you set Subclass.prototype = {}, then you must explicitly specify
       // constructor in that prototype object!
@@ -116,10 +118,11 @@ global.tr.exportTo('tr.model.um', function() {
     }
   };
 
+  var subTypes = {};
   var options = new tr.b.ExtensionRegistryOptions(tr.b.BASIC_REGISTRY_MODE);
-  tr.b.decorateExtensionRegistry(UserExpectation, options);
+  tr.b.decorateExtensionRegistry(subTypes, options);
 
-  UserExpectation.addEventListener('will-register', function(e) {
+  subTypes.addEventListener('will-register', function(e) {
     var metadata = e.typeInfo.metadata;
 
     if (metadata.stageTitle === undefined) {
@@ -138,8 +141,7 @@ global.tr.exportTo('tr.model.um', function() {
       {
         name: 'userExpectation',
         pluralName: 'userExpectations',
-        singleViewElementName: 'tr-ui-a-single-user-expectation-sub-view',
-        multiViewElementName: 'tr-ui-a-multi-user-expectation-sub-view'
+        subTypes: subTypes
       });
 
   return {

@@ -27,13 +27,9 @@ require("./range.js");
 'use strict';
 
 global.tr.exportTo('tr.b', function() {
+  var identity = x => x;
 
-  function identity(d) {
-    return d;
-  }
-
-  function Statistics() {
-  }
+  var Statistics = {};
 
   /* Returns the quotient, or zero if the denominator is zero.*/
   Statistics.divideIfPossibleOrZero = function(numerator, denominator) {
@@ -52,9 +48,37 @@ global.tr.exportTo('tr.b', function() {
   };
 
   Statistics.mean = function(ary, opt_func, opt_this) {
-    if (ary.length == 0)
+    var func = opt_func || identity;
+    var sum = 0;
+    var i = 0;
+
+    for (var elt of ary)
+      sum += func.call(opt_this, elt, i++);
+
+    if (i === 0)
       return undefined;
-    return Statistics.sum(ary, opt_func, opt_this) / ary.length;
+
+    return sum / i;
+  };
+
+  Statistics.geometricMean = function(ary, opt_func, opt_this) {
+    var func = opt_func || identity;
+    var i = 0;
+    var logsum = 0;
+
+    // The geometric mean is expressed as the arithmetic mean of logarithms
+    // in order to prevent overflow.
+    for (var elt of ary) {
+      var x = func.call(opt_this, elt, i++);
+      if (x <= 0)
+        return 0;
+      logsum += Math.log(Math.abs(x));
+    }
+
+    if (i === 0)
+      return 1;
+
+    return Math.exp(logsum / i);
   };
 
   // Returns undefined if the sum of the weights is zero.
@@ -501,10 +525,10 @@ global.tr.exportTo('tr.b', function() {
    * letters like |x|.
    * The probability that |X| ever exactly equals |x| is P(X==x) = 0.
    *
-   * For a discrete probability distribution, aka histogram, see tr.v.Numeric.
+   * For a discrete probability distribution, see tr.v.Histogram.
    */
   function Distribution() {
-  };
+  }
 
   Distribution.prototype = {
     /* The probability density of the random variable at value |x| is the

@@ -5,11 +5,11 @@ found in the LICENSE file.
 **/
 
 require("../base/iteration_helpers.js");
+require("../base/unit.js");
 require("./container_memory_dump.js");
 require("./event_registry.js");
 require("./memory_allocator_dump.js");
 require("../value/numeric.js");
-require("../value/unit.js");
 
 'use strict';
 
@@ -78,7 +78,7 @@ global.tr.exportTo('tr.model', function() {
 
     get userFriendlyName() {
       return 'Global memory dump at ' +
-          tr.v.Unit.byName.timeStampInMs.format(this.start);
+          tr.b.Unit.byName.timeStampInMs.format(this.start);
     },
 
     get containerName() {
@@ -221,7 +221,7 @@ global.tr.exportTo('tr.model', function() {
       if (sizeNumeric !== undefined) {
         size = sizeNumeric.value;
         shouldDefineSize = true;
-        if (sizeNumeric.unit !== tr.v.Unit.byName.sizeInBytes_smallerIsBetter) {
+        if (sizeNumeric.unit !== tr.b.Unit.byName.sizeInBytes_smallerIsBetter) {
           this.model.importWarning({
             type: 'memory_dump_parse_error',
             message: 'Invalid unit of \'size\' numeric of memory allocator ' +
@@ -237,9 +237,9 @@ global.tr.exportTo('tr.model', function() {
             type: 'memory_dump_parse_error',
             message: 'Size provided by memory allocator dump \'' +
                 dump.fullName + '\'' +
-                tr.v.Unit.byName.sizeInBytes.format(size) +
+                tr.b.Unit.byName.sizeInBytes.format(size) +
                 ') is less than ' + dependencyName + ' (' +
-                tr.v.Unit.byName.sizeInBytes.format(dependencySize) + ').'
+                tr.b.Unit.byName.sizeInBytes.format(dependencySize) + ').'
           });
           dump.infos.push({
             type: dependencyInfoType,
@@ -328,7 +328,7 @@ global.tr.exportTo('tr.model', function() {
       size = Math.max(size, aggregatedChildrenSize, largestOwnerSize);
 
       dump.numerics[SIZE_NUMERIC_NAME] = new tr.v.ScalarNumeric(
-          tr.v.Unit.byName.sizeInBytes_smallerIsBetter, size);
+          tr.b.Unit.byName.sizeInBytes_smallerIsBetter, size);
 
       // Add a virtual child to make up for extra size of the dump with
       // respect to its children (if applicable).
@@ -339,7 +339,7 @@ global.tr.exportTo('tr.model', function() {
         virtualChild.parent = dump;
         dump.children.unshift(virtualChild);
         virtualChild.numerics[SIZE_NUMERIC_NAME] = new tr.v.ScalarNumeric(
-            tr.v.Unit.byName.sizeInBytes_smallerIsBetter,
+            tr.b.Unit.byName.sizeInBytes_smallerIsBetter,
             size - aggregatedChildrenSize);
       }
     },
@@ -700,7 +700,7 @@ global.tr.exportTo('tr.model', function() {
         });
       }
       dump.numerics[EFFECTIVE_SIZE_NUMERIC_NAME] = new tr.v.ScalarNumeric(
-          tr.v.Unit.byName.sizeInBytes_smallerIsBetter, effectiveSize);
+          tr.b.Unit.byName.sizeInBytes_smallerIsBetter, effectiveSize);
     },
 
     aggregateNumerics: function() {
@@ -856,9 +856,7 @@ global.tr.exportTo('tr.model', function() {
       GlobalMemoryDump,
       {
         name: 'globalMemoryDump',
-        pluralName: 'globalMemoryDumps',
-        singleViewElementName: 'tr-ui-a-container-memory-dump-sub-view',
-        multiViewElementName: 'tr-ui-a-container-memory-dump-sub-view'
+        pluralName: 'globalMemoryDumps'
       });
 
   return {

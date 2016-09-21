@@ -4,9 +4,8 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
-require("../base/extension_registry.js");
+require("../base/unit.js");
 require("./timed_event.js");
-require("../value/unit.js");
 
 'use strict';
 
@@ -64,7 +63,7 @@ global.tr.exportTo('tr.model', function() {
 
     if (opt_argsStripped !== undefined)
       this.argsStripped = opt_argsStripped;
-  };
+  }
 
   AsyncSlice.prototype = {
     __proto__: tr.model.TimedEvent.prototype,
@@ -92,7 +91,7 @@ global.tr.exportTo('tr.model', function() {
 
     get userFriendlyName() {
       return 'Async slice ' + this.title + ' at ' +
-          tr.v.Unit.byName.timeStampInMs.format(this.start);
+          tr.b.Unit.byName.timeStampInMs.format(this.start);
     },
 
     get stableId() {
@@ -139,17 +138,9 @@ global.tr.exportTo('tr.model', function() {
       AsyncSlice,
       {
         name: 'asyncSlice',
-        pluralName: 'asyncSlices',
-        singleViewElementName: 'tr-ui-a-single-async-slice-sub-view',
-        multiViewElementName: 'tr-ui-a-multi-async-slice-sub-view'
+        pluralName: 'asyncSlices'
       });
 
-
-  var options = new tr.b.ExtensionRegistryOptions(
-      tr.b.TYPE_BASED_REGISTRY_MODE);
-  options.mandatoryBaseClass = AsyncSlice;
-  options.defaultConstructor = AsyncSlice;
-  tr.b.decorateExtensionRegistry(AsyncSlice, options);
 
   return {
     AsyncSlice: AsyncSlice

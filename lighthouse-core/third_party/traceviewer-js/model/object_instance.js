@@ -4,7 +4,6 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
-require("../base/extension_registry.js");
 require("../base/range.js");
 require("../base/sorted_array_utils.js");
 require("./event.js");
@@ -82,7 +81,7 @@ global.tr.exportTo('tr.model', function() {
       }
 
       var snapshotConstructor =
-          tr.model.ObjectSnapshot.getConstructor(
+          tr.model.ObjectSnapshot.subTypes.getConstructor(
               this.category, this.name);
       var snapshot = new snapshotConstructor(this, ts, args);
       this.snapshots.push(snapshot);
@@ -186,16 +185,8 @@ global.tr.exportTo('tr.model', function() {
     ObjectInstance,
     {
       name: 'objectInstance',
-      pluralName: 'objectInstances',
-      singleViewElementName: 'tr-ui-a-single-object-instance-sub-view',
-      multiViewElementName: 'tr-ui-a-multi-object-sub-view'
+      pluralName: 'objectInstances'
     });
-
-  var options = new tr.b.ExtensionRegistryOptions(
-      tr.b.TYPE_BASED_REGISTRY_MODE);
-  options.mandatoryBaseClass = ObjectInstance;
-  options.defaultConstructor = ObjectInstance;
-  tr.b.decorateExtensionRegistry(ObjectInstance, options);
 
   return {
     ObjectInstance: ObjectInstance

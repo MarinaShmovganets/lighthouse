@@ -4,10 +4,10 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
+require("../base/unit.js");
 require("./container_memory_dump.js");
 require("./memory_allocator_dump.js");
 require("./vm_region.js");
-require("../value/unit.js");
 
 'use strict';
 
@@ -61,14 +61,14 @@ global.tr.exportTo('tr.model', function() {
 
     this.tracingOverheadOwnershipSetUp_ = false;
     this.tracingOverheadDiscountedFromVmRegions_ = false;
-  };
+  }
 
   ProcessMemoryDump.prototype = {
     __proto__: tr.model.ContainerMemoryDump.prototype,
 
     get userFriendlyName() {
       return 'Process memory dump at ' +
-          tr.v.Unit.byName.timeStampInMs.format(this.start);
+          tr.b.Unit.byName.timeStampInMs.format(this.start);
     },
 
     get containerName() {
@@ -232,9 +232,7 @@ global.tr.exportTo('tr.model', function() {
       ProcessMemoryDump,
       {
         name: 'processMemoryDump',
-        pluralName: 'processMemoryDumps',
-        singleViewElementName: 'tr-ui-a-container-memory-dump-sub-view',
-        multiViewElementName: 'tr-ui-a-container-memory-dump-sub-view'
+        pluralName: 'processMemoryDumps'
       });
 
   return {

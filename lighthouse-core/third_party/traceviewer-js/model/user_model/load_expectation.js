@@ -54,7 +54,7 @@ global.tr.exportTo('tr.model.um', function() {
     constructor: LoadExpectation
   };
 
-  tr.model.um.UserExpectation.register(LoadExpectation, {
+  tr.model.um.UserExpectation.subTypes.register(LoadExpectation, {
     stageTitle: 'Load',
     colorId: tr.b.ColorScheme.getColorIdForReservedName('rail_load')
   });

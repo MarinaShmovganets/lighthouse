@@ -6,9 +6,9 @@ found in the LICENSE file.
 
 require("../base/iteration_helpers.js");
 require("../base/sorted_array_utils.js");
+require("../base/unit.js");
 require("./event.js");
 require("./event_registry.js");
-require("../value/unit.js");
 
 'use strict';
 
@@ -82,7 +82,7 @@ global.tr.exportTo('tr.model', function() {
 
     get userFriendlyName() {
       return 'Counter sample from ' + this.series_.title + ' at ' +
-          tr.v.Unit.byName.timeStampInMs.format(this.timestamp);
+          tr.b.Unit.byName.timeStampInMs.format(this.timestamp);
     }
   };
 
@@ -91,9 +91,7 @@ global.tr.exportTo('tr.model', function() {
       CounterSample,
       {
         name: 'counterSample',
-        pluralName: 'counterSamples',
-        singleViewElementName: 'tr-ui-a-counter-sample-sub-view',
-        multiViewElementName: 'tr-ui-a-counter-sample-sub-view'
+        pluralName: 'counterSamples'
       });
 
   return {

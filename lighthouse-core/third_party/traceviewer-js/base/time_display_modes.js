@@ -11,7 +11,7 @@ require("./unit_scale.js");
 /**
  * @fileoverview Time currentDisplayUnit
  */
-global.tr.exportTo('tr.v', function() {
+global.tr.exportTo('tr.b', function() {
   var msDisplayMode = {
     scale: 1e-3,
     suffix: 'ms',
@@ -21,7 +21,7 @@ global.tr.exportTo('tr.v', function() {
     },
     formatSpec: {
       unit: 's',
-      unitPrefix: tr.v.UnitScale.MetricTime.MILLI,
+      unitPrefix: tr.b.UnitScale.Metric.MILLI,
       minimumFractionDigits: 3,
     }
   };
@@ -35,7 +35,7 @@ global.tr.exportTo('tr.v', function() {
     },
     formatSpec: {
       unit: 's',
-      unitPrefix: tr.v.UnitScale.MetricTime.NANO,
+      unitPrefix: tr.b.UnitScale.Metric.NANO,
       maximumFractionDigits: 0
     }
   };

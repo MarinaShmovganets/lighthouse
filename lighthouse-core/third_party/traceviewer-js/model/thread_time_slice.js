@@ -145,9 +145,7 @@ global.tr.exportTo('tr.model', function() {
       ThreadTimeSlice,
       {
         name: 'threadTimeSlice',
-        pluralName: 'threadTimeSlices',
-        singleViewElementName: 'tr-ui-a-single-thread-time-slice-sub-view',
-        multiViewElementName: 'tr-ui-a-multi-thread-time-slice-sub-view'
+        pluralName: 'threadTimeSlices'
       });
 
 

@@ -20,7 +20,6 @@ global.tr.exportTo('tr.model', function() {
   var ColorScheme = tr.b.ColorScheme;
   var Counter = tr.model.Counter;
   var CpuSlice = tr.model.CpuSlice;
-  var Slice = tr.model.Slice;
 
   /**
    * The Cpu represents a Cpu from the kernel's point of view.
@@ -61,7 +60,7 @@ global.tr.exportTo('tr.model', function() {
 
     findTopmostSlicesInThisContainer: function*(eventPredicate, opt_this) {
       // All CpuSlices are toplevel since CpuSlices do not nest.
-      for (var s of slices) {
+      for (var s of this.slices) {
         yield * s.findTopmostSlicesRelativeToThisSlice(
             eventPredicate, opt_this);
       }

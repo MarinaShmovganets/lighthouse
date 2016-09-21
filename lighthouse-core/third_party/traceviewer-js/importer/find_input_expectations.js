@@ -70,23 +70,30 @@ global.tr.exportTo('tr.importer', function() {
   );
 
   var RENDERER_FLING_TITLE = 'InputHandlerProxy::HandleGestureFling::started';
+  var PLAYBACK_EVENT_TITLE = 'VideoPlayback';
 
   var CSS_ANIMATION_TITLE = 'Animation';
 
-  // If there's less than this much time between the end of one event and the
-  // start of the next, then they might be merged.
-  // There was not enough thought given to this value, so if you have any slight
-  // reason to change it, then please do so. It might also be good to split this
-  // into multiple values.
+  /**
+   * If there's less than this much time between the end of one event and the
+   * start of the next, then they might be merged.
+   * There was not enough thought given to this value, so if you have any slight
+   * reason to change it, then please do so. It might also be good to split this
+   * into multiple values.
+   */
   var INPUT_MERGE_THRESHOLD_MS = 200;
-  var ANIMATION_MERGE_THRESHOLD_MS = 32;  // 2x 60FPS frames
+  var ANIMATION_MERGE_THRESHOLD_MS = 32;   // 2x 60FPS frames
 
-  // If two MouseWheel events begin this close together, then they're an
-  // Animation, not two responses.
+  /**
+   * If two MouseWheel events begin this close together, then they're an
+   * Animation, not two responses.
+   */
   var MOUSE_WHEEL_THRESHOLD_MS = 40;
 
-  // If two MouseMoves are more than this far apart, then they're two Responses,
-  // not Animation.
+  /**
+   * If two MouseMoves are more than this far apart, then they're two Responses,
+   * not Animation.
+   */
   var MOUSE_MOVE_THRESHOLD_MS = 40;
 
   // Strings used to name IRs.
@@ -100,6 +107,7 @@ global.tr.exportTo('tr.importer', function() {
   var SCROLL_IR_NAME = 'Scroll';
   var CSS_IR_NAME = 'CSS';
   var WEBGL_IR_NAME = 'WebGL';
+  var VIDEO_IR_NAME = 'Video';
 
   // TODO(benjhayden) Find a better home for this.
   function compareEvents(x, y) {
@@ -175,6 +183,7 @@ global.tr.exportTo('tr.importer', function() {
       handleScrollEvents,
       handleCSSAnimations,
       handleWebGLAnimations,
+      handleVideoAnimations
     ];
     handlers.forEach(function(handler) {
       protoExpectations.push.apply(protoExpectations, handler(
@@ -184,7 +193,9 @@ global.tr.exportTo('tr.importer', function() {
     return protoExpectations;
   }
 
-  // Every keyboard event is a Response.
+  /**
+   * Every keyboard event is a Response.
+   */
   function handleKeyboardEvents(modelHelper, sortedInputEvents) {
     var protoExpectations = [];
     forEventTypesIn(sortedInputEvents, KEYBOARD_TYPE_NAMES, function(event) {
@@ -196,7 +207,9 @@ global.tr.exportTo('tr.importer', function() {
     return protoExpectations;
   }
 
-  // Some mouse events can be translated directly into Responses.
+  /**
+   * Some mouse events can be translated directly into Responses.
+   */
   function handleMouseResponseEvents(modelHelper, sortedInputEvents) {
     var protoExpectations = [];
     forEventTypesIn(
@@ -208,17 +221,18 @@ global.tr.exportTo('tr.importer', function() {
     });
     return protoExpectations;
   }
-
-  // MouseWheel events are caused either by a physical wheel on a physical
-  // mouse, or by a touch-drag gesture on a track-pad. The physical wheel
-  // causes MouseWheel events that are much more spaced out, and have no
-  // chance of hitting 60fps, so they are each turned into separate Response
-  // IRs. The track-pad causes MouseWheel events that are much closer
-  // together, and are expected to be 60fps, so the first event in a sequence
-  // is turned into a Response, and the rest are merged into an Animation.
-  // NB this threshold uses the two events' start times, unlike
-  // ProtoExpectation.isNear, which compares the end time of the previous event
-  // with the start time of the next.
+  /**
+   * MouseWheel events are caused either by a physical wheel on a physical
+   * mouse, or by a touch-drag gesture on a track-pad. The physical wheel
+   * causes MouseWheel events that are much more spaced out, and have no
+   * chance of hitting 60fps, so they are each turned into separate Response
+   * IRs. The track-pad causes MouseWheel events that are much closer
+   * together, and are expected to be 60fps, so the first event in a sequence
+   * is turned into a Response, and the rest are merged into an Animation.
+   * NB this threshold uses the two events' start times, unlike
+   * ProtoExpectation.isNear, which compares the end time of the previous event
+   * with the start time of the next.
+   */
   function handleMouseWheelEvents(modelHelper, sortedInputEvents) {
     var protoExpectations = [];
     var currentPE = undefined;
@@ -249,19 +263,20 @@ global.tr.exportTo('tr.importer', function() {
     return protoExpectations;
   }
 
-  // Down events followed closely by Up events are click Responses, but the
-  // Response doesn't start until the Up event.
-  //
-  //     RRR
-  // DDD UUU
-  //
-  // If there are any Move events in between a Down and an Up, then the Down
-  // and the first Move are a Response, then the rest of the Moves are an
-  // Animation:
-  //
-  // RRRRRRRAAAAAAAAAAAAAAAAAAAA
-  // DDD MMM MMM MMM MMM MMM UUU
-  //
+  /**
+   * Down events followed closely by Up events are click Responses, but the
+   * Response doesn't start until the Up event.
+   *
+   *     RRR
+   * DDD UUU
+   *
+   * If there are any Move events in between a Down and an Up, then the Down
+   * and the first Move are a Response, then the rest of the Moves are an
+   * Animation:
+   *
+   * RRRRRRRAAAAAAAAAAAAAAAAAAAA
+   * DDD MMM MMM MMM MMM MMM UUU
+   */
   function handleMouseDragEvents(modelHelper, sortedInputEvents) {
     var protoExpectations = [];
     var currentPE = undefined;
@@ -281,6 +296,7 @@ global.tr.exportTo('tr.importer', function() {
             mouseDownEvent = event;
           }
           break;
+
           // There may be more than 100ms between the start of the mouse down
           // and the start of the mouse up. Chrome and the web don't start to
           // respond until the mouse up. ResponseIRs start deducting comfort
@@ -358,25 +374,26 @@ global.tr.exportTo('tr.importer', function() {
     return protoExpectations;
   }
 
-  // Solitary Tap events are simple Responses:
-  //
-  // RRR
-  // TTT
-  //
-  // TapDowns are part of Responses.
-  //
-  // RRRRRRR
-  // DDD TTT
-  //
-  // TapCancels are part of Responses, which seems strange. They always go
-  // with scrolls, so they'll probably be merged with scroll Responses.
-  // TapCancels can take a significant amount of time and account for a
-  // significant amount of work, which should be grouped with the scroll IRs
-  // if possible.
-  //
-  // RRRRRRR
-  // DDD CCC
-  //
+  /**
+   * Solitary Tap events are simple Responses:
+   *
+   * RRR
+   * TTT
+   *
+   * TapDowns are part of Responses.
+   *
+   * RRRRRRR
+   * DDD TTT
+   *
+   * TapCancels are part of Responses, which seems strange. They always go
+   * with scrolls, so they'll probably be merged with scroll Responses.
+   * TapCancels can take a significant amount of time and account for a
+   * significant amount of work, which should be grouped with the scroll IRs
+   * if possible.
+   *
+   * RRRRRRR
+   * DDD CCC
+   **/
   function handleTapResponseEvents(modelHelper, sortedInputEvents) {
     var protoExpectations = [];
     var currentPE = undefined;
@@ -426,12 +443,13 @@ global.tr.exportTo('tr.importer', function() {
     return protoExpectations;
   }
 
-  // The PinchBegin and the first PinchUpdate comprise a Response, then the
-  // rest of the PinchUpdates comprise an Animation.
-  //
-  // RRRRRRRAAAAAAAAAAAAAAAAAAAA
-  // BBB UUU UUU UUU UUU UUU EEE
-  //
+  /**
+   * The PinchBegin and the first PinchUpdate comprise a Response, then the
+   * rest of the PinchUpdates comprise an Animation.
+   *
+   * RRRRRRRAAAAAAAAAAAAAAAAAAAA
+   * BBB UUU UUU UUU UUU UUU EEE
+   */
   function handlePinchEvents(modelHelper, sortedInputEvents) {
     var protoExpectations = [];
     var currentPE = undefined;
@@ -488,19 +506,20 @@ global.tr.exportTo('tr.importer', function() {
     return protoExpectations;
   }
 
-  // Flings are defined by 3 types of events: FlingStart, FlingCancel, and the
-  // renderer fling event. Flings do not begin with a Response. Flings end
-  // either at the beginning of a FlingCancel, or at the end of the renderer
-  // fling event.
-  //
-  // AAAAAAAAAAAAAAAAAAAAAAAAAA
-  // SSS
-  //     RRRRRRRRRRRRRRRRRRRRRR
-  //
-  //
-  // AAAAAAAAAAA
-  // SSS        CCC
-  //
+  /**
+   * Flings are defined by 3 types of events: FlingStart, FlingCancel, and the
+   * renderer fling event. Flings do not begin with a Response. Flings end
+   * either at the beginning of a FlingCancel, or at the end of the renderer
+   * fling event.
+   *
+   * AAAAAAAAAAAAAAAAAAAAAAAAAA
+   * SSS
+   *     RRRRRRRRRRRRRRRRRRRRRR
+   *
+   *
+   * AAAAAAAAAAA
+   * SSS        CCC
+   */
   function handleFlingEvents(modelHelper, sortedInputEvents) {
     var protoExpectations = [];
     var currentPE = undefined;
@@ -574,18 +593,19 @@ global.tr.exportTo('tr.importer', function() {
     return protoExpectations;
   }
 
-  // The TouchStart and the first TouchMove comprise a Response, then the
-  // rest of the TouchMoves comprise an Animation.
-  //
-  // RRRRRRRAAAAAAAAAAAAAAAAAAAA
-  // SSS MMM MMM MMM MMM MMM EEE
-  //
-  // If there are no TouchMove events in between a TouchStart and a TouchEnd,
-  // then it's just a Response.
-  //
-  // RRRRRRR
-  // SSS EEE
-  //
+  /**
+   * The TouchStart and the first TouchMove comprise a Response, then the
+   * rest of the TouchMoves comprise an Animation.
+   *
+   * RRRRRRRAAAAAAAAAAAAAAAAAAAA
+   * SSS MMM MMM MMM MMM MMM EEE
+   *
+   * If there are no TouchMove events in between a TouchStart and a TouchEnd,
+   * then it's just a Response.
+   *
+   * RRRRRRR
+   * SSS EEE
+   */
   function handleTouchEvents(modelHelper, sortedInputEvents) {
     var protoExpectations = [];
     var currentPE = undefined;
@@ -661,12 +681,13 @@ global.tr.exportTo('tr.importer', function() {
     return protoExpectations;
   }
 
-  // The first ScrollBegin and the first ScrollUpdate comprise a Response,
-  // then the rest comprise an Animation.
-  //
-  // RRRRRRRAAAAAAAAAAAAAAAAAAAA
-  // BBB UUU UUU UUU UUU UUU EEE
-  //
+  /**
+   * The first ScrollBegin and the first ScrollUpdate comprise a Response,
+   * then the rest comprise an Animation.
+   *
+   * RRRRRRRAAAAAAAAAAAAAAAAAAAA
+   * BBB UUU UUU UUU UUU UUU EEE
+   */
   function handleScrollEvents(modelHelper, sortedInputEvents) {
     var protoExpectations = [];
     var currentPE = undefined;
@@ -698,7 +719,7 @@ global.tr.exportTo('tr.importer', function() {
               protoExpectations.push(currentPE);
             }
           } else {
-            // ScrollUpdate without ScrollBegin.
+             // ScrollUpdate without ScrollBegin.
             currentPE = new ProtoExpectation(
                 ProtoExpectation.ANIMATION_TYPE, SCROLL_IR_NAME);
             currentPE.pushEvent(event);
@@ -722,7 +743,41 @@ global.tr.exportTo('tr.importer', function() {
     return protoExpectations;
   }
 
-  // CSS Animations are merged into AnimationExpectations when they intersect.
+  /**
+   * Returns proto expectations for video animation events.
+   *
+   * Video animations represent video playback, and are based on
+   * VideoPlayback async events (going from the VideoFrameCompositor::Start
+   * to VideoFrameCompositor::Stop calls)
+   */
+  function handleVideoAnimations(modelHelper, sortedInputEvents) {
+    var events = [];
+    for (var pid in modelHelper.rendererHelpers) {
+      for (var asyncSlice of
+          modelHelper.rendererHelpers[pid].mainThread.asyncSliceGroup.slices) {
+        if (asyncSlice.title === PLAYBACK_EVENT_TITLE)
+          events.push(asyncSlice);
+      }
+    }
+
+    events.sort(tr.importer.compareEvents);
+
+    var protoExpectations = [];
+    for (var event of events) {
+      var currentPE = new ProtoExpectation(
+          ProtoExpectation.ANIMATION_TYPE, VIDEO_IR_NAME);
+      currentPE.start = event.start;
+      currentPE.end = event.end;
+      currentPE.pushEvent(event);
+      protoExpectations.push(currentPE);
+    }
+
+    return protoExpectations;
+  }
+
+  /**
+   * CSS Animations are merged into AnimationExpectations when they intersect.
+   */
   function handleCSSAnimations(modelHelper, sortedInputEvents) {
     // First find all the top-level CSS Animation async events.
     var animationEvents = modelHelper.browserHelper.
@@ -754,22 +809,22 @@ global.tr.exportTo('tr.importer', function() {
         // find ranges where the animation was actually running.
         var start = undefined;
         animation.subSlices.forEach(function(sub) {
-          if ((sub.args.state === 'running') &&
+          if ((sub.args.data.state === 'running') &&
               (start === undefined)) {
             // It's possible for the state to alternate between running and
             // pending, but the animation is still running in that case,
             // so only set start if the state is changing from one of the halted
             // states.
             start = sub.start;
-          } else if ((sub.args.state === 'paused') ||
-                     (sub.args.state === 'idle') ||
-                     (sub.args.state === 'finished')) {
+          } else if ((sub.args.data.state === 'paused') ||
+                     (sub.args.data.state === 'idle') ||
+                     (sub.args.data.state === 'finished')) {
             if (start === undefined) {
               // An animation was already running when the trace started.
               // (Actually, it's possible that the animation was in the 'idle'
               // state when tracing started, but that should be rare, and will
               // be fixed when async events are buffered.)
-              // http://crbug.com/565627
+              // http: //crbug.com/565627
               start = modelHelper.model.bounds.min;
             }
 
@@ -778,9 +833,10 @@ global.tr.exportTo('tr.importer', function() {
           }
         });
 
-        // An animation was still running when the trace ended.
+        // An animation was still running when the
+        // top-level animation event ended.
         if (start !== undefined)
-          pushAnimationRange(start, modelHelper.model.bounds.max, animation);
+          pushAnimationRange(start, animation.end, animation);
       }
     });
 
@@ -910,18 +966,20 @@ global.tr.exportTo('tr.importer', function() {
     return protoExpectations;
   }
 
-  // TouchStarts happen at the same time as ScrollBegins.
-  // It's easier to let multiple handlers create multiple overlapping
-  // Responses and then merge them, rather than make the handlers aware of the
-  // other handlers' PEs.
-  //
-  // For example:
-  // RR
-  //  RRR  -> RRRRR
-  //    RR
-  //
-  // protoExpectations is input only.
-  // Returns a modified set of ProtoExpectations.
+  /**
+   * TouchStarts happen at the same time as ScrollBegins.
+   * It's easier to let multiple handlers create multiple overlapping
+   * Responses and then merge them, rather than make the handlers aware of the
+   * other handlers' PEs.
+   *
+   * For example:
+   * RR
+   *  RRR  -> RRRRR
+   *    RR
+   *
+   * protoExpectations is input only.
+   * Returns a modified set of ProtoExpectations.
+   */
   function mergeIntersectingResponses(protoExpectations) {
     var newPEs = [];
     while (protoExpectations.length) {
@@ -952,6 +1010,7 @@ global.tr.exportTo('tr.importer', function() {
 
         pe.merge(otherPE);
         protoExpectations.splice(i, 1);
+
         // Don't skip the next otherPE!
         --i;
       }
@@ -959,16 +1018,18 @@ global.tr.exportTo('tr.importer', function() {
     return newPEs;
   }
 
-  // An animation is simply an expectation of 60fps between start and end.
-  // If two animations overlap, then merge them.
-  //
-  // For example:
-  // AA
-  //  AAA  -> AAAAA
-  //    AA
-  //
-  // protoExpectations is input only.
-  // Returns a modified set of ProtoExpectations.
+  /**
+   * An animation is simply an expectation of 60fps between start and end.
+   * If two animations overlap, then merge them.
+   *
+   * For example:
+   * AA
+   *  AAA  -> AAAAA
+   *    AA
+   *
+   * protoExpectations is input only.
+   * Returns a modified set of ProtoExpectations.
+   */
   function mergeIntersectingAnimations(protoExpectations) {
     var newPEs = [];
     while (protoExpectations.length) {
@@ -981,6 +1042,7 @@ global.tr.exportTo('tr.importer', function() {
 
       var isCSS = pe.containsSliceTitle(CSS_ANIMATION_TITLE);
       var isFling = pe.containsTypeNames([INPUT_TYPE.FLING_START]);
+      var isVideo = pe.containsTypeNames([VIDEO_IR_NAME]);
 
       for (var i = 0; i < protoExpectations.length; ++i) {
         var otherPE = protoExpectations[i];
@@ -1000,7 +1062,11 @@ global.tr.exportTo('tr.importer', function() {
         }
 
         // Don't merge Fling Animations with any other types.
-        if (isFling != otherPE.containsTypeNames([INPUT_TYPE.FLING_START]))
+        if (isFling !== otherPE.containsTypeNames([INPUT_TYPE.FLING_START]))
+          continue;
+
+        // Don't merge Video Animations with any other types.
+        if (isVideo !== otherPE.containsTypeNames([VIDEO_IR_NAME]))
           continue;
 
         pe.merge(otherPE);
@@ -1012,16 +1078,18 @@ global.tr.exportTo('tr.importer', function() {
     return newPEs;
   }
 
-  // The ends of responses frequently overlap the starts of animations.
-  // Fix the animations to reflect the fact that the user can only start to
-  // expect 60fps after the response.
-  //
-  // For example:
-  // RRR   -> RRRAA
-  //  AAAA
-  //
-  // protoExpectations is input only.
-  // Returns a modified set of ProtoExpectations.
+  /**
+   * The ends of responses frequently overlap the starts of animations.
+   * Fix the animations to reflect the fact that the user can only start to
+   * expect 60fps after the response.
+   *
+   * For example:
+   * RRR   -> RRRAA
+   *  AAAA
+   *
+   * protoExpectations is input only.
+   * Returns a modified set of ProtoExpectations.
+   */
   function fixResponseAnimationStarts(protoExpectations) {
     protoExpectations.forEach(function(ape) {
       // Only consider animations for now.
@@ -1048,8 +1116,10 @@ global.tr.exportTo('tr.importer', function() {
     return protoExpectations;
   }
 
-  // Merge Tap Responses that overlap Touch-only Animations.
-  // https://github.com/catapult-project/catapult/issues/1431
+  /**
+   * Merge Tap Responses that overlap Touch-only Animations.
+   * https: *github.com/catapult-project/catapult/issues/1431
+   */
   function fixTapResponseTouchAnimations(protoExpectations) {
     function isTapResponse(pe) {
       return (pe.irType === ProtoExpectation.RESPONSE_TYPE) &&
@@ -1138,7 +1208,9 @@ global.tr.exportTo('tr.importer', function() {
     return newPEs;
   }
 
-  // Check that none of the handlers accidentally ignored an input event.
+  /**
+   * Check that none of the handlers accidentally ignored an input event.
+   */
   function checkAllInputEventsHandled(sortedInputEvents, protoExpectations) {
     var handledEvents = [];
     protoExpectations.forEach(function(protoExpectation) {
@@ -1148,7 +1220,8 @@ global.tr.exportTo('tr.importer', function() {
             (event.subSlices.length > 0))
           return;
 
-        if (handledEvents.indexOf(event) >= 0) {
+        if ((handledEvents.indexOf(event) >= 0) &&
+            (event.title !== tr.model.helpers.IMPL_RENDERING_STATS)) {
           console.error('double-handled event', event.typeName,
               parseInt(event.start), parseInt(event.end), protoExpectation);
           return;
@@ -1165,7 +1238,9 @@ global.tr.exportTo('tr.importer', function() {
     });
   }
 
-  // Find ProtoExpectations, post-process them, convert them to real IRs.
+  /**
+   * Find ProtoExpectations, post-process them, convert them to real IRs.
+   */
   function findInputExpectations(modelHelper) {
     var sortedInputEvents = getSortedInputEvents(modelHelper);
     var protoExpectations = findProtoExpectations(

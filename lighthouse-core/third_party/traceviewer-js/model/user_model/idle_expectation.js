@@ -20,7 +20,7 @@ global.tr.exportTo('tr.model.um', function() {
     constructor: IdleExpectation
   };
 
-  tr.model.um.UserExpectation.register(IdleExpectation, {
+  tr.model.um.UserExpectation.subTypes.register(IdleExpectation, {
     stageTitle: 'Idle',
     colorId: tr.b.ColorScheme.getColorIdForReservedName('rail_idle')
   });

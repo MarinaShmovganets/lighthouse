@@ -9,6 +9,7 @@ require("../base/guid.js");
 require("../base/sorted_array_utils.js");
 require("../core/filter.js");
 require("./event_container.js");
+require("./thread_slice.js");
 
 'use strict';
 
@@ -17,7 +18,7 @@ require("./event_container.js");
  */
 global.tr.exportTo('tr.model', function() {
   var ColorScheme = tr.b.ColorScheme;
-  var Slice = tr.model.Slice;
+  var ThreadSlice = tr.model.ThreadSlice;
 
   function getSliceLo(s) {
     return s.start;
@@ -44,8 +45,11 @@ global.tr.exportTo('tr.model', function() {
 
     this.parentContainer_ = parentContainer;
 
-    var sliceConstructor = opt_sliceConstructor || Slice;
+    var sliceConstructor = opt_sliceConstructor || ThreadSlice;
     this.sliceConstructor = sliceConstructor;
+    this.sliceConstructorSubTypes = this.sliceConstructor.subTypes;
+    if (!this.sliceConstructorSubTypes)
+      throw new Error('opt_sliceConstructor must have a subtype registry.');
 
     this.openPartialSlices_ = [];
 
@@ -137,10 +141,12 @@ global.tr.exportTo('tr.model', function() {
 
       var colorId = opt_colorId ||
           ColorScheme.getColorIdForGeneralPurposeString(title);
-      var slice = new this.sliceConstructor(category, title, colorId, ts,
-                                            opt_args ? opt_args : {}, null,
-                                            opt_tts, undefined,
-                                            opt_argsStripped);
+      var sliceConstructorSubTypes = this.sliceConstructorSubTypes;
+      var sliceType = sliceConstructorSubTypes.getConstructor(category, title);
+      var slice = new sliceType(category, title, colorId, ts,
+                                opt_args ? opt_args : {}, null,
+                                opt_tts, undefined,
+                                opt_argsStripped);
       this.openPartialSlices_.push(slice);
       slice.didNotFinish = true;
       this.pushSlice(slice);
@@ -216,10 +222,12 @@ global.tr.exportTo('tr.model', function() {
                                 opt_colorId, opt_bind_id) {
       var colorId = opt_colorId ||
           ColorScheme.getColorIdForGeneralPurposeString(title);
-      var slice = new this.sliceConstructor(category, title, colorId, ts,
-                                            opt_args ? opt_args : {},
-                                            duration, tts, cpuDuration,
-                                            opt_argsStripped, opt_bind_id);
+      var sliceConstructorSubTypes = this.sliceConstructorSubTypes;
+      var sliceType = sliceConstructorSubTypes.getConstructor(category, title);
+      var slice = new sliceType(category, title, colorId, ts,
+                                opt_args ? opt_args : {},
+                                duration, tts, cpuDuration,
+                                opt_argsStripped, opt_bind_id);
       if (duration === undefined)
         slice.didNotFinish = true;
       this.pushSlice(slice);
@@ -266,7 +274,10 @@ global.tr.exportTo('tr.model', function() {
     },
 
     copySlice: function(slice) {
-      var newSlice = new this.sliceConstructor(slice.category, slice.title,
+      var sliceConstructorSubTypes = this.sliceConstructorSubTypes;
+      var sliceType = sliceConstructorSubTypes.getConstructor(slice.category,
+                                                              slice.title);
+      var newSlice = new sliceType(slice.category, slice.title,
           slice.colorId, slice.start,
           slice.args, slice.duration, slice.cpuStart, slice.cpuDuration);
       newSlice.didNotFinish = slice.didNotFinish;

@@ -7,10 +7,9 @@ found in the LICENSE file.
 require("../../base/piecewise_linear_function.js");
 require("../../base/range.js");
 require("../../base/range_utils.js");
+require("../../base/unit.js");
 require("../metric_registry.js");
-require("../../value/numeric.js");
-require("../../value/unit.js");
-require("../../value/value.js");
+require("../../value/histogram.js");
 
 'use strict';
 

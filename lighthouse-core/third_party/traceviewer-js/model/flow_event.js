@@ -4,8 +4,8 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
+require("../base/unit.js");
 require("./timed_event.js");
-require("../value/unit.js");
 
 'use strict';
 
@@ -45,7 +45,7 @@ global.tr.exportTo('tr.model', function() {
 
     get userFriendlyName() {
       return 'Flow event named ' + this.title + ' at ' +
-          tr.v.Unit.byName.timeStampInMs.format(this.timestamp);
+          tr.b.Unit.byName.timeStampInMs.format(this.timestamp);
     }
   };
 
@@ -53,9 +53,7 @@ global.tr.exportTo('tr.model', function() {
       FlowEvent,
       {
         name: 'flowEvent',
-        pluralName: 'flowEvents',
-        singleViewElementName: 'tr-ui-a-single-flow-event-sub-view',
-        multiViewElementName: 'tr-ui-a-multi-flow-event-sub-view'
+        pluralName: 'flowEvents'
       });
 
   return {

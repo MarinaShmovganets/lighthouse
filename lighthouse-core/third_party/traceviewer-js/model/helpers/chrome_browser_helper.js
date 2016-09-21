@@ -16,7 +16,11 @@ global.tr.exportTo('tr.model.helpers', function() {
   function ChromeBrowserHelper(modelHelper, process) {
     tr.model.helpers.ChromeProcessHelper.call(this, modelHelper, process);
     this.mainThread_ = process.findAtMostOneThreadNamed('CrBrowserMain');
+    if (!process.name)
+      process.name = ChromeBrowserHelper.PROCESS_NAME;
   }
+
+  ChromeBrowserHelper.PROCESS_NAME = 'Browser';
 
   ChromeBrowserHelper.isBrowserProcess = function(process) {
     return !!process.findAtMostOneThreadNamed('CrBrowserMain');

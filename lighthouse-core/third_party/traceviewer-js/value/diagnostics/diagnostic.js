@@ -9,21 +9,25 @@ require("../../base/extension_registry.js");
 'use strict';
 
 global.tr.exportTo('tr.v.d', function() {
-  /** @constructor */
-  function Diagnostic() {
-  }
-
-  Diagnostic.prototype = {
-    asDict: function() {
+  class Diagnostic {
+    asDict() {
       var result = {type: this.constructor.name};
       this.asDictInto_(result);
       return result;
-    },
+    }
 
-    asDictInto_: function(d) {
+    asDictInto_(d) {
       throw new Error('Abstract virtual method');
     }
-  };
+
+    static fromDict(d) {
+      var typeInfo = Diagnostic.findTypeInfoWithName(d.type);
+      if (!typeInfo)
+        throw new Error('Unrecognized diagnostic type: ' + d.type);
+
+      return typeInfo.constructor.fromDict(d);
+    }
+  }
 
   var options = new tr.b.ExtensionRegistryOptions(tr.b.BASIC_REGISTRY_MODE);
   options.defaultMetadata = {};
@@ -33,23 +37,11 @@ global.tr.exportTo('tr.v.d', function() {
   Diagnostic.addEventListener('will-register', function(e) {
     var constructor = e.typeInfo.constructor;
     if (!(constructor.fromDict instanceof Function) ||
+        (constructor.fromDict === Diagnostic.fromDict) ||
         (constructor.fromDict.length !== 1)) {
       throw new Error('Diagnostics must define fromDict(d)');
     }
-
-    // When subclasses set their prototype to an entirely new object and omit
-    // their constructor, then it becomes impossible for asDict() to find their
-    // constructor name. Add it back here so that asDict() can find it.
-    constructor.prototype.constructor = constructor;
   });
-
-  Diagnostic.fromDict = function(d) {
-    var typeInfo = Diagnostic.findTypeInfoWithName(d.type);
-    if (!typeInfo)
-      throw new Error('Unrecognized diagnostic type: ' + d.type);
-
-    return typeInfo.constructor.fromDict(d);
-  };
 
   return {
     Diagnostic: Diagnostic
