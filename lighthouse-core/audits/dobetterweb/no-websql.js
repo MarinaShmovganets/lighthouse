@@ -15,6 +15,11 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview Audit a page to ensure that it does not open a database using =
+ * the WebSQL API.
+ */
+
 'use strict';
 
 const Audit = require('../audit');
@@ -39,15 +44,17 @@ class NoWebSQLAudit extends Audit {
    */
   static audit(artifacts) {
     if (typeof artifacts.WebSQL === 'undefined' ||
-        artifacts.WebSQL === -1) {
+        artifacts.WebSQL.database === -1) {
       return NoWebSQLAudit.generateAuditResult({
         rawValue: -1,
-        debugString: artifacts.WebSQL ? artifacts.WebSQL.debugString : ''
+        debugString: (artifacts.WebSQL ?
+            artifacts.WebSQL.debugString : 'WebSQL gatherer did not run')
       });
     }
 
     const db = artifacts.WebSQL.database;
-    const displayValue = db ? `db name: ${db.name}, version: ${db.version}` : '';
+    const displayValue = (db && db.database ?
+        `db name: ${db.database.name}, version: ${db.database.version}` : '');
 
     return NoWebSQLAudit.generateAuditResult({
       rawValue: !db,

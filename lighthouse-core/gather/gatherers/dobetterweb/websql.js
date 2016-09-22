@@ -23,18 +23,13 @@ const MAX_WAIT_TIMEOUT = 500;
 
 class WebSQL extends Gatherer {
 
-  static get MAX_WAIT_TIMEOUT() {
-    return MAX_WAIT_TIMEOUT;
-  }
-
   listenForDatabaseEvents(driver) {
     let timeout;
 
     return new Promise((resolve, reject) => {
       driver.once('Database.addDatabase', db => {
         clearTimeout(timeout);
-        driver.sendCommand('Database.disable');
-        resolve(db);
+        driver.sendCommand('Database.disable').then(_ => resolve(db));
       });
 
       driver.sendCommand('Database.enable');
@@ -43,24 +38,23 @@ class WebSQL extends Gatherer {
       // TODO(ericbidelman): this assumes dbs are opened on page load.
       // load. Figure out a better strategy (code greping, user interaction) later.
       timeout = setTimeout(function() {
-        reject('No WebSQL databases were opened');
-      }, WebSQL.MAX_WAIT_TIMEOUT);
+        resolve(null);
+      }, MAX_WAIT_TIMEOUT);
     });
   }
 
   afterPass(options) {
     return this.listenForDatabaseEvents(options.driver)
       .then(database => {
-        this.artifact = database;
-      }, reason => {
         this.artifact = {
-          database: null,
-          debugString: reason
+          database
         };
-      })
-      .catch(_ => {
+        if (!database) {
+          this.artifact.debugString = 'No WebSQL databases were opened';
+        }
+      }).catch(_ => {
         this.artifact = {
-          value: -1,
+          database: -1,
           debugString: 'Unable to gather WebSQL database state'
         };
       });
