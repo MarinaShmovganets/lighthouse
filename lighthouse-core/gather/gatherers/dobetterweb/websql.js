@@ -19,7 +19,7 @@
 
 const Gatherer = require('../gatherer');
 
-const MAX_WAIT_TIMEOUT = 10 * 1000;
+const MAX_WAIT_TIMEOUT = 500;
 
 class WebSQL extends Gatherer {
 
@@ -32,17 +32,15 @@ class WebSQL extends Gatherer {
 
     return new Promise((resolve, reject) => {
       driver.once('Database.addDatabase', db => {
-        if (timeout) {
-          clearTimeout(timeout);
-        }
+        clearTimeout(timeout);
         driver.sendCommand('Database.disable');
         resolve(db);
       });
 
       driver.sendCommand('Database.enable');
 
-      // Wait for a websql db to be opened. Reject the Promise if none were.
-      // TODO(ericbidelman): this assumes dbs are only opened 10s within page
+      // Wait for a websql db to be opened. Reject the Promise no dbs were created.
+      // TODO(ericbidelman): this assumes dbs are opened on page load.
       // load. Figure out a better strategy (code greping, user interaction) later.
       timeout = setTimeout(function() {
         reject('No WebSQL databases were opened');
@@ -61,7 +59,10 @@ class WebSQL extends Gatherer {
         };
       })
       .catch(_ => {
-        this.artifact = -1;
+        this.artifact = {
+          value: -1,
+          debugString: 'Unable to gather WebSQL database state'
+        };
       });
   }
 }
