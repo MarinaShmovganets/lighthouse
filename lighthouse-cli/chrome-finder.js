@@ -76,14 +76,14 @@ module.exports = {
       process.env.PROGRAMFILES,
       process.env['PROGRAMFILES(X86)']
     ];
-    for (let i = 0; i < prefixes.length; i++) {
-      for (let j = 0; j < suffixes.length; j++) {
-        const chromeCanaryPath = path.join(prefixes[i], suffixes[j]);
+    prefixes.forEach(prefix =>
+      suffixes.forEach(suffix => {
+        const chromeCanaryPath = path.join(prefix, suffix);
         if (canAccess(chromeCanaryPath)) {
           installations.push(chromeCanaryPath);
         }
-      }
-    }
+      })
+    );
     return installations;
   }
 };
