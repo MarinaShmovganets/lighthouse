@@ -16,21 +16,25 @@
 const Audit = require('../../../audits/dobetterweb/appcache-manifest.js');
 const assert = require('assert');
 
-/* global describe, it*/
+/* eslint-env mocha */
 
 describe('Appcache manifest audit', () => {
   it('fails when no input present', () => {
-    return assert.equal(Audit.audit({}).rawValue, false);
+    const auditResult = Audit.audit({});
+    assert.equal(auditResult.rawValue, false);
+    assert.ok(auditResult.debugString);
   });
 
   it('fails when <html> contains a manifest attribute', () => {
-    return assert.notEqual(Audit.audit({
+    const auditResult = Audit.audit({
       AppCacheManifest: 'manifest-name'
-    }).rawValue, null);
+    });
+    assert.equal(auditResult.rawValue, false);
+    assert.ok(auditResult.displayValue);
   });
 
   it('passes when <html> does not contain a manifest attribute', () => {
-    return assert.equal(Audit.audit({
+    assert.equal(Audit.audit({
       AppCacheManifest: null
     }).rawValue, true);
   });
