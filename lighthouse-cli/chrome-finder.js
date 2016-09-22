@@ -78,9 +78,9 @@ module.exports = {
     ];
     prefixes.forEach(prefix =>
       suffixes.forEach(suffix => {
-        const chromeCanaryPath = path.join(prefix, suffix);
-        if (canAccess(chromeCanaryPath)) {
-          installations.push(chromeCanaryPath);
+        const chromePath = path.join(prefix, suffix);
+        if (canAccess(chromePath)) {
+          installations.push(chromePath);
         }
       })
     );
