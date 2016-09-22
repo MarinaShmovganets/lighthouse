@@ -99,6 +99,11 @@ class GatherRunner {
       });
   }
 
+  static disposeDriver(driver) {
+    log.log('status', 'Disconnecting from browser...');
+    driver.disconnect();
+  }
+
   /**
    * Navigates to about:blank and calls beforePass() on gatherers before tracing
    * has started and before navigation to the target page.
@@ -253,8 +258,7 @@ class GatherRunner {
         // We dont need to hold up the reporting for the reload/disconnect,
         // so we will not return a promise in here.
         driver.reloadForCleanStateIfNeeded(options).then(_ => {
-          log.log('status', 'Disconnecting from browser...');
-          driver.disconnect();
+          GatherRunner.disposeDriver(driver);
         });
       })
       .then(_ => {
@@ -272,6 +276,12 @@ class GatherRunner {
           });
         });
         return artifacts;
+      })
+      // cleanup on error
+      .catch(err => {
+        GatherRunner.disposeDriver(driver);
+
+        throw err;
       });
   }
 

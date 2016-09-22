@@ -253,7 +253,6 @@ class Driver {
 
       let swHasMoreThanOneClient = false;
       registrations
-        .filter(reg => !reg.isDeleted)
         .filter(reg => {
           const parsedURL = parseURL(reg.scopeURL);
           const swOrigin = `${parsedURL.protocol}//${parsedURL.hostname}` +
