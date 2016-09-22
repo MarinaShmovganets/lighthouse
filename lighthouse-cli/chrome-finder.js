@@ -67,16 +67,21 @@ module.exports = {
 
   win32() {
     const installations = [];
-    const suffix = '\\Google\\Chrome SxS\\Application\\chrome.exe';
+    const suffixes = [
+      '\\Google\\Chrome SxS\\Application\\chrome.exe',
+      '\\Google\\Chrome\\Application\\chrome.exe'
+    ];
     let prefixes = [
       process.env.LOCALAPPDATA,
       process.env.PROGRAMFILES,
       process.env['PROGRAMFILES(X86)']
     ];
     for (let i = 0; i < prefixes.length; i++) {
-      const chromeCanaryPath = path.join(prefixes[i], suffix);
-      if (canAccess(chromeCanaryPath)) {
-        installations.push(chromeCanaryPath);
+      for (let j = 0; j < suffixes.length; j++) {
+        const chromeCanaryPath = path.join(prefixes[i], suffixes[j]);
+        if (canAccess(chromeCanaryPath)) {
+          installations.push(chromeCanaryPath);
+        }
       }
     }
     return installations;
