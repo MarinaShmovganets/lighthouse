@@ -13,24 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const Audit = require('../../../audits/dobetterweb/no-websql.js');
+'use strict';
+
+const NoWebSQLAudit = require('../../../audits/dobetterweb/no-websql.js');
 const assert = require('assert');
 
 /* eslint-env mocha */
 
 describe('No websql audit', () => {
   it('fails gracefully', () => {
-    const auditResult = Audit.audit({});
+    const auditResult = NoWebSQLAudit.audit({});
     assert.equal(auditResult.rawValue, -1);
     assert.equal(auditResult.debugString, '');
   });
 
   it('passes when no database is created', () => {
-    assert.equal(Audit.audit({WebSQL: {database: null}}).rawValue, true);
+    assert.equal(NoWebSQLAudit.audit({WebSQL: {database: null}}).rawValue, true);
   });
 
   it('fails when database is created', () => {
-    const auditResult = Audit.audit({
+    const auditResult = NoWebSQLAudit.audit({
       WebSQL: {database: 'db-name', version: 1.0}
     });
 
