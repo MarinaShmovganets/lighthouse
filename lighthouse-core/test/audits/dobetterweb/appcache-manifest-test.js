@@ -13,20 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const Audit = require('../../../audits/dobetterweb/appcache-manifest.js');
+'use strict';
+
+const AppCacheManifestAttrAudit = require('../../../audits/dobetterweb/appcache-manifest.js');
 const assert = require('assert');
 
 /* eslint-env mocha */
 
 describe('Appcache manifest audit', () => {
   it('fails when no input present', () => {
-    const auditResult = Audit.audit({});
+    const auditResult = AppCacheManifestAttrAudit.audit({});
     assert.equal(auditResult.rawValue, false);
     assert.ok(auditResult.debugString);
   });
 
   it('fails when <html> contains a manifest attribute', () => {
-    const auditResult = Audit.audit({
+    const auditResult = AppCacheManifestAttrAudit.audit({
       AppCacheManifest: 'manifest-name'
     });
     assert.equal(auditResult.rawValue, false);
@@ -34,7 +36,7 @@ describe('Appcache manifest audit', () => {
   });
 
   it('passes when <html> does not contain a manifest attribute', () => {
-    assert.equal(Audit.audit({
+    assert.equal(AppCacheManifestAttrAudit.audit({
       AppCacheManifest: null
     }).rawValue, true);
   });
