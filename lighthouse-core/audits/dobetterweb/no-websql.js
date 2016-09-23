@@ -16,7 +16,7 @@
  */
 
 /**
- * @fileoverview Audit a page to ensure that it does not open a database using =
+ * @fileoverview Audit a page to ensure that it does not open a database using
  * the WebSQL API.
  */
 
