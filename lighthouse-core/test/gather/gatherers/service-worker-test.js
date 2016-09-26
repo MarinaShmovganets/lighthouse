@@ -40,7 +40,7 @@ describe('Service Worker gatherer', () => {
           return Promise.resolve({versions});
         }
       },
-      url
+      url: {finalUrl: url}
     }).then(_ => {
       assert.deepEqual(serviceWorkerGatherer.artifact.versions, versions);
     });

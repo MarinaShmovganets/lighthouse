@@ -42,7 +42,7 @@ describe('Offline: Service Worker audit', () => {
           scriptURL: 'https://example.com/sw.js'
         }]
       },
-      URL: 'https://example.com'
+      URL: {finalUrl: 'https://example.com'}
     });
 
     assert.equal(output.score, true);
@@ -60,7 +60,7 @@ describe('Offline: Service Worker audit', () => {
       ServiceWorker: {
         versions
       },
-      URL: url
+      URL: {finalUrl: 'https://example.com'}
     });
 
     assert.equal(output.score, false);
