@@ -50,7 +50,6 @@ describe('Offline: Service Worker audit', () => {
   });
 
   it('discards service worker registrations for other origins', () => {
-    const url = 'https://example.com/';
     const versions = [{
       status: 'activated',
       scriptURL: 'https://other-example.com'
