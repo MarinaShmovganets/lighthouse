@@ -18,7 +18,6 @@
 /**
  * @fileoverview Audit a page to ensure that resource loaded over its own
  * origin are over the http/2 protocol.
- * @author Eric Bidelman
  */
 
 'use strict';
@@ -58,12 +57,12 @@ class UsesHTTP2Audit extends Audit {
     const networkRecords = artifacts.networkRecords[Audit.DEFAULT_PASS];
     const finalHost = url.parse(artifacts.URL.finalUrl).host;
 
-    // Filter requests that are on the same origin as the page and not over h2.
+    // Filter requests that are on the same host as the page and not over h2.
     const resources = networkRecords.filter(record => {
       const requestHost = url.parse(record._url).host;
-      const sameOrigin = requestHost === finalHost;
+      const sameHost = requestHost === finalHost;
       const notH2 = /HTTP\/[01][\.\d]?/i.test(record.protocol);
-      return sameOrigin && notH2;
+      return sameHost && notH2;
     });
 
     const displayValue = (resources.length ?
