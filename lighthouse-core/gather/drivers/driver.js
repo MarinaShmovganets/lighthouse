@@ -447,6 +447,38 @@ class Driver {
       storageTypes: 'all',
     });
   }
+
+  /**
+   * Keeps track of calls to a function and returns a list of {url, line, col}
+   * of the usage.
+   * @param {Function} func The function call to track.
+   * @param {Set} set An empty set to populate with stack traces. Should be
+   *     on the global object.
+   * @return {Function} A wrapper around the original function.
+   */
+  static captureAPIUsage(func, set) {
+    const originalFunc = func;
+    const originalPrepareStackTrace = Error.prepareStackTrace;
+
+    return function(...args) {
+      // See v8's Stack Trace API https://github.com/v8/v8/wiki/Stack-Trace-API#customizing-stack-traces
+      Error.prepareStackTrace = function(error, structStackTrace) {
+        const lastCallFrame = structStackTrace[structStackTrace.length - 1];
+        const file = lastCallFrame.getFileName();
+        const line = lastCallFrame.getLineNumber();
+        const col = lastCallFrame.getColumnNumber();
+        return {url: file, line, col}; // return value is e.stack
+      };
+      const e = new Error(`__called ${func.name}__`);
+      set.add(JSON.stringify(e.stack));
+
+      // Restore prepareStackTrace so future errors use v8's formatter and not
+      // our custom one.
+      Error.prepareStackTrace = originalPrepareStackTrace;
+
+      return originalFunc(...args);
+    };
+  }
 }
 
 module.exports = Driver;
