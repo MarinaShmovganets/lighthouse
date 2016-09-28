@@ -59,8 +59,9 @@ class NoDateNowAudit extends Audit {
     const results = artifacts.DateNowUse.usage.filter(err => {
       return url.parse(err.url).host === pageHost;
     }).map(err => {
-      err.misc = `(line: ${err.line}, col: ${err.col})`;
-      return err;
+      return Object.assign({
+        misc: `(line: ${err.line}, col: ${err.col})`
+      }, err);
     });
 
     return NoDateNowAudit.generateAuditResult({

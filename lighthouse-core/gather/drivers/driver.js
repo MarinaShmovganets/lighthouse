@@ -26,6 +26,37 @@ const log = require('../../lib/log.js');
 const MAX_WAIT_FOR_LOAD_EVENT = 25 * 1000;
 const PAUSE_AFTER_LOAD = 500;
 
+/**
+ * Tracks function call usage. Used by captureJSCalls to inject code into the page.
+ * @param {function(...*): *} funcRef The function call to track.
+ * @param {!Set} set An empty set to populate with stack traces. Should be
+ *     on the global object.
+ * @return {function(...*): *} A wrapper around the original function.
+ */
+function captureJSCallUsage(funcRef, set) {
+  const originalFunc = funcRef;
+  const originalPrepareStackTrace = Error.prepareStackTrace;
+
+  return function() {
+    // See v8's Stack Trace API https://github.com/v8/v8/wiki/Stack-Trace-API#customizing-stack-traces
+    Error.prepareStackTrace = function(error, structStackTrace) {
+      const lastCallFrame = structStackTrace[structStackTrace.length - 1];
+      const file = lastCallFrame.getFileName();
+      const line = lastCallFrame.getLineNumber();
+      const col = lastCallFrame.getColumnNumber();
+      return {url: file, line, col}; // return value is e.stack
+    };
+    const e = new Error(`__called ${funcRef.name}__`);
+    set.add(JSON.stringify(e.stack));
+
+    // Restore prepareStackTrace so future errors use v8's formatter and not
+    // our custom one.
+    Error.prepareStackTrace = originalPrepareStackTrace;
+
+    return originalFunc.apply(this, arguments);
+  };
+}
+
 class Driver {
 
   constructor() {
@@ -449,54 +480,25 @@ class Driver {
   }
 
   /**
-   * Tracks function call usage. Used by captureJSCalls to inject code into the page.
-   * @param {Function} func The function call to track.
-   * @param {Set} set An empty set to populate with stack traces. Should be
-   *     on the global object.
-   * @return {Function} A wrapper around the original function.
-   */
-  static captureUsage(func, set) {
-    const originalFunc = func;
-    const originalPrepareStackTrace = Error.prepareStackTrace;
-
-    return function() {
-      // See v8's Stack Trace API https://github.com/v8/v8/wiki/Stack-Trace-API#customizing-stack-traces
-      Error.prepareStackTrace = function(error, structStackTrace) {
-        const lastCallFrame = structStackTrace[structStackTrace.length - 1];
-        const file = lastCallFrame.getFileName();
-        const line = lastCallFrame.getLineNumber();
-        const col = lastCallFrame.getColumnNumber();
-        return {url: file, line, col}; // return value is e.stack
-      };
-      const e = new Error(`__called ${func.name}__`);
-      set.add(JSON.stringify(e.stack));
-
-      // Restore prepareStackTrace so future errors use v8's formatter and not
-      // our custom one.
-      Error.prepareStackTrace = originalPrepareStackTrace;
-
-      return originalFunc.apply(this, arguments);
-    };
-  }
-
-  /**
    * Keeps track of calls to a JS function and returns a list of {url, line, col}
-   * of the usage.
-   * @param {string} funcVar The function name to track ('Date.now', 'console.time').
-   * @param {string} variableToPopulate The variable name to populate with stack traces.
+   * of the usage. Should be called before page load (in beforePass).
+   * @param {string} funcName The function name to track ('Date.now', 'console.time').
+   * @param {string} globalVarToPopulate The variable name to populate with stack traces.
    *     This should unique and on the global object ('window.__dateNowStackTraces').
-   * @return {Function} Call this method when you want results.
+   * @return {function(): !Promise<!Array<{url: string, line: number, col: number}>>}
+   *     Call this method when you want results.
    */
-  captureJSCalls(funcVar, variableToPopulate) {
+  captureFunctionCallSites(funcName, globalVarToPopulate) {
     const collectUsage = () => {
       return this.evaluateAsync(
-          `(__returnResults(Array.from(${variableToPopulate}).map(item => JSON.parse(item))))`);
+          `__returnResults(Array.from(${globalVarToPopulate}).map(item => JSON.parse(item)))`);
     };
 
+    const funcBody = captureJSCallUsage.toString();
+
     this.evaluateScriptOnLoad(`
-        ${variableToPopulate} = new Set();
-        (${funcVar} = function ${Driver.captureUsage.toString()}(
-            ${funcVar}, ${variableToPopulate}))`);
+        ${globalVarToPopulate} = new Set();
+        (${funcName} = ${funcBody}(${funcName}, ${globalVarToPopulate}))`);
 
     return collectUsage;
   }

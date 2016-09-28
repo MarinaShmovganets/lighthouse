@@ -26,7 +26,7 @@ const Gatherer = require('../gatherer');
 class DateNowUse extends Gatherer {
 
   beforePass(options) {
-    this.collectUsage = options.driver.captureJSCalls(
+    this.collectUsage = options.driver.captureFunctionCallSites(
         'Date.now', 'window.__dateNowStackTraces');
   }
 
