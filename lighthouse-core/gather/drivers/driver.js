@@ -483,12 +483,11 @@ class Driver {
    * Keeps track of calls to a JS function and returns a list of {url, line, col}
    * of the usage. Should be called before page load (in beforePass).
    * @param {string} funcName The function name to track ('Date.now', 'console.time').
-   * @param {string} globalVarToPopulate The variable name to populate with stack traces.
-   *     This should unique and on the global object ('window.__dateNowStackTraces').
    * @return {function(): !Promise<!Array<{url: string, line: number, col: number}>>}
    *     Call this method when you want results.
    */
-  captureFunctionCallSites(funcName, globalVarToPopulate) {
+  captureFunctionCallSites(funcName) {
+    const globalVarToPopulate = `window['__${funcName}StackTraces']`;
     const collectUsage = () => {
       return this.evaluateAsync(
           `__returnResults(Array.from(${globalVarToPopulate}).map(item => JSON.parse(item)))`);

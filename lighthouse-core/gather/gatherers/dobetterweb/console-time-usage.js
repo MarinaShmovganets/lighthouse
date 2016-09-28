@@ -26,8 +26,7 @@ const Gatherer = require('../gatherer');
 class ConsoleTimeUsage extends Gatherer {
 
   beforePass(options) {
-    this.collectUsage = options.driver.captureFunctionCallSites(
-        'console.time', 'window.__consoleTimeStackTraces');
+    this.collectUsage = options.driver.captureFunctionCallSites('console.time');
   }
 
   afterPass() {
