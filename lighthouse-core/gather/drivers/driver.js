@@ -449,14 +449,13 @@ class Driver {
   }
 
   /**
-   * Keeps track of calls to a function and returns a list of {url, line, col}
-   * of the usage.
+   * Tracks function call usage. Used by captureJSCalls to inject code into the page.
    * @param {Function} func The function call to track.
    * @param {Set} set An empty set to populate with stack traces. Should be
    *     on the global object.
    * @return {Function} A wrapper around the original function.
    */
-  static captureAPIUsage(func, set) {
+  static captureUsage(func, set) {
     const originalFunc = func;
     const originalPrepareStackTrace = Error.prepareStackTrace;
 
@@ -478,6 +477,28 @@ class Driver {
 
       return originalFunc.apply(this, arguments);
     };
+  }
+
+  /**
+   * Keeps track of calls to a JS function and returns a list of {url, line, col}
+   * of the usage.
+   * @param {string} funcVar The function name to track ('Date.now', 'console.time').
+   * @param {string} variableToPopulate The variable name to populate with stack traces.
+   *     This should unique and on the global object ('window.__dateNowStackTraces').
+   * @return {Function} Call this method when you want results.
+   */
+  captureJSCalls(funcVar, variableToPopulate) {
+    const collectUsage = () => {
+      return this.evaluateAsync(
+          `(__returnResults(Array.from(${variableToPopulate}).map(item => JSON.parse(item))))`);
+    };
+
+    this.evaluateScriptOnLoad(`
+        ${variableToPopulate} = new Set();
+        (${funcVar} = function ${Driver.captureUsage.toString()}(
+            ${funcVar}, ${variableToPopulate}))`);
+
+    return collectUsage;
   }
 }
 

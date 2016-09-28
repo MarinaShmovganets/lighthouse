@@ -19,36 +19,24 @@
  * @fileoverview Tests whether the page is using console.time().
  */
 
-/* global window, __returnResults */
-
 'use strict';
 
-const Driver = require('../../drivers/driver.js');
 const Gatherer = require('../gatherer');
-
-function collectUsage() {
-  __returnResults(Array.from(
-      window.__consoleTimeStackTraces).map(item => JSON.parse(item)));
-}
 
 class ConsoleTimeUsage extends Gatherer {
 
   beforePass(options) {
-    const driver = options.driver;
-    return driver.evaluateScriptOnLoad(`
-        window.__consoleTimeStackTraces = new Set();
-        (console.time = function ${Driver.captureAPIUsage.toString()}(
-            console.time, window.__consoleTimeStackTraces))`);
+    this.collectUsage = options.driver.captureJSCalls(
+        'console.time', 'window.__consoleTimeStackTraces');
   }
 
-  afterPass(options) {
-    return options.driver.evaluateAsync(`(${collectUsage.toString()}())`)
-        .then(consoleTimeUsage => {
-          this.artifact.usage = consoleTimeUsage;
-        }, _ => {
-          this.artifact = -1;
-          return;
-        });
+  afterPass() {
+    return this.collectUsage().then(consoleTimeUsage => {
+      this.artifact.usage = consoleTimeUsage;
+    }, _ => {
+      this.artifact = -1;
+      return;
+    });
   }
 }
 

@@ -19,36 +19,24 @@
  * @fileoverview Tests whether the page is using Date.now().
  */
 
-/* global window, __returnResults */
-
 'use strict';
 
-const Driver = require('../../drivers/driver.js');
 const Gatherer = require('../gatherer');
-
-function collectUsage() {
-  __returnResults(Array.from(
-      window.__dateNowStackTraces).map(item => JSON.parse(item)));
-}
 
 class DateNowUse extends Gatherer {
 
   beforePass(options) {
-    const driver = options.driver;
-    return driver.evaluateScriptOnLoad(`
-        window.__dateNowStackTraces = new Set();
-        (Date.now = function ${Driver.captureAPIUsage.toString()}(
-            Date.now, window.__dateNowStackTraces))`);
+    this.collectUsage = options.driver.captureJSCalls(
+        'Date.now', 'window.__dateNowStackTraces');
   }
 
-  afterPass(options) {
-    return options.driver.evaluateAsync(`(${collectUsage.toString()}())`)
-        .then(dateNowUses => {
-          this.artifact.usage = dateNowUses;
-        }, _ => {
-          this.artifact = -1;
-          return;
-        });
+  afterPass() {
+    return this.collectUsage().then(dateNowUses => {
+      this.artifact.usage = dateNowUses;
+    }, _ => {
+      this.artifact = -1;
+      return;
+    });
   }
 }
 
