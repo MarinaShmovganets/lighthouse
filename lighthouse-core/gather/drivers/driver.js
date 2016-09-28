@@ -485,7 +485,7 @@ class Driver {
    * @param {string} funcName The function name to track ('Date.now', 'console.time').
    * @param {string} globalVarToPopulate The variable name to populate with stack traces.
    *     This should unique and on the global object ('window.__dateNowStackTraces').
-   * @return {function(): !Promise<!Array<!{url: string, line: number, col: number}>>}
+   * @return {function(): !Promise<!Array<{url: string, line: number, col: number}>>}
    *     Call this method when you want results.
    */
   captureFunctionCallSites(funcName, globalVarToPopulate) {
