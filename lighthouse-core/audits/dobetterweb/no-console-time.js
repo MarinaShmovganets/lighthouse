@@ -55,13 +55,13 @@ class NoConsoleTimeAudit extends Audit {
 
     const pageHost = url.parse(artifacts.URL.finalUrl).host;
     // Filter usage from other hosts.
-    const results = artifacts.ConsoleTimeUsage.usage.reduce((prev, err) => {
-      if (url.parse(err.url).host === pageHost) {
-        err.misc = `(line: ${err.line}, col: ${err.col})`;
-        prev.push(err);
-      }
-      return prev;
-    }, []);
+    // Filter usage from other hosts.
+    const results = artifacts.ConsoleTimeUsage.usage.filter(err => {
+      return url.parse(err.url).host === pageHost;
+    }).map(err => {
+      err.misc = `(line: ${err.line}, col: ${err.col})`;
+      return err;
+    });
 
     return NoConsoleTimeAudit.generateAuditResult({
       rawValue: results.length === 0,
