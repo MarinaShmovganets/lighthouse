@@ -460,7 +460,7 @@ class Driver {
     const originalFunc = func;
     const originalPrepareStackTrace = Error.prepareStackTrace;
 
-    return function(...args) {
+    return function() {
       // See v8's Stack Trace API https://github.com/v8/v8/wiki/Stack-Trace-API#customizing-stack-traces
       Error.prepareStackTrace = function(error, structStackTrace) {
         const lastCallFrame = structStackTrace[structStackTrace.length - 1];
@@ -476,7 +476,7 @@ class Driver {
       // our custom one.
       Error.prepareStackTrace = originalPrepareStackTrace;
 
-      return originalFunc(...args);
+      return originalFunc.apply(this, arguments);
     };
   }
 }
