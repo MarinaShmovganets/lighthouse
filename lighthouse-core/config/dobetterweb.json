@@ -59,9 +59,8 @@
           "rawValue": false
         }
       }
-    },
-    {
-      "name": "Avoiding APIs that are detrimental to the user experience",
+    }, {
+      "name": "Avoiding APIs that harm the user experience",
       "criteria": {
         "no-document-write": {
           "rawValue": false
