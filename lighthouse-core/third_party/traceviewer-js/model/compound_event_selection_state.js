@@ -9,7 +9,7 @@ require("../base/base.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
 
   /**
    * Indicates how much of a compound-event is selected [if any].

@@ -9,7 +9,7 @@ require("../base/color_scheme.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
   var ColorScheme = tr.b.ColorScheme;
 
   /**

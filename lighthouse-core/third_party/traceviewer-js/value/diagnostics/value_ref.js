@@ -9,7 +9,7 @@ require("../../base/base.js");
 
 'use strict';
 
-global.tr.exportTo('tr.v.d', function() {
+global.tr.exportTo('tr.v.d', function () {
   /** @constructor */
   function ValueRef(guid) {
     this.guid = guid;

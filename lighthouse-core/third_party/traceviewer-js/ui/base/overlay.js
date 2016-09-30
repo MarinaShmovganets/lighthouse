@@ -21,9 +21,8 @@ require("./utils.js");
  * restores its original parentage.
  *
  */
-global.tr.exportTo('tr.ui.b', function() {
-  if (tr.isHeadless)
-    return {};
+global.tr.exportTo('tr.ui.b', function () {
+  if (tr.isHeadless) return {};
 
   var THIS_DOC = document.currentScript.ownerDocument;
 
@@ -40,7 +39,7 @@ global.tr.exportTo('tr.ui.b', function() {
     /**
      * Initializes the overlay element.
      */
-    decorate: function() {
+    decorate: function () {
       Polymer.dom(this).classList.add('overlay');
 
       this.parentEl_ = this.ownerDocument.body;
@@ -54,48 +53,36 @@ global.tr.exportTo('tr.ui.b', function() {
       this.onDocumentClick_ = this.onDocumentClick_.bind(this);
       this.onClose_ = this.onClose_.bind(this);
 
-      this.addEventListener('visible-change',
-          tr.ui.b.Overlay.prototype.onVisibleChange_.bind(this), true);
+      this.addEventListener('visible-change', tr.ui.b.Overlay.prototype.onVisibleChange_.bind(this), true);
 
       // Setup the shadow root
-      var createShadowRoot = this.createShadowRoot ||
-          this.webkitCreateShadowRoot;
+      var createShadowRoot = this.createShadowRoot || this.webkitCreateShadowRoot;
       this.shadow_ = createShadowRoot.call(this);
-      Polymer.dom(this.shadow_).appendChild(
-          tr.ui.b.instantiateTemplate('#overlay-template', THIS_DOC));
+      Polymer.dom(this.shadow_).appendChild(tr.ui.b.instantiateTemplate('#overlay-template', THIS_DOC));
 
       this.closeBtn_ = Polymer.dom(this.shadow_).querySelector('close-button');
       this.closeBtn_.addEventListener('click', this.onClose_);
 
-      Polymer.dom(this.shadow_)
-          .querySelector('overlay-frame')
-          .addEventListener('click', this.onClick_);
+      Polymer.dom(this.shadow_).querySelector('overlay-frame').addEventListener('click', this.onClick_);
 
-      this.observer_ = new WebKitMutationObserver(
-          this.didButtonBarMutate_.bind(this));
-      this.observer_.observe(
-          Polymer.dom(this.shadow_).querySelector('button-bar'),
-          { childList: true });
+      this.observer_ = new WebKitMutationObserver(this.didButtonBarMutate_.bind(this));
+      this.observer_.observe(Polymer.dom(this.shadow_).querySelector('button-bar'), { childList: true });
 
       // title is a variable on regular HTMLElements. However, we want to
       // use it for something more useful.
-      Object.defineProperty(
-          this, 'title', {
-            get: function() {
-              return Polymer.dom(Polymer.dom(this.shadow_)
-                  .querySelector('title')).textContent;
-            },
-            set: function(title) {
-              Polymer.dom(Polymer.dom(this.shadow_).querySelector('title'))
-                  .textContent = title;
-            }
-          });
+      Object.defineProperty(this, 'title', {
+        get: function () {
+          return Polymer.dom(Polymer.dom(this.shadow_).querySelector('title')).textContent;
+        },
+        set: function (title) {
+          Polymer.dom(Polymer.dom(this.shadow_).querySelector('title')).textContent = title;
+        }
+      });
     },
 
     set userCanClose(userCanClose) {
       this.userCanClose_ = userCanClose;
-      this.closeBtn_.style.display =
-          userCanClose ? 'block' : 'none';
+      this.closeBtn_.style.display = userCanClose ? 'block' : 'none';
     },
 
     get buttons() {
@@ -107,19 +94,18 @@ global.tr.exportTo('tr.ui.b', function() {
     },
 
     set visible(newValue) {
-      if (this.visible_ === newValue)
-        return;
+      if (this.visible_ === newValue) return;
 
       this.visible_ = newValue;
       var e = new tr.b.Event('visible-change');
       this.dispatchEvent(e);
     },
 
-    onVisibleChange_: function() {
+    onVisibleChange_: function () {
       this.visible_ ? this.show_() : this.hide_();
     },
 
-    show_: function() {
+    show_: function () {
       Polymer.dom(this.parentEl_).appendChild(this);
 
       if (this.userCanClose_) {
@@ -134,90 +120,81 @@ global.tr.exportTo('tr.ui.b', function() {
       // Focus the first thing we find that makes sense. (Skip the close button
       // as it doesn't make sense as the first thing to focus.)
       var focusEl = undefined;
-      var elList =
-          Polymer.dom(this).querySelectorAll('button, input, list, select, a');
+      var elList = Polymer.dom(this).querySelectorAll('button, input, list, select, a');
       if (elList.length > 0) {
         if (elList[0] === this.closeBtn_) {
-          if (elList.length > 1)
-            focusEl = elList[1];
+          if (elList.length > 1) focusEl = elList[1];
         } else {
           focusEl = elList[0];
         }
       }
-      if (focusEl === undefined)
-        focusEl = this;
+      if (focusEl === undefined) focusEl = this;
       focusEl.focus();
     },
 
-    hide_: function() {
+    hide_: function () {
       Polymer.dom(this.parentEl_).removeChild(this);
 
       this.parentEl_.removeEventListener('focusin', this.onFocusIn_);
 
-      if (this.closeBtn_)
-        this.closeBtn_.removeEventListener('click', this.onClose_);
+      if (this.closeBtn_) this.closeBtn_.removeEventListener('click', this.onClose_);
 
       document.removeEventListener('keydown', this.onKeyDown_);
       document.removeEventListener('click', this.onDocumentClick_);
     },
 
-    onClose_: function(e) {
+    onClose_: function (e) {
       this.visible = false;
-      if ((e.type != 'keydown') ||
-          (e.type === 'keydown' && e.keyCode === 27))
-        e.stopPropagation();
+      if (e.type != 'keydown' || e.type === 'keydown' && e.keyCode === 27) e.stopPropagation();
       e.preventDefault();
       tr.b.dispatchSimpleEvent(this, 'closeclick');
     },
 
-    onFocusIn_: function(e) {
-      if (e.target === this)
-        return;
+    onFocusIn_: function (e) {
+      if (e.target === this) return;
 
-      window.setTimeout(function() { this.focus(); }, 0);
+      window.setTimeout(function () {
+        this.focus();
+      }, 0);
       e.preventDefault();
       e.stopPropagation();
     },
 
-    didButtonBarMutate_: function(e) {
+    didButtonBarMutate_: function (e) {
       var hasButtons = this.buttons.children.length > 0;
       if (hasButtons) {
-        Polymer.dom(this.shadow_).querySelector('button-bar').style.display =
-            undefined;
+        Polymer.dom(this.shadow_).querySelector('button-bar').style.display = undefined;
       } else {
-        Polymer.dom(this.shadow_).querySelector('button-bar').style.display =
-            'none';
+        Polymer.dom(this.shadow_).querySelector('button-bar').style.display = 'none';
       }
     },
 
-    onKeyDown_: function(e) {
+    onKeyDown_: function (e) {
       // Disallow shift-tab back to another element.
-      if (e.keyCode === 9 &&  // tab
-          e.shiftKey &&
-          e.target === this) {
+      if (e.keyCode === 9 && // tab
+      e.shiftKey && e.target === this) {
         e.preventDefault();
         return;
       }
 
-      if (e.keyCode !== 27)  // escape
+      if (e.keyCode !== 27) // escape
         return;
 
       this.onClose_(e);
     },
 
-    onClick_: function(e) {
+    onClick_: function (e) {
       e.stopPropagation();
     },
 
-    onDocumentClick_: function(e) {
-      if (!this.userCanClose_)
-        return;
+    onDocumentClick_: function (e) {
+      if (!this.userCanClose_) return;
 
       this.onClose_(e);
     }
   };
 
-  Overlay.showError = function(msg, opt_err) {
+  Overlay.showError = function (msg, opt_err) {
     var o = new Overlay();
     o.title = 'Error';
     Polymer.dom(o).textContent = msg;
@@ -232,7 +209,7 @@ global.tr.exportTo('tr.ui.b', function() {
     }
     var b = document.createElement('button');
     Polymer.dom(b).textContent = 'OK';
-    b.addEventListener('click', function() {
+    b.addEventListener('click', function () {
       o.visible = false;
     });
     Polymer.dom(o.buttons).appendChild(b);

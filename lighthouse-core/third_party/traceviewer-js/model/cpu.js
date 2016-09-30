@@ -16,7 +16,7 @@ require("./thread_time_slice.js");
 /**
  * @fileoverview Provides the Cpu class.
  */
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
 
   var ColorScheme = tr.b.ColorScheme;
   var Counter = tr.model.Counter;
@@ -27,8 +27,7 @@ global.tr.exportTo('tr.model', function() {
    * @constructor
    */
   function Cpu(kernel, number) {
-    if (kernel === undefined || number === undefined)
-      throw new Error('Missing arguments');
+    if (kernel === undefined || number === undefined) throw new Error('Missing arguments');
     this.kernel = kernel;
     this.cpuNumber = number;
     this.slices = [];
@@ -59,33 +58,30 @@ global.tr.exportTo('tr.model', function() {
       return 'CPU ' + this.cpuNumber;
     },
 
-    findTopmostSlicesInThisContainer: function*(eventPredicate, opt_this) {
+    findTopmostSlicesInThisContainer: function* (eventPredicate, opt_this) {
       // All CpuSlices are toplevel since CpuSlices do not nest.
       for (var s of this.slices) {
-        yield * s.findTopmostSlicesRelativeToThisSlice(
-            eventPredicate, opt_this);
+        yield* s.findTopmostSlicesRelativeToThisSlice(eventPredicate, opt_this);
       }
     },
 
-    childEvents: function*() {
-      yield * this.slices;
+    childEvents: function* () {
+      yield* this.slices;
 
-      if (this.samples_)
-        yield * this.samples_;
+      if (this.samples_) yield* this.samples_;
     },
 
-    childEventContainers: function*() {
-      yield * tr.b.dictionaryValues(this.counters);
+    childEventContainers: function* () {
+      yield* tr.b.dictionaryValues(this.counters);
     },
 
     /**
      * @return {Counter} The counter on this CPU with the given category/name
      * combination, creating it if it doesn't exist.
      */
-    getOrCreateCounter: function(cat, name) {
+    getOrCreateCounter: function (cat, name) {
       var id = cat + '.' + name;
-      if (!this.counters[id])
-        this.counters[id] = new Counter(this, id, cat, name);
+      if (!this.counters[id]) this.counters[id] = new Counter(this, id, cat, name);
       return this.counters[id];
     },
 
@@ -93,10 +89,9 @@ global.tr.exportTo('tr.model', function() {
      * @return {Counter} the counter on this CPU with the given category/name
      * combination, or undefined if it doesn't exist.
      */
-    getCounter: function(cat, name) {
+    getCounter: function (cat, name) {
       var id = cat + '.' + name;
-      if (!this.counters[id])
-        return undefined;
+      if (!this.counters[id]) return undefined;
       return this.counters[id];
     },
 
@@ -104,17 +99,15 @@ global.tr.exportTo('tr.model', function() {
      * Shifts all the timestamps inside this CPU forward by the amount
      * specified.
      */
-    shiftTimestampsForward: function(amount) {
-      for (var sI = 0; sI < this.slices.length; sI++)
-        this.slices[sI].start = (this.slices[sI].start + amount);
-      for (var id in this.counters)
-        this.counters[id].shiftTimestampsForward(amount);
+    shiftTimestampsForward: function (amount) {
+      for (var sI = 0; sI < this.slices.length; sI++) this.slices[sI].start = this.slices[sI].start + amount;
+      for (var id in this.counters) this.counters[id].shiftTimestampsForward(amount);
     },
 
     /**
      * Updates the range based on the current slices attached to the cpu.
      */
-    updateBounds: function() {
+    updateBounds: function () {
       this.bounds_.reset();
       if (this.slices.length) {
         this.bounds_.addValue(this.slices[0].start);
@@ -126,38 +119,30 @@ global.tr.exportTo('tr.model', function() {
       }
       if (this.samples_ && this.samples_.length) {
         this.bounds_.addValue(this.samples_[0].start);
-        this.bounds_.addValue(
-            this.samples_[this.samples_.length - 1].end);
+        this.bounds_.addValue(this.samples_[this.samples_.length - 1].end);
       }
     },
 
-    createSubSlices: function() {
-      this.samples_ = this.kernel.model.samples.filter(function(sample) {
+    createSubSlices: function () {
+      this.samples_ = this.kernel.model.samples.filter(function (sample) {
         return sample.cpu == this;
       }, this);
     },
 
-    addCategoriesToDict: function(categoriesDict) {
-      for (var i = 0; i < this.slices.length; i++)
-        categoriesDict[this.slices[i].category] = true;
-      for (var id in this.counters)
-        categoriesDict[this.counters[id].category] = true;
-      for (var i = 0; i < this.samples_.length; i++)
-        categoriesDict[this.samples_[i].category] = true;
+    addCategoriesToDict: function (categoriesDict) {
+      for (var i = 0; i < this.slices.length; i++) categoriesDict[this.slices[i].category] = true;
+      for (var id in this.counters) categoriesDict[this.counters[id].category] = true;
+      for (var i = 0; i < this.samples_.length; i++) categoriesDict[this.samples_[i].category] = true;
     },
-
-
 
     /*
      * Returns the index of the slice in the CPU's slices, or undefined.
      */
-    indexOf: function(cpuSlice) {
-      var i = tr.b.findLowIndexInSortedArray(
-          this.slices,
-          function(slice) { return slice.start; },
-          cpuSlice.start);
-      if (this.slices[i] !== cpuSlice)
-        return undefined;
+    indexOf: function (cpuSlice) {
+      var i = tr.b.findLowIndexInSortedArray(this.slices, function (slice) {
+        return slice.start;
+      }, cpuSlice.start);
+      if (this.slices[i] !== cpuSlice) return undefined;
       return i;
     },
 
@@ -166,14 +151,12 @@ global.tr.exportTo('tr.model', function() {
      * at which the thread was unscheduled. |args| is merged with the arguments
      * specified when the thread was initially scheduled.
      */
-    closeActiveThread: function(endTimestamp, args) {
+    closeActiveThread: function (endTimestamp, args) {
       // Don't generate a slice if the last active thread is the idle task.
-      if (this.lastActiveThread_ == undefined || this.lastActiveThread_ == 0)
-        return;
+      if (this.lastActiveThread_ == undefined || this.lastActiveThread_ == 0) return;
 
       if (endTimestamp < this.lastActiveTimestamp_) {
-        throw new Error('The end timestamp of a thread running on CPU ' +
-                        this.cpuNumber + ' is before its start timestamp.');
+        throw new Error('The end timestamp of a thread running on CPU ' + this.cpuNumber + ' is before its start timestamp.');
       }
 
       // Merge |args| with |this.lastActiveArgs_|. If a key is in both
@@ -183,12 +166,7 @@ global.tr.exportTo('tr.model', function() {
       }
 
       var duration = endTimestamp - this.lastActiveTimestamp_;
-      var slice = new tr.model.CpuSlice(
-          '', this.lastActiveName_,
-          ColorScheme.getColorIdForGeneralPurposeString(this.lastActiveName_),
-          this.lastActiveTimestamp_,
-          this.lastActiveArgs_,
-          duration);
+      var slice = new tr.model.CpuSlice('', this.lastActiveName_, ColorScheme.getColorIdForGeneralPurposeString(this.lastActiveName_), this.lastActiveTimestamp_, this.lastActiveArgs_, duration);
       slice.cpu = this;
       this.slices.push(slice);
 
@@ -199,8 +177,7 @@ global.tr.exportTo('tr.model', function() {
       this.lastActiveArgs_ = undefined;
     },
 
-    switchActiveThread: function(timestamp, oldThreadArgs, newThreadId,
-                                 newThreadName, newThreadArgs) {
+    switchActiveThread: function (timestamp, oldThreadArgs, newThreadId, newThreadName, newThreadArgs) {
       // Close the previous active thread and generate a slice.
       this.closeActiveThread(timestamp, oldThreadArgs);
 
@@ -217,7 +194,7 @@ global.tr.exportTo('tr.model', function() {
      * and the duration at this frequency in milliseconds as the value,
      * for the range that was specified.
      */
-    getFreqStatsForRange: function(range) {
+    getFreqStatsForRange: function (range) {
       var stats = {};
 
       function addStatsForFreq(freqSample, index) {
@@ -225,31 +202,24 @@ global.tr.exportTo('tr.model', function() {
         // calculate the end by looking at the starting point
         // of the next value in the series, or if that doesn't
         // exist, assume this frequency is held until the end.
-        var freqEnd = (index < freqSample.series_.length - 1) ?
-            freqSample.series_.samples_[index + 1].timestamp : range.max;
+        var freqEnd = index < freqSample.series_.length - 1 ? freqSample.series_.samples_[index + 1].timestamp : range.max;
 
-        var freqRange = tr.b.Range.fromExplicitRange(freqSample.timestamp,
-            freqEnd);
+        var freqRange = tr.b.Range.fromExplicitRange(freqSample.timestamp, freqEnd);
         var intersection = freqRange.findIntersection(range);
-        if (!(freqSample.value in stats))
-          stats[freqSample.value] = 0;
+        if (!(freqSample.value in stats)) stats[freqSample.value] = 0;
         stats[freqSample.value] += intersection.duration;
       }
 
       var freqCounter = this.getCounter('', 'Clock Frequency');
       if (freqCounter !== undefined) {
         var freqSeries = freqCounter.getSeries(0);
-        if (!freqSeries)
-          return;
+        if (!freqSeries) return;
 
-        tr.b.iterateOverIntersectingIntervals(freqSeries.samples_,
-            function(x) { return x.timestamp; },
-            function(x, index) { return index < freqSeries.length - 1 ?
-                                     freqSeries.samples_[index + 1].timestamp :
-                                     range.max; },
-            range.min,
-            range.max,
-            addStatsForFreq);
+        tr.b.iterateOverIntersectingIntervals(freqSeries.samples_, function (x) {
+          return x.timestamp;
+        }, function (x, index) {
+          return index < freqSeries.length - 1 ? freqSeries.samples_[index + 1].timestamp : range.max;
+        }, range.min, range.max, addStatsForFreq);
       }
 
       return stats;
@@ -259,10 +229,9 @@ global.tr.exportTo('tr.model', function() {
   /**
    * Comparison between processes that orders by cpuNumber.
    */
-  Cpu.compare = function(x, y) {
+  Cpu.compare = function (x, y) {
     return x.cpuNumber - y.cpuNumber;
   };
-
 
   return {
     Cpu: Cpu

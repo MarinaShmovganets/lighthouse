@@ -12,18 +12,18 @@ require("./unit_scale.js");
 /**
  * @fileoverview Time currentDisplayUnit
  */
-global.tr.exportTo('tr.b', function() {
+global.tr.exportTo('tr.b', function () {
   var msDisplayMode = {
     scale: 1e-3,
     suffix: 'ms',
     // Compares a < b with adjustments to precision errors.
-    roundedLess: function(a, b) {
+    roundedLess: function (a, b) {
       return Math.round(a * 1000) < Math.round(b * 1000);
     },
     formatSpec: {
       unit: 's',
       unitPrefix: tr.b.UnitScale.Metric.MILLI,
-      minimumFractionDigits: 3,
+      minimumFractionDigits: 3
     }
   };
 
@@ -31,7 +31,7 @@ global.tr.exportTo('tr.b', function() {
     scale: 1e-9,
     suffix: 'ns',
     // Compares a < b with adjustments to precision errors.
-    roundedLess: function(a, b) {
+    roundedLess: function (a, b) {
       return Math.round(a * 1000000) < Math.round(b * 1000000);
     },
     formatSpec: {

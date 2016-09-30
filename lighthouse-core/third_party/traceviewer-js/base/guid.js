@@ -9,7 +9,7 @@ require("./base.js");
 
 'use strict';
 
-global.tr.exportTo('tr.b', function() {
+global.tr.exportTo('tr.b', function () {
   var nextGUID = 1;
 
   var UUID4_PATTERN = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
@@ -22,7 +22,7 @@ global.tr.exportTo('tr.b', function() {
      *
      * @return {number} globally unique id.
      */
-    allocateSimple: function() {
+    allocateSimple: function () {
       return nextGUID++;
     },
 
@@ -30,7 +30,7 @@ global.tr.exportTo('tr.b', function() {
      *
      * @return {number} last guid.
      */
-    getLastSimpleGuid: function() {
+    getLastSimpleGuid: function () {
       return nextGUID - 1;
     },
 
@@ -43,11 +43,10 @@ global.tr.exportTo('tr.b', function() {
      *
      * @return {string} universally unique id.
      */
-    allocateUUID4: function() {
-      return UUID4_PATTERN.replace(/[xy]/g, function(c) {
+    allocateUUID4: function () {
+      return UUID4_PATTERN.replace(/[xy]/g, function (c) {
         var r = parseInt(Math.random() * 16);
-        if (c === 'y')
-          r = (r & 3) + 8;
+        if (c === 'y') r = (r & 3) + 8;
         return r.toString(16);
       });
     }

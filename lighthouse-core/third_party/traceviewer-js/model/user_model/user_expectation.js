@@ -14,7 +14,7 @@ require("../timed_event.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model.um', function() {
+global.tr.exportTo('tr.model.um', function () {
   var CompoundEventSelectionState = tr.model.CompoundEventSelectionState;
 
   function UserExpectation(parentModel, initiatorTitle, start, duration) {
@@ -33,56 +33,47 @@ global.tr.exportTo('tr.model.um', function() {
   UserExpectation.prototype = {
     __proto__: tr.model.TimedEvent.prototype,
 
-    computeCompoundEvenSelectionState: function(selection) {
+    computeCompoundEvenSelectionState: function (selection) {
       var cess = CompoundEventSelectionState.NOT_SELECTED;
-      if (selection.contains(this))
-        cess |= CompoundEventSelectionState.EVENT_SELECTED;
+      if (selection.contains(this)) cess |= CompoundEventSelectionState.EVENT_SELECTED;
 
-      if (this.associatedEvents.intersectionIsEmpty(selection))
-        return cess;
+      if (this.associatedEvents.intersectionIsEmpty(selection)) return cess;
 
-      var allContained = this.associatedEvents.every(function(event) {
+      var allContained = this.associatedEvents.every(function (event) {
         return selection.contains(event);
       });
 
-      if (allContained)
-        cess |= CompoundEventSelectionState.ALL_ASSOCIATED_EVENTS_SELECTED;
-      else
-        cess |= CompoundEventSelectionState.SOME_ASSOCIATED_EVENTS_SELECTED;
+      if (allContained) cess |= CompoundEventSelectionState.ALL_ASSOCIATED_EVENTS_SELECTED;else cess |= CompoundEventSelectionState.SOME_ASSOCIATED_EVENTS_SELECTED;
       return cess;
     },
 
     // Returns samples which are overlapping with V8.Execute
     get associatedSamples() {
       var samples = new tr.model.EventSet();
-      this.associatedEvents.forEach(function(event) {
-        if (event instanceof tr.model.ThreadSlice)
-          samples.addEventSet(event.overlappingSamples);
+      this.associatedEvents.forEach(function (event) {
+        if (event instanceof tr.model.ThreadSlice) samples.addEventSet(event.overlappingSamples);
       });
       return samples;
     },
 
     get userFriendlyName() {
-      return this.title + ' User Expectation at ' +
-          tr.b.Unit.byName.timeStampInMs.format(this.start);
+      return this.title + ' User Expectation at ' + tr.b.Unit.byName.timeStampInMs.format(this.start);
     },
 
     get stableId() {
-      return ('UserExpectation.' + this.guid);
+      return 'UserExpectation.' + this.guid;
     },
 
     get typeInfo() {
       if (!this.typeInfo_) {
-        this.typeInfo_ = UserExpectation.subTypes.findTypeInfo(
-            this.constructor);
+        this.typeInfo_ = UserExpectation.subTypes.findTypeInfo(this.constructor);
       }
 
       // If you set Subclass.prototype = {}, then you must explicitly specify
       // constructor in that prototype object!
       // http://javascript.info/tutorial/constructor
 
-      if (!this.typeInfo_)
-        throw new Error('Unregistered UserExpectation');
+      if (!this.typeInfo_) throw new Error('Unregistered UserExpectation');
 
       return this.typeInfo_;
     },
@@ -100,8 +91,7 @@ global.tr.exportTo('tr.model.um', function() {
     },
 
     get title() {
-      if (!this.initiatorTitle)
-        return this.stageTitle;
+      if (!this.initiatorTitle) return this.stageTitle;
 
       return this.initiatorTitle + ' ' + this.stageTitle;
     },
@@ -111,9 +101,8 @@ global.tr.exportTo('tr.model.um', function() {
      */
     get totalCpuMs() {
       var cpuMs = 0;
-      this.associatedEvents.forEach(function(event) {
-        if (event.cpuSelfTime)
-          cpuMs += event.cpuSelfTime;
+      this.associatedEvents.forEach(function (event) {
+        if (event.cpuSelfTime) cpuMs += event.cpuSelfTime;
       });
       return cpuMs;
     }
@@ -123,27 +112,23 @@ global.tr.exportTo('tr.model.um', function() {
   var options = new tr.b.ExtensionRegistryOptions(tr.b.BASIC_REGISTRY_MODE);
   tr.b.decorateExtensionRegistry(subTypes, options);
 
-  subTypes.addEventListener('will-register', function(e) {
+  subTypes.addEventListener('will-register', function (e) {
     var metadata = e.typeInfo.metadata;
 
     if (metadata.stageTitle === undefined) {
-      throw new Error('Registered UserExpectations must provide ' +
-          'stageTitle');
+      throw new Error('Registered UserExpectations must provide ' + 'stageTitle');
     }
 
     if (metadata.colorId === undefined) {
-      throw new Error('Registered UserExpectations must provide ' +
-          'colorId');
+      throw new Error('Registered UserExpectations must provide ' + 'colorId');
     }
   });
 
-  tr.model.EventRegistry.register(
-      UserExpectation,
-      {
-        name: 'userExpectation',
-        pluralName: 'userExpectations',
-        subTypes: subTypes
-      });
+  tr.model.EventRegistry.register(UserExpectation, {
+    name: 'userExpectation',
+    pluralName: 'userExpectations',
+    subTypes: subTypes
+  });
 
   return {
     UserExpectation: UserExpectation

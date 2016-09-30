@@ -38,11 +38,10 @@ require("./iteration_helpers.js");
  * was never enforced. We may want to add it back in the future in order to
  * enforce the types that can be put into a given registry.
  */
-global.tr.exportTo('tr.b', function() {
+global.tr.exportTo('tr.b', function () {
 
   function decorateExtensionRegistry(registry, registryOptions) {
-    if (registry.register)
-      throw new Error('Already has registry');
+    if (registry.register) throw new Error('Already has registry');
 
     registryOptions.freeze();
     if (registryOptions.mode == tr.b.BASIC_REGISTRY_MODE) {
@@ -54,8 +53,7 @@ global.tr.exportTo('tr.b', function() {
     }
 
     // Make it an event target.
-    if (registry.addEventListener === undefined)
-      tr.b.EventTarget.decorate(registry);
+    if (registry.addEventListener === undefined) tr.b.EventTarget.decorate(registry);
   }
 
   return {

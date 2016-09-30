@@ -13,7 +13,7 @@ require("./base.js");
  * @fileoverview Helper code for working with tracing categories.
  *
  */
-global.tr.exportTo('tr.b', function() {
+global.tr.exportTo('tr.b', function () {
 
   // Cached values for getCategoryParts.
   var categoryPartsFor = {};
@@ -29,8 +29,7 @@ global.tr.exportTo('tr.b', function() {
    */
   function getCategoryParts(category) {
     var parts = categoryPartsFor[category];
-    if (parts !== undefined)
-      return parts;
+    if (parts !== undefined) return parts;
     parts = category.split(',');
     categoryPartsFor[category] = parts;
     return parts;

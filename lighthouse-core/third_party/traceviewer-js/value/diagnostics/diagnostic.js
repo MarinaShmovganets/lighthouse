@@ -9,10 +9,10 @@ require("../../base/extension_registry.js");
 
 'use strict';
 
-global.tr.exportTo('tr.v.d', function() {
+global.tr.exportTo('tr.v.d', function () {
   class Diagnostic {
     asDict() {
-      var result = {type: this.constructor.name};
+      var result = { type: this.constructor.name };
       this.asDictInto_(result);
       return result;
     }
@@ -23,8 +23,7 @@ global.tr.exportTo('tr.v.d', function() {
 
     static fromDict(d) {
       var typeInfo = Diagnostic.findTypeInfoWithName(d.type);
-      if (!typeInfo)
-        throw new Error('Unrecognized diagnostic type: ' + d.type);
+      if (!typeInfo) throw new Error('Unrecognized diagnostic type: ' + d.type);
 
       return typeInfo.constructor.fromDict(d);
     }
@@ -35,11 +34,9 @@ global.tr.exportTo('tr.v.d', function() {
   options.mandatoryBaseClass = Diagnostic;
   tr.b.decorateExtensionRegistry(Diagnostic, options);
 
-  Diagnostic.addEventListener('will-register', function(e) {
+  Diagnostic.addEventListener('will-register', function (e) {
     var constructor = e.typeInfo.constructor;
-    if (!(constructor.fromDict instanceof Function) ||
-        (constructor.fromDict === Diagnostic.fromDict) ||
-        (constructor.fromDict.length !== 1)) {
+    if (!(constructor.fromDict instanceof Function) || constructor.fromDict === Diagnostic.fromDict || constructor.fromDict.length !== 1) {
       throw new Error('Diagnostics must define fromDict(d)');
     }
   });

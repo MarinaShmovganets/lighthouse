@@ -9,16 +9,15 @@ require("../../base/base.js");
 
 'use strict';
 
-global.tr.exportTo('tr.ui.annotations', function() {
+global.tr.exportTo('tr.ui.annotations', function () {
   /**
    * A base class for all annotation views.
    * @constructor
    */
-  function AnnotationView(viewport, annotation) {
-  }
+  function AnnotationView(viewport, annotation) {}
 
   AnnotationView.prototype = {
-    draw: function(ctx) {
+    draw: function (ctx) {
       throw new Error('Not implemented');
     }
   };

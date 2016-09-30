@@ -10,11 +10,10 @@ require("../base/unit.js");
 
 'use strict';
 
-global.tr.exportTo('tr.v', function() {
+global.tr.exportTo('tr.v', function () {
   class NumericBase {
     constructor(unit) {
-      if (!(unit instanceof tr.b.Unit))
-        throw new Error('Expected provided unit to be instance of Unit');
+      if (!(unit instanceof tr.b.Unit)) throw new Error('Expected provided unit to be instance of Unit');
 
       this.unit = unit;
     }
@@ -29,8 +28,7 @@ global.tr.exportTo('tr.v', function() {
     }
 
     static fromDict(d) {
-      if (d.type === 'scalar')
-        return ScalarNumeric.fromDict(d);
+      if (d.type === 'scalar') return ScalarNumeric.fromDict(d);
 
       throw new Error('Not implemented');
     }
@@ -38,11 +36,9 @@ global.tr.exportTo('tr.v', function() {
 
   class ScalarNumeric extends NumericBase {
     constructor(unit, value) {
-      if (!(unit instanceof tr.b.Unit))
-        throw new Error('Expected Unit');
+      if (!(unit instanceof tr.b.Unit)) throw new Error('Expected Unit');
 
-      if (!(typeof(value) == 'number'))
-        throw new Error('Expected value to be number');
+      if (!(typeof value == 'number')) throw new Error('Expected value to be number');
 
       super(unit);
       this.value = value;
@@ -53,14 +49,7 @@ global.tr.exportTo('tr.v', function() {
 
       // Infinity and NaN are left out of JSON for security reasons that do not
       // apply to our use cases.
-      if (this.value === Infinity)
-        d.value = 'Infinity';
-      else if (this.value === -Infinity)
-        d.value = '-Infinity';
-      else if (isNaN(this.value))
-        d.value = 'NaN';
-      else
-        d.value = this.value;
+      if (this.value === Infinity) d.value = 'Infinity';else if (this.value === -Infinity) d.value = '-Infinity';else if (isNaN(this.value)) d.value = 'NaN';else d.value = this.value;
     }
 
     toString() {
@@ -70,7 +59,7 @@ global.tr.exportTo('tr.v', function() {
     static fromDict(d) {
       // Infinity and NaN are left out of JSON for security reasons that do not
       // apply to our use cases.
-      if (typeof(d.value) === 'string') {
+      if (typeof d.value === 'string') {
         if (d.value === '-Infinity') {
           d.value = -Infinity;
         } else if (d.value === 'Infinity') {

@@ -10,15 +10,14 @@ require("../numeric.js");
 
 'use strict';
 
-global.tr.exportTo('tr.v.d', function() {
+global.tr.exportTo('tr.v.d', function () {
   class Scalar extends tr.v.d.Diagnostic {
     /**
      * @param {!tr.v.ScalarNumeric} value
      */
     constructor(value) {
       super();
-      if (!(value instanceof tr.v.ScalarNumeric))
-        throw new Error("expected ScalarNumeric");
+      if (!(value instanceof tr.v.ScalarNumeric)) throw new Error("expected ScalarNumeric");
       this.value = value;
     }
 

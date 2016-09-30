@@ -12,7 +12,7 @@ require("../../value/histogram.js");
 
 'use strict';
 
-global.tr.exportTo('tr.metrics.sh', function() {
+global.tr.exportTo('tr.metrics.sh', function () {
   var LONG_TASK_MS = 50;
 
   // Anything longer than this should be so rare that its length beyond this is
@@ -28,15 +28,11 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * @param {function()} cb
    * @param {Object=} opt_this
    */
-  function iterateLongTopLevelTasksOnThreadInRange(
-      thread, opt_range, cb, opt_this) {
-    thread.sliceGroup.topLevelSlices.forEach(function(slice) {
-      if (opt_range &&
-          !opt_range.intersectsExplicitRangeInclusive(slice.start, slice.end))
-        return;
+  function iterateLongTopLevelTasksOnThreadInRange(thread, opt_range, cb, opt_this) {
+    thread.sliceGroup.topLevelSlices.forEach(function (slice) {
+      if (opt_range && !opt_range.intersectsExplicitRangeInclusive(slice.start, slice.end)) return;
 
-      if (slice.duration < LONG_TASK_MS)
-        return;
+      if (slice.duration < LONG_TASK_MS) return;
 
       cb.call(opt_this, slice);
     });
@@ -51,14 +47,11 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * @param {Object=} opt_this Context object.
    */
   function iterateRendererMainThreads(model, cb, opt_this) {
-    var modelHelper = model.getOrCreateHelper(
-        tr.model.helpers.ChromeModelHelper);
-    tr.b.dictionaryValues(modelHelper.rendererHelpers).forEach(
-        function(rendererHelper) {
-          if (!rendererHelper.mainThread)
-            return;
-          cb.call(opt_this, rendererHelper.mainThread);
-        });
+    var modelHelper = model.getOrCreateHelper(tr.model.helpers.ChromeModelHelper);
+    tr.b.dictionaryValues(modelHelper.rendererHelpers).forEach(function (rendererHelper) {
+      if (!rendererHelper.mainThread) return;
+      cb.call(opt_this, rendererHelper.mainThread);
+    });
   }
 
   /**
@@ -71,31 +64,21 @@ global.tr.exportTo('tr.metrics.sh', function() {
    */
   function longTasksMetric(values, model, opt_options) {
     var rangeOfInterest = opt_options ? opt_options.rangeOfInterest : undefined;
-    var longTaskHist = new tr.v.Histogram('long tasks',
-        tr.b.Unit.byName.timeDurationInMs_smallerIsBetter,
-        tr.v.HistogramBinBoundaries.createLinear(
-            LONG_TASK_MS, LONGEST_TASK_MS, 40));
+    var longTaskHist = new tr.v.Histogram('long tasks', tr.b.Unit.byName.timeDurationInMs_smallerIsBetter, tr.v.HistogramBinBoundaries.createLinear(LONG_TASK_MS, LONGEST_TASK_MS, 40));
     longTaskHist.description = 'durations of long tasks';
     var slices = new tr.model.EventSet();
-    iterateRendererMainThreads(model, function(thread) {
-      iterateLongTopLevelTasksOnThreadInRange(
-          thread, rangeOfInterest, function(task) {
-            longTaskHist.addSample(task.duration,
-                {relatedEvents: new tr.v.d.RelatedEventSet([task])});
-            slices.push(task);
-            slices.addEventSet(task.descendentSlices);
-          });
+    iterateRendererMainThreads(model, function (thread) {
+      iterateLongTopLevelTasksOnThreadInRange(thread, rangeOfInterest, function (task) {
+        longTaskHist.addSample(task.duration, { relatedEvents: new tr.v.d.RelatedEventSet([task]) });
+        slices.push(task);
+        slices.addEventSet(task.descendentSlices);
+      });
     });
     values.addHistogram(longTaskHist);
 
     var sampleForEvent = undefined;
-    var breakdown = tr.v.d.RelatedHistogramBreakdown.buildFromEvents(
-        values, 'long tasks ', slices,
-        e => (model.getUserFriendlyCategoryFromEvent(e) || 'unknown'),
-        tr.b.Unit.byName.timeDurationInMs_smallerIsBetter, sampleForEvent,
-        tr.v.HistogramBinBoundaries.createExponential(1, LONGEST_TASK_MS, 40));
-    breakdown.colorScheme =
-      tr.v.d.COLOR_SCHEME_CHROME_USER_FRIENDLY_CATEGORY_DRIVER;
+    var breakdown = tr.v.d.RelatedHistogramBreakdown.buildFromEvents(values, 'long tasks ', slices, e => model.getUserFriendlyCategoryFromEvent(e) || 'unknown', tr.b.Unit.byName.timeDurationInMs_smallerIsBetter, sampleForEvent, tr.v.HistogramBinBoundaries.createExponential(1, LONGEST_TASK_MS, 40));
+    breakdown.colorScheme = tr.v.d.COLOR_SCHEME_CHROME_USER_FRIENDLY_CATEGORY_DRIVER;
     longTaskHist.diagnostics.set('category', breakdown);
   }
 
@@ -105,8 +88,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
 
   return {
     longTasksMetric: longTasksMetric,
-    iterateLongTopLevelTasksOnThreadInRange:
-      iterateLongTopLevelTasksOnThreadInRange,
+    iterateLongTopLevelTasksOnThreadInRange: iterateLongTopLevelTasksOnThreadInRange,
     iterateRendererMainThreads: iterateRendererMainThreads,
     LONG_TASK_MS: LONG_TASK_MS,
     LONGEST_TASK_MS: LONGEST_TASK_MS

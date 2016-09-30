@@ -9,11 +9,9 @@ require("./user_expectation.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model.um', function() {
-  function ResponseExpectation(
-      parentModel, initiatorTitle, start, duration, opt_isAnimationBegin) {
-    tr.model.um.UserExpectation.call(
-        this, parentModel, initiatorTitle, start, duration);
+global.tr.exportTo('tr.model.um', function () {
+  function ResponseExpectation(parentModel, initiatorTitle, start, duration, opt_isAnimationBegin) {
+    tr.model.um.UserExpectation.call(this, parentModel, initiatorTitle, start, duration);
     this.isAnimationBegin = opt_isAnimationBegin || false;
   }
 

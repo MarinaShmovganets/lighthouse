@@ -11,15 +11,13 @@ require("../../value/numeric.js");
 
 'use strict';
 
-global.tr.exportTo('tr.metrics.sh', function() {
+global.tr.exportTo('tr.metrics.sh', function () {
   // The following math is easier if the units are seconds rather than ms,
   // so durations will be converted from ms to s.
   var MS_PER_S = 1000;
 
   // https://www.desmos.com/calculator/ysabhcc42g
-  var RESPONSE_RISK =
-    tr.b.Statistics.LogNormalDistribution.fromMedianAndDiminishingReturns(
-      100 / MS_PER_S, 50 / MS_PER_S);
+  var RESPONSE_RISK = tr.b.Statistics.LogNormalDistribution.fromMedianAndDiminishingReturns(100 / MS_PER_S, 50 / MS_PER_S);
 
   /**
    * This helper function computes the risk that a task of the given duration
@@ -86,12 +84,10 @@ global.tr.exportTo('tr.metrics.sh', function() {
    */
   function computeHazardForLongTasksInRangeOnThread(thread, opt_range) {
     var taskHazardScores = [];
-    tr.metrics.sh.iterateLongTopLevelTasksOnThreadInRange(
-        thread, opt_range, function(task) {
+    tr.metrics.sh.iterateLongTopLevelTasksOnThreadInRange(thread, opt_range, function (task) {
       taskHazardScores.push(computeResponsivenessRisk(task.duration));
     });
-    return tr.b.Statistics.weightedMean(
-        taskHazardScores, perceptualBlendSmallerIsBetter);
+    return tr.b.Statistics.weightedMean(taskHazardScores, perceptualBlendSmallerIsBetter);
   }
 
   /**
@@ -103,12 +99,10 @@ global.tr.exportTo('tr.metrics.sh', function() {
    */
   function computeHazardForLongTasks(model) {
     var threadHazardScores = [];
-    tr.metrics.sh.iterateRendererMainThreads(model, function(thread) {
-      threadHazardScores.push(computeHazardForLongTasksInRangeOnThread(
-          thread));
+    tr.metrics.sh.iterateRendererMainThreads(model, function (thread) {
+      threadHazardScores.push(computeHazardForLongTasksInRangeOnThread(thread));
     });
-    return tr.b.Statistics.weightedMean(
-        threadHazardScores, perceptualBlendSmallerIsBetter);
+    return tr.b.Statistics.weightedMean(threadHazardScores, perceptualBlendSmallerIsBetter);
   }
 
   /**
@@ -119,11 +113,9 @@ global.tr.exportTo('tr.metrics.sh', function() {
    */
   function hazardMetric(values, model) {
     var overallHazard = computeHazardForLongTasks(model);
-    if (overallHazard === undefined)
-      overallHazard = 0;
+    if (overallHazard === undefined) overallHazard = 0;
 
-    var hist = new tr.v.Histogram('hazard',
-        tr.b.Unit.byName.normalizedPercentage_smallerIsBetter);
+    var hist = new tr.v.Histogram('hazard', tr.b.Unit.byName.normalizedPercentage_smallerIsBetter);
     hist.addSample(overallHazard);
     values.addHistogram(hist);
   }
@@ -132,8 +124,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
 
   return {
     hazardMetric: hazardMetric,
-    computeHazardForLongTasksInRangeOnThread:
-      computeHazardForLongTasksInRangeOnThread,
+    computeHazardForLongTasksInRangeOnThread: computeHazardForLongTasksInRangeOnThread,
     computeHazardForLongTasks: computeHazardForLongTasks,
     computeResponsivenessRisk: computeResponsivenessRisk
   };

@@ -5,11 +5,13 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 require("./base.js");
 
 'use strict';
 
-global.tr.exportTo('tr.b', function() {
+global.tr.exportTo('tr.b', function () {
   /***
   * An object of this class computes basic statistics online in O(1).
   * Usage:
@@ -37,14 +39,12 @@ global.tr.exportTo('tr.b', function() {
     }
 
     get geometricMean() {
-      if (this.meanlogs_ === undefined)
-        return 0;
+      if (this.meanlogs_ === undefined) return 0;
       return Math.exp(this.meanlogs_);
     }
 
     get mean() {
-      if (this.count_ == 0)
-        return undefined;
+      if (this.count_ == 0) return undefined;
       return this.mean_;
     }
 
@@ -61,16 +61,13 @@ global.tr.exportTo('tr.b', function() {
     }
 
     get variance() {
-      if (this.count_ == 0)
-        return undefined;
-      if (this.count_ == 1)
-        return 0;
+      if (this.count_ == 0) return undefined;
+      if (this.count_ == 1) return 0;
       return this.variance_ / (this.count_ - 1);
     }
 
     get stddev() {
-      if (this.count_ == 0)
-        return undefined;
+      if (this.count_ == 0) return undefined;
       return Math.sqrt(this.variance);
     }
 
@@ -81,10 +78,7 @@ global.tr.exportTo('tr.b', function() {
       this.sum_ += x;
 
       // The geometric mean is computed using the arithmetic mean of logarithms.
-      if (x <= 0)
-        this.meanlogs_ = undefined;
-      else if (this.meanlogs_ !== undefined)
-        this.meanlogs_ += (Math.log(Math.abs(x)) - this.meanlogs_) / this.count;
+      if (x <= 0) this.meanlogs_ = undefined;else if (this.meanlogs_ !== undefined) this.meanlogs_ += (Math.log(Math.abs(x)) - this.meanlogs_) / this.count;
 
       // The following uses Welford's algorithm for computing running mean
       // and variance. See http://www.johndcook.com/blog/standard_deviation.
@@ -121,16 +115,14 @@ global.tr.exportTo('tr.b', function() {
         // https://goo.gl/ddcAep.
         result.mean_ = result.sum / result.count;
         var deltaMean = (this.mean || 0) - (other.mean || 0);
-        result.variance_ = this.variance_ + other.variance_ +
-          (this.count * other.count * deltaMean * deltaMean / result.count);
+        result.variance_ = this.variance_ + other.variance_ + this.count * other.count * deltaMean * deltaMean / result.count;
 
         // Merge the arithmetic means of logarithms of absolute values of
         // samples, weighted by counts.
         if (this.meanlogs_ === undefined || other.meanlogs_ === undefined) {
           result.meanlogs_ = undefined;
         } else {
-          result.meanlogs_ = (this.count * this.meanlogs_ +
-              other.count * other.meanlogs_) / result.count;
+          result.meanlogs_ = (this.count * this.meanlogs_ + other.count * other.meanlogs_) / result.count;
         }
       }
       return result;
@@ -143,15 +135,7 @@ global.tr.exportTo('tr.b', function() {
       // It's more efficient to serialize these fields in an array. If you
       // add any other fields, you should re-evaluate whether it would be more
       // efficient to serialize as a dict.
-      return [
-        this.count_,
-        this.max_,
-        this.meanlogs_,
-        this.mean_,
-        this.min_,
-        this.sum_,
-        this.variance_,
-      ];
+      return [this.count_, this.max_, this.meanlogs_, this.mean_, this.min_, this.sum_, this.variance_];
     }
 
     static fromDict(dict) {
@@ -159,15 +143,17 @@ global.tr.exportTo('tr.b', function() {
       if (dict.length != 7) {
         return result;
       }
-      [
-        result.count_,
-        result.max_,
-        result.meanlogs_,
-        result.mean_,
-        result.min_,
-        result.sum_,
-        result.variance_,
-      ] = dict;
+
+      var _dict = _slicedToArray(dict, 7);
+
+      result.count_ = _dict[0];
+      result.max_ = _dict[1];
+      result.meanlogs_ = _dict[2];
+      result.mean_ = _dict[3];
+      result.min_ = _dict[4];
+      result.sum_ = _dict[5];
+      result.variance_ = _dict[6];
+
       return result;
     }
   }

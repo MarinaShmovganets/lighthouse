@@ -13,15 +13,14 @@ require("./timed_event.js");
 /**
  * @fileoverview Provides the Sample class.
  */
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
   /**
    * A Sample represents a sample taken at an instant in time, plus its stack
    * frame and parameters associated with that sample.
    *
    * @constructor
    */
-  function Sample(cpu, thread, title, start, leafStackFrame,
-                  opt_weight, opt_args) {
+  function Sample(cpu, thread, title, start, leafStackFrame, opt_weight, opt_args) {
     tr.model.TimedEvent.call(this, start);
 
     this.title = title;
@@ -43,7 +42,7 @@ global.tr.exportTo('tr.model', function() {
       return this.leafStackFrame.stackTrace;
     },
 
-    getUserFriendlyStackTrace: function() {
+    getUserFriendlyStackTrace: function () {
       return this.leafStackFrame.getUserFriendlyStackTrace();
     },
 
@@ -52,12 +51,10 @@ global.tr.exportTo('tr.model', function() {
     }
   };
 
-  tr.model.EventRegistry.register(
-      Sample,
-      {
-        name: 'sample',
-        pluralName: 'samples'
-      });
+  tr.model.EventRegistry.register(Sample, {
+    name: 'sample',
+    pluralName: 'samples'
+  });
 
   return {
     Sample: Sample

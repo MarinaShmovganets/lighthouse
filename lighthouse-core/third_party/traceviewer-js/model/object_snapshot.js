@@ -10,7 +10,7 @@ require("./event.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
   /**
    * A snapshot of an object instance, at a given moment in time.
    *
@@ -46,14 +46,12 @@ global.tr.exportTo('tr.model', function() {
     /**
      * See ObjectSnapshot constructor notes on object initialization.
      */
-    preInitialize: function() {
-    },
+    preInitialize: function () {},
 
     /**
      * See ObjectSnapshot constructor notes on object initialization.
      */
-    initialize: function() {
-    },
+    initialize: function () {},
 
     /**
      * Called when an object reference is resolved as this ObjectSnapshot.
@@ -62,27 +60,21 @@ global.tr.exportTo('tr.model', function() {
      * @param {Object} object The object directly containing the reference.
      * @param {String} field The field name of the reference in |object|.
      */
-    referencedAt: function(item, object, field) {
-    },
+    referencedAt: function (item, object, field) {},
 
-    addBoundsToRange: function(range) {
+    addBoundsToRange: function (range) {
       range.addValue(this.ts);
     },
 
     get userFriendlyName() {
-      return 'Snapshot of ' +
-             this.objectInstance.typeName + ' ' +
-             this.objectInstance.id + ' @ ' +
-             tr.b.Unit.byName.timeStampInMs.format(this.ts);
+      return 'Snapshot of ' + this.objectInstance.typeName + ' ' + this.objectInstance.id + ' @ ' + tr.b.Unit.byName.timeStampInMs.format(this.ts);
     }
   };
 
-  tr.model.EventRegistry.register(
-      ObjectSnapshot,
-      {
-        name: 'objectSnapshot',
-        pluralName: 'objectSnapshots'
-      });
+  tr.model.EventRegistry.register(ObjectSnapshot, {
+    name: 'objectSnapshot',
+    pluralName: 'objectSnapshots'
+  });
 
   return {
     ObjectSnapshot: ObjectSnapshot

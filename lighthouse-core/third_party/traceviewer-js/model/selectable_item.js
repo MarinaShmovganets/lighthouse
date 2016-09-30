@@ -12,7 +12,7 @@ require("./selection_state.js");
 /**
  * @fileoverview Provides the SelectableItem class.
  */
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
   var SelectionState = tr.model.SelectionState;
 
   /**
@@ -36,17 +36,15 @@ global.tr.exportTo('tr.model', function() {
       return this.selectionState === SelectionState.SELECTED;
     },
 
-    addToSelection: function(selection) {
+    addToSelection: function (selection) {
       var modelItem = this.modelItem_;
-      if (!modelItem)
-        return;
+      if (!modelItem) return;
       selection.push(modelItem);
     },
 
-    addToTrackMap: function(eventToTrackMap, track) {
+    addToTrackMap: function (eventToTrackMap, track) {
       var modelItem = this.modelItem_;
-      if (!modelItem)
-        return;
+      if (!modelItem) return;
       eventToTrackMap.addEvent(modelItem, track);
     }
   };

@@ -9,7 +9,7 @@ require("./event_target.js");
 
 'use strict';
 
-global.tr.exportTo('tr.b', function() {
+global.tr.exportTo('tr.b', function () {
   var Event;
   if (tr.isHeadless) {
     /**
@@ -25,21 +25,19 @@ global.tr.exportTo('tr.b', function() {
      */
     function HeadlessEvent(type, opt_bubbles, opt_preventable) {
       this.type = type;
-      this.bubbles = (opt_bubbles !== undefined ?
-          !!opt_bubbles : false);
-      this.cancelable = (opt_preventable !== undefined ?
-          !!opt_preventable : false);
+      this.bubbles = opt_bubbles !== undefined ? !!opt_bubbles : false;
+      this.cancelable = opt_preventable !== undefined ? !!opt_preventable : false;
 
       this.defaultPrevented = false;
       this.cancelBubble = false;
     };
 
     HeadlessEvent.prototype = {
-      preventDefault: function() {
+      preventDefault: function () {
         this.defaultPrevented = true;
       },
 
-      stopPropagation: function() {
+      stopPropagation: function () {
         this.cancelBubble = true;
       }
     };
@@ -81,11 +79,10 @@ global.tr.exportTo('tr.b', function() {
    * @return {boolean} If any of the listeners called {@code preventDefault}
    *     during the dispatch this will return false.
    */
-  function dispatchSimpleEvent(target, type, opt_bubbles, opt_cancelable,
-      opt_fields) {
+  function dispatchSimpleEvent(target, type, opt_bubbles, opt_cancelable, opt_fields) {
     var e = new tr.b.Event(type, opt_bubbles, opt_cancelable);
     if (opt_fields) {
-      tr.b.iterItems(opt_fields, function(name, value) {
+      tr.b.iterItems(opt_fields, function (name, value) {
         e[name] = value;
       });
     }

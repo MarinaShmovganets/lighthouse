@@ -5,13 +5,15 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 require("../../model/event_set.js");
 require("./diagnostic.js");
 require("./event_ref.js");
 
 'use strict';
 
-global.tr.exportTo('tr.v.d', function() {
+global.tr.exportTo('tr.v.d', function () {
   /**
    * @typedef {!(tr.v.d.EventRef|tr.model.Event)} EventLike
    */
@@ -27,10 +29,8 @@ global.tr.exportTo('tr.v.d', function() {
       super();
       this.eventsByStableId_ = new Map();
       if (opt_events) {
-        if (opt_events instanceof tr.model.EventSet ||
-            opt_events instanceof Array) {
-          for (var event of opt_events)
-            this.add(event);
+        if (opt_events instanceof tr.model.EventSet || opt_events instanceof Array) {
+          for (var event of opt_events) this.add(event);
         } else {
           this.add(opt_events);
         }
@@ -57,8 +57,14 @@ global.tr.exportTo('tr.v.d', function() {
     }
 
     *[Symbol.iterator]() {
-      for (var [stableId, event] of this.eventsByStableId_)
+      for (var _ref of this.eventsByStableId_) {
+        var _ref2 = _slicedToArray(_ref, 2);
+
+        var stableId = _ref2[0];
+        var event = _ref2[1];
+
         yield event;
+      }
     }
 
     /**
@@ -72,15 +78,16 @@ global.tr.exportTo('tr.v.d', function() {
      * @param {boolean=} opt_required
      */
     resolve(model, opt_required) {
-      for (var [stableId, event] of this.eventsByStableId_) {
-        if (!(event instanceof tr.v.d.EventRef))
-          continue;
+      for (var _ref3 of this.eventsByStableId_) {
+        var _ref4 = _slicedToArray(_ref3, 2);
+
+        var stableId = _ref4[0];
+        var event = _ref4[1];
+
+        if (!(event instanceof tr.v.d.EventRef)) continue;
 
         event = model.getEventByStableId(stableId);
-        if (event instanceof tr.model.Event)
-          this.eventsByStableId_.set(stableId, event);
-        else if (opt_required)
-          throw new Error('Unable to find Event ' + stableId);
+        if (event instanceof tr.model.Event) this.eventsByStableId_.set(stableId, event);else if (opt_required) throw new Error('Unable to find Event ' + stableId);
       }
     }
 
@@ -97,8 +104,7 @@ global.tr.exportTo('tr.v.d', function() {
     }
 
     static fromDict(d) {
-      return new RelatedEventSet(d.events.map(
-          event => new tr.v.d.EventRef(event)));
+      return new RelatedEventSet(d.events.map(event => new tr.v.d.EventRef(event)));
     }
   }
 

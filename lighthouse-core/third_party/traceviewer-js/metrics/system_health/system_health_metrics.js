@@ -12,7 +12,7 @@ require("./power_metric.js");
 
 'use strict';
 
-global.tr.exportTo('tr.metrics.sh', function() {
+global.tr.exportTo('tr.metrics.sh', function () {
   function systemHealthMetrics(values, model) {
     tr.metrics.sh.responsivenessMetric(values, model);
     tr.metrics.sh.longTasksMetric(values, model);

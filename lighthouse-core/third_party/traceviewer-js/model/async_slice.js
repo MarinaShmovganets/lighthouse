@@ -13,7 +13,7 @@ require("./timed_event.js");
 /**
  * @fileoverview Provides the AsyncSlice class.
  */
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
   /**
    * A AsyncSlice represents an interval of time during which an
    * asynchronous operation is in progress. An AsyncSlice consumes no CPU time
@@ -21,9 +21,7 @@ global.tr.exportTo('tr.model', function() {
    *
    * @constructor
    */
-  function AsyncSlice(category, title, colorId, start, args, duration,
-                      opt_isTopLevel, opt_cpuStart, opt_cpuDuration,
-                      opt_argsStripped) {
+  function AsyncSlice(category, title, colorId, start, args, duration, opt_isTopLevel, opt_cpuStart, opt_cpuDuration, opt_argsStripped) {
     tr.model.TimedEvent.call(this, start);
 
     this.category = category || '';
@@ -54,16 +52,13 @@ global.tr.exportTo('tr.model', function() {
 
     // isTopLevel is set at import because only NESTABLE_ASYNC events might not
     // be topLevel. All legacy async events are toplevel by definition.
-    this.isTopLevel = (opt_isTopLevel === true);
+    this.isTopLevel = opt_isTopLevel === true;
 
-    if (opt_cpuStart !== undefined)
-      this.cpuStart = opt_cpuStart;
+    if (opt_cpuStart !== undefined) this.cpuStart = opt_cpuStart;
 
-    if (opt_cpuDuration !== undefined)
-      this.cpuDuration = opt_cpuDuration;
+    if (opt_cpuDuration !== undefined) this.cpuDuration = opt_cpuDuration;
 
-    if (opt_argsStripped !== undefined)
-      this.argsStripped = opt_argsStripped;
+    if (opt_argsStripped !== undefined) this.argsStripped = opt_argsStripped;
   }
 
   AsyncSlice.prototype = {
@@ -81,8 +76,7 @@ global.tr.exportTo('tr.model', function() {
       this.parentContainer_ = parentContainer;
       for (var i = 0; i < this.subSlices.length; i++) {
         var subSlice = this.subSlices[i];
-        if (subSlice.parentContainer === undefined)
-          subSlice.parentContainer = parentContainer;
+        if (subSlice.parentContainer === undefined) subSlice.parentContainer = parentContainer;
       }
     },
 
@@ -91,57 +85,47 @@ global.tr.exportTo('tr.model', function() {
     },
 
     get userFriendlyName() {
-      return 'Async slice ' + this.title + ' at ' +
-          tr.b.Unit.byName.timeStampInMs.format(this.start);
+      return 'Async slice ' + this.title + ' at ' + tr.b.Unit.byName.timeStampInMs.format(this.start);
     },
 
     get stableId() {
       var parentAsyncSliceGroup = this.parentContainer.asyncSliceGroup;
-      return parentAsyncSliceGroup.stableId + '.' +
-          parentAsyncSliceGroup.slices.indexOf(this);
+      return parentAsyncSliceGroup.stableId + '.' + parentAsyncSliceGroup.slices.indexOf(this);
     },
 
-    findTopmostSlicesRelativeToThisSlice: function*(eventPredicate, opt_this) {
+    findTopmostSlicesRelativeToThisSlice: function* (eventPredicate, opt_this) {
       if (eventPredicate(this)) {
         yield this;
         return;
       }
-      for (var s of this.subSlices)
-        yield * s.findTopmostSlicesRelativeToThisSlice(eventPredicate);
+      for (var s of this.subSlices) yield* s.findTopmostSlicesRelativeToThisSlice(eventPredicate);
     },
 
-    findDescendentSlice: function(targetTitle) {
-      if (!this.subSlices)
-        return undefined;
+    findDescendentSlice: function (targetTitle) {
+      if (!this.subSlices) return undefined;
 
       for (var i = 0; i < this.subSlices.length; i++) {
-        if (this.subSlices[i].title == targetTitle)
-          return this.subSlices[i];
+        if (this.subSlices[i].title == targetTitle) return this.subSlices[i];
         var slice = this.subSlices[i].findDescendentSlice(targetTitle);
         if (slice) return slice;
       }
       return undefined;
     },
 
-    enumerateAllDescendents: function*() {
-      for (var slice of this.subSlices)
-        yield slice;
-      for (var slice of this.subSlices)
-        yield * slice.enumerateAllDescendents();
+    enumerateAllDescendents: function* () {
+      for (var slice of this.subSlices) yield slice;
+      for (var slice of this.subSlices) yield* slice.enumerateAllDescendents();
     },
 
-    compareTo: function(that) {
+    compareTo: function (that) {
       return this.title.localeCompare(that.title);
     }
   };
 
-  tr.model.EventRegistry.register(
-      AsyncSlice,
-      {
-        name: 'asyncSlice',
-        pluralName: 'asyncSlices'
-      });
-
+  tr.model.EventRegistry.register(AsyncSlice, {
+    name: 'asyncSlice',
+    pluralName: 'asyncSlices'
+  });
 
   return {
     AsyncSlice: AsyncSlice

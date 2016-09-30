@@ -9,7 +9,7 @@ require("../model/user_model/load_expectation.js");
 
 'use strict';
 
-global.tr.exportTo('tr.importer', function() {
+global.tr.exportTo('tr.importer', function () {
   // This global instant event marks the start of a navigation.
   var NAVIGATION_START = 'NavigationTiming navigationStart';
 
@@ -20,9 +20,7 @@ global.tr.exportTo('tr.importer', function() {
   function findLoadExpectations(modelHelper) {
     var events = [];
     for (var event of modelHelper.model.getDescendantEvents()) {
-      if ((event.title === NAVIGATION_START) ||
-          (event.title === FIRST_CONTENTFUL_PAINT_TITLE))
-        events.push(event);
+      if (event.title === NAVIGATION_START || event.title === FIRST_CONTENTFUL_PAINT_TITLE) events.push(event);
     }
     events.sort(tr.importer.compareEvents);
 
@@ -37,9 +35,7 @@ global.tr.exportTo('tr.importer', function() {
         startEvent = event;
       } else if (event.title === FIRST_CONTENTFUL_PAINT_TITLE) {
         if (startEvent) {
-          loads.push(new tr.model.um.LoadExpectation(
-              modelHelper.model, tr.model.um.LOAD_SUBTYPE_NAMES.SUCCESSFUL,
-              startEvent.start, event.start - startEvent.start));
+          loads.push(new tr.model.um.LoadExpectation(modelHelper.model, tr.model.um.LOAD_SUBTYPE_NAMES.SUCCESSFUL, startEvent.start, event.start - startEvent.start));
           startEvent = undefined;
         }
       }
@@ -48,9 +44,7 @@ global.tr.exportTo('tr.importer', function() {
     // If the trace ended between navigation start and first contentful paint,
     // then make a LoadExpectation that ends at the end of the trace.
     if (startEvent) {
-      loads.push(new tr.model.um.LoadExpectation(
-            modelHelper.model, tr.model.um.LOAD_SUBTYPE_NAMES.SUCCESSFUL,
-            startEvent.start, modelHelper.model.bounds.max - startEvent.start));
+      loads.push(new tr.model.um.LoadExpectation(modelHelper.model, tr.model.um.LOAD_SUBTYPE_NAMES.SUCCESSFUL, startEvent.start, modelHelper.model.bounds.max - startEvent.start));
     }
 
     return loads;

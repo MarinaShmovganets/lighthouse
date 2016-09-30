@@ -12,7 +12,7 @@ require("./timed_event.js");
 /**
  * @fileoverview Provides the ContainerMemoryDump class.
  */
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
   /**
    * The ContainerMemoryDump represents an abstract container memory dump.
    * @constructor
@@ -41,7 +41,7 @@ global.tr.exportTo('tr.model', function() {
   ContainerMemoryDump.prototype = {
     __proto__: tr.model.TimedEvent.prototype,
 
-    shiftTimestampsForward: function(amount) {
+    shiftTimestampsForward: function (amount) {
       this.start += amount;
     },
 
@@ -54,15 +54,14 @@ global.tr.exportTo('tr.model', function() {
       this.forceRebuildingMemoryAllocatorDumpByFullNameIndex();
     },
 
-    getMemoryAllocatorDumpByFullName: function(fullName) {
-      if (this.memoryAllocatorDumps_ === undefined)
-        return undefined;
+    getMemoryAllocatorDumpByFullName: function (fullName) {
+      if (this.memoryAllocatorDumps_ === undefined) return undefined;
 
       // Lazily generate the index if necessary.
       if (this.memoryAllocatorDumpsByFullName_ === undefined) {
         var index = {};
         function addDumpsToIndex(dumps) {
-          dumps.forEach(function(dump) {
+          dumps.forEach(function (dump) {
             index[dump.fullName] = dump;
             addDumpsToIndex(dump.children);
           });
@@ -74,14 +73,13 @@ global.tr.exportTo('tr.model', function() {
       return this.memoryAllocatorDumpsByFullName_[fullName];
     },
 
-    forceRebuildingMemoryAllocatorDumpByFullNameIndex: function() {
+    forceRebuildingMemoryAllocatorDumpByFullNameIndex: function () {
       // Clear the index and generate it lazily.
       this.memoryAllocatorDumpsByFullName_ = undefined;
     },
 
-    iterateRootAllocatorDumps: function(fn, opt_this) {
-      if (this.memoryAllocatorDumps === undefined)
-        return;
+    iterateRootAllocatorDumps: function (fn, opt_this) {
+      if (this.memoryAllocatorDumps === undefined) return;
       this.memoryAllocatorDumps.forEach(fn, opt_this || this);
     }
   };

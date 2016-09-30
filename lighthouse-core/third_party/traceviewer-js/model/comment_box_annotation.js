@@ -12,7 +12,7 @@ require("../ui/annotations/comment_box_annotation_view.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
 
   function CommentBoxAnnotation(location, text) {
     tr.model.Annotation.apply(this, arguments);
@@ -21,21 +21,20 @@ global.tr.exportTo('tr.model', function() {
     this.text = text;
   }
 
-  CommentBoxAnnotation.fromDict = function(dict) {
+  CommentBoxAnnotation.fromDict = function (dict) {
     var args = dict.args;
-    var location =
-        new tr.model.Location(args.location.xWorld, args.location.yComponents);
+    var location = new tr.model.Location(args.location.xWorld, args.location.yComponents);
     return new tr.model.CommentBoxAnnotation(location, args.text);
   };
 
   CommentBoxAnnotation.prototype = {
     __proto__: tr.model.Annotation.prototype,
 
-    onRemove: function() {
+    onRemove: function () {
       this.view_.removeTextArea();
     },
 
-    toDict: function() {
+    toDict: function () {
       return {
         typeName: 'comment_box',
         args: {
@@ -45,13 +44,12 @@ global.tr.exportTo('tr.model', function() {
       };
     },
 
-    createView_: function(viewport) {
+    createView_: function (viewport) {
       return new tr.ui.annotations.CommentBoxAnnotationView(viewport, this);
     }
   };
 
-  tr.model.Annotation.register(
-      CommentBoxAnnotation, {typeName: 'comment_box'});
+  tr.model.Annotation.register(CommentBoxAnnotation, { typeName: 'comment_box' });
 
   return {
     CommentBoxAnnotation: CommentBoxAnnotation

@@ -12,34 +12,29 @@ require("../base/extension_registry.js");
 /**
  * @fileoverview Provides the EventRegistry class.
  */
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
   // Create the type registry.
-  function EventRegistry() {
-  }
+  function EventRegistry() {}
 
   var options = new tr.b.ExtensionRegistryOptions(tr.b.BASIC_REGISTRY_MODE);
   tr.b.decorateExtensionRegistry(EventRegistry, options);
 
   // Enforce all options objects have the right fields.
-  EventRegistry.addEventListener('will-register', function(e) {
+  EventRegistry.addEventListener('will-register', function (e) {
     var metadata = e.typeInfo.metadata;
-    if (metadata.name === undefined)
-      throw new Error('Registered events must provide name metadata');
-    if (metadata.pluralName === undefined)
-      throw new Error('Registered events must provide pluralName metadata');
+    if (metadata.name === undefined) throw new Error('Registered events must provide name metadata');
+    if (metadata.pluralName === undefined) throw new Error('Registered events must provide pluralName metadata');
 
     // Add a subtype registry to every event so that all events can be
     // extended
     if (metadata.subTypes === undefined) {
       metadata.subTypes = {};
-      var options = new tr.b.ExtensionRegistryOptions(
-          tr.b.TYPE_BASED_REGISTRY_MODE);
+      var options = new tr.b.ExtensionRegistryOptions(tr.b.TYPE_BASED_REGISTRY_MODE);
       options.mandatoryBaseClass = e.typeInfo.constructor;
       options.defaultConstructor = e.typeInfo.constructor;
       tr.b.decorateExtensionRegistry(metadata.subTypes, options);
     } else {
-      if (!metadata.subTypes.register)
-        throw new Error('metadata.subTypes must be an extension registry.');
+      if (!metadata.subTypes.register) throw new Error('metadata.subTypes must be an extension registry.');
     }
 
     e.typeInfo.constructor.subTypes = metadata.subTypes;
@@ -47,10 +42,10 @@ global.tr.exportTo('tr.model', function() {
 
   // Helper: lookup Events indexed by type name.
   var eventsByTypeName = undefined;
-  EventRegistry.getEventTypeInfoByTypeName = function(typeName) {
+  EventRegistry.getEventTypeInfoByTypeName = function (typeName) {
     if (eventsByTypeName === undefined) {
       eventsByTypeName = {};
-      EventRegistry.getAllRegisteredTypeInfos().forEach(function(typeInfo) {
+      EventRegistry.getAllRegisteredTypeInfos().forEach(function (typeInfo) {
         eventsByTypeName[typeInfo.metadata.name] = typeInfo;
       });
     }
@@ -58,7 +53,7 @@ global.tr.exportTo('tr.model', function() {
   };
 
   // Ensure eventsByTypeName stays current.
-  EventRegistry.addEventListener('registry-changed', function() {
+  EventRegistry.addEventListener('registry-changed', function () {
     eventsByTypeName = undefined;
   });
 
@@ -68,13 +63,13 @@ global.tr.exportTo('tr.model', function() {
     return result;
   }
 
-  EventRegistry.getUserFriendlySingularName = function(typeName) {
+  EventRegistry.getUserFriendlySingularName = function (typeName) {
     var typeInfo = EventRegistry.getEventTypeInfoByTypeName(typeName);
     var str = typeInfo.metadata.name;
     return convertCamelCaseToTitleCase(str);
   };
 
-  EventRegistry.getUserFriendlyPluralName = function(typeName) {
+  EventRegistry.getUserFriendlyPluralName = function (typeName) {
     var typeInfo = EventRegistry.getEventTypeInfoByTypeName(typeName);
     var str = typeInfo.metadata.pluralName;
     return convertCamelCaseToTitleCase(str);

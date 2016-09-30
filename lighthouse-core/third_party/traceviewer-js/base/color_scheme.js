@@ -14,39 +14,9 @@ require("./iteration_helpers.js");
 /**
  * @fileoverview Provides color scheme related functions.
  */
-global.tr.exportTo('tr.b', function() {
+global.tr.exportTo('tr.b', function () {
   // Basic constants...
-  var generalPurposeColors = [
-    new tr.b.Color(122, 98, 135),
-    new tr.b.Color(150, 83, 105),
-    new tr.b.Color(44, 56, 189),
-    new tr.b.Color(99, 86, 147),
-    new tr.b.Color(104, 129, 107),
-    new tr.b.Color(130, 178, 55),
-    new tr.b.Color(87, 109, 147),
-    new tr.b.Color(111, 145, 88),
-    new tr.b.Color(81, 152, 131),
-    new tr.b.Color(142, 91, 111),
-    new tr.b.Color(81, 163, 70),
-    new tr.b.Color(148, 94, 86),
-    new tr.b.Color(144, 89, 118),
-    new tr.b.Color(83, 150, 97),
-    new tr.b.Color(105, 94, 139),
-    new tr.b.Color(89, 144, 122),
-    new tr.b.Color(105, 119, 128),
-    new tr.b.Color(96, 128, 137),
-    new tr.b.Color(145, 88, 145),
-    new tr.b.Color(88, 145, 144),
-    new tr.b.Color(90, 100, 143),
-    new tr.b.Color(121, 97, 136),
-    new tr.b.Color(111, 160, 73),
-    new tr.b.Color(112, 91, 142),
-    new tr.b.Color(86, 147, 86),
-    new tr.b.Color(63, 100, 170),
-    new tr.b.Color(81, 152, 107),
-    new tr.b.Color(60, 164, 173),
-    new tr.b.Color(143, 72, 161),
-    new tr.b.Color(159, 74, 86)];
+  var generalPurposeColors = [new tr.b.Color(122, 98, 135), new tr.b.Color(150, 83, 105), new tr.b.Color(44, 56, 189), new tr.b.Color(99, 86, 147), new tr.b.Color(104, 129, 107), new tr.b.Color(130, 178, 55), new tr.b.Color(87, 109, 147), new tr.b.Color(111, 145, 88), new tr.b.Color(81, 152, 131), new tr.b.Color(142, 91, 111), new tr.b.Color(81, 163, 70), new tr.b.Color(148, 94, 86), new tr.b.Color(144, 89, 118), new tr.b.Color(83, 150, 97), new tr.b.Color(105, 94, 139), new tr.b.Color(89, 144, 122), new tr.b.Color(105, 119, 128), new tr.b.Color(96, 128, 137), new tr.b.Color(145, 88, 145), new tr.b.Color(88, 145, 144), new tr.b.Color(90, 100, 143), new tr.b.Color(121, 97, 136), new tr.b.Color(111, 160, 73), new tr.b.Color(112, 91, 142), new tr.b.Color(86, 147, 86), new tr.b.Color(63, 100, 170), new tr.b.Color(81, 152, 107), new tr.b.Color(60, 164, 173), new tr.b.Color(143, 72, 161), new tr.b.Color(159, 74, 86)];
 
   var reservedColorsByName = {
     thread_state_uninterruptible: new tr.b.Color(182, 125, 143),
@@ -97,8 +67,7 @@ global.tr.exportTo('tr.b', function() {
   var numReservedColorIds = tr.b.dictionaryLength(reservedColorsByName);
   var numColorsPerVariant = numGeneralPurposeColorIds + numReservedColorIds;
 
-  function ColorScheme() {
-  }
+  function ColorScheme() {}
 
   /*
    * A flat array of tr.b.Color values of the palette, and their variants.
@@ -125,8 +94,7 @@ global.tr.exportTo('tr.b', function() {
    */
   var paletteBase = [];
   paletteBase.push.apply(paletteBase, generalPurposeColors);
-  paletteBase.push.apply(paletteBase,
-                         tr.b.dictionaryValues(reservedColorsByName));
+  paletteBase.push.apply(paletteBase, tr.b.dictionaryValues(reservedColorsByName));
   ColorScheme.colors = [];
   ColorScheme.properties = {};
   ColorScheme.properties = {
@@ -139,70 +107,70 @@ global.tr.exportTo('tr.b', function() {
   }
 
   // Basic colors.
-  pushVariant(function(c) { return c; });
+  pushVariant(function (c) {
+    return c;
+  });
 
   // Brightened variants.
   ColorScheme.properties.brightenedOffsets = [];
   ColorScheme.properties.brightenedOffsets.push(ColorScheme.colors.length);
-  pushVariant(function(c) {
+  pushVariant(function (c) {
     return c.lighten(0.3, 0.9);
   });
 
   ColorScheme.properties.brightenedOffsets.push(ColorScheme.colors.length);
-  pushVariant(function(c) {
+  pushVariant(function (c) {
     return c.lighten(0.48, 0.9);
   });
 
   ColorScheme.properties.brightenedOffsets.push(ColorScheme.colors.length);
-  pushVariant(function(c) {
+  pushVariant(function (c) {
     return c.lighten(0.65, 0.9);
   });
-
 
   // Desaturated variants.
   ColorScheme.properties.dimmedOffsets = [];
   ColorScheme.properties.dimmedOffsets.push(ColorScheme.colors.length);
-  pushVariant(function(c) {
+  pushVariant(function (c) {
     return c.desaturate();
   });
   ColorScheme.properties.dimmedOffsets.push(ColorScheme.colors.length);
-  pushVariant(function(c) {
+  pushVariant(function (c) {
     return c.desaturate(0.5);
   });
   ColorScheme.properties.dimmedOffsets.push(ColorScheme.colors.length);
-  pushVariant(function(c) {
+  pushVariant(function (c) {
     return c.desaturate(0.3);
   });
 
   /**
    * A toString'd representation of ColorScheme.colors.
    */
-  ColorScheme.colorsAsStrings = ColorScheme.colors.map(function(c) {
+  ColorScheme.colorsAsStrings = ColorScheme.colors.map(function (c) {
     return c.toString();
   });
 
   // Build reservedColorNameToIdMap.
-  var reservedColorNameToIdMap = (function() {
+  var reservedColorNameToIdMap = function () {
     var m = new Map();
     var i = generalPurposeColors.length;
-    tr.b.iterItems(reservedColorsByName, function(key, value) {
+    tr.b.iterItems(reservedColorsByName, function (key, value) {
       m.set(key, i++);
     });
     return m;
-  })();
+  }();
 
   /**
    * @param {String} name The color name.
    * @return {Number} The color ID for the given color name.
    */
-  ColorScheme.getColorIdForReservedName = function(name) {
+  ColorScheme.getColorIdForReservedName = function (name) {
     var id = reservedColorNameToIdMap.get(name);
-    if (id === undefined)
-      throw new Error('Unrecognized color ') + name;
+    if (id === undefined) throw new Error('Unrecognized color ') + name;
     return id;
   };
 
-  ColorScheme.getColorForReservedNameAsString = function(reservedName) {
+  ColorScheme.getColorForReservedNameAsString = function (reservedName) {
     var id = ColorScheme.getColorIdForReservedName(reservedName);
     return ColorScheme.colorsAsStrings[id];
   };
@@ -212,10 +180,9 @@ global.tr.exportTo('tr.b', function() {
    * for slices.
    * @param {string} name The string to hash.
    */
-  ColorScheme.getStringHash = function(name) {
+  ColorScheme.getStringHash = function (name) {
     var hash = 0;
-    for (var i = 0; i < name.length; ++i)
-      hash = (hash + 37 * hash + 11 * name.charCodeAt(i)) % 0xFFFFFFFF;
+    for (var i = 0; i < name.length; ++i) hash = (hash + 37 * hash + 11 * name.charCodeAt(i)) % 0xFFFFFFFF;
     return hash;
   };
 
@@ -228,7 +195,7 @@ global.tr.exportTo('tr.b', function() {
    * the getStringHash method. The color ID will be chosen from the general
    * purpose ID space only, e.g. no reserved ID will be used.
    */
-  ColorScheme.getColorIdForGeneralPurposeString = function(string) {
+  ColorScheme.getColorIdForGeneralPurposeString = function (string) {
     if (stringColorIdCache.get(string) === undefined) {
       var hash = ColorScheme.getStringHash(string);
       stringColorIdCache.set(string, hash % numGeneralPurposeColorIds);

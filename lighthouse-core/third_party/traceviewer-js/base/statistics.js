@@ -15,10 +15,9 @@ require("./range.js");
 // assumes that mannwhitneyu is in the global scope. So, in Node only, we
 // require() it in, and then take all its exports and shove them into the
 // global scope by hand.
-(function() {
+(function () {
   if (tr.isNode) {
-    var mwuAbsPath = HTMLImportsLoader.hrefToAbsolutePath(
-        '/mannwhitneyu.js');
+    var mwuAbsPath = HTMLImportsLoader.hrefToAbsolutePath('/mannwhitneyu.js');
     var mwuModule = require(mwuAbsPath);
     for (var exportName in mwuModule) {
       global[exportName] = mwuModule[exportName];
@@ -31,42 +30,38 @@ require("./range.js");
 // TODO(charliea): Remove:
 /* eslint-disable catapult-camelcase */
 
-global.tr.exportTo('tr.b', function() {
+global.tr.exportTo('tr.b', function () {
   var identity = x => x;
 
   var Statistics = {};
 
   /* Returns the quotient, or zero if the denominator is zero.*/
-  Statistics.divideIfPossibleOrZero = function(numerator, denominator) {
-    if (denominator === 0)
-      return 0;
+  Statistics.divideIfPossibleOrZero = function (numerator, denominator) {
+    if (denominator === 0) return 0;
     return numerator / denominator;
   };
 
-  Statistics.sum = function(ary, opt_func, opt_this) {
+  Statistics.sum = function (ary, opt_func, opt_this) {
     var func = opt_func || identity;
     var ret = 0;
     var i = 0;
-    for (var elt of ary)
-      ret += func.call(opt_this, elt, i++);
+    for (var elt of ary) ret += func.call(opt_this, elt, i++);
     return ret;
   };
 
-  Statistics.mean = function(ary, opt_func, opt_this) {
+  Statistics.mean = function (ary, opt_func, opt_this) {
     var func = opt_func || identity;
     var sum = 0;
     var i = 0;
 
-    for (var elt of ary)
-      sum += func.call(opt_this, elt, i++);
+    for (var elt of ary) sum += func.call(opt_this, elt, i++);
 
-    if (i === 0)
-      return undefined;
+    if (i === 0) return undefined;
 
     return sum / i;
   };
 
-  Statistics.geometricMean = function(ary, opt_func, opt_this) {
+  Statistics.geometricMean = function (ary, opt_func, opt_this) {
     var func = opt_func || identity;
     var i = 0;
     var logsum = 0;
@@ -75,20 +70,17 @@ global.tr.exportTo('tr.b', function() {
     // in order to prevent overflow.
     for (var elt of ary) {
       var x = func.call(opt_this, elt, i++);
-      if (x <= 0)
-        return 0;
+      if (x <= 0) return 0;
       logsum += Math.log(Math.abs(x));
     }
 
-    if (i === 0)
-      return 1;
+    if (i === 0) return 1;
 
     return Math.exp(logsum / i);
   };
 
   // Returns undefined if the sum of the weights is zero.
-  Statistics.weightedMean = function(
-      ary, weightCallback, opt_valueCallback, opt_this) {
+  Statistics.weightedMean = function (ary, weightCallback, opt_valueCallback, opt_this) {
     var valueCallback = opt_valueCallback || identity;
     var numerator = 0;
     var denominator = 0;
@@ -97,79 +89,65 @@ global.tr.exportTo('tr.b', function() {
     for (var elt of ary) {
       i++;
       var value = valueCallback.call(opt_this, elt, i);
-      if (value === undefined)
-        continue;
+      if (value === undefined) continue;
       var weight = weightCallback.call(opt_this, elt, i, value);
       numerator += weight * value;
       denominator += weight;
     }
 
-    if (denominator === 0)
-      return undefined;
+    if (denominator === 0) return undefined;
 
     return numerator / denominator;
   };
 
-  Statistics.variance = function(ary, opt_func, opt_this) {
-    if (ary.length === 0)
-      return undefined;
-    if (ary.length === 1)
-      return 0;
+  Statistics.variance = function (ary, opt_func, opt_this) {
+    if (ary.length === 0) return undefined;
+    if (ary.length === 1) return 0;
     var func = opt_func || identity;
     var mean = Statistics.mean(ary, func, opt_this);
-    var sumOfSquaredDistances = Statistics.sum(
-        ary,
-        function(d, i) {
-          var v = func.call(this, d, i) - mean;
-          return v * v;
-        },
-        opt_this);
+    var sumOfSquaredDistances = Statistics.sum(ary, function (d, i) {
+      var v = func.call(this, d, i) - mean;
+      return v * v;
+    }, opt_this);
     return sumOfSquaredDistances / (ary.length - 1);
   };
 
-  Statistics.stddev = function(ary, opt_func, opt_this) {
-    if (ary.length == 0)
-      return undefined;
-    return Math.sqrt(
-        Statistics.variance(ary, opt_func, opt_this));
+  Statistics.stddev = function (ary, opt_func, opt_this) {
+    if (ary.length == 0) return undefined;
+    return Math.sqrt(Statistics.variance(ary, opt_func, opt_this));
   };
 
-  Statistics.max = function(ary, opt_func, opt_this) {
+  Statistics.max = function (ary, opt_func, opt_this) {
     var func = opt_func || identity;
     var ret = -Infinity;
     var i = 0;
-    for (var elt of ary)
-      ret = Math.max(ret, func.call(opt_this, elt, i++));
+    for (var elt of ary) ret = Math.max(ret, func.call(opt_this, elt, i++));
     return ret;
   };
 
-  Statistics.min = function(ary, opt_func, opt_this) {
+  Statistics.min = function (ary, opt_func, opt_this) {
     var func = opt_func || identity;
     var ret = Infinity;
     var i = 0;
-    for (var elt of ary)
-      ret = Math.min(ret, func.call(opt_this, elt, i++));
+    for (var elt of ary) ret = Math.min(ret, func.call(opt_this, elt, i++));
     return ret;
   };
 
-  Statistics.range = function(ary, opt_func, opt_this) {
+  Statistics.range = function (ary, opt_func, opt_this) {
     var func = opt_func || identity;
     var ret = new tr.b.Range();
     var i = 0;
-    for (var elt of ary)
-      ret.addValue(func.call(opt_this, elt, i++));
+    for (var elt of ary) ret.addValue(func.call(opt_this, elt, i++));
     return ret;
   };
 
-  Statistics.percentile = function(ary, percent, opt_func, opt_this) {
-    if (!(percent >= 0 && percent <= 1))
-      throw new Error('percent must be [0,1]');
+  Statistics.percentile = function (ary, percent, opt_func, opt_this) {
+    if (!(percent >= 0 && percent <= 1)) throw new Error('percent must be [0,1]');
 
     var func = opt_func || identity;
     var tmp = new Array(ary.length);
     var i = 0;
-    for (var elt of ary)
-      tmp[i] = func.call(opt_this, elt, i++);
+    for (var elt of ary) tmp[i] = func.call(opt_this, elt, i++);
     tmp.sort((a, b) => a - b);
     var idx = Math.floor((ary.length - 1) * percent);
     return tmp[idx];
@@ -187,7 +165,7 @@ global.tr.exportTo('tr.b', function() {
    * original domain is not bounded (it is for Monte Carlo integration, where
    * discrepancy was first used).
    **/
-  Statistics.normalizeSamples = function(samples) {
+  Statistics.normalizeSamples = function (samples) {
     if (samples.length === 0) {
       return {
         normalized_samples: samples,
@@ -195,19 +173,18 @@ global.tr.exportTo('tr.b', function() {
       };
     }
     // Create a copy to make sure that we don't mutate original |samples| input.
-    samples = samples.slice().sort(
-      function(a, b) {
-        return a - b;
-      }
-    );
+    samples = samples.slice().sort(function (a, b) {
+      return a - b;
+    });
     var low = Math.min.apply(null, samples);
     var high = Math.max.apply(null, samples);
     var newLow = 0.5 / samples.length;
     var newHigh = (samples.length - 0.5) / samples.length;
     if (high - low === 0.0) {
       // Samples is an array of 0.5 in this case.
-      samples = Array.apply(null, new Array(samples.length)).map(
-        function() { return 0.5;});
+      samples = Array.apply(null, new Array(samples.length)).map(function () {
+        return 0.5;
+      });
       return {
         normalized_samples: samples,
         scale: 1.0
@@ -232,9 +209,8 @@ global.tr.exportTo('tr.b', function() {
    * http://en.wikipedia.org/wiki/Low-discrepancy_sequence
    * http://mathworld.wolfram.com/Discrepancy.html
    */
-  Statistics.discrepancy = function(samples, opt_locationCount) {
-    if (samples.length === 0)
-      return 0.0;
+  Statistics.discrepancy = function (samples, opt_locationCount) {
+    if (samples.length === 0) return 0.0;
 
     var maxLocalDiscrepancy = 0;
     var invSampleCount = 1.0 / samples.length;
@@ -251,13 +227,11 @@ global.tr.exportTo('tr.b', function() {
       for (var i = 0; i < opt_locationCount; i++) {
         var location = i / (opt_locationCount - 1);
         locations.push(location);
-        while (sampleIndex < samples.length &&
-          samples[sampleIndex] < location) {
+        while (sampleIndex < samples.length && samples[sampleIndex] < location) {
           sampleIndex += 1;
         }
         countLess.push(sampleIndex);
-        while (sampleIndex < samples.length &&
-            samples[sampleIndex] <= location) {
+        while (sampleIndex < samples.length && samples[sampleIndex] <= location) {
           sampleIndex += 1;
         }
         countLessEqual.push(sampleIndex);
@@ -303,22 +277,16 @@ global.tr.exportTo('tr.b', function() {
       var countOpen = countLess[i] - countLessEqual[i - 1];
       // Number of points that are added if we extend a closed range that
       // ends at location (i-1).
-      var countClosedIncrement =
-          countLessEqual[i] - countLessEqual[i - 1];
+      var countClosedIncrement = countLessEqual[i] - countLessEqual[i - 1];
       // Number of points that are added if we extend an open range that
       // ends at location (i-1).
       var countOpenIncrement = countLess[i] - countLess[i - 1];
 
       // Either extend the previous optimal range or start a new one.
-      maxDiff = Math.max(
-          countClosedIncrement * invSampleCount - length + maxDiff,
-          countClosed * invSampleCount - length);
-      minDiff = Math.min(
-          countOpenIncrement * invSampleCount - length + minDiff,
-          countOpen * invSampleCount - length);
+      maxDiff = Math.max(countClosedIncrement * invSampleCount - length + maxDiff, countClosed * invSampleCount - length);
+      minDiff = Math.min(countOpenIncrement * invSampleCount - length + minDiff, countOpen * invSampleCount - length);
 
-      maxLocalDiscrepancy = Math.max(
-          maxDiff, -minDiff, maxLocalDiscrepancy);
+      maxLocalDiscrepancy = Math.max(maxDiff, -minDiff, maxLocalDiscrepancy);
     }
     return maxLocalDiscrepancy;
   };
@@ -354,16 +322,13 @@ global.tr.exportTo('tr.b', function() {
    * S_i is a time stamp series. In that case, the discrepancy D(S) is:
    * D(S) = max(D(S_1), D(S_2), ..., D(S_N))
    **/
-  Statistics.timestampsDiscrepancy = function(timestamps, opt_absolute,
-                            opt_locationCount) {
-    if (timestamps.length === 0)
-      return 0.0;
+  Statistics.timestampsDiscrepancy = function (timestamps, opt_absolute, opt_locationCount) {
+    if (timestamps.length === 0) return 0.0;
 
-    if (opt_absolute === undefined)
-      opt_absolute = true;
+    if (opt_absolute === undefined) opt_absolute = true;
 
     if (Array.isArray(timestamps[0])) {
-      var rangeDiscrepancies = timestamps.map(function(r) {
+      var rangeDiscrepancies = timestamps.map(function (r) {
         return Statistics.timestampsDiscrepancy(r);
       });
       return Math.max.apply(null, rangeDiscrepancies);
@@ -379,8 +344,7 @@ global.tr.exportTo('tr.b', function() {
       discrepancy /= sampleScale;
     } else {
       // Compute relative discrepancy
-      discrepancy = tr.b.clamp(
-        (discrepancy - invSampleCount) / (1.0 - invSampleCount), 0.0, 1.0);
+      discrepancy = tr.b.clamp((discrepancy - invSampleCount) / (1.0 - invSampleCount), 0.0, 1.0);
     }
     return discrepancy;
   };
@@ -402,17 +366,14 @@ global.tr.exportTo('tr.b', function() {
    *  absolute: See TimestampsDiscrepancy.
    *  opt_locationCount: See TimestampsDiscrepancy.
    **/
-  Statistics.durationsDiscrepancy = function(
-      durations, opt_absolute, opt_locationCount) {
-    if (durations.length === 0)
-      return 0.0;
+  Statistics.durationsDiscrepancy = function (durations, opt_absolute, opt_locationCount) {
+    if (durations.length === 0) return 0.0;
 
-    var timestamps = durations.reduce(function(prev, curr, index, array) {
+    var timestamps = durations.reduce(function (prev, curr, index, array) {
       prev.push(prev[prev.length - 1] + curr);
       return prev;
     }, [0]);
-    return Statistics.timestampsDiscrepancy(
-      timestamps, opt_absolute, opt_locationCount);
+    return Statistics.timestampsDiscrepancy(timestamps, opt_absolute, opt_locationCount);
   };
 
   /**
@@ -422,7 +383,7 @@ global.tr.exportTo('tr.b', function() {
    * @param {number} count
    * @return {!Array}
    */
-  Statistics.uniformlySampleArray = function(samples, count) {
+  Statistics.uniformlySampleArray = function (samples, count) {
     if (samples.length <= count) {
       return samples;
     }
@@ -455,19 +416,14 @@ global.tr.exportTo('tr.b', function() {
    *  newElement: The element that was just extracted from the stream.
    *  numSamples: The total number of samples desired.
    **/
-  Statistics.uniformlySampleStream = function(samples, streamLength, newElement,
-                                              numSamples) {
+  Statistics.uniformlySampleStream = function (samples, streamLength, newElement, numSamples) {
     if (streamLength <= numSamples) {
-      if (samples.length >= streamLength)
-        samples[streamLength - 1] = newElement;
-      else
-        samples.push(newElement);
+      if (samples.length >= streamLength) samples[streamLength - 1] = newElement;else samples.push(newElement);
       return;
     }
 
     var probToKeep = numSamples / streamLength;
-    if (Math.random() > probToKeep)
-      return;  // New sample was rejected.
+    if (Math.random() > probToKeep) return; // New sample was rejected.
 
     // Keeping it, replace an alement randomly.
     var index = Math.floor(Math.random() * numSamples);
@@ -490,16 +446,13 @@ global.tr.exportTo('tr.b', function() {
    *  numSamples: The total number of samples desired, both in |samplesA| and
    *      |samplesB|.
    **/
-  Statistics.mergeSampledStreams = function(
-      samplesA, streamLengthA,
-      samplesB, streamLengthB, numSamples) {
+  Statistics.mergeSampledStreams = function (samplesA, streamLengthA, samplesB, streamLengthB, numSamples) {
     if (streamLengthB < numSamples) {
       // samplesB has not reached max capacity so every sample of stream B were
       // chosen with certainty. Add them one by one into samplesA.
       var nbElements = Math.min(streamLengthB, samplesB.length);
       for (var i = 0; i < nbElements; ++i) {
-        Statistics.uniformlySampleStream(samplesA, streamLengthA + i + 1,
-            samplesB[i], numSamples);
+        Statistics.uniformlySampleStream(samplesA, streamLengthA + i + 1, samplesB[i], numSamples);
       }
       return;
     }
@@ -509,8 +462,7 @@ global.tr.exportTo('tr.b', function() {
       var nbElements = Math.min(streamLengthA, samplesA.length);
       var tempSamples = samplesB.slice();
       for (var i = 0; i < nbElements; ++i) {
-        Statistics.uniformlySampleStream(tempSamples, streamLengthB + i + 1,
-            samplesA[i], numSamples);
+        Statistics.uniformlySampleStream(tempSamples, streamLengthB + i + 1, samplesA[i], numSamples);
       }
       // Copy that back into the first vector.
       for (var i = 0; i < tempSamples.length; ++i) {
@@ -549,8 +501,7 @@ global.tr.exportTo('tr.b', function() {
    *
    * For a discrete probability distribution, see tr.v.Histogram.
    */
-  function Distribution() {
-  }
+  function Distribution() {}
 
   Distribution.prototype = {
     /* The probability density of the random variable at value |x| is the
@@ -560,7 +511,7 @@ global.tr.exportTo('tr.b', function() {
      * @param {number} x A value from the random distribution.
      * @return {number} probability density at x.
      */
-    computeDensity: function(x) {
+    computeDensity: function (x) {
       throw Error('Not implemented');
     },
 
@@ -570,7 +521,7 @@ global.tr.exportTo('tr.b', function() {
      * @param {number} x A value from the random distribution.
      * @return {number} P(X<x).
      */
-    computePercentile: function(x) {
+    computePercentile: function (x) {
       throw Error('Not implemented');
     },
 
@@ -581,7 +532,7 @@ global.tr.exportTo('tr.b', function() {
      * @param {number} x A value from the random distribution.
      * @return {number} P(X>x).
      */
-    computeComplementaryPercentile: function(x) {
+    computeComplementaryPercentile: function (x) {
       return 1 - this.computePercentile(x);
     },
 
@@ -628,20 +579,19 @@ global.tr.exportTo('tr.b', function() {
     }
   };
 
-  Statistics.UniformDistribution = function(opt_range) {
-    if (!opt_range)
-      opt_range = tr.b.Range.fromExplicitRange(0, 1);
+  Statistics.UniformDistribution = function (opt_range) {
+    if (!opt_range) opt_range = tr.b.Range.fromExplicitRange(0, 1);
     this.range = opt_range;
   };
 
   Statistics.UniformDistribution.prototype = {
     __proto__: Distribution.prototype,
 
-    computeDensity: function(x) {
+    computeDensity: function (x) {
       return 1 / this.range.range;
     },
 
-    computePercentile: function(x) {
+    computePercentile: function (x) {
       return tr.b.normalize(x, this.range.min, this.range.max);
     },
 
@@ -672,7 +622,7 @@ global.tr.exportTo('tr.b', function() {
    * general normal distribution is Y = mean + Z*sqrt(variance).
    * https://www.desmos.com/calculator/tqtbjm4s3z
    */
-  Statistics.NormalDistribution = function(opt_mean, opt_variance) {
+  Statistics.NormalDistribution = function (opt_mean, opt_variance) {
     this.mean_ = opt_mean || 0;
     this.variance_ = opt_variance || 1;
     this.standardDeviation_ = Math.sqrt(this.variance_);
@@ -681,15 +631,14 @@ global.tr.exportTo('tr.b', function() {
   Statistics.NormalDistribution.prototype = {
     __proto__: Distribution.prototype,
 
-    computeDensity: function(x) {
-      var scale = (1.0 / (this.standardDeviation * Math.sqrt(2.0 * Math.PI)));
+    computeDensity: function (x) {
+      var scale = 1.0 / (this.standardDeviation * Math.sqrt(2.0 * Math.PI));
       var exponent = -Math.pow(x - this.mean, 2) / (2.0 * this.variance);
       return scale * Math.exp(exponent);
     },
 
-    computePercentile: function(x) {
-      var standardizedX = ((x - this.mean) /
-                           Math.sqrt(2.0 * this.variance));
+    computePercentile: function (x) {
+      var standardizedX = (x - this.mean) / Math.sqrt(2.0 * this.variance);
       return (1.0 + tr.b.erf(standardizedX)) / 2.0;
     },
 
@@ -724,32 +673,29 @@ global.tr.exportTo('tr.b', function() {
    * The standard lognormal distribution exp(Z) has location = 0 and shape = 1.
    * https://www.desmos.com/calculator/tqtbjm4s3z
    */
-  Statistics.LogNormalDistribution = function(opt_location, opt_shape) {
-    this.normalDistribution_ = new Statistics.NormalDistribution(
-        opt_location, Math.pow(opt_shape || 1, 2));
+  Statistics.LogNormalDistribution = function (opt_location, opt_shape) {
+    this.normalDistribution_ = new Statistics.NormalDistribution(opt_location, Math.pow(opt_shape || 1, 2));
   };
 
   Statistics.LogNormalDistribution.prototype = {
     __proto__: Statistics.NormalDistribution.prototype,
 
-    computeDensity: function(x) {
+    computeDensity: function (x) {
       return this.normalDistribution_.computeDensity(Math.log(x)) / x;
     },
 
-    computePercentile: function(x) {
+    computePercentile: function (x) {
       return this.normalDistribution_.computePercentile(Math.log(x));
     },
 
     get mean() {
-      return Math.exp(this.normalDistribution_.mean +
-          (this.normalDistribution_.variance / 2));
+      return Math.exp(this.normalDistribution_.mean + this.normalDistribution_.variance / 2);
     },
 
     get variance() {
       var nm = this.normalDistribution_.mean;
       var nv = this.normalDistribution_.variance;
-      return (Math.exp(2 * (nm + nv)) -
-              Math.exp(2 * nm + nv));
+      return Math.exp(2 * (nm + nv)) - Math.exp(2 * nm + nv);
     },
 
     get standardDeviation() {
@@ -761,8 +707,7 @@ global.tr.exportTo('tr.b', function() {
     },
 
     get mode() {
-      return Math.exp(this.normalDistribution_.mean -
-                      this.normalDistribution_.variance);
+      return Math.exp(this.normalDistribution_.mean - this.normalDistribution_.variance);
     }
   };
 
@@ -784,13 +729,11 @@ global.tr.exportTo('tr.b', function() {
    * @param {number} diminishingReturns The point of diminishing returns.
    * @return {LogNormalDistribution}
    */
-  Statistics.LogNormalDistribution.fromMedianAndDiminishingReturns =
-    function(median, diminishingReturns) {
-      diminishingReturns = Math.log(diminishingReturns / median);
-      var shape = Math.sqrt(1 - 3 * diminishingReturns -
-          Math.sqrt(Math.pow(diminishingReturns - 3, 2) - 8)) / 2;
-      var location = Math.log(median);
-      return new Statistics.LogNormalDistribution(location, shape);
+  Statistics.LogNormalDistribution.fromMedianAndDiminishingReturns = function (median, diminishingReturns) {
+    diminishingReturns = Math.log(diminishingReturns / median);
+    var shape = Math.sqrt(1 - 3 * diminishingReturns - Math.sqrt(Math.pow(diminishingReturns - 3, 2) - 8)) / 2;
+    var location = Math.log(median);
+    return new Statistics.LogNormalDistribution(location, shape);
   };
 
   // p-values less than this indicate statistical significance.
@@ -816,12 +759,10 @@ global.tr.exportTo('tr.b', function() {
    * @param {number=} opt_alpha
    * @return {!HypothesisTestResult}
    */
-  Statistics.mwu = function(a, b, opt_alpha) {
+  Statistics.mwu = function (a, b, opt_alpha) {
     var result = mannwhitneyu.test(a, b);
     var alpha = opt_alpha || Statistics.DEFAULT_ALPHA;
-    result.significance = (result.p < alpha) ?
-      Statistics.Significance.SIGNIFICANT :
-      Statistics.Significance.INSIGNIFICANT;
+    result.significance = result.p < alpha ? Statistics.Significance.SIGNIFICANT : Statistics.Significance.INSIGNIFICANT;
     return result;
   };
 

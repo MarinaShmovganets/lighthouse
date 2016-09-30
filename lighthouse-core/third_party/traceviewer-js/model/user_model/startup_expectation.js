@@ -9,10 +9,9 @@ require("./user_expectation.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model.um', function() {
+global.tr.exportTo('tr.model.um', function () {
   function StartupExpectation(parentModel, start, duration) {
-    tr.model.um.UserExpectation.call(
-        this, parentModel, '', start, duration);
+    tr.model.um.UserExpectation.call(this, parentModel, '', start, duration);
   }
 
   StartupExpectation.prototype = {

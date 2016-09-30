@@ -12,15 +12,14 @@ require("../../value/histogram.js");
 
 'use strict';
 
-global.tr.exportTo('tr.metrics.sh', function() {
+global.tr.exportTo('tr.metrics.sh', function () {
 
   // TODO(alexandermont): Per-frame power metric will be deprecated once
   // newer metrics come online.
   // Frame rate, used to divide power sample interval into frames
   // for purposes of per-frame power metric.
   var FRAMES_PER_SEC = 60;
-  var FRAME_MS = tr.b.convertUnit(1.0 / FRAMES_PER_SEC,
-      tr.b.UnitScale.Metric.NONE, tr.b.UnitScale.Metric.MILLI);
+  var FRAME_MS = tr.b.convertUnit(1.0 / FRAMES_PER_SEC, tr.b.UnitScale.Metric.NONE, tr.b.UnitScale.Metric.MILLI);
 
   /**
    * Returns power data for the specified interval in the form:
@@ -32,11 +31,10 @@ global.tr.exportTo('tr.metrics.sh', function() {
    */
   function getPowerData_(model, start, end) {
     var durationInMs = end - start;
-    var durationInS = tr.b.convertUnit(durationInMs,
-        tr.b.UnitScale.Metric.MILLI, tr.b.UnitScale.Metric.NONE);
+    var durationInS = tr.b.convertUnit(durationInMs, tr.b.UnitScale.Metric.MILLI, tr.b.UnitScale.Metric.NONE);
     var energyInJ = model.device.powerSeries.getEnergyConsumedInJ(start, end);
     var powerInW = energyInJ / durationInS;
-    return {duration: durationInMs, energy: energyInJ, power: powerInW};
+    return { duration: durationInMs, energy: energyInJ, power: powerInW };
   }
 
   // TODO(alexandermont): When LoadExpectation v1.0 is released,
@@ -57,8 +55,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
     for (var bin of tr.b.getOnlyElement(ttiValues).allBins) {
       for (var diagnostics of bin.diagnosticMaps) {
         var breakdown = diagnostics.get('Navigation infos');
-        intervals.push(tr.b.Range.fromExplicitRange(
-            breakdown.value.start, breakdown.value.interactive));
+        intervals.push(tr.b.Range.fromExplicitRange(breakdown.value.start, breakdown.value.interactive));
       }
     }
     return intervals.sort((x, y) => x.min - y.min);
@@ -68,15 +65,14 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * Creates a histogram suitable for time data.
    */
   function makeTimeHistogram_(values, title, description) {
-    var hist = new tr.v.Histogram(title + ':time',
-        tr.b.Unit.byName.timeDurationInMs_smallerIsBetter);
+    var hist = new tr.v.Histogram(title + ':time', tr.b.Unit.byName.timeDurationInMs_smallerIsBetter);
     hist.customizeSummaryOptions({
       avg: false,
       count: false,
       max: true,
       min: true,
       std: false,
-      sum: true,
+      sum: true
     });
     hist.description = 'Time spent in ' + description;
     values.addHistogram(hist);
@@ -87,15 +83,14 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * Creates a histogram suitable for energy data.
    */
   function makeEnergyHistogram_(values, title, description) {
-    var hist = new tr.v.Histogram(title + ':energy',
-        tr.b.Unit.byName.energyInJoules_smallerIsBetter);
+    var hist = new tr.v.Histogram(title + ':energy', tr.b.Unit.byName.energyInJoules_smallerIsBetter);
     hist.customizeSummaryOptions({
       avg: false,
       count: false,
       max: true,
       min: true,
       std: false,
-      sum: true,
+      sum: true
     });
     hist.description = 'Energy consumed in ' + description;
     values.addHistogram(hist);
@@ -106,15 +101,14 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * Creates a histogram suitable for power data.
    */
   function makePowerHistogram_(values, title, description) {
-    var hist = new tr.v.Histogram(title + ':power',
-        tr.b.Unit.byName.powerInWatts_smallerIsBetter);
+    var hist = new tr.v.Histogram(title + ':power', tr.b.Unit.byName.powerInWatts_smallerIsBetter);
     hist.customizeSummaryOptions({
       avg: true,
       count: false,
       max: true,
       min: true,
       std: false,
-      sum: false,
+      sum: false
     });
     hist.description = 'Energy consumption rate in ' + description;
     values.addHistogram(hist);
@@ -132,12 +126,9 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * @param {tr.v.Histogram} powerHist - Histogram to store power data.
    */
   function storePowerData_(data, timeHist, energyHist, powerHist) {
-    if (timeHist !== undefined)
-      timeHist.addSample(data.duration);
-    if (energyHist !== undefined)
-      energyHist.addSample(data.energy);
-    if (powerHist !== undefined)
-      powerHist.addSample(data.power);
+    if (timeHist !== undefined) timeHist.addSample(data.duration);
+    if (energyHist !== undefined) energyHist.addSample(data.energy);
+    if (powerHist !== undefined) powerHist.addSample(data.power);
   }
 
   function createHistograms_(model, values) {
@@ -157,9 +148,9 @@ global.tr.exportTo('tr.metrics.sh', function() {
     // "Scroll Animation", and "Scroll, Touch Animation" are all
     // scroll stages. Histograms for scroll metrics contain one
     // sample for each scroll stage.
-    hists.scrollTimeHist = makeTimeHistogram_(values, 'scroll','scrolling');
-    hists.scrollEnergyHist = makeEnergyHistogram_(values, 'scroll','scrolling');
-    hists.scrollPowerHist = makePowerHistogram_(values, 'scroll','scrolling');
+    hists.scrollTimeHist = makeTimeHistogram_(values, 'scroll', 'scrolling');
+    hists.scrollEnergyHist = makeEnergyHistogram_(values, 'scroll', 'scrolling');
+    hists.scrollPowerHist = makePowerHistogram_(values, 'scroll', 'scrolling');
 
     // Metrics for loading. Loading intervals are defined by the intervals
     // between navigation and TTI (time-to-interactive) given by
@@ -167,20 +158,16 @@ global.tr.exportTo('tr.metrics.sh', function() {
     // consumed after load.
     hists.loadTimeHist = makeTimeHistogram_(values, 'load', 'page loads');
     hists.loadEnergyHist = makeEnergyHistogram_(values, 'load', 'page loads');
-    hists.afterLoadTimeHist = makeTimeHistogram_(values, 'after_load',
-        'period after load');
-    hists.afterLoadPowerHist = makePowerHistogram_(values, 'after_load',
-        'period after load');
+    hists.afterLoadTimeHist = makeTimeHistogram_(values, 'after_load', 'period after load');
+    hists.afterLoadPowerHist = makePowerHistogram_(values, 'after_load', 'period after load');
 
     // Metrics for video. A video stage is any stage with the string "Video"
     // in its name. Histograms for video metrics contain one sample for each
     // video stage. Only power metrics are available for video stages.
-    hists.videoPowerHist = makePowerHistogram_(values, 'video',
-        'video playback')
+    hists.videoPowerHist = makePowerHistogram_(values, 'video', 'video playback');
 
     // Frame based power metric.
-    hists.frameEnergyHist = makeEnergyHistogram_(values, 'per_frame',
-        'each frame');
+    hists.frameEnergyHist = makeEnergyHistogram_(values, 'per_frame', 'each frame');
 
     for (var exp of model.userModel.expectations) {
       var currTitle = exp.title.toLowerCase().replace(' ', '_');
@@ -188,14 +175,11 @@ global.tr.exportTo('tr.metrics.sh', function() {
       // we have to create a new set of histograms for the "generic"
       // RAIL stage metrics.
       if (!hists.railStageToTimeHist.has(currTitle)) {
-        var timeHist = makeTimeHistogram_(values, currTitle,
-            'RAIL stage ' + currTitle);
+        var timeHist = makeTimeHistogram_(values, currTitle, 'RAIL stage ' + currTitle);
 
-        var energyHist = makeEnergyHistogram_(values, currTitle,
-            'RAIL stage ' + currTitle);
+        var energyHist = makeEnergyHistogram_(values, currTitle, 'RAIL stage ' + currTitle);
 
-        var powerHist = makePowerHistogram_(values, currTitle,
-            'RAIL stage ' + currTitle);
+        var powerHist = makePowerHistogram_(values, currTitle, 'RAIL stage ' + currTitle);
 
         hists.railStageToTimeHist.set(currTitle, timeHist);
         hists.railStageToEnergyHist.set(currTitle, energyHist);
@@ -215,19 +199,15 @@ global.tr.exportTo('tr.metrics.sh', function() {
     var data = getPowerData_(model, exp.start, exp.end);
 
     // Add the samples for the "generic" RAIL stage metrics.
-    storePowerData_(data, hists.railStageToTimeHist.get(currTitle),
-        hists.railStageToEnergyHist.get(currTitle),
-        hists.railStageToPowerHist.get(currTitle));
+    storePowerData_(data, hists.railStageToTimeHist.get(currTitle), hists.railStageToEnergyHist.get(currTitle), hists.railStageToPowerHist.get(currTitle));
 
     // If this is a scroll stage, add the sample for the scroll metrics.
     if (exp.title.indexOf("Scroll") !== -1) {
-      storePowerData_(data, hists.scrollTimeHist,
-          hists.scrollEnergyHist, hists.scrollPowerHist);
+      storePowerData_(data, hists.scrollTimeHist, hists.scrollEnergyHist, hists.scrollPowerHist);
     }
 
     // If this is a video stage, add the sample for the video metrics.
-    if (exp.title.indexOf("Video") !== -1)
-      storePowerData_(data, undefined, undefined, hists.videoPowerHist)
+    if (exp.title.indexOf("Video") !== -1) storePowerData_(data, undefined, undefined, hists.videoPowerHist);
   }
 
   /**
@@ -240,15 +220,12 @@ global.tr.exportTo('tr.metrics.sh', function() {
     var lastLoadTime = undefined;
     for (var interval of intervals) {
       var loadData = getPowerData_(model, interval.min, interval.max);
-      storePowerData_(loadData, hists.loadTimeHist, hists.loadEnergyHist,
-          undefined);
-      lastLoadTime = (lastLoadTime == undefined ? interval.max :
-          Math.max(lastLoadTime, interval.max));
+      storePowerData_(loadData, hists.loadTimeHist, hists.loadEnergyHist, undefined);
+      lastLoadTime = lastLoadTime == undefined ? interval.max : Math.max(lastLoadTime, interval.max);
     }
     if (lastLoadTime !== undefined) {
       var afterLoadData = getPowerData_(model, lastLoadTime, model.bounds.max);
-      storePowerData_(afterLoadData, hists.afterLoadTimeHist,
-          undefined, hists.afterLoadPowerHist);
+      storePowerData_(afterLoadData, hists.afterLoadTimeHist, undefined, hists.afterLoadPowerHist);
     }
   }
 
@@ -265,14 +242,11 @@ global.tr.exportTo('tr.metrics.sh', function() {
     }
   }
 
-
   function powerMetric(values, model) {
-    if (!model.device.powerSeries)
-      return;
+    if (!model.device.powerSeries) return;
 
     var hists = createHistograms_(model, values);
-    for(var exp of model.userModel.expectations)
-      processInteractionRecord_(exp, model, hists);
+    for (var exp of model.userModel.expectations) processInteractionRecord_(exp, model, hists);
 
     // The following two metrics aren't based directly on the IR intervals,
     // and so need to be computed outside the processInteractionRecord_ loop.

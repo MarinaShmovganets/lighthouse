@@ -13,7 +13,7 @@ require("./event_registry.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
 
   /**
    * The value of a given measurement at a given time.
@@ -32,8 +32,8 @@ global.tr.exportTo('tr.model', function() {
     this.value_ = value;
   }
 
-  CounterSample.groupByTimestamp = function(samples) {
-    var samplesByTimestamp = tr.b.group(samples, function(sample) {
+  CounterSample.groupByTimestamp = function (samples) {
+    var samplesByTimestamp = tr.b.group(samples, function (sample) {
       return sample.timestamp;
     });
 
@@ -43,7 +43,7 @@ global.tr.exportTo('tr.model', function() {
     for (var i = 0; i < timestamps.length; i++) {
       var ts = timestamps[i];
       var group = samplesByTimestamp[ts];
-      group.sort(function(x, y) {
+      group.sort(function (x, y) {
         return x.series.seriesIndex - y.series.seriesIndex;
       });
       groups.push(group);
@@ -70,30 +70,25 @@ global.tr.exportTo('tr.model', function() {
       this.timestamp_ = timestamp;
     },
 
-    addBoundsToRange: function(range) {
+    addBoundsToRange: function (range) {
       range.addValue(this.timestamp);
     },
 
-    getSampleIndex: function() {
-      return tr.b.findLowIndexInSortedArray(
-          this.series.timestamps,
-          function(x) { return x; },
-          this.timestamp_);
+    getSampleIndex: function () {
+      return tr.b.findLowIndexInSortedArray(this.series.timestamps, function (x) {
+        return x;
+      }, this.timestamp_);
     },
 
     get userFriendlyName() {
-      return 'Counter sample from ' + this.series_.title + ' at ' +
-          tr.b.Unit.byName.timeStampInMs.format(this.timestamp);
+      return 'Counter sample from ' + this.series_.title + ' at ' + tr.b.Unit.byName.timeStampInMs.format(this.timestamp);
     }
   };
 
-
-  tr.model.EventRegistry.register(
-      CounterSample,
-      {
-        name: 'counterSample',
-        pluralName: 'counterSamples'
-      });
+  tr.model.EventRegistry.register(CounterSample, {
+    name: 'counterSample',
+    pluralName: 'counterSamples'
+  });
 
   return {
     CounterSample: CounterSample

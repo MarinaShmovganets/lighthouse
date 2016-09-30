@@ -9,9 +9,8 @@ require("./related_value_map.js");
 
 'use strict';
 
-global.tr.exportTo('tr.v.d', function() {
-  var COLOR_SCHEME_CHROME_USER_FRIENDLY_CATEGORY_DRIVER =
-    'ChromeUserFriendlyCategory';
+global.tr.exportTo('tr.v.d', function () {
+  var COLOR_SCHEME_CHROME_USER_FRIENDLY_CATEGORY_DRIVER = 'ChromeUserFriendlyCategory';
 
   /**
    * RelatedHistogramBreakdown encapsulates an additive relationship between
@@ -41,20 +40,15 @@ global.tr.exportTo('tr.v.d', function() {
     set(name, value) {
       if (!(value instanceof tr.v.d.ValueRef)) {
         if (!(value instanceof tr.v.Histogram)) {
-          throw new Error(
-              'RelatedHistogramBreakdown can only contain Histograms');
+          throw new Error('RelatedHistogramBreakdown can only contain Histograms');
         }
 
-        if (value.name.indexOf(name) !== (value.name.length - name.length)) {
-          throw new Error(
-              'RelatedHistogramBreakdown name must be a suffix of value.name');
+        if (value.name.indexOf(name) !== value.name.length - name.length) {
+          throw new Error('RelatedHistogramBreakdown name must be a suffix of value.name');
         }
 
-        if ((this.length > 0) &&
-            (value.unit !==
-             tr.b.getFirstElement(this)[1].unit)) {
-          throw new Error('Units mismatch', tr.b.getFirstElement(this)[1].unit,
-              value.unit);
+        if (this.length > 0 && value.unit !== tr.b.getFirstElement(this)[1].unit) {
+          throw new Error('Units mismatch', tr.b.getFirstElement(this)[1].unit, value.unit);
         }
       }
 
@@ -63,17 +57,15 @@ global.tr.exportTo('tr.v.d', function() {
 
     asDictInto_(d) {
       tr.v.d.RelatedValueMap.prototype.asDictInto_.call(this, d);
-      if (this.colorScheme)
-        d.colorScheme = this.colorScheme;
+      if (this.colorScheme) d.colorScheme = this.colorScheme;
     }
 
     static fromDict(d) {
       var diagnostic = new RelatedHistogramBreakdown();
-      tr.b.iterItems(d.values, function(name, guid) {
+      tr.b.iterItems(d.values, function (name, guid) {
         diagnostic.set(name, new tr.v.d.ValueRef(guid));
       });
-      if (d.colorScheme)
-        diagnostic.colorScheme = d.colorScheme;
+      if (d.colorScheme) diagnostic.colorScheme = d.colorScheme;
       return diagnostic;
     }
 
@@ -96,27 +88,23 @@ global.tr.exportTo('tr.v.d', function() {
     * @param {*=} opt_this
     * @return {!RelatedHistogramBreakdown}
     */
-    static buildFromEvents(values, namePrefix, events, categoryForEvent, unit,
-        opt_sampleForEvent, opt_binBoundaries, opt_this) {
-      var sampleForEvent = opt_sampleForEvent || ((event) => event.cpuSelfTime);
+    static buildFromEvents(values, namePrefix, events, categoryForEvent, unit, opt_sampleForEvent, opt_binBoundaries, opt_this) {
+      var sampleForEvent = opt_sampleForEvent || (event => event.cpuSelfTime);
 
       var diagnostic = new RelatedHistogramBreakdown();
       for (var event of events) {
         var sample = sampleForEvent.call(opt_this, event);
-        if (sample === undefined)
-          continue;
+        if (sample === undefined) continue;
 
         var eventCategory = categoryForEvent.call(opt_this, event);
         var value = diagnostic.get(eventCategory);
         if (value === undefined) {
-          value = new tr.v.Histogram(
-              namePrefix + eventCategory, unit, opt_binBoundaries);
+          value = new tr.v.Histogram(namePrefix + eventCategory, unit, opt_binBoundaries);
           values.addHistogram(value);
           diagnostic.set(eventCategory, value);
         }
 
-        value.addSample(sample,
-            {relatedEvents: new tr.v.d.RelatedEventSet([event])});
+        value.addSample(sample, { relatedEvents: new tr.v.d.RelatedEventSet([event]) });
       }
       return diagnostic;
     }
@@ -127,8 +115,7 @@ global.tr.exportTo('tr.v.d', function() {
   });
 
   return {
-    COLOR_SCHEME_CHROME_USER_FRIENDLY_CATEGORY_DRIVER:
-      COLOR_SCHEME_CHROME_USER_FRIENDLY_CATEGORY_DRIVER,
+    COLOR_SCHEME_CHROME_USER_FRIENDLY_CATEGORY_DRIVER: COLOR_SCHEME_CHROME_USER_FRIENDLY_CATEGORY_DRIVER,
     RelatedHistogramBreakdown: RelatedHistogramBreakdown
   };
 });

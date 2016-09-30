@@ -9,7 +9,7 @@ require("./diagnostic.js");
 
 'use strict';
 
-global.tr.exportTo('tr.v.d', function() {
+global.tr.exportTo('tr.v.d', function () {
   /**
    * A Generic diagnostic can contain any Plain-Ol'-Data objects that can be
    * serialized using JSON.stringify(): null, boolean, number, string, array,

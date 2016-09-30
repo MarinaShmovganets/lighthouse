@@ -15,7 +15,7 @@ require("../../value/histogram.js");
 
 'use strict';
 
-global.tr.exportTo('tr.metrics.sh', function() {
+global.tr.exportTo('tr.metrics.sh', function () {
   // In the case of Response, Load, and DiscreteAnimation IRs, Responsiveness is
   // derived from the time between when the user thinks they begin an interation
   // (expectedStart) and the time when the screen first changes to reflect the
@@ -27,24 +27,17 @@ global.tr.exportTo('tr.metrics.sh', function() {
   // expectedStart.
 
   function computeAnimationThroughput(animationExpectation) {
-    if (animationExpectation.frameEvents === undefined ||
-        animationExpectation.frameEvents.length === 0)
-      throw new Error('Animation missing frameEvents ' +
-                      animationExpectation.stableId);
+    if (animationExpectation.frameEvents === undefined || animationExpectation.frameEvents.length === 0) throw new Error('Animation missing frameEvents ' + animationExpectation.stableId);
 
-    var durationInS = tr.b.convertUnit(animationExpectation.duration,
-        tr.b.UnitScale.Metric.MILLI, tr.b.UnitScale.Metric.NONE);
+    var durationInS = tr.b.convertUnit(animationExpectation.duration, tr.b.UnitScale.Metric.MILLI, tr.b.UnitScale.Metric.NONE);
     return animationExpectation.frameEvents.length / durationInS;
   }
 
   function computeAnimationframeTimeDiscrepancy(animationExpectation) {
-    if (animationExpectation.frameEvents === undefined ||
-        animationExpectation.frameEvents.length === 0)
-      throw new Error('Animation missing frameEvents ' +
-                      animationExpectation.stableId);
+    if (animationExpectation.frameEvents === undefined || animationExpectation.frameEvents.length === 0) throw new Error('Animation missing frameEvents ' + animationExpectation.stableId);
 
     var frameTimestamps = animationExpectation.frameEvents;
-    frameTimestamps = frameTimestamps.toArray().map(function(event) {
+    frameTimestamps = frameTimestamps.toArray().map(function (event) {
       return event.start;
     });
 
@@ -58,29 +51,15 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * @param {!Object=} opt_options
    */
   function responsivenessMetric(values, model, opt_options) {
-    var responseNumeric = new tr.v.Histogram('response latency',
-        tr.b.Unit.byName.timeDurationInMs_smallerIsBetter,
-        tr.v.HistogramBinBoundaries.createLinear(100, 1e3, 50));
-    var throughputNumeric = new tr.v.Histogram('animation throughput',
-        tr.b.Unit.byName.unitlessNumber_biggerIsBetter,
-        tr.v.HistogramBinBoundaries.createLinear(10, 60, 10));
-    var frameTimeDiscrepancyNumeric = new tr.v.Histogram(
-        'animation frameTimeDiscrepancy',
-        tr.b.Unit.byName.timeDurationInMs_smallerIsBetter,
-        tr.v.HistogramBinBoundaries.createLinear(0, 1e3, 50).
-          addExponentialBins(1e4, 10));
-    var latencyNumeric = new tr.v.Histogram('animation latency',
-        tr.b.Unit.byName.timeDurationInMs_smallerIsBetter,
-        tr.v.HistogramBinBoundaries.createLinear(0, 300, 60));
+    var responseNumeric = new tr.v.Histogram('response latency', tr.b.Unit.byName.timeDurationInMs_smallerIsBetter, tr.v.HistogramBinBoundaries.createLinear(100, 1e3, 50));
+    var throughputNumeric = new tr.v.Histogram('animation throughput', tr.b.Unit.byName.unitlessNumber_biggerIsBetter, tr.v.HistogramBinBoundaries.createLinear(10, 60, 10));
+    var frameTimeDiscrepancyNumeric = new tr.v.Histogram('animation frameTimeDiscrepancy', tr.b.Unit.byName.timeDurationInMs_smallerIsBetter, tr.v.HistogramBinBoundaries.createLinear(0, 1e3, 50).addExponentialBins(1e4, 10));
+    var latencyNumeric = new tr.v.Histogram('animation latency', tr.b.Unit.byName.timeDurationInMs_smallerIsBetter, tr.v.HistogramBinBoundaries.createLinear(0, 300, 60));
 
-    model.userModel.expectations.forEach(function(ue) {
-      if (opt_options && opt_options.rangeOfInterest &&
-          !opt_options.rangeOfInterest.intersectsExplicitRangeInclusive(
-            ue.start, ue.end))
-        return;
+    model.userModel.expectations.forEach(function (ue) {
+      if (opt_options && opt_options.rangeOfInterest && !opt_options.rangeOfInterest.intersectsExplicitRangeInclusive(ue.start, ue.end)) return;
 
-      var sampleDiagnosticMap = tr.v.d.DiagnosticMap.fromObject(
-          {relatedEvents: new tr.v.d.RelatedEventSet([ue])});
+      var sampleDiagnosticMap = tr.v.d.DiagnosticMap.fromObject({ relatedEvents: new tr.v.d.RelatedEventSet([ue]) });
 
       // Responsiveness is not defined for Idle or Startup expectations.
       if (ue instanceof tr.model.um.IdleExpectation) {
@@ -98,23 +77,17 @@ global.tr.exportTo('tr.metrics.sh', function() {
           return;
         }
         var throughput = computeAnimationThroughput(ue);
-        if (throughput === undefined)
-          throw new Error('Missing throughput for ' +
-                          ue.stableId);
+        if (throughput === undefined) throw new Error('Missing throughput for ' + ue.stableId);
 
         throughputNumeric.addSample(throughput, sampleDiagnosticMap);
 
         var frameTimeDiscrepancy = computeAnimationframeTimeDiscrepancy(ue);
-        if (frameTimeDiscrepancy === undefined)
-          throw new Error('Missing frameTimeDiscrepancy for ' +
-                          ue.stableId);
+        if (frameTimeDiscrepancy === undefined) throw new Error('Missing frameTimeDiscrepancy for ' + ue.stableId);
 
-        frameTimeDiscrepancyNumeric.addSample(
-            frameTimeDiscrepancy, sampleDiagnosticMap);
+        frameTimeDiscrepancyNumeric.addSample(frameTimeDiscrepancy, sampleDiagnosticMap);
 
-        ue.associatedEvents.forEach(function(event) {
-          if (!(event instanceof tr.e.cc.InputLatencyAsyncSlice))
-            return;
+        ue.associatedEvents.forEach(function (event) {
+          if (!(event instanceof tr.e.cc.InputLatencyAsyncSlice)) return;
 
           latencyNumeric.addSample(event.duration, sampleDiagnosticMap);
         });
@@ -123,10 +96,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
       }
     });
 
-    [
-      responseNumeric, throughputNumeric, frameTimeDiscrepancyNumeric,
-      latencyNumeric
-    ].forEach(function(numeric) {
+    [responseNumeric, throughputNumeric, frameTimeDiscrepancyNumeric, latencyNumeric].forEach(function (numeric) {
       numeric.customizeSummaryOptions({
         avg: true,
         max: true,
@@ -146,6 +116,6 @@ global.tr.exportTo('tr.metrics.sh', function() {
   });
 
   return {
-    responsivenessMetric: responsivenessMetric,
+    responsivenessMetric: responsivenessMetric
   };
 });

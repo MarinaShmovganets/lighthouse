@@ -10,14 +10,13 @@ require("../../base/rect.js");
 
 'use strict';
 
-global.tr.exportTo('tr.ui.b', function() {
+global.tr.exportTo('tr.ui.b', function () {
   function instantiateTemplate(selector, doc) {
     doc = doc || document;
     var el = Polymer.dom(doc).querySelector(selector);
-    if (!el)
-      throw new Error('Element not found');
+    if (!el) throw new Error('Element not found');
     return doc.importNode(el.content, true);
-//    return el.createInstance();
+    //    return el.createInstance();
   }
 
   function windowRectForElement(element) {
@@ -54,8 +53,7 @@ global.tr.exportTo('tr.ui.b', function() {
   }
 
   function toThreeDigitLocaleString(value) {
-    return value.toLocaleString(
-        undefined, {minimumFractionDigits: 3, maximumFractionDigits: 3});
+    return value.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 });
   }
 
   /**

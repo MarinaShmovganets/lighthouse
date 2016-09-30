@@ -14,7 +14,7 @@ require("./process_base.js");
 /**
  * @fileoverview Provides the Process class.
  */
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
   var Cpu = tr.model.Cpu;
   var ProcessBase = tr.model.ProcessBase;
 
@@ -32,14 +32,14 @@ global.tr.exportTo('tr.model', function() {
   /**
    * Comparison between kernels is pretty meaningless.
    */
-  Kernel.compare = function(x, y) {
+  Kernel.compare = function (x, y) {
     return 0;
   };
 
   Kernel.prototype = {
     __proto__: ProcessBase.prototype,
 
-    compareTo: function(that) {
+    compareTo: function (that) {
       return Kernel.compare(this, that);
     },
 
@@ -59,9 +59,8 @@ global.tr.exportTo('tr.model', function() {
      * @return {Cpu} Gets a specific Cpu or creates one if
      * it does not exist.
      */
-    getOrCreateCpu: function(cpuNumber) {
-      if (!this.cpus[cpuNumber])
-        this.cpus[cpuNumber] = new Cpu(this, cpuNumber);
+    getOrCreateCpu: function (cpuNumber) {
+      if (!this.cpus[cpuNumber]) this.cpus[cpuNumber] = new Cpu(this, cpuNumber);
       return this.cpus[cpuNumber];
     },
 
@@ -70,10 +69,8 @@ global.tr.exportTo('tr.model', function() {
     },
 
     set softwareMeasuredCpuCount(softwareMeasuredCpuCount) {
-      if (this.softwareMeasuredCpuCount_ !== undefined &&
-          this.softwareMeasuredCpuCount_ !== softwareMeasuredCpuCount) {
-        throw new Error(
-            'Cannot change the softwareMeasuredCpuCount once it is set');
+      if (this.softwareMeasuredCpuCount_ !== undefined && this.softwareMeasuredCpuCount_ !== softwareMeasuredCpuCount) {
+        throw new Error('Cannot change the softwareMeasuredCpuCount once it is set');
       }
 
       this.softwareMeasuredCpuCount_ = softwareMeasuredCpuCount;
@@ -88,12 +85,11 @@ global.tr.exportTo('tr.model', function() {
      */
     get bestGuessAtCpuCount() {
       var realCpuCount = tr.b.dictionaryLength(this.cpus);
-      if (realCpuCount !== 0)
-        return realCpuCount;
+      if (realCpuCount !== 0) return realCpuCount;
       return this.softwareMeasuredCpuCount;
     },
 
-    updateBounds: function() {
+    updateBounds: function () {
       ProcessBase.prototype.updateBounds.call(this);
       for (var cpuNumber in this.cpus) {
         var cpu = this.cpus[cpuNumber];
@@ -102,7 +98,7 @@ global.tr.exportTo('tr.model', function() {
       }
     },
 
-    createSubSlices: function() {
+    createSubSlices: function () {
       ProcessBase.prototype.createSubSlices.call(this);
       for (var cpuNumber in this.cpus) {
         var cpu = this.cpus[cpuNumber];
@@ -110,20 +106,19 @@ global.tr.exportTo('tr.model', function() {
       }
     },
 
-    addCategoriesToDict: function(categoriesDict) {
+    addCategoriesToDict: function (categoriesDict) {
       ProcessBase.prototype.addCategoriesToDict.call(this, categoriesDict);
-      for (var cpuNumber in this.cpus)
-        this.cpus[cpuNumber].addCategoriesToDict(categoriesDict);
+      for (var cpuNumber in this.cpus) this.cpus[cpuNumber].addCategoriesToDict(categoriesDict);
     },
 
-    getSettingsKey: function() {
+    getSettingsKey: function () {
       return 'kernel';
     },
 
-    childEventContainers: function*() {
-      yield * ProcessBase.prototype.childEventContainers.call(this);
-      yield * tr.b.dictionaryValues(this.cpus);
-    },
+    childEventContainers: function* () {
+      yield* ProcessBase.prototype.childEventContainers.call(this);
+      yield* tr.b.dictionaryValues(this.cpus);
+    }
   };
 
   return {

@@ -18,7 +18,7 @@ require("./event_set.js");
  * Because a frame is produced by multiple threads, it does not inherit from
  * TimedEvent, and has no duration.
  */
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
   var ColorScheme = tr.b.ColorScheme;
   var Statistics = tr.b.Statistics;
 
@@ -43,12 +43,15 @@ global.tr.exportTo('tr.model', function() {
     this.args = opt_args || {};
 
     this.title = 'Frame';
-    this.start = Statistics.min(
-        threadTimeRanges, function(x) { return x.start; });
-    this.end = Statistics.max(
-        threadTimeRanges, function(x) { return x.end; });
-    this.totalDuration = Statistics.sum(
-        threadTimeRanges, function(x) { return x.end - x.start; });
+    this.start = Statistics.min(threadTimeRanges, function (x) {
+      return x.start;
+    });
+    this.end = Statistics.max(threadTimeRanges, function (x) {
+      return x.end;
+    });
+    this.totalDuration = Statistics.sum(threadTimeRanges, function (x) {
+      return x.end - x.start;
+    });
 
     this.perfClass = FRAME_PERF_CLASS.NEUTRAL;
   };
@@ -65,7 +68,7 @@ global.tr.exportTo('tr.model', function() {
       return this.perfClass_;
     },
 
-    shiftTimestampsForward: function(amount) {
+    shiftTimestampsForward: function (amount) {
       this.start += amount;
       this.end += amount;
 
@@ -75,18 +78,16 @@ global.tr.exportTo('tr.model', function() {
       }
     },
 
-    addBoundsToRange: function(range) {
+    addBoundsToRange: function (range) {
       range.addValue(this.start);
       range.addValue(this.end);
     }
   };
 
-  tr.model.EventRegistry.register(
-      Frame,
-      {
-        name: 'frame',
-        pluralName: 'frames'
-      });
+  tr.model.EventRegistry.register(Frame, {
+    name: 'frame',
+    pluralName: 'frames'
+  });
 
   return {
     Frame: Frame,

@@ -10,7 +10,7 @@ require("./diagnostic.js");
 
 'use strict';
 
-global.tr.exportTo('tr.v.d', function() {
+global.tr.exportTo('tr.v.d', function () {
   class IterationInfo extends tr.v.d.Diagnostic {
     constructor(opt_info) {
       super();
@@ -26,8 +26,7 @@ global.tr.exportTo('tr.v.d', function() {
       this.storyUrl_ = '';
       this.storysetRepeatCounter_ = undefined;
 
-      if (opt_info)
-        this.addInfo(opt_info);
+      if (opt_info) this.addInfo(opt_info);
     }
 
     /**
@@ -43,28 +42,18 @@ global.tr.exportTo('tr.v.d', function() {
      */
     addInfo(info) {
       // IterationInfo from Telemetry
-      if (info.benchmarkName)
-        this.benchmarkName_ = info.benchmarkName;
-      if (info.benchmarkStartMs)
-        this.benchmarkStart_ = new Date(info.benchmarkStartMs);
-      if (info.label)
-        this.label_ = info.label;
-      if (info.storyDisplayName)
-        this.storyDisplayName_ = info.storyDisplayName;
-      if (info.storyGroupingKeys)
-        this.storyGroupingKeys_ = info.storyGroupingKeys;
-      if (info.storyRepeatCounter !== undefined)
-        this.storyRepeatCounter_ = info.storyRepeatCounter;
-      if (info.storyUrl)
-        this.storyUrl_ = info.storyUrl;
-      if (info.storysetRepeatCounter !== undefined)
-        this.storysetRepeatCounter_ = info.storysetRepeatCounter;
+      if (info.benchmarkName) this.benchmarkName_ = info.benchmarkName;
+      if (info.benchmarkStartMs) this.benchmarkStart_ = new Date(info.benchmarkStartMs);
+      if (info.label) this.label_ = info.label;
+      if (info.storyDisplayName) this.storyDisplayName_ = info.storyDisplayName;
+      if (info.storyGroupingKeys) this.storyGroupingKeys_ = info.storyGroupingKeys;
+      if (info.storyRepeatCounter !== undefined) this.storyRepeatCounter_ = info.storyRepeatCounter;
+      if (info.storyUrl) this.storyUrl_ = info.storyUrl;
+      if (info.storysetRepeatCounter !== undefined) this.storysetRepeatCounter_ = info.storysetRepeatCounter;
 
       // From platform tracing metadata
-      if (info['os-version'])
-        this.osVersion_ = info['os-version'];
-      if (info['product-version'])
-        this.productVersion_ = info['product-version'];
+      if (info['os-version']) this.osVersion_ = info['os-version'];
+      if (info['product-version']) this.productVersion_ = info['product-version'];
     }
 
     addToValue(value) {
@@ -81,8 +70,7 @@ global.tr.exportTo('tr.v.d', function() {
 
     asDictInto_(d) {
       d.benchmarkName = this.benchmarkName;
-      if (this.benchmarkStart)
-        d.benchmarkStartMs = this.benchmarkStart.getTime();
+      if (this.benchmarkStart) d.benchmarkStartMs = this.benchmarkStart.getTime();
       d.label = this.label;
       d.storyDisplayName = this.storyDisplayName;
       d.storyGroupingKeys = this.storyGroupingKeys;
@@ -100,8 +88,7 @@ global.tr.exportTo('tr.v.d', function() {
     }
 
     get displayLabel() {
-      if (this.label)
-        return this.label;
+      if (this.label) return this.label;
       return this.benchmarkName + ' ' + this.benchmarkStartString;
     }
 
@@ -154,8 +141,7 @@ global.tr.exportTo('tr.v.d', function() {
     }
 
     get benchmarkStartString() {
-      if (this.benchmarkStart_ === undefined)
-        return '';
+      if (this.benchmarkStart_ === undefined) return '';
       return tr.b.formatDate(this.benchmarkStart);
     }
 
@@ -167,8 +153,7 @@ global.tr.exportTo('tr.v.d', function() {
      */
     static getField(value, fieldName, defaultValue) {
       var iteration = tr.v.d.IterationInfo.getFromValue(value);
-      if (!(iteration instanceof tr.v.d.IterationInfo) ||
-          !iteration[fieldName]) {
+      if (!(iteration instanceof tr.v.d.IterationInfo) || !iteration[fieldName]) {
         return defaultValue;
       }
       return iteration[fieldName];
@@ -181,10 +166,8 @@ global.tr.exportTo('tr.v.d', function() {
      */
     static getStoryGroupingKeyLabel(value, storyGroupingKey) {
       var iteration = tr.v.d.IterationInfo.getFromValue(value);
-      if (!(iteration instanceof tr.v.d.IterationInfo))
-        return storyGroupingKey + ': undefined';
-      return storyGroupingKey + ': ' +
-        iteration.storyGroupingKeys[storyGroupingKey];
+      if (!(iteration instanceof tr.v.d.IterationInfo)) return storyGroupingKey + ': undefined';
+      return storyGroupingKey + ': ' + iteration.storyGroupingKeys[storyGroupingKey];
     }
   }
 

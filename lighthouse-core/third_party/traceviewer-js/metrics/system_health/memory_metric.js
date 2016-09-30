@@ -17,15 +17,13 @@ require("../../value/histogram.js");
 
 'use strict';
 
-global.tr.exportTo('tr.metrics.sh', function() {
+global.tr.exportTo('tr.metrics.sh', function () {
   var BACKGROUND = tr.model.ContainerMemoryDump.LevelOfDetail.BACKGROUND;
   var LIGHT = tr.model.ContainerMemoryDump.LevelOfDetail.LIGHT;
   var DETAILED = tr.model.ContainerMemoryDump.LevelOfDetail.DETAILED;
-  var sizeInBytes_smallerIsBetter =
-      tr.b.Unit.byName.sizeInBytes_smallerIsBetter;
+  var sizeInBytes_smallerIsBetter = tr.b.Unit.byName.sizeInBytes_smallerIsBetter;
   var count_smallerIsBetter = tr.b.Unit.byName.count_smallerIsBetter;
-  var DISPLAYED_SIZE_NUMERIC_NAME =
-      tr.model.MemoryAllocatorDump.DISPLAYED_SIZE_NUMERIC_NAME;
+  var DISPLAYED_SIZE_NUMERIC_NAME = tr.model.MemoryAllocatorDump.DISPLAYED_SIZE_NUMERIC_NAME;
 
   var LEVEL_OF_DETAIL_NAMES = new Map();
   LEVEL_OF_DETAIL_NAMES.set(BACKGROUND, 'background');
@@ -35,19 +33,14 @@ global.tr.exportTo('tr.metrics.sh', function() {
   var BOUNDARIES_FOR_UNIT_MAP = new WeakMap();
   // For unitless numerics (process counts), we use 20 linearly scaled bins
   // from 0 to 20.
-  BOUNDARIES_FOR_UNIT_MAP.set(count_smallerIsBetter,
-      tr.v.HistogramBinBoundaries.createLinear(0, 20, 20));
+  BOUNDARIES_FOR_UNIT_MAP.set(count_smallerIsBetter, tr.v.HistogramBinBoundaries.createLinear(0, 20, 20));
   // For size numerics (subsystem and vm stats), we use 1 bin from 0 B to
   // 1 KiB and 4*24 exponentially scaled bins from 1 KiB to 16 GiB (=2^24 KiB).
-  BOUNDARIES_FOR_UNIT_MAP.set(sizeInBytes_smallerIsBetter,
-      new tr.v.HistogramBinBoundaries(0)
-          .addBinBoundary(1024 /* 1 KiB */)
-          .addExponentialBins(16 * 1024 * 1024 * 1024 /* 16 GiB */, 4 * 24));
+  BOUNDARIES_FOR_UNIT_MAP.set(sizeInBytes_smallerIsBetter, new tr.v.HistogramBinBoundaries(0).addBinBoundary(1024 /* 1 KiB */).addExponentialBins(16 * 1024 * 1024 * 1024 /* 16 GiB */, 4 * 24));
 
   function memoryMetric(values, model, opt_options) {
     var rangeOfInterest = opt_options ? opt_options.rangeOfInterest : undefined;
-    var browserNameToGlobalDumps =
-        splitGlobalDumpsByBrowserName(model, rangeOfInterest);
+    var browserNameToGlobalDumps = splitGlobalDumpsByBrowserName(model, rangeOfInterest);
     addGeneralMemoryDumpValues(browserNameToGlobalDumps, values);
     addDetailedMemoryDumpValues(browserNameToGlobalDumps, values);
     addMemoryDumpCountValues(browserNameToGlobalDumps, values);
@@ -64,8 +57,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
    *     browser names to the associated global memory dumps.
    */
   function splitGlobalDumpsByBrowserName(model, opt_rangeOfInterest) {
-    var chromeModelHelper =
-        model.getOrCreateHelper(tr.model.helpers.ChromeModelHelper);
+    var chromeModelHelper = model.getOrCreateHelper(tr.model.helpers.ChromeModelHelper);
     var browserNameToGlobalDumps = new Map();
     var globalDumpToBrowserHelper = new WeakMap();
 
@@ -74,45 +66,36 @@ global.tr.exportTo('tr.metrics.sh', function() {
     // it fails to find any browser, renderer or GPU process (see
     // tr.model.helpers.ChromeModelHelper.supportsModel).
     if (chromeModelHelper) {
-      chromeModelHelper.browserHelpers.forEach(function(helper) {
+      chromeModelHelper.browserHelpers.forEach(function (helper) {
         // Retrieve the associated global memory dumps and check that they
         // haven't been classified as belonging to another browser process.
-        var globalDumps = skipDumpsThatDoNotIntersectRange(
-            helper.process.memoryDumps.map(d => d.globalMemoryDump),
-            opt_rangeOfInterest);
-        globalDumps.forEach(function(globalDump) {
+        var globalDumps = skipDumpsThatDoNotIntersectRange(helper.process.memoryDumps.map(d => d.globalMemoryDump), opt_rangeOfInterest);
+        globalDumps.forEach(function (globalDump) {
           var existingHelper = globalDumpToBrowserHelper.get(globalDump);
           if (existingHelper !== undefined) {
-            throw new Error('Memory dump ID clash across multiple browsers ' +
-                'with PIDs: ' + existingHelper.pid + ' and ' + helper.pid);
+            throw new Error('Memory dump ID clash across multiple browsers ' + 'with PIDs: ' + existingHelper.pid + ' and ' + helper.pid);
           }
           globalDumpToBrowserHelper.set(globalDump, helper);
         });
 
-        makeKeyUniqueAndSet(browserNameToGlobalDumps,
-            canonicalizeName(helper.browserName), globalDumps);
+        makeKeyUniqueAndSet(browserNameToGlobalDumps, canonicalizeName(helper.browserName), globalDumps);
       });
     }
 
     // 2. If any global memory dump does not have any associated browser
     // process for some reason, associate it with an 'unknown_browser' browser
     // so that we don't lose the data.
-    var unclassifiedGlobalDumps = skipDumpsThatDoNotIntersectRange(
-        model.globalMemoryDumps.filter(g => !globalDumpToBrowserHelper.has(g)),
-        opt_rangeOfInterest);
+    var unclassifiedGlobalDumps = skipDumpsThatDoNotIntersectRange(model.globalMemoryDumps.filter(g => !globalDumpToBrowserHelper.has(g)), opt_rangeOfInterest);
     if (unclassifiedGlobalDumps.length > 0) {
-      makeKeyUniqueAndSet(
-          browserNameToGlobalDumps, 'unknown_browser', unclassifiedGlobalDumps);
+      makeKeyUniqueAndSet(browserNameToGlobalDumps, 'unknown_browser', unclassifiedGlobalDumps);
     }
 
     return browserNameToGlobalDumps;
   }
 
   function skipDumpsThatDoNotIntersectRange(dumps, opt_range) {
-    if (!opt_range)
-      return dumps;
-    return dumps.filter(d => opt_range.intersectsExplicitRangeInclusive(
-        d.start, d.end));
+    if (!opt_range) return dumps;
+    return dumps.filter(d => opt_range.intersectsExplicitRangeInclusive(d.start, d.end));
   }
 
   function canonicalizeName(name) {
@@ -139,25 +122,20 @@ global.tr.exportTo('tr.metrics.sh', function() {
    */
   function convertBrowserNameToUserFriendlyName(browserName) {
     for (var baseName in USER_FRIENDLY_BROWSER_NAMES) {
-      if (!browserName.startsWith(baseName))
-        continue;
+      if (!browserName.startsWith(baseName)) continue;
       var userFriendlyBaseName = USER_FRIENDLY_BROWSER_NAMES[baseName];
       var suffix = browserName.substring(baseName.length);
-      if (suffix.length === 0)
-        return userFriendlyBaseName;
-      else if (/^\d+$/.test(suffix))
-        return userFriendlyBaseName + '(' + suffix + ')';
+      if (suffix.length === 0) return userFriendlyBaseName;else if (/^\d+$/.test(suffix)) return userFriendlyBaseName + '(' + suffix + ')';
     }
     return '\'' + browserName + '\' browser';
   }
 
   function canonicalizeProcessName(rawProcessName) {
-    if (!rawProcessName)
-      return 'unknown_processes';
+    if (!rawProcessName) return 'unknown_processes';
     var baseCanonicalName = canonicalizeName(rawProcessName);
     switch (baseCanonicalName) {
       case 'renderer':
-        return 'renderer_processes';  // Intentionally plural.
+        return 'renderer_processes'; // Intentionally plural.
       case 'browser':
         return 'browser_process';
       default:
@@ -169,8 +147,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * Convert a canonical process name used in value names to a user-friendly
    * name used in value descriptions.
    */
-  function convertProcessNameToUserFriendlyName(processName,
-      opt_requirePlural) {
+  function convertProcessNameToUserFriendlyName(processName, opt_requirePlural) {
     switch (processName) {
       case 'browser_process':
         return opt_requirePlural ? 'browser processes' : 'the browser process';
@@ -239,81 +216,69 @@ global.tr.exportTo('tr.metrics.sh', function() {
    *     unit: sizeInBytes_smallerIsBetter
    */
   function addGeneralMemoryDumpValues(browserNameToGlobalDumps, values) {
-    addMemoryDumpValues(browserNameToGlobalDumps,
-        gmd => true /* process all global memory dumps */,
-        function(processDump, addProcessScalar) {
-          // Increment memory:<browser-name>:<process-name>:process_count value.
+    addMemoryDumpValues(browserNameToGlobalDumps, gmd => true /* process all global memory dumps */
+    , function (processDump, addProcessScalar) {
+      // Increment memory:<browser-name>:<process-name>:process_count value.
+      addProcessScalar({
+        source: 'process_count',
+        value: 1,
+        unit: count_smallerIsBetter,
+        descriptionPrefixBuilder: buildProcessCountDescriptionPrefix
+      });
+
+      if (processDump.totals !== undefined) {
+        tr.b.iterItems(SYSTEM_TOTAL_VALUE_PROPERTIES, function (propertyName, propertySpec) {
           addProcessScalar({
-            source: 'process_count',
-            value: 1,
-            unit: count_smallerIsBetter,
-            descriptionPrefixBuilder: buildProcessCountDescriptionPrefix
+            source: 'reported_by_os',
+            property: propertyName,
+            component: ['system_memory'],
+            value: propertySpec.getPropertyFunction(processDump),
+            unit: sizeInBytes_smallerIsBetter,
+            descriptionPrefixBuilder: propertySpec.descriptionPrefixBuilder
           });
+        });
+      }
 
-          if (processDump.totals !== undefined) {
-            tr.b.iterItems(SYSTEM_TOTAL_VALUE_PROPERTIES,
-                function(propertyName, propertySpec) {
-                  addProcessScalar({
-                    source: 'reported_by_os',
-                    property: propertyName,
-                    component: ['system_memory'],
-                    value: propertySpec.getPropertyFunction(processDump),
-                    unit: sizeInBytes_smallerIsBetter,
-                    descriptionPrefixBuilder:
-                        propertySpec.descriptionPrefixBuilder
-                  });
-                });
+      // Add memory:<browser-name>:<process-name>:reported_by_chrome:...
+      // values.
+      if (processDump.memoryAllocatorDumps === undefined) return;
+      processDump.memoryAllocatorDumps.forEach(function (rootAllocatorDump) {
+        tr.b.iterItems(CHROME_VALUE_PROPERTIES, function (propertyName, descriptionPrefixBuilder) {
+          addProcessScalar({
+            source: 'reported_by_chrome',
+            component: [rootAllocatorDump.name],
+            property: propertyName,
+            value: rootAllocatorDump.numerics[propertyName],
+            descriptionPrefixBuilder: descriptionPrefixBuilder
+          });
+        });
+        // Some dump providers add allocated objects size as
+        // "allocated_objects" child dump.
+        if (rootAllocatorDump.numerics['allocated_objects_size'] === undefined) {
+          var allocatedObjectsDump = rootAllocatorDump.getDescendantDumpByFullName('allocated_objects');
+          if (allocatedObjectsDump !== undefined) {
+            addProcessScalar({
+              source: 'reported_by_chrome',
+              component: [rootAllocatorDump.name],
+              property: 'allocated_objects_size',
+              value: allocatedObjectsDump.numerics['size'],
+              descriptionPrefixBuilder: CHROME_VALUE_PROPERTIES['allocated_objects_size']
+            });
           }
+        }
+      });
 
-          // Add memory:<browser-name>:<process-name>:reported_by_chrome:...
-          // values.
-          if (processDump.memoryAllocatorDumps === undefined)
-            return;
-          processDump.memoryAllocatorDumps.forEach(function(rootAllocatorDump) {
-            tr.b.iterItems(CHROME_VALUE_PROPERTIES,
-                function(propertyName, descriptionPrefixBuilder) {
-                  addProcessScalar({
-                    source: 'reported_by_chrome',
-                    component: [rootAllocatorDump.name],
-                    property: propertyName,
-                    value: rootAllocatorDump.numerics[propertyName],
-                    descriptionPrefixBuilder: descriptionPrefixBuilder
-                  });
-                });
-            // Some dump providers add allocated objects size as
-            // "allocated_objects" child dump.
-            if (rootAllocatorDump.numerics['allocated_objects_size'] ===
-                    undefined) {
-              var allocatedObjectsDump =
-                  rootAllocatorDump.getDescendantDumpByFullName(
-                      'allocated_objects');
-              if (allocatedObjectsDump !== undefined) {
-                addProcessScalar({
-                  source: 'reported_by_chrome',
-                  component: [rootAllocatorDump.name],
-                  property: 'allocated_objects_size',
-                  value: allocatedObjectsDump.numerics['size'],
-                  descriptionPrefixBuilder:
-                      CHROME_VALUE_PROPERTIES['allocated_objects_size']
-                });
-              }
-            }
-          });
-
-          // Add memory:<browser-name>:<process-name>:reported_by_chrome:v8:
-          //     {heap, allocated_by_malloc}:...
-          addV8MemoryDumpValues(processDump, addProcessScalar);
-        },
-        function(componentTree) {
-          // Subtract memory:<browser-name>:<process-name>:reported_by_chrome:
-          // tracing:<size-property> from memory:<browser-name>:<process-name>:
-          // reported_by_chrome:<size-property> if applicable.
-          var tracingNode = componentTree.children[1].get('tracing');
-          if (tracingNode === undefined)
-            return;
-          for (var i = 0; i < componentTree.values.length; i++)
-            componentTree.values[i].total -= tracingNode.values[i].total;
-        }, values);
+      // Add memory:<browser-name>:<process-name>:reported_by_chrome:v8:
+      //     {heap, allocated_by_malloc}:...
+      addV8MemoryDumpValues(processDump, addProcessScalar);
+    }, function (componentTree) {
+      // Subtract memory:<browser-name>:<process-name>:reported_by_chrome:
+      // tracing:<size-property> from memory:<browser-name>:<process-name>:
+      // reported_by_chrome:<size-property> if applicable.
+      var tracingNode = componentTree.children[1].get('tracing');
+      if (tracingNode === undefined) return;
+      for (var i = 0; i < componentTree.values.length; i++) componentTree.values[i].total -= tracingNode.values[i].total;
+    }, values);
   }
 
   /**
@@ -325,24 +290,20 @@ global.tr.exportTo('tr.metrics.sh', function() {
    */
   function addV8MemoryDumpValues(processDump, addProcessScalar) {
     var v8Dump = processDump.getMemoryAllocatorDumpByFullName('v8');
-    if (v8Dump === undefined)
-      return;
-    v8Dump.children.forEach(function(isolateDump) {
+    if (v8Dump === undefined) return;
+    v8Dump.children.forEach(function (isolateDump) {
       // v8:allocated_by_malloc:...
       var mallocDump = isolateDump.getDescendantDumpByFullName('malloc');
       if (mallocDump !== undefined) {
-        addV8ComponentValues(mallocDump, ['v8', 'allocated_by_malloc'],
-                             addProcessScalar);
+        addV8ComponentValues(mallocDump, ['v8', 'allocated_by_malloc'], addProcessScalar);
       }
       // v8:heap:...
       var heapDump = isolateDump.getDescendantDumpByFullName('heap_spaces');
       if (heapDump !== undefined) {
         addV8ComponentValues(heapDump, ['v8', 'heap'], addProcessScalar);
-        heapDump.children.forEach(function(spaceDump) {
-          if (spaceDump.name === 'other_spaces')
-            return;
-          addV8ComponentValues(spaceDump, ['v8', 'heap', spaceDump.name],
-                               addProcessScalar);
+        heapDump.children.forEach(function (spaceDump) {
+          if (spaceDump.name === 'other_spaces') return;
+          addV8ComponentValues(spaceDump, ['v8', 'heap', spaceDump.name], addProcessScalar);
         });
       }
     });
@@ -355,16 +316,14 @@ global.tr.exportTo('tr.metrics.sh', function() {
       component: ['v8'],
       property: 'code_and_metadata_size',
       value: v8Dump.numerics['code_and_metadata_size'],
-      descriptionPrefixBuilder:
-          buildCodeAndMetadataSizeValueDescriptionPrefix
+      descriptionPrefixBuilder: buildCodeAndMetadataSizeValueDescriptionPrefix
     });
     addProcessScalar({
       source: 'reported_by_chrome',
       component: ['v8'],
       property: 'code_and_metadata_size',
       value: v8Dump.numerics['bytecode_and_metadata_size'],
-      descriptionPrefixBuilder:
-          buildCodeAndMetadataSizeValueDescriptionPrefix
+      descriptionPrefixBuilder: buildCodeAndMetadataSizeValueDescriptionPrefix
     });
   }
 
@@ -375,18 +334,16 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * @param {!Array<string>} componentPath The component path for reporting.
    * @param {!function} addProcessScalar The callback for adding a scalar value.
    */
-  function addV8ComponentValues(componentDump, componentPath,
-                                addProcessScalar) {
-      tr.b.iterItems(CHROME_VALUE_PROPERTIES,
-          function(propertyName, descriptionPrefixBuilder) {
-            addProcessScalar({
-              source: 'reported_by_chrome',
-              component: componentPath,
-              property: propertyName,
-              value: componentDump.numerics[propertyName],
-              descriptionPrefixBuilder: descriptionPrefixBuilder
-            });
-          });
+  function addV8ComponentValues(componentDump, componentPath, addProcessScalar) {
+    tr.b.iterItems(CHROME_VALUE_PROPERTIES, function (propertyName, descriptionPrefixBuilder) {
+      addProcessScalar({
+        source: 'reported_by_chrome',
+        component: componentPath,
+        property: propertyName,
+        value: componentDump.numerics[propertyName],
+        descriptionPrefixBuilder: descriptionPrefixBuilder
+      });
+    });
   }
 
   /**
@@ -401,11 +358,9 @@ global.tr.exportTo('tr.metrics.sh', function() {
    */
   function buildProcessCountDescriptionPrefix(componentPath, processName) {
     if (componentPath.length > 0) {
-      throw new Error('Unexpected process count non-empty component path: ' +
-          componentPath.join(':'));
+      throw new Error('Unexpected process count non-empty component path: ' + componentPath.join(':'));
     }
-    return 'total number of ' + convertProcessNameToUserFriendlyName(
-        processName, true /* opt_requirePlural */);
+    return 'total number of ' + convertProcessNameToUserFriendlyName(processName, true /* opt_requirePlural */);
   }
 
   /**
@@ -424,16 +379,14 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * @return {string} Prefix for the value's description (e.g.
    *     'effective size of malloc in the browser process').
    */
-  function buildChromeValueDescriptionPrefix(
-      formatSpec, componentPath, processName) {
+  function buildChromeValueDescriptionPrefix(formatSpec, componentPath, processName) {
     var nameParts = [];
     if (componentPath.length === 0) {
       nameParts.push('total');
       if (formatSpec.totalUserFriendlyPropertyName) {
         nameParts.push(formatSpec.totalUserFriendlyPropertyName);
       } else {
-        if (formatSpec.userFriendlyPropertyNamePrefix)
-          nameParts.push(formatSpec.userFriendlyPropertyNamePrefix);
+        if (formatSpec.userFriendlyPropertyNamePrefix) nameParts.push(formatSpec.userFriendlyPropertyNamePrefix);
         nameParts.push(formatSpec.userFriendlyPropertyName);
       }
       nameParts.push('reported by Chrome for');
@@ -441,21 +394,18 @@ global.tr.exportTo('tr.metrics.sh', function() {
       if (formatSpec.componentPreposition === undefined) {
         // Use component name as an adjective
         // (e.g. 'size of V8 code and metadata').
-        if (formatSpec.userFriendlyPropertyNamePrefix)
-          nameParts.push(formatSpec.userFriendlyPropertyNamePrefix);
+        if (formatSpec.userFriendlyPropertyNamePrefix) nameParts.push(formatSpec.userFriendlyPropertyNamePrefix);
         nameParts.push(componentPath.join(':'));
         nameParts.push(formatSpec.userFriendlyPropertyName);
       } else {
         // Use component name as a noun with a preposition
         // (e.g. 'size of all objects allocated BY MALLOC').
-        if (formatSpec.userFriendlyPropertyNamePrefix)
-          nameParts.push(formatSpec.userFriendlyPropertyNamePrefix);
+        if (formatSpec.userFriendlyPropertyNamePrefix) nameParts.push(formatSpec.userFriendlyPropertyNamePrefix);
         nameParts.push(formatSpec.userFriendlyPropertyName);
         nameParts.push(formatSpec.componentPreposition);
         if (componentPath[componentPath.length - 1] === 'allocated_by_malloc') {
           nameParts.push('objects allocated by malloc for');
-          nameParts.push(
-              componentPath.slice(0, componentPath.length - 1).join(':'));
+          nameParts.push(componentPath.slice(0, componentPath.length - 1).join(':'));
         } else {
           nameParts.push(componentPath.join(':'));
         }
@@ -472,12 +422,11 @@ global.tr.exportTo('tr.metrics.sh', function() {
       userFriendlyPropertyName: 'effective size',
       componentPreposition: 'of'
     }),
-    'allocated_objects_size': buildChromeValueDescriptionPrefix.bind(
-        undefined, {
-          userFriendlyPropertyName: 'size of all objects allocated',
-          totalUserFriendlyPropertyName: 'size of all allocated objects',
-          componentPreposition: 'by'
-        }),
+    'allocated_objects_size': buildChromeValueDescriptionPrefix.bind(undefined, {
+      userFriendlyPropertyName: 'size of all objects allocated',
+      totalUserFriendlyPropertyName: 'size of all allocated objects',
+      componentPreposition: 'by'
+    }),
     'locked_size': buildChromeValueDescriptionPrefix.bind(undefined, {
       userFriendlyPropertyName: 'locked (pinned) size',
       componentPreposition: 'of'
@@ -485,23 +434,21 @@ global.tr.exportTo('tr.metrics.sh', function() {
     'peak_size': buildChromeValueDescriptionPrefix.bind(undefined, {
       userFriendlyPropertyName: 'peak size',
       componentPreposition: 'of'
-    }),
+    })
   };
 
   var SYSTEM_TOTAL_VALUE_PROPERTIES = {
     'resident_size': {
-      getPropertyFunction: function(processDump) {
+      getPropertyFunction: function (processDump) {
         return processDump.totals.residentBytes;
       },
-      descriptionPrefixBuilder: buildOsValueDescriptionPrefix.bind(
-          undefined, 'resident set size (RSS)')
+      descriptionPrefixBuilder: buildOsValueDescriptionPrefix.bind(undefined, 'resident set size (RSS)')
     },
     'peak_resident_size': {
-      getPropertyFunction: function(processDump) {
+      getPropertyFunction: function (processDump) {
         return processDump.totals.peakResidentBytes;
       },
-      descriptionPrefixBuilder: buildOsValueDescriptionPrefix.bind(
-          undefined, 'peak resident set size')
+      descriptionPrefixBuilder: buildOsValueDescriptionPrefix.bind(undefined, 'peak resident set size')
     }
   };
 
@@ -529,61 +476,48 @@ global.tr.exportTo('tr.metrics.sh', function() {
    *     unit: sizeInBytes_smallerIsBetter
    */
   function addDetailedMemoryDumpValues(browserNameToGlobalDumps, values) {
-    addMemoryDumpValues(browserNameToGlobalDumps,
-        g => g.levelOfDetail === DETAILED,
-        function(processDump, addProcessScalar) {
-          // Add memory:<browser-name>:<process-name>:reported_by_os:
-          // system_memory:... values.
-          tr.b.iterItems(
-              SYSTEM_VALUE_COMPONENTS,
-              function(componentName, componentSpec) {
-                tr.b.iterItems(
-                    SYSTEM_VALUE_PROPERTIES,
-                    function(propertyName, propertySpec) {
-                      var node = getDescendantVmRegionClassificationNode(
-                          processDump.vmRegions,
-                          componentSpec.classificationPath);
-                      var componentPath = ['system_memory'];
-                      if (componentName)
-                        componentPath.push(componentName);
-                      addProcessScalar({
-                        source: 'reported_by_os',
-                        component: componentPath,
-                        property: propertyName,
-                        value: node === undefined ?
-                            0 : (node.byteStats[propertySpec.byteStat] || 0),
-                        unit: sizeInBytes_smallerIsBetter,
-                        descriptionPrefixBuilder:
-                            propertySpec.descriptionPrefixBuilder
-                      });
-                    });
-              });
+    addMemoryDumpValues(browserNameToGlobalDumps, g => g.levelOfDetail === DETAILED, function (processDump, addProcessScalar) {
+      // Add memory:<browser-name>:<process-name>:reported_by_os:
+      // system_memory:... values.
+      tr.b.iterItems(SYSTEM_VALUE_COMPONENTS, function (componentName, componentSpec) {
+        tr.b.iterItems(SYSTEM_VALUE_PROPERTIES, function (propertyName, propertySpec) {
+          var node = getDescendantVmRegionClassificationNode(processDump.vmRegions, componentSpec.classificationPath);
+          var componentPath = ['system_memory'];
+          if (componentName) componentPath.push(componentName);
+          addProcessScalar({
+            source: 'reported_by_os',
+            component: componentPath,
+            property: propertyName,
+            value: node === undefined ? 0 : node.byteStats[propertySpec.byteStat] || 0,
+            unit: sizeInBytes_smallerIsBetter,
+            descriptionPrefixBuilder: propertySpec.descriptionPrefixBuilder
+          });
+        });
+      });
 
-          // Add memory:<browser-name>:<process-name>:reported_by_os:
-          // gpu_memory:... values.
-          var memtrackDump = processDump.getMemoryAllocatorDumpByFullName(
-              'gpu/android_memtrack');
-          if (memtrackDump !== undefined) {
-            var descriptionPrefixBuilder = SYSTEM_VALUE_PROPERTIES[
-                'proportional_resident_size'].descriptionPrefixBuilder;
-            memtrackDump.children.forEach(function(memtrackChildDump) {
-              var childName = memtrackChildDump.name;
-              addProcessScalar({
-                source: 'reported_by_os',
-                component: ['gpu_memory', childName],
-                property: 'proportional_resident_size',
-                value: memtrackChildDump.numerics['memtrack_pss'],
-                descriptionPrefixBuilder: descriptionPrefixBuilder
-              });
-            });
-          }
-        }, function(componentTree) {}, values);
+      // Add memory:<browser-name>:<process-name>:reported_by_os:
+      // gpu_memory:... values.
+      var memtrackDump = processDump.getMemoryAllocatorDumpByFullName('gpu/android_memtrack');
+      if (memtrackDump !== undefined) {
+        var descriptionPrefixBuilder = SYSTEM_VALUE_PROPERTIES['proportional_resident_size'].descriptionPrefixBuilder;
+        memtrackDump.children.forEach(function (memtrackChildDump) {
+          var childName = memtrackChildDump.name;
+          addProcessScalar({
+            source: 'reported_by_os',
+            component: ['gpu_memory', childName],
+            property: 'proportional_resident_size',
+            value: memtrackChildDump.numerics['memtrack_pss'],
+            descriptionPrefixBuilder: descriptionPrefixBuilder
+          });
+        });
+      }
+    }, function (componentTree) {}, values);
   }
 
   // Specifications of components reported by the system.
   var SYSTEM_VALUE_COMPONENTS = {
     '': {
-      classificationPath: [],
+      classificationPath: []
     },
     'java_heap': {
       classificationPath: ['Android', 'Java runtime', 'Spaces'],
@@ -603,13 +537,11 @@ global.tr.exportTo('tr.metrics.sh', function() {
   var SYSTEM_VALUE_PROPERTIES = {
     'proportional_resident_size': {
       byteStat: 'proportionalResident',
-      descriptionPrefixBuilder: buildOsValueDescriptionPrefix.bind(
-          undefined, 'proportional resident size (PSS)')
+      descriptionPrefixBuilder: buildOsValueDescriptionPrefix.bind(undefined, 'proportional resident size (PSS)')
     },
     'private_dirty_size': {
       byteStat: 'privateDirtyResident',
-      descriptionPrefixBuilder: buildOsValueDescriptionPrefix.bind(
-          undefined, 'private dirty size')
+      descriptionPrefixBuilder: buildOsValueDescriptionPrefix.bind(undefined, 'private dirty size')
     }
   };
 
@@ -625,16 +557,13 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * @return {string} Prefix for the value's description (e.g.
    *     'total private dirty size of the Java heal in the GPU process').
    */
-  function buildOsValueDescriptionPrefix(
-      userFriendlyPropertyName, componentPath, processName) {
+  function buildOsValueDescriptionPrefix(userFriendlyPropertyName, componentPath, processName) {
     if (componentPath.length > 2) {
-      throw new Error('OS value component path for \'' +
-          userFriendlyPropertyName + '\' too long: ' + componentPath.join(':'));
+      throw new Error('OS value component path for \'' + userFriendlyPropertyName + '\' too long: ' + componentPath.join(':'));
     }
 
     var nameParts = [];
-    if (componentPath.length < 2)
-      nameParts.push('total');
+    if (componentPath.length < 2) nameParts.push('total');
 
     nameParts.push(userFriendlyPropertyName);
 
@@ -642,12 +571,9 @@ global.tr.exportTo('tr.metrics.sh', function() {
       switch (componentPath[0]) {
         case 'system_memory':
           if (componentPath.length > 1) {
-            var userFriendlyComponentName =
-                SYSTEM_VALUE_COMPONENTS[componentPath[1]].userFriendlyName;
+            var userFriendlyComponentName = SYSTEM_VALUE_COMPONENTS[componentPath[1]].userFriendlyName;
             if (userFriendlyComponentName === undefined) {
-              throw new Error('System value sub-component for \'' +
-                  userFriendlyPropertyName + '\' unknown: ' +
-                  componentPath.join(':'));
+              throw new Error('System value sub-component for \'' + userFriendlyPropertyName + '\' unknown: ' + componentPath.join(':'));
             }
             nameParts.push('of', userFriendlyComponentName, 'in');
           } else {
@@ -665,9 +591,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
           break;
 
         default:
-          throw new Error('OS value component for \'' +
-              userFriendlyPropertyName + '\' unknown: ' +
-              componentPath.join(':'));
+          throw new Error('OS value component for \'' + userFriendlyPropertyName + '\' unknown: ' + componentPath.join(':'));
       }
     } else {
       nameParts.push('reported by the OS for');
@@ -687,8 +611,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * @return {string} Prefix for the value's description (e.g.
    *     'size of v8 code and metadata in').
    */
-  function buildCodeAndMetadataSizeValueDescriptionPrefix(
-      componentPath, processName) {
+  function buildCodeAndMetadataSizeValueDescriptionPrefix(componentPath, processName) {
     return buildChromeValueDescriptionPrefix({
       userFriendlyPropertyNamePrefix: 'size of',
       userFriendlyPropertyName: 'code and metadata'
@@ -702,8 +625,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
    */
   function getDescendantVmRegionClassificationNode(node, path) {
     for (var i = 0; i < path.length; i++) {
-      if (node === undefined)
-        break;
+      if (node === undefined) break;
       node = tr.b.findFirstInArray(node.children, c => c.title === path[i]);
     }
     return node;
@@ -724,32 +646,28 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * over all global dumps associated with the relevant browser).
    */
   function addMemoryDumpCountValues(browserNameToGlobalDumps, values) {
-    browserNameToGlobalDumps.forEach(function(globalDumps, browserName) {
+    browserNameToGlobalDumps.forEach(function (globalDumps, browserName) {
       var totalDumpCount = 0;
       var levelOfDetailNameToDumpCount = {};
-      LEVEL_OF_DETAIL_NAMES.forEach(function(levelOfDetailName) {
+      LEVEL_OF_DETAIL_NAMES.forEach(function (levelOfDetailName) {
         levelOfDetailNameToDumpCount[levelOfDetailName] = 0;
       });
 
-      globalDumps.forEach(function(globalDump) {
+      globalDumps.forEach(function (globalDump) {
         totalDumpCount++;
 
         // Increment the level-of-detail-specific dump count (if possible).
-        var levelOfDetailName =
-            LEVEL_OF_DETAIL_NAMES.get(globalDump.levelOfDetail);
-        if (!(levelOfDetailName in levelOfDetailNameToDumpCount))
-          return;  // Unknown level of detail.
+        var levelOfDetailName = LEVEL_OF_DETAIL_NAMES.get(globalDump.levelOfDetail);
+        if (!(levelOfDetailName in levelOfDetailNameToDumpCount)) return; // Unknown level of detail.
         levelOfDetailNameToDumpCount[levelOfDetailName]++;
       });
 
       // Add memory:<browser-name>:all_processes:dump_count[:<level>] values.
-      reportMemoryDumpCountAsValue(browserName, undefined /* total */,
-          totalDumpCount, values);
-      tr.b.iterItems(levelOfDetailNameToDumpCount,
-          function(levelOfDetailName, levelOfDetailDumpCount) {
-            reportMemoryDumpCountAsValue(browserName, levelOfDetailName,
-                levelOfDetailDumpCount, values);
-          });
+      reportMemoryDumpCountAsValue(browserName, undefined /* total */
+      , totalDumpCount, values);
+      tr.b.iterItems(levelOfDetailNameToDumpCount, function (levelOfDetailName, levelOfDetailDumpCount) {
+        reportMemoryDumpCountAsValue(browserName, levelOfDetailName, levelOfDetailDumpCount, values);
+      });
     });
   }
 
@@ -758,27 +676,18 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * |levelOfDetailName| memory dumps added by |browserName| was
    * |levelOfDetailCount|.
    */
-  function reportMemoryDumpCountAsValue(
-      browserName, levelOfDetailName, levelOfDetailDumpCount, values) {
+  function reportMemoryDumpCountAsValue(browserName, levelOfDetailName, levelOfDetailDumpCount, values) {
     // Construct the name of the memory value.
     var nameParts = ['memory', browserName, 'all_processes', 'dump_count'];
-    if (levelOfDetailName !== undefined)
-      nameParts.push(levelOfDetailName);
+    if (levelOfDetailName !== undefined) nameParts.push(levelOfDetailName);
     var name = nameParts.join(':');
 
     // Build the underlying histogram for the memory value.
-    var histogram = new tr.v.Histogram(name, count_smallerIsBetter,
-        BOUNDARIES_FOR_UNIT_MAP.get(count_smallerIsBetter));
+    var histogram = new tr.v.Histogram(name, count_smallerIsBetter, BOUNDARIES_FOR_UNIT_MAP.get(count_smallerIsBetter));
     histogram.addSample(levelOfDetailDumpCount);
 
     // Build the options for the memory value.
-    histogram.description = [
-      'total number of',
-      levelOfDetailName || 'all',
-      'memory dumps added by',
-      convertBrowserNameToUserFriendlyName(browserName),
-      'to the trace'
-    ].join(' ');
+    histogram.description = ['total number of', levelOfDetailName || 'all', 'memory dumps added by', convertBrowserNameToUserFriendlyName(browserName), 'to the trace'].join(' ');
 
     // Report the memory value.
     values.addHistogram(histogram);
@@ -915,15 +824,11 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * @param {!tr.v.ValueSet} values List of values to which the
    *     resulting aggregated values are added.
    */
-  function addMemoryDumpValues(browserNameToGlobalDumps, customGlobalDumpFilter,
-      customProcessDumpValueExtractor, customComponentTreeModifier,
-      values) {
-    browserNameToGlobalDumps.forEach(function(globalDumps, browserName) {
+  function addMemoryDumpValues(browserNameToGlobalDumps, customGlobalDumpFilter, customProcessDumpValueExtractor, customComponentTreeModifier, values) {
+    browserNameToGlobalDumps.forEach(function (globalDumps, browserName) {
       var filteredGlobalDumps = globalDumps.filter(customGlobalDumpFilter);
-      var sourceToPropertyToData = extractDataFromGlobalDumps(
-          filteredGlobalDumps, customProcessDumpValueExtractor);
-      reportDataAsValues(sourceToPropertyToData, browserName,
-          customComponentTreeModifier, values);
+      var sourceToPropertyToData = extractDataFromGlobalDumps(filteredGlobalDumps, customProcessDumpValueExtractor);
+      reportDataAsValues(sourceToPropertyToData, browserName, customComponentTreeModifier, values);
     });
   }
 
@@ -947,123 +852,92 @@ global.tr.exportTo('tr.metrics.sh', function() {
    *
    * See addMemoryDumpValues for more details.
    */
-  function extractDataFromGlobalDumps(
-      globalDumps, customProcessDumpValueExtractor) {
+  function extractDataFromGlobalDumps(globalDumps, customProcessDumpValueExtractor) {
     var sourceToPropertyToData = new Map();
     var dumpCount = globalDumps.length;
-    globalDumps.forEach(function(globalDump, dumpIndex) {
-      tr.b.iterItems(globalDump.processMemoryDumps, function(_, processDump) {
-        extractDataFromProcessDump(
-            processDump, sourceToPropertyToData, dumpIndex, dumpCount,
-            customProcessDumpValueExtractor);
+    globalDumps.forEach(function (globalDump, dumpIndex) {
+      tr.b.iterItems(globalDump.processMemoryDumps, function (_, processDump) {
+        extractDataFromProcessDump(processDump, sourceToPropertyToData, dumpIndex, dumpCount, customProcessDumpValueExtractor);
       });
     });
     return sourceToPropertyToData;
   }
 
-  function extractDataFromProcessDump(processDump, sourceToPropertyToData,
-      dumpIndex, dumpCount, customProcessDumpValueExtractor) {
+  function extractDataFromProcessDump(processDump, sourceToPropertyToData, dumpIndex, dumpCount, customProcessDumpValueExtractor) {
     // Process name is typically 'browser', 'renderer', etc.
     var rawProcessName = processDump.process.name;
     var processNamePath = [canonicalizeProcessName(rawProcessName)];
 
-    customProcessDumpValueExtractor(
-        processDump,
-        function addProcessScalar(spec) {
-          if (spec.value === undefined)
-            return;
+    customProcessDumpValueExtractor(processDump, function addProcessScalar(spec) {
+      if (spec.value === undefined) return;
 
-          var component = spec.component || [];
-          function createDetailsForErrorMessage() {
-            var propertyUserFriendlyName =
-                spec.property === undefined ? '(undefined)' : spec.property;
-            var componentUserFriendlyName =
-                component.length === 0 ? '(empty)' : component.join(':');
-            return ['source=', spec.source, ', property=',
-                propertyUserFriendlyName, ', component=',
-                componentUserFriendlyName, ' in ',
-                processDump.process.userFriendlyName].join('');
-          }
+      var component = spec.component || [];
+      function createDetailsForErrorMessage() {
+        var propertyUserFriendlyName = spec.property === undefined ? '(undefined)' : spec.property;
+        var componentUserFriendlyName = component.length === 0 ? '(empty)' : component.join(':');
+        return ['source=', spec.source, ', property=', propertyUserFriendlyName, ', component=', componentUserFriendlyName, ' in ', processDump.process.userFriendlyName].join('');
+      }
 
-          var value, unit;
-          if (spec.value instanceof tr.v.ScalarNumeric) {
-            value = spec.value.value;
-            unit = spec.value.unit;
-            if (spec.unit !== undefined) {
-              throw new Error('Histogram value for ' +
-                  createDetailsForErrorMessage() + ' already specifies a unit');
-            }
-          } else {
-            value = spec.value;
-            unit = spec.unit;
-          }
+      var value, unit;
+      if (spec.value instanceof tr.v.ScalarNumeric) {
+        value = spec.value.value;
+        unit = spec.value.unit;
+        if (spec.unit !== undefined) {
+          throw new Error('Histogram value for ' + createDetailsForErrorMessage() + ' already specifies a unit');
+        }
+      } else {
+        value = spec.value;
+        unit = spec.unit;
+      }
 
-          var propertyToData = sourceToPropertyToData.get(spec.source);
-          if (propertyToData === undefined) {
-            propertyToData = new Map();
-            sourceToPropertyToData.set(spec.source, propertyToData);
-          }
+      var propertyToData = sourceToPropertyToData.get(spec.source);
+      if (propertyToData === undefined) {
+        propertyToData = new Map();
+        sourceToPropertyToData.set(spec.source, propertyToData);
+      }
 
-          var data = propertyToData.get(spec.property);
-          if (data === undefined) {
-            data = {
-              processAndComponentTreeBuilder:
-                  new tr.b.MultiDimensionalViewBuilder(
-                      2 /* dimensions (process name and component path) */,
-                      dumpCount /* valueCount */),
-              unit: unit,
-              descriptionPrefixBuilder: spec.descriptionPrefixBuilder
-            };
-            propertyToData.set(spec.property, data);
-          } else if (data.unit !== unit) {
-            throw new Error('Multiple units provided for ' +
-                createDetailsForErrorMessage() + ':' +
-                data.unit.unitName + ' and ' + unit.unitName);
-          } else if (data.descriptionPrefixBuilder !==
-                     spec.descriptionPrefixBuilder) {
-            throw new Error(
-                'Multiple description prefix builders provided for' +
-                createDetailsForErrorMessage());
-          }
+      var data = propertyToData.get(spec.property);
+      if (data === undefined) {
+        data = {
+          processAndComponentTreeBuilder: new tr.b.MultiDimensionalViewBuilder(2 /* dimensions (process name and component path) */
+          , dumpCount /* valueCount */),
+          unit: unit,
+          descriptionPrefixBuilder: spec.descriptionPrefixBuilder
+        };
+        propertyToData.set(spec.property, data);
+      } else if (data.unit !== unit) {
+        throw new Error('Multiple units provided for ' + createDetailsForErrorMessage() + ':' + data.unit.unitName + ' and ' + unit.unitName);
+      } else if (data.descriptionPrefixBuilder !== spec.descriptionPrefixBuilder) {
+        throw new Error('Multiple description prefix builders provided for' + createDetailsForErrorMessage());
+      }
 
-          var values = new Array(dumpCount);
-          values[dumpIndex] = value;
+      var values = new Array(dumpCount);
+      values[dumpIndex] = value;
 
-          data.processAndComponentTreeBuilder.addPath(
-              [processNamePath, component] /* path */, values,
-              tr.b.MultiDimensionalViewBuilder.ValueKind.TOTAL /* valueKind */);
-        });
+      data.processAndComponentTreeBuilder.addPath([processNamePath, component] /* path */, values, tr.b.MultiDimensionalViewBuilder.ValueKind.TOTAL /* valueKind */);
+    });
   }
 
-  function reportDataAsValues(sourceToPropertyToData, browserName,
-      customComponentTreeModifier, values) {
+  function reportDataAsValues(sourceToPropertyToData, browserName, customComponentTreeModifier, values) {
     // For each source name (e.g. 'reported_by_os')...
-    sourceToPropertyToData.forEach(function(propertyToData, sourceName) {
+    sourceToPropertyToData.forEach(function (propertyToData, sourceName) {
       // For each property name (e.g. 'effective_size')...
-      propertyToData.forEach(function(data, propertyName) {
+      propertyToData.forEach(function (data, propertyName) {
         var tree = data.processAndComponentTreeBuilder.buildTopDownTreeView();
         var unit = data.unit;
         var descriptionPrefixBuilder = data.descriptionPrefixBuilder;
 
         // Total over 'all' processes...
         customComponentTreeModifier(tree);
-        reportComponentDataAsValues(browserName, sourceName,
-            propertyName, 'all_processes', [] /* componentPath */, tree,
-            unit, descriptionPrefixBuilder, values);
+        reportComponentDataAsValues(browserName, sourceName, propertyName, 'all_processes', [] /* componentPath */, tree, unit, descriptionPrefixBuilder, values);
 
         // For each process name (e.g. 'renderer')...
-        tree.children[0].forEach(function(processTree, processName) {
+        tree.children[0].forEach(function (processTree, processName) {
           if (processTree.children[0].size > 0) {
-            throw new Error('Multi-dimensional view node for source=' +
-                sourceName + ', property=' +
-                (propertyName === undefined ? '(undefined)' : propertyName) +
-                ', process=' + processName +
-                ' has children wrt the process name dimension');
+            throw new Error('Multi-dimensional view node for source=' + sourceName + ', property=' + (propertyName === undefined ? '(undefined)' : propertyName) + ', process=' + processName + ' has children wrt the process name dimension');
           }
           customComponentTreeModifier(processTree);
-          reportComponentDataAsValues(browserName, sourceName,
-              propertyName, processName, [] /* componentPath */, processTree,
-              unit, descriptionPrefixBuilder, values);
+          reportComponentDataAsValues(browserName, sourceName, propertyName, processName, [] /* componentPath */, processTree, unit, descriptionPrefixBuilder, values);
         });
       });
     });
@@ -1079,25 +953,17 @@ global.tr.exportTo('tr.metrics.sh', function() {
    *
    * See addMemoryDumpValues for more details.
    */
-  function reportComponentDataAsValues(
-      browserName, sourceName, propertyName, processName, componentPath,
-      componentNode, unit, descriptionPrefixBuilder, values) {
+  function reportComponentDataAsValues(browserName, sourceName, propertyName, processName, componentPath, componentNode, unit, descriptionPrefixBuilder, values) {
     // Construct the name of the memory value.
-    var nameParts = ['memory', browserName, processName, sourceName].concat(
-        componentPath);
-    if (propertyName !== undefined)
-      nameParts.push(propertyName);
+    var nameParts = ['memory', browserName, processName, sourceName].concat(componentPath);
+    if (propertyName !== undefined) nameParts.push(propertyName);
     var name = nameParts.join(':');
 
     // Build the underlying numeric for the memory value.
     var numeric = buildMemoryNumericFromNode(name, componentNode, unit);
 
     // Build the options for the memory value.
-    numeric.description = [
-      descriptionPrefixBuilder(componentPath, processName),
-      'in',
-      convertBrowserNameToUserFriendlyName(browserName)
-    ].join(' ');
+    numeric.description = [descriptionPrefixBuilder(componentPath, processName), 'in', convertBrowserNameToUserFriendlyName(browserName)].join(' ');
 
     // Report the memory value.
     values.addHistogram(numeric);
@@ -1105,11 +971,9 @@ global.tr.exportTo('tr.metrics.sh', function() {
     // Recursively report memory values for sub-components.
     var depth = componentPath.length;
     componentPath.push(undefined);
-    componentNode.children[1].forEach(function(childNode, childName) {
+    componentNode.children[1].forEach(function (childNode, childName) {
       componentPath[depth] = childName;
-      reportComponentDataAsValues(
-          browserName, sourceName, propertyName, processName, componentPath,
-          childNode, unit, descriptionPrefixBuilder, values);
+      reportComponentDataAsValues(browserName, sourceName, propertyName, processName, componentPath, childNode, unit, descriptionPrefixBuilder, values);
     });
     componentPath.pop();
   }
@@ -1119,8 +983,7 @@ global.tr.exportTo('tr.metrics.sh', function() {
    * |node| to it.
    */
   function buildMemoryNumericFromNode(name, node, unit) {
-    var histogram = new tr.v.Histogram(
-        name, unit, BOUNDARIES_FOR_UNIT_MAP.get(unit));
+    var histogram = new tr.v.Histogram(name, unit, BOUNDARIES_FOR_UNIT_MAP.get(unit));
     node.values.forEach(v => histogram.addSample(v.total));
     return histogram;
   }

@@ -11,16 +11,14 @@ require("./iteration_helpers.js");
 
 var GREEK_SMALL_LETTER_MU = String.fromCharCode(956);
 
-global.tr.exportTo('tr.b', function() {
+global.tr.exportTo('tr.b', function () {
 
   var UnitScale = {};
 
   function defineUnitScale(name, prefixes) {
-    if (UnitScale[name] !== undefined)
-      throw new Error('Unit scale \'' + name + '\' already exists');
+    if (UnitScale[name] !== undefined) throw new Error('Unit scale \'' + name + '\' already exists');
     if (prefixes.AUTO !== undefined) {
-      throw new Error('\'AUTO\' unit prefix will be added automatically ' +
-          'for unit scale \'' + name + '\'');
+      throw new Error('\'AUTO\' unit prefix will be added automatically ' + 'for unit scale \'' + name + '\'');
     }
 
     // If the 'AUTO' unit prefix is used, the prefix that results in
@@ -33,20 +31,19 @@ global.tr.exportTo('tr.b', function() {
     UnitScale[name] = prefixes;
   }
 
- /**
-  * Converts |value| from |fromPrefix| (e.g. kilo) to |toPrefix| (e.g. mega).
-  *
-  * Returns undefined if |value| is undefined.
-  * |fromPrefix| and |toPrefix| need not come from the same UnitScale.
-  *
-  * @param {(undefined|number)} value
-  * @param {!object} fromPrefix
-  * @param {!object} toPrefix
-  * @return {(undefined|number)}
-  */
+  /**
+   * Converts |value| from |fromPrefix| (e.g. kilo) to |toPrefix| (e.g. mega).
+   *
+   * Returns undefined if |value| is undefined.
+   * |fromPrefix| and |toPrefix| need not come from the same UnitScale.
+   *
+   * @param {(undefined|number)} value
+   * @param {!object} fromPrefix
+   * @param {!object} toPrefix
+   * @return {(undefined|number)}
+   */
   function convertUnit(value, fromPrefix, toPrefix) {
-    if (value === undefined)
-      return undefined;
+    if (value === undefined) return undefined;
     return value * (fromPrefix.value / toPrefix.value);
   }
 
@@ -64,10 +61,10 @@ global.tr.exportTo('tr.b', function() {
     NANO: { value: 1e-9, symbol: 'n' },
     MICRO: { value: 1e-6, symbol: GREEK_SMALL_LETTER_MU },
     MILLI: { value: 1e-3, symbol: 'm' },
-    NONE: { value: 1, symbol: ''},
-    KILO: { value: 1e3, symbol: 'k'},
-    MEGA: { value: 1e6, symbol: 'M'},
-    GIGA: { value: 1e9, symbol: 'G'}
+    NONE: { value: 1, symbol: '' },
+    KILO: { value: 1e3, symbol: 'k' },
+    MEGA: { value: 1e6, symbol: 'M' },
+    GIGA: { value: 1e9, symbol: 'G' }
   });
 
   return {

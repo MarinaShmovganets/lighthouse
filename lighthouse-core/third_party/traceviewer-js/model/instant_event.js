@@ -10,7 +10,7 @@ require("./timed_event.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
   var InstantEventType = {
     GLOBAL: 1,
     PROCESS: 2
@@ -53,8 +53,7 @@ global.tr.exportTo('tr.model', function() {
   GlobalInstantEvent.prototype = {
     __proto__: InstantEvent.prototype,
     get userFriendlyName() {
-      return 'Global instant event ' + this.title + ' @ ' +
-          tr.b.Unit.byName.timeStampInMs.format(start);
+      return 'Global instant event ' + this.title + ' @ ' + tr.b.Unit.byName.timeStampInMs.format(start);
     }
   };
 
@@ -75,17 +74,14 @@ global.tr.exportTo('tr.model', function() {
     __proto__: InstantEvent.prototype,
 
     get userFriendlyName() {
-      return 'Process-level instant event ' + this.title + ' @ ' +
-          tr.b.Unit.byName.timeStampInMs.format(start);
+      return 'Process-level instant event ' + this.title + ' @ ' + tr.b.Unit.byName.timeStampInMs.format(start);
     }
   };
 
-  tr.model.EventRegistry.register(
-      InstantEvent,
-      {
-        name: 'instantEvent',
-        pluralName: 'instantEvents'
-      });
+  tr.model.EventRegistry.register(InstantEvent, {
+    name: 'instantEvent',
+    pluralName: 'instantEvents'
+  });
 
   return {
     GlobalInstantEvent: GlobalInstantEvent,

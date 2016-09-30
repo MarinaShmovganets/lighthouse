@@ -9,7 +9,7 @@ require("../../base/guid.js");
 
 'use strict';
 
-global.tr.exportTo('tr.v.d', function() {
+global.tr.exportTo('tr.v.d', function () {
   /**
    * Similar to ValueRef, this is a placeholder in case the referenced Event
    * isn't available in memory to point to directly.

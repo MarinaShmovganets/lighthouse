@@ -9,7 +9,7 @@ require("../../base/base.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model.source_info', function() {
+global.tr.exportTo('tr.model.source_info', function () {
   function SourceInfo(file, opt_line, opt_column) {
     this.file_ = file;
     this.line_ = opt_line || -1;
@@ -30,21 +30,17 @@ global.tr.exportTo('tr.model.source_info', function() {
     },
 
     get domain() {
-      if (!this.file_)
-        return undefined;
+      if (!this.file_) return undefined;
       var domain = this.file_.match(/(.*:\/\/[^:\/]*)/i);
       return domain ? domain[1] : undefined;
     },
 
-    toString: function() {
+    toString: function () {
       var str = '';
 
-      if (this.file_)
-        str += this.file_;
-      if (this.line_ > 0)
-        str += ':' + this.line_;
-      if (this.column_ > 0)
-        str += ':' + this.column_;
+      if (this.file_) str += this.file_;
+      if (this.line_ > 0) str += ':' + this.line_;
+      if (this.column_ > 0) str += ':' + this.column_;
       return str;
     }
   };

@@ -9,7 +9,7 @@ require("../base/base.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
 
   /**
    * HeapEntry represents a single value describing the state of the heap of an
@@ -50,9 +50,8 @@ global.tr.exportTo('tr.model', function() {
   }
 
   HeapDump.prototype = {
-    addEntry: function(leafStackFrame, objectTypeName, size, count) {
-      var entry = new HeapEntry(
-          this, leafStackFrame, objectTypeName, size, count);
+    addEntry: function (leafStackFrame, objectTypeName, size, count) {
+      var entry = new HeapEntry(this, leafStackFrame, objectTypeName, size, count);
       this.entries.push(entry);
       return entry;
     }

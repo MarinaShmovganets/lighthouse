@@ -13,7 +13,7 @@ require("./thread_time_slice.js");
 /**
  * @fileoverview Provides the CpuSlice class.
  */
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
 
   var Slice = tr.model.Slice;
 
@@ -35,28 +35,23 @@ global.tr.exportTo('tr.model', function() {
       return 'tr.ui.analysis.CpuSlice';
     },
 
-    getAssociatedTimeslice: function() {
-      if (!this.threadThatWasRunning)
-        return undefined;
+    getAssociatedTimeslice: function () {
+      if (!this.threadThatWasRunning) return undefined;
       var timeSlices = this.threadThatWasRunning.timeSlices;
       for (var i = 0; i < timeSlices.length; i++) {
         var timeSlice = timeSlices[i];
-        if (timeSlice.start !== this.start)
-          continue;
-        if (timeSlice.duration !== this.duration)
-          continue;
+        if (timeSlice.start !== this.start) continue;
+        if (timeSlice.duration !== this.duration) continue;
         return timeSlice;
       }
       return undefined;
     }
   };
 
-  tr.model.EventRegistry.register(
-      CpuSlice,
-      {
-        name: 'cpuSlice',
-        pluralName: 'cpuSlices'
-      });
+  tr.model.EventRegistry.register(CpuSlice, {
+    name: 'cpuSlice',
+    pluralName: 'cpuSlices'
+  });
 
   return {
     CpuSlice: CpuSlice

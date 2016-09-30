@@ -9,10 +9,10 @@ require("./user_expectation.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model.um', function() {
+global.tr.exportTo('tr.model.um', function () {
   var LOAD_SUBTYPE_NAMES = {
     SUCCESSFUL: 'Successful',
-    FAILED: 'Failed',
+    FAILED: 'Failed'
   };
 
   var DOES_LOAD_SUBTYPE_NAME_EXIST = {};
@@ -21,11 +21,9 @@ global.tr.exportTo('tr.model.um', function() {
   }
 
   function LoadExpectation(parentModel, initiatorTitle, start, duration) {
-    if (!DOES_LOAD_SUBTYPE_NAME_EXIST[initiatorTitle])
-      throw new Error(initiatorTitle + ' is not in LOAD_SUBTYPE_NAMES');
+    if (!DOES_LOAD_SUBTYPE_NAME_EXIST[initiatorTitle]) throw new Error(initiatorTitle + ' is not in LOAD_SUBTYPE_NAMES');
 
-    tr.model.um.UserExpectation.call(
-        this, parentModel, initiatorTitle, start, duration);
+    tr.model.um.UserExpectation.call(this, parentModel, initiatorTitle, start, duration);
 
     // |renderProcess| is the renderer process that contains the loading
     // RenderFrame.

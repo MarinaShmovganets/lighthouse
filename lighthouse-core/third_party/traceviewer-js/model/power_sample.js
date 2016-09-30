@@ -10,7 +10,7 @@ require("./event_registry.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
 
   var Event = tr.model.Event;
   var EventRegistry = tr.model.EventRegistry;
@@ -52,17 +52,15 @@ global.tr.exportTo('tr.model', function() {
       this.powerInW_ = value;
     },
 
-    addBoundsToRange: function(range) {
+    addBoundsToRange: function (range) {
       range.addValue(this.start);
     }
   };
 
-  EventRegistry.register(
-      PowerSample,
-      {
-        name: 'powerSample',
-        pluralName: 'powerSamples'
-      });
+  EventRegistry.register(PowerSample, {
+    name: 'powerSample',
+    pluralName: 'powerSamples'
+  });
 
   return {
     PowerSample: PowerSample

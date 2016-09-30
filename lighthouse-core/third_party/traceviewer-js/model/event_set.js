@@ -13,12 +13,11 @@ require("./event_registry.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
 
   var EventRegistry = tr.model.EventRegistry;
 
-  var RequestSelectionChangeEvent = tr.b.Event.bind(
-      undefined, 'requestSelectionChange', true, false);
+  var RequestSelectionChangeEvent = tr.b.Event.bind(undefined, 'requestSelectionChange', true, false);
 
   /**
    * Represents a event set within a  and its associated set of tracks.
@@ -30,8 +29,7 @@ global.tr.exportTo('tr.model', function() {
 
     if (opt_events) {
       if (opt_events instanceof Array) {
-        for (var event of opt_events)
-          this.push(event);
+        for (var event of opt_events) this.push(event);
       } else if (opt_events instanceof EventSet) {
         this.addEventSet(opt_events);
       } else {
@@ -48,8 +46,7 @@ global.tr.exportTo('tr.model', function() {
     },
 
     get duration() {
-      if (this.bounds_.isEmpty)
-        return 0;
+      if (this.bounds_.isEmpty) return 0;
       return this.bounds_.max - this.bounds_.min;
     },
 
@@ -62,76 +59,65 @@ global.tr.exportTo('tr.model', function() {
     },
 
     *[Symbol.iterator]() {
-      for (var event of this.events_)
-        yield event;
+      for (var event of this.events_) yield event;
     },
 
-    clear: function() {
+    clear: function () {
       this.bounds_ = new tr.b.Range();
       this.events_.clear();
     },
 
     // push pushes only unique events.
     // If an event has been already pushed, do nothing.
-    push: function(event) {
-      if (event.guid == undefined)
-        throw new Error('Event must have a GUID');
+    push: function (event) {
+      if (event.guid == undefined) throw new Error('Event must have a GUID');
 
       if (!this.events_.has(event)) {
         this.events_.add(event);
         // Some uses of eventSet, particularly in tests, have Events as objects
         // that don't have addBoundsToRange as a function. Thus we need to
         // handle this case.
-        if (event.addBoundsToRange)
-          if (this.bounds_ !== undefined)
-            event.addBoundsToRange(this.bounds_);
+        if (event.addBoundsToRange) if (this.bounds_ !== undefined) event.addBoundsToRange(this.bounds_);
       }
 
       return event;
     },
 
-    contains: function(event) {
-      if (this.events_.has(event))
-        return event;
-      else
-        return undefined;
+    contains: function (event) {
+      if (this.events_.has(event)) return event;else return undefined;
     },
 
-    addEventSet: function(eventSet) {
-      for (var event of eventSet)
-        this.push(event);
+    addEventSet: function (eventSet) {
+      for (var event of eventSet) this.push(event);
     },
 
-    intersectionIsEmpty: function(otherEventSet) {
+    intersectionIsEmpty: function (otherEventSet) {
       return !this.some(event => otherEventSet.contains(event));
     },
 
-    equals: function(that) {
-      if (this.length !== that.length)
-        return false;
+    equals: function (that) {
+      if (this.length !== that.length) return false;
       return this.every(event => that.contains(event));
     },
 
-    sortEvents: function(compare) {
+    sortEvents: function (compare) {
       // Convert to array, then sort, then convert back
       var ary = this.toArray();
       ary.sort(compare);
 
       this.clear();
-      for (var event of ary)
-        this.push(event);
+      for (var event of ary) this.push(event);
     },
 
-    getEventsOrganizedByBaseType: function(opt_pruneEmpty) {
+    getEventsOrganizedByBaseType: function (opt_pruneEmpty) {
       var allTypeInfos = EventRegistry.getAllRegisteredTypeInfos();
 
-      var events = this.getEventsOrganizedByCallback(function(event) {
+      var events = this.getEventsOrganizedByCallback(function (event) {
         var maxEventIndex = -1;
         var maxEventTypeInfo = undefined;
 
-        allTypeInfos.forEach(function(eventTypeInfo, eventIndex) {
-          if (!(event instanceof eventTypeInfo.constructor))
-            return;
+        allTypeInfos.forEach(function (eventTypeInfo, eventIndex) {
+          if (!(event instanceof eventTypeInfo.constructor)) return;
           if (eventIndex > maxEventIndex) {
             maxEventIndex = eventIndex;
             maxEventTypeInfo = eventTypeInfo;
@@ -147,19 +133,17 @@ global.tr.exportTo('tr.model', function() {
       });
 
       if (!opt_pruneEmpty) {
-        allTypeInfos.forEach(function(eventTypeInfo) {
-          if (events[eventTypeInfo.metadata.name] === undefined)
-            events[eventTypeInfo.metadata.name] = new EventSet();
+        allTypeInfos.forEach(function (eventTypeInfo) {
+          if (events[eventTypeInfo.metadata.name] === undefined) events[eventTypeInfo.metadata.name] = new EventSet();
         });
       }
 
       return events;
     },
 
-    getEventsOrganizedByTitle: function() {
-      return this.getEventsOrganizedByCallback(function(event) {
-        if (event.title === undefined)
-          throw new Error('An event didn\'t have a title!');
+    getEventsOrganizedByTitle: function () {
+      return this.getEventsOrganizedByCallback(function (event) {
+        if (event.title === undefined) throw new Error('An event didn\'t have a title!');
         return event.title;
       });
     },
@@ -169,15 +153,13 @@ global.tr.exportTo('tr.model', function() {
      * @param {*=} opt_this
      * @return {!Object}
      */
-    getEventsOrganizedByCallback: function(cb, opt_this) {
+    getEventsOrganizedByCallback: function (cb, opt_this) {
       var groupedEvents = tr.b.group(this, cb, opt_this || this);
       return tr.b.mapItems(groupedEvents, (_, events) => new EventSet(events));
     },
 
-    enumEventsOfType: function(type, func) {
-      for (var event of this)
-        if (event instanceof type)
-          func(event);
+    enumEventsOfType: function (type, func) {
+      for (var event of this) if (event instanceof type) func(event);
     },
 
     get userFriendlyName() {
@@ -202,71 +184,61 @@ global.tr.exportTo('tr.model', function() {
       return this.length + ' ' + tmp;
     },
 
-    filter: function(fn, opt_this) {
+    filter: function (fn, opt_this) {
       var res = new EventSet();
-      for (var event of this)
-        if (fn.call(opt_this, event))
-          res.push(event);
+      for (var event of this) if (fn.call(opt_this, event)) res.push(event);
 
       return res;
     },
 
-    toArray: function() {
+    toArray: function () {
       var ary = [];
-      for (var event of this)
-        ary.push(event);
+      for (var event of this) ary.push(event);
       return ary;
     },
 
-    forEach: function(fn, opt_this) {
-      for (var event of this)
-        fn.call(opt_this, event);
+    forEach: function (fn, opt_this) {
+      for (var event of this) fn.call(opt_this, event);
     },
 
-    map: function(fn, opt_this) {
+    map: function (fn, opt_this) {
       var res = [];
-      for (var event of this)
-        res.push(fn.call(opt_this, event));
+      for (var event of this) res.push(fn.call(opt_this, event));
       return res;
     },
 
-    every: function(fn, opt_this) {
-      for (var event of this)
-        if (!fn.call(opt_this, event))
-          return false;
+    every: function (fn, opt_this) {
+      for (var event of this) if (!fn.call(opt_this, event)) return false;
       return true;
     },
 
-    some: function(fn, opt_this) {
-      for (var event of this)
-        if (fn.call(opt_this, event))
-          return true;
+    some: function (fn, opt_this) {
+      for (var event of this) if (fn.call(opt_this, event)) return true;
       return false;
     },
 
-    asDict: function() {
+    asDict: function () {
       var stableIds = [];
-      for (var event of this)
-        stableIds.push(event.stableId);
-      return {'events': stableIds};
+      for (var event of this) stableIds.push(event.stableId);
+      return { 'events': stableIds };
     },
 
-    asSet: function() {
+    asSet: function () {
       return this.events_;
     }
   };
 
-  EventSet.IMMUTABLE_EMPTY_SET = (function() {
+  EventSet.IMMUTABLE_EMPTY_SET = function () {
     var s = new EventSet();
-    s.push = function() {
+    s.push = function () {
       throw new Error('Cannot push to an immutable event set');
     };
-    s.addEventSet = function() {
+    s.addEventSet = function () {
       throw new Error('Cannot add to an immutable event set');
     };
     Object.freeze(s);
     return s;
-  })();
+  }();
 
   return {
     EventSet: EventSet,

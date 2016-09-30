@@ -12,15 +12,13 @@ require("../../value/histogram.js");
 
 'use strict';
 
-global.tr.exportTo('tr.metrics.sh', function() {
+global.tr.exportTo('tr.metrics.sh', function () {
   function syncIsComplete(markers) {
     return markers.length === 2;
   }
 
   function syncInvolvesTelemetry(markers) {
-    for (var marker of markers)
-      if (marker.domainId === tr.model.ClockDomainId.TELEMETRY)
-        return true;
+    for (var marker of markers) if (marker.domainId === tr.model.ClockDomainId.TELEMETRY) return true;
 
     return false;
   }
@@ -29,20 +27,14 @@ global.tr.exportTo('tr.metrics.sh', function() {
     for (var markers of model.clockSyncManager.markersBySyncId.values()) {
       var latency = undefined;
       var targetDomain = undefined;
-      if (!syncIsComplete(markers) || !syncInvolvesTelemetry(markers))
-        continue;
+      if (!syncIsComplete(markers) || !syncInvolvesTelemetry(markers)) continue;
 
       for (var marker of markers) {
         var domain = marker.domainId;
-        if (domain === tr.model.ClockDomainId.TELEMETRY)
-          latency = (marker.endTs - marker.startTs);
-        else
-          targetDomain = domain.toLowerCase();
+        if (domain === tr.model.ClockDomainId.TELEMETRY) latency = marker.endTs - marker.startTs;else targetDomain = domain.toLowerCase();
       }
 
-      var hist = new tr.v.Histogram('clock_sync_latency_' + targetDomain,
-          tr.b.Unit.byName.timeDurationInMs_smallerIsBetter,
-          tr.v.HistogramBinBoundaries.createExponential(1e-3, 1e3, 30));
+      var hist = new tr.v.Histogram('clock_sync_latency_' + targetDomain, tr.b.Unit.byName.timeDurationInMs_smallerIsBetter, tr.v.HistogramBinBoundaries.createExponential(1e-3, 1e3, 30));
       hist.description = 'Clock sync latency for domain ' + targetDomain;
       hist.addSample(latency);
       values.addHistogram(hist);

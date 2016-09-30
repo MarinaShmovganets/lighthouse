@@ -9,11 +9,9 @@ require("./user_expectation.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model.um', function() {
-  function AnimationExpectation(
-      parentModel, initiatorTitle, start, duration) {
-    tr.model.um.UserExpectation.call(
-        this, parentModel, initiatorTitle, start, duration);
+global.tr.exportTo('tr.model.um', function () {
+  function AnimationExpectation(parentModel, initiatorTitle, start, duration) {
+    tr.model.um.UserExpectation.call(this, parentModel, initiatorTitle, start, duration);
     this.frameEvents_ = undefined;
   }
 
@@ -22,14 +20,12 @@ global.tr.exportTo('tr.model.um', function() {
     constructor: AnimationExpectation,
 
     get frameEvents() {
-      if (this.frameEvents_)
-        return this.frameEvents_;
+      if (this.frameEvents_) return this.frameEvents_;
 
       this.frameEvents_ = new tr.model.EventSet();
 
-      this.associatedEvents.forEach(function(event) {
-        if (event.title === tr.model.helpers.IMPL_RENDERING_STATS)
-          this.frameEvents_.push(event);
+      this.associatedEvents.forEach(function (event) {
+        if (event.title === tr.model.helpers.IMPL_RENDERING_STATS) this.frameEvents_.push(event);
       }, this);
 
       return this.frameEvents_;

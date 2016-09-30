@@ -5,13 +5,15 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 require("../../base/iteration_helpers.js");
 require("./diagnostic.js");
 require("./value_ref.js");
 
 'use strict';
 
-global.tr.exportTo('tr.v.d', function() {
+global.tr.exportTo('tr.v.d', function () {
   class RelatedValueMap extends tr.v.d.Diagnostic {
     constructor() {
       super();
@@ -35,9 +37,7 @@ global.tr.exportTo('tr.v.d', function() {
      * @param {!(tr.v.d.ValueRef|tr.v.Histogram)} value
      */
     set(name, value) {
-      if (!(value instanceof tr.v.Histogram) &&
-          !(value instanceof tr.v.d.ValueRef))
-        throw new Error('Must be instanceof Histogram or ValueRef: ' + value);
+      if (!(value instanceof tr.v.Histogram) && !(value instanceof tr.v.d.ValueRef)) throw new Error('Must be instanceof Histogram or ValueRef: ' + value);
 
       this.valuesByName_.set(name, value);
     }
@@ -56,8 +56,7 @@ global.tr.exportTo('tr.v.d', function() {
     }
 
     *[Symbol.iterator]() {
-      for (var pair of this.valuesByName_)
-        yield pair;
+      for (var pair of this.valuesByName_) yield pair;
     }
 
     /**
@@ -72,28 +71,35 @@ global.tr.exportTo('tr.v.d', function() {
      * @param {boolean=} opt_required
      */
     resolve(valueSet, opt_required) {
-      for (var [name, value] of this) {
-        if (!(value instanceof tr.v.d.ValueRef))
-          continue;
+      for (var _ref of this) {
+        var _ref2 = _slicedToArray(_ref, 2);
+
+        var name = _ref2[0];
+        var value = _ref2[1];
+
+        if (!(value instanceof tr.v.d.ValueRef)) continue;
 
         var guid = value.guid;
         value = valueSet.lookup(guid);
-        if (value instanceof tr.v.Histogram)
-          this.valuesByName_.set(name, value);
-        else if (opt_required)
-          throw new Error('Unable to find Histogram ' + guid);
+        if (value instanceof tr.v.Histogram) this.valuesByName_.set(name, value);else if (opt_required) throw new Error('Unable to find Histogram ' + guid);
       }
     }
 
     asDictInto_(d) {
       d.values = {};
-      for (var [name, value] of this)
+      for (var _ref3 of this) {
+        var _ref4 = _slicedToArray(_ref3, 2);
+
+        var name = _ref4[0];
+        var value = _ref4[1];
+
         d.values[name] = value.guid;
+      }
     }
 
     static fromDict(d) {
       var map = new RelatedValueMap();
-      tr.b.iterItems(d.values, function(name, guid) {
+      tr.b.iterItems(d.values, function (name, guid) {
         map.set(name, new tr.v.d.ValueRef(guid));
       });
       return map;

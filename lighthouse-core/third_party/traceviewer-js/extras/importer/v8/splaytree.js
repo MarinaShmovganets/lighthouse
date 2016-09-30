@@ -12,7 +12,7 @@ require("../../../base/base.js");
 /**
  * @fileoverview Splay tree used by CodeMap.
  */
-global.tr.exportTo('tr.e.importer.v8', function() {
+global.tr.exportTo('tr.e.importer.v8', function () {
   /**
    * Constructs a Splay tree.  A splay tree is a self-balancing binary
    * search tree with the additional property that recently accessed
@@ -21,7 +21,7 @@ global.tr.exportTo('tr.e.importer.v8', function() {
    *
    * @constructor
    */
-  function SplayTree() { };
+  function SplayTree() {};
 
   /**
    * Pointer to the root node of the tree.
@@ -34,7 +34,7 @@ global.tr.exportTo('tr.e.importer.v8', function() {
   /**
    * @return {boolean} Whether the tree is empty.
    */
-  SplayTree.prototype.isEmpty = function() {
+  SplayTree.prototype.isEmpty = function () {
     return !this.root_;
   };
 
@@ -46,7 +46,7 @@ global.tr.exportTo('tr.e.importer.v8', function() {
    * @param {number} key Key to insert into the tree.
    * @param {*} value Value to insert into the tree.
    */
-  SplayTree.prototype.insert = function(key, value) {
+  SplayTree.prototype.insert = function (key, value) {
     if (this.isEmpty()) {
       this.root_ = new SplayTree.Node(key, value);
       return;
@@ -70,7 +70,6 @@ global.tr.exportTo('tr.e.importer.v8', function() {
     this.root_ = node;
   };
 
-
   /**
    * Removes a node with the specified key from the tree if the tree
    * contains a node with this key. The removed node is returned. If the
@@ -79,7 +78,7 @@ global.tr.exportTo('tr.e.importer.v8', function() {
    * @param {number} key Key to find and remove from the tree.
    * @return {SplayTree.Node} The removed node.
    */
-  SplayTree.prototype.remove = function(key) {
+  SplayTree.prototype.remove = function (key) {
     if (this.isEmpty()) {
       throw Error('Key not found: ' + key);
     }
@@ -102,7 +101,6 @@ global.tr.exportTo('tr.e.importer.v8', function() {
     return removed;
   };
 
-
   /**
    * Returns the node having the specified key or null if the tree doesn't
    * contain a node with the specified key.
@@ -111,7 +109,7 @@ global.tr.exportTo('tr.e.importer.v8', function() {
    * @param {number} key Key to find in the tree.
    * @return {SplayTree.Node} Node having the specified key.
    */
-  SplayTree.prototype.find = function(key) {
+  SplayTree.prototype.find = function (key) {
     if (this.isEmpty()) {
       return null;
     }
@@ -122,7 +120,7 @@ global.tr.exportTo('tr.e.importer.v8', function() {
   /**
    * @return {SplayTree.Node} Node having the minimum key value.
    */
-  SplayTree.prototype.findMin = function() {
+  SplayTree.prototype.findMin = function () {
     if (this.isEmpty()) {
       return null;
     }
@@ -136,7 +134,7 @@ global.tr.exportTo('tr.e.importer.v8', function() {
   /**
    * @return {SplayTree.Node} Node having the maximum key value.
    */
-  SplayTree.prototype.findMax = function(opt_startNode) {
+  SplayTree.prototype.findMax = function (opt_startNode) {
     if (this.isEmpty()) {
       return null;
     }
@@ -151,7 +149,7 @@ global.tr.exportTo('tr.e.importer.v8', function() {
    * @return {SplayTree.Node} Node having the maximum key value that
    *     is less or equal to the specified key value.
    */
-  SplayTree.prototype.findGreatestLessThan = function(key) {
+  SplayTree.prototype.findGreatestLessThan = function (key) {
     if (this.isEmpty()) {
       return null;
     }
@@ -174,18 +172,22 @@ global.tr.exportTo('tr.e.importer.v8', function() {
    * paired with keys.
    *
    */
-  SplayTree.prototype.exportKeysAndValues = function() {
+  SplayTree.prototype.exportKeysAndValues = function () {
     var result = [];
-    this.traverse_(function(node) { result.push([node.key, node.value]); });
+    this.traverse_(function (node) {
+      result.push([node.key, node.value]);
+    });
     return result;
   };
 
   /**
    * @return {Array<*>} An array containing all the values of tree's nodes.
    */
-  SplayTree.prototype.exportValues = function() {
+  SplayTree.prototype.exportValues = function () {
     var result = [];
-    this.traverse_(function(node) { result.push(node.value); });
+    this.traverse_(function (node) {
+      result.push(node.value);
+    });
     return result;
   };
 
@@ -199,7 +201,7 @@ global.tr.exportTo('tr.e.importer.v8', function() {
    * @param {number} key Key to splay the tree on.
    * @private
    */
-  SplayTree.prototype.splay_ = function(key) {
+  SplayTree.prototype.splay_ = function (key) {
     if (this.isEmpty()) {
       return;
     }
@@ -266,7 +268,7 @@ global.tr.exportTo('tr.e.importer.v8', function() {
    * @param {function(SplayTree.Node)} f Visitor function.
    * @private
    */
-  SplayTree.prototype.traverse_ = function(f) {
+  SplayTree.prototype.traverse_ = function (f) {
     var nodesToVisit = [this.root_];
     while (nodesToVisit.length > 0) {
       var node = nodesToVisit.shift();
@@ -285,7 +287,7 @@ global.tr.exportTo('tr.e.importer.v8', function() {
    * @param {number} key Key.
    * @param {*} value Value.
    */
-  SplayTree.Node = function(key, value) {
+  SplayTree.Node = function (key, value) {
     this.key = key;
     this.value = value;
   };

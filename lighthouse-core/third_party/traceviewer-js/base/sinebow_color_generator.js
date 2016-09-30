@@ -10,7 +10,7 @@ require("./iteration_helpers.js");
 require("./math.js");
 
 'use strict';
-global.tr.exportTo('tr.b', function() {
+global.tr.exportTo('tr.b', function () {
   /**
    * Generate pretty colors!
    * http://basecase.org/env/on-rainbows
@@ -25,50 +25,47 @@ global.tr.exportTo('tr.b', function() {
    * @param {number=} opt_brightness in [0,2]
    */
   function SinebowColorGenerator(opt_a, opt_brightness) {
-    this.a_ = (opt_a === undefined) ? 1 : opt_a;
-    this.brightness_ = (opt_brightness === undefined) ? 1 : opt_brightness;
+    this.a_ = opt_a === undefined ? 1 : opt_a;
+    this.brightness_ = opt_brightness === undefined ? 1 : opt_brightness;
     this.colorIndex_ = 0;
     this.keyToColor = {};
   }
 
   SinebowColorGenerator.prototype = {
-    colorForKey: function(key) {
-      if (!this.keyToColor[key])
-        this.keyToColor[key] = this.nextColor();
+    colorForKey: function (key) {
+      if (!this.keyToColor[key]) this.keyToColor[key] = this.nextColor();
       return this.keyToColor[key];
     },
 
-    nextColor: function() {
+    nextColor: function () {
       var components = SinebowColorGenerator.nthColor(this.colorIndex_++);
-      return tr.b.Color.fromString(SinebowColorGenerator.calculateColor(
-          components[0], components[1], components[2],
-          this.a_, this.brightness_));
+      return tr.b.Color.fromString(SinebowColorGenerator.calculateColor(components[0], components[1], components[2], this.a_, this.brightness_));
     }
   };
 
   SinebowColorGenerator.PHI = (1 + Math.sqrt(5)) / 2;
 
-  SinebowColorGenerator.sinebow_ = function(h) {
+  SinebowColorGenerator.sinebow_ = function (h) {
     h += 0.5;
     h = -h;
     var r = Math.sin(Math.PI * h);
     var g = Math.sin(Math.PI * (h + 1 / 3));
     var b = Math.sin(Math.PI * (h + 2 / 3));
-    r *= r; g *= g; b *= b;
+    r *= r;g *= g;b *= b;
     // Roughly correct for human perception.
     // https://en.wikipedia.org/wiki/Luma_%28video%29
     // Multiply by 2 to normalize all values to 0.5.
     // (Halfway between black and white.)
     var y = 2 * (0.2989 * r + 0.5870 * g + 0.1140 * b);
-    r /= y; g /= y; b /= y;
+    r /= y;g /= y;b /= y;
     return [256 * r, 256 * g, 256 * b];
   };
 
-  SinebowColorGenerator.nthColor = function(n) {
+  SinebowColorGenerator.nthColor = function (n) {
     return SinebowColorGenerator.sinebow_(n * this.PHI);
   };
 
-  SinebowColorGenerator.calculateColor = function(r, g, b, a, brightness) {
+  SinebowColorGenerator.calculateColor = function (r, g, b, a, brightness) {
     if (brightness <= 1) {
       r *= brightness;
       g *= brightness;

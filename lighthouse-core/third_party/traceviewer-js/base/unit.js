@@ -13,16 +13,14 @@ require("./unit_scale.js");
 
 'use strict';
 
-global.tr.exportTo('tr.b', function() {
+global.tr.exportTo('tr.b', function () {
   var TimeDisplayModes = tr.b.TimeDisplayModes;
 
   var PLUS_MINUS_SIGN = String.fromCharCode(177);
 
   function max(a, b) {
-    if (a === undefined)
-      return b;
-    if (b === undefined)
-      return a;
+    if (a === undefined) return b;
+    if (b === undefined) return a;
     return a.scale > b.scale ? a : b;
   }
 
@@ -34,8 +32,7 @@ global.tr.exportTo('tr.b', function() {
   };
 
   /** @constructor */
-  function Unit(unitName, jsonName, basePrefix, isDelta, improvementDirection,
-      formatSpec) {
+  function Unit(unitName, jsonName, basePrefix, isDelta, improvementDirection, formatSpec) {
     this.unitName = unitName;
     this.jsonName = jsonName;
     this.basePrefix = basePrefix;
@@ -52,15 +49,14 @@ global.tr.exportTo('tr.b', function() {
   }
 
   Unit.prototype = {
-    asJSON: function() {
+    asJSON: function () {
       return this.jsonName;
     },
 
     get unitString() {
       // TODO(benjhayden): Refactor with format() and test.
       var formatSpec = this.formatSpec_;
-      if (typeof formatSpec === 'function')
-        formatSpec = formatSpec();
+      if (typeof formatSpec === 'function') formatSpec = formatSpec();
       if (!formatSpec.unit) {
         return '';
       }
@@ -81,40 +77,32 @@ global.tr.exportTo('tr.b', function() {
       return unitString;
     },
 
-    format: function(value, opt_context) {
+    format: function (value, opt_context) {
       var context = opt_context || {};
       var formatSpec = this.formatSpec_;
-      if (typeof formatSpec === 'function')
-        formatSpec = formatSpec();
+      if (typeof formatSpec === 'function') formatSpec = formatSpec();
 
       function resolveProperty(propertyName) {
-        if (propertyName in context)
-          return context[propertyName];
-        else if (propertyName in formatSpec)
-          return formatSpec[propertyName];
-        else
-          return undefined;
+        if (propertyName in context) return context[propertyName];else if (propertyName in formatSpec) return formatSpec[propertyName];else return undefined;
       }
 
       var signString = '';
       if (value < 0) {
         signString = '-';
-        value = -value;  // Treat positive and negative values symmetrically.
+        value = -value; // Treat positive and negative values symmetrically.
       } else if (this.isDelta) {
         signString = value === 0 ? PLUS_MINUS_SIGN : '+';
       }
 
       var unitString = '';
       if (formatSpec.unit) {
-        if (formatSpec.unitHasPrecedingSpace !== false)
-          unitString += ' ';
+        if (formatSpec.unitHasPrecedingSpace !== false) unitString += ' ';
         var unitPrefix = resolveProperty('unitPrefix');
         if (unitPrefix !== undefined) {
           var selectedPrefix;
           if (unitPrefix instanceof Array) {
             var i = 0;
-            while (i < unitPrefix.length - 1 &&
-                   value / unitPrefix[i + 1].value >= 1) {
+            while (i < unitPrefix.length - 1 && value / unitPrefix[i + 1].value >= 1) {
               i++;
             }
             selectedPrefix = unitPrefix[i];
@@ -124,8 +112,7 @@ global.tr.exportTo('tr.b', function() {
           unitString += selectedPrefix.symbol || '';
           value = tr.b.convertUnit(value, this.basePrefix, selectedPrefix);
         } else {
-          value = tr.b.convertUnit(value, this.basePrefix,
-              tr.b.UnitScale.Metric.NONE);
+          value = tr.b.convertUnit(value, this.basePrefix, tr.b.UnitScale.Metric.NONE);
         }
         unitString += formatSpec.unit;
       }
@@ -138,12 +125,10 @@ global.tr.exportTo('tr.b', function() {
       // shift the other property so that
       // |minimumFractionDigits| <= |maximumFractionDigits|.
       if (minimumFractionDigits > maximumFractionDigits) {
-        if ('minimumFractionDigits' in context &&
-            !('maximumFractionDigits' in context)) {
+        if ('minimumFractionDigits' in context && !('maximumFractionDigits' in context)) {
           // Only minimumFractionDigits was overriden by context.
           maximumFractionDigits = minimumFractionDigits;
-        } else if ('maximumFractionDigits' in context &&
-            !('minimumFractionDigits' in context)) {
+        } else if ('maximumFractionDigits' in context && !('minimumFractionDigits' in context)) {
           // Only maximumFractionDigits was overriden by context.
           minimumFractionDigits = maximumFractionDigits;
         }
@@ -158,45 +143,41 @@ global.tr.exportTo('tr.b', function() {
     }
   };
 
-  Unit.reset = function() {
+  Unit.reset = function () {
     Unit.currentTimeDisplayMode = TimeDisplayModes.ms;
   };
 
-  Unit.timestampFromUs = function(us) {
-    return tr.b.convertUnit(us, tr.b.UnitScale.Metric.MICRO,
-        tr.b.UnitScale.Metric.MILLI);
+  Unit.timestampFromUs = function (us) {
+    return tr.b.convertUnit(us, tr.b.UnitScale.Metric.MICRO, tr.b.UnitScale.Metric.MILLI);
   };
 
   Object.defineProperty(Unit, 'currentTimeDisplayMode', {
-    get: function() {
+    get: function () {
       return Unit.currentTimeDisplayMode_;
     },
     // Use tr-v-ui-preferred-display-unit element instead of directly setting.
-    set: function(value) {
-      if (Unit.currentTimeDisplayMode_ === value)
-        return;
+    set: function (value) {
+      if (Unit.currentTimeDisplayMode_ === value) return;
 
       Unit.currentTimeDisplayMode_ = value;
       Unit.dispatchEvent(new tr.b.Event('display-mode-changed'));
     }
   });
 
-  Unit.didPreferredTimeDisplayUnitChange = function() {
+  Unit.didPreferredTimeDisplayUnitChange = function () {
     var largest = undefined;
-    var els = tr.b.findDeepElementsMatching(document.body,
-        'tr-v-ui-preferred-display-unit');
-    els.forEach(function(el) {
+    var els = tr.b.findDeepElementsMatching(document.body, 'tr-v-ui-preferred-display-unit');
+    els.forEach(function (el) {
       largest = max(largest, el.preferredTimeDisplayMode);
     });
 
-    Unit.currentDisplayUnit = largest === undefined ?
-        TimeDisplayModes.ms : largest;
+    Unit.currentDisplayUnit = largest === undefined ? TimeDisplayModes.ms : largest;
   };
 
   Unit.byName = {};
   Unit.byJSONName = {};
 
-  Unit.fromJSON = function(object) {
+  Unit.fromJSON = function (object) {
     var u = Unit.byJSONName[object];
     if (u) {
       return u;
@@ -230,14 +211,12 @@ global.tr.exportTo('tr.b', function() {
    * with the appropriate flags and formatting code (including +/- prefixes
    * for deltas).
    */
-  Unit.define = function(params) {
+  Unit.define = function (params) {
     var definedUnits = [];
 
-    tr.b.iterItems(ImprovementDirection, function(_, improvementDirection) {
-      var regularUnit =
-          Unit.defineUnitVariant_(params, false, improvementDirection);
-      var deltaUnit =
-          Unit.defineUnitVariant_(params, true, improvementDirection);
+    tr.b.iterItems(ImprovementDirection, function (_, improvementDirection) {
+      var regularUnit = Unit.defineUnitVariant_(params, false, improvementDirection);
+      var deltaUnit = Unit.defineUnitVariant_(params, true, improvementDirection);
 
       regularUnit.correspondingDeltaUnit = deltaUnit;
       deltaUnit.correspondingDeltaUnit = deltaUnit;
@@ -248,7 +227,7 @@ global.tr.exportTo('tr.b', function() {
     definedUnits.forEach(u => u.baseUnit = baseUnit);
   };
 
-  Unit.nameSuffixForImprovementDirection = function(improvementDirection) {
+  Unit.nameSuffixForImprovementDirection = function (improvementDirection) {
     switch (improvementDirection) {
       case ImprovementDirection.DONT_CARE:
         return '';
@@ -257,26 +236,21 @@ global.tr.exportTo('tr.b', function() {
       case ImprovementDirection.SMALLER_IS_BETTER:
         return '_smallerIsBetter';
       default:
-        throw new Error(
-            'Unknown improvement direction: ' + improvementDirection);
+        throw new Error('Unknown improvement direction: ' + improvementDirection);
     }
   };
 
-  Unit.defineUnitVariant_ = function(params, isDelta, improvementDirection) {
+  Unit.defineUnitVariant_ = function (params, isDelta, improvementDirection) {
     var nameSuffix = isDelta ? 'Delta' : '';
     nameSuffix += Unit.nameSuffixForImprovementDirection(improvementDirection);
 
     var unitName = params.baseUnitName + nameSuffix;
     var jsonName = params.baseJsonName + nameSuffix;
-    if (Unit.byName[unitName] !== undefined)
-      throw new Error('Unit \'' + unitName + '\' already exists');
-    if (Unit.byJSONName[jsonName] !== undefined)
-      throw new Error('JSON unit \'' + jsonName + '\' alread exists');
+    if (Unit.byName[unitName] !== undefined) throw new Error('Unit \'' + unitName + '\' already exists');
+    if (Unit.byJSONName[jsonName] !== undefined) throw new Error('JSON unit \'' + jsonName + '\' alread exists');
 
-    var basePrefix = params.basePrefix ?
-        params.basePrefix : tr.b.UnitScale.Metric.NONE;
-    var unit = new Unit(unitName, jsonName, basePrefix,
-        isDelta, improvementDirection, params.formatSpec);
+    var basePrefix = params.basePrefix ? params.basePrefix : tr.b.UnitScale.Metric.NONE;
+    var unit = new Unit(unitName, jsonName, basePrefix, isDelta, improvementDirection, params.formatSpec);
     Unit.byName[unitName] = unit;
     Unit.byJSONName[jsonName] = unit;
 
@@ -293,7 +267,7 @@ global.tr.exportTo('tr.b', function() {
     baseUnitName: 'timeDurationInMs',
     baseJsonName: 'ms',
     basePrefix: tr.b.UnitScale.Metric.MILLI,
-    formatSpec: function() {
+    formatSpec: function () {
       return Unit.currentTimeDisplayMode_.formatSpec;
     }
   });
@@ -302,7 +276,7 @@ global.tr.exportTo('tr.b', function() {
     baseUnitName: 'timeStampInMs',
     baseJsonName: 'tsMs',
     basePrefix: tr.b.UnitScale.Metric.MILLI,
-    formatSpec: function() {
+    formatSpec: function () {
       return Unit.currentTimeDisplayMode_.formatSpec;
     }
   });

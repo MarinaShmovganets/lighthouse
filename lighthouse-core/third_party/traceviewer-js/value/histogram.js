@@ -5,6 +5,8 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 require("../base/iteration_helpers.js");
 require("../base/range.js");
 require("../base/running_statistics.js");
@@ -16,7 +18,7 @@ require("./numeric.js");
 
 'use strict';
 
-global.tr.exportTo('tr.v', function() {
+global.tr.exportTo('tr.v', function () {
   var MAX_DIAGNOSTIC_MAPS = 16;
 
   var DEFAULT_BOUNDARIES_FOR_UNIT = new Map();
@@ -42,15 +44,12 @@ global.tr.exportTo('tr.v', function() {
      * @param {!tr.v.d.DiagnosticMap} diagnostics
      */
     addDiagnosticMap(diagnostics) {
-      tr.b.Statistics.uniformlySampleStream(
-          this.diagnosticMaps, this.count, diagnostics, MAX_DIAGNOSTIC_MAPS);
+      tr.b.Statistics.uniformlySampleStream(this.diagnosticMaps, this.count, diagnostics, MAX_DIAGNOSTIC_MAPS);
     }
 
     addBin(other) {
-      if (!this.range.equals(other.range))
-        throw new Error('Merging incompatible Histogram bins.');
-      tr.b.Statistics.mergeSampledStreams(this.diagnosticMaps, this.count,
-          other.diagnosticMaps, other.count, MAX_DIAGNOSTIC_MAPS);
+      if (!this.range.equals(other.range)) throw new Error('Merging incompatible Histogram bins.');
+      tr.b.Statistics.mergeSampledStreams(this.diagnosticMaps, this.count, other.diagnosticMaps, other.count, MAX_DIAGNOSTIC_MAPS);
       this.count += other.count;
     }
 
@@ -74,19 +73,7 @@ global.tr.exportTo('tr.v', function() {
     }
   }
 
-  var DEFAULT_SUMMARY_OPTIONS = new Map([
-    ['avg', true],
-    ['geometricMean', false],
-    ['std', true],
-    ['count', true],
-    ['sum', true],
-    ['min', true],
-    ['max', true],
-    ['nans', false],
-    // Don't include 'percentile' here. Its default value is [], which is
-    // modifiable. Callers may push to it, so there must be a different Array
-    // instance for each Histogram instance.
-  ]);
+  var DEFAULT_SUMMARY_OPTIONS = new Map([['avg', true], ['geometricMean', false], ['std', true], ['count', true], ['sum', true], ['min', true], ['max', true], ['nans', false]]);
 
   /**
    * This is basically a histogram, but so much more.
@@ -135,18 +122,15 @@ global.tr.exportTo('tr.v', function() {
       this.summaryOptions.set('percentile', []);
       this.unit = unit;
 
-      this.underflowBin = new HistogramBin(tr.b.Range.fromExplicitRange(
-          -Number.MAX_VALUE, binBoundaries.range.min));
-      this.overflowBin = new HistogramBin(tr.b.Range.fromExplicitRange(
-          binBoundaries.range.max, Number.MAX_VALUE));
+      this.underflowBin = new HistogramBin(tr.b.Range.fromExplicitRange(-Number.MAX_VALUE, binBoundaries.range.min));
+      this.overflowBin = new HistogramBin(tr.b.Range.fromExplicitRange(binBoundaries.range.max, Number.MAX_VALUE));
 
       for (var range of binBoundaries.binRanges()) {
         this.centralBins.push(new HistogramBin(range));
       }
 
       this.allBins = [this.underflowBin];
-      for (var bin of this.centralBins)
-        this.allBins.push(bin);
+      for (var bin of this.centralBins) this.allBins.push(bin);
       this.allBins.push(this.overflowBin);
 
       this.maxNumSampleValues_ = this.defaultMaxNumSampleValues_;
@@ -158,8 +142,7 @@ global.tr.exportTo('tr.v', function() {
 
     set maxNumSampleValues(n) {
       this.maxNumSampleValues_ = n;
-      tr.b.Statistics.uniformlySampleArray(
-          this.sampleValues_, this.maxNumSampleValues_);
+      tr.b.Statistics.uniformlySampleArray(this.sampleValues_, this.maxNumSampleValues_);
     }
 
     get name() {
@@ -167,24 +150,19 @@ global.tr.exportTo('tr.v', function() {
     }
 
     get guid() {
-      if (this.guid_ === undefined)
-        this.guid_ = tr.b.GUID.allocateUUID4();
+      if (this.guid_ === undefined) this.guid_ = tr.b.GUID.allocateUUID4();
 
       return this.guid_;
     }
 
     set guid(guid) {
-      if (this.guid_ !== undefined)
-        throw new Error('Cannot reset guid');
+      if (this.guid_ !== undefined) throw new Error('Cannot reset guid');
 
       this.guid_ = guid;
     }
 
     static fromDict(dict) {
-      var hist = new Histogram(dict.name,
-          tr.b.Unit.fromJSON(dict.unit),
-          HistogramBinBoundaries.fromDict(
-              dict.binBoundaries));
+      var hist = new Histogram(dict.name, tr.b.Unit.fromJSON(dict.unit), HistogramBinBoundaries.fromDict(dict.binBoundaries));
       hist.guid = dict.guid;
       if (dict.shortName) {
         hist.shortName = dict.shortName;
@@ -255,14 +233,13 @@ global.tr.exportTo('tr.v', function() {
       result.maxNumSampleValues = 1000;
 
       // TODO(eakuefner): Propagate diagnosticMaps?
-      for (var sample of samples)
-        result.addSample(sample);
+      for (var sample of samples) result.addSample(sample);
 
       return result;
     }
 
     get numValues() {
-      return tr.b.Statistics.sum(this.allBins, function(e) {
+      return tr.b.Statistics.sum(this.allBins, function (e) {
         return e.count;
       });
     }
@@ -299,19 +276,15 @@ global.tr.exportTo('tr.v', function() {
      * @return {!tr.b.Statistics.Significance}
      */
     getDifferenceSignificance(other, opt_alpha) {
-      if (this.unit !== other.unit)
-        throw new Error('Cannot compare Numerics with different units');
+      if (this.unit !== other.unit) throw new Error('Cannot compare Numerics with different units');
 
-      if (this.unit.improvementDirection ===
-          tr.b.ImprovementDirection.DONT_CARE) {
+      if (this.unit.improvementDirection === tr.b.ImprovementDirection.DONT_CARE) {
         return tr.b.Statistics.Significance.DONT_CARE;
       }
 
-      if (!(other instanceof Histogram))
-        throw new Error('Unable to compute a p-value');
+      if (!(other instanceof Histogram)) throw new Error('Unable to compute a p-value');
 
-      var testResult = tr.b.Statistics.mwu(
-          this.sampleValues, other.sampleValues, opt_alpha);
+      var testResult = tr.b.Statistics.mwu(this.sampleValues, other.sampleValues, opt_alpha);
       return testResult.significance;
     }
 
@@ -327,21 +300,14 @@ global.tr.exportTo('tr.v', function() {
      * @param {number} percent The percent must be between 0.0 and 1.0.
      */
     getApproximatePercentile(percent) {
-      if (!(percent >= 0 && percent <= 1))
-        throw new Error('percent must be [0,1]');
-      if (this.numValues == 0)
-        return 0;
+      if (!(percent >= 0 && percent <= 1)) throw new Error('percent must be [0,1]');
+      if (this.numValues == 0) return 0;
       var valuesToSkip = Math.floor((this.numValues - 1) * percent);
       for (var i = 0; i < this.allBins.length; i++) {
         var bin = this.allBins[i];
         valuesToSkip -= bin.count;
         if (valuesToSkip < 0) {
-          if (bin === this.underflowBin)
-            return bin.range.max;
-          else if (bin === this.overflowBin)
-            return bin.range.min;
-          else
-            return bin.range.center;
+          if (bin === this.underflowBin) return bin.range.max;else if (bin === this.overflowBin) return bin.range.min;else return bin.range.center;
         }
       }
       throw new Error('Unreachable');
@@ -349,8 +315,7 @@ global.tr.exportTo('tr.v', function() {
 
     getBinForValue(value) {
       // Don't use subtraction to avoid arithmetic overflow.
-      var binIndex = tr.b.findHighIndexInSortedArray(
-          this.allBins, b => value < b.range.max ? -1 : 1);
+      var binIndex = tr.b.findHighIndexInSortedArray(this.allBins, b => value < b.range.max ? -1 : 1);
       return this.allBins[binIndex] || this.overflowBin;
     }
 
@@ -359,34 +324,27 @@ global.tr.exportTo('tr.v', function() {
      * @param {(!Object|!tr.v.d.DiagnosticMap)=} opt_diagnostics
      */
     addSample(value, opt_diagnostics) {
-      if (opt_diagnostics &&
-          !(opt_diagnostics instanceof tr.v.d.DiagnosticMap))
-        opt_diagnostics = tr.v.d.DiagnosticMap.fromObject(opt_diagnostics);
+      if (opt_diagnostics && !(opt_diagnostics instanceof tr.v.d.DiagnosticMap)) opt_diagnostics = tr.v.d.DiagnosticMap.fromObject(opt_diagnostics);
 
-      if (typeof(value) !== 'number' || isNaN(value)) {
+      if (typeof value !== 'number' || isNaN(value)) {
         this.numNans++;
         if (opt_diagnostics) {
-          tr.b.Statistics.uniformlySampleStream(this.nanDiagnosticMaps,
-              this.numNans, opt_diagnostics, MAX_DIAGNOSTIC_MAPS);
+          tr.b.Statistics.uniformlySampleStream(this.nanDiagnosticMaps, this.numNans, opt_diagnostics, MAX_DIAGNOSTIC_MAPS);
         }
       } else {
         this.running.add(value);
 
         var bin = this.getBinForValue(value);
         bin.addSample(value);
-        if (opt_diagnostics)
-          bin.addDiagnosticMap(opt_diagnostics);
-        if (bin.count > this.maxCount_)
-          this.maxCount_ = bin.count;
+        if (opt_diagnostics) bin.addDiagnosticMap(opt_diagnostics);
+        if (bin.count > this.maxCount_) this.maxCount_ = bin.count;
       }
 
-      tr.b.Statistics.uniformlySampleStream(this.sampleValues_,
-          this.numValues + this.numNans, value, this.maxNumSampleValues);
+      tr.b.Statistics.uniformlySampleStream(this.sampleValues_, this.numValues + this.numNans, value, this.maxNumSampleValues);
     }
 
     sampleValuesInto(samples) {
-      for (var sampleValue of this.sampleValues)
-        samples.push(sampleValue);
+      for (var sampleValue of this.sampleValues) samples.push(sampleValue);
     }
 
     /**
@@ -396,14 +354,10 @@ global.tr.exportTo('tr.v', function() {
      * @return {boolean}
      */
     canAddHistogram(other) {
-      if (this.unit !== other.unit)
-        return false;
-      if (this.allBins.length !== other.allBins.length)
-        return false;
+      if (this.unit !== other.unit) return false;
+      if (this.allBins.length !== other.allBins.length) return false;
 
-      for (var i = 0; i < this.allBins.length; ++i)
-        if (!this.allBins[i].range.equals(other.allBins[i].range))
-          return false;
+      for (var i = 0; i < this.allBins.length; ++i) if (!this.allBins[i].range.equals(other.allBins[i].range)) return false;
 
       return true;
     }
@@ -418,12 +372,8 @@ global.tr.exportTo('tr.v', function() {
         throw new Error('Merging incompatible Histograms');
       }
 
-      tr.b.Statistics.mergeSampledStreams(this.nanDiagnosticMaps, this.numNans,
-          other.nanDiagnosticMaps, other.numNans, MAX_DIAGNOSTIC_MAPS);
-      tr.b.Statistics.mergeSampledStreams(
-          this.sampleValues, this.numValues,
-          other.sampleValues, other.numValues, tr.b.Statistics.mean(
-              [this.maxNumSampleValues, other.maxNumSampleValues]));
+      tr.b.Statistics.mergeSampledStreams(this.nanDiagnosticMaps, this.numNans, other.nanDiagnosticMaps, other.numNans, MAX_DIAGNOSTIC_MAPS);
+      tr.b.Statistics.mergeSampledStreams(this.sampleValues, this.numValues, other.sampleValues, other.numValues, tr.b.Statistics.mean([this.maxNumSampleValues, other.maxNumSampleValues]));
       this.numNans += other.numNans;
       this.running = this.running.merge(other.running);
       for (var i = 0; i < this.allBins.length; ++i) {
@@ -440,8 +390,7 @@ global.tr.exportTo('tr.v', function() {
      * The options not included in the |summaryOptions| will not change.
      */
     customizeSummaryOptions(summaryOptions) {
-      tr.b.iterItems(summaryOptions, (key, value) =>
-          this.summaryOptions.set(key, value));
+      tr.b.iterItems(summaryOptions, (key, value) => this.summaryOptions.set(key, value));
     }
 
     /**
@@ -471,8 +420,7 @@ global.tr.exportTo('tr.v', function() {
        * @param {number} percent The percent must be between 0.0 and 1.0.
        */
       function percentToString(percent) {
-        if (percent < 0 || percent > 1)
-          throw new Error('Percent must be between 0.0 and 1.0');
+        if (percent < 0 || percent > 1) throw new Error('Percent must be between 0.0 and 1.0');
         switch (percent) {
           case 0:
             return '000';
@@ -480,17 +428,20 @@ global.tr.exportTo('tr.v', function() {
             return '100';
         }
         var str = percent.toString();
-        if (str[1] !== '.')
-          throw new Error('Unexpected percent');
+        if (str[1] !== '.') throw new Error('Unexpected percent');
         // Pad short strings with zeros.
         str = str + '0'.repeat(Math.max(4 - str.length, 0));
-        if (str.length > 4)
-          str = str.slice(0, 4) + '_' + str.slice(4);
+        if (str.length > 4) str = str.slice(0, 4) + '_' + str.slice(4);
         return '0' + str.slice(2);
       }
 
       var results = new Map();
-      for (var [stat, option] of this.summaryOptions) {
+      for (var _ref of this.summaryOptions) {
+        var _ref2 = _slicedToArray(_ref, 2);
+
+        var stat = _ref2[0];
+        var option = _ref2[1];
+
         if (!option) {
           continue;
         }
@@ -498,19 +449,16 @@ global.tr.exportTo('tr.v', function() {
         if (stat === 'percentile') {
           for (var percent of option) {
             var percentile = this.getApproximatePercentile(percent);
-            results.set('pct_' + percentToString(percent),
-                new tr.v.ScalarNumeric(this.unit, percentile));
+            results.set('pct_' + percentToString(percent), new tr.v.ScalarNumeric(this.unit, percentile));
           }
         } else if (stat === 'nans') {
-          results.set('nans', new tr.v.ScalarNumeric(
-              tr.b.Unit.byName.count_smallerIsBetter, this.numNans));
+          results.set('nans', new tr.v.ScalarNumeric(tr.b.Unit.byName.count_smallerIsBetter, this.numNans));
         } else {
-          var statUnit = stat === 'count' ?
-              tr.b.Unit.byName.count_smallerIsBetter : this.unit;
+          var statUnit = stat === 'count' ? tr.b.Unit.byName.count_smallerIsBetter : this.unit;
           var key = statNameToKey(stat);
           var statValue = this.running[key];
 
-          if (typeof(statValue) === 'number') {
+          if (typeof statValue === 'number') {
             results.set(stat, new tr.v.ScalarNumeric(statUnit, statValue));
           }
         }
@@ -538,8 +486,7 @@ global.tr.exportTo('tr.v', function() {
      * @return {!tr.v.Histogram}
      */
     cloneEmpty() {
-      var binBoundaries = HistogramBinBoundaries.fromDict(
-          this.binBoundariesDict_);
+      var binBoundaries = HistogramBinBoundaries.fromDict(this.binBoundariesDict_);
       return new Histogram(this.name, this.unit, binBoundaries);
     }
 
@@ -565,8 +512,7 @@ global.tr.exportTo('tr.v', function() {
         dict.numNans = this.numNans;
       }
       if (this.nanDiagnosticMaps.length) {
-        dict.nanDiagnostics = this.nanDiagnosticMaps.map(
-            dm => dm.asDict());
+        dict.nanDiagnostics = this.nanDiagnosticMaps.map(dm => dm.asDict());
       }
       if (this.underflowBin.count) {
         dict.underflowBin = this.underflowBin.asDict();
@@ -583,7 +529,12 @@ global.tr.exportTo('tr.v', function() {
 
       var summaryOptions = {};
       var anyOverriddenSummaryOptions = false;
-      for (var [name, option] of this.summaryOptions) {
+      for (var _ref3 of this.summaryOptions) {
+        var _ref4 = _slicedToArray(_ref3, 2);
+
+        var name = _ref4[0];
+        var option = _ref4[1];
+
         if (name === 'percentile') {
           if (option.length === 0) {
             continue;
@@ -627,7 +578,7 @@ global.tr.exportTo('tr.v', function() {
         return undefined;
       }
 
-      if (emptyBins > (numCentralBins / 2)) {
+      if (emptyBins > numCentralBins / 2) {
         var centralBinsDict = {};
         for (var i = 0; i < numCentralBins; ++i) {
           var bin = this.centralBins[i];
@@ -713,23 +664,18 @@ global.tr.exportTo('tr.v', function() {
      */
     static createWithBoundaries(binBoundaries) {
       var builder = new HistogramBinBoundaries(binBoundaries[0]);
-      for (var boundary of binBoundaries.slice(1))
-        builder.addBinBoundary(boundary);
+      for (var boundary of binBoundaries.slice(1)) builder.addBinBoundary(boundary);
       return builder;
     }
 
     static createFromSamples(samples) {
       var range = new tr.b.Range();
       // Prevent non-numeric samples from introducing NaNs into the range.
-      for (var sample of samples)
-        if (!isNaN(Math.max(sample)))
-          range.addValue(sample);
+      for (var sample of samples) if (!isNaN(Math.max(sample))) range.addValue(sample);
 
       // HistogramBinBoundaries.addLinearBins() requires this.
-      if (range.isEmpty)
-        range.addValue(1);
-      if (range.min === range.max)
-        range.addValue(range.min - 1);
+      if (range.isEmpty) range.addValue(1);
+      if (range.min === range.max) range.addValue(range.min - 1);
 
       // This optimizes the resolution when samples are uniformly distributed
       // (which is almost never the case).
@@ -801,8 +747,7 @@ global.tr.exportTo('tr.v', function() {
         this.build_();
       }
       for (var i = 0; i < this.boundaries_.length - 1; ++i) {
-        yield tr.b.Range.fromExplicitRange(
-            this.boundaries_[i], this.boundaries_[i + 1]);
+        yield tr.b.Range.fromExplicitRange(this.boundaries_[i], this.boundaries_[i + 1]);
       }
     }
 
@@ -819,8 +764,7 @@ global.tr.exportTo('tr.v', function() {
         }
         var nextMaxBinBoundary = slice[1];
         var binCount = slice[2];
-        var curMaxBinBoundary = this.boundaries_[
-            this.boundaries_.length - 1];
+        var curMaxBinBoundary = this.boundaries_[this.boundaries_.length - 1];
 
         switch (slice[0]) {
           case HistogramBinBoundaries.SLICE_TYPE.LINEAR:
@@ -832,10 +776,9 @@ global.tr.exportTo('tr.v', function() {
             break;
 
           case HistogramBinBoundaries.SLICE_TYPE.EXPONENTIAL:
-            var binExponentWidth =
-                Math.log(nextMaxBinBoundary / curMaxBinBoundary) / binCount;
+            var binExponentWidth = Math.log(nextMaxBinBoundary / curMaxBinBoundary) / binCount;
             for (var i = 1; i < binCount; i++) {
-              var boundary = curMaxBinBoundary * Math.exp(i * binExponentWidth)
+              var boundary = curMaxBinBoundary * Math.exp(i * binExponentWidth);
               this.boundaries_.push(boundary);
             }
             break;
@@ -858,8 +801,7 @@ global.tr.exportTo('tr.v', function() {
      */
     addBinBoundary(nextMaxBinBoundary) {
       if (nextMaxBinBoundary <= this.range.max) {
-        throw new Error('The added max bin boundary must be larger than ' +
-            'the current max boundary');
+        throw new Error('The added max bin boundary must be larger than ' + 'the current max boundary');
       }
 
       // If boundaries_ had been built, then clear them.
@@ -893,19 +835,16 @@ global.tr.exportTo('tr.v', function() {
      * @param {number} binCount Number of bins to be added (must be positive).
      */
     addLinearBins(nextMaxBinBoundary, binCount) {
-      if (binCount <= 0)
-        throw new Error('Bin count must be positive');
+      if (binCount <= 0) throw new Error('Bin count must be positive');
 
       if (nextMaxBinBoundary <= this.range.max) {
-        throw new Error('The new max bin boundary must be greater than ' +
-            'the previous max bin boundary');
+        throw new Error('The new max bin boundary must be greater than ' + 'the previous max bin boundary');
       }
 
       // If boundaries_ had been built, then clear them.
       this.boundaries_ = undefined;
 
-      this.builder_.push([HistogramBinBoundaries.SLICE_TYPE.LINEAR,
-          nextMaxBinBoundary, binCount]);
+      this.builder_.push([HistogramBinBoundaries.SLICE_TYPE.LINEAR, nextMaxBinBoundary, binCount]);
       this.range.addValue(nextMaxBinBoundary);
       return this;
     }
@@ -942,15 +881,13 @@ global.tr.exportTo('tr.v', function() {
         throw new Error('Current max bin boundary must be positive');
       }
       if (this.range.max >= nextMaxBinBoundary) {
-        throw new Error('The last added max boundary must be greater than ' +
-            'the current max boundary boundary');
+        throw new Error('The last added max boundary must be greater than ' + 'the current max boundary boundary');
       }
 
       // If boundaries_ had been built, then clear them.
       this.boundaries_ = undefined;
 
-      this.builder_.push([HistogramBinBoundaries.SLICE_TYPE.EXPONENTIAL,
-          nextMaxBinBoundary, binCount]);
+      this.builder_.push([HistogramBinBoundaries.SLICE_TYPE.EXPONENTIAL, nextMaxBinBoundary, binCount]);
       this.range.addValue(nextMaxBinBoundary);
       return this;
     }
@@ -958,43 +895,27 @@ global.tr.exportTo('tr.v', function() {
 
   HistogramBinBoundaries.SLICE_TYPE = {
     LINEAR: 0,
-    EXPONENTIAL: 1,
+    EXPONENTIAL: 1
   };
 
-  DEFAULT_BOUNDARIES_FOR_UNIT.set(
-      tr.b.Unit.byName.timeDurationInMs.unitName,
-      HistogramBinBoundaries.createExponential(1e-3, 1e6, 1e2));
+  DEFAULT_BOUNDARIES_FOR_UNIT.set(tr.b.Unit.byName.timeDurationInMs.unitName, HistogramBinBoundaries.createExponential(1e-3, 1e6, 1e2));
 
-  DEFAULT_BOUNDARIES_FOR_UNIT.set(
-      tr.b.Unit.byName.timeStampInMs.unitName,
-      HistogramBinBoundaries.createLinear(0, 1e10, 1e3));
+  DEFAULT_BOUNDARIES_FOR_UNIT.set(tr.b.Unit.byName.timeStampInMs.unitName, HistogramBinBoundaries.createLinear(0, 1e10, 1e3));
 
-  DEFAULT_BOUNDARIES_FOR_UNIT.set(
-      tr.b.Unit.byName.normalizedPercentage.unitName,
-      HistogramBinBoundaries.createLinear(0, 1.0, 20));
+  DEFAULT_BOUNDARIES_FOR_UNIT.set(tr.b.Unit.byName.normalizedPercentage.unitName, HistogramBinBoundaries.createLinear(0, 1.0, 20));
 
-  DEFAULT_BOUNDARIES_FOR_UNIT.set(
-      tr.b.Unit.byName.sizeInBytes.unitName,
-      HistogramBinBoundaries.createExponential(1, 1e12, 1e2));
+  DEFAULT_BOUNDARIES_FOR_UNIT.set(tr.b.Unit.byName.sizeInBytes.unitName, HistogramBinBoundaries.createExponential(1, 1e12, 1e2));
 
-  DEFAULT_BOUNDARIES_FOR_UNIT.set(
-      tr.b.Unit.byName.energyInJoules.unitName,
-      HistogramBinBoundaries.createExponential(1e-3, 1e3, 50));
+  DEFAULT_BOUNDARIES_FOR_UNIT.set(tr.b.Unit.byName.energyInJoules.unitName, HistogramBinBoundaries.createExponential(1e-3, 1e3, 50));
 
-  DEFAULT_BOUNDARIES_FOR_UNIT.set(
-      tr.b.Unit.byName.powerInWatts.unitName,
-      HistogramBinBoundaries.createExponential(1e-3, 1, 50));
+  DEFAULT_BOUNDARIES_FOR_UNIT.set(tr.b.Unit.byName.powerInWatts.unitName, HistogramBinBoundaries.createExponential(1e-3, 1, 50));
 
-  DEFAULT_BOUNDARIES_FOR_UNIT.set(
-      tr.b.Unit.byName.unitlessNumber.unitName,
-      HistogramBinBoundaries.createExponential(1e-3, 1e3, 50));
+  DEFAULT_BOUNDARIES_FOR_UNIT.set(tr.b.Unit.byName.unitlessNumber.unitName, HistogramBinBoundaries.createExponential(1e-3, 1e3, 50));
 
-  DEFAULT_BOUNDARIES_FOR_UNIT.set(
-      tr.b.Unit.byName.count.unitName,
-      HistogramBinBoundaries.createExponential(1, 1e3, 20));
+  DEFAULT_BOUNDARIES_FOR_UNIT.set(tr.b.Unit.byName.count.unitName, HistogramBinBoundaries.createExponential(1, 1e3, 20));
 
   return {
     Histogram: Histogram,
-    HistogramBinBoundaries: HistogramBinBoundaries,
+    HistogramBinBoundaries: HistogramBinBoundaries
   };
 });

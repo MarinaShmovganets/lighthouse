@@ -11,7 +11,7 @@ require("./event.js");
 
 'use strict';
 
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
   /**
    * TimedEvent is a base type for any entity in the trace model with a specific
    * start and duration.
@@ -36,7 +36,7 @@ global.tr.exportTo('tr.model', function() {
       return this.start + this.duration;
     },
 
-    addBoundsToRange: function(range) {
+    addBoundsToRange: function (range) {
       range.addValue(this.start);
       range.addValue(this.end);
     },
@@ -44,9 +44,8 @@ global.tr.exportTo('tr.model', function() {
     // TODO(charliea): Can this be implemented in terms of Event.range()?
     // Returns true if 'that' TimedEvent is fully contained within 'this' timed
     // event.
-    bounds: function(that, opt_precisionUnit) {
-      if (opt_precisionUnit === undefined)
-        opt_precisionUnit = tr.b.TimeDisplayModes.ms;
+    bounds: function (that, opt_precisionUnit) {
+      if (opt_precisionUnit === undefined) opt_precisionUnit = tr.b.TimeDisplayModes.ms;
 
       var startsBefore = opt_precisionUnit.roundedLess(that.start, this.start);
       var endsAfter = opt_precisionUnit.roundedLess(this.end, that.end);

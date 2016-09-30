@@ -5,7 +5,6 @@ Use of this source code is governed by a BSD-style license that can be
 found in the LICENSE file.
 **/
 
-
 'use strict';
 
 /**
@@ -14,9 +13,9 @@ found in the LICENSE file.
  * @const
  */
 
-
 /** Platform, package, object property, and Event support. */
-global.tr = (function() {
+
+global.tr = function () {
   if (global.tr) {
     console.warn('Base was multiply initialized. First init wins.');
     return global.tr;
@@ -66,8 +65,7 @@ global.tr = (function() {
     for (var i = 0; i < parts.length; i++) {
       var partName = parts[i];
       var nextObject = curObject[partName];
-      if (nextObject === undefined)
-        return false;
+      if (nextObject === undefined) return false;
       curObject = nextObject;
     }
     return true;
@@ -76,8 +74,7 @@ global.tr = (function() {
   var panicElement = undefined;
   var rawPanicMessages = [];
   function showPanicElementIfNeeded() {
-    if (panicElement)
-      return;
+    if (panicElement) return;
 
     var panicOverlay = document.createElement('div');
     panicOverlay.style.backgroundColor = 'white';
@@ -99,7 +96,7 @@ global.tr = (function() {
     panicOverlay.appendChild(panicElement);
 
     if (!document.body) {
-      setTimeout(function() {
+      setTimeout(function () {
         document.body.appendChild(panicOverlay);
       }, 150);
     } else {
@@ -109,19 +106,15 @@ global.tr = (function() {
 
   function showPanic(panicTitle, panicDetails) {
     if (tr.isHeadless) {
-      if (panicDetails instanceof Error)
-        throw panicDetails;
+      if (panicDetails instanceof Error) throw panicDetails;
       throw new Error('Panic: ' + panicTitle + ':\n' + panicDetails);
     }
 
-    if (panicDetails instanceof Error)
-      panicDetails = panicDetails.stack;
+    if (panicDetails instanceof Error) panicDetails = panicDetails.stack;
 
     showPanicElementIfNeeded();
     var panicMessageEl = document.createElement('div');
-    panicMessageEl.innerHTML =
-        '<h2 id="message"></h2>' +
-        '<pre id="details"></pre>';
+    panicMessageEl.innerHTML = '<h2 id="message"></h2>' + '<pre id="details"></pre>';
     panicMessageEl.querySelector('#message').textContent = panicTitle;
     panicMessageEl.querySelector('#details').textContent = panicDetails;
     panicElement.appendChild(panicMessageEl);
@@ -136,7 +129,7 @@ global.tr = (function() {
     return rawPanicMessages.length !== 0;
   }
   function getPanicText() {
-    return rawPanicMessages.map(function(msg) {
+    return rawPanicMessages.map(function (msg) {
       return msg.title;
     }).join(', ');
   }
@@ -149,10 +142,8 @@ global.tr = (function() {
       // Maybe we should check the prototype chain here? The current usage
       // pattern is always using an object literal so we only care about own
       // properties.
-      var propertyDescriptor = Object.getOwnPropertyDescriptor(exports,
-                                                               propertyName);
-      if (propertyDescriptor)
-        Object.defineProperty(obj, propertyName, propertyDescriptor);
+      var propertyDescriptor = Object.getOwnPropertyDescriptor(exports, propertyName);
+      if (propertyDescriptor) Object.defineProperty(obj, propertyName, propertyDescriptor);
     }
   };
 
@@ -188,6 +179,6 @@ global.tr = (function() {
     hasPanic: hasPanic,
     getPanicText: getPanicText
   };
-})();
+}();
 
 tr.initialize();

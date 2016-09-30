@@ -11,26 +11,21 @@ require("../../value/histogram.js");
 
 'use strict';
 
-global.tr.exportTo('tr.metrics.sh', function() {
+global.tr.exportTo('tr.metrics.sh', function () {
   function webviewStartupMetric(values, model) {
-    var startupWallHist = new tr.v.Histogram('webview_startup_wall_time',
-        tr.b.Unit.byName.timeDurationInMs_smallerIsBetter);
+    var startupWallHist = new tr.v.Histogram('webview_startup_wall_time', tr.b.Unit.byName.timeDurationInMs_smallerIsBetter);
     startupWallHist.description = 'WebView startup wall time';
-    var startupCPUHist = new tr.v.Histogram('webview_startup_cpu_time',
-        tr.b.Unit.byName.timeDurationInMs_smallerIsBetter);
+    var startupCPUHist = new tr.v.Histogram('webview_startup_cpu_time', tr.b.Unit.byName.timeDurationInMs_smallerIsBetter);
     startupCPUHist.description = 'WebView startup CPU time';
-    var loadWallHist = new tr.v.Histogram('webview_url_load_wall_time',
-        tr.b.Unit.byName.timeDurationInMs_smallerIsBetter);
+    var loadWallHist = new tr.v.Histogram('webview_url_load_wall_time', tr.b.Unit.byName.timeDurationInMs_smallerIsBetter);
     loadWallHist.description = 'WebView blank URL load wall time';
-    var loadCPUHist = new tr.v.Histogram('webview_url_load_cpu_time',
-        tr.b.Unit.byName.timeDurationInMs_smallerIsBetter);
+    var loadCPUHist = new tr.v.Histogram('webview_url_load_cpu_time', tr.b.Unit.byName.timeDurationInMs_smallerIsBetter);
     loadCPUHist.description = 'WebView blank URL load CPU time';
 
     // TODO(alexandermont): Only iterate over the processes and threads that
     // could contain these events.
     for (var slice of model.getDescendantEvents()) {
-      if (!(slice instanceof tr.model.ThreadSlice))
-        continue;
+      if (!(slice instanceof tr.model.ThreadSlice)) continue;
 
       // WebViewStartupInterval is the title of the section of code that is
       // entered (via android.os.Trace.beginSection) when WebView is started

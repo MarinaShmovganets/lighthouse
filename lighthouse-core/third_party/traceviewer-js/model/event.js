@@ -16,7 +16,7 @@ require("./selection_state.js");
 /**
  * @fileoverview Provides the Event class.
  */
-global.tr.exportTo('tr.model', function() {
+global.tr.exportTo('tr.model', function () {
   var SelectableItem = tr.model.SelectableItem;
   var SelectionState = tr.model.SelectionState;
   var IMMUTABLE_EMPTY_SET = tr.model.EventSet.IMMUTABLE_EMPTY_SET;
@@ -56,16 +56,15 @@ global.tr.exportTo('tr.model', function() {
     // addAssociatedAlert(). See #1930.
     associatedAlerts: IMMUTABLE_EMPTY_SET,
 
-    addAssociatedAlert: function(alert) {
-      if (this.associatedAlerts === IMMUTABLE_EMPTY_SET)
-        this.associatedAlerts = new tr.model.EventSet();
+    addAssociatedAlert: function (alert) {
+      if (this.associatedAlerts === IMMUTABLE_EMPTY_SET) this.associatedAlerts = new tr.model.EventSet();
       this.associatedAlerts.push(alert);
     },
 
     // Adds the range of timestamps for this event to the specified range.
     // If this is not overridden in subclass, it means that type of event
     // doesn't have timestamps.
-    addBoundsToRange: function(range) {}
+    addBoundsToRange: function (range) {}
   };
 
   return {
