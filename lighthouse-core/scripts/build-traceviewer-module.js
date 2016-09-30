@@ -45,7 +45,7 @@ function convertImport(src) {
       const imports = window.document.querySelectorAll('link[rel="import"]');
       const scripts = window.document.querySelectorAll('script');
       let scriptsContent = '';
-
+      scriptsContent += addUseStrictDirective();
       scriptsContent += convertLicenseComments(html);
 
       // traverse and rewrite the imports
@@ -108,6 +108,11 @@ function convertImport(src) {
         script = script.replace(/this.tr =/, 'global.tr =');
         script = script.replace(/\(function\(global\)\s?\{/, '(function() {');
         return script;
+      }
+
+      // the "use strict" must be found *above* the require() statements
+      function addUseStrictDirective() {
+        return '"use strict";\n';
       }
 
       function writeNewFile(dest, scriptsContent) {
