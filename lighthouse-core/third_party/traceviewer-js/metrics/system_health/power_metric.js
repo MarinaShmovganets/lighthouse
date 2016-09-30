@@ -164,7 +164,10 @@ global.tr.exportTo('tr.metrics.sh', function() {
     // between navigation and TTI (time-to-interactive) given by
     // getNavigationTTIIntervals_. We also have a metric for the energy
     // consumed after load.
+    hists.loadTimeHist = makeTimeHistogram_(values, 'load', 'page loads');
     hists.loadEnergyHist = makeEnergyHistogram_(values, 'load', 'page loads');
+    hists.afterLoadTimeHist = makeTimeHistogram_(values, 'after_load',
+        'period after load');
     hists.afterLoadPowerHist = makePowerHistogram_(values, 'after_load',
         'period after load');
 
@@ -233,14 +236,19 @@ global.tr.exportTo('tr.metrics.sh', function() {
    */
   function computeLoadingMetric_(model, hists) {
     var intervals = getNavigationTTIIntervals_(model);
-    var lastLoadTime = 0;
+    var lastLoadTime = undefined;
     for (var interval of intervals) {
       var loadData = getPowerData_(model, interval.min, interval.max);
-      hists.loadEnergyHist.addSample(loadData.energy);
-      lastLoadTime = interval.max;
+      storePowerData_(loadData, hists.loadTimeHist, hists.loadEnergyHist,
+          undefined);
+      lastLoadTime = (lastLoadTime == undefined ? interval.max :
+          Math.max(lastLoadTime, interval.max));
     }
-    var afterLoadData = getPowerData_(model, lastLoadTime, model.bounds.max);
-    hists.afterLoadPowerHist.addSample(afterLoadData.power);
+    if (lastLoadTime !== undefined) {
+      var afterLoadData = getPowerData_(model, lastLoadTime, model.bounds.max);
+      storePowerData_(afterLoadData, hists.afterLoadTimeHist,
+          undefined, hists.afterLoadPowerHist);
+    }
   }
 
   /**

@@ -244,10 +244,10 @@ global.tr.exportTo('tr.model', function() {
     },
 
     asDict: function() {
-      var stable_ids = [];
+      var stableIds = [];
       for (var event of this)
-        stable_ids.push(event.stableId);
-      return {'events': stable_ids};
+        stableIds.push(event.stableId);
+      return {'events': stableIds};
     },
 
     asSet: function() {

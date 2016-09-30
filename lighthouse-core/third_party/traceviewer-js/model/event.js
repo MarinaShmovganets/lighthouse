@@ -5,6 +5,7 @@ found in the LICENSE file.
 **/
 
 require("../base/guid.js");
+require("../base/range.js");
 require("./event_set.js");
 require("./selectable_item.js");
 require("./selection_state.js");
@@ -42,6 +43,12 @@ global.tr.exportTo('tr.model', function() {
 
     get stableId() {
       return undefined;
+    },
+
+    get range() {
+      var range = new tr.b.Range();
+      this.addBoundsToRange(range);
+      return range;
     },
 
     // Empty by default. Lazily initialized on an instance in

@@ -219,7 +219,7 @@ global.tr.exportTo('tr.model', function() {
      */
     pushCompleteSlice: function(category, title, ts, duration, tts,
                                 cpuDuration, opt_args, opt_argsStripped,
-                                opt_colorId, opt_bind_id) {
+                                opt_colorId, opt_bindId) {
       var colorId = opt_colorId ||
           ColorScheme.getColorIdForGeneralPurposeString(title);
       var sliceConstructorSubTypes = this.sliceConstructorSubTypes;
@@ -227,7 +227,7 @@ global.tr.exportTo('tr.model', function() {
       var slice = new sliceType(category, title, colorId, ts,
                                 opt_args ? opt_args : {},
                                 duration, tts, cpuDuration,
-                                opt_argsStripped, opt_bind_id);
+                                opt_argsStripped, opt_bindId);
       if (duration === undefined)
         slice.didNotFinish = true;
       this.pushSlice(slice);
@@ -404,20 +404,15 @@ global.tr.exportTo('tr.model', function() {
     createSubSlicesImpl_: function() {
       var precisionUnit = this.model.intrinsicTimeUnit;
 
-      function addSliceIfBounds(root, child) {
-        // Because we know that the start time of child is >= the start time
-        // of all other slices seen so far, we can just check the last slice
-        // of each row for bounding.
-        if (root.bounds(child, precisionUnit)) {
-          if (root.subSlices && root.subSlices.length > 0) {
-            if (addSliceIfBounds(root.subSlices[root.subSlices.length - 1],
-                                 child))
-              return true;
-          }
-          child.parentSlice = root;
-          if (root.subSlices === undefined)
-            root.subSlices = [];
-          root.subSlices.push(child);
+
+      // Note that this doesn't check whether |child| should be added to
+      // |parent|'s descendant slices instead of |parent| directly.
+      function addSliceIfBounds(parent, child) {
+        if (parent.bounds(child, precisionUnit)) {
+          child.parentSlice = parent;
+          if (parent.subSlices === undefined)
+            parent.subSlices = [];
+          parent.subSlices.push(child);
           return true;
         }
         return false;
@@ -460,11 +455,15 @@ global.tr.exportTo('tr.model', function() {
       rootSlice.isTopLevel = true;
       for (var i = 1; i < slices.length; i++) {
         var slice = slices[i];
-        if (!addSliceIfBounds(rootSlice, slice)) {
-          rootSlice = slice;
-          rootSlice.isTopLevel = true;
-          this.topLevelSlices.push(rootSlice);
+        while (rootSlice !== undefined &&
+               (!addSliceIfBounds(rootSlice, slice))) {
+          rootSlice = rootSlice.parentSlice;
         }
+        if (rootSlice === undefined) {
+          this.topLevelSlices.push(slice);
+          slice.isTopLevel = true;
+        }
+        rootSlice = slice;
       }
 
       // Keep the slices in sorted form.

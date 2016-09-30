@@ -21,7 +21,7 @@ global.tr.exportTo('tr.model', function() {
    */
   function Slice(category, title, colorId, start, args, opt_duration,
                  opt_cpuStart, opt_cpuDuration, opt_argsStripped,
-                 opt_bind_id) {
+                 opt_bindId) {
     if (new.target) {
       throw new Error("Can't instantiate pure virtual class Slice");
     }
@@ -43,7 +43,7 @@ global.tr.exportTo('tr.model', function() {
     this.parentContainer = undefined;
     this.argsStripped = false;
 
-    this.bind_id_ = opt_bind_id;
+    this.bind_id_ = opt_bindId;
 
     // parentSlice and isTopLevel will be set by SliceGroup.
     this.parentSlice = undefined;

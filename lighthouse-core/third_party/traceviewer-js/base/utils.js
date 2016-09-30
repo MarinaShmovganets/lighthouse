@@ -98,9 +98,9 @@ global.tr.exportTo('tr.b', function() {
     return stack.slice(2);
   }
 
-  function getUsingPath(path, from_dict) {
+  function getUsingPath(path, fromDict) {
     var parts = path.split('.');
-    var cur = from_dict;
+    var cur = fromDict;
 
     for (var part; parts.length && (part = parts.shift());) {
       if (!parts.length) {
