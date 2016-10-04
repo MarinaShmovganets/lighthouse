@@ -91,11 +91,11 @@ class GatherRunner {
       .then(_ => {
         return driver.cleanAndDisableBrowserCaches();
       }).then(_ => {
+        // Check if multiple tabs of origin are open
+        return driver.checkForMultipleTabsAttached(options.url);
+      }).then(_ => {
         // Clears storage for origin.
         return driver.clearDataForOrigin(options.url);
-      }).then(_ => {
-        // Check Service Workers running
-        return driver.checkForMultipleTabsAttached(options.url);
       });
   }
 

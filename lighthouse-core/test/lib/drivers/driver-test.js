@@ -24,6 +24,32 @@ const assert = require('assert');
 
 let driverStub = new Driver();
 
+function createOnceStub(events) {
+  return (eventName, cb) => {
+    if (events[eventName]) {
+      return cb(events[eventName]);
+    }
+
+    throw Error(`Stub not implemented: ${eventName}`);
+  };
+}
+
+function createSWRegistration(id, url, isDeleted) {
+  return {
+    isDeleted: !!isDeleted,
+    registrationId: id,
+    scopeURL: url,
+  };
+}
+
+function createActiveWorker(id, url, controlledClients) {
+  return {
+    registrationId: id,
+    scriptURL: url,
+    controlledClients,
+  };
+}
+
 driverStub.sendCommand = function(command, params) {
   switch (command) {
     case 'DOM.getDocument':
@@ -83,7 +109,9 @@ describe('Browser Driver', () => {
     assert.notEqual(opts.url, req1.url, 'opts.url changed after the redirects');
     assert.equal(opts.url, req3.url, 'opts.url matches the last redirect');
   });
+});
 
+describe('Multiple tab check', () => {
   it('will fail when multiple tabs are found with the same active serviceworker', () => {
     const pageUrl = 'https://example.com/';
     const swUrl = `${pageUrl}sw.js`;
@@ -132,32 +160,7 @@ describe('Browser Driver', () => {
       .then(_ => assert.ok(true), _ => assert.ok(false));
   });
 
-  it('will succeed when old sw are deleted', () => {
-    const pageUrl = 'https://example.com/';
-    const swUrl = `${pageUrl}sw.js`;
-    const registrations = [
-      createSWRegistration(1, pageUrl, true),
-      createSWRegistration(1, pageUrl),
-    ];
-    const versions = [
-      createActiveWorker(1, swUrl, [])
-    ];
-
-    driverStub.getCurrentTabId = () => Promise.resolve('unique');
-    driverStub.once = createOnceStub({
-      'ServiceWorker.workerRegistrationUpdated': {
-        registrations
-      },
-      'ServiceWorker.workerVersionUpdated': {
-        versions
-      }
-    });
-
-    return driverStub.checkForMultipleTabsAttached(pageUrl)
-      .then(_ => assert.ok(true), _ => assert.ok(false));
-  });
-
-  it('will succeed when only one sw loaded', () => {
+  it('will succeed when only one service worker loaded', () => {
     const pageUrl = 'https://example.com/';
     const swUrl = `${pageUrl}sw.js`;
     const registrations = [createSWRegistration(1, pageUrl)];
@@ -177,29 +180,3 @@ describe('Browser Driver', () => {
       .then(_ => assert.ok(true), _ => assert.ok(false));
   });
 });
-
-function createOnceStub(events) {
-  return (eventName, cb) => {
-    if (events[eventName]) {
-      cb(events[eventName]);
-    }
-
-    throw Error(`Stub not implemented: ${eventName}`);
-  };
-}
-
-function createSWRegistration(id, url, isDeleted) {
-  return {
-    isDeleted: !!isDeleted,
-    registrationId: id,
-    scopeURL: url,
-  };
-}
-
-function createActiveWorker(id, url, controlledClients) {
-  return {
-    registrationId: id,
-    scriptURL: url,
-    controlledClients,
-  };
-}

@@ -44,7 +44,7 @@ const Config = require('./config/config');
  */
 
 module.exports = function(url, flags, configJSON) {
-  return (new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     if (!url) {
       return reject(new Error('Lighthouse requires a URL'));
     }
@@ -62,7 +62,7 @@ module.exports = function(url, flags, configJSON) {
 
     // kick off a lighthouse run
     resolve(Runner.run(driver, {url, flags, config}));
-  }));
+  });
 };
 
 module.exports.getAuditList = Runner.getAuditList;

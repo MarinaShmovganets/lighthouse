@@ -233,7 +233,7 @@ class Driver {
   }
 
   /**
-   * Checks all serviceworkes and see if any duplications are running
+   * Checks all service workers and see if any duplications are running
    * @param {!string} pageUrl
    * @return {!Promise}
    */
