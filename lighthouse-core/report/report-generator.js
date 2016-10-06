@@ -24,9 +24,9 @@ const fs = require('fs');
 const path = require('path');
 
 const RATINGS = {
-  GOOD: 'good',
-  AVERAGE: 'average',
-  POOR: 'poor'
+  GOOD: {label: 'good', minValue: 0.66, minScore: 75},
+  AVERAGE: {label: 'average', minValue: 0.33},
+  POOR: {label: 'poor', minScore: 45}
 };
 
 class ReportGenerator {
@@ -42,16 +42,16 @@ class ReportGenerator {
 
     const getItemRating = (value, aggregatorScored) => {
       if (typeof value === 'boolean') {
-        return value ? RATINGS.GOOD : RATINGS.POOR;
+        return value ? RATINGS.GOOD.label : RATINGS.POOR.label;
       }
 
       // Limit the rating to average if this is a rating for Best Practices.
-      let rating = aggregatorScored ? RATINGS.AVERAGE : RATINGS.POOR;
-      if (value > 0.33) {
-        rating = RATINGS.AVERAGE;
+      let rating = aggregatorScored ? RATINGS.AVERAGE.label : RATINGS.POOR.label;
+      if (value > RATINGS.AVERAGE.minValue) {
+        rating = RATINGS.AVERAGE.label;
       }
-      if (value > 0.66) {
-        rating = RATINGS.GOOD;
+      if (value > RATINGS.GOOD.minValue) {
+        rating = RATINGS.GOOD.label;
       }
 
       return rating;
@@ -91,12 +91,12 @@ class ReportGenerator {
     Handlebars.registerHelper('getTotalScoreRating', aggregation => {
       const totalScore = getTotalScore(aggregation);
 
-      let rating = RATINGS.POOR;
-      if (totalScore > 45) {
-        rating = RATINGS.AVERAGE;
+      let rating = RATINGS.POOR.label;
+      if (totalScore > RATINGS.POOR.minScore) {
+        rating = RATINGS.AVERAGE.label;
       }
-      if (totalScore > 75) {
-        rating = RATINGS.GOOD;
+      if (totalScore > RATINGS.GOOD.minScore) {
+        rating = RATINGS.GOOD.label;
       }
 
       return rating;
@@ -107,7 +107,7 @@ class ReportGenerator {
     Handlebars.registerHelper('getItemRating', getItemRating);
 
     Handlebars.registerHelper('showHelpText', value => {
-      return getItemRating(value) === RATINGS.GOOD ? 'hidden' : '';
+      return getItemRating(value) === RATINGS.GOOD.label ? 'hidden' : '';
     });
 
     // Convert numbers to fixed point decimals
