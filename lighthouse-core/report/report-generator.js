@@ -23,6 +23,12 @@ const Handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
 
+const RATINGS = {
+  GOOD: 'good',
+  AVERAGE: 'average',
+  POOR: 'poor'
+};
+
 class ReportGenerator {
 
   constructor() {
@@ -36,16 +42,16 @@ class ReportGenerator {
 
     const getItemRating = (value, aggregatorScored) => {
       if (typeof value === 'boolean') {
-        return value ? 'good' : 'poor';
+        return value ? RATINGS.GOOD : RATINGS.POOR;
       }
 
       // Limit the rating to average if this is a rating for Best Practices.
-      let rating = aggregatorScored ? 'average' : 'poor';
+      let rating = aggregatorScored ? RATINGS.AVERAGE : RATINGS.POOR;
       if (value > 0.33) {
-        rating = 'average';
+        rating = RATINGS.AVERAGE;
       }
       if (value > 0.66) {
-        rating = 'good';
+        rating = RATINGS.GOOD;
       }
 
       return rating;
@@ -85,12 +91,12 @@ class ReportGenerator {
     Handlebars.registerHelper('getTotalScoreRating', aggregation => {
       const totalScore = getTotalScore(aggregation);
 
-      let rating = 'poor';
+      let rating = RATINGS.POOR;
       if (totalScore > 45) {
-        rating = 'average';
+        rating = RATINGS.AVERAGE;
       }
       if (totalScore > 75) {
-        rating = 'good';
+        rating = RATINGS.GOOD;
       }
 
       return rating;
@@ -101,7 +107,7 @@ class ReportGenerator {
     Handlebars.registerHelper('getItemRating', getItemRating);
 
     Handlebars.registerHelper('showHelpText', value => {
-      return getItemRating(value) === 'good' ? 'hidden' : '';
+      return getItemRating(value) === RATINGS.GOOD ? 'hidden' : '';
     });
 
     // Convert numbers to fixed point decimals
