@@ -34,6 +34,23 @@ class ReportGenerator {
       return Math.round(totalScore * 100);
     };
 
+    const getItemRating = (value, aggregatorScored) => {
+      if (typeof value === 'boolean') {
+        return value ? 'good' : 'poor';
+      }
+
+      // Limit the rating to average if this is a rating for Best Practices.
+      let rating = aggregatorScored ? 'average' : 'poor';
+      if (value > 0.33) {
+        rating = 'average';
+      }
+      if (value > 0.66) {
+        rating = 'good';
+      }
+
+      return rating;
+    };
+
     // Converts a name to a link.
     Handlebars.registerHelper('nameToLink', name => {
       return name.toLowerCase().replace(/\s/, '-');
@@ -79,22 +96,12 @@ class ReportGenerator {
       return rating;
     });
 
-    // Converts a value to a rating string, which can be used inside the report for color styling.
-    Handlebars.registerHelper('getItemRating', (value, aggregatorScored) => {
-      if (typeof value === 'boolean') {
-        return value ? 'good' : 'poor';
-      }
+    // Converts a value to a rating string, which can be used inside the report
+    // for color styling.
+    Handlebars.registerHelper('getItemRating', getItemRating);
 
-      // Limit the rating to average if this is a rating for Best Practices.
-      let rating = aggregatorScored ? 'average' : 'poor';
-      if (value > 0.33) {
-        rating = 'average';
-      }
-      if (value > 0.66) {
-        rating = 'good';
-      }
-
-      return rating;
+    Handlebars.registerHelper('showHelpText', value => {
+      return getItemRating(value) === 'good' ? 'hidden': '';
     });
 
     // Convert numbers to fixed point decimals
