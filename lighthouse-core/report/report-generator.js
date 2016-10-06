@@ -40,18 +40,17 @@ class ReportGenerator {
       return Math.round(totalScore * 100);
     };
 
-    const getItemRating = (value, aggregatorScored) => {
+    const getItemRating = value => {
       if (typeof value === 'boolean') {
         return value ? RATINGS.GOOD.label : RATINGS.POOR.label;
       }
 
       // Limit the rating to average if this is a rating for Best Practices.
-      let rating = aggregatorScored ? RATINGS.AVERAGE.label : RATINGS.POOR.label;
-      if (value > RATINGS.AVERAGE.minValue) {
-        rating = RATINGS.AVERAGE.label;
-      }
+      let rating = RATINGS.POOR.label;
       if (value > RATINGS.GOOD.minValue) {
         rating = RATINGS.GOOD.label;
+      } else if (value > RATINGS.AVERAGE.minValue) {
+        rating = RATINGS.AVERAGE.label;
       }
 
       return rating;
