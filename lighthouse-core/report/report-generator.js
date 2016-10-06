@@ -101,7 +101,7 @@ class ReportGenerator {
     Handlebars.registerHelper('getItemRating', getItemRating);
 
     Handlebars.registerHelper('showHelpText', value => {
-      return getItemRating(value) === 'good' ? 'hidden': '';
+      return getItemRating(value) === 'good' ? 'hidden' : '';
     });
 
     // Convert numbers to fixed point decimals

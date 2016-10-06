@@ -51,7 +51,7 @@ LighthouseReport.prototype = {
 
   toggleHelpText: function(e) {
     if (e.target.classList.contains('report-section__item-help-toggle')) {
-      const el = e.currentTarget.parentNode.querySelector('.report-section__item-helptext')
+      const el = e.currentTarget.parentNode.querySelector('.report-section__item-helptext');
       el.hidden = !el.hidden;
     }
   },
