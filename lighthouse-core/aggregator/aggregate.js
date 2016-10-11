@@ -38,9 +38,6 @@ class Aggregate {
   static _getTotalWeight(expected) {
     const expectedNames = Object.keys(expected);
     let totalWeight = expectedNames.reduce((last, e) => last + (expected[e].weight || 0), 0);
-    if (totalWeight === 0) {
-      totalWeight = 1;
-    }
     return totalWeight;
   }
 
@@ -160,7 +157,7 @@ class Aggregate {
 
       const subItems = [];
       let overallScore = 0;
-      let maxScore = 0;
+      let maxScore = 1;
 
       // Step through each item in the expected results, and add them
       // to the overall score and add each to the subItems list.
