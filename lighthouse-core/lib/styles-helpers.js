@@ -51,7 +51,7 @@ function stylesheetsThatUsedProperty(stylesheets, propName, propVal) {
  * @param {!Object} parsedContent Parsed CSS content.
  * @return {string} Formatted output
  */
-function getFormattedStyleContent(content, parsedContent) {
+function getFormattedStyleRule(content, parsedContent) {
   const lines = content.split('\n');
 
   const declarationRange = parsedContent.declarationRange;
@@ -82,5 +82,5 @@ ${parsedContent.selector} {
 
 module.exports = {
   stylesheetsThatUsedProperty,
-  getFormattedStyleContent
+  getFormattedStyleRule
 };

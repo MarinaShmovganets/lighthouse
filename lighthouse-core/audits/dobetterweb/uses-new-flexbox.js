@@ -65,7 +65,7 @@ class UsesNewFlexBoxAudit extends Audit {
       sheet.parsedContent.forEach(props => {
         urlList.push({
           url: sheet.header.sourceURL,
-          misc: StyleHelpers.getFormattedStyleContent(sheet.content, props)
+          misc: StyleHelpers.getFormattedStyleRule(sheet.content, props)
         });
       });
     });
