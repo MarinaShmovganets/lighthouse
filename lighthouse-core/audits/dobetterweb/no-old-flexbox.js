@@ -33,7 +33,7 @@ class UsesNewFlexBoxAudit extends Audit {
   static get meta() {
     return {
       category: 'CSS',
-      name: 'uses-new-flexbox',
+      name: 'no-old-flexbox',
       description: 'Site does not use the old CSS flexbox',
       helpText: 'The older spec for CSS Flexbox (<code>display: box</code>) is deprecated and <a href="https://developers.google.com/web/updates/2013/10/Flexbox-layout-isn-t-slow?hl=en" target="_blank">less performant</a>. Consider using the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Using_CSS_flexible_boxes" target="_blank">newer version</a> (<code>display: flex</code>), which does not suffer from the same issues.',
       requiredArtifacts: ['Styles']

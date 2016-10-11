@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const UsesNewFlexBoxAudit = require('../../../audits/dobetterweb/uses-new-flexbox.js');
+const UsesNewFlexBoxAudit = require('../../../audits/dobetterweb/no-old-flexbox.js');
 const assert = require('assert');
 const stylesData = require('../../fixtures/styles-gatherer.json');
 

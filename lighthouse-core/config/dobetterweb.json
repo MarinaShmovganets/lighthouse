@@ -18,9 +18,9 @@
     "../audits/dobetterweb/no-console-time",
     "../audits/dobetterweb/no-datenow",
     "../audits/dobetterweb/no-document-write",
+    "../audits/dobetterweb/no-old-flexbox",
     "../audits/dobetterweb/no-websql",
     "../audits/dobetterweb/uses-http2",
-    "../audits/dobetterweb/uses-new-flexbox",
     "../audits/is-on-https"
   ],
 
@@ -53,7 +53,7 @@
     }, {
       "name": "Using modern CSS features",
       "audits": {
-        "uses-new-flexbox": {
+        "no-old-flexbox": {
           "expectedValue": false
         }
       }
