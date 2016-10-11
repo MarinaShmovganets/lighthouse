@@ -22,71 +22,8 @@
 'use strict';
 
 const Audit = require('../audit');
+const StyleHelpers = require('../../lib/styles-helpers');
 const Formatter = require('../../formatters/formatter');
-
-/**
- * @param {!Array} stylesheets A list of stylesheets used by the page.
- * @param {string=} propName Optional name of the CSS property to filter results
- *     on. If propVal is not specified, all stylesheets that use the property are
- *     returned. Otherwise, stylesheets that use the propName: propVal are returned.
- * @param {string=} propVal Optional value of the CSS property to filter results on.
- * @return {Array} A list of stylesheets that use the CSS property.
- */
-function stylesheetsThatUsedProperty(stylesheets, propName, propVal) {
-  if (!propName && !propVal) {
-    return [];
-  }
-
-  return stylesheets.slice(0).filter(s => {
-    s.parsedContent = s.parsedContent.filter(item => {
-      const usedName = item.property.name === propName;
-      const usedVal = item.property.val.indexOf(propVal) === 0; // val should start with needle
-      if (propName && !propVal) {
-        return usedName;
-      } else if (!propName && propVal) {
-        return usedVal;
-      } else if (propName && propVal) {
-        return usedName && usedVal;
-      }
-      return false;
-    });
-    return s.parsedContent.length > 0;
-  });
-}
-
-/**
- * @param {!string} content CSS text content.
- * @param {!Object} parsedContent Parsed CSS content.
- * @return {string} Formatted output
- */
-function getFormattedStyleContent(content, parsedContent) {
-  const lines = content.split('\n');
-
-  const declarationRange = parsedContent.declarationRange;
-  const lineNum = declarationRange.startLine;
-  const start = declarationRange.startColumn;
-  const end = declarationRange.endColumn;
-
-  let rule;
-  if (declarationRange.startLine === declarationRange.endLine) {
-    rule = lines[lineNum].substring(start, end);
-  } else {
-    const startLine = lines[declarationRange.startLine];
-    const endLine = lines[declarationRange.endLine];
-    rule = lines.slice(startLine, endLine).reduce((prev, line) => {
-      prev.push(line.substring(
-          declarationRange.startColumn, declarationRange.endColumn));
-      return prev;
-    }, []).join('\n');
-  }
-
-  const block = `
-${parsedContent.selector} {
-  ${rule}
-} (line: ${lineNum}, row: ${start}, col: ${end})`;
-
-  return block;
-}
 
 class UsesNewFlexBoxAudit extends Audit {
 
@@ -117,16 +54,18 @@ class UsesNewFlexBoxAudit extends Audit {
     }
 
     // TODO: consider usage of vendor prefixes
-    // TODO: consider usage of other properties (e.g. box-flex)
-    const sheetsUsingDisplayBox = stylesheetsThatUsedProperty(
-        artifacts.Styles, 'display', 'box');
+    // TODO: consider usage of other older properties from
+    // https://www.w3.org/TR/2009/WD-css3-flexbox-20090723/
+    // (e.g. box-flex, box-orient, box-flex-group, display: flexbox (2011 version))
+    const sheetsUsingDisplayBox = StyleHelpers.stylesheetsThatUsedProperty(
+        artifacts.Styles, 'display', 'box'); // 2009 version
 
     const urlList = [];
     sheetsUsingDisplayBox.forEach(sheet => {
       sheet.parsedContent.forEach(props => {
         urlList.push({
           url: sheet.header.sourceURL,
-          misc: getFormattedStyleContent(sheet.content, props)
+          misc: StyleHelpers.getFormattedStyleContent(sheet.content, props)
         });
       });
     });
