@@ -52,6 +52,8 @@ class NoOldFlexboxAudit extends Audit {
         rawValue: -1,
         debugString: 'Styles gatherer did not run'
       });
+    } else if (artifacts.Styles.rawValue === -1) {
+      return NoOldFlexboxAudit.generateAuditResult(artifacts.Styles);
     }
 
     // TODO: consider usage of vendor prefixes

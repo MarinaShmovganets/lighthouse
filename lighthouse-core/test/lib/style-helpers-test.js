@@ -35,7 +35,7 @@ describe('style helpers', () => {
       assert.equal(results.length, 1, 'accepts CSS property name/value pair');
 
       results = StyleHelpers.filterStylesheetsByUsage(
-          stylesheets, 'display');
+          stylesheets, 'color');
       assert.equal(results.length, 2, 'accepts only CSS property name');
 
       results = StyleHelpers.filterStylesheetsByUsage(
@@ -55,6 +55,14 @@ describe('style helpers', () => {
       results = StyleHelpers.filterStylesheetsByUsage(
           stylesheets, null, 'someunknownval');
       assert.equal(results.length, 0, 'CSS property value not found');
+
+      results = StyleHelpers.filterStylesheetsByUsage(
+          stylesheets, 'someunknownprop', 'box');
+      assert.equal(results.length, 0, 'unknown CSS property with known value not found');
+
+      results = StyleHelpers.filterStylesheetsByUsage(
+          stylesheets, 'display', 'someunknownval');
+      assert.equal(results.length, 0, 'known CSS property with unknown value not found');
     });
   });
 

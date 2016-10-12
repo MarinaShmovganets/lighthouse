@@ -22,8 +22,19 @@ const stylesData = require('../../fixtures/styles-gatherer.json');
 /* eslint-env mocha */
 
 describe('Page does not use old CSS flexbox', () => {
-  it('fails when no input present', () => {
+  it('it returns error value when no input present', () => {
     const auditResult = NoOldFlexboxAudit.audit({});
+    assert.equal(auditResult.rawValue, -1);
+    assert.ok(auditResult.debugString);
+  });
+
+  it('debugString is present if gatherer fails', () => {
+    const auditResult = NoOldFlexboxAudit.audit({
+      Styles: {
+        rawValue: -1,
+        debugString: 'No active stylesheets were collected.'
+      }
+    });
     assert.equal(auditResult.rawValue, -1);
     assert.ok(auditResult.debugString);
   });

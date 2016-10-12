@@ -76,10 +76,10 @@ class Styles extends Gatherer {
   }
 
   beginStylesCollect(driver) {
-    driver.sendCommand('DOM.enable');
-    driver.sendCommand('CSS.enable');
     driver.on('CSS.styleSheetAdded', this._onStyleSheetAdded);
     driver.on('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
+    return driver.sendCommand('DOM.enable')
+      .then(_ => driver.sendCommand('CSS.enable'));
   }
 
   endStylesCollect(driver) {
@@ -100,25 +100,22 @@ class Styles extends Gatherer {
           styleHeader.content = content.text;
           styleHeader.parsedContent = getCSSPropsInStyleSheet(
               parser.parse(styleHeader.content, {syntax: 'css'}));
-          return content;
+          return styleHeader;
         });
       });
 
-      Promise.all(contentPromises).then(_ => {
+      Promise.all(contentPromises).then(styleHeaders => {
         driver.off('CSS.styleSheetAdded', this._onStyleSheetAdded);
         driver.off('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
-        driver.sendCommand('CSS.disable');
-        driver.sendCommand('DOM.disable');
-
-        const sheetIds = Object.keys(this._activeStyleHeaders);
-
-        resolve(sheetIds.map(id => this._activeStyleHeaders[id]));
-      });
+        return driver.sendCommand('CSS.disable')
+          .then(_ => driver.sendCommand('DOM.disable'))
+          .then(_ => resolve(styleHeaders));
+      }).catch(err => reject(err));
     });
   }
 
   beforePass(options) {
-    this.beginStylesCollect(options.driver);
+    return this.beginStylesCollect(options.driver);
   }
 
   afterPass(options) {
@@ -136,7 +133,6 @@ class Styles extends Gatherer {
           rawValue: -1,
           debugString: err
         };
-        return;
       });
   }
 }
