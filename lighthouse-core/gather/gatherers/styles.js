@@ -49,7 +49,8 @@ class Styles extends Gatherer {
 
   constructor() {
     super();
-    this._activeStyles = [];
+    this._activeStyleSheetIds = [];
+    this._activeStyleHeaders = {};
     this._onStyleSheetAdded = this.onStyleSheetAdded.bind(this);
     this._onStyleSheetRemoved = this.onStyleSheetRemoved.bind(this);
   }
@@ -61,30 +62,20 @@ class Styles extends Gatherer {
       return;
     }
 
-    const parser = new WebInspector.SCSSParser();
-
-    this.driver.sendCommand('CSS.getStyleSheetText', {
-      styleSheetId: styleHeader.header.styleSheetId
-    }).then(content => {
-      styleHeader.content = content.text;
-      styleHeader.parsedContent = getCSSPropsInStyleSheet(
-          parser.parse(styleHeader.content, {syntax: 'css'}));
-      this._activeStyles.push(styleHeader);
-    });
+    this._activeStyleHeaders[styleHeader.header.styleSheetId] = styleHeader;
+    this._activeStyleSheetIds.push(styleHeader.header.styleSheetId);
   }
 
   onStyleSheetRemoved(styleHeader) {
-    for (let i = 0; i < this._activeStyles.length; ++i) {
-      const header = this._activeStyles[i].header;
-      if (header.styleSheetId === styleHeader.styleSheetId) {
-        this._activeStyles.splice(i, 1);
-        break;
-      }
+    delete this._activeStyleHeaders[styleHeader.styleSheetId];
+
+    const idx = this._activeStyleSheetIds.indexOf(styleHeader.styleSheetId);
+    if (idx !== -1) {
+      this._activeStyleSheetIds.splice(idx, 1);
     }
   }
 
   beginStylesCollect(driver) {
-    this.driver = driver;
     driver.sendCommand('DOM.enable');
     driver.sendCommand('CSS.enable');
     driver.on('CSS.styleSheetAdded', this._onStyleSheetAdded);
@@ -93,16 +84,35 @@ class Styles extends Gatherer {
 
   endStylesCollect(driver) {
     return new Promise((resolve, reject) => {
-      if (!driver || !this._activeStyles.length) {
+      if (!driver || !this._activeStyleSheetIds.length) {
         reject('No active stylesheets were collected.');
         return;
       }
 
-      driver.off('CSS.styleSheetAdded', this._onStyleSheetAdded);
-      driver.off('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
-      driver.sendCommand('CSS.disable');
+      const parser = new WebInspector.SCSSParser();
 
-      resolve(this._activeStyles);
+      // Get text content of each style.
+      const contentPromises = this._activeStyleSheetIds.map(sheetId => {
+        return driver.sendCommand('CSS.getStyleSheetText', {
+          styleSheetId: sheetId
+        }).then(content => {
+          const styleHeader = this._activeStyleHeaders[sheetId];
+          styleHeader.content = content.text;
+          styleHeader.parsedContent = getCSSPropsInStyleSheet(
+              parser.parse(styleHeader.content, {syntax: 'css'}));
+          return content;
+        });
+      });
+
+      Promise.all(contentPromises).then(_ => {
+        driver.off('CSS.styleSheetAdded', this._onStyleSheetAdded);
+        driver.off('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
+        driver.sendCommand('CSS.disable');
+
+        const sheetIds = Object.keys(this._activeStyleHeaders);
+
+        resolve(sheetIds.map(id => this._activeStyleHeaders[id]));
+      });
     });
   }
 
