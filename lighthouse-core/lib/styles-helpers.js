@@ -70,17 +70,16 @@ function getFormattedStyleRule(content, parsedContent) {
   const lines = content.split('\n');
 
   const declarationRange = parsedContent.declarationRange;
-  const lineNum = declarationRange.startLine;
+  const startLine = declarationRange.startLine;
+  const endLine = declarationRange.endLine;
   const start = declarationRange.startColumn;
   const end = declarationRange.endColumn;
 
   let rule;
-  if (declarationRange.startLine === declarationRange.endLine) {
-    rule = lines[lineNum].substring(start, end);
+  if (startLine === endLine) {
+    rule = lines[startLine].substring(start, end);
   } else {
-    const startLine = lines[declarationRange.startLine];
-    const endLine = lines[declarationRange.endLine];
-    rule = lines.slice(startLine, endLine).reduce((prev, line) => {
+    rule = lines.slice(lines[startLine], lines[endLine]).reduce((prev, line) => {
       prev.push(line.substring(start, end));
       return prev;
     }, []).join('\n');
@@ -89,7 +88,7 @@ function getFormattedStyleRule(content, parsedContent) {
   const block = `
 ${parsedContent.selector} {
   ${rule}
-} (line: ${lineNum}, row: ${start}, col: ${end})`;
+} (line: ${startLine}, row: ${start}, col: ${end})`;
 
   return block;
 }
