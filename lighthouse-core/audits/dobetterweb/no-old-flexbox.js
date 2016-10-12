@@ -46,8 +46,7 @@ class NoOldFlexboxAudit extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    if (typeof artifacts.Styles === 'undefined' ||
-        artifacts.Styles === -1) {
+    if (typeof artifacts.Styles === 'undefined') {
       return NoOldFlexboxAudit.generateAuditResult({
         rawValue: -1,
         debugString: 'Styles gatherer did not run'

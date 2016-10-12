@@ -84,7 +84,7 @@ class Styles extends Gatherer {
 
   endStylesCollect(driver) {
     return new Promise((resolve, reject) => {
-      if (!driver || !this._activeStyleSheetIds.length) {
+      if (!this._activeStyleSheetIds.length) {
         reject('No active stylesheets were collected.');
         return;
       }

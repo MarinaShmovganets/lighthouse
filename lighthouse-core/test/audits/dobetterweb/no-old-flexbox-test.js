@@ -29,14 +29,15 @@ describe('Page does not use old CSS flexbox', () => {
   });
 
   it('debugString is present if gatherer fails', () => {
+    const debugString = 'No active stylesheets were collected.';
     const auditResult = NoOldFlexboxAudit.audit({
       Styles: {
         rawValue: -1,
-        debugString: 'No active stylesheets were collected.'
+        debugString: debugString
       }
     });
     assert.equal(auditResult.rawValue, -1);
-    assert.ok(auditResult.debugString);
+    assert.equal(auditResult.debugString, debugString);
   });
 
   it('fails when display: box is used', () => {

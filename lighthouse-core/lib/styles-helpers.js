@@ -25,7 +25,7 @@
  *     on. If propVal is not specified, all stylesheets that use the property are
  *     returned. Otherwise, stylesheets that use the propName: propVal are returned.
  * @param {string=} propVal Optional value of the CSS property to filter results on.
- * @return {Array} A list of stylesheets that use the CSS property.
+ * @return {!Array} A list of stylesheets that use the CSS property.
  */
 function filterStylesheetsByUsage(stylesheets, propName, propVal) {
   if (!propName && !propVal) {
@@ -81,8 +81,7 @@ function getFormattedStyleRule(content, parsedContent) {
     const startLine = lines[declarationRange.startLine];
     const endLine = lines[declarationRange.endLine];
     rule = lines.slice(startLine, endLine).reduce((prev, line) => {
-      prev.push(line.substring(
-          declarationRange.startColumn, declarationRange.endColumn));
+      prev.push(line.substring(start, end));
       return prev;
     }, []).join('\n');
   }
