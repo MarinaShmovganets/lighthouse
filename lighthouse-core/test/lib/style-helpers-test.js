@@ -62,12 +62,9 @@ describe('style helpers', () => {
     it('formats output correctly', () => {
       const results = StyleHelpers.filterStylesheetsByUsage(
           stylesheets, 'display', 'box');
-      const [content, parsedContent] = [
-        results[0].content,
-        results[0].parsedContent[0]
-      ];
 
-      const actual = StyleHelpers.getFormattedStyleRule(content, parsedContent);
+      const actual = StyleHelpers.getFormattedStyleRule(
+          results[0].content, results[0].parsedContent[0]);
       const expected = `
 p,div {
   display: box;
