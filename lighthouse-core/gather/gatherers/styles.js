@@ -27,7 +27,7 @@ const WebInspector = require('../../lib/web-inspector');
 const Gatherer = require('./gatherer');
 
 /**
- * @param {!Artifacts} parseTree
+ * @param {!gonzales.AST} parseTree
  * @return {!Array}
  */
 function getCSSPropsInStyleSheet(parseTree) {
@@ -83,35 +83,35 @@ class Styles extends Gatherer {
     }
   }
 
-  beginStylesCollect(opts) {
-    this.driver = opts.driver;
-    this.driver.sendCommand('DOM.enable');
-    this.driver.sendCommand('CSS.enable');
-    this.driver.on('CSS.styleSheetAdded', this._onStyleSheetAdded);
-    this.driver.on('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
+  beginStylesCollect(driver) {
+    this.driver = driver;
+    driver.sendCommand('DOM.enable');
+    driver.sendCommand('CSS.enable');
+    driver.on('CSS.styleSheetAdded', this._onStyleSheetAdded);
+    driver.on('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
   }
 
-  endStylesCollect() {
+  endStylesCollect(driver) {
     return new Promise((resolve, reject) => {
-      if (!this.driver || !this._activeStyles.length) {
+      if (!driver || !this._activeStyles.length) {
         reject('No active stylesheets were collected.');
         return;
       }
 
-      this.driver.off('CSS.styleSheetAdded', this._onStyleSheetAdded);
-      this.driver.off('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
-      this.driver.sendCommand('CSS.disable');
+      driver.off('CSS.styleSheetAdded', this._onStyleSheetAdded);
+      driver.off('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
+      driver.sendCommand('CSS.disable');
 
       resolve(this._activeStyles);
     });
   }
 
   beforePass(options) {
-    this.beginStylesCollect(options);
+    this.beginStylesCollect(options.driver);
   }
 
-  afterPass() {
-    return this.endStylesCollect()
+  afterPass(options) {
+    return this.endStylesCollect(options.driver)
       .then(stylesheets => {
         // Want unique stylesheets. Remove those with the same text content.
         // An example where stylesheets are the same is if the user includes a
@@ -120,8 +120,11 @@ class Styles extends Gatherer {
         // root that share the same <style> tag.
         const map = new Map(stylesheets.map(s => [s.content, s]));
         this.artifact = Array.from(map.values());
-      }, _ => {
-        this.artifact = -1;
+      }, err => {
+        this.artifact = {
+          rawValue: -1,
+          debugString: err
+        };
         return;
       });
   }

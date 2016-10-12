@@ -16,7 +16,8 @@
  */
 
 /**
- * @fileoverview Audit a page to see if it is using the display: box flexbox.
+ * @fileoverview Audit a page to see if it is using the obsolete
+ *     `display: box` flexbox.
  */
 
 'use strict';
@@ -25,7 +26,7 @@ const Audit = require('../audit');
 const StyleHelpers = require('../../lib/styles-helpers');
 const Formatter = require('../../formatters/formatter');
 
-class UsesNewFlexBoxAudit extends Audit {
+class NoOldFlexboxAudit extends Audit {
 
   /**
    * @return {!AuditMeta}
@@ -47,7 +48,7 @@ class UsesNewFlexBoxAudit extends Audit {
   static audit(artifacts) {
     if (typeof artifacts.Styles === 'undefined' ||
         artifacts.Styles === -1) {
-      return UsesNewFlexBoxAudit.generateAuditResult({
+      return NoOldFlexboxAudit.generateAuditResult({
         rawValue: -1,
         debugString: 'Styles gatherer did not run'
       });
@@ -57,7 +58,7 @@ class UsesNewFlexBoxAudit extends Audit {
     // TODO: consider usage of other older properties from
     // https://www.w3.org/TR/2009/WD-css3-flexbox-20090723/
     // (e.g. box-flex, box-orient, box-flex-group, display: flexbox (2011 version))
-    const sheetsUsingDisplayBox = StyleHelpers.stylesheetsThatUsedProperty(
+    const sheetsUsingDisplayBox = StyleHelpers.filterStylesheetsByUsage(
         artifacts.Styles, 'display', 'box'); // 2009 version
 
     const urlList = [];
@@ -70,7 +71,7 @@ class UsesNewFlexBoxAudit extends Audit {
       });
     });
 
-    return UsesNewFlexBoxAudit.generateAuditResult({
+    return NoOldFlexboxAudit.generateAuditResult({
       rawValue: sheetsUsingDisplayBox.length === 0,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
@@ -80,4 +81,4 @@ class UsesNewFlexBoxAudit extends Audit {
   }
 }
 
-module.exports = UsesNewFlexBoxAudit;
+module.exports = NoOldFlexboxAudit;

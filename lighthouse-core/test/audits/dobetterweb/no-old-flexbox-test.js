@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const UsesNewFlexBoxAudit = require('../../../audits/dobetterweb/no-old-flexbox.js');
+const NoOldFlexboxAudit = require('../../../audits/dobetterweb/no-old-flexbox.js');
 const assert = require('assert');
 const stylesData = require('../../fixtures/styles-gatherer.json');
 
@@ -23,13 +23,13 @@ const stylesData = require('../../fixtures/styles-gatherer.json');
 
 describe('Page does not use old CSS flexbox', () => {
   it('fails when no input present', () => {
-    const auditResult = UsesNewFlexBoxAudit.audit({});
+    const auditResult = NoOldFlexboxAudit.audit({});
     assert.equal(auditResult.rawValue, -1);
     assert.ok(auditResult.debugString);
   });
 
   it('fails when display: box is used', () => {
-    const auditResult = UsesNewFlexBoxAudit.audit({
+    const auditResult = NoOldFlexboxAudit.audit({
       Styles: stylesData
     });
     assert.equal(auditResult.rawValue, false);
@@ -40,7 +40,7 @@ describe('Page does not use old CSS flexbox', () => {
   });
 
   it('passes when display: box is not used', () => {
-    const auditResult = UsesNewFlexBoxAudit.audit({
+    const auditResult = NoOldFlexboxAudit.audit({
       Styles: stylesData.slice(1)
     });
     assert.equal(auditResult.rawValue, true);

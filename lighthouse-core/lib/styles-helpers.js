@@ -17,6 +17,9 @@
 'use strict';
 
 /**
+ * Filters a list of stylesheets for usage of a CSS property name, value,
+ * or name/value pair.
+ *
  * @param {!Array} stylesheets A list of stylesheets used by the page.
  * @param {string=} propName Optional name of the CSS property to filter results
  *     on. If propVal is not specified, all stylesheets that use the property are
@@ -24,15 +27,20 @@
  * @param {string=} propVal Optional value of the CSS property to filter results on.
  * @return {Array} A list of stylesheets that use the CSS property.
  */
-function stylesheetsThatUsedProperty(stylesheets, propName, propVal) {
+function filterStylesheetsByUsage(stylesheets, propName, propVal) {
   if (!propName && !propVal) {
     return [];
   }
 
-  return stylesheets.slice(0).filter(s => {
+  // Create deep clone of arrays so multiple calls to filterStylesheetsByUsage
+  // don't alter the original artifacts in stylesheets arg.
+  const deepClone = stylesheets.map(sheet => Object.assign({}, sheet));
+
+  return deepClone.filter(s => {
     s.parsedContent = s.parsedContent.filter(item => {
       const usedName = item.property.name === propName;
       const usedVal = item.property.val.indexOf(propVal) === 0; // val should start with needle
+      // Allow search by css property name, a value, or name/value pair.
       if (propName && !propVal) {
         return usedName;
       } else if (!propName && propVal) {
@@ -47,8 +55,15 @@ function stylesheetsThatUsedProperty(stylesheets, propName, propVal) {
 }
 
 /**
+ * Returns a formatted snippet of CSS
+ *
+ *   Example:
+ *     div {
+ *       display: box;
+ *     } (line: 1, row: 2, col: 3)
+ *
  * @param {!string} content CSS text content.
- * @param {!Object} parsedContent Parsed CSS content.
+ * @param {!Object} parsedContent The parsed version content.
  * @return {string} Formatted output
  */
 function getFormattedStyleRule(content, parsedContent) {
@@ -81,6 +96,6 @@ ${parsedContent.selector} {
 }
 
 module.exports = {
-  stylesheetsThatUsedProperty,
+  filterStylesheetsByUsage,
   getFormattedStyleRule
 };
