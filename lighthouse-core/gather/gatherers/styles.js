@@ -34,9 +34,9 @@ function getCSSPropsInStyleSheet(parseTree) {
   let results = [];
 
   parseTree.traverseByType('declaration', function(node, index, parent) {
-    const [name, val] = node.toString().split(':').map(item => item.trim());
+    const keyVal = node.toString().split(':').map(item => item.trim());
     results.push({
-      property: {name, val},
+      property: {name: keyVal[0], val: keyVal[1]},
       declarationRange: node.declarationRange,
       selector: parent.selectors.toString()
     });
@@ -108,6 +108,7 @@ class Styles extends Gatherer {
         driver.off('CSS.styleSheetAdded', this._onStyleSheetAdded);
         driver.off('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
         driver.sendCommand('CSS.disable');
+        driver.sendCommand('DOM.disable');
 
         const sheetIds = Object.keys(this._activeStyleHeaders);
 
