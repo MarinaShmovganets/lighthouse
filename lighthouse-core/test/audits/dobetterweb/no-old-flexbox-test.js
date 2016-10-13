@@ -48,7 +48,7 @@ describe('Page does not use old CSS flexbox', () => {
     assert.equal(auditResult.extendedInfo.value.length, 2);
     assert.equal(auditResult.extendedInfo.value.length, 2);
     assert.equal(auditResult.extendedInfo.value[0].url, stylesData[0].header.sourceURL);
-    assert.ok(auditResult.extendedInfo.value[0].misc.match(/display\: box/));
+    assert.ok(auditResult.extendedInfo.value[0].code.match(/display\: box/));
   });
 
   it('passes when display: box is not used', () => {

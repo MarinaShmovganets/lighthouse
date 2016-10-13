@@ -63,6 +63,11 @@ class UsesHTTP2Audit extends Audit {
       const sameHost = requestHost === finalHost;
       const notH2 = /HTTP\/[01][\.\d]?/i.test(record.protocol);
       return sameHost && notH2;
+    }).map(record => {
+      return Object.assign({
+        label: record.protocol,
+        url: record.url
+      }, record);
     });
 
     const displayValue = (resources.length ?

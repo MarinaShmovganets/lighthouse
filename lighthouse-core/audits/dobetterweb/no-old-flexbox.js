@@ -65,9 +65,11 @@ class NoOldFlexboxAudit extends Audit {
     const urlList = [];
     sheetsUsingDisplayBox.forEach(sheet => {
       sheet.parsedContent.forEach(props => {
+        const formattedStyleRule = StyleHelpers.getFormattedStyleRule(sheet.content, props);
         urlList.push({
           url: sheet.header.sourceURL,
-          misc: StyleHelpers.getFormattedStyleRule(sheet.content, props)
+          label: formattedStyleRule.location,
+          code: formattedStyleRule.styleRule
         });
       });
     });

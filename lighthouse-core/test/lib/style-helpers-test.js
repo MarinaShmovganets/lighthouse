@@ -73,12 +73,12 @@ describe('style helpers', () => {
 
       const actual = StyleHelpers.getFormattedStyleRule(
           results[0].content, results[0].parsedContent[0]);
-      const expected = `
-p,div {
+      const expected = `p,div {
   display: box;
-} (line: 8, row: 4, col: 17)`;
+}`;
 
-      assert.equal(actual, expected);
+      assert.equal(actual.location, 'line: 8, row: 4, col: 17');
+      assert.equal(actual.styleRule, expected);
     });
   });
 });

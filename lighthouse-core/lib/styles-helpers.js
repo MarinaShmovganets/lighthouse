@@ -55,21 +55,17 @@ function filterStylesheetsByUsage(stylesheets, propName, propVal) {
 }
 
 /**
- * Returns a formatted snippet of CSS
- *
- *   Example:
- *     div {
- *       display: box;
- *     } (line: 1, row: 2, col: 3)
+ * Returns a formatted snippet of CSS and the location of its use.
  *
  * @param {!string} content CSS text content.
  * @param {!Object} parsedContent The parsed version content.
- * @return {string} Formatted output
+ * @return {!Object} Formatted output.
  */
 function getFormattedStyleRule(content, parsedContent) {
   const lines = content.split('\n');
 
   const declarationRange = parsedContent.declarationRange;
+
   const startLine = declarationRange.startLine;
   const endLine = declarationRange.endLine;
   const start = declarationRange.startColumn;
@@ -79,8 +75,10 @@ function getFormattedStyleRule(content, parsedContent) {
   if (startLine === endLine) {
     rule = lines[startLine].substring(start, end);
   } else {
-    rule = lines.slice(lines[startLine], lines[endLine]).reduce((prev, line) => {
-      prev.push(line.substring(start, end));
+    // If css property value spans multiple lines, include all of them so it's
+    // obvious where the value was used.
+    rule = lines.slice(startLine, endLine + 1).reduce((prev, line) => {
+      prev.push(line);
       return prev;
     }, []).join('\n');
   }
@@ -88,9 +86,12 @@ function getFormattedStyleRule(content, parsedContent) {
   const block = `
 ${parsedContent.selector} {
   ${rule}
-} (line: ${startLine}, row: ${start}, col: ${end})`;
+}`;
 
-  return block;
+  return {
+    styleRule: block.trim(),
+    location: `line: ${startLine}, row: ${start}, col: ${end}`
+  };
 }
 
 module.exports = {
