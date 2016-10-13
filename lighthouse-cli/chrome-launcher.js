@@ -50,7 +50,8 @@ module.exports = class Launcher {
     if (process.platform === 'linux') {
       flags.push('--disable-setuid-sandbox');
     }
-
+    // open about:blank as starting page rather than NTP
+    flags.push('about:blank');
     return flags;
   }
 
