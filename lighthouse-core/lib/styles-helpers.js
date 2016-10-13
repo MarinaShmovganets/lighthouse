@@ -59,7 +59,7 @@ function filterStylesheetsByUsage(stylesheets, propName, propVal) {
  *
  * @param {!string} content CSS text content.
  * @param {!Object} parsedContent The parsed version content.
- * @return {!Object} Formatted output.
+ * @return {{styleRule: string, location: string}} Formatted output.
  */
 function getFormattedStyleRule(content, parsedContent) {
   const lines = content.split('\n');

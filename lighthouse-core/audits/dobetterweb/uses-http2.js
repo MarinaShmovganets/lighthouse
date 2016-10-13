@@ -66,7 +66,7 @@ class UsesHTTP2Audit extends Audit {
     }).map(record => {
       return Object.assign({
         label: record.protocol,
-        url: record.url
+        url: record.url // .url is a getter and not copied over for the assign.
       }, record);
     });
 
