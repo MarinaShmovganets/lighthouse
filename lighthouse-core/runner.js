@@ -128,6 +128,11 @@ class Runner {
           generatedTime: (new Date()).toJSON(),
           initialUrl: opts.initialUrl,
           url: opts.url,
+          emulation: {
+            networkThrottle: driver.getNetworkThrottle(),
+            cpuThrottle: driver.getCpuThrottle(),
+            device: driver.getDeviceEmulation(),
+          },
           audits: formattedAudits,
           aggregations
         };

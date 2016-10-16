@@ -60,6 +60,53 @@ limitations under the License.
             </li>
             {{/each}}
           </ul>
+
+          <ul class="menu__nav menu__nav--emulation">
+            {{#if emulation.device}}
+              {{#with emulation.device}}
+                <li class="menu__nav-item">
+                  <a class="menu__link" href="#">
+                    <span class="u-block">Device:</span>
+
+                    <ul>
+                      <li>Screen: {{ screenWidth }} x {{ screenHeight }}</li>
+                      <li>Orientation: {{ screenOrientation.angle }}</li>
+                    </ul>
+                  </a>
+                </li>
+              {{/with}}
+            {{/if}}
+
+            {{#if emulation.networkThrottle}}
+              {{#with emulation.networkThrottle}}
+                <li class="menu__nav-item">
+                  <a class="menu__link" href="#">
+                    <span class="u-block">Network:</span>
+
+                    <ul>
+                      <li>Latency: {{ latency }}</li>
+                      <li>downloadThroughput: {{ toMbps downloadThroughput }} Mbps</li>
+                      <li>uploadThroughput: {{ toMbps uploadThroughput }} Mbps</li>
+                    </ul>
+                  </a>
+                </li>
+              {{/with}}
+            {{/if}}
+
+            {{#if emulation.cpuThrottle}}
+              {{#with emulation.cpuThrottle}}
+                <li class="menu__nav-item">
+                  <a class="menu__link" href="#">
+                    <span class="u-block">CPU:</span>
+
+                    <ul>
+                      <li>Rate: {{ rate }}</li>
+                    </ul>
+                  </a>
+                </li>
+              {{/with}}
+            {{/if}}
+          </ul>
         </div>
       </div>
 

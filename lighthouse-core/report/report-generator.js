@@ -104,6 +104,14 @@ class ReportGenerator {
       }
       return number;
     });
+
+    Handlebars.registerHelper('toMbps', number => {
+      if (number && number.toFixed) {
+        return (number / 1024 / 1024 * 8).toFixed(2);
+      }
+
+      return number;
+    });
   }
 
   /**
@@ -223,6 +231,7 @@ class ReportGenerator {
       generatedTime: this._formatTime(results.generatedTime),
       css: this.getReportCSS(inline),
       script: this.getReportJS(inline),
+      emulation: results.emulation,
       aggregations: results.aggregations,
       auditsByCategory: this._createPWAAuditsByCategory(results.aggregations)
     });

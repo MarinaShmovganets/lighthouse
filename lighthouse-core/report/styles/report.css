@@ -535,6 +535,23 @@ a {
   font-size: 70%;
 }
 
+.menu__nav--emulation {
+  margin-top: 50px;
+}
+
+.menu__nav--emulation .menu__nav-item {
+  height: auto;
+  line-height: normal;
+}
+
+.menu__nav--emulation .menu__link {
+  flex-direction: column;
+}
+
+.u-block {
+  display: block;
+}
+
 @media print {
   .report {
     box-shadow: none;
