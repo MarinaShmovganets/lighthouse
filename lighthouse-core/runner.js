@@ -29,12 +29,6 @@ class Runner {
     // Clean opts input.
     opts.flags = opts.flags || {};
 
-    // Default mobile emulation and page loading to true.
-    // The extension will switch these off initially.
-    if (typeof opts.flags.mobile === 'undefined') {
-      opts.flags.mobile = true;
-    }
-
     const config = opts.config;
 
     // save the initialUrl provided by the user
@@ -134,6 +128,11 @@ class Runner {
           generatedTime: (new Date()).toJSON(),
           initialUrl: opts.initialUrl,
           url: opts.url,
+          emulation: {
+            networkThrottle: driver.getNetworkThrottle(),
+            cpuThrottle: driver.getCpuThrottle(),
+            device: driver.getDeviceEmulation(),
+          },
           audits: formattedAudits,
           aggregations
         };

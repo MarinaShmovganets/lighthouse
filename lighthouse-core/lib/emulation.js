@@ -63,6 +63,13 @@ const NO_THROTTLING_METRICS = {
   offline: false
 };
 
+const NO_CPU_THROTTLE_METRICS = {
+  rate: 1
+};
+const CPU_THROTTLE_METRICS = {
+  rate: 5
+};
+
 function enableNexus5X(driver) {
   /**
    * Finalizes touch emulation by enabling `"ontouchstart" in window` feature detect
@@ -98,24 +105,51 @@ function enableNexus5X(driver) {
     driver.sendCommand('Page.addScriptToEvaluateOnLoad', {
       scriptSource: '(' + injectedTouchEventsFunction.toString() + ')()'
     })
-  ]);
+  ]).then(_ => {
+    return Object.assign({}, NEXUS5X_EMULATION_METRICS);
+  });
 }
 
 function enableNetworkThrottling(driver) {
-  return driver.sendCommand('Network.emulateNetworkConditions', TYPICAL_MOBILE_THROTTLING_METRICS);
+  return driver.sendCommand('Network.emulateNetworkConditions', TYPICAL_MOBILE_THROTTLING_METRICS)
+    .then(_ => {
+      return Object.assign({}, TYPICAL_MOBILE_THROTTLING_METRICS);
+    });
 }
 
 function disableNetworkThrottling(driver) {
-  return driver.sendCommand('Network.emulateNetworkConditions', NO_THROTTLING_METRICS);
+  return driver.sendCommand('Network.emulateNetworkConditions', NO_THROTTLING_METRICS)
+    .then(_ => {
+      return Object.assign({}, NO_THROTTLING_METRICS);
+    });
 }
 
 function goOffline(driver) {
-  return driver.sendCommand('Network.emulateNetworkConditions', OFFLINE_METRICS);
+  return driver.sendCommand('Network.emulateNetworkConditions', OFFLINE_METRICS)
+    .then(_ => {
+      return Object.assign({}, OFFLINE_METRICS);
+    });
+}
+
+function enableCPUThrottling(driver) {
+  return driver.sendCommand('Emulation.setCPUThrottlingRate', CPU_THROTTLE_METRICS)
+    .then(_ => {
+      return Object.assign({}, CPU_THROTTLE_METRICS);
+    });
+}
+
+function disableCPUThrottling(driver) {
+  return driver.sendCommand('Emulation.setCPUThrottlingRate', NO_CPU_THROTTLE_METRICS)
+    .then(_ => {
+      return Object.assign({}, NO_CPU_THROTTLE_METRICS);
+    });
 }
 
 module.exports = {
   enableNexus5X,
   enableNetworkThrottling,
   disableNetworkThrottling,
+  enableCPUThrottling,
+  disableCPUThrottling,
   goOffline
 };

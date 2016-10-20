@@ -52,7 +52,6 @@ const cli = yargs
   })
 
   .group([
-    'mobile',
     'save-assets',
     'save-artifacts',
     'list-all-audits',
@@ -61,7 +60,9 @@ const cli = yargs
     'perf'
   ], 'Configuration:')
   .describe({
-    'mobile': 'Emulates a Nexus 5X',
+    'disable-device-emulation': 'Disable Nexus 5X emulation',
+    'disable-cpu-throttling': 'Disable CPU throttling',
+    'disable-network-throttling': 'Disable network throttling',
     'save-assets': 'Save the trace contents & screenshots to disk',
     'save-artifacts': 'Save all gathered artifacts to disk',
     'list-all-audits': 'Prints a list of all available audits and exits',

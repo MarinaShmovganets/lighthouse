@@ -32,6 +32,10 @@ class Driver {
     this._traceEvents = [];
     this._traceCategories = Driver.traceCategories;
     this._eventEmitter = null;
+
+    this.deviceEmulation = {};
+    this.networkThrottle = {};
+    this.cpuThrottle = {};
   }
 
   static get traceCategories() {
@@ -468,11 +472,55 @@ class Driver {
     });
   }
 
-  beginEmulation() {
-    return Promise.all([
-      emulation.enableNexus5X(this),
-      emulation.enableNetworkThrottling(this)
-    ]);
+  beginEmulation(flags) {
+    let emulations = [];
+
+    if (!flags.disableDeviceEmulation) {
+      emulations.push(
+        emulation.enableNexus5X(this)
+          .then(result => {
+            this.deviceEmulation = result;
+
+            return result;
+          })
+      );
+    }
+
+    if (!flags.disableNetworkThrottling) {
+      emulations.push(
+        emulation.enableNetworkThrottling(this)
+          .then(result => {
+            this.networkThrottle = result;
+
+            return result;
+          })
+      );
+    }
+
+    if (!flags.disableCpuThrottling) {
+      emulations.push(
+        emulation.enableCPUThrottling(this)
+          .then(result => {
+            this.cpuThrottle = result;
+
+            return result;
+          })
+      );
+    }
+
+    return Promise.all(emulations);
+  }
+
+  getDeviceEmulation() {
+    return this.deviceEmulation;
+  }
+
+  getNetworkThrottle() {
+    return this.networkThrottle;
+  }
+
+  getCpuThrottle() {
+    return this.cpuThrottle;
   }
 
   /**
@@ -485,7 +533,7 @@ class Driver {
 
   /**
    * Enable internet connection, using emulated mobile settings if
-   * `options.flags.mobile` is true.
+   * `options.flags.disableNetworkThrottling` is false.
    * @param {!Object} options
    * @return {!Promise}
    */
