@@ -186,18 +186,18 @@ class Driver {
   }
 
   getServiceWorkerRegistrations() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.once('ServiceWorker.workerRegistrationUpdated', data => {
-        this.sendCommand('ServiceWorker.disable');
-        resolve(data);
+        this.sendCommand('ServiceWorker.disable')
+          .then(_ => resolve(data), reject);
       });
 
-      this.sendCommand('ServiceWorker.enable');
+      this.sendCommand('ServiceWorker.enable').catch(reject);
     });
   }
 
   /**
-   * Checks all service workers and see if any duplications are running
+   * Rejects if any open tabs would share a service worker with the target URL.
    * @param {!string} pageUrl
    * @return {!Promise}
    */
@@ -225,20 +225,19 @@ class Driver {
           return origin === swOrigin;
         })
         .forEach(reg => {
-          // Check if any of the service workers are the same (registration id)
-          // Check if the controlledClients are bigger than 1 and it's not the active tab
           swHasMoreThanOneClient = !!versions.find(ver => {
+            // Check if any of the service workers are the same (registration id)
             if (ver.registrationId !== reg.registrationId) {
               return false;
             }
 
+            // Check if the controlledClients are bigger than 1 and it's not the active tab
             if (!ver.controlledClients || ver.controlledClients.length === 0) {
               return false;
             }
 
             const multipleTabsAttached = ver.controlledClients.length > 1;
-            const oneInactiveTabIsAttached = ver.controlledClients.length === 1 &&
-              !ver.controlledClients.find(client => client === activeTabId);
+            const oneInactiveTabIsAttached = ver.controlledClients[0] !== activeTabId;
 
             return multipleTabsAttached || oneInactiveTabIsAttached;
           });

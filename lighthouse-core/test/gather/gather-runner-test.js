@@ -87,7 +87,9 @@ describe('GatherRunner', function() {
       enableRuntimeEvents() {
         return Promise.resolve();
       },
-      checkForMultipleTabsAttached() {},
+      checkForMultipleTabsAttached() {
+        return Promise.resolve();
+      },
       cleanAndDisableBrowserCaches() {
         return Promise.resolve();
       },
@@ -115,7 +117,9 @@ describe('GatherRunner', function() {
       enableRuntimeEvents() {
         return Promise.resolve();
       },
-      checkForMultipleTabsAttached() {},
+      checkForMultipleTabsAttached() {
+        return Promise.resolve();
+      },
       cleanAndDisableBrowserCaches() {
         return Promise.resolve();
       },

@@ -220,6 +220,8 @@ function showRuntimeError(err) {
 function handleError(err) {
   if (err.code === 'ECONNREFUSED') {
     showConnectionError();
+  } else if (err.message.toLowerCase().includes('multiple tabs')) {
+    console.error(err.message);
   } else {
     showRuntimeError(err);
   }

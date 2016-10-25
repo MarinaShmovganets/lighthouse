@@ -27,10 +27,10 @@ const path = require('path');
  * 1. Setup
  *   A. driver.connect()
  *   B. GatherRunner.setupDriver()
- *     i. beginEmulation
- *     ii. cleanAndDisableBrowserCaches
- *     iii. clearDataForOrigin
- *     iiii. checkForMultipleTabsAttached
+ *     i. checkForMultipleTabsAttached
+ *     ii. beginEmulation
+ *     iii. cleanAndDisableBrowserCaches
+ *     iiii. clearDataForOrigin
  *
  * 2. For each pass in the config:
  *   A. GatherRunner.beforePass()
@@ -86,10 +86,10 @@ class GatherRunner {
   static setupDriver(driver, options) {
     log.log('status', 'Initializing…');
     // Enable emulation if required.
-    return Promise.resolve(options.flags.mobile && driver.beginEmulation())
+    return driver.checkForMultipleTabsAttached(options.url)
+      .then(_ => options.flags.mobile && driver.beginEmulation())
       .then(_ => driver.enableRuntimeEvents())
       .then(_ => driver.cleanAndDisableBrowserCaches())
-      .then(_ => driver.checkForMultipleTabsAttached(options.url))
       .then(_ => driver.clearDataForOrigin(options.url));
   }
 
