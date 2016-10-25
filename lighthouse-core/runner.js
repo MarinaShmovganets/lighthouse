@@ -16,6 +16,7 @@
  */
 'use strict';
 
+const Driver = require('./gather/drivers/driver.js');
 const GatherRunner = require('./gather/gather-runner');
 const Aggregate = require('./aggregator/aggregate');
 const assetSaver = require('./lib/asset-saver');
@@ -25,7 +26,7 @@ const path = require('path');
 const url = require('url');
 
 class Runner {
-  static run(driver, opts) {
+  static run(connection, opts) {
     // Clean opts input.
     opts.flags = opts.flags || {};
 
@@ -69,7 +70,7 @@ class Runner {
     // to check that there are artifacts specified in the config, and throw if not.
     if (validPassesAndAudits || validArtifactsAndAudits) {
       if (validPassesAndAudits) {
-        opts.driver = driver;
+        opts.driver = opts.driverMock || new Driver(connection);
         // Finally set up the driver to gather.
         run = run.then(_ => GatherRunner.run(config.passes, opts));
       } else if (validArtifactsAndAudits) {
@@ -94,7 +95,7 @@ class Runner {
       }
 
       // Now run the audits.
-      let auditResults = [];
+      const auditResults = [];
       run = run.then(artifacts => config.audits.reduce((chain, audit) => {
         const status = `Evaluating: ${audit.meta.description}`;
         // Run each audit sequentially, the auditResults array has all our fine work
@@ -110,8 +111,9 @@ class Runner {
       // If there are existing audit results, surface those here.
       run = run.then(_ => config.auditResults);
     } else {
-      throw new Error(
+      const err = Error(
           'The config must provide passes and audits, artifacts and audits, or auditResults');
+      return Promise.reject(err);
     }
 
     // Format and aggregate results before returning.
@@ -129,6 +131,8 @@ class Runner {
         }
 
         return {
+          lighthouseVersion: require('../package').version,
+          generatedTime: (new Date()).toJSON(),
           initialUrl: opts.initialUrl,
           url: opts.url,
           audits: formattedAudits,

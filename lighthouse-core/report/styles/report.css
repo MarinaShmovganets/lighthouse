@@ -181,25 +181,18 @@ a {
   font-family: 'Roboto', Arial, sans-serif;
   font-size: 22px;
   font-weight: 400;
-  color: #FFFFFF;
+  color: #fff;
   margin: 0;
   padding: 0;
   line-height: 1.5;
 }
 
-.menu__header-url {
-  opacity: 0.74;
+.menu__header-version {
+  opacity: 0.4;
+  color: #fff;
   font-family: 'Roboto', Arial, sans-serif;
   font-size: 14px;
-  color: #FFFFFF;
-  margin: 0;
-  padding: 0;
   line-height: 1.5;
-  font-weight: 400;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 92%;
 }
 
 .menu__nav {
@@ -265,9 +258,22 @@ a {
   color: #FFF;
 }
 
+.report-body__url {
+  font-family: 'Roboto', Arial, sans-serif;
+  white-space: nowrap;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 400;
+  color: #aaa;
+  padding: 20px 0 10px;
+}
+
+.report-body__url a {
+  color: currentColor;
+}
+
 .report-body__breakdown {
   flex: 1;
-  padding-top: 20px;
   max-width: 100%;
 }
 
@@ -297,7 +303,7 @@ a {
   font-weight: 500;
   color: #49525F;
   display: flex;
-  margin: 1em 0 0.3em 0;
+  margin: 0.4em 0 0.3em 0;
 }
 
 .report-section__title-main {
@@ -327,9 +333,12 @@ a {
 .report-section__description {
   color: #5F6875;
   font-size: 16px;
-  margin: 0 0 2em 0;
+  margin: 0 0 1em 0;
   line-height: 1.4;
   max-width: 750px;
+}
+.report-section__description:empty {
+  margin: 0;
 }
 
 .report-section__aggregation-description {
@@ -369,15 +378,43 @@ a {
   font-size: 15px;
   color: #555;
   font-style: italic;
-  padding: 8px 0px 16px 24px;
+  margin: 0px 0px 16px 24px;
   max-width: 90%;
 }
+
+.report-section__item-extended-info:empty {
+  margin: 0;
+}
+
 .report-section__item-helptext {
   font-size: 14px;
   color: #999;
   font-style: italic;
   padding: 8px 0px 16px 24px;
   max-width: 90%;
+}
+
+.report-section__item-help-toggle {
+  color: currentColor;
+  border-radius: 50%;
+  width: 21px;
+  height: 21px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0,0,0.3,1);
+  font-size: 90%;
+  font-weight: 600;
+  margin-left: 8px;
+  vertical-align: top;
+  opacity: 0.6;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.report-section__item-help-toggle:hover {
+  opacity: 1;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.7);
 }
 
 .report-section__item-raw-value {

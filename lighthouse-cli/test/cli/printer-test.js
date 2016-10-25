@@ -24,16 +24,6 @@ const sampleResults = require('../fixtures/sample.json');
 /* global describe, it */
 
 describe('Printer', () => {
-  it('accepts valid output modes', () => {
-    const mode = 'json';
-    assert.equal(Printer.checkOutputMode(mode), mode);
-  });
-
-  it('rejects invalid output modes', () => {
-    const mode = 'bacon';
-    assert.notEqual(Printer.checkOutputMode(mode), mode);
-  });
-
   it('accepts valid output paths', () => {
     const path = '/path/to/output';
     assert.equal(Printer.checkOutputPath(path), path);
@@ -45,22 +35,27 @@ describe('Printer', () => {
   });
 
   it('creates JSON for results', () => {
-    const mode = 'json';
+    const mode = Printer.OutputMode.json;
     const jsonOutput = Printer.createOutput(sampleResults, mode);
     assert.doesNotThrow(_ => JSON.parse(jsonOutput));
   });
 
   it('creates Pretty Printed results', () => {
-    const mode = 'pretty';
+    const mode = Printer.OutputMode.pretty;
     const prettyOutput = Printer.createOutput(sampleResults, mode);
 
     // Just check there's no HTML / JSON there.
     assert.throws(_ => JSON.parse(prettyOutput));
     assert.equal(/<!doctype/gim.test(prettyOutput), false);
+
+    const hasScoreOnNonScoredItem = /Using modern offline features.*?(0%|NaN)/.test(prettyOutput);
+    const hasAggregationPresent = prettyOutput.includes('Using modern offline features');
+    assert.equal(hasScoreOnNonScoredItem, false, 'non-scored item was scored');
+    assert.equal(hasAggregationPresent, true, 'non-scored aggregation item is not there');
   });
 
   it('creates HTML for results', () => {
-    const mode = 'html';
+    const mode = Printer.OutputMode.html;
     const htmlOutput = Printer.createOutput(sampleResults, mode);
     assert.ok(/<!doctype/gim.test(htmlOutput));
   });

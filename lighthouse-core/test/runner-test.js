@@ -16,7 +16,7 @@
 'use strict';
 
 const Runner = require('../runner');
-const fakeDriver = require('./gather/fake-driver');
+const driverMock = require('./gather/fake-driver');
 const Config = require('../config/config');
 const Audit = require('../audits/audit');
 const assert = require('assert');
@@ -36,12 +36,12 @@ describe('Runner', () => {
       ]
     });
 
-    return Runner.run(fakeDriver, {url, config}).then(_ => {
+    return Runner.run(null, {url, config, driverMock}).then(_ => {
       assert.ok(typeof config.passes[0].gatherers[0] === 'object');
     });
   });
 
-  it('throws when given neither passes nor artifacts', () => {
+  it('rejects when given neither passes nor artifacts', () => {
     const url = 'https://example.com';
     const config = new Config({
       audits: [
@@ -49,8 +49,12 @@ describe('Runner', () => {
       ]
     });
 
-    return assert.throws(_ => Runner.run(fakeDriver, {url, config}),
-        /The config must provide passes/);
+    return Runner.run(null, {url, config, driverMock})
+      .then(_ => {
+        assert.ok(false);
+      }, err => {
+        assert.ok(/The config must provide passes/.test(err.message));
+      });
   });
 
   it('accepts existing artifacts', () => {
@@ -61,11 +65,17 @@ describe('Runner', () => {
       ],
 
       artifacts: {
-        HTTPS: true
+        HTTPS: {
+          value: true
+        }
       }
     });
 
-    return assert.doesNotThrow(_ => Runner.run({}, {url, config}));
+    return Runner.run({}, {url, config}).then(results => {
+      // Mostly checking that this did not throw, but check representative values.
+      assert.equal(results.initialUrl, url);
+      assert.strictEqual(results.audits['is-on-https'].rawValue, true);
+    });
   });
 
   it('accepts trace artifacts as paths and outputs appropriate data', () => {
@@ -126,7 +136,7 @@ describe('Runner', () => {
     });
   });
 
-  it('throws when given neither audits nor auditResults', () => {
+  it('rejects when given neither audits nor auditResults', () => {
     const url = 'https://example.com';
     const config = new Config({
       passes: [{
@@ -134,16 +144,23 @@ describe('Runner', () => {
       }]
     });
 
-    return assert.throws(_ => Runner.run(fakeDriver, {url, config}),
-        /The config must provide passes/);
+    return Runner.run(null, {url, config, driverMock})
+      .then(_ => {
+        assert.ok(false);
+      }, err => {
+        assert.ok(/The config must provide passes/.test(err.message));
+      });
   });
 
   it('accepts existing auditResults', () => {
     const url = 'https://example.com';
     const config = new Config({
-      auditResults: {
-        HTTPS: true
-      },
+      auditResults: [{
+        name: 'is-on-https',
+        rawValue: true,
+        score: true,
+        displayValue: ''
+      }],
 
       aggregations: [{
         name: 'Aggregation',
@@ -155,7 +172,7 @@ describe('Runner', () => {
           description: 'description',
           audits: {
             'is-on-https': {
-              value: true,
+              expectedValue: true,
               weight: 1
             }
           }
@@ -163,7 +180,11 @@ describe('Runner', () => {
       }]
     });
 
-    return assert.doesNotThrow(_ => Runner.run(fakeDriver, {url, config}));
+    return Runner.run(null, {url, config, driverMock}).then(results => {
+      // Mostly checking that this did not throw, but check representative values.
+      assert.equal(results.initialUrl, url);
+      assert.strictEqual(results.audits['is-on-https'].rawValue, true);
+    });
   });
 
   it('returns an aggregation', () => {
@@ -194,7 +215,9 @@ describe('Runner', () => {
       }]
     });
 
-    return Runner.run(fakeDriver, {url, config}).then(results => {
+    return Runner.run(null, {url, config, driverMock}).then(results => {
+      assert.ok(results.lighthouseVersion);
+      assert.ok(results.generatedTime);
       assert.equal(results.initialUrl, url);
       assert.equal(results.audits['is-on-https'].name, 'is-on-https');
       assert.equal(results.aggregations[0].score[0].overall, 1);

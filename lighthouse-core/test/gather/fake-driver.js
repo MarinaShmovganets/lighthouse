@@ -26,20 +26,20 @@ module.exports = {
   gotoURL() {
     return Promise.resolve();
   },
-
   beginEmulation() {
     return Promise.resolve();
   },
-
   checkForMultipleTabsAttached() {
     return Promise.resolve();
   },
-
-  cleanAndDisableBrowserCaches() {},
-  clearDataForOrigin() {},
   reloadForCleanStateIfNeeded() {
     return Promise.resolve();
   },
+  enableRuntimeEvents() {
+    return Promise.resolve();
+  },
+  cleanAndDisableBrowserCaches() {},
+  clearDataForOrigin() {},
   beginTrace() {
     return Promise.resolve();
   },

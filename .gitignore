@@ -15,5 +15,13 @@ last-run-results.html
 
 *.trace.json
 *.screenshots.html
+*.report.html
 
 closure-error.log
+
+!lighthouse-cli/index.js
+lighthouse-cli/*.map
+lighthouse-cli/*.js
+
+lighthouse-cli/commands/*.map
+lighthouse-cli/commands/*.js

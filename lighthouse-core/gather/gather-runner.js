@@ -46,9 +46,8 @@ const path = require('path');
  *     ii. all gatherer's afterPass()
  *
  * 3. Teardown
- *   A. reloadForCleanStateIfNeeded
- *   B. driver.disconnect()
- *   C. collect all artifacts and return them
+ *   A. driver.disconnect()
+ *   B. collect all artifacts and return them
  */
 class GatherRunner {
   /**
@@ -88,15 +87,10 @@ class GatherRunner {
     log.log('status', 'Initializing…');
     // Enable emulation if required.
     return Promise.resolve(options.flags.mobile && driver.beginEmulation())
-      .then(_ => {
-        return driver.cleanAndDisableBrowserCaches();
-      }).then(_ => {
-        // Check if multiple tabs of origin are open
-        return driver.checkForMultipleTabsAttached(options.url);
-      }).then(_ => {
-        // Clears storage for origin.
-        return driver.clearDataForOrigin(options.url);
-      });
+      .then(_ => driver.enableRuntimeEvents())
+      .then(_ => driver.cleanAndDisableBrowserCaches())
+      .then(_ => driver.checkForMultipleTabsAttached(options.url))
+      .then(_ => driver.clearDataForOrigin(options.url));
   }
 
   static disposeDriver(driver) {
@@ -334,7 +328,7 @@ class GatherRunner {
   }
 
   static instantiateComputedArtifacts() {
-    let computedArtifacts = {};
+    const computedArtifacts = {};
     require('fs').readdirSync(path.join(__dirname, 'computed')).forEach(function(file) {
       // Drop `.js` suffix to keep browserify import happy.
       file = file.replace(/\.js$/, '');

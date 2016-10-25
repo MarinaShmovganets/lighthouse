@@ -82,10 +82,18 @@ describe('GatherRunner', function() {
     const driver = {
       beginEmulation() {
         calledEmulation = true;
+        return Promise.resolve();
       },
-      cleanAndDisableBrowserCaches() {},
-      clearDataForOrigin() {},
-      checkForMultipleTabsAttached() {}
+      enableRuntimeEvents() {
+        return Promise.resolve();
+      },
+      checkForMultipleTabsAttached() {},
+      cleanAndDisableBrowserCaches() {
+        return Promise.resolve();
+      },
+      clearDataForOrigin() {
+        return Promise.resolve();
+      }
     };
 
     return GatherRunner.setupDriver(driver, {
@@ -102,10 +110,18 @@ describe('GatherRunner', function() {
     const driver = {
       beginEmulation() {
         calledEmulation = true;
+        return Promise.resolve();
       },
-      cleanAndDisableBrowserCaches() {},
-      clearDataForOrigin() {},
-      checkForMultipleTabsAttached() {}
+      enableRuntimeEvents() {
+        return Promise.resolve();
+      },
+      checkForMultipleTabsAttached() {},
+      cleanAndDisableBrowserCaches() {
+        return Promise.resolve();
+      },
+      clearDataForOrigin() {
+        return Promise.resolve();
+      }
     };
 
     return GatherRunner.setupDriver(driver, {
@@ -329,7 +345,7 @@ describe('GatherRunner', function() {
   it('loads a gatherer from node_modules/', () => {
     return assert.throws(_ => GatherRunner.getGathererClass(
         // Use a lighthouse dep as a stand in for a module.
-        'chrome-remote-interface'
+        'mocha'
     ), function(err) {
       // Should throw a gatherer validation error, but *not* a gatherer not found error.
       return !/locate gatherer/.test(err) && /beforePass\(\) method/.test(err);
