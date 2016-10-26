@@ -38,6 +38,9 @@ class Manifest extends Gatherer {
   afterPass(options) {
     return options.driver.sendCommand('Page.getAppManifest')
       .then(response => {
+        // We're not reading `response.errors` however it may contain critical and noncritical
+        // errors from Blink's manifest parser: 
+        //   https://chromedevtools.github.io/debugger-protocol-viewer/tot/Page/#type-AppManifestError
         if (!response.data) {
           let errorString;
           if (response.url) {
