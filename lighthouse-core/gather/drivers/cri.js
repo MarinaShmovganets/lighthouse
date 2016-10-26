@@ -30,6 +30,8 @@ class CriConnection extends Connection {
   connect() {
     return this._runJsonCommand('new').then(response => {
       const url = response.webSocketDebuggerUrl;
+      this._tabId = response.id;
+
       return new Promise((resolve, reject) => {
         const ws = new WebSocket(url);
         ws.on('open', () => {
@@ -90,7 +92,7 @@ class CriConnection extends Connection {
   }
 
   getCurrentTabId() {
-    return Promise.resolve(this._tab.id);
+    return Promise.resolve(this._tabId);
   }
 }
 

@@ -128,7 +128,7 @@ class Driver {
    * @return {!Promise<string>}
    */
   getCurrentTabId() {
-    return Promise.reject(new Error('Not implemented'));
+    return this._connection.getCurrentTabId();
   }
 
   evaluateScriptOnLoad(scriptSource) {
