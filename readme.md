@@ -140,7 +140,6 @@ Options:
   --help             Show help                                                             [boolean]
   --version          Show version number                                                   [boolean]
   --skip-autolaunch  Skip autolaunch of Chrome when accessing port 9222 fails              [boolean]
-  --select-chrome    Choose Chrome location when multiple installations are found          [boolean]
   --select-chrome    Interactively choose version of Chrome to use when multiple
                      installations are found                                          [boolean]
 ```
@@ -149,7 +148,8 @@ Options:
 
 Lighthouse can run against a real mobile device. You can follow the [Remote Debugging on Android (Legacy Workflow)](https://developer.chrome.com/devtools/docs/remote-debugging-legacy) up through step 3.3, but the TL;DR is install & run adb, enable USB debugging, then port forward 9222 from the device to the machine with Lighthouse.
 
-Run the cli with --disable-device-emulation configuration to disable device emulation.
+You'll likely want to use the CLI flags `--disable-device-emulation --disable-cpu-throttling` and potentially `--disable-network-throttling`.
+
 ```sh
 $ adb kill-server
 
@@ -160,7 +160,7 @@ $ adb devices -l
 
 $ adb forward tcp:9222 localabstract:chrome_devtools_remote
 
-$ lighthouse --mobile false https://mysite.com
+$ lighthouse --disable-device-emulation --disable-cpu-throttling https://mysite.com
 ```
 
 ## Tests

@@ -449,6 +449,10 @@ class Driver {
     });
   }
 
+  enableRuntimeEvents() {
+    return this.sendCommand('Runtime.enable');
+  }
+
   beginEmulation(flags) {
     const emulations = [];
 
@@ -465,10 +469,6 @@ class Driver {
     }
 
     return Promise.all(emulations);
-  }
-
-  enableRuntimeEvents() {
-    return this.sendCommand('Runtime.enable');
   }
 
   /**
