@@ -48,8 +48,8 @@ class TestGathererNoArtifact {
 const fakeDriver = require('./fake-driver');
 
 function getMockedEmulationDriver(emulationFn, netThrottleFn, cpuThrottleFn) {
-  const Driver = require('../../gather/drivers/driver');
-  const Connection = require('../../gather/drivers/connection');
+  const Driver = require('../../gather/driver');
+  const Connection = require('../../gather/connections/connection');
   const EmulationDriver = class extends Driver {
     enableRuntimeEvents() {
       return Promise.resolve();
