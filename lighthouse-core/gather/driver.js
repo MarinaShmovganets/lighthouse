@@ -16,13 +16,13 @@
  */
 'use strict';
 
-const NetworkRecorder = require('../../lib/network-recorder');
-const emulation = require('../../lib/emulation');
-const Element = require('../../lib/element');
+const NetworkRecorder = require('../lib/network-recorder');
+const emulation = require('../lib/emulation');
+const Element = require('../lib/element');
 const EventEmitter = require('events').EventEmitter;
 const parseURL = require('url').parse;
 
-const log = require('../../lib/log.js');
+const log = require('../lib/log.js');
 
 const MAX_WAIT_FOR_FULLY_LOADED = 25 * 1000;
 const PAUSE_AFTER_LOAD = 500;
@@ -527,11 +527,22 @@ class Driver {
     return this.sendCommand('Runtime.enable');
   }
 
-  beginEmulation() {
-    return Promise.all([
-      emulation.enableNexus5X(this),
-      emulation.enableNetworkThrottling(this)
-    ]);
+  beginEmulation(flags) {
+    const emulations = [];
+
+    if (!flags.disableDeviceEmulation) {
+      emulations.push(emulation.enableNexus5X(this));
+    }
+
+    if (!flags.disableNetworkThrottling) {
+      emulations.push(emulation.enableNetworkThrottling(this));
+    }
+
+    if (!flags.disableCpuThrottling) {
+      emulations.push(emulation.enableCPUThrottling(this));
+    }
+
+    return Promise.all(emulations);
   }
 
   /**
@@ -544,13 +555,13 @@ class Driver {
 
   /**
    * Enable internet connection, using emulated mobile settings if
-   * `options.flags.mobile` is true.
+   * `options.flags.disableNetworkThrottling` is false.
    * @param {!Object} options
    * @return {!Promise}
    */
   goOnline(options) {
     return this.sendCommand('Network.enable').then(_ => {
-      if (options.flags.mobile) {
+      if (!options.flags.disableNetworkThrottling) {
         return emulation.enableNetworkThrottling(this);
       }
 

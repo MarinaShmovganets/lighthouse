@@ -16,7 +16,7 @@
  */
 'use strict';
 
-const Driver = require('./gather/drivers/driver.js');
+const Driver = require('./gather/driver.js');
 const GatherRunner = require('./gather/gather-runner');
 const Aggregate = require('./aggregator/aggregate');
 const assetSaver = require('./lib/asset-saver');
@@ -29,12 +29,6 @@ class Runner {
   static run(connection, opts) {
     // Clean opts input.
     opts.flags = opts.flags || {};
-
-    // Default mobile emulation and page loading to true.
-    // The extension will switch these off initially.
-    if (typeof opts.flags.mobile === 'undefined') {
-      opts.flags.mobile = true;
-    }
 
     const config = opts.config;
 

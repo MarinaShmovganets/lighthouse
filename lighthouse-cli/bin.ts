@@ -21,12 +21,18 @@ const _SIGINT = 'SIGINT';
 const _ERROR_EXIT_CODE = 130;
 const _RUNTIME_ERROR_CODE = 1;
 
+interface LightHouseError extends Error {
+  code?: string
+};
+
 const environment = require('../lighthouse-core/lib/environment.js');
 if (!environment.checkNodeCompatibility()) {
   console.warn('Compatibility error', 'Lighthouse requires node 5+ or 4 with --harmony');
   process.exit(_RUNTIME_ERROR_CODE);
 }
 
+
+import {Results} from './types/types';
 import * as path from 'path';
 const yargs = require('yargs');
 import * as Printer from './printer';
@@ -65,15 +71,17 @@ const cli = yargs
     'perf'
   ], 'Configuration:')
   .describe({
-    'mobile': 'Emulates a Nexus 5X',
+    'disable-device-emulation': 'Disable Nexus 5X emulation',
+    'disable-cpu-throttling': 'Disable CPU throttling',
+    'disable-network-throttling': 'Disable network throttling',
     'save-assets': 'Save the trace contents & screenshots to disk',
     'save-artifacts': 'Save all gathered artifacts to disk',
     'list-all-audits': 'Prints a list of all available audits and exits',
     'list-trace-categories': 'Prints a list of all required trace categories and exits',
     'config-path': 'The path to the config JSON.',
     'perf': 'Use a performance-test-only configuration',
-    'skip-autolaunch': 'Skip autolaunch of chrome when accessing port 9222 fails',
-    'select-chrome': 'Choose chrome location to use when multiple installations are found',
+    'skip-autolaunch': 'Skip autolaunch of Chrome when accessing port 9222 fails',
+    'select-chrome': 'Interactively choose version of Chrome to use when multiple installations are found',
   })
 
   .group([
@@ -88,11 +96,13 @@ Example: --output-path=./lighthouse-results.html`
 
   // boolean values
   .boolean([
+    'disable-device-emulation',
+    'disable-cpu-throttling',
+    'disable-network-throttling',
     'save-assets',
     'save-artifacts',
     'list-all-audits',
     'list-trace-categories',
-    'mobile',
     'perf',
     'skip-autolaunch',
     'select-chrome',
@@ -103,10 +113,10 @@ Example: --output-path=./lighthouse-results.html`
   .choices('output', Printer.GetValidOutputOptions())
 
   // default values
-  .default('mobile', true)
+  .default('disable-cpu-throttling', true)
   .default('output', Printer.GetValidOutputOptions()[Printer.OutputMode.pretty])
   .default('output-path', 'stdout')
-  .check(argv => {
+  .check((argv: {listAllAudits?: boolean, listTraceCategories?: boolean, _: Array<any>}) => {
     // Make sure lighthouse has been passed a url, or at least one of --list-all-audits
     // or --list-trace-categories. If not, stop the program and ask for a url
     if (!argv.listAllAudits && !argv.listTraceCategories && argv._.length === 0) {
@@ -132,7 +142,7 @@ const outputMode = cli.output;
 const outputPath = cli['output-path'];
 const flags = cli;
 
-let config = null;
+let config: Object | null = null;
 if (cli.configPath) {
   // Resolve the config file path relative to where cli was called.
   cli.configPath = path.resolve(process.cwd(), cli.configPath);
@@ -151,14 +161,12 @@ if (cli.verbose) {
 
 log.setLevel(flags.logLevel);
 
-const cleanup = {
-  fns: [],
-  register(fn) {
-    this.fns.push(fn);
-  },
-  doCleanup() {
-    return Promise.all(this.fns.map(c => c()));
-  }
+const cleanup: {fns: Array<Function>,
+  register: Function,
+  doCleanup: () => Promise<undefined>} = {
+    fns: [],
+    register(fn: Function) { this.fns.push(fn); },
+  doCleanup() { return Promise.all(this.fns.map((c: Function) => c())); }
 };
 
 function launchChromeAndRun(addresses: Array<string>,
@@ -183,7 +191,7 @@ function launchChromeAndRun(addresses: Array<string>,
     .then(() => launcher.kill());
 }
 
-function lighthouseRun(addresses, config: Object) {
+function lighthouseRun(addresses: Array<string>, config: Object) {
   // Process URLs once at a time
   const address = addresses.shift();
   if (!address) {
@@ -191,8 +199,8 @@ function lighthouseRun(addresses, config: Object) {
   }
 
   return lighthouse(address, flags, config)
-    .then(results => Printer.write(results, outputMode, outputPath))
-    .then(results => {
+    .then((results: Results) => Printer.write(results, outputMode, outputPath))
+    .then((results: Results) => {
       if (outputMode === Printer.OutputMode.pretty) {
         const filename = `./${assetSaver.getFilenamePrefix({url: address})}.report.html`
         Printer.write(results, 'html', filename);
@@ -211,13 +219,13 @@ function showConnectionError() {
   process.exit(_RUNTIME_ERROR_CODE);
 }
 
-function showRuntimeError(err) {
+function showRuntimeError(err: LightHouseError) {
   console.error('Runtime error encountered:', err);
   console.error(err.stack);
   process.exit(_RUNTIME_ERROR_CODE);
 }
 
-function handleError(err) {
+function handleError(err: LightHouseError) {
   if (err.code === 'ECONNREFUSED') {
     showConnectionError();
   } else if (err.message.toLowerCase().includes('multiple tabs')) {
