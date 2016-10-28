@@ -248,8 +248,6 @@ class Driver {
           'You probably have multiple tabs open to the same origin.'
         );
       }
-
-      return res;
     });
   }
 

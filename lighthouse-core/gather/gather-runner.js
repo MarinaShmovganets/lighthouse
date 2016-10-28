@@ -94,6 +94,8 @@ class GatherRunner {
   }
 
   static disposeDriver(driver) {
+    // We dont need to hold up the reporting for the reload/disconnect,
+    // so we will not return a promise in here.
     log.log('status', 'Disconnecting from browser...');
     driver.disconnect();
   }
@@ -248,13 +250,7 @@ class GatherRunner {
           options.url = urlAfterRedirects;
         });
       })
-      .then(_ => {
-        // We dont need to hold up the reporting for the reload/disconnect,
-        // so we will not return a promise in here.
-        driver.reloadForCleanStateIfNeeded(options).then(_ => {
-          GatherRunner.disposeDriver(driver);
-        });
-      })
+      .then(_ => GatherRunner.disposeDriver(driver))
       .then(_ => {
         // Collate all the gatherer results.
         const computedArtifacts = this.instantiateComputedArtifacts();
