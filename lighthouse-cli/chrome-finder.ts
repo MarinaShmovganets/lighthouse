@@ -75,14 +75,53 @@ export function darwin() {
 }
 
 export function linux() {
+  const installations: Array<string> = [];
+  const suffixes = [
+    '/share/applications/chromium-devel.desktop',
+    '/share/applications/google-chrome.desktop'
+  ];
+  const installationFolders = [
+    process.env.HOME + '/.local/',
+    '/usr/',
+  ];
+  installationFolders.forEach(folder => {
+    suffixes.forEach(suffix => {
+      const desktopPath = path.join(folder, suffix);
+
+      if (desktopPath && canAccess(desktopPath)) {
+        const execPath = execSync(`grep 'Exec=' ${desktopPath} | awk -F '=' '{print $2}'`)
+          .toString()
+          .split(/\r?\n/)[0].replace(/(^[^ ]+).*/, '$1');
+
+        if (execPath && canAccess(execPath)) {
+          installations.push(execPath);
+        }
+      }
+    })
+  });
+
   const execPath = process.env.LIGHTHOUSE_CHROMIUM_PATH;
   if (execPath && canAccess(execPath)) {
-    return [execPath];
+    installations.push(execPath);
   }
-  throw new Error(
-    'The environment variable LIGHTHOUSE_CHROMIUM_PATH must be set to ' +
-    'executable of a build of Chromium version 52.0 or later.'
-  );
+
+  if (!installations.length) {
+    throw new Error('The environment variable LIGHTHOUSE_CHROMIUM_PATH must be set to ' +
+      'executable of a build of Chromium version 52.0 or later.');
+  }
+
+  const priorities: Priorities = [{
+    regex: new RegExp(`chrome-wrapper$`),
+    weight: 51
+  }, {
+    regex: new RegExp(`google-chrome-stable$`),
+    weight: 50
+  }, {
+    regex: new RegExp(process.env.LIGHTHOUSE_CHROMIUM_PATH),
+    weight: 100
+  }];
+
+  return sort(installations, priorities);
 }
 
 export function win32() {
