@@ -108,6 +108,11 @@ class Connection {
     this.emitNotification(object.method, object.params);
   }
 
+  /**
+   * @param {{error: {message: string}}} object
+   * @param {{reject: function(*), method: string}} callback
+   * @private
+   */
   _handleRawError(object, callback) {
     log.formatProtocol('method <= browser ERR',
         {method: callback.method}, 'error');
