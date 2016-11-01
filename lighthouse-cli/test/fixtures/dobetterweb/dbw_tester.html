@@ -168,7 +168,7 @@ function passiveEventsListenerTest() {
 
 // Figure out which tests to fun.
 const params = new URLSearchParams(location.search);
-if (params.has('all')) {
+if (location.search === '') {
   documentWriteTest();
   dateNowTest();
   consoleTimeTest();

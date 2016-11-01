@@ -21,8 +21,8 @@
  */
 module.exports = [
   {
-    initialUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html?all',
-    url: 'http://localhost:10200/dobetterweb/dbw_tester.html?all',
+    initialUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+    url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
     audits: {
       'is-on-https': false,
       'uses-http2': false,
