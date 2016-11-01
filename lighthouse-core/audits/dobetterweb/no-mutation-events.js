@@ -26,19 +26,21 @@ const url = require('url');
 const Audit = require('../audit');
 const Formatter = require('../../formatters/formatter');
 
-const MUTATION_EVENTS = [
-  'DOMAttrModified',
-  'DOMAttributeNameChanged',
-  'DOMCharacterDataModified',
-  'DOMElementNameChanged',
-  'DOMNodeInserted',
-  'DOMNodeInsertedIntoDocument',
-  'DOMNodeRemoved',
-  'DOMNodeRemovedFromDocument',
-  'DOMSubtreeModified'
-];
-
 class NoMutationEventsAudit extends Audit {
+
+  static get MUTATION_EVENTS() {
+    return [
+      'DOMAttrModified',
+      'DOMAttributeNameChanged',
+      'DOMCharacterDataModified',
+      'DOMElementNameChanged',
+      'DOMNodeInserted',
+      'DOMNodeInsertedIntoDocument',
+      'DOMNodeRemoved',
+      'DOMNodeRemovedFromDocument',
+      'DOMSubtreeModified'
+    ];
+  }
 
   /**
    * @return {!AuditMeta}
@@ -47,7 +49,7 @@ class NoMutationEventsAudit extends Audit {
     return {
       category: 'JavaScript',
       name: 'no-mutation-events',
-      description: 'Site does not use Mutation Events in its own scripts',
+      description: 'Site does not use Mutation Events (at the page level) in its own scripts',
       helpText: 'Using <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Mutation_events" target="_blank">Mutation events</a> degrades application performance. They are deprecated in the DOM events spec, replaced by <a href="https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver" target="_blank">MutationObservers</a>.',
       requiredArtifacts: ['URL', 'PageLevelEventListeners']
     };
@@ -73,7 +75,7 @@ class NoMutationEventsAudit extends Audit {
     const pageHost = url.parse(artifacts.URL.finalUrl).host;
 
     const results = listeners.filter(loc => {
-      const isMutationEvent = MUTATION_EVENTS.indexOf(loc.type) !== -1;
+      const isMutationEvent = this.MUTATION_EVENTS.indexOf(loc.type) !== -1;
       const sameHost = url.parse(loc.url).host === pageHost;
       return sameHost && isMutationEvent;
     }).map(loc => {
