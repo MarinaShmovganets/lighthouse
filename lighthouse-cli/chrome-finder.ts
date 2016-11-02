@@ -21,6 +21,9 @@ const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
 
+const newLineRegex = /\r?\n/;
+const argumentsRegex = /(^[^ ]+).*/;
+
 type Priorities = Array<{regex: RegExp, weight: number}>;
 
 export function darwin() {
@@ -41,7 +44,7 @@ export function darwin() {
     ' | grep -i \'google chrome\\( canary\\)\\?.app$\'' +
     ' | awk \'{$1=""; print $0}\''
   ).toString()
-    .split(/\r?\n/)
+    .split(newLineRegex)
     .forEach((inst: string) => {
       suffixes.forEach(suffix => {
         const execPath = path.join(inst.trim(), suffix);
@@ -76,28 +79,33 @@ export function darwin() {
 
 export function linux() {
   const installations: Array<string> = [];
-  const suffixes = [
+  const desktopPaths = [
     '/share/applications/chromium-devel.desktop',
     '/share/applications/google-chrome.desktop'
   ];
-  const installationFolders = [
+  const desktopInstallationFolders = [
     process.env.HOME + '/.local/',
     '/usr/',
   ];
-  installationFolders.forEach(folder => {
-    suffixes.forEach(suffix => {
-      const desktopPath = path.join(folder, suffix);
-
-      if (desktopPath && canAccess(desktopPath)) {
-        const execPath = execSync(`grep 'Exec=' ${desktopPath} | awk -F '=' '{print $2}'`)
-          .toString()
-          .split(/\r?\n/)[0].replace(/(^[^ ]+).*/, '$1');
-
-        if (execPath && canAccess(execPath)) {
-          installations.push(execPath);
-        }
-      }
+  desktopInstallationFolders.forEach(folder => {
+    desktopPaths.forEach(suffix => {
+      installations.push(readDesktopExecutable(path.join(folder, suffix)));
     })
+  });
+
+  const executables = [
+    'google-chrome-stable',
+    'google-chrome',
+  ];
+
+  executables.forEach((executable: string) => {
+    const chromePath = execSync(`which ${executable}`)
+      .toString()
+      .split(newLineRegex)[0];
+
+    if (chromePath && canAccess(chromePath)) {
+      installations.push(chromePath);
+    }
   });
 
   const execPath = process.env.LIGHTHOUSE_CHROMIUM_PATH;
@@ -117,11 +125,14 @@ export function linux() {
     regex: new RegExp(`google-chrome-stable$`),
     weight: 50
   }, {
+    regex: new RegExp(`google-chrome$`),
+    weight: 49
+  }, {
     regex: new RegExp(process.env.LIGHTHOUSE_CHROMIUM_PATH),
     weight: 100
   }];
 
-  return sort(installations, priorities);
+  return sort(installations.filter(Boolean), priorities);
 }
 
 export function win32() {
@@ -171,4 +182,20 @@ function canAccess(file: string): Boolean {
   } catch (e) {
     return false;
   }
+}
+
+function readDesktopExecutable(desktopPath: string): string {
+  let installationPath: string = '';
+
+  if (canAccess(desktopPath)) {
+    const execPath = execSync(`grep 'Exec=' ${desktopPath} | awk -F '=' '{print $2}'`)
+      .toString()
+      .split(newLineRegex)[0].replace(argumentsRegex, '$1');
+
+    if (execPath && canAccess(execPath)) {
+      installationPath = execPath;
+    }
+  }
+
+  return installationPath;
 }
