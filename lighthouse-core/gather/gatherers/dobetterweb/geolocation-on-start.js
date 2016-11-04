@@ -16,8 +16,7 @@
  */
 
 /**
- * @fileoverview Tests whether the page attempts to request geolocation on page load. This often
- * represents a poor user experience, since it lacks context.
+ * @fileoverview Captures calls to the gelocation on page load.
  */
 
 'use strict';

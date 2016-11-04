@@ -15,6 +15,11 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview Audits a page to see if it is requesting the geolocation API on
+ * page load. This is often a sign of poor user experience because it lacks context.
+ */
+
 'use strict';
 
 const Audit = require('../audit');

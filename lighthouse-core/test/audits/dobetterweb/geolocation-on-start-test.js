@@ -15,31 +15,36 @@
  */
 'use strict';
 
-const Audit = require('../../audits/geolocation-on-start.js');
+const GeolocationOnStartAudit = require('../../../audits/dobetterweb/geolocation-on-start.js');
 const assert = require('assert');
 
-/* global describe, it*/
+/* eslint-env mocha */
 
-describe('UX: geolocation audit', () => {
+describe.only('UX: geolocation audit', () => {
   it('fails when no input present', () => {
-    return assert.equal(Audit.audit({}).rawValue, false);
-  });
-
-  it('fails when no input present', () => {
-    return assert.equal(Audit.audit({
-      GeolocationOnStart: -1
-    }).rawValue, false);
+    const auditResult = GeolocationOnStartAudit.audit({});
+    assert.equal(auditResult.rawValue, -1);
+    assert.ok(auditResult.debugString);
   });
 
   it('fails when geolocation has been automatically requested', () => {
-    return assert.equal(Audit.audit({
-      GeolocationOnStart: false
-    }).rawValue, false);
+    const auditResult = GeolocationOnStartAudit.audit({
+      GeolocationOnStart: {
+        usage: [
+          {url: 'http://different.com/two', line: 2, col: 2},
+          {url: 'http://example2.com/two', line: 2, col: 22}
+        ]
+      },
+    });
+    assert.equal(auditResult.rawValue, false);
+    assert.equal(auditResult.extendedInfo.value.length, 2);
   });
 
   it('passes when geolocation has not been automatically requested', () => {
-    return assert.equal(Audit.audit({
-      GeolocationOnStart: true
-    }).rawValue, true);
+    const auditResult = GeolocationOnStartAudit.audit({
+      GeolocationOnStart: {usage: []}
+    });
+    assert.equal(auditResult.rawValue, true);
+    assert.equal(auditResult.extendedInfo.value.length, 0);
   });
 });
