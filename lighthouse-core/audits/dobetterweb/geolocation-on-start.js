@@ -34,6 +34,8 @@ class GeolocationOnStart extends Audit {
       category: 'UX',
       name: 'geolocation-on-start',
       description: 'Page does not automatically request geolocation on page load',
+      helpText: 'Using the geolocation without context is a poor user experience. Always tie API ' +
+                'permissions to user interactions.',
       requiredArtifacts: ['GeolocationOnStart']
     };
   }
