@@ -2,7 +2,6 @@
   "passes": [{
     "recordNetwork": true,
     "gatherers": [
-      "../gather/gatherers/geolocation-on-start",
       "../gather/gatherers/https",
       "../gather/gatherers/styles",
       "../gather/gatherers/url",
@@ -11,15 +10,16 @@
       "../gather/gatherers/dobetterweb/datenow",
       "../gather/gatherers/dobetterweb/document-event-listeners",
       "../gather/gatherers/dobetterweb/document-write",
+      "../gather/gatherers/dobetterweb/geolocation-on-start",
       "../gather/gatherers/dobetterweb/links-blocking-first-paint",
       "../gather/gatherers/dobetterweb/websql"
     ]
   }],
 
   "audits": [
-    "../audits/geolocation-on-start",
     "../audits/is-on-https",
     "../audits/dobetterweb/appcache-manifest",
+    "../audits/dobetterweb/geolocation-on-start",
     "../audits/dobetterweb/link-blocking-first-paint",
     "../audits/dobetterweb/no-console-time",
     "../audits/dobetterweb/no-datenow",

@@ -14,14 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
-
-const Gatherer = require('./gatherer');
 
 /**
  * @fileoverview Tests whether the page attempts to request geolocation on page load. This often
  * represents a poor user experience, since it lacks context.
  */
+
+'use strict';
+
+const Gatherer = require('../gatherer');
 
 class GeolocationOnStart extends Gatherer {
 
@@ -32,7 +33,7 @@ class GeolocationOnStart extends Gatherer {
         'navigator.geolocation.watchPosition');
   }
 
-  afterPass(options) {
+  afterPass() {
     const promises = Promise.all([
       this.collectCurrentPosUsage(),
       this.collectWatchPosUsage()
