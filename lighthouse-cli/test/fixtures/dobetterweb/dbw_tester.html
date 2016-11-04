@@ -171,9 +171,9 @@ function geolocationOnStartTest() {
     // noop
   });
 
-  // const watchID = navigator.geolocation.watchPosition(function(position) {
-  //   navigator.geolocation.clearWatch(watchID);
-  // });
+  const watchID = navigator.geolocation.watchPosition(function(position) {
+    navigator.geolocation.clearWatch(watchID);
+  });
 }
 
 // Figure out which tests to fun.

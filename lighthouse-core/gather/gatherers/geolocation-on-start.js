@@ -20,42 +20,34 @@ const Gatherer = require('./gatherer');
 
 /**
  * @fileoverview Tests whether the page attempts to request geolocation on page load. This often
- * represents a poor user experience, since it lacks context. As such, if the page requests
- * geolocation the gatherer will intercept the call and mark a boolean flag to true. The audit that
- * corresponds with this gatherer then checks for the flag.
- * @author Paul Lewis
+ * represents a poor user experience, since it lacks context.
  */
-
-/* global navigator, window */
-
-/* istanbul ignore next */
-function overrideGeo() {
-  window.__didNotCallGeo = true;
-  // Override the geo functions so that if they're called they're intercepted and we know about it.
-  navigator.geolocation.getCurrentPosition =
-  navigator.geolocation.watchPosition = function() {
-    window.__didNotCallGeo = false;
-  };
-}
-
-function collectGeoState() {
-  return Promise.resolve(window.__didNotCallGeo);
-}
 
 class GeolocationOnStart extends Gatherer {
 
   beforePass(options) {
-    return options.driver.evaluateScriptOnLoad(`(${overrideGeo.toString()}())`);
+    this.collectCurrentPosUsage = options.driver.captureFunctionCallSites(
+        'navigator.geolocation.getCurrentPosition');
+    this.collectWatchPosUsage = options.driver.captureFunctionCallSites(
+        'navigator.geolocation.watchPosition');
   }
 
   afterPass(options) {
-    return options.driver.evaluateAsync(`(${collectGeoState.toString()}())`)
-        .then(returnedValue => {
-          this.artifact = returnedValue;
-        }, _ => {
-          this.artifact = -1;
-          return;
-        });
+    const promises = Promise.all([
+      this.collectCurrentPosUsage(),
+      this.collectWatchPosUsage()
+    ]);
+
+    return promises.then(results => {
+      results = results.reduce((prev, curr) => {
+        prev.push(...curr);
+        return prev;
+      }, []);
+      this.artifact.usage = results;
+    }, _ => {
+      this.artifact = -1;
+      return;
+    });
   }
 }
 
