@@ -21,6 +21,12 @@ const assert = require('assert');
 /* eslint-env mocha */
 
 describe('UX: geolocation audit', () => {
+  it('fails when gatherer returns -1', () => {
+    const auditResult = GeolocationOnStartAudit.audit(-1);
+    assert.equal(auditResult.rawValue, -1);
+    assert.ok(auditResult.debugString.match('did not run'));
+  });
+
   it('fails when no input present', () => {
     const auditResult = GeolocationOnStartAudit.audit({});
     assert.equal(auditResult.rawValue, -1);

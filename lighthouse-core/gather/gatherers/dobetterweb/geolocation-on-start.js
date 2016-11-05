@@ -16,7 +16,7 @@
  */
 
 /**
- * @fileoverview Captures calls to the gelocation on page load.
+ * @fileoverview Captures calls to the geolocation API on page load.
  */
 
 'use strict';
@@ -33,20 +33,14 @@ class GeolocationOnStart extends Gatherer {
   }
 
   afterPass() {
-    const promises = Promise.all([
-      this.collectCurrentPosUsage(),
-      this.collectWatchPosUsage()
-    ]);
+    const promises = this.collectCurrentPosUsage().then(results => {
+      return this.collectWatchPosUsage().then(results2 => results.concat(results2));
+    });
 
     return promises.then(results => {
-      results = results.reduce((prev, curr) => {
-        prev.push(...curr);
-        return prev;
-      }, []);
       this.artifact.usage = results;
     }, _ => {
       this.artifact = -1;
-      return;
     });
   }
 }
