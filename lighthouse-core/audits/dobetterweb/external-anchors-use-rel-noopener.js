@@ -27,8 +27,8 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
     return {
       category: 'Performance',
       name: 'external-anchors-use-rel-noopener',
-      description: 'Site does not have anchor links with target="_blank" and no rel="noopener"',
-      helpText: 'links that open in a new tab should use <code>target="_blank"</code> and <code>rel="noopener"</code> so the <a href="https://jakearchibald.com/2016/performance-benefits-of-rel-noopener">opening page\'s perf does not suffer.</a>',
+      description: 'Site opens external anchors using rel="noopener".',
+      helpText: 'links that open in a new tab should use <code>target="_blank"</code> and <code>rel="noopener"</code> so the <a href="https://jakearchibald.com/2016/performance-benefits-of-rel-noopener">opening page\'s performance does not suffer.</a>',
       requiredArtifacts: ['ExternalAnchorsWithRelNoopener']
     };
   }
