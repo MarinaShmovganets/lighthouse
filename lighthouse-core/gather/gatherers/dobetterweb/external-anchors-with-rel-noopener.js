@@ -18,32 +18,26 @@
 
 const Gatherer = require('../gatherer');
 
-function getPageLinks() {
+function getExternalAnchorsWithNoRelNoOpener() {
   return new Promise((resolve, reject) => {
-    const linkList = [...document.querySelectorAll('a')]
-        .map((link) => {
-          return {
-            target: link.getAttribute('target'),
-            rel: link.getAttribute('rel')
-          };
-        });
-    resolve(linkList);
+    const failingNodeList = [...document.querySelectorAll('a[target="_blank"]:not([rel="noopener"])')];
+    resolve(failingNodeList);
   });
 }
 
-class Links extends Gatherer {
+class ExternalAnchorsWithRelNoopener extends Gatherer {
 
   afterPass(options) {
     const driver = options.driver;
-    const scriptStr = `(${getPageLinks.toString()}())`;
+    const scriptStr = `(${getExternalAnchorsWithNoRelNoOpener.toString()}())`;
     return driver.evaluateAsync(scriptStr)
-      .then(nodeList => {
-        this.artifact = nodeList;
+      .then(failingNodeList => {
+        this.artifact = failingNodeList;
       })
       .catch(_ => {
-        this.artifact = [];
+        this.artifact = -1;
       });
   }
 }
 
-module.exports = Links;
+module.exports = ExternalAnchorsWithRelNoopener;

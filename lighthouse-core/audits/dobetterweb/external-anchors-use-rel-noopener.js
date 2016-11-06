@@ -19,17 +19,17 @@
 
 const Audit = require('../audit');
 
-class NoTargetBlankLinksWithoutRelNoopenerAudit extends Audit {
+class ExternalAnchorsUseRelNoopenerAudit extends Audit {
   /**
    * @return {!AuditMeta}
    */
   static get meta() {
     return {
       category: 'Performance',
-      name: 'no-target-blank-links-without-rel-noopener',
+      name: 'external-anchors-use-rel-noopener',
       description: 'Site does not have anchor links with target="_blank" and no rel="noopener"',
       helpText: 'links that open in a new tab should use <code>target="_blank"</code> and <code>rel="noopener"</code> so the <a href="https://jakearchibald.com/2016/performance-benefits-of-rel-noopener">opening page\'s perf does not suffer.</a>',
-      requiredArtifacts: ['Links']
+      requiredArtifacts: ['ExternalAnchorsWithRelNoopener']
     };
   }
 
@@ -44,15 +44,15 @@ class NoTargetBlankLinksWithoutRelNoopenerAudit extends Audit {
         });
 
     if (failingNodes.length > 0) {
-      return NoTargetBlankLinksWithoutRelNoopenerAudit.generateAuditResult({
+      return ExternalAnchorsUseRelNoopenerAudit.generateAuditResult({
         displayValue: failingNodes.length,
         rawValue: false
       });
     }
-    return NoTargetBlankLinksWithoutRelNoopenerAudit.generateAuditResult({
+    return ExternalAnchorsUseRelNoopenerAudit.generateAuditResult({
       rawValue: true
     });
   }
 }
 
-module.exports = NoTargetBlankLinksWithoutRelNoopenerAudit;
+module.exports = ExternalAnchorsUseRelNoopenerAudit;
