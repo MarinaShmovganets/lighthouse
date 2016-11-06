@@ -10,14 +10,15 @@
       "../gather/gatherers/dobetterweb/datenow",
       "../gather/gatherers/dobetterweb/document-event-listeners",
       "../gather/gatherers/dobetterweb/document-write",
+      "../gather/gatherers/dobetterweb/external-anchors-with-rel-noopener",
       "../gather/gatherers/dobetterweb/links-blocking-first-paint",
-      "../gather/gatherers/dobetterweb/websql",
-      "../gather/gatherers/dobetterweb/links"
+      "../gather/gatherers/dobetterweb/websql"
     ]
   }],
 
   "audits": [
     "../audits/dobetterweb/appcache-manifest",
+    "../audits/dobetterweb/external-anchors-use-rel-noopener",
     "../audits/dobetterweb/link-blocking-first-paint",
     "../audits/dobetterweb/no-console-time",
     "../audits/dobetterweb/no-datenow",
@@ -27,7 +28,6 @@
     "../audits/dobetterweb/no-websql",
     "../audits/dobetterweb/uses-http2",
     "../audits/dobetterweb/uses-passive-event-listeners",
-    "../audits/dobetterweb/no-target-blank-links-without-rel-noopener",
     "../audits/is-on-https"
   ],
 
