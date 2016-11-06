@@ -431,7 +431,7 @@ class Driver {
             elementList.push(new Element({nodeId}, this));
           }
         });
-        return Promise.all(elementList);
+        return elementList;
       });
   }
 
