@@ -91,13 +91,11 @@
         "link-blocking-first-paint": {
           "expectedValue": false
         },
-<<<<<<< HEAD
         "external-anchors-use-rel-noopener": {
           "expectedValue": true
-=======
+        },
         "geolocation-on-start": {
           "expectedValue": false
->>>>>>> upstream/master
         }
       }
     }]
