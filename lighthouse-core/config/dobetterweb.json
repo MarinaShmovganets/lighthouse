@@ -10,7 +10,7 @@
       "../gather/gatherers/dobetterweb/datenow",
       "../gather/gatherers/dobetterweb/document-event-listeners",
       "../gather/gatherers/dobetterweb/document-write",
-      "../gather/gatherers/dobetterweb/external-anchors-with-rel-noopener",
+      "../gather/gatherers/dobetterweb/external-anchors-with-no-rel-noopener",
       "../gather/gatherers/dobetterweb/links-blocking-first-paint",
       "../gather/gatherers/dobetterweb/websql"
     ]
@@ -89,7 +89,7 @@
         "link-blocking-first-paint": {
           "expectedValue": false
         },
-        "no-target-blank-links-without-rel-noopener": {
+        "external-anchors-use-rel-noopener": {
           "expectedValue": true
         }
       }

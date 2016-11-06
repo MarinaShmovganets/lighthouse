@@ -18,6 +18,7 @@
 'use strict';
 
 const Audit = require('../audit');
+const Formatter = require('../../formatters/formatter');
 
 class ExternalAnchorsUseRelNoopenerAudit extends Audit {
   /**
@@ -29,7 +30,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
       name: 'external-anchors-use-rel-noopener',
       description: 'Site opens external anchors using rel="noopener".',
       helpText: 'links that open in a new tab should use <code>target="_blank"</code> and <code>rel="noopener"</code> so the <a href="https://jakearchibald.com/2016/performance-benefits-of-rel-noopener">opening page\'s performance does not suffer.</a>',
-      requiredArtifacts: ['ExternalAnchorsWithRelNoopener']
+      requiredArtifacts: ['ExternalAnchorsWithNoRelNoopener']
     };
   }
 
@@ -38,19 +39,26 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const failingNodes =
-        artifacts.Links.filter(result => {
-          return result.target === '_blank' && result.rel !== 'noopener';
-        });
-
-    if (failingNodes.length > 0) {
+    if (typeof artifacts.ExternalAnchorsWithNoRelNoopener === 'undefined' ||
+        artifacts.ExternalAnchorsWithNoRelNoopener === -1) {
       return ExternalAnchorsUseRelNoopenerAudit.generateAuditResult({
-        displayValue: failingNodes.length,
-        rawValue: false
+        rawValue: -1,
+        debugString: 'ExternalAnchorsWithNoRelNoopener gatherer did not run'
       });
     }
+
+    const failingAnchors = artifacts.ExternalAnchorsWithNoRelNoopener.usages.map((anchorHref) => {
+      return {
+        url: anchorHref
+      }
+    });
+
     return ExternalAnchorsUseRelNoopenerAudit.generateAuditResult({
-      rawValue: true
+      rawValue: failingAnchors.length === 0,
+      extendedInfo: {
+        formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
+        value: failingAnchors
+      }
     });
   }
 }

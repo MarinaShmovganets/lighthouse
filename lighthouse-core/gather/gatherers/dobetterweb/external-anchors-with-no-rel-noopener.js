@@ -20,19 +20,20 @@ const Gatherer = require('../gatherer');
 
 function getExternalAnchorsWithNoRelNoOpener() {
   return new Promise((resolve, reject) => {
-    const failingNodeList = [...document.querySelectorAll('a[target="_blank"]:not([rel="noopener"])')];
+    const failingNodeList = [...document.querySelectorAll('a[target="_blank"]:not([rel="noopener"])')]
+      .map(node => node.href);
     resolve(failingNodeList);
   });
 }
 
-class ExternalAnchorsWithRelNoopener extends Gatherer {
+class ExternalAnchorsWithNoRelNoopener extends Gatherer {
 
   afterPass(options) {
     const driver = options.driver;
     const scriptStr = `(${getExternalAnchorsWithNoRelNoOpener.toString()}())`;
     return driver.evaluateAsync(scriptStr)
       .then(failingNodeList => {
-        this.artifact = failingNodeList;
+        this.artifact.usages = failingNodeList;
       })
       .catch(_ => {
         this.artifact = -1;
@@ -40,4 +41,4 @@ class ExternalAnchorsWithRelNoopener extends Gatherer {
   }
 }
 
-module.exports = ExternalAnchorsWithRelNoopener;
+module.exports = ExternalAnchorsWithNoRelNoopener;
