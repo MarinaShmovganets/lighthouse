@@ -413,6 +413,28 @@ class Driver {
       });
   }
 
+  /**
+   * @param {string} selector Selector to find in the DOM
+   * @return {!Promise<Element[]>} The found elements, or [], resolved in a promise
+   */
+  querySelectorAll(selector) {
+    return this.sendCommand('DOM.getDocument')
+      .then(result => result.root.nodeId)
+      .then(nodeId => this.sendCommand('DOM.querySelectorAll', {
+        nodeId,
+        selector
+      }))
+      .then(nodeList => {
+        const elementList = [];
+        nodeList.nodeIds.forEach(nodeId => {
+          if (nodeId !== 0) {
+            elementList.push(new Element({nodeId}, this));
+          }
+        });
+        return Promise.all(elementList);
+      });
+  }
+
   beginTrace() {
     const tracingOpts = {
       categories: this._traceCategories.join(','),

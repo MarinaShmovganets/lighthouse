@@ -16,27 +16,19 @@
  */
 'use strict';
 
-/* global document */
-
 const Gatherer = require('../gatherer');
-
-function getExternalAnchorsWithNoRelNoOpener() {
-  return new Promise((resolve, reject) => {
-    const failingNodeList =
-      [...document.querySelectorAll('a[target="_blank"]:not([rel="noopener"])')]
-      .map(node => node.href);
-    resolve(failingNodeList);
-  });
-}
 
 class ExternalAnchorsWithNoRelNoopener extends Gatherer {
 
   afterPass(options) {
     const driver = options.driver;
-    const scriptStr = `(${getExternalAnchorsWithNoRelNoOpener.toString()}())`;
-    return driver.evaluateAsync(scriptStr)
+    return driver.querySelectorAll('a[target="_blank"]:not([rel="noopener"])')
       .then(failingNodeList => {
-        this.artifact.usages = failingNodeList;
+        const failingNodes = failingNodeList.map(node => node.getAttribute('href'));
+        return Promise.all(failingNodes);
+      })
+      .then(failingNodes => {
+        this.artifact.usages = failingNodes;
       })
       .catch(_ => {
         this.artifact = -1;
