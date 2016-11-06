@@ -16,11 +16,14 @@
  */
 'use strict';
 
+/* global document */
+
 const Gatherer = require('../gatherer');
 
 function getExternalAnchorsWithNoRelNoOpener() {
   return new Promise((resolve, reject) => {
-    const failingNodeList = [...document.querySelectorAll('a[target="_blank"]:not([rel="noopener"])')]
+    const failingNodeList =
+      [...document.querySelectorAll('a[target="_blank"]:not([rel="noopener"])')]
       .map(node => node.href);
     resolve(failingNodeList);
   });

@@ -47,10 +47,10 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
       });
     }
 
-    const failingAnchors = artifacts.ExternalAnchorsWithNoRelNoopener.usages.map((anchorHref) => {
+    const failingAnchors = artifacts.ExternalAnchorsWithNoRelNoopener.usages.map(anchorHref => {
       return {
         url: anchorHref
-      }
+      };
     });
 
     return ExternalAnchorsUseRelNoopenerAudit.generateAuditResult({
