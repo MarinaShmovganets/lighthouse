@@ -394,6 +394,23 @@ class Driver {
       .then(_ => waitForLoad && this._waitForFullyLoaded(pauseAfterLoadMs));
   }
 
+  getObjectProperty(objectId, name) {
+    return new Promise(resolve => {
+      this.sendCommand('Runtime.getProperties', {
+        objectId,
+        accessorPropertiesOnly: true,
+        generatePreview: false,
+        ownProperties: false,
+      })
+      .then(properties => {
+        const propertyForName = properties.result
+          .find(property => property.name === name)
+          .value.value;
+        resolve(propertyForName);
+      });
+    });
+  }
+
   /**
    * @param {string} selector Selector to find in the DOM
    * @return {!Promise<Element>} The found element, or null, resolved in a promise
