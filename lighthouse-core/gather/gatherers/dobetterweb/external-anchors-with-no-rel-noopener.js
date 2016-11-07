@@ -24,7 +24,7 @@ class ExternalAnchorsWithNoRelNoopener extends Gatherer {
     const driver = options.driver;
     return driver.querySelectorAll('a[target="_blank"]:not([rel="noopener"])')
       .then(failingNodeList => {
-        const failingNodes = failingNodeList.map(node => node.getAttribute('href'));
+        const failingNodes = failingNodeList.map(node => node.getProperty('href'));
         return Promise.all(failingNodes);
       })
       .then(failingNodes => {

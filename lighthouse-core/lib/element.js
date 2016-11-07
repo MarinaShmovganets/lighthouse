@@ -46,6 +46,32 @@ class Element {
         return resp.attributes[attrIndex + 1];
       });
   }
+
+  /**
+   * @param {!string} name Property name
+   * @return {!Promise<?string>} The property value
+   */
+  getProperty(name) {
+    return new Promise((resolve) => {
+      this.driver.sendCommand('DOM.resolveNode', {
+        nodeId: this.element.nodeId
+      })
+      .then(resp => {
+        this.driver.sendCommand('Runtime.getProperties', {
+          objectId: resp.object.objectId,
+          accessorPropertiesOnly: true,
+          generatePreview: false,
+          ownProperties: false,
+        })
+        .then(properties => {
+          const propertyForName = properties.result
+            .find(property => property.name === name)
+            .value.value;
+          resolve(propertyForName);
+        });
+      });
+    });
+  }
 }
 
 module.exports = Element;
