@@ -52,7 +52,7 @@ class Element {
    * @return {!Promise<?string>} The property value
    */
   getProperty(name) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this.driver.sendCommand('DOM.resolveNode', {
         nodeId: this.element.nodeId
       })
