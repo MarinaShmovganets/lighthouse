@@ -51,10 +51,14 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
     const pageHost = url.parse(artifacts.URL.finalUrl).host;
     // Filter usages to exclude anchors that are same origin
     const failingAnchors = artifacts.AnchorsWithNoRelNoopener.usages
-      .filter(anchorHref => url.parse(anchorHref).host !== pageHost)
-      .map(anchorHref => {
+      .filter(anchor => url.parse(anchor.href).host !== pageHost)
+      .map(anchor => {
         return {
-          url: anchorHref
+          url: `<a
+            href="${anchor.href}"
+            ${anchor.target ? ` target="${anchor.target}"` : ''}
+            ${anchor.rel ? ` rel="${anchor.rel}"` : ''}>
+          </a>`
         };
       });
 
