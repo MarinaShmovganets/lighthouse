@@ -397,7 +397,7 @@ class Driver {
   /**
   * @param {string} objectId Object ID for the resolved DOM node
   * @param {string} propName Name of the property
-  * @return {!Promise<String>} The property value
+  * @return {!Promise<String>} The property value, or null, if property not found
   */
   getObjectProperty(objectId, propName) {
     return new Promise(resolve => {
@@ -409,9 +409,13 @@ class Driver {
       })
       .then(properties => {
         const propertyForName = properties.result
-          .find(property => property.name === propName)
-          .value.value;
-        resolve(propertyForName);
+          .find(property => property.name === propName);
+
+        if (propertyForName) {
+          resolve(propertyForName.value.value);
+        } else {
+          reject(null);
+        }
       });
     });
   }
