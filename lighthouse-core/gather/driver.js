@@ -394,7 +394,12 @@ class Driver {
       .then(_ => waitForLoad && this._waitForFullyLoaded(pauseAfterLoadMs));
   }
 
-  getObjectProperty(objectId, name) {
+  /**
+  * @param {string} objectId Object ID for the resolved DOM node
+  * @param {string} propName Name of the property
+  * @return {!Promise<String>} The property value
+  */
+  getObjectProperty(objectId, propName) {
     return new Promise(resolve => {
       this.sendCommand('Runtime.getProperties', {
         objectId,
@@ -404,7 +409,7 @@ class Driver {
       })
       .then(properties => {
         const propertyForName = properties.result
-          .find(property => property.name === name)
+          .find(property => property.name === propName)
           .value.value;
         resolve(propertyForName);
       });

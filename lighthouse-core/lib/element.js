@@ -48,16 +48,16 @@ class Element {
   }
 
   /**
-   * @param {!string} name Property name
+   * @param {!string} propName Property name
    * @return {!Promise<?string>} The property value
    */
-  getProperty(name) {
+  getProperty(propName) {
     return this.driver
       .sendCommand('DOM.resolveNode', {
         nodeId: this.element.nodeId
       })
       .then(resp => {
-        return this.driver.getObjectProperty(resp.object.objectId, name);
+        return this.driver.getObjectProperty(resp.object.objectId, propName);
       });
   }
 }
