@@ -400,7 +400,7 @@ class Driver {
   * @return {!Promise<String>} The property value, or null, if property not found
   */
   getObjectProperty(objectId, propName) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.sendCommand('Runtime.getProperties', {
         objectId,
         accessorPropertiesOnly: true,
