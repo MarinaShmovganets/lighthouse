@@ -31,7 +31,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
       name: 'external-anchors-use-rel-noopener',
       description: 'Site opens external anchors using rel="noopener".',
       helpText: 'links that open in a new tab should use <code>target="_blank"</code> and <code>rel="noopener"</code> so the <a href="https://jakearchibald.com/2016/performance-benefits-of-rel-noopener">opening page\'s performance does not suffer.</a>',
-      requiredArtifacts: ['URL', 'ExternalAnchorsWithNoRelNoopener']
+      requiredArtifacts: ['URL', 'AnchorsWithNoRelNoopener']
     };
   }
 
@@ -40,17 +40,17 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    if (typeof artifacts.ExternalAnchorsWithNoRelNoopener === 'undefined' ||
-        artifacts.ExternalAnchorsWithNoRelNoopener === -1) {
+    if (typeof artifacts.AnchorsWithNoRelNoopener === 'undefined' ||
+        artifacts.AnchorsWithNoRelNoopener === -1) {
       return ExternalAnchorsUseRelNoopenerAudit.generateAuditResult({
         rawValue: -1,
-        debugString: 'ExternalAnchorsWithNoRelNoopener gatherer did not run'
+        debugString: 'AnchorsWithNoRelNoopener gatherer did not run'
       });
     }
 
     const pageHost = url.parse(artifacts.URL.finalUrl).host;
     // Filter usages to exclude anchors that are same origin
-    const failingAnchors = artifacts.ExternalAnchorsWithNoRelNoopener.usages
+    const failingAnchors = artifacts.AnchorsWithNoRelNoopener.usages
       .filter(anchorHref => url.parse(anchorHref).host !== pageHost)
       .map(anchorHref => {
         return {

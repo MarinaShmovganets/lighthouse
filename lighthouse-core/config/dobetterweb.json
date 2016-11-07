@@ -5,12 +5,12 @@
       "../gather/gatherers/https",
       "../gather/gatherers/styles",
       "../gather/gatherers/url",
+      "../gather/gatherers/dobetterweb/anchors-with-no-rel-noopener",
       "../gather/gatherers/dobetterweb/appcache",
       "../gather/gatherers/dobetterweb/console-time-usage",
       "../gather/gatherers/dobetterweb/datenow",
       "../gather/gatherers/dobetterweb/document-event-listeners",
       "../gather/gatherers/dobetterweb/document-write",
-      "../gather/gatherers/dobetterweb/external-anchors-with-no-rel-noopener",
       "../gather/gatherers/dobetterweb/geolocation-on-start",
       "../gather/gatherers/dobetterweb/links-blocking-first-paint",
       "../gather/gatherers/dobetterweb/websql"

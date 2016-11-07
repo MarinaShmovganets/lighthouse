@@ -18,7 +18,7 @@
 
 const Gatherer = require('../gatherer');
 
-class ExternalAnchorsWithNoRelNoopener extends Gatherer {
+class AnchorsWithNoRelNoopener extends Gatherer {
 
   afterPass(options) {
     const driver = options.driver;
@@ -36,4 +36,4 @@ class ExternalAnchorsWithNoRelNoopener extends Gatherer {
   }
 }
 
-module.exports = ExternalAnchorsWithNoRelNoopener;
+module.exports = AnchorsWithNoRelNoopener;
