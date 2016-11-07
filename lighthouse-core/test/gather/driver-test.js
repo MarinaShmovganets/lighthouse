@@ -60,6 +60,10 @@ connection.sendCommand = function(command, params) {
       return Promise.resolve({
         nodeId: params.selector === 'invalid' ? 0 : 231
       });
+    case 'DOM.querySelectorAll':
+      return Promise.resolve({
+        nodeIds: params.selector === 'invalid' ? [] : [231]
+      });
     case 'ServiceWorker.enable':
     case 'ServiceWorker.disable':
       return Promise.resolve();
@@ -93,6 +97,19 @@ describe('Browser Driver', () => {
   it('returns element when DOM.querySelector finds node', () => {
     return driverStub.querySelector('meta head').then(value => {
       assert.equal(value instanceof Element, true);
+    });
+  });
+
+  it('returns [] when DOM.querySelectorAll finds no node', () => {
+    return driverStub.querySelectorAll('invalid').then(value => {
+      assert.deepEqual(value, []);
+    });
+  });
+
+  it('returns element when DOM.querySelectorAll finds node', () => {
+    return driverStub.querySelectorAll('a').then(value => {
+      assert.equal(value.length, 1);
+      assert.equal(value[0] instanceof Element, true);
     });
   });
 
