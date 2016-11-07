@@ -64,6 +64,15 @@ connection.sendCommand = function(command, params) {
       return Promise.resolve({
         nodeIds: params.selector === 'invalid' ? [] : [231]
       });
+    case 'Runtime.getProperties':
+      return Promise.resolve({
+        result: params.objectId === 'invalid' ? [] : [{
+          name: 'test',
+          value: {
+            value: '123'
+          }
+        }]
+      });
     case 'ServiceWorker.enable':
     case 'ServiceWorker.disable':
       return Promise.resolve();
@@ -110,6 +119,18 @@ describe('Browser Driver', () => {
     return driverStub.querySelectorAll('a').then(value => {
       assert.equal(value.length, 1);
       assert.equal(value[0] instanceof Element, true);
+    });
+  });
+
+  it('returns value when getObjectProperty finds property name', () => {
+    return driverStub.getObjectProperty('test', 'test').then(value => {
+      assert.deepEqual(value, 123);
+    });
+  });
+
+  it('returns null when getObjectProperty finds no property name', () => {
+    return driverStub.getObjectProperty('invalid', 'invalid').catch(value => {
+      assert.deepEqual(value, null);
     });
   });
 
