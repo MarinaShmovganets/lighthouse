@@ -42,16 +42,6 @@ if (isBrowser) {
 
 class Emitter extends EventEmitter {
   /**
-   * Fires off all status updates. Listen with
-   * `require('lib/log').events.addListener('status', callback)`
-   */
-  issueStatus(title, args) {
-    if (title === 'status' || title === 'statusEnd') {
-      this.emit(title, args);
-    }
-  }
-
-  /**
    * Fires off all warnings. Listen with
    * `require('lib/log').events.addListener('warning', callback)`
    */
@@ -116,7 +106,6 @@ class Log {
   }
 
   static log(title) {
-    Log.events.issueStatus(title, arguments);
     return Log._logToStdErr(title, Array.from(arguments).slice(1));
   }
 
@@ -130,7 +119,6 @@ class Log {
   }
 
   static verbose(title) {
-    Log.events.issueStatus(title);
     return Log._logToStdErr(`${title}:verbose`, Array.from(arguments).slice(1));
   }
 }

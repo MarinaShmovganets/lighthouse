@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', _ => {
   const statusEl = document.body.querySelector('.status');
   const statusMessageEl = document.body.querySelector('.status__msg');
   const statusDetailsMessageEl = document.body.querySelector('.status__detailsmsg');
+  const cancelButtonEl = document.getElementById('cancel-execution');
   const spinnerEl = document.body.querySelector('.status__spinner');
   const feedbackEl = document.body.querySelector('.feedback');
 
@@ -55,7 +56,12 @@ document.addEventListener('DOMContentLoaded', _ => {
     statusEl.classList.remove(subpageVisibleClass);
   }
 
-  function logstatus([, message, details]) {
+  let wasCanceled;
+
+  function logstatus(message, details) {
+    if (wasCanceled) {
+      return;
+    }
     statusMessageEl.textContent = message;
     statusDetailsMessageEl.textContent = details;
   }
@@ -110,13 +116,13 @@ document.addEventListener('DOMContentLoaded', _ => {
     return _flatten(auditLists);
   }
 
-  background.listenForStatus(logstatus);
   background.loadSelectedAggregations().then(aggregations => {
     const frag = generateOptionsList(optionsList, aggregations);
     optionsList.appendChild(frag);
   });
 
   generateReportEl.addEventListener('click', () => {
+    wasCanceled = false;
     startSpinner();
     feedbackEl.textContent = '';
 
@@ -128,7 +134,7 @@ document.addEventListener('DOMContentLoaded', _ => {
           disableCpuThrottling: true
         },
         restoreCleanState: true
-      }, selectedAudits);
+      }, selectedAudits, logstatus);
     })
     .catch(err => {
       let message = err.message;
@@ -141,7 +147,9 @@ document.addEventListener('DOMContentLoaded', _ => {
           ' Close the other tabs to use lighthouse.';
       }
 
-      feedbackEl.textContent = message;
+      if (!wasCanceled) {
+        feedbackEl.textContent = message;
+      }
       stopSpinner();
       background.console.error(err);
     });
@@ -158,6 +166,13 @@ document.addEventListener('DOMContentLoaded', _ => {
     background.saveSelectedAggregations(checkedAggregations);
 
     optionsEl.classList.remove(subpageVisibleClass);
+  });
+
+  cancelButtonEl.addEventListener('click', _ => {
+    logstatus('Canceled by user');
+    feedbackEl.textContent = '';
+    wasCanceled = true;
+    background.cancelLighthouseInExtension();
   });
 
   chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {

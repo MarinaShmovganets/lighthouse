@@ -16,7 +16,6 @@
  */
 'use strict';
 
-const log = require('../lib/log.js');
 const Audit = require('../audits/audit');
 const path = require('path');
 
@@ -66,26 +65,48 @@ class GatherRunner {
 
   /**
    * Loads options.url with specified options.
+   * @param {!Progress} progress
    * @param {!Driver} driver
    * @param {!Object} options
    * @return {!Promise}
    */
-  static loadPage(driver, options) {
-    return Promise.resolve()
-      // Begin tracing only if requested by config.
-      .then(_ => options.config.recordTrace && driver.beginTrace())
-      // Network is always recorded for internal use, even if not saved as artifact.
-      .then(_ => driver.beginNetworkCollect(options))
-      // Navigate.
-      .then(_ => driver.gotoURL(options.url, {
-        waitForLoad: true,
-        disableJavaScript: !!options.disableJavaScript,
-        flags: options.flags,
-      }));
+  static loadPage(progress, driver, options) {
+    return new Promise((resolve, reject) => {
+      // Set up a watch dog to reject upon progress cancel.
+      const interval = setInterval(_ => {
+        if (progress.isCanceled()) {
+          clearInterval(interval);
+          reject();
+        }
+      }, 100);
+
+      Promise.resolve()
+          // Begin tracing only if requested by config.
+          .then(_ => options.config.recordTrace && driver.beginTrace())
+          // Network is always recorded for internal use, even if not saved as artifact.
+          .then(_ => driver.beginNetworkCollect(options))
+          // Navigate.
+          .then(_ => driver.gotoURL(options.url, {
+            waitForLoad: true,
+            disableJavaScript: !!options.disableJavaScript,
+            flags: options.flags,
+          }))
+          .then(passThrough => {
+            clearInterval(interval);
+            resolve(passThrough);
+          })
+          .catch(reject);
+    });
   }
 
-  static setupDriver(driver, options) {
-    log.log('status', 'Initializing…');
+  /**
+   * @param {!Progress} progress
+   * @param {!Driver} driver
+   * @param {!Object} options
+   * @return {!Promise}
+   */
+  static setupDriver(progress, driver, options) {
+    progress.updateStatus('Initializing…');
     // Enable emulation based on flags
     return driver.assertNoSameOriginServiceWorkerClients(options.url)
       .then(_ => driver.beginEmulation(options.flags))
@@ -94,20 +115,21 @@ class GatherRunner {
       .then(_ => driver.clearDataForOrigin(options.url));
   }
 
-  static disposeDriver(driver) {
+  static disposeDriver(progress, driver) {
     // We dont need to hold up the reporting for the reload/disconnect,
     // so we will not return a promise in here.
-    log.log('status', 'Disconnecting from browser...');
+    progress.updateStatus('Disconnecting from browser...');
     driver.disconnect();
   }
 
   /**
    * Navigates to about:blank and calls beforePass() on gatherers before tracing
    * has started and before navigation to the target page.
+   * @param {!Progress} progress
    * @param {!Object} options
    * @return {!Promise}
    */
-  static beforePass(options) {
+  static beforePass(progress, options) {
     const pass = GatherRunner.loadBlank(options.driver);
 
     return options.config.gatherers.reduce((chain, gatherer) => {
@@ -120,20 +142,21 @@ class GatherRunner {
   /**
    * Navigates to requested URL and then runs pass() on gatherers while trace
    * (if requested) is still being recorded.
+   * @param {!Progress} progress
    * @param {!Object} options
    * @return {!Promise}
    */
-  static pass(options) {
+  static pass(progress, options) {
     const driver = options.driver;
     const config = options.config;
     const gatherers = config.gatherers;
 
     const gatherernames = gatherers.map(g => g.name).join(', ');
     const status = 'Loading page & waiting for onload';
-    log.log('status', status, gatherernames);
+    progress.updateStatus(status, gatherernames);
 
-    const pass = GatherRunner.loadPage(driver, options).then(_ => {
-      log.log('statusEnd', status);
+    const pass = GatherRunner.loadPage(progress, driver, options).then(_ => {
+      progress.updateStatus(`${status}... Done`);
     });
 
     return gatherers.reduce((chain, gatherer) => {
@@ -145,10 +168,11 @@ class GatherRunner {
    * Ends tracing and collects trace data (if requested for this pass), and runs
    * afterPass() on gatherers with trace data passed in. Promise resolves with
    * object containing trace and network data.
+   * @param {!Progress} progress
    * @param {!Object} options
    * @return {!Promise}
    */
-  static afterPass(options) {
+  static afterPass(progress, options) {
     const driver = options.driver;
     const config = options.config;
     const gatherers = config.gatherers;
@@ -158,7 +182,7 @@ class GatherRunner {
 
     if (config.recordTrace) {
       pass = pass.then(_ => {
-        log.log('status', 'Retrieving trace');
+        progress.updateStatus('Retrieving trace');
         return driver.endTrace();
       }).then(traceContents => {
         // Before Chrome 54.0.2816 (codereview.chromium.org/2161583004),
@@ -166,36 +190,36 @@ class GatherRunner {
         // an object with a traceEvents property. Normalize to object form.
         passData.trace = Array.isArray(traceContents) ?
             {traceEvents: traceContents} : traceContents;
-        log.verbose('statusEnd', 'Retrieving trace');
+        progress.updateStatus('Retrieving trace... Done', '', true);
       });
     }
 
     const status = 'Retrieving network records';
     pass = pass.then(_ => {
-      log.log('status', status);
+      progress.updateStatus(status);
       return driver.endNetworkCollect();
     }).then(networkRecords => {
       // Network records only given to gatherers if requested by config.
       config.recordNetwork && (passData.networkRecords = networkRecords);
-      log.verbose('statusEnd', status);
+      progress.updateStatus(`${status}... Done`, '', true);
     });
 
     pass = gatherers.reduce((chain, gatherer) => {
       const status = `Retrieving: ${gatherer.name}`;
       return chain.then(_ => {
-        log.log('status', status);
+        progress.updateStatus(status);
         return gatherer.afterPass(options, passData);
       }).then(ret => {
-        log.verbose('statusEnd', status);
+        progress.updateStatus(`${status}... Done`, '', true);
         return ret;
-      });
+      }).then(progress.checkCanceled());
     }, pass);
 
     // Resolve on tracing data using passName from config.
     return pass.then(_ => passData);
   }
 
-  static run(passes, options) {
+  static run(progress, passes, options) {
     const driver = options.driver;
     const tracingData = {
       traces: {},
@@ -223,7 +247,7 @@ class GatherRunner {
 
     return driver.connect()
       .then(_ => GatherRunner.loadBlank(driver))
-      .then(_ => GatherRunner.setupDriver(driver, options))
+      .then(_ => GatherRunner.setupDriver(progress, driver, options))
 
       // Run each pass
       .then(_ => {
@@ -232,9 +256,10 @@ class GatherRunner {
         return passes.reduce((chain, config, passIndex) => {
           const runOptions = Object.assign({}, options, {config});
           return chain
-            .then(_ => GatherRunner.beforePass(runOptions))
-            .then(_ => GatherRunner.pass(runOptions))
-            .then(_ => GatherRunner.afterPass(runOptions))
+            .then(progress.checkCanceled())
+            .then(_ => GatherRunner.beforePass(progress, runOptions))
+            .then(_ => GatherRunner.pass(progress, runOptions))
+            .then(_ => GatherRunner.afterPass(progress, runOptions))
             .then(passData => {
               // If requested by config, merge trace and network data for this
               // pass into tracingData.
@@ -251,7 +276,8 @@ class GatherRunner {
           options.url = urlAfterRedirects;
         });
       })
-      .then(_ => GatherRunner.disposeDriver(driver))
+      .catch(_ => progress.isCanceled() ? progress.updateStatus('Canceled by user') : undefined)
+      .then(_ => GatherRunner.disposeDriver(progress, driver))
       .then(_ => {
         // Collate all the gatherer results.
         const computedArtifacts = this.instantiateComputedArtifacts();
@@ -270,7 +296,7 @@ class GatherRunner {
       })
       // cleanup on error
       .catch(err => {
-        GatherRunner.disposeDriver(driver);
+        GatherRunner.disposeDriver(progress, driver);
 
         throw err;
       });
