@@ -83,7 +83,7 @@ window.runLighthouseInWorker = function(port, url, options, requestedAudits) {
 };
 
 /**
- * @param {Object} results Lighthouse results object
+ * @param {!Object} results Lighthouse results object
  * @return {!string} Blob URL of the report (or error page) HTML
  */
 window.createReportPageAsBlob = function(results) {

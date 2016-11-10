@@ -14,19 +14,18 @@ const eslint = require('gulp-eslint');
 const livereload = require('gulp-livereload');
 const tap = require('gulp-tap');
 const zip = require('gulp-zip');
+const LighthouseRunner = require('../lighthouse-core/runner');
 
-const audits = fs.readdirSync(path.join(__dirname, '../', 'lighthouse-core/audits/'))
-    .filter(f => /\.js$/.test(f))
-    .map(f => `../lighthouse-core/audits/${f.replace(/\.js$/, '')}`);
+const audits = LighthouseRunner.getAuditList()
+    .map(f => '../lighthouse-core/audits/' + f.replace(/\.js$/, ''));
 
-const gatherers = fs.readdirSync(path.join(__dirname, '../', 'lighthouse-core/gather/gatherers/'))
-    .filter(f => /\.js$/.test(f))
-    .map(f => `../lighthouse-core/gather/gatherers/${f.replace(/\.js$/, '')}`);
+const gatherers = LighthouseRunner.getGathererList()
+    .map(f => '../lighthouse-core/gather/gatherers/' + f.replace(/\.js$/, ''));
 
 const computedArtifacts = fs.readdirSync(
     path.join(__dirname, '../lighthouse-core/gather/computed/'))
     .filter(f => /\.js$/.test(f))
-    .map(f => `../lighthouse-core/gather/computed/${f.replace(/\.js$/, '')}`);
+    .map(f => '../lighthouse-core/gather/computed/' + f.replace(/\.js$/, ''));
 
 gulp.task('extras', () => {
   return gulp.src([
@@ -85,7 +84,7 @@ gulp.task('chromeManifest', () => {
 });
 
 function applyBrowserifyTransforms(bundle) {
-  // Fix an issue with Babelified code that doesn't brfs well.
+  // Fix an issue with imported speedline code that doesn't brfs well.
   return bundle.transform('./fs-transform', {
     global: true
   })
