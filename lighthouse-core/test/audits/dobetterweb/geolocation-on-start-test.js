@@ -33,7 +33,7 @@ describe('UX: geolocation audit', () => {
     assert.ok(auditResult.debugString);
   });
 
-  it('prints debugString information when present', () => {
+  it('prints debugString info if present in artifact', () => {
     const auditResult = GeolocationOnStartAudit.audit({
       GeolocationOnStart: {
         value: -1,
