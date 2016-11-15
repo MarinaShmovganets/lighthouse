@@ -38,7 +38,8 @@ class ImageAlt extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const rule = ImageAlt.findViolation(artifacts, 'image-alt');
+    const violations = artifacts.Accessibility.violations || [];
+    const rule = violations.find(result => result.id === 'image-alt');
 
     return ImageAlt.generateAuditResult({
       rawValue: typeof rule === 'undefined',

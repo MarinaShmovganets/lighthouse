@@ -38,7 +38,8 @@ class ARIAAllowedAttr extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const rule = ARIAAllowedAttr.findViolation(artifacts, 'aria-allowed-attr');
+    const violations = artifacts.Accessibility.violations || [];
+    const rule = violations.find(result => result.id === 'aria-allowed-attr');
 
     return ARIAAllowedAttr.generateAuditResult({
       rawValue: typeof rule === 'undefined',
