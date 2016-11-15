@@ -66,6 +66,11 @@ class Audit {
       helpText: this.meta.helpText
     };
   }
+
+  static findViolation(artifacts, id) {
+    const violations = artifacts.Accessibility.violations || [];
+    return violations.find(result => result.id === id);
+  }
 }
 
 module.exports = Audit;
