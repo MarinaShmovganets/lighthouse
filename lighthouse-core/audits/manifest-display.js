@@ -53,8 +53,13 @@ class ManifestDisplay extends Audit {
     return ManifestDisplay.generateAuditResult({
       rawValue: hasRecommendedValue,
       displayValue,
-      debugString: 'Manifest display property should be set.'
+      debugString: this.createDebugString(hasRecommendedValue)
     });
+  }
+
+  static createDebugString(hasRecValue) {
+    const debugString = 'Manifest display property should be set.';
+    return hasRecValue ? '' : debugString;
   }
 }
 
