@@ -29,7 +29,7 @@ class TTIMetric extends Audit {
       category: 'Performance',
       name: 'time-to-interactive',
       description: 'Time To Interactive (alpha)',
-      optimalValue: SCORING_TARGET.toLocaleString(),
+      optimalValue: SCORING_TARGET.toLocaleString() + 'ms',
       requiredArtifacts: ['traceContents']
     };
   }
