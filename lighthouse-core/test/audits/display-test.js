@@ -63,6 +63,30 @@ describe('Mobile-friendly: display audit', () => {
     assert.equal(output.rawValue, true);
   });
 
+  it('has no debugString when successful', () => {
+    const artifacts = {
+      Manifest: manifestParser(JSON.stringify({
+        display: 'standalone'
+      }), EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL)
+    };
+    const output = Audit.audit(artifacts);
+    assert.equal(output.debugString, '');
+  });
+
+  it('has a debugString when not successful', () => {
+    const artifacts = {
+      Manifest: manifestParser(JSON.stringify({
+        display: 'standalone'
+      }), EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL)
+    };
+
+    const display = artifacts.Manifest.value.display;
+    display.raw = display.value = '';
+
+    const output = Audit.audit(artifacts);
+    assert.equal(output.debugString, 'Manifest display property should be set.');
+  });
+
   it('succeeds when a complete manifest contains a display property', () => {
     return assert.equal(Audit.audit({Manifest: exampleManifest}).rawValue, true);
   });
