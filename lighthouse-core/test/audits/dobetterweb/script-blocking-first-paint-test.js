@@ -15,22 +15,22 @@
  */
 'use strict';
 
-const LinkBlockingFirstPaintAudit =
-    require('../../../audits/dobetterweb/link-blocking-first-paint.js');
+const ScriptBlockingFirstPaintAudit =
+    require('../../../audits/dobetterweb/script-blocking-first-paint.js');
 const assert = require('assert');
 
 /* eslint-env mocha */
 
-describe('Link Block First Paint audit', () => {
+describe('Script Block First Paint audit', () => {
   it('fails when no input present', () => {
-    const auditResult = LinkBlockingFirstPaintAudit.audit({});
+    const auditResult = ScriptBlockingFirstPaintAudit.audit({});
     assert.equal(auditResult.rawValue, false);
     assert.ok(auditResult.debugString);
   });
 
   it('fails when error input present', () => {
-    const auditResult = LinkBlockingFirstPaintAudit.audit({
-      LinksBlockingFirstPaint: {
+    const auditResult = ScriptBlockingFirstPaintAudit.audit({
+      ScriptsBlockingFirstPaint: {
         value: -1
       }
     });
@@ -38,17 +38,15 @@ describe('Link Block First Paint audit', () => {
     assert.ok(auditResult.debugString);
   });
 
-  it('fails when there are links found which block first paint', () => {
-    const linkDetails = {
-      href: 'http://google.com/css/style.css',
-      disabled: false,
-      media: '',
-      rel: 'stylesheet'
+  it('fails when there are scripts found which block first paint', () => {
+    const scriptDetails = {
+      src: 'http://google.com/js/app.js',
+      url: 'http://google.com/js/app.js',
     };
-    const auditResult = LinkBlockingFirstPaintAudit.audit({
-      LinksBlockingFirstPaint: {
+    const auditResult = ScriptBlockingFirstPaintAudit.audit({
+      ScriptsBlockingFirstPaint: {
         items: [{
-          link: linkDetails,
+          script: scriptDetails,
           transferSize: 100,
           spendTime: 100
         }],
@@ -61,13 +59,13 @@ describe('Link Block First Paint audit', () => {
     assert.equal(auditResult.rawValue, false);
     assert.ok(auditResult.displayValue.match('1 resource delayed first paint by 100ms'));
     assert.ok(auditResult.extendedInfo.value.length, 1);
-    assert.ok(auditResult.extendedInfo.value[0].url.match(linkDetails.href));
+    assert.ok(auditResult.extendedInfo.value[0].url.match(scriptDetails.src));
     assert.ok(auditResult.extendedInfo.value[0].label.match('delayed first paint'));
   });
 
-  it('passes when there are no links found which block first paint', () => {
-    const auditResult = LinkBlockingFirstPaintAudit.audit({
-      LinksBlockingFirstPaint: {
+  it('passes when there are no scripts found which block first paint', () => {
+    const auditResult = ScriptBlockingFirstPaintAudit.audit({
+      ScriptsBlockingFirstPaint: {
         items: [],
         total: {
           transferSize: 0,

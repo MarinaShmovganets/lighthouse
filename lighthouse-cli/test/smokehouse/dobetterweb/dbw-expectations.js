@@ -30,6 +30,7 @@ module.exports = [
       'appcache-manifest': false,
       'geolocation-on-start': false,
       'link-blocking-first-paint': false,
+      'script-blocking-first-paint': false,
       'no-console-time': false,
       'no-datenow': false,
       'no-document-write': false,
@@ -58,4 +59,3 @@ module.exports = [
     }
   }
 ];
-

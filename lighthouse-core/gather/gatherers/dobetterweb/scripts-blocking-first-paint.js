@@ -14,21 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 'use strict';
 
 const Gatherer = require('../gatherer');
-
 const TagsBlockingFirstPaint = require('./tags-blocking-first-paint');
 
-class LinksBlockingFirstPaint extends Gatherer {
+class ScriptsBlockingFirstPaint extends Gatherer {
 
   afterPass(options, tracingData) {
     return TagsBlockingFirstPaint
-      .findBlockingTags(options.driver, tracingData.networkRecords, 'LINK')
+      .findBlockingTags(options.driver, tracingData.networkRecords, 'SCRIPT')
       .then(artifact => {
         const items = artifact.items.map(item => {
           return {
-            link: item.tag,
+            script: item.tag,
             transferSize: item.transferSize,
             spendTime: item.spendTime
           };
@@ -45,4 +45,4 @@ class LinksBlockingFirstPaint extends Gatherer {
   }
 }
 
-module.exports = LinksBlockingFirstPaint;
+module.exports = ScriptsBlockingFirstPaint;

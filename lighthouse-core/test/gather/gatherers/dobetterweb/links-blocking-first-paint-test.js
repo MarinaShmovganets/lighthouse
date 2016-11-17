@@ -53,30 +53,10 @@ describe('First paint blocking links', () => {
     linksBlockingFirstPaint = new LinksBlockingFirstPaint();
   });
 
-  it('return formated time', () => {
-    return assert.equal(linksBlockingFirstPaint._formatMS({
-      startTime: 0.888,
-      endTime: 0.999
-    }), 111);
-  });
-
-  it('return filtered link', () => {
-    return assert.deepEqual(linksBlockingFirstPaint._filteredLink(traceData), {
-      'http://google.com/css/style.css': {
-        transferSize: 10,
-        startTime: 10,
-        endTime: 10
-      },
-      'http://google.com/wc/select.html': {
-        transferSize: 11,
-        startTime: 11,
-        endTime: 11
-      }
-    });
-  });
-
   it('returns an artifact', () => {
     const linkDetails = {
+      tagName: 'LINK',
+      url: 'http://google.com/css/style.css',
       href: 'http://google.com/css/style.css',
       disabled: false,
       media: '',
