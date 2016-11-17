@@ -23,6 +23,7 @@ const execSync = require('child_process').execSync;
 
 const newLineRegex = /\r?\n/;
 const argumentsRegex = /(^[^ ]+).*/;
+const chromeExecRegex = /^Exec=\/.*\/(google|chrome|chromium)-.*/;
 
 type Priorities = Array<{regex: RegExp, weight: number}>;
 
@@ -78,21 +79,24 @@ export function darwin() {
 }
 
 export function linux() {
-  const installations: Array<string> = [];
-  const desktopPaths = [
-    '/share/applications/chromium-devel.desktop',
-    '/share/applications/google-chrome.desktop'
-  ];
+  let installations: Array<string> = [];
+
+  // Look into LIGHTHOUSE_CHROMIUM_PATH
+  const execPath = process.env.LIGHTHOUSE_CHROMIUM_PATH;
+  if (execPath && canAccess(execPath)) {
+    installations.push(execPath);
+  }
+
+  // Search in desktop files for executable
   const desktopInstallationFolders = [
-    process.env.HOME + '/.local/',
-    '/usr/',
+    process.env.HOME + '/.local/share/applications/',
+    '/usr/share/applications/',
   ];
   desktopInstallationFolders.forEach(folder => {
-    desktopPaths.forEach(suffix => {
-      installations.push(readDesktopExecutable(path.join(folder, suffix)));
-    })
+    installations = installations.concat(findChromeExecutables(folder));
   });
 
+  // Search for executable with which command
   const executables = [
     'google-chrome-stable',
     'google-chrome',
@@ -107,11 +111,6 @@ export function linux() {
       installations.push(chromePath);
     }
   });
-
-  const execPath = process.env.LIGHTHOUSE_CHROMIUM_PATH;
-  if (execPath && canAccess(execPath)) {
-    installations.push(execPath);
-  }
 
   if (!installations.length) {
     throw new Error('The environment variable LIGHTHOUSE_CHROMIUM_PATH must be set to ' +
@@ -132,7 +131,7 @@ export function linux() {
     weight: 100
   }];
 
-  return sort(installations.filter(Boolean), priorities);
+  return sort(uniq(installations.filter(Boolean)), priorities);
 }
 
 export function win32() {
@@ -184,18 +183,26 @@ function canAccess(file: string): Boolean {
   }
 }
 
-function readDesktopExecutable(desktopPath: string): string {
-  let installationPath: string = '';
+function uniq(arr: Array<any>) {
+    return arr.sort().filter((item: any, pos: number, _this: any) =>
+      !pos || item != _this[pos - 1]
+    );
+}
 
+function findChromeExecutables(desktopPath: string): Array<string> {
+  let installations: Array<string> = [];
   if (canAccess(desktopPath)) {
-    const execPath = execSync(`grep 'Exec=' ${desktopPath} | awk -F '=' '{print $2}'`)
+    let execPaths = execSync(`grep -ER "${chromeExecRegex}" ${desktopPath} | awk -F '=' '{print $2}'`)
       .toString()
-      .split(newLineRegex)[0].replace(argumentsRegex, '$1');
+      .split(newLineRegex)
+      .map((execPath: string) => execPath.replace(argumentsRegex, '$1'));
 
-    if (execPath && canAccess(execPath)) {
-      installationPath = execPath;
-    }
+    execPaths.forEach((execPath: string) => {
+      if (execPath && canAccess(execPath)) {
+        installations.push(execPath);
+      }
+    });
   }
 
-  return installationPath;
+  return installations;
 }
