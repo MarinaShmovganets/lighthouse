@@ -21,18 +21,16 @@ const Gatherer = require('../gatherer');
 /* global document,window */
 
 /* istanbul ignore next */
-function collectLinksThatBlockFirstPaint(target, matchMedia) {
-  target = target || document;
-  matchMedia = matchMedia || (media => window.matchMedia(media).matches);
+function collectLinksThatBlockFirstPaint() {
   return new Promise((resolve, reject) => {
     try {
-      const linkList = [...target.querySelectorAll('link')]
+      const linkList = [...document.querySelectorAll('link')]
         .filter(link => {
           // Filter stylesheet/HTML imports that block rendering.
           // https://www.igvita.com/2012/06/14/debunking-responsive-css-performance-myths/
           // https://www.w3.org/TR/html-imports/#dfn-import-async-attribute
           const blockingStylesheet = (link.rel === 'stylesheet' &&
-              matchMedia(link.media) && !link.disabled);
+              window.matchMedia(link.media).matches && !link.disabled);
           const blockingImport = link.rel === 'import' && !link.hasAttribute('async');
           return blockingStylesheet || blockingImport;
         })
@@ -52,10 +50,6 @@ function collectLinksThatBlockFirstPaint(target, matchMedia) {
 }
 
 class LinksBlockingFirstPaint extends Gatherer {
-  constructor() {
-    super();
-    this._collectLinks = collectLinksThatBlockFirstPaint;
-  }
 
   _filteredLink(tracingData) {
     return tracingData.networkRecords.reduce((prev, record) => {

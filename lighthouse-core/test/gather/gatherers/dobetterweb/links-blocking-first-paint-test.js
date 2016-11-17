@@ -47,44 +47,10 @@ const traceData = {
   ]
 };
 
-function makeStubLink(rel, href, media, disabled, isAsync) {
-  return {
-    href, rel, media, disabled,
-    hasAttribute() {
-      return isAsync;
-    }
-  };
-}
-
 describe('First paint blocking links', () => {
   // Reset the Gatherer before each test.
   beforeEach(() => {
     linksBlockingFirstPaint = new LinksBlockingFirstPaint();
-  });
-
-  it('find blocking links', () => {
-    const target = {
-      querySelectorAll() {
-        return [
-          makeStubLink('stylesheet', 'base.css', 'screen', false, false),
-          makeStubLink('stylesheet', 'style.css', 'screen', false, false),
-          makeStubLink('stylesheet', 'print.css', 'print', false, false),
-          makeStubLink('stylesheet', 'disabled.css', 'screen', true, false),
-          makeStubLink('import', 'sync-compontent.html', null, null, false),
-          makeStubLink('import', 'async-compontent.html', null, null, true),
-        ];
-      }
-    };
-
-    const matchMedia = media => media === 'screen';
-    return linksBlockingFirstPaint._collectLinks(target, matchMedia)
-      .then(actual => {
-        assert.deepEqual(actual, [
-          {href: 'base.css', rel: 'stylesheet', media: 'screen', disabled: false},
-          {href: 'style.css', rel: 'stylesheet', media: 'screen', disabled: false},
-          {href: 'sync-compontent.html', rel: 'import', media: null, disabled: null},
-        ]);
-      });
   });
 
   it('return formated time', () => {
