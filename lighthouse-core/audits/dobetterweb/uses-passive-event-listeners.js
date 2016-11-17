@@ -67,7 +67,7 @@ class PassiveEventsAudit extends Audit {
 
     // Filter out non-passive window/document/document.body listeners that do
     // not call preventDefault() are scroll blocking events.
-    const results = listeners.filter(loc => {
+    let results = listeners.filter(loc => {
       const isScrollBlocking = this.SCROLL_BLOCKING_EVENTS.indexOf(loc.type) !== -1;
       const mentionsPreventDefault = loc.handler.description.match(
             /\.preventDefault\(\s*\)/g);
@@ -75,6 +75,8 @@ class PassiveEventsAudit extends Audit {
       return sameHost && isScrollBlocking && !loc.passive &&
              !mentionsPreventDefault;
     }).map(EventHelpers.addFormattedCodeSnippet);
+
+    results = EventHelpers.groupCodeSnippetsByLocation(results);
 
     return PassiveEventsAudit.generateAuditResult({
       rawValue: results.length === 0,

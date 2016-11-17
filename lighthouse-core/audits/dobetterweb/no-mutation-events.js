@@ -75,11 +75,13 @@ class NoMutationEventsAudit extends Audit {
 
     const pageHost = url.parse(artifacts.URL.finalUrl).host;
 
-    const results = listeners.filter(loc => {
+    let results = listeners.filter(loc => {
       const isMutationEvent = this.MUTATION_EVENTS.indexOf(loc.type) !== -1;
       const sameHost = loc.url ? url.parse(loc.url).host === pageHost : true;
       return sameHost && isMutationEvent;
     }).map(EventHelpers.addFormattedCodeSnippet);
+
+    results = EventHelpers.groupCodeSnippetsByLocation(results);
 
     return NoMutationEventsAudit.generateAuditResult({
       rawValue: results.length === 0,
