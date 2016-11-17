@@ -75,19 +75,19 @@ class NoMutationEventsAudit extends Audit {
 
     const pageHost = url.parse(artifacts.URL.finalUrl).host;
 
-    let results = listeners.filter(loc => {
+    const results = listeners.filter(loc => {
       const isMutationEvent = this.MUTATION_EVENTS.indexOf(loc.type) !== -1;
       const sameHost = loc.url ? url.parse(loc.url).host === pageHost : true;
       return sameHost && isMutationEvent;
     }).map(EventHelpers.addFormattedCodeSnippet);
 
-    results = EventHelpers.groupCodeSnippetsByLocation(results);
+    const groupedResults = EventHelpers.groupCodeSnippetsByLocation(results);
 
     return NoMutationEventsAudit.generateAuditResult({
-      rawValue: results.length === 0,
+      rawValue: groupedResults.length === 0,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
-        value: results
+        value: groupedResults
       }
     });
   }
