@@ -24,37 +24,46 @@ const assert = require('assert');
 describe('Link Block First Paint audit', () => {
   it('fails when no input present', () => {
     const auditResult = LinkBlockingFirstPaintAudit.audit({});
-    assert.equal(auditResult.rawValue, false);
+    assert.equal(auditResult.rawValue, -1);
     assert.ok(auditResult.debugString);
   });
 
   it('fails when error input present', () => {
     const auditResult = LinkBlockingFirstPaintAudit.audit({
-      LinksBlockingFirstPaint: {
+      TagsBlockingFirstPaint: {
         value: -1
       }
     });
-    assert.equal(auditResult.rawValue, false);
+    assert.equal(auditResult.rawValue, -1);
     assert.ok(auditResult.debugString);
   });
 
   it('fails when there are links found which block first paint', () => {
     const linkDetails = {
+      tagName: 'LINK',
       href: 'http://google.com/css/style.css',
+      url: 'http://google.com/css/style.css',
       disabled: false,
       media: '',
       rel: 'stylesheet'
     };
     const auditResult = LinkBlockingFirstPaintAudit.audit({
-      LinksBlockingFirstPaint: {
-        items: [{
-          link: linkDetails,
-          transferSize: 100,
-          spendTime: 100
-        }],
+      TagsBlockingFirstPaint: {
+        items: [
+          {
+            tag: linkDetails,
+            transferSize: 100,
+            spendTime: 100
+          },
+          {
+            tag: {tagName: 'SCRIPT'},
+            transferSize: 20,
+            spendTime: 20,
+          }
+        ],
         total: {
-          transferSize: 100,
-          spendTime: 100
+          transferSize: 120,
+          spendTime: 120
         }
       }
     });
@@ -67,7 +76,7 @@ describe('Link Block First Paint audit', () => {
 
   it('passes when there are no links found which block first paint', () => {
     const auditResult = LinkBlockingFirstPaintAudit.audit({
-      LinksBlockingFirstPaint: {
+      TagsBlockingFirstPaint: {
         items: [],
         total: {
           transferSize: 0,

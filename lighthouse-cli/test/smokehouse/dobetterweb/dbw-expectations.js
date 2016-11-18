@@ -30,13 +30,13 @@ module.exports = [
       'appcache-manifest': false,
       'geolocation-on-start': false,
       'link-blocking-first-paint': false,
-      'script-blocking-first-paint': false,
       'no-console-time': false,
       'no-datenow': false,
       'no-document-write': false,
       'no-mutation-events': false,
       'no-old-flexbox': false,
       'no-websql': false,
+      'script-blocking-first-paint': false,
       'uses-passive-event-listeners': false
     }
   }, {
@@ -55,6 +55,7 @@ module.exports = [
       'no-mutation-events': true,
       'no-old-flexbox': true,
       'no-websql': true,
+      'script-blocking-first-paint': true,
       'uses-passive-event-listeners': true
     }
   }

@@ -36,7 +36,7 @@ function collectTagsThatBlockFirstPaint() {
           // https://www.igvita.com/2012/06/14/debunking-responsive-css-performance-myths/
           // https://www.w3.org/TR/html-imports/#dfn-import-async-attribute
           const blockingStylesheet = (tag.rel === 'stylesheet' &&
-              window.mediaMatches(tag.media).matches && !tag.disabled);
+              window.matchMedia(tag.media).matches && !tag.disabled);
           const blockingImport = tag.rel === 'import' && !tag.hasAttribute('async');
           return blockingStylesheet || blockingImport;
         })
@@ -83,7 +83,7 @@ class TagsBlockingFirstPaint extends Gatherer {
     this._filteredAndIndexedByUrl = filteredAndIndexedByUrl;
   }
 
-  static findBlockingTags(driver, networkRecords, tagNameFilter) {
+  static findBlockingTags(driver, networkRecords) {
     const scriptSrc = `(${collectTagsThatBlockFirstPaint.toString()}())`;
     return driver.evaluateAsync(scriptSrc).then(tags => {
       const requests = filteredAndIndexedByUrl(networkRecords);
@@ -93,7 +93,7 @@ class TagsBlockingFirstPaint extends Gatherer {
 
       const blockingTags = tags.reduce((prev, tag) => {
         const request = requests[tag.url];
-        if (request && (tagNameFilter === undefined || tagNameFilter === tag.tagName)) {
+        if (request) {
           const data = {
             tag,
             transferSize: request.transferSize,

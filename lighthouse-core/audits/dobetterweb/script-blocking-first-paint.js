@@ -16,13 +16,13 @@
  */
 
 /**
- * @fileoverview Audit a page to see if it does not use sync <script> in <head>
+ * @fileoverview Audit a page to see if it does not use sync <script> in <head>.
  */
 
 'use strict';
 
 const Audit = require('../audit');
-const Formatter = require('../../formatters/formatter');
+const LinkBlockingFirstPaintAudit = require('./link-blocking-first-paint');
 
 class ScriptBlockingFirstPaint extends Audit {
 
@@ -35,7 +35,7 @@ class ScriptBlockingFirstPaint extends Audit {
       name: 'script-blocking-first-paint',
       description: 'Site does not use <script> in head that delays first paint',
       helpText: '&lt;script> elements are <a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp" target="_blank">delaying the first paint</a> of your page! Consider inlining or adding <code>async</code> or <code>defer</code> attributes.',
-      requiredArtifacts: ['ScriptsBlockingFirstPaint']
+      requiredArtifacts: ['TagsBlockingFirstPaint']
     };
   }
 
@@ -44,37 +44,9 @@ class ScriptBlockingFirstPaint extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const artifact = artifacts.ScriptsBlockingFirstPaint;
-    if (typeof artifact === 'undefined' || artifact.value === -1) {
-      return ScriptBlockingFirstPaint.generateAuditResult({
-        rawValue: false,
-        debugString: 'ScriptsBlockingFirstPaint gatherer did not run'
-      });
-    }
-
-    const results = artifact.items.map(item => {
-      return {
-        url: item.script.src,
-        label: `delayed first paint by ${item.spendTime}ms`
-      };
-    });
-
-    let displayValue = '';
-    const totalSpendTime = artifact.total.spendTime;
-    if (results.length > 1) {
-      displayValue = `${results.length} resources delayed first paint by ${totalSpendTime}ms`;
-    } else if (results.length === 1) {
-      displayValue = `${results.length} resource delayed first paint by ${totalSpendTime}ms`;
-    }
-
-    return ScriptBlockingFirstPaint.generateAuditResult({
-      displayValue,
-      rawValue: artifact.items.length === 0,
-      extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
-        value: results
-      }
-    });
+    const result = LinkBlockingFirstPaintAudit.computeAuditResultForTags(
+      artifacts, 'SCRIPT');
+    return ScriptBlockingFirstPaint.generateAuditResult(result);
   }
 }
 
