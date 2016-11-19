@@ -60,10 +60,6 @@ describe('First paint blocking tags', () => {
     tagsBlockingFirstPaint = new TagsBlockingFirstPaint();
   });
 
-  it('return formated time', () => {
-    return assert.equal(tagsBlockingFirstPaint._formatMS(0.999 - 0.888), 111);
-  });
-
   it('return filtered and indexed requests', () => {
     const actual = tagsBlockingFirstPaint
       ._filteredAndIndexedByUrl(traceData.networkRecords);

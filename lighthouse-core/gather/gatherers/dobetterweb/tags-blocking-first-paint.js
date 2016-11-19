@@ -28,8 +28,8 @@ function collectTagsThatBlockFirstPaint() {
         .filter(tag => {
           if (tag.tagName === 'SCRIPT') {
             return !tag.hasAttribute('async') &&
-              !tag.hasAttribute('defer') &&
-              !/^data:/.test(tag.src);
+                !tag.hasAttribute('defer') &&
+                !/^data:/.test(tag.src);
           }
 
           // Filter stylesheet/HTML imports that block rendering.
@@ -53,7 +53,7 @@ function collectTagsThatBlockFirstPaint() {
         });
       resolve(tagList);
     } catch (e) {
-      reject('Unable to get Scripts/Stylesheets/HTML Imports on page');
+      reject(`Unable to gather Scripts/Stylesheets/HTML Imports on the page: ${e.message}`);
     }
   });
 }
@@ -72,14 +72,9 @@ function filteredAndIndexedByUrl(networkRecords) {
   }, {});
 }
 
-function formatMS(time) {
-  return Math.round(time * 1000);
-}
-
 class TagsBlockingFirstPaint extends Gatherer {
   constructor() {
     super();
-    this._formatMS = formatMS;
     this._filteredAndIndexedByUrl = filteredAndIndexedByUrl;
   }
 
@@ -97,7 +92,7 @@ class TagsBlockingFirstPaint extends Gatherer {
           const data = {
             tag,
             transferSize: request.transferSize,
-            spendTime: formatMS(request.endTime - request.startTime)
+            spendTime: Math.round((request.endTime - request.startTime) * 1000)
           };
           totalTransferSize += data.transferSize;
           totalSpendTime += data.spendTime;

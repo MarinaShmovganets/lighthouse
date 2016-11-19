@@ -44,8 +44,7 @@ class ScriptBlockingFirstPaint extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const result = LinkBlockingFirstPaintAudit.computeAuditResultForTags(
-      artifacts, 'SCRIPT');
+    const result = LinkBlockingFirstPaintAudit.computeAuditResultForTags(artifacts, 'SCRIPT');
     return ScriptBlockingFirstPaint.generateAuditResult(result);
   }
 }

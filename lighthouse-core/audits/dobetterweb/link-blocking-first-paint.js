@@ -87,8 +87,7 @@ class LinkBlockingFirstPaintAudit extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const result = LinkBlockingFirstPaintAudit.computeAuditResultForTags(
-      artifacts, 'LINK');
+    const result = LinkBlockingFirstPaintAudit.computeAuditResultForTags(artifacts, 'LINK');
     return LinkBlockingFirstPaintAudit.generateAuditResult(result);
   }
 }
