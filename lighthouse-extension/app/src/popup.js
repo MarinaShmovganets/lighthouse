@@ -73,9 +73,10 @@ document.addEventListener('DOMContentLoaded', _ => {
       titleError = `${titleError.substring(0, MAX_ISSUE_ERROR_LENGTH - 3)}...`;
     }
     const title = encodeURI('title=Extension Error: ' + titleError);
+    const labels = '&' + encodeURI('labels=extension');
     const body = '&body=' + encodeURI(qsBody);
 
-    reportErrorEl.href = base + title + body;
+    reportErrorEl.href = base + title + labels + body;
     reportErrorEl.textContent = 'Report Error';
     reportErrorEl.target = '_blank';
     return reportErrorEl;
