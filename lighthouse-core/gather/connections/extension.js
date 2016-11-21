@@ -112,6 +112,8 @@ class ExtensionConnection extends Connection {
 
       chrome.debugger.sendCommand({tabId: this._tabId}, command, params, result => {
         if (chrome.runtime.lastError) {
+          // The error from the extension has a `message` property that is the
+          // stringified version of the actual protocol error object.
           const message = chrome.runtime.lastError.message;
           let error;
           try {
@@ -119,12 +121,12 @@ class ExtensionConnection extends Connection {
           } catch (e) {}
           error = error || {message: 'Unknown debugger protocol error.'};
 
-          const callback = {
-            resolve,
-            reject,
-            method: command
-          };
-          return this.handleRawError(error, callback);
+          // handleRawError returns or throws synchronously, so try/catch awkwardly.
+          try {
+            return resolve(this.handleRawError(error, command));
+          } catch (err) {
+            return reject(err);
+          }
         }
 
         log.formatProtocol('method <= browser OK', {method: command, params: result}, 'verbose');
