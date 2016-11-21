@@ -16,6 +16,8 @@
  */
 'use strict';
 
+const sourcemapStacktrace = require('sourcemapped-stacktrace');
+
 document.addEventListener('DOMContentLoaded', _ => {
   const background = chrome.extension.getBackgroundPage();
   const defaultAggregations = background.getDefaultAggregations();
@@ -65,21 +67,27 @@ document.addEventListener('DOMContentLoaded', _ => {
     let qsBody = '**Lighthouse Version**: ' + getLighthouseVersion() + '\n';
     qsBody += '**Chrome Version**: ' + getChromeVersion() + '\n';
     qsBody += '**Error Message**: ' + err.message + '\n';
-    qsBody += '**Stack Trace**:\n ```' + err.stack + '```';
 
-    const base = 'https://github.com/googlechrome/lighthouse/issues/new?';
-    let titleError = err.message;
-    if (titleError.length > MAX_ISSUE_ERROR_LENGTH) {
-      titleError = `${titleError.substring(0, MAX_ISSUE_ERROR_LENGTH - 3)}...`;
-    }
-    const title = encodeURI('title=Extension Error: ' + titleError);
-    const labels = '&' + encodeURI('labels=extension');
-    const body = '&body=' + encodeURI(qsBody);
+    return new Promise(resolve => {
+      sourcemapStacktrace.mapStackTrace(err.stack, function(mapped) {
+        qsBody += '**Stack Trace**:\n ```' + mapped.join('\n') + '```';
 
-    reportErrorEl.href = base + title + labels + body;
-    reportErrorEl.textContent = 'Report Error';
-    reportErrorEl.target = '_blank';
-    return reportErrorEl;
+        const base = 'https://github.com/googlechrome/lighthouse/issues/new?';
+        let titleError = err.message;
+        if (titleError.length > MAX_ISSUE_ERROR_LENGTH) {
+          titleError = `${titleError.substring(0, MAX_ISSUE_ERROR_LENGTH - 3)}...`;
+        }
+        const title = encodeURI('title=Extension Error: ' + titleError);
+        const labels = '&' + encodeURI('labels=extension');
+        const body = '&body=' + encodeURI(qsBody);
+
+        reportErrorEl.href = base + title + labels + body;
+        reportErrorEl.textContent = 'Report Error';
+        reportErrorEl.target = '_blank';
+
+        resolve(reportErrorEl);
+      });
+    });
   }
 
   function startSpinner() {
@@ -166,7 +174,10 @@ document.addEventListener('DOMContentLoaded', _ => {
 
       if (includeReportLink) {
         feedbackEl.className = 'feedback-error';
-        feedbackEl.appendChild(buildReportErrorLink(err));
+        buildReportErrorLink(err)
+          .then(errorLink => {
+            feedbackEl.appendChild(errorLink);
+          });
       }
 
       stopSpinner();

@@ -22,5 +22,8 @@
     "gulp-zip": "^3.2.0",
     "run-sequence": "^1.1.5",
     "through2": "^2.0.1"
+  },
+  "dependencies": {
+    "sourcemapped-stacktrace": "^1.1.3"
   }
 }
