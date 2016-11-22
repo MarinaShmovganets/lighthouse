@@ -24,7 +24,7 @@ const assert = require('assert');
 // Most of the functionality is tested via the Printer class, but in this
 // particular case, we need to test the functionality that would be branched for
 // the extension, which is relatively minor stuff.
-describe.only('Report', () => {
+describe('Report', () => {
   it('generates CLI HTML', () => {
     const reportGenerator = new ReportGenerator();
     const html = reportGenerator.generateHTML(sampleResults, {inline: true});
