@@ -140,7 +140,7 @@ class ReportGenerator {
    * Escape <script> tas.
    * @return {string}
    */
-  _escapeClosingScriptTags(jsonStr) {
+  _escapeScriptTags(jsonStr) {
     return jsonStr.replace(/<\/script>/g, '<\\/script>');
   }
 
@@ -265,7 +265,7 @@ class ReportGenerator {
       url: results.url,
       lighthouseVersion: results.lighthouseVersion,
       generatedTime: this._formatTime(results.generatedTime),
-      lhresults: this._escapeClosingScriptTags(JSON.stringify(results, null, 2)),
+      lhresults: this._escapeScriptTags(JSON.stringify(results, null, 2)),
       css: this.getReportCSS(),
       reportContext: reportContext || 'extension', // devtools, extension, cli
       script: this.getReportJS(),
