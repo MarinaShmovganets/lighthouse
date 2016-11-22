@@ -216,8 +216,8 @@ function launchChromeAndRun(addresses: Array<string>,
       })
       .then(() => lighthouseRun(addresses, config, flags))
       .then(() => launcher.kill())
-      .catch((error) => {
-        console.error(error);
+      .catch(error => {
+        log.error('Lighthouse CLI', error);
         launcher.kill();
       });
   })
