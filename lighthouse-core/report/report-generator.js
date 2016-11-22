@@ -137,7 +137,7 @@ class ReportGenerator {
   }
 
   /**
-   * Escape <script> tas.
+   * Escape closing script tags.
    * @return {string}
    */
   _escapeScriptTags(jsonStr) {
