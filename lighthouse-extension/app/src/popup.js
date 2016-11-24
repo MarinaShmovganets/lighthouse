@@ -67,27 +67,22 @@ document.addEventListener('DOMContentLoaded', _ => {
     let qsBody = '**Lighthouse Version**: ' + getLighthouseVersion() + '\n';
     qsBody += '**Chrome Version**: ' + getChromeVersion() + '\n';
     qsBody += '**Error Message**: ' + err.message + '\n';
+    qsBody += '**Stack Trace**:\n ```' + err.stack.join('\n') + '```';
 
-    return new Promise(resolve => {
-      sourcemapStacktrace.mapStackTrace(err.stack, function(mapped) {
-        qsBody += '**Stack Trace**:\n ```' + mapped.join('\n') + '```';
+    const base = 'https://github.com/googlechrome/lighthouse/issues/new?';
+    let titleError = err.message;
+    if (titleError.length > MAX_ISSUE_ERROR_LENGTH) {
+      titleError = `${titleError.substring(0, MAX_ISSUE_ERROR_LENGTH - 3)}...`;
+    }
+    const title = encodeURI('title=Extension Error: ' + titleError);
+    const labels = '&' + encodeURI('labels=extension');
+    const body = '&body=' + encodeURI(qsBody);
 
-        const base = 'https://github.com/googlechrome/lighthouse/issues/new?';
-        let titleError = err.message;
-        if (titleError.length > MAX_ISSUE_ERROR_LENGTH) {
-          titleError = `${titleError.substring(0, MAX_ISSUE_ERROR_LENGTH - 3)}...`;
-        }
-        const title = encodeURI('title=Extension Error: ' + titleError);
-        const labels = '&' + encodeURI('labels=extension');
-        const body = '&body=' + encodeURI(qsBody);
+    reportErrorEl.href = base + title + labels + body;
+    reportErrorEl.textContent = 'Report Error';
+    reportErrorEl.target = '_blank';
 
-        reportErrorEl.href = base + title + labels + body;
-        reportErrorEl.textContent = 'Report Error';
-        reportErrorEl.target = '_blank';
-
-        resolve(reportErrorEl);
-      });
-    });
+    return reportErrorEl;
   }
 
   function startSpinner() {
@@ -118,6 +113,21 @@ document.addEventListener('DOMContentLoaded', _ => {
     listItem.appendChild(label);
 
     return listItem;
+  }
+
+  function showError(err, message, includeReportLink) {
+    sourcemapStacktrace.mapStackTrace(err.stack, stackWithSourcemaps => {
+      err.stack = stackWithSourcemaps;
+
+      feedbackEl.textContent = message;
+
+      if (includeReportLink) {
+        feedbackEl.className = 'feedback-error';
+        feedbackEl.appendChild(buildReportErrorLink(err));
+      }
+
+      background.console.error(err);
+    });
   }
 
   /**
@@ -170,18 +180,9 @@ document.addEventListener('DOMContentLoaded', _ => {
         }
       }
 
-      feedbackEl.textContent = message;
-
-      if (includeReportLink) {
-        feedbackEl.className = 'feedback-error';
-        buildReportErrorLink(err)
-          .then(errorLink => {
-            feedbackEl.appendChild(errorLink);
-          });
-      }
+      showError(err, message, includeReportLink);
 
       stopSpinner();
-      background.console.error(err);
     });
   });
 
