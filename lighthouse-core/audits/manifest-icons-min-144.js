@@ -49,10 +49,10 @@ class ManifestIconsMin144 extends Audit {
 
     const matchingIcons = icons.sizeAtLeast(144, /** @type {!Manifest} */ (manifest));
     const foundSizesDebug = matchingIcons.length ?
-        `Found icons of sizes: ${matchingIcons.join(', ')}` : undefined;
+        `found sizes: ${matchingIcons.join(', ')}` : undefined;
     return ManifestIconsMin144.generateAuditResult({
       rawValue: !!matchingIcons.length,
-      debugString: foundSizesDebug
+      displayValue: foundSizesDebug
     });
   }
 }
