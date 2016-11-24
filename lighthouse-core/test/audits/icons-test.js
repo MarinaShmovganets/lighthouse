@@ -67,9 +67,9 @@ describe('Manifest: icons audits', () => {
       const audit192 = Audit192.audit({Manifest});
 
       assert.equal(audit144.rawValue, false);
-      assert.ok(audit144.debugString.match(/144px or greater/));
+      assert.ok(audit144.debugString.match(/are at least 144px/));
       assert.equal(audit192.rawValue, false);
-      assert.ok(audit192.debugString.match(/192px or greater/));
+      assert.ok(audit192.debugString.match(/are at least 192px/));
     });
 
     it('succeeds when a manifest contains icons that are large enough', () => {
