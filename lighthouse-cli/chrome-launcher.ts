@@ -229,7 +229,16 @@ class ChromeLauncher {
   destroyTmp() {
     if (this.TMP_PROFILE_DIR) {
       log.verbose('ChromeLauncher', `Removing ${this.TMP_PROFILE_DIR}`);
-      rimraf.sync(this.TMP_PROFILE_DIR);
+
+      if (this.outFile) {
+        fs.closeSync(this.outFile);
+      }
+
+      if (this.errFile) {
+        fs.closeSync(this.errFile);
+      }
+
+      rimraf.sync(path.normalize(this.TMP_PROFILE_DIR));
     }
   }
 };
