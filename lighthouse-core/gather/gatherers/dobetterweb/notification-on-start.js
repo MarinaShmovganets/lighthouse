@@ -55,10 +55,10 @@ class NotificationOnStart extends Gatherer {
           return this.collectNotificationUsage().then(results => {
             this.artifact.usage = results;
           });
-        }).catch(err => {
+        }).catch(e => {
           this.artifact = {
             value: -1,
-            debugString: err && err.toString()
+            debugString: e && e.message
           };
         });
   }

@@ -44,11 +44,11 @@ class GeolocationOnStart extends Gatherer {
   afterPass(options) {
     return options.driver.evaluateAsync(`(${queryGeolocationPermission.toString()}())`)
         .then(state => {
-          if (state === 'granted') {
+          if (state === 'granted' || state === 'denied') {
             this.artifact = {
               value: -1,
               debugString: 'Unable to determine if this permission was requested ' +
-                           'on page load because it had already been granted. ' +
+                           'on page load because it had already been set. ' +
                            'Try resetting the permission and run Lighthouse again.'
             };
             return;
@@ -62,7 +62,7 @@ class GeolocationOnStart extends Gatherer {
         }).catch(e => {
           this.artifact = {
             value: -1,
-            debugString: e.message
+            debugString: e && e.message
           };
         });
   }
