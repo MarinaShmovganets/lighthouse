@@ -221,6 +221,12 @@ function geolocationOnStartTest() {
   });
 }
 
+function notificationOnStartTest() {
+  Notification.requestPermission().then(function () {
+    // noop
+  });
+}
+
 function oldCSSFlexboxTest() {
   stampTemplate('old-flexbox-tmpl', document.body);
 }
@@ -243,6 +249,7 @@ if (location.search === '') {
   mutationEvenTest();
   passiveEventsListenerTest();
   geolocationOnStartTest();
+  notificationOnStartTest();
   linksBlockingFirstPaintTest();
   noRelOpenLinksTest();
   oldCSSFlexboxTest();
@@ -267,6 +274,9 @@ if (location.search === '') {
   }
   if (params.has('geolocation')) {
     geolocationOnStartTest();
+  }
+  if (params.has('notifications')) {
+    notificationOnStartTest();
   }
   if (params.has('linksblockfp')) {
     linksBlockingFirstPaintTest();
