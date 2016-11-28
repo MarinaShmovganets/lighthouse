@@ -66,7 +66,6 @@ describe('Performance: first-meaningful-paint audit', () => {
 
       return FMPAudit.audit(artifacts).then(result => {
         fmpResult = result;
-        console.log(result);
       }).catch(_ => {
         assert.ok(false);
       });

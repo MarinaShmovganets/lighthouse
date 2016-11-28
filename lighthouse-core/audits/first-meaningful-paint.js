@@ -134,8 +134,6 @@ class FirstMeaningfulPaint extends Audit {
     // Parse the trace for our key events and sort them by timestamp.
     events.filter(e => {
       return e.cat.includes('blink.user_timing') ||
-        e.name === 'FrameView::performLayout' ||
-        e.name === 'Paint' ||
         e.name === 'TracingStartedInPage';
     }).sort((event0, event1) => {
       return event0.ts - event1.ts;
@@ -160,19 +158,6 @@ class FirstMeaningfulPaint extends Audit {
       if (event.name === 'firstMeaningfulPaint' && event.args.frame === mainFrameID &&
           !!navigationStart && event.ts >= navigationStart.ts) {
         firstMeaningfulPaint = event;
-      }
-
-      // COMPAT: frame property requires Chrome 52 (r390306)
-      // https://codereview.chromium.org/1922823003
-      if (event.name === 'FrameView::performLayout' &&
-          event.args.counters && event.args.counters.frame === mainFrameID &&
-          !!navigationStart && event.ts >= navigationStart.ts) {
-        layouts.set(event, event.args.counters);
-      }
-
-      if (event.name === 'Paint' && event.args.data.frame === mainFrameID &&
-        !!navigationStart && event.ts >= navigationStart.ts) {
-        paints.push(event);
       }
     });
 
