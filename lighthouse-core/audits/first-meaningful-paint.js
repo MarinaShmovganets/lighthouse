@@ -61,21 +61,11 @@ class FirstMeaningfulPaint extends Audit {
       const evts = this.collectEvents(traceContents);
 
       const navStart = evts.navigationStart;
-      const fCP = evts.firstContentfulPaint;
-      const fMPbasic = this.findFirstMeaningfulPaint(evts, {});
-      const fMPpageheight = this.findFirstMeaningfulPaint(evts, {pageHeight: true});
-      const fMPwebfont = this.findFirstMeaningfulPaint(evts, {webFont: true});
-      const fMPfull = this.findFirstMeaningfulPaint(evts, {pageHeight: true, webFont: true});
+      const fMP = evts.firstMeaningfulPaint;
 
       var data = {
         navStart,
-        fmpCandidates: {
-          fCP,
-          fMPbasic,
-          fMPpageheight,
-          fMPwebfont,
-          fMPfull
-        }
+        fMP,
       };
 
       const result = this.calculateScore(data);
@@ -101,24 +91,8 @@ class FirstMeaningfulPaint extends Audit {
   }
 
   static calculateScore(data) {
-    // there are a few candidates for fMP:
-    // * firstContentfulPaint: the first time that text or image content was painted.
-    // * fMP basic: paint after most significant layout
-    // * fMP page height: basic + scaling sigificance to page height
-    // * fMP webfont: basic + waiting for in-flight webfonts to paint
-    // * fMP full: considering both page height + webfont heuristics
-
-    // Calculate the difference from navigation and save all candidates
-    const timings = {};
-    const timingsArr = [];
-    Object.keys(data.fmpCandidates).forEach(name => {
-      const evt = data.fmpCandidates[name];
-      timings[name] = evt && ((evt.ts - data.navStart.ts) / 1000);
-      timingsArr.push(timings[name]);
-    });
-
     // First meaningful paint is the last timestamp observed from the candidates
-    const firstMeaningfulPaint = timingsArr.reduce((maxTimestamp, curr) => max(maxTimestamp, curr));
+    const firstMeaningfulPaint = (data.fMP.ts - data.navStart.ts) / 1000;
 
     // Use the CDF of a log-normal distribution for scoring.
     //   < 1100ms: score≈100
@@ -132,13 +106,13 @@ class FirstMeaningfulPaint extends Audit {
     score = Math.min(100, score);
     score = Math.max(0, score);
 
-    timings.navStart = data.navStart.ts / 1000;
+    data.navStart.ts /= 1000;
 
     return {
       duration: `${firstMeaningfulPaint.toFixed(1)}`,
       score: Math.round(score),
       rawValue: firstMeaningfulPaint.toFixed(1),
-      extendedInfo: {timings}
+      extendedInfo: {timings: data}
     };
   }
 
@@ -149,6 +123,7 @@ class FirstMeaningfulPaint extends Audit {
     let mainFrameID;
     let navigationStart;
     let firstContentfulPaint;
+    let firstMeaningfulPaint;
     const layouts = new Map();
     const paints = [];
 
@@ -182,6 +157,11 @@ class FirstMeaningfulPaint extends Audit {
           !!navigationStart && event.ts >= navigationStart.ts) {
         firstContentfulPaint = event;
       }
+      if (event.name === 'firstMeaningfulPaint' && event.args.frame === mainFrameID &&
+          !!navigationStart && event.ts >= navigationStart.ts) {
+        firstMeaningfulPaint = event;
+      }
+
       // COMPAT: frame property requires Chrome 52 (r390306)
       // https://codereview.chromium.org/1922823003
       if (event.name === 'FrameView::performLayout' &&
@@ -205,6 +185,7 @@ class FirstMeaningfulPaint extends Audit {
     return {
       navigationStart,
       firstContentfulPaint,
+      firstMeaningfulPaint,
       layouts,
       paints
     };
