@@ -23,15 +23,6 @@
 
 const Gatherer = require('../gatherer');
 
-/* global navigator */
-
-/* istanbul ignore next */
-function queryNotificationPermission() {
-  return navigator.permissions.query({name: 'notifications'}).then(result => {
-    return result.state;
-  });
-}
-
 class NotificationOnStart extends Gatherer {
 
   beforePass(options) {
@@ -40,7 +31,7 @@ class NotificationOnStart extends Gatherer {
   }
 
   afterPass(options) {
-    return options.driver.evaluateAsync(`(${queryNotificationPermission.toString()}())`)
+    return options.driver.queryPermissionState('notifications')
         .then(state => {
           if (state === 'granted' || state === 'denied') {
             this.artifact = {

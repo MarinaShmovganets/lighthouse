@@ -23,15 +23,6 @@
 
 const Gatherer = require('../gatherer');
 
-/* global navigator */
-
-/* istanbul ignore next */
-function queryGeolocationPermission() {
-  return navigator.permissions.query({name: 'geolocation'}).then(result => {
-    return result.state;
-  });
-}
-
 class GeolocationOnStart extends Gatherer {
 
   beforePass(options) {
@@ -42,7 +33,7 @@ class GeolocationOnStart extends Gatherer {
   }
 
   afterPass(options) {
-    return options.driver.evaluateAsync(`(${queryGeolocationPermission.toString()}())`)
+    return options.driver.queryPermissionState('geolocation')
         .then(state => {
           if (state === 'granted' || state === 'denied') {
             this.artifact = {
