@@ -709,7 +709,8 @@ function captureJSCallUsage(funcRef, set) {
       const stackTrace = structStackTrace.slice(1).map(callsite => callsite.toString());
 
       // If we don't have an URL, (e.g. eval'd code), use the last entry in the
-      // stack trace to give some context. See https://crbug.com/646849.
+      // stack trace to give some context: eval(<context>):<line>:<col>
+      // See https://crbug.com/646849.
       if (!url) {
         url = stackTrace[0];
       }
