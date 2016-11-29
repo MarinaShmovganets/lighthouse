@@ -76,17 +76,6 @@ describe('Page does not use console.time()', () => {
     assert.equal(auditResult.extendedInfo.value.length, 2);
   });
 
-  it('passes when url property is missing', () => {
-    const auditResult = NoConsoleTimeAudit.audit({
-      ConsoleTimeUsage: {
-        usage: [{line: 1, col: 1}]
-      },
-      URL: {finalUrl: URL}
-    });
-    assert.equal(auditResult.rawValue, true);
-    assert.equal(auditResult.extendedInfo.value.length, 0);
-  });
-
   it('fails when console.time() is used in eval()', () => {
     const auditResult = NoConsoleTimeAudit.audit({
       ConsoleTimeUsage: {
