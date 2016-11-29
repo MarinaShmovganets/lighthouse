@@ -63,7 +63,10 @@ class NoConsoleTimeAudit extends Audit {
     const pageHost = url.parse(artifacts.URL.finalUrl).host;
     // Filter usage from other hosts.
     const results = artifacts.ConsoleTimeUsage.usage.filter(err => {
-      return url.parse(err.url).host === pageHost;
+      if (!err.url) {
+        return false;
+      }
+      return err.isEval ? err.url : url.parse(err.url).host === pageHost;
     }).map(err => {
       return Object.assign({
         label: `line: ${err.line}, col: ${err.col}`

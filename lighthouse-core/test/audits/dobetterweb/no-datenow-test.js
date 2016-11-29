@@ -91,4 +91,30 @@ describe('Page does not use Date.now()', () => {
     assert.equal(auditResult.rawValue, false);
     assert.equal(auditResult.extendedInfo.value.length, 1);
   });
+
+  it('passes when url property is missing', () => {
+    const auditResult = DateNowUseAudit.audit({
+      DateNowUse: {
+        usage: [{line: 1, col: 1}]
+      },
+      URL: {finalUrl: URL}
+    });
+    assert.equal(auditResult.rawValue, true);
+    assert.equal(auditResult.extendedInfo.value.length, 0);
+  });
+
+  it('fails when console.time() is used in eval()', () => {
+    const auditResult = DateNowUseAudit.audit({
+      DateNowUse: {
+        usage: [
+          {url: 'http://example.com/one', line: 1, col: 1, isEval: false},
+          {url: 'module.exports (blah/handler.js:5:18)', line: 5, col: 18, isEval: true},
+          {url: 'module.exports (blah/handler.js:5:18)', line: 5, col: 18, isEval: false}
+        ]
+      },
+      URL: {finalUrl: URL}
+    });
+    assert.equal(auditResult.rawValue, false);
+    assert.equal(auditResult.extendedInfo.value.length, 2);
+  });
 });

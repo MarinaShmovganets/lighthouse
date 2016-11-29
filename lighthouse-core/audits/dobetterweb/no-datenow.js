@@ -64,7 +64,10 @@ class NoDateNowAudit extends Audit {
     const pageHost = url.parse(artifacts.URL.finalUrl).host;
     // Filter usage from other hosts.
     const results = artifacts.DateNowUse.usage.filter(err => {
-      return err.url ? url.parse(err.url).host === pageHost : false;
+      if (!err.url) {
+        return false;
+      }
+      return err.isEval ? err.url : url.parse(err.url).host === pageHost;
     }).map(err => {
       return Object.assign({
         label: `line: ${err.line}, col: ${err.col}`,
