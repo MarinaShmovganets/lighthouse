@@ -433,10 +433,6 @@ class Driver {
    *    See https://developer.mozilla.org/en-US/docs/Web/API/Permissions/query.
    */
   queryPermissionState(name) {
-    if (['geolocation', 'notifications', 'midi', 'push'].indexOf(name) === -1) {
-      return Promise.reject(new Error(`Unknown permission: ${name}`));
-    }
-
     const expressionToEval = `
       navigator.permissions.query({name: '${name}'}).then(result => {
         return result.state;
