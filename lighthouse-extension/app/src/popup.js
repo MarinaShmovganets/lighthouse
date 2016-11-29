@@ -116,8 +116,14 @@ document.addEventListener('DOMContentLoaded', _ => {
   }
 
   function showError(err, message, includeReportLink) {
-    sourcemapStacktrace.mapStackTrace(err.stack, stackWithSourcemaps => {
-      err.stack = stackWithSourcemaps;
+    const stackTracePromise = new Promise(function(resolve) {
+      sourcemapStacktrace.mapStackTrace(err.stack, stackWithSourcemaps => {
+        resolve(stackWithSourcemaps);
+      });
+    }).catch(err => Promise.resolve(err.stack));
+
+    stackTracePromise.then(stack => {
+      err.stack = stack;
 
       feedbackEl.textContent = message;
 
