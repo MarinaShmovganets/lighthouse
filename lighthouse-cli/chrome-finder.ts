@@ -132,6 +132,7 @@ export function linux() {
     regex: new RegExp(process.env.LIGHTHOUSE_CHROMIUM_PATH),
     weight: 100
   }];
+  console.log(installations);
 
   return sort(uniq(installations.filter(Boolean)), priorities);
 }
@@ -197,7 +198,7 @@ function uniq(arr: Array<any>) {
 
 function findChromeExecutables(folder: string): Array<string> {
   const argumentsRegex = /(^[^ ]+).*/; // Take everything up to the first space
-  const chromeExecRegex = /^Exec=\/.*\/(google|chrome|chromium)-.*/;
+  const chromeExecRegex = '^Exec=\/.*\/(google|chrome|chromium)-.*';
 
   let installations: Array<string> = [];
   if (canAccess(folder)) {
