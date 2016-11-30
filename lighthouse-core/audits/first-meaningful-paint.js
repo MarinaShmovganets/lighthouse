@@ -104,7 +104,7 @@ class FirstMeaningfulPaint extends Audit {
     score = Math.min(100, score);
     score = Math.max(0, score);
 
-    data.navStart.ts /= 1000;
+    data.navStart = data.navStart.ts / 1000;
 
     return {
       duration: `${firstMeaningfulPaint.toFixed(1)}`,
@@ -127,7 +127,7 @@ class FirstMeaningfulPaint extends Audit {
     const events = traceData;
 
     // Parse the trace for our key events and sort them by timestamp.
-    events.filter(e => e.cat.includes('blink.user_timing'))
+    events.filter(e => e.cat.includes('blink.user_timing') || e.name === 'TracingStartedInPage')
     .sort((event0, event1) => {
       return event0.ts - event1.ts;
     }).forEach(event => {
