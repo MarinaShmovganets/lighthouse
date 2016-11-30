@@ -1,0 +1,89 @@
+/**
+ * Copyright 2016 Google Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --lh-background-color: rgb(32,50,70);
+}
+
+.drop_zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  visibility: hidden;
+}
+.drop_zone.dropping {
+  visibility: visible;
+  font-size: var(--heading-font-size);
+  background: rgba(255,255,255,0.8);
+  color: var(--unknown-color);
+}
+.drop_zone.dropping::after {
+  content: 'Drop report here';
+  border: 2px dashed currentColor;
+  border-radius: 5px;
+  padding: 25px;
+  width: 33vw;
+  height: 20vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+.viewer-placeholder {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: var(--lh-background-color);
+}
+.viewer-placeholder-inner {
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  padding: 64px 32px;
+  border: 2px dashed rgba(255,255,255,0.2);
+}
+.viewer-placeholder-inner.dropping {
+  border-color: currentColor;
+}
+/*.viewer-placeholder-inner::after {
+  content: 'Drop report results';
+
+  width: 33vw;
+  height: 20vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}*/
+.viewer-placeholder h1 {
+  font-weight: 300;
+}
+.viewer-placeholder-logo {
+  height: 50px;
+  width: auto;
+  margin-right: 32px;
+}
