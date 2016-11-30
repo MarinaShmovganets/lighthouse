@@ -64,26 +64,18 @@
   display: flex;
   align-items: center;
   border-radius: 5px;
-  padding: 64px 32px;
+  padding: 40px 32px;
   border: 2px dashed rgba(255,255,255,0.2);
+  cursor: pointer;
 }
 .viewer-placeholder-inner.dropping {
   border-color: currentColor;
 }
-/*.viewer-placeholder-inner::after {
-  content: 'Drop report results';
-
-  width: 33vw;
-  height: 20vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}*/
 .viewer-placeholder h1 {
   font-weight: 300;
 }
 .viewer-placeholder-logo {
-  height: 50px;
+  height: 75px;
   width: auto;
-  margin-right: 32px;
+  margin-right: 16px;
 }
