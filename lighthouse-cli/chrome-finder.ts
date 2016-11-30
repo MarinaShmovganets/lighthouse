@@ -22,8 +22,6 @@ const path = require('path');
 const execSync = require('child_process').execSync;
 
 const newLineRegex = /\r?\n/;
-const argumentsRegex = /(^[^ ]+).*/;
-const chromeExecRegex = /^Exec=\/.*\/(google|chrome|chromium)-.*/;
 
 type Priorities = Array<{regex: RegExp, weight: number}>;
 
@@ -78,16 +76,21 @@ export function darwin() {
   return sort(installations, priorities);
 }
 
+/**
+ * Look for linux executables in 3 ways
+ * 1. Look into LIGHTHOUSE_CHROMIUM_PATH env variable
+ * 2. Look into the directories where .desktop are saved on gnome based distro's
+ * 3. Look for google-chrome-stable & google-chrome executables by using the which command
+ */
 export function linux() {
   let installations: Array<string> = [];
 
-  // Look into LIGHTHOUSE_CHROMIUM_PATH
-  const execPath = process.env.LIGHTHOUSE_CHROMIUM_PATH;
-  if (execPath && canAccess(execPath)) {
-    installations.push(execPath);
+  // 1. Look into LIGHTHOUSE_CHROMIUM_PATH env variable
+  if (canAccess(process.env.LIGHTHOUSE_CHROMIUM_PATH)) {
+    installations.push(process.env.LIGHTHOUSE_CHROMIUM_PATH);
   }
 
-  // Search in desktop files for executable
+  // 2. Look into the directories where .desktop are saved on gnome based distro's
   const desktopInstallationFolders = [
     process.env.HOME + '/.local/share/applications/',
     '/usr/share/applications/',
@@ -96,25 +99,24 @@ export function linux() {
     installations = installations.concat(findChromeExecutables(folder));
   });
 
-  // Search for executable with which command
+  // Look for google-chrome-stable & google-chrome executables by using the which command
   const executables = [
     'google-chrome-stable',
     'google-chrome',
   ];
-
   executables.forEach((executable: string) => {
     const chromePath = execSync(`which ${executable}`)
       .toString()
       .split(newLineRegex)[0];
 
-    if (chromePath && canAccess(chromePath)) {
+    if (canAccess(chromePath)) {
       installations.push(chromePath);
     }
   });
 
   if (!installations.length) {
     throw new Error('The environment variable LIGHTHOUSE_CHROMIUM_PATH must be set to ' +
-      'executable of a build of Chromium version 52.0 or later.');
+      'executable of a build of Chromium version 54.0 or later.');
   }
 
   const priorities: Priorities = [{
@@ -175,6 +177,10 @@ function sort(installations: Array<string>, priorities: Priorities) {
 }
 
 function canAccess(file: string): Boolean {
+  if (!file) {
+    return false;
+  }
+
   try {
     fs.accessSync(file);
     return true;
@@ -189,19 +195,21 @@ function uniq(arr: Array<any>) {
     );
 }
 
-function findChromeExecutables(desktopPath: string): Array<string> {
+function findChromeExecutables(folder: string): Array<string> {
+  const argumentsRegex = /(^[^ ]+).*/; // Take everything up to the first space
+  const chromeExecRegex = /^Exec=\/.*\/(google|chrome|chromium)-.*/;
+
   let installations: Array<string> = [];
-  if (canAccess(desktopPath)) {
-    let execPaths = execSync(`grep -ER "${chromeExecRegex}" ${desktopPath} | awk -F '=' '{print $2}'`)
+  if (canAccess(folder)) {
+    // Output of the grep & print looks like:
+    //    /opt/google/chrome/google-chrome --profile-directory
+    //    /home/user/Downloads/chrome-linux/chrome-wrapper %U
+    let execPaths = execSync(`grep -ER "${chromeExecRegex}" ${folder} | awk -F '=' '{print $2}'`)
       .toString()
       .split(newLineRegex)
       .map((execPath: string) => execPath.replace(argumentsRegex, '$1'));
 
-    execPaths.forEach((execPath: string) => {
-      if (execPath && canAccess(execPath)) {
-        installations.push(execPath);
-      }
-    });
+    execPaths.forEach((execPath: string) => canAccess(execPath) && installations.push(execPath));
   }
 
   return installations;
