@@ -19,26 +19,7 @@
 /* global window, document */
 
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
-
-function replaceHTML(lhresults) {
-  const reportGenerator = new ReportGenerator();
-  let html;
-  try {
-    html = reportGenerator.generateHTML(lhresults, 'viewer');
-  } catch (err) {
-    html = reportGenerator.renderException(err, lhresults);
-  }
-
-  // Pull out the report part of the generated HTML.
-  const div = document.createElement('div');
-  div.innerHTML = html;
-  html = div.querySelector('.js-report').outerHTML;
-
-  document.querySelector('output').innerHTML = html;
-
-  // eslint-disable-next-line no-new
-  new window.LighthouseReport(); // activate event listeners on new results page.
-}
+const LZString = require('lz-string');
 
 class FileUploader {
   constructor() {
@@ -107,17 +88,33 @@ class FileUploader {
 
   /**
    * Reads a file as text.
+   * @static
    * @param {!File} file
+   * @param {!string} readAs A format to read the file ('text', 'dataurl',
+   *     'arraybuffer', 'binstr'). The default is to return the file as text.
    * @return {!Promise<string>}
    */
-  readFile(file) {
+  static readFile(file, readAs) {
     return new Promise((resolve, reject) => {
       const reader = new window.FileReader();
       reader.onload = function(e) {
         resolve(e.target.result);
       };
       reader.onerror = reject;
-      reader.readAsText(file);
+      switch (readAs) {
+        case 'arraybuffer':
+          reader.readAsArrayBuffer(file);
+          break;
+        case 'binstr':
+          reader.readAsBinaryString(file);
+          break;
+        case 'dataurl':
+          reader.readAsDataURL(file);
+          break;
+        case 'text':
+        default:
+          reader.readAsText(file);
+      }
     });
   }
 
@@ -129,7 +126,7 @@ class FileUploader {
    *     type of used.
    */
   updatePage(file) {
-    return this.readFile(file).then(str => {
+    return FileUploader.readFile(file, 'text').then(str => {
       if (!file.type.match('json')) {
         throw new Error('Unsupported report type. Expected JSON.');
       }
@@ -154,7 +151,38 @@ class FileUploader {
   }
 }
 
+function replaceHTML(lhresults) {
+  const reportGenerator = new ReportGenerator();
+  let html;
+  try {
+    html = reportGenerator.generateHTML(lhresults, 'viewer');
+  } catch (err) {
+    html = reportGenerator.renderException(err, lhresults);
+  }
+
+  // Pull out the report part of the generated HTML.
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  html = div.querySelector('.js-report').outerHTML;
+
+  document.querySelector('output').innerHTML = html;
+
+  const compressed = LZString.compressToEncodedURIComponent(html);
+  window.location.hash = compressed;
+
+  // eslint-disable-next-line no-new
+  new window.LighthouseReport(); // activate event listeners on new results page.
+}
+
 window.addEventListener('DOMContentLoaded', _ => {
   // eslint-disable-next-line no-new
   new FileUploader();
+
+  // Render (deep link) results from URL.
+  if (location.hash) {
+    const data = location.hash.slice(1);
+    const html = LZString.decompressFromEncodedURIComponent(data);
+
+    document.querySelector('output').innerHTML = html;
+  }
 });
