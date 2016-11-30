@@ -20,6 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
+const execFileSync = require('child_process').execFileSync;
 
 const newLineRegex = /\r?\n/;
 
@@ -92,7 +93,7 @@ export function linux() {
 
   // 2. Look into the directories where .desktop are saved on gnome based distro's
   const desktopInstallationFolders = [
-    process.env.HOME + '/.local/share/applications/',
+    path.join(require('os').homedir(), '.local/share/applications/'),
     '/usr/share/applications/',
   ];
   desktopInstallationFolders.forEach(folder => {
@@ -105,7 +106,7 @@ export function linux() {
     'google-chrome',
   ];
   executables.forEach((executable: string) => {
-    const chromePath = execSync(`which ${executable}`)
+    const chromePath = execFileSync('which', [executable])
       .toString()
       .split(newLineRegex)[0];
 
@@ -120,19 +121,18 @@ export function linux() {
   }
 
   const priorities: Priorities = [{
-    regex: new RegExp(`chrome-wrapper$`),
+    regex: /chrome-wrapper$/,
     weight: 51
   }, {
-    regex: new RegExp(`google-chrome-stable$`),
+    regex: /google-chrome-stable$/,
     weight: 50
   }, {
-    regex: new RegExp(`google-chrome$`),
+    regex: /google-chrome$/,
     weight: 49
   }, {
     regex: new RegExp(process.env.LIGHTHOUSE_CHROMIUM_PATH),
     weight: 100
   }];
-  console.log(installations);
 
   return sort(uniq(installations.filter(Boolean)), priorities);
 }
@@ -191,9 +191,7 @@ function canAccess(file: string): Boolean {
 }
 
 function uniq(arr: Array<any>) {
-    return arr.sort().filter((item: any, pos: number, _this: any) =>
-      !pos || item != _this[pos - 1]
-    );
+    return Array.from(new Set(arr));
 }
 
 function findChromeExecutables(folder: string): Array<string> {
