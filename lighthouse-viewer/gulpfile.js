@@ -22,7 +22,6 @@ const runSequence = require('run-sequence');
 const gulp = require('gulp');
 const browserify = require('browserify');
 const eslint = require('gulp-eslint');
-// const livereload = require('gulp-livereload');
 const tap = require('gulp-tap');
 
 gulp.task('lint', () => {
@@ -91,8 +90,6 @@ gulp.task('clean', () => {
 });
 
 gulp.task('watch', ['lint', 'browserify', 'html', 'core-js-deps', 'images', 'css'], () => {
-  // livereload.listen();
-
   gulp.watch([
     'app/styles/**/*.css',
     '../lighthouse-core/report/styles/**/*.css'

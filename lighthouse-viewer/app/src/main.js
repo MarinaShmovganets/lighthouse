@@ -19,7 +19,161 @@
 /* global window, document */
 
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
-const LZString = require('lz-string');
+// const firebase = require('firebase/app');
+// require('firebase/auth');
+
+const LH_CURRENT_VERSION = require('../../../package.json').version;
+const APP_URL = `${location.origin}${location.pathname}`;
+
+class Logger {
+  constructor(selector) {
+    this.el = document.querySelector(selector);
+  }
+
+  log(msg) {
+    clearTimeout(this._id);
+
+    this.el.textContent = msg;
+    this.el.classList.add('show');
+    this._id = setTimeout(() => {
+      this.el.classList.remove('show');
+    }, 7000);
+  }
+
+  hide() {
+    clearTimeout(this._id);
+    this.el.classList.remove('show');
+  }
+}
+
+const logger = new Logger('#log');
+
+class FirebaseAuth {
+  constructor() {
+    if (!window.firebase) {
+      throw new Error('Firebase API not loaded');
+    }
+
+    this.accessToken = null;
+    this.user = null;
+
+    this.provider = new firebase.auth.GithubAuthProvider();
+    this.provider.addScope('gist');
+
+    firebase.initializeApp({
+      apiKey: 'AIzaSyApMz8FHTyJNqqUtA51tik5Mro8j-2qMcM',
+      authDomain: 'lighthouse-viewer.firebaseapp.com',
+      databaseURL: 'https://lighthouse-viewer.firebaseio.com',
+      storageBucket: 'lighthouse-viewer.appspot.com',
+      messagingSenderId: '962507201498'
+    });
+
+    this.ready = new Promise((resolve, reject) => {
+      firebase.auth().onAuthStateChanged(user => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (user && accessToken) {
+          this.accessToken = accessToken;
+          this.user = user;
+        }
+        resolve();
+      });
+    });
+  }
+
+  signIn() {
+    return firebase.auth().signInWithPopup(this.provider).then(result => {
+      this.accessToken = result.credential.accessToken;
+      // GH access tokens never expire so we can continue to use this on page refresh.
+      localStorage.setItem('accessToken', this.accessToken);
+      this.user = result.user;
+    });
+  }
+
+  signOut() {
+    return firebase.auth().signOut().then(() => {
+      this.accessToken = null;
+      localStorage.removeItem('accessToken');
+    });
+  }
+}
+
+class GithubAPI {
+  constructor() {
+    this.CLIENT_ID = '48e4c3145c4978268ecb';
+    this.CLIENT_SECRET = '460e73e4a949ed6e2abdd12c705bfb56728e9604';
+    this.auth = new FirebaseAuth();
+  }
+
+  static get LH_JSON_FILE() {
+    return 'lighthouse_results.json';
+  }
+
+  authorize() {
+    this.auth.signIn();
+  }
+
+  createGist(content) {
+    content = JSON.stringify(content);
+
+    const body = `{
+      "description": "lighthouse json results",
+      "public": false,
+      "files": {
+        "${GithubAPI.LH_JSON_FILE}": {
+          "content": ${JSON.stringify(content)}
+        }
+      }
+    }`;
+
+    return fetch('https://api.github.com/gists', {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: `token ${this.auth.accessToken}`
+      }),
+      body
+    })
+    .then(resp => resp.json())
+    .then(json => json.id);
+  }
+
+  getGistContent(id) {
+    return fetch(`https://api.github.com/gists/${id}`, {
+      headers: new Headers({
+        Authorization: `token ${this.auth.accessToken}`
+      })
+    })
+    .then(resp => {
+      if (!resp.ok) {
+        throw new Error(`${resp.status} Fetching gist`);
+      }
+      return resp.json();
+    })
+    .then(json => {
+      const file = json.files[GithubAPI.LH_JSON_FILE];
+      if (!file.truncated) {
+        return file.content;
+      }
+      return fetch(file.raw_url).then(resp => resp.json());
+    });
+  }
+
+  // getGists(username) {
+  //   fetch(`https://api.github.com/users/${username}/gists`, {
+  //     headers: new Headers({
+  //       Authorization: `token ${this.auth.accessToken}`
+  //     })
+  //   })
+  //   .then(resp => resp.json())
+  //   .then(json => {
+  //     json.forEach(i => {
+  //       console.log(i.description);
+  //     });
+  //   });
+  // }
+}
+
+const github = new GithubAPI();
+window.github = github;
 
 class FileUploader {
   constructor() {
@@ -39,7 +193,7 @@ class FileUploader {
     this.fileInput.accept = 'application/json';
 
     this.fileInput.addEventListener('change', e => {
-      this.updatePage(e.target.files[0]);
+      this.updatePage(e.target.files[0]).catch(err => logger.log(err.message));
     });
 
     document.body.appendChild(this.fileInput);
@@ -77,7 +231,13 @@ class FileUploader {
       this.resetDraggingUI();
 
       // Ignore other files if more than one is dropped.
-      this.updatePage(e.dataTransfer.files[0]);
+      this.updatePage(e.dataTransfer.files[0])
+          // TODO: reuse existing lighthouse_results.json gist if one exists.
+          // TODO: reactor github global var pollution.
+          .then(json => github.createGist(json))
+          .then(id => {
+            history.pushState({}, null, `${APP_URL}?gist=${id}`);
+          }).catch(err => logger.log(err.message));
     });
   }
 
@@ -132,10 +292,6 @@ class FileUploader {
       }
 
       const json = JSON.parse(str);
-      if (!json.lighthouseVersion) {
-        throw new Error('JSON file was not generated by Lighthouse');
-      }
-
       replaceHTML(json);
 
       // Remove placeholder drop area after viewing results for first time.
@@ -144,14 +300,23 @@ class FileUploader {
         this.placeholder.remove();
         this.placeholder = null;
       }
-    }).catch(err => {
-      // eslint-disable-next-line
-      window.alert(err.message);
+
+      return json;
     });
   }
 }
 
 function replaceHTML(lhresults) {
+  if (!lhresults.lighthouseVersion) {
+    throw new Error('JSON file was not generated by Lighthouse');
+  } else if (lhresults.lighthouseVersion < LH_CURRENT_VERSION) {
+    // eslint-disable-next-line
+    window.alert('WARNING:  Results may not display properly.\n' +
+                'Report was created with an earlier version of ' +
+                  `Lighthouse (${lhresults.lighthouseVersion}). The latest ` +
+                  `version is ${LH_CURRENT_VERSION}.`);
+  }
+
   const reportGenerator = new ReportGenerator();
   let html;
   try {
@@ -171,20 +336,23 @@ function replaceHTML(lhresults) {
   new window.LighthouseReport(); // activate event listeners on new results page.
 }
 
-function createShareLink(json) {
-  const str = JSON.stringify(json);
-  const compressed = LZString.compressToEncodedURIComponent(str);
-  // window.location.hash = compressed;
-}
-
-window.addEventListener('DOMContentLoaded', _ => {
+function init() {
   // eslint-disable-next-line no-new
   new FileUploader();
 
-  // Render (deep link) results from URL.
-  if (location.hash) {
-    const data = location.hash.slice(1);
-    const jsonStr = LZString.decompressFromEncodedURIComponent(data);
-    replaceHTML(JSON.parse(jsonStr));
+  // Pull gist id from URL and render it.
+  const params = new URLSearchParams(location.search);
+  const gistId = params.get('gist');
+  if (gistId) {
+    logger.log('Loading results from gist...');
+
+    github.auth.ready.then(() => {
+      github.getGistContent(gistId).then(json => {
+        logger.hide();
+        replaceHTML(json);
+      }).catch(err => logger.log(err));
+    });
   }
-});
+}
+
+init();
