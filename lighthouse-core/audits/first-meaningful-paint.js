@@ -104,6 +104,7 @@ class FirstMeaningfulPaint extends Audit {
     score = Math.min(100, score);
     score = Math.max(0, score);
 
+    data.fMP = firstMeaningfulPaint;
     data.navStart = data.navStart.ts / 1000;
 
     return {
