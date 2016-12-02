@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', _ => {
     let qsBody = '**Lighthouse Version**: ' + getLighthouseVersion() + '\n';
     qsBody += '**Chrome Version**: ' + getChromeVersion() + '\n';
     qsBody += '**Error Message**: ' + err.message + '\n';
-    qsBody += '**Stack Trace**:\n ```' + err.stack.join('\n') + '```';
+    qsBody += '**Stack Trace**:\n ```' + err.stack + '\n```';
 
     const base = 'https://github.com/googlechrome/lighthouse/issues/new?';
     let titleError = err.message;
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', _ => {
     }).catch(err => Promise.resolve(err.stack));
 
     stackTracePromise.then(stack => {
-      err.stack = stack;
+      err.stack = stack.join('\n');
 
       feedbackEl.textContent = message;
 
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', _ => {
         feedbackEl.appendChild(buildReportErrorLink(err));
       }
 
-      background.console.error(err);
+      background.console.error(err.message + '\n' + err.stack);
     });
   }
 
