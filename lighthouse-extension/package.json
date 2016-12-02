@@ -24,6 +24,6 @@
     "through2": "^2.0.1"
   },
   "dependencies": {
-    "sourcemapped-stacktrace": "^1.1.3"
+    "sourcemapped-stacktrace": "^1.1.4"
   }
 }
