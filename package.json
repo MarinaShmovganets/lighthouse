@@ -45,19 +45,19 @@
   },
   "dependencies": {
     "axe-core": "^1.1.1",
-    "chrome-devtools-frontend": "1.0.422034",
+    "chrome-devtools-frontend": "^1.0.422034",
     "debug": "^2.2.0",
-    "devtools-timeline-model": "1.1.6",
-    "gl-matrix": "2.3.2",
+    "devtools-timeline-model": "^1.1.6",
+    "gl-matrix": "^2.3.2",
     "handlebars": "^4.0.5",
     "json-stringify-safe": "^5.0.1",
-    "jszip": "2.6.0",
+    "jszip": "^2.6.0",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.2.8",
     "semver": ">=4.3.3",
-    "speedline": "1.0.3",
+    "speedline": "^1.0.3",
     "ws": "^1.1.1",
-    "yargs": "3.30.0"
+    "yargs": "^3.30.0"
   },
   "repository": "googlechrome/lighthouse",
   "keywords": [
