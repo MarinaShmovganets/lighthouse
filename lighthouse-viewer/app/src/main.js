@@ -22,6 +22,10 @@ const ReportGenerator = require('../../../lighthouse-core/report/report-generato
 // const firebase = require('firebase/app');
 // require('firebase/auth');
 
+// TODO: load FB via require.
+// TODO: use polyfill for URLSearchParams
+// TODO: use polyfill for fetch
+
 const LH_CURRENT_VERSION = require('../../../package.json').version;
 const APP_URL = `${location.origin}${location.pathname}`;
 
@@ -30,14 +34,16 @@ class Logger {
     this.el = document.querySelector(selector);
   }
 
-  log(msg) {
+  log(msg, autoHide = true) {
     clearTimeout(this._id);
 
     this.el.textContent = msg;
     this.el.classList.add('show');
-    this._id = setTimeout(() => {
-      this.el.classList.remove('show');
-    }, 7000);
+    if (autoHide) {
+      this._id = setTimeout(() => {
+        this.el.classList.remove('show');
+      }, 7000);
+    }
   }
 
   hide() {
@@ -125,6 +131,10 @@ class GithubAPI {
       }
     }`;
 
+    if (!this.auth.user) {
+      throw new Error('User not signed in to Github.');
+    }
+
     return fetch('https://api.github.com/gists', {
       method: 'POST',
       headers: new Headers({
@@ -137,11 +147,7 @@ class GithubAPI {
   }
 
   getGistContent(id) {
-    return fetch(`https://api.github.com/gists/${id}`, {
-      headers: new Headers({
-        Authorization: `token ${this.auth.accessToken}`
-      })
-    })
+    return fetch(`https://api.github.com/gists/${id}`)
     .then(resp => {
       if (!resp.ok) {
         throw new Error(`${resp.status} Fetching gist`);
@@ -344,7 +350,7 @@ function init() {
   const params = new URLSearchParams(location.search);
   const gistId = params.get('gist');
   if (gistId) {
-    logger.log('Loading results from gist...');
+    logger.log('Loading report from Github...', false);
 
     github.auth.ready.then(() => {
       github.getGistContent(gistId).then(json => {
