@@ -106,7 +106,7 @@ gulp.task('watch', ['lint', 'browserify', 'html', 'core-js-deps', 'images', 'css
   gulp.watch([
     'app/src/**/*.js',
     '../lighthouse-core/**/*.js'
-  ], ['browserify']);
+  ], ['browserify', 'core-js-deps']);
 });
 
 gulp.task('build', cb => {
