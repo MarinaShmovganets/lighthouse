@@ -33,13 +33,6 @@ gulp.task('lint', () => {
   .pipe(eslint.format());
 });
 
-gulp.task('core-js-deps', () => {
-  return gulp.src([
-    '../lighthouse-core/report/scripts/lighthouse-report.js',
-  ])
-  .pipe(gulp.dest('dist/src'));
-});
-
 gulp.task('images', () => {
   return gulp.src('app/images/**/*')
   .pipe(gulp.dest('dist/images'));
@@ -89,7 +82,7 @@ gulp.task('clean', () => {
   );
 });
 
-gulp.task('watch', ['lint', 'browserify', 'html', 'core-js-deps', 'images', 'css'], () => {
+gulp.task('watch', ['lint', 'browserify', 'html', 'images', 'css'], () => {
   gulp.watch([
     'app/styles/**/*.css',
     '../lighthouse-core/report/styles/**/*.css'
@@ -106,13 +99,13 @@ gulp.task('watch', ['lint', 'browserify', 'html', 'core-js-deps', 'images', 'css
   gulp.watch([
     'app/src/**/*.js',
     '../lighthouse-core/**/*.js'
-  ], ['browserify', 'core-js-deps']);
+  ], ['browserify']);
 });
 
 gulp.task('build', cb => {
   runSequence(
     'lint', 'browserify',
-    ['html', 'core-js-deps', 'images', 'css'], cb);
+    ['html', 'images', 'css'], cb);
 });
 
 gulp.task('default', ['clean'], cb => {

@@ -339,7 +339,10 @@ function replaceHTML(lhresults) {
   document.querySelector('output').innerHTML = html;
 
   // eslint-disable-next-line no-new
-  new window.LighthouseReport(); // activate event listeners on new results page.
+  const printButton = document.querySelector('.js-print');
+  printButton && printButton.addEventListener('click', _ => {
+    window.print();
+  });
 }
 
 function init() {
