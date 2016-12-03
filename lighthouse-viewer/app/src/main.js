@@ -19,6 +19,7 @@
 /* global window, document */
 
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
+const idb = require('idb-keyval');
 // const firebase = require('firebase/app');
 // require('firebase/auth');
 
@@ -50,6 +51,14 @@ class Logger {
         this.el.classList.remove('show');
       }, 7000);
     }
+  }
+
+  warn(msg) {
+    console.warn(msg);
+  }
+
+  error(msg) {
+    console.error(msg);
   }
 
   /**
@@ -87,12 +96,13 @@ class FirebaseAuth {
     // require login can hook into the changes.
     this.ready = new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(user => {
-        const accessToken = localStorage.getItem('accessToken');
-        if (user && accessToken) {
-          this.accessToken = accessToken;
-          this.user = user;
-        }
-        resolve(user);
+        idb.get('accessToken').then(token => {
+          if (user && token) {
+            this.accessToken = token;
+            this.user = user;
+          }
+          resolve(user);
+        });
       });
     });
   }
@@ -106,8 +116,8 @@ class FirebaseAuth {
       this.accessToken = result.credential.accessToken;
       // A limitation of FB auth is that it doesn't return an oauth token
       // after a page refresh. We'll get a firebase token, but not an oauth token
-      // for GH. Since GH's tokens never expire, stash the access token in localStorage.
-      localStorage.setItem('accessToken', this.accessToken);
+      // for GH. Since GH's tokens never expire, stash the access token in IDB.
+      idb.set('accessToken', this.accessToken); // Note: async.
       this.user = result.user;
       return this.user;
     });
@@ -121,7 +131,7 @@ class FirebaseAuth {
   signOut() {
     return firebase.auth().signOut().then(() => {
       this.accessToken = null;
-      localStorage.removeItem('accessToken');
+      idb.delete('accessToken'); // Note: async.
     });
   }
 }
@@ -146,6 +156,10 @@ class GithubAPI {
    * @return {!Promise<string>} id of the created gist.
    */
   createGist(content) {
+    if (!this.auth.user) {
+      return Promise.reject(new Error('Please sign-in to Github.'));
+    }
+
     content = JSON.stringify(content);
 
     const body = `{
@@ -157,10 +171,6 @@ class GithubAPI {
         }
       }
     }`;
-
-    if (!this.auth.user) {
-      throw new Error('User not signed in to Github.');
-    }
 
     return fetch('https://api.github.com/gists', {
       method: 'POST',
@@ -183,34 +193,44 @@ class GithubAPI {
       const headers = new Headers();
 
       // If there's an authenticated user, include an Authorization header to
-      // have higher rate limits with the Github API. Otherwise, use Etags.
+      // have higher rate limits with the Github API. Otherwise, rely on ETags.
       if (user) {
         headers.set('Authorization', `token ${this.auth.accessToken}`);
-      } else {
-        const etag = sessionStorage.getItem(id);
-        if (etag) {
-          headers.set('If-None-Match', etag);
-        }
       }
 
-      return fetch(`https://api.github.com/gists/${id}`, {headers}).then(resp => {
-        if (!resp.ok) {
-          if (resp.status === 304) {
-            // TODO: handle 304s.
+      return idb.get(id).then(gist => {
+        if (gist && gist.etag) {
+          headers.set('If-None-Match', gist.etag);
+        }
+
+        // Always make the request to see if there's newer content.
+        return fetch(`https://api.github.com/gists/${id}`, {headers}).then(resp => {
+          const remaining = resp.headers.get('X-RateLimit-Remaining');
+          const limit = resp.headers.get('X-RateLimit-Limit');
+          if (Number(remaining) < 10) {
+            logger.warn('Warning: approaching Github\'s rate limit. ' +
+                        `${limit - remaining}/${limit} requests used. Consider signing ` +
+                        'in to increase this limit.');
           }
-          throw new Error(`${resp.status} Fetching gist`);
-        }
 
-        // const rateLimitRemaining = resp.headers.get('X-RateLimit-Remaining');
-        sessionStorage.setItem(id, resp.headers.get('ETag'));
+          const etag = resp.headers.get('ETag');
 
-        return resp.json();
-      }).then(json => {
-        const file = json.files[GithubAPI.LH_JSON_FILE];
-        if (!file.truncated) {
-          return file.content;
-        }
-        return fetch(file.raw_url).then(resp => resp.json());
+          if (!resp.ok) {
+            if (resp.status === 304) {
+              return gist;
+            }
+            throw new Error(`${resp.status} Fetching gist`);
+          }
+
+          return resp.json().then(json => {
+            const f = json.files[GithubAPI.LH_JSON_FILE];
+            if (f.truncated) {
+              return fetch(f.raw_url).then(resp => resp.json())
+                  .then(json => ({etag, content: json}));
+            }
+            return {etag, content: f.content};
+          });
+        });
       });
     });
   }
@@ -382,8 +402,12 @@ class LighthouseViewerReport {
       this.github.auth.ready.then(_ => {
         this.github.getGistContent(gistId).then(json => {
           logger.hide();
-          this.replaceReportHTML(json);
-        }).catch(err => logger.log(err));
+          this.replaceReportHTML(json.content);
+
+          // Save fetched json and etag to IDB so we can retrieve use it later
+          // for 304 requests.
+          return idb.set(gistId, {etag: json.etag, content: json.content});
+        }).catch(err => logger.error(err));
       });
     }
   }
@@ -448,7 +472,7 @@ class LighthouseViewerReport {
         throw new Error('Unsupported report format. Expected JSON.');
       }
       this.replaceReportHTML(JSON.parse(str));
-    }).catch(err => logger.log(err.message));
+    }).catch(err => logger.error(err.message));
   }
 
   /**
@@ -460,11 +484,13 @@ class LighthouseViewerReport {
     return this.github.createGist(this.json).then(id => {
       history.pushState({}, null, `${APP_URL}?gist=${id}`);
       return id;
-    });
+    }).catch(err => logger.log(err.message));
   }
 }
 
 (function() {
-  // eslint-disable-next-line no-new
-  new LighthouseViewerReport();
+  // eslint-disable-next-line no-unused-vars
+  const report = new LighthouseViewerReport();
+
+  window.github = report.github; // TODO: remove
 })();
