@@ -23,8 +23,10 @@ const firebase = require('firebase/app');
 require('firebase/auth');
 const idb = require('idb-keyval');
 
-// TODO: use polyfill for URLSearchParams
-// TODO: use polyfill for fetch
+// Polyfills
+// TODO: dynamically load this based on feature detection.
+require('whatwg-fetch');
+const URLSearchParams = require('url-search-params');
 
 const LH_CURRENT_VERSION = require('../../../package.json').version;
 const APP_URL = `${location.origin}${location.pathname}`;
@@ -248,7 +250,6 @@ class GithubAPI {
 class FileUploader {
   /**
    * @param {function()} fileHandlerCallback Invoked when the user chooses a new file.
-   * @constructor
    */
   constructor(fileHandlerCallback) {
     this.dropZone = document.querySelector('.drop_zone');

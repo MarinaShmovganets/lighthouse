@@ -17,20 +17,35 @@
 'use strict';
 
 const del = require('del');
-const gutil = require('gulp-util');
-const runSequence = require('run-sequence');
 const gulp = require('gulp');
+const gulpLoadPlugins = require('gulp-load-plugins');
+const runSequence = require('run-sequence');
 const browserify = require('browserify');
-const eslint = require('gulp-eslint');
-const tap = require('gulp-tap');
+const closure = require('google-closure-compiler-js').gulp();
+
+const $ = gulpLoadPlugins();
+
+function license() {
+  return $.license('Apache', {
+    organization: 'Copyright 2016 Google Inc. All rights reserved.',
+    tiny: true
+  });
+}
+
+function applyBrowserifyTransforms(bundle) {
+  // Fix an issue with imported speedline code that doesn't brfs well.
+  return bundle.transform('../lighthouse-extension/fs-transform', {
+    global: true
+  }).transform('brfs', {global: true}); // Transform the fs.readFile etc. Do so in all the modules.
+}
 
 gulp.task('lint', () => {
   return gulp.src([
     'app/src/**/*.js',
     'gulpfile.js'
   ])
-  .pipe(eslint())
-  .pipe(eslint.format());
+  .pipe($.eslint())
+  .pipe($.eslint.format());
 });
 
 gulp.task('images', () => {
@@ -47,38 +62,46 @@ gulp.task('css', () => {
 });
 
 gulp.task('html', () => {
-  return gulp.src('app/*.html')
-  .pipe(gulp.dest('dist'));
+  return gulp.src('app/*.html').pipe(gulp.dest('dist'));
 });
-
-function applyBrowserifyTransforms(bundle) {
-  // Fix an issue with imported speedline code that doesn't brfs well.
-  return bundle.transform('../lighthouse-extension/fs-transform', {
-    global: true
-  })
-  // Transform the fs.readFile etc, but do so in all the modules.
-  .transform('brfs', {
-    global: true
-  });
-}
 
 gulp.task('browserify', () => {
   return gulp.src([
     'app/src/main.js'
   ], {read: false})
-    .pipe(tap(file => {
+    .pipe($.tap(file => {
       let bundle = browserify(file.path);
       bundle = applyBrowserifyTransforms(bundle);
 
-      // Inject the new browserified contents back into our gulp pipeline
+      // Inject transformed browserified content back into our gulp pipeline.
       file.contents = bundle.bundle();
     }))
     .pipe(gulp.dest('dist/src'));
 });
 
+gulp.task('compile', ['browserify'], () => {
+  return gulp.src([
+    'dist/src/main.js'
+  ])
+    .pipe($.sourcemaps.init())
+    .pipe(closure({
+      compilationLevel: 'SIMPLE',
+      // warningLevel: 'VERBOSE',
+      // outputWrapper: '(function(){\n%output%\n}).call(this)',
+      // languageOut: 'ECMASCRIPT5',
+      // processCommonJsModules: true,
+      jsOutputFile: 'main.js',
+      createSourceMap: true
+    }))
+    .pipe($.uglify()) // Use uglify to strip out duplicated license headers.
+    .pipe(license())  // Add license to top.
+    .pipe($.sourcemaps.write('/'))
+    .pipe(gulp.dest('dist/src'));
+});
+
 gulp.task('clean', () => {
   return del(['.tmp', 'dist']).then(paths =>
-    paths.forEach(path => gutil.log('deleted:', gutil.colors.blue(path)))
+    paths.forEach(path => $.util.log('deleted:', $.util.colors.blue(path)))
   );
 });
 
@@ -104,7 +127,7 @@ gulp.task('watch', ['lint', 'browserify', 'html', 'images', 'css'], () => {
 
 gulp.task('build', cb => {
   runSequence(
-    'lint', 'browserify',
+    'lint', 'compile',
     ['html', 'images', 'css'], cb);
 });
 
