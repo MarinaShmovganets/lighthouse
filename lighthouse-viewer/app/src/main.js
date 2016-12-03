@@ -19,11 +19,10 @@
 /* global window, document */
 
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
+const firebase = require('firebase/app');
+require('firebase/auth');
 const idb = require('idb-keyval');
-// const firebase = require('firebase/app');
-// require('firebase/auth');
 
-// TODO: load FB via require.
 // TODO: use polyfill for URLSearchParams
 // TODO: use polyfill for fetch
 
@@ -74,10 +73,6 @@ const logger = new Logger('#log');
 
 class FirebaseAuth {
   constructor() {
-    if (!window.firebase) {
-      throw new Error('Firebase API not loaded');
-    }
-
     this.accessToken = null;
     this.user = null;
 
