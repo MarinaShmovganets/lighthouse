@@ -144,7 +144,8 @@ class GithubAPI {
   }
 
   authorize() {
-    this.auth.signIn();
+    return this.auth.user ? Promise.resolve(this.auth.user) :
+                            this.auth.signIn();
   }
 
   /**
@@ -153,9 +154,7 @@ class GithubAPI {
    * @return {!Promise<string>} id of the created gist.
    */
   createGist(content) {
-    if (!this.auth.user) {
-      return Promise.reject(new Error('Please sign-in to Github.'));
-    }
+    logger.log('Saving JSON to Github gist...', false);
 
     content = JSON.stringify(content);
 
@@ -169,15 +168,19 @@ class GithubAPI {
       }
     }`;
 
-    return fetch('https://api.github.com/gists', {
+    const request = new Request('https://api.github.com/gists', {
       method: 'POST',
-      headers: new Headers({
-        Authorization: `token ${this.auth.accessToken}`
-      }),
+      headers: new Headers({Authorization: `token ${this.auth.accessToken}`}),
       body
-    })
-    .then(resp => resp.json())
-    .then(json => json.id);
+    });
+
+    return this.authorize()
+      .then(_ => fetch(request))
+      .then(resp => resp.json())
+      .then(json => {
+        logger.hide();
+        return json.id;
+      });
   }
 
   /**
@@ -216,7 +219,9 @@ class GithubAPI {
             if (resp.status === 304) {
               return gist;
             }
-            throw new Error(`${resp.status} Fetching gist`);
+            const msg = `${resp.status} fetching gist`;
+            logger.log(msg);
+            throw new Error(msg);
           }
 
           return resp.json().then(json => {
@@ -225,7 +230,7 @@ class GithubAPI {
               return fetch(f.raw_url).then(resp => resp.json())
                   .then(json => ({etag, content: json}));
             }
-            return {etag, content: f.content};
+            return {etag, content: JSON.parse(f.content)};
           });
         });
       });
@@ -403,7 +408,7 @@ class LighthouseViewerReport {
           // Save fetched json and etag to IDB so we can retrieve use it later
           // for 304 requests.
           return idb.set(gistId, {etag: json.etag, content: json.content});
-        }).catch(err => logger.error(err));
+        }).catch(err => logger.error(err.message));
       });
     }
   }
