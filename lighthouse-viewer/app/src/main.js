@@ -34,6 +34,12 @@ class Logger {
     this.el = document.querySelector(selector);
   }
 
+  /**
+   * Shows a butter bar.
+   * @param {!string} msg The message to show.
+   * @param {boolean=} autoHide True to hide the message after a duration.
+   *     Default is true.
+   */
   log(msg, autoHide = true) {
     clearTimeout(this._id);
 
@@ -46,6 +52,9 @@ class Logger {
     }
   }
 
+  /**
+   * Explicitly hides the butter bar.
+   */
   hide() {
     clearTimeout(this._id);
     this.el.classList.remove('show');
@@ -74,6 +83,8 @@ class FirebaseAuth {
       messagingSenderId: '962507201498'
     });
 
+    // Wrap auth state callback in a promise so  other parts of the app that
+    // require login can hook into the changes.
     this.ready = new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(user => {
         const accessToken = localStorage.getItem('accessToken');
@@ -81,20 +92,32 @@ class FirebaseAuth {
           this.accessToken = accessToken;
           this.user = user;
         }
-        resolve();
+        resolve(user);
       });
     });
   }
 
+  /**
+   * Signs in the user to Github using the Firebase API.
+   * @return {!Promise<object>} The logged in user.
+   */
   signIn() {
     return firebase.auth().signInWithPopup(this.provider).then(result => {
       this.accessToken = result.credential.accessToken;
-      // GH access tokens never expire so we can continue to use this on page refresh.
+      // A limitation of FB auth is that it doesn't return an oauth token
+      // after a page refresh. We'll get a firebase token, but not an oauth token
+      // for GH. Since GH's tokens never expire, stash the access token in localStorage.
       localStorage.setItem('accessToken', this.accessToken);
       this.user = result.user;
+      return this.user;
     });
   }
 
+  /**
+   * Signs the user out.
+   * @param {!string} msg The message to show.
+   * @return {!Promise}
+   */
   signOut() {
     return firebase.auth().signOut().then(() => {
       this.accessToken = null;
@@ -105,8 +128,7 @@ class FirebaseAuth {
 
 class GithubAPI {
   constructor() {
-    this.CLIENT_ID = '48e4c3145c4978268ecb';
-    this.CLIENT_SECRET = '460e73e4a949ed6e2abdd12c705bfb56728e9604';
+    // this.CLIENT_ID = '48e4c3145c4978268ecb';
     this.auth = new FirebaseAuth();
   }
 
@@ -118,6 +140,11 @@ class GithubAPI {
     this.auth.signIn();
   }
 
+  /**
+   * Creates a gist under the users account.
+   * @param {!string} content The gist file body.
+   * @return {!Promise<string>} id of the created gist.
+   */
   createGist(content) {
     content = JSON.stringify(content);
 
@@ -146,52 +173,79 @@ class GithubAPI {
     .then(json => json.id);
   }
 
+  /**
+   * Fetches the body content of a gist.
+   * @param {!string} id The id of a gist.
+   * @return {!Promise<object>} json content of the gist.
+   */
   getGistContent(id) {
-    return fetch(`https://api.github.com/gists/${id}`)
-    .then(resp => {
-      if (!resp.ok) {
-        throw new Error(`${resp.status} Fetching gist`);
+    return this.auth.ready.then(user => {
+      const headers = new Headers();
+
+      // If there's an authenticated user, include an Authorization header to
+      // have higher rate limits with the Github API. Otherwise, use Etags.
+      if (user) {
+        headers.set('Authorization', `token ${this.auth.accessToken}`);
+      } else {
+        const etag = sessionStorage.getItem(id);
+        if (etag) {
+          headers.set('If-None-Match', etag);
+        }
       }
-      return resp.json();
-    })
-    .then(json => {
-      const file = json.files[GithubAPI.LH_JSON_FILE];
-      if (!file.truncated) {
-        return file.content;
-      }
-      return fetch(file.raw_url).then(resp => resp.json());
+
+      return fetch(`https://api.github.com/gists/${id}`, {headers}).then(resp => {
+        if (!resp.ok) {
+          if (resp.status === 304) {
+            // TODO: handle 304s.
+          }
+          throw new Error(`${resp.status} Fetching gist`);
+        }
+
+        // const rateLimitRemaining = resp.headers.get('X-RateLimit-Remaining');
+        sessionStorage.setItem(id, resp.headers.get('ETag'));
+
+        return resp.json();
+      }).then(json => {
+        const file = json.files[GithubAPI.LH_JSON_FILE];
+        if (!file.truncated) {
+          return file.content;
+        }
+        return fetch(file.raw_url).then(resp => resp.json());
+      });
     });
   }
 
-  // getGists(username) {
-  //   fetch(`https://api.github.com/users/${username}/gists`, {
-  //     headers: new Headers({
-  //       Authorization: `token ${this.auth.accessToken}`
-  //     })
-  //   })
-  //   .then(resp => resp.json())
-  //   .then(json => {
-  //     json.forEach(i => {
-  //       console.log(i.description);
-  //     });
-  //   });
-  // }
+  /**
+   * Fetches the user's gists.
+   * @param {!string} username
+   * @return {!Promise<Array>} List of user;s gists.
+   */
+  getGists(username) {
+    return fetch(`https://api.github.com/users/${username}/gists`, {
+      headers: new Headers({
+        Authorization: `token ${this.auth.accessToken}`
+      })
+    })
+    .then(resp => resp.json());
+  }
 }
 
-const github = new GithubAPI();
-window.github = github;
-
 class FileUploader {
-  constructor() {
+  /**
+   * @param {function()} fileHandlerCallback Invoked when the user chooses a new file.
+   * @constructor
+   */
+  constructor(fileHandlerCallback) {
     this.dropZone = document.querySelector('.drop_zone');
     this.placeholder = document.querySelector('.viewer-placeholder');
+    this._fileHandlerCallback = fileHandlerCallback;
     this._dragging = false;
 
-    this.attachHiddenFileInput();
-    this.addDnDEventListeners();
+    this.addHiddenFileInput();
+    this.addListeners();
   }
 
-  attachHiddenFileInput() {
+  addHiddenFileInput() {
     this.fileInput = document.createElement('input');
     this.fileInput.id = 'hidden-file-input';
     this.fileInput.type = 'file';
@@ -199,13 +253,13 @@ class FileUploader {
     this.fileInput.accept = 'application/json';
 
     this.fileInput.addEventListener('change', e => {
-      this.updatePage(e.target.files[0]).catch(err => logger.log(err.message));
+      this._fileHandlerCallback(e.target.files[0]);
     });
 
     document.body.appendChild(this.fileInput);
   }
 
-  addDnDEventListeners() {
+  addListeners() {
     this.placeholder.firstElementChild.addEventListener('click', () => {
       this.fileInput.click();
     });
@@ -216,7 +270,7 @@ class FileUploader {
       if (!this._dragging) {
         return;
       }
-      this.resetDraggingUI();
+      this._resetDraggingUI();
     });
 
     document.addEventListener('dragover', e => {
@@ -234,26 +288,30 @@ class FileUploader {
       e.stopPropagation();
       e.preventDefault();
 
-      this.resetDraggingUI();
+      this._resetDraggingUI();
 
-      // Ignore other files if more than one is dropped.
-      this.updatePage(e.dataTransfer.files[0])
-          // TODO: reuse existing lighthouse_results.json gist if one exists.
-          // TODO: reactor github global var pollution.
-          .then(json => github.createGist(json))
-          .then(id => {
-            history.pushState({}, null, `${APP_URL}?gist=${id}`);
-          }).catch(err => logger.log(err.message));
+      // Note, this ignores multiple files in the drop, only taking the first.
+      this._fileHandlerCallback(e.dataTransfer.files[0]);
     });
   }
 
-  resetDraggingUI() {
+  _resetDraggingUI() {
     this.dropZone.classList.remove('dropping');
     this._dragging = false;
+    logger.hide();
+  }
+
+  removeDropzonePlaceholder() {
+    // Remove placeholder drop area after viewing results for first time.
+    // General dropzone takes over.
+    if (this.placeholder) {
+      this.placeholder.remove();
+      this.placeholder = null;
+    }
   }
 
   /**
-   * Reads a file as text.
+   * Reads a file and returns its content in the specified format.
    * @static
    * @param {!File} file
    * @param {!string} readAs A format to read the file ('text', 'dataurl',
@@ -283,6 +341,99 @@ class FileUploader {
       }
     });
   }
+}
+
+class LighthouseViewerReport {
+  constructor() {
+    this.onShare = this.onShare.bind(this);
+    this.onFileUpload = this.onFileUpload.bind(this);
+
+    this.json = null;
+    this.fileUploader = new FileUploader(this.onFileUpload);
+    this.github = new GithubAPI();
+
+    this.addListeners();
+    this.loadFromURL();
+  }
+
+  addListeners() {
+    const printButton = document.querySelector('.js-print');
+    if (!printButton) {
+      return;
+    }
+
+    printButton.addEventListener('click', _ => {
+      window.print();
+    });
+
+    const button = document.createElement('button');
+    button.classList.add('share');
+    button.addEventListener('click', this.onShare);
+    printButton.parentElement.insertBefore(button, printButton);
+  }
+
+  loadFromURL() {
+    // Pull gist id from URL and render it.
+    const params = new URLSearchParams(location.search);
+    const gistId = params.get('gist');
+    if (gistId) {
+      logger.log('Fetching report from Github...', false);
+
+      this.github.auth.ready.then(_ => {
+        this.github.getGistContent(gistId).then(json => {
+          logger.hide();
+          this.replaceReportHTML(json);
+        }).catch(err => logger.log(err));
+      });
+    }
+  }
+
+  _validateReportJson(json) {
+    // Leave off patch version in the comparison.
+    const semverRe = new RegExp(/^(\d+)?\.(\d+)?\.(\d+)$/);
+    const reportVersion = json.lighthouseVersion.replace(semverRe, '$1.$2');
+    const lhVersion = LH_CURRENT_VERSION.replace(semverRe, '$1.$2');
+
+    if (!json.lighthouseVersion) {
+      throw new Error('JSON file was not generated by Lighthouse');
+    } else if (reportVersion < lhVersion) {
+      // TODO: figure out how to handler older reports. All permalinks to older
+      // reports will start to throw this warning when the viewe rev's its
+      // minor LH version.
+      // eslint-disable-next-line
+      window.alert('WARNING:  Results may not display properly.\n' +
+                  'Report was created with an earlier version of ' +
+                  `Lighthouse (${json.lighthouseVersion}). The latest ` +
+                  `version is ${LH_CURRENT_VERSION}.`);
+    }
+  }
+
+  replaceReportHTML(json) {
+    this._validateReportJson(json);
+
+    const reportGenerator = new ReportGenerator();
+
+    let html;
+    try {
+      html = reportGenerator.generateHTML(json, 'viewer');
+    } catch (err) {
+      html = reportGenerator.renderException(err, json);
+    }
+
+    // Use only the results section of the full HTML page.
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    html = div.querySelector('.js-report').outerHTML;
+
+    this.json = json;
+
+    // Remove the placeholder drop area UI once the user has interacted.
+    this.fileUploader.removeDropzonePlaceholder();
+
+    // Replace the HTML and hook up event listeners to the new DOM.
+    document.querySelector('output').innerHTML = html;
+    this.addListeners();
+  }
 
   /**
    * Updates the page's HTML with contents of the JSON file passed in.
@@ -291,77 +442,29 @@ class FileUploader {
    * @throws file was not valid JSON generated by Lighthouse or an unknown file
    *     type of used.
    */
-  updatePage(file) {
+  onFileUpload(file) {
     return FileUploader.readFile(file, 'text').then(str => {
       if (!file.type.match('json')) {
-        throw new Error('Unsupported report type. Expected JSON.');
+        throw new Error('Unsupported report format. Expected JSON.');
       }
+      this.replaceReportHTML(JSON.parse(str));
+    }).catch(err => logger.log(err.message));
+  }
 
-      const json = JSON.parse(str);
-      replaceHTML(json);
-
-      // Remove placeholder drop area after viewing results for first time.
-      // General dropzone takes over.
-      if (this.placeholder) {
-        this.placeholder.remove();
-        this.placeholder = null;
-      }
-
-      return json;
+  /**
+   * Shares the current report by creating a gist on Github.
+   * @return {!Promise<string>} id of the created gist.
+   */
+  onShare() {
+    // TODO: reuse existing lighthouse_results.json gist if one exists.
+    return this.github.createGist(this.json).then(id => {
+      history.pushState({}, null, `${APP_URL}?gist=${id}`);
+      return id;
     });
   }
 }
 
-function replaceHTML(lhresults) {
-  if (!lhresults.lighthouseVersion) {
-    throw new Error('JSON file was not generated by Lighthouse');
-  } else if (lhresults.lighthouseVersion < LH_CURRENT_VERSION) {
-    // eslint-disable-next-line
-    window.alert('WARNING:  Results may not display properly.\n' +
-                'Report was created with an earlier version of ' +
-                  `Lighthouse (${lhresults.lighthouseVersion}). The latest ` +
-                  `version is ${LH_CURRENT_VERSION}.`);
-  }
-
-  const reportGenerator = new ReportGenerator();
-  let html;
-  try {
-    html = reportGenerator.generateHTML(lhresults, 'viewer');
-  } catch (err) {
-    html = reportGenerator.renderException(err, lhresults);
-  }
-
-  // Pull out the report part of the generated HTML.
-  const div = document.createElement('div');
-  div.innerHTML = html;
-  html = div.querySelector('.js-report').outerHTML;
-
-  document.querySelector('output').innerHTML = html;
-
+(function() {
   // eslint-disable-next-line no-new
-  const printButton = document.querySelector('.js-print');
-  printButton && printButton.addEventListener('click', _ => {
-    window.print();
-  });
-}
-
-function init() {
-  // eslint-disable-next-line no-new
-  new FileUploader();
-
-  // Pull gist id from URL and render it.
-  const params = new URLSearchParams(location.search);
-  const gistId = params.get('gist');
-  if (gistId) {
-    logger.log('Loading report from Github...', false);
-
-    github.auth.ready.then(() => {
-      github.getGistContent(gistId).then(json => {
-        logger.hide();
-        replaceHTML(json);
-      }).catch(err => logger.log(err));
-    });
-  }
-}
-
-init();
+  new LighthouseViewerReport();
+})();
