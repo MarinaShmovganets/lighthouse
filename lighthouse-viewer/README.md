@@ -1,5 +1,11 @@
-### Dev
+## Lighthouse Viewer
+
+### Development
 
 * `npm i`
 *  Build: `gulp`, Watch: `gulp watch`
-*  Deployable app ends up in `./dist`.
+
+For development, `gulp watch` will browserify `dist/src/main.js` and create a
+runnable script in all modern browsers. Use this for quick iterations when developing.
+
+For production, run `gulp`. This compiles and minifies `dist/src/main.js` using Closure.
