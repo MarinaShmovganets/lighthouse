@@ -23,6 +23,7 @@ const gulpLoadPlugins = require('gulp-load-plugins');
 const runSequence = require('run-sequence');
 const browserify = require('browserify');
 const closure = require('google-closure-compiler-js').gulp();
+const ghPages = require('gulp-gh-pages');
 
 const $ = gulpLoadPlugins();
 
@@ -124,6 +125,10 @@ gulp.task('watch', ['lint', 'browserify', 'html', 'images', 'css'], () => {
     'app/src/**/*.js',
     '../lighthouse-core/**/*.js'
   ], ['browserify']);
+});
+
+gulp.task('deploy', ['build'], () => {
+  return gulp.src('dist/**/*').pipe(ghPages());
 });
 
 gulp.task('build', cb => {
