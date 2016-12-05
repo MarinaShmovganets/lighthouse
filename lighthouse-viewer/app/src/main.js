@@ -20,7 +20,7 @@
 
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
 // TODO: We only need getFilenamePrefix from asset-saver. Tree shake!
-const AssetSaver = require('../../../lighthouse-core/lib/asset-saver.js');
+const getFilenamePrefix = require('../../../lighthouse-core/lib/asset-saver.js').getFilenamePrefix;
 
 const firebase = require('firebase/app');
 require('firebase/auth');
@@ -161,22 +161,21 @@ class GithubAPI {
     return this.authorize()
       .then(accessToken => {
         // Stringify twice so quotes are escaped for POST request to succeed.
-        const filename = AssetSaver.getFilenamePrefix({url: jsonFile.url});
-        const content = JSON.stringify(JSON.stringify(jsonFile));
-        const body = `{
-          "description": "Lighthouse json report",
-          "public": false,
-          "files": {
-            "${filename}${GithubAPI.LH_JSON_EXT}": {
-              "content": ${content}
+        const filename = getFilenamePrefix({url: jsonFile.url});
+        const body = {
+          description: 'Lighthouse json report',
+          public: false,
+          files: {
+            [`${filename}${GithubAPI.LH_JSON_EXT}`]: {
+              content: JSON.stringify(jsonFile)
             }
           }
-        }`;
+        };
 
         const request = new Request('https://api.github.com/gists', {
           method: 'POST',
           headers: new Headers({Authorization: `token ${accessToken}`}),
-          body
+          body: JSON.stringify(body)
         });
         return fetch(request);
       })
@@ -202,9 +201,9 @@ class GithubAPI {
         headers.set('Authorization', `token ${this.auth.accessToken}`);
       }
 
-      return idb.get(id).then(gist => {
-        if (gist && gist.etag) {
-          headers.set('If-None-Match', gist.etag);
+      return idb.get(id).then(cachedGist => {
+        if (cachedGist && cachedGist.etag) {
+          headers.set('If-None-Match', cachedGist.etag);
         }
 
         // Always make the request to see if there's newer content.
@@ -221,7 +220,7 @@ class GithubAPI {
 
           if (!resp.ok) {
             if (resp.status === 304) {
-              return gist;
+              return cachedGist;
             } else if (resp.status === 404) {
               // Delete the entry from IDB if it no longer exists on the server.
               idb.delete(id); // Note: async.
