@@ -119,7 +119,7 @@ class FirebaseAuth {
       // for GH. Since GH's tokens never expire, stash the access token in IDB.
       idb.set('accessToken', this.accessToken); // Note: async.
       this.user = result.user;
-      return this.user;
+      return this.accessToken;
     });
   }
 
@@ -146,8 +146,8 @@ class GithubAPI {
   }
 
   authorize() {
-    return this.auth.user ? Promise.resolve(this.auth.user) :
-                            this.auth.signIn();
+    return this.auth.accessToken ? Promise.resolve(this.auth.accessToken) :
+                                   this.auth.signIn();
   }
 
   /**
@@ -158,27 +158,28 @@ class GithubAPI {
   createGist(jsonFile) {
     logger.log('Saving JSON to Github gist...', false);
 
-    // Stringify twice so quotes are escaped for POST request to succeed.
-    const filename = AssetSaver.getFilenamePrefix({url: jsonFile.url});
-    const content = JSON.stringify(JSON.stringify(jsonFile));
-    const body = `{
-      "description": "Lighthouse json report",
-      "public": false,
-      "files": {
-        "${filename}${GithubAPI.LH_JSON_EXT}": {
-          "content": ${content}
-        }
-      }
-    }`;
-
-    const request = new Request('https://api.github.com/gists', {
-      method: 'POST',
-      headers: new Headers({Authorization: `token ${this.auth.accessToken}`}),
-      body
-    });
-
     return this.authorize()
-      .then(_ => fetch(request))
+      .then(accessToken => {
+        // Stringify twice so quotes are escaped for POST request to succeed.
+        const filename = AssetSaver.getFilenamePrefix({url: jsonFile.url});
+        const content = JSON.stringify(JSON.stringify(jsonFile));
+        const body = `{
+          "description": "Lighthouse json report",
+          "public": false,
+          "files": {
+            "${filename}${GithubAPI.LH_JSON_EXT}": {
+              "content": ${content}
+            }
+          }
+        }`;
+
+        const request = new Request('https://api.github.com/gists', {
+          method: 'POST',
+          headers: new Headers({Authorization: `token ${accessToken}`}),
+          body
+        });
+        return fetch(request);
+      })
       .then(resp => resp.json())
       .then(json => {
         logger.hide();
