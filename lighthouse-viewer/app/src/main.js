@@ -19,7 +19,7 @@
 /* global window, document */
 
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
-// TODO: We only need getFilenamePrefix from asset-saver. Fgure out how to tree shake.
+// TODO: We only need getFilenamePrefix from asset-saver. Tree shake!
 const AssetSaver = require('../../../lighthouse-core/lib/asset-saver.js');
 
 const firebase = require('firebase/app');
@@ -432,7 +432,7 @@ class LighthouseViewerReport {
 
     if (reportVersion < lhVersion) {
       // TODO: figure out how to handler older reports. All permalinks to older
-      // reports will start to throw this warning when the viewe rev's its
+      // reports will start to throw this warning when the viewer rev's its
       // minor LH version.
       // eslint-disable-next-line
       window.alert('WARNING:  Results may not display properly.\n' +
@@ -490,7 +490,7 @@ class LighthouseViewerReport {
    * @return {!Promise<string>} id of the created gist.
    */
   onShare() {
-    // TODO: reuse existing lighthouse_results.json gist if one exists.
+    // TODO: find and reuse existing json gist if one exists.
     return this.github.createGist(this.json).then(id => {
       history.pushState({}, null, `${APP_URL}?gist=${id}`);
       return id;
