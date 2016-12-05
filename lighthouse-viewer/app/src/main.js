@@ -125,7 +125,6 @@ class FirebaseAuth {
 
   /**
    * Signs the user out.
-   * @param {!string} msg The message to show.
    * @return {!Promise}
    */
   signOut() {
@@ -153,7 +152,7 @@ class GithubAPI {
 
   /**
    * Creates a gist under the users account.
-   * @param {!string} content The gist file body.
+   * @param {!string} jsonFile The gist file body.
    * @return {!Promise<string>} id of the created gist.
    */
   createGist(jsonFile) {
@@ -502,6 +501,4 @@ class LighthouseViewerReport {
 (function() {
   // eslint-disable-next-line no-unused-vars
   const report = new LighthouseViewerReport();
-
-  window.github = report.github; // TODO: remove
 })();
