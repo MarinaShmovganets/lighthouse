@@ -16,8 +16,6 @@
  */
 'use strict';
 
-/* global window, document */
-
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
 // TODO: We only need getFilenamePrefix from asset-saver. Tree shake!
 const getFilenamePrefix = require('../../../lighthouse-core/lib/asset-saver.js').getFilenamePrefix;
@@ -34,6 +32,10 @@ const URLSearchParams = require('url-search-params');
 const LH_CURRENT_VERSION = require('../../../package.json').version;
 const APP_URL = `${location.origin}${location.pathname}`;
 
+/**
+ * Logs messages via a UI butter.
+ * @class
+ */
 class Logger {
   constructor(selector) {
     this.el = document.querySelector(selector);
@@ -76,6 +78,10 @@ class Logger {
 
 const logger = new Logger('#log');
 
+/**
+ * Wrapper for Firebase Authentication
+ * @class
+ */
 class FirebaseAuth {
   constructor() {
     this.accessToken = null;
@@ -114,12 +120,13 @@ class FirebaseAuth {
   signIn() {
     return firebase.auth().signInWithPopup(this.provider).then(result => {
       this.accessToken = result.credential.accessToken;
-      // A limitation of FB auth is that it doesn't return an oauth token
+      this.user = result.user;
+      // A limitation of firebase auth is that it doesn't return an oauth token
       // after a page refresh. We'll get a firebase token, but not an oauth token
       // for GH. Since GH's tokens never expire, stash the access token in IDB.
-      idb.set('accessToken', this.accessToken); // Note: async.
-      this.user = result.user;
-      return this.accessToken;
+      return idb.set('accessToken', this.accessToken).then(_ => {
+        return this.accessToken;
+      });
     });
   }
 
@@ -130,11 +137,15 @@ class FirebaseAuth {
   signOut() {
     return firebase.auth().signOut().then(() => {
       this.accessToken = null;
-      idb.delete('accessToken'); // Note: async.
+      return idb.delete('accessToken');
     });
   }
 }
 
+/**
+ * Wrapper around the Github API for reading/writing gists.
+ * @class
+ */
 class GithubAPI {
   constructor() {
     // this.CLIENT_ID = '48e4c3145c4978268ecb';
@@ -152,7 +163,7 @@ class GithubAPI {
 
   /**
    * Creates a gist under the users account.
-   * @param {!string} jsonFile The gist file body.
+   * @param {!object} jsonFile The gist file body.
    * @return {!Promise<string>} id of the created gist.
    */
   createGist(jsonFile) {
@@ -160,8 +171,10 @@ class GithubAPI {
 
     return this.authorize()
       .then(accessToken => {
-        // Stringify twice so quotes are escaped for POST request to succeed.
-        const filename = getFilenamePrefix({url: jsonFile.url});
+        const filename = getFilenamePrefix({
+          url: jsonFile.url,
+          date: new Date(jsonFile.generatedTime)
+        });
         const body = {
           description: 'Lighthouse json report',
           public: false,
@@ -175,6 +188,7 @@ class GithubAPI {
         const request = new Request('https://api.github.com/gists', {
           method: 'POST',
           headers: new Headers({Authorization: `token ${accessToken}`}),
+          // Stringify twice so quotes are escaped for POST request to succeed.
           body: JSON.stringify(body)
         });
         return fetch(request);
@@ -189,7 +203,7 @@ class GithubAPI {
   /**
    * Fetches the body content of a gist.
    * @param {!string} id The id of a gist.
-   * @return {!Promise<object>} json content of the gist.
+   * @return {!Promise<{etag: string, content: !Object}>} json content of the gist.
    */
   getGistContent(id) {
     return this.auth.ready.then(user => {

@@ -85,7 +85,7 @@ gulp.task('compile', ['browserify'], () => {
   return gulp.src([
     'dist/src/main.js'
   ])
-    .pipe($.sourcemaps.init())
+    // .pipe($.sourcemaps.init())
     .pipe(closure({
       compilationLevel: 'SIMPLE',
       // warningLevel: 'VERBOSE',
@@ -97,12 +97,12 @@ gulp.task('compile', ['browserify'], () => {
     }))
     .pipe($.uglify()) // Use uglify to strip out duplicated license headers.
     .pipe(license())  // Add license to top.
-    .pipe($.sourcemaps.write('/'))
+    // .pipe($.sourcemaps.write('/'))
     .pipe(gulp.dest('dist/src'));
 });
 
 gulp.task('clean', () => {
-  return del(['.tmp', 'dist']).then(paths =>
+  return del(['dist']).then(paths =>
     paths.forEach(path => $.util.log('deleted:', $.util.colors.blue(path)))
   );
 });
