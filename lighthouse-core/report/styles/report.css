@@ -540,9 +540,9 @@ body {
   margin-top: calc((var(--heading-line-height) - var(--heading-font-size) - 6px) / 2);
 }
 
-.section-result__score.--good { background-color: var(--good-color); }
-.section-result__score.--poor { background-color: var(--poor-color); }
-.section-result__score.--average { background-color: var(--average-color); }
+.section-result__score.-good { background-color: var(--good-color); }
+.section-result__score.-poor { background-color: var(--poor-color); }
+.section-result__score.-average { background-color: var(--average-color); }
 
 .section-result__points {
   font-size: var(--heading-font-size);
@@ -658,9 +658,9 @@ body {
   border-radius: 2px;
 }
 
-.subitem-result__points.--good { background-color: var(--good-color); }
-.subitem-result__points.--poor { background-color: var(--poor-color); }
-.subitem-result__points.--average { background-color: var(--average-color); }
+.subitem-result__points.-good { background-color: var(--good-color); }
+.subitem-result__points.-poor { background-color: var(--poor-color); }
+.subitem-result__points.-average { background-color: var(--average-color); }
 
 .subitem__details {
   list-style: none;
