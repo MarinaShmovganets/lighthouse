@@ -203,9 +203,9 @@ class GithubAPI {
   /**
    * Fetches the body content of a gist.
    * @param {!string} id The id of a gist.
-   * @return {!Promise<{etag: string, content: !Object}>} json content of the gist.
+   * @return {!Promise<{etag: string, content: !Object}>} parsed json content of the gist.
    */
-  getGistContent(id) {
+  getGistFileContentAsJson(id) {
     return this.auth.ready.then(user => {
       const headers = new Headers();
 
@@ -415,7 +415,7 @@ class LighthouseViewerReport {
       logger.log('Fetching report from Github...', false);
 
       this.github.auth.ready.then(_ => {
-        this.github.getGistContent(gistId).then(json => {
+        this.github.getGistFileContentAsJson(gistId).then(json => {
           logger.hide();
           this.replaceReportHTML(json.content);
 
