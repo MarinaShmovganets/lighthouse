@@ -158,6 +158,8 @@ class LighthouseViewerReport {
 
     // TODO: find and reuse existing json gist if one exists.
     return this.github.createGist(this.json).then(id => {
+      ga('send', 'event', 'report', 'created');
+
       history.pushState({}, null, `${APP_URL}?gist=${id}`);
       return id;
     }).catch(err => logger.log(err.message));
