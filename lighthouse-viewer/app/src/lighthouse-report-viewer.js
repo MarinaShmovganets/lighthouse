@@ -47,7 +47,7 @@ class LighthouseViewerReport {
   addListeners() {
     const printButton = document.querySelector('.js-print');
     if (printButton) {
-      printButton && printButton.addEventListener('click', _ => {
+      printButton.addEventListener('click', _ => {
         window.print();
       });
     }
