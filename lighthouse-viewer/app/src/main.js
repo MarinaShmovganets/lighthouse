@@ -60,10 +60,12 @@ class Logger {
   }
 
   warn(msg) {
+    this.log('Warning: ' + msg);
     console.warn(msg);
   }
 
   error(msg) {
+    this.log(msg);
     console.error(msg);
   }
 
@@ -98,7 +100,7 @@ class FirebaseAuth {
       messagingSenderId: '962507201498'
     });
 
-    // Wrap auth state callback in a promise so  other parts of the app that
+    // Wrap auth state callback in a promise so other parts of the app that
     // require login can hook into the changes.
     this.ready = new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(user => {
@@ -115,7 +117,7 @@ class FirebaseAuth {
 
   /**
    * Signs in the user to Github using the Firebase API.
-   * @return {!Promise<object>} The logged in user.
+   * @return {!Promise<string>} The logged in user.
    */
   signIn() {
     return firebase.auth().signInWithPopup(this.provider).then(result => {
@@ -128,6 +130,10 @@ class FirebaseAuth {
         return this.accessToken;
       });
     });
+  }
+
+  getAccessToken() {
+    return this.accessToken ? Promise.resolve(this.accessToken) : this.signIn();
   }
 
   /**
@@ -156,20 +162,15 @@ class GithubAPI {
     return '.lighthouse.report.json';
   }
 
-  authorize() {
-    return this.auth.accessToken ? Promise.resolve(this.auth.accessToken) :
-                                   this.auth.signIn();
-  }
-
   /**
    * Creates a gist under the users account.
-   * @param {!object} jsonFile The gist file body.
+   * @param{{url: string, generatedTime: string}} jsonFile The gist file body.
    * @return {!Promise<string>} id of the created gist.
    */
   createGist(jsonFile) {
     logger.log('Saving report to Github...', false);
 
-    return this.authorize()
+    return this.auth.getAccessToken()
       .then(accessToken => {
         const filename = getFilenamePrefix({
           url: jsonFile.url,
@@ -225,7 +226,7 @@ class GithubAPI {
           const remaining = resp.headers.get('X-RateLimit-Remaining');
           const limit = resp.headers.get('X-RateLimit-Limit');
           if (Number(remaining) < 10) {
-            logger.warn('Warning: approaching Github\'s rate limit. ' +
+            logger.warn('Approaching Github\'s rate limit. ' +
                         `${limit - remaining}/${limit} requests used. Consider signing ` +
                         'in to increase this limit.');
           }
@@ -239,9 +240,7 @@ class GithubAPI {
               // Delete the entry from IDB if it no longer exists on the server.
               idb.delete(id); // Note: async.
             }
-            const msg = `${resp.status} fetching gist`;
-            logger.log(msg);
-            throw new Error(msg);
+            throw new Error(`${resp.status} fetching gist`);
           }
 
           return resp.json().then(json => {
@@ -444,7 +443,7 @@ class LighthouseViewerReport {
       // minor LH version.
       // See https://github.com/GoogleChrome/lighthouse/issues/1108
       // eslint-disable-next-line
-      window.alert('WARNING:  Results may not display properly.\n' +
+      logger.warn('Results may not display properly.\n' +
                   'Report was created with an earlier version of ' +
                   `Lighthouse (${reportJson.lighthouseVersion}). The latest ` +
                   `version is ${LH_CURRENT_VERSION}.`);
@@ -488,9 +487,7 @@ class LighthouseViewerReport {
   onFileUpload(file) {
     return FileUploader.readFile(file).then(str => {
       if (!file.type.match('json')) {
-        const msg = 'Unsupported report format. Expected JSON.';
-        logger.log(msg);
-        throw new Error(msg);
+        throw new Error('Unsupported report format. Expected JSON.');
       }
       this.replaceReportHTML(JSON.parse(str));
     }).catch(err => logger.error(err.message));
