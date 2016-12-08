@@ -72,10 +72,12 @@ class LighthouseViewerReport {
 
   enableShareButton() {
     this.shareButton.classList.remove('disable');
+    this.shareButton.disabled = false;
   }
 
   disableShareButton() {
     this.shareButton.classList.add('disable');
+    this.shareButton.disabled = true;
   }
 
   loadFromURL() {
