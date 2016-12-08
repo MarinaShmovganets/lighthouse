@@ -17,7 +17,7 @@
 
 'use strict';
 
-/* global window, ga */
+/* global ga */
 
 const FileUploader = require('./fileuploader');
 const GithubAPI = require('./github');
@@ -37,6 +37,7 @@ class LighthouseViewerReport {
   constructor() {
     this.onShare = this.onShare.bind(this);
     this.onCopy = this.onCopy.bind(this);
+    this.onCopyButtonClick = this.onCopyButtonClick.bind(this);
     this.onFileUpload = this.onFileUpload.bind(this);
 
     this._copyAttempt = false;
@@ -64,19 +65,8 @@ class LighthouseViewerReport {
 
     const copyButton = document.querySelector('.js-copy');
     if (copyButton) {
-      copyButton.addEventListener('click', this.onCopy);
-
-      document.addEventListener('copy', e => {
-        // Only handle copy button presses (e.g. ignore the user copying page text).
-        if (this._copyAttempt) {
-          // We want to write our own data to the clipboard, not the user's text selection.
-          e.preventDefault();
-          e.clipboardData.setData('text/plain', JSON.stringify(this.json, null, 2));
-          logger.log('Report copied to clipboard');
-        }
-
-        this._copyAttempt = false;
-      });
+      copyButton.addEventListener('click', this.onCopyButtonClick);
+      document.addEventListener('copy', this.onCopy);
     }
   }
 
@@ -186,9 +176,24 @@ class LighthouseViewerReport {
   }
 
   /**
+   * Handler copy events.
+   */
+  onCopy(e) {
+    // Only handle copy button presses (e.g. ignore the user copying page text).
+    if (this._copyAttempt) {
+      // We want to write our own data to the clipboard, not the user's text selection.
+      e.preventDefault();
+      e.clipboardData.setData('text/plain', JSON.stringify(this.json, null, 2));
+      logger.log('Report copied to clipboard');
+    }
+
+    this._copyAttempt = false;
+  }
+
+  /**
    * Copies the report JSON to the clipboard (if supported by the browser).
    */
-  onCopy() {
+  onCopyButtonClick() {
     ga('send', 'event', 'report', 'copy');
 
     try {
@@ -204,6 +209,7 @@ class LighthouseViewerReport {
         }
       }
     } catch (err) {
+      this._copyAttempt = false;
       logger.log(err.message);
     }
   }
