@@ -243,7 +243,7 @@ class ChromeLauncher {
    }
 };
 
-function closeFile(file) {
+function closeFile(file: number): Promise<undefined> {
   if (!file) {
     return Promise.resolve();
   }
