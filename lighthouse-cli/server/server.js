@@ -19,24 +19,8 @@
 const express = require('express');
 const app = express();
 
-app.get('/reports/:name', (request, response) => {
-  const options = {
-    root: `${__dirname}/reports/`
-  };
-
-  response.sendFile(request.params.name, options, err => {
-    if (err) {
-      console.log(err);
-      response.status(err.status).end();
-    }
-  });
-});
-
-function listen(port) {
-  return app.listen(port)
-}
+app.use('/reports', express.static(`${__dirname}/reports`));
 
 module.exports = {
-  listen: listen
+  listen: app.listen.bind(app)
 };
-

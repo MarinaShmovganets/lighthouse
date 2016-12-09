@@ -235,16 +235,17 @@ function lighthouseRun(addresses: Array<string>, config: Object, flags: {view: b
   return lighthouse(address, flags, config)
     .then((results: Results) => Printer.write(results, outputMode, outputPath))
     .then((results: Results) => {
+      if (outputMode === Printer.OutputMode[Printer.OutputMode.pretty]) {
+        const filename = `./${assetSaver.getFilenamePrefix({url: address})}.report.html`;
+        Printer.write(results, 'html', filename);
+      }
+
+      // Generate report.html, host it and open it in the default browser
       if (flags.view) {
         const filename = `${assetSaver.getFilenamePrefix({url: address})}.report.html`;
         const fileAbsPath = `${__dirname}/server/reports/${filename}`;
         Printer.write(results, 'html', fileAbsPath);
         opn(`http://localhost:${_REPORT_SERVER_PORT}/reports/${filename}`);
-
-      } else if (outputMode === Printer.OutputMode[Printer.OutputMode.pretty]) {
-        const filename = `./${assetSaver.getFilenamePrefix({url: address})}.report.html`;
-        Printer.write(results, 'html', filename);
-
       }
 
       return lighthouseRun(addresses, config, flags);
