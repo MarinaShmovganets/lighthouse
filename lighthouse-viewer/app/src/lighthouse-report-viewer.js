@@ -249,11 +249,11 @@ class LighthouseViewerReport {
   onPaste(e) {
     e.preventDefault();
 
-    ga('send', 'event', 'report', 'paste');
-
     try {
       const json = JSON.parse(e.clipboardData.getData('text'));
       this.replaceReportHTML(json);
+
+      ga('send', 'event', 'report', 'paste');
     } catch (err) {
       // noop
     }
