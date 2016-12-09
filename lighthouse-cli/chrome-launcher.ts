@@ -233,21 +233,22 @@ class ChromeLauncher {
 
     log.verbose('ChromeLauncher', `Removing ${this.TMP_PROFILE_DIR}`);
 
-    if (this.outFile) {
-      fs.closeSync(this.outFile);
-    }
-
-    if (this.errFile) {
-      fs.closeSync(this.errFile);
-    }
-
-    return new Promise((resolve) => {
-      rimraf(this.TMP_PROFILE_DIR, function() {
-        resolve();
+    return Promise.all([
+      closeFile(this.outFile),
+      closeFile(this.errFile)
+    ])
+      .then(() => {
+        return new Promise(resolve => rimraf(this.TMP_PROFILE_DIR, resolve));
       });
-    });
-  }
+   }
 };
+
+function closeFile(file) {
+  if (!file) {
+    return Promise.resolve();
+  }
+  return new Promise(resolve => fs.close(file, resolve));
+}
 
 function defaults(val: any, def: any) {
   return typeof val === 'undefined' ? def : val;
