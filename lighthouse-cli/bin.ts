@@ -21,6 +21,7 @@ const _SIGINT = 'SIGINT';
 const _ERROR_EXIT_CODE = 130;
 const _RUNTIME_ERROR_CODE = 1;
 const _PROTOCOL_TIMEOUT_EXIT_CODE = 67;
+const _REPORT_SERVER_PORT = 8080;
 
 interface LightHouseError extends Error {
   code?: string
@@ -41,6 +42,8 @@ import * as Printer from './printer';
 const lighthouse = require('../lighthouse-core');
 const assetSaver = require('../lighthouse-core/lib/asset-saver.js');
 const log = require('../lighthouse-core/lib/log');
+const server = require('./server/server');
+const opn = require('opn');
 import {ChromeLauncher} from './chrome-launcher';
 import * as Commands from './commands/commands';
 
@@ -90,12 +93,14 @@ const cliFlags = yargs
 
   .group([
     'output',
-    'output-path'
+    'output-path',
+    'view'
   ], 'Output:')
   .describe({
     'output': 'Reporter for the results',
     'output-path': `The file path to output the results
-Example: --output-path=./lighthouse-results.html`
+Example: --output-path=./lighthouse-results.html`,
+    'view': 'Open report.html in browser'
   })
 
   // boolean values
@@ -112,7 +117,8 @@ Example: --output-path=./lighthouse-results.html`
     'select-chrome',
     'verbose',
     'quiet',
-    'help'
+    'help',
+    'view'
   ])
   .choices('output', Printer.GetValidOutputOptions())
 
@@ -198,7 +204,7 @@ function initPort(flags: {port: number}): Promise<undefined> {
 
 function launchChromeAndRun(addresses: Array<string>,
                             config: Object,
-                            flags: {port: number, selectChrome: boolean}) {
+                            flags: {port: number, selectChrome: boolean, view: boolean}) {
 
   return initPort(flags).then(() => {
     const launcher = new ChromeLauncher({
@@ -219,7 +225,7 @@ function launchChromeAndRun(addresses: Array<string>,
   })
 }
 
-function lighthouseRun(addresses: Array<string>, config: Object, flags: Object) {
+function lighthouseRun(addresses: Array<string>, config: Object, flags: {view: boolean}) {
   // Process URLs once at a time
   const address = addresses.shift();
   if (!address) {
@@ -229,9 +235,16 @@ function lighthouseRun(addresses: Array<string>, config: Object, flags: Object) 
   return lighthouse(address, flags, config)
     .then((results: Results) => Printer.write(results, outputMode, outputPath))
     .then((results: Results) => {
-      if (outputMode === Printer.OutputMode[Printer.OutputMode.pretty]) {
+      if (flags.view) {
+        const filename = `${assetSaver.getFilenamePrefix({url: address})}.report.html`;
+        const fileAbsPath = `${__dirname}/server/reports/${filename}`;
+        Printer.write(results, 'html', fileAbsPath);
+        opn(`http://localhost:${_REPORT_SERVER_PORT}/reports/${filename}`);
+
+      } else if (outputMode === Printer.OutputMode[Printer.OutputMode.pretty]) {
         const filename = `./${assetSaver.getFilenamePrefix({url: address})}.report.html`;
         Printer.write(results, 'html', filename);
+
       }
 
       return lighthouseRun(addresses, config, flags);
@@ -272,6 +285,10 @@ function handleError(err: LightHouseError) {
 
 function run() {
   return initPort(cliFlags).then(() => {
+    if (cliFlags.view) {
+      server.listen(_REPORT_SERVER_PORT);
+    }
+  }).then(() => {
     if (cliFlags.skipAutolaunch) {
       return lighthouseRun(urls, config, cliFlags).catch(handleError);
     } else {
