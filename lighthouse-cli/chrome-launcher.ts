@@ -240,7 +240,7 @@ class ChromeLauncher {
       .then(() => {
         return new Promise(resolve => rimraf(this.TMP_PROFILE_DIR, resolve));
       });
-   }
+  }
 };
 
 function closeFile(file: number): Promise<undefined> {
