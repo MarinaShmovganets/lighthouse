@@ -248,7 +248,11 @@ class ChromeLauncher {
       // ignore
     }
 
-    return new Promise(resolve => rimraf(this.TMP_PROFILE_DIR, resolve));
+    return new Promise((resolve) => {
+      rimraf(this.TMP_PROFILE_DIR, function() {
+        resolve();
+      });
+    });
   }
 };
 
