@@ -355,7 +355,7 @@ class Driver {
     const promise = new Promise((resolve, reject) => {
       securityListener = event => {
         if (event.securityState === 'insecure') {
-          let explanation = event.explanations
+          const explanation = event.explanations
             .filter(expl => expl.securityState === 'insecure')[0];
 
           this.off('Security.securityStateChanged', securityListener);
@@ -419,7 +419,6 @@ class Driver {
       };
     });
 
-
     // Insecure state listener. Rejects when Chrome shows the insecure content page.
     const insecureStatePromise = waitForInsecureState.promise
       .then(explanation => {
@@ -428,7 +427,7 @@ class Driver {
           clearTimeout(maxTimeoutHandle);
           waitForLoadEvent.cancel();
           waitForNetworkIdle.cancel();
-        }
+        };
       });
 
     // Wait for load or timeout and run the cleanup function the winner returns.
@@ -458,9 +457,11 @@ class Driver {
     // These need to be set up BEFORE navigation. Otherwise the events might fire
     // before the listener is added and the promise would never resolve.
     // Listener for onload. Resolves pauseAfterLoadMs ms after load.
-    const waitForLoadEvent = waitForLoad ? this._waitForLoadEvent(pauseAfterLoadMs) : Promise.resolve();
+    const waitForLoadEvent = waitForLoad ?
+      this._waitForLoadEvent(pauseAfterLoadMs) : Promise.resolve();
     // Insecure state listener. Rejects when Chrome shows the insecure content page.
-    const waitForInsecureState = waitForLoad ? this._waitForInsecureState() : Promise.resolve();
+    const waitForInsecureState = waitForLoad ?
+      this._waitForInsecureState() : Promise.resolve();
 
     return Promise.all([
       this.sendCommand('Page.enable'),
@@ -468,7 +469,12 @@ class Driver {
     ])
       .then(_ => this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS}))
       .then(_ => this.sendCommand('Page.navigate', {url}))
-      .then(_ => waitForLoad && this._waitForFullyLoaded(pauseAfterLoadMs, waitForLoadEvent, waitForInsecureState));
+      .then(_ => {
+        if (!waitForLoad) {
+          return;
+        }
+        return this._waitForFullyLoaded(pauseAfterLoadMs, waitForLoadEvent, waitForInsecureState);
+      });
   }
 
   /**
