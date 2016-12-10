@@ -344,7 +344,7 @@ class Driver {
   }
 
   /**
-   * Return a promise that rejects when the securityState changes to 'insecure'
+   * Return a promise that resolves when the securityState changes to 'insecure'
    * and a method to cancel internal listeners.
    * @return {{promise: !Promise, cancel: function()}}
    * @private
