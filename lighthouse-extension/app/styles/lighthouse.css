@@ -190,6 +190,7 @@ html, body {
 }
 
 .feedback {
+  background-color: var(--lh-blue-color);
   position: absolute;
   color: #fff;
   bottom: 10px;
@@ -199,7 +200,9 @@ html, body {
 }
 
 .feedback-error {
+  background-color: var(--lh-blue-color);
   position: absolute;
+  color: #fff;
   bottom: 10px;
   left: 16px;
   width: 180px;
