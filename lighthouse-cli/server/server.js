@@ -18,9 +18,21 @@
 
 const express = require('express');
 const app = express();
+let portPromise = undefined;
 
 app.use('/reports', express.static(`${__dirname}/reports`));
 
+function listen() {
+  if (portPromise === undefined) {
+    portPromise = new Promise((resolve, reject) => {
+      const server = app.listen(0, () => {
+        resolve(server.address().port);
+      });
+    });
+  }
+  return portPromise;
+}
+
 module.exports = {
-  listen: app.listen.bind(app)
+  listen: listen
 };

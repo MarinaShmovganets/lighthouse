@@ -21,7 +21,6 @@ const _SIGINT = 'SIGINT';
 const _ERROR_EXIT_CODE = 130;
 const _RUNTIME_ERROR_CODE = 1;
 const _PROTOCOL_TIMEOUT_EXIT_CODE = 67;
-const _REPORT_SERVER_PORT = 8080;
 
 interface LightHouseError extends Error {
   code?: string
@@ -243,9 +242,11 @@ function lighthouseRun(addresses: Array<string>, config: Object, flags: {view: b
 
       // Generate report.html, host it and open it in the default browser
       if (flags.view) {
-        const fileAbsPath = `${__dirname}/server/reports/${filename}`;
-        Printer.write(results, 'html', fileAbsPath);
-        opn(`http://localhost:${_REPORT_SERVER_PORT}/reports/${filename}`);
+        server.listen().then((port: number) => {
+          const fileAbsPath = `${__dirname}/server/reports/${filename}`;
+          Printer.write(results, 'html', fileAbsPath);
+          opn(`http://localhost:${port}/reports/${filename}`);
+        });
       }
 
       return lighthouseRun(addresses, config, flags);
@@ -286,10 +287,6 @@ function handleError(err: LightHouseError) {
 
 function run() {
   return initPort(cliFlags).then(() => {
-    if (cliFlags.view) {
-      server.listen(_REPORT_SERVER_PORT);
-    }
-  }).then(() => {
     if (cliFlags.skipAutolaunch) {
       return lighthouseRun(urls, config, cliFlags).catch(handleError);
     } else {
