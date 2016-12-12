@@ -40,7 +40,7 @@ function requestHandler(request, response) {
 
   function readFileCallback(err, file) {
     if (err) {
-      console.error(`Unable to read local file ${absoluteFilePath}:`, err);
+      console.error(`Unable to read local file ${filePath}:`, err);
       return sendResponse(500, '500 - Internal Server Error');
     }
     sendResponse(200, file);
@@ -67,6 +67,9 @@ function requestHandler(request, response) {
   }
 }
 
+const server = http.createServer(requestHandler);
+server.on('error', e => console.error(e.code, e));
+
 function getPort(port) {
   if (!portPromise) {
     portPromise = new Promise((reslove, reject) => {
@@ -75,15 +78,6 @@ function getPort(port) {
   }
   return portPromise;
 }
-
-function addFile(filename, filePath) {
-  filePathDict[filename] = filePath;
-  console.log(filePathDict[filename]);
-}
-
-const server = http.createServer(requestHandler);
-
-server.on('error', e => console.error(e.code, e));
 
 module.exports = {
   filePathDict: filePathDict,
