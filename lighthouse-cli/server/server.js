@@ -16,23 +16,76 @@
  */
 'use strict';
 
-const express = require('express');
-const app = express();
+const http = require('http');
+const fs = require('fs');
+const parse = require('url').parse;
+
+// use a {filename: actualPath} mapping to restrict access to other files and simplify URL
+const filePathDict = {'./favicon.ico': `${__dirname}/images/favicon.ico`};
 let portPromise;
 
-app.use('/reports', express.static(`${__dirname}/reports`));
+function requestHandler(request, response) {
+  const parsedURL = parse(request.url, true);
+  const filename = `.${parsedURL.pathname}`;
+  const filePath = filePathDict[filename] || '';
 
-function listen() {
-  if (portPromise) {
-    portPromise = new Promise((resolve, reject) => {
-      const server = app.listen(0, () => {
-        resolve(server.address().port);
-      });
+  fs.exists(filePath, fsExistsCallback);
+
+  function fsExistsCallback(fileExists) {
+    if (!fileExists) {
+      return sendResponse(404, `404 - File not found. ${filename}`);
+    }
+    fs.readFile(filePath, 'binary', readFileCallback);
+  }
+
+  function readFileCallback(err, file) {
+    if (err) {
+      console.error(`Unable to read local file ${absoluteFilePath}:`, err);
+      return sendResponse(500, '500 - Internal Server Error');
+    }
+    sendResponse(200, file);
+  }
+
+  function sendResponse(statusCode, data) {
+    let headers;
+    if (filePath) {
+      if (filePath.endsWith('.html')) {
+        headers = {'Content-Type': 'text/html'};
+      } else if (filePath.endsWith('.json')) {
+        headers = {'Content-Type': 'text/json'};
+      } else if (filePath.endsWith('.png')) {
+        headers = {'Content-Type': 'image/x-icon'};
+      }
+    }
+    response.writeHead(statusCode, headers);
+    finishResponse(data);
+  }
+
+  function finishResponse(data) {
+    response.write(data, 'binary');
+    response.end();
+  }
+}
+
+function getPort(port) {
+  if (!portPromise) {
+    portPromise = new Promise((reslove, reject) => {
+      server.listen(port, _ => reslove(server.address().port));
     });
   }
   return portPromise;
 }
 
+function addFile(filename, filePath) {
+  filePathDict[filename] = filePath;
+  console.log(filePathDict[filename]);
+}
+
+const server = http.createServer(requestHandler);
+
+server.on('error', e => console.error(e.code, e));
+
 module.exports = {
-  listen: listen
+  filePathDict: filePathDict,
+  getPort: getPort
 };

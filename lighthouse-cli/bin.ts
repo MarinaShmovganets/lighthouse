@@ -242,10 +242,20 @@ function lighthouseRun(addresses: Array<string>, config: Object, flags: {view: b
 
       // Generate report.html, host it and open it in the default browser
       if (flags.view) {
-        server.listen().then((port: number) => {
-          const fileAbsPath = `${__dirname}/server/reports/${filename}`;
-          Printer.write(results, 'html', fileAbsPath);
-          opn(`http://localhost:${port}/reports/${filename}`);
+        server.getPort(0).then((port: number) => {
+          // Only generate html file when it is not already generated
+          let filePath: string;
+          if (outputMode === Printer.OutputMode[Printer.OutputMode.pretty]) {
+            filePath = filename;
+          } else if (outputMode !== Printer.OutputMode[Printer.OutputMode.html] || outputPath==='stdout') {
+            filePath = `${__dirname}/server/reports/${filename}`;
+            Printer.write(results, 'html', filePath);
+          } else {
+            filePath = outputPath;
+          }
+
+          server.filePathDict[filename] = filePath;
+          opn(`http://localhost:${port}/${filename}`);
         });
       }
 
