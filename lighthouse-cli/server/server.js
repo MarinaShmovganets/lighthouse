@@ -19,21 +19,25 @@
 const http = require('http');
 const fs = require('fs');
 const parse = require('url').parse;
+const path = require('path');
 
-// use a {filename: actualPath} mapping to restrict access to other files and simplify URL
-const filePathDict = {'./favicon.ico': `${__dirname}/images/favicon.ico`};
 let portPromise;
 
+const FOLDERS = {
+  SRC: `${__dirname}/src`,
+  REPORTS: `${__dirname}/src/reports`
+};
+
 function requestHandler(request, response) {
-  const parsedURL = parse(request.url, true);
-  const filename = `.${parsedURL.pathname}`;
-  const filePath = filePathDict[filename] || '';
+  const pathname = parse(request.url).pathname;
+  // Only files inside src are accessible
+  const filePath = (path.normalize(pathname).startsWith('../')) ? '' : `${FOLDERS.SRC}${pathname}`;
 
   fs.exists(filePath, fsExistsCallback);
 
   function fsExistsCallback(fileExists) {
     if (!fileExists) {
-      return sendResponse(404, `404 - File not found. ${filename}`);
+      return sendResponse(404, `404 - File not found. ${pathname}`);
     }
     fs.readFile(filePath, 'binary', readFileCallback);
   }
@@ -53,7 +57,7 @@ function requestHandler(request, response) {
         headers = {'Content-Type': 'text/html'};
       } else if (filePath.endsWith('.json')) {
         headers = {'Content-Type': 'text/json'};
-      } else if (filePath.endsWith('.png')) {
+      } else if (filePath.endsWith('.ico')) {
         headers = {'Content-Type': 'image/x-icon'};
       }
     }
@@ -73,6 +77,10 @@ server.on('error', e => console.error(e.code, e));
 function getPort(port) {
   if (!portPromise) {
     portPromise = new Promise((reslove, reject) => {
+      for (const folder in FOLDERS) {
+        if (!fs.existsSync(FOLDERS[folder]))
+          fs.mkdirSync(FOLDERS[folder]);
+      }
       server.listen(port, _ => reslove(server.address().port));
     });
   }
@@ -80,6 +88,6 @@ function getPort(port) {
 }
 
 module.exports = {
-  filePathDict: filePathDict,
-  getPort: getPort
+  getPort: getPort,
+  FOLDERS: FOLDERS
 };

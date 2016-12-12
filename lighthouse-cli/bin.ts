@@ -36,6 +36,7 @@ if (!environment.checkNodeCompatibility()) {
 import {Results} from './types/types';
 import * as path from 'path';
 import * as http from 'http';
+import * as fs from 'fs';
 const yargs = require('yargs');
 import * as Printer from './printer';
 const lighthouse = require('../lighthouse-core');
@@ -234,7 +235,7 @@ function lighthouseRun(addresses: Array<string>, config: Object, flags: {view: b
   return lighthouse(address, flags, config)
     .then((results: Results) => Printer.write(results, outputMode, outputPath))
     .then((results: Results) => {
-      const filename = `./${assetSaver.getFilenamePrefix({url: address})}.report.html`;
+      const filename = `${assetSaver.getFilenamePrefix({url: address})}.report.html`;
 
       if (outputMode === Printer.OutputMode[Printer.OutputMode.pretty]) {
         Printer.write(results, 'html', filename);
@@ -243,19 +244,20 @@ function lighthouseRun(addresses: Array<string>, config: Object, flags: {view: b
       // Generate report.html, host it and open it in the default browser
       if (flags.view) {
         server.getPort(0).then((port: number) => {
-          // Only generate html file when it is not already generated
-          let filePath: string;
-          if (outputMode === Printer.OutputMode[Printer.OutputMode.pretty]) {
-            filePath = filename;
-          } else if (outputMode !== Printer.OutputMode[Printer.OutputMode.html] || outputPath==='stdout') {
-            filePath = `${__dirname}/server/reports/${filename}`;
-            Printer.write(results, 'html', filePath);
+          const filePath = `${server.FOLDERS.REPORTS}/${filename}`;
+          const htmlExist = outputMode === Printer.OutputMode[Printer.OutputMode.pretty]
+            || (outputPath !== 'stdout' && outputMode === Printer.OutputMode[Printer.OutputMode.html]);
+
+          // Only generate HTML file when it is not already generated
+          // If the HTML file is already generated, create a symlink to it
+          if (htmlExist) {
+            const targetPath = outputMode === Printer.OutputMode[Printer.OutputMode.pretty] ? filename : outputPath;
+            fs.symlinkSync(path.resolve(targetPath), filePath);
           } else {
-            filePath = outputPath;
+            Printer.write(results, 'html', filePath);
           }
 
-          server.filePathDict[filename] = filePath;
-          opn(`http://localhost:${port}/${filename}`);
+          opn(`http://localhost:${port}/reports/${filename}`);
         });
       }
 
