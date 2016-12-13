@@ -68,6 +68,9 @@ function requestHandler(request, response) {
 
 function prepareServer() {
   for (const folder in FOLDERS) {
+    if (!FOLDERS.hasOwnProperty(folder)) {
+      continue;
+    }
     const folderPath = FOLDERS[folder];
 
     // Create dirs synchronously. Dirs need to be created before server start.
