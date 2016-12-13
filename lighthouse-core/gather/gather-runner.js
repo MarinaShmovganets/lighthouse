@@ -90,7 +90,7 @@ class GatherRunner {
     log.log('status', 'Initializing…');
     // Enable emulation based on flags
     return driver.assertNoSameOriginServiceWorkerClients(options.url)
-      .then(_ => driver.beginEmulation(options.flags))
+      .then(_ => driver.enableEmulation(options.flags))
       .then(_ => driver.enableRuntimeEvents())
       .then(_ => driver.evaluateScriptOnLoad('window.__nativePromise = Promise;'))
       .then(_ => driver.cleanAndDisableBrowserCaches())
@@ -111,7 +111,9 @@ class GatherRunner {
    * @return {!Promise}
    */
   static beforePass(options) {
-    const pass = GatherRunner.loadBlank(options.driver);
+    const pass = GatherRunner
+      .loadBlank(options.driver)
+      .then(_ => options.driver.beginEmulation(options.flags, options.config));
 
     return options.config.gatherers.reduce((chain, gatherer) => {
       return chain.then(_ => {
