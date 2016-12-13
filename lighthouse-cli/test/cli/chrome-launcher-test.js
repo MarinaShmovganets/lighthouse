@@ -20,12 +20,11 @@ require('../../compiled-check.js')('chrome-launcher.js');
 
 const ChromeLauncher = require('../../chrome-launcher.js').ChromeLauncher;
 
-/* global describe, it */
+/* eslint-env mocha */
 
 describe('ChromeLauncher', () => {
   it('doesn\'t fail when killed twice', () => {
     const chromeInstance = new ChromeLauncher();
-    chromeInstance.prepare();
     chromeInstance.run();
     return chromeInstance.waitUntilReady()
       .then(() => {
