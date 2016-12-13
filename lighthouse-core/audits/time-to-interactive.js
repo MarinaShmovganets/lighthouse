@@ -71,9 +71,6 @@ class TTIMetric extends Audit {
       if (fmpResult.rawValue === -1) {
         return generateError(fmpResult.debugString);
       }
-      const fmpTiming = parseFloat(fmpResult.rawValue);
-      const timings = fmpResult.extendedInfo && fmpResult.extendedInfo.value &&
-          fmpResult.extendedInfo.value.timings;
 
       // Process the trace
       const tracingProcessor = new TracingProcessor();
@@ -81,19 +78,22 @@ class TTIMetric extends Audit {
       const model = tracingProcessor.init(trace);
       const endOfTraceTime = model.bounds.max;
 
-      // TODO: Wait for DOMContentLoadedEndEvent
-      const fMPts = timings.fMP + timings.navStart;
+      const fmpTiming = fmpResult.rawValue;
+      const fmpResultExt = fmpResult.extendedInfo.value;
+
+      // frame monotonic timestamps from speedline are in ms (ts / 1000), so we'll match
+      //   https://github.com/pmdartus/speedline/blob/123f512632a/src/frame.js#L86
+      const fMPtsInMS = fmpResultExt.timestamps.fMP / 1000;
+      const navStartTsInMS = fmpResultExt.timestamps.navStart / 1000;
 
       // look at speedline results for 85% starting at FMP
       let visuallyReadyTiming = 0;
-
       if (speedline.frames) {
         const eightyFivePctVC = speedline.frames.find(frame => {
-          return frame.getTimeStamp() >= fMPts && frame.getProgress() >= 85;
+          return frame.getTimeStamp() >= fMPtsInMS && frame.getProgress() >= 85;
         });
-
         if (eightyFivePctVC) {
-          visuallyReadyTiming = eightyFivePctVC.getTimeStamp() - timings.navStart;
+          visuallyReadyTiming = eightyFivePctVC.getTimeStamp() - navStartTsInMS;
         }
       }
 
@@ -146,6 +146,11 @@ class TTIMetric extends Audit {
           fMP: fmpTiming.toFixed(1),
           visuallyReady: visuallyReadyTiming.toFixed(1),
           mainThreadAvail: startTime.toFixed(1)
+        },
+        timestamps: {
+          fMP: fMPtsInMS * 1000,
+          visuallyReady: (visuallyReadyTiming + navStartTsInMS) * 1000,
+          mainThreadAvail: (timeToInteractive + navStartTsInMS) * 1000
         },
         expectedLatencyAtTTI: currentLatency,
         foundLatencies
