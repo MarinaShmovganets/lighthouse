@@ -18,7 +18,7 @@
 
 require('../../compiled-check.js')('chrome-launcher.js');
 
-const {ChromeLauncher} = require('../../chrome-launcher.js');
+const ChromeLauncher = require('../../chrome-launcher.js').ChromeLauncher;
 
 /* global describe, it */
 
