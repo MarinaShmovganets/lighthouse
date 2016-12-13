@@ -25,8 +25,7 @@ const ChromeLauncher = require('../../chrome-launcher.js').ChromeLauncher;
 describe('ChromeLauncher', () => {
   it('doesn\'t fail when killed twice', () => {
     const chromeInstance = new ChromeLauncher();
-    chromeInstance.run();
-    return chromeInstance.waitUntilReady()
+    return chromeInstance.run()
       .then(() => {
         return Promise.all([
           chromeInstance.kill(),
