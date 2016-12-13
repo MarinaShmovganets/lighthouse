@@ -21,31 +21,30 @@ const fs = require('fs');
 const parse = require('url').parse;
 const path = require('path');
 
-let portPromise;
-
+const ROOT = `${__dirname}/src`;
 const FOLDERS = {
-  SRC: `${__dirname}/src`,
-  REPORTS: `${__dirname}/src/reports`
+  REPORTS: `${ROOT}/reports`
 };
+
+const server = http.createServer(requestHandler);
+server.on('error', e => console.error(e.code, e));
 
 function requestHandler(request, response) {
   const pathname = parse(request.url).pathname;
+
   // Only files inside src are accessible
-  const filePath = (path.normalize(pathname).startsWith('../')) ? '' : `${FOLDERS.SRC}${pathname}`;
-
-  fs.exists(filePath, fsExistsCallback);
-
-  function fsExistsCallback(fileExists) {
-    if (!fileExists) {
-      return sendResponse(404, `404 - File not found. ${pathname}`);
-    }
-    fs.readFile(filePath, 'binary', readFileCallback);
-  }
+  const filePath = (path.normalize(pathname).startsWith('../')) ? '' : `${ROOT}${pathname}`;
+  fs.readFile(filePath, 'binary', readFileCallback);
 
   function readFileCallback(err, file) {
     if (err) {
+      if (err.code === 'ENOENT') {
+        sendResponse(404, `404 - File not found. ${pathname}`);
+        return;
+      }
       console.error(`Unable to read local file ${filePath}:`, err);
-      return sendResponse(500, '500 - Internal Server Error');
+      sendResponse(500, '500 - Internal Server Error');
+      return;
     }
     sendResponse(200, file);
   }
@@ -62,32 +61,43 @@ function requestHandler(request, response) {
       }
     }
     response.writeHead(statusCode, headers);
-    finishResponse(data);
-  }
-
-  function finishResponse(data) {
     response.write(data, 'binary');
     response.end();
   }
 }
 
-const server = http.createServer(requestHandler);
-server.on('error', e => console.error(e.code, e));
+function prepareServer() {
+  for (const folder in FOLDERS) {
+    const folderPath = FOLDERS[folder];
 
-function getPort(port) {
-  if (!portPromise) {
-    portPromise = new Promise((reslove, reject) => {
-      for (const folder in FOLDERS) {
-        if (!fs.existsSync(FOLDERS[folder]))
-          fs.mkdirSync(FOLDERS[folder]);
+    // Create dirs synchronously. Dirs need to be created before server start.
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath);
+      continue;
+    }
+
+    // Remove broken symlinks
+    fs.readdir(folderPath, (err, filenames) => {
+      for (const filename of filenames) {
+        const filePath = `${folderPath}/${filename}`;
+        !fs.existsSync(filePath) && fs.unlinkSync(filePath);
       }
-      server.listen(port, _ => reslove(server.address().port));
+    });
+  }
+}
+
+let portPromise;
+function startServer(port) {
+  if (!portPromise) {
+    portPromise = new Promise(resolve => {
+      prepareServer();
+      server.listen(port, _ => resolve(server.address().port));
     });
   }
   return portPromise;
 }
 
 module.exports = {
-  getPort: getPort,
-  FOLDERS: FOLDERS
+  startServer,
+  FOLDERS
 };

@@ -42,7 +42,7 @@ import * as Printer from './printer';
 const lighthouse = require('../lighthouse-core');
 const assetSaver = require('../lighthouse-core/lib/asset-saver.js');
 const log = require('../lighthouse-core/lib/log');
-const server = require('./server/server');
+const performanceXServer = require('./performance-experiment/server');
 const opn = require('opn');
 import {ChromeLauncher} from './chrome-launcher';
 import * as Commands from './commands/commands';
@@ -243,8 +243,8 @@ function lighthouseRun(addresses: Array<string>, config: Object, flags: {view: b
 
       // Generate report.html, host it and open it in the default browser
       if (flags.view) {
-        server.getPort(0).then((port: number) => {
-          const filePath = `${server.FOLDERS.REPORTS}/${filename}`;
+        performanceXServer.startServer(0).then((port: number) => {
+          const filePath = `${performanceXServer.FOLDERS.REPORTS}/${filename}`;
           const htmlExist = outputMode === Printer.OutputMode[Printer.OutputMode.pretty]
             || (outputPath !== 'stdout' && outputMode === Printer.OutputMode[Printer.OutputMode.html]);
 
