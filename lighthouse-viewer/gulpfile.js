@@ -22,7 +22,6 @@ const gulp = require('gulp');
 const gulpLoadPlugins = require('gulp-load-plugins');
 const runSequence = require('run-sequence');
 const browserify = require('browserify');
-const closure = require('google-closure-compiler-js').gulp();
 const ghpages = require('gh-pages');
 
 const $ = gulpLoadPlugins();
@@ -86,7 +85,7 @@ gulp.task('browserify', () => {
         .transform('brfs')
         .bundle();
 
-      file.contents = bundle; // Inject transforme content back the gulp pipeline.
+      file.contents = bundle; // Inject transformed content back the gulp pipeline.
     }))
     .pipe(gulp.dest(`${DIST_FOLDER}/src`));
 });
