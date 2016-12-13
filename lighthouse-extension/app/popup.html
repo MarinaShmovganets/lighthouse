@@ -24,6 +24,7 @@ limitations under the License.
   <meta name="viewport" content="width=device-width">
   <title>Lighthouse Report</title>
   <link rel="stylesheet" href="styles/lighthouse.css">
+  <link rel="stylesheet" href="styles/lighthouse-loading.css">
 </head>
 <body>
 
@@ -44,7 +45,12 @@ limitations under the License.
   </main>
 
   <aside class="status subpage">
-    <div class="status__spinner"></div>
+    <div class="lighthouse-effects">
+      <img src="images/pwa-lighthouse.png" alt="LH logo">
+      <div class="lighthouse-effects__wrapper">
+        <div class="lighthouse-effects__light"></div>
+      </div>
+    </div>
     <div class="status__msg">Starting...</div>
     <div><small class="status__detailsmsg"></small></div>
   </aside>
