@@ -173,8 +173,7 @@ class ReportGenerator {
    * @return {string}
    */
   getReportJS() {
-    const scriptSrc = fs.readFileSync(path.join(__dirname, './scripts/lighthouse-report.js'), 'utf8');
-    return `<script>${scriptSrc}</script>`;
+    return fs.readFileSync(path.join(__dirname, './scripts/lighthouse-report.js'), 'utf8');
   }
 
   /**
@@ -228,10 +227,12 @@ class ReportGenerator {
   /**
    * Generates the Lighthouse report HTML.
    * @param {!Object} results Lighthouse results.
-   * @param {!string} reportContext Where the report is going
+   * @param {!string} reportContext What app is requesting the report (eg. devtools, extension)
    * @returns {string} HTML of the report page.
    */
   generateHTML(results, reportContext) {
+    reportContext = reportContext || 'extension';
+
     // Ensure the formatter for each extendedInfo is registered.
     Object.keys(results.audits).forEach(audit => {
       // Use value rather than key for audit.
@@ -262,7 +263,6 @@ class ReportGenerator {
     });
 
     const template = Handlebars.compile(this.getReportTemplate());
-    reportContext = reportContext || 'extension'; // could be: devtools, extension
 
     return template({
       url: results.url,
