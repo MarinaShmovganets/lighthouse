@@ -228,13 +228,13 @@ class ChromeLauncher {
   }
 
   destroyTmp(): Promise<undefined> {
-    if (!this.TMP_PROFILE_DIR) {
-      return Promise.resolve();
-    }
+    return new Promise(resolve => {
+      if (!this.TMP_PROFILE_DIR) {
+        return resolve();
+      }
 
-    log.verbose('ChromeLauncher', `Removing ${this.TMP_PROFILE_DIR}`);
+      log.verbose('ChromeLauncher', `Removing ${this.TMP_PROFILE_DIR}`);
 
-    try {
       if (this.outFile) {
         fs.closeSync(this.outFile);
         this.outFile = null;
@@ -244,14 +244,8 @@ class ChromeLauncher {
         fs.closeSync(this.errFile);
         this.errFile = null;
       }
-    } catch (e) {
-      // ignore
-    }
 
-    return new Promise((resolve) => {
-      rimraf(this.TMP_PROFILE_DIR, function() {
-        resolve();
-      });
+      rimraf(this.TMP_PROFILE_DIR, () => resolve());
     });
   }
 };
