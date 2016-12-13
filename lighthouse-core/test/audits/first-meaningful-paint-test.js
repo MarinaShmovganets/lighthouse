@@ -57,7 +57,7 @@ describe('Performance: first-meaningful-paint audit', () => {
     });
 
     it('exposes the navStart timestamp', () => {
-      assert.equal(fmpResult.extendedInfo.value.timings.navStart, 668545382.727);
+      assert.equal(fmpResult.extendedInfo.value.timestamps.navStart, 668545382727);
     });
 
     it('scores the fMP correctly', () => {
@@ -70,7 +70,7 @@ describe('Performance: first-meaningful-paint audit', () => {
       return FMPAudit.audit(getArtifacts(lateTracingStartedTrace)).then(result => {
         assert.equal(result.displayValue, '529.9ms');
         assert.equal(result.rawValue, 529.9);
-        assert.equal(result.extendedInfo.value.timings.navStart, 29343540.951);
+        assert.equal(result.extendedInfo.value.timestamps.navStart, 29343540951);
         assert.equal(result.extendedInfo.value.timings.fCP, 80.054);
         assert.ok(!result.debugString);
       }).catch(_ => {
@@ -83,7 +83,7 @@ describe('Performance: first-meaningful-paint audit', () => {
       return FMPAudit.audit(getArtifacts(badNavStartTrace)).then(result => {
         assert.equal(result.displayValue, '632.4ms');
         assert.equal(result.rawValue, 632.4);
-        assert.equal(result.extendedInfo.value.timings.navStart, 8885424.467);
+        assert.equal(result.extendedInfo.value.timestamps.navStart, 8885424467);
         assert.equal(result.extendedInfo.value.timings.fCP, 632.419);
         assert.ok(!result.debugString);
       }).catch(_ => {

@@ -78,10 +78,19 @@ class FirstMeaningfulPaint extends Audit {
     const firstMeaningfulPaint = (evts.firstMeaningfulPaint.ts - evts.navigationStart.ts) / 1000;
     const firstContentfulPaint = (evts.firstContentfulPaint.ts - evts.navigationStart.ts) / 1000;
 
-    const timings = {};
-    timings.navStart = evts.navigationStart.ts / 1000;
-    timings.fMP = firstMeaningfulPaint;
-    timings.fCP = firstContentfulPaint;
+    // Expose the raw, unchanged monotonic timestamps from the trace, along with timing durations
+    const extendedInfo = {
+      timestamps: {
+        navStart: evts.navigationStart.ts,
+        fCP: evts.firstContentfulPaint.ts,
+        fMP: evts.firstMeaningfulPaint.ts
+      },
+      timings: {
+        navStart: 0,
+        fCP: firstContentfulPaint,
+        fMP: firstMeaningfulPaint
+      }
+    };
 
     // Use the CDF of a log-normal distribution for scoring.
     //   < 1100ms: score≈100
@@ -99,7 +108,7 @@ class FirstMeaningfulPaint extends Audit {
       duration: `${firstMeaningfulPaint.toFixed(1)}`,
       score: Math.round(score),
       rawValue: firstMeaningfulPaint.toFixed(1),
-      extendedInfo: {timings}
+      extendedInfo
     };
   }
 
