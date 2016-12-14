@@ -87,8 +87,8 @@ class FirstMeaningfulPaint extends Audit {
       },
       timings: {
         navStart: 0,
-        fCP: firstContentfulPaint,
-        fMP: firstMeaningfulPaint
+        fCP: parseFloat(firstContentfulPaint.toFixed(3)),
+        fMP: parseFloat(firstMeaningfulPaint.toFixed(3))
       }
     };
 
@@ -107,7 +107,7 @@ class FirstMeaningfulPaint extends Audit {
     return {
       duration: `${firstMeaningfulPaint.toFixed(1)}`,
       score: Math.round(score),
-      rawValue: firstMeaningfulPaint.toFixed(1),
+      rawValue: parseFloat(firstMeaningfulPaint.toFixed(1)),
       extendedInfo
     };
   }

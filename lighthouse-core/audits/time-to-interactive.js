@@ -117,7 +117,7 @@ class TTIMetric extends Audit {
         // Get our expected latency for the time window
         const latencies = TracingProcessor.getRiskToResponsiveness(
           model, trace, startTime, endTime, percentiles);
-        const estLatency = latencies[0].time.toFixed(2);
+        const estLatency = latencies[0].time;
         foundLatencies.push({
           estLatency: estLatency,
           startTime: startTime.toFixed(1)
@@ -126,7 +126,8 @@ class TTIMetric extends Audit {
         // Grab this latency and try the threshold again
         currentLatency = estLatency;
       }
-      const timeToInteractive = parseFloat(startTime.toFixed(1));
+      // The start of our window is our TTI
+      const timeToInteractive = startTime;
 
       // Use the CDF of a log-normal distribution for scoring.
       //   < 1200ms: score≈100
@@ -143,22 +144,22 @@ class TTIMetric extends Audit {
 
       const extendedInfo = {
         timings: {
-          fMP: fmpTiming.toFixed(1),
-          visuallyReady: visuallyReadyTiming.toFixed(1),
-          mainThreadAvail: startTime.toFixed(1)
+          fMP: parseFloat(fmpTiming.toFixed(3)),
+          visuallyReady: parseFloat(visuallyReadyTiming.toFixed(3)),
+          timeToInteractive: parseFloat(startTime.toFixed(3))
         },
         timestamps: {
           fMP: fMPtsInMS * 1000,
           visuallyReady: (visuallyReadyTiming + navStartTsInMS) * 1000,
-          mainThreadAvail: (timeToInteractive + navStartTsInMS) * 1000
+          timeToInteractive: (timeToInteractive + navStartTsInMS) * 1000
         },
-        expectedLatencyAtTTI: currentLatency,
+        expectedLatencyAtTTI: parseFloat(currentLatency.toFixed(3)),
         foundLatencies
       };
 
       return TTIMetric.generateAuditResult({
         score,
-        rawValue: timeToInteractive,
+        rawValue: parseFloat(timeToInteractive.toFixed(1)),
         displayValue: `${timeToInteractive}ms`,
         optimalValue: this.meta.optimalValue,
         debugString: speedline.debugString,
