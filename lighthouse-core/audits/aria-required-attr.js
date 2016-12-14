@@ -17,7 +17,12 @@
 
 'use strict';
 
+/**
+ * @fileoverview Ensures elements with ARIA roles have all required ARIA attributes
+ */
+
 const Audit = require('./audit');
+const A11yHelpers = require('../lib/a11y-helpers');
 const Formatter = require('../formatters/formatter');
 
 class ARIARequiredAttr extends Audit {
@@ -28,7 +33,7 @@ class ARIARequiredAttr extends Audit {
     return {
       category: 'Accessibility',
       name: 'aria-required-attr',
-      description: 'Elements with ARIA roles have all required aria-* attributes',
+      description: 'Elements with ARIA roles have the required aria-* attributes',
       requiredArtifacts: ['Accessibility']
     };
   }
@@ -43,21 +48,12 @@ class ARIARequiredAttr extends Audit {
 
     return ARIARequiredAttr.generateAuditResult({
       rawValue: typeof rule === 'undefined',
-      debugString: this.createDebugString(rule),
+      debugString: A11yHelpers.createDebugString(rule),
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.ACCESSIBILITY,
         value: rule
       }
     });
-  }
-
-  static createDebugString(rule) {
-    if (typeof rule === 'undefined') {
-      return '';
-    }
-
-    const elementsStr = rule.nodes.length === 1 ? 'element' : 'elements';
-    return `${rule.help} (Failed on ${rule.nodes.length} ${elementsStr})`;
   }
 }
 

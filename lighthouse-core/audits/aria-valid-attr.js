@@ -17,7 +17,12 @@
 
 'use strict';
 
+/**
+ * @fileoverview Ensures aria-* attributes are valid and not misspelled or non-existent.
+ */
+
 const Audit = require('./audit');
+const A11yHelpers = require('../lib/a11y-helpers');
 const Formatter = require('../formatters/formatter');
 
 class ARIAValidAttr extends Audit {
@@ -28,7 +33,7 @@ class ARIAValidAttr extends Audit {
     return {
       category: 'Accessibility',
       name: 'aria-valid-attr',
-      description: 'Element aria-* attributes are valid ARIA attributes',
+      description: 'Element aria-* attributes are valid and not misspelled or non-existent.',
       requiredArtifacts: ['Accessibility']
     };
   }
@@ -43,21 +48,12 @@ class ARIAValidAttr extends Audit {
 
     return ARIAValidAttr.generateAuditResult({
       rawValue: typeof rule === 'undefined',
-      debugString: this.createDebugString(rule),
+      debugString: A11yHelpers.createDebugString(rule),
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.ACCESSIBILITY,
         value: rule
       }
     });
-  }
-
-  static createDebugString(rule) {
-    if (typeof rule === 'undefined') {
-      return '';
-    }
-
-    const elementsStr = rule.nodes.length === 1 ? 'element' : 'elements';
-    return `${rule.help} (Failed on ${rule.nodes.length} ${elementsStr})`;
   }
 }
 

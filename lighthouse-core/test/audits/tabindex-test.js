@@ -19,23 +19,9 @@
 const Audit = require('../../audits/tabindex.js');
 const assert = require('assert');
 
-/* global describe, it*/
+/* eslint-env mocha */
 
 describe('Accessibility: tabindex audit', () => {
-  it('handles empty rules', () => {
-    const output = Audit.createDebugString();
-    assert.ok(typeof output === 'string');
-  });
-
-  it('creates debug strings', () => {
-    const emptyAudit = Audit.createDebugString({
-      nodes: [],
-      help: 'http://example.com/'
-    });
-
-    assert.equal(emptyAudit, 'http://example.com/ (Failed on 0 elements)');
-  });
-
   it('generates an audit output', () => {
     const artifacts = {
       Accessibility: {

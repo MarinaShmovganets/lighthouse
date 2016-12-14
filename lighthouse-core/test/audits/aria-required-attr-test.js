@@ -19,23 +19,9 @@
 const Audit = require('../../audits/aria-required-attr.js');
 const assert = require('assert');
 
-/* global describe, it*/
+/* eslint-env mocha */
 
 describe('Accessibility: aria-required-attr audit', () => {
-  it('handles empty rules', () => {
-    const output = Audit.createDebugString();
-    assert.ok(typeof output === 'string');
-  });
-
-  it('creates debug strings', () => {
-    const emptyAudit = Audit.createDebugString({
-      nodes: [],
-      help: 'http://example.com/'
-    });
-
-    assert.equal(emptyAudit, 'http://example.com/ (Failed on 0 elements)');
-  });
-
   it('generates an audit output', () => {
     const artifacts = {
       Accessibility: {
@@ -79,6 +65,6 @@ describe('Accessibility: aria-required-attr audit', () => {
 
     const output = Audit.audit(artifacts);
     assert.equal(output.description,
-        'Elements with ARIA roles have all required aria-* attributes');
+        'Elements with ARIA roles have the required aria-* attributes');
   });
 });
