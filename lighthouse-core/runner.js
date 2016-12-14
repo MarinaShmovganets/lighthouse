@@ -90,21 +90,6 @@ class Runner {
         return artifacts;
       });
 
-      // Ignoring these two flags for coverage as this functionality is not exposed by the module.
-      /* istanbul ignore next */
-      if (opts.flags.saveArtifacts) {
-        run = run.then(artifacts => {
-          opts.flags.saveArtifacts && assetSaver.saveArtifacts(artifacts);
-          return artifacts;
-        });
-      }
-      if (opts.flags.saveAssets) {
-        run = run.then(artifacts => {
-          return assetSaver.saveAssets(opts, artifacts)
-            .then(_ => artifacts);
-        });
-      }
-
       // Run each audit sequentially, the auditResults array has all our fine work
       const auditResults = [];
       run = run.then(artifacts => config.audits.reduce((chain, audit) => {

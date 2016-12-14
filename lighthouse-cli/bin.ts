@@ -254,7 +254,7 @@ function handleError(err: LighthouseError) {
 }
 
 function runLighthouse(url: string,
-                       flags: {port: number, skipAutolaunch: boolean, selectChrome: boolean, output: any, outputPath: string, view: boolean},
+                       flags: {port: number, skipAutolaunch: boolean, selectChrome: boolean, output: any, outputPath: string, view: boolean, saveArtifacts: boolean, saveAssets: boolean},
                        config: Object): Promise<undefined> {
 
   let chromeLauncher: ChromeLauncher;
@@ -262,6 +262,19 @@ function runLighthouse(url: string,
     .then(() => getDebuggableChrome(flags))
     .then(chrome => chromeLauncher = chrome)
     .then(() => lighthouse(url, flags, config))
+    .then((results: Results) => {
+      if (flags.saveArtifacts) {
+        assetSaver.saveArtifacts(results.artifacts);
+      }
+      if (flags.saveAssets) {
+        return assetSaver.saveAssets({url: results.url}, results.artifacts).then(() => results);
+      }
+      return results;
+    })
+    .then((results: Results) => {
+      results.artifacts = {};
+      return results;
+     })
     .then((results: Results) => Printer.write(results, flags.output, flags.outputPath))
     .then((results: Results) => {
       if (flags.output === Printer.OutputMode[Printer.OutputMode.pretty]) {
