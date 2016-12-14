@@ -245,19 +245,9 @@ function lighthouseRun(addresses: Array<string>, config: Object, flags: {view: b
       if (flags.view) {
         performanceXServer.startServer(0).then((port: number) => {
           const filePath = `${performanceXServer.FOLDERS.REPORTS}/${filename}`;
-          const htmlExist = outputMode === Printer.OutputMode[Printer.OutputMode.pretty]
-            || (outputPath !== 'stdout' && outputMode === Printer.OutputMode[Printer.OutputMode.html]);
-
-          // Only generate HTML file when it is not already generated
-          // If the HTML file is already generated, create a symlink to it
-          if (htmlExist) {
-            const targetPath = outputMode === Printer.OutputMode[Printer.OutputMode.pretty] ? filename : outputPath;
-            fs.symlinkSync(path.resolve(targetPath), filePath);
-          } else {
-            Printer.write(results, 'html', filePath);
-          }
-
-          opn(`http://localhost:${port}/reports/${filename}`);
+          Printer.write(results, 'html', filePath).then(_ => {
+            opn(`http://localhost:${port}/reports/${filename}`);
+          });
         });
       }
 

@@ -14,12 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 'use strict';
+/**
+ * @fileoverview Server script for Project Performance Experiment.
+ * Start Server by calling startServer(port).
+ *
+ * Functionalities:
+ *   Host report pages.
+ *     Report pages should be stored in ./src/reports
+ *     Report pages can be accessed via URL http://localhost:[PORT]/reports/[REPORT_FILENAME]
+ */
 
 const http = require('http');
 const fs = require('fs');
 const parse = require('url').parse;
 const path = require('path');
+const log = require('../../lighthouse-core/lib/log');
 
 const ROOT = `${__dirname}/src`;
 const FOLDERS = {
@@ -27,7 +38,7 @@ const FOLDERS = {
 };
 
 const server = http.createServer(requestHandler);
-server.on('error', e => console.error(e.code, e));
+server.on('error', err => log.error('PerformanceXServer', err.code, err));
 
 function requestHandler(request, response) {
   const pathname = parse(request.url).pathname;
@@ -42,7 +53,7 @@ function requestHandler(request, response) {
         sendResponse(404, `404 - File not found. ${pathname}`);
         return;
       }
-      console.error(`Unable to read local file ${filePath}:`, err);
+      log.error('PerformanceXServer', `Unable to read local file ${filePath}:`, err);
       sendResponse(500, '500 - Internal Server Error');
       return;
     }
@@ -71,24 +82,20 @@ function prepareServer() {
     if (!FOLDERS.hasOwnProperty(folder)) {
       continue;
     }
-    const folderPath = FOLDERS[folder];
 
     // Create dirs synchronously. Dirs need to be created before server start.
+    const folderPath = FOLDERS[folder];
     if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath);
-      continue;
     }
-
-    // Remove broken symlinks
-    fs.readdir(folderPath, (err, filenames) => {
-      for (const filename of filenames) {
-        const filePath = `${folderPath}/${filename}`;
-        !fs.existsSync(filePath) && fs.unlinkSync(filePath);
-      }
-    });
   }
 }
 
+/**
+ * Start the server if it's not already started.
+ * @param {number} port
+ * @return {!Promise<number>} Promise that resolves to port the server is listening to
+ */
 let portPromise;
 function startServer(port) {
   if (!portPromise) {
