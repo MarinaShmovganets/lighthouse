@@ -32,6 +32,7 @@ interface Results {
   aggregations: Array<Aggregation>;
   audits: Object;
   lighthouseVersion: string;
+  artifacts: Object;
 };
 
 export {

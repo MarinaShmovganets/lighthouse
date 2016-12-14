@@ -111,10 +111,14 @@ class Runner {
         return chain.then(_ => {
           return Runner._runAudit(audit, artifacts);
         }).then(ret => auditResults.push(ret));
-      }, Promise.resolve()).then(_ => auditResults));
+      }, Promise.resolve()).then(_ => {
+        return {artifacts, auditResults};
+      }));
     } else if (config.auditResults) {
       // If there are existing audit results, surface those here.
-      run = run.then(_ => config.auditResults);
+      run = run.then(_ => {
+        return {auditResults: config.auditResults};
+      });
     } else {
       const err = Error(
           'The config must provide passes and audits, artifacts and audits, or auditResults');
@@ -123,7 +127,9 @@ class Runner {
 
     // Format and aggregate results before returning.
     run = run
-      .then(auditResults => {
+      .then(auditData => {
+        const artifacts = auditData.artifacts || {};
+        const auditResults = auditData.auditResults;
         const formattedAudits = auditResults.reduce((formatted, audit) => {
           formatted[audit.name] = audit;
           return formatted;
@@ -141,7 +147,8 @@ class Runner {
           initialUrl: opts.initialUrl,
           url: opts.url,
           audits: formattedAudits,
-          aggregations
+          aggregations,
+          artifacts
         };
       });
 

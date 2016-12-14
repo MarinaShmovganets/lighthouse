@@ -64,6 +64,7 @@ const cliFlags = yargs
   .group([
     'save-assets',
     'save-artifacts',
+    'exclude-artifacts',
     'list-all-audits',
     'list-trace-categories',
     'config-path',
@@ -76,6 +77,7 @@ const cliFlags = yargs
     'disable-network-throttling': 'Disable network throttling',
     'save-assets': 'Save the trace contents & screenshots to disk',
     'save-artifacts': 'Save all gathered artifacts to disk',
+    'exclude-artifacts': 'Exclude artifacts in lighthouse result.',
     'list-all-audits': 'Prints a list of all available audits and exits',
     'list-trace-categories': 'Prints a list of all required trace categories and exits',
     'config-path': 'The path to the config JSON.',
@@ -104,6 +106,7 @@ Example: --output-path=./lighthouse-results.html`,
     'disable-network-throttling',
     'save-assets',
     'save-artifacts',
+    'exclude-artifacts',
     'list-all-audits',
     'list-trace-categories',
     'perf',
@@ -118,6 +121,7 @@ Example: --output-path=./lighthouse-results.html`,
 
   // default values
   .default('disable-cpu-throttling', true)
+  .default('exclude-artifacts', true)
   .default('output', Printer.GetValidOutputOptions()[Printer.OutputMode.pretty])
   .default('output-path', 'stdout')
   .default('port', 9222)
