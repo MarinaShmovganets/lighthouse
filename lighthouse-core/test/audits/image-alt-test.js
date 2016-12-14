@@ -48,7 +48,8 @@ describe('Accessibility: image-alt audit', () => {
     };
 
     const output = Audit.audit(artifacts);
-    assert.equal(output.score, false);
+    assert.equal(output.rawValue, false);
+    assert.equal(output.displayValue, '');
     assert.equal(output.debugString, 'http://example.com/ (Failed on 0 elements)');
   });
 
@@ -64,7 +65,19 @@ describe('Accessibility: image-alt audit', () => {
     };
 
     const output = Audit.audit(artifacts);
-    assert.equal(output.score, false);
+    assert.equal(output.rawValue, false);
+    assert.equal(output.displayValue, '');
     assert.equal(output.debugString, 'http://example.com/ (Failed on 1 element)');
+  });
+
+  it('doesn\'t throw an error when violations is undefined', () => {
+    const artifacts = {
+      Accessibility: {
+        violations: undefined
+      }
+    };
+
+    const output = Audit.audit(artifacts);
+    assert.equal(output.description, 'Every image element has an alt attribute');
   });
 });

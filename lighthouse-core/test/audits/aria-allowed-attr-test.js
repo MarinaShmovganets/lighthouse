@@ -69,4 +69,15 @@ describe('Accessibility: aria-allowed-attr audit', () => {
     assert.equal(output.displayValue, '');
     assert.equal(output.debugString, 'http://example.com/ (Failed on 1 element)');
   });
+
+  it('doesn\'t throw an error when violations is undefined', () => {
+    const artifacts = {
+      Accessibility: {
+        violations: undefined
+      }
+    };
+
+    const output = Audit.audit(artifacts);
+    assert.equal(output.description, 'Element aria-* roles are valid');
+  });
 });

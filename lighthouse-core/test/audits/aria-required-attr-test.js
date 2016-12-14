@@ -16,12 +16,12 @@
  */
 'use strict';
 
-const Audit = require('../../audits/color-contrast.js');
+const Audit = require('../../audits/aria-required-attr.js');
 const assert = require('assert');
 
 /* global describe, it*/
 
-describe('Accessibility: color-contrast audit', () => {
+describe('Accessibility: aria-required-attr audit', () => {
   it('handles empty rules', () => {
     const output = Audit.createDebugString();
     assert.ok(typeof output === 'string');
@@ -40,7 +40,7 @@ describe('Accessibility: color-contrast audit', () => {
     const artifacts = {
       Accessibility: {
         violations: [{
-          id: 'color-contrast',
+          id: 'aria-required-attr',
           nodes: [],
           help: 'http://example.com/'
         }]
@@ -57,7 +57,7 @@ describe('Accessibility: color-contrast audit', () => {
     const artifacts = {
       Accessibility: {
         violations: [{
-          id: 'color-contrast',
+          id: 'aria-required-attr',
           nodes: [{}],
           help: 'http://example.com/'
         }]
@@ -79,6 +79,6 @@ describe('Accessibility: color-contrast audit', () => {
 
     const output = Audit.audit(artifacts);
     assert.equal(output.description,
-        'Background and foreground colors have a sufficient contrast ratio');
+        'Elements with ARIA roles have all required aria-* attributes');
   });
 });
