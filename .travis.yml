@@ -31,5 +31,8 @@ script:
   - cd lighthouse-extension
   - gulp build -- $__node_harmony
   - cd ..
+  - cd lighthouse-viewer
+  - gulp
+  - cd ..
 after_success:
   - npm run coveralls
