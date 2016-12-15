@@ -92,18 +92,26 @@ class Runner {
 
       // Run each audit sequentially, the auditResults array has all our fine work
       const auditResults = [];
-      run = run.then(artifacts => config.audits.reduce((chain, audit) => {
-        return chain.then(_ => {
-          return Runner._runAudit(audit, artifacts);
-        }).then(ret => auditResults.push(ret));
-      }, Promise.resolve()).then(_ => {
+      for (const audit of config.audits) {
+        run = run.then(artifacts => {
+          return Runner._runAudit(audit, artifacts)
+            .then(ret => auditResults.push(ret))
+            .then(_ => artifacts);
+        });
+      }
+      run = run.then(artifacts => {
         return {artifacts, auditResults};
-      }));
+      });
+
     } else if (config.auditResults) {
       // If there are existing audit results, surface those here.
       run = run.then(_ => {
-        return {artifacts: config.artifacts, auditResults: config.auditResults};
+        return {
+          artifacts: config.artifacts || {},
+          auditResults: config.auditResults
+        };
       });
+
     } else {
       const err = Error(
           'The config must provide passes and audits, artifacts and audits, or auditResults');
@@ -112,10 +120,8 @@ class Runner {
 
     // Format and aggregate results before returning.
     run = run
-      .then(auditData => {
-        const artifacts = auditData.artifacts;
-        const auditResults = auditData.auditResults;
-        const formattedAudits = auditResults.reduce((formatted, audit) => {
+      .then(runResults => {
+        const formattedAudits = runResults.auditResults.reduce((formatted, audit) => {
           formatted[audit.name] = audit;
           return formatted;
         }, {});
@@ -123,7 +129,7 @@ class Runner {
         // Only run aggregations if needed.
         let aggregations = [];
         if (config.aggregations) {
-          aggregations = config.aggregations.map(a => Aggregate.aggregate(a, auditResults));
+          aggregations = config.aggregations.map(a => Aggregate.aggregate(a, runResults.auditResults));
         }
 
         return {
@@ -132,8 +138,8 @@ class Runner {
           initialUrl: opts.initialUrl,
           url: opts.url,
           audits: formattedAudits,
-          aggregations,
-          artifacts
+          artifacts: runResults.artifacts,
+          aggregations
         };
       });
 
