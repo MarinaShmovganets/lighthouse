@@ -103,9 +103,14 @@ class Runner {
       });
     } else if (config.auditResults) {
       // If there are existing audit results, surface those here.
+      // Instantiate and return artifacts for consistency.
+      // Although we can move this upwards to reduce code repetition, this process might be quite
+      // costly and does not need to happen most of the time.
+      const artifacts = Object.assign(GatherRunner.instantiateComputedArtifacts(),
+                                      config.artifacts || {});
       run = run.then(_ => {
         return {
-          artifacts: config.artifacts || {},
+          artifacts,
           auditResults: config.auditResults
         };
       });
@@ -129,7 +134,7 @@ class Runner {
           aggregations = config.aggregations.map(
             a => Aggregate.aggregate(a, runResults.auditResults));
         }
-
+        console.log(formattedAudits);
         return {
           lighthouseVersion: require('../package').version,
           generatedTime: (new Date()).toJSON(),

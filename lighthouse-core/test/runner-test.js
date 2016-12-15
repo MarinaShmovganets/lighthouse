@@ -295,4 +295,56 @@ describe('Runner', () => {
       assert.strictEqual(AuditClass.meta.name, auditExpectedName);
     });
   });
+
+  it('returns artifacts when audits are given', () => {
+    const url = 'https://example.com';
+    const config = new Config({
+      audits: [
+        'is-on-https'
+      ],
+
+      artifacts: {
+        HTTPS: {
+          value: true
+        }
+      }
+    });
+
+    return Runner.run({}, {url, config}).then(results => {
+      assert.ok(results.artifacts);
+    });
+  });
+
+  it('returns artifacts when auditResult is given', () => {
+    const url = 'https://example.com';
+    const config = new Config({
+      auditResults: [{
+        name: 'is-on-https',
+        rawValue: true,
+        score: true,
+        displayValue: ''
+      }],
+
+      aggregations: [{
+        name: 'Aggregation',
+        description: '',
+        scored: true,
+        categorizable: true,
+        items: [{
+          name: 'name',
+          description: 'description',
+          audits: {
+            'is-on-https': {
+              expectedValue: true,
+              weight: 1
+            }
+          }
+        }]
+      }]
+    });
+
+    return Runner.run(null, {url, config, driverMock}).then(results => {
+      assert.ok(results.artifacts);
+    });
+  });
 });
