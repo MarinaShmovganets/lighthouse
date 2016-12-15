@@ -21,7 +21,6 @@ const Config = require('../config/config');
 const Audit = require('../audits/audit');
 const assert = require('assert');
 const path = require('path');
-const ComputedArtifacts = require('./gather/computed/computed-artifacts');
 
 /* eslint-env mocha */
 
