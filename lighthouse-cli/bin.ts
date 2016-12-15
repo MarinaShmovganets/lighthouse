@@ -287,16 +287,19 @@ function run() {
       return Promise
         .race([launchChromeAndRun(urls, config, cliFlags), isSigint])
         .catch(maybeSigint => {
-          if (maybeSigint === _SIGINT) {
-            return cleanup
-              .doCleanup()
-              .catch(err => {
-                console.error(err);
-                console.error(err.stack);
-              }).then(() => process.exit(_ERROR_EXIT_CODE));
+        if (maybeSigint === _SIGINT || maybeSigint instanceof Error) {
+          if (maybeSigint instanceof Error) {
+            log.error('Lighthouse', maybeSigint.message);
           }
-          return handleError(maybeSigint);
-        });
+          return cleanup
+            .doCleanup()
+            .catch(err => {
+              console.error(err);
+              console.error(err.stack);
+            }).then(() => process.exit(_ERROR_EXIT_CODE));
+        }
+        return handleError(maybeSigint);
+      });
     }
   })
 }
