@@ -21,6 +21,7 @@ const Config = require('../config/config');
 const Audit = require('../audits/audit');
 const assert = require('assert');
 const path = require('path');
+const ComputedArtifacts = require('./gather/computed/computed-artifacts');
 
 /* eslint-env mocha */
 
@@ -311,7 +312,7 @@ describe('Runner', () => {
     });
 
     return Runner.run({}, {url, config}).then(results => {
-      assert.ok(results.artifacts);
+      assert.ok(results.artifacts !== undefined);
     });
   });
 
@@ -344,7 +345,7 @@ describe('Runner', () => {
     });
 
     return Runner.run(null, {url, config, driverMock}).then(results => {
-      assert.ok(results.artifacts);
+      assert.ok(results.artifacts !== undefined);
     });
   });
 });
