@@ -18,7 +18,7 @@
 'use strict';
 
 /**
- * @fileoverview Ensures every form element has a label
+ * @fileoverview Ensures every form element has a label.
  */
 
 const Audit = require('./audit');

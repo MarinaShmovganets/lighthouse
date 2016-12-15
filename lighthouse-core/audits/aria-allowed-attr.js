@@ -18,7 +18,7 @@
 'use strict';
 
 /**
- * @fileoverview Ensures ARIA attributes are allowed for an element's role
+ * @fileoverview Ensures ARIA attributes are allowed for an element's role.
  */
 
 const Audit = require('./audit');

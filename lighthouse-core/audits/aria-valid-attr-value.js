@@ -18,7 +18,7 @@
 'use strict';
 
 /**
- * @fileoverview Ensures all ARIA attributes have valid values
+ * @fileoverview Ensures all ARIA attributes have valid values.
  */
 
 const Audit = require('./audit');

@@ -18,7 +18,7 @@
 'use strict';
 
 /**
- * @fileoverview Ensures <img> elements have alternate text or a role of none or presentation
+ * @fileoverview Ensures <img> elements have alternate text or a role of none or presentation.
  */
 
 const Audit = require('./audit');

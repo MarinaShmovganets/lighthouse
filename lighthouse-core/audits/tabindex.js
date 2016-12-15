@@ -18,7 +18,7 @@
 'use strict';
 
 /**
- * @fileoverview Ensures tabindex attribute values are not greater than 0
+ * @fileoverview Ensures tabindex attribute values are not greater than 0.
  */
 
 const Audit = require('./audit');

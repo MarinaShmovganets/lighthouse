@@ -20,9 +20,9 @@
  * Creates an output string to tell the user why their audit failed
  *
  * @param {{nodes: !Array, help: string}} rule An aXe test rule with a list of failing nodes
- *    and help text on how to fix the violation
+ *    and help text on how to fix the violation.
  * @return {string} A debug string telling the user why their test failed and which nodes
- *    caused the failure
+ *    caused the failure.
  */
 function createDebugString(rule) {
   if (typeof rule === 'undefined') {

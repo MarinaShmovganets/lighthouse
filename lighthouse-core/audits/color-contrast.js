@@ -19,7 +19,7 @@
 
 /**
  * @fileoverview Ensures the contrast between foreground and background colors meets
- * WCAG 2 AA contrast ratio thresholds
+ * WCAG 2 AA contrast ratio thresholds.
  */
 
 const Audit = require('./audit');
