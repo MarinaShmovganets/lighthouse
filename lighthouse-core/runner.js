@@ -101,7 +101,6 @@ class Runner {
       run = run.then(artifacts => {
         return {artifacts, auditResults};
       });
-
     } else if (config.auditResults) {
       // If there are existing audit results, surface those here.
       run = run.then(_ => {
@@ -110,7 +109,6 @@ class Runner {
           auditResults: config.auditResults
         };
       });
-
     } else {
       const err = Error(
           'The config must provide passes and audits, artifacts and audits, or auditResults');
@@ -128,7 +126,8 @@ class Runner {
         // Only run aggregations if needed.
         let aggregations = [];
         if (config.aggregations) {
-          aggregations = config.aggregations.map(a => Aggregate.aggregate(a, runResults.auditResults));
+          aggregations = config.aggregations.map(
+            a => Aggregate.aggregate(a, runResults.auditResults));
         }
 
         return {
