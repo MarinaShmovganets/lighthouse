@@ -102,7 +102,7 @@ class Runner {
     } else if (config.auditResults) {
       // If there are existing audit results, surface those here.
       run = run.then(_ => {
-        return {auditResults: config.auditResults};
+        return {artifacts: config.artifacts, auditResults: config.auditResults};
       });
     } else {
       const err = Error(
@@ -113,7 +113,7 @@ class Runner {
     // Format and aggregate results before returning.
     run = run
       .then(auditData => {
-        const artifacts = auditData.artifacts || {};
+        const artifacts = auditData.artifacts;
         const auditResults = auditData.auditResults;
         const formattedAudits = auditResults.reduce((formatted, audit) => {
           formatted[audit.name] = audit;

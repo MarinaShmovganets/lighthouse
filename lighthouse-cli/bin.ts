@@ -190,6 +190,7 @@ function initPort(flags: {port: number}): Promise<undefined> {
   })
 }
 
+<<<<<<< 7007880ccd9ec6cf4479237186b4fd161404efde
 /**
  * Attempts to connect to an instance of Chrome with an open remote-debugging
  * port. If none is found and the `skipAutolaunch` flag is not true, launches
