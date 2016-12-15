@@ -134,7 +134,7 @@ class Runner {
           aggregations = config.aggregations.map(
             a => Aggregate.aggregate(a, runResults.auditResults));
         }
-        console.log(formattedAudits);
+
         return {
           lighthouseVersion: require('../package').version,
           generatedTime: (new Date()).toJSON(),
