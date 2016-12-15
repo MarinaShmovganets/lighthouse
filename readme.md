@@ -4,7 +4,7 @@
 
 HTML report:
 
-![image](https://cloud.githubusercontent.com/assets/238208/21206620/2711164e-c218-11e6-8fe8-85c7d2ba362a.png)
+![image](https://cloud.githubusercontent.com/assets/238208/21210165/b3c368c0-c22d-11e6-91fb-aa24959e2637.png)
 
 Default CLI output:
 
