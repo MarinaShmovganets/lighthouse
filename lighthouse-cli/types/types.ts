@@ -33,7 +33,7 @@ interface Results {
   audits: Object;
   lighthouseVersion: string;
   artifacts: Object;
-};
+}
 
 export {
   Results,

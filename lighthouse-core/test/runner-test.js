@@ -21,6 +21,7 @@ const Config = require('../config/config');
 const Audit = require('../audits/audit');
 const assert = require('assert');
 const path = require('path');
+const computedArtifacts = require('../gather/gather-runner').instantiateComputedArtifacts();
 
 /* eslint-env mocha */
 
@@ -296,7 +297,7 @@ describe('Runner', () => {
     });
   });
 
-  it('returns artifacts when audits are given', () => {
+  it('results include artifacts when given artifacts and audits', () => {
     const url = 'https://example.com';
     const config = new Config({
       audits: [
@@ -311,11 +312,50 @@ describe('Runner', () => {
     });
 
     return Runner.run({}, {url, config}).then(results => {
-      assert.ok(results.artifacts !== undefined);
+      if (!results.artifacts instanceof Object) {
+        assert.ok(false);
+        return;
+      }
+
+      assert.strictEqual(results.artifacts.HTTPS.value, true);
+
+      for (const method in computedArtifacts) {
+        if (!computedArtifacts.hasOwnProperty(method)) {
+          continue;
+        }
+        assert.ok(results.artifacts.hasOwnProperty(method));
+      }
     });
   });
 
-  it('returns artifacts when auditResult is given', () => {
+  it('results include artifacts when given passes and audits', () => {
+    const url = 'https://example.com';
+    const config = new Config({
+      passes: [{
+        gatherers: ['https']
+      }],
+
+      audits: [
+        'is-on-https'
+      ]
+    });
+
+    return Runner.run(null, {url, config, driverMock}).then(results => {
+      if (!results.artifacts instanceof Object) {
+        assert.ok(false);
+        return;
+      }
+
+      for (const method in computedArtifacts) {
+        if (!computedArtifacts.hasOwnProperty(method)) {
+          continue;
+        }
+        assert.ok(results.artifacts.hasOwnProperty(method));
+      }
+    });
+  });
+
+  it('results include artifacts when given auditResults', () => {
     const url = 'https://example.com';
     const config = new Config({
       auditResults: [{
@@ -325,26 +365,27 @@ describe('Runner', () => {
         displayValue: ''
       }],
 
-      aggregations: [{
-        name: 'Aggregation',
-        description: '',
-        scored: true,
-        categorizable: true,
-        items: [{
-          name: 'name',
-          description: 'description',
-          audits: {
-            'is-on-https': {
-              expectedValue: true,
-              weight: 1
-            }
-          }
-        }]
-      }]
+      artifacts: {
+        HTTPS: {
+          value: true
+        }
+      }
     });
 
     return Runner.run(null, {url, config, driverMock}).then(results => {
-      assert.ok(results.artifacts !== undefined);
+      if (!results.artifacts instanceof Object) {
+        assert.ok(false);
+        return;
+      }
+
+      assert.strictEqual(results.artifacts.HTTPS.value, true);
+
+      for (const method in computedArtifacts) {
+        if (!computedArtifacts.hasOwnProperty(method)) {
+          continue;
+        }
+        assert.ok(results.artifacts.hasOwnProperty(method));
+      }
     });
   });
 });
