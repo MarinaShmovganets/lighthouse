@@ -20,6 +20,7 @@
 /**
  * @fileoverview Ensures the contrast between foreground and background colors meets
  * WCAG 2 AA contrast ratio thresholds.
+ * See base class in axe-audit.js for audit() implementation.
  */
 
 const AxeAudit = require('./axe-audit');

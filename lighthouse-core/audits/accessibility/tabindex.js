@@ -19,6 +19,7 @@
 
 /**
  * @fileoverview Ensures tabindex attribute values are not greater than 0.
+ * See base class in axe-audit.js for audit() implementation.
  */
 
 const AxeAudit = require('./axe-audit');

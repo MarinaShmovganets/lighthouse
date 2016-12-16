@@ -19,7 +19,7 @@
 
 /**
  * @fileoverview Base class for all aXe audits. Provides a consistent way to
- * generate audit results using aXe rule names
+ * generate audit results using aXe rule names.
  */
 
 const Audit = require('../audit');
@@ -27,7 +27,8 @@ const Formatter = require('../../formatters/formatter');
 
 class AxeAudit extends Audit {
   /**
-   * @param {!Artifacts} artifacts
+   * @param {!Artifacts} artifacts Accessibility gatherer artifacts. Note that AxeAudit
+   * expects the meta name for the class to match the rule id from aXe.
    * @return {!AuditResult}
    */
   static audit(artifacts) {

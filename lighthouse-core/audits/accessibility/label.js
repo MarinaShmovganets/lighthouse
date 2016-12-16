@@ -19,6 +19,7 @@
 
 /**
  * @fileoverview Ensures every form element has a label.
+ * See base class in axe-audit.js for audit() implementation.
  */
 
 const AxeAudit = require('./axe-audit');

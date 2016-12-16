@@ -19,6 +19,7 @@
 
 /**
  * @fileoverview Ensures aria-* attributes are valid and not misspelled or non-existent.
+ * See base class in axe-audit.js for audit() implementation.
  */
 
 const AxeAudit = require('./axe-audit');

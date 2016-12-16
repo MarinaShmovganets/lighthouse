@@ -19,6 +19,7 @@
 
 /**
  * @fileoverview Ensures elements with ARIA roles have all required ARIA attributes.
+ * See base class in axe-audit.js for audit() implementation.
  */
 
 const AxeAudit = require('./axe-audit');

@@ -19,6 +19,7 @@
 
 /**
  * @fileoverview Ensures <img> elements have alternate text or a role of none or presentation.
+ * See base class in axe-audit.js for audit() implementation.
  */
 
 const AxeAudit = require('./axe-audit');
