@@ -26,7 +26,10 @@ describe('CLI bin', function() {
     const yargs = require('yargs');
 
     const optionGroups = yargs.getGroups();
-    const allOptions = [].concat(...Object.values(optionGroups));
+    const allOptions = [];
+    Object.keys(optionGroups).forEach(key => {
+      allOptions.push(...optionGroups[key]);
+    });
     const optionsWithDescriptions = Object.keys(yargs.getUsageInstance().getDescriptions());
 
     allOptions.forEach(opt => {
