@@ -22,11 +22,9 @@
  * WCAG 2 AA contrast ratio thresholds.
  */
 
-const Audit = require('./audit');
-const A11yHelpers = require('../lib/a11y-helpers');
-const Formatter = require('../formatters/formatter');
+const AxeAudit = require('./axe-audit');
 
-class ColorContrast extends Audit {
+class ColorContrast extends AxeAudit {
   /**
    * @return {!AuditMeta}
    */
@@ -37,24 +35,6 @@ class ColorContrast extends Audit {
       description: 'Background and foreground colors have a sufficient contrast ratio',
       requiredArtifacts: ['Accessibility']
     };
-  }
-
-  /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
-   */
-  static audit(artifacts) {
-    const violations = artifacts.Accessibility.violations || [];
-    const rule = violations.find(result => result.id === 'color-contrast');
-
-    return ColorContrast.generateAuditResult({
-      rawValue: typeof rule === 'undefined',
-      debugString: A11yHelpers.createDebugString(rule),
-      extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.ACCESSIBILITY,
-        value: rule
-      }
-    });
   }
 }
 

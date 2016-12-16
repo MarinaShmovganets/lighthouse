@@ -21,11 +21,9 @@
  * @fileoverview Ensures every form element has a label.
  */
 
-const Audit = require('./audit');
-const A11yHelpers = require('../lib/a11y-helpers');
-const Formatter = require('../formatters/formatter');
+const AxeAudit = require('./axe-audit');
 
-class Label extends Audit {
+class Label extends AxeAudit {
   /**
    * @return {!AuditMeta}
    */
@@ -36,24 +34,6 @@ class Label extends Audit {
       description: 'Every form element has a label',
       requiredArtifacts: ['Accessibility']
     };
-  }
-
-  /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
-   */
-  static audit(artifacts) {
-    const violations = artifacts.Accessibility.violations || [];
-    const rule = violations.find(result => result.id === 'label');
-
-    return Label.generateAuditResult({
-      rawValue: typeof rule === 'undefined',
-      debugString: A11yHelpers.createDebugString(rule),
-      extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.ACCESSIBILITY,
-        value: rule
-      }
-    });
   }
 }
 

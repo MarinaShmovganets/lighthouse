@@ -21,11 +21,9 @@
  * @fileoverview Ensures elements with ARIA roles have all required ARIA attributes.
  */
 
-const Audit = require('./audit');
-const A11yHelpers = require('../lib/a11y-helpers');
-const Formatter = require('../formatters/formatter');
+const AxeAudit = require('./axe-audit');
 
-class ARIARequiredAttr extends Audit {
+class ARIARequiredAttr extends AxeAudit {
   /**
    * @return {!AuditMeta}
    */
@@ -36,24 +34,6 @@ class ARIARequiredAttr extends Audit {
       description: 'Elements with ARIA roles have the required aria-* attributes',
       requiredArtifacts: ['Accessibility']
     };
-  }
-
-  /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
-   */
-  static audit(artifacts) {
-    const violations = artifacts.Accessibility.violations || [];
-    const rule = violations.find(result => result.id === 'aria-required-attr');
-
-    return ARIARequiredAttr.generateAuditResult({
-      rawValue: typeof rule === 'undefined',
-      debugString: A11yHelpers.createDebugString(rule),
-      extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.ACCESSIBILITY,
-        value: rule
-      }
-    });
   }
 }
 

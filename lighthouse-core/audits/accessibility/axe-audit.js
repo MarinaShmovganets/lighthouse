@@ -18,43 +18,44 @@
 'use strict';
 
 /**
- * @fileoverview Ensures ARIA attributes are allowed for an element's role.
+ * @fileoverview Base class for all aXe audits. Provides a consistent way to
+ * generate audit results using aXe rule names
  */
 
-const Audit = require('./audit');
-const A11yHelpers = require('../lib/a11y-helpers');
-const Formatter = require('../formatters/formatter');
+const Audit = require('../audit');
+const Formatter = require('../../formatters/formatter');
 
-class ARIAAllowedAttr extends Audit {
-  /**
-   * @return {!AuditMeta}
-   */
-  static get meta() {
-    return {
-      category: 'Accessibility',
-      name: 'aria-allowed-attr',
-      description: 'Element aria-* roles are valid',
-      requiredArtifacts: ['Accessibility']
-    };
-  }
-
+class AxeAudit extends Audit {
   /**
    * @param {!Artifacts} artifacts
    * @return {!AuditResult}
    */
   static audit(artifacts) {
     const violations = artifacts.Accessibility.violations || [];
-    const rule = violations.find(result => result.id === 'aria-allowed-attr');
+    const rule = violations.find(result => result.id === this.meta.name);
 
-    return ARIAAllowedAttr.generateAuditResult({
+    return this.generateAuditResult({
       rawValue: typeof rule === 'undefined',
-      debugString: A11yHelpers.createDebugString(rule),
+      debugString: this.createDebugString(rule),
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.ACCESSIBILITY,
         value: rule
       }
     });
   }
+
+  /**
+   * @param {!{nodes: Array, help: string}} rule
+   * @return {!string}
+   */
+  static createDebugString(rule) {
+    if (typeof rule === 'undefined') {
+      return '';
+    }
+
+    const elementsStr = rule.nodes.length === 1 ? 'element' : 'elements';
+    return `${rule.help} (Failed on ${rule.nodes.length} ${elementsStr})`;
+  }
 }
 
-module.exports = ARIAAllowedAttr;
+module.exports = AxeAudit;
