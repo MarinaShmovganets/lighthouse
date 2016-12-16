@@ -258,6 +258,8 @@ function runLighthouse(url: string,
   return initPort(flags)
     .then(() => getDebuggableChrome(flags))
     .then(chrome => chromeLauncher = chrome)
+    .then(() => performanceXServer.startServer(0))
+    .then((port: number) => performanceXServerPort = port)
     .then(() => lighthouse(url, flags, config))
     .then((results: Results) => {
       // delte artifacts from result so reports won't include artifacts.
