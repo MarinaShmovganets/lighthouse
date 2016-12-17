@@ -203,6 +203,10 @@ class GatherRunner {
       log.log('status', status);
       return driver.endNetworkCollect();
     }).then(networkRecords => {
+      if (driver.online && networkRecords[0].failed) {
+        log.error('statusEnd', networkRecords[0].localizedFailDescription);
+        return Promise.reject(new Error(networkRecords[0].localizedFailDescription));
+      }
       // Network records only given to gatherers if requested by config.
       config.recordNetwork && (passData.networkRecords = networkRecords);
       log.verbose('statusEnd', status);
