@@ -40,6 +40,5 @@ if (!('URLSearchParams' in window)) {
 // Lazy load polyfills that are needed. If any of the load promises fails,
 // stop and don't create a report.
 Promise.all(loadPolyfillPromises).then(_ => {
-  // eslint-disable-next-line no-new
-  new LighthouseViewerReport();
+  window.lhReport = new LighthouseViewerReport();
 });
