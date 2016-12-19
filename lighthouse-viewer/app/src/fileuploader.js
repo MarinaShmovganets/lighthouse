@@ -17,7 +17,7 @@
 
 'use strict';
 
-const logger = require('./logger');
+const logger = require('../../../lighthouse-core/report/scripts/logger');
 
 /**
  * Manages drag and drop file input for the page.

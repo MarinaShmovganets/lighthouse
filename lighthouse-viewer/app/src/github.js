@@ -19,7 +19,7 @@
 
 const idb = require('idb-keyval');
 const FirebaseAuth = require('./firebase-auth');
-const logger = require('./logger');
+const logger = require('../../../lighthouse-core/report/scripts/logger');
 
 // TODO: We only need getFilenamePrefix from asset-saver. Tree shake!
 const getFilenamePrefix = require('../../../lighthouse-core/lib/asset-saver').getFilenamePrefix;

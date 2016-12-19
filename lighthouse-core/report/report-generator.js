@@ -173,7 +173,7 @@ class ReportGenerator {
    * @return {string}
    */
   getReportJS() {
-    return fs.readFileSync(path.join(__dirname, './scripts/lighthouse-report.js'), 'utf8');
+    return fs.readFileSync(path.join(__dirname, './dist/scripts/report.js'), 'utf8');
   }
 
   /**

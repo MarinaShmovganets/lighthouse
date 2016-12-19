@@ -3,6 +3,7 @@ node_modules
 npm-debug.log
 .vscode
 
+lighthouse-core/**/dist/*
 lighthouse-extension/dist
 lighthouse-core/third_party/src
 **/pages/scripts/lighthouse-report.js

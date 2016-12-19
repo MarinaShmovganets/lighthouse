@@ -57,10 +57,17 @@ describe('Report', () => {
     const html = reportGenerator.generateHTML(sampleResults);
 
     assert.ok(html.includes('<footer'), 'no footer tag found');
-    assert.ok(html.includes('printButton = document.querySelector'),
-              'lighthouse-report.js was not inlined');
+    assert.ok(html.includes('window.lhresults = '), 'report results were inlined');
     assert.ok(html.includes('.report-body {'), 'report.css was not inlined');
     assert.ok(!html.includes('&quot;lighthouseVersion'), 'lhresults were not escaped');
     assert.ok(/Version: x\.x\.x/g.test(html), 'Version doesn\'t appear in report');
+  });
+
+  it('does not include script for devtools', () => {
+    const reportGenerator = new ReportGenerator();
+    const html = reportGenerator.generateHTML(sampleResults, 'devtools');
+
+    assert.equal(html.includes('<script'), false, 'no script tag inlined');
+    assert.equal(html.includes('window.lhresults = '), false, 'report results were not inlined');
   });
 });

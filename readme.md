@@ -39,7 +39,7 @@ lighthouse --help
 
 ## Lighthouse Viewer
 
-If you run Lighthouse with the `--output=json` flag, it will generate a json dump of the run. You can view this report online by visiting http://googlechrome.github.io/lighthouse/viewer/ and dragging the file onto the app. Reports can also be shared by clicking the share icon in the top right corner and signing in to Github. 
+If you run Lighthouse with the `--output=json` flag, it will generate a json dump of the run. You can view this report online by visiting http://googlechrome.github.io/lighthouse/viewer/ and dragging the file onto the app. Reports can also be shared by clicking the share icon in the top right corner and signing in to Github.
 
 Note: shared reports are stashed as a secret Gist in Github, under your account.
 
@@ -295,6 +295,17 @@ git -C "./third_party/src/catapult/" pull
 node scripts/build-traceviewer-module.js
 ```
 
+## Release process
+
+1. Build the report js:
+
+    cd lighthouse-core && npm run build && cd ..
+
+2. Build and deploy the extension. See [lighthouse-extension/README.md](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-extension/README.md)
+
+2. Deploy the viewer:
+
+    npm run deploy-viewer
 
 <p align="center">
 <img src="https://cloud.githubusercontent.com/assets/883126/13900813/10a62a14-edcc-11e5-8ad3-f927a592eeb0.png" height="300px"><br>
