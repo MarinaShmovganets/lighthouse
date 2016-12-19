@@ -27,11 +27,11 @@ function requestHandler(request, response) {
   const queryString = requestUrl.search;
   let absoluteFilePath = path.join(__dirname, filePath);
 
-  if (filePath === '/promise_polyfill.js') {
+  if (filePath === '/zone.js') {
     // evaluateAsync previously had a bug that LH would fail if a page polyfilled Promise.
-    // We bring in a third-party Promise polyfill to ensure we don't still fail.
+    // We bring in an aggressive Promise polyfill (zone) to ensure we don't still fail.
     const thirdPartyPath = '../../../lighthouse-core/third_party';
-    absoluteFilePath = path.join(__dirname, `${thirdPartyPath}/promise-polyfill/promise.js`);
+    absoluteFilePath = path.join(__dirname, `${thirdPartyPath}/zone/zone.js`);
   }
 
   fs.exists(absoluteFilePath, fsExistsCallback);
