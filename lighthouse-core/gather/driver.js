@@ -143,7 +143,7 @@ class Driver {
       );
 
       this.sendCommand('Runtime.evaluate', {
-        // We need to expliticly wrap the raw expression for several purposes:
+        // We need to explicitly wrap the raw expression for several purposes:
         // 1. Ensure that the expression will be a native Promise and not a polyfill/non-Promise.
         // 2. Ensure that errors in the expression are captured by the Promise.
         // 3. Ensure that errors captured in the Promise are converted into plain-old JS Objects
