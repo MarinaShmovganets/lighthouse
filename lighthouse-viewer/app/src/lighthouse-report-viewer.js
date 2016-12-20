@@ -409,14 +409,14 @@ class LighthouseViewerReport {
    */
   listenForMessages() {
     window.addEventListener('message', e => {
-      if (e.data.lhresults) {
+      if (e.source === self.opener && e.data.lhresults) {
         this.replaceReportHTML(e.data.lhresults);
         ga('send', 'event', 'report', 'open in viewer');
       }
     });
 
     // If the page was opened as a popup, tell the opening window we're ready.
-    if (self.opener && !self.closed) {
+    if (self.opener && !self.opener.closed) {
       self.opener.postMessage({opened: true}, '*');
     }
   }
