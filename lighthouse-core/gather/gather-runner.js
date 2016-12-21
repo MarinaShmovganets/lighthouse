@@ -94,7 +94,8 @@ class GatherRunner {
     return driver.assertNoSameOriginServiceWorkerClients(options.url)
       .then(_ => driver.beginEmulation(options.flags))
       .then(_ => driver.enableRuntimeEvents())
-      .then(_ => driver.evaluateScriptOnLoad('window.__nativePromise = Promise;'))
+      .then(_ => driver.evaluateScriptOnLoad(`window.__nativePromise = Promise;
+        window.__nativeError = Error;`))
       .then(_ => driver.cleanAndDisableBrowserCaches())
       .then(_ => driver.clearDataForOrigin(options.url));
   }
