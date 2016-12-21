@@ -712,13 +712,13 @@ class Driver {
  * @param {function(...*): *} funcRef The function call to track.
  * @param {!Set} set An empty set to populate with stack traces. Should be
  *     on the global object.
- * @param {Error} nativeError The origal error object some libraries overwrite it.
+ * @param {Error} NativeError The origal error object some libraries overwrite it.
  *     So they can take full control of errors.
  * @return {function(...*): *} A wrapper around the original function.
  */
 function captureJSCallUsage(funcRef, set, NativeError) {
   const originalFunc = funcRef;
-  const originalPrepareStackTrace = nativeError.prepareStackTrace;
+  const originalPrepareStackTrace = NativeError.prepareStackTrace;
 
   return function() {
     // Note: this function runs in the context of the page that is being audited.
