@@ -712,7 +712,7 @@ class Driver {
  * @param {function(...*): *} funcRef The function call to track.
  * @param {!Set} set An empty set to populate with stack traces. Should be
  *     on the global object.
- * @param {Error} NativeError The origal error object some libraries overwrite it.
+ * @param {Error} NativeError The original error object some libraries overwrite it.
  *     So they can take full control of errors.
  * @return {function(...*): *} A wrapper around the original function.
  */
