@@ -227,9 +227,9 @@ window.loadSelectedAggregations = function() {
 };
 
 window.listenForStatus = function(callback) {
-  log.events.addListener('status', function(args) {
-    latestStatusLog = args;
-    callback(args);
+  log.events.addListener('status', function(log) {
+    latestStatusLog = log;
+    callback(log);
   });
 
   // Show latest saved status log to give immediate feedback
