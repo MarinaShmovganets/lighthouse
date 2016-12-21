@@ -676,6 +676,15 @@ class Driver {
   }
 
   /**
+   * Cache native functions/objects inside window
+   * so we are sure polyfills do not overwrite the native implementations
+   */
+  cacheNatives() {
+    return this.evaluateScriptOnLoad(`window.__nativePromise = Promise;
+        window.__nativeError = Error;`);
+  }
+
+  /**
    * Keeps track of calls to a JS function and returns a list of {url, line, col}
    * of the usage. Should be called before page load (in beforePass).
    * @param {string} funcName The function name to track ('Date.now', 'console.time').
@@ -701,7 +710,7 @@ class Driver {
 
     this.evaluateScriptOnLoad(`
         ${globalVarToPopulate} = new Set();
-        (${funcName} = ${funcBody}(${funcName}, ${globalVarToPopulate}, window.__nativeError))`);
+        (${funcName} = ${funcBody}(${funcName}, ${globalVarToPopulate}))`);
 
     return collectUsage;
   }
@@ -712,13 +721,12 @@ class Driver {
  * @param {function(...*): *} funcRef The function call to track.
  * @param {!Set} set An empty set to populate with stack traces. Should be
  *     on the global object.
- * @param {Error} NativeError The original error object some libraries overwrite it.
- *     So they can take full control of errors.
  * @return {function(...*): *} A wrapper around the original function.
  */
-function captureJSCallUsage(funcRef, set, NativeError) {
+function captureJSCallUsage(funcRef, set) {
+  const __nativeError = window.__nativeError || Error;
   const originalFunc = funcRef;
-  const originalPrepareStackTrace = NativeError.prepareStackTrace;
+  const originalPrepareStackTrace = __nativeError.prepareStackTrace;
 
   return function() {
     // Note: this function runs in the context of the page that is being audited.
@@ -726,7 +734,7 @@ function captureJSCallUsage(funcRef, set, NativeError) {
     const args = [...arguments]; // callee's arguments.
 
     // See v8's Stack Trace API https://github.com/v8/v8/wiki/Stack-Trace-API#customizing-stack-traces
-    NativeError.prepareStackTrace = function(error, structStackTrace) {
+    __nativeError.prepareStackTrace = function(error, structStackTrace) {
       // First frame is the function we injected (the one that just threw).
       // Second, is the actual callsite of the funcRef we're after.
       const callFrame = structStackTrace[1];
@@ -749,12 +757,12 @@ function captureJSCallUsage(funcRef, set, NativeError) {
       // would be unique.
       return {url, args, line, col, isEval}; // return value is e.stack
     };
-    const e = new NativeError(`__called ${funcRef.name}__`);
+    const e = new __nativeError(`__called ${funcRef.name}__`);
     set.add(JSON.stringify(e.stack));
 
     // Restore prepareStackTrace so future errors use v8's formatter and not
     // our custom one.
-    NativeError.prepareStackTrace = originalPrepareStackTrace;
+    __nativeError.prepareStackTrace = originalPrepareStackTrace;
 
     // eslint-disable-next-line no-invalid-this
     return originalFunc.apply(this, arguments);
