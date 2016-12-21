@@ -88,6 +88,7 @@
   <a href="./doesnotexist" target="_blank">internal link is ok</a>
 </template>
 
+<script>window.Error = function(error) { this.stack = 'stacktrace'; };</script>
 <script>
 function stampTemplate(id, location) {
   const template = document.querySelector('#' + id);
