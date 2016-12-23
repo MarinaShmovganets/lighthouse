@@ -33,16 +33,16 @@ const log = require('../../lib/log.js');
  */
 function getCSSPropsInStyleSheet(parseTree) {
   const results = [];
-
-  parseTree.traverseByType('declaration', function(node, index, parent) {
-    const keyVal = node.toString().split(':').map(item => item.trim());
-    results.push({
-      property: {name: keyVal[0], val: keyVal[1]},
-      declarationRange: node.declarationRange,
-      selector: parent.selectors.toString()
+  try{
+    parseTree.traverseByType('declaration', function(node, index, parent) {
+      const keyVal = node.toString().split(':').map(item => item.trim());
+      results.push({
+        property: {name: keyVal[0], val: keyVal[1]},
+        declarationRange: node.declarationRange,
+        selector: parent.selectors.toString()
+      });
     });
-  });
-
+  }catch(e){}
   return results;
 }
 
