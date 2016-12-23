@@ -32,7 +32,7 @@ const colors = {
 };
 
 // whitelist non-red/yellow colors for debug()
-debug.colors = [colors.cyan, colors.green, colors.blue, colors.magenta]
+debug.colors = [colors.cyan, colors.green, colors.blue, colors.magenta];
 
 class Emitter extends EventEmitter {
   /**
