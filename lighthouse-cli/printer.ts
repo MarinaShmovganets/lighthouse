@@ -29,6 +29,7 @@ type Mode = 'pretty' | 'json' | 'html';
 import {Results, AuditResult} from './types/types';
 
 const fs = require('fs');
+const figures = require('figures');
 const ReportGenerator = require('../lighthouse-core/report/report-generator');
 const Formatter = require('../lighthouse-core/formatters/formatter');
 const log = require('../lighthouse-core/lib/log');
@@ -56,8 +57,8 @@ function formatAggregationResultItem(score: boolean | number | string, suffix?: 
   const reset = '\x1B[0m';
 
   if (typeof score === 'boolean') {
-    const check = `${green}✓${reset}`;
-    const fail = `${red}✘${reset}`;
+    const check = `${green}${figures.tick}${reset}`;
+    const fail = `${red}${figures.cross}${reset}`;
     return score ? check : fail;
   }
   if (typeof score !== 'number') {
@@ -97,7 +98,7 @@ function createOutput(results: Results, outputMode: OutputMode): string {
   let output = `\n\n${bold}Lighthouse (${version}) results:${reset} ${results.url}\n\n`;
 
   results.aggregations.forEach(aggregation => {
-    output += `▫ ${bold}${aggregation.name}${reset}\n\n`;
+    output += `${figures.squareSmall} ${bold}${aggregation.name}${reset}\n\n`;
 
     aggregation.score.forEach(item => {
       const score = (item.overall * 100).toFixed(0);
