@@ -54,7 +54,7 @@ class NoNegativeMarginsAudit extends Audit {
 
 
     const sheetsUsingNegativeMargins = StyleHelpers.filterStylesheetsByUsage(
-        artifacts.Styles, 'margin','-');
+        artifacts.Styles, 'margin', '-');
 
     const urlList = [];
     sheetsUsingNegativeMargins.forEach(sheet => {
