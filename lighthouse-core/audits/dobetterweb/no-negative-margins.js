@@ -53,13 +53,13 @@ class NoNegativeMarginsAudit extends Audit {
     }
 
 
-    const sheetsUsingDisplayBox = StyleHelpers.filterStylesheetsByUsage(
-        artifacts.Styles, 'margin', '-1');
+    const sheetsUsingNegativeMargins = StyleHelpers.filterStylesheetsByUsage(
+        artifacts.Styles, 'margin','-');
 
     const urlList = [];
     sheetsUsingNegativeMargins.forEach(sheet => {
       sheet.parsedContent.forEach(props => {
-        const formattedStyleRulmarginleHelpers.getFormattedStyleRule(sheet.content, props);
+        const formattedStyleRule = StyleHelpers.getFormattedStyleRule(sheet.content, props);
         urlList.push({
           url: sheet.header.sourceURL,
           label: formattedStyleRule.location,
