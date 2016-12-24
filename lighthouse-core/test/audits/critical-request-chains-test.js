@@ -17,7 +17,8 @@
 
 const Audit = require('../../audits/critical-request-chains.js');
 const assert = require('assert');
-const CriticalRequestChains = {
+
+const FAILING_REQUEST_CHAIN = {
   0: {
     request: {
       endTime: 1,
@@ -49,20 +50,40 @@ const CriticalRequestChains = {
   }
 };
 
-const mockArtifacts = {
-  networkRecords: {
-    [Audit.DEFAULT_PASS]: []
+const PASSING_REQUEST_CHAIN = {
+  0: {
+    request: {
+      endTime: 1,
+      responseReceivedTime: 5,
+      startTime: 0,
+      url: 'https://example.com/'
+    },
+    children: {},
   },
-  requestCriticalRequestChains: function() {
-    return Promise.resolve(CriticalRequestChains);
-  }
+};
+
+const mockArtifacts = (mockChain) => {
+  return {
+    networkRecords: {
+      [Audit.DEFAULT_PASS]: []
+    },
+    requestCriticalRequestChains: function() {
+      return Promise.resolve(mockChain);
+    }
+  };
 };
 
 /* eslint-env mocha */
 describe('Performance: critical-request-chains audit', () => {
-  it('calculates the correct chain length', () => {
-    return Audit.audit(mockArtifacts).then(output => {
+  it('calculates the correct chain result for failing example', () => {
+    return Audit.audit(mockArtifacts(FAILING_REQUEST_CHAIN)).then(output => {
       assert.equal(output.score, false);
+    });
+  });
+
+  it('calculates the correct chain result for passing example', () => {
+    return Audit.audit(mockArtifacts(PASSING_REQUEST_CHAIN)).then(output => {
+      assert.equal(output.score, true);
     });
   });
 });

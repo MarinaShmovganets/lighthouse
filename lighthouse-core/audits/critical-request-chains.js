@@ -29,7 +29,7 @@ class CriticalRequestChains extends Audit {
       category: 'Performance',
       name: 'critical-request-chains',
       description: 'Critical Request Chains',
-      optimalValue: 0,
+      optimalValue: 1,
       helpText: 'The Critical Request Chains below show you what resources are required for first render of this page. Improve page load by reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources. <a href="https://developers.google.com/web/tools/lighthouse/audits/critical-request-chains" rel="noopener" target="_blank">Learn more</a>.',
       requiredArtifacts: ['networkRecords']
     };
@@ -62,7 +62,7 @@ class CriticalRequestChains extends Audit {
       walk(chains, 0);
 
       return CriticalRequestChains.generateAuditResult({
-        rawValue: chainCount.length <= this.meta.optimalValue,
+        rawValue: chainCount <= this.meta.optimalValue,
         displayValue: chainCount,
         optimalValue: this.meta.optimalValue,
         extendedInfo: {
