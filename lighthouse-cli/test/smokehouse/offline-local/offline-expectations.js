@@ -67,7 +67,7 @@ module.exports = [
       'manifest-display': false,
       'without-javascript': true,
       'user-timings': true,
-      'critical-request-chains': true,
+      'critical-request-chains': false,
       'manifest-exists': false,
       'manifest-background-color': false,
       'manifest-theme-color': false,
