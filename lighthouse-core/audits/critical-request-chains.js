@@ -50,7 +50,9 @@ class CriticalRequestChains extends Audit {
         // Since a leaf node indicates the end of a chain, we can inspect the number
         // of child nodes, and, if the count is zero, increment the count.
         if (children.length === 0) {
-          chainCount++;
+          if (depth > chainCount) {
+            chainCount = depth;
+          }
         }
 
         children.forEach(id => {
