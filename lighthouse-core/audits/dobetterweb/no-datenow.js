@@ -75,10 +75,9 @@ class NoDateNowAudit extends Audit {
       try {
         return new URL(err.url).host === pageHost;
       } catch (e) {
-        debugString = 'Lighthouse was unable to determine if some uses of ' +
-                      'Date.now() were made by this page. It\'s possible a ' +
-                      'Chrome extension content script or other eval\'d code ' +
-                      'is calling it.';
+        debugString = 'Lighthouse was unable to determine if some API uses ' +
+                      'were made by this page. It\'s possible a Chrome extension' +
+                      'content script or other eval\'d code is calling this API.';
       }
       return true;
     }).map(err => {
