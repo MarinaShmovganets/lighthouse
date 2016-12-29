@@ -78,8 +78,8 @@ class NoDateNowAudit extends Audit {
         debugString = 'Lighthouse was unable to determine if some API uses ' +
                       'were made by this page. It\'s possible a Chrome extension' +
                       'content script or other eval\'d code is calling this API.';
+        return true;
       }
-      return true;
     }).map(err => {
       return Object.assign({
         label: `line: ${err.line}, col: ${err.col}`,
