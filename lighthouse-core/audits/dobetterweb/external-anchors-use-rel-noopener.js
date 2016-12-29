@@ -58,11 +58,11 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
     const failingAnchors = artifacts.AnchorsWithNoRelNoopener.usages
       .filter(anchor => {
         try {
-          return new URL(anchor.href).host !== pageHost;
+          return anchor.href === '' || new URL(anchor.href).host !== pageHost;
         } catch (err) {
           debugString = 'Lighthouse was unable to determine the destination ' +
-              'of some anchor tags. Remove the href attribute if they are not ' +
-              'used as hyperlinks';
+              'of some anchor tags. If they are not used as hyperlinks, ' +
+              'consider removing the _blank target.';
           return true;
         }
       })
