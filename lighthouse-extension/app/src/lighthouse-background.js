@@ -74,6 +74,25 @@ function filterConfig(config, requestedAggregations) {
 }
 
 /**
+ * Sets the extension badge text.
+ * @param {string=} optUrl If present, sets the badge text to "Testing <url>".
+ *     Otherwise, restore the default badge text.
+ */
+function updateIsRunning(optUrl) {
+  lighthouseIsRunning = typeof optUrl !== 'undefined';
+
+  if (window.chrome && chrome.runtime) {
+    const manifest = chrome.runtime.getManifest();
+    const title = optUrl ? `Testing ${optUrl}` : manifest.browser_action.default_title;
+    chrome.browserAction.setTitle({title});
+
+    const path = optUrl ? 'images/lh_logo_icon_light.png' :
+                          manifest.browser_action.default_icon['38'];
+    chrome.browserAction.setIcon({path});
+  }
+}
+
+/**
  * @param {!Connection} connection
  * @param {string} url
  * @param {!Object} options Lighthouse options.
@@ -90,17 +109,16 @@ window.runLighthouseForConnection = function(connection, url, options, requested
   // Add url and config to fresh options object.
   const runOptions = Object.assign({}, options, {url, config});
 
-  lighthouseIsRunning = true;
+  updateIsRunning(url);
 
   // Run Lighthouse.
   return Runner.run(connection, runOptions)
     .then(result => {
-      lighthouseIsRunning = false;
-
+      updateIsRunning();
       return result;
     })
     .catch(err => {
-      lighthouseIsRunning = false;
+      updateIsRunning();
       throw err;
     });
 };
