@@ -22,6 +22,7 @@ const Audit = require('../audits/audit');
 const assert = require('assert');
 const path = require('path');
 const recordsFromLogs = require('../lib/network-recorder').recordsFromLogs;
+const unresolvedPerfLog = require('./fixtures/unresolved-perflog.json');
 
 /* eslint-env mocha */
 
@@ -142,9 +143,7 @@ describe('Runner', () => {
     const unresolvedDriver = Object.assign({}, driverMock, {
       online: true,
       endNetworkCollect() {
-        return Promise.resolve(
-          recordsFromLogs(require('./fixtures/unresolved-perflog.json'))
-        );
+        return Promise.resolve(recordsFromLogs(unresolvedPerfLog));
       }
     });
 

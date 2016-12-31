@@ -20,6 +20,7 @@ const _SIGINT = 'SIGINT';
 const _SIGINT_EXIT_CODE = 130;
 const _RUNTIME_ERROR_CODE = 1;
 const _PROTOCOL_TIMEOUT_EXIT_CODE = 67;
+const _PAGE_LOAD_ERROR_EXIT_CODE = 68;
 
 const environment = require('../lighthouse-core/lib/environment.js');
 if (!environment.checkNodeCompatibility()) {
@@ -241,8 +242,15 @@ function showProtocolTimeoutError() {
   process.exit(_PROTOCOL_TIMEOUT_EXIT_CODE);
 }
 
+function showPageLoadError() {
+  console.error('Unable to load the page.');
+  process.exit(_PAGE_LOAD_ERROR_EXIT_CODE);
+}
+
 function handleError(err: LighthouseError) {
-  if (err.code === 'ECONNREFUSED') {
+  if (err.code === 'PAGE_LOAD_ERROR') {
+    showPageLoadError();
+  } else if (err.code === 'ECONNREFUSED') {
     showConnectionError();
   } else if (err.code === 'CRI_TIMEOUT') {
     showProtocolTimeoutError();
