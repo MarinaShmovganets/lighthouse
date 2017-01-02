@@ -71,7 +71,7 @@ describe('style helpers', () => {
       results = StyleHelpers.filterStylesheetsByUsage(
           stylesheets, ['display'], 'someunknownval');
       assert.equal(results.length, 0, 'known CSS property in array with unknown value not found');
-  });
+    });
   });
 
   describe('getFormattedStyleRule()', function() {
