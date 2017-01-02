@@ -38,7 +38,7 @@ function filterStylesheetsByUsage(stylesheets, propName, propVal) {
 
   return deepClone.filter(s => {
     s.parsedContent = s.parsedContent.filter(item => {
-      let usedName = ''
+      let usedName = '';
       let usedVal = '';
       // Prevent indexOf on null value
       if (propName) {
