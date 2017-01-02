@@ -41,6 +41,10 @@ describe('style helpers', () => {
       results = StyleHelpers.filterStylesheetsByUsage(
           stylesheets, null, 'box');
       assert.equal(results.length, 1, 'accepts only CSS property value');
+
+      results = StyleHelpers.filterStylesheetsByUsage(
+          stylesheets, ['display'], ['box', 'flexbox']);
+      assert.equal(results.length, 1, 'accepts array CSS property name/value pair');
     });
 
     it('returns no results when not found', () => {
@@ -63,14 +67,17 @@ describe('style helpers', () => {
       results = StyleHelpers.filterStylesheetsByUsage(
           stylesheets, 'display', 'someunknownval');
       assert.equal(results.length, 0, 'known CSS property with unknown value not found');
-    });
+
+      results = StyleHelpers.filterStylesheetsByUsage(
+          stylesheets, ['display'], 'someunknownval');
+      assert.equal(results.length, 0, 'known CSS property in array with unknown value not found');
+  });
   });
 
   describe('getFormattedStyleRule()', function() {
     it('formats output correctly', () => {
       const results = StyleHelpers.filterStylesheetsByUsage(
-          stylesheets, 'display', 'box');
-
+          stylesheets, ['display'], ['box']);
       const actual = StyleHelpers.getFormattedStyleRule(
           results[0].content, results[0].parsedContent[0]);
       const expected = `p,div {
