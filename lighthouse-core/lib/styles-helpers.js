@@ -38,7 +38,7 @@ function filterStylesheetsByUsage(stylesheets, propName, propVal) {
 
   return deepClone.filter(s => {
     s.parsedContent = s.parsedContent.filter(item => {
-      const usedName = item.property.name === propName;
+      const usedName = item.property.name.indexOf(propName) === 0;
       const usedVal = item.property.val.indexOf(propVal) === 0; // val should start with needle
       // Allow search by css property name, a value, or name/value pair.
       if (propName && !propVal) {
