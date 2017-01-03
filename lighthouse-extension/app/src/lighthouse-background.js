@@ -81,11 +81,16 @@ function filterConfig(config, requestedAggregations) {
 function updateBadgeUI(optUrl) {
   if (window.chrome && chrome.runtime) {
     const manifest = chrome.runtime.getManifest();
-    const title = optUrl ? `Testing ${optUrl}` : manifest.browser_action.default_title;
-    chrome.browserAction.setTitle({title});
 
-    const path = optUrl ? 'images/lh_logo_icon_light.png' :
-                          manifest.browser_action.default_icon['38'];
+    let title = manifest.browser_action.default_title;
+    let path = manifest.browser_action.default_icon['38'];
+
+    if (lighthouseIsRunning) {
+      title = `Testing ${optUrl}`;
+      path = 'images/lh_logo_icon_light.png';
+    }
+
+    chrome.browserAction.setTitle({title});
     chrome.browserAction.setIcon({path});
   }
 }
