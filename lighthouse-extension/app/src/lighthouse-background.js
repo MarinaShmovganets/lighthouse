@@ -78,7 +78,7 @@ function filterConfig(config, requestedAggregations) {
  * @param {string=} optUrl If present, sets the badge text to "Testing <url>".
  *     Otherwise, restore the default badge text.
  */
-function updateIsRunning(optUrl) {
+function updateBadgeUI(optUrl) {
   if (window.chrome && chrome.runtime) {
     const manifest = chrome.runtime.getManifest();
     const title = optUrl ? `Testing ${optUrl}` : manifest.browser_action.default_title;
@@ -108,18 +108,18 @@ window.runLighthouseForConnection = function(connection, url, options, requested
   const runOptions = Object.assign({}, options, {url, config});
 
   lighthouseIsRunning = true;
-  updateIsRunning(url);
+  updateBadgeUI(url);
 
   // Run Lighthouse.
   return Runner.run(connection, runOptions)
     .then(result => {
       lighthouseIsRunning = false;
-      updateIsRunning();
+      updateBadgeUI();
       return result;
     })
     .catch(err => {
       lighthouseIsRunning = false;
-      updateIsRunning();
+      updateBadgeUI();
       throw err;
     });
 };
