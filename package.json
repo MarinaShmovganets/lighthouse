@@ -48,6 +48,7 @@
     "chrome-devtools-frontend": "1.0.422034",
     "debug": "^2.2.0",
     "devtools-timeline-model": "1.1.6",
+    "figures": "^2.0.0",
     "gl-matrix": "2.3.2",
     "handlebars": "^4.0.5",
     "json-stringify-safe": "^5.0.1",
