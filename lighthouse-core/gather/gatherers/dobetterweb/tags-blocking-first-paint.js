@@ -21,6 +21,21 @@ const Gatherer = require('../gatherer');
 /* global document,window */
 
 /* istanbul ignore next */
+function saveAsyncLinks() {
+  function checkForLinks() {
+    document.querySelectorAll('link').forEach(link => {
+      if (link.rel === 'preload' || link.disabled || link.async) {
+        window.__asyncLinks[link.href] = true;
+      }
+    });
+  }
+
+  window.__asyncLinks = window.__asyncLinks || {};
+  setInterval(checkForLinks, 100);
+  checkForLinks();
+}
+
+/* istanbul ignore next */
 function collectTagsThatBlockFirstPaint() {
   return new Promise((resolve, reject) => {
     try {
@@ -50,7 +65,8 @@ function collectTagsThatBlockFirstPaint() {
             media: tag.media,
             disabled: tag.disabled
           };
-        });
+        })
+        .filter(tag => !window.__asyncLinks[tag.url]);
       resolve(tagList);
     } catch (e) {
       const friendly = 'Unable to gather Scripts/Stylesheets/HTML Imports on the page';
@@ -62,7 +78,11 @@ function collectTagsThatBlockFirstPaint() {
 function filteredAndIndexedByUrl(networkRecords) {
   return networkRecords.reduce((prev, record) => {
     // Filter stylesheet, javascript, and html import mimetypes.
-    if (/(css|html|script)/.test(record._mimeType)) {
+    const isHtml = record._mimeType.indexOf('html') > -1;
+    // See https://html.spec.whatwg.org/multipage/semantics.html#interactions-of-styling-and-scripting
+    const isParserScriptOrStyle = /(css|script)/.test(record._mimeType) &&
+        record._initiator.type === 'parser';
+    if (isHtml || isParserScriptOrStyle) {
       prev[record._url] = {
         transferSize: record._transferSize,
         startTime: record._startTime,
@@ -110,6 +130,11 @@ class TagsBlockingFirstPaint extends Gatherer {
         }
       };
     });
+  }
+
+  beforePass(options) {
+    const scriptSrc = `(${saveAsyncLinks.toString()})()`;
+    return options.driver.evaluateScriptOnLoad(scriptSrc);
   }
 
   afterPass(options, tracingData) {
