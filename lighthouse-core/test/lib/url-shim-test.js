@@ -26,4 +26,30 @@ describe('URL Shim', () => {
     const url = 'http://5321212.fls.doubleclick.net/activityi;src=5321212;type=unvsn_un;cat=unvsn_uv;ord=7762287885264.98?';
     assert.doesNotThrow(_ => new URL(url));
   });
+
+  it('safely identifies same hosts', () => {
+    const url = 'https://5321212.fls.net/page?query=string#hash';
+    const host = '5321212.fls.net';
+    assert.equal(URL.hostMatches(url, host), true);
+  });
+
+  it('safely identifies different hosts', () => {
+    const url = 'https://www.google.com/page?query=string#hash';
+    const host = 'google.co.uk';
+    assert.equal(URL.hostMatches(url, host), false);
+  });
+
+  it('safely identifies host similarity with fallback', () => {
+    let myVar;
+    const url = 'eval(<context>):64:15';
+    const myFallback = (err, failedUrl) => {
+      assert.ok(err);
+      assert.equal(failedUrl, url);
+      return myVar = 'debug string';
+    };
+
+    assert.equal(URL.hostMatches(url, 'ignored', false), false);
+    assert.equal(URL.hostMatches(url, 'ignored', myFallback), true);
+    assert.equal(myVar, 'debug string');
+  });
 });

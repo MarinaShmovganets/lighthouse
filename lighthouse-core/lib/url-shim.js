@@ -25,4 +25,26 @@
 
 // TODO: Add back node require('url').URL parsing when bug is resolved:
 // https://github.com/GoogleChrome/lighthouse/issues/1186
-module.exports = (typeof self !== 'undefined' && self.URL) || require('whatwg-url').URL;
+const URL = module.exports = (typeof self !== 'undefined' && self.URL) || require('whatwg-url').URL;
+
+/**
+ * Safely checks if the host of a URL matches a known host with a specified
+ * fallback in case of error.
+ *
+ * @param {string} url
+ * @param {string} host
+ * @param {boolean|function=} fallback
+ * @return {boolean}
+ */
+module.exports.hostMatches = function(url, host, fallback) {
+  try {
+    return new URL(url).host === host;
+  } catch (err) {
+    let result = fallback;
+    if (typeof fallback === 'function') {
+      result = fallback(err, url);
+    }
+
+    return Boolean(result);
+  }
+};
