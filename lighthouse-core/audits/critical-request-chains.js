@@ -29,7 +29,7 @@ class CriticalRequestChains extends Audit {
       category: 'Performance',
       name: 'critical-request-chains',
       description: 'Critical Request Chains',
-      optimalValue: 1,
+      optimalValue: 0,
       helpText: 'The Critical Request Chains below show you what resources are required for first render of this page. Improve page load by reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources. <a href="https://developers.google.com/web/tools/lighthouse/audits/critical-request-chains" rel="noopener" target="_blank">Learn more</a>.',
       requiredArtifacts: ['networkRecords']
     };
@@ -50,9 +50,7 @@ class CriticalRequestChains extends Audit {
         // Since a leaf node indicates the end of a chain, we can inspect the number
         // of child nodes, and, if the count is zero, increment the count.
         if (children.length === 0) {
-          if (depth > chainCount) {
-            chainCount = depth;
-          }
+          chainCount++;
         }
 
         children.forEach(id => {
@@ -61,7 +59,13 @@ class CriticalRequestChains extends Audit {
         }, '');
       }
 
-      walk(chains, 0);
+      // Account for initiali navigation
+      const initialNavigationKey = Object.keys(chains)[0];
+      const initialNavChildren = chains[initialNavigationKey].children;
+      if (initialNavChildren &&
+        Object.keys(initialNavChildren).length > 0) {
+        walk(initialNavChildren, 0);
+      }
 
       return CriticalRequestChains.generateAuditResult({
         rawValue: chainCount <= this.meta.optimalValue,
