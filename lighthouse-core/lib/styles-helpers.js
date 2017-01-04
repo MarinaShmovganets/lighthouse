@@ -42,11 +42,11 @@ function filterStylesheetsByUsage(stylesheets, propName, propVal) {
       let usedVal = '';
       // Prevent indexOf on null value
       if (propName) {
-        propName = Array.from(propName);
+        propName = Array.isArray(propName) ? propName : new Array(propName);
         usedName = propName.indexOf(item.property.name) > -1;
       }
       if (propVal) {
-        propVal = Array.from(propVal);
+        propVal = Array.isArray(propVal) ? propVal : new Array(propVal);
         usedVal = propVal.indexOf(item.property.val) > -1;
       }
       // Allow search by css property name, a value, or name/value pair.

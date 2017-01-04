@@ -32,6 +32,7 @@ describe('style helpers', () => {
 
       results = StyleHelpers.filterStylesheetsByUsage(
           stylesheets, 'display', 'box');
+          console.log(results);
       assert.equal(results.length, 1, 'accepts CSS property name/value pair');
 
       results = StyleHelpers.filterStylesheetsByUsage(
@@ -45,6 +46,24 @@ describe('style helpers', () => {
       results = StyleHelpers.filterStylesheetsByUsage(
           stylesheets, ['display'], ['box', 'flexbox']);
       assert.equal(results.length, 1, 'accepts array CSS property name/value pair');
+
+      results = StyleHelpers.filterStylesheetsByUsage(
+          stylesheets, 'display', ['box', 'flexbox']);
+      assert.equal(results.length, 1, 'accepts string CSS property name and array value pair');
+
+      results = StyleHelpers.filterStylesheetsByUsage(
+          stylesheets, ['display'], 'box');
+      assert.equal(results.length, 1, 'accepts array CSS property name and string value pair');
+
+      results = StyleHelpers.filterStylesheetsByUsage(
+          stylesheets, ['display'], 'box');
+      assert.equal(results.length, 1, 'accepts array CSS property name and string value pair');
+
+      results = StyleHelpers.filterStylesheetsByUsage(
+          stylesheets, ['box-flex', 'box-orient', 'box-flex-group', 'display'], 'box');
+      assert.equal(results.length, 1, 'accepts large array of CSS property names and string value pair');
+
+
     });
 
     it('returns no results when not found', () => {
@@ -75,6 +94,20 @@ describe('style helpers', () => {
   });
 
   describe('getFormattedStyleRule()', function() {
+    it('formats output correctly', () => {
+      const results = StyleHelpers.filterStylesheetsByUsage(
+          stylesheets, 'display', 'box');
+      console.log(results);
+      const actual = StyleHelpers.getFormattedStyleRule(
+          results[0].content, results[0].parsedContent[0]);
+      const expected = `p,div {
+  display: box;
+}`;
+
+      assert.equal(actual.location, 'line: 8, row: 4, col: 17');
+      assert.equal(actual.styleRule, expected);
+    });
+
     it('formats output correctly', () => {
       const results = StyleHelpers.filterStylesheetsByUsage(
           stylesheets, ['display'], ['box']);
