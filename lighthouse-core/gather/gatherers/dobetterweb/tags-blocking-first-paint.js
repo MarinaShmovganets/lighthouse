@@ -14,6 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+ /**
+  * @fileoverview
+  *   Identifies stylesheets, HTML Imports, and scripts that potentially block
+  *   the first paint of the page by running several scripts in the page context.
+  *   Candidate blocking tags are collected by querying for all script tags in
+  *   the head of the page and all link tags that are either matching media
+  *   stylesheets or non-async HTML imports. These are then compared to the
+  *   network requests to ensure they were initiated by the parser and not
+  *   injected with script. To avoid false positives from strategies like
+  *   (http://filamentgroup.github.io/loadCSS/test/preload.html), a separate
+  *   script is run to flag all links that at one point were rel=preload.
+  */
+
 'use strict';
 
 const Gatherer = require('../gatherer');
@@ -24,7 +38,7 @@ const Gatherer = require('../gatherer');
 function saveAsyncLinks() {
   function checkForLinks() {
     document.querySelectorAll('link').forEach(link => {
-      if (link.rel === 'preload' || link.disabled || link.async) {
+      if (link.rel === 'preload' || link.disabled) {
         window.__asyncLinks[link.href] = true;
       }
     });
@@ -79,7 +93,8 @@ function filteredAndIndexedByUrl(networkRecords) {
   return networkRecords.reduce((prev, record) => {
     // Filter stylesheet, javascript, and html import mimetypes.
     const isHtml = record._mimeType.indexOf('html') > -1;
-    // See https://html.spec.whatwg.org/multipage/semantics.html#interactions-of-styling-and-scripting
+    // A stylesheet only blocks script if it was initiated by the parser
+    // https://html.spec.whatwg.org/multipage/semantics.html#interactions-of-styling-and-scripting
     const isParserScriptOrStyle = /(css|script)/.test(record._mimeType) &&
         record._initiator.type === 'parser';
     if (isHtml || isParserScriptOrStyle) {
