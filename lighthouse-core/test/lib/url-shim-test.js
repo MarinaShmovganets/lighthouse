@@ -27,29 +27,32 @@ describe('URL Shim', () => {
     assert.doesNotThrow(_ => new URL(url));
   });
 
+  it('safely identifies valid URLs', () => {
+    assert.ok(URL.isValid('https://5321212.fls.net/page?query=string#hash'));
+    assert.ok(URL.isValid('https://localhost:8080/page?query=string#hash'));
+    assert.ok(URL.isValid('https://google.co.uk/deep/page?query=string#hash'));
+  });
+
+  it('safely identifies invalid URLs', () => {
+    assert.equal(URL.isValid(''), false);
+    assert.equal(URL.isValid('eval(<context>):45:16'), false);
+  });
+
   it('safely identifies same hosts', () => {
-    const url = 'https://5321212.fls.net/page?query=string#hash';
-    const host = '5321212.fls.net';
-    assert.equal(URL.hostMatches(url, host), true);
+    const urlA = 'https://5321212.fls.net/page?query=string#hash';
+    const urlB = 'http://5321212.fls.net/deeply/nested/page';
+    assert.ok(URL.hostsMatch(urlA, urlB));
   });
 
   it('safely identifies different hosts', () => {
-    const url = 'https://www.google.com/page?query=string#hash';
-    const host = 'google.co.uk';
-    assert.equal(URL.hostMatches(url, host), false);
+    const urlA = 'https://google.com/page?query=string#hash';
+    const urlB = 'http://google.co.uk/deeply/nested/page';
+    assert.equal(URL.hostsMatch(urlA, urlB), false);
   });
 
-  it('safely identifies host similarity with fallback', () => {
-    let myVar;
-    const url = 'eval(<context>):64:15';
-    const myFallback = (err, failedUrl) => {
-      assert.ok(err);
-      assert.equal(failedUrl, url);
-      return myVar = 'debug string';
-    };
-
-    assert.equal(URL.hostMatches(url, 'ignored', false), false);
-    assert.equal(URL.hostMatches(url, 'ignored', myFallback), true);
-    assert.equal(myVar, 'debug string');
+  it('safely identifies invalid hosts', () => {
+    const urlA = 'https://google.com/page?query=string#hash';
+    const urlB = 'anonymous:45';
+    assert.equal(URL.hostsMatch(urlA, urlB), false);
   });
 });

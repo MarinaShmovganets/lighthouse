@@ -25,26 +25,38 @@
 
 // TODO: Add back node require('url').URL parsing when bug is resolved:
 // https://github.com/GoogleChrome/lighthouse/issues/1186
-const URL = module.exports = (typeof self !== 'undefined' && self.URL) || require('whatwg-url').URL;
+const URL = (typeof self !== 'undefined' && self.URL) || require('whatwg-url').URL;
 
-/**
- * Safely checks if the host of a URL matches a known host with a specified
- * fallback in case of error.
- *
- * @param {string} url
- * @param {string} host
- * @param {boolean|function=} fallback
- * @return {boolean}
- */
-module.exports.hostMatches = function(url, host, fallback) {
-  try {
-    return new URL(url).host === host;
-  } catch (err) {
-    let result = fallback;
-    if (typeof fallback === 'function') {
-      result = fallback(err, url);
+URL.INVALID_URL_DEBUG_STRING =
+    'Lighthouse was unable to determine the URL of some script executions. ' +
+    'It\'s possible a Chrome extension or other eval\'d code is the source.';
+
+class LighthouseURL extends URL {
+  /**
+   * @param {string} url
+   * @return {boolean}
+   */
+  static isValid(url) {
+    try {
+      new URL(url);
+      return true;
+    } catch (e) {
+      return false;
     }
-
-    return Boolean(result);
   }
-};
+
+  /**
+   * @param {string} urlA
+   * @param {string} urlB
+   * @return {boolean}
+   */
+  static hostsMatch(urlA, urlB) {
+    try {
+      return new URL(urlA).host === new URL(urlB).host;
+    } catch (e) {
+      return false;
+    }
+  }
+}
+
+module.exports = LighthouseURL;

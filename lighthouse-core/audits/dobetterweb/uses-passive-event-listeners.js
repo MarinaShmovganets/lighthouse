@@ -58,8 +58,8 @@ class PassiveEventsAudit extends Audit {
       return PassiveEventsAudit.generateAuditResult(artifacts.EventListeners);
     }
 
+    let debugString;
     const listeners = artifacts.EventListeners;
-    const pageHost = new URL(artifacts.URL.finalUrl).host;
 
     // Flags all touch and wheel listeners that 1) are from same host
     // 2) are not passive 3) do not call preventDefault()
@@ -67,9 +67,15 @@ class PassiveEventsAudit extends Audit {
       const isScrollBlocking = this.SCROLL_BLOCKING_EVENTS.indexOf(loc.type) !== -1;
       const mentionsPreventDefault = loc.handler.description.match(
             /\.preventDefault\(\s*\)/g);
-      const sameHost = URL.hostMatches(loc.url, pageHost, true);
-      return sameHost && isScrollBlocking && !loc.passive &&
-             !mentionsPreventDefault;
+      const couldBePassive = isScrollBlocking && !loc.passive &&
+          !mentionsPreventDefault;
+
+      if (!URL.isValid(loc.url)) {
+        debugString = URL.INVALID_URL_DEBUG_STRING;
+        return couldBePassive;
+      }
+
+      return couldBePassive && URL.hostsMatch(artifacts.URL.finalUrl, loc.url);
     }).map(EventHelpers.addFormattedCodeSnippet);
 
     const groupedResults = EventHelpers.groupCodeSnippetsByLocation(results);
@@ -79,7 +85,8 @@ class PassiveEventsAudit extends Audit {
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
         value: groupedResults
-      }
+      },
+      debugString
     });
   }
 }
