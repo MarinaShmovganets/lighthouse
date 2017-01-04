@@ -67,15 +67,15 @@ class PassiveEventsAudit extends Audit {
       const isScrollBlocking = this.SCROLL_BLOCKING_EVENTS.indexOf(loc.type) !== -1;
       const mentionsPreventDefault = loc.handler.description.match(
             /\.preventDefault\(\s*\)/g);
-      const couldBePassive = isScrollBlocking && !loc.passive &&
-          !mentionsPreventDefault;
+      let sameHost = URL.hostsMatch(artifacts.URL.finalUrl, loc.url);
 
       if (!URL.isValid(loc.url)) {
+        sameHost = true;
         debugString = URL.INVALID_URL_DEBUG_STRING;
-        return couldBePassive;
       }
 
-      return couldBePassive && URL.hostsMatch(artifacts.URL.finalUrl, loc.url);
+      return sameHost && isScrollBlocking && !loc.passive &&
+             !mentionsPreventDefault;
     }).map(EventHelpers.addFormattedCodeSnippet);
 
     const groupedResults = EventHelpers.groupCodeSnippetsByLocation(results);
