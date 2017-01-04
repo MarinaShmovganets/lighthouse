@@ -139,11 +139,17 @@ class FirstMeaningfulPaint extends Audit {
     // Our navStart will be the latest one before fCP.
     const navigationStart = frameEvents.filter(e =>
         e.name === 'navigationStart' && e.ts < firstFCP.ts).pop();
-    // FMP will follow at/after the FCP, though we allow some timestamp tolerance
+    // fMP will follow at/after the FCP, though we allow some timestamp tolerance
     const firstMeaningfulPaint = frameEvents.find(e =>
         e.name === 'firstMeaningfulPaint' && e.ts >= (firstFCP.ts - FCPFMP_TOLERANCE));
 
     // Sometimes fMP is triggered before fCP
+    if (!firstMeaningfulPaint) {
+      throw new Error('No usable `firstMeaningfulPaint` event found in trace');
+    }
+
+    // Sometimes fMP is triggered before fCP
+    // (this happends when above the fold is being swapped with JS)
     if (!firstMeaningfulPaint) {
       throw new Error('No usable `firstMeaningfulPaint` event found in trace');
     }
