@@ -103,7 +103,30 @@ ${parsedContent.selector} {
   };
 }
 
+/**
+ * Returns a array of all CSS prefixes and the default CSS style names.
+ *
+ * @param {string|Array<string>=} propNames CSS text content.
+ * @param {Array<string>=} propsNamesWithPrefixes The parsed version content.
+ * @return {{styleRule: string, location: string}} Formatted output.
+ */
+function addWebPrefixes(propsNames) {
+  const vendorPrefixes = ['-o-', '-ms-', '-moz-', '-webkit-'];
+
+  let propsNamesWithPrefixes = [];
+  // Map vendorPrefixes to propsNames
+  for(const i of vendorPrefixes) {
+    const temp = propsNames.map(function(x) {
+      return i + x;
+    });
+    propsNamesWithPrefixes = propsNamesWithPrefixes.concat(temp);
+  }
+  // Add orginal propNames
+  propsNamesWithPrefixes = propsNamesWithPrefixes.concat(propsNames);
+  return propsNamesWithPrefixes;
+}
 module.exports = {
   filterStylesheetsByUsage,
-  getFormattedStyleRule
+  getFormattedStyleRule,
+  addWebPrefixes
 };

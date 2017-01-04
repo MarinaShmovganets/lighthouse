@@ -52,13 +52,13 @@ class NoOldFlexboxAudit extends Audit {
       return NoOldFlexboxAudit.generateAuditResult(artifacts.Styles);
     }
 
-    // TODO: consider usage of vendor prefixes
     // https://www.w3.org/TR/2009/WD-css3-flexbox-20090723/
     // (e.g. box-flex, box-orient, box-flex-group, display: flexbox (2011 version))
     const propsNames = ['box-flex', 'box-orient', 'box-flex-group', 'display'];
+    const propsNamesWithPrefixes = StyleHelpers.addWebPrefixes(propsNames);
     const propsValues = ['box', 'flexbox'];
     const sheetsUsingDisplayBox = StyleHelpers.filterStylesheetsByUsage(
-        artifacts.Styles, propsNames, propsValues);
+        artifacts.Styles, propsNamesWithPrefixes, propsValues);
     const urlList = [];
     sheetsUsingDisplayBox.forEach(sheet => {
       sheet.parsedContent.forEach(props => {

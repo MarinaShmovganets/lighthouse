@@ -32,7 +32,6 @@ describe('style helpers', () => {
 
       results = StyleHelpers.filterStylesheetsByUsage(
           stylesheets, 'display', 'box');
-          console.log(results);
       assert.equal(results.length, 1, 'accepts CSS property name/value pair');
 
       results = StyleHelpers.filterStylesheetsByUsage(
@@ -61,9 +60,7 @@ describe('style helpers', () => {
 
       results = StyleHelpers.filterStylesheetsByUsage(
           stylesheets, ['box-flex', 'box-orient', 'box-flex-group', 'display'], 'box');
-      assert.equal(results.length, 1, 'accepts large array of CSS property names and string value pair');
-
-
+      assert.equal(results.length, 1, 'accepts array of CSS property names and string value pair');
     });
 
     it('returns no results when not found', () => {
@@ -97,7 +94,6 @@ describe('style helpers', () => {
     it('formats output correctly', () => {
       const results = StyleHelpers.filterStylesheetsByUsage(
           stylesheets, 'display', 'box');
-      console.log(results);
       const actual = StyleHelpers.getFormattedStyleRule(
           results[0].content, results[0].parsedContent[0]);
       const expected = `p,div {
@@ -119,6 +115,19 @@ describe('style helpers', () => {
 
       assert.equal(actual.location, 'line: 8, row: 4, col: 17');
       assert.equal(actual.styleRule, expected);
+    });
+  });
+
+  describe('addWebPrefixes()', function() {
+    it('correctly adds prefixes to the propsNames', () => {
+      const propsNames = ['box-flex', 'box-orient', 'box-flex-group', 'display'];
+      const results = StyleHelpers.addWebPrefixes(propsNames);
+      const expected = ['-o-box-flex', '-o-box-orient', '-o-box-flex-group', '-o-display',
+                        '-ms-box-flex', '-ms-box-orient', '-ms-box-flex-group', '-ms-display',
+                        '-moz-box-flex', '-moz-box-orient', '-moz-box-flex-group', '-moz-display',
+                        '-webkit-box-flex', '-webkit-box-orient', '-webkit-box-flex-group',
+                        '-webkit-display', 'box-flex', 'box-orient', 'box-flex-group', 'display'];
+      assert.equal(results.toString(), expected.toString());
     });
   });
 });
