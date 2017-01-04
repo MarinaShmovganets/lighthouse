@@ -271,9 +271,6 @@ function runLighthouse(url: string,
       }
       return results;
     })
-    .then((results: Results) => {
-      return results;
-     })
     .then((results: Results) => Printer.write(results, flags.output, flags.outputPath))
     .then((results: Results) => {
       if (flags.output === Printer.OutputMode[Printer.OutputMode.pretty]) {
