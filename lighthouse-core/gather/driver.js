@@ -703,10 +703,7 @@ class Driver {
   }
 
   blockUrlPatterns(urlPatterns) {
-    const promiseArr = [];
-    for (const url of urlPatterns) {
-      promiseArr.push(this.sendCommand('Network.addBlockedURL', {url}));
-    }
+    const promiseArr = urlPatterns.map(url => this.sendCommand('Network.addBlockedURL', {url}));
     return Promise.all(promiseArr);
   }
 }
