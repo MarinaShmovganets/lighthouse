@@ -111,15 +111,15 @@ ${parsedContent.selector} {
  */
 function addVendorPrefixes(propsNames) {
   const vendorPrefixes = ['-o-', '-ms-', '-moz-', '-webkit-'];
-
-  let propsNamesWithPrefixes = [];
+  propsNames = Array.isArray(propsNames) ? propsNames : new Array(propsNames);
+  let propsNamesWithPrefixes = propsNames;
   // Map vendorPrefixes to propsNames
   for (const prefix of vendorPrefixes) {
     const temp = propsNames.map(propName => `${prefix}${propName}`);
     propsNamesWithPrefixes = propsNamesWithPrefixes.concat(temp);
   }
   // Add original propNames
-  return propsNamesWithPrefixes.concat(propsNames);
+  return propsNamesWithPrefixes;
 }
 module.exports = {
   filterStylesheetsByUsage,
