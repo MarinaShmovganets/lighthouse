@@ -30,6 +30,7 @@ const _flatten = arr => [].concat(...arr);
 
 let lighthouseIsRunning = false;
 let latestStatusLog = [];
+let latestArtifacts = undefined;
 
 /**
  * Filter out any unrequested aggregations from the config. If any audits are
@@ -96,6 +97,17 @@ function updateBadgeUI(optUrl) {
 }
 
 /**
+ * Removes artifacts from the result object for portability
+ * @param {!Object} results Lighthouse results object
+ */
+function filterOutArtifacts(result) {
+  // save artifacts in case the viewer will want them later.
+  latestArtifacts = result.artifacts;
+  // strip them out, as the networkRecords artifact has circular structures
+  result.artifacts = undefined;
+}
+
+/**
  * @param {!Connection} connection
  * @param {string} url
  * @param {!Object} options Lighthouse options.
@@ -120,6 +132,7 @@ window.runLighthouseForConnection = function(connection, url, options, requested
     .then(result => {
       lighthouseIsRunning = false;
       updateBadgeUI();
+      filterOutArtifacts(result);
       return result;
     })
     .catch(err => {
@@ -172,6 +185,7 @@ window.createReportPageAsBlob = function(results, reportContext) {
   let html;
   try {
     html = reportGenerator.generateHTML(results, reportContext);
+    throw new Error('sdlfjksdf');
   } catch (err) {
     html = reportGenerator.renderException(err, results);
   }
@@ -181,6 +195,13 @@ window.createReportPageAsBlob = function(results, reportContext) {
   performance.mark('report-end');
   performance.measure('generate report', 'report-start', 'report-end');
   return blobURL;
+};
+
+/**
+ * Returns full artifacts object from latest run
+ */
+window.getLatestArtifacts = function() {
+  return latestArtifacts;
 };
 
 /**
