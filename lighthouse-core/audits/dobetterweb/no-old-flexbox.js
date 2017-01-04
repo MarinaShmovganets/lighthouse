@@ -55,7 +55,7 @@ class NoOldFlexboxAudit extends Audit {
     // https://www.w3.org/TR/2009/WD-css3-flexbox-20090723/
     // (e.g. box-flex, box-orient, box-flex-group, display: flexbox (2011 version))
     const propsNames = ['box-flex', 'box-orient', 'box-flex-group', 'display'];
-    const propsNamesWithPrefixes = StyleHelpers.addWebPrefixes(propsNames);
+    const propsNamesWithPrefixes = StyleHelpers.addVendorPrefixes(propsNames);
     const propsValues = ['box', 'flexbox'];
     const sheetsUsingDisplayBox = StyleHelpers.filterStylesheetsByUsage(
         artifacts.Styles, propsNamesWithPrefixes, propsValues);

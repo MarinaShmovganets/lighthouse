@@ -55,10 +55,6 @@ describe('style helpers', () => {
       assert.equal(results.length, 1, 'accepts array CSS property name and string value pair');
 
       results = StyleHelpers.filterStylesheetsByUsage(
-          stylesheets, ['display'], 'box');
-      assert.equal(results.length, 1, 'accepts array CSS property name and string value pair');
-
-      results = StyleHelpers.filterStylesheetsByUsage(
           stylesheets, ['box-flex', 'box-orient', 'box-flex-group', 'display'], 'box');
       assert.equal(results.length, 1, 'accepts array of CSS property names and string value pair');
     });
@@ -121,7 +117,7 @@ describe('style helpers', () => {
   describe('addWebPrefixes()', function() {
     it('correctly adds prefixes to the propsNames', () => {
       const propsNames = ['box-flex', 'box-orient', 'box-flex-group', 'display'];
-      const results = StyleHelpers.addWebPrefixes(propsNames);
+      const results = StyleHelpers.addVendorPrefixes(propsNames);
       const expected = ['-o-box-flex', '-o-box-orient', '-o-box-flex-group', '-o-display',
                         '-ms-box-flex', '-ms-box-orient', '-ms-box-flex-group', '-ms-display',
                         '-moz-box-flex', '-moz-box-orient', '-moz-box-flex-group', '-moz-display',

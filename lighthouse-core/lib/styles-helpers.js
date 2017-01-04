@@ -21,7 +21,7 @@
  * or name/value pair.
  *
  * @param {!Array} stylesheets A list of stylesheets used by the page.
- * @param {string|Array<string>=} propName Optional name of the CSS property/propertys to filter
+ * @param {string|Array<string>=} propName Optional name of the CSS property/properties to filter
  *     results on. If propVal is not specified, all stylesheets that use the property are
  *     returned. Otherwise, stylesheets that use the propName: propVal are returned.
  * @param {string|Array<string>=} propVal Optional value of the CSS property/propertys to filter
@@ -104,29 +104,25 @@ ${parsedContent.selector} {
 }
 
 /**
- * Returns a array of all CSS prefixes and the default CSS style names.
+ * Returns an array of all CSS prefixes and the default CSS style names.
  *
- * @param {string|Array<string>=} propNames CSS text content.
- * @param {Array<string>=} propsNamesWithPrefixes The parsed version content.
- * @return {{styleRule: string, location: string}} Formatted output.
+ * @param {string|Array<string>=} propNames CSS property names.
+ * @return {Array<string>=} CSS property names with and without vendor prefixes.
  */
-function addWebPrefixes(propsNames) {
+function addVendorPrefixes(propsNames) {
   const vendorPrefixes = ['-o-', '-ms-', '-moz-', '-webkit-'];
 
   let propsNamesWithPrefixes = [];
   // Map vendorPrefixes to propsNames
-  for(const i of vendorPrefixes) {
-    const temp = propsNames.map(function(x) {
-      return i + x;
-    });
+  for (const prefix of vendorPrefixes) {
+    const temp = propsNames.map(propName => `${prefix}${propName}`);
     propsNamesWithPrefixes = propsNamesWithPrefixes.concat(temp);
   }
-  // Add orginal propNames
-  propsNamesWithPrefixes = propsNamesWithPrefixes.concat(propsNames);
-  return propsNamesWithPrefixes;
+  // Add original propNames
+  return propsNamesWithPrefixes.concat(propsNames);
 }
 module.exports = {
   filterStylesheetsByUsage,
   getFormattedStyleRule,
-  addWebPrefixes
+  addVendorPrefixes
 };
