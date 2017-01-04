@@ -312,17 +312,9 @@ describe('Runner', () => {
     });
 
     return Runner.run({}, {url, config}).then(results => {
-      if (!results.artifacts instanceof Object) {
-        assert.ok(false);
-        return;
-      }
-
       assert.strictEqual(results.artifacts.HTTPS.value, true);
 
-      for (const method in computedArtifacts) {
-        if (!computedArtifacts.hasOwnProperty(method)) {
-          continue;
-        }
+      for (const method in Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
       }
     });
@@ -341,15 +333,7 @@ describe('Runner', () => {
     });
 
     return Runner.run(null, {url, config, driverMock}).then(results => {
-      if (!results.artifacts instanceof Object) {
-        assert.ok(false);
-        return;
-      }
-
-      for (const method in computedArtifacts) {
-        if (!computedArtifacts.hasOwnProperty(method)) {
-          continue;
-        }
+      for (const method in Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
       }
     });
@@ -373,17 +357,9 @@ describe('Runner', () => {
     });
 
     return Runner.run(null, {url, config, driverMock}).then(results => {
-      if (!results.artifacts instanceof Object) {
-        assert.ok(false);
-        return;
-      }
-
       assert.strictEqual(results.artifacts.HTTPS.value, true);
 
-      for (const method in computedArtifacts) {
-        if (!computedArtifacts.hasOwnProperty(method)) {
-          continue;
-        }
+      for (const method in Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
       }
     });
