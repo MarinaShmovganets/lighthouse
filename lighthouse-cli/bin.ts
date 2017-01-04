@@ -260,7 +260,7 @@ function runLighthouse(url: string,
     .then(chrome => chromeLauncher = chrome)
     .then(() => lighthouse(url, flags, config))
     .then((results: Results) => {
-      // delte artifacts from result so reports won't include artifacts.
+      // delete artifacts from result so reports won't include artifacts.
       const artifacts = results.artifacts;
       results.artifacts = undefined;
       if (flags.saveArtifacts) {
