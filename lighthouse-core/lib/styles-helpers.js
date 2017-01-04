@@ -21,10 +21,10 @@
  * or name/value pair.
  *
  * @param {!Array} stylesheets A list of stylesheets used by the page.
- * @param {string|string[]=} propName Optional name of the CSS property/propertys to filter
+ * @param {string|Array<string>=} propName Optional name of the CSS property/propertys to filter
  *     results on. If propVal is not specified, all stylesheets that use the property are
  *     returned. Otherwise, stylesheets that use the propName: propVal are returned.
- * @param {string|string[]=} propVal Optional value of the CSS property/propertys to filter
+ * @param {string|Array<string>=} propVal Optional value of the CSS property/propertys to filter
  *     results on.
  * @return {!Array} A list of stylesheets that use the CSS property.
  */
