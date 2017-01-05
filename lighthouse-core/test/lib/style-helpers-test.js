@@ -117,21 +117,22 @@ describe('style helpers', () => {
   describe('addWebPrefixes()', function() {
     it('correctly adds prefixes to array of propsNames', () => {
       const propsNames = ['box-flex', 'box-orient', 'box-flex-group', 'display'];
-      const results = StyleHelpers.addVendorPrefixes(propsNames);
+      const results = StyleHelpers.addVendorPrefixes(propsNames).sort();
       const expected = ['box-flex', 'box-orient', 'box-flex-group', 'display',
                         '-o-box-flex', '-o-box-orient', '-o-box-flex-group', '-o-display',
                         '-ms-box-flex', '-ms-box-orient', '-ms-box-flex-group', '-ms-display',
                         '-moz-box-flex', '-moz-box-orient', '-moz-box-flex-group', '-moz-display',
                         '-webkit-box-flex', '-webkit-box-orient', '-webkit-box-flex-group',
-                        '-webkit-display'];
-      assert.equal(results.toString(), expected.toString());
+                        '-webkit-display'].sort();
+      assert.deepEqual(results, expected);
     });
 
     it('correctly adds prefixes to a string propName', () => {
       const propName = 'display';
-      const results = StyleHelpers.addVendorPrefixes(propName);
-      const expected = ['display', '-o-display', '-ms-display', '-moz-display', '-webkit-display'];
-      assert.equal(results.toString(), expected.toString());
+      const results = StyleHelpers.addVendorPrefixes(propName).sort();
+      const expected = ['display', '-o-display', '-ms-display', '-moz-display',
+                        '-webkit-display'].sort();
+      assert.deepEqual(results, expected);
     });
   });
 });
