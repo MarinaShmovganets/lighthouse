@@ -133,9 +133,15 @@ class FirstMeaningfulPaint extends Audit {
     // Our navStart will be the latest one before fCP.
     const navigationStart = frameEvents.filter(e =>
         e.name === 'navigationStart' && e.ts < firstFCP.ts).pop();
-    // FMP will follow at/after the FCP
+    // fMP will follow at/after the FCP
     const firstMeaningfulPaint = frameEvents.find(e =>
         e.name === 'firstMeaningfulPaint' && e.ts >= firstFCP.ts);
+
+    // Sometimes fMP is triggered before fCP
+    // (this happends when above the fold is being swapped with JS)
+    if (!firstMeaningfulPaint) {
+      throw new Error('No usable `firstMeaningfulPaint` event found in trace');
+    }
 
     // navigationStart is currently essential to FMP calculation.
     // see: https://github.com/GoogleChrome/lighthouse/issues/753
