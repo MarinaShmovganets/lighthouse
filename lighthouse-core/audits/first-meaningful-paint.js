@@ -148,12 +148,6 @@ class FirstMeaningfulPaint extends Audit {
       throw new Error('No usable `firstMeaningfulPaint` event found in trace');
     }
 
-    // Sometimes fMP is triggered before fCP
-    // (this happends when above the fold is being swapped with JS)
-    if (!firstMeaningfulPaint) {
-      throw new Error('No usable `firstMeaningfulPaint` event found in trace');
-    }
-
     // navigationStart is currently essential to FMP calculation.
     // see: https://github.com/GoogleChrome/lighthouse/issues/753
     if (!navigationStart) {
