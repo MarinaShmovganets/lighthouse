@@ -42,11 +42,11 @@ function filterStylesheetsByUsage(stylesheets, propName, propVal) {
       let usedVal = '';
       // Prevent indexOf on null value
       if (propName) {
-        propName = Array.isArray(propName) ? propName : new Array(propName);
+        propName = Array.isArray(propName) ? propName : [propName];
         usedName = propName.indexOf(item.property.name) > -1;
       }
       if (propVal) {
-        propVal = Array.isArray(propVal) ? propVal : new Array(propVal);
+        propVal = Array.isArray(propVal) ? propVal : [propVal];
         usedVal = propVal.indexOf(item.property.val) > -1;
       }
       // Allow search by css property name, a value, or name/value pair.
@@ -111,7 +111,7 @@ ${parsedContent.selector} {
  */
 function addVendorPrefixes(propsNames) {
   const vendorPrefixes = ['-o-', '-ms-', '-moz-', '-webkit-'];
-  propsNames = Array.isArray(propsNames) ? propsNames : new Array(propsNames);
+  propsNames = Array.isArray(propsNames) ? propsNames : [propsNames];
   let propsNamesWithPrefixes = propsNames;
   // Map vendorPrefixes to propsNames
   for (const prefix of vendorPrefixes) {
