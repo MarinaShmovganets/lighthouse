@@ -64,5 +64,6 @@ cd ..; mkdir tmp; cd tmp
 npm install ../lighthouse
 npm explore lighthouse -- npm run smoke
 npm explore lighthouse -- npm run smokehouse
+npm explore lighthouse -- npm run chrome # try the manual launcher
 cd ..; rm -rf ./tmp;
 ```
