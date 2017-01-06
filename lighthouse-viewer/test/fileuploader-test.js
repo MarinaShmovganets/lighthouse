@@ -19,7 +19,12 @@
 
 const assert = require('assert');
 
-const testHelpers = require('./test-helpers'); // before other src imports.
+const testHelpers = require('./test-helpers');
+
+// Called before other src import so code that relies on `document` and
+// `window` have them defined.
+testHelpers.setupJsDomGlobals();
+
 const FileUploader = require('../app/src/fileuploader');
 const logger = require('../app/src/logger');
 
@@ -32,10 +37,10 @@ function assertUIReset(uploader) {
 describe('Viewer', () => {
   beforeEach(function() {
     // Reconstruct page on every test so event listeners are clean.
-    testHelpers.setupGlobals();
+    testHelpers.setupJsDomGlobals();
   });
 
-  afterEach(testHelpers.cleanupGlobals);
+  afterEach(testHelpers.cleanupJsDomGlobals);
 
   it('initializes properties and the DOM', () => {
     const uploader = new FileUploader();

@@ -23,21 +23,17 @@ const jsdom = require('jsdom');
 
 const PAGE = fs.readFileSync(path.join(__dirname, '../app/index.html'), 'utf8');
 
-function setupGlobals() {
+function setupJsDomGlobals() {
   global.document = jsdom.jsdom(PAGE);
   global.window = global.document.defaultView;
 }
 
-function cleanupGlobals() {
+function cleanupJsDomGlobals() {
   global.document = undefined;
   global.window = undefined;
 }
 
-// call before other src imports so DOM code that relies on `document` and
-// `window` have them defined.
-setupGlobals();
-
 module.exports = {
-  setupGlobals,
-  cleanupGlobals
+  setupJsDomGlobals,
+  cleanupJsDomGlobals
 };
