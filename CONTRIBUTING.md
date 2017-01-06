@@ -36,8 +36,16 @@ echo "Bump the versions in extension/app/manifest.json and package.json"
 # * Test err'thing * 
 echo "Test the CLI."
 yarn run smoke
-echo "Test a fresh local install (see below)"
 echo "Test the extension"
+
+echo "Test a fresh local install (see below)"
+# (starting from lighthouse root...)
+# cd ..; mkdir tmp; cd tmp
+# npm install ../lighthouse
+# npm explore lighthouse -- npm run smoke
+# npm explore lighthouse -- npm run smokehouse
+# npm explore lighthouse -- npm run chrome # try the manual launcher
+# cd ..; rm -rf ./tmp;
 
 echo "Test the lighthouse-viewer build"
 # Manual test for now:
@@ -66,11 +74,5 @@ echo "Inform various peoples"
 
 
 # * Testing a fresh local install *
-# (start from lighthouse root)
-cd ..; mkdir tmp; cd tmp
-npm install ../lighthouse
-npm explore lighthouse -- npm run smoke
-npm explore lighthouse -- npm run smokehouse
-npm explore lighthouse -- npm run chrome # try the manual launcher
-cd ..; rm -rf ./tmp;
+
 ```
