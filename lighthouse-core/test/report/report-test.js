@@ -125,6 +125,5 @@ describe('Report', () => {
         'anchors are transformed');
     assert.ok(!html.includes(
         '<img src="test.gif" onerror="alert(10)">'), 'non-recognized HTML is sanitized');
-    assert.ok(!html.includes('<b>html should not</b>'), 'non-recognized HTML is sanitized');
   });
 });
