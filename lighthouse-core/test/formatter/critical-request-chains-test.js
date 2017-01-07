@@ -129,3 +129,32 @@ describe('CRC Formatter', () => {
     assert.ok(truncatedURLRegExp.test(output));
   });
 });
+
+
+describe('parseURL', () => {
+  it('Elides hashes', () => {
+    const url = 'http://example.com/file-f303dec6eec305a4fab8025577db3c2feb418148ac75ba378281399fb1ba670b.css';
+    const result = criticalRequestChainFormatter.parseURL(url);
+    assert.equal(result.file, '/file-f303dec\u2026.css');
+  });
+
+  it('Elides long names', () => {
+    const result = criticalRequestChainFormatter.parseURL(superLongName);
+    const expected = '/thisIsASuperLongURLThatWillTriggerFilenameTruncationWhichWe\u2026.js';
+    assert.equal(result.file, expected);
+  });
+
+  it('Elides long names with hash', () => {
+    const url = superLongName.slice(0, -3)
+      + '-f303dec6eec305a4fab8025577db3c2feb418148ac75ba378281399fb1ba670b.css';
+    const result = criticalRequestChainFormatter.parseURL(url);
+    const expected = '/thisIsASuperLongURLThatWillTriggerFilenameTruncationWhichW\u2026.css';
+    assert.equal(result.file, expected);
+  });
+
+  it('Doesn\'t elide short names', () => {
+    const url = 'http://example.com/file.css';
+    const result = criticalRequestChainFormatter.parseURL(url);
+    assert.equal(result.file, '/file.css');
+  });
+});

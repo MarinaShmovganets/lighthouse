@@ -227,8 +227,15 @@ class CriticalRequestChains extends Formatter {
         // And grab the last two parts.
         .split('/').slice(-2).join('/');
 
+    // Elide hash in a filename
+    file = file.replace(/([a-f0-9]{7})[a-f0-9]{13}[a-f0-9]*/g, '$1\u2026');
+    // Elide too long filenames
     if (file.length > MAX_FILENAME_LENGTH) {
-      file = file.slice(0, MAX_FILENAME_LENGTH) + '...';
+      const dotIndex = file.lastIndexOf('.');
+      file =
+        file.slice(0, MAX_FILENAME_LENGTH -1 -(file.length - dotIndex))
+        + '\u2026'
+        + file.slice(dotIndex);
     }
 
     const parsedURL = {
