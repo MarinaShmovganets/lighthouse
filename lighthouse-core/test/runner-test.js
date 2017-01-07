@@ -21,8 +21,6 @@ const Config = require('../config/config');
 const Audit = require('../audits/audit');
 const assert = require('assert');
 const path = require('path');
-const recordsFromLogs = require('../lib/network-recorder').recordsFromLogs;
-const unresolvedPerfLog = require('./fixtures/unresolved-perflog.json');
 
 /* eslint-env mocha */
 
@@ -124,61 +122,6 @@ describe('Runner', () => {
       .then(_ => {
         assert.ok(false);
       }, _ => {
-        assert.ok(true);
-      });
-  });
-
-  it('rejects when domain name can\'t be resolved', () => {
-    const url = 'https://some-non-existing-domain.com';
-    const config = new Config({
-      passes: [{
-        gatherers: ['https']
-      }],
-      audits: [
-        'is-on-https'
-      ]
-    });
-
-    // Arrange for driver to return unresolved request.
-    const unresolvedDriver = Object.assign({}, driverMock, {
-      online: true,
-      endNetworkCollect() {
-        return Promise.resolve(recordsFromLogs(unresolvedPerfLog));
-      }
-    });
-
-    return Runner.run({}, {url, config, driverMock: unresolvedDriver})
-      .then(_ => {
-        assert.ok(false);
-      }, error => {
-        assert.ok(true);
-        assert.equal(error.message, 'net::ERR_NAME_NOT_RESOLVED');
-      });
-  });
-
-  it('resolves when domain name can\'t be resolved but is offline', () => {
-    const url = 'https://some-non-existing-domain.com';
-    const config = new Config({
-      passes: [{
-        gatherers: ['https']
-      }],
-      audits: [
-        'is-on-https'
-      ]
-    });
-
-    // Arrange for driver to return unresolved request.
-    const unresolvedDriver = Object.assign({}, driverMock, {
-      online: false,
-      endNetworkCollect() {
-        return Promise.resolve(
-          recordsFromLogs(require('./fixtures/unresolved-perflog.json'))
-        );
-      }
-    });
-
-    return Runner.run({}, {url, config, driverMock: unresolvedDriver})
-      .then(_ => {
         assert.ok(true);
       });
   });

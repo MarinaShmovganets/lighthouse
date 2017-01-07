@@ -23,6 +23,8 @@ const GatherRunner = require('../../gather/gather-runner');
 const assert = require('assert');
 const Config = require('../../config/config');
 const path = require('path');
+const recordsFromLogs = require('../../lib/network-recorder').recordsFromLogs;
+const unresolvedPerfLog = require('./../fixtures/unresolved-perflog.json');
 
 class TestGatherer extends Gatherer {
   constructor() {
@@ -691,5 +693,62 @@ describe('GatherRunner', function() {
         config: new Config({})
       }).then(_ => assert.ok(false), _ => assert.ok(true));
     });
+
+  it('rejects when domain name can\'t be resolved', () => {
+    const passes = [{
+      recordNetwork: true,
+      recordTrace: true,
+      passName: 'firstPass',
+      gatherers: []
+    }];
+
+    // Arrange for driver to return unresolved request.
+    const unresolvedDriver = Object.assign({}, fakeDriver, {
+      online: true,
+      endNetworkCollect() {
+        return Promise.resolve(recordsFromLogs(unresolvedPerfLog));
+      }
+    });
+
+    return GatherRunner.run(passes, {
+      driver: unresolvedDriver,
+      url: 'https://some-non-existing-domain.com',
+      flags: {},
+      config: new Config({})
+    })
+      .then(_ => {
+        assert.ok(false);
+      }, error => {
+        assert.ok(true);
+        assert.equal(error.message, 'net::ERR_NAME_NOT_RESOLVED');
+      });
+  });
+
+  it('resolves when domain name can\'t be resolved but is offline', () => {
+    const passes = [{
+      recordNetwork: true,
+      recordTrace: true,
+      passName: 'firstPass',
+      gatherers: []
+    }];
+
+    // Arrange for driver to return unresolved request.
+    const unresolvedDriver = Object.assign({}, fakeDriver, {
+      online: false,
+      endNetworkCollect() {
+        return Promise.resolve(recordsFromLogs(unresolvedPerfLog));
+      }
+    });
+
+    return GatherRunner.run(passes, {
+      driver: unresolvedDriver,
+      url: 'https://some-non-existing-domain.com',
+      flags: {},
+      config: new Config({})
+    })
+      .then(_ => {
+        assert.ok(true);
+      });
+  });
   });
 });

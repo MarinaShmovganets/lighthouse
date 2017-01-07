@@ -20,7 +20,6 @@ const _SIGINT = 'SIGINT';
 const _SIGINT_EXIT_CODE = 130;
 const _RUNTIME_ERROR_CODE = 1;
 const _PROTOCOL_TIMEOUT_EXIT_CODE = 67;
-const _PAGE_LOAD_ERROR_EXIT_CODE = 68;
 
 const environment = require('../lighthouse-core/lib/environment.js');
 if (!environment.checkNodeCompatibility()) {
@@ -243,8 +242,9 @@ function showProtocolTimeoutError() {
 }
 
 function showPageLoadError() {
-  console.error('Unable to load the page.');
-  process.exit(_PAGE_LOAD_ERROR_EXIT_CODE);
+  console.error('Unable to load the page. ' +
+    'Please verify that the url you are trying to review actually loads in your bowser.');
+  process.exit(_RUNTIME_ERROR_CODE);
 }
 
 function handleError(err: LighthouseError) {

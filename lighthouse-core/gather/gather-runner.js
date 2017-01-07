@@ -204,7 +204,7 @@ class GatherRunner {
       return driver.endNetworkCollect();
     }).then(networkRecords => {
       if (driver.online && networkRecords[0].failed) {
-        log.error('statusEnd', networkRecords[0].localizedFailDescription);
+        log.error('GatherRunner', networkRecords[0].localizedFailDescription);
         const error = new Error(networkRecords[0].localizedFailDescription);
         error.code = 'PAGE_LOAD_ERROR';
         return Promise.reject(error);
