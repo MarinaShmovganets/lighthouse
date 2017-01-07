@@ -91,6 +91,11 @@ function collectTagsThatBlockFirstPaint() {
 
 function filteredAndIndexedByUrl(networkRecords) {
   return networkRecords.reduce((prev, record) => {
+    // Failed requests (404 or other) should not be included, as they do not block.
+    if (record._failed || !record._mimeType) {
+      return prev;
+    }
+
     // Filter stylesheet, javascript, and html import mimetypes.
     const isHtml = record._mimeType.indexOf('html') > -1;
     // A stylesheet only blocks script if it was initiated by the parser
