@@ -11,6 +11,10 @@
     "node": ">=5"
   },
   "scripts": {
+    "prepublish": "npm run install-cli && npm run install-extension && npm run install-viewer",
+    "install-cli": "npm --prefix ./lighthouse-cli install ./lighthouse-cli",
+    "install-extension": "npm --prefix ./lighthouse-extension install ./lighthouse-extension",
+    "install-viewer": "npm --prefix ./lighthouse-viewer install ./lighthouse-viewer",
     "lint": "[ \"$CI\" = true ] && eslint --quiet -f codeframe . || eslint .",
     "smoke": "lighthouse-cli/test/smokehouse/offline-local/run-tests.sh && lighthouse-cli/test/smokehouse/dobetterweb/run-tests.sh",
     "coverage": "node $__node_harmony $(npm bin)/istanbul cover -x \"**/third_party/**\" _mocha -- $(find */test -name '*-test.js') --timeout 10000 --reporter progress",
