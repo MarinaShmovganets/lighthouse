@@ -23,5 +23,38 @@
 
 /* global self */
 
-module.exports = (typeof self !== 'undefined' && self.URL) ||
-  require('url').URL || require('whatwg-url').URL;
+// TODO: Add back node require('url').URL parsing when bug is resolved:
+// https://github.com/GoogleChrome/lighthouse/issues/1186
+const URL = (typeof self !== 'undefined' && self.URL) || require('whatwg-url').URL;
+
+URL.INVALID_URL_DEBUG_STRING =
+    'Lighthouse was unable to determine the URL of some script executions. ' +
+    'It\'s possible a Chrome extension or other eval\'d code is the source.';
+
+/**
+ * @param {string} url
+ * @return {boolean}
+ */
+URL.isValid = function isValid(url) {
+  try {
+    new URL(url);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+/**
+ * @param {string} urlA
+ * @param {string} urlB
+ * @return {boolean}
+ */
+URL.hostsMatch = function hostsMatch(urlA, urlB) {
+  try {
+    return new URL(urlA).host === new URL(urlB).host;
+  } catch (e) {
+    return false;
+  }
+};
+
+module.exports = URL;

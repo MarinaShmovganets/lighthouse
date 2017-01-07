@@ -59,4 +59,20 @@ describe('External anchors use rel="noopener"', () => {
     assert.equal(auditResult.rawValue, false);
     assert.equal(auditResult.extendedInfo.value.length, 2);
   });
+
+  it('handles links with no href attribute', () => {
+    const auditResult = ExternalAnchorsAudit.audit({
+      AnchorsWithNoRelNoopener: {
+        usages: [
+          {href: ''},
+          {href: 'http://'},
+          {href: 'http:'}
+        ]
+      },
+      URL: {finalUrl: URL},
+    });
+    assert.equal(auditResult.rawValue, false);
+    assert.equal(auditResult.extendedInfo.value.length, 3);
+    assert.ok(auditResult.debugString, 'includes debugString');
+  });
 });

@@ -27,7 +27,7 @@ class ManifestDisplay extends Audit {
     return {
       category: 'Manifest',
       name: 'manifest-display',
-      description: 'Manifest\'s display property is set',
+      description: 'Manifest\'s `display` property is set',
       requiredArtifacts: ['Manifest']
     };
   }
@@ -37,7 +37,7 @@ class ManifestDisplay extends Audit {
    * @return {boolean}
    */
   static hasRecommendedValue(val) {
-    return (val === 'fullscreen' || val === 'standalone' || val === 'browser');
+    return ['browser', 'fullscreen', 'minimal-ui', 'standalone'].indexOf(val) !== -1;
   }
 
   /**

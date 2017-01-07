@@ -25,6 +25,9 @@ const idb = require('idb-keyval');
 const logger = require('./logger');
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
 
+// TODO: We only need getFilenamePrefix from asset-saver. Tree shake!
+const getFilenamePrefix = require('../../../lighthouse-core/lib/asset-saver').getFilenamePrefix;
+
 const LH_CURRENT_VERSION = require('../../../package.json').version;
 const APP_URL = `${location.origin}${location.pathname}`;
 
@@ -40,6 +43,10 @@ class LighthouseViewerReport {
     this.onCopyButtonClick = this.onCopyButtonClick.bind(this);
     this.onFileUpload = this.onFileUpload.bind(this);
     this.onPaste = this.onPaste.bind(this);
+    this.onExportButtonClick = this.onExportButtonClick.bind(this);
+    this.onExport = this.onExport.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
 
     this._copyAttempt = false;
 
@@ -50,17 +57,10 @@ class LighthouseViewerReport {
     this._isNewReport = true;
 
     this.initUI();
-    this.loadFromURL();
+    this.loadFromDeepLink();
   }
 
   initUI() {
-    const printButton = document.querySelector('.js-print');
-    if (printButton) {
-      printButton.addEventListener('click', _ => {
-        window.print();
-      });
-    }
-
     this.shareButton = document.querySelector('.js-share');
     if (this.shareButton) {
       this.shareButton.addEventListener('click', this.onShare);
@@ -81,6 +81,18 @@ class LighthouseViewerReport {
     }
 
     document.addEventListener('paste', this.onPaste);
+
+    this.exportButton = document.querySelector('.js-export');
+    if (this.exportButton) {
+      this.exportButton.addEventListener('click', this.onExportButtonClick);
+      const dropdown = document.querySelector('.export-dropdown');
+      dropdown.addEventListener('click', this.onExport);
+    }
+
+    const gistURLInput = document.querySelector('.js-gist-url');
+    if (gistURLInput) {
+      gistURLInput.addEventListener('change', this.onInputChange);
+    }
   }
 
   enableShareButton() {
@@ -93,7 +105,11 @@ class LighthouseViewerReport {
     this.shareButton.disabled = true;
   }
 
-  loadFromURL() {
+  closeExportDropdown() {
+    this.exportButton.classList.remove('active');
+  }
+
+  loadFromDeepLink() {
     // Pull gist id from URL and render it.
     const params = new URLSearchParams(location.search);
     const gistId = params.get('gist');
@@ -179,12 +195,16 @@ class LighthouseViewerReport {
    */
   onFileUpload(file) {
     return FileUploader.readFile(file).then(str => {
-      if (!file.type.match('json')) {
-        throw new Error('Unsupported report format. Expected JSON.');
+      let json;
+      try {
+        json = JSON.parse(str);
+      } catch(e) {
+        throw new Error('Could not parse JSON file.');
       }
+
       this._isNewReport = true;
 
-      this.replaceReportHTML(JSON.parse(str));
+      this.replaceReportHTML(json);
     }).catch(err => logger.error(err.message));
   }
 
@@ -215,7 +235,7 @@ class LighthouseViewerReport {
       // We want to write our own data to the clipboard, not the user's text selection.
       e.preventDefault();
       e.clipboardData.setData('text/plain', JSON.stringify(this.json, null, 2));
-      logger.log('Report copied to clipboard');
+      logger.log('Report JSON copied to clipboard');
     }
 
     this._copyAttempt = false;
@@ -251,6 +271,17 @@ class LighthouseViewerReport {
   onPaste(e) {
     e.preventDefault();
 
+    // Try paste as gist URL.
+    try {
+      const url = new URL(e.clipboardData.getData('text'));
+      this._loadFromGistURL(url);
+
+      ga('send', 'event', 'report', 'paste-link');
+    } catch (err) {
+      // noop
+    }
+
+    // Try paste as json content.
     try {
       const json = JSON.parse(e.clipboardData.getData('text'));
       this.replaceReportHTML(json);
@@ -258,6 +289,114 @@ class LighthouseViewerReport {
       ga('send', 'event', 'report', 'paste');
     } catch (err) {
       // noop
+    }
+  }
+
+  /**
+   * Click handler for export button.
+   */
+  onExportButtonClick(e) {
+    e.target.classList.toggle('active');
+    document.addEventListener('keydown', this.onKeyDown);
+  }
+
+  /**
+   * Handles changes to the gist url input.
+   */
+  onInputChange(e) {
+    e.stopPropagation();
+
+    if (!e.target.value) {
+      return;
+    }
+
+    try {
+      this._loadFromGistURL(e.target.value);
+    } catch (err) {
+      logger.error('Invalid URL');
+    }
+  }
+
+  /**
+   * Updates URL with user's gist and loads from github.
+   * @param {string} url Gist URL.
+   */
+  _loadFromGistURL(url) {
+    try {
+      url = new URL(url);
+
+      if (url.origin !== 'https://gist.github.com') {
+        logger.error('URL was not a gist');
+        return;
+      }
+
+      const match = url.pathname.match(/[a-f0-9]{5,}/);
+      if (match) {
+        history.pushState({}, null, `${APP_URL}?gist=${match[0]}`);
+        this.loadFromDeepLink();
+      }
+    } catch (err) {
+      logger.error('Invalid URL');
+    }
+  }
+
+  /**
+   * Downloads a file (blob) using a[download].
+   * @param {Blob|File} The file to save.
+   */
+  _saveFile(blob) {
+    const filename = getFilenamePrefix({
+      url: this.json.url,
+      date: new Date(this.json.generatedTime)
+    });
+
+    const ext = blob.type.match('json') ? '.json' : '.html';
+
+    const a = document.createElement('a');
+    a.download = `${filename}${ext}`;
+    a.href = URL.createObjectURL(blob);
+    a.click();
+
+    setTimeout(_ => URL.revokeObjectURL(a.href), 500); // cleanup.
+  }
+
+  /**
+   * Handler for "export as" button.
+   */
+  onExport(e) {
+    if (!e.target.dataset.action) {
+      return;
+    }
+
+    switch (e.target.dataset.action) {
+      case 'print':
+        window.print();
+        break;
+      case 'save-json':
+        const jsonStr = JSON.stringify(this.json, null, 2);
+        this._saveFile(new Blob([jsonStr], {type: 'application/json'}));
+        break;
+      case 'save-html':
+        const reportGenerator = new ReportGenerator();
+        try {
+          const htmlStr = reportGenerator.generateHTML(this.json, 'cli');
+          this._saveFile(new Blob([htmlStr], {type: 'text/html'}));
+        } catch (err) {
+          logger.error('Could not export as HTML.');
+        }
+        break;
+    }
+
+    this.closeExportDropdown();
+    document.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  /**
+   * Keydown handler for the document.
+   */
+  onKeyDown(e) {
+    if (e.keyCode === 27) { // ESC
+      this.closeExportDropdown();
     }
   }
 }

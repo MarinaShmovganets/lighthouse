@@ -24,6 +24,7 @@ interface AggregationResultItem {
 interface Aggregation {
   name: string;
   score: Array<AggregationResultItem>;
+  total: number;
 }
 
 interface Results {
@@ -31,7 +32,8 @@ interface Results {
   aggregations: Array<Aggregation>;
   audits: Object;
   lighthouseVersion: string;
-};
+  artifacts: Object;
+}
 
 export {
   Results,

@@ -42,10 +42,9 @@ class PassiveEventsAudit extends Audit {
       category: 'JavaScript',
       name: 'uses-passive-event-listeners',
       description: 'Site uses passive listeners to improve scrolling performance',
-      helpText: 'Consider marking your touch and wheel event listeners as <code>passive</code> ' +
-          'to improve your page\'s scroll performance. <a href="https://developers.google.com/' +
-          'web/tools/lighthouse/audits/passive-event-listeners" target="_blank" ' +
-          'rel="noopener">Learn more</a>.',
+      helpText: 'Consider marking your touch and wheel event listeners as `passive` ' +
+          'to improve your page\'s scroll performance. ' +
+          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/passive-event-listeners).',
       requiredArtifacts: ['URL', 'EventListeners']
     };
   }
@@ -59,8 +58,8 @@ class PassiveEventsAudit extends Audit {
       return PassiveEventsAudit.generateAuditResult(artifacts.EventListeners);
     }
 
+    let debugString;
     const listeners = artifacts.EventListeners;
-    const pageHost = new URL(artifacts.URL.finalUrl).host;
 
     // Flags all touch and wheel listeners that 1) are from same host
     // 2) are not passive 3) do not call preventDefault()
@@ -68,7 +67,13 @@ class PassiveEventsAudit extends Audit {
       const isScrollBlocking = this.SCROLL_BLOCKING_EVENTS.indexOf(loc.type) !== -1;
       const mentionsPreventDefault = loc.handler.description.match(
             /\.preventDefault\(\s*\)/g);
-      const sameHost = loc.url ? new URL(loc.url).host === pageHost : true;
+      let sameHost = URL.hostsMatch(artifacts.URL.finalUrl, loc.url);
+
+      if (!URL.isValid(loc.url)) {
+        sameHost = true;
+        debugString = URL.INVALID_URL_DEBUG_STRING;
+      }
+
       return sameHost && isScrollBlocking && !loc.passive &&
              !mentionsPreventDefault;
     }).map(EventHelpers.addFormattedCodeSnippet);
@@ -80,7 +85,8 @@ class PassiveEventsAudit extends Audit {
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
         value: groupedResults
-      }
+      },
+      debugString
     });
   }
 }

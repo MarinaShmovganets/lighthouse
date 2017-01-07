@@ -26,6 +26,12 @@ const Formatter = require('../formatters/formatter');
 const SCORING_POINT_OF_DIMINISHING_RETURNS = 1600;
 const SCORING_MEDIAN = 4000;
 
+// We want an fMP at or after our fCP, however we see traces with the sole fMP
+// being up to 1ms BEFORE the fCP. We're okay if this happens, however if we see
+// a gap of more than 2 frames (32,000 microseconds), then it's a bug that should
+// be addressed in FirstMeaningfulPaintDetector.cpp
+const FCPFMP_TOLERANCE = 32 * 1000;
+
 class FirstMeaningfulPaint extends Audit {
   /**
    * @return {!AuditMeta}
@@ -36,7 +42,8 @@ class FirstMeaningfulPaint extends Audit {
       name: 'first-meaningful-paint',
       description: 'First meaningful paint',
       optimalValue: SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString() + 'ms',
-      helpText: 'First meaningful paint measures when the primary content of a page is visible. <a href="https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint" target="_blank" rel="noreferrer noopener">Learn more</a>.',
+      helpText: 'First meaningful paint measures when the primary content of a page is visible. ' +
+          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint).',
       requiredArtifacts: ['traces']
     };
   }
@@ -132,9 +139,14 @@ class FirstMeaningfulPaint extends Audit {
     // Our navStart will be the latest one before fCP.
     const navigationStart = frameEvents.filter(e =>
         e.name === 'navigationStart' && e.ts < firstFCP.ts).pop();
-    // FMP will follow at/after the FCP
+    // fMP will follow at/after the FCP, though we allow some timestamp tolerance
     const firstMeaningfulPaint = frameEvents.find(e =>
-        e.name === 'firstMeaningfulPaint' && e.ts >= firstFCP.ts);
+        e.name === 'firstMeaningfulPaint' && e.ts >= (firstFCP.ts - FCPFMP_TOLERANCE));
+
+    // Sometimes fMP is triggered before fCP
+    if (!firstMeaningfulPaint) {
+      throw new Error('No usable `firstMeaningfulPaint` event found in trace');
+    }
 
     // navigationStart is currently essential to FMP calculation.
     // see: https://github.com/GoogleChrome/lighthouse/issues/753
