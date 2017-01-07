@@ -240,8 +240,7 @@ function showProtocolTimeoutError() {
 }
 
 function showPageLoadError() {
-  console.error('Unable to load the page. ' +
-    'Please verify the url you are trying to review.');
+  console.error('Unable to load the page. Please verify the url you are trying to review.');
   process.exit(_RUNTIME_ERROR_CODE);
 }
 
