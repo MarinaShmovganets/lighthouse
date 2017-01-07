@@ -97,6 +97,7 @@ describe('CRC Formatter', () => {
     const truncatedURL = criticalRequestChainFormatter.parseURL(superLongName);
     const truncatedURLRegExp = new RegExp(truncatedURL.file, 'im');
     const expectedTreeOne = new RegExp([
+      '<div class="cnc-node" title="https://example.com/">',
       '<span class="cnc-node__tree-marker">',
       '<span class="tree-marker up-right"></span>',
       '<span class="tree-marker right"></span>',
@@ -111,6 +112,7 @@ describe('CRC Formatter', () => {
     assert.ok(expectedTreeOne.test(output));
 
     const expectedTreeTwo = new RegExp([
+      '<div class="cnc-node" title="https://example.com/b.js">',
       '<span class="cnc-node__tree-marker">',
       '<span class="tree-marker space"></span>',
       '<span class="tree-marker space"></span>',
@@ -126,6 +128,10 @@ describe('CRC Formatter', () => {
     ].join('\\s*'), 'im');
 
     assert.ok(expectedTreeTwo.test(output));
+
+    const expectedTreeThree = new RegExp(`<div class="cnc-node" title="${superLongName}">`);
+
+    assert.ok(expectedTreeThree.test(output));
     assert.ok(truncatedURLRegExp.test(output));
   });
 });
@@ -138,6 +144,12 @@ describe('parseURL', () => {
     assert.equal(result.file, '/file-f303dec\u2026.css');
   });
 
+  it('Elides hashes in the middle', () => {
+    const url = 'http://example.com/file-f303dec6eec305a4fab80378281399fb1ba670b-somethingmore.css';
+    const result = criticalRequestChainFormatter.parseURL(url);
+    assert.equal(result.file, '/file-f303dec\u2026-somethingmore.css');
+  });
+
   it('Elides long names', () => {
     const result = criticalRequestChainFormatter.parseURL(superLongName);
     const expected = '/thisIsASuperLongURLThatWillTriggerFilenameTruncationWhichWe\u2026.js';
@@ -145,8 +157,8 @@ describe('parseURL', () => {
   });
 
   it('Elides long names with hash', () => {
-    const url = superLongName.slice(0, -3)
-      + '-f303dec6eec305a4fab8025577db3c2feb418148ac75ba378281399fb1ba670b.css';
+    const url = superLongName.slice(0, -3) +
+        '-f303dec6eec305a4fab8025577db3c2feb418148ac75ba378281399fb1ba670b.css';
     const result = criticalRequestChainFormatter.parseURL(url);
     const expected = '/thisIsASuperLongURLThatWillTriggerFilenameTruncationWhichW\u2026.css';
     assert.equal(result.file, expected);

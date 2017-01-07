@@ -232,10 +232,8 @@ class CriticalRequestChains extends Formatter {
     // Elide too long filenames
     if (file.length > MAX_FILENAME_LENGTH) {
       const dotIndex = file.lastIndexOf('.');
-      file =
-        file.slice(0, MAX_FILENAME_LENGTH -1 -(file.length - dotIndex))
-        + '\u2026'
-        + file.slice(dotIndex);
+      file = file.slice(0, MAX_FILENAME_LENGTH - 1 - (file.length - dotIndex)) +
+          `\u2026${file.slice(dotIndex)}`;
     }
 
     const parsedURL = {
