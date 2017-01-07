@@ -241,7 +241,7 @@ function showProtocolTimeoutError() {
 
 function showPageLoadError() {
   console.error('Unable to load the page. ' +
-    'Please verify that the url you are trying to review actually loads in your bowser.');
+    'Please verify the url you are trying to review.');
   process.exit(_RUNTIME_ERROR_CODE);
 }
 
@@ -271,7 +271,7 @@ function runLighthouse(url: string,
       // delete artifacts from result so reports won't include artifacts.
       const artifacts = results.artifacts;
       results.artifacts = undefined;
-      
+
       if (flags.saveArtifacts) {
         assetSaver.saveArtifacts(artifacts);
       }
