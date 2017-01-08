@@ -148,6 +148,7 @@ class ReportGenerator {
 
   /**
    * Format time
+   * @param {string} date
    * @return {string}
    */
   _formatTime(date) {
@@ -170,6 +171,7 @@ class ReportGenerator {
 
   /**
    * Escape closing script tags.
+   * @param {string} jsonStr
    * @return {string}
    */
   _escapeScriptTags(jsonStr) {
@@ -244,7 +246,7 @@ class ReportGenerator {
    * Creates the page describing any error generated while running generateHTML()
    * @param {!Error} err Exception thrown from generateHTML.
    * @param {!Object} results Lighthouse results.
-   * @returns {string} HTML of the exception page.
+   * @return {string} HTML of the exception page.
    */
   renderException(err, results) {
     const template = Handlebars.compile(this.getExceptionTemplate());
@@ -260,7 +262,7 @@ class ReportGenerator {
    * Generates the Lighthouse report HTML.
    * @param {!Object} results Lighthouse results.
    * @param {!string} reportContext What app is requesting the report (eg. devtools, extension)
-   * @returns {string} HTML of the report page.
+   * @return {string} HTML of the report page.
    */
   generateHTML(results, reportContext) {
     reportContext = reportContext || 'extension';
