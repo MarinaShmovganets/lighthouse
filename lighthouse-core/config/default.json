@@ -84,6 +84,7 @@
     "dobetterweb/no-console-time",
     "dobetterweb/no-datenow",
     "dobetterweb/no-document-write",
+    "dobetterweb/no-negative-margins",
     "dobetterweb/no-mutation-events",
     "dobetterweb/no-old-flexbox",
     "dobetterweb/no-websql",
@@ -288,6 +289,9 @@
       "name": "Using modern CSS features",
       "audits": {
         "no-old-flexbox": {
+          "expectedValue": false
+        },
+        "no-negative-margins": {
           "expectedValue": false
         }
       }

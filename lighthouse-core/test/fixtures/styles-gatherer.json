@@ -12,7 +12,7 @@
       "startLine": 6,
       "startColumn": 7
     },
-    "content": "\n  body {\n    color: red;\n  }\n  p, div {\n    background: red, green;\n    border-radius: 3px;\n    transform: translateZ(0);\n    display: box;\n    transition: opacity 300ms ease-in-out;\n  }\n  .span {\n    transform: translate3d(0,0,0);\n    display: box; \/* old flexbox *\/\n  }\n",
+    "content": "\n  body {\n    color: red;\n  }\n  p, div {\n    background: red, green;\n    border-radius: 3px;\n    transform: translateZ(0);\n    display: box;\n    transition: opacity 300ms ease-in-out;\n  }\n  .span {\n    transform: translate3d(0,0,0);\n    display: box; \/* old flexbox *\/\n margin: -10px;\n }\n",
     "parsedContent": [
       {
         "property": {
@@ -117,6 +117,19 @@
           "endColumn": 17
         },
         "selector": ".span"
+      },
+      {
+        "property": {
+          "name": "margin",
+          "val": "-10px;"
+        },
+        "declarationRange": {
+          "startLine": 14,
+          "startColumn": 0,
+          "endLine": 14,
+          "endColumn": 16
+        },
+        "selector": ".span"
       }
     ]
   }, {
@@ -132,7 +145,7 @@
       "startLine": 6,
       "startColumn": 7
     },
-    "content": "\n  body {\n    color: red;\n  }\n  p, div {\n    background: red, green;\n    border-radius: 3px;\n    transform: translateZ(0);\n    display: flex;\n    transition: opacity 300ms ease-in-out;\n  }\n  .span {\n    transform: translate3d(0,0,0);\n    display: flex;\n  }\n",
+    "content": "\n  body {\n    color: red;\n  }\n  p, div {\n    background: red, green;\n    border-radius: 3px;\n    transform: translateZ(0);\n    display: flex;\n    transition: opacity 300ms ease-in-out;\n  }\n  .span {\n    transform: translate3d(0,0,0);\n    display: flex;\n }\n",
     "parsedContent": [
       {
         "property": {
