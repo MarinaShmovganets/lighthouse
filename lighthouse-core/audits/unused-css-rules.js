@@ -18,6 +18,8 @@
 
 const Audit = require('./audit');
 const Formatter = require('../formatters/formatter');
+
+const PREVIEW_LENGTH = 100;
 const ALLOWABLE_UNUSED_RULES_RATIO = 0.10;
 
 class UnusedCSSRules extends Audit {
@@ -45,6 +47,55 @@ class UnusedCSSRules extends Audit {
     }, {});
   }
 
+  static countRules(rules, indexedStylesheets) {
+    let unused = 0;
+
+    rules.forEach(rule => {
+      const stylesheetInfo = indexedStylesheets[rule.styleSheetId];
+
+      if (rule.used) {
+        stylesheetInfo.used.push(rule);
+      } else {
+        unused++;
+        stylesheetInfo.unused.push(rule);
+      }
+    });
+
+    return {unused: unused, total: rules.length};
+  }
+
+  static mapSheetToResult(stylesheetInfo) {
+    const numUsed = stylesheetInfo.used.length;
+    const numUnused = stylesheetInfo.unused.length;
+    const percentUsed = Math.round(100 * numUsed / (numUsed + numUnused)) || 0;
+
+    let contentPreview = stylesheetInfo.content;
+    if (contentPreview.length > PREVIEW_LENGTH) {
+      const firstRuleStart = contentPreview.indexOf('{');
+      const firstRuleEnd = contentPreview.indexOf('}');
+      if (firstRuleStart === -1 || firstRuleEnd === -1
+          || firstRuleStart > firstRuleEnd
+          || firstRuleStart > PREVIEW_LENGTH) {
+        contentPreview = contentPreview.slice(0, PREVIEW_LENGTH) + '...';
+      } else if (firstRuleEnd < PREVIEW_LENGTH) {
+        contentPreview = contentPreview.slice(0, firstRuleEnd + 1) + ' ...';
+      } else {
+        const lastSemicolonIndex = contentPreview
+          .slice(0, PREVIEW_LENGTH)
+          .lastIndexOf(';');
+        contentPreview = lastSemicolonIndex < firstRuleStart ?
+            contentPreview.slice(0, PREVIEW_LENGTH) + '... } ...' :
+            contentPreview.slice(0, lastSemicolonIndex + 1) + ' ... } ...';
+      }
+    }
+
+    return {
+      url: stylesheetInfo.header.sourceURL || 'inline',
+      label: `${percentUsed}% rules used`,
+      code: contentPreview.trim(),
+    };
+  }
+
   /**
    * @param {!Artifacts} artifacts
    * @return {!AuditResult}
@@ -64,44 +115,22 @@ class UnusedCSSRules extends Audit {
       return UnusedCSSRules.generateAuditResult(usage);
     }
 
-    let numUnusedRules = 0;
-    let numTotalRules = 0;
-    const indexedStylesheets = UnusedCSSRules.indexStylesheetsById(styles);
-    usage.forEach(rule => {
-      const stylesheetInfo = indexedStylesheets[rule.styleSheetId];
-
-      if (rule.used) {
-        stylesheetInfo.used.push(rule);
-      } else {
-        numUnusedRules++;
-        stylesheetInfo.unused.push(rule);
-      }
-
-      numTotalRules++;
-    });
-
-    const results = Object.keys(indexedStylesheets).map(stylesheetId => {
-      const stylesheetInfo = indexedStylesheets[stylesheetId];
-      const numUsed = stylesheetInfo.used.length;
-      const numUnused = stylesheetInfo.unused.length;
-      const percentUsed = Math.round(100 * numUsed / (numUsed + numUnused));
-      return {
-        url: stylesheetInfo.header.sourceURL || 'inline',
-        label: `${percentUsed}% rules used`,
-        code: stylesheetInfo.content.slice(0, 100),
-      };
+    const indexedSheets = UnusedCSSRules.indexStylesheetsById(styles);
+    const {unused, total} = UnusedCSSRules.countRules(usage, indexedSheets);
+    const results = Object.keys(indexedSheets).map(stylesheetId => {
+      return UnusedCSSRules.mapSheetToResult(indexedSheets[stylesheetId]);
     });
 
     let displayValue = '';
-    if (numUnusedRules > 1) {
-      displayValue = `${numUnusedRules} CSS rules were unused`;
-    } else if (numUnusedRules === 1) {
-      displayValue = `${numUnusedRules} CSS rule was unused`;
+    if (unused > 1) {
+      displayValue = `${unused} CSS rules were unused`;
+    } else if (unused === 1) {
+      displayValue = `${unused} CSS rule was unused`;
     }
 
     return UnusedCSSRules.generateAuditResult({
       displayValue,
-      rawValue: numUnusedRules / numTotalRules > ALLOWABLE_UNUSED_RULES_RATIO,
+      rawValue: unused / total > ALLOWABLE_UNUSED_RULES_RATIO,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
         value: results
