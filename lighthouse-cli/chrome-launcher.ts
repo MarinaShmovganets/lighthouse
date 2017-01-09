@@ -70,16 +70,24 @@ class ChromeLauncher {
   flags() {
     const flags = [
       `--remote-debugging-port=${this.port}`,
+      // Disable built-in Google Translate service
       '--disable-translate',
-      '--disable-extensions', // disable all chrome extensions entirely
-      // '--ignore-certificate-errors', // Ignore certificate errors, like self-signed
-      '--disable-background-networking', /* disables various background network services, including
-          extension updating, safe browsing service, upgrade detector, translate, UMA */
-      '--disable-sync', // disable syncing to a Google account
-      '--metrics-recording-only', // disables reporting to UMA, but allows for collection
-      '--safebrowsing-disable-auto-update', // New safebrowsing lists will not be fetched
-      '--disable-default-apps', // Disables installation of default apps on first run
-      '--no-first-run', // Skip first run wizards
+      // Disable all chrome extensions entirely
+      '--disable-extensions',
+      // Disable various background network services, including extension updating,
+      //   safe browsing service, upgrade detector, translate, UMA
+      '--disable-background-networking',
+      // Disable fetching safebrowsing lists, likely redundant due to disable-background-networking
+      '--safebrowsing-disable-auto-update',
+      // Disable syncing to a Google account
+      '--disable-sync',
+      // Disable reporting to UMA, but allows for collection
+      '--metrics-recording-only',
+      // Disable installation of default apps on first run
+      '--disable-default-apps',
+      // Skip first run wizards
+      '--no-first-run',
+      // Place Chrome profile in a custom location we'll rm -rf later
       `--user-data-dir=${this.TMP_PROFILE_DIR}`
     ];
 
