@@ -37,6 +37,9 @@
 <link rel="import" href="./dbw_partial_b.html" async> <!-- PASS -->
 
 <!-- PASS: preload that's activated later does not block rendering. -->
+<!-- Note: this only passes when using the static-server.js, which supports the ?delay=true param.
+     If you're using your own server, the resource will load instantly and the
+     gatherer find will see a stylesheet instead of a rel="preload". -->
 <link rel="preload" href="./dbw_tester.css?delay=true" as="style" onload="this.rel = 'stylesheet'">
 
 <style>

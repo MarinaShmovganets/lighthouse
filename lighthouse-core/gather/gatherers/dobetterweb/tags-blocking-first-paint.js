@@ -91,8 +91,7 @@ function collectTagsThatBlockFirstPaint() {
 
 function filteredAndIndexedByUrl(networkRecords) {
   return networkRecords.reduce((prev, record) => {
-    // Failed requests (404 or other) should not be included, as they do not block.
-    if (record._failed || !record._mimeType) {
+    if (!record._mimeType) {
       return prev;
     }
 
