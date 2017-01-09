@@ -30,10 +30,8 @@ if (!environment.checkNodeCompatibility()) {
 const assetSaver = require('../lighthouse-core/lib/asset-saver.js');
 import {ChromeLauncher} from './chrome-launcher';
 import * as Commands from './commands/commands';
-import * as fs from 'fs';
 const lighthouse = require('../lighthouse-core');
 const log = require('../lighthouse-core/lib/log');
-const opn = require('opn');
 import * as path from 'path';
 const perfOnlyConfig = require('../lighthouse-core/config/perf.json');
 const performanceXServer = require('./performance-experiment/server');
@@ -252,7 +250,8 @@ function handleError(err: LighthouseError) {
 }
 
 function runLighthouse(url: string,
-                       flags: {port: number, skipAutolaunch: boolean, selectChrome: boolean, output: any, outputPath: string, view: boolean},
+                       flags: {port: number, skipAutolaunch: boolean, selectChrome: boolean, output: any,
+                         outputPath: string, view: boolean, saveArtifacts: boolean, saveAssets: boolean},
                        config: Object): Promise<undefined> {
 
   let chromeLauncher: ChromeLauncher;
@@ -260,22 +259,30 @@ function runLighthouse(url: string,
     .then(() => getDebuggableChrome(flags))
     .then(chrome => chromeLauncher = chrome)
     .then(() => lighthouse(url, flags, config))
+    .then((results: Results) => {
+      // delete artifacts from result so reports won't include artifacts.
+      const artifacts = results.artifacts;
+      results.artifacts = undefined;
+      
+      if (flags.saveArtifacts) {
+        assetSaver.saveArtifacts(artifacts);
+      }
+      if (flags.saveAssets) {
+        return assetSaver.saveAssets({url: results.url}, artifacts).then(() => results);
+      }
+      return results;
+    })
     .then((results: Results) => Printer.write(results, flags.output, flags.outputPath))
     .then((results: Results) => {
-      const filename = `${assetSaver.getFilenamePrefix({url})}.report.html`;
-
       if (flags.output === Printer.OutputMode[Printer.OutputMode.pretty]) {
-        Printer.write(results, 'html', filename);
+        const filename = `${assetSaver.getFilenamePrefix({url})}.report.html`;
+        return Printer.write(results, 'html', filename);
       }
-
-      // If --view, generate report.html, host it, and open it in the default browser
+      return results;
+    })
+    .then((results: Results) => {
       if (flags.view) {
-        return performanceXServer.startServer(0).then((port: number) => {
-          const filePath = `${performanceXServer.FOLDERS.REPORTS}/${filename}`;
-          return Printer.write(results, 'html', filePath).then(() => {
-            opn(`http://localhost:${port}/reports/${filename}`);
-          });
-        });
+        return performanceXServer.serveAndOpenReport({url, flags, config}, results);
       }
     })
     .then(() => chromeLauncher.kill())

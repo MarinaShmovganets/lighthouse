@@ -35,11 +35,10 @@ class NoDateNowAudit extends Audit {
     return {
       category: 'JavaScript',
       name: 'no-datenow',
-      description: 'Site does not use Date.now() in its own scripts',
-      helpText: 'Consider using <code>performance.now()</code> from the User Timing API ' +
+      description: 'Site does not use `Date.now()` in its own scripts',
+      helpText: 'Consider using `performance.now()` from the User Timing API ' +
           'instead. It provides high-precision timestamps, independent of the system ' +
-          'clock. <a href="https://developers.google.com/web/tools/lighthouse/audits/' +
-          'date-now" target="_blank" rel="noopener">Learn more</a>.',
+          'clock. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/date-now).',
       requiredArtifacts: ['URL', 'DateNowUse']
     };
   }
@@ -61,10 +60,21 @@ class NoDateNowAudit extends Audit {
       });
     }
 
-    const pageHost = new URL(artifacts.URL.finalUrl).host;
+    let debugString;
     // Filter usage from other hosts and keep eval'd code.
     const results = artifacts.DateNowUse.usage.filter(err => {
-      return err.isEval ? !!err.url : new URL(err.url).host === pageHost;
+      if (err.isEval) {
+        return !!err.url;
+      }
+
+      if (URL.isValid(err.url)) {
+        return URL.hostsMatch(artifacts.URL.finalUrl, err.url);
+      }
+
+      // If the violation doesn't have a valid url, don't filter it out, but
+      // warn the user that we don't know what the callsite is.
+      debugString = URL.INVALID_URL_DEBUG_STRING;
+      return true;
     }).map(err => {
       return Object.assign({
         label: `line: ${err.line}, col: ${err.col}`,
@@ -77,7 +87,8 @@ class NoDateNowAudit extends Audit {
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
         value: results
-      }
+      },
+      debugString
     });
   }
 }

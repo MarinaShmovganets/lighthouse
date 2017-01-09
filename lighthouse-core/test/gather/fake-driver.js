@@ -43,6 +43,9 @@ module.exports = {
   },
   cleanAndDisableBrowserCaches() {},
   clearDataForOrigin() {},
+  cacheNatives() {
+    return Promise.resolve();
+  },
   beginTrace() {
     return Promise.resolve();
   },
@@ -61,5 +64,8 @@ module.exports = {
     return Promise.resolve({
       schemeIsCryptographic: true
     });
+  },
+  blockUrlPatterns() {
+    return Promise.resolve();
   }
 };

@@ -35,7 +35,8 @@ class SpeedIndexMetric extends Audit {
       category: 'Performance',
       name: 'speed-index-metric',
       description: 'Perceptual Speed Index',
-      helpText: 'Speed Index shows how quickly the contents of a page are visibly populated. <a href="https://developers.google.com/web/tools/lighthouse/audits/speed-index" target="_blank" rel="noreferrer noopener">Learn more</a>.',
+      helpText: 'Speed Index shows how quickly the contents of a page are visibly populated. ' +
+          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/speed-index).',
       optimalValue: SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString(),
       requiredArtifacts: ['traces']
     };
@@ -81,9 +82,18 @@ class SpeedIndexMetric extends Audit {
       score = Math.max(0, score);
 
       const extendedInfo = {
-        first: speedline.first,
-        complete: speedline.complete,
-        duration: speedline.duration,
+        timings: {
+          firstVisualChange: speedline.first,
+          visuallyComplete: speedline.complete,
+          speedIndex: speedline.speedIndex,
+          perceptualSpeedIndex: speedline.perceptualSpeedIndex
+        },
+        timestamps: {
+          firstVisualChange: (speedline.first + speedline.beginning) * 1000,
+          visuallyComplete: (speedline.complete + speedline.beginning) * 1000,
+          speedIndex: (speedline.speedIndex + speedline.beginning) * 1000,
+          perceptualSpeedIndex: (speedline.perceptualSpeedIndex + speedline.beginning) * 1000
+        },
         frames: speedline.frames.map(frame => {
           return {
             timestamp: frame.getTimeStamp(),

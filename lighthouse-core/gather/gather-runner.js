@@ -94,9 +94,10 @@ class GatherRunner {
     return driver.assertNoSameOriginServiceWorkerClients(options.url)
       .then(_ => driver.beginEmulation(options.flags))
       .then(_ => driver.enableRuntimeEvents())
-      .then(_ => driver.evaluateScriptOnLoad('window.__nativePromise = Promise;'))
+      .then(_ => driver.cacheNatives())
       .then(_ => driver.cleanAndDisableBrowserCaches())
-      .then(_ => driver.clearDataForOrigin(options.url));
+      .then(_ => driver.clearDataForOrigin(options.url))
+      .then(_ => driver.blockUrlPatterns(options.flags.blockedUrlPatterns || []));
   }
 
   static disposeDriver(driver) {
