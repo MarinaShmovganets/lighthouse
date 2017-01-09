@@ -37,7 +37,12 @@ class CSSUsage extends Gatherer {
   }
 
   afterPass(options) {
-    return this.gatherRuleUsage(options.driver);
+    return this.gatherRuleUsage(options.driver).catch(err => {
+      return {
+        rawValue: -1,
+        debugString: err,
+      };
+    });
   }
 }
 

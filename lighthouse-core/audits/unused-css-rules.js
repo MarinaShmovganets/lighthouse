@@ -18,10 +18,7 @@
 
 const Audit = require('./audit');
 const Formatter = require('../formatters/formatter');
-
-function keyForRange(range) {
-  return `${range.startLine},${range.startColumn}`;
-}
+const ALLOWABLE_UNUSED_RULES_RATIO = 0.10;
 
 class UnusedCSSRules extends Audit {
   /**
@@ -31,46 +28,21 @@ class UnusedCSSRules extends Audit {
     return {
       category: 'Best Practices',
       name: 'unused-css-rules',
-      description: 'Site does not have unused CSS rules',
+      description: 'Site does not have more than 10% unused CSS',
       helpText: 'Remove unused rules from stylesheets to reduce unnecessary ' +
           'bytes consumed by network activity.',
       requiredArtifacts: ['CSSUsage', 'Styles']
     };
   }
 
-  static indexContentByPosition(parsedContent) {
-    return parsedContent.reduce((indexed, parsed) => {
-      indexed[keyForRange(parsed.declarationRange)] = parsed;
-      return indexed;
-    }, {});
-  }
-
   static indexStylesheetsById(styles) {
-    const indexContent = UnusedCSSRules.indexContentByPosition;
     return styles.reduce((indexed, stylesheet) => {
       indexed[stylesheet.header.styleSheetId] = Object.assign({
         used: [],
         unused: [],
-        indexedContent: indexContent(stylesheet.parsedContent),
       }, stylesheet);
       return indexed;
     }, {});
-  }
-
-  static findSelector(rule, stylesheet) {
-    const parsed = stylesheet.indexedContent[keyForRange(rule.range)];
-    let selector = parsed && parsed.selector;
-    if (!selector) {
-      // This means we failed to parse the content correctly, fallback to manual
-      const range = rule.range;
-      const line = stylesheet.content.split('\n')[range.startLine];
-      // Create a small slice of the line and try to find the selector manually
-      const target = line.slice(range.startColumn - 100, range.startColumn - 1);
-      const match = target.match(/[^}]+$/);
-      selector = match && match[0];
-    }
-
-    return selector || '<unknown>';
   }
 
   /**
@@ -81,47 +53,55 @@ class UnusedCSSRules extends Audit {
     const styles = artifacts.Styles;
     const usage = artifacts.CSSUsage;
 
-    const unusedRules = [];
-    const indexedStylesheets = UnusedCSSRules.indexStylesheetsById(styles);
+    if (typeof styles === 'undefined' || typeof usage === 'undefined') {
+      return UnusedCSSRules.generateAuditResult({
+        rawValue: -1,
+        debugString: 'Styles or CSSUsage Gatherer did not run',
+      });
+    } else if (styles.rawValue === -1) {
+      return UnusedCSSRules.generateAuditResult(styles);
+    } else if (usage.rawValue === -1) {
+      return UnusedCSSRules.generateAuditResult(usage);
+    }
 
+    let numUnusedRules = 0;
+    let numTotalRules = 0;
+    const indexedStylesheets = UnusedCSSRules.indexStylesheetsById(styles);
     usage.forEach(rule => {
       const stylesheetInfo = indexedStylesheets[rule.styleSheetId];
+
       if (rule.used) {
         stylesheetInfo.used.push(rule);
       } else {
+        numUnusedRules++;
         stylesheetInfo.unused.push(rule);
-        unusedRules.push(rule);
       }
+
+      numTotalRules++;
     });
 
-    Object.keys(indexedStylesheets).forEach(stylesheetId => {
+    const results = Object.keys(indexedStylesheets).map(stylesheetId => {
       const stylesheetInfo = indexedStylesheets[stylesheetId];
       const numUsed = stylesheetInfo.used.length;
       const numUnused = stylesheetInfo.unused.length;
-      stylesheetInfo.percentUsed = numUsed / (numUsed + numUnused);
-    });
-
-    const results = unusedRules.map(rule => {
-      const stylesheet = indexedStylesheets[rule.styleSheetId];
-      const selector = UnusedCSSRules.findSelector(rule, stylesheet);
-
+      const percentUsed = Math.round(100 * numUsed / (numUsed + numUnused));
       return {
-        code: selector.replace(/,(?=[^\s])/g, ', '),
-        label: `line: ${rule.range.startLine}, col: ${rule.range.startColumn}`,
-        url: stylesheet.header.sourceURL || '<inline>',
+        url: stylesheetInfo.header.sourceURL || 'inline',
+        label: `${percentUsed}% rules used`,
+        code: stylesheetInfo.content.slice(0, 100),
       };
     });
 
     let displayValue = '';
-    if (results.length > 1) {
-      displayValue = `${results.length} CSS rules were unused`;
-    } else if (results.length === 1) {
-      displayValue = `${results.length} CSS rule was unused`;
+    if (numUnusedRules > 1) {
+      displayValue = `${numUnusedRules} CSS rules were unused`;
+    } else if (numUnusedRules === 1) {
+      displayValue = `${numUnusedRules} CSS rule was unused`;
     }
 
     return UnusedCSSRules.generateAuditResult({
       displayValue,
-      rawValue: results.length === 0,
+      rawValue: numUnusedRules / numTotalRules > ALLOWABLE_UNUSED_RULES_RATIO,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
         value: results
