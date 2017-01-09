@@ -109,8 +109,8 @@ function rerunRequestHandler(request, response) {
     lighthouse(url, flags, perfOnlyConfig).then(results => {
       results.artifacts = undefined;
       hostedExperiments.rerun = {params: {url, flags}, results};
-      response.writeHead(200, {'Content-Type': 'text/plain'});
-      response.end('/?id=rerun');
+      response.writeHead(200);
+      response.end();
     });
   });
 }
