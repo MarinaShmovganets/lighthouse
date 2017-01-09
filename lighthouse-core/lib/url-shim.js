@@ -57,7 +57,6 @@ URL.hostsMatch = function hostsMatch(urlA, urlB) {
   }
 };
 
-
 /**
  * @param {string} url
  * @return {string}

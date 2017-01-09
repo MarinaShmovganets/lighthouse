@@ -26,7 +26,7 @@ class Offline extends Gatherer {
 
   afterPass(options, tracingData) {
     const navigationRecord = tracingData.networkRecords.filter(record => {
-      return cleanHash(new URL(record._url)) === cleanHash(new URL(options.url)) &&
+      return new URL(record._url).stripHash().href === new URL(options.url).stripHash().href &&
         record._fetchedViaServiceWorker;
     }).pop(); // Take the last record that matches.
 
@@ -34,10 +34,6 @@ class Offline extends Gatherer {
       return navigationRecord ? navigationRecord.statusCode : -1;
     });
   }
-}
-
-function cleanHash(url) {
-  return url.href.removeURLFragment();
 }
 
 module.exports = Offline;

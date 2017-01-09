@@ -37,9 +37,19 @@ describe('Offline gatherer', () => {
       url: 'https://do-not-match.com/',
       driver: mockDriver
     };
-    return offlineGather.afterPass(options, tracingData).then(artifact => {
-      assert.strictEqual(artifact, -1);
-    });
+    const optionsWithQueryString = {
+      url: 'https://ifixit-pwa.appspot.com/?history',
+      driver: mockDriver
+    };
+
+    return Promise.all([
+      offlineGather.afterPass(options, tracingData).then(artifact => {
+        assert.strictEqual(artifact, -1);
+      }),
+      offlineGather.afterPass(optionsWithQueryString, tracingData).then(artifact => {
+        assert.strictEqual(artifact, -1);
+      }),
+    ]);
   });
 
   it('returns an artifact set to 200 when offline loading succeeds', () => {
@@ -52,20 +62,12 @@ describe('Offline gatherer', () => {
       url: 'https://ifixit-pwa.appspot.com/#/history',
       driver: mockDriver
     };
-    const optionsWithQueryString = {
-      url: 'https://ifixit-pwa.appspot.com/?history',
-      driver: mockDriver
-    };
-
     return Promise.all([
       offlineGather.afterPass(options, tracingData).then(artifact => {
         assert.strictEqual(artifact, 200);
       }),
       offlineGather.afterPass(optionsWithFragment, tracingData).then(artifact => {
         assert.strictEqual(artifact, 200);
-      }),
-      offlineGather.afterPass(optionsWithQueryString, tracingData).then(artifact => {
-        assert.strictEqual(artifact, -1);
       }),
     ]);
   });
