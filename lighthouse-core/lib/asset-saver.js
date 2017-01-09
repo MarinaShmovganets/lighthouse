@@ -20,7 +20,6 @@ const fs = require('fs');
 const log = require('../../lighthouse-core/lib/log.js');
 const stringifySafe = require('json-stringify-safe');
 const URL = require('./url-shim');
-const stringify = require('json-stringify-safe');
 
 /**
  * Generate a filenamePrefix of hostname_YYYY-MM-DD_HH-MM-SS
@@ -45,6 +44,12 @@ function getFilenamePrefix(results) {
   return filenamePrefix.replace(/[\/\?<>\\:\*\|":]/g, '-');
 }
 
+/**
+ * Generate basic HTML page of screenshot filmstrip
+ * @param {!Array<{timestamp: number, datauri: string}>} screenshots
+ * @param {!Results} results
+ * @return {!string}
+ */
 function screenshotDump(screenshots, results) {
   return `
   <!doctype html>
@@ -82,10 +87,15 @@ img {
   `;
 }
 
+/**
+ * Save entire artifacts object to a single stringified file
+ * @param {!Artifacts} artifacts
+ * @param {!artifactsFilename} artifactsFilename
+ */
 // Set to ignore because testing it would imply testing fs, which isn't strictly necessary.
 /* istanbul ignore next */
-function saveArtifacts(artifacts, filename) {
-  const artifactsFilename = filename || 'artifacts.log';
+function saveArtifacts(artifacts, artifactsFilename) {
+  artifactsFilename = artifactsFilename || 'artifacts.log';
   // The networkRecords artifacts have circular references
   fs.writeFileSync(artifactsFilename, stringifySafe(artifacts));
   log.log('artifacts file saved to disk', artifactsFilename);
@@ -93,8 +103,7 @@ function saveArtifacts(artifacts, filename) {
 
 /**
  * Filter traces and extract screenshots to prepare for saving.
-
- * @param {!Artifacts} artifactsFilename
+ * @param {!Artifacts} artifacts
  * @param {!Results} results
  * @return {!Promise<!Array<{traceData: !Object, html: string}>>}
  */

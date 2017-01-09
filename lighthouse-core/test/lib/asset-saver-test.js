@@ -60,7 +60,7 @@ describe('asset-saver helper', () => {
     });
   });
 
-  describe('saves files.', function() {
+  describe('saves files', function() {
     const options = {
       url: 'https://testexample.com/',
       generatedTime: '2016-05-31T23:34:30.547Z',
