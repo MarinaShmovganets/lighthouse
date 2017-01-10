@@ -697,61 +697,61 @@ describe('GatherRunner', function() {
       }).then(_ => assert.ok(false), _ => assert.ok(true));
     });
 
-  it('rejects when domain name can\'t be resolved', () => {
-    const passes = [{
-      recordNetwork: true,
-      recordTrace: true,
-      passName: 'firstPass',
-      gatherers: []
-    }];
+    it('rejects when domain name can\'t be resolved', () => {
+      const passes = [{
+        recordNetwork: true,
+        recordTrace: true,
+        passName: 'firstPass',
+        gatherers: []
+      }];
 
-    // Arrange for driver to return unresolved request.
-    const unresolvedDriver = Object.assign({}, fakeDriver, {
-      online: true,
-      endNetworkCollect() {
-        return Promise.resolve(recordsFromLogs(unresolvedPerfLog));
-      }
+      // Arrange for driver to return unresolved request.
+      const unresolvedDriver = Object.assign({}, fakeDriver, {
+        online: true,
+        endNetworkCollect() {
+          return Promise.resolve(recordsFromLogs(unresolvedPerfLog));
+        }
+      });
+
+      return GatherRunner.run(passes, {
+        driver: unresolvedDriver,
+        url: 'https://some-non-existing-domain.com',
+        flags: {},
+        config: new Config({})
+      })
+        .then(_ => {
+          assert.ok(false);
+        }, error => {
+          assert.ok(true);
+          assert.equal(error.message, 'net::ERR_NAME_NOT_RESOLVED');
+        });
     });
 
-    return GatherRunner.run(passes, {
-      driver: unresolvedDriver,
-      url: 'https://some-non-existing-domain.com',
-      flags: {},
-      config: new Config({})
-    })
-      .then(_ => {
-        assert.ok(false);
-      }, error => {
-        assert.ok(true);
-        assert.equal(error.message, 'net::ERR_NAME_NOT_RESOLVED');
+    it('resolves when domain name can\'t be resolved but is offline', () => {
+      const passes = [{
+        recordNetwork: true,
+        recordTrace: true,
+        passName: 'firstPass',
+        gatherers: []
+      }];
+
+      // Arrange for driver to return unresolved request.
+      const unresolvedDriver = Object.assign({}, fakeDriver, {
+        online: false,
+        endNetworkCollect() {
+          return Promise.resolve(recordsFromLogs(unresolvedPerfLog));
+        }
       });
-  });
 
-  it('resolves when domain name can\'t be resolved but is offline', () => {
-    const passes = [{
-      recordNetwork: true,
-      recordTrace: true,
-      passName: 'firstPass',
-      gatherers: []
-    }];
-
-    // Arrange for driver to return unresolved request.
-    const unresolvedDriver = Object.assign({}, fakeDriver, {
-      online: false,
-      endNetworkCollect() {
-        return Promise.resolve(recordsFromLogs(unresolvedPerfLog));
-      }
+      return GatherRunner.run(passes, {
+        driver: unresolvedDriver,
+        url: 'https://some-non-existing-domain.com',
+        flags: {},
+        config: new Config({})
+      })
+        .then(_ => {
+          assert.ok(true);
+        });
     });
-
-    return GatherRunner.run(passes, {
-      driver: unresolvedDriver,
-      url: 'https://some-non-existing-domain.com',
-      flags: {},
-      config: new Config({})
-    })
-      .then(_ => {
-        assert.ok(true);
-      });
-  });
   });
 });
