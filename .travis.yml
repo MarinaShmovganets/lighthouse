@@ -15,7 +15,7 @@ cache:
      - lighthouse-viewer/node_modules
 install:
   - npm install
-  - npm install-all
+  - npm run install-all
 before_script:
   - if [[ $(node -v) =~ ^v4.* ]]; then export __node_harmony=--harmony; fi
   - npm i -g typescript@2.0
