@@ -5,7 +5,6 @@
     "node": ">=5"
   },
   "scripts": {
-    "prepublish": "npm run build",
     "watch": "gulp watch",
     "build": "gulp build"
   },

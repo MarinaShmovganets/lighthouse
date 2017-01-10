@@ -25,6 +25,8 @@ accept your pull requests.
 ```sh
 # * Install the latest. This also builds the cli, extension, and viewer *
 yarn
+yarn install-all
+yarn build-all
 
 # * Bump it *
 echo "Bump the versions in extension/app/manifest.json and package.json"

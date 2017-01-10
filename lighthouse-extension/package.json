@@ -5,9 +5,8 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "prepublish": "npm run build",
     "watch": "gulp watch",
-    "build": "gulp build -- $__node_harmony"
+    "build": "gulp build"
   },
   "devDependencies": {
     "brfs": "^1.4.3",
