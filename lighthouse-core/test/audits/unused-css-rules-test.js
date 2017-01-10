@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const Audit = require('../../audits/unused-css-rules.js');
+const UnusedCSSAudit = require('../../audits/unused-css-rules.js');
 const assert = require('assert');
 
 /* eslint-env mocha */
@@ -25,7 +25,7 @@ describe('Best Practices: unused css rules audit', () => {
     let baseSheet;
 
     function map(overrides) {
-      return Audit.mapSheetToResult(Object.assign(baseSheet, overrides));
+      return UnusedCSSAudit.mapSheetToResult(Object.assign(baseSheet, overrides));
     }
 
     function generate(content, length) {
@@ -113,14 +113,8 @@ describe('Best Practices: unused css rules audit', () => {
   });
 
   describe('#audit', () => {
-    it('fails when no input present', () => {
-      const result = Audit.audit({});
-      assert.ok(result.debugString);
-      assert.equal(result.rawValue, -1);
-    });
-
     it('fails when gatherers failed', () => {
-      const result = Audit.audit({
+      const result = UnusedCSSAudit.audit({
         CSSUsage: {rawValue: -1, debugString: 'It errored'},
         Styles: []
       });
@@ -130,7 +124,7 @@ describe('Best Practices: unused css rules audit', () => {
     });
 
     it('passes when rules are used', () => {
-      const result = Audit.audit({
+      const result = UnusedCSSAudit.audit({
         CSSUsage: [
           {styleSheetId: 'a', used: true},
           {styleSheetId: 'a', used: true},
@@ -154,7 +148,7 @@ describe('Best Practices: unused css rules audit', () => {
     });
 
     it('fails when rules are unused', () => {
-      const result = Audit.audit({
+      const result = UnusedCSSAudit.audit({
         CSSUsage: [
           {styleSheetId: 'a', used: true},
           {styleSheetId: 'a', used: false},

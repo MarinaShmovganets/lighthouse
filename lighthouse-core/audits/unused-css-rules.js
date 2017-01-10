@@ -38,7 +38,7 @@ class UnusedCSSRules extends Audit {
   }
 
   /**
-   * @param {!Array.<Object>} styles The output of the Styles gatherer.
+   * @param {!Array.<{header: {styleSheetId: string}}>} styles The output of the Styles gatherer.
    * @return {!Object} A map of styleSheetId to stylesheet information.
    */
   static indexStylesheetsById(styles) {
@@ -53,7 +53,7 @@ class UnusedCSSRules extends Audit {
 
   /**
    * Counts the number of unused rules and adds count information to sheets.
-   * @param {!Array.<RuleUsage>} rules The output of the CSSUsage gatherer.
+   * @param {!Array.<{styleSheetId: string, used: boolean}>} rules The output of the CSSUsage gatherer.
    * @param {!Object} indexedStylesheets Stylesheet information indexed by id.
    * @return {number} The number of unused rules.
    */
@@ -75,7 +75,7 @@ class UnusedCSSRules extends Audit {
   }
 
   /**
-   * @param {Object} stylesheetInfo The stylesheetInfo object.
+   * @param {!Object} stylesheetInfo The stylesheetInfo object.
    * @return {!{url: string, label: string, code: string}} The result for the URLLIST formatter.
    */
   static mapSheetToResult(stylesheetInfo) {
@@ -116,12 +116,7 @@ class UnusedCSSRules extends Audit {
     const styles = artifacts.Styles;
     const usage = artifacts.CSSUsage;
 
-    if (typeof styles === 'undefined' || typeof usage === 'undefined') {
-      return UnusedCSSRules.generateAuditResult({
-        rawValue: -1,
-        debugString: 'Styles or CSSUsage Gatherer did not run',
-      });
-    } else if (styles.rawValue === -1) {
+    if (styles.rawValue === -1) {
       return UnusedCSSRules.generateAuditResult(styles);
     } else if (usage.rawValue === -1) {
       return UnusedCSSRules.generateAuditResult(usage);

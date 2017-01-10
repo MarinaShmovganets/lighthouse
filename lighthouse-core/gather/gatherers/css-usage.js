@@ -28,16 +28,14 @@ class CSSUsage extends Gatherer {
       .then(_ => options.driver.sendCommand('CSS.startRuleUsageTracking'));
   }
 
-  gatherRuleUsage(driver) {
+  afterPass(options) {
+    const driver = options.driver;
+
     return driver.sendCommand('CSS.stopRuleUsageTracking').then(results => {
       return driver.sendCommand('CSS.disable')
         .then(_ => driver.sendCommand('DOM.disable'))
         .then(_ => results.ruleUsage);
-    });
-  }
-
-  afterPass(options) {
-    return this.gatherRuleUsage(options.driver).catch(err => {
+    }).catch(err => {
       return {
         rawValue: -1,
         debugString: err,
