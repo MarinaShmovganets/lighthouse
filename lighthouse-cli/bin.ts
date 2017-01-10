@@ -281,7 +281,7 @@ function runLighthouse(url: string,
     })
     .then((results: Results) => {
       if (flags.interactive) {
-        return performanceXServer.hostExperiment({url, flags}, results);
+        return performanceXServer.hostExperiment({url, flags, config}, results);
       }
     })
     .then(() => chromeLauncher.kill())

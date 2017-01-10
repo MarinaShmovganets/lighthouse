@@ -32,9 +32,7 @@ const opn = require('opn');
 const log = require('../../lighthouse-core/lib/log');
 const reportGenerator = new (require('./report/perf-x-report-generator'))();
 const lighthouse = require('../../lighthouse-core');
-const perfOnlyConfig = require('../../lighthouse-core/config/perf.json');
 
-const hostedExperiments = {};
 
 /**
  * Start the server with an arbitrary port and open report page in the default browser.
@@ -42,8 +40,12 @@ const hostedExperiments = {};
  * @param {!Object} results
  * @return {!Promise<string>} Promise that resolves when server is closed
  */
+let lhResults;
+let lhParams;
 function hostExperiment(params, results) {
-  hostedExperiments.original = {params, results};
+  lhResults = results;
+  lhParams = params;
+
   return new Promise(resolve => {
     const server = http.createServer(requestHandler);
     server.listen(0);
@@ -59,8 +61,7 @@ function hostExperiment(params, results) {
 }
 
 function requestHandler(request, response) {
-  request.parsedUrl = parse(request.url, true);
-  const pathname = request.parsedUrl.pathname;
+  const pathname = parse(request.url).pathname;
 
   if (request.method === 'GET') {
     if (pathname === '/') {
@@ -83,14 +84,7 @@ function requestHandler(request, response) {
 }
 
 function reportRequestHandler(request, response) {
-  const experimentData = hostedExperiments[request.parsedUrl.query.id || 'original'];
-  if (!experimentData) {
-    response.writeHead(404);
-    response.end('404: Resource Not Found');
-    return;
-  }
-
-  const html = reportGenerator.generateHTML(experimentData.results, 'perf-x');
+  const html = reportGenerator.generateHTML(lhResults, 'cli');
   response.writeHead(200, {'Content-Type': 'text/html'});
   response.end(html);
 }
@@ -100,15 +94,12 @@ function rerunRequestHandler(request, response) {
   request.on('data', data => message += data);
 
   request.on('end', () => {
-    const url = hostedExperiments.original.params.url;
-
-    // Add more to flags without changing the original flags
     const additionalFlags = JSON.parse(message);
-    const flags = Object.assign({}, hostedExperiments.original.params.flags, additionalFlags);
+    const flags = Object.assign({}, lhParams.flags, additionalFlags);
 
-    lighthouse(url, flags, perfOnlyConfig).then(results => {
+    lighthouse(lhParams.url, flags, lhParams.config).then(results => {
       results.artifacts = undefined;
-      hostedExperiments.rerun = {params: {url, flags}, results};
+      lhResults = results;
       response.writeHead(200);
       response.end();
     });

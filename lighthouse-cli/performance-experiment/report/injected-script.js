@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-/* global window, document */
+/* global window, document, location */
 
 'use strict';
 
@@ -29,28 +29,21 @@ window.addEventListener('DOMContentLoaded', _ => {
   const rerunButton = document.querySelector('.js-rerun-button');
   rerunButton.style.display = 'inline-block';
 
-  const rerunPopup = document.querySelector('.js-rerun-popup');
   rerunButton.addEventListener('click', () => {
-    rerunPopup.setAttribute('status', 'running');
+    rerunButton.setAttribute('status', 'running');
     rerunLighthouse().then(() => {
-      rerunPopup.setAttribute('status', 'complete');
+      location.reload();
     });
-  });
-
-  const rerunReportLink = document.querySelector('.js-rerun-report-link');
-  rerunReportLink.addEventListener('click', () => {
-    rerunPopup.setAttribute('status', 'idle');
   });
 });
 
 /**
- * Send request to rerun lighthouse with additional cli-flags.
- * The following cli-flags will be ignored.
- *	- Flags which are not applicable to rerun performance evaluation (e.g. --list-all-audits)
- *	- config related flags (e.g. --config-path). Always use perf-olny config for rerunning.
+ * Send POST request to rerun lighthouse.
+ * Available additionalFlags attributes:
+ *	- blockedUrlPatterns {Array<string>} Block all the URL patterns.
  *
  * @param {!Object} additionalFlags
- * @return {!Promise}
+ * @return {!Promise} resolve when rerun is completed
  */
 function rerunLighthouse(additionalFlags={}) {
   return fetch('/rerun', {method: 'POST', body: JSON.stringify(additionalFlags)});
