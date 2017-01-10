@@ -124,8 +124,8 @@ class UnusedCSSRules extends Audit {
 
     const indexedSheets = UnusedCSSRules.indexStylesheetsById(styles);
     const unused = UnusedCSSRules.countUnusedRules(usage, indexedSheets);
-    const results = Object.keys(indexedSheets).map(stylesheetId => {
-      return UnusedCSSRules.mapSheetToResult(indexedSheets[stylesheetId]);
+    const results = Object.keys(indexedSheets).map(sheetId => {
+      return UnusedCSSRules.mapSheetToResult(indexedSheets[sheetId]);
     });
 
     let displayValue = '';
