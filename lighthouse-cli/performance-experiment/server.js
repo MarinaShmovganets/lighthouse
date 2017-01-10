@@ -50,7 +50,7 @@ function hostExperiment(params, results) {
     const server = http.createServer(requestHandler);
     server.listen(0);
     server.on('listening', () => {
-      opn(`http://localhost:${server.address().port}/?id=original`);
+      opn(`http://localhost:${server.address().port}/`);
     });
     server.on('error', err => log.error('PerformanceXServer', err.code, err));
     server.on('close', resolve);
