@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', _ => {
       }
 
       if (err.code === 'PAGE_LOAD_ERROR') {
-        message = 'Unable to load the page. Please verify the url you are trying to review.'
+        message = 'Unable to load the page. Please verify the url you are trying to review.';
         includeReportLink = false;
       }
 
