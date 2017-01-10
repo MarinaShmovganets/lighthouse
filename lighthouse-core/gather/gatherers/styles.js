@@ -36,7 +36,7 @@ function getCSSPropsInStyleSheet(parseTree) {
 
   parseTree.traverseByType('declaration', function(node, index, parent) {
     if (parent.type === 'arguments') {
-      // We don't want to return data URI delcarations of the form
+      // We don't want to return data URI declarations of the form
       // background-image: -webkit-image-set(url('data:image/png,...') 1x)
       return;
     }
@@ -122,6 +122,11 @@ class Styles extends Gatherer {
         driver.off('CSS.styleSheetAdded', this._onStyleSheetAdded);
         driver.off('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
         resolve(styleHeaders);
+        // Currently both CSSUsage and Styles use these domains, so let it disable there.
+        // TODO: have a better way to specify used domains
+        // return driver.sendCommand('CSS.disable')
+        //   .then(_ => driver.sendCommand('DOM.disable'))
+        //   .then(_ => resolve(styleHeaders));
       }).catch(err => reject(err));
     });
   }

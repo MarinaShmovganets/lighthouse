@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,11 +32,15 @@ class UnusedCSSRules extends Audit {
       name: 'unused-css-rules',
       description: 'Site does not have more than 10% unused CSS',
       helpText: 'Remove unused rules from stylesheets to reduce unnecessary ' +
-          'bytes consumed by network activity.',
+          'bytes consumed by network activity. [Learn more](https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery)',
       requiredArtifacts: ['CSSUsage', 'Styles']
     };
   }
 
+  /**
+   * @param {!Array.<Object>} styles The output of the Styles gatherer.
+   * @return {!Object} A map of styleSheetId to stylesheet information.
+   */
   static indexStylesheetsById(styles) {
     return styles.reduce((indexed, stylesheet) => {
       indexed[stylesheet.header.styleSheetId] = Object.assign({
@@ -47,7 +51,13 @@ class UnusedCSSRules extends Audit {
     }, {});
   }
 
-  static countRules(rules, indexedStylesheets) {
+  /**
+   * Counts the number of unused rules and adds count information to sheets.
+   * @param {!Array.<RuleUsage>} rules The output of the CSSUsage gatherer.
+   * @param {!Object} indexedStylesheets Stylesheet information indexed by id.
+   * @return {number} The number of unused rules.
+   */
+  static countUnusedRules(rules, indexedStylesheets) {
     let unused = 0;
 
     rules.forEach(rule => {
@@ -61,9 +71,13 @@ class UnusedCSSRules extends Audit {
       }
     });
 
-    return {unused: unused, total: rules.length};
+    return unused;
   }
 
+  /**
+   * @param {Object} stylesheetInfo The stylesheetInfo object.
+   * @return {!{url: string, label: string, code: string}} The result for the URLLIST formatter.
+   */
   static mapSheetToResult(stylesheetInfo) {
     const numUsed = stylesheetInfo.used.length;
     const numUnused = stylesheetInfo.unused.length;
@@ -80,9 +94,7 @@ class UnusedCSSRules extends Audit {
       } else if (firstRuleEnd < PREVIEW_LENGTH) {
         contentPreview = contentPreview.slice(0, firstRuleEnd + 1) + ' ...';
       } else {
-        const lastSemicolonIndex = contentPreview
-          .slice(0, PREVIEW_LENGTH)
-          .lastIndexOf(';');
+        const lastSemicolonIndex = contentPreview.slice(0, PREVIEW_LENGTH).lastIndexOf(';');
         contentPreview = lastSemicolonIndex < firstRuleStart ?
             contentPreview.slice(0, PREVIEW_LENGTH) + '... } ...' :
             contentPreview.slice(0, lastSemicolonIndex + 1) + ' ... } ...';
@@ -116,7 +128,7 @@ class UnusedCSSRules extends Audit {
     }
 
     const indexedSheets = UnusedCSSRules.indexStylesheetsById(styles);
-    const {unused, total} = UnusedCSSRules.countRules(usage, indexedSheets);
+    const unused = UnusedCSSRules.countUnusedRules(usage, indexedSheets);
     const results = Object.keys(indexedSheets).map(stylesheetId => {
       return UnusedCSSRules.mapSheetToResult(indexedSheets[stylesheetId]);
     });
@@ -130,7 +142,7 @@ class UnusedCSSRules extends Audit {
 
     return UnusedCSSRules.generateAuditResult({
       displayValue,
-      rawValue: unused / total > ALLOWABLE_UNUSED_RULES_RATIO,
+      rawValue: unused / usage.length < ALLOWABLE_UNUSED_RULES_RATIO,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
         value: results

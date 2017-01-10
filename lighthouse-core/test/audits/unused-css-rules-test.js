@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 const Audit = require('../../audits/unused-css-rules.js');
 const assert = require('assert');
 
-/* global describe, it, beforeEach */
+/* eslint-env mocha */
 
 describe('Best Practices: unused css rules audit', () => {
   describe('#mapSheetToResult', () => {
@@ -30,7 +30,7 @@ describe('Best Practices: unused css rules audit', () => {
 
     function generate(content, length) {
       const arr = [];
-      for (let i=0; i<length; i++) {
+      for (let i = 0; i < length; i++) {
         arr.push(content);
       }
       return arr.join('');
@@ -149,7 +149,7 @@ describe('Best Practices: unused css rules audit', () => {
       });
 
       assert.ok(!result.displayValue);
-      assert.equal(result.rawValue, false);
+      assert.equal(result.rawValue, true);
       assert.equal(result.extendedInfo.value.length, 2);
     });
 
@@ -180,7 +180,7 @@ describe('Best Practices: unused css rules audit', () => {
       });
 
       assert.ok(result.displayValue);
-      assert.equal(result.rawValue, true);
+      assert.equal(result.rawValue, false);
       assert.equal(result.extendedInfo.value.length, 3);
     });
   });
