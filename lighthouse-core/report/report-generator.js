@@ -203,21 +203,14 @@ class ReportGenerator {
   /**
    * Gets the script for the report UI
    * @param {string} reportContext
-   * @return {Array<string>}
+   * @return {Array<string>} an array of scripts
    */
   getReportJS(reportContext) {
-    const scriptList = [];
-
-    if (reportContext === 'perf-x') {
-      scriptList.push(fs.readFileSync(path.join(__dirname, './scripts/perf-x.js'), 'utf8'));
+    if (reportContext === 'devtools') {
+      return [];
+    } else {
+      return [fs.readFileSync(path.join(__dirname, './scripts/lighthouse-report.js'), 'utf8')];
     }
-
-    if (reportContext !== 'devtools') {
-      scriptList.push(fs.readFileSync(
-        path.join(__dirname, './scripts/lighthouse-report.js'), 'utf8'));
-    }
-
-    return scriptList;
   }
 
   /**

@@ -30,7 +30,7 @@ const http = require('http');
 const parse = require('url').parse;
 const opn = require('opn');
 const log = require('../../lighthouse-core/lib/log');
-const reportGenerator = new (require('../../lighthouse-core/report/report-generator'))();
+const reportGenerator = new (require('./report/perf-x-report-generator'))();
 const lighthouse = require('../../lighthouse-core');
 const perfOnlyConfig = require('../../lighthouse-core/config/perf.json');
 
