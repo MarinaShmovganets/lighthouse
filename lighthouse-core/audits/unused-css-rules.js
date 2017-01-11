@@ -124,9 +124,11 @@ class UnusedCSSRules extends Audit {
 
     const indexedSheets = UnusedCSSRules.indexStylesheetsById(styles);
     const unused = UnusedCSSRules.countUnusedRules(usage, indexedSheets);
+    const unusedRatio = (unused / usage.length) || 0;
     const results = Object.keys(indexedSheets).map(sheetId => {
       return UnusedCSSRules.mapSheetToResult(indexedSheets[sheetId]);
     });
+
 
     let displayValue = '';
     if (unused > 1) {
@@ -137,7 +139,7 @@ class UnusedCSSRules extends Audit {
 
     return UnusedCSSRules.generateAuditResult({
       displayValue,
-      rawValue: unused / usage.length < ALLOWABLE_UNUSED_RULES_RATIO,
+      rawValue: unusedRatio < ALLOWABLE_UNUSED_RULES_RATIO,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
         value: results
