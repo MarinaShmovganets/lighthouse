@@ -21,7 +21,7 @@ before_script:
   - npm --prefix ./lighthouse-viewer install ./lighthouse-viewer
   - export DISPLAY=:99.0
   - export LIGHTHOUSE_CHROMIUM_PATH="$(pwd)/chrome-linux/chrome"
-  - wget 'https://download-chromium.appspot.com/dl/Linux_x64?type=snapshots' -O chrome.zip && unzip chrome.zip
+  - wget 'https://download-chromium.appspot.com/dl/Linux_x64?type=snapshots' -O chrome.zip && unzip -o chrome.zip
   - $(pwd)/chrome-linux/chrome --version
   - sh -e /etc/init.d/xvfb start
   - ./lighthouse-core/scripts/download-chrome.sh
