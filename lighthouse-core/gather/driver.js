@@ -37,6 +37,7 @@ class Driver {
     this._traceCategories = Driver.traceCategories;
     this._eventEmitter = new EventEmitter();
     this._connection = connection;
+    this.online = true;
     connection.on('notification', event => this._eventEmitter.emit(event.method, event.params));
   }
 
@@ -47,13 +48,14 @@ class Driver {
       'blink.console',
       'blink.user_timing',
       'benchmark',
-      'netlog',
+      'latencyInfo',
       'devtools.timeline',
       'disabled-by-default-devtools.timeline',
       'disabled-by-default-devtools.timeline.frame',
       'disabled-by-default-devtools.timeline.stack',
-      // 'disabled-by-default-v8.cpu_profile',  // these would include JS stack samples, but
-      // 'disabled-by-default-v8.cpu_profile.hires', // will take the trace from 5MB -> 100MB
+      // Flipped off until bugs.chromium.org/p/v8/issues/detail?id=5820 is fixed in Stable
+      // 'disabled-by-default-v8.cpu_profiler',
+      // 'disabled-by-default-v8.cpu_profiler.hires',
       'disabled-by-default-devtools.screenshot'
     ];
   }
@@ -255,6 +257,7 @@ class Driver {
    * If our main document URL redirects, we will update options.url accordingly
    * As such, options.url will always represent the post-redirected URL.
    * options.initialUrl is the pre-redirect URL that things started with
+   * @param {!Object} opts
    */
   enableUrlUpdateIfRedirected(opts) {
     this._networkRecorder.on('requestloaded', redirectRequest => {
@@ -417,7 +420,7 @@ class Driver {
   /**
   * @param {string} objectId Object ID for the resolved DOM node
   * @param {string} propName Name of the property
-  * @return {!Promise<String>} The property value, or null, if property not found
+  * @return {!Promise<string>} The property value, or null, if property not found
   */
   getObjectProperty(objectId, propName) {
     return new Promise((resolve, reject) => {
@@ -618,7 +621,11 @@ class Driver {
    * @return {!Promise}
    */
   goOffline() {
-    return this.sendCommand('Network.enable').then(_ => emulation.goOffline(this));
+    return this.sendCommand('Network.enable').then(_ => {
+      return emulation.goOffline(this);
+    }).then(_ => {
+      this.online = false;
+    });
   }
 
   /**
@@ -634,6 +641,8 @@ class Driver {
       }
 
       return emulation.disableNetworkThrottling(this);
+    }).then(_ => {
+      this.online = true;
     });
   }
 

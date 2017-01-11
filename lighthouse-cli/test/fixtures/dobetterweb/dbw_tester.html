@@ -25,15 +25,22 @@
 <script src="./dbw_tester.js"></script>
 
 <template id="links-blocking-first-paint-tmpl">
-  <!-- we use a relative protocol url to test that `new URL(resource)` in the critical-request-chains.js formatter can handle it -->
-  <link rel="stylesheet" href="//localhost:10200/dobetterweb/dbw_tester.css">
-  <link rel="stylesheet" href="./dbw_disabled.css" disabled>
-  <link rel="import" href="./dbw_partial_a.html">
-  <link rel="import" href="./dbw_partial_b.html" async>
-
-  <!-- doesn't actually block first paint but previously was false positive -->
-  <link rel="preload" href="./dbw_tester.css?delay=true" as="style" onload="this.rel = 'stylesheet'">
+  <link rel="stylesheet" href="./dbw_tester.css?scriptActivated"> <!-- PASS: initiator is script -->
 </template>
+
+<!-- we use a relative protocol url to test that `new URL(resource)` in the critical-request-chains.js formatter can handle it -->
+<link rel="stylesheet" href="//localhost:10200/dobetterweb/dbw_tester.css"> <!-- FAIL, when run under smokehouse -->
+<link rel="stylesheet" href="https://unknown.com/styles.css?404"> <!-- FAIL -->
+<link rel="stylesheet" href="./dbw_tester.css"> <!-- FAIL -->
+<link rel="stylesheet" href="./dbw_disabled.css" disabled> <!-- PASS -->
+<link rel="import" href="./dbw_partial_a.html"> <!-- FAIL -->
+<link rel="import" href="./dbw_partial_b.html" async> <!-- PASS -->
+
+<!-- PASS: preload that's activated later does not block rendering. -->
+<!-- Note: this only passes when using the static-server.js, which supports the ?delay=true param.
+     If you're using your own server, the resource will load instantly and the
+     gatherer find will see a stylesheet instead of a rel="preload". -->
+<link rel="preload" href="./dbw_tester.css?delay=true" as="style" onload="this.rel = 'stylesheet'">
 
 <style>
   body {
@@ -70,6 +77,29 @@
                 3px green;
   }
 </style>
+</template>
+
+<template id="unused-css-rules-tmpl">
+  <style>
+  .unused-a {
+    width: 10px;
+  }
+  .unused-b {
+    height: 10px;
+  }
+  .unused-c {
+    font-size: 10px;
+  }
+  .unused-d {
+    position: absolute;
+  }
+  .totally-made-up {
+    color: white;
+  }
+  body {
+    font-size: 20px;
+  }
+  </style>
 </template>
 
 </head>
@@ -256,6 +286,10 @@ function noRelOpenLinksTest() {
   stampTemplate('noopener-links-tmpl', document.head);
 }
 
+function unusedCssRulesTest() {
+  stampTemplate('unused-css-rules-tmpl', document.head);
+}
+
 // Figure out which tests to fun.
 const params = new URLSearchParams(location.search);
 if (location.search === '') {
@@ -270,6 +304,7 @@ if (location.search === '') {
   linksBlockingFirstPaintTest();
   noRelOpenLinksTest();
   oldCSSFlexboxTest();
+  unusedCssRulesTest();
 } else {
   if (params.has('documentWrite')) {
     documentWriteTest();
@@ -303,6 +338,9 @@ if (location.search === '') {
   }
   if (params.has('oldcssflexbox')) {
     oldCSSFlexboxTest();
+  }
+  if (params.has('unusedcss')) {
+    unusedCssRulesTest();
   }
 }
 </script>
