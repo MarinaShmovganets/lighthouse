@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+if [[ $(node -v) =~ ^v4.* ]]; then export __node_harmony=--harmony; fi
+
 node lighthouse-cli/test/fixtures/static-server.js &
 
 sleep 0.5s
