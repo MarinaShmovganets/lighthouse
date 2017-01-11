@@ -204,10 +204,10 @@ class GatherRunner {
       log.log('status', status);
       return driver.endNetworkCollect();
     }).then(networkRecords => {
-      if (driver.online && networkRecords[0].failed) {
-        console.error(networkRecords[0]);
-        log.error('GatherRunner', networkRecords[0].localizedFailDescription);
-        const error = new Error(networkRecords[0].localizedFailDescription);
+      var mainRecord = networkRecords.find(record => record.url === options.url);
+      if (driver.online && mainRecord.failed) {
+        log.error('GatherRunner', mainRecord.localizedFailDescription);
+        const error = new Error(mainRecord.localizedFailDescription);
         error.code = 'PAGE_LOAD_ERROR';
         return Promise.reject(error);
       }
