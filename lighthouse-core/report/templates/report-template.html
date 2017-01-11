@@ -28,7 +28,7 @@ limitations under the License.
 <body>
 
 <div class="js-report report">
-  <section class="report-body">
+  <section class="report-body js-report-body" status="stable">
     <div class="report-body__header">
       <div class="report-body__metadata">
         <div class="report-body__url">Results for: <a href="{{ url }}" target="_blank">{{ url }}</a></div>
@@ -47,6 +47,7 @@ limitations under the License.
         <button class="report-body__icon share js-share" title="Share report on Github"></button>
         <button class="report-body__icon copy js-copy" title="Copy JSON report"></button>
         <button class="report-body__icon open js-open" title="Open in Lighthouse Viewer"></button>
+        <button class="report-body__icon rerun-button js-rerun-button" title="Rerun this test"></button>
         {{#if_not_eq reportContext "viewer"}}
           <button class="report-body__icon print js-print" title="Print HTML report"></button>
         {{/if_not_eq}}
@@ -176,11 +177,12 @@ limitations under the License.
   </section>
 </div>
 
-{{#if script }}
+{{#if lhresults }}
 <script>
 window.lhresults = {{{lhresults}}};
 </script>
-<script>
-{{{ script }}}
-</script>
 {{/if}}
+
+{{#each scripts }}
+  <script>{{{ this }}}</script>
+{{/each}}
