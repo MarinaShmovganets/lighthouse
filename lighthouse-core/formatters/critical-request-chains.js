@@ -216,29 +216,9 @@ class CriticalRequestChains extends Formatter {
   }
 
   static parseURL(resourceURL, opts) {
-    const MAX_FILENAME_LENGTH = 64;
-    const parsedResourceURL = new URL(resourceURL);
-    const hostname = parsedResourceURL.hostname;
-
-    // Handle 'about:*' URLs specially since they have no path.
-    let file = parsedResourceURL.protocol === 'about:' ? parsedResourceURL.href :
-        // Otherwise, remove any query strings from the path.
-        parsedResourceURL.pathname.replace(/\?.*/, '')
-        // And grab the last two parts.
-        .split('/').slice(-2).join('/');
-
-    // Elide hash in a filename
-    file = file.replace(/([a-f0-9]{7})[a-f0-9]{13}[a-f0-9]*/g, '$1\u2026');
-    // Elide too long filenames
-    if (file.length > MAX_FILENAME_LENGTH) {
-      const dotIndex = file.lastIndexOf('.');
-      file = file.slice(0, MAX_FILENAME_LENGTH - 1 - (file.length - dotIndex)) +
-          `\u2026${file.slice(dotIndex)}`;
-    }
-
     const parsedURL = {
-      file,
-      hostname
+      file: URL.getDisplayName(resourceURL),
+      hostname: new URL(resourceURL).hostname
     };
 
     // If we get passed the opts parameter, this is Handlebars, so we
