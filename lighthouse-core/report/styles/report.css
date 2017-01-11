@@ -77,7 +77,6 @@ html {
   line-height: 1;
   margin: 0;
   padding: 0;
-  min-width: 455px;
 }
 
 html, body {
@@ -818,7 +817,7 @@ body {
 .export-button.active + .export-dropdown {
   visibility: visible;
   opacity: 1;
-  clip: rect(0, 140px, 100px, 0);
+  clip: rect(0, 140px, 200px, 0);
 }
 
 .export-dropdown a {
@@ -881,6 +880,10 @@ body {
     width: 100%;
     padding: 8px;
   }
+  .export-dropdown {
+    right: 0;
+    left: initial;
+  }
   .footer {
     margin-top: 0;
     margin-left: 0;
@@ -916,7 +919,6 @@ body {
 }
 
 :root[data-report-context="viewer"] .share,
-:root[data-report-context="viewer"] .copy,
 :root[data-report-context="viewer"] .export-button {
   display: initial;
 }
