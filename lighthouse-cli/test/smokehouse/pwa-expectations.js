@@ -38,13 +38,17 @@ module.exports = [
         score: true
       },
       'manifest-display': {
-        score: true
+        score: true,
+        displayValue: 'standalone'
       },
       'manifest-exists': {
         score: true
       },
       'manifest-background-color': {
-        score: true
+        score: true,
+        extendedInfo: {
+          value: '#2196F3'
+        }
       },
       'manifest-theme-color': {
         score: true
@@ -87,13 +91,17 @@ module.exports = [
         score: false
       },
       'manifest-display': {
-        score: true
+        score: true,
+        displayValue: 'standalone'
       },
       'manifest-exists': {
         score: true
       },
       'manifest-background-color': {
-        score: true
+        score: true,
+        extendedInfo: {
+          value: '#366597'
+        }
       },
       'manifest-theme-color': {
         score: true
@@ -136,22 +144,28 @@ module.exports = [
         score: true
       },
       'manifest-display': {
-        score: true
+        score: true,
+        displayValue: 'standalone'
       },
       'manifest-exists': {
         score: true
       },
       'manifest-background-color': {
-        score: true
+        score: true,
+        extendedInfo: {
+          value: '#bababa'
+        }
       },
       'manifest-theme-color': {
         score: true
       },
       'manifest-icons-min-192': {
-        score: true
+        score: true,
+        displayValue: 'found sizes: 600x600',
       },
       'manifest-icons-min-144': {
-        score: true
+        score: true,
+        displayValue: 'found sizes: 600x600',
       },
       'manifest-name': {
         score: true
@@ -185,13 +199,17 @@ module.exports = [
         score: true
       },
       'manifest-display': {
-        score: true
+        score: true,
+        displayValue: 'standalone'
       },
       'manifest-exists': {
         score: true
       },
       'manifest-background-color': {
-        score: true
+        score: true,
+        extendedInfo: {
+          value: '#fff'
+        }
       },
       'manifest-theme-color': {
         score: true
@@ -234,13 +252,17 @@ module.exports = [
         score: true
       },
       'manifest-display': {
-        score: true
+        score: true,
+        displayValue: 'standalone'
       },
       'manifest-exists': {
         score: true
       },
       'manifest-background-color': {
-        score: true
+        score: true,
+        extendedInfo: {
+          value: '#383838'
+        }
       },
       'manifest-theme-color': {
         score: true

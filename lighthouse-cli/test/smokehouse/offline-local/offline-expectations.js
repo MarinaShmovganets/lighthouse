@@ -48,10 +48,12 @@ module.exports = [
         score: true
       },
       'user-timings': {
-        score: true
+        score: true,
+        displayValue: '0'
       },
       'critical-request-chains': {
-        score: true
+        score: true,
+        displayValue: '0'
       },
       'manifest-exists': {
         score: false
@@ -133,10 +135,12 @@ module.exports = [
         score: true
       },
       'user-timings': {
-        score: true
+        score: true,
+        displayValue: '0'
       },
       'critical-request-chains': {
-        score: false
+        score: false,
+        displayValue: '1'
       },
       'manifest-exists': {
         score: false
