@@ -205,6 +205,7 @@ class GatherRunner {
       return driver.endNetworkCollect();
     }).then(networkRecords => {
       const mainRecord = networkRecords.find(record => record.url === options.url);
+      console.error(mainRecord);
       if (driver.online && mainRecord.failed) {
         log.error('GatherRunner', mainRecord.localizedFailDescription);
         const error = new Error(mainRecord.localizedFailDescription);
