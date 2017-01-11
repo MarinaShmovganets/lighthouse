@@ -726,7 +726,7 @@ describe('GatherRunner', function() {
           assert.ok(false);
         }, error => {
           assert.ok(true);
-          assert.equal(error.message, 'net::ERR_NAME_NOT_RESOLVED');
+          assert.ok(/net::ERR_NAME_NOT_RESOLVED/.test(error.message));
         });
     });
 
