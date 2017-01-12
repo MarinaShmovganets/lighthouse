@@ -1,14 +1,10 @@
 module.exports = {
   // start with google standard style
   //     https://github.com/google/eslint-config-google/blob/master/index.js
-  "extends": "google",
+  "extends": ["eslint:recommended", "google"],
   "env": {
-    "node": true
-  },
-  "globals": {
-    "Map": false,
-    "Promise": false,
-    "Set": false
+    "node": true,
+    "es6": true
   },
   "rules": {
     // 2 == error, 1 == warning, 0 == off
@@ -21,12 +17,14 @@ module.exports = {
       "ignoreUrls": true,
       "tabWidth": 2
     }],
+    "no-empty": [2, {
+      "allowEmptyCatch": true
+    }],
     "no-implicit-coercion": [2, {
       "boolean": false,
       "number": true,
       "string": true
     }],
-    "no-undef": 2,
     "no-unused-expressions": [2, {
       "allowShortCircuit": true,
       "allowTernary": false

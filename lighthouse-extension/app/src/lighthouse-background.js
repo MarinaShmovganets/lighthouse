@@ -16,6 +16,8 @@
  */
 'use strict';
 
+/* eslint-disable no-console */
+
 const ExtensionProtocol = require('../../../lighthouse-core/gather/connections/extension');
 const RawProtocol = require('../../../lighthouse-core/gather/connections/raw');
 const Runner = require('../../../lighthouse-core/runner');
