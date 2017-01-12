@@ -19,6 +19,10 @@
 
 'use strict';
 
+/**
+ * Opens a new tab to the online viewer and sends the local page's JSON results
+ * to the online viewer using postMessage.
+ */
 function sendJSONReport() {
   const VIEWER_ORIGIN = 'https://googlechrome.github.io';
   const VIEWER_URL = `${VIEWER_ORIGIN}/lighthouse/viewer/`;
