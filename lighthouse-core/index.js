@@ -17,10 +17,9 @@
 
 'use strict';
 
-/* eslint-disable no-console */
-
 const environment = require('../lighthouse-core/lib/environment');
 if (!environment.checkNodeCompatibility()) {
+  // eslint-disable-next-line no-console
   console.warn('Compatibility error', 'Lighthouse requires node 5+ or 4 with --harmony');
   process.exit(1);
 }

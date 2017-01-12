@@ -16,8 +16,6 @@
  */
 'use strict';
 
-/* eslint-disable no-console */
-
 const ExtensionProtocol = require('../../../lighthouse-core/gather/connections/extension');
 const RawProtocol = require('../../../lighthouse-core/gather/connections/raw');
 const Runner = require('../../../lighthouse-core/runner');
@@ -282,6 +280,7 @@ window.isRunning = function() {
 if (window.chrome && chrome.runtime) {
   chrome.runtime.onInstalled.addListener(details => {
     if (details.previousVersion) {
+      // eslint-disable-next-line no-console
       console.log('previousVersion', details.previousVersion);
     }
   });
