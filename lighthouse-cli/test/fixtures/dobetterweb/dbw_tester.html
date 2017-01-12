@@ -346,7 +346,8 @@ if (location.search === '') {
 }
 </script>
 
-<!-- PASS: not in header, does not block rendering -->
+<!-- PASS: not in header, so it does not block rendering. zone.js is loaded
+     by the static-server and provides a polyfill for Promise. -->
 <script src="/zone.js"></script>
 </body>
 </html>
