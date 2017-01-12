@@ -336,7 +336,7 @@
         }
       }
     }, {
-      "name": "Avoiding deprecated APIs",
+      "name": "Avoiding deprecated APIs and browser interventions",
       "audits": {
         "deprecations": {
           "expectedValue": true,

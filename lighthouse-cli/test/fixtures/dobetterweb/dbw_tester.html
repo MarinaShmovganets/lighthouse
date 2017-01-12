@@ -47,9 +47,6 @@
   body {
     color: black;
   }
-  html /deep/ h2 {
-    color: navy; /* FAIL - deprecation warnings */
-  }
 </style>
 
 <template id="old-flexbox-tmpl">
@@ -320,6 +317,13 @@ function deprecationsTest() {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://lighthouse-viewer.appspot.com/data', false);
   xhr.send();
+
+  console.timeline(); // FAIL
+
+  window.webkitStorageInfo.PERSISTENT // FAIL
+
+  // FAIL - intervention.
+  document.write("<script src='https://static.chartbeat.com/js/chartbeat.js'><\/script>");
 }
 
 // Figure out which tests to fun.

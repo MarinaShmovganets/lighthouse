@@ -21,6 +21,10 @@
 
 const params = new URLSearchParams(location.search);
 
+const div = document.createElement('div');
+  div.createShadowRoot();
+  div.createShadowRoot(); // FAIL - multiple shadow v0 roots.
+
 if (location.search === '' || params.has('dateNow')) {
   // FAIL - Date.now() usage in another file.
   const d = Date.now();
@@ -38,6 +42,12 @@ if (location.search === '' || params.has('passiveEvents')) {
   document.addEventListener('wheel', e => {
     console.log('wheel: arrow function');
   });
+}
+
+if (location.search === '' || params.has('deprecations')) {
+  const div = document.createElement('div');
+  div.createShadowRoot();
+  div.createShadowRoot(); // FAIL - multiple shadow v0 roots.
 }
 
 })();

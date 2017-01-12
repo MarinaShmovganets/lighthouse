@@ -32,8 +32,8 @@ class Deprecations extends Audit {
       category: 'Deprecations',
       name: 'deprecations',
       description: 'Site does not use deprecated APIs',
-      helpText: 'Your page uses APIs that are deprecated and will ' +
-          'eventually be removed. [Learn more](https://www.chromestatus.com/features#deprecated).',
+      helpText: 'We found some uses of deprecated APIs. Please consider migrating ' +
+          'to a newer option. [Learn more](https://www.chromestatus.com/features#deprecated).',
       requiredArtifacts: ['ConsoleViolations']
     };
   }
@@ -51,10 +51,12 @@ class Deprecations extends Audit {
     }
 
     const entries = artifacts.ConsoleViolations;
+
     const deprecations = entries.filter(log => log.entry.source === 'deprecation')
         .map(log => {
-          const label = log.entry.lineNumber ? `line: ${log.entry.lineNumber}` : null;
-          const url = log.entry.url || null;
+          // CSS deprecations can have missing URls and lineNumbers.
+          const label = log.entry.lineNumber ? `line: ${log.entry.lineNumber}` : 'line: ???';
+          const url = log.entry.url || 'Unable to determine URL';
           return Object.assign({
             label,
             url,
@@ -68,8 +70,6 @@ class Deprecations extends Audit {
     } else if (deprecations.length === 1) {
       displayValue = `${deprecations.length} warning found`;
     }
-
-console.log(deprecations);
 
     return Deprecations.generateAuditResult({
       rawValue: deprecations.length === 0,
