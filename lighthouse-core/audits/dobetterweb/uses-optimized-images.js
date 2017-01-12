@@ -28,6 +28,7 @@ const Audit = require('../audit');
 const Formatter = require('../../formatters/formatter');
 
 const KB_IN_BYTES = 1024;
+const IGNORE_THRESHOLD_IN_BYTES = 2 * KB_IN_BYTES;
 const TOTAL_WASTED_BYTES_THRESHOLD = 100 * KB_IN_BYTES;
 const WEBP_ALREADY_OPTIMIZED_THRESHOLD_IN_BYTES = 50 * KB_IN_BYTES;
 
@@ -88,6 +89,8 @@ class UsesOptimizedImages extends Audit {
     const results = images.reduce((results, image) => {
       if (image.failed) {
         failedImages.push(image);
+        return results;
+      } else if (image.originalSize < Math.max(IGNORE_THRESHOLD_IN_BYTES, image.webpSize)) {
         return results;
       }
 

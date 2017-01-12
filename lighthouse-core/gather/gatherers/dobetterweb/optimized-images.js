@@ -67,7 +67,7 @@ class OptimizedImages extends Gatherer {
    */
   static filterImageRequests(pageUrl, networkRecords) {
     return networkRecords.reduce((prev, record) => {
-      const isOptimizableImage = /image\/(png|bmp|jpeg|gif)/.test(record._mimeType);
+      const isOptimizableImage = /image\/(png|bmp|jpeg)/.test(record._mimeType);
       const isSameOrigin = URL.hostsMatch(pageUrl, record._url);
       const isBase64DataUri = /^data.{2,40}base64/.test(record._url);
 
