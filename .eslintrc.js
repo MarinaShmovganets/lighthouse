@@ -5,6 +5,11 @@ module.exports = {
   "env": {
     "node": true
   },
+  "globals": {
+    "Map": false,
+    "Promise": false,
+    "Set": false
+  },
   "rules": {
     // 2 == error, 1 == warning, 0 == off
     "indent": [2, 2, {
@@ -21,6 +26,7 @@ module.exports = {
       "number": true,
       "string": true
     }],
+    "no-undef": 2,
     "no-unused-expressions": [2, {
       "allowShortCircuit": true,
       "allowTernary": false
