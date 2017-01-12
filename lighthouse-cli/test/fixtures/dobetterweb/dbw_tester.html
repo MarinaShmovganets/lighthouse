@@ -47,6 +47,9 @@
   body {
     color: black;
   }
+  html /deep/ h2 {
+    color: navy; /* FAIL - deprecation warnings */
+  }
 </style>
 
 <template id="old-flexbox-tmpl">
@@ -308,6 +311,17 @@ function unoptimizedImagesTest() {
   stampTemplate('unoptimized-images-tmpl', document.body);
 }
 
+function deprecationsTest() {
+  try {
+    MediaStreamTrack.getSources(); // FAIL
+  } catch(e) {}
+
+  // FAIL
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://lighthouse-viewer.appspot.com/data', false);
+  xhr.send();
+}
+
 // Figure out which tests to fun.
 const params = new URLSearchParams(location.search);
 if (location.search === '') {
@@ -324,6 +338,7 @@ if (location.search === '') {
   oldCSSFlexboxTest();
   unusedCssRulesTest();
   unoptimizedImagesTest();
+  deprecationsTest();
 } else {
   if (params.has('documentWrite')) {
     documentWriteTest();
@@ -363,6 +378,9 @@ if (location.search === '') {
   }
   if (params.has('unoptimizedimages')) {
     unoptimizedImagesTest();
+  }
+  if (params.has('deprecations')) {
+    deprecationsTest();
   }
 }
 </script>
