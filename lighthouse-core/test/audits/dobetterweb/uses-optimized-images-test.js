@@ -109,7 +109,7 @@ describe('Page uses optimized images', () => {
 
   it('warns when images have failed', () => {
     const auditResult = UsesOptimizedImagesAudit.audit({
-      OptimizedImages: [{failed: true, url: 'image.jpg'}],
+      OptimizedImages: [{failed: true, url: 'http://localhost/image.jpg'}],
     });
 
     assert.ok(/image.jpg/.test(auditResult.debugString));

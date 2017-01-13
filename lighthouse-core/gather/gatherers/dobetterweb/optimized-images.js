@@ -53,7 +53,6 @@ function getOptimizedNumBytes(url) {
         const jpeg = getTypeStats('image/jpeg', 0.8);
         const webp = getTypeStats('image/webp', 0.8);
 
-        document.body.removeChild(canvas);
         resolve({jpeg, webp});
       } catch (err) {
         reject(err);
