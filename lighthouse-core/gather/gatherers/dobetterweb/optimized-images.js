@@ -25,6 +25,11 @@ const URL = require('../../../lib/url-shim');
 
 /* global document */
 
+/**
+ * Runs in the context of the browser
+ * @param {string} url
+ * @return {!Promise<{jpeg: Object, webp: Object}>}
+ */
 /* istanbul ignore next */
 function getOptimizedNumBytes(url) {
   return new Promise(function(resolve, reject) {
@@ -62,8 +67,8 @@ function getOptimizedNumBytes(url) {
 class OptimizedImages extends Gatherer {
   /**
    * @param {string} pageUrl
-   * @param {NetworkRecords} networkRecords
-   * @return {!Array.<!{url: string, isBase64DataUri: boolean, mimeType: string, resourceSize: number}>}
+   * @param {!NetworkRecords} networkRecords
+   * @return {!Array<{url: string, isBase64DataUri: boolean, mimeType: string, resourceSize: number}>}
    */
   static filterImageRequests(pageUrl, networkRecords) {
     return networkRecords.reduce((prev, record) => {
@@ -85,9 +90,9 @@ class OptimizedImages extends Gatherer {
   }
 
   /**
-   * @param {Object} driver
-   * @param {!{url: string, isBase64DataUri: boolean, resourceSize: number}} networkRecord
-   * @return {!Promise.<!{originalSize: number, jpegSize: number, webpSize: number}>}
+   * @param {!Object} driver
+   * @param {{url: string, isBase64DataUri: boolean, resourceSize: number}} networkRecord
+   * @return {!Promise<{originalSize: number, jpegSize: number, webpSize: number}>}
    */
   calculateImageStats(driver, networkRecord) {
     const param = JSON.stringify(networkRecord.url);
