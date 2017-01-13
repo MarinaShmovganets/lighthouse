@@ -44,6 +44,7 @@ function getOptimizedNumBytes(url) {
       return {base64: base64.length, binary: atob(base64).length};
     }
 
+    img.addEventListener('error', reject);
     img.addEventListener('load', () => {
       try {
         canvas.height = img.height;
