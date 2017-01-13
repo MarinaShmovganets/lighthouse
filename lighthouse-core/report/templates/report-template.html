@@ -177,9 +177,13 @@ limitations under the License.
   </section>
 </div>
 
-{{#if scripts }}
+{{#if (and lhresults scripts) }}
+{{!-- Escaped results to prevent XSS from results details. --}}
+<div id="lhresults-dump">
+  {{lhresults}}
+</div>
 <script>
-  window.lhresults = {{{lhresults}}};
+  window.lhresults = JSON.parse(document.querySelector('#lhresults-dump').textContent);
 </script>
 {{/if}}
 

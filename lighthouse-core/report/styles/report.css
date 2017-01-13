@@ -175,6 +175,10 @@ body {
   animation: rotate 1000ms infinite;
 }
 
+#lhresults-dump {
+  display: none !important;
+}
+
 @keyframes rotate {
   from {
     transform: none;
