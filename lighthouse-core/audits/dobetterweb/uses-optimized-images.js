@@ -25,6 +25,7 @@
 'use strict';
 
 const Audit = require('../audit');
+const URL = require('../../lib/url-shim');
 const Formatter = require('../../formatters/formatter');
 
 const KB_IN_BYTES = 1024;
@@ -62,14 +63,6 @@ class UsesOptimizedImages extends Audit {
   }
 
   /**
-   * @param {{isBase64DataUri: boolean, url: string}} image
-   * @return {string}
-   */
-  static getUrl(image) {
-    return image.isBase64DataUri ? image.url.slice(0, 80) + '...' : image.url;
-  }
-
-  /**
    * @param {!Artifacts} artifacts
    * @return {!AuditResult}
    */
@@ -93,7 +86,7 @@ class UsesOptimizedImages extends Audit {
       }
 
       const originalKb = Math.round(image.originalSize / KB_IN_BYTES);
-      const url = UsesOptimizedImages.getUrl(image);
+      const url = URL.getDisplayName(image.url);
       const webpSavings = UsesOptimizedImages.computeSavings(image, 'webp');
 
       let label = `${originalKb} KB total, webp savings: ${webpSavings.percent}%`;
@@ -121,12 +114,13 @@ class UsesOptimizedImages extends Audit {
 
     let debugString;
     if (failedImages.length) {
-      const urls = failedImages.map(image => UsesOptimizedImages.getUrl(image));
-      debugString = `Lighthouse was unable to parse some of your images: ${urls.join(', ')}`;
+      const urls = failedImages.map(image => URL.getDisplayName(image.url));
+      debugString = `Lighthouse was unable to decode some of your images: ${urls.join(', ')}`;
     }
 
     return UsesOptimizedImages.generateAuditResult({
-      displayValue, debugString,
+      displayValue,
+      debugString,
       rawValue: hasAllEfficientImages && totalWastedBytes < TOTAL_WASTED_BYTES_THRESHOLD,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.URLLIST,

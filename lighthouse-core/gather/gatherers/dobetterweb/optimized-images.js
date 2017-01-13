@@ -16,14 +16,15 @@
  */
 
  /**
-  * @fileoverview Determines optimized jpeg/webp filesizes for all same-origin and dataURI images.
+  * @fileoverview Determines optimized jpeg/webp filesizes for all same-origin and dataURI images by
+  *   running the images through canvas in the browser context at quality 0.8.
   */
 'use strict';
 
 const Gatherer = require('../gatherer');
 const URL = require('../../../lib/url-shim');
 
-/* global document */
+/* global document, Image, atob */
 
 /**
  * Runs in the context of the browser
@@ -43,7 +44,6 @@ function getOptimizedNumBytes(url) {
       return {base64: base64.length, binary: atob(base64).length};
     }
 
-    document.body.appendChild(canvas);
     img.addEventListener('load', () => {
       try {
         canvas.height = img.height;
@@ -74,7 +74,7 @@ class OptimizedImages extends Gatherer {
     return networkRecords.reduce((prev, record) => {
       const isOptimizableImage = /image\/(png|bmp|jpeg)/.test(record._mimeType);
       const isSameOrigin = URL.hostsMatch(pageUrl, record._url);
-      const isBase64DataUri = /^data.{2,40}base64/.test(record._url);
+      const isBase64DataUri = /^data:.{2,40}base64\s*,/.test(record._url);
 
       if (isOptimizableImage && (isSameOrigin || isBase64DataUri)) {
         prev.push({
@@ -99,8 +99,9 @@ class OptimizedImages extends Gatherer {
     const script = `(${getOptimizedNumBytes.toString()})(${param})`;
     return driver.evaluateAsync(script).then(stats => {
       const isBase64DataUri = networkRecord.isBase64DataUri;
+      const base64Length = networkRecord.url.length - networkRecord.url.indexOf(',') - 1;
       return {
-        originalSize: isBase64DataUri ? networkRecord.url.length : networkRecord.resourceSize,
+        originalSize: isBase64DataUri ? base64Length : networkRecord.resourceSize,
         jpegSize: isBase64DataUri ? stats.jpeg.base64 : stats.jpeg.binary,
         webpSize: isBase64DataUri ? stats.webp.base64 : stats.webp.binary,
       };

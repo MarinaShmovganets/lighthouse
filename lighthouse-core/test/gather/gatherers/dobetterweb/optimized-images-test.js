@@ -55,7 +55,7 @@ const traceData = {
       _resourceSize: 14,
     },
     {
-      _url: 'data:image/jpeg;base64,SgVc5321...',
+      _url: 'data: image/jpeg ; base64 ,SgVcAT32587935321...',
       _mimeType: 'image/jpeg',
       _resourceSize: 14,
     },
@@ -82,7 +82,7 @@ describe('Optimized images', () => {
       assert.ok(/image.jpg/.test(artifact[0].url));
       assert.ok(/transparent.png/.test(artifact[1].url));
       assert.ok(/image.bmp/.test(artifact[2].url));
-      assert.ok(/data:image/.test(artifact[3].url));
+      assert.ok(/data: image/.test(artifact[3].url));
     });
   });
 
@@ -98,7 +98,7 @@ describe('Optimized images', () => {
       checkSizes(artifact[0], 10, 60, 80);
       checkSizes(artifact[1], 11, 60, 80);
       checkSizes(artifact[2], 12, 60, 80);
-      checkSizes(artifact[3], 34, 80, 100); // uses base64 data
+      checkSizes(artifact[3], 20, 80, 100); // uses base64 data
     });
   });
 
