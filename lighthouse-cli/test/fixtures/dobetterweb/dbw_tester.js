@@ -21,10 +21,6 @@
 
 const params = new URLSearchParams(location.search);
 
-const div = document.createElement('div');
-  div.createShadowRoot();
-  div.createShadowRoot(); // FAIL - multiple shadow v0 roots.
-
 if (location.search === '' || params.has('dateNow')) {
   // FAIL - Date.now() usage in another file.
   const d = Date.now();
