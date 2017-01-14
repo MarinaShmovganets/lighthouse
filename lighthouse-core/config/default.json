@@ -29,7 +29,7 @@
     "recordNetwork": true,
     "passName": "dbw",
     "gatherers": [
-      "console-violations",
+      "console-log-entry",
       "styles",
       "css-usage",
       "dobetterweb/all-event-listeners",

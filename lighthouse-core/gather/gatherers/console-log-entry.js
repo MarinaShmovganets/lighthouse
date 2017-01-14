@@ -23,7 +23,7 @@
 
 const Gatherer = require('./gatherer');
 
-class ConsoleViolations extends Gatherer {
+class ConsoleLogEntry extends Gatherer {
 
   constructor() {
     super();
@@ -62,4 +62,4 @@ class ConsoleViolations extends Gatherer {
   }
 }
 
-module.exports = ConsoleViolations;
+module.exports = ConsoleLogEntry;

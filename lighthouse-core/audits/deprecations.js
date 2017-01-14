@@ -34,7 +34,7 @@ class Deprecations extends Audit {
       description: 'Site does not use deprecated APIs',
       helpText: 'We found some uses of deprecated APIs. Please consider migrating ' +
           'to a newer option. [Learn more](https://www.chromestatus.com/features#deprecated).',
-      requiredArtifacts: ['ConsoleViolations']
+      requiredArtifacts: ['ConsoleLogEntry']
     };
   }
 
@@ -43,11 +43,11 @@ class Deprecations extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    if (artifacts.ConsoleViolations.rawValue === -1) {
-      return Deprecations.generateAuditResult(artifacts.ConsoleViolations);
+    if (artifacts.ConsoleLogEntry.rawValue === -1) {
+      return Deprecations.generateAuditResult(artifacts.ConsoleLogEntry);
     }
 
-    const entries = artifacts.ConsoleViolations;
+    const entries = artifacts.ConsoleLogEntry;
 
     const deprecations = entries.filter(log => log.entry.source === 'deprecation')
         .map(log => {
