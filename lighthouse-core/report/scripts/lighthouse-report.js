@@ -47,7 +47,9 @@ function sendJSONReport() {
 
 /**
  * Sets up listeners to expand audit `<details>` when the user prints the page.
- * Upon closing the print dialog, the details are collapsed.
+ * Ideally, a print stylesheet could take care of this, but CSS has no way to
+ * open a `<details>` element. When the user closes the print dialog, all
+ * `<details>` are collapsed.
  */
 function expandDetailsWhenPrinting() {
   const details = Array.from(document.querySelectorAll('details'));
