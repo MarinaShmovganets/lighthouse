@@ -42,7 +42,6 @@ class ConsoleViolations extends Gatherer {
 
   endConsoleMessageCollect(driver) {
     driver.off('Log.entryAdded', this._onConsoleEntryAdded);
-
     return driver.sendCommand('Log.disable').then(_ => this._logEntries);
   }
 

@@ -18,7 +18,3 @@
 body {
   background-color: #eee;
 }
-
-body /deep/ div {
-  color: pink; /* FAIL - deprecation warning */
-}

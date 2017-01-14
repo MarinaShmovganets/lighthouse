@@ -44,17 +44,14 @@ class Deprecations extends Audit {
    */
   static audit(artifacts) {
     if (artifacts.ConsoleViolations.rawValue === -1) {
-      return NoDateNowAudit.generateAuditResult({
-        rawValue: artifacts.ConsoleViolations.rawValue,
-        debugString: artifacts.ConsoleViolations.debugString
-      });
+      return Deprecations.generateAuditResult(artifacts.ConsoleViolations);
     }
 
     const entries = artifacts.ConsoleViolations;
 
     const deprecations = entries.filter(log => log.entry.source === 'deprecation')
         .map(log => {
-          // CSS deprecations can have missing URls and lineNumbers.
+          // CSS deprecations can have missing URLs and lineNumbers. See https://crbug.com/680832.
           const label = log.entry.lineNumber ? `line: ${log.entry.lineNumber}` : 'line: ???';
           const url = log.entry.url || 'Unable to determine URL';
           return Object.assign({
