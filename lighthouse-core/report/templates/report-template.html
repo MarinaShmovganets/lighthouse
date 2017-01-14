@@ -142,13 +142,13 @@ limitations under the License.
 
                   <div class="subitem-result">
                     {{#if subItem.comingSoon}}
-                          <span class="subitem-result__unknown score-unknown-bg">N/A</span>
+                          <span class="subitem-result__unknown score-unknown-bg"></span>
                     {{else}}
                       {{#if (is-bool subItem.score)}}
                         {{#if subItem.score}}
-                          <span class="subitem-result__good score-good-bg">Pass</span>
+                          <span class="subitem-result__good score-good-bg"></span>
                         {{else}}
-                          <span class="subitem-result__poor score-poor-bg">Fail</span>
+                          <span class="subitem-result__poor score-poor-bg"></span>
                         {{/if}}
                       {{else}}
                         <span class="subitem-result__points score-{{ getItemRating subItem.score }}-bg">
