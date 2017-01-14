@@ -16,6 +16,8 @@
  */
 'use strict';
 
+const sourcemapStacktrace = require('sourcemapped-stacktrace');
+
 document.addEventListener('DOMContentLoaded', _ => {
   const background = chrome.extension.getBackgroundPage();
   const defaultAggregations = background.getDefaultAggregations();
@@ -75,7 +77,7 @@ document.addEventListener('DOMContentLoaded', _ => {
     }
 
     qsBody += '**Error Message**: ' + err.message + '\n';
-    qsBody += '**Stack Trace**:\n ```' + err.stack + '```';
+    qsBody += '**Stack Trace**:\n ```' + err.stack + '\n```';
 
     const base = 'https://github.com/googlechrome/lighthouse/issues/new?';
     let titleError = err.message;
@@ -83,11 +85,13 @@ document.addEventListener('DOMContentLoaded', _ => {
       titleError = `${titleError.substring(0, MAX_ISSUE_ERROR_LENGTH - 3)}...`;
     }
     const title = encodeURI('title=Extension Error: ' + titleError);
+    const labels = '&' + encodeURI('labels=extension');
     const body = '&body=' + encodeURI(qsBody);
 
-    reportErrorEl.href = base + title + body;
+    reportErrorEl.href = base + title + labels + body;
     reportErrorEl.textContent = 'Report Error';
     reportErrorEl.target = '_blank';
+
     return reportErrorEl;
   }
 
@@ -119,6 +123,27 @@ document.addEventListener('DOMContentLoaded', _ => {
     listItem.appendChild(label);
 
     return listItem;
+  }
+
+  function showError(err, message, includeReportLink) {
+    const stackTracePromise = new Promise(function(resolve) {
+      sourcemapStacktrace.mapStackTrace(err.stack, stackWithSourcemaps => {
+        resolve(stackWithSourcemaps);
+      });
+    }).catch(err => Promise.resolve(err.stack));
+
+    stackTracePromise.then(stack => {
+      err.stack = stack.join('\n');
+
+      feedbackEl.textContent = message;
+
+      if (includeReportLink) {
+        feedbackEl.className = 'feedback-error';
+        feedbackEl.appendChild(buildReportErrorLink(err));
+      }
+
+      background.console.error(err.message + '\n' + err.stack);
+    });
   }
 
   /**
@@ -175,15 +200,9 @@ document.addEventListener('DOMContentLoaded', _ => {
         }
       }
 
-      feedbackEl.textContent = message;
-
-      if (includeReportLink) {
-        feedbackEl.className = 'feedback-error';
-        feedbackEl.appendChild(buildReportErrorLink(err));
-      }
+      showError(err, message, includeReportLink);
 
       stopSpinner();
-      background.console.error(err);
     });
   });
 
