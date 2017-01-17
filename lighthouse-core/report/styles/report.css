@@ -855,6 +855,7 @@ body {
   height: 200px;
   display: none;
   overflow-y: scroll;
+  padding-top: 10px;
 }
 
 .config-panel.expanded .config-panel__body {
@@ -893,6 +894,7 @@ body {
   flex: 1 0 auto;
   display: flex;
   margin-left: 10px;
+  line-height: 17px;
 }
 
 .url-blocking-entry__cancel-button {
