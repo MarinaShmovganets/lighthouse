@@ -26,10 +26,33 @@ const log = require('../../../lighthouse-core/lib/log');
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
 
 const STORAGE_KEY = 'lighthouse_audits';
-const _flatten = arr => [].concat(...arr);
 
+let installedExtensions = [];
 let lighthouseIsRunning = false;
 let latestStatusLog = [];
+
+const _flatten = arr => [].concat(...arr);
+
+/**
+ * Enables or disables all other installed chrome extensions. The initial list
+ * of the user's extension is created when the background page is started.
+ * @param {!boolean} enable If true, enables all other installed extensions.
+ *     False disables them.
+ * @param {!Promise}
+ */
+function enableOtherChromeExtensions(enable) {
+  return new Promise(resolve => {
+    let remaining = installedExtensions.length;
+    installedExtensions.forEach(info => {
+      chrome.management.setEnabled(info.id, enable, _ => {
+        remaining -= 1;
+        if (!remaining) {
+          resolve();
+        }
+      });
+    });
+  });
+}
 
 /**
  * Filter out any unrequested aggregations from the config. If any audits are
@@ -124,19 +147,30 @@ window.runLighthouseForConnection = function(connection, url, options, requested
   lighthouseIsRunning = true;
   updateBadgeUI(url);
 
-  // Run Lighthouse.
-  return Runner.run(connection, runOptions)
-    .then(result => {
-      lighthouseIsRunning = false;
-      updateBadgeUI();
-      filterOutArtifacts(result);
-      return result;
-    })
-    .catch(err => {
-      lighthouseIsRunning = false;
-      updateBadgeUI();
-      throw err;
-    });
+  return enableOtherChromeExtensions(false)
+      .then(_ => Runner.run(connection, runOptions)) // Run Lighthouse.
+      .then(result => {
+        lighthouseIsRunning = false;
+        updateBadgeUI();
+        filterOutArtifacts(result);
+
+        // Deliver results even if enabling extensions fails.
+        enableOtherChromeExtensions(true).catch(err => {
+          log.warn('Chrome', `Could not disable some extensions. ${err.message}`);
+        });
+
+        return result;
+      })
+      .catch(err => {
+        lighthouseIsRunning = false;
+        updateBadgeUI();
+
+        enableOtherChromeExtensions(true).catch(err => {
+          log.warn('Chrome', `Could not enable/disable some extensions. ${err.message}`);
+        });
+
+        throw err;
+      });
 };
 
 /**
@@ -276,6 +310,17 @@ window.listenForStatus = function(callback) {
 window.isRunning = function() {
   return lighthouseIsRunning;
 };
+
+// Get list of installed extensions that are enabled and can be disabled.
+// Extensions are not allowed to be disabled if they are under an admin policy.
+chrome.management.getAll(installs => {
+  chrome.management.getSelf(lighthouseCrxInfo => {
+    installedExtensions = installs.filter(info => {
+      return info.id !== lighthouseCrxInfo.id && info.type === 'extension' &&
+             info.enabled && info.mayDisable;
+    });
+  });
+});
 
 if (window.chrome && chrome.runtime) {
   chrome.runtime.onInstalled.addListener(details => {
