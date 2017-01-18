@@ -19,9 +19,65 @@
 
 'use strict';
 
+/**
+ * Opens a new tab to the online viewer and sends the local page's JSON results
+ * to the online viewer using postMessage.
+ */
+function sendJSONReport() {
+  const VIEWER_ORIGIN = 'https://googlechrome.github.io';
+  const VIEWER_URL = `${VIEWER_ORIGIN}/lighthouse/viewer/`;
+
+  // Chrome doesn't allow us to immediately postMessage to a popup right
+  // after it's created. Normally, we could also listen for the popup window's
+  // load event, however it is cross-domain and won't fire. Instead, listen
+  // for a message from the target app saying "I'm open".
+  window.addEventListener('message', function msgHandler(e) {
+    if (e.origin !== VIEWER_ORIGIN) {
+      return;
+    }
+
+    if (e.data.opened) {
+      popup.postMessage({lhresults: window.lhresults}, VIEWER_ORIGIN);
+      window.removeEventListener('message', msgHandler);
+    }
+  });
+
+  const popup = window.open(VIEWER_URL, '_blank');
+}
+
+/**
+ * Sets up listeners to expand audit `<details>` when the user prints the page.
+ * Ideally, a print stylesheet could take care of this, but CSS has no way to
+ * open a `<details>` element. When the user closes the print dialog, all
+ * `<details>` are collapsed.
+ */
+function expandDetailsWhenPrinting() {
+  const details = Array.from(document.querySelectorAll('details'));
+
+  // FF and IE implement these old events.
+  if ('onbeforeprint' in window) {
+    window.addEventListener('beforeprint', _ => {
+      details.map(detail => detail.open = true);
+    });
+    window.addEventListener('afterprint', _ => {
+      details.map(detail => detail.open = false);
+    });
+  } else {
+    // Note: while FF has media listeners, it doesn't fire when matching 'print'.
+    window.matchMedia('print').addListener(mql => {
+      details.map(detail => detail.open = mql.matches);
+    });
+  }
+}
+
 window.addEventListener('DOMContentLoaded', _ => {
+  expandDetailsWhenPrinting();
+
   const printButton = document.querySelector('.js-print');
   printButton.addEventListener('click', _ => {
     window.print();
   });
+
+  const openButton = document.querySelector('.js-open');
+  openButton.addEventListener('click', sendJSONReport);
 });

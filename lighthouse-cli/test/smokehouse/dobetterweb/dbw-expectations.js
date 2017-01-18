@@ -24,42 +24,166 @@ module.exports = [
     initialUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
     url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
     audits: {
-      'is-on-https': false,
-      'uses-http2': false,
-      'external-anchors-use-rel-noopener': false,
-      'appcache-manifest': false,
-      'geolocation-on-start': false,
-      'link-blocking-first-paint': false,
-      'no-console-time': false,
-      'no-datenow': false,
-      'no-document-write': false,
-      'no-mutation-events': false,
-      'no-old-flexbox': false,
-      'no-websql': false,
-      'notification-on-start': false,
-      'script-blocking-first-paint': false,
-      'unused-css-rules': false,
-      'uses-passive-event-listeners': false
+      'is-on-https': {
+        score: false
+      },
+      'uses-http2': {
+        score: false,
+        extendedInfo: {
+          value: {
+            length: 10
+          }
+        }
+      },
+      'external-anchors-use-rel-noopener': {
+        score: false,
+        extendedInfo: {
+          value: {
+            length: 2
+          }
+        }
+      },
+      'appcache-manifest': {
+        score: false,
+        displayValue: '<html manifest="clock.appcache">'
+      },
+      'geolocation-on-start': {
+        score: false
+      },
+      'link-blocking-first-paint': {
+        score: false,
+        extendedInfo: {
+          value: {
+            length: 4
+          }
+        }
+      },
+      'no-console-time': {
+        score: false,
+        extendedInfo: {
+          value: {
+            length: 3
+          }
+        }
+      },
+      'no-datenow': {
+        score: false,
+        extendedInfo: {
+          value: {
+            length: 5
+          }
+        }
+      },
+      'no-document-write': {
+        score: false,
+        extendedInfo: {
+          value: {
+            length: 3
+          }
+        }
+      },
+      'no-mutation-events': {
+        score: false,
+        extendedInfo: {
+          value: {
+            length: 6
+          }
+        }
+      },
+      'no-old-flexbox': {
+        score: false,
+        extendedInfo: {
+          value: {
+            length: 4
+          }
+        }
+      },
+      'no-websql': {
+        score: false,
+        displayValue: 'db name: mydb, version: 1.0'
+      },
+      'notification-on-start': {
+        score: false
+      },
+      'script-blocking-first-paint': {
+        score: false,
+        extendedInfo: {
+          value: {
+            length: 1
+          }
+        }
+      },
+      'unused-css-rules': {
+        score: false,
+        extendedInfo: {
+          value: {
+            length: 4
+          }
+        }
+      },
+      'uses-passive-event-listeners': {
+        score: false,
+        extendedInfo: {
+          value: {
+            // Note: This would normally be 7 but M56 defaults document-level
+            // listeners to passive. See https://www.chromestatus.com/features/5093566007214080
+            length: 4
+          }
+        }
+      },
+      'uses-optimized-images': {
+        score: false
+      },
     }
   }, {
     initialUrl: 'http://localhost:10200/online-only.html',
     url: 'http://localhost:10200/online-only.html',
     audits: {
-      'is-on-https': false,
-      'uses-http2': false,
-      'external-anchors-use-rel-noopener': true,
-      'appcache-manifest': true,
-      'geolocation-on-start': true,
-      'link-blocking-first-paint': true,
-      'no-console-time': true,
-      'no-datenow': true,
-      'no-document-write': true,
-      'no-mutation-events': true,
-      'no-old-flexbox': true,
-      'no-websql': true,
-      'script-blocking-first-paint': true,
-      'unused-css-rules': true,
-      'uses-passive-event-listeners': true
+      'is-on-https': {
+        score: false
+      },
+      'uses-http2': {
+        score: false
+      },
+      'external-anchors-use-rel-noopener': {
+        score: true
+      },
+      'appcache-manifest': {
+        score: true
+      },
+      'geolocation-on-start': {
+        score: true
+      },
+      'link-blocking-first-paint': {
+        score: true
+      },
+      'no-console-time': {
+        score: true
+      },
+      'no-datenow': {
+        score: true
+      },
+      'no-document-write': {
+        score: true
+      },
+      'no-mutation-events': {
+        score: true
+      },
+      'no-old-flexbox': {
+        score: true
+      },
+      'no-websql': {
+        score: true
+      },
+      'script-blocking-first-paint': {
+        score: true
+      },
+      'unused-css-rules': {
+        score: true
+      },
+      'uses-passive-event-listeners': {
+        score: true
+      }
     }
   }
 ];
