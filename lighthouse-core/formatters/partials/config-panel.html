@@ -2,7 +2,6 @@
 .config-panel {
   padding: 0 0 0 0;
   background: #FAFAFA;
-  display: none;
 }
 
 .config-panel__header {
@@ -95,6 +94,12 @@
   }
   .config-panel__header {
     padding-right: 2px;
+  }
+}
+
+@media print {
+  .config-panel {
+    display: none;
   }
 }
 </style>

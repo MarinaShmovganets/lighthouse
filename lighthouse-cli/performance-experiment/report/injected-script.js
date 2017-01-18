@@ -50,7 +50,6 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   configPanel.log('');
-  configPanel.show();
 });
 
 class ConfigPanel {
@@ -127,10 +126,6 @@ class ConfigPanel {
 
   log(message) {
     this._messageField.innerHTML = message;
-  }
-
-  show() {
-    this._configPanel.style.display = 'block';
   }
 
   _toggleBody() {
