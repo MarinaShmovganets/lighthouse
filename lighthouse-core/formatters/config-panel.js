@@ -17,13 +17,10 @@
 
 'use strict';
 
-const URL = require('../lib/url-shim');
 const path = require('path');
 const fs = require('fs');
 const Formatter = require('./formatter');
 const html = fs.readFileSync(path.join(__dirname, 'partials/config-panel.html'), 'utf8');
-
-const isWindows = process.platform === 'win32';
 
 class ConfigPanel extends Formatter {
   static getFormatter(type) {

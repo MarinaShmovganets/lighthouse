@@ -89,7 +89,6 @@ class ConfigPanel {
     return fetch('/rerun', {method: 'POST', body: JSON.stringify(options)}).then(() => {
       location.reload();
     }).catch(err => {
-      rerunButton.classList.remove('rerun-button__spinning');
       this.log(`Lighthouse Runtime Error: ${err}`);
     });
   }
