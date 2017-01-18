@@ -1,0 +1,122 @@
+<style>
+.config-panel {
+  padding: 0 0 0 0;
+  background: #FAFAFA;
+  display: none;
+}
+
+.config-panel__header {
+  height: 50px;
+  border-top: 1px solid #EBEBEB;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding-right: 30px;
+}
+
+.config-panel__body {
+  border-top: 1px solid #EBEBEB;
+  height: 200px;
+  display: none;
+  overflow-y: scroll;
+  padding-top: 10px;
+}
+
+.config-panel.expanded .config-panel__body {
+  display: block;
+}
+
+.config-panel__message {
+  flex: 1 1 0;
+  padding: 0 10px;
+}
+
+.config-panel__panel-toggle {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+  width: 24px;
+  height: 24px;
+  border: none;
+  flex: 0 0 auto;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-color: transparent;
+  margin-left: 8px;
+}
+
+.config-panel.expanded .config-panel__panel-toggle {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+}
+
+.url-blocking-entry {
+  display: flex;
+  flex-direction: row;
+  padding: 2px 10px;
+}
+
+.url-blocking-entry__pattern {
+  flex: 1 0 auto;
+  display: flex;
+  margin-left: 10px;
+  line-height: 17px;
+}
+
+.url-blocking-entry__cancel-button {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M7 11v2h10v-2H7zm5-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>');
+  display: flex;
+  padding: 0 0 0 0px;
+  width: 18px;
+  height: 18px;
+  border: none;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 16px 16px;
+  background-color: transparent;
+}
+
+.url-blocking-entry__add-button {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>');
+  display: flex;
+  padding: 0 0 0 0px;
+  width: 18px;
+  height: 18px;
+  border: none;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 16px 16px;
+  background-color: transparent;
+}
+
+@media screen and (max-width: 767px) {
+  .config-panel {
+    margin-left: 0;
+    width: 100%;
+  }
+  .config-panel__header {
+    padding-right: 2px;
+  }
+}
+</style>
+
+<div class="config-panel js-config-panel">
+  <div class="config-panel__body">
+    <ul class="config-panel__url-blocking-patterns js-url-blocking-patterns">
+      <template class="url-blocking-entry">
+        <li class="url-blocking-entry">
+          <button class="url-blocking-entry__cancel-button"></button>
+          <div class="url-blocking-entry__pattern"></div>
+        </li>
+      </template>
+      <li class="url-blocking-entry">
+        <button class="url-blocking-entry__add-button js-add-button"></button>
+        <input class="url-blocking-entry__pattern js-pattern-input" placeholder="URL blocking Patterns (* for wild card) e.g. *://www.evil.com/*">
+      </li>
+    </ul>
+  </div>
+  <div class="config-panel__header">
+    <button class="config-panel__panel-toggle js-panel-toggle"></button>
+    <div class="config-panel__message js-message"></div>
+    <button class="config-panel__rerun-button js-rerun-button">Rerun</button>
+  </div>
+</div>

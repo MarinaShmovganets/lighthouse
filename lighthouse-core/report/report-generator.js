@@ -90,6 +90,17 @@ class ReportGenerator {
     Handlebars.registerHelper('not', value => !value);
 
     // value == value2?
+    Handlebars.registerHelper('if_eq', function(lhs, rhs, options) {
+      if (lhs === rhs) {
+        // eslint-disable-next-line no-invalid-this
+        return options.fn(this);
+      } else {
+        // eslint-disable-next-line no-invalid-this
+        return options.inverse(this);
+      }
+    });
+
+    // value != value2?
     Handlebars.registerHelper('if_not_eq', function(lhs, rhs, options) {
       if (lhs !== rhs) {
         // eslint-disable-next-line no-invalid-this
@@ -195,7 +206,7 @@ class ReportGenerator {
 
   /**
    * Gets the CSS for the report.
-   * @return {Array<string>} an array of CSS
+   * @return {!Array<string>} an array of CSS
    */
   getReportCSS() {
     return [fs.readFileSync(path.join(__dirname, './styles/report.css'), 'utf8')];
@@ -204,7 +215,7 @@ class ReportGenerator {
   /**
    * Gets the script for the report UI
    * @param {string} reportContext
-   * @return {Array<string>} an array of scripts
+   * @return {!Array<string>} an array of scripts
    */
   getReportJS(reportContext) {
     if (reportContext === 'devtools') {
@@ -300,6 +311,11 @@ class ReportGenerator {
       });
     });
 
+    if (reportContext === 'perf-x') {
+      const formatter = Formatter.getByName('configPanel');
+      Handlebars.registerPartial('config-panel', formatter.getFormatter('html'));
+    }
+
     const template = Handlebars.compile(this.getReportTemplate());
 
     return template({
@@ -307,7 +323,7 @@ class ReportGenerator {
       lighthouseVersion: results.lighthouseVersion,
       generatedTime: this._formatTime(results.generatedTime),
       lhresults: this._escapeScriptTags(JSON.stringify(results, null, 2)),
-      css: this.getReportCSS(),
+      stylesheets: this.getReportCSS(),
       reportContext: reportContext,
       scripts: this.getReportJS(reportContext),
       aggregations: results.aggregations,

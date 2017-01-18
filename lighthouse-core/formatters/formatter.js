@@ -44,7 +44,8 @@ class Formatter {
       urllist: require('./url-list'),
       null: require('./null-formatter'),
       speedline: require('./speedline-formatter'),
-      userTimings: require('./user-timings')
+      userTimings: require('./user-timings'),
+      configPanel: require('./config-panel')
     };
   }
 
