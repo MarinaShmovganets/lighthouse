@@ -23,7 +23,7 @@
 
 const Gatherer = require('./gatherer');
 
-class ConsoleLogEntry extends Gatherer {
+class ChromeConsoleMessages extends Gatherer {
 
   constructor() {
     super();
@@ -53,4 +53,4 @@ class ConsoleLogEntry extends Gatherer {
   }
 }
 
-module.exports = ConsoleLogEntry;
+module.exports = ChromeConsoleMessages;

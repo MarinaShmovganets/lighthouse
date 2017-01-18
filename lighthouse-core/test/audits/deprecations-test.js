@@ -25,7 +25,7 @@ describe('Console deprecations audit', () => {
   it('fails when gather fails', () => {
     const debugString = 'the uniquest debug string';
     const auditResult = DeprecationsAudit.audit({
-      ConsoleLogEntry: {
+      ChromeConsoleMessages: {
         rawValue: -1,
         debugString
       }
@@ -36,7 +36,7 @@ describe('Console deprecations audit', () => {
 
   it('passes when no console messages were found', () => {
     const auditResult = DeprecationsAudit.audit({
-      ConsoleLogEntry: []
+      ChromeConsoleMessages: []
     });
     assert.equal(auditResult.rawValue, true);
     assert.ok(!auditResult.debugString);
@@ -45,7 +45,7 @@ describe('Console deprecations audit', () => {
 
   it('handles deprecations that do not have url or line numbers', () => {
     const auditResult = DeprecationsAudit.audit({
-      ConsoleLogEntry: [
+      ChromeConsoleMessages: [
         {
           entry: {
             source: 'deprecation',
@@ -65,7 +65,7 @@ describe('Console deprecations audit', () => {
     const URL = 'http://example.com';
 
     const auditResult = DeprecationsAudit.audit({
-      ConsoleLogEntry: [
+      ChromeConsoleMessages: [
         {
           entry: {
             source: 'deprecation',

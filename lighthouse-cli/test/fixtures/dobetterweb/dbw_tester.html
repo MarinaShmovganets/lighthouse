@@ -31,7 +31,7 @@
 
 <!-- we use a relative protocol url to test that `new URL(resource)` in the critical-request-chains.js formatter can handle it -->
 <link rel="stylesheet" href="//localhost:10200/dobetterweb/dbw_tester.css"> <!-- FAIL, when run under smokehouse -->
-<link rel="stylesheet" href="https://unknown.com/styles.css?404"> <!-- FAIL -->
+<link rel="stylesheet" href="https://unknown.invalid/styles.css?404"> <!-- FAIL -->
 <link rel="stylesheet" href="./dbw_tester.css"> <!-- FAIL -->
 <link rel="stylesheet" href="./dbw_disabled.css" disabled> <!-- PASS -->
 <link rel="import" href="./dbw_partial_a.html"> <!-- FAIL -->
@@ -321,11 +321,11 @@ function deprecationsTest() {
 
   // TODO: some deprecated API messages are not currently being logged correctly.
   // See: https://crbug.com/680832
-  // try {
-  //   MediaStreamTrack.getSources(); // FAIL
-  // } catch(e) {}
+  try {
+    MediaStreamTrack.getSources(); // Should eventually FAIL
+  } catch(e) {}
 
-  // console.timeline(); // FAIL
+  console.timeline(); // Should eventually FAIL
 
   // FAIL
   const xhr = new XMLHttpRequest();
