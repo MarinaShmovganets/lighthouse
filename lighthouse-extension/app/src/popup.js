@@ -111,100 +111,108 @@ function createOptionItem(text, isChecked) {
   return listItem;
 }
 
-function onGenerateReportButtonClick() {
+/**
+ * Click event handler for Generate Report button.
+ * @param {!Window} background Reference to the extension's background page.
+ * @param {!Object<boolean>} selectedAggregations
+ */
+function onGenerateReportButtonClick(background, selectedAggregations) {
   showRunningSubpage();
 
   const feedbackEl = document.querySelector('.feedback');
   feedbackEl.textContent = '';
 
-  getBackgroundPage.then(background => {
-    background.loadSelectedAggregations().then(selectedAggregations => {
-      return background.runLighthouseInExtension({
-        flags: {
-          disableCpuThrottling: true
-        },
-        restoreCleanState: true
-      }, selectedAggregations);
-    }).catch(err => {
-      let message = err.message;
-      let includeReportLink = true;
+  background.runLighthouseInExtension({
+    flags: {
+      disableCpuThrottling: true
+    },
+    restoreCleanState: true
+  }, selectedAggregations).catch(err => {
+    let message = err.message;
+    let includeReportLink = true;
 
-      // Check for errors in how the user ran Lighthouse and replace with a more
-      // helpful message (and remove 'Report Error' link).
-      for (const [test, replacement] of Object.entries(NON_BUG_ERROR_MESSAGES)) {
-        if (message.includes(test)) {
-          message = replacement;
-          includeReportLink = false;
-          break;
-        }
+    // Check for errors in how the user ran Lighthouse and replace with a more
+    // helpful message (and remove 'Report Error' link).
+    for (const [test, replacement] of Object.entries(NON_BUG_ERROR_MESSAGES)) {
+      if (message.includes(test)) {
+        message = replacement;
+        includeReportLink = false;
+        break;
       }
+    }
 
-      feedbackEl.textContent = message;
+    feedbackEl.textContent = message;
 
-      if (includeReportLink) {
-        feedbackEl.className = 'feedback-error';
-        feedbackEl.appendChild(buildReportErrorLink(err));
-      }
+    if (includeReportLink) {
+      feedbackEl.className = 'feedback-error';
+      feedbackEl.appendChild(buildReportErrorLink(err));
+    }
 
-      hideRunningSubpage();
-      background.console.error(err);
-    });
+    hideRunningSubpage();
+    background.console.error(err);
   });
 }
 
 /**
  * Generates a document fragment containing a list of checkboxes and labels
  * for the aggregation categories.
- * @param {!Object<boolean>} selectedAggregations
  * @param {!Window} background Reference to the extension's background page.
- * @return {!DocumentFragment}
+ * @param {!Object<boolean>} selectedAggregations
  */
-function generateOptionsList(list, selectedAggregations, background) {
+function generateOptionsList(background, selectedAggregations) {
   const frag = document.createDocumentFragment();
 
-  const defaultAggregations = background.getDefaultAggregations();
-  defaultAggregations.forEach(aggregation => {
+  background.getDefaultAggregations().forEach(aggregation => {
     const isChecked = selectedAggregations[aggregation.name];
     frag.appendChild(createOptionItem(aggregation.name, isChecked));
   });
 
-  return frag;
+  const optionsList = document.querySelector('.options__list');
+  optionsList.appendChild(frag);
 }
 
 /**
  * Initializes the popup's state and UI elements.
  * @param {!Window} background Reference to the extension's background page.
  */
-function initPopup(background) {
-  if (background.isRunning()) {
-    showRunningSubpage();
-  }
+function initPopup() {
+  getBackgroundPage.then(background => {
+    // To prevent visual hiccups when opening the popup, we default the subpage
+    // to the "running" view and switch to the default view once we're sure
+    // Lighthouse is not already auditing the page. This change was necessary
+    // now that fetching the background event page is async.
+    if (background.isRunning()) {
+      showRunningSubpage();
+    } else {
+      hideRunningSubpage();
+    }
 
-  background.listenForStatus(logStatus);
+    background.listenForStatus(logStatus);
 
-  const optionsList = document.querySelector('.options__list');
-  background.loadSelectedAggregations().then(aggregations => {
-    const frag = generateOptionsList(optionsList, aggregations, background);
-    optionsList.appendChild(frag);
-  });
+    background.loadSelectedAggregations().then(selectedAggregations => {
+      generateOptionsList(background, selectedAggregations);
 
-  const generateReportButton = document.getElementById('generate-report');
-  generateReportButton.addEventListener('click', onGenerateReportButtonClick);
+      const generateReportButton = document.getElementById('generate-report');
+      generateReportButton.addEventListener('click', () => {
+        onGenerateReportButtonClick(background, selectedAggregations);
+      });
+    });
 
-  const generateOptionsEl = document.getElementById('configure-options');
-  const optionsEl = document.querySelector('.options');
-  generateOptionsEl.addEventListener('click', () => {
-    optionsEl.classList.add(subpageVisibleClass);
-  });
+    const generateOptionsEl = document.getElementById('configure-options');
+    const optionsEl = document.querySelector('.options');
+    generateOptionsEl.addEventListener('click', () => {
+      optionsEl.classList.add(subpageVisibleClass);
+    });
 
-  const okButton = document.getElementById('ok');
-  okButton.addEventListener('click', () => {
-    // Save selected aggregation categories on options page close.
-    const checkedAggregations = Array.from(optionsEl.querySelectorAll(':checked'))
-        .map(input => input.value);
-    background.saveSelectedAggregations(checkedAggregations);
+    const okButton = document.getElementById('ok');
+    okButton.addEventListener('click', () => {
+      // Save selected aggregation categories on options page close.
+      const checkedAggregations = Array.from(optionsEl.querySelectorAll(':checked'))
+          .map(input => input.value);
+      background.saveSelectedAggregations(checkedAggregations);
 
-    optionsEl.classList.remove(subpageVisibleClass);
+      optionsEl.classList.remove(subpageVisibleClass);
+    });
   });
 
   chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
@@ -219,6 +227,4 @@ function initPopup(background) {
   });
 }
 
-document.addEventListener('DOMContentLoaded', _ => {
-  getBackgroundPage.then(initPopup);
-});
+initPopup();
