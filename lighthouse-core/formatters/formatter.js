@@ -24,11 +24,6 @@ class Formatter {
   }
 
   static get SUPPORTED_FORMATS() {
-    // Get the available formatters if they don't already exist.
-    if (!this._formatters) {
-      this._getFormatters();
-    }
-
     // From the formatters we can establish a master list of supported format names.
     if (!this._supportedFormatsNames) {
       this._generateSupportedFormats();
@@ -38,19 +33,22 @@ class Formatter {
   }
 
   static _getFormatters() {
-    this._formatters = {
-      accessibility: require('./accessibility'),
-      criticalRequestChains: require('./critical-request-chains'),
-      urllist: require('./url-list'),
-      null: require('./null-formatter'),
-      speedline: require('./speedline-formatter'),
-      userTimings: require('./user-timings'),
-      configPanel: require('./config-panel')
-    };
+    // Load the available formatters if they are not already loaded.
+    if (!this._formatters) {
+      this._formatters = {
+        accessibility: require('./accessibility'),
+        criticalRequestChains: require('./critical-request-chains'),
+        urllist: require('./url-list'),
+        null: require('./null-formatter'),
+        speedline: require('./speedline-formatter'),
+        userTimings: require('./user-timings')
+      };
+    }
+    return this._formatters;
   }
 
   static _generateSupportedFormats() {
-    const formatNames = Object.keys(this._formatters);
+    const formatNames = Object.keys(this._getFormatters());
     this._supportedFormatsNames = formatNames.reduce((prev, format) => {
       // Reformulates names like criticalNetworkChains to CRITICAL_NETWORK_CHAINS so they appear
       // like a bunch of constants.
@@ -61,15 +59,13 @@ class Formatter {
   }
 
   static getByName(name) {
-    if (!this._formatters) {
-      this._getFormatters();
-    }
+    const formatters = this._getFormatters();
 
-    if (!this._formatters[name]) {
+    if (!formatters[name]) {
       throw new Error(`Unknown formatter: ${name}`);
     }
 
-    return this._formatters[name];
+    return formatters[name];
   }
 
   static getFormatter() {

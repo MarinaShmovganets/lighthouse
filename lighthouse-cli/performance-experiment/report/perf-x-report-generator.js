@@ -20,13 +20,21 @@
 
 const fs = require('fs');
 const path = require('path');
+const Handlebars = require('handlebars');
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
+const Formatter = require('../formatters/perf-x-formatter');
 
 class PerfXReportGenerator extends ReportGenerator {
   getReportJS(reportContext) {
     const scriptArr = super.getReportJS(reportContext);
-    scriptArr.push(fs.readFileSync(path.join(__dirname, './injected-script.js'), 'utf8'));
+    scriptArr.push(fs.readFileSync(path.join(__dirname, 'scripts/perf-x.js'), 'utf8'));
     return scriptArr;
+  }
+
+  generateHTML(results, reportContext) {
+    const formatter = Formatter.getByName('configPanel');
+    Handlebars.registerPartial('config-panel', formatter.getFormatter('html'));
+    return super.generateHTML(results, reportContext);
   }
 }
 

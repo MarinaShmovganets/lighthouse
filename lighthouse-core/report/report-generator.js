@@ -311,11 +311,6 @@ class ReportGenerator {
       });
     });
 
-    if (reportContext === 'perf-x') {
-      const formatter = Formatter.getByName('configPanel');
-      Handlebars.registerPartial('config-panel', formatter.getFormatter('html'));
-    }
-
     const template = Handlebars.compile(this.getReportTemplate());
 
     return template({

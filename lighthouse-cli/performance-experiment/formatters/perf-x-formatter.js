@@ -17,21 +17,12 @@
 
 'use strict';
 
-const path = require('path');
-const fs = require('fs');
-const Formatter = require('./formatter');
-const html = fs.readFileSync(path.join(__dirname, 'partials/config-panel.html'), 'utf8');
+const Formatter = require('../../../lighthouse-core/formatters/formatter');
 
-class ConfigPanel extends Formatter {
-  static getFormatter(type) {
-    switch (type) {
-      case 'html':
-        return html;
-
-      default:
-        throw new Error('Unknown formatter type');
-    }
+class PerfXFormatter extends Formatter {
+  static _getFormatters() {
+    return Object.assign(super._getFormatters(), {configPanel: require('./config-panel')});
   }
 }
 
-module.exports = ConfigPanel;
+module.exports = PerfXFormatter;
