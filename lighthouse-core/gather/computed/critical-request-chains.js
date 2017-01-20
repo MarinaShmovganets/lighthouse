@@ -47,10 +47,6 @@ class CriticalRequestChains extends ComputedArtifact {
       return false;
     }
 
-    if (request.blockedReason() === 'inspector') {
-      return true;
-    }
-
     return includes(['VeryHigh', 'High', 'Medium'], request.priority());
   }
 
@@ -71,8 +67,7 @@ class CriticalRequestChains extends ComputedArtifact {
         startTime: request.startTime,
         endTime: request.endTime,
         responseReceivedTime: request.responseReceivedTime,
-        transferSize: request.transferSize,
-        blocked: request.blockedReason() === 'inspector'
+        transferSize: request.transferSize
       };
     };
 

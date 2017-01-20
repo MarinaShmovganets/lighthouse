@@ -66,6 +66,8 @@ function requestHandler(request, response) {
   if (request.method === 'GET') {
     if (pathname === '/') {
       reportRequestHandler(request, response);
+    } else if (pathname === '/blocked-url-patterns') {
+      blockedUrlPatternsRequestHandler(request, response);
     } else {
       response.writeHead(404);
       response.end('404: Resource Not Found');
@@ -89,13 +91,18 @@ function reportRequestHandler(request, response) {
   response.end(html);
 }
 
+function blockedUrlPatternsRequestHandler(request, response) {
+  response.writeHead(200, {'Content-Type': 'text/json'});
+  response.end(JSON.stringify(lhParams.flags.blockedUrlPatterns || []));
+}
+
 function rerunRequestHandler(request, response) {
   let message = '';
   request.on('data', data => message += data);
 
   request.on('end', () => {
     const additionalFlags = JSON.parse(message);
-    const flags = Object.assign({}, lhParams.flags, additionalFlags);
+    const flags = Object.assign(lhParams.flags, additionalFlags);
 
     lighthouse(lhParams.url, flags, lhParams.config).then(results => {
       results.artifacts = undefined;

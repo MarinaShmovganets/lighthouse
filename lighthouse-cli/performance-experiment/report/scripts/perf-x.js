@@ -26,57 +26,63 @@
  */
 
 window.addEventListener('DOMContentLoaded', () => {
-  const configPanel = new ConfigPanel();
-
-  const blockToggles = document.querySelectorAll('.js-request-blocking__toggle');
-  blockToggles.forEach(toggle => {
-    const requestNode = toggle.parentNode;
-    const url = requestNode.getAttribute('title');
-    const unblockCallback = () => requestNode.classList.remove('request__block');
-
-    toggle.addEventListener('click', () => {
-      if (requestNode.classList.contains('request__block')) {
-        requestNode.classList.remove('request__block');
-        configPanel.removeBlockedUrlPattern(url);
-      } else {
-        requestNode.classList.add('request__block');
-        configPanel.addBlockedUrlPattern(url, unblockCallback);
-      }
-    });
-
-    if (requestNode.classList.contains('request__block')) {
-      configPanel.addBlockedUrlPattern(url, unblockCallback);
-    }
-  });
-
-  configPanel.log('');
+  new ConfigPanel();
 });
 
 class ConfigPanel {
   constructor() {
     this._configPanel = document.querySelector('.js-config-panel');
-    this._rerunButton = this._configPanel.querySelector('.js-rerun-button');
     this._messageField = this._configPanel.querySelector('.js-message');
-    this._bodyToggle = this._configPanel.querySelector('.js-panel-toggle');
     this._urlBlockingList = this._configPanel.querySelector('.js-url-blocking-patterns');
-    this._addButton = this._configPanel.querySelector('.js-add-button');
-    this._patternInput = this._configPanel.querySelector('.js-pattern-input');
+    this._urlBlockingStatus = {};
 
-    this._blockedUrlCallbacks = {};  // {blockedUrlPattern: calcelBlockingCallbacks}
+    const bodyToggle = this._configPanel.querySelector('.js-panel-toggle');
+    bodyToggle.addEventListener('click', this._toggleBody.bind(this));
 
-    this._rerunButton.addEventListener('click', this._rerunLighthouse.bind(this));
-    this._bodyToggle.addEventListener('click', this._toggleBody.bind(this));
-    this._addButton.addEventListener('click', () => {
-      this._patternInput.value && this.addBlockedUrlPattern(this._patternInput.value);
-      this._patternInput.value = '';
+    const rerunButton = this._configPanel.querySelector('.js-rerun-button');
+    rerunButton.addEventListener('click', this._rerunLighthouse.bind(this));
+
+    // init list view buttons
+    const addButton = this._urlBlockingList.querySelector('.js-add-button');
+    const patternInput = this._urlBlockingList.querySelector('.js-pattern-input');
+    addButton.addEventListener('click', () => {
+      if (patternInput.value) {
+        this.addBlockedUrlPattern(patternInput.value);
+        this._urlBlockingList.parentNode.scrollTop = this._urlBlockingList.offsetHeight;
+        patternInput.value = '';
+      }
     });
-    this._patternInput.addEventListener('keypress', event => {
-      (event.keyCode || event.which) === 13 && this._addButton.click();
+    patternInput.addEventListener('keypress', event => {
+      (event.keyCode || event.which) === 13 && addButton.click();
+    });
+
+    // init tree view buttons
+    const requestBlockToggles = this._configPanel.querySelectorAll('.js-request-blocking-toggle');
+    requestBlockToggles.forEach(toggle => {
+      const requestNode = toggle.parentNode;
+      const url = requestNode.getAttribute('title');
+
+      toggle.addEventListener('click', () => {
+        if (requestNode.classList.contains('request__block')) {
+          this.removeBlockedUrlPattern(url);
+        } else {
+          this.addBlockedUrlPattern(url);
+        }
+      });
+    });
+
+    // get and recover blocked URL patterns of current run
+    fetch('/blocked-url-patterns').then(response => {
+      return response.text();
+    }).then(data => {
+      const blockedUrlPatterns = JSON.parse(data);
+      blockedUrlPatterns.forEach(urlPattern => this.addBlockedUrlPattern(urlPattern));
+      this.log('');
     });
   }
 
   /**
-   * Send POST request to rerun lighthouse.
+   * Send POST request to rerun lighthouse with additional flags.
    */
   _rerunLighthouse() {
     this.log('Start Rerunning Lighthouse');
@@ -92,36 +98,54 @@ class ConfigPanel {
     });
   }
 
-  addBlockedUrlPattern(urlPattern, cancelCallback) {
-    if (this._blockedUrlCallbacks[urlPattern]) {
+  addBlockedUrlPattern(urlPattern) {
+    if (this._urlBlockingStatus[urlPattern]) {
       this.log(`${urlPattern} is already in the list`);
-    } else {
-      const template = document.querySelector('template.url-blocking-entry');
-      const newEntry = document.importNode(template.content, true).querySelector('li');
-
-      newEntry.querySelector('div').textContent = urlPattern;
-      newEntry.querySelector('button').addEventListener('click', () => {
-        this.removeBlockedUrlPattern(urlPattern);
-      });
-
-      this._blockedUrlCallbacks[urlPattern] = [() => {
-        newEntry.parentNode.removeChild(newEntry);
-      }];
-
-      this._urlBlockingList.insertBefore(newEntry, template);
-      this.log(`Added URL Blocking Pattern: ${urlPattern}`);
+      return;
     }
-    cancelCallback && this._blockedUrlCallbacks[urlPattern].push(cancelCallback);
+
+    const template = this._configPanel.querySelector('template.url-blocking-entry');
+    const templateCopy = document.importNode(template.content, true);
+    const newEntry = templateCopy.querySelector('.url-blocking-entry');
+
+    // create and add a new entry in the list view
+    newEntry.querySelector('div').textContent = urlPattern;
+    newEntry.setAttribute('data-url-pattern', urlPattern);
+    this._urlBlockingList.insertBefore(newEntry, template);
+    newEntry.querySelector('button').addEventListener('click', () => {
+      this.removeBlockedUrlPattern(urlPattern);
+    });
+
+    // update block status in cnc-tree if the url matches perfectly
+    const treeNode = this._configPanel.querySelector(`.js-cnc-node[title='${urlPattern}']`);
+    treeNode && treeNode.classList.add('request__block');
+
+    this._urlBlockingStatus[urlPattern] = true;
+    this.log(`Added URL Blocking Pattern: ${urlPattern}`);
   }
 
   removeBlockedUrlPattern(urlPattern) {
-    this._blockedUrlCallbacks[urlPattern].forEach(callback => callback());
-    this._blockedUrlCallbacks[urlPattern] = undefined;
+    if (!this._urlBlockingStatus[urlPattern]) {
+      this.log(`${urlPattern} is not in the list`);
+      return;
+    }
+
+    // remove the entry in list view
+    const entrySelector = `.url-blocking-entry[data-url-pattern='${urlPattern}']`;
+    const urlEntry = this._configPanel.querySelector(entrySelector);
+    urlEntry && urlEntry.parentNode.removeChild(urlEntry);
+
+    // update block status in cnc-tree if the url matches perfectly
+    const treeNodeSelector = `.js-cnc-node[title='${urlPattern}']`;
+    const treeNode = this._configPanel.querySelector(treeNodeSelector);
+    treeNode && treeNode.classList.remove('request__block');
+
+    this._urlBlockingStatus[urlPattern] = false;
     this.log(`Removed URL Blocking Pattern: ${urlPattern}`);
   }
 
   getBlockedUrlPatterns() {
-    return Object.keys(this._blockedUrlCallbacks).filter(key => this._blockedUrlCallbacks[key]);
+    return Object.keys(this._urlBlockingStatus).filter(key => this._urlBlockingStatus[key]);
   }
 
   log(message) {

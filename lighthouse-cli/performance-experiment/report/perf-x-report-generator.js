@@ -22,7 +22,7 @@ const fs = require('fs');
 const path = require('path');
 const Handlebars = require('handlebars');
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
-const Formatter = require('../formatters/perf-x-formatter');
+const ConfigPanelFormatter = require('../formatters/config-panel');
 
 class PerfXReportGenerator extends ReportGenerator {
   getReportJS(reportContext) {
@@ -31,10 +31,11 @@ class PerfXReportGenerator extends ReportGenerator {
     return scriptArr;
   }
 
-  generateHTML(results, reportContext) {
-    const formatter = Formatter.getByName('configPanel');
-    Handlebars.registerPartial('config-panel', formatter.getFormatter('html'));
-    return super.generateHTML(results, reportContext);
+  _registerFormatters(audits) {
+    super._registerFormatters(audits);
+    const configPanelTemplate = Handlebars.compile(ConfigPanelFormatter.getFormatter('html'));
+    const criticalRequestChains = audits['critical-request-chains'].extendedInfo.value;
+    Handlebars.registerPartial('config-panel', configPanelTemplate(criticalRequestChains));
   }
 }
 

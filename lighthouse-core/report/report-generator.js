@@ -274,18 +274,13 @@ class ReportGenerator {
   }
 
   /**
-   * Generates the Lighthouse report HTML.
-   * @param {!Object} results Lighthouse results.
-   * @param {!string} reportContext What app is requesting the report (eg. devtools, extension)
-   * @return {string} HTML of the report page.
+   * Register the formatter for each extendedInfo.
+   * @param {!Object} audits Lighthouse results.audits.
    */
-  generateHTML(results, reportContext) {
-    reportContext = reportContext || 'extension';
-
-    // Ensure the formatter for each extendedInfo is registered.
-    Object.keys(results.audits).forEach(audit => {
+  _registerFormatters(audits) {
+    Object.keys(audits).forEach(audit => {
       // Use value rather than key for audit.
-      audit = results.audits[audit];
+      audit = audits[audit];
 
       if (!audit.extendedInfo) {
         return;
@@ -302,6 +297,18 @@ class ReportGenerator {
 
       Handlebars.registerPartial(audit.name, formatter.getFormatter('html'));
     });
+  }
+
+  /**
+   * Generates the Lighthouse report HTML.
+   * @param {!Object} results Lighthouse results.
+   * @param {!string} reportContext What app is requesting the report (eg. devtools, extension)
+   * @return {string} HTML of the report page.
+   */
+  generateHTML(results, reportContext) {
+    reportContext = reportContext || 'extension';
+
+    this._registerFormatters(results.audits);
 
     results.aggregations.forEach(aggregation => {
       aggregation.score.forEach(score => {

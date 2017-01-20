@@ -19,7 +19,7 @@
 
 const path = require('path');
 const fs = require('fs');
-const Formatter = require('./perf-x-formatter');
+const Formatter = require('../../../lighthouse-core/formatters/formatter');
 const html = fs.readFileSync(path.join(__dirname, 'partials/config-panel.html'), 'utf8');
 
 class ConfigPanel extends Formatter {
