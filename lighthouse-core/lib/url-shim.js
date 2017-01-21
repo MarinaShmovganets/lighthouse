@@ -94,4 +94,20 @@ URL.getDisplayName = function getDisplayName(url) {
   return name;
 };
 
+/**
+ * Determine if url1 equals url2, ignoring URL fragments.
+ * @param {string} url1
+ * @param {string} url2
+ * @return {boolean}
+ */
+URL.equalWithExcludedFragments = function(url1, url2) {
+  url1 = new URL(url1);
+  url1.hash = '';
+
+  url2 = new URL(url2);
+  url2.hash = '';
+
+  return url1.href === url2.href;
+};
+
 module.exports = URL;

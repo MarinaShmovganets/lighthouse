@@ -26,7 +26,7 @@ class Offline extends Gatherer {
 
   afterPass(options, tracingData) {
     const navigationRecord = tracingData.networkRecords.filter(record => {
-      return new URL(record._url).stripHash().href === new URL(options.url).stripHash().href &&
+      return URL.equalWithExcludedFragments(record._url, options.url) &&
         record._fetchedViaServiceWorker;
     }).pop(); // Take the last record that matches.
 
