@@ -121,7 +121,7 @@ class UsesResponsiveImages extends Audit {
     let displayValue;
     if (results.length) {
       const totalWastedKB = Math.round(totalWastedBytes / KB_IN_BYTES);
-      displayValue = `${totalWastedKB}KB potential waste took ~${totalWastedTime}ms`;
+      displayValue = `${totalWastedKB}KB (~${totalWastedTime}ms) potential savings`;
     }
 
     return UsesResponsiveImages.generateAuditResult({
