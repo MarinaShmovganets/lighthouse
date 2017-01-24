@@ -23,63 +23,21 @@
 
 const Gatherer = require('./gatherer');
 
-/* global window, document, Image, URL */
+/* global document, Image */
 
 /* istanbul ignore next */
 function collectImageElementInfo() {
-  function parseSrcsetUrls(srcset) {
-    if (!srcset) {
-      return [];
-    }
-
-    const entries = srcset.split(',');
-    const relativeUrls = entries.map(entry => entry.trim().split(' ')[0]);
-    return relativeUrls.map(url => {
-      try {
-        return new URL(url, document.baseURI).href;
-      } catch (e) {
-        return url;
-      }
-    });
-  }
-
-  /**
-   * @param {!HTMLImageElement|HTMLSourceElement} element
-   * @return {!Object}
-   */
-  function getElementInfo(element) {
+  return [...document.querySelectorAll('img')].map(element => {
     return {
-      tagName: element.tagName,
       // currentSrc used over src to get the url as determined by the browser
       // after taking into account srcset/media/sizes/etc.
       src: element.currentSrc,
-      srcset: element.srcset,
-      srcsetUrls: parseSrcsetUrls(element.srcset),
-      sizes: element.sizes,
-      media: element.media,
       clientWidth: element.clientWidth,
       clientHeight: element.clientHeight,
       naturalWidth: element.naturalWidth,
       naturalHeight: element.naturalHeight,
+      isPicture: element.parentElement.tagName === 'PICTURE',
     };
-  }
-
-  return [...document.querySelectorAll('img')].map(element => {
-    const imgElementInfo = getElementInfo(element);
-    if (element.parentElement.tagName !== 'PICTURE') {
-      return Object.assign(imgElementInfo, {isPicture: false});
-    }
-
-    const sources = [...element.parentElement.children]
-        .filter(element => element.tagName === 'SOURCE')
-        .filter(element => !element.media || window.matchMedia(element.media).matches)
-        .map(getElementInfo)
-        .concat(imgElementInfo);
-    return Object.assign(imgElementInfo, {
-      isPicture: true,
-      // nested chain is too deep for DevTools to handle so stringify
-      sources: JSON.stringify(sources),
-    });
   });
 }
 
@@ -133,8 +91,6 @@ class ImageUsage extends Gatherer {
       .then(elements => {
         return elements.reduce((promise, element) => {
           return promise.then(collector => {
-            // rehydrate the sources property
-            element.sources = element.sources && JSON.parse(element.sources);
             // link up the image with its network record
             element.networkRecord = indexedNetworkRecords[element.src];
 
