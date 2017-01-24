@@ -22,7 +22,8 @@ const fs = require('fs');
 const path = require('path');
 const Handlebars = require('handlebars');
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
-const ConfigPanelFormatter = require('../formatters/config-panel');
+const configPanelPartial = fs.readFileSync(path.join(__dirname, 'partials/config-panel.html'),
+                                           'utf8');
 
 class PerfXReportGenerator extends ReportGenerator {
   getReportJS(reportContext) {
@@ -33,7 +34,7 @@ class PerfXReportGenerator extends ReportGenerator {
 
   _registerFormatters(audits) {
     super._registerFormatters(audits);
-    const configPanelTemplate = Handlebars.compile(ConfigPanelFormatter.getFormatter('html'));
+    const configPanelTemplate = Handlebars.compile(configPanelPartial);
     const criticalRequestChains = audits['critical-request-chains'].extendedInfo.value;
     Handlebars.registerPartial('config-panel', configPanelTemplate(criticalRequestChains));
   }

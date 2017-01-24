@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,15 @@
  * limitations under the License.
  */
 
-/* global window, document, location, fetch */
+/* eslint-env browser */
 
 'use strict';
 
 /**
  * @fileoverview Report script for Project Performance Experiment.
  *
- * Include functions for supporting interation between report page and Perf-X server.
+ * Include functions for supporting interaction between report page and Perf-X server.
  */
-
-window.addEventListener('DOMContentLoaded', () => {
-  new ConfigPanel();
-});
 
 class ConfigPanel {
   constructor() {
@@ -37,10 +33,24 @@ class ConfigPanel {
     this._urlBlockingStatus = {};
 
     const bodyToggle = this._configPanel.querySelector('.js-panel-toggle');
-    bodyToggle.addEventListener('click', this._toggleBody.bind(this));
+    bodyToggle.addEventListener('click', () => this._toggleBody());
 
     const rerunButton = this._configPanel.querySelector('.js-rerun-button');
-    rerunButton.addEventListener('click', this._rerunLighthouse.bind(this));
+    rerunButton.addEventListener('click', () => this._rerunLighthouse());
+
+    // init tabs
+    const tabs = this._configPanel.querySelector('.js-tabs');
+    const tabNodes = tabs.querySelectorAll('.js-tab');
+    Array.prototype.forEach.call(tabNodes, tab => {
+      tab.addEventListener('click', () => {
+        Array.prototype.forEach.call(tabs.querySelectorAll('.is-active'), activeEle => {
+          activeEle.classList.remove('is-active');
+        });
+        const tabPanelSelector = tab.getAttribute('href');
+        tabs.querySelector(tabPanelSelector).classList.add('is-active');
+        tab.classList.add('is-active');
+      });
+    });
 
     // init list view buttons
     const addButton = this._urlBlockingList.querySelector('.js-add-button');
@@ -53,12 +63,14 @@ class ConfigPanel {
       }
     });
     patternInput.addEventListener('keypress', event => {
-      (event.keyCode || event.which) === 13 && addButton.click();
+      if (event.keyCode === 13) {
+        addButton.click();
+      }
     });
 
     // init tree view buttons
     const requestBlockToggles = this._configPanel.querySelectorAll('.js-request-blocking-toggle');
-    requestBlockToggles.forEach(toggle => {
+    Array.prototype.forEach.call(requestBlockToggles, toggle => {
       const requestNode = toggle.parentNode;
       const url = requestNode.getAttribute('title');
 
@@ -73,9 +85,8 @@ class ConfigPanel {
 
     // get and recover blocked URL patterns of current run
     fetch('/blocked-url-patterns').then(response => {
-      return response.text();
-    }).then(data => {
-      const blockedUrlPatterns = JSON.parse(data);
+      return response.json();
+    }).then(blockedUrlPatterns => {
       blockedUrlPatterns.forEach(urlPattern => this.addBlockedUrlPattern(urlPattern));
       this.log('');
     });
@@ -98,6 +109,12 @@ class ConfigPanel {
     });
   }
 
+  /**
+   * Add blocked URL pattern if it's not in the blocking list.
+   * URL blocking patterns in #config-panel__tabs__list-panel and #config-panel__tabs__tree-panel
+   * will be updated accordingly.
+   * @param {string} urlPattern
+   */
   addBlockedUrlPattern(urlPattern) {
     if (this._urlBlockingStatus[urlPattern]) {
       this.log(`${urlPattern} is already in the list`);
@@ -124,6 +141,12 @@ class ConfigPanel {
     this.log(`Added URL Blocking Pattern: ${urlPattern}`);
   }
 
+  /**
+   * Remove blocked URL pattern if it's in the blocking list.
+   * URL blocking patterns in #config-panel__tabs__list-panel and #config-panel__tabs__tree-panel
+   * will be updated accordingly.
+   * @param {string} urlPattern
+   */
   removeBlockedUrlPattern(urlPattern) {
     if (!this._urlBlockingStatus[urlPattern]) {
       this.log(`${urlPattern} is not in the list`);
@@ -144,15 +167,29 @@ class ConfigPanel {
     this.log(`Removed URL Blocking Pattern: ${urlPattern}`);
   }
 
+  /**
+   * Get blocked URL patterns in the next run
+   * @return {!Array<string>} an array of blocked URL patterns
+   */
   getBlockedUrlPatterns() {
     return Object.keys(this._urlBlockingStatus).filter(key => this._urlBlockingStatus[key]);
   }
 
+  /**
+   * Show message in the config panel message field. Old message will be overwritten.
+   */
   log(message) {
     this._messageField.innerHTML = message;
   }
 
+  /**
+   * Expand / fold config panel body.
+   */
   _toggleBody() {
     this._configPanel.classList.toggle('expanded');
   }
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  new ConfigPanel();
+});
