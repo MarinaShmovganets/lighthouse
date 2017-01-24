@@ -68,7 +68,7 @@ class UsesResponsiveImages extends Audit {
       return null;
     }
 
-    // TODO(phulce): use an average transfer time for data URI images
+    // TODO(#1517): use an average transfer time for data URI images
     const size = image.networkRecord.resourceSize;
     const transferTimeInMs = 1000 * (image.networkRecord.endTime -
         image.networkRecord.responseReceivedTime);
