@@ -41,9 +41,9 @@ class ConfigPanel {
     // init tabs
     const tabs = this._configPanel.querySelector('.js-tabs');
     const tabNodes = tabs.querySelectorAll('.js-tab');
-    Array.prototype.forEach.call(tabNodes, tab => {
+    [...tabNodes].forEach(tab => {
       tab.addEventListener('click', () => {
-        Array.prototype.forEach.call(tabs.querySelectorAll('.is-active'), activeEle => {
+        [...tabs.querySelectorAll('.is-active')].forEach(activeEle => {
           activeEle.classList.remove('is-active');
         });
         const tabPanelSelector = tab.getAttribute('href');
@@ -70,7 +70,7 @@ class ConfigPanel {
 
     // init tree view buttons
     const requestBlockToggles = this._configPanel.querySelectorAll('.js-request-blocking-toggle');
-    Array.prototype.forEach.call(requestBlockToggles, toggle => {
+    [...requestBlockToggles].forEach(toggle => {
       const requestNode = toggle.parentNode;
       const url = requestNode.getAttribute('title');
 
