@@ -176,12 +176,14 @@ window.runLighthouseInExtension = function(options, requestedAggregations) {
     .then(_ => connection.getCurrentTabURL())
     .then(url => window.runLighthouseForConnection(connection, url, options, requestedAggregations))
     .then(results => {
-      enableOtherChromeExtensions(true);
-      const blobURL = window.createReportPageAsBlob(results, 'extension');
-      chrome.tabs.create({url: blobURL});
+      return enableOtherChromeExtensions(true).then(_ => {
+        const blobURL = window.createReportPageAsBlob(results, 'extension');
+        chrome.tabs.create({url: blobURL});
+      });
     }).catch(err => {
-      enableOtherChromeExtensions(true);
-      throw err;
+      return enableOtherChromeExtensions(true).then(_ => {
+        throw err;
+      });
     });
 };
 
