@@ -23,7 +23,7 @@ const path = require('path');
 const Handlebars = require('handlebars');
 const ReportGenerator = require('../../../lighthouse-core/report/report-generator');
 const configPanelPartial = fs.readFileSync(path.join(__dirname, 'partials/config-panel.html'),
-                                           'utf8');
+    'utf8');
 
 class PerfXReportGenerator extends ReportGenerator {
   getReportJS(reportContext) {
