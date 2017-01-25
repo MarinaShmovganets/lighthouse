@@ -287,7 +287,7 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
   });
 
   it('discards favicons as non-critical', () => {
-    const networkRecords = mockTracingData([HIGH, HIGH, HIGH], [[0, 1], [0, 2]]);
+    const networkRecords = mockTracingData([HIGH, HIGH, HIGH, HIGH], [[0, 1], [0, 2], [0, 3]]);
 
     // 2nd record is a favicon
     networkRecords[1].url = 'https://example.com/favicon.ico';
@@ -296,6 +296,13 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
     };
     // 3rd record is also a favicon
     networkRecords[2].mimeType = 'image/x-icon';
+    // 4th record is also a favicon
+    networkRecords[3].url = 'https://cdn2.vox-cdn.com/favicon-96x96.0.png';
+    networkRecords[3].mimeType = 'image/png';
+    networkRecords[3].parsedURL = {
+      lastPathComponent: 'favicon-96x96.0.png'
+    };
+
     return Gatherer.request(networkRecords).then(criticalChains => {
       assert.deepEqual(criticalChains, {
         0: {
