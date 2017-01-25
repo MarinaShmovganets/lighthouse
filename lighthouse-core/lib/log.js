@@ -40,21 +40,22 @@ class Emitter extends EventEmitter {
    * Fires off all status updates. Listen with
    * `require('lib/log').events.addListener('status', callback)`
    * @param {string} title
-   * @param {...*} args
+   * @param {!Array<*>} argsArray
    */
-  issueStatus(title, ...args) {
+  issueStatus(title, argsArray) {
     if (title === 'status' || title === 'statusEnd') {
-      this.emit(title, args);
+      this.emit(title, [title, ...argsArray]);
     }
   }
 
   /**
    * Fires off all warnings. Listen with
    * `require('lib/log').events.addListener('warning', callback)`
-   * @param {...*} args
+   * @param {string} title
+   * @param {!Array<*>} argsArray
    */
-  issueWarning(...args) {
-    this.emit('warning', args);
+  issueWarning(title, argsArray) {
+    this.emit('warning', [title, ...argsArray]);
   }
 }
 
@@ -64,9 +65,8 @@ const loggingBufferColumns = 25;
 class Log {
 
   static _logToStdErr(title, argsArray) {
-    const args = [...argsArray];
     const log = Log.loggerfn(title);
-    log(...args);
+    log(...argsArray);
   }
 
   static loggerfn(title) {
@@ -116,12 +116,12 @@ class Log {
   }
 
   static log(title, ...args) {
-    Log.events.issueStatus(title, ...args);
+    Log.events.issueStatus(title, args);
     return Log._logToStdErr(title, args);
   }
 
   static warn(title, ...args) {
-    Log.events.issueWarning(title, ...args);
+    Log.events.issueWarning(title, args);
     return Log._logToStdErr(`${title}:warn`, args);
   }
 
@@ -130,7 +130,7 @@ class Log {
   }
 
   static verbose(title, ...args) {
-    Log.events.issueStatus(title);
+    Log.events.issueStatus(title, args);
     return Log._logToStdErr(`${title}:verbose`, args);
   }
 
