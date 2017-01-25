@@ -13,11 +13,13 @@
     "scripts": [
       "scripts/chromereload.js",
       "scripts/lighthouse-background.js"
-    ]
+    ],
+    "persistent": false
   },
   "permissions": [
     "activeTab",
     "debugger",
+    "management",
     "storage"
   ],
   "browser_action": {

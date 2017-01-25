@@ -9,6 +9,7 @@
       "theme-color",
       "manifest",
       "accessibility",
+      "image-usage",
       "content-width"
     ]
   },
@@ -29,6 +30,7 @@
     "recordNetwork": true,
     "passName": "dbw",
     "gatherers": [
+      "chrome-console-messages",
       "styles",
       "css-usage",
       "dobetterweb/all-event-listeners",
@@ -72,6 +74,7 @@
     "theme-color-meta",
     "unused-css-rules",
     "content-width",
+    "deprecations",
     "accessibility/aria-allowed-attr",
     "accessibility/aria-required-attr",
     "accessibility/aria-valid-attr-value",
@@ -94,6 +97,7 @@
     "dobetterweb/script-blocking-first-paint",
     "dobetterweb/uses-http2",
     "dobetterweb/uses-optimized-images",
+    "dobetterweb/uses-responsive-images",
     "dobetterweb/uses-passive-event-listeners"
   ],
 
@@ -292,7 +296,8 @@
       "name": "Using bytes efficiently",
       "audits": {
         "unused-css-rules": {},
-        "uses-optimized-images": {}
+        "uses-optimized-images": {},
+        "uses-responsive-images": {}
       }
     }, {
       "name": "Using modern CSS features",
@@ -332,6 +337,11 @@
         "notification-on-start": {
           "expectedValue": false
         }
+      }
+    }, {
+      "name": "Avoiding deprecated APIs and browser interventions",
+      "audits": {
+        "deprecations": {}
       }
     }, {
       "name": "Accessibility",

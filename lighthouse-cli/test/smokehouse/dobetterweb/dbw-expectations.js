@@ -31,7 +31,9 @@ module.exports = [
         score: false,
         extendedInfo: {
           value: {
-            length: 10
+            results: {
+              length: 11
+            }
           }
         }
       },
@@ -117,7 +119,7 @@ module.exports = [
         score: false,
         extendedInfo: {
           value: {
-            length: 4
+            length: 5
           }
         }
       },
@@ -127,13 +129,38 @@ module.exports = [
           value: {
             // Note: This would normally be 7 but M56 defaults document-level
             // listeners to passive. See https://www.chromestatus.com/features/5093566007214080
-            length: 4
+            results: {
+              length: 4
+            }
           }
         }
       },
       'uses-optimized-images': {
-        score: false
+        score: false,
+        extendedInfo: {
+          value: {
+            results: {
+              length: 1
+            }
+          }
+        }
       },
+      'uses-responsive-images': {
+        score: false,
+        extendedInfo: {
+          value: {
+            length: 2
+          }
+        }
+      },
+      'deprecations': {
+        score: false,
+        extendedInfo: {
+          value: {
+            length: 4
+          }
+        }
+      }
     }
   }, {
     initialUrl: 'http://localhost:10200/online-only.html',

@@ -89,7 +89,7 @@ class ReportGenerator {
     // !value
     Handlebars.registerHelper('not', value => !value);
 
-    // value == value2?
+    // value === value2?
     Handlebars.registerHelper('if_eq', function(lhs, rhs, options) {
       if (lhs === rhs) {
         // eslint-disable-next-line no-invalid-this
@@ -100,7 +100,7 @@ class ReportGenerator {
       }
     });
 
-    // value != value2?
+    // value !== value2
     Handlebars.registerHelper('if_not_eq', function(lhs, rhs, options) {
       if (lhs !== rhs) {
         // eslint-disable-next-line no-invalid-this
@@ -150,7 +150,7 @@ class ReportGenerator {
         // Ignore fatal errors from marked js.
       }
 
-      // The input str has been santized and transformed. Mark it as safe so
+      // The input str has been sanitized and transformed. Mark it as safe so
       // handlebars renders the text as HTML.
       return new Handlebars.SafeString(str);
     });

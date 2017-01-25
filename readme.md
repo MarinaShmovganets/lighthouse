@@ -10,7 +10,7 @@ Default CLI output:
 
 ![image](https://cloud.githubusercontent.com/assets/39191/19172762/60358d9a-8bd8-11e6-8c22-7fcb119ea0f5.png)
 
-Lighthouse requires Chrome 52 or later.
+Lighthouse requires Chrome 54 or later.
 
 ## Install Chrome extension
 
@@ -20,7 +20,7 @@ Quick-start guide on using the Lighthouse extension: http://bit.ly/lighthouse-qu
 
 ## Install CLI [![NPM lighthouse package](https://img.shields.io/npm/v/lighthouse.svg)](https://npmjs.org/package/lighthouse)
 
-Requires Node v5+ or Node v4 w/ `--harmony`
+Requires Node v6+
 
 ```sh
 npm install -g lighthouse
@@ -51,7 +51,7 @@ git clone https://github.com/GoogleChrome/lighthouse
 
 cd lighthouse
 npm install
-npm install-all
+npm run install-all
 
 # The CLI is authored in TypeScript and requires compilation.
 # If you need to make changes to the CLI, run the TS compiler in watch mode:
