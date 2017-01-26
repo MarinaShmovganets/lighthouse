@@ -96,14 +96,15 @@ function getFormattedStyleRule(content, parsedContent) {
     }, []).join('\n');
   }
 
-  const block = `
+  const block = `\`\`\`
 ${parsedContent.selector} {
   ${rule}
-}`;
+}\`\`\``;
 
   return {
     styleRule: block.trim(),
-    location: `line: ${startLine}, row: ${start}, col: ${end}`
+    startLine,
+    location: `${start}:${end}`
   };
 }
 
