@@ -79,9 +79,11 @@ class CriConnection extends Connection {
               resolve(JSON.parse(data));
               return;
             } catch (e) {
+              // In the case of 'close' Chromium returns a string rather than JSON: goo.gl/7v27xD
               if (data === 'Target is closing') {
                 return resolve({message: data});
               }
+              return reject(e);
             }
           }
           reject(new Error(`Protocol JSON API error (${command}), status: ${response.statusCode}`));
@@ -119,6 +121,7 @@ class CriConnection extends Connection {
       this._ws.removeAllListeners();
       this._ws.close();
       this._ws = null;
+      this._pageId = null;
     });
   }
 
