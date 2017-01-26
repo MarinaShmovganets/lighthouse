@@ -102,7 +102,9 @@ module.exports = [
         score: false,
         extendedInfo: {
           value: {
-            length: 7
+            results: {
+              length: 7
+            }
           }
         }
       },

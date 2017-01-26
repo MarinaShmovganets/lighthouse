@@ -39,7 +39,7 @@ describe('Page does not use old CSS flexbox', () => {
       Styles: []
     });
     assert.equal(auditResult.rawValue, true);
-    assert.equal(auditResult.extendedInfo.value.length, 0);
+    assert.equal(auditResult.extendedInfo.value.results.length, 0);
   });
 
   it('fails when display: box is used', () => {
@@ -47,10 +47,15 @@ describe('Page does not use old CSS flexbox', () => {
       Styles: stylesData
     });
     assert.equal(auditResult.rawValue, false);
-    assert.equal(auditResult.extendedInfo.value.length, 2);
-    assert.equal(auditResult.extendedInfo.value.length, 2);
-    assert.equal(auditResult.extendedInfo.value[0].url, stylesData[0].header.sourceURL);
-    assert.ok(auditResult.extendedInfo.value[0].code.match(/display\: box/));
+    assert.equal(auditResult.extendedInfo.value.results.length, 2);
+    assert.equal(auditResult.extendedInfo.value.results.length, 2);
+    assert.equal(auditResult.extendedInfo.value.results[0].url, stylesData[0].header.sourceURL);
+    assert.ok(auditResult.extendedInfo.value.results[0].code.match(/display\: box/));
+
+    const headings = auditResult.extendedInfo.value.tableHeadings;
+    assert.deepEqual(Object.keys(headings).map(key => headings[key]),
+        ['URL', 'Line in the stylesheet / <style>', 'Column start/end', 'Snippet'],
+        'table headings are correct and in order');
   });
 
   it('passes when display: box is not used', () => {
@@ -58,6 +63,6 @@ describe('Page does not use old CSS flexbox', () => {
       Styles: stylesData.slice(1)
     });
     assert.equal(auditResult.rawValue, true);
-    assert.equal(auditResult.extendedInfo.value.length, 0);
+    assert.equal(auditResult.extendedInfo.value.results.length, 0);
   });
 });

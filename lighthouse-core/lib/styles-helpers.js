@@ -96,8 +96,7 @@ function getFormattedStyleRule(content, parsedContent) {
     }, []).join('\n');
   }
 
-  const block = `\`\`\`
-${parsedContent.selector} {
+  const block = `\`\`\`${parsedContent.selector} {
   ${rule}
 }\`\`\``;
 

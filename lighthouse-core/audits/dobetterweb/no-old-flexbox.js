@@ -74,7 +74,7 @@ class NoOldFlexboxAudit extends Audit {
           url,
           location: formattedStyleRule.location,
           startLine: formattedStyleRule.startLine,
-          code:  formattedStyleRule.styleRule
+          code: formattedStyleRule.styleRule
         });
       });
     });
