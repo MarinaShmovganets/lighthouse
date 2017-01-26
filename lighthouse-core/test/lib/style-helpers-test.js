@@ -92,9 +92,9 @@ describe('style helpers', () => {
           stylesheets, 'display', 'box');
       const actual = StyleHelpers.getFormattedStyleRule(
           results[0].content, results[0].parsedContent[0]);
-      const expected = `\`\`\`p,div {
+      const expected = `p,div {
   display: box;
-}\`\`\``;
+}`;
 
       assert.equal(actual.location, '4:17');
       assert.equal(actual.startLine, 8);
@@ -106,9 +106,9 @@ describe('style helpers', () => {
           stylesheets, ['display'], ['box']);
       const actual = StyleHelpers.getFormattedStyleRule(
           results[0].content, results[0].parsedContent[0]);
-      const expected = `\`\`\`p,div {
+      const expected = `p,div {
   display: box;
-}\`\`\``;
+}`;
 
       assert.equal(actual.location, '4:17');
       assert.equal(actual.startLine, 8);
