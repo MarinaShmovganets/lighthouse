@@ -155,7 +155,8 @@ describe('Best Practices: unused css rules audit', () => {
     });
 
     it('ignores missing stylesheets', () => {
-      const result = UnusedCSSAudit.audit({
+      const result = UnusedCSSAudit.audit_({
+        networkRecords,
         URL: {finalUrl: ''},
         CSSUsage: [{styleSheetId: 'a', used: false}],
         Styles: []
