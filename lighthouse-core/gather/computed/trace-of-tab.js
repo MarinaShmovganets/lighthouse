@@ -18,11 +18,12 @@
 'use strict';
 
 const ComputedArtifact = require('./computed-artifact');
+const fMPAudit = require('../../audits/first-meaningful-paint');
 
-class TabOfTrace extends ComputedArtifact {
+class TraceOfTab extends ComputedArtifact {
 
   get name() {
-    return 'TabOfTrace';
+    return 'TraceOfTab';
   }
 
   /**
@@ -47,6 +48,10 @@ class TabOfTrace extends ComputedArtifact {
     const navigationStart = frameEvents.filter(e =>
         e.name === 'navigationStart' && e.ts < firstFCP.ts).pop();
 
+    // fMP will follow at/after the FCP, though we allow some timestamp tolerance
+    const firstMeaningfulPaint = frameEvents.find(e =>
+        e.name === 'firstMeaningfulPaint' && e.ts >= (firstFCP.ts - fMPAudit.toleranceMs));
+
     // subset all trace events to just our tab's process (incl threads other than main)
     const allFrameEvents = trace.traceEvents.filter(e => {
       return e.pid === startedInPageEvt.pid;
@@ -56,9 +61,10 @@ class TabOfTrace extends ComputedArtifact {
       traceEvents: allFrameEvents,
       startedInPageEvt: startedInPageEvt,
       navigationStartEvt: navigationStart,
-      firstContentfulPaintEvt: firstFCP
+      firstContentfulPaintEvt: firstFCP,
+      firstMeaningfulPaintEvt: firstMeaningfulPaint
     };
   }
 }
 
-module.exports = TabOfTrace;
+module.exports = TraceOfTab;

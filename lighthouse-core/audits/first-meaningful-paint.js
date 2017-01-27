@@ -26,11 +26,6 @@ const Formatter = require('../formatters/formatter');
 const SCORING_POINT_OF_DIMINISHING_RETURNS = 1600;
 const SCORING_MEDIAN = 4000;
 
-// We want an fMP at or after our fCP, however we see traces with the sole fMP
-// being up to 1ms BEFORE the fCP. We're okay if this happens, however if we see
-// a gap of more than 2 frames (32,000 microseconds), then it's a bug that should
-// be addressed in FirstMeaningfulPaintDetector.cpp
-const FCPFMP_TOLERANCE = 32 * 1000;
 
 class FirstMeaningfulPaint extends Audit {
   /**
@@ -57,7 +52,7 @@ class FirstMeaningfulPaint extends Audit {
    */
   static audit(artifacts) {
     const trace = artifacts.traces[this.DEFAULT_PASS];
-    return artifacts.requestTabOfTrace(trace).then(tabTrace => {
+    return artifacts.requestTraceOfTab(trace).then(tabTrace => {
       const evts = this.collectEvents(tabTrace);
       const result = this.calculateScore(evts);
 
@@ -123,12 +118,10 @@ class FirstMeaningfulPaint extends Audit {
    * @param {!Object} tabTrace
    */
   static collectEvents(tabTrace) {
+    // The TraceOfTab computed artifact does all the work for us
     const navigationStart = tabTrace.navigationStartEvt;
     const firstFCP = tabTrace.firstContentfulPaintEvt;
-
-    // fMP will follow at/after the FCP, though we allow some timestamp tolerance
-    const firstMeaningfulPaint = tabTrace.traceEvents.find(e =>
-        e.name === 'firstMeaningfulPaint' && e.ts >= (firstFCP.ts - FCPFMP_TOLERANCE));
+    const firstMeaningfulPaint = tabTrace.firstMeaningfulPaintEvt;
 
     // Sometimes fMP is triggered before fCP
     if (!firstMeaningfulPaint) {
@@ -146,6 +139,14 @@ class FirstMeaningfulPaint extends Audit {
       firstMeaningfulPaint,
       firstContentfulPaint: firstFCP
     };
+  }
+
+  // We want an fMP at or after our fCP, however we see traces with the sole fMP
+  // being up to 1ms BEFORE the fCP. We're okay if this happens, however if we see
+  // a gap of more than 2 frames (32,000 microseconds), then it's a bug that should
+  // be addressed in FirstMeaningfulPaintDetector.cpp
+  static get toleranceMs() {
+    return 32 * 1000;
   }
 }
 
