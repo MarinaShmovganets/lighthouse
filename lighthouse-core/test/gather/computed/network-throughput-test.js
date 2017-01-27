@@ -31,6 +31,7 @@ describe('NetworkThroughput', () => {
       failed: false,
       statusCode: 200,
       url: 'https://google.com/logo.png',
+      parsedURL: {isValid: true, scheme: 'https'}
     }, extras);
   }
 
@@ -93,7 +94,7 @@ describe('NetworkThroughput', () => {
   });
 
   it('should exclude data URIs', () => {
-    const extras = {url: 'data:image/jpeg;base64,foobar'};
+    const extras = {parsedURL: {scheme: 'data'}};
     const result = compute([createRecord(0, 2), createRecord(3, 4, extras)]);
     assert.equal(result, 500);
   });

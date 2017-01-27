@@ -41,12 +41,12 @@ class UnusedCSSRules extends Audit {
 
   /**
    * @param {!Array.<{header: {styleSheetId: string}}>} styles The output of the Styles gatherer.
-   * @param {!Array<NetworkRecord>} networkRecords
+   * @param {!Array<WebInspector.NetworkRequest>} networkRecords
    * @return {!Object} A map of styleSheetId to stylesheet information.
    */
   static indexStylesheetsById(styles, networkRecords) {
     const indexedNetworkRecords = networkRecords
-        .filter(record => /css/.test(record.mimeType))
+        .filter(record => record._resourceType && record._resourceType._name === 'stylesheet')
         .reduce((indexed, record) => {
           indexed[record.url] = record;
           return indexed;

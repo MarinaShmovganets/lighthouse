@@ -37,7 +37,8 @@ class NetworkThroughput extends ComputedArtifact {
 
     let totalBytes = 0;
     const timeBoundaries = networkRecords.reduce((boundaries, record) => {
-      if (/^data:/.test(record.url) || record.failed || !record.finished ||
+      const scheme = record.parsedURL && record.parsedURL.scheme;
+      if (scheme === 'data' || record.failed || !record.finished ||
           record.statusCode > 300 || !record.transferSize) {
         return boundaries;
       }
