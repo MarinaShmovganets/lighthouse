@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,31 @@
 
 'use strict';
 
+/**
+ * @fileoverview Singluar helper to parse a raw trace and extract the most useful data for
+ * various tools. This artifact will take a trace and then:
+ *
+ * 1. Find the TracingStartedInPage and navigationStart events of our intended tab & frame.
+ * 2. Find the firstContentfulPaint and marked firstMeaningfulPaint events
+ * 3. Isolate only the trace events from the tab's process (including all threads like compositor)
+ *      * Sort those trace events in chronological order (as order isn't guaranteed)
+ * 4. Return all those items in one handy bundle.
+ */
+
 const ComputedArtifact = require('./computed-artifact');
-const fMPAudit = require('../../audits/first-meaningful-paint');
 
 class TraceOfTab extends ComputedArtifact {
 
   get name() {
     return 'TraceOfTab';
+  }
+
+  // We want an fMP at or after our fCP, however we see traces with the sole fMP
+  // being up to 1ms BEFORE the fCP. We're okay if this happens, however if we see
+  // a gap of more than 2 frames (32,000 microseconds), then it's a bug that should
+  // be addressed in FirstMeaningfulPaintDetector.cpp
+  static get fmpToleranceMs() {
+    return 32 * 1000;
   }
 
   /**
@@ -50,7 +68,7 @@ class TraceOfTab extends ComputedArtifact {
 
     // fMP will follow at/after the FCP, though we allow some timestamp tolerance
     const firstMeaningfulPaint = frameEvents.find(e =>
-        e.name === 'firstMeaningfulPaint' && e.ts >= (firstFCP.ts - fMPAudit.toleranceMs));
+        e.name === 'firstMeaningfulPaint' && e.ts >= (firstFCP.ts - TraceOfTab.fmpToleranceMs));
 
     // subset all trace events to just our tab's process (incl threads other than main)
     const allFrameEvents = trace.traceEvents.filter(e => {

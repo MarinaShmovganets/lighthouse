@@ -140,14 +140,6 @@ class FirstMeaningfulPaint extends Audit {
       firstContentfulPaint: firstFCP
     };
   }
-
-  // We want an fMP at or after our fCP, however we see traces with the sole fMP
-  // being up to 1ms BEFORE the fCP. We're okay if this happens, however if we see
-  // a gap of more than 2 frames (32,000 microseconds), then it's a bug that should
-  // be addressed in FirstMeaningfulPaintDetector.cpp
-  static get toleranceMs() {
-    return 32 * 1000;
-  }
 }
 
 module.exports = FirstMeaningfulPaint;

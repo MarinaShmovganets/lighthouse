@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,22 @@ const preactTrace = require('../../fixtures/traces/preactjs.com_ts_of_undefined.
 
 /* eslint-env mocha */
 describe('Trace of Tab computed artifact:', () => {
-  describe('finds correct FMP in various traces', () => {
-    it('finds the fMP if there was a tracingStartedInPage after the frame\'s navStart', () => {
+  it('gathers the events from the tab\'s process', () => {
+    const trace = traceOfTab.compute_(lateTracingStartedTrace);
+
+    const firstEvt = trace.traceEvents[0];
+    trace.traceEvents.forEach(evt => {
+      assert.equal(evt.pid, firstEvt.pid, 'A traceEvent is found from another process');
+    });
+
+    assert.ok(firstEvt.pid === trace.startedInPageEvt.pid);
+    assert.ok(firstEvt.pid === trace.navigationStartEvt.pid);
+    assert.ok(firstEvt.pid === trace.firstContentfulPaintEvt.pid);
+    assert.ok(firstEvt.pid === trace.firstMeaningfulPaintEvt.pid);
+  });
+
+  describe('finds correct FMP', () => {
+    it('if there was a tracingStartedInPage after the frame\'s navStart', () => {
       const trace = traceOfTab.compute_(lateTracingStartedTrace);
       assert.equal(trace.startedInPageEvt.ts, 29343544280);
       assert.equal(trace.navigationStartEvt.ts, 29343540951);
@@ -34,7 +48,7 @@ describe('Trace of Tab computed artifact:', () => {
       assert.equal(trace.firstMeaningfulPaintEvt.ts, 29344070867);
     });
 
-    it('finds the fMP if there was a tracingStartedInPage after the frame\'s navStart #2', () => {
+    it('if there was a tracingStartedInPage after the frame\'s navStart #2', () => {
       const trace = traceOfTab.compute_(badNavStartTrace);
       assert.equal(trace.startedInPageEvt.ts, 8885435611);
       assert.equal(trace.navigationStartEvt.ts, 8885424467);
@@ -42,7 +56,7 @@ describe('Trace of Tab computed artifact:', () => {
       assert.equal(trace.firstMeaningfulPaintEvt.ts, 8886056891);
     });
 
-    it('finds the fMP if it appears slightly before the fCP', () => {
+    it('if it appears slightly before the fCP', () => {
       const trace = traceOfTab.compute_(preactTrace);
       assert.equal(trace.startedInPageEvt.ts, 1805796376829);
       assert.equal(trace.navigationStartEvt.ts, 1805796384607);
