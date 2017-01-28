@@ -48,7 +48,7 @@ class UserTimings extends Audit {
     // The event phases we are interested in are mark and instant events (R, i, I)
     // and duration events which correspond to measures (B, b, E, e).
     // @see https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview#
-    tabTrace.traceEvents.filter(evt => {
+    tabTrace.processEvents.filter(evt => {
       if (!evt.cat.includes('blink.user_timing')) {
         return false;
       }

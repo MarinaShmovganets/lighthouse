@@ -28,8 +28,8 @@ describe('Trace of Tab computed artifact:', () => {
   it('gathers the events from the tab\'s process', () => {
     const trace = traceOfTab.compute_(lateTracingStartedTrace);
 
-    const firstEvt = trace.traceEvents[0];
-    trace.traceEvents.forEach(evt => {
+    const firstEvt = trace.processEvents[0];
+    trace.processEvents.forEach(evt => {
       assert.equal(evt.pid, firstEvt.pid, 'A traceEvent is found from another process');
     });
 

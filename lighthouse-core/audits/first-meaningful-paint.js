@@ -53,8 +53,22 @@ class FirstMeaningfulPaint extends Audit {
   static audit(artifacts) {
     const trace = artifacts.traces[this.DEFAULT_PASS];
     return artifacts.requestTraceOfTab(trace).then(tabTrace => {
-      const evts = this.collectEvents(tabTrace);
-      const result = this.calculateScore(evts);
+      // Sometimes fMP is triggered before fCP
+      if (!tabTrace.firstMeaningfulPaintEvt) {
+        throw new Error('No usable `firstMeaningfulPaint` event found in trace');
+      }
+
+      // navigationStart is currently essential to FMP calculation.
+      // see: https://github.com/GoogleChrome/lighthouse/issues/753
+      if (!tabTrace.navigationStartEvt) {
+        throw new Error('No `navigationStart` event found in trace');
+      }
+
+      const result = this.calculateScore({
+        navigationStart: tabTrace.navigationStartEvt,
+        firstMeaningfulPaint: tabTrace.firstMeaningfulPaintEvt,
+        firstContentfulPaint: tabTrace.firstContentfulPaintEvt
+      });
 
       return FirstMeaningfulPaint.generateAuditResult({
         score: result.score,
@@ -111,33 +125,6 @@ class FirstMeaningfulPaint extends Audit {
       score: Math.round(score),
       rawValue: parseFloat(firstMeaningfulPaint.toFixed(1)),
       extendedInfo
-    };
-  }
-
-  /**
-   * @param {!Object} tabTrace
-   */
-  static collectEvents(tabTrace) {
-    // The TraceOfTab computed artifact does all the work for us
-    const navigationStart = tabTrace.navigationStartEvt;
-    const firstFCP = tabTrace.firstContentfulPaintEvt;
-    const firstMeaningfulPaint = tabTrace.firstMeaningfulPaintEvt;
-
-    // Sometimes fMP is triggered before fCP
-    if (!firstMeaningfulPaint) {
-      throw new Error('No usable `firstMeaningfulPaint` event found in trace');
-    }
-
-    // navigationStart is currently essential to FMP calculation.
-    // see: https://github.com/GoogleChrome/lighthouse/issues/753
-    if (!navigationStart) {
-      throw new Error('No `navigationStart` event found in trace');
-    }
-
-    return {
-      navigationStart,
-      firstMeaningfulPaint,
-      firstContentfulPaint: firstFCP
     };
   }
 }

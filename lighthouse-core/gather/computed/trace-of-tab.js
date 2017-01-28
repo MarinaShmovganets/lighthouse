@@ -46,7 +46,7 @@ class TraceOfTab extends ComputedArtifact {
 
   /**
    * @param {{traceEvents: !Array}} trace
-   * @return {!Object}
+   * @return {!{processEvents: !Array<TraceEvent>, startedInPageEvt: TraceEvent, navigationStartEvt: TraceEvent, firstContentfulPaintEvt: TraceEvent, firstMeaningfulPaintEvt: TraceEvent}}
   */
   compute_(trace) {
     // Parse the trace for our key events and sort them by timestamp.
@@ -71,12 +71,12 @@ class TraceOfTab extends ComputedArtifact {
         e.name === 'firstMeaningfulPaint' && e.ts >= (firstFCP.ts - TraceOfTab.fmpToleranceMs));
 
     // subset all trace events to just our tab's process (incl threads other than main)
-    const allFrameEvents = trace.traceEvents.filter(e => {
+    const processEvents = trace.traceEvents.filter(e => {
       return e.pid === startedInPageEvt.pid;
     }).sort((event0, event1) => event0.ts - event1.ts);
 
     return {
-      traceEvents: allFrameEvents,
+      processEvents,
       startedInPageEvt: startedInPageEvt,
       navigationStartEvt: navigationStart,
       firstContentfulPaintEvt: firstFCP,
