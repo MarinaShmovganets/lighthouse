@@ -49,7 +49,8 @@ describe('Report', () => {
     assert.ok(html.includes('data-report-context="extension"'),
               'default report context is "extension"');
     html = reportGenerator.generateHTML(sampleResults, 'viewer');
-    assert.ok(html.includes('<html data-report-context="viewer"'), 'viewer report context');
+    assert.ok(html.includes('<html lang="en" data-report-context="viewer"'),
+              'viewer report context');
   });
 
   it('adds export button for viewer context', () => {
