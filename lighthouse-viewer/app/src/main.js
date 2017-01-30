@@ -45,7 +45,7 @@ Promise.all(loadPolyfillPromises).then(_ => {
 });
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js', {scope: './'}).catch(e => {
+  navigator.serviceWorker.register('/sw.js').catch(e => {
     // eslint-disable-next-line no-console
     console.error('Error during service worker registration:', e);
   });
