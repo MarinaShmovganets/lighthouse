@@ -41,7 +41,7 @@ describe('Performance: user-timings audit', () => {
 
       assert.equal(auditResult.score, true);
       assert.equal(auditResult.displayValue, 2);
-      
+
       assert.equal(auditResult.extendedInfo.value[0].isMark, true);
       assert.equal(Math.floor(auditResult.extendedInfo.value[0].startTime), 1000);
       assert.equal(typeof auditResult.extendedInfo.value[0].endTime, 'undefined');
