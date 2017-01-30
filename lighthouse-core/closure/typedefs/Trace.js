@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 
 /**
  * Typing externs file for raw trace events
+ * @see https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview
  * @externs
  */
 
@@ -49,9 +50,6 @@ TraceEvent.prototype.args;
 
 /** @type {number} */
 TraceEvent.prototype.dur;
-
-/** @type {string} */
-TraceEvent.prototype.id;
 
 /** @type {string} */
 TraceEvent.prototype.id;
