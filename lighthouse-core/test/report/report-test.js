@@ -43,6 +43,13 @@ describe('Report', () => {
     assert.ok(/<\/script>/gim.test(html));
   });
 
+  it('`nameToLink` works properly', () => {
+    const reportGenerator = new ReportGenerator();
+    const html = reportGenerator.generateHTML(sampleResults);
+    assert.ok(/class="menu__link" href="#progressive-web-app"/gm.test(html));
+    assert.ok(/id="progressive-web-app"/gm.test(html));
+  });
+
   it('sets report context in HTML', () => {
     const reportGenerator = new ReportGenerator();
     let html = reportGenerator.generateHTML(sampleResults);
