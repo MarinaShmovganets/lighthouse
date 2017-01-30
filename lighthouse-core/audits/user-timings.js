@@ -97,7 +97,7 @@ class UserTimings extends Audit {
 
     return userTimings;
   }
-  
+
   /*
    * @return {!Array<string>}
    */
