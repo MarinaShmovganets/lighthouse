@@ -112,6 +112,7 @@ class UserTimings extends Audit {
    */
   static excludeBlacklisted(timing) {
     return UserTimings.blacklistedPrefixes.every(prefix => !timing.name.startsWith(prefix));
+  }
 
   /**
    * @param {!Artifacts} artifacts
