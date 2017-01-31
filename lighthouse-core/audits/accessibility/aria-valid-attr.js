@@ -33,6 +33,8 @@ class ARIAValidAttr extends AxeAudit {
       category: 'Accessibility',
       name: 'aria-valid-attr',
       description: 'Element aria-* attributes are valid and not misspelled or non-existent.',
+      helpText: 'Screen readers may not be able to read elements with invalid ARIA ' +
+          'attribute names. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/valid-aria-attributes).',
       requiredArtifacts: ['Accessibility']
     };
   }

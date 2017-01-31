@@ -33,6 +33,9 @@ class Label extends AxeAudit {
       category: 'Accessibility',
       name: 'label',
       description: 'Every form element has a label',
+      helpText: 'Although the purpose of each form element may be obvious ' +
+          'to sighted users, more often than not, that same form is unusable to ' +
+          'users who rely on screen readers. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/form-labels).',
       requiredArtifacts: ['Accessibility']
     };
   }
