@@ -26,7 +26,7 @@ describe('TableFormatter', () => {
   const extendedInfo = {
     tableHeadings: {
       url: 'URL', lineCol: 'Line/col', code: 'Snippet', isEval: 'Eval\'d?',
-      pre: 'Code block'},
+      pre: 'Code'},
     results: [{
       url: 'http://example.com',
       line: 123,
@@ -61,7 +61,7 @@ describe('TableFormatter', () => {
   it('generates valid pretty output', () => {
     const pretty = TableFormatter.getFormatter('pretty');
     const output = pretty(extendedInfo);
-    assert.ok(output.includes('      URL LINE/COL SNIPPET EVAL\'D?\n'), 'prints table headings');
+    assert.ok(output.includes('      URL LINE/COL SNIPPET EVAL\'D? CODE\n'), 'prints table headings');
     assert.ok(output.includes('      http://example.com 123:456 yes \n'), 'prints cells');
   });
 
