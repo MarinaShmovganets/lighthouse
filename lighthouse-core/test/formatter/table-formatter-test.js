@@ -24,13 +24,16 @@ const assert = require('assert');
 
 describe('TableFormatter', () => {
   const extendedInfo = {
-    tableHeadings: {url: 'URL', lineCol: 'Line/col', code: 'Snippet', isEval: 'Eval\'d?'},
+    tableHeadings: {
+      url: 'URL', lineCol: 'Line/col', code: 'Snippet', isEval: 'Eval\'d?',
+      pre: 'Code block'},
     results: [{
       url: 'http://example.com',
       line: 123,
       col: 456,
       code: 'code snippet',
-      isEval: true
+      isEval: true,
+      pre: 'pre snippet',
     }]
   };
 
@@ -52,6 +55,7 @@ describe('TableFormatter', () => {
     assert.equal(table.rows[0].cols[1], '123:456');
     assert.equal(table.rows[0].cols[2], '\`code snippet\`');
     assert.equal(table.rows[0].cols[3], 'yes');
+    assert.equal(table.rows[0].cols[4], '\`\`\`\npre snippet\`\`\`');
   });
 
   it('generates valid pretty output', () => {
