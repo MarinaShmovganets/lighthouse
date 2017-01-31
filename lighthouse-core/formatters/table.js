@@ -68,7 +68,8 @@ class Table extends Formatter {
    * @param {!Object<string>} headings for the table. The order of this
    *     object's key/value pairs determines the order of the HTML table headings.
    *     There is special handling for certain keys:
-   *       code: wraps the value in ticks as a markdown code snippet.
+   *       code: wraps the value in single ` for a markdown code snippet.
+   *       pre: wraps the value in triple ``` for a markdown code block.
    *       lineCol: combines the values for the line and col keys into a single
    *                value "line/col".
    *       isEval: returns "yes" if the script was eval'd.
