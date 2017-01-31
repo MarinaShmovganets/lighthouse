@@ -5,6 +5,8 @@ matrix:
     - node_js: "7"
 sudo: required
 dist: trusty
+before_cache:
+  - npm prune
 cache:
    directories:
      - node_modules
