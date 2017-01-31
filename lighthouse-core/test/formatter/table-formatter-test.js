@@ -61,8 +61,10 @@ describe('TableFormatter', () => {
   it('generates valid pretty output', () => {
     const pretty = TableFormatter.getFormatter('pretty');
     const output = pretty(extendedInfo);
-    assert.ok(output.includes('      URL LINE/COL SNIPPET EVAL\'D? CODE\n'), 'prints table headings');
-    assert.ok(output.includes('      http://example.com 123:456 yes \n'), 'prints cells');
+    assert.ok(output.includes(
+        '      URL LINE/COL SNIPPET EVAL\'D? CODE\n'), 'prints table headings');
+    assert.ok(output.includes(
+        '      http://example.com 123:456 yes \n'), 'prints cells');
   });
 
   it('generates valid html output', () => {
