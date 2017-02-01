@@ -32,7 +32,7 @@ class UnusedCSSRules extends Audit {
     return {
       category: 'CSS',
       name: 'unused-css-rules',
-      description: 'Page uses 90% of its CSS rules',
+      description: 'Uses 90% of its CSS rules',
       helpText: 'Remove unused rules from stylesheets to reduce unnecessary ' +
           'bytes consumed by network activity. ' +
           '[Learn more](https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery)',
