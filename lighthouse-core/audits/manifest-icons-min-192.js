@@ -45,8 +45,7 @@ class ManifestIconsMin192 extends Audit {
 
     if (icons.doExist(manifest) === false) {
       return ManifestIconsMin192.generateAuditResult({
-        rawValue: false,
-        debugString: 'WARNING: No icons found in the manifest'
+        rawValue: false
       });
     }
 

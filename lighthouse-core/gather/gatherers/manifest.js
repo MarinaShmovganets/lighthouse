@@ -45,10 +45,6 @@ class Manifest extends Gatherer {
           let errorString;
           if (response.url) {
             errorString = `Unable to retrieve manifest at ${response.url}`;
-          } else {
-            // The driver will return an empty string for url and the data if
-            // the page has no manifest.
-            errorString = 'No manifest found.';
           }
 
           return Manifest._errorManifest(errorString);
