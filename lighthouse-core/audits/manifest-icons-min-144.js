@@ -53,7 +53,7 @@ class ManifestIconsMin144 extends Audit {
     if (matchingIcons.length) {
       displayValue = `found sizes: ${matchingIcons.join(', ')}`;
     } else {
-      debugString = 'WARNING: No icons are at least 144px';
+      debugString = 'No icons are at least 144px';
     }
 
     return ManifestIconsMin144.generateAuditResult({

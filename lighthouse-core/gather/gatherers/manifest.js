@@ -43,6 +43,8 @@ class Manifest extends Gatherer {
         //   https://chromedevtools.github.io/debugger-protocol-viewer/tot/Page/#type-AppManifestError
         if (!response.data) {
           let errorString;
+          // The driver returns an empty string for url and the data if
+          // the page has no manifest.
           if (response.url) {
             errorString = `Unable to retrieve manifest at ${response.url}`;
           }
