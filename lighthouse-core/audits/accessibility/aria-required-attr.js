@@ -34,7 +34,7 @@ class ARIARequiredAttr extends AxeAudit {
       name: 'aria-required-attr',
       description: 'Elements with ARIA roles have the required aria-* attributes',
       helpText: 'Some ARIA roles have required attributes that describe the state ' +
-          'of the role to screen readers. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/required-aria-attributes).',
+          'of the element to screen readers. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/required-aria-attributes).',
       requiredArtifacts: ['Accessibility']
     };
   }

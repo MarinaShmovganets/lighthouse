@@ -33,8 +33,9 @@ class ARIAValidAttr extends AxeAudit {
       category: 'Accessibility',
       name: 'aria-valid-attr-value',
       description: 'Element aria-* attributes have valid values',
-      helpText: 'Screen readers may not be able to read elements with invalid ARIA ' +
-          'attribute values. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/valid-aria-values).',
+      helpText: 'Assistive technologies, like screen readers, can\'t interpret ARIA ' +
+          'attributes with invalid values. [Learn ' +
+          'more](https://developers.google.com/web/tools/lighthouse/audits/valid-aria-values).',
       requiredArtifacts: ['Accessibility']
     };
   }

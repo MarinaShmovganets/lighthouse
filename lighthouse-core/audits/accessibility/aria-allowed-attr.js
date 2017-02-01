@@ -33,8 +33,9 @@ class ARIAAllowedAttr extends AxeAudit {
       category: 'Accessibility',
       name: 'aria-allowed-attr',
       description: 'Element aria-* attributes are allowed for this role',
-      helpText: 'Invalid role-attribute combinations can disable the accessibility ' +
-          'of your page. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/aria-allowed-attributes).',
+      helpText: 'Each ARIA `role` supports a specific subset of `aria-*` attributes. ' +
+          'Mismatching these invalidates the `aria-*` attributes. [Learn ' +
+          'more](https://developers.google.com/web/tools/lighthouse/audits/aria-allowed-attributes).',
       requiredArtifacts: ['Accessibility']
     };
   }
