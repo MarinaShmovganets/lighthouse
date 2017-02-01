@@ -51,7 +51,8 @@ class AppCacheManifestAttr extends Audit {
     }
 
     const usingAppcache = artifacts.AppCacheManifest !== null;
-    const debugString = usingAppcache ? `Found <html manifest="${artifacts.AppCacheManifest}">.` : '';
+    const debugString = usingAppcache ?
+        `Found <html manifest="${artifacts.AppCacheManifest}">.` : '';
 
     return AppCacheManifestAttr.generateAuditResult({
       rawValue: !usingAppcache,
