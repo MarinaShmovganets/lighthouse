@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ class Metrics {
   constructor(traceEvents, auditResults) {
     this._traceEvents = traceEvents;
     this._auditResults = auditResults;
-    this._fakeEvents = [];
   }
 
   /**
@@ -82,7 +81,7 @@ class Metrics {
       },
       {
         name: 'Visually Complete 100%',
-        id: 'vc',
+        id: 'vc100',
         getTs: auditResults => {
           const siExt = auditResults['speed-index-metric'].extendedInfo;
           return siExt.value.timestamps.visuallyComplete;
@@ -101,19 +100,18 @@ class Metrics {
 
   /**
    * Returns simplified representation of all metrics' timestamps from monotonic clock
-   * @param {!Array<!AuditResult>} auditResults
    * @return {!Array<{ts: number, id: string, name: string}>} metrics to consider
    */
-  gatherMetrics(auditResults) {
+  gatherMetrics() {
     const metricDfns = Metrics.metricsDefinitions;
     const resolvedMetrics = [];
     metricDfns.forEach(metric => {
-      // try/catch in case auditResults is missing an audit result
+      // try/catch in case auditResults is missing a particular audit result
       try {
         resolvedMetrics.push({
           id: metric.id,
           name: metric.name,
-          ts: metric.getTs(auditResults)
+          ts: metric.getTs(this._auditResults)
         });
       } catch (e) {
         log.error('metrics-evts', `${metric.name} timestamp not found: ${e.message}`);
@@ -125,7 +123,7 @@ class Metrics {
   /**
    * Getter for our navigationStart trace event
    */
-  get navigationStartEvt() {
+  getNavigationStartEvt() {
     if (!this._navigationStartEvt) {
       const filteredEvents = this._traceEvents.filter(e => {
         return e.name === 'TracingStartedInPage' || e.cat === 'blink.user_timing';
@@ -146,19 +144,15 @@ class Metrics {
    * Constructs performance.measure trace events, which have start/end events as follows:
    *     { "pid": 89922,"tid":1295,"ts":77176783452,"ph":"b","cat":"blink.user_timing","name":"innermeasure","args":{},"tts":1257886,"id":"0xe66c67"}
    *     { "pid": 89922,"tid":1295,"ts":77176882592,"ph":"e","cat":"blink.user_timing","name":"innermeasure","args":{},"tts":1257898,"id":"0xe66c67"}
-   * @param  {!Object} metric
-   * @param  {number} navStartTs
-   * @return {Array} Pair of trace events (start/end)
+   * @param {{ts: number, id: string, name: string}} metric
+   * @param {number} navStartTs
+   * @return {!Array} Pair of trace events (start/end)
    */
   synthesizeEventPair(metric, navStartTs) {
-    if (!metric.ts || metric.id === 'navstart') {
-      return [];
-    }
-
     // We'll masquerade our fake events to look mostly like navigationStart
     const eventBase = {
-      pid: this.navigationStartEvt.pid,
-      tid: this.navigationStartEvt.tid,
+      pid: this.getNavigationStartEvt().pid,
+      tid: this.getNavigationStartEvt().tid,
       cat: 'blink.user_timing',
       name: metric.name,
       args: {},
@@ -177,10 +171,11 @@ class Metrics {
   }
 
   /**
-   * @returns {Array} User timing raw trace event pairs
+   * @returns {!Array} User timing raw trace event pairs
    */
   generateFakeEvents() {
-    const metrics = this.gatherMetrics(this._auditResults);
+    const fakeEvents = [];
+    const metrics = this.gatherMetrics();
     if (metrics.length === 0) {
       log.error('metrics-events', 'Metrics collection had errors, not synthetizing trace events');
       return [];
@@ -188,16 +183,20 @@ class Metrics {
 
     // confirm our navStart's correctly match
     const navStartTs = metrics.find(e => e.id === 'navstart').ts;
-    if (this.navigationStartEvt.ts !== navStartTs) {
+    if (this.getNavigationStartEvt().ts !== navStartTs) {
       log.error('metrics-evts', 'Reference navigationStart doesn\'t match fMP\'s navStart');
       return [];
     }
 
     metrics.forEach(metric => {
-      log.log('metrics-evts', `Sythesizing trace events for ${metric.name}`);
-      this._fakeEvents.push(...this.synthesizeEventPair(metric, navStartTs));
+      if (!metric.ts || metric.id === 'navstart') {
+        !metric.ts && log.error('metrics-evts', `(${metric.name}) missing timestamp. Skipping…`);
+        return;
+      }
+      log.verbose('metrics-evts', `Sythesizing trace events for ${metric.name}`);
+      fakeEvents.push(...this.synthesizeEventPair(metric, navStartTs));
     });
-    return this._fakeEvents;
+    return fakeEvents;
   }
 }
 
