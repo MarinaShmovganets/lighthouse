@@ -17,8 +17,7 @@
 
 'use strict';
 
-const Metrics = require('../../../lib/traces/metrics-evts');
-const assetSaver = require('../../../lib/asset-saver');
+const Metrics = require('../../../lib/traces/pwmetrics-events');
 const assert = require('assert');
 
 const dbwTrace = require('../../fixtures/traces/dbw_tester.json');

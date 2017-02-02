@@ -20,7 +20,7 @@ const fs = require('fs');
 const log = require('../../lighthouse-core/lib/log.js');
 const stringifySafe = require('json-stringify-safe');
 const URL = require('./url-shim');
-const Metrics = require('./traces/metrics-evts');
+const Metrics = require('./traces/pwmetrics-events');
 
 /**
  * Generate a filenamePrefix of hostname_YYYY-MM-DD_HH-MM-SS

@@ -114,7 +114,7 @@ class Metrics {
           ts: metric.getTs(this._auditResults)
         });
       } catch (e) {
-        log.error('metrics-evts', `${metric.name} timestamp not found: ${e.message}`);
+        log.error('pwmetrics-events', `${metric.name} timestamp not found: ${e.message}`);
       }
     });
     return resolvedMetrics;
@@ -184,16 +184,16 @@ class Metrics {
     // confirm our navStart's correctly match
     const navStartTs = metrics.find(e => e.id === 'navstart').ts;
     if (this.getNavigationStartEvt().ts !== navStartTs) {
-      log.error('metrics-evts', 'Reference navigationStart doesn\'t match fMP\'s navStart');
+      log.error('pwmetrics-events', 'Reference navigationStart doesn\'t match fMP\'s navStart');
       return [];
     }
 
     metrics.forEach(metric => {
       if (!metric.ts || metric.id === 'navstart') {
-        !metric.ts && log.error('metrics-evts', `(${metric.name}) missing timestamp. Skipping…`);
+        !metric.ts && log.error('pwmetrics-events', `(${metric.name}) missing timestamp. Skipping…`);
         return;
       }
-      log.verbose('metrics-evts', `Sythesizing trace events for ${metric.name}`);
+      log.verbose('pwmetrics-events', `Sythesizing trace events for ${metric.name}`);
       fakeEvents.push(...this.synthesizeEventPair(metric, navStartTs));
     });
     return fakeEvents;
