@@ -208,7 +208,7 @@ class GatherRunner {
       return driver.endNetworkCollect();
     }).then(networkRecords => {
       const mainRecord = networkRecords.find(record => record.url === options.url);
-      if (driver.online && mainRecord.failed) {
+      if (driver.online && (!mainRecord || mainRecord.failed)) {
         log.error('GatherRunner', mainRecord.localizedFailDescription);
         const error = new Error(`Unable to load the page: ${mainRecord.localizedFailDescription}`);
         error.code = 'PAGE_LOAD_ERROR';
