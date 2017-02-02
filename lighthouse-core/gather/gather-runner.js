@@ -209,8 +209,11 @@ class GatherRunner {
     }).then(networkRecords => {
       const mainRecord = networkRecords.find(record => record.url === options.url);
       if (driver.online && (!mainRecord || mainRecord.failed)) {
-        log.error('GatherRunner', mainRecord.localizedFailDescription);
-        const error = new Error(`Unable to load the page: ${mainRecord.localizedFailDescription}`);
+        const failDescription = mainRecord ?
+            mainRecord.localizedFailDescription :
+            'request took too long';
+        log.error('GatherRunner', failDescription);
+        const error = new Error(`Unable to load the page: ${failDescription}`);
         error.code = 'PAGE_LOAD_ERROR';
         return Promise.reject(error);
       }
