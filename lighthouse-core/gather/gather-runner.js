@@ -125,9 +125,10 @@ class GatherRunner {
   }
 
   /**
-   * @param {string} url
+   * Throws an error if the original network request failed or wasn't found.
+   * @param {string} url The URL of the original requested page.
    * @param {{online: boolean}} driver
-   * @param {!Array<WebInspector.NetworkRequest} networkRecords
+   * @param {!Array<WebInspector.NetworkRequest>} networkRecords
    */
   static assertPageLoaded(url, driver, networkRecords) {
     const mainRecord = networkRecords.find(record => record.url === url);
