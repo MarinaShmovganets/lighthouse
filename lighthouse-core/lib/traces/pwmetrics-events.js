@@ -189,8 +189,11 @@ class Metrics {
     }
 
     metrics.forEach(metric => {
-      if (!metric.ts || metric.id === 'navstart') {
-        !metric.ts && log.error('pwmetrics-events', `(${metric.name}) missing timestamp. Skipping…`);
+      if (metric.id === 'navstart') {
+        return;
+      }
+      if (!metric.ts) {
+        log.error('pwmetrics-events', `(${metric.name}) missing timestamp. Skipping…`);
         return;
       }
       log.verbose('pwmetrics-events', `Sythesizing trace events for ${metric.name}`);
