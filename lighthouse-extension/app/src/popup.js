@@ -208,7 +208,7 @@ function initPopup() {
 
     const okButton = document.getElementById('ok');
     okButton.addEventListener('click', () => {
-      // Save selected aggregation categories on options page close.
+      // Save settings when options page is closed.
       const selectedAggregations = Array.from(optionsEl.querySelectorAll(':checked'))
           .map(input => input.value);
       const disableExtensions = document.querySelector('.setting-disable-extensions').checked;

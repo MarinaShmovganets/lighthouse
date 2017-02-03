@@ -29,7 +29,7 @@ const STORAGE_KEY = 'lighthouse_audits';
 const SETTINGS_KEY = 'lighthouse_settings';
 
 let installedExtensions = [];
-let DISABLE_EXTENSIONS_DURING_RUN = false;
+let disableExtensionsDuringRun = false;
 let lighthouseIsRunning = false;
 let latestStatusLog = [];
 
@@ -43,7 +43,7 @@ const _flatten = arr => [].concat(...arr);
  * @param {!Promise}
  */
 function enableOtherChromeExtensions(enable) {
-  if (!DISABLE_EXTENSIONS_DURING_RUN) {
+  if (!disableExtensionsDuringRun) {
     return Promise.resolve();
   }
 
@@ -259,7 +259,6 @@ window.getDefaultAggregations = function() {
  * Save currently selected set of aggregation categories to local storage.
  * @param {!{selectedAggregations: Array<{name: string, audits: !Array<string>}>,
  *           disableExtensions: boolean}} settings
- * @param {!boolean} disableExtensions True if extensions should be disabled for the run.
  */
 window.saveSettings = function(settings) {
   const storage = {
@@ -273,8 +272,8 @@ window.saveSettings = function(settings) {
   });
 
   // Stash disable extensionS setting.
-  DISABLE_EXTENSIONS_DURING_RUN = settings.disableExtensions;
-  storage[SETTINGS_KEY].disableExtensions = DISABLE_EXTENSIONS_DURING_RUN;
+  disableExtensionsDuringRun = settings.disableExtensions;
+  storage[SETTINGS_KEY].disableExtensions = disableExtensionsDuringRun;
 
   // Save object to chrome local storage.
   chrome.storage.local.set(storage);
@@ -300,7 +299,7 @@ window.loadSettings = function() {
       const savedAggregations = Object.assign(defaultAggregations, result[STORAGE_KEY]);
 
       const defaultSettings = {
-        disableExtensions: DISABLE_EXTENSIONS_DURING_RUN
+        disableExtensions: disableExtensionsDuringRun
       };
       const savedSettings = Object.assign(defaultSettings, result[SETTINGS_KEY]);
 
