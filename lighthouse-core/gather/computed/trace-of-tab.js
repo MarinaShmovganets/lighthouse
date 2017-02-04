@@ -81,7 +81,7 @@ class TraceOfTab extends ComputedArtifact {
       log.verbose('trace-of-tab', `No firstMeaningfulPaint found, falling back to last ${fmpCand}`);
       const lastCandidate = frameEvents.filter(e => e.name === fmpCand).pop();
       if (!lastCandidate) {
-        log.verbose('No `firstMeaningfulPaintCandidate` events found in trace');
+        log.verbose('trace-of-tab', 'No `firstMeaningfulPaintCandidate` events found in trace');
       }
       firstMeaningfulPaint = lastCandidate;
     }
