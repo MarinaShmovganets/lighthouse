@@ -257,8 +257,7 @@ window.getDefaultAggregations = function() {
 
 /**
  * Save currently selected set of aggregation categories to local storage.
- * @param {!{selectedAggregations: Array<{name: string, audits: !Array<string>}>,
- *           disableExtensions: boolean}} settings
+ * @param {{selectedAggregations: !Array<string>, disableExtensions: boolean}} settings
  */
 window.saveSettings = function(settings) {
   const storage = {
@@ -281,8 +280,7 @@ window.saveSettings = function(settings) {
 
 /**
  * Load selected aggregation categories from local storage.
- * @return {!Promise<{selectedAggregations: Array<{name: string, audits: !Array<string>}>,
- *                    disableExtensions: boolean}>}
+ * @return {!Promise<{selectedAggregations: !Object<boolean>, disableExtensions: boolean}>}
  */
 window.loadSettings = function() {
   return new Promise(resolve => {
