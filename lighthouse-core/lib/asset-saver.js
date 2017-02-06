@@ -88,7 +88,8 @@ img {
 }
 
 /**
- * Save entire artifacts object to a single stringified file
+ * Save entire artifacts object to a single stringified file located at
+ * pathWithBasename + .artifacts.log
  * @param {!Artifacts} artifacts
  * @param {string} pathWithBasename
  */

@@ -253,23 +253,26 @@ function saveResults(results: Results,
                      flags: {output: any, outputPath: string, saveArtifacts: boolean, saveAssets: boolean}) {
     let promise = Promise.resolve(results);
     const cwd = process.cwd();
+    // Use the output path as the prefix for all generated files.
+    // If no output path is set, generate a file prefix using the URL and date.
     const configuredPath = !flags.outputPath || flags.outputPath === 'stdout' ?
         assetSaver.getFilenamePrefix(results) :
         flags.outputPath.replace(/\.\w{2,4}$/, '');
     const resolvedPath = path.resolve(cwd, configuredPath);
     const pathWithBasename = resolvedPath.includes(cwd) ?
-        resolvedPath.slice(cwd.length + 1) : resolvedPath;
+        path.relative(cwd, resolvedPath) : resolvedPath;
 
-    // delete artifacts from result so reports won't include artifacts.
+    const audits = results.audits;
     const artifacts = results.artifacts;
-    results.artifacts = undefined;
+    // remove artifacts from result so reports won't include artifacts.
+    results = Object.assign({}, results, {artifacts: undefined});
 
     if (flags.saveArtifacts) {
       assetSaver.saveArtifacts(artifacts, pathWithBasename);
     }
 
     if (flags.saveAssets) {
-      promise = promise.then(_ => assetSaver.saveAssets(artifacts, results.audits, pathWithBasename));
+      promise = promise.then(_ => assetSaver.saveAssets(artifacts, audits, pathWithBasename));
     }
 
     if (flags.output === Printer.OutputMode[Printer.OutputMode.pretty]) {
