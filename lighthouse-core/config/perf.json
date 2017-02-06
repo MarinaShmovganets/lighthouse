@@ -14,6 +14,7 @@
     "gatherers": [
       "styles",
       "css-usage",
+      "dobetterweb/tags-blocking-first-paint",
       "dobetterweb/optimized-images"
     ]
   }
@@ -28,6 +29,8 @@
     "screenshots",
     "critical-request-chains",
     "unused-css-rules",
+    "dobetterweb/link-blocking-first-paint",
+    "dobetterweb/script-blocking-first-paint",
     "dobetterweb/uses-optimized-images",
     "dobetterweb/uses-responsive-images"
   ],
@@ -70,6 +73,8 @@
         "uses-optimized-images": {},
         "uses-responsive-images": {},
         "critical-request-chains": {},
+        "link-blocking-first-paint": {},
+        "script-blocking-first-paint": {},
         "user-timings": {}
       }
     }]
