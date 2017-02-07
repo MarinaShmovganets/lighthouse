@@ -219,7 +219,6 @@ class ReportGenerator {
     const partialStyles = [
       fs.readFileSync(path.join(__dirname, '../formatters/partials',
                       'critical-request-chains.css'), 'utf8'),
-      fs.readFileSync(path.join(__dirname, '../formatters/partials', 'speedline.css'), 'utf8'),
       fs.readFileSync(path.join(__dirname, '../formatters/partials', 'table.css'), 'utf8'),
       fs.readFileSync(path.join(__dirname, '../formatters/partials', 'url-list.css'), 'utf8'),
       fs.readFileSync(path.join(__dirname, '../formatters/partials', 'user-timings.css'), 'utf8')
