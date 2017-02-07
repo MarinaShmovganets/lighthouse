@@ -32,7 +32,6 @@ span, div, p, section, header, h1, h2, li, ul {
   --poor-color: #eb211e;
   --good-color: #1ac123;
   --average-color: #ffae00;
-  --unknown-color: #b3b3b3;
   --warning-color: #f6be00;
   --gutter-gap: 12px;
   --gutter-width: 40px;
@@ -887,9 +886,6 @@ body {
 }
 .score-warning-bg {
   background-color: var(--warning-color);
-}
-.score-unknown-bg {
-  background-color: var(--unknown-color);
 }
 
 .export-section {
