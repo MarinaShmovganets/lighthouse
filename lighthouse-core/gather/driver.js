@@ -401,6 +401,37 @@ class Driver {
   }
 
   /**
+   * Return a promise that resolves when the securityState changes to 'insecure'
+   * and a method to cancel internal listeners.
+   * @return {{promise: !Promise, cancel: function()}}
+   * @private
+   */
+  _waitForInsecureState() {
+    let securityListener;
+
+    const promise = new Promise((resolve, reject) => {
+      securityListener = event => {
+        if (event.securityState === 'insecure') {
+          const explanation = event.explanations
+            .filter(expl => expl.securityState === 'insecure')[0];
+
+          this.off('Security.securityStateChanged', securityListener);
+          resolve(explanation);
+        }
+      };
+      this.on('Security.securityStateChanged', securityListener);
+    });
+    const cancel = () => {
+      this.off('Security.securityStateChanged', securityListener);
+    };
+
+    return {
+      promise,
+      cancel
+    };
+  }
+
+  /**
    * Returns a promise that resolves when:
    * - it's been pauseAfterLoadMs milliseconds after both onload and the network
    * has gone idle, or
@@ -410,11 +441,12 @@ class Driver {
    * @return {!Promise}
    * @private
    */
-  _waitForFullyLoaded(pauseAfterLoadMs) {
+  _waitForFullyLoaded(pauseAfterLoadMs, waitForLoadEvent, waitForInsecureState) {
     let maxTimeoutHandle;
 
-    // Listener for onload. Resolves pauseAfterLoadMs ms after load.
-    const waitForLoadEvent = this._waitForLoadEvent(pauseAfterLoadMs);
+    // This one needs to be set up AFTER the page has navigated. Otherwise it might
+    // flag idle before navigation has actually started and the promise would resolve
+    // too soon.
     // Network listener. Resolves when the network has been idle for pauseAfterLoadMs.
     const waitForNetworkIdle = this._waitForNetworkIdle(pauseAfterLoadMs);
 
@@ -427,6 +459,7 @@ class Driver {
       return function() {
         log.verbose('Driver', 'loadEventFired and network considered idle');
         clearTimeout(maxTimeoutHandle);
+        waitForInsecureState.cancel();
       };
     });
 
@@ -439,13 +472,26 @@ class Driver {
         log.warn('Driver', 'Timed out waiting for page load. Moving on...');
         waitForLoadEvent.cancel();
         waitForNetworkIdle.cancel();
+        waitForInsecureState.cancel();
       };
     });
+
+    // Insecure state listener. Rejects when Chrome shows the insecure content page.
+    const insecureStatePromise = waitForInsecureState.promise
+      .then(explanation => {
+        return function() {
+          log.error('Driver', explanation.description);
+          clearTimeout(maxTimeoutHandle);
+          waitForLoadEvent.cancel();
+          waitForNetworkIdle.cancel();
+        };
+      });
 
     // Wait for load or timeout and run the cleanup function the winner returns.
     return Promise.race([
       loadPromise,
-      maxTimeoutPromise
+      maxTimeoutPromise,
+      insecureStatePromise
     ]).then(cleanup => cleanup());
   }
 
@@ -465,10 +511,27 @@ class Driver {
     const disableJS = _options.disableJavaScript || false;
     const pauseAfterLoadMs = (_options.flags && _options.flags.pauseAfterLoad) || PAUSE_AFTER_LOAD;
 
-    return this.sendCommand('Page.enable')
+    // These need to be set up BEFORE navigation. Otherwise the events might fire
+    // before the listener is added and the promise would never resolve.
+    // Listener for onload. Resolves pauseAfterLoadMs ms after load.
+    const waitForLoadEvent = waitForLoad ?
+      this._waitForLoadEvent(pauseAfterLoadMs) : Promise.resolve();
+    // Insecure state listener. Rejects when Chrome shows the insecure content page.
+    const waitForInsecureState = waitForLoad ?
+      this._waitForInsecureState() : Promise.resolve();
+
+    return Promise.all([
+      this.sendCommand('Page.enable'),
+      this.sendCommand('Security.enable')
+    ])
       .then(_ => this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS}))
       .then(_ => this.sendCommand('Page.navigate', {url}))
-      .then(_ => waitForLoad && this._waitForFullyLoaded(pauseAfterLoadMs));
+      .then(_ => {
+        if (!waitForLoad) {
+          return;
+        }
+        return this._waitForFullyLoaded(pauseAfterLoadMs, waitForLoadEvent, waitForInsecureState);
+      });
   }
 
   /**
