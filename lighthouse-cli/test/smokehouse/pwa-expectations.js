@@ -233,7 +233,7 @@ module.exports = [
   //     //   score: true
   //     // }
   //   }
-  },
+  // },
 
   {
     initialUrl: 'https://pwa.rocks',
