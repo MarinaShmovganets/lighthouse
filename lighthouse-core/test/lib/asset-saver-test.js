@@ -96,6 +96,14 @@ describe('asset-saver helper', () => {
       assert.ok(ssFileContents.includes('{"timestamp":674089419.919'));
       fs.unlinkSync(ssFilename);
     });
+
+    it('each screenshot file saved to disk', () => {
+      screenshotFilmstrip.forEach((_, index) => {
+        const filename = assetSaver.getFilenamePrefix(options) + `-0-screenshot${index}.jpg`;
+        assert.ok(fs.existsSync(filename));
+        fs.unlinkSync(filename);
+      });
+    });
   });
 
   describe('prepareAssets', () => {

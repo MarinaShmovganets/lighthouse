@@ -119,6 +119,7 @@ function prepareAssets(artifacts, results) {
       .then(screenshots => {
         const traceData = Object.assign({}, trace);
         const html = screenshotDump(screenshots, results);
+        const imageData = screenshots.map(shot => shot.datauri.replace(/^.*?base64,/, ''));
 
         if (results && results.audits) {
           const evts = new Metrics(traceData.traceEvents, results.audits).generateFakeEvents();
@@ -126,6 +127,7 @@ function prepareAssets(artifacts, results) {
         }
         assets.push({
           traceData,
+          imageData,
           html
         });
       });
@@ -144,11 +146,20 @@ function saveAssets(artifacts, results) {
     assets.forEach((data, index) => {
       const filenamePrefix = getFilenamePrefix(results);
       const traceData = data.traceData;
-      fs.writeFileSync(`${filenamePrefix}-${index}.trace.json`, JSON.stringify(traceData, null, 2));
-      log.log('trace file saved to disk', filenamePrefix);
 
-      fs.writeFileSync(`${filenamePrefix}-${index}.screenshots.html`, data.html);
-      log.log('screenshots saved to disk', filenamePrefix);
+      const traceFilename = `${filenamePrefix}-${index}.trace.json`;
+      fs.writeFileSync(traceFilename, JSON.stringify(traceData, null, 2));
+      log.log('trace file saved to disk', traceFilename);
+
+      data.imageData.forEach((imageData, imageIndex) => {
+        const filename = `${filenamePrefix}-${index}-screenshot${imageIndex}.jpg`;
+        fs.writeFileSync(filename, imageData, 'base64');
+        log.log('screenshot saved to disk', filename);
+      });
+
+      const screenshotsFilename = `${filenamePrefix}-${index}.screenshots.html`;
+      fs.writeFileSync(screenshotsFilename, data.html);
+      log.log('screenshots saved to disk', screenshotsFilename);
     });
   });
 }
