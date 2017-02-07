@@ -250,6 +250,7 @@ function handleError(err: LighthouseError) {
 }
 
 function saveResults(results: Results,
+                     artifacts: Object,
                      flags: {output: any, outputPath: string, saveArtifacts: boolean, saveAssets: boolean}) {
     let promise = Promise.resolve(results);
     const cwd = process.cwd();
@@ -259,24 +260,17 @@ function saveResults(results: Results,
         assetSaver.getFilenamePrefix(results) :
         flags.outputPath.replace(/\.\w{2,4}$/, '');
     const resolvedPath = path.resolve(cwd, configuredPath);
-    const pathWithBasename = resolvedPath.includes(cwd) ?
-        path.relative(cwd, resolvedPath) : resolvedPath;
-
-    const audits = results.audits;
-    const artifacts = results.artifacts;
-    // remove artifacts from result so reports won't include artifacts.
-    results = Object.assign({}, results, {artifacts: undefined});
 
     if (flags.saveArtifacts) {
-      assetSaver.saveArtifacts(artifacts, pathWithBasename);
+      assetSaver.saveArtifacts(artifacts, resolvedPath);
     }
 
     if (flags.saveAssets) {
-      promise = promise.then(_ => assetSaver.saveAssets(artifacts, audits, pathWithBasename));
+      promise = promise.then(_ => assetSaver.saveAssets(artifacts, results.audits, resolvedPath));
     }
 
     if (flags.output === Printer.OutputMode[Printer.OutputMode.pretty]) {
-      promise = promise.then(_ => Printer.write(results, 'html', `${pathWithBasename}.report.html`));
+      promise = promise.then(_ => Printer.write(results, 'html', `${resolvedPath}.report.html`));
     }
 
     return promise.then(_ => Printer.write(results, flags.output, flags.outputPath));
@@ -292,11 +286,17 @@ function runLighthouse(url: string,
     .then(() => getDebuggableChrome(flags))
     .then(chrome => chromeLauncher = chrome)
     .then(() => lighthouse(url, flags, config))
-    .then((results: Results) => saveResults(results, flags))
     .then((results: Results) => {
+      // remove artifacts from result so reports won't include artifacts.
+      const artifacts = results.artifacts;
+      results.artifacts = undefined;
+
+      let promise = saveResults(results, artifacts, flags);
       if (flags.interactive) {
-        return performanceXServer.hostExperiment({url, flags, config}, results);
+        promise = promise.then(() => performanceXServer.hostExperiment({url, flags, config}, results));
       }
+
+      return promise;
     })
     .then(() => chromeLauncher.kill())
     .catch(err => {
