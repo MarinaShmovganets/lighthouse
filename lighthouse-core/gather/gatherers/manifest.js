@@ -27,7 +27,7 @@ const manifestParser = require('../../lib/manifest-parser');
  */
 class Manifest extends Gatherer {
   /**
-   * Returns the parsed manifest or null, if the page had no manifest.
+   * Returns the parsed manifest or null if the page had no manifest.
    * @param {!Object} options
    * @return {!Promise<?Manifest>}
    */
@@ -42,8 +42,7 @@ class Manifest extends Gatherer {
             throw new Error(`Unable to retrieve manifest at ${response.url}`);
           }
 
-          // The driver will return an empty string for url and the data if
-          // the page has no manifest.
+          // If both the data and the url are empty strings, the page had no manifest.
           return null;
         }
 
