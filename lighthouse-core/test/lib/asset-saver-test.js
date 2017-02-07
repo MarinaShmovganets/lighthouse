@@ -18,6 +18,7 @@
 'use strict';
 
 const assetSaver = require('../../lib/asset-saver');
+const getFilenamePrefix = require('../../lib/file-namer').getFilenamePrefix;
 const Metrics = require('../../lib/traces/pwmetrics-events');
 const assert = require('assert');
 const fs = require('fs');
@@ -35,7 +36,7 @@ describe('asset-saver helper', () => {
       url: 'https://testexample.com',
       generatedTime: '2017-01-06T02:34:56.217Z'
     };
-    const str = assetSaver.getFilenamePrefix(results);
+    const str = getFilenamePrefix(results);
     // we want the filename to match user timezone, however these tests will run on multiple TZs
     assert.ok(str.startsWith('testexample.com'), 'hostname is missing');
     assert.ok(str.includes('2017-'), 'full year is missing');

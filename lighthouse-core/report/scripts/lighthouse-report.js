@@ -253,7 +253,6 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = LighthouseReport;
 
   ReportGenerator = require('../../../lighthouse-core/report/report-generator');
-  window.getFilenamePrefix =
-      require('../../../lighthouse-core/lib/file-namer.js').getFilenamePrefix;
+  window.getFilenamePrefix = require('../../../lighthouse-core/lib/file-namer').getFilenamePrefix;
 }
 

@@ -21,7 +21,7 @@
 
 const idb = require('idb-keyval');
 const FirebaseAuth = require('./firebase-auth');
-const getFilenamePrefix = require('../../../lighthouse-core/lib/file-namer.js').getFilenamePrefix;
+const getFilenamePrefix = require('../../../lighthouse-core/lib/file-namer').getFilenamePrefix;
 
 /**
  * Wrapper around the GitHub API for reading/writing gists.

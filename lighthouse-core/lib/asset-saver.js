@@ -20,7 +20,6 @@ const fs = require('fs');
 const log = require('../../lighthouse-core/lib/log.js');
 const stringifySafe = require('json-stringify-safe');
 const Metrics = require('./traces/pwmetrics-events');
-const getFilenamePrefix = require('./file-namer.js').getFilenamePrefix;
 
 /**
  * Generate basic HTML page of screenshot filmstrip
@@ -135,6 +134,5 @@ function saveAssets(artifacts, audits, pathWithBasename) {
 module.exports = {
   saveArtifacts,
   saveAssets,
-  getFilenamePrefix,
   prepareAssets
 };
