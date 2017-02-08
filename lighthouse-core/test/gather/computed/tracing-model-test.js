@@ -1,5 +1,4 @@
 /**
- * @license
  * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,28 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
-const ComputedArtifact = require('./computed-artifact');
-const TracingProcessor = require('../../lib/traces/tracing-processor');
+const TracingModel = require('../../../gather/computed/tracing-model');
 
-class TracingModel extends ComputedArtifact {
+const assert = require('assert');
+const pwaTrace = require('../../fixtures/traces/progressive-app.json');
 
-  get name() {
-    return 'TracingModel';
-  }
-
-  /**
-   * Return catapult traceviewer model
-   * @param {{traceEvents: !Array}} trace
-   * @return {!TracingProcessorModel}
-   */
-  compute_(trace) {
-    const tracingProcessor = new TracingProcessor();
-    return tracingProcessor.init(trace);
-  }
-
-}
-
-module.exports = TracingModel;
+/* eslint-env mocha */
+describe('Tracing model computed artifact:', () => {
+  it('gets a tracing model', () => {
+    const tracingModel = new TracingModel();
+    const model = tracingModel.compute_(pwaTrace);
+    assert.ok(model instanceof global.tr.Model, 'return is not an instance of tr.Model');
+  });
+});
