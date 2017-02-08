@@ -27,7 +27,9 @@ const manifestParser = require('../../lib/manifest-parser');
  */
 class Manifest extends Gatherer {
   /**
-   * Returns the parsed manifest or null if the page had no manifest.
+   * Returns the parsed manifest or null if the page had no manifest. If the manifest
+   * was unparseable as JSON, manifest.value will be undefined and manifest.debugString
+   * will have the reason. See manifest-parser.js for more information.
    * @param {!Object} options
    * @return {!Promise<?Manifest>}
    */
