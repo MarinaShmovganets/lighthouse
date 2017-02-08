@@ -42,7 +42,7 @@ class Driver {
     this._devtoolsLog = new DevtoolsLog(/^(Page|Network)\./);
     connection.on('notification', event => {
       this._devtoolsLog.record(event);
-      this._eventEmitter.emit(event.method, event.params)
+      this._eventEmitter.emit(event.method, event.params);
     });
     this.online = true;
     this._domainEnabledCounts = new Map();

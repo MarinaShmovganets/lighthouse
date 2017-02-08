@@ -18,7 +18,7 @@
 /* eslint-env mocha */
 
 const assert = require('assert');
-const DevtoolsLog = require('../../../gather/devtools-log');
+const DevtoolsLog = require('../../gather/devtools-log');
 
 describe('MessageLog', () => {
   let messageLog;
