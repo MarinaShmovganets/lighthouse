@@ -20,7 +20,7 @@
 const assert = require('assert');
 const DevtoolsLog = require('../../gather/devtools-log');
 
-describe('MessageLog', () => {
+describe('DevtoolsLog', () => {
   let messageLog;
   const pageMsg = {method: 'Page.frameStartedLoading'};
   const networkMsg = {method: 'Network.requestWillBeSent'};

@@ -32,7 +32,7 @@ class DevtoolsLog {
   }
 
   /**
-   * @return {!Array<Object>}
+   * @return {!Array<{method: string, params: !Object}>}
    */
   get messages() {
     return this._messages;
@@ -52,7 +52,7 @@ class DevtoolsLog {
 
   /**
    * Records a message if method matches filter and recording has been started.
-   * @param {{method: string, params: Object}} message
+   * @param {{method: string, params: !Object}} message
    */
   record(message) {
     if (this._isRecording && (!this._filter || this._filter.test(message.method))) {

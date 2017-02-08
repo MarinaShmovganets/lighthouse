@@ -68,6 +68,9 @@ class Driver {
     ];
   }
 
+  /**
+   * @return {!Array<{method: string, params: !Object}>}
+   */
   get devtoolsLog() {
     return this._devtoolsLog.messages;
   }
