@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-/* global ga, logger, Logger */
+/* global ga, logger */
 
 'use strict';
 
