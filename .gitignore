@@ -14,7 +14,7 @@ results.html
 last-run-results.html
 
 *.trace.json
-*.devtools.json
+*.devtoolslog.json
 *.screenshots.html
 *.report.html
 *.artifacts.log

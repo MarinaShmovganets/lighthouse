@@ -83,7 +83,7 @@ describe('asset-saver helper', () => {
     });
 
     it('devtools log file saved to disk with data', () => {
-      const filename = 'the_file-0.devtools.json';
+      const filename = 'the_file-0.devtoolslog.json';
       const fileContents = fs.readFileSync(filename, 'utf8');
       assert.ok(fileContents.includes('"message": "first"'));
       fs.unlinkSync(filename);

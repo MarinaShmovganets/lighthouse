@@ -149,7 +149,7 @@ function saveAssets(artifacts, audits, pathWithBasename) {
       fs.writeFileSync(traceFilename, JSON.stringify(data.traceData, null, 2));
       log.log('trace file saved to disk', traceFilename);
 
-      const devtoolsLogFilename = `${pathWithBasename}-${index}.devtools.json`;
+      const devtoolsLogFilename = `${pathWithBasename}-${index}.devtoolslog.json`;
       fs.writeFileSync(devtoolsLogFilename, JSON.stringify(data.devtoolsLog, null, 2));
       log.log('devtools log saved to disk', devtoolsLogFilename);
 
