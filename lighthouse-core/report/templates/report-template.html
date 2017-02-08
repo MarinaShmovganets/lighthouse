@@ -237,20 +237,17 @@ limitations under the License.
 </script>
 {{/if}}
 
-{{#if scripts }}
-{{#each scripts }}
-<script>{{{ this }}}</script>
-{{/each}}
-
+{{#if scripts ~}}
 <script>
-(function(exports) {
-'use strict';
-
-exports.addEventListener('DOMContentLoaded', _ => {
-  exports.logger = new Logger('#log');
-  new LighthouseReport(exports.lhresults);
-});
-
-})(window);
+  {{~#each scripts ~}}
+    {{{ this }}}
+  {{~/each~}}
 </script>
-{{/if}}
+<script>
+// Init report.
+window.addEventListener('DOMContentLoaded', _ => {
+  window.logger = new Logger('#log');
+  new LighthouseReport(window.lhresults);
+});
+</script>
+{{~/if}}

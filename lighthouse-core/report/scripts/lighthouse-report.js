@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-/* global ga, logger */
+/* global ga, logger, Logger */
 
 'use strict';
 
@@ -244,15 +244,10 @@ class LighthouseReport {
   }
 }
 
-// Allow this module to be browserified (viewer) or used directly in the browser
-// (main report).
+// Exports for Node usage (Viewer browserifies).
 let ReportGenerator;
 if (typeof module !== 'undefined' && module.exports) {
-  // Node code can use require(). Browser code can use the LighthouseReport
-  // class directly.
   module.exports = LighthouseReport;
-
   ReportGenerator = require('../../../lighthouse-core/report/report-generator');
   window.getFilenamePrefix = require('../../../lighthouse-core/lib/file-namer').getFilenamePrefix;
 }
-
