@@ -21,6 +21,9 @@ if (typeof global.window === 'undefined') {
   global.window = global;
 }
 
+// TODO: move tracingProcessor to a computed artifact or nuke it
+const tracingModelCache = new Map();
+
 // The ideal input response latency, the time between the input task and the
 // first frame of the response.
 const BASE_RESPONSE_LATENCY = 16;
@@ -68,6 +71,11 @@ class TraceProcessor {
 
   // Create the importer and import the trace contents to a model.
   init(trace) {
+
+    if (tracingModelCache.has(trace)) {
+      return tracingModelCache.get(trace);
+    }
+
     const io = new traceviewer.importer.ImportOptions();
     io.showImportWarnings = false;
     io.pruneEmptyContainers = false;
@@ -77,6 +85,7 @@ class TraceProcessor {
     const importer = new traceviewer.importer.Import(model, io);
     importer.importTraces([trace]);
 
+    tracingModelCache.set(trace, model);
     return model;
   }
 
