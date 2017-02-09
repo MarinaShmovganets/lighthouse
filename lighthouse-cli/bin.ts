@@ -65,6 +65,7 @@ const cliFlags = yargs
     'port'
   ], 'Configuration:')
   .describe({
+    'disable-cache-clearing': 'Disable clearing of cache and storage before the run',
     'disable-device-emulation': 'Disable Nexus 5X emulation',
     'disable-cpu-throttling': 'Disable CPU throttling',
     'disable-network-throttling': 'Disable network throttling',
@@ -92,6 +93,7 @@ Example: --output-path=./lighthouse-results.html`
 
   // boolean values
   .boolean([
+    'disable-cache-clearing',
     'disable-device-emulation',
     'disable-cpu-throttling',
     'disable-network-throttling',

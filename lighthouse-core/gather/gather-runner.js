@@ -91,13 +91,14 @@ class GatherRunner {
 
   static setupDriver(driver, options) {
     log.log('status', 'Initializing…');
+    const clearCache = !(options.flags && options.flags.disableCacheClearing);
     // Enable emulation based on flags
     return driver.assertNoSameOriginServiceWorkerClients(options.url)
       .then(_ => driver.beginEmulation(options.flags))
       .then(_ => driver.enableRuntimeEvents())
       .then(_ => driver.cacheNatives())
-      .then(_ => driver.cleanAndDisableBrowserCaches())
-      .then(_ => driver.clearDataForOrigin(options.url))
+      .then(_ => clearCache && driver.cleanAndDisableBrowserCaches())
+      .then(_ => clearCache && driver.clearDataForOrigin(options.url))
       .then(_ => driver.blockUrlPatterns(options.flags.blockedUrlPatterns || []));
   }
 
