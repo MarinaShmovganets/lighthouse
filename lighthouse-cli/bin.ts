@@ -65,7 +65,7 @@ const cliFlags = yargs
     'port'
   ], 'Configuration:')
   .describe({
-    'disable-storage-reset': 'Disable clearing of cache and storage before the run',
+    'disable-storage-reset': 'Disable clearing the browser cache and other storage APIs before a run',
     'disable-device-emulation': 'Disable Nexus 5X emulation',
     'disable-cpu-throttling': 'Disable CPU throttling',
     'disable-network-throttling': 'Disable network throttling',

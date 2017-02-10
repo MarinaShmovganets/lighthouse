@@ -251,7 +251,7 @@ describe('GatherRunner', function() {
     });
   });
 
-  it('does not clear the network cache and origin storage when flag is set', () => {
+  it('does not clear the cache & storage when disable-storage-reset flag is set', () => {
     const asyncFunc = () => Promise.resolve();
     const tests = {
       calledDisableNetworkCache: false,

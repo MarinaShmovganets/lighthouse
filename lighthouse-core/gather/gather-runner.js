@@ -91,7 +91,7 @@ class GatherRunner {
 
   static setupDriver(driver, options) {
     log.log('status', 'Initializing…');
-    const resetStorage = !(options.flags && options.flags.disableStorageReset);
+    const resetStorage = !options.flags.disableStorageReset;
     // Enable emulation based on flags
     return driver.assertNoSameOriginServiceWorkerClients(options.url)
       .then(_ => driver.beginEmulation(options.flags))
