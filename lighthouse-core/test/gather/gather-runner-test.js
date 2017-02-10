@@ -272,7 +272,7 @@ describe('GatherRunner', function() {
     };
 
     return GatherRunner.setupDriver(driver, {
-      flags: {disableCacheClearing: true}
+      flags: {disableStorageReset: true}
     }).then(_ => {
       assert.equal(tests.calledDisableNetworkCache, false);
       assert.equal(tests.calledClearStorage, false);
