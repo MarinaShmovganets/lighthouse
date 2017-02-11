@@ -22,7 +22,7 @@
  */
 module.exports = [
   {
-    initialUrl: 'https://airhorner.com',
+    initialUrl: 'https://airhorner.com/',
     url: 'https://airhorner.com/',
     audits: {
       'is-on-https': {
@@ -236,7 +236,7 @@ module.exports = [
   // },
 
   {
-    initialUrl: 'https://pwa.rocks',
+    initialUrl: 'https://pwa.rocks/',
     url: 'https://pwa.rocks/',
     audits: {
       'is-on-https': {
