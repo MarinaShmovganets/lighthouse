@@ -189,19 +189,17 @@ function reportAssertion(assertion) {
   if (assertion.equal) {
     console.log(`  ${log.greenify(log.tick)} ${assertion.category}: ` +
         log.greenify(assertion.actual));
-  } else {
-    if (assertion.diff) {
-      const diff = assertion.diff;
-      let msg = `  ${log.redify(log.cross)} difference at ${diff.path}: `;
-      msg += log.redify(`found ${diff.actual}, expected ${diff.expected}\n`);
+  } else if (assertion.diff) {
+    const diff = assertion.diff;
+    let msg = `  ${log.redify(log.cross)} difference at ${diff.path}: `;
+    msg += log.redify(`found ${diff.actual}, expected ${diff.expected}\n`);
 
-      const fullActual = JSON.stringify(assertion.actual, null, 2).replace(/\n/g, '\n      ');
-      msg += log.redify('      full found result: ' + fullActual);
-      console.log(msg);
-    } else {
-      console.log(`  ${log.redify(log.cross)} ${assertion.category}: ` +
-          log.redify(`found ${assertion.actual}, expected ${assertion.expected}`));
-    }
+    const fullActual = JSON.stringify(assertion.actual, null, 2).replace(/\n/g, '\n      ');
+    msg += log.redify('      full found result: ' + fullActual);
+    console.log(msg);
+  } else {
+    console.log(`  ${log.redify(log.cross)} ${assertion.category}: ` +
+        log.redify(`found ${assertion.actual}, expected ${assertion.expected}`));
   }
 }
 

@@ -76,9 +76,9 @@ describe('Handlebar helpers', () => {
     assert.equal(table.rows[0].cols.length, Object.keys(headings).length);
     assert.equal(table.rows[0].cols[0], 'http://example.com');
     assert.equal(table.rows[0].cols[1], '123:456');
-    assert.equal(table.rows[0].cols[2], '\`code snippet\`');
+    assert.equal(table.rows[0].cols[2], '`code snippet`');
     assert.equal(table.rows[0].cols[3], 'yes');
-    assert.equal(table.rows[0].cols[4], '\`\`\`\npre snippet\`\`\`');
+    assert.equal(table.rows[0].cols[4], '```\npre snippet```');
     const expectedUrl = 'http://example.com/(format:webp%29/i.jpg';
     assert.equal(table.rows[0].cols[5],
         `[![Image preview](${expectedUrl} "Image preview")](${expectedUrl})`);

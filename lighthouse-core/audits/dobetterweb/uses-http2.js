@@ -54,7 +54,7 @@ class UsesHTTP2Audit extends Audit {
     const resources = networkRecords.filter(record => {
       const requestHost = new URL(record._url).host;
       const sameHost = requestHost === finalHost;
-      const notH2 = /HTTP\/[01][\.\d]?/i.test(record.protocol);
+      const notH2 = /HTTP\/[01][.\d]?/i.test(record.protocol);
       return sameHost && notH2;
     }).map(record => {
       return {

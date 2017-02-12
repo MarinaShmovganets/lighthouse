@@ -276,9 +276,9 @@ class GatherRunner {
         const phaseResultsPromises = gathererResults[gathererName];
         return Promise.all(phaseResultsPromises).then(phaseResults => {
           // Take last defined pass result as artifact.
-          const definedResults = phaseResults.filter(element => element !== undefined);
+          const definedResults = phaseResults.filter(element => typeof element !== 'undefined');
           const artifact = definedResults[definedResults.length - 1];
-          if (artifact === undefined) {
+          if (typeof artifact === 'undefined') {
             throw new Error(`${gathererName} failed to provide an artifact.`);
           }
           artifacts[gathererName] = artifact;

@@ -140,11 +140,11 @@ class LighthouseReport {
         // Since Viewer generates its page HTML dynamically from report JSON,
         // run the ReportGenerator. For everything else, the page's HTML is
         // already the final product.
-        if (e.target.dataset.context !== 'viewer') {
-          htmlStr = document.documentElement.outerHTML;
-        } else {
+        if (e.target.dataset.context === 'viewer') {
           const reportGenerator = new ReportGenerator();
           htmlStr = reportGenerator.generateHTML(this.json, 'cli');
+        } else {
+          htmlStr = document.documentElement.outerHTML;
         }
 
         try {

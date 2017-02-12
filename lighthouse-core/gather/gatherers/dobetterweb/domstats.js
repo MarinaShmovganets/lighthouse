@@ -76,13 +76,13 @@ function elementPathInDOM(element) {
  * @return {!number}
  */
 /* istanbul ignore next */
-function getDOMStats(element, deep=true) {
+function getDOMStats(element, deep = true) {
   let deepestNode = null;
   let maxDepth = 0;
   let maxWidth = 0;
   let parentWithMostChildren = null;
 
-  const _calcDOMWidthAndHeight = function(element, depth=1) {
+  const _calcDOMWidthAndHeight = function(element, depth = 1) {
     if (depth > maxDepth) {
       deepestNode = element;
       maxDepth = depth;

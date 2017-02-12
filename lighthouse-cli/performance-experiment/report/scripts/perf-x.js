@@ -34,7 +34,7 @@ class ConfigPanel {
 
     // Compat: URL.searchParams isn't yet supported by Safari
     const match = location.search.match(/[?&]id=([^&]*)/);
-    this._reportId = match ? match[1]: '';
+    this._reportId = match ? match[1] : '';
 
     const bodyToggle = this._configPanel.querySelector('.js-panel-toggle');
     bodyToggle.addEventListener('click', () => this._toggleBody());

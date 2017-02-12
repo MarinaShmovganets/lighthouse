@@ -27,7 +27,7 @@ function setupJsDomGlobals() {
   global.document = jsdom.jsdom(PAGE);
   global.window = global.document.defaultView;
   global.logger = console;
-  global.logger.hide = () => {/* noop */};
+  global.logger.hide = () => { /* noop */ };
 }
 
 function cleanupJsDomGlobals() {

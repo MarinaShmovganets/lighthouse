@@ -62,7 +62,7 @@ describe('Page uses passive events listeners where applicable', () => {
       URL: {finalUrl: URL},
     });
     assert.equal(auditResult.rawValue, false);
-    assert.ok(auditResult.extendedInfo.value.results[1].url === undefined);
+    assert.ok(typeof auditResult.extendedInfo.value.results[1].url === 'undefined');
     assert.equal(auditResult.extendedInfo.value.results.length, 6);
   });
 

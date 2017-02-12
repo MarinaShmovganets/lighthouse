@@ -59,7 +59,7 @@ class UserTimings extends Audit {
       return evt.name !== 'requestStart' &&
           evt.name !== 'navigationStart' &&
           evt.name !== 'paintNonDefaultBackgroundColor' &&
-          evt.args.frame === undefined;
+          typeof evt.args.frame === 'undefined';
     })
     .forEach(ut => {
       // Mark events fall under phases R and I (or i)

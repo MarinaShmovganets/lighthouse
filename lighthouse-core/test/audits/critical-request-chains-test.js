@@ -88,7 +88,7 @@ const PASSING_REQUEST_CHAIN = {
 
 const EMPTY_REQUEST_CHAIN = {};
 
-const mockArtifacts = (mockChain) => {
+const mockArtifacts = mockChain => {
   return {
     networkRecords: {
       [Audit.DEFAULT_PASS]: []

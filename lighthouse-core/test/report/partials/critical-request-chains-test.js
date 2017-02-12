@@ -19,12 +19,13 @@
 /* eslint-env mocha */
 
 const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
 const Handlebars = require('handlebars');
 const URL = require('../../../lib/url-shim');
 const handlebarHelpers = require('../../../report/handlebar-helpers');
-const fs = require('fs');
-const partialHtml = fs.readFileSync(__dirname +
-    '/../../../report/partials/critical-request-chains.html', 'utf8');
+const partialHtml = fs.readFileSync(path.join(__dirname,
+    '/../../../report/partials/critical-request-chains.html'), 'utf8');
 
 const superLongName =
     'https://example.com/thisIsASuperLongURLThatWillTriggerFilenameTruncationWhichWeWantToTest.js';

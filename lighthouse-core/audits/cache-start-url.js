@@ -70,7 +70,7 @@ class CacheStartUrl extends Audit {
     });
 
     return {
-      rawValue: (cacheHasStartUrl !== undefined)
+      rawValue: (typeof cacheHasStartUrl !== 'undefined')
     };
   }
 }

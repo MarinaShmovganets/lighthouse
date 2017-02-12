@@ -177,7 +177,7 @@ class LighthouseViewerReport extends LighthouseReport {
       let json;
       try {
         json = JSON.parse(str);
-      } catch(e) {
+      } catch (e) {
         throw new Error('Could not parse JSON file.');
       }
 
