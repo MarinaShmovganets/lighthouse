@@ -118,8 +118,8 @@ class UsesResponsiveImages extends Audit {
         preview: '',
         url: 'URL',
         totalKb: 'Original (KB)',
+        potentialSavings: 'Potential Savings (%)',
         wastedKb: 'Savings (KB)',
-        potentialSavings: 'Potential Savings (%)'
       }
     };
   }

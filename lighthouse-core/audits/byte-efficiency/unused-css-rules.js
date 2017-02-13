@@ -184,8 +184,8 @@ class UnusedCSSRules extends Audit {
         url: 'URL',
         numUnused: 'Unused Rules',
         totalKb: 'Original (KB)',
-        wastedKb: 'Savings (KB)',
         potentialSavings: 'Potential Savings (%)',
+        wastedKb: 'Savings (KB)',
       }
     };
   }

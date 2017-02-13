@@ -125,9 +125,9 @@ class UsesOptimizedImages extends Audit {
         preview: '',
         url: 'URL',
         totalKb: 'Original (KB)',
-        wastedKb: 'Savings (KB)',
         webpSavings: 'WebP Savings (%)',
         jpegSavings: 'JPEG Savings (%)',
+        wastedKb: 'Savings (KB)',
       }
     };
   }

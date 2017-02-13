@@ -176,7 +176,7 @@ describe('Best Practices: unused css rules audit', () => {
       assert.equal(result.results.length, 0);
     });
 
-    it('fails when rules are unused', () => {
+    it('fails when lots of rules are unused', () => {
       const result = UnusedCSSAudit.audit_({
         networkRecords,
         URL: {finalUrl: ''},
@@ -195,22 +195,20 @@ describe('Best Practices: unused css rules audit', () => {
           },
           {
             header: {styleSheetId: 'b', sourceURL: 'file://b.css'},
-            content: `${generate('123', 2000)}`
+            content: `${generate('123', 2050)}`
           },
           {
             header: {styleSheetId: 'c', sourceURL: ''},
-            content: `${generate('123', 450)}`
+            content: `${generate('123', 450)}` // will be filtered out
           }
         ]
       });
 
-      assert.equal(result.results.length, 3);
+      assert.equal(result.results.length, 2);
       assert.equal(result.results[0].totalBytes, 10 * 1024);
-      assert.equal(result.results[1].totalBytes, 2000);
-      assert.equal(result.results[2].totalBytes, 450);
+      assert.equal(result.results[1].totalBytes, 2050);
       assert.equal(result.results[0].potentialSavings, '67%');
       assert.equal(result.results[1].potentialSavings, '50%');
-      assert.equal(result.results[2].potentialSavings, '100%');
     });
 
     it('does not include duplicate sheets', () => {
@@ -239,7 +237,7 @@ describe('Best Practices: unused css rules audit', () => {
       assert.equal(result.results.length, 1);
     });
 
-    it('does not include empty sheets', () => {
+    it('does not include empty or small sheets', () => {
       const result = UnusedCSSAudit.audit_({
         networkRecords,
         URL: {finalUrl: ''},
@@ -249,15 +247,16 @@ describe('Best Practices: unused css rules audit', () => {
           {styleSheetId: 'a', used: false},
           {styleSheetId: 'b', used: true},
           {styleSheetId: 'b', used: false},
+          {styleSheetId: 'b', used: false},
         ],
         Styles: [
           {
             header: {styleSheetId: 'a', sourceURL: 'file://a.css'},
-            content: '.my.selector {color: #ccc;}\n a {color: #fff}'
+            content: `${generate('123', 4000)}`
           },
           {
             header: {styleSheetId: 'b', sourceURL: 'file://b.css'},
-            content: '.my.favorite.selector { rule: content; }'
+            content: `${generate('123', 500)}`
           },
           {
             header: {styleSheetId: 'c', sourceURL: 'c.css'},
@@ -274,7 +273,8 @@ describe('Best Practices: unused css rules audit', () => {
         ]
       });
 
-      assert.equal(result.results.length, 2);
+      assert.equal(result.results.length, 1);
+      assert.equal(result.results[0].numUnused, 1);
     });
   });
 });
