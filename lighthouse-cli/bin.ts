@@ -64,7 +64,7 @@ const cliFlags = yargs
     'config-path',
     'perf',
     'port',
-    'timeout'
+    'max-wait-for-load'
   ], 'Configuration:')
   .describe({
     'disable-device-emulation': 'Disable Nexus 5X emulation',
@@ -77,7 +77,7 @@ const cliFlags = yargs
     'config-path': 'The path to the config JSON.',
     'perf': 'Use a performance-test-only configuration',
     'port': 'The port to use for the debugging protocol. Use 0 for a random port',
-    'timeout': 'The timeout in seconds to wait for the page to load before continuing',
+    'max-wait-for-load': 'The timeout in milliseconds to wait for the page to load before continuing. WARNING: Very high values can lead to large traces and instability',
     'skip-autolaunch': 'Skip autolaunch of Chrome when already running instance is not found',
     'select-chrome': 'Interactively choose version of Chrome to use when multiple installations are found',
     'interactive': 'Open Lighthouse in interactive mode'
@@ -117,7 +117,7 @@ Example: --output-path=./lighthouse-results.html`
   .default('output', Printer.GetValidOutputOptions()[Printer.OutputMode.pretty])
   .default('output-path', 'stdout')
   .default('port', 9222)
-  .default('timeout', Driver.MAX_WAIT_FOR_FULLY_LOADED / 1000)
+  .default('max-wait-for-load', Driver.MAX_WAIT_FOR_FULLY_LOADED)
   .check((argv: {listAllAudits?: boolean, listTraceCategories?: boolean, _: Array<any>}) => {
     // Make sure lighthouse has been passed a url, or at least one of --list-all-audits
     // or --list-trace-categories. If not, stop the program and ask for a url
@@ -145,6 +145,10 @@ const url = cliFlags._[0];
 // see: https://github.com/yargs/yargs/issues/341
 if (!cliFlags.outputPath && cliFlags['output-path']) {
   cliFlags.outputPath = cliFlags['output-path'];
+}
+
+if (!cliFlags.maxWaitForLoad && cliFlags['max-wait-for-load']) {
+  cliFlags.maxWaitForLoad = cliFlags['max-wait-for-load'];
 }
 
 let config: Object | null = null;
@@ -283,7 +287,7 @@ function saveResults(results: Results,
 function runLighthouse(url: string,
                        flags: {port: number, skipAutolaunch: boolean, selectChrome: boolean, output: any,
                          outputPath: string, interactive: boolean, saveArtifacts: boolean, saveAssets: boolean
-                         timeout: number},
+                         maxWaitForLoad: number},
                        config: Object): Promise<undefined> {
 
   let chromeLauncher: ChromeLauncher;

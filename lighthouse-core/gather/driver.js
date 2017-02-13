@@ -475,15 +475,12 @@ class Driver {
    * @param {!Object} options
    * @return {!Promise}
    */
-  gotoURL(url, options) {
-    const _options = options || {};
-    const waitForLoad = _options.waitForLoad || false;
-    const disableJS = _options.disableJavaScript || false;
-    const pauseAfterLoadMs = (_options.flags && _options.flags.pauseAfterLoad) || PAUSE_AFTER_LOAD;
-    let maxWaitMs = Driver.MAX_WAIT_FOR_FULLY_LOADED;
-    if (_options.flags && _options.flags.timeout) {
-      maxWaitMs = _options.flags.timeout * 1000;
-    }
+  gotoURL(url, options = {}) {
+    const waitForLoad = options.waitForLoad || false;
+    const disableJS = options.disableJavaScript || false;
+    const pauseAfterLoadMs = (options.flags && options.flags.pauseAfterLoad) || PAUSE_AFTER_LOAD;
+    const maxWaitMs = (options.flags && options.flags.maxWaitForLoad) ||
+        Driver.MAX_WAIT_FOR_FULLY_LOADED;
 
     return this.sendCommand('Page.enable')
       .then(_ => this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS}))
