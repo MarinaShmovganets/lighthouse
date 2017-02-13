@@ -21,6 +21,10 @@ const Formatter = require('../../formatters/formatter');
 
 const KB_IN_BYTES = 1024;
 
+/**
+ * @overview Used as the base for all byte efficiency audits. Computes total bytes
+ *    and estimated time saved. Subclass and override `audit_` to return results.
+ */
 class UnusedBytes extends Audit {
   /**
    * @param {!Artifacts} artifacts
