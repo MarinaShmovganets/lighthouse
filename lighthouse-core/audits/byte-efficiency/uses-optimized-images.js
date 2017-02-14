@@ -94,6 +94,8 @@ class UsesOptimizedImages extends Audit {
         const jpegSavings = UsesOptimizedImages.computeSavings(image, 'jpeg');
         if (jpegSavings.bytes > JPEG_ALREADY_OPTIMIZED_THRESHOLD_IN_BYTES) {
           hasAllEfficientImages = false;
+        }
+        if (jpegSavings.bytes > IGNORE_THRESHOLD_IN_BYTES) {
           jpegSavingsLabel = `${jpegSavings.percent}%`;
         }
       }
