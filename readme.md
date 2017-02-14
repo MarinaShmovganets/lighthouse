@@ -240,6 +240,8 @@ npm run install-all
 # cd lighthouse-cli && npm run dev
 ```
 
+See [Contributing](./CONTRIBUTING.md) for more information.
+
 ### Run
 
 ```sh
@@ -250,10 +252,6 @@ node lighthouse-cli http://example.com
 through the entire app. See [Debugging Node.js with Chrome
 DevTools](https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27#.59rma3ukm)
 for more info.
-
-## Coding Style
-
-The `.eslintrc` defines all. We use [JSDoc](http://usejsdoc.org/) along with [closure annotations](https://developers.google.com/closure/compiler/docs/js-for-compiler). Annotations encouraged for all contributions.
 
 ## Creating custom audits & gatherers
 
@@ -323,21 +321,6 @@ Then, run with: `lighthouse --config-path=config.json http://www.random.url`
 
 The traceviewer-based trace processor from [node-big-rig](https://github.com/GoogleChrome/node-big-rig/tree/master/lib) was forked into Lighthouse. Additionally, the [DevTools' Timeline Model](https://github.com/paulirish/devtools-timeline-model) is available as well. There may be advantages for using one model over another.
 
-### Trace processing
-
-**To update traceviewer source:**
-
-```sh
-cd lighthouse-core
-# if not already there, clone catapult and copy license over
-git clone --depth=1 https://github.com/catapult-project/catapult.git third_party/src/catapult
-cp third_party/src/catapult/LICENSE third_party/traceviewer-js/
-# pull for latest
-git -C "./third_party/src/catapult/" pull
-# run our conversion script
-node scripts/build-traceviewer-module.js
-```
-
 ## FAQ
 
 ### What is the architecture?
@@ -356,11 +339,12 @@ If you'd like to contribute, check the [list of issues](https://github.com/Googl
 
 ### Are results sent to a remote server?
 
-Hope. Lighthouse runs locally, auditing a page using a local version of the Chrome browser installed the
+Nope. Lighthouse runs locally, auditing a page using a local version of the Chrome browser installed the
 machine. Report results are never processed or beaconed to a remote server.
 
 <p align="center">
   <img src="https://cloud.githubusercontent.com/assets/39191/22478294/23f662f6-e79e-11e6-8de3-ffd7be7bf628.png" alt="Lighthouse logo" height="150">
   <br>
-  <b>Lighthouse</b>, ˈlītˌhous (n): a <s>tower or other structure</s> tool containing a beacon light to warn or guide <s>ships</s> developers at "sea".
+  <b>Lighthouse</b>, ˈlītˌhous (n): a <s>tower or other structure</s> tool containing a beacon light
+  to warn or guide <s>ships at sea</s> developers.
 </p>

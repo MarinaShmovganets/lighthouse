@@ -5,12 +5,11 @@ _Some incomplete notes_
 ## Components
 
 * **Driver** - Interfaces with [Chrome Debugging Protocol](https://developer.chrome.com/devtools/docs/debugger-protocol)  ([API viewer](https://chromedevtools.github.io/debugger-protocol-viewer/))
-* **Gathers** - Requesting data from the browser (and maybe post-processing)
+* **Gatherers** - Requesting data from the browser (and maybe post-processing)
 * **Artifacts** - The output of gatherers
 * **Audits** - Non-performance evaluations of capabilities and issues. Includes a raw value and score of that value.
 * **Metrics** - Performance metrics summarizing the UX
-* **Diagnoses** - The perf problems that affect those metrics
-* **Aggregators** - Pulling audit results, grouping into user-facing components (eg. `install_to_homescreen`) and applying weighting and overall scoring.
+* **Aggregations** - Pulling audit results, grouping into user-facing components (eg. `install_to_homescreen`) and applying weighting and overall scoring.
 
 ### Internal module graph
 
