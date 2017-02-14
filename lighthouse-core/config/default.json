@@ -380,7 +380,10 @@
     "categorizable": false,
     "items": [{
       "audits": {
-        "num-dom-nodes": {},
+        "num-dom-nodes": {
+          "expectedValue": 100,
+          "weight": 1
+        },
         "critical-request-chains": {
           "expectedValue": 0,
           "weight": 1
