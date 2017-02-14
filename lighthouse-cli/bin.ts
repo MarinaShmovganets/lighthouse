@@ -77,7 +77,7 @@ const cliFlags = yargs
     'config-path': 'The path to the config JSON.',
     'perf': 'Use a performance-test-only configuration',
     'port': 'The port to use for the debugging protocol. Use 0 for a random port',
-    'max-wait-for-load': 'The timeout in milliseconds to wait for the page to load before continuing. WARNING: Very high values can lead to large traces and instability',
+    'max-wait-for-load': 'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
     'skip-autolaunch': 'Skip autolaunch of Chrome when already running instance is not found',
     'select-chrome': 'Interactively choose version of Chrome to use when multiple installations are found',
     'interactive': 'Open Lighthouse in interactive mode'
