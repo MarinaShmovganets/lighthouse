@@ -16,21 +16,118 @@
  */
 
 /**
- * @fileoverview Gathers all DOM nodes on the page.
+ * @fileoverview Gathers stats about the max height and width of the DOM tree
+ * and total number of nodes used on the page.
  */
 
 'use strict';
 
 const Gatherer = require('../gatherer');
 
-class AllDOMNodes extends Gatherer {
+/**
+ * Constructs a pretty label from element's selectors. For example, given
+ * <div id="myid" class="myclass">, returns 'div#myid.myclass'.
+ * @param {!HTMLElement} element
+ * @return {!string}
+ */
+function createSelectorsLabel(element) {
+  let name = element.localName;
+  const idAttr = element.getAttribute('id');
+  if (idAttr) {
+    name += `#${idAttr}`;
+  }
+  const className = element.className;
+  if (className) {
+    name += `.${className.split(' ').join('.')}`;
+  }
+  return name;
+}
+
+/**
+ * @param {!HTMLElement} element
+ * @return {!Array<string>}
+ */
+function elementPathInDOM(element) {
+  const path = [createSelectorsLabel(element)];
+  let node = element;
+  while (node) {
+    node = node.parentNode.host ? node.parentNode.host : node.parentElement;
+    if (node) {
+      path.push(createSelectorsLabel(node));
+    }
+  }
+  return path.reverse();
+}
+
+/**
+ * Calculates the maximum tree depth of the DOM.
+ * @param {!HTMLElement} element Root of the tree to look in.
+ * @param {boolean=} deep True to include shadow roots. Defaults to true.
+ * @return {!number}
+ */
+function getDOMStats(element, deep=true) {
+  let deepestNode = null;
+  let maxDepth = 0;
+  let maxWidth = 0;
+  let parentWithMostChildren = null;
+
+  const _calcDOMWidthAndHeight = function(element, depth=1) {
+    if (depth > maxDepth) {
+      deepestNode = element;
+      maxDepth = depth;
+    }
+    if (element.children.length > maxWidth) {
+      parentWithMostChildren = element;
+      maxWidth = element.children.length;
+    }
+
+    let child = element.firstElementChild;
+    while (child) {
+      _calcDOMWidthAndHeight(child, depth + 1);
+      // If node has shadow dom, traverse into that tree.
+      if (deep && child.shadowRoot) {
+        _calcDOMWidthAndHeight(child.shadowRoot, depth + 1);
+      }
+      child = child.nextElementSibling;
+    }
+
+    return {maxDepth, maxWidth};
+  };
+
+  const result = _calcDOMWidthAndHeight(element);
+
+  return {
+    depth: {
+      max: result.maxDepth,
+      pathToElement: elementPathInDOM(deepestNode),
+    },
+    width: {
+      max: result.maxWidth,
+      pathToElement: elementPathInDOM(parentWithMostChildren)
+    }
+  };
+}
+
+class DOMStats extends Gatherer {
   /**
    * @param {!Object} options
    * @return {!Promise<!Array<!Object>>}
    */
   afterPass(options) {
-    return options.driver.querySelectorAll('body, body /deep/ *');
+    return options.driver.querySelectorAll('body, body /deep/ *')
+      .then(allNodes => {
+        const expression = `(function() {
+          ${createSelectorsLabel.toString()};
+          ${elementPathInDOM.toString()};
+          return (${getDOMStats.toString()}(document.documentElement));
+        })()`;
+
+        return options.driver.evaluateAsync(expression)
+          .then(result => {
+            return Object.assign({totalDOMNodes: allNodes.length}, result);
+          });
+      });
   }
 }
 
-module.exports = AllDOMNodes;
+module.exports = DOMStats;
