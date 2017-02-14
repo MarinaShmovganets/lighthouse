@@ -49,7 +49,7 @@ class CriticalRequestChains extends Formatter {
           const urlTree = CriticalRequestChains._createURLTreeOutput(info);
 
           const output = `    - Longest request chain: ${longestDuration}ms` +
-          ` over ${longestChain } requests, totalling ${longestTransferSize}KB\n` +
+          ` over ${longestChain} requests, totalling ${longestTransferSize}KB\n` +
           '    - Initial navigation\n' +
               '      ' + urlTree.replace(/\n/g, '\n      ') + '\n';
           return output;
