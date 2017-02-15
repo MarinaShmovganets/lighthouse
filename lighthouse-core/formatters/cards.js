@@ -27,33 +27,14 @@ class Card extends Formatter {
     switch (type) {
       case 'pretty':
         return result => {
-          // let output = '';
-
-          // if (!result || !result.results || !result.tableHeadings) {
-          //   return output;
-          // }
-
-          // const table = Card.createTable(result.tableHeadings, result.results);
-          // const headings = Object.keys(result.tableHeadings).map(key => {
-          //   return result.tableHeadings[key].toUpperCase();
-          // });
-
-          // output += `      ${headings.join(' ')}\n`;
-
-          // table.rows.forEach(row => {
-          //   output += '      ';
-          //   row.cols.forEach(col => {
-          //     // Omit code snippet cols and image previews.
-          //     if (!col || col.startsWith('`') && col.endsWith('`') ||
-          //         col.startsWith('[![Image preview]')) {
-          //       output += '- ';
-          //     } else {
-          //       output += `${col} `;
-          //     }
-          //   });
-          //   output += '\n';
-          // });
-          // return output;
+          if (!result || !Array.isArray(result)) {
+            return '';
+          }
+          let output = '';
+          result.forEach(item => {
+            output += `    - ${item.title}: ${item.value}\n`;
+          });
+          return output;
         };
 
       case 'html':

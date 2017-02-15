@@ -151,7 +151,9 @@
 
   function addDOMTest() {
     const frag = new DocumentFragment();
-    const NUM_NODES = 2020;
+    // const NUM_NODES = 1300; // score: 100
+    const NUM_NODES = 3000; // score: 50
+    // const NUM_NODES = 6000; // score: 0
     for (let i = 0; i < NUM_NODES; ++i) {
       frag.appendChild(document.createElement('span'));
     }

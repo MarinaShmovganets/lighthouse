@@ -31,11 +31,15 @@ const MAX_DOM_NODES = 1500;
 const MAX_DOM_TREE_WIDTH = 60;
 const MAX_DOM_TREE_DEPTH = 32;
 
-// Parameters for log-normal CDF scoring. See https://www.desmos.com/calculator/mcxlbfq8ew.
-const SCORING_POINT_OF_DIMINISHING_RETURNS = MAX_DOM_NODES;
-const SCORING_MEDIAN = 2000;
+// Parameters for log-normal CDF scoring. See https://www.desmos.com/calculator/9cyxpm5qgp.
+const SCORING_POINT_OF_DIMINISHING_RETURNS = 2400;
+const SCORING_MEDIAN = 3000;
 
 class DOMSize extends Audit {
+  static get MAX_DOM_NODES() {
+    return MAX_DOM_NODES;
+  }
+
   /**
    * @return {!AuditMeta}
    */
@@ -44,9 +48,9 @@ class DOMSize extends Audit {
       category: 'Performance',
       name: 'dom-size',
       description: 'Avoids an excessive DOM size',
-      optimalValue: SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString() + ' nodes',
+      optimalValue: DOMSize.MAX_DOM_NODES.toLocaleString() + ' nodes',
       helpText: 'Browser engineers recommend pages contain fewer than ' +
-        `~${MAX_DOM_NODES.toLocaleString()} DOM nodes. The sweet spot is a tree depth < ` +
+        `~${DOMSize.MAX_DOM_NODES.toLocaleString()} DOM nodes. The sweet spot is a tree depth < ` +
         `${MAX_DOM_TREE_DEPTH} elements and fewer than ${MAX_DOM_TREE_WIDTH} ` +
         'children/parent element. A large DOM can increase memory, cause longer ' +
         '[style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), ' +
@@ -69,9 +73,9 @@ class DOMSize extends Audit {
         stats.width.pathToElement[stats.width.pathToElement.length - 1];
 
     // Use the CDF of a log-normal distribution for scoring.
-    //   < 1500ms: score≈100
-    //   2000ms: score=50
-    //   >= 4000ms: score≈0
+    //   < 1500: score≈100
+    //   3000: score=50
+    //   >= 5970: score≈0
     const distribution = TracingProcessor.getLogNormalDistribution(
         SCORING_MEDIAN, SCORING_POINT_OF_DIMINISHING_RETURNS);
     let score = 100 * distribution.computeComplementaryPercentile(stats.totalDOMNodes);
@@ -88,7 +92,7 @@ class DOMSize extends Audit {
     return DOMSize.generateAuditResult({
       rawValue: stats.totalDOMNodes,
       optimalValue: this.meta.optimalValue,
-      score: score.toLocaleString(undefined, {maximumFractionDigits: 0}),
+      score: Math.round(score),
       displayValue: `${stats.totalDOMNodes.toLocaleString()} nodes`,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.CARD,
