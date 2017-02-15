@@ -42,7 +42,7 @@ class DOMSize extends Audit {
   static get meta() {
     return {
       category: 'Performance',
-      name: 'num-dom-nodes',
+      name: 'dom-size',
       description: 'Avoids an excessive DOM size',
       optimalValue: SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString() + ' nodes',
       helpText: 'Browser engineers recommend pages contain fewer than ' +
