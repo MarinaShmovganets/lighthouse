@@ -41,7 +41,7 @@
 .table_list .table-column {
   text-align: right;
 }
-.table_list .table-column.table-column-pre {
+.table_list .table-column.table-column-pre, .table_list .table-column.table-column-code {
   text-align: left;
 }
 .table_list .table-column.table-column-url {
