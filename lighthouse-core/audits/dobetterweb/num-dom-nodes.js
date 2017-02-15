@@ -75,14 +75,14 @@ class DOMSize extends Audit {
     // const widthSnippet = stats.width.pathToElement.reduce((str, curr, i) => {
     //   return `${str}\n` + '  '.repeat(i) + `${curr} >`;
     // }, '');
-    const depthSnippet = stats.depth.pathToElement.join(' > ');
-    const widthSnippet = stats.width.pathToElement[stats.width.pathToElement.length - 1];
+    // const depthSnippet = stats.depth.pathToElement.join(' > ');
+    // const widthSnippet = stats.width.pathToElement[stats.width.pathToElement.length - 1];
 
-    const results = [{
-      total: `## ${stats.totalDOMNodes}`,
-      depth: `## ${stats.depth.max}\n*path to element:*` + '```' + depthSnippet + '```',
-      width: `## ${stats.width.max}\n*element with most children:*` + '```' + widthSnippet + '```'
-    }];
+    // const results = [{
+    //   total: `## ${stats.totalDOMNodes}`,
+    //   depth: `## ${stats.depth.max}\n*path to element:*` + '```' + depthSnippet + '```',
+    //   width: `## ${stats.width.max}\n*element with most children:*` + '```' + widthSnippet + '```'
+    // }];
 
     // Use the CDF of a log-normal distribution for scoring.
     //   < 1500ms: score≈100
@@ -92,23 +92,32 @@ class DOMSize extends Audit {
         SCORING_MEDIAN, SCORING_POINT_OF_DIMINISHING_RETURNS);
     let score = 100 * distribution.computeComplementaryPercentile(stats.totalDOMNodes);
     // Clamp the score to 0 <= x <= 100.
-    score = Math.max(0, Math.min(100, score));
+    score = Math.max(0, Math.min(100, score)).toLocaleString(undefined, {maximumFractionDigits: 0});
+
+    const cards = [
+      {title: 'Total DOM Nodes', value: stats.totalDOMNodes.toLocaleString()},
+      {title: 'Max DOM Depth', value: stats.depth.max.toLocaleString()},
+      {title: 'Max Children / Node', value: stats.width.max.toLocaleString()}
+    ];
 
     return DOMSize.generateAuditResult({
       rawValue: stats.totalDOMNodes,
       optimalValue: this.meta.optimalValue,
       score,
-      displayValue: `${stats.totalDOMNodes} nodes`,
+      displayValue: '',//`${stats.totalDOMNodes} nodes`,
+      // extendedInfo: {
+      //   formatter: Formatter.SUPPORTED_FORMATS.TABLE,
+      //   value: {
+      //     results,
+      //     tableHeadings: {
+      //       total: 'Total DOM Nodes',
+      //       depth: 'Max DOM Depth',
+      //       width: 'Max DOM Width'
+      //     }
+      //   }
       extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.TABLE,
-        value: {
-          results,
-          tableHeadings: {
-            total: 'Total DOM Nodes',
-            depth: 'Max DOM Depth',
-            width: 'Max DOM Width'
-          }
-        }
+        formatter: Formatter.SUPPORTED_FORMATS.CARD,
+        value: cards
       }
     });
   }

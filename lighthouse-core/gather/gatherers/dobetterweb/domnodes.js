@@ -32,7 +32,7 @@ const Gatherer = require('../gatherer');
  */
 function createSelectorsLabel(element) {
   let name = element.localName;
-  const idAttr = element.getAttribute('id');
+  const idAttr = element.getAttribute && element.getAttribute('id');
   if (idAttr) {
     name += `#${idAttr}`;
   }
@@ -51,7 +51,7 @@ function elementPathInDOM(element) {
   const path = [createSelectorsLabel(element)];
   let node = element;
   while (node) {
-    node = node.parentNode.host ? node.parentNode.host : node.parentElement;
+    node = node.parentNode && node.parentNode.host ? node.parentNode.host : node.parentElement;
     if (node) {
       path.push(createSelectorsLabel(node));
     }
