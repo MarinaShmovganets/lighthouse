@@ -16,7 +16,9 @@
  */
 
 /**
- * @fileoverview Audits a page to see how many DOM nodes it creates.
+ * @fileoverview Audits a page to see how the size of DOM it creates. Stats like
+ * tree depth, # children, and total nodes are returned. The score is calculated
+ * based solely on the total number of nodes found on the page.
  */
 
 'use strict';
@@ -34,10 +36,6 @@ const SCORING_POINT_OF_DIMINISHING_RETURNS = MAX_DOM_NODES;
 const SCORING_MEDIAN = 2000;
 
 class DOMSize extends Audit {
-  static get MAX_DOM_NODES() {
-    return 1500;
-  }
-
   /**
    * @return {!AuditMeta}
    */
@@ -48,9 +46,9 @@ class DOMSize extends Audit {
       description: 'Avoids an excessive DOM size',
       optimalValue: SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString() + ' nodes',
       helpText: 'Browser engineers recommend pages contain fewer than ' +
-        `~${MAX_DOM_NODES} DOM nodes. The sweet spot is around ` +
-        `${MAX_DOM_TREE_WIDTH} elements wide and ${MAX_DOM_TREE_DEPTH} ` +
-        'elements deep. A large DOM can increase memory, cause longer ' +
+        `~${MAX_DOM_NODES.toLocaleString()} DOM nodes. The sweet spot is a tree depth < ` +
+        `${MAX_DOM_TREE_DEPTH} elements and fewer than ${MAX_DOM_TREE_WIDTH} ` +
+        'children/parent element. A large DOM can increase memory, cause longer ' +
         '[style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), ' +
         'and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/fundamentals/performance/rendering/).',
       requiredArtifacts: ['DOMStats']
@@ -64,25 +62,11 @@ class DOMSize extends Audit {
   static audit(artifacts) {
     const stats = artifacts.DOMStats;
 
-    // const passesTotal = stats.totalDOMNodes <= MAX_DOM_NODES;
-    // const passesMaxDepth = stats.depth.max <= MAX_DOM_TREE_DEPTH;
-    // const passesMaxWidth = stats.width.max <= MAX_DOM_TREE_WIDTH;
-    // const displayValue = passesTotal ? '' : `${stats.totalDOMNodes} nodes`;
-
-    // const depthSnippet = stats.depth.pathToElement.reduce((str, curr, i) => {
-    //   return `${str}\n` + '  '.repeat(i) + `${curr} >`;
-    // }, '');
-    // const widthSnippet = stats.width.pathToElement.reduce((str, curr, i) => {
-    //   return `${str}\n` + '  '.repeat(i) + `${curr} >`;
-    // }, '');
-    // const depthSnippet = stats.depth.pathToElement.join(' > ');
-    // const widthSnippet = stats.width.pathToElement[stats.width.pathToElement.length - 1];
-
-    // const results = [{
-    //   total: `## ${stats.totalDOMNodes}`,
-    //   depth: `## ${stats.depth.max}\n*path to element:*` + '```' + depthSnippet + '```',
-    //   width: `## ${stats.width.max}\n*element with most children:*` + '```' + widthSnippet + '```'
-    // }];
+    const depthSnippet = stats.depth.pathToElement.reduce((str, curr, i) => {
+      return `${str}\n` + '  '.repeat(i) + `${curr} >`;
+    }, '').trim();
+    const widthSnippet = 'Element with most children:\n' +
+        stats.width.pathToElement[stats.width.pathToElement.length - 1];
 
     // Use the CDF of a log-normal distribution for scoring.
     //   < 1500ms: score≈100
@@ -91,30 +75,21 @@ class DOMSize extends Audit {
     const distribution = TracingProcessor.getLogNormalDistribution(
         SCORING_MEDIAN, SCORING_POINT_OF_DIMINISHING_RETURNS);
     let score = 100 * distribution.computeComplementaryPercentile(stats.totalDOMNodes);
+
     // Clamp the score to 0 <= x <= 100.
-    score = Math.max(0, Math.min(100, score)).toLocaleString(undefined, {maximumFractionDigits: 0});
+    score = Math.max(0, Math.min(100, score));
 
     const cards = [
       {title: 'Total DOM Nodes', value: stats.totalDOMNodes.toLocaleString()},
-      {title: 'Max DOM Depth', value: stats.depth.max.toLocaleString()},
-      {title: 'Max Children / Node', value: stats.width.max.toLocaleString()}
+      {title: 'Max DOM Depth', value: stats.depth.max.toLocaleString(), snippet: depthSnippet},
+      {title: 'Max Children / Node', value: stats.width.max.toLocaleString(), snippet: widthSnippet}
     ];
 
     return DOMSize.generateAuditResult({
       rawValue: stats.totalDOMNodes,
       optimalValue: this.meta.optimalValue,
-      score,
-      displayValue: '',//`${stats.totalDOMNodes} nodes`,
-      // extendedInfo: {
-      //   formatter: Formatter.SUPPORTED_FORMATS.TABLE,
-      //   value: {
-      //     results,
-      //     tableHeadings: {
-      //       total: 'Total DOM Nodes',
-      //       depth: 'Max DOM Depth',
-      //       width: 'Max DOM Width'
-      //     }
-      //   }
+      score: score.toLocaleString(undefined, {maximumFractionDigits: 0}),
+      displayValue: `${stats.totalDOMNodes.toLocaleString()} nodes`,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.CARD,
         value: cards
