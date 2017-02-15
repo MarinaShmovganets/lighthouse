@@ -151,9 +151,10 @@ Configuration:
   --perf                        Use a performance-test-only configuration                  [boolean]
   --port                        The port to use for the debugging protocol. Use 0 for a
                                 random port.                                         [default: 9222]
-  --max-wait-for-load           The timeout in milliseconds to wait for the page to
-                                load before continuing. WARNING: High values can lead
-                                to large traces                                     [default: 25000]
+  --max-wait-for-load           The timeout (in milliseconds) to wait before the page is
+                                considered done loading and the run should continue.
+                                WARNING: Very high values can lead to large traces and
+                                instability.                                        [default: 25000]
 
 Output:
   --output       Reporter for the results
@@ -181,7 +182,7 @@ Options:
 * `./report.json`
 * `./report.artifacts.log`
 
-`--save-artifacts` prints a pretty report to `stdout` **and** generates 
+`--save-artifacts` prints a pretty report to `stdout` **and** generates
 * `./<HOST>_<DATE>.report.html`
 * `./<HOST>_<DATE>.artifacts.log`
 
