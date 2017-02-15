@@ -117,6 +117,21 @@ const handlebarHelpers = {
     return arg;
   },
 
+  // myFavoriteVar -> my-favorite-var
+  kebabCase: str => {
+    return (str || '')
+      // break up camelCase tokens
+      .split(/([A-Z]+[\w]+)/)
+      // replace all special characters and whitespace with hyphens
+      .map(part => part.toLowerCase().replace(/[^\w]+/g, '-'))
+      // rejoin into a single string
+      .join('-')
+      // de-dupe hyphens
+      .replace(/-+/g, '-')
+      // remove leading or trailing hyphens
+      .replace(/(^-|-$)/g, '');
+  },
+
   // eslint-disable-next-line no-unused-vars
   sanitize: (str, opts) => {
     // const isViewer = opts.data.root.reportContext === 'viewer';
