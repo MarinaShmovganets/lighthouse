@@ -20,12 +20,31 @@ const Audit = require('../audit');
 const Formatter = require('../../formatters/formatter');
 
 const KB_IN_BYTES = 1024;
+const WASTEFUL_THRESHOLD_IN_BYTES = 20 * KB_IN_BYTES;
 
 /**
  * @overview Used as the base for all byte efficiency audits. Computes total bytes
  *    and estimated time saved. Subclass and override `audit_` to return results.
  */
 class UnusedBytes extends Audit {
+  /**
+   * @param {number} bytes
+   * @return {number}
+   */
+  static bytesToKbString(bytes) {
+    return Math.round(bytes / KB_IN_BYTES).toLocaleString() + ' KB';
+  }
+
+  /**
+   * @param {number} bytes
+   * @param {percent} percent
+   */
+  static toSavingsString(bytes = 0, percent = 0) {
+    const kbDisplay = this.bytesToKbString(bytes);
+    const percentDisplay = Math.round(percent).toLocaleString() + '%';
+    return `${kbDisplay} _${percentDisplay}_`;
+  }
+
   /**
    * @param {!Artifacts} artifacts
    * @return {!AuditResult}
@@ -37,26 +56,30 @@ class UnusedBytes extends Audit {
       const debugString = result.debugString;
       const results = result.results
           .map(item => {
-            item.wastedKb = Math.round(item.wastedBytes / KB_IN_BYTES) + ' KB';
-            item.totalKb = Math.round(item.totalBytes / KB_IN_BYTES) + ' KB';
+            item.wastedKb = this.bytesToKbString(item.wastedBytes);
+            item.totalKb = this.bytesToKbString(item.totalBytes);
+            item.potentialSavings = this.toSavingsString(item.wastedBytes, item.wastedPercent);
             return item;
           })
           .sort((itemA, itemB) => itemB.wastedBytes - itemA.wastedBytes);
 
       const wastedBytes = results.reduce((sum, item) => sum + item.wastedBytes, 0);
-      const wastedKb = Math.round(wastedBytes / KB_IN_BYTES);
       // Only round to nearest 10ms since we're relatively hand-wavy
       const wastedMs = Math.round(wastedBytes / networkThroughput * 100) * 10;
 
       let displayValue = '';
-      if (wastedKb > 0 && wastedMs > 0) {
-        displayValue = `${wastedKb}KB (~${wastedMs}ms) potential savings`;
+      if (wastedBytes) {
+        const wastedKbDisplay = this.bytesToKbString(wastedBytes);
+        const wastedMsDisplay = wastedMs.toLocaleString() + 'ms';
+        displayValue = `Potential savings of ${wastedKbDisplay} (~${wastedMsDisplay})`;
       }
 
       return this.generateAuditResult({
         debugString,
         displayValue,
-        rawValue: typeof result.passes === 'undefined' ? !displayValue : !!result.passes,
+        rawValue: typeof result.passes === 'undefined' ?
+            wastedBytes < WASTEFUL_THRESHOLD_IN_BYTES :
+            !!result.passes,
         extendedInfo: {
           formatter: Formatter.SUPPORTED_FORMATS.TABLE,
           value: {results, tableHeadings: result.tableHeadings}

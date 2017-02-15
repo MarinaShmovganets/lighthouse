@@ -114,9 +114,9 @@ describe('Best Practices: unused css rules audit', () => {
     });
 
     it('correctly computes potentialSavings', () => {
-      assert.ok(map({used: [], unused: [1, 2]}).potentialSavings, '100%');
-      assert.ok(map({used: [1, 2], unused: [1, 2]}).potentialSavings, '50%');
-      assert.ok(map({used: [1, 2], unused: []}).potentialSavings, '0%');
+      assert.equal(map({used: [], unused: [1, 2]}).wastedPercent, 100);
+      assert.equal(map({used: [1, 2], unused: [1, 2]}).wastedPercent, 50);
+      assert.equal(map({used: [1, 2], unused: []}).wastedPercent, 0);
     });
 
     it('correctly computes url', () => {
@@ -184,6 +184,7 @@ describe('Best Practices: unused css rules audit', () => {
           {styleSheetId: 'a', used: true},
           {styleSheetId: 'a', used: false},
           {styleSheetId: 'a', used: false},
+          {styleSheetId: 'a', used: false},
           {styleSheetId: 'b', used: true},
           {styleSheetId: 'b', used: false},
           {styleSheetId: 'c', used: false},
@@ -207,8 +208,8 @@ describe('Best Practices: unused css rules audit', () => {
       assert.equal(result.results.length, 2);
       assert.equal(result.results[0].totalBytes, 10 * 1024);
       assert.equal(result.results[1].totalBytes, 2050);
-      assert.equal(result.results[0].potentialSavings, '67%');
-      assert.equal(result.results[1].potentialSavings, '50%');
+      assert.equal(result.results[0].wastedPercent, 75);
+      assert.equal(result.results[1].wastedPercent, 50);
     });
 
     it('does not include duplicate sheets', () => {

@@ -70,7 +70,7 @@ describe('Page uses optimized images', () => {
     const headings = auditResult.tableHeadings;
     assert.equal(auditResult.passes, false);
     assert.deepEqual(Object.keys(headings).map(key => headings[key]),
-        ['', 'URL', 'Original (KB)', 'WebP Savings (%)', 'JPEG Savings (%)', 'Savings (KB)'],
+        ['', 'URL', 'Original', 'WebP Savings', 'JPEG Savings'],
         'table headings are correct and in order');
   });
 

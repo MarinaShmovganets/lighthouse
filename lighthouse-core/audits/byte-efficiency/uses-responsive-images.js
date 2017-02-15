@@ -75,8 +75,8 @@ class UsesResponsiveImages extends Audit {
       },
       totalBytes,
       wastedBytes,
+      wastedPercent: 100 * wastedRatio,
       isWasteful: wastedBytes > WASTEFUL_THRESHOLD_IN_BYTES,
-      potentialSavings: Math.round(100 * wastedRatio) + '%'
     };
   }
 
@@ -117,9 +117,8 @@ class UsesResponsiveImages extends Audit {
       tableHeadings: {
         preview: '',
         url: 'URL',
-        totalKb: 'Original (KB)',
-        potentialSavings: 'Potential Savings (%)',
-        wastedKb: 'Savings (KB)',
+        totalKb: 'Original',
+        potentialSavings: 'Potential Savings',
       }
     };
   }

@@ -156,8 +156,8 @@ class UnusedCSSRules extends Audit {
       url,
       numUnused,
       wastedBytes,
+      wastedPercent: percentUnused * 100,
       totalBytes,
-      potentialSavings: `${Math.round(percentUnused * 100)}%`,
     };
   }
 
@@ -183,9 +183,8 @@ class UnusedCSSRules extends Audit {
       tableHeadings: {
         url: 'URL',
         numUnused: 'Unused Rules',
-        totalKb: 'Original (KB)',
-        potentialSavings: 'Potential Savings (%)',
-        wastedKb: 'Savings (KB)',
+        totalKb: 'Original',
+        potentialSavings: 'Potential Savings',
       }
     };
   }

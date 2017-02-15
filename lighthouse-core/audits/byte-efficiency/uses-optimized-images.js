@@ -56,7 +56,7 @@ class UsesOptimizedImages extends Audit {
    */
   static computeSavings(image, type) {
     const bytes = image.originalSize - image[type + 'Size'];
-    const percent = Math.round(100 * bytes / image.originalSize);
+    const percent = 100 * bytes / image.originalSize;
     return {bytes, percent};
   }
 
@@ -96,7 +96,7 @@ class UsesOptimizedImages extends Audit {
           hasAllEfficientImages = false;
         }
         if (jpegSavings.bytes > IGNORE_THRESHOLD_IN_BYTES) {
-          jpegSavingsLabel = `${jpegSavings.percent}%`;
+          jpegSavingsLabel = this.toSavingsString(jpegSavings.bytes, jpegSavings.percent);
         }
       }
 
@@ -107,7 +107,7 @@ class UsesOptimizedImages extends Audit {
         preview: {url: image.url, mimeType: image.mimeType},
         totalBytes: image.originalSize,
         wastedBytes: webpSavings.bytes,
-        webpSavings: `${webpSavings.percent}%`,
+        webpSavings: this.toSavingsString(webpSavings.bytes, webpSavings.percent),
         jpegSavings: jpegSavingsLabel
       });
       return results;
@@ -126,10 +126,9 @@ class UsesOptimizedImages extends Audit {
       tableHeadings: {
         preview: '',
         url: 'URL',
-        totalKb: 'Original (KB)',
-        webpSavings: 'WebP Savings (%)',
-        jpegSavings: 'JPEG Savings (%)',
-        wastedKb: 'Savings (KB)',
+        totalKb: 'Original',
+        webpSavings: 'WebP Savings',
+        jpegSavings: 'JPEG Savings',
       }
     };
   }
