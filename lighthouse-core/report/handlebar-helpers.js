@@ -121,9 +121,9 @@ const handlebarHelpers = {
   kebabCase: str => {
     return (str || '')
       // break up camelCase tokens
-      .split(/([A-Z]+[\w]+)/)
+      .split(/([A-Z]+[a-z0-9]*)/)
       // replace all special characters and whitespace with hyphens
-      .map(part => part.toLowerCase().replace(/[^\w]+/g, '-'))
+      .map(part => part.toLowerCase().replace(/[^a-z0-9]+/gi, '-'))
       // rejoin into a single string
       .join('-')
       // de-dupe hyphens

@@ -41,6 +41,9 @@
 .table_list .table-column {
   text-align: right;
 }
+.table_list .table-column.table-column-pre {
+  text-align: left;
+}
 .table_list .table-column.table-column-url {
   text-align: left;
   width: 250px;
