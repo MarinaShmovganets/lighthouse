@@ -109,94 +109,53 @@ $ lighthouse --disable-device-emulation --disable-cpu-throttling https://mysite.
 
 ## Using programmatically
 
-The example below shows how to setup and run Lighthouse programmatically as a Node module.
+The example below shows how to setup and run Lighthouse programmatically as a Node module. It
+assumes you've installed Lighthouse as a dependency (`yarn install --dev lighthouse`).
 
 ```javascript
-// Install dependencies: yarn install --dev lighthouse yargs
-
-'use strict';
-
-const lighthouse = require('lighthouse');
+const Lighthouse = require('lighthouse');
 const ChromeLauncher = require('lighthouse/lighthouse-cli/chrome-launcher.js').ChromeLauncher;
 const Printer = require('lighthouse/lighthouse-cli/printer');
-const yargs = require('yargs');
 
-// Also could use your own custom config.
-const PERF_CONFIG = require('lighthouse/lighthouse-core/config/perf.json');
-// const DEFAULT_CONFIG = require('lighthouse/lighthouse-core/config/default.json');
+function launchChromeAndRunLighthouse(url, flags, config) {
+  const launcher = new ChromeLauncher({port: 9222, autoSelectChrome: true});
 
-const _SIGINT = 'SIGINT';
-const _SIGINT_EXIT_CODE = 130;
-
-function handleError() {
-  console.error(err);
-}
-
-// Wrapper to launch Chrome and run Lighthouse.
-class LighthouseRunner {
-  constructor(url, flags, config) {
-    this.url = url;
-    this.flags = flags;
-    this.config = config;
-  }
-
-  launchChrome() {
-    this.launcher = new ChromeLauncher({
-      port: this.flags.port,
-      autoSelectChrome: !this.flags.selectChrome,
-    });
-
-    // Kill spawned Chrome process in case of ctrl-C.
-    process.on(_SIGINT, () => {
-      this.launcher.kill().then(() => process.exit(_SIGINT_EXIT_CODE), handleError);
-    });
-
-    return this.launcher.isDebuggerReady().catch(() => {
-      if (this.flags.skipAutolaunch) {
+  launcher.isDebuggerReady()
+    .catch(() => {
+      if (flags.skipAutolaunch) {
         return;
       }
-      return this.launcher.run();
+      return launcher.run(); // Launch Chrome.
+    })
+    .then(() => Lighthouse(url, flags, config)) // Run Lighthouse.
+    .then(results => launcher.kill().then(() => results)) // Kill Chrome and return results.
+    .catch(err => {
+      // Kill Chrome if there's an error.
+      return launcher.kill().then(() => {
+        throw err;
+      }, console.err);
     });
-  }
-
-  run() {
-    return this.launchChrome()
-      .then(() => lighthouse(this.url, this.flags, this.config)) // Run Lighthouse.
-      .then(results => this.launcher.kill().then(() => results)) // Kill Chrome and return results.
-      .catch(err => {
-        // Kill Chrome if there's an error.
-        return this.launcher.kill().then(() => {
-          throw err;
-        }, handleError);
-      });
-  }
-
-  // Example of extracting the overall score from the results.
-  getOverallScore(results) {
-    const scoredAggregations = results.aggregations.filter(a => a.scored);
-    const total = scoredAggregations.reduce((sum, aggregation) => sum + aggregation.total, 0);
-    return (total / scoredAggregations.length) * 100;
   }
 }
 
-const flags = yargs
-  .help('h')
-  .alias('h', 'help')
-  .usage('Usage: $0 URL')
-  .showHelpOnFail(false, 'Specify --help for available options')
-  .describe({
-    'port': 'The port to use for the debugging protocol. Use 0 for a random port'
-  })
-  .default('port', 9222)
-  .default('output', 'pretty')
-  .argv;
+// Use an existing config or create a custom one.
+const config = require('lighthouse/lighthouse-core/config/perf.json');
+const url = 'https://example.com';
+const flags = {output: 'html'};
 
-const url = yargs.argv._[0];
+launchChromeAndRunLighthouse(url, flags, config).then(lighthouseResults => {
+  Printer.write(lighthouseResults, flags.output);
+}).catch(err => console.err);
+```
 
-const runner = new LighthouseRunner(url, flags, PERF_CONFIG);
-runner.run().then(results => {
-  Printer.write(results, flags.output);
-}).catch(err => handleError);
+**Example** - extracting an overall score from all scored audits
+
+```javascript
+function getOverallScore(lighthouseResults) {
+  const scoredAggregations = lighthouseResults.aggregations.filter(a => a.scored);
+  const total = scoredAggregations.reduce((sum, aggregation) => sum + aggregation.total, 0);
+  return (total / scoredAggregations.length) * 100;
+}
 ```
 
 ## Viewing a report
