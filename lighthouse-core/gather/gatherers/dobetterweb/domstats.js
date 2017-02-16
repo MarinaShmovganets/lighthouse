@@ -30,6 +30,7 @@ const Gatherer = require('../gatherer');
  * @param {!HTMLElement} element
  * @return {!string}
  */
+/* istanbul ignore next */
 function createSelectorsLabel(element) {
   let name = element.localName;
   const idAttr = element.getAttribute && element.getAttribute('id');
@@ -47,6 +48,7 @@ function createSelectorsLabel(element) {
  * @param {!HTMLElement} element
  * @return {!Array<string>}
  */
+/* istanbul ignore next */
 function elementPathInDOM(element) {
   const path = [createSelectorsLabel(element)];
   let node = element;
@@ -65,6 +67,7 @@ function elementPathInDOM(element) {
  * @param {boolean=} deep True to include shadow roots. Defaults to true.
  * @return {!number}
  */
+/* istanbul ignore next */
 function getDOMStats(element, deep=true) {
   let deepestNode = null;
   let maxDepth = 0;
