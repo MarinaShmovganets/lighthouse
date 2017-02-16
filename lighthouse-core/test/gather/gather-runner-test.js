@@ -111,7 +111,7 @@ describe('GatherRunner', function() {
     const url = 'https://example.com';
     const driver = fakeDriver;
     const config = new Config({});
-    const options = {url, driver, config};
+    const options = {url, driver, config, _aboutBlankTimeout: 0};
 
     return GatherRunner.run([], options).then(_ => {
       assert.equal(typeof options.flags, 'object');
@@ -440,7 +440,8 @@ describe('GatherRunner', function() {
       driver: fakeDriver,
       url: 'https://example.com',
       flags,
-      config
+      config,
+      _aboutBlankTimeout: 0
     }).then(_ => {
       assert.ok(t1.called);
       assert.ok(t2.called);
@@ -459,7 +460,8 @@ describe('GatherRunner', function() {
       passName: 'secondPass',
       gatherers: [new TestGatherer()]
     }];
-    const options = {driver: fakeDriver, url: 'https://example.com', flags: {}, config: {}};
+    const options = {driver: fakeDriver, url: 'https://example.com', flags: {}, config: {},
+      _aboutBlankTimeout: 0};
 
     return GatherRunner.run(passes, options)
       .then(artifacts => {
@@ -552,7 +554,8 @@ describe('GatherRunner', function() {
       passName: 'firstPass',
       gatherers: [new TestGatherer()]
     }];
-    const options = {driver: fakeDriver, url: 'https://example.com', flags: {}, config: {}};
+    const options = {driver: fakeDriver, url: 'https://example.com', flags: {}, config: {},
+      _aboutBlankTimeout: 0};
 
     return GatherRunner.run(passes, options)
         .then(artifacts => {
@@ -643,7 +646,8 @@ describe('GatherRunner', function() {
         driver: fakeDriver,
         url: 'https://example.com',
         flags: {},
-        config: new Config({})
+        config: new Config({}),
+        _aboutBlankTimeout: 0
       }).then(artifacts => {
         gathererNames.forEach(gathererName => {
           assert.strictEqual(artifacts[gathererName], gathererName);
@@ -742,7 +746,8 @@ describe('GatherRunner', function() {
         driver: fakeDriver,
         url: 'https://example.com',
         flags: {},
-        config: new Config({})
+        config: new Config({}),
+        _aboutBlankTimeout: 0
       }).then(artifacts => {
         gathererNames.forEach(gathererName => {
           const errorArtifact = artifacts[gathererName];
@@ -777,7 +782,8 @@ describe('GatherRunner', function() {
         driver: fakeDriver,
         url: 'https://example.com',
         flags: {},
-        config: new Config({})
+        config: new Config({}),
+        _aboutBlankTimeout: 0
       }).then(
         _ => assert.ok(false),
         err => assert.strictEqual(err.message, errorMessage));
@@ -797,7 +803,8 @@ describe('GatherRunner', function() {
         driver: fakeDriver,
         url: 'https://example.com',
         flags: {},
-        config: new Config({})
+        config: new Config({}),
+        _aboutBlankTimeout: 0
       }).then(_ => assert.ok(false), _ => assert.ok(true));
     });
 
@@ -821,7 +828,8 @@ describe('GatherRunner', function() {
         driver: unresolvedDriver,
         url: 'http://www.some-non-existing-domain.com/',
         flags: {},
-        config: new Config({})
+        config: new Config({}),
+        _aboutBlankTimeout: 0
       })
         .then(_ => {
           assert.ok(false);
@@ -851,7 +859,8 @@ describe('GatherRunner', function() {
         driver: unresolvedDriver,
         url: 'http://www.some-non-existing-domain.com/',
         flags: {},
-        config: new Config({})
+        config: new Config({}),
+        _aboutBlankTimeout: 0
       })
         .then(_ => {
           assert.ok(true);
