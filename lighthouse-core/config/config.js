@@ -233,6 +233,27 @@ function expandArtifacts(artifacts) {
   return artifacts;
 }
 
+function merge(value, extension) {
+  if (typeof value === 'undefined') {
+    return extension;
+  } else if (Array.isArray(extension)) {
+    if (!Array.isArray(value)) throw new TypeError(`Expected array but got ${typeof value}`);
+    return value.concat(extension);
+  } else if (typeof extension === 'object') {
+    if (typeof value !== 'object') throw new TypeError(`Expected array but got ${typeof value}`);
+    Object.keys(extension).forEach(key => {
+      value[key] = merge(value[key], extension[key]);
+    });
+    return value;
+  } else {
+    return extension;
+  }
+}
+
+function deepClone(json) {
+  return JSON.parse(JSON.stringify(json));
+}
+
 class Config {
   /**
    * @constructor
@@ -251,7 +272,8 @@ class Config {
 
     // We don't want to mutate the original config object
     const inputConfig = configJSON;
-    configJSON = JSON.parse(JSON.stringify(inputConfig));
+    configJSON = deepClone(configJSON);
+
     // Copy arrays that could contain plugins to allow for programmatic
     // injection of plugins.
     if (Array.isArray(inputConfig.passes)) {
@@ -262,6 +284,12 @@ class Config {
     if (Array.isArray(inputConfig.audits)) {
       configJSON.audits = Array.from(inputConfig.audits);
     }
+
+    // Extend the default config is specified
+    if (configJSON.extends) {
+      configJSON = Config.extendConfigJSON(deepClone(defaultConfig), configJSON);
+    }
+
     // Store the directory of the config path, if one was provided.
     this._configDir = configPath ? path.dirname(configPath) : undefined;
 
@@ -278,6 +306,27 @@ class Config {
 
     // validatePasses must follow after audits are required
     validatePasses(configJSON.passes, this._audits, this._configDir);
+  }
+
+  static extendConfigJSON(baseJSON, extendJSON) {
+    if (extendJSON.passes) {
+      extendJSON.passes.forEach(pass => {
+        const basePass = baseJSON.passes.find(candidate => candidate.passName === pass.passName);
+        if (!basePass || !pass.passName) {
+          baseJSON.passes.push(pass);
+        } else {
+          merge(basePass, pass);
+        }
+      });
+
+      delete extendJSON.passes;
+    }
+
+    Object.keys(extendJSON).forEach(key => {
+      baseJSON[key] = merge(baseJSON[key], extendJSON[key]);
+    });
+
+    return baseJSON;
   }
 
   /**
