@@ -30,6 +30,11 @@ describe('Num DOM nodes audit', () => {
     }
   };
 
+  const snippet = 'html >\n' +
+                  '  body >\n' +
+                  '    div >\n' +
+                  '      span';
+
   it('calculates score hitting top of distribution', () => {
     const auditResult = DOMSize.audit(artifact);
     assert.equal(auditResult.score, 100);
@@ -40,6 +45,7 @@ describe('Num DOM nodes audit', () => {
     assert.equal(auditResult.extendedInfo.value[0].value, numNodes.toLocaleString());
     assert.equal(auditResult.extendedInfo.value[1].title, 'Max DOM Depth');
     assert.equal(auditResult.extendedInfo.value[1].value, 1);
+    assert.equal(auditResult.extendedInfo.value[1].snippet, snippet, 'generates snippet');
     assert.equal(auditResult.extendedInfo.value[2].title, 'Max Children / Node');
     assert.equal(auditResult.extendedInfo.value[2].value, 2);
   });

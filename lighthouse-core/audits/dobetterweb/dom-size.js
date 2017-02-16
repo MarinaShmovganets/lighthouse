@@ -66,14 +66,20 @@ class DOMSize extends Audit {
   static audit(artifacts) {
     const stats = artifacts.DOMStats;
 
+    /**
+     * html >
+     *   body >
+     *     div >
+     *       span
+     */
     const depthSnippet = stats.depth.pathToElement.reduce((str, curr, i) => {
       return `${str}\n` + '  '.repeat(i) + `${curr} >`;
-    }, '').trim();
+    }, '').replace(/>$/g, '').trim();
     const widthSnippet = 'Element with most children:\n' +
         stats.width.pathToElement[stats.width.pathToElement.length - 1];
 
     // Use the CDF of a log-normal distribution for scoring.
-    //   < 1500: score≈100
+    //   <= 1500: score≈100
     //   3000: score=50
     //   >= 5970: score≈0
     const distribution = TracingProcessor.getLogNormalDistribution(

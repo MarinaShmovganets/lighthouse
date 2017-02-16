@@ -149,6 +149,36 @@ module.exports = [
       }
     }
   }, {
+    initialUrl: 'http://localhost:10200/dobetterweb/domtester.html?smallDOM',
+    url: 'http://localhost:10200/dobetterweb/domtester.html?smallDOM',
+    audits: {
+      'dom-size': {
+        score: 100,
+        extendedInfo: {
+          value: {
+            0: {value: '1,319'},
+            1: {value: '9'},
+            2: {value: '1,303'}
+          }
+        }
+      }
+    }
+  }, {
+    initialUrl: 'http://localhost:10200/dobetterweb/domtester.html?largeDOM',
+    url: 'http://localhost:10200/dobetterweb/domtester.html?largeDOM',
+    audits: {
+      'dom-size': {
+        score: 0,
+        extendedInfo: {
+          value: {
+            0: {value: '6,019'},
+            1: {value: '9'},
+            2: {value: '6,003'}
+          }
+        }
+      }
+    }
+  }, {
     initialUrl: 'http://localhost:10200/online-only.html',
     url: 'http://localhost:10200/online-only.html',
     audits: {

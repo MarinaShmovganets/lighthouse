@@ -41,7 +41,7 @@
       "dobetterweb/document-write",
       "dobetterweb/geolocation-on-start",
       "dobetterweb/notification-on-start",
-      "dobetterweb/domnodes",
+      "dobetterweb/domstats",
       "dobetterweb/optimized-images",
       "dobetterweb/tags-blocking-first-paint",
       "dobetterweb/websql"
