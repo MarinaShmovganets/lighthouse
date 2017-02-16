@@ -237,11 +237,7 @@ class ChromeLauncher {
             process.kill(-this.chrome.pid);
           }
         } catch (err) {
-          if (/(not found|ESRCH)/.test(err.message)) {
-            log.warn('ChromeLauncher', 'Chrome was already killed');
-          } else {
-            throw err;
-          }
+          log.warn('ChromeLauncher', `Chrome could not be killed ${err.message}`);
         }
 
         this.chrome = null;
