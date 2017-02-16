@@ -141,16 +141,6 @@ if (cliFlags.listTraceCategories) {
 
 const url = cliFlags._[0];
 
-// Work around camelCase bug for default value in yargs 3.30.
-// see: https://github.com/yargs/yargs/issues/341
-if (!cliFlags.outputPath && cliFlags['output-path']) {
-  cliFlags.outputPath = cliFlags['output-path'];
-}
-
-if (!cliFlags.maxWaitForLoad && cliFlags['max-wait-for-load']) {
-  cliFlags.maxWaitForLoad = cliFlags['max-wait-for-load'];
-}
-
 let config: Object | null = null;
 if (cliFlags.configPath) {
   // Resolve the config file path relative to where cli was called.
