@@ -20,6 +20,8 @@
  * and total number of nodes used on the page.
  */
 
+/* global document */
+
 'use strict';
 
 const Gatherer = require('../gatherer');
@@ -39,7 +41,7 @@ function createSelectorsLabel(element) {
   }
   const className = element.className;
   if (className) {
-    name += `.${className.split(' ').join('.')}`;
+    name += `.${className.replace(/\s+/g, '.')}`;
   }
   return name;
 }
@@ -55,10 +57,10 @@ function elementPathInDOM(element) {
   while (node) {
     node = node.parentNode && node.parentNode.host ? node.parentNode.host : node.parentElement;
     if (node) {
-      path.push(createSelectorsLabel(node));
+      path.unshift(createSelectorsLabel(node));
     }
   }
-  return path.reverse();
+  return path;
 }
 
 /**
@@ -100,6 +102,7 @@ function getDOMStats(element, deep=true) {
   const result = _calcDOMWidthAndHeight(element);
 
   return {
+    totalDOMNodes: document.querySelectorAll('html, html /deep/ *').length,
     depth: {
       max: result.maxDepth,
       pathToElement: elementPathInDOM(deepestNode),
@@ -117,19 +120,12 @@ class DOMStats extends Gatherer {
    * @return {!Promise<!Array<!Object>>}
    */
   afterPass(options) {
-    return options.driver.querySelectorAll('body, body /deep/ *')
-      .then(allNodes => {
-        const expression = `(function() {
-          ${createSelectorsLabel.toString()};
-          ${elementPathInDOM.toString()};
-          return (${getDOMStats.toString()}(document.documentElement));
-        })()`;
-
-        return options.driver.evaluateAsync(expression)
-          .then(result => {
-            return Object.assign({totalDOMNodes: allNodes.length}, result);
-          });
-      });
+    const expression = `(function() {
+      ${createSelectorsLabel.toString()};
+      ${elementPathInDOM.toString()};
+      return (${getDOMStats.toString()}(document.documentElement));
+    })()`;
+    return options.driver.evaluateAsync(expression);
   }
 }
 

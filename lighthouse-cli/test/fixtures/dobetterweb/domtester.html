@@ -47,28 +47,30 @@
     <div></div>
   </footer>
 <script>
-  const el = document.querySelector('#attachshadow');
-  el.innerHTML = `<div>7</div>`;
-  el.attachShadow({mode: 'open'}).innerHTML = `
-    <div>
-      <div class="here">9</div>
-    </div>
-  `;
+  function withShadowDOMTest() {
+    const el = document.querySelector('#attachshadow');
+    el.innerHTML = `<div>7</div>`;
+    el.attachShadow({mode: 'open'}).innerHTML = `
+      <div>
+        <div class="here">9</div>
+      </div>
+    `;
 
-  const el2 = document.querySelector('#attachshadow-big');
-  el2.attachShadow({mode: 'open'}).innerHTML = `
-    <div>
-      <div>6</div>
-      <div>6</div>
-      <div>6</div>
-      <div>6</div>
-      <div>6</div>
-      <div>6</div>
-      <div>6</div>
-      <div>6</div>
-      <div>6</div>
-    </div>
-  `;
+    const el2 = document.querySelector('#attachshadow-big');
+    el2.attachShadow({mode: 'open'}).innerHTML = `
+      <div>
+        <div>6</div>
+        <div>6</div>
+        <div>6</div>
+        <div>6</div>
+        <div>6</div>
+        <div>6</div>
+        <div>6</div>
+        <div>6</div>
+        <div>6</div>
+      </div>
+    `;
+  }
 
   function domTest(numNodes=1500) {
     const frag = new DocumentFragment();
@@ -83,6 +85,9 @@
     domTest(1300);
   } else if (params.has('largeDOM')) {
     domTest(6000);
+  }
+  if (params.has('withShadowDOM')) {
+    withShadowDOMTest();
   }
 </script>
 </body>
