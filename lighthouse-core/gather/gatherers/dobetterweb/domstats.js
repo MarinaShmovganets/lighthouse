@@ -40,8 +40,8 @@ function createSelectorsLabel(element) {
     name += `#${idAttr}`;
   }
   // svg elements return SVGAnimatedString for .className, which is an object.
-  // Use the class attr instead.
-  const className = element.getAttribute && element.getAttribute('class');
+  // Stringify classList instead.
+  const className = element.classList.toString();
   if (className) {
     name += `.${className.trim().replace(/\s+/g, '.')}`;
   }
