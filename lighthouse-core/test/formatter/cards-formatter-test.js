@@ -25,8 +25,8 @@ describe('CardsFormatter', () => {
   const extendedInfo = {
     value: [
       {title: 'Total DOM Nodes', value: 3500},
-      {title: 'Max DOM Depth', value: 10, snippet: 'snippet'},
-      {title: 'Max Children / Node', value: 20, snippet: 'snippet2'}
+      {title: 'DOM Depth', value: 10, snippet: 'snippet'},
+      {title: 'Maximum Children', value: 20, snippet: 'snippet2'}
     ]
   };
 

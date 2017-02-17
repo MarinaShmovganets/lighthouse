@@ -91,8 +91,8 @@ class DOMSize extends Audit {
 
     const cards = [
       {title: 'Total DOM Nodes', value: stats.totalDOMNodes.toLocaleString()},
-      {title: 'Max DOM Depth', value: stats.depth.max.toLocaleString(), snippet: depthSnippet},
-      {title: 'Max Children / Node', value: stats.width.max.toLocaleString(), snippet: widthSnippet}
+      {title: 'DOM Depth', value: stats.depth.max.toLocaleString(), snippet: depthSnippet},
+      {title: 'Maximum Children', value: stats.width.max.toLocaleString(), snippet: widthSnippet}
     ];
 
     return DOMSize.generateAuditResult({
