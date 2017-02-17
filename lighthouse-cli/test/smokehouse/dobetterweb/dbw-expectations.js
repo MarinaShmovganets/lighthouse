@@ -194,6 +194,20 @@ module.exports = [
       }
     }
   }, {
+    initialUrl: 'https://www.chromestatus.com/features',
+    url: 'https://www.chromestatus.com/features',
+    audits: {
+      'dom-size': {
+        score: 100,
+        extendedInfo: {
+          value: {
+            1: {value: '20'},
+            2: {snippet: 'Element with most children:\nul#versionlist.canaryisdev'}
+          }
+        }
+      }
+    }
+  }, {
     initialUrl: 'http://localhost:10200/online-only.html',
     url: 'http://localhost:10200/online-only.html',
     audits: {
