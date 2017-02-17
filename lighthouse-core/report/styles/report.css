@@ -44,7 +44,7 @@ span, div, p, section, header, h1, h2, li, ul {
   --subheading-color: inherit;
   --heading-font-size: 24px;
   --heading-line-height: 32px;
-  --subitem-indent: 24px;
+  --subitem-indent: 16px;
   --max-line-length: none;
 
   --report-width: 1280px;
@@ -63,7 +63,6 @@ span, div, p, section, header, h1, h2, li, ul {
   --report-header-height: 0;
   --heading-font-size: 20px;
   --heading-line-height: 24px;
-  --subitem-indent: 24px;
   --max-line-length: calc(60 * var(--body-font-size));
 }
 
@@ -701,10 +700,16 @@ summary {
   cursor: pointer;
 }
 
-.aggregation__header > .aggregation__header__score {
+.aggregation__header .aggregation__header__score {
   margin-top: 0;
   position: absolute;
-  left: calc(-1 * var(--subitem-indent));
+  left: calc(-1 * var(--aggregation-icon-size) - var(--subitem-indent) / 2);
+  width: var(--aggregation-icon-size);
+  height: var(--aggregation-icon-size);
+}
+
+.aggregation__header .aggregation__header__score::after {
+  background-size: 14px;
 }
 
 .aggregation__header > h2 {
@@ -715,8 +720,10 @@ summary {
 }
 
 .aggregation {
+  --aggregation-icon-size: 20px;
   margin-top: var(--subheading-line-height);
   max-width: var(--max-line-length);
+  padding-left: calc(var(--aggregation-icon-size) + var(--subitem-indent) / 2);
 }
 
 .aggregation__details {
@@ -737,6 +744,8 @@ summary {
 
 .aggregation__desc {
   font-size: var(--body-font-size);
+  /*font-style: italic;*/
+  color: var(--secondary-text-color);
   line-height: var(--body-line-height);
   margin-top: calc(var(--body-line-height) / 2);
 }
@@ -749,7 +758,7 @@ summary {
 .subitem {
   position: relative;
   font-size: var(--subitem-font-size);
-  padding-left: calc(var(--subitem-indent) + var(--gutter-width) + var(--gutter-gap));
+  padding-left: calc(var(--subitem-indent) * 3);
   margin-top: calc(var(--subitem-line-height) / 2);
 }
 
@@ -768,7 +777,7 @@ summary {
 .subitem-result {
   position: absolute;
   top: 0;
-  left: var(--subitem-indent);
+  left: 0;
   width: var(--gutter-width);
   display: flex;
   flex-direction: column;
