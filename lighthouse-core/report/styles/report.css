@@ -97,6 +97,7 @@ body {
 
 summary {
   cursor: pointer;
+  display: block; /* Firefox compat */
 }
 
 .report-error {
@@ -440,6 +441,7 @@ summary {
   background-color: inherit;
   clip: rect(0, calc( var(--report-width) - var(--report-menu-width)), 0, 0);
   opacity: 0;
+  visibility: hidden;
   transition: all 200ms cubic-bezier(0,0,0.2,1);
   border-bottom: 1px solid #ebebeb;
 }
@@ -447,6 +449,7 @@ summary {
 .report-body__header-container.expanded .report-body__header-content {
   clip: rect(0, calc( var(--report-width) - var(--report-menu-width)), 200px, 0);
   opacity: 1;
+  visibility: visible;
 }
 
 .report-body__header-content .config-section {
@@ -708,6 +711,10 @@ summary {
   height: var(--aggregation-icon-size);
 }
 
+.aggregation__header :-moz-any(.aggregation__header__score) {
+  margin-top: calc(-1 * var(--subitem-indent) / 2); /* FF compat*/
+}
+
 .aggregation__header .aggregation__header__score::after {
   background-size: 14px;
 }
@@ -732,6 +739,10 @@ summary {
 
 .aggregation__details > summary {
   outline: none;
+}
+
+.aggregation__details > summary::-moz-list-bullet {
+  display: none;
 }
 
 .aggregation__details > summary::-webkit-details-marker {
