@@ -233,21 +233,21 @@ function expandArtifacts(artifacts) {
   return artifacts;
 }
 
-function merge(value, extension) {
-  if (typeof value === 'undefined') {
+function merge(base, extension) {
+  if (typeof base === 'undefined') {
     return extension;
   } else if (Array.isArray(extension)) {
-    if (!Array.isArray(value)) throw new TypeError(`Expected array but got ${typeof value}`);
-    return value.concat(extension);
+    if (!Array.isArray(base)) throw new TypeError(`Expected array but got ${typeof base}`);
+    return base.concat(extension);
   } else if (typeof extension === 'object') {
-    if (typeof value !== 'object') throw new TypeError(`Expected array but got ${typeof value}`);
+    if (typeof base !== 'object') throw new TypeError(`Expected object but got ${typeof base}`);
     Object.keys(extension).forEach(key => {
-      value[key] = merge(value[key], extension[key]);
+      base[key] = merge(base[key], extension[key]);
     });
-    return value;
-  } else {
-    return extension;
+    return base;
   }
+
+  return extension;
 }
 
 function deepClone(json) {
@@ -285,7 +285,7 @@ class Config {
       configJSON.audits = Array.from(inputConfig.audits);
     }
 
-    // Extend the default config is specified
+    // Extend the default config if specified
     if (configJSON.extends) {
       configJSON = Config.extendConfigJSON(deepClone(defaultConfig), configJSON);
     }
@@ -308,6 +308,11 @@ class Config {
     validatePasses(configJSON.passes, this._audits, this._configDir);
   }
 
+  /**
+   * @param {!Object} baseJSON The JSON of the configuration to extend
+   * @param {!Object} extendJSON The JSON of the extensions
+   * @return {!Object}
+   */
   static extendConfigJSON(baseJSON, extendJSON) {
     if (extendJSON.passes) {
       extendJSON.passes.forEach(pass => {
@@ -322,11 +327,7 @@ class Config {
       delete extendJSON.passes;
     }
 
-    Object.keys(extendJSON).forEach(key => {
-      baseJSON[key] = merge(baseJSON[key], extendJSON[key]);
-    });
-
-    return baseJSON;
+    return merge(baseJSON, extendJSON);
   }
 
   /**
