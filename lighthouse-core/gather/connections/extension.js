@@ -136,8 +136,7 @@ class ExtensionConnection extends Connection {
     return new Promise((resolve, reject) => {
       const queryOpts = {
         active: true,
-        lastFocusedWindow: true,
-        windowType: 'normal'
+        lastFocusedWindow: true
       };
 
       chrome.tabs.query(queryOpts, (tabs => {
@@ -159,7 +158,7 @@ class ExtensionConnection extends Connection {
   getCurrentTabURL() {
     return this._queryCurrentTab().then(tab => {
       if (!tab.url) {
-        log.error('ExtensionConnection', 'getCurrentTabURL returned empty string');
+        log.error('ExtensionConnection', 'getCurrentTabURL returned empty string', tab);
       }
       return tab.url;
     });
