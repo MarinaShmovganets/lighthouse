@@ -7,6 +7,9 @@ const del = require('del');
 const gutil = require('gulp-util');
 const runSequence = require('run-sequence');
 const gulp = require('gulp');
+const handlebars = require('gulp-handlebars');
+const declare = require('gulp-declare');
+const concat = require('gulp-concat');
 const browserify = require('browserify');
 const chromeManifest = require('gulp-chrome-manifest');
 const debug = require('gulp-debug');
@@ -95,6 +98,19 @@ function applyBrowserifyTransforms(bundle) {
   });
 }
 
+gulp.task('compile-templates', function() {
+  gulp.src('../lighthouse-core/**/templates/*.html')
+    .pipe(handlebars({
+      handlebars: require('handlebars')
+    }))
+    .pipe(declare({
+      namespace: 'report.template',
+      noRedeclare: true, // Avoid duplicate declarations
+    }))
+    .pipe(concat('report-templates.js'))
+    .pipe(gulp.dest('../lighthouse-core/report/templates/'));
+});
+
 gulp.task('browserify-lighthouse', () => {
   return gulp.src([
     'app/src/lighthouse-background.js'
@@ -161,7 +177,7 @@ gulp.task('clean', () => {
   );
 });
 
-gulp.task('watch', ['lint', 'browserify', 'html'], () => {
+gulp.task('watch', ['lint', 'browserify', 'html', 'compile-templates'], () => {
   livereload.listen();
 
   gulp.watch([
@@ -178,6 +194,10 @@ gulp.task('watch', ['lint', 'browserify', 'html'], () => {
     'app/src/**/*.js',
     '../lighthouse-core/**/*.js'
   ], ['browserify']);
+
+  gulp.watch([
+    '../lighthouse-core/**/*.html'
+  ], ['compile-templates']);
 });
 
 gulp.task('package', function() {

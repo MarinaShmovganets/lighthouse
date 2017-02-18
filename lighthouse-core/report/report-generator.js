@@ -21,6 +21,7 @@
 const Formatter = require('../formatters/formatter');
 const Handlebars = require('handlebars');
 const handlebarHelpers = require('./handlebar-helpers');
+const reportTemplate = require('./templates/report-templates');
 const fs = require('fs');
 const path = require('path');
 
@@ -133,7 +134,7 @@ class ReportGenerator {
    * @return {string} HTML of the exception page.
    */
   renderException(err, results) {
-    const template = Handlebars.compile(this.getExceptionTemplate());
+    const template = reportTemplate.report.template['exception'];
     return template({
       errMessage: err.message,
       errStack: err.stack,
@@ -186,7 +187,8 @@ class ReportGenerator {
       });
     });
 
-    const template = Handlebars.compile(this.getReportTemplate());
+    const template = Handlebars.template(reportTemplate.report.template['report-template']);
+
     return template({
       url: results.url,
       lighthouseVersion: results.lighthouseVersion,

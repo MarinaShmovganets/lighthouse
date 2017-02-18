@@ -20,6 +20,9 @@
 const del = require('del');
 const gulp = require('gulp');
 const gulpLoadPlugins = require('gulp-load-plugins');
+const handlebars = require('gulp-handlebars');
+const declare = require('gulp-declare');
+const concat = require('gulp-concat');
 const runSequence = require('run-sequence');
 const browserify = require('browserify');
 const ghpages = require('gh-pages');
@@ -103,6 +106,19 @@ gulp.task('browserify', () => {
     .pipe(gulp.dest(`${DIST_FOLDER}/src`));
 });
 
+gulp.task('compile-templates', function() {
+  gulp.src('../lighthouse-core/**/templates/*.html')
+    .pipe(handlebars({
+      handlebars: require('handlebars')
+    }))
+    .pipe(declare({
+      namespace: 'report.template',
+      noRedeclare: true, // Avoid duplicate declarations
+    }))
+    .pipe(concat('report-templates.js'))
+    .pipe(gulp.dest('../lighthouse-core/report/templates/'));
+});
+
 gulp.task('compile', ['browserify'], () => {
   return gulp.src([`${DIST_FOLDER}/src/main.js`])
     .pipe($.uglify()) // minify.
@@ -116,28 +132,39 @@ gulp.task('clean', () => {
   );
 });
 
-gulp.task('watch', ['lint', 'browserify', 'polyfills', 'html', 'images', 'concat-css'], () => {
-  gulp.watch([
-    'app/styles/**/*.css',
-    '../lighthouse-core/report/styles/**/*.css',
-    '../lighthouse-core/formatters/partials/*.css'
-  ]).on('change', () => {
-    runSequence('concat-css');
-  });
+gulp.task('watch', [
+  'lint',
+  'browserify',
+  'polyfills',
+  'html',
+  'images',
+  'concat-css',
+  'compile-templates'], () => {
+    gulp.watch([
+      'app/styles/**/*.css',
+      '../lighthouse-core/report/styles/**/*.css',
+      '../lighthouse-core/formatters/partials/*.css'
+    ]).on('change', () => {
+      runSequence('concat-css');
+    });
 
-  gulp.watch([
-    'app/index.html',
-    'app/manifest.json',
-    'app/sw.js'
-  ]).on('change', () => {
-    runSequence('html');
-  });
+    gulp.watch([
+      'app/index.html',
+      'app/manifest.json',
+      'app/sw.js'
+    ]).on('change', () => {
+      runSequence('html');
+    });
 
-  gulp.watch([
-    'app/src/**/*.js',
-    '../lighthouse-core/**/*.js'
-  ], ['browserify']);
-});
+    gulp.watch([
+      'app/src/**/*.js',
+      '../lighthouse-core/**/*.js'
+    ], ['browserify']);
+
+    gulp.watch([
+      '../lighthouse-core/**/*.html'
+    ], ['compile-templates']);
+  });
 
 gulp.task('create-dir-for-gh-pages', () => {
   del.sync([`${DIST_FOLDER}/viewer`]);
