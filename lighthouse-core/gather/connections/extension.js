@@ -136,7 +136,7 @@ class ExtensionConnection extends Connection {
     return new Promise((resolve, reject) => {
       const queryOpts = {
         active: true,
-        lastFocusedWindow: true
+        currentWindow: true
       };
 
       chrome.tabs.query(queryOpts, (tabs => {
@@ -146,6 +146,9 @@ class ExtensionConnection extends Connection {
         if (tabs.length === 0) {
           const message = 'Couldn\'t resolve current tab. Please file a bug.';
           return reject(new Error(message));
+        }
+        if (tabs.length > 1) {
+          log.warn('ExtensionConnection', '_queryCurrentTab returned multiple tabs');
         }
         resolve(tabs[0]);
       }));
