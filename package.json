@@ -45,6 +45,8 @@
     "eslint-config-google": "^0.7.1",
     "google-closure-compiler": "^20161201.0.0",
     "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-declare": "^0.3.0",
     "gulp-define-module": "^0.1.5",
     "gulp-handlebars": "^4.0.0",
     "gulp-replace": "^0.5.4",
