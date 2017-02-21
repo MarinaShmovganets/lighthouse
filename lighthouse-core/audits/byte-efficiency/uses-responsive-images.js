@@ -89,6 +89,7 @@ class UsesResponsiveImages extends Audit {
     let debugString;
     const DPR = contentWidth.devicePixelRatio;
     const resultsMap = images.reduce((results, image) => {
+      // TODO: give SVG a free pass until a detail per pixel metric is available
       if (!image.networkRecord || image.networkRecord.mimeType === 'image/svg+xml') {
         return results;
       }
