@@ -21,7 +21,6 @@
 const assert = require('assert');
 const walk = require('walk');
 const path = require('path');
-const Handlebars = require('handlebars');
 
 const walkTree = new Promise((resolve, reject) => {
   const fullFilePath = path.join(__dirname, '../../formatters/');
@@ -43,6 +42,7 @@ const walkTree = new Promise((resolve, reject) => {
 });
 
 describe('Formatters', () => {
+  /* TODO : Remove these tests and add appropriate tests based on handlebar pre-compiled templates
   it('has no formatters failing when getFormatter("html") is called', () => {
     return walkTree.then(formatters => {
       formatters.forEach(formatter => {
@@ -89,7 +89,7 @@ describe('Formatters', () => {
         assert.ok(typeof pretty({}) === 'string');
       });
     });
-  });
+  });*/
 
   it('has no formatters succeeding when getFormatter("invalid-formatter") is called', () => {
     return walkTree.then(formatters => {

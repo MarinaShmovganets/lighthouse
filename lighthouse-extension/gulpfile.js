@@ -98,7 +98,7 @@ function applyBrowserifyTransforms(bundle) {
   });
 }
 
-gulp.task('compile-templates', function() {
+gulp.task('compile-report', function() {
   gulp.src('../lighthouse-core/**/templates/*.html')
     .pipe(handlebars({
       handlebars: require('handlebars')
@@ -109,6 +109,19 @@ gulp.task('compile-templates', function() {
     }))
     .pipe(concat('report-templates.js'))
     .pipe(gulp.dest('../lighthouse-core/report/templates/'));
+});
+
+gulp.task('compile-partials', function() {
+  gulp.src('../lighthouse-core/formatters/partials/*.html')
+    .pipe(handlebars({
+      handlebars: require('handlebars')
+    }))
+    .pipe(declare({
+      namespace: 'report.partials',
+      noRedeclare: true, // Avoid duplicate declarations
+    }))
+    .pipe(concat('report-partials.js'))
+    .pipe(gulp.dest('../lighthouse-core/formatters/partials/templates/'));
 });
 
 gulp.task('browserify-lighthouse', () => {
@@ -177,7 +190,7 @@ gulp.task('clean', () => {
   );
 });
 
-gulp.task('watch', ['lint', 'browserify', 'html', 'compile-templates'], () => {
+gulp.task('watch', ['lint', 'browserify', 'html', 'compile-report', 'compile-partials'], () => {
   livereload.listen();
 
   gulp.watch([
@@ -197,7 +210,11 @@ gulp.task('watch', ['lint', 'browserify', 'html', 'compile-templates'], () => {
 
   gulp.watch([
     '../lighthouse-core/**/*.html'
-  ], ['compile-templates']);
+  ], ['compile-report']);
+
+  gulp.watch([
+    '../lighthouse-core/formatters/partials/*.html'
+  ], ['compile-partials']);
 });
 
 gulp.task('package', function() {
@@ -207,9 +224,11 @@ gulp.task('package', function() {
   .pipe(gulp.dest('package'));
 });
 
+gulp.task('compile-templates', ['compile-report', 'compile-partials']);
+
 gulp.task('build', cb => {
   runSequence(
-    'lint', 'browserify', 'chromeManifest',
+    'lint', 'browserify', 'chromeManifest', 'compile-templates',
     ['html', 'images', 'css', 'extras'], cb);
 });
 

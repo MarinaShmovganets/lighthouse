@@ -106,7 +106,7 @@ gulp.task('browserify', () => {
     .pipe(gulp.dest(`${DIST_FOLDER}/src`));
 });
 
-gulp.task('compile-templates', function() {
+gulp.task('compile-report', function() {
   gulp.src('../lighthouse-core/**/templates/*.html')
     .pipe(handlebars({
       handlebars: require('handlebars')
@@ -118,6 +118,20 @@ gulp.task('compile-templates', function() {
     .pipe(concat('report-templates.js'))
     .pipe(gulp.dest('../lighthouse-core/report/templates/'));
 });
+
+gulp.task('compile-partials', function() {
+  gulp.src('../lighthouse-core/formatters/partials/*.html')
+    .pipe(handlebars({
+      handlebars: require('handlebars')
+    }))
+    .pipe(declare({
+      namespace: 'report.partials',
+      noRedeclare: true, // Avoid duplicate declarations
+    }))
+    .pipe(concat('report-partials.js'))
+    .pipe(gulp.dest('../lighthouse-core/formatters/partials/templates/'));
+});
+
 
 gulp.task('compile', ['browserify'], () => {
   return gulp.src([`${DIST_FOLDER}/src/main.js`])
@@ -139,7 +153,8 @@ gulp.task('watch', [
   'html',
   'images',
   'concat-css',
-  'compile-templates'], () => {
+  'compile-report',
+  'compile-partials'], () => {
     gulp.watch([
       'app/styles/**/*.css',
       '../lighthouse-core/report/styles/**/*.css',
@@ -157,13 +172,12 @@ gulp.task('watch', [
     });
 
     gulp.watch([
-      'app/src/**/*.js',
-      '../lighthouse-core/**/*.js'
-    ], ['browserify']);
+      '../lighthouse-core/**/*.html'
+    ], ['compile-report']);
 
     gulp.watch([
-      '../lighthouse-core/**/*.html'
-    ], ['compile-templates']);
+      '../lighthouse-core/formatters/partials/*.html'
+    ], ['compile-partials']);
   });
 
 gulp.task('create-dir-for-gh-pages', () => {
@@ -186,9 +200,11 @@ gulp.task('deploy', cb => {
   });
 });
 
+gulp.task('compile-templates', ['compile-report', 'compile-partials']);
+
 gulp.task('build', cb => {
   runSequence(
-    'lint', 'compile',
+    'lint', 'compile', 'compile-templates',
     ['html', 'images', 'concat-css', 'polyfills'], cb);
 });
 

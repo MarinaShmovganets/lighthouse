@@ -19,9 +19,10 @@
 /* global Intl */
 
 const Formatter = require('../formatters/formatter');
-const Handlebars = require('handlebars');
+const Handlebars = require('handlebars/runtime');
 const handlebarHelpers = require('./handlebar-helpers');
 const reportTemplate = require('./templates/report-templates');
+const reportPartials = require('../formatters/partials/templates/report-partials');
 const fs = require('fs');
 const path = require('path');
 
@@ -39,22 +40,6 @@ class ReportGenerator {
    */
   _escapeScriptTags(jsonStr) {
     return jsonStr.replace(/<\/script>/g, '<\\/script>');
-  }
-
-  /**
-   * Gets the template for the report.
-   * @return {string}
-   */
-  getReportTemplate() {
-    return fs.readFileSync(path.join(__dirname, './templates/report-template.html'), 'utf8');
-  }
-
-  /**
-   * Gets the template for any exceptions.
-   * @return {string}
-   */
-  getExceptionTemplate() {
-    return fs.readFileSync(path.join(__dirname, './templates/exception.html'), 'utf8');
   }
 
   /**
@@ -165,7 +150,11 @@ class ReportGenerator {
         Handlebars.registerHelper(helpers);
       }
 
-      Handlebars.registerPartial(audit.name, formatter.getFormatter('html'));
+      const partials =reportPartials.report.partials;
+      Handlebars.registerPartial(audit.name,
+        Handlebars.template(
+          partials[audit.name] ? partials[audit.name] : partials['empty-formatter']
+        ));
     });
   }
 
