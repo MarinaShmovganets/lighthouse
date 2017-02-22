@@ -276,11 +276,11 @@ function saveResults(results: Results,
     return promise.then(_ => Printer.write(results, flags.output, flags.outputPath));
 }
 
-function runLighthouse(url: string,
+export function runLighthouse(url: string,
                        flags: {port: number, skipAutolaunch: boolean, selectChrome: boolean, output: any,
                          outputPath: string, interactive: boolean, saveArtifacts: boolean, saveAssets: boolean
                          maxWaitForLoad: number},
-                       config: Object): Promise<undefined> {
+                       config: Object | null): Promise<undefined> {
 
   let chromeLauncher: ChromeLauncher;
   return initPort(flags)
@@ -290,9 +290,9 @@ function runLighthouse(url: string,
     .then((results: Results) => {
       // remove artifacts from result so reports won't include artifacts.
       const artifacts = results.artifacts;
-      results.artifacts = undefined;
+      delete results.artifacts;
 
-      let promise = saveResults(results, artifacts, flags);
+      let promise = saveResults(results, artifacts!, flags);
       if (flags.interactive) {
         promise = promise.then(() => performanceXServer.hostExperiment({url, flags, config}, results));
       }
@@ -301,15 +301,14 @@ function runLighthouse(url: string,
     })
     .then(() => chromeLauncher.kill())
     .catch(err => {
-      return chromeLauncher.kill().then(() => handleError(err), handleError);
-    });
+      if (typeof chromeLauncher !== 'undefined') {
+        return chromeLauncher.kill().then(() => handleError(err), handleError);
+      }
+
+      return handleError(err);
+    })
 }
 
-function run() {
+export function run() {
   return runLighthouse(url, cliFlags, config);
-}
-
-export {
-  runLighthouse,
-  run
 }
