@@ -12,8 +12,7 @@ const chromeManifest = require('gulp-chrome-manifest');
 const debug = require('gulp-debug');
 const eslint = require('gulp-eslint');
 const livereload = require('gulp-livereload');
-const uglifyJsHarmony = require('uglify-js-harmony');
-const uglify = require('gulp-uglify/minifier');
+const babel = require('babel-core');
 const tap = require('gulp-tap');
 const zip = require('gulp-zip');
 const LighthouseRunner = require('../lighthouse-core/runner');
@@ -28,15 +27,6 @@ const computedArtifacts = fs.readdirSync(
     path.join(__dirname, '../lighthouse-core/gather/computed/'))
     .filter(f => /\.js$/.test(f))
     .map(f => '../lighthouse-core/gather/computed/' + f.replace(/\.js$/, ''));
-
-/**
- * Removes inlined license comments from file.
- * @param {string} fileContent File content as a string.
- * @return {string} modified file str
- */
-// function stripInlineLicenseComments(fileContent) {
-//   return fileContent.replace(/(<!--|\/\*\*)[\s\S]*?\d{4} Google Inc[\s\S]*?(-->|\*\/)/g, '');
-// }
 
 gulp.task('extras', () => {
   return gulp.src([
@@ -164,28 +154,18 @@ gulp.task('browserify', cb => {
 
 gulp.task('compilejs', () => {
   const opts = {
-    mangle: false, // Preserve  array notation property access. Needed for artifact name lookups.
-    warnings: true,
-    compress: { // turn off a bunch stuff so we don't create unexpected errors.
-      unused: false,
-      properties: false,
-      dead_code: false,
-      side_effects: false
-    }
+    compact: true, // Do not include superfluous whitespace characters and line terminators.
+    retainLines: true, // Keep things on the same line (looks wonky but helps with stacktraces)
+    comments: false, // Don't output comments
+    shouldPrintComment: _ => false, // Don't include @license or @preserve comments either
   };
 
   return gulp.src(['dist/scripts/lighthouse-background.js'])
-    .pipe(uglify(opts, uglifyJsHarmony).on('error', err => {
-      gutil.log(gutil.colors.red('[Error]'), err.toString());
-      // eslint-disable-next-line no-invalid-this
-      this.emit('end');
+    .pipe(tap(file => {
+      const minified = babel.transform(file.contents.toString(), opts).code;
+      file.contents = new Buffer(minified);
+      return file;
     }))
-    // TODO: strip out headers. This was causing errors, but we should do it.
-    // .pipe(tap(file => {
-    //   const content = file.contents.toString();
-    //   file.contents = new Buffer(stripInlineLicenseComments(content));
-    //   return file;
-    // }))
     .pipe(gulp.dest('dist/scripts'));
 });
 
