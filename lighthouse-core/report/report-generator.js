@@ -119,7 +119,7 @@ class ReportGenerator {
    * @return {string} HTML of the exception page.
    */
   renderException(err, results) {
-    const template = reportTemplate.report.template['exception'];
+    const template = reportTemplate.report.template.exception;
     return template({
       errMessage: err.message,
       errStack: err.stack,
@@ -150,11 +150,9 @@ class ReportGenerator {
         Handlebars.registerHelper(helpers);
       }
 
-      const partials =reportPartials.report.partials;
+      const partials = reportPartials.report.partials;
       Handlebars.registerPartial(audit.name,
-        Handlebars.template(
-          partials[audit.name] ? partials[audit.name] : partials['empty-formatter']
-        ));
+        Handlebars.template(partials[audit.name] || partials['empty-formatter']));
     });
   }
 
