@@ -28,6 +28,7 @@
     "estimated-input-latency",
     "time-to-interactive",
     "user-timings",
+    "page-execution-timings",
     "screenshots",
     "critical-request-chains",
     "byte-efficiency/unused-css-rules",
@@ -77,7 +78,8 @@
         "critical-request-chains": {},
         "link-blocking-first-paint": {},
         "script-blocking-first-paint": {},
-        "user-timings": {}
+        "user-timings": {},
+        "page-execution-timings": {}
       }
     }]
   }]

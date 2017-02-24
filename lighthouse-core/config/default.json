@@ -67,6 +67,7 @@
     "estimated-input-latency",
     "time-to-interactive",
     "user-timings",
+    "page-execution-timings",
     "screenshots",
     "critical-request-chains",
     "manifest-exists",
@@ -421,6 +422,10 @@
         },
         "user-timings": {
           "expectedValue": true,
+          "weight": 1
+        },
+        "page-execution-timings": {
+          "expectedValue": 0,
           "weight": 1
         }
       }
