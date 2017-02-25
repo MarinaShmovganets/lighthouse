@@ -302,7 +302,7 @@ class GatherRunner {
     };
 
     if (typeof options.url !== 'string' || options.url.length === 0) {
-      return Promise.reject(new Error('You must provide a url to the driver'));
+      return Promise.reject(new Error('You must provide a url to the gather-runner'));
     }
 
     if (typeof options.flags === 'undefined') {
@@ -333,6 +333,7 @@ class GatherRunner {
         return passes.reduce((chain, config, passIndex) => {
           const runOptions = Object.assign({}, options, {config});
           return chain
+            .then(_ => driver.setThrottling(options.flags, config))
             .then(_ => GatherRunner.beforePass(runOptions, gathererResults))
             .then(_ => GatherRunner.pass(runOptions, gathererResults))
             .then(_ => GatherRunner.afterPass(runOptions, gathererResults))
