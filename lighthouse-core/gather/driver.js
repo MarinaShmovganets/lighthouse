@@ -596,7 +596,10 @@ class Driver {
       .then(_ => this.sendCommand('Tracing.start', tracingOpts));
   }
 
-  endTrace() {
+  /**
+   * @param {number=} pauseAfterTraceMs Wait this many milliseconds before ending the trace
+   */
+  endTrace(pauseAfterTraceMs = 500) {
     return new Promise((resolve, reject) => {
       // When the tracing has ended this will fire with a stream handle.
       this.once('Tracing.tracingComplete', streamHandle => {
@@ -606,7 +609,7 @@ class Driver {
       });
 
       // Issue the command to stop tracing.
-      this.sendCommand('Tracing.end').catch(reject);
+      setTimeout(() => this.sendCommand('Tracing.end').catch(reject), pauseAfterTraceMs);
     });
   }
 
