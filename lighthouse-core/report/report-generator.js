@@ -152,7 +152,7 @@ class ReportGenerator {
 
       const partials = reportPartials.report.partials;
       Handlebars.registerPartial(audit.name,
-        Handlebars.template(partials[audit.name] || partials['empty-formatter']));
+        Handlebars.template(partials[audit.name] || partials['null-formatter']));
     });
   }
 
