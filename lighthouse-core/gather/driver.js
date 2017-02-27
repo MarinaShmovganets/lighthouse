@@ -597,7 +597,7 @@ class Driver {
   }
 
   /**
-   * @param {number=} pauseAfterTraceMs Wait this many milliseconds before ending the trace
+   * @param {number=} pauseBeforeTraceEndMs Wait this many milliseconds before ending the trace
    */
   endTrace(pauseBeforeTraceEndMs = 0) {
     return new Promise((resolve, reject) => {
