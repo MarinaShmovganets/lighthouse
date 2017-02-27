@@ -21,6 +21,7 @@
 const assert = require('assert');
 const walk = require('walk');
 const path = require('path');
+const Handlebars = require('handlebars');
 
 const walkTree = new Promise((resolve, reject) => {
   const fullFilePath = path.join(__dirname, '../../formatters/');
@@ -42,8 +43,8 @@ const walkTree = new Promise((resolve, reject) => {
 });
 
 describe('Formatters', () => {
-  /* TODO : Remove these tests and add appropriate tests based on handlebar pre-compiled templates
-  it('has no formatters failing when getFormatter("html") is called', () => {
+  // TODO : Remove these tests and add appropriate tests based on handlebar pre-compiled templates
+  it.skip('has no formatters failing when getFormatter("html") is called', () => {
     return walkTree.then(formatters => {
       formatters.forEach(formatter => {
         assert.doesNotThrow(_ => formatter.getFormatter('html'));
@@ -51,7 +52,7 @@ describe('Formatters', () => {
     });
   });
 
-  it('has formatters that return valid HTML', () => {
+  it.skip('has formatters that return valid HTML', () => {
     return walkTree.then(formatters => {
       formatters.forEach(formatter => {
         Handlebars.registerHelper(formatter.getHelpers());
@@ -63,7 +64,7 @@ describe('Formatters', () => {
     });
   });
 
-  it('has no formatters failing when getFormatter("pretty") is called', () => {
+  it.skip('has no formatters failing when getFormatter("pretty") is called', () => {
     return walkTree.then(formatters => {
       formatters.forEach(formatter => {
         assert.doesNotThrow(_ => formatter.getFormatter('pretty'));
@@ -71,7 +72,7 @@ describe('Formatters', () => {
     });
   });
 
-  it('has formatters that return a function for pretty printing', () => {
+  it.skip('has formatters that return a function for pretty printing', () => {
     return walkTree.then(formatters => {
       formatters.forEach(formatter => {
         const pretty = formatter.getFormatter('pretty');
@@ -80,7 +81,7 @@ describe('Formatters', () => {
     });
   });
 
-  it('has formatters that cope with empty or invalid input', () => {
+  it.skip('has formatters that cope with empty or invalid input', () => {
     return walkTree.then(formatters => {
       formatters.forEach(formatter => {
         const pretty = formatter.getFormatter('pretty');
@@ -89,7 +90,7 @@ describe('Formatters', () => {
         assert.ok(typeof pretty({}) === 'string');
       });
     });
-  });*/
+  });
 
   it('has no formatters succeeding when getFormatter("invalid-formatter") is called', () => {
     return walkTree.then(formatters => {
