@@ -18,6 +18,7 @@ const LighthouseRunner = require('../lighthouse-core/runner');
 
 const compileReport = require('../gulp/compile-report');
 const compilePartials = require('../gulp/compile-partials');
+const config = require('../gulp/config');
 
 const audits = LighthouseRunner.getAuditList()
     .map(f => '../lighthouse-core/audits/' + f.replace(/\.js$/, ''));
@@ -48,7 +49,7 @@ gulp.task('extras', () => {
     dot: true
   })
   .pipe(debug({title: 'copying to dist:'}))
-  .pipe(gulp.dest('dist'));
+  .pipe(gulp.dest(config.dist));
 });
 
 gulp.task('lint', () => {
@@ -63,17 +64,17 @@ gulp.task('lint', () => {
 
 gulp.task('images', () => {
   return gulp.src('app/images/**/*')
-  .pipe(gulp.dest('dist/images'));
+  .pipe(gulp.dest(`${config.dist}/images`));
 });
 
 gulp.task('css', () => {
   return gulp.src('app/styles/**/*.css')
-  .pipe(gulp.dest('dist/styles'));
+  .pipe(gulp.dest(`${config.dist}/styles`));
 });
 
 gulp.task('html', () => {
   return gulp.src('app/*.html')
-  .pipe(gulp.dest('dist'));
+  .pipe(gulp.dest(config.dist));
 });
 
 gulp.task('chromeManifest', () => {
@@ -88,7 +89,7 @@ gulp.task('chromeManifest', () => {
   };
   return gulp.src('app/manifest.json')
   .pipe(chromeManifest(manifestOpts))
-  .pipe(gulp.dest('dist'));
+  .pipe(gulp.dest(config.dist));
 });
 
 function applyBrowserifyTransforms(bundle) {
@@ -155,7 +156,7 @@ gulp.task('browserify-other', () => {
       file.contents = bundle.bundle();
     }))
     .pipe(gulp.dest('app/scripts'))
-    .pipe(gulp.dest('dist/scripts'));
+    .pipe(gulp.dest(`${config.dist}/scripts`));
 });
 
 gulp.task('browserify', cb => {
@@ -163,7 +164,7 @@ gulp.task('browserify', cb => {
 });
 
 gulp.task('clean', () => {
-  return del(['.tmp', 'dist', 'app/scripts']).then(paths =>
+  return del(['.tmp', config.dist, 'app/scripts']).then(paths =>
     paths.forEach(path => gutil.log('deleted:', gutil.colors.blue(path)))
   );
 });
@@ -188,18 +189,18 @@ gulp.task('watch', ['lint', 'browserify', 'html', 'compileReport', 'compileParti
   ], ['browserify']);
 
   gulp.watch([
-    '../lighthouse-core/**/*.html'
+    config.report
   ], ['compileReport']);
 
   gulp.watch([
-    '../lighthouse-core/formatters/partials/*.html'
+    config.partials
   ], ['compilePartials']);
 });
 
 gulp.task('package', function() {
-  const manifest = require('./dist/manifest.json');
-  return gulp.src('dist/**')
-  .pipe(zip('lighthouse-' + manifest.version + '.zip'))
+  const manifest = require(`./${config.dist}/manifest.json`);
+  return gulp.src(`${config.dist}/**`)
+  .pipe(zip(`lighthouse-${manifest.version}.zip`))
   .pipe(gulp.dest('package'));
 });
 
