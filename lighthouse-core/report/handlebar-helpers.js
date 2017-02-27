@@ -63,10 +63,9 @@ const handlebarHelpers = {
     return calculateRating(totalScore);
   },
 
-  // Converts an aggregation's score to a rating used for styling.
+  // Converts an aggregation's score to a rating that can be used for styling.
   getAggregationScoreRating: score => {
-    const rating = calculateRating(score * 100);
-    return rating !== 'good' ? 'poor' : rating; // avg rating maps to failure for aggregation.
+    return calculateRating(Math.round(score * 100));
   },
 
   // Converts a value to a rating string, which can be used inside the report
@@ -151,8 +150,8 @@ const handlebarHelpers = {
 
     // Allow the report to inject HTML, but sanitize it first.
     // Viewer in particular, allows user's to upload JSON. To mitigate against
-    // XSS, define a renderer that only transforms links and code snippets.
-    // All other markdown ad HTML is ignored.
+    // XSS, define a renderer that only transforms a few types of markdown blocks.
+    // All other markdown and HTML is ignored.
     const renderer = new marked.Renderer();
     renderer.em = str => `<em>${str}</em>`;
     renderer.link = (href, title, text) => {
@@ -164,7 +163,7 @@ const handlebarHelpers = {
     };
     // eslint-disable-next-line no-unused-vars
     renderer.code = function(code, language) {
-      return `<pre>${code}</pre>`;
+      return `<pre>${Handlebars.Utils.escapeExpression(code)}</pre>`;
     };
     renderer.image = function(src, title, text) {
       return `<img src="${src}" alt="${text}" title="${title}">`;

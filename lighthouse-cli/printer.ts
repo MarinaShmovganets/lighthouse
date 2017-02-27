@@ -23,8 +23,8 @@
  *   'json': JSON formatted results
  *   'html': An HTML report
  */
-enum OutputMode { pretty, json, html };
-type Mode = 'pretty' | 'json' | 'html';
+enum OutputMode { pretty, json, html, none };
+type Mode = 'pretty' | 'json' | 'html' | 'none';
 
 import {Results, AuditResult} from './types/types';
 
@@ -80,7 +80,10 @@ function createOutput(results: Results, outputMode: OutputMode): string {
     return JSON.stringify(results, null, 2);
   }
 
-  // Pretty printed.
+  // No report (the new default)
+  if (outputMode === OutputMode.none) return '';
+
+  // Pretty printed CLI report.
   const version = results.lighthouseVersion;
   let output = `\n\n${log.bold}Lighthouse (${version}) results:${log.reset} ${results.url}\n\n`;
 
@@ -133,7 +136,7 @@ function createOutput(results: Results, outputMode: OutputMode): string {
 /**
  * Writes the output to stdout.
  */
-function writeToStdout(output: string): Promise<undefined> {
+function writeToStdout(output: string): Promise<{}> {
   return new Promise((resolve, reject) => {
     // small delay to avoid race with debug() logs
     setTimeout(_ => {
@@ -146,7 +149,7 @@ function writeToStdout(output: string): Promise<undefined> {
 /**
  * Writes the output to a file.
  */
-function writeFile(filePath: string, output: string, outputMode: OutputMode): Promise<undefined> {
+function writeFile(filePath: string, output: string, outputMode: OutputMode): Promise<{}> {
   return new Promise((resolve, reject) => {
     // TODO: make this mkdir to the filePath.
     fs.writeFile(filePath, output, 'utf8', (err: Error) => {
@@ -184,7 +187,8 @@ function write(results: Results, mode: Mode, path: string): Promise<Results> {
 function GetValidOutputOptions():Array<Mode> {
   return [OutputMode[OutputMode.pretty] as Mode,
           OutputMode[OutputMode.json] as Mode,
-          OutputMode[OutputMode.html] as Mode];
+          OutputMode[OutputMode.html] as Mode,
+          OutputMode[OutputMode.none] as Mode];
 }
 
 export {

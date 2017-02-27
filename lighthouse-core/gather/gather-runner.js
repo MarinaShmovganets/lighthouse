@@ -220,7 +220,7 @@ class GatherRunner {
     if (config.recordTrace) {
       pass = pass.then(_ => {
         log.log('status', 'Retrieving trace');
-        return driver.endTrace();
+        return driver.endTrace(config.pauseBeforeTraceEndMs);
       }).then(traceContents => {
         // Before Chrome 54.0.2816 (codereview.chromium.org/2161583004),
         // traceContents was an array of trace events; after, traceContents is
@@ -302,7 +302,7 @@ class GatherRunner {
     };
 
     if (typeof options.url !== 'string' || options.url.length === 0) {
-      return Promise.reject(new Error('You must provide a url to the driver'));
+      return Promise.reject(new Error('You must provide a url to the gather-runner'));
     }
 
     if (typeof options.flags === 'undefined') {
@@ -333,6 +333,7 @@ class GatherRunner {
         return passes.reduce((chain, config, passIndex) => {
           const runOptions = Object.assign({}, options, {config});
           return chain
+            .then(_ => driver.setThrottling(options.flags, config))
             .then(_ => GatherRunner.beforePass(runOptions, gathererResults))
             .then(_ => GatherRunner.pass(runOptions, gathererResults))
             .then(_ => GatherRunner.afterPass(runOptions, gathererResults))

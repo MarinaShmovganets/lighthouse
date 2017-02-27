@@ -3,6 +3,8 @@
     "passName": "defaultPass",
     "recordNetwork": true,
     "recordTrace": true,
+    "pauseBeforeTraceEndMs": 500,
+    "useThrottling": true,
     "gatherers": [
       "url",
       "https",
@@ -17,6 +19,7 @@
   {
     "passName": "offlinePass",
     "recordNetwork": true,
+    "useThrottling": false,
     "gatherers": [
       "service-worker",
       "offline"
@@ -24,6 +27,7 @@
   },
   {
     "passName": "redirectPass",
+    "useThrottling": false,
     "gatherers": [
       "http-redirect",
       "html-without-javascript"
@@ -31,6 +35,7 @@
   }, {
     "passName": "dbw",
     "recordNetwork": true,
+    "useThrottling": false,
     "gatherers": [
       "chrome-console-messages",
       "styles",
@@ -85,6 +90,7 @@
     "accessibility/image-alt",
     "accessibility/label",
     "accessibility/tabindex",
+    "byte-efficiency/total-byte-weight",
     "byte-efficiency/unused-css-rules",
     "byte-efficiency/uses-optimized-images",
     "byte-efficiency/uses-responsive-images",
@@ -280,22 +286,6 @@
         }
       }
     }, {
-      "name": "Using bytes efficiently",
-      "audits": {
-        "unused-css-rules": {
-          "expectedValue": true,
-          "weight": 1
-        },
-        "uses-optimized-images": {
-          "expectedValue": true,
-          "weight": 1
-        },
-        "uses-responsive-images": {
-          "expectedValue": true,
-          "weight": 1
-        }
-      }
-    }, {
       "name": "Using modern CSS features",
       "audits": {
         "no-old-flexbox": {
@@ -319,14 +309,6 @@
       "name": "Avoiding APIs that harm the user experience",
       "audits": {
         "no-document-write": {
-          "expectedValue": true,
-          "weight": 1
-        },
-        "link-blocking-first-paint": {
-          "expectedValue": true,
-          "weight": 1
-        },
-        "script-blocking-first-paint": {
           "expectedValue": true,
           "weight": 1
         },
@@ -401,18 +383,42 @@
       }
     }]
   }, {
-    "name": "Performance Metrics",
+    "name": "Performance",
     "description": "These encapsulate your app's performance.",
     "scored": false,
     "categorizable": false,
     "items": [{
       "audits": {
-        "dom-size": {
+        "unused-css-rules": {
+          "expectedValue": true,
+          "weight": 1
+        },
+        "uses-optimized-images": {
+          "expectedValue": true,
+          "weight": 1
+        },
+        "uses-responsive-images": {
+          "expectedValue": true,
+          "weight": 1
+        },
+        "total-byte-weight": {
           "expectedValue": 100,
           "weight": 1
         },
         "critical-request-chains": {
           "expectedValue": true,
+          "weight": 1
+        },
+        "link-blocking-first-paint": {
+          "expectedValue": true,
+          "weight": 1
+        },
+        "script-blocking-first-paint": {
+          "expectedValue": true,
+          "weight": 1
+        },
+        "dom-size": {
+          "expectedValue": 100,
           "weight": 1
         },
         "user-timings": {
