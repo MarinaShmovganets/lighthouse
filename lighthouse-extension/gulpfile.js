@@ -7,9 +7,6 @@ const del = require('del');
 const gutil = require('gulp-util');
 const runSequence = require('run-sequence');
 const gulp = require('gulp');
-const handlebars = require('gulp-handlebars');
-const declare = require('gulp-declare');
-const concat = require('gulp-concat');
 const browserify = require('browserify');
 const chromeManifest = require('gulp-chrome-manifest');
 const debug = require('gulp-debug');
@@ -18,6 +15,9 @@ const livereload = require('gulp-livereload');
 const tap = require('gulp-tap');
 const zip = require('gulp-zip');
 const LighthouseRunner = require('../lighthouse-core/runner');
+
+const compileReport = require('../gulp/compile-report');
+const compilePartials = require('../gulp/compile-partials');
 
 const audits = LighthouseRunner.getAuditList()
     .map(f => '../lighthouse-core/audits/' + f.replace(/\.js$/, ''));
@@ -29,6 +29,10 @@ const computedArtifacts = fs.readdirSync(
     path.join(__dirname, '../lighthouse-core/gather/computed/'))
     .filter(f => /\.js$/.test(f))
     .map(f => '../lighthouse-core/gather/computed/' + f.replace(/\.js$/, ''));
+
+
+gulp.task('compileReport', compileReport);
+gulp.task('compilePartials', compilePartials);
 
 gulp.task('extras', () => {
   return gulp.src([
@@ -98,32 +102,6 @@ function applyBrowserifyTransforms(bundle) {
   });
 }
 
-gulp.task('compile-report', function() {
-  gulp.src('../lighthouse-core/**/templates/*.html')
-    .pipe(handlebars({
-      handlebars: require('handlebars')
-    }))
-    .pipe(declare({
-      namespace: 'report.template',
-      noRedeclare: true, // Avoid duplicate declarations
-    }))
-    .pipe(concat('report-templates.js'))
-    .pipe(gulp.dest('../lighthouse-core/report/templates/'));
-});
-
-gulp.task('compile-partials', function() {
-  gulp.src('../lighthouse-core/formatters/partials/*.html')
-    .pipe(handlebars({
-      handlebars: require('handlebars')
-    }))
-    .pipe(declare({
-      namespace: 'report.partials',
-      noRedeclare: true, // Avoid duplicate declarations
-    }))
-    .pipe(concat('report-partials.js'))
-    .pipe(gulp.dest('../lighthouse-core/formatters/partials/templates/'));
-});
-
 gulp.task('browserify-lighthouse', () => {
   return gulp.src([
     'app/src/lighthouse-background.js'
@@ -190,7 +168,8 @@ gulp.task('clean', () => {
   );
 });
 
-gulp.task('watch', ['lint', 'browserify', 'html', 'compile-report', 'compile-partials'], () => {
+
+gulp.task('watch', ['lint', 'browserify', 'html', 'compileReport', 'compilePartials'], () => {
   livereload.listen();
 
   gulp.watch([
@@ -210,11 +189,11 @@ gulp.task('watch', ['lint', 'browserify', 'html', 'compile-report', 'compile-par
 
   gulp.watch([
     '../lighthouse-core/**/*.html'
-  ], ['compile-report']);
+  ], ['compileReport']);
 
   gulp.watch([
     '../lighthouse-core/formatters/partials/*.html'
-  ], ['compile-partials']);
+  ], ['compilePartials']);
 });
 
 gulp.task('package', function() {
@@ -224,7 +203,7 @@ gulp.task('package', function() {
   .pipe(gulp.dest('package'));
 });
 
-gulp.task('compile-templates', ['compile-report', 'compile-partials']);
+gulp.task('compile-templates', ['compileReport', 'compilePartials']);
 
 gulp.task('build', cb => {
   runSequence(

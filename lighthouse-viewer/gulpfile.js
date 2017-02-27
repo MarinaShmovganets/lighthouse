@@ -20,12 +20,12 @@
 const del = require('del');
 const gulp = require('gulp');
 const gulpLoadPlugins = require('gulp-load-plugins');
-const handlebars = require('gulp-handlebars');
-const declare = require('gulp-declare');
-const concat = require('gulp-concat');
 const runSequence = require('run-sequence');
 const browserify = require('browserify');
 const ghpages = require('gh-pages');
+
+const compileReport = require('../gulp/compile-report');
+const compilePartials = require('../gulp/compile-partials');
 
 const $ = gulpLoadPlugins();
 
@@ -37,6 +37,10 @@ function license() {
     tiny: true
   });
 }
+
+
+gulp.task('compileReport', compileReport);
+gulp.task('compilePartials', compilePartials);
 
 gulp.task('lint', () => {
   return gulp.src([
@@ -106,33 +110,6 @@ gulp.task('browserify', () => {
     .pipe(gulp.dest(`${DIST_FOLDER}/src`));
 });
 
-gulp.task('compile-report', function() {
-  gulp.src('../lighthouse-core/**/templates/*.html')
-    .pipe(handlebars({
-      handlebars: require('handlebars')
-    }))
-    .pipe(declare({
-      namespace: 'report.template',
-      noRedeclare: true, // Avoid duplicate declarations
-    }))
-    .pipe(concat('report-templates.js'))
-    .pipe(gulp.dest('../lighthouse-core/report/templates/'));
-});
-
-gulp.task('compile-partials', function() {
-  gulp.src('../lighthouse-core/formatters/partials/*.html')
-    .pipe(handlebars({
-      handlebars: require('handlebars')
-    }))
-    .pipe(declare({
-      namespace: 'report.partials',
-      noRedeclare: true, // Avoid duplicate declarations
-    }))
-    .pipe(concat('report-partials.js'))
-    .pipe(gulp.dest('../lighthouse-core/formatters/partials/templates/'));
-});
-
-
 gulp.task('compile', ['browserify'], () => {
   return gulp.src([`${DIST_FOLDER}/src/main.js`])
     .pipe($.uglify()) // minify.
@@ -153,8 +130,8 @@ gulp.task('watch', [
   'html',
   'images',
   'concat-css',
-  'compile-report',
-  'compile-partials'], () => {
+  'compileReport',
+  'compilePartials'], () => {
     gulp.watch([
       'app/styles/**/*.css',
       '../lighthouse-core/report/styles/**/*.css',
@@ -173,11 +150,11 @@ gulp.task('watch', [
 
     gulp.watch([
       '../lighthouse-core/**/*.html'
-    ], ['compile-report']);
+    ], ['compileReport']);
 
     gulp.watch([
       '../lighthouse-core/formatters/partials/*.html'
-    ], ['compile-partials']);
+    ], ['compilePartials']);
   });
 
 gulp.task('create-dir-for-gh-pages', () => {
@@ -200,7 +177,7 @@ gulp.task('deploy', cb => {
   });
 });
 
-gulp.task('compile-templates', ['compile-report', 'compile-partials']);
+gulp.task('compile-templates', ['compileReport', 'compilePartials']);
 
 gulp.task('build', cb => {
   runSequence(
