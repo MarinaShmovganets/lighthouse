@@ -189,11 +189,11 @@ gulp.task('watch', ['lint', 'browserify', 'html', 'compileReport', 'compileParti
   ], ['browserify']);
 
   gulp.watch([
-    config.report
+    `../${config.report}`
   ], ['compileReport']);
 
   gulp.watch([
-    config.partials
+    `../${config.partials}`
   ], ['compilePartials']);
 });
 

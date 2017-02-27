@@ -32,11 +32,10 @@ const $ = gulpLoadPlugins();
 
 function license() {
   return $.license('Apache', {
-    organization: 'Copyright 2016 Google Inc. All rights reserved.',
+    organization: 'Copyright 2017 Google Inc. All rights reserved.',
     tiny: true
   });
 }
-
 
 gulp.task('compileReport', compileReport);
 gulp.task('compilePartials', compilePartials);
@@ -148,11 +147,11 @@ gulp.task('watch', [
     });
 
     gulp.watch([
-      config.report
+      `../${config.report}`
     ], ['compileReport']);
 
     gulp.watch([
-      config.partials
+      `../${config.partials}`
     ], ['compilePartials']);
   });
 

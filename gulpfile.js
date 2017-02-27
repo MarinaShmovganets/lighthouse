@@ -35,4 +35,4 @@ gulp.task('watch', ['compileReport', 'compilePartials'], () => {
   ], ['compilePartials']);
 });
 
-gulp.task('default', 'compile-templates');
+gulp.task('default', ['compile-templates']);
