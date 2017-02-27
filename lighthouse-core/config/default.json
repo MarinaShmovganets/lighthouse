@@ -3,7 +3,7 @@
     "passName": "defaultPass",
     "recordNetwork": true,
     "recordTrace": true,
-    "pauseAfterTraceMs": 500,
+    "pauseBeforeTraceEndMs": 500,
     "useThrottling": true,
     "gatherers": [
       "url",
