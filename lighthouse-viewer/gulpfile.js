@@ -178,7 +178,7 @@ gulp.task('compile-templates', ['compileReport', 'compilePartials']);
 
 gulp.task('build', cb => {
   runSequence(
-    'lint', 'compile', 'compile-templates',
+    'lint', 'compile-templates', 'compile',
     ['html', 'images', 'concat-css', 'polyfills'], cb);
 });
 

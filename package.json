@@ -15,7 +15,7 @@
     "install-cli": "cd ./lighthouse-cli && npm install",
     "install-extension": "cd ./lighthouse-extension && npm install",
     "install-viewer": "cd ./lighthouse-viewer && npm install",
-    "build-all": "npm run build-cli && npm run build-extension && npm run build-viewer",
+    "build-all": "gulp && npm run build-cli && npm run build-extension && npm run build-viewer",
     "build-cli": "cd ./lighthouse-cli && npm run build",
     "build-extension": "cd ./lighthouse-extension && npm run build",
     "build-viewer": "cd ./lighthouse-viewer && npm run build",

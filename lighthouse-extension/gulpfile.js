@@ -169,7 +169,7 @@ gulp.task('clean', () => {
 });
 
 
-gulp.task('watch', ['lint', 'browserify', 'html', 'compileReport', 'compilePartials'], () => {
+gulp.task('watch', ['lint', 'compileReport', 'compilePartials', 'browserify', 'html'], () => {
   livereload.listen();
 
   gulp.watch([
@@ -207,7 +207,7 @@ gulp.task('compile-templates', ['compileReport', 'compilePartials']);
 
 gulp.task('build', cb => {
   runSequence(
-    'lint', 'browserify', 'chromeManifest', 'compile-templates',
+    'lint', 'compile-templates', 'browserify', 'chromeManifest',
     ['html', 'images', 'css', 'extras'], cb);
 });
 
