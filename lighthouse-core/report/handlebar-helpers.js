@@ -72,6 +72,13 @@ const handlebarHelpers = {
   // for color styling.
   getItemRating,
 
+  // Figures out the icon to display when success or info
+  getScoreGoodIcon: informative => informative ? 'info' : 'good',
+
+  // Figures out the icon to display when fail or warn
+  getScoreBadIcon: (informative, additional) =>
+    (informative || additional) ? 'warning score-warning-bg':'poor score-poor-bg',
+
   shouldShowHelpText: value => (getItemRating(value) !== RATINGS.GOOD.label),
 
   // Convert numbers to fixed point decimals
@@ -152,7 +159,7 @@ const handlebarHelpers = {
       return `<a href="${href}" target="_blank" rel="noopener" ${titleAttr}>${text}</a>`;
     };
     renderer.codespan = function(str) {
-      return `<code>${Handlebars.Utils.escapeExpression(str)}</code>`;
+      return `<code>${str}</code>`;
     };
     // eslint-disable-next-line no-unused-vars
     renderer.code = function(code, language) {
