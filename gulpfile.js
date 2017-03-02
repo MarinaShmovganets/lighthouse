@@ -16,12 +16,11 @@
 'use strict';
 
 const gulp = require('gulp');
-const compileReport = require('./gulp/compile-report');
-const compilePartials = require('./gulp/compile-partials');
+const compile = require('./gulp/compile');
 const config = require('./gulp/config');
 
-gulp.task('compileReport', compileReport);
-gulp.task('compilePartials', compilePartials);
+gulp.task('compileReport', compile.compileReport);
+gulp.task('compilePartials', compile.compilePartials);
 
 gulp.task('compile-templates', ['compileReport', 'compilePartials']);
 

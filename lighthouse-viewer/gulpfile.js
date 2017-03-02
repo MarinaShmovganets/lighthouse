@@ -24,8 +24,7 @@ const runSequence = require('run-sequence');
 const browserify = require('browserify');
 const ghpages = require('gh-pages');
 
-const compileReport = require('../gulp/compile-report');
-const compilePartials = require('../gulp/compile-partials');
+const compile = require('../gulp/compile');
 const config = require('../gulp/config');
 
 const $ = gulpLoadPlugins();
@@ -37,8 +36,8 @@ function license() {
   });
 }
 
-gulp.task('compileReport', compileReport);
-gulp.task('compilePartials', compilePartials);
+gulp.task('compileReport', compile.compileReport);
+gulp.task('compilePartials', compile.compilePartials);
 
 gulp.task('lint', () => {
   return gulp.src([

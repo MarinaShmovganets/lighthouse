@@ -20,15 +20,28 @@ const declare = require('gulp-declare');
 const concat = require('gulp-concat');
 const config = require('./config');
 
-module.exports = function() {
-  return gulp.src(config.partials)
+module.exports = {
+  compilePartials,
+  compileReport
+};
+
+function compilePartials() {
+  compile(config.partials, config.partialsDist, 'partials');
+}
+
+function compileReport() {
+  compile(config.report, config.reportDist, 'templates');
+}
+
+function compile(location, dist, type) {
+  return gulp.src(location)
     .pipe(handlebars({
       handlebars: require('handlebars')
     }))
     .pipe(declare({
-      namespace: 'report.partials',
+      namespace: `report.${type}`,
       noRedeclare: true, // Avoid duplicate declarations
     }))
-    .pipe(concat('report-partials.js'))
-    .pipe(gulp.dest(config.partialsDist));
-};
+    .pipe(concat(`report-${type}.js`))
+    .pipe(gulp.dest(dist));
+}

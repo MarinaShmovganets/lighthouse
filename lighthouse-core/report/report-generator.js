@@ -119,7 +119,7 @@ class ReportGenerator {
    * @return {string} HTML of the exception page.
    */
   renderException(err, results) {
-    const template = reportTemplate.report.template.exception;
+    const template = reportTemplate.report.templates.exception;
     return template({
       errMessage: err.message,
       errStack: err.stack,
@@ -174,7 +174,7 @@ class ReportGenerator {
       });
     });
 
-    const template = Handlebars.template(reportTemplate.report.template['report-template']);
+    const template = Handlebars.template(reportTemplate.report.templates['report-template']);
 
     return template({
       url: results.url,

@@ -16,8 +16,7 @@ const tap = require('gulp-tap');
 const zip = require('gulp-zip');
 const LighthouseRunner = require('../lighthouse-core/runner');
 
-const compileReport = require('../gulp/compile-report');
-const compilePartials = require('../gulp/compile-partials');
+const compile = require('../gulp/compile');
 const config = require('../gulp/config');
 
 const audits = LighthouseRunner.getAuditList()
@@ -32,8 +31,8 @@ const computedArtifacts = fs.readdirSync(
     .map(f => '../lighthouse-core/gather/computed/' + f.replace(/\.js$/, ''));
 
 
-gulp.task('compileReport', compileReport);
-gulp.task('compilePartials', compilePartials);
+gulp.task('compileReport', compile.compileReport);
+gulp.task('compilePartials', compile.compilePartials);
 
 gulp.task('extras', () => {
   return gulp.src([
