@@ -65,15 +65,15 @@ describe('URL Shim', () => {
       assert.equal(result, '\u2026deep/nested/file.css');
     });
 
-    it('respects removeQuery option', () => {
+    it('respects preserveQuery option', () => {
       const url = 'http://example.com/file.css?aQueryString=true';
-      const result = URL.getDisplayName(url, {removeQuery: false});
+      const result = URL.getDisplayName(url, {preserveQuery: true});
       assert.equal(result, '/file.css?aQueryString=true');
     });
 
-    it('respects removeHost option', () => {
+    it('respects preserveHost option', () => {
       const url = 'http://example.com/file.css';
-      const result = URL.getDisplayName(url, {removeHost: false});
+      const result = URL.getDisplayName(url, {preserveHost: true});
       assert.equal(result, 'example.com/file.css');
     });
 
@@ -91,13 +91,13 @@ describe('URL Shim', () => {
 
     it('Elides query strings when can first parameter', () => {
       const url = 'http://example.com/file.css?aQueryString=true&other_long_query_stuff=false&some_other_super_long_query';
-      const result = URL.getDisplayName(url, {removeQuery: false});
+      const result = URL.getDisplayName(url, {preserveQuery: true});
       assert.equal(result, '/file.css?aQueryString=\u2026');
     });
 
     it('Elides query strings when cannot preserve first parameter', () => {
       const url = 'http://example.com/file.css?superDuperNoGoodVeryLongExtraSpecialOnlyTheBestEnourmousQueryString=true';
-      const result = URL.getDisplayName(url, {removeQuery: false});
+      const result = URL.getDisplayName(url, {preserveQuery: true});
       assert.equal(result, '/file.css?\u2026');
     });
 

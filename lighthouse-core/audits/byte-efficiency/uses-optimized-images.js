@@ -80,7 +80,7 @@ class UsesOptimizedImages extends Audit {
         return results;
       }
 
-      const url = URL.getDisplayName(image.url, {removeQuery: false});
+      const url = URL.getDisplayName(image.url, {preserveQuery: true});
       const webpSavings = UsesOptimizedImages.computeSavings(image, 'webp');
 
       if (webpSavings.bytes > WEBP_ALREADY_OPTIMIZED_THRESHOLD_IN_BYTES) {

@@ -61,14 +61,14 @@ URL.hostsMatch = function hostsMatch(urlA, urlB) {
 
 /**
  * @param {string} url
- * @param {{numPathParts: number, removeQuery: boolean, removeHost: boolean}=} options
+ * @param {{numPathParts: number, preserveQuery: boolean, preserveHost: boolean}=} options
  * @return {string}
  */
 URL.getDisplayName = function getDisplayName(url, options) {
   options = Object.assign({
     numPathParts: 2,
-    removeQuery: true,
-    removeHost: true,
+    preserveQuery: false,
+    preserveHost: false,
   }, options);
 
   const parsed = new URL(url);
@@ -85,10 +85,10 @@ URL.getDisplayName = function getDisplayName(url, options) {
       name = ELLIPSIS + parts.slice(-1 * options.numPathParts).join('/');
     }
 
-    if (!options.removeHost) {
+    if (options.preserveHost) {
       name = `${parsed.host}/${name.replace(/^\//, '')}`;
     }
-    if (!options.removeQuery) {
+    if (options.preserveQuery) {
       name = `${name}${parsed.search}`;
     }
   }
