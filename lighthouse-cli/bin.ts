@@ -289,7 +289,16 @@ function saveResults(results: Results,
           });
     }
 
-    return promise.then(_ => Printer.write(results, flags.output, flags.outputPath));
+    return promise.then(_ => {
+      if (Array.isArray(flags.output)) {
+        return flags.output.reduce((innerPromise, outputType) => {
+          const outputPath = `${resolvedPath}.report.${outputType}`;
+          return innerPromise.then(_ => Printer.write(results, outputType, outputPath));
+        }, Promise.resolve(results));
+      } else {
+        return Printer.write(results, flags.output, flags.outputPath);
+      }
+    });
 }
 
 export async function runLighthouse(url: string,
