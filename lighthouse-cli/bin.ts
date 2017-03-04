@@ -94,7 +94,7 @@ const cliFlags = yargs
     'view'
   ], 'Output:')
   .describe({
-    'output': 'Reporter for the results',
+    'output': 'Reporter for the results, supports multiple values',
     'output-path': `The file path to output the results
 Example: --output-path=./lighthouse-results.html`,
     'view': 'Open HTML report in your browser'
@@ -293,7 +293,7 @@ function saveResults(results: Results,
       if (Array.isArray(flags.output)) {
         return flags.output.reduce((innerPromise, outputType) => {
           const outputPath = `${resolvedPath}.report.${outputType}`;
-          return innerPromise.then(_ => Printer.write(results, outputType, outputPath));
+          return innerPromise.then((_: Results) => Printer.write(results, outputType, outputPath));
         }, Promise.resolve(results));
       } else {
         return Printer.write(results, flags.output, flags.outputPath);
