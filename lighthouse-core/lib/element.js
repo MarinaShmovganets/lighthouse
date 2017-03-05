@@ -58,7 +58,9 @@ class Element {
       })
       .then(resp => {
         return this.driver.getObjectProperty(resp.object.objectId, propName);
-      });
+      })
+      // getObjectProperty can reject with null so we make sure to resolve here instead of throwing
+      .catch(prop => prop);
   }
 }
 
