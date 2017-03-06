@@ -43,6 +43,7 @@ class Element {
         if (attrIndex === -1) {
           return null;
         }
+
         return resp.attributes[attrIndex + 1];
       });
   }
@@ -58,9 +59,7 @@ class Element {
       })
       .then(resp => {
         return this.driver.getObjectProperty(resp.object.objectId, propName);
-      })
-      // getObjectProperty can reject with null so we make sure to resolve here instead of throwing
-      .catch(prop => prop);
+      });
   }
 }
 
