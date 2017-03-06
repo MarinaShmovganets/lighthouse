@@ -29,7 +29,7 @@ class AnchorsWithNoRelNoopener extends Gatherer {
       .then(failingNodeList => {
         const failingNodes = failingNodeList.map(node => {
           return Promise.all([
-            node.getAttribute('href'),
+            node.getProperty('href'),
             node.getAttribute('rel'),
             node.getAttribute('target')
           ]);
