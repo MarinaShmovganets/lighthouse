@@ -151,8 +151,10 @@ class ReportGenerator {
       }
 
       const partials = reportPartials.report.partials;
-      Handlebars.registerPartial(audit.name,
-        Handlebars.template(partials[audit.name] || partials['null-formatter']));
+      const partial = partials[audit.name] ||
+          partials[audit.extendedInfo.formatter] ||
+          partials['null-formatter'];
+      Handlebars.registerPartial(audit.name, Handlebars.template(partial));
     });
   }
 
