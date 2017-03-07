@@ -101,6 +101,7 @@ class GatherRunner {
       .then(_ => driver.cacheNatives())
       .then(_ => resetStorage && driver.cleanAndDisableBrowserCaches())
       .then(_ => resetStorage && driver.clearDataForOrigin(options.url))
+      .then(_ => driver.setExtraHTTPHeaders(options.flags.extraHeaders || '{}'))
       .then(_ => driver.blockUrlPatterns(options.flags.blockedUrlPatterns || []));
   }
 

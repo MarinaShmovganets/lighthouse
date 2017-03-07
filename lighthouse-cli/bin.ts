@@ -85,7 +85,8 @@ const cliFlags = yargs
     'max-wait-for-load': 'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
     'skip-autolaunch': 'Skip autolaunch of Chrome when already running instance is not found',
     'select-chrome': 'Interactively choose version of Chrome to use when multiple installations are found',
-    'interactive': 'Open Lighthouse in interactive mode'
+    'interactive': 'Open Lighthouse in interactive mode',
+    'extra-headers': 'Set extra headers to pass with request'
   })
 
   .group([
@@ -294,8 +295,8 @@ function saveResults(results: Results,
 
 export async function runLighthouse(url: string,
                        flags: {port: number, skipAutolaunch: boolean, selectChrome: boolean, output: any,
-                         outputPath: string, interactive: boolean, saveArtifacts: boolean, saveAssets: boolean
-                         chromeFlags: string, maxWaitForLoad: number, view: boolean},
+                         outputPath: string, interactive: boolean, saveArtifacts: boolean, saveAssets: boolean,
+                         chromeFlags: string, maxWaitForLoad: number, view: boolean, extraHeaders: any},
                        config: Object | null): Promise<{}|void> {
 
   let chromeLauncher: ChromeLauncher | undefined = undefined;

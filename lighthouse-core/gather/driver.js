@@ -735,6 +735,18 @@ class Driver {
     return this.sendCommand('Network.setCacheDisabled', {cacheDisabled: true});
   }
 
+  setExtraHTTPHeaders(jsonHeaders) {
+    let headers;
+    try {
+      headers = JSON.parse(jsonHeaders);
+    } catch(e) {
+      log.warn('Driver', 'Invalid header JSON');
+      headers = {};
+    }
+    return this.sendCommand('Network.setExtraHTTPHeaders', {
+      headers
+    });
+  }
   clearDataForOrigin(url) {
     const origin = new URL(url).origin;
 
