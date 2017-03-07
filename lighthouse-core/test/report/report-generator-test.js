@@ -91,7 +91,7 @@ describe('Report', () => {
         '<code>&lt;meta name=&quot;viewport&quot;&gt;</code>'), 'escapes <code>, once.');
   });
 
-  it('does not include script for devtools', () => {
+  it('includes formatter output in HTML report', () => {
     const reportGenerator = new ReportGenerator();
     const html = reportGenerator.generateHTML(sampleResults);
     assert.ok(html.includes('scorecard'), 'contains output from cards formatter');
