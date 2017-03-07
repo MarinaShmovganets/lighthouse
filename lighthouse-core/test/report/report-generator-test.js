@@ -93,6 +93,17 @@ describe('Report', () => {
 
   it('does not include script for devtools', () => {
     const reportGenerator = new ReportGenerator();
+    const html = reportGenerator.generateHTML(sampleResults);
+    assert.ok(html.includes('scorecard'), 'contains output from cards formatter');
+    assert.ok(html.includes('table_list'), 'contains output from table formatter');
+    assert.ok(html.includes('class="cnc-node"'),
+              'contains output from critical request chains formatter');
+    assert.ok(html.includes('class="subitem__detail http-resource"'),
+              'contains output from url list formatter');
+  });
+
+  it('does not include script for devtools', () => {
+    const reportGenerator = new ReportGenerator();
     const html = reportGenerator.generateHTML(sampleResults, 'devtools');
 
     assert.ok(!html.includes('<script'), 'script tag inlined');
