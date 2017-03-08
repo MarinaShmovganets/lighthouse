@@ -30,39 +30,39 @@ const fakeImageStats = {
 const traceData = {
   networkRecords: [
     {
-      _url: 'http://google.com/image.jpg',
-      _mimeType: 'image/jpeg',
-      _resourceSize: 10,
+      url: 'http://google.com/image.jpg',
+      mimeType: 'image/jpeg',
+      resourceSize: 10,
     },
     {
-      _url: 'http://google.com/transparent.png',
-      _mimeType: 'image/png',
-      _resourceSize: 11,
+      url: 'http://google.com/transparent.png',
+      mimeType: 'image/png',
+      resourceSize: 11,
     },
     {
-      _url: 'http://google.com/image.bmp',
-      _mimeType: 'image/bmp',
-      _resourceSize: 12,
+      url: 'http://google.com/image.bmp',
+      mimeType: 'image/bmp',
+      resourceSize: 12,
     },
     {
-      _url: 'http://google.com/image.bmp',
-      _mimeType: 'image/bmp',
-      _resourceSize: 12,
+      url: 'http://google.com/image.bmp',
+      mimeType: 'image/bmp',
+      resourceSize: 12,
     },
     {
-      _url: 'http://google.com/vector.svg',
-      _mimeType: 'image/svg+xml',
-      _resourceSize: 13,
+      url: 'http://google.com/vector.svg',
+      mimeType: 'image/svg+xml',
+      resourceSize: 13,
     },
     {
-      _url: 'http://gmail.com/image.jpg',
-      _mimeType: 'image/jpeg',
-      _resourceSize: 14,
+      url: 'http://gmail.com/image.jpg',
+      mimeType: 'image/jpeg',
+      resourceSize: 14,
     },
     {
-      _url: 'data: image/jpeg ; base64 ,SgVcAT32587935321...',
-      _mimeType: 'image/jpeg',
-      _resourceSize: 14,
+      url: 'data: image/jpeg ; base64 ,SgVcAT32587935321...',
+      mimeType: 'image/jpeg',
+      resourceSize: 14,
     },
   ]
 };
