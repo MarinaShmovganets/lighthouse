@@ -119,6 +119,9 @@ Example: --output-path=./lighthouse-results.html`,
     'help',
     'interactive'
   ])
+
+  .default('fail-under', false)
+
   .choices('output', Printer.GetValidOutputOptions())
 
   // default values
@@ -304,7 +307,8 @@ function saveResults(results: Results,
 export async function runLighthouse(url: string,
                        flags: {port: number, skipAutolaunch: boolean, selectChrome: boolean, output: any,
                          outputPath: string, interactive: boolean, saveArtifacts: boolean, saveAssets: boolean
-                         chromeFlags: string, maxWaitForLoad: number, view: boolean},
+                         chromeFlags: string, maxWaitForLoad: number, view: boolean,
+                         failUnder: any},
                        config: Object | null): Promise<{}|void> {
 
   let chromeLauncher: ChromeLauncher | undefined = undefined;
@@ -322,7 +326,15 @@ export async function runLighthouse(url: string,
       await performanceXServer.hostExperiment({url, flags, config}, results);
     }
 
-    return await chromeLauncher.kill();
+    await chromeLauncher.kill();
+
+    const total = Math.ceil(results.aggregations[0].total * 100);
+    const shouldFail = flags.failUnder && flags.failUnder > total;
+    if (shouldFail) {
+        throw new Error(`Got ${total} needed ${flags.failUnder}`);
+    }
+
+    return Promise.resolve(true)
   } catch (err) {
     if (typeof chromeLauncher !== 'undefined') {
       await chromeLauncher!.kill();
