@@ -326,15 +326,18 @@ export async function runLighthouse(url: string,
       await performanceXServer.hostExperiment({url, flags, config}, results);
     }
 
-    await chromeLauncher.kill();
+    let promise = await chromeLauncher.kill();
 
-    const total = Math.ceil(results.aggregations[0].total * 100);
-    const shouldFail = flags.failUnder && flags.failUnder > total;
-    if (shouldFail) {
-        throw new Error(`Got ${total} needed ${flags.failUnder}`);
+    // FIXME: Cannot provide `--fail-under` unless config includes aggregations.
+    if (results.aggregations.length) {
+        const total = Math.ceil(results.aggregations[0].total * 100);
+        const shouldFail = flags.failUnder && flags.failUnder > total;
+        if (shouldFail) {
+            throw new Error(`Got ${total} needed ${flags.failUnder}`);
+        }
     }
 
-    return Promise.resolve(true)
+    return promise
   } catch (err) {
     if (typeof chromeLauncher !== 'undefined') {
       await chromeLauncher!.kill();
