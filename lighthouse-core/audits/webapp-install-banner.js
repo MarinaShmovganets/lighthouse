@@ -38,10 +38,10 @@ class WebappInstallBanner extends Audit {
    */
   static get meta() {
     return {
-      category: '=',
-      name: '',
-      description: '',
-      helpText: '',
+      category: 'PWA',
+      name: 'webapp-install-banner',
+      description: 'User can be prompted to Install the Web App',
+      helpText: 'While users can manually add your site to their homescreen, the [prompt (aka app install banner)](https://developers.google.com/web/updates/2015/03/increasing-engagement-with-app-install-banners-in-chrome-for-android) will proactively prompt the user to install the app if the various requirements are met and the user has moderate engagement with your site.',
       requiredArtifacts: ['URL', 'ServiceWorker', 'Manifest']
     };
   }
@@ -64,7 +64,7 @@ class WebappInstallBanner extends Audit {
       // 2: validate we have a SW
       const hasServiceWorker = WebappInstallBanner.hasServiceWorker(artifacts);
       if (!hasServiceWorker) {
-        failures.push('Site registers a Service Worker.');
+        failures.push('Site registers a Service Worker');
       }
 
       const extendedInfo = {

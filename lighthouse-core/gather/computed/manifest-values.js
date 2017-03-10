@@ -66,7 +66,7 @@ class ManifestValues extends ComputedArtifact {
       },
       {
         id: 'hasName',
-        userText: 'Manifest contains `name`.',
+        userText: 'Manifest contains `name`',
         toPass: manifest => !!manifest.name.value
       }
     ];
@@ -78,14 +78,12 @@ class ManifestValues extends ComputedArtifact {
    * @return {Array}
    */
   compute_(manifest) {
-    // basic checks to verify the Manifest exists and is valid
-    const existChecks = ManifestValues.manifestExistsChecklist.map(item => {
+    const existsChecks = ManifestValues.manifestExistsChecklist;
+    for (let i = 0; i < existsChecks.length; i++) {
+      const item = existsChecks[i];
       item.passing = item.toPass(manifest);
       delete item.toPass;
-      return item;
-    });
-    if (existChecks.some(item => !item.passing)) {
-      return existChecks;
+      if (!item.passing) return [item];
     }
 
     // standard checks
