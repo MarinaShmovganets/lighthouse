@@ -7,6 +7,10 @@
 'use strict';
 
 const ComputedArtifact = require('./computed-artifact');
+const icons = require('../../lib/icons');
+
+const DISPLAY_VALUES = ['browser', 'fullscreen', 'minimal-ui', 'standalone'];
+// const PWA_DISPLAY_VALUES = ['fullscreen', 'standalone'];
 
 class ManifestValues extends ComputedArtifact {
 
@@ -14,50 +18,82 @@ class ManifestValues extends ComputedArtifact {
     return 'ManifestValues';
   }
 
-  static get manifestChecklist() {
+  static get manifestExistsChecklist() {
     return [
       {
         id: 'hasManifest',
-        userText: 'Nanifest is available.',
-        passing: manifest => manifest !== null
+        userText: 'Manifest is available',
+        toPass: manifest => manifest !== null
       },
       {
         id: 'hasParseableManifest',
-        userText: 'Manifest is parsed as a valid manifest.',
-        passing: manifest => typeof manifest !== 'undefined' && !!manifest.value
-      },
+        userText: 'Manifest is parsed as a valid manifest',
+        toPass: manifest => manifest !== null && typeof manifest !== 'undefined' && !!manifest.value
+      }
+    ];
+  }
+
+  static get manifestChecklist() {
+    return [
       {
         id: 'hasStartUrl',
         userText: 'Manifest contains `start_url`',
-        passing: manifest => !!manifest.start_url.value
+        toPass: manifest => !!manifest.start_url.value
       },
       {
         id: 'hasIconsAtLeast144px',
         userText: 'Manifest contains icons at least 144px',
-        passing: manifest => icons.doExist(manifest) &&
+        toPass: manifest => icons.doExist(manifest) &&
             icons.sizeAtLeast(144, /** @type {!Manifest} */ (manifest)).length > 0
       },
       {
+        id: 'hasDisplayValue',
+        userText: 'Manifest\'s `display` value is explicitly set',
+        // Check for the debugString, added when fallback is defined
+        toPass: manifest => DISPLAY_VALUES.includes(manifest.display.value) &&
+          !manifest.display.debugString
+      },
+      // Disabled for the moment
+      // {
+      //   id: 'hasPWADisplayValue',
+      //   userText: 'Manifest\'s `display` value is either standalone or fullscreen',
+      //   toPass: manifest => PWA_DISPLAY_VALUES.includes(manifest.display.value)
+      // },
+      {
         id: 'hasShortName',
         userText: 'Manifest contains `short_name`',
-        passing: manifest => !!manifest.short_name.value
+        toPass: manifest => !!manifest.short_name.value
       },
       {
         id: 'hasName',
-        userText: 'Manifest contains `name`',
-        passing: manifest => !!manifest.name.value
+        userText: 'Manifest contains `name`.',
+        toPass: manifest => !!manifest.name.value
       }
     ];
   }
 
   /**
-   * Return catapult traceviewer model
-   * @param {{traceEvents: !Array}} trace
-   * @return {!TracingProcessorModel}
+   * Returns results of all manifest checks
+   * @param {Manifest} manifest
+   * @return {Array}
    */
-  compute_(trace) {
-    const tracingProcessor = new TracingProcessor();
-    return tracingProcessor.init(trace);
+  compute_(manifest) {
+    // basic checks to verify the Manifest exists and is valid
+    const existChecks = ManifestValues.manifestExistsChecklist.map(item => {
+      item.passing = item.toPass(manifest);
+      delete item.toPass;
+      return item;
+    });
+    if (existChecks.some(item => !item.passing)) {
+      return existChecks;
+    }
+
+    // standard checks
+    return ManifestValues.manifestChecklist.map(item => {
+      item.passing = item.toPass(manifest.value);
+      delete item.toPass;
+      return item;
+    });
   }
 
 }
