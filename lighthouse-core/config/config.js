@@ -320,11 +320,10 @@ class Config {
   }
 
  /**
-  * Filter out any unrequested aggregations from the config. If any audits are
-  * no longer needed by any remaining aggregations, filter out those as well.
+  * Filter out any unrequested items from the config, based on requested top-level aggregations.
   * @param {!Object} oldConfig Lighthouse config object.
   * @param {!Array<string>} aggregationNames Name values of aggregations to include.
-  * @return {undefined} config is mutated, instead of returning
+  * @return {Object} new config
   */
   static generateNewConfigOfAggregations(oldConfig, aggregationNames) {
     // 0. Clone config to avoid mutating it
@@ -343,13 +342,13 @@ class Config {
     const requiredGatherers = Config.getGatherersNeededByAudits(auditObjectsSelected);
 
     // 4. Filter to only the neccessary passes
-    config.passes = Config.getPassesNeededByGatherers(config.passes, requiredGatherers);
+    config.passes = Config.generatePassesNeededByGatherers(config.passes, requiredGatherers);
     return config;
   }
 
  /**
   * Return names of top-level aggregations from a config. Used by tools driving lighthouse-core
-  * @param {!Object} config Lighthouse config object.
+  * @param {{aggregations: !Array<{name: string}>}} Lighthouse config object.
   * @return {!Array<string>}  Name values of aggregations within
   */
   static getAggregationNames(config) {
@@ -358,7 +357,7 @@ class Config {
 
   /**
    * Find audits required for remaining aggregations.
-   * @param  {!Object} aggregations
+   * @param {!Object} aggregations
    * @return {!Set<string>}
    */
   static getAuditsNeededByAggregations(aggregations) {
@@ -373,9 +372,6 @@ class Config {
    * @return {Map}
    */
   static getMapOfAuditPathToName(config) {
-    // The `audits` property in the config is a list of paths of audits to run.
-    // `requestedAuditNames` is a list of audit *names*. Map paths to names, then
-    // filter out any paths of audits with names that weren't requested.
     const auditObjectsAll = Config.requireAudits(config.audits);
     const auditPathToName = new Map(auditObjectsAll.map((AuditClass, index) => {
       const auditPath = config.audits[index];
@@ -387,7 +383,7 @@ class Config {
 
   /**
    * From some requested audits, return names of all required artifacts
-   * @param  {!Object} audits
+   * @param {!Object} audits
    * @return {!Set<string>}
    */
   static getGatherersNeededByAudits(audits) {
@@ -405,32 +401,24 @@ class Config {
 
   /**
    * Filters to only required passes and gatherers, returning a new passes object
-   * @param  {!Object} passes
-   * @param  {!Set<string>} requiredGatherers
+   * @param {!Object} oldPasses
+   * @param {!Set<string>} requiredGatherers
    * @return {!Object} fresh passes object
    */
-  static getPassesNeededByGatherers(passes, requiredGatherers) {
-    const passesClone = JSON.parse(JSON.stringify(passes));
-    const filteredPasses = passesClone.map(pass => {
-      // remove any unncessary gatherers
+  static generatePassesNeededByGatherers(oldPasses, requiredGatherers) {
+    const passes = JSON.parse(JSON.stringify(oldPasses));
+    const filteredPasses = passes.map(pass => {
+      // remove any unncessary gatherers from within the passes
       pass.gatherers = pass.gatherers.filter(gathererName => {
         gathererName = GatherRunner.getGathererClass(gathererName).name;
         return requiredGatherers.has(gathererName);
       });
       return pass;
-    // remove any passes lacking concrete gatherers
-    }).filter(pass => pass.gatherers.length > 0);
-
-    // handle the perf-only case (no specific gatherers, just trace & network)
-    if (filteredPasses.length === 0) {
-      if (requiredGatherers.has('traces') || requiredGatherers.has('networkRecords')) {
-        filteredPasses.push({
-          recordNetwork: requiredGatherers.has('networkRecords'),
-          recordTrace: requiredGatherers.has('traces'),
-          gatherers: []
-        });
-      }
-    }
+    }).filter(pass => {
+      // remove any passes lacking concrete gatherers, unless they are dependent on the trace
+      if (pass.recordTrace) return true;
+      return pass.gatherers.length > 0;
+    });
     return filteredPasses;
   }
 

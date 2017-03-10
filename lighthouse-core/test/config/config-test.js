@@ -375,12 +375,13 @@ describe('Config', () => {
       const runConfig = JSON.parse(JSON.stringify(defaultConfig));
       const names = Config.getAggregationNames(runConfig);
       assert.equal(Array.isArray(names), true);
-      assert.ok(names.length > 3, 'Did not find more than three aggregations');
+      assert.equal(names.length, 4, 'Did not find more than three aggregations');
     });
   });
 
   describe('generateConfigOfAggregations', () => {
     const aggregationNames = ['Performance'];
+    const totalAuditCount = defaultConfig.audits.length;
 
     it('should not mutate the original config', () => {
       const origConfig = JSON.parse(JSON.stringify(defaultConfig));
@@ -392,7 +393,20 @@ describe('Config', () => {
       const config = Config.generateNewConfigOfAggregations(defaultConfig, aggregationNames);
       assert.equal(config.aggregations.length, 1, 'other aggregations are present');
       assert.equal(config.passes.length, 2, 'incorrect # of passes');
-      assert.ok(config.audits.length < 15, 'audit filtering probably failed');
+      assert.ok(config.audits.length < totalAuditCount, 'audit filtering probably failed');
+    });
+
+    it('should filter out other passes if passed PWA', () => {
+      const config = Config.generateNewConfigOfAggregations(defaultConfig, ['Progressive Web App']);
+      assert.equal(config.aggregations.length, 1, 'other aggregations are present');
+      assert.ok(config.audits.length < totalAuditCount, 'audit filtering probably failed');
+    });
+
+    it('should filter out other passes if passed Best Practices', () => {
+      const config = Config.generateNewConfigOfAggregations(defaultConfig, ['Best Practices']);
+      assert.equal(config.aggregations.length, 1, 'other aggregations are present');
+      assert.equal(config.passes.length, 2, 'incorrect # of passes');
+      assert.ok(config.audits.length < totalAuditCount, 'audit filtering probably failed');
     });
 
     it('should only run audits for ones named by the aggregation', () => {

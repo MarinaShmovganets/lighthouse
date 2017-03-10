@@ -122,12 +122,15 @@ function onGenerateReportButtonClick(background, selectedAggregations) {
   const feedbackEl = document.querySelector('.feedback');
   feedbackEl.textContent = '';
 
+  const aggregationNames = Object.keys(selectedAggregations)
+      .filter(key => !!selectedAggregations[key]);
+
   background.runLighthouseInExtension({
     flags: {
       disableCpuThrottling: true
     },
     restoreCleanState: true
-  }, selectedAggregations).catch(err => {
+  }, aggregationNames).catch(err => {
     let message = err.message;
     let includeReportLink = true;
 
@@ -163,8 +166,8 @@ function generateOptionsList(background, selectedAggregations) {
   const frag = document.createDocumentFragment();
 
   background.getDefaultAggregations().forEach(aggregation => {
-    const isChecked = selectedAggregations[aggregation.name];
-    frag.appendChild(createOptionItem(aggregation.name, isChecked));
+    const isChecked = selectedAggregations[aggregation];
+    frag.appendChild(createOptionItem(aggregation, isChecked));
   });
 
   const optionsList = document.querySelector('.options__list');
@@ -199,10 +202,7 @@ function initPopup() {
     const generateReportButton = document.getElementById('generate-report');
     generateReportButton.addEventListener('click', () => {
       background.loadSettings().then(settings => {
-        const selectedAggregations = settings.selectedAggregations;
-        const aggregationNames = Object.keys(selectedAggregations)
-            .filter(key => !!selectedAggregations[key]);
-        onGenerateReportButtonClick(background, aggregationNames);
+        onGenerateReportButtonClick(background, settings.selectedAggregations);
       });
     });
 

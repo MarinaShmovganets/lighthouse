@@ -186,12 +186,10 @@ window.createReportPageAsBlob = function(results, reportContext) {
 
 /**
  * Returns list of top-level aggregation categories from the default config.
- * @return {!Array<{name: string}>}
+ * @return {!Array<string>}
  */
 window.getDefaultAggregations = function() {
-  return Config.getAggregationNames(defaultConfig).map(name => ({
-    name: name
-  }));
+  return Config.getAggregationNames(defaultConfig);
 };
 
 /**
@@ -205,8 +203,8 @@ window.saveSettings = function(settings) {
   };
 
   // Stash selected aggregations.
-  window.getDefaultAggregations().forEach(audit => {
-    storage[STORAGE_KEY][audit.name] = settings.selectedAggregations.includes(audit.name);
+  window.getDefaultAggregations().forEach(aggName => {
+    storage[STORAGE_KEY][aggName] = settings.selectedAggregations.includes(aggName);
   });
 
   // Stash disable extensions setting.
@@ -227,8 +225,8 @@ window.loadSettings = function() {
       // Start with list of all default aggregations set to true so list is
       // always up to date.
       const defaultAggregations = {};
-      window.getDefaultAggregations().forEach(aggregation => {
-        defaultAggregations[aggregation.name] = true;
+      window.getDefaultAggregations().forEach(aggName => {
+        defaultAggregations[aggName] = true;
       });
 
       // Load saved aggregations and settings, overwriting defaults with any
