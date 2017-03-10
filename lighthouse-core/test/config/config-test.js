@@ -370,49 +370,52 @@ describe('Config', () => {
     });
   });
 
-  describe('getAggregationNames', () => {
-    it('returns the names of the aggregations', () => {
+  describe('getAggregations', () => {
+    it('returns the IDs & names of the aggregations', () => {
       const runConfig = JSON.parse(JSON.stringify(defaultConfig));
-      const names = Config.getAggregationNames(runConfig);
-      assert.equal(Array.isArray(names), true);
-      assert.equal(names.length, 4, 'Did not find more than three aggregations');
+      const aggs = Config.getAggregations(runConfig);
+      assert.equal(Array.isArray(aggs), true);
+      assert.equal(aggs.length, 4, 'Did not find more than three aggregations');
+      const haveName = aggs.every(agg => agg.name.length);
+      const haveID = aggs.every(agg => agg.id.length);
+      assert.equal(haveName === haveID === true, true, 'they dont have IDs and names');
     });
   });
 
   describe('generateConfigOfAggregations', () => {
-    const aggregationNames = ['Performance'];
+    const aggregationIDs = ['perf'];
     const totalAuditCount = defaultConfig.audits.length;
 
     it('should not mutate the original config', () => {
       const origConfig = JSON.parse(JSON.stringify(defaultConfig));
-      Config.generateNewConfigOfAggregations(defaultConfig, aggregationNames);
+      Config.generateNewConfigOfAggregations(defaultConfig, aggregationIDs);
       assert.deepStrictEqual(origConfig, defaultConfig, 'Original config mutated');
     });
 
     it('should filter out other passes if passed Performance', () => {
-      const config = Config.generateNewConfigOfAggregations(defaultConfig, aggregationNames);
+      const config = Config.generateNewConfigOfAggregations(defaultConfig, aggregationIDs);
       assert.equal(config.aggregations.length, 1, 'other aggregations are present');
       assert.equal(config.passes.length, 2, 'incorrect # of passes');
       assert.ok(config.audits.length < totalAuditCount, 'audit filtering probably failed');
     });
 
     it('should filter out other passes if passed PWA', () => {
-      const config = Config.generateNewConfigOfAggregations(defaultConfig, ['Progressive Web App']);
+      const config = Config.generateNewConfigOfAggregations(defaultConfig, ['pwa']);
       assert.equal(config.aggregations.length, 1, 'other aggregations are present');
       assert.ok(config.audits.length < totalAuditCount, 'audit filtering probably failed');
     });
 
     it('should filter out other passes if passed Best Practices', () => {
-      const config = Config.generateNewConfigOfAggregations(defaultConfig, ['Best Practices']);
+      const config = Config.generateNewConfigOfAggregations(defaultConfig, ['bp']);
       assert.equal(config.aggregations.length, 1, 'other aggregations are present');
       assert.equal(config.passes.length, 2, 'incorrect # of passes');
       assert.ok(config.audits.length < totalAuditCount, 'audit filtering probably failed');
     });
 
     it('should only run audits for ones named by the aggregation', () => {
-      const config = Config.generateNewConfigOfAggregations(defaultConfig, aggregationNames);
+      const config = Config.generateNewConfigOfAggregations(defaultConfig, aggregationIDs);
       const selectedAggregation = defaultConfig.aggregations
-          .find(agg => aggregationNames.includes(agg.name));
+          .find(agg => aggregationIDs.includes(agg.id));
       const auditCount = Object.keys(selectedAggregation.items[0].audits).length;
 
       assert.equal(config.audits.length, auditCount, '# of audits match aggregation list');

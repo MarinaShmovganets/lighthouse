@@ -186,10 +186,10 @@ window.createReportPageAsBlob = function(results, reportContext) {
 
 /**
  * Returns list of top-level aggregation categories from the default config.
- * @return {!Array<string>}
+ * @return {!Array<{name: string, id: string}>}
  */
 window.getDefaultAggregations = function() {
-  return Config.getAggregationNames(defaultConfig);
+  return Config.getAggregations(defaultConfig);
 };
 
 /**
@@ -203,8 +203,8 @@ window.saveSettings = function(settings) {
   };
 
   // Stash selected aggregations.
-  window.getDefaultAggregations().forEach(aggName => {
-    storage[STORAGE_KEY][aggName] = settings.selectedAggregations.includes(aggName);
+  window.getDefaultAggregations().forEach(agg => {
+    storage[STORAGE_KEY][agg.id] = settings.selectedAggregations.includes(agg.id);
   });
 
   // Stash disable extensions setting.
@@ -221,12 +221,14 @@ window.saveSettings = function(settings) {
  */
 window.loadSettings = function() {
   return new Promise(resolve => {
+    // Protip: debug what's in storage with:
+    //   chrome.storage.local.get(['lighthouse_audits'], console.log)
     chrome.storage.local.get([STORAGE_KEY, SETTINGS_KEY], result => {
       // Start with list of all default aggregations set to true so list is
       // always up to date.
       const defaultAggregations = {};
-      window.getDefaultAggregations().forEach(aggName => {
-        defaultAggregations[aggName] = true;
+      window.getDefaultAggregations().forEach(agg => {
+        defaultAggregations[agg.id] = true;
       });
 
       // Load saved aggregations and settings, overwriting defaults with any

@@ -321,15 +321,15 @@ class Config {
 
  /**
   * Filter out any unrequested items from the config, based on requested top-level aggregations.
-  * @param {!Object} oldConfig Lighthouse config object.
-  * @param {!Array<string>} aggregationNames Name values of aggregations to include.
+  * @param {!Object} oldConfig Lighthouse config object
+  * @param {!Array<string>} aggregationIDs Id values of aggregations to include
   * @return {Object} new config
   */
-  static generateNewConfigOfAggregations(oldConfig, aggregationNames) {
+  static generateNewConfigOfAggregations(oldConfig, aggregationIDs) {
     // 0. Clone config to avoid mutating it
     const config = JSON.parse(JSON.stringify(oldConfig));
     // 1. Filter to just the chosen aggregations
-    config.aggregations = config.aggregations.filter(agg => aggregationNames.includes(agg.name));
+    config.aggregations = config.aggregations.filter(agg => aggregationIDs.includes(agg.id));
 
     // 2. Resolve which audits will need to run
     const requestedAuditNames = Config.getAuditsNeededByAggregations(config.aggregations);
@@ -347,12 +347,15 @@ class Config {
   }
 
  /**
-  * Return names of top-level aggregations from a config. Used by tools driving lighthouse-core
+  * Return IDs of top-level aggregations from a config. Used by tools driving lighthouse-core
   * @param {{aggregations: !Array<{name: string}>}} Lighthouse config object.
   * @return {!Array<string>}  Name values of aggregations within
   */
-  static getAggregationNames(config) {
-    return config.aggregations.map(agg => agg.name);
+  static getAggregations(config) {
+    return config.aggregations.map(agg => ({
+      name: agg.name,
+      id: agg.id
+    }));
   }
 
   /**

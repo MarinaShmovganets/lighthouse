@@ -94,10 +94,10 @@ function logStatus([, message, details]) {
   statusDetailsMessageEl.textContent = details;
 }
 
-function createOptionItem(text, isChecked) {
+function createOptionItem(text, id, isChecked) {
   const input = document.createElement('input');
   input.setAttribute('type', 'checkbox');
-  input.setAttribute('value', text);
+  input.setAttribute('value', id);
   if (isChecked) {
     input.setAttribute('checked', 'checked');
   }
@@ -122,7 +122,7 @@ function onGenerateReportButtonClick(background, selectedAggregations) {
   const feedbackEl = document.querySelector('.feedback');
   feedbackEl.textContent = '';
 
-  const aggregationNames = Object.keys(selectedAggregations)
+  const aggregationIDs = Object.keys(selectedAggregations)
       .filter(key => !!selectedAggregations[key]);
 
   background.runLighthouseInExtension({
@@ -130,7 +130,7 @@ function onGenerateReportButtonClick(background, selectedAggregations) {
       disableCpuThrottling: true
     },
     restoreCleanState: true
-  }, aggregationNames).catch(err => {
+  }, aggregationIDs).catch(err => {
     let message = err.message;
     let includeReportLink = true;
 
@@ -166,8 +166,8 @@ function generateOptionsList(background, selectedAggregations) {
   const frag = document.createDocumentFragment();
 
   background.getDefaultAggregations().forEach(aggregation => {
-    const isChecked = selectedAggregations[aggregation];
-    frag.appendChild(createOptionItem(aggregation, isChecked));
+    const isChecked = selectedAggregations[aggregation.id];
+    frag.appendChild(createOptionItem(aggregation.name, aggregation.id, isChecked));
   });
 
   const optionsList = document.querySelector('.options__list');
