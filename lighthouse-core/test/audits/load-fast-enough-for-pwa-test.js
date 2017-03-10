@@ -10,23 +10,43 @@ const FastPWAAudit = require('../../audits/load-fast-enough-for-pwa');
 const TTIAudit = require('../../audits/time-to-interactive');
 const Audit = require('../../audits/audit.js');
 const assert = require('assert');
-const traceEvents = require('../fixtures/traces/progressive-app.json');
 
-const GatherRunner = require('../../gather/gather-runner.js');
-const computedArtifacts = GatherRunner.instantiateComputedArtifacts();
-
-function generateArtifactsWithTrace(trace) {
-  return Object.assign(computedArtifacts, {
-    traces: {
-      [Audit.DEFAULT_PASS]: {traceEvents: Array.isArray(trace) ? trace : trace.traceEvents}
+function generateTTIResults(ttiValue) {
+  const ttiResult = {
+    rawValue: ttiValue,
+    extendedInfo: {
+      value: {
+        timings: {
+          timeToInteractive: ttiValue
+        }
+      }
     }
-  });
+  };
+  return Promise.resolve.bind(Promise, ttiResult);
+}
+
+
+function generateArtifacts() {
+  return {
+    networkRecords: {
+      [Audit.DEFAULT_PASS]: []
+    },
+    traces: {
+      [Audit.DEFAULT_PASS]: {traceEvents: []}
+    }
+  };
 }
 
 /* eslint-env mocha */
 describe('PWA: load-fast-enough-for-pwa audit', () => {
+  // monkeypatch TTI to for a more focused test
+  let origTTI;
+  beforeEach(() => origTTI = TTIAudit.audit);
+  afterEach(() => TTIAudit.audit = origTTI);
+
   it('returns boolean based on TTI value', () => {
-    return FastPWAAudit.audit(generateArtifactsWithTrace(traceEvents)).then(result => {
+    TTIAudit.audit = generateTTIResults(5000);
+    return FastPWAAudit.audit(generateArtifacts()).then(result => {
       assert.equal(result.rawValue, true, 'fixture trace is not passing audit');
     }).catch(err => {
       assert.ok(false, err);
@@ -34,14 +54,10 @@ describe('PWA: load-fast-enough-for-pwa audit', () => {
   });
 
   it('fails a bad TTI value', () => {
-    // mock a return for the TTI Audit
-    const origTTI = TTIAudit.audit;
-    const mockTTIResult = {extendedInfo: {value: {timings: {timeToInteractive: 15000}}}};
-    TTIAudit.audit = _ => Promise.resolve(mockTTIResult);
-
-    return FastPWAAudit.audit(generateArtifactsWithTrace(traceEvents)).then(result => {
+    TTIAudit.audit = generateTTIResults(15000);
+    return FastPWAAudit.audit(generateArtifacts()).then(result => {
       assert.equal(result.rawValue, false, 'not failing a long TTI value');
-      TTIAudit.audit = origTTI;
+      assert.ok(result.debugString);
     }).catch(err => {
       assert.ok(false, err);
     });
