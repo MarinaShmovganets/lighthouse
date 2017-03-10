@@ -95,11 +95,11 @@ function filterOutArtifacts(result) {
  * @param {!Connection} connection
  * @param {string} url
  * @param {!Object} options Lighthouse options.
- * @param {!Array<string>} aggregationNames Name values of aggregations to include.
+ * @param {!Array<string>} aggregationIDs Name values of aggregations to include.
  * @return {!Promise}
  */
-window.runLighthouseForConnection = function(connection, url, options, aggregationNames) {
-  const newConfig = Config.generateNewConfigOfAggregations(defaultConfig, aggregationNames);
+window.runLighthouseForConnection = function(connection, url, options, aggregationIDs) {
+  const newConfig = Config.generateNewConfigOfAggregations(defaultConfig, aggregationIDs);
   const config = new Config(newConfig);
 
   // Add url and config to fresh options object.
@@ -124,17 +124,17 @@ window.runLighthouseForConnection = function(connection, url, options, aggregati
 
 /**
  * @param {!Object} options Lighthouse options.
- * @param {!Array<string>} aggregationNames Name values of aggregations to include.
+ * @param {!Array<string>} aggregationIDs Name values of aggregations to include.
  * @return {!Promise}
  */
-window.runLighthouseInExtension = function(options, aggregationNames) {
+window.runLighthouseInExtension = function(options, aggregationIDs) {
   // Default to 'info' logging level.
   log.setLevel('info');
   const connection = new ExtensionProtocol();
   // return enableOtherChromeExtensions(false)
     // .then(_ => connection.getCurrentTabURL())
   return connection.getCurrentTabURL()
-    .then(url => window.runLighthouseForConnection(connection, url, options, aggregationNames))
+    .then(url => window.runLighthouseForConnection(connection, url, options, aggregationIDs))
     .then(results => {
       // return enableOtherChromeExtensions(true).then(_ => {
       const blobURL = window.createReportPageAsBlob(results, 'extension');
@@ -151,14 +151,14 @@ window.runLighthouseInExtension = function(options, aggregationNames) {
  * @param {!RawProtocol.Port} port
  * @param {string} url
  * @param {!Object} options Lighthouse options.
- * @param {!Array<string>} aggregationNames Name values of aggregations to include.
+ * @param {!Array<string>} aggregationIDs Name values of aggregations to include.
  * @return {!Promise}
  */
-window.runLighthouseInWorker = function(port, url, options, aggregationNames) {
+window.runLighthouseInWorker = function(port, url, options, aggregationIDs) {
   // Default to 'info' logging level.
   log.setLevel('info');
   const connection = new RawProtocol(port);
-  return window.runLighthouseForConnection(connection, url, options, aggregationNames);
+  return window.runLighthouseForConnection(connection, url, options, aggregationIDs);
 };
 
 /**
