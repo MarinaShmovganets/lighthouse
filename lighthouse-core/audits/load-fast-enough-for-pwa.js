@@ -16,7 +16,7 @@ const Audit = require('./audit');
 const TTIMetric = require('./time-to-interactive');
 const Emulation = require('../lib/emulation');
 
-const Formatter = require('../formatters/formatter');
+const Formatter = require('../report/formatter');
 
 // Maximum TTI to be considered "fast" for PWA baseline checklist
 //   https://developers.google.com/web/progressive-web-apps/checklist
