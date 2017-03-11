@@ -82,9 +82,11 @@ class OptimizedImages extends Gatherer {
       const isSameOrigin = URL.hostsMatch(pageUrl, record._url);
       const isBase64DataUri = /^data:.{2,40}base64\s*,/.test(record._url);
 
-      if (isOptimizableImage && (isSameOrigin || isBase64DataUri)) {
+      if (isOptimizableImage) {
         prev.push({
+          isSameOrigin,
           isBase64DataUri,
+          requestId: record._requestId,
           url: record._url,
           mimeType: record._mimeType,
           resourceSize: record._resourceSize,
@@ -101,16 +103,31 @@ class OptimizedImages extends Gatherer {
    * @return {!Promise<{originalSize: number, jpegSize: number, webpSize: number}>}
    */
   calculateImageStats(driver, networkRecord) {
-    const param = JSON.stringify(networkRecord.url);
-    const script = `(${getOptimizedNumBytes.toString()})(${param})`;
-    return driver.evaluateAsync(script).then(stats => {
-      const isBase64DataUri = networkRecord.isBase64DataUri;
-      const base64Length = networkRecord.url.length - networkRecord.url.indexOf(',') - 1;
-      return {
-        originalSize: isBase64DataUri ? base64Length : networkRecord.resourceSize,
-        jpegSize: isBase64DataUri ? stats.jpeg.base64 : stats.jpeg.binary,
-        webpSize: isBase64DataUri ? stats.webp.base64 : stats.webp.binary,
-      };
+    let uriPromise = Promise.resolve(networkRecord.url);
+
+    // Get the request body for cross-origin images to circumvent canvas CORS protections
+    if (!networkRecord.isSameOrigin && !networkRecord.isBase64DataUri) {
+      const requestId = networkRecord.requestId;
+      uriPromise = Promise.resolve()
+        .then(_ => driver.sendCommand('Network.enable'))
+        .then(_ => driver.sendCommand('Network.getResponseBody', {requestId}))
+        .then(resp => {
+          const body = resp.base64Encoded ? resp.body : '';
+          return `data:${networkRecord.mimeType};base64,${body}`;
+        });
+    }
+
+    return uriPromise.then(uri => {
+      const script = `(${getOptimizedNumBytes.toString()})(${JSON.stringify(uri)})`;
+      return driver.evaluateAsync(script).then(stats => {
+        const isBase64DataUri = networkRecord.isBase64DataUri;
+        const base64Length = networkRecord.url.length - networkRecord.url.indexOf(',') - 1;
+        return {
+          originalSize: isBase64DataUri ? base64Length : networkRecord.resourceSize,
+          jpegSize: isBase64DataUri ? stats.jpeg.base64 : stats.jpeg.binary,
+          webpSize: isBase64DataUri ? stats.webp.base64 : stats.webp.binary,
+        };
+      });
     });
   }
 
@@ -123,13 +140,15 @@ class OptimizedImages extends Gatherer {
     const networkRecords = traceData.networkRecords;
     const imageRecords = OptimizedImages.filterImageRequests(options.url, networkRecords);
 
-    return Promise.all(imageRecords.map(record => {
-      return this.calculateImageStats(options.driver, record).catch(err => {
-        return {failed: true, err};
-      }).then(stats => {
-        return Object.assign(stats, record);
+    return imageRecords.reduce((promise, record) => {
+      return promise.then(results => {
+        return this.calculateImageStats(options.driver, record).catch(err => {
+          return {failed: true, err};
+        }).then(stats => {
+          return results.concat(Object.assign(stats, record));
+        });
       });
-    })).then(results => {
+    }, Promise.resolve([])).then(results => {
       const successfulResults = results.filter(result => !result.failed);
       if (results.length && !successfulResults.length) {
         throw new Error('All image optimizations failed');
