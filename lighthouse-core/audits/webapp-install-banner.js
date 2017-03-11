@@ -8,7 +8,7 @@
 
 const Audit = require('./audit');
 const SWAudit = require('./service-worker');
-const Formatter = require('../formatters/formatter');
+const Formatter = require('../report/formatter');
 
 /**
  * @fileoverview
