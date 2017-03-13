@@ -17,8 +17,12 @@
 
 /* eslint-env mocha */
 
-const SpeedlineFormatter = require('../../formatters/speedline-formatter.js');
+const Handlebars = require('handlebars');
 const assert = require('assert');
+const handlebarHelpers = require('../../../report/handlebar-helpers');
+const fs = require('fs');
+const partialHtml = fs.readFileSync(__dirname +
+    '/../../../report/partials/speedline.html', 'utf8');
 
 const mockExtendedInfo = {
   timings: {
@@ -36,10 +40,17 @@ const mockExtendedInfo = {
   frames: []
 };
 
-describe('Formatter', () => {
-  it('handles valid input', () => {
-    const pretty = SpeedlineFormatter.getFormatter('pretty');
-    const formatted = pretty(mockExtendedInfo);
+describe('Speedline partial generation', () => {
+  after(() => {
+    Object.keys(handlebarHelpers).forEach(Handlebars.unregisterHelper, Handlebars);
+  });
+
+  it('generates valid html output', () => {
+    Handlebars.registerHelper(handlebarHelpers);
+
+    const template = Handlebars.compile(partialHtml);
+    const formatted = template(mockExtendedInfo).split('\n').join('');
+
     assert.equal(typeof formatted, 'string');
     assert.ok(formatted.length > 0);
     assert.ok(formatted.includes('100ms'), 'first visual change isnt printed');

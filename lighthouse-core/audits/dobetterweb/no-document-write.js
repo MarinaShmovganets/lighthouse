@@ -22,7 +22,7 @@
 'use strict';
 
 const Audit = require('../audit');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 class NoDocWriteAudit extends Audit {
 
@@ -55,7 +55,7 @@ class NoDocWriteAudit extends Audit {
     return NoDocWriteAudit.generateAuditResult({
       rawValue: results.length === 0,
       extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
+        formatter: Formatter.SUPPORTED_FORMATS.URL_LIST,
         value: results
       }
     });

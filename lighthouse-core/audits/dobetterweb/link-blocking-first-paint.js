@@ -23,7 +23,7 @@
 
 const Audit = require('../audit');
 const URL = require('../../lib/url-shim');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 // Because of the way we detect blocking stylesheets, asynchronously loaded
 // CSS with link[rel=preload] can be falsely flagged as blocking. Therefore, ignore stylesheets

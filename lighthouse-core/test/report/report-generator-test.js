@@ -18,6 +18,8 @@
 const ReportGenerator = require('../../report/report-generator.js');
 const sampleResults = require('../results/sample.json');
 const assert = require('assert');
+const Formatter = require('../../report/formatter');
+const Handlebars = require('handlebars/runtime');
 
 /* eslint-env mocha */
 
@@ -91,6 +93,17 @@ describe('Report', () => {
         '<code>&lt;meta name=&quot;viewport&quot;&gt;</code>'), 'escapes <code>, once.');
   });
 
+  it('includes formatter output in HTML report', () => {
+    const reportGenerator = new ReportGenerator();
+    const html = reportGenerator.generateHTML(sampleResults);
+    assert.ok(html.includes('scorecard'), 'contains output from cards formatter');
+    assert.ok(html.includes('table_list'), 'contains output from table formatter');
+    assert.ok(html.includes('class="cnc-node"'),
+              'contains output from critical request chains formatter');
+    assert.ok(html.includes('class="subitem__detail http-resource"'),
+              'contains output from url list formatter');
+  });
+
   it('does not include script for devtools', () => {
     const reportGenerator = new ReportGenerator();
     const html = reportGenerator.generateHTML(sampleResults, 'devtools');
@@ -141,5 +154,39 @@ describe('Report', () => {
     assert.ok(html.includes( '<img src="http://imagelink.com"'), 'images are transformed');
     assert.ok(!html.includes(
         '<img src="test.gif" onerror="alert(10)">'), 'non-recognized HTML is sanitized');
+  });
+
+  describe('Partials', () => {
+    it('registers known partials', () => {
+      const reportGenerator = new ReportGenerator();
+
+      const audits = {
+        fakeAudit: {
+          name: 'fake-audit',
+          extendedInfo: {
+            formatter: Formatter.SUPPORTED_FORMATS.CRITICAL_REQUEST_CHAINS
+          }
+        }
+      };
+
+      reportGenerator._registerPartials(audits);
+      assert.ok(Handlebars.partials['fake-audit']);
+      Handlebars.unregisterPartial('fake-audit');
+    });
+
+    it('throws on requesting an unknown partial', () => {
+      const reportGenerator = new ReportGenerator();
+
+      const audits = {
+        fakeAudit: {
+          name: 'bad-audit',
+          extendedInfo: {
+            formatter: Formatter.SUPPORTED_FORMATS.NOT_A_REAL_THING
+          }
+        }
+      };
+
+      assert.throws(_ => reportGenerator._registerPartials(audits));
+    });
   });
 });

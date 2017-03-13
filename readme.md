@@ -4,7 +4,7 @@
 
 **Lighthouse requires Chrome 56 or later.**
 
-## Instalalation
+## Installation
 
 ### Chrome extension
 
@@ -34,7 +34,7 @@ Kick off a run by passing `lighthouse` the URL to audit:
 lighthouse https://airhorner.com/
 ```
 
-Lighthouse will prettyprint a report to CLI. You can control the output format by passing flags.
+By default, Lighthouse writes the report to an HTML file. You can control the output format by passing flags.
 
 #### CLI options
 
@@ -66,8 +66,13 @@ Configuration:
 
 Output:
   --output       Reporter for the results, supports multiple values
-                         [choices: "none", "pretty", "json", "html"]               [default: "none"]
-  --output-path  The file path to output the results
+                                    [choices: "json", "html"]                      [default: "html"]
+  --output-path  The file path to output the results. Use 'stdout' to write to
+                 stdout.
+                 If using JSON output, default is stdout.
+                 If using HTML output, default is a file in the working
+                 directory with a name based on the test URL and date.
+                 If using multiple outputs, --output-path is ignored.
                  Example: --output-path=./lighthouse-results.html                [default: "stdout"]
 
 Options:
@@ -132,7 +137,7 @@ $ lighthouse --disable-device-emulation --disable-cpu-throttling https://mysite.
 
 ## Using programmatically
 
-The exampl below shows how to setup and run Lighthouse programmatically as a Node module. It
+The example below shows how to setup and run Lighthouse programmatically as a Node module. It
 assumes you've installed Lighthouse as a dependency (`yarn add --dev lighthouse`).
 
 ```javascript
@@ -205,6 +210,14 @@ In the Viewer, reports can be shared by clicking the share icon in the top
 right corner and signing in to GitHub.
 
 > **Note**: shared reports are stashed as a secret Gist in GitHub, under your account.
+
+## Related Projects
+
+* [webpack-lighthouse-plugin](https://github.com/addyosmani/webpack-lighthouse-plugin) -  run Lighthouse from a Webpack build.
+* [lighthouse-mocha-example](https://github.com/justinribeiro/lighthouse-mocha-example) -  gathers performance metrics via Lighthouse and tests them in Mocha
+* [pwmetrics](https://github.com/paulirish/pwmetrics/) - gather performance metrics 
+* [lighthouse-hue](https://github.com/ebidel/lighthouse-hue) - Lighthouse score setting the color of Philips Hue lights
+* [lighthouse-batch](https://www.npmjs.com/package/lighthouse-batch) - Run Lighthouse over a number of sites in sequence and generating a summary report including all of their scores.
 
 ## Develop
 
