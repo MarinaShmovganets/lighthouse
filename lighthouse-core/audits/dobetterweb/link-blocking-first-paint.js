@@ -53,7 +53,7 @@ class LinkBlockingFirstPaintAudit extends Audit {
    * @param {string} tagFilter The tagName to filter on
    * @param {number=} loadThreshold Filter to resources that took at least this
    *    many milliseconds to load.
-   * @return {!Object} The object to pass to `generateAuditResult`
+   * @return {!AuditResult} The object to pass to `generateAuditResult`
    */
   static computeAuditResultForTags(artifacts, tagFilter, loadThreshold = 0) {
     const artifact = artifacts.TagsBlockingFirstPaint;
