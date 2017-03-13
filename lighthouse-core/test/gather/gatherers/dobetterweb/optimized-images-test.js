@@ -78,7 +78,7 @@ describe('Optimized images', () => {
           return Promise.resolve(fakeImageStats);
         },
         sendCommand: function() {
-          return Promise.resolve('mydata');
+          return Promise.resolve({base64Encoded: true, body: 'mydata'});
         },
       }
     };

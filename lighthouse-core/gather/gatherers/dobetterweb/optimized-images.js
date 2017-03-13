@@ -108,13 +108,13 @@ class OptimizedImages extends Gatherer {
     // Get the request body for cross-origin images to circumvent canvas CORS protections
     if (!networkRecord.isSameOrigin && !networkRecord.isBase64DataUri) {
       const requestId = networkRecord.requestId;
-      uriPromise = Promise.resolve()
-        .then(_ => driver.sendCommand('Network.enable'))
-        .then(_ => driver.sendCommand('Network.getResponseBody', {requestId}))
-        .then(resp => {
-          const body = resp.base64Encoded ? resp.body : '';
-          return `data:${networkRecord.mimeType};base64,${body}`;
-        });
+      uriPromise = driver.sendCommand('Network.getResponseBody', {requestId}).then(resp => {
+        if (!resp.base64Encoded) {
+          throw new Error('expected image to be base64 encoded');
+        }
+
+        return `data:${networkRecord.mimeType};base64,${resp.body}`;
+      });
     }
 
     return uriPromise.then(uri => {
@@ -155,14 +155,17 @@ class OptimizedImages extends Gatherer {
     const networkRecords = traceData.networkRecords;
     const imageRecords = OptimizedImages.filterImageRequests(options.url, networkRecords);
 
-    return this.computeOptimizedImages(options.driver, imageRecords).then(results => {
-      const successfulResults = results.filter(result => !result.failed);
-      if (results.length && !successfulResults.length) {
-        throw new Error('All image optimizations failed');
-      }
+    return options.driver.sendCommand('Network.enable')
+      .then(_ => this.computeOptimizedImages(options.driver, imageRecords))
+      .then(results => options.driver.sendCommand('Network.disable').then(_ => results))
+      .then(results => {
+        const successfulResults = results.filter(result => !result.failed);
+        if (results.length && !successfulResults.length) {
+          throw new Error('All image optimizations failed');
+        }
 
-      return results;
-    });
+        return results;
+      });
   }
 }
 
