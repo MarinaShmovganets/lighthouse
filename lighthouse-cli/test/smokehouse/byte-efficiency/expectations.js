@@ -39,7 +39,10 @@ module.exports = [
         extendedInfo: {
           value: {
             results: {
-              length: 4
+              length: 4,
+              1: {
+                isCrossOrigin: true
+              }
             }
           }
         }

@@ -105,12 +105,12 @@ class OptimizedImages extends Gatherer {
   calculateImageStats(driver, networkRecord) {
     let uriPromise = Promise.resolve(networkRecord.url);
 
-    // Get the request body for cross-origin images to circumvent canvas CORS protections
+    // For cross-origin images, circumvent canvas CORS policy by getting image directly from protocol
     if (!networkRecord.isSameOrigin && !networkRecord.isBase64DataUri) {
       const requestId = networkRecord.requestId;
       uriPromise = driver.sendCommand('Network.getResponseBody', {requestId}).then(resp => {
         if (!resp.base64Encoded) {
-          throw new Error('expected image to be base64 encoded');
+          throw new Error('Unable to fetch cross-origin image body');
         }
 
         return `data:${networkRecord.mimeType};base64,${resp.body}`;
