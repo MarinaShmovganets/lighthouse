@@ -106,8 +106,7 @@ class LinkBlockingFirstPaintAudit extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const result = this.computeAuditResultForTags(artifacts, 'LINK', LOAD_THRESHOLD_IN_MS);
-    return this.generateAuditResult(result);
+    return this.computeAuditResultForTags(artifacts, 'LINK', LOAD_THRESHOLD_IN_MS);
   }
 }
 
