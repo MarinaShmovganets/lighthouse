@@ -132,6 +132,21 @@ class OptimizedImages extends Gatherer {
   }
 
   /**
+   * @param {!Object} driver
+   * @param {!Array<!Object>} imageRecords
+   * @return {!Promise<!Array<!Object>>}
+   */
+  computeOptimizedImages(driver, imageRecords) {
+    return imageRecords.reduce((promise, record) => {
+      return promise.then(results => {
+        return this.calculateImageStats(driver, record)
+          .catch(err => ({failed: true, err}))
+          .then(stats => results.concat(Object.assign(stats, record)));
+      });
+    }, Promise.resolve([]));
+  }
+
+  /**
    * @param {!Object} options
    * @param {{networkRecords: !Array<!NetworRecord>}} traceData
    * @return {!Promise<!Array<!Object>}
@@ -140,15 +155,7 @@ class OptimizedImages extends Gatherer {
     const networkRecords = traceData.networkRecords;
     const imageRecords = OptimizedImages.filterImageRequests(options.url, networkRecords);
 
-    return imageRecords.reduce((promise, record) => {
-      return promise.then(results => {
-        return this.calculateImageStats(options.driver, record).catch(err => {
-          return {failed: true, err};
-        }).then(stats => {
-          return results.concat(Object.assign(stats, record));
-        });
-      });
-    }, Promise.resolve([])).then(results => {
+    return this.computeOptimizedImages(options.driver, imageRecords).then(results => {
       const successfulResults = results.filter(result => !result.failed);
       if (results.length && !successfulResults.length) {
         throw new Error('All image optimizations failed');
