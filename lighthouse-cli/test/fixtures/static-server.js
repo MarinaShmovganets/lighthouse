@@ -21,12 +21,13 @@
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
+const parseQueryString = require('querystring').parse;
 const parseURL = require('url').parse;
 
 function requestHandler(request, response) {
   const requestUrl = parseURL(request.url);
   const filePath = requestUrl.pathname;
-  const queryString = requestUrl.search;
+  const queryString = requestUrl.search && parseQueryString(requestUrl.search.slice(1));
   let absoluteFilePath = path.join(__dirname, filePath);
 
   if (filePath === '/zone.js') {
@@ -64,10 +65,9 @@ function requestHandler(request, response) {
     }
     response.writeHead(statusCode, headers);
 
-    if (queryString && queryString.includes('delay')) {
+    if (queryString && typeof queryString.delay !== 'undefined') {
       response.write('');
-      const matched = queryString.match(/delay=(\d+)/);
-      const delay = (matched && parseInt(matched[1])) || 2000;
+      const delay = parseInt(queryString.delay) || 2000;
       return setTimeout(finishResponse, delay, data);
     }
     finishResponse(data);
