@@ -28,7 +28,7 @@ const Formatter = require('../../report/formatter');
 // Because of the way we detect blocking stylesheets, asynchronously loaded
 // CSS with link[rel=preload] can be falsely flagged as blocking. Therefore, ignore stylesheets
 // that loaded fast enough to possibly be non-blocking (and they have minimal impact anyway).
-const LOAD_THRESHOLD_IN_MS = 100;
+const LOAD_THRESHOLD_IN_MS = 50;
 
 class LinkBlockingFirstPaintAudit extends Audit {
 

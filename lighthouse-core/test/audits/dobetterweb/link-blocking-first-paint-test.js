@@ -49,7 +49,7 @@ describe('Link Block First Paint audit', () => {
           tag: linkDetails,
           transferSize: 100,
           startTime: 4.7,
-          endTime: 4.75, // should be ignored for being <100ms
+          endTime: 4.73, // should be ignored for being <50ms
         },
         {
           tag: {tagName: 'SCRIPT'},
