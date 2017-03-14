@@ -123,9 +123,6 @@ function onGenerateReportButtonClick(background, selectedAggregations) {
   feedbackEl.textContent = '';
 
   background.runLighthouseInExtension({
-    flags: {
-      disableCpuThrottling: false
-    },
     restoreCleanState: true
   }, selectedAggregations).catch(err => {
     let message = err.message;
