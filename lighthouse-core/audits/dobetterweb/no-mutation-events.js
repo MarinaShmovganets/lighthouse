@@ -25,7 +25,7 @@
 const URL = require('../../lib/url-shim');
 const Audit = require('../audit');
 const EventHelpers = require('../../lib/event-helpers');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 class NoMutationEventsAudit extends Audit {
 
@@ -79,7 +79,7 @@ class NoMutationEventsAudit extends Audit {
 
     const groupedResults = EventHelpers.groupCodeSnippetsByLocation(results);
 
-    return NoMutationEventsAudit.generateAuditResult({
+    return {
       rawValue: groupedResults.length === 0,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.TABLE,
@@ -89,7 +89,7 @@ class NoMutationEventsAudit extends Audit {
         }
       },
       debugString
-    });
+    };
   }
 }
 

@@ -39,6 +39,7 @@ class UsesResponsiveImages extends Audit {
       category: 'Images',
       name: 'uses-responsive-images',
       description: 'Oversized Images',
+      informative: true,
       helpText:
         'Image sizes served should be based on the device display size to save network bytes. ' +
         'Learn more about [responsive images](https://developers.google.com/web/fundamentals/design-and-ui/media/images) ' +
@@ -53,7 +54,7 @@ class UsesResponsiveImages extends Audit {
    * @return {?Object}
    */
   static computeWaste(image, DPR) {
-    const url = URL.getDisplayName(image.src);
+    const url = URL.getDisplayName(image.src, {preserveQuery: true});
     const actualPixels = image.naturalWidth * image.naturalHeight;
     const usedPixels = image.clientWidth * image.clientHeight * Math.pow(DPR, 2);
     const wastedRatio = 1 - (usedPixels / actualPixels);

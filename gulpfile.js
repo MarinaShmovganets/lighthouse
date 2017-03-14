@@ -1,6 +1,5 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 'use strict';
 
-const Formatter = require('./formatter');
+const gulp = require('gulp');
+const compile = require('./gulp/compile');
+const config = require('./gulp/config');
 
-class NullFormatter extends Formatter {
-  static getFormatter(type) {
-    switch (type) {
-      case 'pretty':
-        return _ => '';
+gulp.task('compileReport', compile.compileReport);
+gulp.task('compilePartials', compile.compilePartials);
 
-      case 'html':
-        return '';
+gulp.task('compile-templates', ['compileReport', 'compilePartials']);
 
-      default:
-        throw new Error('Unknown formatter type');
-    }
-  }
-}
+gulp.task('watch', ['compileReport', 'compilePartials'], () => {
+  gulp.watch([
+    config.report
+  ], ['compileReport']);
 
-module.exports = NullFormatter;
+  gulp.watch([
+    config.partials
+  ], ['compilePartials']);
+});
+
+gulp.task('default', ['compile-templates']);

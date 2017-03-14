@@ -3,6 +3,7 @@
     "passName": "defaultPass",
     "recordNetwork": true,
     "recordTrace": true,
+    "pauseBeforeTraceEndMs": 500,
     "useThrottling": true,
     "gatherers": [
       "url",
@@ -112,6 +113,7 @@
 
   "aggregations": [{
     "name": "Progressive Web App",
+    "id": "pwa",
     "description": "These audits validate the aspects of a Progressive Web App. They are a subset of the [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist).",
     "scored": true,
     "categorizable": true,
@@ -256,6 +258,7 @@
     }]
   }, {
     "name": "Best Practices",
+    "id": "bp",
     "description": "We've compiled some recommendations for modernizing your web app and avoiding performance pitfalls. These audits do not affect your score but are worth a look.",
     "scored": false,
     "categorizable": true,
@@ -383,6 +386,7 @@
     }]
   }, {
     "name": "Performance",
+    "id": "perf",
     "description": "These encapsulate your app's performance.",
     "scored": false,
     "categorizable": false,
@@ -400,10 +404,6 @@
           "expectedValue": true,
           "weight": 1
         },
-        "total-byte-weight": {
-          "expectedValue": 100,
-          "weight": 1
-        },
         "critical-request-chains": {
           "expectedValue": true,
           "weight": 1
@@ -414,6 +414,10 @@
         },
         "script-blocking-first-paint": {
           "expectedValue": true,
+          "weight": 1
+        },
+        "total-byte-weight": {
+          "expectedValue": 100,
           "weight": 1
         },
         "dom-size": {
@@ -428,9 +432,11 @@
     }]
   }, {
     "name": "Fancier stuff",
+    "id": "fancy",
     "description": "A list of newer features that you could be using in your app. These audits do not affect your score and are just suggestions.",
     "scored": false,
     "categorizable": true,
+    "additional": true,
     "items": [{
       "name": "New JavaScript features",
       "audits": {

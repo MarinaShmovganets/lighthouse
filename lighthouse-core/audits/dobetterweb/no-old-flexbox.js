@@ -25,7 +25,7 @@
 const Audit = require('../audit');
 const URL = require('../../lib/url-shim');
 const StyleHelpers = require('../../lib/styles-helpers');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 class NoOldFlexboxAudit extends Audit {
 
@@ -80,7 +80,7 @@ class NoOldFlexboxAudit extends Audit {
       });
     });
 
-    return NoOldFlexboxAudit.generateAuditResult({
+    return {
       rawValue: sheetsUsingOldFlexbox.length === 0,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.TABLE,
@@ -91,7 +91,7 @@ class NoOldFlexboxAudit extends Audit {
             pre: 'Snippet'}
         }
       }
-    });
+    };
   }
 }
 

@@ -17,11 +17,12 @@
 
 /* eslint-env mocha */
 
-const CardsFormatter = require('../../formatters/cards.js');
 const Handlebars = require('handlebars');
 const assert = require('assert');
+const fs = require('fs');
+const partialHtml = fs.readFileSync(__dirname + '/../../../report/partials/cards.html', 'utf8');
 
-describe('CardsFormatter', () => {
+describe('Cards partial generation', () => {
   const extendedInfo = {
     value: [
       {title: 'Total DOM Nodes', value: 3500, target: '1,500 nodes'},
@@ -30,26 +31,8 @@ describe('CardsFormatter', () => {
     ]
   };
 
-  it('handles invalid input', () => {
-    const pretty = CardsFormatter.getFormatter('pretty');
-    assert.equal(pretty(), '');
-    assert.equal(pretty(null), '');
-    assert.equal(pretty({}), '');
-    assert.equal(pretty({results: 'blah'}), '');
-  });
-
-  it('generates valid pretty output', () => {
-    const pretty = CardsFormatter.getFormatter('pretty');
-    const output = pretty(extendedInfo.value);
-    const str = `    - ${extendedInfo.value[0].title}: ${extendedInfo.value[0].value}\n` +
-        `    - ${extendedInfo.value[1].title}: ${extendedInfo.value[1].value}\n` +
-        `    - ${extendedInfo.value[2].title}: ${extendedInfo.value[2].value}\n`;
-    assert.equal(output, str);
-  });
-
   it('generates valid html output', () => {
-    const formatter = CardsFormatter.getFormatter('html');
-    const template = Handlebars.compile(formatter);
+    const template = Handlebars.compile(partialHtml);
     const output = template(extendedInfo.value).split('\n').join('');
     assert.ok(output.match('title="snippet"'), 'adds title attribute for snippet');
     assert.ok(output.match('class="cards__container"'), 'adds wrapper class');

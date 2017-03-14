@@ -24,7 +24,7 @@
 
 const URL = require('../../lib/url-shim');
 const Audit = require('../audit');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 class UsesHTTP2Audit extends Audit {
 
@@ -70,7 +70,7 @@ class UsesHTTP2Audit extends Audit {
       displayValue = `${resources.length} request was not handled over h2`;
     }
 
-    return UsesHTTP2Audit.generateAuditResult({
+    return {
       rawValue: resources.length === 0,
       displayValue: displayValue,
       extendedInfo: {
@@ -80,7 +80,7 @@ class UsesHTTP2Audit extends Audit {
           tableHeadings: {url: 'URL', protocol: 'Protocol'}
         }
       }
-    });
+    };
   }
 }
 

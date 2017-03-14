@@ -18,7 +18,7 @@
 'use strict';
 
 const Audit = require('./audit');
-const Formatter = require('../formatters/formatter');
+const Formatter = require('../report/formatter');
 
 class UserTimings extends Audit {
   /**
@@ -32,7 +32,8 @@ class UserTimings extends Audit {
       helpText: 'Consider instrumenting your app with the User Timing API to create custom, ' +
           'real-world measurements of key user experiences. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/user-timing).',
-      requiredArtifacts: ['traces']
+      requiredArtifacts: ['traces'],
+      informative: true
     };
   }
 
@@ -123,14 +124,14 @@ class UserTimings extends Audit {
     return artifacts.requestTraceOfTab(trace).then(tabTrace => {
       const userTimings = this.filterTrace(tabTrace).filter(UserTimings.excludeBlacklisted);
 
-      return UserTimings.generateAuditResult({
+      return {
         rawValue: true,
         displayValue: userTimings.length,
         extendedInfo: {
           formatter: Formatter.SUPPORTED_FORMATS.USER_TIMINGS,
           value: userTimings
         }
-      });
+      };
     });
   }
 }

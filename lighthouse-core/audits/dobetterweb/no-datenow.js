@@ -24,7 +24,7 @@
 
 const URL = require('../../lib/url-shim');
 const Audit = require('../audit');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 class NoDateNowAudit extends Audit {
 
@@ -65,7 +65,7 @@ class NoDateNowAudit extends Audit {
       return true;
     });
 
-    return NoDateNowAudit.generateAuditResult({
+    return {
       rawValue: results.length === 0,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.TABLE,
@@ -75,7 +75,7 @@ class NoDateNowAudit extends Audit {
         }
       },
       debugString
-    });
+    };
   }
 }
 

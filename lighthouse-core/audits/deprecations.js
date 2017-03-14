@@ -23,7 +23,7 @@
  */
 
 const Audit = require('./audit');
-const Formatter = require('../formatters/formatter');
+const Formatter = require('../report/formatter');
 
 class Deprecations extends Audit {
   /**
@@ -34,8 +34,8 @@ class Deprecations extends Audit {
       category: 'Deprecations',
       name: 'deprecations',
       description: 'Avoids deprecated APIs',
-      helpText: 'We found some uses of deprecated APIs. Please consider migrating ' +
-          'to a newer option. [Learn more](https://www.chromestatus.com/features#deprecated).',
+      helpText: 'Deprecated APIs will eventually be removed from the browser. ' +
+          '[Learn more](https://www.chromestatus.com/features#deprecated).',
       requiredArtifacts: ['ChromeConsoleMessages']
     };
   }
@@ -66,14 +66,14 @@ class Deprecations extends Audit {
       displayValue = `${deprecations.length} warning found`;
     }
 
-    return Deprecations.generateAuditResult({
+    return {
       rawValue: deprecations.length === 0,
       displayValue,
       extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
+        formatter: Formatter.SUPPORTED_FORMATS.URL_LIST,
         value: deprecations
       }
-    });
+    };
   }
 }
 

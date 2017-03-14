@@ -17,7 +17,7 @@
 'use strict';
 
 const Audit = require('../audit');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 const KB_IN_BYTES = 1024;
 const WASTEFUL_THRESHOLD_IN_BYTES = 20 * KB_IN_BYTES;
@@ -84,7 +84,7 @@ class UnusedBytes extends Audit {
         displayValue = `Potential savings of ${wastedKbDisplay} (~${wastedMsDisplay})`;
       }
 
-      return this.generateAuditResult({
+      return {
         debugString,
         displayValue,
         rawValue: typeof result.passes === 'undefined' ?
@@ -94,7 +94,7 @@ class UnusedBytes extends Audit {
           formatter: Formatter.SUPPORTED_FORMATS.TABLE,
           value: {results, tableHeadings: result.tableHeadings}
         }
-      });
+      };
     });
   }
 

@@ -34,7 +34,7 @@ Kick off a run by passing `lighthouse` the URL to audit:
 lighthouse https://airhorner.com/
 ```
 
-Lighthouse will prettyprint a report to CLI. You can control the output format by passing flags.
+By default, Lighthouse writes the report to an HTML file. You can control the output format by passing flags.
 
 #### CLI options
 
@@ -65,9 +65,14 @@ Configuration:
                                 instability.                                        [default: 25000]
 
 Output:
-  --output       Reporter for the results
-                         [choices: "pretty", "json", "html"]                     [default: "pretty"]
-  --output-path  The file path to output the results
+  --output       Reporter for the results, supports multiple values
+                                    [choices: "json", "html"]                      [default: "html"]
+  --output-path  The file path to output the results. Use 'stdout' to write to
+                 stdout.
+                 If using JSON output, default is stdout.
+                 If using HTML output, default is a file in the working
+                 directory with a name based on the test URL and date.
+                 If using multiple outputs, --output-path is ignored.
                  Example: --output-path=./lighthouse-results.html                [default: "stdout"]
 
 Options:
@@ -78,19 +83,36 @@ Options:
                      installations are found                                               [boolean]
 ```
 
-##### Output Path examples
+##### Output Examples
+`lighthouse` generates
+* `./<HOST>_<DATE>.report.html`
 
-`--output-path=~/mydir/foo.out --save-assets` generates
-* `~/mydir/foo.out`
+`lighthouse --output json` generates
+* json output on `stdout`
+
+`lighthouse --output html --output-path ./report.html` generates
+* `./report.html`
+
+NOTE: specifying an output path with multiple formats ignores your specified extension for *ALL* formats
+
+`lighthouse --output json --output html --output-path ./myfile.json` generates
+* `./myfile.report.json`
+* `./myfile.report.html`
+
+`lighthouse --output json --output html` generates
+* `./<HOST>_<DATE>.report.json`
+* `./<HOST>_<DATE>.report.html`
+
+`lighthouse --output-path=~/mydir/foo.out --save-assets` generates
 * `~/mydir/foo.report.html`
 * `~/mydir/foo-0.trace.json`
 * `~/mydir/foo-0.screenshots.html`
 
-`--output-path=./report.json --output json --save-artifacts` generates
+`lighthouse --output-path=./report.json --output json --save-artifacts` generates
 * `./report.json`
 * `./report.artifacts.log`
 
-`--save-artifacts` prints a pretty report to `stdout` **and** generates
+`lighthouse --save-artifacts` generates
 * `./<HOST>_<DATE>.report.html`
 * `./<HOST>_<DATE>.artifacts.log`
 
@@ -189,6 +211,14 @@ right corner and signing in to GitHub.
 
 > **Note**: shared reports are stashed as a secret Gist in GitHub, under your account.
 
+## Related Projects
+
+* [webpack-lighthouse-plugin](https://github.com/addyosmani/webpack-lighthouse-plugin) -  run Lighthouse from a Webpack build.
+* [lighthouse-mocha-example](https://github.com/justinribeiro/lighthouse-mocha-example) -  gathers performance metrics via Lighthouse and tests them in Mocha
+* [pwmetrics](https://github.com/paulirish/pwmetrics/) - gather performance metrics 
+* [lighthouse-hue](https://github.com/ebidel/lighthouse-hue) - Lighthouse score setting the color of Philips Hue lights
+* [lighthouse-batch](https://www.npmjs.com/package/lighthouse-batch) - Run Lighthouse over a number of sites in sequence and generating a summary report including all of their scores.
+
 ## Develop
 
 ### Setup
@@ -199,6 +229,7 @@ git clone https://github.com/GoogleChrome/lighthouse
 cd lighthouse
 npm install
 npm run install-all
+gulp # to precompile the handlebar templates.
 
 # The CLI is authored in TypeScript and requires compilation.
 # If you need to make changes to the CLI, run the TS compiler in watch mode:

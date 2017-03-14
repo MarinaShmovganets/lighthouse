@@ -11,7 +11,7 @@
 const Audit = require('./audit');
 const TracingProcessor = require('../lib/traces/tracing-processor');
 const FMPMetric = require('./first-meaningful-paint');
-const Formatter = require('../formatters/formatter');
+const Formatter = require('../report/formatter');
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 //   https://www.desmos.com/calculator/jlrx14q4w8
@@ -151,7 +151,7 @@ class TTIMetric extends Audit {
         foundLatencies
       };
 
-      return TTIMetric.generateAuditResult({
+      return {
         score,
         rawValue: parseFloat(timeToInteractive.toFixed(1)),
         displayValue: `${parseFloat(timeToInteractive.toFixed(1))}ms`,
@@ -160,7 +160,7 @@ class TTIMetric extends Audit {
           value: extendedInfo,
           formatter: Formatter.SUPPORTED_FORMATS.NULL
         }
-      });
+      };
     });
   }
 }

@@ -23,7 +23,7 @@
 
 const Audit = require('../audit');
 const URL = require('../../lib/url-shim');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 class LinkBlockingFirstPaintAudit extends Audit {
 
@@ -35,6 +35,7 @@ class LinkBlockingFirstPaintAudit extends Audit {
       category: 'Performance',
       name: 'link-blocking-first-paint',
       description: 'Render-blocking Stylesheets',
+      informative: true,
       helpText: 'Link elements are blocking the first paint of your page. Consider ' +
           'inlining critical links and deferring non-critical ones. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).',
@@ -45,7 +46,7 @@ class LinkBlockingFirstPaintAudit extends Audit {
   /**
    * @param {!Artifacts} artifacts
    * @param {string} tagFilter The tagName to filter on
-   * @return {!Object} The object to pass to `generateAuditResult`
+   * @return {!AuditResult}
    */
   static computeAuditResultForTags(artifacts, tagFilter) {
     const artifact = artifacts.TagsBlockingFirstPaint;
@@ -95,8 +96,7 @@ class LinkBlockingFirstPaintAudit extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const result = LinkBlockingFirstPaintAudit.computeAuditResultForTags(artifacts, 'LINK');
-    return LinkBlockingFirstPaintAudit.generateAuditResult(result);
+    return LinkBlockingFirstPaintAudit.computeAuditResultForTags(artifacts, 'LINK');
   }
 }
 

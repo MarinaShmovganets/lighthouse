@@ -18,19 +18,20 @@
 
 /* eslint-env mocha */
 
-const UserTimingsFormatter = require('../../formatters/user-timings.js');
 const assert = require('assert');
+const Handlebars = require('handlebars');
+const handlebarHelpers = require('../../../report/handlebar-helpers');
+const fs = require('fs');
+const partialHtml = fs.readFileSync(__dirname +
+    '/../../../report/partials/user-timings.html', 'utf8');
 
-describe('Formatter', () => {
-  it('handles invalid input', () => {
-    const pretty = UserTimingsFormatter.getFormatter('pretty');
-    assert.doesNotThrow(_ => pretty());
-    assert.doesNotThrow(_ => pretty({}));
+describe('User Timings partial generation', () => {
+  after(() => {
+    Object.keys(handlebarHelpers).forEach(Handlebars.unregisterHelper, Handlebars);
   });
 
-  it('handles valid input', () => {
-    const pretty = UserTimingsFormatter.getFormatter('pretty');
-    const output = pretty([{
+  it('generates valid html output', () => {
+    const extendedInfo = [{
       isMark: true,
       name: 'one',
       startTime: 10,
@@ -42,10 +43,16 @@ describe('Formatter', () => {
       startTime: 1000,
       endTime: 2500,
       duration: 1500
-    }]);
-    assert.ok(/mark/.test(output));
-    assert.ok(/start: 10/.test(output));
-    assert.ok(/measure/.test(output));
-    assert.ok(/duration: 1500/.test(output));
+    }];
+
+    Handlebars.registerHelper(handlebarHelpers);
+
+    const template = Handlebars.compile(partialHtml);
+    const output = template(extendedInfo).split('\n').join('');
+
+    assert.ok(/Mark: 10/.test(output));
+    assert.ok(/one/.test(output));
+    assert.ok(/two/.test(output));
+    assert.ok(/Measure 1500/.test(output));
   });
 });

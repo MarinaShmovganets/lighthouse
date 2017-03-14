@@ -19,7 +19,7 @@
 
 const Audit = require('./audit');
 const TracingProcessor = require('../lib/traces/tracing-processor');
-const Formatter = require('../formatters/formatter');
+const Formatter = require('../report/formatter');
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 // https://www.desmos.com/calculator/joz3pqttdq
@@ -69,7 +69,7 @@ class FirstMeaningfulPaint extends Audit {
         firstContentfulPaint: tabTrace.firstContentfulPaintEvt
       });
 
-      return FirstMeaningfulPaint.generateAuditResult({
+      return {
         score: result.score,
         rawValue: parseFloat(result.duration),
         displayValue: `${result.duration}ms`,
@@ -79,7 +79,7 @@ class FirstMeaningfulPaint extends Audit {
           value: result.extendedInfo,
           formatter: Formatter.SUPPORTED_FORMATS.NULL
         }
-      });
+      };
     });
   }
 

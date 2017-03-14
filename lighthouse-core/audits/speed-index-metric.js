@@ -19,7 +19,7 @@
 
 const Audit = require('./audit');
 const TracingProcessor = require('../lib/traces/tracing-processor');
-const Formatter = require('../formatters/formatter');
+const Formatter = require('../report/formatter');
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 // https://www.desmos.com/calculator/mdgjzchijg
@@ -96,7 +96,7 @@ class SpeedIndexMetric extends Audit {
         })
       };
 
-      return SpeedIndexMetric.generateAuditResult({
+      return {
         score: Math.round(score),
         rawValue: Math.round(speedline.perceptualSpeedIndex),
         optimalValue: this.meta.optimalValue,
@@ -104,7 +104,7 @@ class SpeedIndexMetric extends Audit {
           formatter: Formatter.SUPPORTED_FORMATS.SPEEDLINE,
           value: extendedInfo
         }
-      });
+      };
     });
   }
 }

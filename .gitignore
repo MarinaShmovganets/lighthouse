@@ -9,6 +9,7 @@ lighthouse-core/third_party/src
 coverage
 
 lighthouse-cli/results
+lighthouse-cli/performance-experiment/experiment-database/experiment-data*
 results
 results.html
 last-run-results.html
@@ -17,6 +18,8 @@ last-run-results.html
 *.devtoolslog.json
 *.screenshots.html
 *.report.html
+*.report.json
+*.report.pretty
 *.artifacts.log
 
 closure-error.log
@@ -34,3 +37,6 @@ lighthouse-cli/types/*.map
 /chrome-linux/
 /chrome-win32/
 /chrome.zip
+
+lighthouse-core/report/partials/templates/
+lighthouse-core/report/templates/*.js

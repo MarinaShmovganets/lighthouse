@@ -18,7 +18,7 @@
 'use strict';
 
 const Audit = require('./audit');
-const Formatter = require('../formatters/formatter');
+const Formatter = require('../report/formatter');
 
 class CriticalRequestChains extends Audit {
   /**
@@ -29,6 +29,7 @@ class CriticalRequestChains extends Audit {
       category: 'Performance',
       name: 'critical-request-chains',
       description: 'Critical Request Chains',
+      informative: true,
       optimalValue: 0,
       helpText: 'The Critical Request Chains below show you what resources are ' +
           'required for first render of this page. Improve page load by reducing ' +
@@ -37,6 +38,58 @@ class CriticalRequestChains extends Audit {
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/critical-request-chains).',
       requiredArtifacts: ['networkRecords']
     };
+  }
+
+  static _traverse(tree, cb) {
+    function walk(node, depth, startTime, transferSize = 0) {
+      const children = Object.keys(node);
+      if (children.length === 0) {
+        return;
+      }
+      children.forEach(id => {
+        const child = node[id];
+        if (!startTime) {
+          startTime = child.request.startTime;
+        }
+
+        // Call the callback with the info for this child.
+        cb({
+          depth,
+          id,
+          node: child,
+          chainDuration: (child.request.endTime - startTime) * 1000,
+          chainTransferSize: (transferSize + child.request.transferSize)
+        });
+
+        // Carry on walking.
+        walk(child.children, depth + 1, startTime);
+      }, '');
+    }
+
+    walk(tree, 0);
+  }
+
+  /**
+   * Get stats about the longest initiator chain (as determined by time duration)
+   * @return {{duration: number, length: number, transferSize: number}}
+   */
+  static _getLongestChain(tree) {
+    const longest = {
+      duration: 0,
+      length: 0,
+      transferSize: 0
+    };
+    CriticalRequestChains._traverse(tree, opts => {
+      const duration = opts.chainDuration;
+      if (duration > longest.duration) {
+        longest.duration = duration;
+        longest.transferSize = opts.chainTransferSize;
+        longest.length = opts.depth;
+      }
+    });
+    // Always return the longest chain + 1 because the depth is zero indexed.
+    longest.length++;
+    return longest;
   }
 
   /**
@@ -70,15 +123,18 @@ class CriticalRequestChains extends Audit {
         walk(initialNavChildren, 0);
       }
 
-      return CriticalRequestChains.generateAuditResult({
+      return {
         rawValue: chainCount <= this.meta.optimalValue,
         displayValue: chainCount,
         optimalValue: this.meta.optimalValue,
         extendedInfo: {
           formatter: Formatter.SUPPORTED_FORMATS.CRITICAL_REQUEST_CHAINS,
-          value: chains
+          value: {
+            chains,
+            longestChain: CriticalRequestChains._getLongestChain(chains)
+          }
         }
-      });
+      };
     });
   }
 }

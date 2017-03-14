@@ -25,7 +25,7 @@
 
 const Audit = require('../audit');
 const TracingProcessor = require('../../lib/traces/tracing-processor');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 const MAX_DOM_NODES = 1500;
 const MAX_DOM_TREE_WIDTH = 60;
@@ -105,16 +105,16 @@ class DOMSize extends Audit {
       target: `< ${MAX_DOM_TREE_WIDTH.toLocaleString()} nodes`
     }];
 
-    return DOMSize.generateAuditResult({
+    return {
       rawValue: stats.totalDOMNodes,
       optimalValue: this.meta.optimalValue,
       score: Math.round(score),
       displayValue: `${stats.totalDOMNodes.toLocaleString()} nodes`,
       extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.CARD,
+        formatter: Formatter.SUPPORTED_FORMATS.CARDS,
         value: cards
       }
-    });
+    };
   }
 
 }

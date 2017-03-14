@@ -20,7 +20,7 @@
 'use strict';
 
 const Audit = require('./byte-efficiency-audit');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 const TracingProcessor = require('../../lib/traces/tracing-processor');
 const URL = require('../../lib/url-shim');
 
@@ -40,6 +40,7 @@ class TotalByteWeight extends Audit {
       name: 'total-byte-weight',
       optimalValue: this.bytesToKbString(OPTIMAL_VALUE),
       description: 'Avoids enormous network payloads',
+      informative: true,
       helpText:
           'Network transfer size [costs users real dollars](https://whatdoesmysitecost.com/) ' +
           'and is [highly correlated](http://httparchive.org/interesting.php#onLoad) with long load times. ' +
@@ -63,7 +64,7 @@ class TotalByteWeight extends Audit {
         }
 
         const result = {
-          url: URL.getDisplayName(record.url),
+          url: URL.getDisplayName(record.url, {preserveQuery: true}),
           totalBytes: record.transferSize,
           totalKb: this.bytesToKbString(record.transferSize),
           totalMs: this.bytesToMsString(record.transferSize, networkThroughput),
@@ -83,7 +84,7 @@ class TotalByteWeight extends Audit {
           SCORING_MEDIAN, SCORING_POINT_OF_DIMINISHING_RETURNS);
       const score = 100 * distribution.computeComplementaryPercentile(totalBytes);
 
-      return this.generateAuditResult({
+      return {
         rawValue: totalBytes,
         optimalValue: this.meta.optimalValue,
         displayValue: `Total size was ${Audit.bytesToKbString(totalBytes)}`,
@@ -99,7 +100,7 @@ class TotalByteWeight extends Audit {
             }
           }
         }
-      });
+      };
     });
   }
 }

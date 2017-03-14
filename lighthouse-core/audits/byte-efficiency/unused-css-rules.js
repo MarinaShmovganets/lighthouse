@@ -30,6 +30,7 @@ class UnusedCSSRules extends Audit {
       category: 'CSS',
       name: 'unused-css-rules',
       description: 'Unused CSS rules',
+      informative: true,
       helpText: 'Remove unused rules from stylesheets to reduce unnecessary ' +
           'bytes consumed by network activity. ' +
           '[Learn more](https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery)',
@@ -140,7 +141,7 @@ class UnusedCSSRules extends Audit {
       const contentPreview = UnusedCSSRules.determineContentPreview(stylesheetInfo.content);
       url = '*inline*```' + contentPreview + '```';
     } else {
-      url = URL.getDisplayName(url);
+      url = URL.getDisplayName(url, {preserveQuery: true});
     }
 
     // If we don't know for sure how many bytes this sheet used on the network,

@@ -18,12 +18,12 @@
 
 /* global Intl */
 
-const Formatter = require('../formatters/formatter');
-const Handlebars = require('handlebars');
+const Handlebars = require('handlebars/runtime');
 const handlebarHelpers = require('./handlebar-helpers');
+const reportTemplate = require('./templates/report-templates');
+const reportPartials = require('../report/partials/templates/report-partials');
 const fs = require('fs');
 const path = require('path');
-
 
 class ReportGenerator {
 
@@ -41,22 +41,6 @@ class ReportGenerator {
   }
 
   /**
-   * Gets the template for the report.
-   * @return {string}
-   */
-  getReportTemplate() {
-    return fs.readFileSync(path.join(__dirname, './templates/report-template.html'), 'utf8');
-  }
-
-  /**
-   * Gets the template for any exceptions.
-   * @return {string}
-   */
-  getExceptionTemplate() {
-    return fs.readFileSync(path.join(__dirname, './templates/exception.html'), 'utf8');
-  }
-
-  /**
    * Gets the CSS for the report.
    * @return {!Array<string>} an array of CSS
    */
@@ -64,11 +48,11 @@ class ReportGenerator {
     // Cannot DRY this up and dynamically create paths because fs.readdirSync
     // doesn't browserify well with a variable path. See https://github.com/substack/brfs/issues/36.
     const partialStyles = [
-      fs.readFileSync(__dirname + '/../formatters/partials/cards.css', 'utf8'),
-      fs.readFileSync(__dirname + '/../formatters/partials/critical-request-chains.css', 'utf8'),
-      fs.readFileSync(__dirname + '/../formatters/partials/table.css', 'utf8'),
-      fs.readFileSync(__dirname + '/../formatters/partials/url-list.css', 'utf8'),
-      fs.readFileSync(__dirname + '/../formatters/partials/user-timings.css', 'utf8')
+      fs.readFileSync(__dirname + '/../report/partials/cards.css', 'utf8'),
+      fs.readFileSync(__dirname + '/../report/partials/critical-request-chains.css', 'utf8'),
+      fs.readFileSync(__dirname + '/../report/partials/table.css', 'utf8'),
+      fs.readFileSync(__dirname + '/../report/partials/url-list.css', 'utf8'),
+      fs.readFileSync(__dirname + '/../report/partials/user-timings.css', 'utf8')
     ];
 
     return [
@@ -133,7 +117,7 @@ class ReportGenerator {
    * @return {string} HTML of the exception page.
    */
   renderException(err, results) {
-    const template = Handlebars.compile(this.getExceptionTemplate());
+    const template = reportTemplate.report.templates.exception;
     return template({
       errMessage: err.message,
       errStack: err.stack,
@@ -143,28 +127,24 @@ class ReportGenerator {
   }
 
   /**
-   * Register the formatter for each extendedInfo.
+   * Register the partial used for each extendedInfo under the audit's name.
    * @param {!Object} audits Lighthouse results.audits.
    */
-  _registerFormatters(audits) {
-    Object.keys(audits).forEach(audit => {
-      // Use value rather than key for audit.
-      audit = audits[audit];
+  _registerPartials(audits) {
+    Object.keys(audits).forEach(auditName => {
+      const audit = audits[auditName];
 
       if (!audit.extendedInfo) {
         return;
       }
-      if (!audit.extendedInfo.formatter) {
-        // HTML formatter not provided for this subItem
-        return;
-      }
-      const formatter = Formatter.getByName(audit.extendedInfo.formatter);
-      const helpers = formatter.getHelpers();
-      if (helpers) {
-        Handlebars.registerHelper(helpers);
+
+      const partialName = audit.extendedInfo.formatter;
+      const partial = reportPartials.report.partials[partialName];
+      if (!partial) {
+        throw new Error(`${auditName} requested unknown partial for formatting`);
       }
 
-      Handlebars.registerPartial(audit.name, formatter.getFormatter('html'));
+      Handlebars.registerPartial(audit.name, Handlebars.template(partial));
     });
   }
 
@@ -176,7 +156,7 @@ class ReportGenerator {
    * @return {string} HTML of the report page.
    */
   generateHTML(results, reportContext = 'extension', reportsCatalog) {
-    this._registerFormatters(results.audits);
+    this._registerPartials(results.audits);
 
     results.aggregations.forEach(aggregation => {
       aggregation.score.forEach(score => {
@@ -186,7 +166,8 @@ class ReportGenerator {
       });
     });
 
-    const template = Handlebars.compile(this.getReportTemplate());
+    const template = Handlebars.template(reportTemplate.report.templates['report-template']);
+
     return template({
       url: results.url,
       lighthouseVersion: results.lighthouseVersion,

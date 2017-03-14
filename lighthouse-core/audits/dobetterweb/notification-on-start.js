@@ -23,7 +23,7 @@
 'use strict';
 
 const Audit = require('../audit');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 class NotificationOnStart extends Audit {
   /**
@@ -52,13 +52,13 @@ class NotificationOnStart extends Audit {
       }, err);
     });
 
-    return NotificationOnStart.generateAuditResult({
+    return {
       rawValue: results.length === 0,
       extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
+        formatter: Formatter.SUPPORTED_FORMATS.URL_LIST,
         value: results
       }
-    });
+    };
   }
 
 }
