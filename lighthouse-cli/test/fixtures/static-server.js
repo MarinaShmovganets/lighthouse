@@ -66,7 +66,9 @@ function requestHandler(request, response) {
 
     if (queryString && queryString.includes('delay')) {
       response.write('');
-      return setTimeout(finishResponse, 2000, data);
+      const matched = queryString.match(/delay=(\d+)/);
+      const delay = (matched && parseInt(matched[1])) || 2000;
+      return setTimeout(finishResponse, delay, data);
     }
     finishResponse(data);
   }
