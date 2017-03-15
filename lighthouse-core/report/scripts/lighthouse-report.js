@@ -203,7 +203,6 @@ class LighthouseReport {
    */
   expandDetailsWhenPrinting() {
     const details = Array.from(document.querySelectorAll('details'));
-
     details.map(detail => detail.open = true);
   }
 
