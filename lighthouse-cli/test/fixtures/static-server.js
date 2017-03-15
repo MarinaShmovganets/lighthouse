@@ -65,9 +65,10 @@ function requestHandler(request, response) {
     }
     response.writeHead(statusCode, headers);
 
+    // Delay the response by the specified ms defaulting to 2000ms for non-numeric values
     if (queryString && typeof queryString.delay !== 'undefined') {
       response.write('');
-      const delay = parseInt(queryString.delay) || 2000;
+      const delay = parseInt(queryString.delay, 10) || 2000;
       return setTimeout(finishResponse, delay, data);
     }
     finishResponse(data);
