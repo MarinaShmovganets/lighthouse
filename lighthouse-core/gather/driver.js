@@ -272,10 +272,25 @@ class Driver {
 
   getServiceWorkerVersions() {
     return new Promise((resolve, reject) => {
-      this.once('ServiceWorker.workerVersionUpdated', data => {
-        this.sendCommand('ServiceWorker.disable')
-          .then(_ => resolve(data), reject);
-      });
+      const versionUpdatedListener = data => {
+        // find a service worker with runningStatus that looks like active
+        // on slow connections the serviceworker might still be installing
+        const nonRedundantServiceWorkers = data.versions.filter(sw => {
+          return sw.status !== 'redundant';
+        });
+        const activeServiceWorker = nonRedundantServiceWorkers.find(sw => {
+          return sw.status === 'activated';
+        });
+
+        const hasActiveServiceWorker = nonRedundantServiceWorkers.length && activeServiceWorker;
+        if (!nonRedundantServiceWorkers.length || hasActiveServiceWorker) {
+          this.off('ServiceWorker.workerVersionUpdated', versionUpdatedListener);
+          this.sendCommand('ServiceWorker.disable')
+            .then(_ => resolve(data), reject);
+        }
+      };
+
+      this.on('ServiceWorker.workerVersionUpdated', versionUpdatedListener);
 
       this.sendCommand('ServiceWorker.enable').catch(reject);
     });
