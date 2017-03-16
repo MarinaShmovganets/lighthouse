@@ -20,6 +20,7 @@
 'use strict';
 
 const Audit = require('./byte-efficiency-audit');
+const TTIAudit = require('../time-to-interactive');
 const URL = require('../../lib/url-shim');
 
 const ALLOWABLE_OFFSCREEN_X = 100;
@@ -37,7 +38,7 @@ class OffscreenImages extends Audit {
       category: 'Images',
       name: 'offscreen-images',
       description: 'Offscreen images',
-      helpText: 'Images that are not above the fold should be lazy loaded on interaction. ' +
+      helpText: 'Images that are not above the fold should be lazily loaded. ' +
         'Consider using the [IntersectionObserver](https://developers.google.com/web/updates/2016/04/intersectionobserver) API.',
       requiredArtifacts: ['ImageUsage', 'ViewportDimensions', 'networkRecords']
     };
