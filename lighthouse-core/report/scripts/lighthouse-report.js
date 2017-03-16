@@ -32,6 +32,7 @@ class LighthouseReport {
     this.onExportButtonClick = this.onExportButtonClick.bind(this);
     this.onExport = this.onExport.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
+    this.printShortCutDetect = this.printShortCutDetect.bind(this);
 
     this._addEventListeners();
   }
@@ -53,6 +54,7 @@ class LighthouseReport {
 
       document.addEventListener('copy', this.onCopy);
     }
+    document.addEventListener('keydown', this.printShortCutDetect);
   }
 
   /**
@@ -197,6 +199,15 @@ class LighthouseReport {
   }
 
   /**
+   * Expands details while user using short cut to printing report
+   */
+  printShortCutDetect(e) {
+    if ((e.ctrlKey || e.metaKey) && e.keyCode === 80) { // Ctrl+P
+      this.expandDetailsWhenPrinting();
+    }
+  }
+
+  /**
    * Expands audit `<details>` when the user prints the page.
    * Ideally, a print stylesheet could take care of this, but CSS has no way to
    * open a `<details>` element.
@@ -221,7 +232,9 @@ class LighthouseReport {
     } else {
       // Note: while FF has media listeners, it doesn't fire when matching 'print'.
       window.matchMedia('print').addListener(mql => {
-        if(!mql.matches) details.map(detail => detail.open = mql.matches);
+        if(!mql.matches) {
+          details.map(detail => detail.open = mql.matches);
+        }
       });
     }
   }
