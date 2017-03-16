@@ -49,7 +49,7 @@ module.exports = [
         extendedInfo: {
           value: {
             results: {
-              length: 3
+              length: 4
             }
           }
         }

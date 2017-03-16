@@ -114,6 +114,7 @@
 
   "aggregations": [{
     "name": "Progressive Web App",
+    "id": "pwa",
     "description": "These audits validate the aspects of a Progressive Web App. They are a subset of the [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist).",
     "scored": true,
     "categorizable": true,
@@ -258,6 +259,7 @@
     }]
   }, {
     "name": "Best Practices",
+    "id": "bp",
     "description": "We've compiled some recommendations for modernizing your web app and avoiding performance pitfalls. These audits do not affect your score but are worth a look.",
     "scored": false,
     "categorizable": true,
@@ -385,6 +387,7 @@
     }]
   }, {
     "name": "Performance",
+    "id": "perf",
     "description": "These encapsulate your app's performance.",
     "scored": false,
     "categorizable": false,
@@ -434,6 +437,7 @@
     }]
   }, {
     "name": "Fancier stuff",
+    "id": "fancy",
     "description": "A list of newer features that you could be using in your app. These audits do not affect your score and are just suggestions.",
     "scored": false,
     "categorizable": true,

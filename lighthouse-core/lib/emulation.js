@@ -38,7 +38,7 @@ const NEXUS5X_EMULATION_METRICS = {
 
 const NEXUS5X_USERAGENT = {
   userAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) AppleWebKit/537.36' +
-    '(KHTML, like Gecko) Chrome/52.0.2743.8 Mobile Safari/537.36'
+    '(KHTML, like Gecko) Chrome/59.0.3033.0 Mobile Safari/537.36'
 };
 
 const TYPICAL_MOBILE_THROTTLING_METRICS = {
@@ -67,7 +67,7 @@ const NO_CPU_THROTTLE_METRICS = {
   rate: 1
 };
 const CPU_THROTTLE_METRICS = {
-  rate: 5
+  rate: 4.5
 };
 
 function enableNexus5X(driver) {
@@ -95,6 +95,11 @@ function enableNexus5X(driver) {
 
   return Promise.all([
     driver.sendCommand('Emulation.setDeviceMetricsOverride', NEXUS5X_EMULATION_METRICS),
+    // required for screenshotting emulated page size, rather than full size
+    driver.sendCommand('Emulation.setVisibleSize', {
+      width: NEXUS5X_EMULATION_METRICS.screenWidth,
+      height: NEXUS5X_EMULATION_METRICS.screenHeight
+    }),
     // Network.enable must be called for UA overriding to work
     driver.sendCommand('Network.enable'),
     driver.sendCommand('Network.setUserAgentOverride', NEXUS5X_USERAGENT),

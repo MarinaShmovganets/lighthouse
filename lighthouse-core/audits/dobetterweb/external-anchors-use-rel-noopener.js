@@ -19,7 +19,7 @@
 
 const URL = require('../../lib/url-shim');
 const Audit = require('../audit');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 class ExternalAnchorsUseRelNoopenerAudit extends Audit {
   /**
@@ -29,7 +29,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
     return {
       category: 'Performance',
       name: 'external-anchors-use-rel-noopener',
-      description: 'Opens external anchors using rel="noopener"',
+      description: 'Opens external anchors using `rel="noopener"`',
       helpText: 'Open new tabs using `rel="noopener"` to improve performance and ' +
           'prevent security vulnerabilities. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/noopener).',
@@ -68,14 +68,14 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
         };
       });
 
-    return ExternalAnchorsUseRelNoopenerAudit.generateAuditResult({
+    return {
       rawValue: failingAnchors.length === 0,
       extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
+        formatter: Formatter.SUPPORTED_FORMATS.URL_LIST,
         value: failingAnchors
       },
       debugString
-    });
+    };
   }
 }
 

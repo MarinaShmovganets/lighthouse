@@ -44,10 +44,10 @@ class ContentWidth extends Audit {
     const windowWidth = artifacts.ViewportDimensions.outerWidth;
     const widthsMatch = viewportWidth === windowWidth;
 
-    return ContentWidth.generateAuditResult({
+    return {
       rawValue: widthsMatch,
       debugString: this.createDebugString(widthsMatch, artifacts.ViewportDimensions)
-    });
+    };
   }
 
   static createDebugString(match, artifact) {

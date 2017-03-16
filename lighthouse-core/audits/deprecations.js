@@ -23,7 +23,7 @@
  */
 
 const Audit = require('./audit');
-const Formatter = require('../formatters/formatter');
+const Formatter = require('../report/formatter');
 
 class Deprecations extends Audit {
   /**
@@ -66,14 +66,14 @@ class Deprecations extends Audit {
       displayValue = `${deprecations.length} warning found`;
     }
 
-    return Deprecations.generateAuditResult({
+    return {
       rawValue: deprecations.length === 0,
       displayValue,
       extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
+        formatter: Formatter.SUPPORTED_FORMATS.URL_LIST,
         value: deprecations
       }
-    });
+    };
   }
 }
 

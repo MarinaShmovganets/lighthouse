@@ -18,7 +18,7 @@
 'use strict';
 
 const Audit = require('./audit');
-const Formatter = require('../formatters/formatter');
+const Formatter = require('../report/formatter');
 
 class Screenshots extends Audit {
   /**
@@ -41,13 +41,13 @@ class Screenshots extends Audit {
     const trace = artifacts.traces[this.DEFAULT_PASS];
 
     return artifacts.requestScreenshots(trace).then(screenshots => {
-      return Screenshots.generateAuditResult({
+      return {
         rawValue: screenshots.length || 0,
         extendedInfo: {
           formatter: Formatter.SUPPORTED_FORMATS.NULL,
           value: screenshots
         }
-      });
+      };
     });
   }
 }

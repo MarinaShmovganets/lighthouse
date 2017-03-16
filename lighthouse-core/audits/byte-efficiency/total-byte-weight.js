@@ -20,7 +20,7 @@
 'use strict';
 
 const Audit = require('./byte-efficiency-audit');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 const TracingProcessor = require('../../lib/traces/tracing-processor');
 const URL = require('../../lib/url-shim');
 
@@ -84,7 +84,7 @@ class TotalByteWeight extends Audit {
           SCORING_MEDIAN, SCORING_POINT_OF_DIMINISHING_RETURNS);
       const score = 100 * distribution.computeComplementaryPercentile(totalBytes);
 
-      return this.generateAuditResult({
+      return {
         rawValue: totalBytes,
         optimalValue: this.meta.optimalValue,
         displayValue: `Total size was ${Audit.bytesToKbString(totalBytes)}`,
@@ -100,7 +100,7 @@ class TotalByteWeight extends Audit {
             }
           }
         }
-      });
+      };
     });
   }
 }

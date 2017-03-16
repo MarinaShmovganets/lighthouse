@@ -80,7 +80,7 @@ class GatherRunner {
   static loadPage(driver, options) {
     return Promise.resolve()
       // Begin tracing only if requested by config.
-      .then(_ => options.config.recordTrace && driver.beginTrace())
+      .then(_ => options.config.recordTrace && driver.beginTrace(options.flags))
       // Network is always recorded for internal use, even if not saved as artifact.
       .then(_ => driver.beginNetworkCollect(options))
       // Navigate.
@@ -313,9 +313,8 @@ class GatherRunner {
       return Promise.reject(new Error('You must provide a config'));
     }
 
-    // CPU throttling is temporarily off by default
     if (typeof options.flags.disableCpuThrottling === 'undefined') {
-      options.flags.disableCpuThrottling = true;
+      options.flags.disableCpuThrottling = false;
     }
 
     passes = this.instantiateGatherers(passes, options.config.configDir);

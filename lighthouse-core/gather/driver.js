@@ -570,9 +570,14 @@ class Driver {
       });
   }
 
-  beginTrace() {
+  /**
+   * @param {{traceCategories: string=}=} flags
+   */
+  beginTrace(flags) {
+    const additionalCategories = flags && flags.traceCategories && flags.traceCategories.split(',');
+    const traceCategories = new Set(this._traceCategories.concat(additionalCategories || []));
     const tracingOpts = {
-      categories: this._traceCategories.join(','),
+      categories: Array.from(traceCategories).join(','),
       transferMode: 'ReturnAsStream',
       options: 'sampling-frequency=10000'  // 1000 is default and too slow.
     };

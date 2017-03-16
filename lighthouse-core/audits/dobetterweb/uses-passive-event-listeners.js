@@ -25,7 +25,7 @@
 const URL = require('../../lib/url-shim');
 const Audit = require('../audit');
 const EventHelpers = require('../../lib/event-helpers');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 class PassiveEventsAudit extends Audit {
 
@@ -76,7 +76,7 @@ class PassiveEventsAudit extends Audit {
 
     const groupedResults = EventHelpers.groupCodeSnippetsByLocation(results);
 
-    return PassiveEventsAudit.generateAuditResult({
+    return {
       rawValue: groupedResults.length === 0,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.TABLE,
@@ -86,7 +86,7 @@ class PassiveEventsAudit extends Audit {
         }
       },
       debugString
-    });
+    };
   }
 }
 

@@ -23,7 +23,7 @@
 'use strict';
 
 const Audit = require('../audit');
-const Formatter = require('../../formatters/formatter');
+const Formatter = require('../../report/formatter');
 
 class GeolocationOnStart extends Audit {
   /**
@@ -52,13 +52,13 @@ class GeolocationOnStart extends Audit {
       }, err);
     });
 
-    return GeolocationOnStart.generateAuditResult({
+    return {
       rawValue: results.length === 0,
       extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
+        formatter: Formatter.SUPPORTED_FORMATS.URL_LIST,
         value: results
       }
-    });
+    };
   }
 
 }

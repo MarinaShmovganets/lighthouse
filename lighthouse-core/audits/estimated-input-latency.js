@@ -18,7 +18,7 @@
 
 const Audit = require('./audit');
 const TracingProcessor = require('../lib/traces/tracing-processor');
-const Formatter = require('../formatters/formatter');
+const Formatter = require('../report/formatter');
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 // https://www.desmos.com/calculator/srv0hqhf7d
@@ -62,7 +62,7 @@ class EstimatedInputLatency extends Audit {
         SCORING_POINT_OF_DIMINISHING_RETURNS);
     const score = 100 * distribution.computeComplementaryPercentile(ninetieth.time);
 
-    return EstimatedInputLatency.generateAuditResult({
+    return {
       score: Math.round(score),
       optimalValue: this.meta.optimalValue,
       rawValue,
@@ -71,7 +71,7 @@ class EstimatedInputLatency extends Audit {
         value: latencyPercentiles,
         formatter: Formatter.SUPPORTED_FORMATS.NULL
       }
-    });
+    };
   }
 
   /**

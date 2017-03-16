@@ -18,25 +18,22 @@
 
 /* eslint-env mocha */
 
-const AccessibilityFormatter = require('../../formatters/accessibility.js');
 const Handlebars = require('handlebars');
 const assert = require('assert');
+const handlebarHelpers = require('../../../report/handlebar-helpers');
+const fs = require('fs');
+const partialHtml = fs.readFileSync(__dirname +
+    '/../../../report/partials/accessibility.html', 'utf8');
 
-describe('Formatter', () => {
-  it('handles invalid input', () => {
-    const pretty = AccessibilityFormatter.getFormatter('pretty');
-    assert.doesNotThrow(_ => pretty());
-    assert.doesNotThrow(_ => pretty({}));
-    assert.doesNotThrow(_ => pretty({impact: ''}));
-    assert.doesNotThrow(_ => pretty({impact: '', helpUrl: ''}));
-    assert.doesNotThrow(_ => pretty({impact: '', helpUrl: '', nodes: []}));
+describe('Accessibility partial generation', () => {
+  after(() => {
+    Object.keys(handlebarHelpers).forEach(Handlebars.unregisterHelper, Handlebars);
   });
 
   it('generates valid html output', () => {
-    Handlebars.registerHelper(AccessibilityFormatter.getHelpers());
+    Handlebars.registerHelper(handlebarHelpers);
 
-    const formatter = AccessibilityFormatter.getFormatter('html');
-    const template = Handlebars.compile(formatter);
+    const template = Handlebars.compile(partialHtml);
 
     let output = template({nodes: [{target: 'some-id'}]});
     assert.ok(output.match(/1 element failed this test/g), 'msg for one input');
