@@ -214,26 +214,8 @@
       }
     }, {
       "name": "Installed web app will launch with custom splash screen",
-      "description": "A default splash screen will be constructed, but meeting these requirements guarantee a high-quality and customizable [splash screen](https://developers.google.com/web/updates/2015/10/splashscreen) the user sees between tapping the home screen icon and your app's first paint.",
-      "see": "https://github.com/GoogleChrome/lighthouse/issues/24",
       "audits": {
-        "manifest-exists": {
-          "expectedValue": true,
-          "weight": 1
-        },
-        "manifest-name": {
-          "expectedValue": true,
-          "weight": 1
-        },
-        "manifest-background-color": {
-          "expectedValue": true,
-          "weight": 1
-        },
-        "manifest-theme-color": {
-          "expectedValue": true,
-          "weight": 1
-        },
-        "manifest-icons-min-192": {
+        "splash-screen": {
           "expectedValue": true,
           "weight": 1
         }

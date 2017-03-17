@@ -56,7 +56,10 @@ class WebappInstallBanner extends Audit {
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
       // 1: validate manifest is in order
       manifestValues.forEach(item => {
-        if (!item.passing) {
+        if (!item.groups.includes('validity') && !item.groups.includes('banner'))
+          return;
+
+        if (item.passing === false) {
           failures.push(item.userText);
         }
       });
@@ -68,7 +71,7 @@ class WebappInstallBanner extends Audit {
       }
 
       const extendedInfo = {
-        value: {manifestValues, hasServiceWorker},
+        value: {failures, manifestValues},
         formatter: Formatter.SUPPORTED_FORMATS.NULL
       };
 

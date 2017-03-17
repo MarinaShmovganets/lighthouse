@@ -6,7 +6,7 @@
 
 'use strict';
 
-const InstallWebAppAudit = require('../../audits/webapp-install-banner');
+const WebappInstallBannerAudit = require('../../audits/webapp-install-banner');
 const assert = require('assert');
 const manifestParser = require('../../lib/manifest-parser');
 
@@ -19,7 +19,7 @@ const GatherRunner = require('../../gather/gather-runner.js');
 
 function generateMockArtifacts() {
   const computedArtifacts = GatherRunner.instantiateComputedArtifacts();
-  const mockArtifacts = Object.assign({}, computedArtifacts, {
+  const clonedArtifacts = JSON.parse(JSON.stringify({
     Manifest: exampleManifest,
     ServiceWorker: {
       versions: [{
@@ -28,37 +28,47 @@ function generateMockArtifacts() {
       }]
     },
     URL: {finalUrl: 'https://example.com'}
-  });
+  }));
+  const mockArtifacts = Object.assign({}, computedArtifacts, clonedArtifacts);
   return mockArtifacts;
 }
 
 /* eslint-env mocha */
 describe('PWA: webapp install banner audit', () => {
   describe('basics', () => {
-    it('passes with complete manifest and SW', () => {
-      return InstallWebAppAudit.audit(generateMockArtifacts()).then(result => {
-        assert.strictEqual(result.rawValue, true);
-        assert.strictEqual(result.debugString, undefined);
-      });
-    });
-
     it('fails if page had no manifest', () => {
       const artifacts = generateMockArtifacts();
       artifacts.Manifest = null;
 
-      return InstallWebAppAudit.audit(artifacts).then(result => {
+      return WebappInstallBannerAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.debugString.includes('is available'), result.debugString);
+      });
+    });
+
+    it('fails with a non-parsable manifest', () => {
+      const artifacts = generateMockArtifacts();
+      artifacts.Manifest = manifestParser('{,:}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      return WebappInstallBannerAudit.audit(artifacts).then(result => {
+        assert.strictEqual(result.rawValue, false);
+        assert.ok(result.debugString.includes('parsed as JSON'));
       });
     });
 
     it('fails when an empty manifest is present', () => {
       const artifacts = generateMockArtifacts();
       artifacts.Manifest = manifestParser('{}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-
-      return InstallWebAppAudit.audit(artifacts).then(result => {
+      return WebappInstallBannerAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.debugString);
+        assert.strictEqual(result.extendedInfo.value.failures.length, 4);
+      });
+    });
+
+    it('passes with complete manifest and SW', () => {
+      return WebappInstallBannerAudit.audit(generateMockArtifacts()).then(result => {
+        assert.strictEqual(result.rawValue, true, result.debugString);
+        assert.strictEqual(result.debugString, undefined, result.debugString);
       });
     });
   });
@@ -69,9 +79,11 @@ describe('PWA: webapp install banner audit', () => {
       const artifacts = generateMockArtifacts();
       artifacts.Manifest.value.start_url.value = undefined;
 
-      return InstallWebAppAudit.audit(artifacts).then(result => {
+      return WebappInstallBannerAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.debugString.includes('start_url'), result.debugString);
+        const failures = result.extendedInfo.value.failures;
+        assert.strictEqual(failures.length, 1, failures);
       });
     });
 
@@ -80,9 +92,11 @@ describe('PWA: webapp install banner audit', () => {
       const artifacts = generateMockArtifacts();
       artifacts.Manifest.value.short_name.value = undefined;
 
-      return InstallWebAppAudit.audit(artifacts).then(result => {
+      return WebappInstallBannerAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.debugString.includes('short_name'), result.debugString);
+        const failures = result.extendedInfo.value.failures;
+        assert.strictEqual(failures.length, 1, failures);
       });
     });
 
@@ -90,9 +104,11 @@ describe('PWA: webapp install banner audit', () => {
       const artifacts = generateMockArtifacts();
       artifacts.Manifest.value.name.value = undefined;
 
-      return InstallWebAppAudit.audit(artifacts).then(result => {
+      return WebappInstallBannerAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.debugString.includes('name'), result.debugString);
+        const failures = result.extendedInfo.value.failures;
+        assert.strictEqual(failures.length, 1, failures);
       });
     });
 
@@ -100,9 +116,11 @@ describe('PWA: webapp install banner audit', () => {
       const artifacts = generateMockArtifacts();
       artifacts.Manifest.value.icons.value = [];
 
-      return InstallWebAppAudit.audit(artifacts).then(result => {
+      return WebappInstallBannerAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.debugString.includes('icons'), result.debugString);
+        const failures = result.extendedInfo.value.failures;
+        assert.strictEqual(failures.length, 1, failures);
       });
     });
   });
@@ -111,9 +129,11 @@ describe('PWA: webapp install banner audit', () => {
     const artifacts = generateMockArtifacts();
     artifacts.ServiceWorker.versions = [];
 
-    return InstallWebAppAudit.audit(artifacts).then(result => {
+    return WebappInstallBannerAudit.audit(artifacts).then(result => {
       assert.strictEqual(result.rawValue, false);
       assert.ok(result.debugString.includes('Service Worker'), result.debugString);
+      const failures = result.extendedInfo.value.failures;
+      assert.strictEqual(failures.length, 1, failures);
     });
   });
 });

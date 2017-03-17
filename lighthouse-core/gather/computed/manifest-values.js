@@ -9,8 +9,8 @@
 const ComputedArtifact = require('./computed-artifact');
 const icons = require('../../lib/icons');
 
-const DISPLAY_VALUES = ['browser', 'fullscreen', 'minimal-ui', 'standalone'];
-// const PWA_DISPLAY_VALUES = ['fullscreen', 'standalone'];
+const DISPLAY_VALUES = ['minimal-ui', 'fullscreen', 'standalone', 'browser'];
+const PWA_DISPLAY_VALUES = ['minimal-ui', 'fullscreen', 'standalone'];
 
 class ManifestValues extends ComputedArtifact {
 
@@ -18,56 +18,69 @@ class ManifestValues extends ComputedArtifact {
     return 'ManifestValues';
   }
 
-  static get manifestExistsChecklist() {
+  static get manifestChecklist() {
     return [
       {
         id: 'hasManifest',
+        groups: ['validity'],
         userText: 'Manifest is available',
         toPass: manifest => manifest !== null
       },
       {
         id: 'hasParseableManifest',
-        userText: 'Manifest is parsed as a valid manifest',
-        toPass: manifest => manifest !== null && typeof manifest !== 'undefined' && !!manifest.value
-      }
-    ];
-  }
-
-  static get manifestChecklist() {
-    return [
+        groups: ['validity'],
+        userText: 'Manifest is parsed as JSON',
+        toPass: manifest => typeof manifest !== 'undefined' && !!manifest.value
+      },
       {
         id: 'hasStartUrl',
+        groups: ['banner'],
         userText: 'Manifest contains `start_url`',
-        toPass: manifest => !!manifest.start_url.value
+        toPass: manifest => !!manifest.value.start_url.value
       },
       {
-        id: 'hasIconsAtLeast144px',
-        userText: 'Manifest contains icons at least 144px',
-        toPass: manifest => icons.doExist(manifest) &&
-            icons.sizeAtLeast(144, /** @type {!Manifest} */ (manifest)).length > 0
+        id: 'hasIconsAtLeast192px',
+        groups: ['banner'],
+        userText: 'Manifest contains icons at least 192px',
+        toPass: manifest => icons.doExist(manifest.value) &&
+            icons.sizeAtLeast(192, /** @type {!Manifest} */ (manifest.value)).length > 0
       },
       {
-        id: 'hasDisplayValue',
-        userText: 'Manifest\'s `display` value is explicitly set',
-        // Check for the debugString, added when fallback is defined
-        toPass: manifest => DISPLAY_VALUES.includes(manifest.display.value) &&
-          !manifest.display.debugString
+        id: 'hasIconsAtLeast512px',
+        groups: ['splash'],
+        userText: 'Manifest contains icons at least 512px',
+        toPass: manifest => icons.doExist(manifest.value) &&
+            icons.sizeAtLeast(512, /** @type {!Manifest} */ (manifest.value)).length > 0
       },
-      // Disabled for the moment
-      // {
-      //   id: 'hasPWADisplayValue',
-      //   userText: 'Manifest\'s `display` value is either standalone or fullscreen',
-      //   toPass: manifest => PWA_DISPLAY_VALUES.includes(manifest.display.value)
-      // },
+      {
+        id: 'hasPWADisplayValue',
+        groups: ['banner'],
+        userText: 'Manifest\'s `display` value is one of: ' + PWA_DISPLAY_VALUES.join(', '),
+        toPass: manifest => PWA_DISPLAY_VALUES.includes(manifest.value.display.value)
+      },
+      {
+        id: 'hasBackgroundColor',
+        groups: ['splash'],
+        userText: 'Manifest contains `background_color`',
+        toPass: manifest => !!manifest.value.background_color.value
+      },
+      {
+        id: 'hasThemeColor',
+        groups: ['splash'],
+        userText: 'Manifest contains `theme_color`',
+        toPass: manifest => !!manifest.value.theme_color.value
+      },
       {
         id: 'hasShortName',
+        groups: ['banner', 'splash'],
         userText: 'Manifest contains `short_name`',
-        toPass: manifest => !!manifest.short_name.value
+        toPass: manifest => !!manifest.value.short_name.value
       },
       {
         id: 'hasName',
+        groups: ['banner', 'splash'],
         userText: 'Manifest contains `name`',
-        toPass: manifest => !!manifest.name.value
+        toPass: manifest => !!manifest.value.name.value
       }
     ];
   }
@@ -78,18 +91,22 @@ class ManifestValues extends ComputedArtifact {
    * @return {Array}
    */
   compute_(manifest) {
-    const existsChecks = ManifestValues.manifestExistsChecklist;
+
+    // if the manifest isn't there or is invalid, we'll report that first
+    const existsChecks = ManifestValues.manifestChecklist.filter(item => 
+        item.groups.includes('validity'));
+    
     for (let i = 0; i < existsChecks.length; i++) {
       const item = existsChecks[i];
       item.passing = item.toPass(manifest);
-      delete item.toPass;
-      if (!item.passing) return [item];
+      if (item.passing === false) 
+        return [item];
     }
 
-    // standard checks
+    // evaluate the other checks
     return ManifestValues.manifestChecklist.map(item => {
-      item.passing = item.toPass(manifest.value);
-      delete item.toPass;
+      item.passing = item.toPass(manifest);
+      item.debugString
       return item;
     });
   }
