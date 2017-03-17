@@ -57,7 +57,7 @@ class LoadFastEnough4Pwa extends Audit {
 
       const extendedInfo = {
         formatter: Formatter.SUPPORTED_FORMATS.NULL,
-        value: {allRequestLatencies, timeToInteractive}
+        value: {areLatenciesAll3G, allRequestLatencies, isFast, timeToInteractive}
       };
 
       if (!areLatenciesAll3G) {
