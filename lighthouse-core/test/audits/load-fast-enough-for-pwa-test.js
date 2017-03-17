@@ -25,11 +25,10 @@ function generateTTIResults(ttiValue) {
   return Promise.resolve.bind(Promise, ttiResult);
 }
 
-
-function generateArtifacts() {
+function generateArtifacts(networkRecords = []) {
   return {
     networkRecords: {
-      [Audit.DEFAULT_PASS]: []
+      [Audit.DEFAULT_PASS]: networkRecords
     },
     traces: {
       [Audit.DEFAULT_PASS]: {traceEvents: []}
@@ -58,6 +57,41 @@ describe('PWA: load-fast-enough-for-pwa audit', () => {
     return FastPWAAudit.audit(generateArtifacts()).then(result => {
       assert.equal(result.rawValue, false, 'not failing a long TTI value');
       assert.ok(result.debugString);
+    }).catch(err => {
+      assert.ok(false, err);
+    });
+  });
+
+  it('fails a good TTI value with no throttling', () => {
+    TTIAudit.audit = generateTTIResults(5000);
+    // latencies are very short
+    const mockNetworkRecords = [
+      {_timing: {sendEnd: 0, receiveHeadersEnd: 50}},
+      {_timing: {sendEnd: 0, receiveHeadersEnd: 75}},
+      { },
+      {_timing: {sendEnd: 0, receiveHeadersEnd: 50}},
+    ];
+    return FastPWAAudit.audit(generateArtifacts(mockNetworkRecords)).then(result => {
+      assert.equal(result.rawValue, false);
+      assert.ok(result.debugString.includes('network request latencies'));
+    }).catch(err => {
+      assert.ok(false, err);
+    });
+  });
+
+
+  it('passes a good TTI value and WITH throttling', () => {
+    TTIAudit.audit = generateTTIResults(5000);
+    // latencies are very long
+    const mockNetworkRecords = [
+      {_timing: {sendEnd: 0, receiveHeadersEnd: 250}},
+      {_timing: {sendEnd: 0, receiveHeadersEnd: 175}},
+      { },
+      {_timing: {sendEnd: 0, receiveHeadersEnd: 250}},
+    ];
+    return FastPWAAudit.audit(generateArtifacts(mockNetworkRecords)).then(result => {
+      assert.equal(result.rawValue, true);
+      assert.strictEqual(result.debugString, undefined);
     }).catch(err => {
       assert.ok(false, err);
     });
