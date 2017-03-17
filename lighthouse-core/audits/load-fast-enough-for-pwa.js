@@ -61,27 +61,27 @@ class LoadFastEnough4Pwa extends Audit {
       };
 
       if (!areLatenciesAll3G) {
-        return LoadFastEnough4Pwa.generateAuditResult({
+        return {
           rawValue: false,
           // eslint-disable-next-line max-len
           debugString: `The Time To Interactive was found at ${ttiResult.displayValue}, however, the network request latencies were not sufficiently realistic, so the performance measurements cannot be trusted.`,
           extendedInfo
-        });
+        };
       }
 
       if (!isFast) {
-        return LoadFastEnough4Pwa.generateAuditResult({
+        return {
           rawValue: false,
            // eslint-disable-next-line max-len
           debugString: `Under 3G conditions, the Time To Interactive was at ${ttiResult.displayValue}. More details in the "Performance" section.`,
           extendedInfo
-        });
+        };
       }
 
-      return LoadFastEnough4Pwa.generateAuditResult({
+      return {
         rawValue: true,
         extendedInfo
-      });
+      };
     });
   }
 }
