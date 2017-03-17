@@ -41,18 +41,19 @@ function collectImageElementInfo() {
     };
   });
 
+  // Chrome normalizes background image style from getComputedStyle to be an absolute URL in quotes.
   // Only match basic background-image: url("http://host/image.jpeg") declarations
-  const ALLOWED_IMAGE = /^\s*url\("([^"]+)"\)\s*$/;
+  const CSS_URL_REGEX = /^url\("([^"]+)"\)$/;
   // Only find images that aren't specifically scaled
-  const ALLOWED_SIZE = /(auto|contain|cover)/;
+  const CSS_SIZE_REGEX = /(auto|contain|cover)/;
   const cssImages = [...document.querySelectorAll('*')].reduce((images, element) => {
     const style = window.getComputedStyle(element);
-    if (!ALLOWED_IMAGE.test(style.backgroundImage) ||
-        !ALLOWED_SIZE.test(style.backgroundSize)) {
+    if (!CSS_URL_REGEX.test(style.backgroundImage) ||
+        !CSS_SIZE_REGEX.test(style.backgroundSize)) {
       return images;
     }
 
-    const imageMatch = style.backgroundImage.match(ALLOWED_IMAGE);
+    const imageMatch = style.backgroundImage.match(CSS_URL_REGEX);
     const url = imageMatch[1];
 
     // Heuristic to filter out sprite sheets
