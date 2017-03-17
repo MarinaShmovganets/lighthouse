@@ -74,18 +74,18 @@ class WebappInstallBanner extends Audit {
 
       // If we fail, share the failures
       if (failures.length > 0) {
-        return WebappInstallBanner.generateAuditResult({
+        return {
           rawValue: false,
           debugString: `Unsatisfied requirements: ${failures.join(', ')}.`,
           extendedInfo
-        });
+        };
       }
 
       // Otherwise, we pass
-      return WebappInstallBanner.generateAuditResult({
+      return {
         rawValue: true,
         extendedInfo
-      });
+      };
     });
   }
 }
