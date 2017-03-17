@@ -17,12 +17,14 @@
 
 const UnusedImages =
     require('../../../audits/byte-efficiency/offscreen-images.js');
+const TTIAudit = require('../../../audits/time-to-interactive.js');
 const assert = require('assert');
 
 /* eslint-env mocha */
-function generateRecord(resourceSizeInKb, mimeType = 'image/png') {
+function generateRecord(resourceSizeInKb, startTime = 0, mimeType = 'image/png') {
   return {
     mimeType,
+    startTime,
     resourceSize: resourceSizeInKb * 1024,
   };
 }
@@ -52,37 +54,48 @@ function generateImage(size, coords, networkRecord, src = 'https://google.com/lo
 }
 
 describe('OffscreenImages audit', () => {
+  const _ttiAuditOriginal = TTIAudit.audit;
+  before(() => {
+    const timeToInteractive = 2000000;
+    const extendedInfo = {value: {timestamps: {timeToInteractive}}};
+    TTIAudit.audit = () => Promise.resolve({extendedInfo});
+  });
+
+  after(() => {
+    TTIAudit.audit = _ttiAuditOriginal;
+  });
+
   const DEFAULT_DIMENSIONS = {innerWidth: 1920, innerHeight: 1080};
 
   it('handles images without network record', () => {
-    const auditResult = UnusedImages.audit_({
+    return UnusedImages.audit_({
       ViewportDimensions: DEFAULT_DIMENSIONS,
       ImageUsage: [
         generateImage(generateSize(100, 100), [0, 0]),
       ],
+    }).then(auditResult => {
+      assert.equal(auditResult.results.length, 0);
     });
-
-    assert.equal(auditResult.results.length, 0);
   });
 
   it('does not find used images', () => {
     const urlB = 'https://google.com/logo2.png';
     const urlC = 'data:image/jpeg;base64,foobar';
-    const auditResult = UnusedImages.audit_({
+    return UnusedImages.audit_({
       ViewportDimensions: DEFAULT_DIMENSIONS,
       ImageUsage: [
         generateImage(generateSize(200, 200), [0, 0], generateRecord(100)),
         generateImage(generateSize(100, 100), [0, 1080], generateRecord(100), urlB),
         generateImage(generateSize(400, 400), [1720, 1080], generateRecord(3), urlC),
       ],
+    }).then(auditResult => {
+      assert.equal(auditResult.results.length, 0);
     });
-
-    assert.equal(auditResult.results.length, 0);
   });
 
   it('finds unused images', () => {
     const url = s => `https://google.com/logo${s}.png`;
-    const auditResult = UnusedImages.audit_({
+    return UnusedImages.audit_({
       ViewportDimensions: DEFAULT_DIMENSIONS,
       ImageUsage: [
         // offscreen to the right
@@ -96,14 +109,14 @@ describe('OffscreenImages audit', () => {
         // half offscreen to the top, should not warn
         generateImage(generateSize(1000, 1000), [0, -500], generateRecord(100), url('E')),
       ],
+    }).then(auditResult => {
+      assert.equal(auditResult.results.length, 4);
     });
-
-    assert.equal(auditResult.results.length, 4);
   });
 
   it('de-dupes images', () => {
     const urlB = 'https://google.com/logo2.png';
-    const auditResult = UnusedImages.audit_({
+    return UnusedImages.audit_({
       ViewportDimensions: DEFAULT_DIMENSIONS,
       ImageUsage: [
         generateImage(generateSize(50, 50), [0, 0], generateRecord(50)),
@@ -111,8 +124,20 @@ describe('OffscreenImages audit', () => {
         generateImage(generateSize(50, 50), [0, 1500], generateRecord(200), urlB),
         generateImage(generateSize(400, 400), [0, 1500], generateRecord(90), urlB),
       ],
+    }).then(auditResult => {
+      assert.equal(auditResult.results.length, 1);
     });
+  });
 
-    assert.equal(auditResult.results.length, 1);
+  it('disregards lazily loaded images', () => {
+    return UnusedImages.audit_({
+      ViewportDimensions: DEFAULT_DIMENSIONS,
+      ImageUsage: [
+        // offscreen to the right
+        generateImage(generateSize(200, 200), [3000, 0], generateRecord(100, 3)),
+      ],
+    }).then(auditResult => {
+      assert.equal(auditResult.results.length, 0);
+    });
   });
 });

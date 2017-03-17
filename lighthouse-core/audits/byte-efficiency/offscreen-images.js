@@ -40,7 +40,7 @@ class OffscreenImages extends Audit {
       description: 'Offscreen images',
       helpText: 'Images that are not above the fold should be lazily loaded. ' +
         'Consider using the [IntersectionObserver](https://developers.google.com/web/updates/2016/04/intersectionobserver) API.',
-      requiredArtifacts: ['ImageUsage', 'ViewportDimensions', 'networkRecords']
+      requiredArtifacts: ['ImageUsage', 'ViewportDimensions', 'traces', 'networkRecords']
     };
   }
 
@@ -84,6 +84,7 @@ class OffscreenImages extends Audit {
         url: image.networkRecord.url,
         mimeType: image.networkRecord.mimeType
       },
+      requestStartTime: image.networkRecord.startTime,
       totalBytes,
       wastedBytes,
       wastedPercent: 100 * wastedRatio,
@@ -120,25 +121,25 @@ class OffscreenImages extends Audit {
       return results;
     }, new Map());
 
-    const results = Array.from(resultsMap.values())
-        .filter(item => {
-          const isWasteful = item.wastedBytes > IGNORE_THRESHOLD_IN_BYTES &&
-              item.wastedPercent > IGNORE_THRESHOLD_IN_PERCENT;
-          // TODO: only warn for images that weren't lazily loaded
-          // const loadedEarly = item.requestStartTime < artifacts.timeToInteractive;
-
-          return isWasteful;
-        });
-    return {
-      debugString,
-      results,
-      tableHeadings: {
-        preview: '',
-        url: 'URL',
-        totalKb: 'Original',
-        potentialSavings: 'Potential Savings',
-      }
-    };
+    return TTIAudit.audit(artifacts).then(ttiResult => {
+      const tti = ttiResult.extendedInfo.value.timestamps.timeToInteractive / 1000000;
+      const results = Array.from(resultsMap.values()).filter(item => {
+        const isWasteful = item.wastedBytes > IGNORE_THRESHOLD_IN_BYTES &&
+            item.wastedPercent > IGNORE_THRESHOLD_IN_PERCENT;
+        const loadedEarly = item.requestStartTime < tti;
+        return isWasteful && loadedEarly;
+      });
+      return {
+        debugString,
+        results,
+        tableHeadings: {
+          preview: '',
+          url: 'URL',
+          totalKb: 'Original',
+          potentialSavings: 'Potential Savings',
+        }
+      };
+    });
   }
 }
 
