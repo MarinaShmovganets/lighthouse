@@ -61,7 +61,6 @@
     "service-worker",
     "works-offline",
     "viewport",
-    "manifest-display",
     "without-javascript",
     "first-meaningful-paint",
     "load-fast-enough-for-pwa",
@@ -72,11 +71,8 @@
     "screenshots",
     "critical-request-chains",
     "webapp-install-banner",
-    "manifest-exists",
-    "manifest-background-color",
+    "splash-screen",
     "manifest-theme-color",
-    "manifest-icons-min-192",
-    "manifest-name",
     "manifest-short-name-length",
     "theme-color-meta",
     "content-width",
@@ -224,10 +220,6 @@
       "name": "Address bar matches brand colors",
       "description": "The browser address bar can be themed to match your site. A `theme-color` [meta tag](https://developers.google.com/web/updates/2014/11/Support-for-theme-color-in-Chrome-39-for-Android) will upgrade the address bar when a user browses the site, and the [manifest theme-color](https://developers.google.com/web/updates/2015/08/using-manifest-to-set-sitewide-theme-color) will apply the same theme site-wide once it's been added to homescreen.",
       "audits": {
-        "manifest-exists": {
-          "expectedValue": true,
-          "weight": 1
-        },
         "theme-color-meta": {
           "expectedValue": true,
           "weight": 1
@@ -334,10 +326,6 @@
       "name": "Other",
       "audits": {
         "manifest-short-name-length": {
-          "expectedValue": true,
-          "weight": 1
-        },
-        "manifest-display": {
           "expectedValue": true,
           "weight": 1
         }

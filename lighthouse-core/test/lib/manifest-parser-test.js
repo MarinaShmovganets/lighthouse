@@ -90,11 +90,11 @@ describe('Manifest Parser', function() {
       assert.equal(icons.value.length, 1);
     });
 
-    it('finds three icons in the stub manifest', function() {
+    it('finds four icons in the stub manifest', function() {
       const parsedManifest = manifestParser(JSON.stringify(manifestStub), EXAMPLE_MANIFEST_URL,
           EXAMPLE_DOC_URL);
       assert(!parsedManifest.debugString);
-      assert.equal(parsedManifest.value.icons.value.length, 3);
+      assert.equal(parsedManifest.value.icons.value.length, 4);
     });
 
     it('parses icons with extra whitespace', function() {

@@ -22,17 +22,6 @@ const Formatter = require('../report/formatter');
  *   * manifest contains icon that's a png and size >= 512px
  */
 
-//probably can delete
-// name
-// manifest-background-color
-// manifest-icons-min-192"
-
-// manifest icons test goes to manifestvaluescomputed test
-
-// cannot delete:
-// "manifest-theme-color":
-
-
 class SplashScreen extends Audit {
 
   /**
