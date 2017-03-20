@@ -13,7 +13,7 @@ const manifestParser = require('../../lib/manifest-parser');
 const manifestSrc = JSON.stringify(require('../fixtures/manifest.json'));
 const EXAMPLE_MANIFEST_URL = 'https://example.com/manifest.json';
 const EXAMPLE_DOC_URL = 'https://example.com/index.html';
-const exampleManifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+const exampleManifest = noUrlManifestParser(manifestSrc);
 
 const GatherRunner = require('../../gather/gather-runner.js');
 
@@ -23,6 +23,16 @@ function generateMockArtifacts() {
     Manifest: exampleManifest
   });
   return mockArtifacts;
+}
+
+/**
+ * Simple manifest parsing helper when the manifest URLs aren't material to the
+ * test. Uses example.com URLs for testing.
+ * @param {string} manifestSrc
+ * @return {!ManifestNode<(!Manifest|undefined)>}
+ */
+function noUrlManifestParser(manifestSrc) {
+  return manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
 }
 
 /* eslint-env mocha */
@@ -90,6 +100,18 @@ describe('PWA: splash screen audit', () => {
     it('fails when a manifest contains no background color', () => {
       const artifacts = generateMockArtifacts();
       artifacts.Manifest.value.background_color.value = undefined;
+
+      return SplashScreenAudit.audit(artifacts).then(result => {
+        assert.strictEqual(result.rawValue, false);
+        assert.ok(result.debugString.includes('background_color'), result.debugString);
+      });
+    });
+
+    it('fails when a manifest contains no background color', () => {
+      const artifacts = generateMockArtifacts();
+      artifacts.Manifest = noUrlManifestParser(JSON.stringify({
+        background_color: 'no'
+      }));
 
       return SplashScreenAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);

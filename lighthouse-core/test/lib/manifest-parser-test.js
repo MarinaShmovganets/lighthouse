@@ -250,10 +250,8 @@ describe('Manifest Parser', function() {
       assert.equal(parsedUrl.value, docUrl);
     });
 
-    // TODO(bckenny): run these tests when we have a proper URL parser:
-    // https://github.com/GoogleChrome/lighthouse/issues/602
     // 8.10(5)
-    it.skip('falls back to document URL and issues a warning for an invalid URL', () => {
+    it('falls back to document URL and issues a warning for an invalid URL', () => {
       // `new URL('/manifest.json', '')` is invalid and will throw.
       const manifestSrc = JSON.stringify({
         start_url: '/manifest.json'

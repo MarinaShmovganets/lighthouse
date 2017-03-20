@@ -9,7 +9,6 @@
 const ComputedArtifact = require('./computed-artifact');
 const icons = require('../../lib/icons');
 
-const DISPLAY_VALUES = ['minimal-ui', 'fullscreen', 'standalone', 'browser'];
 const PWA_DISPLAY_VALUES = ['minimal-ui', 'fullscreen', 'standalone'];
 
 class ManifestValues extends ComputedArtifact {
@@ -91,15 +90,14 @@ class ManifestValues extends ComputedArtifact {
    * @return {Array}
    */
   compute_(manifest) {
-
     // if the manifest isn't there or is invalid, we'll report that first
-    const existsChecks = ManifestValues.manifestChecklist.filter(item => 
+    const existsChecks = ManifestValues.manifestChecklist.filter(item =>
         item.groups.includes('validity'));
-    
+
     for (let i = 0; i < existsChecks.length; i++) {
       const item = existsChecks[i];
       item.passing = item.toPass(manifest);
-      if (item.passing === false) 
+      if (item.passing === false)
         return [item];
     }
 
