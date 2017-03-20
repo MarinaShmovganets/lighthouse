@@ -11,6 +11,10 @@ const icons = require('../../lib/icons');
 
 const PWA_DISPLAY_VALUES = ['minimal-ui', 'fullscreen', 'standalone'];
 
+// Historically, Chrome recommended 12 chars as the maximum short_name length to prevent truncation.
+// See #69 for more discussion & https://developer.chrome.com/apps/manifest/name#short_name
+const SUGGESTED_SHORTNAME_LENGTH = 12;
+
 class ManifestValues extends ComputedArtifact {
 
   get name() {
@@ -71,9 +75,16 @@ class ManifestValues extends ComputedArtifact {
       },
       {
         id: 'hasShortName',
-        groups: ['banner', 'splash'],
+        groups: ['banner', 'splash', 'shortNameLength'],
         userText: 'Manifest contains `short_name`',
         toPass: manifest => !!manifest.value.short_name.value
+      },
+      {
+        id: 'shortNameLength',
+        groups: ['shortNameLength'],
+        userText: 'Manifest `short_name` won\'t be truncated when displayed on the homescreen',
+        toPass: manifest => manifest.value.short_name.value &&
+            manifest.value.short_name.value.length <= SUGGESTED_SHORTNAME_LENGTH
       },
       {
         id: 'hasName',
@@ -104,7 +115,6 @@ class ManifestValues extends ComputedArtifact {
     // evaluate the other checks
     return ManifestValues.manifestChecklist.map(item => {
       item.passing = item.toPass(manifest);
-      item.debugString
       return item;
     });
   }
