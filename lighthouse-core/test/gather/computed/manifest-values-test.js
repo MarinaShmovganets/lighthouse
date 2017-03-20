@@ -59,7 +59,7 @@ describe('ManifestValues computed artifact', () => {
   it('passes the all checks with fixture manifest', () => {
     const manifestArtifact = noUrlManifestParser(manifestSrc);
     const results = manifestValues.compute_(manifestArtifact);
-    assert.equal(results.length, 10);
+    assert.equal(results.length, 11);
     assert.equal(results.every(i => i.passing), true, 'not all checks passed');
   });
 
