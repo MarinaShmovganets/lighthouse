@@ -69,7 +69,7 @@ class ManifestValues extends ComputedArtifact {
       },
       {
         id: 'hasThemeColor',
-        groups: ['splash'],
+        groups: ['splash', 'omnibox'],
         userText: 'Manifest contains `theme_color`',
         toPass: manifest => !!manifest.value.theme_color.value
       },
