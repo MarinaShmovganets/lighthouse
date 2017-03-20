@@ -32,7 +32,7 @@ class HTMLHasLang extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'html-has-lang',
-      description: 'The `<html>` element has a `lang=""` attribute.',
+      description: '`<html>` element has a `[lang]` attribute.',
       helpText: 'The `lang` attribute is useful for multilingual screen reader users who may ' +
           'prefer a language other than the default.',
       requiredArtifacts: ['Accessibility']

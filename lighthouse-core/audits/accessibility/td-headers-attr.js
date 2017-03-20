@@ -33,10 +33,10 @@ class TDHeadersAttr extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'td-headers-attr',
-      description: 'All cells in a `<table>` element that use the headers attribute only refer ' +
+      description: 'Cells in a `<table>` element that use the `[headers]` attribute only refer ' +
           'to other cells of that same table.',
       helpText: 'Screen readers have features to make navigating tables easier. Ensuring `<td>` ' +
-          'cells using the headers attribute only refer to other cells in the same table may ' +
+          'cells using the `[headers]` attribute only refer to other cells in the same table may ' +
           'improve the experience for screen reader users.',
       requiredArtifacts: ['Accessibility']
     };

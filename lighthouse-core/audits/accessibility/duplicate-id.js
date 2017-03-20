@@ -32,7 +32,7 @@ class DuplicateId extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'duplicate-id',
-      description: 'All `id=""` attributes on the page are unique.',
+      description: '`[id]` attributes on the page are unique.',
       helpText: 'Unique `id=""` attributes help ensure assistive technologies do not overlook ' +
           'elements with the same id.',
       requiredArtifacts: ['Accessibility']

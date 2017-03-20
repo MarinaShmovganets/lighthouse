@@ -32,9 +32,9 @@ class ValidLang extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'valid-lang',
-      description: 'All elements using the `lang=""` attribute have a valid value.',
-      helpText: 'Specifying a valid language helps ensure that text is pronounced correctly by a ' +
-          'screen reader.',
+      description: '`[lang]` attributes have a valid value.',
+      helpText: 'Specifying a valid BCP 47 language on elements helps ensure that text is ' +
+          'pronounced correctly by a screen reader.',
       requiredArtifacts: ['Accessibility']
     };
   }

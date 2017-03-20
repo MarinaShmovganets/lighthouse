@@ -32,7 +32,7 @@ class Accesskeys extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'accesskeys',
-      description: 'All accesskeys in the document are unique.',
+      description: '`[accesskey]` values are unique.',
       helpText: '`accesskey` attributes allow the user to quickly activiate or focus part ' +
           'of the page.' +
           'Using the same `accesskey` more than once could lead to a confusing experience.',

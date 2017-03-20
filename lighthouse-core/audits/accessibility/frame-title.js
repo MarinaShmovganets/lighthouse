@@ -32,7 +32,7 @@ class FrameTitle extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'frame-title',
-      description: 'All `<frame>` or `<iframe>` elements have a title.',
+      description: '`<frame>` or `<iframe>` elements have a title.',
       helpText: 'Screen reader users rely on a frame title to describe the contents of the frame.',
       requiredArtifacts: ['Accessibility']
     };

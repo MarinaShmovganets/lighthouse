@@ -32,7 +32,7 @@ class List extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'list',
-      description: 'All lists contain only `<li>` elements and script supporting elements ' +
+      description: 'Lists contain only `<li>` elements and script supporting elements ' +
           '(`<script>` and `<template>`).',
       helpText: 'Screen readers have a specific way of announcing lists. Ensuring proper list ' +
           'structure aides screen reader output.',

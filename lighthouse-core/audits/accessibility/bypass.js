@@ -33,7 +33,7 @@ class Bypass extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'bypass',
-      description: 'The page contains a skip link, heading, or landmark region.',
+      description: 'The page contains a heading, skip link, or landmark region.',
       helpText: 'Adding ways to bypass repetitive content lets keyboard users navigate the page ' +
           'more efficiently.',
       requiredArtifacts: ['Accessibility']

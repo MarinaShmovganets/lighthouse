@@ -32,7 +32,7 @@ class ARIAAllowedAttr extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'aria-allowed-attr',
-      description: 'Element aria-* attributes are allowed for this role',
+      description: '`[aria-*]` attributes match their roles.',
       helpText: 'Each ARIA `role` supports a specific subset of `aria-*` attributes. ' +
           'Mismatching these invalidates the `aria-*` attributes. [Learn ' +
           'more](https://developers.google.com/web/tools/lighthouse/audits/aria-allowed-attributes).',

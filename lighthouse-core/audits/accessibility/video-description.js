@@ -32,7 +32,7 @@ class VideoDescription extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'video-description',
-      description: 'All `<video>` elements have an audio description.',
+      description: '`<video>` elements have an audio description.',
       helpText: 'Audio descriptions provide relevant information for videos that dialogue ' +
           'cannot, such as facial expressions and scenes.',
       requiredArtifacts: ['Accessibility']

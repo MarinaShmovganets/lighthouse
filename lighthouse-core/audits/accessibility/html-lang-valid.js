@@ -32,9 +32,9 @@ class HTMLLangValid extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'html-lang-valid',
-      description: 'The `<html>` element has a valid value for its `lang=""` attribute.',
-      helpText: 'Specifying a valid language helps ensure that text is pronounced correctly by a ' +
-          'screen reader.',
+      description: '`<html>` element has a valid value for its `[lang]` attribute.',
+      helpText: 'Specifying a valid BCP 47 language (e.g. lang=en or lang=pt-BR) helps ' +
+          'screen readers announce text properly.',
       requiredArtifacts: ['Accessibility']
     };
   }

@@ -32,7 +32,7 @@ class InputImageAlt extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'input-image-alt',
-      description: 'All `<input type="image">` elements have `alt` text.',
+      description: '`<input type="image">` elements have `[alt]` text.',
       helpText: 'When an image is being used as an `<input>` button providing alternative text ' +
           'can help screen reader users understand the purpose of the button.',
       requiredArtifacts: ['Accessibility']

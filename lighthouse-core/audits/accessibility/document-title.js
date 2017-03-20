@@ -32,7 +32,7 @@ class DocumentTitle extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'document-title',
-      description: 'HTML document has a `<title>` element.',
+      description: 'Document has a `<title>` element.',
       helpText: 'Screen reader users use page titles to get an overview of the contents of ' +
           'the page.',
       requiredArtifacts: ['Accessibility']

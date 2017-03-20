@@ -32,7 +32,7 @@ class ListItem extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'listitem',
-      description: 'All list items (`<li>`) are contained within `<ul>` or `<ol>` parent elements.',
+      description: 'List items (`<li>`) are contained within `<ul>` or `<ol>` parent elements.',
       helpText: 'Screen readers require list items (`<li>`) to be contained within a ' +
           'parent `<ul>` or `<ol>` to be announced properly',
       requiredArtifacts: ['Accessibility']

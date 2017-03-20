@@ -32,7 +32,7 @@ class ObjectAlt extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'object-alt',
-      description: 'All `<object>` elements have a text alternative.',
+      description: '`<object>` elements have `[alt]` text.',
       helpText: 'Screen readers cannot translate non-text content. Adding alt text to `<object>` ' +
           'elements will help a screen reader convey the meaning to a user.',
       requiredArtifacts: ['Accessibility']

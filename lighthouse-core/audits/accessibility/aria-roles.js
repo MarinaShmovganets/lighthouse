@@ -32,7 +32,7 @@ class AriaRoles extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'aria-roles',
-      description: 'All values assigned to role="" correspond to valid ARIA roles.',
+      description: '`[role]` values are valid.',
       helpText: 'ARIA roles require specific values to perform their accessibility function.',
       requiredArtifacts: ['Accessibility']
     };

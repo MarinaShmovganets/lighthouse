@@ -32,7 +32,7 @@ class Label extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'label',
-      description: 'Every form element has a label',
+      description: 'Form elements have associated labels.',
       helpText: 'Labels ensure that form controls are announced properly by assistive ' +
           'technologies, like screen readers. [Learn ' +
           'more](https://developers.google.com/web/tools/lighthouse/audits/form-labels).',

@@ -32,7 +32,7 @@ class DLItem extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'dlitem',
-      description: 'All definition list items are wrapped in parent <dl> elements.',
+      description: 'Definition list items are wrapped in `<dl>` elements.',
       helpText: 'Definition list items (<dt> and/or <dd>) wrapped in parent <dl> elements enable ' +
           'screen readers to properly announce content.',
       requiredArtifacts: ['Accessibility']

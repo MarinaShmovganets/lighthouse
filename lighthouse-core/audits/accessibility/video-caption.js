@@ -32,7 +32,7 @@ class VideoCaption extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'video-caption',
-      description: 'All `<video>` elements are captioned.',
+      description: '`<video>` elements are captioned.',
       helpText: 'When a video provides a caption it is easier for deaf and hearing impaired ' +
           'users to access its information.',
       requiredArtifacts: ['Accessibility']

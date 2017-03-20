@@ -32,8 +32,8 @@ class MetaViewport extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'meta-viewport',
-      description: 'The `user-scalable=no` attribute is not present in the ' +
-          '`<meta name="viewport">` element and the `maximum-scale` attribute is not less than 5.',
+      description: '`[user-scalable="no"]` is not used in the `<meta name="viewport">` ' +
+          'element and the `[maximum-scale]` attribute is not less than 5.',
       helpText: 'Disabling zooming is problematic for users with low vision who rely on screen ' +
           'magnification to properly see the contents of a web page.',
       requiredArtifacts: ['Accessibility']
