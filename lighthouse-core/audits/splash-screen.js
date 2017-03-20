@@ -7,7 +7,6 @@
 'use strict';
 
 const Audit = require('./audit');
-const SWAudit = require('./service-worker');
 const Formatter = require('../report/formatter');
 
 /**
@@ -23,15 +22,14 @@ const Formatter = require('../report/formatter');
  *   * manifest contains icon that's a png and size >= 512px
  */
 
-
 //probably can delete
 // name
 // manifest-background-color
 // manifest-icons-min-192"
 
 // cannot delete:
-      // "manifest-theme-color":
-      
+// "manifest-theme-color":
+
 
 class SplashScreen extends Audit {
 

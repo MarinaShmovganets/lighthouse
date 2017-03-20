@@ -25,97 +25,96 @@ function generateMockArtifacts() {
   return mockArtifacts;
 }
 
-// /* eslint-env mocha */
-// describe('PWA: webapp install banner audit', () => {
-//   describe.only('basics', () => {
-//     it('fails if page had no manifest', () => {
-//       const artifacts = generateMockArtifacts();
-//       artifacts.Manifest = null;
+/* eslint-env mocha */
+describe('PWA: splash screen audit', () => {
+  describe('basics', () => {
+    it('fails if page had no manifest', () => {
+      const artifacts = generateMockArtifacts();
+      artifacts.Manifest = null;
 
-//       return SplashScreenAudit.audit(artifacts).then(result => {
-//         assert.strictEqual(result.rawValue, false);
-//         assert.ok(result.debugString.includes('is available'), result.debugString);
-//       });
-//     });
+      return SplashScreenAudit.audit(artifacts).then(result => {
+        assert.strictEqual(result.rawValue, false);
+        assert.ok(result.debugString.includes('is available'), result.debugString);
+      });
+    });
 
-//     it('fails with a non-parsable manifest', () => {
-//       const artifacts = generateMockArtifacts();
-//       artifacts.Manifest = manifestParser('{,:}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-//       return SplashScreenAudit.audit(artifacts).then(result => {
-//         assert.strictEqual(result.rawValue, false);
-//         assert.ok(result.debugString.includes('parsed as JSON'));
-//       });
-//     });
+    it('fails with a non-parsable manifest', () => {
+      const artifacts = generateMockArtifacts();
+      artifacts.Manifest = manifestParser('{,:}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      return SplashScreenAudit.audit(artifacts).then(result => {
+        assert.strictEqual(result.rawValue, false);
+        assert.ok(result.debugString.includes('parsed as JSON'));
+      });
+    });
 
-//     it('fails when an empty manifest is present', () => {
-//       const artifacts = generateMockArtifacts();
-//       artifacts.Manifest = manifestParser('{}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-//       return SplashScreenAudit.audit(artifacts).then(result => {
-//         assert.strictEqual(result.rawValue, false);
-//         assert.ok(result.debugString);
-//         assert.strictEqual(result.extendedInfo.value.failures.length, 3);
-//       });
-//     });
+    it('fails when an empty manifest is present', () => {
+      const artifacts = generateMockArtifacts();
+      artifacts.Manifest = manifestParser('{}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      return SplashScreenAudit.audit(artifacts).then(result => {
+        assert.strictEqual(result.rawValue, false);
+        assert.ok(result.debugString);
+        assert.strictEqual(result.extendedInfo.value.failures.length, 5);
+      });
+    });
 
-//     it('passes with complete manifest and SW', () => {
-//       return SplashScreenAudit.audit(generateMockArtifacts()).then(result => {
-//         assert.strictEqual(result.rawValue, true, result.debugString);
-//         assert.strictEqual(result.debugString, undefined, result.debugString);
-//       });
-//     });
-//   });
+    it('passes with complete manifest and SW', () => {
+      return SplashScreenAudit.audit(generateMockArtifacts()).then(result => {
+        assert.strictEqual(result.rawValue, true, result.debugString);
+        assert.strictEqual(result.debugString, undefined, result.debugString);
+      });
+    });
+  });
 
-//   describe('one-off-failures', () => {
-//     /* eslint-disable camelcase */ // because start_url
-//     it('fails when a manifest contains no start_url', () => {
-//       const artifacts = generateMockArtifacts();
-//       artifacts.Manifest.value.start_url.value = undefined;
+  describe('one-off-failures', () => {
+    /* eslint-disable camelcase */ // because short_name
+    it('fails when a manifest contains no short_name', () => {
+      const artifacts = generateMockArtifacts();
+      artifacts.Manifest.value.short_name.value = undefined;
 
-//       return SplashScreenAudit.audit(artifacts).then(result => {
-//         assert.strictEqual(result.rawValue, false);
-//         assert.ok(result.debugString.includes('start_url'), result.debugString);
-//       });
-//     });
+      return SplashScreenAudit.audit(artifacts).then(result => {
+        assert.strictEqual(result.rawValue, false);
+        assert.ok(result.debugString.includes('short_name'), result.debugString);
+      });
+    });
 
-//     /* eslint-disable camelcase */ // because short_name
-//     it('fails when a manifest contains no short_name', () => {
-//       const artifacts = generateMockArtifacts();
-//       artifacts.Manifest.value.short_name.value = undefined;
+    it('fails when a manifest contains no name', () => {
+      const artifacts = generateMockArtifacts();
+      artifacts.Manifest.value.name.value = undefined;
 
-//       return SplashScreenAudit.audit(artifacts).then(result => {
-//         assert.strictEqual(result.rawValue, false);
-//         assert.ok(result.debugString.includes('short_name'), result.debugString);
-//       });
-//     });
+      return SplashScreenAudit.audit(artifacts).then(result => {
+        assert.strictEqual(result.rawValue, false);
+        assert.ok(result.debugString.includes('name'), result.debugString);
+      });
+    });
 
-//     it('fails when a manifest contains no name', () => {
-//       const artifacts = generateMockArtifacts();
-//       artifacts.Manifest.value.name.value = undefined;
+    it('fails when a manifest contains no background color', () => {
+      const artifacts = generateMockArtifacts();
+      artifacts.Manifest.value.background_color.value = undefined;
 
-//       return SplashScreenAudit.audit(artifacts).then(result => {
-//         assert.strictEqual(result.rawValue, false);
-//         assert.ok(result.debugString.includes('name'), result.debugString);
-//       });
-//     });
+      return SplashScreenAudit.audit(artifacts).then(result => {
+        assert.strictEqual(result.rawValue, false);
+        assert.ok(result.debugString.includes('background_color'), result.debugString);
+      });
+    });
 
-//     it('fails if page had no icons in the manifest', () => {
-//       const artifacts = generateMockArtifacts();
-//       artifacts.Manifest.value.icons.value = [];
+    it('fails when a manifest contains no theme color', () => {
+      const artifacts = generateMockArtifacts();
+      artifacts.Manifest.value.theme_color.value = undefined;
 
-//       return SplashScreenAudit.audit(artifacts).then(result => {
-//         assert.strictEqual(result.rawValue, false);
-//         assert.ok(result.debugString.includes('icons'), result.debugString);
-//       });
-//     });
-//   });
+      return SplashScreenAudit.audit(artifacts).then(result => {
+        assert.strictEqual(result.rawValue, false);
+        assert.ok(result.debugString.includes('theme_color'), result.debugString);
+      });
+    });
 
-//   it('fails if page had no SW', () => {
-//     const artifacts = generateMockArtifacts();
-//     artifacts.ServiceWorker.versions = [];
+    it('fails if page had no icons in the manifest', () => {
+      const artifacts = generateMockArtifacts();
+      artifacts.Manifest.value.icons.value = [];
 
-//     return SplashScreenAudit.audit(artifacts).then(result => {
-//       assert.strictEqual(result.rawValue, false);
-//       assert.ok(result.debugString.includes('Service Worker'), result.debugString);
-//     });
-//   });
-// });
+      return SplashScreenAudit.audit(artifacts).then(result => {
+        assert.strictEqual(result.rawValue, false);
+        assert.ok(result.debugString.includes('icons'), result.debugString);
+      });
+    });
+  });
+});
