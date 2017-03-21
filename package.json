@@ -34,7 +34,8 @@
     "chrome": "node ./lighthouse-cli/manual-chrome-launcher.js",
     "fast": "npm run start -- --disable-device-emulation --disable-cpu-throttling --disable-network-throttling",
     "smokehouse": "node lighthouse-cli/test/smokehouse/smokehouse.js",
-    "deploy-viewer": "cd lighthouse-viewer && gulp deploy"
+    "deploy-viewer": "cd lighthouse-viewer && gulp deploy",
+    "gulp-example": "gulp --gulpfile docs/recipes/gulp/gulpfile.js --cwd docs/recipes/gulp"
   },
   "devDependencies": {
     "@types/node": "^6.0.45",
@@ -46,6 +47,7 @@
     "google-closure-compiler": "^20161201.0.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
+    "gulp-connect": "^5.0.0",
     "gulp-declare": "^0.3.0",
     "gulp-define-module": "^0.1.5",
     "gulp-handlebars": "^4.0.0",
