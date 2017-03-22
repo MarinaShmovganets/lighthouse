@@ -63,7 +63,7 @@ describe('PWA: splash screen audit', () => {
       return SplashScreenAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.debugString);
-        assert.strictEqual(result.extendedInfo.value.failures.length, 5);
+        assert.strictEqual(result.extendedInfo.value.failures.length, 4);
       });
     });
 
@@ -76,17 +76,6 @@ describe('PWA: splash screen audit', () => {
   });
 
   describe('one-off-failures', () => {
-    /* eslint-disable camelcase */ // because short_name
-    it('fails when a manifest contains no short_name', () => {
-      const artifacts = generateMockArtifacts();
-      artifacts.Manifest.value.short_name.value = undefined;
-
-      return SplashScreenAudit.audit(artifacts).then(result => {
-        assert.strictEqual(result.rawValue, false);
-        assert.ok(result.debugString.includes('short_name'), result.debugString);
-      });
-    });
-
     it('fails when a manifest contains no name', () => {
       const artifacts = generateMockArtifacts();
       artifacts.Manifest.value.name.value = undefined;

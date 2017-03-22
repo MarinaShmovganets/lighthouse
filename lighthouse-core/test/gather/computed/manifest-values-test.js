@@ -51,7 +51,7 @@ describe('ManifestValues computed artifact', () => {
   it('passes the validity checks on an empty manifest', () => {
     const manifestArtifact = noUrlManifestParser('{}');
     const results = manifestValues.compute_(manifestArtifact);
-    const validityChecks = results.filter(i => i.groups.includes('validity'));
+    const validityChecks = results.filter(i => ManifestValues.validityIds.includes(i.id));
     assert.equal(validityChecks.length, 2);
     assert.equal(validityChecks.every(i => i.passing), true, 'not all validity checks passed');
   });

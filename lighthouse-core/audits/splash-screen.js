@@ -44,14 +44,21 @@ class SplashScreen extends Audit {
 
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
       // 1: validate manifest is in order
-      manifestValues.forEach(item => {
-        if (!item.groups.includes('validity') && !item.groups.includes('splash'))
-          return;
+      const validityIds = ['hasManifest', 'hasParseableManifest'];
+      const bannerCheckIds = [
+        'hasName',
+        'hasBackgroundColor',
+        'hasThemeColor',
+        'hasIconsAtLeast512px'
+      ];
 
-        if (item.passing === false) {
-          failures.push(item.userText);
-        }
-      });
+      manifestValues
+        .filter(item => validityIds.includes(item.id) || bannerCheckIds.includes(item.id))
+        .forEach(item => {
+          if (item.passing === false) {
+            failures.push(item.userText);
+          }
+        });
 
       const extendedInfo = {
         value: {manifestValues, failures},

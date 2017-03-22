@@ -38,9 +38,10 @@ class ThemedOmnibox extends Audit {
     const failures = [];
 
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
-
+      // 1: validate manifest is in order
+      const validityIds = ['hasManifest', 'hasParseableManifest'];
       const isValid = manifestValues
-        .filter(item => item.groups.includes('validity'))
+        .filter(item => validityIds.includes(item.id))
         .every(item => item.passing === true);
 
       if (!isValid) {

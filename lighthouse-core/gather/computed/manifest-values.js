@@ -21,74 +21,73 @@ class ManifestValues extends ComputedArtifact {
     return 'ManifestValues';
   }
 
-  static get manifestChecklist() {
+  static get validityIds() {
+    return ['hasManifest', 'hasParseableManifest'];
+  }
+
+  static get manifestExistsChecklist() {
     return [
       {
         id: 'hasManifest',
-        groups: ['validity'],
         userText: 'Manifest is available',
         toPass: manifest => manifest !== null
       },
       {
         id: 'hasParseableManifest',
-        groups: ['validity'],
         userText: 'Manifest is parsed as JSON',
-        toPass: manifest => typeof manifest !== 'undefined' && !!manifest.value
-      },
+        toPass: manifest => manifest !== null &&
+          typeof manifest !== 'undefined' && !!manifest.value
+      }
+    ];
+  }
+
+  static get manifestChecklist() {
+    return [
       {
         id: 'hasStartUrl',
-        groups: ['banner'],
         userText: 'Manifest contains `start_url`',
         toPass: manifest => !!manifest.value.start_url.value
       },
       {
         id: 'hasIconsAtLeast192px',
-        groups: ['banner'],
         userText: 'Manifest contains icons at least 192px',
         toPass: manifest => icons.doExist(manifest.value) &&
             icons.sizeAtLeast(192, /** @type {!Manifest} */ (manifest.value)).length > 0
       },
       {
         id: 'hasIconsAtLeast512px',
-        groups: ['splash'],
         userText: 'Manifest contains icons at least 512px',
         toPass: manifest => icons.doExist(manifest.value) &&
             icons.sizeAtLeast(512, /** @type {!Manifest} */ (manifest.value)).length > 0
       },
       {
         id: 'hasPWADisplayValue',
-        groups: ['banner'],
-        userText: 'Manifest\'s `display` value is one of: ' + PWA_DISPLAY_VALUES.join(', '),
+        userText: 'Manifest\'s `display` value is one of: ' + PWA_DISPLAY_VALUES.join(' | '),
         toPass: manifest => PWA_DISPLAY_VALUES.includes(manifest.value.display.value)
       },
       {
         id: 'hasBackgroundColor',
-        groups: ['splash'],
         userText: 'Manifest contains `background_color`',
         toPass: manifest => !!manifest.value.background_color.value
       },
       {
         id: 'hasThemeColor',
-        groups: ['splash', 'omnibox'],
         userText: 'Manifest contains `theme_color`',
         toPass: manifest => !!manifest.value.theme_color.value
       },
       {
         id: 'hasShortName',
-        groups: ['banner', 'splash', 'shortNameLength'],
         userText: 'Manifest contains `short_name`',
         toPass: manifest => !!manifest.value.short_name.value
       },
       {
         id: 'shortNameLength',
-        groups: ['shortNameLength'],
         userText: 'Manifest `short_name` won\'t be truncated when displayed on the homescreen',
         toPass: manifest => manifest.value.short_name.value &&
             manifest.value.short_name.value.length <= SUGGESTED_SHORTNAME_LENGTH
       },
       {
         id: 'hasName',
-        groups: ['banner', 'splash'],
         userText: 'Manifest contains `name`',
         toPass: manifest => !!manifest.value.name.value
       }
@@ -98,25 +97,36 @@ class ManifestValues extends ComputedArtifact {
   /**
    * Returns results of all manifest checks
    * @param {Manifest} manifest
-   * @return {Array}
+   * @return {<{isValid: !boolean, validityFailure: ?string, allChecks: !Array}>}
    */
   compute_(manifest) {
     // if the manifest isn't there or is invalid, we'll report that first
-    const existsChecks = ManifestValues.manifestChecklist.filter(item =>
-        item.groups.includes('validity'));
-
-    for (let i = 0; i < existsChecks.length; i++) {
-      const item = existsChecks[i];
-      item.passing = item.toPass(manifest);
-      if (item.passing === false)
-        return [item];
-    }
-
-    // evaluate the other checks
-    return ManifestValues.manifestChecklist.map(item => {
+    const validityChecks = ManifestValues.manifestExistsChecklist.map(item => {
       item.passing = item.toPass(manifest);
       return item;
     });
+    const failingValidity = validityChecks.find(item => item.passing === false);
+
+    // if we have a failure, report that only
+    if (failingValidity) {
+      return {
+        isValid: false,
+        validityFailure: failingValidity.userText,
+        allChecks: []
+      };
+    }
+
+    // manifest is valid, so do the rest of the checks
+    const remainingChecks = ManifestValues.manifestChecklist.map(item => {
+      item.passing = item.toPass(manifest);
+      return item;
+    });
+
+    return {
+      isValid: true,
+      validityFailure: undefined,
+      allChecks: remainingChecks
+    };
   }
 
 }

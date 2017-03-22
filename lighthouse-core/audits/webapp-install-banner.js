@@ -21,7 +21,7 @@ const Formatter = require('../report/formatter');
  *   * manifest has a valid name
  *   * manifest has a valid shortname
  *   * manifest display property is either standalone or fullscreen
- *   * manifest contains icon that's a png and size >= 144px
+ *   * manifest contains icon that's a png and size >= 192px
  *   * SW is registered, and it owns this page and the manifest's start url
  *   * Site engagement score of 2 or higher
 
@@ -55,14 +55,21 @@ class WebappInstallBanner extends Audit {
 
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
       // 1: validate manifest is in order
-      manifestValues.forEach(item => {
-        if (!item.groups.includes('validity') && !item.groups.includes('banner'))
-          return;
 
-        if (item.passing === false) {
-          failures.push(item.userText);
-        }
-      });
+      const bannerCheckIds = [
+        'hasName',
+        'hasShortName',
+        'hasStartUrl',
+        'hasPWADisplayValue',
+        'hasIconsAtLeast192px'
+      ];
+      manifestValues
+        .filter(item => validityIds.includes(item.id) || bannerCheckIds.includes(item.id))
+        .forEach(item => {
+          if (item.passing === false) {
+            failures.push(item.userText);
+          }
+        });
 
       // 2: validate we have a SW
       const hasServiceWorker = WebappInstallBanner.hasServiceWorker(artifacts);
