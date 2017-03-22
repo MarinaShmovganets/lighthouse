@@ -40,6 +40,7 @@
       "chrome-console-messages",
       "styles",
       "css-usage",
+      "js-usage",
       "dobetterweb/all-event-listeners",
       "dobetterweb/anchors-with-no-rel-noopener",
       "dobetterweb/appcache",
@@ -120,6 +121,7 @@
     "accessibility/video-description",
     "byte-efficiency/total-byte-weight",
     "byte-efficiency/unused-css-rules",
+    "byte-efficiency/unused-javascript",
     "byte-efficiency/uses-optimized-images",
     "byte-efficiency/uses-responsive-images",
     "dobetterweb/appcache-manifest",
@@ -576,6 +578,10 @@
     "items": [{
       "audits": {
         "unused-css-rules": {
+          "expectedValue": true,
+          "weight": 1
+        },
+        "unused-javascript": {
           "expectedValue": true,
           "weight": 1
         },

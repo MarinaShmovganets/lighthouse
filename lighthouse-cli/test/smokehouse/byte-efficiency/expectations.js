@@ -34,6 +34,20 @@ module.exports = [
           }
         }
       },
+      'unused-javascript': {
+        score: false,
+        extendedInfo: {
+          value: {
+            results: {
+              length: 1,
+              0: {
+                wastedKb: '34 KB',
+                numUnused: 2,
+              }
+            }
+          }
+        }
+      },
       'uses-optimized-images': {
         score: false,
         extendedInfo: {
