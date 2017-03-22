@@ -46,7 +46,7 @@ function collectImageElementInfo() {
   const CSS_URL_REGEX = /^url\("([^"]+)"\)$/;
   // Only find images that aren't specifically scaled
   const CSS_SIZE_REGEX = /(auto|contain|cover)/;
-  const cssImages = [...document.querySelectorAll('*')].reduce((images, element) => {
+  const cssImages = [...document.querySelectorAll('html /deep/ *')].reduce((images, element) => {
     const style = window.getComputedStyle(element);
     if (!CSS_URL_REGEX.test(style.backgroundImage) ||
         !CSS_SIZE_REGEX.test(style.backgroundSize)) {
@@ -66,6 +66,7 @@ function collectImageElementInfo() {
       src: url,
       clientWidth: element.clientWidth,
       clientHeight: element.clientHeight,
+      // CSS Images do not expose natural size, we'll determine the size later
       naturalWidth: Number.MAX_VALUE,
       naturalHeight: Number.MAX_VALUE,
       isCss: true,
