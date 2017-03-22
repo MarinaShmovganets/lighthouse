@@ -27,6 +27,8 @@ const DevtoolsLog = require('./devtools-log');
 
 const PAUSE_AFTER_LOAD = 500;
 
+const _uniq = arr => Array.from(new Set(arr));
+
 class Driver {
   static get MAX_WAIT_FOR_FULLY_LOADED() {
     return 25 * 1000;
@@ -571,13 +573,14 @@ class Driver {
   }
 
   /**
-   * @param {{traceCategories: string=}=} flags
+   * @param {{additionalTraceCategories: string=}=} flags
    */
   beginTrace(flags) {
-    const additionalCategories = flags && flags.traceCategories && flags.traceCategories.split(',');
-    const traceCategories = new Set(this._traceCategories.concat(additionalCategories || []));
+    const additionalCategories = (flags && flags.additionalTraceCategories &&
+        flags.additionalTraceCategories.split(',')) || [];
+    const traceCategories = this._traceCategories.concat(additionalCategories);
     const tracingOpts = {
-      categories: Array.from(traceCategories).join(','),
+      categories: _uniq(traceCategories).join(','),
       transferMode: 'ReturnAsStream',
       options: 'sampling-frequency=10000'  // 1000 is default and too slow.
     };

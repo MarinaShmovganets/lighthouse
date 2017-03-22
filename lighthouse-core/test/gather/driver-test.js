@@ -168,8 +168,8 @@ describe('Browser Driver', () => {
     });
   });
 
-  it('will use requested traceCategories', () => {
-    return driverStub.beginTrace({traceCategories: 'v8,v8.execute,toplevel'}).then(() => {
+  it('will use requested additionalTraceCategories', () => {
+    return driverStub.beginTrace({additionalTraceCategories: 'v8,v8.execute,toplevel'}).then(() => {
       const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
       const categories = traceCmd.params.categories;
       assert.ok(categories.includes('blink'), 'contains default categories');
