@@ -19,11 +19,12 @@
 /* eslint-env mocha */
 
 const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
 const Handlebars = require('handlebars');
 const handlebarHelpers = require('../../../report/handlebar-helpers');
-const fs = require('fs');
-const partialHtml = fs.readFileSync(__dirname +
-    '/../../../report/partials/user-timings.html', 'utf8');
+const partialHtml = fs.readFileSync(path.join(__dirname,
+    '/../../../report/partials/user-timings.html'), 'utf8');
 
 describe('User Timings partial generation', () => {
   after(() => {

@@ -36,7 +36,7 @@ describe('Report', () => {
   it('should format generated Time', () => {
     const reportGenerator = new ReportGenerator();
     const html = reportGenerator.generateHTML(sampleResults);
-    assert.ok(/on: 2\/\d{1,2}\/2017\, /gim.test(html));
+    assert.ok(/on: 2\/\d{1,2}\/2017, /gim.test(html));
   });
 
   it('should escape closing </script> tags', () => {
@@ -150,8 +150,8 @@ describe('Report', () => {
     assert.ok(html.includes(
         '<a href="http://example.com" target="_blank" rel="noopener"'),
         'anchors are transformed');
-    assert.ok(html.includes( '<a href="http://imagelink.com"'), 'images in links are transformed');
-    assert.ok(html.includes( '<img src="http://imagelink.com"'), 'images are transformed');
+    assert.ok(html.includes('<a href="http://imagelink.com"'), 'images in links are transformed');
+    assert.ok(html.includes('<img src="http://imagelink.com"'), 'images are transformed');
     assert.ok(!html.includes(
         '<img src="test.gif" onerror="alert(10)">'), 'non-recognized HTML is sanitized');
   });

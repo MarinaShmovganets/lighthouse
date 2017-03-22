@@ -298,17 +298,17 @@ class Runner {
       {
         name: 'Device Emulation',
         enabled: !flags.disableDeviceEmulation,
-        description: emulationDesc['deviceEmulation']
+        description: emulationDesc.deviceEmulation
       },
       {
         name: 'Network Throttling',
         enabled: !flags.disableNetworkThrottling,
-        description: emulationDesc['networkThrottling']
+        description: emulationDesc.networkThrottling
       },
       {
         name: 'CPU Throttling',
         enabled: !flags.disableCpuThrottling,
-        description: emulationDesc['cpuThrottling']
+        description: emulationDesc.cpuThrottling
       }
     ];
 

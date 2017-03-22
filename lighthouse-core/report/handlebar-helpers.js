@@ -169,7 +169,7 @@ const handlebarHelpers = {
           case 'code':
             return '`' + value.trim() + '`';
           case 'pre':
-            return '\`\`\`\n' + result[key].trim() + '\`\`\`';
+            return '```\n' + result[key].trim() + '```';
           case 'lineCol':
             return `${result.line}:${result.col}`;
           case 'isEval':
@@ -275,14 +275,14 @@ const handlebarHelpers = {
    * @return {string}
    */
   getScoreBadIcon: (informative, additional) =>
-    (informative || additional) ? 'warning score-warning-bg':'poor score-poor-bg',
+    ((informative || additional) ? 'warning score-warning-bg' : 'poor score-poor-bg'),
 
   /**
    * Figures out the icon to display when success or info.
    * @param {boolean} informative
    * @return {string}
    */
-  getScoreGoodIcon: informative => informative ? 'info' : 'good',
+  getScoreGoodIcon: informative => (informative ? 'info' : 'good'),
 
   getTotalScore,
 
@@ -329,12 +329,12 @@ const handlebarHelpers = {
    * @return {string}
    */
   ifNotEq: function(lhs, rhs, options) {
-    if (lhs !== rhs) {
-      // eslint-disable-next-line no-invalid-this
-      return options.fn(this);
-    } else {
+    if (lhs === rhs) {
       // eslint-disable-next-line no-invalid-this
       return options.inverse(this);
+    } else {
+      // eslint-disable-next-line no-invalid-this
+      return options.fn(this);
     }
   },
 
@@ -402,7 +402,7 @@ const handlebarHelpers = {
    * @param {string} str
    * @return {string}
    */
-  sanitize: (str) => {
+  sanitize: str => {
     // const isViewer = opts.data.root.reportContext === 'viewer';
 
     const renderer = new marked.Renderer();

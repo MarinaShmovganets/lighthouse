@@ -49,7 +49,7 @@ function parseString(raw, trim) {
   if (typeof raw === 'string') {
     value = trim ? raw.trim() : raw;
   } else {
-    if (raw !== undefined) {
+    if (typeof raw !== 'undefined') {
       debugString = 'ERROR: expected a string.';
     }
     value = undefined;
@@ -66,7 +66,7 @@ function parseColor(raw) {
   const color = parseString(raw);
 
   // Finished if color missing or not a string.
-  if (color.value === undefined) {
+  if (typeof color.value === 'undefined') {
     return color;
   }
 
@@ -198,7 +198,7 @@ function parseIcon(raw, manifestUrl) {
     value: 1,
     debugString: undefined
   };
-  if (density.raw !== undefined) {
+  if (typeof density.raw !== 'undefined') {
     density.value = parseFloat(density.raw);
     if (isNaN(density.value) || !isFinite(density.value) || density.value <= 0) {
       density.value = 1;
@@ -207,7 +207,7 @@ function parseIcon(raw, manifestUrl) {
   }
 
   const sizes = parseString(raw.sizes);
-  if (sizes.value !== undefined) {
+  if (typeof sizes.value !== 'undefined') {
     const set = new Set();
     sizes.value.trim().split(/\s+/).forEach(size => set.add(size.toLowerCase()));
     sizes.value = set.size > 0 ? Array.from(set) : undefined;
@@ -228,7 +228,7 @@ function parseIcon(raw, manifestUrl) {
 function parseIcons(jsonInput, manifestUrl) {
   const raw = jsonInput.icons;
 
-  if (raw === undefined) {
+  if (typeof raw === 'undefined') {
     return {
       raw,
       value: [],
@@ -248,11 +248,11 @@ function parseIcons(jsonInput, manifestUrl) {
   // individual icons are lost. Warn instead?
   const value = raw
     // 9.6(3)(1)
-    .filter(icon => icon.src !== undefined)
+    .filter(icon => typeof icon.src !== 'undefined')
     // 9.6(3)(2)(1)
     .map(icon => parseIcon(icon, manifestUrl))
     // 9.6(3)(2)(2)
-    .filter(parsedIcon => parsedIcon.value.src.value !== undefined);
+    .filter(parsedIcon => typeof parsedIcon.value.src.value !== 'undefined');
 
   return {
     raw,
@@ -291,7 +291,7 @@ function parseApplication(raw) {
 function parseRelatedApplications(jsonInput) {
   const raw = jsonInput.related_applications;
 
-  if (raw === undefined) {
+  if (typeof raw === 'undefined') {
     return {
       raw,
       value: undefined,
@@ -329,7 +329,7 @@ function parsePreferRelatedApplications(jsonInput) {
   if (typeof raw === 'boolean') {
     value = raw;
   } else {
-    if (raw !== undefined) {
+    if (typeof raw !== 'undefined') {
       debugString = 'ERROR: \'prefer_related_applications\' expected to be a boolean.';
     }
     value = undefined;
@@ -358,7 +358,7 @@ function parseBackgroundColor(jsonInput) {
  * @return {!ManifestNode<(!Manifest|undefined)>}
  */
 function parse(string, manifestUrl, documentUrl) {
-  if (manifestUrl === undefined || documentUrl === undefined) {
+  if (typeof manifestUrl === 'undefined' || typeof documentUrl === 'undefined') {
     throw new Error('Manifest and document URLs required for manifest parsing.');
   }
 

@@ -45,7 +45,7 @@ gulp.task('js-compile', function() {
 
     // Replace any non-local import (e.g. not starting with .) with a dummy type. These are likely
     // the built-in Node modules. But not always, so TODO(samthor): Fix this.
-    .pipe(replace(/require\(\'[^\.].*?\'\)/g, '/** @type {*} */ ({})'))
+    .pipe(replace(/require\('[^.].*?'\)/g, '/** @type {*} */ ({})'))
 
     .pipe(closureCompiler({
       compilation_level: 'SIMPLE',

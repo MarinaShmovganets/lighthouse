@@ -73,7 +73,7 @@ describe('Total byte weight audit', () => {
     ]);
 
     return TotalByteWeight.audit(artifacts).then(result => {
-      assert.ok(40 < result.score && result.score < 60, 'score is around 50');
+      assert.ok(result.score > 40 && result.score < 60, 'score is around 50');
       assert.strictEqual(result.rawValue, 4180 * 1024);
       const results = result.extendedInfo.value.results;
       assert.strictEqual(results.length, 10, 'results are clipped at top 10');

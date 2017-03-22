@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 'use strict';
 
 /* eslint-env mocha */
 
-const Handlebars = require('handlebars');
 const assert = require('assert');
-const handlebarHelpers = require('../../../report/handlebar-helpers');
 const fs = require('fs');
-const partialHtml = fs.readFileSync(__dirname +
-    '/../../../report/partials/table.html', 'utf8');
+const path = require('path');
+const Handlebars = require('handlebars');
+const handlebarHelpers = require('../../../report/handlebar-helpers');
+const partialHtml = fs.readFileSync(path.join(__dirname,
+    '/../../../report/partials/table.html'), 'utf8');
 
 describe('Table partial generation', () => {
   after(() => {
@@ -51,8 +53,8 @@ describe('Table partial generation', () => {
     const output = template(extendedInfo).split('\n').join('');
     assert.ok(output.match('<table class="table_list'), 'creates a table');
     assert.ok(output.match('multicolumn'), 'adds multicolumn class for large tables');
-    assert.ok(output.match(/class=\"[^"]*table-column-preview/), 'adds column className');
-    assert.ok(output.match(/class=\"[^"]*table-column-line-col/), 'adds multi-word className');
+    assert.ok(output.match(/class="[^"]*table-column-preview/), 'adds column className');
+    assert.ok(output.match(/class="[^"]*table-column-line-col/), 'adds multi-word className');
 
     const extendedInfoShort = {
       tableHeadings: {url: 'URL', lineCol: 'Line/col'},

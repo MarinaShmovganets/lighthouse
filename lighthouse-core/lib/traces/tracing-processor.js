@@ -181,8 +181,8 @@ class TraceProcessor {
    */
   static getRiskToResponsiveness(model, trace, startTime, endTime, percentiles) {
     // Range of responsiveness we care about. Default to bounds of model.
-    startTime = startTime === undefined ? model.bounds.min : startTime;
-    endTime = endTime === undefined ? model.bounds.max : endTime;
+    startTime = typeof startTime === 'undefined' ? model.bounds.min : startTime;
+    endTime = typeof endTime === 'undefined' ? model.bounds.max : endTime;
     const totalTime = endTime - startTime;
     if (percentiles) {
       percentiles.sort((a, b) => a - b);

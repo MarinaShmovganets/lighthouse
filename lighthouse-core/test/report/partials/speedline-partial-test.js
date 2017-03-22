@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 'use strict';
 
 /* eslint-env mocha */
 
-const Handlebars = require('handlebars');
 const assert = require('assert');
-const handlebarHelpers = require('../../../report/handlebar-helpers');
 const fs = require('fs');
-const partialHtml = fs.readFileSync(__dirname +
-    '/../../../report/partials/speedline.html', 'utf8');
+const path = require('path');
+const Handlebars = require('handlebars');
+const handlebarHelpers = require('../../../report/handlebar-helpers');
+const partialHtml = fs.readFileSync(path.join(__dirname,
+    '/../../../report/partials/speedline.html'), 'utf8');
 
 const mockExtendedInfo = {
   timings: {

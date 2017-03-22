@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 'use strict';
 
 /* eslint-env mocha */
 
-const Handlebars = require('handlebars');
 const assert = require('assert');
 const fs = require('fs');
-const partialHtml = fs.readFileSync(__dirname + '/../../../report/partials/cards.html', 'utf8');
+const path = require('path');
+const Handlebars = require('handlebars');
+const partialHtml = fs.readFileSync(path.join(__dirname,
+    '/../../../report/partials/cards.html'), 'utf8');
 
 describe('Cards partial generation', () => {
   const extendedInfo = {
@@ -38,7 +41,7 @@ describe('Cards partial generation', () => {
     assert.ok(output.match('class="cards__container"'), 'adds wrapper class');
     assert.ok(output.match('target: 1,500 nodes'), 'adds target val html');
     assert.ok(!output.match('target: 10'), 'omits target html without a value');
-    assert.equal(output.match(/class=\"[^"]*scorecard-value/g).length, extendedInfo.value.length);
-    assert.equal(output.match(/class=\"[^"]*scorecard-title/g).length, extendedInfo.value.length);
+    assert.equal(output.match(/class="[^"]*scorecard-value/g).length, extendedInfo.value.length);
+    assert.equal(output.match(/class="[^"]*scorecard-title/g).length, extendedInfo.value.length);
   });
 });

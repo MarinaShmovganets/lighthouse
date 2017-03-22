@@ -18,10 +18,11 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 
 // Auto convert partial filenames to lookup for audits to use.
 const formatters = {};
-fs.readdirSync(__dirname + '/partials')
+fs.readdirSync(path.join(__dirname, '/partials'))
   .filter(filename => filename.endsWith('.html'))
   .forEach(filename => {
     const baseName = filename.replace(/\.html$/, '');

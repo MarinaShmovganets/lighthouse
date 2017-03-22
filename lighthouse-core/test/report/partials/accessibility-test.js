@@ -18,12 +18,13 @@
 
 /* eslint-env mocha */
 
-const Handlebars = require('handlebars');
 const assert = require('assert');
-const handlebarHelpers = require('../../../report/handlebar-helpers');
 const fs = require('fs');
-const partialHtml = fs.readFileSync(__dirname +
-    '/../../../report/partials/accessibility.html', 'utf8');
+const path = require('path');
+const Handlebars = require('handlebars');
+const handlebarHelpers = require('../../../report/handlebar-helpers');
+const partialHtml = fs.readFileSync(path.join(__dirname,
+    '/../../../report/partials/accessibility.html'), 'utf8');
 
 describe('Accessibility partial generation', () => {
   after(() => {
