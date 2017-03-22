@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 'use strict';
 
 /**
- * @fileoverview Ensures every HTML document has a `lang` attribute.
+ * @fileoverview Ensures `<video>` elements have closed captions.
  * See base class in axe-audit.js for audit() implementation.
  */
 
@@ -32,7 +32,7 @@ class VideoCaption extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'video-caption',
-      description: '`<video>` elements are captioned.',
+      description: '`<video>` elements contain a `<track>` element with `[kind="captions"]`.',
       helpText: 'When a video provides a caption it is easier for deaf and hearing impaired ' +
           'users to access its information.',
       requiredArtifacts: ['Accessibility']

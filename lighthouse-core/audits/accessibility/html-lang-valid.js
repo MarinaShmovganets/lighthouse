@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ class HTMLLangValid extends AxeAudit {
       category: 'Accessibility',
       name: 'html-lang-valid',
       description: '`<html>` element has a valid value for its `[lang]` attribute.',
-      helpText: 'Specifying a valid BCP 47 language (e.g. lang=en or lang=pt-BR) helps ' +
-          'screen readers announce text properly.',
+      helpText: 'Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) ' +
+          'helps screen readers announce text properly.',
       requiredArtifacts: ['Accessibility']
     };
   }

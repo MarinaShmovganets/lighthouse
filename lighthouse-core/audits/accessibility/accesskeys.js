@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ class Accesskeys extends AxeAudit {
       category: 'Accessibility',
       name: 'accesskeys',
       description: '`[accesskey]` values are unique.',
-      helpText: '`accesskey` attributes allow the user to quickly activiate or focus part ' +
+      helpText: '`accesskey` attributes allow the user to quickly activate or focus part ' +
           'of the page.' +
           'Using the same `accesskey` more than once could lead to a confusing experience.',
       requiredArtifacts: ['Accessibility']

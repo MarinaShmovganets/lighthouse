@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ class InputImageAlt extends AxeAudit {
       category: 'Accessibility',
       name: 'input-image-alt',
       description: '`<input type="image">` elements have `[alt]` text.',
-      helpText: 'When an image is being used as an `<input>` button providing alternative text ' +
+      helpText: 'When an image is being used as an `<input>` button, providing alternative text ' +
           'can help screen reader users understand the purpose of the button.',
       requiredArtifacts: ['Accessibility']
     };

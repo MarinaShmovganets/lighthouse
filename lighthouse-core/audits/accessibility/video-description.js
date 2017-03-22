@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ class VideoDescription extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'video-description',
-      description: '`<video>` elements have an audio description.',
+      description: '`<video>` elements contain a `<track>` element with `[kind="description"]`.',
       helpText: 'Audio descriptions provide relevant information for videos that dialogue ' +
           'cannot, such as facial expressions and scenes.',
       requiredArtifacts: ['Accessibility']
