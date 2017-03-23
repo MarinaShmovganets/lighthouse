@@ -81,7 +81,7 @@ class ManifestValues extends ComputedArtifact {
   /**
    * Returns results of all manifest checks
    * @param {Manifest} manifest
-   * @return {<{isParseFailure: !boolean, parseFailureReason: ?string, allChecks: !Array}>}
+   * @return {{isParseFailure: !boolean, parseFailureReason: ?string, allChecks: !Array}}
    */
   compute_(manifest) {
     // if the manifest isn't there or is invalid json, we report that and bail
