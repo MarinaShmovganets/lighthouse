@@ -68,9 +68,9 @@ class ManifestShortNameLength extends Audit {
         };
       }
 
-      const isShortNameShortEnough = manifestValues.allChecks.find(i => i.id === 'shortNameLength').passing;
+      const isShortEnough = manifestValues.allChecks.find(i => i.id === 'shortNameLength').passing;
       return {
-        rawValue: isShortNameShortEnough
+        rawValue: isShortEnough
       };
     });
   }
