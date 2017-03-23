@@ -27,21 +27,25 @@ const Gatherer = require('./gatherer');
 
 /* istanbul ignore next */
 function collectImageElementInfo() {
-  const htmlImages = [...document.querySelectorAll('img')].map(element => {
+  function getClientRect(element) {
     const clientRect = element.getBoundingClientRect();
+    return {
+      // manually copy the properties because ClientRect does not JSONify
+      top: clientRect.top,
+      bottom: clientRect.bottom,
+      left: clientRect.left,
+      right: clientRect.right,
+    };
+  }
+
+  const htmlImages = [...document.querySelectorAll('img')].map(element => {
     return {
       // currentSrc used over src to get the url as determined by the browser
       // after taking into account srcset/media/sizes/etc.
       src: element.currentSrc,
       clientWidth: element.clientWidth,
       clientHeight: element.clientHeight,
-      clientRect: {
-        // manually copy the properties because ClientRect does not JSONify
-        top: clientRect.top,
-        bottom: clientRect.bottom,
-        left: clientRect.left,
-        right: clientRect.right,
-      },
+      clientRect: getClientRect(element),
       naturalWidth: element.naturalWidth,
       naturalHeight: element.naturalHeight,
       isCss: false,
@@ -74,6 +78,7 @@ function collectImageElementInfo() {
       src: url,
       clientWidth: element.clientWidth,
       clientHeight: element.clientHeight,
+      clientRect: getClientRect(element),
       // CSS Images do not expose natural size, we'll determine the size later
       naturalWidth: Number.MAX_VALUE,
       naturalHeight: Number.MAX_VALUE,
