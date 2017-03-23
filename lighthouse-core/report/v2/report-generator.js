@@ -16,8 +16,6 @@
  */
 'use strict';
 
-const ConfigV2 = require('../../config/v2/config');
-
 class ReportGeneratorV2 {
   /**
    * Computes the weighted-average of the score of the list of items.
@@ -37,46 +35,32 @@ class ReportGeneratorV2 {
     return (results.sum / results.weight) || 0;
   }
 
-  _geometricMean(items) {
-    const results = items.reduce((result, item) => {
-      const score = Number(item.score) || 0;
-      const weight = Number(item.weight) || 0;
-      return {
-        weight: result.weight + weight,
-        product: result.product * Math.max(Math.pow(score, weight), 1),
-      };
-    }, {weight: 0, product: 1});
-
-    return Math.pow(results.product, 1 / results.weight) || 0;
-  }
-
+  /**
+   * Returns the report JSON object with computed scores.
+   * @param {{categories: !Object<{audits: !Array}>}} config
+   * @param {!Object<{score: number|boolean}>} resultsByAuditId
+   * @return {{categories: !Array<{audits: !Array<{score: number, result: !Object}>}>}}
+   */
   generateReportJson(config, resultsByAuditId) {
-    const categories = ConfigV2.objectToArray(config.report.categories).map(category => {
-      const children = category.children.map(item => {
-        const result = resultsByAuditId[item.id];
+    const categories = Object.keys(config.categories).map(categoryId => {
+      const category = config.categories[categoryId];
+      category.id = categoryId;
+
+      const audits = category.audits.map(audit => {
+        const result = resultsByAuditId[audit.id];
         let score = Number(result.score) || 0;
         if (typeof result.score === 'boolean') {
           score = result.score ? 100 : 0;
         }
 
-        return Object.assign({}, item, {result, score});
+        return Object.assign({}, audit, {result, score});
       });
 
       const score = ReportGeneratorV2.arithmeticMean(audits);
       return Object.assign({}, category, {audits, score});
     });
 
-    const scoreByCategory = categories.reduce((scores, category) => {
-      scores[category.id] = category.score;
-      return scores;
-    }, {});
-
-    const score = this._geometricMean([
-      {score: scoreByCategory.pwa, weight: 5},
-      {score: scoreByCategory.performance, weight: 5},
-      {score: scoreByCategory.accessibility, weight: 4},
-    ]);
-    return {score, categories};
+    return {categories};
   }
 }
 

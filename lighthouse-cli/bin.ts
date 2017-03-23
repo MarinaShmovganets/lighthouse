@@ -293,7 +293,8 @@ function saveResults(results: Results,
           return innerPromise.then((_: Results) => Printer.write(results, outputType, outputPath));
         }, Promise.resolve(results));
       } else {
-        const outputPath = flags.outputPath || `${resolvedPath}.report.${flags.output}`;
+        let outputPath = flags.outputPath || `${resolvedPath}.report.${flags.output}`;
+        outputPath = outputPath.replace(/\.htmlv2$/, '.html');
         return Printer.write(results, flags.output, outputPath).then(results => {
           if (flags.output === Printer.OutputMode[Printer.OutputMode.html]) {
             if (flags.view) {

@@ -152,10 +152,11 @@ class ReportGenerator {
    * Returns aggregations directly from results or maps Config v2 categories to equivalent Config
    * v1 aggregations.
    * @param {{aggregations: !Array<!Object>, reportCategories: !Array<!Object>}} results
+   * @param {boolean=} forceV2
    * @return {!Array<!Aggregation>}
    */
-  _getAggregations(results) {
-    if (results.aggregations.length) {
+  _getAggregations(results, forceV2 = false) {
+    if (results.aggregations.length && !forceV2) {
       return results.aggregations;
     }
 
@@ -171,7 +172,7 @@ class ReportGenerator {
         score: [{
           name, description,
           overall: category.score / 100,
-          subItems: category.children.map(child => child.result),
+          subItems: category.audits.map(child => child.result),
         }],
       };
     });
@@ -182,9 +183,10 @@ class ReportGenerator {
    * @param {!Object} results Lighthouse results.
    * @param {!string} reportContext What app is requesting the report (eg. devtools, extension)
    * @param {?Object} reportsCatalog Basic info about all the reports to include in left nav bar
+   * @param {boolean=} forceV2
    * @return {string} HTML of the report page.
    */
-  generateHTML(results, reportContext = 'extension', reportsCatalog) {
+  generateHTML(results, reportContext = 'extension', reportsCatalog, forceV2) {
     this._registerPartials(results.audits);
 
     results.aggregations.forEach(aggregation => {
@@ -205,7 +207,7 @@ class ReportGenerator {
       stylesheets: this.getReportCSS(),
       reportContext: reportContext,
       scripts: this.getReportJS(reportContext),
-      aggregations: this._getAggregations(results),
+      aggregations: this._getAggregations(results, forceV2),
       auditsByCategory: this._createPWAAuditsByCategory(results.aggregations),
       runtimeConfig: results.runtimeConfig,
       reportsCatalog

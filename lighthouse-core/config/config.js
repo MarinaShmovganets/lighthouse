@@ -285,6 +285,7 @@ class Config {
 
     this._audits = Config.requireAudits(configJSON.audits, this._configDir);
     this._artifacts = expandArtifacts(configJSON.artifacts);
+    this.categories = configJSON.categories;
 
     // validatePasses must follow after audits are required
     validatePasses(configJSON.passes, this._audits, this._configDir);

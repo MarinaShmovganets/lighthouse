@@ -137,7 +137,7 @@ class Runner {
 
         // compute config v2 categories if available
         let reportCategories = [];
-        if (config.report) {
+        if (config.categories) {
           const reportGenerator = new ReportGeneratorV2();
           reportCategories = reportGenerator.generateReportJson(config, resultsById).categories;
         }
