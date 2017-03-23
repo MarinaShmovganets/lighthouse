@@ -36,9 +36,9 @@ class ThemedOmnibox extends Audit {
 
   static assessMetaThemecolor(themeColorMeta, failures) {
     if (themeColorMeta === null) {
-      failures.push('No `<meta name="theme-color">` tag found.');
+      failures.push('No `<meta name="theme-color">` tag found');
     } else if (!validColor(themeColorMeta)) {
-      failures.push('The theme-color meta tag did not contain a valid CSS color.');
+      failures.push('The theme-color meta tag did not contain a valid CSS color');
     }
   }
 
