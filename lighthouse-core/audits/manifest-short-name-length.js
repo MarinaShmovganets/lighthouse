@@ -35,26 +35,32 @@ class ManifestShortNameLength extends Audit {
     };
   }
 
+
+  static assessManifest(manifestValues, failures) {
+    if (manifestValues.isParseFailure) {
+      failures.push(manifestValues.parseFailureReason);
+      return;
+    }
+
+    const themeColorCheck = manifestValues.allChecks.find(i => i.id === 'hasThemeColor');
+    if (!themeColorCheck.passing) {
+      failures.push(themeColorCheck.userText);
+    }
+  }
+
   /**
    * @param {!Artifacts} artifacts
    * @return {!AuditResult}
    */
   static audit(artifacts) {
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
-      // 1: validate manifest is in order
-      const validityIds = ['hasManifest', 'hasParseableManifest'];
-      const isValid = manifestValues
-        .filter(item => validityIds.includes(item.id))
-        .every(item => item.passing === true);
-
-      if (!isValid) {
-        // Page has no manifest or was invalid JSON.
+      if (manifestValues.isParseFailure) {
         return {
           rawValue: false
         };
       }
 
-      const hasShortName = manifestValues.find(i => i.id === 'hasShortName').passing;
+      const hasShortName = manifestValues.allChecks.find(i => i.id === 'hasShortName').passing;
       if (!hasShortName) {
         return {
           rawValue: false,
@@ -62,7 +68,7 @@ class ManifestShortNameLength extends Audit {
         };
       }
 
-      const isShortNameShortEnough = manifestValues.find(i => i.id === 'shortNameLength').passing;
+      const isShortNameShortEnough = manifestValues.allChecks.find(i => i.id === 'shortNameLength').passing;
       return {
         rawValue: isShortNameShortEnough
       };

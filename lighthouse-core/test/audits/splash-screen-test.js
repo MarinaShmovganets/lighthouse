@@ -6,7 +6,7 @@
 
 'use strict';
 
-const SplashScreenAudit = require('../../audits/splash-screen')
+const SplashScreenAudit = require('../../audits/splash-screen');
 const assert = require('assert');
 const manifestParser = require('../../lib/manifest-parser');
 
@@ -53,7 +53,7 @@ describe('PWA: splash screen audit', () => {
       artifacts.Manifest = manifestParser('{,:}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
       return SplashScreenAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
-        assert.ok(result.debugString.includes('parsed as JSON'));
+        assert.ok(result.debugString.includes('parsed as valid JSON'));
       });
     });
 

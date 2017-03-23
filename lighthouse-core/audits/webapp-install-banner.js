@@ -20,13 +20,12 @@ const Formatter = require('../report/formatter');
  *   * manifest has valid start url
  *   * manifest has a valid name
  *   * manifest has a valid shortname
- *   * manifest display property is either standalone or fullscreen
+ *   * manifest display property is standalone, minimal-ui, or fullscreen
  *   * manifest contains icon that's a png and size >= 192px
  *   * SW is registered, and it owns this page and the manifest's start url
  *   * Site engagement score of 2 or higher
 
  * This audit covers these requirements with the following exceptions:
- *   * it doesn't look at standalone/fullscreen
  *   * it doesn't consider SW controlling the starturl
  *   * it doesn't consider the site engagement score (naturally)
  */
@@ -46,8 +45,34 @@ class WebappInstallBanner extends Audit {
     };
   }
 
-  static hasServiceWorker(artifacts) {
-    return SWAudit.audit(artifacts).rawValue;
+  static assessManifest(manifestValues, failures) {
+    if (manifestValues.isParseFailure) {
+      failures.push(manifestValues.parseFailureReason);
+      return;
+    }
+
+    const bannerCheckIds = [
+      'hasName',
+      'hasShortName',
+      'hasStartUrl',
+      'hasPWADisplayValue',
+      'hasIconsAtLeast192px'
+    ];
+    manifestValues.allChecks
+      .filter(item => bannerCheckIds.includes(item.id))
+      .forEach(item => {
+        if (item.passing === false) {
+          failures.push(item.userText);
+        }
+      });
+  }
+
+
+  static assessServiceWorker(artifacts, failures) {
+    const hasServiceWorker = SWAudit.audit(artifacts).rawValue;
+    if (!hasServiceWorker) {
+      failures.push('Site registers a Service Worker');
+    }
   }
 
   static audit(artifacts) {
@@ -55,27 +80,9 @@ class WebappInstallBanner extends Audit {
 
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
       // 1: validate manifest is in order
-
-      const bannerCheckIds = [
-        'hasName',
-        'hasShortName',
-        'hasStartUrl',
-        'hasPWADisplayValue',
-        'hasIconsAtLeast192px'
-      ];
-      manifestValues
-        .filter(item => validityIds.includes(item.id) || bannerCheckIds.includes(item.id))
-        .forEach(item => {
-          if (item.passing === false) {
-            failures.push(item.userText);
-          }
-        });
-
+      WebappInstallBanner.assessManifest(manifestValues, failures);
       // 2: validate we have a SW
-      const hasServiceWorker = WebappInstallBanner.hasServiceWorker(artifacts);
-      if (!hasServiceWorker) {
-        failures.push('Site registers a Service Worker');
-      }
+      WebappInstallBanner.assessServiceWorker(artifacts, failures);
 
       const extendedInfo = {
         value: {failures, manifestValues},

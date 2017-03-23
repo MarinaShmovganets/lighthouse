@@ -29,9 +29,29 @@ class ThemedOmnibox extends Audit {
       category: 'PWA',
       name: 'themed-omnibox',
       description: 'Address bar matches brand colors',
-      helpText: `The browser address bar can be themed to match your site. A \`theme-color\` [meta tag](https://developers.google.com/web/updates/2014/11/Support-for-theme-color-in-Chrome-39-for-Android) will upgrade the address bar when a user browses the site, and the [manifest theme-color](https://developers.google.com/web/updates/2015/08/using-manifest-to-set-sitewide-theme-color) will apply the same theme site-wide once it's been added to homescreen.`,
+      helpText: 'The browser address bar can be themed to match your site. A `theme-color` [meta tag](https://developers.google.com/web/updates/2014/11/Support-for-theme-color-in-Chrome-39-for-Android) will upgrade the address bar when a user browses the site, and the [manifest theme-color](https://developers.google.com/web/updates/2015/08/using-manifest-to-set-sitewide-theme-color) will apply the same theme site-wide once it\'s been added to homescreen.',
       requiredArtifacts: ['Manifest', 'ThemeColor']
     };
+  }
+
+  static assessMetaThemecolor(themeColorMeta, failures) {
+    if (themeColorMeta === null) {
+      failures.push('No `<meta name="theme-color">` tag found.');
+    } else if (!validColor(themeColorMeta)) {
+      failures.push('The theme-color meta tag did not contain a valid CSS color.');
+    }
+  }
+
+  static assessManifest(manifestValues, failures) {
+    if (manifestValues.isParseFailure) {
+      failures.push(manifestValues.parseFailureReason);
+      return;
+    }
+
+    const themeColorCheck = manifestValues.allChecks.find(i => i.id === 'hasThemeColor');
+    if (!themeColorCheck.passing) {
+      failures.push(themeColorCheck.userText);
+    }
   }
 
   static audit(artifacts) {
@@ -39,30 +59,9 @@ class ThemedOmnibox extends Audit {
 
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
       // 1: validate manifest is in order
-      const validityIds = ['hasManifest', 'hasParseableManifest'];
-      const isValid = manifestValues
-        .filter(item => validityIds.includes(item.id))
-        .every(item => item.passing === true);
-
-      if (!isValid) {
-        // Page has no manifest or was invalid JSON.
-        return {
-          rawValue: false,
-          debugString: 'No valid manifest was found'
-        };
-      }
-
-      const themeColorCheck = manifestValues.find(i => i.id === 'hasThemeColor');
-      if (!themeColorCheck.passing) {
-        failures.push(themeColorCheck.userText);
-      }
-
-      const themeColorMeta = artifacts.ThemeColor;
-      if (themeColorMeta === null) {
-        failures.push('No `<meta name="theme-color">` tag found.');
-      } else if (!validColor(themeColorMeta)) {
-        failures.push('The theme-color meta tag did not contain a valid CSS color.');
-      }
+      ThemedOmnibox.assessManifest(manifestValues, failures);
+      // 2: validate we have a SW
+      ThemedOmnibox.assessMetaThemecolor(artifacts.ThemeColor, failures);
 
       // If we fail, share the failures
       if (failures.length > 0) {

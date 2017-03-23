@@ -6,7 +6,7 @@
 
 'use strict';
 
-const ThemedOmniboxAudit = require('../../audits/themed-omnibox')
+const ThemedOmniboxAudit = require('../../audits/themed-omnibox');
 const assert = require('assert');
 const manifestParser = require('../../lib/manifest-parser');
 
@@ -44,7 +44,7 @@ describe('PWA: themed omnibox audit', () => {
 
     return ThemedOmniboxAudit.audit(artifacts).then(result => {
       assert.strictEqual(result.rawValue, false);
-      assert.ok(result.debugString.includes('No valid manifest'), result.debugString);
+      assert.ok(result.debugString.includes('Manifest is available'), result.debugString);
     });
   });
 

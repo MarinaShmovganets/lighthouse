@@ -33,9 +33,31 @@ class SplashScreen extends Audit {
       name: 'splash-screen',
       description: 'Configured for a custom splash screen',
       // When your app launches from a user\'s homescreen, the browser ' 'uses `background_color` to paint the background of the browser ' +'while your app loads for a smooth transition experience. ' + '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/manifest-contains-background_color).',
-      helpText: `A default splash screen will be constructed, but meeting these requirements guarantee a high-quality and customizable [splash screen](https://developers.google.com/web/updates/2015/10/splashscreen) the user sees between tapping the home screen icon and your app's first paint.`,
+      helpText: 'A default splash screen will be constructed, but meeting these requirements guarantee a high-quality and customizable [splash screen](https://developers.google.com/web/updates/2015/10/splashscreen) the user sees between tapping the home screen icon and your app\'s first paint.',
       requiredArtifacts: ['Manifest']
     };
+  }
+
+  static assessManifest(manifestValues, failures) {
+    if (manifestValues.isParseFailure) {
+      failures.push(manifestValues.parseFailureReason);
+      return;
+    }
+
+    const splashScreenCheckIds = [
+      'hasName',
+      'hasBackgroundColor',
+      'hasThemeColor',
+      'hasIconsAtLeast512px'
+    ];
+
+    manifestValues.allChecks
+      .filter(item => splashScreenCheckIds.includes(item.id))
+      .forEach(item => {
+        if (item.passing === false) {
+          failures.push(item.userText);
+        }
+      });
   }
 
 
@@ -44,21 +66,7 @@ class SplashScreen extends Audit {
 
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
       // 1: validate manifest is in order
-      const validityIds = ['hasManifest', 'hasParseableManifest'];
-      const bannerCheckIds = [
-        'hasName',
-        'hasBackgroundColor',
-        'hasThemeColor',
-        'hasIconsAtLeast512px'
-      ];
-
-      manifestValues
-        .filter(item => validityIds.includes(item.id) || bannerCheckIds.includes(item.id))
-        .forEach(item => {
-          if (item.passing === false) {
-            failures.push(item.userText);
-          }
-        });
+      SplashScreen.assessManifest(manifestValues, failures);
 
       const extendedInfo = {
         value: {manifestValues, failures},

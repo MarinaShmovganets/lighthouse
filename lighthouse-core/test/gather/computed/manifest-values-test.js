@@ -30,37 +30,37 @@ function noUrlManifestParser(manifestSrc) {
 
 /* eslint-env mocha */
 describe('ManifestValues computed artifact', () => {
-  it('fails with 1 failure if page had no manifest', () => {
+  it('reports a parse failure if page had no manifest', () => {
     const manifestArtifact = null;
     const results = manifestValues.compute_(manifestArtifact);
-    assert.equal(results.length, 1);
-    const failures = results.filter(i => i.passing === false);
-    assert.equal(failures.length, 1);
-    assert.ok(failures[0].userText.includes('available'));
+    assert.equal(results.isParseFailure, true);
+    assert.ok(results.parseFailureReason.includes('available'));
+    assert.equal(results.allChecks.length, 0);
   });
 
-  it('fails with 1 failure if page had an unparseable manifest', () => {
+  it('reports a parse failure if page had an unparseable manifest', () => {
     const manifestArtifact = noUrlManifestParser('{:,}');
     const results = manifestValues.compute_(manifestArtifact);
-    assert.equal(results.length, 1);
-    const failures = results.filter(i => i.passing === false);
-    assert.equal(failures.length, 1);
-    assert.ok(failures[0].userText.includes('parsed as JSON'));
+    assert.equal(results.isParseFailure, true);
+    assert.ok(results.parseFailureReason.includes('parsed as valid JSON'));
+    assert.equal(results.allChecks.length, 0);
   });
 
-  it('passes the validity checks on an empty manifest', () => {
+  it('passes the parsing checks on an empty manifest', () => {
     const manifestArtifact = noUrlManifestParser('{}');
     const results = manifestValues.compute_(manifestArtifact);
-    const validityChecks = results.filter(i => ManifestValues.validityIds.includes(i.id));
-    assert.equal(validityChecks.length, 2);
-    assert.equal(validityChecks.every(i => i.passing), true, 'not all validity checks passed');
+    assert.equal(results.isParseFailure, false);
+    assert.equal(results.parseFailureReason, undefined);
   });
 
   it('passes the all checks with fixture manifest', () => {
     const manifestArtifact = noUrlManifestParser(manifestSrc);
     const results = manifestValues.compute_(manifestArtifact);
-    assert.equal(results.length, 11);
-    assert.equal(results.every(i => i.passing), true, 'not all checks passed');
+    assert.equal(results.isParseFailure, false);
+    assert.equal(results.parseFailureReason, undefined);
+
+    assert.equal(results.allChecks.length, ManifestValues.manifestChecks.length);
+    assert.equal(results.allChecks.every(i => i.passing), true, 'not all checks passed');
   });
 
   describe('color checks', () => {
@@ -69,7 +69,7 @@ describe('ManifestValues computed artifact', () => {
         start_url: '/'
       }));
       const results = manifestValues.compute_(Manifest);
-      const colorResults = results.filter(i => i.id.includes('Color'));
+      const colorResults = results.allChecks.filter(i => i.id.includes('Color'));
       assert.equal(colorResults.every(i => i.passing === false), true);
     });
 
@@ -80,7 +80,7 @@ describe('ManifestValues computed artifact', () => {
       }));
 
       const results = manifestValues.compute_(Manifest);
-      const colorResults = results.filter(i => i.id.includes('Color'));
+      const colorResults = results.allChecks.filter(i => i.id.includes('Color'));
       assert.equal(colorResults.every(i => i.passing === false), true);
     });
 
@@ -91,13 +91,13 @@ describe('ManifestValues computed artifact', () => {
       }));
 
       const results = manifestValues.compute_(Manifest);
-      const colorResults = results.filter(i => i.id.includes('Color'));
+      const colorResults = results.allChecks.filter(i => i.id.includes('Color'));
       assert.equal(colorResults.every(i => i.passing === true), true);
     });
   });
 
   describe('hasPWADisplayValue', () => {
-    const check = ManifestValues.manifestChecklist.find(i => i.id === 'hasPWADisplayValue');
+    const check = ManifestValues.manifestChecks.find(i => i.id === 'hasPWADisplayValue');
 
     it('passes accepted values', () => {
       let Manifest;
@@ -125,7 +125,7 @@ describe('ManifestValues computed artifact', () => {
         });
         const Manifest = noUrlManifestParser(manifestSrc);
         const results = manifestValues.compute_(Manifest);
-        const iconResults = results.filter(i => i.id.includes('Icons'));
+        const iconResults = results.allChecks.filter(i => i.id.includes('Icons'));
         assert.equal(iconResults.every(i => i.passing === false), true);
       });
 
@@ -135,7 +135,7 @@ describe('ManifestValues computed artifact', () => {
         });
         const Manifest = noUrlManifestParser(manifestSrc);
         const results = manifestValues.compute_(Manifest);
-        const iconResults = results.filter(i => i.id.includes('Icons'));
+        const iconResults = results.allChecks.filter(i => i.id.includes('Icons'));
         assert.equal(iconResults.every(i => i.passing === false), true);
       });
     });
@@ -149,7 +149,7 @@ describe('ManifestValues computed artifact', () => {
         });
         const Manifest = noUrlManifestParser(manifestSrc);
         const results = manifestValues.compute_(Manifest);
-        const iconResults = results.filter(i => i.id.includes('Icons'));
+        const iconResults = results.allChecks.filter(i => i.id.includes('Icons'));
 
         assert.equal(iconResults.every(i => i.passing === false), true);
       });
@@ -163,7 +163,7 @@ describe('ManifestValues computed artifact', () => {
         });
         const Manifest = noUrlManifestParser(manifestSrc);
         const results = manifestValues.compute_(Manifest);
-        const iconResults = results.filter(i => i.id.includes('Icons'));
+        const iconResults = results.allChecks.filter(i => i.id.includes('Icons'));
 
         assert.equal(iconResults.every(i => i.passing === true), true);
       });
@@ -179,7 +179,7 @@ describe('ManifestValues computed artifact', () => {
         });
         const Manifest = noUrlManifestParser(manifestSrc);
         const results = manifestValues.compute_(Manifest);
-        const iconResults = results.filter(i => i.id.includes('Icons'));
+        const iconResults = results.allChecks.filter(i => i.id.includes('Icons'));
 
         assert.equal(iconResults.every(i => i.passing === true), true);
       });
@@ -194,11 +194,10 @@ describe('ManifestValues computed artifact', () => {
         });
         const Manifest = noUrlManifestParser(manifestSrc);
         const results = manifestValues.compute_(Manifest);
-        const iconResults = results.filter(i => i.id.includes('Icons'));
+        const iconResults = results.allChecks.filter(i => i.id.includes('Icons'));
 
         assert.equal(iconResults.every(i => i.passing === false), true);
       });
     });
   });
-
 });

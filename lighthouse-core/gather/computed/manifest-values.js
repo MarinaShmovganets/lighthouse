@@ -25,7 +25,7 @@ class ManifestValues extends ComputedArtifact {
     return ['hasManifest', 'hasParseableManifest'];
   }
 
-  static get manifestExistsChecklist() {
+  static get manifestParsingChecks() {
     return [
       {
         id: 'hasManifest',
@@ -34,14 +34,14 @@ class ManifestValues extends ComputedArtifact {
       },
       {
         id: 'hasParseableManifest',
-        userText: 'Manifest is parsed as JSON',
+        userText: 'Manifest is parsed as valid JSON',
         toPass: manifest => manifest !== null &&
           typeof manifest !== 'undefined' && !!manifest.value
       }
     ];
   }
 
-  static get manifestChecklist() {
+  static get manifestChecks() {
     return [
       {
         id: 'hasStartUrl',
@@ -97,34 +97,32 @@ class ManifestValues extends ComputedArtifact {
   /**
    * Returns results of all manifest checks
    * @param {Manifest} manifest
-   * @return {<{isValid: !boolean, validityFailure: ?string, allChecks: !Array}>}
+   * @return {<{isParseFailure: !boolean, parseFailureReason: ?string, allChecks: !Array}>}
    */
   compute_(manifest) {
-    // if the manifest isn't there or is invalid, we'll report that first
-    const validityChecks = ManifestValues.manifestExistsChecklist.map(item => {
+    // if the manifest isn't there or is invalid json, we report that and bail
+    const parsingChecks = ManifestValues.manifestParsingChecks.map(item => {
       item.passing = item.toPass(manifest);
       return item;
     });
-    const failingValidity = validityChecks.find(item => item.passing === false);
-
-    // if we have a failure, report that only
-    if (failingValidity) {
+    const failingParsingCheck = parsingChecks.find(item => item.passing === false);
+    if (failingParsingCheck) {
       return {
-        isValid: false,
-        validityFailure: failingValidity.userText,
+        isParseFailure: true,
+        parseFailureReason: failingParsingCheck.userText,
         allChecks: []
       };
     }
 
     // manifest is valid, so do the rest of the checks
-    const remainingChecks = ManifestValues.manifestChecklist.map(item => {
+    const remainingChecks = ManifestValues.manifestChecks.map(item => {
       item.passing = item.toPass(manifest);
       return item;
     });
 
     return {
-      isValid: true,
-      validityFailure: undefined,
+      isParseFailure: false,
+      parseFailureReason: undefined,
       allChecks: remainingChecks
     };
   }
