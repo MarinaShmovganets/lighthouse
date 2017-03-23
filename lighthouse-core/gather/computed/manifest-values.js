@@ -25,22 +25,6 @@ class ManifestValues extends ComputedArtifact {
     return ['hasManifest', 'hasParseableManifest'];
   }
 
-  static get manifestParsingChecks() {
-    return [
-      {
-        id: 'hasManifest',
-        userText: 'Manifest is available',
-        toPass: manifest => manifest !== null
-      },
-      {
-        id: 'hasParseableManifest',
-        userText: 'Manifest is parsed as valid JSON',
-        toPass: manifest => manifest !== null &&
-          typeof manifest !== 'undefined' && !!manifest.value
-      }
-    ];
-  }
-
   static get manifestChecks() {
     return [
       {
@@ -101,15 +85,18 @@ class ManifestValues extends ComputedArtifact {
    */
   compute_(manifest) {
     // if the manifest isn't there or is invalid json, we report that and bail
-    const parsingChecks = ManifestValues.manifestParsingChecks.map(item => {
-      item.passing = item.toPass(manifest);
-      return item;
-    });
-    const failingParsingCheck = parsingChecks.find(item => item.passing === false);
-    if (failingParsingCheck) {
+    let parseFailureReason;
+
+    if (manifest === null) {
+      parseFailureReason = 'Manifest is available';
+    }
+    if (manifest && manifest.value === undefined) {
+      parseFailureReason = 'Manifest is parsed as valid JSON';
+    }
+    if (parseFailureReason) {
       return {
         isParseFailure: true,
-        parseFailureReason: failingParsingCheck.userText,
+        parseFailureReason,
         allChecks: []
       };
     }
@@ -122,7 +109,7 @@ class ManifestValues extends ComputedArtifact {
 
     return {
       isParseFailure: false,
-      parseFailureReason: undefined,
+      parseFailureReason,
       allChecks: remainingChecks
     };
   }
