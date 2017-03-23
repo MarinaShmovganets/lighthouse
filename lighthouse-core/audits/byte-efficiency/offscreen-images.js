@@ -16,6 +16,7 @@
  */
  /**
   * @fileoverview Checks to see if images are displayed only outside of the viewport.
+  *     Images requested after TTI are not flagged as violations.
   */
 'use strict';
 
@@ -38,8 +39,8 @@ class OffscreenImages extends Audit {
       category: 'Images',
       name: 'offscreen-images',
       description: 'Offscreen images',
-      helpText: 'Images that are not above the fold should be lazily loaded. ' +
-        'Consider using the [IntersectionObserver](https://developers.google.com/web/updates/2016/04/intersectionobserver) API.',
+      helpText: 'Images that are not above the fold should be lazily loaded after the page is ' +
+        'interactive. Consider using the [IntersectionObserver](https://developers.google.com/web/updates/2016/04/intersectionobserver) API.',
       requiredArtifacts: ['ImageUsage', 'ViewportDimensions', 'traces', 'networkRecords']
     };
   }
@@ -122,11 +123,11 @@ class OffscreenImages extends Audit {
     }, new Map());
 
     return TTIAudit.audit(artifacts).then(ttiResult => {
-      const tti = ttiResult.extendedInfo.value.timestamps.timeToInteractive / 1000000;
+      const ttiTimestamp = ttiResult.extendedInfo.value.timestamps.timeToInteractive / 1000000;
       const results = Array.from(resultsMap.values()).filter(item => {
         const isWasteful = item.wastedBytes > IGNORE_THRESHOLD_IN_BYTES &&
             item.wastedPercent > IGNORE_THRESHOLD_IN_PERCENT;
-        const loadedEarly = item.requestStartTime < tti;
+        const loadedEarly = item.requestStartTime < ttiTimestamp;
         return isWasteful && loadedEarly;
       });
       return {

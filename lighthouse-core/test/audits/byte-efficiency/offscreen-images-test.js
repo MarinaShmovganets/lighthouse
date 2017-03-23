@@ -24,7 +24,7 @@ const assert = require('assert');
 function generateRecord(resourceSizeInKb, startTime = 0, mimeType = 'image/png') {
   return {
     mimeType,
-    startTime,
+    startTime, // DevTools timestamp which is in seconds
     resourceSize: resourceSizeInKb * 1024,
   };
 }
@@ -56,7 +56,8 @@ function generateImage(size, coords, networkRecord, src = 'https://google.com/lo
 describe('OffscreenImages audit', () => {
   const _ttiAuditOriginal = TTIAudit.audit;
   before(() => {
-    const timeToInteractive = 2000000;
+    const desiredTTIInSeconds = 2;
+    const timeToInteractive = desiredTTIInSeconds * 1000000; // trace timestamps are in microseconds
     const extendedInfo = {value: {timestamps: {timeToInteractive}}};
     TTIAudit.audit = () => Promise.resolve({extendedInfo});
   });
@@ -129,7 +130,7 @@ describe('OffscreenImages audit', () => {
     });
   });
 
-  it('disregards lazily loaded images', () => {
+  it('disregards images loaded after TTI', () => {
     return UnusedImages.audit_({
       ViewportDimensions: DEFAULT_DIMENSIONS,
       ImageUsage: [
