@@ -244,6 +244,9 @@ class GatherRunner {
       log.verbose('statusEnd', status);
     });
 
+    // Disable throttling so the afterPass analysis isn't throttled
+    pass = pass.then(_ => driver.setThrottling(options.flags, {useThrottling: false}));
+
     pass = gatherers.reduce((chain, gatherer) => {
       const status = `Retrieving: ${gatherer.name}`;
       return chain.then(_ => {
