@@ -27,11 +27,11 @@ span, div, p, section, header, h1, h2, li, ul {
 :root {
   --text-font-family: "Roboto", -apple-system, BlinkMacSystemFont,  "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   --text-color: #222;
-  --secondary-text-color: #606060;
+  --secondary-text-color: #565656;
   --accent-color: #3879d9;
-  --poor-color: #e53935; /* md red 600 */
-  --good-color: #43a047; /* md green 600 */
-  --average-color: #ef6c00; /* md orange 800 */
+  --poor-color: #df332f;
+  --good-color: #2b882f;
+  --average-color: #c15700;
   --warning-color: #757575; /* md grey 600 */
   --gutter-gap: 12px;
   --gutter-width: 40px;
@@ -90,7 +90,7 @@ html, body {
 }
 
 a {
-  color: #15c;
+  color: #0c50c7;
 }
 
 body {
@@ -338,7 +338,7 @@ summary {
 .menu__link {
   padding: 0 20px;
   text-decoration: none;
-  color: #767676;
+  color: #595959;
   display: flex;
 }
 
@@ -629,7 +629,7 @@ summary {
   margin-left: var(--report-menu-width);
   font-size: 12px;
   border-top: 1px solid var(--report-border-color);
-  color: #767676;
+  color: #565656;
   background-color: var(--report-header-bg-color);
   border-top: 1px solid var(--report-border-color);
 }
