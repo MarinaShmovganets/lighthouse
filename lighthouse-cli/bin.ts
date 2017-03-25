@@ -296,7 +296,8 @@ function saveResults(results: Results,
         let outputPath = flags.outputPath || `${resolvedPath}.report.${flags.output}`;
         outputPath = outputPath.replace(/\.domhtml$/, '.html');
         return Printer.write(results, flags.output, outputPath).then(results => {
-          if (flags.output === Printer.OutputMode[Printer.OutputMode.html]) {
+          if (flags.output === Printer.OutputMode[Printer.OutputMode.html] ||
+              flags.output === Printer.OutputMode[Printer.OutputMode.domhtml]) {
             if (flags.view) {
               opn(`${resolvedPath}.report.html`, {wait: false});
             } else {
