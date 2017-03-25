@@ -16,6 +16,13 @@
  */
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+
+const REPORT_TEMPLATE = fs.readFileSync(path.join(__dirname, './report-template.html'), 'utf8');
+// TODO: Setup a gulp pipeline to concat and minify the renderer files?
+const REPORT_JAVASCRIPT = fs.readFileSync(path.join(__dirname, './report-renderer.js'), 'utf8');
+
 class ReportGeneratorV2 {
   /**
    * Computes the weighted-average of the score of the list of items.
@@ -61,6 +68,15 @@ class ReportGeneratorV2 {
     });
 
     return {categories};
+  }
+
+  /**
+   * @param {!Object} reportAsJson
+   */
+  generateReportHtml(reportAsJson) {
+    return REPORT_TEMPLATE
+      .replace(/%%LIGHTHOUSE_JSON%%/, JSON.stringify(reportAsJson))
+      .replace(/%%LIGHTHOUSE_JAVASCRIPT%%/, REPORT_JAVASCRIPT);
   }
 }
 

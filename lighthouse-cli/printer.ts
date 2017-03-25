@@ -29,6 +29,7 @@ import {Results} from './types/types';
 
 const fs = require('fs');
 const ReportGenerator = require('../lighthouse-core/report/report-generator');
+const ReportGeneratorV2 = require('../lighthouse-core/report/v2/report-generator');
 const log = require('../lighthouse-core/lib/log');
 
 
@@ -56,7 +57,7 @@ function createOutput(results: Results, outputMode: OutputMode): string {
   }
 
   if (outputMode === OutputMode.htmlv2) {
-    return reportGenerator.generateHTML(results, 'cli', undefined, true);
+    return new ReportGeneratorV2().generateReportHtml(results);
   }
 
   // JSON report.
