@@ -53,6 +53,18 @@ describe('ReportGeneratorV2', () => {
   });
 
   describe('#generateReportJson', () => {
+    it('should return a score', () => {
+      const result = new ReportGeneratorV2().generateReportJson({
+        categories: {
+          'categoryA': {weight: 1, audits: [{id: 'auditA', weight: 1}]},
+          'categoryB': {weight: 4, audits: [{id: 'auditB', weight: 1}]},
+          'categoryC': {audits: []},
+        }
+      }, {auditA: {score: 50}, auditB: {score: 100}});
+
+      assert.equal(result.score, 90);
+    });
+
     it('should return categories', () => {
       const result = new ReportGeneratorV2().generateReportJson({
         categories: {

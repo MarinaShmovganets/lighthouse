@@ -67,7 +67,8 @@ class ReportGeneratorV2 {
       return Object.assign({}, category, {audits, score});
     });
 
-    return {categories};
+    const score = ReportGeneratorV2.arithmeticMean(categories);
+    return {score, categories};
   }
 
   /**

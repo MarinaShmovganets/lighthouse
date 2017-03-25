@@ -149,44 +149,13 @@ class ReportGenerator {
   }
 
   /**
-   * Returns aggregations directly from results or maps Config v2 categories to equivalent Config
-   * v1 aggregations.
-   * @param {{aggregations: !Array<!Object>, reportCategories: !Array<!Object>}} results
-   * @param {boolean=} forceV2
-   * @return {!Array<!Aggregation>}
-   */
-  _getAggregations(results, forceV2 = false) {
-    if (results.aggregations.length && !forceV2) {
-      return results.aggregations;
-    }
-
-    return results.reportCategories.map(category => {
-      const name = category.name;
-      const description = category.description;
-
-      return {
-        name, description,
-        categorizable: false,
-        scored: category.id === 'pwa',
-        total: category.score / 100,
-        score: [{
-          name, description,
-          overall: category.score / 100,
-          subItems: category.audits.map(child => child.result),
-        }],
-      };
-    });
-  }
-
-  /**
    * Generates the Lighthouse report HTML.
    * @param {!Object} results Lighthouse results.
    * @param {!string} reportContext What app is requesting the report (eg. devtools, extension)
    * @param {?Object} reportsCatalog Basic info about all the reports to include in left nav bar
-   * @param {boolean=} forceV2
    * @return {string} HTML of the report page.
    */
-  generateHTML(results, reportContext = 'extension', reportsCatalog, forceV2) {
+  generateHTML(results, reportContext = 'extension', reportsCatalog) {
     this._registerPartials(results.audits);
 
     results.aggregations.forEach(aggregation => {
@@ -207,7 +176,7 @@ class ReportGenerator {
       stylesheets: this.getReportCSS(),
       reportContext: reportContext,
       scripts: this.getReportJS(reportContext),
-      aggregations: this._getAggregations(results, forceV2),
+      aggregations: results.aggregations,
       auditsByCategory: this._createPWAAuditsByCategory(results.aggregations),
       runtimeConfig: results.runtimeConfig,
       reportsCatalog

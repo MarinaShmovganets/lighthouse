@@ -135,11 +135,13 @@ class Runner {
             a => Aggregate.aggregate(a, runResults.auditResults));
         }
 
-        // compute config v2 categories if available
         let reportCategories = [];
+        let score = 0;
         if (config.categories) {
           const reportGenerator = new ReportGeneratorV2();
-          reportCategories = reportGenerator.generateReportJson(config, resultsById).categories;
+          const report = reportGenerator.generateReportJson(config, resultsById);
+          reportCategories = report.categories;
+          score = report.score;
         }
 
         return {
@@ -150,6 +152,7 @@ class Runner {
           audits: resultsById,
           artifacts: runResults.artifacts,
           runtimeConfig: Runner.getRuntimeConfig(opts.flags),
+          score,
           reportCategories,
           aggregations
         };

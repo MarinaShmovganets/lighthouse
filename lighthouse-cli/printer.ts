@@ -22,8 +22,8 @@
  *   'json': JSON formatted results
  *   'html': An HTML report
  */
-enum OutputMode { json, html, htmlv2 };
-type Mode = 'json' | 'html' | 'htmlv2';
+enum OutputMode { json, html, domhtml };
+type Mode = 'json' | 'html' | 'domhtml';
 
 import {Results} from './types/types';
 
@@ -56,7 +56,7 @@ function createOutput(results: Results, outputMode: OutputMode): string {
     return reportGenerator.generateHTML(results, 'cli');
   }
 
-  if (outputMode === OutputMode.htmlv2) {
+  if (outputMode === OutputMode.domhtml) {
     return new ReportGeneratorV2().generateReportHtml(results);
   }
 
@@ -123,7 +123,7 @@ function write(results: Results, mode: Mode, path: string): Promise<Results> {
 function GetValidOutputOptions():Array<Mode> {
   return [OutputMode[OutputMode.json] as Mode,
           OutputMode[OutputMode.html] as Mode,
-          OutputMode[OutputMode.htmlv2] as Mode];
+          OutputMode[OutputMode.domhtml] as Mode];
 }
 
 export {

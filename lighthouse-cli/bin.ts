@@ -294,7 +294,7 @@ function saveResults(results: Results,
         }, Promise.resolve(results));
       } else {
         let outputPath = flags.outputPath || `${resolvedPath}.report.${flags.output}`;
-        outputPath = outputPath.replace(/\.htmlv2$/, '.html');
+        outputPath = outputPath.replace(/\.domhtml$/, '.html');
         return Printer.write(results, flags.output, outputPath).then(results => {
           if (flags.output === Printer.OutputMode[Printer.OutputMode.html]) {
             if (flags.view) {
