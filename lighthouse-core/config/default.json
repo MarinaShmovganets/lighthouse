@@ -119,7 +119,6 @@
     "accessibility/video-caption",
     "accessibility/video-description",
     "byte-efficiency/total-byte-weight",
-    "byte-efficiency/unused-css-rules",
     "byte-efficiency/offscreen-images",
     "byte-efficiency/uses-optimized-images",
     "byte-efficiency/uses-responsive-images",
@@ -593,10 +592,6 @@
           "weight": 1
         },
         "offscreen-images": {
-          "expectedValue": true,
-          "weight": 1
-        },
-         "unused-css-rules": {
           "expectedValue": true,
           "weight": 1
         },
