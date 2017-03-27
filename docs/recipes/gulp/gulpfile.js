@@ -3,7 +3,7 @@
 const gulp = require('gulp');
 const connect = require('gulp-connect');
 const lighthouse = require('lighthouse');
-const ChromeLauncher = require('lighthouse/lighthouse-cli/chrome-launcher');
+const ChromeLauncher = require('lighthouse/lighthouse-cli/chrome-launcher').ChromeLauncher;
 const perfConfig = require('lighthouse/lighthouse-core/config/perf.json');
 const PORT = 8080;
 let launcher;
@@ -13,9 +13,9 @@ let launcher;
  */
 const connectServer = function() {
   return connect.server({
-    root: '../public',
+    root: './public',
     livereload: true,
-    PORT
+    port: PORT
   });
 };
 
@@ -31,7 +31,7 @@ const disconnectServer = function() {
  * Launch chrome
  */
 const launchChrome = function() {
-  launcher = new (ChromeLauncher.ChromeLauncher || ChromeLauncher)();
+  launcher = new ChromeLauncher();
   return launcher.isDebuggerReady()
     .catch(() => {
       return launcher.run();
@@ -43,8 +43,8 @@ const launchChrome = function() {
  */
 const runLighthouse = function() {
   const url = `http://localhost:${PORT}/index.html`;
-  const ligthouseOptions = {}; // available options - https://github.com/GoogleChrome/lighthouse/#cli-options
-  lighthouse(url, ligthouseOptions, perfConfig)
+  const lighthouseOptions = {}; // available options - https://github.com/GoogleChrome/lighthouse/#cli-options
+  return lighthouse(url, lighthouseOptions, perfConfig)
     .then(handleOk)
     .catch(handleError);
 };
@@ -53,9 +53,11 @@ const runLighthouse = function() {
  * Handle ok result
  * @param {Object} results - Lighthouse results
  */
-const handleOk = function() {
+const handleOk = function(results) {
   disconnectServer();
   // TODO: use lighthouse results for checking your performance expectations
+  /* eslint-disable no-console */
+  console.log(results);
   process.exit(0);
 };
 
@@ -68,9 +70,9 @@ const handleError = function() {
 };
 
 gulp.task('lighthouse', function() {
-  Promise.resolve(launchChrome()).then(_ => {
+  launchChrome().then(_ => {
     connectServer();
-    runLighthouse();
+    return runLighthouse();
   });
 });
 

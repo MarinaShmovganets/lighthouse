@@ -11,11 +11,10 @@
     "node": ">=6"
   },
   "scripts": {
-    "install-all": "npm run install-cli && npm run install-extension && npm run install-viewer && npm run install-recipes",
+    "install-all": "npm run install-cli && npm run install-extension && npm run install-viewer",
     "install-cli": "cd ./lighthouse-cli && npm install",
     "install-extension": "cd ./lighthouse-extension && npm install",
     "install-viewer": "cd ./lighthouse-viewer && npm install",
-    "install-recipes": "cd ./docs/recipes && npm install",
     "build-all": "gulp && npm run build-cli && npm run build-extension && npm run build-viewer",
     "build-cli": "cd ./lighthouse-cli && npm run build",
     "build-extension": "cd ./lighthouse-extension && npm run build",
@@ -47,7 +46,6 @@
     "google-closure-compiler": "^20161201.0.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
-    "gulp-connect": "^5.0.0",
     "gulp-declare": "^0.3.0",
     "gulp-define-module": "^0.1.5",
     "gulp-handlebars": "^4.0.0",
