@@ -696,15 +696,16 @@ class Driver {
   }
 
   setThrottling(flags, passConfig) {
-    const useCpuThrottling = passConfig.useThrottling && !flags.disableCpuThrottling;
-    const useNetworkThrottling = passConfig.useThrottling && !flags.disableNetworkThrottling;
-    const cpuThrottleFunc = `${useCpuThrottling ? 'enable' : 'disable'}CPUThrottling`;
-    const networkThrottleFunc = `${useNetworkThrottling ? 'enable' : 'disable'}NetworkThrottling`;
+    const throttleCpu = passConfig.useThrottling && !flags.disableCpuThrottling;
+    const throttleNetwork = passConfig.useThrottling && !flags.disableNetworkThrottling;
+    const cpuPromise = throttleCpu ?
+        emulation.enableCPUThrottling(this) :
+        emulation.disableCPUThrottling(this);
+    const networkPromise = throttleNetwork ?
+        emulation.enableNetworkThrottling(this) :
+        emulation.disableNetworkThrottling(this);
 
-    return Promise.all([
-      emulation[cpuThrottleFunc](this),
-      emulation[networkThrottleFunc](this),
-    ]);
+    return Promise.all([cpuPromise, networkPromise]);
   }
 
   /**

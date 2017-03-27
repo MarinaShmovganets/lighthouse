@@ -47,7 +47,7 @@ const URL = require('../lib/url-shim');
  *       c. navigate to options.url (and wait for onload)
  *     ii. all gatherer's pass()
  *   C. GatherRunner.afterPass()
- *     i. endTrace (if requested) & endNetworkCollect
+ *     i. endTrace (if requested) & endNetworkCollect & endThrottling
  *     ii. all gatherer's afterPass()
  *
  * 3. Teardown
