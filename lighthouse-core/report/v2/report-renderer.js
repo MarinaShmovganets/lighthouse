@@ -34,6 +34,3 @@ class ReportRenderer {
     element.appendChild(pre);
   }
 }
-
-const renderer = new ReportRenderer(window.__LIGHTHOUSE_JSON__);
-renderer.render(document.body);

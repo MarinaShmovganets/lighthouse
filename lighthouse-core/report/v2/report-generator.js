@@ -26,7 +26,7 @@ const REPORT_JAVASCRIPT = fs.readFileSync(path.join(__dirname, './report-rendere
 class ReportGeneratorV2 {
   /**
    * Computes the weighted-average of the score of the list of items.
-   * @param {!Array<{score: number=, weight: number=}} items
+   * @param {!Array<{score: number|undefined, weight: number|undefined}} items
    * @return {number}
    */
   static arithmeticMean(items) {
@@ -45,7 +45,7 @@ class ReportGeneratorV2 {
   /**
    * Returns the report JSON object with computed scores.
    * @param {{categories: !Object<{audits: !Array}>}} config
-   * @param {!Object<{score: number|boolean}>} resultsByAuditId
+   * @param {!Object<{score: ?number|boolean|undefined}>} resultsByAuditId
    * @return {{categories: !Array<{audits: !Array<{score: number, result: !Object}>}>}}
    */
   generateReportJson(config, resultsByAuditId) {
@@ -55,6 +55,7 @@ class ReportGeneratorV2 {
 
       const audits = category.audits.map(audit => {
         const result = resultsByAuditId[audit.id];
+        // Cast to number to catch `null` and undefined when audits error/do not run
         let score = Number(result.score) || 0;
         if (typeof result.score === 'boolean') {
           score = result.score ? 100 : 0;
@@ -72,12 +73,14 @@ class ReportGeneratorV2 {
   }
 
   /**
+   * Returns the report HTML as a string with the report JSON and renderer JS inlined.
    * @param {!Object} reportAsJson
+   * @return {string}
    */
   generateReportHtml(reportAsJson) {
     return REPORT_TEMPLATE
-      .replace(/%%LIGHTHOUSE_JSON%%/, JSON.stringify(reportAsJson))
-      .replace(/%%LIGHTHOUSE_JAVASCRIPT%%/, REPORT_JAVASCRIPT);
+      .replace(/%%LIGHTHOUSE_JSON%%/, JSON.stringify(reportAsJson).replace(/</g, '\\u003c'))
+      .replace(/%%LIGHTHOUSE_JAVASCRIPT%%/, REPORT_JAVASCRIPT.replace(/<\//g, '\\u003c/'));
   }
 }
 
