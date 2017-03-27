@@ -8,6 +8,9 @@ const perfConfig = require('lighthouse/lighthouse-core/config/perf.json');
 const PORT = 8080;
 let launcher;
 
+/**
+ * Connect to server
+ */
 const connectServer = function() {
   return connect.server({
     root: '../public',
@@ -16,11 +19,17 @@ const connectServer = function() {
   });
 };
 
+/**
+ * Disconnect server
+ */
 const disconnectServer = function() {
   connect.serverClose();
   launcher.kill();
 };
 
+/**
+ * Launch chrome
+ */
 const launchChrome = function() {
   launcher = new (ChromeLauncher.ChromeLauncher || ChromeLauncher)();
   return launcher.isDebuggerReady()
@@ -29,6 +38,9 @@ const launchChrome = function() {
     });
 };
 
+/**
+ * Run lighthouse
+ */
 const runLighthouse = function() {
   const url = `http://localhost:${PORT}/index.html`;
   const ligthouseOptions = {}; // available options - https://github.com/GoogleChrome/lighthouse/#cli-options
@@ -37,12 +49,19 @@ const runLighthouse = function() {
     .catch(handleError);
 };
 
-const handleOk = function(results) {
+/**
+ * Handle ok result
+ * @param {Object} results - Lighthouse results
+ */
+const handleOk = function() {
   disconnectServer();
   // TODO: use lighthouse results for checking your performance expectations
   process.exit(0);
 };
 
+/**
+ * Handle error
+ */
 const handleError = function() {
   disconnectServer();
   process.exit(1);
