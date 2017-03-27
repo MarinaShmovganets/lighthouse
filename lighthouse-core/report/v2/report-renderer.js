@@ -30,7 +30,7 @@ window.ReportRenderer = class ReportRenderer {
    */
   render(element) {
     const pre = document.createElement('pre');
-    pre.innerText = JSON.stringify(this._report, null, 2);
+    pre.textContent = JSON.stringify(this._report, null, 2);
     element.appendChild(pre);
   }
 };
