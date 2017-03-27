@@ -1,4 +1,5 @@
-{
+/* eslint-disable */
+module.exports = {
   "passes": [{
     "passName": "defaultPass",
     "recordNetwork": true,
@@ -119,6 +120,7 @@
     "accessibility/video-caption",
     "accessibility/video-description",
     "byte-efficiency/total-byte-weight",
+    // "byte-efficiency/unused-css-rules",
     "byte-efficiency/offscreen-images",
     "byte-efficiency/uses-optimized-images",
     "byte-efficiency/uses-responsive-images",
@@ -595,6 +597,10 @@
           "expectedValue": true,
           "weight": 1
         },
+        // "unused-css-rules": {
+        //   "expectedValue": true,
+        //   "weight": 1
+        // },
         "link-blocking-first-paint": {
           "expectedValue": true,
           "weight": 1
