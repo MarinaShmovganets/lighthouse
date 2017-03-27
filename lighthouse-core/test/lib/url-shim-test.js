@@ -138,6 +138,12 @@ describe('URL Shim', () => {
       const result = URL.getDisplayName(url);
       assert.equal(result, '/file.css');
     });
+
+    it('Doesn\'t elide short names when used with preserveHost', () => {
+      const url = 'http://google.com/img/logo.jpg';
+      const result = URL.getDisplayName(url, {preserveHost: true});
+      assert.equal(result, 'google.com/img/logo.jpg');
+    });
   });
 
   describe('equalWithExcludedFragments', () => {
