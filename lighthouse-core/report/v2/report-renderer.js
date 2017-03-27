@@ -17,7 +17,7 @@
 
 /* eslint-env browser */
 
-class ReportRenderer {
+window.ReportRenderer = class ReportRenderer {
   /**
    * @param {!Object} report
    */
@@ -33,4 +33,5 @@ class ReportRenderer {
     pre.innerText = JSON.stringify(this._report, null, 2);
     element.appendChild(pre);
   }
-}
+};
+
