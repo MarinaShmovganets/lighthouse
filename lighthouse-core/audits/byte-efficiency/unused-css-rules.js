@@ -28,7 +28,8 @@ class UnusedCSSRules extends Audit {
   static get meta() {
     return {
       category: 'CSS',
-      name: 'unused-css-rules',
+      // TODO: Re-enable after CSS protocol has settled
+      name: 'DISABLED___unused-css-rules',
       description: 'Unused CSS rules',
       informative: true,
       helpText: 'Remove unused rules from stylesheets to reduce unnecessary ' +
