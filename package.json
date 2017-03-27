@@ -11,10 +11,11 @@
     "node": ">=6"
   },
   "scripts": {
-    "install-all": "npm run install-cli && npm run install-extension && npm run install-viewer",
+    "install-all": "npm run install-cli && npm run install-extension && npm run install-viewer && npm run install-recipes",
     "install-cli": "cd ./lighthouse-cli && npm install",
     "install-extension": "cd ./lighthouse-extension && npm install",
     "install-viewer": "cd ./lighthouse-viewer && npm install",
+    "install-recipes": "cd ./docs/recipes && npm install",
     "build-all": "gulp && npm run build-cli && npm run build-extension && npm run build-viewer",
     "build-cli": "cd ./lighthouse-cli && npm run build",
     "build-extension": "cd ./lighthouse-extension && npm run build",
@@ -34,8 +35,7 @@
     "chrome": "node ./lighthouse-cli/manual-chrome-launcher.js",
     "fast": "npm run start -- --disable-device-emulation --disable-cpu-throttling --disable-network-throttling",
     "smokehouse": "node lighthouse-cli/test/smokehouse/smokehouse.js",
-    "deploy-viewer": "cd lighthouse-viewer && gulp deploy",
-    "gulp-example": "gulp --gulpfile docs/recipes/gulp/gulpfile.js --cwd docs/recipes/gulp"
+    "deploy-viewer": "cd lighthouse-viewer && gulp deploy"
   },
   "devDependencies": {
     "@types/node": "^6.0.45",

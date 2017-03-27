@@ -1,0 +1,12 @@
+{
+  "name": "lighthouse-recipes",
+  "private": true,
+  "scripts": {
+    "gulp-example": "gulp --gulpfile gulp/gulpfile.js --cwd gulp"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0",
+    "lighthouse": "^1.6.3"
+  }
+}
