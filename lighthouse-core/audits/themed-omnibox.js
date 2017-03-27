@@ -6,7 +6,7 @@
 
 'use strict';
 
-const Audit = require('./audit');
+const Audit = require('./multi-check-audit');
 const validColor = require('../lib/web-inspector').Color.parse;
 
 /**
@@ -54,26 +54,17 @@ class ThemedOmnibox extends Audit {
     }
   }
 
-  static audit(artifacts) {
+  static audit_(artifacts) {
     const failures = [];
 
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
-      // 1: validate manifest is in order
       ThemedOmnibox.assessManifest(manifestValues, failures);
-      // 2: validate we have a SW
       ThemedOmnibox.assessMetaThemecolor(artifacts.ThemeColor, failures);
 
-      // If we fail, share the failures
-      if (failures.length > 0) {
-        return {
-          rawValue: false,
-          debugString: `Unsatisfied requirements: ${failures.join(', ')}.`
-        };
-      }
-
-      // Otherwise, we pass
       return {
-        rawValue: true,
+        failures,
+        manifestValues,
+        themeColor: artifacts.ThemeColor
       };
     });
   }

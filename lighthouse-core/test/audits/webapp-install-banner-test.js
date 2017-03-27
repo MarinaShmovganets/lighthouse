@@ -42,7 +42,7 @@ describe('PWA: webapp install banner audit', () => {
 
       return WebappInstallBannerAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
-        assert.ok(result.debugString.includes('is available'), result.debugString);
+        assert.ok(result.debugString.includes('No manifest was fetched'), result.debugString);
       });
     });
 
@@ -51,7 +51,7 @@ describe('PWA: webapp install banner audit', () => {
       artifacts.Manifest = manifestParser('{,:}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
       return WebappInstallBannerAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
-        assert.ok(result.debugString.includes('parsed as valid JSON'));
+        assert.ok(result.debugString.includes('failed to parse as valid JSON'));
       });
     });
 

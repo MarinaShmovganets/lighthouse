@@ -6,7 +6,7 @@
 
 'use strict';
 
-const Audit = require('./audit');
+const Audit = require('./multi-check-audit');
 const Formatter = require('../report/formatter');
 
 /**
@@ -54,38 +54,22 @@ class SplashScreen extends Audit {
     manifestValues.allChecks
       .filter(item => splashScreenCheckIds.includes(item.id))
       .forEach(item => {
-        if (item.passing === false) {
+        if (!item.passing) {
           failures.push(item.userText);
         }
       });
   }
 
 
-  static audit(artifacts) {
+  static audit_(artifacts) {
     const failures = [];
 
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
-      // 1: validate manifest is in order
       SplashScreen.assessManifest(manifestValues, failures);
 
-      const extendedInfo = {
-        value: {manifestValues, failures},
-        formatter: Formatter.SUPPORTED_FORMATS.NULL
-      };
-
-      // If we fail, share the failures
-      if (failures.length > 0) {
-        return {
-          rawValue: false,
-          debugString: `Unsatisfied requirements: ${failures.join(', ')}.`,
-          extendedInfo
-        };
-      }
-
-      // Otherwise, we pass
       return {
-        rawValue: true,
-        extendedInfo
+        failures,
+        manifestValues
       };
     });
   }

@@ -29,50 +29,50 @@ class ManifestValues extends ComputedArtifact {
     return [
       {
         id: 'hasStartUrl',
-        userText: 'Manifest contains `start_url`',
+        userText: 'Manifest does not contain a `start_url`',
         toPass: manifest => !!manifest.value.start_url.value
       },
       {
         id: 'hasIconsAtLeast192px',
-        userText: 'Manifest contains icons at least 192px',
+        userText: 'Manifest does not have icons at least 192px',
         toPass: manifest => icons.doExist(manifest.value) &&
             icons.sizeAtLeast(192, /** @type {!Manifest} */ (manifest.value)).length > 0
       },
       {
         id: 'hasIconsAtLeast512px',
-        userText: 'Manifest contains icons at least 512px',
+        userText: 'Manifest does not have icons at least 512px',
         toPass: manifest => icons.doExist(manifest.value) &&
             icons.sizeAtLeast(512, /** @type {!Manifest} */ (manifest.value)).length > 0
       },
       {
         id: 'hasPWADisplayValue',
-        userText: 'Manifest\'s `display` value is one of: ' + PWA_DISPLAY_VALUES.join(' | '),
+        userText: 'Manifest\'s `display` value is not one of: ' + PWA_DISPLAY_VALUES.join(' | '),
         toPass: manifest => PWA_DISPLAY_VALUES.includes(manifest.value.display.value)
       },
       {
         id: 'hasBackgroundColor',
-        userText: 'Manifest contains `background_color`',
+        userText: 'Manifest does not have `background_color`',
         toPass: manifest => !!manifest.value.background_color.value
       },
       {
         id: 'hasThemeColor',
-        userText: 'Manifest contains `theme_color`',
+        userText: 'Manifest does not have `theme_color`',
         toPass: manifest => !!manifest.value.theme_color.value
       },
       {
         id: 'hasShortName',
-        userText: 'Manifest contains `short_name`',
+        userText: 'Manifest does not have `short_name`',
         toPass: manifest => !!manifest.value.short_name.value
       },
       {
         id: 'shortNameLength',
-        userText: 'Manifest `short_name` won\'t be truncated when displayed on the homescreen',
+        userText: 'Manifest `short_name` will be truncated when displayed on the homescreen',
         toPass: manifest => manifest.value.short_name.value &&
             manifest.value.short_name.value.length <= SUGGESTED_SHORTNAME_LENGTH
       },
       {
         id: 'hasName',
-        userText: 'Manifest contains `name`',
+        userText: 'Manifest does not have `name`',
         toPass: manifest => !!manifest.value.name.value
       }
     ];
@@ -88,10 +88,10 @@ class ManifestValues extends ComputedArtifact {
     let parseFailureReason;
 
     if (manifest === null) {
-      parseFailureReason = 'Manifest is available';
+      parseFailureReason = 'No manifest was fetched';
     }
     if (manifest && manifest.value === undefined) {
-      parseFailureReason = 'Manifest is parsed as valid JSON';
+      parseFailureReason = 'Manifest failed to parse as valid JSON';
     }
     if (parseFailureReason) {
       return {

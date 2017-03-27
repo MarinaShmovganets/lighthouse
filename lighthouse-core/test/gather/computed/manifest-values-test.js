@@ -34,7 +34,7 @@ describe('ManifestValues computed artifact', () => {
     const manifestArtifact = null;
     const results = manifestValues.compute_(manifestArtifact);
     assert.equal(results.isParseFailure, true);
-    assert.ok(results.parseFailureReason.includes('available'));
+    assert.ok(results.parseFailureReason, 'No manifest was fetched');
     assert.equal(results.allChecks.length, 0);
   });
 
@@ -42,7 +42,7 @@ describe('ManifestValues computed artifact', () => {
     const manifestArtifact = noUrlManifestParser('{:,}');
     const results = manifestValues.compute_(manifestArtifact);
     assert.equal(results.isParseFailure, true);
-    assert.ok(results.parseFailureReason.includes('parsed as valid JSON'));
+    assert.ok(results.parseFailureReason.includes('failed to parse as valid JSON'));
     assert.equal(results.allChecks.length, 0);
   });
 

@@ -44,7 +44,7 @@ describe('PWA: themed omnibox audit', () => {
 
     return ThemedOmniboxAudit.audit(artifacts).then(result => {
       assert.strictEqual(result.rawValue, false);
-      assert.ok(result.debugString.includes('Manifest is available'), result.debugString);
+      assert.ok(result.debugString.includes('No manifest was fetched'), result.debugString);
     });
   });
 
@@ -126,7 +126,7 @@ describe('PWA: themed omnibox audit', () => {
     }));
     return ThemedOmniboxAudit.audit(artifacts).then(result => {
       assert.equal(result.rawValue, false);
-      assert.ok(result.debugString.includes('contains `theme_color`'));
+      assert.ok(result.debugString.includes('does not have `theme_color`'), result.debugString);
     });
   });
 
@@ -135,7 +135,7 @@ describe('PWA: themed omnibox audit', () => {
     artifacts.ThemeColor = 'not a color';
     return ThemedOmniboxAudit.audit(artifacts).then(result => {
       assert.equal(result.rawValue, false);
-      assert.ok(result.debugString.includes('theme-color meta tag'));
+      assert.ok(result.debugString.includes('theme-color meta tag'), result.debugString);
     });
   });
 });

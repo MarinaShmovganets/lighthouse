@@ -6,7 +6,7 @@
 
 'use strict';
 
-const Audit = require('./audit');
+const Audit = require('./multi-check-audit');
 const SWAudit = require('./service-worker');
 const Formatter = require('../report/formatter');
 
@@ -61,7 +61,7 @@ class WebappInstallBanner extends Audit {
     manifestValues.allChecks
       .filter(item => bannerCheckIds.includes(item.id))
       .forEach(item => {
-        if (item.passing === false) {
+        if (!item.passing) {
           failures.push(item.userText);
         }
       });
@@ -75,33 +75,16 @@ class WebappInstallBanner extends Audit {
     }
   }
 
-  static audit(artifacts) {
+  static audit_(artifacts) {
     const failures = [];
 
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
-      // 1: validate manifest is in order
       WebappInstallBanner.assessManifest(manifestValues, failures);
-      // 2: validate we have a SW
       WebappInstallBanner.assessServiceWorker(artifacts, failures);
 
-      const extendedInfo = {
-        value: {failures, manifestValues},
-        formatter: Formatter.SUPPORTED_FORMATS.NULL
-      };
-
-      // If we fail, share the failures
-      if (failures.length > 0) {
-        return {
-          rawValue: false,
-          debugString: `Unsatisfied requirements: ${failures.join(', ')}.`,
-          extendedInfo
-        };
-      }
-
-      // Otherwise, we pass
       return {
-        rawValue: true,
-        extendedInfo
+        failures,
+        manifestValues
       };
     });
   }
