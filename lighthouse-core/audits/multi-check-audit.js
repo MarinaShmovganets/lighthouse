@@ -23,7 +23,7 @@ class MultiCheckAudit extends Audit {
   }
 
   /**
-   * @param {!{manifestValues: !Object, failures: !Array<!string>, themeColor: ?string}} result
+   * @param {!{failures: !Array<!string>, themeColor: ?string, manifestValues: ?Object, }} result
    * @return {!AuditResult}
    */
   static createAuditResult(result) {
