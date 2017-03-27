@@ -21,24 +21,37 @@ const assert = require('assert');
 /* eslint-env mocha */
 
 describe('Security: HTTPS audit', () => {
-  it('fails when not on HTTPS', () => {
-    const debugString = 'Error string';
-    const result = Audit.audit({
-      HTTPS: {
-        value: false,
-        debugString
-      }
-    });
+  function getArtifacts(networkRecords) {
+    return {networkRecords: {defaultPass: networkRecords}};
+  }
+
+  it('fails when there is one record not on HTTPS', () => {
+    const result = Audit.audit(getArtifacts([
+      {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
+      {url: 'http://insecure.com/image.jpeg', scheme: 'http', domain: 'insecure.com'},
+      {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
+    ]));
     assert.strictEqual(result.rawValue, false);
-    assert.strictEqual(result.debugString, debugString);
+    assert.ok(result.debugString.includes('insecure.com/image.jpeg'));
   });
 
-  it('passes when on HTTPS', () => {
-    const result = Audit.audit({
-      HTTPS: {
-        value: true
-      }
-    });
+  it('passes when all records on HTTPS', () => {
+    const result = Audit.audit(getArtifacts([
+      {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
+      {url: 'https://secure.com/image.jpeg', scheme: 'https', domain: 'secure.com'},
+      {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
+    ]));
+
+    assert.strictEqual(result.rawValue, true);
+  });
+
+  it('passes when all records on localhost or HTTPS', () => {
+    const result = Audit.audit(getArtifacts([
+      {url: 'http://localhost:8080/index.html', scheme: 'https', domain: 'localhost'},
+      {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
+      {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
+    ]));
+
     assert.strictEqual(result.rawValue, true);
   });
 });

@@ -138,7 +138,6 @@ describe('Config', () => {
       passes: [{
         gatherers: [
           'url',
-          'https',
           'viewport'
         ]
       }],
