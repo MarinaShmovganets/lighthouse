@@ -8,7 +8,6 @@
 
 const Audit = require('./multi-check-audit');
 const SWAudit = require('./service-worker');
-const Formatter = require('../report/formatter');
 
 /**
  * @fileoverview

@@ -7,7 +7,6 @@
 'use strict';
 
 const Audit = require('./multi-check-audit');
-const Formatter = require('../report/formatter');
 
 /**
  * @fileoverview
@@ -32,8 +31,7 @@ class SplashScreen extends Audit {
       category: 'PWA',
       name: 'splash-screen',
       description: 'Configured for a custom splash screen',
-      // When your app launches from a user\'s homescreen, the browser ' 'uses `background_color` to paint the background of the browser ' +'while your app loads for a smooth transition experience. ' + '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/manifest-contains-background_color).',
-      helpText: 'A default splash screen will be constructed, but meeting these requirements guarantee a high-quality and customizable [splash screen](https://developers.google.com/web/updates/2015/10/splashscreen) the user sees between tapping the home screen icon and your app\'s first paint.',
+      helpText: 'A default splash screen will be constructed for your app, but satisfying these requirements guarantee a high-quality [splash screen](https://developers.google.com/web/updates/2015/10/splashscreen) that transitions the user from tapping the home screen icon to your app\'s first paint',
       requiredArtifacts: ['Manifest']
     };
   }

@@ -13,7 +13,7 @@
 const Audit = require('./audit');
 const Formatter = require('../report/formatter');
 
-class AxeAudit extends Audit {
+class MultiCheckAudit extends Audit {
   /**
    * @param {!Artifacts} artifacts
    * @return {!AuditResult}
@@ -56,4 +56,4 @@ class AxeAudit extends Audit {
   }
 }
 
-module.exports = AxeAudit;
+module.exports = MultiCheckAudit;
