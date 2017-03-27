@@ -62,7 +62,7 @@ class WebappInstallBanner extends Audit {
       .filter(item => bannerCheckIds.includes(item.id))
       .forEach(item => {
         if (!item.passing) {
-          failures.push(item.userText);
+          failures.push(item.failureText);
         }
       });
   }

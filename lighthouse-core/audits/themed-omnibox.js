@@ -50,7 +50,7 @@ class ThemedOmnibox extends Audit {
 
     const themeColorCheck = manifestValues.allChecks.find(i => i.id === 'hasThemeColor');
     if (!themeColorCheck.passing) {
-      failures.push(themeColorCheck.userText);
+      failures.push(themeColorCheck.failureText);
     }
   }
 

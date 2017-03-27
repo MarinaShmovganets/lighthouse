@@ -102,18 +102,18 @@ describe('ManifestValues computed artifact', () => {
     it('passes accepted values', () => {
       let Manifest;
       Manifest = noUrlManifestParser(JSON.stringify({display: 'minimal-ui'}));
-      assert.equal(check.toPass(Manifest), true, 'doesnt pass minimal-ui');
+      assert.equal(check.validate(Manifest), true, 'doesnt pass minimal-ui');
       Manifest = noUrlManifestParser(JSON.stringify({display: 'standalone'}));
-      assert.equal(check.toPass(Manifest), true, 'doesnt pass standalone');
+      assert.equal(check.validate(Manifest), true, 'doesnt pass standalone');
       Manifest = noUrlManifestParser(JSON.stringify({display: 'fullscreen'}));
-      assert.equal(check.toPass(Manifest), true, 'doesnt pass fullscreen');
+      assert.equal(check.validate(Manifest), true, 'doesnt pass fullscreen');
     });
     it('fails invalid values', () => {
       let Manifest;
       Manifest = noUrlManifestParser(JSON.stringify({display: 'display'}));
-      assert.equal(check.toPass(Manifest), false, 'doesnt fail display');
+      assert.equal(check.validate(Manifest), false, 'doesnt fail display');
       Manifest = noUrlManifestParser(JSON.stringify({display: ''}));
-      assert.equal(check.toPass(Manifest), false, 'doesnt fail empty string');
+      assert.equal(check.validate(Manifest), false, 'doesnt fail empty string');
     });
   });
 
