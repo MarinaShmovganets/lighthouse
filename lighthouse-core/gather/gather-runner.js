@@ -342,7 +342,7 @@ class GatherRunner {
             .then(passData => {
               // If requested by config, merge trace and network data for this
               // pass into tracingData.
-              const passName = config.passName || Audit.DEFAULT_PASS;
+              const passName = config.passName || config.id || Audit.DEFAULT_PASS;
               if (config.recordTrace) {
                 tracingData.traces[passName] = passData.trace;
                 tracingData.devtoolsLogs[passName] = passData.devtoolsLog;
@@ -434,6 +434,12 @@ class GatherRunner {
   static instantiateGatherers(passes, rootPath) {
     return passes.map(pass => {
       pass.gatherers = pass.gatherers.map(gatherer => {
+        // support config v2 gatherer objects
+        if (gatherer.implementation) {
+          const GathererClass = gatherer.implementation;
+          return new GathererClass();
+        }
+
         // If this is already instantiated, don't do anything else.
         if (typeof gatherer !== 'string') {
           return gatherer;
