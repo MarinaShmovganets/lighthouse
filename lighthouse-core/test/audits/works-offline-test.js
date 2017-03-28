@@ -36,7 +36,7 @@ describe('Offline: works-offline audit', () => {
   it('warns if initial url does not match final url', () => {
     const output = Audit.audit({
       Offline: 200,
-      URL: {initialUrl: URL, finalUrl: '${URL}/features'}
+      URL: {initialUrl: URL, finalUrl: `${URL}/features`}
     });
 
     assert.equal(output.rawValue, true);
