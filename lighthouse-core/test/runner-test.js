@@ -150,7 +150,7 @@ describe('Runner', () => {
       const url = 'https://example.com';
       const config = new Config({
         audits: [
-          // requires the HTTPS artifact
+          // requires the ViewportDimensions artifact
           'content-width'
         ],
 
@@ -388,18 +388,17 @@ describe('Runner', () => {
 
   it('results include artifacts when given artifacts and audits', () => {
     const url = 'https://example.com';
+    const ViewportDimensions = {innerHeight: 10, innerWidth: 10};
     const config = new Config({
       audits: [
         'content-width'
       ],
 
-      artifacts: {
-        ViewportDimensions: '#ffffff'
-      }
+      artifacts: {ViewportDimensions}
     });
 
     return Runner.run({}, {url, config}).then(results => {
-      assert.strictEqual(results.artifacts.ViewportDimensions, '#ffffff');
+      assert.deepEqual(results.artifacts.ViewportDimensions, ViewportDimensions);
 
       for (const method of Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
