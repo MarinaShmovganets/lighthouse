@@ -1,5 +1,21 @@
 'use strict';
 
+/**
+ * Copyright 2016 Google Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 const gulp = require('gulp');
 const connect = require('gulp-connect');
 const lighthouse = require('lighthouse');
@@ -9,9 +25,9 @@ const PORT = 8080;
 let launcher;
 
 /**
- * Connect to server
+ * Start server
  */
-const connectServer = function() {
+const startServer = function() {
   return connect.server({
     root: './public',
     livereload: true,
@@ -20,9 +36,9 @@ const connectServer = function() {
 };
 
 /**
- * Disconnect server
+ * Stop server
  */
-const disconnectServer = function() {
+const stopServer = function() {
   connect.serverClose();
   launcher.kill();
 };
@@ -44,9 +60,7 @@ const launchChrome = function() {
 const runLighthouse = function() {
   const url = `http://localhost:${PORT}/index.html`;
   const lighthouseOptions = {}; // available options - https://github.com/GoogleChrome/lighthouse/#cli-options
-  return lighthouse(url, lighthouseOptions, perfConfig)
-    .then(handleOk)
-    .catch(handleError);
+  return lighthouse(url, lighthouseOptions, perfConfig);
 };
 
 /**
@@ -54,7 +68,7 @@ const runLighthouse = function() {
  * @param {Object} results - Lighthouse results
  */
 const handleOk = function(results) {
-  disconnectServer();
+  stopServer();
   // TODO: use lighthouse results for checking your performance expectations
   /* eslint-disable no-console */
   console.log(results);
@@ -65,14 +79,16 @@ const handleOk = function(results) {
  * Handle error
  */
 const handleError = function() {
-  disconnectServer();
+  stopServer();
   process.exit(1);
 };
 
 gulp.task('lighthouse', function() {
   launchChrome().then(_ => {
-    connectServer();
-    return runLighthouse();
+    startServer();
+    return runLighthouse()
+      .then(handleOk)
+      .catch(handleError);
   });
 });
 
