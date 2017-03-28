@@ -5,17 +5,9 @@
     "pauseBeforeTraceEndMs": 500,
     "useThrottling": true,
     "gatherers": [
-      "url",
       "image-usage",
       "viewport-dimensions",
-      "dobetterweb/domstats"
-    ]
-  },
-  {
-    "passName": "css-image-usage",
-    "recordNetwork": true,
-    "useThrottling": false,
-    "gatherers": [
+      "dobetterweb/domstats",
       "dobetterweb/tags-blocking-first-paint",
       "dobetterweb/optimized-images"
     ]
