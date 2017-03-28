@@ -21,6 +21,7 @@
  * An enumeration of acceptable output modes:
  *   'json': JSON formatted results
  *   'html': An HTML report
+ *   'domhtml': An HTML report rendered client-side with DOM elements
  */
 enum OutputMode { json, html, domhtml };
 type Mode = 'json' | 'html' | 'domhtml';

@@ -51,11 +51,10 @@ class ReportGeneratorV2 {
   generateReportJson(config, resultsByAuditId) {
     const categories = Object.keys(config.categories).map(categoryId => {
       const category = config.categories[categoryId];
-      category.id = categoryId;
 
       const audits = category.audits.map(audit => {
         const result = resultsByAuditId[audit.id];
-        // Cast to number to catch `null` and undefined when audits error/do not run
+        // Cast to number to catch `null` and undefined when audits error
         let score = Number(result.score) || 0;
         if (typeof result.score === 'boolean') {
           score = result.score ? 100 : 0;
@@ -78,9 +77,11 @@ class ReportGeneratorV2 {
    * @return {string}
    */
   generateReportHtml(reportAsJson) {
+    const sanitizedJson = JSON.stringify(reportAsJson).replace(/</g, '\\u003c');
+    const sanitizedJavascript = REPORT_JAVASCRIPT.replace(/<\//g, '\\u003c/');
     return REPORT_TEMPLATE
-      .replace(/%%LIGHTHOUSE_JSON%%/, JSON.stringify(reportAsJson).replace(/</g, '\\u003c'))
-      .replace(/%%LIGHTHOUSE_JAVASCRIPT%%/, REPORT_JAVASCRIPT.replace(/<\//g, '\\u003c/'));
+      .replace(/%%LIGHTHOUSE_JSON%%/, sanitizedJson)
+      .replace(/%%LIGHTHOUSE_JAVASCRIPT%%/, sanitizedJavascript);
   }
 }
 

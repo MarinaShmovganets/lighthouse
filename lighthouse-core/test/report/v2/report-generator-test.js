@@ -74,9 +74,7 @@ describe('ReportGeneratorV2', () => {
       }, {});
 
       assert.equal(result.categories.length, 2);
-      assert.equal(result.categories[0].id, 'my-category');
       assert.equal(result.categories[0].name, 'My Category');
-      assert.equal(result.categories[1].id, 'my-other-category');
       assert.equal(result.categories[1].description, 'It is a nice category');
     });
 
