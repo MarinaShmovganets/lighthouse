@@ -66,7 +66,7 @@ describe('Runner', () => {
       ],
 
       artifacts: {
-        ViewportDimensions: '#ffffff'
+        ViewportDimensions: {}
       }
     });
 

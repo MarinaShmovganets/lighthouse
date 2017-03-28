@@ -63,7 +63,7 @@ class HTTPS extends Audit {
     if (insecureRecords.length > 1) {
       displayValue = `${insecureRecords.length} insecure requests found`;
     } else if (insecureRecords.length === 1) {
-      displayValue = `${insecureRecords.length} insecure requests found`;
+      displayValue = `${insecureRecords.length} insecure request found`;
     }
 
     return {

@@ -25,6 +25,18 @@ describe('Security: HTTPS audit', () => {
     return {networkRecords: {defaultPass: networkRecords}};
   }
 
+  it('fails when there is more than one insecure record', () => {
+    const result = Audit.audit(getArtifacts([
+      {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
+      {url: 'http://insecure.com/image.jpeg', scheme: 'http', domain: 'insecure.com'},
+      {url: 'http://insecure.com/image2.jpeg', scheme: 'http', domain: 'insecure.com'},
+      {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
+    ]));
+    assert.strictEqual(result.rawValue, false);
+    assert.ok(result.displayValue.includes('requests found'));
+    assert.strictEqual(result.extendedInfo.value.length, 2);
+  });
+
   it('fails when there is one insecure record', () => {
     const result = Audit.audit(getArtifacts([
       {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
@@ -32,6 +44,7 @@ describe('Security: HTTPS audit', () => {
       {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
     ]));
     assert.strictEqual(result.rawValue, false);
+    assert.ok(result.displayValue.includes('request found'));
     assert.deepEqual(result.extendedInfo.value[0], {url: 'insecure.com/image.jpeg'});
   });
 
