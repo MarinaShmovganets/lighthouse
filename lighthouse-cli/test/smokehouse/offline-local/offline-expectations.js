@@ -27,7 +27,7 @@ module.exports = [
     url: 'http://localhost:10200/online-only.html',
     audits: {
       'is-on-https': {
-        score: false
+        score: true
       },
       'redirects-http': {
         score: false
@@ -41,9 +41,6 @@ module.exports = [
       'viewport': {
         score: true
       },
-      'manifest-display': {
-        score: false
-      },
       'without-javascript': {
         score: true
       },
@@ -55,34 +52,13 @@ module.exports = [
         score: true,
         displayValue: '0'
       },
-      'manifest-exists': {
+      'webapp-install-banner': {
         score: false
       },
-      'manifest-background-color': {
+      'splash-screen': {
         score: false
       },
-      'manifest-theme-color': {
-        score: false
-      },
-      'manifest-icons-min-192': {
-        score: false
-      },
-      'manifest-icons-min-144': {
-        score: false
-      },
-      'manifest-name': {
-        score: false
-      },
-      'manifest-short-name': {
-        score: false
-      },
-      'manifest-short-name-length': {
-        score: false
-      },
-      'manifest-start-url': {
-        score: false
-      },
-      'theme-color-meta': {
+      'themed-omnibox': {
         score: false
       },
       'aria-valid-attr': {
@@ -114,7 +90,7 @@ module.exports = [
     url: 'http://localhost:10503/offline-ready.html',
     audits: {
       'is-on-https': {
-        score: false
+        score: true
       },
       'redirects-http': {
         score: false
@@ -128,9 +104,6 @@ module.exports = [
       'viewport': {
         score: true
       },
-      'manifest-display': {
-        score: false
-      },
       'without-javascript': {
         score: true
       },
@@ -142,34 +115,13 @@ module.exports = [
         score: false,
         displayValue: '1'
       },
-      'manifest-exists': {
+      'webapp-install-banner': {
         score: false
       },
-      'manifest-background-color': {
+      'splash-screen': {
         score: false
       },
-      'manifest-theme-color': {
-        score: false
-      },
-      'manifest-icons-min-192': {
-        score: false
-      },
-      'manifest-icons-min-144': {
-        score: false
-      },
-      'manifest-name': {
-        score: false
-      },
-      'manifest-short-name': {
-        score: false
-      },
-      'manifest-short-name-length': {
-        score: false
-      },
-      'manifest-start-url': {
-        score: false
-      },
-      'theme-color-meta': {
+      'themed-omnibox': {
         score: false
       },
       'aria-valid-attr': {

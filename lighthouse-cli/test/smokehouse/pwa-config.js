@@ -25,7 +25,7 @@ module.exports = {
     recordTrace: true,
     gatherers: [
       'url',
-      'https',
+      'theme-color',
       'manifest',
       // https://github.com/GoogleChrome/lighthouse/issues/566
       // 'cache-contents'
@@ -52,15 +52,9 @@ module.exports = {
     'redirects-http',
     'service-worker',
     'works-offline',
-    'manifest-display',
-    'manifest-exists',
-    'manifest-background-color',
-    'manifest-theme-color',
-    'manifest-icons-min-192',
-    'manifest-icons-min-144',
-    'manifest-name',
-    'manifest-short-name',
-    'manifest-start-url',
+    'webapp-install-banner',
+    'splash-screen',
+    'themed-omnibox',
     // https://github.com/GoogleChrome/lighthouse/issues/566
     // 'cache-start-url'
   ],

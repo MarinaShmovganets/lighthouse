@@ -496,7 +496,7 @@ class Driver {
   * @return {!Promise<string>} The property value, or null, if property not found
   */
   getObjectProperty(objectId, propName) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.sendCommand('Runtime.getProperties', {
         objectId,
         accessorPropertiesOnly: true,
@@ -507,12 +507,12 @@ class Driver {
         const propertyForName = properties.result
           .find(property => property.name === propName);
 
-        if (propertyForName) {
+        if (propertyForName && propertyForName.value) {
           resolve(propertyForName.value.value);
         } else {
           resolve(null);
         }
-      });
+      }).catch(reject);
     });
   }
 
@@ -696,15 +696,16 @@ class Driver {
   }
 
   setThrottling(flags, passConfig) {
-    const p = [];
-    if (passConfig.useThrottling) {
-      if (!flags.disableNetworkThrottling) p.push(emulation.enableNetworkThrottling(this));
-      if (!flags.disableCpuThrottling) p.push(emulation.enableCPUThrottling(this));
-    } else {
-      p.push(emulation.disableNetworkThrottling(this));
-      p.push(emulation.disableCPUThrottling(this));
-    }
-    return Promise.all(p);
+    const throttleCpu = passConfig.useThrottling && !flags.disableCpuThrottling;
+    const throttleNetwork = passConfig.useThrottling && !flags.disableNetworkThrottling;
+    const cpuPromise = throttleCpu ?
+        emulation.enableCPUThrottling(this) :
+        emulation.disableCPUThrottling(this);
+    const networkPromise = throttleNetwork ?
+        emulation.enableNetworkThrottling(this) :
+        emulation.disableNetworkThrottling(this);
+
+    return Promise.all([cpuPromise, networkPromise]);
   }
 
   /**
