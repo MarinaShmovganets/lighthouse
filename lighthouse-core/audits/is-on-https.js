@@ -20,6 +20,9 @@ const Audit = require('./audit');
 const Formatter = require('../report/formatter');
 const URL = require('../lib/url-shim');
 
+const SECURE_SCHEMES = ['data', 'https', 'wss'];
+const SECURE_DOMAINS = ['localhost', '127.0.0.1'];
+
 class HTTPS extends Audit {
   /**
    * @return {!AuditMeta}
@@ -39,13 +42,21 @@ class HTTPS extends Audit {
   }
 
   /**
+   * @param {{scheme: string, domain: string}} record
+   * @return {boolean}
+   */
+  static isSecureRecord(record) {
+    return SECURE_SCHEMES.includes(record.scheme) || SECURE_DOMAINS.includes(record.domain);
+  }
+
+  /**
    * @param {!Artifacts} artifacts
    * @return {!AuditResult}
    */
   static audit(artifacts) {
     const networkRecords = artifacts.networkRecords[Audit.DEFAULT_PASS];
     const insecureRecords = networkRecords
-        .filter(record => record.scheme === 'http' && record.domain !== 'localhost')
+        .filter(record => !HTTPS.isSecureRecord(record))
         .map(record => ({url: URL.getDisplayName(record.url, {preserveHost: true})}));
 
     let displayValue = '';

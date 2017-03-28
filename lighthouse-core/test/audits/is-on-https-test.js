@@ -25,33 +25,39 @@ describe('Security: HTTPS audit', () => {
     return {networkRecords: {defaultPass: networkRecords}};
   }
 
-  it('fails when there is one record not on HTTPS', () => {
+  it('fails when there is one insecure record', () => {
     const result = Audit.audit(getArtifacts([
       {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
       {url: 'http://insecure.com/image.jpeg', scheme: 'http', domain: 'insecure.com'},
       {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
     ]));
     assert.strictEqual(result.rawValue, false);
-    assert.ok(result.debugString.includes('insecure.com/image.jpeg'));
+    assert.deepEqual(result.extendedInfo.value[0], {url: 'insecure.com/image.jpeg'});
   });
 
-  it('passes when all records on HTTPS', () => {
+  it('passes when all records are secure', () => {
     const result = Audit.audit(getArtifacts([
       {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
-      {url: 'https://secure.com/image.jpeg', scheme: 'https', domain: 'secure.com'},
+      {url: 'http://localhost/image.jpeg', scheme: 'http', domain: 'localhost'},
       {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
     ]));
 
     assert.strictEqual(result.rawValue, true);
   });
 
-  it('passes when all records on localhost or HTTPS', () => {
-    const result = Audit.audit(getArtifacts([
-      {url: 'http://localhost:8080/index.html', scheme: 'https', domain: 'localhost'},
-      {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
-      {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
-    ]));
+  describe('#isSecureRecord', () => {
+    it('correctly identifies insecure records', () => {
+      assert.strictEqual(Audit.isSecureRecord({scheme: 'http', domain: 'google.com'}), false);
+      assert.strictEqual(Audit.isSecureRecord({scheme: 'http', domain: '54.33.21.23'}), false);
+      assert.strictEqual(Audit.isSecureRecord({scheme: 'ws', domain: 'my-service.com'}), false);
+      assert.strictEqual(Audit.isSecureRecord({scheme: '', domain: 'google.com'}), false);
+    });
 
-    assert.strictEqual(result.rawValue, true);
+    it('correctly identifies secure records', () => {
+      assert.strictEqual(Audit.isSecureRecord({scheme: 'http', domain: 'localhost'}), true);
+      assert.strictEqual(Audit.isSecureRecord({scheme: 'https', domain: 'google.com'}), true);
+      assert.strictEqual(Audit.isSecureRecord({scheme: 'wss', domain: 'my-service.com'}), true);
+      assert.strictEqual(Audit.isSecureRecord({scheme: 'data', domain: ''}), true);
+    });
   });
 });
