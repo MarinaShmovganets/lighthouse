@@ -84,14 +84,14 @@ window.ReportRenderer = class ReportRenderer {
    */
   _renderScore(score, title, description) {
     const element = this._createElement('div', 'lighthouse-score');
-    const value = this._createChild(element, 'div', 'lighthouse-score-value');
+    const value = this._createChild(element, 'div', 'lighthouse-score__value');
     value.textContent = score.toLocaleString(undefined, {maximumFractionDigits: 1});
     if (score <= 50)
-      value.classList.add('lighthouse-score-value-failed');
+      value.classList.add('lighthouse-score__value--failed');
 
-    const column = this._createChild(element, 'div', 'lighthouse-score-text');
-    this._createChild(column, 'div', 'lighthouse-score-title').textContent = title;
-    this._createChild(column, 'div', 'lighthouse-score-description').textContent = description;
+    const column = this._createChild(element, 'div', 'lighthouse-score__text');
+    this._createChild(column, 'div', 'lighthouse-score__title').textContent = title;
+    this._createChild(column, 'div', 'lighthouse-score__description').textContent = description;
     return element;
   }
 
@@ -136,11 +136,11 @@ window.ReportRenderer = class ReportRenderer {
   _renderList(list) {
     const element = this._createElement('div', 'lighthouse-list');
     if (list.header) {
-      const header = this._createChild(element, 'div', 'lighthouse-list-header');
+      const header = this._createChild(element, 'div', 'lighthouse-list__header');
       header.appendChild(this._renderDetails(list.header));
-      header.addEventListener('click', () => items.classList.toggle('hidden'), false);
+      header.addEventListener('click', () => items.classList.toggle('--hidden'), false);
     }
-    const items = this._createChild(element, 'div', 'lighthouse-list-items hidden');
+    const items = this._createChild(element, 'div', 'lighthouse-list__items --hidden');
     for (const item of list.items)
       items.appendChild(this._renderDetails(item));
     return element;
@@ -152,7 +152,7 @@ window.ReportRenderer = class ReportRenderer {
    */
   _renderException(e) {
     const element = this._createElement('div', 'lighthouse-exception');
-    element.textContent = String(e);
+    element.textContent = String(e.stack);
     return element;
   }
 
@@ -195,14 +195,14 @@ window.ReportRenderer = class ReportRenderer {
   }
 };
 
-// /** @typedef {{type: string, text: string|undefined, header: DetailsJSON|undefined, items: Array<DetailsJSON>|undefined}} */
-// var DetailsJSON;
-//
-// /** @typedef {{id: string, weight: number, score: number, result: {description: string, displayValue: string, helpText: string, score: number|boolean, details: DetailsJSON|undefined}}} */
-// var AuditJSON;
-//
-// /** @typedef {{name: string, weight: number, score: number, description: string, audits: Array<AuditJSON>}} */
-// var CategoryJSON;
-//
-// /** @typedef {{reportCategories: Array<CategoryJSON>}} */
-// var ReportJSON;
+/** @typedef {{type: string, text: string|undefined, header: DetailsJSON|undefined, items: Array<DetailsJSON>|undefined}} */
+let DetailsJSON;
+
+/** @typedef {{id: string, weight: number, score: number, result: {description: string, displayValue: string, helpText: string, score: number|boolean, details: DetailsJSON|undefined}}} */
+let AuditJSON;
+
+/** @typedef {{name: string, weight: number, score: number, description: string, audits: Array<AuditJSON>}} */
+let CategoryJSON;
+
+/** @typedef {{reportCategories: Array<CategoryJSON>}} */
+let ReportJSON;
