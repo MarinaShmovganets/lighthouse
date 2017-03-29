@@ -22,6 +22,7 @@ const path = require('path');
 const REPORT_TEMPLATE = fs.readFileSync(path.join(__dirname, './report-template.html'), 'utf8');
 // TODO: Setup a gulp pipeline to concat and minify the renderer files?
 const REPORT_JAVASCRIPT = fs.readFileSync(path.join(__dirname, './report-renderer.js'), 'utf8');
+const REPORT_CSS = fs.readFileSync(path.join(__dirname, './report-styles.css'), 'utf8');
 
 class ReportGeneratorV2 {
   /**
@@ -79,9 +80,11 @@ class ReportGeneratorV2 {
   generateReportHtml(reportAsJson) {
     const sanitizedJson = JSON.stringify(reportAsJson).replace(/</g, '\\u003c');
     const sanitizedJavascript = REPORT_JAVASCRIPT.replace(/<\//g, '\\u003c/');
+    const sanitizedCss = REPORT_CSS.replace(/<\//g, '\\u003c/');
     return REPORT_TEMPLATE
       .replace(/%%LIGHTHOUSE_JSON%%/, sanitizedJson)
-      .replace(/%%LIGHTHOUSE_JAVASCRIPT%%/, sanitizedJavascript);
+      .replace(/%%LIGHTHOUSE_JAVASCRIPT%%/, sanitizedJavascript)
+      .replace(/%%LIGHTHOUSE_CSS%%/, sanitizedCss);
   }
 }
 
