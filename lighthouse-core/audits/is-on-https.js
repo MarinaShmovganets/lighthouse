@@ -75,8 +75,8 @@ class HTTPS extends Audit {
       },
       details: {
         type: 'list',
-        header: { type: 'text', text: 'Insecure URLs:' },
-        items: insecureRecords.map(record => ({ type: 'text', text: record.url })),
+        header: {type: 'text', text: 'Insecure URLs:'},
+        items: insecureRecords.map(record => ({type: 'text', text: record.url})),
       }
     };
   }

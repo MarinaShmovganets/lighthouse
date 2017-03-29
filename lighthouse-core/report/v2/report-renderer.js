@@ -31,7 +31,7 @@ window.ReportRenderer = class ReportRenderer {
    */
   renderReport(report) {
     try {
-      var element = this._renderReport(report);
+      const element = this._renderReport(report);
       const pre = this._document.createElement('pre');
       pre.textContent = JSON.stringify(report, null, 2);
       element.appendChild(pre);
@@ -47,7 +47,7 @@ window.ReportRenderer = class ReportRenderer {
    * @returns {Element}
    */
   _createElement(name, className) {
-    var element = this._document.createElement(name);
+    const element = this._document.createElement(name);
     if (className)
       element.className = className;
     return element;
@@ -60,7 +60,7 @@ window.ReportRenderer = class ReportRenderer {
    * @returns {Element}
    */
   _createChild(parent, name, className) {
-    var child = this._createElement(name, className);
+    const child = this._createElement(name, className);
     parent.appendChild(child);
     return child;
   }
@@ -71,7 +71,7 @@ window.ReportRenderer = class ReportRenderer {
    * @return {Node}
    */
   _createTextChild(parent, text) {
-    var child = this._document.createTextNode(text);
+    const child = this._document.createTextNode(text);
     parent.appendChild(child);
     return child;
   }
@@ -83,13 +83,13 @@ window.ReportRenderer = class ReportRenderer {
    * @return {Element}
    */
   _renderScore(score, title, description) {
-    var element = this._createElement('div', 'lighthouse-score');
-    var value = this._createChild(element, 'div', 'lighthouse-score-value');
+    const element = this._createElement('div', 'lighthouse-score');
+    const value = this._createChild(element, 'div', 'lighthouse-score-value');
     value.textContent = score.toLocaleString(undefined, {maximumFractionDigits: 1});
     if (score <= 50)
       value.classList.add('lighthouse-score-value-failed');
 
-    var column = this._createChild(element, 'div', 'lighthouse-score-text');
+    const column = this._createChild(element, 'div', 'lighthouse-score-text');
     this._createChild(column, 'div', 'lighthouse-score-title').textContent = title;
     this._createChild(column, 'div', 'lighthouse-score-description').textContent = description;
     return element;
@@ -104,7 +104,7 @@ window.ReportRenderer = class ReportRenderer {
       case 'text': return this._renderText(details);
       case 'block': return this._renderBlock(details);
       case 'list': return this._renderList(details);
-      default: throw 'Unknown type: ' + details.type;
+      default: throw new Error('Unknown type: ' + details.type);
     }
   }
 
@@ -113,7 +113,7 @@ window.ReportRenderer = class ReportRenderer {
    * @return {Element}
    */
   _renderText(text) {
-    var element = this._createElement('div', 'lighthouse-text');
+    const element = this._createElement('div', 'lighthouse-text');
     element.textContent = text.text;
     return element;
   }
@@ -123,8 +123,8 @@ window.ReportRenderer = class ReportRenderer {
    * @return {Element}
    */
   _renderBlock(block) {
-    var element = this._createElement('div', 'lighthouse-block');
-    for (var item of block.items)
+    const element = this._createElement('div', 'lighthouse-block');
+    for (const item of block.items)
       element.appendChild(this._renderDetails(item));
     return element;
   }
@@ -134,14 +134,14 @@ window.ReportRenderer = class ReportRenderer {
    * @return {Element}
    */
   _renderList(list) {
-    var element = this._createElement('div', 'lighthouse-list');
+    const element = this._createElement('div', 'lighthouse-list');
     if (list.header) {
-      var header = this._createChild(element, 'div', 'lighthouse-list-header');
+      const header = this._createChild(element, 'div', 'lighthouse-list-header');
       header.appendChild(this._renderDetails(list.header));
       header.addEventListener('click', () => items.classList.toggle('hidden'), false);
     }
-    var items = this._createChild(element, 'div', 'lighthouse-list-items hidden');
-    for (var item of list.items)
+    const items = this._createChild(element, 'div', 'lighthouse-list-items hidden');
+    for (const item of list.items)
       items.appendChild(this._renderDetails(item));
     return element;
   }
@@ -151,8 +151,8 @@ window.ReportRenderer = class ReportRenderer {
    * @return {Element}
    */
   _renderException(e) {
-    var element = this._createElement('div', 'lighthouse-exception');
-    element.textContent = '' + e;
+    const element = this._createElement('div', 'lighthouse-exception');
+    element.textContent = String(e);
     return element;
   }
 
@@ -161,8 +161,8 @@ window.ReportRenderer = class ReportRenderer {
    * @return {Element}
    */
   _renderReport(report) {
-    var element = this._createElement('div', 'lighthouse-report');
-    for (var category of report.reportCategories)
+    const element = this._createElement('div', 'lighthouse-report');
+    for (const category of report.reportCategories)
       element.appendChild(this._renderCategory(category));
     return element;
   }
@@ -172,9 +172,9 @@ window.ReportRenderer = class ReportRenderer {
    * @return {Element}
    */
   _renderCategory(category) {
-    var element = this._createElement('div', 'lighthouse-category');
+    const element = this._createElement('div', 'lighthouse-category');
     element.appendChild(this._renderScore(category.score, category.name, category.description));
-    for (var audit of category.audits)
+    for (const audit of category.audits)
       element.appendChild(this._renderAudit(audit));
     return element;
   }
@@ -184,8 +184,8 @@ window.ReportRenderer = class ReportRenderer {
    * @return {Element}
    */
   _renderAudit(audit) {
-    var element = this._createElement('div', 'lighthouse-audit');
-    var title = audit.result.description;
+    const element = this._createElement('div', 'lighthouse-audit');
+    let title = audit.result.description;
     if (audit.result.displayValue)
       title += ': ' + audit.result.displayValue;
     element.appendChild(this._renderScore(audit.score, title, audit.result.helpText));
@@ -195,14 +195,14 @@ window.ReportRenderer = class ReportRenderer {
   }
 };
 
-/** @typedef {{type: string, text: string|undefined, header: DetailsJSON|undefined, items: Array<DetailsJSON>|undefined}} */
-var DetailsJSON;
-
-/** @typedef {{id: string, weight: number, score: number, result: {description: string, displayValue: string, helpText: string, score: number|boolean, details: DetailsJSON|undefined}}} */
-var AuditJSON;
-
-/** @typedef {{name: string, weight: number, score: number, description: string, audits: Array<AuditJSON>}} */
-var CategoryJSON;
-
-/** @typedef {{reportCategories: Array<CategoryJSON>}} */
-var ReportJSON;
+// /** @typedef {{type: string, text: string|undefined, header: DetailsJSON|undefined, items: Array<DetailsJSON>|undefined}} */
+// var DetailsJSON;
+//
+// /** @typedef {{id: string, weight: number, score: number, result: {description: string, displayValue: string, helpText: string, score: number|boolean, details: DetailsJSON|undefined}}} */
+// var AuditJSON;
+//
+// /** @typedef {{name: string, weight: number, score: number, description: string, audits: Array<AuditJSON>}} */
+// var CategoryJSON;
+//
+// /** @typedef {{reportCategories: Array<CategoryJSON>}} */
+// var ReportJSON;
