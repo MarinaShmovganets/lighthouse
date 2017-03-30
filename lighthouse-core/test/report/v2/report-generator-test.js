@@ -106,4 +106,25 @@ describe('ReportGeneratorV2', () => {
       assert.equal(result.categories[1].score, 55);
     });
   });
+
+  describe('#generateHtmlReport', () => {
+    it('should return html', () => {
+      const result = new ReportGeneratorV2().generateReportHtml({});
+      assert.ok(result.includes('doctype html'), 'includes doctype');
+      assert.ok(result.trim().match(/<\/html>$/), 'ends with HTML tag');
+    });
+
+    it('should inject the report JSON', () => {
+      const code = 'hax</script><script>console.log("pwned");';
+      const result = new ReportGeneratorV2().generateReportHtml({code});
+      assert.ok(result.includes('"code":"hax'), 'injects the json');
+      assert.ok(result.includes('\\u003c/script'), 'escapes HTML tags');
+    });
+
+    it('should inject the report renderer javascript', () => {
+      const result = new ReportGeneratorV2().generateReportHtml({});
+      assert.ok(result.includes('ReportRenderer'), 'injects the script');
+      assert.ok(result.includes('pre$`post'), 'does not break from String.replace');
+    });
+  });
 });

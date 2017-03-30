@@ -80,8 +80,8 @@ class ReportGeneratorV2 {
     const sanitizedJson = JSON.stringify(reportAsJson).replace(/</g, '\\u003c');
     const sanitizedJavascript = REPORT_JAVASCRIPT.replace(/<\//g, '\\u003c/');
     return REPORT_TEMPLATE
-      .replace(/%%LIGHTHOUSE_JSON%%/, sanitizedJson)
-      .replace(/%%LIGHTHOUSE_JAVASCRIPT%%/, sanitizedJavascript);
+      .split('%%LIGHTHOUSE_JSON%%').join(sanitizedJson)
+      .split('%%LIGHTHOUSE_JAVASCRIPT%%').join(sanitizedJavascript);
   }
 }
 
