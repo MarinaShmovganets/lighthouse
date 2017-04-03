@@ -17,7 +17,7 @@
 'use strict';
 
 /**
- * Expected Lighthouse audit values for byte efficiency tests
+ * Expected Lighthouse audit values for --perf tests
  */
 module.exports = [
   {
@@ -28,8 +28,9 @@ module.exports = [
         score: 100,
         extendedInfo: {
           value: {
-            timings: {
-            }
+            timings: {},
+            timestamps: {},
+            frames: []
           }
         }
       },
@@ -37,9 +38,8 @@ module.exports = [
         score: 100,
         extendedInfo: {
           value: {
-            foundLatencies: {
-              length: 1
-            }
+            timings: {},
+            timestamps: {}
           }
         }
       }
