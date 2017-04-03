@@ -69,10 +69,9 @@ const runLighthouse = function() {
  */
 const handleOk = function(results) {
   stopServer();
-  // TODO: use lighthouse results for checking your performance expectations
-  // e.g. process.exit(1) if score falls below a certain threshold.
-  /* eslint-disable no-console */
-  console.log(results);
+  console.log(results); // eslint-disable-line no-console
+  // TODO: use lighthouse results for checking your performance expectations.
+  // e.g. process.exit(1) or throw Error if score falls below a certain threshold.
   return results;
 };
 
@@ -82,7 +81,7 @@ const handleOk = function(results) {
 const handleError = function(e) {
   stopServer();
   console.error(e);
-  process.exit(1);
+  throw e; // Throw to exit process with status 1.
 };
 
 gulp.task('lighthouse', function() {
