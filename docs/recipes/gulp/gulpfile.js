@@ -70,21 +70,23 @@ const runLighthouse = function() {
 const handleOk = function(results) {
   stopServer();
   // TODO: use lighthouse results for checking your performance expectations
+  // e.g. process.exit(1) if score falls below a certain threshold.
   /* eslint-disable no-console */
   console.log(results);
-  process.exit(0);
+  return results;
 };
 
 /**
  * Handle error
  */
-const handleError = function() {
+const handleError = function(e) {
   stopServer();
+  console.error(e);
   process.exit(1);
 };
 
 gulp.task('lighthouse', function() {
-  launchChrome().then(_ => {
+  return launchChrome().then(_ => {
     startServer();
     return runLighthouse()
       .then(handleOk)
