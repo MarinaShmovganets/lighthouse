@@ -75,6 +75,7 @@ class Audit {
       debugString: result.debugString,
       optimalValue: result.optimalValue,
       extendedInfo: result.extendedInfo,
+      scoringMode: audit.meta.scoringMode || 'binary',
       informative: audit.meta.informative,
       name: audit.meta.name,
       category: audit.meta.category,
