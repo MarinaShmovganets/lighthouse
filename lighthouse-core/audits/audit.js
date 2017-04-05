@@ -27,12 +27,12 @@ class Audit {
   }
 
   /**
-   * @return {{Numeric: string, Binary: string}}
+   * @return {{NUMERIC: string, BINARY: string}}
    */
-  static get ScoringModes() {
+  static get SCORING_MODES() {
     return {
-      Numeric: 'numeric',
-      Binary: 'binary',
+      NUMERIC: 'numeric',
+      BINARY: 'binary',
     };
   }
 
@@ -85,7 +85,7 @@ class Audit {
       debugString: result.debugString,
       optimalValue: result.optimalValue,
       extendedInfo: result.extendedInfo,
-      scoringMode: audit.meta.scoringMode || Audit.ScoringModes.Binary,
+      scoringMode: audit.meta.scoringMode || Audit.SCORING_MODES.BINARY,
       informative: audit.meta.informative,
       name: audit.meta.name,
       category: audit.meta.category,
