@@ -32,7 +32,7 @@ class TTIMetric extends Audit {
           'enough to interact with. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive).',
       optimalValue: SCORING_TARGET.toLocaleString() + 'ms',
-      scoringMode: 'numeric',
+      scoringMode: Audit.ScoringModes.Numeric,
       requiredArtifacts: ['traces']
     };
   }

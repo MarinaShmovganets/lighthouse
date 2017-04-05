@@ -27,6 +27,16 @@ class Audit {
   }
 
   /**
+   * @return {{Numeric: string, Binary: string}}
+   */
+  static get ScoringModes() {
+    return {
+      Numeric: 'numeric',
+      Binary: 'binary',
+    };
+  }
+
+  /**
    * @throws {Error}
    */
   static get meta() {
@@ -75,7 +85,7 @@ class Audit {
       debugString: result.debugString,
       optimalValue: result.optimalValue,
       extendedInfo: result.extendedInfo,
-      scoringMode: audit.meta.scoringMode || 'binary',
+      scoringMode: audit.meta.scoringMode || Audit.ScoringModes.Binary,
       informative: audit.meta.informative,
       name: audit.meta.name,
       category: audit.meta.category,

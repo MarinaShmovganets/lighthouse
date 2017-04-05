@@ -39,7 +39,7 @@ class FirstMeaningfulPaint extends Audit {
       optimalValue: SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString() + 'ms',
       helpText: 'First meaningful paint measures when the primary content of a page is visible. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint).',
-      scoringMode: 'numeric',
+      scoringMode: Audit.ScoringModes.Numeric,
       requiredArtifacts: ['traces']
     };
   }
