@@ -105,7 +105,7 @@ class ReportRenderer {
   }
 
   /**
-   * @param {!DocumentFragment|Element} element DOM node to populate with values.
+   * @param {!DocumentFragment|!Element} element DOM node to populate with values.
    * @param {number} score
    * @param {string} scoringMode
    * @param {string} title
@@ -141,6 +141,13 @@ class ReportRenderer {
     }
     if (audit.result.optimalValue) {
       title += ` (target: ${audit.result.optimalValue})`;
+    }
+
+    // Append audit details to header section so the entire audit is within a <details>.
+    const header = tmpl.querySelector('.lighthouse-score__header');
+    header.open = audit.score < 100; // expand failed audits
+    if (audit.result.details) {
+      header.appendChild(this._renderDetails(audit.result.details));
     }
 
     return this._populateScore(tmpl, audit.score, scoringMode, title, description);
@@ -257,14 +264,6 @@ class ReportRenderer {
   _renderAudit(audit) {
     const element = this._createElement('div', 'lighthouse-audit');
     element.appendChild(this._renderAuditScore(audit));
-
-    // Append audit details to to header section so the entire audit is within one <details>.
-    const header = element.querySelector('.lighthouse-score__header');
-    header.open = audit.score < 100; // expand failed audits
-    if (audit.result.details) {
-      header.appendChild(this._renderDetails(audit.result.details));
-    }
-
     return element;
   }
 }

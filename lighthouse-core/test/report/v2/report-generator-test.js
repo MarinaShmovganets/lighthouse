@@ -150,7 +150,7 @@ describe('ReportGeneratorV2', () => {
       const page = jsdom.jsdom(new ReportGeneratorV2().generateReportHtml({}));
       const templates = jsdom.jsdom(TEMPLATES_FILE);
 
-      assert.deepEqual(page.querySelectorAll('template[id^="tmpl-"]'),
+      assert.deepStrictEqual(page.querySelectorAll('template[id^="tmpl-"]'),
           templates.querySelectorAll('template[id^="tmpl-"]'), 'all templates injected');
     });
 
