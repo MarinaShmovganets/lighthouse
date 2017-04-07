@@ -22,6 +22,7 @@ const path = require('path');
 const REPORT_TEMPLATE = fs.readFileSync(path.join(__dirname, './report-template.html'), 'utf8');
 // TODO: Setup a gulp pipeline to concat and minify the renderer files?
 const REPORT_JAVASCRIPT = fs.readFileSync(path.join(__dirname, './report-renderer.js'), 'utf8');
+const REPORT_CSS = fs.readFileSync(path.join(__dirname, './report-styles.css'), 'utf8');
 
 class ReportGeneratorV2 {
   /**
@@ -99,22 +100,22 @@ class ReportGeneratorV2 {
       const audits = category.audits.map(audit => {
         const result = resultsByAuditId[audit.id];
         // Cast to number to catch `null` and undefined when audits error
-        let score = Number(result.score) || 0;
+        let auditScore = Number(result.score) || 0;
         if (typeof result.score === 'boolean') {
-          score = result.score ? 100 : 0;
+          auditScore = result.score ? 100 : 0;
         }
 
-        return Object.assign({}, audit, {result, score});
+        return Object.assign({}, audit, {result, score: auditScore});
       });
 
-      const score = ReportGeneratorV2.arithmeticMean(audits);
-      return Object.assign({}, category, {audits, score});
+      const categoryScore = ReportGeneratorV2.arithmeticMean(audits);
+      return Object.assign({}, category, {audits, score: categoryScore});
     });
 
-    const score = ReportGeneratorV2.arithmeticMean(categories);
+    const overallScore = ReportGeneratorV2.arithmeticMean(categories);
     // TODO: remove aggregations when old report is fully replaced
     const aggregations = ReportGeneratorV2._getAggregations(categories);
-    return {score, categories, aggregations};
+    return {score: overallScore, categories, aggregations};
   }
 
   /**
@@ -129,6 +130,7 @@ class ReportGeneratorV2 {
     return ReportGeneratorV2.replaceStrings(REPORT_TEMPLATE, [
       {search: '%%LIGHTHOUSE_JSON%%', replacement: sanitizedJson},
       {search: '%%LIGHTHOUSE_JAVASCRIPT%%', replacement: sanitizedJavascript},
+      {search: '/*%%LIGHTHOUSE_CSS%%*/', replacement: REPORT_CSS},
     ]);
   }
 }

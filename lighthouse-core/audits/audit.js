@@ -27,6 +27,16 @@ class Audit {
   }
 
   /**
+   * @return {{NUMERIC: string, BINARY: string}}
+   */
+  static get SCORING_MODES() {
+    return {
+      NUMERIC: 'numeric',
+      BINARY: 'binary',
+    };
+  }
+
+  /**
    * @throws {Error}
    */
   static get meta() {
@@ -75,11 +85,13 @@ class Audit {
       debugString: result.debugString,
       optimalValue: result.optimalValue,
       extendedInfo: result.extendedInfo,
+      scoringMode: audit.meta.scoringMode || Audit.SCORING_MODES.BINARY,
       informative: audit.meta.informative,
       name: audit.meta.name,
       category: audit.meta.category,
       description: audit.meta.description,
-      helpText: audit.meta.helpText
+      helpText: audit.meta.helpText,
+      details: result.details,
     };
   }
 }

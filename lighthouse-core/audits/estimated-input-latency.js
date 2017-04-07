@@ -40,13 +40,16 @@ class EstimatedInputLatency extends Audit {
           'of latency, or less. 10% of the time a user can expect additional latency. If your ' +
           'score is higher than Lighthouse\'s target score, users may perceive your app as ' +
           'laggy. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency).',
+      scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces']
     };
   }
 
-  static calculate(speedline, model, trace) {
-    // Use speedline's first paint as start of range for input latency check.
-    const startTime = speedline.first;
+  static calculate(tabTrace, model, trace) {
+    const startTime = tabTrace.timings.firstMeaningfulPaint;
+    if (!startTime) {
+      throw new Error('No firstMeaningfulPaint event found in trace');
+    }
 
     const latencyPercentiles = TracingProcessor.getRiskToResponsiveness(model, trace, startTime);
     const ninetieth = latencyPercentiles.find(result => result.percentile === 0.9);
@@ -84,11 +87,12 @@ class EstimatedInputLatency extends Audit {
     const trace = artifacts.traces[this.DEFAULT_PASS];
 
     const pending = [
-      artifacts.requestSpeedline(trace),
+      artifacts.requestTraceOfTab(trace),
       artifacts.requestTracingModel(trace)
     ];
-    return Promise.all(pending).then(([speedline, model]) =>
-        EstimatedInputLatency.calculate(speedline, model, trace));
+    return Promise.all(pending).then(([tabTrace, model]) => {
+      return EstimatedInputLatency.calculate(tabTrace, model, trace);
+    });
   }
 }
 
