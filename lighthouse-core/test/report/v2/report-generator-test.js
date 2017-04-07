@@ -149,9 +149,8 @@ describe('ReportGeneratorV2', () => {
     it('should inject the report templates', () => {
       const page = jsdom.jsdom(new ReportGeneratorV2().generateReportHtml({}));
       const templates = jsdom.jsdom(TEMPLATES_FILE);
-
-      assert.deepStrictEqual(page.querySelectorAll('template[id^="tmpl-"]'),
-          templates.querySelectorAll('template[id^="tmpl-"]'), 'all templates injected');
+      assert.equal(page.querySelectorAll('template[id^="tmpl-"]').length,
+          templates.querySelectorAll('template[id^="tmpl-"]').length, 'all templates injected');
     });
 
     it('should inject the report CSS', () => {
