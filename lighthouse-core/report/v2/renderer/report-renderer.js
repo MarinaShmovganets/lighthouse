@@ -91,7 +91,8 @@ class ReportRenderer {
                           `lighthouse-score__value--${scoringMode}`);
 
     element.querySelector('.lighthouse-score__title').textContent = title;
-    element.querySelector('.lighthouse-score__description').textContent = description;
+    element.querySelector('.lighthouse-score__description')
+        .appendChild(this._dom.createSpanFromMarkdown(description));
 
     return element;
   }

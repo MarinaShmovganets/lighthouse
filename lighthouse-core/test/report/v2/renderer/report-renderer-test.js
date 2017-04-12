@@ -20,6 +20,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const jsdom = require('jsdom');
+const URL = require('../../../../lib/url-shim');
 const DOM = require('../../../../report/v2/renderer/dom.js');
 const DetailsRenderer = require('../../../../report/v2/renderer/details-renderer.js');
 const ReportRenderer = require('../../../../report/v2/renderer/report-renderer.js');
@@ -29,50 +30,19 @@ const TEMPLATE_FILE = fs.readFileSync(__dirname + '/../../../../report/v2/templa
 
 describe('ReportRenderer V2', () => {
   let renderer;
-  let dom;
 
   before(() => {
+    global.URL = URL;
     global.DOM = DOM;
     global.DetailsRenderer = DetailsRenderer;
     const document = jsdom.jsdom(TEMPLATE_FILE);
     renderer = new ReportRenderer(document);
-    dom = new DOM(document);
   });
 
   after(() => {
+    global.URL = undefined;
     global.DOM = undefined;
     global.DetailsRenderer = undefined;
-  });
-
-  describe('DOM', () => {
-    describe('createElement', () => {
-      it('creates a simple element using default values', () => {
-        const el = dom.createElement('div');
-        assert.equal(el.localName, 'div');
-        assert.equal(el.className, '');
-        assert.equal(el.className, el.attributes.length);
-      });
-
-      it('creates an element from parameters', () => {
-        const el = dom.createElement(
-            'div', 'class1 class2', {title: 'title attr', tabindex: 0});
-        assert.equal(el.localName, 'div');
-        assert.equal(el.className, 'class1 class2');
-        assert.equal(el.getAttribute('title'), 'title attr');
-        assert.equal(el.getAttribute('tabindex'), '0');
-      });
-    });
-
-    describe('cloneTemplate', () => {
-      it('should clone a template', () => {
-        const clone = dom.cloneTemplate('#tmpl-lighthouse-audit-score');
-        assert.ok(clone.querySelector('.lighthouse-score'));
-      });
-
-      it('fails when template cannot be found', () => {
-        assert.throws(() => dom.cloneTemplate('#unknown-selector'));
-      });
-    });
   });
 
   describe('renderReport', () => {
@@ -99,7 +69,7 @@ describe('ReportRenderer V2', () => {
       const score = auditDOM.querySelector('.lighthouse-score__value');
 
       assert.equal(title.textContent, audit.result.description);
-      assert.equal(description.textContent, audit.result.helpText);
+      assert.ok(description.querySelector('a'), 'audit help text contains coverted markdown links');
       assert.equal(score.textContent, '0');
       assert.ok(score.classList.contains('lighthouse-score__value--fail'));
       assert.ok(score.classList.contains(`lighthouse-score__value--${audit.result.scoringMode}`));
@@ -119,7 +89,7 @@ describe('ReportRenderer V2', () => {
                 'category score is numeric');
       assert.equal(value.textContent, Math.round(category.score), 'category score is rounded');
       assert.equal(title.textContent, category.name, 'title is set');
-      assert.equal(description.textContent, category.description, 'description is set');
+      assert.ok(description.querySelector('a'), 'description contains converted markdown links');
 
       const audits = categoryDOM.querySelectorAll('.lighthouse-category > .lighthouse-audit');
       assert.equal(audits.length, category.audits.length, 'renders correct number of audits');

@@ -15,6 +15,8 @@
  */
 'use strict';
 
+/* globals URL */
+
 class DOM {
   /**
    * @param {!Document} document
@@ -51,6 +53,35 @@ class DOM {
       throw new Error(`Template not found: template${selector}`);
     }
     return this._document.importNode(template.content, true);
+  }
+
+  /**
+   * @param {string} text
+   * @return {!HTMLSpanElement}
+   */
+  createSpanFromMarkdown(text) {
+    const element = this.createElement('span');
+
+    // Split on markdown links (e.g. [some link](https://...)).
+    const parts = text.split(/\[(.*?)\]\((https?:\/\/.*?)\)/g);
+
+    while (parts.length) {
+      // Pop off the same number of elements as there are capture groups.
+      const [preambleText, linkText, linkHref] = parts.splice(0, 3);
+      element.appendChild(this._document.createTextNode(preambleText));
+
+      // Append link if there are any.
+      if (linkText && linkHref) {
+        const a = this.createElement('a');
+        a.rel = 'noopener';
+        a.target = '_blank';
+        a.textContent = linkText;
+        a.href = (new URL(linkHref)).href;
+        element.appendChild(a);
+      }
+    }
+
+    return element;
   }
 }
 
