@@ -88,4 +88,4 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 /** @typedef {{type: string, text: string|undefined, header: DetailsJSON|undefined, items: Array<DetailsJSON>|undefined}} */
-let DetailsJSON; // eslint-disable-line no-unused-vars
+DetailsRenderer.DetailsJSON; // eslint-disable-line no-unused-expressions
