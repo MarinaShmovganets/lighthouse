@@ -361,25 +361,26 @@ class Config {
     const categories = {};
 
     // warn if the category is not found
-    categoryIds.forEach(category => {
-      if (!oldCategories[category]) {
-        log.warn('config', `unrecognized category: ${category}`);
+    categoryIds.forEach(categoryId => {
+      if (!oldCategories[categoryId]) {
+        log.warn('config', `unrecognized category in 'onlyCategories': ${categoryId}`);
       }
     });
 
     // warn if the audit is not found in a category
-    auditIds.forEach(audit => {
-      const foundCategory = Object.keys(oldCategories).find(category => {
-        const audits = oldCategories[category].audits;
-        return audits.find(candidate => candidate.id === audit);
+    auditIds.forEach(auditId => {
+      const foundCategory = Object.keys(oldCategories).find(categoryId => {
+        const audits = oldCategories[categoryId].audits;
+        return audits.find(candidate => candidate.id === auditId);
       });
 
       if (!foundCategory) {
-        log.warn('config', `unrecognized audit: ${audit}`);
+        log.warn('config', `unrecognized audit in 'onlyAudits': ${auditId}`);
       }
 
       if (categoryIds.includes(foundCategory)) {
-        log.warn('config', `${foundCategory} category already includes "${audit}"`);
+        log.warn('config', `${auditId} in 'onlyAudits' is already included by ` +
+            `${foundCategory} in 'onlyCategories'`);
       }
     });
 

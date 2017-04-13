@@ -319,8 +319,25 @@ describe('Config', () => {
     });
 
     assert.ok(config.audits.length, 'inherited audits by extension');
-    assert.ok(config.audits.length < origConfig.audits.length, 'filtered out audits');
+    assert.equal(config.audits.length, origConfig.categories.performance.audits.length + 1);
     assert.equal(config.passes.length, 2, 'filtered out passes');
+  });
+
+  it('warns for invalid filters', () => {
+    const warnings = [];
+    const saveWarning = evt => warnings.push(evt);
+    log.events.addListener('warning', saveWarning);
+    const config = new Config({
+      extends: true,
+      settings: {
+        onlyCategories: ['performance', 'missing-category'],
+        onlyAudits: ['time-to-interactive', 'missing-audit'],
+      },
+    });
+
+    log.events.removeListener('warning', saveWarning);
+    assert.ok(config, 'failed to generate config');
+    assert.equal(warnings.length, 3, 'did not warn enough');
   });
 
   describe('artifact loading', () => {
