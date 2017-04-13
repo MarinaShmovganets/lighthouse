@@ -248,16 +248,16 @@ body {
 }
 
 summary.lh-passed-audits-summary {
-    margin: 10px 5px;
-    font-size: 15px;
+  margin: 10px 5px;
+  font-size: 15px;
 }
 
 summary.lh-passed-audits-summary::-webkit-details-marker {
-    background: rgb(66, 175, 69);
-    color: white;
-    position:relative;
-    content: '';
-    padding: 3px;
+  background: rgb(66, 175, 69);
+  color: white;
+  position:relative;
+  content: '';
+  padding: 3px;
 }
 
 /*# sourceURL=report.styles.css */
