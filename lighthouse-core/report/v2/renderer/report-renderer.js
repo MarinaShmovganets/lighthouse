@@ -172,8 +172,8 @@ class ReportRenderer {
       element.appendChild(this._renderAudit(audit));
     }
 
-    const passedElem = this._createElement('details', 'lighthouse-category-passed');
-    const passedSummary = this._createElement('summary', 'lighthouse-cateogry-passed-summary');
+    const passedElem = this._dom.createElement('details', 'lh-passed-audits');
+    const passedSummary = this._dom.createElement('summary', 'lh-passed-audits-summary');
     passedSummary.textContent = `View ${passedAudits.length} passed items`;
     passedElem.appendChild(passedSummary);
 
