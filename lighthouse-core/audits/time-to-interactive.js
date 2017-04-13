@@ -13,9 +13,9 @@ const TracingProcessor = require('../lib/traces/tracing-processor');
 const Formatter = require('../report/formatter');
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
-//   https://www.desmos.com/calculator/jlrx14q4w8
-const SCORING_POINT_OF_DIMINISHING_RETURNS = 1700;
-const SCORING_MEDIAN = 5000;
+//   https://www.desmos.com/calculator/klsen8gqbf
+const SCORING_POINT_OF_DIMINISHING_RETURNS = 4000;
+const SCORING_MEDIAN = 10000;
 // This aligns with the external TTI targets in https://goo.gl/yXqxpL
 const SCORING_TARGET = 5000;
 

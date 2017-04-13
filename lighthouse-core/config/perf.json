@@ -8,8 +8,14 @@
       "image-usage",
       "viewport-dimensions",
       "dobetterweb/domstats",
-      "dobetterweb/tags-blocking-first-paint",
       "dobetterweb/optimized-images"
+    ]
+  }, {
+    "passName": "blocking-links",
+    "useThrottling": false,
+    "recordNetwork": true,
+    "gatherers": [
+      "dobetterweb/tags-blocking-first-paint"
     ]
   }
   ],
