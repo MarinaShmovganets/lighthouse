@@ -23,7 +23,6 @@ class DOM {
    */
   constructor(document) {
     this._document = document;
-    this.templatesContext = this._document;
   }
 
  /**
@@ -34,7 +33,8 @@ class DOM {
    *     set the attribute on the node.
    * @return {!Element}
    */
-  createElement(name, className, attrs = {}) {
+  createElement(name, className, attrs) {
+    attrs = attrs || {};
     const element = this._document.createElement(name);
     if (className) {
       element.className = className;
@@ -49,20 +49,21 @@ class DOM {
 
   /**
    * @param {string} selector
+   * @param {!Document|!Element} context
    * @return {!DocumentFragment} A clone of the template content.
    * @throws {Error}
    */
-  cloneTemplate(selector) {
-    const template = this.templatesContext.querySelector(selector);
+  cloneTemplate(selector, context) {
+    const template = context.querySelector(selector);
     if (!template) {
       throw new Error(`Template not found: template${selector}`);
     }
-    return this._document.importNode(template.content, true);
+    return /** @type {!DocumentFragment} */ (this._document.importNode(template.content, true));
   }
 
   /**
    * @param {string} text
-   * @return {!HTMLSpanElement}
+   * @return {!Element}
    */
   createSpanFromMarkdown(text) {
     const element = this.createElement('span');
@@ -87,6 +88,13 @@ class DOM {
     }
 
     return element;
+  }
+
+  /**
+   * @return {!Document}
+   */
+  document() {
+    return this._document;
   }
 }
 

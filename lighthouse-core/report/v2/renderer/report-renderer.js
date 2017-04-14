@@ -62,10 +62,12 @@ class ReportRenderer {
   constructor(dom, detailsRenderer) {
     this._dom = dom;
     this._detailsRenderer = detailsRenderer;
+
+    this._templateContext = this._dom.document();
   }
 
   /**
-   * @param {!ReportJSON} report
+   * @param {!ReportRenderer.ReportJSON} report
    * @return {!Element}
    */
   renderReport(report) {
@@ -95,15 +97,22 @@ class ReportRenderer {
     element.querySelector('.lh-score__description')
         .appendChild(this._dom.createSpanFromMarkdown(description));
 
-    return element;
+    return /** @type {!Element} **/ (element);
   }
 
   /**
-   * @param {!AuditJSON} audit
+   * @param {!Document|!Element} context
+   */
+  setTemplateContext(context) {
+    this._templateContext = context;
+  }
+
+  /**
+   * @param {!ReportRenderer.AuditJSON} audit
    * @return {!Element}
    */
   _renderAuditScore(audit) {
-    const tmpl = this._dom.cloneTemplate('#tmpl-lh-audit-score');
+    const tmpl = this._dom.cloneTemplate('#tmpl-lh-audit-score', this._templateContext);
 
     const scoringMode = audit.result.scoringMode;
     const description = audit.result.helpText;
@@ -127,11 +136,11 @@ class ReportRenderer {
   }
 
   /**
-   * @param {!CategoryJSON} category
+   * @param {!ReportRenderer.CategoryJSON} category
    * @return {!Element}
    */
   _renderCategoryScore(category) {
-    const tmpl = this._dom.cloneTemplate('#tmpl-lh-category-score');
+    const tmpl = this._dom.cloneTemplate('#tmpl-lh-category-score', this._templateContext);
     const score = Math.round(category.score);
     return this._populateScore(tmpl, score, 'numeric', category.name, category.description);
   }
@@ -147,7 +156,7 @@ class ReportRenderer {
   }
 
   /**
-   * @param {!ReportJSON} report
+   * @param {!ReportRenderer.ReportJSON} report
    * @return {!Element}
    */
   _renderReport(report) {
@@ -159,7 +168,7 @@ class ReportRenderer {
   }
 
   /**
-   * @param {!CategoryJSON} category
+   * @param {!ReportRenderer.CategoryJSON} category
    * @return {!Element}
    */
   _renderCategory(category) {
@@ -186,7 +195,7 @@ class ReportRenderer {
   }
 
   /**
-   * @param {!AuditJSON} audit
+   * @param {!ReportRenderer.AuditJSON} audit
    * @return {!Element}
    */
   _renderAudit(audit) {
@@ -202,11 +211,41 @@ if (typeof module !== 'undefined' && module.exports) {
   self.ReportRenderer = ReportRenderer;
 }
 
-/** @typedef {{id: string, weight: number, score: number, result: {description: string, displayValue: string, helpText: string, score: number|boolean, details: DetailsRenderer.DetailsJSON|DetailsRenderer.CardsDetailsJSON|undefined}}} */
-let AuditJSON; // eslint-disable-line no-unused-vars
+/**
+ * @typedef {{
+ *     id: string, weight:
+ *     number, score: number,
+ *     result: {
+ *       description: string,
+ *       displayValue: string,
+ *       helpText: string,
+ *       score: (number|boolean),
+ *       scoringMode: string,
+ *       details: (DetailsRenderer.DetailsJSON|DetailsRenderer.CardsDetailsJSON|undefined)
+ *     }
+ * }}
+ */
+ReportRenderer.AuditJSON; // eslint-disable-line no-unused-expressions
 
-/** @typedef {{name: string, weight: number, score: number, description: string, audits: Array<AuditJSON>}} */
-let CategoryJSON; // eslint-disable-line no-unused-vars
+/**
+ * @typedef {{
+ *     name: string,
+ *     weight: number,
+ *     score: number,
+ *     description: string,
+ *     audits: Array<ReportRenderer.AuditJSON>
+ * }}
+ */
+ReportRenderer.CategoryJSON; // eslint-disable-line no-unused-expressions
 
-/** @typedef {{reportCategories: Array<CategoryJSON>}} */
-let ReportJSON; // eslint-disable-line no-unused-vars
+/**
+ * @typedef {{
+ *     lighthouseVersion: !string,
+ *     generatedTime: !string,
+ *     initialUrl: !string,
+ *     url: !string,
+ *     audits: ?Object,
+ *     reportCategories: !Array<!ReportRenderer.CategoryJSON>
+ * }}
+ */
+ReportRenderer.ReportJSON; // eslint-disable-line no-unused-expressions
