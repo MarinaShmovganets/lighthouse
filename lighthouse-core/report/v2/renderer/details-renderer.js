@@ -36,7 +36,7 @@ class DetailsRenderer {
       case 'block':
         return this._renderBlock(details);
       case 'cards':
-        return this._renderCards(details);
+        return this._renderCards(/** @type {!DetailsRenderer.CardsDetailsJSON} */ (details));
       case 'list':
         return this._renderList(details);
       default:
@@ -89,7 +89,7 @@ class DetailsRenderer {
   }
 
   /**
-   * @param {!CardsDetailsJSON} details
+   * @param {!DetailsRenderer.CardsDetailsJSON} details
    * @return {!Element}
    */
   _renderCards(details) {
@@ -129,7 +129,7 @@ if (typeof module !== 'undefined' && module.exports) {
  * @typedef {{
  *     type: string,
  *     text: (string|undefined),
- *     header: (DetailsRenderer.DetailsJSON|undefined),
+ *     header: (!DetailsRenderer.DetailsJSON|undefined),
  *     items: (!Array<!DetailsRenderer.DetailsJSON>|undefined)
  * }}
  */
@@ -138,8 +138,8 @@ DetailsRenderer.DetailsJSON; // eslint-disable-line no-unused-expressions
 /** @typedef {{
  *     type: string,
  *     text: string,
- *     header: DetailsJSON,
- *     items: Array<{title: string, value: string, snippet: string|undefined, target: string}>
+ *     header: !DetailsRenderer.DetailsJSON,
+ *     items: !Array<{title: string, value: string, snippet: (string|undefined), target: string}>
  * }}
  */
 DetailsRenderer.CardsDetailsJSON; // eslint-disable-line no-unused-expressions

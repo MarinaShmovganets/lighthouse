@@ -34,14 +34,16 @@ class DOM {
    * @return {!Element}
    */
   createElement(name, className, attrs) {
+    // TODO(all): adopt `attrs` default arg when https://codereview.chromium.org/2821773002/ lands
     attrs = attrs || {};
     const element = this._document.createElement(name);
     if (className) {
       element.className = className;
     }
     Object.keys(attrs).forEach(key => {
-      if (attrs[key] !== undefined) {
-        element.setAttribute(key, attrs[key]);
+      const value = attrs[key];
+      if (typeof value !== 'undefined') {
+        element.setAttribute(key, value);
       }
     });
     return element;

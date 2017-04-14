@@ -101,6 +101,8 @@ class ReportRenderer {
   }
 
   /**
+   * Define a custom element for <templates> to be extracted from. For example:
+   *     this.setTemplateContext(new DOMParser().parseFromString(htmlStr, 'text/html'))
    * @param {!Document|!Element} context
    */
   setTemplateContext(context) {
@@ -221,7 +223,7 @@ if (typeof module !== 'undefined' && module.exports) {
  *       helpText: string,
  *       score: (number|boolean),
  *       scoringMode: string,
- *       details: (DetailsRenderer.DetailsJSON|DetailsRenderer.CardsDetailsJSON|undefined)
+ *       details: (!DetailsRenderer.DetailsJSON|!DetailsRenderer.CardsDetailsJSON|undefined)
  *     }
  * }}
  */
@@ -233,7 +235,7 @@ ReportRenderer.AuditJSON; // eslint-disable-line no-unused-expressions
  *     weight: number,
  *     score: number,
  *     description: string,
- *     audits: Array<ReportRenderer.AuditJSON>
+ *     audits: !Array<!ReportRenderer.AuditJSON>
  * }}
  */
 ReportRenderer.CategoryJSON; // eslint-disable-line no-unused-expressions
