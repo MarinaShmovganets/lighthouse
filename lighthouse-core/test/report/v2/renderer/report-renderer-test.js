@@ -94,4 +94,12 @@ describe('ReportRenderer V2', () => {
       assert.equal(audits.length, category.audits.length, 'renders correct number of audits');
     });
   });
+
+  it('can set a custom templateContext', () => {
+    assert.equal(renderer._templateContext, renderer._dom.document());
+
+    const otherDocument = jsdom.jsdom(TEMPLATE_FILE);
+    renderer.setTemplateContext(otherDocument);
+    assert.equal(renderer._templateContext, otherDocument);
+  });
 });
