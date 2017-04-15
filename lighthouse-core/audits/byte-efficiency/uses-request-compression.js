@@ -89,14 +89,6 @@ class ResponsesAreCompressed extends ByteEfficiencyAudit {
       });
     });
 
-    const tableItems = results.map(result => {
-      return [
-        {type: 'url', text: result.url},
-        {type: 'text', text: result.totalBytes},
-        {type: 'text', text: result.potentialSavings},
-      ];
-    });
-
     let debugString;
     return {
       passes: totalWastedBytes < TOTAL_WASTED_BYTES_THRESHOLD,
@@ -107,15 +99,10 @@ class ResponsesAreCompressed extends ByteEfficiencyAudit {
         totalKb: 'Original',
         potentialSavings: 'GZIP Savings',
       },
-
-      details: {
-        type: 'table',
-        header: [
-          {type: 'text', text: 'Uncompressed resource URL'},
-          {type: 'text', text: 'Original'},
-          {type: 'text', text: 'GZIP Savings'},
-        ],
-        items: tableItems
+      headings: {
+        url: {itemType: 'url', text: 'Uncompressed resource URL'},
+        totalKb: {itemType: 'text', text: 'Original'},
+        potentialSavings: {itemType: 'text', text: 'GZIP Savings'},
       }
     };
   }
