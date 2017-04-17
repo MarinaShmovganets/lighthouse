@@ -265,6 +265,16 @@ describe('Config', () => {
     }), /meta.requiredArtifacts property/);
   });
 
+  it('throws when no audits or auditResults are present', () => {
+    return assert.throws(_ => new Config({
+      categories: {
+        pwa: {
+          audits: []
+        }
+      }
+    }), /could not find audits or auditResults/);
+  });
+
   it('throws when a category references a non-existent audit', () => {
     return assert.throws(_ => new Config({
       audits: [],
@@ -288,7 +298,7 @@ describe('Config', () => {
           ]
         }
       }
-    }), /missing an audit id at index 0/);
+    }), 'missing an audit id at pwa[0]');
   });
 
   it('filters the config', () => {
