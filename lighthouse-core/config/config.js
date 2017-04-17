@@ -145,6 +145,30 @@ function validatePasses(passes, audits, rootPath) {
   });
 }
 
+function validateCategories(categories, audits) {
+  if (!categories || !audits) {
+    return;
+  }
+
+  const auditIds = new Set(audits.map(audit => audit.meta.name));
+  Object.keys(categories).forEach(categoryId => {
+    const category = categories[categoryId];
+    if (!category.audits) {
+      throw new Error(`${categoryId} category has no audits`);
+    }
+
+    category.audits.forEach((audit, index) => {
+      if (!audit.id) {
+        throw new Error(`${categoryId} category is missing an audit id at index ${index}`);
+      }
+
+      if (!auditIds.has(audit.id)) {
+        throw new Error(`could not find ${audit.id} audit`);
+      }
+    });
+  });
+}
+
 function assertValidAudit(auditDefinition, auditPath) {
   const auditName = auditPath || auditDefinition.meta.name;
 
@@ -298,6 +322,7 @@ class Config {
 
     // validatePasses must follow after audits are required
     validatePasses(configJSON.passes, this._audits, this._configDir);
+    validateCategories(configJSON.categories, this._audits);
   }
 
   /**
