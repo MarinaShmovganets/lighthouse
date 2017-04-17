@@ -145,7 +145,7 @@ function validatePasses(passes, audits, rootPath) {
   });
 }
 
-function validateCategories(categories, audits, auditResults = []) {
+function validateCategories(categories, audits, auditResults) {
   if (!categories) {
     return;
   }
