@@ -145,13 +145,9 @@ function validatePasses(passes, audits, rootPath) {
   });
 }
 
-function validateCategories(categories, audits, auditResults) {
+function validateCategories(categories, audits, auditResults = []) {
   if (!categories) {
     return;
-  }
-
-  if (!audits && !auditResults) {
-    throw new Error('could not find audits or auditResults');
   }
 
   const auditIds = audits ?
