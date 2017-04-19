@@ -23,7 +23,7 @@ module.exports = {
     "useThrottling": false,
     "gatherers": [
       "service-worker",
-      "offline"
+      "offline",
     ]
   },
   {
@@ -31,7 +31,8 @@ module.exports = {
     "useThrottling": false,
     "gatherers": [
       "http-redirect",
-      "html-without-javascript"
+      "html-without-javascript",
+      "start-url",
     ]
   }, {
     "passName": "dbw",

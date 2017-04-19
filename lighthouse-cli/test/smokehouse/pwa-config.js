@@ -42,7 +42,8 @@ module.exports = {
   {
     gatherers: [
       'dobetterweb/domstats',
-      'http-redirect'
+      'http-redirect',
+      'start-url',
     ]
   }],
 
