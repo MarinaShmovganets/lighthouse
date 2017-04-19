@@ -73,7 +73,10 @@ class ReportRenderer {
    */
   _renderReport(report) {
     const element = this._dom.createElement('div', 'lh-report');
+    const scoreHeader = element.appendChild(
+        this._dom.createElement('div', 'lh-scores-header'));
     for (const category of report.reportCategories) {
+      scoreHeader.appendChild(this._categoryRenderer.renderScoreGauge(category));
       element.appendChild(this._categoryRenderer.render(category));
     }
     return element;

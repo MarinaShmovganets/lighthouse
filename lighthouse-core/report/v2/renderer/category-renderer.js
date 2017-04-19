@@ -145,10 +145,38 @@ class CategoryRenderer {
 
   /**
    * @param {!ReportRenderer.CategoryJSON} category
+   * @return {!DocumentFragment}
+   */
+  renderScoreGauge(category) {
+    const tmpl = this._dom.cloneTemplate('#tmpl-lh-gauge', this._templateContext);
+    tmpl.querySelector('.lh-gauge__wrapper').href = `#${category.id}`;
+    tmpl.querySelector('.lh-gauge__label').textContent = category.name;
+
+    const score = Math.round(category.score);
+    const fillRotation = Math.floor((score / 100) * 180);
+
+    const gauge = tmpl.querySelector('.lh-gauge');
+    gauge.setAttribute('data-progress', score); // .dataset not supported in jsdom.
+    gauge.classList.add(`lh-gauge--${calculateRating(score)}`);
+
+    Array.from(gauge.querySelectorAll('.lh-gauge__fill')).forEach(el => {
+      el.style.transform = `rotate(${fillRotation}deg)`;
+    });
+
+    gauge.querySelector('.lh-gauge__mask--full').style.transform = `rotate(${fillRotation}deg)`;
+    gauge.querySelector('.lh-gauge__fill--fix').style.transform = `rotate(${fillRotation * 2}deg)`;
+    gauge.querySelector('.lh-gauge__percentage').textContent = score;
+
+    return tmpl;
+  }
+
+  /**
+   * @param {!ReportRenderer.CategoryJSON} category
    * @return {!Element}
    */
   render(category) {
     const element = this._dom.createElement('div', 'lh-category');
+    element.id = category.id;
     element.appendChild(this._renderCategoryScore(category));
 
     const passedAudits = category.audits.filter(audit => audit.score === 100);
