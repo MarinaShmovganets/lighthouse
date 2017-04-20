@@ -20,9 +20,7 @@
 
 const Gatherer = require('./gatherer');
 const fs = require('fs');
-const axe = fs.readFileSync(
-  require.resolve('axe-core/axe.min.js')
-);
+const axe = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 
 // This is run in the page, not Lighthouse itself.
 // axe.run returns a promise which fulfills with a results object
