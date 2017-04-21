@@ -80,7 +80,7 @@ class CategoryRenderer {
     }
 
     // Append audit details to header section so the entire audit is within a <details>.
-    const header = /** @type {!HTMLDetailsElement} */ (this._dom.find(tmpl, '.lh-score__header'));
+    const header = /** @type {!HTMLDetailsElement} */ (this._dom.find('.lh-score__header', tmpl));
     header.open = audit.score < 100; // expand failed audits
     if (audit.result.details) {
       header.appendChild(this._detailsRenderer.render(audit.result.details));
@@ -99,13 +99,13 @@ class CategoryRenderer {
    */
   _populateScore(element, score, scoringMode, title, description) {
     // Fill in the blanks.
-    const valueEl = this._dom.find(element, '.lh-score__value');
+    const valueEl = this._dom.find('.lh-score__value', element);
     valueEl.textContent = formatNumber(score);
     valueEl.classList.add(`lh-score__value--${calculateRating(score)}`,
         `lh-score__value--${scoringMode}`);
 
-    this._dom.find(element, '.lh-score__title').textContent = title;
-    this._dom.find(element, '.lh-score__description')
+    this._dom.find('.lh-score__title', element).textContent = title;
+    this._dom.find('.lh-score__description', element)
         .appendChild(this._dom.createSpanFromMarkdown(description));
 
     return /** @type {!Element} **/ (element);
