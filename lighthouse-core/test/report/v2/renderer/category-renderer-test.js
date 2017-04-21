@@ -43,8 +43,6 @@ describe('CategoryRenderer', () => {
     global.URL = undefined;
   });
 
-
-
   it('renders an audit', () => {
     const audit = sampleResults.reportCategories[0].audits[0];
     const auditDOM = renderer._renderAudit(audit);
