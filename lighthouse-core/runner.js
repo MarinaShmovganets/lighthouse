@@ -151,6 +151,7 @@ class Runner {
           artifacts: runResults.artifacts,
           runtimeConfig: Runner.getRuntimeConfig(opts.flags),
           score,
+          reportTags: config.tags,
           reportCategories,
           aggregations
         };
