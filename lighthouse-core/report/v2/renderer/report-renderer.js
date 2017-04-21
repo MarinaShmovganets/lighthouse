@@ -22,7 +22,7 @@
  * Dummy text for ensuring report robustness: </script> pre$`post %%LIGHTHOUSE_JSON%%
  */
 
-/* globals self, DOM */
+/* globals self */
 
 const RATINGS = {
   PASS: {label: 'pass', minScore: 75},
@@ -90,13 +90,13 @@ class ReportRenderer {
    */
   _populateScore(element, score, scoringMode, title, description) {
     // Fill in the blanks.
-    const valueEl = DOM.find(element, '.lh-score__value');
+    const valueEl = this._dom.find(element, '.lh-score__value');
     valueEl.textContent = formatNumber(score);
     valueEl.classList.add(`lh-score__value--${calculateRating(score)}`,
         `lh-score__value--${scoringMode}`);
 
-    DOM.find(element, '.lh-score__title').textContent = title;
-    DOM.find(element, '.lh-score__description')
+    this._dom.find(element, '.lh-score__title').textContent = title;
+    this._dom.find(element, '.lh-score__description')
         .appendChild(this._dom.createSpanFromMarkdown(description));
 
     return /** @type {!Element} **/ (element);
@@ -130,7 +130,7 @@ class ReportRenderer {
     }
 
     // Append audit details to header section so the entire audit is within a <details>.
-    const header = /** @type {!HTMLDetailsElement} */ (DOM.find(tmpl, '.lh-score__header'));
+    const header = /** @type {!HTMLDetailsElement} */ (this._dom.find(tmpl, '.lh-score__header'));
     header.open = audit.score < 100; // expand failed audits
     if (audit.result.details) {
       header.appendChild(this._detailsRenderer.render(audit.result.details));

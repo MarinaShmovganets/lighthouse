@@ -25,7 +25,7 @@
     "coverage": "node $(npm bin)/istanbul cover -x \"**/third_party/**\" _mocha -- $(find */test -name '*-test.js') --timeout 10000 --reporter progress",
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | coveralls",
     "start": "gulp && node ./lighthouse-cli/index.js",
-    "test": "npm run lint --silent && gulp && npm run unit",
+    "test": "npm run lint --silent && gulp && npm run unit && npm run closure",
     "core-unit": "bash lighthouse-core/scripts/run-mocha.sh --core",
     "cli-unit": "bash lighthouse-core/scripts/run-mocha.sh --cli",
     "viewer-unit": "bash lighthouse-core/scripts/run-mocha.sh --viewer",

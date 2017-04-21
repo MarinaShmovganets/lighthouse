@@ -33,7 +33,6 @@ describe('ReportRenderer V2', () => {
 
   before(() => {
     global.URL = URL;
-    global.DOM = DOM;
     const document = jsdom.jsdom(TEMPLATE_FILE);
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);
@@ -42,7 +41,6 @@ describe('ReportRenderer V2', () => {
 
   after(() => {
     global.URL = undefined;
-    global.DOM = undefined;
   });
 
   describe('renderReport', () => {

@@ -101,11 +101,11 @@ class DOM {
   /**
    * Guaranteed context.querySelector. Always returns an element or throws if
    * nothing matches query.
-   * @param {!DocumentFragment|!Element} context
    * @param {string} query
+   * @param {!DocumentFragment|!Element} context
    * @return {!Element}
    */
-  static find(context, query) {
+  find(context, query) {
     const result = context.querySelector(query);
     if (result === null) {
       throw new Error(`query ${query} not found`);
