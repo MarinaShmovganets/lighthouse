@@ -36,14 +36,14 @@ module.exports = {
     recordNetwork: true,
     gatherers: [
       'service-worker',
-      'offline'
+      'offline',
+      'start-url'
     ]
   },
   {
     gatherers: [
       'dobetterweb/domstats',
-      'http-redirect',
-      'start-url',
+      'http-redirect'
     ]
   }],
 

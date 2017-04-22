@@ -44,14 +44,12 @@ const wrapSendCommand = (mockDriver, url) => {
     return record.statusCode;
   };
 
-  mockDriver.sendCommand = (name) => {
-    if (name === 'Page.getAppManifest') {
-      return Promise.resolve({
-        data: '{"start_url": "' + url + '"}',
-        errors: [],
-        url,
-      });
-    }
+  mockDriver.getAppManifest = () => {
+    return Promise.resolve({
+      data: '{"start_url": "' + url + '"}',
+      errors: [],
+      url,
+    });
   };
 
   return mockDriver;
@@ -74,13 +72,16 @@ describe('Start-url gatherer', () => {
     };
 
     return Promise.all([
+      startUrlGatherer.pass(options),
+      startUrlGatherer.pass(optionsWithQueryString)
+    ]).then(_ => Promise.all([
       startUrlGatherer.afterPass(options, tracingData).then(artifact => {
         assert.strictEqual(artifact, -1);
       }),
       startUrlGatherer.afterPass(optionsWithQueryString, tracingData).then(artifact => {
         assert.strictEqual(artifact, -1);
       }),
-    ]);
+    ]));
   });
 
   it('returns an artifact set to 200 when offline loading succeeds', () => {

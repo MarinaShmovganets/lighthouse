@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,54 @@
  */
 'use strict';
 
-const ManifestGatherer = require('./manifest');
+const Gatherer = require('./gatherer');
+const URL = require('../../lib/url-shim');
+const manifestParser = require('../../lib/manifest-parser');
 
-class StartUrl extends ManifestGatherer {
-  afterPass(options) {
-    let startUrl = options.url;
+class StartUrl extends Gatherer {
+  constructor() {
+    super();
 
-    return super.afterPass(options)
+    this.startUrl = null;
+    this.err = null;
+  }
+
+  pass(options) {
+    return options.driver.getAppManifest()
+      .then(response => {
+        return manifestParser(response.data, response.url, options.url);
+      })
       .then(manifest => {
-        if (!manifest) {
-          return Promise.reject(`Unable to retrieve manifest at ${options.url}`);
+        if (!manifest.value.start_url || !manifest.value.start_url.value) {
+          throw new Error('No web app manifest found on page ${options.url}');
         }
 
-        startUrl = manifest.value.start_url.raw;
-      })
-      .then(_ => options.driver.goOffline())
-      .then(_ => options.driver.evaluateAsync(
-          `fetch('${startUrl}').then(response => response.status)
-            .catch(err => -1)`
+        this.startUrl = manifest.value.start_url.value;
+      }).then(_ => options.driver.evaluateAsync(
+          `fetch('${this.startUrl}').then(response => response.status)
+            .catch(err => err)`
       ))
-      .then(code => {
-        return options.driver.goOnline(options)
-          .then(_ => code);
+      .catch(err => {
+        this.err = err instanceof Error ? err : new Error(err);
       });
+  }
+
+  afterPass(options, tracingData) {
+    if (!this.startUrl) {
+      throw new Error('No start_url found inside the manifest');
+    }
+
+    if (!URL.originsMatch(options.url, this.startUrl)) {
+      throw new Error('start_url must be same-origin as document');
+    }
+
+    const navigationRecord = tracingData.networkRecords.filter(record => {
+      return URL.equalWithExcludedFragments(record._url, this.startUrl) &&
+        record._fetchedViaServiceWorker;
+    }).pop(); // Take the last record that matches.
+
+    return options.driver.goOnline(options)
+      .then(_ => navigationRecord ? navigationRecord.statusCode : -1);
   }
 }
 
