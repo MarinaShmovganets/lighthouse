@@ -30,10 +30,10 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       passes: [{
-        gatherers: ['https']
+        gatherers: ['theme-color']
       }],
       audits: [
-        'is-on-https'
+        'theme-color-meta'
       ]
     });
 
@@ -46,7 +46,7 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       audits: [
-        'is-on-https'
+        'theme-color-meta'
       ]
     });
 
@@ -62,20 +62,18 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       audits: [
-        'is-on-https'
+        'theme-color-meta'
       ],
 
       artifacts: {
-        HTTPS: {
-          value: true
-        }
+        ThemeColor: '#ffffff'
       }
     });
 
     return Runner.run({}, {url, config}).then(results => {
       // Mostly checking that this did not throw, but check representative values.
       assert.equal(results.initialUrl, url);
-      assert.strictEqual(results.audits['is-on-https'].rawValue, true);
+      assert.strictEqual(results.audits['theme-color-meta'].rawValue, true);
     });
   });
 
@@ -152,18 +150,18 @@ describe('Runner', () => {
       const url = 'https://example.com';
       const config = new Config({
         audits: [
-          // requires the HTTPS artifact
-          'is-on-https'
+          // requires the theme-color-meta artifact
+          'theme-color-meta'
         ],
 
         artifacts: {}
       });
 
       return Runner.run({}, {url, config}).then(results => {
-        const auditResult = results.audits['is-on-https'];
+        const auditResult = results.audits['theme-color-meta'];
         assert.strictEqual(auditResult.rawValue, null);
         assert.strictEqual(auditResult.error, true);
-        assert.ok(auditResult.debugString.includes('HTTPS'));
+        assert.ok(auditResult.debugString.includes('ThemeColor'));
       });
     });
 
@@ -174,13 +172,13 @@ describe('Runner', () => {
       const url = 'https://example.com';
       const config = new Config({
         audits: [
-          'is-on-https'
+          'theme-color-meta'
         ],
 
         artifacts: {
           // Error objects don't make it through the Config constructor due to
           // JSON.stringify/parse step, so populate with test error below.
-          HTTPS: null
+          ThemeColor: null
         }
       });
       config.artifacts.HTTPS = artifactError;
@@ -277,7 +275,7 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       passes: [{
-        gatherers: ['https']
+        gatherers: ['theme-color']
       }]
     });
 
@@ -293,7 +291,7 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       auditResults: [{
-        name: 'is-on-https',
+        name: 'theme-color-meta',
         rawValue: true,
         score: true,
         displayValue: ''
@@ -308,7 +306,7 @@ describe('Runner', () => {
           name: 'name',
           description: 'description',
           audits: {
-            'is-on-https': {
+            'theme-color-meta': {
               expectedValue: true,
               weight: 1
             }
@@ -320,7 +318,7 @@ describe('Runner', () => {
     return Runner.run(null, {url, config, driverMock}).then(results => {
       // Mostly checking that this did not throw, but check representative values.
       assert.equal(results.initialUrl, url);
-      assert.strictEqual(results.audits['is-on-https'].rawValue, true);
+      assert.strictEqual(results.audits['theme-color-meta'].rawValue, true);
     });
   });
 
@@ -328,7 +326,7 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       auditResults: [{
-        name: 'is-on-https',
+        name: 'theme-color-meta',
         rawValue: true,
         score: true,
         displayValue: ''
@@ -343,7 +341,7 @@ describe('Runner', () => {
           name: 'name',
           description: 'description',
           audits: {
-            'is-on-https': {
+            'theme-color-meta': {
               expectedValue: true,
               weight: 1
             }
@@ -356,9 +354,9 @@ describe('Runner', () => {
       assert.ok(results.lighthouseVersion);
       assert.ok(results.generatedTime);
       assert.equal(results.initialUrl, url);
-      assert.equal(results.audits['is-on-https'].name, 'is-on-https');
+      assert.equal(results.audits['theme-color-meta'].name, 'theme-color-meta');
       assert.equal(results.aggregations[0].score[0].overall, 1);
-      assert.equal(results.aggregations[0].score[0].subItems[0], 'is-on-https');
+      assert.equal(results.aggregations[0].score[0].subItems[0], 'theme-color-meta');
     });
   });
 
@@ -392,18 +390,16 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       audits: [
-        'is-on-https'
+        'theme-color-meta'
       ],
 
       artifacts: {
-        HTTPS: {
-          value: true
-        }
+        ThemeColor: '#ffffff'
       }
     });
 
     return Runner.run({}, {url, config}).then(results => {
-      assert.strictEqual(results.artifacts.HTTPS.value, true);
+      assert.strictEqual(results.artifacts.ThemeColor.value, '#ffffff');
 
       for (const method of Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
@@ -415,17 +411,17 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       passes: [{
-        gatherers: ['https']
+        gatherers: ['theme-color']
       }],
 
       audits: [
-        'is-on-https'
+        'theme-color-meta'
       ]
     });
 
     return Runner.run(null, {url, config, driverMock}).then(results => {
       // Check whether non-computedArtifacts attributes are returned
-      assert.ok(results.artifacts.HTTPS);
+      assert.ok(results.artifacts.ThemeColor);
 
       for (const method of Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
@@ -437,21 +433,19 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       auditResults: [{
-        name: 'is-on-https',
+        name: 'theme-color-meta',
         rawValue: true,
         score: true,
         displayValue: ''
       }],
 
       artifacts: {
-        HTTPS: {
-          value: true
-        }
+        ThemeColor: '#ffffff'
       }
     });
 
     return Runner.run(null, {url, config, driverMock}).then(results => {
-      assert.strictEqual(results.artifacts.HTTPS.value, true);
+      assert.strictEqual(results.artifacts.ThemeColor.value, true);
 
       for (const method of Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
