@@ -17,7 +17,7 @@
 'use strict';
 
 const Audit = require('./audit');
-const Formatter = require('../report/formatter');
+const Formatter = require('../formatters/formatter');
 const URL = require('../lib/url-shim');
 
 const SECURE_SCHEMES = ['data', 'https', 'wss'];
