@@ -52,11 +52,11 @@ gulp.task('compile-report', () => {
       'accessControls',
       'const',
       'visibility',
+      'reportUnknownTypes',
     ],
     jscomp_warning: [
       // https://github.com/google/closure-compiler/wiki/Warnings
       'checkRegExp',
-      'reportUnknownTypes',
       'missingReturn',
       'strictModuleDepCheck',
       'typeInvalidation',
