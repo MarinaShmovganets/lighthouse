@@ -30,10 +30,10 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       passes: [{
-        gatherers: ['theme-color']
+        gatherers: ['viewport-dimensions']
       }],
       audits: [
-        'theme-color-meta'
+        'content-width'
       ]
     });
 
@@ -46,7 +46,7 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       audits: [
-        'theme-color-meta'
+        'content-width'
       ]
     });
 
@@ -62,18 +62,18 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       audits: [
-        'theme-color-meta'
+        'content-width'
       ],
 
       artifacts: {
-        ThemeColor: '#ffffff'
+        ViewportDimensions: {}
       }
     });
 
     return Runner.run({}, {url, config}).then(results => {
       // Mostly checking that this did not throw, but check representative values.
       assert.equal(results.initialUrl, url);
-      assert.strictEqual(results.audits['theme-color-meta'].rawValue, true);
+      assert.strictEqual(results.audits['content-width'].rawValue, true);
     });
   });
 
@@ -150,18 +150,18 @@ describe('Runner', () => {
       const url = 'https://example.com';
       const config = new Config({
         audits: [
-          // requires the theme-color-meta artifact
-          'theme-color-meta'
+          // requires the ViewportDimensions artifact
+          'content-width'
         ],
 
         artifacts: {}
       });
 
       return Runner.run({}, {url, config}).then(results => {
-        const auditResult = results.audits['theme-color-meta'];
+        const auditResult = results.audits['content-width'];
         assert.strictEqual(auditResult.rawValue, null);
         assert.strictEqual(auditResult.error, true);
-        assert.ok(auditResult.debugString.includes('ThemeColor'));
+        assert.ok(auditResult.debugString.includes('ViewportDimensions'));
       });
     });
 
@@ -172,19 +172,19 @@ describe('Runner', () => {
       const url = 'https://example.com';
       const config = new Config({
         audits: [
-          'theme-color-meta'
+          'content-width'
         ],
 
         artifacts: {
           // Error objects don't make it through the Config constructor due to
           // JSON.stringify/parse step, so populate with test error below.
-          ThemeColor: null
+          ViewportDimensions: null
         }
       });
-      config.artifacts.HTTPS = artifactError;
+      config.artifacts.ViewportDimensions = artifactError;
 
       return Runner.run({}, {url, config}).then(results => {
-        const auditResult = results.audits['is-on-https'];
+        const auditResult = results.audits['content-width'];
         assert.strictEqual(auditResult.rawValue, null);
         assert.strictEqual(auditResult.error, true);
         assert.ok(auditResult.debugString.includes(errorMessage));
@@ -275,7 +275,7 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       passes: [{
-        gatherers: ['theme-color']
+        gatherers: ['viewport-dimensions']
       }]
     });
 
@@ -291,7 +291,7 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       auditResults: [{
-        name: 'theme-color-meta',
+        name: 'content-width',
         rawValue: true,
         score: true,
         displayValue: ''
@@ -306,7 +306,7 @@ describe('Runner', () => {
           name: 'name',
           description: 'description',
           audits: {
-            'theme-color-meta': {
+            'content-width': {
               expectedValue: true,
               weight: 1
             }
@@ -318,7 +318,7 @@ describe('Runner', () => {
     return Runner.run(null, {url, config, driverMock}).then(results => {
       // Mostly checking that this did not throw, but check representative values.
       assert.equal(results.initialUrl, url);
-      assert.strictEqual(results.audits['theme-color-meta'].rawValue, true);
+      assert.strictEqual(results.audits['content-width'].rawValue, true);
     });
   });
 
@@ -326,7 +326,7 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       auditResults: [{
-        name: 'theme-color-meta',
+        name: 'content-width',
         rawValue: true,
         score: true,
         displayValue: ''
@@ -341,7 +341,7 @@ describe('Runner', () => {
           name: 'name',
           description: 'description',
           audits: {
-            'theme-color-meta': {
+            'content-width': {
               expectedValue: true,
               weight: 1
             }
@@ -354,9 +354,9 @@ describe('Runner', () => {
       assert.ok(results.lighthouseVersion);
       assert.ok(results.generatedTime);
       assert.equal(results.initialUrl, url);
-      assert.equal(results.audits['theme-color-meta'].name, 'theme-color-meta');
+      assert.equal(results.audits['content-width'].name, 'content-width');
       assert.equal(results.aggregations[0].score[0].overall, 1);
-      assert.equal(results.aggregations[0].score[0].subItems[0], 'theme-color-meta');
+      assert.equal(results.aggregations[0].score[0].subItems[0], 'content-width');
     });
   });
 
@@ -388,18 +388,17 @@ describe('Runner', () => {
 
   it('results include artifacts when given artifacts and audits', () => {
     const url = 'https://example.com';
+    const ViewportDimensions = {innerHeight: 10, innerWidth: 10};
     const config = new Config({
       audits: [
-        'theme-color-meta'
+        'content-width'
       ],
 
-      artifacts: {
-        ThemeColor: '#ffffff'
-      }
+      artifacts: {ViewportDimensions}
     });
 
     return Runner.run({}, {url, config}).then(results => {
-      assert.strictEqual(results.artifacts.ThemeColor.value, '#ffffff');
+      assert.deepEqual(results.artifacts.ViewportDimensions, ViewportDimensions);
 
       for (const method of Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
@@ -411,17 +410,17 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       passes: [{
-        gatherers: ['theme-color']
+        gatherers: ['viewport-dimensions']
       }],
 
       audits: [
-        'theme-color-meta'
+        'content-width'
       ]
     });
 
     return Runner.run(null, {url, config, driverMock}).then(results => {
       // Check whether non-computedArtifacts attributes are returned
-      assert.ok(results.artifacts.ThemeColor);
+      assert.ok(results.artifacts.ViewportDimensions);
 
       for (const method of Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
@@ -433,19 +432,21 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       auditResults: [{
-        name: 'theme-color-meta',
+        name: 'is-on-https',
         rawValue: true,
         score: true,
         displayValue: ''
       }],
 
       artifacts: {
-        ThemeColor: '#ffffff'
+        HTTPS: {
+          value: true
+        }
       }
     });
 
     return Runner.run(null, {url, config, driverMock}).then(results => {
-      assert.strictEqual(results.artifacts.ThemeColor.value, true);
+      assert.strictEqual(results.artifacts.HTTPS.value, true);
 
       for (const method of Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
