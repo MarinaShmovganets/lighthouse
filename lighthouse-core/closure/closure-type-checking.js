@@ -52,6 +52,8 @@ gulp.task('compile-report', () => {
       'accessControls',
       'const',
       'visibility',
+
+      // This is *very* strict, so we can move back to a warning if needed.
       'reportUnknownTypes',
     ],
     jscomp_warning: [
