@@ -17,7 +17,7 @@
  :root {
   --text-font-family: '.SFNSDisplay-Regular', 'Helvetica Neue', 'Lucida Grande', sans-serif;
   --body-font-size: 13px;
-  --body-line-height: 20px;
+  --body-line-height: 1.5;
   --default-padding: 16px;
 
   --secondary-text-color: #565656;
