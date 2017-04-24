@@ -78,6 +78,46 @@ module.exports = [
         score: false
       },
       'webapp-install-banner': {
+        score: false
+      },
+      'splash-screen': {
+        score: true
+      },
+      'themed-omnibox': {
+        score: true
+      },
+      // 'cache-start-url': {
+      //   score: true
+      // }
+    }
+  },
+
+  {
+    initialUrl: 'https://www.chromestatus.com/features',
+    url: 'https://www.chromestatus.com/features',
+    audits: {
+      'dom-size': {
+        score: 100,
+        extendedInfo: {
+          value: {
+            1: {value: '20'},
+            2: {snippet: /ul.versionlist/}
+          }
+        }
+      },
+      'is-on-https': {
+        score: true
+      },
+      'redirects-http': {
+        score: true
+      },
+      'service-worker': {
+        score: true
+      },
+      'works-offline': {
+        score: true
+      },
+      'webapp-install-banner': {
         score: true
       },
       'splash-screen': {

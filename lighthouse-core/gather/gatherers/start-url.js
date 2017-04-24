@@ -44,7 +44,9 @@ class StartUrl extends Gatherer {
 
         this.startUrl = manifest.value.start_url.value;
       }).then(_ => options.driver.evaluateAsync(
-          `fetch('${this.startUrl}').then(response => response.status)`
+          `fetch('${this.startUrl}')
+            .then(response => response.status)
+            .catch(err => err)`
       ));
   }
 
@@ -53,7 +55,8 @@ class StartUrl extends Gatherer {
       return Promise.reject(new Error('No start_url found inside the manifest'));
     }
 
-    const navigationRecord = tracingData.networkRecords.filter(record => {
+    const networkRecords = tracingData.networkRecords;
+    const navigationRecord = networkRecords.filter(record => {
       return URL.equalWithExcludedFragments(record._url, this.startUrl) &&
         record._fetchedViaServiceWorker;
     }).pop(); // Take the last record that matches.

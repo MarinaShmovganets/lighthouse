@@ -51,7 +51,9 @@ describe('Manifest gatherer', () => {
     return manifestGather.afterPass({
       driver: {
         getAppManifest() {
-          return Promise.reject(new Error(`Unable to retrieve manifest at ${EXAMPLE_MANIFEST_URL}.`));
+          return Promise.reject(
+            new Error(`Unable to retrieve manifest at ${EXAMPLE_MANIFEST_URL}.`)
+          );
         }
       }
     }).then(

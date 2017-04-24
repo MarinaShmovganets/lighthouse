@@ -24,6 +24,7 @@ module.exports = {
     "gatherers": [
       "service-worker",
       "offline",
+      "start-url",
     ]
   },
   {
@@ -32,7 +33,6 @@ module.exports = {
     "gatherers": [
       "http-redirect",
       "html-without-javascript",
-      "start-url",
     ]
   }, {
     "passName": "dbw",
