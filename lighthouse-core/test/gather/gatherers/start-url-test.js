@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All rights reserved.
+ * Copyright 2017 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ const mockDriver = {
 };
 
 const wrapSendCommand = (mockDriver, url) => {
+  mockDriver = Object.assign({}, mockDriver);
   mockDriver.evaluateAsync = () => {
     url = new URL(url);
     url.hash = '';
@@ -62,6 +63,7 @@ const findRequestByUrl = (url) => {
 describe('Start-url gatherer', () => {
   it('returns an artifact set to -1 when offline loading fails', () => {
     const startUrlGatherer = new StartUrlGatherer();
+    const startUrlGathererWithQueryString = new StartUrlGatherer();
     const options = {
       url: 'https://do-not-match.com/',
       driver: wrapSendCommand(mockDriver, 'https://do-not-match.com/')
@@ -72,35 +74,70 @@ describe('Start-url gatherer', () => {
     };
 
     return Promise.all([
-      startUrlGatherer.pass(options),
-      startUrlGatherer.pass(optionsWithQueryString)
-    ]).then(_ => Promise.all([
-      startUrlGatherer.afterPass(options, tracingData).then(artifact => {
-        assert.strictEqual(artifact, -1);
-      }),
-      startUrlGatherer.afterPass(optionsWithQueryString, tracingData).then(artifact => {
-        assert.strictEqual(artifact, -1);
-      }),
-    ]));
+      startUrlGatherer.pass(options)
+        .then(_ => startUrlGatherer.afterPass(options, tracingData)),
+      startUrlGathererWithQueryString.pass(optionsWithQueryString)
+        .then(_ => startUrlGathererWithQueryString.afterPass(optionsWithQueryString, tracingData))
+    ]).then(([artifact, artifactWithQueryString]) => {
+      assert.strictEqual(artifact, -1);
+      assert.strictEqual(artifactWithQueryString, -1);
+    });
   });
 
   it('returns an artifact set to 200 when offline loading succeeds', () => {
     const startUrlGatherer = new StartUrlGatherer();
+    const startUrlGathererWithFragment = new StartUrlGatherer();
     const options = {
       url: 'https://ifixit-pwa.appspot.com/',
       driver: wrapSendCommand(mockDriver, 'https://ifixit-pwa.appspot.com/')
     };
-    const optionsWithFragment = {
+    const optionsWithQueryString = {
       url: 'https://ifixit-pwa.appspot.com/#/history',
       driver: wrapSendCommand(mockDriver, 'https://ifixit-pwa.appspot.com/#/history')
     };
+
     return Promise.all([
-      startUrlGatherer.afterPass(options, tracingData).then(artifact => {
-        assert.strictEqual(artifact, 200);
-      }),
-      startUrlGatherer.afterPass(optionsWithFragment, tracingData).then(artifact => {
-        assert.strictEqual(artifact, 200);
-      }),
-    ]);
+      startUrlGatherer.pass(options)
+        .then(_ => startUrlGatherer.afterPass(options, tracingData)),
+      startUrlGathererWithFragment.pass(optionsWithQueryString)
+        .then(_ => startUrlGathererWithFragment.afterPass(optionsWithQueryString, tracingData))
+    ]).then(([artifact, artifactWithFragment]) => {
+      assert.strictEqual(artifact, 200);
+      assert.strictEqual(artifactWithFragment, 200);
+    });
+  });
+
+  it('returns an error when manifest cannot be found', () => {
+    const startUrlGatherer = new StartUrlGatherer();
+    const options = {
+      url: 'https://ifixit-pwa.appspot.com/',
+      driver: wrapSendCommand(mockDriver, '')
+    };
+
+    startUrlGatherer.pass(options)
+      .then(_ => startUrlGatherer.afterPass(options, tracingData))
+      .then(_ => {
+        assert.ok(false, 'should fail because manifest is empty');
+      })
+      .catch(err => {
+        assert.strictEqual(err.message, `No web app manifest found on page ${options.url}`);
+      });
+  });
+
+  it('returns an error when origin is not the same', () => {
+    const startUrlGatherer = new StartUrlGatherer();
+    const options = {
+      url: 'https://ifixit-pwa.appspot.com/',
+      driver: wrapSendCommand(mockDriver, 'https://not-same-origin.com/')
+    };
+
+    startUrlGatherer.pass(options)
+      .then(_ => startUrlGatherer.afterPass(options, tracingData))
+      .then(_ => {
+        assert.ok(false, 'should fail because origin is not the same');
+      })
+      .catch(err => {
+        assert.strictEqual(err.message, 'ERROR: start_url must be same-origin as document');
+      });
   });
 });

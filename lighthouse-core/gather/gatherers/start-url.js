@@ -34,27 +34,23 @@ class StartUrl extends Gatherer {
         return manifestParser(response.data, response.url, options.url);
       })
       .then(manifest => {
-        if (!manifest.value.start_url || !manifest.value.start_url.value) {
-          throw new Error('No web app manifest found on page ${options.url}');
+        if (!manifest.value.start_url || !manifest.value.start_url.raw) {
+          return Promise.reject(new Error(`No web app manifest found on page ${options.url}`));
+        }
+
+        if (manifest.value.start_url.debugString) {
+          return Promise.reject(new Error(manifest.value.start_url.debugString));
         }
 
         this.startUrl = manifest.value.start_url.value;
       }).then(_ => options.driver.evaluateAsync(
-          `fetch('${this.startUrl}').then(response => response.status)
-            .catch(err => err)`
-      ))
-      .catch(err => {
-        this.err = err instanceof Error ? err : new Error(err);
-      });
+          `fetch('${this.startUrl}').then(response => response.status)`
+      ));
   }
 
   afterPass(options, tracingData) {
     if (!this.startUrl) {
-      throw new Error('No start_url found inside the manifest');
-    }
-
-    if (!URL.originsMatch(options.url, this.startUrl)) {
-      throw new Error('start_url must be same-origin as document');
+      return Promise.reject(new Error('No start_url found inside the manifest'));
     }
 
     const navigationRecord = tracingData.networkRecords.filter(record => {
