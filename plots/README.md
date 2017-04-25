@@ -25,5 +25,11 @@ $ npm run measure
 $ npm run analyze
 
 # View visualization
+
+# Sites by metric
 # Open index.html in browser
+
+# Metrics by site
+# Open plot-per-site.html in browser
 ```
+
