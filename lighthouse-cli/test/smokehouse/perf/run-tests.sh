@@ -9,6 +9,7 @@ expectations="lighthouse-cli/test/smokehouse/perf/expectations.js"
 save_assets=""
 
 if [[ "$CI" = true ]]; then
+  # save assets so that failures may be examined later
   save_assets="--save-assets-path=perf.json"
 fi
 
