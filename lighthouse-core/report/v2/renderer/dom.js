@@ -60,16 +60,17 @@ class DOM {
       throw new Error(`Template not found: template${selector}`);
     }
 
-    const clone = this._document.importNode(template.content, true);
+    const clone = /** @type {!DocumentFragment} */ (
+        this._document.importNode(template.content, true));
 
     // Prevent duplicate styles in the DOM. After a template has been stamped
-    // for the first time, remove its styles so they're not re-added.
-    if (template.used) {
-      Array.from(clone.querySelectorAll('style')).forEach(style => style.remove());
+    // for the first time, remove the clone's styles so they're not re-added.
+    if (template.hasAttribute('data-stamped')) {
+      this.findAll('style', clone).forEach(style => style.remove());
     }
-    template.used = true;
+    template.setAttribute('data-stamped', true);
 
-    return /** @type {!DocumentFragment} */ (clone);
+    return clone;
   }
 
   /**
@@ -121,6 +122,16 @@ class DOM {
       throw new Error(`query ${query} not found`);
     }
     return result;
+  }
+
+  /**
+   * Helper for context.querySelectorAll. Returns an Array instead of a NodeList.
+   * @param {string} query
+   * @param {!DocumentFragment|!Element} context
+   * @return {!Array<Element>}
+   */
+  findAll(query, context) {
+    return Array.from(context.querySelectorAll(query));
   }
 }
 

@@ -149,23 +149,25 @@ class CategoryRenderer {
    */
   renderScoreGauge(category) {
     const tmpl = this._dom.cloneTemplate('#tmpl-lh-gauge', this._templateContext);
-    tmpl.querySelector('.lh-gauge__wrapper').href = `#${category.id}`;
-    tmpl.querySelector('.lh-gauge__label').textContent = category.name;
+    this._dom.find('.lh-gauge__wrapper', tmpl).href = `#${category.id}`;
+    this._dom.find('.lh-gauge__label', tmpl).textContent = category.name;
 
     const score = Math.round(category.score);
     const fillRotation = Math.floor((score / 100) * 180);
 
-    const gauge = tmpl.querySelector('.lh-gauge');
+    const gauge = this._dom.find('.lh-gauge', tmpl);
     gauge.setAttribute('data-progress', score); // .dataset not supported in jsdom.
     gauge.classList.add(`lh-gauge--${calculateRating(score)}`);
 
-    Array.from(gauge.querySelectorAll('.lh-gauge__fill')).forEach(el => {
+    this._dom.findAll('.lh-gauge__fill', gauge).forEach(el => {
       el.style.transform = `rotate(${fillRotation}deg)`;
     });
 
-    gauge.querySelector('.lh-gauge__mask--full').style.transform = `rotate(${fillRotation}deg)`;
-    gauge.querySelector('.lh-gauge__fill--fix').style.transform = `rotate(${fillRotation * 2}deg)`;
-    gauge.querySelector('.lh-gauge__percentage').textContent = score;
+    this._dom.find('.lh-gauge__mask--full', gauge).style.transform =
+        `rotate(${fillRotation}deg)`;
+    this._dom.find('.lh-gauge__fill--fix', gauge).style.transform =
+        `rotate(${fillRotation * 2}deg)`;
+    this._dom.find('.lh-gauge__percentage', gauge).textContent = score;
 
     return tmpl;
   }

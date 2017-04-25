@@ -111,6 +111,7 @@ ReportRenderer.AuditJSON; // eslint-disable-line no-unused-expressions
 /**
  * @typedef {{
  *     name: string,
+ *     id: string,
  *     weight: number,
  *     score: number,
  *     description: string,
