@@ -246,7 +246,7 @@ class GatherRunner {
     const status = 'Retrieving network records';
     pass = pass.then(_ => {
       log.log('status', status);
-      return driver.endNetworkCollect();
+      return driver.endNetworkCollect(options);
     }).then(networkRecords => {
       GatherRunner.assertPageLoaded(options.url, driver, networkRecords);
 
