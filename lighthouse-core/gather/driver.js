@@ -278,11 +278,10 @@ class Driver {
         const activateCandidates = data.versions.filter(sw => {
           return sw.status !== 'redundant';
         });
-        const activeServiceWorker = activateCandidates.find(sw => {
+        const hasActiveServiceWorker = activateCandidates.find(sw => {
           return sw.status === 'activated';
         });
 
-        const hasActiveServiceWorker = activeServiceWorker;
         if (!activateCandidates.length || hasActiveServiceWorker) {
           this.off('ServiceWorker.workerVersionUpdated', versionUpdatedListener);
           this.sendCommand('ServiceWorker.disable')
