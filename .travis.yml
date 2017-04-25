@@ -12,7 +12,7 @@ cache:
      - lighthouse-extension/node_modules
      - lighthouse-viewer/node_modules
 install:
-  - npm install
+  - yarn install
   - npm run install-all
 before_script:
   - export DISPLAY=:99.0
