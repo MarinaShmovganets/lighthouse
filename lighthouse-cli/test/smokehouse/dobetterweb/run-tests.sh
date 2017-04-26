@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
 
-reset="\e[0m"
-dim="\e[2m"
-bold="\e[1m"
-
-command="node lighthouse-cli/test/fixtures/static-server.js &"
-
-echo -e $bold"dobetterweb smokehouse $reset"
-echo -e "$dim\$ $command $reset"
-eval $command
+node lighthouse-cli/test/fixtures/static-server.js &
 
 sleep 0.5s
 
