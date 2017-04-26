@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
-node lighthouse-cli/test/fixtures/static-server.js &
+reset="\e[0m"
+dim="\e[2m"
+bold="\e[1m"
+
+command="node lighthouse-cli/test/fixtures/static-server.js &"
+
+echo -e $bold"byte-efficiency smokehouse $reset"
+echo -e "$dim\$ $command $reset"
+eval $command
 
 sleep 0.5s
 
