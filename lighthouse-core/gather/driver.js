@@ -711,26 +711,20 @@ class Driver {
     });
   }
 
-  endNetworkCollect(opts = {}) {
-    const pauseAfterLoadMs = (opts.flags && opts.flags.pauseAfterLoad) || PAUSE_AFTER_LOAD;
+  endNetworkCollect() {
     return new Promise((resolve, reject) => {
-      const waitForNetworkIdle = this._waitForNetworkIdle(pauseAfterLoadMs).promise;
+      this.off('Network.requestWillBeSent', this._networkRecorder.onRequestWillBeSent);
+      this.off('Network.requestServedFromCache', this._networkRecorder.onRequestServedFromCache);
+      this.off('Network.responseReceived', this._networkRecorder.onResponseReceived);
+      this.off('Network.dataReceived', this._networkRecorder.onDataReceived);
+      this.off('Network.loadingFinished', this._networkRecorder.onLoadingFinished);
+      this.off('Network.loadingFailed', this._networkRecorder.onLoadingFailed);
+      this.off('Network.resourceChangedPriority', this._networkRecorder.onResourceChangedPriority);
 
-      waitForNetworkIdle.then(() => {
-        const networkRecorder = this._networkRecorder;
-        this.off('Network.requestWillBeSent', networkRecorder.onRequestWillBeSent);
-        this.off('Network.requestServedFromCache', networkRecorder.onRequestServedFromCache);
-        this.off('Network.responseReceived', networkRecorder.onResponseReceived);
-        this.off('Network.dataReceived', networkRecorder.onDataReceived);
-        this.off('Network.loadingFinished', networkRecorder.onLoadingFinished);
-        this.off('Network.loadingFailed', networkRecorder.onLoadingFailed);
-        this.off('Network.resourceChangedPriority', networkRecorder.onResourceChangedPriority);
+      resolve(this._networkRecords);
 
-        resolve(this._networkRecords);
-
-        this.networkRecorder = null;
-        this._networkRecords = [];
-      }).catch(err => reject(err));
+      this._networkRecorder = null;
+      this._networkRecords = [];
     });
   }
 
