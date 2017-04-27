@@ -40,7 +40,7 @@
   box-sizing: border-box;
 }
 
-body.lh-root {
+.lh-root {
   font-family: var(--text-font-family);
   font-size: var(--body-font-size);
   margin: 0;
