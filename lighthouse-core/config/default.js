@@ -330,7 +330,7 @@ module.exports = {
   }, {
       "name": "Accessibility",
       "id": "accessibility",
-      "description": "These checks highlight opportunities to improve the accessibility of your app.",
+      "description": "These checks highlight opportunities to [improve the accessibility of your app](https://developers.google.com/web/fundamentals/accessibility).",
       "scored": false,
       "categorizable": true,
       "items": [{
@@ -664,7 +664,7 @@ module.exports = {
     },
     "accessibility": {
       "name": "Accessibility",
-      "description": "These audits validate that your app [works for all users](https://developers.google.com/web/fundamentals/accessibility/).",
+      "description": "These checks highlight opportunities to [improve the accessibility of your app](https://developers.google.com/web/fundamentals/accessibility).",
       "audits": [
         {"id": "accesskeys", "weight": 1, "tags": ["a11y-correct-attributes"]},
         {"id": "aria-allowed-attr", "weight": 1, "tags": ["a11y-aria"]},

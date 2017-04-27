@@ -73,7 +73,10 @@ class ReportRenderer {
    */
   _renderReport(report) {
     const element = this._dom.createElement('div', 'lh-report');
+    const scoreHeader = element.appendChild(
+        this._dom.createElement('div', 'lh-scores-header'));
     for (const category of report.reportCategories) {
+      scoreHeader.appendChild(this._categoryRenderer.renderScoreGauge(category));
       element.appendChild(this._categoryRenderer.render(category, report.reportTags));
     }
     return element;
@@ -93,6 +96,7 @@ if (typeof module !== 'undefined' && module.exports) {
  *     score: number,
  *     result: {
  *       description: string,
+ *       debugString: string,
  *       displayValue: string,
  *       helpText: string,
  *       score: (number|boolean),
@@ -107,6 +111,7 @@ ReportRenderer.AuditJSON; // eslint-disable-line no-unused-expressions
 /**
  * @typedef {{
  *     name: string,
+ *     id: string,
  *     weight: number,
  *     score: number,
  *     description: string,
