@@ -28,6 +28,35 @@ class StartUrl extends Gatherer {
     this.err = null;
   }
 
+  executeFetchRequest(driver, url) {
+    return new Promise((resolve, reject) => {
+      let requestId;
+      const fetchRequestId = (data) => {
+        if (URL.equalWithExcludedFragments(data.request.url, url)) {
+          requestId = data.requestId;
+          driver.off('Network.requestWillBeSent', fetchRequestId);
+        }
+      };
+      const fetchDone = (data) => {
+        if (data.requestId === requestId) {
+          driver.off('Network.loadingFinished', fetchDone);
+          driver.off('Network.loadingFailed', fetchDone);
+
+          resolve();
+        }
+      };
+
+      driver.on('Network.requestWillBeSent', fetchRequestId);
+      driver.on('Network.loadingFinished', fetchDone);
+      driver.on('Network.loadingFailed', fetchDone);
+      driver.evaluateAsync(
+        `fetch('${url}')
+          .then(response => response.status)
+          .catch(err => -1)`
+      ).catch(err => reject(err));
+    });
+  }
+
   pass(options) {
     return options.driver.getAppManifest()
       .then(response => {
@@ -43,11 +72,7 @@ class StartUrl extends Gatherer {
         }
 
         this.startUrl = manifest.value.start_url.value;
-      }).then(_ => options.driver.evaluateAsync(
-          `fetch('${this.startUrl}')
-            .then(response => response.status)
-            .catch(err => err)`
-      ));
+      }).then(_ => this.executeFetchRequest(options.driver, this.startUrl));
   }
 
   afterPass(options, tracingData) {

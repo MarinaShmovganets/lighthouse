@@ -29,6 +29,7 @@ const mockDriver = {
   goOnline() {
     return Promise.resolve();
   },
+  off() {}
 };
 
 const wrapSendCommand = (mockDriver, url) => {
@@ -39,10 +40,30 @@ const wrapSendCommand = (mockDriver, url) => {
 
     const record = findRequestByUrl(url.href);
     if (!record) {
-      return -1;
+      return Promise.reject(-1);
     }
 
-    return record.statusCode;
+    return Promise.resolve(record.statusCode);
+  };
+
+  mockDriver.on = (name, cb) => {
+    if (name === 'Network.requestWillBeSent') {
+      cb({
+        request: {
+          url,
+          requestId: 1
+        }
+      });
+    }
+
+    if (name === 'Network.loadingFinished') {
+      cb({
+        request: {
+          url,
+          requestId: 1
+        }
+      });
+    }
   };
 
   mockDriver.getAppManifest = () => {
