@@ -19,13 +19,13 @@
 
 /**
  * Logs messages via a UI butter.
- * @class
  */
 class Logger {
   /**
    * @param {!Element} element
    */
   constructor(element) {
+    /** @type {!Element} */
     this.el = element;
     /** @private {?number} */
     this._id = null;
@@ -34,12 +34,10 @@ class Logger {
   /**
    * Shows a butter bar.
    * @param {!string} msg The message to show.
-   * @param {boolean=} optAutoHide True to hide the message after a duration.
+   * @param {boolean=} autoHide True to hide the message after a duration.
    *     Default is true.
    */
-  log(msg, optAutoHide) {
-    const autoHide = typeof optAutoHide === 'undefined' ? true : optAutoHide;
-
+  log(msg, autoHide = true) {
     clearTimeout(this._id);
 
     this.el.textContent = msg;

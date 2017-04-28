@@ -15,7 +15,7 @@
  */
 'use strict';
 
-/* globals self, formatNumber, calculateRating */
+/* globals self, Util */
 
 class CategoryRenderer {
   /**
@@ -75,8 +75,8 @@ class CategoryRenderer {
   _populateScore(element, score, scoringMode, title, description) {
     // Fill in the blanks.
     const valueEl = this._dom.find('.lh-score__value', element);
-    valueEl.textContent = formatNumber(score);
-    valueEl.classList.add(`lh-score__value--${calculateRating(score)}`,
+    valueEl.textContent = Util.formatNumber(score);
+    valueEl.classList.add(`lh-score__value--${Util.calculateRating(score)}`,
         `lh-score__value--${scoringMode}`);
 
     this._dom.find('.lh-score__title', element).textContent = title;
@@ -127,7 +127,7 @@ class CategoryRenderer {
 
     const gauge = this._dom.find('.lh-gauge', tmpl);
     gauge.setAttribute('data-progress', score); // .dataset not supported in jsdom.
-    gauge.classList.add(`lh-gauge--${calculateRating(score)}`);
+    gauge.classList.add(`lh-gauge--${Util.calculateRating(score)}`);
 
     this._dom.findAll('.lh-gauge__fill', gauge).forEach(el => {
       el.style.transform = `rotate(${fillRotation}deg)`;

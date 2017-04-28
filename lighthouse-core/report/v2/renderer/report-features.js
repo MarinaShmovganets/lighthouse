@@ -20,7 +20,7 @@
  * the report.
  */
 
-/* globals self URL Blob Logger CustomEvent */
+/* globals self URL Blob CustomEvent */
 
 class ReportUIFeatures {
 
@@ -38,8 +38,6 @@ class ReportUIFeatures {
     this._copyAttempt = false;
     /** @type {!Element} **/
     this.exportButton; // eslint-disable-line no-unused-expressions
-    /** @type {!Logger} **/
-    this.logger; // eslint-disable-line no-unused-expressions
 
     this.onCopy = this.onCopy.bind(this);
     this.onExportButtonClick = this.onExportButtonClick.bind(this);
@@ -52,11 +50,9 @@ class ReportUIFeatures {
    * Adds export button, print, and other functionality to the report. The method
    * should be called whenever the report needs to be re-rendered.
    * @param {!ReportRenderer.ReportJSON} report
-   * @param {!Element} container Parent element to render the report into.
    */
-  initFeatures(report, container) {
+  initFeatures(report) {
     this.json = report;
-    this._setupLogger(container);
     this._setupExportButton();
     this._setUpCollapseDetailsAfterPrinting();
     this._resetUIState();
@@ -84,16 +80,6 @@ class ReportUIFeatures {
   }
 
   /**
-   * @param {!Element} container Parent element to render the report into.
-   */
-  _setupLogger(container) {
-    const loggerEl = this._dom.createElement('div');
-    loggerEl.id = 'lh-log';
-    container.appendChild(loggerEl);
-    this.logger = new Logger(loggerEl);
-  }
-
-  /**
    * Handler copy events.
    * @param {!Event} e
    */
@@ -103,7 +89,10 @@ class ReportUIFeatures {
       // We want to write our own data to the clipboard, not the user's text selection.
       e.preventDefault();
       e.clipboardData.setData('text/plain', JSON.stringify(this.json, null, 2));
-      this.logger.log('Report JSON copied to clipboard');
+
+      this._fireEventOn('lh-log', this._document, {
+        cmd: 'log', msg: 'Report JSON copied to clipboard'
+      });
     }
 
     this._copyAttempt = false;
@@ -127,12 +116,15 @@ class ReportUIFeatures {
         // a valid text selection on the page. See http://caniuse.com/#feat=clipboard.
         if (!this._document.execCommand('copy')) {
           this._copyAttempt = false; // Prevent event handler from seeing this as a copy attempt.
-          this.logger.warn('Your browser does not support copy to clipboard.');
+
+          this._fireEventOn('lh-log', this._document, {
+            cmd: 'warn', msg: 'Your browser does not support copy to clipboard.'
+          });
         }
       }
     } catch (/** @type {!Error} */ e) {
       this._copyAttempt = false;
-      this.logger.log(e.message);
+      this._fireEventOn('lh-log', this._document, {cmd: 'log', msg: e.message});
     }
   }
 
@@ -157,7 +149,6 @@ class ReportUIFeatures {
    * be in their closed state (not opened) and the templates should be unstamped.
    */
   _resetUIState() {
-    this.logger.hide();
     this.closeExportDropdown();
     this._dom.resetTemplates();
   }
@@ -195,7 +186,9 @@ class ReportUIFeatures {
         try {
           this._saveFile(new Blob([htmlStr], {type: 'text/html'}));
         } catch (/** @type {!Error} */ e) {
-          this.logger.error('Could not export as HTML. ' + e.message);
+          this._fireEventOn('lh-log', this._document, {
+            cmd: 'error', msg: 'Could not export as HTML. ' + e.message
+          });
         }
         break;
       }

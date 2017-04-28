@@ -22,7 +22,7 @@
  * Dummy text for ensuring report robustness: </script> pre$`post %%LIGHTHOUSE_JSON%%
  */
 
-/* globals self, formatDateTime, formatNumber, calculateRating */
+/* globals self, Util */
 
 class ReportRenderer {
   /**
@@ -48,18 +48,21 @@ class ReportRenderer {
   renderReport(report, container) {
     container.textContent = ''; // Remove previous report.
 
+    let element;
     try {
-      container.appendChild(this._renderReport(report));
+      element = container.appendChild(this._renderReport(report));
 
       // Hook in JS features and page-level event listeners after the report
       // is in the document.
       if (this._uiFeatures) {
-        this._uiFeatures.initFeatures(report, container);
+        this._uiFeatures.initFeatures(report);
       }
     } catch (/** @type {!Error} */ e) {
       container.textContent = '';
-      container.appendChild(this._renderException(e));
+      element = container.appendChild(this._renderException(e));
     }
+
+    return /** @type {!Element} **/ (element);
   }
 
   /**
@@ -89,7 +92,7 @@ class ReportRenderer {
   _renderReportHeader(report) {
     const header = this._dom.cloneTemplate('#tmpl-lh-heading', this._templateContext);
     this._dom.find('.lh-config__timestamp', header).textContent =
-        formatDateTime(report.generatedTime);
+        Util.formatDateTime(report.generatedTime);
     const url = this._dom.find('.lh-metadata__url', header);
     url.href = report.url;
     url.textContent = report.url;
@@ -115,7 +118,7 @@ class ReportRenderer {
     const footer = this._dom.cloneTemplate('#tmpl-lh-footer', this._templateContext);
     this._dom.find('.lh-footer__version', footer).textContent = report.lighthouseVersion;
     this._dom.find('.lh-footer__timestamp', footer).textContent =
-        formatDateTime(report.generatedTime);
+        Util.formatDateTime(report.generatedTime);
     return footer;
   }
 
@@ -138,8 +141,8 @@ class ReportRenderer {
 
       this._dom.find('.leftnav-item__category', navItem).textContent = category.name;
       const score = this._dom.find('.leftnav-item__score', navItem);
-      score.classList.add(`lh-score__value--${calculateRating(category.score)}`);
-      score.textContent = Math.round(formatNumber(category.score));
+      score.classList.add(`lh-score__value--${Util.calculateRating(category.score)}`);
+      score.textContent = Math.round(Util.formatNumber(category.score));
       nav.appendChild(navItem);
     }
     return leftNav;

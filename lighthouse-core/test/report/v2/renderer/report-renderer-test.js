@@ -20,11 +20,10 @@
 const assert = require('assert');
 const fs = require('fs');
 const jsdom = require('jsdom');
-const helpers = require('../../../../report/v2/renderer/format-helpers.js');
+const Util = require('../../../../report/v2/renderer/util.js');
 const URL = require('../../../../lib/url-shim');
 const DOM = require('../../../../report/v2/renderer/dom.js');
 const DetailsRenderer = require('../../../../report/v2/renderer/details-renderer.js');
-const Logger = require('../../../../report/v2/renderer/logger.js');
 const ReportUIFeatures = require('../../../../report/v2/renderer/report-features.js');
 const CategoryRenderer = require('../../../../report/v2/renderer/category-renderer.js');
 const ReportRenderer = require('../../../../report/v2/renderer/report-renderer.js');
@@ -37,9 +36,8 @@ describe('ReportRenderer V2', () => {
 
   before(() => {
     global.URL = URL;
-    global.Logger = Logger;
+    global.Util = Util;
     global.ReportUIFeatures = ReportUIFeatures;
-    Object.keys(helpers).forEach(key => global[key] = helpers[key]);
 
     // Stub out matchMedia for Node.
     global.matchMedia = function() {
@@ -60,10 +58,9 @@ describe('ReportRenderer V2', () => {
   after(() => {
     global.self = undefined;
     global.URL = undefined;
-    global.Logger = undefined;
+    global.Util = undefined;
     global.ReportUIFeatures = undefined;
     global.matchMedia = undefined;
-    Object.keys(helpers).forEach(key => global[key] = undefined);
   });
 
   describe('renderReport', () => {
@@ -126,7 +123,7 @@ describe('ReportRenderer V2', () => {
       const scores = header.querySelectorAll('.leftnav-item__score');
       sampleResults.reportCategories.forEach((cat, i) => {
         assert.equal(categories[i].textContent, cat.name);
-        assert.equal(scores[i].textContent, Math.round(helpers.formatNumber(cat.score)));
+        assert.equal(scores[i].textContent, Math.round(Util.formatNumber(cat.score)));
       });
     });
 

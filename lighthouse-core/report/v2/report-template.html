@@ -30,6 +30,8 @@ limitations under the License.
 
   <main><!-- report populated here --></main>
 
+  <div id="lh-log"></div>
+
   <script>%%LIGHTHOUSE_JAVASCRIPT%%</script>
   <script>window.__LIGHTHOUSE_JSON__ = %%LIGHTHOUSE_JSON%%;</script>
   <script>
@@ -45,8 +47,27 @@ limitations under the License.
     });
 
     document.addEventListener('lh-analytics', e => {
-      if (ga) {
+      if (window.ga) {
         ga(e.detail.cmd, e.detail.fields);
+      }
+    });
+
+    document.addEventListener('lh-log', e => {
+      const logger = new Logger(document.querySelector('#lh-log'));
+
+      switch (e.detail.cmd) {
+        case 'log':
+          logger.log(e.detail.msg);
+          break;
+        case 'warn':
+          logger.warn(e.detail.msg);
+          break;
+        case 'error':
+          logger.error(e.detail.msg);
+          break;
+        case 'hide':
+          logger.hide();
+          break;
       }
     });
   </script>

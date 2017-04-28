@@ -16,30 +16,30 @@
 'use strict';
 
 const assert = require('assert');
-const helpers = require('../../../../report/v2/renderer/format-helpers.js');
+const Util = require('../../../../report/v2/renderer/util.js');
 const sampleResults = require('../../../results/sample_v2.json');
 
 /* eslint-env mocha */
 
-describe('format-helpers', () => {
+describe('util helpers', () => {
   it('formats a number', () => {
-    assert.strictEqual(helpers.formatNumber(10), '10');
-    assert.strictEqual(helpers.formatNumber(100.01), '100');
-    assert.strictEqual(helpers.formatNumber(13000.456), '13,000.5');
+    assert.strictEqual(Util.formatNumber(10), '10');
+    assert.strictEqual(Util.formatNumber(100.01), '100');
+    assert.strictEqual(Util.formatNumber(13000.456), '13,000.5');
   });
 
   it('formats a date', () => {
-    const timestamp = helpers.formatDateTime(sampleResults.generatedTime);
+    const timestamp = Util.formatDateTime(sampleResults.generatedTime);
     assert.ok(timestamp.includes('Apr 5, 2017'));
   });
 
   it('calculates a score ratings', () => {
-    assert.equal(helpers.calculateRating(0), 'fail');
-    assert.equal(helpers.calculateRating(10), 'fail');
-    assert.equal(helpers.calculateRating(45), 'average');
-    assert.equal(helpers.calculateRating(55), 'average');
-    assert.equal(helpers.calculateRating(75), 'pass');
-    assert.equal(helpers.calculateRating(80), 'pass');
-    assert.equal(helpers.calculateRating(100), 'pass');
+    assert.equal(Util.calculateRating(0), 'fail');
+    assert.equal(Util.calculateRating(10), 'fail');
+    assert.equal(Util.calculateRating(45), 'average');
+    assert.equal(Util.calculateRating(55), 'average');
+    assert.equal(Util.calculateRating(75), 'pass');
+    assert.equal(Util.calculateRating(80), 'pass');
+    assert.equal(Util.calculateRating(100), 'pass');
   });
 });
