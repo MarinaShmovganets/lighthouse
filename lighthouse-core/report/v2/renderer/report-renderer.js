@@ -227,7 +227,7 @@ ReportRenderer.TagJSON; // eslint-disable-line no-unused-expressions
  *     initialUrl: string,
  *     url: string,
  *     reportCategories: !Array<!ReportRenderer.CategoryJSON>,
- *     reportTags: !Object<string, !ReportRenderer.TagJSON>
+ *     reportTags: !Object<string, !ReportRenderer.TagJSON>,
  *     runtimeConfig: {
  *       blockedUrlPatterns: !Array<string>,
  *       environment: !Array<{description: string, enabled: boolean, name: string}>
