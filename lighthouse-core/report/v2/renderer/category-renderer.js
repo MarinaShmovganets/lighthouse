@@ -15,37 +15,7 @@
  */
 'use strict';
 
-/* globals self */
-
-const RATINGS = {
-  PASS: {label: 'pass', minScore: 75},
-  AVERAGE: {label: 'average', minScore: 45},
-  FAIL: {label: 'fail'}
-};
-
-/**
- * Convert a score to a rating label.
- * @param {number} score
- * @return {string}
- */
-function calculateRating(score) {
-  let rating = RATINGS.FAIL.label;
-  if (score >= RATINGS.PASS.minScore) {
-    rating = RATINGS.PASS.label;
-  } else if (score >= RATINGS.AVERAGE.minScore) {
-    rating = RATINGS.AVERAGE.label;
-  }
-  return rating;
-}
-
-/**
- * Format number.
- * @param {number} number
- * @return {string}
- */
-function formatNumber(number) {
-  return number.toLocaleString(undefined, {maximumFractionDigits: 1});
-}
+/* globals self, Util */
 
 class CategoryRenderer {
   /**
@@ -105,8 +75,8 @@ class CategoryRenderer {
   _populateScore(element, score, scoringMode, title, description) {
     // Fill in the blanks.
     const valueEl = this._dom.find('.lh-score__value', element);
-    valueEl.textContent = formatNumber(score);
-    valueEl.classList.add(`lh-score__value--${calculateRating(score)}`,
+    valueEl.textContent = Util.formatNumber(score);
+    valueEl.classList.add(`lh-score__value--${Util.calculateRating(score)}`,
         `lh-score__value--${scoringMode}`);
 
     this._dom.find('.lh-score__title', element).textContent = title;
@@ -157,7 +127,7 @@ class CategoryRenderer {
 
     const gauge = this._dom.find('.lh-gauge', tmpl);
     gauge.setAttribute('data-progress', score); // .dataset not supported in jsdom.
-    gauge.classList.add(`lh-gauge--${calculateRating(score)}`);
+    gauge.classList.add(`lh-gauge--${Util.calculateRating(score)}`);
 
     this._dom.findAll('.lh-gauge__fill', gauge).forEach(el => {
       el.style.transform = `rotate(${fillRotation}deg)`;
@@ -236,7 +206,7 @@ class CategoryRenderer {
 
     const auditGroupSummary = this._dom.createElement('summary',
           'lh-audit-group__summary lh-expandable-details__summary');
-    const auditGroupArrow = this._dom.createElement('div', 'lh-expandable-details__arrow', {
+    const auditGroupArrow = this._dom.createElement('div', '.lh-toggle-arrow', {
       title: 'See audits',
     });
     auditGroupSummary.appendChild(auditGroupHeader);
@@ -255,6 +225,7 @@ class CategoryRenderer {
    */
   _renderAccessibilityCategory(category, tags) {
     const element = this._dom.createElement('div', 'lh-category');
+    element.id = category.id;
     element.appendChild(this._renderCategoryScore(category));
 
     const auditsGroupedByTag = category.audits.reduce((indexed, audit) => {
