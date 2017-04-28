@@ -291,6 +291,38 @@ describe('Config', () => {
     }), 'missing an audit id at pwa[0]');
   });
 
+  it('throws when an accessibility audit does not have a tag', () => {
+    return assert.throws(_ => new Config({
+      audits: ['accessibility/color-contrast'],
+      categories: {
+        accessibility: {
+          audits: [
+            {id: 'color-contrast'}
+          ]
+        }
+      }
+    }), /does not have exactly 1 tag/);
+  });
+
+  it('throws when an audit references an unknown tag', () => {
+    return assert.throws(_ => new Config({
+      tags: {
+        'tag-a': {
+          title: 'Tag A',
+          description: 'The best tag a around.',
+        },
+      },
+      audits: ['first-meaningful-paint'],
+      categories: {
+        pwa: {
+          audits: [
+            {id: 'first-meaningful-paint', tags: ['tag-a', 'missing-tag']}
+          ]
+        }
+      }
+    }), /unknown tag missing-tag/);
+  });
+
   it('filters the config', () => {
     const config = new Config({
       settings: {

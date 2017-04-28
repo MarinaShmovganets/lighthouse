@@ -280,7 +280,7 @@ summary {
   flex: 1;
 }
 
-.lh-expandable-details[open] .lh-toggle-arrow {
+.lh-expandable-details[open] > .lh-expandable-details__summary > .lh-toggle-arrow {
   transform: rotateZ(90deg);
 }
 

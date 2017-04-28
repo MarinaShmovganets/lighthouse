@@ -145,7 +145,7 @@ function validatePasses(passes, audits, rootPath) {
   });
 }
 
-function validateCategories(categories, audits, auditResults) {
+function validateCategories(categories, audits, auditResults, tags) {
   if (!categories) {
     return;
   }
@@ -161,6 +161,18 @@ function validateCategories(categories, audits, auditResults) {
 
       if (!auditIds.includes(audit.id)) {
         throw new Error(`could not find ${audit.id} audit for category ${categoryId}`);
+      }
+
+      if (categoryId === 'accessibility' && (!audit.tags || audit.tags.length !== 1)) {
+        throw new Error(`${audit.id} accessibility audit does not have exactly 1 tag`);
+      }
+
+      if (audit.tags) {
+        audit.tags.forEach(tag => {
+          if (!tags[tag]) {
+            throw new Error(`${audit.id} references unknown tag ${tag}`);
+          }
+        });
       }
     });
   });
@@ -320,7 +332,7 @@ class Config {
 
     // validatePasses must follow after audits are required
     validatePasses(configJSON.passes, this._audits, this._configDir);
-    validateCategories(configJSON.categories, this._audits, this._auditResults);
+    validateCategories(configJSON.categories, this._audits, this._auditResults, this._tags);
   }
 
   /**
@@ -570,7 +582,7 @@ class Config {
     return this._categories;
   }
 
-  /** @type {Object<string, {title: string, description: string}>} */
+  /** @type {Object<string, {title: string, description: string}>|undefined} */
   get tags() {
     return this._tags;
   }
