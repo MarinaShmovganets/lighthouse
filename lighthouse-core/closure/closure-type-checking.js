@@ -32,8 +32,7 @@ gulp.task('compile-report', () => {
   return gulp.src([
     // externs
     'closure/third_party/commonjs.js',
-    'closure/third_party/google_universal_analytics_api.js',
-
+    'lib/filer-namer.js',
     'report/v2/renderer/*.js',
   ])
 

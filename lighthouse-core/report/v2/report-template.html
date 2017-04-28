@@ -45,8 +45,8 @@ limitations under the License.
     });
 
     document.addEventListener('lh-analytics', e => {
-      if (self.ga) {
-        self.ga(e.detail.cmd, e.detail.fields);
+      if (ga) {
+        ga(e.detail.cmd, e.detail.fields);
       }
     });
   </script>

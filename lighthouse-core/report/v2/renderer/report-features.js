@@ -15,6 +15,11 @@
  */
 'use strict';
 
+/**
+ * @fileoverview Adds export button, print, and other dynamic functionality to
+ * the report.
+ */
+
 /* globals self URL Blob Logger CustomEvent */
 
 class ReportUIFeatures {
@@ -23,17 +28,18 @@ class ReportUIFeatures {
    * @param {!DOM} dom
    */
   constructor(dom) {
-    this.json = null;
+    /** @type {!ReportRenderer.ReportJSON} */
+    this.json; // eslint-disable-line no-unused-expressions
     /** @private {!DOM} */
     this._dom = dom;
     /** @private {!Document} */
     this._document = this._dom.document();
     /** @private {boolean} */
     this._copyAttempt = false;
-    /** @type {Element} **/
-    this.exportButton = null;
-    /** @type {Logger} **/
-    this.logger = null;
+    /** @type {!Element} **/
+    this.exportButton; // eslint-disable-line no-unused-expressions
+    /** @type {!Logger} **/
+    this.logger; // eslint-disable-line no-unused-expressions
 
     this.onCopy = this.onCopy.bind(this);
     this.onExportButtonClick = this.onExportButtonClick.bind(this);
@@ -61,7 +67,7 @@ class ReportUIFeatures {
   /**
    * Fires a custom DOM event on target.
    * @param {string} name Name of the event.
-   * @param {!Document|!Element} target DOM node to fire the event on.
+   * @param {!Node=} target DOM node to fire the event on.
    * @param {Object<{detail: Object<string, *>}>=} detail Custom data to include.
    */
   _fireEventOn(name, target = this._document, detail) {
@@ -105,6 +111,7 @@ class ReportUIFeatures {
 
   /**
    * Copies the report JSON to the clipboard (if supported by the browser).
+   * @suppress {reportUnknownTypes}
    */
   onCopyButtonClick() {
     this._fireEventOn('lh-analytics', this._document, {
@@ -147,15 +154,12 @@ class ReportUIFeatures {
   /**
    * Resets the state of page before capturing the page for export.
    * When the user opens the exported HTML page, certain UI elements should
-   * be in their open state (not opened) and the templates should be refreshly
-   * stamped.
+   * be in their closed state (not opened) and the templates should be unstamped.
    */
   _resetUIState() {
     this.logger.hide();
     this.closeExportDropdown();
-    this._dom.findAll('template[data-stamped]', this._document).forEach(t => {
-      t.removeAttribute('data-stamped');
-    });
+    this._dom.resetTemplates();
   }
 
   /**
@@ -174,9 +178,6 @@ class ReportUIFeatures {
     switch (el.getAttribute('data-action')) {
       case 'copy':
         this.onCopyButtonClick();
-        break;
-      case 'open-viewer':
-        this.sendJSONReport();
         break;
       case 'print':
         this.expandAllDetails();
@@ -212,34 +213,6 @@ class ReportUIFeatures {
     if (e.keyCode === 27) { // ESC
       this.closeExportDropdown();
     }
-  }
-
-  /**
-   * Opens a new tab to the online viewer and sends the local page's JSON results
-   * to the online viewer using postMessage.
-   */
-  sendJSONReport() {
-    const VIEWER_ORIGIN = 'https://googlechrome.github.io';
-    const VIEWER_URL = `${VIEWER_ORIGIN}/lighthouse/viewer/`;
-
-    // Chrome doesn't allow us to immediately postMessage to a popup right
-    // after it's created. Normally, we could also listen for the popup window's
-    // load event, however it is cross-domain and won't fire. Instead, listen
-    // for a message from the target app saying "I'm open".
-    self.addEventListener('message', function msgHandler(/** @type {!Event} */ evt) {
-      const e = /** @type {!MessageEvent} */ (evt);
-
-      if (e.origin !== VIEWER_ORIGIN) {
-        return;
-      }
-
-      if (e.data['opened']) {
-        popup.postMessage({lhresults: this.json}, VIEWER_ORIGIN);
-        self.removeEventListener('message', msgHandler);
-      }
-    }.bind(this));
-
-    const popup = self.open(VIEWER_URL, '_blank');
   }
 
   /**
@@ -304,7 +277,7 @@ class ReportUIFeatures {
     const ext = blob.type.match('json') ? '.json' : '.html';
     const href = URL.createObjectURL(blob);
 
-    const a = this._dom.createElement('a');
+    const a = /** @type {!HTMLAnchorElement} */ (this._dom.createElement('a'));
     a.download = `${filename}${ext}`;
     a.href = href;
     this._document.body.appendChild(a); // Firefox requires anchor to be in the DOM.

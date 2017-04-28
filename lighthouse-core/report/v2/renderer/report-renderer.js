@@ -44,14 +44,12 @@ class ReportRenderer {
   /**
    * @param {!ReportRenderer.ReportJSON} report
    * @param {!Element} container Parent element to render the report into.
-   * @return {!Element}
    */
   renderReport(report, container) {
     container.textContent = ''; // Remove previous report.
 
-    let element;
     try {
-      element = container.appendChild(this._renderReport(report));
+      container.appendChild(this._renderReport(report));
 
       // Hook in JS features and page-level event listeners after the report
       // is in the document.
@@ -60,10 +58,8 @@ class ReportRenderer {
       }
     } catch (/** @type {!Error} */ e) {
       container.textContent = '';
-      element = container.appendChild(this._renderException(e));
+      container.appendChild(this._renderException(e));
     }
-
-    return /** @type {!Element} **/ (element);
   }
 
   /**
