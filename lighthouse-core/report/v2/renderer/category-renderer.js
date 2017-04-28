@@ -206,7 +206,7 @@ class CategoryRenderer {
 
     const auditGroupSummary = this._dom.createElement('summary',
           'lh-audit-group__summary lh-expandable-details__summary');
-    const auditGroupArrow = this._dom.createElement('div', '.lh-toggle-arrow', {
+    const auditGroupArrow = this._dom.createElement('div', 'lh-toggle-arrow', {
       title: 'See audits',
     });
     auditGroupSummary.appendChild(auditGroupHeader);
