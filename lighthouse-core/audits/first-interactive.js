@@ -60,7 +60,6 @@ class FirstInteractiveMetric extends Audit {
           score,
           rawValue: firstInteractive.timeInMs,
           displayValue: `${displayValue.toLocaleString()}ms`,
-          optimalValue: this.meta.optimalValue,
           extendedInfo: {
             value: firstInteractive,
             formatter: Formatter.SUPPORTED_FORMATS.NULL,

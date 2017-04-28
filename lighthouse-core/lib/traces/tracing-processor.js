@@ -248,14 +248,11 @@ class TraceProcessor {
     const startEvent = trace.traceEvents.find(event => event.name === 'TracingStartedInPage');
     const mainThread = TraceProcessor._findMainThreadFromIds(model, startEvent.pid, startEvent.tid);
 
-    const events = mainThread.sliceGroup.slices.filter(slice => {
+    return mainThread.sliceGroup.slices.filter(slice => {
       return slice.title === SCHEDULABLE_TASK_TITLE &&
           slice.end > startTime &&
           slice.start < endTime;
     });
-
-    events.sort((a, b) => a.start - b.start);
-    return events;
   }
 
   /**

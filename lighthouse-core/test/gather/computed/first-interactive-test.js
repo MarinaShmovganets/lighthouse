@@ -18,24 +18,50 @@
 const FirstInteractive = require('../../../gather/computed/first-interactive');
 const firstInteractive = new FirstInteractive();
 const TracingProcessor = require('../../../lib/traces/tracing-processor.js');
+const Runner = require('../../../runner.js');
+
+const tooShortTrace = require('../../fixtures/traces/progressive-app.json');
+const acceptableTrace = require('../../fixtures/traces/progressive-app-m60.json');
 
 const assert = require('assert');
 
 /* eslint-env mocha */
 describe('FirstInteractive computed artifact:', () => {
-  let mainThreadEvents;
-  let originalMainThreadEventsFunc;
+  let computedArtifacts;
 
-  before(() => {
-    originalMainThreadEventsFunc = TracingProcessor.getMainThreadTopLevelEvents;
-    TracingProcessor.getMainThreadTopLevelEvents = () => mainThreadEvents;
+  beforeEach(() => {
+    computedArtifacts = Runner.instantiateComputedArtifacts();
   });
 
-  after(() => {
-    TracingProcessor.getMainThreadTopLevelEvents = originalMainThreadEventsFunc;
+  it('throws on short traces', () => {
+    return firstInteractive.compute_({traceEvents: tooShortTrace}, computedArtifacts).then(() => {
+      assert.ok(false, 'should have thrown for short trace');
+    }).catch(err => {
+      assert.equal(err.message, 'trace not at least 5 seconds longer than FMP');
+    });
+  });
+
+  it('should compute firstInteractive', () => {
+    return firstInteractive.compute_(acceptableTrace, computedArtifacts).then(output => {
+      assert.equal(Math.round(output.timeInMs), 1052);
+      assert.ok(output.timestamp, 'output is missing timestamp');
+    });
   });
 
   describe('#computeWithArtifacts', () => {
+    let mainThreadEvents;
+    let originalMainThreadEventsFunc;
+
+    before(() => {
+      originalMainThreadEventsFunc = TracingProcessor.getMainThreadTopLevelEvents;
+      TracingProcessor.getMainThreadTopLevelEvents = () => mainThreadEvents
+          .map(evt => Object.assign(evt, {duration: evt.end - evt.start}));
+    });
+
+    after(() => {
+      TracingProcessor.getMainThreadTopLevelEvents = originalMainThreadEventsFunc;
+    });
+
     it('should throw when trace is not long enough after FMP', () => {
       assert.throws(() => {
         firstInteractive.computeWithArtifacts({}, {}, {
@@ -69,7 +95,7 @@ describe('FirstInteractive computed artifact:', () => {
     });
 
     it('should not return a time earlier than FMP', () => {
-      mainThreadEvents = [{start: 1000, end: 2400}];
+      mainThreadEvents = [];
 
       const result = firstInteractive.computeWithArtifacts({}, {}, {
         timings: {
@@ -83,6 +109,23 @@ describe('FirstInteractive computed artifact:', () => {
       });
 
       assert.equal(result.timeInMs, 3400);
+    });
+
+    it('should return DCL when DCL is after FMP', () => {
+      mainThreadEvents = [];
+
+      const result = firstInteractive.computeWithArtifacts({}, {}, {
+        timings: {
+          firstMeaningfulPaint: 3400,
+          domContentLoaded: 7000,
+          traceEnd: 12000,
+        },
+        timestamps: {
+          navigationStart: 0,
+        },
+      });
+
+      assert.equal(result.timeInMs, 7000);
     });
 
     it('should return DCL when DCL is after interactive', () => {
@@ -108,7 +151,7 @@ describe('FirstInteractive computed artifact:', () => {
       mainThreadEvents = [
         {start: 4000, end: 4200},
         {start: 9000, end: 9500},
-        {start: 12000, end: 12100}, // lonely task
+        {start: 12000, end: 12100}, // light task
       ];
 
       const result = firstInteractive.computeWithArtifacts({}, {}, {
@@ -156,29 +199,40 @@ describe('FirstInteractive computed artifact:', () => {
       assert.equal(result, 15000);
     });
 
-    it('should allow lonely tasks', () => {
+    it('should allow light task clusters', () => {
       const longTasks = [
         {start: 2200, end: 10000},
         {start: 11000, end: 11500},
 
-        // first lonely task group
+        // first light task cluster
         {start: 12750, end: 12825},
         {start: 12850, end: 12930},
         {start: 12935, end: 12990},
 
-        // second lonely task group
+        // second light task cluster
         {start: 14000, end: 14200},
       ];
       const result = FirstInteractive.findQuietWindow(5000, 60000, longTasks);
       assert.equal(result, 11500);
     });
 
-    it('should not allow lonely tasks in the first 5s after FMP', () => {
+    it('should allow heavy clusters after a long quiet period', () => {
+      const longTasks = [
+        {start: 5000, end: 5100},
+        {start: 10500, end: 12000},
+        {start: 12500, end: 16500},
+      ];
+
+      const result = FirstInteractive.findQuietWindow(5000, 60000, longTasks);
+      assert.equal(result, 5100);
+    });
+
+    it('should not allow tasks in the first 5s after FMP to be light', () => {
       const longTasks = [
         {start: 2200, end: 10000},
         {start: 11000, end: 11500},
 
-        // first lonely task group
+        // first light task cluster
         {start: 12750, end: 12825},
         {start: 12850, end: 12930},
         {start: 12935, end: 12990},
@@ -188,12 +242,12 @@ describe('FirstInteractive computed artifact:', () => {
       assert.equal(result, 12990);
     });
 
-    it('should not allow large tasks in lonely group', () => {
+    it('should not allow large tasks in light cluster', () => {
       const longTasks = [
         {start: 2200, end: 10000},
         {start: 11000, end: 11500},
 
-        // first lonely task group
+        // first light task cluster
         {start: 12750, end: 12825},
         {start: 12850, end: 12930},
         {start: 12935, end: 12990},
@@ -203,6 +257,27 @@ describe('FirstInteractive computed artifact:', () => {
 
       const result = FirstInteractive.findQuietWindow(5000, 60000, longTasks);
       assert.equal(result, 17000);
+    });
+
+    it('should not allow start of cluster to be first quiet', () => {
+      const longTasks = [
+        {start: 10000, end: 10500},
+        {start: 10600, end: 10700},
+      ];
+
+      const result = FirstInteractive.findQuietWindow(5000, 60000, longTasks);
+      assert.equal(result, 10700);
+    });
+
+    it('should not allow heavy clusters at the very end of a window', () => {
+      const longTasks = [
+        {start: 5000, end: 5100},
+        {start: 10050, end: 10100},
+        {start: 10500, end: 16500},
+      ];
+
+      const result = FirstInteractive.findQuietWindow(5000, 60000, longTasks);
+      assert.equal(result, 16500);
     });
 
     it('should throw when long tasks are too close to traceEnd', () => {
