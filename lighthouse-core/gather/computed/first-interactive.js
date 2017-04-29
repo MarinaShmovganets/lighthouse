@@ -94,7 +94,7 @@ class FirstInteractive extends ComputedArtifact {
     // task from 15.5-16s, we need that later task to be clustered with the first so we can properly
     // identify that main thread isn't quiet.
     const clusteringWindowEnd = windowEnd + MIN_TASK_CLUSTER_PADDING;
-    const isInClusteringWindow = task => task && task.start < clusteringWindowEnd;
+    const isInClusteringWindow = task => task.start < clusteringWindowEnd;
     for (let i = startIndex; i < tasks.length; i++) {
       if (!isInClusteringWindow(tasks[i])) {
         break;

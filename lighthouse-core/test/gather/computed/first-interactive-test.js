@@ -34,7 +34,7 @@ describe('FirstInteractive computed artifact:', () => {
   });
 
   it('throws on short traces', () => {
-    return firstInteractive.compute_({traceEvents: tooShortTrace}, computedArtifacts).then(() => {
+    return computedArtifacts.requestFirstInteractive({traceEvents: tooShortTrace}).then(() => {
       assert.ok(false, 'should have thrown for short trace');
     }).catch(err => {
       assert.equal(err.message, 'trace not at least 5 seconds longer than FMP');
@@ -42,7 +42,7 @@ describe('FirstInteractive computed artifact:', () => {
   });
 
   it('should compute firstInteractive', () => {
-    return firstInteractive.compute_(acceptableTrace, computedArtifacts).then(output => {
+    return computedArtifacts.requestFirstInteractive(acceptableTrace).then(output => {
       assert.equal(Math.round(output.timeInMs), 1052);
       assert.ok(output.timestamp, 'output is missing timestamp');
     });

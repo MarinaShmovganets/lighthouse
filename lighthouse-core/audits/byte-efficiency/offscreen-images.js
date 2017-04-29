@@ -101,7 +101,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
   static audit_(artifacts) {
     const images = artifacts.ImageUsage;
     const viewportDimensions = artifacts.ViewportDimensions;
-    const trace = artifacts.traces[Audit.DEFAULT_PASS];
+    const trace = artifacts.traces[ByteEfficiencyAudit.DEFAULT_PASS];
 
     let debugString;
     const resultsMap = images.reduce((results, image) => {
