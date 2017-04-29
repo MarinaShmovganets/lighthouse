@@ -43,8 +43,3 @@ echo -e "\033[32m ✓\033[39m Report renderer files copied."
 # copy lighthouse-background (potentially stale)
 cp -pPR "$lh_bg_js" "$lh_worker_dir/lighthouse-background.js"
 echo -e "\033[96m ✓\033[39m (Potentially stale) lighthouse-background copied."
-
-# browserify a fresh lighthouse-background and copy again
-gulp --cwd "lighthouse-extension" browserify-lighthouse
-cp -pPR "$lh_bg_js" "$lh_worker_dir/lighthouse-background.js"
-echo -e "\033[32m ✓\033[39m Fresh lighthouse-background copied."
