@@ -82,21 +82,7 @@ describe('Config', () => {
       audits: []
     };
 
-    return new Promise((resolve, reject) => {
-      const warningListener = function(args) {
-        const warningMsg = args[1];
-        const isMatch = new RegExp(`overwrite.+${unlikelyPassName}`).test(warningMsg);
-        if (isMatch) {
-          log.events.removeListener('warning', warningListener);
-          resolve();
-        } else {
-          reject(isMatch);
-        }
-      };
-      log.events.addListener('warning', warningListener);
-
-      const _ = new Config(configJson);
-    });
+    assert.throws(_ => new Config(configJson), /unique/);
   });
 
   it('warns when traced twice with no passNames specified', () => {
@@ -109,18 +95,7 @@ describe('Config', () => {
       audits: []
     };
 
-    return new Promise((resolve, reject) => {
-      const warningListener = function(args) {
-        const warningMsg = args[1];
-        if (new RegExp(`overwrite.+${Audit.DEFAULT_PASS}`).test(warningMsg)) {
-          log.events.removeListener('warning', warningListener);
-          resolve();
-        }
-      };
-      log.events.addListener('warning', warningListener);
-
-      const _ = new Config(configJson);
-    });
+    assert.throws(_ => new Config(configJson), /unique/);
   });
 
   it('throws for unknown gatherers', () => {
@@ -298,7 +273,7 @@ describe('Config', () => {
       },
       passes: [
         {recordTrace: true, gatherers: []},
-        {gatherers: ['accessibility']},
+        {passName: 'a11y', gatherers: ['accessibility']},
       ],
       audits: [
         'accessibility/color-contrast',

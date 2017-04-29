@@ -129,13 +129,12 @@ function validatePasses(passes, audits, rootPath) {
     });
   });
 
-  // Passes should have unique passName's. Warn otherwise.
+  // Passes must have unique `passName`s. Throw otherwise.
   const usedNames = new Set();
-  passes.forEach((pass, index) => {
+  passes.forEach(pass => {
     const passName = pass.passName || Audit.DEFAULT_PASS;
     if (usedNames.has(passName)) {
-      log.warn('config', `passes[${index}] may overwrite trace ` +
-          ` of earlier pass without a unique passName (repeated name: ${passName}.`);
+      throw new Error(`Passes must have unique names (repeated passName: ${passName}.`);
     }
     usedNames.add(passName);
   });
