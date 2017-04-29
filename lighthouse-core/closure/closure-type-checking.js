@@ -33,12 +33,18 @@ gulp.task('compile-report', () => {
     // externs
     'closure/third_party/commonjs.js',
 
+    'lib/file-namer.js',
     'report/v2/renderer/*.js',
   ])
 
   // Ignore `module.exports` and `self.ClassName = ClassName` statements.
   .pipe(replace(/^\s\smodule\.exports = \w+;$/gm, ';'))
   .pipe(replace(/^\s\sself\.(\w+) = \1;$/gm, ';'))
+
+  // Remove node-specific code from file-namer so it can be included in report.
+  .pipe(replace(/^\s\smodule\.exports = {\w+};$/gm, ';'))
+  .pipe(replace('require(\'./url-shim\');', 'null;'))
+  .pipe(replace('(URLConstructor || URL)', 'URL'))
 
   .pipe(closureCompiler({
     compilation_level: 'SIMPLE',
