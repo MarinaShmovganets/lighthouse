@@ -87,6 +87,7 @@ class GatherRunner {
       .then(_ => options.config.recordTrace && driver.beginTrace(options.flags))
       // Network is always recorded for gatherer use
       .then(_ => driver.beginNetworkCollect(options))
+      .then(_ => driver.beginDevtoolsLog())
       // Navigate.
       .then(_ => driver.gotoURL(options.url, {
         waitForLoad: true,
@@ -245,6 +246,7 @@ class GatherRunner {
     const status = 'Retrieving network records';
     pass = pass.then(_ => {
       log.log('status', status);
+      driver.endDevtoolsLog();
       return driver.endNetworkCollect();
     }).then(networkRecords => {
       GatherRunner.assertPageLoaded(options.url, driver, networkRecords);

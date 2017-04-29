@@ -50,6 +50,8 @@ function getMockedEmulationDriver(emulationFn, netThrottleFn, cpuThrottleFn, blo
   const Driver = require('../../gather/driver');
   const Connection = require('../../gather/connections/connection');
   const EmulationDriver = class extends Driver {
+    beginDevtoolsLog() { }
+    endDevtoolsLog() { }
     enableRuntimeEvents() {
       return Promise.resolve();
     }
@@ -97,6 +99,8 @@ describe('GatherRunner', function() {
       gotoURL() {
         return Promise.resolve(true);
       },
+      beginDevtoolsLog() { },
+      endDevtoolsLog() { },
       beginNetworkCollect() {
         return Promise.resolve();
       }
@@ -324,6 +328,8 @@ describe('GatherRunner', function() {
   it('tells the driver to begin tracing', () => {
     let calledTrace = false;
     const driver = {
+      beginDevtoolsLog() { },
+      endDevtoolsLog() { },
       beginTrace() {
         calledTrace = true;
         return Promise.resolve();
@@ -374,6 +380,8 @@ describe('GatherRunner', function() {
   it('tells the driver to begin network collection', () => {
     let calledNetworkCollect = false;
     const driver = {
+      beginDevtoolsLog() { },
+      endDevtoolsLog() { },
       beginNetworkCollect() {
         calledNetworkCollect = true;
         return Promise.resolve();
