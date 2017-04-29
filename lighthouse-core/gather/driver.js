@@ -833,6 +833,16 @@ class Driver {
     const promiseArr = urlPatterns.map(url => this.sendCommand('Network.addBlockedURL', {url}));
     return Promise.all(promiseArr);
   }
+
+  handleJavaScriptDialogs() {
+    this.sendCommand('Page.enable');
+    this.on('Page.javascriptDialogOpening', _ => {
+      this.sendCommand('Page.handleJavaScriptDialog', {
+        accept: true,
+        promptText: ' ',
+      });
+    });
+  }
 }
 
 /**
