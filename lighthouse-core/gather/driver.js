@@ -834,12 +834,18 @@ class Driver {
     return Promise.all(promiseArr);
   }
 
-  handleJavaScriptDialogs() {
-    this.sendCommand('Page.enable');
-    this.on('Page.javascriptDialogOpening', _ => {
-      this.sendCommand('Page.handleJavaScriptDialog', {
-        accept: true,
-        promptText: ' ',
+  /**
+   * Dismiss JavaScript dialogs (alert, confirm, prompt), providing a
+   * generic promptText in case the dialog is a prompt.
+   * @return {!Promise}
+   */
+  dismissJavaScriptDialogs() {
+    return this.sendCommand('Page.enable').then(_ => {
+      this.once('Page.javascriptDialogOpening', _ => {
+        this.sendCommand('Page.handleJavaScriptDialog', {
+          accept: true,
+          promptText: 'Lighthouse prompt response',
+        });
       });
     });
   }
