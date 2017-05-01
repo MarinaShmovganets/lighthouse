@@ -22,8 +22,6 @@ module.exports = {
   getUserAgent() {
     return Promise.resolve('Fake user agent');
   },
-  beginDevtoolsLog() { },
-  endDevtoolsLog() { },
   connect() {
     return Promise.resolve();
   },
