@@ -95,7 +95,7 @@ describe('Config', () => {
       audits: []
     };
 
-    assert.throws(_ => new Config(configJson), /unique/);
+    assert.throws(_ => new Config(configJson), /requires a passName/);
   });
 
   it('throws for unknown gatherers', () => {

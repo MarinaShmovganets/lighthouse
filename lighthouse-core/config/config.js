@@ -131,8 +131,18 @@ function validatePasses(passes, audits, rootPath) {
 
   // Passes must have unique `passName`s. Throw otherwise.
   const usedNames = new Set();
-  passes.forEach(pass => {
-    const passName = pass.passName || Audit.DEFAULT_PASS;
+  let defaultUsed = false;
+  passes.forEach((pass, index) => {
+    let passName = pass.passName;
+    if (!passName) {
+      if (defaultUsed) {
+        throw new Error(`passes[${index}] requires a passName`);
+      }
+
+      passName = Audit.DEFAULT_PASS;
+      defaultUsed = true;
+    }
+
     if (usedNames.has(passName)) {
       throw new Error(`Passes must have unique names (repeated passName: ${passName}.`);
     }
