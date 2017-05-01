@@ -144,13 +144,13 @@ class CategoryRenderer {
 
   /**
    * @param {!ReportRenderer.CategoryJSON} category
-   * @param {!Object<string, !ReportRenderer.TagJSON>} tags
+   * @param {!Object<string, !ReportRenderer.GroupJSON>} groups
    * @return {!Element}
    */
-  render(category, tags) {
+  render(category, groups) {
     switch (category.id) {
       case 'accessibility':
-        return this._renderAccessibilityCategory(category, tags);
+        return this._renderAccessibilityCategory(category, groups);
       default:
         return this._renderDefaultCategory(category);
     }
@@ -191,18 +191,18 @@ class CategoryRenderer {
 
   /**
    * @param {!Array<!ReportRenderer.AuditJSON>} audits
-   * @param {!ReportRenderer.TagJSON} tag
+   * @param {!ReportRenderer.GroupJSON} group
    * @return {!Element}
    */
-  _renderAuditGroup(audits, tag) {
+  _renderAuditGroup(audits, group) {
     const auditGroupElem = this._dom.createElement('details',
           'lh-audit-group lh-expandable-details');
     const auditGroupHeader = this._dom.createElement('div',
           'lh-audit-group__header lh-expandable-details__header');
-    auditGroupHeader.textContent = tag.title;
+    auditGroupHeader.textContent = group.title;
 
     const auditGroupDescription = this._dom.createElement('div', 'lh-audit-group__description');
-    auditGroupDescription.textContent = tag.description;
+    auditGroupDescription.textContent = group.description;
 
     const auditGroupSummary = this._dom.createElement('summary',
           'lh-audit-group__summary lh-expandable-details__summary');
@@ -220,17 +220,17 @@ class CategoryRenderer {
 
   /**
    * @param {!ReportRenderer.CategoryJSON} category
-   * @param {!Object<string, !ReportRenderer.TagJSON>} tags
+   * @param {!Object<string, !ReportRenderer.GroupJSON>} groups
    * @return {!Element}
    */
-  _renderAccessibilityCategory(category, tags) {
+  _renderAccessibilityCategory(category, groupDefinitions) {
     const element = this._dom.createElement('div', 'lh-category');
     element.id = category.id;
     element.appendChild(this._renderCategoryScore(category));
 
-    const auditsGroupedByTag = category.audits.reduce((indexed, audit) => {
-      const tagId = audit.tags[0];
-      const groups = indexed[tagId] || {passed: [], failed: []};
+    const auditsGroupedByGroup = category.audits.reduce((indexed, audit) => {
+      const groupId = audit.group;
+      const groups = indexed[groupId] || {passed: [], failed: []};
 
       if (audit.score === 100) {
         groups.passed.push(audit);
@@ -238,22 +238,22 @@ class CategoryRenderer {
         groups.failed.push(audit);
       }
 
-      indexed[tagId] = groups;
+      indexed[groupId] = groups;
       return indexed;
     }, {});
 
     const passedElements = [];
-    Object.keys(auditsGroupedByTag).forEach(tagId => {
-      const tag = tags[tagId];
-      const groups = auditsGroupedByTag[tagId];
+    Object.keys(auditsGroupedByGroup).forEach(groupId => {
+      const group = groupDefinitions[groupId];
+      const groups = auditsGroupedByGroup[groupId];
       if (groups.failed.length) {
-        const auditGroupElem = this._renderAuditGroup(groups.failed, tag);
+        const auditGroupElem = this._renderAuditGroup(groups.failed, group);
         auditGroupElem.open = true;
         element.appendChild(auditGroupElem);
       }
 
       if (groups.passed.length) {
-        const auditGroupElem = this._renderAuditGroup(groups.passed, tag);
+        const auditGroupElem = this._renderAuditGroup(groups.passed, group);
         passedElements.push(auditGroupElem);
       }
     });

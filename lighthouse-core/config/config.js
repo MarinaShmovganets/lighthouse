@@ -145,7 +145,7 @@ function validatePasses(passes, audits, rootPath) {
   });
 }
 
-function validateCategories(categories, audits, auditResults, tags) {
+function validateCategories(categories, audits, auditResults, groups) {
   if (!categories) {
     return;
   }
@@ -163,16 +163,12 @@ function validateCategories(categories, audits, auditResults, tags) {
         throw new Error(`could not find ${audit.id} audit for category ${categoryId}`);
       }
 
-      if (categoryId === 'accessibility' && (!audit.tags || audit.tags.length !== 1)) {
-        throw new Error(`${audit.id} accessibility audit does not have exactly 1 tag`);
+      if (categoryId === 'accessibility' && !audit.group) {
+        throw new Error(`${audit.id} accessibility audit does not have a group`);
       }
 
-      if (audit.tags) {
-        audit.tags.forEach(tag => {
-          if (!tags[tag]) {
-            throw new Error(`${audit.id} references unknown tag ${tag}`);
-          }
-        });
+      if (audit.group && !groups[audit.group]) {
+        throw new Error(`${audit.id} references unknown group ${audit.group}`);
       }
     });
   });
@@ -328,11 +324,11 @@ class Config {
     this._audits = Config.requireAudits(configJSON.audits, this._configDir);
     this._artifacts = expandArtifacts(configJSON.artifacts);
     this._categories = configJSON.categories;
-    this._tags = configJSON.tags;
+    this._groups = configJSON.groups;
 
     // validatePasses must follow after audits are required
     validatePasses(configJSON.passes, this._audits, this._configDir);
-    validateCategories(configJSON.categories, this._audits, this._auditResults, this._tags);
+    validateCategories(configJSON.categories, this._audits, this._auditResults, this._groups);
   }
 
   /**
@@ -583,8 +579,8 @@ class Config {
   }
 
   /** @type {Object<string, {title: string, description: string}>|undefined} */
-  get tags() {
-    return this._tags;
+  get groups() {
+    return this._groups;
   }
 }
 

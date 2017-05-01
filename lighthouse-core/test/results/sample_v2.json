@@ -1,7 +1,7 @@
 {
   "userAgent": "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) AppleWebKit/537.36(KHTML, like Gecko) Chrome/59.0.3033.0 Mobile Safari/537.36",
   "lighthouseVersion": "2.0.0-alpha.1",
-  "generatedTime": "2017-04-28T23:07:51.189Z",
+  "generatedTime": "2017-05-01T22:31:16.245Z",
   "initialUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "audits": {
@@ -88,21 +88,21 @@
       "helpText": "Your app should display some content when JavaScript is disabled, even if it's just a warning to the user that JavaScript is required to use the app. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/no-js)."
     },
     "first-meaningful-paint": {
-      "score": 72,
-      "displayValue": "2958.8ms",
-      "rawValue": 2958.8,
+      "score": 74,
+      "displayValue": "2898.2ms",
+      "rawValue": 2898.2,
       "optimalValue": "1,600ms",
       "extendedInfo": {
         "value": {
           "timestamps": {
-            "navStart": 84944562719,
-            "fCP": 84947521491,
-            "fMP": 84947521500
+            "navStart": 116142036337,
+            "fCP": 116144934531,
+            "fMP": 116144934538
           },
           "timings": {
             "navStart": 0,
-            "fCP": 2958.772,
-            "fMP": 2958.781
+            "fCP": 2898.194,
+            "fMP": 2898.201
           }
         },
         "formatter": "null"
@@ -122,23 +122,22 @@
         "value": {
           "areLatenciesAll3G": true,
           "allRequestLatencies": [
-            154.14699999382674,
-            154.66600000217994,
-            211.82799999951365,
-            218.14499999163624,
-            223.612999994657,
-            213.30700001271902,
-            154.9539999978156,
-            171.46399999910497,
-            171.58099998778198,
-            2011.511999997309,
-            2206.4079999981936,
-            155.83600000536498,
-            214.81999999377888,
-            151.3059999997492
+            151.57499999622814,
+            157.12699999858143,
+            213.550999993458,
+            217.45199999713822,
+            228.59500000777214,
+            151.88200000557072,
+            206.05799999611898,
+            156.58999999868698,
+            157.266000009258,
+            2011.1069999984454,
+            2207.6920000108666,
+            158.08399999514248,
+            213.4119999973339
           ],
           "isFast": true,
-          "timeToInteractive": 2984.218
+          "timeToInteractive": 2918.407
         }
       },
       "scoringMode": "binary",
@@ -148,32 +147,32 @@
       "helpText": "Satisfied if the _Time To Interactive_ duration is shorter than _10 seconds_, as defined by the [PWA Baseline Checklist](https://developers.google.com/web/progressive-web-apps/checklist). Network throttling is required (specifically: RTT latencies >= 150 RTT are expected)."
     },
     "speed-index-metric": {
-      "score": 81,
-      "displayValue": "2989",
-      "rawValue": 2989,
+      "score": 82,
+      "displayValue": "2923",
+      "rawValue": 2923,
       "optimalValue": "1,250",
       "extendedInfo": {
         "formatter": "speedline",
         "value": {
           "timings": {
-            "firstVisualChange": 2989,
-            "visuallyComplete": 2989,
-            "speedIndex": 2989.2430000007153,
-            "perceptualSpeedIndex": 2989.2430000007153
+            "firstVisualChange": 2922,
+            "visuallyComplete": 2922,
+            "speedIndex": 2922.946000009775,
+            "perceptualSpeedIndex": 2922.946000009775
           },
           "timestamps": {
-            "firstVisualChange": 84947546694,
-            "visuallyComplete": 84947546694,
-            "speedIndex": 84947546937,
-            "perceptualSpeedIndex": 84947546937
+            "firstVisualChange": 116144953798,
+            "visuallyComplete": 116144953798,
+            "speedIndex": 116144954744,
+            "perceptualSpeedIndex": 116144954744
           },
           "frames": [
             {
-              "timestamp": 84944557.694,
+              "timestamp": 116142031.798,
               "progress": 0
             },
             {
-              "timestamp": 84947546.937,
+              "timestamp": 116144954.744,
               "progress": 100
             }
           ]
@@ -206,11 +205,11 @@
           },
           {
             "percentile": 0.99,
-            "time": 16.461652799925798
+            "time": 16.31384681796759
           },
           {
             "percentile": 1,
-            "time": 24.74499999999898
+            "time": 22.604999995113758
           }
         ],
         "formatter": "null"
@@ -222,47 +221,47 @@
       "helpText": "The score above is an estimate of how long your app takes to respond to user input, in milliseconds. There is a 90% probability that a user encounters this amount of latency, or less. 10% of the time a user can expect additional latency. If your score is higher than Lighthouse's target score, users may perceive your app as laggy. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency)."
     },
     "time-to-interactive": {
-      "score": 82,
-      "displayValue": "2984.2ms",
-      "rawValue": 2984.2,
+      "score": 83,
+      "displayValue": "2918.4ms",
+      "rawValue": 2918.4,
       "optimalValue": "5,000ms",
       "extendedInfo": {
         "value": {
           "timings": {
-            "onLoad": 2966.259000003338,
-            "fMP": 2958.781,
-            "visuallyReady": 2984.218,
-            "timeToInteractive": 2984.218,
-            "timeToInteractiveB": 2958.7810000032187,
-            "timeToInteractiveC": 2958.7810000032187,
-            "endOfTrace": 8649.224000006914
+            "onLoad": 2905.877000004053,
+            "fMP": 2898.201,
+            "visuallyReady": 2918.407,
+            "timeToInteractive": 2918.407,
+            "timeToInteractiveB": 2898.201000005007,
+            "timeToInteractiveC": 2898.201000005007,
+            "endOfTrace": 8424.498999997973
           },
           "timestamps": {
-            "onLoad": 84947528978,
-            "fMP": 84947521500,
-            "visuallyReady": 84947546937,
-            "timeToInteractive": 84947546937,
-            "timeToInteractiveB": 84947521500,
-            "timeToInteractiveC": 84947521500,
-            "endOfTrace": 84953211943
+            "onLoad": 116144942214,
+            "fMP": 116144934538,
+            "visuallyReady": 116144954744,
+            "timeToInteractive": 116144954744,
+            "timeToInteractiveB": 116144934538,
+            "timeToInteractiveC": 116144934538,
+            "endOfTrace": 116150460836
           },
           "latencies": {
             "timeToInteractive": [
               {
                 "estLatency": 16,
-                "startTime": "2984.2"
+                "startTime": "2918.4"
               }
             ],
             "timeToInteractiveB": [
               {
                 "estLatency": 16,
-                "startTime": "2958.8"
+                "startTime": "2898.2"
               }
             ],
             "timeToInteractiveC": [
               {
                 "estLatency": 16,
-                "startTime": "2958.8"
+                "startTime": "2898.2"
               }
             ]
           },
@@ -300,121 +299,121 @@
         "formatter": "critical-request-chains",
         "value": {
           "chains": {
-            "33160.1": {
+            "80262.1": {
               "request": {
                 "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
-                "startTime": 84944.56468,
-                "endTime": 84944.762882,
-                "responseReceivedTime": 84944.720611,
+                "startTime": 116142.038233,
+                "endTime": 116142.233289,
+                "responseReceivedTime": 116142.190414,
                 "transferSize": 10248
               },
               "children": {
-                "33160.3": {
+                "80262.3": {
                   "request": {
                     "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
-                    "startTime": 84944.763368,
-                    "endTime": 84944.926974,
-                    "responseReceivedTime": 84944.92649,
+                    "startTime": 116142.226583,
+                    "endTime": 116142.384611,
+                    "responseReceivedTime": 116142.384137,
                     "transferSize": 859
                   },
                   "children": {}
                 },
-                "33160.4": {
+                "80262.4": {
                   "request": {
                     "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
-                    "startTime": 84944.763652,
-                    "endTime": 84944.984878,
-                    "responseReceivedTime": 84944.983773,
+                    "startTime": 116142.227322,
+                    "endTime": 116142.442419,
+                    "responseReceivedTime": 116142.441297,
                     "transferSize": 139
                   },
                   "children": {}
                 },
-                "33160.6": {
+                "80262.6": {
                   "request": {
                     "url": "http://localhost:10200/dobetterweb/dbw_disabled.css?delay=200",
-                    "startTime": 84944.764309,
-                    "endTime": 84944.990843,
-                    "responseReceivedTime": 84944.990465,
+                    "startTime": 116142.228163,
+                    "endTime": 116142.448269,
+                    "responseReceivedTime": 116142.447848,
                     "transferSize": 1146
                   },
                   "children": {}
                 },
-                "33160.7": {
+                "80262.7": {
                   "request": {
                     "url": "http://localhost:10200/dobetterweb/dbw_partial_a.html?delay=200",
-                    "startTime": 84944.764841,
-                    "endTime": 84944.998005,
-                    "responseReceivedTime": 84944.997626,
+                    "startTime": 116142.228645,
+                    "endTime": 116142.462447,
+                    "responseReceivedTime": 116142.462127,
                     "transferSize": 770
                   },
                   "children": {}
                 },
-                "33160.8": {
-                  "request": {
-                    "url": "http://localhost:10200/dobetterweb/dbw_partial_b.html?delay=200",
-                    "startTime": 84944.765311,
-                    "endTime": 84945.14093,
-                    "responseReceivedTime": 84945.140559,
-                    "transferSize": 767
-                  },
-                  "children": {}
-                },
-                "33160.18": {
+                "80262.18": {
                   "request": {
                     "url": "http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js",
-                    "startTime": 84944.777267,
-                    "endTime": 84945.169853,
-                    "responseReceivedTime": 84944.976683,
+                    "startTime": 116142.238476,
+                    "endTime": 116142.577254,
+                    "responseReceivedTime": 116142.40497,
                     "transferSize": 31677
                   },
                   "children": {}
                 },
-                "33160.9": {
+                "80262.8": {
+                  "request": {
+                    "url": "http://localhost:10200/dobetterweb/dbw_partial_b.html?delay=200",
+                    "startTime": 116142.22909,
+                    "endTime": 116142.59131,
+                    "responseReceivedTime": 116142.590948,
+                    "transferSize": 767
+                  },
+                  "children": {}
+                },
+                "80262.9": {
                   "request": {
                     "url": "http://localhost:10200/dobetterweb/dbw_tester.js",
-                    "startTime": 84944.765806,
-                    "endTime": 84945.176713,
-                    "responseReceivedTime": 84945.155898,
+                    "startTime": 116142.229566,
+                    "endTime": 116142.612633,
+                    "responseReceivedTime": 116142.598539,
                     "transferSize": 1630
                   },
                   "children": {}
                 },
-                "33160.17": {
+                "80262.17": {
                   "request": {
                     "url": "http://localhost:10200/zone.js",
-                    "startTime": 84944.776726,
-                    "endTime": 84945.512443,
-                    "responseReceivedTime": 84945.162613,
+                    "startTime": 116142.237713,
+                    "endTime": 116142.948478,
+                    "responseReceivedTime": 116142.605779,
                     "transferSize": 71654
                   },
                   "children": {}
                 },
-                "33160.2": {
+                "80262.2": {
                   "request": {
                     "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
-                    "startTime": 84944.759431,
-                    "endTime": 84946.771862,
-                    "responseReceivedTime": 84946.771499,
+                    "startTime": 116142.224327,
+                    "endTime": 116144.23631,
+                    "responseReceivedTime": 116144.235911,
                     "transferSize": 859
                   },
                   "children": {}
                 },
-                "33160.5": {
+                "80262.5": {
                   "request": {
                     "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
-                    "startTime": 84944.763979,
-                    "endTime": 84946.979068,
-                    "responseReceivedTime": 84946.978652,
+                    "startTime": 116142.227873,
+                    "endTime": 116144.436661,
+                    "responseReceivedTime": 116144.436096,
                     "transferSize": 859
                   },
                   "children": {}
                 },
-                "33160.21": {
+                "80262.21": {
                   "request": {
                     "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
-                    "startTime": 84947.02113,
-                    "endTime": 84947.23666,
-                    "responseReceivedTime": 84947.236326,
+                    "startTime": 116144.465445,
+                    "endTime": 116144.679699,
+                    "responseReceivedTime": 116144.679311,
                     "transferSize": 859
                   },
                   "children": {}
@@ -423,7 +422,7 @@
             }
           },
           "longestChain": {
-            "duration": 2671.9799999991665,
+            "duration": 2641.466000000946,
             "length": 2,
             "transferSize": 859
           }
@@ -546,7 +545,7 @@
             "source": "deprecation",
             "level": "warning",
             "text": "Calling Element.createShadowRoot() for an element which already hosts a shadow root is deprecated. See https://www.chromestatus.com/features/4668884095336448 for more details.",
-            "timestamp": 1493420869767.03,
+            "timestamp": 1493677874895.61,
             "lineNumber": 45,
             "stackTrace": {
               "callFrames": [
@@ -574,7 +573,7 @@
             "source": "deprecation",
             "level": "warning",
             "text": "Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience. For more help, check https://xhr.spec.whatwg.org/.",
-            "timestamp": 1493420869786.15,
+            "timestamp": 1493677874915.5,
             "lineNumber": 291,
             "stackTrace": {
               "callFrames": [
@@ -602,7 +601,7 @@
             "source": "deprecation",
             "level": "warning",
             "text": "'window.webkitStorageInfo' is deprecated. Please use 'navigator.webkitTemporaryStorage' or 'navigator.webkitPersistentStorage' instead.",
-            "timestamp": 1493420869788.23,
+            "timestamp": 1493677874917.84,
             "lineNumber": 294,
             "stackTrace": {
               "callFrames": [
@@ -630,7 +629,7 @@
             "source": "deprecation",
             "level": "warning",
             "text": "/deep/ combinator is deprecated and will be a no-op in M60, around August 2017. See https://www.chromestatus.com/features/4964279606312960 for more details.",
-            "timestamp": 1493420869828.24
+            "timestamp": 1493677874953.48
           }
         ]
       },
@@ -1207,7 +1206,7 @@
     "total-byte-weight": {
       "score": 100,
       "displayValue": "Total size was 129 KB",
-      "rawValue": 131940,
+      "rawValue": 131715,
       "optimalValue": "1,600 KB",
       "extendedInfo": {
         "formatter": "table",
@@ -1256,12 +1255,6 @@
               "totalMs": "0ms"
             },
             {
-              "url": "/dobetterweb/dbw_tester.css?delay=2000&async=true",
-              "totalBytes": 859,
-              "totalKb": "1 KB",
-              "totalMs": "0ms"
-            },
-            {
               "url": "/dobetterweb/dbw_tester.css?delay=2200",
               "totalBytes": 859,
               "totalKb": "1 KB",
@@ -1269,6 +1262,12 @@
             },
             {
               "url": "/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
+              "totalBytes": 859,
+              "totalKb": "1 KB",
+              "totalMs": "0ms"
+            },
+            {
+              "url": "/dobetterweb/dbw_tester.css?delay=2000&async=true",
               "totalBytes": 859,
               "totalKb": "1 KB",
               "totalMs": "0ms"
@@ -1350,7 +1349,7 @@
               "wastedPercent": 78.6058936238654,
               "potentialSavings": "55 KB _79%_",
               "wastedKb": "55 KB",
-              "wastedMs": "270ms",
+              "wastedMs": "260ms",
               "totalKb": "70 KB",
               "totalMs": "340ms"
             },
@@ -1536,7 +1535,7 @@
     },
     "link-blocking-first-paint": {
       "score": false,
-      "displayValue": "4 resources delayed first paint by 2211ms",
+      "displayValue": "4 resources delayed first paint by 2205ms",
       "rawValue": false,
       "extendedInfo": {
         "formatter": "table",
@@ -1545,22 +1544,22 @@
             {
               "url": "/dobetterweb/dbw_tester.css?delay=100",
               "totalKb": "1 KB",
-              "totalMs": "106ms"
+              "totalMs": "110ms"
             },
             {
               "url": "/dobetterweb/unknown404.css?delay=200",
               "totalKb": "0 KB",
-              "totalMs": "205ms"
+              "totalMs": "206ms"
             },
             {
               "url": "/dobetterweb/dbw_tester.css?delay=2200",
               "totalKb": "1 KB",
-              "totalMs": "2211ms"
+              "totalMs": "2205ms"
             },
             {
               "url": "/dobetterweb/dbw_partial_a.html?delay=200",
               "totalKb": "1 KB",
-              "totalMs": "207ms"
+              "totalMs": "208ms"
             }
           ],
           "tableHeadings": {
@@ -1912,7 +1911,7 @@
     },
     "script-blocking-first-paint": {
       "score": false,
-      "displayValue": "1 resource delayed first paint by 206ms",
+      "displayValue": "1 resource delayed first paint by 209ms",
       "rawValue": false,
       "extendedInfo": {
         "formatter": "table",
@@ -1921,7 +1920,7 @@
             {
               "url": "/dobetterweb/dbw_tester.js",
               "totalKb": "2 KB",
-              "totalMs": "206ms"
+              "totalMs": "209ms"
             }
           ],
           "tableHeadings": {
@@ -1940,7 +1939,7 @@
     },
     "uses-http2": {
       "score": false,
-      "displayValue": "13 requests were not handled over h2",
+      "displayValue": "12 requests were not handled over h2",
       "rawValue": false,
       "extendedInfo": {
         "formatter": "table",
@@ -1993,10 +1992,6 @@
             {
               "protocol": "http/1.1",
               "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200"
-            },
-            {
-              "protocol": "http/1.1",
-              "url": "http://localhost:10200/favicon.ico"
             }
           ],
           "tableHeadings": {
@@ -2202,23 +2197,22 @@
               "value": {
                 "areLatenciesAll3G": true,
                 "allRequestLatencies": [
-                  154.14699999382674,
-                  154.66600000217994,
-                  211.82799999951365,
-                  218.14499999163624,
-                  223.612999994657,
-                  213.30700001271902,
-                  154.9539999978156,
-                  171.46399999910497,
-                  171.58099998778198,
-                  2011.511999997309,
-                  2206.4079999981936,
-                  155.83600000536498,
-                  214.81999999377888,
-                  151.3059999997492
+                  151.57499999622814,
+                  157.12699999858143,
+                  213.550999993458,
+                  217.45199999713822,
+                  228.59500000777214,
+                  151.88200000557072,
+                  206.05799999611898,
+                  156.58999999868698,
+                  157.266000009258,
+                  2011.1069999984454,
+                  2207.6920000108666,
+                  158.08399999514248,
+                  213.4119999973339
                 ],
                 "isFast": true,
-                "timeToInteractive": 2984.218
+                "timeToInteractive": 2918.407
               }
             },
             "scoringMode": "binary",
@@ -2363,21 +2357,21 @@
           "id": "first-meaningful-paint",
           "weight": 5,
           "result": {
-            "score": 72,
-            "displayValue": "2958.8ms",
-            "rawValue": 2958.8,
+            "score": 74,
+            "displayValue": "2898.2ms",
+            "rawValue": 2898.2,
             "optimalValue": "1,600ms",
             "extendedInfo": {
               "value": {
                 "timestamps": {
-                  "navStart": 84944562719,
-                  "fCP": 84947521491,
-                  "fMP": 84947521500
+                  "navStart": 116142036337,
+                  "fCP": 116144934531,
+                  "fMP": 116144934538
                 },
                 "timings": {
                   "navStart": 0,
-                  "fCP": 2958.772,
-                  "fMP": 2958.781
+                  "fCP": 2898.194,
+                  "fMP": 2898.201
                 }
               },
               "formatter": "null"
@@ -2388,38 +2382,38 @@
             "description": "First meaningful paint",
             "helpText": "First meaningful paint measures when the primary content of a page is visible. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint)."
           },
-          "score": 72
+          "score": 74
         },
         {
           "id": "speed-index-metric",
           "weight": 1,
           "result": {
-            "score": 81,
-            "displayValue": "2989",
-            "rawValue": 2989,
+            "score": 82,
+            "displayValue": "2923",
+            "rawValue": 2923,
             "optimalValue": "1,250",
             "extendedInfo": {
               "formatter": "speedline",
               "value": {
                 "timings": {
-                  "firstVisualChange": 2989,
-                  "visuallyComplete": 2989,
-                  "speedIndex": 2989.2430000007153,
-                  "perceptualSpeedIndex": 2989.2430000007153
+                  "firstVisualChange": 2922,
+                  "visuallyComplete": 2922,
+                  "speedIndex": 2922.946000009775,
+                  "perceptualSpeedIndex": 2922.946000009775
                 },
                 "timestamps": {
-                  "firstVisualChange": 84947546694,
-                  "visuallyComplete": 84947546694,
-                  "speedIndex": 84947546937,
-                  "perceptualSpeedIndex": 84947546937
+                  "firstVisualChange": 116144953798,
+                  "visuallyComplete": 116144953798,
+                  "speedIndex": 116144954744,
+                  "perceptualSpeedIndex": 116144954744
                 },
                 "frames": [
                   {
-                    "timestamp": 84944557.694,
+                    "timestamp": 116142031.798,
                     "progress": 0
                   },
                   {
-                    "timestamp": 84947546.937,
+                    "timestamp": 116144954.744,
                     "progress": 100
                   }
                 ]
@@ -2431,7 +2425,7 @@
             "description": "Perceptual Speed Index",
             "helpText": "Speed Index shows how quickly the contents of a page are visibly populated. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/speed-index)."
           },
-          "score": 81
+          "score": 82
         },
         {
           "id": "estimated-input-latency",
@@ -2457,11 +2451,11 @@
                 },
                 {
                   "percentile": 0.99,
-                  "time": 16.461652799925798
+                  "time": 16.31384681796759
                 },
                 {
                   "percentile": 1,
-                  "time": 24.74499999999898
+                  "time": 22.604999995113758
                 }
               ],
               "formatter": "null"
@@ -2478,47 +2472,47 @@
           "id": "time-to-interactive",
           "weight": 5,
           "result": {
-            "score": 82,
-            "displayValue": "2984.2ms",
-            "rawValue": 2984.2,
+            "score": 83,
+            "displayValue": "2918.4ms",
+            "rawValue": 2918.4,
             "optimalValue": "5,000ms",
             "extendedInfo": {
               "value": {
                 "timings": {
-                  "onLoad": 2966.259000003338,
-                  "fMP": 2958.781,
-                  "visuallyReady": 2984.218,
-                  "timeToInteractive": 2984.218,
-                  "timeToInteractiveB": 2958.7810000032187,
-                  "timeToInteractiveC": 2958.7810000032187,
-                  "endOfTrace": 8649.224000006914
+                  "onLoad": 2905.877000004053,
+                  "fMP": 2898.201,
+                  "visuallyReady": 2918.407,
+                  "timeToInteractive": 2918.407,
+                  "timeToInteractiveB": 2898.201000005007,
+                  "timeToInteractiveC": 2898.201000005007,
+                  "endOfTrace": 8424.498999997973
                 },
                 "timestamps": {
-                  "onLoad": 84947528978,
-                  "fMP": 84947521500,
-                  "visuallyReady": 84947546937,
-                  "timeToInteractive": 84947546937,
-                  "timeToInteractiveB": 84947521500,
-                  "timeToInteractiveC": 84947521500,
-                  "endOfTrace": 84953211943
+                  "onLoad": 116144942214,
+                  "fMP": 116144934538,
+                  "visuallyReady": 116144954744,
+                  "timeToInteractive": 116144954744,
+                  "timeToInteractiveB": 116144934538,
+                  "timeToInteractiveC": 116144934538,
+                  "endOfTrace": 116150460836
                 },
                 "latencies": {
                   "timeToInteractive": [
                     {
                       "estLatency": 16,
-                      "startTime": "2984.2"
+                      "startTime": "2918.4"
                     }
                   ],
                   "timeToInteractiveB": [
                     {
                       "estLatency": 16,
-                      "startTime": "2958.8"
+                      "startTime": "2898.2"
                     }
                   ],
                   "timeToInteractiveC": [
                     {
                       "estLatency": 16,
-                      "startTime": "2958.8"
+                      "startTime": "2898.2"
                     }
                   ]
                 },
@@ -2532,14 +2526,14 @@
             "description": "Time To Interactive (alpha)",
             "helpText": "Time to Interactive identifies the time at which your app appears to be ready enough to interact with. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive)."
           },
-          "score": 82
+          "score": 83
         },
         {
           "id": "link-blocking-first-paint",
           "weight": 0,
           "result": {
             "score": false,
-            "displayValue": "4 resources delayed first paint by 2211ms",
+            "displayValue": "4 resources delayed first paint by 2205ms",
             "rawValue": false,
             "extendedInfo": {
               "formatter": "table",
@@ -2548,22 +2542,22 @@
                   {
                     "url": "/dobetterweb/dbw_tester.css?delay=100",
                     "totalKb": "1 KB",
-                    "totalMs": "106ms"
+                    "totalMs": "110ms"
                   },
                   {
                     "url": "/dobetterweb/unknown404.css?delay=200",
                     "totalKb": "0 KB",
-                    "totalMs": "205ms"
+                    "totalMs": "206ms"
                   },
                   {
                     "url": "/dobetterweb/dbw_tester.css?delay=2200",
                     "totalKb": "1 KB",
-                    "totalMs": "2211ms"
+                    "totalMs": "2205ms"
                   },
                   {
                     "url": "/dobetterweb/dbw_partial_a.html?delay=200",
                     "totalKb": "1 KB",
-                    "totalMs": "207ms"
+                    "totalMs": "208ms"
                   }
                 ],
                 "tableHeadings": {
@@ -2587,7 +2581,7 @@
           "weight": 0,
           "result": {
             "score": false,
-            "displayValue": "1 resource delayed first paint by 206ms",
+            "displayValue": "1 resource delayed first paint by 209ms",
             "rawValue": false,
             "extendedInfo": {
               "formatter": "table",
@@ -2596,7 +2590,7 @@
                   {
                     "url": "/dobetterweb/dbw_tester.js",
                     "totalKb": "2 KB",
-                    "totalMs": "206ms"
+                    "totalMs": "209ms"
                   }
                 ],
                 "tableHeadings": {
@@ -2662,7 +2656,7 @@
                     "wastedPercent": 78.6058936238654,
                     "potentialSavings": "55 KB _79%_",
                     "wastedKb": "55 KB",
-                    "wastedMs": "270ms",
+                    "wastedMs": "260ms",
                     "totalKb": "70 KB",
                     "totalMs": "340ms"
                   },
@@ -2727,7 +2721,7 @@
           "result": {
             "score": 100,
             "displayValue": "Total size was 129 KB",
-            "rawValue": 131940,
+            "rawValue": 131715,
             "optimalValue": "1,600 KB",
             "extendedInfo": {
               "formatter": "table",
@@ -2776,12 +2770,6 @@
                     "totalMs": "0ms"
                   },
                   {
-                    "url": "/dobetterweb/dbw_tester.css?delay=2000&async=true",
-                    "totalBytes": 859,
-                    "totalKb": "1 KB",
-                    "totalMs": "0ms"
-                  },
-                  {
                     "url": "/dobetterweb/dbw_tester.css?delay=2200",
                     "totalBytes": 859,
                     "totalKb": "1 KB",
@@ -2789,6 +2777,12 @@
                   },
                   {
                     "url": "/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
+                    "totalBytes": 859,
+                    "totalKb": "1 KB",
+                    "totalMs": "0ms"
+                  },
+                  {
+                    "url": "/dobetterweb/dbw_tester.css?delay=2000&async=true",
                     "totalBytes": 859,
                     "totalKb": "1 KB",
                     "totalMs": "0ms"
@@ -2886,121 +2880,121 @@
               "formatter": "critical-request-chains",
               "value": {
                 "chains": {
-                  "33160.1": {
+                  "80262.1": {
                     "request": {
                       "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
-                      "startTime": 84944.56468,
-                      "endTime": 84944.762882,
-                      "responseReceivedTime": 84944.720611,
+                      "startTime": 116142.038233,
+                      "endTime": 116142.233289,
+                      "responseReceivedTime": 116142.190414,
                       "transferSize": 10248
                     },
                     "children": {
-                      "33160.3": {
+                      "80262.3": {
                         "request": {
                           "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
-                          "startTime": 84944.763368,
-                          "endTime": 84944.926974,
-                          "responseReceivedTime": 84944.92649,
+                          "startTime": 116142.226583,
+                          "endTime": 116142.384611,
+                          "responseReceivedTime": 116142.384137,
                           "transferSize": 859
                         },
                         "children": {}
                       },
-                      "33160.4": {
+                      "80262.4": {
                         "request": {
                           "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
-                          "startTime": 84944.763652,
-                          "endTime": 84944.984878,
-                          "responseReceivedTime": 84944.983773,
+                          "startTime": 116142.227322,
+                          "endTime": 116142.442419,
+                          "responseReceivedTime": 116142.441297,
                           "transferSize": 139
                         },
                         "children": {}
                       },
-                      "33160.6": {
+                      "80262.6": {
                         "request": {
                           "url": "http://localhost:10200/dobetterweb/dbw_disabled.css?delay=200",
-                          "startTime": 84944.764309,
-                          "endTime": 84944.990843,
-                          "responseReceivedTime": 84944.990465,
+                          "startTime": 116142.228163,
+                          "endTime": 116142.448269,
+                          "responseReceivedTime": 116142.447848,
                           "transferSize": 1146
                         },
                         "children": {}
                       },
-                      "33160.7": {
+                      "80262.7": {
                         "request": {
                           "url": "http://localhost:10200/dobetterweb/dbw_partial_a.html?delay=200",
-                          "startTime": 84944.764841,
-                          "endTime": 84944.998005,
-                          "responseReceivedTime": 84944.997626,
+                          "startTime": 116142.228645,
+                          "endTime": 116142.462447,
+                          "responseReceivedTime": 116142.462127,
                           "transferSize": 770
                         },
                         "children": {}
                       },
-                      "33160.8": {
-                        "request": {
-                          "url": "http://localhost:10200/dobetterweb/dbw_partial_b.html?delay=200",
-                          "startTime": 84944.765311,
-                          "endTime": 84945.14093,
-                          "responseReceivedTime": 84945.140559,
-                          "transferSize": 767
-                        },
-                        "children": {}
-                      },
-                      "33160.18": {
+                      "80262.18": {
                         "request": {
                           "url": "http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js",
-                          "startTime": 84944.777267,
-                          "endTime": 84945.169853,
-                          "responseReceivedTime": 84944.976683,
+                          "startTime": 116142.238476,
+                          "endTime": 116142.577254,
+                          "responseReceivedTime": 116142.40497,
                           "transferSize": 31677
                         },
                         "children": {}
                       },
-                      "33160.9": {
+                      "80262.8": {
+                        "request": {
+                          "url": "http://localhost:10200/dobetterweb/dbw_partial_b.html?delay=200",
+                          "startTime": 116142.22909,
+                          "endTime": 116142.59131,
+                          "responseReceivedTime": 116142.590948,
+                          "transferSize": 767
+                        },
+                        "children": {}
+                      },
+                      "80262.9": {
                         "request": {
                           "url": "http://localhost:10200/dobetterweb/dbw_tester.js",
-                          "startTime": 84944.765806,
-                          "endTime": 84945.176713,
-                          "responseReceivedTime": 84945.155898,
+                          "startTime": 116142.229566,
+                          "endTime": 116142.612633,
+                          "responseReceivedTime": 116142.598539,
                           "transferSize": 1630
                         },
                         "children": {}
                       },
-                      "33160.17": {
+                      "80262.17": {
                         "request": {
                           "url": "http://localhost:10200/zone.js",
-                          "startTime": 84944.776726,
-                          "endTime": 84945.512443,
-                          "responseReceivedTime": 84945.162613,
+                          "startTime": 116142.237713,
+                          "endTime": 116142.948478,
+                          "responseReceivedTime": 116142.605779,
                           "transferSize": 71654
                         },
                         "children": {}
                       },
-                      "33160.2": {
+                      "80262.2": {
                         "request": {
                           "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
-                          "startTime": 84944.759431,
-                          "endTime": 84946.771862,
-                          "responseReceivedTime": 84946.771499,
+                          "startTime": 116142.224327,
+                          "endTime": 116144.23631,
+                          "responseReceivedTime": 116144.235911,
                           "transferSize": 859
                         },
                         "children": {}
                       },
-                      "33160.5": {
+                      "80262.5": {
                         "request": {
                           "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
-                          "startTime": 84944.763979,
-                          "endTime": 84946.979068,
-                          "responseReceivedTime": 84946.978652,
+                          "startTime": 116142.227873,
+                          "endTime": 116144.436661,
+                          "responseReceivedTime": 116144.436096,
                           "transferSize": 859
                         },
                         "children": {}
                       },
-                      "33160.21": {
+                      "80262.21": {
                         "request": {
                           "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
-                          "startTime": 84947.02113,
-                          "endTime": 84947.23666,
-                          "responseReceivedTime": 84947.236326,
+                          "startTime": 116144.465445,
+                          "endTime": 116144.679699,
+                          "responseReceivedTime": 116144.679311,
                           "transferSize": 859
                         },
                         "children": {}
@@ -3009,7 +3003,7 @@
                   }
                 },
                 "longestChain": {
-                  "duration": 2671.9799999991665,
+                  "duration": 2641.466000000946,
                   "length": 2,
                   "transferSize": 859
                 }
@@ -3046,7 +3040,7 @@
         }
       ],
       "id": "performance",
-      "score": 79.25
+      "score": 80.58333333333333
     },
     {
       "name": "Accessibility",
@@ -3055,9 +3049,7 @@
         {
           "id": "accesskeys",
           "weight": 1,
-          "tags": [
-            "a11y-correct-attributes"
-          ],
+          "group": "a11y-correct-attributes",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3076,9 +3068,7 @@
         {
           "id": "aria-allowed-attr",
           "weight": 1,
-          "tags": [
-            "a11y-aria"
-          ],
+          "group": "a11y-aria",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3097,9 +3087,7 @@
         {
           "id": "aria-required-attr",
           "weight": 1,
-          "tags": [
-            "a11y-aria"
-          ],
+          "group": "a11y-aria",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3118,9 +3106,7 @@
         {
           "id": "aria-required-children",
           "weight": 1,
-          "tags": [
-            "a11y-aria"
-          ],
+          "group": "a11y-aria",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3139,9 +3125,7 @@
         {
           "id": "aria-required-parent",
           "weight": 1,
-          "tags": [
-            "a11y-aria"
-          ],
+          "group": "a11y-aria",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3160,9 +3144,7 @@
         {
           "id": "aria-roles",
           "weight": 1,
-          "tags": [
-            "a11y-aria"
-          ],
+          "group": "a11y-aria",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3181,9 +3163,7 @@
         {
           "id": "aria-valid-attr-value",
           "weight": 1,
-          "tags": [
-            "a11y-aria"
-          ],
+          "group": "a11y-aria",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3202,9 +3182,7 @@
         {
           "id": "aria-valid-attr",
           "weight": 1,
-          "tags": [
-            "a11y-aria"
-          ],
+          "group": "a11y-aria",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3223,9 +3201,7 @@
         {
           "id": "audio-caption",
           "weight": 1,
-          "tags": [
-            "a11y-correct-attributes"
-          ],
+          "group": "a11y-correct-attributes",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3244,9 +3220,7 @@
         {
           "id": "button-name",
           "weight": 1,
-          "tags": [
-            "a11y-element-names"
-          ],
+          "group": "a11y-element-names",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3265,9 +3239,7 @@
         {
           "id": "bypass",
           "weight": 1,
-          "tags": [
-            "a11y-describe-contents"
-          ],
+          "group": "a11y-describe-contents",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3286,9 +3258,7 @@
         {
           "id": "color-contrast",
           "weight": 1,
-          "tags": [
-            "a11y-color-contrast"
-          ],
+          "group": "a11y-color-contrast",
           "result": {
             "score": false,
             "displayValue": "",
@@ -3384,9 +3354,7 @@
         {
           "id": "definition-list",
           "weight": 1,
-          "tags": [
-            "a11y-well-structured"
-          ],
+          "group": "a11y-well-structured",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3405,9 +3373,7 @@
         {
           "id": "dlitem",
           "weight": 1,
-          "tags": [
-            "a11y-well-structured"
-          ],
+          "group": "a11y-well-structured",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3426,9 +3392,7 @@
         {
           "id": "document-title",
           "weight": 1,
-          "tags": [
-            "a11y-describe-contents"
-          ],
+          "group": "a11y-describe-contents",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3447,9 +3411,7 @@
         {
           "id": "duplicate-id",
           "weight": 1,
-          "tags": [
-            "a11y-well-structured"
-          ],
+          "group": "a11y-well-structured",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3468,9 +3430,7 @@
         {
           "id": "frame-title",
           "weight": 1,
-          "tags": [
-            "a11y-describe-contents"
-          ],
+          "group": "a11y-describe-contents",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3489,9 +3449,7 @@
         {
           "id": "html-has-lang",
           "weight": 1,
-          "tags": [
-            "a11y-language"
-          ],
+          "group": "a11y-language",
           "result": {
             "score": false,
             "displayValue": "",
@@ -3542,9 +3500,7 @@
         {
           "id": "html-lang-valid",
           "weight": 1,
-          "tags": [
-            "a11y-language"
-          ],
+          "group": "a11y-language",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3563,9 +3519,7 @@
         {
           "id": "image-alt",
           "weight": 1,
-          "tags": [
-            "a11y-correct-attributes"
-          ],
+          "group": "a11y-correct-attributes",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3584,9 +3538,7 @@
         {
           "id": "input-image-alt",
           "weight": 1,
-          "tags": [
-            "a11y-correct-attributes"
-          ],
+          "group": "a11y-correct-attributes",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3605,9 +3557,7 @@
         {
           "id": "label",
           "weight": 1,
-          "tags": [
-            "a11y-describe-contents"
-          ],
+          "group": "a11y-describe-contents",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3626,9 +3576,7 @@
         {
           "id": "layout-table",
           "weight": 1,
-          "tags": [
-            "a11y-describe-contents"
-          ],
+          "group": "a11y-describe-contents",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3647,9 +3595,7 @@
         {
           "id": "link-name",
           "weight": 1,
-          "tags": [
-            "a11y-element-names"
-          ],
+          "group": "a11y-element-names",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3668,9 +3614,7 @@
         {
           "id": "list",
           "weight": 1,
-          "tags": [
-            "a11y-well-structured"
-          ],
+          "group": "a11y-well-structured",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3689,9 +3633,7 @@
         {
           "id": "listitem",
           "weight": 1,
-          "tags": [
-            "a11y-well-structured"
-          ],
+          "group": "a11y-well-structured",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3710,9 +3652,7 @@
         {
           "id": "meta-refresh",
           "weight": 1,
-          "tags": [
-            "a11y-meta"
-          ],
+          "group": "a11y-meta",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3731,9 +3671,7 @@
         {
           "id": "meta-viewport",
           "weight": 1,
-          "tags": [
-            "a11y-meta"
-          ],
+          "group": "a11y-meta",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3752,9 +3690,7 @@
         {
           "id": "object-alt",
           "weight": 1,
-          "tags": [
-            "a11y-describe-contents"
-          ],
+          "group": "a11y-describe-contents",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3773,9 +3709,7 @@
         {
           "id": "tabindex",
           "weight": 1,
-          "tags": [
-            "a11y-correct-attributes"
-          ],
+          "group": "a11y-correct-attributes",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3794,9 +3728,7 @@
         {
           "id": "td-headers-attr",
           "weight": 1,
-          "tags": [
-            "a11y-correct-attributes"
-          ],
+          "group": "a11y-correct-attributes",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3815,9 +3747,7 @@
         {
           "id": "th-has-data-cells",
           "weight": 1,
-          "tags": [
-            "a11y-correct-attributes"
-          ],
+          "group": "a11y-correct-attributes",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3836,9 +3766,7 @@
         {
           "id": "valid-lang",
           "weight": 1,
-          "tags": [
-            "a11y-language"
-          ],
+          "group": "a11y-language",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3857,9 +3785,7 @@
         {
           "id": "video-caption",
           "weight": 1,
-          "tags": [
-            "a11y-describe-contents"
-          ],
+          "group": "a11y-describe-contents",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3878,9 +3804,7 @@
         {
           "id": "video-description",
           "weight": 1,
-          "tags": [
-            "a11y-describe-contents"
-          ],
+          "group": "a11y-describe-contents",
           "result": {
             "score": true,
             "displayValue": "",
@@ -3977,7 +3901,7 @@
           "weight": 1,
           "result": {
             "score": false,
-            "displayValue": "13 requests were not handled over h2",
+            "displayValue": "12 requests were not handled over h2",
             "rawValue": false,
             "extendedInfo": {
               "formatter": "table",
@@ -4030,10 +3954,6 @@
                   {
                     "protocol": "http/1.1",
                     "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200"
-                  },
-                  {
-                    "protocol": "http/1.1",
-                    "url": "http://localhost:10200/favicon.ico"
                   }
                 ],
                 "tableHeadings": {
@@ -4427,7 +4347,7 @@
                   "source": "deprecation",
                   "level": "warning",
                   "text": "Calling Element.createShadowRoot() for an element which already hosts a shadow root is deprecated. See https://www.chromestatus.com/features/4668884095336448 for more details.",
-                  "timestamp": 1493420869767.03,
+                  "timestamp": 1493677874895.61,
                   "lineNumber": 45,
                   "stackTrace": {
                     "callFrames": [
@@ -4455,7 +4375,7 @@
                   "source": "deprecation",
                   "level": "warning",
                   "text": "Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience. For more help, check https://xhr.spec.whatwg.org/.",
-                  "timestamp": 1493420869786.15,
+                  "timestamp": 1493677874915.5,
                   "lineNumber": 291,
                   "stackTrace": {
                     "callFrames": [
@@ -4483,7 +4403,7 @@
                   "source": "deprecation",
                   "level": "warning",
                   "text": "'window.webkitStorageInfo' is deprecated. Please use 'navigator.webkitTemporaryStorage' or 'navigator.webkitPersistentStorage' instead.",
-                  "timestamp": 1493420869788.23,
+                  "timestamp": 1493677874917.84,
                   "lineNumber": 294,
                   "stackTrace": {
                     "callFrames": [
@@ -4511,7 +4431,7 @@
                   "source": "deprecation",
                   "level": "warning",
                   "text": "/deep/ combinator is deprecated and will be a no-op in M60, around August 2017. See https://www.chromestatus.com/features/4964279606312960 for more details.",
-                  "timestamp": 1493420869828.24
+                  "timestamp": 1493677874953.48
                 }
               ]
             },
@@ -4543,7 +4463,7 @@
       "score": 0
     }
   ],
-  "reportTags": {
+  "reportGroups": {
     "a11y-color-contrast": {
       "title": "Color Contrast Is Satisfactory",
       "description": "Screen readers and other assitive technologies require annotations to understand otherwise ambiguous content."
@@ -4670,23 +4590,22 @@
                 "value": {
                   "areLatenciesAll3G": true,
                   "allRequestLatencies": [
-                    154.14699999382674,
-                    154.66600000217994,
-                    211.82799999951365,
-                    218.14499999163624,
-                    223.612999994657,
-                    213.30700001271902,
-                    154.9539999978156,
-                    171.46399999910497,
-                    171.58099998778198,
-                    2011.511999997309,
-                    2206.4079999981936,
-                    155.83600000536498,
-                    214.81999999377888,
-                    151.3059999997492
+                    151.57499999622814,
+                    157.12699999858143,
+                    213.550999993458,
+                    217.45199999713822,
+                    228.59500000777214,
+                    151.88200000557072,
+                    206.05799999611898,
+                    156.58999999868698,
+                    157.266000009258,
+                    2011.1069999984454,
+                    2207.6920000108666,
+                    158.08399999514248,
+                    213.4119999973339
                   ],
                   "isFast": true,
-                  "timeToInteractive": 2984.218
+                  "timeToInteractive": 2918.407
                 }
               },
               "scoringMode": "binary",
@@ -4801,29 +4720,29 @@
       "description": "These encapsulate your app's performance.",
       "categorizable": false,
       "scored": false,
-      "total": 0.7925,
+      "total": 0.8058333333333333,
       "score": [
         {
           "name": "Performance",
           "description": "These encapsulate your app's performance.",
-          "overall": 0.7925,
+          "overall": 0.8058333333333333,
           "subItems": [
             {
-              "score": 72,
-              "displayValue": "2958.8ms",
-              "rawValue": 2958.8,
+              "score": 74,
+              "displayValue": "2898.2ms",
+              "rawValue": 2898.2,
               "optimalValue": "1,600ms",
               "extendedInfo": {
                 "value": {
                   "timestamps": {
-                    "navStart": 84944562719,
-                    "fCP": 84947521491,
-                    "fMP": 84947521500
+                    "navStart": 116142036337,
+                    "fCP": 116144934531,
+                    "fMP": 116144934538
                   },
                   "timings": {
                     "navStart": 0,
-                    "fCP": 2958.772,
-                    "fMP": 2958.781
+                    "fCP": 2898.194,
+                    "fMP": 2898.201
                   }
                 },
                 "formatter": "null"
@@ -4835,32 +4754,32 @@
               "helpText": "First meaningful paint measures when the primary content of a page is visible. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint)."
             },
             {
-              "score": 81,
-              "displayValue": "2989",
-              "rawValue": 2989,
+              "score": 82,
+              "displayValue": "2923",
+              "rawValue": 2923,
               "optimalValue": "1,250",
               "extendedInfo": {
                 "formatter": "speedline",
                 "value": {
                   "timings": {
-                    "firstVisualChange": 2989,
-                    "visuallyComplete": 2989,
-                    "speedIndex": 2989.2430000007153,
-                    "perceptualSpeedIndex": 2989.2430000007153
+                    "firstVisualChange": 2922,
+                    "visuallyComplete": 2922,
+                    "speedIndex": 2922.946000009775,
+                    "perceptualSpeedIndex": 2922.946000009775
                   },
                   "timestamps": {
-                    "firstVisualChange": 84947546694,
-                    "visuallyComplete": 84947546694,
-                    "speedIndex": 84947546937,
-                    "perceptualSpeedIndex": 84947546937
+                    "firstVisualChange": 116144953798,
+                    "visuallyComplete": 116144953798,
+                    "speedIndex": 116144954744,
+                    "perceptualSpeedIndex": 116144954744
                   },
                   "frames": [
                     {
-                      "timestamp": 84944557.694,
+                      "timestamp": 116142031.798,
                       "progress": 0
                     },
                     {
-                      "timestamp": 84947546.937,
+                      "timestamp": 116144954.744,
                       "progress": 100
                     }
                   ]
@@ -4893,11 +4812,11 @@
                   },
                   {
                     "percentile": 0.99,
-                    "time": 16.461652799925798
+                    "time": 16.31384681796759
                   },
                   {
                     "percentile": 1,
-                    "time": 24.74499999999898
+                    "time": 22.604999995113758
                   }
                 ],
                 "formatter": "null"
@@ -4909,47 +4828,47 @@
               "helpText": "The score above is an estimate of how long your app takes to respond to user input, in milliseconds. There is a 90% probability that a user encounters this amount of latency, or less. 10% of the time a user can expect additional latency. If your score is higher than Lighthouse's target score, users may perceive your app as laggy. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency)."
             },
             {
-              "score": 82,
-              "displayValue": "2984.2ms",
-              "rawValue": 2984.2,
+              "score": 83,
+              "displayValue": "2918.4ms",
+              "rawValue": 2918.4,
               "optimalValue": "5,000ms",
               "extendedInfo": {
                 "value": {
                   "timings": {
-                    "onLoad": 2966.259000003338,
-                    "fMP": 2958.781,
-                    "visuallyReady": 2984.218,
-                    "timeToInteractive": 2984.218,
-                    "timeToInteractiveB": 2958.7810000032187,
-                    "timeToInteractiveC": 2958.7810000032187,
-                    "endOfTrace": 8649.224000006914
+                    "onLoad": 2905.877000004053,
+                    "fMP": 2898.201,
+                    "visuallyReady": 2918.407,
+                    "timeToInteractive": 2918.407,
+                    "timeToInteractiveB": 2898.201000005007,
+                    "timeToInteractiveC": 2898.201000005007,
+                    "endOfTrace": 8424.498999997973
                   },
                   "timestamps": {
-                    "onLoad": 84947528978,
-                    "fMP": 84947521500,
-                    "visuallyReady": 84947546937,
-                    "timeToInteractive": 84947546937,
-                    "timeToInteractiveB": 84947521500,
-                    "timeToInteractiveC": 84947521500,
-                    "endOfTrace": 84953211943
+                    "onLoad": 116144942214,
+                    "fMP": 116144934538,
+                    "visuallyReady": 116144954744,
+                    "timeToInteractive": 116144954744,
+                    "timeToInteractiveB": 116144934538,
+                    "timeToInteractiveC": 116144934538,
+                    "endOfTrace": 116150460836
                   },
                   "latencies": {
                     "timeToInteractive": [
                       {
                         "estLatency": 16,
-                        "startTime": "2984.2"
+                        "startTime": "2918.4"
                       }
                     ],
                     "timeToInteractiveB": [
                       {
                         "estLatency": 16,
-                        "startTime": "2958.8"
+                        "startTime": "2898.2"
                       }
                     ],
                     "timeToInteractiveC": [
                       {
                         "estLatency": 16,
-                        "startTime": "2958.8"
+                        "startTime": "2898.2"
                       }
                     ]
                   },
@@ -4965,7 +4884,7 @@
             },
             {
               "score": false,
-              "displayValue": "4 resources delayed first paint by 2211ms",
+              "displayValue": "4 resources delayed first paint by 2205ms",
               "rawValue": false,
               "extendedInfo": {
                 "formatter": "table",
@@ -4974,22 +4893,22 @@
                     {
                       "url": "/dobetterweb/dbw_tester.css?delay=100",
                       "totalKb": "1 KB",
-                      "totalMs": "106ms"
+                      "totalMs": "110ms"
                     },
                     {
                       "url": "/dobetterweb/unknown404.css?delay=200",
                       "totalKb": "0 KB",
-                      "totalMs": "205ms"
+                      "totalMs": "206ms"
                     },
                     {
                       "url": "/dobetterweb/dbw_tester.css?delay=2200",
                       "totalKb": "1 KB",
-                      "totalMs": "2211ms"
+                      "totalMs": "2205ms"
                     },
                     {
                       "url": "/dobetterweb/dbw_partial_a.html?delay=200",
                       "totalKb": "1 KB",
-                      "totalMs": "207ms"
+                      "totalMs": "208ms"
                     }
                   ],
                   "tableHeadings": {
@@ -5008,7 +4927,7 @@
             },
             {
               "score": false,
-              "displayValue": "1 resource delayed first paint by 206ms",
+              "displayValue": "1 resource delayed first paint by 209ms",
               "rawValue": false,
               "extendedInfo": {
                 "formatter": "table",
@@ -5017,7 +4936,7 @@
                     {
                       "url": "/dobetterweb/dbw_tester.js",
                       "totalKb": "2 KB",
-                      "totalMs": "206ms"
+                      "totalMs": "209ms"
                     }
                   ],
                   "tableHeadings": {
@@ -5073,7 +4992,7 @@
                       "wastedPercent": 78.6058936238654,
                       "potentialSavings": "55 KB _79%_",
                       "wastedKb": "55 KB",
-                      "wastedMs": "270ms",
+                      "wastedMs": "260ms",
                       "totalKb": "70 KB",
                       "totalMs": "340ms"
                     },
@@ -5128,7 +5047,7 @@
             {
               "score": 100,
               "displayValue": "Total size was 129 KB",
-              "rawValue": 131940,
+              "rawValue": 131715,
               "optimalValue": "1,600 KB",
               "extendedInfo": {
                 "formatter": "table",
@@ -5177,12 +5096,6 @@
                       "totalMs": "0ms"
                     },
                     {
-                      "url": "/dobetterweb/dbw_tester.css?delay=2000&async=true",
-                      "totalBytes": 859,
-                      "totalKb": "1 KB",
-                      "totalMs": "0ms"
-                    },
-                    {
                       "url": "/dobetterweb/dbw_tester.css?delay=2200",
                       "totalBytes": 859,
                       "totalKb": "1 KB",
@@ -5190,6 +5103,12 @@
                     },
                     {
                       "url": "/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
+                      "totalBytes": 859,
+                      "totalKb": "1 KB",
+                      "totalMs": "0ms"
+                    },
+                    {
+                      "url": "/dobetterweb/dbw_tester.css?delay=2000&async=true",
                       "totalBytes": 859,
                       "totalKb": "1 KB",
                       "totalMs": "0ms"
@@ -5277,121 +5196,121 @@
                 "formatter": "critical-request-chains",
                 "value": {
                   "chains": {
-                    "33160.1": {
+                    "80262.1": {
                       "request": {
                         "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
-                        "startTime": 84944.56468,
-                        "endTime": 84944.762882,
-                        "responseReceivedTime": 84944.720611,
+                        "startTime": 116142.038233,
+                        "endTime": 116142.233289,
+                        "responseReceivedTime": 116142.190414,
                         "transferSize": 10248
                       },
                       "children": {
-                        "33160.3": {
+                        "80262.3": {
                           "request": {
                             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
-                            "startTime": 84944.763368,
-                            "endTime": 84944.926974,
-                            "responseReceivedTime": 84944.92649,
+                            "startTime": 116142.226583,
+                            "endTime": 116142.384611,
+                            "responseReceivedTime": 116142.384137,
                             "transferSize": 859
                           },
                           "children": {}
                         },
-                        "33160.4": {
+                        "80262.4": {
                           "request": {
                             "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
-                            "startTime": 84944.763652,
-                            "endTime": 84944.984878,
-                            "responseReceivedTime": 84944.983773,
+                            "startTime": 116142.227322,
+                            "endTime": 116142.442419,
+                            "responseReceivedTime": 116142.441297,
                             "transferSize": 139
                           },
                           "children": {}
                         },
-                        "33160.6": {
+                        "80262.6": {
                           "request": {
                             "url": "http://localhost:10200/dobetterweb/dbw_disabled.css?delay=200",
-                            "startTime": 84944.764309,
-                            "endTime": 84944.990843,
-                            "responseReceivedTime": 84944.990465,
+                            "startTime": 116142.228163,
+                            "endTime": 116142.448269,
+                            "responseReceivedTime": 116142.447848,
                             "transferSize": 1146
                           },
                           "children": {}
                         },
-                        "33160.7": {
+                        "80262.7": {
                           "request": {
                             "url": "http://localhost:10200/dobetterweb/dbw_partial_a.html?delay=200",
-                            "startTime": 84944.764841,
-                            "endTime": 84944.998005,
-                            "responseReceivedTime": 84944.997626,
+                            "startTime": 116142.228645,
+                            "endTime": 116142.462447,
+                            "responseReceivedTime": 116142.462127,
                             "transferSize": 770
                           },
                           "children": {}
                         },
-                        "33160.8": {
-                          "request": {
-                            "url": "http://localhost:10200/dobetterweb/dbw_partial_b.html?delay=200",
-                            "startTime": 84944.765311,
-                            "endTime": 84945.14093,
-                            "responseReceivedTime": 84945.140559,
-                            "transferSize": 767
-                          },
-                          "children": {}
-                        },
-                        "33160.18": {
+                        "80262.18": {
                           "request": {
                             "url": "http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js",
-                            "startTime": 84944.777267,
-                            "endTime": 84945.169853,
-                            "responseReceivedTime": 84944.976683,
+                            "startTime": 116142.238476,
+                            "endTime": 116142.577254,
+                            "responseReceivedTime": 116142.40497,
                             "transferSize": 31677
                           },
                           "children": {}
                         },
-                        "33160.9": {
+                        "80262.8": {
+                          "request": {
+                            "url": "http://localhost:10200/dobetterweb/dbw_partial_b.html?delay=200",
+                            "startTime": 116142.22909,
+                            "endTime": 116142.59131,
+                            "responseReceivedTime": 116142.590948,
+                            "transferSize": 767
+                          },
+                          "children": {}
+                        },
+                        "80262.9": {
                           "request": {
                             "url": "http://localhost:10200/dobetterweb/dbw_tester.js",
-                            "startTime": 84944.765806,
-                            "endTime": 84945.176713,
-                            "responseReceivedTime": 84945.155898,
+                            "startTime": 116142.229566,
+                            "endTime": 116142.612633,
+                            "responseReceivedTime": 116142.598539,
                             "transferSize": 1630
                           },
                           "children": {}
                         },
-                        "33160.17": {
+                        "80262.17": {
                           "request": {
                             "url": "http://localhost:10200/zone.js",
-                            "startTime": 84944.776726,
-                            "endTime": 84945.512443,
-                            "responseReceivedTime": 84945.162613,
+                            "startTime": 116142.237713,
+                            "endTime": 116142.948478,
+                            "responseReceivedTime": 116142.605779,
                             "transferSize": 71654
                           },
                           "children": {}
                         },
-                        "33160.2": {
+                        "80262.2": {
                           "request": {
                             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
-                            "startTime": 84944.759431,
-                            "endTime": 84946.771862,
-                            "responseReceivedTime": 84946.771499,
+                            "startTime": 116142.224327,
+                            "endTime": 116144.23631,
+                            "responseReceivedTime": 116144.235911,
                             "transferSize": 859
                           },
                           "children": {}
                         },
-                        "33160.5": {
+                        "80262.5": {
                           "request": {
                             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
-                            "startTime": 84944.763979,
-                            "endTime": 84946.979068,
-                            "responseReceivedTime": 84946.978652,
+                            "startTime": 116142.227873,
+                            "endTime": 116144.436661,
+                            "responseReceivedTime": 116144.436096,
                             "transferSize": 859
                           },
                           "children": {}
                         },
-                        "33160.21": {
+                        "80262.21": {
                           "request": {
                             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
-                            "startTime": 84947.02113,
-                            "endTime": 84947.23666,
-                            "responseReceivedTime": 84947.236326,
+                            "startTime": 116144.465445,
+                            "endTime": 116144.679699,
+                            "responseReceivedTime": 116144.679311,
                             "transferSize": 859
                           },
                           "children": {}
@@ -5400,7 +5319,7 @@
                     }
                   },
                   "longestChain": {
-                    "duration": 2671.9799999991665,
+                    "duration": 2641.466000000946,
                     "length": 2,
                     "transferSize": 859
                   }
@@ -6079,7 +5998,7 @@
             },
             {
               "score": false,
-              "displayValue": "13 requests were not handled over h2",
+              "displayValue": "12 requests were not handled over h2",
               "rawValue": false,
               "extendedInfo": {
                 "formatter": "table",
@@ -6132,10 +6051,6 @@
                     {
                       "protocol": "http/1.1",
                       "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200"
-                    },
-                    {
-                      "protocol": "http/1.1",
-                      "url": "http://localhost:10200/favicon.ico"
                     }
                   ],
                   "tableHeadings": {
@@ -6489,7 +6404,7 @@
                     "source": "deprecation",
                     "level": "warning",
                     "text": "Calling Element.createShadowRoot() for an element which already hosts a shadow root is deprecated. See https://www.chromestatus.com/features/4668884095336448 for more details.",
-                    "timestamp": 1493420869767.03,
+                    "timestamp": 1493677874895.61,
                     "lineNumber": 45,
                     "stackTrace": {
                       "callFrames": [
@@ -6517,7 +6432,7 @@
                     "source": "deprecation",
                     "level": "warning",
                     "text": "Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience. For more help, check https://xhr.spec.whatwg.org/.",
-                    "timestamp": 1493420869786.15,
+                    "timestamp": 1493677874915.5,
                     "lineNumber": 291,
                     "stackTrace": {
                       "callFrames": [
@@ -6545,7 +6460,7 @@
                     "source": "deprecation",
                     "level": "warning",
                     "text": "'window.webkitStorageInfo' is deprecated. Please use 'navigator.webkitTemporaryStorage' or 'navigator.webkitPersistentStorage' instead.",
-                    "timestamp": 1493420869788.23,
+                    "timestamp": 1493677874917.84,
                     "lineNumber": 294,
                     "stackTrace": {
                       "callFrames": [
@@ -6573,7 +6488,7 @@
                     "source": "deprecation",
                     "level": "warning",
                     "text": "/deep/ combinator is deprecated and will be a no-op in M60, around August 2017. See https://www.chromestatus.com/features/4964279606312960 for more details.",
-                    "timestamp": 1493420869828.24
+                    "timestamp": 1493677874953.48
                   }
                 ]
               },

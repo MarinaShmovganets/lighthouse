@@ -166,7 +166,7 @@ class ReportRenderer {
     const categories = reportSection.appendChild(this._dom.createElement('div', 'lh-categories'));
     for (const category of report.reportCategories) {
       scoreHeader.appendChild(this._categoryRenderer.renderScoreGauge(category));
-      categories.appendChild(this._categoryRenderer.render(category, report.reportTags));
+      categories.appendChild(this._categoryRenderer.render(category, report.reportGroups));
     }
 
     reportSection.appendChild(this._renderReportFooter(report));
@@ -218,7 +218,7 @@ ReportRenderer.CategoryJSON; // eslint-disable-line no-unused-expressions
  *     description: string,
  * }}
  */
-ReportRenderer.TagJSON; // eslint-disable-line no-unused-expressions
+ReportRenderer.GroupJSON; // eslint-disable-line no-unused-expressions
 
 /**
  * @typedef {{
@@ -227,7 +227,7 @@ ReportRenderer.TagJSON; // eslint-disable-line no-unused-expressions
  *     initialUrl: string,
  *     url: string,
  *     reportCategories: !Array<!ReportRenderer.CategoryJSON>,
- *     reportTags: !Object<string, !ReportRenderer.TagJSON>,
+ *     reportGroups: !Object<string, !ReportRenderer.GroupJSON>,
  *     runtimeConfig: {
  *       blockedUrlPatterns: !Array<string>,
  *       environment: !Array<{description: string, enabled: boolean, name: string}>

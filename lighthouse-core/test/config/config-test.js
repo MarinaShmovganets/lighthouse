@@ -291,7 +291,7 @@ describe('Config', () => {
     }), 'missing an audit id at pwa[0]');
   });
 
-  it('throws when an accessibility audit does not have a tag', () => {
+  it('throws when an accessibility audit does not have a group', () => {
     return assert.throws(_ => new Config({
       audits: ['accessibility/color-contrast'],
       categories: {
@@ -301,26 +301,27 @@ describe('Config', () => {
           ]
         }
       }
-    }), /does not have exactly 1 tag/);
+    }), /does not have a group/);
   });
 
-  it('throws when an audit references an unknown tag', () => {
+  it('throws when an audit references an unknown group', () => {
     return assert.throws(_ => new Config({
-      tags: {
-        'tag-a': {
-          title: 'Tag A',
-          description: 'The best tag a around.',
+      groups: {
+        'group-a': {
+          title: 'Group A',
+          description: 'The best group around.',
         },
       },
       audits: ['first-meaningful-paint'],
       categories: {
         pwa: {
           audits: [
-            {id: 'first-meaningful-paint', tags: ['tag-a', 'missing-tag']}
+            {id: 'first-meaningful-paint', group: 'group-a'},
+            {id: 'first-meaningful-paint', group: 'missing-group'},
           ]
         }
       }
-    }), /unknown tag missing-tag/);
+    }), /unknown group missing-group/);
   });
 
   it('filters the config', () => {
