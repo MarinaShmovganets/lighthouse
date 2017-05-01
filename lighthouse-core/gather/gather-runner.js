@@ -238,6 +238,7 @@ class GatherRunner {
         // an object with a traceEvents property. Normalize to object form.
         passData.trace = Array.isArray(traceContents) ?
             {traceEvents: traceContents} : traceContents;
+        passData.devtoolsLog = driver.devtoolsLog;
         log.verbose('statusEnd', 'Retrieving trace');
       });
     }
@@ -249,7 +250,6 @@ class GatherRunner {
     }).then(networkRecords => {
       GatherRunner.assertPageLoaded(options.url, driver, networkRecords);
       // Expose devtoolsLog & networkRecords to gatherers
-      passData.devtoolsLog = driver.devtoolsLog;
       passData.networkRecords = networkRecords;
       log.verbose('statusEnd', status);
     });
@@ -354,9 +354,9 @@ class GatherRunner {
               const passName = config.passName || Audit.DEFAULT_PASS;
               if (config.recordTrace) {
                 tracingData.traces[passName] = passData.trace;
+                tracingData.devtoolsLogs[passName] = passData.devtoolsLog;
               }
 
-              tracingData.devtoolsLogs[passName] = passData.devtoolsLog;
               tracingData.networkRecords[passName] = passData.networkRecords;
 
               if (passIndex === 0) {
