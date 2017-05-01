@@ -482,6 +482,7 @@ class Config {
    * @return {!Object} fresh passes object
    */
   static generatePassesNeededByGatherers(oldPasses, requiredGatherers) {
+    const needsTraces = requiredGatherers.has('traces') || requiredGatherers.has('devtoolsLog');
     const passes = JSON.parse(JSON.stringify(oldPasses));
     const filteredPasses = passes.map(pass => {
       // remove any unncessary gatherers from within the passes
@@ -489,6 +490,10 @@ class Config {
         gathererName = GatherRunner.getGathererClass(gathererName).name;
         return requiredGatherers.has(gathererName);
       });
+
+      // disable the trace if no audit requires a trace
+      pass.recordTrace = pass.recordTrace && needsTraces;
+
       return pass;
     }).filter(pass => {
       // remove any passes lacking concrete gatherers, unless they are dependent on the trace
