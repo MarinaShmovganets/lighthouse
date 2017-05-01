@@ -841,7 +841,7 @@ class Driver {
    */
   dismissJavaScriptDialogs() {
     return this.sendCommand('Page.enable').then(_ => {
-      this.once('Page.javascriptDialogOpening', _ => {
+      this.on('Page.javascriptDialogOpening', _ => {
         // rejection intentionally unhandled
         this.sendCommand('Page.handleJavaScriptDialog', {
           accept: true,
