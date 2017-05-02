@@ -29,7 +29,7 @@ const CategoryRenderer = require('../../../../report/v2/renderer/category-render
 const ReportRenderer = require('../../../../report/v2/renderer/report-renderer.js');
 const sampleResults = require('../../../results/sample_v2.json');
 
-const TIMESTAMP_REGEX = /\d+, \d{4}.*\d+:\d+/
+const TIMESTAMP_REGEX = /\d+, \d{4}.*\d+:\d+/;
 const TEMPLATE_FILE = fs.readFileSync(__dirname + '/../../../../report/v2/templates.html', 'utf8');
 
 describe('ReportRenderer V2', () => {

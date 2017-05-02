@@ -169,6 +169,7 @@ if (typeof module !== 'undefined' && module.exports) {
  *     id: string,
  *     weight: number,
  *     score: number,
+ *     group: string,
  *     result: {
  *       description: string,
  *       debugString: string,
