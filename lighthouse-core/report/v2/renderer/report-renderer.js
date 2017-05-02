@@ -171,6 +171,7 @@ if (typeof module !== 'undefined' && module.exports) {
  *     score: number,
  *     result: {
  *       description: string,
+ *       informative: boolean,
  *       debugString: string,
  *       displayValue: string,
  *       helpText: string,
