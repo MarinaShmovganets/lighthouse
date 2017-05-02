@@ -24,7 +24,7 @@ const Util = require('../../../../report/v2/renderer/util.js');
 const URL = require('../../../../lib/url-shim');
 const DOM = require('../../../../report/v2/renderer/dom.js');
 const DetailsRenderer = require('../../../../report/v2/renderer/details-renderer.js');
-const ReportUIFeatures = require('../../../../report/v2/renderer/report-features.js');
+const ReportUIFeatures = require('../../../../report/v2/renderer/report-ui-features.js');
 const CategoryRenderer = require('../../../../report/v2/renderer/category-renderer.js');
 const ReportRenderer = require('../../../../report/v2/renderer/report-renderer.js');
 const sampleResults = require('../../../results/sample_v2.json');
@@ -81,16 +81,6 @@ describe('ReportRenderer V2', () => {
       const newReport = renderer.renderReport(sampleResults, container);
       assert.ok(!container.contains(oldReport), 'old report was removed');
       assert.ok(container.contains(newReport), 'new report appended to container');
-    });
-
-    it('should render an exception for invalid input', () => {
-      const container = renderer._dom._document.body;
-      const output = renderer.renderReport({
-        get reportCategories() {
-          throw new Error();
-        }
-      }, container);
-      assert.ok(output.classList.contains('lh-exception'));
     });
 
     it('renders a header', () => {

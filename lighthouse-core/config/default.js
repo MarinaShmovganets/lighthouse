@@ -3,7 +3,6 @@ module.exports = {
   "settings": {},
   "passes": [{
     "passName": "defaultPass",
-    "recordNetwork": true,
     "recordTrace": true,
     "pauseBeforeTraceEndMs": 5000,
     "useThrottling": true,
@@ -19,7 +18,6 @@ module.exports = {
   },
   {
     "passName": "offlinePass",
-    "recordNetwork": true,
     "useThrottling": false,
     "gatherers": [
       "service-worker",
@@ -35,7 +33,6 @@ module.exports = {
     ]
   }, {
     "passName": "dbw",
-    "recordNetwork": true,
     "useThrottling": false,
     "gatherers": [
       "chrome-console-messages",
@@ -68,6 +65,7 @@ module.exports = {
     "load-fast-enough-for-pwa",
     "speed-index-metric",
     "estimated-input-latency",
+    "first-interactive",
     "time-to-interactive",
     "user-timings",
     "critical-request-chains",
@@ -650,6 +648,7 @@ module.exports = {
         {"id": "speed-index-metric", "weight": 1},
         {"id": "estimated-input-latency", "weight": 1},
         {"id": "time-to-interactive", "weight": 5},
+        {"id": "first-interactive", "weight": 5},
         {"id": "link-blocking-first-paint", "weight": 0},
         {"id": "script-blocking-first-paint", "weight": 0},
         // {"id": "unused-css-rules", "weight": 0},

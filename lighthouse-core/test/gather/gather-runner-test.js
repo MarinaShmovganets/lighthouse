@@ -255,6 +255,7 @@ describe('GatherRunner', function() {
       assertNoSameOriginServiceWorkerClients: asyncFunc,
       beginEmulation: asyncFunc,
       setThrottling: asyncFunc,
+      dismissJavaScriptDialogs: asyncFunc,
       enableRuntimeEvents: asyncFunc,
       cacheNatives: asyncFunc,
       cleanAndDisableBrowserCaches: createCheck('calledDisableNetworkCache'),
@@ -283,6 +284,7 @@ describe('GatherRunner', function() {
       assertNoSameOriginServiceWorkerClients: asyncFunc,
       beginEmulation: asyncFunc,
       setThrottling: asyncFunc,
+      dismissJavaScriptDialogs: asyncFunc,
       enableRuntimeEvents: asyncFunc,
       cacheNatives: asyncFunc,
       cleanAndDisableBrowserCaches: createCheck('calledDisableNetworkCache'),
@@ -384,7 +386,6 @@ describe('GatherRunner', function() {
     };
 
     const config = {
-      recordNetwork: true,
       gatherers: [{}]
     };
 
@@ -409,7 +410,6 @@ describe('GatherRunner', function() {
     });
 
     const config = {
-      recordNetwork: true,
       gatherers: [
         new TestGatherer()
       ]
@@ -444,7 +444,6 @@ describe('GatherRunner', function() {
 
     const passes = [{
       blankDuration: 0,
-      recordNetwork: true,
       recordTrace: true,
       passName: 'firstPass',
       gatherers: [
@@ -472,13 +471,11 @@ describe('GatherRunner', function() {
   it('respects trace names', () => {
     const passes = [{
       blankDuration: 0,
-      recordNetwork: true,
       recordTrace: true,
       passName: 'firstPass',
       gatherers: [new TestGatherer()]
     }, {
       blankDuration: 0,
-      recordNetwork: true,
       recordTrace: true,
       passName: 'secondPass',
       gatherers: [new TestGatherer()]
@@ -783,7 +780,6 @@ describe('GatherRunner', function() {
     it('rejects if a gatherer does not provide an artifact', () => {
       const passes = [{
         blankDuration: 0,
-        recordNetwork: true,
         recordTrace: true,
         passName: 'firstPass',
         gatherers: [
@@ -802,7 +798,6 @@ describe('GatherRunner', function() {
     it('rejects when domain name can\'t be resolved', () => {
       const passes = [{
         blankDuration: 0,
-        recordNetwork: true,
         recordTrace: true,
         passName: 'firstPass',
         gatherers: []
@@ -833,7 +828,6 @@ describe('GatherRunner', function() {
     it('resolves when domain name can\'t be resolved but is offline', () => {
       const passes = [{
         blankDuration: 0,
-        recordNetwork: true,
         recordTrace: true,
         passName: 'firstPass',
         gatherers: []
