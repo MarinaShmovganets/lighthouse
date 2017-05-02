@@ -40,8 +40,11 @@ class CriticalRequestChains extends ComputedArtifact {
     }
 
     // Treat favicons as non-critical resources
+    // Match on 1) strict mime-type, 2) strict filename 3) loose combination
     if (request.mimeType === 'image/x-icon' ||
-        (request.parsedURL && request.parsedURL.lastPathComponent === 'favicon.ico')) {
+        request.parsedURL && request.parsedURL.lastPathComponent == 'favicon.ico' ||
+        (request.parsedURL && request.parsedURL.lastPathComponent.includes('favicon')
+        && request.mimeType && request.mimeType.startsWith('image/'))) {
       return false;
     }
 
