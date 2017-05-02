@@ -493,7 +493,8 @@ class Config {
 
       // disable the trace if no audit requires a trace
       if (pass.recordTrace && !auditsNeedTrace) {
-        log.warn('config', `Trace not requested by an audit, dropping trace in ${pass.passName}`);
+        const passName = pass.passName || 'unknown pass';
+        log.warn('config', `Trace not requested by an audit, dropping trace in ${passName}`);
         pass.recordTrace = false;
       }
 

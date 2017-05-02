@@ -347,6 +347,7 @@ describe('Config', () => {
       },
     });
 
+    log.events.removeListener('warning', saveWarning);
     assert.ok(config.audits.length, 'inherited audits by extension');
     assert.equal(config.passes.length, 1, 'filtered out passes');
     assert.equal(warnings.length, 1, 'warned about dropping trace');
