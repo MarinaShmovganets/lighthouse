@@ -337,6 +337,9 @@ describe('Config', () => {
   });
 
   it('filtering filters out traces when not needed', () => {
+    const warnings = [];
+    const saveWarning = evt => warnings.push(evt);
+    log.events.addListener('warning', saveWarning);
     const config = new Config({
       extends: true,
       settings: {
@@ -346,6 +349,7 @@ describe('Config', () => {
 
     assert.ok(config.audits.length, 'inherited audits by extension');
     assert.equal(config.passes.length, 1, 'filtered out passes');
+    assert.equal(warnings.length, 1, 'warned about dropping trace');
     assert.equal(config.passes[0].recordTrace, false, 'turns off tracing if not needed');
   });
 
