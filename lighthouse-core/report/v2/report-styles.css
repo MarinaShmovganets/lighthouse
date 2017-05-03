@@ -399,6 +399,8 @@ summary {
 
 .lh-category .lh-score__gauge {
   margin: 10px var(--lh-score-margin);
+  flex-basis: var(--circle-size);
+  flex-shrink: 0;
 }
 
 .lh-category .lh-score__gauge .lh-gauge {
