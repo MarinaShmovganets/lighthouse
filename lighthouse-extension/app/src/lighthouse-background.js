@@ -170,7 +170,6 @@ window.runLighthouseInWorker = function(port, url, options, categoryIDs) {
  */
 window.createReportPageAsBlob = function(results, reportContext) {
   performance.mark('report-start');
-  filterOutArtifacts(results);
   const reportGenerator = new ReportGenerator();
   let html;
   try {
