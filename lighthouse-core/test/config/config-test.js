@@ -401,7 +401,7 @@ describe('Config', () => {
             defaultPass: path.resolve(__dirname, '../fixtures/traces/trace-user-timings.json')
           },
           devtoolsLogs: {
-            defaultPass: path.resolve(__dirname, '../fixtures/perflog.json')
+            defaultPass: path.resolve(__dirname, '../fixtures/devtoolslog.json')
           }
         }
       });
@@ -425,8 +425,8 @@ describe('Config', () => {
             otherPass: path.resolve(__dirname, '../fixtures/traces/trace-user-timings.json')
           },
           devtoolsLogs: {
-            defaultPass: path.resolve(__dirname, '../fixtures/perflog.json'),
-            otherPass: path.resolve(__dirname, '../fixtures/perflog.json')
+            defaultPass: path.resolve(__dirname, '../fixtures/devtoolslog.json'),
+            otherPass: path.resolve(__dirname, '../fixtures/devtoolslog.json')
           }
         }
       });
@@ -445,7 +445,7 @@ describe('Config', () => {
                             '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json')
           },
           devtoolsLogs: {
-            defaultPass: path.resolve(__dirname, '../fixtures/perflog.json')
+            defaultPass: path.resolve(__dirname, '../fixtures/devtoolslog.json')
           }
         }
       });
