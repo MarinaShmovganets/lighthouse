@@ -249,7 +249,7 @@ class CategoryRenderer {
       auditsGroupedByGroup[groupId] = groups;
     });
 
-    const passedElements = /** @type {!Array<!Element>} */ ([]);
+    const passedElements = [];
     Object.keys(auditsGroupedByGroup).forEach(groupId => {
       const group = groupDefinitions[groupId];
       const groups = auditsGroupedByGroup[groupId];
