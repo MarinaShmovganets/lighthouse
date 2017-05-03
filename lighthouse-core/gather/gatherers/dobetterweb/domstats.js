@@ -65,12 +65,12 @@ function elementPathInDOM(element) {
     // Anchor elements have a .host property. Be sure we've found a shadow root
     // host and not an anchor.
     if (ShadowRoot.prototype.isPrototypeOf(node)) {
-      const shadowHost = node.host && node.localName !== 'a';
-      node = shadowHost ? node.host : node.parentElement;
+      const isShadowHost = node.host && node.localName !== 'a';
+      node = isShadowHost ? node.host : node.parentElement;
     } else {
-      const shadowHost = node.parentNode && node.parentNode.host &&
-                         node.parentNode.localName !== 'a';
-      node = shadowHost ? node.parentNode.host : node.parentElement;
+      const isShadowHost = node.parentNode && node.parentNode.host &&
+                           node.parentNode.localName !== 'a';
+      node = isShadowHost ? node.parentNode.host : node.parentElement;
     }
 
     if (node) {
