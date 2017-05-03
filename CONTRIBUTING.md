@@ -24,7 +24,7 @@ accept your pull requests.
 
 ## Contributing a patch
 
-For code patches, use this repo. The [documentation](https://developers.google.com/web/tools/lighthouse/) lives in the [WebFundamentals repo](https://github.com/google/WebFundamentals/tree/master/src/content/en/tools/lighthouse).
+If you have a contribution for our [documentation](https://developers.google.com/web/tools/lighthouse/), please submit it in the [WebFundamentals repo](https://github.com/google/WebFundamentals/tree/master/src/content/en/tools/lighthouse) repo.
 
 1. Submit an issue describing your proposed change to the repo in question.
 1. The repo owner will respond to your issue promptly.
