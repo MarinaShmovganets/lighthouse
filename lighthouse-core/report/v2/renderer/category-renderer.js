@@ -234,7 +234,7 @@ class CategoryRenderer {
     element.appendChild(this._renderCategoryScore(category));
 
     const auditsGroupedByGroup = /** @type {!Object<string,
-        {passed: !Array<!ReportRenderer.AuditJSON>,
+        {passed: !Array<!ReportRenderer.AuditSON>,
         failed: !Array<!ReportRenderer.AuditJSON>}>} */ ({});
     category.audits.forEach(audit => {
       const groupId = audit.group;
