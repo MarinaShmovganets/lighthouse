@@ -34,7 +34,7 @@ const log = require('../../lighthouse-core/lib/log');
 const lighthouse = require('../../lighthouse-core');
 const ExperimentDatabase = require('./experiment-database/database');
 const PerfXReportGenerator = require('./report/perf-x-report-generator');
-const opn = require('../shim-modules').opn();
+const opn = require('../shim-modules').opn;
 
 let database;
 let fallbackReportId;
@@ -57,7 +57,7 @@ function hostExperiment(params, results) {
 
     const server = http.createServer(requestHandler);
     server.listen(0);
-    server.on('listening', () => opn(`http://localhost:${server.address().port}/?id=${id}`));
+    server.on('listening', () => opn && opn(`http://localhost:${server.address().port}/?id=${id}`));
     server.on('error', err => log.error('PerformanceXServer', err.code, err));
     server.on('close', resolve);
     process.on('SIGINT', () => {

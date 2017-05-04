@@ -38,10 +38,12 @@ const yargs = require('yargs');
 const pkg = require('../package.json');
 
 // accept noop modules for these, so the real dependency is optional.
-const opn = require('./shim-modules').opn();
-const updateNotifier = require('./shim-modules').updateNotifier();
+const opn = require('./shim-modules').opn;
+const updateNotifier = require('./shim-modules').updateNotifier;
 
-updateNotifier({pkg}).notify(); // Tell user if there's a newer version of LH.
+if (updateNotifier) {
+  updateNotifier({pkg}).notify(); // Tell user if there's a newer version of LH.
+}
 
 interface LighthouseError extends Error {
   code?: string
@@ -305,7 +307,7 @@ function saveResults(results: Results,
         return Printer.write(results, flags.output, outputPath).then(results => {
           if (flags.output === Printer.OutputMode[Printer.OutputMode.html] ||
               flags.output === Printer.OutputMode[Printer.OutputMode.domhtml]) {
-            if (flags.view) {
+            if (opn && flags.view) {
               opn(outputPath, {wait: false});
             } else {
               log.log('CLI', 'Protip: Run lighthouse with `--view` to immediately open the HTML report in your browser');

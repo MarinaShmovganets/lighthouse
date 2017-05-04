@@ -11,29 +11,25 @@
  * if the real dependency is not installed.
  */
 
-export let opn = () => {
-	function shim(str: String, obj: Object) {
+let opn;
+try {
+	opn = require('opn');
+} catch (e) {
+	opn = function shimOpn() {
 		console.error('module `opn` not installed. Not opening browser.');
-		return [str, obj];
-	}
+	};
+}
 
-	try {
-  	return require('opn');
-	} catch (e) {
-		return shim;
- }
-};
-
-
-export let updateNotifier = () => {
-	function shim(obj: Object) {
+let updateNotifier;
+try {
+	updateNotifier = require('update-notifier');
+} catch (e) {
+	updateNotifier = function shimUpdateNotifier() {
 		console.error('module `update-notifier` not installed. Not checking for new version.');
-		return {notify: () => obj};
-	}
+	};
+}
 
-	try {
-  	return require('update-notifier');
-	} catch (e) {
-		return shim;
-	}
+export {
+	opn,
+	updateNotifier
 };
