@@ -72,16 +72,6 @@ class DetailsRenderer {
   }
 
   /**
-   * @param {!DetailsRenderer.DetailsJSON} text
-   * @return {!Element}
-   */
-  _renderURL(text) {
-    const element = this._renderText(text);
-    element.classList.add('lh-text__url');
-    return element;
-  }
-
-  /**
    * Create small thumbnail with scaled down image asset.
    * If the supplied details doesn't have an image/* mimeType, then an empty span is returned.
    * @param {!DetailsRenderer.ThumbnailDetails} value
