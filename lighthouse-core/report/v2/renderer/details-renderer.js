@@ -42,6 +42,8 @@ class DetailsRenderer {
         return this._renderCards(/** @type {!DetailsRenderer.CardsDetailsJSON} */ (details));
       case 'table':
         return this._renderTable(/** @type {!DetailsRenderer.TableDetailsJSON} */ (details));
+      case 'code':
+        return this._renderCode(/** @type {!DetailsRenderer.CodeDetailsJSON} */ (details));
       case 'list':
         return this._renderList(/** @type {!DetailsRenderer.ListDetailsJSON} */ (details));
       default:
@@ -167,6 +169,25 @@ class DetailsRenderer {
     element.appendChild(cardsParent);
     return element;
   }
+
+  /**
+   * @param {!DetailsRenderer.CodeDetailsJSON} details
+   * @return {!Element}
+   */
+  _renderCode(details) {
+    const element = this._dom.createElement('div', 'lh-details');
+
+    const pre = this._dom.createElement('pre', 'lh-code');
+    pre.textContent = details.text;
+
+    if (details.header) {
+      element.appendChild(this._renderText(details.header));
+    }
+
+    element.appendChild(pre);
+
+    return element;
+  }
 }
 
 if (typeof module !== 'undefined' && module.exports) {
@@ -217,3 +238,12 @@ DetailsRenderer.TableDetailsJSON; // eslint-disable-line no-unused-expressions
  * }}
  */
 DetailsRenderer.ThumbnailDetails; // eslint-disable-line no-unused-expressions
+
+/**
+ * @typedef {{
+ *     type: string,
+ *     text: string,
+ *     header: (!DetailsRenderer.DetailsJSON|undefined),
+ * }}
+ */
+DetailsRenderer.CodeDetailsJSON; // eslint-disable-line no-unused-expressions

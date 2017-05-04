@@ -356,6 +356,12 @@ summary {
   font-size: large;
 }
 
+.lh-code {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: pre-line;
+}
+
 .lh-scores-header {
   display: flex;
   margin: var(--report-header-height) 0 0 0;

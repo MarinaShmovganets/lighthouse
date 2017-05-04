@@ -108,5 +108,19 @@ describe('DetailsRenderer', () => {
       assert.equal(cards[1].getAttribute('title'), 'snippet', 'adds title attribute for snippet');
       assert.ok(!cards[1].querySelector('.lh-scorecard__target'), 'handles missing target');
     });
+
+    it('renders code', () => {
+      const el = renderer.render({
+        type: 'code',
+        text: 'code snippet',
+        header: {type: 'text', text: 'label (123)'}
+      });
+
+      const pre = el.querySelector('pre.lh-code');
+      assert.ok(pre, 'rendered pre tag');
+
+      const label = el.querySelector('.lh-text');
+      assert.ok(label.textContent.includes('label (123)'), 'contains label');
+    });
   });
 });

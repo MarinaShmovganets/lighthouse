@@ -59,6 +59,19 @@ class Deprecations extends Audit {
           }, log.entry);
         });
 
+    function makeDepractionsV2(entries) {
+      return entries.filter(log => log.entry.source === 'deprecation').map(log => {
+        // CSS deprecations can have missing URLs and lineNumbers. See https://crbug.com/680832.
+        const label = log.entry.lineNumber ? `line: ${log.entry.lineNumber}` : 'line: ???';
+        const url = log.entry.url || 'Unable to determine URL';
+        return {
+          type: 'code',
+          text: log.entry.text,
+          header: {type: 'text', text: `${url} (${label})`}
+        };
+      });
+    }
+
     let displayValue = '';
     if (deprecations.length > 1) {
       displayValue = `${deprecations.length} warnings found`;
@@ -72,6 +85,11 @@ class Deprecations extends Audit {
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.URL_LIST,
         value: deprecations
+      },
+      details: {
+        type: 'list',
+        header: {type: 'text', text: 'Deprecations & warnings'},
+        items: makeDepractionsV2(entries)
       }
     };
   }
