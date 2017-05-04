@@ -59,6 +59,9 @@ class Deprecations extends Audit {
           }, log.entry);
         });
 
+    /**
+     * @return {!DetailsRenderer.CodeDetailsJSON} details
+     */
     function makeDepractionsV2(entries) {
       return entries.filter(log => log.entry.source === 'deprecation').map(log => {
         // CSS deprecations can have missing URLs and lineNumbers. See https://crbug.com/680832.

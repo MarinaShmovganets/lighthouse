@@ -243,7 +243,7 @@ DetailsRenderer.ThumbnailDetails; // eslint-disable-line no-unused-expressions
  * @typedef {{
  *     type: string,
  *     text: string,
- *     header: (!DetailsRenderer.DetailsJSON|undefined),
+ *     header: {type: string, text: (string|undefined)}
  * }}
  */
 DetailsRenderer.CodeDetailsJSON; // eslint-disable-line no-unused-expressions
