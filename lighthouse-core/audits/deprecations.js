@@ -61,9 +61,10 @@ class Deprecations extends Audit {
         });
 
     /**
+     * @param {!Array<!DetailsRenderer.CodeDetailsJSON>} entries
      * @return {!DetailsRenderer.CodeDetailsJSON} details
      */
-    function makeDepractionsV2(entries) {
+    function makeDeprecationsV2(entries) {
       return entries.filter(log => log.entry.source === 'deprecation').map(log => {
         // CSS deprecations can have missing URLs and lineNumbers. See https://crbug.com/680832.
         const url = URL.isValid(log.entry.url) ? URL.getDisplayName(log.entry.url) : '';
@@ -94,7 +95,7 @@ class Deprecations extends Audit {
       details: {
         type: 'list',
         header: {type: 'text', text: 'Deprecations & warnings'},
-        items: makeDepractionsV2(entries)
+        items: makeDeprecationsV2(entries)
       }
     };
   }
