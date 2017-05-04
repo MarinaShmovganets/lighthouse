@@ -43,7 +43,7 @@ class DetailsRenderer {
       case 'table':
         return this._renderTable(/** @type {!DetailsRenderer.TableDetailsJSON} */ (details));
       case 'code':
-        return this._renderCode(/** @type {!DetailsRenderer.CodeDetailsJSON} */ (details));
+        return this._renderCode(details);
       case 'list':
         return this._renderList(/** @type {!DetailsRenderer.ListDetailsJSON} */ (details));
       default:
@@ -171,7 +171,7 @@ class DetailsRenderer {
   }
 
   /**
-   * @param {!DetailsRenderer.CodeDetailsJSON} details
+   * @param {!DetailsRenderer.DetailsJSON} details
    * @return {!Element}
    */
   _renderCode(details) {
@@ -229,14 +229,3 @@ DetailsRenderer.TableDetailsJSON; // eslint-disable-line no-unused-expressions
  * }}
  */
 DetailsRenderer.ThumbnailDetails; // eslint-disable-line no-unused-expressions
-
-/**
- * @typedef {{
- *     type: string,
- *     text: string,
- *     url: (string|undefined),
- *     source: string,
- *     lineNumber: (string|undefined)
- * }}
- */
-DetailsRenderer.CodeDetailsJSON; // eslint-disable-line no-unused-expressions
