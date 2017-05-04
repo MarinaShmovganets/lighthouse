@@ -210,6 +210,7 @@ ReportRenderer.GroupJSON; // eslint-disable-line no-unused-expressions
 /**
  * @typedef {{
  *     lighthouseVersion: string,
+ *     userAgent: string,
  *     generatedTime: string,
  *     initialUrl: string,
  *     url: string,
