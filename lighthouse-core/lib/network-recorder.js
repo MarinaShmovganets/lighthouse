@@ -40,14 +40,6 @@ class NetworkRecorder extends EventEmitter {
         this.onRequestStarted.bind(this));
     this.networkManager.addEventListener(this.EventTypes.RequestFinished,
         this.onRequestFinished.bind(this));
-
-    this.onRequestWillBeSent = this.onRequestWillBeSent.bind(this);
-    this.onRequestServedFromCache = this.onRequestServedFromCache.bind(this);
-    this.onResponseReceived = this.onResponseReceived.bind(this);
-    this.onDataReceived = this.onDataReceived.bind(this);
-    this.onLoadingFinished = this.onLoadingFinished.bind(this);
-    this.onLoadingFailed = this.onLoadingFailed.bind(this);
-    this.onResourceChangedPriority = this.onResourceChangedPriority.bind(this);
   }
 
   get EventTypes() {
@@ -156,6 +148,10 @@ class NetworkRecorder extends EventEmitter {
    * @param {!Object<string, *>=} params
    */
   dispatch(method, params) {
+    if (!/^Network\./.test(method)) {
+      return;
+    }
+
     switch (method) {
       case 'Network.requestWillBeSent': return this.onRequestWillBeSent(params);
       case 'Network.requestServedFromCache': return this.onRequestServedFromCache(params);

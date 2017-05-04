@@ -44,19 +44,28 @@ class Driver {
     this._connection = connection;
     // currently only used by WPT where just Page and Network are needed
     this._devtoolsLog = new DevtoolsLog(/^(Page|Network)\./);
-    connection.on('notification', event => {
-      this._devtoolsLog.record(event);
-      this._recordNetworkEvent(event.method, event.params);
-      this._eventEmitter.emit(event.method, event.params);
-    });
     this.online = true;
     this._domainEnabledCounts = new Map();
 
     /**
-     * Used for monitoring network status events.
+     * Used for monitoring network status events during gotoURL.
      * @private {?NetworkRecorder}
      */
-    this._networkStatus = null;
+    this._networkStatusMonitor = null;
+
+    /**
+     * Used for monitoring url redirects during gotoURL.
+     * @private {?string}
+     */
+    this._monitoredUrl = null;
+
+    connection.on('notification', event => {
+      this._devtoolsLog.record(event);
+      if (this._networkStatusMonitor) {
+        this._networkStatusMonitor.dispatch(event.method, event.params);
+      }
+      this._eventEmitter.emit(event.method, event.params);
+    });
   }
 
   static get traceCategories() {
@@ -346,24 +355,6 @@ class Driver {
   }
 
   /**
-   * Track any redirects of the supplied url. options.url will always represent
-   * the post-redirected URL.
-   * @param {{url: string}} options
-   */
-  enableUrlUpdateIfRedirected(options) {
-    this._networkStatus.on('requestloaded', redirectRequest => {
-      // Quit if this is not a redirected request
-      if (!redirectRequest.redirectSource) {
-        return;
-      }
-      const earlierRequest = redirectRequest.redirectSource;
-      if (earlierRequest.url === options.url) {
-        options.url = redirectRequest.url;
-      }
-    });
-  }
-
-  /**
    * Returns a promise that resolves when the network has been idle for
    * `pauseAfterLoadMs` ms and a method to cancel internal network listeners and
    * timeout.
@@ -378,7 +369,7 @@ class Driver {
     const promise = new Promise((resolve, reject) => {
       const onIdle = () => {
         // eslint-disable-next-line no-use-before-define
-        this._networkStatus.once('networkbusy', onBusy);
+        this._networkStatusMonitor.once('networkbusy', onBusy);
         idleTimeout = setTimeout(_ => {
           cancel();
           resolve();
@@ -386,17 +377,17 @@ class Driver {
       };
 
       const onBusy = () => {
-        this._networkStatus.once('networkidle', onIdle);
+        this._networkStatusMonitor.once('networkidle', onIdle);
         clearTimeout(idleTimeout);
       };
 
       cancel = () => {
         clearTimeout(idleTimeout);
-        this._networkStatus.removeListener('networkbusy', onBusy);
-        this._networkStatus.removeListener('networkidle', onIdle);
+        this._networkStatusMonitor.removeListener('networkbusy', onBusy);
+        this._networkStatusMonitor.removeListener('networkidle', onIdle);
       };
 
-      if (this._networkStatus.isIdle()) {
+      if (this._networkStatusMonitor.isIdle()) {
         onIdle();
       } else {
         onBusy();
@@ -488,41 +479,43 @@ class Driver {
   }
 
   /**
-   * Set up listener for network quiet events and URL redirects. URL in options
-   * object will be updated to the post-redirected URL.
-   * @param {{url: string}} options
+   * Set up listener for network quiet events and URL redirects. Passed in URL
+   * will be monitored for redirects, with the final loaded URL passed back in
+   * _endNetworkStatusMonitoring.
+   * @param {string} startingUrl
    * @return {!Promise}
    * @private
    */
-  _beginNetworkMonitoring(options) {
-    return new Promise((resolve, reject) => {
-      this._networkStatus = new NetworkRecorder([], this);
-      this.enableUrlUpdateIfRedirected(options);
+  _beginNetworkStatusMonitoring(startingUrl) {
+    this._networkStatusMonitor = new NetworkRecorder([], this);
 
-      this.sendCommand('Network.enable').then(resolve, reject);
+    // Update startingUrl if it's ever redirected.
+    this._monitoredUrl = startingUrl;
+    this._networkStatusMonitor.on('requestloaded', redirectRequest => {
+      // Ignore if this is not a redirected request.
+      if (!redirectRequest.redirectSource) {
+        return;
+      }
+      const earlierRequest = redirectRequest.redirectSource;
+      if (earlierRequest.url === this._monitoredUrl) {
+        this._monitoredUrl = redirectRequest.url;
+      }
     });
+
+    return this.sendCommand('Network.enable');
   }
 
   /**
-   * Dispatch relevant events to the networkStatus listener.
-   * @param {string} method
-   * @param {!Object<string, *>=} params
+   * End network status listening. Returns the final, possibly redirected,
+   * loaded URL starting with the one passed into _endNetworkStatusMonitoring.
+   * @return {string}
    * @private
    */
-  _recordNetworkEvent(method, params) {
-    if (!this._networkStatus) return;
-
-    const regexFilter = /^Network\./;
-    if (!regexFilter.test(method)) return;
-    this._networkStatus.dispatch(method, params);
-  }
-
-  /**
-   * End network status listening.
-   * @private
-   */
-  _endNetworkMonitoring() {
-    this._networkStatus = null;
+  _endNetworkStatusMonitoring() {
+    this._networkStatusMonitor = null;
+    const finalUrl = this._monitoredUrl;
+    this._monitoredUrl = null;
+    return finalUrl;
   }
 
   /**
@@ -543,17 +536,12 @@ class Driver {
     const maxWaitMs = (options.flags && options.flags.maxWaitForLoad) ||
         Driver.MAX_WAIT_FOR_FULLY_LOADED;
 
-    const redirectTracking = {url};
-
-    return this._beginNetworkMonitoring(redirectTracking)
+    return this._beginNetworkStatusMonitoring(url)
       .then(_ => this.sendCommand('Page.enable'))
       .then(_ => this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS}))
       .then(_ => this.sendCommand('Page.navigate', {url}))
       .then(_ => waitForLoad && this._waitForFullyLoaded(pauseAfterLoadMs, maxWaitMs))
-      .then(_ => {
-        this._endNetworkMonitoring();
-        return redirectTracking.url;
-      });
+      .then(_ => this._endNetworkStatusMonitoring());
   }
 
   /**
