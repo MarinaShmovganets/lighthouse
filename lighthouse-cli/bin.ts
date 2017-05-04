@@ -38,8 +38,7 @@ const yargs = require('yargs');
 const pkg = require('../package.json');
 
 // accept noop modules for these, so the real dependency is optional.
-const opn = require('./shim-modules').opn;
-const updateNotifier = require('./shim-modules').updateNotifier;
+import {opn, updateNotifier} from './shim-modules';
 
 updateNotifier({pkg}).notify(); // Tell user if there's a newer version of LH.
 
