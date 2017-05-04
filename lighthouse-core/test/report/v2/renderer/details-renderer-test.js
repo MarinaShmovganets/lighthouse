@@ -113,14 +113,17 @@ describe('DetailsRenderer', () => {
       const el = renderer.render({
         type: 'code',
         text: 'code snippet',
-        header: {type: 'text', text: 'label (123)'}
+        lineNumber: 123,
+        source: 'deprecation',
+        url: 'https://example.com/feature'
       });
 
       const pre = el.querySelector('pre.lh-code');
       assert.ok(pre, 'rendered pre tag');
+      assert.ok(pre.textContent.includes('deprecation'), 'rendered pre tag');
 
-      const label = el.querySelector('.lh-text');
-      assert.ok(label.textContent.includes('label (123)'), 'contains label');
+      const label = el.querySelector('.lh-text.lh-text__url');
+      assert.ok(label.textContent.includes('https://example.com/feature:123'), 'contains url');
     });
   });
 });

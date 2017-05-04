@@ -55,6 +55,16 @@ class DetailsRenderer {
    * @param {!DetailsRenderer.DetailsJSON} text
    * @return {!Element}
    */
+  _renderURL(text) {
+    const element = this._renderText(text);
+    element.classList.add('lh-text__url');
+    return element;
+  }
+
+  /**
+   * @param {!DetailsRenderer.DetailsJSON} text
+   * @return {!Element}
+   */
   _renderText(text) {
     const element = this._dom.createElement('div', 'lh-text');
     element.textContent = text.text;
@@ -175,16 +185,15 @@ class DetailsRenderer {
    * @return {!Element}
    */
   _renderCode(details) {
-    const element = this._dom.createElement('div', 'lh-details');
+    const element = this._dom.createElement('div', 'lh-details flex justified');
 
-    const pre = this._dom.createElement('pre', 'lh-code');
-    pre.textContent = details.text;
+    const pre = element.appendChild(this._dom.createElement('pre', 'lh-code'));
+    pre.textContent = details.source ? `[${details.source}] ${details.text}` : details.text;
 
-    if (details.header) {
-      element.appendChild(this._renderText(details.header));
+    if (details.url) {
+      const text = details.url + (details.lineNumber ? `:${details.lineNumber}` : '');
+      element.appendChild(this._renderURL({type: 'text', text}));
     }
-
-    element.appendChild(pre);
 
     return element;
   }
@@ -243,7 +252,9 @@ DetailsRenderer.ThumbnailDetails; // eslint-disable-line no-unused-expressions
  * @typedef {{
  *     type: string,
  *     text: string,
- *     header: {type: string, text: (string|undefined)}
+ *     url: (string|undefined),
+ *     source: string,
+ *     lineNumber: (string|undefined)
  * }}
  */
 DetailsRenderer.CodeDetailsJSON; // eslint-disable-line no-unused-expressions
