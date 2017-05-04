@@ -148,7 +148,7 @@ class NetworkRecorder extends EventEmitter {
    * @param {!Object<string, *>=} params
    */
   dispatch(method, params) {
-    if (!/^Network\./.test(method)) {
+    if (!method.startsWith('Network.')) {
       return;
     }
 
