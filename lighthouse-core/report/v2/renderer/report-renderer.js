@@ -80,6 +80,8 @@ class ReportRenderer {
     url.href = report.url;
     url.textContent = report.url;
 
+    this._dom.find('.lh-env__item__ua', header).textContent = report.userAgent;
+
     const env = this._dom.find('.lh-env__items', header);
     report.runtimeConfig.environment.forEach(runtime => {
       const item = this._dom.cloneTemplate('#tmpl-lh-env__items', env);
