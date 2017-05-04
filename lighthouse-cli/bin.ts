@@ -35,9 +35,11 @@ import * as Printer from './printer';
 import * as randomPort from './random-port';
 import {Results} from './types/types';
 const yargs = require('yargs');
-const opn = require('opn');
-const updateNotifier = require('update-notifier');
 const pkg = require('../package.json');
+
+// accept noop modules for these, so the real dependency is optional.
+const opn = require('./shim-modules').opn();
+const updateNotifier = require('./shim-modules').updateNotifier();
 
 updateNotifier({pkg}).notify(); // Tell user if there's a newer version of LH.
 
