@@ -118,6 +118,10 @@ class GatherRunner {
       .then(_ => driver.enableRuntimeEvents())
       .then(_ => driver.cacheNatives())
       .then(_ => driver.dismissJavaScriptDialogs())
+<<<<<<< HEAD
+=======
+      .then(_ => resetStorage && driver.cleanBrowserCaches())
+>>>>>>> Don't disable disk cache, just clear it once for perf.
       .then(_ => resetStorage && driver.clearDataForOrigin(options.url))
       .then(_ => gathererResults.UserAgent = [driver.getUserAgent()]);
   }
