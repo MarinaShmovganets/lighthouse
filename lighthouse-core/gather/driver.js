@@ -750,18 +750,12 @@ class Driver {
         .then(_ => this.online = true);
   }
 
-  cleanAndDisableBrowserCaches() {
-    return Promise.all([
-      this.clearBrowserCache(),
-      this.disableBrowserCache()
-    ]);
-  }
-
-  clearBrowserCache() {
-    return this.sendCommand('Network.clearBrowserCache');
+  enableBrowserCache() {
+    return this.sendCommand('Network.setCacheDisabled', {cacheDisabled: false});
   }
 
   disableBrowserCache() {
+    log.warn('Driver', 'disabling network cache');
     return this.sendCommand('Network.setCacheDisabled', {cacheDisabled: true});
   }
 
