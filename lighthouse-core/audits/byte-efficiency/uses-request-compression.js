@@ -47,7 +47,7 @@ class ResponsesAreCompressed extends ByteEfficiencyAudit {
   /**
    * @param {!Artifacts} artifacts
    * @param {number} networkThroughput
-   * @return {{results: !Array<Object>, passes: boolean=, headings: !Audit.Headings, debugString: string=}}
+   * @return {!Audit.HeadingsResult}
    */
   static audit_(artifacts) {
     const uncompressedResponses = artifacts.ResponseCompression;

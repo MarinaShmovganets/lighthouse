@@ -70,6 +70,8 @@ class DetailsRenderer {
   }
 
   /**
+   * Create small thumbnail with scaled down image asset.
+   * If the supplied details doesn't have an image/* mimeType, then an empty span is returned.
    * @param {!DetailsRenderer.ThumbnailDetails} value
    * @return {!Element}
    */
@@ -80,7 +82,7 @@ class DetailsRenderer {
 
     const element = this._dom.createElement('img', 'lh-thumbnail');
     element.src = value.url;
-    element.alt = 'Image preview';
+    element.alt = '';
     element.title = value.url;
     return element;
   }

@@ -70,7 +70,7 @@ class Audit {
    * Table cells will use the type specified in headings[x].itemType. However a custom type
    * can be provided: results[x].propName = {type: 'code', text: '...'}
    * @param {!Audit.Headings} headings
-   * @param {!Array<!Object<string, string>>} results
+   * @param {!Array<!Object<string, *>>} results
    * @return {!Array<!DetailsRenderer.DetailsJSON>}
    */
   static makeV2TableRows(headings, results) {
@@ -157,13 +157,20 @@ class Audit {
 
 module.exports = Audit;
 
+/** @typedef {
+ * !Array<{
+ *   key: string,
+ *   itemType: string,
+ *   text: string,
+ * }>}
+ */
+Audit.Headings; // eslint-disable-line no-unused-expressions
+
 /** @typedef {{
- *     key: string,
- *     itemType: string,
- *     text: string,
+ *   results: !Array<!Object<string, string>>,
+ *   headings: !Audit.Headings,
+ *   passes: boolean,
+ *   debugString: (string|undefined)
  * }}
  */
-Audit.Heading; // eslint-disable-line no-unused-expressions
-
-/** @typedef {!Array<!Audit.Heading>} */
-Audit.Headings; // eslint-disable-line no-unused-expressions
+Audit.HeadingsResult; // eslint-disable-line no-unused-expressions
