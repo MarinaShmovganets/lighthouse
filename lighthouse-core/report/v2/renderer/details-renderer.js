@@ -175,17 +175,9 @@ class DetailsRenderer {
    * @return {!Element}
    */
   _renderCode(details) {
-    const element = this._dom.createElement('div', 'lh-details flex justified');
-
-    const pre = element.appendChild(this._dom.createElement('pre', 'lh-code'));
-    pre.textContent = details.source ? `[${details.source}] ${details.text}` : details.text;
-
-    if (details.url) {
-      const text = details.url + (details.lineNumber ? `:${details.lineNumber}` : '');
-      element.appendChild(this._renderURL({type: 'text', text}));
-    }
-
-    return element;
+    const pre = this._dom.createElement('pre', 'lh-code');
+    pre.textContent = details.text;
+    return pre;
   }
 }
 

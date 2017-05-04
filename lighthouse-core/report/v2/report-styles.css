@@ -67,22 +67,6 @@ summary {
   cursor: pointer;
 }
 
-.flex {
-  display: flex;
-}
-.flex.vertical {
-  flex-direction: column;
-}
-.flex.vcenter {
-  align-items: center;
-}
-.flex.hcenter {
-  justify-content: center;
-}
-.flex.justified {
-  justify-content: space-between;
-}
-
 .lh-details {
   font-size: smaller;
   margin-top: var(--default-padding);

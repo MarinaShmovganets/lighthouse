@@ -118,12 +118,9 @@ describe('DetailsRenderer', () => {
         url: 'https://example.com/feature'
       });
 
-      const pre = el.querySelector('pre.lh-code');
-      assert.ok(pre, 'rendered pre tag');
-      assert.ok(pre.textContent.includes('deprecation'), 'rendered pre tag');
-
-      const label = el.querySelector('.lh-text.lh-text__url');
-      assert.ok(label.textContent.includes('https://example.com/feature:123'), 'contains url');
+      assert.ok(el.localName === 'pre');
+      assert.ok(el.classList.contains('lh-code'));
+      assert.equal(el.textContent, 'code snippet');
     });
   });
 });

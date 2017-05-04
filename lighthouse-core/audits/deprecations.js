@@ -60,23 +60,24 @@ class Deprecations extends Audit {
           }, log.entry);
         });
 
-    /**
-     * @param {!Array<!DetailsRenderer.CodeDetailsJSON>} entries
-     * @return {!DetailsRenderer.CodeDetailsJSON} details
-     */
-    function makeDeprecationsV2(entries) {
-      return entries.filter(log => log.entry.source === 'deprecation').map(log => {
-        // CSS deprecations can have missing URLs and lineNumbers. See https://crbug.com/680832.
-        const url = URL.isValid(log.entry.url) ? URL.getDisplayName(log.entry.url) : '';
-        return {
-          type: 'code',
-          text: log.entry.text,
-          url,
-          source: log.entry.source,
-          lineNumber: log.entry.lineNumber
-        };
-      });
-    }
+    const deprecationsV2 = entries.filter(log => log.entry.source === 'deprecation').map(log => {
+      // CSS deprecations can have missing URLs and lineNumbers. See https://crbug.com/680832.
+      const url = URL.isValid(log.entry.url) ? URL.getDisplayName(log.entry.url) : '';
+      return {
+        type: 'code',
+        text: log.entry.text,
+        url,
+        source: log.entry.source,
+        lineNumber: log.entry.lineNumber
+      };
+    });
+
+    const headings = [
+      {key: 'text', itemType: 'code', text: 'Deprecation / Warning'},
+      {key: 'url', itemType: 'url', text: 'URL'},
+      {key: 'lineNumber', itemType: 'text', text: 'Line'},
+    ];
+    const details = Audit.makeV2TableDetails(headings, deprecationsV2);
 
     let displayValue = '';
     if (deprecations.length > 1) {
@@ -92,11 +93,7 @@ class Deprecations extends Audit {
         formatter: Formatter.SUPPORTED_FORMATS.URL_LIST,
         value: deprecations
       },
-      details: {
-        type: 'list',
-        header: {type: 'text', text: 'Deprecations & warnings'},
-        items: makeDeprecationsV2(entries)
-      }
+      details
     };
   }
 }
