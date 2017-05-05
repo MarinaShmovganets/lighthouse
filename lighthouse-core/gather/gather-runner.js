@@ -253,7 +253,7 @@ class GatherRunner {
       const status = 'Retrieving devtoolsLog and network records';
       log.log('status', status);
       const devtoolsLog = driver.endDevtoolsLog();
-      const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog, driver);
+      const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
       GatherRunner.assertPageLoaded(options.url, driver, networkRecords);
       log.verbose('statusEnd', status);
 

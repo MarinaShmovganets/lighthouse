@@ -237,23 +237,14 @@ module.exports = (function() {
 
   /**
    * Creates a new WebInspector NetworkManager using a mocked Target.
-   * @param {!Driver=} driver
    * @return {!WebInspector.NetworkManager}
    */
-  WebInspector.NetworkManager.createWithFakeTarget = function(driver) {
+  WebInspector.NetworkManager.createWithFakeTarget = function() {
     // Mocked-up WebInspector Target for NetworkManager
     const fakeNetworkAgent = {
       enable() {},
-      getResponseBody(requestId, onComplete) {
-        if (!driver) {
-          throw new Error('No driver available to query for request content');
-        }
-
-        driver.sendCommand('Network.getResponseBody', {
-          requestId,
-        })
-        .then(response => onComplete(null, response.body, response.base64Encoded))
-        .catch(err => onComplete(err));
+      getResponseBody() {
+        throw new Error('Use driver.getRequestContent() for network request content');
       }
     };
     const fakeConsoleModel = {

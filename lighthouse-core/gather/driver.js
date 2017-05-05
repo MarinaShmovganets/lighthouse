@@ -487,7 +487,7 @@ class Driver {
    * @private
    */
   _beginNetworkStatusMonitoring(startingUrl) {
-    this._networkStatusMonitor = new NetworkRecorder([], this);
+    this._networkStatusMonitor = new NetworkRecorder([]);
 
     // Update startingUrl if it's ever redirected.
     this._monitoredUrl = startingUrl;
@@ -545,9 +545,9 @@ class Driver {
   }
 
   /**
-  * @param {string} objectId Object ID for the resolved DOM node
-  * @param {string} propName Name of the property
-  * @return {!Promise<string>} The property value, or null, if property not found
+   * @param {string} objectId Object ID for the resolved DOM node
+   * @param {string} propName Name of the property
+   * @return {!Promise<string>} The property value, or null, if property not found
   */
   getObjectProperty(objectId, propName) {
     return new Promise((resolve, reject) => {
@@ -568,6 +568,17 @@ class Driver {
         }
       }).catch(reject);
     });
+  }
+
+  /**
+   * Return the body of the response with the given ID.
+   * @param {string} requestId
+   * @return {string}
+   */
+  getRequestContent(requestId) {
+    return this.sendCommand('Network.getResponseBody', {
+      requestId,
+    }).then(result => result.body);
   }
 
   /**
