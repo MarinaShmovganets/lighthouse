@@ -260,7 +260,9 @@ describe('Runner', () => {
       ],
 
       artifacts: {
-        performanceLog: path.join(__dirname, '/fixtures/perflog.json')
+        devtoolsLogs: {
+          defaultPass: path.join(__dirname, '/fixtures/perflog.json')
+        }
       }
     });
 
@@ -442,6 +444,7 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       passes: [{
+        recordTrace: true,
         passName: 'firstPass',
         gatherers: ['viewport-dimensions']
       }],
@@ -459,14 +462,17 @@ describe('Runner', () => {
         assert.ok(results.artifacts.hasOwnProperty(method));
       }
 
-      // Verify a computed artifact. driverMock will include networkRecords
-      // built from fixtures/perflog.json.
-      const networkRecords = results.artifacts.networkRecords.firstPass;
-      const p = results.artifacts.requestCriticalRequestChains(networkRecords);
-      return p.then(chains => {
-        assert.ok(chains['93149.1']);
-        assert.ok(chains['93149.1'].request);
-        assert.ok(chains['93149.1'].children);
+      // Verify a computed artifact
+      const artifacts = results.artifacts;
+      const devtoolsLogs = artifacts.devtoolsLogs['firstPass'];
+      assert.equal(Array.isArray(devtoolsLogs), true, 'devtoolsLogs is not an array');
+
+      return artifacts.requestNetworkRecords(devtoolsLogs).then(networkRecords => {
+        return artifacts.requestCriticalRequestChains(networkRecords).then(chains => {
+          assert.ok(chains['93149.1']);
+          assert.ok(chains['93149.1'].request);
+          assert.ok(chains['93149.1'].children);
+        });
       });
     });
   });

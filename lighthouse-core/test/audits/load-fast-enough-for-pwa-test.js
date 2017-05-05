@@ -23,8 +23,11 @@ const assert = require('assert');
 
 function generateArtifacts(firstInteractiveValue, networkRecords = []) {
   return {
-    networkRecords: {
-      [Audit.DEFAULT_PASS]: networkRecords
+    devtoolsLogs: {
+      [Audit.DEFAULT_PASS]: []
+    },
+    requestNetworkRecords: () => {
+      return Promise.resolve(networkRecords);
     },
     traces: {
       [Audit.DEFAULT_PASS]: {traceEvents: []}
