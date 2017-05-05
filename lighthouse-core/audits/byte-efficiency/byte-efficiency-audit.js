@@ -34,14 +34,10 @@ class UnusedBytes extends Audit {
    * @return {number}
    */
   static scoreForWastedMs(wastedMs) {
-    if (wastedMs === 0)
-      return 100;
-    else if (wastedMs < WASTED_MS_FOR_AVERAGE)
-      return 90;
-    else if (wastedMs < WASTED_MS_FOR_POOR)
-      return 65;
-    else
-      return 0;
+    if (wastedMs === 0) return 100;
+    else if (wastedMs < WASTED_MS_FOR_AVERAGE) return 90;
+    else if (wastedMs < WASTED_MS_FOR_POOR) return 65;
+    else return 0;
   }
 
   /**
