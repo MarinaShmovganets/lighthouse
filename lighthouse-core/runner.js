@@ -161,6 +161,7 @@ class Runner {
           score,
           reportCategories,
           reportGroups: config.groups,
+          config,
           aggregations
         };
       });
