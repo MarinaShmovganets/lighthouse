@@ -7,10 +7,11 @@ _Some incomplete notes_
 ## Components & Terminology
 
 * **Driver** - Interfaces with [Chrome Debugging Protocol](https://developer.chrome.com/devtools/docs/debugger-protocol)  ([API viewer](https://chromedevtools.github.io/debugger-protocol-viewer/))
-* **Gatherers** - Requests data from the browser or collects information from the page (and maybe post-processing)
+* **Gatherers** - Uses Driver to collect information about the page. Minimal post-processing.
   * **Artifacts** - output of a gatherer
-* **Audits** - Tests for something. Either a pass/fail check or calculates a score.
-* **Categories** - Grouping audit results into a user-facing section of the report (eg. `Best Practices`). Appies weighting and overall scoring to the section.
+* **Audits** - Using the Artifacts as input, Audits evaluate a test and assign pass/fail/scoring.
+  * **Computed Artifacts** - Generated on-demand from artifacts, these add additional meaning, and are often shared amongst multiple audits.
+* **Categories** - Grouping audit results into a user-facing section of the report (eg. `Best Practices`). Applies weighting and overall scoring to the section.
 
 ## Protocol
 
