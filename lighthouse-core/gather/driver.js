@@ -578,6 +578,7 @@ class Driver {
   getRequestContent(requestId) {
     return this.sendCommand('Network.getResponseBody', {
       requestId,
+    // Ignoring result.base64Encoded, which indicates if body is already encoded
     }).then(result => result.body);
   }
 
