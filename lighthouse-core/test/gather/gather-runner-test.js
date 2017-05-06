@@ -271,6 +271,34 @@ describe('GatherRunner', function() {
     });
   });
 
+  it('clears the disk & memory cache on a perf run', () => {
+    const asyncFunc = () => Promise.resolve();
+    const tests = {
+      calledCleanBrowserCaches: false
+    };
+    const createCheck = variable => () => {
+      tests[variable] = true;
+      return Promise.resolve();
+    };
+    const driver = {
+      beginDevtoolsLog: asyncFunc,
+      beginTrace: asyncFunc,
+      gotoURL: asyncFunc,
+      cleanBrowserCaches: createCheck('calledCleanBrowserCaches')
+    };
+    const config = {
+      recordTrace: true,
+      useThrottling: true,
+      gatherers: []
+    };
+    const flags = {
+      disableStorageReset: false
+    };
+    return GatherRunner.pass({driver, config, flags}, {TestGatherer: []}).then(_ => {
+      assert.equal(tests.calledCleanBrowserCaches, true);
+    });
+  });
+
   it('does not clear origin storage with flag --disable-storage-reset', () => {
     const asyncFunc = () => Promise.resolve();
     const tests = {

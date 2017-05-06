@@ -47,10 +47,11 @@ let GathererResults; // eslint-disable-line no-unused-vars
  *     ii. Enable network request blocking for specified patterns
  *     iii. all gatherers' beforePass()
  *   B. GatherRunner.pass()
- *     i. beginTrace (if requested) & beginDevtoolsLog
- *     ii. GatherRunner.loadPage()
- *       a. cleanBrowserCaches
- *       b. navigate to options.url (and wait for onload)
+ *     i. cleanBrowserCaches() (if it's a perf run)
+ *     ii. beginDevtoolsLog()
+ *     iii. beginTrace (if requested)
+ *     iiv. GatherRunner.loadPage()
+ *       a. navigate to options.url (and wait for onload)
  *     iii. all gatherers' pass()
  *   C. GatherRunner.afterPass()
  *     i. endTrace (if requested) & endDevtoolsLog & endThrottling
@@ -87,20 +88,13 @@ class GatherRunner {
    * @return {!Promise}
    */
   static loadPage(driver, options) {
-    const resetStorage = !options.flags.disableStorageReset;
-    const recordTrace = options.config.recordTrace;
-    const useThrottling = options.config.useThrottling;
-    return Promise.resolve()
-      // Clear disk & memory cache if it's a perf run
-      .then(_ => resetStorage && recordTrace && useThrottling && driver.cleanBrowserCaches())
-      // Navigate.
-      .then(_ => driver.gotoURL(options.url, {
-        waitForLoad: true,
-        disableJavaScript: !!options.disableJavaScript,
-        flags: options.flags,
-      })).then(finalUrl => {
-        options.url = finalUrl;
-      });
+    return driver.gotoURL(options.url, {
+      waitForLoad: true,
+      disableJavaScript: !!options.disableJavaScript,
+      flags: options.flags,
+    }).then(finalUrl => {
+      options.url = finalUrl;
+    });
   }
 
   /**
@@ -208,15 +202,20 @@ class GatherRunner {
     const config = options.config;
     const gatherers = config.gatherers;
 
+    const resetStorage = !options.flags.disableStorageReset;
+    const recordTrace = config.recordTrace;
+    const useThrottling = config.useThrottling;
+
     const gatherernames = gatherers.map(g => g.name).join(', ');
     const status = 'Loading page & waiting for onload';
     log.log('status', status, gatherernames);
 
-    // Always record devtoolsLog.
-    driver.beginDevtoolsLog();
-
     const pass = Promise.resolve()
-      // Begin tracing only if requested by config.
+      // Clear disk & memory cache if it's a perf run
+      .then(_ => resetStorage && recordTrace && useThrottling && driver.cleanBrowserCaches())
+      // Always record devtoolsLog
+      .then(_ => driver.beginDevtoolsLog())
+      // Begin tracing if requested by config.
       .then(_ => config.recordTrace && driver.beginTrace(options.flags))
       // Navigate.
       .then(_ => GatherRunner.loadPage(driver, options))
