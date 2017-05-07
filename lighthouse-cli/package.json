@@ -5,11 +5,16 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
-    "test": "mocha --reporter dot test/**/*-test.js"
+    "test": "mocha --reporter dot test/**/*-test.js",
+    "format": "clang-format -i --style=file **/*.ts"
   },
   "devDependencies": {
     "mocha": "^3.2.0",
     "typescript": "2.2.1"
+  },
+  "devDependencies": {
+    "typescript": "2.2.1",
+    "clang-format": "^1.0.50"
   },
   "dependencies": {
     "@types/node": "6.0.66"
