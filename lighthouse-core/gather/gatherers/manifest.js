@@ -18,6 +18,7 @@
 
 const Gatherer = require('./gatherer');
 const manifestParser = require('../../lib/manifest-parser');
+const BOM_ENCODING = [0xEF, 0xBB, 0xBF];
 
 /**
  * Uses the debugger protocol to fetch the manifest from within the context of
@@ -43,7 +44,17 @@ class Manifest extends Gatherer {
           return null;
         }
 
+<<<<<<< HEAD
         return Promise.reject(err);
+=======
+        const isBomEncoded = Buffer.from(response.data).slice(1, 4)
+          .equals(new Buffer(BOM_ENCODING));
+        if (isBomEncoded) {
+          throw new Error('Manifest is encoded with BOM. Please remove the BOM encoding');
+        }
+
+        return manifestParser(response.data, response.url, options.url);
+>>>>>>> Throw error when manifest is BOM encoding
       });
   }
 }

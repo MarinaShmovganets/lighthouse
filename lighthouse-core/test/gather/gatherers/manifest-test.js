@@ -47,6 +47,46 @@ describe('Manifest gatherer', () => {
     });
   });
 
+  it('throws an error when manifest is saved as BOM UTF-8', () => {
+    const fs = require('fs');
+    const manifestWithoutBOM = fs.readFileSync(__dirname + '/../../fixtures/manifest.json')
+      .toString();
+    const manifestWithBOM = fs.readFileSync(__dirname + '/../../fixtures/manifest-bom.json')
+      .toString();
+
+    const getDriver = (data) => {
+      return {
+        driver: {
+          sendCommand() {
+            return Promise.resolve({
+              data: JSON.stringify(data),
+              errors: [],
+              url: EXAMPLE_MANIFEST_URL
+            });
+          }
+        },
+        url: EXAMPLE_DOC_URL
+      };
+    };
+
+    const promises = [];
+    promises.push(manifestGather.afterPass(getDriver(manifestWithBOM))
+      .then(
+        _ => assert.ok(false),
+        err => assert.ok(err.message.includes('Manifest is encoded with BOM.'))
+      )
+    );
+
+    promises.push(manifestGather.afterPass(getDriver(manifestWithoutBOM))
+      .then(
+        _ => assert.ok(true),
+        _ => assert.ok(false)
+      )
+    );
+
+    return Promise.all(promises);
+  });
+
   it('throws an error when unable to retrieve the manifest', () => {
     return manifestGather.afterPass({
       driver: {
