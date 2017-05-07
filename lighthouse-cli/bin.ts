@@ -28,120 +28,39 @@ import {ChromeLauncher} from './chrome-launcher';
 import * as Commands from './commands/commands';
 const lighthouse = require('../lighthouse-core');
 const log = require('../lighthouse-core/lib/log');
-const Driver = require('../lighthouse-core/gather/driver.js');
 import * as path from 'path';
 const perfOnlyConfig = require('../lighthouse-core/config/perf.json');
 const performanceXServer = require('./performance-experiment/server');
 import * as Printer from './printer';
 import * as randomPort from './random-port';
 import {Results} from './types/types';
-const yargs = require('yargs');
-const pkg = require('../package.json');
-
+import {getCliFlags} from './cli-flags';
 // accept noop modules for these, so the real dependency is optional.
 import {opn, updateNotifier} from './shim-modules';
+const pkg = require('../package.json');
 
-updateNotifier({pkg}).notify();  // Tell user if there's a newer version of LH.
 
 interface LighthouseError extends Error {
   code?: string
 }
-;
 
-const cliFlags =
-    yargs.help('help')
-        .version(() => pkg.version)
-        .showHelpOnFail(false, 'Specify --help for available options')
+interface Flags {
+  port: number;
+  skipAutolaunch: boolean;
+  selectChrome: boolean;
+  output: any;
+  outputPath: string;
+  interactive: boolean;
+  saveArtifacts: boolean;
+  saveAssets: boolean;
+  chromeFlags: string;
+  maxWaitForLoad: number;
+  view: boolean;
+}
 
-        .usage('$0 url')
+updateNotifier({pkg}).notify();  // Tell user if there's a newer version of LH.
 
-        // List of options
-        .group(['verbose', 'quiet'], 'Logging:')
-        .describe({
-          verbose: 'Displays verbose logging',
-          quiet: 'Displays no progress, debug logs or errors'
-        })
-
-        .group(
-            [
-              'save-assets', 'save-artifacts', 'list-all-audits',
-              'list-trace-categories', 'additional-trace-categories',
-              'config-path', 'chrome-flags', 'perf', 'port', 'max-wait-for-load'
-            ],
-            'Configuration:')
-        .describe({
-          'disable-storage-reset':
-              'Disable clearing the browser cache and other storage APIs before a run',
-          'disable-device-emulation': 'Disable Nexus 5X emulation',
-          'disable-cpu-throttling': 'Disable CPU throttling',
-          'disable-network-throttling': 'Disable network throttling',
-          'save-assets': 'Save the trace contents & screenshots to disk',
-          'save-artifacts': 'Save all gathered artifacts to disk',
-          'list-all-audits': 'Prints a list of all available audits and exits',
-          'list-trace-categories':
-              'Prints a list of all required trace categories and exits',
-          'additional-trace-categories':
-              'Additional categories to capture with the trace (comma-delimited).',
-          'config-path': 'The path to the config JSON.',
-          'chrome-flags': 'Custom flags to pass to Chrome.',
-          'perf': 'Use a performance-test-only configuration',
-          'port':
-              'The port to use for the debugging protocol. Use 0 for a random port',
-          'max-wait-for-load':
-              'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
-          'skip-autolaunch':
-              'Skip autolaunch of Chrome when already running instance is not found',
-          'select-chrome':
-              'Interactively choose version of Chrome to use when multiple installations are found',
-          'interactive': 'Open Lighthouse in interactive mode'
-        })
-
-        .group(['output', 'output-path', 'view'], 'Output:')
-        .describe({
-          'output': `Reporter for the results, supports multiple values`,
-          'output-path':
-              `The file path to output the results. Use 'stdout' to write to stdout.
-If using JSON output, default is stdout.
-If using HTML output, default is a file in the working directory with a name based on the test URL and date.
-If using multiple outputs, --output-path is ignored.
-Example: --output-path=./lighthouse-results.html`,
-          'view': 'Open HTML report in your browser'
-        })
-
-        // boolean values
-        .boolean([
-          'disable-storage-reset', 'disable-device-emulation',
-          'disable-cpu-throttling', 'disable-network-throttling', 'save-assets',
-          'save-artifacts', 'list-all-audits', 'list-trace-categories', 'perf',
-          'view', 'skip-autolaunch', 'select-chrome', 'verbose', 'quiet',
-          'help', 'interactive'
-        ])
-        .choices('output', Printer.GetValidOutputOptions())
-
-        // default values
-        .default('chrome-flags', '')
-        .default('disable-cpu-throttling', false)
-        .default(
-            'output', Printer.GetValidOutputOptions()[Printer.OutputMode.html])
-        .default('port', 9222)
-        .default('max-wait-for-load', Driver.MAX_WAIT_FOR_FULLY_LOADED)
-        .check((argv: {
-                 listAllAudits?: boolean,
-                 listTraceCategories?: boolean,
-                 _: Array<any>
-               }) => {
-          // Make sure lighthouse has been passed a url, or at least one of
-          // --list-all-audits
-          // or --list-trace-categories. If not, stop the program and ask for a
-          // url
-          if (!argv.listAllAudits && !argv.listTraceCategories &&
-              argv._.length === 0) {
-            throw new Error('Please provide a url');
-          }
-
-          return true;
-        })
-        .argv;
+const cliFlags = getCliFlags();
 
 // Process terminating command
 if (cliFlags.listAllAudits) {
@@ -178,11 +97,34 @@ if (cliFlags.output === Printer.OutputMode[Printer.OutputMode.json] &&
   cliFlags.outputPath = 'stdout';
 }
 
+export function run() {
+  return runLighthouse(url, cliFlags, config);
+}
+
+
+function showProtocolTimeoutError() {
+  console.error('Debugger protocol timed out while connecting to Chrome.');
+  process.exit(_PROTOCOL_TIMEOUT_EXIT_CODE);
+}
+
+function showPageLoadError() {
+  console.error(
+      'Unable to load the page. Please verify the url you are trying to review.');
+  process.exit(_RUNTIME_ERROR_CODE);
+}
+
+function showConnectionError() {
+  console.error('Unable to connect to Chrome');
+  console.error(
+      'If you\'re using lighthouse with --skip-autolaunch, ' +
+      'make sure you\'re running some other Chrome with a debugger.');
+  process.exit(_RUNTIME_ERROR_CODE);
+}
+
 /**
  * If the requested port is 0, set it to a random, unused port.
  */
-function initPort(flags: {port: number}): Promise<undefined> {
-  return Promise.resolve().then(() => {
+function initPort(flags: {port: number}){return Promise.resolve().then(() => {
   if (flags.port !== 0) {
     log.verbose('Lighthouse CLI', `Using supplied port ${flags.port}`);
     return;
@@ -193,20 +135,14 @@ function initPort(flags: {port: number}): Promise<undefined> {
     flags.port = portNumber;
     log.verbose('Lighthouse CLI', `Using generated port ${flags.port}.`);
   });
-  })
-}
+})}
 
 /**
  * Attempts to connect to an instance of Chrome with an open remote-debugging
  * port. If none is found and the `skipAutolaunch` flag is not true, launches
  * a debuggable instance.
  */
-async function getDebuggableChrome(flags: {
-  skipAutolaunch: boolean,
-  port: number,
-  selectChrome: boolean,
-  chromeFlags: string
-}): Promise<ChromeLauncher> {
+async function getDebuggableChrome(flags: Flags) {
   const chromeLauncher = new ChromeLauncher({
     port: flags.port,
     additionalFlags: flags.chromeFlags.split(' '),
@@ -221,7 +157,7 @@ async function getDebuggableChrome(flags: {
 
   try {
     // Check if there is an existing instance of Chrome ready to talk.
-    await chromeLauncher.isDebuggerReady()
+    await chromeLauncher.isDebuggerReady();
   } catch (e) {
     if (!flags.skipAutolaunch) {
       // If not, create one.
@@ -231,14 +167,6 @@ async function getDebuggableChrome(flags: {
   }
 
   return chromeLauncher;
- }
-
-function showConnectionError() {
-  console.error('Unable to connect to Chrome');
-  console.error(
-      'If you\'re using lighthouse with --skip-autolaunch, ' +
-      'make sure you\'re running some other Chrome with a debugger.');
-  process.exit(_RUNTIME_ERROR_CODE);
 }
 
 function showRuntimeError(err: LighthouseError) {
@@ -246,17 +174,6 @@ function showRuntimeError(err: LighthouseError) {
   if (err.stack) {
     console.error(err.stack);
   }
-  process.exit(_RUNTIME_ERROR_CODE);
-}
-
-function showProtocolTimeoutError() {
-  console.error('Debugger protocol timed out while connecting to Chrome.');
-  process.exit(_PROTOCOL_TIMEOUT_EXIT_CODE);
-}
-
-function showPageLoadError() {
-  console.error(
-      'Unable to load the page. Please verify the url you are trying to review.');
   process.exit(_RUNTIME_ERROR_CODE);
 }
 
@@ -272,13 +189,7 @@ function handleError(err: LighthouseError) {
   }
 }
 
-function saveResults(results: Results, artifacts: Object, flags: {
-  output: any,
-  outputPath: string,
-  saveArtifacts: boolean,
-  saveAssets: boolean,
-  view: boolean
-}) {
+function saveResults(results: Results, artifacts: Object, flags: Flags) {
   let promise = Promise.resolve(results);
   const cwd = process.cwd();
   // Use the output path as the prefix for all generated files.
@@ -328,41 +239,32 @@ function saveResults(results: Results, artifacts: Object, flags: {
   });
 }
 
-export function run() {
-  return runLighthouse(url, cliFlags, config);
-}
-
 export async function runLighthouse(
-  url: string,
-  flags: {port: number, skipAutolaunch: boolean, selectChrome: boolean, output: any,
-    outputPath: string, interactive: boolean, saveArtifacts: boolean, saveAssets: boolean
-    chromeFlags: string, maxWaitForLoad: number, view: boolean},
-    config: Object | null): Promise<{}|void> {
-      let chromeLauncher: ChromeLauncher|undefined = undefined;
+    url: string, flags: Flags, config: Object|null) {
+  let chromeLauncher: ChromeLauncher|undefined = undefined;
 
-      try {
-        await initPort(flags);
-        const chromeLauncher = await getDebuggableChrome(flags);
-        const results = await lighthouse(url, flags, config);
+  try {
+    await initPort(flags);
+    const chromeLauncher = await getDebuggableChrome(flags);
+    const results = await lighthouse(url, flags, config);
 
-        const artifacts = results.artifacts;
-        delete results.artifacts;
+    const artifacts = results.artifacts;
+    delete results.artifacts;
 
-        await saveResults(results, artifacts!, flags);
-        if (flags.interactive) {
-          await performanceXServer.hostExperiment(
-              {url, flags, config}, results);
-        }
+    await saveResults(results, artifacts!, flags);
+    if (flags.interactive) {
+      await performanceXServer.hostExperiment({url, flags, config}, results);
+    }
 
-        if (chromeLauncher !== undefined) {
-          return await chromeLauncher.kill();
-        }
+    if (chromeLauncher !== undefined) {
+      return await chromeLauncher.kill();
+    }
 
-      } catch (err) {
-        if (typeof chromeLauncher !== 'undefined') {
-          await chromeLauncher!.kill();
-        }
+  } catch (err) {
+    if (typeof chromeLauncher !== 'undefined') {
+      await chromeLauncher!.kill();
+    }
 
-        return handleError(err);
-      }
-    };
+    return handleError(err);
+  }
+};
