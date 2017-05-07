@@ -35,8 +35,7 @@ import {Results} from './types/types';
 
 const fs = require('fs');
 const ReportGenerator = require('../lighthouse-core/report/report-generator');
-const ReportGeneratorV2 =
-    require('../lighthouse-core/report/v2/report-generator');
+const ReportGeneratorV2 = require('../lighthouse-core/report/v2/report-generator');
 const log = require('../lighthouse-core/lib/log');
 
 /**
@@ -91,16 +90,14 @@ function writeToStdout(output: string): Promise<{}> {
 /**
  * Writes the output to a file.
  */
-function writeFile(filePath: string, output: string,
-                   outputMode: OutputMode): Promise<{}> {
+function writeFile(filePath: string, output: string, outputMode: OutputMode): Promise<{}> {
   return new Promise((resolve, reject) => {
     // TODO: make this mkdir to the filePath.
     fs.writeFile(filePath, output, 'utf8', (err: Error) => {
       if (err) {
         return reject(err);
       }
-      log.log('Printer',
-              `${OutputMode[outputMode]} output written to ${filePath}`);
+      log.log('Printer', `${OutputMode[outputMode]} output written to ${filePath}`);
       resolve();
     });
   });
@@ -115,8 +112,7 @@ function write(results: Results, mode: Mode, path: string): Promise<Results> {
 
     const output = createOutput(results, (<any>OutputMode)[mode]);
 
-    // Testing stdout is out of scope, and doesn't really achieve much besides
-    // testing Node,
+    // Testing stdout is out of scope, and doesn't really achieve much besides testing Node,
     // so we will skip this chunk of the code.
     /* istanbul ignore if */
     if (outputPath === 'stdout') {
@@ -124,7 +120,9 @@ function write(results: Results, mode: Mode, path: string): Promise<Results> {
     }
 
     return writeFile(outputPath, output, (<any>OutputMode)[mode])
-        .then(_ => { resolve(results); })
+        .then(_ => {
+          resolve(results);
+        })
         .catch(err => reject(err));
   });
 }

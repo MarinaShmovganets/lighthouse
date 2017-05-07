@@ -22,8 +22,7 @@ const _RUNTIME_ERROR_CODE = 1;
 const _PROTOCOL_TIMEOUT_EXIT_CODE = 67;
 
 const assetSaver = require('../lighthouse-core/lib/asset-saver.js');
-const getFilenamePrefix =
-    require('../lighthouse-core/lib/file-namer.js').getFilenamePrefix;
+const getFilenamePrefix = require('../lighthouse-core/lib/file-namer.js').getFilenamePrefix;
 import {ChromeLauncher} from './chrome-launcher';
 import * as Commands from './commands/commands';
 const lighthouse = require('../lighthouse-core');
@@ -92,8 +91,7 @@ if (cliFlags.verbose) {
 }
 log.setLevel(cliFlags.logLevel);
 
-if (cliFlags.output === Printer.OutputMode[Printer.OutputMode.json] &&
-    !cliFlags.outputPath) {
+if (cliFlags.output === Printer.OutputMode[Printer.OutputMode.json] && !cliFlags.outputPath) {
   cliFlags.outputPath = 'stdout';
 }
 
@@ -108,8 +106,7 @@ function showProtocolTimeoutError() {
 }
 
 function showPageLoadError() {
-  console.error(
-      'Unable to load the page. Please verify the url you are trying to review.');
+  console.error('Unable to load the page. Please verify the url you are trying to review.');
   process.exit(_RUNTIME_ERROR_CODE);
 }
 
@@ -151,8 +148,7 @@ async function getDebuggableChrome(flags: Flags) {
 
   // Kill spawned Chrome process in case of ctrl-C.
   process.on(_SIGINT, () => {
-    chromeLauncher.kill().then(
-        () => process.exit(_SIGINT_EXIT_CODE), handleError);
+    chromeLauncher.kill().then(() => process.exit(_SIGINT_EXIT_CODE), handleError);
   });
 
   try {
@@ -204,23 +200,19 @@ function saveResults(results: Results, artifacts: Object, flags: Flags) {
   }
 
   if (flags.saveAssets) {
-    promise = promise.then(
-        _ => assetSaver.saveAssets(artifacts, results.audits, resolvedPath));
+    promise = promise.then(_ => assetSaver.saveAssets(artifacts, results.audits, resolvedPath));
   }
 
-  const typeToExtension = (type: string) =>
-      type === 'domhtml' ? 'dom.html' : type;
+  const typeToExtension = (type: string) => type === 'domhtml' ? 'dom.html' : type;
   return promise.then(_ => {
     if (Array.isArray(flags.output)) {
       return flags.output.reduce((innerPromise, outputType) => {
-        const outputPath =
-            `${resolvedPath}.report.${typeToExtension(outputType)}`;
-        return innerPromise.then(
-            (_: Results) => Printer.write(results, outputType, outputPath));
+        const outputPath = `${resolvedPath}.report.${typeToExtension(outputType)}`;
+        return innerPromise.then((_: Results) => Printer.write(results, outputType, outputPath));
       }, Promise.resolve(results));
     } else {
-      const outputPath = flags.outputPath ||
-          `${resolvedPath}.report.${typeToExtension(flags.output)}`;
+      const outputPath =
+          flags.outputPath || `${resolvedPath}.report.${typeToExtension(flags.output)}`;
       return Printer.write(results, flags.output, outputPath).then(results => {
         if (flags.output === Printer.OutputMode[Printer.OutputMode.html] ||
             flags.output === Printer.OutputMode[Printer.OutputMode.domhtml]) {
@@ -239,8 +231,7 @@ function saveResults(results: Results, artifacts: Object, flags: Flags) {
   });
 }
 
-export async function runLighthouse(
-    url: string, flags: Flags, config: Object|null) {
+export async function runLighthouse(url: string, flags: Flags, config: Object|null) {
   let chromeLauncher: ChromeLauncher|undefined = undefined;
 
   try {

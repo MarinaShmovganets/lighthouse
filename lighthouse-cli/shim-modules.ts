@@ -31,9 +31,8 @@ try {
   updateNotifier = require('update-notifier');
 } catch (e) {
   updateNotifier = function shimUpdateNotifier() {
-    console.error(
-        'module `update-notifier` not installed. Not checking for new version.');
-    return {notify : () => false};
+    console.error('module `update-notifier` not installed. Not checking for new version.');
+    return {notify: () => false};
   };
 }
 

@@ -67,12 +67,10 @@ export class ChromeLauncher {
       '--disable-translate',
       // Disable all chrome extensions entirely
       '--disable-extensions',
-      // Disable various background network services, including extension
-      // updating,
+      // Disable various background network services, including extension updating,
       //   safe browsing service, upgrade detector, translate, UMA
       '--disable-background-networking',
-      // Disable fetching safebrowsing lists, likely redundant due to
-      // disable-background-networking
+      // Disable fetching safebrowsing lists, likely redundant due to disable-background-networking
       '--safebrowsing-disable-auto-update',
       // Disable syncing to a Google account
       '--disable-sync',
@@ -98,24 +96,23 @@ export class ChromeLauncher {
 
   prepare() {
     switch (process.platform) {
-    case 'darwin':
-    case 'linux':
-      this.TMP_PROFILE_DIR = unixTmpDir();
-      break;
+      case 'darwin':
+      case 'linux':
+        this.TMP_PROFILE_DIR = unixTmpDir();
+        break;
 
-    case 'win32':
-      this.TMP_PROFILE_DIR = win32TmpDir();
-      break;
+      case 'win32':
+        this.TMP_PROFILE_DIR = win32TmpDir();
+        break;
 
-    default:
-      throw new Error('Platform ' + process.platform + ' is not supported');
+      default:
+        throw new Error('Platform ' + process.platform + ' is not supported');
     }
 
     this.outFile = fs.openSync(`${this.TMP_PROFILE_DIR}/chrome-out.log`, 'a');
     this.errFile = fs.openSync(`${this.TMP_PROFILE_DIR}/chrome-err.log`, 'a');
 
-    // fix for Node4
-    // you can't pass a fd to fs.writeFileSync
+    // fix for Node4: you can't pass a fd to fs.writeFileSync
     this.pidFile = `${this.TMP_PROFILE_DIR}/chrome.pid`;
 
     log.verbose('ChromeLauncher', `created ${this.TMP_PROFILE_DIR}`);
@@ -138,8 +135,7 @@ export class ChromeLauncher {
             return installations[0];
           }
 
-          return ask('Choose a Chrome installation to use with Lighthouse',
-                     installations);
+          return ask('Choose a Chrome installation to use with Lighthouse', installations);
         })
         .then(execPath => this.spawn(execPath));
   }
@@ -147,25 +143,22 @@ export class ChromeLauncher {
   spawn(execPath: string): Promise<any[]> {
     return new Promise(resolve => {
              if (this.chrome) {
-               log.log('ChromeLauncher',
-                       `Chrome already running with pid ${this.chrome.pid}.`);
+               log.log('ChromeLauncher', `Chrome already running with pid ${this.chrome.pid}.`);
                return resolve(this.chrome.pid);
              }
 
-             const chrome = spawn(execPath, this.flags(), {
-               detached : true,
-               stdio : [ 'ignore', this.outFile, this.errFile ]
-             });
+             const chrome = spawn(
+                 execPath, this.flags(),
+                 {detached: true, stdio: ['ignore', this.outFile, this.errFile]});
              this.chrome = chrome;
 
              fs.writeFileSync(this.pidFile, chrome.pid.toString());
 
              log.verbose(
-                 'ChromeLauncher',
-                 `Chrome running with pid ${chrome.pid} on port ${this.port}.`);
+                 'ChromeLauncher', `Chrome running with pid ${chrome.pid} on port ${this.port}.`);
              resolve(chrome.pid);
            })
-        .then(pid => Promise.all([ pid, this.waitUntilReady() ]));
+        .then(pid => Promise.all([pid, this.waitUntilReady()]));
   }
 
   cleanup(client?: net.Socket) {
@@ -209,8 +202,7 @@ export class ChromeLauncher {
 
         launcher.isDebuggerReady()
             .then(() => {
-              log.log('ChromeLauncher',
-                      waitStatus + `${log.greenify(log.tick)}`);
+              log.log('ChromeLauncher', waitStatus + `${log.greenify(log.tick)}`);
               resolve();
             })
             .catch(err => {
@@ -226,7 +218,9 @@ export class ChromeLauncher {
   kill(): Promise<{}> {
     return new Promise(resolve => {
       if (this.chrome) {
-        this.chrome.on('close', () => { this.destroyTmp().then(resolve); });
+        this.chrome.on('close', () => {
+          this.destroyTmp().then(resolve);
+        });
 
         log.log('ChromeLauncher', 'Killing all Chrome Instances');
         try {
@@ -236,8 +230,7 @@ export class ChromeLauncher {
             process.kill(-this.chrome.pid);
           }
         } catch (err) {
-          log.warn('ChromeLauncher',
-                   `Chrome could not be killed ${err.message}`);
+          log.warn('ChromeLauncher', `Chrome could not be killed ${err.message}`);
         }
 
         delete this.chrome;
@@ -285,7 +278,7 @@ function unixTmpDir() {
 
 function win32TmpDir() {
   const winTmpPath = process.env.TEMP || process.env.TMP ||
-                     (process.env.SystemRoot || process.env.windir) + '\\temp';
+      (process.env.SystemRoot || process.env.windir) + '\\temp';
   const randomNumber = Math.floor(Math.random() * 9e7 + 1e7);
   const tmpdir = path.join(winTmpPath, 'lighthouse.' + randomNumber);
 
