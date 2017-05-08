@@ -853,9 +853,7 @@ class Driver {
   }
 
   /**
-   * This method sets the URL patterns to be blocked and is called at the beginning of each pass.
-   * No "clearing" is done at the end of the pass since the next pass will set to [] if necessary.
-   * @param {!Array<string>} urls
+   * @param {!Array<string>} urls URL patterns to block. Wildcards ('*') are allowed.
    * @return {!Promise}
    */
   blockUrlPatterns(urls) {
