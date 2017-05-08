@@ -162,6 +162,8 @@ class CategoryRenderer {
   }
 
   /**
+   * Renders the group container for a group of audits. Individual audit elements can be added
+   * directly to the returned element.
    * @param {!ReportRenderer.GroupJSON} group
    * @return {!Element}
    */
