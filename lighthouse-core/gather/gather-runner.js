@@ -40,7 +40,6 @@ let GathererResults; // eslint-disable-line no-unused-vars
  *     iv. evaluateScriptOnLoad rescue native Promise from potential polyfill
  *     v. cleanAndDisableBrowserCaches
  *     vi. clearDataForOrigin
- *     vii. blockUrlPatterns
  *
  * 2. For each pass in the config:
  *   A. GatherRunner.beforePass()
