@@ -52,6 +52,12 @@ const cliFlags = yargs
   .showHelpOnFail(false, 'Specify --help for available options')
 
   .usage('$0 url')
+  .example('$0 url --view', 'Opens the HTML report in a browser after the run completes')
+  .example('$0 url --config-path=./myconfig.js', 'Runs Lighthouse with your own configuration: custom audits, report generation, etc.')
+  .example('$0 url --output=json --output-path=./report.json --save-assets', 'Save trace, screenshots, and named JSON report.')
+  .example('$0 url --disable-device-emulation --disable-network-throttling', 'Disable device emulation')
+  .example('$0 url --chrome-flags="--window-size=412,732"', 'Launch Chrome with a specific window size')
+  .example('$0 url --quiet --chrome-flags="--headless"', 'Launch Headless Chrome, turn off logging')
 
   // List of options
   .group([
@@ -86,7 +92,7 @@ const cliFlags = yargs
     'list-trace-categories': 'Prints a list of all required trace categories and exits',
     'additional-trace-categories': 'Additional categories to capture with the trace (comma-delimited).',
     'config-path': 'The path to the config JSON.',
-    'chrome-flags': 'Custom flags to pass to Chrome.',
+    'chrome-flags': 'Custom flags to pass to Chrome (space-delimited). For a full list of flags, see http://peter.sh/experiments/chromium-command-line-switches/.',
     'perf': 'Use a performance-test-only configuration',
     'port': 'The port to use for the debugging protocol. Use 0 for a random port',
     'max-wait-for-load': 'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
@@ -146,6 +152,7 @@ Example: --output-path=./lighthouse-results.html`,
 
     return true;
   })
+  .epilogue('For more information on Lighthouse, see https://developers.google.com/web/tools/lighthouse/.')
   .argv;
 
 // Process terminating command
@@ -209,7 +216,7 @@ function getDebuggableChrome(flags: {skipAutolaunch: boolean, port: number, sele
                                chromeFlags: string}): Promise<ChromeLauncher> {
   const chromeLauncher = new ChromeLauncher({
     port: flags.port,
-    additionalFlags: flags.chromeFlags.split(' '),
+    chromeFlags: flags.chromeFlags.split(' '),
     autoSelectChrome: !flags.selectChrome,
   });
 
