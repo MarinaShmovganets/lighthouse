@@ -110,7 +110,6 @@ class GatherRunner {
       .then(_ => driver.enableRuntimeEvents())
       .then(_ => driver.cacheNatives())
       .then(_ => driver.dismissJavaScriptDialogs())
-      .then(_ => resetStorage && driver.cleanAndDisableBrowserCaches())
       .then(_ => resetStorage && driver.clearDataForOrigin(options.url))
       .then(_ => driver.blockUrlPatterns(options.flags.blockedUrlPatterns || []))
       .then(_ => gathererResults.UserAgent = [driver.getUserAgent()]);
@@ -355,7 +354,9 @@ class GatherRunner {
           return chain
             .then(_ => driver.setThrottling(options.flags, config))
             .then(_ => GatherRunner.beforePass(runOptions, gathererResults))
+            .then(_ => config.recordTrace && driver.disableBrowserCache())
             .then(_ => GatherRunner.pass(runOptions, gathererResults))
+            .then(_ => driver.enableBrowserCache())
             .then(_ => GatherRunner.afterPass(runOptions, gathererResults))
             .then(passData => {
               const passName = config.passName || Audit.DEFAULT_PASS;
