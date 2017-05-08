@@ -113,7 +113,6 @@ describe('CategoryRenderer', () => {
       const score = categoryDOM.querySelector('.lh-score');
       const value = categoryDOM.querySelector('.lh-score  > .lh-score__value');
       const title = score.querySelector('.lh-score__title');
-      const description = score.querySelector('.lh-score__description');
 
       assert.deepEqual(score, score.firstElementChild, 'first child is a score');
       assert.ok(value.classList.contains('lh-score__value--numeric'),
