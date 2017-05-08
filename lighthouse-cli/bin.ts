@@ -51,13 +51,13 @@ const cliFlags = yargs
   .version(() => pkg.version)
   .showHelpOnFail(false, 'Specify --help for available options')
 
-  .usage('$0 url')
-  .example('$0 url --view', 'Opens the HTML report in a browser after the run completes')
-  .example('$0 url --config-path=./myconfig.js', 'Runs Lighthouse with your own configuration: custom audits, report generation, etc.')
-  .example('$0 url --output=json --output-path=./report.json --save-assets', 'Save trace, screenshots, and named JSON report.')
-  .example('$0 url --disable-device-emulation --disable-network-throttling', 'Disable device emulation')
-  .example('$0 url --chrome-flags="--window-size=412,732"', 'Launch Chrome with a specific window size')
-  .example('$0 url --quiet --chrome-flags="--headless"', 'Launch Headless Chrome, turn off logging')
+  .usage('lighthouse <url>')
+  .example('lighthouse <url> --view', 'Opens the HTML report in a browser after the run completes')
+  .example('lighthouse <url> --config-path=./myconfig.js', 'Runs Lighthouse with your own configuration: custom audits, report generation, etc.')
+  .example('lighthouse <url> --output=json --output-path=./report.json --save-assets', 'Save trace, screenshots, and named JSON report.')
+  .example('lighthouse <url> --disable-device-emulation --disable-network-throttling', 'Disable device emulation')
+  .example('lighthouse <url> --chrome-flags="--window-size=412,732"', 'Launch Chrome with a specific window size')
+  .example('lighthouse <url> --quiet --chrome-flags="--headless"', 'Launch Headless Chrome, turn off logging')
 
   // List of options
   .group([
@@ -153,6 +153,7 @@ Example: --output-path=./lighthouse-results.html`,
     return true;
   })
   .epilogue('For more information on Lighthouse, see https://developers.google.com/web/tools/lighthouse/.')
+  .wrap(yargs.terminalWidth())
   .argv;
 
 // Process terminating command
