@@ -72,16 +72,16 @@ module.exports = [
           }
         }
       },
-      // 'no-mutation-events': {
-      //   score: false,
-      //   extendedInfo: {
-      //     value: {
-      //       results: {
-      //         length: 6
-      //       }
-      //     }
-      //   }
-      // },
+      'no-mutation-events': {
+        score: false,
+        extendedInfo: {
+          value: {
+            results: {
+              length: 6
+            }
+          }
+        }
+      },
       // 'no-old-flexbox': {
       //   score: false,
       //   extendedInfo: {
