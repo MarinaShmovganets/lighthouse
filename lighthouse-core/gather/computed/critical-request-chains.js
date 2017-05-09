@@ -40,7 +40,7 @@ class CriticalRequestChains extends ComputedArtifact {
       WebInspector.resourceTypes.Image._category,
       WebInspector.resourceTypes.XHR._category
     ];
-    if (nonCriticalResourceTypes.includes(resourceTypeCategory) {
+    if (nonCriticalResourceTypes.includes(resourceTypeCategory)) {
       return false;
     }
 
