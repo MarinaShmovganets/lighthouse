@@ -33,6 +33,7 @@ describe('UX: notification audit', () => {
     });
     assert.equal(auditResult.rawValue, false);
     assert.equal(auditResult.extendedInfo.value.length, 2);
+    assert.equal(auditResult.details.items.length, 2);
   });
 
   it('passes when notification has not been automatically requested', () => {
@@ -41,5 +42,6 @@ describe('UX: notification audit', () => {
     });
     assert.equal(auditResult.rawValue, true);
     assert.equal(auditResult.extendedInfo.value.length, 0);
+    assert.equal(auditResult.details.items.length, 0);
   });
 });
