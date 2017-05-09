@@ -32,7 +32,7 @@ describe('Link Block First Paint audit', () => {
       rel: 'stylesheet'
     };
     const timestamps = {firstContentfulPaint: 5600};
-    const auditResult = LinkBlockingFirstPaintAudit.audit({
+    return LinkBlockingFirstPaintAudit.audit({
       traces: {},
       requestTraceOfTab: () => Promise.resolve({timestamps}),
       TagsBlockingFirstPaint: [
@@ -72,22 +72,25 @@ describe('Link Block First Paint audit', () => {
           spendTime: 20,
         }
       ]
+    }).then(auditResult => {
+      assert.equal(auditResult.rawValue, 500);
+      assert.ok(auditResult.displayValue.match('2 resources delayed first paint by 500ms'));
+      const results = auditResult.extendedInfo.value.results;
+      assert.equal(results.length, 2);
+      assert.ok(results[0].url.includes('css/style.css'), 'has a url');
+      assert.equal(results[0].totalMs, '500ms');
+      assert.equal(results[1].totalMs, '200ms');
     });
-    assert.equal(auditResult.rawValue, 500);
-    assert.ok(auditResult.displayValue.match('2 resources delayed first paint by 500ms'));
-    assert.equal(auditResult.extendedInfo.value.results.length, 2);
-    assert.ok(auditResult.extendedInfo.value.results[0].url.includes('css/style.css'), 'has a url');
-    assert.equal(auditResult.extendedInfo.value.results[0].totalMs, '500ms');
-    assert.equal(auditResult.extendedInfo.value.results[1].totalMs, '200ms');
   });
 
   it('passes when there are no links found which block first paint', () => {
-    const auditResult = LinkBlockingFirstPaintAudit.audit({
+    return LinkBlockingFirstPaintAudit.audit({
       traces: {},
       requestTraceOfTab: () => Promise.resolve({timestamps: {}}),
       TagsBlockingFirstPaint: []
+    }).then(auditResult => {
+      assert.equal(auditResult.rawValue, 0);
+      assert.equal(auditResult.extendedInfo.value.results.length, 0);
     });
-    assert.equal(auditResult.rawValue, 0);
-    assert.equal(auditResult.extendedInfo.value.results.length, 0);
   });
 });

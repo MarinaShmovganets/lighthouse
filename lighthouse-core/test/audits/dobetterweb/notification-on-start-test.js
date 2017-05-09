@@ -38,7 +38,7 @@ describe('UX: notification audit', () => {
 
   it('passes when notification has not been automatically requested', () => {
     const auditResult = NotificationOnStart.audit({
-      NotificationOnStart: []
+      ChromeConsoleMessages: []
     });
     assert.equal(auditResult.rawValue, true);
     assert.equal(auditResult.extendedInfo.value.length, 0);

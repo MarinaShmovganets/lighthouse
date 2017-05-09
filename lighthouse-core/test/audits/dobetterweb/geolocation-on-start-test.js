@@ -39,7 +39,7 @@ describe('UX: geolocation audit', () => {
 
   it('passes when geolocation has not been automatically requested', () => {
     const auditResult = GeolocationOnStartAudit.audit({
-      GeolocationOnStart: []
+      ChromeConsoleMessages: []
     });
     assert.equal(auditResult.rawValue, true);
     assert.equal(auditResult.extendedInfo.value.length, 0);

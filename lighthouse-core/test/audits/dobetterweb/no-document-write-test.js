@@ -25,7 +25,7 @@ const URL = 'https://example.com';
 describe('Page does not use document.write()', () => {
   it('passes when document.write() is not used', () => {
     const auditResult = DocWriteUseAudit.audit({
-      DocWriteUse: [],
+      ChromeConsoleMessages: [],
       URL: {finalUrl: URL},
     });
     assert.equal(auditResult.rawValue, true);
@@ -45,7 +45,7 @@ describe('Page does not use document.write()', () => {
       ],
     });
     assert.equal(auditResult.rawValue, false);
-    assert.equal(auditResult.extendedInfo.value.length, 3);
-    assert.equal(auditResult.details.items.length, 3);
+    assert.equal(auditResult.extendedInfo.value.length, 2);
+    assert.equal(auditResult.details.items.length, 2);
   });
 });

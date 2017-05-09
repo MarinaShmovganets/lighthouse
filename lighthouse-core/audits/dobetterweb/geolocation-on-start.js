@@ -52,7 +52,7 @@ class GeolocationOnStart extends ViolationAudit {
       {key: 'url', itemType: 'url', text: 'URL'},
       {key: 'label', itemType: 'text', text: 'Location'},
     ];
-    const details = Audit.makeV2TableDetails(headings, results);
+    const details = ViolationAudit.makeV2TableDetails(headings, results);
 
     return {
       rawValue: results.length === 0,
