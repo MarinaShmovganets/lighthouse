@@ -21,10 +21,10 @@
 
 'use strict';
 
-const Audit = require('../audit');
+const ViolationAudit = require('../violation-audit');
 const Formatter = require('../../report/formatter');
 
-class NoDocWriteAudit extends Audit {
+class NoDocWriteAudit extends ViolationAudit {
 
   /**
    * @return {!AuditMeta}
@@ -46,7 +46,7 @@ class NoDocWriteAudit extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const results = Audit.getViolationResults(artifacts, /document\.write/);
+    const results = ViolationAudit.getViolationResults(artifacts, /document\.write/);
 
     return {
       rawValue: results.length === 0,

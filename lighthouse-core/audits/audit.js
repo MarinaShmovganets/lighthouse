@@ -57,18 +57,6 @@ class Audit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @param {!RegExp} pattern
-   * @return {!Array}
-   */
-  static getViolationResults(artifacts, pattern) {
-    return artifacts.ChromeConsoleMessages
-        .map(message => message.entry)
-        .filter(entry => entry.source === 'violation' && pattern.test(entry.text))
-        .map(entry => Object.assign({label: `line: ${entry.lineNumber}`}, entry));
-  }
-
-  /**
    * @param {!Audit.Headings} headings
    * @return {!Array<string>}
    */

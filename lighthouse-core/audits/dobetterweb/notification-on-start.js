@@ -22,10 +22,10 @@
 
 'use strict';
 
-const Audit = require('../audit');
+const ViolationAudit = require('../violation-audit');
 const Formatter = require('../../report/formatter');
 
-class NotificationOnStart extends Audit {
+class NotificationOnStart extends ViolationAudit {
   /**
    * @return {!AuditMeta}
    */
@@ -46,7 +46,7 @@ class NotificationOnStart extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const results = Audit.getViolationResults(artifacts, /notification permission/);
+    const results = ViolationAudit.getViolationResults(artifacts, /notification permission/);
 
     return {
       rawValue: results.length === 0,

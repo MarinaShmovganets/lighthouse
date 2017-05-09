@@ -239,8 +239,8 @@ module.exports = (function() {
   // TODO: Remove when we update to a devtools version that has isLinkPreload
   const Dispatcher = WebInspector.NetworkDispatcher;
   const origUpdateRequest = Dispatcher.prototype._updateNetworkRequestWithRequest;
-  Dispatcher.prototype._updateNetworkRequestWithRequest = function (netRecord, request) {
-    origUpdateRequest.apply(this, arguments);
+  Dispatcher.prototype._updateNetworkRequestWithRequest = function(netRecord, request) {
+    origUpdateRequest.apply(this, arguments); // eslint-disable-line
     netRecord.isLinkPreload = Boolean(request.isLinkPreload);
     netRecord._isLinkPreload = Boolean(request.isLinkPreload);
   };

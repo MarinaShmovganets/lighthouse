@@ -22,10 +22,10 @@
 
 'use strict';
 
-const Audit = require('../audit');
+const ViolationAudit = require('../violation-audit');
 const Formatter = require('../../report/formatter');
 
-class GeolocationOnStart extends Audit {
+class GeolocationOnStart extends ViolationAudit {
   /**
    * @return {!AuditMeta}
    */
@@ -46,7 +46,7 @@ class GeolocationOnStart extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const results = Audit.getViolationResults(artifacts, /geolocation/);
+    const results = ViolationAudit.getViolationResults(artifacts, /geolocation/);
     return {
       rawValue: results.length === 0,
       extendedInfo: {

@@ -22,11 +22,10 @@
 
 'use strict';
 
-const URL = require('../../lib/url-shim');
-const Audit = require('../audit');
+const ViolationAudit = require('../violation-audit');
 const Formatter = require('../../report/formatter');
 
-class PassiveEventsAudit extends Audit {
+class PassiveEventsAudit extends ViolationAudit {
   /**
    * @return {!AuditMeta}
    */
@@ -47,7 +46,7 @@ class PassiveEventsAudit extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const results = Audit.getViolationResults(artifacts, /passive event listener/);
+    const results = ViolationAudit.getViolationResults(artifacts, /passive event listener/);
 
     return {
       rawValue: results.length === 0,

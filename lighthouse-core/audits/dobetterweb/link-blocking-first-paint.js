@@ -52,19 +52,20 @@ class LinkBlockingFirstPaintAudit extends Audit {
   /**
    * @param {!Artifacts} artifacts
    * @param {string} tagFilter The tagName to filter on
-   * @param {number=} endedBefore The trace milisecond timestamp that offending tags must have ended
+   * @param {number=} endTimeMax The trace milisecond timestamp that offending tags must have ended
    *    before (typically first contentful paint).
-   * @param {number=} loadThreshold Filter to resources that took at least this
+   * @param {number=} loadDurationThreshold Filter to resources that took at least this
    *    many milliseconds to load.
    * @return {!AuditResult} The object to pass to `generateAuditResult`
    */
-  static computeAuditResultForTags(artifacts, tagFilter, endedBefore = 0, loadThreshold = 0) {
+  static computeAuditResultForTags(artifacts, tagFilter, endTimeMax = Infinity,
+      loadDurationThreshold = 0) {
     const artifact = artifacts.TagsBlockingFirstPaint;
 
     const filtered = artifact.filter(item => {
       return item.tag.tagName === tagFilter &&
-        (item.endTime - item.startTime) * 1000 >= loadThreshold &&
-        item.endTime * 1000 < endedBefore;
+        (item.endTime - item.startTime) * 1000 >= loadDurationThreshold &&
+        item.endTime * 1000 < endTimeMax;
     });
 
     const startTime = filtered.reduce((t, item) => Math.min(t, item.startTime), Number.MAX_VALUE);

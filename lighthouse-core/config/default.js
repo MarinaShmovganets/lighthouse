@@ -14,6 +14,7 @@ module.exports = {
       "manifest",
       "chrome-console-messages",
       "image-usage",
+      // "css-usage",
       "accessibility",
       "dobetterweb/all-event-listeners",
       "dobetterweb/anchors-with-no-rel-noopener",
@@ -22,7 +23,7 @@ module.exports = {
       "dobetterweb/optimized-images",
       "dobetterweb/response-compression",
       "dobetterweb/tags-blocking-first-paint",
-      "dobetterweb/websql"
+      "dobetterweb/websql",
     ]
   },
   {
