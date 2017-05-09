@@ -50,9 +50,9 @@ let GathererResults; // eslint-disable-line no-unused-vars
  *     i. cleanBrowserCaches() (if it's a perf run)
  *     ii. beginDevtoolsLog()
  *     iii. beginTrace (if requested)
- *     iiv. GatherRunner.loadPage()
+ *     iv. GatherRunner.loadPage()
  *       a. navigate to options.url (and wait for onload)
- *     iii. all gatherers' pass()
+ *     v. all gatherers' pass()
  *   C. GatherRunner.afterPass()
  *     i. endTrace (if requested) & endDevtoolsLog & endThrottling
  *     ii. all gatherers' afterPass()
@@ -202,9 +202,8 @@ class GatherRunner {
     const config = options.config;
     const gatherers = config.gatherers;
 
-    const resetStorage = !options.flags.disableStorageReset;
     const recordTrace = config.recordTrace;
-    const useThrottling = config.useThrottling;
+    const isPerfRun = !options.flags.disableStorageReset && recordTrace && config.useThrottling;
 
     const gatherernames = gatherers.map(g => g.name).join(', ');
     const status = 'Loading page & waiting for onload';
@@ -212,11 +211,11 @@ class GatherRunner {
 
     const pass = Promise.resolve()
       // Clear disk & memory cache if it's a perf run
-      .then(_ => resetStorage && recordTrace && useThrottling && driver.cleanBrowserCaches())
+      .then(_ => isPerfRun && driver.cleanBrowserCaches())
       // Always record devtoolsLog
       .then(_ => driver.beginDevtoolsLog())
       // Begin tracing if requested by config.
-      .then(_ => config.recordTrace && driver.beginTrace(options.flags))
+      .then(_ => recordTrace && driver.beginTrace(options.flags))
       // Navigate.
       .then(_ => GatherRunner.loadPage(driver, options))
       .then(_ => log.log('statusEnd', status));
