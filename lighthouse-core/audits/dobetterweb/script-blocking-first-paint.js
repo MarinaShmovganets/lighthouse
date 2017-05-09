@@ -47,11 +47,7 @@ class ScriptBlockingFirstPaint extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    return artifacts.requestTraceOfTab(trace).then(traceOfTab => {
-      const fcp = traceOfTab.timestamps.firstContentfulPaint;
-      return LinkBlockingFirstPaintAudit.computeAuditResultForTags(artifacts, 'SCRIPT', fcp);
-    });
+    return LinkBlockingFirstPaintAudit.computeAuditResultForTags(artifacts, 'SCRIPT');
   }
 }
 

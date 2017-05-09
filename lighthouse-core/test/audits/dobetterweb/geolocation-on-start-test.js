@@ -22,10 +22,14 @@ const assert = require('assert');
 
 describe('UX: geolocation audit', () => {
   it('fails when geolocation has been automatically requested', () => {
+    const text = 'Do not request geolocation permission without a user action.';
+
     const auditResult = GeolocationOnStartAudit.audit({
-      GeolocationOnStart: [
-        {url: 'https://different.com/two', line: 2, col: 2},
-        {url: 'https://example2.com/two', line: 2, col: 22}
+      ChromeConsoleMessages: [
+        {entry: {source: 'violation', url: 'https://example.com/', text}},
+        {entry: {source: 'violation', url: 'https://example2.com/two', text}},
+        {entry: {source: 'violation', url: 'http://abc.com/', text: 'No document.write'}},
+        {entry: {source: 'deprecation', url: 'https://example.com/two'}},
       ],
     });
     assert.equal(auditResult.rawValue, false);

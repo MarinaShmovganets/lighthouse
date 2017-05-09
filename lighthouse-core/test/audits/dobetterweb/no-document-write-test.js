@@ -33,13 +33,15 @@ describe('Page does not use document.write()', () => {
   });
 
   it('fails when document.write() is used', () => {
+    const text = 'Do not use document.write';
     const auditResult = DocWriteUseAudit.audit({
-      DocWriteUse: [
-        {url: 'http://example.com/one', line: 1, col: 1},
-        {url: 'http://example.com/two', line: 10, col: 1},
-        {url: 'http://example2.com/two', line: 2, col: 22}
-      ],
       URL: {finalUrl: URL},
+      ChromeConsoleMessages: [
+        {entry: {source: 'violation', url: 'https://example.com/', text}},
+        {entry: {source: 'violation', url: 'https://example2.com/two', text}},
+        {entry: {source: 'violation', url: 'http://abc.com/', text: 'Long event handler!'}},
+        {entry: {source: 'deprecation', url: 'https://example.com/two'}},
+      ],
     });
     assert.equal(auditResult.rawValue, false);
     assert.equal(auditResult.extendedInfo.value.length, 3);

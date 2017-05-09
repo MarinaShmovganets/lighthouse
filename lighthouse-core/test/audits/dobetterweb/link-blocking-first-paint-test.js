@@ -31,13 +31,28 @@ describe('Link Block First Paint audit', () => {
       media: '',
       rel: 'stylesheet'
     };
+    const timestamps = {firstContentfulPaint: 5600};
     const auditResult = LinkBlockingFirstPaintAudit.audit({
+      traces: {},
+      requestTraceOfTab: () => Promise.resolve({timestamps}),
       TagsBlockingFirstPaint: [
         {
           tag: linkDetails,
           transferSize: 100,
           startTime: 5,
           endTime: 5.4,
+        },
+        {
+          tag: linkDetails,
+          transferSize: 100,
+          startTime: 5,
+          endTime: 5.8, // should be ignored for being after FCP
+        },
+        {
+          tag: linkDetails,
+          transferSize: 100,
+          startTime: 5,
+          endTime: 5.8, // should be ignored for being after FCP
         },
         {
           tag: linkDetails,
@@ -68,6 +83,8 @@ describe('Link Block First Paint audit', () => {
 
   it('passes when there are no links found which block first paint', () => {
     const auditResult = LinkBlockingFirstPaintAudit.audit({
+      traces: {},
+      requestTraceOfTab: () => Promise.resolve({timestamps: {}}),
       TagsBlockingFirstPaint: []
     });
     assert.equal(auditResult.rawValue, true);
