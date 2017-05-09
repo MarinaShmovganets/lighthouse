@@ -43,7 +43,7 @@ class CriticalRequestChains extends ComputedArtifact {
     if (nonCriticalResourceTypes.includes(resourceTypeCategory) {
       return false;
     }
- 
+
     // Treat favicons as non-critical resources
     if (request.mimeType === 'image/x-icon' ||
         (request.parsedURL && request.parsedURL.lastPathComponent === 'favicon.ico')) {
