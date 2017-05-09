@@ -1,11 +1,22 @@
-One time setup:
+## One time setup:
 
 ```sh
-npm i
+yarn
 ```
 
-Live dev:
+### Live dev:
 
 ```sh
-npm run dev
+yarn dev
+```
+
+### Tests
+
+```sh
+yarn test
+```
+
+(for test watching)
+```sh
+yarn test -- --watch
 ```

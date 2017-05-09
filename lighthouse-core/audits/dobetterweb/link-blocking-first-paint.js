@@ -24,6 +24,7 @@
 const Audit = require('../audit');
 const URL = require('../../lib/url-shim');
 const Formatter = require('../../report/formatter');
+const scoreForWastedMs = require('../byte-efficiency/byte-efficiency-audit').scoreForWastedMs;
 
 // Because of the way we detect blocking stylesheets, asynchronously loaded
 // CSS with link[rel=preload] and an onload handler (see https://github.com/filamentgroup/loadCSS)
@@ -40,7 +41,7 @@ class LinkBlockingFirstPaintAudit extends Audit {
     return {
       category: 'Performance',
       name: 'link-blocking-first-paint',
-      description: 'Render-blocking stylesheets',
+      description: 'Reduce render-blocking stylesheets',
       informative: true,
       helpText: 'Link elements are blocking the first paint of your page. Consider ' +
           'inlining critical links and deferring non-critical ones. ' +
@@ -64,7 +65,8 @@ class LinkBlockingFirstPaintAudit extends Audit {
         (item.endTime - item.startTime) * 1000 >= loadThreshold;
     });
 
-    const startTime = filtered.reduce((t, item) => Math.min(t, item.startTime), Number.MAX_VALUE);
+    const startTime = filtered.length === 0 ? 0 :
+        filtered.reduce((t, item) => Math.min(t, item.startTime), Number.MAX_VALUE);
     let endTime = 0;
 
     const results = filtered.map(item => {
@@ -85,20 +87,28 @@ class LinkBlockingFirstPaintAudit extends Audit {
       displayValue = `${results.length} resource delayed first paint by ${delayTime}ms`;
     }
 
+    const headings = [
+      {key: 'url', itemType: 'url', text: 'URL'},
+      {key: 'totalKb', itemType: 'text', text: 'Size (KB)'},
+      {key: 'totalMs', itemType: 'text', text: 'Delayed Paint By (ms)'},
+    ];
+
+    const v1TableHeadings = Audit.makeV1TableHeadings(headings);
+    const v2TableDetails = Audit.makeV2TableDetails(headings, results);
+
     return {
       displayValue,
-      rawValue: results.length === 0,
+      score: scoreForWastedMs(delayTime),
+      rawValue: delayTime,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.TABLE,
         value: {
+          wastedMs: delayTime,
           results,
-          tableHeadings: {
-            url: 'URL',
-            totalKb: 'Size (KB)',
-            totalMs: 'Delayed Paint By (ms)'
-          }
+          tableHeadings: v1TableHeadings
         }
-      }
+      },
+      details: v2TableDetails
     };
   }
 

@@ -50,30 +50,6 @@ const FAILING_REQUEST_CHAIN = {
   }
 };
 
-const FAILING_REQUEST_CHAIN_2 = {
-  13653.1: {
-    request: {
-      url: 'http://localhost:10503/offline-ready.html',
-      startTime: 33552.036878,
-      endTime: 33552.285438,
-      responseReceivedTime: 33552.275677,
-      transferSize: 1849
-    },
-    children: {
-      13653.2: {
-        request: {
-          url: 'http://localhost:10503/icon-128.png?delay',
-          startTime: 33552.318928,
-          endTime: 33554.33721,
-          responseReceivedTime: 33554.334569,
-          transferSize: 99
-        },
-        children: {}
-      }
-    }
-  }
-};
-
 const PASSING_REQUEST_CHAIN = {
   0: {
     request: {
@@ -86,12 +62,28 @@ const PASSING_REQUEST_CHAIN = {
   },
 };
 
+const PASSING_REQUEST_CHAIN_2 = {
+  13653.1: {
+    request: {
+      url: 'http://localhost:10503/offline-ready.html',
+      startTime: 33552.036878,
+      endTime: 33552.285438,
+      responseReceivedTime: 33552.275677,
+      transferSize: 1849
+    },
+    children: {}
+  }
+};
+
 const EMPTY_REQUEST_CHAIN = {};
 
 const mockArtifacts = (mockChain) => {
   return {
-    networkRecords: {
+    devtoolsLogs: {
       [Audit.DEFAULT_PASS]: []
+    },
+    requestNetworkRecords: () => {
+      return Promise.resolve([]);
     },
     requestCriticalRequestChains: function() {
       return Promise.resolve(mockChain);
@@ -108,15 +100,15 @@ describe('Performance: critical-request-chains audit', () => {
     });
   });
 
-  it('calculates the correct chain result for failing example (no 2.)', () => {
-    return Audit.audit(mockArtifacts(FAILING_REQUEST_CHAIN_2)).then(output => {
-      assert.equal(output.displayValue, 1);
-      assert.equal(output.rawValue, false);
+  it('calculates the correct chain result for passing example', () => {
+    return Audit.audit(mockArtifacts(PASSING_REQUEST_CHAIN)).then(output => {
+      assert.equal(output.displayValue, 0);
+      assert.equal(output.rawValue, true);
     });
   });
 
-  it('calculates the correct chain result for passing example', () => {
-    return Audit.audit(mockArtifacts(PASSING_REQUEST_CHAIN)).then(output => {
+  it('calculates the correct chain result for passing example (no 2.)', () => {
+    return Audit.audit(mockArtifacts(PASSING_REQUEST_CHAIN_2)).then(output => {
       assert.equal(output.displayValue, 0);
       assert.equal(output.rawValue, true);
     });

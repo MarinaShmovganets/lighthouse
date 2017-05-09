@@ -22,11 +22,13 @@ let sendCommandParams = [];
 const Driver = require('../../gather/driver.js');
 const Connection = require('../../gather/connections/connection.js');
 const Element = require('../../lib/element.js');
-const NetworkRecorder = require('../../lib/network-recorder');
 const assert = require('assert');
+const EventEmitter = require('events').EventEmitter;
 
 const connection = new Connection();
 const driverStub = new Driver(connection);
+
+const redirectDevtoolsLog = require('../fixtures/wikipedia-redirect.devtoolslog.json');
 
 function createOnceStub(events) {
   return (eventName, cb) => {
@@ -46,11 +48,12 @@ function createSWRegistration(id, url, isDeleted) {
   };
 }
 
-function createActiveWorker(id, url, controlledClients) {
+function createActiveWorker(id, url, controlledClients, status = 'activated') {
   return {
     registrationId: id,
     scriptURL: url,
     controlledClients,
+    status,
   };
 }
 
@@ -87,20 +90,6 @@ connection.sendCommand = function(command, params) {
       throw Error(`Stub not implemented: ${command}`);
   }
 };
-
-// mock redirects to test out enableUrlUpdateIfRedirected
-const req1 = {
-  url: 'http://aliexpress.com/'
-};
-const req2 = {
-  redirectSource: req1,
-  url: 'http://www.aliexpress.com/'
-};
-const req3 = {
-  redirectSource: req2,
-  url: 'http://m.aliexpress.com/?tracelog=wwwhome2mobilesitehome'
-};
-const mockRedirects = [req1, req2, req3];
 
 /* eslint-env mocha */
 
@@ -152,20 +141,49 @@ describe('Browser Driver', () => {
     });
   });
 
-  it('will update the options.url through redirects', () => {
-    const networkRecorder = driverStub._networkRecorder = new NetworkRecorder([]);
-    const opts = {url: req1.url};
-    driverStub.enableUrlUpdateIfRedirected(opts);
+  it('will track redirects through gotoURL load', () => {
+    const delay = _ => new Promise(resolve => setTimeout(resolve));
 
-    // Fake some reqFinished events
-    const networkManager = networkRecorder.networkManager;
-    mockRedirects.forEach(request => {
-      networkManager.dispatchEventToListeners(networkRecorder.EventTypes.RequestFinished, request);
+    class ReplayConnection extends EventEmitter {
+      connect() {
+        return Promise.resolve();
+      }
+      disconnect() {
+        return Promise.resolve();
+      }
+      replayLog() {
+        redirectDevtoolsLog.forEach(msg => this.emit('notification', msg));
+      }
+      sendCommand(method) {
+        const resolve = Promise.resolve();
+
+        // If navigating, wait, then replay devtools log in parallel to resolve.
+        if (method === 'Page.navigate') {
+          resolve.then(delay).then(_ => this.replayLog());
+        }
+
+        return resolve;
+      }
+    }
+    const replayConnection = new ReplayConnection();
+    const driver = new Driver(replayConnection);
+
+    // Redirect in log will go through
+    const startUrl = 'http://en.wikipedia.org/';
+    // then https://en.wikipedia.org/
+    // then https://en.wikipedia.org/wiki/Main_Page
+    const finalUrl = 'https://en.m.wikipedia.org/wiki/Main_Page';
+
+    const loadOptions = {
+      waitForLoad: true,
+      flags: {
+        pauseAfterLoad: 1
+      }
+    };
+
+    return driver.gotoURL(startUrl, loadOptions).then(loadedUrl => {
+      assert.equal(loadedUrl, finalUrl);
     });
-
-    // The above event is handled synchronously by enableUrlUpdateIfRedirected and will be all set
-    assert.notEqual(opts.url, req1.url, 'opts.url changed after the redirects');
-    assert.equal(opts.url, req3.url, 'opts.url matches the last redirect');
   });
 
   it('will request default traceCategories', () => {
@@ -199,9 +217,12 @@ describe('Multiple tab check', () => {
       'ServiceWorker.workerRegistrationUpdated': {
         registrations: []
       },
+    });
+
+    driverStub.on = createOnceStub({
       'ServiceWorker.workerVersionUpdated': {
         versions: []
-      }
+      },
     });
 
     return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
@@ -223,9 +244,12 @@ describe('Multiple tab check', () => {
       'ServiceWorker.workerRegistrationUpdated': {
         registrations
       },
+    });
+
+    driverStub.on = createOnceStub({
       'ServiceWorker.workerVersionUpdated': {
         versions
-      }
+      },
     });
 
     return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
@@ -244,10 +268,13 @@ describe('Multiple tab check', () => {
     driverStub.once = createOnceStub({
       'ServiceWorker.workerRegistrationUpdated': {
         registrations
-      },
+      }
+    });
+
+    driverStub.on = createOnceStub({
       'ServiceWorker.workerVersionUpdated': {
         versions
-      }
+      },
     });
 
     return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl)
@@ -267,10 +294,46 @@ describe('Multiple tab check', () => {
       'ServiceWorker.workerRegistrationUpdated': {
         registrations
       },
+    });
+
+    driverStub.on = createOnceStub({
       'ServiceWorker.workerVersionUpdated': {
         versions
-      }
+      },
     });
+
+    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
+  });
+
+  it('will wait for serviceworker to be activated', () => {
+    const pageUrl = 'https://example.com/';
+    const swUrl = `${pageUrl}sw.js`;
+    const registrations = [createSWRegistration(1, pageUrl)];
+    const versions = [createActiveWorker(1, swUrl, [], 'installing')];
+
+    driverStub.once = createOnceStub({
+      'ServiceWorker.workerRegistrationUpdated': {
+        registrations
+      },
+    });
+
+    driverStub.on = (eventName, cb) => {
+      if (eventName === 'ServiceWorker.workerVersionUpdated') {
+        cb({versions});
+
+        setTimeout(() => {
+          cb({
+            versions: [
+              createActiveWorker(1, swUrl, [], 'activated'),
+            ]
+          });
+        }, 1000);
+
+        return;
+      }
+
+      throw Error(`Stub not implemented: ${eventName}`);
+    };
 
     return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
   });

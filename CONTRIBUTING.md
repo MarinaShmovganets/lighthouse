@@ -24,6 +24,8 @@ accept your pull requests.
 
 ## Contributing a patch
 
+If you have a contribution for our [documentation](https://developers.google.com/web/tools/lighthouse/), please submit it in the [WebFundamentals repo](https://github.com/google/WebFundamentals/tree/master/src/content/en/tools/lighthouse).
+
 1. Submit an issue describing your proposed change to the repo in question.
 1. The repo owner will respond to your issue promptly.
 1. If your proposed change is accepted, and you haven't already done so, sign a Contributor License Agreement (see details above).
@@ -60,7 +62,7 @@ echo "Bump the versions in extension/app/manifest.json and package.json"
 # * Test err'thing *
 echo "Test the CLI."
 lighthouse --perf "chrome://version"
-yarn run smoke
+yarn smoke
 echo "Test the extension"
 
 echo "Test a fresh local install"
@@ -93,7 +95,7 @@ irish-pub; pkgfiles;
 
 echo "ship it"
 npm publish
-yarn run deploy-viewer
+yarn deploy-viewer
 
 echo "Use the GitHub web interface to tag the release"
 echo "Generate the release notes, and update the release page"

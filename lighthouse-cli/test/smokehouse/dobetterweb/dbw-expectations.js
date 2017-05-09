@@ -55,7 +55,7 @@ module.exports = [
         score: false
       },
       'link-blocking-first-paint': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             results: {
@@ -102,16 +102,16 @@ module.exports = [
           }
         }
       },
-      'no-old-flexbox': {
-        score: false,
-        extendedInfo: {
-          value: {
-            results: {
-              length: 7
-            }
-          }
-        }
-      },
+      // 'no-old-flexbox': {
+      //   score: false,
+      //   extendedInfo: {
+      //     value: {
+      //       results: {
+      //         length: 7
+      //       }
+      //     }
+      //   }
+      // },
       'no-websql': {
         score: false,
         debugString: 'Found database "mydb", version: 1.0.'
@@ -120,7 +120,7 @@ module.exports = [
         score: false
       },
       'script-blocking-first-paint': {
-        score: false,
+        score: 90,
         extendedInfo: {
           value: {
             results: {
@@ -158,7 +158,7 @@ module.exports = [
         score: 100,
         extendedInfo: {
           value: {
-            0: {value: '1,323'},
+            0: {value: '1,324'},
             1: {value: '7'},
             2: {value: '1,303'}
           }
@@ -173,7 +173,7 @@ module.exports = [
         score: 0,
         extendedInfo: {
           value: {
-            0: {value: '6,024'},
+            0: {value: '6,025'},
             1: {value: '9'},
             2: {value: '6,003'}
           }
@@ -188,8 +188,23 @@ module.exports = [
         score: 100,
         extendedInfo: {
           value: {
-            0: {value: '24'},
+            0: {value: '25'},
             1: {value: '9'},
+            2: {value: '9'}
+          }
+        }
+      }
+    }
+  }, {
+    initialUrl: 'http://localhost:10200/dobetterweb/domtester.html?ShadowRootWithManyChildren',
+    url: 'http://localhost:10200/dobetterweb/domtester.html?ShadowRootWithManyChildren',
+    audits: {
+      'dom-size': {
+        score: 100,
+        extendedInfo: {
+          value: {
+            0: {value: '24'},
+            1: {value: '7'},
             2: {value: '9'}
           }
         }
@@ -215,7 +230,7 @@ module.exports = [
         score: true
       },
       'link-blocking-first-paint': {
-        score: true
+        score: 100
       },
       'no-console-time': {
         score: true
@@ -229,14 +244,14 @@ module.exports = [
       'no-mutation-events': {
         score: true
       },
-      'no-old-flexbox': {
-        score: true
-      },
+      // 'no-old-flexbox': {
+      //   score: true
+      // },
       'no-websql': {
         score: true
       },
       'script-blocking-first-paint': {
-        score: true
+        score: 100
       },
       'uses-passive-event-listeners': {
         score: true

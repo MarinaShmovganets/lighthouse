@@ -20,18 +20,16 @@
 /** @fileoverview
  *  This audit evaluates if a page's load performance is fast enough for it to be considered a PWA.
  *  We are doublechecking that the network requests were throttled (or slow on their own)
- *  Afterwards, we report if the TTI is less than 10 seconds.
+ *  Afterwards, we report if the TTFI is less than 10 seconds.
  */
 
 const Audit = require('./audit');
-const TTIMetric = require('./time-to-interactive');
 const Emulation = require('../lib/emulation');
-
 const Formatter = require('../report/formatter');
 
-// Maximum TTI to be considered "fast" for PWA baseline checklist
+// Maximum TTFI to be considered "fast" for PWA baseline checklist
 //   https://developers.google.com/web/progressive-web-apps/checklist
-const MAXIMUM_TTI = 10 * 1000;
+const MAXIMUM_TTFI = 10 * 1000;
 
 class LoadFastEnough4Pwa extends Audit {
   /**
@@ -42,8 +40,8 @@ class LoadFastEnough4Pwa extends Audit {
       category: 'PWA',
       name: 'load-fast-enough-for-pwa',
       description: 'Page load is fast enough on 3G',
-      helpText: 'Satisfied if the _Time To Interactive_ duration is shorter than _10 seconds_, as defined by the [PWA Baseline Checklist](https://developers.google.com/web/progressive-web-apps/checklist). Network throttling is required (specifically: RTT latencies >= 150 RTT are expected).',
-      requiredArtifacts: ['traces', 'networkRecords']
+      helpText: 'Satisfied if the Time To Interactive duration is shorter than 10 seconds, as defined by the [PWA Baseline Checklist](https://developers.google.com/web/progressive-web-apps/checklist). Network throttling is required (specifically: RTT latencies >= 150 RTT are expected).',
+      requiredArtifacts: ['traces', 'devtoolsLogs']
     };
   }
 
@@ -52,48 +50,71 @@ class LoadFastEnough4Pwa extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const networkRecords = artifacts.networkRecords[Audit.DEFAULT_PASS];
-    const allRequestLatencies = networkRecords.map(record => {
-      if (!record._timing) return undefined;
-      // Use DevTools' definition of Waiting latency: https://github.com/ChromeDevTools/devtools-frontend/blob/66595b8a73a9c873ea7714205b828866630e9e82/front_end/network/RequestTimingView.js#L164
-      return record._timing.receiveHeadersEnd - record._timing.sendEnd;
-    });
+    const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    return artifacts.requestNetworkRecords(devtoolsLogs).then(networkRecords => {
+      const allRequestLatencies = networkRecords.map(record => {
+        // Ignore requests that don't have timing data or resources that have
+        // previously been requested and are coming from the cache.
+        const fromCache = record._fromDiskCache || record._fromMemoryCache;
+        if (!record._timing || fromCache) {
+          return undefined;
+        }
 
-    const latency3gMin = Emulation.settings.TYPICAL_MOBILE_THROTTLING_METRICS.latency - 10;
-    const areLatenciesAll3G = allRequestLatencies.every(val =>
-        val === undefined || val > latency3gMin);
+        // Use DevTools' definition of Waiting latency: https://github.com/ChromeDevTools/devtools-frontend/blob/66595b8a73a9c873ea7714205b828866630e9e82/front_end/network/RequestTimingView.js#L164
+        const latency = record._timing.receiveHeadersEnd - record._timing.sendEnd;
 
-    return TTIMetric.audit(artifacts).then(ttiResult => {
-      const timeToInteractive = ttiResult.extendedInfo.value.timings.timeToInteractive;
-      const isFast = timeToInteractive < MAXIMUM_TTI;
-
-      const extendedInfo = {
-        formatter: Formatter.SUPPORTED_FORMATS.NULL,
-        value: {areLatenciesAll3G, allRequestLatencies, isFast, timeToInteractive}
-      };
-
-      if (!areLatenciesAll3G) {
         return {
-          rawValue: false,
-          // eslint-disable-next-line max-len
-          debugString: `The Time To Interactive was found at ${ttiResult.displayValue}, however, the network request latencies were not sufficiently realistic, so the performance measurements cannot be trusted.`,
+          url: record._url,
+          latency: latency.toLocaleString(undefined, {maximumFractionDigits: 2})
+        };
+      });
+
+      const latency3gMin = Emulation.settings.TYPICAL_MOBILE_THROTTLING_METRICS.latency - 10;
+      const areLatenciesAll3G = allRequestLatencies.every(val =>
+          val === undefined || val.latency > latency3gMin);
+
+      const trace = artifacts.traces[Audit.DEFAULT_PASS];
+      return artifacts.requestFirstInteractive(trace).then(firstInteractive => {
+        const timeToFirstInteractive = firstInteractive.timeInMs;
+        const isFast = timeToFirstInteractive < MAXIMUM_TTFI;
+
+        const extendedInfo = {
+          formatter: Formatter.SUPPORTED_FORMATS.NULL,
+          value: {areLatenciesAll3G, allRequestLatencies, isFast, timeToFirstInteractive}
+        };
+
+        // Filter records that don't have latencies.
+        const recordsWithLatencies = allRequestLatencies.filter(val => val !== undefined);
+
+        const details = Audit.makeV2TableDetails([
+          {key: 'url', itemType: 'url', text: 'URL'},
+          {key: 'latency', itemType: 'text', text: 'Latency (ms)'},
+        ], recordsWithLatencies);
+
+        if (!areLatenciesAll3G) {
+          return {
+            rawValue: false,
+            // eslint-disable-next-line max-len
+            debugString: `First Interactive was found at ${timeToFirstInteractive.toLocaleString()}, however, the network request latencies were not sufficiently realistic, so the performance measurements cannot be trusted.`,
+            extendedInfo,
+            details
+          };
+        }
+
+        if (!isFast) {
+          return {
+            rawValue: false,
+            // eslint-disable-next-line max-len
+            debugString: `Under 3G conditions, First Interactive was at ${timeToFirstInteractive.toLocaleString()}. More details in the "Performance" section.`,
+            extendedInfo
+          };
+        }
+
+        return {
+          rawValue: true,
           extendedInfo
         };
-      }
-
-      if (!isFast) {
-        return {
-          rawValue: false,
-           // eslint-disable-next-line max-len
-          debugString: `Under 3G conditions, the Time To Interactive was at ${ttiResult.displayValue}. More details in the "Performance" section.`,
-          extendedInfo
-        };
-      }
-
-      return {
-        rawValue: true,
-        extendedInfo
-      };
+      });
     });
   }
 }

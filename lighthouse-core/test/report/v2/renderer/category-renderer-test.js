@@ -20,6 +20,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const jsdom = require('jsdom');
+const Util = require('../../../../report/v2/renderer/util.js');
 const URL = require('../../../../lib/url-shim');
 const DOM = require('../../../../report/v2/renderer/dom.js');
 const DetailsRenderer = require('../../../../report/v2/renderer/details-renderer.js');
@@ -33,6 +34,8 @@ describe('CategoryRenderer', () => {
 
   before(() => {
     global.URL = URL;
+    global.Util = Util;
+
     const document = jsdom.jsdom(TEMPLATE_FILE);
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);
@@ -41,6 +44,7 @@ describe('CategoryRenderer', () => {
 
   after(() => {
     global.URL = undefined;
+    global.Util = undefined;
   });
 
   it('renders an audit', () => {
@@ -71,9 +75,18 @@ describe('CategoryRenderer', () => {
     assert.ok(!audit2.querySelector('.lh-debug'));
   });
 
+  it('renders an informative audit', () => {
+    const auditDOM = renderer._renderAudit({
+      id: 'informative', score: 0,
+      result: {description: 'It informs', helpText: '', informative: true},
+    });
+
+    assert.ok(auditDOM.querySelector('.lh-score--informative'));
+  });
+
   it('renders a category', () => {
     const category = sampleResults.reportCategories[0];
-    const categoryDOM = renderer.render(category);
+    const categoryDOM = renderer.render(category, sampleResults.reportGroups);
 
     const score = categoryDOM.querySelector('.lh-score');
     const value = categoryDOM.querySelector('.lh-score  > .lh-score__value');
@@ -91,6 +104,120 @@ describe('CategoryRenderer', () => {
         '.lh-category > .lh-passed-audits > .lh-audit');
     assert.equal(audits.length, category.audits.length, 'renders correct number of audits');
   });
+
+  describe('performance category', () => {
+    const category = sampleResults.reportCategories.find(cat => cat.id === 'performance');
+
+    it('renders the category header', () => {
+      const categoryDOM = renderer.render(category, sampleResults.reportGroups);
+      const score = categoryDOM.querySelector('.lh-score');
+      const value = categoryDOM.querySelector('.lh-score  > .lh-score__value');
+      const title = score.querySelector('.lh-score__title');
+
+      assert.deepEqual(score, score.firstElementChild, 'first child is a score');
+      assert.ok(value.classList.contains('lh-score__value--numeric'),
+                'category score is numeric');
+      assert.equal(value.textContent, Math.round(category.score), 'category score is rounded');
+      assert.equal(title.textContent, category.name, 'title is set');
+    });
+
+    it('renders the sections', () => {
+      const categoryDOM = renderer.render(category, sampleResults.reportGroups);
+      const sections = categoryDOM.querySelectorAll('.lh-category > .lh-audit-group');
+      assert.equal(sections.length, 3);
+    });
+
+    it('renders the metrics', () => {
+      const categoryDOM = renderer.render(category, sampleResults.reportGroups);
+      const metricsSection = categoryDOM.querySelectorAll('.lh-category > .lh-audit-group')[0];
+
+      const metricAudits = category.audits.filter(audit => audit.group === 'perf-metric');
+      const metricsElements = metricsSection.querySelectorAll('.lh-audit');
+      assert.equal(metricsElements.length, metricAudits.length);
+    });
+
+    it('renders the failing performance hints', () => {
+      const categoryDOM = renderer.render(category, sampleResults.reportGroups);
+
+      const hintAudits = category.audits.filter(audit => audit.group === 'perf-hint' &&
+          audit.score !== 100);
+      const hintElements = categoryDOM.querySelectorAll('.lh-perf-hint');
+      assert.equal(hintElements.length, hintAudits.length);
+
+      const hintElement = hintElements[0];
+      const hintSparklineElement = hintElement.querySelector('.lh-perf-hint__sparkline');
+      assert.ok(hintElement.querySelector('.lh-perf-hint__title'), 'did not render title');
+      assert.ok(hintSparklineElement, 'did not render sparkline');
+      assert.ok(hintElement.querySelector('.lh-perf-hint__stats'), 'did not render stats');
+      assert.ok(/Potential savings/.test(hintSparklineElement.title), 'did not render tooltip');
+    });
+
+    it('renders the failing diagnostics', () => {
+      const categoryDOM = renderer.render(category, sampleResults.reportGroups);
+      const diagnosticSection = categoryDOM.querySelectorAll('.lh-category > .lh-audit-group')[2];
+
+      const diagnosticAudits = category.audits.filter(audit => audit.group === 'perf-info' &&
+          audit.score !== 100);
+      const diagnosticElements = diagnosticSection.querySelectorAll('.lh-audit');
+      assert.equal(diagnosticElements.length, diagnosticAudits.length);
+    });
+
+    it('renders the passed audits', () => {
+      const categoryDOM = renderer.render(category, sampleResults.reportGroups);
+      const passedSection = categoryDOM.querySelector('.lh-category > .lh-passed-audits');
+
+      const passedAudits = category.audits.filter(audit => audit.group !== 'perf-metric' &&
+          audit.score === 100);
+      const passedElements = passedSection.querySelectorAll('.lh-audit');
+      assert.equal(passedElements.length, passedAudits.length);
+    });
+  });
+
+  describe('accessibility category', () => {
+    const category = sampleResults.reportCategories.find(cat => cat.id === 'accessibility');
+
+    it('renders the category header', () => {
+      const categoryDOM = renderer.render(category, sampleResults.reportGroups);
+      const score = categoryDOM.querySelector('.lh-score');
+      const value = categoryDOM.querySelector('.lh-score  > .lh-score__value');
+      const title = score.querySelector('.lh-score__title');
+      const description = score.querySelector('.lh-score__description');
+
+      assert.deepEqual(score, score.firstElementChild, 'first child is a score');
+      assert.ok(value.classList.contains('lh-score__value--numeric'),
+                'category score is numeric');
+      assert.equal(value.textContent, Math.round(category.score), 'category score is rounded');
+      assert.equal(title.textContent, category.name, 'title is set');
+      assert.ok(description.querySelector('a'), 'description contains converted markdown links');
+    });
+
+    it('renders the failed audits grouped by group', () => {
+      const categoryDOM = renderer.render(category, sampleResults.reportGroups);
+
+      const failedAudits = category.audits.filter(audit => audit.score !== 100);
+      const failedAuditTags = new Set(failedAudits.map(audit => audit.group));
+
+      const failedAuditGroups = categoryDOM.querySelectorAll('.lh-category > .lh-audit-group');
+      assert.equal(failedAuditGroups.length, failedAuditTags.size);
+    });
+
+    it('renders the passed audits grouped by group', () => {
+      const categoryDOM = renderer.render(category, sampleResults.reportGroups);
+
+      const passedAudits = category.audits.filter(audit => audit.score === 100);
+      const passedAuditTags = new Set(passedAudits.map(audit => audit.group));
+
+      const passedAuditGroups = categoryDOM.querySelectorAll('.lh-passed-audits .lh-audit-group');
+      assert.equal(passedAuditGroups.length, passedAuditTags.size);
+    });
+
+    it('renders all the audits', () => {
+      const categoryDOM = renderer.render(category, sampleResults.reportGroups);
+      const auditsElements = categoryDOM.querySelectorAll('.lh-audit');
+      assert.equal(auditsElements.length, category.audits.length);
+    });
+  });
+
 
   describe('grouping passed/failed', () => {
     it('separates audits in the DOM', () => {

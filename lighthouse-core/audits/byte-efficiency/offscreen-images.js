@@ -20,8 +20,7 @@
   */
 'use strict';
 
-const Audit = require('./byte-efficiency-audit');
-const TTIAudit = require('../time-to-interactive');
+const ByteEfficiencyAudit = require('./byte-efficiency-audit');
 const URL = require('../../lib/url-shim');
 
 const ALLOWABLE_OFFSCREEN_X = 100;
@@ -30,7 +29,7 @@ const ALLOWABLE_OFFSCREEN_Y = 200;
 const IGNORE_THRESHOLD_IN_BYTES = 2048;
 const IGNORE_THRESHOLD_IN_PERCENT = 75;
 
-class OffscreenImages extends Audit {
+class OffscreenImages extends ByteEfficiencyAudit {
   /**
    * @return {!AuditMeta}
    */
@@ -42,7 +41,7 @@ class OffscreenImages extends Audit {
       informative: true,
       helpText: 'Images that are not above the fold should be lazily loaded after the page is ' +
         'interactive. Consider using the [IntersectionObserver](https://developers.google.com/web/updates/2016/04/intersectionobserver) API.',
-      requiredArtifacts: ['ImageUsage', 'ViewportDimensions', 'traces', 'networkRecords']
+      requiredArtifacts: ['ImageUsage', 'ViewportDimensions', 'traces', 'devtoolsLogs']
     };
   }
 
@@ -84,6 +83,7 @@ class OffscreenImages extends Audit {
     return {
       url,
       preview: {
+        type: 'thumbnail',
         url: image.networkRecord.url,
         mimeType: image.networkRecord.mimeType
       },
@@ -96,12 +96,12 @@ class OffscreenImages extends Audit {
 
   /**
    * @param {!Artifacts} artifacts
-   * @return {{results: !Array<Object>, tableHeadings: Object,
-   *     passes: boolean=, debugString: string=}}
+   * @return {!Audit.HeadingsResult}
    */
   static audit_(artifacts) {
     const images = artifacts.ImageUsage;
     const viewportDimensions = artifacts.ViewportDimensions;
+    const trace = artifacts.traces[ByteEfficiencyAudit.DEFAULT_PASS];
 
     let debugString;
     const resultsMap = images.reduce((results, image) => {
@@ -124,23 +124,26 @@ class OffscreenImages extends Audit {
       return results;
     }, new Map());
 
-    return TTIAudit.audit(artifacts).then(ttiResult => {
-      const ttiTimestamp = ttiResult.extendedInfo.value.timestamps.timeToInteractive / 1000000;
+    return artifacts.requestFirstInteractive(trace).then(firstInteractive => {
+      const ttiTimestamp = firstInteractive.timestamp / 1000000;
       const results = Array.from(resultsMap.values()).filter(item => {
         const isWasteful = item.wastedBytes > IGNORE_THRESHOLD_IN_BYTES &&
             item.wastedPercent > IGNORE_THRESHOLD_IN_PERCENT;
         const loadedEarly = item.requestStartTime < ttiTimestamp;
         return isWasteful && loadedEarly;
       });
+
+      const headings = [
+        {key: 'preview', itemType: 'thumbnail', text: ''},
+        {key: 'url', itemType: 'url', text: 'URL'},
+        {key: 'totalKb', itemType: 'text', text: 'Original'},
+        {key: 'potentialSavings', itemType: 'text', text: 'Potential Savings'},
+      ];
+
       return {
         debugString,
         results,
-        tableHeadings: {
-          preview: '',
-          url: 'URL',
-          totalKb: 'Original',
-          potentialSavings: 'Potential Savings',
-        }
+        headings,
       };
     });
   }

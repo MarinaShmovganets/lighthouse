@@ -33,6 +33,7 @@ gulp.task('compile-report', () => {
     // externs
     'closure/third_party/commonjs.js',
 
+    'lib/file-namer.js',
     'report/v2/renderer/*.js',
   ])
 
@@ -40,12 +41,17 @@ gulp.task('compile-report', () => {
   .pipe(replace(/^\s\smodule\.exports = \w+;$/gm, ';'))
   .pipe(replace(/^\s\sself\.(\w+) = \1;$/gm, ';'))
 
+  // Remove node-specific code from file-namer so it can be included in report.
+  .pipe(replace(/^\s\smodule\.exports = {\w+};$/gm, ';'))
+  .pipe(replace('require(\'./url-shim\');', 'null;'))
+  .pipe(replace('(URLConstructor || URL)', 'URL'))
+
   .pipe(closureCompiler({
     compilation_level: 'SIMPLE',
     // new_type_inf: true,
     language_in: 'ECMASCRIPT6_STRICT',
     language_out: 'ECMASCRIPT5_STRICT',
-    warning_level: process.env.CI ? 'QUIET' : 'VERBOSE',
+    warning_level: 'VERBOSE',
     jscomp_error: [
       'checkTypes',
       'missingProperties',
@@ -87,6 +93,10 @@ gulp.task('compile-report', () => {
     formatting: 'PRETTY_PRINT',
     preserve_type_annotations: true,
   }))
+  .on('error', err => {
+    gutil.log(err.message);
+    return process.exit(1);
+  })
   .pipe(gulp.dest('../'))
   .on('end', () => {
     gutil.log('Closure compilation successful.');

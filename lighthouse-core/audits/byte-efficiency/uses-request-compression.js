@@ -20,14 +20,14 @@
  */
 'use strict';
 
-const Audit = require('./byte-efficiency-audit');
+const ByteEfficiencyAudit = require('./byte-efficiency-audit');
 const URL = require('../../lib/url-shim');
 
 const IGNORE_THRESHOLD_IN_BYTES = 1400;
 const IGNORE_THRESHOLD_IN_PERCENT = 0.1;
 const TOTAL_WASTED_BYTES_THRESHOLD = 10 * 1024; // 10KB
 
-class ResponsesAreCompressed extends Audit {
+class ResponsesAreCompressed extends ByteEfficiencyAudit {
   /**
    * @return {!AuditMeta}
    */
@@ -35,18 +35,19 @@ class ResponsesAreCompressed extends Audit {
     return {
       category: 'Performance',
       name: 'uses-request-compression',
-      description: 'Compression enabled for server responses',
+      informative: true,
+      description: 'Enable text compression',
       helpText: 'Text-based responses should be served with compression (gzip, deflate or brotli)' +
         ' to minimize total network bytes.' +
         ' [Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer).',
-      requiredArtifacts: ['ResponseCompression', 'networkRecords']
+      requiredArtifacts: ['ResponseCompression', 'devtoolsLogs']
     };
   }
 
   /**
    * @param {!Artifacts} artifacts
    * @param {number} networkThroughput
-   * @return {!AuditResult}
+   * @return {!Audit.HeadingsResult}
    */
   static audit_(artifacts) {
     const uncompressedResponses = artifacts.ResponseCompression;
@@ -89,15 +90,17 @@ class ResponsesAreCompressed extends Audit {
     });
 
     let debugString;
+    const headings = [
+      {key: 'url', itemType: 'url', text: 'Uncompressed resource URL'},
+      {key: 'totalKb', itemType: 'text', text: 'Original'},
+      {key: 'potentialSavings', itemType: 'text', text: 'GZIP Savings'},
+    ];
+
     return {
       passes: totalWastedBytes < TOTAL_WASTED_BYTES_THRESHOLD,
       debugString,
       results,
-      tableHeadings: {
-        url: 'Uncompressed resource URL',
-        totalKb: 'Original',
-        potentialSavings: 'GZIP Savings',
-      }
+      headings,
     };
   }
 }
