@@ -41,7 +41,7 @@ class NetworkRecorder extends EventEmitter {
   }
 
   get EventTypes() {
-    return NetworkManager.Events;
+    return NetworkManager.EventTypes;
   }
 
   activeRequestCount() {

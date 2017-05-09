@@ -215,7 +215,7 @@ module.exports = (function() {
   WebInspector.NetworkLog = function(target) {
     this._requests = new Map();
     target.networkManager.addEventListener(
-      WebInspector.NetworkManager.Events.RequestStarted, this._onRequestStarted, this);
+      WebInspector.NetworkManager.EventTypes.RequestStarted, this._onRequestStarted, this);
   };
 
   WebInspector.NetworkLog.prototype = {
