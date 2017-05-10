@@ -53,7 +53,7 @@ class UnusedBytes extends Audit {
    * @return {string}
    */
   static toSavingsString(percent = 0) {
-    return Math.round(percent).toLocaleString() + '%';;
+    return Math.round(percent).toLocaleString() + '%';
   }
 
   /**
