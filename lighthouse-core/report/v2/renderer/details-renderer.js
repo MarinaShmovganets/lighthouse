@@ -126,11 +126,11 @@ class DetailsRenderer {
     const theadElem = this._dom.createChildOf(tableElem, 'thead');
     const theadTrElem = this._dom.createChildOf(theadElem, 'tr');
 
-    details.itemHeaders.forEach((heading, index) => {
-      const itemType = details.items[0][index].type;
+    for (const heading of details.itemHeaders) {
+      const itemType = heading.itemType || 'text';
       const classes = `lh-table-column--${itemType}`;
       this._dom.createChildOf(theadTrElem, 'th', classes).appendChild(this.render(heading));
-    });
+    }
 
     const tbodyElem = this._dom.createChildOf(tableElem, 'tbody');
     for (const row of details.items) {

@@ -142,7 +142,7 @@ describe('DetailsRenderer', () => {
         itemHeaders: [
           {type: 'text', text: 'First'},
           {type: 'text', text: 'Second'},
-          {type: 'text', text: 'Preview'},
+          {type: 'text', text: 'Preview', itemType: 'thumbnail'},
         ],
         items: [
           [
