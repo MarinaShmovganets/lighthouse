@@ -32,9 +32,9 @@ const execSync = childProcess.execSync;
 const isWindows = process.platform === 'win32';
 
 export class ChromeLauncher {
-  prepared: Boolean = false;
+  prepared = false;
   pollInterval: number = 500;
-  autoSelectChrome: Boolean;
+  autoSelectChrome: boolean;
   TMP_PROFILE_DIR: string;
   outFile?: number;
   errFile?: number;
@@ -47,7 +47,7 @@ export class ChromeLauncher {
   constructor(opts: {
     startingUrl?: string,
     chromeFlags?: Array<string>,
-    autoSelectChrome?: Boolean,
+    autoSelectChrome?: boolean,
     port?: number
   } = {}) {
     // choose the first one (default)
@@ -261,7 +261,7 @@ export class ChromeLauncher {
   }
 };
 
-function defaults(val: any, def: any) {
+function defaults<T>(val: T | undefined, def: T): T {
   return typeof val === 'undefined' ? def : val;
 }
 
