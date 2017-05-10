@@ -44,15 +44,12 @@ export class ChromeLauncher {
   chrome?: childProcess.ChildProcess;
   port: number;
 
-  // We can not use default args here due to support node pre 6.
-  constructor(opts?: {
+  constructor(opts: {
     startingUrl?: string,
     chromeFlags?: Array<string>,
     autoSelectChrome?: Boolean,
     port?: number
-  }) {
-    opts = opts || {};
-
+  } = {}) {
     // choose the first one (default)
     this.autoSelectChrome = defaults(opts.autoSelectChrome, true);
     this.startingUrl = defaults(opts.startingUrl, 'about:blank');
