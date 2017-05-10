@@ -49,14 +49,11 @@ class UnusedBytes extends Audit {
   }
 
   /**
-   * @param {number} bytes
    * @param {number} percent
    * @return {string}
    */
-  static toSavingsString(bytes = 0, percent = 0) {
-    const kbDisplay = this.bytesToKbString(bytes);
-    const percentDisplay = Math.round(percent).toLocaleString() + '%';
-    return `${kbDisplay} _${percentDisplay}_`;
+  static toSavingsString(percent = 0) {
+    return Math.round(percent).toLocaleString() + '%';;
   }
 
   /**
@@ -96,7 +93,7 @@ class UnusedBytes extends Audit {
           item.wastedMs = this.bytesToMsString(item.wastedBytes, networkThroughput);
           item.totalKb = this.bytesToKbString(item.totalBytes);
           item.totalMs = this.bytesToMsString(item.totalBytes, networkThroughput);
-          item.potentialSavings = this.toSavingsString(item.wastedBytes, item.wastedPercent);
+          item.potentialSavings = this.toSavingsString(item.wastedPercent);
           return item;
         })
         .sort((itemA, itemB) => itemB.wastedBytes - itemA.wastedBytes);
