@@ -215,11 +215,20 @@ DetailsRenderer.ListDetailsJSON; // eslint-disable-line no-unused-expressions
  */
 DetailsRenderer.CardsDetailsJSON; // eslint-disable-line no-unused-expressions
 
+/**
+ * @typedef {{
+ *     type: string,
+ *     itemType: (string|undefined),
+ *     text: (string|undefined)
+ * }}
+ */
+DetailsRenderer.TableHeaderJSON; // eslint-disable-line no-unused-expressions
+
 /** @typedef {{
  *     type: string,
  *     header: ({text: string}|undefined),
  *     items: !Array<!Array<!DetailsRenderer.DetailsJSON>>,
- *     itemHeaders: !Array<!DetailsRenderer.DetailsJSON>
+ *     itemHeaders: !Array<!DetailsRenderer.TableHeaderJSON>
  * }}
  */
 DetailsRenderer.TableDetailsJSON; // eslint-disable-line no-unused-expressions
