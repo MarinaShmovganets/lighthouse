@@ -170,15 +170,22 @@ export class ChromeLauncher {
   // resolves if ready, rejects otherwise
   isDebuggerReady(): Promise<{}> {
     return new Promise((resolve, reject) => {
-      const client = net.createConnection(this.port);
-      client.once('error', err => {
-        this.cleanup(client);
+      let client
+
+      try {
+        client = net.createConnection(this.port);
+        client.once('error', err => {
+          this.cleanup(client);
+          reject(err);
+        });
+        client.once('connect', () => {
+          this.cleanup(client);
+          resolve();
+        });
+      } catch (err) {
+        if (client) this.cleanup(client);
         reject(err);
-      });
-      client.once('connect', () => {
-        this.cleanup(client);
-        resolve();
-      });
+      }
     });
   }
 
