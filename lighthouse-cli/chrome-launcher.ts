@@ -138,7 +138,7 @@ export class ChromeLauncher {
         .then(execPath => this.spawn(execPath));
   }
 
-  spawn(execPath: string): Promise<any[]> {
+  spawn(execPath: string) {
     const spawnPromise = new Promise(resolve => {
       if (this.chrome) {
         log.log('ChromeLauncher', `Chrome already running with pid ${this.chrome.pid}.`);
@@ -183,7 +183,7 @@ export class ChromeLauncher {
   }
 
   // resolves when debugger is ready, rejects after 10 polls
-  waitUntilReady(): Promise<{}> {
+  waitUntilReady() {
     const launcher = this;
 
     return new Promise((resolve, reject) => {
@@ -212,7 +212,7 @@ export class ChromeLauncher {
     });
   }
 
-  kill(): Promise<{}> {
+  kill() {
     return new Promise(resolve => {
       if (this.chrome) {
         this.chrome.on('close', () => {
@@ -238,7 +238,7 @@ export class ChromeLauncher {
     });
   }
 
-  destroyTmp(): Promise<{}> {
+  destroyTmp() {
     return new Promise(resolve => {
       if (!this.TMP_PROFILE_DIR) {
         return resolve();
