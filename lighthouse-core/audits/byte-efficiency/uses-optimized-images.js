@@ -96,7 +96,7 @@ class UsesOptimizedImages extends ByteEfficiencyAudit {
           hasAllEfficientImages = false;
         }
         if (jpegSavings.bytes > IGNORE_THRESHOLD_IN_BYTES) {
-          jpegSavingsLabel = this.toSavingsString(jpegSavings.percent);
+          jpegSavingsLabel = this.toSavingsString(jpegSavings.bytes, jpegSavings.percent);
         }
       }
 
@@ -108,7 +108,7 @@ class UsesOptimizedImages extends ByteEfficiencyAudit {
         preview: {url: image.url, mimeType: image.mimeType, type: 'thumbnail'},
         totalBytes: image.originalSize,
         wastedBytes: webpSavings.bytes,
-        webpSavings: this.toSavingsString(webpSavings.percent),
+        webpSavings: this.toSavingsString(webpSavings.bytes, webpSavings.percent),
         jpegSavings: jpegSavingsLabel
       });
       return results;

@@ -85,7 +85,7 @@ class ResponsesAreCompressed extends ByteEfficiencyAudit {
         totalBytes,
         wastedBytes: gzipSavingsBytes,
         wastedPercent: gzipSavingsPercent,
-        potentialSavings: this.toSavingsString(gzipSavingsPercent),
+        potentialSavings: this.toSavingsString(gzipSavingsBytes, gzipSavingsPercent),
       });
     });
 
