@@ -27,8 +27,8 @@ class TTIMetric extends Audit {
     return {
       category: 'Performance',
       name: 'time-to-interactive',
-      description: 'Time To First Interactive (alpha)',
-      helpText: 'Time to First Interactive identifies the time at which your app appears to be ready ' +
+      description: 'Time To Interactive (alpha)',
+      helpText: 'Time to Interactive identifies the time at which your app appears to be ready ' +
           'enough to interact with. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive).',
       optimalValue: `< ${SCORING_TARGET.toLocaleString()} ms`,
