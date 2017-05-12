@@ -37,6 +37,12 @@ class Manifest extends Gatherer {
   afterPass(options) {
     return options.driver.getAppManifest()
       .then(response => {
+        const isBomEncoded = Buffer.from(response.data).slice(0, BOM_ENCODING.length)
+          .equals(new Buffer(BOM_ENCODING));
+        if (isBomEncoded) {
+          response.data = Buffer.from(response.data).slice(BOM_ENCODING.length).toString();
+        }
+
         return manifestParser(response.data, response.url, options.url);
       })
       .catch(err => {
@@ -44,17 +50,7 @@ class Manifest extends Gatherer {
           return null;
         }
 
-<<<<<<< HEAD
         return Promise.reject(err);
-=======
-        const isBomEncoded = Buffer.from(response.data).slice(1, 4)
-          .equals(new Buffer(BOM_ENCODING));
-        if (isBomEncoded) {
-          throw new Error('Manifest is encoded with BOM. Please remove the BOM encoding');
-        }
-
-        return manifestParser(response.data, response.url, options.url);
->>>>>>> Throw error when manifest is BOM encoding
       });
   }
 }

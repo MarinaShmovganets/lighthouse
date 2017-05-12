@@ -57,9 +57,9 @@ describe('Manifest gatherer', () => {
     const getDriver = (data) => {
       return {
         driver: {
-          sendCommand() {
+          getAppManifest() {
             return Promise.resolve({
-              data: JSON.stringify(data),
+              data,
               errors: [],
               url: EXAMPLE_MANIFEST_URL
             });
@@ -72,8 +72,8 @@ describe('Manifest gatherer', () => {
     const promises = [];
     promises.push(manifestGather.afterPass(getDriver(manifestWithBOM))
       .then(
-        _ => assert.ok(false),
-        err => assert.ok(err.message.includes('Manifest is encoded with BOM.'))
+        _ => assert.ok(true),
+        _ => assert.ok(false)
       )
     );
 
