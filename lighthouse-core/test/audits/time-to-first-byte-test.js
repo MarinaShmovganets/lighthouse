@@ -5,11 +5,11 @@
  */
 'use strict';
 
-const TimeToFirstByte = require('../../audits/time-to-firstbyte.js');
+const TimeToFirstByte = require('../../audits/time-to-first-byte.js');
 const assert = require('assert');
 
 /* eslint-env mocha */
-describe('Performance: time-to-firstbyte audit', () => {
+describe('Performance: time-to-first-byte audit', () => {
   it.skip('fails when ttfb is higher than 215ms', () => {
     const networkRecords = [
       {_url: 'https://google.com/', _requestId: '0', _timing: {receiveHeadersEnd: 500, sendEnd: 200}},
