@@ -46,6 +46,9 @@ let TraceOfTabArtifact;
 function ComputedArtifacts() {}
 
 /** @type {function(!DevtoolsLog): !Promise<!Object>} */
+ComputedArtifacts.prototype.requestCriticalRequests;
+
+/** @type {function(!DevtoolsLog): !Promise<!Object>} */
 ComputedArtifacts.prototype.requestCriticalRequestChains;
 
 /** @type {function(!DevtoolsLog): !Promise<!Array<!WebInspector.NetworkRequest>>} */
