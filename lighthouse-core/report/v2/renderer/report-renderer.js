@@ -47,6 +47,8 @@ class ReportRenderer {
    */
   renderReport(report, container) {
     container.textContent = ''; // Remove previous report.
+
+    this.setArtifacts(report.artifacts);
     const element = container.appendChild(this._renderReport(report));
 
     // Hook in JS features and page-level event listeners after the report
@@ -66,6 +68,15 @@ class ReportRenderer {
   setTemplateContext(context) {
     this._templateContext = context;
     this._categoryRenderer.setTemplateContext(context);
+  }
+
+  /**
+   * Provide access to artifacts from categoryRenderer
+   * @param {*} artifacts
+   */
+  setArtifacts(artifacts) {
+    this._artifacts = artifacts;
+    this._categoryRenderer.setArtifacts(artifacts);
   }
 
   /**

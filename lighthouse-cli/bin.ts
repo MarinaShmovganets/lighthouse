@@ -224,8 +224,14 @@ export async function runLighthouse(
     const chromeLauncher = await getDebuggableChrome(flags);
     const results = await lighthouse(url, flags, config);
 
+    // Filter out artifacts except for screenshots in traces to minimize report size.
+    var traces = results.artifacts.traces;
+    for (var pass in traces)
+      traces[pass]['traceEvents'] = traces[pass]['traceEvents'].filter((e: {cat: string}) => e['cat'] === 'disabled-by-default-devtools.screenshot');
+    results.artifacts = { traces: traces };
+
     const artifacts = results.artifacts;
-    delete results.artifacts;
+    // delete results.artifacts;
 
     await saveResults(results, artifacts!, flags);
     if (flags.interactive) {
