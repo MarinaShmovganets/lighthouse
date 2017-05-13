@@ -18,7 +18,8 @@
 
 const Gatherer = require('./gatherer');
 const manifestParser = require('../../lib/manifest-parser');
-const BOM_ENCODING = [0xEF, 0xBB, 0xBF];
+const BOM_LENGTH = 3;
+const BOM_FIRSTCHAR = 65279;
 
 /**
  * Uses the debugger protocol to fetch the manifest from within the context of
@@ -37,10 +38,9 @@ class Manifest extends Gatherer {
   afterPass(options) {
     return options.driver.getAppManifest()
       .then(response => {
-        const isBomEncoded = Buffer.from(response.data).slice(0, BOM_ENCODING.length)
-          .equals(new Buffer(BOM_ENCODING));
+        const isBomEncoded = response.data.charCodeAt(0) === BOM_FIRSTCHAR;
         if (isBomEncoded) {
-          response.data = Buffer.from(response.data).slice(BOM_ENCODING.length).toString();
+          response.data = Buffer.from(response.data).slice(BOM_LENGTH).toString();
         }
 
         return manifestParser(response.data, response.url, options.url);

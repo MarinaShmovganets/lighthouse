@@ -47,7 +47,7 @@ describe('Manifest gatherer', () => {
     });
   });
 
-  it('throws an error when manifest is saved as BOM UTF-8', () => {
+  it('returns an artifact when manifest is saved as BOM UTF-8', () => {
     const fs = require('fs');
     const manifestWithoutBOM = fs.readFileSync(__dirname + '/../../fixtures/manifest.json')
       .toString();
@@ -72,14 +72,18 @@ describe('Manifest gatherer', () => {
     const promises = [];
     promises.push(manifestGather.afterPass(getDriver(manifestWithBOM))
       .then(
-        _ => assert.ok(true),
+        (manifest) => {
+          assert.strictEqual(manifest.raw, Buffer.from(manifestWithBOM).slice(3).toString());
+        },
         _ => assert.ok(false)
       )
     );
 
     promises.push(manifestGather.afterPass(getDriver(manifestWithoutBOM))
       .then(
-        _ => assert.ok(true),
+        (manifest) => {
+          assert.strictEqual(manifest.raw, manifestWithoutBOM);
+        },
         _ => assert.ok(false)
       )
     );
