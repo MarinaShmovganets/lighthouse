@@ -25,8 +25,11 @@ const URL = require('../lib/url-shim');
 const log = require('../lib/log.js');
 const DevtoolsLog = require('./devtools-log');
 
+// Controls how long to wait after onLoad before continuing
 const DEFAULT_PAUSE_AFTER_LOAD = 0;
+// Controls how long to wait between network requests before determining the network is quiet
 const DEFAULT_NETWORK_QUIET_THRESHOLD = 5000;
+// Controls how long to wait after network quiet before continuing
 const DEFAULT_PAUSE_AFTER_NETWORK_QUIET = 0;
 
 const _uniq = arr => Array.from(new Set(arr));
