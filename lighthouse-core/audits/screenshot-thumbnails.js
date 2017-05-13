@@ -30,6 +30,7 @@ class ScreenshotThumbnails extends Audit {
     return {
       category: 'Images',
       name: 'screenshot-thumbnails',
+      informative: true,
       description: 'Screenshot Thumbnails',
       helpText: 'This is what the load of your site looked like.',
       requiredArtifacts: ['traces']
@@ -111,7 +112,8 @@ class ScreenshotThumbnails extends Audit {
         });
       }
 
-      return {rawValue: thumbnails};
+      // explicitly set score so it isn't inferred from rawValue
+      return {score: 100, rawValue: thumbnails};
     });
   }
 }

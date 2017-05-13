@@ -20,7 +20,7 @@ const path = require('path');
 const assert = require('assert');
 
 const Runner = require('../../runner.js');
-const Audit = require('../../audits/screenshot-thumbnails');
+const ScreenshotThumbnailsAudit = require('../../audits/screenshot-thumbnails');
 const pwaTrace = require('../fixtures/traces/progressive-app-m60.json');
 
 /* eslint-env mocha */
@@ -31,10 +31,10 @@ describe('Screenshot thumbnails', () => {
       traces: {defaultPass: pwaTrace}
     }, Runner.instantiateComputedArtifacts());
 
-    return Audit.audit(artifacts).then(results => {
+    return ScreenshotThumbnailsAudit.audit(artifacts).then(results => {
       results.rawValue.forEach((result, index) => {
         const framePath = path.join(__dirname,
-            `../fixtures/traces/progressive-app-frame-${index}.jpg`);
+            `../fixtures/traces/screenshots/progressive-app-frame-${index}.jpg`);
         const expectedData = fs.readFileSync(framePath, 'base64');
         assert.equal(expectedData.length, result.data.length);
       });
