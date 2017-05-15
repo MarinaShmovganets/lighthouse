@@ -32,17 +32,18 @@ describe('Screenshot thumbnails', () => {
     }, Runner.instantiateComputedArtifacts());
 
     return ScreenshotThumbnailsAudit.audit(artifacts).then(results => {
-      results.rawValue.forEach((result, index) => {
+      results.details.items.forEach((result, index) => {
         const framePath = path.join(__dirname,
             `../fixtures/traces/screenshots/progressive-app-frame-${index}.jpg`);
         const expectedData = fs.readFileSync(framePath, 'base64');
         assert.equal(expectedData.length, result.data.length);
       });
 
-      assert.equal(results.rawValue[0].timing, 82);
-      assert.equal(results.rawValue[2].timing, 245);
-      assert.equal(results.rawValue[9].timing, 818);
-      assert.equal(results.rawValue[0].timestamp, 225414253815);
+      assert.ok(results.rawValue);
+      assert.equal(results.details.items[0].timing, 82);
+      assert.equal(results.details.items[2].timing, 245);
+      assert.equal(results.details.items[9].timing, 818);
+      assert.equal(results.details.items[0].timestamp, 225414253815);
     });
   });
 });

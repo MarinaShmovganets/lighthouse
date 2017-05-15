@@ -112,8 +112,14 @@ class ScreenshotThumbnails extends Audit {
         });
       }
 
-      // explicitly set score so it isn't inferred from rawValue
-      return {score: 100, rawValue: thumbnails};
+      return {
+        score: 100,
+        rawValue: thumbnails.length > 0,
+        details: {
+          type: 'screenshots',
+          items: thumbnails,
+        },
+      };
     });
   }
 }
