@@ -15,7 +15,7 @@
  */
 'use strict';
 
-/* globals self */
+/* globals self CriticalRequestChainRenderer */
 
 class DetailsRenderer {
   /**
@@ -24,11 +24,20 @@ class DetailsRenderer {
   constructor(dom) {
     /** @private {!DOM} */
     this._dom = dom;
+    /** @private {!Document|!Element} */
+    this._templateContext; // eslint-disable-line no-unused-expressions
+  }
+
+  /**
+   * @param {!Document|!Element} context
+   */
+  setTemplateContext(context) {
+    this._templateContext = context;
   }
 
   /**
    * @param {!DetailsRenderer.DetailsJSON} details
-   * @return {!Element}
+   * @return {!Node}
    */
   render(details) {
     switch (details.type) {
@@ -37,7 +46,7 @@ class DetailsRenderer {
       case 'url':
         return this._renderURL(details);
       case 'thumbnail':
-        return this._renderThumbnail(details);
+        return this._renderThumbnail(/** @type {!DetailsRenderer.ThumbnailDetails} */ (details));
       case 'filmstrip':
         return this._renderFilmstrip(/** @type {!DetailsRenderer.FilmstripDetails} */ (details));
       case 'cards':
@@ -48,6 +57,9 @@ class DetailsRenderer {
         return this._renderCode(details);
       case 'node':
         return this.renderNode(/** @type {!DetailsRenderer.NodeDetailsJSON} */(details));
+      case 'criticalrequestchain':
+        return CriticalRequestChainRenderer.render(this._dom, this._templateContext,
+            /** @type {!CriticalRequestChainRenderer.CRCDetailsJSON} */ (details));
       case 'list':
         return this._renderList(/** @type {!DetailsRenderer.ListDetailsJSON} */ (details));
       default:
@@ -112,7 +124,6 @@ class DetailsRenderer {
     element.appendChild(itemsElem);
     return element;
   }
-
 
   /**
    * @param {!DetailsRenderer.TableDetailsJSON} details
@@ -284,7 +295,6 @@ DetailsRenderer.NodeDetailsJSON; // eslint-disable-line no-unused-expressions
  * }}
  */
 DetailsRenderer.TableDetailsJSON; // eslint-disable-line no-unused-expressions
-
 
 /** @typedef {{
  *     type: string,

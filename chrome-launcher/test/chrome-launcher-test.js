@@ -16,41 +16,37 @@
 
 'use strict';
 
-require('../../compiled-check.js')('chrome-launcher.js');
+require('../compiled-check.js')('chrome-launcher.js');
 
-const ChromeLauncher = require('../../chrome-launcher.js').ChromeLauncher;
-const log = require('../../../lighthouse-core/lib/log');
+const ChromeLauncher = require('../chrome-launcher.js').Launcher;
+const log = require('../../lighthouse-core/lib/log');
 const assert = require('assert');
 
 /* eslint-env mocha */
 
-describe('ChromeLauncher', () => {
+describe('Launcher', () => {
   it('doesn\'t fail when killed twice', () => {
     log.setLevel('error');
     const chromeInstance = new ChromeLauncher();
-    return chromeInstance.run()
-      .then(() => {
-        log.setLevel();
-        return Promise.all([
-          chromeInstance.kill(),
-          chromeInstance.kill()
-        ]);
-      });
+    return chromeInstance.launch().then(() => {
+      log.setLevel();
+      return Promise.all([chromeInstance.kill(), chromeInstance.kill()]);
+    });
   });
 
   it('doesn\'t launch multiple chrome processes', () => {
     log.setLevel('error');
     const chromeInstance = new ChromeLauncher();
     let pid;
-    return chromeInstance.run()
-      .then(() => {
-        pid = chromeInstance.chrome.pid;
-        return chromeInstance.run();
-      })
-      .then(() => {
-        log.setLevel();
-        assert.strictEqual(pid, chromeInstance.chrome.pid);
-        return chromeInstance.kill();
-      });
+    return chromeInstance.launch()
+        .then(() => {
+          pid = chromeInstance.chrome.pid;
+          return chromeInstance.launch();
+        })
+        .then(() => {
+          log.setLevel();
+          assert.strictEqual(pid, chromeInstance.chrome.pid);
+          return chromeInstance.kill();
+        });
   });
 });

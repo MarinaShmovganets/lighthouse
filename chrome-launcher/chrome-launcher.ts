@@ -19,67 +19,83 @@
 
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
-import * as path from 'path';
 import * as chromeFinder from './chrome-finder';
-import {ask} from './ask';
-
-const mkdirp = require('mkdirp');
+import {getRandomPort} from './random-port';
+import {DEFAULT_FLAGS} from './flags';
+import {makeTmpDir, defaults, delay} from './utils';
 import * as net from 'net';
 const rimraf = require('rimraf');
 const log = require('../lighthouse-core/lib/log');
 const spawn = childProcess.spawn;
 const execSync = childProcess.execSync;
 const isWindows = process.platform === 'win32';
+const _SIGINT = 'SIGINT';
+const _SIGINT_EXIT_CODE = 130;
+const _SUPPORTED_PLATFORMS = new Set(['darwin', 'linux', 'win32']);
 
-export class ChromeLauncher {
-  prepared = false;
-  pollInterval: number = 500;
-  autoSelectChrome: boolean;
-  TMP_PROFILE_DIR: string;
-  outFile?: number;
-  errFile?: number;
-  pidFile: string;
-  startingUrl: string;
-  chromeFlags: Array<string>;
-  chrome?: childProcess.ChildProcess;
+type SupportedPlatforms = 'darwin'|'linux'|'win32';
+
+export interface Options {
+  startingUrl?: string;
+  chromeFlags?: Array<string>;
+  port?: number;
+  handleSIGINT?: boolean;
+  chromePath?: string;
+}
+
+export interface LaunchedChrome {
+  pid: number;
   port: number;
+  kill: () => Promise<{}>;
+}
 
-  constructor(opts: {
-    startingUrl?: string,
-    chromeFlags?: Array<string>,
-    autoSelectChrome?: boolean,
-    port?: number
-  } = {}) {
-    // choose the first one (default)
-    this.autoSelectChrome = defaults(opts.autoSelectChrome, true);
-    this.startingUrl = defaults(opts.startingUrl, 'about:blank');
-    this.chromeFlags = defaults(opts.chromeFlags, []);
-    this.port = defaults(opts.port, 9222);
+export async function launch(opts: Options = {}): Promise<LaunchedChrome> {
+  opts.handleSIGINT = defaults(opts.handleSIGINT, true);
+
+  const instance = new Launcher(opts);
+
+  // Kill spawned Chrome process in case of ctrl-C.
+  if (opts.handleSIGINT) {
+    process.on(_SIGINT, async () => {
+      await instance.kill();
+      process.exit(_SIGINT_EXIT_CODE);
+    });
   }
 
-  flags() {
-    const flags = [
+  await instance.launch();
+
+  return {pid: instance.pid!, port: instance.port!, kill: async () => instance.kill()};
+}
+
+export class Launcher {
+  private tmpDirandPidFileReady = false;
+  private pollInterval: number = 500;
+  private pidFile: string;
+  private startingUrl: string;
+  private TMP_PROFILE_DIR: string;
+  private outFile?: number;
+  private errFile?: number;
+  private chromePath?: string;
+  private chromeFlags: string[];
+  private chrome?: childProcess.ChildProcess;
+  private requestedPort?: number;
+  port?: number;
+  pid?: number;
+
+  constructor(opts: Options = {}) {
+    // choose the first one (default)
+    this.startingUrl = defaults(opts.startingUrl, 'about:blank');
+    this.chromeFlags = defaults(opts.chromeFlags, []);
+    this.requestedPort = defaults(opts.port, 0);
+    this.chromePath = opts.chromePath;
+  }
+
+  private get flags() {
+    const flags = DEFAULT_FLAGS.concat([
       `--remote-debugging-port=${this.port}`,
-      // Disable built-in Google Translate service
-      '--disable-translate',
-      // Disable all chrome extensions entirely
-      '--disable-extensions',
-      // Disable various background network services, including extension updating,
-      //   safe browsing service, upgrade detector, translate, UMA
-      '--disable-background-networking',
-      // Disable fetching safebrowsing lists, likely redundant due to disable-background-networking
-      '--safebrowsing-disable-auto-update',
-      // Disable syncing to a Google account
-      '--disable-sync',
-      // Disable reporting to UMA, but allows for collection
-      '--metrics-recording-only',
-      // Disable installation of default apps on first run
-      '--disable-default-apps',
-      // Skip first run wizards
-      '--no-first-run',
       // Place Chrome profile in a custom location we'll rm -rf later
       `--user-data-dir=${this.TMP_PROFILE_DIR}`
-    ];
+    ]);
 
     if (process.platform === 'linux') {
       flags.push('--disable-setuid-sandbox');
@@ -91,20 +107,13 @@ export class ChromeLauncher {
     return flags;
   }
 
-  prepare() {
-    switch (process.platform) {
-      case 'darwin':
-      case 'linux':
-        this.TMP_PROFILE_DIR = unixTmpDir();
-        break;
-
-      case 'win32':
-        this.TMP_PROFILE_DIR = win32TmpDir();
-        break;
-
-      default:
-        throw new Error('Platform ' + process.platform + ' is not supported');
+  private prepare() {
+    const platform = process.platform as SupportedPlatforms;
+    if (!_SUPPORTED_PLATFORMS.has(platform)) {
+      throw new Error(`Platform ${platform} is not supported`);
     }
+
+    this.TMP_PROFILE_DIR = makeTmpDir();
 
     this.outFile = fs.openSync(`${this.TMP_PROFILE_DIR}/chrome-out.log`, 'a');
     this.errFile = fs.openSync(`${this.TMP_PROFILE_DIR}/chrome-err.log`, 'a');
@@ -115,38 +124,59 @@ export class ChromeLauncher {
 
     log.verbose('ChromeLauncher', `created ${this.TMP_PROFILE_DIR}`);
 
-    this.prepared = true;
+    this.tmpDirandPidFileReady = true;
   }
 
-  run() {
-    if (!this.prepared) {
+  async launch() {
+    if (this.requestedPort !== 0) {
+      this.port = this.requestedPort;
+
+      // If an explict port is passed first look for an open connection...
+      try {
+        return await this.isDebuggerReady();
+      } catch (err) {
+        log.log(
+            'ChromeLauncher',
+            `No debugging port found on port ${this.port}, launching a new Chrome.`);
+      }
+    }
+
+    if (!this.tmpDirandPidFileReady) {
       this.prepare();
     }
 
-    return Promise.resolve()
-        .then(() => {
-          const installations = (<any>chromeFinder)[process.platform]();
+    if (this.chromePath === undefined) {
+      const installations = await chromeFinder[process.platform as SupportedPlatforms]();
+      if (installations.length === 0) {
+        throw new Error('No Chrome Installations Found');
+      }
 
-          if (installations.length < 1) {
-            return Promise.reject(new Error('No Chrome Installations Found'));
-          } else if (installations.length === 1 || this.autoSelectChrome) {
-            return installations[0];
-          }
+      this.chromePath = installations[0];
+    }
 
-          return ask('Choose a Chrome installation to use with Lighthouse', installations);
-        })
-        .then(execPath => this.spawn(execPath));
+    this.pid = await this.spawn(this.chromePath);
+    return Promise.resolve();
   }
 
-  spawn(execPath: string) {
-    const spawnPromise = new Promise(resolve => {
+  private async spawn(execPath: string) {
+    // Typescript is losing track of the return type without the explict typing.
+    const spawnPromise: Promise<number> = new Promise(async (resolve) => {
       if (this.chrome) {
         log.log('ChromeLauncher', `Chrome already running with pid ${this.chrome.pid}.`);
         return resolve(this.chrome.pid);
       }
 
+
+      // If a zero value port is set, it means the launcher
+      // is responsible for generating the port number.
+      // We do this here so that we can know the port before
+      // we pass it into chrome.
+      if (this.requestedPort === 0) {
+        this.port = await getRandomPort();
+      }
+
       const chrome = spawn(
-          execPath, this.flags(), {detached: true, stdio: ['ignore', this.outFile, this.errFile]});
+          execPath, this.flags, {detached: true, stdio: ['ignore', this.outFile, this.errFile]});
       this.chrome = chrome;
 
       fs.writeFileSync(this.pidFile, chrome.pid.toString());
@@ -155,10 +185,12 @@ export class ChromeLauncher {
       resolve(chrome.pid);
     });
 
-    return spawnPromise.then(pid => Promise.all([pid, this.waitUntilReady()]));
+    const pid = await spawnPromise;
+    await this.waitUntilReady();
+    return pid;
   }
 
-  cleanup(client?: net.Socket) {
+  private cleanup(client?: net.Socket) {
     if (client) {
       client.removeAllListeners();
       client.end();
@@ -168,9 +200,9 @@ export class ChromeLauncher {
   }
 
   // resolves if ready, rejects otherwise
-  isDebuggerReady(): Promise<{}> {
+  private isDebuggerReady(): Promise<{}> {
     return new Promise((resolve, reject) => {
-      const client = net.createConnection(this.port);
+      const client = net.createConnection(this.port!);
       client.once('error', err => {
         this.cleanup(client);
         reject(err);
@@ -183,7 +215,7 @@ export class ChromeLauncher {
   }
 
   // resolves when debugger is ready, rejects after 10 polls
-  waitUntilReady() {
+  private waitUntilReady() {
     const launcher = this;
 
     return new Promise((resolve, reject) => {
@@ -238,7 +270,7 @@ export class ChromeLauncher {
     });
   }
 
-  destroyTmp() {
+  private destroyTmp() {
     return new Promise(resolve => {
       if (!this.TMP_PROFILE_DIR) {
         return resolve();
@@ -260,25 +292,3 @@ export class ChromeLauncher {
     });
   }
 };
-
-function defaults<T>(val: T | undefined, def: T): T {
-  return typeof val === 'undefined' ? def : val;
-}
-
-function delay(time: number) {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
-
-function unixTmpDir() {
-  return execSync('mktemp -d -t lighthouse.XXXXXXX').toString().trim();
-}
-
-function win32TmpDir() {
-  const winTmpPath = process.env.TEMP || process.env.TMP ||
-      (process.env.SystemRoot || process.env.windir) + '\\temp';
-  const randomNumber = Math.floor(Math.random() * 9e7 + 1e7);
-  const tmpdir = path.join(winTmpPath, 'lighthouse.' + randomNumber);
-
-  mkdirp.sync(tmpdir);
-  return tmpdir;
-}

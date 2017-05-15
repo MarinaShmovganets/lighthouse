@@ -22,12 +22,9 @@ if (args.length) {
   startingUrl = args.find(flag => !flag.startsWith('--'));
 }
 
-const {ChromeLauncher} = require('./chrome-launcher');
-const chromeInstance = new ChromeLauncher({
+const {launch} = require('./chrome-launcher');
+
+launch({
   startingUrl,
   chromeFlags,
-});
-
-chromeInstance.prepare();
-chromeInstance.run();
-
+}).then(v => console.log(`✨  Chrome debugging port ${v.port}`))
