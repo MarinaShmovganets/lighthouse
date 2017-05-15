@@ -71,7 +71,7 @@ class UsesOptimizedImages extends ByteEfficiencyAudit {
         return;
       }
 
-      const url = URL.getDisplayName(image.url);
+      const url = URL.getURLDisplayName(image.url);
       const jpegSavings = UsesOptimizedImages.computeSavings(image, 'jpeg');
 
       results.push({
@@ -85,7 +85,7 @@ class UsesOptimizedImages extends ByteEfficiencyAudit {
 
     let debugString;
     if (failedImages.length) {
-      const urls = failedImages.map(image => URL.getDisplayName(image.url));
+      const urls = failedImages.map(image => URL.getURLDisplayName(image.url));
       debugString = `Lighthouse was unable to decode some of your images: ${urls.join(', ')}`;
     }
 

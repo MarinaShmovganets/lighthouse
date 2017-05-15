@@ -29,6 +29,8 @@ class CategoryRenderer {
     this._detailsRenderer = detailsRenderer;
     /** @private {!Document|!Element} */
     this._templateContext = this._dom.document();
+
+    this._detailsRenderer.setTemplateContext(this._templateContext);
   }
 
   /**
@@ -173,11 +175,11 @@ class CategoryRenderer {
    * Renders the group container for a group of audits. Individual audit elements can be added
    * directly to the returned element.
    * @param {!ReportRenderer.GroupJSON} group
-   * @return {!Element}
+   * @return {!HTMLDetailsElement}
    */
   _renderAuditGroup(group) {
-    const auditGroupElem = this._dom.createElement('details',
-          'lh-audit-group lh-expandable-details');
+    const auditGroupElem = /** @type {!HTMLDetailsElement} */ (this._dom.createElement('details',
+          'lh-audit-group lh-expandable-details'));
     const auditGroupHeader = this._dom.createElement('div',
           'lh-audit-group__header lh-expandable-details__header');
     auditGroupHeader.textContent = group.title;
@@ -216,6 +218,7 @@ class CategoryRenderer {
    */
   setTemplateContext(context) {
     this._templateContext = context;
+    this._detailsRenderer.setTemplateContext(context);
   }
 
   /**
