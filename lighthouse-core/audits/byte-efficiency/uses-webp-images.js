@@ -33,7 +33,7 @@ class UsesWebPImages extends ByteEfficiencyAudit {
     return {
       category: 'Images',
       name: 'uses-webp-images',
-      description: 'Convert images to WebP',
+      description: 'Serve images as WebP',
       informative: true,
       helpText: '[WebP](https://developers.google.com/speed/webp/) images take less time to download and save cellular data. ' +
         '[Learn more about image optimization](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/image-optimization).',
