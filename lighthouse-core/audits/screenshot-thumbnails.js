@@ -116,7 +116,7 @@ class ScreenshotThumbnails extends Audit {
         score: 100,
         rawValue: thumbnails.length > 0,
         details: {
-          type: 'screenshots',
+          type: 'filmstrip',
           items: thumbnails,
         },
       };

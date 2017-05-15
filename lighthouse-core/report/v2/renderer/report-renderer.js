@@ -173,7 +173,7 @@ if (typeof module !== 'undefined' && module.exports) {
  *     score: number,
  *     group: string,
  *     result: {
- *       rawValue: (Object|number|undefined),
+ *       rawValue: (number|undefined),
  *       description: string,
  *       informative: boolean,
  *       debugString: string,

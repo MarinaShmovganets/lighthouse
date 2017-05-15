@@ -170,34 +170,6 @@ class CategoryRenderer {
   }
 
   /**
-   * @param {!Array<!CategoryRenderer.FilmstripThumbnail>} thumbnails
-   * @return {!Element}
-   */
-  _renderFilmstrip(thumbnails) {
-    const filmstripEl = this._dom.createElement('div', 'lh-filmstrip');
-
-    for (const thumbnail of thumbnails) {
-      const frameEl = this._dom.createChildOf(filmstripEl, 'div', 'lh-filmstrip__frame');
-
-      let timing = thumbnail.timing.toLocaleString() + ' ms';
-      if (thumbnail.timing > 1000) {
-        timing = Math.round(thumbnail.timing / 100) / 10 + ' s';
-      }
-
-      const timingEl = this._dom.createChildOf(frameEl, 'div', 'lh-filmstrip__timestamp');
-      timingEl.textContent = timing;
-
-      const base64data = thumbnail.data;
-      this._dom.createChildOf(frameEl, 'img', 'lh-filmstrip__thumbnail', {
-        src: `data:image/jpeg;base64,${base64data}`,
-        alt: `Screenshot at ${timing}`,
-      });
-    }
-
-    return filmstripEl;
-  }
-
-  /**
    * Renders the group container for a group of audits. Individual audit elements can be added
    * directly to the returned element.
    * @param {!ReportRenderer.GroupJSON} group
@@ -332,12 +304,10 @@ class CategoryRenderer {
     const metricAuditsEl = this._renderAuditGroup(groups['perf-metric']);
 
     const thumbnailAudit = category.audits.find(audit => audit.id === 'screenshot-thumbnails');
-    const hasThumbnails = thumbnailAudit && thumbnailAudit.result &&
-        thumbnailAudit.result.details && Array.isArray(thumbnailAudit.result.details.items);
-    if (hasThumbnails) {
-      const thumbnails = /** @type {!Array<!CategoryRenderer.FilmstripThumbnail>} */
-          (thumbnailAudit.result.details.items);
-      const filmstripEl = this._renderFilmstrip(thumbnails);
+    const thumbnailDetails = thumbnailAudit && thumbnailAudit.result &&
+        thumbnailAudit.result.details;
+    if (thumbnailDetails) {
+      const filmstripEl = this._detailsRenderer.render(thumbnailDetails);
       metricAuditsEl.appendChild(filmstripEl);
     }
 
@@ -447,12 +417,3 @@ if (typeof module !== 'undefined' && module.exports) {
  * }}
  */
 CategoryRenderer.PerfHintExtendedInfo; // eslint-disable-line no-unused-expressions
-
-/**
- * @typedef {{
- *    timing: number,
- *    timestamp: number,
- *    data: string,
- * }}
- */
-CategoryRenderer.FilmstripThumbnail; // eslint-disable-line no-unused-expressions
