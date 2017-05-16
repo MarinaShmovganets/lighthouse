@@ -39,6 +39,7 @@ class ReportUIFeatures {
     /** @type {!Element} **/
     this.exportButton; // eslint-disable-line no-unused-expressions
 
+    this.onMediaQueryChange = this.onMediaQueryChange.bind(this);
     this.onCopy = this.onCopy.bind(this);
     this.onExportButtonClick = this.onExportButtonClick.bind(this);
     this.onExport = this.onExport.bind(this);
@@ -53,6 +54,7 @@ class ReportUIFeatures {
    */
   initFeatures(report) {
     this.json = report;
+    this._setupMediaQueryListeners();
     this._setupExportButton();
     this._setUpCollapseDetailsAfterPrinting();
     this._resetUIState();
@@ -69,6 +71,25 @@ class ReportUIFeatures {
   _fireEventOn(name, target = this._document, detail) {
     const event = new CustomEvent(name, detail ? {detail} : null);
     this._document.dispatchEvent(event);
+  }
+
+  _setupMediaQueryListeners() {
+    const mediaQuery = window.matchMedia('(max-width: 600px)');
+    mediaQuery.addListener(this.onMediaQueryChange);
+    this.onMediaQueryChange(mediaQuery);
+  }
+
+  /**
+   * Handler media query change events.
+   * @param {!Event} e
+   */
+  onMediaQueryChange(e) {
+    const root = this._dom.find('.lh-root', this._document);
+    if (e.matches) {
+      root.classList.add('lh-narrow');
+    } else {
+      root.classList.remove('lh-narrow');
+    }
   }
 
   _setupExportButton() {

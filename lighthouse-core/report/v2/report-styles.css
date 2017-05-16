@@ -19,8 +19,6 @@
   --monospace-font-family: 'Menlo', 'dejavu sans mono', 'Consolas', 'Lucida Console', monospace;
   --body-font-size: 12px;
   --header-font-size: 14px;
-  --body-font-size: 13px;
-  --header-font-size: 16px;
   --body-line-height: 1.5;
   --default-padding: 12px;
   --section-padding: 16px;
@@ -341,11 +339,14 @@ span.lh-node:hover {
   min-width: calc(var(--lh-filmstrip-thumbnail-width) * 10 + var(--default-padding) * 2);
 }
 
-@media(max-width: 600px) {
-  .lh-timeline-container {
-    width: calc(100vw - var(--section-padding) * 2);
-    overflow-x: scroll;
-  }
+.lh-narrow .lh-timeline-container {
+  width: calc(100vw - var(--section-padding) * 2);
+  overflow-x: scroll;
+}
+
+.lh-devtools .lh-timeline-container {
+  width: 100%;
+  overflow-x: scroll;
 }
 
 /* Perf Timeline Metric */
