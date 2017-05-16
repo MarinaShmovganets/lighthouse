@@ -75,7 +75,7 @@ class LoadFastEnough4Pwa extends Audit {
         // Only examine the first request per origin to reduce noisiness from cases like H2 push
         // where individual request latency may not apply.
         const existing = firstRequestLatenciesByOrigin.get(origin);
-        if (!existing || existing.startTime > latencyInfo.startTime) {
+        if (!existing || latencyInfo.startTime < existing.startTime) {
           firstRequestLatenciesByOrigin.set(origin, latencyInfo);
         }
       });
