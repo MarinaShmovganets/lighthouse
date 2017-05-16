@@ -74,18 +74,18 @@ class ReportUIFeatures {
   }
 
   _setupMediaQueryListeners() {
-    const mediaQuery = window.matchMedia('(max-width: 600px)');
+    const mediaQuery = self.matchMedia('(max-width: 600px)');
     mediaQuery.addListener(this.onMediaQueryChange);
     this.onMediaQueryChange(mediaQuery);
   }
 
   /**
    * Handler media query change events.
-   * @param {!Event} e
+   * @param {!MediaQueryList} mql
    */
-  onMediaQueryChange(e) {
+  onMediaQueryChange(mql) {
     const root = this._dom.find('.lh-root', this._document);
-    if (e.matches) {
+    if (mql.matches) {
       root.classList.add('lh-narrow');
     } else {
       root.classList.remove('lh-narrow');
