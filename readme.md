@@ -160,43 +160,21 @@ assumes you've installed Lighthouse as a dependency (`yarn add --dev lighthouse`
 
 ```javascript
 const lighthouse = require('lighthouse');
-const ChromeLauncher = require('lighthouse/chrome-laucher/chrome-launcher.js');
-const Printer = require('lighthouse/lighthouse-cli/printer');
+const chromeLauncher = require('lighthouse/chrome-launcher/chrome-launcher');
 
-function launchChromeAndRunLighthouse(url, flags, config) {
-  const launchedChrome = ChromeLauncher.launch();
-
-  launchedChrome
-    .then(() => lighthouse(url, flags, config)) // Run Lighthouse.
-    .then(results => launchedChrome.kill())
-    .then(() => results) // Kill Chrome and return results.
-    .catch(err => {
-      // Kill Chrome if there's an error.
-      return launchedChrome.kill().then(() => {
-        throw err;
-      });
-    });
+function launchChromeAndRunLighthouse(url, flags, config = null) {
+  return chromeLauncher.launch().then(chrome => {
+    flags.port = chrome.port;
+    return lighthouse(url, flags, config).then(results =>
+      chrome.kill().then(() => results)
+    );
+  });
 }
 
-// Use an existing config or create a custom one.
-const config = require('lighthouse/lighthouse-core/config/perf.json');
-const url = 'https://example.com';
-const flags = {output: 'html'};
-
-launchChromeAndRunLighthouse(url, flags, config).then(lighthouseResults => {
-  lighthouseResults.artifacts = undefined; // You can save the artifacts separately if so desired
-  return Printer.write(lighthouseResults, flags.output);
-}).catch(err => console.error(err));
-```
-
-**Example** - extracting an overall score from all scored audits
-
-```javascript
-function getOverallScore(lighthouseResults) {
-  const scoredAggregations = lighthouseResults.aggregations.filter(a => a.scored);
-  const total = scoredAggregations.reduce((sum, aggregation) => sum + aggregation.total, 0);
-  return (total / scoredAggregations.length) * 100;
-}
+// In use:
+const flags = {output: 'json'};
+launchChromeAndRunLighthouse('https://example.com', flags)
+	.then(results => console.log(results));
 ```
 
 ### Recipes

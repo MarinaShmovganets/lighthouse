@@ -1,3 +1,4 @@
+
 /**
  * @license
  * Copyright 2017 Google Inc. All rights reserved.
@@ -14,29 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 'use strict';
 
+const ManualAudit = require('./manual-audit');
+
 /**
- * Expected Lighthouse audit values for --perf tests
+ * @fileoverview Manual PWA audit for cross browser support.
  */
-module.exports = [
-  {
-    initialUrl: 'http://localhost:10200/online-only.html',
-    url: 'http://localhost:10200/online-only.html',
-    audits: {
-      'speed-index-metric': {
-        score: 100,
-        extendedInfo: {
-          value: {
-            timings: {},
-            timestamps: {},
-            frames: []
-          }
-        }
-      },
-      'first-interactive': {
-        score: 100,
-      }
-    }
-  },
-];
+
+class PWACrossBrowser extends ManualAudit {
+
+  /**
+   * @return {!AuditMeta}
+   */
+  static get meta() {
+    return Object.assign({
+      category: 'PWA',
+      name: 'pwa-cross-browser',
+      helpText: 'To reach the most number of users, sites should work across ' +
+      'every major browser. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist#site-works-cross-browser).',
+      description: 'Site works cross-browser',
+    }, super.meta);
+  }
+}
+
+module.exports = PWACrossBrowser;

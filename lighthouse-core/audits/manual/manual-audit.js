@@ -14,29 +14,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 'use strict';
 
 /**
- * Expected Lighthouse audit values for --perf tests
+ * @fileoverview Base class for audits that the user should verify manually on
+ * their site.
  */
-module.exports = [
-  {
-    initialUrl: 'http://localhost:10200/online-only.html',
-    url: 'http://localhost:10200/online-only.html',
-    audits: {
-      'speed-index-metric': {
-        score: 100,
-        extendedInfo: {
-          value: {
-            timings: {},
-            timestamps: {},
-            frames: []
-          }
-        }
-      },
-      'first-interactive': {
-        score: 100,
-      }
-    }
-  },
-];
+
+const Audit = require('../audit');
+
+class ManualAudit extends Audit {
+
+  /**
+   * @return {!AuditMeta}
+   */
+  static get meta() {
+    return {
+      informative: true,
+      manual: true,
+      requiredArtifacts: []
+    };
+  }
+
+  /**
+   * @return {!AuditResult}
+   */
+  static audit() {
+    return {
+      rawValue: false,
+      // displayValue: '(needs manual verification)'
+    };
+  }
+}
+
+module.exports = ManualAudit;
