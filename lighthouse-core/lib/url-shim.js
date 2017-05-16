@@ -74,6 +74,18 @@ URL.originsMatch = function originsMatch(urlA, urlB) {
 
 /**
  * @param {string} url
+ * @return {string|undefined}
+ */
+URL.getOrigin = function getOrigin(url) {
+  try {
+    return new URL(url).origin;
+  } catch (e) {
+    return;
+  }
+};
+
+/**
+ * @param {string} url
  * @param {{numPathParts: number, preserveQuery: boolean, preserveHost: boolean}=} options
  * @return {string}
  */
