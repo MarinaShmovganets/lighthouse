@@ -69,7 +69,7 @@ class LoadFastEnough4Pwa extends Audit {
           url: record._url,
           startTime: record._startTime,
           origin,
-          latency: latency.toLocaleString(undefined, {maximumFractionDigits: 2})
+          latency,
         };
 
         // Only examine the first request per origin to reduce noisiness from cases like H2 push
@@ -80,9 +80,13 @@ class LoadFastEnough4Pwa extends Audit {
         }
       });
 
-      const firstRequestLatencies = Array.from(firstRequestLatenciesByOrigin.values());
+      let firstRequestLatencies = Array.from(firstRequestLatenciesByOrigin.values());
       const latency3gMin = Emulation.settings.TYPICAL_MOBILE_THROTTLING_METRICS.targetLatency - 10;
       const areLatenciesAll3G = firstRequestLatencies.every(val => val.latency > latency3gMin);
+      firstRequestLatencies = firstRequestLatencies.map(item => ({
+        url: item.url,
+        latency: item.latency.toLocaleString(undefined, {maximumFractionDigits: 2})
+      }));
 
       const trace = artifacts.traces[Audit.DEFAULT_PASS];
       return artifacts.requestFirstInteractive(trace).then(firstInteractive => {
