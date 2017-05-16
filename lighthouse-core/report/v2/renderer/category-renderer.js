@@ -123,10 +123,8 @@ class CategoryRenderer {
    * @return {!Element}
    */
   _renderTimelineMetricAudit(audit, scale) {
-    const element = this._dom.createElement('div', [
-      'lh-timeline-metric',
-      `lh-timeline-metric--${Util.calculateRating(audit.score)}`,
-    ].join(' '));
+    const element = this._dom.createElement('div',
+        `lh-timeline-metric lh-timeline-metric--${Util.calculateRating(audit.score)}`);
 
     const sparklineContainerEl = this._dom.createChildOf(element, 'div',
         'lh-timeline-metric__sparkline');
@@ -145,7 +143,7 @@ class CategoryRenderer {
     const sparklineEl = this._dom.createChildOf(sparklineContainerEl, 'div',
         'lh-sparkline lh-sparkline--thin');
     const sparklineBarEl = this._dom.createChildOf(sparklineEl, 'div', 'lh-sparkline__bar');
-    sparklineBarEl.style.width = audit.result.rawValue / scale * 100 + '%';
+    sparklineBarEl.style.width = `${audit.result.rawValue / scale * 100}%`;
 
     const descriptionEl = this._dom.createChildOf(element, 'div',
         'lh-timeline-metric__description');
@@ -358,10 +356,7 @@ class CategoryRenderer {
     if (thumbnailResult && thumbnailResult.details) {
       const thumbnailDetails = /** @type {!DetailsRenderer.FilmstripDetails} */
           (thumbnailResult.details);
-      if (typeof thumbnailDetails.scale === 'number') {
-        perfTimelineScale = Math.max(perfTimelineScale, thumbnailDetails.scale);
-      }
-
+      perfTimelineScale = Math.max(perfTimelineScale, thumbnailDetails.scale);
       const filmstripEl = this._detailsRenderer.render(thumbnailDetails);
       timelineEl.appendChild(filmstripEl);
     }

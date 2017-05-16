@@ -329,7 +329,7 @@ summary {
 
 @media(max-width: 600px) {
   .lh-timeline-container {
-    width: calc(100vw - var(--default-padding) * 2);
+    width: calc(100vw - var(--section-padding) * 2);
     overflow-x: scroll;
   }
 }
