@@ -4,7 +4,7 @@ A hypothetical site measures the time from navigation start to when the page has
 
 This Lighthouse [gatherer](searchable-gatherer.js)/[audit](searchable-audit.js) pair will take that value from the context of the page and test whether or not it stays below a test threshold.
 
-The config file tells Lighthouse where to find the gatherer and audit files, when to run them, and how to incoporate their output into the Lighthouse report.
+The config file tells Lighthouse where to find the gatherer and audit files, when to run them, and how to incorporate their output into the Lighthouse report.
 
 ## Run
 With site running:

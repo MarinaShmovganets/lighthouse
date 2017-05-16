@@ -16,10 +16,10 @@
 'use strict';
 
 module.exports = {
-  // Run our tests along with all the default Lighthouse tests.
+  // 1. Run your custom tests along with all the default Lighthouse tests.
   extends: 'lighthouse:default',
 
-  // Add gatherer to the default Lighthouse load ('pass') of the page.
+  // 2. Add gatherer to the default Lighthouse load ('pass') of the page.
   passes: [{
     passName: 'defaultPass',
     gatherers: [
@@ -27,12 +27,12 @@ module.exports = {
     ],
   }],
 
-  // Add custom audit to the list of audits 'lighthouse:default' will run.
+  // 3. Add custom audit to the list of audits 'lighthouse:default' will run.
   audits: [
     'searchable-audit'
   ],
 
-  // Create a new 'My site metrics' section in the default report for our results.
+  // 4. Create a new 'My site metrics' section in the default report for our results.
   categories: {
     mysite: {
       name: 'My site metrics',
