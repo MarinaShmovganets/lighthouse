@@ -85,14 +85,14 @@ class ScreenshotThumbnails extends Audit {
 
     return Promise.all([
       artifacts.requestSpeedline(trace),
-      TTFI.audit(artifacts).catch(() => ({})),
-      TTCI.audit(artifacts).catch(() => ({})),
+      TTFI.audit(artifacts).catch(() => ({rawValue: 0})),
+      TTCI.audit(artifacts).catch(() => ({rawValue: 0})),
     ]).then(([speedline, ttfi, ttci]) => {
       const thumbnails = [];
       const analyzedFrames = speedline.frames.filter(frame => !frame.isProgressInterpolated());
-      const ttfiVal = typeof ttfi.rawValue === 'number' ? ttfi.rawValue : 0;
-      const ttciVal = typeof ttci.rawValue === 'number' ? ttci.rawValue : 0;
-      const timelineEnd = Math.max(speedline.complete, ttfiVal, ttciVal);
+      // Find thumbnails to cover the full range of the trace (max of last visual change and time
+      // to interactive).
+      const timelineEnd = Math.max(speedline.complete, ttfi.rawValue, ttci.rawValue);
 
       for (let i = 1; i <= NUMBER_OF_THUMBNAILS; i++) {
         const targetTimestamp = speedline.beginning + timelineEnd * i / NUMBER_OF_THUMBNAILS;
