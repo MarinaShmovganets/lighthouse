@@ -72,11 +72,6 @@ class LoadFastEnough4Pwa extends Audit {
           latency: latency.toLocaleString(undefined, {maximumFractionDigits: 2})
         };
 
-        // Ignore invalid origins
-        if (!origin) {
-          return;
-        }
-
         // Only examine the first request per origin to reduce noisiness
         const existing = firstRequestLatenciesByOrigin.get(origin);
         if (!existing || existing.startTime > latencyInfo.startTime) {
