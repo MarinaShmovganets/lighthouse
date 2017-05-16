@@ -55,8 +55,8 @@ class LoadFastEnough4Pwa extends Audit {
     return artifacts.requestNetworkRecords(devtoolsLogs).then(networkRecords => {
       const firstRequestLatenciesByOrigin = new Map();
       networkRecords.forEach(record => {
-        // Ignore requests that don't have valid origin, timing data, or came from the cache.
-        // Also ignore unfinished requests since they won't have timing information.
+        // Ignore requests that don't have valid origin, timing data, came from the cache, or are
+        // not finished.
         const fromCache = record._fromDiskCache || record._fromMemoryCache;
         const origin = URL.getOrigin(record._url);
         if (!origin || !record._timing || fromCache || !record.finished) {
@@ -68,11 +68,12 @@ class LoadFastEnough4Pwa extends Audit {
         const latencyInfo = {
           url: record._url,
           startTime: record._startTime,
-          origin: origin,
+          origin,
           latency: latency.toLocaleString(undefined, {maximumFractionDigits: 2})
         };
 
-        // Only examine the first request per origin to reduce noisiness
+        // Only examine the first request per origin to reduce noisiness from cases like H2 push
+        // where individual request latency may not apply.
         const existing = firstRequestLatenciesByOrigin.get(origin);
         if (!existing || existing.startTime > latencyInfo.startTime) {
           firstRequestLatenciesByOrigin.set(origin, latencyInfo);

@@ -74,13 +74,13 @@ URL.originsMatch = function originsMatch(urlA, urlB) {
 
 /**
  * @param {string} url
- * @return {string|undefined}
+ * @return {?string}
  */
 URL.getOrigin = function getOrigin(url) {
   try {
     return new URL(url).origin;
   } catch (e) {
-    return;
+    return null;
   }
 };
 
