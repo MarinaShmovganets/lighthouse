@@ -41,7 +41,7 @@ class LoadFastEnough4Pwa extends Audit {
       category: 'PWA',
       name: 'load-fast-enough-for-pwa',
       description: 'Page load is fast enough on 3G',
-      helpText: 'Satisfied if the Time To Interactive duration is shorter than 10 seconds, as defined by the [PWA Baseline Checklist](https://developers.google.com/web/progressive-web-apps/checklist). Network throttling is required (specifically: RTT latencies >= 150 RTT are expected).',
+      helpText: 'Satisfied if First Interactive is less than 10 seconds, as defined by the [PWA Baseline Checklist](https://developers.google.com/web/progressive-web-apps/checklist). Network throttling is required (specifically: RTT latencies >= 150 RTT are expected).',
       requiredArtifacts: ['traces', 'devtoolsLogs']
     };
   }
@@ -60,12 +60,6 @@ class LoadFastEnough4Pwa extends Audit {
         const fromCache = record._fromDiskCache || record._fromMemoryCache;
         const origin = URL.getOrigin(record._url);
         if (!origin || !record._timing || fromCache || !record.finished) {
-          return;
-        }
-
-        // Disregard requests with an invalid start time, (H2 request start times are sometimes less
-        // than issue time and even negative which throws off timing)
-        if (record._startTime < record._issueTime) {
           return;
         }
 
@@ -109,22 +103,22 @@ class LoadFastEnough4Pwa extends Audit {
           {key: 'latency', itemType: 'text', text: 'Latency (ms)'},
         ], firstRequestLatencies);
 
-        if (!areLatenciesAll3G) {
-          return {
-            rawValue: false,
-            // eslint-disable-next-line max-len
-            debugString: `First Interactive was found at ${timeToFirstInteractive.toLocaleString()}, however, the network request latencies were not sufficiently realistic, so the performance measurements cannot be trusted.`,
-            extendedInfo,
-            details
-          };
-        }
-
         if (!isFast) {
           return {
             rawValue: false,
             // eslint-disable-next-line max-len
-            debugString: `Under 3G conditions, First Interactive was at ${timeToFirstInteractive.toLocaleString()}. More details in the "Performance" section.`,
+            debugString: `First Interactive was at ${timeToFirstInteractive.toLocaleString()}. More details in the "Performance" section.`,
             extendedInfo
+          };
+        }
+
+        if (!areLatenciesAll3G) {
+          return {
+            rawValue: true,
+            // eslint-disable-next-line max-len
+            debugString: `First Interactive was found at ${timeToFirstInteractive.toLocaleString()}, however, the network request latencies were not sufficiently realistic, so the performance measurements cannot be trusted.`,
+            extendedInfo,
+            details
           };
         }
 

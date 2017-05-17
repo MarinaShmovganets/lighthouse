@@ -41,7 +41,8 @@ class WorksOffline extends Audit {
    */
   static audit(artifacts) {
     let debugString;
-    if (!URL.equalWithExcludedFragments(artifacts.URL.initialUrl, artifacts.URL.finalUrl)) {
+    if (artifacts.Offline !== 200 &&
+        !URL.equalWithExcludedFragments(artifacts.URL.initialUrl, artifacts.URL.finalUrl)) {
       debugString = 'WARNING: You may be failing this check because your test URL ' +
           `(${artifacts.URL.initialUrl}) was redirected to "${artifacts.URL.finalUrl}". ` +
           'Try testing the second URL directly.';
