@@ -18,7 +18,7 @@
 /* globals self URL */
 
 const ELLIPSIS = '\u2026';
-const NBPS = '\xa0';
+const NBSP = '\xa0';
 
 const RATINGS = {
   PASS: {label: 'pass', minScore: 75},
@@ -67,7 +67,7 @@ class Util {
    */
   static formatMilliseconds(ms, granularity = 10) {
     const coarseTime = Math.round(ms / granularity) * granularity;
-    return `${coarseTime.toLocaleString()}${NBPS}ms`;
+    return `${coarseTime.toLocaleString()}${NBSP}ms`;
   }
 
   /**
