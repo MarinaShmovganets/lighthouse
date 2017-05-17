@@ -132,7 +132,7 @@ function main() {
     return;
   }
 
-  const launcher = ChromeLauncher.launch();
+  const launcher = ChromeLauncher.launch({port: 9222});
 
   return launcher.then(() => runAnalysis())
   .catch(err => console.error(err))
