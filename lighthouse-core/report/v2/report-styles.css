@@ -541,8 +541,9 @@ span.lh-node:hover {
   border-top: 1px solid var(--report-secondary-border-color);
 }
 
-.lh-audit-group--manual {
+.lh-category > .lh-audit-group.lh-audit-group--manual {
   border-top: none;
+  margin-left: var(--default-padding);
 }
 
 .lh-audit-group__header {
