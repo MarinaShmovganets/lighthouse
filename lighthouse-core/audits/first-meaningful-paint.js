@@ -18,6 +18,7 @@
 'use strict';
 
 const Audit = require('./audit');
+const Util = require('../report/v2/renderer/util.js');
 const TracingProcessor = require('../lib/traces/tracing-processor');
 const Formatter = require('../report/formatter');
 
@@ -65,11 +66,11 @@ class FirstMeaningfulPaint extends Audit {
       }
 
       const result = this.calculateScore(tabTrace);
-      const coarseDuration = Math.round(result.duration / 10) * 10;
+
       return {
         score: result.score,
         rawValue: parseFloat(result.duration),
-        displayValue: `${coarseDuration.toLocaleString()} ms`,
+        displayValue: Util.formatMilliseconds(result.duration),
         debugString: result.debugString,
         optimalValue: this.meta.optimalValue,
         extendedInfo: {
