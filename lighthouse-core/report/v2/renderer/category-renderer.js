@@ -151,7 +151,7 @@ class CategoryRenderer {
 
     const descriptionEl = this._dom.createChildOf(element, 'div',
         'lh-timeline-metric__description');
-    descriptionEl.appendChild(this._dom.createSpanFromMarkdown(audit.result.helpText));
+    descriptionEl.appendChild(this._dom.convertMarkdownLinkSnippets(audit.result.helpText));
 
     return element;
   }
