@@ -69,12 +69,12 @@ describe('CategoryRenderer', () => {
   it('renders an audit debug str when appropriate', () => {
     const audit1 = renderer._renderAudit({
       scoringMode: 'binary', score: 0,
-      result: {helpText: '', debugString: 'Debug string'},
+      result: {helpText: '', debugString: 'Debug string', description: 'Audit title'},
     });
     assert.ok(audit1.querySelector('.lh-debug'));
 
     const audit2 = renderer._renderAudit({
-      scoringMode: 'binary', score: 0, result: {helpText: ''},
+      scoringMode: 'binary', score: 0, result: {helpText: '', description: 'Audit title'},
     });
     assert.ok(!audit2.querySelector('.lh-debug'));
   });
@@ -106,20 +106,20 @@ describe('CategoryRenderer', () => {
 
     const audits = categoryDOM.querySelectorAll('.lh-category > .lh-audit, ' +
         '.lh-category > .lh-passed-audits > .lh-audit, ' +
-        '.lh-audit-group__summary--manual ~ .lh-audit');
+        '.lh-audit-group--manual .lh-audit');
     assert.equal(audits.length, category.audits.length, 'renders correct number of audits');
   });
 
   it('renders manual audits if the category contains them', () => {
     const pwaCategory = sampleResults.reportCategories.find(cat => cat.id === 'pwa');
     const categoryDOM = renderer.render(pwaCategory, sampleResults.reportGroups);
-    assert.ok(categoryDOM.querySelector('.lh-audit-group__summary--manual'));
+    assert.ok(categoryDOM.querySelector('.lh-audit-group--manual .lh-audit-group__summary'));
     assert.equal(categoryDOM.querySelectorAll('.lh-score--informative.lh-score--manual').length, 3,
         'score shows informative and dash icon');
 
     const perfCategory = sampleResults.reportCategories.find(cat => cat.id === 'performance');
     const categoryDOM2 = renderer.render(perfCategory, sampleResults.reportGroups);
-    assert.ok(!categoryDOM2.querySelector('.lh-audit-group__summary--manual'));
+    assert.ok(!categoryDOM2.querySelector('.lh-audit-group--manual'));
   });
 
   describe('performance category', () => {
@@ -149,8 +149,9 @@ describe('CategoryRenderer', () => {
       const metricsSection = categoryDOM.querySelectorAll('.lh-category > .lh-audit-group')[0];
 
       const metricAudits = category.audits.filter(audit => audit.group === 'perf-metric');
-      const metricsElements = metricsSection.querySelectorAll('.lh-audit');
-      assert.equal(metricsElements.length, metricAudits.length);
+      const timelineElements = metricsSection.querySelectorAll('.lh-timeline-metric');
+      const nontimelineElements = metricsSection.querySelectorAll('.lh-audit');
+      assert.equal(timelineElements.length + nontimelineElements.length, metricAudits.length);
     });
 
     it('renders the failing performance hints', () => {
@@ -257,7 +258,7 @@ describe('CategoryRenderer', () => {
       const elem = renderer.render(category, sampleResults.reportGroups);
       const passedAudits = elem.querySelectorAll('.lh-category > .lh-passed-audits > .lh-audit');
       const failedAudits = elem.querySelectorAll('.lh-category > .lh-audit');
-      const manualAudits = elem.querySelectorAll('.lh-audit-group__summary--manual ~ .lh-audit');
+      const manualAudits = elem.querySelectorAll('.lh-audit-group--manual .lh-audit');
 
       assert.equal(passedAudits.length + failedAudits.length + manualAudits.length,
                    category.audits.length);

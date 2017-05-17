@@ -88,9 +88,10 @@ class CategoryRenderer {
     valueEl.classList.add(`lh-score__value--${Util.calculateRating(score)}`,
         `lh-score__value--${scoringMode}`);
 
-    this._dom.find('.lh-score__title', element).textContent = title;
+    this._dom.find('.lh-score__title', element).appendChild(
+        this._dom.convertMarkdownCodeSnippets(title));
     this._dom.find('.lh-score__description', element)
-        .appendChild(this._dom.createSpanFromMarkdown(description));
+        .appendChild(this._dom.convertMarkdownLinkSnippets(description));
 
     return /** @type {!Element} **/ (element);
   }
@@ -117,6 +118,41 @@ class CategoryRenderer {
   _renderAudit(audit) {
     const element = this._dom.createElement('div', 'lh-audit');
     element.appendChild(this._renderAuditScore(audit));
+    return element;
+  }
+
+  /**
+   * @param {!ReportRenderer.AuditJSON} audit
+   * @param {number} scale
+   * @return {!Element}
+   */
+  _renderTimelineMetricAudit(audit, scale) {
+    const element = this._dom.createElement('div',
+        `lh-timeline-metric lh-timeline-metric--${Util.calculateRating(audit.score)}`);
+
+    const sparklineContainerEl = this._dom.createChildOf(element, 'div',
+        'lh-timeline-metric__sparkline');
+    const titleEl = this._dom.createChildOf(element, 'div', 'lh-timeline-metric__title');
+    const titleNameEl = this._dom.createChildOf(titleEl, 'span', 'lh-timeline-metric__name');
+    const titleValueEl = this._dom.createChildOf(titleEl, 'span', 'lh-timeline-metric__value');
+    titleNameEl.textContent = audit.result.description;
+    titleValueEl.textContent = audit.result.displayValue;
+
+    if (typeof audit.result.rawValue !== 'number') {
+      const debugStrEl = this._dom.createChildOf(element, 'div', 'lh-debug');
+      debugStrEl.textContent = audit.result.debugString || 'Report error: no metric information';
+      return element;
+    }
+
+    const sparklineEl = this._dom.createChildOf(sparklineContainerEl, 'div',
+        'lh-sparkline lh-sparkline--thin');
+    const sparklineBarEl = this._dom.createChildOf(sparklineEl, 'div', 'lh-sparkline__bar');
+    sparklineBarEl.style.width = `${audit.result.rawValue / scale * 100}%`;
+
+    const descriptionEl = this._dom.createChildOf(element, 'div',
+        'lh-timeline-metric__description');
+    descriptionEl.appendChild(this._dom.convertMarkdownLinkSnippets(audit.result.helpText));
+
     return element;
   }
 
@@ -165,7 +201,7 @@ class CategoryRenderer {
     }
 
     const descriptionEl = this._dom.createChildOf(element, 'div', 'lh-perf-hint__description');
-    descriptionEl.appendChild(this._dom.createSpanFromMarkdown(audit.result.helpText));
+    descriptionEl.appendChild(this._dom.convertMarkdownLinkSnippets(audit.result.helpText));
 
     if (audit.result.details) {
       element.appendChild(this._detailsRenderer.render(audit.result.details));
@@ -188,7 +224,7 @@ class CategoryRenderer {
     auditGroupHeader.textContent = group.title;
 
     const auditGroupDescription = this._dom.createElement('div', 'lh-audit-group__description');
-    auditGroupDescription.appendChild(this._dom.createSpanFromMarkdown(group.description));
+    auditGroupDescription.appendChild(this._dom.convertMarkdownLinkSnippets(group.description));
 
     const auditGroupSummary = this._dom.createElement('summary',
           'lh-audit-group__summary lh-expandable-details__summary');
@@ -233,9 +269,7 @@ class CategoryRenderer {
     Object.keys(auditsGroupedByGroup).forEach(groupId => {
       const group = groupDefinitions[groupId];
       const auditGroupElem = this._renderAuditGroup(group);
-
-      this._dom.find('.lh-audit-group__summary', auditGroupElem)
-          .classList.add('lh-audit-group__summary--manual');
+      auditGroupElem.classList.add('lh-audit-group--manual');
 
       auditsGroupedByGroup[groupId].forEach(audit => {
         auditGroupElem.appendChild(this._renderAudit(audit));
@@ -342,16 +376,35 @@ class CategoryRenderer {
 
     const metricAudits = category.audits.filter(audit => audit.group === 'perf-metric');
     const metricAuditsEl = this._renderAuditGroup(groups['perf-metric']);
+    const timelineContainerEl = this._dom.createChildOf(metricAuditsEl, 'div',
+        'lh-timeline-container');
+    const timelineEl = this._dom.createChildOf(timelineContainerEl, 'div', 'lh-timeline');
+
+    let perfTimelineScale = 0;
+    metricAudits.forEach(audit => {
+      if (typeof audit.result.rawValue === 'number' && audit.result.rawValue) {
+        perfTimelineScale = Math.max(perfTimelineScale, audit.result.rawValue);
+      }
+    });
 
     const thumbnailAudit = category.audits.find(audit => audit.id === 'screenshot-thumbnails');
-    const thumbnailDetails = thumbnailAudit && thumbnailAudit.result &&
-        thumbnailAudit.result.details;
-    if (thumbnailDetails) {
+    const thumbnailResult = thumbnailAudit && thumbnailAudit.result;
+    if (thumbnailResult && thumbnailResult.details) {
+      const thumbnailDetails = /** @type {!DetailsRenderer.FilmstripDetails} */
+          (thumbnailResult.details);
+      perfTimelineScale = Math.max(perfTimelineScale, thumbnailDetails.scale);
       const filmstripEl = this._detailsRenderer.render(thumbnailDetails);
-      metricAuditsEl.appendChild(filmstripEl);
+      timelineEl.appendChild(filmstripEl);
     }
 
-    metricAudits.forEach(item => metricAuditsEl.appendChild(this._renderAudit(item)));
+    metricAudits.forEach(item => {
+      if (item.id === 'speed-index-metric' || item.id === 'estimated-input-latency') {
+        return metricAuditsEl.appendChild(this._renderAudit(item));
+      }
+
+      timelineEl.appendChild(this._renderTimelineMetricAudit(item, perfTimelineScale));
+    });
+
     metricAuditsEl.open = true;
     element.appendChild(metricAuditsEl);
 
