@@ -65,11 +65,11 @@ class FirstMeaningfulPaint extends Audit {
       }
 
       const result = this.calculateScore(tabTrace);
-
+      const coarseDuration = Math.round(result.duration / 10) * 10;
       return {
         score: result.score,
         rawValue: parseFloat(result.duration),
-        displayValue: `${result.duration}ms`,
+        displayValue: `${coarseDuration.toLocaleString()} ms`,
         debugString: result.debugString,
         optimalValue: this.meta.optimalValue,
         extendedInfo: {

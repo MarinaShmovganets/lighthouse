@@ -59,7 +59,7 @@ class FirstInteractiveMetric extends Audit {
         return {
           score,
           rawValue: firstInteractive.timeInMs,
-          displayValue: `${displayValue.toLocaleString()}ms`,
+          displayValue: `${displayValue.toLocaleString()} ms`,
           extendedInfo: {
             value: firstInteractive,
             formatter: Formatter.SUPPORTED_FORMATS.NULL,

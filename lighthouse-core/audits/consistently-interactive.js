@@ -246,7 +246,7 @@ class ConsistentlyInteractiveMetric extends Audit {
         return {
           score,
           rawValue: timeInMs,
-          displayValue: `${displayValue.toLocaleString()}ms`,
+          displayValue: `${displayValue.toLocaleString()} ms`,
           optimalValue: this.meta.optimalValue,
           extendedInfo: {
             value: extendedInfo,
