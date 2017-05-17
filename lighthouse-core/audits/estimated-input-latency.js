@@ -69,7 +69,7 @@ class EstimatedInputLatency extends Audit {
       score: Math.round(score),
       optimalValue: this.meta.optimalValue,
       rawValue,
-      displayValue: `${rawValue} ms`,
+      displayValue: `${Math.round(rawValue)} ms`,
       extendedInfo: {
         value: latencyPercentiles,
         formatter: Formatter.SUPPORTED_FORMATS.NULL
