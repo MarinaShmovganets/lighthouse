@@ -41,15 +41,16 @@ class WorksOffline extends Audit {
    */
   static audit(artifacts) {
     let debugString;
-    if (artifacts.Offline !== 200 &&
-        !URL.equalWithExcludedFragments(artifacts.URL.initialUrl, artifacts.URL.finalUrl)) {
-      debugString = 'WARNING: You may be failing this check because your test URL ' +
-          `(${artifacts.URL.initialUrl}) was redirected to "${artifacts.URL.finalUrl}". ` +
-          'Try testing the second URL directly.';
+    const passed = artifacts.Offline === 200;
+    if (!URL.equalWithExcludedFragments(artifacts.URL.initialUrl, artifacts.URL.finalUrl)) {
+      const explanation = passed ? 'Your test URL' :
+          'You may be failing this check because your test URL';
+      debugString = `WARNING: ${explanation} (${artifacts.URL.initialUrl}) was redirected to ` +
+          `"${artifacts.URL.finalUrl}". Try testing the second URL directly to verify .`;
     }
 
     return {
-      rawValue: artifacts.Offline === 200,
+      rawValue: passed,
       debugString
     };
   }
