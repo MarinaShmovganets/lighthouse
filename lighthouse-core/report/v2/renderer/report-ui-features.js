@@ -76,20 +76,17 @@ class ReportUIFeatures {
   _setupMediaQueryListeners() {
     const mediaQuery = self.matchMedia('(max-width: 600px)');
     mediaQuery.addListener(this.onMediaQueryChange);
+    // Ensure the handler is called on init
     this.onMediaQueryChange(mediaQuery);
   }
 
   /**
-   * Handler media query change events.
+   * Handle media query change events.
    * @param {!MediaQueryList} mql
    */
   onMediaQueryChange(mql) {
     const root = this._dom.find('.lh-root', this._document);
-    if (mql.matches) {
-      root.classList.add('lh-narrow');
-    } else {
-      root.classList.remove('lh-narrow');
-    }
+    root.classList.toggle('lh-narrow', mql.matches);
   }
 
   _setupExportButton() {
@@ -101,7 +98,7 @@ class ReportUIFeatures {
   }
 
   /**
-   * Handler copy events.
+   * Handle copy events.
    * @param {!Event} e
    */
   onCopy(e) {
