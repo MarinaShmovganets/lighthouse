@@ -88,7 +88,8 @@ class CategoryRenderer {
     valueEl.classList.add(`lh-score__value--${Util.calculateRating(score)}`,
         `lh-score__value--${scoringMode}`);
 
-    this._dom.find('.lh-score__title', element).textContent = title;
+    this._dom.find('.lh-score__title', element).appendChild(
+        this._dom.convertMarkdownCodeSnippets(title));
     this._dom.find('.lh-score__description', element)
         .appendChild(this._dom.createSpanFromMarkdown(description));
 

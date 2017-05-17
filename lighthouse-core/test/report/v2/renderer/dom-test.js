@@ -117,4 +117,13 @@ describe('DOM', () => {
       assert.equal(result.innerHTML, text);
     });
   });
+
+  describe('convertMarkdownCodeSnippets', () => {
+    it('correctly converts links', () => {
+      const result = dom.convertMarkdownCodeSnippets(
+          'Here is some `code`, and then some `more code`, and yet event `more`.');
+      assert.equal(result.innerHTML, 'Here is some <code>code</code>, and then some ' +
+          '<code>more code</code>, and yet event <code>more</code>.');
+    });
+  });
 });
