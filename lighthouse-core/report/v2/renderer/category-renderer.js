@@ -91,7 +91,7 @@ class CategoryRenderer {
     this._dom.find('.lh-score__title', element).appendChild(
         this._dom.convertMarkdownCodeSnippets(title));
     this._dom.find('.lh-score__description', element)
-        .appendChild(this._dom.createSpanFromMarkdown(description));
+        .appendChild(this._dom.convertMarkdownLinkSnippets(description));
 
     return /** @type {!Element} **/ (element);
   }
@@ -201,7 +201,7 @@ class CategoryRenderer {
     }
 
     const descriptionEl = this._dom.createChildOf(element, 'div', 'lh-perf-hint__description');
-    descriptionEl.appendChild(this._dom.createSpanFromMarkdown(audit.result.helpText));
+    descriptionEl.appendChild(this._dom.convertMarkdownLinkSnippets(audit.result.helpText));
 
     if (audit.result.details) {
       element.appendChild(this._detailsRenderer.render(audit.result.details));
@@ -224,7 +224,7 @@ class CategoryRenderer {
     auditGroupHeader.textContent = group.title;
 
     const auditGroupDescription = this._dom.createElement('div', 'lh-audit-group__description');
-    auditGroupDescription.appendChild(this._dom.createSpanFromMarkdown(group.description));
+    auditGroupDescription.appendChild(this._dom.convertMarkdownLinkSnippets(group.description));
 
     const auditGroupSummary = this._dom.createElement('summary',
           'lh-audit-group__summary lh-expandable-details__summary');

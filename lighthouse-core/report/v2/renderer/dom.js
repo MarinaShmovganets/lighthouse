@@ -101,7 +101,7 @@ class DOM {
    * @param {string} text
    * @return {!Element}
    */
-  createSpanFromMarkdown(text) {
+  convertMarkdownLinkSnippets(text) {
     const element = this.createElement('span');
 
     // Split on markdown links (e.g. [some link](https://...)).
