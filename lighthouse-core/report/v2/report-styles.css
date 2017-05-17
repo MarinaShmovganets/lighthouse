@@ -541,25 +541,29 @@ span.lh-node:hover {
   border-top: 1px solid var(--report-secondary-border-color);
 }
 
+.lh-audit-group--manual {
+  border-top: none;
+}
+
 .lh-audit-group__header {
   font-size: 18px;
 }
 
-.lh-audit-group__summary--manual {
+.lh-audit-group--manual .lh-audit-group__summary {
   display: flex;
   align-items: center;
   font-size: 15px;
 }
 
-.lh-audit-group__summary--manual .lh-audit-group__header  {
+.lh-audit-group--manual .lh-audit-group__summary .lh-audit-group__header  {
   font-size: inherit;
 }
 
-.lh-audit-group__summary--manual .lh-toggle-arrow {
+.lh-audit-group--manual .lh-audit-group__summary .lh-toggle-arrow {
   display: none;
 }
 
-.lh-audit-group__summary--manual::-webkit-details-marker {
+.lh-audit-group--manual .lh-audit-group__summary::-webkit-details-marker {
   display: initial;
   background: var(--manual-color) !important;
 }
@@ -693,7 +697,7 @@ summary.lh-passed-audits-summary {
 }
 
 summary.lh-passed-audits-summary::-webkit-details-marker,
-.lh-audit-group__summary--manual::-webkit-details-marker {
+.lh-audit-group--manual > summary::-webkit-details-marker {
   background: var(--pass-color);
   color: white;
   padding: 3px 3px 3px 6px;
@@ -701,7 +705,7 @@ summary.lh-passed-audits-summary::-webkit-details-marker,
 }
 
 .lh-passed-audits[open] summary.lh-passed-audits-summary::-webkit-details-marker,
-.lh-audit-group[open] summary.lh-audit-group__summary--manual::-webkit-details-marker {
+.lh-audit-group--manual[open] > summary::-webkit-details-marker {
   padding: 3px 5px 3px 4px;
 }
 
