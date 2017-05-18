@@ -53,6 +53,10 @@ global.HTMLImportsLoader.hrefToAbsolutePath = function(path) {
 
 require('../../third_party/traceviewer-js/');
 const traceviewer = global.tr;
+if (typeof atob === 'undefined') {
+  traceviewer.b.Base64.atob = input => new Buffer(input).toString('base64')
+  traceviewer.b.Base64.btoa = input => new Buffer(input, 'base64').toString()
+}
 
 class TraceProcessor {
   get RESPONSE() {
