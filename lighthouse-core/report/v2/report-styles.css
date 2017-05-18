@@ -624,7 +624,7 @@ span.lh-node:hover {
 
 .lh-scores-header {
   display: flex;
-  overflow-x: auto;
+  overflow-x: hidden;
   margin: var(--report-header-height) 0 0 0;
   padding: calc(var(--default-padding) * 2) var(--default-padding);
   border-bottom: 1px solid var(--report-border-color);
@@ -746,6 +746,7 @@ summary.lh-passed-audits-summary::-webkit-details-marker,
   .lh-report {
     margin-left: 0;
     width: 100%;
+    min-width: 400px;
   }
   .lh-category {
     padding: 24px var(--default-padding);
