@@ -46,16 +46,16 @@ class Connection {
    * Call protocol methods
    * @param {!string} method
    * @param {!Object} params
-   * @param {boolean=} silent
+   * @param {Object=} options
    * @return {!Promise}
    */
-  sendCommand(method, params = {}, silent = false) {
+  sendCommand(method, params = {}, options) {
     log.formatProtocol('method => browser', {method, params}, 'verbose');
     const id = ++this._lastCommandId;
     const message = JSON.stringify({id, method, params});
     this.sendRawMessage(message);
     return new Promise((resolve, reject) => {
-      this._callbacks.set(id, {resolve, reject, method, silent});
+      this._callbacks.set(id, {resolve, reject, method, options});
     });
   }
 
@@ -99,7 +99,7 @@ class Connection {
 
       return callback.resolve(Promise.resolve().then(_ => {
         if (object.error) {
-          const logLevel = callback.silent ? 'verbose' : 'error';
+          const logLevel = callback.options && callback.options.silent ? 'verbose' : 'error';
           log.formatProtocol('method <= browser ERR', {method: callback.method}, logLevel);
           throw new Error(`Protocol error (${callback.method}): ${object.error.message}`);
         }

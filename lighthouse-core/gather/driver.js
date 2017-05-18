@@ -187,10 +187,10 @@ class Driver {
    * Call protocol methods
    * @param {!string} method
    * @param {!Object} params
-   * @param {boolean=} silent
+   * @param {Object=} options
    * @return {!Promise}
    */
-  sendCommand(method, params, silent) {
+  sendCommand(method, params, options) {
     const domainCommand = /^(\w+)\.(enable|disable)$/.exec(method);
     if (domainCommand) {
       const enable = domainCommand[2] === 'enable';
@@ -199,7 +199,7 @@ class Driver {
       }
     }
 
-    return this._connection.sendCommand(method, params, silent);
+    return this._connection.sendCommand(method, params, options);
   }
 
   /**
@@ -721,7 +721,7 @@ class Driver {
     return new Promise((resolve) => {
       const traceCallback = () => resolve();
       this.once('Tracing.tracingComplete', traceCallback);
-      return this.sendCommand('Tracing.end', undefined, true).catch(() => {
+      return this.sendCommand('Tracing.end', undefined, {silent: true}).catch(() => {
         this.off('Tracing.tracingComplete', traceCallback);
         traceCallback();
       });
