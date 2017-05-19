@@ -65,7 +65,7 @@ class TotalByteWeight extends ByteEfficiencyAudit {
           if (record.scheme === 'data' || !record.finished) return;
 
           const result = {
-            url: URL.getURLDisplayName(record.url),
+            url: record.url,
             totalBytes: record.transferSize,
             totalKb: this.bytesToKbString(record.transferSize),
             totalMs: this.bytesToMsString(record.transferSize, networkThroughput),
