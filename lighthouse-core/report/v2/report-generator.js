@@ -97,11 +97,17 @@ class ReportGeneratorV2 {
 
   /**
    * Returns the report JSON object with computed scores.
-   * @param {{categories: !Object<{audits: !Array}>}} config
-   * @param {!Object<{score: ?number|boolean|undefined}>} resultsByAuditId
+   * @param {{categories: !Object<{audits: !Array}>, config: ?Object, audits: ?Object}} config
+   * @param {!Object<{score: ?number|boolean|undefined}>=} resultsByAuditId
    * @return {{categories: !Array<{audits: !Array<{score: number, result: !Object}>}>}}
    */
-  generateReportJson(config, resultsByAuditId) {
+  generateReportJson(configOrLhr, resultsByAuditId) {
+    let config = configOrLhr;
+    if (configOrLhr.config && configOrLhr.audits) {
+      config = configOrLhr.config;
+      resultsByAuditId = configOrLhr.audits;
+    }
+
     const categories = Object.keys(config.categories).map(categoryId => {
       const category = config.categories[categoryId];
       category.id = categoryId;
@@ -132,8 +138,14 @@ class ReportGeneratorV2 {
    * @param {!Object} reportAsJson
    * @return {string}
    */
-  generateReportHtml(reportAsJson) {
-    const sanitizedJson = JSON.stringify(reportAsJson).replace(/</g, '\\u003c');
+  generateReportHtml(reportJsonOrLhr) {
+    let reportJson = reportJsonOrLhr;
+    if (reportJsonOrLhr.config && reportJsonOrLhr.audits) {
+      const clonedLhr = Object.assign({}, reportJsonOrLhr, {config: undefined});
+      reportJson = Object.assign(clonedLhr, this.generateReportJson(reportJsonOrLhr));
+    }
+
+    const sanitizedJson = JSON.stringify(reportJson).replace(/</g, '\\u003c');
     const sanitizedJavascript = REPORT_JAVASCRIPT.replace(/<\//g, '\\u003c/');
 
     return ReportGeneratorV2.replaceStrings(REPORT_TEMPLATE, [
