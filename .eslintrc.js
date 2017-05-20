@@ -35,7 +35,6 @@ module.exports = {
       "argsIgnorePattern": "(^reject$|^_$)",
       "varsIgnorePattern": "(^_$)"
     }],
-    "quotes": [2, "single", {"allowTemplateLiterals": true}],
     "strict": [2, "global"],
     "prefer-const": 2,
     "curly": [2, "multi-line"],
