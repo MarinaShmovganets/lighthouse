@@ -49,7 +49,7 @@ class Connection {
    * @param {Object=} options
    * @return {!Promise}
    */
-  sendCommand(method, params = {}, options) {
+  sendCommand(method, params = {}, options = {}) {
     log.formatProtocol('method => browser', {method, params}, 'verbose');
     const id = ++this._lastCommandId;
     const message = JSON.stringify({id, method, params});
