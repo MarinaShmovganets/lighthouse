@@ -46,7 +46,7 @@ class WorksOffline extends Audit {
       const explanation = passed ? 'Your test URL' :
           'You may be failing this check because your test URL';
       debugString = `WARNING: ${explanation} (${artifacts.URL.initialUrl}) was redirected to ` +
-          `"${artifacts.URL.finalUrl}". Try testing the second URL directly to verify .`;
+          `"${artifacts.URL.finalUrl}". Try testing the second URL directly.`;
     }
 
     return {
