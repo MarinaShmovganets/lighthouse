@@ -49,16 +49,16 @@ describe('TracingProcessor lib', () => {
     assert.doesNotThrow(_ => {
       new TracingProcessor().init([
         {
-          "pid": 15256,
-          "tid": 1295,
-          "ts": 668545368880,
-          "ph": "e",
-          "id": "fake-event",
-          "cat": "blink.user_timing",
-          "name": "Zone:ZonePromise",
-          "dur": 64,
-          "tdur": 61,
-          "tts": 881373
+          'pid': 15256,
+          'tid': 1295,
+          'ts': 668545368880,
+          'ph': 'e',
+          'id': 'fake-event',
+          'cat': 'blink.user_timing',
+          'name': 'Zone:ZonePromise',
+          'dur': 64,
+          'tdur': 61,
+          'tts': 881373
         },
       ]);
     });
