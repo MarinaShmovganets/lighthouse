@@ -187,10 +187,10 @@ class Driver {
    * Call protocol methods
    * @param {!string} method
    * @param {!Object} params
-   * @param {Object=} options
+   * @param {{silent: boolean}=} cmdOpts
    * @return {!Promise}
    */
-  sendCommand(method, params, options) {
+  sendCommand(method, params, cmdOpts) {
     const domainCommand = /^(\w+)\.(enable|disable)$/.exec(method);
     if (domainCommand) {
       const enable = domainCommand[2] === 'enable';
@@ -199,7 +199,7 @@ class Driver {
       }
     }
 
-    return this._connection.sendCommand(method, params, options);
+    return this._connection.sendCommand(method, params, cmdOpts);
   }
 
   /**

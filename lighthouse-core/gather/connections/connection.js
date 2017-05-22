@@ -46,16 +46,16 @@ class Connection {
    * Call protocol methods
    * @param {!string} method
    * @param {!Object} params
-   * @param {Object=} options
+   * @param {{silent: boolean}=} cmdOpts
    * @return {!Promise}
    */
-  sendCommand(method, params = {}, options = {}) {
+  sendCommand(method, params = {}, cmdOpts = {}) {
     log.formatProtocol('method => browser', {method, params}, 'verbose');
     const id = ++this._lastCommandId;
     const message = JSON.stringify({id, method, params});
     this.sendRawMessage(message);
     return new Promise((resolve, reject) => {
-      this._callbacks.set(id, {resolve, reject, method, options});
+      this._callbacks.set(id, {resolve, reject, method, options: cmdOpts});
     });
   }
 
