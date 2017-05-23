@@ -138,7 +138,7 @@ NOTE: specifying an output path with multiple formats ignores your specified ext
 
 ## Viewing a report
 
-Lighthouse can produce a report as JSON, HTML, or stdout CLI output.
+Lighthouse can produce a report as JSON or HTML.
 
 HTML report:
 
@@ -159,7 +159,8 @@ right corner and signing in to GitHub.
 
 ## Develop
 
-Also see [Contributing](./CONTRIBUTING.md) for more information.
+Read on for the basics of hacking on Lighthouse. Also see [Contributing](./CONTRIBUTING.md)
+for detailed information.
 
 ### Setup
 
