@@ -41,51 +41,51 @@ class TTFBMetric extends Audit {
   static audit(artifacts) {
     const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
 
-    return artifacts.requestNetworkRecords(devtoolsLogs).then(
-      networkRecords => artifacts.requestCriticalRequests(networkRecords)
-        .then(criticalRequests => [
-          criticalRequests,
-          networkRecords
+    return artifacts.requestNetworkRecords(devtoolsLogs)
+      .then(
+        networkRecords => Promise.all([
+          networkRecords,
+          artifacts.requestCriticalRequests(networkRecords)
         ])
-    ).then(([criticalRequests, networkRecords]) => {
-      const results = [];
-      let displayValue;
+      ).then(([criticalRequests, networkRecords]) => {
+        const results = [];
+        let displayValue;
 
-      criticalRequests.forEach(request => {
-        const networkRecord = networkRecords.find(record => record._requestId === request.id);
+        criticalRequests.forEach(request => {
+          const networkRecord = networkRecords.find(record => record._requestId === request.id);
 
-        if (networkRecord && networkRecord._timing) {
-          const ttfb = TTFBMetric.caclulateTTFB(networkRecord);
-          results.push({
-            url: URL.getURLDisplayName(networkRecord._url),
-            ttfb: Util.formatMilliseconds(Math.round(ttfb), 1),
-            rawTTFB: ttfb
-          });
+          if (networkRecord && networkRecord._timing) {
+            const ttfb = TTFBMetric.caclulateTTFB(networkRecord);
+            results.push({
+              url: URL.getURLDisplayName(networkRecord._url),
+              ttfb: Util.formatMilliseconds(Math.round(ttfb), 1),
+              rawTTFB: ttfb
+            });
+          }
+        });
+
+        const recordsOverBudget = results.filter(row =>
+            row.rawTTFB > TTFB_THRESHOLD + TTFB_THRESHOLD_BUFFER
+        );
+
+        const details = Audit.makeV2TableDetails([
+          {key: 'url', itemType: 'url', text: 'URL'},
+          {key: 'ttfb', itemType: 'text', text: 'Time To First Byte (ms)'},
+        ], recordsOverBudget);
+
+        if (recordsOverBudget.length) {
+          const thresholdDisplay = Util.formatMiliseconds(TTFB_THRESHOLD, 1);
+          const recordsOverBudgetDisplay = Util.formatNumber(recordsOverBudget.length);
+          displayValue = `${recordsOverBudgetDisplay} critical request(s) went over` +
+            ` the ${thresholdDisplay} threshold`;
         }
+
+        return {
+          rawValue: recordsOverBudget.length === 0,
+          details,
+          displayValue,
+        };
       });
-
-      const recordsOverBudget = results.filter(row =>
-          row.rawTTFB > TTFB_THRESHOLD + TTFB_THRESHOLD_BUFFER
-      );
-
-      const details = Audit.makeV2TableDetails([
-        {key: 'url', itemType: 'url', text: 'URL'},
-        {key: 'ttfb', itemType: 'text', text: 'Time To First Byte (ms)'},
-      ], recordsOverBudget);
-
-      if (recordsOverBudget.length) {
-        const thresholdDisplay = Util.formatMiliseconds(TTFB_THRESHOLD, 1);
-        const recordsOverBudgetDisplay = Util.formatNumber(recordsOverBudget.length);
-        displayValue = `${recordsOverBudgetDisplay} critical request(s) went over` +
-          ` the ${thresholdDisplay} threshold`;
-      }
-
-      return {
-        rawValue: recordsOverBudget.length === 0,
-        details,
-        displayValue,
-      };
-    });
   }
 }
 
