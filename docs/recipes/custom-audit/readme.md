@@ -1,6 +1,6 @@
 # Basic Custom Audit Recipe
 
-> **Tip**: see [Lighthouse Architecture](../../../docs/architecture.md) information
+> **Tip**: see [Lighthouse Architecture](../../../docs/architecture.md) for information
 on terminology and architecture.
 
 ## What this example does
