@@ -60,24 +60,21 @@ function hideRunningSubpage() {
 }
 
 function buildReportErrorLink(err) {
-  let qsBody = '**Lighthouse Version**: ' + getLighthouseVersion() + '\n';
-  qsBody += '**Chrome Version**: ' + getChromeVersion() + '\n';
-
-  if (siteURL) {
-    qsBody += '**URL**: ' + siteURL + '\n';
-  }
-
-  qsBody += '**Error Message**: ' + err.message + '\n';
-  qsBody += '**Stack Trace**:\n ```' + err.stack + '```';
+  const issueBody = `
+**Lighthouse Version**: ${getLighthouseVersion()}
+**Chrome Version**: ${getChromeVersion()}
+**Initial URL**: ${siteURL}
+**Error Message**: ${err.message}
+**Stack Trace**:
+\`\`\`
+${err.stack}
+\`\`\`
+    `;
 
   const base = 'https://github.com/GoogleChrome/lighthouse/issues/new?';
-  let titleError = err.message;
-
-  if (titleError.length > MAX_ISSUE_ERROR_LENGTH) {
-    titleError = `${titleError.substring(0, MAX_ISSUE_ERROR_LENGTH - 3)}...`;
-  }
-  const title = encodeURI('title=Extension Error: ' + titleError);
-  const body = '&body=' + encodeURI(qsBody);
+  const errorTitle = err.message.substring(0, MAX_ISSUE_ERROR_LENGTH);
+  const title = encodeURI('title=Extension Error: ' + errorTitle);
+  const body = '&body=' + encodeURI(issueBody.trim());
 
   const reportErrorEl = document.createElement('a');
   reportErrorEl.className = 'button button--report-error';
