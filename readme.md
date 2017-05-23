@@ -1,6 +1,6 @@
 # Lighthouse  [![Build Status](https://travis-ci.org/GoogleChrome/lighthouse.svg?branch=master)](https://travis-ci.org/GoogleChrome/lighthouse) [![Coverage Status](https://coveralls.io/repos/github/GoogleChrome/lighthouse/badge.svg?branch=master)](https://coveralls.io/github/GoogleChrome/lighthouse?branch=master) [![NPM lighthouse package](https://img.shields.io/npm/v/lighthouse.svg)](https://npmjs.org/package/lighthouse)
 
-> [Lighthouse](https://developers.google.com/web/tools/lighthouse/) analyzes web apps and web pages, collecting modern performance metrics and insights on developer best practices.
+> Lighthouse analyzes web apps and web pages, collecting modern performance metrics and insights on developer best practices.
 
 _Lighthouse requires Chrome [stable or later](https://googlechrome.github.io/current-versions/)._
 
@@ -234,7 +234,7 @@ yarn compile-devtools
 * [webpack-lighthouse-plugin](https://github.com/addyosmani/webpack-lighthouse-plugin) - run Lighthouse from a Webpack build.
 * [lighthouse-mocha-example](https://github.com/justinribeiro/lighthouse-mocha-example) - gather performance metrics via Lighthouse and tests them in Mocha
 * [pwmetrics](https://github.com/paulirish/pwmetrics/) - gather performance metrics
-* [lighthouse-hue](https://github.com/ebidel/lighthouse-hue) - uses a Lighthouse score to set the color of Philips Hue lights
+* [lighthouse-hue](https://github.com/ebidel/lighthouse-hue) - set the color of Philips Hue lights based on a Lighthouse score
 * [lighthouse-batch](https://www.npmjs.com/package/lighthouse-batch) - run Lighthouse over a number of sites and generate a summary of their metrics/scores.
 * [lighthouse-cron](https://github.com/thearegee/lighthouse-cron) - Cron multiple batch Lighthouse audits and emit results for sending to remote server.
 
@@ -261,7 +261,7 @@ machine. Report results are never processed or beaconed to a remote server.
 
 ### How do I author custom audits to extend Lighthouse?
 
-> **Tip**: see [Lighthouse Architecture](./docs/architecture.md) more information
+> **Tip**: see [Lighthouse Architecture](./docs/architecture.md) for more information
 on terminology and architecture.
 
 Lighthouse can be extended to run custom audits and gatherers that you author.
