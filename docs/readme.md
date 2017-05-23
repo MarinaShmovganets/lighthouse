@@ -1,4 +1,6 @@
-Useful documentation, examples, and [recipes](./recipes/) to get you started.
+This directory contains useful documentation, examples (keep reading),
+and [recipes](./recipes/) to get you started. For an overview of Lighthouse's
+internals, see [Lighthouse Architecture](architecture.md).
 
 ## Using programmatically
 

@@ -28,7 +28,7 @@ As of Chrome 60 or later, Lighthouse is integrated directly into the Chrome DevT
 To use Lighthouse from within the DevTools, open the tools, select the Audits panel,
 and hit "Perform an Audit...".
 
-<img width="350px" alt="Lighthouse integration in CHrome DevTools" src="https://cloud.githubusercontent.com/assets/238208/26366636/ada298f8-3fa0-11e7-9da5-ede2c906d10c.png">
+<img width="350px" alt="Lighthouse integration in Chrome DevTools" src="https://cloud.githubusercontent.com/assets/238208/26366636/ada298f8-3fa0-11e7-9da5-ede2c906d10c.png">
 
 ### Chrome extension
 
@@ -191,8 +191,6 @@ for more info.
 
 ### Tests
 
-Some basic unit tests forked are in `/test` and run via mocha. eslint is also checked for style violations.
-
 ```sh
 # lint and test all files
 yarn test
@@ -201,9 +199,10 @@ yarn test
 #   Requires http://entrproject.org : brew install entr
 yarn watch
 
-## run linting and unit tests separately
+## run linting, unit, and smoke tests separately
 yarn lint
 yarn unit
+yarn smoke
 
 ## run closure compiler (on whitelisted files)
 yarn closure
