@@ -2,49 +2,41 @@
 
 > [Lighthouse](https://developers.google.com/web/tools/lighthouse/) analyzes web apps and web pages, collecting modern performance metrics and insights on developer best practices.
 
-## Installation
+_Lighthouse requires Chrome [stable or later](https://googlechrome.github.io/current-versions/)._
 
-_Lighthouse requires Chrome 56 or later._
+## Using Lighthouse in Chrome DevTools
 
-### Chrome extension
+Lighthouse is integrated directly into the Chrome Developer Tools, under the "Audits" panel.
 
-[Install from the Chrome Web Store](https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk).
+**Installation**: install [Chrome Canary](https://www.google.com/chrome/browser/canary.html).
 
-### Node CLI
-
-_Lighthouse requires Node 6 or later._
-
-```sh
-npm install -g lighthouse
-# yarn global add lighthouse
-```
-
-## Running Lighthouse
-
-### Chrome DevTools
-
-As of Chrome 60 or later, Lighthouse is integrated directly into the Chrome DevTools.
-
-To use Lighthouse from within the DevTools, open the tools, select the Audits panel,
-and hit "Perform an Audit...".
+**Run it**: open Chrome DevTools, select the Audits panel, and hit "Perform an Audit...".
 
 <img width="350px" alt="Lighthouse integration in Chrome DevTools" src="https://cloud.githubusercontent.com/assets/238208/26366636/ada298f8-3fa0-11e7-9da5-ede2c906d10c.png">
 
-### Chrome extension
+## Using the Chrome extension
 
-Check out the [quick-start guide](https://developers.google.com/web/tools/lighthouse/#extension).
+**Installation**: [install the extension](https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk) from the Chrome Web Store.
 
-### Node CLI
+**Run it**: follow the [extension quick-start guide](https://developers.google.com/web/tools/lighthouse/#extension).
 
-Kick off a run by passing `lighthouse` the URL to audit:
+## Using the Node CLI
+
+_Lighthouse requires Node 6 or later._
+
+**Installation**:
 
 ```sh
-lighthouse https://airhorner.com/
+npm install -g lighthouse
+# or use yarn:
+# yarn global add lighthouse
 ```
+
+**Run it**: `lighthouse https://airhorner.com/`
 
 By default, Lighthouse writes the report to an HTML file. You can control the output format by passing flags.
 
-#### CLI options
+### CLI options
 
 ```sh
 $ lighthouse --help
@@ -157,6 +149,31 @@ right corner and signing in to GitHub.
 
 > **Note**: shared reports are stashed as a secret Gist in GitHub, under your account.
 
+## Docs & Recipes
+
+Useful documentation, examples, and recipes to get you started.
+
+**Docs**
+
+- [Using Lighthouse programmatically](./docs/readme.md#using-programmatically)
+- [Testing a site with authentication](./docs/readme.md#testing-on-a-site-with-authentication)
+- [Testing on a mobile device](./docs/readme.md#testing-on-a-mobile-device)
+- [Lighthouse Architecture](./docs/architecture.md)
+
+**Recipes**
+
+- [gulp](docs/recipes/gulp) - helpful for CI integration
+- [Custom Audit example](./docs/recipes/custom-audit) - extend Lighthouse, run your own audits
+
+**Videos**
+
+The session from Google I/O 2017 covers architecture, writing custom audits,
+Github/Travis/CI integration, headless Chrome, and more:
+
+[![Lighthouse @ Google I/O](https://img.youtube.com/vi/NoRYn6gOtVo/0.jpg)](https://www.youtube.com/watch?v=NoRYn6gOtVo)
+
+_click to watch the video_
+
 ## Develop
 
 Read on for the basics of hacking on Lighthouse. Also see [Contributing](./CONTRIBUTING.md)
@@ -165,7 +182,7 @@ for detailed information.
 ### Setup
 
 ```sh
-# yarn should be installed, first
+# yarn should be installed first
 
 git clone https://github.com/GoogleChrome/lighthouse
 
@@ -173,9 +190,11 @@ cd lighthouse
 yarn install-all
 yarn build-all
 
-# The CLI is authored in TypeScript and requires compilation.
+# The CLI and Chrome Launcher are authored in TypeScript and require compilation.
 # If you need to make changes to the CLI, run the TS compiler in watch mode:
 # cd lighthouse-cli && yarn dev
+# similarly, run the TS compiler for the launcher:
+# cd chrome-launcher && yarn dev
 ```
 
 ### Run
@@ -210,38 +229,13 @@ yarn closure
 yarn compile-devtools
 ```
 
-## Docs & Recipes
-
-Useful documentation, examples, and recipes to get you started.
-
-**Docs**
-
-- [Using Lighthouse programmatically](./docs/readme.md#using-programmatically)
-- [Testing a site with authentication](./docs/readme.md#testing-on-a-site-with-authentication)
-- [Testing on a mobile device](./docs/readme.md#testing-on-a-mobile-device)
-- [Lighthouse Architecture](./docs/architecture.md)
-
-**Recipes**
-
-- [gulp](docs/recipes/gulp) - helpful for CI integration
-- [Custom Audit example](./docs/recipes/custom-audit) - extend Lighthouse, run your own audits
-
-**Videos**
-
-The session from Google I/O 2017 covers architecture, writing custom audits,
-Github/Travis/CI integration, headless Chrome, and more:
-
-[![Lighthouse @ Google I/O](https://img.youtube.com/vi/NoRYn6gOtVo/0.jpg)](https://www.youtube.com/watch?v=NoRYn6gOtVo)
-
-_click to watch the video_
-
 ## Related Projects
 
-* [webpack-lighthouse-plugin](https://github.com/addyosmani/webpack-lighthouse-plugin) -  run Lighthouse from a Webpack build.
-* [lighthouse-mocha-example](https://github.com/justinribeiro/lighthouse-mocha-example) -  gathers performance metrics via Lighthouse and tests them in Mocha
+* [webpack-lighthouse-plugin](https://github.com/addyosmani/webpack-lighthouse-plugin) - run Lighthouse from a Webpack build.
+* [lighthouse-mocha-example](https://github.com/justinribeiro/lighthouse-mocha-example) - gather performance metrics via Lighthouse and tests them in Mocha
 * [pwmetrics](https://github.com/paulirish/pwmetrics/) - gather performance metrics
-* [lighthouse-hue](https://github.com/ebidel/lighthouse-hue) - Lighthouse score setting the color of Philips Hue lights
-* [lighthouse-batch](https://www.npmjs.com/package/lighthouse-batch) - Run Lighthouse over a number of sites in sequence and generating a summary report including all of their scores.
+* [lighthouse-hue](https://github.com/ebidel/lighthouse-hue) - uses a Lighthouse score to set the color of Philips Hue lights
+* [lighthouse-batch](https://www.npmjs.com/package/lighthouse-batch) - run Lighthouse over a number of sites and generate a summary of their metrics/scores.
 * [lighthouse-cron](https://github.com/thearegee/lighthouse-cron) - Cron multiple batch Lighthouse audits and emit results for sending to remote server.
 
 ## FAQ

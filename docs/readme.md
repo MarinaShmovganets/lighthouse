@@ -23,8 +23,9 @@ function launchChromeAndRunLighthouse(url, flags, config = null) {
 const flags = {output: 'json'};
 
 // Usage:
-launchChromeAndRunLighthouse('https://example.com', flags)
-  .then(results => console.log(results));
+launchChromeAndRunLighthouse('https://example.com', flags).then(results => {
+  // Use results!
+});
 ```
 
 ### Turn on logging
@@ -44,10 +45,12 @@ launchChromeAndRunLighthouse('https://example.com', flags).then(...);
 
 ## Testing on a site with authentication
 
-Lighthouse adds `chrome-debug` to the CLI when you install it from npm.
+When installed globally via `npm i -g lighthouse` or `yarn global add lighthouse`,
+`chrome-debug` is added to your `PATH`. This binary launches a standalone Chrome
+instance with an open debugging port.
 
 - Run `chrome-debug`
-- open and login to your site
+- navigate to and log in to your site
 - in a separate terminal tab `lighthouse http://mysite.com`
 
 ## Testing on a mobile device
@@ -71,7 +74,9 @@ $ lighthouse --disable-device-emulation --disable-cpu-throttling https://mysite.
 
 ## Lighthouse as trace processor
 
-Lighthouse can be used to analyze trace and performance data collected from other tools (like WebPageTest and ChromeDriver). The `traces` and `devtoolsLogs` artifact items can be provided using a string for the absolute path on disk. The `devtoolsLogs` array is captured from the Network domain (a la ChromeDriver's [`enableNetwork` option](https://sites.google.com/a/chromium.org/chromedriver/capabilities#TOC-perfLoggingPrefs-object)) and reformatted slightly. As an example, here's a trace-only run that's reporting on user timings and critical request chains:
+Lighthouse can be used to analyze trace and performance data collected from other tools (like WebPageTest and ChromeDriver). The `traces` and `devtoolsLogs` artifact items can be provided using a string for the absolute path on disk. The `devtoolsLogs` array is captured from the `Network` and `Page` domains (a la ChromeDriver's [enableNetwork and enablePage options]((https://sites.google.com/a/chromium.org/chromedriver/capabilities#TOC-perfLoggingPrefs-object)).
+
+As an example, here's a trace-only run that's reporting on user timings and critical request chains:
 
 ### `config.json`
 
@@ -107,5 +112,3 @@ Lighthouse can be used to analyze trace and performance data collected from othe
 ```
 
 Then, run with: `lighthouse --config-path=config.json http://www.random.url`
-
-The traceviewer-based trace processor from [node-big-rig](https://github.com/GoogleChrome/node-big-rig/tree/master/lib) was forked into Lighthouse. Additionally, the [DevTools' Timeline Model](https://github.com/paulirish/devtools-timeline-model) is available as well. There may be advantages for using one model over another.
