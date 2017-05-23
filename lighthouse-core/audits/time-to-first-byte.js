@@ -42,12 +42,11 @@ class TTFBMetric extends Audit {
     const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
 
     return artifacts.requestNetworkRecords(devtoolsLogs)
-      .then(
-        networkRecords => Promise.all([
-          networkRecords,
-          artifacts.requestCriticalRequests(networkRecords)
-        ])
-      ).then(([criticalRequests, networkRecords]) => {
+      .then(networkRecords => Promise.all([
+        networkRecords,
+        artifacts.requestCriticalRequests(networkRecords)
+      ]))
+      .then(([criticalRequests, networkRecords]) => {
         const results = [];
         let displayValue;
 
