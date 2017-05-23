@@ -71,14 +71,15 @@ ${err.stack}
 \`\`\`
     `;
 
-  const base = 'https://github.com/GoogleChrome/lighthouse/issues/new?';
+  const url = new URL('https://github.com/GoogleChrome/lighthouse/issues/new');
+
   const errorTitle = err.message.substring(0, MAX_ISSUE_ERROR_LENGTH);
-  const title = encodeURI('title=Extension Error: ' + errorTitle);
-  const body = '&body=' + encodeURI(issueBody.trim());
+  url.searchParams.append('title', `Extension Error: ${errorTitle}`);
+  url.searchParams.append('body', issueBody.trim());
 
   const reportErrorEl = document.createElement('a');
   reportErrorEl.className = 'button button--report-error';
-  reportErrorEl.href = base + title + body;
+  reportErrorEl.href = url;
   reportErrorEl.textContent = 'Report Error';
   reportErrorEl.target = '_blank';
 
