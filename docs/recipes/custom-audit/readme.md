@@ -21,6 +21,9 @@ find the gatherer and audit files, when to run them, and how to incorporate thei
 output into the Lighthouse report. This example extends [Lighthouse's
 default configuration](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/config/default.js).
 
+**Note**: when extending default.js, passes with the same name are merged together,
+all other arrays will be concatenated, and primitive values will override the defaults.
+
 ## Run the configuration
 
 Run Lighthouse with the custom audit by using the `--config-path` flag with your configuration file:
