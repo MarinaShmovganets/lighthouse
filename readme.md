@@ -233,7 +233,7 @@ yarn compile-devtools
 
 * **[Calibre](https://calibreapp.com)** Calibre is a web performance monitoring tool running Lighthouse continuously or on-demand via an API. Test using emulated devices and connection speeds from a number of geographical locations. Set budgets and improve performance with actionable guidelines.
 
-* **[Web Page Test](https://www.webpagetest.org)** — WebPagetest is an open source project that is primarily being developed and supported by Google as part of our efforts to make the web faster.
+* **[Web Page Test](https://www.webpagetest.org)** — An [open source](https://github.com/WPO-Foundation/webpagetest) tool for measuring and analyzing the performance of web pages on real devices. Users can choose to produce a Lighthouse report alongside the analysis of WebPageTest results.
 
 ## Related Projects
 
