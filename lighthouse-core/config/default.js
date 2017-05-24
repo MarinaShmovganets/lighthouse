@@ -753,6 +753,14 @@ module.exports = {
         {"id": "deprecations", "weight": 1},
         {"id": "manifest-short-name-length", "weight": 1},
       ]
+    },
+    "fancy": {
+      "name": "Fancier stuff",
+      "description": "A list of newer features that you could be using in your app. These audits do not affect your score and are just suggestions.",
+      "audits": [
+        {"id": "no-datenow", "weight": 1},
+        {"id": "no-console-time", "weight": 1},
+      ]
     }
   }
 }

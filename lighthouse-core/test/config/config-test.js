@@ -518,7 +518,7 @@ describe('Config', () => {
     it('returns the IDs & names of the aggregations', () => {
       const categories = Config.getCategories(origConfig);
       assert.equal(Array.isArray(categories), true);
-      assert.equal(categories.length, 4, 'Found the correct number of categories');
+      assert.equal(categories.length, 5, 'Found the correct number of categories');
       const haveName = categories.every(agg => agg.name.length);
       const haveID = categories.every(agg => agg.id.length);
       assert.equal(haveName === haveID === true, true, 'they have IDs and names');
