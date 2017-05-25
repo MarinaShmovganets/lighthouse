@@ -154,7 +154,7 @@ function getEmulationDesc() {
   return {
     'deviceEmulation': 'Nexus 5X',
     'cpuThrottling': `${CPU_THROTTLE_METRICS.rate}x slowdown`,
-    'networkThrottling': `${latency}ms RTT, ${byteToMbit(downloadThroughput)}Mbps down, ` +
+    'networkThrottling': `${latency * 2}ms RTT, ${byteToMbit(downloadThroughput)}Mbps down, ` +
         `${byteToMbit(uploadThroughput)}Mbps up`
   };
 }
