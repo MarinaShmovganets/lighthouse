@@ -29,7 +29,7 @@ const DEFAULT_EXPECTATIONS_PATH = 'pwa-expectations';
 
 const PROTOCOL_TIMEOUT_EXIT_CODE = 67;
 const RETRIES = 3;
-const NUMERICAL_EXPECTATION_REGEXP = /(<|>)(\d+)/;
+const NUMERICAL_EXPECTATION_REGEXP = /^(<|>)(\d+)$/;
 
 
 /**
