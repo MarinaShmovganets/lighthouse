@@ -3,7 +3,6 @@ matrix:
   include:
     - node_js: "6.9.1"
     - node_js: "7"
-sudo: required
 dist: trusty
 env:
   global:
@@ -20,7 +19,6 @@ cache:
     - lighthouse-extension/node_modules
     - lighthouse-viewer/node_modules
 install:
-  - yarn
   - yarn install-all
 before_script:
   - gem install travis-artifacts
