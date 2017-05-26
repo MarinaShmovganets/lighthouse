@@ -49,14 +49,11 @@ class NoVulnerableLibrariesAudit extends Audit {
   static audit(artifacts) {
     const vulns = artifacts.JSVulnerableLibraries;
 
-    // Filter requests that are on the same host as the page and not over h2.
-    const finalVulns = vulns.map(record => {
-      return {
+    const finalVulns = vulns.map(record => ({
         severity: record.severity,
         library: record.name + '@' + record.version,
         url: 'https://snyk.io/vuln/' + record.id
-      };
-    });
+    }));
 
     let displayValue = '';
     if (vulns.length > 1) {
