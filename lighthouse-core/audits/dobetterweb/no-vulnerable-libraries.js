@@ -47,7 +47,8 @@ class NoVulnerableLibrariesAudit extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const vulns = artifacts.JSVulnerableLibraries;
+    const vulns = artifacts.JSVulnerableLibraries.vulnerabilities;
+    const libraries = artifacts.JSVulnerableLibraries.libraries;
 
     const finalVulns = vulns.map(record => ({
         severity: record.severity,
@@ -73,15 +74,8 @@ class NoVulnerableLibrariesAudit extends Audit {
       rawValue: vulns.length === 0,
       displayValue,
       extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.TABLE,
-        value: {
-          results: finalVulns,
-          tableHeadings: {
-            url: 'Details',
-            library: 'Library',
-            severity: 'Severity'
-          }
-        }
+        js_libs: libraries,
+        vulnerabilities: finalVulns
       },
       details,
     };
