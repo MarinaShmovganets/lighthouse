@@ -71,8 +71,12 @@ class JSVulnerableLibraries extends Gatherer {
       .then(returnedValue => {
         return new Promise((resolve, reject) => {
           // need to mimic package.json for now
-          const jsonBody = '{"name": "lighthouse", "version": "1.0",' +
-            '"dependencies":' + JSON.stringify(returnedValue) + '}';
+          const jsonBody = {
+            'name': 'lighthouse',
+            'version': '1.0',
+            'dependencies': returnedValue
+          };
+
           let vulnerabilities = [];
           request.post({
             headers: {
@@ -80,7 +84,7 @@ class JSVulnerableLibraries extends Gatherer {
               'Authorization': 'token 815130d4-940b-4252-b301-5ce28d734bf7'
             },
             url: 'https://snyk.io/api/vuln/npm',
-            body: jsonBody
+            body: JSON.stringify(jsonBody)
           }, function(err, response, body) {
             vulnerabilities = JSON.parse(body).vulnerabilities;
             resolve(vulnerabilities);
