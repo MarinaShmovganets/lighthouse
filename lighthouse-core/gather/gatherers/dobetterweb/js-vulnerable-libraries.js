@@ -71,7 +71,8 @@ class JSVulnerableLibraries extends Gatherer {
       .then(returnedValue => {
         return new Promise((resolve, reject) => {
           // need to mimic package.json for now
-          const jsonBody = '{"dependencies":' + JSON.stringify(returnedValue) + '}';
+          const jsonBody = '{"name": "lighthouse", "version": "1.0",' +
+            '"dependencies":' + JSON.stringify(returnedValue) + '}';
           let vulnerabilities = [];
           request.post({
             headers: {
