@@ -71,7 +71,7 @@ class NoVulnerableLibrariesAudit extends Audit {
 
     return {
       rawValue: vulns.length === 0,
-      displayValue: displayValue,
+      displayValue,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.TABLE,
         value: {
