@@ -73,6 +73,10 @@ a {
   color: #0c50c7;
 }
 
+summary:active {
+  outline: none;
+}
+
 summary {
   cursor: pointer;
 }
@@ -691,7 +695,12 @@ span.lh-node:hover {
 }
 
 .lh-passed-audits[open] summary.lh-passed-audits-summary {
-  margin-bottom: calc(var(--default-padding) * 2);
+  outline: none;
+  background: var(--pass-color);
+  margin-right: 0;
+  padding: 6px 0px 6px 4px;
+  color: white;
+  border-radius: 2px;
 }
 
 summary.lh-passed-audits-summary {
