@@ -26,6 +26,7 @@ module.exports = {
       "dobetterweb/response-compression",
       "dobetterweb/tags-blocking-first-paint",
       "dobetterweb/websql",
+      "dobetterweb/js-vulnerable-libraries",
     ]
   },
   {
@@ -132,6 +133,7 @@ module.exports = {
     "dobetterweb/no-websql",
     "dobetterweb/notification-on-start",
     "dobetterweb/script-blocking-first-paint",
+    "dobetterweb/no-vulnerable-libraries",
     "dobetterweb/uses-http2",
     "dobetterweb/uses-passive-event-listeners"
   ],
@@ -327,6 +329,10 @@ module.exports = {
       "name": "Other",
       "audits": {
         "manifest-short-name-length": {
+          "expectedValue": true,
+          "weight": 1
+        },
+        "no-vulnerable-libraries": {
           "expectedValue": true,
           "weight": 1
         }
@@ -749,6 +755,7 @@ module.exports = {
         {"id": "no-document-write", "weight": 1},
         {"id": "external-anchors-use-rel-noopener", "weight": 1},
         {"id": "geolocation-on-start", "weight": 1},
+        {"id": "no-vulnerable-libraries", "weight": 1},
         {"id": "notification-on-start", "weight": 1},
         {"id": "deprecations", "weight": 1},
         {"id": "manifest-short-name-length", "weight": 1},
