@@ -17,7 +17,8 @@
 
 /* eslint-env mocha */
 
-const PasswordInputsWithPreventedPasteGatherer = require('../../../../gather/gatherers/dobetterweb/password-inputs-with-prevented-paste');
+const PasswordInputsWithPreventedPasteGatherer =
+  require('../../../../gather/gatherers/dobetterweb/password-inputs-with-prevented-paste');
 const assert = require('assert');
 let gatherer;
 
@@ -27,17 +28,21 @@ describe('ViewportDimensions gatherer', () => {
   });
 
   it('returns an artifact', () => {
-    return gatherer.afterPass({
-      driver: {
-        evaluateAsync() {
-          return Promise.resolve([{
-            snippet: '<input type="password" onpaste="return false"/>',
-          }]);
+    return gatherer
+      .afterPass({
+        driver: {
+          evaluateAsync() {
+            return Promise.resolve([
+              {
+                snippet: '<input type="password" onpaste="return false"/>'
+              }
+            ]);
+          }
         }
-      }
-    }).then(artifact => {
-      assert.ok(typeof artifact === 'object');
-      assert.ok(artifact[0].snippet.length > 0);
-    });
+      })
+      .then(artifact => {
+        assert.ok(typeof artifact === 'object');
+        assert.ok(artifact[0].snippet.length > 0);
+      });
   });
 });
