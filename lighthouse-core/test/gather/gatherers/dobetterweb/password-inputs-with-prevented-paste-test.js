@@ -22,7 +22,7 @@ const PasswordInputsWithPreventedPasteGatherer =
 const assert = require('assert');
 let gatherer;
 
-describe('ViewportDimensions gatherer', () => {
+describe('PasswordInputsWithPreventedPaste gatherer', () => {
   beforeEach(() => {
     gatherer = new PasswordInputsWithPreventedPasteGatherer();
   });
