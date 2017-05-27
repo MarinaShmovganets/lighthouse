@@ -77,9 +77,9 @@ class DetailsRenderer {
     let displayedURL;
     let title;
     try {
-      displayedURL = Util.parseURL(text.text).file;
+      displayedURL = Util.parseURL(url).file;
       title = url;
-    } catch (e) {
+    } catch (/** @type {!Error} */ e) {
       if (!(e instanceof TypeError)) {
         throw e;
       }
