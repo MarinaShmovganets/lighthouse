@@ -72,10 +72,30 @@ class DetailsRenderer {
    * @return {!Element}
    */
   _renderURL(text) {
-    const parsedURL = Util.parseURL(text.text);
-    const element = this._renderText({text: parsedURL.file});
+    const url = text.text || '';
+
+    let displayedURL;
+    let title;
+    try {
+      displayedURL = Util.parseURL(text.text).file;
+      title = url;
+    } catch (e) {
+      if (!(e instanceof TypeError)) {
+        throw e;
+      }
+      displayedURL = url;
+    }
+
+    const element = this._renderText({
+      type: 'url',
+      text: displayedURL
+    });
     element.classList.add('lh-text__url');
-    element.title = text.text;
+
+    if (title) {
+      element.title = url;
+    }
+
     return element;
   }
 
