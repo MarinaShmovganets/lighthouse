@@ -41,6 +41,9 @@ class PasswordInputsCanBePastedIntoAudit extends Audit {
     const passwordInputsWithPreventedPaste = artifacts.PasswordInputsWithPreventedPaste;
     return {
       rawValue: passwordInputsWithPreventedPaste.length === 0,
+      extendedInfo: {
+        value: passwordInputsWithPreventedPaste
+      }
     };
   }
 }
