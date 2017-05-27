@@ -73,10 +73,6 @@ a {
   color: #0c50c7;
 }
 
-summary:active {
-  outline: none;
-}
-
 summary {
   cursor: pointer;
 }
