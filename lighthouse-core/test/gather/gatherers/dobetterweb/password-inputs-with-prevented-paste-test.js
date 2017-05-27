@@ -31,15 +31,13 @@ describe('ViewportDimensions gatherer', () => {
       driver: {
         evaluateAsync() {
           return Promise.resolve([{
-            id: 'id',
-            name: 'name'
+            snippet: '<input type="password" onpaste="return false"/>',
           }]);
         }
       }
     }).then(artifact => {
       assert.ok(typeof artifact === 'object');
-      assert.ok(artifact[0].id === 'id');
-      assert.ok(artifact[0].name === 'name');
+      assert.ok(artifact[0].snippet.length > 0);
     });
   });
 });

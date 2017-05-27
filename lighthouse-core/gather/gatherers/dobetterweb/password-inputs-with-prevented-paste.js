@@ -23,6 +23,17 @@ const Gatherer = require('../gatherer');
 // This is run in the page, not Lighthouse itself.
 /* istanbul ignore next */
 function findPasswordInputsWithPreventedPaste() {
+  /**
+   * Gets the opening tag text of the given node.
+   * @param {!Node}
+   * @return {string}
+   */
+  function getOuterHTMLSnippet(node) {
+    const reOpeningTag = /^.*?\>/;
+    const match = node.outerHTML.match(reOpeningTag);
+    return match && match[0];
+  }
+
   return Array.from(document.querySelectorAll('input[type="password"]'))
     .filter(passwordInput =>
       !passwordInput.dispatchEvent(
@@ -30,8 +41,7 @@ function findPasswordInputsWithPreventedPaste() {
       )
     )
     .map(passwordInput => ({
-      name: passwordInput.name,
-      id: passwordInput.id
+      snippet: getOuterHTMLSnippet(passwordInput)
     }));
 }
 
