@@ -74,6 +74,8 @@ describe('Manifest gatherer', () => {
       .then(
         (manifest) => {
           assert.strictEqual(manifest.raw, Buffer.from(manifestWithBOM).slice(3).toString());
+          assert.strictEqual(manifest.value.name.value, 'Example App');
+          assert.strictEqual(manifest.value.short_name.value, 'ExApp');
         },
         _ => assert.ok(false)
       )
@@ -83,6 +85,8 @@ describe('Manifest gatherer', () => {
       .then(
         (manifest) => {
           assert.strictEqual(manifest.raw, manifestWithoutBOM);
+          assert.strictEqual(manifest.value.name.value, 'Example App');
+          assert.strictEqual(manifest.value.short_name.value, 'ExApp');
         },
         _ => assert.ok(false)
       )
