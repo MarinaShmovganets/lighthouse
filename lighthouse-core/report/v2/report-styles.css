@@ -564,6 +564,14 @@ span.lh-node:hover {
   display: none;
 }
 
+/* moz-special audit icons */
+summary.lh-audit-group__summary::-moz-list-bullet,
+summary.lh-expandable-details__summary::-moz-list-bullet >
+details.lh-audit-group details.lh-expandable-details details.lh-audit-group--manual {
+  display: list-item;
+  background: var(--manual-color) !important;
+}
+
 .lh-audit-group--manual .lh-audit-group__summary::-webkit-details-marker {
   display: initial;
   background: var(--manual-color) !important;
@@ -699,8 +707,13 @@ summary.lh-passed-audits-summary {
   margin-left: var(--default-padding);
   margin-bottom: 0;
   font-size: 15px;
-  display: flex;
+  display: list-item;
   align-items: center;
+}
+
+summary.lh-passed-audits-summary::-moz-list-bullet,
+.lh-audit-group--manual > summary::-moz-list-bullet {
+  color: var(--pass-color);
 }
 
 summary.lh-passed-audits-summary::-webkit-details-marker,
@@ -709,6 +722,10 @@ summary.lh-passed-audits-summary::-webkit-details-marker,
   color: white;
   padding: 3px 3px 3px 6px;
   border-radius: 2px;
+}
+.lh-passed-audits[open] summary.lh-passed-audits-summary::-moz-list-bullet,
+.lh-audit-group--manual[open] > summary::-moz-list-bullet {
+  padding: 3px 5px 3px 4px;
 }
 
 .lh-passed-audits[open] summary.lh-passed-audits-summary::-webkit-details-marker,
