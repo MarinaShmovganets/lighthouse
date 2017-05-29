@@ -23,10 +23,10 @@ module.exports = {
       "dobetterweb/appcache",
       "dobetterweb/domstats",
       "dobetterweb/optimized-images",
+      "dobetterweb/password-inputs-with-prevented-paste",
       "dobetterweb/response-compression",
       "dobetterweb/tags-blocking-first-paint",
-      "dobetterweb/websql",
-      "dobetterweb/password-inputs-with-prevented-paste",
+      "dobetterweb/websql"
     ]
   },
   {
@@ -132,10 +132,10 @@ module.exports = {
     // "dobetterweb/no-old-flexbox",
     "dobetterweb/no-websql",
     "dobetterweb/notification-on-start",
+    "dobetterweb/password-inputs-can-be-pasted-into",
     "dobetterweb/script-blocking-first-paint",
     "dobetterweb/uses-http2",
-    "dobetterweb/uses-passive-event-listeners",
-    "dobetterweb/password-inputs-can-be-pasted-into"
+    "dobetterweb/uses-passive-event-listeners"
   ],
 
   "aggregations": [{
