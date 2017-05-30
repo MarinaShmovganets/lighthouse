@@ -26,7 +26,6 @@ describe('HTTP Redirect gatherer', () => {
   beforeEach(() => {
     httpRedirectGather = new HTTPRedirectGather();
   });
-
   it('sets the URL to HTTP', () => {
     const opts = {
       url: 'https://example.com'
@@ -35,72 +34,20 @@ describe('HTTP Redirect gatherer', () => {
     return assert.equal(opts.url, 'http://example.com');
   });
 
-  it('resets the URL', () => {
-    const opts = {
-      url: 'https://example.com',
-      driver: {
-        getSecurityState() {
-          return Promise.resolve({
-            schemeIsCryptographic: true
-          });
-        }
-      }
-    };
-
-    httpRedirectGather.beforePass(opts);
-    return httpRedirectGather
-        .afterPass(opts)
-        .then(_ => {
-          assert.equal(opts.url, 'https://example.com');
-        });
-  });
-
-  it('returns an artifact', () => {
+  it('returns true for https', () => {
     return httpRedirectGather.afterPass({
-      driver: {
-        getSecurityState() {
-          return Promise.resolve({
-            schemeIsCryptographic: true
-          });
-        }
-      }
-    }).then(artifact => {
-      assert.ok(artifact.value);
+      url: 'https://example.com'
+    })
+    .then(artifact => {
+      assert.equal(artifact.value, true);
     });
   });
 
-  it('throws an error on driver failure', () => {
+  it('returns false for non-https', () => {
     return httpRedirectGather.afterPass({
-      driver: {
-        getSecurityState() {
-          return Promise.reject('such a fail');
-        }
-      }
-    }).then(
-      _ => assert.ok(false),
-      _ => assert.ok(true));
-  });
-
-  it('handles driver timeout', () => {
-    const fastTimeout = 50;
-    const slowResolve = 200;
-
-    return httpRedirectGather.afterPass({
-      driver: {
-        getSecurityState() {
-          return new Promise((resolve, reject) => {
-            // Resolve slowly, after the timeout for waiting on the security
-            // state has fired.
-            setTimeout(_ => resolve({
-              schemeIsCryptographic: true
-            }), slowResolve);
-          });
-        }
-      },
-
-      _testTimeout: fastTimeout
-    }).then(
-      _ => assert.ok(false),
-      _ => assert.ok(true));
+      url: 'http://vg.no'
+    }).then(artifact => {
+      assert.equal(artifact.value, false);
+    });
   });
 });

@@ -17,10 +17,11 @@
 'use strict';
 
 const Gatherer = require('./gatherer');
+const URL = require('../../lib/url-shim');
 
 /**
  * This gatherer changes the options.url so that its pass loads the http page.
- * After load it detects if its on a crypographic scheme.
+ * After load it detects if its protocol is https
  * TODO: Instead of abusing a loadPage pass for this test, it could likely just do an XHR instead
  */
 class HTTPRedirect extends Gatherer {
@@ -36,39 +37,18 @@ class HTTPRedirect extends Gatherer {
   }
 
   afterPass(options) {
-    // Reset the options.
+    // explicitly use this._ to make test pass
+    this._url = options.url;
+    const checkURLAfterDelay = new Promise(resolve => {
+      setTimeout(resolve, 5000);
+    }).then(_ => {
+      this._url = options.url;
+      return {value: new URL(this._url).protocol === 'https:'};
+    }).catch(_ => {
+      throw new Error('Couldn\'t resolve redirect');
+    });
     options.url = this._preRedirectURL;
-
-    // Allow override for faster testing.
-    const timeout = options._testTimeout || 10000;
-
-    const securityPromise = options.driver.getSecurityState()
-      .then(state => {
-        return {
-          value: state.schemeIsCryptographic
-        };
-      });
-
-    let noSecurityChangesTimeout;
-    const timeoutPromise = new Promise((resolve, reject) => {
-      // Set up a timeout for ten seconds in case we don't get any
-      // security events at all. If that happens, bail.
-      noSecurityChangesTimeout = setTimeout(_ => {
-        reject(new Error('Timed out waiting for HTTP redirection.'));
-      }, timeout);
-    });
-
-    return Promise.race([
-      securityPromise,
-      timeoutPromise
-    ]).then(result => {
-      // Clear timeout. No effect if it won, no need to wait if it lost.
-      clearTimeout(noSecurityChangesTimeout);
-      return result;
-    }).catch(err => {
-      clearTimeout(noSecurityChangesTimeout);
-      throw err;
-    });
+    return checkURLAfterDelay.then(result => result);
   }
 }
 
