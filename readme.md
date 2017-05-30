@@ -1,4 +1,4 @@
-# Lighthouse  [![Build Status](https://travis-ci.org/GoogleChrome/lighthouse.svg?branch=master)](https://travis-ci.org/GoogleChrome/lighthouse) [![Coverage Status](https://coveralls.io/repos/github/GoogleChrome/lighthouse/badge.svg?branch=master)](https://coveralls.io/github/GoogleChrome/lighthouse?branch=master) [![NPM lighthouse package](https://img.shields.io/npm/v/lighthouse.svg)](https://npmjs.org/package/lighthouse)
+# Lighthouse  [![Linux Build Status](https://img.shields.io/travis/GoogleChrome/lighthouse/master.svg)](https://travis-ci.org/GoogleChrome/lighthouse) [![Windows Build Status](https://img.shields.io/appveyor/ci/paulirish/lighthouse/master.svg)](https://ci.appveyor.com/project/paulirish/lighthouse/branch/master) [![Coverage Status](https://img.shields.io/coveralls/GoogleChrome/lighthouse/master.svg)](https://coveralls.io/github/GoogleChrome/lighthouse?branch=master) [![NPM lighthouse package](https://img.shields.io/npm/v/lighthouse.svg)](https://npmjs.org/package/lighthouse)
 
 > Lighthouse analyzes web apps and web pages, collecting modern performance metrics and insights on developer best practices.
 
@@ -229,14 +229,20 @@ yarn closure
 yarn compile-devtools
 ```
 
+## Lighthouse Integrations
+
+* **[Calibre](https://calibreapp.com)** - Calibre is a web performance monitoring tool running Lighthouse continuously or on-demand via an API. Test using emulated devices and connection speeds from a number of geographical locations. Set budgets and improve performance with actionable guidelines.
+
+* **[Web Page Test](https://www.webpagetest.org)** — An [open source](https://github.com/WPO-Foundation/webpagetest) tool for measuring and analyzing the performance of web pages on real devices. Users can choose to produce a Lighthouse report alongside the analysis of WebPageTest results.
+
 ## Related Projects
 
-* [webpack-lighthouse-plugin](https://github.com/addyosmani/webpack-lighthouse-plugin) - run Lighthouse from a Webpack build.
-* [lighthouse-mocha-example](https://github.com/justinribeiro/lighthouse-mocha-example) - gather performance metrics via Lighthouse and tests them in Mocha
-* [pwmetrics](https://github.com/paulirish/pwmetrics/) - gather performance metrics
-* [lighthouse-hue](https://github.com/ebidel/lighthouse-hue) - set the color of Philips Hue lights based on a Lighthouse score
-* [lighthouse-batch](https://www.npmjs.com/package/lighthouse-batch) - run Lighthouse over a number of sites and generate a summary of their metrics/scores.
-* [lighthouse-cron](https://github.com/thearegee/lighthouse-cron) - Cron multiple batch Lighthouse audits and emit results for sending to remote server.
+* **[webpack-lighthouse-plugin](https://github.com/addyosmani/webpack-lighthouse-plugin)** - run Lighthouse from a Webpack build.
+* **[lighthouse-mocha-example](https://github.com/justinribeiro/lighthouse-mocha-example)** - gather performance metrics via Lighthouse and tests them in Mocha
+* **[pwmetrics](https://github.com/paulirish/pwmetrics/)** - gather performance metrics
+* **[lighthouse-hue](https://github.com/ebidel/lighthouse-hue)** - set the color of Philips Hue lights based on a Lighthouse score
+* **[lighthouse-batch](https://www.npmjs.com/package/lighthouse-batch)** - run Lighthouse over a number of sites and generate a summary of their metrics/scores.
+* **[lighthouse-cron](https://github.com/thearegee/lighthouse-cron)** - Cron multiple batch Lighthouse audits and emit results for sending to remote server.
 
 ## FAQ
 
