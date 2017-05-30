@@ -22,6 +22,7 @@ const _PROTOCOL_TIMEOUT_EXIT_CODE = 67;
 const assetSaver = require('../lighthouse-core/lib/asset-saver.js');
 const getFilenamePrefix = require('../lighthouse-core/lib/file-namer.js').getFilenamePrefix;
 import {launch, LaunchedChrome} from '../chrome-launcher/chrome-launcher';
+import {defaults} from '../chrome-launcher/utils';
 import * as Commands from './commands/commands';
 import {getFlags, Flags} from './cli-flags';
 const lighthouse = require('../lighthouse-core');
@@ -45,7 +46,7 @@ interface LighthouseError extends Error {
 const cliFlags = getFlags();
 
 if (cliFlags.remoteDevice) {
-  cliFlags.port = 9222;
+  cliFlags.port = defaults(cliFlags.port, 9222);
   cliFlags.disableNetworkThrottling = true;
   cliFlags.disableCpuThrottling = true;
   cliFlags.disableDeviceEmulation = true;
