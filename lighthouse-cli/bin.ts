@@ -47,9 +47,10 @@ const cliFlags = getFlags();
 
 if (cliFlags.remoteDevice) {
   cliFlags.port = defaults(cliFlags.port, 9222);
-  cliFlags.disableNetworkThrottling = true;
-  cliFlags.disableCpuThrottling = true;
-  cliFlags.disableDeviceEmulation = true;
+  cliFlags.disableNetworkThrottling = defaults(cliFlags.disableNetworkThrottling, true);
+  console.log(cliFlags.disableNetworkThrottling)
+  cliFlags.disableCpuThrottling = defaults(cliFlags.disableCpuThrottling, true);
+  cliFlags.disableDeviceEmulation = defaults(cliFlags.disableDeviceEmulation, true);
 }
 
 // Process terminating command
