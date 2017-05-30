@@ -73,7 +73,8 @@ export function getFlags() {
         'disable-device-emulation': 'Disable Nexus 5X emulation',
         'disable-cpu-throttling': 'Disable CPU throttling',
         'disable-network-throttling': 'Disable network throttling',
-        'remote-device': 'Enable remote device emulation',
+        'remote-device':
+            'Disables CPU/Network throttling, emulation, and defaults the protocol port to 9222',
         'save-assets': 'Save the trace contents & screenshots to disk',
         'save-artifacts': 'Save all gathered artifacts to disk',
         'list-all-audits': 'Prints a list of all available audits and exits',
