@@ -44,6 +44,13 @@ interface LighthouseError extends Error {
 
 const cliFlags = getFlags();
 
+if (cliFlags.remoteDevice) {
+  cliFlags.port = 9222;
+  cliFlags.disableNetworkThrottling = true;
+  cliFlags.disableCpuThrottling = true;
+  cliFlags.disableDeviceEmulation = true;
+}
+
 // Process terminating command
 if (cliFlags.listAllAudits) {
   Commands.ListAudits();
