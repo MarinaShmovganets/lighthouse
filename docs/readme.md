@@ -51,7 +51,7 @@ instance with an open debugging port.
 
 - Run `chrome-debug`
 - navigate to and log in to your site
-- in a separate terminal tab `lighthouse http://mysite.com`
+- in a separate terminal tab `lighthouse http://mysite.com --port port-number` with the debugging port number your Chrome instance is running on
 
 ## Testing on a mobile device
 
