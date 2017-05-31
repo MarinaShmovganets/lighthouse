@@ -18,6 +18,7 @@
 
 const Audit = require('./audit');
 const Formatter = require('../report/formatter');
+const URL = require('../lib/url-shim');
 
 const SECURE_SCHEMES = ['data', 'https', 'wss', 'blob', 'chrome', 'chrome-extension'];
 const SECURE_DOMAINS = ['localhost', '127.0.0.1'];
@@ -57,7 +58,7 @@ class HTTPS extends Audit {
     return artifacts.requestNetworkRecords(devtoolsLogs).then(networkRecords => {
       const insecureRecords = networkRecords
           .filter(record => !HTTPS.isSecureRecord(record))
-          .map(record => ({url: record.url}));
+          .map(record => ({url: URL.elideDataURI(record.url)}));
 
       let displayValue = '';
       if (insecureRecords.length > 1) {

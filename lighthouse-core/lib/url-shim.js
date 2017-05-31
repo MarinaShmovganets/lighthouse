@@ -97,6 +97,7 @@ URL.getURLDisplayName = function getURLDisplayName(url, options) {
 };
 
 /**
+ * Limits data URIs to 100 characters, returns all other strings untouched.
  * @param {string} url
  * @return {string}
  */
