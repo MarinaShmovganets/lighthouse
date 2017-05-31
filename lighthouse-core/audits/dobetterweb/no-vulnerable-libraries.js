@@ -34,7 +34,7 @@ class NoVulnerableLibrariesAudit extends Audit {
     return {
       category: 'Security',
       name: 'no-vulnerable-libraries',
-      description: 'Avoids using any front-end JavaScript libraries'
+      description: 'Avoids front-end JavaScript libraries'
         + ' with known security vulnerabilities',
       helpText: 'Sites should take care to ensure that they are not using any' +
         ' front-end JavaScript libraries that contain known security vulnerabilities.',
