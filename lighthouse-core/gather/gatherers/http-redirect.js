@@ -37,15 +37,8 @@ class HTTPRedirect extends Gatherer {
   }
 
   afterPass(options) {
-    // explicitly use this._ to make test pass
-    this._url = options.url;
     const checkURLAfterDelay = new Promise(resolve => {
-      setTimeout(resolve, 5000);
-    }).then(_ => {
-      this._url = options.url;
-      return {value: new URL(this._url).protocol === 'https:'};
-    }).catch(_ => {
-      throw new Error('Couldn\'t resolve redirect');
+      resolve({value: new URL(options.url).protocol === 'https:'});
     });
     options.url = this._preRedirectURL;
     return checkURLAfterDelay.then(result => result);
