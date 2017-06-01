@@ -38,6 +38,7 @@ class RedirectsHTTP extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
+    .
     return {
       rawValue: artifacts.HTTPRedirect.value,
       debugString: artifacts.HTTPRedirect.debugString
