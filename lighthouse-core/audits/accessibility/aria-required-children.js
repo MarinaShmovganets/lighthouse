@@ -34,6 +34,7 @@ class AriaRequiredChildren extends AxeAudit {
       category: 'Accessibility',
       name: 'aria-required-children',
       description: '`[role]`s that require child `[role]`s contain them.',
+      fallbackDescription: '`[role]`s that require child `[role]`s does not contain them.',
       helpText: 'Some ARIA parent roles must contain specific child roles to perform ' +
           'their intended accessibility functions. ' +
           '[Learn more](https://dequeuniversity.com/rules/axe/1.1/aria-required-children).',

@@ -34,6 +34,7 @@ class GeolocationOnStart extends ViolationAudit {
       category: 'UX',
       name: 'geolocation-on-start',
       description: 'Avoids requesting the geolocation permission on page load',
+      fallbackDescription: 'Does not avoid requesting the geolocation permission on page load',
       helpText: 'Users are mistrustful of or confused by sites that request their ' +
           'location without context. Consider tying the request to user gestures instead. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/geolocation-on-load).',

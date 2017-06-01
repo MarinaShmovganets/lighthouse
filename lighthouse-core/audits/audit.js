@@ -136,6 +136,11 @@ class Audit {
     if (displayValue === score) {
       displayValue = '';
     }
+    let auditDescription = audit.meta.description;
+
+    if((result.error || result.rawValue === false) && audit.meta.fallbackDescription) {
+      auditDescription = audit.meta.fallbackDescription;
+    }
 
     return {
       score,
@@ -150,7 +155,7 @@ class Audit {
       manual: audit.meta.manual,
       name: audit.meta.name,
       category: audit.meta.category,
-      description: audit.meta.description,
+      description: auditDescription,
       helpText: audit.meta.helpText,
       details: result.details,
     };
