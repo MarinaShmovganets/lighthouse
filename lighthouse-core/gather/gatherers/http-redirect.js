@@ -38,7 +38,7 @@ class HTTPRedirect extends Gatherer {
   afterPass(options) {
     let isRedirect = false;
 
-    if(options.driver._httpsArr[0].scheme === 'https') {
+    if(options.driver._httpsArr.length !== 0 && options.driver._httpsArr[0].scheme === 'https') {
       isRedirect = true;
     }
     options.url = this._preRedirectURL;
