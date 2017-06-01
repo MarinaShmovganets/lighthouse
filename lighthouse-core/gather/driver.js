@@ -64,6 +64,20 @@ class Driver {
      */
     this._monitoredUrl = null;
 
+    /**
+     * Used for monitoring initial route before httpsRedirect at
+     * _beginNetworkStatusMonitoring
+     * @private {Array}
+     */
+    this._httpsArr = [];
+
+    /**
+     * Used for monitoring url redirects to https
+     * at _beginNetworkStatusMonitoring.
+     * @private {Array}
+     */
+    this._httpArr = [];
+
     connection.on('notification', event => {
       this._devtoolsLog.record(event);
       if (this._networkStatusMonitor) {
@@ -532,6 +546,13 @@ class Driver {
     // Update startingUrl if it's ever redirected.
     this._monitoredUrl = startingUrl;
     this._networkStatusMonitor.on('requestloaded', redirectRequest => {
+      // register URLs to later validate against redirect
+      if(redirectRequest.parsedURL.scheme === 'https') {
+        this._httpsArr.push(redirectRequest.parsedURL);
+      }
+      if(redirectRequest.parsedURL.scheme === 'http') {
+        this._httpArr.push(redirectRequest.parsedURL);
+      }
       // Ignore if this is not a redirected request.
       if (!redirectRequest.redirectSource) {
         return;

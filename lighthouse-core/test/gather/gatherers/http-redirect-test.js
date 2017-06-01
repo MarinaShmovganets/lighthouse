@@ -33,21 +33,4 @@ describe('HTTP Redirect gatherer', () => {
     httpRedirectGather.beforePass(opts);
     return assert.equal(opts.url, 'http://example.com');
   });
-
-  it('returns true for https', () => {
-    return httpRedirectGather.afterPass({
-      url: 'https://example.com'
-    })
-    .then(artifact => {
-      assert.equal(artifact.value, true);
-    });
-  });
-
-  it('returns false for non-https', () => {
-    return httpRedirectGather.afterPass({
-      url: 'http://vg.no'
-    }).then(artifact => {
-      assert.equal(artifact.value, false);
-    });
-  });
 });
