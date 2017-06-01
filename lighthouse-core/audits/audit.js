@@ -17,6 +17,7 @@
 'use strict';
 
 const DEFAULT_PASS = 'defaultPass';
+const Util = require('../report/v2/renderer/util');
 
 class Audit {
   /**
@@ -141,7 +142,13 @@ class Audit {
     if((result.error || result.rawValue === false) && audit.meta.fallbackDescription) {
       auditDescription = audit.meta.fallbackDescription;
     }
-
+    if(typeof result.rawValue !== 'boolean' && audit.meta.scoringMode === 'numeric' && audit.meta.fallbackDescription) {
+      let fallbackAuditDescriptionScore = Util.calculateRating(score)
+      // TODO: Here we could also add a average description if needed
+      if(fallbackAuditDescriptionScore === 'fail') {
+        auditDescription = audit.meta.fallbackDescription;
+      }
+    }
     return {
       score,
       displayValue: `${displayValue}`,
