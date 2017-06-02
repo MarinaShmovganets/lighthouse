@@ -17,6 +17,7 @@
 'use strict';
 
 const Gatherer = require('./gatherer');
+const URL = require('../../lib/url-shim');
 
 /**
  * This gatherer changes the options.url so that its pass loads the http page.
@@ -39,9 +40,13 @@ class HTTPRedirect extends Gatherer {
     let isRedirect = false;
 
     if(options.driver._httpsArr.length !== 0) {
-      const httpsExpectURL = options.url.replace(/^http/, 'https');
       options.driver._httpsArr.forEach( (httpsUrl) => {
-        if(httpsUrl.url === httpsExpectURL) {
+        if(new URL(options.url).protocol === 'http:') {
+          const RedirectURL = options.url.replace(/^http/, 'https');
+          if(RedirectURL === httpsUrl.url) {
+            isRedirect = true;
+          }
+        } else if(httpsUrl.url === options.url) {
           isRedirect = true;
         } else if(httpsUrl.path === '/') {
           isRedirect = true;

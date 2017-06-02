@@ -33,4 +33,24 @@ describe('HTTP Redirect gatherer', () => {
     httpRedirectGather.beforePass(opts);
     return assert.equal(opts.url, 'http://example.com');
   });
+
+  it('returns true for https', () => {
+    const trueHTTPSRedirectResult = httpRedirectGather.afterPass({
+      url: 'https://example.com',
+      driver: {
+        _httpsArr: [{url: 'https://example.com'}]
+      }
+    });
+    assert.equal(trueHTTPSRedirectResult.value, true);
+  });
+
+  it('returns false for non-https', () => {
+    const trueHTTPSRedirectResult = httpRedirectGather.afterPass({
+      url: 'http://vg.no',
+      driver: {
+        _httpsArr: []
+      }
+    });
+    assert.equal(trueHTTPSRedirectResult.value, false);
+  });
 });
