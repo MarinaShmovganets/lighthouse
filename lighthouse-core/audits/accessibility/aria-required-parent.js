@@ -33,8 +33,8 @@ class AriaRequiredParent extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'aria-required-parent',
-      description: '`[role]`s are contained by their required parent element.',
-      fallbackDescription: '`[role]`s are not contained by their required parent element.',
+      description: 'Elements with `[role]` that require specific children `[role]`s, are present.',
+      fallbackDescription: 'Elements with `[role]` that require specific children `[role]`s, are missing.',
       helpText: 'Some ARIA child roles must be contained by specific parent roles to ' +
           'properly perform their intended accessibility functions. ' +
           '[Learn more](https://dequeuniversity.com/rules/worldspace/2.1/aria-required-parent).',
