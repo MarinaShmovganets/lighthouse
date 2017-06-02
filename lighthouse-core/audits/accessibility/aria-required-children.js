@@ -21,7 +21,7 @@ class AriaRequiredChildren extends AxeAudit {
     return {
       category: 'Accessibility',
       name: 'aria-required-children',
-      description: '`[role]`s that require child `[role]`s contain them.',
+      description: 'Elements with `[role]` that require specific children `[role]`s, are present.',
       fallbackDescription: 'Elements with `[role]` that require specific children `[role]`s, are missing.',
       helpText: 'Some ARIA parent roles must contain specific child roles to perform ' +
           'their intended accessibility functions. ' +
