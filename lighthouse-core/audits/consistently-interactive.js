@@ -40,7 +40,6 @@ class ConsistentlyInteractiveMetric extends Audit {
       category: 'Performance',
       name: 'consistently-interactive',
       description: 'Consistently Interactive (beta)',
-      fallbackDescription: 'Is not Consistently Interactive (beta)',
       helpText: 'The point at which most network resources have finished loading and the ' +
           'CPU is idle for a prolonged period.',
       scoringMode: Audit.SCORING_MODES.NUMERIC,

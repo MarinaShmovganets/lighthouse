@@ -127,14 +127,8 @@ class Audit {
       displayValue = '';
     }
     let auditDescription = audit.meta.description;
-
-    if((result.error || result.rawValue === false) && audit.meta.fallbackDescription) {
-      auditDescription = audit.meta.fallbackDescription;
-    }
-    if(typeof result.rawValue !== 'boolean' && audit.meta.scoringMode === 'numeric' && audit.meta.fallbackDescription) {
-      let fallbackAuditDescriptionScore = Util.calculateRating(score)
-      // TODO: Here we could also add a average description if needed
-      if(fallbackAuditDescriptionScore === 'fail') {
+    if (audit.meta.fallbackDescription) {
+      if (!result.rawValue || (typeof result.rawValue === 'number' && result.rawValue < 100)) {
         auditDescription = audit.meta.fallbackDescription;
       }
     }
