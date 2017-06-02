@@ -34,7 +34,7 @@ class NotificationOnStart extends ViolationAudit {
       category: 'UX',
       name: 'notification-on-start',
       description: 'Avoids requesting the notification permission on page load',
-      fallbackDescription: 'Does not avoid requesting the notification permission on page load',
+      fallbackDescription: 'Requests the notification permission on page load',
       helpText: 'Users are mistrustful of or confused by sites that request to send ' +
           'notifications without context. Consider tying the request to user gestures ' +
           'instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/notifications-on-load).',
