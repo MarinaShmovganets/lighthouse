@@ -98,9 +98,10 @@ class CategoryRenderer {
 
   /**
    * @param {!ReportRenderer.CategoryJSON} category
+   * @param {!Object<string, !ReportRenderer.CertificationJSON>=} certifications
    * @return {!Element}
    */
-  _renderCategoryScore(category) {
+  _renderCategoryScore(category, certifications) {
     const tmpl = this._dom.cloneTemplate('#tmpl-lh-category-score', this._templateContext);
     const score = Math.round(category.score);
 
@@ -108,7 +109,22 @@ class CategoryRenderer {
     const gaugeEl = this.renderScoreGauge(category);
     gaugeContainerEl.appendChild(gaugeEl);
 
-    return this._populateScore(tmpl, score, 'numeric', category.name, category.description);
+    const element = this._populateScore(
+        tmpl, score, 'numeric', category.name, category.description);
+
+    // If category wants a certification and the certification has passed, add a checkmark.
+    if (certifications && category.certification) {
+      const certification = certifications[category.certification];
+      if (certification.isCertified) {
+        const titleEl = element.querySelector('.lh-score__title');
+        const link = /** @type {!Element} */ (titleEl.appendChild(this._dom.createSpanFromMarkdown(
+            `[✔](${certification.url})`)));
+        link.classList.add('lh-score__isCertified');
+        link.title = certification.description;
+      }
+    }
+
+    return element;
   }
 
   /**
@@ -319,28 +335,30 @@ class CategoryRenderer {
   /**
    * @param {!ReportRenderer.CategoryJSON} category
    * @param {!Object<string, !ReportRenderer.GroupJSON>} groups
+   * @param {!Object<string, !ReportRenderer.CertificationJSON>} certifications
    * @return {!Element}
    */
-  render(category, groups) {
+  render(category, groups, certifications) {
     switch (category.id) {
       case 'performance':
         return this._renderPerformanceCategory(category, groups);
       case 'accessibility':
         return this._renderAccessibilityCategory(category, groups);
       default:
-        return this._renderDefaultCategory(category, groups);
+        return this._renderDefaultCategory(category, groups, certifications);
     }
   }
 
   /**
    * @param {!ReportRenderer.CategoryJSON} category
    * @param {!Object<string, !ReportRenderer.GroupJSON>} groupDefinitions
+   * @param {!Object<string, !ReportRenderer.CertificationJSON>} certifications
    * @return {!Element}
    */
-  _renderDefaultCategory(category, groupDefinitions) {
+  _renderDefaultCategory(category, groupDefinitions, certifications) {
     const element = this._dom.createElement('div', 'lh-category');
     element.id = category.id;
-    element.appendChild(this._renderCategoryScore(category));
+    element.appendChild(this._renderCategoryScore(category, certifications));
 
     const manualAudits = category.audits.filter(audit => audit.result.manual);
     const nonManualAudits = category.audits.filter(audit => !manualAudits.includes(audit));
