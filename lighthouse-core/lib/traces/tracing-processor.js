@@ -150,13 +150,13 @@ class TraceProcessor {
    * @return {{durations: !Array<number>, clippedLength: number}}
    */
   static getMainThreadTopLevelEventDurations(tabTrace, startTime = 0, endTime = Infinity) {
-    const topLevelTasks = TraceProcessor.getMainThreadTopLevelEvents(tabTrace, startTime, endTime);
+    const topLevelEvents = TraceProcessor.getMainThreadTopLevelEvents(tabTrace, startTime, endTime);
 
     // Find durations of all slices in range of interest.
     const durations = [];
     let clippedLength = 0;
 
-    topLevelTasks.forEach(event => {
+    topLevelEvents.forEach(event => {
       let duration = event.duration;
       let eventStart = event.start;
       if (eventStart < startTime) {
