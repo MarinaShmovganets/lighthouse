@@ -68,7 +68,7 @@ class EstimatedInputLatency extends Audit {
 
     return {
       score: Math.round(score),
-      optimalValue: this.meta.optimalValue,
+      optimalValue: EstimatedInputLatency.meta.optimalValue,
       rawValue,
       displayValue: Util.formatMilliseconds(rawValue, 1),
       extendedInfo: {
@@ -87,9 +87,8 @@ class EstimatedInputLatency extends Audit {
   static audit(artifacts) {
     const trace = artifacts.traces[this.DEFAULT_PASS];
 
-    return artifacts.requestTraceOfTab(trace).then(tabTrace => {
-      return EstimatedInputLatency.calculate(tabTrace);
-    });
+    return artifacts.requestTraceOfTab(trace)
+        .then(EstimatedInputLatency.calculate);
   }
 }
 

@@ -101,11 +101,7 @@ class TraceOfTab extends ComputedArtifact {
     const mainThreadEvents = processEvents
       .filter(e => e.tid === startedInPageEvt.tid);
 
-    const earliestTraceEvt = trace.traceEvents.reduce((min, evt) => {
-      return evt.ts === 0 || min.ts <= evt.ts ? min : evt;
-    }, {ts: Infinity});
-
-    const latestTraceEvt = trace.traceEvents.reduce((max, evt) => {
+    const traceEnd = trace.traceEvents.reduce((max, evt) => {
       return max.ts > evt.ts ? max : evt;
     });
 
@@ -114,7 +110,7 @@ class TraceOfTab extends ComputedArtifact {
       firstPaint,
       firstContentfulPaint,
       firstMeaningfulPaint,
-      traceEnd: latestTraceEvt,
+      traceEnd: {ts: traceEnd.ts + (traceEnd.dur || 0)},
       onLoad,
       domContentLoaded,
     };
@@ -132,8 +128,6 @@ class TraceOfTab extends ComputedArtifact {
       timestamps,
       processEvents,
       mainThreadEvents,
-      earliestTraceEvt,
-      latestTraceEvt,
       startedInPageEvt,
       navigationStartEvt: navigationStart,
       firstPaintEvt: firstPaint,

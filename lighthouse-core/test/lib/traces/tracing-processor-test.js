@@ -195,7 +195,7 @@ describe('TracingProcessor lib', () => {
       const tabTrace = new TraceOfTab().compute_(trace);
       const ret = TracingProcessor.getMainThreadTopLevelEvents(tabTrace);
 
-      assert.equal(ret.length, 651);
+      assert.equal(ret.length, 645);
     });
 
     it('filters events based on start and end times', () => {
@@ -244,7 +244,7 @@ describe('TracingProcessor lib', () => {
       }
 
       assert.equal(durations.filter(dur => isNaN(dur)).length, 0, 'NaN found');
-      assert.equal(durations.length, 651);
+      assert.equal(durations.length, 645);
 
       assert.equal(getDurationFromIndex(50), 0.01);
       assert.equal(getDurationFromIndex(300), 0.04);
@@ -272,8 +272,8 @@ describe('TracingProcessor lib', () => {
       const trace = {traceEvents: pwaTrace};
       const tabTrace = new TraceOfTab().compute_(trace);
       const ret = TracingProcessor.getRiskToResponsiveness(tabTrace);
-      assert.equal(ret.durations.length, 651);
-      assert.equal(Math.round(ret.totalTime), 2159);
+      assert.equal(ret.durations.length, 645);
+      assert.equal(Math.round(ret.totalTime), 2143);
       assert.equal(ret.clippedLength, 0);
       assert.deepEqual(ret.percentiles, [0.5, 0.75, 0.9, 0.99, 1]);
     });

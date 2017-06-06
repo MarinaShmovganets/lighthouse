@@ -121,28 +121,21 @@ class TraceProcessor {
   /**
    * Calculates the maximum queueing time (in ms) of high priority tasks for
    * selected percentiles within a window of the main thread.
-   * @see https://docs.google.com/document/d/18gvP-CBA2BiBpi3Rz1I1ISciKGhniTSZ9TY0XCnXS7E/preview
+   * @see https://docs.google.com/document/d/1b9slyaB9yho91YTOkAQfpCdULFkZM9LqsipcX3t7He8/preview
    * @param {!TraceOfTabArtifact} tabTrace
-   * @param {number=} startTime Optional start time (in ms) of range of interest. Defaults to trace start.
-   * @param {number=} endTime Optional end time (in ms) of range of interest. Defaults to trace end.
+   * @param {number=} startTime Optional start time (in ms relative to navstart) of range of interest. Defaults to navstart.
+   * @param {number=} endTime Optional end time (in ms relative to navstart) of range of interest. Defaults to trace end.
    * @param {!Array<number>=} percentiles Optional array of percentiles to compute. Defaults to [0.5, 0.75, 0.9, 0.99, 1].
    * @return {!Array<{percentile: number, time: number}>}
    */
-  static getRiskToResponsiveness(tabTrace, startTime, endTime, percentiles) {
-    const navStart = tabTrace.navigationStartEvt.ts;
-    const traceStart = tabTrace.earliestTraceEvt.ts;
-    const traceEnd = tabTrace.latestTraceEvt.ts;
-
-    // Range of responsiveness we care about. Default to bounds of model.
-    startTime = startTime === undefined ? (traceStart - navStart) / 1000 : startTime;
-    endTime = endTime === undefined ? (traceEnd - navStart) / 1000 : endTime;
-
+  static getRiskToResponsiveness(
+    tabTrace,
+    startTime = 0,
+    endTime = tabTrace.timings.traceEnd,
+    percentiles = [0.5, 0.75, 0.9, 0.99, 1]
+  ) {
     const totalTime = endTime - startTime;
-    if (percentiles) {
-      percentiles.sort((a, b) => a - b);
-    } else {
-      percentiles = [0.5, 0.75, 0.9, 0.99, 1];
-    }
+    percentiles.sort((a, b) => a - b);
 
     const ret = TraceProcessor.getMainThreadTopLevelEventDurations(tabTrace, startTime, endTime);
     return TraceProcessor._riskPercentiles(ret.durations, totalTime, percentiles,
@@ -152,11 +145,11 @@ class TraceProcessor {
   /**
    * Provides durations in ms of all main thread top-level events
    * @param {!TraceOfTabArtifact} tabTrace
-   * @param {number} startTime Optional start time (in ms) of range of interest. Defaults to trace start.
-   * @param {number} endTime Optional end time (in ms) of range of interest. Defaults to trace end.
+   * @param {number} startTime Optional start time (in ms relative to navstart) of range of interest. Defaults to navstart.
+   * @param {number} endTime Optional end time (in ms relative to navstart) of range of interest. Defaults to trace end.
    * @return {{durations: !Array<number>, clippedLength: number}}
    */
-  static getMainThreadTopLevelEventDurations(tabTrace, startTime = -Infinity, endTime = Infinity) {
+  static getMainThreadTopLevelEventDurations(tabTrace, startTime = 0, endTime = Infinity) {
     const topLevelTasks = TraceProcessor.getMainThreadTopLevelEvents(tabTrace, startTime, endTime);
 
     // Find durations of all slices in range of interest.
@@ -191,13 +184,13 @@ class TraceProcessor {
    * Provides the top level events on the main thread with timestamps in ms relative to navigation
    * start.
    * @param {!TraceOfTabArtifact} tabTrace
-   * @param {number=} startTime Optional start time (in ms) of range of interest. Defaults to trace start.
-   * @param {number=} endTime Optional end time (in ms) of range of interest. Defaults to trace end.
+   * @param {number=} startTime Optional start time (in ms relative to navstart) of range of interest. Defaults to navstart.
+   * @param {number=} endTime Optional end time (in ms relative to navstart) of range of interest. Defaults to trace end.
    * @return {!Array<{start: number, end: number, duration: number}>}
    */
-  static getMainThreadTopLevelEvents(tabTrace, startTime = -Infinity, endTime = Infinity) {
+  static getMainThreadTopLevelEvents(tabTrace, startTime = 0, endTime = Infinity) {
     const topLevelEvents = [];
-    // note: processEvents is already sorted by event start
+    // note: mainThreadEvents is already sorted by event start
     for (const event of tabTrace.mainThreadEvents) {
       if (event.name !== SCHEDULABLE_TASK_TITLE || !event.dur) continue;
 
@@ -209,7 +202,6 @@ class TraceProcessor {
         start,
         end,
         duration: event.dur / 1000,
-        events: [event],
       });
     }
     return topLevelEvents;
