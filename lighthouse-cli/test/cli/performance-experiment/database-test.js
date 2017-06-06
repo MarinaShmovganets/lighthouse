@@ -12,7 +12,8 @@ const fs = require('fs');
 const PerfXDatabase = require('../../../performance-experiment/experiment-database/database');
 const sampleResults = require('../../../../lighthouse-core/test/results/sample');
 
-describe('Perf-X Database', function() {
+// TODO: Update/retire PerfX
+describe.skip('Perf-X Database', function() {
   let perfXDatabase;
   beforeEach(() => perfXDatabase = new PerfXDatabase());
   afterEach(() => perfXDatabase.clear());
