@@ -57,6 +57,15 @@ describe('Byte efficiency base audit', () => {
     assert.ok(failingResult.score < 50, 'scores failing wastedMs');
   });
 
+  it('should throw on invalid network throughput', () => {
+    assert.throws(() => {
+      ByteEfficiencyAudit.createAuditResult({
+        headings: [{key: 'value', text: 'Label'}],
+        results: [{wastedBytes: 350, totalBytes: 700, wastedPercent: 50}],
+      }, Infinity);
+    });
+  });
+
   it('should populate Kb', () => {
     const result = ByteEfficiencyAudit.createAuditResult({
       headings: [{key: 'value', text: 'Label'}],

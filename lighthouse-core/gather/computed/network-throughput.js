@@ -15,6 +15,7 @@ class NetworkThroughput extends ComputedArtifact {
   /**
    * Computes the average throughput for the given records in bytes/second.
    * Excludes data URI, failed or otherwise incomplete, and cached requests.
+   * Returns Infinity if there were no analyzable network records.
    *
    * @param {?Array<!WebInspector.NetworkRequest>} networkRecords
    * @return {number}
