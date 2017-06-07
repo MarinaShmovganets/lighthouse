@@ -61,7 +61,7 @@ describe('Byte efficiency base audit', () => {
     const result = ByteEfficiencyAudit.createAuditResult({
       headings: [{key: 'value', text: 'Label'}],
       results: [{wastedBytes: 2048, totalBytes: 4096, wastedPercent: 50}],
-    });
+    }, 1000);
 
     assert.equal(result.extendedInfo.value.results[0].wastedKb, '2 KB');
     assert.equal(result.extendedInfo.value.results[0].totalKb, '4 KB');
@@ -85,7 +85,7 @@ describe('Byte efficiency base audit', () => {
         {wastedBytes: 450, totalBytes: 1000, wastedPercent: 50},
         {wastedBytes: 400, totalBytes: 450, wastedPercent: 50},
       ],
-    });
+    }, 1000);
 
     assert.equal(result.extendedInfo.value.results[0].wastedBytes, 450);
     assert.equal(result.extendedInfo.value.results[1].wastedBytes, 400);
