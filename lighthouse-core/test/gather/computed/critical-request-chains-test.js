@@ -7,9 +7,9 @@
 
 /* eslint-env mocha */
 
-const GathererClass = require('../../../gather/computed/critical-request-chains');
 const assert = require('assert');
-const Gatherer = new GathererClass();
+
+const Runner = require('../../../runner.js');
 
 const HIGH = 'High';
 const VERY_HIGH = 'VeryHigh';
@@ -37,11 +37,18 @@ function mockTracingData(prioritiesList, edges) {
   return networkRecords;
 }
 
+function getCriticalChain(networkRecords) {
+  const computedArtifacts = Runner.instantiateComputedArtifacts();
+  computedArtifacts.requestNetworkRecords = _ => {
+    return Promise.resolve(networkRecords);
+  };
+
+  return computedArtifacts.requestCriticalRequestChains({});
+}
+
 function testGetCriticalChain(data) {
-  const networkRecords = mockTracingData(data.priorityList, data.edges);
-  return Gatherer.request(networkRecords).then(criticalChains => {
-    assert.deepEqual(criticalChains, data.expected);
-  });
+  return getCriticalChain(mockTracingData(data.priorityList, data.edges))
+    .then(criticalChains => assert.deepEqual(criticalChains, data.expected));
 }
 
 function constructEmptyRequest() {
@@ -257,7 +264,8 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
     // Make a fake redirect
     networkRecords[1].requestId = '1:redirected.0';
     networkRecords[2].requestId = '1';
-    return Gatherer.request(networkRecords).then(criticalChains => {
+
+    return getCriticalChain(networkRecords).then(criticalChains => {
       assert.deepEqual(criticalChains, {
         0: {
           request: constructEmptyRequest(),
@@ -299,7 +307,7 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
       lastPathComponent: 'android-chrome-192x192.png'
     };
 
-    return Gatherer.request(networkRecords).then(criticalChains => {
+    return getCriticalChain(networkRecords).then(criticalChains => {
       assert.deepEqual(criticalChains, {
         0: {
           request: constructEmptyRequest(),
@@ -314,7 +322,7 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
 
     // Reverse the records so we force nodes to be made early.
     networkRecords.reverse();
-    return Gatherer.request(networkRecords).then(criticalChains => {
+    return getCriticalChain(networkRecords).then(criticalChains => {
       assert.deepEqual(criticalChains, {
         0: {
           request: constructEmptyRequest(),
