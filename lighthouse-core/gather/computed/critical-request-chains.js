@@ -38,7 +38,7 @@ class CriticalRequestChains extends ComputedArtifact {
     return ['VeryHigh', 'High', 'Medium'].includes(request.priority());
   }
 
-  static extractChains(networkRecords) {
+  static extractChain(networkRecords) {
     networkRecords = networkRecords.filter(req => req.finished);
 
     // Build a map of requestID -> Node.
@@ -132,7 +132,7 @@ class CriticalRequestChains extends ComputedArtifact {
    */
   compute_(devtoolsLog, artifacts) {
     return artifacts.requestNetworkRecords(devtoolsLog)
-      .then(CriticalRequestChains.extractChains);
+      .then(CriticalRequestChains.extractChain);
   }
 }
 

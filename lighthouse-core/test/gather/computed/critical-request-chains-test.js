@@ -8,7 +8,7 @@
 /* eslint-env mocha */
 
 const assert = require('assert');
-
+const CriticalRequestChains = require('../../../gather/computed/critical-request-chains');
 const Runner = require('../../../runner.js');
 
 const HIGH = 'High';
@@ -37,18 +37,10 @@ function mockTracingData(prioritiesList, edges) {
   return networkRecords;
 }
 
-function getCriticalChain(networkRecords) {
-  const computedArtifacts = Runner.instantiateComputedArtifacts();
-  computedArtifacts.requestNetworkRecords = _ => {
-    return Promise.resolve(networkRecords);
-  };
-
-  return computedArtifacts.requestCriticalRequestChains({});
-}
-
 function testGetCriticalChain(data) {
-  return getCriticalChain(mockTracingData(data.priorityList, data.edges))
-    .then(criticalChains => assert.deepEqual(criticalChains, data.expected));
+  const networkRecords = mockTracingData(data.priorityList, data.edges);
+  const criticalChains = CriticalRequestChains.extractChain(networkRecords);
+  assert.deepEqual(criticalChains, data.expected);
 }
 
 function constructEmptyRequest() {
@@ -61,7 +53,16 @@ function constructEmptyRequest() {
   };
 }
 
-describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
+describe('CriticalRequestChain gatherer: extractChain function', () => {
+  it('returns correct data for chain from a devtoolsLog', () => {
+    const computedArtifacts = Runner.instantiateComputedArtifacts();
+    const wikiDevtoolsLog = require('../../fixtures/wikipedia-redirect.devtoolslog.json');
+    const wikiChains = require('../../fixtures/wikipedia-redirect.critical-request-chains.json');
+    computedArtifacts.requestCriticalRequestChains(wikiDevtoolsLog).then(chains => {
+      assert.deepEqual(chains, wikiChains);
+    });
+  });
+
   it('returns correct data for chain of four critical requests', () =>
     testGetCriticalChain({
       priorityList: [HIGH, MEDIUM, VERY_HIGH, HIGH],
@@ -265,23 +266,22 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
     networkRecords[1].requestId = '1:redirected.0';
     networkRecords[2].requestId = '1';
 
-    return getCriticalChain(networkRecords).then(criticalChains => {
-      assert.deepEqual(criticalChains, {
-        0: {
-          request: constructEmptyRequest(),
-          children: {
-            '1:redirected.0': {
-              request: constructEmptyRequest(),
-              children: {
-                1: {
-                  request: constructEmptyRequest(),
-                  children: {}
-                }
+    const criticalChains = CriticalRequestChains.extractChain(networkRecords);
+    assert.deepEqual(criticalChains, {
+      0: {
+        request: constructEmptyRequest(),
+        children: {
+          '1:redirected.0': {
+            request: constructEmptyRequest(),
+            children: {
+              1: {
+                request: constructEmptyRequest(),
+                children: {}
               }
             }
           }
         }
-      });
+      }
     });
   });
 
@@ -307,13 +307,12 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
       lastPathComponent: 'android-chrome-192x192.png'
     };
 
-    return getCriticalChain(networkRecords).then(criticalChains => {
-      assert.deepEqual(criticalChains, {
-        0: {
-          request: constructEmptyRequest(),
-          children: {}
-        }
-      });
+    const criticalChains = CriticalRequestChains.extractChain(networkRecords);
+    assert.deepEqual(criticalChains, {
+      0: {
+        request: constructEmptyRequest(),
+        children: {}
+      }
     });
   });
 
@@ -322,18 +321,17 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
 
     // Reverse the records so we force nodes to be made early.
     networkRecords.reverse();
-    return getCriticalChain(networkRecords).then(criticalChains => {
-      assert.deepEqual(criticalChains, {
-        0: {
-          request: constructEmptyRequest(),
-          children: {
-            1: {
-              request: constructEmptyRequest(),
-              children: {}
-            }
+    const criticalChains = CriticalRequestChains.extractChain(networkRecords);
+    assert.deepEqual(criticalChains, {
+      0: {
+        request: constructEmptyRequest(),
+        children: {
+          1: {
+            request: constructEmptyRequest(),
+            children: {}
           }
         }
-      });
+      }
     });
   });
 });
