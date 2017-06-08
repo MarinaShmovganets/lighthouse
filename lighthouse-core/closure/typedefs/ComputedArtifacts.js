@@ -53,7 +53,7 @@ ComputedArtifacts.prototype.requestNetworkRecords;
 /** @type {function(ManifestNode<(!Manifest|undefined)>): !Promise<{isParseFailure: boolean, parseFailureReason: string, allChecks: !Array<{passing: boolean, failureText: string}>}>} */
 ComputedArtifacts.prototype.requestManifestValues;
 
-/** @type {function(!Array): !Promise<number>} */
+/** @type {function(!DevtoolsLog): !Promise<number>} */
 ComputedArtifacts.prototype.requestNetworkThroughput;
 
 // ComputedArtifacts.prototype.requestPushedRequests;
