@@ -30,6 +30,7 @@ class SplashScreen extends MultiCheckAudit {
       category: 'PWA',
       name: 'splash-screen',
       description: 'Configured for a custom splash screen',
+      fallbackDescription: 'Is not configured for a custom splash screen',
       helpText: 'A custom splash screen creates a higher-quality user experience and makes your ' +
           'Progressive Web App feel more like a native app. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/custom-splash-screen).',

@@ -37,6 +37,7 @@ class DOMSize extends Audit {
       category: 'Performance',
       name: 'dom-size',
       description: 'Avoids an excessive DOM size',
+      fallbackDescription: 'Uses an excessive DOM size',
       optimalValue: `< ${Util.formatNumber(DOMSize.MAX_DOM_NODES)} nodes`,
       helpText: 'Browser engineers recommend pages contain fewer than ' +
         `~${Util.formatNumber(DOMSize.MAX_DOM_NODES)} DOM nodes. The sweet spot is a tree ` +

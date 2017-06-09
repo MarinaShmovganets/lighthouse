@@ -17,6 +17,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
       category: 'Performance',
       name: 'external-anchors-use-rel-noopener',
       description: 'Opens external anchors using `rel="noopener"`',
+      fallbackDescription: 'Does not open external anchors using `rel="noopener"`',
       helpText: 'Open new tabs using `rel="noopener"` to improve performance and ' +
           'prevent security vulnerabilities. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/noopener).',
