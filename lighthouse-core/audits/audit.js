@@ -6,7 +6,6 @@
 'use strict';
 
 const DEFAULT_PASS = 'defaultPass';
-const Util = require('../report/v2/renderer/util');
 
 class Audit {
   /**
