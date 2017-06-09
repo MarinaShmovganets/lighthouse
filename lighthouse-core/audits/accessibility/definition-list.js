@@ -23,8 +23,7 @@ class DefinitionList extends AxeAudit {
       description: '`<dl>`\'s contain only properly-ordered `<dt>` and `<dd>` groups, `<script>` ' +
           'or `<template>` elements.',
       fallbackDescription: '`<dl>`\'s do not contain only properly-ordered `<dt>` and `<dd>` ' +
-      'groups, `<script>` ' +
-          'or `<template>` elements.',
+          'groups, `<script>` or `<template>` elements.',
       helpText: 'When definition lists are not properly marked up, screen readers may produce ' +
           'confusing or inaccurate output. ' +
           '[Learn more](https://dequeuniversity.com/rules/axe/1.1/definition-list).',

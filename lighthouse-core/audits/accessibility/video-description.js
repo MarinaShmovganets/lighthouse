@@ -22,7 +22,7 @@ class VideoDescription extends AxeAudit {
       name: 'video-description',
       description: '`<video>` elements contain a `<track>` element with `[kind="description"]`.',
       fallbackDescription: '`<video>` elements do not contain a `<track>` element with ' +
-      '`[kind="description"]`.',
+          '`[kind="description"]`.',
       helpText: 'Audio descriptions provide relevant information for videos that dialogue ' +
           'cannot, such as facial expressions and scenes. ' +
           '[Learn more](https://dequeuniversity.com/rules/axe/1.1/video-description).',

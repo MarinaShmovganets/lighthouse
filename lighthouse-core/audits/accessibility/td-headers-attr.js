@@ -24,7 +24,7 @@ class TDHeadersAttr extends AxeAudit {
       description: 'Cells in a `<table>` element that use the `[headers]` attribute only refer ' +
           'to other cells of that same table.',
       fallbackDescription: 'Cells in a `<table>` element that use the `[headers]` ' +
-      'attribute refers to other cells of that same table.',
+          'attribute refers to other cells of that same table.',
       helpText: 'Screen readers have features to make navigating tables easier. Ensuring `<td>` ' +
           'cells using the `[headers]` attribute only refer to other cells in the same table may ' +
           'improve the experience for screen reader users. ' +
