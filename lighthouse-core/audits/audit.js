@@ -117,7 +117,7 @@ class Audit {
     }
     let auditDescription = audit.meta.description;
     if (audit.meta.fallbackDescription) {
-      if (!result.rawValue || (typeof result.rawValue === 'number' && result.score < 100)) {
+      if (!score || (typeof score === 'number' && score < 100)) {
         auditDescription = audit.meta.fallbackDescription;
       }
     }
