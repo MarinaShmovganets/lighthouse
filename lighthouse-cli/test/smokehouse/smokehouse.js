@@ -49,11 +49,12 @@ function resolveLocalOrCwd(payloadPath) {
 function runLighthouse(url, configPath, saveAssetsPath) {
   const command = 'node';
   const args = [
+    '--trace-warnings',
     'lighthouse-cli/index.js',
     url,
     `--config-path=${configPath}`,
     '--output=json',
-    '--quiet',
+    '--verbose',
     '--port=0'
   ];
 

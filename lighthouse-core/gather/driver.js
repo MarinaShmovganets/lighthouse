@@ -187,8 +187,22 @@ class Driver {
         return Promise.resolve();
       }
     }
+    const waitTimeout = 10 * 1000;
+    let waitTimeoutHandle;
 
-    return this._connection.sendCommand(method, params, cmdOpts);
+    const waitTimeoutPromise = new Promise(resolve => {
+      waitTimeoutHandle = setTimeout(resolve, waitTimeout);
+    }).then(_ => {
+      return Promise.reject(new Error(`sendCommand of ${method} took over 10s to respond`));
+    });
+
+    const sendCommandPromise = this._connection.sendCommand(method, params, cmdOpts);
+
+    return Promise.race([waitTimeoutPromise, sendCommandPromise])
+      .then(data => {
+        clearTimeout(waitTimeoutHandle);
+        return data;
+      });
   }
 
   /**
@@ -909,20 +923,26 @@ class Driver {
   }
 
   /**
-   * Dismiss JavaScript dialogs (alert, confirm, prompt), providing a
-   * generic promptText in case the dialog is a prompt.
+   * Dismiss JavaScript dialogs (alert, confirm, prompt), but quit everything if we fail to dismiss
    * @return {!Promise}
    */
   dismissJavaScriptDialogs() {
-    return this.sendCommand('Page.enable').then(_ => {
-      this.on('Page.javascriptDialogOpening', data => {
-        log.warn('Driver', `${data.type} dialog opened by the page automatically suppressed.`);
+    const waitForDismiss = 2000;
+    const silent = {silent: true};
 
-        // rejection intentionally unhandled
-        this.sendCommand('Page.handleJavaScriptDialog', {
-          accept: true,
-          promptText: 'Lighthouse prompt response',
-        });
+    return this.sendCommand('Page.enable').then(_ => {
+      // No need to wait for this event bind to complete, so no promise returned
+      this.on('Page.javascriptDialogOpening', data => {
+        log.warn('Driver', `${data.type} dialog opened. Attempting to dismiss...`);
+
+        const waitTimeoutID = setTimeout(_ => {
+          Promise.reject(new Error(`handleJavaScriptDialog took over ${waitForDismiss}ms`));
+        }, waitForDismiss);
+
+        this.sendCommand('Page.handleJavaScriptDialog', {accept: false}, silent)
+          .catch(_ => this.sendCommand('Page.handleJavaScriptDialog', {accept: true}, silent))
+          .catch(e => log.warn('Driver', e))
+          .then(_ => clearTimeout(waitTimeoutID));
       });
     });
   }
