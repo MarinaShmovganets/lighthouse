@@ -116,8 +116,8 @@ echo "Inform various peoples"
 cd chrome-launcher
 echo "build the launcher source code"
 yarn build
-echo "run npm version [<newversion> | major | minor | patch | premajor | preminor | prepatch | prerelease | from-git]"
-echo "commit the change as a version bump"
+yarn version
+echo "version bump will be committed"
 npm publish
 ```
 
