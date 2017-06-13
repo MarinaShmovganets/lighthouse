@@ -444,12 +444,12 @@ class Driver {
     let lastTimeout;
     let isResolvable = false;
     function checkForQuiet(driver, resolve) {
-      const tryLater = () => {
-        lastTimeout = setTimeout(() => checkForQuiet(driver, resolve), 1000);
+      const tryLater = timeToWait => {
+        lastTimeout = setTimeout(() => checkForQuiet(driver, resolve), timeToWait);
       };
 
       if (!isResolvable) {
-        return tryLater();
+        return tryLater(1000);
       }
 
       return driver.evaluateAsync(`(${checkTimeSinceLastLongTask.toString()})()`)
@@ -459,7 +459,7 @@ class Driver {
             resolve();
           } else {
             log.verbose('Driver', `CPU has been idle for ${timeSinceLongTask} ms`);
-            tryLater();
+            tryLater(waitForCPUQuiet - timeSinceLongTask);
           }
         });
     }
@@ -1098,7 +1098,19 @@ function installPerformanceObserver() {
  * instanbul ignore next
  */
 function checkTimeSinceLastLongTask() {
-  return window.performance.now() - window.____lastLongTask;
+  // Wait for a delta before returning so that we're sure the PerformanceObserver
+  // has had time to register the last longtask
+  return new Promise(resolve => {
+    const timeoutRequested = window.performance.now() + 50;
+
+    setTimeout(() => {
+      // Double check that a long task hasn't happened since setTimeout
+      const timeoutFired = window.performance.now();
+      const timeSinceLongTask = timeoutFired - timeoutRequested < 50 ?
+          timeoutFired - window.____lastLongTask : 0;
+      resolve(timeSinceLongTask);
+    }, 50);
+  });
 }
 
 module.exports = Driver;
