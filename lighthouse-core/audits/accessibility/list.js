@@ -22,7 +22,7 @@ class List extends AxeAudit {
       name: 'list',
       description: 'Lists contain only `<li>` elements and script supporting elements ' +
           '(`<script>` and `<template>`).',
-      fallbackDescription: 'Lists do not contain only `<li>` elements and script ' +
+      failureDescription: 'Lists do not contain only `<li>` elements and script ' +
           'supporting elements (`<script>` and `<template>`).',
       helpText: 'Screen readers have a specific way of announcing lists. Ensuring proper list ' +
           'structure aids screen reader output. ' +

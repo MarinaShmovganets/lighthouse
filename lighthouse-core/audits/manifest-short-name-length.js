@@ -16,7 +16,7 @@ class ManifestShortNameLength extends Audit {
       category: 'Manifest',
       name: 'manifest-short-name-length',
       description: 'Manifest\'s `short_name` won\'t be truncated when displayed on homescreen',
-      fallbackDescription: 'Manifest\'s `short_name` will be truncated when displayed ' +
+      failureDescription: 'Manifest\'s `short_name` will be truncated when displayed ' +
           'on homescreen',
       helpText: 'Make your app\'s `short_name` fewer than 12 characters to ' +
           'ensure that it\'s not truncated on homescreens. [Learn ' +

@@ -116,9 +116,9 @@ class Audit {
       displayValue = '';
     }
     let auditDescription = audit.meta.description;
-    if (audit.meta.fallbackDescription) {
+    if (audit.meta.failureDescription) {
       if (!score || (typeof score === 'number' && score < 100)) {
-        auditDescription = audit.meta.fallbackDescription;
+        auditDescription = audit.meta.failureDescription;
       }
     }
     return {
