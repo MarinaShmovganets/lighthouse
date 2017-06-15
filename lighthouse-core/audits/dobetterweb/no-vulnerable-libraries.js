@@ -47,20 +47,23 @@ class NoVulnerableLibrariesAudit extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const vulns = artifacts.JSVulnerableLibraries.vulnerabilities;
     const libraries = artifacts.JSVulnerableLibraries.libraries;
 
-    const finalVulns = vulns.map(record => ({
-        severity: record.severity,
-        library: record.name + '@' + record.version,
-        url: 'https://snyk.io/vuln/' + record.id
+    const finalVulns = Object.assign(...libraries.filter(obj => {
+      return obj.vulns;
+    }).map(record => {
+      let libVulns = [];
+      for (let i in record.vulns) {
+        libVulns.push(record.vulns[i]);
+      };
+      return libVulns;
     }));
 
     let displayValue = '';
-    if (vulns.length > 1) {
-      displayValue = `${vulns.length} vulnerabilities detected.`;
-    } else if (vulns.length === 1) {
-      displayValue = `${vulns.length} vulnerability was detected.`;
+    if (finalVulns.length > 1) {
+      displayValue = `${finalVulns.length} vulnerabilities detected.`;
+    } else if (finalVulns.length === 1) {
+      displayValue = `${finalVulns.length} vulnerability was detected.`;
     }
 
     const headings = [
@@ -71,7 +74,7 @@ class NoVulnerableLibrariesAudit extends Audit {
     const details = Audit.makeV2TableDetails(headings, finalVulns);
 
     return {
-      rawValue: vulns.length === 0,
+      rawValue: finalVulns.length === 0,
       displayValue,
       extendedInfo: {
         js_libs: libraries,

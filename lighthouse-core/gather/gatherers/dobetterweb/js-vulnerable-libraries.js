@@ -25,7 +25,10 @@
 'use strict';
 
 const Gatherer = require('../gatherer');
-const request = require('request');
+const fs = require('fs');
+const semver = require('semver');
+// https://snyk.io/partners/api/v2/vulndb/clientside.json
+const snykDB = JSON.parse(fs.readFileSync(require.resolve('../../../../third-party/snyk-snapshot.json'), 'utf8'));
 
 /**
  * Obtains a list of an object contain any detected JS libraries
@@ -68,34 +71,25 @@ class JSVulnerableLibraries extends Gatherer {
     return options.driver
       .evaluateAsync(expression)
       .then(libraries => {
-        // filter out any without a known npm package for passing to Snyk
-        const dependencies = Object.assign(...libraries.filter(obj => {
-          return obj.npmPkgName;
-        }).map(record => ({
-          [record.npmPkgName]: {"version": record.version}
-        })));
-
-        return new Promise((resolve, reject) => {
-          // need to mimic `npm ls --json` for now
-          const jsonBody = {
-            'name': 'lighthouse',
-            'version': '1.0',
-            'dependencies': dependencies
-          };
-
-          let vulnerabilities = [];
-          request.post({
-            headers: {
-              'content-type': 'application/json',
-              'Authorization': 'token 815130d4-940b-4252-b301-5ce28d734bf7'
-            },
-            url: 'https://snyk.io/api/vuln/npm',
-            body: JSON.stringify(jsonBody)
-          }, function(err, response, body) {
-            vulnerabilities = JSON.parse(body).vulnerabilities;
-            resolve({vulnerabilities, libraries});
-          });
-        });
+        //add vulns to raw libraries results
+        let vulns = [];
+        for (let i in libraries) {
+             if (snykDB.npm[libraries[i].npmPkgName]) {
+                let snykInfo = snykDB.npm[libraries[i].npmPkgName];
+                for (let j in snykInfo) {
+                    if (semver.satisfies(libraries[i].version, snykInfo[j].semver.vulnerable[0])) {
+                        // valid vulnerability
+                        vulns.push({
+                        	severity: snykInfo[j].severity,
+                        	library: libraries[i].name + '@' + libraries[i].version,
+                        	url: 'https://snyk.io/vuln/' + snykInfo[j].id
+                        });
+                    }
+                }
+               	libraries[i].vulns = vulns;
+             }
+        }
+        return {libraries};
       })
       .then(returnedValue => {
         return returnedValue;
