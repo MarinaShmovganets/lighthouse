@@ -7,6 +7,7 @@
 
 const Audit = require('./audit');
 const Formatter = require('../report/formatter');
+const Util = require('../report/v2/renderer/util');
 const URL = require('../lib/url-shim');
 
 const TTFB_THRESHOLD = 200;
@@ -53,7 +54,7 @@ class TTFBMetric extends Audit {
           const ttfb = TTFBMetric.caclulateTTFB(networkRecord);
           results.push({
             url: URL.getURLDisplayName(networkRecord._url),
-            ttfb: `${Math.round(ttfb).toLocaleString()} ms`,
+            ttfb: Util.formatMilliseconds(Math.round(ttfb), 1),
             rawTTFB: ttfb
           });
         }

@@ -35,15 +35,16 @@ class Util {
   /**
    * Format number.
    * @param {number} number
+   * @param {number} decimalPlaces Number of decimal places to include. Defaults to 1.
    * @return {string}
    */
-  static formatNumber(number) {
-    return number.toLocaleString(undefined, {maximumFractionDigits: 1});
+  static formatNumber(number, decimalPlaces = 1) {
+    return number.toLocaleString(undefined, {maximumFractionDigits: decimalPlaces});
   }
 
   /**
    * @param {number} size
-   * @param {number=} decimalPlaces Number of decimal places to include. Defaults to 2.
+   * @param {number} decimalPlaces Number of decimal places to include. Defaults to 2.
    * @return {string}
    */
   static formateBytesToKB(size, decimalPlaces = 2) {
@@ -52,7 +53,7 @@ class Util {
 
   /**
    * @param {number} ms
-   * @param {number=} granularity Controls how coarse the displayed value is, defaults to 10
+   * @param {number} granularity Controls how coarse the displayed value is, defaults to 10
    * @return {string}
    */
   static formatMilliseconds(ms, granularity = 10) {
