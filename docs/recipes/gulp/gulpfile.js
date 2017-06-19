@@ -49,7 +49,7 @@ function launchChromeAndRunLighthouse(url, flags, config = null) {
 const handleOk = function(results) {
     stopServer();
     console.log(results); // eslint-disable-line no-console
-    // gigitTODO: use lighthouse results for checking your performance expectations.
+    // TODO: use lighthouse results for checking your performance expectations.
     // e.g. process.exit(1) or throw Error if score falls below a certain threshold.
     // if (results.audits['first-meaningful-paint'].rawValue > 3000) {
     //     console.log(`Warning: Time to first meaningful paint ${results.audits['first-meaningful-paint'].displayValue}`);
