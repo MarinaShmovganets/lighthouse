@@ -9,7 +9,7 @@
 const gulp = require('gulp');
 const connect = require('gulp-connect');
 const lighthouse = require('lighthouse');
-const chromeLauncher = require('lighthouse/chrome-launcher/chrome-launcher');
+const chromeLauncher = require('lighthouse/chrome-launcher');
 const perfConfig = require('lighthouse/lighthouse-core/config/perf.json');
 const PORT = 8080;
 
@@ -52,8 +52,8 @@ const handleOk = function(results) {
   // TODO: use lighthouse results for checking your performance expectations.
   // e.g. process.exit(1) or throw Error if score falls below a certain threshold.
   // if (results.audits['first-meaningful-paint'].rawValue > 3000) {
-  //     console.log(`Warning: Time to first meaningful paint ${results.audits['first-meaningful-paint'].displayValue}`);
-  //     process.exit(1);
+  //   console.log(`Warning: Time to first meaningful paint ${results.audits['first-meaningful-paint'].displayValue}`);
+  //   process.exit(1);
   // }
   return results;
 };
