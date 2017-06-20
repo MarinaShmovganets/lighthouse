@@ -22,6 +22,7 @@ cache:
     - lighthouse-viewer/node_modules
     - /home/travis/.rvm/gems/
 install:
+  - yarn cache clean
   - yarn
   - yarn install-all
 before_script:
