@@ -19,6 +19,12 @@ describe('CLI Tests', function() {
     assert.equal(ret.status, 1);
   });
 
+  it('should list options via --help', () => {
+    const ret = spawnSync('node', [indexPath, '--help'], {encoding: 'utf8'});
+    assert.ok(ret.stdout.includes('lighthouse <url>'));
+    assert.ok(ret.stdout.includes('For more information on Lighthouse'));
+  });
+
   it('should list all audits without a url and exit immediately after', () => {
     const ret = spawnSync('node', [indexPath, '--list-all-audits'], {encoding: 'utf8'});
 
