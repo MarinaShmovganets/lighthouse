@@ -23,6 +23,7 @@ cache:
     - /home/travis/.rvm/gems/
 install:
   - yarn
+  # travis can't handle the parallel install (without caches)
   - yarn run install-all:task:windows
 before_script:
   - gem install travis-artifacts
