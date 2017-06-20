@@ -83,7 +83,6 @@ gulp.task('browserify', () => {
           removeComments: true
         })
         .transform('brfs')
-        .ignore('../lighthouse-core/lib/log.js')
         .ignore('whatwg-url')
         .ignore('url')
         .ignore('debug/node')
