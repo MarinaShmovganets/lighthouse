@@ -33,9 +33,9 @@ access_token = config['endpoints'].values[0]['access_token']
 
 Travis.access_token = access_token
 
-$days_of_builds_to_consider = 10
+$days_of_builds_to_consider = 5
 
-puts "build, state, started_at, duration"
+puts "build, branch, state, started_at, duration"
 
 def log_durations
   repository = Travis::Repository.find('GoogleChrome/lighthouse')
@@ -50,7 +50,7 @@ def log_durations
     end
 
     build.jobs.each do |job|
-      puts "#{job.number}, #{job.state}, #{job.started_at}, #{job.duration}"
+      puts "#{job.number}, #{job.branch_info}, #{job.state}, #{job.started_at}, #{job.duration}"
     end
   end
 end
