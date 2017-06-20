@@ -22,8 +22,8 @@ const NON_BUG_ERROR_MESSAGES = {
   // The user tries to review an error page or has network issues
   'Unable to load the page': 'Unable to load the page. Please verify the url you ' +
       'are trying to review.',
-  'Cannot access contents of the page': 'The Lighthouse extension can only audit ' +
-      ' http & https pages.',
+  'Cannot access contents of the page': 'Lighthouse can only audit URLs that start' +
+      ' with http:// or https://.',
 };
 
 const MAX_ISSUE_ERROR_LENGTH = 60;
