@@ -1,6 +1,44 @@
 # Running Lighthouse using headless Chrome
 
-### CLI
+For now, we recommend running Chrome with xvfb. See below.
+
+## CLI (xvfb)
+
+Chrome + xvfb is the stable solution we recommend. These steps worked on Debian Jessie:
+
+```sh
+# get node 6
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# get chromium (stable) and Xvfb
+apt-get install chromium-browser xvfb
+
+# install lighthouse
+npm i -g lighthouse
+```
+
+Run it:
+
+```sh
+export DISPLAY=:1.5
+TMP_PROFILE_DIR=$(mktemp -d -t lighthouse.XXXXXXXXXX)
+
+# start up chromium inside xvfb
+xvfb-run --server-args='-screen 0, 1024x768x16' \
+    chromium-browser --user-data-dir=$TMP_PROFILE_DIR
+    --start-maximized \
+    --no-first-run \
+    --remote-debugging-port=9222 "about:blank"
+
+# Kick off Lighthouse run on same port as debugging port.
+lighthouse --port=9222 https://github.com
+```
+
+## CLI (headless)
+
+> **Note**: Headless Chrome still has a few bugs to work out. For example, [network emulation](https://bugs.chromium.org/p/chromium/issues/detail?id=728451) is not supported yet.
+This can affect the accuracy of performance scores returned by Lighthouse.
 
 Setup:
 
@@ -22,7 +60,7 @@ Kick off run of Lighthouse using headless Chrome:
 lighthouse --chrome-flags="--headless" https://github.com
 ```
 
-### Node
+## Node
 
 Install:
 
@@ -53,7 +91,7 @@ launchChromeAndRunLighthouse('https://github.com', flags).then(results => {
 });
 ```
 
-### Also worth a look
+## Other resources
 
 Other resources you might find helpful:
 
