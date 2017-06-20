@@ -95,9 +95,12 @@ class SpeedIndexMetric extends Audit {
         })
       };
 
+      const rawValue = Math.round(speedline.perceptualSpeedIndex);
+
       return {
         score: Math.round(score),
-        rawValue: Math.round(speedline.perceptualSpeedIndex),
+        rawValue,
+        displayValue: Util.formatNumber(rawValue),
         optimalValue: this.meta.optimalValue,
         extendedInfo: {
           formatter: Formatter.SUPPORTED_FORMATS.SPEEDLINE,

@@ -73,8 +73,10 @@ class TTFBMetric extends Audit {
       let displayValue;
 
       if (recordsOverBudget.length) {
-        displayValue = recordsOverBudget.length +
-          ` critical request(s) went over the ${TTFB_THRESHOLD} ms threshold`;
+        const thresholdDisplay = Util.formatMiliseconds(TTFB_THRESHOLD, 1);
+        const recordsOverBudgetDisplay = Util.formatNumber(recordsOverBudget.length);
+        displayValue = `${recordsOverBudgetDisplay} critical request(s) went over` +
+          ` the ${thresholdDisplay} threshold`;
       }
 
       return {
