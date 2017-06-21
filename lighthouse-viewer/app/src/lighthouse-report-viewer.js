@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global DOM, CategoryRenderer, DetailsRenderer, ViewerUiFeatures, ReportRenderer, DragAndDrop, GithubApi, logger */
+/* global DOM, CategoryRenderer, DetailsRenderer, ViewerUIFeatures, ReportRenderer, DragAndDrop, GithubApi, logger */
 
 /**
  * Class that manages viewing Lighthouse reports.
@@ -130,7 +130,7 @@ class LighthouseReportViewer {
         history.pushState({}, null, LighthouseReportViewer.APP_URL);
       }
 
-      const features = new ViewerUiFeatures(dom, saveCallback);
+      const features = new ViewerUIFeatures(dom, saveCallback);
       features.initFeatures(json);
     } catch(e) {
       logger.error(`Error rendering report: ${e.message}`);

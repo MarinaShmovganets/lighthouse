@@ -11,7 +11,7 @@
  * Extends ReportUIFeatures to add an (optional) ability to save to a gist and
  * generates the saved report from a browserified ReportGenerator.
  */
-class ViewerUiFeatures extends ReportUIFeatures {
+class ViewerUIFeatures extends ReportUIFeatures {
   /**
    * @param {!DOM} dom
    * @param {?function(!ReportRenderer.ReportJSON)} saveGistCallback
@@ -38,7 +38,7 @@ class ViewerUiFeatures extends ReportUIFeatures {
   }
 
   /**
-   * Returns the html that recreates this report. Uses ReportGenerator
+   * Uses ReportGenerator to create the html that recreates this report.
    * @return {string}
    * @override
    */
@@ -71,5 +71,5 @@ class ViewerUiFeatures extends ReportUIFeatures {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = ViewerUiFeatures;
+  module.exports = ViewerUIFeatures;
 }

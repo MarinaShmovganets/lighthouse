@@ -31,7 +31,7 @@ class FirebaseAuth {
 
     /**
      * Promise which resolves after the first check of auth state. After this,
-     * _accessToken will be set if user logged in and has access token.
+     * _accessToken will be set if user is logged in and has access token.
      * @private {!Promise<undefined>}
      */
     this._ready = Promise.all([
@@ -73,9 +73,7 @@ class FirebaseAuth {
       // A limitation of firebase auth is that it doesn't return an oauth token
       // after a page refresh. We'll get a firebase token, but not an oauth token
       // for GitHub. Since GitHub's tokens never expire, stash the access token in IDB.
-      return idbKeyval.set('accessToken', this._accessToken).then(_ => {
-        return this._accessToken;
-      });
+      return idbKeyval.set('accessToken', this._accessToken).then(_ => this._accessToken);
     });
   }
 

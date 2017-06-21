@@ -46,9 +46,9 @@ function streamFromString(content, fakeFilename = 'fake.file') {
 
 gulp.task('lint', () => {
   return gulp.src([
-    'app/src/**/*.js',
+    'app/**/*.js',
+    'test/**/*.js',
     'gulpfile.js',
-    'sw.js'
   ])
   .pipe($.eslint())
   .pipe($.eslint.format())
@@ -60,6 +60,7 @@ gulp.task('images', () => {
   .pipe(gulp.dest(`dist/images`));
 });
 
+// Concat Report and Viewer stylesheets into single viewer.css file.
 gulp.task('concat-css', () => {
   const reportCss = streamFromString(ReportGenerator.reportCss, 'report-styles.css');
   const viewerCss = gulp.src('app/styles/viewer.css');
@@ -92,26 +93,34 @@ gulp.task('polyfills', () => {
   .pipe(gulp.dest(`dist/src/polyfills`));
 });
 
+// Combine multiple JS bundles into single viewer.js file.
 gulp.task('compile-js', () => {
-  const filename = __dirname + '/../lighthouse-core/report/v2/report-generator.js';
+  // JS bundle from browserified ReportGenerator.
+  const generatorFilename = __dirname + '/../lighthouse-core/report/v2/report-generator.js';
   const opts = {standalone: 'ReportGenerator'};
-  const generatorJs = browserify(filename, opts)
+  const generatorJs = browserify(generatorFilename, opts)
     .transform('brfs')
     .bundle()
     .pipe(source('report-generator.js'))
     .pipe(vinylBuffer());
 
+  // JS bundle from report renderer scripts.
   const baseReportJs = streamFromString(ReportGenerator.reportJs, 'report.js');
 
+  // JS bundle of library dependencies.
   const deps = gulp.src([
     'node_modules/idb-keyval/dist/idb-keyval-min.js',
   ]);
 
+  // JS bundle of injectected global variable with current Lighthouse version.
   const versionStr = `window.LH_CURRENT_VERSION = '${lighthousePackage.version}';`;
   const versionJs = streamFromString(versionStr, 'report.js');
-  const viewer = streamqueue({objectMode: true}, versionJs, gulp.src('app/src/*.js'));
 
-  return streamqueue({objectMode: true}, generatorJs, baseReportJs, deps, viewer)
+  // JS bundle of viewer-specific JS files.
+  const viewerJs = gulp.src('app/src/*.js');
+
+  // Concat and uglify JS bundles in this order.
+  return streamqueue({objectMode: true}, generatorJs, baseReportJs, deps, versionJs, viewerJs)
     .pipe($.concat('viewer.js', {newLine: ';\n'}))
     .pipe(uglify())
     .pipe(license())
