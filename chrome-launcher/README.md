@@ -97,3 +97,22 @@ chromeLauncher.launch({
   console.log(`Chrome debugging port running on ${chrome.port}`);
 });
 ```
+
+### Continuous Integration
+
+Unlike development environment, on CI environment Chrome binary is not present. 
+If `chrome-launcher` is wanted to be used on CI then Chrome binary can be installed via 
+`curl -L https://raw.githubusercontent.com/GoogleChrome/lighthouse/master/lighthouse-core/scripts/download-chrome.sh | bash`
+command. 
+As a result, e.g. for Travis, you might have .travis.yml config:
+
+```yaml
+language: node_js
+install:
+  - yarn install
+before_script:
+  - export DISPLAY=:99.0
+  - export LIGHTHOUSE_CHROMIUM_PATH="$(pwd)/chrome-linux/chrome"
+  - sh -e /etc/init.d/xvfb start
+  - curl -L https://raw.githubusercontent.com/GoogleChrome/lighthouse/master/lighthouse-core/scripts/download-chrome.sh | bash
+```
