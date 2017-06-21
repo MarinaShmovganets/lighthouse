@@ -100,11 +100,11 @@ chromeLauncher.launch({
 
 ### Continuous Integration
 
-Unlike development environment, on CI environment Chrome binary is not present. 
-If `chrome-launcher` is wanted to be used on CI then Chrome binary can be installed via 
-`curl -L https://raw.githubusercontent.com/GoogleChrome/lighthouse/master/lighthouse-core/scripts/download-chrome.sh | bash`
-command. 
-As a result, e.g. for Travis, you might have .travis.yml config:
+In a CI environment like Travis, Chrome may not be installed. If you want to use `chrome-launcher`, you can install Chrome using Lighthouse's `download-chrome.sh` script:
+
+`curl -L https://raw.githubusercontent.com/GoogleChrome/lighthouse/v2.1.0/lighthouse-core/scripts/download-chrome.sh | bash`
+
+Then in `.travis.yml`, use it like so:
 
 ```yaml
 language: node_js
@@ -114,5 +114,5 @@ before_script:
   - export DISPLAY=:99.0
   - export LIGHTHOUSE_CHROMIUM_PATH="$(pwd)/chrome-linux/chrome"
   - sh -e /etc/init.d/xvfb start
-  - curl -L https://raw.githubusercontent.com/GoogleChrome/lighthouse/master/lighthouse-core/scripts/download-chrome.sh | bash
+  - curl -L https://raw.githubusercontent.com/GoogleChrome/lighthouse/v2.1.0/lighthouse-core/scripts/download-chrome.sh | bash
 ```
