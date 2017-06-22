@@ -139,18 +139,17 @@ class ReportRenderer {
    */
   _renderReport(report) {
     const container = this._dom.createElement('div', 'lh-container');
-    const isSoloCategory = report.reportCategories.length === 1;
-    let scoreHeader;
-
     container.appendChild(this._renderReportHeader(report)); // sticky header goes at the top.
     container.appendChild(this._renderReportNav(report));
-
     const reportSection = container.appendChild(this._dom.createElement('div', 'lh-report'));
+
+    let scoreHeader;
+    const isSoloCategory = report.reportCategories.length === 1;
     if (!isSoloCategory) {
       scoreHeader = reportSection.appendChild(this._dom.createElement('div', 'lh-scores-header'));
     }
-    const categories = reportSection.appendChild(this._dom.createElement('div', 'lh-categories'));
 
+    const categories = reportSection.appendChild(this._dom.createElement('div', 'lh-categories'));
     for (const category of report.reportCategories) {
       if (scoreHeader) {
         scoreHeader.appendChild(this._categoryRenderer.renderScoreGauge(category));
