@@ -382,6 +382,10 @@ class Config {
    * @return {!Object<string, {audits: !Array<{id: string}>}>}
    */
   static filterCategoriesAndAudits(oldCategories, categoryIds, auditIds, skipAuditIds) {
+    if (auditIds && skipAuditIds) {
+      throw new Error('Cannot set both skipAudits and onlyAudits');
+    }
+
     const categories = {};
     const filterByIncludedCategory = !!categoryIds;
     const filterByIncludedAudit = !!auditIds;
@@ -403,10 +407,6 @@ class Config {
         const audits = oldCategories[categoryId].audits;
         return audits.find(candidate => candidate.id === auditId);
       });
-
-      if (skipAuditIds.includes(auditId) && auditIds.includes(auditId)) {
-        log.warn('config', `audit '${auditId}' in 'onlyAudits' was also found in 'skipAudits'`);
-      }
 
       if (!foundCategory) {
         const parentKeyName = skipAuditIds.includes(auditId) ? 'skipAudits' : 'onlyAudits';
