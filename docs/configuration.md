@@ -154,7 +154,7 @@ The categories property controls how to score and organize the audit results in 
 | audits | `Object[]` | The audits to include in the category. |
 | audits[$i].id | `string` | The ID of the audit to include. |
 | audits[$i].weight | `number` | The weight of the audit in the scoring of the category. |
-| audits[$i].group | `string|undefined` | The ID of the [display group](#groups-object-undefined) of the audit. |
+| audits[$i].group | `string` (optional) | The ID of the [display group](#groups-objectundefined) of the audit. |
 
 ### `groups: Object|undefined`
 
