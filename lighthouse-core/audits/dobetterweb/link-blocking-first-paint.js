@@ -72,8 +72,8 @@ class LinkBlockingFirstPaintAudit extends Audit {
       };
     });
 
-    const rawTime = Math.round((endTime - startTime) * 1000);
-    const delayTime = Util.formatMilliseconds(rawTime, 1);
+    const rawDelayTime = Math.round((endTime - startTime) * 1000);
+    const delayTime = Util.formatMilliseconds(rawDelayTime, 1);
     let displayValue = '';
     if (results.length > 1) {
       displayValue = `${results.length} resources delayed first paint by ${delayTime}`;
@@ -92,8 +92,8 @@ class LinkBlockingFirstPaintAudit extends Audit {
 
     return {
       displayValue,
-      score: scoreForWastedMs(delayTime),
-      rawValue: rawTime,
+      score: scoreForWastedMs(rawDelayTime),
+      rawValue: rawDelayTime,
       extendedInfo: {
         formatter: Formatter.SUPPORTED_FORMATS.TABLE,
         value: {
