@@ -27,7 +27,7 @@
 const Gatherer = require('../gatherer');
 const fs = require('fs');
 const semver = require('semver');
-const libDetector = require('js-library-detector');
+const libDetectorSource = fs.readFileSync(require.resolve('js-library-detector/library/libraries.js'), 'utf8');
 // https://snyk.io/partners/api/v2/vulndb/clientside.json
 const snykDB = JSON.parse(fs.readFileSync(require.resolve('../../../../third-party/snyk-snapshot.json'), 'utf8'));
 
@@ -63,6 +63,7 @@ class JSVulnerableLibraries extends Gatherer {
    */
   afterPass(options) {
     const expression = `(function () {
+      ${libDetectorSource};
       return (${detectLibraries.toString()}());
     })()`;
 
@@ -78,13 +79,13 @@ class JSVulnerableLibraries extends Gatherer {
                     if (semver.satisfies(libraries[i].version, snykInfo[j].semver.vulnerable[0])) {
                         // valid vulnerability
                         vulns.push({
-                        	severity: snykInfo[j].severity,
-                        	library: libraries[i].name + '@' + libraries[i].version,
-                        	url: 'https://snyk.io/vuln/' + snykInfo[j].id
+                            severity: snykInfo[j].severity,
+                            library: libraries[i].name + '@' + libraries[i].version,
+                            url: 'https://snyk.io/vuln/' + snykInfo[j].id
                         });
                     }
                 }
-               	libraries[i].vulns = vulns;
+                libraries[i].vulns = vulns;
              }
         }
         return {libraries};

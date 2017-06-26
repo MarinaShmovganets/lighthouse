@@ -36,8 +36,8 @@ class NoVulnerableLibrariesAudit extends Audit {
       name: 'no-vulnerable-libraries',
       description: 'Avoids front-end JavaScript libraries'
         + ' with known security vulnerabilities',
-      helpText: 'Sites should take care to ensure that they are not using any' +
-        ' front-end JavaScript libraries that contain known security vulnerabilities.',
+      helpText: 'Some third-party scripts may contain known security vulnerabilities ' +
+        ' that are easily and identified and exploited by attackers.',
       requiredArtifacts: ['JSVulnerableLibraries']
     };
   }
