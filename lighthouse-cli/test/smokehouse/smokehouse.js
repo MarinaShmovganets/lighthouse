@@ -1,19 +1,8 @@
 #!/usr/bin/env node
 /**
- * @license
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
@@ -22,13 +11,14 @@
 const path = require('path');
 const spawnSync = require('child_process').spawnSync;
 const yargs = require('yargs');
-const log = require('../../../lighthouse-core/lib/log');
+const log = require('lighthouse-logger');
 
 const DEFAULT_CONFIG_PATH = 'pwa-config';
 const DEFAULT_EXPECTATIONS_PATH = 'pwa-expectations';
 
 const PROTOCOL_TIMEOUT_EXIT_CODE = 67;
 const RETRIES = 3;
+const NUMERICAL_EXPECTATION_REGEXP = /^(<=?|>=?)(\d+)$/;
 
 
 /**
@@ -105,6 +95,39 @@ function runLighthouse(url, configPath, saveAssetsPath) {
 }
 
 /**
+ * Checks if the actual value matches the expectation. Does not recursively search. This supports
+ *    - Greater than/less than operators, e.g. "<100", ">90"
+ *    - Regular expressions
+ *    - Strict equality
+ *
+ * @param {*} actual
+ * @param {*} expected
+ * @return {boolean}
+ */
+function matchesExpectation(actual, expected) {
+  if (typeof actual === 'number' && NUMERICAL_EXPECTATION_REGEXP.test(expected)) {
+    const parts = expected.match(NUMERICAL_EXPECTATION_REGEXP);
+    const operator = parts[1];
+    const number = parseInt(parts[2]);
+    switch (operator) {
+      case '>':
+        return actual > number;
+      case '>=':
+        return actual >= number;
+      case '<':
+        return actual < number;
+      case '<=':
+        return actual <= number;
+    }
+  } else if (typeof actual === 'string' && expected instanceof RegExp && expected.test(actual)) {
+    return true;
+  } else {
+    // Strict equality check, plus NaN equivalence.
+    return Object.is(actual, expected);
+  }
+}
+
+/**
  * Walk down expected result, comparing to actual result. If a difference is found,
  * the path to the difference is returned, along with the expected primitive value
  * and the value actually found at that location. If no difference is found, returns
@@ -118,12 +141,7 @@ function runLighthouse(url, configPath, saveAssetsPath) {
  * @return {({path: string, actual: *, expected: *}|null)}
  */
 function findDifference(path, actual, expected) {
-  // Strict equality check, plus NaN equivalence.
-  if (Object.is(actual, expected)) {
-    return null;
-  }
-
-  if (typeof actual === 'string' && expected instanceof RegExp && expected.test(actual)) {
+  if (matchesExpectation(actual, expected)) {
     return null;
   }
 
