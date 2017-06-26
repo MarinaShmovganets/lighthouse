@@ -20,16 +20,19 @@
  any known vulnerabilities they contain.
  */
 
-/* global document ShadowRoot */
+/* global window */
+/* global d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests */
 
 'use strict';
 
 const Gatherer = require('../gatherer');
 const fs = require('fs');
 const semver = require('semver');
-const libDetectorSource = fs.readFileSync(require.resolve('js-library-detector/library/libraries.js'), 'utf8');
+const libDetectorSource = fs.readFileSync(
+  require.resolve('js-library-detector/library/libraries.js'), 'utf8');
 // https://snyk.io/partners/api/v2/vulndb/clientside.json
-const snykDB = JSON.parse(fs.readFileSync(require.resolve('../../../../third-party/snyk-snapshot.json'), 'utf8'));
+const snykDB = JSON.parse(fs.readFileSync(
+    require.resolve('../../../../third-party/snyk-snapshot.json'), 'utf8'));
 
 /**
  * Obtains a list of an object contain any detected JS libraries
@@ -37,24 +40,25 @@ const snykDB = JSON.parse(fs.readFileSync(require.resolve('../../../../third-par
  * @return {!Object}
  */
 /* istanbul ignore next */
+/* eslint-disable camelcase */
 function detectLibraries() {
-  // From https://raw.githubusercontent.com/johnmichel/Library-Detector-for-Chrome/master/library/libraries.js
-
-  let libraries = [];
-  for (let i in d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests) {
-    try {
-      const result = d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests[i].test(window);
-      if (result === false) continue;
-      libraries.push({
+  const libraries = [];
+  for (const i in d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests) {
+    if (Object.hasOwnProperty.call(d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests, i)) {
+      try {
+        const result = d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests[i].test(window);
+        if (result === false) continue;
+        libraries.push({
           name: i,
           version: result.version,
           npmPkgName: d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests[i].npm
-      });
-    } catch(e) {}
+        });
+      } catch(e) {}
+    }
   }
   return libraries;
 }
-
+/* eslint-enable camelcase */
 
 class JSVulnerableLibraries extends Gatherer {
   /**
@@ -70,23 +74,23 @@ class JSVulnerableLibraries extends Gatherer {
     return options.driver
       .evaluateAsync(expression)
       .then(libraries => {
-        //add vulns to raw libraries results
-        let vulns = [];
-        for (let i in libraries) {
-             if (snykDB.npm[libraries[i].npmPkgName]) {
-                let snykInfo = snykDB.npm[libraries[i].npmPkgName];
-                for (let j in snykInfo) {
-                    if (semver.satisfies(libraries[i].version, snykInfo[j].semver.vulnerable[0])) {
-                        // valid vulnerability
-                        vulns.push({
-                            severity: snykInfo[j].severity,
-                            library: libraries[i].name + '@' + libraries[i].version,
-                            url: 'https://snyk.io/vuln/' + snykInfo[j].id
-                        });
-                    }
-                }
-                libraries[i].vulns = vulns;
-             }
+        // add vulns to raw libraries results
+        const vulns = [];
+        for (const i in libraries) {
+          if (snykDB.npm[libraries[i].npmPkgName]) {
+            const snykInfo = snykDB.npm[libraries[i].npmPkgName];
+            for (const j in snykInfo) {
+              if (semver.satisfies(libraries[i].version, snykInfo[j].semver.vulnerable[0])) {
+                // valid vulnerability
+                vulns.push({
+                  severity: snykInfo[j].severity,
+                  library: libraries[i].name + '@' + libraries[i].version,
+                  url: 'https://snyk.io/vuln/' + snykInfo[j].id
+                });
+              }
+            }
+            libraries[i].vulns = vulns;
+          }
         }
         return {libraries};
       })

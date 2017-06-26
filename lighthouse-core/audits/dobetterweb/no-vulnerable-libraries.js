@@ -23,7 +23,6 @@
 'use strict';
 
 const Audit = require('../audit');
-const Formatter = require('../../report/formatter');
 
 class NoVulnerableLibrariesAudit extends Audit {
 
@@ -52,10 +51,12 @@ class NoVulnerableLibrariesAudit extends Audit {
     const finalVulns = Object.assign(...libraries.filter(obj => {
       return obj.vulns;
     }).map(record => {
-      let libVulns = [];
-      for (let i in record.vulns) {
-        libVulns.push(record.vulns[i]);
-      };
+      const libVulns = [];
+      for (const i in record.vulns) {
+        if (Object.hasOwnProperty.call(record.vulns, i)) {
+          libVulns.push(record.vulns[i]);
+        }
+      }
       return libVulns;
     }));
 
