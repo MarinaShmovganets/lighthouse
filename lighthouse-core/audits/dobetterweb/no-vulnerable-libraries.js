@@ -67,7 +67,7 @@ class NoVulnerableLibrariesAudit extends Audit {
     }
 
     const headings = [
-      {key: 'url', itemType: 'url', text: 'Details'},
+      {key: 'url', itemType: 'text', text: 'Details'},
       {key: 'library', itemType: 'text', text: 'Library'},
       {key: 'severity', itemType: 'text', text: 'Severity'}
     ];
