@@ -65,11 +65,9 @@ class LinkBlockingFirstPaintAudit extends Audit {
     const results = filtered.map(item => {
       endTime = Math.max(item.endTime, endTime);
 
-      const transferSizeKbs = Util.formateBytesToKB(Math.round(item.transferSize));
-
       return {
         url: item.tag.url,
-        totalKb: `${transferSizeKbs} KB`,
+        totalKb: Util.formatBytesToKB(item.transferSize),
         totalMs: Util.formatMilliseconds(Math.round((item.endTime - startTime) * 1000), 1)
       };
     });

@@ -35,7 +35,7 @@ class UnusedBytes extends Audit {
    * @return {string}
    */
   static bytesToKbString(bytes) {
-    return `${Util.formateBytesToKB(bytes)} KB`;
+    return Util.formatBytesToKB(bytes);
   }
 
   /**
