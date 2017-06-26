@@ -78,7 +78,7 @@ The settings property controls various aspects of running Lighthouse such as CPU
 
 The passes property controls how to load the requested URL and what information to gather about the page while loading. Each entry in the passes array represents one load of the page (e.g. 4 entries in `passes` will load the page 4 times), so be judicious about adding multiple entries here to avoid extending run times.
 
-Along with the basic settings on how long to wait for the page to load and whether to record a trace file you'll find a list of **gatherers** to use. Gatherers can read information from the page to generate artifacts which are later used by audits to provide you with a Lighthouse report. For more information on implementing a custom gatherer and the role they play in building a Lighthouse report, refer to the [recipes](https://github.com/GoogleChrome/lighthouse/blob/master/docs/recipes/custom-audit).
+Each `passes` entry defines basic settings such as how long to wait for the page to load and whether to record a trace file. Additionally a list of **gatherers** to use is defined per pass. Gatherers can read information from the page to generate artifacts which are later used by audits to provide you with a Lighthouse report. For more information on implementing a custom gatherer and the role they play in building a Lighthouse report, refer to the [recipes](https://github.com/GoogleChrome/lighthouse/blob/master/docs/recipes/custom-audit). Also note that `artifacts.devtoolsLogs` will be automatically populated for every pass. Gatherers also have access to this data within the `afterPass` as `traceData.devtoolsLog` (However, most will find the higher-level `traceData.networkRecords` more useful).
 
 
 #### Example
@@ -106,11 +106,11 @@ Along with the basic settings on how long to wait for the page to load and wheth
 | Name | Type | Description |
 | -- | -- | -- |
 | passName | `string` | A unique identifier for the pass used in audits and during config extension. |
-| recordTrace | `boolean` | Records a [trace](https://github.com/GoogleChrome/lighthouse/blob/master/docs/architecture.md#understanding-a-trace) of the pass when enabled. |
+| recordTrace | `boolean` | Records a [trace](https://github.com/GoogleChrome/lighthouse/blob/master/docs/architecture.md#understanding-a-trace) of the pass when enabled. Available to gatherers during `afterPass` as `traceData.trace` and to audits in `artifacts.traces`. |
 | useThrottling | `boolean` | Enables throttling of the pass when enabled. |
-| pauseAfterLoadMs | `number` | The number of milliseconds to wait after the load event before the pass can continue. Used to ensure the page has had time for post-load JavaScript to execute before ending a trace. |
-| networkQuietThresholdMs | `number` | The number of milliseconds since the last network request to wait before the page should be considered to have reached 'network quiet'. Used to ensure the page has had time for the full waterfall of network requests to complete before ending a trace. |
-| pauseAfterNetworkQuietMs | `number` | The number of milliseconds to wait after 'network quiet' before the pass can continue. Used to ensure the page has had time for post-network-quiet JavaScript to execute before ending a trace. |
+| pauseAfterLoadMs | `number` | The number of milliseconds to wait after the load event before the pass can continue. Used to ensure the page has had time for post-load JavaScript to execute before ending a trace. (Default: 0) |
+| networkQuietThresholdMs | `number` | The number of milliseconds since the last network request to wait before the page should be considered to have reached 'network quiet'. Used to ensure the page has had time for the full waterfall of network requests to complete before ending a trace. (Default: 5000) |
+| pauseAfterNetworkQuietMs | `number` | The number of milliseconds to wait after 'network quiet' before the pass can continue. Used to ensure the page has had time for post-network-quiet JavaScript to execute before ending a trace. (Default: 0) |
 | blockedUrlPatterns | `string[]` | URLs of requests to block while loading the page. Basic wildcard support using `*`.  |
 | gatherers | `string[]` | The list of gatherers to run on this pass. |
 
@@ -133,6 +133,8 @@ The audits property controls which audits to run and include with your Lighthous
 ### `categories: Object|undefined`
 
 The categories property controls how to score and organize the audit results in the report. Each category defined in the config will have an entry in the `reportCategories` property of Lighthouse's output. The category output contains the child audit results along with an overall score for the category.
+
+**Note:** many modules consuming Lighthouse have no need to group or score all the audit results; in these cases, it's fine to omit a categories section.
 
 #### Example
 ```js
@@ -165,7 +167,7 @@ The categories property controls how to score and organize the audit results in 
 
 The groups property controls how to visually group audits within a category. For example, this is what enables the grouped rendering of metrics and accessibility audits in the report.
 
-**Note: logic to display audit groups is required in the report renderer. Adding arbitrary groups without additional rendering logic may not perform as expected.**
+**Note: The report-renderer has display logic that's hardcoded to specific audit group names. Adding arbitrary groups without additional rendering logic may not perform as expected.**
 
 #### Example
 ```js
@@ -200,4 +202,5 @@ The best examples are the ones Lighthouse uses itself! There are several referen
 * [lighthouse-core/config/perf.json](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/config/perf.json)
 * [lighthouse-core/config/plots-config.js](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/config/plots-config.js)
 * [docs/recipes/custom-audit/custom-config.js](https://github.com/GoogleChrome/lighthouse/blob/master/docs/recipes/custom-audit/custom-config.js)
+* [pwmetrics](https://github.com/paulirish/pwmetrics/blob/master/lib/lh-config.ts)
 
