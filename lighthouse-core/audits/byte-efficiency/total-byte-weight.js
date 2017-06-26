@@ -87,6 +87,11 @@ class TotalByteWeight extends ByteEfficiencyAudit {
         optimalValue: this.meta.optimalValue,
         displayValue: `Total size was ${ByteEfficiencyAudit.bytesToKbString(totalBytes)}`,
         score: Math.round(Math.max(0, Math.min(score, 100))),
+        extendedInfo: {
+          value: {
+            results,
+          }
+        },
         details: tableDetails
       };
     });

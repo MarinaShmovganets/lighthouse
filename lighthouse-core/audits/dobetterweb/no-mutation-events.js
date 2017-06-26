@@ -78,6 +78,11 @@ class NoMutationEventsAudit extends Audit {
 
     return {
       rawValue: groupedResults.length === 0,
+      extendedInfo: {
+        value: {
+          results: groupedResults,
+        }
+      },
       details,
       debugString
     };

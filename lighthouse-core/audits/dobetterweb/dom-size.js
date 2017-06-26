@@ -100,6 +100,9 @@ class DOMSize extends Audit {
       optimalValue: this.meta.optimalValue,
       score: Math.round(score),
       displayValue: `${stats.totalDOMNodes.toLocaleString()} nodes`,
+      extendedInfo: {
+        value: cards
+      },
       details: {
         type: 'cards',
         header: {type: 'text', text: 'View details'},

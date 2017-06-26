@@ -8,8 +8,8 @@
 /**
  * An enumeration of acceptable output modes:
  *   'json': JSON formatted results
- *   'html': An HTML report rendered client-side with DOM elements
- *   'domhtml': Alias for 'html' report.
+ *   'html': An HTML report
+ *   'domhtml': Alias for 'html' report
  */
 enum OutputMode {
   json,

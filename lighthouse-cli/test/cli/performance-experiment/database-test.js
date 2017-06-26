@@ -10,7 +10,7 @@ const assert = require('assert');
 const fs = require('fs');
 
 const PerfXDatabase = require('../../../performance-experiment/experiment-database/database');
-const sampleResults = require('../../../../lighthouse-core/test/results/sample');
+const sampleResults = require('../../../../lighthouse-core/test/results/sample_v2');
 
 // TODO: Update/retire PerfX
 describe.skip('Perf-X Database', function() {

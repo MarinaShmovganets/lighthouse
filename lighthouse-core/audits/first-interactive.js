@@ -57,7 +57,7 @@ class FirstInteractiveMetric extends Audit {
           rawValue: firstInteractive.timeInMs,
           displayValue: Util.formatMilliseconds(firstInteractive.timeInMs),
           extendedInfo: {
-            value: firstInteractive
+            value: firstInteractive,
           }
         };
       });

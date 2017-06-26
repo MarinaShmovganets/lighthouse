@@ -61,7 +61,7 @@ class EstimatedInputLatency extends Audit {
       rawValue,
       displayValue: Util.formatMilliseconds(rawValue, 1),
       extendedInfo: {
-        value: latencyPercentiles
+        value: latencyPercentiles,
       }
     };
   }
