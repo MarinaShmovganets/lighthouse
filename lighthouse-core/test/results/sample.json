@@ -836,7 +836,7 @@
       "name": "total-byte-weight",
       "category": "Network",
       "description": "Avoids enormous network payloads",
-      "helpText": "Network transfer size [costs users real dollars](https://whatdoesmysitecost.com/) and is [highly correlated](http://httparchive.org/interesting.php#onLoad) with long load times. Try to find ways to reduce the size of required files."
+      "helpText": "Network transfer size [costs users real money](https://whatdoesmysitecost.com/) and is [highly correlated](http://httparchive.org/interesting.php#onLoad) with long load times. Try to find ways to reduce the size of required files."
     },
     "unused-css-rules": {
       "score": true,
@@ -942,7 +942,7 @@
       "name": "dom-size",
       "category": "Performance",
       "description": "Avoids an excessive DOM size",
-      "helpText": "Browser engineers recommend pages contain fewer than ~1,500 DOM nodes. The sweet spot is a tree depth < 32 elements and fewer than 60 children/parent element. A large DOM can increase memory, cause longer [style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/fundamentals/performance/rendering/)."
+      "helpText": "Browser engineers recommend pages contain fewer than ~1,500 DOM nodes. The sweet spot is a tree depth < 32 elements and fewer than 60 children/parent element. A large DOM can increase memory usage, cause longer [style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/fundamentals/performance/rendering/)."
     },
     "external-anchors-use-rel-noopener": {
       "score": false,
@@ -1612,8 +1612,8 @@
         },
         {
           "overall": 0,
-          "name": "Address bar matches brand colors",
-          "description": "The browser address bar can be themed to match your site. A `theme-color` [meta tag](https://developers.google.com/web/updates/2014/11/Support-for-theme-color-in-Chrome-39-for-Android) will upgrade the address bar when a user browses the site, and the [manifest theme-color](https://developers.google.com/web/updates/2015/08/using-manifest-to-set-sitewide-theme-color) will apply the same theme site-wide once it's been added to homescreen.",
+          "name": "Address bar has been themed",
+          "description": "The browser address bar can be themed to match your site. Adding the `theme-color` [meta tag](https://developers.google.com/web/updates/2014/11/Support-for-theme-color-in-Chrome-39-for-Android) to a web page will colorize the address bar when a user browses the site, while adding the `theme_color` [attribute](https://developers.google.com/web/updates/2015/08/using-manifest-to-set-sitewide-theme-color) to your web app's manifest will colorize the address bar once the app has been added to homescreen.",
           "subItems": [
             "manifest-exists",
             "theme-color-meta",
