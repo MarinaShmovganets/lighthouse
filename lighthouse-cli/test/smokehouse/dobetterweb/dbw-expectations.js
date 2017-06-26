@@ -23,6 +23,13 @@ module.exports = [
       },
       'uses-http2': {
         score: false,
+        extendedInfo: {
+          value: {
+            results: {
+              length: 14
+            }
+          }
+        },
         details: {
           items: {
             length: 14
@@ -33,6 +40,11 @@ module.exports = [
         score: false,
         debugString: 'Lighthouse was unable to determine the destination of some anchor tags. ' +
                      'If they are not used as hyperlinks, consider removing the _blank target.',
+        extendedInfo: {
+          value: {
+            length: 3
+          }
+        },
         details: {
           items: {
             length: 3
@@ -48,6 +60,13 @@ module.exports = [
       },
       'link-blocking-first-paint': {
         score: 0,
+        extendedInfo: {
+          value: {
+            results: {
+              length: 4
+            }
+          }
+        },
         details: {
           items: {
             length: 4
@@ -56,6 +75,11 @@ module.exports = [
       },
       'no-document-write': {
         score: false,
+        extendedInfo: {
+          value: {
+            length: 3
+          }
+        },
         details: {
           items: {
             length: 3
@@ -64,6 +88,13 @@ module.exports = [
       },
       'no-mutation-events': {
         score: false,
+        extendedInfo: {
+          value: {
+            results: {
+              length: 6
+            }
+          }
+        },
         details: {
           items: {
             length: 6
@@ -90,6 +121,13 @@ module.exports = [
       'script-blocking-first-paint': {
         // TODO: re-enable score assertions when we have more flexible assertions like < 100
         // score: 90,
+        extendedInfo: {
+          value: {
+            results: {
+              length: 1
+            }
+          }
+        },
         details: {
           items: {
             length: 1
@@ -108,6 +146,11 @@ module.exports = [
       },
       'deprecations': {
         score: false,
+        extendedInfo: {
+          value: {
+            length: 4
+          }
+        },
         details: {
           items: {
             length: 4
@@ -129,6 +172,13 @@ module.exports = [
     audits: {
       'dom-size': {
         score: 100,
+        extendedInfo: {
+          value: {
+            0: {value: '1,324'},
+            1: {value: '7'},
+            2: {value: '1,303'}
+          }
+        },
         details: {
           items: {
             0: {value: '1,324'},
@@ -144,6 +194,13 @@ module.exports = [
     audits: {
       'dom-size': {
         score: 0,
+        extendedInfo: {
+          value: {
+            0: {value: '6,025'},
+            1: {value: '9'},
+            2: {value: '6,003'}
+          }
+        },
         details: {
           items: {
             0: {value: '6,025'},
@@ -159,6 +216,13 @@ module.exports = [
     audits: {
       'dom-size': {
         score: 100,
+        extendedInfo: {
+          value: {
+            0: {value: '25'},
+            1: {value: '9'},
+            2: {value: '9'}
+          }
+        },
         details: {
           items: {
             0: {value: '25'},
@@ -174,6 +238,13 @@ module.exports = [
     audits: {
       'dom-size': {
         score: 100,
+        extendedInfo: {
+          value: {
+            0: {value: '24'},
+            1: {value: '7'},
+            2: {value: '9'}
+          }
+        },
         details: {
           items: {
             0: {value: '24'},
