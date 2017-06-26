@@ -117,7 +117,7 @@ class UserTimings extends Audit {
         return {
           name: item.name,
           timingType: item.isMark ? 'Mark' : 'Measure',
-          time: Util.formatMilliseconds(time, 1),
+          time: Util.formatMilliseconds(time, 0.001),
           timeAsNumber: time,
         };
       }).sort((itemA, itemB) => {

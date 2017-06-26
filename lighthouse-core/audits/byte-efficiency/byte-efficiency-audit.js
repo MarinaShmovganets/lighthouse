@@ -55,7 +55,7 @@ class UnusedBytes extends Audit {
    * @return {string}
    */
   static bytesToMsString(bytes, networkThroughput) {
-    return Util.formatMilliseconds( Math.round(bytes / networkThroughput * 100) * 10, 1);
+    return Util.formatMilliseconds(bytes / networkThroughput * 1000, 1);
   }
 
   /**
