@@ -1,21 +1,16 @@
 # Lighthouse Configuration
 
-The Lighthouse config object is the primary method of customizing a Lighthouse run to suit your use case. Using a custom config, you can limit the audits to run, add additional loads of the page under special conditions, add your own custom checks, tweak the scoring, and more.
+The Lighthouse config object is the primary method of customizing Lighthouse to suit your use case. Using a custom config, you can limit the audits to run, add additional loads of the page under special conditions, add your own custom checks, tweak the scoring, and more.
+
+Read more about the [architecture of Lighthouse](https://github.com/GoogleChrome/lighthouse/blob/master/docs/architecture.md).
 
 ## Usage
 
-You can specify a custom config file when using lighthouse through the CLi or consuming the npm module yourself.
+You can specify a custom config file when using Lighthouse through the CLI or consuming the npm module yourself.
 
-**CLI**
-```sh
-lighthouse --config-path=path/to/custom-config.js https://example.com
-```
-
-**Node**
+**custom-config.js**
 ```js
-const lighthouse = require('lighthouse')
-
-const config = {
+module.exports = {
   passes: [{
     recordTrace: true,
     pauseBeforeTraceEndMs: 5000,
@@ -30,9 +25,19 @@ const config = {
     'first-interactive',
     'consistently-interactive',
   ]
-}
+};
+```
 
-lighthouse('http://example.com/', {port: 9222}, config)
+**CLI**
+```sh
+lighthouse --config-path=path/to/custom-config.js https://example.com
+```
+
+**Node**
+```js
+const lighthouse = require('lighthouse');
+const config = require('./path/to/custom-config.js');
+lighthouse('https://example.com/', {port: 9222}, config);
 ```
 
 ## Properties
@@ -62,18 +67,18 @@ The settings property controls various aspects of running Lighthouse such as CPU
 }
 ```
 
-#### Schema
+#### Options
 | Name | Type | Description |
 | -- | -- | -- |
-| onlyCategories | `string[]` | Limits the run to just what's required for the specified categories. Additive with `onlyAudits`. |
-| onlyAudits | `string[]` | Limits the run to just what's required for the specified audits. Additive with `onlyCategories`. |
-| skipAudits | `string[]` | Prevents the specified audits from being evaluated in the run. Takes priority over `onlyCategories`, not usable in conjuction with `onlyAudits`. |
+| onlyCategories | `string[]` | Includes only the specified categories in the final report. Additive with `onlyAudits` and reduces the time to audit a page. |
+| onlyAudits | `string[]` | Includes only the specified audits in the final report. Additive with `onlyCategories` and reduces the time to audit a page. |
+| skipAudits | `string[]` | Excludes the specified audits from the final report. Takes priority over `onlyCategories`, not usable in conjuction with `onlyAudits`, and reduces the time to audit a page. |
 
 ### `passes: Object[]`
 
 The passes property controls how to load the requested URL and what information to gather about the page while loading. Each entry in the passes array represents one load of the page (e.g. 4 entries in `passes` will load the page 4 times), so be judicious about adding multiple entries here to avoid extending run times.
 
-Along with the basic settings on how long to wait for the page to load and whether to record a trace file you'll find a list of **gatherers** to use. Gatherers can read information from the page to generate artifacts which are later used by audits to provide you with a Lighthouse report. For more information on implementing a custom gatherer and the role they play in building a lighthouse report, refer to the [recipes](https://github.com/GoogleChrome/lighthouse/blob/master/docs/recipes/).
+Along with the basic settings on how long to wait for the page to load and whether to record a trace file you'll find a list of **gatherers** to use. Gatherers can read information from the page to generate artifacts which are later used by audits to provide you with a Lighthouse report. For more information on implementing a custom gatherer and the role they play in building a Lighthouse report, refer to the [recipes](https://github.com/GoogleChrome/lighthouse/blob/master/docs/recipes/custom-audit).
 
 
 #### Example
@@ -97,15 +102,15 @@ Along with the basic settings on how long to wait for the page to load and wheth
 }
 ```
 
-#### Schema
+#### Options
 | Name | Type | Description |
 | -- | -- | -- |
-| passName | `string` | An identifier for the pass used in audits and during config extension. |
+| passName | `string` | A unique identifier for the pass used in audits and during config extension. |
 | recordTrace | `boolean` | Records a [trace](https://github.com/GoogleChrome/lighthouse/blob/master/docs/architecture.md#understanding-a-trace) of the pass when enabled. |
 | useThrottling | `boolean` | Enables throttling of the pass when enabled. |
-| pauseAfterLoadMs | `number` | The number of milliseconds to wait after the load event before the pass can continue. |
-| networkQuietThresholdMs | `number` | The number of milliseconds since the last network request to wait before the page should be considered to have reached 'network quiet'. |
-| pauseAfterNetworkQuietMs | `number` | The number of milliseconds to wait after 'network quiet' before the pass can continue. |
+| pauseAfterLoadMs | `number` | The number of milliseconds to wait after the load event before the pass can continue. Used to ensure the page has had time for post-load JavaScript to execute before ending a trace. |
+| networkQuietThresholdMs | `number` | The number of milliseconds since the last network request to wait before the page should be considered to have reached 'network quiet'. Used to ensure the page has had time for the full waterfall of network requests to complete before ending a trace. |
+| pauseAfterNetworkQuietMs | `number` | The number of milliseconds to wait after 'network quiet' before the pass can continue. Used to ensure the page has had time for post-network-quiet JavaScript to execute before ending a trace. |
 | blockedUrlPatterns | `string[]` | URLs of requests to block while loading the page. Basic wildcard support using `*`.  |
 | gatherers | `string[]` | The list of gatherers to run on this pass. |
 
@@ -146,7 +151,7 @@ The categories property controls how to score and organize the audit results in 
 }
 ```
 
-#### Schema
+#### Options
 | Name | Type | Description |
 | -- | -- | -- |
 | name | `string` | The display name of the category. |
