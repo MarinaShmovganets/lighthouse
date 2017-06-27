@@ -225,7 +225,8 @@ export class Launcher {
     return new Promise((resolve, reject) => {
       let retries = 0;
       let waitStatus = 'Waiting for browser.';
-      (function poll() {
+
+      const poll = () => {
         if (retries === 0) {
           log.log('ChromeLauncher', waitStatus);
         }
@@ -240,11 +241,19 @@ export class Launcher {
             })
             .catch(err => {
               if (retries > 10) {
+                log.error('ChromeLauncher', err.message);
+                const stderr =
+                    this.fs.readFileSync(`${this.userDataDir}/chrome-err.log`, {encoding: 'utf-8'});
+                log.error(
+                    'ChromeLauncher', `Logging contents of ${this.userDataDir}/chrome-err.log`);
+                log.error('ChromeLauncher', stderr);
                 return reject(err);
               }
               delay(launcher.pollInterval).then(poll);
             });
-      })();
+      };
+      poll();
+
     });
   }
 
