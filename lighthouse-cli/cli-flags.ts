@@ -14,7 +14,7 @@ import {GetValidOutputOptions, OutputMode} from './printer';
 export interface Flags {
   skipAutolaunch: boolean, port: number, selectChrome: boolean, chromeFlags: string, output: any,
       outputPath: string, interactive: boolean, saveArtifacts: boolean, saveAssets: boolean,
-      view: boolean, maxWaitForLoad: number
+      view: boolean, maxWaitForLoad: number, logLevel: string
 }
 
 export function getFlags(manualArgv?: string) {

@@ -33,7 +33,8 @@ interface LighthouseError extends Error {
  * a debuggable instance.
  */
 async function getDebuggableChrome(flags: Flags) {
-  return await launch({port: flags.port, chromeFlags: flags.chromeFlags.split(' ')});
+  return await launch(
+      {port: flags.port, chromeFlags: flags.chromeFlags.split(' '), logLevel: flags.logLevel});
 }
 
 function showConnectionError() {
