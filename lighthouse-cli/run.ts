@@ -100,7 +100,8 @@ export function saveResults(results: Results, artifacts: Object, flags: Flags) {
         return innerPromise.then((_: Results) => Printer.write(results, outputType, outputPath));
       }, Promise.resolve(results));
     } else {
-      const outputPath = flags.outputPath || `${resolvedPath}.report.${typeToExtension(flags.output)}`;
+      const outputPath =
+          flags.outputPath || `${resolvedPath}.report.${typeToExtension(flags.output)}`;
       return Printer.write(results, flags.output, outputPath).then(results => {
         if (flags.output === Printer.OutputMode[Printer.OutputMode.html] ||
             flags.output === Printer.OutputMode[Printer.OutputMode.domhtml]) {
