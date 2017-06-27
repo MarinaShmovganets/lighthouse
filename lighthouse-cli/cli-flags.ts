@@ -34,6 +34,7 @@ export function getFlags() {
       .example(
           'lighthouse <url> --disable-device-emulation --disable-network-throttling',
           'Disable device emulation')
+      .example('lighthouse <url> --remote-device', 'Enable remote device emulation')
       .example(
           'lighthouse <url> --chrome-flags="--window-size=412,732"',
           'Launch Chrome with a specific window size')
@@ -61,6 +62,8 @@ export function getFlags() {
         'disable-device-emulation': 'Disable Nexus 5X emulation',
         'disable-cpu-throttling': 'Disable CPU throttling',
         'disable-network-throttling': 'Disable network throttling',
+        'remote-device':
+            'Disables CPU/Network throttling, emulation, and defaults the protocol port to 9222',
         'save-assets': 'Save the trace contents & screenshots to disk',
         'save-artifacts': 'Save all gathered artifacts to disk',
         'list-all-audits': 'Prints a list of all available audits and exits',
@@ -93,10 +96,10 @@ Example: --output-path=./lighthouse-results.html`,
 
       // boolean values
       .boolean([
-        'disable-storage-reset', 'disable-device-emulation', 'disable-cpu-throttling',
-        'disable-network-throttling', 'save-assets', 'save-artifacts', 'list-all-audits',
-        'list-trace-categories', 'perf', 'view', 'skip-autolaunch', 'select-chrome', 'verbose',
-        'quiet', 'help', 'interactive'
+        'disable-storage-reset', 'remote-device', 'disable-device-emulation',
+        'disable-cpu-throttling', 'disable-network-throttling', 'save-assets', 'save-artifacts',
+        'list-all-audits', 'list-trace-categories', 'perf', 'view', 'skip-autolaunch',
+        'select-chrome', 'verbose', 'quiet', 'help', 'interactive'
       ])
       .choices('output', GetValidOutputOptions())
 
