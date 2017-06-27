@@ -30,6 +30,7 @@ export interface Options {
   handleSIGINT?: boolean;
   chromePath?: string;
   userDataDir?: string;
+  logLevel?: string;
 }
 
 export interface LaunchedChrome {
@@ -79,6 +80,8 @@ export class Launcher {
   constructor(private opts: Options = {}, moduleOverrides: ModuleOverrides = {}) {
     this.fs = moduleOverrides.fs || fs;
     this.rimraf = moduleOverrides.rimraf || rimraf;
+
+    log.setLevel(defaults(this.opts.logLevel, 'info'));
 
     // choose the first one (default)
     this.startingUrl = defaults(this.opts.startingUrl, 'about:blank');
