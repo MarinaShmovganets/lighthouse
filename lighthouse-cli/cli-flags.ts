@@ -17,8 +17,8 @@ export interface Flags {
       view: boolean, maxWaitForLoad: number
 }
 
-export function getFlags(fakeInput?: string) {
-  const y = fakeInput ? yargs(fakeInput) : yargs;
+export function getFlags(manualArgv?: string) {
+  const y = manualArgv ? yargs(manualArgv) : yargs;
 
   return y.help('help')
       .version(() => pkg.version)
