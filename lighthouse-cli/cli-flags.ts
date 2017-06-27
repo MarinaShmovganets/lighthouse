@@ -17,8 +17,10 @@ export interface Flags {
       view: boolean, maxWaitForLoad: number
 }
 
-export function getFlags() {
-  return yargs.help('help')
+export function getFlags(fakeInput?: string) {
+  const y = fakeInput ? yargs(fakeInput) : yargs;
+
+  return y.help('help')
       .version(() => pkg.version)
       .showHelpOnFail(false, 'Specify --help for available options')
 
