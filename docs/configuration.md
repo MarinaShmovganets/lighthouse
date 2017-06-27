@@ -42,6 +42,15 @@ lighthouse('https://example.com/', {port: 9222}, config);
 
 ## Properties
 
+| Name | Type |
+| - | - |
+| extends | <code>string&#124;boolean&#124;undefined</code> |
+| settings | <code>Object&#124;undefined</code> |
+| passes | <code>Object[]</code> |
+| audits | <code>string[]</code> |
+| categories | <code>Object&#124;undefined</code> |
+| groups | <code>Object&#124;undefined</code> |
+
 ### `extends: string|boolean|undefined`
 
 The extends property controls if your configuration should inherit from the default Lighthouse configuration. [Learn more.](#config-extension)
