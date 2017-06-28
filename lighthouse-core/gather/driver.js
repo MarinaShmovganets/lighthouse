@@ -514,8 +514,11 @@ class Driver {
 
   /**
    * Returns a promise that resolves when:
-   * - it's been networkQuietThresholdMs milliseconds after both onload and the network
-   * has gone idle, or
+   * - All of the following conditions have been met:
+   *    - pauseAfterLoadMs milliseconds have passed since the load event.
+   *    - networkQuietThresholdMs milliseconds have passed since the last network request that exceeded
+   *      2 inflight requests (network-2-quiet has been reached).
+   *    - cpuQuietThresholdMs have passed since the last long task after network-2-quiet.
    * - maxWaitForLoadedMs milliseconds have passed.
    * See https://github.com/GoogleChrome/lighthouse/issues/627 for more.
    * @param {number} pauseAfterLoadMs
