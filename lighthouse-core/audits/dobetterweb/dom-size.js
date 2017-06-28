@@ -99,7 +99,7 @@ class DOMSize extends Audit {
       rawValue: stats.totalDOMNodes,
       optimalValue: this.meta.optimalValue,
       score: Math.round(score),
-      displayValue: `${stats.totalDOMNodes.toLocaleString()} nodes`,
+      displayValue: `${Util.formatNumber(stats.totalDOMNodes)} nodes`,
       extendedInfo: {
         value: cards
       },
