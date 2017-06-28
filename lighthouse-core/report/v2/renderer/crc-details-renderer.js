@@ -117,7 +117,7 @@ class CriticalRequestChainRenderer {
       span.textContent = ' - ' + Util.chainDuration(
           segment.node.request.startTime, segment.node.request.endTime) + 'ms, ';
       const span2 = dom.createElement('span', 'crc-node__chain-duration');
-      span2.textContent = Util.formatBytesToKB(segment.node.request.transferSize) + 'KB';
+      span2.textContent = Util.formatBytesToKB(segment.node.request.transferSize);
 
       treevalEl.appendChild(span);
       treevalEl.appendChild(span2);
