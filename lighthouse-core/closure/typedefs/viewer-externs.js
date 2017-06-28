@@ -5,8 +5,19 @@
  */
 'use strict';
 
-const path = require('path');
+/**
+ * Typing externs file needed for Viewer compilation.
+ * @externs
+ */
 
-const opn = require('opn');
+/**
+ * @struct
+ * @constructor
+ */
+function ReportGenerator() {}
 
-opn(path.resolve(__dirname, 'index.html'));
+/**
+ * @param {!ReportRenderer.ReportJSON} reportJson
+ * @return {string}
+ */
+ReportGenerator.prototype.generateReportHtml = function(reportJson) {};

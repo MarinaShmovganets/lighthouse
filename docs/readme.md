@@ -9,18 +9,17 @@ assumes you've installed Lighthouse as a dependency (`yarn add --dev lighthouse`
 
 ```javascript
 const lighthouse = require('lighthouse');
-const chromeLauncher = require('lighthouse/chrome-launcher/chrome-launcher');
+const chromeLauncher = require('lighthouse/chrome-launcher');
 
-function launchChromeAndRunLighthouse(url, flags, config = null) {
+function launchChromeAndRunLighthouse(url, flags = {}, config = null) {
   return chromeLauncher.launch().then(chrome => {
     flags.port = chrome.port;
     return lighthouse(url, flags, config).then(results =>
-      chrome.kill().then(() => results)
-    );
+      chrome.kill().then(() => results));
   });
 }
 
-const flags = {output: 'json'};
+const flags = {};
 
 // Usage:
 launchChromeAndRunLighthouse('https://example.com', flags).then(results => {
@@ -30,7 +29,7 @@ launchChromeAndRunLighthouse('https://example.com', flags).then(results => {
 
 ### Performance-only Lighthouse run
 
-Many modules consuming Lighthouse are only interested in the performance numbers. 
+Many modules consuming Lighthouse are only interested in the performance numbers.
 Lighthouse ships with a [performance-only config](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/config/perf.json) that you can use:
 
 ```js
@@ -39,7 +38,7 @@ const perfConfig: any = require('lighthouse/lighthouse-core/config/perf.json');
 launchChromeAndRunLighthouse(url, flags, perfConfig).then( // ...
 ```
 
-You can also craft your own config (e.g. [plots.json](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/config/plots.json)) for completely custom runs. Also see the [basic custom audit recipe](https://github.com/GoogleChrome/lighthouse/tree/master/docs/recipes/custom-audit).
+You can also craft your own config (e.g. [plots-config.js](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/config/plots-config.js)) for completely custom runs. Also see the [basic custom audit recipe](https://github.com/GoogleChrome/lighthouse/tree/master/docs/recipes/custom-audit).
 
 
 ### Turn on logging

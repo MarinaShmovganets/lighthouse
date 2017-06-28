@@ -9,7 +9,7 @@ const Config = require('../../config/config');
 const assert = require('assert');
 const path = require('path');
 const defaultConfig = require('../../config/default.js');
-const log = require('../../lib/log');
+const log = require('lighthouse-logger');
 const Gatherer = require('../../gather/gatherers/gatherer');
 const Audit = require('../../audits/audit');
 const Runner = require('../../runner');
@@ -296,6 +296,7 @@ describe('Config', () => {
       settings: {
         onlyCategories: ['needed-category'],
         onlyAudits: ['color-contrast'],
+        skipAudits: ['first-meaningful-paint'],
       },
       passes: [
         {recordTrace: true, gatherers: []},
@@ -328,11 +329,11 @@ describe('Config', () => {
       },
     });
 
-    assert.ok(config.audits.length, 3);
+    assert.ok(config.audits.length, 2);
     assert.equal(config.passes.length, 2);
     assert.ok(config.passes[0].recordTrace, 'preserves recordTrace pass');
     assert.ok(!config.categories['unused-category'], 'removes unused categories');
-    assert.equal(config.categories['needed-category'].audits.length, 2);
+    assert.equal(config.categories['needed-category'].audits.length, 1);
     assert.equal(config.categories['other-category'].audits.length, 1);
   });
 
@@ -377,12 +378,13 @@ describe('Config', () => {
       settings: {
         onlyCategories: ['performance', 'missing-category'],
         onlyAudits: ['first-interactive', 'missing-audit'],
+        skipAudits: ['first-interactive'],
       },
     });
 
     log.events.removeListener('warning', saveWarning);
     assert.ok(config, 'failed to generate config');
-    assert.equal(warnings.length, 3, 'did not warn enough');
+    assert.equal(warnings.length, 4, 'did not warn enough');
   });
 
   describe('artifact loading', () => {

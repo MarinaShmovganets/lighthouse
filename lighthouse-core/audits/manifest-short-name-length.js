@@ -16,24 +16,11 @@ class ManifestShortNameLength extends Audit {
       category: 'Manifest',
       name: 'manifest-short-name-length',
       description: 'Manifest\'s `short_name` won\'t be truncated when displayed on homescreen',
-      helpText: 'Make your app\'s `short_name` less than 12 characters to ' +
+      helpText: 'Make your app\'s `short_name` fewer than 12 characters to ' +
           'ensure that it\'s not truncated on homescreens. [Learn ' +
           'more](https://developers.google.com/web/tools/lighthouse/audits/manifest-short_name-is-not-truncated).',
       requiredArtifacts: ['Manifest']
     };
-  }
-
-
-  static assessManifest(manifestValues, failures) {
-    if (manifestValues.isParseFailure) {
-      failures.push(manifestValues.parseFailureReason);
-      return;
-    }
-
-    const themeColorCheck = manifestValues.allChecks.find(i => i.id === 'hasThemeColor');
-    if (!themeColorCheck.passing) {
-      failures.push(themeColorCheck.failureText);
-    }
   }
 
   /**
