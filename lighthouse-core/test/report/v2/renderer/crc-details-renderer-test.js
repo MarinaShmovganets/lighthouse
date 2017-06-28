@@ -104,6 +104,7 @@ describe('DetailsRenderer', () => {
     assert.equal(chains[1].querySelector('.crc-node__tree-hostname').textContent, '(example.com)');
     const durationNodes = chains[1].querySelectorAll('.crc-node__chain-duration');
     assert.equal(durationNodes[0].textContent, ' - 5,000ms, ');
+    // Note: actual transferSize is 2000 bytes but formatter displays as KB.
     assert.equal(durationNodes[1].textContent, '1.95KB');
   });
 });
