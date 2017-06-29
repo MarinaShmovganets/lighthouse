@@ -203,7 +203,7 @@ module.exports = [
         },
         details: {
           items: {
-            0: {value: '6,025'},
+            0: {value: '6,037'},
             1: {value: '9'},
             2: {value: '6,003'}
           }
@@ -225,7 +225,7 @@ module.exports = [
         },
         details: {
           items: {
-            0: {value: '25'},
+            0: {value: '37'},
             1: {value: '9'},
             2: {value: '9'}
           }
@@ -247,7 +247,7 @@ module.exports = [
         },
         details: {
           items: {
-            0: {value: '24'},
+            0: {value: '33'},
             1: {value: '7'},
             2: {value: '9'}
           }

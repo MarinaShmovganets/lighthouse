@@ -748,7 +748,7 @@ class Driver {
    *     True by default.
    * @return {!Promise<!Array<!Element>>} The found elements, or [], resolved in a promise
    */
-  getAllElementsInDocumentAndFrames(pierce = true) {
+  getElementsInDocument(pierce = true) {
     return this.sendCommand('DOM.getFlattenedDocument', {depth: -1, pierce})
       .then(result => {
         const elements = result.nodes.filter(node => node.nodeType === 1);
