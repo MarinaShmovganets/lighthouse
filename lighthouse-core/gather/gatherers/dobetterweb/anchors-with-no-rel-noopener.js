@@ -14,26 +14,27 @@ class AnchorsWithNoRelNoopener extends Gatherer {
    */
   afterPass(options) {
     const driver = options.driver;
-    return driver.querySelectorAll('a[target="_blank"]:not([rel~="noopener"])')
-      .then(failingNodeList => {
-        const failingNodes = failingNodeList.map(node => {
-          return Promise.all([
-            node.getAttribute('href'),
-            node.getAttribute('rel'),
-            node.getAttribute('target')
-          ]);
-        });
-        return Promise.all(failingNodes);
-      })
-      .then(failingNodes => {
-        return failingNodes.map(node => {
-          return {
-            href: node[0],
-            rel: node[1],
-            target: node[2]
-          };
-        });
+    return driver.querySelectorAll(
+      'a[target="_blank"]:not([rel~="noopener"]):not([rel~="noreferrer"])'
+    ).then(failingNodeList => {
+      const failingNodes = failingNodeList.map(node => {
+        return Promise.all([
+          node.getAttribute('href'),
+          node.getAttribute('rel'),
+          node.getAttribute('target')
+        ]);
       });
+      return Promise.all(failingNodes);
+    })
+    .then(failingNodes => {
+      return failingNodes.map(node => {
+        return {
+          href: node[0],
+          rel: node[1],
+          target: node[2]
+        };
+      });
+    });
   }
 }
 
