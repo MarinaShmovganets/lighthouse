@@ -931,7 +931,7 @@ class Driver {
    * @return {!Promise}
    */
   registerPerformanceObserver() {
-    return this.evaluteScriptOnNewDocument(`(${registerPerformanceObserver.toString()})()`);
+    return this.evaluteScriptOnNewDocument(`(${registerPerformanceObserverInPage.toString()})()`);
   }
 
   /**
@@ -1088,7 +1088,7 @@ function wrapRuntimeEvalErrorInBrowser(err) {
  * property on window to the end time of the last long task.
  * instanbul ignore next
  */
-function registerPerformanceObserver() {
+function registerPerformanceObserverInPage() {
   window.____lastLongTask = window.performance.now();
   const observer = new window.PerformanceObserver(entryList => {
     const entries = entryList.getEntries();
