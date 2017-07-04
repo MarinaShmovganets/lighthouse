@@ -12,9 +12,8 @@ const Driver = require('../lighthouse-core/gather/driver.js');
 import {GetValidOutputOptions, OutputMode} from './printer';
 
 export interface Flags {
-  port: number, selectChrome: boolean, chromeFlags: string, output: any,
-      outputPath: string, interactive: boolean, saveArtifacts: boolean, saveAssets: boolean,
-      view: boolean, maxWaitForLoad: number, logLevel: string
+  port: number, chromeFlags: string, output: any, outputPath: string, interactive: boolean,
+      saveArtifacts: boolean, saveAssets: boolean, view: boolean, maxWaitForLoad: number, logLevel: string
 }
 
 export function getFlags(manualArgv?: string) {
@@ -76,8 +75,6 @@ export function getFlags(manualArgv?: string) {
         'port': 'The port to use for the debugging protocol. Use 0 for a random port',
         'max-wait-for-load':
             'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
-        'select-chrome':
-            'Interactively choose version of Chrome to use when multiple installations are found',
         'interactive': 'Open Lighthouse in interactive mode'
       })
 
@@ -96,8 +93,7 @@ Example: --output-path=./lighthouse-results.html`,
       .boolean([
         'disable-storage-reset', 'disable-device-emulation', 'disable-cpu-throttling',
         'disable-network-throttling', 'save-assets', 'save-artifacts', 'list-all-audits',
-        'list-trace-categories', 'perf', 'view', 'select-chrome', 'verbose',
-        'quiet', 'help', 'interactive'
+        'list-trace-categories', 'perf', 'view', 'verbose', 'quiet', 'help', 'interactive'
       ])
       .choices('output', GetValidOutputOptions())
 
