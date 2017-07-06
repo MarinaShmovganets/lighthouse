@@ -5,10 +5,22 @@
  */
 'use strict';
 
-module.exports = {
-  report: 'lighthouse-core/report/templates/*.html',
-  reportDist: 'lighthouse-core/report/templates/',
-  partials: 'lighthouse-core/report/partials/*.html',
-  partialsDist: 'lighthouse-core/report/partials/templates/',
-  dist: 'dist'
-};
+/**
+ * Expected Lighthouse audit values for --perf tests
+ */
+module.exports = [
+  {
+    initialUrl: 'http://localhost:10200/tricky-ttci.html',
+    url: 'http://localhost:10200/tricky-ttci.html',
+    audits: {
+      'first-interactive': {
+        score: '<75',
+        rawValue: '>9000',
+      },
+      'consistently-interactive': {
+        score: '<75',
+        rawValue: '>9000',
+      },
+    }
+  },
+];

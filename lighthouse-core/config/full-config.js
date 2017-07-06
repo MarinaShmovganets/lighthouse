@@ -5,23 +5,24 @@
  */
 'use strict';
 
-const gulp = require('gulp');
-const compile = require('./gulp/compile');
-const config = require('./gulp/config');
-
-gulp.task('compileReport', compile.compileReport);
-gulp.task('compilePartials', compile.compilePartials);
-
-gulp.task('compile-templates', ['compileReport', 'compilePartials']);
-
-gulp.task('watch', ['compileReport', 'compilePartials'], () => {
-  gulp.watch([
-    config.report
-  ], ['compileReport']);
-
-  gulp.watch([
-    config.partials
-  ], ['compilePartials']);
-});
-
-gulp.task('default', ['compile-templates']);
+module.exports = {
+  extends: 'lighthouse:default',
+  passes: [
+    {
+      passName: 'extraPass',
+      gatherers: [
+        'styles',
+      ]
+    },
+  ],
+  audits: [
+    'dobetterweb/no-old-flexbox',
+  ],
+  categories: {
+    'best-practices': {
+      audits: [
+        {id: 'no-old-flexbox', weight: 1},
+      ]
+    }
+  },
+};
