@@ -16,8 +16,7 @@
  */
 
 /**
- * @fileoverview Gathers a list of libraries and
- any known vulnerabilities they contain.
+ * @fileoverview Gathers a list of libraries and any known vulnerabilities they contain.
  */
 
 /* global window */
@@ -35,27 +34,29 @@ const snykDB = JSON.parse(fs.readFileSync(
     require.resolve('../../../../third-party/snyk-snapshot.json'), 'utf8'));
 
 /**
- * Obtains a list of an object contain any detected JS libraries
- * and the versions they're using.
- * @return {!Object}
+ * Obtains a list of detected JS libraries and their versions.
+ * @return {!Array<!{name: string, version: string, npmPkgName: string}>}
  */
 /* istanbul ignore next */
 /* eslint-disable camelcase */
 function detectLibraries() {
   const libraries = [];
-  for (const i in d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests) {
-    if (Object.hasOwnProperty.call(d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests, i)) {
-      try {
-        const result = d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests[i].test(window);
-        if (result === false) continue;
+
+  // d41d8cd98f00b204e9800998ecf8427e_ is a consistent prefix used by the detect libraries
+  // see https://github.com/HTTPArchive/httparchive/issues/77#issuecomment-291320900
+  Object.entries(d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests).forEach(([name, lib]) => {
+    try {
+      const result = lib.test(window);
+      if (result) {
         libraries.push({
-          name: i,
+          name: name,
           version: result.version,
-          npmPkgName: d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests[i].npm
+          npmPkgName: lib.npm
         });
-      } catch(e) {}
-    }
-  }
+      }
+    } catch(e) {}
+  });
+
   return libraries;
 }
 /* eslint-enable camelcase */
@@ -76,26 +77,23 @@ class JSVulnerableLibraries extends Gatherer {
       .then(libraries => {
         // add vulns to raw libraries results
         const vulns = [];
-        for (const i in libraries) {
-          if (snykDB.npm[libraries[i].npmPkgName]) {
-            const snykInfo = snykDB.npm[libraries[i].npmPkgName];
-            for (const j in snykInfo) {
-              if (semver.satisfies(libraries[i].version, snykInfo[j].semver.vulnerable[0])) {
+        libraries.forEach(lib => {
+          if (snykDB.npm[lib.npmPkgName]) {
+            const snykInfo = snykDB.npm[lib.npmPkgName];
+            snykInfo.forEach(vuln => {
+              if (semver.satisfies(lib.version, vuln.semver.vulnerable[0])) {
                 // valid vulnerability
                 vulns.push({
-                  severity: snykInfo[j].severity,
-                  library: libraries[i].name + '@' + libraries[i].version,
-                  url: 'https://snyk.io/vuln/' + snykInfo[j].id
+                  severity: vuln.severity,
+                  library: `${lib.name}@${lib.version}`,
+                  url: 'https://snyk.io/vuln/' + vuln.id
                 });
               }
-            }
-            libraries[i].vulns = vulns;
+            });
+            lib.vulns = vulns;
           }
-        }
-        return {libraries};
-      })
-      .then(returnedValue => {
-        return returnedValue;
+        });
+        return libraries;
       });
   }
 }

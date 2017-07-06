@@ -17,7 +17,8 @@
 
 /**
  * @fileoverview Audits a page to make sure there are no JS libraries with
- * known vulnerabilities being used.
+ * known vulnerabilities being used. Checks against a vulnerability db
+ * provided by Snyk.io and checked in locally as third-party/snyk-snapshot.json
  */
 
 'use strict';
@@ -46,7 +47,7 @@ class NoVulnerableLibrariesAudit extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const libraries = artifacts.JSVulnerableLibraries.libraries;
+    const libraries = artifacts.JSVulnerableLibraries;
 
     const finalVulns = Object.assign(...libraries.filter(obj => {
       return obj.vulns;
@@ -72,13 +73,13 @@ class NoVulnerableLibrariesAudit extends Audit {
       {key: 'library', itemType: 'text', text: 'Library'},
       {key: 'severity', itemType: 'text', text: 'Severity'}
     ];
-    const details = Audit.makeV2TableDetails(headings, finalVulns);
+    const details = Audit.makeTableDetails(headings, finalVulns);
 
     return {
       rawValue: finalVulns.length === 0,
       displayValue,
       extendedInfo: {
-        js_libs: libraries,
+        jsLibs: libraries,
         vulnerabilities: finalVulns
       },
       details,
