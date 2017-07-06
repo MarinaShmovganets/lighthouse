@@ -90,7 +90,7 @@ class Connection {
         if (object.error) {
           const logLevel = callback.options && callback.options.silent ? 'verbose' : 'error';
           log.formatProtocol('method <= browser ERR', {method: callback.method}, logLevel);
-          throw new Error(`Protocol error (${callback.method}): ${object.error.message}`);
+          throw new Error(`Protocol error (${callback.method}): ${object.error.message} ${object.error.data}`);
         }
 
         log.formatProtocol('method <= browser OK',
