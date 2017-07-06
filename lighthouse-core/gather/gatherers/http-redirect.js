@@ -6,10 +6,11 @@
 'use strict';
 
 const Gatherer = require('./gatherer');
+const URL = require('../../lib/url-shim');
 
 /**
  * This gatherer changes the options.url so that its pass loads the http page.
- * After load it detects if its on a crypographic scheme.
+ * After load it detects if its protocol is https
  * TODO: Instead of abusing a loadPage pass for this test, it could likely just do an XHR instead
  */
 class HTTPRedirect extends Gatherer {
@@ -25,39 +26,24 @@ class HTTPRedirect extends Gatherer {
   }
 
   afterPass(options) {
-    // Reset the options.
-    options.url = this._preRedirectURL;
+    let isRedirect = new URL(options.url).protocol === 'https:' ? true : false;
 
-    // Allow override for faster testing.
-    const timeout = options._testTimeout || 10000;
-
-    const securityPromise = options.driver.getSecurityState()
-      .then(state => {
-        return {
-          value: state.schemeIsCryptographic
-        };
+    if(options.driver._httpsArr.length !== 0) {
+      options.driver._httpsArr.forEach( (httpsUrl) => {
+        if(new URL(options.url).protocol === 'http:') {
+          const RedirectURL = options.url.replace(/^http/, 'https');
+          if(RedirectURL === httpsUrl.url) {
+            isRedirect = true;
+          }
+        } else if(httpsUrl.url === options.url) {
+          isRedirect = true;
+        } else if(httpsUrl.path === '/') {
+          isRedirect = true;
+        }
       });
-
-    let noSecurityChangesTimeout;
-    const timeoutPromise = new Promise((resolve, reject) => {
-      // Set up a timeout for ten seconds in case we don't get any
-      // security events at all. If that happens, bail.
-      noSecurityChangesTimeout = setTimeout(_ => {
-        reject(new Error('Timed out waiting for HTTP redirection.'));
-      }, timeout);
-    });
-
-    return Promise.race([
-      securityPromise,
-      timeoutPromise
-    ]).then(result => {
-      // Clear timeout. No effect if it won, no need to wait if it lost.
-      clearTimeout(noSecurityChangesTimeout);
-      return result;
-    }).catch(err => {
-      clearTimeout(noSecurityChangesTimeout);
-      throw err;
-    });
+    }
+    options.url = this._preRedirectURL;
+    return {value: isRedirect};
   }
 }
 
