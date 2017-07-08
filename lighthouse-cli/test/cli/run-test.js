@@ -34,6 +34,9 @@ describe('CLI run', function() {
       assert.strictEqual(results.generatedTime, passedResults.generatedTime);
       assert.strictEqual(results.url, passedResults.url);
       assert.strictEqual(results.audits.viewport.rawValue, passedResults.audits.viewport.rawValue);
+      assert.strictEqual(
+          Object.keys(results.audits).length,
+          Object.keys(passedResults.audits).length);
       assert.deepStrictEqual(results.timing, passedResults.timing);
 
       fs.unlinkSync(filename);
