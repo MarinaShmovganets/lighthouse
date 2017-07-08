@@ -69,8 +69,11 @@ export function getFlags(manualArgv?: string) {
         'additional-trace-categories':
             'Additional categories to capture with the trace (comma-delimited).',
         'config-path': 'The path to the config JSON.',
-        'chrome-flags':
-            'Custom flags to pass to Chrome (space-delimited). For a full list of flags, see http://peter.sh/experiments/chromium-command-line-switches/.',
+        'chrome-flags': `Custom flags to pass to Chrome (space-delimited). For a full list of flags, see http://peter.sh/experiments/chromium-command-line-switches/.
+
+            Environment variables:
+            CHROME_PATH: Explicit path of intended Chrome binary. If set must point to an executable of a build of Chromium version 54.0 or later. By default, any detected Chrome Canary or Chrome (stable) will be launched.
+            `,
         'perf': 'Use a performance-test-only configuration',
         'port': 'The port to use for the debugging protocol. Use 0 for a random port',
         'max-wait-for-load':
