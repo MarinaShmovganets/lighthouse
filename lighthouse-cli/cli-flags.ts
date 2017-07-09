@@ -13,7 +13,8 @@ import {GetValidOutputOptions, OutputMode} from './printer';
 
 export interface Flags {
   port: number, chromeFlags: string, output: any, outputPath: string, interactive: boolean,
-      saveArtifacts: boolean, saveAssets: boolean, view: boolean, maxWaitForLoad: number, logLevel: string
+      saveArtifacts: boolean, saveAssets: boolean, view: boolean, maxWaitForLoad: number,
+      logLevel: string
 }
 
 export function getFlags(manualArgv?: string) {
@@ -69,7 +70,8 @@ export function getFlags(manualArgv?: string) {
         'additional-trace-categories':
             'Additional categories to capture with the trace (comma-delimited).',
         'config-path': 'The path to the config JSON.',
-        'chrome-flags': `Custom flags to pass to Chrome (space-delimited). For a full list of flags, see http://peter.sh/experiments/chromium-command-line-switches/.
+        'chrome-flags':
+            `Custom flags to pass to Chrome (space-delimited). For a full list of flags, see http://peter.sh/experiments/chromium-command-line-switches/.
 
             Environment variables:
             CHROME_PATH: Explicit path of intended Chrome binary. If set must point to an executable of a build of Chromium version 54.0 or later. By default, any detected Chrome Canary or Chrome (stable) will be launched.
