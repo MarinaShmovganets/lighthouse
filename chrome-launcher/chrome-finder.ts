@@ -60,7 +60,9 @@ function resolveChromePath() {
   }
 
   if (canAccess(process.env.LIGHTHOUSE_CHROMIUM_PATH)) {
-    log.warn('ChromeLauncher', 'LIGHTHOUSE_CHROMIUM_PATH is deprecated, use CHROME_PATH env variable instead.');
+    log.warn(
+        'ChromeLauncher',
+        'LIGHTHOUSE_CHROMIUM_PATH is deprecated, use CHROME_PATH env variable instead.');
     return process.env.LIGHTHOUSE_CHROMIUM_PATH as string;
   }
 
@@ -131,7 +133,7 @@ export function win32() {
     '\\Google\\Chrome SxS\\Application\\chrome.exe', '\\Google\\Chrome\\Application\\chrome.exe'
   ];
   const prefixes =
-    [process.env.LOCALAPPDATA, process.env.PROGRAMFILES, process.env['PROGRAMFILES(X86)']];
+      [process.env.LOCALAPPDATA, process.env.PROGRAMFILES, process.env['PROGRAMFILES(X86)']];
 
   const customChromePath = resolveChromePath();
   if (customChromePath) {
