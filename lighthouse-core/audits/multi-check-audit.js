@@ -38,11 +38,16 @@ class MultiCheckAudit extends Audit {
       };
     }
 
+    let debugString;
+    if (result.warnings && result.warnings.length > 0) {
+      debugString = `Warnings: ${result.warnings.join(', ')}`;
+    }
+
     // Otherwise, we pass
     return {
       rawValue: true,
       extendedInfo,
-      debugString: result.debugString,
+      debugString,
     };
   }
 

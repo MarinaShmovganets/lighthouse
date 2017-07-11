@@ -157,7 +157,7 @@ describe('PWA: webapp install banner audit', () => {
 
     return WebappInstallBannerAudit.audit(artifacts).then(result => {
       assert.strictEqual(result.rawValue, true);
-      assert.equal(result.debugString, 'Warning!');
+      assert.equal(result.debugString, 'Warnings: Warning!');
     });
   });
 });

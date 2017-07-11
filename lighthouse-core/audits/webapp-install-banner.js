@@ -79,20 +79,19 @@ class WebappInstallBanner extends MultiCheckAudit {
 
     if (!hasOfflineStartUrl) {
       result.failures.push('Manifest start_url is not cached by a Service Worker');
+    }
 
-      if (artifacts.StartUrl.debugString) {
-        result.failures.push(artifacts.StartUrl.debugString);
-      }
-    } else if (artifacts.StartUrl.debugString) {
-      result.debugString = artifacts.StartUrl.debugString;
+    if (artifacts.StartUrl.debugString) {
+      result.warnings.push(artifacts.StartUrl.debugString);
     }
   }
 
   static audit_(artifacts) {
     const failures = [];
+    const warnings = [];
 
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
-      const result = {failures, manifestValues};
+      const result = {warnings, failures, manifestValues};
       WebappInstallBanner.assessManifest(artifacts, result);
       WebappInstallBanner.assessServiceWorker(artifacts, result);
       WebappInstallBanner.assessOfflineStartUrl(artifacts, result);
