@@ -24,6 +24,11 @@ export function darwin() {
 
   const installations: Array<string> = [];
 
+  const customChromePath = resolveChromePath();
+  if (customChromePath) {
+    installations.push(customChromePath);
+  }
+
   execSync(
       `${LSREGISTER} -dump` +
       ' | grep -i \'google chrome\\( canary\\)\\?.app$\'' +
@@ -47,7 +52,9 @@ export function darwin() {
     {regex: /^\/Applications\/.*Chrome.app/, weight: 100},
     {regex: /^\/Applications\/.*Chrome Canary.app/, weight: 101},
     {regex: /^\/Volumes\/.*Chrome.app/, weight: -2},
-    {regex: /^\/Volumes\/.*Chrome Canary.app/, weight: -1}
+    {regex: /^\/Volumes\/.*Chrome Canary.app/, weight: -1},
+    {regex: new RegExp(process.env.LIGHTHOUSE_CHROMIUM_PATH), weight: 150},
+    {regex: new RegExp(process.env.CHROME_PATH), weight: 151}
   ];
   // clang-format on
 
