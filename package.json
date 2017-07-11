@@ -104,6 +104,10 @@
     {
       "path": "./lighthouse-extension/dist/scripts/lighthouse-background.js",
       "threshold": "400 Kb"
+    },
+    {
+      "path": "./lighthouse-viewer/dist/src/viewer.js",
+      "threshold": "60 Kb"
     }
   ],
   "homepage": "https://github.com/GoogleChrome/lighthouse#readme"
