@@ -43,7 +43,8 @@ class WebappInstallBanner extends MultiCheckAudit {
     };
   }
 
-  static assessManifest(manifestValues, failures) {
+  static assessManifest(artifacts, result) {
+    const {manifestValues, failures} = result;
     if (manifestValues.isParseFailure) {
       failures.push(manifestValues.parseFailureReason);
       return;
@@ -66,21 +67,21 @@ class WebappInstallBanner extends MultiCheckAudit {
   }
 
 
-  static assessServiceWorker(artifacts, failures) {
+  static assessServiceWorker(artifacts, result) {
     const hasServiceWorker = SWAudit.audit(artifacts).rawValue;
     if (!hasServiceWorker) {
-      failures.push('Site does not register a Service Worker');
+      result.failures.push('Site does not register a Service Worker');
     }
   }
 
-  static assessOfflineStartUrl(artifacts, failures, result) {
+  static assessOfflineStartUrl(artifacts, result) {
     const hasOfflineStartUrl = artifacts.StartUrl.statusCode === 200;
 
     if (!hasOfflineStartUrl) {
-      failures.push('Manifest start_url is not cached by a Service Worker');
+      result.failures.push('Manifest start_url is not cached by a Service Worker');
 
       if (artifacts.StartUrl.debugString) {
-        failures.push(artifacts.StartUrl.debugString);
+        result.failures.push(artifacts.StartUrl.debugString);
       }
     } else if (artifacts.StartUrl.debugString) {
       result.debugString = artifacts.StartUrl.debugString;
@@ -92,9 +93,9 @@ class WebappInstallBanner extends MultiCheckAudit {
 
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
       const result = {failures, manifestValues};
-      WebappInstallBanner.assessManifest(manifestValues, failures, result);
-      WebappInstallBanner.assessServiceWorker(artifacts, failures, result);
-      WebappInstallBanner.assessOfflineStartUrl(artifacts, failures, result);
+      WebappInstallBanner.assessManifest(artifacts, result);
+      WebappInstallBanner.assessServiceWorker(artifacts, result);
+      WebappInstallBanner.assessOfflineStartUrl(artifacts, result);
 
       return result;
     });

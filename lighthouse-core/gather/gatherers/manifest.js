@@ -27,7 +27,7 @@ class Manifest extends Gatherer {
   afterPass(options) {
     return options.driver.getAppManifest()
       .then(response => {
-        if (!response || !response.data) {
+        if (!response) {
           return null;
         }
 

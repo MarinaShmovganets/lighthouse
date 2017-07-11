@@ -53,11 +53,16 @@ class StartUrl extends Gatherer {
       })
       .then(manifest => {
         if (!manifest || !manifest.value) {
-          this.debugString = `No usable web app manifest found on page ${options.url}`;
+          const detailedMsg = manifest && manifest.debugString;
+          this.debugString = detailedMsg ?
+              `Error fetching web app manifest: ${detailedMsg}` :
+              `No usable web app manifest found on page ${options.url}`;
           return;
         }
 
         if (manifest.value.start_url.debugString) {
+          // Even if the start URL had an error, the browser will still supply a fallback URL.
+          // Therefore, we only set the debugString here and continue with the fetch.
           this.debugString = manifest.value.start_url.debugString;
         }
 
@@ -75,13 +80,22 @@ class StartUrl extends Gatherer {
 
     return options.driver.goOnline(options)
       .then(_ => {
-        let debugString = this.debugString;
-        if (!navigationRecord) {
-          debugString = debugString || 'Did not fetch start URL from service worker';
-          return {statusCode: -1, debugString};
+        if (!this.startUrl) {
+          return {
+            statusCode: -1,
+            debugString: this.debugString || 'No start URL to fetch',
+          };
+        } else if (!navigationRecord) {
+          return {
+            statusCode: -1,
+            debugString: this.debugString || 'Did not fetch start URL from service worker',
+          };
+        } else {
+          return {
+            statusCode: navigationRecord.statusCode,
+            debugString: this.debugString,
+          };
         }
-
-        return {statusCode: navigationRecord.statusCode, debugString};
       });
   }
 }
