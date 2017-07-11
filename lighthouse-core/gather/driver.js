@@ -10,6 +10,7 @@ const emulation = require('../lib/emulation');
 const Element = require('../lib/element');
 const EventEmitter = require('events').EventEmitter;
 const URL = require('../lib/url-shim');
+const TraceParser = require('../lib/traces/trace-parser');
 
 const log = require('lighthouse-logger');
 const DevtoolsLog = require('./devtools-log');
@@ -206,7 +207,7 @@ class Driver {
    * @param {string} scriptSource
    * @return {!Promise<string>} Identifier of the added script.
    */
-  evaluateScriptOnLoad(scriptSource) {
+  evaluteScriptOnNewDocument(scriptSource) {
     return this.sendCommand('Page.addScriptToEvaluateOnLoad', {
       scriptSource
     });
@@ -457,8 +458,6 @@ class Driver {
         });
     }
 
-    log.verbose('Driver', `Installing longtask listener for CPU idle.`);
-    this.evaluateScriptOnLoad(`(${installPerformanceObserver.toString()})()`);
     let cancel;
     const promise = new Promise((resolve, reject) => {
       checkForQuiet(this, resolve);
@@ -736,6 +735,20 @@ class Driver {
   }
 
   /**
+   * Returns the flattened list of all DOM nodes within the document.
+   * @param {boolean=} pierce Whether to pierce through shadow trees and iframes.
+   *     True by default.
+   * @return {!Promise<!Array<!Element>>} The found elements, or [], resolved in a promise
+   */
+  getElementsInDocument(pierce = true) {
+    return this.sendCommand('DOM.getFlattenedDocument', {depth: -1, pierce})
+      .then(result => {
+        const elements = result.nodes.filter(node => node.nodeType === 1);
+        return elements.map(node => new Element({nodeId: node.nodeId}, this));
+      });
+  }
+
+  /**
    * @param {{additionalTraceCategories: string=}=} flags
    */
   beginTrace(flags) {
@@ -794,7 +807,7 @@ class Driver {
   _readTraceFromStream(streamHandle) {
     return new Promise((resolve, reject) => {
       let isEOF = false;
-      let result = '';
+      const parser = new TraceParser();
 
       const readArguments = {
         handle: streamHandle.stream
@@ -805,11 +818,11 @@ class Driver {
           return;
         }
 
-        result += response.data;
+        parser.parseChunk(response.data);
 
         if (response.eof) {
           isEOF = true;
-          return resolve(JSON.parse(result));
+          return resolve(parser.getTrace());
         }
 
         return this.sendCommand('IO.read', readArguments).then(onChunkRead);
@@ -914,10 +927,19 @@ class Driver {
   /**
    * Cache native functions/objects inside window
    * so we are sure polyfills do not overwrite the native implementations
+   * @return {!Promise}
    */
   cacheNatives() {
-    return this.evaluateScriptOnLoad(`window.__nativePromise = Promise;
+    return this.evaluteScriptOnNewDocument(`window.__nativePromise = Promise;
         window.__nativeError = Error;`);
+  }
+
+  /**
+   * Install a performance observer that watches longtask timestamps for waitForCPUIdle.
+   * @return {!Promise}
+   */
+  registerPerformanceObserver() {
+    return this.evaluteScriptOnNewDocument(`(${registerPerformanceObserverInPage.toString()})()`);
   }
 
   /**
@@ -945,7 +967,7 @@ class Driver {
 
     const funcBody = captureJSCallUsage.toString();
 
-    this.evaluateScriptOnLoad(`
+    this.evaluteScriptOnNewDocument(`
         ${globalVarToPopulate} = new Set();
         (${funcName} = ${funcBody}(${funcName}, ${globalVarToPopulate}))`);
 
@@ -1074,7 +1096,7 @@ function wrapRuntimeEvalErrorInBrowser(err) {
  * property on window to the end time of the last long task.
  * instanbul ignore next
  */
-function installPerformanceObserver() {
+function registerPerformanceObserverInPage() {
   window.____lastLongTask = window.performance.now();
   const observer = new window.PerformanceObserver(entryList => {
     const entries = entryList.getEntries();
