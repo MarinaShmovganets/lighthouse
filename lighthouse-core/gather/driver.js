@@ -1114,10 +1114,10 @@ function registerPerformanceObserverInPage() {
     }
   });
 
-  // HACK: Kick off an interval so the script won't be discarded prematurely by DevTools
-  setInterval(() => undefined, 5000);
-  // HACK: Start the observation in a setTimeout so Chrome will continue to deliver longtask notifications
-  setTimeout(() => observer.observe({entryTypes: ['longtask']}), 0);
+  observer.observe({entryTypes: ['longtask']});
+  // HACK: A PerformanceObserver will be GC'd if there are no more references to it, so attach it to
+  // window to ensure we still receive longtask notifications
+  window.____lhPerformanceObserver = observer;
 }
 
 
