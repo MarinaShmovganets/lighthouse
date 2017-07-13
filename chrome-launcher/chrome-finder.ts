@@ -53,11 +53,17 @@ export function darwin() {
     {regex: /^\/Applications\/.*Chrome Canary.app/, weight: 101},
     {regex: /^\/Volumes\/.*Chrome.app/, weight: -2},
     {regex: /^\/Volumes\/.*Chrome Canary.app/, weight: -1},
-    {regex: new RegExp(process.env.LIGHTHOUSE_CHROMIUM_PATH), weight: 150},
-    {regex: new RegExp(process.env.CHROME_PATH), weight: 151}
   ];
-  // clang-format on
 
+  if (process.env.LIGHTHOUSE_CHROMIUM_PATH) {
+    priorities.push({regex: new RegExp(process.env.LIGHTHOUSE_CHROMIUM_PATH), weight: 150});
+  }
+
+  if (process.env.CHROME_PATH) {
+    priorities.push({regex: new RegExp(process.env.CHROME_PATH), weight: 151});
+  }
+
+  // clang-format on
   return sort(installations, priorities);
 }
 
@@ -107,8 +113,7 @@ export function linux() {
   ];
   executables.forEach((executable: string) => {
     try {
-      const chromePath =
-          execFileSync('which', [executable]).toString().split(newLineRegex)[0];
+      const chromePath = execFileSync('which', [executable]).toString().split(newLineRegex)[0];
 
       if (canAccess(chromePath)) {
         installations.push(chromePath);
@@ -127,9 +132,15 @@ export function linux() {
   const priorities: Priorities = [
     {regex: /chrome-wrapper$/, weight: 51}, {regex: /google-chrome-stable$/, weight: 50},
     {regex: /google-chrome$/, weight: 49},
-    {regex: new RegExp(process.env.LIGHTHOUSE_CHROMIUM_PATH), weight: 100},
-    {regex: new RegExp(process.env.CHROME_PATH), weight: 101}
   ];
+
+  if (process.env.LIGHTHOUSE_CHROMIUM_PATH) {
+    priorities.push({regex: new RegExp(process.env.LIGHTHOUSE_CHROMIUM_PATH), weight: 100});
+  }
+
+  if (process.env.CHROME_PATH) {
+    priorities.push({regex: new RegExp(process.env.CHROME_PATH), weight: 101});
+  }
 
   return sort(uniq(installations.filter(Boolean)), priorities);
 }
