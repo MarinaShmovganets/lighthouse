@@ -1116,7 +1116,7 @@ function registerPerformanceObserverInPage() {
 
   observer.observe({entryTypes: ['longtask']});
   // HACK: A PerformanceObserver will be GC'd if there are no more references to it, so attach it to
-  // window to ensure we still receive longtask notifications
+  // window to ensure we still receive longtask notifications. See https://crbug.com/742530.
   window.____lhPerformanceObserver = observer;
 }
 

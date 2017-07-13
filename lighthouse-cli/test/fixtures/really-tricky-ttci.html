@@ -1,0 +1,26 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<body>
+  Just try and figure out my TTCI (hint: it should be NEVER)<br>
+  This is a test to ensure we properly handle PerformanceObserver lifecycle, see
+  <a href="https://crbug.com/742530">https://crbug.com/742530</a>
+  <script>
+    /**
+     * Stalls the main thread for timeInMs
+     */
+    function stall(timeInMs) {
+      const start = performance.now();
+      while (performance.now() - start < timeInMs) {
+        for (let i = 0; i < 1000000; i++) ;
+      }
+    }
+
+    function keepStalling() {
+      stall(50);
+      setTimeout(keepStalling, 4000 + Math.random() * 700);
+    }
+
+    keepStalling();
+  </script>
+</body>
+</html>
