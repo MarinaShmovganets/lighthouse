@@ -41,12 +41,10 @@ describe('ComputedArtifact base class', () => {
     const multiInputArtifact = new MultipleInputArtifact();
 
     return Promise.resolve()
-      .then(() => singleInputArtifact.request(1))
-      .then(() => multiInputArtifact.request(1, 2))
-      .then(() => {
-        assert.throws(() => singleInputArtifact.request(1, 2));
-        assert.throws(() => multiInputArtifact.request(1));
-      });
+      .then(_ => singleInputArtifact.request(1))
+      .then(_ => multiInputArtifact.request(1, 2))
+      .then(_ => assert.throws(() => singleInputArtifact.request(1, 2)))
+      .then(_ => assert.throws(() => multiInputArtifact.request(1)));
   });
 
   it('caches computed artifacts', () => {
@@ -76,12 +74,12 @@ describe('ComputedArtifact base class', () => {
 
     return computedArtifact.request(obj0, obj1)
       .then(result => assert.equal(result, 0))
-      .then(() => assert.deepEqual(computedArtifact.lastArguments, [obj0, obj1, mockComputed]))
-      .then(() => computedArtifact.request(obj1, obj2))
+      .then(_ => assert.deepEqual(computedArtifact.lastArguments, [obj0, obj1, mockComputed]))
+      .then(_ => computedArtifact.request(obj1, obj2))
       .then(result => assert.equal(result, 1))
-      .then(() => assert.deepEqual(computedArtifact.lastArguments, [obj1, obj2, mockComputed]))
-      .then(() => computedArtifact.request(obj0, obj1))
+      .then(_ => assert.deepEqual(computedArtifact.lastArguments, [obj1, obj2, mockComputed]))
+      .then(_ => computedArtifact.request(obj0, obj1))
       .then(result => assert.equal(result, 0))
-      .then(() => assert.deepEqual(computedArtifact.lastArguments, [obj1, obj2, mockComputed]));
+      .then(_ => assert.deepEqual(computedArtifact.lastArguments, [obj1, obj2, mockComputed]));
   });
 });
