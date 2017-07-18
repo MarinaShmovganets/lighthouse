@@ -5,6 +5,8 @@
  */
 'use strict';
 
+const statistics = require('../lib/statistics');
+
 const DEFAULT_PASS = 'defaultPass';
 
 class Audit {
@@ -30,6 +32,27 @@ class Audit {
    */
   static get meta() {
     throw new Error('Audit meta information must be overridden.');
+  }
+
+  /**
+   * Computes and clamps the score between 0 and 100 based on the measured value, and the two control
+   * points on the log-normal distribution (point of diminishing returns and the median value).
+   *
+   * @param {number} measuredValue
+   * @param {number} diminishingReturnsValue
+   * @param {number} medianValue
+   * @return {number}
+   */
+  static computeScore(measuredValue, diminishingReturnsValue, medianValue) {
+    const distribution = statistics.getLogNormalDistribution(
+      medianValue,
+      diminishingReturnsValue
+    );
+
+    let score = 100 * distribution.computeComplementaryPercentile(measuredValue);
+    score = Math.min(100, score);
+    score = Math.max(0, score);
+    return Math.round(score);
   }
 
   /**
