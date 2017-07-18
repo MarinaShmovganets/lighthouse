@@ -120,7 +120,7 @@ class ComputedArtifact {
 
   /**
    * Request a computed artifact, caching the result on the input artifact.
-   * @param {*} artifact
+   * @param {...*} artifacts
    * @return {!Promise<*>}
    */
   request(...artifacts) {
