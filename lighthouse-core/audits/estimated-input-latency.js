@@ -50,7 +50,7 @@ class EstimatedInputLatency extends Audit {
     //  Median = 100ms
     //  75th Percentile ≈ 133ms
     //  95th Percentile ≈ 199ms
-    const score = Audit.computeScore(
+    const score = Audit.computeLogNormalScore(
       ninetieth.time,
       SCORING_POINT_OF_DIMINISHING_RETURNS,
       SCORING_MEDIAN

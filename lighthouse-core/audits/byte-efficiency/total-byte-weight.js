@@ -71,7 +71,7 @@ class TotalByteWeight extends ByteEfficiencyAudit {
       //   <= 1600KB: score≈100
       //   4000KB: score=50
       //   >= 9000KB: score≈0
-      const score = ByteEfficiencyAudit.computeScore(
+      const score = ByteEfficiencyAudit.computeLogNormalScore(
         totalBytes,
         SCORING_POINT_OF_DIMINISHING_RETURNS,
         SCORING_MEDIAN

@@ -62,7 +62,7 @@ class SpeedIndexMetric extends Audit {
       //  Median = 5,500
       //  75th Percentile = 8,820
       //  95th Percentile = 17,400
-      const score = Audit.computeScore(
+      const score = Audit.computeLogNormalScore(
         speedline.perceptualSpeedIndex,
         SCORING_POINT_OF_DIMINISHING_RETURNS,
         SCORING_MEDIAN

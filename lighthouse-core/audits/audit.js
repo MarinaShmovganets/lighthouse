@@ -35,15 +35,16 @@ class Audit {
   }
 
   /**
-   * Computes and clamps the score between 0 and 100 based on the measured value, and the two control
-   * points on the log-normal distribution (point of diminishing returns and the median value).
+   * Computes a clamped score between 0 and 100 based on the measured value. Score is determined by
+   * considering a log-normal distribution governed by the two control points, point of diminishing
+   * returns and the median value, and returning the percentage of sites that have higher value.
    *
    * @param {number} measuredValue
    * @param {number} diminishingReturnsValue
    * @param {number} medianValue
    * @return {number}
    */
-  static computeScore(measuredValue, diminishingReturnsValue, medianValue) {
+  static computeLogNormalScore(measuredValue, diminishingReturnsValue, medianValue) {
     const distribution = statistics.getLogNormalDistribution(
       medianValue,
       diminishingReturnsValue

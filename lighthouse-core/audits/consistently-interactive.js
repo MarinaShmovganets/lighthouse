@@ -229,7 +229,11 @@ class ConsistentlyInteractiveMetric extends Audit {
         const extendedInfo = Object.assign(quietPeriodInfo, {timestamp, timeInMs});
 
         return {
-          score: Audit.computeScore(timeInMs, SCORING_POINT_OF_DIMINISHING_RETURNS, SCORING_MEDIAN),
+          score: Audit.computeLogNormalScore(
+            timeInMs,
+            SCORING_POINT_OF_DIMINISHING_RETURNS,
+            SCORING_MEDIAN
+          ),
           rawValue: timeInMs,
           displayValue: Util.formatMilliseconds(timeInMs),
           optimalValue: this.meta.optimalValue,

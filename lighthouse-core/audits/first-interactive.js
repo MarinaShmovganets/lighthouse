@@ -41,7 +41,7 @@ class FirstInteractiveMetric extends Audit {
     return artifacts.requestFirstInteractive(trace)
       .then(firstInteractive => {
         return {
-          score: Audit.computeScore(
+          score: Audit.computeLogNormalScore(
             firstInteractive.timeInMs,
             SCORING_POINT_OF_DIMINISHING_RETURNS,
             SCORING_MEDIAN
