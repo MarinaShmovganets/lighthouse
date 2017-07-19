@@ -27,8 +27,11 @@ let GathererResults; // eslint-disable-line no-unused-vars
  *     ii. beginEmulation
  *     iii. enableRuntimeEvents
  *     iv. evaluateScriptOnLoad rescue native Promise from potential polyfill
- *     v. cleanBrowserCaches
- *     vi. clearDataForOrigin
+ *     v. register a performance observer
+ *     vi. register dialog dismisser
+ *     vii. clearDataForOrigin
+ *     viii. getUserAgent
+ *     ix. ignore the user's input events
  *
  * 2. For each pass in the config:
  *   A. GatherRunner.beforePass()
@@ -104,7 +107,8 @@ class GatherRunner {
       .then(_ => driver.registerPerformanceObserver())
       .then(_ => driver.dismissJavaScriptDialogs())
       .then(_ => resetStorage && driver.clearDataForOrigin(options.url))
-      .then(_ => gathererResults.UserAgent = [driver.getUserAgent()]);
+      .then(_ => gathererResults.UserAgent = [driver.getUserAgent()])
+      .then(_ => driver.sendCommand('Input.setIgnoreInputEvents', {ignore: true}));
   }
 
   static disposeDriver(driver) {
