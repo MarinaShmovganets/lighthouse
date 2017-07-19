@@ -130,7 +130,8 @@ export function linux() {
   }
 
   const priorities: Priorities = [
-    {regex: /chrome-wrapper$/, weight: 51}, {regex: /google-chrome-stable$/, weight: 50},
+    {regex: /chrome-wrapper$/, weight: 51},
+    {regex: /google-chrome-stable$/, weight: 50},
     {regex: /google-chrome$/, weight: 49},
   ];
 
