@@ -30,7 +30,6 @@ let GathererResults; // eslint-disable-line no-unused-vars
  *     v. register a performance observer
  *     vi. register dialog dismisser
  *     vii. clearDataForOrigin
- *     viii. ignore the user's input events
  *
  * 2. For each pass in the config:
  *   A. GatherRunner.beforePass()
@@ -106,8 +105,7 @@ class GatherRunner {
       .then(_ => driver.cacheNatives())
       .then(_ => driver.registerPerformanceObserver())
       .then(_ => driver.dismissJavaScriptDialogs())
-      .then(_ => resetStorage && driver.clearDataForOrigin(options.url))
-      .then(_ => driver.sendCommand('Input.setIgnoreInputEvents', {ignore: true}));
+      .then(_ => resetStorage && driver.clearDataForOrigin(options.url));
   }
 
   static disposeDriver(driver) {
