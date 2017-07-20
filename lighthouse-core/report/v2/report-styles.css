@@ -120,6 +120,10 @@ summary {
   margin-top: var(--default-padding);
 }
 
+.lh-details summary {
+  font-size: 13px;
+}
+
 .lh-details[open] summary {
   margin-bottom: var(--default-padding);
 }
