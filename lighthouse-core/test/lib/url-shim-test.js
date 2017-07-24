@@ -222,4 +222,11 @@ describe('URL Shim', () => {
       assert.ok(!URL.equalWithExcludedFragments('utter nonsense', 'http://example.com'));
     });
   });
+
+  describe('getProtocol', () => {
+    it('returns protocol of the given url', () => {
+      assert.equal(URL.getProtocol('http://google.com'), 'http:');
+      assert.equal(URL.getProtocol('chrome-extension://some_asset.css'), 'chrome-extension:');
+    });
+  });
 });

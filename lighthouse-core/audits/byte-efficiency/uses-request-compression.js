@@ -14,6 +14,7 @@ const URL = require('../../lib/url-shim');
 
 const IGNORE_THRESHOLD_IN_BYTES = 1400;
 const IGNORE_THRESHOLD_IN_PERCENT = 0.1;
+const CHROME_EXTENSION_PROTOCOL = 'chrome-extension:';
 
 class ResponsesAreCompressed extends ByteEfficiencyAudit {
   /**
@@ -40,8 +41,12 @@ class ResponsesAreCompressed extends ByteEfficiencyAudit {
   static audit_(artifacts) {
     const uncompressedResponses = artifacts.ResponseCompression;
 
+    function skipUnrelatedResponses(record) {
+      return URL.getProtocol(record.url) !== CHROME_EXTENSION_PROTOCOL;
+    }
+
     const results = [];
-    uncompressedResponses.forEach(record => {
+    uncompressedResponses.filter(skipUnrelatedResponses).forEach(record => {
       const originalSize = record.resourceSize;
       const gzipSize = record.gzipSize;
       const gzipSavings = originalSize - gzipSize;
