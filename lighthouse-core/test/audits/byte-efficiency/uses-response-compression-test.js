@@ -45,17 +45,4 @@ describe('Page uses optimized responses', () => {
 
     assert.equal(auditResult.results.length, 1);
   });
-
-  it('skips responses from installed chrome extensions', () => {
-    const auditResult = ResponsesAreCompressedAudit.audit_({
-      ResponseCompression: [
-        generateResponse('index.css', 'text/css', 6 * KB_BYTES, 4.5 * KB_BYTES), // 1,5kb & 25% (hit)
-        generateResponse('chrome-extension.css', 'text/css',
-          6 * KB_BYTES, 4.5 * KB_BYTES), // 1,5kb & 25% (hit) despite chrome-extension in asset's filename
-        generateResponse('extension_style.css', 'text/css',
-          6 * KB_BYTES, 4.5 * KB_BYTES, 'chrome-extension:') // 1,5kb & 25% (hit) but comes from other extension
-      ]
-    });
-    assert.equal(auditResult.results.length, 2);
-  });
 });

@@ -128,13 +128,4 @@ URL.equalWithExcludedFragments = function(url1, url2) {
   }
 };
 
-/**
- * Returns protocol of the given URL
- * @param {string} url
- * @return {string}
- */
-URL.getProtocol = function(url) {
-  return new URL(url).protocol;
-};
-
 module.exports = URL;
