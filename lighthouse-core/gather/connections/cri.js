@@ -17,7 +17,7 @@ const DEFAULT_PORT = 9222;
 class CriConnection extends Connection {
   /**
    * @param {number=} port Optional port number. Defaults to 9222;
-   * @param {string} hostname Optional hostname. Defaults to localhost.
+   * @param {string=} hostname Optional hostname. Defaults to localhost.
    * @constructor
    */
   constructor(port, hostname) {
