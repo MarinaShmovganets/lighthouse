@@ -10,9 +10,9 @@ const ResponsesAreCompressedAudit =
   require('../../../audits/byte-efficiency/uses-request-compression.js');
 const assert = require('assert');
 
-function generateResponse(filename, type, originalSize, gzipSize, schema = 'http:') {
+function generateResponse(filename, type, originalSize, gzipSize) {
   return {
-    url: `${schema}//google.com/${filename}`,
+    url: `http://google.com/${filename}`,
     mimeType: `${type}`,
     resourceSize: originalSize,
     gzipSize,
