@@ -27,13 +27,42 @@ interface LighthouseError extends Error {
   code?: string
 }
 
+function parseChromeFlags(flags: string) {
+  const result: Array<string> = []
+  let index = 0
+  let currentFlag = ''
+  let isInNestedString = false
+
+  const consumeNextChar = () => {
+    const c = flags[index++]
+
+    // Check if we're entering/existing a nested string
+    if (c === '"' && index > 0 && flags[index - 1] !== '\\') {
+      isInNestedString = !isInNestedString
+    }
+
+    if ((c === ' ' && !isInNestedString) || index === flags.length) {
+      result.push(currentFlag)
+      currentFlag = ''
+    } else {
+      currentFlag += c
+    }
+  }
+
+  while (index < flags.length) {
+    consumeNextChar()
+  }
+
+  return result
+}
+
 /**
  * Attempts to connect to an instance of Chrome with an open remote-debugging
  * port. If none is found, launches a debuggable instance.
  */
 async function getDebuggableChrome(flags: Flags) {
   return await launch(
-      {port: flags.port, chromeFlags: flags.chromeFlags.split(' '), logLevel: flags.logLevel});
+      {port: flags.port, chromeFlags: parseChromeFlags(flags.chromeFlags), logLevel: flags.logLevel});
 }
 
 function showConnectionError() {
