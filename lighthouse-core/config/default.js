@@ -51,6 +51,8 @@ module.exports = {
   {
     passName: 'redirectPass',
     useThrottling: false,
+    // Move on even if there's no HTTP server
+    assertPageLoaded: false,
     // Just wait for onload
     networkQuietThresholdMs: 0,
     // Speed up the redirect pass by blocking stylesheets, fonts, and images

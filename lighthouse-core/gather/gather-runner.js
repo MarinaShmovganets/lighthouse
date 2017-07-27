@@ -254,7 +254,9 @@ class GatherRunner {
       log.log('status', status);
       const devtoolsLog = driver.endDevtoolsLog();
       const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
-      GatherRunner.assertPageLoaded(options.url, driver, networkRecords);
+      if (config.assertPageLoaded !== false) {
+        GatherRunner.assertPageLoaded(options.url, driver, networkRecords);
+      }
       log.verbose('statusEnd', status);
 
       // Expose devtoolsLog and networkRecords to gatherers
