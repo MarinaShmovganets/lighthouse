@@ -28,32 +28,32 @@ interface LighthouseError extends Error {
 }
 
 function parseChromeFlags(flags: string) {
-  const result: Array<string> = []
-  let index = 0
-  let currentFlag = ''
-  let isInNestedString = false
+  const result: Array<string> = [];
+  let index = 0;
+  let currentFlag = '';
+  let isInNestedString = false;
 
-  const consumeNextChar = () => {
-    const c = flags[index++]
+  function consumeNextChar() {
+    const c = flags[index++];
 
     // Check if we're entering/existing a nested string
     if (c === '"' && index > 0 && flags[index - 1] !== '\\') {
-      isInNestedString = !isInNestedString
+      isInNestedString = !isInNestedString;
     }
 
     if ((c === ' ' && !isInNestedString) || index === flags.length) {
-      result.push(currentFlag)
-      currentFlag = ''
+      result.push(currentFlag);
+      currentFlag = '';
     } else {
-      currentFlag += c
+      currentFlag += c;
     }
   }
 
   while (index < flags.length) {
-    consumeNextChar()
+    consumeNextChar();
   }
 
-  return result
+  return result;
 }
 
 /**
@@ -61,8 +61,11 @@ function parseChromeFlags(flags: string) {
  * port. If none is found, launches a debuggable instance.
  */
 async function getDebuggableChrome(flags: Flags) {
-  return await launch(
-      {port: flags.port, chromeFlags: parseChromeFlags(flags.chromeFlags), logLevel: flags.logLevel});
+  return await launch({
+    port: flags.port,
+    chromeFlags: parseChromeFlags(flags.chromeFlags),
+    logLevel: flags.logLevel
+  });
 }
 
 function showConnectionError() {
