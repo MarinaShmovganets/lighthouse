@@ -10,19 +10,22 @@ const WebSocket = require('ws');
 const http = require('http');
 const log = require('lighthouse-logger');
 
-const hostname = 'localhost';
 const CONNECT_TIMEOUT = 10000;
 const DEFAULT_PORT = 9222;
+const DEFAULT_HOSTNAME = 'localhost';
 
 class CriConnection extends Connection {
   /**
-   * @param {number=} port Optional port number. Defaults to 9222;
+   * @param connectionParams Information about the connection.
+   * @param {string=} connectionParams.hostname Optional host address. Defaults to 'localhost';
+   * @param {number=} connectionParams.port Optional port number. Defaults to 9222;
    * @constructor
    */
-  constructor(port) {
+  constructor({hostname = DEFAULT_HOSTNAME, port = DEFAULT_PORT}) {
     super();
 
-    this.port = port || DEFAULT_PORT;
+    this.hostname = hostname;
+    this.port = port;
   }
 
   /**
@@ -77,7 +80,7 @@ class CriConnection extends Connection {
   _runJsonCommand(command) {
     return new Promise((resolve, reject) => {
       const request = http.get({
-        hostname: hostname,
+        hostname: this.hostname,
         port: this.port,
         path: '/json/' + command
       }, response => {
