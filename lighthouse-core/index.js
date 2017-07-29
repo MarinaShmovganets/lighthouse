@@ -36,7 +36,7 @@ module.exports = function(url, flags = {}, configJSON) {
     const config = new Config(configJSON, flags.configPath);
 
     const connection = new ChromeProtocol({
-      hostname: flags.hostnae,
+      hostname: flags.hostname,
       port: flags.port,
     });
 
