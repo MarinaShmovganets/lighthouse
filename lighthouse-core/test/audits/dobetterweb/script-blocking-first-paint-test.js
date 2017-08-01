@@ -33,7 +33,7 @@ describe('Script Block First Paint audit', () => {
         {
           tag: scriptDetails,
           transferSize: 100,
-          startTime: 15,
+          startTime: 15, // well after FCP and should be ignored
           endTime: 15.1
         },
         {
