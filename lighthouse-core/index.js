@@ -35,7 +35,10 @@ module.exports = function(url, flags = {}, configJSON) {
     // Use ConfigParser to generate a valid config file
     const config = new Config(configJSON, flags.configPath);
 
-    const connection = new ChromeProtocol(flags.port);
+    const connection = new ChromeProtocol({
+      hostname: flags.hostname,
+      port: flags.port,
+    });
 
     // kick off a lighthouse run
     return Runner.run(connection, {url, flags, config})
