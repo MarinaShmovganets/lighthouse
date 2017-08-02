@@ -20,11 +20,8 @@ class CriConnection extends Connection {
    * @param {string=} hostname Optional hostname. Defaults to localhost.
    * @constructor
    */
-  constructor(port, hostname) {
+  constructor(port = DEFAULT_PORT, hostname = DEFAULT_HOSTNAME) {
     super();
-
-    this.hostname = hostname || DEFAULT_HOSTNAME;
-    this.port = port || DEFAULT_PORT;
   }
 
   /**
