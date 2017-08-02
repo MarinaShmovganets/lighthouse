@@ -11,6 +11,8 @@ import * as Printer from './printer';
 import {Results} from './types/types';
 import {Flags} from './cli-flags';
 import {launch, LaunchedChrome} from '../chrome-launcher/chrome-launcher';
+
+const yargs = require('yargs');
 const lighthouse = require('../lighthouse-core');
 const log = require('lighthouse-logger');
 const getFilenamePrefix = require('../lighthouse-core/lib/file-namer.js').getFilenamePrefix;
@@ -28,32 +30,34 @@ interface LighthouseError extends Error {
 }
 
 function parseChromeFlags(flags: string) {
-  const result: Array<string> = [];
-  let index = 0;
-  let currentFlag = '';
-  let isInNestedString = false;
+  let args = yargs(flags).argv
+  let allKeys = Object.keys(args)
 
-  function consumeNextChar() {
-    const c = flags[index++];
+  // Remove any "mangled" arguments (args that contain dashes are duplicated as
+  // camelCased variants, but the dashed version remains)
+  let keysToFilter = allKeys
+    .filter(k => k.indexOf('-') !== -1)
+    .map(k => { return k.replace(/-(\w)/, (_, p1) => p1.toUpperCase())})
 
-    // Check if we're entering/existing a nested string
-    if (c === '"' && index > 0 && flags[index - 1] !== '\\') {
-      isInNestedString = !isInNestedString;
-    }
+  const keysToDelete = allKeys.filter(key => {
+    return (
+      key === '_' ||
+      key.startsWith('$') ||
+      keysToFilter.indexOf(key) !== -1
+    )
+  })
 
-    if ((c === ' ' && !isInNestedString) || index === flags.length) {
-      result.push(currentFlag);
-      currentFlag = '';
-    } else {
-      currentFlag += c;
-    }
-  }
+  keysToDelete.forEach(key => {
+    delete args[key]
+  })
 
-  while (index < flags.length) {
-    consumeNextChar();
-  }
-
-  return result;
+  // Render the args back out as command-line arguments.
+  // Boolean values that are true are rendered without a value (--debug vs. --debug=true)
+  return Object.keys(args)
+    .map(k => typeof args[k] === 'boolean' && args[k] === true
+      ? `--${k}`
+      : `--${k}="${args[k]}"`
+    )
 }
 
 /**
