@@ -33,20 +33,11 @@ function parseChromeFlags(flags: string) {
   let args = yargs(flags).argv;
   const allKeys = Object.keys(args);
 
-  // Remove any "mangled" arguments (args that contain dashes are duplicated as
-  // camelCased variants, but the dashed version remains)
-  let keysToFilter = allKeys.filter(k => k.indexOf('-') !== -1)
-                         .map(k => k.replace(/-(\w)/, (_, p1) => p1.toUpperCase()));
-
-  const keysToDelete = allKeys.filter(
-      key => (key === '_' || key.startsWith('$') || keysToFilter.indexOf(key) !== -1))
-
-  keysToDelete.forEach(key => delete args[key]);
-
-  // Render the args back out as command-line arguments.
+  // Remove unneeded arguments and then render back out as command-line arguments.
   // Boolean values that are true are rendered without a value (--debug vs. --debug=true)
-  return Object.keys(args).map(
-      k => typeof args[k] === 'boolean' && args[k] === true ? `--${k}` : `--${k}="${args[k]}"`);
+  return allKeys.filter(k => k !== '_' && !k.startsWith('$') && !/[A-Z]/.test(k))
+      .map(
+          k => typeof args[k] === 'boolean' && args[k] === true ? `--${k}` : `--${k}="${args[k]}"`);
 }
 
 /**
