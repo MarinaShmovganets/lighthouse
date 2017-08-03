@@ -54,6 +54,10 @@ describe('Parsing --chrome-flags', () => {
     assert.deepStrictEqual(['--debug=false'], parseChromeFlags('--debug=false'));
   });
 
+  it('returns boolean flags that empty when passed undefined', () => {
+    assert.deepStrictEqual([], parseChromeFlags());
+  });
+
   it('returns flags correctly for issue 2817', () => {
     assert.deepStrictEqual(
       ['--host-resolver-rules="MAP www.example.org:443 127.0.0.1:8443"'],
