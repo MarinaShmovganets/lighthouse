@@ -29,8 +29,9 @@ interface LighthouseError extends Error {
   code?: string
 }
 
+// Boolean values that are true are rendered without a value (--debug vs. --debug=true)
 function formatArg(arg: string, value: any): string {
-  if (typeof value === 'boolean' && value === true) {
+  if (value === true) {
     return `--${arg}`
   }
 
@@ -47,8 +48,7 @@ export function parseChromeFlags(flags: string) {
   let args = yargs(flags).argv;
   const allKeys = Object.keys(args);
 
-  // Remove unneeded arguments and then render back out as command-line arguments.
-  // Boolean values that are true are rendered without a value (--debug vs. --debug=true)
+  // Remove unneeded arguments (yargs includes a _ arg, $-prefixed args, and camelCase dupes)
   return allKeys.filter(k => k !== '_' && !k.startsWith('$') && !/[A-Z]/.test(k))
       .map(k => formatArg(k, args[k]));
 }
