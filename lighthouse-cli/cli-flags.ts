@@ -12,9 +12,9 @@ const Driver = require('../lighthouse-core/gather/driver.js');
 import {GetValidOutputOptions, OutputMode} from './printer';
 
 export interface Flags {
-  port: number, chromeFlags: string, output: any, outputPath: string,
-      interactive: boolean, saveArtifacts: boolean, saveAssets: boolean, view: boolean,
-      maxWaitForLoad: number, logLevel: string, host: string
+  port: number, chromeFlags: string, output: any, outputPath: string, interactive: boolean,
+      saveArtifacts: boolean, saveAssets: boolean, view: boolean, maxWaitForLoad: number,
+      logLevel: string, host: string
 }
 
 export function getFlags(manualArgv?: string) {

@@ -22,6 +22,8 @@ class CriConnection extends Connection {
    */
   constructor(port = DEFAULT_PORT, hostname = DEFAULT_HOSTNAME) {
     super();
+    this.port = port;
+    this.hostname = hostname;
   }
 
   /**
