@@ -389,14 +389,6 @@ class CategoryRenderer {
       perfTimelineScale = Math.max(perfTimelineScale, thumbnailDetails.scale);
       const filmstripEl = this._detailsRenderer.render(thumbnailDetails);
       timelineEl.appendChild(filmstripEl);
-
-      // add final frame to timelineEl
-      const finalFrame = thumbnailDetails.items.pop();
-      const finalFrameEl = this._dom.createElement('img', 'lh-timeline-finalframe', {
-        src: `data:image/jpeg;base64,${finalFrame.data}`,
-        alt: `Screenshot at ${Util.formatNumber(finalFrame.timing / 1000) + ' s'}`,
-      });
-      timelineEl.appendChild(finalFrameEl);
     }
 
     metricAudits.forEach(item => {
