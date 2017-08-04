@@ -51,17 +51,24 @@ export async function launch(opts: Options = {}): Promise<LaunchedChrome> {
 
   const instance = new Launcher(opts);
 
+  let sigintListener =
+      async () => {
+    await instance.kill(sigintListener);
+    process.exit(_SIGINT_EXIT_CODE);
+  }
+
   // Kill spawned Chrome process in case of ctrl-C.
   if (opts.handleSIGINT) {
-    process.on(_SIGINT, async () => {
-      await instance.kill();
-      process.exit(_SIGINT_EXIT_CODE);
-    });
+    process.on(_SIGINT, sigintListener);
   }
 
   await instance.launch();
 
-  return {pid: instance.pid!, port: instance.port!, kill: async () => instance.kill()};
+  return {
+    pid: instance.pid!,
+    port: instance.port!,
+    kill: async () => instance.kill(sigintListener)
+  };
 }
 
 export class Launcher {
@@ -272,7 +279,7 @@ export class Launcher {
     });
   }
 
-  kill() {
+  kill(sigintListener?: Function) {
     return new Promise(resolve => {
       if (this.chrome) {
         this.chrome.on('close', () => {
@@ -285,6 +292,7 @@ export class Launcher {
             execSync(`taskkill /pid ${this.chrome.pid} /T /F`);
           } else {
             process.kill(-this.chrome.pid);
+            process.removeListener(_SIGINT, sigintListener);
           }
         } catch (err) {
           log.warn('ChromeLauncher', `Chrome could not be killed ${err.message}`);
