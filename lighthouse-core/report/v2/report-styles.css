@@ -33,6 +33,7 @@
   --warning-color: #ffab00; /* md amber a700 */
   --report-border-color: #ccc;
   --report-secondary-border-color: #ebebeb;
+  --metric-timeline-rule-color: #b3b3b3;
   --report-width: calc(60 * var(--body-font-size));
   --report-menu-width: calc(20 * var(--body-font-size));
   --report-content-width: calc(var(--report-width) + var(--report-menu-width));
@@ -386,7 +387,7 @@ span.lh-node:hover {
 
 .lh-timeline-container {
   overflow: hidden;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--metric-timeline-rule-color);
 }
 
 .lh-timeline {
@@ -596,7 +597,7 @@ span.lh-node:hover {
   content: '';
   height: 7px;
   width: 2px;
-  background: gray;
+  background: var(--metric-timeline-rule-color);
   position: absolute;
   right: 0;
   top: -2px;
