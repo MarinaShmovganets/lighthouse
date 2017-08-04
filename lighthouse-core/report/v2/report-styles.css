@@ -87,6 +87,11 @@
   --lh-section-vpadding: 8px;
 }
 
+@keyframes fadeIn {
+  0% { opacity: 0;}
+  100% { opacity: 0.6;}
+}
+
 .lh-root * {
   box-sizing: border-box;
 }
@@ -639,11 +644,6 @@ span.lh-node:hover {
   opacity: 0;
   animation: fadeIn 150ms;
   animation-fill-mode: forwards;
-}
-
-@keyframes fadeIn {
-  0% { opacity: 0;}
-  100% { opacity: 0.6;}
 }
 
 /* Audit */
