@@ -47,28 +47,11 @@ export interface ModuleOverrides {
 }
 
 export async function launch(opts: Options = {}): Promise<LaunchedChrome> {
-  opts.handleSIGINT = defaults(opts.handleSIGINT, true);
-
   const instance = new Launcher(opts);
-
-  let sigintListener =
-      async () => {
-    await instance.kill(sigintListener);
-    process.exit(_SIGINT_EXIT_CODE);
-  }
-
-  // Kill spawned Chrome process in case of ctrl-C.
-  if (opts.handleSIGINT) {
-    process.on(_SIGINT, sigintListener);
-  }
 
   await instance.launch();
 
-  return {
-    pid: instance.pid!,
-    port: instance.port!,
-    kill: async () => instance.kill(sigintListener)
-  };
+  return {pid: instance.pid!, port: instance.port!, kill: async () => instance.kill()};
 }
 
 export class Launcher {
@@ -132,6 +115,11 @@ export class Launcher {
     return makeTmpDir();
   }
 
+  async sigintListener() {
+    await this.kill();
+    return process.exit(_SIGINT_EXIT_CODE);
+  }
+
   prepare() {
     const platform = process.platform as SupportedPlatforms;
     if (!_SUPPORTED_PLATFORMS.has(platform)) {
@@ -176,6 +164,11 @@ export class Launcher {
       }
 
       this.chromePath = installations[0];
+    }
+
+    // Kill spawned Chrome process in case of ctrl-C.
+    if (defaults(this.opts.handleSIGINT, true)) {
+      process.on(_SIGINT, this.sigintListener.bind(this));
     }
 
     this.pid = await this.spawnProcess(this.chromePath);
@@ -279,7 +272,7 @@ export class Launcher {
     });
   }
 
-  kill(sigintListener?: Function) {
+  kill() {
     return new Promise(resolve => {
       if (this.chrome) {
         this.chrome.on('close', () => {
@@ -292,7 +285,7 @@ export class Launcher {
             execSync(`taskkill /pid ${this.chrome.pid} /T /F`);
           } else {
             process.kill(-this.chrome.pid);
-            process.removeListener(_SIGINT, sigintListener);
+            process.removeListener(_SIGINT, this.sigintListener);
           }
         } catch (err) {
           log.warn('ChromeLauncher', `Chrome could not be killed ${err.message}`);
