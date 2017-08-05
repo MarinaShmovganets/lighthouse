@@ -82,7 +82,8 @@ class FirstMeaningfulPaint extends Audit {
         fMP: traceOfTab.timings.firstMeaningfulPaint,
         onLoad: traceOfTab.timings.onLoad,
         endOfTrace: traceOfTab.timings.traceEnd,
-      }
+      },
+      fmpIsFallback: traceOfTab.fmpIsFallback
     };
 
     Object.keys(extendedInfo.timings).forEach(key => {

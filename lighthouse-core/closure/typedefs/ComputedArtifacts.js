@@ -34,6 +34,7 @@ let TraceTimes;
     firstContentfulPaintEvt: TraceEvent,
     firstMeaningfulPaintEvt: TraceEvent,
     onLoadEvt: TraceEvent,
+    fmpIsFallback: boolean,
   }} */
 let TraceOfTabArtifact;
 
