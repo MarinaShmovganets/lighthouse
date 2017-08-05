@@ -61,7 +61,7 @@ describe('Performance: first-meaningful-paint audit', () => {
     });
 
     it('did not fall back to an FMP candidate event', () => {
-      assert.ok(!fmpResult.extendedInfo.value.fmpIsFallback);
+      assert.ok(!fmpResult.extendedInfo.value.fmpFellBack);
     });
   });
 
@@ -72,7 +72,7 @@ describe('Performance: first-meaningful-paint audit', () => {
         assert.equal(result.rawValue, 529.9);
         assert.equal(result.extendedInfo.value.timestamps.navStart, 29343540951);
         assert.equal(result.extendedInfo.value.timings.fCP, 80.054);
-        assert.ok(!result.extendedInfo.value.fmpIsFallback);
+        assert.ok(!result.extendedInfo.value.fmpFellBack);
         assert.ok(!result.debugString);
       });
     });
@@ -83,7 +83,7 @@ describe('Performance: first-meaningful-paint audit', () => {
         assert.equal(result.rawValue, 632.4);
         assert.equal(result.extendedInfo.value.timestamps.navStart, 8885424467);
         assert.equal(result.extendedInfo.value.timings.fCP, 632.419);
-        assert.ok(!result.extendedInfo.value.fmpIsFallback);
+        assert.ok(!result.extendedInfo.value.fmpFellBack);
         assert.ok(!result.debugString);
       });
     });
@@ -94,7 +94,7 @@ describe('Performance: first-meaningful-paint audit', () => {
         assert.equal(result.rawValue, 878.4);
         assert.equal(result.extendedInfo.value.timestamps.navStart, 1805796384607);
         assert.equal(result.extendedInfo.value.timings.fCP, 879.046);
-        assert.ok(!result.extendedInfo.value.fmpIsFallback);
+        assert.ok(!result.extendedInfo.value.fmpFellBack);
         assert.ok(!result.debugString);
       });
     });
@@ -104,7 +104,7 @@ describe('Performance: first-meaningful-paint audit', () => {
         assert.equal(result.displayValue, '4,460\xa0ms');
         assert.equal(result.rawValue, 4460.9);
         assert.equal(result.extendedInfo.value.timings.fCP, 1494.73);
-        assert.ok(result.extendedInfo.value.fmpIsFallback);
+        assert.ok(result.extendedInfo.value.fmpFellBack);
         assert.ok(!result.debugString);
       });
     });
@@ -120,7 +120,7 @@ describe('Performance: first-meaningful-paint audit', () => {
       assert.strictEqual(result.extendedInfo.value.timestamps.fCP, undefined);
       assert.strictEqual(result.extendedInfo.value.timestamps.fMP, 2149509604903);
       // NOTE: falls back to candidate FMP
-      assert.ok(result.extendedInfo.value.fmpIsFallback);
+      assert.ok(result.extendedInfo.value.fmpFellBack);
     });
   });
 });
