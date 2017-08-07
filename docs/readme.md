@@ -48,7 +48,7 @@ and set an appropriate logging level in your code. You'll also need to pass
 the `logLevel` flag when calling `lighthouse`.
 
 ```javascript
-const log = require('lighthouse/lighthouse-core/lib/log');
+const log = require('lighthouse/lighthouse-logger');
 
 const flags = {logLevel: 'info', output: 'json'};
 log.setLevel(flags.logLevel);
