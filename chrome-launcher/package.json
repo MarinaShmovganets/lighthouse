@@ -7,7 +7,7 @@
     "test": "mocha --require ts-node/register --reporter=dot test/**/*-test.ts --timeout=10000",
     "coverage": "nyc yarn test && nyc report --reporter=text-lcov > lcov.info",
     "test-formatting": "test/check-formatting.sh",
-    "format": "clang-format -i -style=file **/*.ts *.ts"
+    "format": "scripts/format.sh"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.41",
