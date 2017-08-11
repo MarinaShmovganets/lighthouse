@@ -124,9 +124,7 @@ describe('Launcher', () => {
   });
 
   it('throws an error when chromePath is empty', (done) => {
-    const chromeInstance = new Launcher({
-      chromePath: ''
-    });
+    const chromeInstance = new Launcher({chromePath: ''});
     chromeInstance.launch().catch(() => done());
   });
 });
