@@ -58,8 +58,7 @@ Configuration:
                                  http://peter.sh/experiments/chromium-command-line-switches/.                                          [default: ""]
   --perf                         Use a performance-test-only configuration                                                                 [boolean]
   --port                         The port to use for the debugging protocol. Use 0 for a random port                                 [default: 9222]
-  --host                         The host to use for the debugging protocol.
-  host                                 [default: localhost]
+  --hostname                     The hostname to use for the debugging protocol.                                                [default: localhost]
   --max-wait-for-load            The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue.
                                  WARNING: Very high values can lead to large traces and instability                                 [default: 25000]
 

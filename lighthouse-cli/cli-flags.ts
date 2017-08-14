@@ -14,7 +14,7 @@ import {GetValidOutputOptions, OutputMode} from './printer';
 export interface Flags {
   port: number, chromeFlags: string, output: any, outputPath: string, interactive: boolean,
       saveArtifacts: boolean, saveAssets: boolean, view: boolean, maxWaitForLoad: number,
-      logLevel: string, host: string
+      logLevel: string, hostname: string
 }
 
 export function getFlags(manualArgv?: string) {
@@ -53,8 +53,8 @@ export function getFlags(manualArgv?: string) {
       .group(
           [
             'save-assets', 'save-artifacts', 'list-all-audits', 'list-trace-categories',
-            'additional-trace-categories', 'config-path', 'chrome-flags', 'perf', 'port', 'host',
-            'max-wait-for-load'
+            'additional-trace-categories', 'config-path', 'chrome-flags', 'perf', 'port',
+            'hostname', 'max-wait-for-load'
           ],
           'Configuration:')
       .describe({
@@ -77,7 +77,7 @@ export function getFlags(manualArgv?: string) {
             CHROME_PATH: Explicit path of intended Chrome binary. If set must point to an executable of a build of Chromium version 54.0 or later. By default, any detected Chrome Canary or Chrome (stable) will be launched.
             `,
         'perf': 'Use a performance-test-only configuration',
-        'host': 'The host to use for the debugging protocol.',
+        'hostname': 'The hostname to use for the debugging protocol.',
         'port': 'The port to use for the debugging protocol. Use 0 for a random port',
         'max-wait-for-load':
             'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
@@ -108,7 +108,7 @@ Example: --output-path=./lighthouse-results.html`,
       .default('disable-cpu-throttling', false)
       .default('output', GetValidOutputOptions()[OutputMode.domhtml])
       .default('port', 0)
-      .default('host', 'localhost')
+      .default('hostname', 'localhost')
       .default('max-wait-for-load', Driver.MAX_WAIT_FOR_FULLY_LOADED)
       .check((argv: {listAllAudits?: boolean, listTraceCategories?: boolean, _: Array<any>}) => {
         // Make sure lighthouse has been passed a url, or at least one of --list-all-audits
