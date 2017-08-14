@@ -895,7 +895,7 @@ There were 128 PRs landed for this release. These are their stories.
 ### Docs
 - **Audit:** Update EQT/EIL design doc links to latest docs - #923
 - **Audit:** Fix no-datenow `helpText` typo - #955
-- **Audit:** Update uses-passive-event-listeners `description text - #956
+- **Audit:** Update uses-passive-event-listeners `description` text - #956
 - **readme:** Add DBW to readme - #863
 - **readme:** Update development section with TypeScript info - #859
 - **readme:** Document yarn install command - #939
