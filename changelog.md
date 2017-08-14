@@ -118,7 +118,7 @@ Enable typescript coverage metrics for coveralls.
 
 
 <a name="2.1.0"></a>
-# [v2.1.0](https://github.com/GoogleChrome/lighthouse/tree/v2.1.0) (2017-06-07)
+# 2.1.0 (2017-06-07)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v2.0.0...v2.1.0)
 
 **Fixed bugs:**
@@ -168,22 +168,20 @@ Enable typescript coverage metrics for coveralls.
 - Plots: make measure script more flexible \(CLI args\) [\#2183](https://github.com/GoogleChrome/lighthouse/pull/2183) ([wwwillchen](https://github.com/wwwillchen))
 
 
-## [v2.0.0](https://github.com/GoogleChrome/lighthouse/tree/v2.0.0) (2017-05-19)
+# 2.0.0 (2017-05-19)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v1.6.0...v2.0.0)
 
-
-
-# Big changes
-## Brand new report
+## Big changes
+### Brand new report
 <a href="https://user-images.githubusercontent.com/39191/28991453-b9061d48-793c-11e7-957f-1399ae992e84.png"><img src="https://user-images.githubusercontent.com/39191/28991453-b9061d48-793c-11e7-957f-1399ae992e84.png" height=300 align=right></a>
 Everything is brand new UI. header footer, left nav, export, score gauges… screenshots! filmstrip . pass and failures seperated. Sparklines. Accessibility by section. Perf sections..
 
 <br clear=all>
 
-## Chrome DevTools Integration
+### Chrome DevTools Integration
 Take a look at the DevTools' Audit tab, where Lighthouse is now integrated
 
-## Lighthouse is much faster now
+### Lighthouse is much faster now
 <img src="https://user-images.githubusercontent.com/39191/28991472-1a1f0b9e-793d-11e7-95c1-34effccb8126.png" align=right>
 
 Overall the **Operation Yaquina Bay** (Issue #2146) effort made massive improvements to the total lighthouse runtime:
@@ -359,8 +357,6 @@ Thanks to @ebidel and @paulirish for merging this stuff back to stable branch.
 # 1.6.0 (2017-03-04)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v1.5.2...1.6.0)
 
-## [1.6.0](https://github.com/GoogleChrome/lighthouse/compare/v1.5.2...1.6.0) (2017-03-03)
-
 There were 44 PRs landed for this release. These are their stories.
 
 ### New Contributors!
@@ -475,8 +471,6 @@ Huge thanks to @sendilkumarn, who contributed [four epic PRs](https://github.com
 <a name="1.5.0"></a>
 # 1.5.0 (2017-02-10)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v1.4.1...1.5.0)
-
-## [1.5.0](https://github.com/GoogleChrome/lighthouse/compare/1.4.1...1.5.0) (2017-02-09)
 
 There were 128 PRs landed for this release. These are their stories.
 
@@ -638,7 +632,7 @@ There were 128 PRs landed for this release. These are their stories.
 
 <a name="1.4.0"></a>
 # 1.4.0 (2017-01-04)
-## [1.4.0](https://github.com/GoogleChrome/lighthouse/compare/1.4.0...1.3.2) (2017-01-04)
+[Full changelog](https://github.com/GoogleChrome/lighthouse/compare/1.4.0...1.3.2)
 
 ### New Contributors!
 
