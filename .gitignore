@@ -36,6 +36,9 @@ lighthouse-cli/*.js
 chrome-launcher/*.map
 chrome-launcher/*.js
 
+lighthouse-assert/*.map
+lighthouse-assert/*.js
+
 lighthouse-cli/commands/*.map
 lighthouse-cli/commands/*.js
 
