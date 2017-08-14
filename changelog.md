@@ -71,50 +71,50 @@ Thanks to Katie Hempenius, Artur M, Kevin Farrugia, Piper Chester, Robin Drexler
 Since 2.1.0 we've had a number of other features, fixes, and improvements. Presented by category:
 
 #### Report
-use locale string for all our number output (#2553)
-fixes viewer CSS specificity and event listener removal (#2575)
-freshen up audit helpText
-Report: don't display score gauge header if there's only one. (#2261)
-Remove report v1 and dependencies (#2596)
-better debug message for missing network times (#2451)
-spelling fix in link-name audit (#2496)
-Theme Color wording fixes (#2466)
+* use locale string for all our number output (#2553)
+* fixes viewer CSS specificity and event listener removal (#2575)
+* freshen up audit helpText
+* Report: don't display score gauge header if there's only one. (#2261)
+* Remove report v1 and dependencies (#2596)
+* better debug message for missing network times (#2451)
+* spelling fix in link-name audit (#2496)
+* Theme Color wording fixes (#2466)
 
 #### Audit + Gather
-fix(driver): wait for CPU idle via clientside perfObserver (#2473)
-Remove /deep/ usage as it is being deprecated (#2371)
-Remove BOM encoding from manifest (#2175)
-Throw better error message when url is not auditable (#2527)
-Critical Request Chain audit: fix incorrect transfersize. (#2610)
-domstats: prevent infinite loop (#2561)
+* fix(driver): wait for CPU idle via clientside perfObserver (#2473)
+* Remove /deep/ usage as it is being deprecated (#2371)
+* Remove BOM encoding from manifest (#2175)
+* Throw better error message when url is not auditable (#2527)
+* Critical Request Chain audit: fix incorrect transfersize. (#2610)
+* domstats: prevent infinite loop (#2561)
 
 #### Performance & Traces
-docs: add trace interpretation guide (#2472)
-use a stable sort for trace events (#2415)
-remove old TTI code (#2452)
-refactor(trace-of-tab): return timestamps in microseconds (#2454)
-add streaming json parser
-add streaming trace writer in saveAssets
+* docs: add trace interpretation guide (#2472)
+* use a stable sort for trace events (#2415)
+* remove old TTI code (#2452)
+* refactor(trace-of-tab): return timestamps in microseconds (#2454)
+* add streaming json parser
+* add streaming trace writer in saveAssets
 
 #### Plots
-better support power use cases (#2464)
-disable flaky smoke test (#2606)
-smoke test for happy case (#2411)
+* better support power use cases (#2464)
+* disable flaky smoke test (#2606)
+* smoke test for happy case (#2411)
 
 
 #### Configurability
-feat(config): add audit blacklist support (#2499)
-feat(config): add extends lighthouse:full (#2557)
-docs(config): add config documentation (#2592)
+* feat(config): add audit blacklist support (#2499)
+* feat(config): add extends lighthouse:full (#2557)
+* docs(config): add config documentation (#2592)
 
 #### Misc
-Add script to capture travis build durations (#2541)
-Expose launch/lighthouse/report flow to consuming modules (#2602)
-harden security of static-server (#2563)
-is-on-https: check record.protocol for blob urls (#2538)
-LH implementation of LogNormalDistribution; remove traceviewer (#2456)
-move computed artifacts dependent on networkRecords to devtoolsLog (#2467)
-Enable typescript coverage metrics for coveralls.
+* Add script to capture travis build durations (#2541)
+* Expose launch/lighthouse/report flow to consuming modules (#2602)
+* harden security of static-server (#2563)
+* is-on-https: check record.protocol for blob urls (#2538)
+* LH implementation of LogNormalDistribution; remove traceviewer (#2456)
+* move computed artifacts dependent on networkRecords to devtoolsLog (#2467)
+* Enable typescript coverage metrics for coveralls.
 
 
 <a name="2.1.0"></a>
@@ -186,136 +186,134 @@ Take a look at the DevTools' Audit tab, where Lighthouse is now integrated
 
 Overall the **Operation Yaquina Bay** (Issue #2146) effort made massive improvements to the total lighthouse runtime:
 
-476e7806 fix: remove afterPass throttling (#1901)
-7d7bac66 perf: enable speedline fastMode (#2230)
-f7ea9354 perf(config): disable styles gatherer (#2153)
-d99778b4 perf: consolidate DBW pass into defaultPass (#2160)
-ff21a33a fix: only record a trace if needed by an audit (#2117)
-740c2e99 perf(gather-runner): Clear cache selectively per-pass (#2156)
-4c515cfa block stylesheets and images on redirect pass (#2168)
-d0cb646a perf(gatherers): skip optimization of cross origin images (#2154)
-d99b5ada perf: make network quiet threshold configurable per pass (#2220)
+* 476e7806 fix: remove afterPass throttling (#1901)
+* 7d7bac66 perf: enable speedline fastMode (#2230)
+* f7ea9354 perf(config): disable styles gatherer (#2153)
+* d99778b4 perf: consolidate DBW pass into defaultPass (#2160)
+* ff21a33a fix: only record a trace if needed by an audit (#2117)
+* 740c2e99 perf(gather-runner): Clear cache selectively per-pass (#2156)
+* 4c515cfa block stylesheets and images on redirect pass (#2168)
+* d0cb646a perf(gatherers): skip optimization of cross origin images (#2154)
+* d99b5ada perf: make network quiet threshold configurable per pass (#2220)
 
 ## New Contributors!
 
 Huge thanks to who contributed 27 epic PRs. 
 
-@abacon - remove images from critical request chains
-@benschwarz - Calibre and WPT to readme
-@chrisdwheatley - add related projects section
-@dandv - Mention where the documentation is
-@dgozman - Add basic rendering to report generator v2
-@ev1stensberg - math.round scores, firefox svg images, package.json correct folder
-@jinjorge - Fix typo in readme
-@jimthedev - readme instructions for running behind a login
-@johnboxall - Total byte audit reports full URL
-@mrbusche - Update outdated link for "Web App Install Banners" article
-@maya - Fix "Installation" spelling mistake
-@stramel - non-critical images, template literal linting, containerized trusty
-@mikerhyssmith - Updated readme to add port number when testing a site with authentication
-@sendilkumarn - handlebars precompiled (we'll pour one out), clearer iconography, helpText fixes. 
-@ZZhaoTireless - report `<details>` printing fix
-@cedricbellet - handleJavascriptDialogs
-@thearegee - Readme: Adding lighthouse-cron to Related Projects
+* @abacon - remove images from critical request chains
+* @benschwarz - Calibre and WPT to readme
+* @chrisdwheatley - add related projects section
+* @dandv - Mention where the documentation is
+* @dgozman - Add basic rendering to report generator v2
+* @ev1stensberg - math.round scores, firefox svg images, package.json correct folder
+* @jinjorge - Fix typo in readme
+* @jimthedev - readme instructions for running behind a login
+* @johnboxall - Total byte audit reports full URL
+* @mrbusche - Update outdated link for "Web App Install Banners" article
+* @maya - Fix "Installation" spelling mistake
+* @stramel - non-critical images, template literal linting, containerized trusty
+* @mikerhyssmith - Updated readme to add port number when testing a site with authentication
+* @sendilkumarn - handlebars precompiled (we'll pour one out), clearer iconography, helpText fixes. 
+* @ZZhaoTireless - report `<details>` printing fix
+* @cedricbellet - handleJavascriptDialogs
+* @thearegee - Readme: Adding lighthouse-cron to Related Projects
 
 
 
 ## Audits
-Added the "is fast on 3g" audit
-4c34e28f Fix service worker gatherer by waiting for active state (#1864)
-bbe7f3b9 allow computed artifacts to request other computed artifacts (#2018)
-ba01e2a2 Added audit for request compression (gzip & br) (#1513)
-ef520256 feat(image-usage): add support for CSS images (#1868)
-17088655 fix: default(.json -> .js). Disable css usage audit (#1911)
-50349613 Collapse the 9 manifest PWA audits into 3  (#1847)
-902585b8 feat: add OffscreenImages Audit (#1807)
-bad5bdae Add TTI < 10s audit for PWA (#1840)
-d2cb5a21 feat: add consistently interactive audit (#2023)
-d3a06925 DOMStat Audit: shadow roots don't have .classList (#2131)
-691157f2 Add audit to check if start_url is cached by SW (#2040)
-df2fae5e PWA Audits: add placeholders for rest of baseline checks. (#2248)
-3c752a0c refactor: split optimized images into WebP and optimize audit (#2216)
-c908e817 retire TTI (alpha) audit (#2266)
+* Added the "is fast on 3g" audit
+* 4c34e28f Fix service worker gatherer by waiting for active state (#1864)
+* bbe7f3b9 allow computed artifacts to request other computed artifacts (#2018)
+* ba01e2a2 Added audit for request compression (gzip & br) (#1513)
+* ef520256 feat(image-usage): add support for CSS images (#1868)
+* 17088655 fix: default(.json -> .js). Disable css usage audit (#1911)
+* 50349613 Collapse the 9 manifest PWA audits into 3  (#1847)
+* 902585b8 feat: add OffscreenImages Audit (#1807)
+* bad5bdae Add TTI < 10s audit for PWA (#1840)
+* d2cb5a21 feat: add consistently interactive audit (#2023)
+* d3a06925 DOMStat Audit: shadow roots don't have .classList (#2131)
+* 691157f2 Add audit to check if start_url is cached by SW (#2040)
+* df2fae5e PWA Audits: add placeholders for rest of baseline checks. (#2248)
+* 3c752a0c refactor: split optimized images into WebP and optimize audit (#2216)
+* c908e817 retire TTI (alpha) audit (#2266)
 
 
 ## Metrics & Precision
-ade2d88f Enable CPU throttling (4.5x) (#1778)
-added the TTFI and TTCI metrics
-f1aeb581 Fix screenshot capture bounds (#1839)
-7b86c71e Enhance error wording around busy traces. (#2247)
-008c5d91 add lighthouse execution time to json results (#2241)
-f0e0dfaf tests: exclude score checking and flaky link preload assertion. (#2202)
-bd7f862d Update: Use array of non-critical resource types (#2191)
-0549cca7 fix: always use navStart as speedline timeOrigin (#2114)
-da8e0979 NEW feat: add firstInteractive (#2013)
-2212ca2e Update network throttling to simulate more realistic network conditions (#2238)
-b5bf067b Remove images from critical request chains. (#2085)
-0bf1744b fix: add more helpful error messages when fMP is missing (#1959)
-ca2600ac Improve reliability of finding navStart (#1895)
-04579fe3 Ignore cache hits for "fast on 3g" check (#2143)
-b1784d12 Ignore memory cache hits too. ref #2143
-e84530e7 fix: bump jpeg quality for image optimization audit (#2354)
-0d0e93f3 fix: do not flag blob urls as insecure (#2330)
-782acc59 polish: do not fail loadfast4pwa for internal redirects (#2296)
-
-
+* ade2d88f Enable CPU throttling (4.5x) (#1778)
+* added the TTFI and TTCI metrics
+* f1aeb581 Fix screenshot capture bounds (#1839)
+* 7b86c71e Enhance error wording around busy traces. (#2247)
+* 008c5d91 add lighthouse execution time to json results (#2241)
+* f0e0dfaf tests: exclude score checking and flaky link preload assertion. (#2202)
+* bd7f862d Update: Use array of non-critical resource types (#2191)
+* 0549cca7 fix: always use navStart as speedline timeOrigin (#2114)
+* da8e0979 NEW feat: add firstInteractive (#2013)
+* 2212ca2e Update network throttling to simulate more realistic network conditions (#2238)
+* b5bf067b Remove images from critical request chains. (#2085)
+* 0bf1744b fix: add more helpful error messages when fMP is missing (#1959)
+* ca2600ac Improve reliability of finding navStart (#1895)
+* 04579fe3 Ignore cache hits for "fast on 3g" check (#2143)
+* b1784d12 Ignore memory cache hits too. ref #2143
+* e84530e7 fix: bump jpeg quality for image optimization audit (#2354)
+* 0d0e93f3 fix: do not flag blob urls as insecure (#2330)
+* 782acc59 polish: do not fail loadfast4pwa for internal redirects (#2296)
 
 
 ## Plots
-b2eaa086 Plots: A/B screenshot viewer (#2026)
-618d5f0a plots: metrics-per-site view (#2041)
-c43eb098 plots: measure and visualize perf metrics (#1936)
-3f7e5a1c Plots: make measure script more flexible (CLI args) (#2183)
+* b2eaa086 Plots: A/B screenshot viewer (#2026)
+* 618d5f0a plots: metrics-per-site view (#2041)
+* c43eb098 plots: measure and visualize perf metrics (#1936)
+* 3f7e5a1c Plots: make measure script more flexible (CLI args) (#2183)
 
 
 ## CLI
-Chrome launcher is a thing now.
-2bb9c5b3 readme: tell developer to have yarn installed. ref #2072
-65bec1bd feat(cli): add support for custom trace categories (#1866)
-b9bce62b Warn users if they have not yet generated the file. (#2176)
+* Chrome launcher is a thing now.
+* 2bb9c5b3 readme: tell developer to have yarn installed. ref #2072
+* 65bec1bd feat(cli): add support for custom trace categories (#1866)
+* b9bce62b Warn users if they have not yet generated the file. (#2176)
 
 
 ## Testing
-47ee1b8d travis: include node 8.0.0 (#2395)
-Re-enable AppVeyor support #2380, #2382
-d5854b64 test(smokehouse): add numeric comparisons (#2356)
-8b47006e Smokehouse: log out the node command we spawn (#2074)
-4f598c50 ci: save perf trace to S3 on failure (#2051)
-5945332c Switch to containerized Trusty (#2234)
-fb791e40 update eslint `curly` rule to google js style (#2263)
+* 47ee1b8d travis: include node 8.0.0 (#2395)
+* Re-enable AppVeyor support #2380, #2382
+* d5854b64 test(smokehouse): add numeric comparisons (#2356)
+* 8b47006e Smokehouse: log out the node command we spawn (#2074)
+* 4f598c50 ci: save perf trace to S3 on failure (#2051)
+* 5945332c Switch to containerized Trusty (#2234)
+* fb791e40 update eslint `curly` rule to google js style (#2263)
 
 
 ## Misc
-07e0aab1 Remove recordNetwork from config (#2102)
-16b0b048 feat: support Config category and audit whitelisting (#1988)
-b2ccdfcb Allow opn & update-notifier CLI deps to be optional. (#2150)
-283af871 dismiss any Javascript Dialogs automatically (#1939) (#2106)
-e475bdb5 refactor(aggregations): switch usage of aggregations to categories (#1935)
-48b72a85 fix: always ensure tracing is off before starting (#2279)
-131df278 polish: listen for network idle after DCL (#2271)
-d7e4d1bb always construct networkRecords from devtoolsLog (#2133)
-11a1db3c networkRecords => computed artifact. generate networkRecords during gather via the networkRecorder dispatcher breaking change: performanceLog => devtoolsLogs
-fb3cfbd5 makes non-finished network records available (#2197)
-d7064290 extension: Fix formatting of bug reports (#2343)
-9f5a8aa9 Add error to chrome extension when url is using the chrome protocol (#2346)
+* 07e0aab1 Remove recordNetwork from config (#2102)
+* 16b0b048 feat: support Config category and audit whitelisting (#1988)
+* b2ccdfcb Allow opn & update-notifier CLI deps to be optional. (#2150)
+* 283af871 dismiss any Javascript Dialogs automatically (#1939) (#2106)
+* e475bdb5 refactor(aggregations): switch usage of aggregations to categories (#1935)
+* 48b72a85 fix: always ensure tracing is off before starting (#2279)
+* 131df278 polish: listen for network idle after DCL (#2271)
+* d7e4d1bb always construct networkRecords from devtoolsLog (#2133)
+* 11a1db3c networkRecords => computed artifact. generate networkRecords during gather via the networkRecorder dispatcher breaking change: performanceLog => devtoolsLogs
+* fb3cfbd5 makes non-finished network records available (#2197)
+* d7064290 extension: Fix formatting of bug reports (#2343)
+* 9f5a8aa9 Add error to chrome extension when url is using the chrome protocol (#2346)
 
 ## Docs
-Many readme/contributing changes, related projects
-e46f5401 Architecture docs: add arch diagram and lingo updates (#2158)
-af479e9f Architecture diagram
-8047ef36 Add custom audit recipe (#2255)
-6898d09e add CI gulp recipe (#1886)
-909a4638 add doc for testing site with authentication (#1906)
-7c1c1c59 improve instructions for running behind a login (#2123)
-fb86d507 Docs: add docs/readme (#2341)
-d926f321 README: update CLI help with latest. Give common examples (#2182)
-15c5ef13 add related projects section (#1835)
+* Many readme/contributing changes, related projects
+* e46f5401 Architecture docs: add arch diagram and lingo updates (#2158)
+* af479e9f Architecture diagram
+* 8047ef36 Add custom audit recipe (#2255)
+* 6898d09e add CI gulp recipe (#1886)
+* 909a4638 add doc for testing site with authentication (#1906)
+* 7c1c1c59 improve instructions for running behind a login (#2123)
+* fb86d507 Docs: add docs/readme (#2341)
+* d926f321 README: update CLI help with latest. Give common examples (#2182)
+* 15c5ef13 add related projects section (#1835)
 
 ## Deps
-e46244d6 Bump axe-core  (#2090)
-638760ee Migrate all dev scripts + docs from npm to yarn. (#2071, #2072, #2067)
-d90bce3b fix: bump speedline to fix perceptual speed index (#2046)
-3716658b Rev axe to address #2206 (#2335)
+* e46244d6 Bump axe-core  (#2090)
+* 638760ee Migrate all dev scripts + docs from npm to yarn. (#2071, #2072, #2067)
+* d90bce3b fix: bump speedline to fix perceptual speed index (#2046)
+* 3716658b Rev axe to address #2206 (#2335)
 
 
 <a name="1.6.5"></a>
