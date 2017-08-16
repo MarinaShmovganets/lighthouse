@@ -18,10 +18,13 @@ const spawn = childProcess.spawn;
 const execSync = childProcess.execSync;
 const isWindows = process.platform === 'win32';
 const _SIGINT = 'SIGINT';
-const _SIGINT_EXIT_CODE = 130;
 const _SUPPORTED_PLATFORMS = new Set(['darwin', 'linux', 'win32']);
 
 type SupportedPlatforms = 'darwin'|'linux'|'win32';
+
+interface LighthouseError extends Error {
+  code?: string
+}
 
 export interface Options {
   startingUrl?: string;
@@ -46,24 +49,76 @@ export interface ModuleOverrides {
   spawn?: typeof childProcess.spawn;
 }
 
-export async function launch(opts: Options = {}): Promise<LaunchedChrome> {
-  opts.handleSIGINT = defaults(opts.handleSIGINT, true);
+/**
+ * LaunchManager handles launch retries and SIGINT binding
+ */
+export class LaunchManager {
+  private instance?: Launcher;
+  private opts: Options;
+  private isSigintBound: boolean;
+  private maxAttempts: number;
+  private failedAttempts: number;
 
-  const instance = new Launcher(opts);
-
-  // Kill spawned Chrome process in case of ctrl-C.
-  if (opts.handleSIGINT) {
-    process.on(_SIGINT, async () => {
-      await instance.kill();
-      process.exit(_SIGINT_EXIT_CODE);
-    });
+  constructor() {
+    this.isSigintBound = false;
+    this.maxAttempts = 3;
+    this.failedAttempts = 0;
   }
 
-  await instance.launch();
+  setOptions(opts: Options = {}) {
+    this.opts = opts;
+  }
 
-  return {pid: instance.pid!, port: instance.port!, kill: async () => instance.kill()};
+  async launchInstance(): Promise<LaunchedChrome> {
+    console.assert(!this.instance, 'Already a launcher instance, can\'t create a second.');
+
+    this.instance = new Launcher(this.opts);
+    this.handleSigint();
+    await this.instance.launch().catch(err => {
+      return this.retry(err);
+    });
+
+    return {
+      pid: this.instance.pid!,
+      port: this.instance.port!,
+      kill: async () => this.instance!.kill()
+    };
+  }
+
+  async retry(err: LighthouseError) {
+    if (err.code !== 'ECONNREFUSED') return Promise.reject(err);
+
+    // clean up the chrome process
+    await this.instance!.kill();
+    this.instance = undefined;
+
+    // begin the retry attempt (or quit as we've tried enough)
+    this.failedAttempts++;
+    if (this.failedAttempts <= this.maxAttempts - 1) {
+      const attemptCount = `${this.failedAttempts}/${this.maxAttempts}`;
+      log.warn('ChromeLauncher', `Connection refused. Attempt ${attemptCount} failed. Retrying...`);
+    } else {
+      log.error('ChromeLauncher', 'Reached maximum launch attempts. Quitting...');
+      return Promise.reject(err);
+    }
+    return this.launchInstance();
+  }
+
+  async handleSigint() {
+    this.opts.handleSIGINT = defaults(this.opts.handleSIGINT, true);
+    // Kill spawned Chrome process in case of ctrl-C.
+    if (this.opts.handleSIGINT && !this.isSigintBound) {
+      this.isSigintBound = true;
+      process.on(_SIGINT, async () => {
+        await this.instance!.kill();
+      });
+    }
+  }
 }
 
+/**
+ * Launcher handles the lifecycle of a unique process of Chrome
+ */
 export class Launcher {
   private tmpDirandPidFileReady = false;
   private pollInterval: number = 500;
@@ -150,7 +205,7 @@ export class Launcher {
 
       // If an explict port is passed first look for an open connection...
       try {
-        return await this.isDebuggerReady();
+        return await this.doesDebuggingPortConnect();
       } catch (err) {
         log.log(
             'ChromeLauncher',
@@ -209,53 +264,53 @@ export class Launcher {
     return pid;
   }
 
-  private cleanup(client?: net.Socket) {
-    if (client) {
-      client.removeAllListeners();
-      client.end();
-      client.destroy();
-      client.unref();
-    }
-  }
-
-  // resolves if ready, rejects otherwise
-  private isDebuggerReady(): Promise<{}> {
+  // resolves if it connects, rejects otherwise
+  private doesDebuggingPortConnect(): Promise<{}> {
     return new Promise((resolve, reject) => {
       const client = net.createConnection(this.port!);
       client.once('error', err => {
-        this.cleanup(client);
+        cleanup(client);
         reject(err);
       });
       client.once('connect', () => {
-        this.cleanup(client);
+        cleanup(client);
         resolve();
       });
     });
+
+    function cleanup(client?: net.Socket) {
+      if (client) {
+        client.removeAllListeners();
+        client.end();
+        client.destroy();
+        client.unref();
+      }
+    }
   }
 
-  // resolves when debugger is ready, rejects after 10 polls
+  // resolves when debugging port is ready, polls 10 times every 500ms
   private waitUntilReady() {
-    const launcher = this;
+    const maxPortCheckRetries = 10;
 
     return new Promise((resolve, reject) => {
       let retries = 0;
-      let waitStatus = 'Waiting for browser.';
+      let waitStatus = 'Attempting to connect...';
+      log.log('ChromeLauncher', `Establishing connection on port ${this.port}...`);
 
       const poll = () => {
-        if (retries === 0) {
-          log.log('ChromeLauncher', waitStatus);
-        }
-        retries++;
+        log.verbose('ChromeLauncher', waitStatus);
         waitStatus += '..';
-        log.log('ChromeLauncher', waitStatus);
+        retries++;
 
-        launcher.isDebuggerReady()
+        this.doesDebuggingPortConnect()
             .then(() => {
-              log.log('ChromeLauncher', waitStatus + `${log.greenify(log.tick)}`);
+              log.log(
+                  'ChromeLauncher',
+                  `Connection established on port ${this.port} ${log.greenify(log.tick)}`);
               resolve();
             })
             .catch(err => {
-              if (retries > 10) {
+              if (retries > maxPortCheckRetries) {
                 log.error('ChromeLauncher', err.message);
                 const stderr =
                     this.fs.readFileSync(`${this.userDataDir}/chrome-err.log`, {encoding: 'utf-8'});
@@ -264,11 +319,10 @@ export class Launcher {
                 log.error('ChromeLauncher', stderr);
                 return reject(err);
               }
-              delay(launcher.pollInterval).then(poll);
+              delay(this.pollInterval).then(poll);
             });
       };
       poll();
-
     });
   }
 
@@ -279,7 +333,7 @@ export class Launcher {
           this.destroyTmp().then(resolve);
         });
 
-        log.log('ChromeLauncher', 'Killing all Chrome Instances');
+        log.log('ChromeLauncher', `Killing Chrome instance ${this.chrome.pid}`);
         try {
           if (isWindows) {
             execSync(`taskkill /pid ${this.chrome.pid} /T /F`);
@@ -319,3 +373,9 @@ export class Launcher {
     });
   }
 };
+
+const manager = new LaunchManager();
+export function launch(opts: Options = {}): Promise<LaunchedChrome> {
+  manager.setOptions(opts);
+  return manager.launchInstance();
+}
