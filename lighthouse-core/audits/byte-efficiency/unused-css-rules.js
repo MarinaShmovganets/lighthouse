@@ -34,7 +34,6 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
    */
   static indexStylesheetsById(styles, networkRecords) {
     const indexedNetworkRecords = networkRecords
-        .filter(record => record._resourceType && record._resourceType._name === 'stylesheet')
         .reduce((indexed, record) => {
           indexed[record.url] = record;
           return indexed;
@@ -70,10 +69,9 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
 
   /**
    * @param {!Object} stylesheetInfo
-   * @param {boolean} isInline
-   * @return {{debugString: string|undefined, wastedBytes: number, totalBytes: number}}
+   * @return {{wastedBytes: number, totalBytes: number, wastedPercent: number}}
    */
-  static computeUsage(stylesheetInfo, isInline) {
+  static computeUsage(stylesheetInfo) {
     let usedUncompressedBytes = 0;
     const totalUncompressedBytes = stylesheetInfo.content.length;
 
@@ -81,22 +79,20 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
       usedUncompressedBytes += usedRule.endOffset - usedRule.startOffset;
     }
 
-    // If we don't know for sure how many bytes this sheet used on the network,
-    // we can guess it was roughly the size of the content gzipped.
-    const totalBytes = stylesheetInfo.networkRecord ?
-        stylesheetInfo.networkRecord.transferSize :
-        Math.round(stylesheetInfo.content.length / 3);
+    const networkRecord = stylesheetInfo.networkRecord;
+    let totalBytes = networkRecord && stylesheetInfo.networkRecord.transferSize;
+    if (!networkRecord || networkRecord._resourceType._name !== 'stylesheet') {
+      // If we don't know for sure how many bytes this sheet used on the network,
+      // we can guess it was roughly the size of the content length.
+      const wasCompressed = !networkRecord ||
+          networkRecord._transferSize !== networkRecord._resourceSize;
+      totalBytes = wasCompressed ? Math.round(totalUncompressedBytes / 3) : totalUncompressedBytes;
+    }
 
     const percentUnused = (totalUncompressedBytes - usedUncompressedBytes) / totalUncompressedBytes;
     const wastedBytes = Math.round(percentUnused * totalBytes);
 
-    let debugString;
-    if (!isInline && !stylesheetInfo.networkRecord) {
-      debugString = `Unable to find network record for ${stylesheetInfo.header.sourceURL}`;
-    }
-
     return {
-      debugString,
       wastedBytes,
       wastedPercent: percentUnused * 100,
       totalBytes,
@@ -187,13 +183,7 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
         {key: 'potentialSavings', itemType: 'text', text: 'Potential Savings'},
       ];
 
-      const debugString = results
-          .map(result => result.debugString)
-          .filter(Boolean)
-          .pop();
-
       return {
-        debugString,
         results,
         headings,
       };

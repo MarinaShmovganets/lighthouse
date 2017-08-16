@@ -190,8 +190,6 @@ describe('Best Practices: unused css rules audit', () => {
         ]
       }).then(result => {
         assert.equal(result.results.length, 2);
-        assert.ok(!result.results[0].debugString, 'present network record errored');
-        assert.ok(result.results[1].debugString, 'missing network record did not error');
         assert.equal(result.results[0].totalBytes, 10 * 1024);
         assert.equal(result.results[1].totalBytes, 2050);
         assert.equal(result.results[0].wastedPercent, 75);

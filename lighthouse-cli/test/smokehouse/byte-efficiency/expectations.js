@@ -17,6 +17,7 @@ module.exports = [
         score: '<100',
         extendedInfo: {
           value: {
+            wastedKb: 26,
             results: {
               length: 2
             }
