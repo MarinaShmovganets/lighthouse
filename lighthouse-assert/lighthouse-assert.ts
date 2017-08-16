@@ -58,7 +58,7 @@ const FINAL_URL = 'final url';
 
 export class LighthouseAssert {
   public collatedResults: Array<CollatedResult> = [];
-  private results: Result;
+  private results: Array<Result>;
   private expectations: Array<Expectation>;
 
   /**
@@ -67,7 +67,7 @@ export class LighthouseAssert {
    * @param {Array<Expectation>} expectations
    * @return {boolean}
    */
-  constructor(lhResults: Result, expectations: Array<Expectation>) {
+  constructor(lhResults: Array<Result>, expectations: Array<Expectation>) {
     this.results = lhResults;
     this.expectations = expectations;
   }
@@ -90,8 +90,9 @@ export class LighthouseAssert {
    * Collate results on each expectation.
    */
   collate() {
-    for (let expectation of this.expectations) {
-      this.collatedResults.push(this.collateAuditResults(this.results, expectation))
+    for (const expectation of this.expectations) {
+      for (const result of this.results)
+        this.collatedResults.push(this.collateAuditResults(result, expectation))
     }
   }
 

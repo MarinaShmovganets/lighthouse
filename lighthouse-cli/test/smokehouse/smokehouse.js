@@ -12,14 +12,13 @@ const path = require('path');
 const spawnSync = require('child_process').spawnSync;
 const yargs = require('yargs');
 const log = require('lighthouse-logger');
+const LighthouseAssert = require('../../../lighthouse-assert/lighthouse-assert').LighthouseAssert;
 
 const DEFAULT_CONFIG_PATH = 'pwa-config';
 const DEFAULT_EXPECTATIONS_PATH = 'pwa-expectations';
 
 const PROTOCOL_TIMEOUT_EXIT_CODE = 67;
 const RETRIES = 3;
-const NUMERICAL_EXPECTATION_REGEXP = /^(<=?|>=?)(\d+)$/;
-
 
 /**
  * Attempt to resolve a path locally. If this fails, attempts to locate the path
@@ -95,127 +94,6 @@ function runLighthouse(url, configPath, saveAssetsPath) {
 }
 
 /**
- * Checks if the actual value matches the expectation. Does not recursively search. This supports
- *    - Greater than/less than operators, e.g. "<100", ">90"
- *    - Regular expressions
- *    - Strict equality
- *
- * @param {*} actual
- * @param {*} expected
- * @return {boolean}
- */
-function matchesExpectation(actual, expected) {
-  if (typeof actual === 'number' && NUMERICAL_EXPECTATION_REGEXP.test(expected)) {
-    const parts = expected.match(NUMERICAL_EXPECTATION_REGEXP);
-    const operator = parts[1];
-    const number = parseInt(parts[2]);
-    switch (operator) {
-      case '>':
-        return actual > number;
-      case '>=':
-        return actual >= number;
-      case '<':
-        return actual < number;
-      case '<=':
-        return actual <= number;
-    }
-  } else if (typeof actual === 'string' && expected instanceof RegExp && expected.test(actual)) {
-    return true;
-  } else {
-    // Strict equality check, plus NaN equivalence.
-    return Object.is(actual, expected);
-  }
-}
-
-/**
- * Walk down expected result, comparing to actual result. If a difference is found,
- * the path to the difference is returned, along with the expected primitive value
- * and the value actually found at that location. If no difference is found, returns
- * null.
- *
- * Only checks own enumerable properties, not object prototypes, and will loop
- * until the stack is exhausted, so works best with simple objects (e.g. parsed JSON).
- * @param {string} path
- * @param {*} actual
- * @param {*} expected
- * @return {({path: string, actual: *, expected: *}|null)}
- */
-function findDifference(path, actual, expected) {
-  if (matchesExpectation(actual, expected)) {
-    return null;
-  }
-
-  // If they aren't both an object we can't recurse further, so this is the difference.
-  if (actual === null || expected === null || typeof actual !== 'object' ||
-      typeof expected !== 'object' || expected instanceof RegExp) {
-    return {
-      path,
-      actual,
-      expected
-    };
-  }
-
-  // We only care that all expected's own properties are on actual (and not the other way around).
-  for (const key of Object.keys(expected)) {
-    // Bracket numbers, but property names requiring quotes will still be unquoted.
-    const keyAccessor = /^\d+$/.test(key) ? `[${key}]` : `.${key}`;
-    const keyPath = path + keyAccessor;
-    const expectedValue = expected[key];
-
-    if (!(key in actual)) {
-      return {path: keyPath, actual: undefined, expected: expectedValue};
-    }
-
-    const actualValue = actual[key];
-    const subDifference = findDifference(keyPath, actualValue, expectedValue);
-
-    // Break on first difference found.
-    if (subDifference) {
-      return subDifference;
-    }
-  }
-
-  return null;
-}
-
-/**
- * Collate results into comparisons of actual and expected scores on each audit.
- * @param {{url: string, audits: !Array}} actual
- * @param {{url: string, audits: !Array}} expected
- * @return {{finalUrl: !Object, audits: !Array<!Object>}}
- */
-function collateResults(actual, expected) {
-  const auditNames = Object.keys(expected.audits);
-  const collatedAudits = auditNames.map(auditName => {
-    const actualResult = actual.audits[auditName];
-    if (!actualResult) {
-      throw new Error(`Config did not trigger run of expected audit ${auditName}`);
-    }
-
-    const expectedResult = expected.audits[auditName];
-    const diff = findDifference(auditName, actualResult, expectedResult);
-
-    return {
-      category: auditName,
-      actual: actualResult,
-      expected: expectedResult,
-      equal: !diff,
-      diff
-    };
-  });
-
-  return {
-    finalUrl: {
-      category: 'final url',
-      actual: actual.url,
-      expected: expected.url,
-      equal: actual.url === expected.url
-    },
-    audits: collatedAudits
-  };
-}
-
-/**
  * Log the result of an assertion of actual and expected results.
  * @param {{category: string, equal: boolean, diff: ?Object, actual: boolean, expected: boolean}} assertion
  */
@@ -288,11 +166,13 @@ const expectations = require(resolveLocalOrCwd(cli['expectations-path']));
 // reporting result.
 let passingCount = 0;
 let failingCount = 0;
+
 expectations.forEach(expected => {
   console.log(`Checking '${expected.initialUrl}'...`);
   const results = runLighthouse(expected.initialUrl, configPath, cli['save-assets-path']);
-  const collated = collateResults(results, expected);
-  const counts = report(collated);
+  const lighthouseAssert = new LighthouseAssert([results], [expected]);
+  lighthouseAssert.collate();
+  const counts = report(lighthouseAssert.collatedResults[0]);
   passingCount += counts.passed;
   failingCount += counts.failed;
 });

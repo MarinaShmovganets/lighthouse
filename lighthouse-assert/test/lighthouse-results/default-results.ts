@@ -1,4 +1,4 @@
-export default {
+export default [{
   initialUrl: 'http://localhost:10200/tricky-ttci.html',
   url: 'http://localhost:10200/tricky-ttci.html',
   audits: {
@@ -11,4 +11,4 @@ export default {
       rawValue: '>9000',
     },
   }
-};
+}];

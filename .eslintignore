@@ -20,6 +20,7 @@ lighthouse-cli/types/*.js
 !chrome-launcher/manual-chrome-launcher.js
 !chrome-launcher/compiled-check.js
 chrome-launcher/*.js
+lighthouse-assert/*.js
 
 # Generated files
 plots/out*
