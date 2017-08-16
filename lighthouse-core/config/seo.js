@@ -9,17 +9,21 @@ module.exports = {
   extends: 'lighthouse:default',
   groups: {
     'seo-mobile': {
-      title: 'Mobile Friendliness',
+      title: 'Mobile Friendly',
       description: 'Having a mobile-friendly website is a critical part of your online presence. In many countries, smartphone traffic now exceeds desktop traffic. '
     },
     'seo-content': {
       title: 'Content Best Practices',
-      description: 'Format your HTML in a way that enables crawlers to more easily understand your website\'s content.'
+      description: 'Ensure your markup enables crawlers to better understand your app\'s content.'
+    },
+    'seo-crawl': {
+      title: 'Crawling and Indexing',
+      description: 'These ensure that your app is able to be crawled.'
     }
   },
   categories: {
     'seo': {
-      name: 'Search Engine Optimization',
+      name: 'SEO',
       description: 'These ensure your app is able to be understood by search engine crawlers.',
       audits: [
         {id: 'meta-viewport', weight: 1, group: 'seo-mobile'},
