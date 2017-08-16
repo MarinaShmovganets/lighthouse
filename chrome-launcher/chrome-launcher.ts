@@ -47,17 +47,7 @@ export interface ModuleOverrides {
 }
 
 export async function launch(opts: Options = {}): Promise<LaunchedChrome> {
-  opts.handleSIGINT = defaults(opts.handleSIGINT, true);
-
   const instance = new Launcher(opts);
-
-  // Kill spawned Chrome process in case of ctrl-C.
-  if (opts.handleSIGINT) {
-    process.on(_SIGINT, async () => {
-      await instance.kill();
-      process.exit(_SIGINT_EXIT_CODE);
-    });
-  }
 
   await instance.launch();
 
@@ -125,6 +115,11 @@ export class Launcher {
     return makeTmpDir();
   }
 
+  async sigintListener() {
+    await this.kill();
+    return process.exit(_SIGINT_EXIT_CODE);
+  }
+
   prepare() {
     const platform = process.platform as SupportedPlatforms;
     if (!_SUPPORTED_PLATFORMS.has(platform)) {
@@ -169,6 +164,11 @@ export class Launcher {
       }
 
       this.chromePath = installations[0];
+    }
+
+    // Kill spawned Chrome process in case of ctrl-C.
+    if (defaults(this.opts.handleSIGINT, true)) {
+      process.on(_SIGINT, this.sigintListener.bind(this));
     }
 
     this.pid = await this.spawnProcess(this.chromePath);
@@ -285,6 +285,7 @@ export class Launcher {
             execSync(`taskkill /pid ${this.chrome.pid} /T /F`);
           } else {
             process.kill(-this.chrome.pid);
+            process.removeListener(_SIGINT, this.sigintListener);
           }
         } catch (err) {
           log.warn('ChromeLauncher', `Chrome could not be killed ${err.message}`);
