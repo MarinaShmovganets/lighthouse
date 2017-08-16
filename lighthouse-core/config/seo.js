@@ -10,7 +10,8 @@ module.exports = {
   groups: {
     'seo-mobile': {
       title: 'Mobile Friendly',
-      description: 'Having a mobile-friendly website is a critical part of your online presence. In many countries, smartphone traffic now exceeds desktop traffic. '
+      description: 'Having a mobile-friendly website is a critical part of your online presence.' +
+        ' In many countries, smartphone traffic now exceeds desktop traffic.'
     },
     'seo-content': {
       title: 'Content Best Practices',
