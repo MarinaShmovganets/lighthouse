@@ -79,22 +79,28 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
     }
 
     const networkRecord = stylesheetInfo.networkRecord;
-    let totalBytes = networkRecord && stylesheetInfo.networkRecord.transferSize;
-    if (!networkRecord || networkRecord._resourceType._name !== 'stylesheet') {
+    let totalTransferredBytes;
+    if (networkRecord &&
+        networkRecord._resourceType &&
+        networkRecord._resourceType._name === 'stylesheet') {
+      totalTransferredBytes = networkRecord.transferSize;
+    } else {
       // If we don't know for sure how many bytes this sheet used on the network,
       // we can guess it was roughly the size of the content length.
       const wasCompressed = !networkRecord ||
           networkRecord._transferSize !== networkRecord._resourceSize;
-      totalBytes = wasCompressed ? Math.round(totalUncompressedBytes / 3) : totalUncompressedBytes;
+      totalTransferredBytes = wasCompressed ?
+          Math.round(totalUncompressedBytes / 3) :
+          totalUncompressedBytes;
     }
 
     const percentUnused = (totalUncompressedBytes - usedUncompressedBytes) / totalUncompressedBytes;
-    const wastedBytes = Math.round(percentUnused * totalBytes);
+    const wastedBytes = Math.round(percentUnused * totalTransferredBytes);
 
     return {
       wastedBytes,
       wastedPercent: percentUnused * 100,
-      totalBytes,
+      totalBytes: totalTransferredBytes,
     };
   }
 
@@ -145,14 +151,12 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
     }
 
     let url = stylesheetInfo.header.sourceURL;
-    let isInline = false;
     if (!url || url === pageUrl) {
       const contentPreview = UnusedCSSRules.determineContentPreview(stylesheetInfo.content);
       url = {type: 'code', text: contentPreview};
-      isInline = true;
     }
 
-    const usage = UnusedCSSRules.computeUsage(stylesheetInfo, isInline);
+    const usage = UnusedCSSRules.computeUsage(stylesheetInfo);
     return Object.assign({url}, usage);
   }
 
