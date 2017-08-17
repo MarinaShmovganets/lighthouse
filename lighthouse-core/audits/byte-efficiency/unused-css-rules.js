@@ -6,7 +6,6 @@
 'use strict';
 
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
-const URL = require('../../lib/url-shim');
 
 const PREVIEW_LENGTH = 100;
 
@@ -151,8 +150,6 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
       const contentPreview = UnusedCSSRules.determineContentPreview(stylesheetInfo.content);
       url = {type: 'code', text: contentPreview};
       isInline = true;
-    } else {
-      url = URL.getURLDisplayName(url);
     }
 
     const usage = UnusedCSSRules.computeUsage(stylesheetInfo, isInline);
