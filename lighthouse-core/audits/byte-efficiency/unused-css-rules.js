@@ -83,7 +83,8 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
     if (!networkRecord) {
       // We don't know how many bytes this sheet used on the network, but we can guess it was
       // roughly the size of the content gzipped.
-      totalTransferredBytes = Math.round(totalUncompressedBytes / 3);
+      // See https://discuss.httparchive.org/t/file-size-and-compression-savings/145 for multipliers
+      totalTransferredBytes = Math.round(totalUncompressedBytes * .5);
     } else if (networkRecord._resourceType && networkRecord._resourceType._name === 'stylesheet') {
       // This was a regular standalone stylesheet, just use the transfer size.
       totalTransferredBytes = networkRecord.transferSize;
@@ -91,7 +92,7 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
       // This was a stylesheet that was inlined in a different resource type (e.g. HTML document).
       // Use the compression ratio of the resource to estimate the total transferred bytes.
       const compressionRatio = (networkRecord._transferSize / networkRecord._resourceSize) || 1;
-      totalTransferredBytes = compressionRatio * totalUncompressedBytes;
+      totalTransferredBytes = Math.round(compressionRatio * totalUncompressedBytes);
     }
 
     const percentUnused = (totalUncompressedBytes - usedUncompressedBytes) / totalUncompressedBytes;
