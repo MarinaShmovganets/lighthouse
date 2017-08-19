@@ -12,10 +12,24 @@ export default [
     initialUrl: 'http://localhost:10200/tricky-ttci.html',
     url: 'http://localhost:10200/tricky-ttci.html',
     audits: {
+      'first-contentful-paint': {
+        score: {
+          "warn": '>=65',
+          "error": '<=85',
+        },
+        rawValue: '>3000',
+      },
+      'first-meaningful-paint': {
+        score: {
+          "warn": '<=65',
+          "error": '<=85',
+        },
+        rawValue: '>3000',
+      },
       'first-interactive': {
         score: {
-          warn: '<85',
-          error: '<65',
+          warn: '<=65',
+          error: '<=85',
         },
         rawValue: '>9000',
       },

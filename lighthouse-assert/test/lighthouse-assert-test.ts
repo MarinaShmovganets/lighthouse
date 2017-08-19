@@ -20,9 +20,9 @@ describe('lighthouse-assert', () => {
     assert.ok(!lighthouseAssert.equal());
   });
 
-  it('should return true if results equal or more then the expected', () => {
+  it('should fail if pwa results are not the same as expected', () => {
     const lighthouseAssert = new LighthouseAssert(pwaResults, pwaExpectations);
     lighthouseAssert.collate();
-    assert.ok(lighthouseAssert.equal());
+    assert.ok(!lighthouseAssert.equal());
   });
 });

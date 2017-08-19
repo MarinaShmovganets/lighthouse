@@ -14,11 +14,17 @@ module.exports = [
     url: 'http://localhost:10200/tricky-ttci.html',
     audits: {
       'first-interactive': {
-        score: '<75',
+        score: {
+          error: '<45',
+          warn: '<45'
+        },
         rawValue: '>9000',
       },
       'consistently-interactive': {
-        score: '<75',
+        score: {
+          error: '<45',
+          warn: '<45'
+        },
         rawValue: '>9000',
       },
     }

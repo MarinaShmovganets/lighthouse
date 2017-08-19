@@ -25,7 +25,10 @@ module.exports = [
       //   }
       // },
       'offscreen-images': {
-        score: '<100',
+        score: {
+          error: '<65',
+          warn: '<65'
+        },
         extendedInfo: {
           value: {
             results: {
@@ -35,7 +38,10 @@ module.exports = [
         }
       },
       'uses-webp-images': {
-        score: '<100',
+        score: {
+          error: '<65',
+          warn: '<65'
+        },
         extendedInfo: {
           value: {
             results: {
@@ -45,7 +51,10 @@ module.exports = [
         }
       },
       'uses-optimized-images': {
-        score: '<100',
+        score: {
+          error: '<90',
+          warn: '<90'
+        },
         extendedInfo: {
           value: {
             results: {
@@ -55,7 +64,10 @@ module.exports = [
         }
       },
       'uses-responsive-images': {
-        score: '<100',
+        score: {
+          error: '<65',
+          warn: '<65'
+        },
         extendedInfo: {
           value: {
             results: {

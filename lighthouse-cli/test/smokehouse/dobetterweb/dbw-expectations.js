@@ -59,7 +59,10 @@ module.exports = [
         score: false
       },
       'link-blocking-first-paint': {
-        score: 0,
+        score: {
+          error: '>0',
+          warn: '>0'
+        },
         extendedInfo: {
           value: {
             results: {
@@ -171,7 +174,10 @@ module.exports = [
     url: 'http://localhost:10200/dobetterweb/domtester.html?smallDOM',
     audits: {
       'dom-size': {
-        score: 100,
+        score: {
+          error: '<100',
+          warn: '<100'
+        },
         extendedInfo: {
           value: {
             0: {value: '1,324'},
@@ -193,7 +199,10 @@ module.exports = [
     url: 'http://localhost:10200/dobetterweb/domtester.html?largeDOM&withShadowDOM',
     audits: {
       'dom-size': {
-        score: 0,
+        score: {
+          error: '>0',
+          warn: '>0'
+        },
         extendedInfo: {
           value: {
             0: {value: '6,037'},
@@ -215,7 +224,10 @@ module.exports = [
     url: 'http://localhost:10200/dobetterweb/domtester.html?withShadowDOM',
     audits: {
       'dom-size': {
-        score: 100,
+        score: {
+          error: '<100',
+          warn: '<100'
+        },
         extendedInfo: {
           value: {
             0: {value: '37'},
@@ -237,7 +249,10 @@ module.exports = [
     url: 'http://localhost:10200/dobetterweb/domtester.html?ShadowRootWithManyChildren',
     audits: {
       'dom-size': {
-        score: 100,
+        score: {
+          error: '<100',
+          warn: '<100'
+        },
         extendedInfo: {
           value: {
             0: {value: '33'},
@@ -274,7 +289,10 @@ module.exports = [
         score: true
       },
       'link-blocking-first-paint': {
-        score: 100
+        score: {
+          error: '<100',
+          warn: '<100'
+        }
       },
       'no-document-write': {
         score: true
@@ -289,7 +307,10 @@ module.exports = [
         score: true
       },
       'script-blocking-first-paint': {
-        score: 100
+        score: {
+          error: '<100',
+          warn: '<100'
+        }
       },
       'uses-passive-event-listeners': {
         score: true

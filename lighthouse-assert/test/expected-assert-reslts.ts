@@ -17,32 +17,64 @@ export default [
     },
     "audits": [
       {
-        "category": "first-interactive",
+        "category": "first-contentful-paint",
         "actual": {
-          "score": "<75",
-          "rawValue": ">9000"
+          "score": 100,
+          "rawValue": ">3000"
         },
         "expected": {
           "score": {
-            "error": "<65",
-            "warn": "<85"
+            "warn": '>=65',
+            "error": '<=85',
           },
-          "rawValue": ">9000"
+          "rawValue": ">3000"
+        },
+        "equal": true,
+        "diff": {}
+      },
+      {
+        "category": "first-meaningful-paint",
+        "actual": {
+          "score": "60",
+          "rawValue": ">3000"
+        },
+        "expected": {
+          "score": {
+            "warn": '<=65',
+            "error": '<=85',
+          },
+          "rawValue": ">3000"
         },
         "equal": false,
         "diff": {
-          "path": "first-interactive.score",
-          "actual": "<75",
+          "path": "first-meaningful-paint.score",
+          "actual": "60",
           "expected": {
-            "error": "<65",
-            "warn": "<85"
+            "warn": '<=65',
+            "error": '<=85',
           }
         }
       },
       {
+        "category": "first-interactive",
+        "actual": {
+          "score": "100",
+          "rawValue": ">9000"
+        },
+        "expected": {
+          "score": {
+            "warn": '<=65',
+            "error": '<=85',
+          },
+          "rawValue": ">9000"
+        },
+        "equal": true,
+        "diff": {}
+      },
+      {
         "category": "consistently-interactive",
         "actual": {
-          "score": "<75",
+          "score": "<80",
           "rawValue": ">9000"
         },
         "expected": {

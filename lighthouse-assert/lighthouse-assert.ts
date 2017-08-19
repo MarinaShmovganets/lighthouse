@@ -13,7 +13,8 @@ interface ActualAudits {
 }
 
 interface ActualAudit {
-  score: string;
+  score: string|number;
+  [key: string]: string|number;
 }
 
 interface ExpectedAudits {
@@ -22,12 +23,20 @@ interface ExpectedAudits {
 
 interface ExpectedAudit {
   score: ExpectedScore;
+  [key: string]: ExpectedScore;
 }
 
 interface ExpectedScore {
   error: string;
   warn: string;
+  [key: string]: string;
 }
+
+interface NormalizedExpectedScore {
+  error: number;
+  warn: number;
+}
+
 
 interface CollatedResult {
   finalUrl: {
@@ -49,11 +58,10 @@ interface CollatedAudit {
 
 interface Diff extends Object {
   path?: string;
-  actual?: string;
-  expected?: ExpectedScore;
+  actual?: string|number|boolean;
+  expected?: ExpectedScore|boolean;
 }
 
-const NUMERICAL_EXPECTATION_REGEXP = /^(<=?|>=?)(\d+)$/;
 const FINAL_URL = 'final url';
 
 export class LighthouseAssert {
@@ -77,13 +85,11 @@ export class LighthouseAssert {
    * @return {boolean}
    */
   equal(): boolean {
-    //@fixme this.collatedResults[0]
-    const audits = this.collatedResults[0].audits;
-    for (const audit of audits) {
-      let equal = audit.equal;
-      if (!equal) return equal;
-    }
-    return true;
+    const notCollatedResults = this.collatedResults.find(result => {
+      const auditResults = result.audits.find(audit => !audit.equal);
+      return (auditResults && !auditResults.equal) ? true : false;
+    });
+    return notCollatedResults ? false : true;
   }
 
   /**
@@ -112,7 +118,7 @@ export class LighthouseAssert {
       }
 
       const expectedResult = expected.audits[auditName];
-      const diff = this.findDifference(auditName, actualResult, expectedResult);
+      const diff = DifferenceFactory.findDifference(auditName, actualResult, expectedResult);
       collatedAudits.push({
         category: auditName,
         actual: actualResult,
@@ -132,7 +138,31 @@ export class LighthouseAssert {
       audits: collatedAudits
     };
   }
+}
 
+const OPERAND_EXPECTATION_REGEXP = /^(<=?|>=?)/;
+
+interface DifferenceInterface {
+  getDiff: () => Diff;
+  matchesExpectation: () => boolean;
+}
+
+class ObjectDifference implements DifferenceInterface {
+  private path: string;
+  private actual: ActualAudit;
+  private expected: ExpectedAudit;
+
+  /**
+   * Constructor
+   * @param {string} path
+   * @param {ActualAudit} actual
+   * @param {ExpectedAudit} expected
+   */
+  constructor(path: string, actual: ActualAudit, expected: ExpectedAudit) {
+    this.path = path;
+    this.actual = actual;
+    this.expected = expected;
+  }
   /**
    * Walk down expected result, comparing to actual result. If a difference is found,
    * the path to the difference is returned, along with the expected primitive value
@@ -141,60 +171,36 @@ export class LighthouseAssert {
    *
    * Only checks own enumerable properties, not object prototypes, and will loop
    * until the stack is exhausted, so works best with simple objects (e.g. parsed JSON).
-   * @param {string} path
-   * @param {*} actual
-   * @param {*} expected
+   *
    * @return {Diff}
    */
-  private findDifference(path: string, actual: ActualAudit|any, expected: ExpectedAudit|any): Diff {
+  getDiff(): Diff {
     let diff: Diff = {};
 
-    if (expected && typeof expected === 'object') {
-      diff = this.getObjectsDiff(path, actual, expected);
-    } else {
-      diff = this.getNoneObjectsDiff(path, actual, expected);
-    }
-
-    return diff;
-  }
-
-  private getObjectsDiff(path: string, actual: ActualAudit|any, expected: ExpectedAudit|any): Diff {
-    let diff: Diff = {};
-    if (Object.is(actual, expected)) return diff;
+    if (this.matchesExpectation()) return diff;
 
     // We only care that all expected's own properties are on actual (and not the other way around).
-    for (const key of Object.keys(expected)) {
+    for (const key of Object.keys(this.expected)) {
       // Bracket numbers, but property names requiring quotes will still be unquoted.
       const keyAccessor = /^\d+$/.test(key) ? `[${key}]` : `.${key}`;
-      const keyPath = path + keyAccessor;
-      const expectedValue = expected[key];
+      const keyPath = this.path + keyAccessor;
+      const expectedValue = this.expected[key];
 
-      if (!(key in actual)) {
+      if (!(key in this.actual)) {
         return {path: keyPath, actual: undefined, expected: expectedValue};
       }
 
-      const actualValue = actual[key];
-      const subDifference = this.getNoneObjectsDiff(keyPath, actualValue, expectedValue);
-      return diff = subDifference;
-    }
-    return diff;
-  }
-
-  private getNoneObjectsDiff(path: string, actual: ActualAudit|any, expected: ExpectedAudit|any): Diff {
-    let diff: Diff = {};
-    for (const expectationType of Object.keys(expected)) {
-      const expectedByType = expected[expectationType];
-      if (this.matchesExpectation(actual, expectedByType)) return diff;
-
-      // If they aren't both an object we can't recurse further, so this is the difference.
-      if (actual === null || expectedByType === null || typeof actual !== 'object' ||
-        typeof expectedByType !== 'object' || expectedByType instanceof RegExp) {
-        diff = {
-          path,
-          actual,
-          expected
-        };
+      const actualValue = this.actual[key];
+      let difference;
+      //@todo use factory. P.S. generics should solve this problem
+      if (typeof actualValue === 'boolean' && typeof expectedValue === 'boolean') {
+        difference = new BooleanDifference(keyPath, { score: actualValue }, { score: expectedValue });
+      } else {
+        difference = new NoneObjectDifference(keyPath, { score: actualValue }, { score: expectedValue });
       }
+      const subDifference = difference.getDiff();
+      if (subDifference)
+        return diff = subDifference;
     }
     return diff;
   }
@@ -205,19 +211,173 @@ export class LighthouseAssert {
    *    - Regular expressions
    *    - Strict equality
    *
-   * @param {ActualAudit} actual
-   * @param {ExpectedAudit|any} expected
    * @return {boolean}
    */
-  private matchesExpectation(actual: ActualAudit|any, expected: ExpectedAudit|any): boolean {
-    if (typeof actual === 'string' && NUMERICAL_EXPECTATION_REGEXP.test(expected)) {
-      const parts = expected.match(NUMERICAL_EXPECTATION_REGEXP);
-      const number = parseInt(parts[2]);
-      //@fixme regexp
-      const actualValue = parseInt(actual.replace(/<|>/, ''));
-      return actualValue >= number;
-    } else {
-      return (typeof actual === 'string' && expected instanceof RegExp && expected.test(actual));
+  matchesExpectation(): boolean {
+    return Object.is(this.actual, this.expected);
+  }
+}
+
+
+class NoneObjectDifference implements DifferenceInterface {
+  private path: string;
+  private actual: ActualAudit;
+  private expected: ExpectedAudit;
+
+  /**
+   * Constructor
+   * @param {string} path
+   * @param {ActualAudit} actual
+   * @param {ExpectedAudit} expected
+   */
+  constructor(path: string, actual: ActualAudit, expected: ExpectedAudit) {
+    this.path = path;
+    this.actual = actual;
+    this.expected = expected;
+  }
+
+  /**
+   * Walk down expected result, comparing to actual result. If a difference is found,
+   * the path to the difference is returned, along with the expected primitive value
+   * and the value actually found at that location. If no difference is found, returns
+   * null.
+   *
+   * Only checks own enumerable properties, not object prototypes, and will loop
+   * until the stack is exhausted, so works best with simple objects (e.g. parsed JSON).
+   *
+   * @return {Diff}
+   */
+  getDiff(): Diff {
+    let diff: Diff = {};
+
+    if (this.matchesExpectation()) return diff;
+
+    for (const expectationType of Object.keys(this.expected)) {
+      const expectedByType = this.expected[expectationType];
+      // If they aren't both an object we can't recurse further, so this is the difference.
+      if (this.actual.score === null || expectedByType === null || typeof this.actual.score !== 'object' ||
+        typeof expectedByType !== 'object' || expectedByType instanceof RegExp) {
+        diff = {
+          path: this.path,
+          actual: this.actual.score,
+          expected: this.expected.score
+        };
+      }
     }
+    return diff;
+  }
+
+  /**
+   * Checks if the actual value matches the expectation. Does not recursively search. This supports
+   *    - Greater than/less than operators, e.g. "<100", ">90"
+   *
+   * @return {boolean}
+   */
+  matchesExpectation(): boolean {
+    const actualValue = this.normalize(this.actual.score);
+    const normalizedExpected: NormalizedExpectedScore = {
+      warn: this.normalize(this.expected.score.warn),
+      error: this.normalize(this.expected.score.error)
+    };
+    return this.inRange(actualValue, normalizedExpected);
+  }
+
+  /**
+   * Checks if the actual value in warning and error range
+   *
+   * @param {number} actual
+   * @param {NormalizedExpectedScore} expected
+   * @return {boolean}
+   */
+  private inRange(actual: number, expected: NormalizedExpectedScore): boolean {
+    return actual >= expected.error || actual >= expected.warn && actual < expected.error;
+  }
+
+  /**
+   * Normalizes score value
+   *
+   * @param {string|number} value
+   * @return {number}
+   */
+  private normalize(value: string|number): number {
+    if (typeof value === 'string') {
+      return parseInt(value.replace(OPERAND_EXPECTATION_REGEXP, ''));
+    } else {
+      return value;
+    }
+  }
+}
+
+class BooleanDifference implements DifferenceInterface {
+  private path: string;
+  private actual: { score: boolean };
+  private expected: { score: boolean };
+
+  /**
+   * Constructor
+   * @param {string} path
+   * @param {ActualAudit} actual
+   * @param {ExpectedAudit} expected
+   */
+  constructor(path: string, actual: { score: boolean }, expected: { score: boolean }) {
+    this.path = path;
+    this.actual = actual;
+    this.expected = expected;
+  }
+
+  /**
+   * Walk down expected result, comparing to actual result. If a difference is found,
+   * the path to the difference is returned, along with the expected primitive value
+   * and the value actually found at that location. If no difference is found, returns
+   * null.
+   *
+   * Only checks own enumerable properties, not object prototypes, and will loop
+   * until the stack is exhausted, so works best with simple objects (e.g. parsed JSON).
+   * @return {Diff}
+   */
+  getDiff(): Diff {
+    if (this.matchesExpectation()) {
+      return {};
+    } else {
+      return {
+        path: this.path,
+        actual: this.actual.score,
+        expected: this.expected.score
+      };
+    }
+  }
+
+  /**
+   * Checks if the actual value matches the expectation. Does not recursively search. This supports booleans
+   *
+   * @return {boolean}
+   */
+  matchesExpectation(): boolean {
+    return this.actual.score == this.expected.score;
+  }
+}
+
+
+class DifferenceFactory {
+  /**
+   * Find difference comparing to actual result.
+   *
+   * @param {string} path
+   * @param {ActualAudit|*} actual
+   * @param {ExpectedAudit|*} expected
+   * @return {Diff}
+   */
+  static findDifference(path: string, actual: ActualAudit|any, expected: ExpectedAudit|any): Diff {
+    let difference;
+    //@todo use generics
+    if (actual && typeof actual === 'object') {
+      difference = new ObjectDifference(path, actual, expected);
+    } else if (actual && typeof actual.score === 'boolean') {
+      difference = new BooleanDifference(path, actual, expected);
+    } else {
+      difference = new NoneObjectDifference(path, actual, expected);
+    }
+    // @todo add regexp diff class
+    return difference.getDiff();
   }
 }
