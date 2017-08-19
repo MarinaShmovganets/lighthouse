@@ -112,7 +112,7 @@ function createOptionItem(text, id, isChecked) {
  * @param {!Window} background Reference to the extension's background page.
  * @param {!Object<boolean>} selectedCategories
  */
-function onGenerateReportButtonClick(background, selectedCategories) {
+function onGenerateReportButtonClick(background, selectedCategories, selectedFlags) {
   showRunningSubpage();
 
   const feedbackEl = document.querySelector('.feedback');
@@ -122,7 +122,8 @@ function onGenerateReportButtonClick(background, selectedCategories) {
       .filter(key => !!selectedCategories[key]);
 
   background.runLighthouseInExtension({
-    restoreCleanState: true
+    restoreCleanState: true,
+    flags: selectedFlags
   }, categoryIDs).catch(err => {
     let message = err.message;
     let includeReportLink = true;
@@ -154,17 +155,29 @@ function onGenerateReportButtonClick(background, selectedCategories) {
  * for the categories.
  * @param {!Window} background Reference to the extension's background page.
  * @param {!Object<boolean>} selectedCategories
+ * @param {!Object<boolean>} selectedFlags
  */
-function generateOptionsList(background, selectedCategories) {
-  const frag = document.createDocumentFragment();
+function generateOptionsList(background, selectedCategories, selectedFlags) {
+  const fragAudit = document.createDocumentFragment();
 
   background.getDefaultCategories().forEach(category => {
     const isChecked = selectedCategories[category.id];
-    frag.appendChild(createOptionItem(category.name, category.id, isChecked));
+    fragAudit.appendChild(createOptionItem(category.name, category.id, isChecked));
   });
 
-  const optionsList = document.querySelector('.options__list');
-  optionsList.appendChild(frag);
+  const optionsListAudit = document.querySelector('.options_audit__list');
+  optionsListAudit.appendChild(fragAudit);
+
+
+  const fragFlags = document.createDocumentFragment();
+
+  background.getDefaultFlags().forEach(flag => {
+    const isChecked = selectedFlags[flag.id];
+    fragFlags.appendChild(createOptionItem(flag.name, flag.id, isChecked));
+  });
+
+  const optionsListFlags = document.querySelector('.options_flags__list');
+  optionsListFlags.appendChild(fragFlags);
 }
 
 /**
@@ -187,7 +200,7 @@ function initPopup() {
 
     // generate checkboxes from saved settings
     background.loadSettings().then(settings => {
-      generateOptionsList(background, settings.selectedCategories);
+      generateOptionsList(background, settings.selectedCategories, settings.selectedFlags);
       document.querySelector('.setting-disable-extensions').checked = settings.disableExtensions;
     });
 
@@ -195,7 +208,10 @@ function initPopup() {
     const generateReportButton = document.getElementById('generate-report');
     generateReportButton.addEventListener('click', () => {
       background.loadSettings().then(settings => {
-        onGenerateReportButtonClick(background, settings.selectedCategories);
+        onGenerateReportButtonClick(
+          background,
+          settings.selectedCategories,
+          settings.selectedFlags);
       });
     });
 
@@ -210,11 +226,13 @@ function initPopup() {
     const okButton = document.getElementById('ok');
     okButton.addEventListener('click', () => {
       // Save settings when options page is closed.
-      const selectedCategories = Array.from(optionsEl.querySelectorAll(':checked'))
-          .map(input => input.value);
+      const selectedCategories = Array.from(document.querySelector('.options_audit__list')
+        .querySelectorAll(':checked')).map(input => input.value);
       const disableExtensions = document.querySelector('.setting-disable-extensions').checked;
+      const selectedFlags = Array.from(document.querySelector('.options_flags__list')
+        .querySelectorAll(':checked')).map(input => input.value);
 
-      background.saveSettings({selectedCategories, disableExtensions});
+      background.saveSettings({selectedCategories, selectedFlags, disableExtensions});
 
       optionsEl.classList.remove(subpageVisibleClass);
     });

@@ -331,6 +331,7 @@ class Config {
     this._artifacts = expandArtifacts(configJSON.artifacts);
     this._categories = configJSON.categories;
     this._groups = configJSON.groups;
+    this._flags = configJSON.flags;
 
     // validatePasses must follow after audits are required
     validatePasses(configJSON.passes, this._audits, this._configDir);
@@ -485,6 +486,18 @@ class Config {
   }
 
   /**
+   * @param {{flags: !Object<string, {name: string, enabled: boolean}>}} config
+   * @return {!Array<{id: string, name: string, enabled: boolean}>}
+   */
+  static getFlags(config) {
+    return Object.keys(config.flags).map(id => {
+      const name = config.flags[id].name;
+      const enabled = config.flags[id].enabled;
+      return {id, name, enabled};
+    });
+  }
+
+  /**
    * Creates mapping from audit path (used in config.audits) to audit.name (used in categories)
    * @param {!Object} config Lighthouse config object.
    * @return {Map}
@@ -615,6 +628,11 @@ class Config {
   /** @type {Object<{audits: !Array<{id: string, weight: number}>}>} */
   get categories() {
     return this._categories;
+  }
+
+  /** @type {Object<{flags: !Array<{name: string, enabled: number}>}>} */
+  get flags() {
+    return this._flags;
   }
 
   /** @type {Object<string, {title: string, description: string}>|undefined} */

@@ -15,6 +15,7 @@ const log = require('lighthouse-logger');
 const ReportGeneratorV2 = require('../../../lighthouse-core/report/v2/report-generator');
 
 const STORAGE_KEY = 'lighthouse_audits';
+const FLAGS_KEY = 'lighthouse_flags';
 const SETTINGS_KEY = 'lighthouse_settings';
 
 // let installedExtensions = [];
@@ -83,7 +84,7 @@ function filterOutArtifacts(result) {
 /**
  * @param {!Connection} connection
  * @param {string} url
- * @param {!Object} options Lighthouse options.
+ * @param {!Object} options Lighthouse options, including flags.
  * @param {!Array<string>} categoryIDs Name values of categories to include.
  * @return {!Promise}
  */
@@ -178,18 +179,31 @@ window.getDefaultCategories = function() {
 };
 
 /**
+ * Returns list of top-level flags from the default config.
+ * @return {!Array<{name: string, id: string}>}
+ */
+window.getDefaultFlags = function() {
+  return Config.getFlags(defaultConfig);
+};
+
+/**
  * Save currently selected set of category categories to local storage.
- * @param {{selectedCategories: !Array<string>, disableExtensions: boolean}} settings
+ * @param {{selectedCategories: !Array<string>, selectedFlags: !Array<string>, disableExtensions: boolean}} settings
  */
 window.saveSettings = function(settings) {
   const storage = {
     [STORAGE_KEY]: {},
-    [SETTINGS_KEY]: {}
+    [SETTINGS_KEY]: {},
+    [FLAGS_KEY]: {},
   };
 
   // Stash selected categories.
   window.getDefaultCategories().forEach(category => {
     storage[STORAGE_KEY][category.id] = settings.selectedCategories.includes(category.id);
+  });
+  // Stash selected flags.
+  window.getDefaultFlags().forEach(flag => {
+    storage[FLAGS_KEY][flag.id] = settings.selectedFlags.includes(flag.id);
   });
 
   // Stash disable extensions setting.
@@ -208,7 +222,7 @@ window.loadSettings = function() {
   return new Promise(resolve => {
     // Protip: debug what's in storage with:
     //   chrome.storage.local.get(['lighthouse_audits'], console.log)
-    chrome.storage.local.get([STORAGE_KEY, SETTINGS_KEY], result => {
+    chrome.storage.local.get([STORAGE_KEY, SETTINGS_KEY, FLAGS_KEY], result => {
       // Start with list of all default categories set to true so list is
       // always up to date.
       const defaultCategories = {};
@@ -220,6 +234,12 @@ window.loadSettings = function() {
       // saved selections.
       const savedCategories = Object.assign(defaultCategories, result[STORAGE_KEY]);
 
+      const defaultFlags = {};
+      window.getDefaultFlags().forEach(flags => {
+        defaultFlags[flags.id] = flags.enabled;
+      });
+      const savedFlags = Object.assign(defaultFlags, result[FLAGS_KEY]);
+
       const defaultSettings = {
         disableExtensions: disableExtensionsDuringRun
       };
@@ -227,6 +247,7 @@ window.loadSettings = function() {
 
       resolve({
         selectedCategories: savedCategories,
+        selectedFlags: savedFlags,
         disableExtensions: savedSettings.disableExtensions
       });
     });

@@ -10,7 +10,7 @@
 
 * `npm i`
 * `yarn watch`
-* Load `/app` as Unpacked extension.
+* Load `/app` as Unpacked extension in chrome://extensions/.
 * Saved changes _should_ trigger a recompile followed by browsersync automatically refreshing the extension.
 * Scripts in `./app/src/` are browserified into `./app/scripts`.
 

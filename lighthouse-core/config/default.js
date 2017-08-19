@@ -301,5 +301,19 @@ module.exports = {
         {id: 'password-inputs-can-be-pasted-into', weight: 1},
       ]
     }
-  }
+  },
+  flags: {
+    disableCpuThrottling: {
+      name: 'Disable CPU Throttling',
+      enabled: false,
+    },
+    disableDeviceEmulation: {
+      name: 'Disable Device Emulation',
+      enabled: false,
+    },
+    disableNetworkThrottling: {
+      name: 'Disable Network Throttling',
+      enabled: false,
+    },
+  },
 };

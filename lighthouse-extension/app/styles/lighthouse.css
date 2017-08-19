@@ -199,7 +199,12 @@ html, body {
   font-weight: 300;
 }
 
-.options__list {
+.options_audit__list {
+  padding: 0;
+  list-style-type: none;
+}
+
+.options_flags__list {
   padding: 0;
   list-style-type: none;
 }
