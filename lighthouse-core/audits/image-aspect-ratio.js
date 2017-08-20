@@ -34,11 +34,11 @@ class ImageAspectRatio extends Audit {
    * @param {!Object} image
    * @return {?Object}
    */
-  static checkAspectRatio(image) {
+  static computeAspectRatios(image) {
     const url = URL.elideDataURI(image.src);
     const actualAspectRatio = image.naturalWidth / image.naturalHeight;
     const usedAspectRatio = image.clientWidth / image.clientHeight;
-    const ratiosDontMatch = actualAspectRatio != usedAspectRatio;
+    const doesRatiosMatch = actualAspectRatio != usedAspectRatio;
 
     // if(!Number.isFinite(actualAspectRatio) || !Number.isFinite(usedAspectRatio)) {
     //   return new Error(`Invalid image sizing information ${url}`);
@@ -51,7 +51,9 @@ class ImageAspectRatio extends Audit {
         url: image.networkRecord.url,
         mimeType: image.networkRecord.mimeType
       },
-      ratiosDontMatch
+      usedAspectRatio: `${image.clientWidth} x ${image.clientHeight}`,
+      actualAspectRatio: `${image.naturalWidth} x ${image.naturalHeight}`,
+      doesRatiosMatch,
     };
   }
 
@@ -65,27 +67,28 @@ class ImageAspectRatio extends Audit {
     let debugString;
     const resultsMap = new Map();
     images.forEach(image => {
-      const processed = ImageAspectRatio.checkAspectRatio(image);
-      if(processed instanceof Error) {
-        debugString = processed.message;
-        return;
-      }
+      const processed = ImageAspectRatio.computeAspectRatios(image);
+
+      // if(processed instanceof Error) {
+      //   debugString = processed.message;
+      //   return;
+      // }
 
       resultsMap.set(processed.preview.url, processed);
     });
 
     const results = Array.from(resultsMap.values())
-      .filter(item => item.ratiosDontMatch);
+      .filter(item => item.doesRatiosMatch);
 
     const headings = [
       {key: 'preview', itemType: 'thumbnail', text: ''},
       {key: 'url', itemType: 'url', text: 'URL'},
-      {key: '', itemType: 'text', text: 'Aspect Ratio (Original)'},
-      {key: '', itemType: 'text', text: 'Aspect Ratio (Actual)'}
+      {key: 'usedAspectRatio', itemType: 'text', text: 'Aspect Ratio (Original)'},
+      {key: 'actualAspectRatio', itemType: 'text', text: 'Aspect Ratio (Actual)'}
     ];
 
     return {
-      rawValue: 'KP',
+      rawValue: 'Put something useful here',
       debugString,
       details: Audit.makeTableDetails(headings, results)
     };

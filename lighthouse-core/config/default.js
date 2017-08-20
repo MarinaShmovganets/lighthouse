@@ -235,7 +235,6 @@ module.exports = {
         {id: 'uses-request-compression', weight: 0, group: 'perf-hint'},
         // {id: 'time-to-firstbyte', weight: 0, group: 'perf-hint'},
         {id: 'total-byte-weight', weight: 0, group: 'perf-info'},
-        {id: 'image-aspect-ratio', weight: 0, group: 'perf-info'},
         {id: 'dom-size', weight: 0, group: 'perf-info'},
         {id: 'critical-request-chains', weight: 0, group: 'perf-info'},
         {id: 'user-timings', weight: 0, group: 'perf-info'},
@@ -301,6 +300,7 @@ module.exports = {
         {id: 'deprecations', weight: 1},
         {id: 'manifest-short-name-length', weight: 1},
         {id: 'password-inputs-can-be-pasted-into', weight: 1},
+        {id: 'image-aspect-ratio', weight: 1},
       ]
     }
   }
