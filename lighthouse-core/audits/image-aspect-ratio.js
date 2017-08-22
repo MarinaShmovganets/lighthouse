@@ -23,8 +23,8 @@ class ImageAspectRatio extends Audit {
     return {
       category: 'Images',
       name: 'image-aspect-ratio',
-      description: 'Use Proper Aspect Ratio',
-      informative: true,
+      description: 'Uses Images with appropriate aspect ratio',
+      failureDescription: 'Does not uses Images with appropriate aspect ratio',
       helpText: 'Serve Images that are appropriately sized as per the aspect ratio',
       requiredArtifacts: ['ImageUsage']
     };
@@ -36,13 +36,16 @@ class ImageAspectRatio extends Audit {
    */
   static computeAspectRatios(image) {
     const url = URL.elideDataURI(image.src);
-    const actualAspectRatio = image.naturalWidth / image.naturalHeight;
-    const usedAspectRatio = image.clientWidth / image.clientHeight;
-    const doesRatiosMatch = actualAspectRatio != usedAspectRatio;
+    const actualAspectRatio = (image.naturalWidth / image.naturalHeight).toFixed(2);
+    const usedAspectRatio = (image.clientWidth / image.clientHeight).toFixed(2);
+    const doesRatiosMatch = Math.abs(
+      parseFloat(actualAspectRatio) - parseFloat(usedAspectRatio)
+    ) < 0.5;
 
-    // if(!Number.isFinite(actualAspectRatio) || !Number.isFinite(usedAspectRatio)) {
-    //   return new Error(`Invalid image sizing information ${url}`);
-    // }
+    if(!Number.isFinite(parseFloat(actualAspectRatio)) ||
+      !Number.isFinite(parseFloat(usedAspectRatio))) {
+      return new Error(`Invalid image sizing information ${url}`);
+    }
 
     return {
       url,
@@ -51,8 +54,8 @@ class ImageAspectRatio extends Audit {
         url: image.networkRecord.url,
         mimeType: image.networkRecord.mimeType
       },
-      usedAspectRatio: `${image.clientWidth} x ${image.clientHeight}`,
-      actualAspectRatio: `${image.naturalWidth} x ${image.naturalHeight}`,
+      usedAspectRatio: `${image.clientWidth} x ${image.clientHeight} (${usedAspectRatio})`,
+      actualAspectRatio: `${image.naturalWidth} x ${image.naturalHeight} (${actualAspectRatio})`,
       doesRatiosMatch,
     };
   }
@@ -66,19 +69,21 @@ class ImageAspectRatio extends Audit {
 
     let debugString;
     const resultsMap = new Map();
-    images.forEach(image => {
+    images.filter(image => {
+      // filter out images that don't have a proper url and width/height
+      return image.networkRecord && image.clientWidth && image.clientHeight;
+    }).forEach(image => {
       const processed = ImageAspectRatio.computeAspectRatios(image);
 
-      // if(processed instanceof Error) {
-      //   debugString = processed.message;
-      //   return;
-      // }
-
+      if(processed instanceof Error) {
+        debugString = processed.message;
+        return;
+      }
       resultsMap.set(processed.preview.url, processed);
     });
 
     const results = Array.from(resultsMap.values())
-      .filter(item => item.doesRatiosMatch);
+      .filter(item => !item.doesRatiosMatch);
 
     const headings = [
       {key: 'preview', itemType: 'thumbnail', text: ''},
@@ -88,7 +93,7 @@ class ImageAspectRatio extends Audit {
     ];
 
     return {
-      rawValue: 'Put something useful here',
+      rawValue: '',
       debugString,
       details: Audit.makeTableDetails(headings, results)
     };
