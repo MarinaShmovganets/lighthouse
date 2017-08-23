@@ -1,10 +1,10 @@
 import * as assert from 'assert';
 import { LighthouseAssert } from '../';
-import pwaExpectations from './expectations/pwa-expectations';
-import defaultExpectations from './expectations/default-expectations';
-import defaultResults from './lighthouse-results/default-results';
-import pwaResults from './lighthouse-results/pwa-results';
-import expectedAssertResults from './expected-assert-reslts';
+import pwaExpectations from './fixtures/expectations/pwa-expectations';
+import defaultExpectations from './fixtures/expectations/default-expectations';
+import defaultResults from './fixtures/lighthouse-results/default-results';
+import pwaResults from './fixtures/lighthouse-results/pwa-results';
+import expectedAssertResults from './fixtures/expected-assert-results';
 
 describe('lighthouse-assert', () => {
   it('should build collated results', () => {

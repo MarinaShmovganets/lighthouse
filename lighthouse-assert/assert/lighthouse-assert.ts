@@ -13,8 +13,17 @@ interface ActualAudits {
 }
 
 interface ActualAudit {
+  [key: string]: any;
+}
+
+interface NoneObjectActualAudit {
   score: string|number;
   [key: string]: string|number;
+}
+
+interface BooleanActualAudit {
+  score: boolean;
+  [key: string]: boolean;
 }
 
 interface ExpectedAudits {
@@ -24,6 +33,16 @@ interface ExpectedAudits {
 interface ExpectedAudit {
   score: ExpectedScore;
   [key: string]: ExpectedScore;
+}
+
+interface NoneObjectExpectedAudit {
+  score: ExpectedScore;
+  [key: string]: ExpectedScore;
+}
+
+interface BooleanExpectedAudit {
+  score: boolean;
+  [key: string]: boolean;
 }
 
 interface ExpectedScore {
@@ -221,8 +240,8 @@ class ObjectDifference implements DifferenceInterface {
 
 class NoneObjectDifference implements DifferenceInterface {
   private path: string;
-  private actual: ActualAudit;
-  private expected: ExpectedAudit;
+  private actual: NoneObjectActualAudit;
+  private expected: NoneObjectExpectedAudit;
 
   /**
    * Constructor
@@ -230,7 +249,7 @@ class NoneObjectDifference implements DifferenceInterface {
    * @param {ActualAudit} actual
    * @param {ExpectedAudit} expected
    */
-  constructor(path: string, actual: ActualAudit, expected: ExpectedAudit) {
+  constructor(path: string, actual: NoneObjectActualAudit, expected: NoneObjectExpectedAudit) {
     this.path = path;
     this.actual = actual;
     this.expected = expected;
@@ -310,8 +329,8 @@ class NoneObjectDifference implements DifferenceInterface {
 
 class BooleanDifference implements DifferenceInterface {
   private path: string;
-  private actual: { score: boolean };
-  private expected: { score: boolean };
+  private actual: BooleanActualAudit;
+  private expected: BooleanExpectedAudit;
 
   /**
    * Constructor
@@ -319,7 +338,7 @@ class BooleanDifference implements DifferenceInterface {
    * @param {ActualAudit} actual
    * @param {ExpectedAudit} expected
    */
-  constructor(path: string, actual: { score: boolean }, expected: { score: boolean }) {
+  constructor(path: string, actual: BooleanActualAudit, expected: BooleanExpectedAudit) {
     this.path = path;
     this.actual = actual;
     this.expected = expected;
@@ -367,7 +386,7 @@ class DifferenceFactory {
    * @param {ExpectedAudit|*} expected
    * @return {Diff}
    */
-  static findDifference(path: string, actual: ActualAudit|any, expected: ExpectedAudit|any): Diff {
+  static findDifference(path: string, actual: any, expected: any): Diff {
     let difference;
     //@todo use generics
     if (actual && typeof actual === 'object') {

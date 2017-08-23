@@ -1,1 +1,1 @@
-export * from './lighthouse-assert';
+export * from './assert/lighthouse-assert';
