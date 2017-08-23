@@ -14,6 +14,7 @@
 const Audit = require('./audit');
 
 const URL = require('../lib/url-shim');
+const THRESHOLD = 0.05;
 
 class ImageAspectRatio extends Audit {
   /**
@@ -36,14 +37,12 @@ class ImageAspectRatio extends Audit {
    */
   static computeAspectRatios(image) {
     const url = URL.elideDataURI(image.src);
-    const actualAspectRatio = (image.naturalWidth / image.naturalHeight).toFixed(2);
-    const usedAspectRatio = (image.clientWidth / image.clientHeight).toFixed(2);
-    const doesRatiosMatch = Math.abs(
-      parseFloat(actualAspectRatio) - parseFloat(usedAspectRatio)
-    ) < 0.5;
+    const actualAspectRatio = image.naturalWidth / image.naturalHeight;
+    const displayedAspectRatio = image.clientWidth / image.clientHeight;
+    const doRatiosMatch = Math.abs(actualAspectRatio - displayedAspectRatio) < THRESHOLD;
 
-    if(!Number.isFinite(parseFloat(actualAspectRatio)) ||
-      !Number.isFinite(parseFloat(usedAspectRatio))) {
+    if (!Number.isFinite(actualAspectRatio) ||
+      !Number.isFinite(displayedAspectRatio)) {
       return new Error(`Invalid image sizing information ${url}`);
     }
 
@@ -54,9 +53,11 @@ class ImageAspectRatio extends Audit {
         url: image.networkRecord.url,
         mimeType: image.networkRecord.mimeType
       },
-      usedAspectRatio: `${image.clientWidth} x ${image.clientHeight} (${usedAspectRatio})`,
-      actualAspectRatio: `${image.naturalWidth} x ${image.naturalHeight} (${actualAspectRatio})`,
-      doesRatiosMatch,
+      displayedAspectRatio: `${image.clientWidth} x ${image.clientHeight} 
+        (${displayedAspectRatio.toFixed(2)})`,
+      actualAspectRatio: `${image.naturalWidth} x ${image.naturalHeight} 
+        (${actualAspectRatio.toFixed(2)})`,
+      doRatiosMatch,
     };
   }
 
@@ -68,27 +69,24 @@ class ImageAspectRatio extends Audit {
     const images = artifacts.ImageUsage;
 
     let debugString;
-    const resultsMap = new Map();
+    let results = [];
     images.filter(image => {
       // filter out images that don't have a proper url and width/height
       return image.networkRecord && image.clientWidth && image.clientHeight;
     }).forEach(image => {
       const processed = ImageAspectRatio.computeAspectRatios(image);
-
-      if(processed instanceof Error) {
+      if (processed instanceof Error) {
         debugString = processed.message;
         return;
       }
-      resultsMap.set(processed.preview.url, processed);
-    });
 
-    const results = Array.from(resultsMap.values())
-      .filter(item => !item.doesRatiosMatch);
+      if(processed.doRatiosMatch) results.push(processed);
+    });
 
     const headings = [
       {key: 'preview', itemType: 'thumbnail', text: ''},
       {key: 'url', itemType: 'url', text: 'URL'},
-      {key: 'usedAspectRatio', itemType: 'text', text: 'Aspect Ratio (Original)'},
+      {key: 'displayedAspectRatio', itemType: 'text', text: 'Aspect Ratio (Displayed)'},
       {key: 'actualAspectRatio', itemType: 'text', text: 'Aspect Ratio (Actual)'}
     ];
 

@@ -48,19 +48,19 @@ describe('Images: aspect-ratio audit', () => {
     });
   }
 
-  testImage('is very large than natural aspect ratio', {
+  testImage('is much larger than natural aspect ratio', {
     listed: true,
     clientSize: [800, 500],
     naturalSize: [200, 200]
   });
 
-  testImage('is large than natural aspect ratio', {
+  testImage('is larger than natural aspect ratio', {
     listed: false,
     clientSize: [400, 300],
     naturalSize: [200, 200]
   });
 
-  testImage('is very small than natural aspect ratio', {
+  testImage('is much smaller than natural aspect ratio', {
     listed: true,
     clientSize: [200, 200],
     naturalSize: [800, 500]
