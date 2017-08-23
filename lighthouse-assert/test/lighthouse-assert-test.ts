@@ -25,4 +25,15 @@ describe('lighthouse-assert', () => {
     lighthouseAssert.collate();
     assert.ok(!lighthouseAssert.equal());
   });
+
+  describe('status count of results', () => {
+    const lighthouseAssert = new LighthouseAssert(defaultResults, defaultExpectations);
+    lighthouseAssert.collate();
+    const statusCounts = lighthouseAssert.getStatusCounts();
+    const expectedStatusCounts = {
+      passed: 3,
+      failed: 1
+    };
+    assert.deepEqual(statusCounts, expectedStatusCounts);
+  })
 });

@@ -81,6 +81,11 @@ interface Diff extends Object {
   expected?: ExpectedScore|boolean;
 }
 
+interface StatusCounts extends Object {
+  passed: number;
+  failed: number;
+}
+
 const FINAL_URL = 'final url';
 
 export class LighthouseAssert {
@@ -119,6 +124,24 @@ export class LighthouseAssert {
       for (const result of this.results)
         this.collatedResults.push(this.collateAuditResults(result, expectation))
     }
+  }
+
+  /**
+   * Get status counts for collated results
+   */
+  getStatusCounts() {
+    let statusCounts: StatusCounts = {
+      passed: 0,
+      failed: 0
+    };
+
+    for (const collatedResult of this.collatedResults) {
+      // @todo include other results then audits
+      for (const audit of collatedResult.audits) {
+        (audit && audit.equal) ? statusCounts.passed += 1 : statusCounts.failed += 1;
+      }
+    }
+    return statusCounts;
   }
 
   /**
