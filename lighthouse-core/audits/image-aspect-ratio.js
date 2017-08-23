@@ -69,7 +69,7 @@ class ImageAspectRatio extends Audit {
     const images = artifacts.ImageUsage;
 
     let debugString;
-    let results = [];
+    const results = [];
     images.filter(image => {
       // filter out images that don't have a proper url and width/height
       return image.networkRecord && image.clientWidth && image.clientHeight;
@@ -80,7 +80,7 @@ class ImageAspectRatio extends Audit {
         return;
       }
 
-      if(processed.doRatiosMatch) results.push(processed);
+      if(!processed.doRatiosMatch) results.push(processed);
     });
 
     const headings = [
