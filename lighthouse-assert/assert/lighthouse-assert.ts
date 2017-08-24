@@ -75,13 +75,13 @@ interface CollatedAudit {
   diff: Diff|Object;
 }
 
-interface Diff extends Object {
+export interface Diff extends Object {
   path?: string;
   actual?: string|number|boolean;
   expected?: ExpectedScore|boolean;
 }
 
-interface StatusCounts extends Object {
+export interface StatusCounts extends Object {
   passed: number;
   failed: number;
 }
