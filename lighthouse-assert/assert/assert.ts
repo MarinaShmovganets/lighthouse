@@ -88,7 +88,7 @@ export interface StatusCounts extends Object {
 
 const FINAL_URL = 'final url';
 
-export class LighthouseAssert {
+export class Assert {
   public collatedResults: Array<CollatedResult> = [];
   private results: Array<Result>;
   private expectations: Array<Expectation>;

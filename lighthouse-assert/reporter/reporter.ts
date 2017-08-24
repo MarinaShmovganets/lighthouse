@@ -10,13 +10,13 @@ export interface IReporter {
 export class DefaultReporter implements IReporter {
   stderr(diff: Diff) {
     let msg = `  ${log.redify(log.cross)} difference at ${diff.path}: `;
-    msg += log.redify(`found ${diff.actual}, expected ${diff.expected}\n`);
+    msg += log.redify(`found ${diff.actual}, expected ${JSON.stringify(diff.expected, null, 2)}\n`);
 
     console.log(msg);
   }
 
   stdoutFailingStatus(count: number) {
-    console.log(log.redify(`${count} passing`));
+    console.log(log.redify(`${count} failing`));
   }
 
   stdoutPassingStatus(count: number) {

@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { LighthouseAssert } from '../';
+import { Assert } from '../';
 import pwaExpectations from './fixtures/expectations/pwa-expectations';
 import defaultExpectations from './fixtures/expectations/default-expectations';
 import defaultResults from './fixtures/lighthouse-results/default-results';
@@ -8,26 +8,26 @@ import expectedAssertResults from './fixtures/expected-assert-results';
 
 describe('lighthouse-assert', () => {
   it('should build collated results', () => {
-    const lighthouseAssert = new LighthouseAssert(defaultResults, defaultExpectations);
+    const lighthouseAssert = new Assert(defaultResults, defaultExpectations);
     lighthouseAssert.collate();
     const collatedResults = lighthouseAssert.collatedResults;
     assert.deepEqual(collatedResults, expectedAssertResults);
   });
 
   it('should return false if results less the expected', () => {
-    const lighthouseAssert = new LighthouseAssert(defaultResults, defaultExpectations);
+    const lighthouseAssert = new Assert(defaultResults, defaultExpectations);
     lighthouseAssert.collate();
     assert.ok(!lighthouseAssert.equal());
   });
 
   it('should fail if pwa results are not the same as expected', () => {
-    const lighthouseAssert = new LighthouseAssert(pwaResults, pwaExpectations);
+    const lighthouseAssert = new Assert(pwaResults, pwaExpectations);
     lighthouseAssert.collate();
     assert.ok(!lighthouseAssert.equal());
   });
 
   describe('status count of results', () => {
-    const lighthouseAssert = new LighthouseAssert(defaultResults, defaultExpectations);
+    const lighthouseAssert = new Assert(defaultResults, defaultExpectations);
     lighthouseAssert.collate();
     const statusCounts = lighthouseAssert.getStatusCounts();
     const expectedStatusCounts = {
