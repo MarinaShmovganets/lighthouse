@@ -50,46 +50,51 @@ class NoVulnerableLibrariesAudit extends Audit {
    */
   static audit(artifacts) {
     const libraries = artifacts.JSVulnerableLibraries;
-
-    const finalVulns = Object.assign(
-      ...libraries
-        .filter(obj => {
-          return obj.vulns;
-        })
-        .map(record => {
-          const libVulns = [];
-          for (const i in record.vulns) {
-            if (Object.hasOwnProperty.call(record.vulns, i)) {
-              libVulns.push(record.vulns[i]);
+    if (libraries.length) {
+      const finalVulns = Object.assign(
+        ...libraries
+          .filter(obj => {
+            return obj.vulns;
+          })
+          .map(record => {
+            const libVulns = [];
+            for (const i in record.vulns) {
+              if (Object.hasOwnProperty.call(record.vulns, i)) {
+                libVulns.push(record.vulns[i]);
+              }
             }
-          }
-          return libVulns;
-        })
-    );
+            return libVulns;
+          })
+      );
 
-    let displayValue = '';
-    if (finalVulns.length > 1) {
-      displayValue = `${finalVulns.length} vulnerabilities detected.`;
-    } else if (finalVulns.length === 1) {
-      displayValue = `${finalVulns.length} vulnerability was detected.`;
+      let displayValue = '';
+      if (finalVulns.length > 1) {
+        displayValue = `${finalVulns.length} vulnerabilities detected.`;
+      } else if (finalVulns.length === 1) {
+        displayValue = `${finalVulns.length} vulnerability was detected.`;
+      }
+
+      const headings = [
+        {key: 'url', itemType: 'text', text: 'Details'},
+        {key: 'library', itemType: 'text', text: 'Library'},
+        {key: 'severity', itemType: 'text', text: 'Severity'}
+      ];
+      const details = Audit.makeTableDetails(headings, finalVulns);
+      return {
+        rawValue: finalVulns.length === 0,
+        displayValue,
+        extendedInfo: {
+          jsLibs: libraries,
+          vulnerabilities: finalVulns
+        },
+        details,
+      };
+    } else {
+      return {
+        rawValue: true,
+        extendedInfo: {}
+      };
     }
-
-    const headings = [
-      {key: 'url', itemType: 'text', text: 'Details'},
-      {key: 'library', itemType: 'text', text: 'Library'},
-      {key: 'severity', itemType: 'text', text: 'Severity'}
-    ];
-    const details = Audit.makeTableDetails(headings, finalVulns);
-
-    return {
-      rawValue: finalVulns.length === 0,
-      displayValue,
-      extendedInfo: {
-        jsLibs: libraries,
-        vulnerabilities: finalVulns
-      },
-      details,
-    };
   }
 
 }
