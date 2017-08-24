@@ -51,17 +51,21 @@ class NoVulnerableLibrariesAudit extends Audit {
   static audit(artifacts) {
     const libraries = artifacts.JSVulnerableLibraries;
 
-    const finalVulns = Object.assign(...libraries.filter(obj => {
-      return obj.vulns;
-    }).map(record => {
-      const libVulns = [];
-      for (const i in record.vulns) {
-        if (Object.hasOwnProperty.call(record.vulns, i)) {
-          libVulns.push(record.vulns[i]);
-        }
-      }
-      return libVulns;
-    }));
+    const finalVulns = Object.assign(
+      ...libraries
+        .filter(obj => {
+          return obj.vulns;
+        })
+        .map(record => {
+          const libVulns = [];
+          for (const i in record.vulns) {
+            if (Object.hasOwnProperty.call(record.vulns, i)) {
+              libVulns.push(record.vulns[i]);
+            }
+          }
+          return libVulns;
+        })
+    );
 
     let displayValue = '';
     if (finalVulns.length > 1) {
