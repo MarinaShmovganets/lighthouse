@@ -21,9 +21,10 @@ class ImageAlt extends AxeAudit {
       category: 'Accessibility',
       name: 'image-alt',
       description: 'Image elements have `[alt]` attributes.',
+      failureDescription: 'Image elements do not have `[alt]` attributes.',
       helpText: 'Informative elements should aim for short, descriptive alternate text. ' +
           'Decorative elements can be ignored with an empty alt attribute.' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/alt-attribute).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/image-alt?application=lighthouse).',
       requiredArtifacts: ['Accessibility']
     };
   }

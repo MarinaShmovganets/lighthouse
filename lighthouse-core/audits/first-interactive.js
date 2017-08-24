@@ -7,17 +7,11 @@
 
 const Audit = require('./audit');
 const Util = require('../report/v2/renderer/util.js');
-const statistics = require('../lib/statistics');
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 //   https://www.desmos.com/calculator/rjp0lbit8y
 const SCORING_POINT_OF_DIMINISHING_RETURNS = 1700;
 const SCORING_MEDIAN = 10000;
-
-const distribution = statistics.getLogNormalDistribution(
-  SCORING_MEDIAN,
-  SCORING_POINT_OF_DIMINISHING_RETURNS
-);
 
 class FirstInteractiveMetric extends Audit {
   /**
@@ -28,8 +22,9 @@ class FirstInteractiveMetric extends Audit {
       category: 'Performance',
       name: 'first-interactive',
       description: 'First Interactive (beta)',
-      helpText: 'The first point at which necessary scripts of the page have loaded ' +
-          'and the CPU is idle enough to handle most user input.',
+      helpText: 'First Interactive marks the time at which the page is ' +
+          'minimally interactive. ' +
+          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-interactive).',
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces']
     };
@@ -46,14 +41,12 @@ class FirstInteractiveMetric extends Audit {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     return artifacts.requestFirstInteractive(trace)
       .then(firstInteractive => {
-        let score = 100 * distribution.computeComplementaryPercentile(firstInteractive.timeInMs);
-        // Clamp the score to 0 <= x <= 100.
-        score = Math.min(100, score);
-        score = Math.max(0, score);
-        score = Math.round(score);
-
         return {
-          score,
+          score: Audit.computeLogNormalScore(
+            firstInteractive.timeInMs,
+            SCORING_POINT_OF_DIMINISHING_RETURNS,
+            SCORING_MEDIAN
+          ),
           rawValue: firstInteractive.timeInMs,
           displayValue: Util.formatMilliseconds(firstInteractive.timeInMs),
           extendedInfo: {

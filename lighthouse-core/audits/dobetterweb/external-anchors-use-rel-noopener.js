@@ -17,6 +17,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
       category: 'Performance',
       name: 'external-anchors-use-rel-noopener',
       description: 'Opens external anchors using `rel="noopener"`',
+      failureDescription: 'Does not open external anchors using `rel="noopener"`',
       helpText: 'Open new tabs using `rel="noopener"` to improve performance and ' +
           'prevent security vulnerabilities. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/noopener).',
@@ -38,7 +39,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
     const failingAnchors = artifacts.AnchorsWithNoRelNoopener
       .filter(anchor => {
         try {
-          return anchor.href === '' || new URL(anchor.href).host !== pageHost;
+          return new URL(anchor.href).host !== pageHost;
         } catch (err) {
           debugString = 'Lighthouse was unable to determine the destination ' +
               'of some anchor tags. If they are not used as hyperlinks, ' +

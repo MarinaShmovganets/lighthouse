@@ -15,9 +15,19 @@ const livereload = require('gulp-livereload');
 const babel = require('babel-core');
 const tap = require('gulp-tap');
 const zip = require('gulp-zip');
+const gulpReplace = require('gulp-replace');
+const header = require('gulp-header');
 const LighthouseRunner = require('../lighthouse-core/runner');
+const pkg = require('../package.json');
 
 const distDir = 'dist';
+
+const VERSION = pkg.version;
+const COMMIT_HASH = require('child_process')
+  .execSync('git rev-parse HEAD')
+  .toString().trim();
+
+const BANNER = `// lighthouse, browserified. ${VERSION} (${COMMIT_HASH})\n`;
 
 const audits = LighthouseRunner.getAuditList()
     .map(f => '../lighthouse-core/audits/' + f.replace(/\.js$/, ''));
@@ -101,7 +111,7 @@ gulp.task('browserify-lighthouse', () => {
     'app/src/lighthouse-background.js'
   ], {read: false})
     .pipe(tap(file => {
-      let bundle = browserify(file.path); // , {debug: true})
+      let bundle = browserify(file.path); // , {debug: true}); // for sourcemaps
       bundle = applyBrowserifyTransforms(bundle);
 
       // lighthouse-background will need some additional transforms, ignores and requires…
@@ -144,9 +154,11 @@ gulp.task('browserify-other', () => {
     .pipe(tap(file => {
       let bundle = browserify(file.path); // , {debug: true}); // for sourcemaps
       bundle = applyBrowserifyTransforms(bundle);
+
       // Inject the new browserified contents back into our gulp pipeline
       file.contents = bundle.bundle();
     }))
+    .pipe(gulpReplace('__COMMITHASH__', COMMIT_HASH))
     .pipe(gulp.dest('app/scripts'))
     .pipe(gulp.dest(`${distDir}/scripts`));
 });
@@ -161,6 +173,7 @@ gulp.task('compilejs', () => {
     retainLines: true, // Keep things on the same line (looks wonky but helps with stacktraces)
     comments: false, // Don't output comments
     shouldPrintComment: _ => false, // Don't include @license or @preserve comments either
+    // sourceMaps: 'both'
   };
 
   return gulp.src(['dist/scripts/lighthouse-background.js'])
@@ -169,6 +182,7 @@ gulp.task('compilejs', () => {
       file.contents = new Buffer(minified);
       return file;
     }))
+    .pipe(header(BANNER))
     .pipe(gulp.dest('dist/scripts'));
 });
 
