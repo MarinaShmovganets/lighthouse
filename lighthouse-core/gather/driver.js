@@ -265,25 +265,18 @@ class Driver {
   }
 
   getAppManifest() {
-    return new Promise((resolve, reject) => {
-      this.sendCommand('Page.getAppManifest')
-        .then(response => {
-          // We're not reading `response.errors` however it may contain critical and noncritical
-          // errors from Blink's manifest parser:
-          //   https://chromedevtools.github.io/debugger-protocol-viewer/tot/Page/#type-AppManifestError
-          if (!response.data) {
-            if (response.url) {
-              return reject(new Error(`Unable to retrieve manifest at ${response.url}.`));
-            }
+    return this.sendCommand('Page.getAppManifest')
+      .then(response => {
+        // We're not reading `response.errors` however it may contain critical and noncritical
+        // errors from Blink's manifest parser:
+        //   https://chromedevtools.github.io/debugger-protocol-viewer/tot/Page/#type-AppManifestError
+        if (!response.data) {
+          // If the data is empty, the page had no manifest.
+          return null;
+        }
 
-            // If both the data and the url are empty strings, the page had no manifest.
-            return reject('No web app manifest found.');
-          }
-
-          resolve(response);
-        })
-        .catch(err => reject(err));
-    });
+        return response;
+      });
   }
 
   getSecurityState() {
@@ -376,11 +369,10 @@ class Driver {
    * Returns a promise that resolves when the network has been idle (after DCL) for
    * `networkQuietThresholdMs` ms and a method to cancel internal network listeners/timeout.
    * @param {number} networkQuietThresholdMs
-   * @param {number} pauseAfterNetworkQuietMs
    * @return {{promise: !Promise, cancel: function()}}
    * @private
    */
-  _waitForNetworkIdle(networkQuietThresholdMs, pauseAfterNetworkQuietMs) {
+  _waitForNetworkIdle(networkQuietThresholdMs) {
     let idleTimeout;
     let cancel;
 
@@ -414,9 +406,6 @@ class Driver {
         this._networkStatusMonitor.removeListener('network-2-busy', onBusy);
         this._networkStatusMonitor.removeListener('network-2-idle', onIdle);
       };
-    }).then(() => {
-      // Once idle has been determined wait another pauseAfterLoadMs
-      return new Promise(resolve => setTimeout(resolve, pauseAfterNetworkQuietMs));
     });
 
     return {
@@ -426,41 +415,34 @@ class Driver {
   }
 
   /**
-   * Installs a PerformanceObserver in the page to monitor for longtasks and resolves when there have
-   * been no long tasks for at least waitForCPUQuiet ms. The promise will not resolve until the
-   * `markAsResolvable` function on the return object has been called. This is to prevent promise resolution
-   * before some important point in time such as network quiet or document load.
+   * Resolves when there have been no long tasks for at least waitForCPUQuiet ms.
    * @param {number} waitForCPUQuiet
-   * @return {{promise: !Promise, cancel: function(), markAsResolvable: function()}}
+   * @return {{promise: !Promise, cancel: function()}}
    */
   _waitForCPUIdle(waitForCPUQuiet) {
     if (!waitForCPUQuiet) {
       return {
-        markAsResolvable: () => undefined,
         promise: Promise.resolve(),
         cancel: () => undefined,
       };
     }
 
     let lastTimeout;
-    let isResolvable = false;
+    let cancelled = false;
     function checkForQuiet(driver, resolve) {
-      const tryLater = timeToWait => {
-        lastTimeout = setTimeout(() => checkForQuiet(driver, resolve), timeToWait);
-      };
-
-      if (!isResolvable) {
-        return tryLater(1000);
-      }
+      if (cancelled) return;
 
       return driver.evaluateAsync(`(${checkTimeSinceLastLongTask.toString()})()`)
         .then(timeSinceLongTask => {
+          if (cancelled) return;
+
           if (typeof timeSinceLongTask === 'number' && timeSinceLongTask >= waitForCPUQuiet) {
             log.verbose('Driver', `CPU has been idle for ${timeSinceLongTask} ms`);
             resolve();
           } else {
             log.verbose('Driver', `CPU has been idle for ${timeSinceLongTask} ms`);
-            tryLater(waitForCPUQuiet - timeSinceLongTask);
+            const timeToWait = waitForCPUQuiet - timeSinceLongTask;
+            lastTimeout = setTimeout(() => checkForQuiet(driver, resolve), timeToWait);
           }
         });
     }
@@ -469,15 +451,13 @@ class Driver {
     const promise = new Promise((resolve, reject) => {
       checkForQuiet(this, resolve);
       cancel = () => {
+        cancelled = true;
         if (lastTimeout) clearTimeout(lastTimeout);
         reject(new Error('Wait for CPU idle cancelled'));
       };
     });
 
     return {
-      markAsResolvable: () => {
-        isResolvable = true;
-      },
       promise,
       cancel,
     };
@@ -536,15 +516,17 @@ class Driver {
     // Network listener. Resolves when the network has been idle for networkQuietThresholdMs.
     const waitForNetworkIdle = this._waitForNetworkIdle(networkQuietThresholdMs);
     // CPU listener. Resolves when the CPU has been idle for cpuQuietThresholdMs after network idle.
-    const waitForCPUIdle = this._waitForCPUIdle(cpuQuietThresholdMs);
+    let waitForCPUIdle = null;
 
     // Wait for both load promises. Resolves on cleanup function the clears load
     // timeout timer.
     const loadPromise = Promise.all([
       waitForLoadEvent.promise,
-      waitForNetworkIdle.promise.then(waitForCPUIdle.markAsResolvable),
-      waitForCPUIdle.promise,
+      waitForNetworkIdle.promise,
     ]).then(() => {
+      waitForCPUIdle = this._waitForCPUIdle(cpuQuietThresholdMs);
+      return waitForCPUIdle.promise;
+    }).then(() => {
       return function() {
         log.verbose('Driver', 'loadEventFired and network considered idle');
         clearTimeout(maxTimeoutHandle);
@@ -560,7 +542,7 @@ class Driver {
         log.warn('Driver', 'Timed out waiting for page load. Moving on...');
         waitForLoadEvent.cancel();
         waitForNetworkIdle.cancel();
-        waitForCPUIdle.cancel();
+        waitForCPUIdle && waitForCPUIdle.cancel();
       };
     });
 
@@ -1114,7 +1096,14 @@ function registerPerformanceObserverInPage() {
       }
     }
   });
+
   observer.observe({entryTypes: ['longtask']});
+  // HACK: A PerformanceObserver will be GC'd if there are no more references to it, so attach it to
+  // window to ensure we still receive longtask notifications. See https://crbug.com/742530.
+  // For an example test of this behavior see https://gist.github.com/patrickhulce/69d8bed1807e762218994b121d06fea6.
+  //   FIXME COMPAT: This hack isn't neccessary as of Chrome 62.0.3176.0
+  //   https://bugs.chromium.org/p/chromium/issues/detail?id=742530#c7
+  window.____lhPerformanceObserver = observer;
 }
 
 

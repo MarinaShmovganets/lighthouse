@@ -189,9 +189,20 @@ function assertValidAudit(auditDefinition, auditPath) {
     );
   }
 
+  // If it'll have a ✔ or ✖ displayed alongside the result, it should have failureDescription
+  if (typeof auditDefinition.meta.failureDescription !== 'string' &&
+    auditDefinition.meta.informative !== true &&
+    auditDefinition.meta.scoringMode !== Audit.SCORING_MODES.NUMERIC) {
+    throw new Error(`${auditName} has no failureDescription and should.`);
+  }
+
   if (typeof auditDefinition.meta.helpText !== 'string') {
     throw new Error(
       `${auditName} has no meta.helpText property, or the property is not a string.`
+    );
+  } else if (auditDefinition.meta.helpText === '') {
+    throw new Error(
+      `${auditName} has an empty meta.helpText string. Please add a description for the UI.`
     );
   }
 
@@ -533,6 +544,8 @@ class Config {
     }).filter(pass => {
       // remove any passes lacking concrete gatherers, unless they are dependent on the trace
       if (pass.recordTrace) return true;
+      // Always keep defaultPass
+      if (pass.passName === 'defaultPass') return true;
       return pass.gatherers.length > 0;
     });
     return filteredPasses;
