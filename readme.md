@@ -55,9 +55,15 @@ Configuration:
   --additional-trace-categories  Additional categories to capture with the trace (comma-delimited).
   --config-path                  The path to the config JSON.
   --chrome-flags                 Custom flags to pass to Chrome (space-delimited). For a full list of flags, see
-                                 http://peter.sh/experiments/chromium-command-line-switches/.                                          [default: ""]
+                                 http://peter.sh/experiments/chromium-command-line-switches/.
+
+                                 Environment variables:
+                                 CHROME_PATH: Explicit path of intended Chrome binary. If set must point to an executable of a build of
+                                 Chromium version 54.0 or later. By default, any detected Chrome Canary or Chrome (stable) will be launched.
+                                                                                                                                       [default: ""]
   --perf                         Use a performance-test-only configuration                                                                 [boolean]
   --port                         The port to use for the debugging protocol. Use 0 for a random port                                 [default: 9222]
+  --hostname                     The hostname to use for the debugging protocol.                                                [default: localhost]
   --max-wait-for-load            The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue.
                                  WARNING: Very high values can lead to large traces and instability                                 [default: 25000]
 
@@ -77,8 +83,6 @@ Options:
   --disable-device-emulation    Disable Nexus 5X emulation                                                                                 [boolean]
   --disable-cpu-throttling      Disable CPU throttling                                                                    [boolean] [default: false]
   --disable-network-throttling  Disable network throttling                                                                                 [boolean]
-  --skip-autolaunch             Skip autolaunch of Chrome when already running instance is not found                                       [boolean]
-  --select-chrome               Interactively choose version of Chrome to use when multiple installations are found                        [boolean]
   --interactive                 Open Lighthouse in interactive mode                                                                        [boolean]
 
 Examples:
@@ -244,12 +248,18 @@ yarn compile-devtools
 * **[lighthouse-hue](https://github.com/ebidel/lighthouse-hue)** - set the color of Philips Hue lights based on a Lighthouse score
 * **[lighthouse-batch](https://www.npmjs.com/package/lighthouse-batch)** - run Lighthouse over a number of sites and generate a summary of their metrics/scores.
 * **[lighthouse-cron](https://github.com/thearegee/lighthouse-cron)** - Cron multiple batch Lighthouse audits and emit results for sending to remote server.
+* **[lightcrawler](https://github.com/github/lightcrawler)** - Crawl a website and run each page found through Lighthouse.
+
 
 ## FAQ
 
 ### How does Lighthouse work?
 
 See [Lighthouse Architecture](./docs/architecture.md).
+
+### Can I configure the lighthouse run?
+
+Yes! Details in [Lighthouse configuration](./docs/configuration.md).
 
 ### What is "Do Better Web"?
 

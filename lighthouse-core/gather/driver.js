@@ -10,6 +10,7 @@ const emulation = require('../lib/emulation');
 const Element = require('../lib/element');
 const EventEmitter = require('events').EventEmitter;
 const URL = require('../lib/url-shim');
+const TraceParser = require('../lib/traces/trace-parser');
 
 const log = require('lighthouse-logger');
 const DevtoolsLog = require('./devtools-log');
@@ -18,8 +19,8 @@ const DevtoolsLog = require('./devtools-log');
 const DEFAULT_PAUSE_AFTER_LOAD = 0;
 // Controls how long to wait between network requests before determining the network is quiet
 const DEFAULT_NETWORK_QUIET_THRESHOLD = 5000;
-// Controls how long to wait after network quiet before continuing
-const DEFAULT_PAUSE_AFTER_NETWORK_QUIET = 0;
+// Controls how long to wait between longtasks before determining the CPU is idle, off by default
+const DEFAULT_CPU_QUIET_THRESHOLD = 0;
 
 const _uniq = arr => Array.from(new Set(arr));
 
@@ -206,7 +207,7 @@ class Driver {
    * @param {string} scriptSource
    * @return {!Promise<string>} Identifier of the added script.
    */
-  evaluateScriptOnLoad(scriptSource) {
+  evaluteScriptOnNewDocument(scriptSource) {
     return this.sendCommand('Page.addScriptToEvaluateOnLoad', {
       scriptSource
     });
@@ -264,25 +265,18 @@ class Driver {
   }
 
   getAppManifest() {
-    return new Promise((resolve, reject) => {
-      this.sendCommand('Page.getAppManifest')
-        .then(response => {
-          // We're not reading `response.errors` however it may contain critical and noncritical
-          // errors from Blink's manifest parser:
-          //   https://chromedevtools.github.io/debugger-protocol-viewer/tot/Page/#type-AppManifestError
-          if (!response.data) {
-            if (response.url) {
-              return reject(new Error(`Unable to retrieve manifest at ${response.url}.`));
-            }
+    return this.sendCommand('Page.getAppManifest')
+      .then(response => {
+        // We're not reading `response.errors` however it may contain critical and noncritical
+        // errors from Blink's manifest parser:
+        //   https://chromedevtools.github.io/debugger-protocol-viewer/tot/Page/#type-AppManifestError
+        if (!response.data) {
+          // If the data is empty, the page had no manifest.
+          return null;
+        }
 
-            // If both the data and the url are empty strings, the page had no manifest.
-            return reject('No web app manifest found.');
-          }
-
-          resolve(response);
-        })
-        .catch(err => reject(err));
-    });
+        return response;
+      });
   }
 
   getSecurityState() {
@@ -375,11 +369,10 @@ class Driver {
    * Returns a promise that resolves when the network has been idle (after DCL) for
    * `networkQuietThresholdMs` ms and a method to cancel internal network listeners/timeout.
    * @param {number} networkQuietThresholdMs
-   * @param {number} pauseAfterNetworkQuietMs
    * @return {{promise: !Promise, cancel: function()}}
    * @private
    */
-  _waitForNetworkIdle(networkQuietThresholdMs, pauseAfterNetworkQuietMs) {
+  _waitForNetworkIdle(networkQuietThresholdMs) {
     let idleTimeout;
     let cancel;
 
@@ -413,14 +406,60 @@ class Driver {
         this._networkStatusMonitor.removeListener('network-2-busy', onBusy);
         this._networkStatusMonitor.removeListener('network-2-idle', onIdle);
       };
-    }).then(() => {
-      // Once idle has been determined wait another pauseAfterLoadMs
-      return new Promise(resolve => setTimeout(resolve, pauseAfterNetworkQuietMs));
     });
 
     return {
       promise,
       cancel
+    };
+  }
+
+  /**
+   * Resolves when there have been no long tasks for at least waitForCPUQuiet ms.
+   * @param {number} waitForCPUQuiet
+   * @return {{promise: !Promise, cancel: function()}}
+   */
+  _waitForCPUIdle(waitForCPUQuiet) {
+    if (!waitForCPUQuiet) {
+      return {
+        promise: Promise.resolve(),
+        cancel: () => undefined,
+      };
+    }
+
+    let lastTimeout;
+    let cancelled = false;
+    function checkForQuiet(driver, resolve) {
+      if (cancelled) return;
+
+      return driver.evaluateAsync(`(${checkTimeSinceLastLongTask.toString()})()`)
+        .then(timeSinceLongTask => {
+          if (cancelled) return;
+
+          if (typeof timeSinceLongTask === 'number' && timeSinceLongTask >= waitForCPUQuiet) {
+            log.verbose('Driver', `CPU has been idle for ${timeSinceLongTask} ms`);
+            resolve();
+          } else {
+            log.verbose('Driver', `CPU has been idle for ${timeSinceLongTask} ms`);
+            const timeToWait = waitForCPUQuiet - timeSinceLongTask;
+            lastTimeout = setTimeout(() => checkForQuiet(driver, resolve), timeToWait);
+          }
+        });
+    }
+
+    let cancel;
+    const promise = new Promise((resolve, reject) => {
+      checkForQuiet(this, resolve);
+      cancel = () => {
+        cancelled = true;
+        if (lastTimeout) clearTimeout(lastTimeout);
+        reject(new Error('Wait for CPU idle cancelled'));
+      };
+    });
+
+    return {
+      promise,
+      cancel,
     };
   }
 
@@ -454,34 +493,40 @@ class Driver {
 
   /**
    * Returns a promise that resolves when:
-   * - it's been networkQuietThresholdMs milliseconds after both onload and the network
-   * has gone idle, or
+   * - All of the following conditions have been met:
+   *    - pauseAfterLoadMs milliseconds have passed since the load event.
+   *    - networkQuietThresholdMs milliseconds have passed since the last network request that exceeded
+   *      2 inflight requests (network-2-quiet has been reached).
+   *    - cpuQuietThresholdMs have passed since the last long task after network-2-quiet.
    * - maxWaitForLoadedMs milliseconds have passed.
    * See https://github.com/GoogleChrome/lighthouse/issues/627 for more.
    * @param {number} pauseAfterLoadMs
    * @param {number} networkQuietThresholdMs
-   * @param {number} pauseAfterNetworkQuietMs
+   * @param {number} cpuQuietThresholdMs
    * @param {number} maxWaitForLoadedMs
    * @return {!Promise}
    * @private
    */
-  _waitForFullyLoaded(pauseAfterLoadMs, networkQuietThresholdMs, pauseAfterNetworkQuietMs,
+  _waitForFullyLoaded(pauseAfterLoadMs, networkQuietThresholdMs, cpuQuietThresholdMs,
       maxWaitForLoadedMs) {
     let maxTimeoutHandle;
 
     // Listener for onload. Resolves pauseAfterLoadMs ms after load.
     const waitForLoadEvent = this._waitForLoadEvent(pauseAfterLoadMs);
-    // Network listener. Resolves pauseAfterNetworkQuietMs after when the network has been idle for
-    // networkQuietThresholdMs.
-    const waitForNetworkIdle = this._waitForNetworkIdle(networkQuietThresholdMs,
-        pauseAfterNetworkQuietMs);
+    // Network listener. Resolves when the network has been idle for networkQuietThresholdMs.
+    const waitForNetworkIdle = this._waitForNetworkIdle(networkQuietThresholdMs);
+    // CPU listener. Resolves when the CPU has been idle for cpuQuietThresholdMs after network idle.
+    let waitForCPUIdle = null;
 
     // Wait for both load promises. Resolves on cleanup function the clears load
     // timeout timer.
     const loadPromise = Promise.all([
       waitForLoadEvent.promise,
-      waitForNetworkIdle.promise
+      waitForNetworkIdle.promise,
     ]).then(() => {
+      waitForCPUIdle = this._waitForCPUIdle(cpuQuietThresholdMs);
+      return waitForCPUIdle.promise;
+    }).then(() => {
       return function() {
         log.verbose('Driver', 'loadEventFired and network considered idle');
         clearTimeout(maxTimeoutHandle);
@@ -497,6 +542,7 @@ class Driver {
         log.warn('Driver', 'Timed out waiting for page load. Moving on...');
         waitForLoadEvent.cancel();
         waitForNetworkIdle.cancel();
+        waitForCPUIdle && waitForCPUIdle.cancel();
       };
     });
 
@@ -564,13 +610,13 @@ class Driver {
 
     let pauseAfterLoadMs = options.config && options.config.pauseAfterLoadMs;
     let networkQuietThresholdMs = options.config && options.config.networkQuietThresholdMs;
-    let pauseAfterNetworkQuietMs = options.config && options.config.pauseAfterNetworkQuietMs;
+    let cpuQuietThresholdMs = options.config && options.config.cpuQuietThresholdMs;
     let maxWaitMs = options.flags && options.flags.maxWaitForLoad;
 
     /* eslint-disable max-len */
     if (typeof pauseAfterLoadMs !== 'number') pauseAfterLoadMs = DEFAULT_PAUSE_AFTER_LOAD;
     if (typeof networkQuietThresholdMs !== 'number') networkQuietThresholdMs = DEFAULT_NETWORK_QUIET_THRESHOLD;
-    if (typeof pauseAfterNetworkQuietMs !== 'number') pauseAfterNetworkQuietMs = DEFAULT_PAUSE_AFTER_NETWORK_QUIET;
+    if (typeof cpuQuietThresholdMs !== 'number') cpuQuietThresholdMs = DEFAULT_CPU_QUIET_THRESHOLD;
     if (typeof maxWaitMs !== 'number') maxWaitMs = Driver.MAX_WAIT_FOR_FULLY_LOADED;
     /* eslint-enable max-len */
 
@@ -579,7 +625,7 @@ class Driver {
       .then(_ => this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS}))
       .then(_ => this.sendCommand('Page.navigate', {url}))
       .then(_ => waitForLoad && this._waitForFullyLoaded(pauseAfterLoadMs,
-          networkQuietThresholdMs, pauseAfterNetworkQuietMs, maxWaitMs))
+          networkQuietThresholdMs, cpuQuietThresholdMs, maxWaitMs))
       .then(_ => this._endNetworkStatusMonitoring());
   }
 
@@ -678,6 +724,20 @@ class Driver {
   }
 
   /**
+   * Returns the flattened list of all DOM nodes within the document.
+   * @param {boolean=} pierce Whether to pierce through shadow trees and iframes.
+   *     True by default.
+   * @return {!Promise<!Array<!Element>>} The found elements, or [], resolved in a promise
+   */
+  getElementsInDocument(pierce = true) {
+    return this.sendCommand('DOM.getFlattenedDocument', {depth: -1, pierce})
+      .then(result => {
+        const elements = result.nodes.filter(node => node.nodeType === 1);
+        return elements.map(node => new Element({nodeId: node.nodeId}, this));
+      });
+  }
+
+  /**
    * @param {{additionalTraceCategories: string=}=} flags
    */
   beginTrace(flags) {
@@ -736,7 +796,7 @@ class Driver {
   _readTraceFromStream(streamHandle) {
     return new Promise((resolve, reject) => {
       let isEOF = false;
-      let result = '';
+      const parser = new TraceParser();
 
       const readArguments = {
         handle: streamHandle.stream
@@ -747,11 +807,11 @@ class Driver {
           return;
         }
 
-        result += response.data;
+        parser.parseChunk(response.data);
 
         if (response.eof) {
           isEOF = true;
-          return resolve(JSON.parse(result));
+          return resolve(parser.getTrace());
         }
 
         return this.sendCommand('IO.read', readArguments).then(onChunkRead);
@@ -856,10 +916,19 @@ class Driver {
   /**
    * Cache native functions/objects inside window
    * so we are sure polyfills do not overwrite the native implementations
+   * @return {!Promise}
    */
   cacheNatives() {
-    return this.evaluateScriptOnLoad(`window.__nativePromise = Promise;
+    return this.evaluteScriptOnNewDocument(`window.__nativePromise = Promise;
         window.__nativeError = Error;`);
+  }
+
+  /**
+   * Install a performance observer that watches longtask timestamps for waitForCPUIdle.
+   * @return {!Promise}
+   */
+  registerPerformanceObserver() {
+    return this.evaluteScriptOnNewDocument(`(${registerPerformanceObserverInPage.toString()})()`);
   }
 
   /**
@@ -887,7 +956,7 @@ class Driver {
 
     const funcBody = captureJSCallUsage.toString();
 
-    this.evaluateScriptOnLoad(`
+    this.evaluteScriptOnNewDocument(`
         ${globalVarToPopulate} = new Set();
         (${funcName} = ${funcBody}(${funcName}, ${globalVarToPopulate}))`);
 
@@ -1009,6 +1078,53 @@ function wrapRuntimeEvalErrorInBrowser(err) {
     message: err.message || fallbackMessage,
     stack: err.stack || (new Error()).stack,
   };
+}
+
+/**
+ * Used by _waitForCPUIdle and executed in the context of the page, updates the ____lastLongTask
+ * property on window to the end time of the last long task.
+ * instanbul ignore next
+ */
+function registerPerformanceObserverInPage() {
+  window.____lastLongTask = window.performance.now();
+  const observer = new window.PerformanceObserver(entryList => {
+    const entries = entryList.getEntries();
+    for (const entry of entries) {
+      if (entry.entryType === 'longtask') {
+        const taskEnd = entry.startTime + entry.duration;
+        window.____lastLongTask = Math.max(window.____lastLongTask, taskEnd);
+      }
+    }
+  });
+
+  observer.observe({entryTypes: ['longtask']});
+  // HACK: A PerformanceObserver will be GC'd if there are no more references to it, so attach it to
+  // window to ensure we still receive longtask notifications. See https://crbug.com/742530.
+  // For an example test of this behavior see https://gist.github.com/patrickhulce/69d8bed1807e762218994b121d06fea6.
+  //   FIXME COMPAT: This hack isn't neccessary as of Chrome 62.0.3176.0
+  //   https://bugs.chromium.org/p/chromium/issues/detail?id=742530#c7
+  window.____lhPerformanceObserver = observer;
+}
+
+
+/**
+ * Used by _waitForCPUIdle and executed in the context of the page, returns time since last long task.
+ * instanbul ignore next
+ */
+function checkTimeSinceLastLongTask() {
+  // Wait for a delta before returning so that we're sure the PerformanceObserver
+  // has had time to register the last longtask
+  return new Promise(resolve => {
+    const timeoutRequested = window.performance.now() + 50;
+
+    setTimeout(() => {
+      // Double check that a long task hasn't happened since setTimeout
+      const timeoutFired = window.performance.now();
+      const timeSinceLongTask = timeoutFired - timeoutRequested < 50 ?
+          timeoutFired - window.____lastLongTask : 0;
+      resolve(timeSinceLongTask);
+    }, 50);
+  });
 }
 
 module.exports = Driver;

@@ -125,6 +125,7 @@ class DetailsRenderer {
     if (!list.items.length) return this._dom.createElement('span');
 
     const element = this._dom.createElement('details', 'lh-details');
+    element.open = true;
     if (list.header) {
       const summary = this._dom.createElement('summary', 'lh-list__header');
       summary.textContent = list.header.text;
@@ -147,6 +148,7 @@ class DetailsRenderer {
     if (!details.items.length) return this._dom.createElement('span');
 
     const element = this._dom.createElement('details', 'lh-details');
+    element.open = true;
     if (details.header) {
       element.appendChild(this._dom.createElement('summary')).textContent = details.header;
     }
@@ -194,6 +196,7 @@ class DetailsRenderer {
    */
   _renderCards(details) {
     const element = this._dom.createElement('details', 'lh-details');
+    element.open = true;
     if (details.header) {
       element.appendChild(this._dom.createElement('summary')).textContent = details.header.text;
     }
@@ -228,7 +231,7 @@ class DetailsRenderer {
     for (const thumbnail of details.items) {
       const frameEl = this._dom.createChildOf(filmstripEl, 'div', 'lh-filmstrip__frame');
 
-      let timing = thumbnail.timing.toLocaleString() + ' ms';
+      let timing = Util.formatMilliseconds(thumbnail.timing, 1);
       if (thumbnail.timing > 1000) {
         timing = Util.formatNumber(thumbnail.timing / 1000) + ' s';
       }

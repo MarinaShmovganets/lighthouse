@@ -6,8 +6,7 @@
 'use strict';
 
 const Audit = require('./audit');
-const statistics = require('../lib/statistics');
-const Formatter = require('../report/formatter');
+const Util = require('../report/v2/renderer/util');
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 // https://www.desmos.com/calculator/mdgjzchijg
@@ -25,7 +24,7 @@ class SpeedIndexMetric extends Audit {
       description: 'Perceptual Speed Index',
       helpText: 'Speed Index shows how quickly the contents of a page are visibly populated. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/speed-index).',
-      optimalValue: `< ${SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString()}`,
+      optimalValue: `< ${Util.formatNumber(SCORING_POINT_OF_DIMINISHING_RETURNS)}`,
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces']
     };
@@ -63,13 +62,11 @@ class SpeedIndexMetric extends Audit {
       //  Median = 5,500
       //  75th Percentile = 8,820
       //  95th Percentile = 17,400
-      const distribution = statistics.getLogNormalDistribution(SCORING_MEDIAN,
-        SCORING_POINT_OF_DIMINISHING_RETURNS);
-      let score = 100 * distribution.computeComplementaryPercentile(speedline.perceptualSpeedIndex);
-
-      // Clamp the score to 0 <= x <= 100.
-      score = Math.min(100, score);
-      score = Math.max(0, score);
+      const score = Audit.computeLogNormalScore(
+        speedline.perceptualSpeedIndex,
+        SCORING_POINT_OF_DIMINISHING_RETURNS,
+        SCORING_MEDIAN
+      );
 
       const extendedInfo = {
         timings: {
@@ -94,12 +91,14 @@ class SpeedIndexMetric extends Audit {
         })
       };
 
+      const rawValue = Math.round(speedline.perceptualSpeedIndex);
+
       return {
-        score: Math.round(score),
-        rawValue: Math.round(speedline.perceptualSpeedIndex),
+        score,
+        rawValue,
+        displayValue: Util.formatNumber(rawValue),
         optimalValue: this.meta.optimalValue,
         extendedInfo: {
-          formatter: Formatter.SUPPORTED_FORMATS.SPEEDLINE,
           value: extendedInfo
         }
       };

@@ -41,7 +41,10 @@ npm install chrome-launcher
   handleSIGINT: boolean;
 
   // (optional) Explicit path of intended Chrome binary
-  // By default, any detected Chrome Canary or Chrome (stable) will be launched
+  // * If this `chromePath` option is defined, it will be used.
+  // * Otherwise, the `CHROME_PATH` env variable will be used if set. (`LIGHTHOUSE_CHROMIUM_PATH` is deprecated)
+  // * Otherwise, a detected Chrome Canary will be used if found
+  // * Otherwise, a detected Chrome (stable) will be used
   chromePath: string;
 
   // (optional) Chrome profile path to use
@@ -51,6 +54,14 @@ npm install chrome-launcher
   // (optional) Starting URL to open the browser with
   // Default: `about:blank`
   startingUrl: string;
+
+  // (optional) Logging level: verbose, info, error, silent
+  // Default: 'info'
+  logLevel: string;
+
+  // (optional) Enable extension loading
+  // Default: false
+  enableExtensions: boolean
 };
 ```
 
@@ -112,7 +123,7 @@ install:
   - yarn install
 before_script:
   - export DISPLAY=:99.0
-  - export LIGHTHOUSE_CHROMIUM_PATH="$(pwd)/chrome-linux/chrome"
+  - export CHROME_PATH="$(pwd)/chrome-linux/chrome"
   - sh -e /etc/init.d/xvfb start
   - curl -L https://raw.githubusercontent.com/GoogleChrome/lighthouse/v2.1.0/lighthouse-core/scripts/download-chrome.sh | bash
 ```

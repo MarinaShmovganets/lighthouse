@@ -13,7 +13,7 @@
 
 const URL = require('../../lib/url-shim');
 const Audit = require('../audit');
-const Formatter = require('../../report/formatter');
+const Util = require('../../report/v2/renderer/util.js');
 
 class UsesHTTP2Audit extends Audit {
 
@@ -25,6 +25,7 @@ class UsesHTTP2Audit extends Audit {
       category: 'Performance',
       name: 'uses-http2',
       description: 'Uses HTTP/2 for its own resources',
+      failureDescription: 'Does not use HTTP/2 for all of its resources',
       helpText: 'HTTP/2 offers many benefits over HTTP/1.1, including binary headers, ' +
           'multiplexing, and server push. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/http2).',
       requiredArtifacts: ['URL', 'devtoolsLogs']
@@ -42,10 +43,11 @@ class UsesHTTP2Audit extends Audit {
 
       // Filter requests that are on the same host as the page and not over h2.
       const resources = networkRecords.filter(record => {
+        // test the protocol first to avoid (potentially) expensive URL parsing
+        const isOldHttp = /HTTP\/[01][\.\d]?/i.test(record.protocol);
+        if (!isOldHttp) return false;
         const requestHost = new URL(record._url).host;
-        const sameHost = requestHost === finalHost;
-        const notH2 = /HTTP\/[01][\.\d]?/i.test(record.protocol);
-        return sameHost && notH2;
+        return requestHost === finalHost;
       }).map(record => {
         return {
           protocol: record.protocol,
@@ -55,25 +57,24 @@ class UsesHTTP2Audit extends Audit {
 
       let displayValue = '';
       if (resources.length > 1) {
-        displayValue = `${resources.length} requests were not handled over h2`;
+        displayValue =
+          `${Util.formatNumber(resources.length)} requests were not handled over HTTP/2`;
       } else if (resources.length === 1) {
-        displayValue = `${resources.length} request was not handled over h2`;
+        displayValue = `${resources.length} request was not handled over HTTP/2`;
       }
 
       const headings = [
         {key: 'url', itemType: 'url', text: 'URL'},
         {key: 'protocol', itemType: 'text', text: 'Protocol'},
       ];
-      const details = Audit.makeV2TableDetails(headings, resources);
+      const details = Audit.makeTableDetails(headings, resources);
 
       return {
         rawValue: resources.length === 0,
         displayValue: displayValue,
         extendedInfo: {
-          formatter: Formatter.SUPPORTED_FORMATS.TABLE,
           value: {
             results: resources,
-            tableHeadings: {url: 'URL', protocol: 'Protocol'}
           }
         },
         details,

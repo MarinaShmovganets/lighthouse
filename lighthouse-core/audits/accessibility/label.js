@@ -21,9 +21,10 @@ class Label extends AxeAudit {
       category: 'Accessibility',
       name: 'label',
       description: 'Form elements have associated labels.',
+      failureDescription: 'Form elements do not have associated labels.',
       helpText: 'Labels ensure that form controls are announced properly by assistive ' +
           'technologies, like screen readers. [Learn ' +
-          'more](https://developers.google.com/web/tools/lighthouse/audits/form-labels).',
+          'more](https://dequeuniversity.com/rules/axe/2.2/label?application=lighthouse).',
       requiredArtifacts: ['Accessibility']
     };
   }

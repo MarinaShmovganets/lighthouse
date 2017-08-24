@@ -35,6 +35,7 @@ lighthouse-cli/*.js
 !chrome-launcher/compiled-check.js
 chrome-launcher/*.map
 chrome-launcher/*.js
+chrome-launcher/*.d.ts
 
 lighthouse-cli/commands/*.map
 lighthouse-cli/commands/*.js
@@ -45,8 +46,5 @@ lighthouse-cli/types/*.map
 /chrome-linux/
 /chrome-win32/
 /chrome.zip
-
-lighthouse-core/report/partials/templates/
-lighthouse-core/report/templates/*.js
 
 plots/out**

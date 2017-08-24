@@ -8,8 +8,6 @@
 const Audit = require('./audit');
 const Util = require('../report/v2/renderer/util.js');
 const TracingProcessor = require('../lib/traces/tracing-processor');
-const statistics = require('../lib/statistics');
-const Formatter = require('../report/formatter');
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 // https://www.desmos.com/calculator/srv0hqhf7d
@@ -25,7 +23,7 @@ class EstimatedInputLatency extends Audit {
       category: 'Performance',
       name: 'estimated-input-latency',
       description: 'Estimated Input Latency',
-      optimalValue: `< ${SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString()} ms`,
+      optimalValue: `< ${Util.formatMilliseconds(SCORING_POINT_OF_DIMINISHING_RETURNS, 1)}`,
       helpText: 'The score above is an estimate of how long your app takes to respond to user ' +
           'input, in milliseconds. There is a 90% probability that a user encounters this amount ' +
           'of latency, or less. 10% of the time a user can expect additional latency. If your ' +
@@ -52,18 +50,19 @@ class EstimatedInputLatency extends Audit {
     //  Median = 100ms
     //  75th Percentile ≈ 133ms
     //  95th Percentile ≈ 199ms
-    const distribution = statistics.getLogNormalDistribution(SCORING_MEDIAN,
-        SCORING_POINT_OF_DIMINISHING_RETURNS);
-    const score = 100 * distribution.computeComplementaryPercentile(ninetieth.time);
+    const score = Audit.computeLogNormalScore(
+      ninetieth.time,
+      SCORING_POINT_OF_DIMINISHING_RETURNS,
+      SCORING_MEDIAN
+    );
 
     return {
-      score: Math.round(score),
+      score,
       optimalValue: EstimatedInputLatency.meta.optimalValue,
       rawValue,
       displayValue: Util.formatMilliseconds(rawValue, 1),
       extendedInfo: {
         value: latencyPercentiles,
-        formatter: Formatter.SUPPORTED_FORMATS.NULL
       }
     };
   }

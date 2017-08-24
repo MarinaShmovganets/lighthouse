@@ -13,8 +13,8 @@ module.exports = {
     passName: 'defaultPass',
     recordTrace: true,
     pauseAfterLoadMs: 5250,
-    networkQuietThresholdMs: 5000,
-    pauseAfterNetworkQuietMs: 2500,
+    networkQuietThresholdMs: 5250,
+    cpuQuietThresholdMs: 5250,
     useThrottling: true,
     gatherers: [
       'url',
@@ -24,7 +24,6 @@ module.exports = {
       'manifest',
       'chrome-console-messages',
       'image-usage',
-      // 'css-usage',
       'accessibility',
       'dobetterweb/all-event-listeners',
       'dobetterweb/anchors-with-no-rel-noopener',
@@ -123,7 +122,6 @@ module.exports = {
     'accessibility/video-caption',
     'accessibility/video-description',
     'byte-efficiency/total-byte-weight',
-    // 'byte-efficiency/unused-css-rules',
     'byte-efficiency/offscreen-images',
     'byte-efficiency/uses-webp-images',
     'byte-efficiency/uses-optimized-images',
@@ -136,7 +134,6 @@ module.exports = {
     'dobetterweb/link-blocking-first-paint',
     'dobetterweb/no-document-write',
     'dobetterweb/no-mutation-events',
-    // 'dobetterweb/no-old-flexbox',
     'dobetterweb/no-websql',
     'dobetterweb/notification-on-start',
     'dobetterweb/password-inputs-can-be-pasted-into',
@@ -192,7 +189,7 @@ module.exports = {
     },
     'manual-pwa-checks': {
       title: 'Manual checks to verify',
-      description: 'These audits are required by the baseline ' +
+      description: 'These checks are required by the baseline ' +
           '[PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist) but are ' +
           'not automatically checked by Lighthouse. They do not affect your score but it\'s important that you verify them manually.'
     },
@@ -201,7 +198,7 @@ module.exports = {
     'pwa': {
       name: 'Progressive Web App',
       weight: 1,
-      description: 'These audits validate the aspects of a Progressive Web App, as specified by the baseline [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist).',
+      description: 'These checks validate the aspects of a Progressive Web App, as specified by the baseline [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist).',
       audits: [
         {id: 'service-worker', weight: 1},
         {id: 'works-offline', weight: 1},
@@ -221,7 +218,7 @@ module.exports = {
     },
     'performance': {
       name: 'Performance',
-      description: 'These encapsulate your app\'s performance.',
+      description: 'These encapsulate your app\'s current performance and opportunities to improve it.',
       audits: [
         {id: 'first-meaningful-paint', weight: 5, group: 'perf-metric'},
         {id: 'first-interactive', weight: 5, group: 'perf-metric'},
@@ -230,7 +227,6 @@ module.exports = {
         {id: 'estimated-input-latency', weight: 1, group: 'perf-metric'},
         {id: 'link-blocking-first-paint', weight: 0, group: 'perf-hint'},
         {id: 'script-blocking-first-paint', weight: 0, group: 'perf-hint'},
-        // {id: 'unused-css-rules', weight: 0},
         {id: 'uses-responsive-images', weight: 0, group: 'perf-hint'},
         {id: 'offscreen-images', weight: 0, group: 'perf-hint'},
         {id: 'uses-optimized-images', weight: 0, group: 'perf-hint'},
@@ -288,13 +284,12 @@ module.exports = {
     },
     'best-practices': {
       name: 'Best Practices',
-      description: 'We\'ve compiled some recommendations for modernizing your web app and avoiding performance pitfalls. These audits do not affect your score but are worth a look.',
+      description: 'We\'ve compiled some recommendations for modernizing your web app and avoiding performance pitfalls.',
       audits: [
         {id: 'appcache-manifest', weight: 1},
         {id: 'no-websql', weight: 1},
         {id: 'is-on-https', weight: 1},
         {id: 'uses-http2', weight: 1},
-        // {id: 'no-old-flexbox', weight: 1},
         {id: 'uses-passive-event-listeners', weight: 1},
         {id: 'no-mutation-events', weight: 1},
         {id: 'no-document-write', weight: 1},
