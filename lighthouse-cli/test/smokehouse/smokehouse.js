@@ -12,7 +12,7 @@ const path = require('path');
 const spawnSync = require('child_process').spawnSync;
 const yargs = require('yargs');
 const log = require('lighthouse-logger');
-const LighthouseAssert = require('../../../lighthouse-assert/lighthouse-assert').LighthouseAssert;
+const LighthouseAssert = require('../../../lighthouse-assert').LighthouseAssert;
 
 const DEFAULT_CONFIG_PATH = 'pwa-config';
 const DEFAULT_EXPECTATIONS_PATH = 'pwa-expectations';
@@ -166,21 +166,13 @@ const expectations = require(resolveLocalOrCwd(cli['expectations-path']));
 // reporting result.
 let passingCount = 0;
 let failingCount = 0;
+let results = [];
 
 expectations.forEach(expected => {
   console.log(`Checking '${expected.initialUrl}'...`);
-  const results = runLighthouse(expected.initialUrl, configPath, cli['save-assets-path']);
-  const lighthouseAssert = new LighthouseAssert([results], [expected]);
-  lighthouseAssert.collate();
-  const counts = report(lighthouseAssert.collatedResults[0]);
-  passingCount += counts.passed;
-  failingCount += counts.failed;
+  const lhResults = runLighthouse(expected.initialUrl, configPath, cli['save-assets-path']);
+  results.push(lhResults);
 });
 
-if (passingCount) {
-  console.log(log.greenify(`${passingCount} passing`));
-}
-if (failingCount) {
-  console.log(log.redify(`${failingCount} failing`));
-  process.exit(1);
-}
+const lighthouseAssert = new LighthouseAssert();
+lighthouseAssert.assert(results, expectations);
