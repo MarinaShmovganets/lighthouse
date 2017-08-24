@@ -94,7 +94,7 @@ class OptimizedImages extends Gatherer {
   /**
    * @param {!Object} driver
    * @param {string} requestId
-   * @param {string} encoding
+   * @param {string} encoding Either webp or jpeg.
    * @return {!Promise<{encodedSize: number}>}
    */
   _getEncodedResponse(driver, requestId, encoding) {
@@ -106,7 +106,7 @@ class OptimizedImages extends Gatherer {
   /**
    * @param {!Object} driver
    * @param {{url: string, isBase64DataUri: boolean, resourceSize: number}} networkRecord
-   * @return {!Promise<?{originalSize: number, jpegSize: number, webpSize: number}>}
+   * @return {!Promise<?{fromProtocol: boolean, originalSize: number, jpegSize: number, webpSize: number}>}
    */
   calculateImageStats(driver, networkRecord) {
     // TODO(phulce): remove this dance of trying _getEncodedResponse with a fallback when Audits
@@ -116,6 +116,7 @@ class OptimizedImages extends Gatherer {
       return this._getEncodedResponse(driver, requestId, 'jpeg').then(jpegData => {
         return this._getEncodedResponse(driver, requestId, 'webp').then(webpData => {
           return {
+            fromProtocol: true,
             originalSize: networkRecord.resourceSize,
             jpegSize: jpegData.encodedSize,
             webpSize: webpData.encodedSize,
@@ -125,12 +126,15 @@ class OptimizedImages extends Gatherer {
         if (/wasn't found/.test(err.message)) {
           // Mark non-support so we don't keep attempting the protocol method over and over
           this._getEncodedResponseUnsupported = true;
+        } else {
+          throw err;
         }
       });
     }).then(result => {
       if (result) return result;
 
-      // Take the slower/same-origin-limited fallback path if getEncodedResponse isn't available yet
+      // Take the slower fallback path if getEncodedResponse isn't available yet
+      // CORS canvas tainting doesn't support cross-origin images, so skip them early
       if (!networkRecord.isSameOrigin && !networkRecord.isBase64DataUri) return null;
 
       const script = `(${getOptimizedNumBytes.toString()})(${JSON.stringify(networkRecord.url)})`;
@@ -139,6 +143,7 @@ class OptimizedImages extends Gatherer {
         const isBase64DataUri = networkRecord.isBase64DataUri;
         const base64Length = networkRecord.url.length - networkRecord.url.indexOf(',') - 1;
         return {
+          fromProtocol: false,
           originalSize: isBase64DataUri ? base64Length : networkRecord.resourceSize,
           jpegSize: isBase64DataUri ? stats.jpeg.base64 : stats.jpeg.binary,
           webpSize: isBase64DataUri ? stats.webp.base64 : stats.webp.binary,
