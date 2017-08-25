@@ -120,10 +120,9 @@ export class Assert {
    * Collate results on each expectation.
    */
   collate() {
-    for (const expectation of this.expectations) {
-      for (const result of this.results)
-        this.collatedResults.push(this.collateAuditResults(result, expectation))
-    }
+    this.expectations.forEach((expectation, index) => {
+      this.collatedResults.push(this.collateAuditResults(this.results[index], expectation))
+    });
   }
 
   /**
