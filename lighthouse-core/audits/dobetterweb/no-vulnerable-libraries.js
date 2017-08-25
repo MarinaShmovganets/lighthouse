@@ -43,6 +43,28 @@ class NoVulnerableLibrariesAudit extends Audit {
       requiredArtifacts: ['JSVulnerableLibraries']
     };
   }
+  /**
+   * @param {object} vulns
+   * @return {string}
+   */
+  static mostSevere(vulns) {
+    vulns.map(vuln => {
+      switch (vuln.severity) {
+        case 'high':
+          vuln.numericSeverity = 3;
+          break;
+        case 'medium':
+          vuln.numericSeverity = 2;
+          break;
+        case 'low':
+          vuln.numericSeverity = 1;
+          break;
+      }
+    })
+    .sort((itemA, itemB) => itemA.numericSeverity > itemB.numericSeverity);
+
+    return vulns[0].severity.charAt(0).toUpperCase() + vulns[0].severity.slice(1);
+  }
 
   /**
    * @param {!Artifacts} artifacts
@@ -51,37 +73,34 @@ class NoVulnerableLibrariesAudit extends Audit {
   static audit(artifacts) {
     const libraries = artifacts.JSVulnerableLibraries;
     if (libraries.length) {
-      const finalVulns = Object.assign(
-        ...libraries
-          .filter(obj => {
-            return obj.vulns;
-          })
-          .map(record => {
-            const libVulns = [];
-            for (const i in record.vulns) {
-              if (Object.hasOwnProperty.call(record.vulns, i)) {
-                libVulns.push(record.vulns[i]);
-              }
-            }
-            return libVulns;
-          })
-      );
+      let totalVulns = 0;
+      const finalVulns = libraries.filter(obj => {
+        return obj.vulns;
+      })
+      .map(lib => {
+        lib.detectedLib = lib.name + '@' + lib.version;
+        lib.vulnCount = lib.vulns.length;
+        lib.highestSeverity = this.mostSevere(lib.vulns);
+        totalVulns += lib.vulnCount;
+        return lib;
+      });
 
       let displayValue = '';
-      if (finalVulns.length > 1) {
-        displayValue = `${finalVulns.length} vulnerabilities detected.`;
-      } else if (finalVulns.length === 1) {
-        displayValue = `${finalVulns.length} vulnerability was detected.`;
+      if (totalVulns > 1) {
+        displayValue = `${totalVulns} vulnerabilities detected.`;
+      } else if (totalVulns === 1) {
+        displayValue = `${totalVulns} vulnerability was detected.`;
       }
 
       const headings = [
-        {key: 'url', itemType: 'text', text: 'Details'},
-        {key: 'library', itemType: 'text', text: 'Library'},
-        {key: 'severity', itemType: 'text', text: 'Severity'}
+        {key: 'detectedLib', itemType: 'text', text: 'Library Version'},
+        {key: 'vulnCount', itemType: 'text', text: 'Vulnerability Count'},
+        {key: 'highestSeverity', itemType: 'text', text: 'Highest Severity'}
       ];
       const details = Audit.makeTableDetails(headings, finalVulns);
+
       return {
-        rawValue: finalVulns.length === 0,
+        rawValue: totalVulns === 0,
         displayValue,
         extendedInfo: {
           jsLibs: libraries,

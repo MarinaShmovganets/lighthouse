@@ -5,13 +5,54 @@
  */
 'use strict';
 
-const NoVulnerableLibrariesAudit = require('../../../audits/dobetterweb/no-vulnerable-libraries.js');
+const NoVulnerableLibrariesAudit =
+  require('../../../audits/dobetterweb/no-vulnerable-libraries.js');
 const assert = require('assert');
 
 /* eslint-env mocha */
 
 describe('Avoids front-end JavaScript libraries with known vulnerabilities', () => {
+  it('fails when JS libraries with known vulnerabilities are detected', () => {
+    const auditResult = NoVulnerableLibrariesAudit.audit({
+      JSVulnerableLibraries: [
+        {
+          name: 'lib1',
+          version: '2.1.4',
+          npmPkgName: 'lib1',
+          pkgLink: 'https://lib1url.com',
+          vulns:
+          [{
+            severity: 'medium',
+            library: 'lib1@2.1.4',
+            url: 'https://lib1url.com/vuln1'
+          }, {
+            severity: 'low',
+            library: 'lib1@2.1.4',
+            url: 'https://lib1url.com/vuln2'
+          }]
+        },
+        {name: 'Lo-Dash', version: '3.10.1', npmPkgName: 'lodash'},
+      ]
+    });
+    assert.equal(auditResult.rawValue, false);
+    assert.equal(auditResult.details.items.length, 1);
+    assert.equal(auditResult.extendedInfo.jsLibs.length, 2);
+    assert.equal(auditResult.details.items[0][2].text, 'Medium');
+    assert.equal(auditResult.details.items[0][1].text, 2);
+    assert.equal(auditResult.details.items[0][0].text, 'lib1@2.1.4');
+  });
 
+  it('passes when no JS libraries with known vulnerabilities are detected', () => {
+    const auditResult = NoVulnerableLibrariesAudit.audit({
+      JSVulnerableLibraries: [
+        {name: 'lib1', version: '3.10.1', npmPkgName: 'lib1'},
+        {name: 'lib2', version: null, npmPkgName: 'lib2'},
+      ]
+    });
+    assert.equal(auditResult.rawValue, true);
+    assert.equal(auditResult.details.items.length, 0);
+    assert.equal(auditResult.extendedInfo.jsLibs.length, 2);
+  });
 
   it('passes when no JS libraries are detected', () => {
     const auditResult = NoVulnerableLibrariesAudit.audit({

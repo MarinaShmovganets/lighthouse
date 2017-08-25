@@ -76,9 +76,11 @@ class JSVulnerableLibraries extends Gatherer {
       .evaluateAsync(expression)
       .then(libraries => {
         // add vulns to raw libraries results
-        const vulns = [];
         libraries.forEach(lib => {
+          const vulns = [];
           if (snykDB.npm[lib.npmPkgName]) {
+            lib.pkgLink = 'https://snyk.io/vuln/npm:' + lib.npmPkgName
+              + '#@' + lib.version;
             const snykInfo = snykDB.npm[lib.npmPkgName];
             snykInfo.forEach(vuln => {
               if (semver.satisfies(lib.version, vuln.semver.vulnerable[0])) {
