@@ -1,87 +1,87 @@
-export interface Result {
+export interface IResult {
   url: string;
-  audits: ActualAudits;
+  audits: IActualAudits;
 }
 
-export interface Expectation {
+export interface IExpectation {
   url: string;
-  audits: ExpectedAudits;
+  audits: IExpectedAudits;
 }
 
-interface ActualAudits {
-  [key: string]: ActualAudit
+interface IActualAudits {
+  [key: string]: IActualAudit
 }
 
-interface ActualAudit {
+interface IActualAudit {
   [key: string]: any;
 }
 
-interface NoneObjectActualAudit {
+interface INoneObjectActualAudit {
   score: string|number;
   [key: string]: string|number;
 }
 
-interface BooleanActualAudit {
+interface IBooleanActualAudit {
   score: boolean;
   [key: string]: boolean;
 }
 
-interface ExpectedAudits {
-  [key: string]: ExpectedAudit;
+interface IExpectedAudits {
+  [key: string]: IExpectedAudit;
 }
 
-interface ExpectedAudit {
-  score: ExpectedScore;
-  [key: string]: ExpectedScore;
+interface IExpectedAudit {
+  score: IExpectedScore;
+  [key: string]: IExpectedScore;
 }
 
-interface NoneObjectExpectedAudit {
-  score: ExpectedScore;
-  [key: string]: ExpectedScore;
+interface INoneObjectExpectedAudit {
+  score: IExpectedScore;
+  [key: string]: IExpectedScore;
 }
 
-interface BooleanExpectedAudit {
+interface IBooleanExpectedAudit {
   score: boolean;
   [key: string]: boolean;
 }
 
-interface ExpectedScore {
+interface IExpectedScore {
   error: string;
   warn: string;
   [key: string]: string;
 }
 
-interface NormalizedExpectedScore {
+interface INormalizedExpectedScore {
   error: number;
   warn: number;
 }
 
 
-interface CollatedResult {
+interface ICollatedResult {
   finalUrl: {
     category: string;
     actual: string;
     expected: string;
     equal: boolean;
   };
-  audits: Array<CollatedAudit>;
+  audits: Array<ICollatedAudit>;
 }
 
-interface CollatedAudit {
+interface ICollatedAudit {
   category: string;
-  actual: ActualAudit;
-  expected: ExpectedAudit;
+  actual: IActualAudit;
+  expected: IExpectedAudit;
   equal: boolean;
-  diff: Diff|Object;
+  diff: IDiff|Object;
 }
 
-export interface Diff extends Object {
+export interface IDiff extends Object {
   path?: string;
   actual?: string|number|boolean;
-  expected?: ExpectedScore|boolean;
+  expected?: IExpectedScore|boolean;
 }
 
-export interface StatusCounts extends Object {
+export interface IStatusCounts extends Object {
   passed: number;
   failed: number;
 }
@@ -89,17 +89,17 @@ export interface StatusCounts extends Object {
 const FINAL_URL = 'final url';
 
 export class Assert {
-  public collatedResults: Array<CollatedResult> = [];
-  private results: Array<Result>;
-  private expectations: Array<Expectation>;
+  public collatedResults: Array<ICollatedResult> = [];
+  private results: Array<IResult>;
+  private expectations: Array<IExpectation>;
 
   /**
    * Constructor
-   * @param {Result} lhResults
-   * @param {Array<Expectation>} expectations
+   * @param {IResult} lhResults
+   * @param {Array<IExpectation>} expectations
    * @return {boolean}
    */
-  constructor(lhResults: Array<Result>, expectations: Array<Expectation>) {
+  constructor(lhResults: Array<IResult>, expectations: Array<IExpectation>) {
     this.results = lhResults;
     this.expectations = expectations;
   }
@@ -129,7 +129,7 @@ export class Assert {
    * Get status counts for collated results
    */
   getStatusCounts() {
-    let statusCounts: StatusCounts = {
+    let statusCounts: IStatusCounts = {
       passed: 0,
       failed: 0
     };
@@ -145,13 +145,13 @@ export class Assert {
 
   /**
    * Collate results into comparisons of actual and expected scores on each audit.
-   * @param {{url: string, audits: Result}} actual
-   * @param {{url: string, audits: Result}} expected
-   * @return {{finalUrl: Object, audits: !Array<CollatedAudit>}}
+   * @param {{url: string, audits: IResult}} actual
+   * @param {{url: string, audits: IResult}} expected
+   * @return {{finalUrl: Object, audits: !Array<ICollatedAudit>}}
    */
-  private collateAuditResults(actual: Result, expected: Expectation): CollatedResult {
+  private collateAuditResults(actual: IResult, expected: IExpectation): ICollatedResult {
     const auditNames = Object.keys(expected.audits);
-    const collatedAudits: Array<CollatedAudit> = [];
+    const collatedAudits: Array<ICollatedAudit> = [];
     auditNames.forEach(auditName => {
       const actualResult = actual.audits[auditName];
       if (!actualResult) {
@@ -183,23 +183,23 @@ export class Assert {
 
 const OPERAND_EXPECTATION_REGEXP = /^(<=?|>=?)/;
 
-interface DifferenceInterface {
-  getDiff: () => Diff;
+interface IDifference {
+  getDiff: () => IDiff;
   matchesExpectation: () => boolean;
 }
 
-class ObjectDifference implements DifferenceInterface {
+class ObjectDifference implements IDifference {
   private path: string;
-  private actual: ActualAudit;
-  private expected: ExpectedAudit;
+  private actual: IActualAudit;
+  private expected: IExpectedAudit;
 
   /**
    * Constructor
    * @param {string} path
-   * @param {ActualAudit} actual
-   * @param {ExpectedAudit} expected
+   * @param {IActualAudit} actual
+   * @param {IExpectedAudit} expected
    */
-  constructor(path: string, actual: ActualAudit, expected: ExpectedAudit) {
+  constructor(path: string, actual: IActualAudit, expected: IExpectedAudit) {
     this.path = path;
     this.actual = actual;
     this.expected = expected;
@@ -213,10 +213,10 @@ class ObjectDifference implements DifferenceInterface {
    * Only checks own enumerable properties, not object prototypes, and will loop
    * until the stack is exhausted, so works best with simple objects (e.g. parsed JSON).
    *
-   * @return {Diff}
+   * @return {IDiff}
    */
-  getDiff(): Diff {
-    let diff: Diff = {};
+  getDiff(): IDiff {
+    let diff: IDiff = {};
 
     if (this.matchesExpectation()) return diff;
 
@@ -260,18 +260,18 @@ class ObjectDifference implements DifferenceInterface {
 }
 
 
-class NoneObjectDifference implements DifferenceInterface {
+class NoneObjectDifference implements IDifference {
   private path: string;
-  private actual: NoneObjectActualAudit;
-  private expected: NoneObjectExpectedAudit;
+  private actual: INoneObjectActualAudit;
+  private expected: INoneObjectExpectedAudit;
 
   /**
    * Constructor
    * @param {string} path
-   * @param {ActualAudit} actual
-   * @param {ExpectedAudit} expected
+   * @param {IActualAudit} actual
+   * @param {IExpectedAudit} expected
    */
-  constructor(path: string, actual: NoneObjectActualAudit, expected: NoneObjectExpectedAudit) {
+  constructor(path: string, actual: INoneObjectActualAudit, expected: INoneObjectExpectedAudit) {
     this.path = path;
     this.actual = actual;
     this.expected = expected;
@@ -286,10 +286,10 @@ class NoneObjectDifference implements DifferenceInterface {
    * Only checks own enumerable properties, not object prototypes, and will loop
    * until the stack is exhausted, so works best with simple objects (e.g. parsed JSON).
    *
-   * @return {Diff}
+   * @return {IDiff}
    */
-  getDiff(): Diff {
-    let diff: Diff = {};
+  getDiff(): IDiff {
+    let diff: IDiff = {};
 
     if (this.matchesExpectation()) return diff;
 
@@ -316,7 +316,7 @@ class NoneObjectDifference implements DifferenceInterface {
    */
   matchesExpectation(): boolean {
     const actualValue = this.normalize(this.actual.score);
-    const normalizedExpected: NormalizedExpectedScore = {
+    const normalizedExpected: INormalizedExpectedScore = {
       warn: this.normalize(this.expected.score.warn),
       error: this.normalize(this.expected.score.error)
     };
@@ -327,10 +327,10 @@ class NoneObjectDifference implements DifferenceInterface {
    * Checks if the actual value in warning and error range
    *
    * @param {number} actual
-   * @param {NormalizedExpectedScore} expected
+   * @param {INormalizedExpectedScore} expected
    * @return {boolean}
    */
-  private inRange(actual: number, expected: NormalizedExpectedScore): boolean {
+  private inRange(actual: number, expected: INormalizedExpectedScore): boolean {
     return actual >= expected.error || actual >= expected.warn && actual < expected.error;
   }
 
@@ -349,18 +349,18 @@ class NoneObjectDifference implements DifferenceInterface {
   }
 }
 
-class BooleanDifference implements DifferenceInterface {
+class BooleanDifference implements IDifference {
   private path: string;
-  private actual: BooleanActualAudit;
-  private expected: BooleanExpectedAudit;
+  private actual: IBooleanActualAudit;
+  private expected: IBooleanExpectedAudit;
 
   /**
    * Constructor
    * @param {string} path
-   * @param {ActualAudit} actual
-   * @param {ExpectedAudit} expected
+   * @param {IActualAudit} actual
+   * @param {IExpectedAudit} expected
    */
-  constructor(path: string, actual: BooleanActualAudit, expected: BooleanExpectedAudit) {
+  constructor(path: string, actual: IBooleanActualAudit, expected: IBooleanExpectedAudit) {
     this.path = path;
     this.actual = actual;
     this.expected = expected;
@@ -374,9 +374,9 @@ class BooleanDifference implements DifferenceInterface {
    *
    * Only checks own enumerable properties, not object prototypes, and will loop
    * until the stack is exhausted, so works best with simple objects (e.g. parsed JSON).
-   * @return {Diff}
+   * @return {IDiff}
    */
-  getDiff(): Diff {
+  getDiff(): IDiff {
     if (this.matchesExpectation()) {
       return {};
     } else {
@@ -404,11 +404,11 @@ class DifferenceFactory {
    * Find difference comparing to actual result.
    *
    * @param {string} path
-   * @param {ActualAudit|*} actual
-   * @param {ExpectedAudit|*} expected
-   * @return {Diff}
+   * @param {IActualAudit|*} actual
+   * @param {IExpectedAudit|*} expected
+   * @return {IDiff}
    */
-  static findDifference(path: string, actual: any, expected: any): Diff {
+  static findDifference(path: string, actual: any, expected: any): IDiff {
     let difference;
     //@todo use generics
     if (actual && typeof actual === 'object') {

@@ -1,9 +1,9 @@
 import * as assert from 'assert';
-import { Logger, Diff } from '../';
+import { Logger, IDiff } from '../';
 import { IReporter } from '../reporter/reporter';
 
 class MockReporter implements IReporter {
-  stderr(diff: Diff) {
+  stderr(diff: IDiff) {
     return `${diff.path} error
 Actual: ${diff.actual}
 Expected: ${JSON.stringify(diff.expected, null, 2)}`
@@ -33,7 +33,7 @@ describe('logger', () => {
   it('should show error diff', () => {
     const reporter = new MockReporter();
     const logger = new Logger(reporter);
-    const diff: Diff = {
+    const diff: IDiff = {
       path: 'test.score',
       actual: 100,
       expected: {

@@ -1,5 +1,5 @@
 const log = require('lighthouse-logger');
-import { Diff } from '../'
+import { IDiff } from '../'
 
 export interface IReporter {
   stderr: (diff: any) => void;
@@ -8,7 +8,7 @@ export interface IReporter {
 }
 
 export class DefaultReporter implements IReporter {
-  stderr(diff: Diff) {
+  stderr(diff: IDiff) {
     let msg = `  ${log.redify(log.cross)} difference at ${diff.path}: `;
     msg += log.redify(`found ${diff.actual}, expected ${JSON.stringify(diff.expected, null, 2)}\n`);
 

@@ -1,4 +1,4 @@
-import { Assert, Result, Expectation } from './assert/assert';
+import { Assert, IResult, IExpectation } from './assert/assert';
 import { IReporter, DefaultReporter } from './reporter/reporter';
 import { Logger } from './logger';
 
@@ -11,7 +11,7 @@ export class LighthouseAssert {
     this.logger = new Logger(reporter);
   }
 
-  assert(results: Array<Result>, expectations: Array<Expectation>) {
+  assert(results: Array<IResult>, expectations: Array<IExpectation>) {
     this.assertInstance = new Assert(results, expectations);
     this.assertInstance.collate();
 
