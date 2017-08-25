@@ -58,7 +58,7 @@ class CriticalRequests extends ComputedArtifact {
 
     // Get all the critical requests.
     /** @type {!Array<NetworkRequest>} */
-    const criticalRequests = networkRecords.filter(req => CriticalRequests.isCritical(req));
+    const criticalRequests = networkRecords.filter(CriticalRequests.isCritical);
     const requestIds = [];
 
     // Create a tree of critical requests.

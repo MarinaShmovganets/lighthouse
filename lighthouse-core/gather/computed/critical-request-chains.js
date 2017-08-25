@@ -17,7 +17,7 @@ class CriticalRequestChains extends ComputedArtifact {
     return {
       request: {
         id: request.id,
-        url: request._url,
+        url: request.url,
         startTime: request.startTime,
         endTime: request.endTime,
         responseReceivedTime: request.responseReceivedTime,

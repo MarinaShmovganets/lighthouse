@@ -41,11 +41,10 @@ class TTFBMetric extends Audit {
   static audit(artifacts) {
     const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
 
-    return artifacts.requestNetworkRecords(devtoolsLogs)
-      .then(networkRecords => Promise.all([
-        networkRecords,
-        artifacts.requestCriticalRequests(networkRecords)
-      ]))
+    return Promise.all([
+      artifacts.requestNetworkRecords(devtoolsLogs),
+      artifacts.requestCriticalRequests(devtoolsLogs)
+    ])
       .then(([criticalRequests, networkRecords]) => {
         const results = [];
         let displayValue;
@@ -67,11 +66,6 @@ class TTFBMetric extends Audit {
             row.rawTTFB > TTFB_THRESHOLD + TTFB_THRESHOLD_BUFFER
         );
 
-        const details = Audit.makeV2TableDetails([
-          {key: 'url', itemType: 'url', text: 'URL'},
-          {key: 'ttfb', itemType: 'text', text: 'Time To First Byte (ms)'},
-        ], recordsOverBudget);
-
         if (recordsOverBudget.length) {
           const thresholdDisplay = Util.formatMiliseconds(TTFB_THRESHOLD, 1);
           const recordsOverBudgetDisplay = Util.formatNumber(recordsOverBudget.length);
@@ -79,9 +73,15 @@ class TTFBMetric extends Audit {
             ` the ${thresholdDisplay} threshold`;
         }
 
+        const headings = [
+          {key: 'url', itemType: 'url', text: 'URL'},
+          {key: 'ttfb', itemType: 'text', text: 'Time To First Byte (ms)'},
+        ];
+
         return {
           rawValue: recordsOverBudget.length === 0,
-          details,
+          results,
+          headings,
           displayValue,
         };
       });
