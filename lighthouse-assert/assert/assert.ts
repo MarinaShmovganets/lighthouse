@@ -188,7 +188,7 @@ interface IDifference {
   matchesExpectation: () => boolean;
 }
 
-class ObjectDifference implements IDifference {
+class DeepObjectDifference implements IDifference {
   private path: string;
   private actual: IActualAudit;
   private expected: IExpectedAudit;
@@ -237,7 +237,7 @@ class ObjectDifference implements IDifference {
       if (typeof actualValue === 'boolean' && typeof expectedValue === 'boolean') {
         difference = new BooleanDifference(keyPath, { score: actualValue }, { score: expectedValue });
       } else {
-        difference = new NoneObjectDifference(keyPath, { score: actualValue }, { score: expectedValue });
+        difference = new ObjectDifference(keyPath, { score: actualValue }, { score: expectedValue });
       }
       const subDifference = difference.getDiff();
       if (subDifference)
@@ -247,10 +247,7 @@ class ObjectDifference implements IDifference {
   }
 
   /**
-   * Checks if the actual value matches the expectation. Does not recursively search. This supports
-   *    - Greater than/less than operators, e.g. "<100", ">90"
-   *    - Regular expressions
-   *    - Strict equality
+   * Checks if the actual and expected object values are equal
    *
    * @return {boolean}
    */
@@ -260,7 +257,7 @@ class ObjectDifference implements IDifference {
 }
 
 
-class NoneObjectDifference implements IDifference {
+class ObjectDifference implements IDifference {
   private path: string;
   private actual: INoneObjectActualAudit;
   private expected: INoneObjectExpectedAudit;
@@ -310,7 +307,7 @@ class NoneObjectDifference implements IDifference {
 
   /**
    * Checks if the actual value matches the expectation. Does not recursively search. This supports
-   *    - Greater than/less than operators, e.g. "<100", ">90"
+   * greater than/less than operators, e.g. "<100", ">90"
    *
    * @return {boolean}
    */
@@ -404,19 +401,19 @@ class DifferenceFactory {
    * Find difference comparing to actual result.
    *
    * @param {string} path
-   * @param {IActualAudit|*} actual
-   * @param {IExpectedAudit|*} expected
+   * @param {*} actual
+   * @param {*} expected
    * @return {IDiff}
    */
   static findDifference(path: string, actual: any, expected: any): IDiff {
     let difference;
     //@todo use generics
     if (actual && typeof actual === 'object') {
-      difference = new ObjectDifference(path, actual, expected);
+      difference = new DeepObjectDifference(path, actual, expected);
     } else if (actual && typeof actual.score === 'boolean') {
       difference = new BooleanDifference(path, actual, expected);
     } else {
-      difference = new NoneObjectDifference(path, actual, expected);
+      difference = new ObjectDifference(path, actual, expected);
     }
     // @todo add regexp diff class
     return difference.getDiff();

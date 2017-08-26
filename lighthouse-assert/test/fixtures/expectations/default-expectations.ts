@@ -5,7 +5,7 @@
  */
 
 /**
- * Expected Lighthouse audit values for --perf tests
+ * Default expected Lighthouse audit values for tests
  */
 export default [
   {

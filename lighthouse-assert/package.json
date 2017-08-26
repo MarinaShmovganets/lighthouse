@@ -16,7 +16,8 @@
     "nyc": "^11.0.2",
     "sinon": "^2.3.5",
     "ts-node": "^3.0.4",
-    "typescript": "2.2.1"
+    "typescript": "2.2.1",
+    "intercept-stdout": "^0.1.2"
   },
   "dependencies": {
     "@types/core-js": "^0.9.41",
