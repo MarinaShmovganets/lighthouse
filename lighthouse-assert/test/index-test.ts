@@ -5,8 +5,8 @@
  */
 
 import * as assert from 'assert';
-const intercept = require("intercept-stdout");
-import { LighthouseAssert } from '../';
+const intercept = require('intercept-stdout');
+import {LighthouseAssert} from '../';
 import successExpectations from './fixtures/expectations/success-expectations';
 import successResults from './fixtures/lighthouse-results/success-results';
 

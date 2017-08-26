@@ -5,12 +5,14 @@
  */
 
 import * as assert from 'assert';
-import { Assert } from '../';
-import pwaExpectations from './fixtures/expectations/pwa-expectations';
+
+import {Assert} from '../';
+
 import defaultExpectations from './fixtures/expectations/default-expectations';
+import pwaExpectations from './fixtures/expectations/pwa-expectations';
+import expectedAssertResults from './fixtures/expected-assert-results';
 import defaultResults from './fixtures/lighthouse-results/default-results';
 import pwaResults from './fixtures/lighthouse-results/pwa-results';
-import expectedAssertResults from './fixtures/expected-assert-results';
 
 describe('lighthouse-assert', () => {
   it('should build collated results', () => {
@@ -36,10 +38,7 @@ describe('lighthouse-assert', () => {
     const lighthouseAssert = new Assert(defaultResults, defaultExpectations);
     lighthouseAssert.collate();
     const statusCounts = lighthouseAssert.getStatusCounts();
-    const expectedStatusCounts = {
-      passed: 3,
-      failed: 1
-    };
+    const expectedStatusCounts = {passed: 3, failed: 1};
     assert.deepEqual(statusCounts, expectedStatusCounts);
   })
 });

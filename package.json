@@ -38,6 +38,7 @@
     "unit": "bash lighthouse-core/scripts/run-mocha.sh --default",
     "test-cli-formatting": "cd lighthouse-cli && ./test/check-formatting.sh && cd ..",
     "test-launcher-formatting": "cd chrome-launcher && ./test/check-formatting.sh && cd ..",
+    "test-lighthouse-assert": "cd lighthouse-assert && ./test/check-formatting.sh && cd ..",
     "launcher-unit": "yarn unit-launcher",
     "core-unit": "yarn unit-core",
     "cli-unit": "yarn unit-cli",

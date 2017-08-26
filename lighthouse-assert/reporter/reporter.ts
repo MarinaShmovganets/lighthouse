@@ -5,7 +5,7 @@
  */
 
 const log = require('lighthouse-logger');
-import { IDiff } from '../'
+import {IDiff} from '../'
 
 export interface IReporter {
   stderr: (diff: any) => void;

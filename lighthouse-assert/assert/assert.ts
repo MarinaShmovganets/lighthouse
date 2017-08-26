@@ -58,12 +58,7 @@ interface INormalizedExpectedScore {
 
 
 interface ICollatedResult {
-  finalUrl: {
-    category: string;
-    actual: string;
-    expected: string;
-    equal: boolean;
-  };
+  finalUrl: {category: string; actual: string; expected: string; equal: boolean;};
   audits: Array<ICollatedAudit>;
 }
 
@@ -120,19 +115,16 @@ export class Assert {
    * Collate results on each expectation.
    */
   collate() {
-    this.expectations.forEach((expectation, index) => {
-      this.collatedResults.push(this.collateAuditResults(this.results[index], expectation))
-    });
+    this.expectations.forEach(
+        (expectation, index) => {
+            this.collatedResults.push(this.collateAuditResults(this.results[index], expectation))});
   }
 
   /**
    * Get status counts for collated results
    */
   getStatusCounts() {
-    let statusCounts: IStatusCounts = {
-      passed: 0,
-      failed: 0
-    };
+    let statusCounts: IStatusCounts = {passed: 0, failed: 0};
 
     for (const collatedResult of this.collatedResults) {
       // @todo include other results then audits
@@ -235,13 +227,12 @@ class DeepObjectDifference implements IDifference {
       let difference;
       //@todo use factory. P.S. generics should solve this problem
       if (typeof actualValue === 'boolean' && typeof expectedValue === 'boolean') {
-        difference = new BooleanDifference(keyPath, { score: actualValue }, { score: expectedValue });
+        difference = new BooleanDifference(keyPath, {score: actualValue}, {score: expectedValue});
       } else {
-        difference = new ObjectDifference(keyPath, { score: actualValue }, { score: expectedValue });
+        difference = new ObjectDifference(keyPath, {score: actualValue}, {score: expectedValue});
       }
       const subDifference = difference.getDiff();
-      if (subDifference)
-        return diff = subDifference;
+      if (subDifference) return diff = subDifference;
     }
     return diff;
   }
@@ -293,13 +284,10 @@ class ObjectDifference implements IDifference {
     for (const expectationType of Object.keys(this.expected)) {
       const expectedByType = this.expected[expectationType];
       // If they aren't both an object we can't recurse further, so this is the difference.
-      if (this.actual.score === null || expectedByType === null || typeof this.actual.score !== 'object' ||
-        typeof expectedByType !== 'object' || expectedByType instanceof RegExp) {
-        diff = {
-          path: this.path,
-          actual: this.actual.score,
-          expected: this.expected.score
-        };
+      if (this.actual.score === null || expectedByType === null ||
+          typeof this.actual.score !== 'object' || typeof expectedByType !== 'object' ||
+          expectedByType instanceof RegExp) {
+        diff = {path: this.path, actual: this.actual.score, expected: this.expected.score};
       }
     }
     return diff;
@@ -377,11 +365,7 @@ class BooleanDifference implements IDifference {
     if (this.matchesExpectation()) {
       return {};
     } else {
-      return {
-        path: this.path,
-        actual: this.actual.score,
-        expected: this.expected.score
-      };
+      return {path: this.path, actual: this.actual.score, expected: this.expected.score};
     }
   }
 

@@ -4,9 +4,9 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { Assert, IResult, IExpectation } from './assert/assert';
-import { IReporter, DefaultReporter } from './reporter/reporter';
-import { Logger } from './logger';
+import {Assert, IExpectation, IResult} from './assert/assert';
+import {Logger} from './logger';
+import {DefaultReporter, IReporter} from './reporter/reporter';
 
 export class LighthouseAssert {
   private assertInstance: Assert;
@@ -32,8 +32,7 @@ export class LighthouseAssert {
   private showError() {
     for (const result of this.assertInstance.collatedResults) {
       for (const audit of result.audits) {
-        if (!audit.equal)
-          this.logger.stderr(audit.diff);
+        if (!audit.equal) this.logger.stderr(audit.diff);
       }
     }
   }
