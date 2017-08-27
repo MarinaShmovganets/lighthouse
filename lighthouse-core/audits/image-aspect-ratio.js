@@ -71,8 +71,14 @@ class ImageAspectRatio extends Audit {
     let debugString;
     const results = [];
     images.filter(image => {
-      // filter out images that don't have a proper url and width/height
-      return image.networkRecord && image.clientWidth && image.clientHeight;
+      // filter out images that don't have following properties
+      // networkRecord, clientWidth, clientHeight
+      // css images, images that use `object-fit`: `cover` or `contain`
+      return image.networkRecord &&
+        image.clientWidth &&
+        image.clientHeight &&
+        image.isCss === false &&
+        image.usesObjectFit === false;
     }).forEach(image => {
       const processed = ImageAspectRatio.computeAspectRatios(image);
       if (processed instanceof Error) {

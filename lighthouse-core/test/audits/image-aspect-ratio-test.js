@@ -23,10 +23,10 @@ function generateSize(width, height, prefix = 'client') {
   return size;
 }
 
-function generateImage(clientSize, naturalSize, networkRecord, src = 'https://google.com/logo.png') {
+function generateImage(clientSize, naturalSize, networkRecord, props, src = 'https://google.com/logo.png') {
   Object.assign(networkRecord || {}, {url: src});
   const image = {src, networkRecord};
-  Object.assign(image, clientSize, naturalSize);
+  Object.assign(image, clientSize, naturalSize, props);
   return image;
 }
 
@@ -39,7 +39,8 @@ describe('Images: aspect-ratio audit', () => {
           generateImage(
             generateSize(...data.clientSize),
             generateSize(...data.naturalSize, 'natural'),
-            generateRecord()
+            generateRecord(),
+            data.props
           )
         ]
       });
@@ -51,36 +52,80 @@ describe('Images: aspect-ratio audit', () => {
   testImage('is much larger than natural aspect ratio', {
     listed: true,
     clientSize: [800, 500],
-    naturalSize: [200, 200]
+    naturalSize: [200, 200],
+    props: {
+      isCss: false,
+      usesObjectFit: false
+    }
+  });
+
+  testImage('is a css image and much larger than natural aspect ratio', {
+    listed: false,
+    clientSize: [800, 500],
+    naturalSize: [200, 200],
+    props: {
+      isCss: true,
+      usesObjectFit: false
+    }
   });
 
   testImage('is larger than natural aspect ratio', {
     listed: true,
     clientSize: [400, 300],
-    naturalSize: [200, 200]
+    naturalSize: [200, 200],
+    props: {
+      isCss: false,
+      usesObjectFit: false
+    }
+  });
+
+  testImage('uses object-fit and is much smaller than natural aspect ratio', {
+    listed: false,
+    clientSize: [200, 200],
+    naturalSize: [800, 500],
+    props: {
+      isCss: false,
+      usesObjectFit: true
+    }
   });
 
   testImage('is much smaller than natural aspect ratio', {
     listed: true,
     clientSize: [200, 200],
-    naturalSize: [800, 500]
+    naturalSize: [800, 500],
+    props: {
+      isCss: false,
+      usesObjectFit: false
+    }
   });
 
   testImage('is smaller than natural aspect ratio', {
     listed: true,
     clientSize: [200, 200],
-    naturalSize: [400, 300]
+    naturalSize: [400, 300],
+    props: {
+      isCss: false,
+      usesObjectFit: false
+    }
   });
 
   testImage('aspect ratios match', {
     listed: false,
     clientSize: [100, 100],
-    naturalSize: [300, 300]
+    naturalSize: [300, 300],
+    props: {
+      isCss: false,
+      usesObjectFit: false
+    }
   });
 
   testImage('has invalid sizing information', {
     listed: false,
     clientSize: [0, 0],
-    naturalSize: [100, 100]
+    naturalSize: [100, 100],
+    props: {
+      isCss: false,
+      usesObjectFit: false
+    }
   });
 });

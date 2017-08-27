@@ -43,6 +43,8 @@ function collectImageElementInfo() {
       naturalHeight: element.naturalHeight,
       isCss: false,
       isPicture: element.parentElement.tagName === 'PICTURE',
+      usesObjectFit: window.getComputedStyle(element).getPropertyValue('object-fit') === 'cover'
+      || window.getComputedStyle(element).getPropertyValue('object-fit') === 'contain'
     };
   });
 
@@ -78,6 +80,8 @@ function collectImageElementInfo() {
       naturalHeight: Number.MAX_VALUE,
       isCss: true,
       isPicture: false,
+      usesObjectFit: window.getComputedStyle(element).getPropertyValue('object-fit') === 'cover'
+        || window.getComputedStyle(element).getPropertyValue('object-fit') === 'contain'
     });
 
     return images;
