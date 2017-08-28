@@ -22,13 +22,17 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
           pkgLink: 'https://lib1url.com',
           vulns:
           [{
-            severity: 'medium',
+            severity: 'high',
             library: 'lib1@2.1.4',
             url: 'https://lib1url.com/vuln1'
           }, {
-            severity: 'low',
+            severity: 'medium',
             library: 'lib1@2.1.4',
             url: 'https://lib1url.com/vuln2'
+          }, {
+            severity: 'low',
+            library: 'lib1@2.1.4',
+            url: 'https://lib1url.com/vuln3'
           }]
         },
         {name: 'Lo-Dash', version: '3.10.1', npmPkgName: 'lodash'},
@@ -37,8 +41,36 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
     assert.equal(auditResult.rawValue, false);
     assert.equal(auditResult.details.items.length, 1);
     assert.equal(auditResult.extendedInfo.jsLibs.length, 2);
-    assert.equal(auditResult.details.items[0][2].text, 'Medium');
-    assert.equal(auditResult.details.items[0][1].text, 2);
+    assert.equal(auditResult.displayValue, "3 vulnerabilities detected.");
+    assert.equal(auditResult.details.items[0][2].text, 'High');
+    assert.equal(auditResult.details.items[0][1].text, 3);
+    assert.equal(auditResult.details.items[0][0].text, 'lib1@2.1.4');
+
+  });
+
+  it('fails when only one vulnerability is detected', () => {
+    const auditResult = NoVulnerableLibrariesAudit.audit({
+      JSVulnerableLibraries: [
+        {
+          name: 'lib1',
+          version: '2.1.4',
+          npmPkgName: 'lib1',
+          pkgLink: 'https://lib1url.com',
+          vulns:
+          [{
+            severity: 'low',
+            library: 'lib1@2.1.4',
+            url: 'https://lib1url.com/vuln3'
+          }]
+        },
+      ]
+    });
+    assert.equal(auditResult.rawValue, false);
+    assert.equal(auditResult.details.items.length, 1);
+    assert.equal(auditResult.extendedInfo.jsLibs.length, 1);
+    assert.equal(auditResult.displayValue, "1 vulnerability was detected.");
+    assert.equal(auditResult.details.items[0][2].text, 'Low');
+    assert.equal(auditResult.details.items[0][1].text, 1);
     assert.equal(auditResult.details.items[0][0].text, 'lib1@2.1.4');
   });
 
