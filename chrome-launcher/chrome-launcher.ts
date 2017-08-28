@@ -34,8 +34,8 @@ export interface Options {
   userDataDir?: string;
   logLevel?: string;
   enableExtensions?: boolean;
-  portCheckInterval?: number;
-  maxPortCheckRetries?: number;
+  connectionPollInterval?: number;
+  maxConnectionRetries?: number;
 }
 
 export interface LaunchedChrome {
@@ -89,8 +89,8 @@ export class Launcher {
   private errFile?: number;
   private chromePath?: string;
   private enableExtensions?: boolean;
-  private portCheckInterval: number;
-  private maxPortCheckRetries: number;
+  private connectionPollInterval: number;
+  private maxConnectionRetries: number;
   private chromeFlags: string[];
   private requestedPort?: number;
   private chrome?: childProcess.ChildProcess;
@@ -115,8 +115,8 @@ export class Launcher {
     this.requestedPort = defaults(this.opts.port, 0);
     this.chromePath = this.opts.chromePath;
     this.enableExtensions = defaults(this.opts.enableExtensions, false);
-    this.portCheckInterval = defaults(this.opts.portCheckInterval, 500);
-    this.maxPortCheckRetries = defaults(this.opts.maxPortCheckRetries, 500);
+    this.connectionPollInterval = defaults(this.opts.connectionPollInterval, 500);
+    this.maxConnectionRetries = defaults(this.opts.maxConnectionRetries, 10);
   }
 
   private get flags() {
@@ -275,7 +275,7 @@ export class Launcher {
               resolve();
             })
             .catch(err => {
-              if (retries > launcher.maxPortCheckRetries) {
+              if (retries > launcher.maxConnectionRetries) {
                 log.error('ChromeLauncher', err.message);
                 const stderr =
                     this.fs.readFileSync(`${this.userDataDir}/chrome-err.log`, {encoding: 'utf-8'});
@@ -284,7 +284,7 @@ export class Launcher {
                 log.error('ChromeLauncher', stderr);
                 return reject(err);
               }
-              delay(launcher.portCheckInterval).then(poll);
+              delay(launcher.connectionPollInterval).then(poll);
             });
       };
       poll();
