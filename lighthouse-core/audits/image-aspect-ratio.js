@@ -77,8 +77,8 @@ class ImageAspectRatio extends Audit {
       return image.networkRecord &&
         image.clientWidth &&
         image.clientHeight &&
-        image.isCss === false &&
-        image.usesObjectFit === false;
+        !image.isCss &&
+        !image.usesObjectFit;
     }).forEach(image => {
       const processed = ImageAspectRatio.computeAspectRatios(image);
       if (processed instanceof Error) {

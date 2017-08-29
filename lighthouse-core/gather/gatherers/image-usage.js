@@ -32,6 +32,7 @@ function collectImageElementInfo() {
   const allImageElements = allElements.filter(element => element.localName === 'img');
 
   const htmlImages = allImageElements.map(element => {
+    const computedStyle = window.getComputedStyle(element);
     return {
       // currentSrc used over src to get the url as determined by the browser
       // after taking into account srcset/media/sizes/etc.
@@ -43,8 +44,8 @@ function collectImageElementInfo() {
       naturalHeight: element.naturalHeight,
       isCss: false,
       isPicture: element.parentElement.tagName === 'PICTURE',
-      usesObjectFit: window.getComputedStyle(element).getPropertyValue('object-fit') === 'cover'
-      || window.getComputedStyle(element).getPropertyValue('object-fit') === 'contain'
+      usesObjectFit: computedStyle.getPropertyValue('object-fit') === 'cover'
+      || computedStyle.getPropertyValue('object-fit') === 'contain'
     };
   });
 
@@ -80,8 +81,7 @@ function collectImageElementInfo() {
       naturalHeight: Number.MAX_VALUE,
       isCss: true,
       isPicture: false,
-      usesObjectFit: window.getComputedStyle(element).getPropertyValue('object-fit') === 'cover'
-        || window.getComputedStyle(element).getPropertyValue('object-fit') === 'contain'
+      usesObjectFit: false
     });
 
     return images;
