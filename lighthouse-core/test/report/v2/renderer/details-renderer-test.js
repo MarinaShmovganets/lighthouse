@@ -40,6 +40,16 @@ describe('DetailsRenderer', () => {
       assert.ok(el.classList.contains('lh-text'), 'adds classes');
     });
 
+    it('renders links', () => {
+      const el = renderer.render({type: 'link', text: '[My text content](https://example.com)'});
+      const links = el.querySelectorAll('a');
+      assert.ok(el.localName === 'span', 'creates a wrapping span');
+      assert.ok(links.length, 'creates a link');
+      assert.equal(links[0].getAttribute('href'), 'https://example.com/');
+      assert.equal(links[0].textContent, 'My text content');
+      assert.ok(el.classList.contains('lh-link'), 'adds classes');
+    });
+
     it('renders lists with headers', () => {
       const el = renderer.render({
         type: 'list',

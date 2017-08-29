@@ -35,6 +35,8 @@ class DetailsRenderer {
         return this._renderText(details);
       case 'url':
         return this._renderURL(details);
+      case 'link':
+        return this._renderLink(details);
       case 'thumbnail':
         return this._renderThumbnail(/** @type {!DetailsRenderer.ThumbnailDetails} */ (details));
       case 'filmstrip':
@@ -86,6 +88,17 @@ class DetailsRenderer {
       element.title = url;
     }
 
+    return element;
+  }
+
+  /**
+   * @param {!DetailsRenderer.DetailsJSON} text
+   * @return {!Element}
+   */
+  _renderLink(text) {
+    const snippet = text.text || '';
+    const element = this._dom.convertMarkdownLinkSnippets(snippet);
+    element.classList.add('lh-link');
     return element;
   }
 
