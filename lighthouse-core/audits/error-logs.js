@@ -24,9 +24,9 @@ class ErrorLogs extends Audit {
       description: 'No errors logged to the console',
       helpText: `
         Errors logged to the console indicate unresolved problems.
-        They can come from JavaScript exceptions or other browser failures.
+        They can come from JavaScript exceptions, network request failures,
+        or other browser concerns.
       `,
-      optimalValue: '0',
       failureDescription: 'Errors were logged to the console',
       requiredArtifacts: ['ChromeConsoleMessages']
     };
@@ -47,9 +47,8 @@ class ErrorLogs extends Audit {
     });
 
     const headings = [
-      {key: 'source', itemType: 'text', text: 'Source'},
+      {key: 'url', itemType: 'url', text: 'URL'},
       {key: 'description', itemType: 'text', text: 'Description'},
-      {key: 'url', itemType: 'text', text: 'Url'},
     ];
 
     const details = Audit.makeTableDetails(headings, tableRows);
@@ -59,7 +58,6 @@ class ErrorLogs extends Audit {
       score: numErrors == 0,
       rawValue: numErrors,
       displayValue: numErrors,
-      optimalValue: this.meta.optimalValue,
       details,
     };
   }
