@@ -80,7 +80,7 @@ class JSVulnerableLibraries extends Gatherer {
           const vulns = [];
           if (snykDB.npm[lib.npmPkgName]) {
             lib.pkgLink = 'https://snyk.io/vuln/npm:' + lib.npmPkgName
-              + '#@' + lib.version;
+              + '#lh@' + lib.version;
             const snykInfo = snykDB.npm[lib.npmPkgName];
             snykInfo.forEach(vuln => {
               if (semver.satisfies(lib.version, vuln.semver.vulnerable[0])) {

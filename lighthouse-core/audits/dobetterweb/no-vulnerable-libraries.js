@@ -78,7 +78,10 @@ class NoVulnerableLibrariesAudit extends Audit {
         return obj.vulns;
       })
       .map(lib => {
-        lib.detectedLib = lib.name + '@' + lib.version;
+        lib.detectedLib = {};
+        lib.detectedLib.text = lib.name + '@' + lib.version;
+        lib.detectedLib.url = lib.pkgLink;
+        lib.detectedLib.type = 'link';
         lib.vulnCount = lib.vulns.length;
         lib.highestSeverity = this.mostSevere(lib.vulns);
         totalVulns += lib.vulnCount;
@@ -93,7 +96,7 @@ class NoVulnerableLibrariesAudit extends Audit {
       }
 
       const headings = [
-        {key: 'detectedLib', itemType: 'text', text: 'Library Version'},
+        {key: 'detectedLib', itemType: 'link', text: 'Library Version'},
         {key: 'vulnCount', itemType: 'text', text: 'Vulnerability Count'},
         {key: 'highestSeverity', itemType: 'text', text: 'Highest Severity'}
       ];

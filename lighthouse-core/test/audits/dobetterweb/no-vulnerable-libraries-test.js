@@ -40,6 +40,7 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
     assert.equal(auditResult.details.items[0][2].text, 'Medium');
     assert.equal(auditResult.details.items[0][1].text, 2);
     assert.equal(auditResult.details.items[0][0].text, 'lib1@2.1.4');
+    assert.equal(auditResult.details.items[0][0].url, 'https://lib1url.com');
   });
 
   it('passes when no JS libraries with known vulnerabilities are detected', () => {
