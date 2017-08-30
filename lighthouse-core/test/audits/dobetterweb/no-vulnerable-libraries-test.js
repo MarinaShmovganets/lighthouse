@@ -41,12 +41,11 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
     assert.equal(auditResult.rawValue, false);
     assert.equal(auditResult.details.items.length, 1);
     assert.equal(auditResult.extendedInfo.jsLibs.length, 2);
-    assert.equal(auditResult.displayValue, "3 vulnerabilities detected.");
+    assert.equal(auditResult.displayValue, '3 vulnerabilities detected.');
     assert.equal(auditResult.details.items[0][2].text, 'High');
     assert.equal(auditResult.details.items[0][1].text, 3);
     assert.equal(auditResult.details.items[0][0].text, 'lib1@2.1.4');
     assert.equal(auditResult.details.items[0][0].url, 'https://lib1url.com');
-
   });
 
   it('fails when only one vulnerability is detected', () => {
@@ -69,7 +68,7 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
     assert.equal(auditResult.rawValue, false);
     assert.equal(auditResult.details.items.length, 1);
     assert.equal(auditResult.extendedInfo.jsLibs.length, 1);
-    assert.equal(auditResult.displayValue, "1 vulnerability was detected.");
+    assert.equal(auditResult.displayValue, '1 vulnerability was detected.');
     assert.equal(auditResult.details.items[0][2].text, 'Low');
     assert.equal(auditResult.details.items[0][1].text, 1);
     assert.equal(auditResult.details.items[0][0].text, 'lib1@2.1.4');
