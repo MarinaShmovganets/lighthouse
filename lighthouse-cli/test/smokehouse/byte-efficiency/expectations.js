@@ -29,7 +29,7 @@ module.exports = [
         extendedInfo: {
           value: {
             // TODO(phulce): Update this to =32 once block-level coverage tracking hits stable
-            wastedKb: '>=20',
+            wastedKb: '>=18',
             results: {
               length: 2,
             },
