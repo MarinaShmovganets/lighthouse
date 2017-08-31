@@ -16,13 +16,6 @@ function generateRecord(url = 'https://google.com/logo.png', mimeType = 'image/p
   };
 }
 
-function generateSize(width, height, prefix = 'client') {
-  const size = {};
-  size[`${prefix}Width`] = width;
-  size[`${prefix}Height`] = height;
-  return size;
-}
-
 function generateImage(clientSize, naturalSize, networkRecord, props, src = 'https://google.com/logo.png') {
   Object.assign(networkRecord || {}, {url: src});
   const image = {src, networkRecord};
@@ -37,8 +30,8 @@ describe('Images: aspect-ratio audit', () => {
       const result = Audit.audit({
         ImageUsage: [
           generateImage(
-            generateSize(...data.clientSize),
-            generateSize(...data.naturalSize, 'natural'),
+            {width: data.clientSize[0], height: data.clientSize[1]},
+            {naturalWidth: data.naturalSize[0], naturalHeight: data.naturalSize[1]},
             generateRecord(),
             data.props
           )
@@ -61,7 +54,7 @@ describe('Images: aspect-ratio audit', () => {
 
   testImage('is a css image and much larger than natural aspect ratio', {
     listed: false,
-    clientSize: [800, 500],
+    clientSize: [],
     naturalSize: [200, 200],
     props: {
       isCss: true,

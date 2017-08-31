@@ -26,7 +26,7 @@ class ImageAspectRatio extends Audit {
       name: 'image-aspect-ratio',
       description: 'Uses Images with appropriate aspect ratio',
       failureDescription: 'Does not uses Images with appropriate aspect ratio',
-      helpText: 'Serve Images that are appropriately sized as per the aspect ratio',
+      helpText: 'Image displayed sizes should match their natural aspect ratio.',
       requiredArtifacts: ['ImageUsage']
     };
   }
@@ -38,7 +38,7 @@ class ImageAspectRatio extends Audit {
   static computeAspectRatios(image) {
     const url = URL.elideDataURI(image.src);
     const actualAspectRatio = image.naturalWidth / image.naturalHeight;
-    const displayedAspectRatio = image.clientWidth / image.clientHeight;
+    const displayedAspectRatio = image.width / image.height;
     const doRatiosMatch = Math.abs(actualAspectRatio - displayedAspectRatio) < THRESHOLD;
 
     if (!Number.isFinite(actualAspectRatio) ||
@@ -53,9 +53,9 @@ class ImageAspectRatio extends Audit {
         url: image.networkRecord.url,
         mimeType: image.networkRecord.mimeType
       },
-      displayedAspectRatio: `${image.clientWidth} x ${image.clientHeight} 
+      displayedAspectRatio: `${image.width} x ${image.height}
         (${displayedAspectRatio.toFixed(2)})`,
-      actualAspectRatio: `${image.naturalWidth} x ${image.naturalHeight} 
+      actualAspectRatio: `${image.naturalWidth} x ${image.naturalHeight}
         (${actualAspectRatio.toFixed(2)})`,
       doRatiosMatch,
     };
@@ -72,12 +72,10 @@ class ImageAspectRatio extends Audit {
     const results = [];
     images.filter(image => {
       // filter out images that don't have following properties
-      // networkRecord, clientWidth, clientHeight
-      // css images, images that use `object-fit`: `cover` or `contain`
+      // networkRecord, width, height, images that use `object-fit`: `cover` or `contain`
       return image.networkRecord &&
-        image.clientWidth &&
-        image.clientHeight &&
-        !image.isCss &&
+        image.width &&
+        image.height &&
         !image.usesObjectFit;
     }).forEach(image => {
       const processed = ImageAspectRatio.computeAspectRatios(image);
@@ -86,7 +84,7 @@ class ImageAspectRatio extends Audit {
         return;
       }
 
-      if(!processed.doRatiosMatch) results.push(processed);
+      if (!processed.doRatiosMatch) results.push(processed);
     });
 
     const headings = [

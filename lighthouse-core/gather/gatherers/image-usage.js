@@ -37,6 +37,8 @@ function collectImageElementInfo() {
       // currentSrc used over src to get the url as determined by the browser
       // after taking into account srcset/media/sizes/etc.
       src: element.currentSrc,
+      width: element.width,
+      height: element.height,
       clientWidth: element.clientWidth,
       clientHeight: element.clientHeight,
       clientRect: getClientRect(element),
