@@ -74,51 +74,51 @@ class NoVulnerableLibrariesAudit extends Audit {
    */
   static audit(artifacts) {
     const libraries = artifacts.JSVulnerableLibraries;
-    if (libraries.length) {
-      let totalVulns = 0;
-      const finalVulns = libraries.filter(obj => {
-        return obj.vulns;
-      })
-      .map(lib => {
-        lib.detectedLib = {};
-        lib.detectedLib.text = lib.name + '@' + lib.version;
-        lib.detectedLib.url = lib.pkgLink;
-        lib.detectedLib.type = 'link';
-        lib.vulnCount = lib.vulns.length;
-        lib.highestSeverity = this.mostSevere(lib.vulns).replace(/^\w/, l => l.toUpperCase());
-        totalVulns += lib.vulnCount;
-        return lib;
-      });
-
-      let displayValue = '';
-      if (totalVulns > 1) {
-        displayValue = `${totalVulns} vulnerabilities detected.`;
-      } else if (totalVulns === 1) {
-        displayValue = `${totalVulns} vulnerability was detected.`;
-      }
-
-      const headings = [
-        {key: 'detectedLib', itemType: 'link', text: 'Library Version'},
-        {key: 'vulnCount', itemType: 'text', text: 'Vulnerability Count'},
-        {key: 'highestSeverity', itemType: 'text', text: 'Highest Severity'}
-      ];
-      const details = Audit.makeTableDetails(headings, finalVulns);
-
-      return {
-        rawValue: totalVulns === 0,
-        displayValue,
-        extendedInfo: {
-          jsLibs: libraries,
-          vulnerabilities: finalVulns
-        },
-        details,
-      };
-    } else {
+    if (!libraries.length) {
       return {
         rawValue: true,
         extendedInfo: {}
       };
     }
+
+    let totalVulns = 0;
+    const finalVulns = libraries.filter(obj => {
+      return obj.vulns;
+    })
+    .map(lib => {
+      lib.detectedLib = {};
+      lib.detectedLib.text = lib.name + '@' + lib.version;
+      lib.detectedLib.url = lib.pkgLink;
+      lib.detectedLib.type = 'link';
+      lib.vulnCount = lib.vulns.length;
+      lib.highestSeverity = this.mostSevere(lib.vulns).replace(/^\w/, l => l.toUpperCase());
+      totalVulns += lib.vulnCount;
+      return lib;
+    });
+
+    let displayValue = '';
+    if (totalVulns > 1) {
+      displayValue = `${totalVulns} vulnerabilities detected.`;
+    } else if (totalVulns === 1) {
+      displayValue = `${totalVulns} vulnerability was detected.`;
+    }
+
+    const headings = [
+      {key: 'detectedLib', itemType: 'link', text: 'Library Version'},
+      {key: 'vulnCount', itemType: 'text', text: 'Vulnerability Count'},
+      {key: 'highestSeverity', itemType: 'text', text: 'Highest Severity'}
+    ];
+    const details = Audit.makeTableDetails(headings, finalVulns);
+
+    return {
+      rawValue: totalVulns === 0,
+      displayValue,
+      extendedInfo: {
+        jsLibs: libraries,
+        vulnerabilities: finalVulns
+      },
+      details,
+    };
   }
 
 }
