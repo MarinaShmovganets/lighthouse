@@ -45,7 +45,7 @@ class NoVulnerableLibrariesAudit extends Audit {
   }
 
   /**
-   * @return {!SeverityMap}
+   * @return {!object}
    */
   static get severityMap() {
     return {
