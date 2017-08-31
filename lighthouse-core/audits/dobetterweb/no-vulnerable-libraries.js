@@ -43,27 +43,29 @@ class NoVulnerableLibrariesAudit extends Audit {
       requiredArtifacts: ['JSVulnerableLibraries']
     };
   }
+
+  /**
+   * @return {!SeverityMap}
+   */
+  static get severityMap() {
+    return {
+      high: 3,
+      medium: 2,
+      low: 1
+    };
+  }
+
   /**
    * @param {object} vulns
    * @return {string}
    */
   static mostSevere(vulns) {
     vulns.map(vuln => {
-      switch (vuln.severity) {
-        case 'high':
-          vuln.numericSeverity = 3;
-          break;
-        case 'medium':
-          vuln.numericSeverity = 2;
-          break;
-        case 'low':
-          vuln.numericSeverity = 1;
-          break;
-      }
+      vuln.numericSeverity = this.severityMap[vuln.severity];
     })
     .sort((itemA, itemB) => itemA.numericSeverity > itemB.numericSeverity);
 
-    return vulns[0].severity.charAt(0).toUpperCase() + vulns[0].severity.slice(1);
+    return vulns[0].severity;
   }
 
   /**
@@ -83,7 +85,7 @@ class NoVulnerableLibrariesAudit extends Audit {
         lib.detectedLib.url = lib.pkgLink;
         lib.detectedLib.type = 'link';
         lib.vulnCount = lib.vulns.length;
-        lib.highestSeverity = this.mostSevere(lib.vulns);
+        lib.highestSeverity = this.mostSevere(lib.vulns).replace(/^\w/, l => l.toUpperCase());
         totalVulns += lib.vulnCount;
         return lib;
       });
