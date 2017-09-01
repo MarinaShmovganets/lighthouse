@@ -5,6 +5,18 @@
  */
 'use strict';
 
+/**
+ * @fileoverview This class encapsulates logic for handling resources and tasks used to model the
+ * execution dependency graph of the page. A node has a unique identifier and can depend on other
+ * nodes/be depended on. The construction of the graph maintains some important invariants that are
+ * inherent to the model:
+ *
+ *    1. The graph is a DAG, there are no cycles.
+ *    2. There is always a root node upon which all other nodes eventually depend.
+ *
+ * This allows particular optimizations in this class so that we do no need to check for cycles as
+ * these methods are called and we can always start traversal at the root node.
+ */
 class Node {
 
   /**
@@ -84,7 +96,7 @@ class Node {
    * node that was called clone is not included in the resulting filtered graph, the return will be
    * undefined.
    * @param {function(!Node):boolean=} predicate
-   * @return {?Node}
+   * @return {!Node|undefined}
    */
   cloneWithRelationships(predicate) {
     const rootNode = this.getRootNode();
