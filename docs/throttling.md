@@ -1,7 +1,7 @@
 
 ## The 3G network throttling preset
 
-This 3G preset is the standard recommendation:
+This is the standard recommendation for 3G throttling:
 
 - Latency: 150ms
 - Throughput: 1.6Mbps down / 750 Kbps up.
@@ -11,11 +11,11 @@ These exact figures are used as the [WebPageTest "Mobile 3G - Fast" preset](http
 
 ## Throttling basics
 
-1. The DevTools network throttling, which Lighthouse uses, is implemented within Chrome at the request-level. As a result, it has some downsides that are now summarized in this doc: [Network Throttling & Chrome - status](https://docs.google.com/document/d/1TwWLaLAfnBfbk5_ZzpGXegPapCIfyzT4MWuZgspKUAQ/edit). The TLDR: while it's a [decent approximation](https://docs.google.com/document/d/1uS9SH1KpVH31JAmf-iIZ61VazwAF9MrCVwETshBC4UQ/edit), it inaccurately models a slow connection.
-1. Proxy-level throttling tools do not affect UDP data, so they're not recommended.
-1. Packet-level throttling tools are able to make the most accurate network simulation.
+1. The DevTools network throttling, which Lighthouse uses, is implemented within Chrome at the _request-level_. As a result, it has some downsides that are now summarized in this doc: [Network Throttling & Chrome - status](https://docs.google.com/document/d/1TwWLaLAfnBfbk5_ZzpGXegPapCIfyzT4MWuZgspKUAQ/edit). The TLDR: while it's a [decent approximation](https://docs.google.com/document/d/1uS9SH1KpVH31JAmf-iIZ61VazwAF9MrCVwETshBC4UQ/edit), it's not a sufficient model of a slow connection.
+1. _Proxy-level_ throttling tools do not affect UDP data, so they're not recommended.
+1. _Packet-level_ throttling tools are able to make the most accurate network simulation.
 
-## Improved packet-level throttling
+## How do I get high-quality packet-level throttling?
 
 If you want to use more accurate throttling, read on.
 
@@ -29,8 +29,6 @@ The `comcast` Go package appears to be the most usable Mac/Linux commandline app
 
 ### `comcast` set up
 
-
-
 ```sh
 # Install with go
 go get github.com/tylertreat/comcast
@@ -39,21 +37,22 @@ go get github.com/tylertreat/comcast
 # To use the recommended throttling values:
 comcast --latency=150 --target-bw=1600 --dry-run
 
-# Remove --dry-run and type your sudo password to apply the changes
+# To disable throttling
+# comcast --stop
 ```
 
 Currently, `comcast` [doesn't support](https://github.com/tylertreat/comcast/issues/17) a separate uplink throughput.
 
 
-A typical Lighthouse session will now look like:
+### Using Lighthouse with `comcast`
 
 ```sh
-# Enable system traffic shaping
+# Enable system traffic throttling
 comcast --latency=150 --target-bw=1600
 
 # Run Lighthouse with it's own throttling disabled
 lighthouse --disable-network-throttling # ...
 
-# Disable the traffic shaping
+# Disable the traffic throttling
 comcast --stop
 ```
