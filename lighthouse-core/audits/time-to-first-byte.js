@@ -10,7 +10,6 @@ const URL = require('../lib/url-shim');
 const Util = require('../report/v2/renderer/util');
 
 const TTFB_THRESHOLD = 600;
-const TTFB_THRESHOLD_BUFFER = 15;
 
 class TTFBMetric extends Audit {
   /**
@@ -20,7 +19,7 @@ class TTFBMetric extends Audit {
     return {
       category: 'Performance',
       name: 'time-to-first-byte',
-      description: 'Time To First Byte (TTFB)',
+      description: 'Keep server response times low (TTFB)',
       informative: true,
       helpText: 'Time To First Byte identifies the time at which your server sends a response.' +
         ' [Learn more](https://developers.google.com/web/tools/chrome-devtools/network-performance/issues).',
@@ -49,7 +48,7 @@ class TTFBMetric extends Audit {
         const thresholdDisplay = Util.formatMilliseconds(TTFB_THRESHOLD, 1);
         const finalUrlRequest = networkRecords.find(record => record._url === finalUrl);
         const ttfb = TTFBMetric.caclulateTTFB(finalUrlRequest);
-        const passed = ttfb < TTFB_THRESHOLD + TTFB_THRESHOLD_BUFFER;
+        const passed = ttfb < TTFB_THRESHOLD;
 
         if (!passed) {
           debugString = `Root document (${URL.getURLDisplayName(finalUrl)}) went over` +

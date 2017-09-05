@@ -10,7 +10,7 @@ const assert = require('assert');
 
 /* eslint-env mocha */
 describe('Performance: time-to-first-byte audit', () => {
-  it('fails when ttfb of root document is higher than 615ms', () => {
+  it('fails when ttfb of root document is higher than 600ms', () => {
     const networkRecords = [
       {_url: 'https://example.com/', _requestId: '0', _timing: {receiveHeadersEnd: 830, sendEnd: 200}},
       {_url: 'https://google.com/styles.css', _requestId: '1', _timing: {receiveHeadersEnd: 450, sendEnd: 200}},
@@ -28,7 +28,7 @@ describe('Performance: time-to-first-byte audit', () => {
     });
   });
 
-  it('succeeds when ttfb of root document is lower than 615ms', () => {
+  it('succeeds when ttfb of root document is lower than 600ms', () => {
     const networkRecords = [
       {_url: 'https://example.com/', _requestId: '0', _timing: {receiveHeadersEnd: 400, sendEnd: 200}},
       {_url: 'https://google.com/styles.css', _requestId: '1', _timing: {receiveHeadersEnd: 850, sendEnd: 200}},
