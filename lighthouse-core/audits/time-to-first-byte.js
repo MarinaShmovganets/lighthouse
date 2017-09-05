@@ -9,7 +9,7 @@ const Audit = require('./audit');
 const URL = require('../lib/url-shim');
 const Util = require('../report/v2/renderer/util');
 
-const TTFB_THRESHOLD = 200;
+const TTFB_THRESHOLD = 600;
 const TTFB_THRESHOLD_BUFFER = 15;
 
 class TTFBMetric extends Audit {
@@ -23,7 +23,7 @@ class TTFBMetric extends Audit {
       description: 'Time To First Byte (TTFB)',
       informative: true,
       helpText: 'Time To First Byte identifies the time at which your server sends a response.' +
-        '[Learn more](https://developers.google.com/web/tools/chrome-devtools/network-performance/issues).',
+        ' [Learn more](https://developers.google.com/web/tools/chrome-devtools/network-performance/issues).',
       requiredArtifacts: ['devtoolsLogs', 'URL']
     };
   }
@@ -43,7 +43,7 @@ class TTFBMetric extends Audit {
 
     return artifacts.requestNetworkRecords(devtoolsLogs)
       .then((networkRecords) => {
-        let displayValue;
+        let debugString = '';
 
         const finalUrl = artifacts.URL.finalUrl;
         const thresholdDisplay = Util.formatMilliseconds(TTFB_THRESHOLD, 1);
@@ -51,17 +51,21 @@ class TTFBMetric extends Audit {
         const ttfb = TTFBMetric.caclulateTTFB(finalUrlRequest);
         const passed = ttfb < TTFB_THRESHOLD + TTFB_THRESHOLD_BUFFER;
 
-        if (passed) {
-          displayValue = `${URL.getURLDisplayName(finalUrl)} is below` +
-            ` the ${thresholdDisplay} threshold`;
-        } else {
-          displayValue = `${URL.getURLDisplayName(finalUrl)} went over` +
+        if (!passed) {
+          debugString = `Root document (${URL.getURLDisplayName(finalUrl)}) went over` +
             ` the ${thresholdDisplay} threshold`;
         }
 
         return {
-          rawValue: passed,
-          displayValue,
+          rawValue: ttfb,
+          score: passed,
+          displayValue: Util.formatMilliseconds(ttfb),
+          extendedInfo: {
+            value: {
+              wastedMs: ttfb - TTFB_THRESHOLD,
+            },
+          },
+          debugString,
         };
       });
   }

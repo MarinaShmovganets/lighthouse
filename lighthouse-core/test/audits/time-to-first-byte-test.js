@@ -10,9 +10,9 @@ const assert = require('assert');
 
 /* eslint-env mocha */
 describe('Performance: time-to-first-byte audit', () => {
-  it('fails when ttfb of root document is higher than 215ms', () => {
+  it('fails when ttfb of root document is higher than 615ms', () => {
     const networkRecords = [
-      {_url: 'https://example.com/', _requestId: '0', _timing: {receiveHeadersEnd: 500, sendEnd: 200}},
+      {_url: 'https://example.com/', _requestId: '0', _timing: {receiveHeadersEnd: 830, sendEnd: 200}},
       {_url: 'https://google.com/styles.css', _requestId: '1', _timing: {receiveHeadersEnd: 450, sendEnd: 200}},
       {_url: 'https://google.com/image.jpg', _requestId: '2', _timing: {receiveHeadersEnd: 600, sendEnd: 400}},
     ];
@@ -23,15 +23,16 @@ describe('Performance: time-to-first-byte audit', () => {
     };
 
     return TimeToFirstByte.audit(artifacts).then(result => {
-      assert.strictEqual(result.rawValue, false);
+      assert.strictEqual(result.rawValue, 630);
+      assert.strictEqual(result.score, false);
     });
   });
 
-  it('succeeds when ttfb of root document is lower than 215ms', () => {
+  it('succeeds when ttfb of root document is lower than 615ms', () => {
     const networkRecords = [
-      {_url: 'https://example.com/', _requestId: '0', _timing: {receiveHeadersEnd: 300, sendEnd: 200}},
-      {_url: 'https://google.com/styles.css', _requestId: '1', _timing: {receiveHeadersEnd: 450, sendEnd: 200}},
-      {_url: 'https://google.com/image.jpg', _requestId: '2', _timing: {receiveHeadersEnd: 600, sendEnd: 400}},
+      {_url: 'https://example.com/', _requestId: '0', _timing: {receiveHeadersEnd: 400, sendEnd: 200}},
+      {_url: 'https://google.com/styles.css', _requestId: '1', _timing: {receiveHeadersEnd: 850, sendEnd: 200}},
+      {_url: 'https://google.com/image.jpg', _requestId: '2', _timing: {receiveHeadersEnd: 1000, sendEnd: 400}},
     ];
     const artifacts = {
       devtoolsLogs: {[TimeToFirstByte.DEFAULT_PASS]: []},
@@ -40,7 +41,8 @@ describe('Performance: time-to-first-byte audit', () => {
     };
 
     return TimeToFirstByte.audit(artifacts).then(result => {
-      assert.strictEqual(result.rawValue, true);
+      assert.strictEqual(result.rawValue, 200);
+      assert.strictEqual(result.score, true);
     });
   });
 });
