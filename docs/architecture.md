@@ -13,7 +13,7 @@ _Some incomplete notes_
   * **Computed Artifacts** - Generated on-demand from artifacts, these add additional meaning, and are often shared amongst multiple audits.
   
 ### Audit/Report terminology
-* **Audit Category** - Roll-up collection of audits and audit groups into a user-facing section of the report (eg. `Best Practices`). Applies weighting and overall scoring to the section. Examples: PWA, Accessibility, Best Practices.
+* **Category** - Roll-up collection of audits and audit groups into a user-facing section of the report (eg. `Best Practices`). Applies weighting and overall scoring to the section. Examples: PWA, Accessibility, Best Practices.
 * **Audit description** - Short user-visible title for the successful audit. eg. “All image elements have `[alt]` attributes.”
 * **Audit failure description** - Short user-visible title for a failing  audit. eg. “Some image elements do not have `[alt]` attributes.”
 * **Audit help text** - Explanation of why the user should care about the audit. Not necessarily how to fix it, unless there is no external link that explains it. ([See helpText guidelines](CONTRIBUTING.md#helptext-guidelines)). eg. “Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more].”
