@@ -11,7 +11,7 @@ These exact figures are used as the [WebPageTest "Mobile 3G - Fast" preset](http
 
 ## Throttling basics
 
-1. The DevTools network throttling, which Lighthouse uses, is implemented within Chrome at the _request-level_. As a result, it has some downsides that are now summarized in this doc: [Network Throttling & Chrome - status](https://docs.google.com/document/d/1TwWLaLAfnBfbk5_ZzpGXegPapCIfyzT4MWuZgspKUAQ/edit). The TLDR: while it's a [decent approximation](https://docs.google.com/document/d/1uS9SH1KpVH31JAmf-iIZ61VazwAF9MrCVwETshBC4UQ/edit), it's not a sufficient model of a slow connection.
+1. The DevTools network throttling, which Lighthouse uses, is implemented within Chrome at the _request-level_. As a result, it has some downsides that are now summarized in this doc: [Network Throttling & Chrome - status](https://docs.google.com/document/d/1TwWLaLAfnBfbk5_ZzpGXegPapCIfyzT4MWuZgspKUAQ/edit). The TLDR: while it's a [decent approximation](https://docs.google.com/document/d/1uS9SH1KpVH31JAmf-iIZ61VazwAF9MrCVwETshBC4UQ/edit), it's not a sufficient model of a slow connection. The [multipliers used in Lighthouse](https://github.com/GoogleChrome/lighthouse/blob/3be483287a530fb560c843b7299ef9cfe91ce1cc/lighthouse-core/lib/emulation.js#L33-L39) attempt to correct for the differences.
 1. _Proxy-level_ throttling tools do not affect UDP data, so they're not recommended.
 1. _Packet-level_ throttling tools are able to make the most accurate network simulation.
 
