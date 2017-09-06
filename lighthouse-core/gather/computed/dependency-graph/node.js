@@ -209,7 +209,6 @@ class Node {
 }
 
 Node.TYPES = {
-  UNKNOWN: 'unknown',
   NETWORK: 'network',
 };
 
