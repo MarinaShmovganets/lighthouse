@@ -21,13 +21,12 @@ class ErrorLogs extends Audit {
     return {
       category: 'ErrorLogs',
       name: 'error-logs',
-      description: 'No errors logged to the console',
+      description: 'No browser errors logged to the console',
       helpText: `
         Errors logged to the console indicate unresolved problems.
-        They can come from JavaScript exceptions, network request failures,
-        or other browser concerns.
+        They can come from network request failures and other browser concerns.
       `,
-      failureDescription: 'Errors were logged to the console',
+      failureDescription: 'Browser errors were logged to the console',
       requiredArtifacts: ['ChromeConsoleMessages']
     };
   }
