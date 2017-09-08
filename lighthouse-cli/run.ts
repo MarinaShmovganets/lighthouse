@@ -3,6 +3,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
+
 'use strict';
 
 import * as path from 'path';
@@ -18,6 +19,7 @@ const log = require('lighthouse-logger');
 const getFilenamePrefix = require('../lighthouse-core/lib/file-namer.js').getFilenamePrefix;
 const assetSaver = require('../lighthouse-core/lib/asset-saver.js');
 const performanceXServer = require('./performance-experiment/server');
+import { LighthouseAssert, IResult, IExpectation } from "../lighthouse-assert";
 
 // accept noop modules for these, so the real dependency is optional.
 import {opn} from './shim-modules';
@@ -165,6 +167,11 @@ export async function runLighthouse(
 
     await launchedChrome.kill();
 
+    if (flags.expectationsPath) {
+      const expectations = require(flags.expectationsPath);
+      assertResults(results, expectations);
+    }
+
     return results;
   } catch (err) {
     if (typeof launchedChrome !== 'undefined') {
@@ -174,3 +181,9 @@ export async function runLighthouse(
     return handleError(err);
   }
 }
+
+function assertResults(results: IResult, expectations: IExpectation) {
+  const lighthouseAssert = new LighthouseAssert();
+  lighthouseAssert.assert([results], [expectations]);
+}
+

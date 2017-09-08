@@ -16,6 +16,7 @@ const LighthouseAssert = require('../../../lighthouse-assert').LighthouseAssert;
 
 const DEFAULT_CONFIG_PATH = 'pwa-config';
 const DEFAULT_EXPECTATIONS_PATH = 'pwa-expectations';
+const ASSERT_EXPECTATIONS_PATH = 'perf-integration/expectations';
 
 const PROTOCOL_TIMEOUT_EXIT_CODE = 67;
 const RETRIES = 3;
@@ -43,9 +44,10 @@ function resolveLocalOrCwd(payloadPath) {
  * @param {string} url
  * @param {string} configPath
  * @param {string=} saveAssetsPath
+ * @param {string=} expectationsPath
  * @return {!LighthouseResults}
  */
-function runLighthouse(url, configPath, saveAssetsPath) {
+function runLighthouse(url, configPath, saveAssetsPath, expectationsPath) {
   const command = 'node';
   const args = [
     'lighthouse-cli/index.js',
@@ -59,6 +61,10 @@ function runLighthouse(url, configPath, saveAssetsPath) {
   if (saveAssetsPath) {
     args.push('--save-assets');
     args.push(`--output-path=${saveAssetsPath}`);
+  }
+
+  if (expectationsPath) {
+    args.push(`--expectations-path=${expectationsPath}`);
   }
 
   // Lighthouse sometimes times out waiting to for a connection to Chrome in CI.
@@ -90,62 +96,11 @@ function runLighthouse(url, configPath, saveAssetsPath) {
     return require(resolveLocalOrCwd(saveAssetsPath));
   }
 
-  return JSON.parse(runResults.stdout);
-}
-
-/**
- * Log the result of an assertion of actual and expected results.
- * @param {{category: string, equal: boolean, diff: ?Object, actual: boolean, expected: boolean}} assertion
- */
-function reportAssertion(assertion) {
-  if (assertion.equal) {
-    console.log(`  ${log.greenify(log.tick)} ${assertion.category}: ` +
-        log.greenify(assertion.actual));
-  } else {
-    if (assertion.diff) {
-      const diff = assertion.diff;
-      let msg = `  ${log.redify(log.cross)} difference at ${diff.path}: `;
-      msg += log.redify(`found ${diff.actual}, expected ${diff.expected}\n`);
-
-      const fullActual = JSON.stringify(assertion.actual, null, 2).replace(/\n/g, '\n      ');
-      msg += log.redify('      full found result: ' + fullActual);
-      console.log(msg);
-    } else {
-      console.log(`  ${log.redify(log.cross)} ${assertion.category}: ` +
-          log.redify(`found ${assertion.actual}, expected ${assertion.expected}`));
-    }
+  try {
+    return JSON.parse(runResults.stdout);
+  } catch(e) {
+    console.log(runResults.stdout);
   }
-}
-
-/**
- * Log all the comparisons between actual and expected test results, then print
- * summary. Returns count of passed and failed tests.
- * @param {{finalUrl: !Object, audits: !Array<!Object>}} results
- * @return {{passed: number, failed: number}}
- */
-function report(results) {
-  reportAssertion(results.finalUrl);
-
-  let correctCount = 0;
-  let failedCount = 0;
-  results.audits.forEach(auditAssertion => {
-    if (auditAssertion.equal) {
-      correctCount++;
-    } else {
-      failedCount++;
-      reportAssertion(auditAssertion);
-    }
-  });
-
-  const plural = correctCount === 1 ? '' : 's';
-  const correctStr = `${correctCount} audit${plural}`;
-  const colorFn = correctCount === 0 ? log.redify : log.greenify;
-  console.log(`  Correctly passed ${colorFn(correctStr)}\n`);
-
-  return {
-    passed: correctCount,
-    failed: failedCount
-  };
 }
 
 const cli = yargs
@@ -154,25 +109,38 @@ const cli = yargs
     'config-path': 'The path to the config JSON file',
     'expectations-path': 'The path to the expected audit results file',
     'save-assets-path': 'Saves assets to the named path if set',
+    'run-integrated-lighthouse-assert': 'Run lighthouse with integrated assert'
   })
   .default('config-path', DEFAULT_CONFIG_PATH)
   .default('expectations-path', DEFAULT_EXPECTATIONS_PATH)
+  .default('run-integrated-lighthouse-assert', false)
   .argv;
 
 const configPath = resolveLocalOrCwd(cli['config-path']);
-const expectations = require(resolveLocalOrCwd(cli['expectations-path']));
+const assetsPath = cli['save-assets-path'];
 
-// Loop sequentially over expectations, comparing against Lighthouse run, and
-// reporting result.
-let passingCount = 0;
-let failingCount = 0;
-let results = [];
+function runStandaloneLighthouseAssert() {
+  const expectations = require(resolveLocalOrCwd(cli['expectations-path']));
 
-expectations.forEach(expected => {
-  console.log(`Checking '${expected.initialUrl}'...`);
-  const lhResults = runLighthouse(expected.initialUrl, configPath, cli['save-assets-path']);
-  results.push(lhResults);
-});
+  let results = [];
 
-const lighthouseAssert = new LighthouseAssert();
-lighthouseAssert.assert(results, expectations);
+  expectations.forEach(expected => {
+    console.log(`Checking '${expected.initialUrl}'...`);
+    const lhResults = runLighthouse(expected.initialUrl, configPath, assetsPath);
+    results.push(lhResults);
+  });
+
+  const lighthouseAssert = new LighthouseAssert();
+  lighthouseAssert.assert(results, expectations);
+}
+
+function runIntegratedLighthouseAssert() {
+  runLighthouse('http://localhost:10200/online-only.html', configPath, assetsPath, resolveLocalOrCwd(ASSERT_EXPECTATIONS_PATH));
+}
+
+if (cli['run-integrated-lighthouse-assert']) {
+  runIntegratedLighthouseAssert();
+} else {
+  runStandaloneLighthouseAssert();
+}
+

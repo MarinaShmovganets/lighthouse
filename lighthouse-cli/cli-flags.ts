@@ -14,7 +14,7 @@ import {GetValidOutputOptions, OutputMode} from './printer';
 export interface Flags {
   port: number, chromeFlags: string, output: any, outputPath: string, interactive: boolean,
       saveArtifacts: boolean, saveAssets: boolean, view: boolean, maxWaitForLoad: number,
-      logLevel: string
+      logLevel: string, expectationsPath: string
 }
 
 export function getFlags(manualArgv?: string) {
@@ -53,7 +53,7 @@ export function getFlags(manualArgv?: string) {
       .group(
           [
             'save-assets', 'save-artifacts', 'list-all-audits', 'list-trace-categories',
-            'additional-trace-categories', 'config-path', 'chrome-flags', 'perf', 'port',
+            'additional-trace-categories', 'config-path', 'expectations-path', 'chrome-flags', 'perf', 'port',
             'max-wait-for-load'
           ],
           'Configuration:')
@@ -80,7 +80,8 @@ export function getFlags(manualArgv?: string) {
         'port': 'The port to use for the debugging protocol. Use 0 for a random port',
         'max-wait-for-load':
             'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
-        'interactive': 'Open Lighthouse in interactive mode'
+        'interactive': 'Open Lighthouse in interactive mode',
+        'expectations-path': 'Path to assert expectations'
       })
 
       .group(['output', 'output-path', 'view'], 'Output:')
