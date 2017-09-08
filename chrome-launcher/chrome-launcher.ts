@@ -7,12 +7,12 @@
 
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
+import * as net from 'net';
+import * as rimraf from 'rimraf';
 import * as chromeFinder from './chrome-finder';
 import {getRandomPort} from './random-port';
 import {DEFAULT_FLAGS} from './flags';
 import {makeTmpDir, defaults, delay} from './utils';
-import * as net from 'net';
-const rimraf = require('rimraf');
 const log = require('lighthouse-logger');
 const spawn = childProcess.spawn;
 const execSync = childProcess.execSync;
@@ -22,6 +22,8 @@ const _SIGINT_EXIT_CODE = 130;
 const _SUPPORTED_PLATFORMS = new Set(['darwin', 'linux', 'win32']);
 
 type SupportedPlatforms = 'darwin'|'linux'|'win32';
+
+const instances = new Set();
 
 export interface Options {
   startingUrl?: string;
@@ -46,22 +48,35 @@ export interface ModuleOverrides {
   spawn?: typeof childProcess.spawn;
 }
 
+const sigintListener = async () => {
+  for (const instance of instances) {
+    await instance.kill();
+  }
+  process.exit(_SIGINT_EXIT_CODE);
+};
+
 export async function launch(opts: Options = {}): Promise<LaunchedChrome> {
   opts.handleSIGINT = defaults(opts.handleSIGINT, true);
 
   const instance = new Launcher(opts);
 
   // Kill spawned Chrome process in case of ctrl-C.
-  if (opts.handleSIGINT) {
-    process.on(_SIGINT, async () => {
-      await instance.kill();
-      process.exit(_SIGINT_EXIT_CODE);
-    });
+  if (opts.handleSIGINT && instances.size === 0) {
+    process.on(_SIGINT, sigintListener);
   }
+  instances.add(instance);
 
   await instance.launch();
 
-  return {pid: instance.pid!, port: instance.port!, kill: async () => instance.kill()};
+  const kill = async () => {
+    instances.delete(instance);
+    if (instances.size === 0) {
+      process.removeListener(_SIGINT, sigintListener);
+    }
+    return instance.kill();
+  };
+
+  return {pid: instance.pid!, port: instance.port!, kill};
 }
 
 export class Launcher {
@@ -177,10 +192,10 @@ export class Launcher {
 
   private async spawnProcess(execPath: string) {
     // Typescript is losing track of the return type without the explict typing.
-    const spawnPromise: Promise<number> = new Promise(async (resolve) => {
+    const spawnPromise: Promise<number> = (async () => {
       if (this.chrome) {
         log.log('ChromeLauncher', `Chrome already running with pid ${this.chrome.pid}.`);
-        return resolve(this.chrome.pid);
+        return this.chrome.pid;
       }
 
 
@@ -201,8 +216,8 @@ export class Launcher {
       this.fs.writeFileSync(this.pidFile, chrome.pid.toString());
 
       log.verbose('ChromeLauncher', `Chrome running with pid ${chrome.pid} on port ${this.port}.`);
-      resolve(chrome.pid);
-    });
+      return chrome.pid;
+    })();
 
     const pid = await spawnPromise;
     await this.waitUntilReady();

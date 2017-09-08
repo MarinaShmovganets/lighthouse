@@ -14,7 +14,7 @@ import {GetValidOutputOptions, OutputMode} from './printer';
 export interface Flags {
   port: number, chromeFlags: string, output: any, outputPath: string, interactive: boolean,
       saveArtifacts: boolean, saveAssets: boolean, view: boolean, maxWaitForLoad: number,
-      logLevel: string, expectationsPath: string
+      logLevel: string, hostname: string, blockedUrlPatterns: string[], expectationsPath: string
 }
 
 export function getFlags(manualArgv?: string) {
@@ -54,10 +54,11 @@ export function getFlags(manualArgv?: string) {
           [
             'save-assets', 'save-artifacts', 'list-all-audits', 'list-trace-categories',
             'additional-trace-categories', 'config-path', 'expectations-path', 'chrome-flags', 'perf', 'port',
-            'max-wait-for-load'
+            'hostname', 'max-wait-for-load'
           ],
           'Configuration:')
       .describe({
+        'blocked-url-patterns': 'Block any network requests to the specified URL patterns',
         'disable-storage-reset':
             'Disable clearing the browser cache and other storage APIs before a run',
         'disable-device-emulation': 'Disable Nexus 5X emulation',
@@ -77,6 +78,7 @@ export function getFlags(manualArgv?: string) {
             CHROME_PATH: Explicit path of intended Chrome binary. If set must point to an executable of a build of Chromium version 54.0 or later. By default, any detected Chrome Canary or Chrome (stable) will be launched.
             `,
         'perf': 'Use a performance-test-only configuration',
+        'hostname': 'The hostname to use for the debugging protocol.',
         'port': 'The port to use for the debugging protocol. Use 0 for a random port',
         'max-wait-for-load':
             'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
@@ -102,12 +104,15 @@ Example: --output-path=./lighthouse-results.html`,
         'list-trace-categories', 'perf', 'view', 'verbose', 'quiet', 'help', 'interactive'
       ])
       .choices('output', GetValidOutputOptions())
+      // force as an array
+      .array('blocked-url-patterns')
 
       // default values
       .default('chrome-flags', '')
       .default('disable-cpu-throttling', false)
       .default('output', GetValidOutputOptions()[OutputMode.domhtml])
       .default('port', 0)
+      .default('hostname', 'localhost')
       .default('max-wait-for-load', Driver.MAX_WAIT_FOR_FULLY_LOADED)
       .check((argv: {listAllAudits?: boolean, listTraceCategories?: boolean, _: Array<any>}) => {
         // Make sure lighthouse has been passed a url, or at least one of --list-all-audits
