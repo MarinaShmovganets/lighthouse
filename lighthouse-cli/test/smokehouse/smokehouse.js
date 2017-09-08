@@ -121,8 +121,7 @@ const assetsPath = cli['save-assets-path'];
 
 function runStandaloneLighthouseAssert() {
   const expectations = require(resolveLocalOrCwd(cli['expectations-path']));
-
-  let results = [];
+  const results = [];
 
   expectations.forEach(expected => {
     console.log(`Checking '${expected.initialUrl}'...`);
