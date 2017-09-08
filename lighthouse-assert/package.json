@@ -27,9 +27,9 @@
     "mkdirp": "0.5.1",
     "rimraf": "^2.6.1"
   },
-  "version": "0.0.1",
-  "description": "",
-  "repository": "",
-  "author": "",
-  "license": ""
+  "version": "0.1.0",
+  "description": "Lighthouse aseertation",
+  "repository": "https://github.com/GoogleChrome/lighthouse/tree/master/lighthouse-assert",
+  "author": "The Chromium Authors",
+  "license": "Apache-2.0"
 }
