@@ -10,7 +10,7 @@ import {LighthouseAssert} from '../';
 import successExpectations from './fixtures/expectations/success-expectations';
 import successResults from './fixtures/lighthouse-results/success-results';
 
-describe('Ligthouse assert', () => {
+describe('Lighthouse assert', () => {
   let stdout;
   const unhook_intercept = intercept((txt: string) => {
     stdout = txt;

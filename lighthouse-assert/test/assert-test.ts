@@ -17,26 +17,22 @@ import pwaResults from './fixtures/lighthouse-results/pwa-results';
 describe('lighthouse-assert', () => {
   it('should build collated results', () => {
     const lighthouseAssert = new Assert(defaultResults, defaultExpectations);
-    lighthouseAssert.collate();
     const collatedResults = lighthouseAssert.collatedResults;
     assert.deepEqual(collatedResults, expectedAssertResults);
   });
 
   it('should return false if results less the expected', () => {
     const lighthouseAssert = new Assert(defaultResults, defaultExpectations);
-    lighthouseAssert.collate();
     assert.ok(!lighthouseAssert.equal());
   });
 
   it('should fail if pwa results are not the same as expected', () => {
     const lighthouseAssert = new Assert(pwaResults, pwaExpectations);
-    lighthouseAssert.collate();
     assert.ok(!lighthouseAssert.equal());
   });
 
   describe('status count of results', () => {
     const lighthouseAssert = new Assert(defaultResults, defaultExpectations);
-    lighthouseAssert.collate();
     const statusCounts = lighthouseAssert.getStatusCounts();
     const expectedStatusCounts = {passed: 3, failed: 1};
     assert.deepEqual(statusCounts, expectedStatusCounts);
