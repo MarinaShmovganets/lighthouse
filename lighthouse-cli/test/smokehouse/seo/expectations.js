@@ -21,4 +21,21 @@ module.exports = [
       },
     }
   },
+  {
+    initialUrl: 'http://localhost:10200/seo/seo-failure-cases.html',
+    url: 'http://localhost:10200/seo/seo-failure-cases.html',
+    audits: {
+      'meta-viewport': {
+        score: false,
+      },
+      'document-title': {
+        score: false,
+        extendedInfo: {
+          value: {
+            id: 'document-title'
+          }
+        }
+      },
+    }
+  },
 ];
