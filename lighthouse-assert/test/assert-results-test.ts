@@ -6,11 +6,11 @@
 
 import * as assert from 'assert';
 
-import { AssertResults } from '../assert/assert-results';
+import {AssertResults} from '../assert/assert-results';
 
 import defaultExpectations from './fixtures/expectations/default-expectations';
-import defaultResults from './fixtures/lighthouse-results/default-results';
 import expectedAssertResults from './fixtures/expected-assert-results';
+import defaultResults from './fixtures/lighthouse-results/default-results';
 
 describe('assert-results', () => {
   it('should return collated results', () => {
@@ -21,10 +21,9 @@ describe('assert-results', () => {
 
   it('should throw if expected results are absent', () => {
     const assertResults = new AssertResults();
-    const results = [{
-      url: 'test',
-      audits: {}
-    }];
-    assert.throws(() => assertResults.collate(results, defaultExpectations), /Error:/, 'Config did not trigger run of expected audit first-contentful-paint');
+    const results = [{url: 'test', audits: {}}];
+    assert.throws(
+        () => assertResults.collate(results, defaultExpectations), /Error:/,
+        'Config did not trigger run of expected audit first-contentful-paint');
   });
 });

@@ -27,7 +27,7 @@ describe('lighthouse-assert', () => {
   it('should have status count of results', () => {
     const lighthouseAssert = new Assert(defaultResults, defaultExpectations);
     const statusCounts = lighthouseAssert.getStatusCounts();
-    const expectedStatusCounts = { passed: 3, failed: 1 };
+    const expectedStatusCounts = {passed: 3, failed: 1};
     assert.deepEqual(statusCounts, expectedStatusCounts);
   })
 });

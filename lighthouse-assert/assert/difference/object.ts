@@ -1,5 +1,12 @@
+/**
+ * @license Copyright 2017 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+
 import { IDifference } from './interface';
-import { INoneObjectActualAudit, INoneObjectExpectedAudit, IDiff, INormalizedExpectedScore } from "../types";
+import { INoneObjectActualAudit, INoneObjectExpectedAudit, IDiff, INormalizedExpectedScore } from '../types';
+import { inRange } from '../utils';
 
 const OPERAND_EXPECTATION_REGEXP = /^(<=?|>=?)/;
 
@@ -21,13 +28,7 @@ export class ObjectDifference implements IDifference {
   }
 
   /**
-   * Walk down expected result, comparing to actual result. If a difference is found,
-   * the path to the difference is returned, along with the expected primitive value
-   * and the value actually found at that location. If no difference is found, returns
-   * null.
-   *
-   * Only checks own enumerable properties, not object prototypes, and will loop
-   * until the stack is exhausted, so works best with simple objects (e.g. parsed JSON).
+   * Find diff
    *
    * @return {IDiff}
    */
@@ -60,19 +61,7 @@ export class ObjectDifference implements IDifference {
       error: this.normalize(this.expected.score.error)
     };
     // @todo check inRange due to symbols like '<=', '>=' etc.
-    return this.inRange(normalizedExpected.error, 100, actualValue);
-  }
-
-  /**
-   * Checks if the actual value in warning and error range
-   *
-   * @param {number} min
-   * @param {number} max
-   * @param {number} value
-   * @return {boolean}
-   */
-  private inRange(min: number, max: number, value: number): boolean {
-    return value > min && value <= max;
+    return inRange(normalizedExpected.error, 100, actualValue);
   }
 
   /**

@@ -6,7 +6,7 @@
 
 import * as assert from 'assert';
 
-import { inRange } from '../assert/utils';
+import {inRange} from '../assert/utils';
 
 describe('Assert utils', () => {
   describe('when actual result', () => {
