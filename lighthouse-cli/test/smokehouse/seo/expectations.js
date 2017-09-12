@@ -13,7 +13,7 @@ module.exports = [
     initialUrl: 'http://localhost:10200/seo/seo-tester.html',
     url: 'http://localhost:10200/seo/seo-tester.html',
     audits: {
-      'meta-viewport': {
+      'viewport': {
         score: true,
       },
       'document-title': {
@@ -28,7 +28,7 @@ module.exports = [
     initialUrl: 'http://localhost:10200/seo/seo-failure-cases.html',
     url: 'http://localhost:10200/seo/seo-failure-cases.html',
     audits: {
-      'meta-viewport': {
+      'viewport': {
         score: false,
       },
       'document-title': {
