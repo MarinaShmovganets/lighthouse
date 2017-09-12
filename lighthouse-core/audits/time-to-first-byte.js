@@ -45,14 +45,12 @@ class TTFBMetric extends Audit {
         let debugString = '';
 
         const finalUrl = artifacts.URL.finalUrl;
-        const thresholdDisplay = Util.formatMilliseconds(TTFB_THRESHOLD, 1);
         const finalUrlRequest = networkRecords.find(record => record._url === finalUrl);
         const ttfb = TTFBMetric.caclulateTTFB(finalUrlRequest);
         const passed = ttfb < TTFB_THRESHOLD;
 
         if (!passed) {
-          debugString = `Root document (${URL.getURLDisplayName(finalUrl)}) went over` +
-            ` the ${thresholdDisplay} threshold`;
+          debugString = `Root document took ${Util.formatMilliseconds(ttfb, 1)} ms to get the first byte.`;
         }
 
         return {
