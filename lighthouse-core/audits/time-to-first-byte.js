@@ -6,7 +6,6 @@
 'use strict';
 
 const Audit = require('./audit');
-const URL = require('../lib/url-shim');
 const Util = require('../report/v2/renderer/util');
 
 const TTFB_THRESHOLD = 600;
@@ -50,7 +49,8 @@ class TTFBMetric extends Audit {
         const passed = ttfb < TTFB_THRESHOLD;
 
         if (!passed) {
-          debugString = `Root document took ${Util.formatMilliseconds(ttfb, 1)} ms to get the first byte.`;
+          debugString = `Root document took ${Util.formatMilliseconds(ttfb, 1)} ms` +
+            'to get the first byte.';
         }
 
         return {
