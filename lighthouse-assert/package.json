@@ -4,7 +4,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
-    "test": "mocha --require ts-node/register --reporter=dot test/**/*-test.ts --timeout=10000",
+    "test": "yarn build && mocha --require ts-node/register --reporter=dot test/**/*-test.ts --timeout=10000",
     "coverage": "nyc yarn test && nyc report --reporter=text-lcov > lcov.info",
     "format": "clang-format -i -style=file **/*.ts *.ts"
   },

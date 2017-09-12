@@ -22,9 +22,8 @@ export class AssertResults {
    * @return {{finalUrl: Object, audits: !Array<ICollatedAudit>}}
    */
   private collateAuditResults(actual: IResult, expected: IExpectation): ICollatedResult {
-    const auditNames = Object.keys(expected.audits);
     const collatedAudits: Array<ICollatedAudit> = [];
-    auditNames.forEach(auditName => {
+    for (const auditName in expected.audits) {
       const actualResult = actual.audits[auditName];
       if (!actualResult) {
         throw new Error(`Config did not trigger run of expected audit ${auditName}`);
@@ -39,7 +38,7 @@ export class AssertResults {
         equal: !Object.keys(diff).length,
         diff: diff
       });
-    });
+    }
 
     return {
       finalUrl: {

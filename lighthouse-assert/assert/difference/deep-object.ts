@@ -19,6 +19,7 @@ export class DeepObjectDifference implements IDifference {
     this.actual = actual;
     this.expected = expected;
   }
+
   /**
    * Walk down expected result, comparing to actual result. If a difference is found,
    * the path to the difference is returned, along with the expected primitive value
@@ -43,16 +44,19 @@ export class DeepObjectDifference implements IDifference {
       const expectedValue = this.expected[key];
 
       if (!(key in this.actual)) {
-        return {path: keyPath, actual: undefined, expected: expectedValue};
+        return {
+          path: keyPath,
+          actual: undefined,
+          expected: expectedValue
+        };
       }
 
       const actualValue = this.actual[key];
       let difference;
-      //@todo use factory. P.S. generics should solve this problem
       if (typeof actualValue === 'boolean' && typeof expectedValue === 'boolean') {
-        difference = new BooleanDifference(keyPath, {score: actualValue}, {score: expectedValue});
+        difference = new BooleanDifference(keyPath, { score: actualValue }, { score: expectedValue });
       } else {
-        difference = new ObjectDifference(keyPath, {score: actualValue}, {score: expectedValue});
+        difference = new ObjectDifference(keyPath, { score: actualValue }, { score: expectedValue });
       }
       const subDifference = difference.getDiff();
       if (subDifference) return diff = subDifference;

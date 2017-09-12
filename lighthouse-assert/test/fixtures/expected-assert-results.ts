@@ -27,7 +27,6 @@ export default [
             "warn": '>=65',
             "error": '<=85',
           },
-          "rawValue": ">3000"
         },
         "equal": true,
         "diff": {}
@@ -43,7 +42,6 @@ export default [
             "warn": '<=65',
             "error": '<=85',
           },
-          "rawValue": ">3000"
         },
         "equal": false,
         "diff": {
@@ -66,7 +64,6 @@ export default [
             "warn": '<=65',
             "error": '<=85',
           },
-          "rawValue": ">9000"
         },
         "equal": true,
         "diff": {}
@@ -82,7 +79,6 @@ export default [
             "error": "<75",
             "warn": "<75"
           },
-          "rawValue": ">9000"
         },
         "equal": true,
         "diff": {}

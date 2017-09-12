@@ -10,17 +10,10 @@ import {Assert} from '../';
 
 import defaultExpectations from './fixtures/expectations/default-expectations';
 import pwaExpectations from './fixtures/expectations/pwa-expectations';
-import expectedAssertResults from './fixtures/expected-assert-results';
 import defaultResults from './fixtures/lighthouse-results/default-results';
 import pwaResults from './fixtures/lighthouse-results/pwa-results';
 
 describe('lighthouse-assert', () => {
-  it('should build collated results', () => {
-    const lighthouseAssert = new Assert(defaultResults, defaultExpectations);
-    const collatedResults = lighthouseAssert.collatedResults;
-    assert.deepEqual(collatedResults, expectedAssertResults);
-  });
-
   it('should return false if results less the expected', () => {
     const lighthouseAssert = new Assert(defaultResults, defaultExpectations);
     assert.ok(!lighthouseAssert.equal());
@@ -31,10 +24,10 @@ describe('lighthouse-assert', () => {
     assert.ok(!lighthouseAssert.equal());
   });
 
-  describe('status count of results', () => {
+  it('should have status count of results', () => {
     const lighthouseAssert = new Assert(defaultResults, defaultExpectations);
     const statusCounts = lighthouseAssert.getStatusCounts();
-    const expectedStatusCounts = {passed: 3, failed: 1};
+    const expectedStatusCounts = { passed: 3, failed: 1 };
     assert.deepEqual(statusCounts, expectedStatusCounts);
   })
 });

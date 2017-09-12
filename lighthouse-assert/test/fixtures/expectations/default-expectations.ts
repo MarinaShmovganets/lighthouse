@@ -17,28 +17,24 @@ export default [
           "warn": '>=65',
           "error": '<=85',
         },
-        rawValue: '>3000',
       },
       'first-meaningful-paint': {
         score: {
           "warn": '<=65',
           "error": '<=85',
         },
-        rawValue: '>3000',
       },
       'first-interactive': {
         score: {
           warn: '<=65',
           error: '<=85',
         },
-        rawValue: '>9000',
       },
       'consistently-interactive': {
         score: {
           warn: '<75',
           error: '<75',
         },
-        rawValue: '>9000',
       },
     }
   },
