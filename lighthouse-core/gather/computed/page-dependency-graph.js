@@ -11,7 +11,8 @@ const CPUNode = require('./dependency-graph/cpu-node');
 const GraphEstimator = require('./dependency-graph/estimator/estimator');
 const TracingProcessor = require('../../lib/traces/tracing-processor');
 
-const MINIMUM_TASK_DURATION = 10 * 1000;
+// Tasks smaller than 10 ms have minimal impact on simulation
+const MINIMUM_TASK_DURATION_OF_INTEREST = 10;
 
 class PageDependencyGraphArtifact extends ComputedArtifact {
   get name() {
@@ -41,7 +42,7 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
    * @param {!Array<!WebInspector.NetworkRequest>} networkRecords
    * @return {!NetworkNodeOutput}
    */
-  static getNetworkNodes(networkRecords) {
+  static getNetworkNodeOutput(networkRecords) {
     const nodes = [];
     const idToNodeMap = new Map();
     const urlToNodeMap = new Map();
@@ -49,14 +50,12 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
     networkRecords.forEach(record => {
       const node = new NetworkNode(record);
       nodes.push(node);
-      idToNodeMap.set(record.requestId, node);
 
-      if (urlToNodeMap.has(record.url)) {
-        const list = urlToNodeMap.get(record.url);
-        list.push(node);
-      } else {
-        urlToNodeMap.set(record.url, [node]);
-      }
+      const list = urlToNodeMap.get(record.url) || [];
+      list.push(node);
+
+      idToNodeMap.set(record.requestId, node);
+      urlToNodeMap.set(record.url, list);
     });
 
     return {nodes, idToNodeMap, urlToNodeMap};
@@ -69,6 +68,8 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
   static getCPUNodes(traceOfTab) {
     const nodes = [];
     let i = 0;
+
+    const minimumEvtDur = MINIMUM_TASK_DURATION_OF_INTEREST * 1000;
     while (i < traceOfTab.mainThreadEvents.length) {
       const evt = traceOfTab.mainThreadEvents[i];
 
@@ -76,7 +77,7 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
       if (
         evt.name !== TracingProcessor.SCHEDULABLE_TASK_TITLE ||
         !evt.dur ||
-        evt.dur < MINIMUM_TASK_DURATION
+        evt.dur < minimumEvtDur
       ) {
         i++;
         continue;
@@ -111,7 +112,7 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
           const parentCandidates = networkNodeOutput.urlToNodeMap.get(initiator) || [rootNode];
           // Only add the initiator relationship if the initiator is unambiguous
           const parent = parentCandidates.length === 1 ? parentCandidates[0] : rootNode;
-          parent.addDependent(node);
+          node.addDependency(parent);
         });
       } else if (node !== rootNode) {
         rootNode.addDependent(node);
@@ -123,13 +124,12 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
    * @param {!Node} rootNode
    * @param {!NetworkNodeOutput} networkNodeOutput
    * @param {!Array<!CPUNode>} cpuNodes
-   * @param {!TraceOfTabArtifact} traceOfTab
    */
   static linkCPUNodes(rootNode, networkNodeOutput, cpuNodes) {
     function addDependentNetworkRequest(cpuNode, reqId) {
       const networkNode = networkNodeOutput.idToNodeMap.get(reqId);
       if (!networkNode || networkNode.resourceType !== 'xhr') return;
-      networkNode.addDependency(cpuNode);
+      cpuNode.addDependent(networkNode);
     }
 
     function addDependencyOnUrl(cpuNode, url) {
@@ -153,7 +153,7 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
 
     const timers = new Map();
     for (const node of cpuNodes) {
-      for (const evt of node.children) {
+      for (const evt of node.childEvents) {
         if (!evt.args.data) continue;
 
         const url = evt.args.data.url;
@@ -217,21 +217,22 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
    * @return {!Node}
    */
   static createGraph(traceOfTab, networkRecords) {
-    const networkNodeOutput = this.getNetworkNodes(networkRecords);
-    const cpuNodes = this.getCPUNodes(traceOfTab);
+    const networkNodeOutput = PageDependencyGraphArtifact.getNetworkNodeOutput(networkRecords);
+    const cpuNodes = PageDependencyGraphArtifact.getCPUNodes(traceOfTab);
 
     const rootRequest = networkRecords.reduce((min, r) => (min.startTime < r.startTime ? min : r));
     const rootNode = networkNodeOutput.idToNodeMap.get(rootRequest.requestId);
 
-    this.linkNetworkNodes(rootNode, networkNodeOutput, networkRecords);
-    this.linkCPUNodes(rootNode, networkNodeOutput, cpuNodes, traceOfTab);
+    PageDependencyGraphArtifact.linkNetworkNodes(rootNode, networkNodeOutput, networkRecords);
+    PageDependencyGraphArtifact.linkCPUNodes(rootNode, networkNodeOutput, cpuNodes);
 
     return rootNode;
   }
 
   /**
+   * Estimates the duration of the graph and returns individual node timing information.
    * @param {!Node} rootNode
-   * @return {}
+   * @return {{timeInMs: number, nodeTiming: !Map<!Node, !NodeTimingData>}}
    */
   static estimateGraph(rootNode) {
     return new GraphEstimator(rootNode).estimateWithDetails();

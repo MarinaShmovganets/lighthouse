@@ -142,7 +142,7 @@ class Estimator {
 
   /**
    * @param {!Node} node
-   * @param {!Object} values
+   * @param {!NodeTimingData} values
    */
   _setTimingData(node, values) {
     const timingData = this._nodeTiming.get(node) || {};
@@ -183,7 +183,7 @@ class Estimator {
 
     // Try to add all its dependents to the queue
     for (const dependent of node.getDependents()) {
-      // Skip this node if one of its dependencies hasn't finished yet
+      // Skip dependent node if one of its dependencies hasn't finished yet
       const dependencies = dependent.getDependencies();
       if (dependencies.some(dependency => !this._nodesCompleted.has(dependency))) continue;
 
@@ -321,7 +321,7 @@ class Estimator {
 
   /**
    * Estimates the time taken to process all of the graph's nodes.
-   * @return {{timeInMs: number, nodeTiming: !Map<!Node, Object>}}
+   * @return {{timeInMs: number, nodeTiming: !Map<!Node, !NodeTimingData>}}
    */
   estimateWithDetails() {
     // initialize all the necessary data containers
@@ -342,7 +342,7 @@ class Estimator {
     // add root node to queue
     this._markNodeAsInQueue(rootNode, totalElapsedTime);
 
-    // loop as long as we have nodes in the queue or currently in process
+    // loop as long as we have nodes in the queue or currently in progress
     while (nodesInQueue.size || nodesInProgress.size) {
       depth++;
 
@@ -387,3 +387,13 @@ class Estimator {
 }
 
 module.exports = Estimator;
+
+/**
+ * @typedef {{
+ *    estimatedTimeElapsed: number|undefined,
+ *    timeElapsed: number|undefined,
+ *    timeElapsedOvershoot: number|undefined,
+ *    bytesDownloaded: number|undefined,
+ * }}
+ */
+Estimator.NodeTimingData; // eslint-disable-line no-unused-expressions

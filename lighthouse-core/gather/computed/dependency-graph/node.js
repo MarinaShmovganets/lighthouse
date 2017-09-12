@@ -121,14 +121,6 @@ class Node {
   }
 
   /**
-   * @param {!Node}
-   * @return {boolean}
-   */
-  hasDependency(node) {
-    return this._dependencies.includes(node);
-  }
-
-  /**
    * Clones the node's information without adding any dependencies/dependents.
    * @return {!Node}
    */

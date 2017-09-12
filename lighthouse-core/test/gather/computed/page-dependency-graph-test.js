@@ -67,14 +67,14 @@ describe('PageDependencyGraph computed artifact:', () => {
     });
   });
 
-  describe('#getNetworkNodes', () => {
+  describe('#getNetworkNodeOutput', () => {
     const request1 = createRequest(1, 'urlA');
     const request2 = createRequest(2, 'urlB');
     const request3 = createRequest(3, 'urlB');
     const networkRecords = [request1, request2, request3];
 
     it('should create network nodes', () => {
-      const networkNodeOutput = PageDependencyGraph.getNetworkNodes(networkRecords);
+      const networkNodeOutput = PageDependencyGraph.getNetworkNodeOutput(networkRecords);
       for (let i = 0; i < networkRecords.length; i++) {
         const node = networkNodeOutput.nodes[i];
         assert.ok(node, `did not create node at index ${i}`);
@@ -85,7 +85,7 @@ describe('PageDependencyGraph computed artifact:', () => {
     });
 
     it('should index nodes by ID', () => {
-      const networkNodeOutput = PageDependencyGraph.getNetworkNodes(networkRecords);
+      const networkNodeOutput = PageDependencyGraph.getNetworkNodeOutput(networkRecords);
       const indexedById = networkNodeOutput.idToNodeMap;
       for (const record of networkRecords) {
         assert.equal(indexedById.get(record.requestId).record, record);
@@ -93,7 +93,7 @@ describe('PageDependencyGraph computed artifact:', () => {
     });
 
     it('should index nodes by URL', () => {
-      const networkNodeOutput = PageDependencyGraph.getNetworkNodes(networkRecords);
+      const networkNodeOutput = PageDependencyGraph.getNetworkNodeOutput(networkRecords);
       const nodes = networkNodeOutput.nodes;
       const indexedByUrl = networkNodeOutput.urlToNodeMap;
       assert.deepEqual(indexedByUrl.get('urlA'), [nodes[0]]);
@@ -122,15 +122,15 @@ describe('PageDependencyGraph computed artifact:', () => {
       assert.equal(node1.id, '1.0');
       assert.equal(node1.type, 'cpu');
       assert.equal(node1.event, traceOfTab.mainThreadEvents[0]);
-      assert.equal(node1.children.length, 2);
-      assert.equal(node1.children[1].name, 'OtherEvent');
+      assert.equal(node1.childEvents.length, 2);
+      assert.equal(node1.childEvents[1].name, 'OtherEvent');
 
       const node2 = nodes[1];
       assert.equal(node2.id, '1.250000');
       assert.equal(node2.type, 'cpu');
       assert.equal(node2.event, traceOfTab.mainThreadEvents[5]);
-      assert.equal(node2.children.length, 1);
-      assert.equal(node2.children[0].name, 'LaterEvent');
+      assert.equal(node2.childEvents.length, 1);
+      assert.equal(node2.childEvents[0].name, 'LaterEvent');
     });
   });
 
