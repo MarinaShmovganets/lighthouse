@@ -13,4 +13,4 @@ exit_code=$?
 # kill test servers
 kill $(jobs -p)
 
-exit 1; # "$exit_code"
+exit "$exit_code"
