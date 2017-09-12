@@ -19,6 +19,9 @@ module.exports = [
       'document-title': {
         score: true,
       },
+      'meta-description': {
+        score: true,
+      }
     }
   },
   {
@@ -36,6 +39,9 @@ module.exports = [
           }
         }
       },
+      'meta-description': {
+        score: false,
+      }
     }
   },
 ];
