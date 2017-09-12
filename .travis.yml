@@ -1,14 +1,12 @@
 language: node_js
-matrix:
-  include:
-    - node_js: "6.9.1"
-    - node_js: "7"
-    - node_js: "8"
 dist: trusty
 env:
   global:
     - ARTIFACTS_AWS_REGION=us-west-2
     - ARTIFACTS_S3_BUCKET=lighthouse-screenshots-debugging
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+    - DISPLAY=:99.0
+    - ARTIFACT_NAME=lh_${TRAVIS_BRANCH/\//-}_${TRAVIS_BUILD_ID}-node
     - secure: WNrQ6K8eS8/lVml6qz031oV3HQM0M3WB1+1K9DTbjlVSuYgzu3tLGCRWn67tF8+3AQWIRDXyHByONrGinWTm1teZA9SaTzuVhMrO7CHdsWTWsypQ0UqJ6H4mH/wJwJv/kW6OtQSQJGUTF8kEz33nDQVW+iFWxJx3Ow4egya6cb9D89TnUJ0FBLxYYS2DjNTbIMVBMBqSGyrd/Ww5CoYzKR96Y9jby5IId9TFFJqk3qFfXVh3Diy5TX8hUvqUpD48cfQpxE8cLZ/uOXtRsHjwMvekCSG7fNMlbQ9nJ4MmnIwhdvFrKbx1xS7g5FdRfyN+q3QcDxskytWYmtzREoRjU3N6ao8IGsXG88yXpK1bdGQ2BdNAg4IltQDGMKMzVC37sAFmXvI9S00TmWQOoAu5D4KuW9Gchc+syCpZ+umqPGePgfGryWBt0slOkFi3mixavL0kAr1kAbWbeGFBLEeX80NFFm+F2qOMuwPSsmVJ8bsgsEp0DkceyggAqb9VDyTq9ci8l/pTGTQfqbEBcXgS19BY2zDldvncfmHFisd13zHOYkqn+pi+Ta87xlskL93FOxQFn14avJo/5iNa2HmEh8vq/jBbocVr+Tt+T+OMzN/RFGBfzqU4T2K3rj9hG1cCgZFuVm+sdSuulzeUjV7y3rDAT3eAUwBnERCzwDhCpT0=
     - secure: UdWqkZHhU2PDMKleiL386FHI6S+N0PETDd5RWPBNM/YvMREWHyWeb3vZwsMqSVri1DNk8SqI2d0PC4/jLGKchRBqlO4+smuw9f09ihn+mGI67GFsyJu6UQ5/nz5eiUKx2ZRsuB8t8BbCGiOWh+UQUuHTEgAi8ndL+ml+Vy1XRpqbT49rOTKcr+G/4J+TyEjq+wRrpZMZmhYeX0EZAcofL8KYvgbV5jbkOnQV2oI0cyCO1FQxnIz9yopvwrMlKz/1jmKiRyJOj0YaKSJ5lWs0G2RFsWmXrEAgDAlOqoJ2QCTCM5M1Fnh+0oWPholN7X4Nj/USqxRlcGaUwDLh5RhcDlrFv+wC9iBIDIay3K1/IKndikkO8OP+tCYDlx2VQRX50LPUTEQzrXEbD6pFUl1ezLQCZPejX7R/HI5rOr8WcmZzKXtl1MP0h8YX1e9HX7gXBUB0RGwnTV/P+Q6WEcxN32T/xdwbYi/YQsXfzeL7fzF5PI5LnaAc141lhcUiILs9HwnEyB7gWWLlut+GNKfse6DrNkKc3I12TVVMbHWuP2waGuc1EMcMCyC/9lb17sk5q1gbIbAsSWki9mHtrJsk0KtriKY/uOFiK5W6Dno1ITbMqbTvIelMKgQPkjYmvqyLDhADRXQz9kxlSmxcdTG5dB9lOm6ubFdRmWEPhPumq4I=
 cache:
@@ -20,34 +18,129 @@ cache:
     - lighthouse-extension/node_modules
     - lighthouse-viewer/node_modules
     - /home/travis/.rvm/gems/
+    - "${HOME}/google-cloud-sdk/"
+before_install:
+  - '[ -z "$encrypted_83706645e717_key" ] || [ -z "$encrypted_83706645e717_iv" ] && export USE_GCLOUD=false || export USE_GCLOUD=true'
+  - 'if [ "$USE_GCLOUD" = "true" ]; then openssl aes-256-cbc -K $encrypted_83706645e717_key -iv $encrypted_83706645e717_iv -in gcloud-credentials.json.enc -out gcloud-credentials.json -d; fi'
 install:
-  - yarn
-  # travis can't handle the parallel install (without caches)
-  - yarn run install-all:task:windows
-before_script:
-  - gem install travis-artifacts
-  - export DISPLAY=:99.0
-  - export CHROME_PATH="$(pwd)/chrome-linux/chrome"
-  - sh -e /etc/init.d/xvfb start
-  - sleep 3 # wait for xvfb to boot
-  - yarn build-all
-script:
-  - yarn bundlesize
-  - yarn test-cli-formatting
-  - yarn test-launcher-formatting
-  - yarn lint
-  - yarn unit
-  - yarn closure
-  - yarn smoke
-  - yarn smokehouse
-  - yarn compile-devtools
+  # stop travis when PR and not node 6.9.1
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ "$TRAVIS_NODE_VERSION" != "6.9.1" ]; then travis_terminate 0; fi'
+  - yarn; yarn install-all:task:windows
+script: "echo \"do nothing\""
+jobs:
+  include:
+    - &prep-cache
+      stage: Prepare cache
+      env:
+        - LINT=true
+        - SMOKE=true
+        - UNIT=true
+      script:
+        - chmod +x travis/install_gcloud.sh
+        - yarn build-ci
+        - |
+          if [ "$USE_GCLOUD" = "true" ]; then
+            travis_wait ./travis/install_gcloud.sh;
+            source ${HOME}/google-cloud-sdk/path.bash.inc;
+            tar -czf ${ARTIFACT_NAME}-${TRAVIS_NODE_VERSION}.tar.gz ./**;
+            gsutil cp ${ARTIFACT_NAME}-${TRAVIS_NODE_VERSION}.tar.gz gs://lighthouse-ci;
+          fi
+      node_js: "6.9.1"
+    - <<: *prep-cache
+      env:
+        - LINT=true
+        - SMOKE=true
+        - UNIT=true
+      node_js: "7"
+    - <<: *prep-cache
+      env:
+        - LINT=true
+        - SMOKE=true
+        - UNIT=true
+      node_js: "8"
+    - &tests
+      stage: Test
+      install: skip
+      env:
+        - LINT=true
+      script:
+        # stop travis when PR and not node 6.9.1
+        - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ "$TRAVIS_NODE_VERSION" != "6.9.1" ]; then travis_terminate 0; fi'
+        - '[ -z "$encrypted_83706645e717_key" ] || [ -z "$encrypted_83706645e717_iv" ] && export USE_GCLOUD=false || export USE_GCLOUD=true'
+        - chmod +x travis/install_gcloud.sh
+        - |
+          if [ "$USE_GCLOUD" = "true" ]; then
+            travis_wait ./travis/install_gcloud.sh;
+            gsutil cp gs://lighthouse-ci/${ARTIFACT_NAME}-${TRAVIS_NODE_VERSION}.tar.gz ./
+            tar -xzf ${ARTIFACT_NAME}-${TRAVIS_NODE_VERSION}.tar.gz
+          fi
+        - 'if [ "$USE_GCLOUD" = "false" ]; then yarn; fi'
+        - export CHROME_PATH=$(which google-chrome-stable)
+        - 'if [ "${UNIT}" = "true" ] || [ "${SMOKE}" = "true" ]; then sh -e /etc/init.d/xvfb start; sleep 3; fi;'
+        - 'if [ "${LINT}" = "true" ]; then yarn install-cli && yarn test-cli-formatting; fi'
+        - 'if [ "${LINT}" = "true" ]; then yarn install-launcher && yarn test-launcher-formatting; fi'
+        - 'if [ "${LINT}" = "true" ]; then yarn lint; fi'
+        - 'if [ "${LINT}" = "true" ]; then yarn && yarn closure; fi'
+        - 'if [ "${UNIT}" = "true" ]; then yarn build-launcher && yarn build-cli && yarn unit; fi'
+        - 'if [ "${UNIT}" = "true" ]; then yarn smoke; fi'
+        - 'if [ "${SMOKE}" = "true" ] && [ "$TRAVIS_NODE_VERSION" = "6.9.1" ]; then yarn install-extension && yarn build-extension && yarn compile-devtools; fi'
+        - 'if [ "${SMOKE}" = "true" ]; then yarn install-launcher && yarn build-launcher &&  yarn install-cli && yarn build-cli && yarn smokehouse; fi'
+      after_failure:
+        - 'if [ "${SMOKE}" = "true" ]; then grep "No screenshots" perf.json && gem install travis-artifacts && travis-artifacts upload --path perf-0.trace.json; fi'
+      after_success:
+        - 'if [ "${LINT}" = "true" ]; then ./lighthouse-core/scripts/generate-combined-coverage.sh; fi'
+      node_js: "6.9.1"
+      addons:
+        chrome: stable
+    - <<: *tests
+      env:
+        - UNIT=true
+    - <<: *tests
+      env:
+        - SMOKE=true
+    - <<: *tests
+      node_js: "7"
+    - <<: *tests
+      env:
+        - UNIT=true
+      node_js: "7"
+    - <<: *tests
+      env:
+        - SMOKE=true
+      node_js: "7"
+    - <<: *tests
+      node_js: "8"
+    - <<: *tests
+      env:
+        - UNIT=true
+      node_js: "8"
+    - <<: *tests
+      env:
+        - SMOKE=true
+      node_js: "8"
+    - &cleanup
+      stage: Cleanup
+      install: skip
+      cache: skip
+      env:
+        - LINT=true
+        - SMOKE=true
+        - UNIT=true
+      script:
+        - '[ -z "$encrypted_83706645e717_key" ] || [ -z "$encrypted_83706645e717_iv" ] && export USE_GCLOUD=false || export USE_GCLOUD=true'
+        - |
+          if [ "$USE_GCLOUD" = "true" ]; then
+            chmod +x travis/install_gcloud.sh
+            travis_wait ./travis/install_gcloud.sh
+            gsutil rm gs://lighthouse-ci/${ARTIFACT_NAME}-${TRAVIS_NODE_VERSION}.tar.gz
+          fi
+      node_js: "6.9.1"
+    - <<: *cleanup
+      node_js: "7"
+    - <<: *cleanup
+      node_js: "8"
+
 before_cache:
   # the `yarn compile-devtools` task adds these to node_modules, which slows down caching
   - rm -rf ./node_modules/temp-devtoolsfrontend/
   - rm -rf ./node_modules/temp-devtoolsprotocol/
-after_success:
-  - ./lighthouse-core/scripts/generate-combined-coverage.sh
-after_failure:
-  - grep 'No screenshots' perf.json && travis-artifacts upload --path perf-0.trace.json
-addons:
-  chrome: stable
