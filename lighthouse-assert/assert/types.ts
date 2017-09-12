@@ -33,8 +33,8 @@ interface IExpectedAudits {
 }
 
 export interface IExpectedAudit {
-  score: IExpectedScore;
-  [key: string]: IExpectedScore;
+  score: IExpectedScore|string;
+  [key: string]: IExpectedScore|string;
 }
 
 export interface INoneObjectExpectedAudit {

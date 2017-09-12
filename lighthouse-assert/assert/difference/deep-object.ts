@@ -41,7 +41,13 @@ export class DeepObjectDifference implements IDifference {
       // Bracket numbers, but property names requiring quotes will still be unquoted.
       const keyAccessor = /^\d+$/.test(key) ? `[${key}]` : `.${key}`;
       const keyPath = this.path + keyAccessor;
-      const expectedValue = this.expected[key];
+      let expectedValue = this.expected[key];
+      if (typeof expectedValue === 'string') {
+        expectedValue = {
+          warn: expectedValue,
+          error: expectedValue
+        };
+      }
 
       if (!(key in this.actual)) {
         return {

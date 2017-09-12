@@ -24,8 +24,8 @@ export default [
         },
         "expected": {
           "score": {
-            "warn": '>=65',
-            "error": '<=85',
+            "warn": '<=85',
+            "error": '<=65',
           },
         },
         "equal": true,
@@ -39,8 +39,8 @@ export default [
         },
         "expected": {
           "score": {
-            "warn": '<=65',
-            "error": '<=85',
+            "warn": '<=85',
+            "error": '<=65',
           },
         },
         "equal": false,
@@ -48,8 +48,8 @@ export default [
           "path": "first-meaningful-paint.score",
           "actual": "60",
           "expected": {
-            "warn": '<=65',
-            "error": '<=85',
+            "warn": '<=85',
+            "error": '<=65',
           }
         }
       },
@@ -61,8 +61,8 @@ export default [
         },
         "expected": {
           "score": {
-            "warn": '<=65',
-            "error": '<=85',
+            "warn": '<=85',
+            "error": '<=65',
           },
         },
         "equal": true,
@@ -75,10 +75,7 @@ export default [
           "rawValue": ">9000"
         },
         "expected": {
-          "score": {
-            "error": "<75",
-            "warn": "<75"
-          },
+          "score": "<75"
         },
         "equal": true,
         "diff": {}

@@ -14,28 +14,25 @@ export default [
     audits: {
       'first-contentful-paint': {
         score: {
-          "warn": '>=65',
-          "error": '<=85',
-        },
+          "warn": '<=85',
+          "error": '<=65'
+        }
       },
       'first-meaningful-paint': {
         score: {
-          "warn": '<=65',
-          "error": '<=85',
-        },
+          "warn": '<=85',
+          "error": '<=65'
+        }
       },
       'first-interactive': {
         score: {
-          warn: '<=65',
-          error: '<=85',
-        },
+          warn: '<=85',
+          error: '<=65'
+        }
       },
       'consistently-interactive': {
-        score: {
-          warn: '<75',
-          error: '<75',
-        },
-      },
+        score: '<75'
+      }
     }
-  },
+  }
 ];

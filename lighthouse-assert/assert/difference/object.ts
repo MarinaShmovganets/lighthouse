@@ -35,7 +35,6 @@ export class ObjectDifference implements IDifference {
     let diff: IDiff = {};
 
     if (this.matchesExpectation()) return diff;
-
     for (const expectationType of Object.keys(this.expected)) {
       const expectedByType = this.expected[expectationType];
       // If they aren't both an object we can't recurse further, so this is the difference.
@@ -60,18 +59,20 @@ export class ObjectDifference implements IDifference {
       warn: this.normalize(this.expected.score.warn),
       error: this.normalize(this.expected.score.error)
     };
-    return this.inRange(actualValue, normalizedExpected);
+    // @todo check inRange due to symbols like '<=', '>=' etc.
+    return this.inRange(normalizedExpected.error, 100, actualValue);
   }
 
   /**
    * Checks if the actual value in warning and error range
    *
-   * @param {number} actual
-   * @param {INormalizedExpectedScore} expected
+   * @param {number} min
+   * @param {number} max
+   * @param {number} value
    * @return {boolean}
    */
-  private inRange(actual: number, expected: INormalizedExpectedScore): boolean {
-    return actual >= expected.error || actual >= expected.warn && actual < expected.error;
+  private inRange(min: number, max: number, value: number): boolean {
+    return value > min && value <= max;
   }
 
   /**
