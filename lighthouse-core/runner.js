@@ -227,6 +227,7 @@ class Runner {
     const fileList = [
       ...fs.readdirSync(path.join(__dirname, './audits')),
       ...fs.readdirSync(path.join(__dirname, './audits/dobetterweb')).map(f => `dobetterweb/${f}`),
+      ...fs.readdirSync(path.join(__dirname, './audits/seo')).map(f => `seo/${f}`),
       ...fs.readdirSync(path.join(__dirname, './audits/accessibility'))
           .map(f => `accessibility/${f}`),
       ...fs.readdirSync(path.join(__dirname, './audits/byte-efficiency'))
@@ -245,6 +246,7 @@ class Runner {
   static getGathererList() {
     const fileList = [
       ...fs.readdirSync(path.join(__dirname, './gather/gatherers')),
+      ...fs.readdirSync(path.join(__dirname, './gather/gatherers/seo')).map(f => `seo/${f}`),
       ...fs.readdirSync(path.join(__dirname, './gather/gatherers/dobetterweb'))
           .map(f => `dobetterweb/${f}`)
     ];
@@ -256,9 +258,13 @@ class Runner {
    */
   static instantiateComputedArtifacts() {
     const computedArtifacts = {};
+    const filenamesToSkip = [
+      'computed-artifact.js', // the base class which other artifacts inherit
+      'dependency-graph', // a folder containing dependencies, not an artifact
+    ];
+
     require('fs').readdirSync(__dirname + '/gather/computed').forEach(function(filename) {
-      // Skip base class.
-      if (filename === 'computed-artifact.js') return;
+      if (filenamesToSkip.includes(filename)) return;
 
       // Drop `.js` suffix to keep browserify import happy.
       filename = filename.replace(/\.js$/, '');
