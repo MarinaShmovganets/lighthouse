@@ -7,29 +7,39 @@
 
 module.exports = {
   extends: 'lighthouse:default',
+  passes: [{
+    passName: 'defaultPass',
+    gatherers: [
+      'seo/meta-description',
+    ],
+  }],
+  audits: [
+    'seo/meta-description',
+  ],
   groups: {
     'seo-mobile': {
       title: 'Mobile Friendly',
       description: 'Having a mobile-friendly website is a critical part of your online presence.' +
-        ' In many countries, smartphone traffic now exceeds desktop traffic.'
+        ' In many countries, smartphone traffic now exceeds desktop traffic.',
     },
     'seo-content': {
       title: 'Content Best Practices',
-      description: 'Ensure your markup enables crawlers to better understand your app\'s content.'
+      description: 'Ensure your markup enables crawlers to better understand your app\'s content.',
     },
     'seo-crawl': {
       title: 'Crawling and Indexing',
-      description: 'These ensure that your app is able to be crawled.'
-    }
+      description: 'These ensure that your app is able to be crawled.',
+    },
   },
   categories: {
     'seo': {
       name: 'SEO',
       description: 'These ensure your app is able to be understood by search engine crawlers.',
       audits: [
-        {id: 'meta-viewport', weight: 1, group: 'seo-mobile'},
-        {id: 'document-title', weight: 1, group: 'seo-content'}
-      ]
-    }
-  }
+        {id: 'viewport', weight: 1, group: 'seo-mobile'},
+        {id: 'document-title', weight: 1, group: 'seo-content'},
+        {id: 'meta-description', weight: 1, group: 'seo-content'},
+      ],
+    },
+  },
 };

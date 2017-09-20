@@ -12,23 +12,28 @@ const assert = require('assert');
 const acceptableTrace = require('../fixtures/traces/progressive-app-m60.json');
 const acceptableDevToolsLog = require('../fixtures/traces/progressive-app-m60.devtools.log.json');
 
-
 /* eslint-env mocha */
 describe('Performance: predictive performance audit', () => {
   it('should compute the predicted values', () => {
     const artifacts = Object.assign({
       traces: {
-        [PredictivePerf.DEFAULT_PASS]: acceptableTrace
+        [PredictivePerf.DEFAULT_PASS]: acceptableTrace,
       },
       devtoolsLogs: {
-        [PredictivePerf.DEFAULT_PASS]: acceptableDevToolsLog
+        [PredictivePerf.DEFAULT_PASS]: acceptableDevToolsLog,
       },
     }, Runner.instantiateComputedArtifacts());
 
     return PredictivePerf.audit(artifacts).then(output => {
-      assert.equal(output.score, 97);
-      assert.equal(Math.round(output.rawValue), 2250);
-      assert.equal(output.displayValue, '2,250\xa0ms');
+      assert.equal(output.score, 95);
+      assert.equal(Math.round(output.rawValue), 2638);
+      assert.equal(output.displayValue, '2,640\xa0ms');
+
+      const valueOf = name => Math.round(output.extendedInfo.value[name]);
+      assert.equal(valueOf('optimisticFMP'), 1362);
+      assert.equal(valueOf('pessimisticFMP'), 2070);
+      assert.equal(valueOf('optimisticTTCI'), 3470);
+      assert.equal(valueOf('pessimisticTTCI'), 3649);
     });
   });
 });
