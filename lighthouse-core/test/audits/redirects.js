@@ -122,22 +122,22 @@ const mockArtifacts = (mockChain) => {
 describe('Performance: Redirects audit', () => {
   it('fails when more than one redirect detected', () => {
     return Audit.audit(mockArtifacts(FAILING_REDIRECT_CHAIN)).then(output => {
-      assert.equal(output.displayValue, 2);
-      assert.equal(output.rawValue, false);
+      assert.equal(output.score, 2);
+      assert.equal(output.rawValue, 11000);
     });
   });
 
   it('passes when one redirect detected', () => {
     return Audit.audit(mockArtifacts(SUCCESS_ONE_REDIRECT_CHAIN)).then(output => {
-      assert.equal(output.displayValue, 1);
-      assert.equal(output.rawValue, true);
+      assert.equal(output.score, 1);
+      assert.equal(output.rawValue, 6000);
     });
   });
 
   it('passes when no redirect detected', () => {
     return Audit.audit(mockArtifacts(SUCCESS_REDIRECT_CHAIN)).then(output => {
-      assert.equal(output.displayValue, 0);
-      assert.equal(output.rawValue, true);
+      assert.equal(output.score, 0);
+      assert.equal(output.rawValue, 0);
     });
   });
 });
