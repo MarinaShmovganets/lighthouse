@@ -129,3 +129,5 @@ before_script:
 addons:
   chrome: stable
 ```
+
+> Since Travis can install Chrome at a run time you no longer need to install it manually. Read [more](https://docs.travis-ci.com/user/chrome).
