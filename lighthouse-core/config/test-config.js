@@ -8,6 +8,6 @@
 module.exports = {
   extends: 'lighthouse:default',
   settings: {
-    onlyAudits: ['redirects']
-  }
+    onlyAudits: ['redirects'],
+  },
 };

@@ -22,7 +22,7 @@ class Redirects extends Audit {
       description: 'Avoids page redirects.',
       failureDescription: 'Has page redirects.',
       helpText: ' Redirects introduce additional delays before the page can be loaded. [Learn more](https://developers.google.com/speed/docs/insights/AvoidRedirects).',
-      requiredArtifacts: ['URL', 'devtoolsLogs']
+      requiredArtifacts: ['URL', 'devtoolsLogs'],
     };
   }
 
@@ -73,9 +73,9 @@ class Redirects extends Audit {
           extendedInfo: {
             value: {
               wastedMs: totalWastedMs,
-            }
+            },
           },
-          details
+          details,
         };
       });
   }

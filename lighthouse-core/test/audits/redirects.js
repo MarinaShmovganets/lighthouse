@@ -15,7 +15,7 @@ const FAILING_REDIRECT_CHAIN = {
       endTime: 1,
       responseReceivedTime: 5,
       startTime: 0,
-      url: 'http://example.com/'
+      url: 'http://example.com/',
     },
     children: {
       '1.1:redirected.1': {
@@ -23,7 +23,7 @@ const FAILING_REDIRECT_CHAIN = {
           endTime: 16,
           responseReceivedTime: 14,
           startTime: 11,
-          url: 'https://example.com/'
+          url: 'https://example.com/',
         },
         children: {
           '2.1:redirected.2': {
@@ -31,9 +31,9 @@ const FAILING_REDIRECT_CHAIN = {
               endTime: 17,
               responseReceivedTime: 15,
               startTime: 12,
-              url: 'https://m.example.com/'
+              url: 'https://m.example.com/',
             },
-            children: {}
+            children: {},
           },
         },
       },
@@ -47,7 +47,7 @@ const SUCCESS_ONE_REDIRECT_CHAIN = {
       endTime: 1,
       responseReceivedTime: 5,
       startTime: 0,
-      url: 'https://example.com/'
+      url: 'https://example.com/',
     },
     children: {
       '1.1': {
@@ -55,7 +55,7 @@ const SUCCESS_ONE_REDIRECT_CHAIN = {
           endTime: 16,
           responseReceivedTime: 14,
           startTime: 11,
-          url: 'https://m.example.com/'
+          url: 'https://m.example.com/',
         },
         children: {
         },
@@ -65,9 +65,9 @@ const SUCCESS_ONE_REDIRECT_CHAIN = {
           endTime: 17,
           responseReceivedTime: 15,
           startTime: 12,
-          url: 'https://m.example.com/file.js'
+          url: 'https://m.example.com/file.js',
         },
-        children: {}
+        children: {},
       },
     },
   },
@@ -79,7 +79,7 @@ const SUCCESS_REDIRECT_CHAIN = {
       endTime: 1,
       responseReceivedTime: 5,
       startTime: 0,
-      url: 'https://example.com/'
+      url: 'https://example.com/',
     },
     children: {
       '1.1': {
@@ -87,7 +87,7 @@ const SUCCESS_REDIRECT_CHAIN = {
           endTime: 16,
           responseReceivedTime: 14,
           startTime: 11,
-          url: 'https://example.com/file.js'
+          url: 'https://example.com/file.js',
         },
         children: {
           '2.1': {
@@ -95,9 +95,9 @@ const SUCCESS_REDIRECT_CHAIN = {
               endTime: 17,
               responseReceivedTime: 15,
               startTime: 12,
-              url: 'https://m.example.com/file.css'
+              url: 'https://m.example.com/file.css',
             },
-            children: {}
+            children: {},
           },
         },
       },
@@ -108,14 +108,14 @@ const SUCCESS_REDIRECT_CHAIN = {
 const mockArtifacts = (mockChain) => {
   return {
     devtoolsLogs: {
-      [Audit.DEFAULT_PASS]: []
+      [Audit.DEFAULT_PASS]: [],
     },
     requestNetworkRecords: () => {
       return Promise.resolve([]);
     },
     requestCriticalRequestChains: function() {
       return Promise.resolve(mockChain);
-    }
+    },
   };
 };
 

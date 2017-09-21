@@ -18,7 +18,7 @@ module.exports = [
         score: 2,
         rawValue: '>=1000',
       },
-    }
+    },
   },
   {
     initialUrl: `http://localhost:10200/online-only.html?cb=${cacheBuster}&redirect=%2Fredirects-final.html`,
@@ -28,6 +28,6 @@ module.exports = [
         score: 1,
         rawValue: '>=1000',
       },
-    }
+    },
   },
 ];

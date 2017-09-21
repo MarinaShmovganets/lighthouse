@@ -13,6 +13,6 @@ module.exports = {
   settings: {
     onlyAudits: [
       'redirects',
-    ]
-  }
+    ],
+  },
 };
