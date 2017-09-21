@@ -9,7 +9,7 @@ const Audit = require('./audit');
 const Util = require('../report/v2/renderer/util');
 
 // PSI allows one redirect (http://example.com => http://m.example.com)
-const REDIRECT_TRESHOLD = 1;
+const REDIRECT_THRESHOLD = 1;
 
 class Redirects extends Audit {
   /**
@@ -54,10 +54,9 @@ class Redirects extends Audit {
           requests = child.children;
         }
 
-        const passed = pageRedirects.length <= REDIRECT_TRESHOLD;
+        const passed = pageRedirects.length <= REDIRECT_THRESHOLD;
         if (!passed) {
-          debugString = `Your page has ${pageRedirects.length} redirects.` +
-            ' Redirects introduce additional delays before the page can be loaded.';
+          debugString = `Your page has ${pageRedirects.length} redirects.`;
         }
 
         const headings = [
