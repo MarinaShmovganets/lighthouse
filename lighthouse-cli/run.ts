@@ -36,7 +36,7 @@ function formatArg(arg: string, value: any): string {
   }
 
   // Only quote the value if it contains spaces
-  if (typeof(value) === 'string' && value.indexOf(' ') !== -1) {
+  if (String(value).indexOf(' ') !== -1) {
     value = `"${value}"`
   }
 
