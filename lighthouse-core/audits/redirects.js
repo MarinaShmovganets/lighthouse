@@ -6,6 +6,7 @@
 'use strict';
 
 const Audit = require('./audit');
+const Util = require('../report/v2/renderer/util');
 
 // PSI allows one redirect (http://example.com => http://m.example.com)
 const REDIRECT_TRESHOLD = 1;
@@ -33,6 +34,7 @@ class Redirects extends Audit {
     return artifacts.requestCriticalRequestChains(artifacts.devtoolsLogs[Audit.DEFAULT_PASS])
       .then(criticalRequests => {
         const pageRedirects = [];
+        let totalWastedMs = 0;
         let debugString = null;
 
         let requests = criticalRequests;
@@ -42,8 +44,11 @@ class Redirects extends Audit {
           Redirects.isRedirect(requestKey)
         ) {
           const child = requests[requestKey];
+          const wastedMs = (child.request.endTime - child.request.startTime) * 1000;
+          totalWastedMs += wastedMs;
           pageRedirects.push({
             url: child.request.url,
+            wastedMs: Util.formatMilliseconds(wastedMs),
           });
 
           requests = child.children;
@@ -57,15 +62,19 @@ class Redirects extends Audit {
 
         const headings = [
           {key: 'url', itemType: 'text', text: 'URL'},
+          {key: 'wastedMs', itemType: 'text', text: 'Wasted ms'},
         ];
         const details = Audit.makeTableDetails(headings, pageRedirects);
 
         return {
           debugString,
-          displayValue: pageRedirects.length,
-          rawValue: passed,
+          score: pageRedirects.length,
+          rawValue: totalWastedMs,
+          displayValue: Util.formatMilliseconds(totalWastedMs),
           extendedInfo: {
-            value: pageRedirects
+            value: {
+              wastedMs: totalWastedMs,
+            }
           },
           details
         };

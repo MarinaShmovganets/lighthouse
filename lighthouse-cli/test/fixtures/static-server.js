@@ -51,7 +51,8 @@ function requestHandler(request, response) {
   }
 
   function sendResponse(statusCode, data) {
-    let headers;
+    let headers = {};
+    let delay = 0;
     if (filePath.endsWith('.js')) {
       headers = {'Content-Type': 'text/javascript'};
     } else if (filePath.endsWith('.css')) {
@@ -60,19 +61,43 @@ function requestHandler(request, response) {
       headers = {'Content-Type': 'image/svg+xml'};
     }
 
-    if (queryString && typeof queryString.status_code !== 'undefined') {
-      statusCode = parseInt(queryString.status_code, 10);
+    if (queryString) {
+      // set document status-code
+      if (typeof queryString.status_code !== 'undefined') {
+        statusCode = parseInt(queryString.status_code, 10);
+      }
+
+      // set delay of request when present
+      if (typeof queryString.delay !== 'undefined') {
+        delay = parseInt(queryString.delay, 10) || 2000;
+      }
+
+      // redirect url to new url if present
+      if (typeof queryString.redirect !== 'undefined') {
+        if (delay > 0) {
+          return setTimeout(sendRedirect, delay, queryString.redirect);
+        } else {
+          return sendRedirect(queryString.redirect);
+        }
+      }
     }
 
     response.writeHead(statusCode, headers);
 
-    // Delay the response by the specified ms defaulting to 2000ms for non-numeric values
-    if (queryString && typeof queryString.delay !== 'undefined') {
-      response.write('');
-      const delay = parseInt(queryString.delay, 10) || 2000;
+    // Delay the response
+    if (delay > 0) {
       return setTimeout(finishResponse, delay, data);
     }
+
     finishResponse(data);
+  }
+
+  function sendRedirect(url) {
+    const headers = {
+      Location: url,
+    };
+    response.writeHead(302, headers);
+    response.end();
   }
 
   function finishResponse(data) {
