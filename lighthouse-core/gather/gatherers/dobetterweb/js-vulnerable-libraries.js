@@ -36,7 +36,7 @@ function detectLibraries() {
         libraries.push({
           name: name,
           version: result.version,
-          npmPkgName: lib.npm
+          npmPkgName: lib.npm,
         });
       }
     } catch(e) {}

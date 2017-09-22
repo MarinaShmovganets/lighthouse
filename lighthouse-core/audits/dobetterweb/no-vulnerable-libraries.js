@@ -31,7 +31,7 @@ class NoVulnerableLibrariesAudit extends Audit {
         + ' with known security vulnerabilities',
       helpText: 'Some third-party scripts may contain known security vulnerabilities ' +
         ' that are easily identified and exploited by attackers.',
-      requiredArtifacts: ['JSVulnerableLibraries']
+      requiredArtifacts: ['JSVulnerableLibraries'],
     };
   }
 
@@ -50,7 +50,7 @@ class NoVulnerableLibrariesAudit extends Audit {
     return {
       high: 3,
       medium: 2,
-      low: 1
+      low: 1,
     };
   }
 
@@ -73,7 +73,7 @@ class NoVulnerableLibrariesAudit extends Audit {
         vulns.push({
           severity: vuln.severity,
           library: `${lib.name}@${lib.version}`,
-          url: 'https://snyk.io/vuln/' + vuln.id
+          url: 'https://snyk.io/vuln/' + vuln.id,
         });
       }
     });
@@ -103,7 +103,7 @@ class NoVulnerableLibrariesAudit extends Audit {
     if (!libraries.length) {
       return {
         rawValue: true,
-        extendedInfo: {}
+        extendedInfo: {},
       };
     }
 
@@ -135,7 +135,7 @@ class NoVulnerableLibrariesAudit extends Audit {
     const headings = [
       {key: 'detectedLib', itemType: 'link', text: 'Library Version'},
       {key: 'vulnCount', itemType: 'text', text: 'Vulnerability Count'},
-      {key: 'highestSeverity', itemType: 'text', text: 'Highest Severity'}
+      {key: 'highestSeverity', itemType: 'text', text: 'Highest Severity'},
     ];
     const details = Audit.makeTableDetails(headings, finalVulns);
 
@@ -144,7 +144,7 @@ class NoVulnerableLibrariesAudit extends Audit {
       displayValue,
       extendedInfo: {
         jsLibs: libraries,
-        vulnerabilities: finalVulns
+        vulnerabilities: finalVulns,
       },
       details,
     };
