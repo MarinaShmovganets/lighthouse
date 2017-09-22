@@ -13,7 +13,7 @@ const assert = require('assert');
 describe('Console error logs audit', () => {
   it('passes when no console messages were found', () => {
     const auditResult = ErrorLogsAudit.audit({
-      ChromeConsoleMessages: []
+      ChromeConsoleMessages: [],
     });
     assert.equal(auditResult.rawValue, 0);
     assert.equal(auditResult.score, true);
@@ -29,9 +29,9 @@ describe('Console error logs audit', () => {
             level: 'info',
             source: 'network',
             text: 'This is a simple info msg',
-          }
+          },
         },
-      ]
+      ],
     });
     assert.equal(auditResult.rawValue, 0);
     assert.equal(auditResult.score, true);
@@ -47,17 +47,17 @@ describe('Console error logs audit', () => {
             level: 'error',
             source: 'network',
             text: 'The server responded with a status of 404 (Not Found)',
-            url: 'http://www.example.com/favicon.ico'
-          }
+            url: 'http://www.example.com/favicon.ico',
+          },
         }, {
           entry: {
             level: 'error',
             source: 'network',
             text: 'WebSocket connection failed: Unexpected response code: 500',
-            url: 'http://www.example.com/wsconnect.ws'
-          }
-        }
-      ]
+            url: 'http://www.example.com/wsconnect.ws',
+          },
+        },
+      ],
     });
     assert.equal(auditResult.rawValue, 2);
     assert.equal(auditResult.score, false);
@@ -81,9 +81,9 @@ describe('Console error logs audit', () => {
         {
           entry: {
             level: 'error',
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
     assert.equal(auditResult.rawValue, 1);
     assert.equal(auditResult.score, false);

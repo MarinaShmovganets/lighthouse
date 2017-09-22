@@ -27,7 +27,7 @@ class ErrorLogs extends Audit {
         They can come from network request failures and other browser concerns.
       `,
       failureDescription: 'Browser errors were logged to the console',
-      requiredArtifacts: ['ChromeConsoleMessages']
+      requiredArtifacts: ['ChromeConsoleMessages'],
     };
   }
 
@@ -41,7 +41,7 @@ class ErrorLogs extends Audit {
       return {
         source: item.entry.source,
         description: item.entry.text,
-        url: item.entry.url
+        url: item.entry.url,
       };
     });
 
