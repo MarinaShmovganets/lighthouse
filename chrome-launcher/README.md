@@ -111,7 +111,7 @@ chromeLauncher.launch({
 
 ### Continuous Integration
 
-In a CI environment, Chrome may not be installed. If you want to use `chrome-launcher`, e.g. Travis can [install Chrome at run time with an addon](https://docs.travis-ci.com/user/chrome).
+In a CI environment like Travis, Chrome may not be installed. If you want to use `chrome-launcher`, Travis can [install Chrome at run time with an addon](https://docs.travis-ci.com/user/chrome).
 
 > You can also install Chrome manually using Lighthouse's `download-chrome.sh` script:
 > `curl -L https://raw.githubusercontent.com/GoogleChrome/lighthouse/v2.1.0/lighthouse-core/scripts/download-chrome.sh | bash`
