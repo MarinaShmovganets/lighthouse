@@ -29,7 +29,7 @@ module.exports = {
       'dobetterweb/anchors-with-no-rel-noopener',
       'dobetterweb/appcache',
       'dobetterweb/domstats',
-      'dobetterweb/js-vulnerable-libraries',
+      'dobetterweb/js-libraries',
       'dobetterweb/optimized-images',
       'dobetterweb/password-inputs-with-prevented-paste',
       'dobetterweb/response-compression',
