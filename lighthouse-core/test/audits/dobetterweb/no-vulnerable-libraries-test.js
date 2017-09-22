@@ -10,69 +10,21 @@ const NoVulnerableLibrariesAudit =
 const assert = require('assert');
 
 /* eslint-env mocha */
-
 describe('Avoids front-end JavaScript libraries with known vulnerabilities', () => {
   it('fails when JS libraries with known vulnerabilities are detected', () => {
     const auditResult = NoVulnerableLibrariesAudit.audit({
       JSVulnerableLibraries: [
-        {
-          name: 'lib1',
-          version: '2.1.4',
-          npmPkgName: 'lib1',
-          pkgLink: 'https://lib1url.com',
-          vulns:
-          [{
-            severity: 'high',
-            library: 'lib1@2.1.4',
-            url: 'https://lib1url.com/vuln1'
-          }, {
-            severity: 'medium',
-            library: 'lib1@2.1.4',
-            url: 'https://lib1url.com/vuln2'
-          }, {
-            severity: 'low',
-            library: 'lib1@2.1.4',
-            url: 'https://lib1url.com/vuln3'
-          }]
-        },
-        {name: 'Lo-Dash', version: '3.10.1', npmPkgName: 'lodash'},
+        {name: 'lib1', version: '1.0.0', npmPkgName: 'lib1'},
+        {name: 'angular', version: '1.1.4', npmPkgName: 'angular'},
+        {name: 'lib3', version: null, npmPkgName: 'lib3'},
       ]
     });
     assert.equal(auditResult.rawValue, false);
     assert.equal(auditResult.details.items.length, 1);
-    assert.equal(auditResult.extendedInfo.jsLibs.length, 2);
-    assert.equal(auditResult.displayValue, '3 vulnerabilities detected.');
+    assert.equal(auditResult.extendedInfo.jsLibs.length, 3);
     assert.equal(auditResult.details.items[0][2].text, 'High');
-    assert.equal(auditResult.details.items[0][1].text, 3);
-    assert.equal(auditResult.details.items[0][0].text, 'lib1@2.1.4');
-    assert.equal(auditResult.details.items[0][0].url, 'https://lib1url.com');
-  });
-
-  it('fails when only one vulnerability is detected', () => {
-    const auditResult = NoVulnerableLibrariesAudit.audit({
-      JSVulnerableLibraries: [
-        {
-          name: 'lib1',
-          version: '2.1.4',
-          npmPkgName: 'lib1',
-          pkgLink: 'https://lib1url.com',
-          vulns:
-          [{
-            severity: 'low',
-            library: 'lib1@2.1.4',
-            url: 'https://lib1url.com/vuln3'
-          }]
-        },
-      ]
-    });
-    assert.equal(auditResult.rawValue, false);
-    assert.equal(auditResult.details.items.length, 1);
-    assert.equal(auditResult.extendedInfo.jsLibs.length, 1);
-    assert.equal(auditResult.displayValue, '1 vulnerability was detected.');
-    assert.equal(auditResult.details.items[0][2].text, 'Low');
-    assert.equal(auditResult.details.items[0][1].text, 1);
-    assert.equal(auditResult.details.items[0][0].text, 'lib1@2.1.4');
-    assert.equal(auditResult.details.items[0][0].url, 'https://lib1url.com');
+    assert.equal(auditResult.details.items[0][0].text, 'angular@1.1.4');
+    assert.equal(auditResult.details.items[0][0].url, 'https://snyk.io/vuln/npm:angular#lh@1.1.4');
   });
 
   it('passes when no JS libraries with known vulnerabilities are detected', () => {

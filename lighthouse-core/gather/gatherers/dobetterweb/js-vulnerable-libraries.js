@@ -15,12 +15,8 @@
 
 const Gatherer = require('../gatherer');
 const fs = require('fs');
-const semver = require('semver');
 const libDetectorSource = fs.readFileSync(
   require.resolve('js-library-detector/library/libraries.js'), 'utf8');
-// https://snyk.io/partners/api/v2/vulndb/clientside.json
-const snykDB = JSON.parse(fs.readFileSync(
-    require.resolve('../../../../third-party/snyk-snapshot.json'), 'utf8'));
 
 /**
  * Obtains a list of detected JS libraries and their versions.
@@ -61,31 +57,7 @@ class JSVulnerableLibraries extends Gatherer {
       return (${detectLibraries.toString()}());
     })()`;
 
-    return options.driver
-      .evaluateAsync(expression)
-      .then(libraries => {
-        // add vulns to raw libraries results
-        libraries.forEach(lib => {
-          const vulns = [];
-          if (snykDB.npm[lib.npmPkgName]) {
-            lib.pkgLink = 'https://snyk.io/vuln/npm:' + lib.npmPkgName
-              + '#lh@' + lib.version;
-            const snykInfo = snykDB.npm[lib.npmPkgName];
-            snykInfo.forEach(vuln => {
-              if (semver.satisfies(lib.version, vuln.semver.vulnerable[0])) {
-                // valid vulnerability
-                vulns.push({
-                  severity: vuln.severity,
-                  library: `${lib.name}@${lib.version}`,
-                  url: 'https://snyk.io/vuln/' + vuln.id
-                });
-              }
-            });
-            lib.vulns = vulns;
-          }
-        });
-        return libraries;
-      });
+    return options.driver.evaluateAsync(expression);
   }
 }
 

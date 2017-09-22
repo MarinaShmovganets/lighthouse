@@ -13,6 +13,8 @@
 'use strict';
 
 const Audit = require('../audit');
+const fs = require('fs');
+const semver = require('semver');
 
 class NoVulnerableLibrariesAudit extends Audit {
 
@@ -36,6 +38,14 @@ class NoVulnerableLibrariesAudit extends Audit {
   /**
    * @return {!object}
    */
+  static get snykDB() {
+    return JSON.parse(fs.readFileSync(
+      require.resolve('../../../third-party/snyk-snapshot.json'), 'utf8'));
+  }
+
+  /**
+   * @return {!object}
+   */
   static get severityMap() {
     return {
       high: 3,
@@ -45,16 +55,43 @@ class NoVulnerableLibrariesAudit extends Audit {
   }
 
   /**
+   * @param {object} lib
+   * @return {object}
+   */
+  static getVulns(lib, snykDB) {
+    const vulns = [];
+    if (!snykDB.npm[lib.npmPkgName]) {
+      return vulns;
+    }
+
+    lib.pkgLink = 'https://snyk.io/vuln/npm:' + lib.npmPkgName
+      + '#lh@' + lib.version;
+    const snykInfo = snykDB.npm[lib.npmPkgName];
+    snykInfo.forEach(vuln => {
+      if (semver.satisfies(lib.version, vuln.semver.vulnerable[0])) {
+        // valid vulnerability
+        vulns.push({
+          severity: vuln.severity,
+          library: `${lib.name}@${lib.version}`,
+          url: 'https://snyk.io/vuln/' + vuln.id
+        });
+      }
+    });
+    return vulns;
+  }
+
+  /**
    * @param {object} vulns
    * @return {string}
    */
   static mostSevere(vulns) {
-    vulns.map(vuln => {
-      vuln.numericSeverity = this.severityMap[vuln.severity];
-    })
-    .sort((itemA, itemB) => itemA.numericSeverity > itemB.numericSeverity);
-
-    return vulns[0].severity;
+    const sortedVulns = vulns
+      .map(vuln => {
+        vuln.numericSeverity = this.severityMap[vuln.severity];
+        return vuln;
+      })
+      .sort((a, b) => b.numericSeverity - a.numericSeverity);
+    return sortedVulns[0].severity;
   }
 
   /**
@@ -71,18 +108,21 @@ class NoVulnerableLibrariesAudit extends Audit {
     }
 
     let totalVulns = 0;
-    const finalVulns = libraries.filter(obj => {
-      return obj.vulns;
-    })
-    .map(lib => {
-      lib.detectedLib = {};
-      lib.detectedLib.text = lib.name + '@' + lib.version;
-      lib.detectedLib.url = lib.pkgLink;
-      lib.detectedLib.type = 'link';
-      lib.vulnCount = lib.vulns.length;
-      lib.highestSeverity = this.mostSevere(lib.vulns).replace(/^\w/, l => l.toUpperCase());
-      totalVulns += lib.vulnCount;
+    const finalVulns = libraries.map(lib => {
+      lib.vulns = this.getVulns(lib, this.snykDB);
+      if (lib.vulns.length > 0) {
+        lib.vulnCount = lib.vulns.length;
+        lib.highestSeverity = this.mostSevere(lib.vulns).replace(/^\w/, l => l.toUpperCase());
+        totalVulns += lib.vulnCount;
+        lib.detectedLib = {};
+        lib.detectedLib.text = lib.name + '@' + lib.version;
+        lib.detectedLib.url = lib.pkgLink;
+        lib.detectedLib.type = 'link';
+      }
       return lib;
+    })
+    .filter(obj => {
+      return obj.vulns.length > 0;
     });
 
     let displayValue = '';
