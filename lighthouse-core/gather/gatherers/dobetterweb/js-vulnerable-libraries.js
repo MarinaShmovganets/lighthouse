@@ -46,7 +46,7 @@ function detectLibraries() {
 }
 /* eslint-enable camelcase */
 
-class JSVulnerableLibraries extends Gatherer {
+class JSLibraries extends Gatherer {
   /**
    * @param {!Object} options
    * @return {!Promise<!Array<!Object>>}
@@ -61,4 +61,4 @@ class JSVulnerableLibraries extends Gatherer {
   }
 }
 
-module.exports = JSVulnerableLibraries;
+module.exports = JSLibraries;

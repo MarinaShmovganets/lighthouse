@@ -31,7 +31,7 @@ class NoVulnerableLibrariesAudit extends Audit {
         + ' with known security vulnerabilities',
       helpText: 'Some third-party scripts may contain known security vulnerabilities ' +
         ' that are easily identified and exploited by attackers.',
-      requiredArtifacts: ['JSVulnerableLibraries'],
+      requiredArtifacts: ['JSLibraries'],
     };
   }
 
@@ -99,7 +99,7 @@ class NoVulnerableLibrariesAudit extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const libraries = artifacts.JSVulnerableLibraries;
+    const libraries = artifacts.JSLibraries;
     if (!libraries.length) {
       return {
         rawValue: true,
