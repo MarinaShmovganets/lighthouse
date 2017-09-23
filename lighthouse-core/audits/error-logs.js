@@ -6,9 +6,8 @@
 'use strict';
 
 /**
- * @fileoverview Audits a page to determine if it is calling deprecated APIs.
- * This is done by collecting console log messages and filtering them by ones
- * that contain deprecated API warnings sent by Chrome.
+ * @fileoverview Audits a page to determine whether it contains console errors.
+ * This is done by collecting Chrome console log messages and filtering out the non-error ones.
  */
 
 const Audit = require('./audit');
@@ -22,10 +21,8 @@ class ErrorLogs extends Audit {
       category: 'ErrorLogs',
       name: 'error-logs',
       description: 'No browser errors logged to the console',
-      helpText: `
-        Errors logged to the console indicate unresolved problems.
-        They can come from network request failures and other browser concerns.
-      `,
+      helpText: 'Errors logged to the console indicate unresolved problems. ' +
+        'They can come from network request failures and other browser concerns.',
       failureDescription: 'Browser errors were logged to the console',
       requiredArtifacts: ['ChromeConsoleMessages'],
     };
@@ -54,13 +51,11 @@ class ErrorLogs extends Audit {
     const numErrors = tableRows.length;
 
     return {
-      score: numErrors == 0,
+      score: numErrors === 0,
       rawValue: numErrors,
-      displayValue: numErrors,
       details,
     };
   }
-
 }
 
 module.exports = ErrorLogs;
