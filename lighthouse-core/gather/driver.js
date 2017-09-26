@@ -622,9 +622,13 @@ class Driver {
     /* eslint-enable max-len */
 
     return this._beginNetworkStatusMonitoring(url)
-      .then(_ => this.sendCommand('Page.enable'))
-      .then(_ => this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS}))
-      .then(_ => this.sendCommand('Page.navigate', {url}))
+      .then(_ => {
+        // These can 'race' and that's OK.
+        // We don't want to wait for Page.navigate's resolution, as it can happen _after_ onload.
+        this.sendCommand('Page.enable');
+        this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS});
+        this.sendCommand('Page.navigate', {url});
+      })
       .then(_ => waitForLoad && this._waitForFullyLoaded(pauseAfterLoadMs,
           networkQuietThresholdMs, cpuQuietThresholdMs, maxWaitMs))
       .then(_ => this._endNetworkStatusMonitoring());
