@@ -7,7 +7,7 @@
 
 /* eslint-env mocha */
 
-const ErrorLogsAudit = require('../../audits/error-logs.js');
+const ErrorLogsAudit = require('../../audits/errors-in-console.js');
 const assert = require('assert');
 
 describe('Console error logs audit', () => {

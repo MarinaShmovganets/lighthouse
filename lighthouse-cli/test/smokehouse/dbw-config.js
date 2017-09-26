@@ -18,7 +18,7 @@ module.exports = {
       'dom-size',
       'link-blocking-first-paint',
       'script-blocking-first-paint',
-      'error-logs',
+      'errors-in-console',
     ],
   },
 };
