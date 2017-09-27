@@ -37,15 +37,17 @@ class Deprecations extends Audit {
   static audit(artifacts) {
     const entries = artifacts.ChromeConsoleMessages;
 
-    const deprecations = entries.filter(log => log.entry.source === 'deprecation').map(log => {
-      return {
-        type: 'code',
-        text: log.entry.text,
-        url: log.entry.url,
-        source: log.entry.source,
-        lineNumber: log.entry.lineNumber,
-      };
-    });
+    const deprecations =
+      entries.filter( e => e.entry !== undefined)
+      .filter(log => log.entry.source === 'deprecation').map(log => {
+        return {
+          type: 'code',
+          text: log.entry.text,
+          url: log.entry.url,
+          source: log.entry.source,
+          lineNumber: log.entry.lineNumber,
+        };
+      });
 
     const headings = [
       {key: 'text', itemType: 'code', text: 'Deprecation / Warning'},
