@@ -18,15 +18,22 @@ class ChromeConsoleMessages extends Gatherer {
     super();
     this._logEntries = [];
     this._onConsoleEntryAdded = this.onConsoleEntry.bind(this);
+    this._onRuntimeExceptionThrown = this.onRuntimeExceptionThrown.bind(this);
   }
 
   onConsoleEntry(entry) {
     this._logEntries.push(entry);
   }
 
+  onRuntimeExceptionThrown(entry) {
+    this._logEntries.push(entry);
+  }
+
   beforePass(options) {
     const driver = options.driver;
     driver.on('Log.entryAdded', this._onConsoleEntryAdded);
+    driver.on('Runtime.exceptionThrown', this._onRuntimeExceptionThrown);
+
     return driver.sendCommand('Log.enable')
       .then(() => driver.sendCommand('Log.startViolationsReport', {
         config: [{name: 'discouragedAPIUse', threshold: -1}],
@@ -35,10 +42,12 @@ class ChromeConsoleMessages extends Gatherer {
 
   afterPass(options) {
     return Promise.resolve()
-        .then(_ => options.driver.sendCommand('Log.stopViolationsReport'))
-        .then(_ => options.driver.off('Log.entryAdded', this._onConsoleEntryAdded))
-        .then(_ => options.driver.sendCommand('Log.disable'))
-        .then(_ => this._logEntries);
+      .then(_ => options.driver.sendCommand('Log.stopViolationsReport'))
+      .then(_ => options.driver.off('Runtime.exceptionThrown', this._onRuntimeExceptionThrown))
+      .then(_ => options.driver.sendCommand('Runtime.disable'))
+      .then(_ => options.driver.off('Log.entryAdded', this._onConsoleEntryAdded))
+      .then(_ => options.driver.sendCommand('Log.disable'))
+      .then(_ => this._logEntries);
   }
 }
 

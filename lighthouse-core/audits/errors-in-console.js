@@ -34,13 +34,28 @@ class ErrorLogs extends Audit {
    */
   static audit(artifacts) {
     const entries = artifacts.ChromeConsoleMessages;
-    const tableRows = entries.filter(log => log.entry.level === 'error').map(item => {
-      return {
-        source: item.entry.source,
-        description: item.entry.text,
-        url: item.entry.url,
-      };
-    });
+
+    const consoleRows =
+      entries.filter(log => log.entry && log.entry.level === 'error')
+      .map(item => {
+        return {
+          source: item.entry.source,
+          description: item.entry.text,
+          url: item.entry.url,
+        };
+      });
+
+    const runtimeExRows =
+      entries.filter(entry => entry.exceptionDetails !== undefined)
+      .map(entry => {
+        return {
+          source: 'Runtime.exception',
+          description: entry.exceptionDetails.exception.description,
+          url: entry.exceptionDetails.url,
+        };
+      });
+
+    const tableRows = consoleRows.concat(runtimeExRows);
 
     const headings = [
       {key: 'url', itemType: 'url', text: 'URL'},
