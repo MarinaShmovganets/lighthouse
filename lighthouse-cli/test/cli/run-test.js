@@ -54,6 +54,10 @@ describe('Parsing --chrome-flags', () => {
     assert.deepStrictEqual(['--debug=false'], parseChromeFlags('--debug=false'));
   });
 
+  it('returns int flags that correctly', () => {
+    assert.deepStrictEqual(['--log-level=0'], parseChromeFlags('--log-level=0'));
+  });
+
   it('returns boolean flags that empty when passed undefined', () => {
     assert.deepStrictEqual([], parseChromeFlags());
   });
