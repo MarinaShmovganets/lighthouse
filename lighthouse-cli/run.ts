@@ -30,21 +30,18 @@ interface LighthouseError extends Error {
 }
 
 // exported for testing
-export function parseChromeFlags(flags: string) {
+export function parseChromeFlags(flags: string = '') {
   const parsed = yargsParser(
-      flags || '', {configuration: {'camel-case-expansion': false, 'boolean-negation': false}});
-
-  const addQuotes = (str: String) =>
-      (typeof str === 'string' && str.includes(' ')) ? `"${str}"` : str;
+      flags, {configuration: {'camel-case-expansion': false, 'boolean-negation': false}});
 
   return Object
       .keys(parsed)
       // Remove unnecessary _ item provided by yargs,
       .filter(key => key !== '_')
-      // Avoid '=true', then reintroduce quotes if required
+      // Avoid '=true', then reintroduce quotes
       .map(key => {
         if (parsed[key] === true) return `--${key}`;
-        return `--${key}=${addQuotes(parsed[key])}`;
+        return `--${key}="${parsed[key]}"`;
       });
 }
 
