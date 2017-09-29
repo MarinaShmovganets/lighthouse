@@ -10,14 +10,13 @@ import * as path from 'path';
 import * as Printer from './printer';
 import {Results} from './types/types';
 import {Flags} from './cli-flags';
-import {launch, LaunchedChrome} from '../chrome-launcher/chrome-launcher';
+import {launch, LaunchedChrome} from 'chrome-launcher';
 
 const yargs = require('yargs');
 const lighthouse = require('../lighthouse-core');
 const log = require('lighthouse-logger');
 const getFilenamePrefix = require('../lighthouse-core/lib/file-namer.js').getFilenamePrefix;
 const assetSaver = require('../lighthouse-core/lib/asset-saver.js');
-const performanceXServer = require('./performance-experiment/server');
 
 // accept noop modules for these, so the real dependency is optional.
 import {opn} from './shim-modules';
@@ -159,10 +158,6 @@ export async function runLighthouse(
     delete results.artifacts;
 
     await saveResults(results, artifacts!, flags);
-    if (flags.interactive) {
-      await performanceXServer.hostExperiment({url, flags, config}, results);
-    }
-
     await launchedChrome.kill();
 
     return results;

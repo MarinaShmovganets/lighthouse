@@ -4,7 +4,7 @@ We'd love your help! This doc covers how to become a contributor and submit code
 
 ## Follow the coding style
 
-The `.eslintrc` defines all. We use [JSDoc](http://usejsdoc.org/) along with [closure annotations](https://developers.google.com/closure/compiler/docs/js-for-compiler). Annotations encouraged for all contributions.
+The `.eslintrc` file defines all. We use [JSDoc](http://usejsdoc.org/) along with [closure annotations](https://developers.google.com/closure/compiler/docs/js-for-compiler). Annotations are encouraged for all contributions.
 
 ## Learn about the architecture
 
@@ -78,9 +78,10 @@ echo "Test the extension"
 
 echo "Test a fresh local install"
 # (starting from lighthouse root...)
+# npm pack
 # cd ..; trash tmp; mkdir tmp; cd tmp
 # npm init -y
-# npm install ../lighthouse
+# npm install ../lighthouse/lighthouse-<version>.tgz
 # npm explore lighthouse -- npm run smoke
 # npm explore lighthouse -- npm run smokehouse
 # npm explore lighthouse -- npm run chrome # try the manual launcher
@@ -117,18 +118,6 @@ echo "Generate the release notes, and update the release page"
 
 # * Tell the world!!! *
 echo "Inform various peoples"
-```
-
-### Releasing chrome launcher.
-
-```sh
-cd chrome-launcher
-echo "build the launcher source code"
-yarn build
-yarn version --no-git-tag-version
-git commit -am "launcher to 0.x.x"
-echo "commit (but without a tag, as it gets mixed up with LH rls tags)"
-npm publish
 ```
 
 ### Canary release
