@@ -6,9 +6,8 @@
 'use strict';
 
 const ComputedArtifact = require('./computed-artifact');
-const NetworkNode = require('./dependency-graph/network-node');
-const CPUNode = require('./dependency-graph/cpu-node');
-const GraphEstimator = require('./dependency-graph/estimator/estimator');
+const NetworkNode = require('../../lib/dependency-graph/network-node');
+const CPUNode = require('../../lib/dependency-graph/cpu-node');
 const TracingProcessor = require('../../lib/traces/tracing-processor');
 const WebInspector = require('../../lib/web-inspector');
 
@@ -233,15 +232,6 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
     PageDependencyGraphArtifact.linkCPUNodes(rootNode, networkNodeOutput, cpuNodes);
 
     return rootNode;
-  }
-
-  /**
-   * Estimates the duration of the graph and returns individual node timing information.
-   * @param {!Node} rootNode
-   * @return {{timeInMs: number, nodeTiming: !Map<!Node, !NodeTimingData>}}
-   */
-  static estimateGraph(rootNode) {
-    return new GraphEstimator(rootNode).estimateWithDetails();
   }
 
   /**

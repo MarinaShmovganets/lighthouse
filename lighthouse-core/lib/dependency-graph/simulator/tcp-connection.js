@@ -89,11 +89,15 @@ class TcpConnection {
    *  https://hpbn.co/transport-layer-security-tls/#tls-handshake for details.
    *
    * @param {number} bytesToDownload
-   * @param {number=} timeAlreadyElapsed
-   * @param {number=} maximumTimeToElapse
+   * @param {{timeAlreadyElapsed: number, maximumTimeToElapse}=} options
    * @return {{timeElapsed: number, roundTrips: number, bytesDownloaded: number, congestionWindow: number}}
    */
-  simulateDownloadUntil(bytesToDownload, timeAlreadyElapsed = 0, maximumTimeToElapse = Infinity) {
+  simulateDownloadUntil(bytesToDownload, options) {
+    options = Object.assign({
+      timeAlreadyElapsed: 0,
+      maximumTimeToElapse: Infinity,
+    }, options);
+
     if (this._warmed && this._h2) {
       bytesToDownload -= this._h2OverflowBytesDownloaded;
     }
@@ -118,8 +122,8 @@ class TcpConnection {
     let timeToFirstByte = handshakeAndRequest + this._serverLatency + oneWayLatency;
     if (this._warmed && this._h2) timeToFirstByte = 0;
 
-    const timeElapsedForTTFB = Math.max(timeToFirstByte - timeAlreadyElapsed, 0);
-    const maximumDownloadTimeToElapse = maximumTimeToElapse - timeElapsedForTTFB;
+    const timeElapsedForTTFB = Math.max(timeToFirstByte - options.timeAlreadyElapsed, 0);
+    const maximumDownloadTimeToElapse = options.maximumTimeToElapse - timeElapsedForTTFB;
 
     let congestionWindow = Math.min(this._congestionWindow, maximumCongestionWindow);
     let totalBytesDownloaded = 0;

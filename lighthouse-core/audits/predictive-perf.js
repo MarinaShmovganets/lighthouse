@@ -7,8 +7,8 @@
 
 const Audit = require('./audit');
 const Util = require('../report/v2/renderer/util.js');
-const PageDependencyGraph = require('../gather/computed/page-dependency-graph.js');
-const Node = require('../gather/computed/dependency-graph/node.js');
+const Simulator = require('../lib/dependency-graph/simulator/simulator.js');
+const Node = require('../lib/dependency-graph/node.js');
 const WebInspector = require('../lib/web-inspector');
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
@@ -126,13 +126,13 @@ class PredictivePerf extends Audit {
       let sum = 0;
       const values = {};
       Object.keys(graphs).forEach(key => {
-        const estimate = PageDependencyGraph.estimateGraph(graphs[key]);
-        const lastLongTaskEnd = PredictivePerf.getLastLongTaskEndTime(estimate.nodeTiming);
+        const results = new Simulator(graphs[key]).simulate();
+        const lastLongTaskEnd = PredictivePerf.getLastLongTaskEndTime(results.nodeTiming);
 
         switch (key) {
           case 'optimisticFMP':
           case 'pessimisticFMP':
-            values[key] = estimate.timeInMs;
+            values[key] = results.timeInMs;
             break;
           case 'optimisticTTCI':
             values[key] = Math.max(values.optimisticFMP, lastLongTaskEnd);

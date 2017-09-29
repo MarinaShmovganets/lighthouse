@@ -6,7 +6,7 @@
 'use strict';
 
 const Node = require('./node');
-const WebInspector = require('../../../lib/web-inspector');
+const WebInspector = require('../web-inspector');
 
 class NetworkNode extends Node {
   /**

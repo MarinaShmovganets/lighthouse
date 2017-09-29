@@ -6,7 +6,7 @@
 'use strict';
 
 const PageDependencyGraph = require('../../../gather/computed/page-dependency-graph');
-const Node = require('../../../gather/computed/dependency-graph/node');
+const Node = require('../../../lib/dependency-graph/node');
 const Runner = require('../../../runner.js');
 const WebInspector = require('../../../lib/web-inspector');
 
