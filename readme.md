@@ -82,7 +82,6 @@ Options:
   --disable-device-emulation    Disable Nexus 5X emulation                                                                                 [boolean]
   --disable-cpu-throttling      Disable CPU throttling                                                                    [boolean] [default: false]
   --disable-network-throttling  Disable network throttling                                                                                 [boolean]
-  --interactive                 Open Lighthouse in interactive mode                                                                        [boolean]
 
 Examples:
   lighthouse <url> --view                                                   Opens the HTML report in a browser after the run completes
@@ -194,11 +193,9 @@ yarn
 yarn install-all
 yarn build-all
 
-# The CLI and Chrome Launcher are authored in TypeScript and require compilation.
+# The CLI is authored in TypeScript and requires compilation.
 # If you need to make changes to the CLI, run the TS compiler in watch mode:
 # cd lighthouse-cli && yarn dev
-# similarly, run the TS compiler for the launcher:
-# cd chrome-launcher && yarn dev
 ```
 
 ### Run
@@ -234,8 +231,9 @@ yarn compile-devtools
 ```
 
 ## Lighthouse Integrations
+This section details projects that have integrated Lighthouse. If you're working on a cool project integrating Lighthouse and would like to be featured here, file an issue to this repo or tweet at us [@_____lighthouse](https://twitter.com/____lighthouse?lang=en)
 
-* **[Calibre](https://calibreapp.com)** - Calibre is a web performance monitoring tool running Lighthouse continuously or on-demand via an API. Test using emulated devices and connection speeds from a number of geographical locations. Set budgets and improve performance with actionable guidelines.
+* **[Calibre](https://calibreapp.com)** - Calibre is a web performance monitoring tool running Lighthouse continuously or on-demand via an API. Test using emulated devices and connection speeds from a number of geographical locations. Set budgets and improve performance with actionable guidelines. Note that Calibre is a paid product with a free 14-day trial. 
 
 * **[Web Page Test](https://www.webpagetest.org)** — An [open source](https://github.com/WPO-Foundation/webpagetest) tool for measuring and analyzing the performance of web pages on real devices. Users can choose to produce a Lighthouse report alongside the analysis of WebPageTest results.
 
