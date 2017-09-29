@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Gathers a list of libraries and any known vulnerabilities they contain.
+ * @fileoverview Gathers a list of detected JS libraries and their versions.
  */
 
 /* global window */

@@ -13,8 +13,8 @@
 'use strict';
 
 const Audit = require('../audit');
-const fs = require('fs');
 const semver = require('semver');
+const snykDatabase = require('../../../third-party/snyk/snapshot.json');
 
 class NoVulnerableLibrariesAudit extends Audit {
 
@@ -36,15 +36,14 @@ class NoVulnerableLibrariesAudit extends Audit {
   }
 
   /**
-   * @return {!object}
+   * @return {{npm: !Object<string, !Array<{id: string, severity: string, semver: {vulnerable: !Array<string>}}>>}}
    */
   static get snykDB() {
-    return JSON.parse(fs.readFileSync(
-      require.resolve('../../../third-party/snyk/snapshot.json'), 'utf8'));
+    return snykDatabase;
   }
 
   /**
-   * @return {!object}
+   * @return {!Object<string, number>}
    */
   static get severityMap() {
     return {
@@ -56,7 +55,8 @@ class NoVulnerableLibrariesAudit extends Audit {
 
   /**
    * @param {{name: string, version: string, npmPkgName: string|undefined}} lib
-   * @return {object}
+   * @param {{npm: !Object<string, !Array<{id: string, severity: string, semver: {vulnerable: !Array<string>}}>>}} snykDB
+   * @return {!Array<{severity: string, numericSeverity: number, library: string, url: string}>}
    */
   static getVulns(lib, snykDB) {
     const vulns = [];
