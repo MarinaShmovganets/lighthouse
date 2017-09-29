@@ -84,7 +84,7 @@ class NoVulnerableLibrariesAudit extends Audit {
    * @param {object} vulns
    * @return {string}
    */
-  static mostSevere(vulns) {
+  static highestSeverity(vulns) {
     const sortedVulns = vulns
       .map(vuln => {
         vuln.numericSeverity = this.severityMap[vuln.severity];
@@ -112,7 +112,7 @@ class NoVulnerableLibrariesAudit extends Audit {
       lib.vulns = this.getVulns(lib, this.snykDB);
       if (lib.vulns.length > 0) {
         lib.vulnCount = lib.vulns.length;
-        lib.highestSeverity = this.mostSevere(lib.vulns).replace(/^\w/, l => l.toUpperCase());
+        lib.highestSeverity = this.highestSeverity(lib.vulns).replace(/^\w/, l => l.toUpperCase());
         totalVulns += lib.vulnCount;
         lib.detectedLib = {};
         lib.detectedLib.text = lib.name + '@' + lib.version;
