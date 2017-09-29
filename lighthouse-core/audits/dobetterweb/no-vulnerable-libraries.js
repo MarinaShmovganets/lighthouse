@@ -7,7 +7,7 @@
 /**
  * @fileoverview Audits a page to make sure there are no JS libraries with
  * known vulnerabilities being used. Checks against a vulnerability db
- * provided by Snyk.io and checked in locally as third-party/snyk-snapshot.json
+ * provided by Snyk.io and checked in locally as third-party/snyk/snapshot.json
  */
 
 'use strict';
@@ -40,7 +40,7 @@ class NoVulnerableLibrariesAudit extends Audit {
    */
   static get snykDB() {
     return JSON.parse(fs.readFileSync(
-      require.resolve('../../../third-party/snyk-snapshot.json'), 'utf8'));
+      require.resolve('../../../third-party/snyk/snapshot.json'), 'utf8'));
   }
 
   /**

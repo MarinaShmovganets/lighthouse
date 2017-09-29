@@ -10,4 +10,4 @@
 
 url="https://snyk.io/partners/api/v2/vulndb/clientside.json"
 
-wget "$url" -O snyk-snapshot2.json && mv snyk-snapshot2.json ./third-party
+wget "$url" -O snyk-snapshot.json && mv snyk-snapshot.json ./third-party/snyk/snapshot.json
