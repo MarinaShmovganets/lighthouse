@@ -118,7 +118,8 @@ class ReportGeneratorV2 {
   generateReportHtml(reportAsJson) {
     const sanitizedJson = JSON.stringify(reportAsJson)
       .replace(/</g, '\\u003c') // replaces opening script tags
-      .replace(/\u2028/g, '\\n'); // replaces line separators
+      .replace(/\u2028/g, '\\u2028') // replaces line separators ()
+      .replace(/\u2029/g, '\\u2029'); // replaces paragraph separators
     const sanitizedJavascript = REPORT_JAVASCRIPT.replace(/<\//g, '\\u003c/');
 
     return ReportGeneratorV2.replaceStrings(REPORT_TEMPLATE, [
