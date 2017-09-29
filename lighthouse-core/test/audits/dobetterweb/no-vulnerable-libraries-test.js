@@ -13,7 +13,7 @@ const assert = require('assert');
 describe('Avoids front-end JavaScript libraries with known vulnerabilities', () => {
   it('fails when JS libraries with known vulnerabilities are detected', () => {
     const auditResult = NoVulnerableLibrariesAudit.audit({
-      JSVulnerableLibraries: [
+      JSLibraries: [
         {name: 'lib1', version: '1.0.0', npmPkgName: 'lib1'},
         {name: 'angular', version: '1.1.4', npmPkgName: 'angular'},
         {name: 'lib3', version: null, npmPkgName: 'lib3'},
@@ -29,7 +29,7 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
 
   it('passes when no JS libraries with known vulnerabilities are detected', () => {
     const auditResult = NoVulnerableLibrariesAudit.audit({
-      JSVulnerableLibraries: [
+      JSLibraries: [
         {name: 'lib1', version: '3.10.1', npmPkgName: 'lib1'},
         {name: 'lib2', version: null, npmPkgName: 'lib2'},
       ],
@@ -41,7 +41,7 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
 
   it('passes when no JS libraries are detected', () => {
     const auditResult = NoVulnerableLibrariesAudit.audit({
-      JSVulnerableLibraries: [],
+      JSLibraries: [],
     });
     assert.equal(auditResult.rawValue, true);
   });
