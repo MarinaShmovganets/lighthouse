@@ -31,28 +31,22 @@ class Redirects extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    return artifacts.requestCriticalRequestChains(artifacts.devtoolsLogs[Audit.DEFAULT_PASS])
-      .then(criticalRequests => {
-        const pageRedirects = [];
+    return artifacts.requestMainResource(artifacts.devtoolsLogs[Audit.DEFAULT_PASS])
+      .then(mainResource => {
+        // redirects is only available when redirects happens
+        const redirectRequests = mainResource.redirects || [];
         let totalWastedMs = 0;
         let debugString = null;
 
-        let requests = criticalRequests;
-        let requestKey;
-        while (
-          (requestKey = Redirects.getKeyOfFirstRequest(requests)) &&
-          Redirects.isRedirect(requestKey)
-        ) {
-          const child = requests[requestKey];
-          const wastedMs = (child.request.endTime - child.request.startTime) * 1000;
+        const pageRedirects = redirectRequests.map(request => {
+          const wastedMs = (request.endTime - request.startTime) * 1000;
           totalWastedMs += wastedMs;
-          pageRedirects.push({
-            url: child.request.url,
-            wastedMs: Util.formatMilliseconds(wastedMs),
-          });
 
-          requests = child.children;
-        }
+          return {
+            url: request.url,
+            wastedMs: Util.formatMilliseconds(wastedMs),
+          };
+        });
 
         const passed = pageRedirects.length <= REDIRECT_THRESHOLD;
         if (!passed) {
@@ -67,7 +61,7 @@ class Redirects extends Audit {
 
         return {
           debugString,
-          score: pageRedirects.length,
+          score: passed,
           rawValue: totalWastedMs,
           displayValue: Util.formatMilliseconds(totalWastedMs),
           extendedInfo: {
@@ -78,16 +72,6 @@ class Redirects extends Audit {
           details,
         };
       });
-  }
-
-  static isRedirect(requestKey) {
-    return requestKey.includes('redirected');
-  }
-
-  static getKeyOfFirstRequest(children) {
-    const requestKeys = Object.keys(children);
-
-    return requestKeys[0];
   }
 }
 
