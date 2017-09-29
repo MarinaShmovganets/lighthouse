@@ -10,6 +10,7 @@ const NetworkNode = require('./dependency-graph/network-node');
 const CPUNode = require('./dependency-graph/cpu-node');
 const GraphEstimator = require('./dependency-graph/estimator/estimator');
 const TracingProcessor = require('../../lib/traces/tracing-processor');
+const WebInspector = require('../../lib/web-inspector');
 
 // Tasks smaller than 10 ms have minimal impact on simulation
 const MINIMUM_TASK_DURATION_OF_INTEREST = 10;
@@ -132,7 +133,8 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
   static linkCPUNodes(rootNode, networkNodeOutput, cpuNodes) {
     function addDependentNetworkRequest(cpuNode, reqId) {
       const networkNode = networkNodeOutput.idToNodeMap.get(reqId);
-      if (!networkNode || networkNode.resourceType !== 'xhr') return;
+      if (!networkNode ||
+          networkNode.record._resourceType !== WebInspector.resourceTypes.XHR) return;
       cpuNode.addDependent(networkNode);
     }
 
