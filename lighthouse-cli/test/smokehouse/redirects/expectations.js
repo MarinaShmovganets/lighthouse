@@ -27,12 +27,12 @@ module.exports = [
     },
   },
   {
-    initialUrl: `http://localhost:10200/online-only.html?cb=${cacheBuster}&delay=300&redirect=%2Fredirects-final.html`,
+    initialUrl: `http://localhost:10200/online-only.html?cb=${cacheBuster}&delay=750&redirect=%2Fredirects-final.html`,
     url: 'http://localhost:10200/redirects-final.html',
     audits: {
       'redirects': {
         score: 0,
-        rawValue: '>=300',
+        rawValue: '>=750',
         details: {
           items: {
             length: 1,
