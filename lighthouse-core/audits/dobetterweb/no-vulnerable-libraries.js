@@ -55,7 +55,7 @@ class NoVulnerableLibrariesAudit extends Audit {
   }
 
   /**
-   * @param {object} lib
+   * @param {{name: string, version: string, npmPkgName: string|undefined}} lib
    * @return {object}
    */
   static getVulns(lib, snykDB) {
@@ -72,6 +72,7 @@ class NoVulnerableLibrariesAudit extends Audit {
         // valid vulnerability
         vulns.push({
           severity: vuln.severity,
+          numericSeverity: this.severityMap[vuln.severity],
           library: `${lib.name}@${lib.version}`,
           url: 'https://snyk.io/vuln/' + vuln.id,
         });
@@ -81,15 +82,11 @@ class NoVulnerableLibrariesAudit extends Audit {
   }
 
   /**
-   * @param {object} vulns
+   * @param {{severity: string, numericSeverity: number, library: string, url:string }} vulns
    * @return {string}
    */
   static highestSeverity(vulns) {
     const sortedVulns = vulns
-      .map(vuln => {
-        vuln.numericSeverity = this.severityMap[vuln.severity];
-        return vuln;
-      })
       .sort((a, b) => b.numericSeverity - a.numericSeverity);
     return sortedVulns[0].severity;
   }
@@ -103,7 +100,6 @@ class NoVulnerableLibrariesAudit extends Audit {
     if (!libraries.length) {
       return {
         rawValue: true,
-        extendedInfo: {},
       };
     }
 
