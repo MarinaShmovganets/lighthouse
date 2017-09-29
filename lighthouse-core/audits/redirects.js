@@ -7,6 +7,7 @@
 
 const Audit = require('./audit');
 const Util = require('../report/v2/renderer/util');
+const UnusedBytes = require('./byte-efficiency/byte-efficiency-audit');
 
 // PSI allows one redirect (http://example.com => http://m.example.com)
 const REDIRECT_THRESHOLD = 1;
@@ -61,7 +62,7 @@ class Redirects extends Audit {
 
         return {
           debugString,
-          score: passed,
+          score: UnusedBytes.scoreForWastedMs(totalWastedMs),
           rawValue: totalWastedMs,
           displayValue: Util.formatMilliseconds(totalWastedMs),
           extendedInfo: {

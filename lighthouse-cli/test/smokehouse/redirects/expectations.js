@@ -16,7 +16,7 @@ module.exports = [
     url: 'http://localhost:10200/redirects-final.html',
     audits: {
       'redirects': {
-        score: false,
+        score: 0,
         rawValue: '>=1000',
         details: {
           items: {
@@ -27,12 +27,12 @@ module.exports = [
     },
   },
   {
-    initialUrl: `http://localhost:10200/online-only.html?cb=${cacheBuster}&delay=500&redirect=%2Fredirects-final.html`,
+    initialUrl: `http://localhost:10200/online-only.html?cb=${cacheBuster}&delay=300&redirect=%2Fredirects-final.html`,
     url: 'http://localhost:10200/redirects-final.html',
     audits: {
       'redirects': {
-        score: true,
-        rawValue: '>=500',
+        score: 0,
+        rawValue: '>=300',
         details: {
           items: {
             length: 1,

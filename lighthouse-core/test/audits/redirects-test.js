@@ -34,7 +34,7 @@ const FAILING_REDIRECTS = {
 
 const SUCCESS_ONE_REDIRECT = {
   redirects: [{
-    endTime: 1,
+    endTime: 0.7,
     responseReceivedTime: 5,
     startTime: 0,
     url: 'https://example.com/',
@@ -60,7 +60,7 @@ const mockArtifacts = (mockChain) => {
 describe('Performance: Redirects audit', () => {
   it('fails when more than one redirect detected', () => {
     return Audit.audit(mockArtifacts(FAILING_REDIRECTS)).then(output => {
-      assert.equal(output.score, false);
+      assert.equal(output.score, 0);
       assert.equal(output.details.items.length, 3);
       assert.equal(output.rawValue, 11000);
     });
@@ -68,15 +68,15 @@ describe('Performance: Redirects audit', () => {
 
   it('passes when one redirect detected', () => {
     return Audit.audit(mockArtifacts(SUCCESS_ONE_REDIRECT)).then(output => {
-      assert.equal(output.score, true);
+      assert.equal(output.score, 65);
       assert.equal(output.details.items.length, 1);
-      assert.equal(output.rawValue, 1000);
+      assert.equal(output.rawValue, 700);
     });
   });
 
   it('passes when no redirect detected', () => {
     return Audit.audit(mockArtifacts(SUCCESS_NOREDIRECT)).then(output => {
-      assert.equal(output.score, true);
+      assert.equal(output.score, 100);
       assert.equal(output.details.items.length, 0);
       assert.equal(output.rawValue, 0);
     });
