@@ -10,6 +10,7 @@ const assert = require('assert');
 
 /* eslint-env mocha */
 const FAILING_REDIRECTS = {
+  startTime: 17,
   redirects: [
     {
       endTime: 1,
@@ -33,6 +34,7 @@ const FAILING_REDIRECTS = {
 };
 
 const SUCCESS_ONE_REDIRECT = {
+  startTime: 0.7,
   redirects: [{
     endTime: 0.7,
     responseReceivedTime: 5,
@@ -62,7 +64,7 @@ describe('Performance: Redirects audit', () => {
     return Audit.audit(mockArtifacts(FAILING_REDIRECTS)).then(output => {
       assert.equal(output.score, 0);
       assert.equal(output.details.items.length, 3);
-      assert.equal(output.rawValue, 11000);
+      assert.equal(output.rawValue, 17000);
     });
   });
 

@@ -9,9 +9,6 @@ const Audit = require('./audit');
 const Util = require('../report/v2/renderer/util');
 const UnusedBytes = require('./byte-efficiency/byte-efficiency-audit');
 
-// PSI allows one redirect (http://example.com => http://m.example.com)
-const REDIRECT_THRESHOLD = 1;
-
 class Redirects extends Audit {
   /**
    * @return {!AuditMeta}
@@ -36,32 +33,30 @@ class Redirects extends Audit {
       .then(mainResource => {
         // redirects is only available when redirects happens
         const redirectRequests = mainResource.redirects || [];
+        // add main resource to redirectRequests so we can use it to calculate wastedMs
+        redirectRequests.push(mainResource);
         let totalWastedMs = 0;
-        let debugString = null;
 
-        const pageRedirects = redirectRequests.map(request => {
-          const wastedMs = (request.endTime - request.startTime) * 1000;
+        const pageRedirects = [];
+        for (let i = 1; i < redirectRequests.length; i++) {
+          const request = redirectRequests[i - 1];
+          const nextRequest = redirectRequests[i];
+          const wastedMs = (nextRequest.startTime - request.startTime) * 1000;
           totalWastedMs += wastedMs;
 
-          return {
+          pageRedirects.push({
             url: request.url,
             wastedMs: Util.formatMilliseconds(wastedMs),
-          };
-        });
-
-        const passed = pageRedirects.length <= REDIRECT_THRESHOLD;
-        if (!passed) {
-          debugString = `Your page has ${pageRedirects.length} redirects.`;
+          });
         }
 
         const headings = [
           {key: 'url', itemType: 'text', text: 'URL'},
-          {key: 'wastedMs', itemType: 'text', text: 'Wasted ms'},
+          {key: 'wastedMs', itemType: 'text', text: 'Time for Redirect'},
         ];
         const details = Audit.makeTableDetails(headings, pageRedirects);
 
         return {
-          debugString,
           score: UnusedBytes.scoreForWastedMs(totalWastedMs),
           rawValue: totalWastedMs,
           displayValue: Util.formatMilliseconds(totalWastedMs),

@@ -32,7 +32,7 @@ module.exports = [
     audits: {
       'redirects': {
         score: '<100',
-        rawValue: '>=750',
+        rawValue: '>=300',
         details: {
           items: {
             length: 1,
