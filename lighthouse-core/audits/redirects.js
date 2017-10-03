@@ -19,7 +19,7 @@ class Redirects extends Audit {
       name: 'redirects',
       description: 'Avoids page redirects.',
       failureDescription: 'Has page redirects.',
-      helpText: ' Redirects introduce additional delays before the page can be loaded. [Learn more](https://developers.google.com/speed/docs/insights/AvoidRedirects).',
+      helpText: 'Redirects introduce additional delays before the page can be loaded. [Learn more](https://developers.google.com/speed/docs/insights/AvoidRedirects).',
       requiredArtifacts: ['URL', 'devtoolsLogs'],
     };
   }
@@ -42,7 +42,12 @@ class Redirects extends Audit {
           const request = redirectRequests[i - 1];
           const nextRequest = redirectRequests[i];
           const wastedMs = (nextRequest.startTime - request.startTime) * 1000;
-          totalWastedMs += wastedMs;
+
+          // We skip the first redirect in our calculations but show it in the table below.
+          // We allow 1 redirect (www. => m.)
+          if (i > 1) {
+            totalWastedMs += wastedMs;
+          }
 
           pageRedirects.push({
             url: request.url,

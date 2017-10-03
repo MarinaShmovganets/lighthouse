@@ -64,15 +64,15 @@ describe('Performance: Redirects audit', () => {
     return Audit.audit(mockArtifacts(FAILING_REDIRECTS)).then(output => {
       assert.equal(output.score, 0);
       assert.equal(output.details.items.length, 3);
-      assert.equal(output.rawValue, 17000);
+      assert.equal(output.rawValue, 6000);
     });
   });
 
   it('passes when one redirect detected', () => {
     return Audit.audit(mockArtifacts(SUCCESS_ONE_REDIRECT)).then(output => {
-      assert.equal(output.score, 65);
+      assert.equal(output.score, 100);
       assert.equal(output.details.items.length, 1);
-      assert.equal(output.rawValue, 700);
+      assert.equal(output.rawValue, 0);
     });
   });
 
