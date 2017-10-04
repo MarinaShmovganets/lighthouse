@@ -18,7 +18,7 @@ class Redirects extends Audit {
       category: 'Performance',
       name: 'redirects',
       description: 'Avoids page redirects.',
-      failureDescription: 'Has page redirects.',
+      failureDescription: 'Has more than one page redirects',
       helpText: 'Redirects introduce additional delays before the page can be loaded. [Learn more](https://developers.google.com/speed/docs/insights/AvoidRedirects).',
       requiredArtifacts: ['URL', 'devtoolsLogs'],
     };

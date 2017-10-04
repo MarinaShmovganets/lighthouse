@@ -51,8 +51,7 @@ function requestHandler(request, response) {
   }
 
   function sendResponse(statusCode, data) {
-    let headers = {};
-    let delay = 0;
+    let headers;
     if (filePath.endsWith('.js')) {
       headers = {'Content-Type': 'text/javascript'};
     } else if (filePath.endsWith('.css')) {
@@ -61,6 +60,7 @@ function requestHandler(request, response) {
       headers = {'Content-Type': 'image/svg+xml'};
     }
 
+    let delay = 0;
     if (queryString) {
       // set document status-code
       if (typeof queryString.status_code !== 'undefined') {
@@ -74,11 +74,7 @@ function requestHandler(request, response) {
 
       // redirect url to new url if present
       if (typeof queryString.redirect !== 'undefined') {
-        if (delay > 0) {
-          return setTimeout(sendRedirect, delay, queryString.redirect);
-        } else {
-          return sendRedirect(queryString.redirect);
-        }
+        return setTimeout(sendRedirect, delay, queryString.redirect);
       }
     }
 

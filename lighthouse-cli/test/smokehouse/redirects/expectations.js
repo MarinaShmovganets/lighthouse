@@ -12,7 +12,7 @@ const cacheBuster = Number(new Date());
 
 module.exports = [
   {
-    initialUrl: `http://localhost:10200/online-only.html?cb=${cacheBuster}&delay=500&redirect=%2Foffline-only.html%3Fcb=${cacheBuster}%26delay=500%26redirect%3D%2Fredirects-final.html`,
+    initialUrl: `http://localhost:10200/online-only.html?delay=500&redirect=%2Foffline-only.html%3Fcb=${cacheBuster}%26delay=500%26redirect%3D%2Fredirects-final.html`,
     url: 'http://localhost:10200/redirects-final.html',
     audits: {
       'redirects': {
@@ -27,12 +27,12 @@ module.exports = [
     },
   },
   {
-    initialUrl: `http://localhost:10200/online-only.html?cb=${cacheBuster}&delay=300&redirect=%2Fredirects-final.html`,
+    initialUrl: `http://localhost:10200/online-only.html?delay=300&redirect=%2Fredirects-final.html`,
     url: 'http://localhost:10200/redirects-final.html',
     audits: {
       'redirects': {
         score: 100,
-        rawValue: '>=0',
+        rawValue: 0,
         details: {
           items: {
             length: 1,
