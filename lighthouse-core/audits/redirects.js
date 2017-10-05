@@ -17,8 +17,8 @@ class Redirects extends Audit {
     return {
       category: 'Performance',
       name: 'redirects',
-      description: 'Avoids page redirects.',
-      failureDescription: 'Has more than one page redirects',
+      description: 'Avoids page redirects',
+      failureDescription: 'Has multiple page redirects',
       helpText: 'Redirects introduce additional delays before the page can be loaded. [Learn more](https://developers.google.com/speed/docs/insights/AvoidRedirects).',
       requiredArtifacts: ['URL', 'devtoolsLogs'],
     };
@@ -32,7 +32,7 @@ class Redirects extends Audit {
     return artifacts.requestMainResource(artifacts.devtoolsLogs[Audit.DEFAULT_PASS])
       .then(mainResource => {
         // redirects is only available when redirects happens
-        const redirectRequests = mainResource.redirects || [];
+        const redirectRequests = Array.from(mainResource.redirects || []);
         // add main resource to redirectRequests so we can use it to calculate wastedMs
         redirectRequests.push(mainResource);
         let totalWastedMs = 0;
