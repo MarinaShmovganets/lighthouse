@@ -158,7 +158,8 @@ module.exports = [
           value: {
             // Note: This would normally be 7 but M56 defaults document-level
             // listeners to passive. See https://www.chromestatus.com/features/5093566007214080
-            length: 4,
+            // Note: Explicitly passive:false doesn't get a warning as of M63: crbug.com/770208
+            length: '>=3',
           },
         },
       },
