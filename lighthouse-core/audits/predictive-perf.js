@@ -7,7 +7,7 @@
 
 const Audit = require('./audit');
 const Util = require('../report/v2/renderer/util.js');
-const Simulator = require('../lib/dependency-graph/simulator/simulator.js');
+const LoadSimulator = require('../lib/dependency-graph/simulator/simulator.js');
 const Node = require('../lib/dependency-graph/node.js');
 const WebInspector = require('../lib/web-inspector');
 
@@ -126,13 +126,13 @@ class PredictivePerf extends Audit {
       let sum = 0;
       const values = {};
       Object.keys(graphs).forEach(key => {
-        const results = new Simulator(graphs[key]).simulate();
-        const lastLongTaskEnd = PredictivePerf.getLastLongTaskEndTime(results.nodeTiming);
+        const estimate = new LoadSimulator(graphs[key]).simulate();
+        const lastLongTaskEnd = PredictivePerf.getLastLongTaskEndTime(estimate.nodeTiming);
 
         switch (key) {
           case 'optimisticFMP':
           case 'pessimisticFMP':
-            values[key] = results.timeInMs;
+            values[key] = estimate.timeInMs;
             break;
           case 'optimisticTTCI':
             values[key] = Math.max(values.optimisticFMP, lastLongTaskEnd);
