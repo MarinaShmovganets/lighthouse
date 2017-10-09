@@ -11,7 +11,7 @@ The top-level object is what the lighthouse node module returns and the entirety
 | Name | Description |
 | - | - |
 | lighthouseVersion | The version of Lighthouse with which these results were generated. |
-| generatedTime | The ISO timestamp at which the results were generated. |
+| generatedTime | The ISO-8601 timestamp of when the results were generated. |
 | userAgent | The user agent string of the version of Chrome that was used by Lighthouse. |
 | initialUrl | The URL that was supplied to Lighthouse and initially navigated to. |
 | url | The URL that Lighthouse ended up auditing after redirects were followed. |
@@ -52,12 +52,14 @@ An object containing the results of the audits, keyed by their name.
 | name  | `string` | The string identifier of the audit in kebab case.  |
 | category | `string` | No longer used. *WARNING: Deprecated, will be removed in Lighthouse 3.0* |
 | description | `string` | The brief description of the audit's successful state. |
-| failureDescription | `string` | The brief description of the audit's failure state. |
 | helpText | `string` | A more detailed description that describes why the audit is important and links to Lighthouse documentation on the audit, markdown links supported. |
+| debugString | <code>string&#124;undefined</code> | A string indicating some additional information to the user explaining an unusual circumstance or reason for failure. |
+| informative | `boolean` | Indicator used for display that the audit is intended to be informative only, not failable. |
+| manual | `boolean` | Indicator used for display that the audit does not have results and is a placeholder for the user to conduct manual testing. |
 | score | <code>boolean&#124;number</code> | The scored value determined by the audit as either boolean or a number `0-100`. If the audit is a boolean, the implication is `score ? 100 : 0`. |
 | rawValue | <code>boolean&#124;number</code> | The unscored value determined by the audit. Typically this will match the score if there's no additional information to impart. For performance audits, this value is typically a number indicating the metric value. |
 | displayValue | `string` | The string to display in the report alongside audit results. If empty, nothing additional is shown. This is typically used to explain additional information such as the number and nature of failing items. |
-| scoringMode | `string` | A string identifying how granular the score is meant to be indicating, i.e. is the audit pass/fail or are there shades of gray 0-100. *NOTE: This does not necessarily mean `typeof audit.score === audit.scoringMode`, an audit can have a score of 40 with a scoringMode of `"binary"` meant to indicate failure.* |
+| scoringMode | <code>"binary"&#124;"numeric"</code> | A string identifying how granular the score is meant to be indicating, i.e. is the audit pass/fail or are there shades of gray 0-100. *NOTE: This does not necessarily mean `typeof audit.score === audit.scoringMode`, an audit can have a score of 40 with a scoringMode of `"binary"` meant to indicate display should be failure.* |
 | details | `Object` | Extra information found by the audit necessary for display. The structure of this object varies from audit to audit. The structure of this object is somewhat stable between minor version bumps as this object is used to render the HTML report.
 | extendedInfo | `Object` | Extra information found by the audit. The structure of this object varies from audit to audit and is generally for programmatic consumption and debugging, though there is typically overlap with `details`. *WARNING: The structure of this object is not stable and cannot be trusted to follow semver* |
 
@@ -165,7 +167,7 @@ An object containing information about how long Lighthouse spent auditing.
 <a name="report-categories"></a>
 ## `reportCategories`
 
-An array containing the different categories, their scores, and the results of the audits that comprise them.
+An array containing the different categories, their scores, and the results of the audits in the categories.
 
 ### CategoryEntry Properties
 | Name | Type | Description |
@@ -175,15 +177,15 @@ An array containing the different categories, their scores, and the results of t
 | description | `string` | A brief description of the purpose of the category, supports markdown links. |
 | score | `string` | The overall score of the category, the weighted average of all its audits. |
 | weight | `string` | The weight of the category in the overall Lighthouse score. |
-| audits | `AuditEntry[]` | An array of all the audit results that comprise the category. Each entry contains a copy of the audit's result in the top-level [audits](#audits) object. |
+| audits | `AuditEntry[]` | An array of all the audit results in the category. |
 
 ### AuditEntry Properties
 | Name | Type | Description |
 | -- | -- | -- |
 | id | `string` | The string identifier of the category. |
-| score | `number` | The numeric score `0-100` of the audit, audits with a boolean score result are converted with `score ? 100 : 0`. |
+| score | `number` | The numeric score `0-100` of the audit. Audits with a boolean score result are converted with `score ? 100 : 0`. |
 | weight | `number` | The weight of the audit's score in the overall category score. |
-| result | `Object` | The actual audit result, a copy of the audit object found in [audits](#audits). |
+| result | `Object` | The actual audit result, a copy of the audit object found in [audits](#audits). *NOTE: this property will likely be removed in upcoming releases; use the `id` property to lookup the result in the `audits` property.* |
 
 ### Example
 ```json
