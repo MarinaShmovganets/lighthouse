@@ -15,7 +15,7 @@ The top-level Lighthouse Results object (LHR) is what the lighthouse node module
 | userAgent | The user agent string of the version of Chrome that was used by Lighthouse. |
 | initialUrl | The URL that was supplied to Lighthouse and initially navigated to. |
 | url | The URL that Lighthouse ended up auditing after redirects were followed. |
-| score | The overall score `0-100`, a weighted average of all category scores. |
+| score | The overall score `0-100`, a weighted average of all category scores. *NOTE: Only the PWA category has a weight by default* |
 | [audits](#audits) | An object containing the results of the audits. |
 | [runtimeConfig](#runtime-config) | An object containing information about the configuration used by Lighthouse. |
 | [timing](#timing) | An object containing information about how long Lighthouse spent auditing. |
