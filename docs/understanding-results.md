@@ -2,9 +2,9 @@
 
 The results object contains all the audit information Lighthouse determined about the page. In fact, everything you see in the HTML report, even the screenshots, is a rendering of information contained in the results object. You might need to work directly with the results object if you use [Lighthouse programmatically](https://github.com/GoogleChrome/lighthouse/blob/master/docs/readme.md#using-programmatically), consume the JSON output of the [CLI](https://github.com/GoogleChrome/lighthouse#using-the-node-cli), explore [Lighthouse results in HTTPArchive](https://github.com/GoogleChrome/lighthouse#lighthouse-integrations), or work on the report generation code that reads the Lighthouse JSON and outputs HTML.
 
-## Top-level Object
+## Lighthouse Results Object (LHR)
 
-The top-level object is what the lighthouse node module returns and the entirety of the JSON output of the CLI. It contains some metadata about the run and the results in the various subproperties below.
+The top-level Lighthouse Results object (LHR) is what the lighthouse node module returns and the entirety of the JSON output of the CLI. It contains some metadata about the run and the results in the various subproperties below.
 
 ### Properties
 
@@ -50,18 +50,18 @@ An object containing the results of the audits, keyed by their name.
 | Name | Type | Description |
 | -- | -- | -- |
 | name  | `string` | The string identifier of the audit in kebab case.  |
-| category | `string` | No longer used. *WARNING: Deprecated, will be removed in Lighthouse 3.0* |
 | description | `string` | The brief description of the audit's successful state. |
 | helpText | `string` | A more detailed description that describes why the audit is important and links to Lighthouse documentation on the audit, markdown links supported. |
 | debugString | <code>string&#124;undefined</code> | A string indicating some additional information to the user explaining an unusual circumstance or reason for failure. |
-| informative | `boolean` | Indicator used for display that the audit is intended to be informative only, not failable. |
-| manual | `boolean` | Indicator used for display that the audit does not have results and is a placeholder for the user to conduct manual testing. |
-| score | <code>boolean&#124;number</code> | The scored value determined by the audit as either boolean or a number `0-100`. If the audit is a boolean, the implication is `score ? 100 : 0`. |
 | rawValue | <code>boolean&#124;number</code> | The unscored value determined by the audit. Typically this will match the score if there's no additional information to impart. For performance audits, this value is typically a number indicating the metric value. |
 | displayValue | `string` | The string to display in the report alongside audit results. If empty, nothing additional is shown. This is typically used to explain additional information such as the number and nature of failing items. |
+| score | <code>boolean&#124;number</code> | The scored value determined by the audit as either boolean or a number `0-100`. If the audit is a boolean, the implication is `score ? 100 : 0`. |
 | scoringMode | <code>"binary"&#124;"numeric"</code> | A string identifying how granular the score is meant to be indicating, i.e. is the audit pass/fail or are there shades of gray 0-100. *NOTE: This does not necessarily mean `typeof audit.score === audit.scoringMode`, an audit can have a score of 40 with a scoringMode of `"binary"` meant to indicate display should be failure.* |
 | details | `Object` | Extra information found by the audit necessary for display. The structure of this object varies from audit to audit. The structure of this object is somewhat stable between minor version bumps as this object is used to render the HTML report.
 | extendedInfo | `Object` | Extra information found by the audit. The structure of this object varies from audit to audit and is generally for programmatic consumption and debugging, though there is typically overlap with `details`. *WARNING: The structure of this object is not stable and cannot be trusted to follow semver* |
+| manual | `boolean` | Indicator used for display that the audit does not have results and is a placeholder for the user to conduct manual testing. |
+| informative | `boolean` | Indicator used for display that the audit is intended to be informative only. It cannot be passed or failed. |
+| category | `string` | No longer used. *WARNING: Deprecated, will be removed in Lighthouse 3.0* |
 
 ### Example
 ```json
@@ -236,7 +236,7 @@ An object containing the display groups of audits for the report, keyed by the g
 <a name="artifacts"></a>
 ## `artifacts`
 
-An object containing gatherer results keyed by gatherer class name. The structure varies by artifact and is not stable. The values of artifacts are subject to change. This property is only available when consuming Lighthouse results programmatically as the artifacts contain trace data and can be quite large.
+An object containing gatherer results keyed by gatherer class name. The structure varies by artifact and is not stable. The values of artifacts are subject to change. This property is only available when consuming Lighthouse results programmatically as the artifacts contain trace data and can be quite large (>50MB).
 
 ### Example
 ```json
