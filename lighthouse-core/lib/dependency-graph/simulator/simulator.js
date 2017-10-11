@@ -146,7 +146,7 @@ class Simulator {
     this._connectionsInUse = new Set();
     this._numberInProgressByType = new Map();
 
-    this._nodes = {};
+    this._nodes = [];
     for (const key of Object.keys(NodeState)) {
       this._nodes[NodeState[key]] = new Set();
     }
