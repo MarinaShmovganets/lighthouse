@@ -96,6 +96,7 @@ class ImageAspectRatio extends Audit {
 
     return {
       rawValue: results.length,
+      score: results.length === 0,
       debugString,
       details: Audit.makeTableDetails(headings, results),
     };
