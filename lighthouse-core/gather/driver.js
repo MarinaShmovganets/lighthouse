@@ -628,8 +628,11 @@ class Driver {
 
     return this.sendCommand('Page.getResourceTree')
       .then(data => {
-        const frameId = data.frameTree.frame.id;
-        return this.sendCommand('Page.createIsolatedWorld', {frameId});
+        const mainFrameId = data.frameTree.frame.id;
+        return this.sendCommand('Page.createIsolatedWorld', {
+          frameId: mainFrameId,
+          worldName: 'lighthouse_isolated_context',
+        });
       })
       .then(data => this._isolatedExecutionContextId = data.executionContextId);
   }
