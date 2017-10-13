@@ -187,7 +187,6 @@ module.exports = [
       },
       'image-aspect-ratio': {
         score: false,
-        rawValue: 1,
         details: {
           items: {
             0: {
