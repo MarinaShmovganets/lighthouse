@@ -619,6 +619,9 @@ class Driver {
   }
 
   /**
+   * Returns the cached isolated execution context ID or creates a new execution context for the main
+   * frame. The cached execution context is cleared on every gotoURL invocation, so a new one will
+   * always be created on the first call on a new page.
    * @return {!Promise<number>}
    */
   _getOrCreateIsolatedContextId() {
