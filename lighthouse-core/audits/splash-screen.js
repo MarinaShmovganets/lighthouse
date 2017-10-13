@@ -27,7 +27,6 @@ class SplashScreen extends MultiCheckAudit {
    */
   static get meta() {
     return {
-      category: 'PWA',
       name: 'splash-screen',
       description: 'Configured for a custom splash screen',
       failureDescription: 'Is not configured for a custom splash screen',
