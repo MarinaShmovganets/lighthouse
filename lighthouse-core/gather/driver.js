@@ -14,6 +14,7 @@ const TraceParser = require('../lib/traces/trace-parser');
 
 const log = require('lighthouse-logger');
 const DevtoolsLog = require('./devtools-log');
+const SWManager = require('./connections/sw-manager');
 
 // Controls how long to wait after onLoad before continuing
 const DEFAULT_PAUSE_AFTER_LOAD = 0;
@@ -105,6 +106,14 @@ class Driver {
   }
 
   /**
+   * @return {!Promise<null>}
+   */
+  attachToServiceWorkers() {
+    this._swManager = new SWManager(this._connection, {subtargetType: 'service_worker'});
+    return this._swManager.listen();
+  }
+
+  /**
    * Bind listeners for protocol events
    * @param {!string} eventName
    * @param {function(...)} cb
@@ -180,10 +189,10 @@ class Driver {
    * Call protocol methods
    * @param {!string} method
    * @param {!Object} params
-   * @param {{silent: boolean}=} cmdOpts
+   * @param {{silent: boolean, shareWithSW: boolean}=} cmdOpts
    * @return {!Promise}
    */
-  sendCommand(method, params, cmdOpts) {
+  sendCommand(method, params, cmdOpts = {}) {
     const domainCommand = /^(\w+)\.(enable|disable)$/.exec(method);
     if (domainCommand) {
       const enable = domainCommand[2] === 'enable';
@@ -192,7 +201,15 @@ class Driver {
       }
     }
 
+    if (cmdOpts.shareWithSW) {
+      this.sendCommandToSubtargets(method, params);
+    }
+
     return this._connection.sendCommand(method, params, cmdOpts);
+  }
+
+  sendCommandToSubtargets(method, params) {
+    return this._swManager.sendCommandToSubtargets(method, params);
   }
 
   /**
