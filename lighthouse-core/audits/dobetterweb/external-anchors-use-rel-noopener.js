@@ -47,6 +47,10 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
           return true;
         }
       })
+      .filter(anchor => {
+        // Ignore href's that do not redirect to a new url
+        return !/javascript:.*/.test(anchor.href);
+      })
       .map(anchor => {
         return {
           href: anchor.href || 'Unknown',
