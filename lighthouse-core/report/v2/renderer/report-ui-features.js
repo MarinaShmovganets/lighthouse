@@ -257,7 +257,6 @@ class ReportUIFeatures {
    */
   printShortCutDetect(e) {
     if ((e.ctrlKey || e.metaKey) && e.keyCode === 80) { // Ctrl+P
-      this.expandAllDetails();
       this.closeExportDropdown();
     }
   }
