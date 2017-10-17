@@ -49,7 +49,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
       })
       .filter(anchor => {
         // Ignore href's that do not redirect to a new url
-        return !/^javascript:/.test(anchor.href);
+        return !anchor.href.startsWith('javascript:');
       })
       .map(anchor => {
         return {
