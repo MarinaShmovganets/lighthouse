@@ -13,7 +13,7 @@ We're using [conventional-commit](https://conventionalcommits.org/) for our comm
 > type(scope): message subject
 
 * The `type` must be one of: `new_audit` `core` `tests` `docs` `deps` `report` `cli` `extension` `misc`. (See [`.cz-config`](https://github.com/GoogleChrome/lighthouse/blob/master/.cz-config.js#L13))
-* The `scope` is optional, but recommended. Any string is allowed; it should indicate what change affects.
+* The `scope` is optional, but recommended. Any string is allowed; it should indicate what the change affects.
 * The `message subject` should be pithy and direct.
 
 The [commitizen CLI](https://github.com/commitizen/cz-cli) can help to construct these commit messages.
