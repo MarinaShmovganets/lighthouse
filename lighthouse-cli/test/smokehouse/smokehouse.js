@@ -196,6 +196,7 @@ function collateResults(actual, expected) {
     const diff = findDifference(auditName, actualResult, expectedResult);
 
     return {
+      category: auditName,
       actual: actualResult,
       expected: expectedResult,
       equal: !diff,
@@ -205,6 +206,7 @@ function collateResults(actual, expected) {
 
   return {
     finalUrl: {
+      category: 'final url',
       actual: actual.url,
       expected: expected.url,
       equal: actual.url === expected.url,
