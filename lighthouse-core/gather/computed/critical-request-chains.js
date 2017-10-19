@@ -18,13 +18,13 @@ class CriticalRequestChains extends ComputedArtifact {
    * It's imperfect, but there is not a higher-fidelity signal available yet.
    * @see https://docs.google.com/document/d/1bCDuq9H1ih9iNjgzyAL0gpwNFiEP4TZS-YLRp_RuMlc
    * @param {any} request
-   * @param {!WebInspector.NetworkRequest}
+   * @param {!WebInspector.NetworkRequest} mainResource
    */
   static isCritical(request, mainResource) {
     const resourceTypeCategory = request._resourceType && request._resourceType._category;
 
     // Iframes are considered High Priority but they are not render blocking
-    const isIframe = resourceTypeCategory === WebInspector.resourceTypes.Document._category
+    const isIframe = request._resourceType === WebInspector.resourceTypes.Document
       && request.frameId !== mainResource.frameId;
     // XHRs are fetched at High priority, but we exclude them, as they are unlikely to be critical
     // Images are also non-critical.
