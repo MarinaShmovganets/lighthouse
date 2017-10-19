@@ -76,7 +76,7 @@ class CriticalRequestChains extends ComputedArtifact {
       let ancestorRequest = request.initiatorRequest();
       let node = criticalRequestChains;
       while (ancestorRequest) {
-        const ancestorIsCritical = CriticalRequestChains.isCritical(ancestorRequest,mainResource);
+        const ancestorIsCritical = CriticalRequestChains.isCritical(ancestorRequest, mainResource);
 
         // If the parent request isn't a high priority request it won't be in the
         // requestIdToRequests map, and so we can break the chain here. We should also

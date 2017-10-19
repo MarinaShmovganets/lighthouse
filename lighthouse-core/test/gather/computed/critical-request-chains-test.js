@@ -328,17 +328,17 @@ describe('CriticalRequestChain gatherer: extractChain function', () => {
     // 1th record is the root document
     networkRecords[0].url = 'https://example.com';
     networkRecords[0].mimeType = 'text/html';
-    networkRecords[0]._resourceType._category = WebInspector.resourceTypes.Document._category;
+    networkRecords[0]._resourceType = WebInspector.resourceTypes.Document;
     // 2nd record is an iframe in the page
     networkRecords[1].url = 'https://example.com/iframe.html';
     networkRecords[1].mimeType = 'text/html';
-    networkRecords[1]._resourceType._category = WebInspector.resourceTypes.Document._category;
-    networkRecords[0].frameId = '2';
+    networkRecords[1]._resourceType = WebInspector.resourceTypes.Document;
+    networkRecords[1].frameId = '2';
     // 3rd record is an iframe loaded by a script
     networkRecords[2].url = 'https://youtube.com/';
     networkRecords[2].mimeType = 'text/html';
-    networkRecords[2]._resourceType._category = WebInspector.resourceTypes.Document._category;
-    networkRecords[0].frameId = '3';
+    networkRecords[2]._resourceType = WebInspector.resourceTypes.Document;
+    networkRecords[2].frameId = '3';
 
     const criticalChains = CriticalRequestChains.extractChain([networkRecords, mainResource]);
     assert.deepEqual(criticalChains, {
