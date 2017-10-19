@@ -22,7 +22,7 @@ class CriticalRequestChains extends ComputedArtifact {
    * @param {!WebInspector.NetworkRequest} mainResource
    */
   static isCritical(request, mainResource) {
-    assert.ok(mainResource,  'mainResource not provided');
+    assert.ok(mainResource, 'mainResource not provided');
     const resourceTypeCategory = request._resourceType && request._resourceType._category;
 
     // Iframes are considered High Priority but they are not render blocking
