@@ -7,6 +7,7 @@
 
 const ComputedArtifact = require('./computed-artifact');
 const WebInspector = require('../../lib/web-inspector');
+const assert = require('assert');
 
 class CriticalRequestChains extends ComputedArtifact {
   get name() {
@@ -21,6 +22,7 @@ class CriticalRequestChains extends ComputedArtifact {
    * @param {!WebInspector.NetworkRequest} mainResource
    */
   static isCritical(request, mainResource) {
+    assert.ok(mainResource,  'mainResource not provided');
     const resourceTypeCategory = request._resourceType && request._resourceType._category;
 
     // Iframes are considered High Priority but they are not render blocking
