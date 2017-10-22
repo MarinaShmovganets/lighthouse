@@ -28,6 +28,9 @@ module.exports = [
       'link-text': {
         score: true,
       },
+      'is-crawlable': {
+        score: true,
+      },
     },
   },
   {
@@ -58,6 +61,14 @@ module.exports = [
         details: {
           items: {
             length: 3,
+          },
+        },
+      },
+      'is-crawlable': {
+        score: false,
+        details: {
+          items: {
+            length: 1,
           },
         },
       },

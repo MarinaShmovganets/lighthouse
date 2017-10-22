@@ -12,6 +12,16 @@ const BLOCKLIST = new Set([
 ]);
 const ROBOTS_HEADER = 'x-robots-tag';
 
+/**
+ * @param {string} directives
+ * @returns {boolean}
+ */
+function hasBlockingDirective(directives) {
+  return directives.split(',')
+    .map(d => d.toLowerCase().trim())
+    .some(d => BLOCKLIST.has(d));
+}
+
 class IsCrawlable extends Audit {
   /**
    * @return {!AuditMeta}
@@ -22,7 +32,7 @@ class IsCrawlable extends Audit {
       description: 'Page isn’t blocked from indexing',
       failureDescription: 'Page is blocked from indexing',
       helpText: 'The “Robots” directives tell crawlers how your content should be indexed. ' +
-        '[Learn more](https://developers.google.com/search/reference/robots_meta_tag).',
+      '[Learn more](https://developers.google.com/search/reference/robots_meta_tag).',
       requiredArtifacts: ['MetaRobots'],
     };
   }
@@ -34,49 +44,35 @@ class IsCrawlable extends Audit {
   static audit(artifacts) {
     return artifacts.requestMainResource(artifacts.devtoolsLogs[Audit.DEFAULT_PASS])
       .then(mainResource => {
+        const blockingDirectives = [];
+
         if (artifacts.MetaRobots) {
-          const blockingDirective = artifacts.MetaRobots
-            .split(',')
-            .map(d => d.toLowerCase().trim())
-            .find(d => BLOCKLIST.has(d));
+          const isBlocking = hasBlockingDirective(artifacts.MetaRobots);
 
-          if (blockingDirective) {
-            return {
-              rawValue: false,
-              extendedInfo: {
-                value: {
-                  type: 'tag',
-                  directive: blockingDirective,
-                },
+          if (isBlocking) {
+            blockingDirectives.push({
+              source: {
+                type: 'node',
+                snippet: `<meta name="robots" content="${artifacts.MetaRobots}" />`,
               },
-            };
+            });
           }
         }
 
-        const robotsHeader = mainResource.responseHeaders()
-          .find(h => h.name.toLowerCase() === ROBOTS_HEADER);
+        mainResource.responseHeaders
+          .filter(h => h.name.toLowerCase() === ROBOTS_HEADER && hasBlockingDirective(h.value))
+          .forEach(h => blockingDirectives.push({
+            source: `${h.name}: ${h.value}`,
+          }));
 
-        if (robotsHeader) {
-          const blockingDirective = robotsHeader.value
-            .split(',')
-            .map(d => d.toLowerCase().trim())
-            .find(d => BLOCKLIST.has(d));
-
-          if (blockingDirective) {
-            return {
-              rawValue: false,
-              extendedInfo: {
-                value: {
-                  type: 'header',
-                  directive: blockingDirective,
-                },
-              },
-            };
-          }
-        }
+        const headings = [
+          {key: 'source', itemType: 'code', text: 'Source'},
+        ];
+        const details = Audit.makeTableDetails(headings, blockingDirectives);
 
         return {
-          rawValue: true,
+          rawValue: blockingDirectives.length === 0,
+          details,
         };
       });
   }
