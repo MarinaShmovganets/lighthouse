@@ -178,6 +178,10 @@ class ReportUIFeatures {
         this.onCopyButtonClick();
         break;
       case 'print':
+        this.closeExportDropdown();
+        self.print();
+        break;
+      case 'print-expanded':
         this.expandAllDetails();
         this.closeExportDropdown();
         self.print();
