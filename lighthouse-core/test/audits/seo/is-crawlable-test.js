@@ -18,6 +18,8 @@ describe('SEO: Is page crawlable audit', () => {
       'foo, noindex, bar',
       'all, none, all',
       '     noindex      ',
+      'unavailable_after: 25 Jun 2010 15:00:00 PST',
+      ' Unavailable_after: 25-Aug-2007 15:00:00 EST',
     ];
 
     const allRuns = robotsValues.map(robotsValue => {
@@ -84,6 +86,9 @@ describe('SEO: Is page crawlable audit', () => {
       [
         {name: 'x-robots-tag', value: '    noindex    '},
       ],
+      [
+        {name: 'x-robots-tag', value: 'unavailable_after: 25 Jun 2010 15:00:00 PST'},
+      ],
     ];
 
     const allRuns = robotsHeaders.map(headers => {
@@ -109,6 +114,7 @@ describe('SEO: Is page crawlable audit', () => {
     const mainResource = {
       responseHeaders: [
         {name: 'X-Robots-Tag', value: 'all, nofollow'},
+        {name: 'X-Robots-Tag', value: 'unavailable_after: 25 Jun 2045 15:00:00 PST'},
       ],
     };
     const artifacts = {
@@ -134,6 +140,42 @@ describe('SEO: Is page crawlable audit', () => {
 
     return IsCrawlableAudit.audit(artifacts).then(auditResult => {
       assert.equal(auditResult.rawValue, true);
+    });
+  });
+
+  it('ignores UA specific directives', () => {
+    const mainResource = {
+      responseHeaders: [
+        {name: 'x-robots-tag', value: 'googlebot: none'},
+      ],
+    };
+    const artifacts = {
+      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: []},
+      requestMainResource: () => Promise.resolve(mainResource),
+      MetaRobots: null,
+    };
+
+    return IsCrawlableAudit.audit(artifacts).then(auditResult => {
+      assert.equal(auditResult.rawValue, true);
+    });
+  });
+
+  it('returns all failing items', () => {
+    const mainResource = {
+      responseHeaders: [
+        {name: 'x-robots-tag', value: 'none'},
+        {name: 'x-robots-tag', value: 'noindex'},
+      ],
+    };
+    const artifacts = {
+      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: []},
+      requestMainResource: () => Promise.resolve(mainResource),
+      MetaRobots: 'noindex',
+    };
+
+    return IsCrawlableAudit.audit(artifacts).then(auditResult => {
+      assert.equal(auditResult.rawValue, false);
+      assert.equal(auditResult.details.items.length, 3);
     });
   });
 });
