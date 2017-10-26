@@ -79,7 +79,7 @@ function requestHandler(request, response) {
 
         extraHeaders.forEach(header => {
           const parts = header.split(':');
-          headers[parts[0]] = parts[1];
+          headers[parts[0]] = parts.slice(1).join(':');
         });
       }
 

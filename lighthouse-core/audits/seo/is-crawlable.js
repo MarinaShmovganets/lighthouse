@@ -14,7 +14,7 @@ const ROBOTS_HEADER = 'x-robots-tag';
 const UNAVAILABLE_AFTER = 'unavailable_after';
 
 /**
- * Checks if given directive is a valid unavailable_after directive and if content expired
+ * Checks if given directive is a valid unavailable_after directive with a date in the past
  * @param {string} directive
  * @returns {boolean}
  */
@@ -25,7 +25,7 @@ function isUnavailable(directive) {
     return false;
   }
 
-  const date = Date.parse(parts[1]);
+  const date = Date.parse(parts.slice(1).join(':'));
 
   return !isNaN(date) && date < Date.now();
 }
@@ -42,13 +42,16 @@ function hasBlockingDirective(directives) {
 }
 
 /**
- * Returns false if robots header specifies user agent (e.g. googlebot)
+ * Returns false if robots header specifies user agent (e.g. `googlebot: noindex`)
  * @param {string} directives
  * @returns {boolean}
  */
-function hasUA(directives) {
-  const parts = directives.split(':');
-  return parts.length > 1 && parts[0] !== UNAVAILABLE_AFTER;
+function hasUserAgent(directives) {
+  const parts = directives.match(/^([^,:]+):/);
+
+  // Check if directives are prefixed with `googlebot:`, `googlebot-news:`, `otherbot:`, etc.
+  // but ignore `unavailable_after:` which is a valid directive
+  return !!parts && parts[1].toLowerCase() !== UNAVAILABLE_AFTER;
 }
 
 class IsCrawlable extends Audit {
@@ -89,7 +92,7 @@ class IsCrawlable extends Audit {
         }
 
         mainResource.responseHeaders
-          .filter(h => h.name.toLowerCase() === ROBOTS_HEADER && !hasUA(h.value) &&
+          .filter(h => h.name.toLowerCase() === ROBOTS_HEADER && !hasUserAgent(h.value) &&
             hasBlockingDirective(h.value))
           .forEach(h => blockingDirectives.push({source: `${h.name}: ${h.value}`}));
 

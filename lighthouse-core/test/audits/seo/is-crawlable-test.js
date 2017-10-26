@@ -89,6 +89,9 @@ describe('SEO: Is page crawlable audit', () => {
       [
         {name: 'x-robots-tag', value: 'unavailable_after: 25 Jun 2010 15:00:00 PST'},
       ],
+      [
+        {name: 'x-robots-tag', value: 'all, unavailable_after: 25-Jun-2010 15:00:00 PST'},
+      ],
     ];
 
     const allRuns = robotsHeaders.map(headers => {
@@ -146,7 +149,7 @@ describe('SEO: Is page crawlable audit', () => {
   it('ignores UA specific directives', () => {
     const mainResource = {
       responseHeaders: [
-        {name: 'x-robots-tag', value: 'googlebot: none'},
+        {name: 'x-robots-tag', value: 'googlebot: unavailable_after: 25 Jun 2007 15:00:00 PST'},
       ],
     };
     const artifacts = {

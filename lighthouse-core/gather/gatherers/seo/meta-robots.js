@@ -21,4 +21,3 @@ class MetaRobots extends Gatherer {
 }
 
 module.exports = MetaRobots;
-
