@@ -83,5 +83,5 @@ export async function run() {
     },
   });
 
-  return await runLighthouse(url, cliFlags, config);
+  return runLighthouse(url, cliFlags, config);
 }

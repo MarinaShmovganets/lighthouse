@@ -138,13 +138,13 @@ export function saveResults(results: Results, artifacts: Object, flags: Flags) {
 }
 
 export async function runLighthouse(
-    url: string, flags: Flags, config: Object|null, environmentData?: Object): Promise<{}|void> {
+    url: string, flags: Flags, config: Object|null): Promise<{}|void> {
   let launchedChrome: LaunchedChrome|undefined;
 
   try {
     launchedChrome = await getDebuggableChrome(flags);
     flags.port = launchedChrome.port;
-    const results = await lighthouse(url, flags, config, environmentData);
+    const results = await lighthouse(url, flags, config);
 
     const artifacts = results.artifacts;
     delete results.artifacts;
