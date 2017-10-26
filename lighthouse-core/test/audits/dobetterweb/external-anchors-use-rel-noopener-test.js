@@ -59,6 +59,7 @@ describe('External anchors use rel="noopener"', () => {
     const auditResult = ExternalAnchorsAudit.audit({
       AnchorsWithNoRelNoopener: [
         {href: 'javascript:void(0)'},
+        {href: 'JAVASCRIPT:void(0)'},
       ],
       URL: {finalUrl: URL},
     });

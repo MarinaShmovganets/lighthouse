@@ -49,7 +49,11 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
       })
       .filter(anchor => {
         // Ignore href's that are not real links
-        return !anchor.href.startsWith('javascript:');
+        return (
+          anchor.href
+            ? !anchor.href.toLowerCase().startsWith('javascript:')
+            : true
+        );
       })
       .map(anchor => {
         return {
