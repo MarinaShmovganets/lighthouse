@@ -34,8 +34,8 @@ module.exports = [
     },
   },
   {
-    initialUrl: 'http://localhost:10200/seo/seo-failure-cases.html?status_code=403',
-    url: 'http://localhost:10200/seo/seo-failure-cases.html?status_code=403',
+    initialUrl: 'http://localhost:10200/seo/seo-failure-cases.html?status_code=403&extra_header=x-robots-tag:none',
+    url: 'http://localhost:10200/seo/seo-failure-cases.html?status_code=403&extra_header=x-robots-tag:none',
     audits: {
       'viewport': {
         score: false,
@@ -68,7 +68,7 @@ module.exports = [
         score: false,
         details: {
           items: {
-            length: 1,
+            length: 2,
           },
         },
       },
