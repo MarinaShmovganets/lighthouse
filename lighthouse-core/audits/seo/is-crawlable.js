@@ -14,7 +14,7 @@ const ROBOTS_HEADER = 'x-robots-tag';
 const UNAVAILABLE_AFTER = 'unavailable_after';
 
 /**
- * Checks if given directive is a valid unavailable_after directive and if it's expired
+ * Checks if given directive is a valid unavailable_after directive and if content expired
  * @param {string} directive
  * @returns {boolean}
  */
@@ -60,7 +60,7 @@ class IsCrawlable extends Audit {
       name: 'is-crawlable',
       description: 'Page isn’t blocked from indexing',
       failureDescription: 'Page is blocked from indexing',
-      helpText: 'The “Robots” directives tell crawlers how your content should be indexed. ' +
+      helpText: 'The "Robots" directives tell crawlers how your content should be indexed. ' +
       '[Learn more](https://developers.google.com/search/reference/robots_meta_tag).',
       requiredArtifacts: ['MetaRobots'],
     };
