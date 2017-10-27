@@ -21,14 +21,14 @@ describe('Web Inspector lib', function() {
     assert.ok(WebInspector.Color);
   });
 
-  it('does not destroy setImmediate', done => {
+  it('does not polyfill setImmediate incorrectly', done => {
     const fakeArg = {
       foo() {},
     };
 
     setImmediate(function(arg) {
       try {
-        arg.foo();
+        arg.foo(); // make sure setImmediate passed the fakeArg
         done();
       } catch (err) {
         done(err);
