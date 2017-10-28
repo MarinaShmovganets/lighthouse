@@ -27,12 +27,13 @@ const Gatherer = require('../gatherer');
 function collectTagsThatBlockFirstPaint() {
   return new Promise((resolve, reject) => {
     try {
-      const tagList = [...document.querySelectorAll('link, head script[src]')]
+      const tagList = [...document.querySelectorAll('link, head script[src], script[type]')]
         .filter(tag => {
           if (tag.tagName === 'SCRIPT') {
             return !tag.hasAttribute('async') &&
                 !tag.hasAttribute('defer') &&
-                !/^data:/.test(tag.src);
+                !/^data:/.test(tag.src) &&
+                !(tag.getAttribute('type') === 'module');
           }
 
           // Filter stylesheet/HTML imports that block rendering.
