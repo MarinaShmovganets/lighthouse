@@ -31,7 +31,7 @@ function isUnavailable(directive) {
 }
 
 /**
- * Returns false if any of provided directives blocks page from being indexed
+ * Returns true if any of provided directives blocks page from being indexed
  * @param {string} directives
  * @returns {boolean}
  */
@@ -42,7 +42,7 @@ function hasBlockingDirective(directives) {
 }
 
 /**
- * Returns false if robots header specifies user agent (e.g. `googlebot: noindex`)
+ * Returns true if robots header specifies user agent (e.g. `googlebot: noindex`)
  * @param {string} directives
  * @returns {boolean}
  */

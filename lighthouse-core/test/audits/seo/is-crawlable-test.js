@@ -150,6 +150,7 @@ describe('SEO: Is page crawlable audit', () => {
     const mainResource = {
       responseHeaders: [
         {name: 'x-robots-tag', value: 'googlebot: unavailable_after: 25 Jun 2007 15:00:00 PST'},
+        {name: 'x-robots-tag', value: 'unavailable_after: 25 Jun 2045 15:00:00 PST'},
       ],
     };
     const artifacts = {
