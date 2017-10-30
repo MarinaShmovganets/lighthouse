@@ -177,7 +177,8 @@ class ReportUIFeatures {
       case 'copy':
         this.onCopyButtonClick();
         break;
-      case 'print':
+      case 'print-summary':
+        this.collapseAllDetails();
         this.closeExportDropdown();
         self.print();
         break;
