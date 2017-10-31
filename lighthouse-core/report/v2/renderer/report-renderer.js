@@ -117,7 +117,7 @@ class ReportRenderer {
   /**
    * Returns a div with a list of top-level warnings, or an empty div if no warnings.
    * @param {!ReportRenderer.ReportJSON} report
-   * @return {!DocumentFragment}
+   * @return {!Node}
    */
   _renderReportWarnings(report) {
     if (!report.runWarnings || report.runWarnings.length === 0) {
