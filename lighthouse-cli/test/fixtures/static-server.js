@@ -12,6 +12,7 @@ const path = require('path');
 const fs = require('fs');
 const parseQueryString = require('querystring').parse;
 const parseURL = require('url').parse;
+const HEADER_SAFELIST = new Set(['x-robots-tag']);
 
 const lhRootDirPath = path.join(__dirname, '../../../');
 
@@ -78,8 +79,11 @@ function requestHandler(request, response) {
         extraHeaders = Array.isArray(extraHeaders) ? extraHeaders : [extraHeaders];
 
         extraHeaders.forEach(header => {
-          const parts = header.split(':');
-          headers[parts[0]] = parts.slice(1).join(':');
+          const [headerName, ...headerValue] = header.split(':');
+
+          if (HEADER_SAFELIST.has(headerName.toLowerCase())) {
+            headers[headerName] = headerValue.join(':');
+          }
         });
       }
 
