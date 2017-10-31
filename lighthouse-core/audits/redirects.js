@@ -68,7 +68,7 @@ class Redirects extends Audit {
 
         return {
           // We award a passing grade if you only have 1 redirect
-          score: redirectRequests.length === 2 ? 100 : UnusedBytes.scoreForWastedMs(totalWastedMs),
+          score: redirectRequests.length <= 2 ? 100 : UnusedBytes.scoreForWastedMs(totalWastedMs),
           rawValue: totalWastedMs,
           displayValue: Util.formatMilliseconds(totalWastedMs, 1),
           extendedInfo: {
