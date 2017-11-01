@@ -32,7 +32,7 @@ describe('Images: aspect-ratio audit', () => {
           generateImage(
             {width: data.clientSize[0], height: data.clientSize[1]},
             {naturalWidth: data.naturalSize[0], naturalHeight: data.naturalSize[1]},
-            generateRecord(),
+            generateRecord({mimeType: data.mimeType}),
             data.props
           ),
         ],
@@ -128,6 +128,17 @@ describe('Images: aspect-ratio audit', () => {
     debugString: 'Invalid image sizing information https://google.com/logo.png',
     clientSize: [100, 100],
     naturalSize: [0, 0],
+    props: {
+      isCss: false,
+      usesObjectFit: false,
+    },
+  });
+
+  testImage('is an svg image', {
+    mimeType: 'image/svg',
+    rawValue: true,
+    clientSize: [],
+    naturalSize: [150, 150],
     props: {
       isCss: false,
       usesObjectFit: false,

@@ -73,6 +73,7 @@ class ImageAspectRatio extends Audit {
       // filter out images that don't have following properties
       // networkRecord, width, height, images that use `object-fit`: `cover` or `contain`
       return image.networkRecord &&
+        image.networkRecord.mimeType !== 'image/svg+xml' &&
         image.width &&
         image.height &&
         !image.usesObjectFit;
