@@ -135,7 +135,7 @@ describe('Images: aspect-ratio audit', () => {
   });
 
   testImage('is an svg image', {
-    mimeType: 'image/svg',
+    mimeType: 'image/svg+xml',
     rawValue: true,
     clientSize: [],
     naturalSize: [150, 150],
