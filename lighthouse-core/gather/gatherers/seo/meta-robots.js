@@ -15,7 +15,7 @@ class MetaRobots extends Gatherer {
   afterPass(options) {
     const driver = options.driver;
 
-    return driver.querySelector('head meta[name="robots"]')
+    return driver.querySelector('head meta[name="robots" i]')
       .then(node => node && node.getAttribute('content'));
   }
 }
