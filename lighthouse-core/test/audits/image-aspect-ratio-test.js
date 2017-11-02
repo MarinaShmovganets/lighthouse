@@ -32,7 +32,7 @@ describe('Images: aspect-ratio audit', () => {
           generateImage(
             {width: data.clientSize[0], height: data.clientSize[1]},
             {naturalWidth: data.naturalSize[0], naturalHeight: data.naturalSize[1]},
-            generateRecord({mimeType: data.mimeType}),
+            generateRecord(),
             data.props
           ),
         ],
@@ -134,14 +134,25 @@ describe('Images: aspect-ratio audit', () => {
     },
   });
 
-  testImage('is an svg image', {
-    mimeType: 'image/svg+xml',
-    rawValue: true,
-    clientSize: [],
-    naturalSize: [150, 150],
-    props: {
-      isCss: false,
-      usesObjectFit: false,
-    },
+  it('skips svg images', () => {
+    const result = ImageAspectRatioAudit.audit({
+      ImageUsage: [
+        generateImage(
+          {width: 150, height: 150},
+          {},
+          {
+            url: 'https://google.com/logo.png',
+            mimeType: 'image/svg+xml',
+          },
+          {
+            isCss: false,
+            usesObjectFit: false,
+          }
+        ),
+      ],
+    });
+
+    assert.strictEqual(result.rawValue, true, 'rawValue does not match');
+    assert.strictEqual(result.debugString, undefined, 'debugString does not match');
   });
 });
