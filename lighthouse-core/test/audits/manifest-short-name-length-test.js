@@ -1,17 +1,7 @@
 /**
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
@@ -22,52 +12,72 @@ const manifestParser = require('../../lib/manifest-parser');
 const EXAMPLE_MANIFEST_URL = 'https://example.com/manifest.json';
 const EXAMPLE_DOC_URL = 'https://example.com/index.html';
 
+const Runner = require('../../runner.js');
+
+function generateMockArtifacts() {
+  const computedArtifacts = Runner.instantiateComputedArtifacts();
+  const mockArtifacts = Object.assign({}, computedArtifacts, {
+    Manifest: null,
+  });
+  return mockArtifacts;
+}
+
 /* eslint-env mocha */
 
 describe('Manifest: short_name_length audit', () => {
   it('fails with no debugString if page had no manifest', () => {
-    const result = ManifestShortNameLengthAudit.audit({
-      Manifest: null
+    const artifacts = generateMockArtifacts();
+    artifacts.Manifest = null;
+
+    return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
+      assert.strictEqual(result.rawValue, false);
+      assert.strictEqual(result.debugString, undefined);
     });
-    assert.strictEqual(result.rawValue, false);
-    assert.strictEqual(result.debugString, undefined);
   });
 
   it('fails when an empty manifest is present', () => {
-    const Manifest = manifestParser('{}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-    const result = ManifestShortNameLengthAudit.audit({Manifest});
-    assert.equal(result.rawValue, false);
-    assert.equal(result.debugString, 'No short_name found in manifest.');
+    const artifacts = generateMockArtifacts();
+    artifacts.Manifest = manifestParser('{}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+    return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
+      assert.equal(result.rawValue, false);
+      assert.equal(result.debugString, 'No short_name found in manifest.');
+    });
   });
 
   it('fails when a manifest contains no short_name and too long name', () => {
+    const artifacts = generateMockArtifacts();
     const manifestSrc = JSON.stringify({
-      name: 'i\'m much longer than the recommended size'
+      name: 'i\'m much longer than the recommended size',
     });
-    const Manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-    const out = ManifestShortNameLengthAudit.audit({Manifest});
-    assert.equal(out.rawValue, false);
-    assert.notEqual(out.debugString, undefined);
+    artifacts.Manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+    return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
+      assert.equal(result.rawValue, false);
+      assert.notEqual(result.debugString, undefined);
+    });
   });
 
   // Need to disable camelcase check for dealing with short_name.
   /* eslint-disable camelcase */
   it('fails when a manifest contains a too long short_name', () => {
+    const artifacts = generateMockArtifacts();
     const manifestSrc = JSON.stringify({
-      short_name: 'i\'m much longer than the recommended size'
+      short_name: 'i\'m much longer than the recommended size',
     });
-    const Manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-    const out = ManifestShortNameLengthAudit.audit({Manifest});
-    assert.equal(out.rawValue, false);
-    assert.notEqual(out.debugString, undefined);
+    artifacts.Manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+    return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
+      assert.equal(result.rawValue, false);
+    });
   });
 
   it('succeeds when a manifest contains a short_name', () => {
+    const artifacts = generateMockArtifacts();
     const manifestSrc = JSON.stringify({
-      short_name: 'Lighthouse'
+      short_name: 'Lighthouse',
     });
-    const Manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-    return assert.equal(ManifestShortNameLengthAudit.audit({Manifest}).rawValue, true);
+    artifacts.Manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+    return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
+      assert.equal(result.rawValue, true);
+    });
   });
   /* eslint-enable camelcase */
 });

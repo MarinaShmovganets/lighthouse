@@ -1,19 +1,8 @@
 #!/usr/bin/env node
 /**
- * @license
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
@@ -22,13 +11,14 @@
 const path = require('path');
 const spawnSync = require('child_process').spawnSync;
 const yargs = require('yargs');
-const log = require('../../../lighthouse-core/lib/log');
+const log = require('lighthouse-logger');
 
 const DEFAULT_CONFIG_PATH = 'pwa-config';
 const DEFAULT_EXPECTATIONS_PATH = 'pwa-expectations';
 
 const PROTOCOL_TIMEOUT_EXIT_CODE = 67;
 const RETRIES = 3;
+const NUMERICAL_EXPECTATION_REGEXP = /^(<=?|>=?)(\d+)$/;
 
 
 /**
@@ -53,9 +43,10 @@ function resolveLocalOrCwd(payloadPath) {
  * Launch Chrome and do a full Lighthouse run.
  * @param {string} url
  * @param {string} configPath
+ * @param {string=} saveAssetsPath
  * @return {!LighthouseResults}
  */
-function runLighthouse(url, configPath) {
+function runLighthouse(url, configPath, saveAssetsPath) {
   const command = 'node';
   const args = [
     'lighthouse-cli/index.js',
@@ -63,8 +54,13 @@ function runLighthouse(url, configPath) {
     `--config-path=${configPath}`,
     '--output=json',
     '--quiet',
-    '--port=0'
+    '--port=0',
   ];
+
+  if (saveAssetsPath) {
+    args.push('--save-assets');
+    args.push(`--output-path=${saveAssetsPath}`);
+  }
 
   // Lighthouse sometimes times out waiting to for a connection to Chrome in CI.
   // Watch for this error and retry relaunching Chrome and running Lighthouse up
@@ -77,6 +73,7 @@ function runLighthouse(url, configPath) {
     }
 
     runCount++;
+    console.log(`${log.dim}$ ${command} ${args.join(' ')} ${log.reset}`);
     runResults = spawnSync(command, args, {encoding: 'utf8', stdio: ['pipe', 'pipe', 'inherit']});
   } while (runResults.status === PROTOCOL_TIMEOUT_EXIT_CODE && runCount <= RETRIES);
 
@@ -89,7 +86,45 @@ function runLighthouse(url, configPath) {
     process.exit(runResults.status);
   }
 
+  if (saveAssetsPath) {
+    // If assets were saved, the JSON output was written to the specified path instead of stdout
+    return require(resolveLocalOrCwd(saveAssetsPath));
+  }
+
   return JSON.parse(runResults.stdout);
+}
+
+/**
+ * Checks if the actual value matches the expectation. Does not recursively search. This supports
+ *    - Greater than/less than operators, e.g. "<100", ">90"
+ *    - Regular expressions
+ *    - Strict equality
+ *
+ * @param {*} actual
+ * @param {*} expected
+ * @return {boolean}
+ */
+function matchesExpectation(actual, expected) {
+  if (typeof actual === 'number' && NUMERICAL_EXPECTATION_REGEXP.test(expected)) {
+    const parts = expected.match(NUMERICAL_EXPECTATION_REGEXP);
+    const operator = parts[1];
+    const number = parseInt(parts[2]);
+    switch (operator) {
+      case '>':
+        return actual > number;
+      case '>=':
+        return actual >= number;
+      case '<':
+        return actual < number;
+      case '<=':
+        return actual <= number;
+    }
+  } else if (typeof actual === 'string' && expected instanceof RegExp && expected.test(actual)) {
+    return true;
+  } else {
+    // Strict equality check, plus NaN equivalence.
+    return Object.is(actual, expected);
+  }
 }
 
 /**
@@ -106,18 +141,17 @@ function runLighthouse(url, configPath) {
  * @return {({path: string, actual: *, expected: *}|null)}
  */
 function findDifference(path, actual, expected) {
-  // Strict equality check, plus NaN equivalence.
-  if (Object.is(actual, expected)) {
+  if (matchesExpectation(actual, expected)) {
     return null;
   }
 
   // If they aren't both an object we can't recurse further, so this is the difference.
   if (actual === null || expected === null || typeof actual !== 'object' ||
-      typeof expected !== 'object') {
+      typeof expected !== 'object' || expected instanceof RegExp) {
     return {
       path,
       actual,
-      expected
+      expected,
     };
   }
 
@@ -129,7 +163,7 @@ function findDifference(path, actual, expected) {
     const expectedValue = expected[key];
 
     if (!(key in actual)) {
-      return {keyPath, undefined, expectedValue};
+      return {path: keyPath, actual: undefined, expected: expectedValue};
     }
 
     const actualValue = actual[key];
@@ -166,7 +200,7 @@ function collateResults(actual, expected) {
       actual: actualResult,
       expected: expectedResult,
       equal: !diff,
-      diff
+      diff,
     };
   });
 
@@ -175,9 +209,9 @@ function collateResults(actual, expected) {
       category: 'final url',
       actual: actual.url,
       expected: expected.url,
-      equal: actual.url === expected.url
+      equal: actual.url === expected.url,
     },
-    audits: collatedAudits
+    audits: collatedAudits,
   };
 }
 
@@ -232,7 +266,7 @@ function report(results) {
 
   return {
     passed: correctCount,
-    failed: failedCount
+    failed: failedCount,
   };
 }
 
@@ -240,7 +274,8 @@ const cli = yargs
   .help('help')
   .describe({
     'config-path': 'The path to the config JSON file',
-    'expectations-path': 'The path to the expected audit results file'
+    'expectations-path': 'The path to the expected audit results file',
+    'save-assets-path': 'Saves assets to the named path if set',
   })
   .default('config-path', DEFAULT_CONFIG_PATH)
   .default('expectations-path', DEFAULT_EXPECTATIONS_PATH)
@@ -255,7 +290,7 @@ let passingCount = 0;
 let failingCount = 0;
 expectations.forEach(expected => {
   console.log(`Checking '${expected.initialUrl}'...`);
-  const results = runLighthouse(expected.initialUrl, configPath);
+  const results = runLighthouse(expected.initialUrl, configPath, cli['save-assets-path']);
   const collated = collateResults(results, expected);
   const counts = report(collated);
   passingCount += counts.passed;

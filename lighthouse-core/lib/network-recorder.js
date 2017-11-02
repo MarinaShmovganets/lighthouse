@@ -1,26 +1,19 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
 const NetworkManager = require('./web-inspector').NetworkManager;
 const EventEmitter = require('events').EventEmitter;
-const log = require('../lib/log.js');
+const log = require('lighthouse-logger');
 
 class NetworkRecorder extends EventEmitter {
+  /**
+   * Creates an instance of NetworkRecorder.
+   * @param {!Array} recordArray
+   */
   constructor(recordArray) {
     super();
 
@@ -34,14 +27,6 @@ class NetworkRecorder extends EventEmitter {
         this.onRequestStarted.bind(this));
     this.networkManager.addEventListener(this.EventTypes.RequestFinished,
         this.onRequestFinished.bind(this));
-
-    this.onRequestWillBeSent = this.onRequestWillBeSent.bind(this);
-    this.onRequestServedFromCache = this.onRequestServedFromCache.bind(this);
-    this.onResponseReceived = this.onResponseReceived.bind(this);
-    this.onDataReceived = this.onDataReceived.bind(this);
-    this.onLoadingFinished = this.onLoadingFinished.bind(this);
-    this.onLoadingFailed = this.onLoadingFailed.bind(this);
-    this.onResourceChangedPriority = this.onResourceChangedPriority.bind(this);
   }
 
   get EventTypes() {
@@ -56,13 +41,18 @@ class NetworkRecorder extends EventEmitter {
     return this.activeRequestCount() === 0;
   }
 
+  is2Idle() {
+    return this.activeRequestCount() <= 2;
+  }
+
   /**
-   * Listener for the NetworkManager's RequestStarted event, which includes both
+   * Listener for the DevTools SDK NetworkManager's RequestStarted event, which includes both
    * web socket and normal request creation.
    * @private
    */
-  onRequestStarted() {
+  onRequestStarted(request) {
     this.startedRequestCount++;
+    this._records.push(request.data);
 
     const activeCount = this.activeRequestCount();
     log.verbose('NetworkRecorder', `Request started. ${activeCount} requests in progress` +
@@ -73,18 +63,21 @@ class NetworkRecorder extends EventEmitter {
     if (activeCount === 1) {
       this.emit('networkbusy');
     }
+
+    // If exactly three requests in progress, we've transitioned from 2-idle to 2-busy.
+    if (activeCount === 3) {
+      this.emit('network-2-busy');
+    }
   }
 
   /**
-   * Listener for the NetworkManager's RequestFinished event, which includes
-   * request finish, failure, and redirect, as well as the closing of web
-   * sockets.
+   * Listener for the DevTools SDK NetworkManager's RequestFinished event, which includes
+   * request finish, failure, and redirect, as well as the closing of web sockets.
    * @param {!WebInspector.NetworkRequest} request
    * @private
    */
   onRequestFinished(request) {
     this.finishedRequestCount++;
-    this._records.push(request.data);
     this.emit('requestloaded', request.data);
 
     const activeCount = this.activeRequestCount();
@@ -96,8 +89,13 @@ class NetworkRecorder extends EventEmitter {
     if (this.isIdle()) {
       this.emit('networkidle');
     }
+
+    if (this.is2Idle()) {
+      this.emit('network-2-idle');
+    }
   }
 
+  // The below methods proxy network data into the DevTools SDK network layer.
   // There are a few differences between the debugging protocol naming and
   // the parameter naming used in NetworkManager. These are noted below.
 
@@ -144,26 +142,39 @@ class NetworkRecorder extends EventEmitter {
         data.newPriority, data.timestamp);
   }
 
-  static recordsFromLogs(logs) {
+  /**
+   * Routes network events to their handlers, so we can construct networkRecords
+   * @param {!string} method
+   * @param {!Object<string, *>=} params
+   */
+  dispatch(method, params) {
+    if (!method.startsWith('Network.')) {
+      return;
+    }
+
+    switch (method) {
+      case 'Network.requestWillBeSent': return this.onRequestWillBeSent(params);
+      case 'Network.requestServedFromCache': return this.onRequestServedFromCache(params);
+      case 'Network.responseReceived': return this.onResponseReceived(params);
+      case 'Network.dataReceived': return this.onDataReceived(params);
+      case 'Network.loadingFinished': return this.onLoadingFinished(params);
+      case 'Network.loadingFailed': return this.onLoadingFailed(params);
+      case 'Network.resourceChangedPriority': return this.onResourceChangedPriority(params);
+      default: return;
+    }
+  }
+
+  /**
+   * Construct network records from a log of devtools protocol messages.
+   * @param {!DevtoolsLog} devtoolsLog
+   * @return {!Array<!WebInspector.NetworkRequest>}
+   */
+  static recordsFromLogs(devtoolsLog) {
     const records = [];
     const nr = new NetworkRecorder(records);
-    const dispatcher = method => {
-      switch (method) {
-        case 'Network.requestWillBeSent': return nr.onRequestWillBeSent;
-        case 'Network.requestServedFromCache': return nr.onRequestServedFromCache;
-        case 'Network.responseReceived': return nr.onResponseReceived;
-        case 'Network.dataReceived': return nr.onDataReceived;
-        case 'Network.loadingFinished': return nr.onLoadingFinished;
-        case 'Network.loadingFailed': return nr.onLoadingFailed;
-        case 'Network.resourceChangedPriority': return nr.onResourceChangedPriority;
-        default: return () => {};
-      }
-    };
-
-    logs.forEach(networkEvent => {
-      dispatcher(networkEvent.method)(networkEvent.params);
+    devtoolsLog.forEach(message => {
+      nr.dispatch(message.method, message.params);
     });
-
     return records;
   }
 }

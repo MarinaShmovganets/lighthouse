@@ -1,17 +1,7 @@
 /**
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
@@ -27,7 +17,7 @@ const mockDriver = {
   },
   goOnline() {
     return Promise.resolve();
-  }
+  },
 };
 
 describe('Offline gatherer', () => {
@@ -35,11 +25,11 @@ describe('Offline gatherer', () => {
     const offlineGather = new OfflineGather();
     const options = {
       url: 'https://do-not-match.com/',
-      driver: mockDriver
+      driver: mockDriver,
     };
     const optionsWithQueryString = {
       url: 'https://ifixit-pwa.appspot.com/?history',
-      driver: mockDriver
+      driver: mockDriver,
     };
 
     return Promise.all([
@@ -56,11 +46,11 @@ describe('Offline gatherer', () => {
     const offlineGather = new OfflineGather();
     const options = {
       url: 'https://ifixit-pwa.appspot.com/',
-      driver: mockDriver
+      driver: mockDriver,
     };
     const optionsWithFragment = {
       url: 'https://ifixit-pwa.appspot.com/#/history',
-      driver: mockDriver
+      driver: mockDriver,
     };
     return Promise.all([
       offlineGather.afterPass(options, tracingData).then(artifact => {

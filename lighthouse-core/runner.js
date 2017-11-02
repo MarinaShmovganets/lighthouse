@@ -1,30 +1,20 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
 const Driver = require('./gather/driver.js');
 const GatherRunner = require('./gather/gather-runner');
-const Aggregate = require('./aggregator/aggregate');
+const ReportGeneratorV2 = require('./report/v2/report-generator');
 const Audit = require('./audits/audit');
 const emulation = require('./lib/emulation');
-const log = require('./lib/log');
+const log = require('lighthouse-logger');
 const fs = require('fs');
 const path = require('path');
 const URL = require('./lib/url-shim');
+const Sentry = require('./lib/sentry');
 
 class Runner {
   static run(connection, opts) {
@@ -32,6 +22,9 @@ class Runner {
     opts.flags = opts.flags || {};
 
     const config = opts.config;
+
+    // List of top-level warnings for this Lighthouse run.
+    const lighthouseRunWarnings = [];
 
     // save the initialUrl provided by the user
     opts.initialUrl = opts.url;
@@ -46,6 +39,13 @@ class Runner {
       const err = new Error('The url provided should have a proper protocol and hostname.');
       return Promise.reject(err);
     }
+
+    const sentryContext = Sentry.getContext();
+    Sentry.captureBreadcrumb({
+      message: 'Run started',
+      category: 'lifecycle',
+      data: sentryContext && sentryContext.extra,
+    });
 
     // If the URL isn't https and is also not localhost complain to the user.
     if (parsedURL.protocol !== 'https:' && parsedURL.hostname !== 'localhost') {
@@ -69,14 +69,22 @@ class Runner {
     // to check that there are artifacts specified in the config, and throw if not.
     if (validPassesAndAudits || validArtifactsAndAudits) {
       if (validPassesAndAudits) {
+        // Set up the driver and run gatherers.
         opts.driver = opts.driverMock || new Driver(connection);
-        // Finally set up the driver to gather.
         run = run.then(_ => GatherRunner.run(config.passes, opts));
       } else if (validArtifactsAndAudits) {
-        run = run.then(_ => {
-          return Object.assign(GatherRunner.instantiateComputedArtifacts(), config.artifacts);
-        });
+        run = run.then(_ => config.artifacts);
       }
+
+      run = run.then(artifacts => {
+        // Bring in lighthouseRunWarnings from gathering stage.
+        if (artifacts.LighthouseRunWarnings) {
+          lighthouseRunWarnings.push(...artifacts.LighthouseRunWarnings);
+        }
+
+        // And add computed artifacts.
+        return Object.assign({}, artifacts, Runner.instantiateComputedArtifacts());
+      });
 
       // Basic check that the traces (gathered or loaded) are valid.
       run = run.then(artifacts => {
@@ -87,6 +95,11 @@ class Runner {
           }
         }
 
+        return artifacts;
+      });
+
+      run = run.then(artifacts => {
+        log.log('status', 'Analyzing and running audits...');
         return artifacts;
       });
 
@@ -105,12 +118,12 @@ class Runner {
     } else if (config.auditResults) {
       // If there are existing audit results, surface those here.
       // Instantiate and return artifacts for consistency.
-      const artifacts = Object.assign(GatherRunner.instantiateComputedArtifacts(),
-                                      config.artifacts || {});
+      const artifacts = Object.assign({}, config.artifacts || {},
+          Runner.instantiateComputedArtifacts());
       run = run.then(_ => {
         return {
           artifacts,
-          auditResults: config.auditResults
+          auditResults: config.auditResults,
         };
       });
     } else {
@@ -119,31 +132,44 @@ class Runner {
       return Promise.reject(err);
     }
 
-    // Format and aggregate results before returning.
+    // Format and generate JSON report before returning.
     run = run
       .then(runResults => {
-        const formattedAudits = runResults.auditResults.reduce((formatted, audit) => {
-          formatted[audit.name] = audit;
-          return formatted;
+        log.log('status', 'Generating results...');
+
+        const resultsById = runResults.auditResults.reduce((results, audit) => {
+          results[audit.name] = audit;
+          return results;
         }, {});
 
-        // Only run aggregations if needed.
-        let aggregations = [];
-        if (config.aggregations) {
-          aggregations = config.aggregations.map(
-            a => Aggregate.aggregate(a, runResults.auditResults));
+        let reportCategories = [];
+        let score = 0;
+        if (config.categories) {
+          const reportGenerator = new ReportGeneratorV2();
+          const report = reportGenerator.generateReportJson(config, resultsById);
+          reportCategories = report.categories;
+          score = report.score;
         }
 
         return {
+          userAgent: runResults.artifacts.UserAgent,
           lighthouseVersion: require('../package').version,
           generatedTime: (new Date()).toJSON(),
           initialUrl: opts.initialUrl,
           url: opts.url,
-          audits: formattedAudits,
+          runWarnings: lighthouseRunWarnings,
+          audits: resultsById,
           artifacts: runResults.artifacts,
           runtimeConfig: Runner.getRuntimeConfig(opts.flags),
-          aggregations
+          score,
+          reportCategories,
+          reportGroups: config.groups,
         };
+      })
+      .catch(err => {
+        return Sentry.captureException(err).then(() => {
+          throw err;
+        });
       });
 
     return run;
@@ -181,21 +207,34 @@ class Runner {
         // have thrown). Output error result on behalf of audit.
         if (artifacts[artifactName] instanceof Error) {
           const artifactError = artifacts[artifactName];
+          Sentry.captureException(artifactError, {
+            tags: {gatherer: artifactName},
+            level: 'warning',
+          });
+
           log.warn('Runner', `${artifactName} gatherer, required by audit ${audit.meta.name},` +
             ` encountered an error: ${artifactError.message}`);
-          throw new Error(
+
+          // Create a friendlier display error and mark it as expected to avoid duplicates in Sentry
+          const error = new Error(
               `Required ${artifactName} gatherer encountered an error: ${artifactError.message}`);
+          error.expected = true;
+          throw error;
         }
       }
       // all required artifacts are in good shape, so we proceed
       return audit.audit(artifacts);
-    }).catch(err => {
+    // Fill remaining audit result fields.
+    }).then(auditResult => Audit.generateAuditResult(audit, auditResult))
+    .catch(err => {
+      log.warn(audit.meta.name, `Caught exception: ${err.message}`);
       if (err.fatal) {
         throw err;
       }
 
+      Sentry.captureException(err, {tags: {audit: audit.meta.name}, level: 'warning'});
       // Non-fatal error become error audit result.
-      return audit.generateErrorAuditResult('Audit error: ' + err.message);
+      return Audit.generateErrorAuditResult(audit, 'Audit error: ' + err.message);
     }).then(result => {
       log.verbose('statusEnd', status);
       return result;
@@ -209,17 +248,22 @@ class Runner {
   static getAuditList() {
     const ignoredFiles = [
       'audit.js',
+      'violation-audit.js',
       'accessibility/axe-audit.js',
-      'byte-efficiency/byte-efficiency-audit.js'
+      'multi-check-audit.js',
+      'byte-efficiency/byte-efficiency-audit.js',
+      'manual/manual-audit.js',
     ];
 
     const fileList = [
       ...fs.readdirSync(path.join(__dirname, './audits')),
       ...fs.readdirSync(path.join(__dirname, './audits/dobetterweb')).map(f => `dobetterweb/${f}`),
+      ...fs.readdirSync(path.join(__dirname, './audits/seo')).map(f => `seo/${f}`),
       ...fs.readdirSync(path.join(__dirname, './audits/accessibility'))
           .map(f => `accessibility/${f}`),
       ...fs.readdirSync(path.join(__dirname, './audits/byte-efficiency'))
-          .map(f => `byte-efficiency/${f}`)
+          .map(f => `byte-efficiency/${f}`),
+      ...fs.readdirSync(path.join(__dirname, './audits/manual')).map(f => `manual/${f}`),
     ];
     return fileList.filter(f => {
       return /\.js$/.test(f) && !ignoredFiles.includes(f);
@@ -233,10 +277,33 @@ class Runner {
   static getGathererList() {
     const fileList = [
       ...fs.readdirSync(path.join(__dirname, './gather/gatherers')),
+      ...fs.readdirSync(path.join(__dirname, './gather/gatherers/seo')).map(f => `seo/${f}`),
       ...fs.readdirSync(path.join(__dirname, './gather/gatherers/dobetterweb'))
-          .map(f => `dobetterweb/${f}`)
+          .map(f => `dobetterweb/${f}`),
     ];
     return fileList.filter(f => /\.js$/.test(f) && f !== 'gatherer.js').sort();
+  }
+
+  /**
+   * @return {!ComputedArtifacts}
+   */
+  static instantiateComputedArtifacts() {
+    const computedArtifacts = {};
+    const filenamesToSkip = [
+      'computed-artifact.js', // the base class which other artifacts inherit
+    ];
+
+    require('fs').readdirSync(__dirname + '/gather/computed').forEach(function(filename) {
+      if (filenamesToSkip.includes(filename)) return;
+
+      // Drop `.js` suffix to keep browserify import happy.
+      filename = filename.replace(/\.js$/, '');
+      const ArtifactClass = require('./gather/computed/' + filename);
+      const artifact = new ArtifactClass(computedArtifacts);
+      // define the request* function that will be exposed on `artifacts`
+      computedArtifacts['request' + artifact.name] = artifact.request.bind(artifact);
+    });
+    return computedArtifacts;
   }
 
   /**
@@ -296,18 +363,18 @@ class Runner {
       {
         name: 'Device Emulation',
         enabled: !flags.disableDeviceEmulation,
-        description: emulationDesc['deviceEmulation']
+        description: emulationDesc['deviceEmulation'],
       },
       {
         name: 'Network Throttling',
         enabled: !flags.disableNetworkThrottling,
-        description: emulationDesc['networkThrottling']
+        description: emulationDesc['networkThrottling'],
       },
       {
         name: 'CPU Throttling',
         enabled: !flags.disableCpuThrottling,
-        description: emulationDesc['cpuThrottling']
-      }
+        description: emulationDesc['cpuThrottling'],
+      },
     ];
 
     return {environment, blockedUrlPatterns: flags.blockedUrlPatterns || []};

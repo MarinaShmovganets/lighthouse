@@ -1,18 +1,7 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
@@ -23,7 +12,7 @@ const ALLOWED_DISPLAY_VALUES = [
   'fullscreen',
   'standalone',
   'minimal-ui',
-  'browser'
+  'browser',
 ];
 /**
  * All display-mode fallbacks, including when unset, lead to default display mode 'browser'.
@@ -39,7 +28,7 @@ const ALLOWED_ORIENTATION_VALUES = [
   'portrait-primary',
   'portrait-secondary',
   'landscape-primary',
-  'landscape-secondary'
+  'landscape-secondary',
 ];
 
 function parseString(raw, trim) {
@@ -58,7 +47,7 @@ function parseString(raw, trim) {
   return {
     raw,
     value,
-    debugString
+    debugString,
   };
 }
 
@@ -112,7 +101,7 @@ function parseStartUrl(jsonInput, manifestUrl, documentUrl) {
     return {
       raw,
       value: documentUrl,
-      debugString: 'ERROR: start_url string empty'
+      debugString: 'ERROR: start_url string empty',
     };
   }
   const parsedAsString = parseString(raw);
@@ -130,7 +119,7 @@ function parseStartUrl(jsonInput, manifestUrl, documentUrl) {
     return {
       raw,
       value: documentUrl,
-      debugString: 'ERROR: invalid start_url relative to ${manifestUrl}'
+      debugString: 'ERROR: invalid start_url relative to ${manifestUrl}',
     };
   }
 
@@ -139,13 +128,13 @@ function parseStartUrl(jsonInput, manifestUrl, documentUrl) {
     return {
       raw,
       value: documentUrl,
-      debugString: 'ERROR: start_url must be same-origin as document'
+      debugString: 'ERROR: start_url must be same-origin as document',
     };
   }
 
   return {
     raw,
-    value: startUrl
+    value: startUrl,
   };
 }
 
@@ -196,7 +185,7 @@ function parseIcon(raw, manifestUrl) {
   const density = {
     raw: raw.density,
     value: 1,
-    debugString: undefined
+    debugString: undefined,
   };
   if (density.raw !== undefined) {
     density.value = parseFloat(density.raw);
@@ -219,9 +208,9 @@ function parseIcon(raw, manifestUrl) {
       src,
       type,
       density,
-      sizes
+      sizes,
     },
-    debugString: undefined
+    debugString: undefined,
   };
 }
 
@@ -232,7 +221,7 @@ function parseIcons(jsonInput, manifestUrl) {
     return {
       raw,
       value: [],
-      debugString: undefined
+      debugString: undefined,
     };
   }
 
@@ -240,7 +229,7 @@ function parseIcons(jsonInput, manifestUrl) {
     return {
       raw,
       value: [],
-      debugString: 'ERROR: \'icons\' expected to be an array but is not.'
+      debugString: 'ERROR: \'icons\' expected to be an array but is not.',
     };
   }
 
@@ -257,7 +246,7 @@ function parseIcons(jsonInput, manifestUrl) {
   return {
     raw,
     value,
-    debugString: undefined
+    debugString: undefined,
   };
 }
 
@@ -282,9 +271,9 @@ function parseApplication(raw) {
     value: {
       platform,
       id,
-      url: appUrl
+      url: appUrl,
     },
-    debugString: undefined
+    debugString: undefined,
   };
 }
 
@@ -295,7 +284,7 @@ function parseRelatedApplications(jsonInput) {
     return {
       raw,
       value: undefined,
-      debugString: undefined
+      debugString: undefined,
     };
   }
 
@@ -303,7 +292,7 @@ function parseRelatedApplications(jsonInput) {
     return {
       raw,
       value: undefined,
-      debugString: 'ERROR: \'related_applications\' expected to be an array but is not.'
+      debugString: 'ERROR: \'related_applications\' expected to be an array but is not.',
     };
   }
 
@@ -317,7 +306,7 @@ function parseRelatedApplications(jsonInput) {
   return {
     raw,
     value,
-    debugString: undefined
+    debugString: undefined,
   };
 }
 
@@ -338,7 +327,7 @@ function parsePreferRelatedApplications(jsonInput) {
   return {
     raw,
     value,
-    debugString
+    debugString,
   };
 }
 
@@ -370,7 +359,7 @@ function parse(string, manifestUrl, documentUrl) {
     return {
       raw: string,
       value: undefined,
-      debugString: 'ERROR: file isn\'t valid JSON: ' + e
+      debugString: 'ERROR: file isn\'t valid JSON: ' + e,
     };
   }
 
@@ -385,14 +374,14 @@ function parse(string, manifestUrl, documentUrl) {
     related_applications: parseRelatedApplications(jsonInput),
     prefer_related_applications: parsePreferRelatedApplications(jsonInput),
     theme_color: parseThemeColor(jsonInput),
-    background_color: parseBackgroundColor(jsonInput)
+    background_color: parseBackgroundColor(jsonInput),
   };
   /* eslint-enable camelcase */
 
   return {
     raw: string,
     value: manifest,
-    debugString: undefined
+    debugString: undefined,
   };
 }
 

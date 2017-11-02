@@ -1,24 +1,12 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-
 'use strict';
 
 const Audit = require('./audit');
-const Formatter = require('../formatters/formatter');
+const Util = require('../report/v2/renderer/util');
 
 class UserTimings extends Audit {
   /**
@@ -26,14 +14,13 @@ class UserTimings extends Audit {
    */
   static get meta() {
     return {
-      category: 'Performance',
       name: 'user-timings',
       description: 'User Timing marks and measures',
       helpText: 'Consider instrumenting your app with the User Timing API to create custom, ' +
           'real-world measurements of key user experiences. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/user-timing).',
       requiredArtifacts: ['traces'],
-      informative: true
+      informative: true,
     };
   }
 
@@ -68,7 +55,7 @@ class UserTimings extends Audit {
           name: ut.name,
           isMark: true,
           args: ut.args,
-          startTime: ut.ts
+          startTime: ut.ts,
         });
 
       // Beginning of measure event, keep track of this events start time
@@ -82,7 +69,7 @@ class UserTimings extends Audit {
           isMark: false,
           args: ut.args,
           startTime: measuresStartTimes[ut.name],
-          endTime: ut.ts
+          endTime: ut.ts,
         });
       }
     });
@@ -123,15 +110,43 @@ class UserTimings extends Audit {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     return artifacts.requestTraceOfTab(trace).then(tabTrace => {
       const userTimings = this.filterTrace(tabTrace).filter(UserTimings.excludeBlacklisted);
-
-      return UserTimings.generateAuditResult({
-        rawValue: true,
-        displayValue: userTimings.length,
-        extendedInfo: {
-          formatter: Formatter.SUPPORTED_FORMATS.USER_TIMINGS,
-          value: userTimings
+      const tableRows = userTimings.map(item => {
+        const time = item.isMark ? item.startTime : item.duration;
+        return {
+          name: item.name,
+          timingType: item.isMark ? 'Mark' : 'Measure',
+          time: Util.formatMilliseconds(time, 0.001),
+          timeAsNumber: time,
+        };
+      }).sort((itemA, itemB) => {
+        if (itemA.timingType === itemB.timingType) {
+          // If both items are the same type, sort in ascending order by time
+          return itemA.timeAsNumber - itemB.timeAsNumber;
+        } else if (itemA.timingType === 'Measure') {
+          // Put measures before marks
+          return -1;
+        } else {
+          return 1;
         }
       });
+
+      const headings = [
+        {key: 'name', itemType: 'text', text: 'Name'},
+        {key: 'timingType', itemType: 'text', text: 'Type'},
+        {key: 'time', itemType: 'text', text: 'Time'},
+      ];
+
+      const details = Audit.makeTableDetails(headings, tableRows);
+
+      return {
+        // mark the audit as failed if there are user timings to display
+        rawValue: userTimings.length === 0,
+        displayValue: userTimings.length,
+        extendedInfo: {
+          value: userTimings,
+        },
+        details,
+      };
     });
   }
 }

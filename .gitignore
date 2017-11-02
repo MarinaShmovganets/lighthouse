@@ -7,17 +7,21 @@ lighthouse-extension/dist
 lighthouse-core/third_party/src
 **/pages/scripts/lighthouse-report.js
 coverage
+lcov.info
+.nyc_output
 
 lighthouse-cli/results
-lighthouse-cli/performance-experiment/experiment-database/experiment-data*
-results
 results.html
 last-run-results.html
 
 *.trace.json
 *.devtoolslog.json
 *.screenshots.html
+*.screenshots.json
 *.report.html
+*.report.dom.html
+*.report.json
+*.report.pretty
 *.artifacts.log
 
 closure-error.log
@@ -35,3 +39,5 @@ lighthouse-cli/types/*.map
 /chrome-linux/
 /chrome-win32/
 /chrome.zip
+
+plots/out**

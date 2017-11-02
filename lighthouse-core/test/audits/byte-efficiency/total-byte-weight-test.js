@@ -1,22 +1,13 @@
 /**
- * Copyright 2017 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2017 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
 const TotalByteWeight = require('../../../audits/byte-efficiency/total-byte-weight.js');
 const assert = require('assert');
+const NBSP = '\xa0';
 
 /* eslint-env mocha */
 
@@ -35,8 +26,9 @@ function generateArtifacts(records) {
     records = records.map(args => generateRequest(...args));
   }
   return {
-    networkRecords: {defaultPass: records},
-    requestNetworkThroughput: () => Promise.resolve(1024)
+    devtoolsLogs: {defaultPass: []},
+    requestNetworkRecords: () => Promise.resolve(records),
+    requestNetworkThroughput: () => Promise.resolve(1024),
   };
 }
 
@@ -51,9 +43,10 @@ describe('Total byte weight audit', () => {
     return TotalByteWeight.audit(artifacts).then(result => {
       assert.strictEqual(result.rawValue, 150 * 1024);
       assert.strictEqual(result.score, 100);
-      const results = result.extendedInfo.value.results;
+      const results = result.details.items;
       assert.strictEqual(results.length, 3);
-      assert.strictEqual(results[0].totalBytes, 70 * 1024, 'results are sorted');
+      assert.strictEqual(result.extendedInfo.value.totalCompletedRequests, 3);
+      assert.strictEqual(results[0][1].text, `70${NBSP}KB`, 'results are sorted');
     });
   });
 
@@ -75,8 +68,9 @@ describe('Total byte weight audit', () => {
     return TotalByteWeight.audit(artifacts).then(result => {
       assert.ok(40 < result.score && result.score < 60, 'score is around 50');
       assert.strictEqual(result.rawValue, 4180 * 1024);
-      const results = result.extendedInfo.value.results;
+      const results = result.details.items;
       assert.strictEqual(results.length, 10, 'results are clipped at top 10');
+      assert.strictEqual(result.extendedInfo.value.totalCompletedRequests, 11);
     });
   });
 

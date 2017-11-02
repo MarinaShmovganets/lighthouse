@@ -1,23 +1,13 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
 const fs = require('fs');
-const log = require('../../lighthouse-core/lib/log.js');
+const log = require('lighthouse-logger');
+const stream = require('stream');
 const stringifySafe = require('json-stringify-safe');
 const Metrics = require('./traces/pwmetrics-events');
 
@@ -96,7 +86,7 @@ function prepareAssets(artifacts, audits) {
     return chain.then(_ => artifacts.requestScreenshots(trace))
       .then(screenshots => {
         const traceData = Object.assign({}, trace);
-        const html = screenshotDump(screenshots);
+        const screenshotsHTML = screenshotDump(screenshots);
 
         if (audits) {
           const evts = new Metrics(traceData.traceEvents, audits).generateFakeEvents();
@@ -105,11 +95,74 @@ function prepareAssets(artifacts, audits) {
         assets.push({
           traceData,
           devtoolsLog,
-          html
+          screenshotsHTML,
+          screenshots,
         });
       });
   }, Promise.resolve())
     .then(_ => assets);
+}
+
+/**
+ * Generates a JSON representation of traceData line-by-line to avoid OOM due to
+ * very large traces.
+ * @param {{traceEvents: !Array}} traceData
+ * @return {!Iterator<string>}
+ */
+function* traceJsonGenerator(traceData) {
+  const keys = Object.keys(traceData);
+
+  yield '{\n';
+
+  // Stringify and emit trace events separately to avoid a giant string in memory.
+  yield '"traceEvents": [\n';
+  if (traceData.traceEvents.length > 0) {
+    const eventsIterator = traceData.traceEvents[Symbol.iterator]();
+    // Emit first item manually to avoid a trailing comma.
+    const firstEvent = eventsIterator.next().value;
+    yield `  ${JSON.stringify(firstEvent)}`;
+    for (const event of eventsIterator) {
+      yield `,\n  ${JSON.stringify(event)}`;
+    }
+  }
+  yield '\n]';
+
+  // Emit the rest of the object (usually just `metadata`)
+  if (keys.length > 1) {
+    for (const key of keys) {
+      if (key === 'traceEvents') continue;
+
+      yield `,\n"${key}": ${JSON.stringify(traceData[key], null, 2)}`;
+    }
+  }
+
+  yield '}\n';
+}
+
+/**
+ * Save a trace as JSON by streaming to disk at traceFilename.
+ * @param {{traceEvents: !Array}} traceData
+ * @param {string} traceFilename
+ * @return {!Promise<undefined>}
+ */
+function saveTrace(traceData, traceFilename) {
+  return new Promise((resolve, reject) => {
+    const traceIter = traceJsonGenerator(traceData);
+    // A stream that pulls in the next traceJsonGenerator chunk as writeStream
+    // reads from it. Closes stream with null when iteration is complete.
+    const traceStream = new stream.Readable({
+      read() {
+        const next = traceIter.next();
+        this.push(next.done ? null : next.value);
+      },
+    });
+
+    const writeStream = fs.createWriteStream(traceFilename);
+    writeStream.on('finish', resolve);
+    writeStream.on('error', reject);
+
+    traceStream.pipe(writeStream);
+  });
 }
 
 /**
@@ -121,24 +174,31 @@ function prepareAssets(artifacts, audits) {
  */
 function saveAssets(artifacts, audits, pathWithBasename) {
   return prepareAssets(artifacts, audits).then(assets => {
-    assets.forEach((data, index) => {
-      const traceFilename = `${pathWithBasename}-${index}.trace.json`;
-      fs.writeFileSync(traceFilename, JSON.stringify(data.traceData, null, 2));
-      log.log('trace file saved to disk', traceFilename);
-
+    return Promise.all(assets.map((data, index) => {
       const devtoolsLogFilename = `${pathWithBasename}-${index}.devtoolslog.json`;
       fs.writeFileSync(devtoolsLogFilename, JSON.stringify(data.devtoolsLog, null, 2));
-      log.log('devtools log saved to disk', devtoolsLogFilename);
+      log.log('saveAssets', 'devtools log saved to disk: ' + devtoolsLogFilename);
 
-      const screenshotsFilename = `${pathWithBasename}-${index}.screenshots.html`;
-      fs.writeFileSync(screenshotsFilename, data.html);
-      log.log('screenshots saved to disk', screenshotsFilename);
-    });
+      const screenshotsHTMLFilename = `${pathWithBasename}-${index}.screenshots.html`;
+      fs.writeFileSync(screenshotsHTMLFilename, data.screenshotsHTML);
+      log.log('saveAssets', 'screenshots saved to disk: ' + screenshotsHTMLFilename);
+
+      const screenshotsJSONFilename = `${pathWithBasename}-${index}.screenshots.json`;
+      fs.writeFileSync(screenshotsJSONFilename, JSON.stringify(data.screenshots, null, 2));
+      log.log('saveAssets', 'screenshots saved to disk: ' + screenshotsJSONFilename);
+
+      const streamTraceFilename = `${pathWithBasename}-${index}.trace.json`;
+      log.log('saveAssets', 'streaming trace file to disk: ' + streamTraceFilename);
+      return saveTrace(data.traceData, streamTraceFilename).then(_ => {
+        log.log('saveAssets', 'trace file streamed to disk: ' + streamTraceFilename);
+      });
+    }));
   });
 }
 
 module.exports = {
   saveArtifacts,
   saveAssets,
-  prepareAssets
+  prepareAssets,
+  saveTrace,
 };

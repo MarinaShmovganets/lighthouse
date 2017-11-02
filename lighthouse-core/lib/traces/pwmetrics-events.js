@@ -1,25 +1,29 @@
 /**
- * @license
- * Copyright 2017 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2017 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
-const log = require('../../../lighthouse-core/lib/log.js');
+const log = require('lighthouse-logger');
+
+/**
+ * @param {!Object} object
+ * @param {string} path
+ * @return {*}
+ */
+function safeGet(object, path) {
+  const components = path.split('.');
+  for (const component of components) {
+    if (!object) {
+      return null;
+    }
+    object = object[component];
+  }
+  return object;
+}
 
 class Metrics {
-
   constructor(traceEvents, auditResults) {
     this._traceEvents = traceEvents;
     this._auditResults = auditResults;
@@ -36,65 +40,133 @@ class Metrics {
         id: 'navstart',
         getTs: auditResults => {
           const fmpExt = auditResults['first-meaningful-paint'].extendedInfo;
-          return fmpExt.value.timestamps.navStart;
-        }
+          return safeGet(fmpExt, 'value.timestamps.navStart');
+        },
+        getTiming: auditResults => {
+          const fmpExt = auditResults['first-meaningful-paint'].extendedInfo;
+          return safeGet(fmpExt, 'value.timings.navStart');
+        },
       },
       {
         name: 'First Contentful Paint',
         id: 'ttfcp',
         getTs: auditResults => {
           const fmpExt = auditResults['first-meaningful-paint'].extendedInfo;
-          return fmpExt.value.timestamps.fCP;
-        }
+          return safeGet(fmpExt, 'value.timestamps.fCP');
+        },
+        getTiming: auditResults => {
+          const fmpExt = auditResults['first-meaningful-paint'].extendedInfo;
+          return safeGet(fmpExt, 'value.timings.fCP');
+        },
       },
       {
         name: 'First Meaningful Paint',
         id: 'ttfmp',
         getTs: auditResults => {
           const fmpExt = auditResults['first-meaningful-paint'].extendedInfo;
-          return fmpExt.value.timestamps.fMP;
-        }
+          return safeGet(fmpExt, 'value.timestamps.fMP');
+        },
+        getTiming: auditResults => {
+          const fmpExt = auditResults['first-meaningful-paint'].extendedInfo;
+          return safeGet(fmpExt, 'value.timings.fMP');
+        },
       },
       {
         name: 'Perceptual Speed Index',
         id: 'psi',
         getTs: auditResults => {
           const siExt = auditResults['speed-index-metric'].extendedInfo;
-          return siExt.value.timestamps.perceptualSpeedIndex;
-        }
+          return safeGet(siExt, 'value.timestamps.perceptualSpeedIndex');
+        },
+        getTiming: auditResults => {
+          const siExt = auditResults['speed-index-metric'].extendedInfo;
+          return safeGet(siExt, 'value.timings.perceptualSpeedIndex');
+        },
       },
       {
         name: 'First Visual Change',
         id: 'fv',
         getTs: auditResults => {
           const siExt = auditResults['speed-index-metric'].extendedInfo;
-          return siExt.value.timestamps.firstVisualChange;
-        }
+          return safeGet(siExt, 'value.timestamps.firstVisualChange');
+        },
+        getTiming: auditResults => {
+          const siExt = auditResults['speed-index-metric'].extendedInfo;
+          return safeGet(siExt, 'value.timings.firstVisualChange');
+        },
       },
       {
         name: 'Visually Complete 85%',
         id: 'vc85',
         getTs: auditResults => {
-          const siExt = auditResults['time-to-interactive'].extendedInfo;
-          return siExt.value.timestamps.visuallyReady;
-        }
+          const siExt = auditResults['speed-index-metric'].extendedInfo;
+          return safeGet(siExt, 'value.timestamps.visuallyReady');
+        },
+        getTiming: auditResults => {
+          const siExt = auditResults['speed-index-metric'].extendedInfo;
+          return safeGet(siExt, 'value.timings.visuallyReady');
+        },
       },
       {
         name: 'Visually Complete 100%',
         id: 'vc100',
         getTs: auditResults => {
           const siExt = auditResults['speed-index-metric'].extendedInfo;
-          return siExt.value.timestamps.visuallyComplete;
-        }
+          return safeGet(siExt, 'value.timestamps.visuallyComplete');
+        },
+        getTiming: auditResults => {
+          const siExt = auditResults['speed-index-metric'].extendedInfo;
+          return safeGet(siExt, 'value.timings.visuallyComplete');
+        },
       },
       {
-        name: 'Time to Interactive',
-        id: 'tti',
+        name: 'First Interactive (vBeta)',
+        id: 'ttfi',
         getTs: auditResults => {
-          const ttiExt = auditResults['time-to-interactive'].extendedInfo;
-          return ttiExt.value.timestamps.timeToInteractive;
-        }
-      }
+          const ttfiExt = auditResults['first-interactive'].extendedInfo;
+          return safeGet(ttfiExt, 'value.timestamp');
+        },
+        getTiming: auditResults => {
+          const ttfiExt = auditResults['first-interactive'].extendedInfo;
+          return safeGet(ttfiExt, 'value.timeInMs');
+        },
+      },
+      {
+        name: 'Time to Consistently Interactive (vBeta)',
+        id: 'ttci',
+        getTs: auditResults => {
+          const ttiExt = auditResults['consistently-interactive'].extendedInfo;
+          return safeGet(ttiExt, 'value.timestamp');
+        },
+        getTiming: auditResults => {
+          const ttiExt = auditResults['consistently-interactive'].extendedInfo;
+          return safeGet(ttiExt, 'value.timeInMs');
+        },
+      },
+      {
+        name: 'End of Trace',
+        id: 'eot',
+        getTs: auditResults => {
+          const ttiExt = auditResults['first-meaningful-paint'].extendedInfo;
+          return safeGet(ttiExt, 'value.timestamps.endOfTrace');
+        },
+        getTiming: auditResults => {
+          const ttiExt = auditResults['first-meaningful-paint'].extendedInfo;
+          return safeGet(ttiExt, 'value.timings.endOfTrace');
+        },
+      },
+      {
+        name: 'On Load',
+        id: 'onload',
+        getTs: auditResults => {
+          const ttiExt = auditResults['first-meaningful-paint'].extendedInfo;
+          return safeGet(ttiExt, 'value.timestamps.onLoad');
+        },
+        getTiming: auditResults => {
+          const ttiExt = auditResults['first-meaningful-paint'].extendedInfo;
+          return safeGet(ttiExt, 'value.timings.onLoad');
+        },
+      },
     ];
   }
 
@@ -111,7 +183,7 @@ class Metrics {
         resolvedMetrics.push({
           id: metric.id,
           name: metric.name,
-          ts: metric.getTs(this._auditResults)
+          ts: metric.getTs(this._auditResults),
         });
       } catch (e) {
         log.error('pwmetrics-events', `${metric.name} timestamp not found: ${e.message}`);
@@ -121,47 +193,38 @@ class Metrics {
   }
 
   /**
-   * Getter for our navigationStart trace event
+   * Get the full trace event for our navigationStart
+   * @param {!Array<{ts: number, id: string, name: string}>} metrics
    */
-  getNavigationStartEvt() {
-    if (!this._navigationStartEvt) {
-      const filteredEvents = this._traceEvents.filter(e => {
-        return e.name === 'TracingStartedInPage' || e.cat === 'blink.user_timing';
-      });
-
-      const tracingStartedEvt = filteredEvents.filter(e => e.name === 'TracingStartedInPage')[0];
-      const navigationStartEvt = filteredEvents.filter(e => {
-        return e.name === 'navigationStart' &&
-            e.pid === tracingStartedEvt.pid && e.tid === tracingStartedEvt.tid;
-      })[0];
-      this._navigationStartEvt = navigationStartEvt;
-    }
-    return this._navigationStartEvt;
+  identifyNavigationStartEvt(metrics) {
+    const navStartMetric = metrics.find(e => e.id === 'navstart');
+    if (!navStartMetric) return;
+    this._navigationStartEvt = this._traceEvents.find(
+      e => e.name === 'navigationStart' && e.ts === navStartMetric.ts
+    );
   }
-
 
   /**
    * Constructs performance.measure trace events, which have start/end events as follows:
    *     { "pid": 89922,"tid":1295,"ts":77176783452,"ph":"b","cat":"blink.user_timing","name":"innermeasure","args":{},"tts":1257886,"id":"0xe66c67"}
    *     { "pid": 89922,"tid":1295,"ts":77176882592,"ph":"e","cat":"blink.user_timing","name":"innermeasure","args":{},"tts":1257898,"id":"0xe66c67"}
    * @param {{ts: number, id: string, name: string}} metric
-   * @param {{ts: number, id: string, name: string}} navStart
    * @return {!Array} Pair of trace events (start/end)
    */
-  synthesizeEventPair(metric, navStart) {
+  synthesizeEventPair(metric) {
     // We'll masquerade our fake events to look mostly like navigationStart
     const eventBase = {
-      pid: this.getNavigationStartEvt().pid,
-      tid: this.getNavigationStartEvt().tid,
+      pid: this._navigationStartEvt.pid,
+      tid: this._navigationStartEvt.tid,
       cat: 'blink.user_timing',
       name: metric.name,
       args: {},
       // randomized id is same for the pair
-      id: `0x${((Math.random() * 1000000) | 0).toString(16)}`
+      id: `0x${((Math.random() * 1000000) | 0).toString(16)}`,
     };
     const fakeMeasureStartEvent = Object.assign({}, eventBase, {
-      ts: navStart.ts,
-      ph: 'b'
+      ts: this._navigationStartEvt.ts,
+      ph: 'b',
     });
     const fakeMeasureEndEvent = Object.assign({}, eventBase, {
       ts: metric.ts,
@@ -181,10 +244,9 @@ class Metrics {
       return [];
     }
 
-    // confirm our navStart's correctly match
-    const navStartEvt = metrics.find(e => e.id === 'navstart');
-    if (!navStartEvt || this.getNavigationStartEvt().ts !== navStartEvt.ts) {
-      log.error('pwmetrics-events', 'Reference navigationStart doesn\'t match fMP\'s navStart');
+    this.identifyNavigationStartEvt(metrics);
+    if (!this._navigationStartEvt) {
+      log.error('pwmetrics-events', 'Reference navigationStart not found');
       return [];
     }
 
@@ -197,7 +259,7 @@ class Metrics {
         return;
       }
       log.verbose('pwmetrics-events', `Sythesizing trace events for ${metric.name}`);
-      fakeEvents.push(...this.synthesizeEventPair(metric, navStartEvt));
+      fakeEvents.push(...this.synthesizeEventPair(metric));
     });
     return fakeEvents;
   }

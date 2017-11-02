@@ -1,25 +1,16 @@
 /**
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
 /* eslint-env mocha */
 
-const GathererClass = require('../../../gather/computed/critical-request-chains');
 const assert = require('assert');
-const Gatherer = new GathererClass();
+const CriticalRequestChains = require('../../../gather/computed/critical-request-chains');
+const WebInspector = require('../../../lib/web-inspector');
+const Runner = require('../../../runner.js');
 
 const HIGH = 'High';
 const VERY_HIGH = 'VeryHigh';
@@ -29,13 +20,15 @@ const VERY_LOW = 'VeryLow';
 
 function mockTracingData(prioritiesList, edges) {
   const networkRecords = prioritiesList.map((priority, index) =>
-      ({requestId: index.toString(),
-        _resourceType: {
-          _category: 'fake'
-        },
-        priority: () => priority,
-        initiatorRequest: () => null
-      }));
+    ({requestId: index.toString(),
+      _resourceType: {
+        _category: 'fake',
+      },
+      frameId: 1,
+      finished: true,
+      priority: () => priority,
+      initiatorRequest: () => null,
+    }));
 
   // add mock initiator information
   edges.forEach(edge => {
@@ -48,9 +41,9 @@ function mockTracingData(prioritiesList, edges) {
 
 function testGetCriticalChain(data) {
   const networkRecords = mockTracingData(data.priorityList, data.edges);
-  return Gatherer.request(networkRecords).then(criticalChains => {
-    assert.deepEqual(criticalChains, data.expected);
-  });
+  const mainResource = networkRecords[0];
+  const criticalChains = CriticalRequestChains.extractChain([networkRecords, mainResource]);
+  assert.deepEqual(criticalChains, data.expected);
 }
 
 function constructEmptyRequest() {
@@ -59,11 +52,20 @@ function constructEmptyRequest() {
     responseReceivedTime: undefined,
     startTime: undefined,
     url: undefined,
-    transferSize: undefined
+    transferSize: undefined,
   };
 }
 
-describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
+describe('CriticalRequestChain gatherer: extractChain function', () => {
+  it('returns correct data for chain from a devtoolsLog', () => {
+    const computedArtifacts = Runner.instantiateComputedArtifacts();
+    const wikiDevtoolsLog = require('../../fixtures/wikipedia-redirect.devtoolslog.json');
+    const wikiChains = require('../../fixtures/wikipedia-redirect.critical-request-chains.json');
+    computedArtifacts.requestCriticalRequestChains(wikiDevtoolsLog).then(chains => {
+      assert.deepEqual(chains, wikiChains);
+    });
+  });
+
   it('returns correct data for chain of four critical requests', () =>
     testGetCriticalChain({
       priorityList: [HIGH, MEDIUM, VERY_HIGH, HIGH],
@@ -80,15 +82,15 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
                   children: {
                     3: {
                       request: constructEmptyRequest(),
-                      children: {}
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                      children: {},
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     }));
 
   it('returns correct data for chain interleaved with non-critical requests',
@@ -101,11 +103,11 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
           children: {
             1: {
               request: constructEmptyRequest(),
-              children: {}
-            }
-          }
-        }
-      }
+              children: {},
+            },
+          },
+        },
+      },
     }));
 
   it('returns correct data for two parallel chains', () =>
@@ -118,20 +120,20 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
           children: {
             2: {
               request: constructEmptyRequest(),
-              children: {}
-            }
-          }
+              children: {},
+            },
+          },
         },
         1: {
           request: constructEmptyRequest(),
           children: {
             3: {
               request: constructEmptyRequest(),
-              children: {}
-            }
-          }
-        }
-      }
+              children: {},
+            },
+          },
+        },
+      },
     }));
 
   it('returns correct data for fork at root', () =>
@@ -144,15 +146,15 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
           children: {
             1: {
               request: constructEmptyRequest(),
-              children: {}
+              children: {},
             },
             2: {
               request: constructEmptyRequest(),
-              children: {}
-            }
-          }
-        }
-      }
+              children: {},
+            },
+          },
+        },
+      },
     }));
 
   it('returns correct data for fork at non root', () =>
@@ -168,31 +170,31 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
               children: {
                 2: {
                   request: constructEmptyRequest(),
-                  children: {}
+                  children: {},
                 },
                 3: {
                   request: constructEmptyRequest(),
-                  children: {}
-                }
-              }
-            }
-          }
-        }
-      }
+                  children: {},
+                },
+              },
+            },
+          },
+        },
+      },
     }));
 
   it('returns empty chain list when no critical request', () =>
     testGetCriticalChain({
       priorityList: [LOW, LOW],
       edges: [[0, 1]],
-      expected: {}
+      expected: {},
     }));
 
   it('returns empty chain list when no request whatsoever', () =>
     testGetCriticalChain({
       priorityList: [],
       edges: [],
-      expected: {}
+      expected: {},
     }));
 
   it('returns two single node chains for two independent requests', () =>
@@ -202,13 +204,13 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
       expected: {
         0: {
           request: constructEmptyRequest(),
-          children: {}
+          children: {},
         },
         1: {
           request: constructEmptyRequest(),
-          children: {}
-        }
-      }
+          children: {},
+        },
+      },
     }));
 
   it('returns correct data on a random big graph', () =>
@@ -224,15 +226,15 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
               children: {
                 2: {
                   request: constructEmptyRequest(),
-                  children: {}
+                  children: {},
                 },
                 3: {
                   request: constructEmptyRequest(),
-                  children: {}
-                }
-              }
-            }
-          }
+                  children: {},
+                },
+              },
+            },
+          },
         },
         4: {
           request: constructEmptyRequest(),
@@ -245,84 +247,125 @@ describe('CriticalRequestChain gatherer: getCriticalChain function', () => {
                   children: {
                     8: {
                       request: constructEmptyRequest(),
-                      children: {}
-                    }
-                  }
+                      children: {},
+                    },
+                  },
                 },
                 6: {
                   request: constructEmptyRequest(),
-                  children: {}
-                }
-              }
-            }
-          }
-        }
-      }
+                  children: {},
+                },
+              },
+            },
+          },
+        },
+      },
     }));
 
   it('handles redirects', () => {
     const networkRecords = mockTracingData([HIGH, HIGH, HIGH], [[0, 1], [1, 2]]);
+    const mainResource = networkRecords[0];
 
     // Make a fake redirect
     networkRecords[1].requestId = '1:redirected.0';
     networkRecords[2].requestId = '1';
-    return Gatherer.request(networkRecords).then(criticalChains => {
-      assert.deepEqual(criticalChains, {
-        0: {
-          request: constructEmptyRequest(),
-          children: {
-            '1:redirected.0': {
-              request: constructEmptyRequest(),
-              children: {
-                1: {
-                  request: constructEmptyRequest(),
-                  children: {}
-                }
-              }
-            }
-          }
-        }
-      });
+
+    const criticalChains = CriticalRequestChains.extractChain([networkRecords, mainResource]);
+    assert.deepEqual(criticalChains, {
+      0: {
+        request: constructEmptyRequest(),
+        children: {
+          '1:redirected.0': {
+            request: constructEmptyRequest(),
+            children: {
+              1: {
+                request: constructEmptyRequest(),
+                children: {},
+              },
+            },
+          },
+        },
+      },
     });
   });
 
   it('discards favicons as non-critical', () => {
-    const networkRecords = mockTracingData([HIGH, HIGH, HIGH], [[0, 1], [0, 2]]);
+    const networkRecords = mockTracingData([HIGH, HIGH, HIGH, HIGH], [[0, 1], [0, 2], [0, 3]]);
+    const mainResource = networkRecords[0];
 
     // 2nd record is a favicon
     networkRecords[1].url = 'https://example.com/favicon.ico';
+    networkRecords[1].mimeType = 'image/x-icon';
     networkRecords[1].parsedURL = {
-      lastPathComponent: 'favicon.ico'
+      lastPathComponent: 'favicon.ico',
     };
-    // 3rd record is also a favicon
-    networkRecords[2].mimeType = 'image/x-icon';
-    return Gatherer.request(networkRecords).then(criticalChains => {
-      assert.deepEqual(criticalChains, {
-        0: {
-          request: constructEmptyRequest(),
-          children: {}
-        }
-      });
+    // 3rd record is a favicon
+    networkRecords[2].url = 'https://example.com/favicon-32x32.png';
+    networkRecords[2].mimeType = 'image/png';
+    networkRecords[2].parsedURL = {
+      lastPathComponent: 'favicon-32x32.png',
+    };
+    // 4th record is a favicon
+    networkRecords[3].url = 'https://example.com/android-chrome-192x192.png';
+    networkRecords[3].mimeType = 'image/png';
+    networkRecords[3].parsedURL = {
+      lastPathComponent: 'android-chrome-192x192.png',
+    };
+
+    const criticalChains = CriticalRequestChains.extractChain([networkRecords, mainResource]);
+    assert.deepEqual(criticalChains, {
+      0: {
+        request: constructEmptyRequest(),
+        children: {},
+      },
+    });
+  });
+
+  it('discards iframes as non-critical', () => {
+    const networkRecords = mockTracingData([HIGH, HIGH, HIGH], [[0, 1], [0, 2]]);
+    const mainResource = networkRecords[0];
+
+    // 1th record is the root document
+    networkRecords[0].url = 'https://example.com';
+    networkRecords[0].mimeType = 'text/html';
+    networkRecords[0]._resourceType = WebInspector.resourceTypes.Document;
+    // 2nd record is an iframe in the page
+    networkRecords[1].url = 'https://example.com/iframe.html';
+    networkRecords[1].mimeType = 'text/html';
+    networkRecords[1]._resourceType = WebInspector.resourceTypes.Document;
+    networkRecords[1].frameId = '2';
+    // 3rd record is an iframe loaded by a script
+    networkRecords[2].url = 'https://youtube.com/';
+    networkRecords[2].mimeType = 'text/html';
+    networkRecords[2]._resourceType = WebInspector.resourceTypes.Document;
+    networkRecords[2].frameId = '3';
+
+    const criticalChains = CriticalRequestChains.extractChain([networkRecords, mainResource]);
+    assert.deepEqual(criticalChains, {
+      0: {
+        request: constructEmptyRequest(),
+        children: {},
+      },
     });
   });
 
   it('handles non-existent nodes when building the tree', () => {
     const networkRecords = mockTracingData([HIGH, HIGH], [[0, 1]]);
+    const mainResource = networkRecords[0];
 
     // Reverse the records so we force nodes to be made early.
     networkRecords.reverse();
-    return Gatherer.request(networkRecords).then(criticalChains => {
-      assert.deepEqual(criticalChains, {
-        0: {
-          request: constructEmptyRequest(),
-          children: {
-            1: {
-              request: constructEmptyRequest(),
-              children: {}
-            }
-          }
-        }
-      });
+    const criticalChains = CriticalRequestChains.extractChain([networkRecords, mainResource]);
+    assert.deepEqual(criticalChains, {
+      0: {
+        request: constructEmptyRequest(),
+        children: {
+          1: {
+            request: constructEmptyRequest(),
+            children: {},
+          },
+        },
+      },
     });
   });
 });

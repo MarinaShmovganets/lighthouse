@@ -1,18 +1,7 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
 /**
@@ -25,21 +14,19 @@
 const Audit = require('../audit');
 const URL = require('../../lib/url-shim');
 const StyleHelpers = require('../../lib/styles-helpers');
-const Formatter = require('../../formatters/formatter');
 
 class NoOldFlexboxAudit extends Audit {
-
   /**
    * @return {!AuditMeta}
    */
   static get meta() {
     return {
-      category: 'CSS',
       name: 'no-old-flexbox',
       description: 'Avoids old CSS flexbox',
+      failureDescription: 'Uses old CSS flexbox',
       helpText: 'The 2009 spec of Flexbox is deprecated and is 2.3x slower than the latest ' +
           'spec. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/old-flexbox).',
-      requiredArtifacts: ['Styles', 'URL']
+      requiredArtifacts: ['Styles', 'URL'],
     };
   }
 
@@ -68,30 +55,29 @@ class NoOldFlexboxAudit extends Audit {
         if (!URL.isValid(url) || url === pageUrl) {
           url = 'inline';
         } else {
-          url = URL.getDisplayName(url);
+          url = URL.getURLDisplayName(url);
         }
 
         urlList.push({
           url,
           location: formattedStyleRule.location,
           startLine: formattedStyleRule.startLine,
-          pre: formattedStyleRule.styleRule
+          pre: formattedStyleRule.styleRule,
         });
       });
     });
 
-    return NoOldFlexboxAudit.generateAuditResult({
+    return {
       rawValue: sheetsUsingOldFlexbox.length === 0,
       extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.TABLE,
         value: {
           results: urlList,
           tableHeadings: {
             url: 'URL', startLine: 'Line in the stylesheet / <style>', location: 'Column start/end',
-            pre: 'Snippet'}
-        }
-      }
-    });
+            pre: 'Snippet'},
+        },
+      },
+    };
   }
 }
 

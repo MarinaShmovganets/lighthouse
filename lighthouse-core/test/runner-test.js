@@ -1,17 +1,7 @@
 /**
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
@@ -21,7 +11,7 @@ const Config = require('../config/config');
 const Audit = require('../audits/audit');
 const assert = require('assert');
 const path = require('path');
-const computedArtifacts = require('../gather/gather-runner').instantiateComputedArtifacts();
+const computedArtifacts = Runner.instantiateComputedArtifacts();
 
 /* eslint-env mocha */
 
@@ -30,11 +20,11 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       passes: [{
-        gatherers: ['https']
+        gatherers: ['viewport-dimensions'],
       }],
       audits: [
-        'is-on-https'
-      ]
+        'content-width',
+      ],
     });
 
     return Runner.run(null, {url, config, driverMock}).then(_ => {
@@ -46,8 +36,8 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       audits: [
-        'is-on-https'
-      ]
+        'content-width',
+      ],
     });
 
     return Runner.run(null, {url, config, driverMock})
@@ -62,20 +52,18 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       audits: [
-        'is-on-https'
+        'content-width',
       ],
 
       artifacts: {
-        HTTPS: {
-          value: true
-        }
-      }
+        ViewportDimensions: {},
+      },
     });
 
     return Runner.run({}, {url, config}).then(results => {
       // Mostly checking that this did not throw, but check representative values.
       assert.equal(results.initialUrl, url);
-      assert.strictEqual(results.audits['is-on-https'].rawValue, true);
+      assert.strictEqual(results.audits['content-width'].rawValue, true);
     });
   });
 
@@ -84,20 +72,20 @@ describe('Runner', () => {
 
     const config = new Config({
       audits: [
-        'user-timings'
+        'user-timings',
       ],
 
       artifacts: {
         traces: {
-          [Audit.DEFAULT_PASS]: path.join(__dirname, '/fixtures/traces/trace-user-timings.json')
-        }
-      }
+          [Audit.DEFAULT_PASS]: path.join(__dirname, '/fixtures/traces/trace-user-timings.json'),
+        },
+      },
     });
 
     return Runner.run({}, {url, config}).then(results => {
       const audits = results.audits;
       assert.equal(audits['user-timings'].displayValue, 2);
-      assert.equal(audits['user-timings'].rawValue, true);
+      assert.equal(audits['user-timings'].rawValue, false);
     });
   });
 
@@ -106,7 +94,7 @@ describe('Runner', () => {
     const config = new Config({
       passes: [{
         recordTrace: true,
-        gatherers: []
+        gatherers: [],
       }],
     });
 
@@ -114,9 +102,9 @@ describe('Runner', () => {
     const badTraceDriver = Object.assign({}, driverMock, {
       endTrace() {
         return Promise.resolve({
-          traceEvents: 'not an array'
+          traceEvents: 'not an array',
         });
-      }
+      },
     });
 
     return Runner.run({}, {url, config, driverMock: badTraceDriver})
@@ -133,11 +121,11 @@ describe('Runner', () => {
       const config = new Config({
         audits: [
           // requires traces[Audit.DEFAULT_PASS]
-          'user-timings'
+          'user-timings',
         ],
         artifacts: {
-          traces: {}
-        }
+          traces: {},
+        },
       });
 
       return Runner.run({}, {url, config}).then(results => {
@@ -152,18 +140,18 @@ describe('Runner', () => {
       const url = 'https://example.com';
       const config = new Config({
         audits: [
-          // requires the HTTPS artifact
-          'is-on-https'
+          // requires the ViewportDimensions artifact
+          'content-width',
         ],
 
-        artifacts: {}
+        artifacts: {},
       });
 
       return Runner.run({}, {url, config}).then(results => {
-        const auditResult = results.audits['is-on-https'];
+        const auditResult = results.audits['content-width'];
         assert.strictEqual(auditResult.rawValue, null);
         assert.strictEqual(auditResult.error, true);
-        assert.ok(auditResult.debugString.includes('HTTPS'));
+        assert.ok(auditResult.debugString.includes('ViewportDimensions'));
       });
     });
 
@@ -174,19 +162,19 @@ describe('Runner', () => {
       const url = 'https://example.com';
       const config = new Config({
         audits: [
-          'is-on-https'
+          'content-width',
         ],
 
         artifacts: {
           // Error objects don't make it through the Config constructor due to
           // JSON.stringify/parse step, so populate with test error below.
-          HTTPS: null
-        }
+          ViewportDimensions: null,
+        },
       });
-      config.artifacts.HTTPS = artifactError;
+      config.artifacts.ViewportDimensions = artifactError;
 
       return Runner.run({}, {url, config}).then(results => {
-        const auditResult = results.audits['is-on-https'];
+        const auditResult = results.audits['content-width'];
         assert.strictEqual(auditResult.rawValue, null);
         assert.strictEqual(auditResult.error, true);
         assert.ok(auditResult.debugString.includes(errorMessage));
@@ -196,10 +184,11 @@ describe('Runner', () => {
 
   describe('Bad audit behavior handling', () => {
     const testAuditMeta = {
-      category: 'ThrowThrow',
       name: 'throwy-audit',
       description: 'Always throws',
-      requiredArtifacts: []
+      failureDescription: 'Always throws is failing, natch',
+      helpText: 'Test for always throwing',
+      requiredArtifacts: [],
     };
 
     it('produces an error audit result when an audit throws a non-fatal Error', () => {
@@ -214,10 +203,10 @@ describe('Runner', () => {
             static audit() {
               throw new Error(errorMessage);
             }
-          }
+          },
         ],
 
-        artifacts: {}
+        artifacts: {},
       });
 
       return Runner.run({}, {url, config}).then(results => {
@@ -242,10 +231,10 @@ describe('Runner', () => {
               fatalError.fatal = true;
               throw fatalError;
             }
-          }
+          },
         ],
 
-        artifacts: {}
+        artifacts: {},
       });
 
       return Runner.run({}, {url, config}).then(
@@ -258,17 +247,19 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       audits: [
-        'critical-request-chains'
+        'critical-request-chains',
       ],
 
       artifacts: {
-        performanceLog: path.join(__dirname, '/fixtures/perflog.json')
-      }
+        devtoolsLogs: {
+          defaultPass: path.join(__dirname, '/fixtures/perflog.json'),
+        },
+      },
     });
 
     return Runner.run({}, {url, config}).then(results => {
       const audits = results.audits;
-      assert.equal(audits['critical-request-chains'].displayValue, 9);
+      assert.equal(audits['critical-request-chains'].displayValue, 5);
       assert.equal(audits['critical-request-chains'].rawValue, false);
     });
   });
@@ -277,8 +268,8 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       passes: [{
-        gatherers: ['https']
-      }]
+        gatherers: ['viewport-dimensions'],
+      }],
     });
 
     return Runner.run(null, {url, config, driverMock})
@@ -293,72 +284,59 @@ describe('Runner', () => {
     const url = 'https://example.com';
     const config = new Config({
       auditResults: [{
-        name: 'is-on-https',
+        name: 'content-width',
         rawValue: true,
         score: true,
-        displayValue: ''
+        displayValue: '',
       }],
 
-      aggregations: [{
-        name: 'Aggregation',
-        description: '',
-        scored: true,
-        categorizable: true,
-        items: [{
-          name: 'name',
-          description: 'description',
-          audits: {
-            'is-on-https': {
-              expectedValue: true,
-              weight: 1
-            }
-          }
-        }]
-      }]
+      categories: {
+        category: {
+          name: 'Category',
+          description: '',
+          audits: [
+            {id: 'content-width', weight: 1},
+          ],
+        },
+      },
     });
 
     return Runner.run(null, {url, config, driverMock}).then(results => {
       // Mostly checking that this did not throw, but check representative values.
       assert.equal(results.initialUrl, url);
-      assert.strictEqual(results.audits['is-on-https'].rawValue, true);
+      assert.strictEqual(results.audits['content-width'].rawValue, true);
     });
   });
 
-  it('returns an aggregation', () => {
+  it('returns reportCategories', () => {
     const url = 'https://example.com';
     const config = new Config({
       auditResults: [{
-        name: 'is-on-https',
+        name: 'content-width',
         rawValue: true,
         score: true,
-        displayValue: ''
+        displayValue: 'display',
       }],
-
-      aggregations: [{
-        name: 'Aggregation',
-        description: '',
-        scored: true,
-        categorizable: true,
-        items: [{
-          name: 'name',
-          description: 'description',
-          audits: {
-            'is-on-https': {
-              expectedValue: true,
-              weight: 1
-            }
-          }
-        }]
-      }]
+      categories: {
+        category: {
+          name: 'Category',
+          description: '',
+          audits: [
+            {id: 'content-width', weight: 1},
+          ],
+        },
+      },
     });
 
     return Runner.run(null, {url, config, driverMock}).then(results => {
       assert.ok(results.lighthouseVersion);
       assert.ok(results.generatedTime);
       assert.equal(results.initialUrl, url);
-      assert.equal(results.audits['is-on-https'].name, 'is-on-https');
-      assert.equal(results.aggregations[0].score[0].overall, 1);
-      assert.equal(results.aggregations[0].score[0].subItems[0], 'is-on-https');
+      assert.equal(results.audits['content-width'].name, 'content-width');
+      assert.equal(results.reportCategories[0].score, 100);
+      assert.equal(results.reportCategories[0].audits[0].id, 'content-width');
+      assert.equal(results.reportCategories[0].audits[0].score, 100);
+      assert.equal(results.reportCategories[0].audits[0].result.displayValue, 'display');
     });
   });
 
@@ -388,22 +366,27 @@ describe('Runner', () => {
     });
   });
 
+  it('can create computed artifacts', () => {
+    const computedArtifacts = Runner.instantiateComputedArtifacts();
+    assert.ok(Object.keys(computedArtifacts).length, 'there are a few computed artifacts');
+    Object.keys(computedArtifacts).forEach(artifactRequest => {
+      assert.equal(typeof computedArtifacts[artifactRequest], 'function');
+    });
+  });
+
   it('results include artifacts when given artifacts and audits', () => {
     const url = 'https://example.com';
+    const ViewportDimensions = {innerHeight: 10, innerWidth: 10};
     const config = new Config({
       audits: [
-        'is-on-https'
+        'content-width',
       ],
 
-      artifacts: {
-        HTTPS: {
-          value: true
-        }
-      }
+      artifacts: {ViewportDimensions},
     });
 
     return Runner.run({}, {url, config}).then(results => {
-      assert.strictEqual(results.artifacts.HTTPS.value, true);
+      assert.deepEqual(results.artifacts.ViewportDimensions, ViewportDimensions);
 
       for (const method of Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
@@ -411,25 +394,37 @@ describe('Runner', () => {
     });
   });
 
-  it('results include artifacts when given passes and audits', () => {
+  it('results include artifacts and computedArtifacts when given passes and audits', () => {
     const url = 'https://example.com';
     const config = new Config({
       passes: [{
-        gatherers: ['https']
+        passName: 'firstPass',
+        gatherers: ['viewport-dimensions'],
       }],
 
       audits: [
-        'is-on-https'
-      ]
+        'content-width',
+      ],
     });
 
     return Runner.run(null, {url, config, driverMock}).then(results => {
       // Check whether non-computedArtifacts attributes are returned
-      assert.ok(results.artifacts.HTTPS);
+      assert.ok(results.artifacts.ViewportDimensions);
 
       for (const method of Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
       }
+
+      // Verify a computed artifact
+      const artifacts = results.artifacts;
+      const devtoolsLogs = artifacts.devtoolsLogs['firstPass'];
+      assert.equal(Array.isArray(devtoolsLogs), true, 'devtoolsLogs is not an array');
+
+      return artifacts.requestCriticalRequestChains(devtoolsLogs).then(chains => {
+        assert.ok(chains['93149.1']);
+        assert.ok(chains['93149.1'].request);
+        assert.ok(chains['93149.1'].children);
+      });
     });
   });
 
@@ -440,14 +435,14 @@ describe('Runner', () => {
         name: 'is-on-https',
         rawValue: true,
         score: true,
-        displayValue: ''
+        displayValue: '',
       }],
 
       artifacts: {
         HTTPS: {
-          value: true
-        }
-      }
+          value: true,
+        },
+      },
     });
 
     return Runner.run(null, {url, config, driverMock}).then(results => {
@@ -456,6 +451,24 @@ describe('Runner', () => {
       for (const method of Object.keys(computedArtifacts)) {
         assert.ok(results.artifacts.hasOwnProperty(method));
       }
+    });
+  });
+
+  it('includes any LighthouseRunWarnings from artifacts in output', () => {
+    const url = 'https://example.com';
+    const LighthouseRunWarnings = [
+      'warning0',
+      'warning1',
+    ];
+    const config = new Config({
+      artifacts: {
+        LighthouseRunWarnings,
+      },
+      audits: [],
+    });
+
+    return Runner.run(null, {url, config, driverMock}).then(results => {
+      assert.deepStrictEqual(results.runWarnings, LighthouseRunWarnings);
     });
   });
 });

@@ -1,30 +1,21 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
-const defaultConfigPath = './default.json';
-const defaultConfig = require('./default.json');
-const recordsFromLogs = require('../lib/network-recorder').recordsFromLogs;
+const defaultConfigPath = './default.js';
+const defaultConfig = require('./default.js');
+const fullConfig = require('./full-config.js');
 
 const GatherRunner = require('../gather/gather-runner');
-const log = require('../lib/log');
+const log = require('lighthouse-logger');
 const path = require('path');
 const Audit = require('../audits/audit');
 const Runner = require('../runner');
+
+const _flatten = arr => [].concat(...arr);
 
 // cleanTrace is run to remove duplicate TracingStartedInPage events,
 // and to change TracingStartedInBrowser events into TracingStartedInPage.
@@ -40,16 +31,16 @@ function cleanTrace(trace) {
     return {
       pid: evt.pid,
       tid: evt.tid,
-      ts: ts || 0,  // default to 0 for now
+      ts: ts || 0, // default to 0 for now
       ph: 'I',
       cat: 'disabled-by-default-devtools.timeline',
       name: 'TracingStartedInPage',
       args: {
         data: {
-          page: evt.frame
-        }
+          page: evt.frame,
+        },
       },
-      s: 't'
+      s: 't',
     };
   };
 
@@ -79,7 +70,7 @@ function cleanTrace(trace) {
         pid: evt.pid,
         tid: evt.tid,
         frame: frame,
-        count: 0
+        count: 0,
       };
       countsByThread[name] = counter;
       threads.push(counter);
@@ -113,7 +104,7 @@ function validatePasses(passes, audits, rootPath) {
   if (!Array.isArray(passes)) {
     return;
   }
-  const requiredGatherers = getGatherersNeededByAudits(audits);
+  const requiredGatherers = Config.getGatherersNeededByAudits(audits);
 
   // Log if we are running gathers that are not needed by the audits listed in the config
   passes.forEach(pass => {
@@ -127,33 +118,54 @@ function validatePasses(passes, audits, rootPath) {
     });
   });
 
-  // Log if multiple passes require trace or network recording and could overwrite one another.
+  // Passes must have unique `passName`s. Throw otherwise.
   const usedNames = new Set();
+  let defaultUsed = false;
   passes.forEach((pass, index) => {
-    if (!pass.recordNetwork && !pass.recordTrace) {
-      return;
+    let passName = pass.passName;
+    if (!passName) {
+      if (defaultUsed) {
+        throw new Error(`passes[${index}] requires a passName`);
+      }
+
+      passName = Audit.DEFAULT_PASS;
+      defaultUsed = true;
     }
 
-    const passName = pass.passName || Audit.DEFAULT_PASS;
     if (usedNames.has(passName)) {
-      log.warn('config', `passes[${index}] may overwrite trace or network ` +
-          `data of earlier pass without a unique passName (repeated name: ${passName}.`);
+      throw new Error(`Passes must have unique names (repeated passName: ${passName}.`);
     }
     usedNames.add(passName);
   });
 }
 
-function getGatherersNeededByAudits(audits) {
-  // It's possible we didn't get given any audits (but existing audit results), in which case
-  // there is no need to do any work here.
-  if (!audits) {
-    return new Set();
+function validateCategories(categories, audits, auditResults, groups) {
+  if (!categories) {
+    return;
   }
 
-  return audits.reduce((list, audit) => {
-    audit.meta.requiredArtifacts.forEach(artifact => list.add(artifact));
-    return list;
-  }, new Set());
+  const auditIds = audits ?
+      audits.map(audit => audit.meta.name) :
+      auditResults.map(audit => audit.name);
+  Object.keys(categories).forEach(categoryId => {
+    categories[categoryId].audits.forEach((audit, index) => {
+      if (!audit.id) {
+        throw new Error(`missing an audit id at ${categoryId}[${index}]`);
+      }
+
+      if (!auditIds.includes(audit.id)) {
+        throw new Error(`could not find ${audit.id} audit for category ${categoryId}`);
+      }
+
+      if (categoryId === 'accessibility' && !audit.group) {
+        throw new Error(`${audit.id} accessibility audit does not have a group`);
+      }
+
+      if (audit.group && !groups[audit.group]) {
+        throw new Error(`${audit.id} references unknown group ${audit.group}`);
+      }
+    });
+  });
 }
 
 function assertValidAudit(auditDefinition, auditPath) {
@@ -167,26 +179,32 @@ function assertValidAudit(auditDefinition, auditPath) {
     throw new Error(`${auditName} has no meta.name property, or the property is not a string.`);
   }
 
-  if (typeof auditDefinition.meta.category !== 'string') {
-    throw new Error(`${auditName} has no meta.category property, or the property is not a string.`);
-  }
-
   if (typeof auditDefinition.meta.description !== 'string') {
     throw new Error(
       `${auditName} has no meta.description property, or the property is not a string.`
     );
   }
 
-  if (!Array.isArray(auditDefinition.meta.requiredArtifacts)) {
+  // If it'll have a ✔ or ✖ displayed alongside the result, it should have failureDescription
+  if (typeof auditDefinition.meta.failureDescription !== 'string' &&
+    auditDefinition.meta.informative !== true &&
+    auditDefinition.meta.scoringMode !== Audit.SCORING_MODES.NUMERIC) {
+    throw new Error(`${auditName} has no failureDescription and should.`);
+  }
+
+  if (typeof auditDefinition.meta.helpText !== 'string') {
     throw new Error(
-      `${auditName} has no meta.requiredArtifacts property, or the property is not an array.`
+      `${auditName} has no meta.helpText property, or the property is not a string.`
+    );
+  } else if (auditDefinition.meta.helpText === '') {
+    throw new Error(
+      `${auditName} has an empty meta.helpText string. Please add a description for the UI.`
     );
   }
 
-  if (typeof auditDefinition.generateAuditResult !== 'function') {
+  if (!Array.isArray(auditDefinition.meta.requiredArtifacts)) {
     throw new Error(
-      `${auditName} has no generateAuditResult() method. ` +
-        'Did you inherit from the proper base class?'
+      `${auditName} has no meta.requiredArtifacts property, or the property is not an array.`
     );
   }
 }
@@ -205,7 +223,7 @@ function expandArtifacts(artifacts) {
       // traceEvents property. Normalize to new format.
       if (Array.isArray(trace)) {
         trace = {
-          traceEvents: trace
+          traceEvents: trace,
         };
       }
       trace = cleanTrace(trace);
@@ -214,20 +232,10 @@ function expandArtifacts(artifacts) {
     });
   }
 
-  if (artifacts.performanceLog) {
-    if (typeof artifacts.performanceLog === 'string') {
-      // Support older format of a single performance log.
-      const log = require(artifacts.performanceLog);
-      artifacts.networkRecords = {
-        [Audit.DEFAULT_PASS]: recordsFromLogs(log)
-      };
-    } else {
-      artifacts.networkRecords = {};
-      Object.keys(artifacts.performanceLog).forEach(key => {
-        const log = require(artifacts.performanceLog[key]);
-        artifacts.networkRecords[key] = recordsFromLogs(log);
-      });
-    }
+  if (artifacts.devtoolsLogs) {
+    Object.keys(artifacts.devtoolsLogs).forEach(key => {
+      artifacts.devtoolsLogs[key] = require(artifacts.devtoolsLogs[key]);
+    });
   }
 
   return artifacts;
@@ -285,9 +293,25 @@ class Config {
       configJSON.audits = Array.from(inputConfig.audits);
     }
 
-    // Extend the default config if specified
-    if (configJSON.extends) {
+    // Extend the default or full config if specified
+    if (configJSON.extends === 'lighthouse:full') {
+      const explodedFullConfig = Config.extendConfigJSON(deepClone(defaultConfig),
+          deepClone(fullConfig));
+      configJSON = Config.extendConfigJSON(explodedFullConfig, configJSON);
+    } else if (configJSON.extends) {
       configJSON = Config.extendConfigJSON(deepClone(defaultConfig), configJSON);
+    }
+
+    // Generate a limited config if specified
+    if (configJSON.settings &&
+        (Array.isArray(configJSON.settings.onlyCategories) ||
+        Array.isArray(configJSON.settings.onlyAudits) ||
+        Array.isArray(configJSON.settings.skipAudits))) {
+      const categoryIds = configJSON.settings.onlyCategories;
+      const auditIds = configJSON.settings.onlyAudits;
+      const skipAuditIds = configJSON.settings.skipAudits;
+      configJSON = Config.generateNewFilteredConfig(configJSON, categoryIds, auditIds,
+          skipAuditIds);
     }
 
     // Store the directory of the config path, if one was provided.
@@ -299,13 +323,14 @@ class Config {
       throw new Error('config.auditResults must be an array');
     }
 
-    this._aggregations = configJSON.aggregations || null;
-
     this._audits = Config.requireAudits(configJSON.audits, this._configDir);
     this._artifacts = expandArtifacts(configJSON.artifacts);
+    this._categories = configJSON.categories;
+    this._groups = configJSON.groups;
 
     // validatePasses must follow after audits are required
     validatePasses(configJSON.passes, this._audits, this._configDir);
+    validateCategories(configJSON.categories, this._audits, this._auditResults, this._groups);
   }
 
   /**
@@ -328,6 +353,198 @@ class Config {
     }
 
     return merge(baseJSON, extendJSON);
+  }
+
+  /**
+   * Filter out any unrequested items from the config, based on requested top-level categories.
+   * @param {!Object} oldConfig Lighthouse config object
+   * @param {!Array<string>=} categoryIds ID values of categories to include
+   * @param {!Array<string>=} auditIds ID values of categories to include
+   * @param {!Array<string>=} skipAuditIds ID values of categories to exclude
+   * @return {!Object} A new config
+   */
+  static generateNewFilteredConfig(oldConfig, categoryIds, auditIds, skipAuditIds) {
+    // 0. Clone config to avoid mutating it
+    const config = deepClone(oldConfig);
+    // 1. Filter to just the chosen categories
+    config.categories = Config.filterCategoriesAndAudits(config.categories, categoryIds, auditIds,
+        skipAuditIds);
+
+    // 2. Resolve which audits will need to run
+    const requestedAuditNames = Config.getAuditIdsInCategories(config.categories);
+    const auditPathToNameMap = Config.getMapOfAuditPathToName(config);
+    config.audits = config.audits.filter(auditPath =>
+        requestedAuditNames.has(auditPathToNameMap.get(auditPath)));
+
+    // 3. Resolve which gatherers will need to run
+    const auditObjectsSelected = Config.requireAudits(config.audits);
+    const requiredGatherers = Config.getGatherersNeededByAudits(auditObjectsSelected);
+
+    // 4. Filter to only the neccessary passes
+    config.passes = Config.generatePassesNeededByGatherers(config.passes, requiredGatherers);
+    return config;
+  }
+
+  /**
+   * Filter out any unrequested categories or audits from the categories object.
+   * @param {!Object<string, {audits: !Array<{id: string}>}>} categories
+   * @param {!Array<string>=} categoryIds
+   * @param {!Array<string>=} auditIds
+   * @param {!Array<string>=} skipAuditIds
+   * @return {!Object<string, {audits: !Array<{id: string}>}>}
+   */
+  static filterCategoriesAndAudits(oldCategories, categoryIds, auditIds, skipAuditIds) {
+    if (auditIds && skipAuditIds) {
+      throw new Error('Cannot set both skipAudits and onlyAudits');
+    }
+
+    const categories = {};
+    const filterByIncludedCategory = !!categoryIds;
+    const filterByIncludedAudit = !!auditIds;
+    categoryIds = categoryIds || [];
+    auditIds = auditIds || [];
+    skipAuditIds = skipAuditIds || [];
+
+    // warn if the category is not found
+    categoryIds.forEach(categoryId => {
+      if (!oldCategories[categoryId]) {
+        log.warn('config', `unrecognized category in 'onlyCategories': ${categoryId}`);
+      }
+    });
+
+    // warn if the audit is not found in a category or there are overlaps
+    const auditsToValidate = new Set(auditIds.concat(skipAuditIds));
+    for (const auditId of auditsToValidate) {
+      const foundCategory = Object.keys(oldCategories).find(categoryId => {
+        const audits = oldCategories[categoryId].audits;
+        return audits.find(candidate => candidate.id === auditId);
+      });
+
+      if (!foundCategory) {
+        const parentKeyName = skipAuditIds.includes(auditId) ? 'skipAudits' : 'onlyAudits';
+        log.warn('config', `unrecognized audit in '${parentKeyName}': ${auditId}`);
+      }
+
+      if (auditIds.includes(auditId) && categoryIds.includes(foundCategory)) {
+        log.warn('config', `${auditId} in 'onlyAudits' is already included by ` +
+            `${foundCategory} in 'onlyCategories'`);
+      }
+    }
+
+    Object.keys(oldCategories).forEach(categoryId => {
+      const category = deepClone(oldCategories[categoryId]);
+
+      if (filterByIncludedCategory && filterByIncludedAudit) {
+        // If we're filtering to the category and audit whitelist, include the union of the two
+        if (!categoryIds.includes(categoryId)) {
+          category.audits = category.audits.filter(audit => auditIds.includes(audit.id));
+        }
+      } else if (filterByIncludedCategory) {
+        // If we're filtering to just the category whitelist and the category is not included, skip it
+        if (!categoryIds.includes(categoryId)) {
+          return;
+        }
+      } else if (filterByIncludedAudit) {
+        category.audits = category.audits.filter(audit => auditIds.includes(audit.id));
+      }
+
+      // always filter to the audit blacklist
+      category.audits = category.audits.filter(audit => !skipAuditIds.includes(audit.id));
+
+      if (category.audits.length) {
+        categories[categoryId] = category;
+      }
+    });
+
+    return categories;
+  }
+
+  /**
+   * Finds the unique set of audit IDs used by the categories object.
+   * @param {!Object<string, {audits: !Array<{id: string}>}>} categories
+   * @return {!Set<string>}
+   */
+  static getAuditIdsInCategories(categories) {
+    const audits = _flatten(Object.keys(categories).map(id => categories[id].audits));
+    return new Set(audits.map(audit => audit.id));
+  }
+
+  /**
+   * @param {{categories: !Object<string, {name: string}>}} config
+   * @return {!Array<{id: string, name: string}>}
+   */
+  static getCategories(config) {
+    return Object.keys(config.categories).map(id => {
+      const name = config.categories[id].name;
+      return {id, name};
+    });
+  }
+
+  /**
+   * Creates mapping from audit path (used in config.audits) to audit.name (used in categories)
+   * @param {!Object} config Lighthouse config object.
+   * @return {Map}
+   */
+  static getMapOfAuditPathToName(config) {
+    const auditObjectsAll = Config.requireAudits(config.audits);
+    const auditPathToName = new Map(auditObjectsAll.map((AuditClass, index) => {
+      const auditPath = config.audits[index];
+      const auditName = AuditClass.meta.name;
+      return [auditPath, auditName];
+    }));
+    return auditPathToName;
+  }
+
+  /**
+   * From some requested audits, return names of all required artifacts
+   * @param {!Object} audits
+   * @return {!Set<string>}
+   */
+  static getGatherersNeededByAudits(audits) {
+    // It's possible we weren't given any audits (but existing audit results), in which case
+    // there is no need to do any work here.
+    if (!audits) {
+      return new Set();
+    }
+
+    return audits.reduce((list, audit) => {
+      audit.meta.requiredArtifacts.forEach(artifact => list.add(artifact));
+      return list;
+    }, new Set());
+  }
+
+  /**
+   * Filters to only required passes and gatherers, returning a new passes object
+   * @param {!Object} oldPasses
+   * @param {!Set<string>} requiredGatherers
+   * @return {!Object} fresh passes object
+   */
+  static generatePassesNeededByGatherers(oldPasses, requiredGatherers) {
+    const auditsNeedTrace = requiredGatherers.has('traces');
+    const passes = JSON.parse(JSON.stringify(oldPasses));
+    const filteredPasses = passes.map(pass => {
+      // remove any unncessary gatherers from within the passes
+      pass.gatherers = pass.gatherers.filter(gathererName => {
+        gathererName = GatherRunner.getGathererClass(gathererName).name;
+        return requiredGatherers.has(gathererName);
+      });
+
+      // disable the trace if no audit requires a trace
+      if (pass.recordTrace && !auditsNeedTrace) {
+        const passName = pass.passName || 'unknown pass';
+        log.warn('config', `Trace not requested by an audit, dropping trace in ${passName}`);
+        pass.recordTrace = false;
+      }
+
+      return pass;
+    }).filter(pass => {
+      // remove any passes lacking concrete gatherers, unless they are dependent on the trace
+      if (pass.recordTrace) return true;
+      // Always keep defaultPass
+      if (pass.passName === 'defaultPass') return true;
+      return pass.gatherers.length > 0;
+    });
+    return filteredPasses;
   }
 
   /**
@@ -391,9 +608,14 @@ class Config {
     return this._artifacts;
   }
 
-  /** @type {Array<!Aggregation>} */
-  get aggregations() {
-    return this._aggregations;
+  /** @type {Object<{audits: !Array<{id: string, weight: number}>}>} */
+  get categories() {
+    return this._categories;
+  }
+
+  /** @type {Object<string, {title: string, description: string}>|undefined} */
+  get groups() {
+    return this._groups;
   }
 }
 

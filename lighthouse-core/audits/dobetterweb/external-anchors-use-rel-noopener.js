@@ -1,25 +1,12 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-
 'use strict';
 
 const URL = require('../../lib/url-shim');
 const Audit = require('../audit');
-const Formatter = require('../../formatters/formatter');
 
 class ExternalAnchorsUseRelNoopenerAudit extends Audit {
   /**
@@ -27,13 +14,13 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
    */
   static get meta() {
     return {
-      category: 'Performance',
       name: 'external-anchors-use-rel-noopener',
-      description: 'Opens external anchors using rel="noopener"',
+      description: 'Opens external anchors using `rel="noopener"`',
+      failureDescription: 'Does not open external anchors using `rel="noopener"`',
       helpText: 'Open new tabs using `rel="noopener"` to improve performance and ' +
           'prevent security vulnerabilities. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/noopener).',
-      requiredArtifacts: ['URL', 'AnchorsWithNoRelNoopener']
+      requiredArtifacts: ['URL', 'AnchorsWithNoRelNoopener'],
     };
   }
 
@@ -51,7 +38,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
     const failingAnchors = artifacts.AnchorsWithNoRelNoopener
       .filter(anchor => {
         try {
-          return anchor.href === '' || new URL(anchor.href).host !== pageHost;
+          return new URL(anchor.href).host !== pageHost;
         } catch (err) {
           debugString = 'Lighthouse was unable to determine the destination ' +
               'of some anchor tags. If they are not used as hyperlinks, ' +
@@ -61,21 +48,32 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
       })
       .map(anchor => {
         return {
+          href: anchor.href || 'Unknown',
+          target: anchor.target || '',
+          rel: anchor.rel || '',
           url: '<a' +
               (anchor.href ? ` href="${anchor.href}"` : '') +
               (anchor.target ? ` target="${anchor.target}"` : '') +
-              (anchor.rel ? ` rel="${anchor.rel}"` : '') + '>'
+              (anchor.rel ? ` rel="${anchor.rel}"` : '') + '>',
         };
       });
 
-    return ExternalAnchorsUseRelNoopenerAudit.generateAuditResult({
+    const headings = [
+      {key: 'href', itemType: 'url', text: 'URL'},
+      {key: 'target', itemType: 'text', text: 'Target'},
+      {key: 'rel', itemType: 'text', text: 'Rel'},
+    ];
+
+    const details = Audit.makeTableDetails(headings, failingAnchors);
+
+    return {
       rawValue: failingAnchors.length === 0,
       extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
-        value: failingAnchors
+        value: failingAnchors,
       },
-      debugString
-    });
+      details,
+      debugString,
+    };
   }
 }
 

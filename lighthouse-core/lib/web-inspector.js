@@ -1,18 +1,7 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
@@ -35,25 +24,29 @@ module.exports = (function() {
     global.window = global;
   }
 
-  global.Runtime = {};
-  global.Runtime.experiments = {
-    isEnabled(experimentName) {
-      switch (experimentName) {
-        case 'timelineLatencyInfo':
-          return true;
-        default:
-          return false;
-      }
-    }
-  };
+  // Stash the real one so we can reinstall after DT incorrectly polyfills.
+  // See https://github.com/GoogleChrome/lighthouse/issues/73
+  const _setImmediate = global.setImmediate;
+
+  global.Runtime = global.Runtime || {};
+
+  // Required for devtools-timeline-model
+  global.Runtime.experiments = global.Runtime.experiments || {};
+  global.Runtime.experiments.isEnabled = global.Runtime.experiments.isEnabled || (_ => false);
+
+  const _queryParam = global.Runtime.queryParam;
   global.Runtime.queryParam = function(arg) {
     switch (arg) {
       case 'remoteFrontend':
         return false;
       case 'ws':
         return false;
-      default:
-        throw Error('Mock queryParam case not implemented.');
+      default: {
+        if (_queryParam) {
+          return _queryParam.call(global.Runtime, arg);
+        }
+        throw new Error('Mock queryParam case not implemented.');
+      }
     }
   };
 
@@ -61,7 +54,7 @@ module.exports = (function() {
   global.WorkerRuntime = {};
 
   global.Protocol = {
-    Agents() {}
+    Agents() {},
   };
 
   global.WebInspector = {};
@@ -71,20 +64,20 @@ module.exports = (function() {
       addChangeListener() {},
       get() {
         return false;
-      }
+      },
     },
     monitoringXHREnabled: {
       addChangeListener() {},
       get() {
         return false;
-      }
+      },
     },
     showNativeFunctionsInJSProfile: {
       addChangeListener() {},
       get() {
         return true;
-      }
-    }
+      },
+    },
   };
   WebInspector.moduleSetting = function(settingName) {
     return this._moduleSettings[settingName];
@@ -95,21 +88,21 @@ module.exports = (function() {
     RequestMixedContentType: {
       Blockable: 'blockable',
       OptionallyBlockable: 'optionally-blockable',
-      None: 'none'
+      None: 'none',
     },
     BlockedReason: {
       CSP: 'csp',
       MixedContent: 'mixed-content',
       Origin: 'origin',
       Inspector: 'inspector',
-      Other: 'other'
+      Other: 'other',
     },
     InitiatorType: {
       Other: 'other',
       Parser: 'parser',
       Redirect: 'redirect',
-      Script: 'script'
-    }
+      Script: 'script',
+    },
   };
 
   // Enum from SecurityState enum in protocol's Security domain
@@ -120,8 +113,8 @@ module.exports = (function() {
       Insecure: 'insecure',
       Warning: 'warning',
       Secure: 'secure',
-      Info: 'info'
-    }
+      Info: 'info',
+    },
   };
   // From https://chromium.googlesource.com/chromium/src/third_party/WebKit/Source/devtools/+/master/protocol.json#93
   global.PageAgent = {
@@ -138,8 +131,8 @@ module.exports = (function() {
       EventSource: 'eventsource',
       WebSocket: 'websocket',
       Manifest: 'manifest',
-      Other: 'other'
-    }
+      Other: 'other',
+    },
   };
   // Dependencies for network-recorder
   require('chrome-devtools-frontend/front_end/common/Object.js');
@@ -155,7 +148,7 @@ module.exports = (function() {
   // Dependencies for timeline-model
   WebInspector.targetManager = {
     observeTargets() { },
-    addEventListener() { }
+    addEventListener() { },
   };
   WebInspector.settings = {
     createSetting() {
@@ -163,12 +156,12 @@ module.exports = (function() {
         get() {
           return false;
         },
-        addChangeListener() {}
+        addChangeListener() {},
       };
-    }
+    },
   };
   WebInspector.console = {
-    error() {}
+    error() {},
   };
   WebInspector.VBox = function() {};
   WebInspector.HBox = function() {};
@@ -187,6 +180,11 @@ module.exports = (function() {
   require('chrome-devtools-frontend/front_end/timeline_model/TimelineModel.js');
   require('chrome-devtools-frontend/front_end/ui_lazy/SortableDataGrid.js');
   require('chrome-devtools-frontend/front_end/timeline/TimelineTreeView.js');
+
+  // used for streaming json parsing
+  require('chrome-devtools-frontend/front_end/common/TextUtils.js');
+  require('chrome-devtools-frontend/front_end/timeline/TimelineLoader.js');
+
   require('chrome-devtools-frontend/front_end/timeline_model/TimelineProfileTree.js');
   require('chrome-devtools-frontend/front_end/components_lazy/FilmStripModel.js');
   require('chrome-devtools-frontend/front_end/timeline_model/TimelineIRModel.js');
@@ -196,19 +194,19 @@ module.exports = (function() {
   WebInspector.DeferredTempFile = function() {};
   WebInspector.DeferredTempFile.prototype = {
     write: function() {},
-    finishWriting: function() {}
+    finishWriting: function() {},
   };
 
   // Mock for WebInspector code that writes to console.
   WebInspector.ConsoleMessage = function() {};
   WebInspector.ConsoleMessage.MessageSource = {
-    Network: 'network'
+    Network: 'network',
   };
   WebInspector.ConsoleMessage.MessageLevel = {
-    Log: 'log'
+    Log: 'log',
   };
   WebInspector.ConsoleMessage.MessageType = {
-    Log: 'log'
+    Log: 'log',
   };
 
   // Mock NetworkLog
@@ -229,11 +227,21 @@ module.exports = (function() {
         return;
       }
       this._requests.set(request.url, request);
-    }
+    },
   };
 
   // Dependencies for color parsing.
   require('chrome-devtools-frontend/front_end/common/Color.js');
+
+  // Monkey patch update so we don't lose request information
+  // TODO: Remove when we update to a devtools version that has isLinkPreload
+  const Dispatcher = WebInspector.NetworkDispatcher;
+  const origUpdateRequest = Dispatcher.prototype._updateNetworkRequestWithRequest;
+  Dispatcher.prototype._updateNetworkRequestWithRequest = function(netRecord, request) {
+    origUpdateRequest.apply(this, arguments); // eslint-disable-line
+    netRecord.isLinkPreload = Boolean(request.isLinkPreload);
+    netRecord._isLinkPreload = Boolean(request.isLinkPreload);
+  };
 
   /**
    * Creates a new WebInspector NetworkManager using a mocked Target.
@@ -242,11 +250,14 @@ module.exports = (function() {
   WebInspector.NetworkManager.createWithFakeTarget = function() {
     // Mocked-up WebInspector Target for NetworkManager
     const fakeNetworkAgent = {
-      enable() {}
+      enable() {},
+      getResponseBody() {
+        throw new Error('Use driver.getRequestContent() for network request content');
+      },
     };
     const fakeConsoleModel = {
       addMessage() {},
-      target() {}
+      target() {},
     };
     const fakeTarget = {
       _modelByConstructor: new Map(),
@@ -257,7 +268,7 @@ module.exports = (function() {
         return fakeNetworkAgent;
       },
       registerNetworkDispatcher() { },
-      model() { }
+      model() { },
     };
 
     fakeTarget.networkManager = new WebInspector.NetworkManager(fakeTarget);
@@ -287,7 +298,7 @@ module.exports = (function() {
     /** @type {!{properties: !Array<!Gonzales.Node>, node: !Gonzales.Node}} */
     const rootBlock = {
       properties: [],
-      node: ast
+      node: ast,
     };
     /** @type {!Array<!{properties: !Array<!Gonzales.Node>, node: !Gonzales.Node}>} */
     const blocks = [rootBlock];
@@ -296,6 +307,9 @@ module.exports = (function() {
 
     return ast;
   };
+
+  // Restore setImmediate, see comment at top.
+  global.setImmediate = _setImmediate;
 
   return WebInspector;
 })();

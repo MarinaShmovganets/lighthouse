@@ -1,18 +1,7 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
 /**
@@ -24,17 +13,16 @@
 const Gatherer = require('../gatherer');
 
 class EventListeners extends Gatherer {
-
   listenForScriptParsedEvents() {
-    return this.driver.sendCommand('Debugger.enable').then(_ => {
-      this.driver.on('Debugger.scriptParsed', script => {
-        this._parsedScripts.set(script.scriptId, script);
-      });
-    });
+    this._listener = script => {
+      this._parsedScripts.set(script.scriptId, script);
+    };
+    this.driver.on('Debugger.scriptParsed', this._listener);
+    return this.driver.sendCommand('Debugger.enable');
   }
 
   unlistenForScriptParsedEvents() {
-    this.driver.off('Debugger.scriptParsed', this.listenForScriptParsedEvents);
+    this.driver.off('Debugger.scriptParsed', this._listener);
     return this.driver.sendCommand('Debugger.disable');
   }
 
@@ -50,19 +38,19 @@ class EventListeners extends Gatherer {
     if (typeof nodeIdOrObject === 'string') {
       promise = this.driver.sendCommand('Runtime.evaluate', {
         expression: nodeIdOrObject,
-        objectGroup: 'event-listeners-gatherer' // populates event handler info.
+        objectGroup: 'event-listeners-gatherer', // populates event handler info.
       });
     } else {
       promise = this.driver.sendCommand('DOM.resolveNode', {
         nodeId: nodeIdOrObject,
-        objectGroup: 'event-listeners-gatherer' // populates event handler info.
+        objectGroup: 'event-listeners-gatherer', // populates event handler info.
       });
     }
 
     return promise.then(result => {
       const obj = result.object || result.result;
       return this.driver.sendCommand('DOMDebugger.getEventListeners', {
-        objectId: obj.objectId
+        objectId: obj.objectId,
       }).then(results => {
         return {listeners: results.listeners, tagName: obj.description};
       });
@@ -118,22 +106,23 @@ class EventListeners extends Gatherer {
     })).then(nestedListeners => [].concat(...nestedListeners));
   }
 
-  beforePass(options) {
-    this.driver = options.driver;
-    this._parsedScripts = new Map();
-    return this.listenForScriptParsedEvents();
-  }
-
   /**
    * @param {!Object} options
    * @return {!Promise<!Array<!Object>>}
    */
   afterPass(options) {
-    return this.unlistenForScriptParsedEvents()
-      .then(_ => options.driver.querySelectorAll('body, body /deep/ *')) // drill into shadow trees
+    this.driver = options.driver;
+    this._parsedScripts = new Map();
+    return options.driver.sendCommand('DOM.enable')
+      .then(() => this.listenForScriptParsedEvents())
+      .then(() => this.unlistenForScriptParsedEvents())
+      .then(() => options.driver.getElementsInDocument())
       .then(nodes => {
         nodes.push('document', 'window');
         return this.collectListeners(nodes);
+      }).then(listeners => {
+        return options.driver.sendCommand('DOM.disable')
+          .then(() => listeners);
       });
   }
 }

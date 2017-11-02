@@ -15,7 +15,19 @@ const livereload = require('gulp-livereload');
 const babel = require('babel-core');
 const tap = require('gulp-tap');
 const zip = require('gulp-zip');
+const gulpReplace = require('gulp-replace');
+const header = require('gulp-header');
 const LighthouseRunner = require('../lighthouse-core/runner');
+const pkg = require('../package.json');
+
+const distDir = 'dist';
+
+const VERSION = pkg.version;
+const COMMIT_HASH = require('child_process')
+  .execSync('git rev-parse HEAD')
+  .toString().trim();
+
+const BANNER = `// lighthouse, browserified. ${VERSION} (${COMMIT_HASH})\n`;
 
 const audits = LighthouseRunner.getAuditList()
     .map(f => '../lighthouse-core/audits/' + f.replace(/\.js$/, ''));
@@ -39,16 +51,16 @@ gulp.task('extras', () => {
     '!app/*.html',
   ], {
     base: 'app',
-    dot: true
+    dot: true,
   })
   .pipe(debug({title: 'copying to dist:'}))
-  .pipe(gulp.dest('dist'));
+  .pipe(gulp.dest(distDir));
 });
 
 gulp.task('lint', () => {
   return gulp.src([
     'app/src/**/*.js',
-    'gulpfile.js'
+    'gulpfile.js',
   ])
   .pipe(eslint())
   .pipe(eslint.format())
@@ -57,17 +69,17 @@ gulp.task('lint', () => {
 
 gulp.task('images', () => {
   return gulp.src('app/images/**/*')
-  .pipe(gulp.dest('dist/images'));
+  .pipe(gulp.dest(`${distDir}/images`));
 });
 
 gulp.task('css', () => {
   return gulp.src('app/styles/**/*.css')
-  .pipe(gulp.dest('dist/styles'));
+  .pipe(gulp.dest(`${distDir}/styles`));
 });
 
 gulp.task('html', () => {
   return gulp.src('app/*.html')
-  .pipe(gulp.dest('dist'));
+  .pipe(gulp.dest(distDir));
 });
 
 gulp.task('chromeManifest', () => {
@@ -76,13 +88,13 @@ gulp.task('chromeManifest', () => {
     background: {
       target: 'scripts/lighthouse-background.js',
       exclude: [
-        'scripts/chromereload.js'
-      ]
-    }
+        'scripts/chromereload.js',
+      ],
+    },
   };
   return gulp.src('app/manifest.json')
   .pipe(chromeManifest(manifestOpts))
-  .pipe(gulp.dest('dist'));
+  .pipe(gulp.dest(distDir));
 });
 
 function applyBrowserifyTransforms(bundle) {
@@ -96,10 +108,10 @@ function applyBrowserifyTransforms(bundle) {
 
 gulp.task('browserify-lighthouse', () => {
   return gulp.src([
-    'app/src/lighthouse-background.js'
+    'app/src/lighthouse-background.js',
   ], {read: false})
     .pipe(tap(file => {
-      let bundle = browserify(file.path); // , {debug: true})
+      let bundle = browserify(file.path); // , {debug: true}); // for sourcemaps
       bundle = applyBrowserifyTransforms(bundle);
 
       // lighthouse-background will need some additional transforms, ignores and requires…
@@ -111,7 +123,9 @@ gulp.task('browserify-lighthouse', () => {
       .ignore('source-map')
       .ignore('whatwg-url')
       .ignore('url')
-      .ignore('debug/node');
+      .ignore('debug/node')
+      .ignore('raven')
+      .ignore('pako/lib/zlib/inflate.js');
 
       // Expose the audits, gatherers, and computed artifacts so they can be dynamically loaded.
       const corePath = '../lighthouse-core/';
@@ -123,7 +137,7 @@ gulp.task('browserify-lighthouse', () => {
         bundle = bundle.require(gatherer, {expose: gatherer.replace(driverPath, './')});
       });
       computedArtifacts.forEach(artifact => {
-        bundle = bundle.require(artifact, {expose: artifact.replace(driverPath, './')});
+        bundle = bundle.require(artifact, {expose: artifact.replace(corePath, './')});
       });
 
       // Inject the new browserified contents back into our gulp pipeline
@@ -141,11 +155,13 @@ gulp.task('browserify-other', () => {
     .pipe(tap(file => {
       let bundle = browserify(file.path); // , {debug: true}); // for sourcemaps
       bundle = applyBrowserifyTransforms(bundle);
+
       // Inject the new browserified contents back into our gulp pipeline
       file.contents = bundle.bundle();
     }))
+    .pipe(gulpReplace('__COMMITHASH__', COMMIT_HASH))
     .pipe(gulp.dest('app/scripts'))
-    .pipe(gulp.dest('dist/scripts'));
+    .pipe(gulp.dest(`${distDir}/scripts`));
 });
 
 gulp.task('browserify', cb => {
@@ -158,6 +174,7 @@ gulp.task('compilejs', () => {
     retainLines: true, // Keep things on the same line (looks wonky but helps with stacktraces)
     comments: false, // Don't output comments
     shouldPrintComment: _ => false, // Don't include @license or @preserve comments either
+    // sourceMaps: 'both'
   };
 
   return gulp.src(['dist/scripts/lighthouse-background.js'])
@@ -166,16 +183,18 @@ gulp.task('compilejs', () => {
       file.contents = new Buffer(minified);
       return file;
     }))
+    .pipe(header(BANNER))
     .pipe(gulp.dest('dist/scripts'));
 });
 
 gulp.task('clean', () => {
-  return del(['.tmp', 'dist', 'app/scripts']).then(paths =>
+  return del(['.tmp', distDir, 'app/scripts']).then(paths =>
     paths.forEach(path => gutil.log('deleted:', gutil.colors.blue(path)))
   );
 });
 
-gulp.task('watch', ['lint', 'browserify', 'html'], () => {
+
+gulp.task('watch', ['browserify', 'html'], () => {
   livereload.listen();
 
   gulp.watch([
@@ -184,20 +203,20 @@ gulp.task('watch', ['lint', 'browserify', 'html'], () => {
     'app/images/**/*',
     'app/styles/**/*',
     'app/_locales/**/*.json',
-    'node_modules/lighthouse-core/**/*.js'
+    'node_modules/lighthouse-core/**/*.js',
   ]).on('change', livereload.reload);
 
   gulp.watch([
     '*.js',
     'app/src/**/*.js',
-    '../lighthouse-core/**/*.js'
+    '../lighthouse-core/**/*.js',
   ], ['browserify']);
 });
 
 gulp.task('package', function() {
-  const manifest = require('./dist/manifest.json');
-  return gulp.src('dist/**')
-  .pipe(zip('lighthouse-' + manifest.version + '.zip'))
+  const manifest = require(`./${distDir}/manifest.json`);
+  return gulp.src(`${distDir}/**`)
+  .pipe(zip(`lighthouse-${manifest.version}.zip`))
   .pipe(gulp.dest('package'));
 });
 

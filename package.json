@@ -1,76 +1,97 @@
 {
   "name": "lighthouse",
-  "version": "1.6.0",
+  "version": "2.5.1",
   "description": "Lighthouse",
   "main": "./lighthouse-core/index.js",
   "bin": {
     "lighthouse": "./lighthouse-cli/index.js",
-    "chrome-debug": "./lighthouse-cli/manual-chrome-launcher.js"
+    "chrome-debug": "./chrome-launcher/manual-chrome-launcher.js"
   },
   "engines": {
     "node": ">=6"
   },
   "scripts": {
-    "install-all": "npm run install-cli && npm run install-extension && npm run install-viewer",
-    "install-cli": "cd ./lighthouse-cli && npm install",
-    "install-extension": "cd ./lighthouse-extension && npm install",
-    "install-viewer": "cd ./lighthouse-viewer && npm install",
-    "build-all": "npm run build-cli && npm run build-extension && npm run build-viewer",
-    "build-cli": "cd ./lighthouse-cli && npm run build",
-    "build-extension": "cd ./lighthouse-extension && npm run build",
-    "build-viewer": "cd ./lighthouse-viewer && npm run build",
+    "install-all": "npm-run-posix-or-windows install-all:task",
+    "install-all:task": "yarn & yarn install-cli & yarn install-extension & yarn install-viewer & wait",
+    "install-all:task:windows": "yarn && yarn install-cli && yarn install-extension && yarn install-viewer",
+    "install-cli": "cd ./lighthouse-cli && yarn install && yarn build",
+    "install-extension": "cd ./lighthouse-extension && yarn install",
+    "install-viewer": "cd ./lighthouse-viewer && yarn install",
+    "build-all": "npm-run-posix-or-windows build-all:task",
+    "build-all:task": "yarn build-cli & yarn build-extension & yarn build-viewer & wait",
+    "build-all:task:windows": "yarn build-cli && yarn build-extension && yarn build-viewer",
+    "build-cli": "cd ./lighthouse-cli && yarn build",
+    "build-extension": "cd ./lighthouse-extension && yarn build",
+    "build-viewer": "cd ./lighthouse-viewer && yarn build",
+    "clean": "rimraf *.report.html *.report.dom.html *.report.json *.screenshots.html *.devtoolslog.json *.trace.json || true",
     "lint": "[ \"$CI\" = true ] && eslint --quiet -f codeframe . || eslint .",
-    "smoke": "bash lighthouse-cli/test/smokehouse/offline-local/run-tests.sh && bash lighthouse-cli/test/smokehouse/dobetterweb/run-tests.sh && bash lighthouse-cli/test/smokehouse/byte-efficiency/run-tests.sh",
-    "coverage": "node $(npm bin)/istanbul cover -x \"**/third_party/**\" _mocha -- $(find */test -name '*-test.js') --timeout 10000 --reporter progress",
-    "coveralls": "npm run coverage && cat ./coverage/lcov.info | coveralls",
+    "smoke": "bash lighthouse-cli/test/smokehouse/run-all-tests.sh",
+    "coverage": "istanbul cover -x \"**/third_party/**\" _mocha -- $(find */test -name '*-test.js') --timeout 10000 --reporter progress --report lcovonly",
     "start": "node ./lighthouse-cli/index.js",
-    "test": "npm run lint --silent && npm run unit",
-    "core-unit": "bash lighthouse-core/scripts/run-mocha.sh --core",
-    "cli-unit": "bash lighthouse-core/scripts/run-mocha.sh --cli",
-    "viewer-unit": "bash lighthouse-core/scripts/run-mocha.sh --viewer",
+    "test": "yarn lint --quiet && yarn unit && yarn closure && yarn test-cli-formatting",
+    "unit-core": "bash lighthouse-core/scripts/run-mocha.sh --core",
+    "unit-cli": "bash lighthouse-core/scripts/run-mocha.sh --cli",
+    "unit-viewer": "bash lighthouse-core/scripts/run-mocha.sh --viewer",
     "unit": "bash lighthouse-core/scripts/run-mocha.sh --default",
+    "test-cli-formatting": "cd lighthouse-cli && ./test/check-formatting.sh && cd ..",
+    "core-unit": "yarn unit-core",
+    "cli-unit": "yarn unit-cli",
+    "viewer-unit": "yarn unit-viewer",
     "closure": "cd lighthouse-core && node closure/closure-type-checking.js",
+    "devtools": "bash lighthouse-core/scripts/roll-to-devtools.sh",
+    "compile-devtools": "bash lighthouse-core/scripts/compile-against-devtools.sh",
     "watch": "bash lighthouse-core/scripts/run-mocha.sh --watch",
-    "chrome": "node ./lighthouse-cli/manual-chrome-launcher.js",
-    "fast": "npm run start -- --disable-device-emulation --disable-cpu-throttling --disable-network-throttling",
+    "chrome": "node chrome-launcher/manual-chrome-launcher.js",
+    "fast": "yarn start -- --disable-device-emulation --disable-cpu-throttling --disable-network-throttling",
     "smokehouse": "node lighthouse-cli/test/smokehouse/smokehouse.js",
-    "deploy-viewer": "cd lighthouse-viewer && gulp deploy"
+    "deploy-viewer": "cd lighthouse-viewer && gulp deploy",
+    "bundlesize": "bundlesize",
+    "plots-smoke": "bash plots/test/smoke.sh"
   },
   "devDependencies": {
     "@types/node": "^6.0.45",
     "babel-core": "^6.16.0",
-    "babel-plugin-transform-es2015-destructuring": "^6.9.0",
+    "bundlesize": "^0.14.4",
+    "codecov": "^2.2.0",
+    "commitizen": "^2.9.6",
     "coveralls": "^2.11.9",
-    "eslint": "^3.12.0",
-    "eslint-config-google": "^0.7.1",
-    "google-closure-compiler": "^20161201.0.0",
+    "cz-customizable": "^5.2.0",
+    "eslint": "^4.8.0",
+    "eslint-config-google": "^0.9.1",
+    "google-closure-compiler": "^20170521.0.0",
     "gulp": "^3.9.1",
     "gulp-replace": "^0.5.4",
     "gulp-util": "^3.0.7",
     "istanbul": "^0.4.3",
-    "jsdom": "^9.0.0",
+    "jsdom": "^9.12.0",
+    "lcov-result-merger": "^1.2.0",
     "mocha": "^3.2.0",
-    "walk": "^2.3.9",
+    "npm-run-posix-or-windows": "^2.0.2",
     "zone.js": "^0.7.3"
   },
   "dependencies": {
-    "axe-core": "2.1.7",
+    "axe-core": "2.4.1",
     "chrome-devtools-frontend": "1.0.422034",
-    "debug": "2.2.0",
+    "chrome-launcher": "0.8.1",
+    "configstore": "^3.1.1",
     "devtools-timeline-model": "1.1.6",
-    "gl-matrix": "2.3.2",
-    "handlebars": "4.0.5",
+    "inquirer": "^3.3.0",
+    "jpeg-js": "0.1.2",
+    "js-library-detector": "^4.0.0",
     "json-stringify-safe": "5.0.1",
-    "marked": "0.3.6",
-    "metaviewport-parser": "0.0.1",
+    "lighthouse-logger": "^1.0.0",
+    "metaviewport-parser": "0.1.0",
     "mkdirp": "0.5.1",
     "opn": "4.0.2",
-    "rimraf": "2.2.8",
-    "semver": "5.3.0",
-    "speedline": "1.0.3",
+    "raven": "^2.2.1",
+    "rimraf": "^2.6.1",
+    "semver": "^5.3.0",
+    "speedline": "1.2.0",
+    "update-notifier": "^2.1.0",
     "whatwg-url": "4.0.0",
-    "ws": "1.1.1",
-    "yargs": "3.32.0"
+    "ws": "1.1.2",
+    "yargs": "3.32.0",
+    "yargs-parser": "7.0.0"
   },
   "repository": "GoogleChrome/lighthouse",
   "keywords": [
@@ -83,5 +104,23 @@
   "bugs": {
     "url": "https://github.com/GoogleChrome/lighthouse/issues"
   },
-  "homepage": "https://github.com/GoogleChrome/lighthouse#readme"
+  "bundlesize": [
+    {
+      "path": "./lighthouse-extension/dist/scripts/lighthouse-background.js",
+      "threshold": "400 Kb"
+    },
+    {
+      "path": "./lighthouse-viewer/dist/src/viewer.js",
+      "threshold": "60 Kb"
+    }
+  ],
+  "homepage": "https://github.com/GoogleChrome/lighthouse#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./.cz-config.js"
+    }
+  }
 }

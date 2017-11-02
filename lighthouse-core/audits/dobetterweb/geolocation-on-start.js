@@ -1,18 +1,7 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
 /**
@@ -22,22 +11,21 @@
 
 'use strict';
 
-const Audit = require('../audit');
-const Formatter = require('../../formatters/formatter');
+const ViolationAudit = require('../violation-audit');
 
-class GeolocationOnStart extends Audit {
+class GeolocationOnStart extends ViolationAudit {
   /**
    * @return {!AuditMeta}
    */
   static get meta() {
     return {
-      category: 'UX',
       name: 'geolocation-on-start',
       description: 'Avoids requesting the geolocation permission on page load',
+      failureDescription: 'Requests the geolocation permission on page load',
       helpText: 'Users are mistrustful of or confused by sites that request their ' +
           'location without context. Consider tying the request to user gestures instead. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/geolocation-on-load).',
-      requiredArtifacts: ['GeolocationOnStart']
+      requiredArtifacts: ['ChromeConsoleMessages'],
     };
   }
 
@@ -46,21 +34,23 @@ class GeolocationOnStart extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    const results = artifacts.GeolocationOnStart.map(err => {
-      return Object.assign({
-        label: `line: ${err.line}, col: ${err.col}`
-      }, err);
-    });
+    // 'Only request geolocation information in response to a user gesture.'
+    const results = ViolationAudit.getViolationResults(artifacts, /geolocation/);
 
-    return GeolocationOnStart.generateAuditResult({
+    const headings = [
+      {key: 'url', itemType: 'url', text: 'URL'},
+      {key: 'label', itemType: 'text', text: 'Location'},
+    ];
+    const details = ViolationAudit.makeTableDetails(headings, results);
+
+    return {
       rawValue: results.length === 0,
       extendedInfo: {
-        formatter: Formatter.SUPPORTED_FORMATS.URLLIST,
-        value: results
-      }
-    });
+        value: results,
+      },
+      details,
+    };
   }
-
 }
 
 module.exports = GeolocationOnStart;

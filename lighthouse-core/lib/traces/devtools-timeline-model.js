@@ -1,20 +1,8 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-
 'use strict';
 
 const WebInspector = require('../web-inspector');
@@ -25,7 +13,6 @@ const TimelineModelTreeView =
     require('devtools-timeline-model/lib/timeline-model-treeview.js')(WebInspector);
 
 class TimelineModel {
-
   constructor(events) {
     this.init(events);
   }
@@ -48,11 +35,14 @@ class TimelineModel {
     // populate with events
     this._tracingModel.reset();
 
-    ConsoleQuieter.mute({prefix: 'timelineModel'});
-    this._tracingModel.addEvents(events);
-    this._tracingModel.tracingComplete();
-    this._timelineModel.setEvents(this._tracingModel);
-    ConsoleQuieter.unmuteAndFlush();
+    try {
+      ConsoleQuieter.mute({prefix: 'timelineModel'});
+      this._tracingModel.addEvents(events);
+      this._tracingModel.tracingComplete();
+      this._timelineModel.setEvents(this._tracingModel);
+    } finally {
+      ConsoleQuieter.unmuteAndFlush();
+    }
 
     return this;
   }
@@ -76,7 +66,7 @@ class TimelineModel {
     const nonessentialEvents = [
       WebInspector.TimelineModel.RecordType.EventDispatch,
       WebInspector.TimelineModel.RecordType.FunctionCall,
-      WebInspector.TimelineModel.RecordType.TimerFire
+      WebInspector.TimelineModel.RecordType.TimerFire,
     ];
     filters.push(new WebInspector.ExclusiveNameFilter(nonessentialEvents));
 
@@ -94,10 +84,10 @@ class TimelineModel {
     return WebInspector.TimelineProfileTree.buildBottomUp(topDown, noGroupAggregator);
   }
 
- /**
-  * @param  {!string} grouping Allowed values: None Category Subdomain Domain URL EventName
-  * @return {!WebInspector.TimelineProfileTree.Node} A grouped and sorted tree
-  */
+  /**
+   * @param  {!string} grouping Allowed values: None Category Subdomain Domain URL EventName
+   * @return {!WebInspector.TimelineProfileTree.Node} A grouped and sorted tree
+   */
   bottomUpGroupBy(grouping) {
     const topDown = this.topDown();
 
@@ -129,7 +119,6 @@ class TimelineModel {
     irModel.populate(this._timelineModel);
     return irModel;
   }
-
 }
 
 module.exports = TimelineModel;

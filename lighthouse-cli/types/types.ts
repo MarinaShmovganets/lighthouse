@@ -1,43 +1,46 @@
 interface AuditResult {
+  rawValue: boolean|number;
+  displayValue?: string;
+  debugString?: string;
+  score?: boolean|number;
+  optimalValue: number|string;
+  extendedInfo?: {value: string;};
+}
+
+interface AuditResults {
+  [metric: string]: AuditResult
+}
+
+interface AuditFullResult {
+  rawValue: boolean|number;
   displayValue: string;
-  debugString: string;
-  score: number;
+  debugString?: string;
+  score: boolean|number;
+  scoringMode: string;
   error?: boolean;
   description: string;
   name: string;
-  category: string;
   helpText?: string;
-  requiredArtifacts?: Array<string>;
-  extendedInfo?: {
-    value: string;
-    formatter: string;
-  };
+  extendedInfo?: {value: string};
 }
 
-interface AggregationResultItem {
-  overall: number;
-  name: string;
-  scored: boolean;
-  subItems: Array<AuditResult | string>;
-}
-
-interface Aggregation {
-  name: string;
-  score: Array<AggregationResultItem>;
-  total: number;
+interface AuditFullResults {
+  [metric: string]: AuditFullResult
 }
 
 interface Results {
   url: string;
-  aggregations: Array<Aggregation>;
-  audits: Object;
+  audits: AuditFullResults;
   lighthouseVersion: string;
   artifacts?: Object;
+  initialUrl: string;
+  generatedTime: string;
 }
 
 export {
   Results,
-  Aggregation,
-  AggregationResultItem,
   AuditResult,
+  AuditResults,
+  AuditFullResult,
+  AuditFullResults,
 }

@@ -17,3 +17,8 @@ coverage/**
 lighthouse-cli/*.js
 lighthouse-cli/commands/*.js
 lighthouse-cli/types/*.js
+
+# Generated files
+plots/out*
+
+!.eslintrc.js

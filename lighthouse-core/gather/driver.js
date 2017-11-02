@@ -1,18 +1,7 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
@@ -21,15 +10,23 @@ const emulation = require('../lib/emulation');
 const Element = require('../lib/element');
 const EventEmitter = require('events').EventEmitter;
 const URL = require('../lib/url-shim');
+const TraceParser = require('../lib/traces/trace-parser');
 
-const log = require('../lib/log.js');
+const log = require('lighthouse-logger');
 const DevtoolsLog = require('./devtools-log');
 
-const PAUSE_AFTER_LOAD = 500;
+// Controls how long to wait after onLoad before continuing
+const DEFAULT_PAUSE_AFTER_LOAD = 0;
+// Controls how long to wait between network requests before determining the network is quiet
+const DEFAULT_NETWORK_QUIET_THRESHOLD = 5000;
+// Controls how long to wait between longtasks before determining the CPU is idle, off by default
+const DEFAULT_CPU_QUIET_THRESHOLD = 0;
+
+const _uniq = arr => Array.from(new Set(arr));
 
 class Driver {
   static get MAX_WAIT_FOR_FULLY_LOADED() {
-    return 25 * 1000;
+    return 30 * 1000;
   }
 
   /**
@@ -42,18 +39,36 @@ class Driver {
     this._connection = connection;
     // currently only used by WPT where just Page and Network are needed
     this._devtoolsLog = new DevtoolsLog(/^(Page|Network)\./);
-    connection.on('notification', event => {
-      this._devtoolsLog.record(event);
-      this._eventEmitter.emit(event.method, event.params);
-    });
     this.online = true;
     this._domainEnabledCounts = new Map();
+    this._isolatedExecutionContextId = undefined;
+
+    /**
+     * Used for monitoring network status events during gotoURL.
+     * @private {?NetworkRecorder}
+     */
+    this._networkStatusMonitor = null;
+
+    /**
+     * Used for monitoring url redirects during gotoURL.
+     * @private {?string}
+     */
+    this._monitoredUrl = null;
+
+    connection.on('notification', event => {
+      this._devtoolsLog.record(event);
+      if (this._networkStatusMonitor) {
+        this._networkStatusMonitor.dispatch(event.method, event.params);
+      }
+      this._eventEmitter.emit(event.method, event.params);
+    });
   }
 
   static get traceCategories() {
     return [
       '-*', // exclude default
       'toplevel',
+      'v8.execute',
       'blink.console',
       'blink.user_timing',
       'benchmark',
@@ -66,15 +81,16 @@ class Driver {
       // Flipped off until bugs.chromium.org/p/v8/issues/detail?id=5820 is fixed in Stable
       // 'disabled-by-default-v8.cpu_profiler',
       // 'disabled-by-default-v8.cpu_profiler.hires',
-      'disabled-by-default-devtools.screenshot'
+      'disabled-by-default-devtools.screenshot',
     ];
   }
 
   /**
-   * @return {!Array<{method: string, params: !Object}>}
+   * @return {!Promise<string>}
    */
-  get devtoolsLog() {
-    return this._devtoolsLog.messages;
+  getUserAgent() {
+    // FIXME: use Browser.getVersion instead
+    return this.evaluateAsync('navigator.userAgent');
   }
 
   /**
@@ -164,9 +180,10 @@ class Driver {
    * Call protocol methods
    * @param {!string} method
    * @param {!Object} params
+   * @param {{silent: boolean}=} cmdOpts
    * @return {!Promise}
    */
-  sendCommand(method, params) {
+  sendCommand(method, params, cmdOpts) {
     const domainCommand = /^(\w+)\.(enable|disable)$/.exec(method);
     if (domainCommand) {
       const enable = domainCommand[2] === 'enable';
@@ -175,7 +192,7 @@ class Driver {
       }
     }
 
-    return this._connection.sendCommand(method, params);
+    return this._connection.sendCommand(method, params, cmdOpts);
   }
 
   /**
@@ -193,19 +210,36 @@ class Driver {
    * @param {string} scriptSource
    * @return {!Promise<string>} Identifier of the added script.
    */
-  evaluateScriptOnLoad(scriptSource) {
+  evaluteScriptOnNewDocument(scriptSource) {
     return this.sendCommand('Page.addScriptToEvaluateOnLoad', {
-      scriptSource
+      scriptSource,
     });
   }
 
   /**
-   * Evaluate an expression in the context of the current page.
+   * Evaluate an expression in the context of the current page. If useIsolation is true, the expression
+   * will be evaluated in a content script that has access to the page's DOM but whose JavaScript state
+   * is completely separate.
    * Returns a promise that resolves on the expression's value.
    * @param {string} expression
+   * @param {{useIsolation: boolean}=} options
    * @return {!Promise<*>}
    */
-  evaluateAsync(expression) {
+  evaluateAsync(expression, options = {}) {
+    const contextIdPromise = options.useIsolation ?
+        this._getOrCreateIsolatedContextId() :
+        Promise.resolve(undefined);
+    return contextIdPromise.then(contextId => this._evaluateInContext(expression, contextId));
+  }
+
+  /**
+   * Evaluate an expression in the given execution context; an undefined contextId implies the main
+   * page without isolation.
+   * @param {string} expression
+   * @param {number|undefined} contextId
+   * @return {!Promise<*>}
+   */
+  _evaluateInContext(expression, contextId) {
     return new Promise((resolve, reject) => {
       // If this gets to 60s and it hasn't been resolved, reject the Promise.
       const asyncTimeout = setTimeout(
@@ -213,7 +247,7 @@ class Driver {
         60000
       );
 
-      this.sendCommand('Runtime.evaluate', {
+      const evaluationParams = {
         // We need to explicitly wrap the raw expression for several purposes:
         // 1. Ensure that the expression will be a native Promise and not a polyfill/non-Promise.
         // 2. Ensure that errors in the expression are captured by the Promise.
@@ -230,8 +264,11 @@ class Driver {
         }())`,
         includeCommandLineAPI: true,
         awaitPromise: true,
-        returnByValue: true
-      }).then(result => {
+        returnByValue: true,
+        contextId,
+      };
+
+      this.sendCommand('Runtime.evaluate', evaluationParams).then(result => {
         clearTimeout(asyncTimeout);
         const value = result.result.value;
 
@@ -250,6 +287,21 @@ class Driver {
     });
   }
 
+  getAppManifest() {
+    return this.sendCommand('Page.getAppManifest')
+      .then(response => {
+        // We're not reading `response.errors` however it may contain critical and noncritical
+        // errors from Blink's manifest parser:
+        //   https://chromedevtools.github.io/debugger-protocol-viewer/tot/Page/#type-AppManifestError
+        if (!response.data) {
+          // If the data is empty, the page had no manifest.
+          return null;
+        }
+
+        return response;
+      });
+  }
+
   getSecurityState() {
     return new Promise((resolve, reject) => {
       this.once('Security.securityStateChanged', data => {
@@ -263,10 +315,24 @@ class Driver {
 
   getServiceWorkerVersions() {
     return new Promise((resolve, reject) => {
-      this.once('ServiceWorker.workerVersionUpdated', data => {
-        this.sendCommand('ServiceWorker.disable')
-          .then(_ => resolve(data), reject);
-      });
+      const versionUpdatedListener = data => {
+        // find a service worker with runningStatus that looks like active
+        // on slow connections the serviceworker might still be installing
+        const activateCandidates = data.versions.filter(sw => {
+          return sw.status !== 'redundant';
+        });
+        const hasActiveServiceWorker = activateCandidates.find(sw => {
+          return sw.status === 'activated';
+        });
+
+        if (!activateCandidates.length || hasActiveServiceWorker) {
+          this.off('ServiceWorker.workerVersionUpdated', versionUpdatedListener);
+          this.sendCommand('ServiceWorker.disable')
+            .then(_ => resolve(data), reject);
+        }
+      };
+
+      this.on('ServiceWorker.workerVersionUpdated', versionUpdatedListener);
 
       this.sendCommand('ServiceWorker.enable').catch(reject);
     });
@@ -323,67 +389,102 @@ class Driver {
   }
 
   /**
-   * If our main document URL redirects, we will update options.url accordingly
-   * As such, options.url will always represent the post-redirected URL.
-   * options.initialUrl is the pre-redirect URL that things started with
-   * @param {!Object} opts
-   */
-  enableUrlUpdateIfRedirected(opts) {
-    this._networkRecorder.on('requestloaded', redirectRequest => {
-      // Quit if this is not a redirected request
-      if (!redirectRequest.redirectSource) {
-        return;
-      }
-      const earlierRequest = redirectRequest.redirectSource;
-      if (earlierRequest.url === opts.url) {
-        opts.url = redirectRequest.url;
-      }
-    });
-  }
-
-  /**
-   * Returns a promise that resolves when the network has been idle for
-   * `pauseAfterLoadMs` ms and a method to cancel internal network listeners and
-   * timeout.
-   * @param {string} pauseAfterLoadMs
+   * Returns a promise that resolves when the network has been idle (after DCL) for
+   * `networkQuietThresholdMs` ms and a method to cancel internal network listeners/timeout.
+   * @param {number} networkQuietThresholdMs
    * @return {{promise: !Promise, cancel: function()}}
    * @private
    */
-  _waitForNetworkIdle(pauseAfterLoadMs) {
+  _waitForNetworkIdle(networkQuietThresholdMs) {
     let idleTimeout;
     let cancel;
 
     const promise = new Promise((resolve, reject) => {
       const onIdle = () => {
         // eslint-disable-next-line no-use-before-define
-        this._networkRecorder.once('networkbusy', onBusy);
+        this._networkStatusMonitor.once('network-2-busy', onBusy);
         idleTimeout = setTimeout(_ => {
           cancel();
           resolve();
-        }, pauseAfterLoadMs);
+        }, networkQuietThresholdMs);
       };
 
       const onBusy = () => {
-        this._networkRecorder.once('networkidle', onIdle);
+        this._networkStatusMonitor.once('network-2-idle', onIdle);
         clearTimeout(idleTimeout);
       };
 
+      const domContentLoadedListener = () => {
+        if (this._networkStatusMonitor.is2Idle()) {
+          onIdle();
+        } else {
+          onBusy();
+        }
+      };
+
+      this.once('Page.domContentEventFired', domContentLoadedListener);
       cancel = () => {
         clearTimeout(idleTimeout);
-        this._networkRecorder.removeListener('networkbusy', onBusy);
-        this._networkRecorder.removeListener('networkidle', onIdle);
+        this.off('Page.domContentEventFired', domContentLoadedListener);
+        this._networkStatusMonitor.removeListener('network-2-busy', onBusy);
+        this._networkStatusMonitor.removeListener('network-2-idle', onIdle);
       };
-
-      if (this._networkRecorder.isIdle()) {
-        onIdle();
-      } else {
-        onBusy();
-      }
     });
 
     return {
       promise,
-      cancel
+      cancel,
+    };
+  }
+
+  /**
+   * Resolves when there have been no long tasks for at least waitForCPUQuiet ms.
+   * @param {number} waitForCPUQuiet
+   * @return {{promise: !Promise, cancel: function()}}
+   */
+  _waitForCPUIdle(waitForCPUQuiet) {
+    if (!waitForCPUQuiet) {
+      return {
+        promise: Promise.resolve(),
+        cancel: () => undefined,
+      };
+    }
+
+    let lastTimeout;
+    let cancelled = false;
+
+    const checkForQuietExpression = `(${checkTimeSinceLastLongTask.toString()})()`;
+    function checkForQuiet(driver, resolve) {
+      if (cancelled) return;
+
+      return driver.evaluateAsync(checkForQuietExpression)
+        .then(timeSinceLongTask => {
+          if (cancelled) return;
+
+          if (typeof timeSinceLongTask === 'number' && timeSinceLongTask >= waitForCPUQuiet) {
+            log.verbose('Driver', `CPU has been idle for ${timeSinceLongTask} ms`);
+            resolve();
+          } else {
+            log.verbose('Driver', `CPU has been idle for ${timeSinceLongTask} ms`);
+            const timeToWait = waitForCPUQuiet - timeSinceLongTask;
+            lastTimeout = setTimeout(() => checkForQuiet(driver, resolve), timeToWait);
+          }
+        });
+    }
+
+    let cancel;
+    const promise = new Promise((resolve, reject) => {
+      checkForQuiet(this, resolve);
+      cancel = () => {
+        cancelled = true;
+        if (lastTimeout) clearTimeout(lastTimeout);
+        reject(new Error('Wait for CPU idle cancelled'));
+      };
+    });
+
+    return {
+      promise,
+      cancel,
     };
   }
 
@@ -411,35 +512,46 @@ class Driver {
 
     return {
       promise,
-      cancel
+      cancel,
     };
   }
 
   /**
    * Returns a promise that resolves when:
-   * - it's been pauseAfterLoadMs milliseconds after both onload and the network
-   * has gone idle, or
+   * - All of the following conditions have been met:
+   *    - pauseAfterLoadMs milliseconds have passed since the load event.
+   *    - networkQuietThresholdMs milliseconds have passed since the last network request that exceeded
+   *      2 inflight requests (network-2-quiet has been reached).
+   *    - cpuQuietThresholdMs have passed since the last long task after network-2-quiet.
    * - maxWaitForLoadedMs milliseconds have passed.
    * See https://github.com/GoogleChrome/lighthouse/issues/627 for more.
    * @param {number} pauseAfterLoadMs
+   * @param {number} networkQuietThresholdMs
+   * @param {number} cpuQuietThresholdMs
    * @param {number} maxWaitForLoadedMs
    * @return {!Promise}
    * @private
    */
-  _waitForFullyLoaded(pauseAfterLoadMs, maxWaitForLoadedMs) {
+  _waitForFullyLoaded(pauseAfterLoadMs, networkQuietThresholdMs, cpuQuietThresholdMs,
+      maxWaitForLoadedMs) {
     let maxTimeoutHandle;
 
     // Listener for onload. Resolves pauseAfterLoadMs ms after load.
     const waitForLoadEvent = this._waitForLoadEvent(pauseAfterLoadMs);
-    // Network listener. Resolves when the network has been idle for pauseAfterLoadMs.
-    const waitForNetworkIdle = this._waitForNetworkIdle(pauseAfterLoadMs);
+    // Network listener. Resolves when the network has been idle for networkQuietThresholdMs.
+    const waitForNetworkIdle = this._waitForNetworkIdle(networkQuietThresholdMs);
+    // CPU listener. Resolves when the CPU has been idle for cpuQuietThresholdMs after network idle.
+    let waitForCPUIdle = null;
 
     // Wait for both load promises. Resolves on cleanup function the clears load
     // timeout timer.
     const loadPromise = Promise.all([
       waitForLoadEvent.promise,
-      waitForNetworkIdle.promise
-    ]).then(_ => {
+      waitForNetworkIdle.promise,
+    ]).then(() => {
+      waitForCPUIdle = this._waitForCPUIdle(cpuQuietThresholdMs);
+      return waitForCPUIdle.promise;
+    }).then(() => {
       return function() {
         log.verbose('Driver', 'loadEventFired and network considered idle');
         clearTimeout(maxTimeoutHandle);
@@ -455,43 +567,129 @@ class Driver {
         log.warn('Driver', 'Timed out waiting for page load. Moving on...');
         waitForLoadEvent.cancel();
         waitForNetworkIdle.cancel();
+        waitForCPUIdle && waitForCPUIdle.cancel();
       };
     });
 
     // Wait for load or timeout and run the cleanup function the winner returns.
     return Promise.race([
       loadPromise,
-      maxTimeoutPromise
+      maxTimeoutPromise,
     ]).then(cleanup => cleanup());
   }
 
   /**
-   * Navigate to the given URL. Use of this method directly isn't advised: if
+   * Set up listener for network quiet events and URL redirects. Passed in URL
+   * will be monitored for redirects, with the final loaded URL passed back in
+   * _endNetworkStatusMonitoring.
+   * @param {string} startingUrl
+   * @return {!Promise}
+   * @private
+   */
+  _beginNetworkStatusMonitoring(startingUrl) {
+    this._networkStatusMonitor = new NetworkRecorder([]);
+
+    // Update startingUrl if it's ever redirected.
+    this._monitoredUrl = startingUrl;
+    this._networkStatusMonitor.on('requestloaded', redirectRequest => {
+      // Ignore if this is not a redirected request.
+      if (!redirectRequest.redirectSource) {
+        return;
+      }
+      const earlierRequest = redirectRequest.redirectSource;
+      if (earlierRequest.url === this._monitoredUrl) {
+        this._monitoredUrl = redirectRequest.url;
+      }
+    });
+
+    return this.sendCommand('Network.enable');
+  }
+
+  /**
+   * End network status listening. Returns the final, possibly redirected,
+   * loaded URL starting with the one passed into _endNetworkStatusMonitoring.
+   * @return {string}
+   * @private
+   */
+  _endNetworkStatusMonitoring() {
+    this._networkStatusMonitor = null;
+    const finalUrl = this._monitoredUrl;
+    this._monitoredUrl = null;
+    return finalUrl;
+  }
+
+  /**
+   * Returns the cached isolated execution context ID or creates a new execution context for the main
+   * frame. The cached execution context is cleared on every gotoURL invocation, so a new one will
+   * always be created on the first call on a new page.
+   * @return {!Promise<number>}
+   */
+  _getOrCreateIsolatedContextId() {
+    if (typeof this._isolatedExecutionContextId === 'number') {
+      return Promise.resolve(this._isolatedExecutionContextId);
+    }
+
+    return this.sendCommand('Page.getResourceTree')
+      .then(data => {
+        const mainFrameId = data.frameTree.frame.id;
+        return this.sendCommand('Page.createIsolatedWorld', {
+          frameId: mainFrameId,
+          worldName: 'lighthouse_isolated_context',
+        });
+      })
+      .then(data => this._isolatedExecutionContextId = data.executionContextId);
+  }
+
+  _clearIsolatedContextId() {
+    this._isolatedExecutionContextId = undefined;
+  }
+
+  /**
+   * Navigate to the given URL. Direct use of this method isn't advised: if
    * the current page is already at the given URL, navigation will not occur and
    * so the returned promise will only resolve after the MAX_WAIT_FOR_FULLY_LOADED
    * timeout. See https://github.com/GoogleChrome/lighthouse/pull/185 for one
    * possible workaround.
+   * Resolves on the url of the loaded page, taking into account any redirects.
    * @param {string} url
    * @param {!Object} options
-   * @return {!Promise}
+   * @return {!Promise<string>}
    */
   gotoURL(url, options = {}) {
     const waitForLoad = options.waitForLoad || false;
     const disableJS = options.disableJavaScript || false;
-    const pauseAfterLoadMs = (options.flags && options.flags.pauseAfterLoad) || PAUSE_AFTER_LOAD;
-    const maxWaitMs = (options.flags && options.flags.maxWaitForLoad) ||
-        Driver.MAX_WAIT_FOR_FULLY_LOADED;
 
-    return this.sendCommand('Page.enable')
-      .then(_ => this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS}))
-      .then(_ => this.sendCommand('Page.navigate', {url}))
-      .then(_ => waitForLoad && this._waitForFullyLoaded(pauseAfterLoadMs, maxWaitMs));
+    let pauseAfterLoadMs = options.config && options.config.pauseAfterLoadMs;
+    let networkQuietThresholdMs = options.config && options.config.networkQuietThresholdMs;
+    let cpuQuietThresholdMs = options.config && options.config.cpuQuietThresholdMs;
+    let maxWaitMs = options.flags && options.flags.maxWaitForLoad;
+
+    /* eslint-disable max-len */
+    if (typeof pauseAfterLoadMs !== 'number') pauseAfterLoadMs = DEFAULT_PAUSE_AFTER_LOAD;
+    if (typeof networkQuietThresholdMs !== 'number') networkQuietThresholdMs = DEFAULT_NETWORK_QUIET_THRESHOLD;
+    if (typeof cpuQuietThresholdMs !== 'number') cpuQuietThresholdMs = DEFAULT_CPU_QUIET_THRESHOLD;
+    if (typeof maxWaitMs !== 'number') maxWaitMs = Driver.MAX_WAIT_FOR_FULLY_LOADED;
+    /* eslint-enable max-len */
+
+    return this._beginNetworkStatusMonitoring(url)
+      .then(_ => this._clearIsolatedContextId())
+      .then(_ => {
+        // These can 'race' and that's OK.
+        // We don't want to wait for Page.navigate's resolution, as it can now
+        // happen _after_ onload: https://crbug.com/768961
+        this.sendCommand('Page.enable');
+        this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS});
+        this.sendCommand('Page.navigate', {url});
+      })
+      .then(_ => waitForLoad && this._waitForFullyLoaded(pauseAfterLoadMs,
+          networkQuietThresholdMs, cpuQuietThresholdMs, maxWaitMs))
+      .then(_ => this._endNetworkStatusMonitoring());
   }
 
   /**
-  * @param {string} objectId Object ID for the resolved DOM node
-  * @param {string} propName Name of the property
-  * @return {!Promise<string>} The property value, or null, if property not found
+   * @param {string} objectId Object ID for the resolved DOM node
+   * @param {string} propName Name of the property
+   * @return {!Promise<string>} The property value, or null, if property not found
   */
   getObjectProperty(objectId, propName) {
     return new Promise((resolve, reject) => {
@@ -505,13 +703,25 @@ class Driver {
         const propertyForName = properties.result
           .find(property => property.name === propName);
 
-        if (propertyForName) {
+        if (propertyForName && propertyForName.value) {
           resolve(propertyForName.value.value);
         } else {
-          reject(null);
+          resolve(null);
         }
-      });
+      }).catch(reject);
     });
+  }
+
+  /**
+   * Return the body of the response with the given ID.
+   * @param {string} requestId
+   * @return {string}
+   */
+  getRequestContent(requestId) {
+    return this.sendCommand('Network.getResponseBody', {
+      requestId,
+    // Ignoring result.base64Encoded, which indicates if body is already encoded
+    }).then(result => result.body);
   }
 
   /**
@@ -538,7 +748,7 @@ class Driver {
       .then(result => result.root.nodeId)
       .then(nodeId => this.sendCommand('DOM.querySelector', {
         nodeId,
-        selector
+        selector,
       }))
       .then(element => {
         if (element.nodeId === 0) {
@@ -557,7 +767,7 @@ class Driver {
       .then(result => result.root.nodeId)
       .then(nodeId => this.sendCommand('DOM.querySelectorAll', {
         nodeId,
-        selector
+        selector,
       }))
       .then(nodeList => {
         const elementList = [];
@@ -570,11 +780,31 @@ class Driver {
       });
   }
 
-  beginTrace() {
+  /**
+   * Returns the flattened list of all DOM nodes within the document.
+   * @param {boolean=} pierce Whether to pierce through shadow trees and iframes.
+   *     True by default.
+   * @return {!Promise<!Array<!Element>>} The found elements, or [], resolved in a promise
+   */
+  getElementsInDocument(pierce = true) {
+    return this.sendCommand('DOM.getFlattenedDocument', {depth: -1, pierce})
+      .then(result => {
+        const elements = result.nodes.filter(node => node.nodeType === 1);
+        return elements.map(node => new Element({nodeId: node.nodeId}, this));
+      });
+  }
+
+  /**
+   * @param {{additionalTraceCategories: string=}=} flags
+   */
+  beginTrace(flags) {
+    const additionalCategories = (flags && flags.additionalTraceCategories &&
+        flags.additionalTraceCategories.split(',')) || [];
+    const traceCategories = this._traceCategories.concat(additionalCategories);
     const tracingOpts = {
-      categories: this._traceCategories.join(','),
+      categories: _uniq(traceCategories).join(','),
       transferMode: 'ReturnAsStream',
-      options: 'sampling-frequency=10000'  // 1000 is default and too slow.
+      options: 'sampling-frequency=10000', // 1000 is default and too slow.
     };
 
     // Check any domains that could interfere with or add overhead to the trace.
@@ -588,39 +818,45 @@ class Driver {
       throw new Error('DOM domain enabled when starting trace');
     }
 
-    this._devtoolsLog.reset();
-    this._devtoolsLog.beginRecording();
-
     // Enable Page domain to wait for Page.loadEventFired
     return this.sendCommand('Page.enable')
+      // ensure tracing is stopped before we can start
+      // see https://github.com/GoogleChrome/lighthouse/issues/1091
+      .then(_ => this.endTraceIfStarted())
       .then(_ => this.sendCommand('Tracing.start', tracingOpts));
   }
 
-  /**
-   * @param {number=} pauseBeforeTraceEndMs Wait this many milliseconds before ending the trace
-   */
-  endTrace(pauseBeforeTraceEndMs = 0) {
+  endTraceIfStarted() {
+    return new Promise((resolve) => {
+      const traceCallback = () => resolve();
+      this.once('Tracing.tracingComplete', traceCallback);
+      return this.sendCommand('Tracing.end', undefined, {silent: true}).catch(() => {
+        this.off('Tracing.tracingComplete', traceCallback);
+        traceCallback();
+      });
+    });
+  }
+
+  endTrace() {
     return new Promise((resolve, reject) => {
       // When the tracing has ended this will fire with a stream handle.
       this.once('Tracing.tracingComplete', streamHandle => {
-        this._devtoolsLog.endRecording();
         this._readTraceFromStream(streamHandle)
             .then(traceContents => resolve(traceContents), reject);
       });
 
-      // Issue the command to stop tracing after an optional delay.
-      // Audits like TTI may require slightly longer trace to find a minimum window size.
-      setTimeout(() => this.sendCommand('Tracing.end').catch(reject), pauseBeforeTraceEndMs);
+      // Issue the command to stop tracing.
+      return this.sendCommand('Tracing.end').catch(reject);
     });
   }
 
   _readTraceFromStream(streamHandle) {
     return new Promise((resolve, reject) => {
       let isEOF = false;
-      let result = '';
+      const parser = new TraceParser();
 
       const readArguments = {
-        handle: streamHandle.stream
+        handle: streamHandle.stream,
       };
 
       const onChunkRead = response => {
@@ -628,11 +864,11 @@ class Driver {
           return;
         }
 
-        result += response.data;
+        parser.parseChunk(response.data);
 
         if (response.eof) {
           isEOF = true;
-          return resolve(JSON.parse(result));
+          return resolve(parser.getTrace());
         }
 
         return this.sendCommand('IO.read', readArguments).then(onChunkRead);
@@ -642,39 +878,21 @@ class Driver {
     });
   }
 
-  beginNetworkCollect(opts) {
-    return new Promise((resolve, reject) => {
-      this._networkRecords = [];
-      this._networkRecorder = new NetworkRecorder(this._networkRecords);
-      this.enableUrlUpdateIfRedirected(opts);
-
-      this.on('Network.requestWillBeSent', this._networkRecorder.onRequestWillBeSent);
-      this.on('Network.requestServedFromCache', this._networkRecorder.onRequestServedFromCache);
-      this.on('Network.responseReceived', this._networkRecorder.onResponseReceived);
-      this.on('Network.dataReceived', this._networkRecorder.onDataReceived);
-      this.on('Network.loadingFinished', this._networkRecorder.onLoadingFinished);
-      this.on('Network.loadingFailed', this._networkRecorder.onLoadingFailed);
-      this.on('Network.resourceChangedPriority', this._networkRecorder.onResourceChangedPriority);
-
-      this.sendCommand('Network.enable').then(resolve, reject);
-    });
+  /**
+   * Begin recording devtools protocol messages.
+   */
+  beginDevtoolsLog() {
+    this._devtoolsLog.reset();
+    this._devtoolsLog.beginRecording();
   }
 
-  endNetworkCollect() {
-    return new Promise((resolve, reject) => {
-      this.off('Network.requestWillBeSent', this._networkRecorder.onRequestWillBeSent);
-      this.off('Network.requestServedFromCache', this._networkRecorder.onRequestServedFromCache);
-      this.off('Network.responseReceived', this._networkRecorder.onResponseReceived);
-      this.off('Network.dataReceived', this._networkRecorder.onDataReceived);
-      this.off('Network.loadingFinished', this._networkRecorder.onLoadingFinished);
-      this.off('Network.loadingFailed', this._networkRecorder.onLoadingFailed);
-      this.off('Network.resourceChangedPriority', this._networkRecorder.onResourceChangedPriority);
-
-      resolve(this._networkRecords);
-
-      this._networkRecorder = null;
-      this._networkRecords = [];
-    });
+  /**
+   * Stop recording to devtoolsLog and return log contents.
+   * @return {!Array<{method: string, params: (!Object<string, *>|undefined)}>}
+   */
+  endDevtoolsLog() {
+    this._devtoolsLog.endRecording();
+    return this._devtoolsLog.messages;
   }
 
   enableRuntimeEvents() {
@@ -688,15 +906,16 @@ class Driver {
   }
 
   setThrottling(flags, passConfig) {
-    const p = [];
-    if (passConfig.useThrottling) {
-      if (!flags.disableNetworkThrottling) p.push(emulation.enableNetworkThrottling(this));
-      if (!flags.disableCpuThrottling) p.push(emulation.enableCPUThrottling(this));
-    } else {
-      p.push(emulation.disableNetworkThrottling(this));
-      p.push(emulation.disableCPUThrottling(this));
-    }
-    return Promise.all(p);
+    const throttleCpu = passConfig.useThrottling && !flags.disableCpuThrottling;
+    const throttleNetwork = passConfig.useThrottling && !flags.disableNetworkThrottling;
+    const cpuPromise = throttleCpu ?
+        emulation.enableCPUThrottling(this) :
+        emulation.disableCPUThrottling(this);
+    const networkPromise = throttleNetwork ?
+        emulation.enableNetworkThrottling(this) :
+        emulation.disableNetworkThrottling(this);
+
+    return Promise.all([cpuPromise, networkPromise]);
   }
 
   /**
@@ -720,19 +939,12 @@ class Driver {
         .then(_ => this.online = true);
   }
 
-  cleanAndDisableBrowserCaches() {
-    return Promise.all([
-      this.clearBrowserCache(),
-      this.disableBrowserCache()
-    ]);
-  }
-
-  clearBrowserCache() {
-    return this.sendCommand('Network.clearBrowserCache');
-  }
-
-  disableBrowserCache() {
-    return this.sendCommand('Network.setCacheDisabled', {cacheDisabled: true});
+  cleanBrowserCaches() {
+    // Wipe entire disk cache
+    return this.sendCommand('Network.clearBrowserCache')
+      // Toggle 'Disable Cache' to evict the memory cache
+      .then(_ => this.sendCommand('Network.setCacheDisabled', {cacheDisabled: true}))
+      .then(_ => this.sendCommand('Network.setCacheDisabled', {cacheDisabled: false}));
   }
 
   setExtraHTTPHeaders(jsonHeaders) {
@@ -761,22 +973,31 @@ class Driver {
       'shader_cache',
       'websql',
       'service_workers',
-      'cache_storage'
+      'cache_storage',
     ].join(',');
 
     return this.sendCommand('Storage.clearDataForOrigin', {
       origin: origin,
-      storageTypes: typesToClear
+      storageTypes: typesToClear,
     });
   }
 
   /**
    * Cache native functions/objects inside window
    * so we are sure polyfills do not overwrite the native implementations
+   * @return {!Promise}
    */
   cacheNatives() {
-    return this.evaluateScriptOnLoad(`window.__nativePromise = Promise;
+    return this.evaluteScriptOnNewDocument(`window.__nativePromise = Promise;
         window.__nativeError = Error;`);
+  }
+
+  /**
+   * Install a performance observer that watches longtask timestamps for waitForCPUIdle.
+   * @return {!Promise}
+   */
+  registerPerformanceObserver() {
+    return this.evaluteScriptOnNewDocument(`(${registerPerformanceObserverInPage.toString()})()`);
   }
 
   /**
@@ -790,7 +1011,7 @@ class Driver {
     const globalVarToPopulate = `window['__${funcName}StackTraces']`;
     const collectUsage = () => {
       return this.evaluateAsync(
-          `Promise.resolve(Array.from(${globalVarToPopulate}).map(item => JSON.parse(item)))`)
+          `Array.from(${globalVarToPopulate}).map(item => JSON.parse(item))`)
         .then(result => {
           if (!Array.isArray(result)) {
             throw new Error(
@@ -804,16 +1025,44 @@ class Driver {
 
     const funcBody = captureJSCallUsage.toString();
 
-    this.evaluateScriptOnLoad(`
+    this.evaluteScriptOnNewDocument(`
         ${globalVarToPopulate} = new Set();
         (${funcName} = ${funcBody}(${funcName}, ${globalVarToPopulate}))`);
 
     return collectUsage;
   }
 
-  blockUrlPatterns(urlPatterns) {
-    const promiseArr = urlPatterns.map(url => this.sendCommand('Network.addBlockedURL', {url}));
-    return Promise.all(promiseArr);
+  /**
+   * @param {!Array<string>} urls URL patterns to block. Wildcards ('*') are allowed.
+   * @return {!Promise}
+   */
+  blockUrlPatterns(urls) {
+    return this.sendCommand('Network.setBlockedURLs', {urls})
+      .catch(err => {
+        // TODO: remove this handler once m59 hits stable
+        if (!/wasn't found/.test(err.message)) {
+          throw err;
+        }
+      });
+  }
+
+  /**
+   * Dismiss JavaScript dialogs (alert, confirm, prompt), providing a
+   * generic promptText in case the dialog is a prompt.
+   * @return {!Promise}
+   */
+  dismissJavaScriptDialogs() {
+    return this.sendCommand('Page.enable').then(_ => {
+      this.on('Page.javascriptDialogOpening', data => {
+        log.warn('Driver', `${data.type} dialog opened by the page automatically suppressed.`);
+
+        // rejection intentionally unhandled
+        this.sendCommand('Page.handleJavaScriptDialog', {
+          accept: true,
+          promptText: 'Lighthouse prompt response',
+        });
+      });
+    });
   }
 }
 
@@ -898,6 +1147,53 @@ function wrapRuntimeEvalErrorInBrowser(err) {
     message: err.message || fallbackMessage,
     stack: err.stack || (new Error()).stack,
   };
+}
+
+/**
+ * Used by _waitForCPUIdle and executed in the context of the page, updates the ____lastLongTask
+ * property on window to the end time of the last long task.
+ * instanbul ignore next
+ */
+function registerPerformanceObserverInPage() {
+  window.____lastLongTask = window.performance.now();
+  const observer = new window.PerformanceObserver(entryList => {
+    const entries = entryList.getEntries();
+    for (const entry of entries) {
+      if (entry.entryType === 'longtask') {
+        const taskEnd = entry.startTime + entry.duration;
+        window.____lastLongTask = Math.max(window.____lastLongTask, taskEnd);
+      }
+    }
+  });
+
+  observer.observe({entryTypes: ['longtask']});
+  // HACK: A PerformanceObserver will be GC'd if there are no more references to it, so attach it to
+  // window to ensure we still receive longtask notifications. See https://crbug.com/742530.
+  // For an example test of this behavior see https://gist.github.com/patrickhulce/69d8bed1807e762218994b121d06fea6.
+  //   FIXME COMPAT: This hack isn't neccessary as of Chrome 62.0.3176.0
+  //   https://bugs.chromium.org/p/chromium/issues/detail?id=742530#c7
+  window.____lhPerformanceObserver = observer;
+}
+
+
+/**
+ * Used by _waitForCPUIdle and executed in the context of the page, returns time since last long task.
+ * instanbul ignore next
+ */
+function checkTimeSinceLastLongTask() {
+  // Wait for a delta before returning so that we're sure the PerformanceObserver
+  // has had time to register the last longtask
+  return new Promise(resolve => {
+    const timeoutRequested = window.performance.now() + 50;
+
+    setTimeout(() => {
+      // Double check that a long task hasn't happened since setTimeout
+      const timeoutFired = window.performance.now();
+      const timeSinceLongTask = timeoutFired - timeoutRequested < 50 ?
+          timeoutFired - window.____lastLongTask : 0;
+      resolve(timeSinceLongTask);
+    }, 50);
+  });
 }
 
 module.exports = Driver;

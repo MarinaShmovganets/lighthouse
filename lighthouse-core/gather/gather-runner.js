@@ -1,25 +1,19 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
-const log = require('../lib/log.js');
+const log = require('lighthouse-logger');
 const Audit = require('../audits/audit');
-const path = require('path');
 const URL = require('../lib/url-shim');
+const NetworkRecorder = require('../lib/network-recorder.js');
+
+/**
+ * @typedef {!Object<string, !Array<!Promise<*>>>}
+ */
+let GathererResults; // eslint-disable-line no-unused-vars
 
 /**
  * Class that drives browser to load the page and runs gatherer lifecycle hooks.
@@ -33,22 +27,25 @@ const URL = require('../lib/url-shim');
  *     ii. beginEmulation
  *     iii. enableRuntimeEvents
  *     iv. evaluateScriptOnLoad rescue native Promise from potential polyfill
- *     v. cleanAndDisableBrowserCaches
- *     vi. clearDataForOrigin
- *     vii. blockUrlPatterns
+ *     v. register a performance observer
+ *     vi. register dialog dismisser
+ *     vii. clearDataForOrigin
  *
  * 2. For each pass in the config:
  *   A. GatherRunner.beforePass()
  *     i. navigate to about:blank
- *     ii. all gatherer's beforePass()
+ *     ii. Enable network request blocking for specified patterns
+ *     iii. all gatherers' beforePass()
  *   B. GatherRunner.pass()
- *     i. GatherRunner.loadPage()
- *       b. beginTrace (if requested) & beginNetworkCollect
- *       c. navigate to options.url (and wait for onload)
- *     ii. all gatherer's pass()
+ *     i. cleanBrowserCaches() (if it's a perf run)
+ *     ii. beginDevtoolsLog()
+ *     iii. beginTrace (if requested)
+ *     iv. GatherRunner.loadPage()
+ *       a. navigate to options.url (and wait for onload)
+ *     v. all gatherers' pass()
  *   C. GatherRunner.afterPass()
- *     i. endTrace (if requested) & endNetworkCollect
- *     ii. all gatherer's afterPass()
+ *     i. endTrace (if requested) & endDevtoolsLog & endThrottling
+ *     ii. all gatherers' afterPass()
  *
  * 3. Teardown
  *   A. GatherRunner.disposeDriver()
@@ -72,44 +69,52 @@ class GatherRunner {
   }
 
   /**
-   * Loads options.url with specified options.
+   * Loads options.url with specified options. If the main document URL
+   * redirects, options.url will be updated accordingly. As such, options.url
+   * will always represent the post-redirected URL. options.initialUrl is the
+   * pre-redirect starting URL.
    * @param {!Driver} driver
    * @param {!Object} options
    * @return {!Promise}
    */
   static loadPage(driver, options) {
-    return Promise.resolve()
-      // Begin tracing only if requested by config.
-      .then(_ => options.config.recordTrace && driver.beginTrace())
-      // Network is always recorded for internal use, even if not saved as artifact.
-      .then(_ => driver.beginNetworkCollect(options))
-      // Navigate.
-      .then(_ => driver.gotoURL(options.url, {
-        waitForLoad: true,
-        disableJavaScript: !!options.disableJavaScript,
-        flags: options.flags,
-      }));
+    return driver.gotoURL(options.url, {
+      waitForLoad: true,
+      disableJavaScript: !!options.disableJavaScript,
+      flags: options.flags,
+      config: options.config,
+    }).then(finalUrl => {
+      options.url = finalUrl;
+    });
   }
 
-  static setupDriver(driver, options) {
+  /**
+   * @param {!Driver} driver
+   * @param {!GathererResults} gathererResults
+   * @param {!Object} options
+   * @return {!Promise}
+   */
+  static setupDriver(driver, gathererResults, options) {
     log.log('status', 'Initializing…');
     const resetStorage = !options.flags.disableStorageReset;
     // Enable emulation based on flags
     return driver.assertNoSameOriginServiceWorkerClients(options.url)
+      .then(_ => driver.getUserAgent())
+      .then(userAgent => {
+        gathererResults.UserAgent = [userAgent];
+        GatherRunner.warnOnHeadless(userAgent, gathererResults);
+      })
       .then(_ => driver.beginEmulation(options.flags))
       .then(_ => driver.enableRuntimeEvents())
       .then(_ => driver.cacheNatives())
-      .then(_ => resetStorage && driver.cleanAndDisableBrowserCaches())
-      .then(_ => resetStorage && driver.clearDataForOrigin(options.url))
-      .then(_ => driver.setExtraHTTPHeaders(options.flags.extraHeaders || '{}'))
-      .then(_ => driver.blockUrlPatterns(options.flags.blockedUrlPatterns || []));
+      .then(_ => driver.registerPerformanceObserver())
+      .then(_ => driver.dismissJavaScriptDialogs())
+      .then(_ => resetStorage && driver.clearDataForOrigin(options.url));
   }
 
   static disposeDriver(driver) {
-    // We dont need to hold up the reporting for the reload/disconnect,
-    // so we will not return a promise in here.
     log.log('status', 'Disconnecting from browser...');
-    driver.disconnect().catch(err => {
+    return driver.disconnect().catch(err => {
       // Ignore disconnecting error if browser was already closed.
       // See https://github.com/GoogleChrome/lighthouse/issues/1583
       if (!(/close\/.*status: 500$/.test(err.message))) {
@@ -139,16 +144,38 @@ class GatherRunner {
    * @param {!Array<WebInspector.NetworkRequest>} networkRecords
    */
   static assertPageLoaded(url, driver, networkRecords) {
+    if (!driver.online) return;
+
     const mainRecord = networkRecords.find(record => {
       // record.url is actual request url, so needs to be compared without any URL fragment.
       return URL.equalWithExcludedFragments(record.url, url);
     });
-    if (driver.online && (!mainRecord || mainRecord.failed)) {
-      const message = mainRecord ? mainRecord.localizedFailDescription : 'timeout reached';
-      log.error('GatherRunner', message);
-      const error = new Error(`Unable to load the page: ${message}`);
+
+    let errorMessage;
+    if (!mainRecord) {
+      errorMessage = 'no document request found';
+    } else if (mainRecord.failed) {
+      errorMessage = `failed document request (${mainRecord.localizedFailDescription})`;
+    }
+
+    if (errorMessage) {
+      log.error('GatherRunner', errorMessage, url);
+      const error = new Error(`Unable to load page: ${errorMessage}`);
       error.code = 'PAGE_LOAD_ERROR';
       throw error;
+    }
+  }
+
+  /**
+   * Add run warning if running in Headless Chrome.
+   * @param {string} userAgent
+   * @param {!GathererResults} gathererResults
+   */
+  static warnOnHeadless(userAgent, gathererResults) {
+    if (userAgent.startsWith('HeadlessChrome')) {
+      gathererResults.LighthouseRunWarnings.push('Your site\'s mobile performance may be ' +
+          'worse than the numbers presented in this report. Lighthouse could not test on a ' +
+          'mobile connection because Headless Chrome does not support network throttling.');
     }
   }
 
@@ -156,13 +183,20 @@ class GatherRunner {
    * Navigates to about:blank and calls beforePass() on gatherers before tracing
    * has started and before navigation to the target page.
    * @param {!Object} options
-   * @param {!Object<!Array<!Promise<*>>} gathererResults
+   * @param {!GathererResults} gathererResults
    * @return {!Promise}
    */
   static beforePass(options, gathererResults) {
+    const blockedUrls = (options.config.blockedUrlPatterns || [])
+      .concat(options.flags.blockedUrlPatterns || []);
     const blankPage = options.config.blankPage;
     const blankDuration = options.config.blankDuration;
-    const pass = GatherRunner.loadBlank(options.driver, blankPage, blankDuration);
+    const pass = GatherRunner.loadBlank(options.driver, blankPage, blankDuration)
+        // Set request blocking before any network activity
+        // No "clearing" is done at the end of the pass since blockUrlPatterns([]) will unset all if
+        // neccessary at the beginning of the next pass.
+        .then(() => options.driver.blockUrlPatterns(blockedUrls))
+        .then(() => driver.setExtraHTTPHeaders(options.flags.extraHeaders || '{}'));
 
     return options.config.gatherers.reduce((chain, gatherer) => {
       return chain.then(_ => {
@@ -177,7 +211,7 @@ class GatherRunner {
    * Navigates to requested URL and then runs pass() on gatherers while trace
    * (if requested) is still being recorded.
    * @param {!Object} options
-   * @param {!Object<!Array<!Promise<*>>} gathererResults
+   * @param {!GathererResults} gathererResults
    * @return {!Promise}
    */
   static pass(options, gathererResults) {
@@ -185,13 +219,23 @@ class GatherRunner {
     const config = options.config;
     const gatherers = config.gatherers;
 
+    const recordTrace = config.recordTrace;
+    const isPerfRun = !options.flags.disableStorageReset && recordTrace && config.useThrottling;
+
     const gatherernames = gatherers.map(g => g.name).join(', ');
     const status = 'Loading page & waiting for onload';
     log.log('status', status, gatherernames);
 
-    const pass = GatherRunner.loadPage(driver, options).then(_ => {
-      log.log('statusEnd', status);
-    });
+    const pass = Promise.resolve()
+      // Clear disk & memory cache if it's a perf run
+      .then(_ => isPerfRun && driver.cleanBrowserCaches())
+      // Always record devtoolsLog
+      .then(_ => driver.beginDevtoolsLog())
+      // Begin tracing if requested by config.
+      .then(_ => recordTrace && driver.beginTrace(options.flags))
+      // Navigate.
+      .then(_ => GatherRunner.loadPage(driver, options))
+      .then(_ => log.log('statusEnd', status));
 
     return gatherers.reduce((chain, gatherer) => {
       return chain.then(_ => {
@@ -207,7 +251,7 @@ class GatherRunner {
    * afterPass() on gatherers with trace data passed in. Promise resolves with
    * object containing trace and network data.
    * @param {!Object} options
-   * @param {!Object<!Array<!Promise<*>>} gathererResults
+   * @param {!GathererResults} gathererResults
    * @return {!Promise}
    */
   static afterPass(options, gathererResults) {
@@ -221,29 +265,32 @@ class GatherRunner {
     if (config.recordTrace) {
       pass = pass.then(_ => {
         log.log('status', 'Retrieving trace');
-        return driver.endTrace(config.pauseBeforeTraceEndMs);
+        return driver.endTrace();
       }).then(traceContents => {
         // Before Chrome 54.0.2816 (codereview.chromium.org/2161583004),
         // traceContents was an array of trace events; after, traceContents is
         // an object with a traceEvents property. Normalize to object form.
         passData.trace = Array.isArray(traceContents) ?
             {traceEvents: traceContents} : traceContents;
-        passData.devtoolsLog = driver.devtoolsLog;
         log.verbose('statusEnd', 'Retrieving trace');
       });
     }
 
-    const status = 'Retrieving network records';
     pass = pass.then(_ => {
+      const status = 'Retrieving devtoolsLog and network records';
       log.log('status', status);
-      return driver.endNetworkCollect();
-    }).then(networkRecords => {
+      const devtoolsLog = driver.endDevtoolsLog();
+      const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
       GatherRunner.assertPageLoaded(options.url, driver, networkRecords);
-
-      // Network records only given to gatherers if requested by config.
-      config.recordNetwork && (passData.networkRecords = networkRecords);
       log.verbose('statusEnd', status);
+
+      // Expose devtoolsLog and networkRecords to gatherers
+      passData.devtoolsLog = devtoolsLog;
+      passData.networkRecords = networkRecords;
     });
+
+    // Disable throttling so the afterPass analysis isn't throttled
+    pass = pass.then(_ => driver.setThrottling(options.flags, {useThrottling: false}));
 
     pass = gatherers.reduce((chain, gatherer) => {
       const status = `Retrieving: ${gatherer.name}`;
@@ -266,11 +313,14 @@ class GatherRunner {
    * last produced value (that's not undefined) as the artifact for that
    * gatherer. If a non-fatal error was rejected from a gatherer phase,
    * uses that error object as the artifact instead.
-   * @param {!Object<!Array<!Promise<*>>} gathererResults
+   * @param {!GathererResults} gathererResults
    * @return {!Promise<!Artifacts>}
    */
   static collectArtifacts(gathererResults) {
     const artifacts = {};
+
+    // Nest LighthouseRunWarnings, if any, so they will be collected into artifact.
+    gathererResults.LighthouseRunWarnings = [gathererResults.LighthouseRunWarnings];
 
     return Object.keys(gathererResults).reduce((chain, gathererName) => {
       return chain.then(_ => {
@@ -299,7 +349,7 @@ class GatherRunner {
     const tracingData = {
       traces: {},
       devtoolsLogs: {},
-      networkRecords: {}
+      networkRecords: {},
     };
 
     if (typeof options.url !== 'string' || options.url.length === 0) {
@@ -314,18 +364,19 @@ class GatherRunner {
       return Promise.reject(new Error('You must provide a config'));
     }
 
-    // CPU throttling is temporarily off by default
     if (typeof options.flags.disableCpuThrottling === 'undefined') {
-      options.flags.disableCpuThrottling = true;
+      options.flags.disableCpuThrottling = false;
     }
 
     passes = this.instantiateGatherers(passes, options.config.configDir);
 
-    const gathererResults = {};
+    const gathererResults = {
+      LighthouseRunWarnings: [],
+    };
 
     return driver.connect()
       .then(_ => GatherRunner.loadBlank(driver))
-      .then(_ => GatherRunner.setupDriver(driver, options))
+      .then(_ => GatherRunner.setupDriver(driver, gathererResults, options))
 
       // Run each pass
       .then(_ => {
@@ -339,15 +390,15 @@ class GatherRunner {
             .then(_ => GatherRunner.pass(runOptions, gathererResults))
             .then(_ => GatherRunner.afterPass(runOptions, gathererResults))
             .then(passData => {
-              // If requested by config, merge trace and network data for this
-              // pass into tracingData.
               const passName = config.passName || Audit.DEFAULT_PASS;
+
+              // networkRecords are discarded and not added onto artifacts.
+              tracingData.devtoolsLogs[passName] = passData.devtoolsLog;
+
+              // If requested by config, add trace to pass's tracingData
               if (config.recordTrace) {
                 tracingData.traces[passName] = passData.trace;
-                tracingData.devtoolsLogs[passName] = passData.devtoolsLog;
               }
-              config.recordNetwork &&
-                  (tracingData.networkRecords[passName] = passData.networkRecords);
 
               if (passIndex === 0) {
                 urlAfterRedirects = runOptions.url;
@@ -360,10 +411,8 @@ class GatherRunner {
       .then(_ => GatherRunner.disposeDriver(driver))
       .then(_ => GatherRunner.collectArtifacts(gathererResults))
       .then(artifacts => {
-        // Add tracing data and computed artifacts to artifacts object.
-        const computedArtifacts = this.instantiateComputedArtifacts();
-        Object.assign(artifacts, computedArtifacts, tracingData);
-        return artifacts;
+        // Add tracing data to the artifacts object.
+        return Object.assign(artifacts, tracingData);
       })
       // cleanup on error
       .catch(err => {
@@ -415,19 +464,6 @@ class GatherRunner {
     if (typeof gathererInstance.afterPass !== 'function') {
       throw new Error(`${gathererName} has no afterPass() method.`);
     }
-  }
-
-  static instantiateComputedArtifacts() {
-    const computedArtifacts = {};
-    require('fs').readdirSync(path.join(__dirname, 'computed')).forEach(function(file) {
-      // Drop `.js` suffix to keep browserify import happy.
-      file = file.replace(/\.js$/, '');
-      const ArtifactClass = require('./computed/' + file);
-      const artifact = new ArtifactClass();
-      // define the request* function that will be exposed on `artifacts`
-      computedArtifacts['request' + artifact.name] = artifact.request.bind(artifact);
-    });
-    return computedArtifacts;
   }
 
   static instantiateGatherers(passes, rootPath) {
