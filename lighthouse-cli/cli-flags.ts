@@ -43,6 +43,9 @@ export function getFlags(manualArgv?: string) {
       .example(
           'lighthouse <url> --quiet --chrome-flags="--headless"',
           'Launch Headless Chrome, turn off logging')
+      .example(
+          'lighthouse <url> --extra-headers "{\\"Cookie\\":\\"monster=blue\\", \\"x-men\\":\\"wolverine\\"}"',
+          'Add additional HTTP Headers to requests')
 
       // List of options
       .group(['verbose', 'quiet'], 'Logging:')

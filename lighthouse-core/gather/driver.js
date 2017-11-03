@@ -947,6 +947,10 @@ class Driver {
       .then(_ => this.sendCommand('Network.setCacheDisabled', {cacheDisabled: false}));
   }
 
+  /**
+   * @param {!String} jsonHeaders JSON formatted HTTP Header key/value pairs.
+   * @return {!Promise}
+   */
   setExtraHTTPHeaders(jsonHeaders) {
     let headers;
     try {
@@ -959,6 +963,7 @@ class Driver {
       headers,
     });
   }
+
   clearDataForOrigin(url) {
     const origin = new URL(url).origin;
 
