@@ -34,7 +34,8 @@ class TestGathererNoArtifact extends Gatherer {
 
 const fakeDriver = require('./fake-driver');
 
-function getMockedEmulationDriver(emulationFn, netThrottleFn, cpuThrottleFn, blockUrlFn) {
+function getMockedEmulationDriver(emulationFn, netThrottleFn, cpuThrottleFn,
+  blockUrlFn, extraHeadersFn) {
   const Driver = require('../../gather/driver');
   const Connection = require('../../gather/connections/connection');
   const EmulationDriver = class extends Driver {
@@ -71,6 +72,9 @@ function getMockedEmulationDriver(emulationFn, netThrottleFn, cpuThrottleFn, blo
           break;
         case 'Network.setBlockedURLs':
           fn = blockUrlFn;
+          break;
+        case 'Network.setExtraHTTPHeaders':
+          fn = extraHeadersFn;
           break;
         default:
           fn = null;
@@ -255,6 +259,7 @@ describe('GatherRunner', function() {
       cleanBrowserCaches: createCheck('calledCleanBrowserCaches'),
       clearDataForOrigin: createCheck('calledClearStorage'),
       blockUrlPatterns: asyncFunc,
+      setExtraHTTPHeaders: asyncFunc,
       getUserAgent: () => Promise.resolve('Fake user agent'),
     };
 
@@ -313,6 +318,7 @@ describe('GatherRunner', function() {
       cleanBrowserCaches: createCheck('calledCleanBrowserCaches'),
       clearDataForOrigin: createCheck('calledClearStorage'),
       blockUrlPatterns: asyncFunc,
+      setExtraHTTPHeaders: asyncFunc,
       getUserAgent: () => Promise.resolve('Fake user agent'),
     };
 

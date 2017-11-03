@@ -196,7 +196,7 @@ class GatherRunner {
         // No "clearing" is done at the end of the pass since blockUrlPatterns([]) will unset all if
         // neccessary at the beginning of the next pass.
         .then(() => options.driver.blockUrlPatterns(blockedUrls))
-        .then(() => driver.setExtraHTTPHeaders(options.flags.extraHeaders || '{}'));
+        .then(() => options.driver.setExtraHTTPHeaders(options.flags.extraHeaders || '{}'));
 
     return options.config.gatherers.reduce((chain, gatherer) => {
       return chain.then(_ => {

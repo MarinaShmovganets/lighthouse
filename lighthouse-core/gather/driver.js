@@ -951,12 +951,12 @@ class Driver {
     let headers;
     try {
       headers = JSON.parse(jsonHeaders);
-    } catch(e) {
+    } catch (e) {
       log.warn('Driver', 'Invalid header JSON');
       headers = {};
     }
     return this.sendCommand('Network.setExtraHTTPHeaders', {
-      headers
+      headers,
     });
   }
   clearDataForOrigin(url) {
