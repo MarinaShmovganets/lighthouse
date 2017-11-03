@@ -25,6 +25,7 @@ last-run-results.html
 *.artifacts.log
 
 closure-error.log
+yarn-error.log
 
 !lighthouse-cli/index.js
 lighthouse-cli/*.map
