@@ -79,6 +79,7 @@ connection.sendCommand = function(command, params) {
     case 'Tracing.start':
     case 'ServiceWorker.enable':
     case 'ServiceWorker.disable':
+    case 'Network.setExtraHTTPHeaders':
       return Promise.resolve();
     case 'Tracing.end':
       return Promise.reject(new Error('tracing not started'));
@@ -237,6 +238,12 @@ describe('Browser Driver', () => {
       assert.ok(categories.includes('v8.execute'), 'contains added categories');
       assert.ok(categories.indexOf('toplevel') === categories.lastIndexOf('toplevel'),
           'de-dupes categories');
+    });
+  });
+
+  it('should send the Network.setExtraHTTPHeaders command', () => {
+    return driverStub.setExtraHTTPHeaders().then(() => {
+      assert.equal(sendCommandParams[0].command, 'Network.setExtraHTTPHeaders');
     });
   });
 });

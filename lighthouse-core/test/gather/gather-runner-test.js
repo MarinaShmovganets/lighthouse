@@ -364,6 +364,60 @@ describe('GatherRunner', function() {
     }).then(() => assert.deepStrictEqual(receivedUrlPatterns, []));
   });
 
+
+  it('tells the driver to set additional http headers when extraHeaders flag is given', () => {
+    let receivedHeaders = null;
+    const driver = getMockedEmulationDriver(null, null, null, null, params => {
+      receivedHeaders = params.headers;
+    });
+    const headers = {
+      'Cookie': 'monster',
+      'x-men': 'wolverine',
+    };
+
+    return GatherRunner.beforePass({
+      driver,
+      flags: {
+        extraHeaders: JSON.stringify(headers),
+      },
+      config: {gatherers: []},
+    }).then(() => assert.deepStrictEqual(
+        receivedHeaders,
+        headers
+      ));
+  });
+
+  it('returns an empty object if an un-parsable value is passed in to extraHeaders', () => {
+    let receivedHeaders = null;
+    const driver = getMockedEmulationDriver(null, null, null, null, params => {
+      receivedHeaders = params.headers;
+    });
+
+    return GatherRunner.beforePass({
+      driver,
+      flags: {
+        extraHeaders: undefined,
+      },
+      config: {gatherers: []},
+    }).then(() => assert.deepStrictEqual(
+        receivedHeaders,
+        {}
+      ));
+  });
+
+  it('should not throw when extraHeaders is not given', () => {
+    let receivedHeaders = null;
+    const driver = getMockedEmulationDriver(null, null, null, null, params => {
+      receivedHeaders = params.headers;
+    });
+
+    return GatherRunner.beforePass({
+      driver,
+      flags: {},
+      config: {gatherers: []},
+    }).then(() => assert.deepStrictEqual(receivedHeaders, {}));
+  });
+
   it('tells the driver to begin tracing', () => {
     let calledTrace = false;
     const driver = {
@@ -558,7 +612,6 @@ describe('GatherRunner', function() {
         assert.equal(artifacts.networkRecords['secondPass'], undefined);
       });
   });
-
 
   it('loads gatherers from custom paths', () => {
     const root = path.resolve(__dirname, '../fixtures');
