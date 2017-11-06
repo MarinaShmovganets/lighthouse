@@ -97,6 +97,36 @@ class PredictivePerf extends Audit {
 
   /**
    * @param {!Node} dependencyGraph
+   * @param {!TraceOfTabArtifact} traceOfTab
+   * @return {!Node}
+   */
+  static getOptimisticFMPGraph(dependencyGraph, traceOfTab) {
+    const fmp = traceOfTab.timestamps.firstMeaningfulPaint;
+    return dependencyGraph.cloneWithRelationships(node => {
+      if (node.endTime > fmp || node.type === Node.TYPES.CPU) return false;
+      // Include non-script-initiated network requests with a render-blocking priority
+      return node.hasRenderBlockingPriority() && node.initiatorType !== 'script';
+    });
+  }
+
+  /**
+   * @param {!Node} dependencyGraph
+   * @param {!TraceOfTabArtifact} traceOfTab
+   * @return {!Node}
+   */
+  static getPessimisticFMPGraph(dependencyGraph, traceOfTab) {
+    const fmp = traceOfTab.timestamps.firstMeaningfulPaint;
+    return dependencyGraph.cloneWithRelationships(node => {
+      if (node.endTime > fmp) return false;
+      // Include CPU tasks that performed a layout
+      if (node.type === Node.TYPES.CPU) return node.didPerformLayout();
+      // Include all network requests that had render-blocking priority (even script-initiated)
+      return node.hasRenderBlockingPriority();
+    });
+  }
+
+  /**
+   * @param {!Node} dependencyGraph
    * @return {!Node}
    */
   static getOptimisticTTCIGraph(dependencyGraph) {
@@ -149,6 +179,8 @@ class PredictivePerf extends Audit {
       const graphs = {
         optimisticFCP: PredictivePerf.getOptimisticFCPGraph(graph, traceOfTab),
         pessimisticFCP: PredictivePerf.getPessimisticFCPGraph(graph, traceOfTab),
+        optimisticFMP: PredictivePerf.getOptimisticFMPGraph(graph, traceOfTab),
+        pessimisticFMP: PredictivePerf.getPessimisticFMPGraph(graph, traceOfTab),
         optimisticTTCI: PredictivePerf.getOptimisticTTCIGraph(graph, traceOfTab),
         pessimisticTTCI: PredictivePerf.getPessimisticTTCIGraph(graph, traceOfTab),
       };
@@ -162,13 +194,15 @@ class PredictivePerf extends Audit {
         switch (key) {
           case 'optimisticFCP':
           case 'pessimisticFCP':
+          case 'optimisticFMP':
+          case 'pessimisticFMP':
             values[key] = estimate.timeInMs;
             break;
           case 'optimisticTTCI':
-            values[key] = Math.max(values.optimisticFCP, lastLongTaskEnd);
+            values[key] = Math.max(values.optimisticFMP, lastLongTaskEnd);
             break;
           case 'pessimisticTTCI':
-            values[key] = Math.max(values.pessimisticFCP, lastLongTaskEnd);
+            values[key] = Math.max(values.pessimisticFMP, lastLongTaskEnd);
             break;
         }
 
