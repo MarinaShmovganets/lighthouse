@@ -15,7 +15,7 @@ export interface Flags {
   port: number, chromeFlags: string, output: any, outputPath: string, saveArtifacts: boolean,
       saveAssets: boolean, view: boolean, maxWaitForLoad: number, logLevel: string,
       hostname: string, blockedUrlPatterns: string[], enableErrorReporting: boolean,
-      extraHeaders: any
+      extraHeaders: string
 }
 
 export function getFlags(manualArgv?: string) {
