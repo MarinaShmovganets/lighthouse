@@ -19,6 +19,24 @@ const SCORING_MEDIAN = 10000;
 // Any CPU task of 20 ms or more will end up being a critical long task on mobile
 const CRITICAL_LONG_TASK_THRESHOLD = 20;
 
+const COEFFICIENTS = {
+  FCP: {
+    intercept: 1440,
+    optimistic: -1.75,
+    pessimistic: 2.73,
+  },
+  FMP: {
+    intercept: 1532,
+    optimistic: -.30,
+    pessimistic: 1.33,
+  },
+  TTCI: {
+    intercept: 1582,
+    optimistic: .97,
+    pessimistic: .49,
+  },
+};
+
 class PredictivePerf extends Audit {
   /**
    * @return {!AuditMeta}
@@ -102,8 +120,16 @@ class PredictivePerf extends Audit {
    */
   static getOptimisticFMPGraph(dependencyGraph, traceOfTab) {
     const fmp = traceOfTab.timestamps.firstMeaningfulPaint;
+    const requiredScriptUrls = PredictivePerf.getScriptUrls(dependencyGraph, node => {
+      return (
+        node.endTime <= fmp && node.hasRenderBlockingPriority() && node.initiatorType !== 'script'
+      );
+    });
+
     return dependencyGraph.cloneWithRelationships(node => {
-      if (node.endTime > fmp || node.type === Node.TYPES.CPU) return false;
+      if (node.endTime > fmp) return false;
+      // Include EvaluateScript tasks for blocking scripts
+      if (node.type === Node.TYPES.CPU) return node.isEvaluateScriptFor(requiredScriptUrls);
       // Include non-script-initiated network requests with a render-blocking priority
       return node.hasRenderBlockingPriority() && node.initiatorType !== 'script';
     });
@@ -116,10 +142,18 @@ class PredictivePerf extends Audit {
    */
   static getPessimisticFMPGraph(dependencyGraph, traceOfTab) {
     const fmp = traceOfTab.timestamps.firstMeaningfulPaint;
+    const requiredScriptUrls = PredictivePerf.getScriptUrls(dependencyGraph, node => {
+      return node.endTime <= fmp && node.hasRenderBlockingPriority();
+    });
+
     return dependencyGraph.cloneWithRelationships(node => {
       if (node.endTime > fmp) return false;
-      // Include CPU tasks that performed a layout
-      if (node.type === Node.TYPES.CPU) return node.didPerformLayout();
+
+      // Include CPU tasks that performed a layout or were evaluations of required scripts
+      if (node.type === Node.TYPES.CPU) {
+        return node.didPerformLayout() || node.isEvaluateScriptFor(requiredScriptUrls);
+      }
+
       // Include all network requests that had render-blocking priority (even script-initiated)
       return node.hasRenderBlockingPriority();
     });
@@ -185,7 +219,6 @@ class PredictivePerf extends Audit {
         pessimisticTTCI: PredictivePerf.getPessimisticTTCIGraph(graph, traceOfTab),
       };
 
-      let sum = 0;
       const values = {};
       Object.keys(graphs).forEach(key => {
         const estimate = new LoadSimulator(graphs[key]).simulate();
@@ -205,21 +238,33 @@ class PredictivePerf extends Audit {
             values[key] = Math.max(values.pessimisticFMP, lastLongTaskEnd);
             break;
         }
-
-        sum += values[key];
       });
 
-      const meanDuration = sum / Object.keys(values).length;
+      values.roughEstimateOfFCP = COEFFICIENTS.FCP.intercept +
+        COEFFICIENTS.FCP.optimistic * values.optimisticFCP +
+        COEFFICIENTS.FCP.pessimistic * values.pessimisticFCP;
+      values.roughEstimateOfFMP = COEFFICIENTS.FMP.intercept +
+        COEFFICIENTS.FMP.optimistic * values.optimisticFMP +
+        COEFFICIENTS.FMP.pessimistic * values.pessimisticFMP;
+      values.roughEstimateOfTTCI = COEFFICIENTS.TTCI.intercept +
+        COEFFICIENTS.TTCI.optimistic * values.optimisticTTCI +
+        COEFFICIENTS.TTCI.pessimistic * values.pessimisticTTCI;
+
+      // While the raw values will never be lower than following metric, the weights make this
+      // theoretically possible, so take the maximum if this happens.
+      values.roughEstimateOfFMP = Math.max(values.roughEstimateOfFCP, values.roughEstimateOfFMP);
+      values.roughEstimateOfTTCI = Math.max(values.roughEstimateOfFMP, values.roughEstimateOfTTCI);
+
       const score = Audit.computeLogNormalScore(
-        meanDuration,
+        values.roughEstimateOfTTCI,
         SCORING_POINT_OF_DIMINISHING_RETURNS,
         SCORING_MEDIAN
       );
 
       return {
         score,
-        rawValue: meanDuration,
-        displayValue: Util.formatMilliseconds(meanDuration),
+        rawValue: values.roughEstimateOfTTCI,
+        displayValue: Util.formatMilliseconds(values.roughEstimateOfTTCI),
         extendedInfo: {value: values},
       };
     });
