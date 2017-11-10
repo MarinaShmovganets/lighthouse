@@ -54,7 +54,7 @@ describe('Parsing --chrome-flags', () => {
     assert.deepStrictEqual(parseChromeFlags('--debug=false'), ['--debug=false']);
   });
 
-  it('returns boolean flags that empty when passed undefined', () => {
+  it('returns empty when passed undefined', () => {
     assert.deepStrictEqual(parseChromeFlags(), []);
   });
 
@@ -66,7 +66,7 @@ describe('Parsing --chrome-flags', () => {
     assert.deepStrictEqual(parseChromeFlags('--log-level=0'), ['--log-level=0']);
   });
 
-  it('quotes flag values with spaces in them (#2817)', () => {
+  it('handles flag values with spaces in them (#2817)', () => {
     assert.deepStrictEqual(
       parseChromeFlags('--user-agent="iPhone UA Test"'),
       ['--user-agent=iPhone UA Test']
