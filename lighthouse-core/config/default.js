@@ -128,6 +128,16 @@ module.exports = {
     'accessibility/valid-lang',
     'accessibility/video-caption',
     'accessibility/video-description',
+    'accessibility/manual/custom-controls-labels',
+    'accessibility/manual/custom-controls-roles',
+    'accessibility/manual/focus-traps',
+    'accessibility/manual/focusable-controls',
+    'accessibility/manual/heading-levels',
+    'accessibility/manual/logical-tab-order',
+    'accessibility/manual/managed-focus',
+    'accessibility/manual/offscreen-content-hidden',
+    'accessibility/manual/use-landmarks',
+    'accessibility/manual/visual-order-follows-dom',
     'byte-efficiency/total-byte-weight',
     'byte-efficiency/offscreen-images',
     'byte-efficiency/uses-webp-images',
@@ -199,6 +209,10 @@ module.exports = {
       title: 'Meta Tags Used Properly',
       description: 'These are opportunities to improve the user experience of your site.',
     },
+    'manual-a11y-checks': {
+      title: 'Manual checks to verify',
+      description: 'These checks address areas which an automated testing tool cannot cover. They do not affect your score but it\'s important that you verify them manually. Learn more in our guide on [conducting an accessibility review](https://developers.google.com/web/fundamentals/accessibility/how-to-review).'
+    },
     'manual-pwa-checks': {
       title: 'Manual checks to verify',
       description: 'These checks are required by the baseline ' +
@@ -255,7 +269,7 @@ module.exports = {
     },
     'accessibility': {
       name: 'Accessibility',
-      description: 'These checks highlight opportunities to [improve the accessibility of your app](https://developers.google.com/web/fundamentals/accessibility).',
+      description: 'These checks highlight opportunities to [improve the accessibility of your app](https://developers.google.com/web/fundamentals/accessibility). Please note that only a subset of accessibility issues can be automatically detected and manual testing is encouraged.',
       audits: [
         {id: 'accesskeys', weight: 1, group: 'a11y-correct-attributes'},
         {id: 'aria-allowed-attr', weight: 3, group: 'a11y-aria'},
@@ -292,6 +306,16 @@ module.exports = {
         {id: 'valid-lang', weight: 1, group: 'a11y-language'},
         {id: 'video-caption', weight: 4, group: 'a11y-describe-contents'},
         {id: 'video-description', weight: 3, group: 'a11y-describe-contents'},
+        {id: 'custom-controls-labels', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'custom-controls-roles', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'focus-traps', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'focusable-controls', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'heading-levels', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'logical-tab-order', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'managed-focus', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'offscreen-content-hidden', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'use-landmarks', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'visual-order-follows-dom', weight: 0, group: 'manual-a11y-checks'},
       ],
     },
     'best-practices': {
