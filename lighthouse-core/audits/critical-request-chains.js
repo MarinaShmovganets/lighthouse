@@ -14,11 +14,9 @@ class CriticalRequestChains extends Audit {
    */
   static get meta() {
     return {
-      category: 'Performance',
       name: 'critical-request-chains',
       description: 'Critical Request Chains',
       informative: true,
-      optimalValue: 0,
       helpText: 'The Critical Request Chains below show you what resources are ' +
           'required for first render of this page. Improve page load by reducing ' +
           'the length of chains, reducing the download size of resources, or ' +
@@ -114,9 +112,8 @@ class CriticalRequestChains extends Audit {
       const longestChain = CriticalRequestChains._getLongestChain(chains);
 
       return {
-        rawValue: chainCount <= this.meta.optimalValue,
+        rawValue: chainCount === 0,
         displayValue: Util.formatNumber(chainCount),
-        optimalValue: this.meta.optimalValue,
         extendedInfo: {
           value: {
             chains,

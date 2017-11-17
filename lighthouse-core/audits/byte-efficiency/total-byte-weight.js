@@ -9,7 +9,6 @@ const ByteEfficiencyAudit = require('./byte-efficiency-audit');
 
 // Parameters for log-normal CDF scoring. See https://www.desmos.com/calculator/gpmjeykbwr
 // ~75th and ~90th percentiles http://httparchive.org/interesting.php?a=All&l=Feb%201%202017&s=All#bytesTotal
-const OPTIMAL_VALUE = 1600 * 1024;
 const SCORING_POINT_OF_DIMINISHING_RETURNS = 2500 * 1024;
 const SCORING_MEDIAN = 4000 * 1024;
 
@@ -19,9 +18,7 @@ class TotalByteWeight extends ByteEfficiencyAudit {
    */
   static get meta() {
     return {
-      category: 'Network',
       name: 'total-byte-weight',
-      optimalValue: `< ${this.bytesToKbString(OPTIMAL_VALUE)}`,
       description: 'Avoids enormous network payloads',
       failureDescription: 'Has enormous network payloads',
       helpText:
@@ -85,7 +82,6 @@ class TotalByteWeight extends ByteEfficiencyAudit {
       return {
         score,
         rawValue: totalBytes,
-        optimalValue: this.meta.optimalValue,
         displayValue: `Total size was ${ByteEfficiencyAudit.bytesToKbString(totalBytes)}`,
         extendedInfo: {
           value: {

@@ -121,6 +121,15 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
       } else if (node !== rootNode) {
         rootNode.addDependent(node);
       }
+
+      const redirects = Array.from(node.record.redirects || []);
+      redirects.push(node.record);
+
+      for (let i = 1; i < redirects.length; i++) {
+        const redirectNode = networkNodeOutput.idToNodeMap.get(redirects[i - 1].requestId);
+        const actualNode = networkNodeOutput.idToNodeMap.get(redirects[i].requestId);
+        actualNode.addDependency(redirectNode);
+      }
     });
   }
 
@@ -230,6 +239,10 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
 
     PageDependencyGraphArtifact.linkNetworkNodes(rootNode, networkNodeOutput, networkRecords);
     PageDependencyGraphArtifact.linkCPUNodes(rootNode, networkNodeOutput, cpuNodes);
+
+    if (NetworkNode.hasCycle(rootNode)) {
+      throw new Error('Invalid dependency graph created, cycle detected');
+    }
 
     return rootNode;
   }

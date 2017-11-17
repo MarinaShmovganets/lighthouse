@@ -36,7 +36,6 @@ describe('Config', () => {
       static get meta() {
         return {
           name: 'MyAudit',
-          category: 'mine',
           description: 'My audit',
           failureDescription: 'My failing audit',
           helpText: '.',
@@ -125,7 +124,6 @@ describe('Config', () => {
     configJSON.auditResults = [{
       value: 1,
       rawValue: 1.0,
-      optimalValue: 1.0,
       name: 'Test Audit',
       details: {
         items: {
@@ -210,10 +208,6 @@ describe('Config', () => {
     assert.throws(_ => new Config({
       audits: [basePath + '/missing-audit'],
     }), /audit\(\) method/);
-
-    assert.throws(_ => new Config({
-      audits: [basePath + '/missing-category'],
-    }), /meta.category property/);
 
     assert.throws(_ => new Config({
       audits: [basePath + '/missing-name'],
@@ -442,7 +436,6 @@ describe('Config', () => {
       static get meta() {
         return {
           name: 'custom-audit',
-          category: 'none',
           description: 'none',
           failureDescription: 'none',
           helpText: 'none',

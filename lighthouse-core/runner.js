@@ -14,6 +14,7 @@ const log = require('lighthouse-logger');
 const fs = require('fs');
 const path = require('path');
 const URL = require('./lib/url-shim');
+const Sentry = require('./lib/sentry');
 
 class Runner {
   static run(connection, opts) {
@@ -21,6 +22,9 @@ class Runner {
     opts.flags = opts.flags || {};
 
     const config = opts.config;
+
+    // List of top-level warnings for this Lighthouse run.
+    const lighthouseRunWarnings = [];
 
     // save the initialUrl provided by the user
     opts.initialUrl = opts.url;
@@ -35,6 +39,13 @@ class Runner {
       const err = new Error('The url provided should have a proper protocol and hostname.');
       return Promise.reject(err);
     }
+
+    const sentryContext = Sentry.getContext();
+    Sentry.captureBreadcrumb({
+      message: 'Run started',
+      category: 'lifecycle',
+      data: sentryContext && sentryContext.extra,
+    });
 
     // If the URL isn't https and is also not localhost complain to the user.
     if (parsedURL.protocol !== 'https:' && parsedURL.hostname !== 'localhost') {
@@ -65,8 +76,13 @@ class Runner {
         run = run.then(_ => config.artifacts);
       }
 
-      // Add computed artifacts.
       run = run.then(artifacts => {
+        // Bring in lighthouseRunWarnings from gathering stage.
+        if (artifacts.LighthouseRunWarnings) {
+          lighthouseRunWarnings.push(...artifacts.LighthouseRunWarnings);
+        }
+
+        // And add computed artifacts.
         return Object.assign({}, artifacts, Runner.instantiateComputedArtifacts());
       });
 
@@ -81,7 +97,6 @@ class Runner {
 
         return artifacts;
       });
-
 
       run = run.then(artifacts => {
         log.log('status', 'Analyzing and running audits...');
@@ -142,6 +157,7 @@ class Runner {
           generatedTime: (new Date()).toJSON(),
           initialUrl: opts.initialUrl,
           url: opts.url,
+          runWarnings: lighthouseRunWarnings,
           audits: resultsById,
           artifacts: runResults.artifacts,
           runtimeConfig: Runner.getRuntimeConfig(opts.flags),
@@ -149,6 +165,11 @@ class Runner {
           reportCategories,
           reportGroups: config.groups,
         };
+      })
+      .catch(err => {
+        return Sentry.captureException(err).then(() => {
+          throw err;
+        });
       });
 
     return run;
@@ -186,10 +207,19 @@ class Runner {
         // have thrown). Output error result on behalf of audit.
         if (artifacts[artifactName] instanceof Error) {
           const artifactError = artifacts[artifactName];
+          Sentry.captureException(artifactError, {
+            tags: {gatherer: artifactName},
+            level: 'warning',
+          });
+
           log.warn('Runner', `${artifactName} gatherer, required by audit ${audit.meta.name},` +
             ` encountered an error: ${artifactError.message}`);
-          throw new Error(
+
+          // Create a friendlier display error and mark it as expected to avoid duplicates in Sentry
+          const error = new Error(
               `Required ${artifactName} gatherer encountered an error: ${artifactError.message}`);
+          error.expected = true;
+          throw error;
         }
       }
       // all required artifacts are in good shape, so we proceed
@@ -202,6 +232,7 @@ class Runner {
         throw err;
       }
 
+      Sentry.captureException(err, {tags: {audit: audit.meta.name}, level: 'warning'});
       // Non-fatal error become error audit result.
       return Audit.generateErrorAuditResult(audit, 'Audit error: ' + err.message);
     }).then(result => {

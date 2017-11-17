@@ -34,9 +34,6 @@ AuditResult.prototype.displayValue;
  */
 AuditResult.prototype.debugString;
 
-/** @type {(boolean|number|string|undefined|null)} */
-AuditResult.prototype.optimalValue;
-
 /** @type {(AuditExtendedInfo|undefined|null)} */
 AuditResult.prototype.extendedInfo;
 
@@ -74,17 +71,11 @@ AuditFullResult.prototype.error;
 /** @type {(string|undefined)} */
 AuditFullResult.prototype.debugString;
 
-/** @type {(boolean|number|string|undefined|null)} */
-AuditFullResult.prototype.optimalValue;
-
 /** @type {(AuditExtendedInfo|undefined|null)} */
 AuditFullResult.prototype.extendedInfo;
 
 /** @type {string} */
 AuditFullResult.prototype.name;
-
-/** @type {string} */
-AuditFullResult.prototype.category;
 
 /** @type {string} */
 AuditFullResult.prototype.description;

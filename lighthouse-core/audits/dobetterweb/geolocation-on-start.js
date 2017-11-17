@@ -19,7 +19,6 @@ class GeolocationOnStart extends ViolationAudit {
    */
   static get meta() {
     return {
-      category: 'UX',
       name: 'geolocation-on-start',
       description: 'Avoids requesting the geolocation permission on page load',
       failureDescription: 'Requests the geolocation permission on page load',
@@ -35,6 +34,7 @@ class GeolocationOnStart extends ViolationAudit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
+    // 'Only request geolocation information in response to a user gesture.'
     const results = ViolationAudit.getViolationResults(artifacts, /geolocation/);
 
     const headings = [

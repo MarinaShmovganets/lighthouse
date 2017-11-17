@@ -30,7 +30,6 @@ class ConsistentlyInteractiveMetric extends Audit {
    */
   static get meta() {
     return {
-      category: 'Performance',
       name: 'consistently-interactive',
       description: 'Consistently Interactive (beta)',
       helpText: 'Consistently Interactive marks the time at which the page is ' +
@@ -237,7 +236,6 @@ class ConsistentlyInteractiveMetric extends Audit {
           ),
           rawValue: timeInMs,
           displayValue: Util.formatMilliseconds(timeInMs),
-          optimalValue: this.meta.optimalValue,
           extendedInfo: {
             value: extendedInfo,
           },

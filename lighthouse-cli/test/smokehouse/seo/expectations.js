@@ -25,11 +25,17 @@ module.exports = [
       'http-status-code': {
         score: true,
       },
+      'link-text': {
+        score: true,
+      },
+      'is-crawlable': {
+        score: true,
+      },
     },
   },
   {
-    initialUrl: 'http://localhost:10200/seo/seo-failure-cases.html?status_code=403',
-    url: 'http://localhost:10200/seo/seo-failure-cases.html?status_code=403',
+    initialUrl: 'http://localhost:10200/seo/seo-failure-cases.html?status_code=403&extra_header=x-robots-tag:none',
+    url: 'http://localhost:10200/seo/seo-failure-cases.html?status_code=403&extra_header=x-robots-tag:none',
     audits: {
       'viewport': {
         score: false,
@@ -48,6 +54,23 @@ module.exports = [
       'http-status-code': {
         score: false,
         displayValue: '403',
+      },
+      'link-text': {
+        score: false,
+        displayValue: '3 links found',
+        details: {
+          items: {
+            length: 3,
+          },
+        },
+      },
+      'is-crawlable': {
+        score: false,
+        details: {
+          items: {
+            length: 2,
+          },
+        },
       },
     },
   },

@@ -16,16 +16,10 @@
 function AuditMeta() {}
 
 /** @type {string} */
-AuditMeta.prototype.category;
-
-/** @type {string} */
 AuditMeta.prototype.name;
 
 /** @type {string} */
 AuditMeta.prototype.description;
-
-/** @type {?(boolean|number|string|undefined)} */
-AuditMeta.prototype.optimalValue;
 
 /** @type {!Array<string>} */
 AuditMeta.prototype.requiredArtifacts;

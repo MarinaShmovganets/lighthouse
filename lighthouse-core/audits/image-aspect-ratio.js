@@ -22,11 +22,10 @@ class ImageAspectRatio extends Audit {
    */
   static get meta() {
     return {
-      category: 'Images',
       name: 'image-aspect-ratio',
-      description: 'Uses Images with appropriate aspect ratio',
-      failureDescription: 'Does not use Images with appropriate aspect ratio',
-      helpText: 'Image displayed sizes should match their natural aspect ratio.',
+      description: 'Displays images with correct aspect ratio',
+      failureDescription: 'Displays images with incorrect aspect ratio',
+      helpText: 'Image display dimensions should match natural aspect ratio.',
       requiredArtifacts: ['ImageUsage'],
     };
   }
@@ -71,9 +70,11 @@ class ImageAspectRatio extends Audit {
     let debugString;
     const results = [];
     images.filter(image => {
-      // filter out images that don't have following properties
-      // networkRecord, width, height, images that use `object-fit`: `cover` or `contain`
+      // - filter out images that don't have following properties:
+      //   networkRecord, width, height, images that use `object-fit`: `cover` or `contain`
+      // - filter all svgs as they have no natural dimensions to audit
       return image.networkRecord &&
+        image.networkRecord.mimeType !== 'image/svg+xml' &&
         image.width &&
         image.height &&
         !image.usesObjectFit;
@@ -95,7 +96,7 @@ class ImageAspectRatio extends Audit {
     ];
 
     return {
-      rawValue: results.length,
+      rawValue: results.length === 0,
       debugString,
       details: Audit.makeTableDetails(headings, results),
     };

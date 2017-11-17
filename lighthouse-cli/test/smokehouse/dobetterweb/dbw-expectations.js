@@ -15,11 +15,12 @@ module.exports = [
     audits: {
       'errors-in-console': {
         score: false,
-        rawValue: 3,
-        displayValue: '3',
+        // TODO: should be 5 after m64 (see note in dbw_tester.js)
+        rawValue: 4,
+        displayValue: '4',
         details: {
           items: {
-            length: 3,
+            length: 4,
           },
         },
       },
@@ -36,13 +37,13 @@ module.exports = [
         extendedInfo: {
           value: {
             results: {
-              length: 14,
+              length: 16,
             },
           },
         },
         details: {
           items: {
-            length: 14,
+            length: 16,
           },
         },
       },
@@ -168,12 +169,12 @@ module.exports = [
         score: false,
         extendedInfo: {
           value: {
-            length: 4,
+            length: 3,
           },
         },
         details: {
           items: {
-            length: 4,
+            length: 3,
           },
         },
       },
@@ -182,6 +183,19 @@ module.exports = [
         extendedInfo: {
           value: {
             length: 2,
+          },
+        },
+      },
+      'image-aspect-ratio': {
+        score: false,
+        details: {
+          items: {
+            0: {
+              2: {
+                text: /^480 x 57/,
+              },
+            },
+            length: 1,
           },
         },
       },
