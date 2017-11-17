@@ -210,8 +210,8 @@ module.exports = {
       description: 'These are opportunities to improve the user experience of your site.',
     },
     'manual-a11y-checks': {
-      title: 'Manual checks to verify',
-      description: 'These checks address areas which an automated testing tool cannot cover. They do not affect your score but it\'s important that you verify them manually. Learn more in our guide on [conducting an accessibility review](https://developers.google.com/web/fundamentals/accessibility/how-to-review).'
+      title: 'Additional items to manually check',
+      description: 'These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://developers.google.com/web/fundamentals/accessibility/how-to-review).',
     },
     'manual-pwa-checks': {
       title: 'Manual checks to verify',
@@ -269,7 +269,7 @@ module.exports = {
     },
     'accessibility': {
       name: 'Accessibility',
-      description: 'These checks highlight opportunities to [improve the accessibility of your app](https://developers.google.com/web/fundamentals/accessibility). Please note that only a subset of accessibility issues can be automatically detected and manual testing is encouraged.',
+      description: 'These checks highlight opportunities to [improve the accessibility of your app](https://developers.google.com/web/fundamentals/accessibility). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.',
       audits: [
         {id: 'accesskeys', weight: 1, group: 'a11y-correct-attributes'},
         {id: 'aria-allowed-attr', weight: 3, group: 'a11y-aria'},
@@ -306,16 +306,16 @@ module.exports = {
         {id: 'valid-lang', weight: 1, group: 'a11y-language'},
         {id: 'video-caption', weight: 4, group: 'a11y-describe-contents'},
         {id: 'video-description', weight: 3, group: 'a11y-describe-contents'},
+        {id: 'logical-tab-order', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'focusable-controls', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'managed-focus', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'focus-traps', weight: 0, group: 'manual-a11y-checks'},
         {id: 'custom-controls-labels', weight: 0, group: 'manual-a11y-checks'},
         {id: 'custom-controls-roles', weight: 0, group: 'manual-a11y-checks'},
-        {id: 'focus-traps', weight: 0, group: 'manual-a11y-checks'},
-        {id: 'focusable-controls', weight: 0, group: 'manual-a11y-checks'},
-        {id: 'heading-levels', weight: 0, group: 'manual-a11y-checks'},
-        {id: 'logical-tab-order', weight: 0, group: 'manual-a11y-checks'},
-        {id: 'managed-focus', weight: 0, group: 'manual-a11y-checks'},
-        {id: 'offscreen-content-hidden', weight: 0, group: 'manual-a11y-checks'},
-        {id: 'use-landmarks', weight: 0, group: 'manual-a11y-checks'},
         {id: 'visual-order-follows-dom', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'offscreen-content-hidden', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'heading-levels', weight: 0, group: 'manual-a11y-checks'},
+        {id: 'use-landmarks', weight: 0, group: 'manual-a11y-checks'},
       ],
     },
     'best-practices': {

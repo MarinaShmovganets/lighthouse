@@ -20,7 +20,7 @@ class OffscreenContentHidden extends ManualAudit {
   static get meta() {
     return Object.assign({
       name: 'offscreen-content-hidden',
-      helpText: 'Assistive technologies, like screen readers, may be able to navigate to offscreen content. To avoid this, consider hiding the content with CSS display: none or aria-hidden. [Learn more](https://developers.google.com/web/fundamentals/accessibility/how-to-review#try_it_with_a_screen_reader).',
+      helpText: 'Offscreen content is hidden with display: none or aria-hidden=true. [Learn more](https://developers.google.com/web/fundamentals/accessibility/how-to-review#try_it_with_a_screen_reader).',
       description: 'Offscreen content is hidden from assistive technology',
     }, super.meta);
   }
