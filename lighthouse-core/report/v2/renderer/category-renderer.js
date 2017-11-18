@@ -483,7 +483,7 @@ class CategoryRenderer {
 
     const passedElem = this._renderPassedAuditsSection(passedElements);
     element.appendChild(passedElem);
-    
+
     // Render manual audits after passing.
     this._renderManualAudits(manualAudits, groupDefinitions, element);
 
