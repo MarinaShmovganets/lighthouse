@@ -31,6 +31,10 @@ const writerOpts = {
 
     if (commit.type === 'test') {
       commit.type = 'tests';
+    } else if (commit.type === 'cli') {
+      commit.type = 'CLI';
+    } else if (commit.type === 'new_audit') {
+      commit.type = 'New Audits';
     }
 
     if (commit.type) {
@@ -60,10 +64,10 @@ const writerOpts = {
   groupBy: 'type',
   commitGroupsSort: (a, b) => {
     // put new audit on the top
-    if (a.title === 'New audit') {
+    if (a.title === 'New Audits') {
       return -1;
     }
-    if (b.title === 'New audit') {
+    if (b.title === 'New Audits') {
       return 1;
     }
 
