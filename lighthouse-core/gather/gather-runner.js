@@ -373,7 +373,7 @@ class GatherRunner {
       LighthouseRunWarnings: [],
     };
 
-    return driver.connect()
+    return driver.connect(options.flags.tabId)
       .then(_ => GatherRunner.loadBlank(driver))
       .then(_ => GatherRunner.setupDriver(driver, gathererResults, options))
 

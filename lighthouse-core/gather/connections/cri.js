@@ -24,13 +24,24 @@ class CriConnection extends Connection {
     super();
     this.port = port;
     this.hostname = hostname;
+    this.existingTab = false;
   }
 
   /**
    * @override
    * @return {!Promise}
    */
-  connect() {
+  connect(tabId) {
+    if (tabId) {
+      // If tabId is specified, a tab is already opened in the browser and there is no need to create a new one.
+      return this._runJsonCommand('list').then(tabs => {
+        const tab = tabs.find((tab) => {
+          return tab.id === tabId;
+        });
+        this.existingTab = true;
+        return this._runJsonCommand(`activate/${tab.id}`).then(_ => this._connectToSocket(tab));
+      });
+    }
     return this._runJsonCommand('new')
       .then(response => this._connectToSocket(response))
       .catch(_ => {
@@ -73,7 +84,7 @@ class CriConnection extends Connection {
 
   /**
    * @param {!string} command
-   * @return {!Promise<string>}
+   * @return {!Promise<!Object>}
    */
   _runJsonCommand(command) {
     return new Promise((resolve, reject) => {
@@ -126,6 +137,9 @@ class CriConnection extends Connection {
    * @override
    */
   disconnect() {
+    if (this.existingTab) {
+      return Promise.resolve();
+    }
     if (!this._ws) {
       log.warn('CriConnection', 'disconnect() was called without an established connection.');
       return Promise.resolve();
