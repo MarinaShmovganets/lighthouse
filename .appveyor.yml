@@ -33,6 +33,7 @@ test_script:
   - which yarn
   - yarn lint
   - yarn unit
+  - yarn type
   - yarn smoke
   - yarn smokehouse
 
