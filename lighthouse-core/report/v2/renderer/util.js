@@ -94,6 +94,7 @@ class Util {
       return zeroLabel;
     }
 
+    /** @type {!Array<string>} */
     const parts = [];
     const unitLabels = /** @type {!Object<string, number>} */ ({
       d: 60 * 60 * 24,
