@@ -51,7 +51,10 @@
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile changelog.md --same-file"
   },
   "lint-staged": {
-    "*.js": ["eslint"]
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "devDependencies": {
     "@types/node": "^6.0.45",
