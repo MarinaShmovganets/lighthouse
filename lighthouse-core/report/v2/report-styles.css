@@ -24,6 +24,7 @@
   --audit-indent: 16px;
   --expandable-indent: 20px;
   --secondary-text-color: #565656;
+  --tertiary-text-color: #ccc;
   /*--accent-color: #3879d9;*/
   --fail-color: #df332f;
   --pass-color: #2b882f;
@@ -44,6 +45,8 @@
   --lh-score-highlight-bg: #fafafa;
   --lh-score-icon-background-size: 24px;
   --lh-score-margin: 12px;
+  --lh-help-link-size: 12px;
+  --lh-help-link-font-size: 8px;
   --lh-table-header-bg: #ccc;
   --lh-table-higlight-bg: #fafafa;
   --lh-sparkline-height: 5px;
@@ -336,6 +339,36 @@ span.lh-node:hover {
 
 .lh-score__title {
   flex: 1;
+}
+
+.lh-help-link {
+  color: var(--tertiary-text-color);
+  border: 1px solid var(--report-border-color);
+  position: relative;
+  top: calc(var(--lh-help-link-size) / -6);
+  left: calc(var(--lh-help-link-size) / 2);
+  width: var(--lh-help-link-size);
+  height: var(--lh-help-link-size);
+  line-height: var(--lh-help-link-size);
+  font-size: var(--lh-help-link-font-size);
+  border-radius: 50%;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  display: none;
+}
+
+.lh-help-link:hover {
+  border-color: var(--informative-color);
+  color: var(--informative-color);
+}
+
+.lh-help-link::after {
+  content: "?";
+}
+
+.lh-help-link--visible {
+  display: inline-block;
 }
 
 .lh-toggle-arrow {
