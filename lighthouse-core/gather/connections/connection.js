@@ -32,7 +32,7 @@ class Connection {
 
 
   /**
-   * @return {!Promise}
+   * @return {!Promise<string>}
    */
   wsEndpoint() {
     return Promise.reject(new Error('Not implemented'));

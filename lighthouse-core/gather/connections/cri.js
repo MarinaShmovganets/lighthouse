@@ -143,7 +143,7 @@ class CriConnection extends Connection {
    * @return {!Promise<string>}
    */
   wsEndpoint() {
-    return this._runJsonCommand('version').then(response => response.webSocketDebuggerUrl)
+    return this._runJsonCommand('version').then(response => response.webSocketDebuggerUrl);
   }
 
 
