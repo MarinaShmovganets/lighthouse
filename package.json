@@ -27,7 +27,7 @@
     "coverage": "istanbul cover -x \"**/third_party/**\" _mocha -- $(find */test -name '*-test.js') --timeout 10000 --reporter progress --report lcovonly",
     "coveralls": "yarn coverage && cat ./coverage/lcov.info | coveralls && ./node_modules/codecov/bin/codecov",
     "start": "node ./lighthouse-cli/index.js",
-    "test": "yarn lint --quiet && yarn unit && yarn type && yarn closure",
+    "test": "yarn lint --quiet && yarn unit && yarn type-check && yarn closure",
     "unit-core": "bash lighthouse-core/scripts/run-mocha.sh --core",
     "unit-cli": "bash lighthouse-core/scripts/run-mocha.sh --cli",
     "unit-viewer": "bash lighthouse-core/scripts/run-mocha.sh --viewer",
@@ -46,7 +46,7 @@
     "bundlesize": "bundlesize",
     "plots-smoke": "bash plots/test/smoke.sh",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile changelog.md --same-file",
-    "type": "tsc -p ."
+    "type-check": "tsc -p ."
   },
   "devDependencies": {
     "@types/configstore": "^2.1.1",
