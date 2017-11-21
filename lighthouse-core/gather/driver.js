@@ -104,6 +104,10 @@ class Driver {
     return this._connection.disconnect();
   }
 
+  wsEndpoint() {
+    return this._connection.wsEndpoint();
+  }
+
   /**
    * Bind listeners for protocol events
    * @param {!string} eventName

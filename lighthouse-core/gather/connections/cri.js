@@ -140,6 +140,15 @@ class CriConnection extends Connection {
 
   /**
    * @override
+   * @return {!Promise<string>}
+   */
+  wsEndpoint() {
+    return this._runJsonCommand('version').then(response => response.webSocketDebuggerUrl)
+  }
+
+
+  /**
+   * @override
    * @param {string} message
    */
   sendRawMessage(message) {

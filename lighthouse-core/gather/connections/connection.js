@@ -30,6 +30,15 @@ class Connection {
     return Promise.reject(new Error('Not implemented'));
   }
 
+
+  /**
+   * @return {!Promise}
+   */
+  wsEndpoint() {
+    return Promise.reject(new Error('Not implemented'));
+  }
+
+
   /**
    * Call protocol methods
    * @param {!string} method
