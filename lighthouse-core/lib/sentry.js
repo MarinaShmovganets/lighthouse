@@ -20,6 +20,11 @@ const sentryApi = {
   getContext: noop,
 };
 
+const IGNORED_ERRORS = [
+  /Unable to load/, // see https://github.com/GoogleChrome/lighthouse/issues/2784
+  /Tracing already started/, // see https://github.com/GoogleChrome/lighthouse/issues/1091
+];
+
 /**
  * We'll create a delegate for sentry so that environments without error reporting enabled will use
  * noop functions and environments with error reporting will call the actual Sentry methods.
@@ -32,6 +37,7 @@ sentryDelegate.init = function init(opts) {
   }
 
   const environmentData = opts.environmentData || {};
+  const isDevelopment = environmentData.environment === 'development';
   const sentryConfig = Object.assign({}, environmentData, {allowSecretKey: true});
 
   try {
@@ -44,7 +50,19 @@ sentryDelegate.init = function init(opts) {
 
     // Special case captureException to return a Promise so we don't process.exit too early
     sentryDelegate.captureException = (...args) => {
-      if (args[0] && args[0].expected) return Promise.resolve();
+      const empty = Promise.resolve();
+      // Ignore expected errors
+      if (args[0] && args[0].expected) return empty;
+      // Ignore errors matching our shortlist
+      if (args[0] && IGNORED_ERRORS.some(regex => regex.test(args[0].message))) return empty;
+      // Only report 25% of production errors
+      if (!isDevelopment && Math.random() > 0.25) return empty;
+      // Protocol errors all share same stack trace, so add more to fingerprint
+      if (args[0] && args[0].protocolMethod) {
+        const opts = args[1] || {};
+        opts.fingerprint = ['{{ default }}', args[0].protocolMethod, args[0].protocolError];
+        args = [args[0], opts];
+      }
 
       return new Promise(resolve => {
         Sentry.captureException(...args, () => resolve());

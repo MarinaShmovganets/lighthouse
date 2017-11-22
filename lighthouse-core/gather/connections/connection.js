@@ -8,6 +8,7 @@
 
 const EventEmitter = require('events').EventEmitter;
 const log = require('lighthouse-logger');
+const Sentry = require('../../lib/sentry');
 
 class Connection {
   constructor() {
@@ -101,7 +102,10 @@ class Connection {
           log.formatProtocol('method <= browser ERR', {method: callback.method}, logLevel);
           let errMsg = `(${callback.method}): ${object.error.message}`;
           if (object.error.data) errMsg += ` (${object.error.data})`;
-          throw new Error(`Protocol error ${errMsg}`);
+          const error = new Error(`Protocol error ${errMsg}`);
+          error.protocolMethod = callback.method;
+          error.protocolError = object.error.message;
+          throw error;
         }
 
         log.formatProtocol('method <= browser OK',
