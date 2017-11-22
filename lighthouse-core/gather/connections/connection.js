@@ -8,7 +8,6 @@
 
 const EventEmitter = require('events').EventEmitter;
 const log = require('lighthouse-logger');
-const Sentry = require('../../lib/sentry');
 
 class Connection {
   constructor() {
