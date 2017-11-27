@@ -39,10 +39,7 @@ sentryDelegate.init = function init(opts) {
   }
 
   const environmentData = opts.environmentData || {};
-  const sentryConfig = Object.assign({}, environmentData, {
-    allowSecretKey: true,
-    captureUnhandledRejections: true,
-  });
+  const sentryConfig = Object.assign({}, environmentData, {captureUnhandledRejections: true});
 
   try {
     const Sentry = require('raven');
