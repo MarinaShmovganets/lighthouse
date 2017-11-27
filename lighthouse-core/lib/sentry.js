@@ -58,7 +58,7 @@ sentryDelegate.init = function init(opts) {
       if (!err) return empty;
       // Ignore expected errors
       if (err.expected) return empty;
-      // Sample known errors that occurr at a high frequency
+      // Sample known errors that occur at a high frequency
       const sampledErrorMatch = SAMPLED_ERRORS.find(sample => sample.pattern.test(err.message));
       if (sampledErrorMatch && sampledErrorMatch.rate <= Math.random()) return empty;
       // Protocol errors all share same stack trace, so add more to fingerprint
