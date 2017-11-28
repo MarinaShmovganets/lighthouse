@@ -17,7 +17,7 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
       assert.equal(NoVulnerableLibrariesAudit.normalizeVersion('52.1.13'), '52.1.13');
       assert.equal(NoVulnerableLibrariesAudit.normalizeVersion('52.1.13-rc.1'), '52.1.13-rc.1');
       assert.equal(NoVulnerableLibrariesAudit.normalizeVersion('c0ab71056b936'), 'c0ab71056b936');
-    })
+    });
 
     it('should fix bad version numbers', () => {
       assert.equal(NoVulnerableLibrariesAudit.normalizeVersion('11.51'), '11.51.0');
