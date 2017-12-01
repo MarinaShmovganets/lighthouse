@@ -69,13 +69,10 @@ describe('DTM Model gatherer', () => {
     let pwaTrace = JSON.parse(pwaJson);
     return computedArtifacts.requestDevtoolsTimelineModel({traceEvents: pwaTrace})
       .then(_ => {
-        // assert.deepEqual has issue with diffing large array, so manually loop.
         const freshTrace = removeMutatedDataFromDevtools(JSON.parse(pwaJson));
         assert.strictEqual(pwaTrace.length, freshTrace.length);
 
         pwaTrace = removeMutatedDataFromDevtools(pwaTrace);
-        // for loop is faster than doing a deepStrictEqual on the whole trace
-        // Mocha fails as it has a timeout of 2 seconds
         for (let i = 0; i < pwaTrace.length; i++) {
           assert.deepStrictEqual(pwaTrace[i], freshTrace[i]);
         }
