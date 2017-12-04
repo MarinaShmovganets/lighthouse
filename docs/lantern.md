@@ -32,7 +32,9 @@ Stats were collected using the [trace-evaluation](https://github.com/patrickhulc
 ## Conclusions
 
 ### Lantern Accuracy Conclusions
-Definitive conclusions on repeat view accuracy require much more data for the same URLs (i.e. more than 1 run for each URL per environment), but for the single view use case, Lantern is roughly as accurate at predicting the rank of a website the next time you visit it as the metrics themselves which is the highest goal we set out to achieve. As a sanity check, we also see that using the unthrottled metrics to predict the rank of throttled performance has a significantly lower rank correlation than Lantern.
+
+* For the single view use case, we conclude that Lantern is roughly as accurate at predicting the rank of a website the next time you visit it as the metrics themselves. That is to say, the average error we observe between a Lantern performance score and a LH on DevTools performance score is within the expectation for standard deviation, which is the highest goal we set out to achieve. As a sanity check, we also see that using the unthrottled metrics to predict throttled performance has a significantly lower correlation than Lantern does.
+* For the repeat view use case, we require more data to reach a conclusion, but the high correlation of the single view use case suggests the accuracy meets our correlation requirements even if some sites may diverge.
 
 ### Metric Variability Conclusions
 The reference stats demonstrate that there is high degree of variability with the user-centric metrics and strengthens the position that every load is just an observation of a point drawn from a distribution and to understand the entire experience, multiple draws must be taken, i.e. multiple runs are needed to have sufficiently small error bounds on the median load experience.
