@@ -71,7 +71,7 @@ describe('Performance: page execution timings audit', () => {
       const valueOf = name => Math.round(output.extendedInfo.value[name]);
 
       assert.equal(output.details.items.length, 12);
-      assert.equal(output.score, false);
+      assert.equal(output.score, true);
       assert.equal(Math.round(output.rawValue), 611);
 
       for (const category in output.extendedInfo.value) {
