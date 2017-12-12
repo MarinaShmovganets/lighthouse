@@ -26,8 +26,8 @@ class Manifest extends Gatherer {
    */
   afterPass(options) {
     const manifestPromise = options.driver.getAppManifest();
-    const timeoutPromise = new Promise((resolve,reject)=>{
-      setTimeout(resolve,3000);
+    const timeoutPromise = new Promise((resolve, reject)=>{
+      setTimeout(resolve, 3000);
     });
     return Promise.race([manifestPromise, timeoutPromise])
       .then(response => {

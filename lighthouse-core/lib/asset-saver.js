@@ -210,9 +210,10 @@ function logAssets(artifacts, audits) {
     log.log('devtoolslog.json', JSON.stringify(data.devtoolsLog, null, 2));
     log.log('screenshots.html', data.screenshotsHTML);
     const traceIter = traceJsonGenerator(data.traceData);
-    let traceJson = ''
-    for (const trace of traceIter)
+    let traceJson = '';
+    for (const trace of traceIter) {
       traceJson += trace;
+    }
     log.log('trace.json', traceJson);
   });
 }
