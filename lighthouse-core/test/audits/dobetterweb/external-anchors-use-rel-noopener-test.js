@@ -66,4 +66,16 @@ describe('External anchors use rel="noopener"', () => {
     assert.equal(auditResult.rawValue, true);
     assert.equal(auditResult.details.items.length, 0);
   });
+
+  it('does not fail for links with mailto in href attribute', () => {
+    const auditResult = ExternalAnchorsAudit.audit({
+      AnchorsWithNoRelNoopener: [
+        {href: 'mailto:inbox@email.com'},
+        {href: 'MAILTO:INBOX@EMAIL.COM'},
+      ],
+      URL: {finalUrl: URL},
+    });
+    assert.equal(auditResult.rawValue, true);
+    assert.equal(auditResult.details.items.length, 0);
+  });
 });

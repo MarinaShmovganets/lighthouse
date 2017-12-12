@@ -46,7 +46,9 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
           return true;
         }
       })
-      .filter(anchor => anchor.href.toLowerCase().startsWith('http'))
+      .filter(anchor => {
+        return !anchor.href || anchor.href.toLowerCase().startsWith('http');
+      })
       .map(anchor => {
         return {
           href: anchor.href || 'Unknown',
