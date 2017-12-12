@@ -208,11 +208,11 @@ function logAssets(artifacts, audits) {
   return prepareAssets(artifacts, audits).then(assets => {
     const data = assets[0];
     log.log('devtoolslog.json', JSON.stringify(data.devtoolsLog, null, 2));
-    log.log('screenshots.html', data.screenshotsHTML);
+
     const traceIter = traceJsonGenerator(data.traceData);
     let traceJson = '';
-    for (const trace of traceIter) {
-      traceJson += trace;
+    for (const traceNext of traceIter) {
+      traceJson += traceNext;
     }
     log.log('trace.json', traceJson);
   });
