@@ -198,9 +198,29 @@ function saveAssets(artifacts, audits, pathWithBasename) {
   });
 }
 
+/**
+ * Log trace(s) and associated screenshot(s) to console.
+ * @param {!Artifacts} artifacts
+ * @param {!Audits} audits
+ * @return {!Promise}
+ */
+function logAssets(artifacts, audits) {
+  return prepareAssets(artifacts, audits).then(assets => {
+    const data = assets[0];
+    log.log('devtoolslog.json', JSON.stringify(data.devtoolsLog, null, 2));
+    log.log('screenshots.html', data.screenshotsHTML);
+    const traceIter = traceJsonGenerator(data.traceData);
+    let traceJson = ''
+    for (const trace of traceIter)
+      traceJson += trace;
+    log.log('trace.json', traceJson);
+  });
+}
+
 module.exports = {
   saveArtifacts,
   saveAssets,
   prepareAssets,
   saveTrace,
+  logAssets,
 };
