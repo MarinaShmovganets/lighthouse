@@ -16,6 +16,8 @@ const gzip = require('zlib').gzip;
 const compressionTypes = ['gzip', 'br', 'deflate'];
 const CHROME_EXTENSION_PROTOCOL = 'chrome-extension:';
 
+const GETREQUESTCONTENT_MAXWAIT = 1000;
+
 class ResponseCompression extends Gatherer {
   /**
    * @param {!NetworkRecords} networkRecords
@@ -58,7 +60,9 @@ class ResponseCompression extends Gatherer {
 
     const driver = options.driver;
     return Promise.all(textRecords.map(record => {
-      return driver.getRequestContent(record.requestId).then(content => {
+      const contentPromise = driver.getRequestContent(record.requestId);
+      const timeoutPromise = new Promise(resolve => setTimeout(resolve, GETREQUESTCONTENT_MAXWAIT));
+      return Promise.race([contentPromise, timeoutPromise]).then(content => {
         // if we don't have any content gzipSize is set to 0
         if (!content) {
           record.gzipSize = 0;

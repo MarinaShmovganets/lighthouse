@@ -9,6 +9,7 @@ const Gatherer = require('./gatherer');
 const manifestParser = require('../../lib/manifest-parser');
 const BOM_LENGTH = 3;
 const BOM_FIRSTCHAR = 65279;
+const GETAPPMANIFEST_MAXWAIT = 3000;
 
 /**
  * Uses the debugger protocol to fetch the manifest from within the context of
@@ -25,7 +26,10 @@ class Manifest extends Gatherer {
    * @return {!Promise<?Manifest>}
    */
   afterPass(options) {
-    return options.driver.getAppManifest()
+    const manifestPromise = options.driver.getAppManifest();
+    const timeoutPromise = new Promise(resolve => setTimeout(resolve, GETAPPMANIFEST_MAXWAIT));
+
+    return Promise.race([manifestPromise, timeoutPromise])
       .then(response => {
         if (!response) {
           return null;

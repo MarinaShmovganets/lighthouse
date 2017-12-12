@@ -10,7 +10,9 @@ const RawProtocol = require('../../../lighthouse-core/gather/connections/raw');
 const Runner = require('../../../lighthouse-core/runner');
 const Config = require('../../../lighthouse-core/config/config');
 const defaultConfig = require('../../../lighthouse-core/config/default.js');
+const fastConfig=require('../../../lighthouse-core/config/fast-config.js');
 const log = require('lighthouse-logger');
+const assetSaver = require('../../../lighthouse-core/lib/asset-saver.js');
 
 const ReportGeneratorV2 = require('../../../lighthouse-core/report/v2/report-generator');
 
@@ -88,7 +90,7 @@ function filterOutArtifacts(result) {
  * @return {!Promise}
  */
 window.runLighthouseForConnection = function(connection, url, options, categoryIDs) {
-  const config = new Config({
+  const config = options && options.fastMode ? new Config(fastConfig) : new Config({
     extends: 'lighthouse:default',
     settings: {onlyCategories: categoryIDs},
   });
@@ -135,6 +137,39 @@ window.runLighthouseInExtension = function(options, categoryIDs) {
       // return enableOtherChromeExtensions(true).then(_ => {
       throw err;
       // });
+    });
+};
+
+/**
+ * @param {string} url
+ * @param {!Object} options Lighthouse options.
+          Specify lightriderFormat to change the output format.
+ * @param {!Array<string>} categoryIDs Name values of categories to include.
+ * @return {!Promise}
+ */
+window.runLighthouseInWebRendering = function(url, options, categoryIDs) {
+  // Default to 'info' logging level.
+  log.setLevel('info');
+  const connection = window.newWebRenderingConnection();
+  const startTime = Date.now();
+  return window.runLighthouseForConnection(connection, url, options, categoryIDs)
+    .then(results => {
+      const endTime = Date.now();
+      results.timing = {total: endTime - startTime};
+      const artifacts = results.artifacts;
+      filterOutArtifacts(results);
+      let promise = Promise.resolve();
+      if (options && options.saveAssets) {
+        promise = assetSaver.logAssets(artifacts, results.audits);
+      }
+      promise.then( _ => {
+        if (options && options.lightriderFormat === 'json') {
+          connection.quit(JSON.stringify(results));
+        }
+        connection.quit(new ReportGeneratorV2().generateReportHtml(results));
+      });
+    }).catch(err => {
+      throw err;
     });
 };
 
