@@ -95,6 +95,7 @@ function prepareAssets(artifacts, audits) {
         }
 
         assets.push({
+          passName,
           traceData,
           devtoolsLog,
           screenshotsHTML,
@@ -206,15 +207,15 @@ function saveAssets(artifacts, audits, pathWithBasename) {
  */
 function logAssets(artifacts, audits) {
   return prepareAssets(artifacts, audits).then(assets => {
-    const data = assets[0];
-    log.log('devtoolslog.json', JSON.stringify(data.devtoolsLog, null, 2));
-    log.log('screenshots.html', data.screenshotsHTML);
-    const traceIter = traceJsonGenerator(data.traceData);
-    let traceJson = '';
-    for (const trace of traceIter) {
-      traceJson += trace;
-    }
-    log.log('trace.json', traceJson);
+    assets.map(data => {
+      log.log('devtoolslog-' + data.passName + '.json',data.devtoolsLog);
+      const traceIter = traceJsonGenerator(data.traceData);
+      let traceJson = '';
+      for (const trace of traceIter) {
+        traceJson += trace;
+      }
+      log.log('trace-' + data.passName + '.json', traceJson);
+    });
   });
 }
 
