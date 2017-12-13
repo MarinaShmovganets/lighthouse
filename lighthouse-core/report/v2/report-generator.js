@@ -64,6 +64,41 @@ class ReportGeneratorV2 {
         .join(firstReplacement.replacement);
   }
 
+<<<<<<< HEAD
+=======
+  /**
+   * Returns the report JSON object with computed scores.
+   * @param {{categories: !Object<string, {id: string|undefined, weight: number|undefined, audits: !Array<{id: string, weight: number|undefined}>}>}} config
+   * @param {!Object<{score: ?number|boolean|undefined}>} resultsByAuditId
+   * @return {{score: number, categories: !Array<{audits: !Array<{score: number, result: !Object}>}>}}
+   */
+  generateReportJson(config, resultsByAuditId) {
+    const categories = Object.keys(config.categories).map(categoryId => {
+      const category = config.categories[categoryId];
+      category.id = categoryId;
+
+      const audits = category.audits.filter(audit => {
+        const result = resultsByAuditId[audit.id];
+        return !result.notApplicable;
+      }).map(audit => {
+        const result = resultsByAuditId[audit.id];
+        // Cast to number to catch `null` and undefined when audits error
+        let auditScore = Number(result.score) || 0;
+        if (typeof result.score === 'boolean') {
+          auditScore = result.score ? 100 : 0;
+        }
+
+        return Object.assign({}, audit, {result, score: auditScore});
+      });
+
+      const categoryScore = ReportGeneratorV2.arithmeticMean(audits);
+      return Object.assign({}, category, {audits, score: categoryScore});
+    });
+
+    const overallScore = ReportGeneratorV2.arithmeticMean(categories);
+    return {score: overallScore, categories};
+  }
+>>>>>>> wip not applicable reporting
 
   /**
    * Returns the report HTML as a string with the report JSON and renderer JS inlined.
