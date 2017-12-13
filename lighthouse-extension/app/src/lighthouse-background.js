@@ -164,7 +164,7 @@ window.runLighthouseAsInCLI = function(connection, url, options, categoryIDs) {
         promise = promise.then(_ => assetSaver.logAssets(artifacts, results.audits));
       }
       promise.then( _ => {
-        const json = options && options.lightriderFormat === 'json';
+        const json = options && options.outputFormat === 'json';
         return json ? JSON.stringify(results) : new ReportGeneratorV2().generateReportHtml(results);
       });
     }).catch(err => {
