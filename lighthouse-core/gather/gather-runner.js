@@ -288,7 +288,7 @@ class GatherRunner {
       if (pageLoadError) {
         gathererResults.LighthouseRunWarnings.push('Lighthouse was unable to reliably load the ' +
           'page you requested. Make sure you are testing the correct URL and that the server is ' +
-          'properly responding to all requests.')
+          'properly responding to all requests.');
       }
 
       // Expose devtoolsLog and networkRecords to gatherers
@@ -353,7 +353,7 @@ class GatherRunner {
         });
       });
     }, Promise.resolve()).then(_ => {
-      // Fail the run if more than 50% of all audits failed due to page load failure.
+      // Fail the run if more than 50% of all artifacts failed due to page load failure.
       if (pageLoadFailures.length > Object.keys(artifacts).length * .5) {
         throw pageLoadFailures[0];
       }
