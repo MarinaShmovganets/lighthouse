@@ -158,7 +158,7 @@ window.runLighthouseAsInCLI = function(connection, url, options, categoryIDs) {
       results.timing = {total: endTime - startTime};
       let promise = Promise.resolve();
       if (options && options.logAssets) {
-        promise = promise.then(_ => assetSaver.logAssets(result.artifacts, results.audits));
+        promise = promise.then(_ => assetSaver.logAssets(results.artifacts, results.audits));
       }
       filterOutArtifacts(results);
       promise.then( _ => {
