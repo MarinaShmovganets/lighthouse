@@ -59,9 +59,7 @@ class ResponseCompression extends Gatherer {
     const driver = options.driver;
     return Promise.all(textRecords.map(record => {
       const contentPromise = driver.getRequestContent(record.requestId);
-      const timeoutPromise = new Promise((resolve, reject)=>{
-        setTimeout(resolve, 3000);
-      });
+      const timeoutPromise = new Promise(resolve => setTimeout(resolve, 3000));
       return Promise.race([contentPromise, timeoutPromise]).then(content => {
         // if we don't have any content gzipSize is set to 0
         if (!content) {

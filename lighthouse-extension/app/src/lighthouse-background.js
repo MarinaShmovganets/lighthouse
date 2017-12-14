@@ -150,25 +150,22 @@ window.runLighthouseInExtension = function(options, categoryIDs) {
  * @return {!Promise}
  */
 window.runLighthouseAsInCLI = function(connection, url, options, categoryIDs) {
-  // Default to 'info' logging level.
   log.setLevel('info');
   const startTime = Date.now();
   return window.runLighthouseForConnection(connection, url, options, categoryIDs)
     .then(results => {
       const endTime = Date.now();
       results.timing = {total: endTime - startTime};
-      const artifacts = results.artifacts;
-      filterOutArtifacts(results);
       let promise = Promise.resolve();
-      if (options && options.saveAssets) {
-        promise = promise.then(_ => assetSaver.logAssets(artifacts, results.audits));
+      if (options && options.logAssets) {
+        promise = promise.then(_ => assetSaver.logAssets(result.artifacts, results.audits));
       }
+      filterOutArtifacts(results);
       promise.then( _ => {
         const json = options && options.outputFormat === 'json';
         return json ? JSON.stringify(results) : new ReportGeneratorV2().generateReportHtml(results);
       });
-    }).catch(err => {
-      throw err;
+      return promise;
     });
 };
 
