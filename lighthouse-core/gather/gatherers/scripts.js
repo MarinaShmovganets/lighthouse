@@ -31,7 +31,7 @@ class Scripts extends Gatherer {
             .catch(_ => null)
             .then(content => {
               if (!content) return;
-              scriptContentMap.set(record.url, content);
+              scriptContentMap.set(record.requestId, content);
             });
         })
         .then(() => scriptContentMap);

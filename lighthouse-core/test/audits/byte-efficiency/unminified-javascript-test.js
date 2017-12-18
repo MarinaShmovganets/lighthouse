@@ -12,12 +12,13 @@ const assert = require('assert');
 
 /* eslint-env mocha */
 
+const _resourceType = {_name: 'script'};
 describe('Page uses optimized responses', () => {
   it('fails when given unminified scripts', () => {
     const auditResult = UnminifiedJavascriptAudit.audit_({
       Scripts: new Map([
         [
-          'foo.js',
+          '123.1',
           `
             var foo = new Set();
             foo.add(1);
@@ -29,7 +30,7 @@ describe('Page uses optimized responses', () => {
           `,
         ],
         [
-          'other.js',
+          '123.2',
           `
             const foo = new Set();
             foo.add(1);
@@ -42,8 +43,8 @@ describe('Page uses optimized responses', () => {
         ],
       ]),
     }, [
-      {url: 'foo.js', _transferSize: 20 * KB, _resourceType: {_name: 'script'}},
-      {url: 'other.js', _transferSize: 50 * KB, _resourceType: {_name: 'script'}},
+      {requestId: '123.1', url: 'foo.js', _transferSize: 20 * KB, _resourceType},
+      {requestId: '123.2', url: 'other.js', _transferSize: 50 * KB, _resourceType},
     ]);
 
     assert.equal(auditResult.results.length, 2);
@@ -59,11 +60,11 @@ describe('Page uses optimized responses', () => {
     const auditResult = UnminifiedJavascriptAudit.audit_({
       Scripts: new Map([
         [
-          'foo.js',
+          '123.1',
           'var f=new Set();f.add(1);f.add(2);if(f.has(2))console.log(1234)',
         ],
         [
-          'other.js',
+          '123.2',
           `
             const foo = new Set();
             foo.add(1);
@@ -75,14 +76,14 @@ describe('Page uses optimized responses', () => {
           `,
         ],
         [
-          'invalid.js',
+          '123.3',
           'for{(wtf',
         ],
       ]),
     }, [
-      {url: 'foo.js', _transferSize: 20 * KB, _resourceType: {_name: 'script'}},
-      {url: 'other.js', _transferSize: 3 * KB, _resourceType: {_name: 'script'}},
-      {url: 'invalid.js', _transferSize: 20 * KB, _resourceType: {_name: 'script'}},
+      {requestId: '123.1', url: 'foo.js', _transferSize: 20 * KB, _resourceType},
+      {requestId: '123.2', url: 'other.js', _transferSize: 3 * KB, _resourceType},
+      {requestId: '123.3', url: 'invalid.js', _transferSize: 20 * KB, _resourceType},
     ]);
 
     assert.equal(auditResult.results.length, 0);
