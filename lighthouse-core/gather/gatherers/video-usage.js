@@ -5,7 +5,7 @@
  */
 
 /**
-  * @fileoverview Gathers all videos used on the page with their size,
+  * @fileoverview Gathers all videos used on the page with their size 
   * information. Executes script in the context of the page.
   */
 'use strict';
@@ -13,7 +13,7 @@
 const Gatherer = require('./gatherer');
 const DOMHelpers = require('../../lib/dom-helpers.js');
 
-/* global window, getElementsInDocument, Video */
+/* global window, getElementsInDocument */
 
 /* istanbul ignore next */
 function collectVideoElementInfo() {
