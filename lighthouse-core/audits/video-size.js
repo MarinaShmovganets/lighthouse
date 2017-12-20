@@ -8,6 +8,7 @@
 const Audit = require('./audit');
 const URL = require('../lib/url-shim');
 
+// Video is wasteful if more than 20% of its pixels aren't used.
 const WASTEFUL_THRESHOLD_IN_PERCENT = 1.2;
 
 class VideoSize extends Audit {
@@ -34,14 +35,14 @@ class VideoSize extends Audit {
    */
   static computeWaste(video, DPR) {
     const url = URL.elideDataURI(video.src);
-    const actualSize = video.videoWidth * video.videoHeight;
-    const containerSize = video.clientWidth * video.clientHeight * Math.pow(DPR, 2);
+    const videoPixels = video.videoWidth * video.videoHeight;
+    const elementPixels = video.clientWidth * DPR * video.clientHeight * DPR;
     
     return {
       url,
-      actualSizeInPixels: `${video.videoWidth}x${video.videoHeight}`,
-      containerSizeInPixels: `${video.clientWidth}x${video.clientHeight}`,
-      isWasteful: (actualSize > containerSize * WASTEFUL_THRESHOLD_IN_PERCENT),
+      videoSize: `${video.videoWidth}x${video.videoHeight}`,
+      elementSize: `${video.clientWidth}x${video.clientHeight}`,
+      isWasteful: (videoPixels > elementPixels * WASTEFUL_THRESHOLD_IN_PERCENT),
     };
   }
 
@@ -66,8 +67,8 @@ class VideoSize extends Audit {
 
     const headings = [
       {key: 'url', itemType: 'url', text: 'URL'},
-      {key: 'actualSizeInPixels', itemType: 'text', text: 'Actual Size'},
-      {key: 'containerSizeInPixels', itemType: 'text', text: 'Container Size'},
+      {key: 'videoSize', itemType: 'text', text: 'Video Size'},
+      {key: 'elementSize', itemType: 'text', text: 'Element Size'},
     ];
 
     const tableDetails = Audit.makeTableDetails(headings, results);
