@@ -55,7 +55,7 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
     rules.forEach(rule => {
       const stylesheetInfo = indexedStylesheets[rule.styleSheetId];
 
-      if (!stylesheetInfo || stylesheetInfo.isDuplicate) {
+      if (!stylesheetInfo) {
         return;
       }
 
@@ -131,10 +131,6 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
    * @return {?{url: string, wastedBytes: number, totalBytes: number}}
    */
   static mapSheetToResult(stylesheetInfo, pageUrl) {
-    if (stylesheetInfo.isDuplicate) {
-      return null;
-    }
-
     let url = stylesheetInfo.header.sourceURL;
     if (!url || url === pageUrl) {
       const contentPreview = UnusedCSSRules.determineContentPreview(stylesheetInfo.content);
@@ -150,7 +146,7 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
    * @return {!Audit.HeadingsResult}
    */
   static audit_(artifacts) {
-    const styles = artifacts.Styles;
+    const styles = Array.from(artifacts.Styles.values());
     const usage = artifacts.CSSUsage;
     const pageUrl = artifacts.URL.finalUrl;
 
