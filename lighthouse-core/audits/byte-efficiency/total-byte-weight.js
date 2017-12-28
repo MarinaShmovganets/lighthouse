@@ -22,7 +22,7 @@ class TotalByteWeight extends ByteEfficiencyAudit {
       description: 'Avoids enormous network payloads',
       failureDescription: 'Has enormous network payloads',
       helpText:
-          'Large network payloads cost users real money and are highly-correlated with ' +
+          'Large network payloads cost users real money and are highly correlated with ' +
           'long load times. [Learn ' +
           'more](https://developers.google.com/web/tools/lighthouse/audits/network-payloads).',
       scoringMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
