@@ -14,6 +14,9 @@ const Gatherer = require('../gatherer');
 const gzip = require('zlib').gzip;
 
 const compressionTypes = ['gzip', 'br', 'deflate'];
+const mediaTypes = ['mp3', 'wav', 'wma', 'webm', 'jpg', 'gif', 'png', 'webp',
+  'svg', 'mkv', 'flv', 'gif', 'avi', 'mov', 'mpg', '3gp', 'mpeg', 'avi', 'wmv'];
+
 const CHROME_EXTENSION_PROTOCOL = 'chrome-extension:';
 
 class ResponseCompression extends Gatherer {
@@ -26,10 +29,20 @@ class ResponseCompression extends Gatherer {
 
     networkRecords.forEach(record => {
       const isTextBasedResource = record.resourceType() && record.resourceType().isTextType();
+      const url = record.url.toLowerCase();
+      let isMediaResource;
+
+      for (let i = 0; i < mediaTypes.length; i+=1) {
+        if (url.endsWith(mediaTypes[i])) {
+          isMediaResource = true;
+          break;
+        }
+      }
       const isChromeExtensionResource = record.url.startsWith(CHROME_EXTENSION_PROTOCOL);
 
       if (!isTextBasedResource || !record.resourceSize || !record.finished ||
-        isChromeExtensionResource || !record.transferSize || record.statusCode === 304) {
+        isChromeExtensionResource || !record.transferSize || record.statusCode === 304
+        ||isMediaResource) {
         return;
       }
 
