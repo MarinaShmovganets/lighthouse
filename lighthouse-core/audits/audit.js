@@ -114,7 +114,7 @@ class Audit {
     const tableRows = Audit.makeTableRows(headings, results);
     return {
       type: 'table',
-      header: 'View Details',
+      header: {type: 'text', text: 'View details'},
       itemHeaders: tableHeaders,
       items: tableRows,
     };
