@@ -146,7 +146,7 @@ class Runner {
         let reportCategories = [];
         let score = 0;
         if (config.categories) {
-          const report = ReportScoring.generateReportJson(config, resultsById);
+          const report = ReportScoring.scoreAllCategories(config, resultsById);
           reportCategories = report.categories;
           score = report.score;
         }

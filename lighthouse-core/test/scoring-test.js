@@ -41,9 +41,9 @@ describe('ReportScoring', () => {
     });
   });
 
-  describe('#generateReportJson', () => {
+  describe('#scoreAllCategories', () => {
     it('should return a score', () => {
-      const result = ReportScoring.generateReportJson({
+      const result = ReportScoring.scoreAllCategories({
         categories: {
           'categoryA': {weight: 1, audits: [{id: 'auditA', weight: 1}]},
           'categoryB': {weight: 4, audits: [{id: 'auditB', weight: 1}]},
@@ -55,7 +55,7 @@ describe('ReportScoring', () => {
     });
 
     it('should return categories', () => {
-      const result = ReportScoring.generateReportJson({
+      const result = ReportScoring.scoreAllCategories({
         categories: {
           'my-category': {name: 'My Category', audits: []},
           'my-other-category': {description: 'It is a nice category', audits: []},
@@ -76,7 +76,7 @@ describe('ReportScoring', () => {
         'my-boolean-failed-audit': {score: false},
       };
 
-      const result = ReportScoring.generateReportJson({
+      const result = ReportScoring.scoreAllCategories({
         categories: {
           'my-category': {audits: [{id: 'my-audit'}]},
           'my-scored': {

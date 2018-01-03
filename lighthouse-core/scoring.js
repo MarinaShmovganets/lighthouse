@@ -31,7 +31,7 @@ class ReportScoring {
    * @param {!Object<{score: ?number|boolean|undefined}>} resultsByAuditId
    * @return {{score: number, categories: !Array<{audits: !Array<{score: number, result: !Object}>}>}}
    */
-  static generateReportJson(config, resultsByAuditId) {
+  static scoreAllCategories(config, resultsByAuditId) {
     const categories = Object.keys(config.categories).map(categoryId => {
       const category = config.categories[categoryId];
       category.id = categoryId;
