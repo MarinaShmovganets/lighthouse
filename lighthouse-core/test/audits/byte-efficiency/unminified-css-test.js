@@ -62,6 +62,24 @@ describe('Page uses optimized css', () => {
       assert.equal(UnminifiedCssAudit.computeTokenLength(full), minified.length);
     });
 
+    it('should handle license comments', () => {
+      const full = `
+        /*!
+         * @LICENSE
+         * Apache 2.0
+         */
+        .my-class {
+          width: 100px;
+        }
+      `;
+
+      const minified = `/*!
+         * @LICENSE
+         * Apache 2.0
+         */.my-class{width:100px;}`;
+      assert.equal(UnminifiedCssAudit.computeTokenLength(full), minified.length);
+    });
+
     it('should handle unbalanced comments', () => {
       const full = `
         /*

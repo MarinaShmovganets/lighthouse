@@ -39,20 +39,22 @@ class UnminifiedCSS extends ByteEfficiencyAudit {
   static computeTokenLength(content) {
     let totalTokenLength = 0;
     let isInComment = false;
+    let commentCharacterValue = 1;
     let isInString = false;
     let stringStarter = null;
 
     for (let i = 0; i < content.length; i++) {
-      const char = content.charAt(i);
-      const nextChar = content.charAt(i + 1);
-      const chars = char + nextChar;
+      const chars = content.substr(i, 2);
+      const char = chars.charAt(0);
 
-      const isWhitespace = /\s/.test(char);
-      const isStringStarter = /('|")/.test(char);
+      const isWhitespace = char === ' ' || char === '\n' || char === '\t';
+      const isStringStarter = char === '\'' || char === '"';
 
       if (isInComment) {
+        totalTokenLength += commentCharacterValue;
         if (chars === '*/') {
           isInComment = false;
+          totalTokenLength += commentCharacterValue;
           i++;
         }
       } else if (isInString) {
@@ -68,6 +70,8 @@ class UnminifiedCSS extends ByteEfficiencyAudit {
       } else {
         if (chars === '/*') {
           isInComment = true;
+          commentCharacterValue = content.charAt(i + 2) === '!' ? 1 : 0;
+          totalTokenLength += 2 * commentCharacterValue;
           i++;
         } else if (isStringStarter) {
           isInString = true;
@@ -115,7 +119,7 @@ class UnminifiedCSS extends ByteEfficiencyAudit {
    */
   static audit_(artifacts, networkRecords) {
     const results = [];
-    for (const stylesheet of artifacts.Styles.values()) {
+    for (const stylesheet of artifacts.Styles) {
       const networkRecord = networkRecords
         .find(record => record.url === stylesheet.header.sourceURL);
       if (!networkRecord || !stylesheet.content) continue;
