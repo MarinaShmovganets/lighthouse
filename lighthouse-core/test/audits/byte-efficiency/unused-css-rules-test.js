@@ -134,7 +134,7 @@ describe('Best Practices: unused css rules audit', () => {
         requestNetworkRecords,
         URL: {finalUrl: ''},
         CSSUsage: [{styleSheetId: 'a', used: false}],
-        Styles: new Map([]),
+        Styles: [],
       }).then(result => {
         assert.equal(result.results.length, 0);
       });
@@ -150,16 +150,16 @@ describe('Best Practices: unused css rules audit', () => {
           {styleSheetId: 'a', used: true},
           {styleSheetId: 'b', used: true},
         ],
-        Styles: new Map([
-          ['a', {
+        Styles: [
+          {
             header: {styleSheetId: 'a', sourceURL: 'file://a.css'},
             content: '.my.selector {color: #ccc;}\n a {color: #fff}',
-          }],
-          ['b', {
+          },
+          {
             header: {styleSheetId: 'b', sourceURL: 'file://b.css'},
             content: '.my.favorite.selector { rule: content; }',
-          }],
-        ]),
+          },
+        ],
       }).then(result => {
         assert.equal(result.results.length, 0);
       });
@@ -174,26 +174,50 @@ describe('Best Practices: unused css rules audit', () => {
           {styleSheetId: 'a', used: true, startOffset: 0, endOffset: 11}, // 44 * 1 / 4
           {styleSheetId: 'b', used: true, startOffset: 0, endOffset: 3075}, // 2050 * 3 / 2
         ],
-        Styles: new Map([
-          ['a', {
+        Styles: [
+          {
             header: {styleSheetId: 'a', sourceURL: 'file://a.css'},
             content: '.my.selector {color: #ccc;}\n a {color: #fff}',
-          }],
-          ['b', {
+          },
+          {
             header: {styleSheetId: 'b', sourceURL: 'file://b.css'},
             content: `${generate('123', 2050)}`,
-          }],
-          ['c', {
+          },
+          {
             header: {styleSheetId: 'c', sourceURL: ''},
             content: `${generate('123', 450)}`, // will be filtered out
-          }],
-        ]),
+          },
+        ],
       }).then(result => {
         assert.equal(result.results.length, 2);
         assert.equal(result.results[0].totalBytes, 10 * 1024);
         assert.equal(result.results[1].totalBytes, 3075);
         assert.equal(result.results[0].wastedPercent, 75);
         assert.equal(result.results[1].wastedPercent, 50);
+      });
+    });
+
+    it('does not include duplicate sheets', () => {
+      return UnusedCSSAudit.audit_({
+        devtoolsLogs,
+        requestNetworkRecords,
+        URL: {finalUrl: ''},
+        CSSUsage: [
+          {styleSheetId: 'a', used: true, startOffset: 0, endOffset: 33}, // 44 * 3 / 4
+        ],
+        Styles: [
+          {
+            header: {styleSheetId: 'a', sourceURL: 'file://a.css'},
+            content: '.my.selector {color: #ccc;}\n a {color: #fff}',
+          },
+          {
+            isDuplicate: true,
+            header: {styleSheetId: 'b', sourceURL: 'file://b.css'},
+            content: 'a.other {color: #fff}',
+          },
+        ],
+      }).then(result => {
+        assert.equal(result.results.length, 1);
       });
     });
 
@@ -206,28 +230,28 @@ describe('Best Practices: unused css rules audit', () => {
           {styleSheetId: 'a', used: true, startOffset: 0, endOffset: 8000}, // 4000 * 3 / 2
           {styleSheetId: 'b', used: true, startOffset: 0, endOffset: 500}, // 500 * 3 / 3
         ],
-        Styles: new Map([
-          ['a', {
+        Styles: [
+          {
             header: {styleSheetId: 'a', sourceURL: 'file://a.css'},
             content: `${generate('123', 4000)}`,
-          }],
-          ['b', {
+          },
+          {
             header: {styleSheetId: 'b', sourceURL: 'file://b.css'},
             content: `${generate('123', 500)}`,
-          }],
-          ['c', {
+          },
+          {
             header: {styleSheetId: 'c', sourceURL: 'file://c.css'},
             content: '@import url(http://googlefonts.com?myfont)',
-          }],
-          ['d', {
+          },
+          {
             header: {styleSheetId: 'd', sourceURL: 'file://d.css'},
             content: '/* nothing to see here */',
-          }],
-          ['e', {
+          },
+          {
             header: {styleSheetId: 'e', sourceURL: 'file://e.css'},
             content: '       ',
-          }],
-        ]),
+          },
+        ],
       }).then(result => {
         assert.equal(result.results.length, 1);
         assert.equal(Math.floor(result.results[0].wastedPercent), 33);

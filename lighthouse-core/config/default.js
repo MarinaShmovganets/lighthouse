@@ -18,7 +18,6 @@ module.exports = {
     useThrottling: true,
     gatherers: [
       'url',
-      'styles',
       'scripts',
       'viewport',
       'viewport-dimensions',
