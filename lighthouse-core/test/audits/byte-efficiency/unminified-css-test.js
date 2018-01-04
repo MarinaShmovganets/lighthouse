@@ -148,7 +148,7 @@ describe('Page uses optimized css', () => {
               `.replace(/\n\s+/g, '\n'),
             },
           ],
-        ]),
+        ]).values(),
       },
       [
         {url: 'foo.css', _transferSize: 20 * KB, _resourceType},
@@ -189,7 +189,7 @@ describe('Page uses optimized css', () => {
               content: '/* a broken comment .clasz { width: 0; }',
             },
           ],
-        ]),
+        ]).values(),
       },
       [
         {url: 'foo.css', _transferSize: 20 * KB, _resourceType},
