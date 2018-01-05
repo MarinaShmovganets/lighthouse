@@ -37,8 +37,10 @@ describe('Page uses optimized css', () => {
       const pairs = [
         ['.my-class { content: "/*"; }', '.my-class{content:"/*";}'],
         ['.my-class { content: \'/* */\'; }', '.my-class{content:\'/* */\';}'],
-        ['.my-class { content: "/*\\\\"; }', '.my-class{content:"/*\\\\";}'],
-        ['.my-class { content: "/*\\""; }', '.my-class{content:"/*\\"";}'],
+        ['.my-class { content: "/*\\\\a"; }', '.my-class{content:"/*\\\\a";}'],
+        ['.my-class { content: "/*\\"a"; }', '.my-class{content:"/*\\"a";}'],
+        ['.my-class { content: "hello }', '.my-class { content: "hello }'],
+        ['.my-class { content: "hello" }', '.my-class{content:"hello"}'],
       ];
 
       for (const [full, minified] of pairs) {

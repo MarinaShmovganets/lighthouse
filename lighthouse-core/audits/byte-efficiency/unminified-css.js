@@ -8,9 +8,7 @@
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
 
 const IGNORE_THRESHOLD_IN_PERCENT = 5;
-const IGNORE_THRESHOLD_IN_BYTES = 512;
-
-const ESCAPE_SLASH = '\\';
+const IGNORE_THRESHOLD_IN_BYTES = 2048;
 
 /**
  * @fileOverview
@@ -39,43 +37,42 @@ class UnminifiedCSS extends ByteEfficiencyAudit {
   static computeTokenLength(content) {
     let totalTokenLength = 0;
     let isInComment = false;
-    let commentCharacterValue = 1;
+    let isInLicenseComment = false;
     let isInString = false;
-    let stringStarter = null;
+    let stringOpenChar = null;
 
     for (let i = 0; i < content.length; i++) {
-      const chars = content.substr(i, 2);
-      const char = chars.charAt(0);
+      const twoChars = content.substr(i, 2);
+      const char = twoChars.charAt(0);
 
       const isWhitespace = char === ' ' || char === '\n' || char === '\t';
-      const isStringStarter = char === '\'' || char === '"';
+      const isAStringOpenChar = char === `'` || char === '"';
 
       if (isInComment) {
-        totalTokenLength += commentCharacterValue;
-        if (chars === '*/') {
+        if (isInLicenseComment) totalTokenLength++;
+
+        if (twoChars === '*/') {
+          if (isInLicenseComment) totalTokenLength++;
           isInComment = false;
-          totalTokenLength += commentCharacterValue;
           i++;
         }
       } else if (isInString) {
         totalTokenLength++;
-        if (chars === ESCAPE_SLASH) {
+        if (char === '\\') {
           totalTokenLength++;
           i++;
-        } else if (char === stringStarter) {
+        } else if (char === stringOpenChar) {
           isInString = false;
-          totalTokenLength++;
-          i++;
         }
       } else {
-        if (chars === '/*') {
+        if (twoChars === '/*') {
           isInComment = true;
-          commentCharacterValue = content.charAt(i + 2) === '!' ? 1 : 0;
-          totalTokenLength += 2 * commentCharacterValue;
+          isInLicenseComment = content.charAt(i + 2) === '!';
+          if (isInLicenseComment) totalTokenLength += 2;
           i++;
-        } else if (isStringStarter) {
+        } else if (isAStringOpenChar) {
           isInString = true;
-          stringStarter = char;
+          stringOpenChar = char;
           totalTokenLength++;
         } else if (!isWhitespace) {
           totalTokenLength++;
@@ -85,7 +82,7 @@ class UnminifiedCSS extends ByteEfficiencyAudit {
 
     // If the content contained unbalanced comments, it's either invalid or we had a parsing error.
     // Report the token length as the entire string so it will be ignored.
-    if (isInComment) {
+    if (isInComment || isInString) {
       return content.length;
     }
 
