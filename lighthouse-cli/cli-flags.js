@@ -52,7 +52,7 @@ function getFlags(manualArgv) {
 
       .group(
         [
-          'save-assets', 'save-artifacts', 'list-all-audits', 'list-trace-categories',
+          'save-assets', 'list-all-audits', 'list-trace-categories',
           'additional-trace-categories', 'config-path', 'chrome-flags', 'perf', 'port',
           'hostname', 'max-wait-for-load', 'enable-error-reporting', 'gather-mode', 'audit-mode',
         ],
@@ -70,7 +70,6 @@ function getFlags(manualArgv) {
             'Collect artifacts from a connected browser and save to disk. If audit-mode is not also enabled, the run will quit early.',
         'audit-mode': 'Process saved artifacts from disk',
         'save-assets': 'Save the trace contents & screenshots to disk',
-        'save-artifacts': 'Save all gathered artifacts to disk',
         'list-all-audits': 'Prints a list of all available audits and exits',
         'list-trace-categories': 'Prints a list of all required trace categories and exits',
         'additional-trace-categories':
@@ -105,7 +104,7 @@ function getFlags(manualArgv) {
       // boolean values
       .boolean([
         'disable-storage-reset', 'disable-device-emulation', 'disable-cpu-throttling',
-        'disable-network-throttling', 'save-assets', 'save-artifacts', 'list-all-audits',
+        'disable-network-throttling', 'save-assets', 'list-all-audits',
         'list-trace-categories', 'perf', 'view', 'verbose', 'quiet', 'help',
         'gather-mode', 'audit-mode',
       ])

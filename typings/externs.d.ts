@@ -12,7 +12,6 @@ export interface Flags {
   chromeFlags: string;
   output: any;
   outputPath: string;
-  saveArtifacts: boolean;
   saveAssets: boolean;
   view: boolean;
   maxWaitForLoad: number;
