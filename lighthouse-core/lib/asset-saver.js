@@ -142,7 +142,7 @@ function saveArtifacts(artifacts, basePath) {
 
   // save everything else
   promise = promise.then(_ => {
-    fs.writeFileSync(`${basePath}/${artifactsFilename}`, JSON.stringify(artifacts), 'utf8');
+    fs.writeFileSync(`${basePath}/${artifactsFilename}`, JSON.stringify(artifacts, 0, 2), 'utf8');
     log.log('Artifacts saved to disk in folder:', basePath);
   });
   return promise;
