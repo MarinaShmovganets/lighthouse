@@ -109,9 +109,9 @@ function handleError(err) {
  */
 function saveResults(results, artifacts, flags) {
   const shouldSaveResults = flags.auditMode || (flags.gatherMode == flags.auditMode);
-  if (!shouldSaveResults) return Promise.resolve();
+  let promise = Promise.resolve();
+  if (!shouldSaveResults) return promise;
 
-  let promise = Promise.resolve(results);
   const cwd = process.cwd();
 
   // Use the output path as the prefix for all generated files.
@@ -163,7 +163,10 @@ function runLighthouse(url, flags, config) {
   /** @type {!LH.LaunchedChrome} */
   let launchedChrome;
   const shouldGather = flags.gatherMode || flags.gatherMode == flags.auditMode;
+  /** @type {!Promise<!LH.Results|void>} */
   let promise = Promise.resolve();
+  /** @type {!Promise<!LH.Results>|undefined} */
+  let resultsP;
 
   if (shouldGather) {
     promise = promise.then(_ =>
@@ -173,19 +176,19 @@ function runLighthouse(url, flags, config) {
       })
     );
   }
-  promise = promise.then(_ => {
+  resultsP = promise.then(_ => {
     return lighthouse(url, flags, config).then(results => {
       return potentiallyKillChrome().then(_ => results);
     });
   });
 
-  promise = promise.then(results => {
+  resultsP = resultsP.then(results => {
     const artifacts = results.artifacts;
     delete results.artifacts;
     return saveResults(results, artifacts, flags).then(_ => results);
   });
 
-  return promise.catch(err => {
+  return resultsP.catch(err => {
     return Promise.resolve()
       .then(_ => potentiallyKillChrome())
       .then(_ => handleError(err));
@@ -196,8 +199,7 @@ function runLighthouse(url, flags, config) {
    */
   function potentiallyKillChrome() {
     if (launchedChrome !== undefined) {
-      // TODO: keeps tsc happy (erases return type) but is useless.
-      return launchedChrome.kill().then(_ => {});
+      return launchedChrome.kill();
     }
     return Promise.resolve({});
   }

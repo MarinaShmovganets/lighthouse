@@ -22,6 +22,8 @@ export interface Flags {
   enableErrorReporting: boolean;
   listAllAudits: boolean;
   listTraceCategories: boolean;
+  auditMode: boolean;
+  gatherMode: boolean;
   configPath?: string;
   perf: boolean;
   verbose: boolean;
