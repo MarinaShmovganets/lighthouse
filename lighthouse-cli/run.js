@@ -163,29 +163,25 @@ function runLighthouse(url, flags, config) {
   /** @type {!LH.LaunchedChrome} */
   let launchedChrome;
   const shouldGather = flags.gatherMode || flags.gatherMode === flags.auditMode;
-  /** @type {!Promise<!LH.Results|void>} */
-  let promise = Promise.resolve();
-  /** @type {!Promise<!LH.Results>|undefined} */
-  let resultsP;
+  let chromeP = Promise.resolve();
 
   if (shouldGather) {
-    promise = promise.then(_ =>
+    chromeP = chromeP.then(_ =>
       getDebuggableChrome(flags).then(launchedChromeInstance => {
         launchedChrome = launchedChromeInstance;
         flags.port = launchedChrome.port;
       })
     );
   }
-  resultsP = promise.then(_ => {
+
+  const resultsP = chromeP.then(_ => {
     return lighthouse(url, flags, config).then(results => {
       return potentiallyKillChrome().then(_ => results);
+    }).then(results => {
+      const artifacts = results.artifacts;
+      delete results.artifacts;
+      return saveResults(results, artifacts, flags).then(_ => results);
     });
-  });
-
-  resultsP = resultsP.then(results => {
-    const artifacts = results.artifacts;
-    delete results.artifacts;
-    return saveResults(results, artifacts, flags).then(_ => results);
   });
 
   return resultsP.catch(err => {

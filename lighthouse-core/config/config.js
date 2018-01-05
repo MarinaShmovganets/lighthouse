@@ -578,10 +578,6 @@ class Config {
     });
   }
 
-  removePasses() {
-    this._passes = undefined;
-  }
-
   /** @type {string} */
   get configDir() {
     return this._configDir;
