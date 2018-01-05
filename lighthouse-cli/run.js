@@ -108,11 +108,11 @@ function handleError(err) {
  * @return {!Promise<void>}
  */
 function saveResults(results, artifacts, flags) {
-  const shouldSaveResults = flags.auditMode || (flags.gatherMode == flags.auditMode);
-  let promise = Promise.resolve();
-  if (!shouldSaveResults) return promise;
-
   const cwd = process.cwd();
+  let promise = Promise.resolve();
+
+  const shouldSaveResults = flags.auditMode || (flags.gatherMode === flags.auditMode);
+  if (!shouldSaveResults) return promise;
 
   // Use the output path as the prefix for all generated files.
   // If no output path is set, generate a file prefix using the URL and date.
@@ -162,7 +162,7 @@ function saveResults(results, artifacts, flags) {
 function runLighthouse(url, flags, config) {
   /** @type {!LH.LaunchedChrome} */
   let launchedChrome;
-  const shouldGather = flags.gatherMode || flags.gatherMode == flags.auditMode;
+  const shouldGather = flags.gatherMode || flags.gatherMode === flags.auditMode;
   /** @type {!Promise<!LH.Results|void>} */
   let promise = Promise.resolve();
   /** @type {!Promise<!LH.Results>|undefined} */
