@@ -42,7 +42,7 @@ The current size of confidence intervals for DevTools throttled performance scor
 
 ## Links
 
-* [Lighthouse Variability and Accuracy Analysis](https://docs.google.com/document/d/1qH_XV8Jw4jo3LB4bCInvjBH9zN0hCAIssNZ9vuQz7_U/edit#)
+* [Lighthouse Variability and Accuracy Analysis](https://docs.google.com/document/d/1BqtL-nG53rxWOI5RO0pItSRPowZVnYJ_gBEQCJ5EeUE/edit?usp=sharing)
 * [Lantern Deck](https://docs.google.com/presentation/d/1EsuNICCm6uhrR2PLNaI5hNkJ-q-8Mv592kwHmnf4c6U/edit?usp=sharing)
 * [Lantern Design Doc](https://docs.google.com/a/chromium.org/document/d/1pHEjtQjeycMoFOtheLfFjqzggY8VvNaIRfjC7IgNLq0/edit?usp=sharing)
 * [WPT Trace Data Set Half 1](https://drive.google.com/open?id=1Y_duiiJVljzIEaYWEmiTqKQFUBFWbKVZ) (access on request)
