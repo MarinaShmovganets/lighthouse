@@ -81,6 +81,16 @@ describe('Runner', () => {
         assert.equal(runAuditSpy.called, true, '_runAudit was not called');
       });
     });
+
+    it('non -G/-A run doesn\'t save artifacts to disk', () => {
+      const opts = {url, config: generateConfig(), driverMock};
+      return Runner.run(null, opts).then(_ => {
+        assert.equal(loadArtifactsSpy.called, false, 'loadArtifacts was called');
+        assert.equal(gatherRunnerRunSpy.called, true, 'GatherRunner.run was not called');
+        assert.equal(saveArtifactsSpy.called, false, 'saveArtifacts was called');
+        assert.equal(runAuditSpy.called, true, '_runAudit was not called');
+      });
+    });
   });
 
   it('expands gatherers', () => {

@@ -143,7 +143,7 @@ class Runner {
     opts.driver = opts.driverMock || new Driver(connection);
     return GatherRunner.run(opts.config.passes, opts).then(artifacts => {
       const flags = opts.flags;
-      const shouldSave = flags.gatherMode || flags.gatherMode === flags.auditMode;
+      const shouldSave = flags.gatherMode;
       const p = shouldSave ? Runner._saveArtifacts(artifacts): Promise.resolve();
       return p.then(_ => artifacts);
     });
