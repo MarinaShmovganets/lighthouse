@@ -744,7 +744,7 @@ span.lh-node:hover {
   font-size: large;
 }
 
-.lh-text__url {
+.lh-text {
   white-space: nowrap;
 }
 
@@ -902,7 +902,6 @@ summary.lh-passed-audits-summary {
   --image-preview-size: 24px;
   border: 1px solid var(--report-secondary-border-color);
   border-collapse: collapse;
-  table-layout: fixed;
   width: 100%;
 }
 
@@ -916,8 +915,7 @@ summary.lh-passed-audits-summary {
 
 .lh-table th,
 .lh-table td {
-  padding: 10px;
-  overflow: auto;
+  padding: 8px 6px;
 }
 
 .lh-table-column--text {
@@ -932,6 +930,27 @@ summary.lh-passed-audits-summary {
   text-align: left;
   min-width: 250px;
   white-space: nowrap;
+  max-width: 450px;
+}
+
+.lh-text__url {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lh-text__url:hover {
+  text-decoration: underline dotted #999;
+  text-decoration-skip-ink: auto;
+}
+
+.lh-text__url > .lh-text, .lh-text__url-host {
+  display: inline;
+}
+
+.lh-text__url-host {
+  margin-left: calc(var(--body-font-size) / 2);
+  opacity: 0.6;
+  font-size: 90%
 }
 
 .lh-thumbnail {
