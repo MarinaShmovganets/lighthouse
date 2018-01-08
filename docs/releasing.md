@@ -17,7 +17,6 @@ Release manager follows the below _Release Process_.
 ### Release publicity
 
 1. Release mgr copies changelog to a new [Releases](https://github.com/GoogleChrome/lighthouse/releases). Tags and ships it.
-1. Release mgr adds Release notes to the repo's [changelog](https://github.com/GoogleChrome/lighthouse/blob/master/changelog.md).
 1. Release mgr tells the _LH public_ Hangout chat about the new version.
 1. V writes and publishes the [/updates](https://developers.google.com/web/updates/) blog post
 1. Paul writes the tweet and sends it on [@____lighthouse](https://twitter.com/____lighthouse).
