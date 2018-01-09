@@ -117,7 +117,7 @@ describe('asset-saver helper', () => {
           const traceFileContents = fs.readFileSync(traceFilename, 'utf8');
           const traceEventsFromDisk = JSON.parse(traceFileContents).traceEvents;
           traceEventsFromDisk.forEach((evt, i) => {
-            assert.deepStrictEqual(evt, fullTraceObj[i]);
+            assert.deepStrictEqual(evt, fullTraceObj.traceEvents[i]);
           });
         });
     });
@@ -160,7 +160,7 @@ describe('asset-saver helper', () => {
           const traceFileContents = fs.readFileSync(traceFilename, 'utf8');
           const traceEventsFromDisk = JSON.parse(traceFileContents).traceEvents;
           traceEventsFromDisk.forEach((evt, i) => {
-            assert.deepStrictEqual(evt, trace[i]);
+            assert.deepStrictEqual(evt, trace.traceEvents[i]);
           });
         });
     });
