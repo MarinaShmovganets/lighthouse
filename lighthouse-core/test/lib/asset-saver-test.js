@@ -56,7 +56,7 @@ describe('asset-saver helper', () => {
       const traceFileContents = fs.readFileSync(traceFilename, 'utf8');
       assert.deepStrictEqual(JSON.parse(traceFileContents), {traceEvents});
       fs.unlinkSync(traceFilename);
-    });
+    }).timeout(120000);
 
     it('devtools log file saved to disk with data', () => {
       const filename = 'the_file-0.devtoolslog.json';
