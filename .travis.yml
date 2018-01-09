@@ -1,3 +1,4 @@
+sudo: yes
 language: node_js
 matrix:
   include:
@@ -12,35 +13,35 @@ cache:
     - lighthouse-extension/node_modules
     - lighthouse-viewer/node_modules
     - /home/travis/.rvm/gems/
-# before_install:
-#   # TODO: remove after yarn is 1.0+ on Travis: https://github.com/travis-ci/travis-ci/issues/7566
-#   - curl -o- -L https://yarnpkg.com/install.sh | bash
-#   - export PATH="$HOME/.yarn/bin:$PATH"
-# install:
-#   - yarn
-#   # travis can't handle the parallel install (without caches)
-#   - yarn run install-all:task:windows
+before_install:
+  # TODO: remove after yarn is 1.0+ on Travis: https://github.com/travis-ci/travis-ci/issues/7566
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH="$HOME/.yarn/bin:$PATH"
+install:
+  - yarn
+  # travis can't handle the parallel install (without caches)
+  - yarn run install-all:task:windows
 before_script:
   - export DISPLAY=:99.0
   - export CHROME_PATH="$(pwd)/chrome-linux/chrome"
   - sh -e /etc/init.d/xvfb start
+  - yarn build-all
 script:
-  - bash ./go.sh
-  # - yarn bundlesize
-  # - yarn lint
-  # - yarn unit
-  # - yarn type-check
-  # - yarn closure
-  # - yarn smoke
-  # - yarn smokehouse
-  # # _JAVA_OPTIONS is breaking parsing of compiler output. See #3338.
-  # - unset _JAVA_OPTIONS
-  # - yarn compile-devtools
+  - yarn bundlesize
+  - yarn lint
+  - yarn unit
+  - yarn type-check
+  - yarn closure
+  - yarn smoke
+  - yarn smokehouse
+  # _JAVA_OPTIONS is breaking parsing of compiler output. See #3338.
+  - unset _JAVA_OPTIONS
+  - yarn compile-devtools
 before_cache:
   # the `yarn compile-devtools` task adds these to node_modules, which slows down caching
   - rm -rf ./node_modules/temp-devtoolsfrontend/
   - rm -rf ./node_modules/temp-devtoolsprotocol/
-# after_success:
-#   - yarn coveralls
+after_success:
+  - yarn coveralls
 addons:
   chrome: stable
