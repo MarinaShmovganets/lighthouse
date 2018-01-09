@@ -54,7 +54,10 @@ describe('asset-saver helper', () => {
     it('trace file saved to disk with only trace events', () => {
       const traceFilename = 'the_file-0.trace.json';
       const traceFileContents = fs.readFileSync(traceFilename, 'utf8');
-      assert.deepStrictEqual(JSON.parse(traceFileContents), {traceEvents});
+      const traceEventsFromDisk = JSON.parse(traceFileContents).traceEvents;
+      traceEventsFromDisk.forEach((evt, i) => {
+        assert.deepStrictEqual(evt, traceEvents[i]);
+      });
       fs.unlinkSync(traceFilename);
     }).timeout(120000);
 
