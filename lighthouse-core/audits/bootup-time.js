@@ -9,6 +9,7 @@ const Audit = require('./audit');
 const WebInspector = require('../lib/web-inspector');
 const Util = require('../report/v2/renderer/util');
 const {groupIdToName, taskToGroup} = require('../lib/task-groups');
+const THRESHOLD_IN_MS = 10;
 
 class BootupTime extends Audit {
   /**
@@ -73,22 +74,28 @@ class BootupTime extends Audit {
       ];
 
       // map data in correct format to create a table
-      const results = Array.from(executionTimings).map(([url, groups]) => {
-        // Add up the totalBootupTime for all the taskGroups
-        totalBootupTime += Object.keys(groups).reduce((sum, name) => sum += groups[name], 0);
-        extendedInfo[url] = groups;
+      const results = Array.from(executionTimings)
+        .filter(([, groups]) => {
+          const scriptingTotal = groups[groupIdToName.scripting] || 0;
+          const parseCompileTotal = groups[groupIdToName.scriptParseCompile] || 0;
 
-        const scriptingTotal = groups[groupIdToName.scripting] || 0;
-        const parseCompileTotal = groups[groupIdToName.scriptParseCompile] || 0;
-        return {
-          url: url,
-          sum: scriptingTotal + parseCompileTotal,
-          // Only reveal the javascript task costs
-          // Later we can account for forced layout costs, etc.
-          scripting: Util.formatMilliseconds(scriptingTotal, 1),
-          scriptParseCompile: Util.formatMilliseconds(parseCompileTotal, 1),
-        };
-      }).sort((a, b) => b.sum - a.sum);
+          return scriptingTotal >= THRESHOLD_IN_MS || parseCompileTotal >= THRESHOLD_IN_MS;
+        }).map(([url, groups]) => {
+          // Add up the totalBootupTime for all the taskGroups
+          totalBootupTime += Object.keys(groups).reduce((sum, name) => sum += groups[name], 0);
+          extendedInfo[url] = groups;
+
+          const scriptingTotal = groups[groupIdToName.scripting] || 0;
+          const parseCompileTotal = groups[groupIdToName.scriptParseCompile] || 0;
+          return {
+            url: url,
+            sum: scriptingTotal + parseCompileTotal,
+            // Only reveal the javascript task costs
+            // Later we can account for forced layout costs, etc.
+            scripting: Util.formatMilliseconds(scriptingTotal, 1),
+            scriptParseCompile: Util.formatMilliseconds(parseCompileTotal, 1),
+          };
+        }).sort((a, b) => b.sum - a.sum);
 
       const tableDetails = BootupTime.makeTableDetails(headings, results);
 
