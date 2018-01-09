@@ -29,7 +29,7 @@ class SplashScreen extends MultiCheckAudit {
       name: 'splash-screen',
       description: 'Configured for a custom splash screen',
       failureDescription: 'Is not configured for a custom splash screen',
-      helpText: 'Meet these requirements to ensure a high-quality experience when ' +
+      helpText: 'A themed splash screen ensures a high-quality experience when ' +
           'users launch your app from their homescreens. [Learn ' +
           'more](https://developers.google.com/web/tools/lighthouse/audits/custom-splash-screen).',
       requiredArtifacts: ['Manifest'],
