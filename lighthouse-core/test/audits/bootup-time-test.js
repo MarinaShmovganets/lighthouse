@@ -25,7 +25,7 @@ describe('Performance: bootup-time audit', () => {
     return BootupTime.audit(artifacts).then(output => {
       assert.equal(output.details.items.length, 4);
       assert.equal(output.score, true);
-      assert.equal(Math.round(output.rawValue), 147);
+      assert.equal(Math.round(output.rawValue), 176);
 
       const roundedValueOf = name => {
         const value = output.extendedInfo.value[name];
