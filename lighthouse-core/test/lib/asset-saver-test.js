@@ -17,6 +17,13 @@ const dbwResults = require('../fixtures/dbw_tester-perf-results.json');
 const Audit = require('../../audits/audit.js');
 const fullTraceObj = require('../fixtures/traces/progressive-app-m60.json');
 
+function assertTraceEventsEqual(traceEventsA, traceEventsB) {
+  assert.equal(traceEventsA.length, traceEventsB.length);
+  traceEventsA.forEach((evt, i) => {
+    assert.deepStrictEqual(evt, traceEventsB[i]);
+  });
+}
+
 /* eslint-env mocha */
 describe('asset-saver helper', () => {
   it('generates HTML', () => {
@@ -55,9 +62,7 @@ describe('asset-saver helper', () => {
       const traceFilename = 'the_file-0.trace.json';
       const traceFileContents = fs.readFileSync(traceFilename, 'utf8');
       const traceEventsFromDisk = JSON.parse(traceFileContents).traceEvents;
-      traceEventsFromDisk.forEach((evt, i) => {
-        assert.deepStrictEqual(evt, traceEvents[i]);
-      });
+      assertTraceEventsEqual(traceEventsFromDisk, traceEvents);
       fs.unlinkSync(traceFilename);
     });
 
@@ -116,9 +121,7 @@ describe('asset-saver helper', () => {
         .then(_ => {
           const traceFileContents = fs.readFileSync(traceFilename, 'utf8');
           const traceEventsFromDisk = JSON.parse(traceFileContents).traceEvents;
-          traceEventsFromDisk.forEach((evt, i) => {
-            assert.deepStrictEqual(evt, fullTraceObj.traceEvents[i]);
-          });
+          assertTraceEventsEqual(traceEventsFromDisk, fullTraceObj.traceEvents);
         });
     });
 
@@ -159,9 +162,7 @@ describe('asset-saver helper', () => {
         .then(_ => {
           const traceFileContents = fs.readFileSync(traceFilename, 'utf8');
           const traceEventsFromDisk = JSON.parse(traceFileContents).traceEvents;
-          traceEventsFromDisk.forEach((evt, i) => {
-            assert.deepStrictEqual(evt, trace.traceEvents[i]);
-          });
+          assertTraceEventsEqual(traceEventsFromDisk, trace.traceEvents);
         });
     });
 
