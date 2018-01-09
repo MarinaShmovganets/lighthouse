@@ -186,6 +186,6 @@ describe('asset-saver helper', () => {
           const fileStats = fs.lstatSync(traceFilename);
           assert.ok(fileStats.size > Math.pow(2, 28));
         });
-    });
+    }).timeout(20000);
   });
 });
