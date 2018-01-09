@@ -67,7 +67,7 @@ class DetailsRenderer {
     const url = text.text || '';
 
     let displayedPath;
-    let displayedHost = '';
+    let displayedHost;
     let title;
     try {
       const parsed = Util.parseURL(url);
@@ -85,16 +85,16 @@ class DetailsRenderer {
     element.appendChild(this._renderText({
       text: displayedPath,
     }));
-    const hostElem = this._renderText({
-      text: displayedHost,
-    });
-    hostElem.classList.add('lh-text__url-host');
-    element.appendChild(hostElem);
 
-    if (title) {
-      element.title = url;
+    if (displayedHost) {
+      const hostElem = this._renderText({
+        text: displayedHost,
+      });
+      hostElem.classList.add('lh-text__url-host');
+      element.appendChild(hostElem);
     }
 
+    if (title) element.title = url;
     return element;
   }
 
