@@ -65,7 +65,7 @@ describe('asset-saver helper', () => {
       const traceEventsFromDisk = JSON.parse(traceFileContents).traceEvents;
       assertTraceEventsEqual(traceEventsFromDisk, traceEvents);
       fs.unlinkSync(traceFilename);
-    });
+    }).timeout(10000);
 
     it('devtools log file saved to disk with data', () => {
       const filename = 'the_file-0.devtoolslog.json';
@@ -124,7 +124,7 @@ describe('asset-saver helper', () => {
           const traceEventsFromDisk = JSON.parse(traceFileContents).traceEvents;
           assertTraceEventsEqual(traceEventsFromDisk, fullTraceObj.traceEvents);
         });
-    });
+    }).timeout(5000);
 
     it('correctly saves a trace with no trace events to disk', () => {
       const trace = {
@@ -165,7 +165,7 @@ describe('asset-saver helper', () => {
           const traceEventsFromDisk = JSON.parse(traceFileContents).traceEvents;
           assertTraceEventsEqual(traceEventsFromDisk, trace.traceEvents);
         });
-    });
+    }).timeout(10000);
 
     it('can save traces over 256MB (slow)', () => {
       // Create a trace that wil be longer than 256MB when stringified, the hard
@@ -186,6 +186,6 @@ describe('asset-saver helper', () => {
           const fileStats = fs.lstatSync(traceFilename);
           assert.ok(fileStats.size > Math.pow(2, 28));
         });
-    }).timeout(20000);
+    }).timeout(40 * 1000);
   });
 });
