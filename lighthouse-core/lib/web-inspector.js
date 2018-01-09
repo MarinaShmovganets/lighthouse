@@ -298,7 +298,7 @@ module.exports = (function() {
     return fakeTarget.networkManager;
   };
 
-  // Dependecies for effective CSS rule calculation.
+  // Dependencies for effective CSS rule calculation.
   require('chrome-devtools-frontend/front_end/common/TextRange.js');
   require('chrome-devtools-frontend/front_end/sdk/CSSMatchedStyles.js');
   require('chrome-devtools-frontend/front_end/sdk/CSSMedia.js');
