@@ -59,7 +59,7 @@ describe('asset-saver helper', () => {
         assert.deepStrictEqual(evt, traceEvents[i]);
       });
       fs.unlinkSync(traceFilename);
-    }).timeout(120000);
+    });
 
     it('devtools log file saved to disk with data', () => {
       const filename = 'the_file-0.devtoolslog.json';
