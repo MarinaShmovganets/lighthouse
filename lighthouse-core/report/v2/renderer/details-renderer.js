@@ -84,11 +84,13 @@ class DetailsRenderer {
     const element = this._dom.createElement('div', 'lh-text__url');
     element.appendChild(this._renderText({
       text: displayedPath,
+      type: 'text',
     }));
 
     if (displayedHost) {
       const hostElem = this._renderText({
         text: displayedHost,
+        type: 'text',
       });
       hostElem.classList.add('lh-text__url-host');
       element.appendChild(hostElem);
