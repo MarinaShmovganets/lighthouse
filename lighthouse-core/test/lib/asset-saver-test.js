@@ -115,7 +115,10 @@ describe('asset-saver helper', () => {
       return assetSaver.saveTrace(fullTraceObj, traceFilename)
         .then(_ => {
           const traceFileContents = fs.readFileSync(traceFilename, 'utf8');
-          assert.deepStrictEqual(JSON.parse(traceFileContents), fullTraceObj);
+          const traceEventsFromDisk = JSON.parse(traceFileContents).traceEvents;
+          traceEventsFromDisk.forEach((evt, i) => {
+            assert.deepStrictEqual(evt, fullTraceObj[i]);
+          });
         });
     });
 
@@ -155,7 +158,10 @@ describe('asset-saver helper', () => {
       return assetSaver.saveTrace(trace, traceFilename)
         .then(_ => {
           const traceFileContents = fs.readFileSync(traceFilename, 'utf8');
-          assert.deepStrictEqual(JSON.parse(traceFileContents), trace);
+          const traceEventsFromDisk = JSON.parse(traceFileContents).traceEvents;
+          traceEventsFromDisk.forEach((evt, i) => {
+            assert.deepStrictEqual(evt, trace[i]);
+          });
         });
     });
 
