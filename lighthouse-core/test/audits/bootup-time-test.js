@@ -39,12 +39,7 @@ describe('Performance: bootup-time audit', () => {
       assert.deepEqual(roundedValueOf('https://www.google-analytics.com/plugins/ua/linkid.js'), {[groupIdToName.scripting]: 25.2, [groupIdToName.scriptParseCompile]: 1.2});
       assert.deepEqual(roundedValueOf('https://www.google-analytics.com/analytics.js'), {[groupIdToName.scripting]: 40.1, [groupIdToName.scriptParseCompile]: 9.6, [groupIdToName.styleLayout]: 0.2});
 
-      // commented the lines below as they are not relevant anymore with the < 10ms fix
-      // I want to comment these to show that it's not a bug
-      // assert.deepEqual(roundedValueOf('https://www.google-analytics.com/cx/api.js?experiment=jdCfRmudTmy-0USnJ8xPbw'), {[groupIdToName.scriptParseCompile]: 3, [groupIdToName.scripting]: 1.2});
-      // assert.deepEqual(roundedValueOf('https://www.google-analytics.com/cx/api.js?experiment=qvpc5qIfRC2EMnbn6bbN5A'), {[groupIdToName.scriptParseCompile]: 2.5, [groupIdToName.scripting]: 1});
-      // assert.deepEqual(roundedValueOf('https://pwa.rocks/'), {[groupIdToName.parseHTML]: 14.2, [groupIdToName.scripting]: 6.1, [groupIdToName.scriptParseCompile]: 1.2});
-      // assert.deepEqual(roundedValueOf('https://pwa.rocks/0ff789bf.js'), {[groupIdToName.parseHTML]: 0});
+      assert.ok(output.details.items.length < Object.keys(output.extendedInfo.value).length, 'Items below 10ms threshold were not filtered out');
     });
   });
 
