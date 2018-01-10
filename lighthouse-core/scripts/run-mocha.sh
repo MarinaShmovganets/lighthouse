@@ -9,7 +9,7 @@
 flag=$1
 
 function _runmocha() {
-  mocha $2 $(find $1/test -name '*-test.js');
+  mocha --reporter dot $2 $(find $1/test -name '*-test.js');
 }
 
 if [ "$flag" == '--watch' ]; then
