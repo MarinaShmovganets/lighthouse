@@ -178,7 +178,6 @@ module.exports = {
     'seo/hreflang',
     'seo/plugins',
     'seo/canonical',
-    'seo/manual/mobile-friendly',
     'seo/manual/structured-data',
   ],
 
@@ -397,7 +396,6 @@ module.exports = {
         {id: 'canonical', weight: 1, group: 'seo-content'},
         {id: 'font-size', weight: 1, group: 'seo-mobile'},
         {id: 'plugins', weight: 1, group: 'seo-content'},
-        {id: 'mobile-friendly', weight: 0, group: 'manual-seo-checks'},
         {id: 'structured-data', weight: 0, group: 'manual-seo-checks'},
       ],
     },
