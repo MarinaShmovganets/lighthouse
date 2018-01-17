@@ -11,20 +11,23 @@ assumes you've installed Lighthouse as a dependency (`yarn add --dev lighthouse`
 const lighthouse = require('lighthouse');
 const chromeLauncher = require('chrome-launcher');
 
-function launchChromeAndRunLighthouse(url, flags = {}, config = null) {
-  return chromeLauncher.launch().then(chrome => {
-    flags.port = chrome.port;
-    return lighthouse(url, flags, config).then(results =>
+function launchChromeAndRunLighthouse(url, opts, config = null) {
+  return chromeLauncher.launch({chromeFlags: opts.chromeFlags}).then(chrome => {
+    opts.port = chrome.port;
+    return lighthouse(url, opts, config).then(results =>
       chrome.kill().then(() => results));
   });
 }
 
-const flags = {};
+const opts = {
+  chromeFlags: ['--show-paint-rects']
+};
 
 // Usage:
-launchChromeAndRunLighthouse('https://example.com', flags).then(results => {
+launchChromeAndRunLighthouse('https://example.com', opts).then(results => {
   // Use results!
 });
+
 ```
 
 ### Performance-only Lighthouse run
@@ -82,7 +85,7 @@ $ adb devices -l
 
 $ adb forward tcp:9222 localabstract:chrome_devtools_remote
 
-$ lighthouse --disable-device-emulation --disable-cpu-throttling https://mysite.com
+$ lighthouse --port=9222 --disable-device-emulation --disable-cpu-throttling https://example.com
 ```
 
 ## Lighthouse as trace processor
@@ -112,7 +115,7 @@ As an example, here's a trace-only run that's reporting on user timings and crit
   "categories": {
     "performance": {
       "name": "Performance Metrics",
-      "description": "These encapsulate your app's performance.",
+      "description": "These encapsulate your web app's performance.",
       "audits": [
         {"id": "user-timings", "weight": 1},
         {"id": "critical-request-chains", "weight": 1}

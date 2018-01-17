@@ -607,9 +607,7 @@ describe('GatherRunner', function() {
 
     return GatherRunner.run(passes, options)
       .then(artifacts => {
-        // todo, trash these
-        assert.equal(artifacts.networkRecords['firstPass'], undefined);
-        assert.equal(artifacts.networkRecords['secondPass'], undefined);
+        assert.equal(artifacts.networkRecords, undefined);
       });
   });
 
@@ -680,33 +678,31 @@ describe('GatherRunner', function() {
       /afterPass\(\) method/);
   });
 
-  describe('#assertPageLoaded', () => {
+  describe('#getPageLoadError', () => {
     it('passes when the page is loaded', () => {
       const url = 'http://the-page.com';
       const records = [{url}];
-      GatherRunner.assertPageLoaded(url, {online: true}, records);
+      assert.ok(!GatherRunner.getPageLoadError(url, records));
     });
 
     it('passes when the page is loaded, ignoring any fragment', () => {
       const url = 'http://example.com/#/page/list';
       const records = [{url: 'http://example.com'}];
-      GatherRunner.assertPageLoaded(url, {online: true}, records);
+      assert.ok(!GatherRunner.getPageLoadError(url, records));
     });
 
     it('throws when page fails to load', () => {
       const url = 'http://the-page.com';
       const records = [{url, failed: true, localizedFailDescription: 'foobar'}];
-      assert.throws(() => {
-        GatherRunner.assertPageLoaded(url, {online: true}, records);
-      }, /Unable.*foobar/);
+      const error = GatherRunner.getPageLoadError(url, records);
+      assert.ok(error && /Unable.*foobar/.test(error.message));
     });
 
     it('throws when page times out', () => {
       const url = 'http://the-page.com';
       const records = [];
-      assert.throws(() => {
-        GatherRunner.assertPageLoaded(url, {online: true}, records);
-      }, /Unable.*no document request/);
+      const error = GatherRunner.getPageLoadError(url, records);
+      assert.ok(error && /Unable.*no document request/.test(error.message));
     });
   });
 
@@ -960,13 +956,10 @@ describe('GatherRunner', function() {
         url,
         flags: {},
         config: new Config({}),
-      })
-        .then(_ => {
-          assert.ok(false);
-        }, error => {
-          assert.ok(true);
-          assert.ok(/net::ERR_NAME_NOT_RESOLVED/.test(error.message));
-        });
+      }).then(artifacts => {
+        assert.equal(artifacts.LighthouseRunWarnings.length, 1);
+        assert.ok(/unable.*load the page/.test(artifacts.LighthouseRunWarnings[0]));
+      });
     });
 
     it('resolves when domain name can\'t be resolved but is offline', () => {
@@ -1001,13 +994,17 @@ describe('GatherRunner', function() {
     });
   });
 
-  it('issues a lighthouseRunWarnings if running in Headless', () => {
-    const userAgent = 'HeadlessChrome/64.0.3240.0';
+  it('issues a lighthouseRunWarnings if running an old version of Headless', () => {
     const gathererResults = {
       LighthouseRunWarnings: [],
     };
 
+    const userAgent = 'Mozilla/5.0 AppleWebKit/537.36 HeadlessChrome/63.0.3239.0 Safari/537.36';
     GatherRunner.warnOnHeadless(userAgent, gathererResults);
+    assert.strictEqual(gathererResults.LighthouseRunWarnings.length, 0);
+
+    const oldUserAgent = 'Mozilla/5.0 AppleWebKit/537.36 HeadlessChrome/62.0.3239.0 Safari/537.36';
+    GatherRunner.warnOnHeadless(oldUserAgent, gathererResults);
     assert.strictEqual(gathererResults.LighthouseRunWarnings.length, 1);
     const warning = gathererResults.LighthouseRunWarnings[0];
     assert.ok(/Headless Chrome/.test(warning));

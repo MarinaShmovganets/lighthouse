@@ -6,7 +6,6 @@
 'use strict';
 
 const Audit = require('../audit');
-const Sentry = require('../../lib/sentry');
 const Util = require('../../report/v2/renderer/util');
 
 const KB_IN_BYTES = 1024;
@@ -62,7 +61,7 @@ class UnusedBytes extends Audit {
    * Estimates the number of bytes this network record would have consumed on the network based on the
    * uncompressed size (totalBytes), uses the actual transfer size from the network record if applicable.
    *
-   * @param {!WebInspector.NetworkRequest} networkRecord
+   * @param {?WebInspector.NetworkRequest} networkRecord
    * @param {number} totalBytes Uncompressed size of the resource
    * @param {string=} resourceType
    * @param {number=} compressionRatio
@@ -134,15 +133,6 @@ class UnusedBytes extends Audit {
     }
 
     const tableDetails = Audit.makeTableDetails(result.headings, results);
-
-    if (debugString) {
-      // Track these with Sentry since we don't want to fail the entire audit for a single image failure.
-      // Use captureException to preserve the stack and take advantage of Sentry grouping.
-      Sentry.captureException(new Error(debugString), {
-        tags: {audit: this.meta.name},
-        level: 'warning',
-      });
-    }
 
     return {
       debugString,

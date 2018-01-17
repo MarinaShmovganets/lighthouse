@@ -1,6 +1,6 @@
 {
   "name": "__MSG_appName__",
-  "version": "2.5.1",
+  "version": "2.8.0",
   "minimum_chrome_version": "56",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
@@ -12,7 +12,7 @@
   "background": {
     "scripts": [
       "scripts/chromereload.js",
-      "scripts/lighthouse-background.js"
+      "scripts/lighthouse-ext-background.js"
     ],
     "persistent": false
   },

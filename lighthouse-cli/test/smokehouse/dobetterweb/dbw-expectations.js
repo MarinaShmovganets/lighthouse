@@ -37,13 +37,13 @@ module.exports = [
         extendedInfo: {
           value: {
             results: {
-              length: 15,
+              length: 16,
             },
           },
         },
         details: {
           items: {
-            length: 15,
+            length: 16,
           },
         },
       },
@@ -53,12 +53,12 @@ module.exports = [
                      'If they are not used as hyperlinks, consider removing the _blank target.',
         extendedInfo: {
           value: {
-            length: 2,
+            length: 3,
           },
         },
         details: {
           items: {
-            length: 2,
+            length: 3,
           },
         },
       },
@@ -112,16 +112,6 @@ module.exports = [
           },
         },
       },
-      // 'no-old-flexbox': {
-      //   score: false,
-      //   extendedInfo: {
-      //     value: {
-      //       results: {
-      //         length: 7
-      //       }
-      //     }
-      //   }
-      // },
       'no-vulnerable-libraries': {
         score: false,
         details: {
@@ -316,9 +306,6 @@ module.exports = [
       'no-mutation-events': {
         score: true,
       },
-      // 'no-old-flexbox': {
-      //   score: true
-      // },
       'no-websql': {
         score: true,
       },

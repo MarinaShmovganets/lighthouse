@@ -3,6 +3,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
+// @ts-nocheck
 'use strict';
 
 const defaultConfigPath = './default.js';
@@ -139,14 +140,12 @@ function validatePasses(passes, audits, rootPath) {
   });
 }
 
-function validateCategories(categories, audits, auditResults, groups) {
+function validateCategories(categories, audits, groups) {
   if (!categories) {
     return;
   }
 
-  const auditIds = audits ?
-      audits.map(audit => audit.meta.name) :
-      auditResults.map(audit => audit.name);
+  const auditIds = audits.map(audit => audit.meta.name);
   Object.keys(categories).forEach(categoryId => {
     categories[categoryId].audits.forEach((audit, index) => {
       if (!audit.id) {
@@ -318,10 +317,6 @@ class Config {
     this._configDir = configPath ? path.dirname(configPath) : undefined;
 
     this._passes = configJSON.passes || null;
-    this._auditResults = configJSON.auditResults || null;
-    if (this._auditResults && !Array.isArray(this._auditResults)) {
-      throw new Error('config.auditResults must be an array');
-    }
 
     this._audits = Config.requireAudits(configJSON.audits, this._configDir);
     this._artifacts = expandArtifacts(configJSON.artifacts);
@@ -330,7 +325,7 @@ class Config {
 
     // validatePasses must follow after audits are required
     validatePasses(configJSON.passes, this._audits, this._configDir);
-    validateCategories(configJSON.categories, this._audits, this._auditResults, this._groups);
+    validateCategories(configJSON.categories, this._audits, this._groups);
   }
 
   /**
@@ -596,11 +591,6 @@ class Config {
   /** @type {Array<!Audit>} */
   get audits() {
     return this._audits;
-  }
-
-  /** @type {Array<!AuditResult>} */
-  get auditResults() {
-    return this._auditResults;
   }
 
   /** @type {Array<!Artifacts>} */

@@ -51,6 +51,7 @@ class TraceOfTab extends ComputedArtifact {
     // The first TracingStartedInPage in the trace is definitely our renderer thread of interest
     // Beware: the tracingStartedInPage event can appear slightly after a navigationStart
     const startedInPageEvt = keyEvents.find(e => e.name === 'TracingStartedInPage');
+    if (!startedInPageEvt) throw new Error('TracingStartedInPage was not found in the trace');
     // Filter to just events matching the frame ID for sanity
     const frameEvents = keyEvents.filter(e => e.args.frame === startedInPageEvt.args.data.page);
 
@@ -78,7 +79,7 @@ class TraceOfTab extends ComputedArtifact {
     // However, if no candidates were found (a bogus trace, likely), we fail.
     if (!firstMeaningfulPaint) {
       // Track this with Sentry since it's likely a bug we should investigate.
-      Sentry.captureMessage('No firstMeaningfulPaint found, using fallback');
+      Sentry.captureMessage('No firstMeaningfulPaint found, using fallback', {level: 'warning'});
 
       const fmpCand = 'firstMeaningfulPaintCandidate';
       fmpFellBack = true;

@@ -13,6 +13,28 @@ module.exports = [
     initialUrl: 'http://localhost:10200/byte-efficiency/tester.html',
     url: 'http://localhost:10200/byte-efficiency/tester.html',
     audits: {
+      'unminified-css': {
+        score: '<100',
+        extendedInfo: {
+          value: {
+            wastedKb: 17,
+            results: {
+              length: 1,
+            },
+          },
+        },
+      },
+      'unminified-javascript': {
+        score: '<100',
+        extendedInfo: {
+          value: {
+            wastedKb: 14,
+            results: {
+              length: 1,
+            },
+          },
+        },
+      },
       'unused-css-rules': {
         score: '<100',
         extendedInfo: {
@@ -40,9 +62,15 @@ module.exports = [
         score: '<100',
         extendedInfo: {
           value: {
-            results: {
-              length: 3,
-            },
+            results: [
+              {
+                url: /lighthouse-unoptimized.jpg$/,
+              }, {
+                url: /lighthouse-480x320.webp$/,
+              }, {
+                url: /large.svg$/,
+              },
+            ],
           },
         },
       },

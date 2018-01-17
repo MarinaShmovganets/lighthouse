@@ -23,7 +23,6 @@ class SpeedIndexMetric extends Audit {
       description: 'Perceptual Speed Index',
       helpText: 'Speed Index shows how quickly the contents of a page are visibly populated. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/speed-index).',
-      optimalValue: `< ${Util.formatNumber(SCORING_POINT_OF_DIMINISHING_RETURNS)}`,
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces'],
     };
@@ -44,7 +43,7 @@ class SpeedIndexMetric extends Audit {
         throw new Error('Trace unable to find visual progress frames.');
       }
 
-      if (speedline.speedIndex === 0) {
+      if (speedline.perceptualSpeedIndex === 0) {
         throw new Error('Error in Speedline calculating Speed Index (speedIndex of 0).');
       }
 
@@ -72,14 +71,12 @@ class SpeedIndexMetric extends Audit {
           firstVisualChange: speedline.first,
           visuallyReady: visuallyReadyInMs,
           visuallyComplete: speedline.complete,
-          speedIndex: speedline.speedIndex,
           perceptualSpeedIndex: speedline.perceptualSpeedIndex,
         },
         timestamps: {
           firstVisualChange: (speedline.first + speedline.beginning) * 1000,
           visuallyReady: (visuallyReadyInMs + speedline.beginning) * 1000,
           visuallyComplete: (speedline.complete + speedline.beginning) * 1000,
-          speedIndex: (speedline.speedIndex + speedline.beginning) * 1000,
           perceptualSpeedIndex: (speedline.perceptualSpeedIndex + speedline.beginning) * 1000,
         },
         frames: speedline.frames.map(frame => {
@@ -96,7 +93,6 @@ class SpeedIndexMetric extends Audit {
         score,
         rawValue,
         displayValue: Util.formatNumber(rawValue),
-        optimalValue: this.meta.optimalValue,
         extendedInfo: {
           value: extendedInfo,
         },

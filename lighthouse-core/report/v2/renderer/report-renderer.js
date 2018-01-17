@@ -183,12 +183,12 @@ if (typeof module !== 'undefined' && module.exports) {
  *       description: string,
  *       informative: boolean,
  *       manual: boolean,
+ *       notApplicable: boolean,
  *       debugString: string,
  *       displayValue: string,
  *       helpText: string,
  *       score: (number|boolean),
  *       scoringMode: string,
- *       optimalValue: number,
  *       extendedInfo: Object,
  *       details: (!DetailsRenderer.DetailsJSON|undefined)
  *     }

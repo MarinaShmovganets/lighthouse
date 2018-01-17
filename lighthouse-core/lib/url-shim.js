@@ -3,12 +3,12 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
+// @ts-nocheck
+'use strict';
 
 /**
  * URL shim so we keep our code DRY
  */
-
-'use strict';
 
 /* global self */
 
@@ -17,6 +17,9 @@ const Util = require('../report/v2/renderer/util.js');
 // TODO: Add back node require('url').URL parsing when bug is resolved:
 // https://github.com/GoogleChrome/lighthouse/issues/1186
 const URL = (typeof self !== 'undefined' && self.URL) || require('whatwg-url').URL;
+
+URL.URLSearchParams = (typeof self !== 'undefined' && self.URLSearchParams) ||
+    require('whatwg-url').URLSearchParams;
 
 URL.INVALID_URL_DEBUG_STRING =
     'Lighthouse was unable to determine the URL of some script executions. ' +
@@ -104,6 +107,9 @@ URL.elideDataURI = function elideDataURI(url) {
 // As a result, the network URL (chrome://chrome/settings/) doesn't match the final document URL (chrome://settings/).
 function rewriteChromeInternalUrl(url) {
   if (!url || !url.startsWith('chrome://')) return url;
+  // Chrome adds a trailing slash to `chrome://` URLs, but the spec does not.
+  //   https://github.com/GoogleChrome/lighthouse/pull/3941#discussion_r154026009
+  if (url.endsWith('/')) url = url.replace(/\/$/, '');
   return url.replace(/^chrome:\/\/chrome\//, 'chrome://');
 }
 

@@ -86,7 +86,7 @@ gulp.task('chromeManifest', () => {
   const manifestOpts = {
     buildnumber: false,
     background: {
-      target: 'scripts/lighthouse-background.js',
+      target: 'scripts/lighthouse-ext-background.js',
       exclude: [
         'scripts/chromereload.js',
       ],
@@ -109,6 +109,7 @@ function applyBrowserifyTransforms(bundle) {
 gulp.task('browserify-lighthouse', () => {
   return gulp.src([
     'app/src/lighthouse-background.js',
+    'app/src/lighthouse-ext-background.js',
   ], {read: false})
     .pipe(tap(file => {
       let bundle = browserify(file.path); // , {debug: true}); // for sourcemaps
@@ -119,12 +120,13 @@ gulp.task('browserify-lighthouse', () => {
       // Do the additional transform to convert references of devtools-timeline-model
       // to the modified version internal to Lighthouse.
       bundle.transform('./dtm-transform.js', {global: true})
-      .ignore('../lighthouse-core/lib/asset-saver.js') // relative from gulpfile location
       .ignore('source-map')
       .ignore('whatwg-url')
       .ignore('url')
       .ignore('debug/node')
       .ignore('raven')
+      .ignore('mkdirp')
+      .ignore('rimraf')
       .ignore('pako/lib/zlib/inflate.js');
 
       // Expose the audits, gatherers, and computed artifacts so they can be dynamically loaded.
@@ -177,7 +179,9 @@ gulp.task('compilejs', () => {
     // sourceMaps: 'both'
   };
 
-  return gulp.src(['dist/scripts/lighthouse-background.js'])
+  return gulp.src([
+    'dist/scripts/lighthouse-background.js',
+    'dist/scripts/lighthouse-ext-background.js'])
     .pipe(tap(file => {
       const minified = babel.transform(file.contents.toString(), opts).code;
       file.contents = new Buffer(minified);

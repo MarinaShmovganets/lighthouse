@@ -3,6 +3,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
+// @ts-nocheck
 'use strict';
 
 const NetworkRecorder = require('../lib/network-recorder');
@@ -26,7 +27,7 @@ const _uniq = arr => Array.from(new Set(arr));
 
 class Driver {
   static get MAX_WAIT_FOR_FULLY_LOADED() {
-    return 30 * 1000;
+    return 45 * 1000;
   }
 
   /**
@@ -105,9 +106,18 @@ class Driver {
   }
 
   /**
+   * Get the browser WebSocket endpoint for devtools protocol clients like Puppeteer.
+   * Only works with WebSocket connection, not extension or devtools.
+   * @return {!Promise<string>}
+   */
+  wsEndpoint() {
+    return this._connection.wsEndpoint();
+  }
+
+  /**
    * Bind listeners for protocol events
    * @param {!string} eventName
-   * @param {function(...)} cb
+   * @param {function(...args)} cb
    */
   on(eventName, cb) {
     if (this._eventEmitter === null) {
@@ -123,7 +133,7 @@ class Driver {
    * Bind a one-time listener for protocol events. Listener is removed once it
    * has been called.
    * @param {!string} eventName
-   * @param {function(...)} cb
+   * @param {function(...args)} cb
    */
   once(eventName, cb) {
     if (this._eventEmitter === null) {
@@ -137,7 +147,7 @@ class Driver {
   /**
    * Unbind event listeners
    * @param {!string} eventName
-   * @param {function(...)} cb
+   * @param {function(...args)} cb
    */
   off(eventName, cb) {
     if (this._eventEmitter === null) {
@@ -781,17 +791,28 @@ class Driver {
   }
 
   /**
-   * Returns the flattened list of all DOM nodes within the document.
+   * Returns the flattened list of all DOM elements within the document.
    * @param {boolean=} pierce Whether to pierce through shadow trees and iframes.
    *     True by default.
    * @return {!Promise<!Array<!Element>>} The found elements, or [], resolved in a promise
    */
   getElementsInDocument(pierce = true) {
+    return this.getNodesInDocument(pierce)
+      .then(nodes => nodes
+        .filter(node => node.nodeType === 1)
+        .map(node => new Element({nodeId: node.nodeId}, this))
+      );
+  }
+
+  /**
+   * Returns the flattened list of all DOM nodes within the document.
+   * @param {boolean=} pierce Whether to pierce through shadow trees and iframes.
+   *     True by default.
+   * @return {!Promise<!Array<!Node>>} The found nodes, or [], resolved in a promise
+   */
+  getNodesInDocument(pierce = true) {
     return this.sendCommand('DOM.getFlattenedDocument', {depth: -1, pierce})
-      .then(result => {
-        const elements = result.nodes.filter(node => node.nodeType === 1);
-        return elements.map(node => new Element({nodeId: node.nodeId}, this));
-      });
+      .then(result => result.nodes ? result.nodes : []);
   }
 
   /**

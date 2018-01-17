@@ -3,6 +3,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
+// @ts-nocheck
 'use strict';
 
 /**
@@ -24,15 +25,31 @@ module.exports = (function() {
     global.window = global;
   }
 
+  global.Node = {
+    ELEMENT_NODE: 1,
+    TEXT_NODE: 3,
+  };
+
+  global.CSSAgent = {};
+  global.CSSAgent.StyleSheetOrigin = {
+    INJECTED: 'injected',
+    USER_AGENT: 'user-agent',
+    INSPECTOR: 'inspector',
+    REGULAR: 'regular',
+  };
+
+  global.CSS = {};
+  global.CSS.supports = () => true;
+
   // Stash the real one so we can reinstall after DT incorrectly polyfills.
   // See https://github.com/GoogleChrome/lighthouse/issues/73
   const _setImmediate = global.setImmediate;
 
   global.Runtime = global.Runtime || {};
-
-  // Required for devtools-timeline-model
   global.Runtime.experiments = global.Runtime.experiments || {};
-  global.Runtime.experiments.isEnabled = global.Runtime.experiments.isEnabled || (_ => false);
+  // DevTools runtime doesn't know about some experiments that DTM looks for
+  // To avoid exceptions, we assume all experiments are disabled
+  global.Runtime.experiments.isEnabled = (_ => false);
 
   const _queryParam = global.Runtime.queryParam;
   global.Runtime.queryParam = function(arg) {
@@ -281,32 +298,21 @@ module.exports = (function() {
     return fakeTarget.networkManager;
   };
 
-  // Dependencies for CSS parsing.
+  // Dependencies for effective CSS rule calculation.
   require('chrome-devtools-frontend/front_end/common/TextRange.js');
-  const gonzales = require('chrome-devtools-frontend/front_end/gonzales/gonzales-scss.js');
-  require('chrome-devtools-frontend/front_end/gonzales/SCSSParser.js');
+  require('chrome-devtools-frontend/front_end/sdk/CSSMatchedStyles.js');
+  require('chrome-devtools-frontend/front_end/sdk/CSSMedia.js');
+  require('chrome-devtools-frontend/front_end/sdk/CSSMetadata.js');
+  require('chrome-devtools-frontend/front_end/sdk/CSSProperty.js');
+  require('chrome-devtools-frontend/front_end/sdk/CSSRule.js');
+  require('chrome-devtools-frontend/front_end/sdk/CSSStyleDeclaration.js');
 
-  // Mostly taken from from chrome-devtools-frontend/front_end/gonzales/SCSSParser.js.
-  WebInspector.SCSSParser.prototype.parse = function(content) {
-    let ast = null;
-    try {
-      ast = gonzales.parse(content, {syntax: 'css'});
-    } catch (e) {
-      return {error: e};
-    }
-
-    /** @type {!{properties: !Array<!Gonzales.Node>, node: !Gonzales.Node}} */
-    const rootBlock = {
-      properties: [],
-      node: ast,
-    };
-    /** @type {!Array<!{properties: !Array<!Gonzales.Node>, node: !Gonzales.Node}>} */
-    const blocks = [rootBlock];
-    ast.selectors = [];
-    WebInspector.SCSSParser.extractNodes(ast, blocks, rootBlock);
-
-    return ast;
-  };
+  WebInspector.CSSMetadata._generatedProperties = [
+    {
+      name: 'font-size',
+      inherited: true,
+    },
+  ];
 
   // Restore setImmediate, see comment at top.
   global.setImmediate = _setImmediate;
