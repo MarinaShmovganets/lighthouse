@@ -134,7 +134,7 @@ function getFlags(manualArgv) {
 
         return true;
       })
-      .coerce('extra-headers', /** @param {string} arg */ arg => {
+      .coerce('extra-headers', /** @param {string} arg */ (arg) => {
         let extraHeaders = arg;
 
         if (arg.substr(0, 1) !== '{') {
