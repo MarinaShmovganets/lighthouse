@@ -969,20 +969,17 @@ class Driver {
   }
 
   /**
-   * @param {!String} jsonHeaders JSON formatted HTTP Header key/value pairs.
+   * @param {!Object} headers key/value pairs of HTTP Headers.
    * @return {!Promise}
    */
-  setExtraHTTPHeaders(jsonHeaders) {
-    let headers;
-    try {
-      headers = JSON.parse(jsonHeaders);
-    } catch (e) {
-      log.warn('Driver', 'Invalid header JSON');
-      headers = {};
+  setExtraHTTPHeaders(headers) {
+    if (headers) {
+      return this.sendCommand('Network.setExtraHTTPHeaders', {
+        headers,
+      });
     }
-    return this.sendCommand('Network.setExtraHTTPHeaders', {
-      headers,
-    });
+
+    return Promise.resolve({});
   }
 
   clearDataForOrigin(url) {

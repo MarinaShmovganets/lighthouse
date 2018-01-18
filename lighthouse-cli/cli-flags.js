@@ -12,6 +12,7 @@ const yargs = require('yargs');
 const pkg = require('../package.json');
 const Driver = require('../lighthouse-core/gather/driver.js');
 const printer = require('./printer');
+const fs = require('fs');
 
 /**
  * @param {string=} manualArgv
@@ -44,7 +45,10 @@ function getFlags(manualArgv) {
           'Launch Headless Chrome, turn off logging')
       .example(
           'lighthouse <url> --extra-headers "{\\"Cookie\\":\\"monster=blue\\", \\"x-men\\":\\"wolverine\\"}"',
-          'Add additional HTTP Headers to requests')
+          'Stringify\'d JSON HTTP Header key/value pairs to send in requests')
+      .example(
+          'lighthouse <url> --extra-headers=./path/to/file.json',
+          'Path to JSON file of HTTP Header key/value pairs to send in requests')
 
       // List of options
       .group(['verbose', 'quiet'], 'Logging:')
@@ -86,7 +90,7 @@ function getFlags(manualArgv) {
         'port': 'The port to use for the debugging protocol. Use 0 for a random port',
         'max-wait-for-load':
             'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
-        'extra-headers': 'Set extra headers to pass with request',
+        'extra-headers': 'Set extra HTTP Headers to pass with request',
       })
       // set aliases
       .alias({'gather-mode': 'G', 'audit-mode': 'A'})
@@ -112,6 +116,7 @@ function getFlags(manualArgv) {
       .choices('output', printer.getValidOutputOptions())
       // force as an array
       .array('blocked-url-patterns')
+      .string('extra-headers')
 
       // default values
       .default('chrome-flags', '')
@@ -128,6 +133,15 @@ function getFlags(manualArgv) {
         }
 
         return true;
+      })
+      .coerce('extra-headers', /** @param {string} arg */ arg => {
+        let extraHeaders = arg;
+
+        if (arg.substr(0, 1) !== '{') {
+          extraHeaders = fs.readFileSync(arg, 'utf-8');
+        }
+
+        return JSON.parse(extraHeaders);
       })
       .epilogue(
           'For more information on Lighthouse, see https://developers.google.com/web/tools/lighthouse/.')

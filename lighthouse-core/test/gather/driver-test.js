@@ -80,7 +80,7 @@ connection.sendCommand = function(command, params) {
     case 'ServiceWorker.enable':
     case 'ServiceWorker.disable':
     case 'Network.setExtraHTTPHeaders':
-      return Promise.resolve();
+      return Promise.resolve({});
     case 'Tracing.end':
       return Promise.reject(new Error('tracing not started'));
     default:
@@ -241,9 +241,18 @@ describe('Browser Driver', () => {
     });
   });
 
-  it('should send the Network.setExtraHTTPHeaders command', () => {
-    return driverStub.setExtraHTTPHeaders().then(() => {
+  it('should send the Network.setExtraHTTPHeaders command when there are extra-headers', () => {
+    return driverStub.setExtraHTTPHeaders({
+      'Cookie': 'monster',
+      'x-men': 'wolverine',
+    }).then(() => {
       assert.equal(sendCommandParams[0].command, 'Network.setExtraHTTPHeaders');
+    });
+  });
+
+  it('should not send the Network.setExtraHTTPHeaders command when there no extra-headers', () => {
+    return driverStub.setExtraHTTPHeaders().then(() => {
+      assert.equal(sendCommandParams[0], undefined);
     });
   });
 });

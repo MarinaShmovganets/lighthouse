@@ -378,7 +378,7 @@ describe('GatherRunner', function() {
     return GatherRunner.beforePass({
       driver,
       flags: {
-        extraHeaders: JSON.stringify(headers),
+        extraHeaders: headers,
       },
       config: {gatherers: []},
     }).then(() => assert.deepStrictEqual(
@@ -387,11 +387,8 @@ describe('GatherRunner', function() {
       ));
   });
 
-  it('returns an empty object if an un-parsable value is passed in to extraHeaders', () => {
-    let receivedHeaders = null;
-    const driver = getMockedEmulationDriver(null, null, null, null, params => {
-      receivedHeaders = params.headers;
-    });
+  it('returns an empty object if a falsey value is passed in to extraHeaders', () => {
+    const driver = getMockedEmulationDriver(null, null, null, null, params => params.headers);
 
     return GatherRunner.beforePass({
       driver,
@@ -399,23 +396,7 @@ describe('GatherRunner', function() {
         extraHeaders: undefined,
       },
       config: {gatherers: []},
-    }).then(() => assert.deepStrictEqual(
-        receivedHeaders,
-        {}
-      ));
-  });
-
-  it('should not throw when extraHeaders is not given', () => {
-    let receivedHeaders = null;
-    const driver = getMockedEmulationDriver(null, null, null, null, params => {
-      receivedHeaders = params.headers;
-    });
-
-    return GatherRunner.beforePass({
-      driver,
-      flags: {},
-      config: {gatherers: []},
-    }).then(() => assert.deepStrictEqual(receivedHeaders, {}));
+    }).then((returnValue) => assert.deepStrictEqual(returnValue, {}));
   });
 
   it('tells the driver to begin tracing', () => {
