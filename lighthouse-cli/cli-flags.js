@@ -12,7 +12,6 @@ const yargs = require('yargs');
 const pkg = require('../package.json');
 const Driver = require('../lighthouse-core/gather/driver.js');
 const printer = require('./printer');
-const fs = require('fs');
 
 /**
  * @param {string=} manualArgv
@@ -133,15 +132,6 @@ function getFlags(manualArgv) {
         }
 
         return true;
-      })
-      .coerce('extra-headers', /** @param {string} arg */ (arg) => {
-        let extraHeaders = arg;
-
-        if (arg.substr(0, 1) !== '{') {
-          extraHeaders = fs.readFileSync(arg, 'utf-8');
-        }
-
-        return JSON.parse(extraHeaders);
       })
       .epilogue(
           'For more information on Lighthouse, see https://developers.google.com/web/tools/lighthouse/.')

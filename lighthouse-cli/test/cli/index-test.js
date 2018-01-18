@@ -43,7 +43,7 @@ describe('CLI Tests', function() {
 
   describe('extra-headers', () => {
     it('should exit with a error if the path is not valid', () => {
-      const ret = spawnSync('node', [indexPath,
+      const ret = spawnSync('node', [indexPath, 'https://www.google.com',
         '--extra-headers=./fixtures/extra-headers/not-found.json'], {encoding: 'utf8'});
 
       assert.ok(ret.stderr.includes('no such file or directory'));
@@ -51,7 +51,7 @@ describe('CLI Tests', function() {
     });
 
     it('should exit with a error if the file does not contain valid JSON', () => {
-      const ret = spawnSync('node', [indexPath,
+      const ret = spawnSync('node', [indexPath, 'https://www.google.com',
         '--extra-headers',
         path.resolve(__dirname, '../fixtures/extra-headers/invalid.txt')], {encoding: 'utf8'});
 
@@ -60,7 +60,7 @@ describe('CLI Tests', function() {
     });
 
     it('should exit with a error if the passsed in string is not valid JSON', () => {
-      const ret = spawnSync('node', [indexPath,
+      const ret = spawnSync('node', [indexPath, 'https://www.google.com',
         '--extra-headers', '{notjson}'], {encoding: 'utf8'});
 
       assert.ok(ret.stderr.includes('Unexpected token'));
