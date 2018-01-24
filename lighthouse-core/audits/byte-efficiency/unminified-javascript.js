@@ -45,6 +45,10 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
     let totalTokenLength = 0;
 
     const tokens = esprima.tokenize(scriptContent, {tolerant: true});
+    if (!tokens.length && tokens.errors && tokens.errors.length) {
+      throw tokens.errors[0];
+    }
+
     for (const token of tokens) {
       totalTokenLength += token.value.length;
     }
@@ -82,7 +86,6 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
           result.wastedBytes < IGNORE_THRESHOLD_IN_BYTES) continue;
         results.push(result);
       } catch (err) {
-        console.log(scriptContent)
         debugString = `Unable to process ${networkRecord._url}: ${err.message}`;
       }
     }

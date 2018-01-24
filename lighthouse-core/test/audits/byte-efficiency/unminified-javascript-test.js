@@ -41,14 +41,17 @@ describe('Page uses optimized responses', () => {
           `
             const foo = 1
             /Edge\/\d*\.\d*/.exec('foo')
-          `
+          `,
+        '123.4': '#$*% non sense'
       },
     }, [
       {requestId: '123.1', url: 'foo.js', _transferSize: 20 * KB, _resourceType},
       {requestId: '123.2', url: 'other.js', _transferSize: 50 * KB, _resourceType},
-      {requestId: '123.3', url: 'invalid.js', _transferSize: 100 * KB, _resourceType},
+      {requestId: '123.3', url: 'valid-ish.js', _transferSize: 100 * KB, _resourceType},
+      {requestId: '123.4', url: 'invalid.js', _transferSize: 100 * KB, _resourceType},
     ]);
 
+    assert.ok(auditResult.debugString);
     assert.equal(auditResult.results.length, 3);
     assert.equal(auditResult.results[0].url, 'foo.js');
     assert.equal(Math.round(auditResult.results[0].wastedPercent), 57);
@@ -56,7 +59,7 @@ describe('Page uses optimized responses', () => {
     assert.equal(auditResult.results[1].url, 'other.js');
     assert.equal(Math.round(auditResult.results[1].wastedPercent), 53);
     assert.equal(Math.round(auditResult.results[1].wastedBytes / 1024), 27);
-    assert.equal(auditResult.results[2].url, 'invalid.js');
+    assert.equal(auditResult.results[2].url, 'valid-ish.js');
     assert.equal(Math.round(auditResult.results[2].wastedPercent), 72);
     assert.equal(Math.round(auditResult.results[2].wastedBytes / 1024), 72);
   });
