@@ -38,11 +38,12 @@ describe('Page uses optimized responses', () => {
             }
           `,
         '123.3':
+          /* eslint-disable no-useless-escape */
           `
             const foo = 1
             /Edge\/\d*\.\d*/.exec('foo')
           `,
-        '123.4': '#$*% non sense'
+        '123.4': '#$*% non sense',
       },
     }, [
       {requestId: '123.1', url: 'foo.js', _transferSize: 20 * KB, _resourceType},
