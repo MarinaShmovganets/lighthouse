@@ -67,11 +67,11 @@ Configuration:
   --enable-error-reporting       Enables error reporting (prompts once by default, setting this flag will force error reporting to that state).
 
 Output:
-  --output       Reporter for the results, supports multiple values                           [choices: "json", "html", "domhtml"] [default: "html"]
-  --output-path  The file path to output the results. Use 'stdout' to write to stdout.
+  --output       Reporter for the results, supports multiple values                        [choices: "json", "html", "domhtml"] [default: "domhtml"]
+  --output-path  The file path or directory to output the results. Use 'stdout' to write to stdout.
                  If using JSON output, default is stdout.
                  If using HTML output, default is a file in the working directory with a name based on the test URL and date.
-                 If using multiple outputs, --output-path is ignored.
+                 If using multiple outputs, --output-path is used as the prefix to the file names.
                  Example: --output-path=./lighthouse-results.html
   --view         Open HTML report in your browser                                                                                          [boolean]
 

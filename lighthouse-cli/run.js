@@ -7,6 +7,7 @@
 
 /* eslint-disable no-console */
 
+const fs = require('fs');
 const path = require('path');
 
 const Printer = require('./printer');
@@ -102,6 +103,15 @@ function handleError(err) {
 }
 
 /**
+ * @param {string} filename
+ */
+function isDirectory(filename) {
+  const fileExists = filename && fs.existsSync(filename);
+  const fileStats = fileExists && fs.lstatSync(filename);
+  return fileStats && fileStats.isDirectory();
+}
+
+/**
  * @param {!LH.Results} results
  * @param {!Object} artifacts
  * @param {!LH.Flags} flags
@@ -112,10 +122,16 @@ function saveResults(results, artifacts, flags) {
   const cwd = process.cwd();
   // Use the output path as the prefix for all generated files.
   // If no output path is set, generate a file prefix using the URL and date.
-  const configuredPath = !flags.outputPath || flags.outputPath === 'stdout' ?
+  const isOutputPathDirectory = isDirectory(flags.outputPath);
+
+  const configuredPath =
+    !flags.outputPath || flags.outputPath === 'stdout' || isOutputPathDirectory ?
       getFilenamePrefix(results) :
       flags.outputPath.replace(/\.\w{2,4}$/, '');
-  const resolvedPath = path.resolve(cwd, configuredPath);
+
+  const resolvedPath = isOutputPathDirectory ?
+    path.resolve(cwd, flags.outputPath, configuredPath) :
+    path.resolve(cwd, configuredPath);
 
   if (flags.saveArtifacts) {
     assetSaver.saveArtifacts(artifacts, resolvedPath);
@@ -135,7 +151,7 @@ function saveResults(results, artifacts, flags) {
     } else {
       const extension = flags.output === 'domhtml' ? 'html' : flags.output;
       const outputPath =
-          flags.outputPath || `${resolvedPath}.report.${extension}`;
+        (!isOutputPathDirectory && flags.outputPath) || `${resolvedPath}.report.${extension}`;
       return Printer.write(results, flags.output, outputPath).then(_ => {
         if (flags.output === Printer.OutputMode[Printer.OutputMode.html] ||
             flags.output === Printer.OutputMode[Printer.OutputMode.domhtml]) {

@@ -43,6 +43,37 @@ describe('CLI run', function() {
       fs.unlinkSync(filename);
     });
   }).timeout(60000);
+
+  it('runLighthouse can save results to directory', () => {
+    const url = 'chrome://version';
+    const directory = path.join(process.cwd(), 'run.ts.results');
+    fs.mkdirSync(directory);
+    const flags = getFlags(`--output=json --output-path=${directory} ${url}`);
+    return run.runLighthouse(url, flags, fastConfig).then(passedResults => {
+      assert.ok(fs.existsSync(directory));
+
+      const files = fs.readdirSync(directory);
+      assert(files.length, 1);
+
+      const filename = path.resolve(directory, files[0]);
+
+      assert.ok(fs.existsSync(filename));
+      const results = JSON.parse(fs.readFileSync(filename, 'utf-8'));
+      assert.equal(results.audits.viewport.rawValue, false);
+
+      // passed results match saved results
+      assert.strictEqual(results.generatedTime, passedResults.generatedTime);
+      assert.strictEqual(results.url, passedResults.url);
+      assert.strictEqual(results.audits.viewport.rawValue, passedResults.audits.viewport.rawValue);
+      assert.strictEqual(
+          Object.keys(results.audits).length,
+          Object.keys(passedResults.audits).length);
+      assert.deepStrictEqual(results.timing, passedResults.timing);
+
+      fs.unlinkSync(filename);
+      fs.rmdirSync(directory);
+    });
+  }).timeout(60000);
 });
 
 describe('Parsing --chrome-flags', () => {
