@@ -6,9 +6,9 @@ matrix:
     - node_js: "6.9.1"
       if: type IN (push, pull_request)
     - node_js: "8"
-      if: branch = master
+      if: NOT type IN (push, pull_request)
     - node_js: "9"
-      if: branch = master
+      if: NOT type IN (push, pull_request)
 dist: trusty
 cache:
   yarn: true
