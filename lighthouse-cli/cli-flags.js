@@ -42,6 +42,12 @@ function getFlags(manualArgv) {
       .example(
           'lighthouse <url> --quiet --chrome-flags="--headless"',
           'Launch Headless Chrome, turn off logging')
+      .example(
+          'lighthouse <url> --extra-headers "{\\"Cookie\\":\\"monster=blue\\", \\"x-men\\":\\"wolverine\\"}"',
+          'Stringify\'d JSON HTTP Header key/value pairs to send in requests')
+      .example(
+          'lighthouse <url> --extra-headers=./path/to/file.json',
+          'Path to JSON file of HTTP Header key/value pairs to send in requests')
 
       // List of options
       .group(['verbose', 'quiet'], 'Logging:')
@@ -52,9 +58,9 @@ function getFlags(manualArgv) {
 
       .group(
         [
-          'save-assets', 'save-artifacts', 'list-all-audits', 'list-trace-categories',
+          'save-assets', 'list-all-audits', 'list-trace-categories',
           'additional-trace-categories', 'config-path', 'chrome-flags', 'perf', 'port',
-          'hostname', 'max-wait-for-load', 'enable-error-reporting',
+          'hostname', 'max-wait-for-load', 'enable-error-reporting', 'gather-mode', 'audit-mode',
         ],
         'Configuration:')
       .describe({
@@ -66,25 +72,27 @@ function getFlags(manualArgv) {
         'disable-device-emulation': 'Disable Nexus 5X emulation',
         'disable-cpu-throttling': 'Disable CPU throttling',
         'disable-network-throttling': 'Disable network throttling',
+        'gather-mode':
+            'Collect artifacts from a connected browser and save to disk. If audit-mode is not also enabled, the run will quit early.',
+        'audit-mode': 'Process saved artifacts from disk',
         'save-assets': 'Save the trace contents & screenshots to disk',
-        'save-artifacts': 'Save all gathered artifacts to disk',
         'list-all-audits': 'Prints a list of all available audits and exits',
         'list-trace-categories': 'Prints a list of all required trace categories and exits',
         'additional-trace-categories':
             'Additional categories to capture with the trace (comma-delimited).',
         'config-path': 'The path to the config JSON.',
         'chrome-flags':
-            `Custom flags to pass to Chrome (space-delimited). For a full list of flags, see http://peter.sh/experiments/chromium-command-line-switches/.
-
-            Environment variables:
-            CHROME_PATH: Explicit path of intended Chrome binary. If set must point to an executable of a build of Chromium version 54.0 or later. By default, any detected Chrome Canary or Chrome (stable) will be launched.
-            `,
+            `Custom flags to pass to Chrome (space-delimited). For a full list of flags, see http://bit.ly/chrome-flags
+            Additionally, use the CHROME_PATH environment variable to use a specific Chrome binary. Requires Chromium version 54.0 or later. If omitted, any detected Chrome Canary or Chrome stable will be used.`,
         'perf': 'Use a performance-test-only configuration',
         'hostname': 'The hostname to use for the debugging protocol.',
         'port': 'The port to use for the debugging protocol. Use 0 for a random port',
         'max-wait-for-load':
             'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
+        'extra-headers': 'Set extra HTTP Headers to pass with request',
       })
+      // set aliases
+      .alias({'gather-mode': 'G', 'audit-mode': 'A'})
 
       .group(['output', 'output-path', 'view'], 'Output:')
       .describe({
@@ -100,17 +108,19 @@ function getFlags(manualArgv) {
       // boolean values
       .boolean([
         'disable-storage-reset', 'disable-device-emulation', 'disable-cpu-throttling',
-        'disable-network-throttling', 'save-assets', 'save-artifacts', 'list-all-audits',
+        'disable-network-throttling', 'save-assets', 'list-all-audits',
         'list-trace-categories', 'perf', 'view', 'verbose', 'quiet', 'help',
+        'gather-mode', 'audit-mode',
       ])
       .choices('output', printer.getValidOutputOptions())
       // force as an array
       .array('blocked-url-patterns')
+      .string('extra-headers')
 
       // default values
       .default('chrome-flags', '')
       .default('disable-cpu-throttling', false)
-      .default('output', 'domhtml')
+      .default('output', 'html')
       .default('port', 0)
       .default('hostname', 'localhost')
       .default('max-wait-for-load', Driver.MAX_WAIT_FOR_FULLY_LOADED)

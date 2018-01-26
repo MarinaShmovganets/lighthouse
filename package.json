@@ -1,6 +1,6 @@
 {
   "name": "lighthouse",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "Lighthouse",
   "main": "./lighthouse-core/index.js",
   "bin": {
@@ -47,7 +47,8 @@
     "bundlesize": "bundlesize",
     "plots-smoke": "bash plots/test/smoke.sh",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile changelog.md --same-file",
-    "type-check": "tsc -p ."
+    "type-check": "tsc -p .",
+    "mixed-content": "./lighthouse-cli/index.js --chrome-flags='--headless' --config-path=./lighthouse-core/config/mixed-content.js"
   },
   "devDependencies": {
     "@types/configstore": "^2.1.1",
@@ -73,13 +74,14 @@
     "jsdom": "^9.12.0",
     "mocha": "^3.2.0",
     "npm-run-posix-or-windows": "^2.0.2",
+    "sinon": "^2.3.5",
     "typescript": "^2.6.1",
     "zone.js": "^0.7.3"
   },
   "dependencies": {
-    "axe-core": "2.4.1",
+    "axe-core": "2.6.1",
     "chrome-devtools-frontend": "1.0.422034",
-    "chrome-launcher": "0.8.1",
+    "chrome-launcher": "^0.10.2",
     "configstore": "^3.1.1",
     "devtools-timeline-model": "1.1.6",
     "esprima": "^4.0.0",
@@ -87,7 +89,6 @@
     "inquirer": "^3.3.0",
     "jpeg-js": "0.1.2",
     "js-library-detector": "^4.3.1",
-    "json-stringify-safe": "5.0.1",
     "lighthouse-logger": "^1.0.0",
     "metaviewport-parser": "0.1.0",
     "mkdirp": "0.5.1",

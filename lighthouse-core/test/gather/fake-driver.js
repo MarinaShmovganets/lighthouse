@@ -44,6 +44,9 @@ module.exports = {
   cacheNatives() {
     return Promise.resolve();
   },
+  evaluateAsync() {
+    return Promise.resolve({});
+  },
   registerPerformanceObserver() {
     return Promise.resolve();
   },
@@ -65,6 +68,9 @@ module.exports = {
     });
   },
   blockUrlPatterns() {
+    return Promise.resolve();
+  },
+  setExtraHTTPHeaders() {
     return Promise.resolve();
   },
 };
