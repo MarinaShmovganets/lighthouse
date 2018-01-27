@@ -8,94 +8,84 @@
   * @fileoverview Determines optimized gzip/br/deflate filesizes for all responses by
   *   checking the content-encoding header.
   */
-'use strict';
+  'use strict';
 
-const Gatherer = require('../gatherer');
-const gzip = require('zlib').gzip;
-
-const compressionTypes = ['gzip', 'br', 'deflate'];
-const mediaTypes = ['mp3', 'wav', 'wma', 'webm', 'jpg', 'gif', 'png', 'webp',
-  'svg', 'mkv', 'flv', 'gif', 'avi', 'mov', 'mpg', '3gp', 'mpeg', 'avi', 'wmv'];
-
-const CHROME_EXTENSION_PROTOCOL = 'chrome-extension:';
-
-class ResponseCompression extends Gatherer {
-  /**
+  const Gatherer = require('../gatherer');
+  const gzip = require('zlib').gzip;
+  
+  const compressionTypes = ['gzip', 'br', 'deflate'];
+  const binaryMimeTypes = ['image', 'audio', 'video'];
+  const CHROME_EXTENSION_PROTOCOL = 'chrome-extension:';
+  
+  class ResponseCompression extends Gatherer {
+    /**
      * @param {!NetworkRecords} networkRecords
      * @return {!Array<{url: string, isBase64DataUri: boolean, mimeType: string, resourceSize: number}>}
      */
-  static filterUnoptimizedResponses(networkRecords) {
-    const unoptimizedResponses = [];
-
-    networkRecords.forEach(record => {
-      const isTextBasedResource = record.resourceType() && record.resourceType().isTextType();
-      const url = record.url.toLowerCase();
-      let isMediaResource;
-
-      for (let i = 0; i < mediaTypes.length; i+=1) {
-        if (url.endsWith(mediaTypes[i])) {
-          isMediaResource = true;
-          break;
+    static filterUnoptimizedResponses(networkRecords) {
+      const unoptimizedResponses = [];
+  
+      networkRecords.forEach(record => {
+        const isBinaryResource = record.mimeType && binaryMimeTypes.some(mimeType => record.mimeType.startsWith(mimeType));
+        const isTextBasedResource = !isBinaryResource && record.resourceType() && record.resourceType().isTextType();
+        const isChromeExtensionResource = record.url.startsWith(CHROME_EXTENSION_PROTOCOL);
+  
+        if (!isTextBasedResource || !record.resourceSize || !record.finished ||
+          isChromeExtensionResource || !record.transferSize || record.statusCode === 304) {
+          return;
         }
-      }
-      const isChromeExtensionResource = record.url.startsWith(CHROME_EXTENSION_PROTOCOL);
-
-      if (!isTextBasedResource || !record.resourceSize || !record.finished ||
-          isChromeExtensionResource || !record.transferSize || record.statusCode === 304
-          ||isMediaResource) {
-        return;
-      }
-
-      const isContentEncoded = record.responseHeaders.find(header =>
+  
+        const isContentEncoded = record.responseHeaders.find(header =>
           header.name.toLowerCase() === 'content-encoding' &&
           compressionTypes.includes(header.value)
-      );
-
-      if (!isContentEncoded) {
-        unoptimizedResponses.push({
-          requestId: record.requestId,
-          url: record.url,
-          mimeType: record.mimeType,
-          transferSize: record.transferSize,
-          resourceSize: record.resourceSize,
-        });
-      }
-    });
-
-    return unoptimizedResponses;
-  }
-
-  afterPass(options, traceData) {
-    const networkRecords = traceData.networkRecords;
-    const textRecords = ResponseCompression.filterUnoptimizedResponses(networkRecords);
-
-    const driver = options.driver;
-    return Promise.all(textRecords.map(record => {
-      const contentPromise = driver.getRequestContent(record.requestId);
-      const timeoutPromise = new Promise(resolve => setTimeout(resolve, 3000));
-      return Promise.race([contentPromise, timeoutPromise]).then(content => {
-        // if we don't have any content gzipSize is set to 0
-        if (!content) {
-          record.gzipSize = 0;
-
-          return record;
+        );
+  
+        if (!isContentEncoded) {
+          unoptimizedResponses.push({
+            requestId: record.requestId,
+            url: record.url,
+            mimeType: record.mimeType,
+            transferSize: record.transferSize,
+            resourceSize: record.resourceSize,
+          });
         }
-
-        return new Promise((resolve, reject) => {
-          return gzip(content, (err, res) => {
-            if (err) {
-              return reject(err);
-            }
-
-            // get gzip size
-            record.gzipSize = Buffer.byteLength(res, 'utf8');
-
-            resolve(record);
+      });
+  
+      return unoptimizedResponses;
+    }
+  
+    afterPass(options, traceData) {
+      const networkRecords = traceData.networkRecords;
+      const textRecords = ResponseCompression.filterUnoptimizedResponses(networkRecords);
+  
+      const driver = options.driver;
+      return Promise.all(textRecords.map(record => {
+        const contentPromise = driver.getRequestContent(record.requestId);
+        const timeoutPromise = new Promise(resolve => setTimeout(resolve, 3000));
+        return Promise.race([contentPromise, timeoutPromise]).then(content => {
+          // if we don't have any content gzipSize is set to 0
+          if (!content) {
+            record.gzipSize = 0;
+  
+            return record;
+          }
+  
+          return new Promise((resolve, reject) => {
+            return gzip(content, (err, res) => {
+              if (err) {
+                return reject(err);
+              }
+  
+              // get gzip size
+              record.gzipSize = Buffer.byteLength(res, 'utf8');
+  
+              resolve(record);
+            });
           });
         });
-      });
-    }));
+      }));
+    }
   }
-}
-
-module.exports = ResponseCompression;
+  
+  module.exports = ResponseCompression;
+  
