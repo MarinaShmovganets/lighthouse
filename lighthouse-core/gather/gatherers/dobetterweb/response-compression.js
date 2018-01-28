@@ -19,9 +19,9 @@ const CHROME_EXTENSION_PROTOCOL = 'chrome-extension:';
 
 class ResponseCompression extends Gatherer {
   /**
-     * @param {!NetworkRecords} networkRecords
-     * @return {!Array<{url: string, isBase64DataUri: boolean, mimeType: string, resourceSize: number}>}
-     */
+   * @param {!NetworkRecords} networkRecords
+   * @return {!Array<{url: string, isBase64DataUri: boolean, mimeType: string, resourceSize: number}>}
+   */
   static filterUnoptimizedResponses(networkRecords) {
     const unoptimizedResponses = [];
 
@@ -33,13 +33,13 @@ class ResponseCompression extends Gatherer {
       const isChromeExtensionResource = record.url.startsWith(CHROME_EXTENSION_PROTOCOL);
 
       if (!isTextBasedResource || !record.resourceSize || !record.finished ||
-          isChromeExtensionResource || !record.transferSize || record.statusCode === 304) {
+        isChromeExtensionResource || !record.transferSize || record.statusCode === 304) {
         return;
       }
 
       const isContentEncoded = record.responseHeaders.find(header =>
-          header.name.toLowerCase() === 'content-encoding' &&
-          compressionTypes.includes(header.value)
+        header.name.toLowerCase() === 'content-encoding' &&
+        compressionTypes.includes(header.value)
       );
 
       if (!isContentEncoded) {
