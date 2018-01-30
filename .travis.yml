@@ -4,11 +4,10 @@ matrix:
   fast_finish: true
   include:
     - node_js: "6.9.1"
-      if: type IN (push, pull_request)
     - node_js: "8"
-      if: NOT type IN (push, pull_request)
+      if: branch = master
     - node_js: "9"
-      if: NOT type IN (push, pull_request)
+      if: branch = master
 dist: trusty
 cache:
   yarn: true
