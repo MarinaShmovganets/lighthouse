@@ -62,7 +62,7 @@ class UsesRelPreloadAudit extends Audit {
       artifacts.requestMainResource(devtoolsLogs),
     ]).then(([critChains, mainResource]) => {
       const results = [];
-      let minWasted = Number.POSITIVE_INFINITY;
+      let minWasted = 0;
       // get all critical requests 2 + mainResourceIndex levels deep
       const mainResourceIndex = mainResource.redirects ? mainResource.redirects.length : 0;
 
@@ -75,7 +75,7 @@ class UsesRelPreloadAudit extends Audit {
           const wastedMs = (request._startTime - mainResource._endTime) * 1000;
 
           if (wastedMs >= THRESHOLD_IN_MS) {
-            minWasted = Math.min(wastedMs, minWasted);
+            minWasted = minWasted ? Math.min(wastedMs, minWasted) : wastedMs;
             results.push({
               url: request.url,
               wastedMs: Util.formatMilliseconds(wastedMs),
