@@ -265,10 +265,8 @@ const cli = yargs
     'config-path': 'The path to the config JSON file',
     'expectations-path': 'The path to the expected audit results file',
   })
-  .array('save-assets-path')
   .default('config-path', DEFAULT_CONFIG_PATH)
   .default('expectations-path', DEFAULT_EXPECTATIONS_PATH)
-  .default('save-assets-path', [])
   .argv;
 
 const configPath = resolveLocalOrCwd(cli['config-path']);
@@ -280,7 +278,7 @@ let passingCount = 0;
 let failingCount = 0;
 expectations.forEach((expected, index) => {
   console.log(`Checking '${expected.initialUrl}'...`);
-  const results = runLighthouse(expected.initialUrl, configPath, cli['save-assets-path'][index]);
+  const results = runLighthouse(expected.initialUrl, configPath);
   const collated = collateResults(results, expected);
   const counts = report(collated);
   passingCount += counts.passed;
