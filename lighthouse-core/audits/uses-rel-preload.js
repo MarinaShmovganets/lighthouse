@@ -62,7 +62,7 @@ class UsesRelPreloadAudit extends Audit {
       artifacts.requestMainResource(devtoolsLogs),
     ]).then(([critChains, mainResource]) => {
       const results = [];
-      let minWasted = 0;
+      let maxWasted = 0;
       // get all critical requests 2 + mainResourceIndex levels deep
       const mainResourceIndex = mainResource.redirects ? mainResource.redirects.length : 0;
 
@@ -72,10 +72,10 @@ class UsesRelPreloadAudit extends Audit {
         const networkRecord = request;
         if (!networkRecord._isLinkPreload && networkRecord.protocol !== 'data') {
           // calculate time between mainresource.endTime and resource start time
-          const wastedMs = (request._startTime - mainResource._endTime) * 1000;
+          const wastedMs = Math.min(request._startTime - mainResource._endTime, request._endTime - request._startTime) * 1000;
 
           if (wastedMs >= THRESHOLD_IN_MS) {
-            minWasted = minWasted ? Math.min(wastedMs, minWasted) : wastedMs;
+            maxWasted = Math.max(wastedMs, maxWasted);
             results.push({
               url: request.url,
               wastedMs: Util.formatMilliseconds(wastedMs),
@@ -94,9 +94,9 @@ class UsesRelPreloadAudit extends Audit {
       const details = Audit.makeTableDetails(headings, results);
 
       return {
-        score: UnusedBytes.scoreForWastedMs(minWasted),
-        rawValue: minWasted,
-        displayValue: Util.formatMilliseconds(minWasted),
+        score: UnusedBytes.scoreForWastedMs(maxWasted),
+        rawValue: maxWasted,
+        displayValue: Util.formatMilliseconds(maxWasted),
         extendedInfo: {
           value: results,
         },
