@@ -14,7 +14,7 @@ module.exports = [
     url: 'http://localhost:10200/preload.html',
     audits: {
       'speed-index-metric': {
-        score: '>=90',
+        score: '>=80',
         extendedInfo: {
           value: {
             timings: {},
