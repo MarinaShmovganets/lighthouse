@@ -20,6 +20,7 @@ class UsesRelPreloadAudit extends Audit {
       category: 'Performance',
       name: 'uses-rel-preload',
       description: 'Preload key requests',
+      informative: true,
       helpText: 'Consider using <link rel=preload> to prioritize fetching late-discovered ' +
         'resources sooner [Learn more](https://developers.google.com/web/updates/2016/03/link-rel-preload).',
       requiredArtifacts: ['devtoolsLogs', 'traces'],
@@ -61,7 +62,7 @@ class UsesRelPreloadAudit extends Audit {
       artifacts.requestMainResource(devtoolsLogs),
     ]).then(([critChains, mainResource]) => {
       const results = [];
-      let maxWasted = 0;
+      let minWasted = Number.POSITIVE_INFINITY;
       // get all critical requests 2 + mainResourceIndex levels deep
       const mainResourceIndex = mainResource.redirects ? mainResource.redirects.length : 0;
 
@@ -74,9 +75,9 @@ class UsesRelPreloadAudit extends Audit {
           const wastedMs = (request._startTime - mainResource._endTime) * 1000;
 
           if (wastedMs >= THRESHOLD_IN_MS) {
-            maxWasted = Math.max(wastedMs, maxWasted);
+            minWasted = Math.min(wastedMs, minWasted);
             results.push({
-              url: request._url,
+              url: request.url,
               wastedMs: Util.formatMilliseconds(wastedMs),
             });
           }
@@ -93,9 +94,9 @@ class UsesRelPreloadAudit extends Audit {
       const details = Audit.makeTableDetails(headings, results);
 
       return {
-        score: UnusedBytes.scoreForWastedMs(maxWasted),
-        rawValue: maxWasted,
-        displayValue: Util.formatMilliseconds(maxWasted),
+        score: UnusedBytes.scoreForWastedMs(minWasted),
+        rawValue: minWasted,
+        displayValue: Util.formatMilliseconds(minWasted),
         extendedInfo: {
           value: results,
         },

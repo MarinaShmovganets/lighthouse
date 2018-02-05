@@ -95,7 +95,7 @@ class CriticalRequestChains extends Audit {
 
       const request = opts.node.request;
       chain.request = {
-        url: request._url,
+        url: request.url,
         startTime: request.startTime,
         endTime: request.endTime,
         responseReceivedTime: request.responseReceivedTime,

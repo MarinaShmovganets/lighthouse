@@ -36,12 +36,6 @@ module.exports = [
         // Can be flaky, so test float rawValue instead of boolean score
         rawValue: '<1000',
       },
-    },
-  },
-  {
-    initialUrl: 'http://localhost:10200/preload.html',
-    url: 'http://localhost:10200/preload.html',
-    audits: {
       'uses-rel-preload': {
         score: '<100',
         rawValue: '>500',
