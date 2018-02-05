@@ -137,11 +137,10 @@ class Fonts extends Gatherer {
   }
 
   afterPass({driver}) {
+    const args = JSON.stringify(fontFaceDescriptors);
     return Promise.all(
       [
-        driver.evaluateAsync(`(()=>{`
-          + `const args = ${JSON.stringify(fontFaceDescriptors)};`
-          + `return (${getAllLoadedFonts.toString()})(args);})()`),
+        driver.evaluateAsync(`(${getAllLoadedFonts.toString()})(${args})`),
         driver.evaluateAsync(`(${getFontFaceFromStylesheets.toString()})()`),
       ]
     ).then(([loadedFonts, fontFaces]) => {
