@@ -211,7 +211,7 @@ class GatherRunner {
     const blankPage = options.config.blankPage;
 
     // On the very first pass we're already on blank
-    const skipLoadBlank = options.config.passName === 'defaultPass';
+    const skipLoadBlank = options.passIndex === 0;
     let pass = skipLoadBlank
       ? Promise.resolve()
       : GatherRunner.loadBlank(options.driver, blankPage);
@@ -427,7 +427,7 @@ class GatherRunner {
         // If the main document redirects, we'll update this to keep track
         let urlAfterRedirects;
         return passes.reduce((chain, config, passIndex) => {
-          const runOptions = Object.assign({}, options, {config});
+          const runOptions = Object.assign({}, options, {config}, {passIndex});
           return chain
             .then(_ => driver.setThrottling(options.flags, config))
             .then(_ => GatherRunner.beforePass(runOptions, gathererResults))
