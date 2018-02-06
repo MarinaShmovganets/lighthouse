@@ -276,7 +276,7 @@ const expectations = require(resolveLocalOrCwd(cli['expectations-path']));
 // reporting result.
 let passingCount = 0;
 let failingCount = 0;
-expectations.forEach((expected) => {
+expectations.forEach(expected => {
   console.log(`Checking '${expected.initialUrl}'...`);
   const results = runLighthouse(expected.initialUrl, configPath);
   const collated = collateResults(results, expected);
