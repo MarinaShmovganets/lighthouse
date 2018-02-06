@@ -72,7 +72,8 @@ class UsesRelPreloadAudit extends Audit {
         const networkRecord = request;
         if (!networkRecord._isLinkPreload && networkRecord.protocol !== 'data') {
           // calculate time between mainresource.endTime and resource start time
-          const wastedMs = Math.min(request._startTime - mainResource._endTime, request._endTime - request._startTime) * 1000;
+          const wastedMs = Math.min(request._startTime - mainResource._endTime,
+            request._endTime - request._startTime) * 1000;
 
           if (wastedMs >= THRESHOLD_IN_MS) {
             maxWasted = Math.max(wastedMs, maxWasted);

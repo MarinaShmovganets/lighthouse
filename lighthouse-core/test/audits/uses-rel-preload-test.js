@@ -44,6 +44,7 @@ describe('Performance: uses-rel-preload audit', () => {
       {
         requestId: '3',
         _startTime: 10,
+        _endTime: 19,
         _isLinkPreload: false,
         _url: 'http://www.example.com/script.js',
       },
