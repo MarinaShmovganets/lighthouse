@@ -26,10 +26,11 @@ class ResponseCompression extends Gatherer {
     const unoptimizedResponses = [];
 
     networkRecords.forEach(record => {
-      const isBinaryResource = record.mimeType &&
-      binaryMimeTypes.some(mimeType => record.mimeType.startsWith(mimeType));
-      const isTextBasedResource = !isBinaryResource && record.resourceType() &&
-      record.resourceType().isTextType();
+      const mimeType = record.mimeType;
+      const resourceType = record.resourceType();
+
+      const isBinaryResource = mimeType && binaryMimeTypes.some(type => mimeType.startsWith(type));
+      const isTextBasedResource = !isBinaryResource && resourceType && resourceType.isTextType();
       const isChromeExtensionResource = record.url.startsWith(CHROME_EXTENSION_PROTOCOL);
 
       if (!isTextBasedResource || !record.resourceSize || !record.finished ||
