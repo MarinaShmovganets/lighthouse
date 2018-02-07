@@ -18,6 +18,7 @@ export interface Flags {
   logLevel: string;
   hostname: string;
   blockedUrlPatterns: string[];
+  extraHeaders: string;
   enableErrorReporting: boolean;
   listAllAudits: boolean;
   listTraceCategories: boolean;
@@ -79,5 +80,6 @@ export interface LaunchedChrome {
 }
 
 export interface LighthouseError extends Error {
-  code?: string
+  code?: string;
+  friendlyMessage?: string;
 }

@@ -254,7 +254,10 @@ class Runner {
 
       Sentry.captureException(err, {tags: {audit: audit.meta.name}, level: 'error'});
       // Non-fatal error become error audit result.
-      return Audit.generateErrorAuditResult(audit, 'Audit error: ' + err.message);
+      const debugString = err.friendlyMessage ?
+        `${err.friendlyMessage} (${err.message})` :
+        `Audit error: ${err.message}`;
+      return Audit.generateErrorAuditResult(audit, debugString);
     }).then(result => {
       log.verbose('statusEnd', status);
       return result;
@@ -400,7 +403,11 @@ class Runner {
       },
     ];
 
-    return {environment, blockedUrlPatterns: flags.blockedUrlPatterns || []};
+    return {
+      environment,
+      blockedUrlPatterns: flags.blockedUrlPatterns || [],
+      extraHeaders: flags.extraHeaders || {},
+    };
   }
 }
 

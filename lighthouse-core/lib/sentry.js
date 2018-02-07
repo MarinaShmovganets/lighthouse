@@ -21,10 +21,15 @@ const sentryApi = {
 };
 
 const SAMPLED_ERRORS = [
-  {pattern: /Unable to load/, rate: 0.1},
+  // Error code based sampling
+  {pattern: /DOCUMENT_REQUEST$/, rate: 0.1},
+  {pattern: /(IDLE_PERIOD|FMP_TOO_LATE)/, rate: 0.1},
+  {pattern: /^NO_.*/, rate: 0.1},
+  // Message based sampling
   {pattern: /Failed to decode/, rate: 0.1},
-  {pattern: /No resource with given id/, rate: 0.01},
-  {pattern: /No node with given id/, rate: 0.01},
+  {pattern: /All image optimizations failed/, rate: 0.1},
+  {pattern: /No.*resource with given/, rate: 0.01},
+  {pattern: /No.*node with given id/, rate: 0.01},
 ];
 
 /**
