@@ -5,15 +5,24 @@
  */
 'use strict';
 
+const isEqual = require('lodash.isequal');
+
 /**
  * @fileoverview This class is designed to allow maps with arbitrary equality functions.
  * It is not meant to be performant and is well-suited to use cases where the number of entries is
  * likely to be small (like computed artifacts).
  */
-module.exports = class CustomMap {
-  constructor(equalsFn) {
-    this._equalsFn = equalsFn;
+module.exports = class CacheMap {
+  constructor() {
+    this._equalsFn = (a, b) => a === b;
     this._entries = [];
+  }
+
+  /**
+   * @param {function():boolean} equalsFn
+   */
+  setEqualsFn(equalsFn) {
+    this._equalsFn = equalsFn;
   }
 
   has(key) {
@@ -39,23 +48,15 @@ module.exports = class CustomMap {
     return -1;
   }
 
-  static deepEquals(objA, objB, maxDepth = 5) {
-    if (objA === objB) return true;
-    if (maxDepth < 0) return false;
-    if (typeof objA !== typeof objB) return false;
-    if (typeof objA !== 'object') return false;
-    if (Boolean(objA) !== Boolean(objB)) return false;
-    if (!objA && !objB) return true;
-
-    if (Array.isArray(objA)) {
-      if (!Array.isArray(objB) || objA.length !== objB.length) return false;
-      return !objA.find((itemA, index) => !CustomMap.deepEquals(itemA, objB[index], maxDepth - 1));
-    }
-
-    const keysA = Object.keys(objA);
-    const keysB = Object.keys(objB);
-    if (!CustomMap.deepEquals(keysA, keysB)) return false;
-
-    return !keysA.find(key => !CustomMap.deepEquals(objA[key], objB[key], maxDepth - 1));
+  /**
+   * Determines whether two objects are deeply equal. Defers to lodash isEqual, but is kept here for
+   * easy usage by consumers.
+   * See https://lodash.com/docs/4.17.5#isEqual.
+   * @param {*} objA
+   * @param {*} objB
+   * @return {boolean}
+   */
+  static deepEquals(objA, objB) {
+    return isEqual(objA, objB);
   }
 };
