@@ -117,6 +117,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
 
     return artifacts.requestFirstInteractive(trace).then(firstInteractive => {
       const ttiTimestamp = firstInteractive.timestamp / 1000000;
+      console.error(ttiTimestamp, resultsMap)
       const results = Array.from(resultsMap.values()).filter(item => {
         const isWasteful = item.wastedBytes > IGNORE_THRESHOLD_IN_BYTES &&
             item.wastedPercent > IGNORE_THRESHOLD_IN_PERCENT;
