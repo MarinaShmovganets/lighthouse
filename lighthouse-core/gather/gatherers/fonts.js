@@ -146,7 +146,10 @@ class Fonts extends Gatherer {
     ).then(([loadedFonts, fontFaces]) => {
       return loadedFonts.map(fontFace => {
         const fontFaceItem = this._findSameFontFamily(fontFace, fontFaces);
-        fontFace.src = fontFaceItem.src || [];
+        fontFace.src = [];
+        if (fontFaceItem) {
+          fontFace.src = fontFaceItem.src;
+        }
 
         return fontFace;
       });
