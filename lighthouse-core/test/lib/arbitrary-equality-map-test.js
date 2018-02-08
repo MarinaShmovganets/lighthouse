@@ -8,12 +8,12 @@
 /* eslint-env mocha */
 
 const assert = require('assert');
-const CacheMap = require('../../lib/cache-map.js');
+const ArbitraryEqualityMap = require('../../lib/arbitrary-equality-map.js');
 const trace = require('../fixtures/traces/progressive-app-m60.json');
 
-describe('CacheMap', () => {
+describe('ArbitraryEqualityMap', () => {
   it('creates a map', () => {
-    const map = new CacheMap();
+    const map = new ArbitraryEqualityMap();
     assert.equal(map.has(1), false);
     assert.equal(map.get(1), undefined);
     map.set(1, 2);
@@ -23,8 +23,8 @@ describe('CacheMap', () => {
 
   it('uses custom equality function', () => {
     // create a map which stores 1 value per type
-    const map = new CacheMap();
-    map.setEqualsFn((a, b) => typeof a === typeof b);
+    const map = new ArbitraryEqualityMap();
+    map.setEqualityFn((a, b) => typeof a === typeof b);
     map.set(true, 1);
     map.set('foo', 2);
     map.set({}, 3);
@@ -38,8 +38,8 @@ describe('CacheMap', () => {
   });
 
   it('is not hella slow', () => {
-    const map = new CacheMap();
-    map.setEqualsFn(CacheMap.deepEquals);
+    const map = new ArbitraryEqualityMap();
+    map.setEqualityFn(ArbitraryEqualityMap.deepEquals);
     for (let i = 0; i < 100; i++) {
       map.set({i}, i);
     }
@@ -51,8 +51,8 @@ describe('CacheMap', () => {
   }).timeout(1000);
 
   it('is fast for expected usage', () => {
-    const map = new CacheMap();
-    map.setEqualsFn(CacheMap.deepEquals);
+    const map = new ArbitraryEqualityMap();
+    map.setEqualityFn(ArbitraryEqualityMap.deepEquals);
     map.set([trace, {x: 0}], 'foo');
     map.set([trace, {x: 1}], 'bar');
 

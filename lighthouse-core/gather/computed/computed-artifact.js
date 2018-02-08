@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const CacheMap = require('../../lib/cache-map');
+const ArbitraryEqualityMap = require('../../lib/arbitrary-equality-map');
 
 class ComputedArtifact {
   /**
@@ -13,8 +13,8 @@ class ComputedArtifact {
    */
   constructor(allComputedArtifacts) {
     /** @private {!Map} */
-    this._cache = new CacheMap();
-    this._cache.setEqualsFn(CacheMap.deepEquals);
+    this._cache = new ArbitraryEqualityMap();
+    this._cache.setEqualityFn(ArbitraryEqualityMap.deepEquals);
 
     /** @private {!ComputedArtifacts} */
     this._allComputedArtifacts = allComputedArtifacts;

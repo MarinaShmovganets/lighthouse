@@ -12,7 +12,7 @@ const isEqual = require('lodash.isequal');
  * It is not meant to be performant and is well-suited to use cases where the number of entries is
  * likely to be small (like computed artifacts).
  */
-module.exports = class CacheMap {
+module.exports = class ArbitraryEqualityMap {
   constructor() {
     this._equalsFn = (a, b) => a === b;
     this._entries = [];
@@ -21,7 +21,7 @@ module.exports = class CacheMap {
   /**
    * @param {function():boolean} equalsFn
    */
-  setEqualsFn(equalsFn) {
+  setEqualityFn(equalsFn) {
     this._equalsFn = equalsFn;
   }
 
