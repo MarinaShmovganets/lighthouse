@@ -26,7 +26,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
   static get meta() {
     return {
       name: 'offscreen-images',
-      description: 'Non-visible images',
+      description: 'Offscreen images',
       informative: true,
       helpText: 'Consider lazy-loading offscreen and hidden images to improve page load speed ' +
         'and time to interactive. ' +
