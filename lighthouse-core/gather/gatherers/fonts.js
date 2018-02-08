@@ -120,7 +120,7 @@ function getFontFaceFromStylesheets() {
         promises.push(Promise.resolve(getSheetsFontFaces(stylesheet)));
       }
     } catch (err) {
-      promises.push(Promise.resolve({err: {message: err.message, stack: err.stack}}));
+      promises.push({err: {message: err.message, stack: err.stack}});
     }
   }
   // Flatten results
@@ -149,7 +149,7 @@ class Fonts extends Gatherer {
         if (fontFace.err) {
           const err = new Error(fontFace.err.message);
           err.stack = fontFace.err.stack;
-          Sentry.captureException(err, {level: 'warning'});
+          Sentry.captureException(err, {tags: {gatherer: 'Fonts'}, level: 'warning'});
           return null;
         }
 
