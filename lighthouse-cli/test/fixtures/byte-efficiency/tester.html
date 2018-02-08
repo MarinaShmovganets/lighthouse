@@ -32,20 +32,17 @@ function generateInlineStyleWithSize(sizeInBytes, firstContent = '', used = fals
   document.head.appendChild(style);
 }
 
-function stall(timeInMs) {
+// Add a long task to delay FI
+setTimeout(() => {
   const start = Date.now();
-  while (Date.now() < start + timeInMs) ;
-}
-
-// Add a long tasks to delay FI
-setTimeout(() => stall(100), 4000);
-setTimeout(() => stall(100), 7000);
+  while (Date.now() < start + 100) ;
+}, 4000);
 
 // Lazily load the image
 setTimeout(() => {
   const template = document.getElementById('lazily-loaded-image');
   document.body.appendChild(template.content.cloneNode(true));
-}, 8000);
+}, 7000);
 </script>
 <style>
   .onscreen {
