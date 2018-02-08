@@ -166,6 +166,13 @@ class TraceProcessor {
         duration: event.dur / 1000,
       });
     }
+
+    // There should *always* be at least one top level event, having 0 typically means something is
+    // drastically wrong with the trace and would should just give up early and loudly.
+    if (!topLevelEvents.length) {
+      throw new Error('Could not find any top level events');
+    }
+
     return topLevelEvents;
   }
 
