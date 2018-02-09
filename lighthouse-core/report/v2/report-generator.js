@@ -6,6 +6,7 @@
 'use strict';
 
 const fs = require('fs');
+const uglifyEs = require('uglify-es');
 
 const REPORT_TEMPLATE = fs.readFileSync(__dirname + '/report-template.html', 'utf8');
 const REPORT_JAVASCRIPT = [
@@ -27,7 +28,7 @@ class ReportGeneratorV2 {
    * @return {string}
    */
   static get reportJs() {
-    return REPORT_JAVASCRIPT;
+    return uglifyEs.minify(REPORT_JAVASCRIPT).code;
   }
 
   /**
