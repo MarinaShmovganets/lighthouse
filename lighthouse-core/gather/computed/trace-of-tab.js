@@ -51,8 +51,17 @@ class TraceOfTab extends ComputedArtifact {
 
     // The first TracingStartedInPage in the trace is definitely our renderer thread of interest
     // Beware: the tracingStartedInPage event can appear slightly after a navigationStart
-    const startedInPageEvt = keyEvents.find(e => e.name === 'TracingStartedInPage');
+    const startedInPageEvt = keyEvents.find(e => {
+      if (e.name !== 'TracingStartedInPage') return false;
+      // In the extension, the first TracingStartedInPage is on chrome-extension://…/logo-page.html
+      // We'll await the next, which is the page/frame of the target URL
+      const url = e.args.data && e.args.data.frames && e.args.data.frames[0] &&
+          e.args.data.frames[0].url;
+      return !(url.startsWith('chrome-extension:') || url.startsWith('data:'));
+    });
+
     if (!startedInPageEvt) throw new LHError(LHError.errors.NO_TRACING_STARTED);
+
     // Filter to just events matching the frame ID for sanity
     const frameEvents = keyEvents.filter(e => e.args.frame === startedInPageEvt.args.data.page);
 
