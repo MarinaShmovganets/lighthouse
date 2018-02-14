@@ -1,3 +1,74 @@
+ <a name="2.9.1"></a>
+# 2.9.1 (2018-02-12)
+[Full Changelog](https://github.com/googlechrome/lighthouse/compare/v2.9.0...v2.9.1)
+
+
+## New Contributors!
+Thanks to @GaryJones for [helping us spel gud](https://github.com/GoogleChrome/lighthouse/pull/4485)!
+
+
+## Core
+
+* REVERT: gather-runner: load a blank data URI, rather than about:blank ([#4518](https://github.com/googlechrome/lighthouse/pull/4518))
+* fonts: fix infinite loop ([#4488](https://github.com/googlechrome/lighthouse/pull/4488))
+* responsive-images: move images with no dimensions to offscreen audit ([#4487](https://github.com/googlechrome/lighthouse/pull/4487))
+* tracing-processor: fix scheduleable task logic ([#4480](https://github.com/googlechrome/lighthouse/pull/4480))
+* webfonts: patch fonts gatherer to handle missing font item ([#4465](https://github.com/googlechrome/lighthouse/pull/4465))
+* computed-artifact: use deep equality over strict ([#4409](https://github.com/googlechrome/lighthouse/pull/4409))
+
+## Docs & Tests
+
+* docs: examples of combining puppeteer & lighthouse ([#4408](https://github.com/googlechrome/lighthouse/pull/4408))
+* appveyor: quietly unzip Chrome to keep appveyor logs cleaner ([ecedb32](https://github.com/googlechrome/lighthouse/commit/ecedb32))
+* appveyor: only run tests against master and PRs ([#4484](https://github.com/googlechrome/lighthouse/pull/4484))
+* smokehouse: improve smokehouse failure output ([#4482](https://github.com/googlechrome/lighthouse/pull/4482))
+* spelling: fix discernable to discernible ([#4485](https://github.com/googlechrome/lighthouse/pull/4485))
+
+
+ <a name="2.9.0"></a>
+# 2.9.0 (2018-02-08)
+[Full Changelog](https://github.com/googlechrome/lighthouse/compare/v2.8.0...v2.9.0)
+
+## New Contributors!
+Thanks to @FadySamirSadek, @christhompson and @rupesh1 for their first contributions! Awesome stuff.
+
+
+## New Audits
+
+* mixed-content https upgradeability ([#3953](https://github.com/googlechrome/lighthouse/pull/3953))
+* preload: Adding `<link rel=preload>` audit ([#3450](https://github.com/googlechrome/lighthouse/pull/3450))
+* font-display: Recommend `font-display: optional` ([#3831](https://github.com/googlechrome/lighthouse/pull/3831))
+
+## CLI
+
+* Add `--extra-headers`: Enable sending additional HTTP Headers ([#3732](https://github.com/googlechrome/lighthouse/pull/3732))
+* Add `--mixed-content`: triggers the mixed content audit ([#4441](https://github.com/googlechrome/lighthouse/pull/4441))
+
+## Core
+
+* centralize error strings ([#4280](https://github.com/googlechrome/lighthouse/pull/4280))
+* gather-runner: load a branded data URI, rather than `about:blank` ([#4310](https://github.com/googlechrome/lighthouse/pull/4310))
+* mobile-friendly: convey MFT covers add'l mobile-friendly auditing ([#4307](https://github.com/googlechrome/lighthouse/pull/4307))
+* response-compression: Exclude binary files from auditing ([#4144](https://github.com/googlechrome/lighthouse/pull/4144))
+* screenshot-thumbnails: increase size to 120px ([#4383](https://github.com/googlechrome/lighthouse/pull/4383))
+* start-url: switch to plain old fetch ([#4301](https://github.com/googlechrome/lighthouse/pull/4301))
+* unminified-js: add tolerant option to esprima ([#4338](https://github.com/googlechrome/lighthouse/pull/4338))
+* a11y: aXe perf: only collect provided resultTypes ([#4380](https://github.com/googlechrome/lighthouse/pull/4380))
+
+## Deps
+
+* bump metaviewport-parser to 0.2.0 ([#4382](https://github.com/googlechrome/lighthouse/pull/4382))
+* snyk: update snyk snapshot ([#4439](https://github.com/googlechrome/lighthouse/pull/4439))
+
+## Misc
+
+* coverage: minimize impact of timeout due to istanbul's instrumentation ([#4396](https://github.com/googlechrome/lighthouse/pull/4396))
+* escape usage of '#' in data URIs ([#4381](https://github.com/googlechrome/lighthouse/pull/4381))
+* package: scripts don't require "--" for options to be forwarded ([#4437](https://github.com/googlechrome/lighthouse/pull/4437))
+* sentry: update sampled errors list ([#4277](https://github.com/googlechrome/lighthouse/pull/4277))
+* travis: Only build on Node 6 for PRs. Don't do the `push` build for non-master. ([af8dbd0](https://github.com/googlechrome/lighthouse/commit/af8dbd0))
+* Extension: Fix scrollbar from showing on Options page ([#4263](https://github.com/googlechrome/lighthouse/pull/4263))
+
  <a name="2.8.0"></a>
 # 2.8.0 (2018-01-12)
 [Full Changelog](https://github.com/googlechrome/lighthouse/compare/v2.7.0...v2.8.0)

@@ -99,6 +99,7 @@ module.exports = {
     'deprecations',
     'mainthread-work-breakdown',
     'bootup-time',
+    'uses-rel-preload',
     'font-display',
     'manual/pwa-cross-browser',
     'manual/pwa-page-transitions',
@@ -218,7 +219,7 @@ module.exports = {
       description: 'These are opportunities to improve the configuration of your HTML elements.',
     },
     'a11y-element-names': {
-      title: 'Elements Have Discernable Names',
+      title: 'Elements Have Discernible Names',
       description: 'These are opportunities to improve the semantics of the controls in your application. This may enhance the experience for users of assistive technology, like a screen reader.',
     },
     'a11y-language': {
@@ -279,6 +280,7 @@ module.exports = {
         {id: 'uses-request-compression', weight: 0, group: 'perf-hint'},
         {id: 'time-to-first-byte', weight: 0, group: 'perf-hint'},
         {id: 'redirects', weight: 0, group: 'perf-hint'},
+        {id: 'uses-rel-preload', weight: 0, group: 'perf-hint'},
         {id: 'total-byte-weight', weight: 0, group: 'perf-info'},
         {id: 'uses-long-cache-ttl', weight: 0, group: 'perf-info'},
         {id: 'dom-size', weight: 0, group: 'perf-info'},
