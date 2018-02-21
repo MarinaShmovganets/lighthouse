@@ -2,9 +2,6 @@
 
 ## CLI (headless)
 
-> **Note**: Headless Chrome still has a few bugs to work out. For example, [network emulation](https://bugs.chromium.org/p/chromium/issues/detail?id=728451) is not supported yet.
-This can affect the accuracy of performance scores returned by Lighthouse.
-
 Setup:
 
 ```sh
@@ -27,7 +24,7 @@ lighthouse --chrome-flags="--headless" https://github.com
 
 ## CLI (xvfb)
 
-Alternativeluy, you can run full Chrome + xvfb instead of headless mode. These steps worked on Debian Jessie:
+Alternatively, you can run full Chrome + xvfb instead of headless mode. These steps worked on Debian Jessie:
 
 ```sh
 # get node 6
