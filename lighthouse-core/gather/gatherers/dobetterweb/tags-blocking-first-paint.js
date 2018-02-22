@@ -28,9 +28,9 @@ function installMediaListener() {
   Object.defineProperty(HTMLLinkElement.prototype, 'media', {
     set: function(val) {
       window.___linkMediaChanges.push({
-        url: this.href,
-        value: val,
-        time: Date.now() - window.performance.timing.responseEnd,
+        href: this.href,
+        media: val,
+        msSinceHTMLEnd: Date.now() - window.performance.timing.responseEnd,
         matches: window.matchMedia(val).matches,
       });
 
@@ -71,7 +71,7 @@ function collectTagsThatBlockFirstPaint() {
             rel: tag.rel,
             media: tag.media,
             disabled: tag.disabled,
-            mediaChanges: window.___linkMediaChanges.filter(item => item.url === tag.href),
+            mediaChanges: window.___linkMediaChanges.filter(item => item.href === tag.href),
           };
         });
       resolve(tagList);
@@ -131,11 +131,14 @@ class TagsBlockingFirstPaint extends Gatherer {
           // Even if the request was initially blocking or appeared to be blocking once the
           // page was loaded, the media attribute could have been changed during load, capping the
           // amount of time it was render blocking. See https://github.com/GoogleChrome/lighthouse/issues/2832.
-          const nonMatchingMediaChangeTimes = (tag.mediaChanges || [])
+          const timesResourceBecameNonBlocking = (tag.mediaChanges || [])
             .filter(change => !change.matches)
-            .map(change => change.time);
-          const earliestNonBlockingTime = Math.min(...nonMatchingMediaChangeTimes);
-          const lastTimeResourceWasBlocking = firstRequestEndTime + earliestNonBlockingTime / 1000;
+            .map(change => change.msSinceHTMLEnd);
+          const earliestNonBlockingTime = Math.min(...timesResourceBecameNonBlocking);
+          const lastTimeResourceWasBlocking = Math.max(
+            request.startTime,
+            firstRequestEndTime + earliestNonBlockingTime / 1000
+          );
 
           prev.push({
             tag,
