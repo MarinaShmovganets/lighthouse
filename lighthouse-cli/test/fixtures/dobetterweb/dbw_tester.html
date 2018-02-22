@@ -24,7 +24,7 @@
     stylesheet.media = 'not-matching';
     stylesheet.onload = () => stylesheet.media = 'screen';
     stylesheet.parentNode.insertBefore(stylesheet, stylesheet.nextSibling);
-  }, 500);
+  }, 1500);
 </script>
 
 <!-- Note: these will only fail when using the static-server.js, which supports the ?delay=true param.
@@ -105,7 +105,7 @@
 
 <!-- Force FCP to be ~5s out, necessary to make sure our render-blocking audits still work -->
 <!-- even when other forces were responsible for delaying the render. -->
-<script> while (Date.now() - performance.timing.responseStart < 5000) ; </script>
+<script src="./fcp-delayer.js?delay=5000"></script>
 </head>
 <body>
 
