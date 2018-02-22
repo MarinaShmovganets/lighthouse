@@ -76,26 +76,32 @@ class PredictivePerf extends Audit {
    * @param {!Node} dependencyGraph
    * @return {!Object}
    */
-  static computeOptions(dependencyGraph) {
+  static computeRTTAndServerResponseTime(dependencyGraph) {
     const records = [];
     dependencyGraph.traverse(node => {
       if (node.type === Node.TYPES.NETWORK) records.push(node.record);
     });
 
-    const rttSummaries = Array.from(NetworkAnalyzer.estimateRTTByOrigin(records).entries());
-    const rttByOrigin = new Map(rttSummaries.map(item => [item[0], item[1].min]));
+    // First pass compute the estimated observed RTT to each origin's servers.
+    const rttByOrigin = new Map();
+    for (const [origin, summary] of NetworkAnalyzer.estimateRTTByOrigin(records).entries()) {
+      rttByOrigin.set(origin, summary.min);
+    }
+
+    // We'll use the minimum RTT as the assumed connection latency since we care about how much addt'l
+    // latency each origin introduces as Lantern will be simulating with its own connection latency.
+    const minimumRtt = Math.min(...Array.from(rttByOrigin.values()));
+    // We'll use the observed RTT information to help estimate the server response time
     const responseTimeSummaries = NetworkAnalyzer.estimateServerResponseTimeByOrigin(records, {
       rttByOrigin,
     });
 
-    const baselineRtt = Math.min(...Array.from(rttByOrigin.values()));
-    const additionalRttByOrigin = new Map(
-      Array.from(rttByOrigin.entries()).map(item => [item[0], item[1] - baselineRtt])
-    );
-
-    const serverResponseTimeByOrigin = new Map(
-      Array.from(responseTimeSummaries.entries()).map(item => [item[0], item[1].median])
-    );
+    const additionalRttByOrigin = new Map();
+    const serverResponseTimeByOrigin = new Map();
+    for (const [origin, summary] of responseTimeSummaries.entries()) {
+      additionalRttByOrigin.set(origin, rttByOrigin.get(origin) - minimumRtt);
+      serverResponseTimeByOrigin.set(origin, summary.median);
+    }
 
     return {additionalRttByOrigin, serverResponseTimeByOrigin};
   }
@@ -252,10 +258,10 @@ class PredictivePerf extends Audit {
       };
 
       const values = {};
-      const options = PredictivePerf.computeOptions(graph);
+      const options = PredictivePerf.computeRTTAndServerResponseTime(graph);
       Object.keys(graphs).forEach(key => {
         const estimate = new LoadSimulator(graphs[key], options).simulate();
-        const longTaskThreshold = /optimistic/.test(key) ? 100 : 50;
+        const longTaskThreshold = key.startsWith('optimistic') ? 100 : 50;
         const lastLongTaskEnd = PredictivePerf.getLastLongTaskEndTime(
           estimate.nodeTiming,
           longTaskThreshold
