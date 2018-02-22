@@ -30,7 +30,7 @@ function installMediaListener() {
       window.___linkMediaChanges.push({
         url: this.href,
         value: val,
-        time: Date.now() - window.performance.timing.responseStart,
+        time: Date.now() - window.performance.timing.responseEnd,
         matches: window.matchMedia(val).matches,
       });
 
@@ -118,22 +118,30 @@ class TagsBlockingFirstPaint extends Gatherer {
 
   static findBlockingTags(driver, networkRecords) {
     const scriptSrc = `(${collectTagsThatBlockFirstPaint.toString()}())`;
+    const firstRequestEndTime = networkRecords.reduce(
+      (min, record) => Math.min(min, record._endTime),
+      Infinity
+    );
     return driver.evaluateAsync(scriptSrc).then(tags => {
       const requests = filteredAndIndexedByUrl(networkRecords);
 
       return tags.reduce((prev, tag) => {
         const request = requests[tag.url];
         if (request && !request.isLinkPreload) {
+          // Even if the request was initially blocking or appeared to be blocking once the
+          // page was loaded, the media attribute could have been changed during load, capping the
+          // amount of time it was render blocking. See https://github.com/GoogleChrome/lighthouse/issues/2832.
           const nonMatchingMediaChangeTimes = (tag.mediaChanges || [])
             .filter(change => !change.matches)
             .map(change => change.time);
           const earliestNonBlockingTime = Math.min(...nonMatchingMediaChangeTimes);
+          const lastTimeResourceWasBlocking = firstRequestEndTime + earliestNonBlockingTime / 1000;
 
           prev.push({
             tag,
             transferSize: request.transferSize || 0,
             startTime: request.startTime,
-            endTime: Math.min(request.endTime, request.startTime + earliestNonBlockingTime / 1000),
+            endTime: Math.min(request.endTime, lastTimeResourceWasBlocking),
           });
 
           // Prevent duplicates from showing up again
