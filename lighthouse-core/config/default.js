@@ -286,7 +286,7 @@ module.exports = {
         {id: 'uses-long-cache-ttl', weight: 0, group: 'perf-info'},
         {id: 'dom-size', weight: 0, group: 'perf-info'},
         {id: 'critical-request-chains', weight: 0, group: 'perf-info'},
-        {id: 'network-requests', weight: 0, group: 'perf-info'},
+        {id: 'network-requests', weight: 0},
         {id: 'user-timings', weight: 0, group: 'perf-info'},
         {id: 'bootup-time', weight: 0, group: 'perf-info'},
         {id: 'screenshot-thumbnails', weight: 0},

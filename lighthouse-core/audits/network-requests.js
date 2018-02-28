@@ -46,9 +46,15 @@ class NetworkRequests extends Audit {
 
       const headings = [
         {key: 'url', itemType: 'url', text: 'URL'},
-        {key: 'startTime', itemType: 'ms', text: 'Start Time'},
-        {key: 'endTime', itemType: 'ms', text: 'End Time'},
-        {key: 'transferSize', itemType: 'bytes', text: 'Transfer Size'},
+        {key: 'startTime', itemType: 'ms', granularity: 1, text: 'Start Time'},
+        {key: 'endTime', itemType: 'ms', granularity: 1, text: 'End Time'},
+        {
+          key: 'transferSize',
+          itemType: 'bytes',
+          displayUnit: 'kb',
+          granularity: 1,
+          text: 'Transfer Size',
+        },
         {key: 'statusCode', itemType: 'text', text: 'Status Code'},
       ];
 
