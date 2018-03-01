@@ -55,6 +55,18 @@ describe('HTTP Redirect gatherer', () => {
     });
   });
 
+  it('fails a non-redirecting page', () => {
+    return httpRedirectGather.afterPass({
+      driver: {
+        evaluateAsync: function() {
+          return Promise.resolve(false);
+        },
+      },
+    }).then(artifact => {
+      assert.ok(artifact.value === false);
+    });
+  });
+
   it('throws an error on driver failure', () => {
     return httpRedirectGather.afterPass({
       driver: {
