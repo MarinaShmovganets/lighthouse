@@ -61,6 +61,12 @@ module.exports = {
       exports: 'never',
       functions: 'never',
     }],
+    'spaced-comment': [2, 'always', {
+      line: {
+        // allow typescript triple-slash directives
+        markers: ['/'],
+      },
+    }],
 
     // Disabled rules
     'require-jsdoc': 0,
