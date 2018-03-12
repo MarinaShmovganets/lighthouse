@@ -93,8 +93,8 @@ class UnusedBytes extends Audit {
    * @param {!Node} graph
    * @return {number}
    */
-  static computeWasteWithTTIGraph(results, graph) {
-    const simulationBeforeChanges = new LoadSimulator(graph).simulate();
+  static computeWasteWithTTIGraph(results, graph, simulator) {
+    const simulationBeforeChanges = simulator.simulate();
     const resultsByUrl = new Map();
     for (const result of results) {
       resultsByUrl.set(result.url, result);
@@ -111,7 +111,7 @@ class UnusedBytes extends Audit {
       node.record._transferSize = Math.max(original - wastedBytes, 0);
     });
 
-    const simulationAfterChanges = new LoadSimulator(graph).simulate();
+    const simulationAfterChanges = simulator.simulate();
     // Restore the original transfer size after we've done our simulation
     graph.traverse(node => {
       if (node.type !== 'network') return;
@@ -135,12 +135,15 @@ class UnusedBytes extends Audit {
    * @return {!AuditResult}
    */
   static createAuditResult(result, graph) {
+    const simulatorOptions = PredictivePerf.computeRTTAndServerResponseTime(graph);
+    const simulator = new LoadSimulator(graph, simulatorOptions);
+
     const debugString = result.debugString;
     const results = result.results.sort((itemA, itemB) => itemB.wastedBytes - itemA.wastedBytes);
 
     const wastedBytes = results.reduce((sum, item) => sum + item.wastedBytes, 0);
     const wastedKb = Math.round(wastedBytes / KB_IN_BYTES);
-    const wastedMs = this.computeWasteWithTTIGraph(results, graph);
+    const wastedMs = UnusedBytes.computeWasteWithTTIGraph(results, graph, simulator);
 
     let displayValue = result.displayValue || '';
     if (typeof result.displayValue === 'undefined' && wastedBytes) {

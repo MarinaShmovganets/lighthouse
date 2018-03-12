@@ -25,6 +25,7 @@ describe('Byte efficiency base audit', () => {
       url: 'http://example.com/',
       parsedURL: {scheme: 'http'},
       _transferSize: 400000,
+      _timing: {receiveHeadersEnd: 0},
     };
 
     Object.defineProperty(networkRecord, 'transferSize', {
@@ -187,7 +188,7 @@ describe('Byte efficiency base audit', () => {
         graph
       );
 
-      assert.equal(result.rawValue, 160);
+      assert.equal(result.rawValue, 420);
     });
   });
 });
