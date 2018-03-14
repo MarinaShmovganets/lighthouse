@@ -218,6 +218,8 @@ module.exports = Audit;
 // TODO: placeholder typedefs until Details are typed
 /**
  * @typedef {void} Audit.DetailsRenderer.DetailsSummary
+ * @property {number=} wastedMs
+ * @property {number=} wastedKb
  */
 
 /**
@@ -225,5 +227,5 @@ module.exports = Audit;
  * @property {'table'} type
  * @property {Array<Audit.Heading>} headings
  * @property {Array<Object<string, string>>} items
- * @property {void} summary
+ * @property {Audit.DetailsRenderer.DetailsSummary} summary
  */
