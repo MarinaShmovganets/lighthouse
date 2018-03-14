@@ -95,7 +95,8 @@ class CategoryRenderer {
     const gaugeEl = this.renderScoreGauge(category);
     gaugeContainerEl.appendChild(gaugeEl);
 
-    return this._populateScore(tmpl, category.score, 'numeric', category.name, category.description);
+    const {score, name, description} = category;
+    return this._populateScore(tmpl, score, 'numeric', name, description);
   }
 
   /**
