@@ -7,6 +7,7 @@
 'use strict';
 
 const statistics = require('../lib/statistics');
+const Util = require('../report/v2/renderer/util');
 
 const DEFAULT_PASS = 'defaultPass';
 
@@ -149,7 +150,7 @@ class Audit {
 
     let auditDescription = audit.meta.description;
     if (audit.meta.failureDescription) {
-      if (score < 1) {
+      if (score < Util.PASS_THRESHOLD) {
         auditDescription = audit.meta.failureDescription;
       }
     }

@@ -9,14 +9,19 @@
 
 const ELLIPSIS = '\u2026';
 const NBSP = '\xa0';
+const PASS_THRESHOLD = 0.75;
 
 const RATINGS = {
-  PASS: {label: 'pass', minScore: 0.75},
+  PASS: {label: 'pass', minScore: PASS_THRESHOLD},
   AVERAGE: {label: 'average', minScore: 0.45},
   FAIL: {label: 'fail'},
 };
 
 class Util {
+  static get PASS_THRESHOLD() {
+    return PASS_THRESHOLD;
+  }
+
   /**
    * Convert a score to a rating label.
    * @param {number} score
