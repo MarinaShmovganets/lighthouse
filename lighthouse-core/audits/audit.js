@@ -190,10 +190,10 @@ module.exports = Audit;
  * @property {string} description
  * @property {string} helpText
  * @property {Array<string>} requiredArtifacts
- * @property {string=} failureDescription
- * @property {boolean=} informative
- * @property {boolean=} manual
- * @property {Audit.ScoringModeValues=} scoreDisplayMode
+ * @property {string|undefined} failureDescription
+ * @property {boolean|undefined} informative
+ * @property {boolean|undefined} manual
+ * @property {Audit.ScoringModeValues|undefined} scoreDisplayMode
  */
 
 /**
@@ -212,14 +212,14 @@ module.exports = Audit;
  * @property {number} results
  * @property {Audit.Headings} headings
  * @property {boolean} passes
- * @property {string=} debugString
+ * @property {string|undefined} debugString
  */
 
 // TODO: placeholder typedefs until Details are typed
 /**
  * @typedef {void} Audit.DetailsRenderer.DetailsSummary
- * @property {number=} wastedMs
- * @property {number=} wastedKb
+ * @property {number|undefined} wastedMs
+ * @property {number|undefined} wastedKb
  */
 
 /**
