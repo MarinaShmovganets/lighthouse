@@ -50,6 +50,7 @@ declare namespace LH.Audit {
     summary: DetailsRendererDetailsSummary;
   }
 
+  // Type returned by Audit.audit(). Only rawValue is required.
   export interface Product {
     rawValue: boolean | number | null;
     displayValue?: string;
@@ -62,15 +63,23 @@ declare namespace LH.Audit {
     details?: object;
   }
 
-  export interface Result extends Product {
+  /* Audit result returned in Lighthouse report. All audits offer a description and score of 0-1 */
+  export interface Result {
+    rawValue: boolean | number | null;
     displayValue: string;
+    debugString?: string;
     score: number;
     scoreDisplayMode: ScoringModeValue;
     description: string;
+    extendedInfo?: {value: string};
+    notApplicable?: boolean;
+    error?: boolean;
     name: string;
     helpText?: string;
     informative?: boolean;
     manual?: boolean;
+    // TODO: define details
+    details?: object;
   }
 
   export interface Results {
