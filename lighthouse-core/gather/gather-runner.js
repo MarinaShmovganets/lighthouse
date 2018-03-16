@@ -100,7 +100,10 @@ class GatherRunner {
     const resetStorage = !options.flags.disableStorageReset;
     // Enable emulation based on flags
     return driver.assertNoSameOriginServiceWorkerClients(options.url)
-      .then(_ => driver.getUserAgent())
+      .then(_ => {
+        options.fetchedAt = (new Date()).toJSON();
+        return driver.getUserAgent();
+      })
       .then(userAgent => {
         gathererResults.UserAgent = [userAgent];
         GatherRunner.warnOnHeadless(userAgent, gathererResults);

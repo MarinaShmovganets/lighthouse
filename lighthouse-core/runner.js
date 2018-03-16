@@ -102,7 +102,7 @@ class Runner {
       return {
         userAgent: runResults.artifacts.UserAgent,
         lighthouseVersion: require('../package').version,
-        generatedTime: (new Date()).toJSON(),
+        fetchedAt: opts.fetchedAt,
         initialUrl: opts.initialUrl,
         url: opts.url,
         runWarnings: lighthouseRunWarnings,
