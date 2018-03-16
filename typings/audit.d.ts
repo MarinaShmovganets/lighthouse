@@ -39,7 +39,7 @@ declare namespace LH.Audit {
   // TODO: placeholder typedefs until Details are typed
   export interface DetailsRendererDetailsSummary {
     wastedMs?: number;
-    wastedKb?: number;
+    wastedBytes?: number;
   }
 
   // TODO: placeholder typedefs until Details are typed
