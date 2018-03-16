@@ -118,7 +118,7 @@ class Util {
 
   /**
    * @param {!URL} parsedUrl
-   * @param {{numPathParts: (number|undefined), preserveQuery: (boolean|undefined), preserveHost: (boolean|undefined)}=} options
+   * @param {{numPathParts?: number, preserveQuery?: boolean, preserveHost?: boolean}=} options
    * @return {string}
    */
   static getURLDisplayName(parsedUrl, options) {
