@@ -17,6 +17,10 @@ const RATINGS = {
   FAIL: {label: 'fail'},
 };
 
+/**
+ * @fileoverview
+ * @suppress {reportUnknownTypes} see https://github.com/GoogleChrome/lighthouse/pull/4778#issuecomment-373549391
+ */
 class Util {
   static get PASS_THRESHOLD() {
     return PASS_THRESHOLD;
