@@ -181,9 +181,9 @@ assign-symbols@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
 
-astw@^2.0.0, "astw@github:goto-bus-stop/astw#new-acorn":
+astw@^2.0.0, "astw@github:paulirish/astw#new-acorn":
   version "2.2.0"
-  resolved "https://codeload.github.com/goto-bus-stop/astw/tar.gz/c1131eb355f90e2053f3abec016f1e07972269ae"
+  resolved "https://codeload.github.com/paulirish/astw/tar.gz/c1131eb355f90e2053f3abec016f1e07972269ae"
   dependencies:
     acorn "^5.2.1"
     xtend "^4.0.1"

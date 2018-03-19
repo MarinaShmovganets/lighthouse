@@ -26,7 +26,7 @@
     "through2": "^2.0.1"
   },
   "resolutions": {
-    "browserify/insert-module-globals/lexical-scope/astw": "github:goto-bus-stop/astw#new-acorn"
+    "browserify/insert-module-globals/lexical-scope/astw": "github:paulirish/astw#new-acorn"
   },
   "dependencies": {}
 }
