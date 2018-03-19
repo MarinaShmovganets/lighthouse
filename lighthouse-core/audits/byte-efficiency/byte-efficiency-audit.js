@@ -136,6 +136,7 @@ class UnusedBytes extends Audit {
    */
   static createAuditResult(result, graph) {
     const simulatorOptions = PredictivePerf.computeRTTAndServerResponseTime(graph);
+    Object.assign(simulatorOptions, {cpuTaskMultiplier: 1, layoutTaskMultiplier: 1});
     const simulator = new LoadSimulator(graph, simulatorOptions);
 
     const debugString = result.debugString;
