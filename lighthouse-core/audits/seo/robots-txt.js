@@ -109,9 +109,9 @@ function validateRobots(content) {
         };
       }
 
-      if (parseLine.directive === DIRECTIVE_USER_AGENT) {
+      if (parsedLine.directive === DIRECTIVE_USER_AGENT) {
         inGroup = true;
-      } else if (!inGroup && DIRECTIVES_GROUP_MEMBERS.has(parseLine.directive)) {
+      } else if (!inGroup && DIRECTIVES_GROUP_MEMBERS.has(parsedLine.directive)) {
         return {
           index: index + 1,
           line: line,
@@ -123,7 +123,6 @@ function validateRobots(content) {
     })
     .filter(error => error !== null);
 }
-
 
 class RobotsTxt extends Audit {
   /**
@@ -161,7 +160,7 @@ class RobotsTxt extends Audit {
         rawValue: false,
         displayValue: `request for robots.txt returned HTTP${status}`,
       };
-    } else if (status >= HTTP_CLIENT_ERROR_CODE_LOW || content === null) {
+    } else if (status >= HTTP_CLIENT_ERROR_CODE_LOW || content === '') {
       return {
         rawValue: true,
         notApplicable: true,
