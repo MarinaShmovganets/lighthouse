@@ -753,6 +753,7 @@ describe('GatherRunner', function() {
         ],
 
         LighthouseRunWarnings: [],
+        fetchedAt: null,
       };
 
       return GatherRunner.collectArtifacts(gathererResults).then(artifacts => {
@@ -772,6 +773,7 @@ describe('GatherRunner', function() {
 
       const gathererResults = {
         LighthouseRunWarnings,
+        fetchedAt: null,
       };
 
       return GatherRunner.collectArtifacts(gathererResults).then(artifacts => {
