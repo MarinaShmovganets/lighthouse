@@ -11,7 +11,7 @@ declare global {
     }
 
     export interface LoadData {
-      networkRecords: Array<Crdp.Network.Response>;
+      networkRecords: Array<void>;
       devtoolsLog: Array<void>;
       trace: {traceEvents: Array<TraceEvent>}
     }
