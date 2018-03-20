@@ -101,7 +101,7 @@ class GatherRunner {
     // Enable emulation based on flags
     return driver.assertNoSameOriginServiceWorkerClients(options.url)
       .then(_ => {
-        gathererResults.fetchedAt = (new Date()).toJSON();
+        gathererResults.fetchedAt = [(new Date()).toJSON()];
         return driver.getUserAgent();
       })
       .then(userAgent => {
@@ -351,7 +351,6 @@ class GatherRunner {
     // Nest LighthouseRunWarnings, if any, so they will be collected into artifact.
     const uniqueWarnings = Array.from(new Set(gathererResults.LighthouseRunWarnings));
     gathererResults.LighthouseRunWarnings = [uniqueWarnings];
-    gathererResults.fetchedAt = [gathererResults.fetchedAt];
 
     const pageLoadFailures = [];
     return Object.keys(gathererResults).reduce((chain, gathererName) => {
