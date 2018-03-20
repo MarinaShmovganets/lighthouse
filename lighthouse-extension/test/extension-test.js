@@ -133,7 +133,7 @@ describe('Lighthouse chrome extension', function() {
 
   it('should not have any audit errors', async () => {
     function getDebugStrings(elems) {
-      return elems.map(el => () => {
+      return elems.map(el => {
         const auditContainer = el.closest('.lh-audit,.lh-timeline-metric,.lh-perf-hint');
         return {
           debugString: el.textContent,
