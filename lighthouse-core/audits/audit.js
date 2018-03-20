@@ -6,6 +6,7 @@
 'use strict';
 
 const statistics = require('../lib/statistics');
+const Util = require('../report/v2/renderer/util');
 
 const DEFAULT_PASS = 'defaultPass';
 
@@ -25,7 +26,7 @@ class Audit {
   }
 
   /**
-   * @return {Audit.ScoringModes}
+   * @return {LH.Audit.ScoringModes}
    */
   static get SCORING_MODES() {
     return {
@@ -35,7 +36,7 @@ class Audit {
   }
 
   /**
-   * @return {Audit.Meta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     throw new Error('Audit meta information must be overridden.');
@@ -66,7 +67,7 @@ class Audit {
   /**
    * @param {typeof Audit} audit
    * @param {string} debugString
-   * @return {LH.AuditFullResult}
+   * @return {LH.Audit.Result}
    */
   static generateErrorAuditResult(audit, debugString) {
     return Audit.generateAuditResult(audit, {
@@ -77,10 +78,10 @@ class Audit {
   }
 
   /**
-   * @param {Audit.Headings} headings
+   * @param {Array<LH.Audit.Heading>} headings
    * @param {Array<Object<string, string>>} results
-   * @param {Audit.DetailsRenderer.DetailsSummary} summary
-   * @return {Audit.DetailsRenderer.DetailsJSON}
+   * @param {LH.Audit.DetailsRendererDetailsSummary} summary
+   * @return {LH.Audit.DetailsRendererDetailsJSON}
    */
   static makeTableDetails(headings, results, summary) {
     if (results.length === 0) {
@@ -102,8 +103,8 @@ class Audit {
 
   /**
    * @param {typeof Audit} audit
-   * @param {LH.AuditResult} result
-   * @return {{score: number, scoreDisplayMode: Audit.ScoringModeValues}}
+   * @param {LH.Audit.Product} result
+   * @return {{score: number, scoreDisplayMode: LH.Audit.ScoringModeValue}}
    */
   static _normalizeAuditScore(audit, result) {
     // Cast true/false to 1/0
@@ -125,8 +126,8 @@ class Audit {
 
   /**
    * @param {typeof Audit} audit
-   * @param {LH.AuditResult} result
-   * @return {LH.AuditFullResult}
+   * @param {LH.Audit.Product} result
+   * @return {LH.Audit.Result}
    */
   static generateAuditResult(audit, result) {
     if (typeof result.rawValue === 'undefined') {
@@ -148,7 +149,7 @@ class Audit {
 
     let auditDescription = audit.meta.description;
     if (audit.meta.failureDescription) {
-      if (score < 1) {
+      if (score < Util.PASS_THRESHOLD) {
         auditDescription = audit.meta.failureDescription;
       }
     }
@@ -173,59 +174,3 @@ class Audit {
 }
 
 module.exports = Audit;
-
-/**
- * @typedef {Object} Audit.ScoringModes
- * @property {'numeric'} NUMERIC
- * @property {'binary'} BINARY
- */
-
-/**
- * @typedef {Audit.ScoringModes[keyof Audit.ScoringModes]} Audit.ScoringModeValues
- */
-
-/**
- * @typedef {Object} Audit.Meta
- * @property {string} name
- * @property {string} description
- * @property {string} helpText
- * @property {Array<string>} requiredArtifacts
- * @property {string} [failureDescription]
- * @property {boolean} [informative]
- * @property {boolean} [manual]
- * @property {Audit.ScoringModeValues} [scoreDisplayMode]
- */
-
-/**
- * @typedef {Object} Audit.Heading
- * @property {string} key
- * @property {string} itemType
- * @property {string} text
- */
-
-/**
- * @typedef {Array<Audit.Heading>} Audit.Headings
- */
-
-/**
- * @typedef {Object} Audit.HeadingsResult
- * @property {number} results
- * @property {Audit.Headings} headings
- * @property {boolean} passes
- * @property {string} [debugString]
- */
-
-// TODO: placeholder typedefs until Details are typed
-/**
- * @typedef {void} Audit.DetailsRenderer.DetailsSummary
- * @property {number} [wastedMs]
- * @property {number} [wastedKb]
- */
-
-/**
- * @typedef {object} Audit.DetailsRenderer.DetailsJSON
- * @property {'table'} type
- * @property {Array<Audit.Heading>} headings
- * @property {Array<Object<string, string>>} items
- * @property {Audit.DetailsRenderer.DetailsSummary} summary
- */

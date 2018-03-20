@@ -4,141 +4,115 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-declare namespace LH {
+import _Crdp from "../node_modules/vscode-chrome-debug-core/lib/crdp/crdp";
 
-  export interface Flags {
-    _: string[];
-    port: number;
-    chromeFlags: string;
-    output: any;
-    outputPath: string;
-    saveAssets: boolean;
-    view: boolean;
-    maxWaitForLoad: number;
-    logLevel: string;
-    hostname: string;
-    blockedUrlPatterns: string[];
-    extraHeaders: string;
-    enableErrorReporting: boolean;
-    listAllAudits: boolean;
-    listTraceCategories: boolean;
-    auditMode: boolean;
-    gatherMode: boolean;
-    configPath?: string;
-    perf: boolean;
-    mixedContent: boolean;
-    verbose: boolean;
-    quiet: boolean;
-  }
+declare global {
+  module LH {
+    export import Crdp = _Crdp;
 
-  export interface Config {}
+    export interface Flags {
+      _: string[];
+      port: number;
+      chromeFlags: string;
+      output: any;
+      outputPath: string;
+      saveAssets: boolean;
+      view: boolean;
+      maxWaitForLoad: number;
+      logLevel: string;
+      hostname: string;
+      blockedUrlPatterns: string[];
+      extraHeaders: string;
+      enableErrorReporting: boolean;
+      listAllAudits: boolean;
+      listTraceCategories: boolean;
+      auditMode: boolean|string;
+      gatherMode: boolean|string;
+      configPath?: string;
+      perf: boolean;
+      mixedContent: boolean;
+      verbose: boolean;
+      quiet: boolean;
+    }
 
-  export interface AuditResult {
-    rawValue: boolean | number | null;
-    displayValue?: string;
-    debugString?: string;
-    score?: number;
-    extendedInfo?: {value: string};
-    notApplicable?: boolean;
-    error?: boolean;
-    // TODO: define details
-    details?: object;
-  }
+    export interface Config {}
 
-  export interface AuditResults {
-    [metric: string]: AuditResult;
-  }
+    export interface Results {
+      url: string;
+      audits: Audit.Results;
+      lighthouseVersion: string;
+      artifacts?: Object;
+      initialUrl: string;
+      fetchedAt: string;
+    }
 
-  export interface AuditFullResult extends AuditResult {
-    displayValue: string;
-    score: number;
-    scoreDisplayMode: 'numeric' | 'binary';
-    description: string;
-    name: string;
-    helpText?: string;
-    informative?: boolean;
-    manual?: boolean;
-  }
+    export interface LaunchedChrome {
+      pid: number;
+      port: number;
+      kill: () => Promise<{}>;
+    }
 
-  export interface AuditFullResults {
-    [metric: string]: AuditFullResult;
-  }
+    export interface LighthouseError extends Error {
+      code?: string;
+      friendlyMessage?: string;
+    }
 
-  export interface Results {
-    url: string;
-    audits: AuditFullResults;
-    lighthouseVersion: string;
-    artifacts?: Object;
-    initialUrl: string;
-    fetchedAt: string;
-  }
+    export interface TraceEvent {
+      name: string;
+      args: any;
+      tid: number;
+      ts: number;
+      dur: number;
+    }
 
-  export interface LaunchedChrome {
-    pid: number;
-    port: number;
-    kill: () => Promise<{}>;
-  }
+    export interface NetworkRequest {
+      requestId: string;
+      connectionId: string;
+      connectionReused: boolean;
 
-  export interface LighthouseError extends Error {
-    code?: string;
-    friendlyMessage?: string;
-  }
+      url: string;
+      protocol: string;
+      origin: string | null;
+      parsedURL: DevToolsParsedURL;
 
-  export interface TraceEvent {
-    name: string;
-    args: any;
-    tid: number;
-    ts: number;
-    dur: number;
-  }
+      startTime: number;
+      endTime: number;
 
-  export interface NetworkRequest {
-    requestId: string;
-    connectionId: string;
-    connectionReused: boolean;
+      transferSize: number;
 
-    url: string;
-    protocol: string;
-    origin: string | null;
-    parsedURL: DevToolsParsedURL;
+      _initiator: NetworkRequestInitiator;
+      _timing: NetworkRequestTiming;
+      _resourceType: any;
+      priority(): 'VeryHigh' | 'High' | 'Medium' | 'Low';
+    }
 
-    startTime: number;
-    endTime: number;
+    export interface NetworkRequestInitiator {
+      type: 'script' | 'parser';
+    }
 
-    transferSize: number;
+    export interface NetworkRequestTiming {
+      connectStart: number;
+      connectEnd: number
+      sslStart: number;
+      sslEnd: number;
+      sendStart: number;
+      sendEnd: number;
+      receiveHeadersEnd: number;
+    }
 
-    _initiator: NetworkRequestInitiator;
-    _timing: NetworkRequestTiming;
-    _resourceType: any;
-    priority(): 'VeryHigh' | 'High' | 'Medium' | 'Low';
-  }
+    export interface DevToolsParsedURL {
+      scheme: string;
+      host: string;
+    }
 
-  export interface NetworkRequestInitiator {
-    type: 'script' | 'parser';
-  }
-
-  export interface NetworkRequestTiming {
-    connectStart: number;
-    connectEnd: number
-    sslStart: number;
-    sslEnd: number;
-    sendStart: number;
-    sendEnd: number;
-    receiveHeadersEnd: number;
-  }
-
-  export interface DevToolsParsedURL {
-    scheme: string;
-    host: string;
-  }
-
-  export interface DevToolsJsonTarget {
-    description: string;
-    devtoolsFrontendUrl: string;
-    id: string;
-    title: string;
-    type: string;
-    url: string;
-    webSocketDebuggerUrl: string;
+    export interface DevToolsJsonTarget {
+      description: string;
+      devtoolsFrontendUrl: string;
+      id: string;
+      title: string;
+      type: string;
+      url: string;
+      webSocketDebuggerUrl: string;
+    }
   }
 }
