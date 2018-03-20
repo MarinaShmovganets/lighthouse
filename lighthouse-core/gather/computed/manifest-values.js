@@ -8,7 +8,7 @@
 const ComputedArtifact = require('./computed-artifact');
 const icons = require('../../lib/icons');
 
-const PWA_DISPLAY_VALUES = ['minimal-ui', 'fullscreen', 'standalone'];
+const PWA_DISPLAY_VALUES = ['minimal-ui', 'fullscreen', 'standalone', 'browser'];
 
 // Historically, Chrome recommended 12 chars as the maximum short_name length to prevent truncation.
 // See #69 for more discussion & https://developer.chrome.com/apps/manifest/name#short_name
