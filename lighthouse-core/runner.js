@@ -109,6 +109,7 @@ class Runner {
         userAgent: runResults.artifacts.UserAgent,
         lighthouseVersion: require('../package').version,
         fetchedAt: runResults.artifacts.fetchedAt,
+        generatedTime: 'Please use .fetchedAt instead',
         initialUrl: opts.initialUrl,
         url: opts.url,
         runWarnings: lighthouseRunWarnings,
