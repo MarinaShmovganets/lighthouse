@@ -25,8 +25,9 @@ describe('Lighthouse chrome extension', function() {
   let originalManifest;
 
   function getAuditElementsCount({category, selector}) {
-    return extensionPage.evaluate(({category, selector}) =>
-      document.querySelector(`#${category}`).parentNode.querySelectorAll(selector).length,
+    return extensionPage.evaluate(
+      ({category, selector}) =>
+        document.querySelector(`#${category}`).parentNode.querySelectorAll(selector).length,
       {category, selector}
     );
   }
@@ -58,8 +59,7 @@ describe('Lighthouse chrome extension', function() {
     await page.goto('https://www.paulirish.com', {waitUntil: 'networkidle2'});
     const targets = await browser.targets();
     const extensionTarget = targets.find(({_targetInfo}) => {
-      return _targetInfo.title === 'Lighthouse' &&
-        _targetInfo.type === 'background_page';
+      return _targetInfo.title === 'Lighthouse' && _targetInfo.type === 'background_page';
     });
 
     if (!extensionTarget) {
@@ -67,16 +67,13 @@ describe('Lighthouse chrome extension', function() {
     }
 
     const client = await extensionTarget.createCDPSession();
-    const lighthouseResult = await client.send(
-      'Runtime.evaluate',
-      {
-        expression: `runLighthouseInExtension({
+    const lighthouseResult = await client.send('Runtime.evaluate', {
+      expression: `runLighthouseInExtension({
           restoreCleanState: true,
         }, ${JSON.stringify(lighthouseCategories)})`,
-        awaitPromise: true,
-        returnByValue: true,
-      }
-    );
+      awaitPromise: true,
+      returnByValue: true,
+    });
 
     if (lighthouseResult.exceptionDetails) {
       if (lighthouseResult.exceptionDetails.exception) {
@@ -86,8 +83,9 @@ describe('Lighthouse chrome extension', function() {
       throw new Error(lighthouseResult.exceptionDetails.text);
     }
 
-    extensionPage = (await browser.pages())
-      .find(page => page.url().includes('blob:chrome-extension://'));
+    extensionPage = (await browser.pages()).find(page =>
+      page.url().includes('blob:chrome-extension://')
+    );
   });
 
   after(async () => {
@@ -101,8 +99,11 @@ describe('Lighthouse chrome extension', function() {
 
   it('should contain all categories', async () => {
     const categories = await extensionPage.$$(`#${lighthouseCategories.join(',#')}`);
-    assert.equal(categories.length, lighthouseCategories.length,
-      `${categories.join(' ')} does not match ${lighthouseCategories.join(' ')}`);
+    assert.equal(
+      categories.length,
+      lighthouseCategories.length,
+      `${categories.join(' ')} does not match ${lighthouseCategories.join(' ')}`
+    );
   });
 
   it('should contain audits of all categories', async () => {
@@ -116,8 +117,11 @@ describe('Lighthouse chrome extension', function() {
 
       const elementCount = await getAuditElementsCount({category, selector});
 
-      assert.equal(expected, elementCount,
-        `${category} does not have the correct amount of audits`);
+      assert.equal(
+        expected,
+        elementCount,
+        `${category} does not have the correct amount of audits`
+      );
     }
   });
 
