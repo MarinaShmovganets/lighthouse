@@ -12,7 +12,7 @@ class StartUrl extends Gatherer {
   /**
    * Grab the manifest, extract it's start_url, attempt to `fetch()` it while offline
    * @param {*} options
-   * @return {{statusCode: number, debugString: ?string}}
+   * @return {{statusCode: number, debugString?: string}}
    */
   afterPass(options) {
     const driver = options.driver;
@@ -26,7 +26,7 @@ class StartUrl extends Gatherer {
           return {statusCode: -1, debugString: reason};
         }
 
-        return this._attemptManifestFetch(options, startUrl);
+        return this._attemptManifestFetch(options.driver, startUrl);
       }).catch(() => {
         return {statusCode: -1, debugString: 'Unable to fetch start URL via service worker'};
       });
@@ -35,7 +35,7 @@ class StartUrl extends Gatherer {
   /**
    * Read the parsed manifest and return failure reasons or the startUrl
    * @param {Manifest} manifest
-   * @return {{isReadFailure: !boolean, reason: ?string, startUrl: ?startUrl}}
+   * @return {{isReadFailure: true, reason: string}|{isReadFailure: false, startUrl: string}}
    */
   _readManifestStartUrl(manifest) {
     if (!manifest || !manifest.value) {
@@ -59,22 +59,22 @@ class StartUrl extends Gatherer {
 
   /**
    * Try to `fetch(start_url)`, return true if fetched by SW
-   * @param {*} options
+   * Resolves when we have a matched network request
+   * @param {!Driver} driver
    * @param {!string} startUrl
    * @return {Promise<{statusCode: ?number, debugString: ?string}>}
    */
-  _attemptManifestFetch(options, startUrl) {
+  _attemptManifestFetch(driver, startUrl) {
     // Wait up to 3s to get a matched network request from the fetch() to work
-    const timeoutPromise = new Promise(resolve => setTimeout(_ =>
-      resolve({statusCode: -1, debugString: 'Timed out waiting for fetched start_url'})
-      , 3000));
+    const timeoutPromise = new Promise(resolve =>
+      setTimeout(
+        () => resolve({statusCode: -1, debugString: 'Timed out waiting for fetched start_url'}),
+        3000
+      )
+    );
 
     const fetchPromise = new Promise(resolve => {
-      const driver = options.driver;
       driver.on('Network.responseReceived', onResponseReceived);
-
-      // Deliberately not returning, as _attemptManifestFetch resolves when we have a matched network request
-      driver.evaluateAsync(`fetch('${startUrl}')`);
 
       function onResponseReceived({response}) {
         // ignore mismatched URLs
@@ -92,7 +92,9 @@ class StartUrl extends Gatherer {
       }
     });
 
-    return Promise.race([fetchPromise, timeoutPromise]);
+    return driver
+      .evaluateAsync(`fetch('${startUrl}')`)
+      .then(() => Promise.race([fetchPromise, timeoutPromise]));
   }
 }
 
