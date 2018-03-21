@@ -15,17 +15,18 @@ class StartUrl extends Gatherer {
    * @return {{statusCode: number, debugString: ?string}}
    */
   afterPass(options) {
-    return options.driver.goOnline(options)
-      .then(() => options.driver.getAppManifest())
-      .then(response => options.driver.goOffline(options).then(() => response))
+    const driver = options.driver;
+    return driver.goOnline(options)
+      .then(() => driver.getAppManifest())
+      .then(response => driver.goOffline(options).then(() => response))
       .then(response => response && manifestParser(response.data, response.url, options.url))
       .then(manifest => {
-        const {isReadFailure, reason, startUrl} = this.readManifestStartUrl(manifest);
+        const {isReadFailure, reason, startUrl} = this._readManifestStartUrl(manifest);
         if (isReadFailure) {
           return {statusCode: -1, debugString: reason};
         }
 
-        return this.attemptManifestFetch(options, startUrl);
+        return this._attemptManifestFetch(options, startUrl);
       }).catch(() => {
         return {statusCode: -1, debugString: 'Unable to fetch start URL via service worker'};
       });
@@ -36,7 +37,7 @@ class StartUrl extends Gatherer {
    * @param {Manifest} manifest
    * @return {{isReadFailure: !boolean, reason: ?string, startUrl: ?startUrl}}
    */
-  readManifestStartUrl(manifest) {
+  _readManifestStartUrl(manifest) {
     if (!manifest || !manifest.value) {
       const detailedMsg = manifest && manifest.debugString;
 
@@ -62,12 +63,17 @@ class StartUrl extends Gatherer {
    * @param {!string} startUrl
    * @return {Promise<{statusCode: ?number, debugString: ?string}>}
    */
-  attemptManifestFetch(options, startUrl) {
-    return new Promise(resolve => {
+  _attemptManifestFetch(options, startUrl) {
+    // Wait up to 3s to get a matched network request from the fetch() to work
+    const timeoutPromise = new Promise(resolve => setTimeout(_ =>
+      resolve({statusCode: -1, debugString: 'Timed out waiting for fetched start_url'})
+      , 3000));
+
+    const fetchPromise = new Promise(resolve => {
       const driver = options.driver;
       driver.on('Network.responseReceived', onResponseReceived);
 
-      // Deliberately not returning, as attemptManifestFetch resolves when we have a matched network request
+      // Deliberately not returning, as _attemptManifestFetch resolves when we have a matched network request
       driver.evaluateAsync(`fetch('${startUrl}')`);
 
       function onResponseReceived({response}) {
@@ -85,6 +91,8 @@ class StartUrl extends Gatherer {
         return resolve({statusCode: response.status});
       }
     });
+
+    return Promise.race([fetchPromise, timeoutPromise]);
   }
 }
 
