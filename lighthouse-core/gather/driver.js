@@ -16,7 +16,7 @@ const TraceParser = require('../lib/traces/trace-parser');
 const log = require('lighthouse-logger');
 const DevtoolsLog = require('./devtools-log');
 
-const inPageHelpers = require('../lib/page-functions.js');
+const pageFunctions = require('../lib/page-functions.js');
 
 // Pulled in for Connection type checking.
 // eslint-disable-next-line no-unused-vars
@@ -281,7 +281,7 @@ class Driver {
           return new __nativePromise(function (resolve) {
             return __nativePromise.resolve()
               .then(_ => ${expression})
-              .catch(${inPageHelpers.wrapRuntimeEvalErrorInBrowser.toString()})
+              .catch(${pageFunctions.wrapRuntimeEvalErrorInBrowser.toString()})
               .then(resolve);
           });
         }())`,
@@ -492,7 +492,7 @@ class Driver {
     let lastTimeout;
     let cancelled = false;
 
-    const checkForQuietExpression = `(${inPageHelpers.checkTimeSinceLastLongTask.toString()})()`;
+    const checkForQuietExpression = `(${pageFunctions.checkTimeSinceLastLongTask.toString()})()`;
     /**
      * @param {Driver} driver
      * @param {(value: void) => void} resolve
@@ -1134,7 +1134,7 @@ class Driver {
    * @return {Promise<void>}
    */
   async registerPerformanceObserver() {
-    const scriptStr = `(${inPageHelpers.registerPerformanceObserverInPage.toString()})()`;
+    const scriptStr = `(${pageFunctions.registerPerformanceObserverInPage.toString()})()`;
     await this.evaluteScriptOnNewDocument(scriptStr);
   }
 
@@ -1161,7 +1161,7 @@ class Driver {
         });
     };
 
-    const funcBody = inPageHelpers.captureJSCallUsage.toString();
+    const funcBody = pageFunctions.captureJSCallUsage.toString();
 
     this.evaluteScriptOnNewDocument(`
         ${globalVarToPopulate} = new Set();
