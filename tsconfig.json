@@ -16,9 +16,12 @@
   },
   "include": [
     "lighthouse-cli/**/*.js",
+    "lighthouse-core/audits/audit.js",
     "lighthouse-core/lib/dependency-graph/**/*.js",
     "lighthouse-core/gather/connections/**/*.js",
-    "./typings/externs.d.ts"
+    "lighthouse-core/gather/gatherers/gatherer.js",
+    "lighthouse-core/scripts/*.js",
+    "./typings/*.d.ts"
   ],
   "exclude": [
     "lighthouse-cli/test/**/*.js"
