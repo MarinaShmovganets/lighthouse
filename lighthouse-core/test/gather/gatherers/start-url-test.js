@@ -120,7 +120,7 @@ describe('Start-url gatherer', () => {
     return startUrlGatherer.afterPass(options, tracingData)
       .then(artifact => {
         assert.equal(artifact.debugString,
-          `No usable web app manifest found on page ${options.url}`);
+          `No usable web app manifest found on page`);
       });
   });
 
