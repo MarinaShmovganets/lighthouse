@@ -78,9 +78,9 @@ function parseLine(line) {
       throw new Error('Pattern should either be empty, start with "/" or "*"');
     }
 
-    const dolarIndex = directiveValue.indexOf('$');
+    const dollarIndex = directiveValue.indexOf('$');
 
-    if (dolarIndex !== -1 && dolarIndex !== directiveValue.length - 1) {
+    if (dollarIndex !== -1 && dollarIndex !== directiveValue.length - 1) {
       throw new Error('"$" should only be used at the end of the pattern');
     }
   }
