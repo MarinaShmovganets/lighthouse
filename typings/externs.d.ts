@@ -4,10 +4,10 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import _Crdp from "../node_modules/vscode-chrome-debug-core/lib/crdp/crdp";
+import _Crdp from '../node_modules/vscode-chrome-debug-core/lib/crdp/crdp';
 
 declare global {
-  module LH {
+  namespace LH {
     export import Crdp = _Crdp;
 
     export interface Flags {
@@ -26,8 +26,8 @@ declare global {
       enableErrorReporting: boolean;
       listAllAudits: boolean;
       listTraceCategories: boolean;
-      auditMode: boolean|string;
-      gatherMode: boolean|string;
+      auditMode: boolean | string;
+      gatherMode: boolean | string;
       configPath?: string;
       perf: boolean;
       mixedContent: boolean;
@@ -36,11 +36,32 @@ declare global {
       disableDeviceEmulation?: boolean;
       disableCpuThrottling?: boolean;
       disableNetworkThrottling?: boolean;
+      onlyAudits?: string[];
+      onlyCategories?: string[];
+      skipAudits?: string[];
     }
 
     // TODO: type checking for Config
     export interface Config {
       passes: ConfigPass[];
+      settings: ConfigSettings;
+    }
+
+    export interface ConfigSettings {
+      blockedUrlPatterns?: string[];
+      additionalTraceCategories?: string[];
+      maxWaitForLoad?: number;
+      extraHeaders?: Crdp.Network.Headers;
+      auditMode?: boolean | string;
+      gatherMode?: boolean | string;
+      disableStorageReset?: boolean;
+      disableDeviceEmulation?: boolean;
+      disableCpuThrottling?: boolean;
+      disableNetworkThrottling?: boolean;
+
+      onlyAudits?: string[];
+      onlyCategories?: string[];
+      skipAudits?: string[];
     }
 
     export interface ConfigPass {
@@ -105,7 +126,7 @@ declare global {
 
     export interface NetworkRequestTiming {
       connectStart: number;
-      connectEnd: number
+      connectEnd: number;
       sslStart: number;
       sslEnd: number;
       sendStart: number;

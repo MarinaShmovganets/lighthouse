@@ -440,8 +440,26 @@ describe('Config', () => {
     const auditNames = new Set(config.audits.map(audit => audit.implementation.meta.name));
     assert.ok(config, 'failed to generate config');
     assert.ok(auditNames.has('custom-audit'), 'did not include custom audit');
-    assert.ok(auditNames.has('unused-css-rules'), 'did not include full audits');
+    assert.ok(auditNames.has('unused-javascript'), 'did not include full audits');
     assert.ok(auditNames.has('first-meaningful-paint'), 'did not include default audits');
+  });
+
+  it('merges settings with correct priority', () => {
+    const config = new Config(
+      {
+        extends: 'lighthouse:full',
+        settings: {
+          disableStorageReset: true,
+        },
+      },
+      undefined,
+      {disableDeviceEmulation: true}
+    );
+
+    assert.ok(config, 'failed to generate config');
+    assert.ok(typeof config.settings.maxWaitForLoad === 'number', 'missing setting from default');
+    assert.ok(config.settings.disableStorageReset, 'missing setting from extension config');
+    assert.ok(config.settings.disableDeviceEmulation, 'missing setting from flags');
   });
 
   describe('artifact loading', () => {
