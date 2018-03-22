@@ -208,7 +208,7 @@ describe('Browser Driver', () => {
 
     const loadOptions = {
       waitForLoad: true,
-      config: {
+      passConfig: {
         networkQuietThresholdMs: 1,
       },
     };
