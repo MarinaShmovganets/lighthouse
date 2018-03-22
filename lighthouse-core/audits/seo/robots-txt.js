@@ -26,31 +26,11 @@ const DIRECTIVE_SAFELIST = new Set([
 const SITEMAP_VALID_PROTOCOLS = new Set(['https:', 'http:', 'ftp:']);
 
 /**
- * @param {!string} line single line from a robots.txt file
- * @returns {!{directive: string, value: string}}
+ * @param {!string} directiveName
+ * @param {!string} directiveValue
+ * @throws will throw an exception if given directive is invalid
  */
-function parseLine(line) {
-  const hashIndex = line.indexOf('#');
-
-  if (hashIndex !== -1) {
-    line = line.substr(0, hashIndex);
-  }
-
-  line = line.trim();
-
-  if (line.length === 0) {
-    return {};
-  }
-
-  const colonIndex = line.indexOf(':');
-
-  if (colonIndex === -1) {
-    throw new Error('Syntax not understood');
-  }
-
-  const directiveName = line.slice(0, colonIndex).trim().toLowerCase();
-  const directiveValue = line.slice(colonIndex + 1).trim();
-
+function verifyDirective(directiveName, directiveValue) {
   if (!DIRECTIVE_SAFELIST.has(directiveName)) {
     throw new Error('Unknown directive');
   }
@@ -84,6 +64,36 @@ function parseLine(line) {
       throw new Error('"$" should only be used at the end of the pattern');
     }
   }
+}
+
+/**
+ * @param {!string} line single line from a robots.txt file
+ * @throws will throw an exception if given line has errors
+ * @returns {!{directive: string, value: string}}
+ */
+function parseLine(line) {
+  const hashIndex = line.indexOf('#');
+
+  if (hashIndex !== -1) {
+    line = line.substr(0, hashIndex);
+  }
+
+  line = line.trim();
+
+  if (line.length === 0) {
+    return {};
+  }
+
+  const colonIndex = line.indexOf(':');
+
+  if (colonIndex === -1) {
+    throw new Error('Syntax not understood');
+  }
+
+  const directiveName = line.slice(0, colonIndex).trim().toLowerCase();
+  const directiveValue = line.slice(colonIndex + 1).trim();
+
+  verifyDirective(directiveName, directiveValue);
 
   return {
     directive: directiveName,
@@ -109,6 +119,8 @@ function validateRobots(content) {
         };
       }
 
+      // group-member records (allow, disallow) have to be precided with a start-of-group record (user-agent)
+      // see: https://developers.google.com/search/reference/robots_txt#grouping-of-records
       if (parsedLine.directive === DIRECTIVE_USER_AGENT) {
         inGroup = true;
       } else if (!inGroup && DIRECTIVES_GROUP_MEMBERS.has(parsedLine.directive)) {
