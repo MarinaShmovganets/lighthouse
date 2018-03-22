@@ -151,6 +151,7 @@ class RobotsTxt extends Audit {
 
     if (!status) {
       return {
+        rawValue: false,
         debugString: 'Lighthouse was unable to download your robots.txt file',
       };
     }
@@ -171,8 +172,8 @@ class RobotsTxt extends Audit {
 
     const headings = [
       {key: 'index', itemType: 'text', text: 'Line #'},
-      {key: 'line', itemType: 'text', text: 'Content'},
-      {key: 'error', itemType: 'text', text: 'Error'},
+      {key: 'line', itemType: 'code', text: 'Content'},
+      {key: 'error', itemType: 'code', text: 'Error'},
     ];
 
     const details = Audit.makeTableDetails(headings, validationErrors);
