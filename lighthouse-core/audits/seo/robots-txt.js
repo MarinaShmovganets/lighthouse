@@ -33,8 +33,8 @@ const DIRECTIVE_SAFELIST = new Set([
 const SITEMAP_VALID_PROTOCOLS = new Set(['https:', 'http:', 'ftp:']);
 
 /**
- * @param {!string} directiveName
- * @param {!string} directiveValue
+ * @param {string} directiveName
+ * @param {string} directiveValue
  * @throws will throw an exception if given directive is invalid
  */
 function verifyDirective(directiveName, directiveValue) {
@@ -74,7 +74,7 @@ function verifyDirective(directiveName, directiveValue) {
 }
 
 /**
- * @param {!string} line single line from a robots.txt file
+ * @param {string} line single line from a robots.txt file
  * @throws will throw an exception if given line has errors
  * @returns {!{directive: string, value: string}}
  */
@@ -122,7 +122,7 @@ function validateRobots(content) {
         return {
           index: index + 1,
           line: line,
-          error: e.message,
+          message: e.message,
         };
       }
 
@@ -134,7 +134,7 @@ function validateRobots(content) {
         return {
           index: index + 1,
           line: line,
-          error: 'No user-agent specified',
+          message: 'No user-agent specified',
         };
       }
 
@@ -192,7 +192,7 @@ class RobotsTxt extends Audit {
     const headings = [
       {key: 'index', itemType: 'text', text: 'Line #'},
       {key: 'line', itemType: 'code', text: 'Content'},
-      {key: 'error', itemType: 'code', text: 'Error'},
+      {key: 'message', itemType: 'code', text: 'Error'},
     ];
 
     const details = Audit.makeTableDetails(headings, validationErrors);
