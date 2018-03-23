@@ -11,7 +11,7 @@ const constants = require('./constants');
 
 module.exports = {
   settings: {
-    maxWaitForLoad: constants.MAX_WAIT_FOR_FULLY_LOADED,
+    maxWaitForLoad: constants.MAX_WAIT_FOR_LOAD,
   },
   passes: [{
     passName: 'defaultPass',

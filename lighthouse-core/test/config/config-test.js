@@ -450,6 +450,7 @@ describe('Config', () => {
         extends: 'lighthouse:full',
         settings: {
           disableStorageReset: true,
+          disableDeviceEmulation: false,
         },
       },
       undefined,
