@@ -5,6 +5,15 @@
  */
 'use strict';
 
+/**
+ * @fileoverview Validates robots.txt file according to the official standard and its various
+ * extensions respected by the popular web crawlers.
+ * - Google - https://developers.google.com/search/reference/robots_txt
+ * - Bing - https://www.bing.com/webmaster/help/how-to-create-a-robots-txt-file-cb7c31ec
+ * - Yandex - https://yandex.com/support/webmaster/controlling-robot/robots-txt.xml
+ * - Yahoo - https://help.yahoo.com/kb/sln2213.html
+ */
+
 const Audit = require('../audit');
 const URL = require('../../lib/url-shim');
 
