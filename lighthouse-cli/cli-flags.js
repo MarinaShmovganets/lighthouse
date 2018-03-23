@@ -91,6 +91,9 @@ function getFlags(manualArgv) {
         'max-wait-for-load':
             'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
         'extra-headers': 'Set extra HTTP Headers to pass with request',
+        'only-audits': 'Only run the specified audits',
+        'only-categories': 'Only run the specified categories',
+        'skip-audits': 'Run everything except these audits',
       })
       // set aliases
       .alias({'gather-mode': 'G', 'audit-mode': 'A'})
