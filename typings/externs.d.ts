@@ -7,7 +7,7 @@
 import _Crdp from '../node_modules/vscode-chrome-debug-core/lib/crdp/crdp';
 
 declare global {
-  namespace LH {
+  module LH {
     export import Crdp = _Crdp;
 
     interface SharedFlagsSettings {
