@@ -5,20 +5,20 @@
  */
 'use strict';
 
-const constants = require('./constants');
+const Driver = require('../gather/driver');
 
 /* eslint-disable max-len */
 
 module.exports = {
   settings: {
-    maxWaitForLoad: constants.MAX_WAIT_FOR_LOAD,
+    maxWaitForLoad: Driver.MAX_WAIT_FOR_FULLY_LOADED,
   },
   passes: [{
     passName: 'defaultPass',
     recordTrace: true,
-    pauseAfterLoadMs: constants.PAUSE_AFTER_LOAD_MS,
-    networkQuietThresholdMs: constants.NETWORK_QUIET_THRESHOLD_MS,
-    cpuQuietThresholdMs: constants.CPU_QUIET_THRESHOLD_MS,
+    pauseAfterLoadMs: 5250,
+    networkQuietThresholdMs: 5250,
+    cpuQuietThresholdMs: 5250,
     useThrottling: true,
     gatherers: [
       'url',
