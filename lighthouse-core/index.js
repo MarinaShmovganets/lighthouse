@@ -44,7 +44,7 @@ function lighthouse(url, flags = {}, configJSON) {
     const connection = new ChromeProtocol(flags.port, flags.hostname);
 
     // kick off a lighthouse run
-    return Runner.run(connection, {url, flags, config})
+    return Runner.run(connection, {url, config})
       .then((lighthouseResults = {}) => {
         // Annotate with time to run lighthouse.
         const endTime = Date.now();

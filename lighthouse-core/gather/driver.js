@@ -28,12 +28,10 @@ const DEFAULT_PAUSE_AFTER_LOAD = 0;
 const DEFAULT_NETWORK_QUIET_THRESHOLD = 5000;
 // Controls how long to wait between longtasks before determining the CPU is idle, off by default
 const DEFAULT_CPU_QUIET_THRESHOLD = 0;
+// Controls maximum amount of time to wait before continuing
+const DEFAULT_MAX_WAIT_FOR_LOAD = require('../config/constants').MAX_WAIT_FOR_LOAD;
 
 class Driver {
-  static get MAX_WAIT_FOR_FULLY_LOADED() {
-    return 45 * 1000;
-  }
-
   /**
    * @param {Connection} connection
    */
@@ -745,7 +743,7 @@ class Driver {
       if (typeof pauseAfterLoadMs !== 'number') pauseAfterLoadMs = DEFAULT_PAUSE_AFTER_LOAD;
       if (typeof networkQuietThresholdMs !== 'number') networkQuietThresholdMs = DEFAULT_NETWORK_QUIET_THRESHOLD;
       if (typeof cpuQuietThresholdMs !== 'number') cpuQuietThresholdMs = DEFAULT_CPU_QUIET_THRESHOLD;
-      if (typeof maxWaitMs !== 'number') maxWaitMs = Driver.MAX_WAIT_FOR_FULLY_LOADED;
+      if (typeof maxWaitMs !== 'number') maxWaitMs = DEFAULT_MAX_WAIT_FOR_LOAD;
       /* eslint-enable max-len */
 
       await this._waitForFullyLoaded(pauseAfterLoadMs, networkQuietThresholdMs, cpuQuietThresholdMs,

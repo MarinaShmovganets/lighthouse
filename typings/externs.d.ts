@@ -10,7 +10,22 @@ declare global {
   namespace LH {
     export import Crdp = _Crdp;
 
-    export interface Flags {
+    interface SharedFlagsSettings {
+      maxWaitForLoad?: number;
+      blockedUrlPatterns?: string[];
+      additionalTraceCategories?: string[];
+      auditMode?: boolean | string;
+      gatherMode?: boolean | string;
+      disableStorageReset?: boolean;
+      disableDeviceEmulation?: boolean;
+      disableCpuThrottling?: boolean;
+      disableNetworkThrottling?: boolean;
+      onlyAudits?: string[];
+      onlyCategories?: string[];
+      skipAudits?: string[];
+    }
+
+    export interface Flags extends SharedFlagsSettings {
       _: string[];
       port: number;
       chromeFlags: string;
@@ -18,27 +33,18 @@ declare global {
       outputPath: string;
       saveAssets: boolean;
       view: boolean;
-      maxWaitForLoad?: number;
       logLevel: string;
       hostname: string;
-      blockedUrlPatterns: string[];
-      extraHeaders: string;
       enableErrorReporting: boolean;
       listAllAudits: boolean;
       listTraceCategories: boolean;
-      auditMode: boolean | string;
-      gatherMode: boolean | string;
       configPath?: string;
       perf: boolean;
       mixedContent: boolean;
       verbose: boolean;
       quiet: boolean;
-      disableDeviceEmulation?: boolean;
-      disableCpuThrottling?: boolean;
-      disableNetworkThrottling?: boolean;
-      onlyAudits?: string[];
-      onlyCategories?: string[];
-      skipAudits?: string[];
+
+      extraHeaders?: string;
     }
 
     // TODO: type checking for Config
@@ -47,21 +53,8 @@ declare global {
       settings: ConfigSettings;
     }
 
-    export interface ConfigSettings {
-      blockedUrlPatterns?: string[];
-      additionalTraceCategories?: string[];
-      maxWaitForLoad?: number;
+    export interface ConfigSettings extends SharedFlagsSettings {
       extraHeaders?: Crdp.Network.Headers;
-      auditMode?: boolean | string;
-      gatherMode?: boolean | string;
-      disableStorageReset?: boolean;
-      disableDeviceEmulation?: boolean;
-      disableCpuThrottling?: boolean;
-      disableNetworkThrottling?: boolean;
-
-      onlyAudits?: string[];
-      onlyCategories?: string[];
-      skipAudits?: string[];
     }
 
     export interface ConfigPass {
