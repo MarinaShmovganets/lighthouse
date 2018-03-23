@@ -431,7 +431,7 @@ class Driver {
     };
 
     // Check here for _networkStatusMonitor to satisfy type checker. Any further race condition
-    // will be caught at runtime on calls to it. 
+    // will be caught at runtime on calls to it.
     if (!this._networkStatusMonitor) {
       throw new Error('Driver._waitForNetworkIdle called with no networkStatusMonitor');
     }
@@ -717,7 +717,7 @@ class Driver {
    * possible workaround.
    * Resolves on the url of the loaded page, taking into account any redirects.
    * @param {string} url
-   * @param {{waitForLoad?: boolean, disableJavaScript?: boolean, config?: LH.ConfigPass, flags?: LH.Flags}} options
+   * @param {{waitForLoad?: boolean, disableJavaScript?: boolean, passConfig?: LH.ConfigPass, flags?: LH.Flags}} options
    * @return {Promise<string>}
    */
   async gotoURL(url, options = {}) {
@@ -735,9 +735,10 @@ class Driver {
     this.sendCommand('Page.navigate', {url});
 
     if (waitForLoad) {
-      let pauseAfterLoadMs = options.config && options.config.pauseAfterLoadMs;
-      let networkQuietThresholdMs = options.config && options.config.networkQuietThresholdMs;
-      let cpuQuietThresholdMs = options.config && options.config.cpuQuietThresholdMs;
+      const passConfig = options.passConfig;
+      let pauseAfterLoadMs = passConfig && passConfig.pauseAfterLoadMs;
+      let networkQuietThresholdMs = passConfig && passConfig.networkQuietThresholdMs;
+      let cpuQuietThresholdMs = passConfig && passConfig.cpuQuietThresholdMs;
       let maxWaitMs = options.flags && options.flags.maxWaitForLoad;
 
       /* eslint-disable max-len */
