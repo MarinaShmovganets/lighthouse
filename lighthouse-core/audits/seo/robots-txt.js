@@ -76,7 +76,7 @@ function verifyDirective(directiveName, directiveValue) {
 /**
  * @param {string} line single line from a robots.txt file
  * @throws will throw an exception if given line has errors
- * @returns {!{directive: string, value: string}}
+ * @returns {{directive: string, value: string}|null}
  */
 function parseLine(line) {
   const hashIndex = line.indexOf('#');
@@ -88,7 +88,7 @@ function parseLine(line) {
   line = line.trim();
 
   if (line.length === 0) {
-    return {};
+    return null;
   }
 
   const colonIndex = line.indexOf(':');
@@ -108,22 +108,34 @@ function parseLine(line) {
   };
 }
 
+/**
+ * @param {string} content
+ * @returns {Array<{index: string, line: string, message: string}>}
+ */
 function validateRobots(content) {
+  /**
+   * @type Array<{index: string, line: string, message: string}>
+   */
+  const errors = [];
   let inGroup = false;
 
-  return content
+  content
     .split(/\r\n|\r|\n/)
-    .map((line, index) => {
+    .forEach((line, index) => {
       let parsedLine;
 
       try {
         parsedLine = parseLine(line);
       } catch (e) {
-        return {
-          index: index + 1,
+        errors.push({
+          index: (index + 1).toString(),
           line: line,
-          message: e.message,
-        };
+          message: e.message.toString(),
+        });
+      }
+
+      if (!parsedLine) {
+        return;
       }
 
       // group-member records (allow, disallow) have to be precided with a start-of-group record (user-agent)
@@ -131,21 +143,20 @@ function validateRobots(content) {
       if (parsedLine.directive === DIRECTIVE_USER_AGENT) {
         inGroup = true;
       } else if (!inGroup && DIRECTIVES_GROUP_MEMBERS.has(parsedLine.directive)) {
-        return {
-          index: index + 1,
+        errors.push({
+          index: (index + 1).toString(),
           line: line,
           message: 'No user-agent specified',
-        };
+        });
       }
+    });
 
-      return null;
-    })
-    .filter(error => error !== null);
+  return errors;
 }
 
 class RobotsTxt extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
@@ -159,8 +170,8 @@ class RobotsTxt extends Audit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
+   * @param {{RobotsTxt: {status: number, content: string}}} artifacts
+   * @return {LH.Audit.Product}
    */
   static audit(artifacts) {
     const {
@@ -195,7 +206,7 @@ class RobotsTxt extends Audit {
       {key: 'message', itemType: 'code', text: 'Error'},
     ];
 
-    const details = Audit.makeTableDetails(headings, validationErrors);
+    const details = Audit.makeTableDetails(headings, validationErrors, {});
     let displayValue;
 
     if (validationErrors.length) {
