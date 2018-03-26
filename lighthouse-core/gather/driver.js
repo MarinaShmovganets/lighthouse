@@ -735,10 +735,8 @@ class Driver {
     this.sendCommand('Page.navigate', {url});
 
     if (waitForLoad) {
-      const passConfig = passContext.passConfig;
-      let pauseAfterLoadMs = passConfig && passConfig.pauseAfterLoadMs;
-      let networkQuietThresholdMs = passConfig && passConfig.networkQuietThresholdMs;
-      let cpuQuietThresholdMs = passConfig && passConfig.cpuQuietThresholdMs;
+      const passConfig = passContext.passConfig || {};
+      let {pauseAfterLoadMs, networkQuietThresholdMs, cpuQuietThresholdMs} = passConfig;
       let maxWaitMs = passContext.settings && passContext.settings.maxWaitForLoad;
 
       /* eslint-disable max-len */
