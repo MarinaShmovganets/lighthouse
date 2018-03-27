@@ -142,7 +142,7 @@ describe('Config', () => {
 
     return assert.throws(_ => new Config({
       audits: [],
-    }, configPath), /absolute path/);
+    }, {configPath}), /absolute path/);
   });
 
   it('loads an audit relative to a config path', () => {
@@ -150,7 +150,7 @@ describe('Config', () => {
 
     return assert.doesNotThrow(_ => new Config({
       audits: ['../fixtures/valid-custom-audit'],
-    }, configPath));
+    }, {configPath}));
   });
 
   it('loads an audit from node_modules/', () => {
@@ -453,7 +453,6 @@ describe('Config', () => {
           disableDeviceEmulation: false,
         },
       },
-      undefined,
       {disableDeviceEmulation: true}
     );
 
@@ -695,7 +694,7 @@ describe('Config', () => {
     it('loads a gatherer relative to a config path', () => {
       const config = new Config({
         passes: [{gatherers: ['../fixtures/valid-custom-gatherer']}],
-      }, __filename);
+      }, {configPath: __filename});
       const gatherer = config.passes[0].gatherers[0];
 
       assert.equal(gatherer.instance.name, 'CustomGatherer');

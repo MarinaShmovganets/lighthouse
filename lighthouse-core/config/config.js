@@ -279,10 +279,11 @@ class Config {
   /**
    * @constructor
    * @param {!LighthouseConfig} configJSON
-   * @param {string=} configPath The absolute path to the config file, if there is one.
    * @param {LH.Flags=} flags
    */
-  constructor(configJSON, configPath, flags) {
+  constructor(configJSON, flags) {
+    let configPath = flags && flags.configPath;
+
     if (!configJSON) {
       configJSON = defaultConfig;
       configPath = path.resolve(__dirname, defaultConfigPath);

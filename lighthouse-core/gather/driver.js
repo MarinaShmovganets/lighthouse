@@ -717,11 +717,12 @@ class Driver {
    * possible workaround.
    * Resolves on the url of the loaded page, taking into account any redirects.
    * @param {string} url
-   * @param {{waitForLoad?: boolean, disableJavaScript?: boolean, passConfig?: LH.ConfigPass, settings?: LH.ConfigSettings}} passContext
+   * @param {{waitForLoad?: boolean, passContext?: LH.Gatherer.PassContext}} options
    * @return {Promise<string>}
    */
-  async gotoURL(url, passContext = {}) {
-    const waitForLoad = passContext.waitForLoad || false;
+  async gotoURL(url, options = {}) {
+    const waitForLoad = options.waitForLoad || false;
+    const passContext = options.passContext || {};
     const disableJS = passContext.disableJavaScript || false;
 
     await this._beginNetworkStatusMonitoring(url);

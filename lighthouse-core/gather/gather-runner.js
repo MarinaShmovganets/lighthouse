@@ -81,9 +81,7 @@ class GatherRunner {
   static loadPage(driver, passContext) {
     return driver.gotoURL(passContext.url, {
       waitForLoad: true,
-      disableJavaScript: !!passContext.disableJavaScript,
-      settings: passContext.settings,
-      passConfig: passContext.passConfig,
+      passContext,
     }).then(finalUrl => {
       passContext.url = finalUrl;
     });
