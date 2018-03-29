@@ -118,8 +118,8 @@ function enableNetworkThrottling(driver, throttlingSettings) {
   }
 
   // DevTools expects throughput in bytes per second rather than kbps
-  conditions.downloadThroughput = conditions.downloadThroughput * 1024 / 8;
-  conditions.uploadThroughput = conditions.uploadThroughput * 1024 / 8;
+  conditions.downloadThroughput = Math.floor(conditions.downloadThroughput * 1024 / 8);
+  conditions.uploadThroughput = Math.floor(conditions.uploadThroughput * 1024 / 8);
   return driver.sendCommand('Network.emulateNetworkConditions', conditions);
 }
 
