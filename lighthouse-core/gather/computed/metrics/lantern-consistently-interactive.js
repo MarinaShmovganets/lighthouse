@@ -68,14 +68,17 @@ class ConsistentlyInteractive extends MetricArtifact {
   /**
    * @param {LH.Gatherer.Simulation.Result} simulationResult
    * @param {Object} extras
-   * @return {number}
+   * @return {LH.Gatherer.Simulation.Result}
    */
-  getEstimateFromSimulation(simulationResult, extras) {
+  getEstimateFromSimulationResult(simulationResult, extras) {
     const lastTaskAt = ConsistentlyInteractive.getLastLongTaskEndTime(simulationResult.nodeTiming);
     const minimumTime = extras.optimistic
       ? extras.fmpResult.optimisticEstimate.timeInMs
       : extras.fmpResult.pessimisticEstimate.timeInMs;
-    return Math.max(minimumTime, lastTaskAt);
+    return {
+      timeInMs: Math.max(minimumTime, lastTaskAt),
+      nodeTiming: simulationResult.nodeTiming,
+    };
   }
 
   /**

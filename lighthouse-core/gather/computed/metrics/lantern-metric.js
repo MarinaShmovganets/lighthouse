@@ -58,11 +58,11 @@ class LanternMetricArtifact extends ComputedArtifact {
 
   /**
    * @param {LH.Gatherer.Simulation.Result} simulationResult
-   * @param {*} extras
-   * @return {number}
+   * @param {any=} extras
+   * @return {LH.Gatherer.Simulation.Result}
    */
-  getEstimateFromSimulation(simulationResult, extras) { // eslint-disable-line no-unused-vars
-    return simulationResult.timeInMs;
+  getEstimateFromSimulationResult(simulationResult, extras) { // eslint-disable-line no-unused-vars
+    return simulationResult;
   }
 
   /**
@@ -86,16 +86,16 @@ class LanternMetricArtifact extends ComputedArtifact {
       serverResponseTimeByOrigin: networkAnalysis.serverResponseTimeByOrigin,
     };
 
-    const optimisticEstimate = new Simulator(optimisticGraph, options).simulate();
-    const pessimisticEstimate = new Simulator(pessimisticGraph, options).simulate();
+    const optimisticSimulatorOutput = new Simulator(optimisticGraph, options).simulate();
+    const pessimisticSimulatorOutput = new Simulator(pessimisticGraph, options).simulate();
 
-    optimisticEstimate.timeInMs = this.getEstimateFromSimulation(
-      optimisticEstimate,
+    const optimisticEstimate = this.getEstimateFromSimulationResult(
+      optimisticSimulatorOutput,
       Object.assign({}, extras, {optimistic: true})
     );
 
-    pessimisticEstimate.timeInMs = this.getEstimateFromSimulation(
-      pessimisticEstimate,
+    const pessimisticEstimate = this.getEstimateFromSimulationResult(
+      pessimisticSimulatorOutput,
       Object.assign({}, extras, {optimistic: false})
     );
 
