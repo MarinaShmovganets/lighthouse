@@ -167,8 +167,6 @@ function getEmulationDesc(settings) {
   let cpuThrottling;
   let networkThrottling;
 
-  /** @type {function(number|undefined):string} */
-  const byteToKbit = (bytes = 0) => (bytes / 1024 * 8).toFixed();
   /** @type {LH.ThrottlingSettings} */
   const throttling = settings.throttling || {};
 
@@ -179,20 +177,17 @@ function getEmulationDesc(settings) {
       break;
     case 'devtools': {
       const {cpuSlowdownMultiplier, requestLatencyMs} = throttling;
-      const down = byteToKbit(throttling.downloadThroughputKbps);
-      const up = byteToKbit(throttling.uploadThroughputKbps);
-
       cpuThrottling = `${cpuSlowdownMultiplier}x slowdown (DevTools)`;
       networkThrottling = `${requestLatencyMs}${NBSP}ms HTTP RTT, ` +
-        `${down}${NBSP}Kbps down, ${up}${NBSP}Kbps up (DevTools)`;
+        `${throttling.downloadThroughputKbps}${NBSP}Kbps down, ` +
+        `${throttling.uploadThroughputKbps}${NBSP}Kbps up (DevTools)`;
       break;
     }
     case 'simulate': {
-      const {cpuSlowdownMultiplier, rttMs} = throttling;
-      const throughput = byteToKbit(throttling.throughputKbps);
+      const {cpuSlowdownMultiplier, rttMs, throughputKbps} = throttling;
       cpuThrottling = `${cpuSlowdownMultiplier}x slowdown (Simulated)`;
       networkThrottling = `${rttMs}${NBSP}ms TCP RTT, ` +
-        `${throughput}${NBSP}Kbps throughput (Simulated)`;
+        `${throughputKbps}${NBSP}Kbps throughput (Simulated)`;
       break;
     }
     default:

@@ -22,7 +22,7 @@ const DEFAULT_THROUGHPUT = emulation.MOBILE_3G_THROTTLING.targetDownloadThroughp
 // same multiplier as Lighthouse uses for CPU emulation
 const DEFAULT_CPU_TASK_MULTIPLIER = emulation.CPU_THROTTLE_METRICS.rate;
 // layout tasks tend to be less CPU-bound and do not experience the same increase in duration
-const DEFAULT_LAYOUT_TASK_MULTIPLIER = .5;
+const DEFAULT_LAYOUT_TASK_MULTIPLIER = 0.5;
 // if a task takes more than 10 seconds it's usually a sign it isn't actually CPU bound and we're overestimating
 const DEFAULT_MAXIMUM_CPU_TASK_DURATION = 10000;
 
