@@ -56,9 +56,9 @@ declare global {
 
     namespace Simulation {
       // HACK: TS treats 'import * as Foo' as namespace instead of a type, use typeof and prototype
-      export type GraphNode = typeof _Node['prototype'];
-      export type GraphNetworkNode = typeof _NetworkNode['prototype'];
-      export type GraphCPUNode = typeof _CPUNode['prototype'];
+      export type GraphNode = InstanceType<typeof _Node>;
+      export type GraphNetworkNode = InstanceType<typeof _NetworkNode>;
+      export type GraphCPUNode = InstanceType<typeof _CPUNode>;
 
       export interface MetricCoefficients {
         intercept: number;

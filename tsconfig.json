@@ -6,7 +6,6 @@
     "allowJs": true,
     "checkJs": true,
     "strict": true,
-    "allowSyntheticDefaultImports": true,
     // "listFiles": true,
     "typeRoots": [
       "@types",
