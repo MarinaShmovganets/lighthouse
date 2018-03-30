@@ -76,6 +76,7 @@ describe('Lighthouse chrome extension', function() {
     });
 
     if (lighthouseResult.exceptionDetails) {
+      console.error(lighthouseResult); // eslint-disable-line no-console
       if (lighthouseResult.exceptionDetails.exception) {
         throw new Error(lighthouseResult.exceptionDetails.exception.description);
       }
