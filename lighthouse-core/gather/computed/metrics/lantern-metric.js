@@ -61,7 +61,7 @@ class LanternMetricArtifact extends ComputedArtifact {
    * @param {any=} extras
    * @return {LH.Gatherer.Simulation.Result}
    */
-  getEstimateFromSimulationResult(simulationResult, extras) { // eslint-disable-line no-unused-vars
+  getEstimateFromSimulation(simulationResult, extras) { // eslint-disable-line no-unused-vars
     return simulationResult;
   }
 
@@ -86,16 +86,16 @@ class LanternMetricArtifact extends ComputedArtifact {
       serverResponseTimeByOrigin: networkAnalysis.serverResponseTimeByOrigin,
     };
 
-    const optimisticSimulatorOutput = new Simulator(optimisticGraph, options).simulate();
-    const pessimisticSimulatorOutput = new Simulator(pessimisticGraph, options).simulate();
+    const optimisticSimulation = new Simulator(optimisticGraph, options).simulate();
+    const pessimisticSimulation = new Simulator(pessimisticGraph, options).simulate();
 
-    const optimisticEstimate = this.getEstimateFromSimulationResult(
-      optimisticSimulatorOutput,
+    const optimisticEstimate = this.getEstimateFromSimulation(
+      optimisticSimulation,
       Object.assign({}, extras, {optimistic: true})
     );
 
-    const pessimisticEstimate = this.getEstimateFromSimulationResult(
-      pessimisticSimulatorOutput,
+    const pessimisticEstimate = this.getEstimateFromSimulation(
+      pessimisticSimulation,
       Object.assign({}, extras, {optimistic: false})
     );
 
