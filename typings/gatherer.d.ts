@@ -74,7 +74,7 @@ declare global {
         throughput?: number;
         fallbackTTFB?: number;
         maximumConcurrentRequests?: number;
-        cpuTaskMultiplier?: number;
+        cpuSlowdownMultiplier?: number;
         layoutTaskMultiplier?: number;
         additionalRttByOrigin?: Map<string, number>;
         serverResponseTimeByOrigin?: Map<string, number>;
