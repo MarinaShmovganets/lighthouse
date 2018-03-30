@@ -11,7 +11,10 @@ import * as _CPUNode from '../lighthouse-core/lib/dependency-graph/cpu-node';
 declare global {
   module LH.Gatherer {
     export interface PassContext {
-      options: object;
+      disableJavaScript?: boolean;
+      passConfig?: ConfigPass;
+      settings?: ConfigSettings;
+      options?: object;
     }
 
     export interface LoadData {

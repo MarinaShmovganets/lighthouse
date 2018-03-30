@@ -69,8 +69,6 @@ class ReportRenderer {
       const item = this._dom.cloneTemplate('#tmpl-lh-env__items', env);
       this._dom.find('.lh-env__name', item).textContent = runtime.name;
       this._dom.find('.lh-env__description', item).textContent = runtime.description;
-      this._dom.find('.lh-env__enabled', item).textContent =
-          runtime.enabled ? 'Enabled' : 'Disabled';
       env.appendChild(item);
     });
 
@@ -258,12 +256,13 @@ ReportRenderer.GroupJSON; // eslint-disable-line no-unused-expressions
  *     initialUrl: string,
  *     url: string,
  *     runWarnings: (!Array<string>|undefined),
+ *     artifacts: {traces: {defaultPass: {traceEvents: !Array}}},
  *     audits: !Object<string, !ReportRenderer.AuditResultJSON>,
  *     reportCategories: !Array<!ReportRenderer.CategoryJSON>,
  *     reportGroups: !Object<string, !ReportRenderer.GroupJSON>,
  *     runtimeConfig: {
  *       blockedUrlPatterns: !Array<string>,
- *       extraHeaders: !Object,
+ *       extraHeaders: !Object<string, string>,
  *       environment: !Array<{description: string, enabled: boolean, name: string}>
  *     }
  * }}

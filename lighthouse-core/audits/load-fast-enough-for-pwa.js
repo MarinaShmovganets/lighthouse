@@ -80,11 +80,11 @@ class LoadFastEnough4Pwa extends Audit {
       });
 
       let firstRequestLatencies = Array.from(firstRequestLatenciesByOrigin.values());
-      const latency3gMin = Emulation.settings.TYPICAL_MOBILE_THROTTLING_METRICS.targetLatency - 10;
+      const latency3gMin = Emulation.settings.MOBILE_3G_THROTTLING.targetLatencyMs - 10;
       const areLatenciesAll3G = firstRequestLatencies.every(val => val.latency > latency3gMin);
       firstRequestLatencies = firstRequestLatencies.map(item => ({
         url: item.url,
-        latency: Util.formatNumber(item.latency, .01),
+        latency: Util.formatNumber(item.latency, 0.01),
       }));
 
       const trace = artifacts.traces[Audit.DEFAULT_PASS];
