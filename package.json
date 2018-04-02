@@ -92,6 +92,7 @@
     "chrome-devtools-frontend": "1.0.422034",
     "chrome-launcher": "^0.10.2",
     "configstore": "^3.1.1",
+    "csv-validator": "^0.0.3",
     "devtools-timeline-model": "1.1.6",
     "esprima": "^4.0.0",
     "http-link-header": "^0.8.0",
