@@ -13,15 +13,17 @@ const log = require('lighthouse-logger');
  * An enumeration of acceptable output modes:
  *   'json': JSON formatted results
  *   'html': An HTML report
+ *   'csv': CSV formatted results
  */
 const OutputMode = {
   json: 'json',
   html: 'html',
+  csv: 'csv',
 };
 
 /**
  * Verify output path to use, either stdout or a file path.
- * @param {string=} path
+ * @param {string} path
  * @return {string}
  */
 function checkOutputPath(path) {
@@ -30,6 +32,48 @@ function checkOutputPath(path) {
     return 'stdout';
   }
   return path;
+}
+
+/**
+ * Converts the results to a CSV formatted string
+ * Each row describes the result of 1 audit with
+ *  - the name of the category the audit belongs to
+ *  - the name of the audit
+ *  - a description of the audit
+ *  - the score type that is used for the audit
+ *  - the score value of the audit
+ * 
+ * @param {!LH.Results} results
+ * @returns {string}
+ */
+function toCSVReport(results) {
+  // To keep things "official" we follow the CSV specification (RFC4180)
+  // The document describes how to deal with escaping commas and quotes etc.
+  const CRLF = '\r\n';
+  const separator = ',';
+  /** @param {!string} value @returns {string} */
+  const escape = (value) => `"${value.replace(/"/g, '""')}"`;
+
+  // Map every audit to its corresponding category
+  // which can be queried when needed
+  const map = {};
+  results.reportCategories.forEach(category => {
+    category.audits.forEach(audit => map[audit.id] = category.name);
+  });
+
+  // Possible TODO: tightly couple headers and row values
+  // This would make it easier to include new / other row values
+  const header = ['category', 'name', 'description', 'type', 'score'];
+  const table = Object
+    .keys(results.audits)
+    .map(key => {
+      const category = map[key];
+      const audit = results.audits[key];
+      return [category, audit.name, audit.description, audit.scoreDisplayMode, audit.score]
+        .map(value => value.toString())
+        .map(escape);
+    });
+  return [header, ...table].map(row => row.join(separator)).join(CRLF);
 }
 
 /**
@@ -46,6 +90,10 @@ function createOutput(results, outputMode) {
   // JSON report.
   if (outputMode === OutputMode.json) {
     return JSON.stringify(results, null, 2);
+  }
+  // CSV report.
+  if (outputMode === OutputMode.csv) {
+    return toCSVReport(results);
   }
   throw new Error('Invalid output mode: ' + outputMode);
 }
