@@ -38,11 +38,11 @@ describe('Printer', () => {
 
   it('creates CSV for results', () => {
     const mode = Printer.OutputMode.csv;
-    const path = './.test-file.csv';
+    const path = './.results-as-csv.csv';
     const headers = {
       category: '',
       name: '',
-      description: '',
+      title: '',
       type: '',
       score: 42,
     };

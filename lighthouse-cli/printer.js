@@ -43,7 +43,7 @@ function checkOutputPath(path) {
  *  - the score type that is used for the audit
  *  - the score value of the audit
  * 
- * @param {!LH.Results} results
+ * @param {LH.Results} results
  * @returns {string}
  */
 function toCSVReport(results) {
@@ -51,23 +51,23 @@ function toCSVReport(results) {
   // The document describes how to deal with escaping commas and quotes etc.
   const CRLF = '\r\n';
   const separator = ',';
-  /** @param {!string} value @returns {string} */
+  /** @param {string} value @returns {string} */
   const escape = (value) => `"${value.replace(/"/g, '""')}"`;
 
   // Map every audit to its corresponding category
   // which can be queried when needed
-  const map = {};
+  const auditCategories = {};
   results.reportCategories.forEach(category => {
-    category.audits.forEach(audit => map[audit.id] = category.name);
+    category.audits.forEach(audit => auditCategories[audit.id] = category.name);
   });
 
   // Possible TODO: tightly couple headers and row values
   // This would make it easier to include new / other row values
-  const header = ['category', 'name', 'description', 'type', 'score'];
+  const header = ['category', 'name', 'title', 'type', 'score'];
   const table = Object
     .keys(results.audits)
     .map(key => {
-      const category = map[key];
+      const category = auditCategories[key];
       const audit = results.audits[key];
       return [category, audit.name, audit.description, audit.scoreDisplayMode, audit.score]
         .map(value => value.toString())
