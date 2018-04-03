@@ -766,7 +766,7 @@ class Driver {
    * @return {Promise<Element|null>} The found element, or null, resolved in a promise
    */
   async querySelector(selector) {
-    const documentResponse = await this.sendCommand('DOM.getDocument', {});
+    const documentResponse = await this.sendCommand('DOM.getDocument');
     const rootNodeId = documentResponse.root.nodeId;
 
     const targetNode = await this.sendCommand('DOM.querySelector', {
@@ -785,7 +785,7 @@ class Driver {
    * @return {Promise<Array<Element>>} The found elements, or [], resolved in a promise
    */
   async querySelectorAll(selector) {
-    const documentResponse = await this.sendCommand('DOM.getDocument', {});
+    const documentResponse = await this.sendCommand('DOM.getDocument');
     const rootNodeId = documentResponse.root.nodeId;
 
     const targetNodeList = await this.sendCommand('DOM.querySelectorAll', {
