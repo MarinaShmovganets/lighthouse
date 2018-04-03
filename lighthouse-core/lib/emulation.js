@@ -86,7 +86,7 @@ function enableNexus5X(driver) {
     // Network.enable must be called for UA overriding to work
     driver.sendCommand('Network.enable'),
     driver.sendCommand('Network.setUserAgentOverride', NEXUS5X_USERAGENT),
-    driver.sendCommand('Page.setTouchEmulationEnabled', {
+    driver.sendCommand('Emulation.setEmitTouchEventsForMouse', {
       enabled: true,
       configuration: 'mobile',
     }),
