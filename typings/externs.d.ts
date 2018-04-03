@@ -103,7 +103,11 @@ declare global {
 
     export interface TraceEvent {
       name: string;
-      args: any;
+      args: {
+        data?: {
+          url: string
+        };
+      };
       tid: number;
       ts: number;
       dur: number;
