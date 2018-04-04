@@ -603,7 +603,7 @@ class Driver {
       if (earlierRequest.url === this._monitoredUrl) {
         this._monitoredUrl = redirectRequest.url;
       }
-    }
+    };
     this._networkStatusMonitor.on('requestloaded', requestLoadedListener);
 
     return this.sendCommand('Network.enable');
