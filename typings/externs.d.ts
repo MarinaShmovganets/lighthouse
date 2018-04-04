@@ -105,7 +105,7 @@ declare global {
       name: string;
       args: {
         data?: {
-          url: string
+          url?: string
         };
       };
       tid: number;
