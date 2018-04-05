@@ -42,7 +42,7 @@ function checkOutputPath(path) {
  *  - a description of the audit
  *  - the score type that is used for the audit
  *  - the score value of the audit
- * 
+ *
  * @param {LH.Results} results
  * @returns {string}
  */
@@ -54,26 +54,21 @@ function toCSVReport(results) {
   /** @param {string} value @returns {string} */
   const escape = (value) => `"${value.replace(/"/g, '""')}"`;
 
-  // Map every audit to its corresponding category
-  // which can be queried when needed
-  const auditCategories = {};
-  results.reportCategories.forEach(category => {
-    category.audits.forEach(audit => auditCategories[audit.id] = category.name);
-  });
 
   // Possible TODO: tightly couple headers and row values
-  // This would make it easier to include new / other row values
   const header = ['category', 'name', 'title', 'type', 'score'];
-  const table = Object
-    .keys(results.audits)
-    .map(key => {
-      const category = auditCategories[key];
-      const audit = results.audits[key];
-      return [category, audit.name, audit.description, audit.scoreDisplayMode, audit.score]
+  const table = results.reportCategories.map(category => {
+    return category.audits.map(catAudit => {
+      const audit = results.audits[catAudit.id];
+      return [category.name, audit.name, audit.description, audit.scoreDisplayMode, audit.score]
         .map(value => value.toString())
         .map(escape);
     });
-  return [header, ...table].map(row => row.join(separator)).join(CRLF);
+  });
+
+  // @ts-ignore TS loses track of type Array
+  const flattedTable = [].concat(...table);
+  return [header, ...flattedTable].map(row => row.join(separator)).join(CRLF);
 }
 
 /**
