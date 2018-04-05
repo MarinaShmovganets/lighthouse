@@ -36,7 +36,7 @@ describe('Printer', () => {
     assert.ok(/<html lang="en"/gim.test(htmlOutput));
   });
 
-  it('creates CSV for results', () => {
+  it('creates CSV for results', async () => {
     const mode = Printer.OutputMode.csv;
     const path = './.results-as-csv.csv';
     const headers = {
@@ -46,17 +46,15 @@ describe('Printer', () => {
       type: '',
       score: 42,
     };
-    return Printer
-      .write(sampleResults, mode, path)
-      .then(async () => {
-        try {
-          await csvValidator(path, headers);
-        } catch (err) {
-          assert.fail('CSV parser error:\n' + err.join('\n'));
-        } finally {
-          fs.unlinkSync(path);
-        }
-      });
+    await Printer.write(sampleResults, mode, path);
+
+    try {
+      await csvValidator(path, headers);
+    } catch (err) {
+      assert.fail('CSV parser error:\n' + err.join('\n'));
+    } finally {
+      fs.unlinkSync(path);
+    }
   });
 
   it('writes file for results', () => {
