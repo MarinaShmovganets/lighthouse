@@ -8,10 +8,7 @@ declare global {
   module LH {
     export interface Artifacts {
       fetchedAt: string;
-      LanternMetric: Artifacts.LanternMetric;
       LighthouseRunWarnings: string[];
-      TraceOfTab: Artifacts.TraceOfTab;
-      TraceTimes: Artifacts.TraceTimes;
       UserAgent: string;
       traces: {[passName: string]: Trace};
       devtoolsLogs: {[passName: string]: Protocol.RawEventMessage};

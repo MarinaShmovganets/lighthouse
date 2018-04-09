@@ -597,6 +597,7 @@ describe('GatherRunner', function() {
   });
 
   describe('artifact collection', () => {
+    // Make sure our gatherers never execute in parallel
     it('runs gatherer lifecycle methods strictly in sequence', async () => {
       const counter = {
         beforePass: 0,
