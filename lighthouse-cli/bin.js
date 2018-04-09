@@ -55,9 +55,9 @@ if (cliFlags.configPath) {
   cliFlags.configPath = path.resolve(process.cwd(), cliFlags.configPath);
   config = /** @type {LH.Config.Json} */ (require(cliFlags.configPath));
 } else if (cliFlags.perf) {
-  config = /** @type {LH.Config.Json} */ (perfOnlyConfig);
+  config = perfOnlyConfig;
 } else if (cliFlags.mixedContent) {
-  config = /** @type {LH.Config.Json} */ (mixedContentConfig);
+  config = mixedContentConfig;
   // The mixed-content audits require headless Chrome (https://crbug.com/764505).
   cliFlags.chromeFlags = `${cliFlags.chromeFlags} --headless`;
 }

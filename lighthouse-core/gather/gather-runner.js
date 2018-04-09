@@ -356,7 +356,8 @@ class GatherRunner {
    * @return {Promise<LH.Artifacts>}
    */
   static async collectArtifacts(gathererResults, tracingData, settings) {
-    // Can't handle dynamic GathererResults -> Artifacts, so explicitly make *.
+    // Can't handle dynamic GathererResults -> Artifacts, so explicitly make *
+    // and cast to Artifacts before returning.
     /** @type {Object<string, *>} */
     const artifacts = {
       traces: tracingData.traces,

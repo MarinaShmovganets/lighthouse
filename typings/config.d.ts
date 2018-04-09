@@ -9,8 +9,7 @@ import * as Gatherer from '../lighthouse-core/gather/gatherers/gatherer.js';
 declare global {
   module LH {
     /**
-     * The full, normalized Lighthouse Config. Also a namespace for Config-
-     * related types (see below).
+     * The full, normalized Lighthouse Config.
      */
     export interface Config {
       settings: Config.Settings;
@@ -18,6 +17,9 @@ declare global {
     }
 
     module Config {
+      /**
+       * The pre-normalization Lighthouse Config format.
+       */
       export interface Json {
         settings?: SettingsJson;
         passes?: PassJson[];
