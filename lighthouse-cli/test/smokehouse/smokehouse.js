@@ -48,18 +48,21 @@ function resolveLocalOrCwd(payloadPath) {
  * @return {!LighthouseResults}
  */
 function runLighthouse(url, configPath, isDebug) {
+  isDebug = isDebug || process.env.SMOKEHOUSE_DEBUG;
+
   const command = 'node';
+  const outputPath = `smokehouse-${Math.round(Math.random() * 100000)}.report.json`;
   const args = [
     'lighthouse-cli/index.js',
     url,
     `--config-path=${configPath}`,
-    `--output-path=smokehouse.report.json`,
+    `--output-path=${outputPath}`,
     '--output=json',
     '--quiet',
     '--port=0',
   ];
 
-  if (isDebug || process.env.SMOKEHOUSE_DEBUG) {
+  if (isDebug) {
     args.push('-GA');
   }
 
@@ -92,12 +95,19 @@ function runLighthouse(url, configPath, isDebug) {
     process.exit(runResults.status);
   }
 
-  if (isDebug || process.env.SMOKEHOUSE_DEBUG) {
+  if (isDebug) {
     console.log(`STDOUT: ${runResults.stdout}`);
     console.error(`STDERR: ${runResults.stderr}`);
   }
 
-  return JSON.parse(fs.readFileSync('smokehouse.report.json', 'utf8'));
+  const lhr = fs.readFileSync(outputPath, 'utf8');
+  if (isDebug) {
+    console.log('Smokehouse output available at: ', outputPath);
+  } else {
+    fs.unlinkSync(outputPath);
+  }
+
+  return JSON.parse(lhr);
 }
 
 /**
