@@ -45,6 +45,7 @@ class ConsistentlyInteractive extends MetricArtifact {
       return [{start: 0, end: traceEndTsInMs}];
     }
 
+    /** @type {Array<TimePeriod>} */
     const quietPeriods = [];
     longTasks.forEach((task, index) => {
       if (index === 0) {
@@ -74,14 +75,13 @@ class ConsistentlyInteractive extends MetricArtifact {
    * Finds the first time period where a network quiet period and a CPU quiet period overlap.
    * @param {!Array<!TimePeriod>} longTasks
    * @param {Array<LH.WebInspector.NetworkRequest>} networkRecords
-   * @param {{timestamps: {navigationStart: number, firstMeaningfulPaint: number,
-   *    traceEnd: number}}} traceOfTab
-   * @return {{cpuQuietPeriod: !TimePeriod, networkQuietPeriod: !TimePeriod,
-   *    cpuQuietPeriods: !Array<!TimePeriod>, networkQuietPeriods: !Array<!TimePeriod>}}
+   * @param {LH.Gatherer.Artifact.TraceOfTab} traceOfTab
+   * @return {{cpuQuietPeriod: !TimePeriod, networkQuietPeriod: !TimePeriod, cpuQuietPeriods: !Array<!TimePeriod>, networkQuietPeriods: !Array<!TimePeriod>}}
    */
   static findOverlappingQuietPeriods(longTasks, networkRecords, traceOfTab) {
     const FMPTsInMs = traceOfTab.timestamps.firstMeaningfulPaint / 1000;
 
+    /** @type {function(TimePeriod):boolean} */
     const isLongEnoughQuietPeriod = period =>
         period.end > FMPTsInMs + REQUIRED_QUIET_WINDOW &&
         period.end - period.start >= REQUIRED_QUIET_WINDOW;
@@ -133,11 +133,13 @@ class ConsistentlyInteractive extends MetricArtifact {
 
   /**
    * @param {LH.Gatherer.Artifact.MetricComputationData} data
-   * @param {Object} artifacts
    * @return {Promise<LH.Gatherer.Artifact.Metric>}
    */
-  computeObservedMetric(data, artifacts) {
+  computeObservedMetric(data) {
     const {traceOfTab, networkRecords} = data;
+    if (!traceOfTab || !networkRecords) {
+      throw new Error('Missing required artifacts');
+    }
 
     if (!traceOfTab.timestamps.firstMeaningfulPaint) {
       throw new LHError(LHError.errors.NO_FMP);
@@ -149,8 +151,12 @@ class ConsistentlyInteractive extends MetricArtifact {
 
     const longTasks = TracingProcessor.getMainThreadTopLevelEvents(traceOfTab)
         .filter(event => event.duration >= 50);
-    const quietPeriodInfo = ConsistentlyInteractive.findOverlappingQuietPeriods(longTasks, networkRecords,
-        traceOfTab);
+    const quietPeriodInfo = ConsistentlyInteractive.findOverlappingQuietPeriods(
+      longTasks,
+      networkRecords,
+      traceOfTab
+    );
+
     const cpuQuietPeriod = quietPeriodInfo.cpuQuietPeriod;
 
     const timestamp = Math.max(
@@ -159,7 +165,7 @@ class ConsistentlyInteractive extends MetricArtifact {
       traceOfTab.timestamps.domContentLoaded / 1000
     ) * 1000;
     const timing = (timestamp - traceOfTab.timestamps.navigationStart) / 1000;
-    return {timing, timestamp};
+    return Promise.resolve({timing, timestamp});
   }
 }
 

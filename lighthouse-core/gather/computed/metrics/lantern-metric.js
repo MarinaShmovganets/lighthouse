@@ -109,7 +109,7 @@ class LanternMetricArtifact extends ComputedArtifact {
   }
 
   /**
-   * @param {{trace: Object, devtoolsLog: Object}} data
+   * @param {LH.Gatherer.Artifact.MetricComputationData} data
    * @param {Object} artifacts
    * @return {Promise<LH.Gatherer.Artifact.LanternMetric>}
    */

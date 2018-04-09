@@ -7,9 +7,6 @@
 
 const Audit = require('./audit');
 const Util = require('../report/v2/renderer/util');
-const NetworkRecorder = require('../lib/network-recorder');
-const TracingProcessor = require('../lib/traces/tracing-processor');
-const LHError = require('../lib/errors');
 
 /**
  * @fileoverview This audit identifies the time the page is "consistently interactive".
@@ -52,7 +49,8 @@ class ConsistentlyInteractiveMetric extends Audit {
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
-    const metricResult = await artifacts.requestConsistentlyInteractive({trace, devtoolsLog, settings: context.settings});
+    const metricComputationData = {trace, devtoolsLog, settings: context.settings};
+    const metricResult = await artifacts.requestConsistentlyInteractive(metricComputationData);
     const timeInMs = metricResult.timing;
     const extendedInfo = {
       timeInMs,

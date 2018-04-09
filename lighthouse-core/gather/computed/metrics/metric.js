@@ -43,15 +43,14 @@ class MetricArtifact extends ComputedArtifact {
       traceOfTab: await artifacts.requestTraceOfTab(trace),
     }, data);
 
-    const throttlingMethod = data.settings.throttlingMethod;
-    switch (throttlingMethod) {
+    switch (settings.throttlingMethod) {
       case 'simulate':
         return this.computeSimulatedMetric(augmentedData, artifacts);
       case 'provided':
       case 'devtools':
         return this.computeObservedMetric(augmentedData, artifacts);
       default:
-        throw new TypeError(`Unrecognized throttling method: ${throttlingMethod}`);
+        throw new TypeError(`Unrecognized throttling method: ${settings.throttlingMethod}`);
     }
   }
 }
