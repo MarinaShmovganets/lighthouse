@@ -602,7 +602,7 @@ describe('GatherRunner', function() {
       const counter = {
         beforePass: 0,
         pass: 0,
-        afterPass: 0
+        afterPass: 0,
       };
       const shortPause = () => new Promise(resolve => setTimeout(resolve, 50));
       async function fastish(counterName, value) {
@@ -621,7 +621,7 @@ describe('GatherRunner', function() {
         await shortPause();
         await medium(counterName, value);
       }
-      
+
       const gatherers = [
         class First extends Gatherer {
           async beforePass() {
@@ -658,7 +658,7 @@ describe('GatherRunner', function() {
             await fastish('afterPass', 3);
             return this.name;
           }
-        }
+        },
       ];
       const passes = [{
         blankDuration: 0,
@@ -819,18 +819,18 @@ describe('GatherRunner', function() {
     });
 
     it('produces a LighthouseRunWarnings artifact from array of warnings', () => {
-      const LighthouseRunWarnings = [[
+      const LighthouseRunWarnings = [
         'warning0',
         'warning1',
         'warning2',
-      ]];
+      ];
 
       const gathererResults = {
         LighthouseRunWarnings,
       };
 
       return GatherRunner.collectArtifacts(gathererResults, {}).then(artifacts => {
-        assert.deepStrictEqual(artifacts.LighthouseRunWarnings, LighthouseRunWarnings[0]);
+        assert.deepStrictEqual(artifacts.LighthouseRunWarnings, LighthouseRunWarnings);
       });
     });
 
@@ -1008,17 +1008,17 @@ describe('GatherRunner', function() {
 
   it('issues a lighthouseRunWarnings if running an old version of Headless', () => {
     const gathererResults = {
-      LighthouseRunWarnings: [[]],
+      LighthouseRunWarnings: [],
     };
 
     const userAgent = 'Mozilla/5.0 AppleWebKit/537.36 HeadlessChrome/63.0.3239.0 Safari/537.36';
     GatherRunner.warnOnHeadless(userAgent, gathererResults);
-    assert.strictEqual(gathererResults.LighthouseRunWarnings[0].length, 0);
+    assert.strictEqual(gathererResults.LighthouseRunWarnings.length, 0);
 
     const oldUserAgent = 'Mozilla/5.0 AppleWebKit/537.36 HeadlessChrome/62.0.3239.0 Safari/537.36';
     GatherRunner.warnOnHeadless(oldUserAgent, gathererResults);
-    assert.strictEqual(gathererResults.LighthouseRunWarnings[0].length, 1);
-    const warning = gathererResults.LighthouseRunWarnings[0][0];
+    assert.strictEqual(gathererResults.LighthouseRunWarnings.length, 1);
+    const warning = gathererResults.LighthouseRunWarnings[0];
     assert.ok(/Headless Chrome/.test(warning));
   });
 });

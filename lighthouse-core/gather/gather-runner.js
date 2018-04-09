@@ -17,7 +17,7 @@ const Driver = require('../gather/driver.js'); // eslint-disable-line no-unused-
  * Each entry in each gatherer result array is the output of a gatherer phase:
  * `beforePass`, `pass`, and `afterPass`. Flattened into an `LH.Artifacts` in
  * `collectArtifacts`.
- * @typedef {{LighthouseRunWarnings: Array<Array<string>>, [artifactName: string]: Array<*>}} GathererResults
+ * @typedef {{LighthouseRunWarnings: Array<string>, [artifactName: string]: Array<*>}} GathererResults
  */
 /** @typedef {{traces: Object<string, LH.Trace>, devtoolsLogs: Object<string, Array<LH.Protocol.RawEventMessage>>}} TracingData */
 
@@ -191,7 +191,7 @@ class GatherRunner {
     // https://chromium.googlesource.com/chromium/src/+/8931a104b145ccf92390f6f48fba6553a1af92e4
     const minVersion = '63.0.3239.0';
     if (chromeVersion && chromeVersion < minVersion) {
-      gathererResults.LighthouseRunWarnings[0].push('Your site\'s mobile performance may be ' +
+      gathererResults.LighthouseRunWarnings.push('Your site\'s mobile performance may be ' +
           'worse than the numbers presented in this report. Lighthouse could not test on a ' +
           'mobile connection because Headless Chrome does not support network throttling ' +
           'prior to version ' + minVersion + '. The version used was ' + chromeVersion);
@@ -307,7 +307,7 @@ class GatherRunner {
     if (!driver.online) pageLoadError = undefined;
 
     if (pageLoadError) {
-      gathererResults.LighthouseRunWarnings[0].push('Lighthouse was unable to reliably load the ' +
+      gathererResults.LighthouseRunWarnings.push('Lighthouse was unable to reliably load the ' +
         'page you requested. Make sure you are testing the correct URL and that the server is ' +
         'properly responding to all requests.');
     }
@@ -363,14 +363,14 @@ class GatherRunner {
       traces: tracingData.traces,
       devtoolsLogs: tracingData.devtoolsLogs,
       settings,
+      // Take only unique LighthouseRunWarnings, if any.
+      LighthouseRunWarnings: Array.from(new Set(gathererResults.LighthouseRunWarnings)),
     };
-
-    // Take only unique LighthouseRunWarnings, if any.
-    const uniqueWarnings = Array.from(new Set(gathererResults.LighthouseRunWarnings[0]));
-    gathererResults.LighthouseRunWarnings = [uniqueWarnings];
 
     const pageLoadFailures = [];
     for (const [gathererName, phaseResultsPromises] of Object.entries(gathererResults)) {
+      if (artifacts[gathererName] !== undefined) continue;
+
       try {
         const phaseResults = await Promise.all(phaseResultsPromises);
         // Take last defined pass result as artifact.
@@ -413,7 +413,7 @@ class GatherRunner {
 
     /** @type {GathererResults} */
     const gathererResults = {
-      LighthouseRunWarnings: [[]],
+      LighthouseRunWarnings: [],
       fetchedAt: [(new Date()).toJSON()],
     };
 
