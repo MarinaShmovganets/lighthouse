@@ -24,7 +24,7 @@ class ConsistentlyInteractive extends MetricArtifact {
    * number of allowed concurrent requests (2).
    * @param {Array<LH.WebInspector.NetworkRequest>} networkRecords
    * @param {{timestamps: {traceEnd: number}}} traceOfTab
-   * @return {!Array<!TimePeriod>}
+   * @return {Array<TimePeriod>}
    */
   static _findNetworkQuietPeriods(networkRecords, traceOfTab) {
     const traceEndTsInMs = traceOfTab.timestamps.traceEnd / 1000;
@@ -34,9 +34,9 @@ class ConsistentlyInteractive extends MetricArtifact {
 
   /**
    * Finds all time periods where there are no long tasks.
-   * @param {!Array<!TimePeriod>} longTasks
+   * @param {Array<TimePeriod>} longTasks
    * @param {{timestamps: {navigationStart: number, traceEnd: number}}} traceOfTab
-   * @return {!Array<!TimePeriod>}
+   * @return {Array<TimePeriod>}
    */
   static _findCPUQuietPeriods(longTasks, traceOfTab) {
     const navStartTsInMs = traceOfTab.timestamps.navigationStart / 1000;
@@ -73,10 +73,10 @@ class ConsistentlyInteractive extends MetricArtifact {
 
   /**
    * Finds the first time period where a network quiet period and a CPU quiet period overlap.
-   * @param {!Array<!TimePeriod>} longTasks
+   * @param {Array<TimePeriod>} longTasks
    * @param {Array<LH.WebInspector.NetworkRequest>} networkRecords
    * @param {LH.Gatherer.Artifact.TraceOfTab} traceOfTab
-   * @return {{cpuQuietPeriod: !TimePeriod, networkQuietPeriod: !TimePeriod, cpuQuietPeriods: !Array<!TimePeriod>, networkQuietPeriods: !Array<!TimePeriod>}}
+   * @return {{cpuQuietPeriod: TimePeriod, networkQuietPeriod: TimePeriod, cpuQuietPeriods: Array<TimePeriod>, networkQuietPeriods: Array<TimePeriod>}}
    */
   static findOverlappingQuietPeriods(longTasks, networkRecords, traceOfTab) {
     const FMPTsInMs = traceOfTab.timestamps.firstMeaningfulPaint / 1000;

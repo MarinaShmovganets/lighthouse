@@ -7,7 +7,17 @@
 
 const ComputedArtifact = require('../computed-artifact');
 
-class MetricArtifact extends ComputedArtifact {
+/**
+ * @fileOverview Encapsulates logic for choosing the correct metric computation method based on the
+ * specified throttling settings, supporting simulated and observed metric types.
+ *
+ * To implement a fully supported metric:
+ *     - Override the name getter with MyMetricName
+ *     - Override the computeObservedMetric method with the observed-mode implementation.
+ *     - Override the computeSimulatedMetric method with the simulated-mode implementation OR
+ *       create another computed artifact with the name LanternMyMetricName.
+ */
+class ComputedMetric extends ComputedArtifact {
   /** @type {string} */
   get name() {
     throw new Error('Unimplemented');
@@ -55,4 +65,4 @@ class MetricArtifact extends ComputedArtifact {
   }
 }
 
-module.exports = MetricArtifact;
+module.exports = ComputedMetric;
