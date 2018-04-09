@@ -65,6 +65,7 @@ function runLighthouse(url, configPath, isDebug) {
 
   if (process.env.APPVEYOR) {
     // Appveyor is hella slow already, disable CPU throttling so we're not 16x slowdown
+    // see https://github.com/GoogleChrome/lighthouse/issues/4891
     args.push('--disable-cpu-throttling');
   }
 
