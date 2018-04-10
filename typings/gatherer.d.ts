@@ -24,20 +24,6 @@ declare global {
     }
 
     namespace Artifact {
-      export interface MetricComputationData {
-        devtoolsLog: Array<Protocol.RawEventMessage>;
-        trace: {traceEvents: Array<TraceEvent>};
-        settings: ConfigSettings;
-
-        networkRecords?: Array<WebInspector.NetworkRequest>;
-        traceOfTab?: TraceOfTab;
-      }
-
-      export interface Metric {
-        timing: number;
-        timestamp: number;
-      }
-
       export interface LanternMetric {
         timing: number;
         optimisticEstimate: Simulation.Result;
