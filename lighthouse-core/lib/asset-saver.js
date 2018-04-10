@@ -129,7 +129,13 @@ async function saveArtifacts(artifacts, basePath) {
   rimraf.sync(`${basePath}/*${traceSuffix}`);
   rimraf.sync(`${basePath}/${artifactsFilename}`);
 
-  const {traces, devtoolsLogs, ...restArtifacts} = artifacts;
+  // TODO: when https://github.com/GoogleChrome/lighthouse/issues/4952 is fixed
+  // const {traces, devtoolsLogs, ...restArtifacts} = artifacts;
+  const traces = artifacts.traces;
+  const devtoolsLogs = artifacts.devtoolsLogs;
+  const restArtifacts = Object.assign({}, artifacts);
+  delete restArtifacts.traces;
+  delete restArtifacts.devtoolsLogs;
 
   // save traces
   for (const [passName, trace] of Object.entries(traces)) {
