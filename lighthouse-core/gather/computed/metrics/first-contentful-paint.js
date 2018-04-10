@@ -19,10 +19,6 @@ class FirstContentfulPaint extends MetricArtifact {
    */
   computeObservedMetric(data) {
     const {traceOfTab} = data;
-    if (!traceOfTab) {
-      throw new Error('Missing required artifacts');
-    }
-
     if (!traceOfTab.timestamps.firstContentfulPaint) {
       throw new LHError(LHError.errors.NO_FCP);
     }

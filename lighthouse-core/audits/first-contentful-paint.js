@@ -8,19 +8,16 @@
 const Audit = require('./audit');
 const Util = require('../report/v2/renderer/util.js');
 
-// eslint-disable-next-line max-len
-const LEARN_MORE_LINK = 'https://developers.google.com/web/fundamentals/performance/user-centric-performance-metrics#first_paint_and_first_contentful_paint';
-
 class FirstContentfulPaint extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {AuditMeta}
    */
   static get meta() {
     return {
       name: 'first-contentful-paint',
       description: 'First Contentful Paint',
       helpText: 'First contentful paint marks the time at which the first text/image is painted. ' +
-          `[Learn more](${LEARN_MORE_LINK}).`,
+          `[Learn more](https://developers.google.com/web/fundamentals/performance/user-centric-performance-metrics#first_paint_and_first_contentful_paint).`,
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces', 'devtoolsLogs'],
     };
@@ -38,9 +35,9 @@ class FirstContentfulPaint extends Audit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
+   * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
-   * @return {!Promise<!AuditResult>}
+   * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
