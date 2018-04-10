@@ -75,7 +75,7 @@ class ConsistentlyInteractive extends MetricArtifact {
    * Finds the first time period where a network quiet period and a CPU quiet period overlap.
    * @param {Array<TimePeriod>} longTasks
    * @param {Array<LH.WebInspector.NetworkRequest>} networkRecords
-   * @param {LH.Gatherer.Artifact.TraceOfTab} traceOfTab
+   * @param {LH.Artifacts.TraceOfTab} traceOfTab
    * @return {{cpuQuietPeriod: TimePeriod, networkQuietPeriod: TimePeriod, cpuQuietPeriods: Array<TimePeriod>, networkQuietPeriods: Array<TimePeriod>}}
    */
   static findOverlappingQuietPeriods(longTasks, networkRecords, traceOfTab) {
@@ -132,8 +132,8 @@ class ConsistentlyInteractive extends MetricArtifact {
   }
 
   /**
-   * @param {LH.Gatherer.Artifact.MetricComputationData} data
-   * @return {Promise<LH.Gatherer.Artifact.Metric>}
+   * @param {LH.Artifacts.MetricComputationData} data
+   * @return {Promise<LH.Artifacts.Metric>}
    */
   computeObservedMetric(data) {
     const {traceOfTab, networkRecords} = data;

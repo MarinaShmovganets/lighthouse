@@ -24,27 +24,27 @@ class ComputedMetric extends ComputedArtifact {
   }
 
   /**
-   * @param {LH.Gatherer.Artifact.MetricComputationData} data
+   * @param {LH.Artifacts.MetricComputationData} data
    * @param {Object} artifacts
-   * @return {Promise<LH.Gatherer.Artifact.LanternMetric>}
+   * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   computeSimulatedMetric(data, artifacts) {
     return artifacts[`requestLantern${this.name}`](data);
   }
 
   /**
-   * @param {LH.Gatherer.Artifact.MetricComputationData} data
+   * @param {LH.Artifacts.MetricComputationData} data
    * @param {Object} artifacts
-   * @return {Promise<LH.Gatherer.Artifact.Metric>}
+   * @return {Promise<LH.Artifacts.Metric>}
    */
   computeObservedMetric(data, artifacts) { // eslint-disable-line no-unused-vars
     throw new Error('Unimplemented');
   }
 
   /**
-   * @param {LH.Gatherer.Artifact.MetricComputationData} data
+   * @param {LH.Artifacts.MetricComputationData} data
    * @param {Object} artifacts
-   * @return {Promise<LH.Gatherer.Artifact.LanternMetric|LH.Gatherer.Artifact.Metric>}
+   * @return {Promise<LH.Artifacts.LanternMetric|LH.Artifacts.Metric>}
    */
   async compute_(data, artifacts) {
     const {trace, devtoolsLog, settings} = data;

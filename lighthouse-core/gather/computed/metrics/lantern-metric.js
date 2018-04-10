@@ -66,7 +66,7 @@ class LanternMetricArtifact extends ComputedArtifact {
   }
 
   /**
-   * @param {{trace: Object, devtoolsLog: Object, settings: LH.ConfigSettings}} data
+   * @param {{trace: Object, devtoolsLog: Object, settings: LH.Config.Settings}} data
    * @param {Object} artifacts
    * @param {any=} extras
    * @return {Promise<LH.Artifacts.LanternMetric>}
@@ -109,7 +109,7 @@ class LanternMetricArtifact extends ComputedArtifact {
   }
 
   /**
-   * @param {LH.Gatherer.Artifact.MetricComputationData} data
+   * @param {LH.Artifacts.MetricComputationData} data
    * @param {Object} artifacts
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */

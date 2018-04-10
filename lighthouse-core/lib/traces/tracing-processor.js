@@ -84,7 +84,7 @@ class TraceProcessor {
    * Calculates the maximum queueing time (in ms) of high priority tasks for
    * selected percentiles within a window of the main thread.
    * @see https://docs.google.com/document/d/1b9slyaB9yho91YTOkAQfpCdULFkZM9LqsipcX3t7He8/preview
-   * @param {LH.Gatherer.Artifact.TraceOfTab} tabTrace
+   * @param {LH.Artifacts.TraceOfTab} tabTrace
    * @param {number=} startTime Optional start time (in ms relative to navstart) of range of interest. Defaults to navstart.
    * @param {number=} endTime Optional end time (in ms relative to navstart) of range of interest. Defaults to trace end.
    * @param {!Array<number>=} percentiles Optional array of percentiles to compute. Defaults to [0.5, 0.75, 0.9, 0.99, 1].
@@ -106,7 +106,7 @@ class TraceProcessor {
 
   /**
    * Provides durations in ms of all main thread top-level events
-   * @param {LH.Gatherer.Artifact.TraceOfTab} tabTrace
+   * @param {LH.Artifacts.TraceOfTab} tabTrace
    * @param {number} startTime Optional start time (in ms relative to navstart) of range of interest. Defaults to navstart.
    * @param {number} endTime Optional end time (in ms relative to navstart) of range of interest. Defaults to trace end.
    * @return {{durations: Array<number>, clippedLength: number}}
@@ -146,7 +146,7 @@ class TraceProcessor {
   /**
    * Provides the top level events on the main thread with timestamps in ms relative to navigation
    * start.
-   * @param {LH.Gatherer.Artifact.TraceOfTab} tabTrace
+   * @param {LH.Artifacts.TraceOfTab} tabTrace
    * @param {number=} startTime Optional start time (in ms relative to navstart) of range of interest. Defaults to navstart.
    * @param {number=} endTime Optional end time (in ms relative to navstart) of range of interest. Defaults to trace end.
    * @return {!Array<{start: number, end: number, duration: number}>}
