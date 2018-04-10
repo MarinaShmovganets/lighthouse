@@ -103,7 +103,7 @@ function runLighthouse(url, configPath, isDebug) {
 
   const lhr = fs.readFileSync(outputPath, 'utf8');
   if (isDebug) {
-    console.log('Smokehouse output available at: ', outputPath);
+    console.log('LHR output available at: ', outputPath);
   } else {
     fs.unlinkSync(outputPath);
   }
