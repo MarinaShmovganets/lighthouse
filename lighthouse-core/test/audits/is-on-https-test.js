@@ -21,6 +21,7 @@ describe('Security: HTTPS audit', () => {
   it('fails when there is more than one insecure record', () => {
     return Audit.audit(getArtifacts([
       {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
+      {url: 'https://google.com/', scheme: 'https', domain: 'google.com'}, // should be de-duped
       {url: 'http://insecure.com/image.jpeg', scheme: 'http', domain: 'insecure.com'},
       {url: 'http://insecure.com/image2.jpeg', scheme: 'http', domain: 'insecure.com'},
       {url: 'https://google.com/', scheme: 'https', domain: 'google.com'},
