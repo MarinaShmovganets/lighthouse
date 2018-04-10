@@ -84,7 +84,7 @@ class ConsistentlyInteractive extends MetricArtifact {
   /**
    * @param {LH.Gatherer.Artifact.MetricComputationData} data
    * @param {Object} artifacts
-   * @return {Promise<LH.Gatherer.Artifact.LanternMetric>}
+   * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   async compute_(data, artifacts) {
     const fmpResult = await artifacts.requestLanternFirstMeaningfulPaint(data, artifacts);

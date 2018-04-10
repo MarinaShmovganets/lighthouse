@@ -9,6 +9,12 @@ import _StrictEventEmitter from '../third-party/strict-event-emitter-types/index
 import { EventEmitter } from 'events';
 
 declare global {
+  // Augment global Error type to include node's optional `code` property
+  // see https://nodejs.org/api/errors.html#errors_error_code
+  interface Error {
+    code?: string;
+  }
+
   module LH {
     // re-export useful type modules under global LH module.
     export import Crdp = _Crdp;
@@ -30,7 +36,7 @@ declare global {
     interface SharedFlagsSettings {
       maxWaitForLoad?: number;
       blockedUrlPatterns?: string[];
-      additionalTraceCategories?: string[];
+      additionalTraceCategories?: string;
       auditMode?: boolean | string;
       gatherMode?: boolean | string;
       disableStorageReset?: boolean;
@@ -64,27 +70,6 @@ declare global {
       extraHeaders?: string;
     }
 
-    // TODO: type checking for Config
-    export interface Config {
-      passes?: ConfigPass[];
-      settings?: ConfigSettings;
-    }
-
-    export interface ConfigSettings extends SharedFlagsSettings {
-      extraHeaders?: Crdp.Network.Headers;
-    }
-
-    export interface ConfigPass {
-      recordTrace?: boolean;
-      useThrottling?: boolean;
-      pauseAfterLoadMs?: number;
-      networkQuietThresholdMs?: number;
-      cpuQuietThresholdMs?: number;
-      blockedUrlPatterns?: string[];
-      blankPage?: string;
-      blankDuration?: string;
-    }
-
     export interface Results {
       url: string;
       audits: Audit.Results;
@@ -92,6 +77,19 @@ declare global {
       artifacts?: Object;
       initialUrl: string;
       fetchedAt: string;
+      reportCategories: ReportCategory[];
+    }
+
+    export interface ReportCategory {
+      name: string;
+      description: string;
+      audits: ReportAudit[];
+    }
+
+    export interface ReportAudit {
+      id: string;
+      weight: number;
+      group: string;
     }
 
     export interface LaunchedChrome {
@@ -101,8 +99,11 @@ declare global {
     }
 
     export interface LighthouseError extends Error {
-      code?: string;
       friendlyMessage?: string;
+    }
+
+    export interface Trace {
+      traceEvents: TraceEvent[];
     }
 
     export interface TraceEvent {
