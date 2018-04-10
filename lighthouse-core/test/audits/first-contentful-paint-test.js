@@ -23,7 +23,7 @@ describe('Performance: first-contentful-paint audit', () => {
       },
       devtoolsLogs: {
         [Audit.DEFAULT_PASS]: pwaDevtoolsLog,
-      }
+      },
     }, Runner.instantiateComputedArtifacts());
 
     const settings = {throttlingMethod: 'provided'};
