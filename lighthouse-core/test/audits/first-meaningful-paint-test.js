@@ -9,7 +9,8 @@ const FMPAudit = require('../../audits/first-meaningful-paint.js');
 const Audit = require('../../audits/audit.js');
 const assert = require('assert');
 const options = FMPAudit.defaultOptions;
-const traceEvents = require('../fixtures/traces/progressive-app.json');
+const trace = require('../fixtures/traces/progressive-app-m60.json');
+const devtoolsLogs = require('../fixtures/traces/progressive-app-m60.devtools.log.json');
 
 const Runner = require('../../runner.js');
 const computedArtifacts = Runner.instantiateComputedArtifacts();
@@ -18,14 +19,27 @@ const computedArtifacts = Runner.instantiateComputedArtifacts();
 describe('Performance: first-meaningful-paint audit', () => {
   it('computes FMP correctly for valid trace', async () => {
     const artifacts = Object.assign({
-      traces: {[Audit.DEFAULT_PASS]: {traceEvents}},
-      devtoolsLogs: {[Audit.DEFAULT_PASS]: []},
+      traces: {[Audit.DEFAULT_PASS]: trace},
+      devtoolsLogs: {[Audit.DEFAULT_PASS]: devtoolsLogs},
     }, computedArtifacts);
     const context = {options, settings: {throttlingMethod: 'provided'}};
     const fmpResult = await FMPAudit.audit(artifacts, context);
 
-    assert.equal(fmpResult.score, 0.99);
-    assert.equal(fmpResult.displayValue, '1,100\xa0ms');
-    assert.equal(fmpResult.rawValue, 1099.523);
+    assert.equal(fmpResult.score, 1);
+    assert.equal(fmpResult.displayValue, '780\xa0ms');
+    assert.equal(fmpResult.rawValue, 783.328);
+  });
+
+  it('computes FMP correctly for simulated', async () => {
+    const artifacts = Object.assign({
+      traces: {[Audit.DEFAULT_PASS]: trace},
+      devtoolsLogs: {[Audit.DEFAULT_PASS]: devtoolsLogs},
+    }, computedArtifacts);
+    const context = {options, settings: {throttlingMethod: 'simulate'}};
+    const fmpResult = await FMPAudit.audit(artifacts, context);
+
+    assert.equal(fmpResult.score, 0.75);
+    assert.equal(fmpResult.displayValue, '2,850\xa0ms');
+    assert.equal(Math.round(fmpResult.rawValue), 2851);
   });
 });
