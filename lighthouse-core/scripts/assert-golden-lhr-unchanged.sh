@@ -33,8 +33,8 @@ set +x
 
 # remove timing from both
 cp "$samplev2Path" "$goldenLHRPath"
-node "$pwd/cleanup-LHR.js" "$goldenLHRPath"
-node "$pwd/cleanup-LHR.js" "$freshLHRPath"
+node "$pwd/cleanup-LHR-for-diff.js" "$goldenLHRPath"
+node "$pwd/cleanup-LHR-for-diff.js" "$freshLHRPath"
 
 colorText "Diff'ing golden LHR against the fresh LHR" "$purple"
 git --no-pager diff --color=always --no-index "$goldenLHRPath" "$freshLHRPath"
@@ -45,5 +45,6 @@ if [ $retVal -eq 0 ]; then
   colorText "✅  PASS. No change in LHR." "$green"
 else
   colorText "❌  FAIL. LHR has changed." "$red"
+  echo "Run \`yarn update:sample-json\` to rebaseline the golden LHR."
 fi
 exit $retVal
