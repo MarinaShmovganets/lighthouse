@@ -7,6 +7,8 @@
  */
 'use strict';
 
+/** @fileoverview Read in a LHR JSON file, remove whatever shouldn't be compared, write it back. */
+
 const {readFileSync, writeFileSync} = require('fs');
 
 const filename = process.argv[2];
