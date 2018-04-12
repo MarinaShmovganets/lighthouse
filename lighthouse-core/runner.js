@@ -180,7 +180,7 @@ class Runner {
 
     if (artifacts.settings) {
       const overrides = {'gatherMode': undefined, 'G': undefined, 'gather-mode': undefined,
-        'auditMode': undefined, 'A': undefined, 'audit-mode': undefined};
+        'auditMode': undefined, 'A': undefined, 'audit-mode': undefined, 'port': 0};
       const normalizedGatherSettings = Object.assign({}, artifacts.settings, overrides);
       const normalizedAuditSettings = Object.assign({}, opts.settings, overrides);
 

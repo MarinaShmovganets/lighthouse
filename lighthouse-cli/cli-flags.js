@@ -19,7 +19,7 @@ const printer = require('./printer');
 function getFlags(manualArgv) {
   // @ts-ignore yargs() is incorrectly typed as not returning itself
   const y = manualArgv ? yargs(manualArgv) : yargs;
-  return y.help('help')
+  const argv = y.help('help')
       .version(() => pkg.version)
       .showHelpOnFail(false, 'Specify --help for available options')
 
@@ -143,6 +143,17 @@ function getFlags(manualArgv) {
           'For more information on Lighthouse, see https://developers.google.com/web/tools/lighthouse/.')
       .wrap(yargs.terminalWidth())
       .argv;
+
+  // Map all undefined values to null so our asset-saver does not discard them.
+  // Asset saver uses JSON.stringify to save our settings to disk. JSON.stringify removes undefined values
+  // as it's not valid json.
+  for (const key in argv) {
+    if (typeof argv[key] === 'undefined') {
+      argv[key] = null;
+    }
+  }
+
+  return argv;
 }
 
 module.exports = {
