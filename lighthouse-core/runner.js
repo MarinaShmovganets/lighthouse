@@ -254,8 +254,8 @@ class Runner {
 
       // all required artifacts are in good shape, so we proceed
       const auditOptions = Object.assign({}, audit.defaultOptions, auditDefn.options);
-      const auditProduct = await audit.audit(artifacts, {options: auditOptions, settings: settings});
-      auditResult = Audit.generateAuditResult(audit, auditProduct);
+      const product = await audit.audit(artifacts, {options: auditOptions, settings: settings});
+      auditResult = Audit.generateAuditResult(audit, product);
     } catch (err) {
       log.warn(audit.meta.name, `Caught exception: ${err.message}`);
       if (err.fatal) {

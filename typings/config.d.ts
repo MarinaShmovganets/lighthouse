@@ -114,7 +114,6 @@ declare global {
       }
 
       // For now, these are unchanged from JSON version
-      // TODO(bckenny): could make weight required but not required on json
       export interface CategoryMember extends CategoryMemberJson {}
       export interface Category extends CategoryJson {
         audits: CategoryMember[];

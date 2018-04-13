@@ -55,7 +55,7 @@ class Audit {
    *
    * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
-   * @return {LH.Audit.Product | Promise<LH.Audit.Product>}
+   * @return {LH.Audit.Product|Promise<LH.Audit.Product>}
    */
   static audit(artifacts, context) {
     throw new Error('audit() method must be overriden');
