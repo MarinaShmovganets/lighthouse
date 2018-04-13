@@ -65,7 +65,10 @@ class SpeedIndex extends MetricArtifact {
   async compute_(data, artifacts) {
     const speedline = await artifacts.requestSpeedline(data.trace);
     const fcpResult = await artifacts.requestLanternFirstContentfulPaint(data, artifacts);
-    const metricResult = await this.computeMetricWithGraphs(data, artifacts, {speedline, fcpResult});
+    const metricResult = await this.computeMetricWithGraphs(data, artifacts, {
+      speedline,
+      fcpResult,
+    });
     metricResult.timing = Math.max(metricResult.timing, fcpResult.timing);
     return metricResult;
   }
@@ -96,9 +99,7 @@ class SpeedIndex extends MetricArtifact {
     const totalWeightedTime = layoutWeights
       .map(evt => evt.weight * Math.max(evt.time, fcpTimeInMs))
       .reduce((a, b) => a + b, 0);
-    const totalWeight = layoutWeights
-      .map(evt => evt.weight)
-      .reduce((a, b) => a + b, 0);
+    const totalWeight = layoutWeights.map(evt => evt.weight).reduce((a, b) => a + b, 0);
     return totalWeightedTime / totalWeight;
   }
 }
