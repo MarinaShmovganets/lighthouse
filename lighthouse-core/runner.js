@@ -48,8 +48,7 @@ class Runner {
       try {
         parsedURL = new URL(opts.url);
       } catch (e) {
-        const err = new Error('The url provided should have a proper protocol and hostname.');
-        throw err;
+        throw new Error('The url provided should have a proper protocol and hostname.');
       }
 
       const sentryContext = Sentry.getContext();
