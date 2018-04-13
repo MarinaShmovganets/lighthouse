@@ -62,7 +62,7 @@ describe('ReportScoring', () => {
       assert.equal(scoredCategories[1].score, 0.55);
     });
 
-    it.only('should weight notApplicable audits as 0', () => {
+    it('should weight notApplicable audits as 0', () => {
       const resultsByAuditId = {
         'my-boolean-audit': {score: 1, extendedInfo: {}, notApplicable: true},
         'my-scored-audit': {score: 1},

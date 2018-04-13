@@ -79,6 +79,8 @@ declare global {
       /**
        * A LH Artifacts object, but the traces and devtoolsLogs are replaced
        * with file paths of json files to import as those artifacts.
+       * TODO(bckenny): this is to support legacy config.artifacts. Migrate to
+       * -A instead.
        */
       export interface ArtifactsJson extends Omit<Artifacts, 'traces'|'devtoolsLogs'> {
         traces: Record<string, string>;

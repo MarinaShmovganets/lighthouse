@@ -153,15 +153,15 @@ class Runner {
     }
 
     const driver = runnerOpts.driverMock || new Driver(connection);
-    const options = {
+    const gatherOpts = {
       driver,
       initialUrl: runnerOpts.initialUrl,
       url: runnerOpts.url,
       settings: runnerOpts.config.settings,
     };
-    const artifacts = await GatherRunner.run(runnerOpts.config.passes, options);
+    const artifacts = await GatherRunner.run(runnerOpts.config.passes, gatherOpts);
     // TODO(bckenny): transition to using finalUrl in artifacts rather than on opts.
-    runnerOpts.url = options.url;
+    runnerOpts.url = gatherOpts.url;
     return artifacts;
   }
 
