@@ -115,7 +115,7 @@ declare global {
         options: {};
       }
 
-      // For now, these are unchanged from JSON version
+      // TODO: For now, these are unchanged from JSON and Result versions. Need to harmonize.
       export interface CategoryMember extends CategoryMemberJson {}
       export interface Category extends CategoryJson {
         audits: CategoryMember[];
