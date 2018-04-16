@@ -82,8 +82,8 @@ class SpeedIndex extends MetricArtifact {
    *
    * This approach was determined after evaluating the accuracy/complexity tradeoff of many
    * different methods. Read more in the evaluation doc.
-   * @see https://docs.google.com/document/d/1qJWXwxoyVLVadezIp_Tgdk867G3tDNkkVRvUJSH3K1E/edit#
    *
+   * @see https://docs.google.com/document/d/1qJWXwxoyVLVadezIp_Tgdk867G3tDNkkVRvUJSH3K1E/edit#
    * @param {Map<Node, LH.Gatherer.Simulation.NodeTiming>} nodeTiming
    * @param {number} fcpTimeInMs
    * @return {number}
