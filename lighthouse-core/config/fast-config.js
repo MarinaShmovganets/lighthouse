@@ -18,7 +18,7 @@ module.exports = {
       'first-interactive',
       'consistently-interactive',
       'estimated-input-latency',
-      'speed-index-metric',
+      'speed-index',
       'offscreen-images',
       'load-fast-enough-for-pwa',
     ],

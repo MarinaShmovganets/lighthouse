@@ -65,52 +65,22 @@ class Metrics {
         getTiming: findValueInMetricsAuditFn('traceFirstMeaningfulPaint', 'timing'),
       },
       {
-        name: 'Perceptual Speed Index',
-        id: 'psi',
-        getTs: auditResults => {
-          const siExt = auditResults['speed-index-metric'].extendedInfo;
-          return safeGet(siExt, 'value.timestamps.perceptualSpeedIndex');
-        },
-        getTiming: auditResults => {
-          const siExt = auditResults['speed-index-metric'].extendedInfo;
-          return safeGet(siExt, 'value.timings.perceptualSpeedIndex');
-        },
+        name: 'Speed Index',
+        id: 'si',
+        getTs: findValueInMetricsAuditFn('traceSpeedIndex', 'timestamp'),
+        getTiming: findValueInMetricsAuditFn('traceSpeedIndex', 'timing'),
       },
       {
         name: 'First Visual Change',
         id: 'fv',
-        getTs: auditResults => {
-          const siExt = auditResults['speed-index-metric'].extendedInfo;
-          return safeGet(siExt, 'value.timestamps.firstVisualChange');
-        },
-        getTiming: auditResults => {
-          const siExt = auditResults['speed-index-metric'].extendedInfo;
-          return safeGet(siExt, 'value.timings.firstVisualChange');
-        },
-      },
-      {
-        name: 'Visually Complete 85%',
-        id: 'vc85',
-        getTs: auditResults => {
-          const siExt = auditResults['speed-index-metric'].extendedInfo;
-          return safeGet(siExt, 'value.timestamps.visuallyReady');
-        },
-        getTiming: auditResults => {
-          const siExt = auditResults['speed-index-metric'].extendedInfo;
-          return safeGet(siExt, 'value.timings.visuallyReady');
-        },
+        getTs: findValueInMetricsAuditFn('traceFirstVisualChange', 'timestamp'),
+        getTiming: findValueInMetricsAuditFn('traceFirstVisualChange', 'timing'),
       },
       {
         name: 'Visually Complete 100%',
         id: 'vc100',
-        getTs: auditResults => {
-          const siExt = auditResults['speed-index-metric'].extendedInfo;
-          return safeGet(siExt, 'value.timestamps.visuallyComplete');
-        },
-        getTiming: auditResults => {
-          const siExt = auditResults['speed-index-metric'].extendedInfo;
-          return safeGet(siExt, 'value.timings.visuallyComplete');
-        },
+        getTs: findValueInMetricsAuditFn('traceLastVisualChange', 'timestamp'),
+        getTiming: findValueInMetricsAuditFn('traceLastVisualChange', 'timing'),
       },
       {
         name: 'First Interactive (vBeta)',
@@ -125,16 +95,10 @@ class Metrics {
         },
       },
       {
-        name: 'Time to Consistently Interactive (vBeta)',
+        name: 'Time to Interactive',
         id: 'ttci',
-        getTs: auditResults => {
-          const ttiExt = auditResults['consistently-interactive'].extendedInfo;
-          return safeGet(ttiExt, 'value.timestamp');
-        },
-        getTiming: auditResults => {
-          const ttiExt = auditResults['consistently-interactive'].extendedInfo;
-          return safeGet(ttiExt, 'value.timeInMs');
-        },
+        getTs: findValueInMetricsAuditFn('timeToInteractive', 'timestamp'),
+        getTiming: findValueInMetricsAuditFn('timeToInteractive', 'timing'),
       },
       {
         name: 'End of Trace',
