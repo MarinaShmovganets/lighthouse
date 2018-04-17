@@ -105,24 +105,8 @@
     "load-fast-enough-for-pwa": {
       "score": 1,
       "displayValue": "",
-      "rawValue": true,
-      "extendedInfo": {
-        "value": {
-          "areLatenciesAll3G": true,
-          "firstRequestLatencies": [
-            {
-              "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
-              "latency": "570.56"
-            },
-            {
-              "url": "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js",
-              "latency": "564.12"
-            }
-          ],
-          "isFast": true,
-          "timeToFirstInteractive": 4927.278
-        }
-      },
+      "rawValue": 4927.278,
+      "debugString": "First Interactive was 4,930 ms. More details in the \"Performance\" section.",
       "scoreDisplayMode": "binary",
       "name": "load-fast-enough-for-pwa",
       "description": "Page load is fast enough on 3G",
@@ -341,20 +325,14 @@
         }
       }
     },
-    "first-interactive": {
+    "first-cpu-idle": {
       "score": 0.82,
       "displayValue": "4,930 ms",
       "rawValue": 4927.278,
-      "extendedInfo": {
-        "value": {
-          "timeInMs": 4927.278,
-          "timestamp": 185608247190
-        }
-      },
       "scoreDisplayMode": "numeric",
-      "name": "first-interactive",
-      "description": "First Interactive (beta)",
-      "helpText": "First Interactive marks the time at which the page is minimally interactive. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-interactive)."
+      "name": "first-cpu-idle",
+      "description": "First CPU Idle",
+      "helpText": "First CPU Idle marks the first time at which the page's main thread is quiet enough to handle input. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-interactive)."
     },
     "consistently-interactive": {
       "score": 0.82,
@@ -1599,6 +1577,11 @@
             "metricName": "firstMeaningfulPaint",
             "timing": 3969.136,
             "timestamp": 185607289048
+          },
+          {
+            "metricName": "firstCPUIdle",
+            "timing": 4927.278,
+            "timestamp": 185608247190
           },
           {
             "metricName": "timeToInteractive",
@@ -4746,7 +4729,7 @@
           "group": "perf-metric"
         },
         {
-          "id": "first-interactive",
+          "id": "first-cpu-idle",
           "weight": 5,
           "group": "perf-metric"
         },
@@ -5403,6 +5386,6 @@
     }
   },
   "timing": {
-    "total": 877
+    "total": 864
   }
 }
