@@ -15,13 +15,6 @@ module.exports = [
     audits: {
       'speed-index': {
         score: '>=0.80',
-        extendedInfo: {
-          value: {
-            timings: {},
-            timestamps: {},
-            frames: [],
-          },
-        },
       },
       'first-meaningful-paint': {
         score: '>=0.90',
