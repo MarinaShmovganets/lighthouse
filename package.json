@@ -23,14 +23,11 @@
     "build-viewer": "cd ./lighthouse-viewer && yarn build",
     "clean": "rimraf *.report.html *.report.dom.html *.report.json *.screenshots.html *.screenshots.json *.devtoolslog.json *.trace.json || true",
     "lint": "[ \"$CI\" = true ] && eslint --quiet -f codeframe . || eslint .",
-
     "smoke": "node lighthouse-cli/test/smokehouse/run-smoke.js",
-
     "debug": "node --inspect-brk ./lighthouse-cli/index.js",
     "start": "node ./lighthouse-cli/index.js",
     "test": "yarn lint --quiet && yarn unit && yarn type-check && yarn closure && yarn diff:sample-json",
     "test-extension": "cd lighthouse-extension && yarn test",
-
     "unit-core": "mocha --reporter dot \"lighthouse-core/test/**/*-test.js\"",
     "unit-cli": "mocha --reporter dot \"lighthouse-cli/test/**/*-test.js\"",
     "unit-viewer": "mocha --reporter dot \"lighthouse-viewer/test/**/*-test.js\"",
@@ -67,6 +64,7 @@
   "devDependencies": {
     "@types/chrome": "^0.0.60",
     "@types/configstore": "^2.1.1",
+    "@types/css-font-loading-module": "^0.0.1",
     "@types/inquirer": "^0.0.35",
     "@types/lodash.isequal": "^4.5.2",
     "@types/node": "*",
