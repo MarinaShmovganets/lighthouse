@@ -231,7 +231,7 @@ function parseIcon(raw, manifestUrl) {
     sizes = {
       raw: raw.sizes,
       value: set.size > 0 ? Array.from(set) : undefined,
-      debugString: undefined
+      debugString: undefined,
     };
   } else {
     sizes = {...parsedSizes};

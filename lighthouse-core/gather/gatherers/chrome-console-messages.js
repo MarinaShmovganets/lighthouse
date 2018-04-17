@@ -21,8 +21,7 @@ class ChromeConsoleMessages extends Gatherer {
   }
 
   /**
-   * 
-   * @param {LH.Crdp.Log.EntryAddedEvent} entry 
+   * @param {LH.Crdp.Log.EntryAddedEvent} entry
    */
   onConsoleEntry(entry) {
     this._logEntries.push(entry);

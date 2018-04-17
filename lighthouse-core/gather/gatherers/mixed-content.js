@@ -76,8 +76,8 @@ class MixedContent extends Gatherer {
           interceptionId: event.interceptionId,
         });
       }
-    }
-    
+    };
+
     return onRequestIntercepted;
   }
 

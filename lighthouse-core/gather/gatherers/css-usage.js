@@ -12,7 +12,6 @@ const Gatherer = require('./gatherer');
  */
 class CSSUsage extends Gatherer {
   /**
-   * 
    * @param {LH.Gatherer.PassContext} passContext
    * @return {Promise<LH.Artifacts['CSSUsage']>}
    */
@@ -38,11 +37,11 @@ class CSSUsage extends Gatherer {
         return {
           header: sheet.header,
           content: content.text,
-        }
+        };
       });
     });
     const styleSheetInfo = await Promise.all(promises);
-    
+
     const ruleUsageResponse = await driver.sendCommand('CSS.stopRuleUsageTracking');
     await driver.sendCommand('CSS.disable');
     await driver.sendCommand('DOM.disable');

@@ -254,7 +254,7 @@ class Driver {
   }
 
   /**
-   * @return {Promise<?Required<LH.Crdp.Page.GetAppManifestResponse>>}
+   * @return {Promise<{url: string, data: string}|null>}
    */
   getAppManifest() {
     return this.sendCommand('Page.getAppManifest')

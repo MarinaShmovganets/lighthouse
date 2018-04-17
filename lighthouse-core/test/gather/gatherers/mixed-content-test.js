@@ -58,7 +58,6 @@ describe('MixedContent Gatherer', () => {
       },
     };
     driver.cb = (args) => {
-      debugger;
       assert.strictEqual(Buffer.from(args.rawResponse, 'base64')
           .toString('utf8').includes('302 Found'), true);
     };

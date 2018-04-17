@@ -51,7 +51,7 @@ class CacheContents extends Gatherer {
     if (!cacheUrls || !Array.isArray(cacheUrls)) {
       throw new Error('Unable to retrieve cache contents');
     }
-    
+
     return cacheUrls;
   }
 }

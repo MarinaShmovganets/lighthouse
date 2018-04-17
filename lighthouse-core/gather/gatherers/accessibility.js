@@ -39,7 +39,7 @@ function runA11yChecks() {
       'server-side-image-map': {enabled: false},
     },
     // @ts-ignore
-    }).then(axeResult => {
+  }).then(axeResult => {
     // Augment the node objects with outerHTML snippet & custom path string
     // @ts-ignore
     axeResult.violations.forEach(v => v.nodes.forEach(node => {
