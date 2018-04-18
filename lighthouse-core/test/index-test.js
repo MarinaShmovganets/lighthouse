@@ -87,7 +87,7 @@ describe('Module Tests', function() {
       });
   });
 
-  it.only('should return formatted LHR when given no categories', function() {
+  it('should return formatted LHR when given no categories', function() {
     const exampleUrl = 'https://example.com/';
     return lighthouse(exampleUrl, {
       output: 'json',
