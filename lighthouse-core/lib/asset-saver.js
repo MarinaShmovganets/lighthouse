@@ -74,11 +74,10 @@ img {
 /**
  * Load artifacts object from files located within basePath
  * Also save the traces to their own files
- * @param {string} artifactsPath
+ * @param {string} basePath
  * @return {Promise<LH.Artifacts>}
  */
-async function loadArtifacts(artifactsPath) {
-  const basePath = path.resolve(process.cwd(), artifactsPath);
+async function loadArtifacts(basePath) {
   log.log('Reading artifacts from disk:', basePath);
 
   if (!fs.existsSync(basePath)) {
