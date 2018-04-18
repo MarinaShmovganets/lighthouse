@@ -12,7 +12,6 @@ const defaultConfig = require('../../config/default-config.js');
 const log = require('lighthouse-logger');
 const Gatherer = require('../../gather/gatherers/gatherer');
 const Audit = require('../../audits/audit');
-const Runner = require('../../runner');
 
 /* eslint-env mocha */
 

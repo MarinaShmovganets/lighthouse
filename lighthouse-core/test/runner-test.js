@@ -539,7 +539,7 @@ describe('Runner', () => {
     return Runner.run(null, {url, config, driverMock}).then(results => {
       assert.deepStrictEqual(results.runWarnings, [
         'I\'m a warning!',
-        'Also a warning'
+        'Also a warning',
       ]);
     });
   });

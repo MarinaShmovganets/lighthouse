@@ -82,7 +82,7 @@ async function loadArtifacts(artifactsPath) {
   log.log('Reading artifacts from disk:', basePath);
 
   if (!fs.existsSync(basePath)) {
-    throw new Error('No saved artifacts found at ' + basePath)
+    throw new Error('No saved artifacts found at ' + basePath);
   }
 
   // load artifacts.json
