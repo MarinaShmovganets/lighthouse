@@ -106,7 +106,6 @@
       "score": 1,
       "displayValue": "",
       "rawValue": 4927.278,
-      "debugString": "First Interactive was 4,930 ms. More details in the \"Performance\" section.",
       "scoreDisplayMode": "binary",
       "name": "load-fast-enough-for-pwa",
       "description": "Page load is fast enough on 3G",
@@ -325,14 +324,20 @@
         }
       }
     },
-    "first-cpu-idle": {
+    "first-interactive": {
       "score": 0.82,
       "displayValue": "4,930 ms",
       "rawValue": 4927.278,
+      "extendedInfo": {
+        "value": {
+          "timeInMs": 4927.278,
+          "timestamp": 185608247190
+        }
+      },
       "scoreDisplayMode": "numeric",
-      "name": "first-cpu-idle",
-      "description": "First CPU Idle",
-      "helpText": "First CPU Idle marks the first time at which the page's main thread is quiet enough to handle input. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-interactive)."
+      "name": "first-interactive",
+      "description": "First Interactive (beta)",
+      "helpText": "First Interactive marks the time at which the page is minimally interactive. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-interactive)."
     },
     "consistently-interactive": {
       "score": 0.82,
@@ -1577,11 +1582,6 @@
             "metricName": "firstMeaningfulPaint",
             "timing": 3969.136,
             "timestamp": 185607289048
-          },
-          {
-            "metricName": "firstCPUIdle",
-            "timing": 4927.278,
-            "timestamp": 185608247190
           },
           {
             "metricName": "timeToInteractive",
@@ -4729,7 +4729,7 @@
           "group": "perf-metric"
         },
         {
-          "id": "first-cpu-idle",
+          "id": "first-interactive",
           "weight": 5,
           "group": "perf-metric"
         },
@@ -5386,6 +5386,6 @@
     }
   },
   "timing": {
-    "total": 864
+    "total": 788
   }
 }
