@@ -74,18 +74,22 @@ img {
 /**
  * Load artifacts object from files located within basePath
  * Also save the traces to their own files
- * @param {string} basePath
+ * @param {string} artifactsPath
  * @return {Promise<LH.Artifacts>}
  */
-async function loadArtifacts(basePath) {
+async function loadArtifacts(artifactsPath) {
+  const basePath = path.resolve(process.cwd(), artifactsPath);
   log.log('Reading artifacts from disk:', basePath);
 
-  if (!fs.existsSync(basePath)) return Promise.reject(new Error('No saved artifacts found'));
+  if (!fs.existsSync(basePath)) {
+    throw new Error('No saved artifacts found at ' + basePath)
+  }
 
   // load artifacts.json
-  const filenames = fs.readdirSync(basePath);
   /** @type {LH.Artifacts} */
   const artifacts = JSON.parse(fs.readFileSync(path.join(basePath, artifactsFilename), 'utf8'));
+
+  const filenames = fs.readdirSync(basePath);
 
   // load devtoolsLogs
   artifacts.devtoolsLogs = {};

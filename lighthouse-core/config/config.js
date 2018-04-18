@@ -214,38 +214,6 @@ function assertValidGatherer(gathererInstance, gathererName) {
   }
 }
 
-function expandArtifacts(artifacts) {
-  if (!artifacts) {
-    return null;
-  }
-  // currently only trace logs and performance logs should be imported
-  if (artifacts.traces) {
-    Object.keys(artifacts.traces).forEach(key => {
-      log.log('info', 'Normalizng trace contents into expected state...');
-      let trace = require(artifacts.traces[key]);
-      // Before Chrome 54.0.2816 (codereview.chromium.org/2161583004), trace was
-      // an array of trace events. After this point, trace is an object with a
-      // traceEvents property. Normalize to new format.
-      if (Array.isArray(trace)) {
-        trace = {
-          traceEvents: trace,
-        };
-      }
-      trace = cleanTrace(trace);
-
-      artifacts.traces[key] = trace;
-    });
-  }
-
-  if (artifacts.devtoolsLogs) {
-    Object.keys(artifacts.devtoolsLogs).forEach(key => {
-      artifacts.devtoolsLogs[key] = require(artifacts.devtoolsLogs[key]);
-    });
-  }
-
-  return artifacts;
-}
-
 /**
  * Creates a settings object from potential flags object by dropping all the properties
  * that don't exist on Config.Settings.
@@ -367,7 +335,6 @@ class Config {
 
     this._passes = Config.requireGatherers(configJSON.passes, this._configDir);
     this._audits = Config.requireAudits(configJSON.audits, this._configDir);
-    this._artifacts = expandArtifacts(configJSON.artifacts);
     this._categories = configJSON.categories;
     this._groups = configJSON.groups;
     this._settings = configJSON.settings || {};
@@ -780,11 +747,6 @@ class Config {
   /** @type {Array<!Config.AuditWithOptions>} */
   get audits() {
     return this._audits;
-  }
-
-  /** @type {Array<!Artifacts>} */
-  get artifacts() {
-    return this._artifacts;
   }
 
   /** @type {Object<{audits: !Array<{id: string, weight: number}>}>} */
