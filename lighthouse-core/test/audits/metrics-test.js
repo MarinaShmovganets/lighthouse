@@ -43,16 +43,16 @@ describe('Performance: metrics', () => {
       timeToInteractive: 5308,
       speedIndex: 2063,
 
-      traceNavigationStart: 0,
-      traceFirstPaint: 499,
-      traceFirstContentfulPaint: 499,
-      traceFirstMeaningfulPaint: 783,
-      traceTraceEnd: 12540,
-      traceLoad: 2199,
-      traceDomContentLoaded: 560,
-      traceFirstVisualChange: 520,
-      traceLastVisualChange: 818,
-      traceSpeedIndex: 605,
+      observedNavigationStart: 0,
+      observedFirstPaint: 499,
+      observedFirstContentfulPaint: 499,
+      observedFirstMeaningfulPaint: 783,
+      observedTraceEnd: 12540,
+      observedLoad: 2199,
+      observedDomContentLoaded: 560,
+      observedFirstVisualChange: 520,
+      observedLastVisualChange: 818,
+      observedSpeedIndex: 605,
     });
   });
 });

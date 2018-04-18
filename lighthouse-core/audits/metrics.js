@@ -51,24 +51,24 @@ class Metrics extends Audit {
     // Include all timestamps of interest from trace of tab
     for (const [traceEventName, timing] of Object.entries(traceOfTab.timings)) {
       const uppercased = traceEventName.slice(0, 1).toUpperCase() + traceEventName.slice(1);
-      const metricName = `trace${uppercased}`;
+      const metricName = `observed${uppercased}`;
       const timestamp = traceOfTab.timestamps[traceEventName];
       metrics.push({metricName, timing, timestamp});
     }
 
     // Include some visual metrics from speedline
     metrics.push({
-      metricName: 'traceFirstVisualChange',
+      metricName: 'observedFirstVisualChange',
       timing: speedline.first,
       timestamp: (speedline.first + speedline.beginning) * 1000,
     });
     metrics.push({
-      metricName: 'traceLastVisualChange',
+      metricName: 'observedLastVisualChange',
       timing: speedline.complete,
       timestamp: (speedline.complete + speedline.beginning) * 1000,
     });
     metrics.push({
-      metricName: 'traceSpeedIndex',
+      metricName: 'observedSpeedIndex',
       timing: speedline.speedIndex,
       timestamp: (speedline.speedIndex + speedline.beginning) * 1000,
     });
