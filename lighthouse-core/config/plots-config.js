@@ -11,7 +11,7 @@ module.exports = {
       'first-meaningful-paint',
       'speed-index',
       'estimated-input-latency',
-      'first-interactive',
+      'first-cpu-idle',
       'consistently-interactive',
     ],
   },

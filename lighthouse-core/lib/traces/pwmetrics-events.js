@@ -83,16 +83,10 @@ class Metrics {
         getTiming: findValueInMetricsAuditFn('traceLastVisualChange', 'timing'),
       },
       {
-        name: 'First Interactive (vBeta)',
+        name: 'First CPU Idle',
         id: 'ttfi',
-        getTs: auditResults => {
-          const ttfiExt = auditResults['first-interactive'].extendedInfo;
-          return safeGet(ttfiExt, 'value.timestamp');
-        },
-        getTiming: auditResults => {
-          const ttfiExt = auditResults['first-interactive'].extendedInfo;
-          return safeGet(ttfiExt, 'value.timeInMs');
-        },
+        getTs: findValueInMetricsAuditFn('firstCPUIdle', 'timestamp'),
+        getTiming: findValueInMetricsAuditFn('firstCPUIdle', 'timing'),
       },
       {
         name: 'Time to Interactive',

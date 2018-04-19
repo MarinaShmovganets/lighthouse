@@ -12,7 +12,6 @@ const defaultConfig = require('../../config/default-config.js');
 const log = require('lighthouse-logger');
 const Gatherer = require('../../gather/gatherers/gatherer');
 const Audit = require('../../audits/audit');
-const Runner = require('../../runner');
 
 /* eslint-env mocha */
 
@@ -285,14 +284,14 @@ describe('Config', () => {
       audits: [
         'accessibility/color-contrast',
         'first-meaningful-paint',
-        'first-interactive',
+        'first-cpu-idle',
         'estimated-input-latency',
       ],
       categories: {
         'needed-category': {
           audits: [
             {id: 'first-meaningful-paint'},
-            {id: 'first-interactive'},
+            {id: 'first-cpu-idle'},
           ],
         },
         'other-category': {
@@ -329,14 +328,14 @@ describe('Config', () => {
       audits: [
         'accessibility/color-contrast',
         'first-meaningful-paint',
-        'first-interactive',
+        'first-cpu-idle',
         'estimated-input-latency',
       ],
       categories: {
         'needed-category': {
           audits: [
             {id: 'first-meaningful-paint'},
-            {id: 'first-interactive'},
+            {id: 'first-cpu-idle'},
             {id: 'color-contrast'},
           ],
         },
@@ -397,7 +396,7 @@ describe('Config', () => {
       extends: true,
       settings: {
         onlyCategories: ['performance', 'missing-category'],
-        onlyAudits: ['first-interactive', 'missing-audit'],
+        onlyAudits: ['first-cpu-idle', 'missing-audit'],
       },
     });
 
@@ -471,68 +470,6 @@ describe('Config', () => {
     assert.ok(typeof config.settings.maxWaitForLoad === 'number', 'missing setting from default');
     assert.ok(config.settings.disableStorageReset, 'missing setting from extension config');
     assert.ok(config.settings.disableDeviceEmulation, 'missing setting from flags');
-  });
-
-  describe('artifact loading', () => {
-    it('expands artifacts', () => {
-      const config = new Config({
-        artifacts: {
-          traces: {
-            defaultPass: path.resolve(__dirname, '../fixtures/traces/trace-user-timings.json'),
-          },
-          devtoolsLogs: {
-            defaultPass: path.resolve(__dirname, '../fixtures/perflog.json'),
-          },
-        },
-      });
-      const computed = Runner.instantiateComputedArtifacts();
-
-      const traceUserTimings = require('../fixtures/traces/trace-user-timings.json');
-      assert.deepStrictEqual(config.artifacts.traces.defaultPass.traceEvents, traceUserTimings);
-      const devtoolsLogs = config.artifacts.devtoolsLogs.defaultPass;
-      assert.equal(devtoolsLogs.length, 555);
-
-      return computed.requestNetworkRecords(devtoolsLogs).then(records => {
-        assert.equal(records.length, 76);
-      });
-    });
-
-    it('expands artifacts with multiple named passes', () => {
-      const config = new Config({
-        artifacts: {
-          traces: {
-            defaultPass: path.resolve(__dirname, '../fixtures/traces/trace-user-timings.json'),
-            otherPass: path.resolve(__dirname, '../fixtures/traces/trace-user-timings.json'),
-          },
-          devtoolsLogs: {
-            defaultPass: path.resolve(__dirname, '../fixtures/perflog.json'),
-            otherPass: path.resolve(__dirname, '../fixtures/perflog.json'),
-          },
-        },
-      });
-      const traceUserTimings = require('../fixtures/traces/trace-user-timings.json');
-      assert.deepStrictEqual(config.artifacts.traces.defaultPass.traceEvents, traceUserTimings);
-      assert.deepStrictEqual(config.artifacts.traces.otherPass.traceEvents, traceUserTimings);
-      assert.equal(config.artifacts.devtoolsLogs.defaultPass.length, 555);
-      assert.equal(config.artifacts.devtoolsLogs.otherPass.length, 555);
-    });
-
-    it('handles traces with no TracingStartedInPage events', () => {
-      const config = new Config({
-        artifacts: {
-          traces: {
-            defaultPass: path.resolve(__dirname,
-                            '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json'),
-          },
-          devtoolsLogs: {
-            defaultPass: path.resolve(__dirname, '../fixtures/perflog.json'),
-          },
-        },
-      });
-
-      assert.ok(config.artifacts.traces.defaultPass.traceEvents.find(
-            e => e.name === 'TracingStartedInPage' && e.args.data.page === '0xhad00p'));
-    });
   });
 
   describe('#extendConfigJSON', () => {

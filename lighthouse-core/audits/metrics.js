@@ -34,12 +34,20 @@ class Metrics extends Audit {
     const speedline = await artifacts.requestSpeedline(trace);
     const firstContentfulPaint = await artifacts.requestFirstContentfulPaint(metricComputationData);
     const firstMeaningfulPaint = await artifacts.requestFirstMeaningfulPaint(metricComputationData);
+    const firstCPUIdle = await artifacts.requestFirstCPUIdle(metricComputationData);
     const timeToInteractive = await artifacts.requestConsistentlyInteractive(metricComputationData);
     const speedIndex = await artifacts.requestSpeedIndex(metricComputationData);
     const metrics = [];
 
     // Include the simulated/observed performance metrics
-    const metricsMap = {firstContentfulPaint, firstMeaningfulPaint, timeToInteractive, speedIndex};
+    const metricsMap = {
+      firstContentfulPaint,
+      firstMeaningfulPaint,
+      firstCPUIdle,
+      timeToInteractive,
+      speedIndex,
+    };
+
     for (const [metricName, values] of Object.entries(metricsMap)) {
       metrics.push({
         metricName,
