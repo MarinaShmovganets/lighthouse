@@ -21,8 +21,7 @@ class EstimatedInputLatency extends Audit {
       name: 'estimated-input-latency',
       description: 'Estimated Input Latency',
       helpText: 'The score above is an estimate of how long your app takes to respond to user ' +
-          'input, in milliseconds. There is a 90% probability that a user encounters this amount ' +
-          'of latency, or less. 10% of the time a user can expect additional latency. If your ' +
+          'input, in milliseconds, during the busiest 5s window of page load. If your ' +
           'latency is higher than 50 ms, users may perceive your app as laggy. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency).',
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
@@ -47,7 +46,8 @@ class EstimatedInputLatency extends Audit {
       throw new LHError(LHError.errors.NO_FMP);
     }
 
-    const events = TracingProcessor.getMainThreadTopLevelEvents(tabTrace, startTime);
+    const events = TracingProcessor.getMainThreadTopLevelEvents(tabTrace, startTime)
+      .filter(evt => evt.duration >= 1);
 
     const candidateStartEvts = events.filter(evt => evt.duration >= 10);
 
@@ -56,11 +56,12 @@ class EstimatedInputLatency extends Audit {
       const latencyPercentiles = TracingProcessor.getRiskToResponsiveness(
         events,
         startEvt.start,
-        startEvt.start + ROLLING_WINDOW_SIZE
+        startEvt.start + ROLLING_WINDOW_SIZE,
+        [0.9]
       );
 
       worst90thPercentileLatency = Math.max(
-        latencyPercentiles.find(result => result.percentile === 0.9).time,
+        latencyPercentiles[0].time,
         worst90thPercentileLatency
       );
     }
