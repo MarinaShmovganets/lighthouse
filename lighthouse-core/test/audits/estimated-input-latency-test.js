@@ -5,12 +5,13 @@
  */
 'use strict';
 
-const Audit = require('../../audits/estimated-input-latency.js');
-const Runner = require('../../runner.js');
+const Audit = require('../../audits/estimated-input-latency');
+const Runner = require('../../runner');
 const assert = require('assert');
 const options = Audit.defaultOptions;
 
-const pwaTrace = require('../fixtures/traces/progressive-app.json');
+const TracingProcessor = require('../../lib/traces/tracing-processor');
+const pwaTrace = require('../fixtures/traces/progressive-app-m60.json');
 
 const computedArtifacts = Runner.instantiateComputedArtifacts();
 
@@ -25,12 +26,63 @@ function generateArtifactsWithTrace(trace) {
 
 describe('Performance: estimated-input-latency audit', () => {
   it('evaluates valid input correctly', () => {
-    const artifacts = generateArtifactsWithTrace({traceEvents: pwaTrace});
+    const artifacts = generateArtifactsWithTrace(pwaTrace);
     return Audit.audit(artifacts, {options}).then(output => {
       assert.equal(output.debugString, undefined);
-      assert.equal(output.rawValue, 16.2);
-      assert.equal(output.displayValue, '16\xa0ms');
+      assert.equal(Math.round(output.rawValue * 10) / 10, 17.1);
+      assert.equal(output.displayValue, '17\xa0ms');
       assert.equal(output.score, 1);
+    });
+  });
+
+  describe('#audit', () => {
+    let firstMeaningfulPaint;
+    let traceEnd;
+    let artifacts;
+    let origGetMainThreadEventsFn;
+    let mainThreadEvtsMock;
+
+    beforeEach(() => {
+      firstMeaningfulPaint = 0.00001;
+      traceEnd = 1e20;
+      artifacts = {
+        traces: {},
+        requestTraceOfTab() {
+          const timings = {firstMeaningfulPaint, traceEnd};
+          return Promise.resolve({timings});
+        },
+      };
+
+      origGetMainThreadEventsFn = TracingProcessor.getMainThreadTopLevelEvents;
+      TracingProcessor.getMainThreadTopLevelEvents = () => mainThreadEvtsMock(arguments);
+    });
+
+    afterEach(() => {
+      TracingProcessor.getMainThreadTopLevelEvents = origGetMainThreadEventsFn;
+    });
+
+    it('uses a 5s rolling window, not traceEnd', async () => {
+      mainThreadEvtsMock = () => [
+        {start: 7500, end: 10000, duration: 2500},
+        {start: 10000, end: 15000, duration: 5000},
+      ];
+
+      const result = await Audit.audit(artifacts, {options});
+      assert.equal(result.rawValue, 4516);
+      assert.equal(result.score, 0);
+    });
+
+    it('handles continuous tasks', async () => {
+      const events = [];
+      for (let i = 0; i < 1000; i++) {
+        events.push({start: i * 100, end: (i + 1) * 100, duration: 100});
+      }
+
+      mainThreadEvtsMock = () => events;
+
+      const result = await Audit.audit(artifacts, {options});
+      assert.equal(result.rawValue, 106);
+      assert.equal(result.score, 0.44);
     });
   });
 });

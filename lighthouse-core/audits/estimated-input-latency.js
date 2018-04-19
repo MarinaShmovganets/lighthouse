@@ -10,6 +10,8 @@ const Util = require('../report/v2/renderer/util');
 const TracingProcessor = require('../lib/traces/tracing-processor');
 const LHError = require('../lib/errors');
 
+const ROLLING_WINDOW_SIZE = 5000;
+
 class EstimatedInputLatency extends Audit {
   /**
    * @return {!AuditMeta}
@@ -45,23 +47,34 @@ class EstimatedInputLatency extends Audit {
       throw new LHError(LHError.errors.NO_FMP);
     }
 
-    const latencyPercentiles = TracingProcessor.getRiskToResponsiveness(tabTrace, startTime);
-    const ninetieth = latencyPercentiles.find(result => result.percentile === 0.9);
-    const rawValue = parseFloat(ninetieth.time.toFixed(1));
+    const events = TracingProcessor.getMainThreadTopLevelEvents(tabTrace, startTime);
+
+    const candidateStartEvts = events.filter(evt => evt.duration >= 10);
+
+    let worst90thPercentileLatency = 16;
+    for (const startEvt of candidateStartEvts) {
+      const latencyPercentiles = TracingProcessor.getRiskToResponsiveness(
+        events,
+        startEvt.start,
+        startEvt.start + ROLLING_WINDOW_SIZE
+      );
+
+      worst90thPercentileLatency = Math.max(
+        latencyPercentiles.find(result => result.percentile === 0.9).time,
+        worst90thPercentileLatency
+      );
+    }
 
     const score = Audit.computeLogNormalScore(
-      ninetieth.time,
+      worst90thPercentileLatency,
       context.options.scorePODR,
       context.options.scoreMedian
     );
 
     return {
       score,
-      rawValue,
-      displayValue: Util.formatMilliseconds(rawValue, 1),
-      extendedInfo: {
-        value: latencyPercentiles,
-      },
+      rawValue: worst90thPercentileLatency,
+      displayValue: Util.formatMilliseconds(worst90thPercentileLatency, 1),
     };
   }
 
