@@ -48,12 +48,12 @@ const SMOKETESTS = [{
   id: 'dbw',
   expectations: 'dobetterweb/dbw-expectations.js',
   config: smokehouseDir + 'dbw-config.js',
-  batch: 'parallel-second',
+  batch: 'parallel-third',
 }, {
   id: 'redirects',
   expectations: 'redirects/expectations.js',
   config: smokehouseDir + 'redirects-config.js',
-  batch: 'parallel-first',
+  batch: 'parallel-third',
 }, {
   id: 'seo',
   expectations: 'seo/expectations.js',
@@ -78,7 +78,7 @@ const SMOKETESTS = [{
   id: 'ttci',
   expectations: 'tricky-ttci/expectations.js',
   config: 'lighthouse-core/config/default-config.js',
-  batch: 'parallel-second',
+  batch: 'parallel-third',
 }];
 
 /**
