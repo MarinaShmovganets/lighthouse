@@ -18,7 +18,8 @@ async function getRobotsTxtContent() {
       return {status: response.status, content: null};
     }
 
-    return response.text().then(content => ({status: response.status, content}));
+    const content = await response.text();
+    return {status: response.status, content};
   } catch (_) {
     return {status: null, content: null};
   }
