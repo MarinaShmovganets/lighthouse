@@ -41,10 +41,10 @@ function installMediaListener() {
   });
 }
 
-/* istanbul ignore next */
 /**
  * @return {Promise<{tagName: string, url: string, src: string, href: string, rel: string, media: string, disabled: boolean, mediaChanges: {href: string, media: string, msSinceHTMLEnd: number, matches: boolean}}>}
  */
+/* istanbul ignore next */
 function collectTagsThatBlockFirstPaint() {
   return new Promise((resolve, reject) => {
     try {

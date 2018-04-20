@@ -48,7 +48,7 @@ function detectLibraries() {
 class JSLibraries extends Gatherer {
   /**
    * @param {LH.Gatherer.PassContext} passContext
-   * @return {!Promise<LH.Artifacts['JSLibraries']>}
+   * @return {Promise<LH.Artifacts['JSLibraries']>}
    */
   afterPass(passContext) {
     const expression = `(function () {
