@@ -74,8 +74,20 @@ describe('Performance: estimated-input-latency audit', () => {
 
     it('handles continuous tasks', async () => {
       const events = [];
-      for (let i = 0; i < 1000; i++) {
-        events.push({start: i * 100, end: (i + 1) * 100, duration: 100});
+      const longTaskDuration = 100;
+      const longTaskNumber = 1000;
+      const shortTaskDuration = 1.1;
+      const shortTaskNumber = 10000;
+
+      for (let i = 0; i < longTaskNumber; i++) {
+        const start = i * longTaskDuration;
+        events.push({start: start, end: start + longTaskDuration, duration: longTaskDuration});
+      }
+
+      const baseline = events[events.length - 1].end;
+      for (let i = 0; i < shortTaskNumber; i++) {
+        const start = i * shortTaskDuration + baseline;
+        events.push({start: start, end: start + shortTaskDuration, duration: shortTaskDuration});
       }
 
       mainThreadEvtsMock = () => events;

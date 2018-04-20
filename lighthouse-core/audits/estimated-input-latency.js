@@ -12,6 +12,11 @@ const LHError = require('../lib/errors');
 
 const ROLLING_WINDOW_SIZE = 5000;
 
+/**
+ * @fileOverview This audit determines the largest 90 percentile EQT value of all 5s windows between
+ *    FMP and the end of the trace.
+ * @see https://docs.google.com/document/d/1b9slyaB9yho91YTOkAQfpCdULFkZM9LqsipcX3t7He8/preview
+ */
 class EstimatedInputLatency extends Audit {
   /**
    * @return {!AuditMeta}

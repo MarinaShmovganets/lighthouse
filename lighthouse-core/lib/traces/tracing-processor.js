@@ -117,9 +117,9 @@ class TraceProcessor {
     const durations = [];
     let clippedLength = 0;
 
-    topLevelEvents.forEach(event => {
+    for (const event of topLevelEvents) {
       if (event.end < startTime || event.start > endTime) {
-        return;
+        continue;
       }
 
       let duration = event.duration;
@@ -136,7 +136,7 @@ class TraceProcessor {
       }
 
       durations.push(duration);
-    });
+    }
     durations.sort((a, b) => a - b);
 
     return {
