@@ -20,6 +20,7 @@ const Gatherer = require('../gatherer');
  * @param {Element} element
  * @return {?string}
  */
+/* istanbul ignore next */
 function getOuterHTMLSnippet(element) {
   const reOpeningTag = /^.*?>/;
   const match = element.outerHTML.match(reOpeningTag);
