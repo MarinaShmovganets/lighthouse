@@ -49,7 +49,7 @@ Currently, `comcast` will also throttle the websocket port that Lighthouse uses 
 # Enable system traffic throttling
 comcast --latency=150 --target-bw=1600
 
-# Run Lighthouse with it's own throttling disabled
+# Run Lighthouse with its own throttling disabled
 lighthouse --throttling.requestLatencyMs=0 --throttling.downloadThroughputKbps=0 --throttling.uploadThroughputKbps=0 # ...
 
 # Disable the traffic throttling once you see "Retrieving trace"
