@@ -29,7 +29,7 @@
   --average-color: hsl(31, 100%, 45%); /* md orange 800 */
   --pass-color: hsl(139, 70%, 30%);
   --informative-color: #0c50c7;
-  --manual-color: #757575;
+  --medium-75-gray: #757575;
   --warning-color: #ffab00; /* md amber a700 */
   --report-border-color: #ccc;
   --report-secondary-border-color: #ebebeb;
@@ -221,7 +221,7 @@ span.lh-node:hover {
 .lh-score--manual .lh-score__value::after {
   background: url('data:image/svg+xml;utf8,<svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><title>manual</title><path d="M2 5h8v2H2z" fill="hsl(0, 0%, 100%)" fill-rule="evenodd"/></svg>') no-repeat 50% 50%;
   background-size: 18px;
-  background-color: var(--manual-color);
+  background-color: var(--medium-75-gray);
   width: 20px;
   height:  20px;
   position: relative;
@@ -366,7 +366,7 @@ span.lh-node:hover {
   display: flex;
 }
 
-.lh-metrics {
+.lh-metrics-column {
   flex: 1;
   margin-right: 20px;
 }
@@ -739,7 +739,7 @@ span.lh-node:hover {
   position: absolute;
   right: var(--section-padding);
   bottom: var(--section-padding);
-  color: #757575;
+  color: var(--medium-75-gray);
 }
 
 span.lh-scorescale-range {
@@ -969,9 +969,9 @@ summary.lh-passed-audits-summary {
 
 .tooltip-boundary:hover .tooltip {
   display: block;
-  animation: fadeInTooltip 250ms;
+  animation: fadeInTooltip 150ms;
   animation-fill-mode: forwards;
-  animation-delay: 300ms;
+  animation-delay: 500ms;
   min-width: 15em;
   background: #ffffff;
   padding: 15px;

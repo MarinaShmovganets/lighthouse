@@ -237,17 +237,16 @@ class CategoryRenderer {
     const tmpl = this.dom.cloneTemplate('#tmpl-lh-gauge', this.templateContext);
     const wrapper = this.dom.find('.lh-gauge__wrapper', tmpl);
     wrapper.href = `#${category.id}`;
-    this.dom.find('.lh-gauge__label', tmpl).textContent = category.name;
-
-    const gauge = this.dom.find('.lh-gauge', tmpl);
     wrapper.classList.add(`lh-gauge__wrapper--${Util.calculateRating(category.score)}`);
 
+    const gauge = this.dom.find('.lh-gauge', tmpl);
     // score of 100: `stroke-dasharray: 360 360`;
     // score of  50: `stroke-dasharray: 180 360`;
     this.dom.find('.lh-gauge-arc', gauge).style.strokeDasharray = `${category.score * 360} 360`;
+
     const scoreOutOf100 = Math.round(category.score * 100);
     this.dom.find('.lh-gauge__percentage', tmpl).textContent = scoreOutOf100;
-
+    this.dom.find('.lh-gauge__label', tmpl).textContent = category.name;
     return tmpl;
   }
 

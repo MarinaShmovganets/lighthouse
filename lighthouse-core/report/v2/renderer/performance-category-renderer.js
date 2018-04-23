@@ -121,14 +121,16 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const otherMetrics = metricAudits.filter(a => a.weight < 3);
 
     const metricsBoxesEl = this.dom.createChildOf(metricAuditsEl, 'div', 'lh-metrics-container');
-    const keyBox = this.dom.createChildOf(metricsBoxesEl, 'div', 'lh-metrics lh-metrics__key');
-    const otherBox = this.dom.createChildOf(metricsBoxesEl, 'div', 'lh-metrics lh-metrics__other');
+    const metricsColumn1El = this.dom.createChildOf(metricsBoxesEl, 'div',
+        'lh-metrics-column lh-metrics-column__key');
+    const metricsColumn2El = this.dom.createChildOf(metricsBoxesEl, 'div',
+        'lh-metrics-column lh-metrics-column__other');
 
     keyMetrics.forEach(item => {
-      keyBox.appendChild(this._renderMetric(item));
+      metricsColumn1El.appendChild(this._renderMetric(item));
     });
     otherMetrics.forEach(item => {
-      otherBox.appendChild(this._renderMetric(item));
+      metricsColumn2El.appendChild(this._renderMetric(item));
     });
 
     // Filmstrip
