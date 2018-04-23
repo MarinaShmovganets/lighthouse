@@ -78,7 +78,7 @@ function writeFile(filePath, output, outputMode) {
 function write(results, mode, path) {
   return new Promise((resolve, reject) => {
     const outputPath = checkOutputPath(path);
-    const output = results.formattedReport;
+    const output = results.report;
 
     if (outputPath === 'stdout') {
       return writeToStdout(output).then(_ => resolve(results));

@@ -123,9 +123,9 @@ gulp.task('browserify-lighthouse', () => {
       .ignore('rimraf')
       .ignore('pako/lib/zlib/inflate.js');
 
-      // Prevent the DevTools/LR background script from getting the HTML report generator.
+      // Prevent the DevTools background script from getting the stringified HTML.
       if (/lighthouse-background/.test(file.path)) {
-        bundle.ignore(require.resolve('../lighthouse-core/report/v2/report-generator.js'));
+        bundle.ignore(require.resolve('../lighthouse-core/report/v2/html-report-assets.js'));
       }
 
       // Expose the audits, gatherers, and computed artifacts so they can be dynamically loaded.

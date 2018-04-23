@@ -73,7 +73,7 @@ declare global {
 
     export interface RunnerResult {
       lhr: Result;
-      formattedReport: string;
+      report: string;
       artifacts: Artifacts;
     }
 

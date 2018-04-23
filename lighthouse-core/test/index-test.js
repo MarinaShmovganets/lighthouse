@@ -99,7 +99,7 @@ describe('Module Tests', function() {
         'viewport',
       ],
     }).then(results => {
-      assert.ok(/<html/.test(results.formattedReport), 'did not create html report');
+      assert.ok(/<html/.test(results.report), 'did not create html report');
       assert.ok(results.artifacts.ViewportDimensions, 'did not set artifacts');
       assert.ok(results.lhr.lighthouseVersion);
       assert.ok(results.lhr.fetchedAt);

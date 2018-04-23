@@ -120,7 +120,7 @@ window.runLighthouseAsInCLI = function(connection, url, options, categoryIDs) {
         promise = promise.then(_ => assetSaver.logAssets(results.artifacts, results.lhr.audits));
       }
       return promise.then( _ => {
-        return results.formattedReport;
+        return results.report;
       });
     });
 };
@@ -133,7 +133,7 @@ window.runLighthouseAsInCLI = function(connection, url, options, categoryIDs) {
  */
 window.createReportPageAsBlob = function(runnerResult) {
   performance.mark('report-start');
-  const html = runnerResult.formattedReport;
+  const html = runnerResult.report;
   const blob = new Blob([html], {type: 'text/html'});
   const blobURL = window.URL.createObjectURL(blob);
 
