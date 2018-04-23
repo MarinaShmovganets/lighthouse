@@ -95,15 +95,21 @@ class NetworkRecorder extends EventEmitter {
    * @param {Array<LH.WebInspector.NetworkRequest>} networkRecords
    * @param {number} allowedConcurrentRequests
    * @param {number=} endTime
+   * @param {(function(LH.WebInspector.NetworkRequest):boolean)=} filter
    * @return {Array<{start: number, end: number}>}
    */
-  static findNetworkQuietPeriods(networkRecords, allowedConcurrentRequests, endTime = Infinity) {
+  static findNetworkQuietPeriods(
+      networkRecords,
+      allowedConcurrentRequests,
+      endTime = Infinity,
+      filter
+  ) {
     // First collect the timestamps of when requests start and end
     /** @type {Array<{time: number, isStart: boolean}>} */
     let timeBoundaries = [];
     networkRecords.forEach(record => {
       const scheme = record.parsedURL && record.parsedURL.scheme;
-      if (IGNORED_NETWORK_SCHEMES.includes(scheme)) {
+      if (IGNORED_NETWORK_SCHEMES.includes(scheme) || (filter && !filter(record))) {
         return;
       }
 

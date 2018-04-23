@@ -28,6 +28,7 @@ declare global {
       _resourceSize?: number;
 
       finished: boolean;
+      requestMethod: string;
       statusCode: number;
       redirectSource?: {
         url: string;
