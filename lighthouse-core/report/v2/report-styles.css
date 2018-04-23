@@ -174,7 +174,7 @@ summary {
   word-break: break-word;
   color: hsl(174, 100%, 27%);
 }
-span.lh-node:hover {
+.lh-node:hover {
     background: hsl(0, 0%, 98%);
     border-radius: 2px;
 }
@@ -742,7 +742,7 @@ span.lh-node:hover {
   color: var(--medium-75-gray);
 }
 
-span.lh-scorescale-range {
+.lh-scorescale-range {
   margin-left: 10px;
 }
 
