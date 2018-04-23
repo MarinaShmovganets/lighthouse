@@ -75,6 +75,7 @@ function getFontFaceFromStylesheets() {
         if (rule instanceof CSSFontFaceRule) {
           const fontsObject = {
             // @ts-ignore (currently) non-standard Chrome extension to CSSStyleDeclaration
+            // See disussion in https://bugzilla.mozilla.org/show_bug.cgi?id=1296373#c4
             display: rule.style.fontDisplay || 'auto',
             family: rule.style.fontFamily ? rule.style.fontFamily.replace(/"|'/g, '') : '',
             stretch: rule.style.fontStretch || 'normal',
