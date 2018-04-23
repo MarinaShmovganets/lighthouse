@@ -418,7 +418,7 @@ span.lh-node:hover {
 }
 
 .lh-perf-metric--pass .lh-perf-metric__value span::after {
-  background: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2"><circle class="path circle" fill="#73AF55" cx="65.1" cy="65.1" r="62.1"/><polyline class="path check" fill="none" stroke="white" stroke-width="16" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/></svg>') no-repeat 50% 50%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><title>check</title><path fill="hsl(139, 70%, 30%)" d="M24 4C12.95 4 4 12.95 4 24c0 11.04 8.95 20 20 20 11.04 0 20-8.96 20-20 0-11.05-8.96-20-20-20zm-4 30L10 24l2.83-2.83L20 28.34l15.17-15.17L38 16 20 34z"/></svg>') no-repeat 50% 50%;
 }
 
 
@@ -426,7 +426,7 @@ span.lh-node:hover {
   color: var(--average-color);
 }
 .lh-perf-metric--average .lh-perf-metric__value span::after {
-  background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>info</title><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="hsl(31, 100%, 45%)"/></svg>') no-repeat 50% 50%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><title>info</title><path fill="hsl(31, 100%, 45%)" d="M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm2 30h-4V22h4v12zm0-16h-4v-4h4v4z"/></svg>') no-repeat 50% 50%;
 }
 
 
@@ -434,7 +434,7 @@ span.lh-node:hover {
   color: var(--fail-color);
 }
 .lh-perf-metric--fail .lh-perf-metric__value span::after {
-  background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>warn</title><path d="M0 0h24v24H0z" fill="none"/><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" fill="hsl(1, 73%, 45%)"/></svg>') no-repeat 50% 50%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><title>warn</title><path fill="hsl(1, 73%, 45%)" d="M2 42h44L24 4 2 42zm24-6h-4v-4h4v4zm0-8h-4v-8h4v8z"/></svg>') no-repeat 50% 50%;
 }
 
 .lh-perf-metric .lh-debug {
