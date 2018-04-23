@@ -240,9 +240,10 @@ class CategoryRenderer {
     wrapper.classList.add(`lh-gauge__wrapper--${Util.calculateRating(category.score)}`);
 
     const gauge = this.dom.find('.lh-gauge', tmpl);
-    // score of 100: `stroke-dasharray: 360 360`;
-    // score of  50: `stroke-dasharray: 180 360`;
-    this.dom.find('.lh-gauge-arc', gauge).style.strokeDasharray = `${category.score * 360} 360`;
+    // 329 is ~= 2 * Math.PI * gauge radius (53)
+    // https://codepen.io/xgad/post/svg-radial-progress-meters
+    // score of 50: `stroke-dasharray: 164.5 329`;
+    this.dom.find('.lh-gauge-arc', gauge).style.strokeDasharray = `${category.score * 329} 329`;
 
     const scoreOutOf100 = Math.round(category.score * 100);
     this.dom.find('.lh-gauge__percentage', tmpl).textContent = scoreOutOf100;
