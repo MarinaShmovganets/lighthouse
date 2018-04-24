@@ -420,7 +420,6 @@
     }
 
     .lh-gauge {
-        text-anchor: middle;
         max-width: 360px;
         max-height: 360px;
         stroke-linecap: round;
@@ -467,7 +466,7 @@
 
       /* Contain the layout style paint & layers during animation*/
       contain: content;
-      will-change: opacity;
+      will-change: opacity; /* Only using for layer promotion */
     }
 
     .lh-gauge__label {

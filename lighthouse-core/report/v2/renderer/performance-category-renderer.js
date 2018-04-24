@@ -121,10 +121,8 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const otherMetrics = metricAudits.filter(a => a.weight < 3);
 
     const metricsBoxesEl = this.dom.createChildOf(metricAuditsEl, 'div', 'lh-metrics-container');
-    const metricsColumn1El = this.dom.createChildOf(metricsBoxesEl, 'div',
-        'lh-metrics-column lh-metrics-column__key');
-    const metricsColumn2El = this.dom.createChildOf(metricsBoxesEl, 'div',
-        'lh-metrics-column lh-metrics-column__other');
+    const metricsColumn1El = this.dom.createChildOf(metricsBoxesEl, 'div', 'lh-metrics-column');
+    const metricsColumn2El = this.dom.createChildOf(metricsBoxesEl, 'div', 'lh-metrics-column');
 
     keyMetrics.forEach(item => {
       metricsColumn1El.appendChild(this._renderMetric(item));
@@ -147,7 +145,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     metricAuditsEl.open = true;
     element.appendChild(metricAuditsEl);
 
-    // Diagnostics
+    // Opportunities
     const hintAudits = category.audits
         .filter(audit => audit.group === 'perf-hint' && audit.result.score < 1)
         .sort((auditA, auditB) => auditB.result.rawValue - auditA.result.rawValue);
@@ -160,6 +158,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
       element.appendChild(hintAuditsEl);
     }
 
+    // Diagnostics
     const infoAudits = category.audits
         .filter(audit => audit.group === 'perf-info' && audit.result.score < 1);
     if (infoAudits.length) {
