@@ -84,8 +84,8 @@ declare global {
 
         export interface OpportunityDetails {
           type: 'opportunity';
-          savingsMs: number
-          savingsBytes?: number
+          overallSavingsMs: number
+          overallSavingsBytes?: number
           headings: ColumnHeading[];
           items: (WastedBytesDetailsItem | WastedTimeDetailsItem)[];
         }
