@@ -38,9 +38,6 @@ describe('Lighthouse Viewer', function() {
   }
 
   before(async function() {
-    // eslint-disable-next-line
-    this.timeout(10 * 1000);
-
     server.listen(portNumber, 'localhost');
 
     // start puppeteer
@@ -57,9 +54,6 @@ describe('Lighthouse Viewer', function() {
   });
 
   after(async function() {
-    // eslint-disable-next-line
-    this.timeout(10 * 1000);
-
     await Promise.all([
       new Promise(resolve => server.close(resolve)),
       browser && browser.close(),
