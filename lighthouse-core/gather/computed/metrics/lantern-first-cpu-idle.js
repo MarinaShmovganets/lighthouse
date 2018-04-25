@@ -28,8 +28,8 @@ class LanternFirstCPUIdle extends LanternConsistentlyInteractive {
       : extras.fmpResult.pessimisticEstimate.timeInMs;
 
     return {
-      timeInMs: LanternFirstCPUIdle.getFirstCPUIdleWindowStart(simulation.nodeTiming, fmpTimeInMs),
-      nodeTiming: simulation.nodeTiming,
+      timeInMs: LanternFirstCPUIdle.getFirstCPUIdleWindowStart(simulation.nodeTimings, fmpTimeInMs),
+      nodeTimings: simulation.nodeTimings,
     };
   }
 
