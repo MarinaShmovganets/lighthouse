@@ -33,11 +33,14 @@ class ConsistentlyInteractive extends MetricArtifact {
    */
   static _findNetworkQuietPeriods(networkRecords, traceOfTab) {
     const traceEndTsInMs = traceOfTab.timestamps.traceEnd / 1000;
-    /** @param {LH.WebInspector.NetworkRequest} record */
-    const filter = record => record.finished && record.requestMethod === 'GET' && !record.failed &&
-        Math.floor(record.statusCode / 100) < 4;
-    return NetworkRecorder.findNetworkQuietPeriods(networkRecords,
-      ALLOWED_CONCURRENT_REQUESTS, traceEndTsInMs, filter);
+    // Ignore records that failed, never finished, or were POST/PUT/etc.
+    const filteredNetworkRecords = networkRecords.filter(record => {
+      return record.finished && record.requestMethod === 'GET' && !record.failed &&
+          // Consider network records that had 4xx/5xx status code as "failed"
+          Math.floor(record.statusCode / 100) < 4;
+    });
+    return NetworkRecorder.findNetworkQuietPeriods(filteredNetworkRecords,
+      ALLOWED_CONCURRENT_REQUESTS, traceEndTsInMs);
   }
 
   /**
@@ -87,11 +90,11 @@ class ConsistentlyInteractive extends MetricArtifact {
    * @return {{cpuQuietPeriod: TimePeriod, networkQuietPeriod: TimePeriod, cpuQuietPeriods: Array<TimePeriod>, networkQuietPeriods: Array<TimePeriod>}}
    */
   static findOverlappingQuietPeriods(longTasks, networkRecords, traceOfTab) {
-    const FCPTsInMs = traceOfTab.timestamps.firstContentfulPaint / 1000;
+    const FcpTsInMs = traceOfTab.timestamps.firstContentfulPaint / 1000;
 
     /** @type {function(TimePeriod):boolean} */
     const isLongEnoughQuietPeriod = period =>
-        period.end > FCPTsInMs + REQUIRED_QUIET_WINDOW &&
+        period.end > FcpTsInMs + REQUIRED_QUIET_WINDOW &&
         period.end - period.start >= REQUIRED_QUIET_WINDOW;
     const networkQuietPeriods = this._findNetworkQuietPeriods(networkRecords, traceOfTab)
         .filter(isLongEnoughQuietPeriod);
