@@ -42,15 +42,15 @@ describe('Lighthouse Viewer', function() {
 
     // start puppeteer
     browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       executablePath: process.env.CHROME_PATH,
     });
     viewerPage = await browser.newPage();
     viewerPage.on('pageerror', pageError => pageErrors.push(pageError));
-    await viewerPage.goto(viewerUrl, {waitUntil: 'networkidle2', timeout: 3000});
+    await viewerPage.goto(viewerUrl, {waitUntil: 'networkidle2', timeout: 30000});
     const fileInput = await viewerPage.$('#hidden-file-input');
     await fileInput.uploadFile(sampleLhr);
-    await viewerPage.waitForSelector('.lh-container', {timeout: 3000});
+    await viewerPage.waitForSelector('.lh-container', {timeout: 30000});
   });
 
   after(async function() {
