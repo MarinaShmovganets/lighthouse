@@ -22,10 +22,18 @@ const WebInspector = require('../../lib/web-inspector');
 // to possibly be non-blocking (and they have minimal impact anyway).
 const MINIMUM_WASTED_MS = 50;
 
-const keyByUrl = arr => arr.reduce((map, node) => {
-  map[node.record && node.record.url] = node;
-  return map;
-}, {});
+/**
+ * Given a simulation's nodeTiming, return an object with the nodes/timing keyed by network URL
+ * @param {LH.Gatherer.Simulation.Result['nodeTiming']} nodeTimingMap
+ * @return {Object<string, {node: Node, nodeTiming: LH.Gatherer.Simulation.NodeTiming}>}
+ */
+const getNodesAndTimingByUrl = nodeTimingMap => {
+  const nodes = Array.from(nodeTimingMap.keys());
+  return nodes.reduce((map, node) => {
+    map[node.record && node.record.url] = {node, nodeTiming: nodeTimingMap.get(node)};
+    return map;
+  }, {});
+};
 
 class RenderBlockingResources extends Audit {
   /**
@@ -37,9 +45,10 @@ class RenderBlockingResources extends Audit {
       description: 'Eliminate render-blocking resources',
       informative: true,
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
-      helpText: 'Resources are blocking the first paint of your page. Consider ' +
-          'delivering critical JS/CSS inline and deferring all non-critical ' +
-          'JS/styles. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).',
+      helpText:
+        'Resources are blocking the first paint of your page. Consider ' +
+        'delivering critical JS/CSS inline and deferring all non-critical ' +
+        'JS/styles. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).',
       requiredArtifacts: ['CSSUsage', 'URL', 'TagsBlockingFirstPaint', 'traces'],
     };
   }
@@ -61,19 +70,17 @@ class RenderBlockingResources extends Audit {
     const fcpSimulation = await artifacts.requestFirstContentfulPaint(metricComputationData);
     const fcpTsInMs = traceOfTab.timestamps.firstContentfulPaint / 1000;
 
-    const nodeTimingMap = fcpSimulation.optimisticEstimate.nodeTiming;
-    const nodesByUrl = keyByUrl(Array.from(nodeTimingMap.keys()));
+    const nodesByUrl = getNodesAndTimingByUrl(fcpSimulation.optimisticEstimate.nodeTiming);
 
     const results = [];
     const deferredNodeIds = new Set();
     for (const resource of artifacts.TagsBlockingFirstPaint) {
       // Ignore any resources that finished after observed FCP (they're clearly not render-blocking)
       if (resource.endTime * 1000 > fcpTsInMs) continue;
-
-      const node = nodesByUrl[resource.tag.url];
-      const nodeTiming = nodeTimingMap.get(node);
       // TODO(phulce): beacon these occurences to Sentry to improve FCP graph
-      if (!node) continue;
+      if (!nodesByUrl[resource.tag.url]) continue;
+
+      const {node, nodeTiming} = nodesByUrl[resource.tag.url];
 
       // Mark this node and all it's dependents as deferrable
       // TODO(phulce): make this slightly more surgical
@@ -127,8 +134,9 @@ class RenderBlockingResources extends Audit {
     let totalChildNetworkBytes = 0;
     const minimalFCPGraph = fcpGraph.cloneWithRelationships(node => {
       const canDeferRequest = deferredIds.has(node.id);
-      const isStylesheet = node.type === Node.TYPES.NETWORK &&
-          node.record._resourceType === WebInspector.resourceTypes.Stylesheet;
+      const isStylesheet =
+        node.type === Node.TYPES.NETWORK &&
+        node.record._resourceType === WebInspector.resourceTypes.Stylesheet;
       if (canDeferRequest && isStylesheet) {
         // We'll inline the used bytes of the stylesheet and assume the rest can be deferred
         const wastedBytes = wastedBytesMap.get(node.record.url) || 0;
@@ -180,8 +188,13 @@ class RenderBlockingResources extends Audit {
 
     const headings = [
       {key: 'url', itemType: 'url', text: 'URL'},
-      {key: 'totalBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 0.01,
-        text: 'Size (KB)'},
+      {
+        key: 'totalBytes',
+        itemType: 'bytes',
+        displayUnit: 'kb',
+        granularity: 0.01,
+        text: 'Size (KB)',
+      },
       {key: 'wastedMs', itemType: 'ms', text: 'Download Time (ms)', granularity: 1},
     ];
 
