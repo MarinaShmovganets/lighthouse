@@ -62,8 +62,8 @@ describe('Lighthouse Viewer', function() {
 
 
   const selectors = {
-    audits: '.lh-audit, .lh-timeline-metric, .lh-perf-hint',
-    titles: '.lh-score__title, .lh-perf-hint__title, .lh-timeline-metric__title',
+    audits: '.lh-audit, .lh-perf-metric, .lh-perf-hint',
+    titles: '.lh-score__title, .lh-perf-hint__title, .lh-perf-metric__title',
   };
 
   it('should load with no errors', async () => {
