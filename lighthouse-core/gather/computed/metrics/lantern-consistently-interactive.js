@@ -94,12 +94,12 @@ class ConsistentlyInteractive extends MetricArtifact {
   }
 
   /**
-   * @param {Map<Node, LH.Gatherer.Simulation.NodeTiming>} nodeTiming
+   * @param {Map<Node, LH.Gatherer.Simulation.NodeTiming>} nodeTimings
    * @return {number}
    */
-  static getLastLongTaskEndTime(nodeTiming, duration = 50) {
+  static getLastLongTaskEndTime(nodeTimings, duration = 50) {
     // @ts-ignore TS can't infer how the object invariants change
-    return Array.from(nodeTiming.entries())
+    return Array.from(nodeTimings.entries())
       .filter(([node, timing]) => {
         if (node.type !== Node.TYPES.CPU) return false;
         if (!timing.endTime || !timing.startTime) return false;
