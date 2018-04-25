@@ -37,7 +37,7 @@ class ConsistentlyInteractive extends MetricArtifact {
     const filteredNetworkRecords = networkRecords.filter(record => {
       return record.finished && record.requestMethod === 'GET' && !record.failed &&
           // Consider network records that had 4xx/5xx status code as "failed"
-          Math.floor(record.statusCode / 100) < 4;
+          record.statusCode < 400;
     });
     return NetworkRecorder.findNetworkQuietPeriods(filteredNetworkRecords,
       ALLOWED_CONCURRENT_REQUESTS, traceEndTsInMs);
