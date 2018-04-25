@@ -80,7 +80,8 @@ class RenderBlockingResources extends Audit {
       // i.e. the referenced font asset won't become inlined just because you inline the CSS
       node.traverse(node => deferredNodeIds.add(node.id));
 
-      const wastedMs = nodeTiming.endTime - nodeTiming.startTime;
+      // "wastedMs" is the download time of the network request, responseReceived - requestSent
+      const wastedMs = Math.round(nodeTiming.endTime - nodeTiming.startTime);
       if (wastedMs < MINIMUM_WASTED_MS) continue;
 
       results.push({
@@ -94,7 +95,7 @@ class RenderBlockingResources extends Audit {
       return {results, wastedMs: 0};
     }
 
-    const wastedMs = RenderBlockingResources.estimateSavingsFromInlining(
+    const wastedMs = RenderBlockingResources.estimateSavingsWithGraphs(
       simulator,
       fcpSimulation.optimisticGraph,
       deferredNodeIds,
@@ -105,33 +106,44 @@ class RenderBlockingResources extends Audit {
   }
 
   /**
+   * Estimates how much faster this page would reach FCP if we inlined all the used CSS from the
+   * render blocking stylesheets and deferred all the scripts. This is more conservative than
+   * removing all the assets and more aggressive than inlining everything.
+   *
+   * *Most* of the time, scripts in the head are there accidentally/due to lack of awareness
+   * rather than necessity, so we're comfortable with this balance. In the worst case, we're telling
+   * devs that they should be able to get to a reasonable first paint without JS, which is not a bad
+   * thing.
+   *
    * @param {Simulator} simulator
    * @param {Node} fcpGraph
    * @param {Set<string>} deferredIds
    * @param {Map<string, number>} wastedBytesMap
    * @return {number}
    */
-  static estimateSavingsFromInlining(simulator, fcpGraph, deferredIds, wastedBytesMap) {
+  static estimateSavingsWithGraphs(simulator, fcpGraph, deferredIds, wastedBytesMap) {
     const originalEstimate = simulator.simulate(fcpGraph).timeInMs;
 
     let totalChildNetworkBytes = 0;
-    const graphWithoutChildren = fcpGraph.cloneWithRelationships(node => {
-      const willDefer = deferredIds.has(node.id);
-      if (willDefer && node.type === Node.TYPES.NETWORK &&
-          node.record._resourceType === WebInspector.resourceTypes.Stylesheet) {
+    const minimalFCPGraph = fcpGraph.cloneWithRelationships(node => {
+      const canDeferRequest = deferredIds.has(node.id);
+      const isStylesheet = node.type === Node.TYPES.NETWORK &&
+          node.record._resourceType === WebInspector.resourceTypes.Stylesheet;
+      if (canDeferRequest && isStylesheet) {
+        // We'll inline the used bytes of the stylesheet and assume the rest can be deferred
         const wastedBytes = wastedBytesMap.get(node.record.url) || 0;
         totalChildNetworkBytes += node.record._transferSize - wastedBytes;
       }
 
-      // Include all nodes that couldn't be deferred
-      return !willDefer;
+      // If a node can be deferred, exclude it from the new FCP graph
+      return !canDeferRequest;
     });
 
-    graphWithoutChildren.record._transferSize += totalChildNetworkBytes;
-    const estimateAfterInlineA = simulator.simulate(graphWithoutChildren);
-    const estimateAfterInline = estimateAfterInlineA.timeInMs;
-    graphWithoutChildren.record._transferSize -= totalChildNetworkBytes;
-    return Math.max(originalEstimate - estimateAfterInline, 0);
+    // Add the inlined bytes to the HTML response
+    minimalFCPGraph.record._transferSize += totalChildNetworkBytes;
+    const estimateAfterInline = simulator.simulate(minimalFCPGraph).timeInMs;
+    minimalFCPGraph.record._transferSize -= totalChildNetworkBytes;
+    return Math.round(Math.max(originalEstimate - estimateAfterInline, 0));
   }
 
   /**

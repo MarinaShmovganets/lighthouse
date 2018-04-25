@@ -42,8 +42,8 @@ describe('Render blocking resources audit', () => {
     assert.equal(result.rawValue, 0);
   });
 
-  describe('#estimateSavingsFromInlining', () => {
-    const estimate = RenderBlockingResourcesAudit.estimateSavingsFromInlining;
+  describe('#estimateSavingsWithGraphs', () => {
+    const estimate = RenderBlockingResourcesAudit.estimateSavingsWithGraphs;
 
     let requestId;
     let record;
