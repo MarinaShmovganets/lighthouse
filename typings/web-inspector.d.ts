@@ -50,7 +50,6 @@ declare global {
     export interface ParsedURL {
       scheme: string;
       host: string;
-      securityOrigin(): string;
     }
 
     export interface NetworkRequestInitiator {
