@@ -7,7 +7,7 @@
 'use strict';
 
 const Audit = require('./audit');
-const Util = require('../report/v2/renderer/util');
+const Util = require('../report/html/renderer/util');
 const UnusedBytes = require('./byte-efficiency/byte-efficiency-audit');
 // Preconnect establishes a "clean" socket. Chrome's socket manager will keep an unused socket
 // around for 10s. Meaning, the time delta between processing preconnect a request should be <10s,
@@ -98,14 +98,9 @@ class UsesRelPreconnectAudit extends Audit {
         }
 
         const securityOrigin = record.parsedURL.securityOrigin();
-        if (origins.has(securityOrigin)) {
-          const records = origins.get(securityOrigin);
-          if (records) {
-            records.push(record);
-          }
-        } else {
-          origins.set(securityOrigin, [record]);
-        }
+        const records = origins.get(securityOrigin) || [];
+        records.push(record);
+        origins.set(securityOrigin, records);
       });
 
     /** @type {Array<{url: string, type: 'ms', wastedMs: number}>}*/
@@ -113,12 +108,8 @@ class UsesRelPreconnectAudit extends Audit {
     origins.forEach(records => {
       // Sometimes requests are done simultaneous and the connection has not been made
       // chrome will try to connect for each network record, we get the first record
-      const firstRecordOfOrigin = records.reduce((firstRecordOfOrigin, record) => {
-        if (!firstRecordOfOrigin || record.startTime < firstRecordOfOrigin.startTime) {
-          return record;
-        }
-
-        return firstRecordOfOrigin;
+      const firstRecordOfOrigin = records.reduce((firstRecord, record) => {
+        return (record.startTime < firstRecord.startTime) ? record: firstRecord;
       });
 
       const connectionTime =
