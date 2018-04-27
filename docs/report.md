@@ -2,7 +2,7 @@
 
 Lighthouse has an indepedent report renderer that takes the **LHR** (Lighthouse Result object) and creates a DOM tree of the report. It's all done client-side.
 
-In 3.0, the basic HTML report outline is delivered as a string [from lighthouse-core's runner](https://github.com/GoogleChrome/lighthouse/blob/63c999789dc08b9a3b56b22f25f478f13050da29/lighthouse-core/runner.js#L137-L138).
+Example standalone HTML report, delivered by the CLI: https://crazy-roll.surge.sh/dbwtester.html _(View the source! 📖)_
 
 ### Report Renderer components
 
