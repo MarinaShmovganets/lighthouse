@@ -54,13 +54,13 @@ class LanternEstimatedInputLatency extends LanternMetricArtifact {
       : extras.fmpResult.optimisticEstimate.timeInMs;
 
     const events = LanternEstimatedInputLatency.getEventsAfterFMP(
-      simulation.nodeTiming,
+      simulation.nodeTimings,
       fmpTimeInMs
     );
 
     return {
       timeInMs: EstimatedInputLatency.calculateRollingWindowEIL(events),
-      nodeTiming: simulation.nodeTiming,
+      nodeTimings: simulation.nodeTimings,
     };
   }
 
@@ -75,13 +75,13 @@ class LanternEstimatedInputLatency extends LanternMetricArtifact {
   }
 
   /**
-   * @param {Map<Node, LH.Gatherer.Simulation.NodeTiming>} nodeTiming
+   * @param {LH.Gatherer.Simulation.Result['nodeTimings']} nodeTimings
    * @param {number} fmpTimeInMs
    */
-  static getEventsAfterFMP(nodeTiming, fmpTimeInMs) {
+  static getEventsAfterFMP(nodeTimings, fmpTimeInMs) {
     /** @type {Array<{start: number, end: number, duration: number}>} */
     const events = [];
-    for (const [node, timing] of nodeTiming.entries()) {
+    for (const [node, timing] of nodeTimings.entries()) {
       if (node.type !== Node.TYPES.CPU) continue;
       if (!timing.endTime || !timing.startTime) continue;
       if (timing.endTime < fmpTimeInMs) continue;
