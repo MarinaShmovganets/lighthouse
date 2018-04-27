@@ -8,8 +8,6 @@
 const ComputedArtifact = require('./computed-artifact');
 const icons = require('../../lib/icons');
 
-const ManifestParser = require('../../lib/manifest-parser.js'); // eslint-disable-line no-unused-vars
-
 const PWA_DISPLAY_VALUES = ['minimal-ui', 'fullscreen', 'standalone'];
 
 // Historically, Chrome recommended 12 chars as the maximum short_name length to prevent truncation.
@@ -25,10 +23,10 @@ class ManifestValues extends ComputedArtifact {
     return ['hasManifest', 'hasParseableManifest'];
   }
 
-  /** @typedef {(val: NonNullable<LH.Artifacts.Manifest['value']>) => boolean} validator */
+  /** @typedef {(val: NonNullable<LH.Artifacts.Manifest['value']>) => boolean} Validator */
 
   /**
-   * @return {Array<{id: string, failureText: string, validate: validator}>}
+   * @return {Array<{id: string, failureText: string, validate: Validator}>}
    */
   static get manifestChecks() {
     return [

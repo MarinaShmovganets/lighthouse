@@ -194,7 +194,7 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
       for (const evt of node.childEvents) {
         if (!evt.args.data) continue;
 
-        const dataUrl = evt.args.data.url;
+        const argsUrl = evt.args.data.url;
         const stackTraceUrls = (evt.args.data.stackTrace || []).map(l => l.url).filter(Boolean);
 
         switch (evt.name) {
@@ -217,8 +217,8 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
             break;
 
           case 'EvaluateScript':
-            // @ts-ignore - 'EvaluateScript' event means dataUrl is defined.
-            addDependencyOnUrl(node, dataUrl);
+            // @ts-ignore - 'EvaluateScript' event means argsUrl is defined.
+            addDependencyOnUrl(node, argsUrl);
             stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
             break;
 
@@ -227,15 +227,15 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
             // @ts-ignore - 'XHRReadyStateChange' event means readyState is defined.
             if (evt.args.data.readyState !== 4) break;
 
-            // @ts-ignore - 'XHRReadyStateChange' event means dataUrl is defined.
-            addDependencyOnUrl(node, dataUrl);
+            // @ts-ignore - 'XHRReadyStateChange' event means argsUrl is defined.
+            addDependencyOnUrl(node, argsUrl);
             stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
             break;
 
           case 'FunctionCall':
           case 'v8.compile':
-            // @ts-ignore - events mean dataUrl is defined.
-            addDependencyOnUrl(node, dataUrl);
+            // @ts-ignore - events mean argsUrl is defined.
+            addDependencyOnUrl(node, argsUrl);
             break;
 
           case 'ParseAuthorStyleSheet':
