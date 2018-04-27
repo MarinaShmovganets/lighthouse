@@ -22,12 +22,14 @@ declare global {
 
       startTime: number;
       endTime: number;
+      _responseReceivedTime: number;
 
       transferSize: number;
       _transferSize?: number;
       _resourceSize?: number;
 
       finished: boolean;
+      requestMethod: string;
       statusCode: number;
       redirectSource?: {
         url: string;
@@ -36,6 +38,7 @@ declare global {
       localizedFailDescription?: string;
 
       _initiator: NetworkRequestInitiator;
+      initiatorRequest(): NetworkRequest,
       _timing: NetworkRequestTiming;
       _resourceType: ResourceType;
       _mimeType: string;
@@ -55,6 +58,8 @@ declare global {
     }
 
     export interface NetworkRequestTiming {
+      dnsStart: number;
+      dnsEnd: number;
       connectStart: number;
       connectEnd: number;
       sslStart: number;

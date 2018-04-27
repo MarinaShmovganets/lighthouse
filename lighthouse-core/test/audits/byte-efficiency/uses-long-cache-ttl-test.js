@@ -60,7 +60,7 @@ describe('Cache headers audit', () => {
     return CacheHeadersAudit.audit(artifacts, {options}).then(result => {
       const items = result.extendedInfo.value.results;
       assert.equal(items.length, 1);
-      assert.equal(items[0].cacheLifetimeInSeconds, 0);
+      assert.equal(items[0].cacheLifetimeMs, 0);
       assert.equal(items[0].wastedBytes, 10000);
       assert.equal(result.displayValue, '1 asset found');
     });
@@ -77,12 +77,12 @@ describe('Cache headers audit', () => {
     return CacheHeadersAudit.audit(artifacts, {options}).then(result => {
       const items = result.details.items;
       assert.equal(items.length, 3);
-      assert.equal(items[0].cacheLifetimeInSeconds, 3600);
+      assert.equal(items[0].cacheLifetimeMs, 3600 * 1000);
       assert.equal(items[0].cacheHitProbability, 0.2);
       assert.equal(Math.round(items[0].wastedBytes), 80000);
-      assert.equal(items[1].cacheLifetimeInSeconds, 3600);
+      assert.equal(items[1].cacheLifetimeMs, 3600 * 1000);
       assert.equal(Math.round(items[1].wastedBytes), 8000);
-      assert.equal(items[2].cacheLifetimeInSeconds, 86400);
+      assert.equal(items[2].cacheLifetimeMs, 86400 * 1000);
       assert.equal(Math.round(items[2].wastedBytes), 4000);
       assert.equal(result.displayValue, '3 assets found');
     });
@@ -102,11 +102,11 @@ describe('Cache headers audit', () => {
     return CacheHeadersAudit.audit(artifacts, {options}).then(result => {
       const items = result.extendedInfo.value.results;
       assert.equal(items.length, 3);
-      closeEnough(items[0].cacheLifetimeInSeconds, 3600);
+      closeEnough(items[0].cacheLifetimeMs, 3600 * 1000);
       assert.equal(Math.round(items[0].wastedBytes), 8000);
-      closeEnough(items[1].cacheLifetimeInSeconds, 86400);
+      closeEnough(items[1].cacheLifetimeMs, 86400 * 1000);
       assert.equal(Math.round(items[1].wastedBytes), 4000);
-      closeEnough(items[2].cacheLifetimeInSeconds, 86400 * 90);
+      closeEnough(items[2].cacheLifetimeMs, 86400 * 90 * 1000);
       assert.equal(Math.round(items[2].wastedBytes), 768);
     });
   });
@@ -128,9 +128,9 @@ describe('Cache headers audit', () => {
     return CacheHeadersAudit.audit(artifacts, {options}).then(result => {
       const items = result.extendedInfo.value.results;
       assert.equal(items.length, 2);
-      assert.ok(Math.abs(items[0].cacheLifetimeInSeconds - 3600) <= 1, 'invalid expires parsing');
+      assert.ok(Math.abs(items[0].cacheLifetimeMs - 3600 * 1000) <= 1, 'invalid expires parsing');
       assert.equal(Math.round(items[0].wastedBytes), 8000);
-      assert.ok(Math.abs(items[1].cacheLifetimeInSeconds - 86400) <= 1, 'invalid expires parsing');
+      assert.ok(Math.abs(items[1].cacheLifetimeMs - 86400 * 1000) <= 1, 'invalid expires parsing');
       assert.equal(Math.round(items[1].wastedBytes), 4000);
     });
   });
@@ -166,7 +166,7 @@ describe('Cache headers audit', () => {
   it('ignores potentially uncacheable records', () => {
     networkRecords = [
       networkRecord({statusCode: 500}),
-      networkRecord({url: 'https://example.com/dynamic.js?userId=crazy'}),
+      networkRecord({url: 'https://example.com/dynamic.js?userId=crazy', transferSize: 10}),
       networkRecord({url: 'data:image/jpeg;base64,what'}),
       networkRecord({resourceType: WebInspector.resourceTypes.XHR}),
     ];

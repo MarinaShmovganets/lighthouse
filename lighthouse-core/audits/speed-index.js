@@ -6,7 +6,7 @@
 'use strict';
 
 const Audit = require('./audit');
-const Util = require('../report/v2/renderer/util');
+const Util = require('../report/html/renderer/util');
 
 class SpeedIndex extends Audit {
   /**
@@ -28,9 +28,11 @@ class SpeedIndex extends Audit {
    */
   static get defaultOptions() {
     return {
-      // see https://www.desmos.com/calculator/mdgjzchijg
-      scorePODR: 1250,
-      scoreMedian: 5500,
+      // 75th and 90th percentiles HTTPArchive -> 50 and 75
+      // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
+      // see https://www.desmos.com/calculator/y1bg8ij7ti
+      scorePODR: 1700,
+      scoreMedian: 5800,
     };
   }
 

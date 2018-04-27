@@ -78,8 +78,7 @@ class UnusedBytes extends Audit {
     const settings = context && context.settings || {};
     const simulatorOptions = {
       devtoolsLog,
-      throttlingMethod: settings.throttlingMethod,
-      throttling: settings.throttling,
+      settings,
     };
 
     return artifacts
@@ -130,8 +129,8 @@ class UnusedBytes extends Audit {
     });
 
     const savingsOnTTI = Math.max(
-      ConsistentlyInteractive.getLastLongTaskEndTime(simulationBeforeChanges.nodeTiming) -
-        ConsistentlyInteractive.getLastLongTaskEndTime(simulationAfterChanges.nodeTiming),
+      ConsistentlyInteractive.getLastLongTaskEndTime(simulationBeforeChanges.nodeTimings) -
+        ConsistentlyInteractive.getLastLongTaskEndTime(simulationAfterChanges.nodeTimings),
       0
     );
 

@@ -6,7 +6,7 @@
 'use strict';
 
 const statistics = require('../lib/statistics');
-const Util = require('../report/v2/renderer/util');
+const Util = require('../report/html/renderer/util');
 
 const DEFAULT_PASS = 'defaultPass';
 
@@ -100,7 +100,7 @@ class Audit {
 
   /**
    * @param {Array<LH.Audit.Heading>} headings
-   * @param {Array<Object<string, string>>} results
+   * @param {Array<Object<string, string|number>>} results
    * @param {LH.Audit.DetailsRendererDetailsSummary} summary
    * @return {LH.Audit.DetailsRendererDetailsJSON}
    */

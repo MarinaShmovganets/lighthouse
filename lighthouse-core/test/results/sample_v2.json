@@ -112,7 +112,7 @@
       "helpText": "A fast page load over a 3G network ensures a good mobile user experience. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/fast-3g)."
     },
     "speed-index": {
-      "score": 0.62,
+      "score": 0.67,
       "displayValue": "4,420 ms",
       "rawValue": 4417,
       "scoreDisplayMode": "numeric",
@@ -267,7 +267,7 @@
       }
     },
     "first-cpu-idle": {
-      "score": 0.82,
+      "score": 0.65,
       "displayValue": "4,930 ms",
       "rawValue": 4927.278,
       "scoreDisplayMode": "numeric",
@@ -276,7 +276,7 @@
       "helpText": "First CPU Idle marks the first time at which the page's main thread is quiet enough to handle input. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-interactive)."
     },
     "consistently-interactive": {
-      "score": 0.82,
+      "score": 0.69,
       "displayValue": "4,930 ms",
       "rawValue": 4927.278,
       "extendedInfo": {
@@ -1057,6 +1057,27 @@
       "name": "uses-rel-preload",
       "description": "Preload key requests",
       "helpText": "Consider using <link rel=preload> to prioritize fetching late-discovered resources sooner. [Learn more](https://developers.google.com/web/updates/2016/03/link-rel-preload).",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": [],
+        "summary": {
+          "wastedMs": 0
+        }
+      }
+    },
+    "uses-rel-preconnect": {
+      "score": 1,
+      "displayValue": "0 ms",
+      "rawValue": 0,
+      "extendedInfo": {
+        "value": []
+      },
+      "scoreDisplayMode": "numeric",
+      "informative": true,
+      "name": "uses-rel-preconnect",
+      "description": "Avoid multiple, costly round trips to any origin",
+      "helpText": "Consider adding preconnect or dns-prefetch resource hints to establish early connections to important third-party origins. [Learn more](https://developers.google.com/web/fundamentals/performance/resource-prioritization#preconnect).",
       "details": {
         "type": "table",
         "headings": [],
@@ -2449,7 +2470,7 @@
       "helpText": "DOM order matches the visual order, improving navigation for assistive technology. [Learn more](https://developers.google.com/web/fundamentals/accessibility/how-to-review#try_it_with_a_screen_reader)."
     },
     "uses-long-cache-ttl": {
-      "score": 0.91,
+      "score": 0.58,
       "displayValue": "11 assets found",
       "rawValue": 103455,
       "extendedInfo": {
@@ -2458,7 +2479,7 @@
             {
               "url": "http://localhost:10200/zone.js",
               "cacheControl": null,
-              "cacheLifetimeInSeconds": 0,
+              "cacheLifetimeMs": 0,
               "cacheHitProbability": 0,
               "totalBytes": 71654,
               "wastedBytes": 71654
@@ -2466,7 +2487,7 @@
             {
               "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
               "cacheControl": null,
-              "cacheLifetimeInSeconds": 0,
+              "cacheLifetimeMs": 0,
               "cacheHitProbability": 0,
               "totalBytes": 24741,
               "wastedBytes": 24741
@@ -2474,7 +2495,7 @@
             {
               "url": "http://localhost:10200/dobetterweb/dbw_tester.js",
               "cacheControl": null,
-              "cacheLifetimeInSeconds": 0,
+              "cacheLifetimeMs": 0,
               "cacheHitProbability": 0,
               "totalBytes": 1703,
               "wastedBytes": 1703
@@ -2482,7 +2503,7 @@
             {
               "url": "http://localhost:10200/dobetterweb/dbw_disabled.css?delay=200&isdisabled",
               "cacheControl": null,
-              "cacheLifetimeInSeconds": 0,
+              "cacheLifetimeMs": 0,
               "cacheHitProbability": 0,
               "totalBytes": 1108,
               "wastedBytes": 1108
@@ -2490,7 +2511,7 @@
             {
               "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true",
               "cacheControl": null,
-              "cacheLifetimeInSeconds": 0,
+              "cacheLifetimeMs": 0,
               "cacheHitProbability": 0,
               "totalBytes": 821,
               "wastedBytes": 821
@@ -2498,7 +2519,7 @@
             {
               "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
               "cacheControl": null,
-              "cacheLifetimeInSeconds": 0,
+              "cacheLifetimeMs": 0,
               "cacheHitProbability": 0,
               "totalBytes": 821,
               "wastedBytes": 821
@@ -2506,7 +2527,7 @@
             {
               "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
               "cacheControl": null,
-              "cacheLifetimeInSeconds": 0,
+              "cacheLifetimeMs": 0,
               "cacheHitProbability": 0,
               "totalBytes": 821,
               "wastedBytes": 821
@@ -2514,7 +2535,7 @@
             {
               "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
               "cacheControl": null,
-              "cacheLifetimeInSeconds": 0,
+              "cacheLifetimeMs": 0,
               "cacheHitProbability": 0,
               "totalBytes": 821,
               "wastedBytes": 821
@@ -2522,7 +2543,7 @@
             {
               "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
               "cacheControl": null,
-              "cacheLifetimeInSeconds": 0,
+              "cacheLifetimeMs": 0,
               "cacheHitProbability": 0,
               "totalBytes": 821,
               "wastedBytes": 821
@@ -2530,7 +2551,7 @@
             {
               "url": "http://localhost:10200/dobetterweb/empty_module.js?delay=500",
               "cacheControl": null,
-              "cacheLifetimeInSeconds": 0,
+              "cacheLifetimeMs": 0,
               "cacheHitProbability": 0,
               "totalBytes": 144,
               "wastedBytes": 144
@@ -2538,7 +2559,7 @@
             {
               "url": "blob:http://localhost:10200/ae0eac03-ab9b-4a6a-b299-f5212153e277",
               "cacheControl": null,
-              "cacheLifetimeInSeconds": 0,
+              "cacheLifetimeMs": 0,
               "cacheHitProbability": 0,
               "totalBytes": 0,
               "wastedBytes": 0
@@ -2549,7 +2570,7 @@
       },
       "scoreDisplayMode": "numeric",
       "name": "uses-long-cache-ttl",
-      "description": "Uses efficient cache policy on static assets",
+      "description": "Uses inefficient cache policy on static assets",
       "helpText": "A long cache lifetime can speed up repeat visits to your page. [Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching#cache-control).",
       "details": {
         "type": "table",
@@ -2560,7 +2581,7 @@
             "text": "URL"
           },
           {
-            "key": "cacheLifetimeInSeconds",
+            "key": "cacheLifetimeMs",
             "itemType": "ms",
             "text": "Cache TTL",
             "displayUnit": "duration"
@@ -2577,7 +2598,7 @@
           {
             "url": "http://localhost:10200/zone.js",
             "cacheControl": null,
-            "cacheLifetimeInSeconds": 0,
+            "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 71654,
             "wastedBytes": 71654
@@ -2585,7 +2606,7 @@
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
             "cacheControl": null,
-            "cacheLifetimeInSeconds": 0,
+            "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 24741,
             "wastedBytes": 24741
@@ -2593,7 +2614,7 @@
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.js",
             "cacheControl": null,
-            "cacheLifetimeInSeconds": 0,
+            "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 1703,
             "wastedBytes": 1703
@@ -2601,7 +2622,7 @@
           {
             "url": "http://localhost:10200/dobetterweb/dbw_disabled.css?delay=200&isdisabled",
             "cacheControl": null,
-            "cacheLifetimeInSeconds": 0,
+            "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 1108,
             "wastedBytes": 1108
@@ -2609,7 +2630,7 @@
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true",
             "cacheControl": null,
-            "cacheLifetimeInSeconds": 0,
+            "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 821,
             "wastedBytes": 821
@@ -2617,7 +2638,7 @@
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
             "cacheControl": null,
-            "cacheLifetimeInSeconds": 0,
+            "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 821,
             "wastedBytes": 821
@@ -2625,7 +2646,7 @@
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
             "cacheControl": null,
-            "cacheLifetimeInSeconds": 0,
+            "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 821,
             "wastedBytes": 821
@@ -2633,7 +2654,7 @@
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
             "cacheControl": null,
-            "cacheLifetimeInSeconds": 0,
+            "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 821,
             "wastedBytes": 821
@@ -2641,7 +2662,7 @@
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
             "cacheControl": null,
-            "cacheLifetimeInSeconds": 0,
+            "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 821,
             "wastedBytes": 821
@@ -2649,7 +2670,7 @@
           {
             "url": "http://localhost:10200/dobetterweb/empty_module.js?delay=500",
             "cacheControl": null,
-            "cacheLifetimeInSeconds": 0,
+            "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 144,
             "wastedBytes": 144
@@ -2657,7 +2678,7 @@
           {
             "url": "blob:http://localhost:10200/ae0eac03-ab9b-4a6a-b299-f5212153e277",
             "cacheControl": null,
-            "cacheLifetimeInSeconds": 0,
+            "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 0,
             "wastedBytes": 0
@@ -2831,6 +2852,69 @@
         "summary": {
           "wastedMs": 0,
           "wastedBytes": 0
+        }
+      }
+    },
+    "render-blocking-resources": {
+      "score": 0,
+      "displayValue": "5 resources delayed first paint by 1129ms",
+      "rawValue": 1129,
+      "scoreDisplayMode": "numeric",
+      "informative": true,
+      "name": "render-blocking-resources",
+      "description": "Eliminate render-blocking resources",
+      "helpText": "Resources are blocking the first paint of your page. Consider delivering critical JS/CSS inline and deferring all non-critical JS/styles. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "url",
+            "itemType": "url",
+            "text": "URL"
+          },
+          {
+            "key": "totalBytes",
+            "itemType": "bytes",
+            "displayUnit": "kb",
+            "granularity": 0.01,
+            "text": "Size (KB)"
+          },
+          {
+            "key": "wastedMs",
+            "itemType": "ms",
+            "text": "Download Time (ms)",
+            "granularity": 1
+          }
+        ],
+        "items": [
+          {
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
+            "totalBytes": 821,
+            "wastedMs": 873
+          },
+          {
+            "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
+            "totalBytes": 139,
+            "wastedMs": 873
+          },
+          {
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
+            "totalBytes": 821,
+            "wastedMs": 873
+          },
+          {
+            "url": "http://localhost:10200/dobetterweb/dbw_partial_a.html?delay=200",
+            "totalBytes": 736,
+            "wastedMs": 723
+          },
+          {
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.js",
+            "totalBytes": 1703,
+            "wastedMs": 723
+          }
+        ],
+        "summary": {
+          "wastedMs": 1129
         }
       }
     },
@@ -3402,90 +3486,6 @@
             }
           }
         ]
-      }
-    },
-    "link-blocking-first-paint": {
-      "score": 0,
-      "displayValue": "4 resources delayed first paint by 2,214 ms",
-      "rawValue": 2214,
-      "extendedInfo": {
-        "value": {
-          "results": [
-            {
-              "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
-              "totalBytes": 821,
-              "wastedMs": 2213.8710000144783
-            },
-            {
-              "url": "http://localhost:10200/dobetterweb/dbw_partial_a.html?delay=200",
-              "totalBytes": 736,
-              "wastedMs": 593.0220000154804
-            },
-            {
-              "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
-              "totalBytes": 139,
-              "wastedMs": 577.7950000192504
-            },
-            {
-              "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
-              "totalBytes": 821,
-              "wastedMs": 569.1630000073928
-            }
-          ]
-        }
-      },
-      "scoreDisplayMode": "numeric",
-      "informative": true,
-      "name": "link-blocking-first-paint",
-      "description": "Reduce render-blocking stylesheets",
-      "helpText": "External stylesheets are blocking the first paint of your page. Consider delivering critical CSS via `<style>` tags and deferring non-critical styles. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).",
-      "details": {
-        "type": "table",
-        "headings": [
-          {
-            "key": "url",
-            "itemType": "url",
-            "text": "URL"
-          },
-          {
-            "key": "totalBytes",
-            "itemType": "bytes",
-            "displayUnit": "kb",
-            "granularity": 0.01,
-            "text": "Size (KB)"
-          },
-          {
-            "key": "wastedMs",
-            "itemType": "ms",
-            "text": "Delayed Paint By (ms)",
-            "granularity": 1
-          }
-        ],
-        "items": [
-          {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
-            "totalBytes": 821,
-            "wastedMs": 2213.8710000144783
-          },
-          {
-            "url": "http://localhost:10200/dobetterweb/dbw_partial_a.html?delay=200",
-            "totalBytes": 736,
-            "wastedMs": 593.0220000154804
-          },
-          {
-            "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
-            "totalBytes": 139,
-            "wastedMs": 577.7950000192504
-          },
-          {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
-            "totalBytes": 821,
-            "wastedMs": 569.1630000073928
-          }
-        ],
-        "summary": {
-          "wastedMs": 2214
-        }
       }
     },
     "no-document-write": {
@@ -4079,60 +4079,6 @@
         ]
       }
     },
-    "script-blocking-first-paint": {
-      "score": 0,
-      "displayValue": "1 resource delayed first paint by 1,148 ms",
-      "rawValue": 1148,
-      "extendedInfo": {
-        "value": {
-          "results": [
-            {
-              "url": "http://localhost:10200/dobetterweb/dbw_tester.js",
-              "totalBytes": 1703,
-              "wastedMs": 1148.00399998785
-            }
-          ]
-        }
-      },
-      "scoreDisplayMode": "numeric",
-      "informative": true,
-      "name": "script-blocking-first-paint",
-      "description": "Reduce render-blocking scripts",
-      "helpText": "Script elements are blocking the first paint of your page. Consider inlining critical scripts and deferring non-critical ones. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).",
-      "details": {
-        "type": "table",
-        "headings": [
-          {
-            "key": "url",
-            "itemType": "url",
-            "text": "URL"
-          },
-          {
-            "key": "totalBytes",
-            "itemType": "bytes",
-            "displayUnit": "kb",
-            "granularity": 0.01,
-            "text": "Size (KB)"
-          },
-          {
-            "key": "wastedMs",
-            "itemType": "ms",
-            "text": "Delayed Paint By (ms)",
-            "granularity": 1
-          }
-        ],
-        "items": [
-          {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.js",
-            "totalBytes": 1703,
-            "wastedMs": 1148.00399998785
-          }
-        ],
-        "summary": {
-          "wastedMs": 1148
-        }
-      }
-    },
     "uses-http2": {
       "score": 0,
       "displayValue": "15 requests were not handled over HTTP/2",
@@ -4690,12 +4636,7 @@
           "group": "perf-metric"
         },
         {
-          "id": "link-blocking-first-paint",
-          "weight": 0,
-          "group": "perf-hint"
-        },
-        {
-          "id": "script-blocking-first-paint",
+          "id": "render-blocking-resources",
           "weight": 0,
           "group": "perf-hint"
         },
@@ -4736,6 +4677,11 @@
         },
         {
           "id": "uses-text-compression",
+          "weight": 0,
+          "group": "perf-hint"
+        },
+        {
+          "id": "uses-rel-preconnect",
           "weight": 0,
           "group": "perf-hint"
         },
@@ -4808,7 +4754,7 @@
         }
       ],
       "id": "performance",
-      "score": 0.7
+      "score": 0.62
     },
     {
       "name": "Progressive Web App",

@@ -15,6 +15,13 @@ declare global {
     code?: string;
   }
 
+  /** Make properties K in T optional. */
+  type MakeOptional<T, K extends keyof T> = {
+    [P in Exclude<keyof T, K>]: T[P]
+  } & {
+    [P in K]+?: T[P]
+  }
+
   module LH {
     // re-export useful type modules under global LH module.
     export import Crdp = _Crdp;
@@ -34,6 +41,7 @@ declare global {
     }
 
     interface SharedFlagsSettings {
+      output?: 'json' | 'html' | 'csv';
       maxWaitForLoad?: number;
       blockedUrlPatterns?: string[] | null;
       additionalTraceCategories?: string | null;
@@ -70,14 +78,10 @@ declare global {
       extraHeaders?: string;
     }
 
-    export interface Results {
-      url: string;
-      audits: Audit.Results;
-      lighthouseVersion: string;
-      artifacts?: Object;
-      initialUrl: string;
-      fetchedAt: string;
-      reportCategories: ReportCategory[];
+    export interface RunnerResult {
+      lhr: Result;
+      report: string;
+      artifacts: Artifacts;
     }
 
     export interface ReportCategory {
