@@ -113,6 +113,7 @@ declare global {
 
       // Metrics.
       requestConsistentlyInteractive(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric|Artifacts.Metric>;
+      requestEstimatedInputLatency(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric|Artifacts.Metric>;
       requestFirstContentfulPaint(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric|Artifacts.Metric>;
       requestFirstCPUIdle(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric|Artifacts.Metric>;
       requestFirstMeaningfulPaint(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric|Artifacts.Metric>;
@@ -120,6 +121,7 @@ declare global {
 
       // Lantern metrics.
       requestLanternConsistentlyInteractive(data: LH.Artifacts.MetricComputationData): Promise<Artifacts.LanternMetric>;
+      requestLanternEstimatedInputLatency(data: LH.Artifacts.MetricComputationData): Promise<Artifacts.LanternMetric>;
       requestLanternFirstContentfulPaint(data: LH.Artifacts.MetricComputationData): Promise<Artifacts.LanternMetric>;
       requestLanternFirstCPUIdle(data: LH.Artifacts.MetricComputationData): Promise<Artifacts.LanternMetric>;
       requestLanternFirstMeaningfulPaint(data: LH.Artifacts.MetricComputationData): Promise<Artifacts.LanternMetric>;
