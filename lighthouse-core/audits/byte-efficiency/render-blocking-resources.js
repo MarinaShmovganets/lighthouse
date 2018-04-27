@@ -51,6 +51,7 @@ class RenderBlockingResources extends Audit {
         'JS/styles. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).',
       // This audit also looks at CSSUsage but has a graceful fallback if it failed, so do not mark
       // it as a "requiredArtifact".
+      // TODO: look into adding an `optionalArtifacts` property that captures this
       requiredArtifacts: ['URL', 'TagsBlockingFirstPaint', 'traces'],
     };
   }
