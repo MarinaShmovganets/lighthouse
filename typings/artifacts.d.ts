@@ -6,6 +6,7 @@
 
 import * as parseManifest from '../lighthouse-core/lib/manifest-parser.js';
 import * as _LanternSimulator from '../lighthouse-core/lib/dependency-graph/simulator/simulator.js';
+import speedline = require('speedline');
 
 type LanternSimulator = InstanceType<typeof _LanternSimulator>;
 
@@ -319,19 +320,7 @@ declare global {
         pessimisticGraph: Gatherer.Simulation.GraphNode;
       }
 
-      export interface Speedline {
-        beginning: number;
-        complete: number;
-        duration: number;
-        end: number;
-        first: number;
-        speedIndex: number;
-        frames: {
-          getProgress(): number;
-          getTimeStamp(): number;
-          isProgressInterpolated(): number;
-        }[]
-      }
+      export type Speedline = ReturnType<typeof speedline>;
 
       // TODO(bckenny): all but navigationStart could actually be undefined.
       export interface TraceTimes {
