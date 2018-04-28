@@ -2,7 +2,7 @@
 
 Lighthouse has an indepedent report renderer that takes the **LHR** (Lighthouse Result object) and creates a DOM tree of the report. It's all done client-side.
 
-Example standalone HTML report, delivered by the CLI: https://crazy-roll.surge.sh/dbwtester.html _(View the source! 📖)_
+Example standalone HTML report, delivered by the CLI: [`dbwtest-3.0.0-alpha.html`](https://googlechrome.github.io/lighthouse/reports/dbwtest-3.0.0-alpha.html) _(View the source! 📖)_
 
 ### Report Renderer components
 
