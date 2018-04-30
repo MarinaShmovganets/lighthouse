@@ -31,14 +31,16 @@ class CategoryRenderer {
     const tmpl = this.dom.cloneTemplate('#tmpl-lh-audit', this.templateContext);
     const auditEl = this.dom.find('.lh-audit', tmpl);
     auditEl.id = audit.result.name;
-
     const scoreDisplayMode = audit.result.scoreDisplayMode;
-    const description = audit.result.helpText;
     let title = audit.result.description;
-
     if (audit.result.displayValue) {
       title += `:  ${audit.result.displayValue}`;
     }
+
+    this.dom.find('.lh-audit__title', auditEl).appendChild(
+      this.dom.convertMarkdownCodeSnippets(title));
+    this.dom.find('.lh-audit__description', auditEl)
+      .appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.helpText));
 
     if (audit.result.debugString) {
       const debugStrEl = auditEl.appendChild(this.dom.createElement('div', 'lh-debug'));
@@ -58,29 +60,21 @@ class CategoryRenderer {
       auditEl.classList.add('lh-audit--manual');
     }
 
-    return this._populateScore(auditEl, audit.result.score, scoreDisplayMode, title, description);
+    return this._populateScore(auditEl, audit.result.score, scoreDisplayMode);
   }
 
   /**
    * @param {!DocumentFragment|!Element} element DOM node to populate with values.
    * @param {number} score
    * @param {string} scoreDisplayMode
-   * @param {string} title
-   * @param {string} description
    * @return {!Element}
    */
-  _populateScore(element, score, scoreDisplayMode, title, description) {
-    // Fill in the blanks.
+  _populateScore(element, score, scoreDisplayMode) {
     const scoreOutOf100 = Math.round(score * 100);
     const valueEl = this.dom.find('.lh-score__value', element);
     valueEl.textContent = Util.formatNumber(scoreOutOf100);
     valueEl.classList.add(`lh-score__value--${Util.calculateRating(score)}`,
         `lh-score__value--${scoreDisplayMode}`);
-
-    this.dom.find('.lh-audit__title, .lh-category-header__title', element).appendChild(
-        this.dom.convertMarkdownCodeSnippets(title));
-    this.dom.find('.lh-audit__description, .lh-category-header__description', element)
-        .appendChild(this.dom.convertMarkdownLinkSnippets(description));
 
     return /** @type {!Element} **/ (element);
   }
@@ -96,8 +90,12 @@ class CategoryRenderer {
     const gaugeEl = this.renderScoreGauge(category);
     gaugeContainerEl.appendChild(gaugeEl);
 
-    const {score, name, description} = category;
-    return this._populateScore(tmpl, score, 'numeric', name, description);
+    this.dom.find('.lh-category-header__title', tmpl).appendChild(
+      this.dom.convertMarkdownCodeSnippets(category.name));
+    this.dom.find('.lh-category-header__description', tmpl)
+      .appendChild(this.dom.convertMarkdownLinkSnippets(category.description));
+
+    return this._populateScore(tmpl, category.score, 'numeric');
   }
 
   /**

@@ -16,6 +16,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const tmpl = this.dom.cloneTemplate('#tmpl-lh-perf-metric', this.templateContext);
     const element = this.dom.find('.lh-perf-metric', tmpl);
     element.id = audit.result.name;
+    // FIXME(paulirish): currently this sets a 'lh-perf-metric--undefined' class on error'd audits
     element.classList.add(`lh-perf-metric--${Util.calculateRating(audit.result.score)}`);
 
     const titleEl = this.dom.find('.lh-perf-metric__title', tmpl);
@@ -30,7 +31,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     if (audit.result.error) {
       element.classList.add(`lh-perf-metric--error`);
       descriptionEl.innerHTML = '';
-      valueEl.textContent = 'Error';
+      valueEl.textContent = 'Error!';
       const content = this.dom.createChildOf(descriptionEl, 'span', 'lh-error-tooltip-content');
       content.textContent = audit.result.debugString || 'Report error: no metric information';
     }

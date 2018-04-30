@@ -425,6 +425,11 @@ summary {
   color: var(--fail-color);
 }
 
+/* Hide icon if there was an error */
+.lh-perf-metric--error .lh-perf-metric__value::after {
+  display: none;
+}
+
 /* Perf Hint */
 
 .lh-perf-hint {
