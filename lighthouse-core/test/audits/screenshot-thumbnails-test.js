@@ -46,7 +46,7 @@ describe('Screenshot thumbnails', () => {
     });
   }).timeout(10000);
 
-  it('should scale the timeline to TTCI when observed', () => {
+  it('should scale the timeline to TTI when observed', () => {
     const settings = {throttlingMethod: 'devtools'};
     const artifacts = Object.assign({
       traces: {defaultPass: pwaTrace},
@@ -64,7 +64,7 @@ describe('Screenshot thumbnails', () => {
     });
   });
 
-  it('should not scale the timeline to TTCI when simulate', () => {
+  it('should not scale the timeline to TTI when simulate', () => {
     const settings = {throttlingMethod: 'simulate'};
     const artifacts = Object.assign({
       traces: {defaultPass: pwaTrace},

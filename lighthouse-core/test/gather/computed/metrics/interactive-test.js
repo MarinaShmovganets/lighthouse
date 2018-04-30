@@ -28,7 +28,7 @@ function generateNetworkRecords(records, navStart) {
 }
 
 /* eslint-env mocha */
-describe('Metrics: TTCI', () => {
+describe('Metrics: TTI', () => {
   it('should compute a simulated value', async () => {
     const artifacts = Runner.instantiateComputedArtifacts();
     const settings = {throttlingMethod: 'simulate'};
