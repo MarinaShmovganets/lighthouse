@@ -15,6 +15,8 @@ const UnusedBytes = require('./byte-efficiency/byte-efficiency-audit');
 // @see https://github.com/GoogleChrome/lighthouse/issues/3106#issuecomment-333653747
 const PRECONNECT_SOCKET_MAX_IDLE = 15;
 
+const IGNORE_THRESHOLD_IN_MS = 50;
+
 class UsesRelPreconnectAudit extends Audit {
   /**
    * @return {LH.Audit.Meta}
@@ -134,6 +136,8 @@ class UsesRelPreconnectAudit extends Audit {
         firstRecordOfOrigin._timing.dnsStart;
 
       const wastedMs = Math.min(connectionTime, timeBetweenMainResourceAndDnsStart);
+      if (wastedMs < IGNORE_THRESHOLD_IN_MS) return;
+
       maxWasted = Math.max(wastedMs, maxWasted);
       results.push({
         url: securityOrigin,
