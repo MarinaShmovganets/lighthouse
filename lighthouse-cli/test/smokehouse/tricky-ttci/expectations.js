@@ -17,7 +17,7 @@ module.exports = [
         score: '<75',
         rawValue: '>9000',
       },
-      'consistently-interactive': {
+      'interactive': {
         score: '<75',
         rawValue: '>9000',
       },

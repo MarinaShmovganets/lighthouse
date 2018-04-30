@@ -39,8 +39,7 @@ class PredictivePerf extends Audit {
     const settings = {}; // Use default settings.
     const fcp = await artifacts.requestLanternFirstContentfulPaint({trace, devtoolsLog, settings});
     const fmp = await artifacts.requestLanternFirstMeaningfulPaint({trace, devtoolsLog, settings});
-    const ttci = await artifacts.requestLanternConsistentlyInteractive({trace, devtoolsLog,
-      settings});
+    const ttci = await artifacts.requestLanternInteractive({trace, devtoolsLog, settings});
     const ttfcpui = await artifacts.requestLanternFirstCPUIdle({trace, devtoolsLog, settings});
     const si = await artifacts.requestLanternSpeedIndex({trace, devtoolsLog, settings});
     const eil = await artifacts.requestLanternEstimatedInputLatency({trace, devtoolsLog, settings});

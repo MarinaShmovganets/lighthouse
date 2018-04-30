@@ -69,7 +69,7 @@ describe('Screenshot thumbnails', () => {
     const artifacts = Object.assign({
       traces: {defaultPass: pwaTrace},
     }, computedArtifacts);
-    computedArtifacts.requestConsistentlyInteractive = () => ({timing: 20000});
+    computedArtifacts.requestInteractive = () => ({timing: 20000});
 
     return ScreenshotThumbnailsAudit.audit(artifacts, {settings}).then(results => {
       assert.equal(results.details.items[0].timing, 82);
@@ -82,7 +82,7 @@ describe('Screenshot thumbnails', () => {
     const artifacts = {
       traces: {},
       requestSpeedline: () => ({frames: [], complete: false, beginning: -1}),
-      requestConsistentlyInteractive: () => ({timing: NaN}),
+      requestInteractive: () => ({timing: NaN}),
     };
 
     try {

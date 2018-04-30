@@ -77,7 +77,7 @@ class ScreenshotThumbnails extends Audit {
     if (context.settings.throttlingMethod !== 'simulate') {
       const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
       const metricComputationData = {trace, devtoolsLog, settings: context.settings};
-      const ttci = artifacts.requestConsistentlyInteractive(metricComputationData);
+      const ttci = artifacts.requestInteractive(metricComputationData);
       try {
         minimumTimelineDuration = (await ttci).timing;
       } catch (_) {

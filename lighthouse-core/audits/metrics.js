@@ -35,7 +35,7 @@ class Metrics extends Audit {
     const firstContentfulPaint = await artifacts.requestFirstContentfulPaint(metricComputationData);
     const firstMeaningfulPaint = await artifacts.requestFirstMeaningfulPaint(metricComputationData);
     const firstCPUIdle = await artifacts.requestFirstCPUIdle(metricComputationData);
-    const timeToInteractive = await artifacts.requestConsistentlyInteractive(metricComputationData);
+    const timeToInteractive = await artifacts.requestInteractive(metricComputationData);
     const speedIndex = await artifacts.requestSpeedIndex(metricComputationData);
     const estimatedInputLatency = await artifacts.requestEstimatedInputLatency(metricComputationData); // eslint-disable-line max-len
     const metrics = [];
