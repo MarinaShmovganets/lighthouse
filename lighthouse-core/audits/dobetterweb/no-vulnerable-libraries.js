@@ -137,7 +137,7 @@ class NoVulnerableLibrariesAudit extends Audit {
 
     let totalVulns = 0;
     /** @type {Array<{highestSeverity: string, vulnCount: number, detectedLib: LH.Audit.DetailsRendererLinkDetailsJSON}>} */
-    const vulnerableResults = [];
+    const vulnerabilityResults = [];
 
     const libraryVulns = foundLibraries.map(lib => {
       const version = this.normalizeVersion(lib.version) || '';
@@ -149,7 +149,7 @@ class NoVulnerableLibrariesAudit extends Audit {
       if (vulns.length > 0) {
         highestSeverity = this.highestSeverity(vulns).replace(/^\w/, l => l.toUpperCase());
 
-        vulnerableResults.push({
+        vulnerabilityResults.push({
           highestSeverity,
           vulnCount,
           detectedLib: {
@@ -181,14 +181,14 @@ class NoVulnerableLibrariesAudit extends Audit {
       {key: 'vulnCount', itemType: 'text', text: 'Vulnerability Count'},
       {key: 'highestSeverity', itemType: 'text', text: 'Highest Severity'},
     ];
-    const details = Audit.makeTableDetails(headings, vulnerableResults, {});
+    const details = Audit.makeTableDetails(headings, vulnerabilityResults, {});
 
     return {
       rawValue: totalVulns === 0,
       displayValue,
       extendedInfo: {
         jsLibs: libraryVulns,
-        vulnerabilities: vulnerableResults,
+        vulnerabilities: vulnerabilityResults,
       },
       details,
     };

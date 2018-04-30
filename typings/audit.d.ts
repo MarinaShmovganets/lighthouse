@@ -47,7 +47,7 @@ declare global {
       debugString?: string;
     }
 
-    // TODO: placeholders typedefs until Details are typed
+    // TODO: placeholder typedefs until Details are typed
     export interface DetailsRendererDetailsSummary {
       wastedMs?: number;
       wastedBytes?: number;
