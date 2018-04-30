@@ -21,16 +21,18 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const titleEl = this.dom.find('.lh-perf-metric__title', tmpl);
     titleEl.textContent = audit.result.description;
 
-    const valueEl = this.dom.find('.lh-perf-metric__value span', tmpl);
+    const valueEl = this.dom.find('.lh-perf-metric__value', tmpl);
     valueEl.textContent = audit.result.displayValue;
 
     const descriptionEl = this.dom.find('.lh-perf-metric__description', tmpl);
     descriptionEl.appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.helpText));
 
-    if (typeof audit.result.rawValue !== 'number') {
-      const debugStrEl = this.dom.createChildOf(element, 'div', 'lh-debug');
-      debugStrEl.textContent = audit.result.debugString || 'Report error: no metric information';
-      return element;
+    if (audit.result.error) {
+      element.classList.add(`lh-perf-metric--error`);
+      descriptionEl.innerHTML = '';
+      valueEl.textContent = 'Error';
+      const content = this.dom.createChildOf(descriptionEl, 'span', 'lh-error-tooltip-content');
+      content.textContent = audit.result.debugString || 'Report error: no metric information';
     }
 
     return element;
