@@ -30,18 +30,16 @@ class Redirects extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
+    const settings = context.settings;
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
-    const simulatorData = {devtoolsLog, settings: context.settings};
-    const simulator = await artifacts.requestLoadSimulator(simulatorData);
 
-    // TODO(phulce): split MetricComputationInput type and avoid this cast
-    const metricSettings = /** @type {LH.Config.Settings} */ ({throttlingMethod: 'simulate'});
-    const metricComputationData = {trace, devtoolsLog, simulator, settings: metricSettings};
-
+    const traceOfTab = await artifacts.requestTraceOfTab(trace);
+    const networkRecords = await artifacts.requestNetworkRecords(devtoolsLog);
     const mainResource = await artifacts.requestMainResource({URL: artifacts.URL, devtoolsLog});
-    const metricResult = /** @type {LH.Artifacts.LanternMetric} */ (
-      await artifacts.requestInteractive(metricComputationData));
+
+    const metricComputationData = {trace, devtoolsLog, traceOfTab, networkRecords, settings};
+    const metricResult = await artifacts.requestLanternInteractive(metricComputationData);
 
     /** @type {Map<string, LH.Gatherer.Simulation.NodeTiming>} */
     const nodeTimingsByUrl = new Map();
@@ -75,7 +73,9 @@ class Redirects extends Audit {
 
       const initialTiming = nodeTimingsByUrl.get(initialRequest.url);
       const redirectedTiming = nodeTimingsByUrl.get(redirectedRequest.url);
-      if (!initialTiming || !redirectedTiming) continue;
+      if (!initialTiming || !redirectedTiming) {
+        throw new Error('Could not find redirects in graph');
+      }
 
       // @ts-ignore TODO(phulce): split NodeTiming typedef, these are always defined
       const wastedMs = redirectedTiming.startTime - initialTiming.startTime;

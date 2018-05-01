@@ -65,8 +65,9 @@ describe('Performance: Redirects audit', () => {
     return {
       traces: {},
       devtoolsLogs: {},
-      requestInteractive: () => ({pessimisticEstimate: {nodeTimings}}),
-      requestLoadSimulator: () => {},
+      requestLanternInteractive: () => ({pessimisticEstimate: {nodeTimings}}),
+      requestTraceOfTab: () => {},
+      requestNetworkRecords: () => [],
       requestMainResource: function() {
         return Promise.resolve(mockChain);
       },
