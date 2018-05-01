@@ -202,29 +202,9 @@ summary {
   width: 16px;
 }
 
-.lh-audit--informative .lh-score__value {
-  color: var(--informative-color);
-  border-radius: 50%;
-  top: 3px;
-}
-
-.lh-audit--informative .lh-score__value::after {
+.lh-audit--informative .lh-score__value,
+.lh-audit--manual .lh-score__value {
   display: none;
-  background: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>info</title><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="hsl(218, 89%, 41%)"/></svg>') no-repeat 50% 50%;
-  background-size: var(--lh-score-icon-background-size);
-}
-
-.lh-audit--manual .lh-score__value::after {
-  background: url('data:image/svg+xml;utf8,<svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><title>manual</title><path d="M2 5h8v2H2z" fill="hsl(0, 0%, 100%)" fill-rule="evenodd"/></svg>') no-repeat 50% 50%;
-  background-size: 18px;
-  background-color: var(--medium-75-gray);
-  width: 20px;
-  height:  20px;
-  position: relative;
-}
-
-.lh-score__value--binary {
-  color: transparent !important;
 }
 
 /* No icon for audits with number scores. */
