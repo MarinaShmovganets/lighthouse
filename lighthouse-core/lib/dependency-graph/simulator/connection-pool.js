@@ -121,7 +121,7 @@ module.exports = class ConnectionPool {
         this._connectionReusedByRequestId.get(record.requestId);
 
     let connectionToUse = availableWarmConnection || availableColdConnection;
-    if (needsColdConnection) connectionToUse = availableColdConnection;
+    if (needsColdConnection) connectionToUse = availableColdConnection || availableWarmConnection;
     if (needsWarmConnection) connectionToUse = availableWarmConnection;
     if (!connectionToUse) return null;
 

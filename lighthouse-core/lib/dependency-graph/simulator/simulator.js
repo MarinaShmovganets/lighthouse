@@ -322,6 +322,10 @@ class Simulator {
         this._startNodeIfPossible(node, totalElapsedTime);
       }
 
+      if (!nodesInProgress.size) {
+        throw new Error('Failed to start a node, potential mismatch in original execution');
+      }
+
       // set the available throughput for all connections based on # inflight
       this._updateNetworkCapacity();
 

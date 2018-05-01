@@ -24,9 +24,8 @@ describe('DependencyGraph/Simulator/ConnectionPool', () => {
     return Object.assign({
       requestId: requestId++,
       url,
-      origin,
       protocol: 'http/1.1',
-      parsedURL: {scheme},
+      parsedURL: {scheme, securityOrigin: () => origin},
     }, data);
   }
 
@@ -107,16 +106,26 @@ describe('DependencyGraph/Simulator/ConnectionPool', () => {
       const warmRecord = record();
       const pool = new ConnectionPool([coldRecord, warmRecord], {rtt, throughput});
       pool._connectionReusedByRequestId.set(warmRecord.requestId, true);
-      assert.ok(pool.acquire(coldRecord), 'should have acquired cold connection');
+
+      assert.ok(pool.acquire(coldRecord), 'should have acquired connection');
       assert.ok(!pool.acquire(warmRecord), 'should not have acquired connection');
       pool.release(coldRecord);
 
-      for (const connection of pool._connectionsByOrigin.get('http://example.com')) {
-        connection.setWarmed(true);
-      }
+      const connections = Array.from(pool._connectionsByOrigin.get('http://example.com'));
+      connections.forEach((connection, i) => {
+        connection.setWarmed(i % 2 === 0);
+      });
 
-      assert.ok(!pool.acquire(coldRecord), 'should not have acquired connection');
-      assert.ok(pool.acquire(warmRecord), 'should have acquired warm connection');
+      assert.equal(pool.acquire(coldRecord), connections[1], 'should have cold connection');
+      assert.equal(pool.acquire(warmRecord), connections[0], 'should have warm connection');
+
+      connections.forEach(connection => {
+        connection.setWarmed(true);
+      });
+
+      // still allow a cold to receive a warm, just don't prefer it
+      assert.ok(pool.acquire(coldRecord), 'should have acquired connection');
+      assert.ok(pool.acquire(warmRecord), 'should have acquired connection');
     });
 
     it('should ignore observed connection reuse when flag is present', () => {
