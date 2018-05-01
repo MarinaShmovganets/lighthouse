@@ -39,9 +39,6 @@ class Util {
     } else if (score >= RATINGS.AVERAGE.minScore) {
       rating = RATINGS.AVERAGE.label;
     }
-    if (score === null) {
-      rating = RATINGS.AVERAGE.ERROR;
-    }
     return rating;
   }
 

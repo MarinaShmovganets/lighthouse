@@ -60,10 +60,10 @@ class CategoryRenderer {
     if (audit.result.error) {
       auditEl.classList.add(`lh-audit--error`);
       const valueEl = this.dom.find('.lh-score__value', auditEl);
-      valueEl.textContent = 'Error!';
+      valueEl.textContent = 'Error';
       valueEl.classList.add('tooltip-boundary');
       const content = this.dom.createChildOf(valueEl, 'div', 'lh-error-tooltip-content tooltip');
-      content.textContent = audit.result.debugString || 'Report error: no metric information';
+      content.textContent = audit.result.debugString || 'Report error: no audit information';
     } else if (audit.result.debugString) {
       const debugStrEl = auditEl.appendChild(this.dom.createElement('div', 'lh-debug'));
       debugStrEl.textContent = audit.result.debugString;

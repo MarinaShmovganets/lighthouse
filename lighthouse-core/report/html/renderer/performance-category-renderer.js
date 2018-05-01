@@ -30,8 +30,8 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
 
     if (audit.result.error) {
       element.classList.add(`lh-perf-metric--error`);
-      descriptionEl.innerHTML = '';
-      valueEl.textContent = 'Error!';
+      descriptionEl.textContent = '';
+      valueEl.textContent = 'Error';
       const content = this.dom.createChildOf(descriptionEl, 'span', 'lh-error-tooltip-content');
       content.textContent = audit.result.debugString || 'Report error: no metric information';
     }
