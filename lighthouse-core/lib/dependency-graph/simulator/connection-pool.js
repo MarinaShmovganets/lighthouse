@@ -102,7 +102,7 @@ module.exports = class ConnectionPool {
       return this._connectionsByRecord.get(record);
     }
 
-    const origin = String(record.origin);
+    const origin = String(record.parsedURL.securityOrigin());
     /** @type {TcpConnection[]} */
     const connections = this._connectionsByOrigin.get(origin) || [];
     // Sort connections by decreasing congestion window, i.e. warmest to coldest
