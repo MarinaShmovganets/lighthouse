@@ -243,6 +243,11 @@ summary {
   background: var(--fail-icon-url) no-repeat center center / 12px 12px;
 }
 
+/* This must override the above styles */
+.lh-audit .lh-score__value--binary {
+  color: transparent;
+}
+
 .lh-audit__description, .lh-category-header__description  {
   font-size: var(--body-font-size);
   color: var(--secondary-text-color);
@@ -585,6 +590,11 @@ summary {
 .lh-audit .lh-debug {
   margin-left: var(--expandable-indent);
   margin-right: var(--lh-audit-score-width);
+}
+
+.lh-audit--error .lh-score__value {
+  color: var(--fail-color);
+  font-weight: normal;
 }
 
 /* Audit Group */
@@ -939,13 +949,14 @@ summary.lh-passed-audits-summary {
   animation: fadeInTooltip 150ms;
   animation-fill-mode: forwards;
   animation-delay: 900ms;
-  min-width: 15em;
+  min-width: 23em;
   background: #ffffff;
   padding: 15px;
   border-radius: 5px;
   bottom: 100%;
   z-index: 1;
   will-change: opacity;
+  right: 0;
 }
 
 .tooltip::before {

@@ -42,11 +42,6 @@ class CategoryRenderer {
     this.dom.find('.lh-audit__description', auditEl)
       .appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.helpText));
 
-    if (audit.result.debugString) {
-      const debugStrEl = auditEl.appendChild(this.dom.createElement('div', 'lh-debug'));
-      debugStrEl.textContent = audit.result.debugString;
-    }
-
     // Append audit details to header section so the entire audit is within a <details>.
     const header = /** @type {!HTMLDetailsElement} */ (this.dom.find('.lh-audit__header', auditEl));
     if (audit.result.details && audit.result.details.type) {
@@ -60,7 +55,20 @@ class CategoryRenderer {
       auditEl.classList.add('lh-audit--manual');
     }
 
-    return this._populateScore(auditEl, audit.result.score, scoreDisplayMode);
+    this._populateScore(auditEl, audit.result.score, scoreDisplayMode);
+
+    if (audit.result.error) {
+      auditEl.classList.add(`lh-audit--error`);
+      const valueEl = this.dom.find('.lh-score__value', auditEl);
+      valueEl.textContent = 'Error!';
+      valueEl.classList.add('tooltip-boundary');
+      const content = this.dom.createChildOf(valueEl, 'div', 'lh-error-tooltip-content tooltip');
+      content.textContent = audit.result.debugString || 'Report error: no metric information';
+    } else if (audit.result.debugString) {
+      const debugStrEl = auditEl.appendChild(this.dom.createElement('div', 'lh-debug'));
+      debugStrEl.textContent = audit.result.debugString;
+    }
+    return auditEl;
   }
 
   /**
