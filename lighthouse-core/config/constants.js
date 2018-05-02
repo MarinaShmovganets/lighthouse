@@ -60,8 +60,15 @@ const defaultPassConfig = {
   gatherers: [],
 };
 
+const observedPassConfigOverrides = {
+  pauseAfterLoadMs: 5250,
+  networkQuietThresholdMs: 5250,
+  cpuQuietThresholdMs: 5250,
+};
+
 module.exports = {
   throttling,
   defaultSettings,
   defaultPassConfig,
+  observedPassConfigOverrides,
 };

@@ -398,9 +398,13 @@ class Config {
     const defaultPass = config.passes.find(pass => pass.passName === 'defaultPass');
     if (!defaultPass) return;
 
-    defaultPass.pauseAfterLoadMs = Math.max(5250, defaultPass.pauseAfterLoadMs);
-    defaultPass.cpuQuietThresholdMs = Math.max(5250, defaultPass.cpuQuietThresholdMs);
-    defaultPass.networkQuietThresholdMs = Math.max(5250, defaultPass.networkQuietThresholdMs);
+    const overrides = constants.observedPassConfigOverrides;
+    defaultPass.pauseAfterLoadMs =
+      Math.max(overrides.pauseAfterLoadMs, defaultPass.pauseAfterLoadMs);
+    defaultPass.cpuQuietThresholdMs =
+      Math.max(overrides.cpuQuietThresholdMs, defaultPass.cpuQuietThresholdMs);
+    defaultPass.networkQuietThresholdMs =
+      Math.max(overrides.networkQuietThresholdMs, defaultPass.networkQuietThresholdMs);
   }
 
   /**
