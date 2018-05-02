@@ -63,7 +63,7 @@ const SMOKETESTS = [{
   id: 'offline',
   expectations: 'offline-local/offline-expectations.js',
   config: smokehouseDir + 'offline-config.js',
-  batch: 'parallel-second',
+  batch: 'offline',
 }, {
   id: 'byte',
   expectations: 'byte-efficiency/expectations.js',
