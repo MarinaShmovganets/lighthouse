@@ -314,6 +314,7 @@ declare global {
 
       export interface LanternMetric {
         timing: number;
+        timestamp?: never;
         optimisticEstimate: Gatherer.Simulation.Result
         pessimisticEstimate: Gatherer.Simulation.Result;
         optimisticGraph: Gatherer.Simulation.GraphNode;
