@@ -99,8 +99,10 @@ class UnusedBytes extends Audit {
   }
 
   /**
-   * Computes the estimated effect of all the byte savings on the last long task
-   * in the provided graph.
+   * Computes the estimated effect of all the byte savings on the maximum of the following:
+   *
+   * - end time of the last long task in the provided graph
+   * - (if includeLoad is true or not provided) end time of the last node in the graph
    *
    * @param {Array<LH.Audit.ByteEfficiencyResult>} results The array of byte savings results per resource
    * @param {Node} graph
@@ -145,14 +147,15 @@ class UnusedBytes extends Audit {
       networkNode.record._transferSize = originalTransferSize;
     });
 
-    const savingsOnLoad = options.includeLoad ?
-      simulationBeforeChanges.timeInMs - simulationAfterChanges.timeInMs :
-      Number.MIN_VALUE;
+    const savingsOnOverallLoad = simulationBeforeChanges.timeInMs - simulationAfterChanges.timeInMs;
     const savingsOnTTI = Interactive.getLastLongTaskEndTime(simulationBeforeChanges.nodeTimings) -
       Interactive.getLastLongTaskEndTime(simulationAfterChanges.nodeTimings);
 
+    let savings = savingsOnTTI;
+    if (options.includeLoad) savings = Math.max(savings, savingsOnOverallLoad);
+
     // Round waste to nearest 10ms
-    return Math.round(Math.max(savingsOnLoad, savingsOnTTI, 0) / 10) * 10;
+    return Math.round(Math.max(savings, 0) / 10) * 10;
   }
 
   /**

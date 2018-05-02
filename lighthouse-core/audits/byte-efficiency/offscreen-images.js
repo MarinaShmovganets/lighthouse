@@ -135,8 +135,8 @@ class OffscreenImages extends ByteEfficiencyAudit {
     const settings = context.settings;
     return artifacts.requestFirstCPUIdle({trace, devtoolsLog, settings}).then(firstInteractive => {
       // The filter below is just to be extra safe that we exclude images that were loaded post-TTI.
-      // If we're in the Lantern case though, we just have to rely on the graph simulation doing the
-      // right thing.
+      // If we're in the Lantern case and `timestamp` isn't available, we just have to rely on the
+      // graph simulation doing the right thing.
       const ttiTimestamp = firstInteractive.timestamp ? firstInteractive.timestamp / 1e6 : Infinity;
 
       const results = Array.from(resultsMap.values()).filter(item => {
