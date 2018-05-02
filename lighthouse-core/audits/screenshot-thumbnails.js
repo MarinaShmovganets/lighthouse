@@ -32,7 +32,7 @@ class ScreenshotThumbnails extends Audit {
    * Scales down an image to THUMBNAIL_WIDTH using nearest neighbor for speed, maintains aspect
    * ratio of the original thumbnail.
    *
-   * @param {{width: number, height: number, data: Buffer}} imageData
+   * @param {ReturnType<SpeedlineFrame['getParsedImage']>} imageData
    * @return {{width: number, height: number, data: Uint8Array}}
    */
   static scaleImageToThumbnail(imageData) {
