@@ -282,6 +282,7 @@ declare global {
       export interface DevtoolsTimelineModelNode {
         children: Map<string, DevtoolsTimelineModelNode>;
         selfTime: number;
+        // SDK.TracingModel.Event
         event: {
           name: string;
         };
