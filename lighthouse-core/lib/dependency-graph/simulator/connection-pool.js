@@ -91,6 +91,13 @@ module.exports = class ConnectionPool {
   }
 
   /**
+   * This method finds an available connection to the origin specified by the network record or null
+   * if no connection was available. If returned, connection will not be available for other network
+   * records until release is called.
+   *
+   * If ignoreConnectionReused is true, acquire will consider all connections not in use as available.
+   * Otherwise, only connections that have matching "warmth" are considered available.
+   *
    * @param {LH.WebInspector.NetworkRequest} record
    * @param {{ignoreConnectionReused?: boolean}} options
    * @return {?TcpConnection}

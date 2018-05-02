@@ -108,7 +108,7 @@ describe('DependencyGraph/Simulator/ConnectionPool', () => {
       assert.ok(connections[6], 'did not find connection for 7th record');
     });
 
-    it.only('should respect observed connection reuse', () => {
+    it('should respect observed connection reuse', () => {
       const coldRecord = record();
       const warmRecord = record();
       const pool = new ConnectionPool([coldRecord, warmRecord], {rtt, throughput});
