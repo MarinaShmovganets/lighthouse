@@ -65,7 +65,7 @@ module.exports = [
       },
       'user-timings': {
         score: 1,
-        displayValue: '',
+        displayValue: '0',
       },
       'critical-request-chains': {
         score: 1,
@@ -128,7 +128,7 @@ module.exports = [
       },
       'user-timings': {
         score: 1,
-        displayValue: '',
+        displayValue: '0',
       },
       'critical-request-chains': {
         score: 1,

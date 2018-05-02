@@ -144,6 +144,7 @@ declare global {
       tid: number;
       ts: number;
       dur: number;
+      ph: 'X'|'M'|'B'|'E'|'I'|'O'|'N'|'R'|'D'|'S'|'F';
     }
 
     export interface DevToolsJsonTarget {
