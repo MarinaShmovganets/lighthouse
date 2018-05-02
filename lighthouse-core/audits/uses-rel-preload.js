@@ -63,6 +63,8 @@ class UsesRelPreloadAudit extends Audit {
       return {wastedMs: 0, results: []};
     }
 
+    // Preload changes the ordering of requests, simulate the original graph with flexible ordering
+    // to have a reasonable baseline for comparison.
     const simulationBeforeChanges = simulator.simulate(graph, {flexibleOrdering: true});
 
     const modifiedGraph = graph.cloneWithRelationships();
@@ -92,6 +94,7 @@ class UsesRelPreloadAudit extends Audit {
       node.addDependency(mainDocumentNode);
     }
 
+    // Once we've modified the dependencies, simulate the new graph with flexible ordering.
     const simulationAfterChanges = simulator.simulate(modifiedGraph, {flexibleOrdering: true});
     const originalNodesByRecord = Array.from(simulationBeforeChanges.nodeTimings.keys())
         .reduce((map, node) => map.set(node.record, node), new Map());
@@ -140,6 +143,8 @@ class UsesRelPreloadAudit extends Audit {
 
       const criticalRequests = UsesRelPreloadAudit._flattenRequests(critChains,
         3 + mainResourceIndex, 2 + mainResourceIndex);
+
+      /** @type {Set<string>} */
       const urls = new Set();
       for (const networkRecord of criticalRequests) {
         if (!networkRecord._isLinkPreload && networkRecord.protocol !== 'data') {

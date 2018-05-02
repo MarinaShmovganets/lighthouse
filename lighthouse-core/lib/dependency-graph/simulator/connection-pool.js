@@ -11,6 +11,10 @@ const TcpConnection = require('./tcp-connection');
 const DEFAULT_SERVER_RESPONSE_TIME = 30;
 const TLS_SCHEMES = ['https', 'wss'];
 
+// Each origin can have 6 simulatenous connections open
+// https://cs.chromium.org/chromium/src/net/socket/client_socket_pool_manager.cc?type=cs&q="int+g_max_sockets_per_group"
+const CONNECTIONS_PER_ORIGIN = 6;
+
 module.exports = class ConnectionPool {
   /**
    * @param {LH.WebInspector.NetworkRequest[]} records
@@ -82,9 +86,8 @@ module.exports = class ConnectionPool {
         throw new Error(`Could not find a connection for origin: ${origin}`);
       }
 
-      // Make sure each origin has 6 connections available
-      // https://cs.chromium.org/chromium/src/net/socket/client_socket_pool_manager.cc?type=cs&q="int+g_max_sockets_per_group"
-      while (connections.length < 6) connections.push(connections[0].clone());
+      // Make sure each origin has minimum number of connections available for max throughput
+      while (connections.length < CONNECTIONS_PER_ORIGIN) connections.push(connections[0].clone());
 
       this._connectionsByOrigin.set(origin, connections);
     }

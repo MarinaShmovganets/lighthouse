@@ -106,8 +106,7 @@ class TcpConnection {
    * @return {TcpConnection}
    */
   clone() {
-    // @ts-ignore
-    return Object.assign(new TcpConnection(), this);
+    return Object.assign(new TcpConnection(this._rtt, this._throughput), this);
   }
 
   /**

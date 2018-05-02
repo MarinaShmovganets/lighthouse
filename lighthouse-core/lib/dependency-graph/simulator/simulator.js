@@ -223,6 +223,7 @@ class Simulator {
 
     const record = /** @type {NetworkNode} */ (node).record;
     const timingData = this._nodeTimings.get(node);
+    // If we're estimating time remaining, we already acquired a connection for this record, definitely non-null
     const connection = /** @type {TcpConnection} */ (this._acquireConnection(record));
     const calculation = connection.simulateDownloadUntil(
       record.transferSize - timingData.bytesDownloaded,
@@ -266,6 +267,7 @@ class Simulator {
     if (node.type !== Node.TYPES.NETWORK) throw new Error('Unsupported');
 
     const record = /** @type {NetworkNode} */ (node).record;
+    // If we're updating the progress, we already acquired a connection for this record, definitely non-null
     const connection = /** @type {TcpConnection} */ (this._acquireConnection(record));
     const calculation = connection.simulateDownloadUntil(
       record.transferSize - timingData.bytesDownloaded,
@@ -290,7 +292,14 @@ class Simulator {
   }
 
   /**
-   * Estimates the time taken to process all of the graph's nodes.
+   * Estimates the time taken to process all of the graph's nodes, returns the overall time along with
+   * each node annotated by start/end times.
+   *
+   * If flexibleOrdering is set, simulator/connection pool are allowed to deviate from what was
+   * observed in the trace/devtoolsLog and start requests as soon as they are queued (i.e. do not
+   * wait around for a warm connection to be available if the original record was fetched on a warm
+   * connection).
+   *
    * @param {Node} graph
    * @param {{flexibleOrdering?: boolean}=} options
    * @return {LH.Gatherer.Simulation.Result}

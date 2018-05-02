@@ -39,6 +39,10 @@ describe('Performance: uses-rel-preload audit', () => {
     return new NetworkNode({url, requestId});
   }
 
+  afterEach(() => {
+    mockSimulator = undefined;
+  });
+
   it('should suggest preload resource', () => {
     const rootNode = buildNode(1, 'http://example.com');
     const mainDocumentNode = buildNode(2, 'http://www.example.com');
@@ -71,7 +75,7 @@ describe('Performance: uses-rel-preload audit', () => {
           nodeTimings.set(scriptAddedNodeLocal, {startTime: 1000, endTime: 2000});
         }
 
-        return {nodeTimings};
+        return {timeInMs: 3250, nodeTimings};
       },
     };
 
