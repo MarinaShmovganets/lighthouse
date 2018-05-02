@@ -52,7 +52,7 @@ class Simulator {
     this._layoutTaskMultiplier = this._cpuSlowdownMultiplier * this._options.layoutTaskMultiplier;
 
     // Properties reset on every `.simulate` call but duplicated here for type checking
-    this._ignoreObserved = false;
+    this._flexibleOrdering = false;
     this._nodeTimings = new Map();
     this._numberInProgressByType = new Map();
     this._nodes = {};
@@ -154,7 +154,7 @@ class Simulator {
    */
   _acquireConnection(record) {
     return this._connectionPool.acquire(record, {
-      ignoreObserved: this._ignoreObserved,
+      ignoreConnectionReused: this._flexibleOrdering,
     });
   }
 
@@ -292,13 +292,13 @@ class Simulator {
   /**
    * Estimates the time taken to process all of the graph's nodes.
    * @param {Node} graph
-   * @param {{ignoreObserved?: boolean}=} options
+   * @param {{flexibleOrdering?: boolean}=} options
    * @return {LH.Gatherer.Simulation.Result}
    */
   simulate(graph, options) {
-    options = Object.assign({ignoreObserved: false}, options);
+    options = Object.assign({flexibleOrdering: false}, options);
     // initialize the necessary data containers
-    this._ignoreObserved = options.ignoreObserved;
+    this._flexibleOrdering = options.flexibleOrdering;
     this._initializeConnectionPool(graph);
     this._initializeAuxiliaryData();
 

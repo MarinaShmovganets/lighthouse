@@ -85,7 +85,6 @@ module.exports = class ConnectionPool {
       // Make sure each origin has 6 connections available
       // https://cs.chromium.org/chromium/src/net/socket/client_socket_pool_manager.cc?type=cs&q="int+g_max_sockets_per_group"
       while (connections.length < 6) connections.push(connections[0].clone());
-      while (connections.length > 6) connections.pop();
 
       this._connectionsByOrigin.set(origin, connections);
     }
@@ -93,7 +92,7 @@ module.exports = class ConnectionPool {
 
   /**
    * @param {LH.WebInspector.NetworkRequest} record
-   * @param {{ignoreObserved?: boolean}} options
+   * @param {{ignoreConnectionReused?: boolean}} options
    * @return {?TcpConnection}
    */
   acquire(record, options = {}) {
@@ -106,23 +105,20 @@ module.exports = class ConnectionPool {
     /** @type {TcpConnection[]} */
     const connections = this._connectionsByOrigin.get(origin) || [];
     // Sort connections by decreasing congestion window, i.e. warmest to coldest
-    const sortedConnections = connections.sort((a, b) => b.congestionWindow - a.congestionWindow);
+    const availableConnections = connections
+      .filter(connection => !this._connectionsInUse.has(connection))
+      .sort((a, b) => b.congestionWindow - a.congestionWindow);
 
-    const availableWarmConnection = sortedConnections.find(connection => {
-      return connection.isWarm() && !this._connectionsInUse.has(connection);
-    });
-    const availableColdConnection = sortedConnections.find(connection => {
-      return !connection.isWarm() && !this._connectionsInUse.has(connection);
-    });
+    const observedConnectionWasReused = !!this._connectionReusedByRequestId.get(record.requestId);
 
-    const needsColdConnection = !options.ignoreObserved &&
-        !this._connectionReusedByRequestId.get(record.requestId);
-    const needsWarmConnection = !options.ignoreObserved &&
-        this._connectionReusedByRequestId.get(record.requestId);
+    /** @type {TcpConnection|undefined} */
+    let connectionToUse = availableConnections[0];
+    if (!options.ignoreConnectionReused) {
+      connectionToUse = availableConnections.find(
+        connection => connection.isWarm() === observedConnectionWasReused
+      );
+    }
 
-    let connectionToUse = availableWarmConnection || availableColdConnection;
-    if (needsColdConnection) connectionToUse = availableColdConnection || availableWarmConnection;
-    if (needsWarmConnection) connectionToUse = availableWarmConnection;
     if (!connectionToUse) return null;
 
     this._connectionsInUse.add(connectionToUse);

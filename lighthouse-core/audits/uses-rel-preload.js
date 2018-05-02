@@ -63,7 +63,7 @@ class UsesRelPreloadAudit extends Audit {
       return {wastedMs: 0, results: []};
     }
 
-    const simulationBeforeChanges = simulator.simulate(graph, {ignoreObserved: true});
+    const simulationBeforeChanges = simulator.simulate(graph, {flexibleOrdering: true});
 
     const modifiedGraph = graph.cloneWithRelationships();
 
@@ -92,7 +92,7 @@ class UsesRelPreloadAudit extends Audit {
       node.addDependency(mainDocumentNode);
     }
 
-    const simulationAfterChanges = simulator.simulate(modifiedGraph, {ignoreObserved: true});
+    const simulationAfterChanges = simulator.simulate(modifiedGraph, {flexibleOrdering: true});
     const originalNodesByRecord = Array.from(simulationBeforeChanges.nodeTimings.keys())
         .reduce((map, node) => map.set(node.record, node), new Map());
 

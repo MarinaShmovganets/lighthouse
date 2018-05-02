@@ -92,16 +92,23 @@ describe('DependencyGraph/Simulator/ConnectionPool', () => {
       assert.deepStrictEqual(pool.connectionsInUse(), [connectionForA, connectionForB]);
     });
 
-    it('should return null when available connections are exhausted', () => {
+    it('should allocate at least 6 connections', () => {
+      const pool = new ConnectionPool([record()], {rtt, throughput});
+      for (let i = 0; i < 6; i++) {
+        assert.ok(pool.acquire(record()), `did not find connection for ${i}th record`);
+      }
+    });
+
+    it('should allocate all connections', () => {
       const records = new Array(7).fill(undefined, 0, 7).map(() => record());
       const pool = new ConnectionPool(records, {rtt, throughput});
       const connections = records.map(record => pool.acquire(record));
       assert.ok(connections[0], 'did not find connection for 1st record');
       assert.ok(connections[5], 'did not find connection for 6th record');
-      assert.equal(connections[6], null);
+      assert.ok(connections[6], 'did not find connection for 7th record');
     });
 
-    it('should respect observed connection reuse', () => {
+    it.only('should respect observed connection reuse', () => {
       const coldRecord = record();
       const warmRecord = record();
       const pool = new ConnectionPool([coldRecord, warmRecord], {rtt, throughput});
@@ -118,13 +125,14 @@ describe('DependencyGraph/Simulator/ConnectionPool', () => {
 
       assert.equal(pool.acquire(coldRecord), connections[1], 'should have cold connection');
       assert.equal(pool.acquire(warmRecord), connections[0], 'should have warm connection');
+      pool.release(coldRecord);
+      pool.release(warmRecord);
 
       connections.forEach(connection => {
         connection.setWarmed(true);
       });
 
-      // still allow a cold to receive a warm, just don't prefer it
-      assert.ok(pool.acquire(coldRecord), 'should have acquired connection');
+      assert.ok(!pool.acquire(coldRecord), 'should not have acquired connection');
       assert.ok(pool.acquire(warmRecord), 'should have acquired connection');
     });
 
@@ -134,7 +142,7 @@ describe('DependencyGraph/Simulator/ConnectionPool', () => {
       const pool = new ConnectionPool([coldRecord, warmRecord], {rtt, throughput});
       pool._connectionReusedByRequestId.set(warmRecord.requestId, true);
 
-      const opts = {ignoreObserved: true};
+      const opts = {ignoreConnectionReused: true};
       assert.ok(pool.acquire(coldRecord, opts), 'should have acquired connection');
       assert.ok(pool.acquire(warmRecord, opts), 'should have acquired connection');
       pool.release(coldRecord);
@@ -179,8 +187,10 @@ describe('DependencyGraph/Simulator/ConnectionPool', () => {
     });
 
     it('frees the connection for reissue', () => {
-      const records = new Array(7).fill(undefined, 0, 7).map(() => record());
+      const records = new Array(6).fill(undefined, 0, 7).map(() => record());
       const pool = new ConnectionPool(records, {rtt, throughput});
+      records.push(record());
+
       records.forEach(record => pool.acquire(record));
 
       assert.equal(pool.connectionsInUse().length, 6);
