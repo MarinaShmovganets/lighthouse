@@ -10,7 +10,7 @@ const Util = require('../report/html/renderer/util');
 
 class SpeedIndex extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
@@ -28,10 +28,10 @@ class SpeedIndex extends Audit {
    */
   static get defaultOptions() {
     return {
-      // 75th and 90th percentiles HTTPArchive -> 50 and 75
+      // 75th and 95th percentiles HTTPArchive -> median and PODR
       // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
-      // see https://www.desmos.com/calculator/y1bg8ij7ti
-      scorePODR: 1700,
+      // see https://www.desmos.com/calculator/orvoyu9ygq
+      scorePODR: 2900,
       scoreMedian: 5800,
     };
   }
@@ -39,9 +39,9 @@ class SpeedIndex extends Audit {
   /**
    * Audits the page to give a score for the Speed Index.
    * @see https://github.com/GoogleChrome/lighthouse/issues/197
-   * @param {Artifacts} artifacts The artifacts from the gather phase.
+   * @param {LH.Artifacts} artifacts The artifacts from the gather phase.
    * @param {LH.Audit.Context} context
-   * @return {Promise<AuditResult>}
+   * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];

@@ -19,7 +19,7 @@
  */
 class Node {
   /**
-   * @param {string|number} id
+   * @param {string} id
    */
   constructor(id) {
     this._id = id;
@@ -30,7 +30,7 @@ class Node {
   }
 
   /**
-   * @return {string|number}
+   * @return {string}
    */
   get id() {
     return this._id;
@@ -147,7 +147,7 @@ class Node {
    * Clones the entire graph connected to this node filtered by the optional predicate. If a node is
    * included by the predicate, all nodes along the paths between the two will be included. If the
    * node that was called clone is not included in the resulting filtered graph, the method will throw.
-   * @param {function(Node):boolean=} predicate
+   * @param {function(Node):boolean} [predicate]
    * @return {Node}
    */
   cloneWithRelationships(predicate) {

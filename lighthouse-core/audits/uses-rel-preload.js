@@ -3,7 +3,6 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-
 'use strict';
 
 const Audit = require('./audit');
@@ -13,11 +12,10 @@ const THRESHOLD_IN_MS = 100;
 
 class UsesRelPreloadAudit extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      category: 'Performance',
       name: 'uses-rel-preload',
       description: 'Preload key requests',
       informative: true,
@@ -28,8 +26,19 @@ class UsesRelPreloadAudit extends Audit {
     };
   }
 
+  /**
+   * @param {LH.Artifacts.CriticalRequestNode} chains
+   * @param {number} maxLevel
+   * @param {number=} minLevel
+   */
   static _flattenRequests(chains, maxLevel, minLevel = 0) {
+    /** @type {Array<LH.WebInspector.NetworkRequest>} */
     const requests = [];
+
+    /**
+     * @param {LH.Artifacts.CriticalRequestNode} chains
+     * @param {number} level
+     */
     const flatten = (chains, level) => {
       Object.keys(chains).forEach(chain => {
         if (chains[chain]) {
@@ -53,8 +62,8 @@ class UsesRelPreloadAudit extends Audit {
   /**
    * Computes the estimated effect of preloading all the resources.
    * @param {Set<string>} urls The array of byte savings results per resource
-   * @param {Node} graph
-   * @param {Simulator} simulator
+   * @param {LH.Gatherer.Simulation.GraphNode} graph
+   * @param {LH.Gatherer.Simulation.Simulator} simulator
    * @param {LH.WebInspector.NetworkRequest} mainResource
    * @return {{wastedMs: number, results: Array<{url: string, wastedMs: number}>}}
    */
@@ -69,16 +78,20 @@ class UsesRelPreloadAudit extends Audit {
 
     const modifiedGraph = graph.cloneWithRelationships();
 
+    /** @type {Array<LH.Gatherer.Simulation.GraphNetworkNode>} */
     const nodesToPreload = [];
-    /** @type {Node|null} */
+    /** @type {LH.Gatherer.Simulation.GraphNode|null} */
     let mainDocumentNode = null;
     modifiedGraph.traverse(node => {
-      if (node.record && urls.has(node.record.url)) {
-        nodesToPreload.push(node);
+      if (node.type !== 'network') return;
+
+      const networkNode = /** @type {LH.Gatherer.Simulation.GraphNetworkNode} */ (node);
+      if (networkNode.record && urls.has(networkNode.record.url)) {
+        nodesToPreload.push(networkNode);
       }
 
-      if (node.record && node.record.url === mainResource.url) {
-        mainDocumentNode = node;
+      if (networkNode.record && networkNode.record.url === mainResource.url) {
+        mainDocumentNode = networkNode;
       }
     });
 
@@ -97,6 +110,7 @@ class UsesRelPreloadAudit extends Audit {
     // Once we've modified the dependencies, simulate the new graph with flexible ordering.
     const simulationAfterChanges = simulator.simulate(modifiedGraph, {flexibleOrdering: true});
     const originalNodesByRecord = Array.from(simulationBeforeChanges.nodeTimings.keys())
+        // @ts-ignore we don't care if all nodes without a record collect on `undefined`
         .reduce((map, node) => map.set(node.record, node), new Map());
 
     const results = [];
@@ -104,6 +118,7 @@ class UsesRelPreloadAudit extends Audit {
       const originalNode = originalNodesByRecord.get(node.record);
       const timingAfter = simulationAfterChanges.nodeTimings.get(node);
       const timingBefore = simulationBeforeChanges.nodeTimings.get(originalNode);
+      // @ts-ignore TODO(phulce): fix timing typedef
       const wastedMs = Math.round(timingBefore.endTime - timingAfter.endTime);
       if (wastedMs < THRESHOLD_IN_MS) continue;
       results.push({url: node.record.url, wastedMs});
@@ -122,8 +137,9 @@ class UsesRelPreloadAudit extends Audit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
+   * @param {LH.Artifacts} artifacts
+   * @param {LH.Audit.Context} context
+   * @return {Promise<LH.Audit.Product>}
    */
   static audit(artifacts, context) {
     const trace = artifacts.traces[UsesRelPreloadAudit.DEFAULT_PASS];

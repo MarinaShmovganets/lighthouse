@@ -10,7 +10,7 @@ const Util = require('../report/html/renderer/util.js');
 
 class FirstCPUIdle extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
@@ -29,10 +29,10 @@ class FirstCPUIdle extends Audit {
    */
   static get defaultOptions() {
     return {
-      // 75th and 90th percentiles HTTPArchive -> 50 and 75
+      // 75th and 95th percentiles HTTPArchive -> median and PODR
       // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
-      // see https://www.desmos.com/calculator/cwuavnclzj
-      scorePODR: 1400,
+      // see https://www.desmos.com/calculator/yv89gz2nwf
+      scorePODR: 2900,
       scoreMedian: 6500,
     };
   }
@@ -41,9 +41,9 @@ class FirstCPUIdle extends Audit {
    * Identify the time the page is "first interactive"
    * @see https://docs.google.com/document/d/1GGiI9-7KeY3TPqS3YT271upUVimo-XiL5mwWorDUD4c/edit#
    *
-   * @param {Artifacts} artifacts
+   * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
-   * @return {Promise<AuditResult>}
+   * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];

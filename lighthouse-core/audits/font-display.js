@@ -11,13 +11,13 @@ const allowedFontFaceDisplays = ['block', 'fallback', 'optional', 'swap'];
 
 class FontDisplay extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
       name: 'font-display',
       description: 'All text remains visible during webfont loads',
-      failureDescription: 'Avoid invisible text while webfonts are loading',
+      failureDescription: 'Text is invisible while webfonts are loading',
       helpText: 'Leverage the font-display CSS feature to ensure text is user-visible while ' +
         'webfonts are loading. ' +
         '[Learn more](https://developers.google.com/web/updates/2016/02/font-display).',
@@ -26,8 +26,8 @@ class FontDisplay extends Audit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
+   * @param {LH.Artifacts} artifacts
+   * @return {Promise<LH.Audit.Product>}
    */
   static audit(artifacts) {
     const devtoolsLogs = artifacts.devtoolsLogs[this.DEFAULT_PASS];
@@ -47,14 +47,14 @@ class FontDisplay extends Audit {
         .filter(fontRecord => {
           // find the fontRecord of a font
           return !!fontsWithoutProperDisplay.find(fontFace => {
-            return fontFace.src.find(src => fontRecord.url === src);
+            return !!fontFace.src && !!fontFace.src.find(src => fontRecord.url === src);
           });
         })
         // calculate wasted time
         .map(record => {
           // In reality the end time should be calculated with paint time included
           // all browsers wait 3000ms to block text so we make sure 3000 is our max wasted time
-          const wastedTime = Math.min((record._endTime - record._startTime) * 1000, 3000);
+          const wastedTime = Math.min((record.endTime - record.startTime) * 1000, 3000);
 
           return {
             url: record.url,

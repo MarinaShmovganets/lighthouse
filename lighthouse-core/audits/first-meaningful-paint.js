@@ -10,7 +10,7 @@ const Util = require('../report/html/renderer/util');
 
 class FirstMeaningfulPaint extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
@@ -28,10 +28,10 @@ class FirstMeaningfulPaint extends Audit {
    */
   static get defaultOptions() {
     return {
-      // 75th and 90th percentiles HTTPArchive -> 50 and 75
+      // 75th and 95th percentiles HTTPArchive -> median and PODR
       // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
-      // see https://www.desmos.com/calculator/trv2goqvsd
-      scorePODR: 1400,
+      // see https://www.desmos.com/calculator/2t1ugwykrl
+      scorePODR: 2000,
       scoreMedian: 4000,
     };
   }
@@ -40,9 +40,9 @@ class FirstMeaningfulPaint extends Audit {
    * Audits the page to give a score for First Meaningful Paint.
    * @see https://github.com/GoogleChrome/lighthouse/issues/26
    * @see https://docs.google.com/document/d/1BR94tJdZLsin5poeet0XoTW60M0SjvOJQttKT-JK8HI/view
-   * @param {!Artifacts} artifacts The artifacts from the gather phase.
+   * @param {LH.Artifacts} artifacts The artifacts from the gather phase.
    * @param {LH.Audit.Context} context
-   * @return {!Promise<!AuditResult>}
+   * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];

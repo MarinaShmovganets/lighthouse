@@ -38,13 +38,22 @@ declare global {
       key: string;
       itemType: string;
       text: string;
+      displayUnit?: string;
+      granularity?: number;
     }
 
-    export interface HeadingsResult {
-      results: number;
+    export interface ByteEfficiencyProduct {
+      results: Array<ByteEfficiencyResult>;
       headings: Array<Audit.Heading>;
-      passes: boolean;
+      displayValue?: string;
       debugString?: string;
+    }
+
+    export interface ByteEfficiencyResult {
+      url: string | DetailsRendererCodeDetailJSON;
+      wastedBytes: number;
+      totalBytes: number;
+      wastedPercent?: number;
     }
 
     // TODO: placeholder typedefs until Details are typed
@@ -61,8 +70,14 @@ declare global {
       summary?: DetailsRendererDetailsSummary;
     }
 
+    export interface DetailsRendererCodeDetailJSON {
+      type: 'code',
+      value: string;
+    }
+
     export type DetailsItem = string | number | DetailsRendererNodeDetailsJSON |
-      DetailsRendererLinkDetailsJSON;
+      DetailsRendererLinkDetailsJSON | DetailsRendererCodeDetailJSON | undefined |
+      boolean;
 
     export interface DetailsRendererNodeDetailsJSON {
       type: 'node';
@@ -111,6 +126,19 @@ declare global {
 
     export interface Results {
       [metric: string]: Result;
+    }
+
+    export type SimpleCriticalRequestNode = {
+      [id: string]: {
+        request: {
+          url: string;
+          startTime: number;
+          endTime: number;
+          _responseReceivedTime: number;
+          transferSize: number;
+        };
+        children: SimpleCriticalRequestNode;
+      }
     }
   }
 }

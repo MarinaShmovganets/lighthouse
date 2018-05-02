@@ -16,7 +16,7 @@ const Util = require('../report/html/renderer/util');
  */
 class InteractiveMetric extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
@@ -34,18 +34,18 @@ class InteractiveMetric extends Audit {
    */
   static get defaultOptions() {
     return {
-      // 75th and 90th percentiles HTTPArchive -> 50 and 75
+      // 75th and 95th percentiles HTTPArchive -> median and PODR
       // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
-      // see https://www.desmos.com/calculator/dohd3b0sbr
-      scorePODR: 1200,
+      // see https://www.desmos.com/calculator/5xgy0pyrbp
+      scorePODR: 2900,
       scoreMedian: 7300,
     };
   }
 
   /**
-   * @param {!Artifacts} artifacts
+   * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
-   * @return {!Promise<!AuditResult>}
+   * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
@@ -56,7 +56,9 @@ class InteractiveMetric extends Audit {
     const extendedInfo = {
       timeInMs,
       timestamp: metricResult.timestamp,
+      // @ts-ignore - TODO(bckenny): make lantern metric/metric a discriminated union.
       optimistic: metricResult.optimisticEstimate && metricResult.optimisticEstimate.timeInMs,
+      // @ts-ignore
       pessimistic: metricResult.pessimisticEstimate && metricResult.pessimisticEstimate.timeInMs,
     };
 

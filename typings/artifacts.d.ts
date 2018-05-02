@@ -99,7 +99,8 @@ declare global {
     }
 
     export interface ComputedArtifacts {
-      requestDevtoolsTimelineModel(trace: Trace): Promise<{filmStripModel(): Artifacts.DevtoolsTimelineFilmStripModel}>;
+      requestCriticalRequestChains(data: {devtoolsLog: DevtoolsLog, URL: Artifacts['URL']}): Promise<Artifacts.CriticalRequestNode>;
+      requestDevtoolsTimelineModel(trace: Trace): Promise<Artifacts.DevtoolsTimelineModel>;
       requestLoadSimulator(data: {devtoolsLog: DevtoolsLog, settings: Config.Settings}): Promise<LanternSimulator>;
       requestMainResource(data: {devtoolsLog: DevtoolsLog, URL: Artifacts['URL']}): Promise<WebInspector.NetworkRequest>;
       requestManifestValues(manifest: LH.Artifacts['Manifest']): Promise<LH.Artifacts.ManifestValues>;
@@ -113,7 +114,7 @@ declare global {
       requestSpeedline(trace: Trace): Promise<LH.Artifacts.Speedline>;
 
       // Metrics.
-      requestConsistentlyInteractive(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric|Artifacts.Metric>;
+      requestInteractive(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric|Artifacts.Metric>;
       requestEstimatedInputLatency(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric|Artifacts.Metric>;
       requestFirstContentfulPaint(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric|Artifacts.Metric>;
       requestFirstCPUIdle(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric|Artifacts.Metric>;
@@ -121,12 +122,12 @@ declare global {
       requestSpeedIndex(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric|Artifacts.Metric>;
 
       // Lantern metrics.
-      requestLanternConsistentlyInteractive(data: LH.Artifacts.MetricComputationData): Promise<Artifacts.LanternMetric>;
-      requestLanternEstimatedInputLatency(data: LH.Artifacts.MetricComputationData): Promise<Artifacts.LanternMetric>;
-      requestLanternFirstContentfulPaint(data: LH.Artifacts.MetricComputationData): Promise<Artifacts.LanternMetric>;
-      requestLanternFirstCPUIdle(data: LH.Artifacts.MetricComputationData): Promise<Artifacts.LanternMetric>;
-      requestLanternFirstMeaningfulPaint(data: LH.Artifacts.MetricComputationData): Promise<Artifacts.LanternMetric>;
-      requestLanternSpeedIndex(data: LH.Artifacts.MetricComputationData): Promise<Artifacts.LanternMetric>;
+      requestLanternInteractive(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric>;
+      requestLanternEstimatedInputLatency(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric>;
+      requestLanternFirstContentfulPaint(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric>;
+      requestLanternFirstCPUIdle(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric>;
+      requestLanternFirstMeaningfulPaint(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric>;
+      requestLanternSpeedIndex(data: LH.Artifacts.MetricComputationDataInput): Promise<Artifacts.LanternMetric>;
     }
 
     module Artifacts {
@@ -278,6 +279,20 @@ declare global {
         }>;
       }
 
+      export interface DevtoolsTimelineModelNode {
+        children: Map<string, DevtoolsTimelineModelNode>;
+        selfTime: number;
+        // SDK.TracingModel.Event
+        event: {
+          name: string;
+        };
+      }
+
+      export interface DevtoolsTimelineModel {
+        filmStripModel(): Artifacts.DevtoolsTimelineFilmStripModel;
+        bottomUpGroupBy(grouping: string): DevtoolsTimelineModelNode;
+      }
+
       export interface ManifestValues {
         isParseFailure: boolean;
         parseFailureReason: string | undefined;
@@ -292,12 +307,12 @@ declare global {
         devtoolsLog: DevtoolsLog;
         trace: Trace;
         settings: Config.Settings;
+        simulator?: LanternSimulator;
       }
 
       export interface MetricComputationData extends MetricComputationDataInput {
         networkRecords: Array<WebInspector.NetworkRequest>;
         traceOfTab: TraceOfTab;
-        simulator?: LanternSimulator;
       }
 
       export interface Metric {
@@ -314,13 +329,14 @@ declare global {
 
       export interface LanternMetric {
         timing: number;
+        timestamp?: never;
         optimisticEstimate: Gatherer.Simulation.Result
         pessimisticEstimate: Gatherer.Simulation.Result;
         optimisticGraph: Gatherer.Simulation.GraphNode;
         pessimisticGraph: Gatherer.Simulation.GraphNode;
       }
 
-      export type Speedline = ReturnType<typeof speedline>;
+      export type Speedline = speedline.Output<'speedIndex'>;
 
       // TODO(bckenny): all but navigationStart could actually be undefined.
       export interface TraceTimes {
