@@ -144,7 +144,7 @@ class UserTimings extends Audit {
       return {
         // mark the audit as failed if there are user timings to display
         rawValue: userTimings.length === 0,
-        displayValue: `${userTimings.length}`,
+        displayValue: userTimings.length ? `${userTimings.length}` : '',
         extendedInfo: {
           value: userTimings,
         },

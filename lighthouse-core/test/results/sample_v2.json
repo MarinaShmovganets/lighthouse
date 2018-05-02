@@ -292,7 +292,7 @@
     },
     "user-timings": {
       "score": 1,
-      "displayValue": "0",
+      "displayValue": "",
       "rawValue": true,
       "extendedInfo": {
         "value": []
