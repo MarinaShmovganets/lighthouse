@@ -62,7 +62,8 @@ function validateCategories(categories, audits, groups) {
         throw new Error(`could not find ${audit.id} audit for category ${categoryId}`);
       }
 
-      if (categoryId === 'accessibility' && !audit.group) {
+      const auditImpl = audits.find(a => a.implementation.meta.name === audit.id).implementation;
+      if (categoryId === 'accessibility' && !audit.group && !auditImpl.meta.manual) {
         throw new Error(`${audit.id} accessibility audit does not have a group`);
       }
 

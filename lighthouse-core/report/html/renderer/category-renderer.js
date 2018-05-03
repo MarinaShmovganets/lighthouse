@@ -188,10 +188,10 @@ class CategoryRenderer {
 
   /**
    * @param {!Array<!ReportRenderer.AuditJSON>} manualAudits
-   * @param {!Object<string, !ReportRenderer.GroupJSON>} groupDefinitions
+   * @param {string} manualDescription
    * @param {!Element} element Parent container to add the manual audits to.
    */
-  _renderManualAudits(manualAudits, groupDefinitions, element) {
+  _renderManualAudits(manualAudits, manualDescription, element) {
     // While we could support rendering multiple groups of manual audits, it doesn't
     // seem desirable for UX or renderer complexity. So we'll throw.
     const groupsIds = new Set(manualAudits.map(a => a.group));
@@ -201,8 +201,8 @@ class CategoryRenderer {
     /* eslint-enable no-console */
     if (!groupsIds.size) return;
 
-    const groupId = /** @type {string} */ (Array.from(groupsIds)[0]);
-    const auditGroupElem = this.renderAuditGroup(groupDefinitions[groupId], {expandable: true});
+    const group = {title: 'Additional items to manually check', description: manualDescription};
+    const auditGroupElem = this.renderAuditGroup(group, {expandable: true});
     auditGroupElem.classList.add('lh-audit-group--manual');
 
     manualAudits.forEach(audit => {
@@ -346,7 +346,7 @@ class CategoryRenderer {
     }
 
     // Render manual audits after passing.
-    this._renderManualAudits(manualAudits, groupDefinitions, element);
+    this._renderManualAudits(manualAudits, category.manualDescription, element);
 
     return element;
   }
