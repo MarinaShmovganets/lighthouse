@@ -31,18 +31,19 @@ class Util {
   }
 
   /**
-   * @param {string|Array<string|number>} displayValue
+   * @param {string|Array<string|number>=} displayValue
    * @return {string}
    */
   static formatDisplayValue(displayValue) {
-    if (typeof displayValue === 'string') {
-      return displayValue;
+    if (typeof displayValue === 'string' || typeof displayValue === 'undefined') {
+      return displayValue || '';
     }
 
     const template = /** @type {string} */ displayValue.shift();
     if (typeof template !== 'string') {
-      console.error('Invalid display value', displayValue);
-      return '';
+      // First value should always be the format string, but we don't want to fail to build
+      // a report, return a placeholder.
+      return 'UNKNOWN';
     }
 
     let output = template;

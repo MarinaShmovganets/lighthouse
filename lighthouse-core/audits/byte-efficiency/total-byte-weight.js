@@ -6,7 +6,6 @@
 'use strict';
 
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
-const Util = require('../../report/html/renderer/util');
 
 class TotalByteWeight extends ByteEfficiencyAudit {
   /**

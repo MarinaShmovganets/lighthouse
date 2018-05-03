@@ -992,7 +992,10 @@
     },
     "bootup-time": {
       "score": 0.9,
-      "displayValue": "1,300 ms",
+      "displayValue": [
+        "%10d ms",
+        1302.3579999804497
+      ],
       "rawValue": 1302.3579999804497,
       "extendedInfo": {
         "value": {
@@ -1068,7 +1071,7 @@
     "uses-rel-preload": {
       "score": 1,
       "displayValue": [
-        "%10d ms",
+        "Potential savings of %10d ms",
         0
       ],
       "rawValue": 0,
@@ -1092,7 +1095,7 @@
     "uses-rel-preconnect": {
       "score": 1,
       "displayValue": [
-        "%10d ms",
+        "Potential savings of %10d ms",
         0
       ],
       "rawValue": 0,
