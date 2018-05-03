@@ -51,23 +51,24 @@ function validateCategories(categories, audits, groups) {
     return;
   }
 
-  const auditIds = audits.map(audit => audit.implementation.meta.name);
   Object.keys(categories).forEach(categoryId => {
-    categories[categoryId].audits.forEach((audit, index) => {
-      if (!audit.id) {
+    categories[categoryId].audits.forEach((auditRef, index) => {
+      if (!auditRef.id) {
         throw new Error(`missing an audit id at ${categoryId}[${index}]`);
       }
 
-      if (!auditIds.includes(audit.id)) {
-        throw new Error(`could not find ${audit.id} audit for category ${categoryId}`);
+      const audit = audits.find(a => a.implementation.meta.name === auditRef.id);
+      if (!audit) {
+        throw new Error(`could not find ${auditRef.id} audit for category ${categoryId}`);
       }
 
-      if (categoryId === 'accessibility' && !audit.group) {
-        throw new Error(`${audit.id} accessibility audit does not have a group`);
+      const auditImpl = audit.implementation;
+      if (categoryId === 'accessibility' && !auditRef.group && !auditImpl.meta.manual) {
+        throw new Error(`${auditRef.id} accessibility audit does not have a group`);
       }
 
-      if (audit.group && !groups[audit.group]) {
-        throw new Error(`${audit.id} references unknown group ${audit.group}`);
+      if (auditRef.group && !groups[auditRef.group]) {
+        throw new Error(`${auditRef.id} references unknown group ${auditRef.group}`);
       }
     });
   });
@@ -187,7 +188,7 @@ function deepClone(json) {
   // injection of plugins.
   if (Array.isArray(json.passes)) {
     cloned.passes.forEach((pass, i) => {
-      pass.gatherers = cloneArrayWithPluginSafety(json.passes[i].gatherers);
+      pass.gatherers = cloneArrayWithPluginSafety(json.passes[i].gatherers || []);
     });
   }
 
@@ -248,6 +249,8 @@ class Config {
       configJSON = Config.generateNewFilteredConfig(configJSON, categoryIds, auditIds,
           skipAuditIds);
     }
+
+    Config.adjustDefaultPassForThrottling(configJSON);
 
     // Store the directory of the config path, if one was provided.
     this._configDir = configPath ? path.dirname(configPath) : undefined;
@@ -379,6 +382,30 @@ class Config {
     }
 
     return mergedItems;
+  }
+
+  /**
+   * Observed throttling methods (devtools/provided) require at least 5s of quiet for the metrics to
+   * be computed. This method adjusts the quiet thresholds to the required minimums if necessary.
+   *
+   * @param {LH.Config.Json} config
+   */
+  static adjustDefaultPassForThrottling(config) {
+    if (config.settings.throttlingMethod !== 'devtools' &&
+        config.settings.throttlingMethod !== 'provided') {
+      return;
+    }
+
+    const defaultPass = config.passes.find(pass => pass.passName === 'defaultPass');
+    if (!defaultPass) return;
+
+    const overrides = constants.nonSimulatedPassConfigOverrides;
+    defaultPass.pauseAfterLoadMs =
+      Math.max(overrides.pauseAfterLoadMs, defaultPass.pauseAfterLoadMs);
+    defaultPass.cpuQuietThresholdMs =
+      Math.max(overrides.cpuQuietThresholdMs, defaultPass.cpuQuietThresholdMs);
+    defaultPass.networkQuietThresholdMs =
+      Math.max(overrides.networkQuietThresholdMs, defaultPass.networkQuietThresholdMs);
   }
 
   /**

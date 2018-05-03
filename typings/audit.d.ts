@@ -83,7 +83,7 @@ declare global {
 
     export type DetailsItem = string | number | DetailsRendererNodeDetailsJSON |
       DetailsRendererLinkDetailsJSON | DetailsRendererCodeDetailJSON | undefined |
-      boolean;
+      boolean | DetailsRendererUrlDetailsJSON;
 
     export interface DetailsRendererNodeDetailsJSON {
       type: 'node';
@@ -96,6 +96,11 @@ declare global {
       type: 'link';
       text: string;
       url: string;
+    }
+
+    export interface DetailsRendererUrlDetailsJSON {
+      type: 'url';
+      value: string;
     }
 
     // Type returned by Audit.audit(). Only rawValue is required.
