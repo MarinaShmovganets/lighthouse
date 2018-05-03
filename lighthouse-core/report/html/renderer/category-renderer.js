@@ -75,7 +75,7 @@ class CategoryRenderer {
    * @param {!DocumentFragment|!Element} element DOM node to populate with values.
    * @param {number} score
    * @param {string} scoreDisplayMode
-   * @param {?boolean} isError
+   * @param {boolean} isError
    * @return {!Element}
    */
   _populateScore(element, score, scoreDisplayMode, isError) {
@@ -105,7 +105,7 @@ class CategoryRenderer {
     this.dom.find('.lh-category-header__description', tmpl)
       .appendChild(this.dom.convertMarkdownLinkSnippets(category.description));
 
-    return this._populateScore(tmpl, category.score, 'numeric');
+    return this._populateScore(tmpl, category.score, 'numeric', false);
   }
 
   /**
