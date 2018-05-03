@@ -76,8 +76,8 @@ describe('PerfCategoryRenderer', () => {
     const categoryDOM = renderer.render(category, sampleResults.reportGroups);
     const metricsSection = categoryDOM.querySelectorAll('.lh-category > .lh-audit-group')[0];
 
-    const metricAudits = category.audits.filter(audit => audit.group === 'perf-metric');
-    const timelineElements = metricsSection.querySelectorAll('.lh-perf-metric');
+    const metricAudits = category.audits.filter(audit => audit.group === 'metrics');
+    const timelineElements = metricsSection.querySelectorAll('.lh-metric');
     const nontimelineElements = metricsSection.querySelectorAll('.lh-audit');
     assert.equal(timelineElements.length + nontimelineElements.length, metricAudits.length);
   });
@@ -85,23 +85,23 @@ describe('PerfCategoryRenderer', () => {
   it('renders the failing performance hints', () => {
     const categoryDOM = renderer.render(category, sampleResults.reportGroups);
 
-    const hintAudits = category.audits.filter(audit => audit.group === 'perf-hint' &&
+    const hintAudits = category.audits.filter(audit => audit.group === 'load-opportunities' &&
         audit.result.score !== 1);
-    const hintElements = categoryDOM.querySelectorAll('.lh-perf-hint');
+    const hintElements = categoryDOM.querySelectorAll('.lh-load-opportunity');
     assert.equal(hintElements.length, hintAudits.length);
 
     const hintElement = hintElements[0];
-    const hintSparklineElement = hintElement.querySelector('.lh-perf-hint__sparkline');
-    assert.ok(hintElement.querySelector('.lh-perf-hint__title'), 'did not render title');
+    const hintSparklineElement = hintElement.querySelector('.lh-load-opportunity__sparkline');
+    assert.ok(hintElement.querySelector('.lh-load-opportunity__title'), 'did not render title');
     assert.ok(hintSparklineElement, 'did not render sparkline');
-    assert.ok(hintElement.querySelector('.lh-perf-hint__stats'), 'did not render stats');
+    assert.ok(hintElement.querySelector('.lh-load-opportunity__stats'), 'did not render stats');
     assert.ok(hintSparklineElement.title, 'did not render tooltip');
   });
 
   it('renders the performance hints with a debug string', () => {
     const auditWithDebug = {
       score: 0,
-      group: 'perf-hint',
+      group: 'load-opportunities',
       result: {
         rawValue: 100, debugString: 'Yikes!', description: 'Bug',
         helpText: '', score: 0.32,
@@ -112,14 +112,14 @@ describe('PerfCategoryRenderer', () => {
     const fakeCategory = Object.assign({}, category, {audits: [auditWithDebug]});
     const categoryDOM = renderer.render(fakeCategory, sampleResults.reportGroups);
 
-    const debugEl = categoryDOM.querySelector('.lh-perf-hint .lh-debug');
+    const debugEl = categoryDOM.querySelector('.lh-load-opportunity .lh-debug');
     assert.ok(debugEl, 'did not render debug');
   });
 
   it('renders errored performance hint with a debug string', () => {
     const auditWithDebug = {
       score: 0,
-      group: 'perf-hint',
+      group: 'load-opportunities',
       result: {
         error: true, score: 0,
         rawValue: 100, debugString: 'Yikes!!', description: 'Bug #2',
@@ -130,14 +130,14 @@ describe('PerfCategoryRenderer', () => {
     const fakeCategory = Object.assign({}, category, {audits: [auditWithDebug]});
     const categoryDOM = renderer.render(fakeCategory, sampleResults.reportGroups);
 
-    const debugEl = categoryDOM.querySelector('.lh-perf-hint .lh-debug');
+    const debugEl = categoryDOM.querySelector('.lh-load-opportunity .lh-debug');
     assert.ok(debugEl, 'did not render debug');
   });
 
   it('throws if a performance hint is missing summary.wastedMs', () => {
     const auditWithDebug = {
       score: 0,
-      group: 'perf-hint',
+      group: 'load-opportunities',
       result: {
         rawValue: 100, description: 'Bug',
         helpText: '', score: 0.32,
@@ -154,7 +154,7 @@ describe('PerfCategoryRenderer', () => {
     const categoryDOM = renderer.render(category, sampleResults.reportGroups);
     const diagnosticSection = categoryDOM.querySelectorAll('.lh-category > .lh-audit-group')[2];
 
-    const diagnosticAudits = category.audits.filter(audit => audit.group === 'perf-info' &&
+    const diagnosticAudits = category.audits.filter(audit => audit.group === 'diagnostics' &&
         audit.result.score !== 1);
     const diagnosticElements = diagnosticSection.querySelectorAll('.lh-audit');
     assert.equal(diagnosticElements.length, diagnosticAudits.length);
@@ -165,7 +165,7 @@ describe('PerfCategoryRenderer', () => {
     const passedSection = categoryDOM.querySelector('.lh-category > .lh-passed-audits');
 
     const passedAudits = category.audits.filter(audit =>
-        audit.group && audit.group !== 'perf-metric' &&
+        audit.group && audit.group !== 'metrics' &&
         audit.result.score === 1);
     const passedElements = passedSection.querySelectorAll('.lh-audit');
     assert.equal(passedElements.length, passedAudits.length);

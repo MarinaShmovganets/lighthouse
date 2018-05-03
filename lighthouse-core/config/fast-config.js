@@ -41,7 +41,7 @@ module.exports = {
   categories: {
     performance: {
       audits: [
-        {id: 'predictive-perf', weight: 5, group: 'perf-metric'},
+        {id: 'predictive-perf', weight: 5, group: 'metrics'},
       ],
     },
   },
