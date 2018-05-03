@@ -35,10 +35,10 @@ class Util {
    * @return {string}
    */
   static formatDisplayValue(displayValue) {
-    if (typeof displayValue === 'string' || typeof displayValue === 'undefined') {
-      return displayValue || '';
-    }
+    if (typeof displayValue === 'undefined') return '';
+    if (typeof displayValue === 'string') return displayValue;
 
+    const replacementRegex = /%([0-9.]*d|s)/;
     const template = /** @type {string} */ displayValue.shift();
     if (typeof template !== 'string') {
       // First value should always be the format string, but we don't want to fail to build
@@ -47,14 +47,24 @@ class Util {
     }
 
     let output = template;
-    while (displayValue.length) {
-      const replacement = /** @type {number|string} */ (displayValue.shift());
-      output = output.replace(/%([0-9.]+)?(d|s)/, match => {
+    for (const replacement of displayValue) {
+      if (!replacementRegex.test(output)) {
+        // eslint-disable-next-line no-console
+        console.warn('Too many replacements given');
+        break;
+      }
+
+      output = output.replace(replacementRegex, match => {
         const granularity = Number(match.match(/[0-9.]+/)) || 1;
         return match === '%s' ?
           replacement.toLocaleString() :
           (Math.round(Number(replacement) / granularity) * granularity).toLocaleString();
       });
+    }
+
+    if (replacementRegex.test(output)) {
+      // eslint-disable-next-line no-console
+      console.warn('Not enough replacements given');
     }
 
     return output;

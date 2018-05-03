@@ -12,6 +12,19 @@ const NBSP = '\xa0';
 /* eslint-env mocha */
 
 describe('util helpers', () => {
+  let origConsoleWarn;
+  let consoleWarnCalls;
+
+  beforeEach(() => {
+    origConsoleWarn = console.warn;
+    consoleWarnCalls = [];
+    console.warn = msg => consoleWarnCalls.push(msg);
+  });
+
+  afterEach(() => {
+    console.warn = origConsoleWarn;
+  });
+
   it('formats a number', () => {
     assert.strictEqual(Util.formatNumber(10), '10');
     assert.strictEqual(Util.formatNumber(100.01), '100');
@@ -55,14 +68,25 @@ describe('util helpers', () => {
   });
 
   it('formats display values', () => {
-    const format = (...args) => Util.formatDisplayValue(...args);
+    const format = arg => Util.formatDisplayValue(arg);
     assert.equal(format(undefined), '');
-    assert.equal(format([1]), 'UNKNOWN');
-    assert.equal(format(['%s %s', 'Hello', 'Paul']), 'Hello Paul');
+    assert.equal(format('Foo %s %d'), 'Foo %s %d');
+    assert.equal(format([]), 'UNKNOWN');
+    assert.equal(format(['%s %s', 'Hello', 'formatDisplayValue']), 'Hello formatDisplayValue');
     assert.equal(format(['%s%', 99.9]), '99.9%');
     assert.equal(format(['%d%', 99.9]), '100%');
     assert.equal(format(['%s ms', 12345.678]), '12,345.678 ms');
     assert.equal(format(['%10d ms', 12345.678]), '12,350 ms');
     assert.equal(format(['%.01d ms', 12345.678]), '12,345.68 ms');
+    assert.equal(format(['%.01s literal', 1234]), '%.01s literal');
+  });
+
+  it('warns on improper display value formatting', () => {
+    assert.equal(Util.formatDisplayValue(['%s']), '%s');
+    assert.equal(Util.formatDisplayValue(['%s', 'foo', 'bar']), 'foo');
+    assert.deepEqual(consoleWarnCalls, [
+      'Not enough replacements given',
+      'Too many replacements given',
+    ]);
   });
 });
