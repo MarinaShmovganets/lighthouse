@@ -46,8 +46,6 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
    * @return {!Element}
    */
   _renderOpportunity(audit, scale) {
-    const tooltipAttrs = {title: audit.result.displayValue};
-
     const element = this.dom.createElement('details', [
       'lh-load-opportunity',
       `lh-load-opportunity--${Util.calculateRating(audit.result.score)}`,
@@ -56,7 +54,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     element.id = audit.result.name;
 
     const summary = this.dom.createChildOf(element, 'summary', 'lh-load-opportunity__summary ' +
-      'lh-expandable-details__summary');
+    'lh-expandable-details__summary');
     const titleEl = this.dom.createChildOf(summary, 'div', 'lh-load-opportunity__title');
     titleEl.textContent = audit.result.description;
 
@@ -70,32 +68,35 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
 
     const details = audit.result.details;
     const summaryInfo = /** @type {!DetailsRenderer.OpportunitySummary}
-        */ (details && details.summary);
+    */ (details && details.summary);
     // eslint-disable-next-line no-console
     console.assert(summaryInfo, 'Missing `summary` for load-opportunities audit');
     // eslint-disable-next-line no-console
     console.assert(typeof summaryInfo.wastedMs === 'number',
-        'Missing numeric `summary.wastedMs` for load-opportunities audit');
+    'Missing numeric `summary.wastedMs` for load-opportunities audit');
     if (!summaryInfo || !summaryInfo.wastedMs) {
       return element;
     }
 
-    const sparklineContainerEl = this.dom.createChildOf(summary, 'div', 'lh-load-opportunity__sparkline',
-        tooltipAttrs);
+    const elemAttrs = {title: audit.result.displayValue};
+    const sparklineContainerEl = this.dom.createChildOf(summary, 'div',
+        'lh-load-opportunity__sparkline', elemAttrs);
     const sparklineEl = this.dom.createChildOf(sparklineContainerEl, 'div', 'lh-sparkline');
     const sparklineBarEl = this.dom.createChildOf(sparklineEl, 'div', 'lh-sparkline__bar');
     sparklineBarEl.style.width = summaryInfo.wastedMs / scale * 100 + '%';
 
-    const statsEl = this.dom.createChildOf(summary, 'div', 'lh-load-opportunity__stats', tooltipAttrs);
+    const statsEl = this.dom.createChildOf(summary, 'div', 'lh-load-opportunity__stats', elemAttrs);
     const statsMsEl = this.dom.createChildOf(statsEl, 'div', 'lh-load-opportunity__primary-stat');
     statsMsEl.textContent = Util.formatMilliseconds(summaryInfo.wastedMs);
 
     if (summaryInfo.wastedBytes) {
-      const statsKbEl = this.dom.createChildOf(statsEl, 'div', 'lh-load-opportunity__secondary-stat');
+      const statsKbEl = this.dom.createChildOf(statsEl, 'div',
+          'lh-load-opportunity__secondary-stat');
       statsKbEl.textContent = Util.formatBytesToKB(summaryInfo.wastedBytes);
     }
 
-    const descriptionEl = this.dom.createChildOf(element, 'div', 'lh-load-opportunity__description');
+    const descriptionEl = this.dom.createChildOf(element, 'div',
+        'lh-load-opportunity__description');
     descriptionEl.appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.helpText));
 
     if (audit.result.debugString) {
