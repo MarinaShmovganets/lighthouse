@@ -56,12 +56,13 @@ describe('util helpers', () => {
 
   it('formats display values', () => {
     const format = (...args) => Util.formatDisplayValue(...args);
+    assert.equal(format(undefined), '');
+    assert.equal(format([1]), 'UNKNOWN');
     assert.equal(format(['%s %s', 'Hello', 'Paul']), 'Hello Paul');
     assert.equal(format(['%s%', 99.9]), '99.9%');
     assert.equal(format(['%d%', 99.9]), '100%');
     assert.equal(format(['%s ms', 12345.678]), '12,345.678 ms');
     assert.equal(format(['%10d ms', 12345.678]), '12,350 ms');
-    assert.equal(format(['%.01d ms', 12345.678]), '12,345.68 ms');
     assert.equal(format(['%.01d ms', 12345.678]), '12,345.68 ms');
   });
 });

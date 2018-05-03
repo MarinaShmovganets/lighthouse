@@ -175,7 +175,7 @@ class UnusedBytes extends Audit {
     /** @type {LH.Audit.DisplayValue} */
     let displayValue = result.displayValue || '';
     if (typeof result.displayValue === 'undefined' && wastedBytes) {
-      displayValue = ['Potential savings of %d KB', wastedKb];
+      displayValue = ['Potential savings of %d\xa0KB', wastedKb];
     }
 
     const summary = {
