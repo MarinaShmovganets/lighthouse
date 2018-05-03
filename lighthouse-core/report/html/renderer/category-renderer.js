@@ -37,7 +37,7 @@ class CategoryRenderer {
     let title = audit.result.description;
 
     if (audit.result.displayValue) {
-      title += `:  ${audit.result.displayValue}`;
+      title += `:  ${Util.formatDisplayValue(audit.result.displayValue)}`;
     }
 
     if (audit.result.debugString) {

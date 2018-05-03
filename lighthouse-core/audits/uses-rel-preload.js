@@ -183,7 +183,7 @@ class UsesRelPreloadAudit extends Audit {
       return {
         score: UnusedBytes.scoreForWastedMs(wastedMs),
         rawValue: wastedMs,
-        displayValue: Util.formatMilliseconds(wastedMs),
+        displayValue: [Util.MS_DISPLAY_VALUE, wastedMs],
         extendedInfo: {
           value: results,
         },

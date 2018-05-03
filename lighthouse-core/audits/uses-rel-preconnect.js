@@ -158,7 +158,7 @@ class UsesRelPreconnectAudit extends Audit {
     return {
       score: UnusedBytes.scoreForWastedMs(maxWasted),
       rawValue: maxWasted,
-      displayValue: Util.formatMilliseconds(maxWasted),
+      displayValue: [Util.MS_DISPLAY_VALUE, maxWasted],
       extendedInfo: {
         value: results,
       },

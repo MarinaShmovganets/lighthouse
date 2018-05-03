@@ -22,7 +22,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     titleEl.textContent = audit.result.description;
 
     const valueEl = this.dom.find('.lh-perf-metric__value span', tmpl);
-    valueEl.textContent = audit.result.displayValue;
+    valueEl.textContent = Util.formatDisplayValue(audit.result.displayValue);
 
     const descriptionEl = this.dom.find('.lh-perf-metric__description', tmpl);
     descriptionEl.appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.helpText));
@@ -42,7 +42,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
    * @return {!Element}
    */
   _renderPerfHintAudit(audit, scale) {
-    const tooltipAttrs = {title: audit.result.displayValue};
+    const tooltipAttrs = {title: Util.formatDisplayValue(audit.result.displayValue)};
 
     const element = this.dom.createElement('details', [
       'lh-perf-hint',

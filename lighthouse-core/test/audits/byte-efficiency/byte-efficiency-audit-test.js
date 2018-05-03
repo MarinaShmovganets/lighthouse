@@ -176,7 +176,7 @@ describe('Byte efficiency base audit', () => {
       ],
     }, graph, simulator);
 
-    assert.ok(result.displayValue.includes('2048 bytes'), 'contains correct bytes');
+    assert.ok(result.displayValue.includes(2048), 'contains correct bytes');
   });
 
   it('should work on real graphs', async () => {

@@ -26,6 +26,39 @@ class Util {
     return PASS_THRESHOLD;
   }
 
+  static get MS_DISPLAY_VALUE() {
+    return `%10d${NBSP}ms`;
+  }
+
+  /**
+   * @param {string|Array<string|number>} displayValue
+   * @return {string}
+   */
+  static formatDisplayValue(displayValue) {
+    if (typeof displayValue === 'string') {
+      return displayValue;
+    }
+
+    const template = /** @type {string} */ displayValue.shift();
+    if (typeof template !== 'string') {
+      console.error('Invalid display value', displayValue);
+      return '';
+    }
+
+    let output = template;
+    while (displayValue.length) {
+      const replacement = /** @type {number|string} */ (displayValue.shift());
+      output = output.replace(/%([0-9.]+)?(d|s)/, match => {
+        const granularity = Number(match.match(/[0-9.]+/)) || 1;
+        return match === '%s' ?
+          replacement.toLocaleString() :
+          (Math.round(Number(replacement) / granularity) * granularity).toLocaleString();
+      });
+    }
+
+    return output;
+  }
+
   /**
    * Convert a score to a rating label.
    * @param {number} score
