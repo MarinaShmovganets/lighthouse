@@ -192,14 +192,7 @@ class CategoryRenderer {
    * @param {!Element} element Parent container to add the manual audits to.
    */
   _renderManualAudits(manualAudits, manualDescription, element) {
-    // While we could support rendering multiple groups of manual audits, it doesn't
-    // seem desirable for UX or renderer complexity. So we'll throw.
-    const groupsIds = new Set(manualAudits.map(a => a.group));
-    /* eslint-disable no-console */
-    console.assert(groupsIds.size <= 1, 'More than 1 manual audit group found.');
-    console.assert(!groupsIds.has(undefined), 'Some manual audits don\'t belong to a group');
-    /* eslint-enable no-console */
-    if (!groupsIds.size) return;
+    if (!manualAudits.length) return;
 
     const group = {title: 'Additional items to manually check', description: manualDescription};
     const auditGroupElem = this.renderAuditGroup(group, {expandable: true});
