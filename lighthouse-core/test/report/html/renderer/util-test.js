@@ -10,6 +10,7 @@ const Util = require('../../../../report/html/renderer/util.js');
 const NBSP = '\xa0';
 
 /* eslint-env mocha */
+/* eslint-disable no-console */
 
 describe('util helpers', () => {
   let origConsoleWarn;
@@ -78,7 +79,9 @@ describe('util helpers', () => {
     assert.equal(format(['%s ms', 12345.678]), '12,345.678 ms');
     assert.equal(format(['%10d ms', 12345.678]), '12,350 ms');
     assert.equal(format(['%.01d ms', 12345.678]), '12,345.68 ms');
+    // handle edge cases
     assert.equal(format(['%.01s literal', 1234]), '%.01s literal');
+    assert.equal(format(['%1.01.1d junk', 1234]), '%1.01.1d junk');
   });
 
   it('warns on improper display value formatting', () => {
