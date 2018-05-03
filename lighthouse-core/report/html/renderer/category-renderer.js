@@ -55,15 +55,15 @@ class CategoryRenderer {
       auditEl.classList.add('lh-audit--manual');
     }
 
-    this._populateScore(auditEl, audit.result.score, scoreDisplayMode);
+    this._populateScore(auditEl, audit.result.score, scoreDisplayMode, audit.result.error);
 
     if (audit.result.error) {
       auditEl.classList.add(`lh-audit--error`);
       const valueEl = this.dom.find('.lh-score__value', auditEl);
       valueEl.textContent = 'Error';
       valueEl.classList.add('tooltip-boundary');
-      const content = this.dom.createChildOf(valueEl, 'div', 'lh-error-tooltip-content tooltip');
-      content.textContent = audit.result.debugString || 'Report error: no audit information';
+      const tooltip = this.dom.createChildOf(valueEl, 'div', 'lh-error-tooltip-content tooltip');
+      tooltip.textContent = audit.result.debugString || 'Report error: no audit information';
     } else if (audit.result.debugString) {
       const debugStrEl = auditEl.appendChild(this.dom.createElement('div', 'lh-debug'));
       debugStrEl.textContent = audit.result.debugString;
@@ -75,14 +75,16 @@ class CategoryRenderer {
    * @param {!DocumentFragment|!Element} element DOM node to populate with values.
    * @param {number} score
    * @param {string} scoreDisplayMode
+   * @param {?boolean} isError
    * @return {!Element}
    */
-  _populateScore(element, score, scoreDisplayMode) {
+  _populateScore(element, score, scoreDisplayMode, isError) {
     const scoreOutOf100 = Math.round(score * 100);
     const valueEl = this.dom.find('.lh-score__value', element);
     valueEl.textContent = Util.formatNumber(scoreOutOf100);
-    valueEl.classList.add(`lh-score__value--${Util.calculateRating(score)}`,
-        `lh-score__value--${scoreDisplayMode}`);
+    // FIXME(paulirish): this'll have to deal with null scores and scoreDisplayMode stuff..
+    const rating = isError ? 'error' : Util.calculateRating(score);
+    valueEl.classList.add(`lh-score__value--${rating}`, `lh-score__value--${scoreDisplayMode}`);
 
     return /** @type {!Element} **/ (element);
   }

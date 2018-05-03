@@ -15,7 +15,6 @@ const RATINGS = {
   PASS: {label: 'pass', minScore: PASS_THRESHOLD},
   AVERAGE: {label: 'average', minScore: 0.45},
   FAIL: {label: 'fail'},
-  ERROR: {label: 'error'},
 };
 
 /**
