@@ -2983,7 +2983,7 @@
     "unminified-javascript": {
       "score": 1,
       "displayValue": [
-        "Potential savings of %d KB",
+        "Potential savings of %d KB",
         30
       ],
       "rawValue": 0,
@@ -3072,7 +3072,7 @@
     "uses-webp-images": {
       "score": 1,
       "displayValue": [
-        "Potential savings of %d KB",
+        "Potential savings of %d KB",
         8
       ],
       "rawValue": 0,
@@ -3168,7 +3168,7 @@
     "uses-text-compression": {
       "score": 0.9,
       "displayValue": [
-        "Potential savings of %d KB",
+        "Potential savings of %d KB",
         63
       ],
       "rawValue": 150,
