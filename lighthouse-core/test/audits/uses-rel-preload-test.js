@@ -11,6 +11,11 @@
 const UsesRelPreload = require('../../audits/uses-rel-preload.js');
 const NetworkNode = require('../../lib/dependency-graph/network-node');
 const assert = require('assert');
+
+const Runner = require('../../runner');
+const pwaTrace = require('../fixtures/traces/progressive-app-m60.json');
+const pwaDevtoolsLog = require('../fixtures/traces/progressive-app-m60.devtools.log.json');
+
 const defaultMainResource = {
   _endTime: 1,
 };
@@ -188,5 +193,22 @@ describe('Performance: uses-rel-preload audit', () => {
       assert.equal(output.rawValue, 0);
       assert.equal(output.details.items.length, 0);
     });
+  });
+
+  it('does no throw on a real trace/devtools log', async () => {
+    const artifacts = Object.assign({
+      URL: {finalUrl: 'https://pwa.rocks/'},
+      traces: {
+        [UsesRelPreload.DEFAULT_PASS]: pwaTrace,
+      },
+      devtoolsLogs: {
+        [UsesRelPreload.DEFAULT_PASS]: pwaDevtoolsLog,
+      },
+    }, Runner.instantiateComputedArtifacts());
+
+    const settings = {throttlingMethod: 'provided'};
+    const result = await UsesRelPreload.audit(artifacts, {settings});
+    assert.equal(result.score, 1);
+    assert.equal(result.rawValue, 0);
   });
 });
