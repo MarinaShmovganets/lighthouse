@@ -59,6 +59,7 @@ Configuration:
                                  Chromium version 54.0 or later. By default, any detected Chrome Canary or Chrome (stable) will be launched.
                                                                                                                                        [default: ""]
   --port                         The port to use for the debugging protocol. Use 0 for a random port                                    [default: 0]
+  --preset                       Use a built-in configuration.                                            [choices: "full", "perf", "mixed-content"]
   --hostname                     The hostname to use for the debugging protocol.                                              [default: "localhost"]
   --max-wait-for-load            The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue.
                                  WARNING: Very high values can lead to large traces and instability                                 [default: 45000]
