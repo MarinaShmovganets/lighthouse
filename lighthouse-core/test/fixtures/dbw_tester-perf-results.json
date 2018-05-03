@@ -1131,7 +1131,7 @@
         {
           "id": "first-meaningful-paint",
           "weight": 5,
-          "group": "metrics",
+          "group": "perf-metric",
           "result": {
             "score": 67,
             "displayValue": "3218.1ms",
@@ -1166,7 +1166,7 @@
         {
           "id": "speed-index-metric",
           "weight": 1,
-          "group": "metrics",
+          "group": "perf-metric",
           "result": {
             "score": 78,
             "displayValue": "3226",
@@ -1215,7 +1215,7 @@
         {
           "id": "estimated-input-latency",
           "weight": 1,
-          "group": "metrics",
+          "group": "perf-metric",
           "result": {
             "score": 100,
             "displayValue": "16ms",
@@ -1256,7 +1256,7 @@
         {
           "id": "time-to-interactive",
           "weight": 5,
-          "group": "metrics",
+          "group": "perf-metric",
           "result": {
             "score": 76,
             "displayValue": "3326.1ms",
@@ -1336,7 +1336,7 @@
         {
           "id": "first-interactive",
           "weight": 5,
-          "group": "metrics",
+          "group": "perf-metric",
           "result": {
             "score": 91,
             "displayValue": "3,400ms",
@@ -1358,7 +1358,7 @@
         {
           "id": "consistently-interactive",
           "weight": 5,
-          "group": "metrics",
+          "group": "perf-metric",
           "result": {
             "score": 91,
             "displayValue": "3,400ms",
@@ -1400,7 +1400,7 @@
         {
           "id": "link-blocking-first-paint",
           "weight": 0,
-          "group": "load-opportunities",
+          "group": "perf-hint",
           "result": {
             "score": 0,
             "displayValue": "4 resources delayed first paint by 2236ms",
@@ -1528,7 +1528,7 @@
         {
           "id": "script-blocking-first-paint",
           "weight": 0,
-          "group": "load-opportunities",
+          "group": "perf-hint",
           "result": {
             "score": 65,
             "displayValue": "1 resource delayed first paint by 409ms",
@@ -1599,7 +1599,7 @@
         {
           "id": "uses-optimized-images",
           "weight": 0,
-          "group": "load-opportunities",
+          "group": "perf-hint",
           "result": {
             "score": 100,
             "displayValue": "",
@@ -1662,7 +1662,7 @@
         {
           "id": "uses-text-compression",
           "weight": 0,
-          "group": "load-opportunities",
+          "group": "perf-hint",
           "result": {
             "score": 90,
             "displayValue": "Potential savings of 62 KB (~290ms)",
@@ -1765,7 +1765,7 @@
         {
           "id": "uses-responsive-images",
           "weight": 0,
-          "group": "load-opportunities",
+          "group": "perf-hint",
           "result": {
             "score": 100,
             "displayValue": "",
@@ -1822,7 +1822,7 @@
         {
           "id": "total-byte-weight",
           "weight": 0,
-          "group": "diagnostics",
+          "group": "perf-info",
           "result": {
             "score": 100,
             "displayValue": "Total size was 130 KB",
@@ -2073,7 +2073,7 @@
         {
           "id": "dom-size",
           "weight": 0,
-          "group": "diagnostics",
+          "group": "perf-info",
           "result": {
             "score": 100,
             "displayValue": "35 nodes",
@@ -2137,7 +2137,7 @@
         {
           "id": "critical-request-chains",
           "weight": 0,
-          "group": "diagnostics",
+          "group": "perf-info",
           "result": {
             "score": 0,
             "displayValue": "12",
@@ -2297,7 +2297,7 @@
         {
           "id": "user-timings",
           "weight": 0,
-          "group": "diagnostics",
+          "group": "perf-info",
           "result": {
             "score": 1,
             "displayValue": "0",
@@ -2320,15 +2320,15 @@
     }
   ],
   "reportGroups": {
-    "metrics": {
+    "perf-metric": {
       "title": "Metrics",
       "description": "These metrics encapsulate your web app's performance across a number of dimensions."
     },
-    "load-opportunities": {
+    "perf-hint": {
       "title": "Opportunities",
       "description": "These are opportunities to speed up your application by optimizing the following resources."
     },
-    "diagnostics": {
+    "perf-info": {
       "title": "Diagnostics",
       "description": "More information about the performance of your application."
     },
