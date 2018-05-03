@@ -82,23 +82,23 @@ describe('PerfCategoryRenderer', () => {
     assert.equal(timelineElements.length + nontimelineElements.length, metricAudits.length);
   });
 
-  it('renders the failing performance hints', () => {
+  it('renders the failing performance opportunities', () => {
     const categoryDOM = renderer.render(category, sampleResults.reportGroups);
 
-    const hintAudits = category.audits.filter(audit => audit.group === 'load-opportunities' &&
+    const oppAudits = category.audits.filter(audit => audit.group === 'load-opportunities' &&
         audit.result.score !== 1);
-    const hintElements = categoryDOM.querySelectorAll('.lh-load-opportunity');
-    assert.equal(hintElements.length, hintAudits.length);
+    const oppElements = categoryDOM.querySelectorAll('.lh-load-opportunity');
+    assert.equal(oppElements.length, oppAudits.length);
 
-    const hintElement = hintElements[0];
-    const hintSparklineElement = hintElement.querySelector('.lh-load-opportunity__sparkline');
-    assert.ok(hintElement.querySelector('.lh-load-opportunity__title'), 'did not render title');
-    assert.ok(hintSparklineElement, 'did not render sparkline');
-    assert.ok(hintElement.querySelector('.lh-load-opportunity__stats'), 'did not render stats');
-    assert.ok(hintSparklineElement.title, 'did not render tooltip');
+    const oppElement = oppElements[0];
+    const oppSparklineElement = oppElement.querySelector('.lh-load-opportunity__sparkline');
+    assert.ok(oppElement.querySelector('.lh-load-opportunity__title'), 'did not render title');
+    assert.ok(oppSparklineElement, 'did not render sparkline');
+    assert.ok(oppElement.querySelector('.lh-load-opportunity__stats'), 'did not render stats');
+    assert.ok(oppSparklineElement.title, 'did not render tooltip');
   });
 
-  it('renders the performance hints with a debug string', () => {
+  it('renders the performance opportunities with a debug string', () => {
     const auditWithDebug = {
       score: 0,
       group: 'load-opportunities',
@@ -116,7 +116,7 @@ describe('PerfCategoryRenderer', () => {
     assert.ok(debugEl, 'did not render debug');
   });
 
-  it('renders errored performance hint with a debug string', () => {
+  it('renders errored performance opportunities with a debug string', () => {
     const auditWithDebug = {
       score: 0,
       group: 'load-opportunities',
@@ -134,7 +134,7 @@ describe('PerfCategoryRenderer', () => {
     assert.ok(debugEl, 'did not render debug');
   });
 
-  it('throws if a performance hint is missing summary.wastedMs', () => {
+  it('throws if a performance opportunities is missing summary.wastedMs', () => {
     const auditWithDebug = {
       score: 0,
       group: 'load-opportunities',

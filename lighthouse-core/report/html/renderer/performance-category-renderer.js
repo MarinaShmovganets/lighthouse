@@ -153,26 +153,26 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     element.appendChild(metricAuditsEl);
 
     // Opportunities
-    const hintAudits = category.audits
+    const oppAudits = category.audits
         .filter(audit => audit.group === 'load-opportunities' && audit.result.score < 1)
         .sort((auditA, auditB) => auditB.result.rawValue - auditA.result.rawValue);
-    if (hintAudits.length) {
-      const maxWaste = Math.max(...hintAudits.map(audit => audit.result.rawValue));
+    if (oppAudits.length) {
+      const maxWaste = Math.max(...oppAudits.map(audit => audit.result.rawValue));
       const scale = Math.ceil(maxWaste / 1000) * 1000;
-      const hintAuditsEl = this.renderAuditGroup(groups['load-opportunities'], {expandable: false});
-      hintAudits.forEach(item => hintAuditsEl.appendChild(this._renderOpportunity(item, scale)));
-      hintAuditsEl.open = true;
-      element.appendChild(hintAuditsEl);
+      const oppsEl = this.renderAuditGroup(groups['load-opportunities'], {expandable: false});
+      oppAudits.forEach(item => oppsEl.appendChild(this._renderOpportunity(item, scale)));
+      oppsEl.open = true;
+      element.appendChild(oppsEl);
     }
 
     // Diagnostics
-    const infoAudits = category.audits
+    const diagAudits = category.audits
         .filter(audit => audit.group === 'diagnostics' && audit.result.score < 1);
-    if (infoAudits.length) {
-      const infoAuditsEl = this.renderAuditGroup(groups['diagnostics'], {expandable: false});
-      infoAudits.forEach(item => infoAuditsEl.appendChild(this.renderAudit(item)));
-      infoAuditsEl.open = true;
-      element.appendChild(infoAuditsEl);
+    if (diagAudits.length) {
+      const diagsEl = this.renderAuditGroup(groups['diagnostics'], {expandable: false});
+      diagAudits.forEach(item => diagsEl.appendChild(this.renderAudit(item)));
+      diagsEl.open = true;
+      element.appendChild(diagsEl);
     }
 
     const passedElements = category.audits
