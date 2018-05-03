@@ -200,7 +200,6 @@ declare global {
         export interface DomNodeWithParent extends Crdp.DOM.Node {
           parentId: number;
           parentNode: DomNodeWithParent;
-          attributes: Array<string>;
         }
       }
 

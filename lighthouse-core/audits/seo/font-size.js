@@ -43,10 +43,10 @@ function getUniqueFailingRules(fontSizeArtifact) {
 }
 
 /**
- * @param {Array<string>} attributes
+ * @param {Array<string>=} attributes
  * @returns {Map<string, string>}
  */
-function getAttributeMap(attributes) {
+function getAttributeMap(attributes = []) {
   const map = new Map();
 
   for (let i = 0; i < attributes.length; i += 2) {
@@ -86,7 +86,8 @@ function getSelector(node) {
  * @return {{type: 'node', selector: string, snippet: string}}
  */
 function nodeToTableNode(node) {
-  const attributesString = node.attributes.map((value, idx) =>
+  const attributes = node.attributes || [];
+  const attributesString = attributes.map((value, idx) =>
     (idx % 2 === 0) ? ` ${value}` : `="${value}"`
   ).join('');
 
