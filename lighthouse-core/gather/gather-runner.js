@@ -81,7 +81,7 @@ class GatherRunner {
   /**
    * Loads options.url with specified options. If the main document URL
    * redirects, options.url will be updated accordingly. As such, options.url
-   * will always represent the post-redirected URL. options.initialUrl is the
+   * will always represent the post-redirected URL. options.requestedUrl is the
    * pre-redirect starting URL.
    * @param {Driver} driver
    * @param {LH.Gatherer.PassContext} passContext

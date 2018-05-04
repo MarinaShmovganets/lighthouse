@@ -179,7 +179,7 @@ describe('Runner', () => {
     });
 
     return Runner.run({}, {url, config}).then(results => {
-      assert.equal(results.lhr.initialUrl, url);
+      assert.equal(results.lhr.requestedUrl, url);
       assert.equal(results.lhr.audits['eavesdrop-audit'].rawValue, true);
       // assert that the options we received matched expectations
       assert.deepEqual(calls, [{x: 1}, {x: 2}]);
@@ -412,7 +412,7 @@ describe('Runner', () => {
     return Runner.run(null, {url, config, driverMock}).then(results => {
       assert.ok(results.lhr.lighthouseVersion);
       assert.ok(results.lhr.fetchTime);
-      assert.equal(results.lhr.initialUrl, url);
+      assert.equal(results.lhr.requestedUrl, url);
       assert.equal(gatherRunnerRunSpy.called, true, 'GatherRunner.run was not called');
       assert.equal(results.lhr.audits['content-width'].name, 'content-width');
     });
@@ -442,7 +442,7 @@ describe('Runner', () => {
     return Runner.run(null, {url, config, driverMock}).then(results => {
       assert.ok(results.lhr.lighthouseVersion);
       assert.ok(results.lhr.fetchTime);
-      assert.equal(results.lhr.initialUrl, url);
+      assert.equal(results.lhr.requestedUrl, url);
       assert.equal(gatherRunnerRunSpy.called, true, 'GatherRunner.run was not called');
       assert.equal(results.lhr.audits['content-width'].name, 'content-width');
       assert.equal(results.lhr.audits['content-width'].score, 1);

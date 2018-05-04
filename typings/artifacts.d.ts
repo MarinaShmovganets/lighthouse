@@ -89,7 +89,7 @@ declare global {
       /** The value of the <meta name="theme=color">'s content attribute, or null. */
       ThemeColor: string|null;
       /** The URL initially supplied to be loaded and the post-redirects URL that was loaded. */
-      URL: {initialUrl: string, finalUrl: string};
+      URL: {requestedUrl: string, finalUrl: string};
       /** The value of the <meta name="viewport">'s content attribute, or null. */
       Viewport: string|null;
       /** The dimensions and devicePixelRatio of the loaded viewport. */

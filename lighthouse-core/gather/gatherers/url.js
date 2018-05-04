@@ -13,11 +13,11 @@ class URL extends Gatherer {
    * @return {LH.Artifacts['URL']}
    */
   afterPass(passContext) {
-    // Instead of the originally inputted URL (options.initialUrl), we want the resolved
+    // Instead of the originally inputted URL (options.requestedUrl), we want the resolved
     // post-redirect URL (which is here at options.url)
     return {
-      // @ts-ignore TODO(bckenny): fix url/initialUrl on passContext
-      initialUrl: passContext.initialUrl,
+      // @ts-ignore TODO(bckenny): fix url/requestedUrl on passContext
+      requestedUrl: passContext.initialUrl,
       finalUrl: passContext.url,
     };
   }

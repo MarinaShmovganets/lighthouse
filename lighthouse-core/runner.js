@@ -24,7 +24,7 @@ const Connection = require('./gather/connections/connection.js'); // eslint-disa
 class Runner {
   /**
    * @param {Connection} connection
-   * @param {{config: LH.Config, url: string, initialUrl?: string, driverMock?: Driver}} opts
+   * @param {{config: LH.Config, url: string, requestedUrl?: string, driverMock?: Driver}} opts
    * @return {Promise<LH.RunnerResult|undefined>}
    */
   static async run(connection, opts) {
@@ -38,9 +38,9 @@ class Runner {
        */
       const lighthouseRunWarnings = [];
 
-      // save the initialUrl provided by the user
-      opts.initialUrl = opts.url;
-      if (typeof opts.initialUrl !== 'string' || opts.initialUrl.length === 0) {
+      // save the requestedUrl provided by the user
+      opts.requestedUrl = opts.url;
+      if (typeof opts.requestedUrl !== 'string' || opts.requestedUrl.length === 0) {
         throw new Error('You must provide a url to the runner');
       }
 
@@ -119,12 +119,14 @@ class Runner {
         reportCategories = ReportScoring.scoreAllCategories(opts.config.categories, resultsById);
       }
 
+      const finalUrl = artifacts.URL ? artifacts.URL.finalUrl : '';
+
       const lhr = {
         userAgent: artifacts.UserAgent,
         lighthouseVersion,
         fetchTime: artifacts.fetchTime,
-        initialUrl: opts.initialUrl,
-        url: opts.url,
+        requestedUrl: opts.requestedUrl,
+        finalUrl,
         runWarnings: lighthouseRunWarnings,
         audits: resultsById,
         runtimeConfig: Runner.getRuntimeConfig(settings),
@@ -144,7 +146,7 @@ class Runner {
 
   /**
    * Establish connection, load page and collect all required artifacts
-   * @param {{config: LH.Config, url: string, initialUrl?: string, driverMock?: Driver}} runnerOpts
+   * @param {{config: LH.Config, url: string, requestedUrl?: string, driverMock?: Driver}} runnerOpts
    * @param {Connection} connection
    * @return {Promise<LH.Artifacts>}
    */
@@ -156,7 +158,7 @@ class Runner {
     const driver = runnerOpts.driverMock || new Driver(connection);
     const gatherOpts = {
       driver,
-      initialUrl: runnerOpts.initialUrl,
+      requestedUrl: runnerOpts.requestedUrl,
       url: runnerOpts.url,
       settings: runnerOpts.config.settings,
     };
