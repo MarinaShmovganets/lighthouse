@@ -83,9 +83,7 @@ class Metrics extends Audit {
 
     for (const [name, value] of Object.entries(metrics)) {
       const key = /** @type {keyof UberMetricsItem} */ (name);
-      if (typeof value === 'undefined') {
-        delete metrics[key];
-      } else {
+      if (typeof value !== 'undefined') {
         metrics[key] = Math.round(value);
       }
     }

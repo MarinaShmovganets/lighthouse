@@ -30,11 +30,17 @@ describe('Performance: metrics', () => {
 
     assert.deepStrictEqual(result.details.items[0], {
       firstContentfulPaint: 2038,
+      firstContentfulPaintTs: undefined,
       firstMeaningfulPaint: 2851,
+      firstMeaningfulPaintTs: undefined,
       firstCPUIdle: 5308,
+      firstCPUIdleTs: undefined,
       interactive: 5308,
+      interactiveTs: undefined,
       speedIndex: 2063,
+      speedIndexTs: undefined,
       estimatedInputLatency: 104,
+      estimatedInputLatencyTs: undefined,
 
       observedNavigationStart: 0,
       observedNavigationStartTs: 225414172015,
