@@ -221,7 +221,7 @@ declare global {
           left: number;
           right: number;
         };
-        networkRecord: {
+        networkRecord?: {
           url: string;
           resourceSize: number;
           startTime: number;
