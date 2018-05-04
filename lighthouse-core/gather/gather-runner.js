@@ -423,11 +423,10 @@ class GatherRunner {
 
       // Run each pass
       .then(_ => {
-        // If the main document redirects, we'll update this to keep track
-        let urlAfterRedirects = options.requestedUrl;
         return passes.reduce((chain, passConfig, passIndex) => {
           const passContext = {
             driver: options.driver,
+            // If the main document redirects, we'll update this to keep track
             url: options.requestedUrl,
             settings: options.settings,
             passConfig,
@@ -448,12 +447,11 @@ class GatherRunner {
               }
 
               if (passIndex === 0) {
-                urlAfterRedirects = passContext.url;
+                // Copy redirected URL to artifact in the first pass only.
+                gathererResults.URL[0].finalUrl = passContext.url;
               }
             });
-        }, Promise.resolve()).then(_ => {
-          gathererResults.URL[0].finalUrl = urlAfterRedirects;
-        });
+        }, Promise.resolve());
       })
       .then(_ => GatherRunner.disposeDriver(driver))
       .then(_ => GatherRunner.collectArtifacts(gathererResults, tracingData, options.settings))

@@ -131,7 +131,8 @@ describe('GatherRunner', function() {
     const options = {requestedUrl, driver, config, settings};
 
     return GatherRunner.run(config.passes, options).then(artifacts => {
-      assert.deepStrictEqual(artifacts.URL, {requestedUrl, finalUrl}, 'did not find expected URL artifact');
+      assert.deepStrictEqual(artifacts.URL, {requestedUrl, finalUrl},
+        'did not find expected URL artifact');
     });
   });
 
