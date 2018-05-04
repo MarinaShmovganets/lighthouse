@@ -1261,7 +1261,7 @@
           }
         ]
       },
-      "scoreDisplayMode": "binary",
+      "scoreDisplayMode": "informative",
       "name": "network-requests",
       "description": "Network Requests",
       "helpText": "Lists the network requests that were made during page load.",

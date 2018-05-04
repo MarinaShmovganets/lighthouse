@@ -48,12 +48,7 @@ class CategoryRenderer {
       header.appendChild(this.detailsRenderer.render(audit.result.details));
     }
 
-    if (audit.result.scoreDisplayMode === 'informative') {
-      auditEl.classList.add('lh-audit--informative');
-    }
-    if (audit.result.scoreDisplayMode === 'manual') {
-      auditEl.classList.add('lh-audit--manual');
-    }
+    auditEl.classList.add(`lh-audit--${audit.result.scoreDisplayMode}`);
 
     this._populateScore(auditEl, audit.result.score, scoreDisplayMode, audit.result.error);
 
