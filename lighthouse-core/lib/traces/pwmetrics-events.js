@@ -8,6 +8,7 @@
 
 const log = require('lighthouse-logger');
 
+// TODO: rework this file to not need this
 function findValueInMetricsAuditFn(metricName) {
   return auditResults => {
     const metricsAudit = auditResults.metrics;
