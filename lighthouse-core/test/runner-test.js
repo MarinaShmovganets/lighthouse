@@ -149,7 +149,7 @@ describe('Runner', () => {
   });
 
   it('accepts audit options', () => {
-    const url = 'https://example.com';
+    const url = 'https://example.com/';
 
     const calls = [];
     class EavesdropAudit extends Audit {
@@ -187,7 +187,7 @@ describe('Runner', () => {
   });
 
   it('accepts trace artifacts as paths and outputs appropriate data', () => {
-    const url = 'https://example.com';
+    const url = 'https://example.com/';
 
     const config = new Config({
       settings: {
@@ -399,7 +399,7 @@ describe('Runner', () => {
   });
 
   it('returns data even if no config categories are provided', () => {
-    const url = 'https://example.com';
+    const url = 'https://example.com/';
     const config = new Config({
       passes: [{
         gatherers: ['viewport-dimensions'],
@@ -420,7 +420,7 @@ describe('Runner', () => {
 
 
   it('returns reportCategories', () => {
-    const url = 'https://example.com';
+    const url = 'https://example.com/';
     const config = new Config({
       passes: [{
         gatherers: ['viewport-dimensions'],
@@ -508,7 +508,7 @@ describe('Runner', () => {
     const config = new Config({
       passes: [{
         passName: 'firstPass',
-        gatherers: ['url', 'viewport-dimensions'],
+        gatherers: ['viewport', 'viewport-dimensions'],
       }],
 
       audits: [

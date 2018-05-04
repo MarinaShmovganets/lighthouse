@@ -73,7 +73,7 @@ describe('Module Tests', function() {
     return lighthouse('SOME_URL', {}, {
       passes: [{
         gatherers: [
-          'url',
+          'viewport',
         ],
       }],
       audits: [
