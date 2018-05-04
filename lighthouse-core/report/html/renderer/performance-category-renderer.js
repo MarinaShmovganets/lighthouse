@@ -57,11 +57,11 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     titleEl.textContent = audit.result.description;
     this.dom.find('.lh-audit__index', element).textContent = `${index + 1}`;
 
-    if (audit.result.error) {
+    if (audit.result.debugString || audit.result.error) {
       const debugStrEl = this.dom.createChildOf(summary, 'div', 'lh-debug');
       debugStrEl.textContent = audit.result.debugString || 'Audit error';
-      return element;
     }
+    if (audit.result.error) return element;
 
     const details = audit.result.details;
     const summaryInfo = /** @type {!DetailsRenderer.OpportunitySummary}
@@ -71,11 +71,14 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     }
 
     const displayValue = Util.formatDisplayValue(audit.result.displayValue);
+    const sparklineWidthPct = `${summaryInfo.wastedMs / scale * 100}%`;
+    const wastedMs = Util.formatSeconds(summaryInfo.wastedMs, 0.01);
+    const auditDescription = this.dom.convertMarkdownLinkSnippets(audit.result.helpText);
     this.dom.find('.lh-load-opportunity__sparkline', tmpl).title = displayValue;
     this.dom.find('.lh-load-opportunity__wasted-stat', tmpl).title = displayValue;
-    this.dom.find('.lh-sparkline__bar', tmpl).style.width = summaryInfo.wastedMs / scale * 100 + '%';
-    this.dom.find('.lh-load-opportunity__wasted-stat', tmpl).textContent = Util.formatSeconds(summaryInfo.wastedMs, 0.01);
-    this.dom.find('.lh-load-opportunity__description', tmpl).appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.helpText));
+    this.dom.find('.lh-sparkline__bar', tmpl).style.width = sparklineWidthPct;
+    this.dom.find('.lh-load-opportunity__wasted-stat', tmpl).textContent = wastedMs;
+    this.dom.find('.lh-load-opportunity__description', tmpl).appendChild(auditDescription);
 
     // If there's no `type`, then we only used details for `summary`
     if (details.type) {
