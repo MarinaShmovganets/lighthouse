@@ -22,7 +22,7 @@ class UsesOptimizedImages extends ByteEfficiencyAudit {
   static get meta() {
     return {
       name: 'uses-optimized-images',
-      description: 'Efficiently encode images',
+      description: 'Serve optimized images',
       informative: true,
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
       helpText: 'Optimized images load faster and consume less cellular data. ' +
