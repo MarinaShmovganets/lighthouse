@@ -457,16 +457,6 @@
   flex: 10;
 }
 
-.lh-load-opportunity__sparkline {
-  flex: 1;
-  margin-top: calc((var(--body-line-height) - var(--lh-sparkline-height)) / 2);
-}
-
-.lh-load-opportunity__sparkline .lh-sparkline {
-  width: 100%;
-  float: right;
-  margin: 0;
-}
 
 .lh-load-opportunity__wasted-stat {
   text-align: right;
@@ -504,6 +494,26 @@
   color: var(--fail-color);
 }
 
+
+/* Sparkline */
+
+.lh-load-opportunity__sparkline {
+  flex: 1;
+  margin-top: calc((var(--body-line-height) - var(--lh-sparkline-height)) / 2);
+}
+
+.lh-sparkline {
+  height: var(--lh-sparkline-height);
+  width: 100%;
+}
+
+.lh-sparkline__bar {
+  background: var(--informative-color);
+  height: 100%;
+  float: right;
+}
+
+
 /* Filmstrip */
 
 .lh-filmstrip {
@@ -540,39 +550,6 @@
   border: 1px solid var(--report-secondary-border-color);
   max-height: 100px;
   max-width: 60px;
-}
-
-/* Sparkline */
-
-.lh-sparkline {
-  margin: 5px;
-  height: var(--lh-sparkline-height);
-  width: 100%;
-}
-
-.lh-sparkline--thin {
-  height: calc(var(--lh-sparkline-height) / 2);
-}
-
-.lh-sparkline__bar {
-  background: var(--warning-color);
-  height: 100%;
-  float: right;
-  position: relative;
-}
-
-/* correlate metric end location with sparkline */
-.lh-metric:hover .lh-sparkline__bar::after {
-  content: '';
-  height: 100vh;
-  width: 2px;
-  background: inherit;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  opacity: 0;
-  animation: fadeIn 150ms;
-  animation-fill-mode: forwards;
 }
 
 /* Audit */
