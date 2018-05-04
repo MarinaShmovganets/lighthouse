@@ -268,7 +268,7 @@ ReportRenderer.GroupJSON; // eslint-disable-line no-unused-expressions
  *     audits: !Object<string, !ReportRenderer.AuditResultJSON>,
  *     reportCategories: !Array<!ReportRenderer.CategoryJSON>,
  *     reportGroups: !Object<string, !ReportRenderer.GroupJSON>,
- *     runtimeSettings: !Object<string, *>,
+ *     runtimeSettings: !LH.Config.Settings,
  * }}
  */
 ReportRenderer.ReportJSON; // eslint-disable-line no-unused-expressions
