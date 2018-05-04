@@ -280,7 +280,8 @@
 }
 
 .lh-audit-group[open] > .lh-audit-group__summary > .lh-toggle-arrow,
-.lh-expandable-details[open] > .lh-expandable-details__summary > .lh-toggle-arrow {
+.lh-expandable-details[open] > .lh-expandable-details__summary > .lh-toggle-arrow,
+.lh-expandable-details[open] > .lh-expandable-details__summary > div > .lh-toggle-arrow {
   transform: rotateZ(-90deg);
 }
 
@@ -425,7 +426,7 @@
   color: var(--medium-75-gray);
   text-align: center;
   display: unset;
-  line-height: 40px;
+  line-height: calc(3 * var(--body-font-size));
 }
 
 .lh-load-opportunity__summary {

@@ -118,7 +118,7 @@ class Util {
 
   /**
    * @param {number} ms
-   * @param {number=} granularity Controls how coarse the displayed value is, defaults to 10
+   * @param {number=} granularity Controls how coarse the displayed value is, defaults to 0.1
    * @return {string}
    */
   static formatSeconds(ms, granularity = 0.1) {
