@@ -415,8 +415,7 @@
   border-bottom: none;
 }
 
-.lh-load-opportunity__summary,
-.lh-load-opportunity__header {
+.lh-load-opportunity__cols {
   display: flex;
   align-items: flex-start;
 }
