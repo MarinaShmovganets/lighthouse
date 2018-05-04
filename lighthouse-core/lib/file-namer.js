@@ -8,6 +8,11 @@
 /* global URL */
 
 /**
+ * @fileoverview
+ * @suppress {reportUnknownTypes}
+ */
+
+/**
  * Generate a filenamePrefix of hostname_YYYY-MM-DD_HH-MM-SS
  * Date/time uses the local timezone, however Node has unreliable ICU
  * support, so we must construct a YYYY-MM-DD date format manually. :/
@@ -15,7 +20,7 @@
  * @return {string}
  */
 function getFilenamePrefix(lhr) {
-  const hostname = new (URLConstructor || URL)(lhr.url).hostname;
+  const hostname = new (getUrlConstructor())(lhr.url).hostname;
   const date = (lhr.fetchTime && new Date(lhr.fetchTime)) || new Date();
 
   const timeStr = date.toLocaleTimeString('en-US', {hour12: false});
@@ -31,10 +36,14 @@ function getFilenamePrefix(lhr) {
   return filenamePrefix.replace(/[/?<>\\:*|":]/g, '-');
 }
 
-/** @type {typeof URL|undefined} */
-let URLConstructor;
-if (typeof module !== 'undefined' && module.exports) {
-  URLConstructor = require('./url-shim');
+function getUrlConstructor() {
+  if (typeof module !== 'undefined' && module.exports) {
+    return require('./url-shim');
+  } else {
+    return URL;
+  }
+}
 
+if (typeof module !== 'undefined' && module.exports) {
   module.exports = {getFilenamePrefix};
 }
