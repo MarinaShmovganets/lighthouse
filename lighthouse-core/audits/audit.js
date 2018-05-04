@@ -128,7 +128,7 @@ class Audit {
   /**
    * @param {typeof Audit} audit
    * @param {LH.Audit.Product} result
-   * @return {{score: number, scoreDisplayMode: LH.Audit.ScoringModeValue}}
+   * @return {{score: number, scoreDisplayMode: LH.Audit.ScoreDisplayMode}}
    */
   static _normalizeAuditScore(audit, result) {
     // Cast true/false to 1/0

@@ -24,7 +24,7 @@ declare global {
       NOT_APPLICABLE: 'not-applicable';
     }
 
-    export type ScoringModeValue = Audit.ScoreDisplayModes[keyof Audit.ScoreDisplayModes];
+    export type ScoreDisplayMode = Audit.ScoreDisplayModes[keyof Audit.ScoreDisplayModes];
 
     export interface Meta {
       name: string;
@@ -32,7 +32,7 @@ declare global {
       helpText: string;
       requiredArtifacts: Array<keyof Artifacts>;
       failureDescription?: string;
-      scoreDisplayMode?: Audit.ScoringModeValue;
+      scoreDisplayMode?: Audit.ScoreDisplayMode;
     }
 
     export interface Heading {
@@ -100,6 +100,7 @@ declare global {
       debugString?: string;
       score?: number;
       extendedInfo?: {[p: string]: any};
+      /** Overrides scoreDisplayMode with not-applicable if set to true */
       notApplicable?: boolean;
       error?: boolean;
       // TODO(bckenny): define details
@@ -112,7 +113,7 @@ declare global {
       displayValue: string;
       debugString?: string;
       score: number;
-      scoreDisplayMode: ScoringModeValue;
+      scoreDisplayMode: ScoreDisplayMode;
       description: string;
       extendedInfo?: {[p: string]: any};
       error?: boolean;
