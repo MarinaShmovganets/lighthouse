@@ -14,7 +14,7 @@ declare global {
   module LH {
     export interface Artifacts extends ComputedArtifacts {
       // Created by by gather-runner
-      fetchedAt: string;
+      fetchTime: string;
       LighthouseRunWarnings: string[];
       UserAgent: string;
       traces: {[passName: string]: Trace};
@@ -182,18 +182,18 @@ declare global {
         failingTextLength: number;
         visitedTextLength: number;
         analyzedFailingTextLength: number;
-        analyzedFailingNodesData: {
+        analyzedFailingNodesData: Array<{
           fontSize: number;
           textLength: number;
           node: FontSize.DomNodeWithParent;
           cssRule: {
-            type: string;
+            type: 'Regular' | 'Inline' | 'Attributes';
             range: {startLine: number, startColumn: number};
-            parentRule: {origin: string, selectors: {text: string}[]};
+            parentRule: {origin: Crdp.CSS.StyleSheetOrigin, selectors: {text: string}[]};
             styleSheetId: string;
             stylesheet: Crdp.CSS.CSSStyleSheetHeader;
           }
-        }
+        }>
       }
 
       export module FontSize {
@@ -221,14 +221,16 @@ declare global {
           left: number;
           right: number;
         };
-        networkRecord: {
+        networkRecord?: {
           url: string;
           resourceSize: number;
           startTime: number;
           endTime: number;
           responseReceivedTime: number;
           mimeType: string;
-        }
+        };
+        width?: number;
+        height?: number;
       }
 
       export interface OptimizedImage {

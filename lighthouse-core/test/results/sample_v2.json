@@ -1,8 +1,7 @@
 {
   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3358.0 Safari/537.36",
   "lighthouseVersion": "3.0.0-alpha",
-  "fetchedAt": "2018-03-13T00:55:45.840Z",
-  "generatedTime": "Please use .fetchedAt instead",
+  "fetchTime": "2018-03-13T00:55:45.840Z",
   "initialUrl": "http://localhost/dobetterweb/dbw_tester.html",
   "url": "http://localhost/dobetterweb/dbw_tester.html",
   "runWarnings": [],
@@ -86,7 +85,10 @@
     },
     "first-contentful-paint": {
       "score": 0.51,
-      "displayValue": "3,970 ms",
+      "displayValue": [
+        "%10d ms",
+        3969.135
+      ],
       "rawValue": 3969.135,
       "scoreDisplayMode": "numeric",
       "name": "first-contentful-paint",
@@ -95,7 +97,10 @@
     },
     "first-meaningful-paint": {
       "score": 0.51,
-      "displayValue": "3,970 ms",
+      "displayValue": [
+        "%10d ms",
+        3969.136
+      ],
       "rawValue": 3969.136,
       "scoreDisplayMode": "numeric",
       "name": "first-meaningful-paint",
@@ -113,7 +118,10 @@
     },
     "speed-index": {
       "score": 0.74,
-      "displayValue": "4,420 ms",
+      "displayValue": [
+        "%10d ms",
+        4417
+      ],
       "rawValue": 4417,
       "scoreDisplayMode": "numeric",
       "name": "speed-index",
@@ -187,7 +195,10 @@
     },
     "estimated-input-latency": {
       "score": 1,
-      "displayValue": "16 ms",
+      "displayValue": [
+        "%d ms",
+        16
+      ],
       "rawValue": 16,
       "scoreDisplayMode": "numeric",
       "name": "estimated-input-latency",
@@ -266,7 +277,10 @@
     },
     "first-cpu-idle": {
       "score": 0.72,
-      "displayValue": "4,930 ms",
+      "displayValue": [
+        "%10d ms",
+        4927.278
+      ],
       "rawValue": 4927.278,
       "scoreDisplayMode": "numeric",
       "name": "first-cpu-idle",
@@ -275,7 +289,10 @@
     },
     "interactive": {
       "score": 0.78,
-      "displayValue": "4,930 ms",
+      "displayValue": [
+        "%10d ms",
+        4927.278
+      ],
       "rawValue": 4927.278,
       "extendedInfo": {
         "value": {
@@ -623,7 +640,10 @@
     },
     "redirects": {
       "score": 1,
-      "displayValue": "0 ms",
+      "displayValue": [
+        "%d ms",
+        0
+      ],
       "rawValue": 0,
       "extendedInfo": {
         "value": {
@@ -845,7 +865,10 @@
     },
     "mainthread-work-breakdown": {
       "score": 0.98,
-      "displayValue": "1,360 ms",
+      "displayValue": [
+        "%d ms",
+        1359.7759999930859
+      ],
       "rawValue": 1359.7759999930859,
       "extendedInfo": {
         "value": {
@@ -964,7 +987,10 @@
     },
     "bootup-time": {
       "score": 0.9,
-      "displayValue": "1,300 ms",
+      "displayValue": [
+        "%10d ms",
+        1302.3579999804497
+      ],
       "rawValue": 1302.3579999804497,
       "extendedInfo": {
         "value": {
@@ -1039,7 +1065,10 @@
     },
     "uses-rel-preload": {
       "score": 1,
-      "displayValue": "0 ms",
+      "displayValue": [
+        "Potential savings of %10d ms",
+        0
+      ],
       "rawValue": 0,
       "extendedInfo": {
         "value": []
@@ -1059,7 +1088,10 @@
     },
     "uses-rel-preconnect": {
       "score": 1,
-      "displayValue": "0 ms",
+      "displayValue": [
+        "Potential savings of %10d ms",
+        0
+      ],
       "rawValue": 0,
       "extendedInfo": {
         "value": []
@@ -2605,7 +2637,10 @@
     },
     "total-byte-weight": {
       "score": 1,
-      "displayValue": "Total size was 157 KB",
+      "displayValue": [
+        "Total size was %d KB",
+        156.970703125
+      ],
       "rawValue": 160738,
       "extendedInfo": {
         "value": {
@@ -2857,7 +2892,10 @@
     },
     "unminified-javascript": {
       "score": 1,
-      "displayValue": "Potential savings of 30470 bytes",
+      "displayValue": [
+        "Potential savings of %d KB",
+        30
+      ],
       "rawValue": 0,
       "extendedInfo": {
         "value": {
@@ -2941,7 +2979,10 @@
     },
     "uses-webp-images": {
       "score": 1,
-      "displayValue": "Potential savings of 8526 bytes",
+      "displayValue": [
+        "Potential savings of %d KB",
+        8
+      ],
       "rawValue": 0,
       "extendedInfo": {
         "value": {
@@ -3032,7 +3073,10 @@
     },
     "uses-text-compression": {
       "score": 0.9,
-      "displayValue": "Potential savings of 64646 bytes",
+      "displayValue": [
+        "Potential savings of %d KB",
+        63
+      ],
       "rawValue": 150,
       "extendedInfo": {
         "value": {
@@ -3159,7 +3203,10 @@
     },
     "dom-size": {
       "score": 1,
-      "displayValue": "53 nodes",
+      "displayValue": [
+        "%d nodes",
+        53
+      ],
       "rawValue": 53,
       "extendedInfo": {
         "value": [
@@ -4471,122 +4518,122 @@
         {
           "id": "first-contentful-paint",
           "weight": 3,
-          "group": "perf-metric"
+          "group": "metrics"
         },
         {
           "id": "first-meaningful-paint",
           "weight": 1,
-          "group": "perf-metric"
+          "group": "metrics"
         },
         {
           "id": "speed-index",
           "weight": 4,
-          "group": "perf-metric"
+          "group": "metrics"
         },
         {
           "id": "interactive",
           "weight": 5,
-          "group": "perf-metric"
+          "group": "metrics"
         },
         {
           "id": "first-cpu-idle",
           "weight": 2,
-          "group": "perf-metric"
+          "group": "metrics"
         },
         {
           "id": "estimated-input-latency",
           "weight": 0,
-          "group": "perf-metric"
+          "group": "metrics"
         },
         {
           "id": "render-blocking-resources",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "uses-responsive-images",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "offscreen-images",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "unminified-css",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "unminified-javascript",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "unused-css-rules",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "uses-optimized-images",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "uses-webp-images",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "uses-text-compression",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "uses-rel-preconnect",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "time-to-first-byte",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "redirects",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "uses-rel-preload",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "efficient-animated-content",
           "weight": 0,
-          "group": "perf-hint"
+          "group": "load-opportunities"
         },
         {
           "id": "total-byte-weight",
           "weight": 0,
-          "group": "perf-info"
+          "group": "diagnostics"
         },
         {
           "id": "uses-long-cache-ttl",
           "weight": 0,
-          "group": "perf-info"
+          "group": "diagnostics"
         },
         {
           "id": "dom-size",
           "weight": 0,
-          "group": "perf-info"
+          "group": "diagnostics"
         },
         {
           "id": "critical-request-chains",
           "weight": 0,
-          "group": "perf-info"
+          "group": "diagnostics"
         },
         {
           "id": "network-requests",
@@ -4599,12 +4646,12 @@
         {
           "id": "user-timings",
           "weight": 0,
-          "group": "perf-info"
+          "group": "diagnostics"
         },
         {
           "id": "bootup-time",
           "weight": 0,
-          "group": "perf-info"
+          "group": "diagnostics"
         },
         {
           "id": "screenshot-thumbnails",
@@ -4613,12 +4660,12 @@
         {
           "id": "mainthread-work-breakdown",
           "weight": 0,
-          "group": "perf-info"
+          "group": "diagnostics"
         },
         {
           "id": "font-display",
           "weight": 0,
-          "group": "perf-info"
+          "group": "diagnostics"
         }
       ],
       "id": "performance",
@@ -5059,15 +5106,15 @@
     }
   ],
   "reportGroups": {
-    "perf-metric": {
+    "metrics": {
       "title": "Metrics",
       "description": "These metrics encapsulate your web app's performance across a number of dimensions."
     },
-    "perf-hint": {
+    "load-opportunities": {
       "title": "Opportunities",
       "description": "These are opportunities to speed up your application by optimizing the following resources."
     },
-    "perf-info": {
+    "diagnostics": {
       "title": "Diagnostics",
       "description": "More information about the performance of your application."
     },

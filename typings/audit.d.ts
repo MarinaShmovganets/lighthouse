@@ -26,6 +26,12 @@ declare global {
 
     export type ScoreDisplayMode = Audit.ScoreDisplayModes[keyof Audit.ScoreDisplayModes];
 
+    interface DisplayValueArray extends Array<string|number> {
+      0: string;
+    }
+
+    export type DisplayValue = string | DisplayValueArray;
+
     export interface Meta {
       name: string;
       description: string;
@@ -78,7 +84,7 @@ declare global {
 
     export type DetailsItem = string | number | DetailsRendererNodeDetailsJSON |
       DetailsRendererLinkDetailsJSON | DetailsRendererCodeDetailJSON | undefined |
-      boolean;
+      boolean | DetailsRendererUrlDetailsJSON;
 
     export interface DetailsRendererNodeDetailsJSON {
       type: 'node';
@@ -93,10 +99,15 @@ declare global {
       url: string;
     }
 
+    export interface DetailsRendererUrlDetailsJSON {
+      type: 'url';
+      value: string;
+    }
+
     // Type returned by Audit.audit(). Only rawValue is required.
     export interface Product {
       rawValue: boolean | number | null;
-      displayValue?: string;
+      displayValue?: DisplayValue;
       debugString?: string;
       score?: number;
       extendedInfo?: {[p: string]: any};
@@ -110,7 +121,7 @@ declare global {
     /* Audit result returned in Lighthouse report. All audits offer a description and score of 0-1 */
     export interface Result {
       rawValue: boolean | number | null;
-      displayValue: string;
+      displayValue: DisplayValue;
       debugString?: string;
       score: number;
       scoreDisplayMode: ScoreDisplayMode;

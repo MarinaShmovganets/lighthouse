@@ -42,6 +42,11 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
    * @return {null|Error|LH.Audit.ByteEfficiencyResult};
    */
   static computeWaste(image, DPR) {
+    // Nothing can be done without network info.
+    if (!image.networkRecord) {
+      return null;
+    }
+
     const url = URL.elideDataURI(image.src);
     const actualPixels = image.naturalWidth * image.naturalHeight;
     const usedPixels = image.clientWidth * image.clientHeight * Math.pow(DPR, 2);
