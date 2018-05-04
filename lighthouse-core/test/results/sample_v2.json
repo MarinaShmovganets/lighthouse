@@ -3152,7 +3152,7 @@
       "scoreDisplayMode": "numeric",
       "informative": true,
       "name": "uses-optimized-images",
-      "description": "Serve optimized images",
+      "description": "Efficiently encode images",
       "helpText": "Optimized images load faster and consume less cellular data. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/optimize-images).",
       "details": {
         "type": "table",
