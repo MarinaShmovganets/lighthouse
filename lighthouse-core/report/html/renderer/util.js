@@ -71,11 +71,38 @@ class Util {
   }
 
   /**
+   *
+   * @param {{score: number|null, scoreDisplayMode: string}} audit
+   */
+  static didAuditPass(audit) {
+    switch (audit.scoreDisplayMode) {
+      case 'manual':
+      case 'not-applicable':
+        return true;
+      case 'error':
+      case 'informative':
+        return false;
+      case 'numeric':
+      case 'binary':
+        return audit.score === 1;
+    }
+  }
+
+  /**
    * Convert a score to a rating label.
-   * @param {number} score
+   * @param {number|null} score
+   * @param {string=} scoreDisplayMode
    * @return {string}
    */
-  static calculateRating(score) {
+  static calculateRating(score, scoreDisplayMode) {
+    // Handle edge cases first, manual and not applicable receive 'pass', errored audits receive 'fail'
+    if (scoreDisplayMode === 'manual' || scoreDisplayMode === 'not-applicable') {
+      return RATINGS.PASS.label;
+    } else if (score === null) {
+      return RATINGS.FAIL.label;
+    }
+
+    // At this point, we're rating a standard binary/numeric audit
     let rating = RATINGS.FAIL.label;
     if (score >= RATINGS.PASS.minScore) {
       rating = RATINGS.PASS.label;

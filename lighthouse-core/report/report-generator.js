@@ -73,7 +73,7 @@ class ReportGenerator {
       return category.audits.map(catAudit => {
         const audit = lhr.audits[catAudit.id];
         return [category.name, audit.name, audit.description, audit.scoreDisplayMode, audit.score]
-          .map(value => value.toString())
+          .map(value => value === null ? '0' : value.toString())
           .map(escape);
       });
     });
