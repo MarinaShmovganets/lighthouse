@@ -121,8 +121,7 @@ class Runner {
       const lhr = {
         userAgent: artifacts.UserAgent,
         lighthouseVersion,
-        fetchedAt: artifacts.fetchedAt,
-        generatedTime: 'Please use .fetchedAt instead',
+        fetchTime: artifacts.fetchTime,
         initialUrl: opts.initialUrl,
         url: opts.url,
         runWarnings: lighthouseRunWarnings,
