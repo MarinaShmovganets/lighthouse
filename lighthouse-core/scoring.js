@@ -22,14 +22,15 @@ class ReportScoring {
    * @return {number|null}
    */
   static arithmeticMean(items) {
+    // Filter down to just the items with a weight as they have no effect on score
+    items = items.filter(item => item.weight > 0);
     // If there is 1 null score, return a null average
-    if (items.some(item => item.score === null && item.weight !== 0)) return null;
+    if (items.some(item => item.score === null)) return null;
 
     const results = items.reduce(
       (result, item) => {
         const score = item.score;
         const weight = item.weight;
-        if (weight === 0) return result;
 
         return {
           weight: result.weight + weight,

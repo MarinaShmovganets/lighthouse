@@ -233,8 +233,13 @@ class CategoryRenderer {
     this.dom.find('.lh-gauge-arc', gauge).style.strokeDasharray = `${numericScore * 329} 329`;
 
     const scoreOutOf100 = Math.round(numericScore * 100);
-    this.dom.find('.lh-gauge__percentage', tmpl).textContent = category.score === null ?
-      '?' : scoreOutOf100;
+    const percentageEl = this.dom.find('.lh-gauge__percentage', tmpl);
+    percentageEl.textContent = scoreOutOf100;
+    if (category.score === null) {
+      percentageEl.textContent = '?';
+      percentageEl.title = 'Errors occurred while auditing';
+    }
+
     this.dom.find('.lh-gauge__label', tmpl).textContent = category.name;
     return tmpl;
   }

@@ -16,7 +16,6 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const tmpl = this.dom.cloneTemplate('#tmpl-lh-metric', this.templateContext);
     const element = this.dom.find('.lh-metric', tmpl);
     element.id = audit.result.name;
-    // FIXME(paulirish): currently this sets a 'lh-metric--fail' class on error'd audits
     const rating = Util.calculateRating(audit.result.score, audit.result.scoreDisplayMode);
     element.classList.add(`lh-metric--${rating}`);
 
@@ -30,8 +29,6 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     descriptionEl.appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.helpText));
 
     if (audit.result.error) {
-      element.classList.remove(`lh-metric--fail`);
-      element.classList.add(`lh-metric--error`);
       descriptionEl.textContent = '';
       valueEl.textContent = 'Error!';
       const tooltip = this.dom.createChildOf(descriptionEl, 'span', 'lh-error-tooltip-content');
@@ -132,7 +129,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
 
     // Opportunities
     const opportunityAudits = category.audits
-        .filter(audit => audit.group === 'load-opportunities' && !Util.didAuditPass(audit.result))
+        .filter(audit => audit.group === 'load-opportunities' && audit.result.score < 1)
         .sort((auditA, auditB) => auditB.result.rawValue - auditA.result.rawValue);
     if (opportunityAudits.length) {
       const maxWaste = Math.max(...opportunityAudits.map(audit => audit.result.rawValue));
