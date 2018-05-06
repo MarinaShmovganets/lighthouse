@@ -4546,7 +4546,7 @@
       "helpText": "Run the [Structured Data Testing Tool](https://search.google.com/structured-data/testing-tool/) and the [Structured Data Linter](http://linter.structured-data.org/) to validate structured data. [Learn more](https://developers.google.com/search/docs/guides/mark-up-content)."
     }
   },
-  "runtimeSettings": {
+  "configSettings": {
     "output": "json",
     "maxWaitForLoad": 45000,
     "throttlingMethod": "devtools",
@@ -4558,7 +4558,6 @@
       "uploadThroughputKbps": 675,
       "cpuSlowdownMultiplier": 4
     },
-    "auditMode": "./lighthouse-core/test/results/artifacts",
     "gatherMode": false,
     "disableStorageReset": false,
     "disableDeviceEmulation": false,

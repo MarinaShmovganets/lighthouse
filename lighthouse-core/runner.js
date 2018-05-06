@@ -127,7 +127,7 @@ class Runner {
         url: opts.url,
         runWarnings: lighthouseRunWarnings,
         audits: resultsById,
-        runtimeSettings: settings,
+        configSettings: settings,
         reportCategories,
         reportGroups: opts.config.groups,
         timing: {total: Date.now() - startTime},
