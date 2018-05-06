@@ -72,8 +72,8 @@ class Util {
   }
 
   /**
-   *
-   * @param {{score: number|null, scoreDisplayMode: string}} audit
+   * @param {{score: (number|null), scoreDisplayMode: string}} audit
+   * @return {boolean}
    */
   static didAuditPass(audit) {
     switch (audit.scoreDisplayMode) {
@@ -85,6 +85,7 @@ class Util {
         return false;
       case 'numeric':
       case 'binary':
+      default:
         return Number(audit.score) > PASS_THRESHOLD;
     }
   }

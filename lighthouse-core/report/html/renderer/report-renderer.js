@@ -213,7 +213,7 @@ if (typeof module !== 'undefined' && module.exports) {
  *     scoreDisplayMode: string,
  *     extendedInfo: Object,
  *     error: boolean,
- *     score: number|null,
+ *     score: (number|null),
  *     details: (!DetailsRenderer.DetailsJSON|undefined),
  * }}
  */
@@ -222,10 +222,10 @@ ReportRenderer.AuditResultJSON; // eslint-disable-line no-unused-expressions
 /**
  * @typedef {{
  *     id: string,
- *     score: number|null,
+ *     score: (number|null),
  *     weight: number,
  *     group: (string|undefined),
- *     result: (ReportRenderer.AuditResultJSON|undefined)
+ *     result: ReportRenderer.AuditResultJSON
  * }}
  */
 ReportRenderer.AuditJSON; // eslint-disable-line no-unused-expressions
@@ -234,7 +234,7 @@ ReportRenderer.AuditJSON; // eslint-disable-line no-unused-expressions
  * @typedef {{
  *     name: string,
  *     id: string,
- *     score: number|null,
+ *     score: (number|null),
  *     description: string,
  *     manualDescription: string,
  *     audits: !Array<!ReportRenderer.AuditJSON>
