@@ -119,14 +119,12 @@ class Runner {
         reportCategories = ReportScoring.scoreAllCategories(opts.config.categories, resultsById);
       }
 
-      const finalUrl = artifacts.URL ? artifacts.URL.finalUrl : '';
-
       const lhr = {
         userAgent: artifacts.UserAgent,
         lighthouseVersion,
         fetchTime: artifacts.fetchTime,
         requestedUrl: requestedUrl,
-        finalUrl,
+        finalUrl: artifacts.URL.finalUrl,
         runWarnings: lighthouseRunWarnings,
         audits: resultsById,
         runtimeConfig: Runner.getRuntimeConfig(settings),
