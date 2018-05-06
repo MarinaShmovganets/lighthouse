@@ -72,8 +72,10 @@ class ReportGenerator {
     const table = lhr.reportCategories.map(category => {
       return category.audits.map(catAudit => {
         const audit = lhr.audits[catAudit.id];
-        return [category.name, audit.name, audit.description, audit.scoreDisplayMode, audit.score]
-          .map(value => value === null ? '0' : value.toString())
+        // CSV validator wants all scores to be numeric, use -1 for now
+        const numericScore = audit.score === null ? -1 : audit.score;
+        return [category.name, audit.name, audit.description, audit.scoreDisplayMode, numericScore]
+          .map(value => value.toString())
           .map(escape);
       });
     });
