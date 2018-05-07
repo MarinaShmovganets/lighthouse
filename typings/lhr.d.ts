@@ -11,9 +11,9 @@ declare global {
      */
     export interface Result {
       /** The URL that was supplied to Lighthouse and initially navigated to. */
-      initialUrl: string;
+      requestedUrl: string;
       /** The post-redirects URL that Lighthouse loaded. */
-      url: string;
+      finalUrl: string;
       /** The ISO-8601 timestamp of when the results were generated. */
       fetchTime: string;
       /** The version of Lighthouse with which these results were generated. */
@@ -27,8 +27,8 @@ declare global {
 
 
       // Additional non-LHR-lite information.
-      /** Description of the runtime configuration used for gathering these results. */
-      runtimeConfig: Result.RuntimeConfig;
+      /** The config settings used for these results. */
+      configSettings: Config.Settings;
       /** List of top-level warnings for this Lighthouse run. */
       runWarnings: string[];
       /** The User-Agent string of the browser used run Lighthouse for these results. */

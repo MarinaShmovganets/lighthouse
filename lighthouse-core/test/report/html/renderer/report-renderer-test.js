@@ -97,21 +97,23 @@ describe('ReportRenderer', () => {
 
       assert.ok(header.querySelector('.lh-config__timestamp').textContent.match(TIMESTAMP_REGEX),
           'formats the generated datetime');
-      assert.equal(header.querySelector('.lh-metadata__url').textContent, sampleResults.url);
+      assert.equal(header.querySelector('.lh-metadata__url').textContent, sampleResults.finalUrl);
       const url = header.querySelector('.lh-metadata__url');
-      assert.equal(url.textContent, sampleResults.url);
-      assert.equal(url.href, sampleResults.url);
+      assert.equal(url.textContent, sampleResults.finalUrl);
+      assert.equal(url.href, sampleResults.finalUrl);
 
       const userAgent = header.querySelector('.lh-env__item__ua');
       assert.equal(userAgent.textContent, sampleResults.userAgent, 'user agent populated');
 
       // Check runtime settings were populated.
       const names = Array.from(header.querySelectorAll('.lh-env__name')).slice(1);
-      const descriptions = header.querySelectorAll('.lh-env__description');
-      sampleResults.runtimeConfig.environment.forEach((env, i) => {
-        assert.equal(names[i].textContent, env.name);
-        assert.equal(descriptions[i].textContent, env.description);
-      });
+      const descriptions = Array.from(header.querySelectorAll('.lh-env__description'));
+      assert.equal(names.length, 3);
+      assert.equal(descriptions.length, 3);
+      const descriptionsTxt = descriptions.map(el => el.textContent).join('\n');
+      assert.ok(/Nexus/.test(descriptionsTxt), 'should have added device emulation');
+      assert.ok(/RTT/.test(descriptionsTxt), 'should have added network');
+      assert.ok(/\dx/.test(descriptionsTxt), 'should have added CPU');
     });
 
     it('should not mutate a report object', () => {
