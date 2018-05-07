@@ -132,10 +132,6 @@ describe('ReportRenderer', () => {
       const container = renderer._dom._document.body;
       const output = renderer.renderReport(sampleResults, container);
 
-      var el = renderer._dom.createElement('div');
-      el.appendChild(output);
-      console.log(JSON.stringify(el));
-      console.log(el.querySelectorAll('.lh-run-warnings').length);
       const warningEls = output.querySelectorAll('.lh-run-warnings > ul > li');
       assert.strictEqual(warningEls.length, 1);
       assert.ok(/Links.*unsafe/.test(warningEls[0].textContent), 'did not add warning text');
