@@ -161,7 +161,7 @@ class Audit {
 
     let {score, scoreDisplayMode} = Audit._normalizeAuditScore(audit, result);
 
-    // If the audit was determined to not apply to the page, we'll reset it as informative only
+    // If the audit was determined to not apply to the page, set score display mode appropriately
     if (result.notApplicable) {
       scoreDisplayMode = Audit.SCORING_MODES.NOT_APPLICABLE;
       result.rawValue = true;
