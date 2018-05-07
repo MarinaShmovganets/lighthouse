@@ -215,8 +215,8 @@ describe('CategoryRenderer', () => {
     it('separates audits in the DOM', () => {
       const category = sampleResults.reportCategories.find(c => c.id === 'pwa');
       const elem = renderer.render(category, sampleResults.reportGroups);
-      const passedAudits = elem.querySelectorAll('.lh-passed-audits > .lh-audit');
-      const failedAudits = elem.querySelectorAll('.lh-failed-audits > .lh-audit');
+      const passedAudits = elem.querySelectorAll('.lh-passed-audits .lh-audit');
+      const failedAudits = elem.querySelectorAll('.lh-failed-audits .lh-audit');
       const manualAudits = elem.querySelectorAll('.lh-audit-group--manual .lh-audit');
 
       assert.equal(passedAudits.length, 4);
