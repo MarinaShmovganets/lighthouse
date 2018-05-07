@@ -27,7 +27,7 @@ class DetailsRenderer {
 
   /**
    * @param {!DetailsRenderer.DetailsJSON} details
-   * @return {!Node}
+   * @return {!Element}
    */
   render(details) {
     switch (details.type) {

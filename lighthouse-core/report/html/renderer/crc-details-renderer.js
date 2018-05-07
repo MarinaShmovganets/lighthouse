@@ -148,7 +148,7 @@ class CriticalRequestChainRenderer {
    * @param {!DOM} dom
    * @param {!Node} templateContext
    * @param {!CriticalRequestChainRenderer.CRCDetailsJSON} details
-   * @return {!Node}
+   * @return {!Element}
    */
   static render(dom, templateContext, details) {
     const tmpl = dom.cloneTemplate('#tmpl-lh-crc', templateContext);
