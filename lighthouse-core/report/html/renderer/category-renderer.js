@@ -47,7 +47,8 @@ class CategoryRenderer {
     // Append audit details to header section so the entire audit is within a <details>.
     const header = /** @type {!HTMLDetailsElement} */ (this.dom.find('details', auditEl));
     if (audit.result.details && audit.result.details.type) {
-      header.appendChild(this.detailsRenderer.render(audit.result.details));
+      const elem = header.appendChild(this.detailsRenderer.render(audit.result.details));
+      elem.classList.add('lh-details');
     }
 
     auditEl.classList.add(`lh-audit--${audit.result.scoreDisplayMode}`);

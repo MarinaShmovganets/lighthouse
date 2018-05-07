@@ -522,6 +522,7 @@
 
 <!-- Lighthouse crtiical request chains component -->
 <template id="tmpl-lh-crc">
+<div class="lh-crc-container">
   <style>
     .lh-crc .tree-marker {
       width: 12px;
@@ -575,22 +576,20 @@
     <b class="lh-crc__longest_transfersize"><!-- fill me: longestChain.length --></b>
   </div>
   <div class="lh-crc">
-    <details class="lh-details">
-      <summary></summary>
-      <div class="crc-initial-nav">Initial Navigation</div>
-      <!-- stamp for each chain -->
-      <template id="tmpl-lh-crc__chains">
-        <div class="crc-node">
-          <span class="crc-node__tree-marker">
+    <div class="crc-initial-nav">Initial Navigation</div>
+    <!-- stamp for each chain -->
+    <template id="tmpl-lh-crc__chains">
+      <div class="crc-node">
+        <span class="crc-node__tree-marker">
 
-          </span>
-          <span class="crc-node__tree-value">
-            <span class="crc-node__tree-file"><!-- fill me: node.request.url.file --></span>
-            <span class="crc-node__tree-hostname">(<!-- fill me: node.request.url.host -->)</span>
+        </span>
+        <span class="crc-node__tree-value">
+          <span class="crc-node__tree-file"><!-- fill me: node.request.url.file --></span>
+          <span class="crc-node__tree-hostname">(<!-- fill me: node.request.url.host -->)</span>
 
-          </span>
-        </div>
-      </template>
-    </details>
+        </span>
+      </div>
+    </template>
   </div>
+</div>
 </template>
