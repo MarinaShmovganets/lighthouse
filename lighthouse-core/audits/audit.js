@@ -158,6 +158,7 @@ class Audit {
       throw new Error('generateAuditResult requires a rawValue');
     }
 
+    // TODO(bckenny): cleanup the flow of notApplicable/error/binary/numeric
     let {score, scoreDisplayMode} = Audit._normalizeAuditScore(audit, result);
 
     // If the audit was determined to not apply to the page, set score display mode appropriately
