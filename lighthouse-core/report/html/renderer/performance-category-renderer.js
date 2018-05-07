@@ -129,7 +129,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
 
     // Opportunities
     const opportunityAudits = category.audits
-        .filter(audit => audit.group === 'load-opportunities' && audit.result.score < 1)
+        .filter(audit => audit.group === 'load-opportunities' && !Util.showAsPassed(audit.result))
         .sort((auditA, auditB) => auditB.result.rawValue - auditA.result.rawValue);
     if (opportunityAudits.length) {
       const maxWaste = Math.max(...opportunityAudits.map(audit => audit.result.rawValue));
@@ -146,7 +146,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
 
     // Diagnostics
     const diagnosticAudits = category.audits
-        .filter(audit => audit.group === 'diagnostics' && !Util.didAuditPass(audit.result))
+        .filter(audit => audit.group === 'diagnostics' && !Util.showAsPassed(audit.result))
         .sort((a, b) => {
           const scoreA = a.result.scoreDisplayMode === 'informative' ? 100 : Number(a.result.score);
           const scoreB = b.result.scoreDisplayMode === 'informative' ? 100 : Number(b.result.score);
@@ -162,7 +162,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
 
     const passedElements = category.audits
         .filter(audit => (audit.group === 'load-opportunities' || audit.group === 'diagnostics') &&
-            Util.didAuditPass(audit.result))
+            Util.showAsPassed(audit.result))
         .map((audit, i) => this.renderAudit(audit, i));
 
     if (!passedElements.length) return element;

@@ -139,7 +139,7 @@ describe('PerfCategoryRenderer', () => {
     const diagnosticSection = categoryDOM.querySelectorAll('.lh-category > .lh-audit-group')[2];
 
     const diagnosticAudits = category.audits.filter(audit => audit.group === 'diagnostics' &&
-        Number(audit.result.score) < 0.75 && audit.result.scoreDisplayMode !== 'not-applicable');
+        audit.result.score !== 1 && audit.result.scoreDisplayMode !== 'not-applicable');
     const diagnosticElements = diagnosticSection.querySelectorAll('.lh-audit');
     assert.equal(diagnosticElements.length, diagnosticAudits.length);
   });
@@ -150,7 +150,7 @@ describe('PerfCategoryRenderer', () => {
 
     const passedAudits = category.audits.filter(audit =>
         audit.group && audit.group !== 'metrics' &&
-        (audit.result.score >= 0.75 || audit.result.scoreDisplayMode === 'not-applicable'));
+        (audit.result.score === 1 || audit.result.scoreDisplayMode === 'not-applicable'));
     const passedElements = passedSection.querySelectorAll('.lh-audit');
     assert.equal(passedElements.length, passedAudits.length);
   });

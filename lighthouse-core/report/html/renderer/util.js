@@ -75,10 +75,12 @@ class Util {
    * Used to determine if the "passed" for the purposes of showing up in the "failed" or "passed"
    * sections of the report.
    *
-   * @param {{score: (number|null), scoreDisplayMode: string}} audit
+   * @param {{score: (number|null), scoreDisplayMode: string, debugString: (string|undefined)}} audit
    * @return {boolean}
    */
-  static didAuditPass(audit) {
+  static showAsPassed(audit) {
+    if (audit.debugString) return false;
+
     switch (audit.scoreDisplayMode) {
       case 'manual':
       case 'not-applicable':
@@ -89,7 +91,10 @@ class Util {
       case 'numeric':
       case 'binary':
       default:
-        return Number(audit.score) > PASS_THRESHOLD;
+        // Numeric audits that are within PASS_THRESHOLD will still show up with failing.
+        // For opportunities, we want to have them show up with other failing for contrast.
+        // For diagnostics, we sort by score so they'll be lowest priority.
+        return Number(audit.score) === 1;
     }
   }
 

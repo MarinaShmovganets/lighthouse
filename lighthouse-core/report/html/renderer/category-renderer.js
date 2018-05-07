@@ -282,7 +282,7 @@ class CategoryRenderer {
 
       if (auditRef.result.scoreDisplayMode === 'not-applicable') {
         group.notApplicable.push(auditRef);
-      } else if (Util.didAuditPass(auditRef.result) && !auditRef.result.debugString) {
+      } else if (Util.showAsPassed(auditRef.result)) {
         group.passed.push(auditRef);
       } else {
         group.failed.push(auditRef);
