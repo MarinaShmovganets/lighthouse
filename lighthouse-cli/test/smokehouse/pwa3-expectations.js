@@ -101,12 +101,15 @@ module.exports = [
 
       // "manual" audits. Just verify in the results.
       'pwa-cross-browser': {
+        score: null,
         scoreDisplayMode: 'manual',
       },
       'pwa-page-transitions': {
+        score: null,
         scoreDisplayMode: 'manual',
       },
       'pwa-each-page-has-url': {
+        score: null,
         scoreDisplayMode: 'manual',
       },
     },
