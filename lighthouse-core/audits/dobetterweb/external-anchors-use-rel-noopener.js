@@ -42,7 +42,8 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
           return new URL(anchor.href).host !== pageHost;
         } catch (err) {
           // TODO(phulce): make this message better with anchor.outerHTML
-          warnings.push(`Unable to determine href for anchor target=${anchor.target}`);
+          warnings.push('Unable to determine the destination for anchor tag. ' +
+            'If not used as a hyperlink, consider removing target=_blank.');
           return true;
         }
       })

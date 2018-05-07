@@ -47,7 +47,7 @@ module.exports = [
       },
       'external-anchors-use-rel-noopener': {
         score: 0,
-        warnings: ['Unable to determine href for anchor target=_blank'],
+        warnings: [/Unable to determine/],
         extendedInfo: {
           value: {
             length: 3,

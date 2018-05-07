@@ -113,12 +113,12 @@ describe('CategoryRenderer', () => {
     category.description = prevDesc;
   });
 
-  // TODO(phulce): decide what to do about these cases
-  it.skip('renders audits with errorMessage as failed', () => {
+  // TODO(phulce): revisit if top-level warnings approach is too noisy
+  it.skip('renders audits with warnings as failed', () => {
     const auditResult = {
       description: 'Audit',
       helpText: 'Learn more',
-      debugString: 'It may not have worked!',
+      warnings: ['It may not have worked!'],
       score: 1,
     };
     const audit = {result: auditResult, score: 1};
