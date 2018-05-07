@@ -184,11 +184,10 @@ class OptimizedImages extends Gatherer {
           continue;
         }
 
-        results.push({
-          failed: false,
-          ...stats,
-          ...record,
-        });
+        /** @type {LH.Artifacts.OptimizedImage} */
+        // @ts-ignore TODO(bckenny): fix browserify/Object.spread. See https://github.com/GoogleChrome/lighthouse/issues/5152
+        const image = Object.assign({failed: false}, stats, record);
+        results.push(image);
       } catch (err) {
         // Track this with Sentry since these errors aren't surfaced anywhere else, but we don't
         // want to tank the entire run due to a single image.
@@ -199,11 +198,10 @@ class OptimizedImages extends Gatherer {
           level: 'warning',
         });
 
-        results.push({
-          failed: true,
-          errMsg: err.message,
-          ...record,
-        });
+        /** @type {LH.Artifacts.OptimizedImageError} */
+        // @ts-ignore TODO(bckenny): see above browserify/Object.spread TODO.
+        const imageError = Object.assign({failed: true, errMsg: err.message}, record);
+        results.push(imageError);
       }
     }
 
