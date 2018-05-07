@@ -71,9 +71,9 @@ class ReportScoring {
         return member;
       });
 
-      const scores = audits.map(member => ({
-        score: resultsByAuditId[member.id].score,
-        weight: member.weight,
+      const scores = audits.map(auditRef => ({
+        score: resultsByAuditId[auditRef.id].score,
+        weight: auditRef.weight,
       }));
       const score = ReportScoring.arithmeticMean(scores);
 
