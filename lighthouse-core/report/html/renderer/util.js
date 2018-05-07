@@ -72,6 +72,9 @@ class Util {
   }
 
   /**
+   * Used to determine if the "passed" for the purposes of showing up in the "failed" or "passed"
+   * sections of the report.
+   *
    * @param {{score: (number|null), scoreDisplayMode: string}} audit
    * @return {boolean}
    */

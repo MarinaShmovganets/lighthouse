@@ -225,6 +225,7 @@ class CategoryRenderer {
     wrapper.href = `#${category.id}`;
     wrapper.classList.add(`lh-gauge__wrapper--${Util.calculateRating(category.score)}`);
 
+    // Cast `null` to 0
     const numericScore = Number(category.score);
     const gauge = this.dom.find('.lh-gauge', tmpl);
     // 329 is ~= 2 * Math.PI * gauge radius (53)
