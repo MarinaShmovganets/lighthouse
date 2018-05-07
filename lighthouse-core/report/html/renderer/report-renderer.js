@@ -37,8 +37,8 @@ class ReportRenderer {
     ReportRenderer.smooshAuditResultsIntoCategories(clone.audits, clone.reportCategories);
 
     container.textContent = ''; // Remove previous report.
-    const element = container.appendChild(this._renderReport(clone));
-    return /** @type {!Element} **/ (element);
+    container.appendChild(this._renderReport(clone));
+    return /** @type {!Element} **/ (container);
   }
 
   /**

@@ -75,9 +75,7 @@ describe('ReportRenderer', () => {
     it('should render a report', () => {
       const container = renderer._dom._document.body;
       const output = renderer.renderReport(sampleResults, container);
-      assert.ok(container.contains(output), 'report appended to container');
-      assert.ok(output.classList.contains('lh-container'));
-      assert.ok(output.querySelector('.lh-header'), 'has a header');
+      assert.ok(output.querySelector('.lh-header-sticky'), 'has a header');
       assert.ok(output.querySelector('.lh-report'), 'has report body');
       assert.equal(output.querySelectorAll('.lh-gauge').length,
           sampleResults.reportCategories.length * 2, 'renders category gauges');
@@ -123,19 +121,6 @@ describe('ReportRenderer', () => {
       assert.deepStrictEqual(sampleResults, originalResults);
     }).timeout(2000);
 
-    it('renders a left nav', () => {
-      const header = renderer._renderReportNav(sampleResults);
-      const categoryCount = sampleResults.reportCategories.length;
-      assert.equal(header.querySelectorAll('.lh-leftnav__item').length, categoryCount);
-
-      const categories = header.querySelectorAll('.leftnav-item__category');
-      const scores = header.querySelectorAll('.leftnav-item__score');
-      sampleResults.reportCategories.forEach((cat, i) => {
-        assert.equal(categories[i].textContent, cat.name);
-        assert.equal(Number(scores[i].textContent), cat.score * 100);
-      });
-    });
-
     it('renders no warning section when no lighthouseRunWarnings occur', () => {
       const warningResults = Object.assign({}, sampleResults, {runWarnings: []});
       const container = renderer._dom._document.body;
@@ -147,6 +132,10 @@ describe('ReportRenderer', () => {
       const container = renderer._dom._document.body;
       const output = renderer.renderReport(sampleResults, container);
 
+      var el = renderer._dom.createElement('div');
+      el.appendChild(output);
+      console.log(JSON.stringify(el));
+      console.log(el.querySelectorAll('.lh-run-warnings').length);
       const warningEls = output.querySelectorAll('.lh-run-warnings > ul > li');
       assert.strictEqual(warningEls.length, 1);
       assert.ok(/Links.*unsafe/.test(warningEls[0].textContent), 'did not add warning text');
