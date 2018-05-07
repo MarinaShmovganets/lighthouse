@@ -27,6 +27,22 @@ class ReportUIFeatures {
     this._copyAttempt = false;
     /** @type {!Element} **/
     this.exportButton; // eslint-disable-line no-unused-expressions
+    /** @type {!Element} **/
+    this.headerSticky; // eslint-disable-line no-unused-expressions
+    /** @type {!Element} **/
+    this.headerBackground; // eslint-disable-line no-unused-expressions
+    /** @type {!Element} **/
+    this.lighthouseIcon; // eslint-disable-line no-unused-expressions
+    /** @type {!Element} **/
+    this.scoresShadowWrapper; // eslint-disable-line no-unused-expressions
+    /** @type {!Element} **/
+    this.productInfo; // eslint-disable-line no-unused-expressions
+    /** @type {!Element} **/
+    this.toolbar; // eslint-disable-line no-unused-expressions
+    /** @type {!number} */
+    this.headerOverlap = 0;
+    /** @type {!number} */
+    this.headerHeight = 0;
     /** @type {number} */
     this.latestKnownScrollY = 0;
     /** @type {boolean} */
