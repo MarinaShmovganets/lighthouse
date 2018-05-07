@@ -100,6 +100,7 @@
       position: absolute;
       top: 0;
       width: 100%;
+      will-change: transform;
     }
     .lh-lighthouse {
       position: absolute;
@@ -108,7 +109,7 @@
       transform: translate3d(calc(var(--report-content-width) / 2), -100%, 0);
       opacity: 1;
       transform-origin: bottom right;
-      will-change: transform;
+      will-change: transform, opacity;
     }
     .lh-header {
       width: 100%;
@@ -146,6 +147,7 @@
       box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.1);
       opacity: 1;
       border-radius: 8px;
+      will-change: opacity;
     }
     .lh-scores-container {
       background: #fff;
@@ -165,6 +167,7 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
+      will-change: opacity;
     }
     .lh-product-info__icon {
       height: 20px;
@@ -174,6 +177,7 @@
       position: absolute;
       top: 0;
       width: 100%;
+      will-change: transform;
       z-index: 1;
     }
     .lh-toolbar .lh-container {
@@ -185,6 +189,7 @@
       right: var(--section-indent);
       transform: translateY(-50%) scale3d(1, 1, 1);
       top: 50%;
+      will-change: transform;
     }
     .lh-export__button {
       background-color: #fff;

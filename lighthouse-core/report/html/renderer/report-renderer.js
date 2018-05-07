@@ -116,7 +116,7 @@ class ReportRenderer {
   _renderReport(report) {
     const headerStickyContainer = this._dom.createElement('div', 'lh-header-sticky');
     headerStickyContainer.appendChild(this._renderReportHeader(report));
-    const scoreContainer = this._dom.find('.lh-scores-container', headerStickyContainer)
+    const scoreContainer = this._dom.find('.lh-scores-container', headerStickyContainer);
 
     const container = this._dom.createElement('div', 'lh-container');
 
@@ -152,7 +152,7 @@ class ReportRenderer {
 
     if (scoreHeader) {
       const scoreScale = this._dom.cloneTemplate('#tmpl-lh-scorescale', this._templateContext);
-      scoreContainer.appendChild(scoreHeader)
+      scoreContainer.appendChild(scoreHeader);
       scoreContainer.appendChild(scoreScale);
     }
 
