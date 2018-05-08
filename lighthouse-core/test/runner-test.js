@@ -430,9 +430,9 @@ describe('Runner', () => {
       ],
       categories: {
         category: {
-          name: 'Category',
+          title: 'Category',
           description: '',
-          audits: [
+          auditRefs: [
             {id: 'content-width', weight: 1},
           ],
         },
@@ -447,7 +447,7 @@ describe('Runner', () => {
       assert.equal(results.lhr.audits['content-width'].name, 'content-width');
       assert.equal(results.lhr.audits['content-width'].score, 1);
       assert.equal(results.lhr.reportCategories[0].score, 1);
-      assert.equal(results.lhr.reportCategories[0].audits[0].id, 'content-width');
+      assert.equal(results.lhr.reportCategories[0].auditRefs[0].id, 'content-width');
     });
   });
 

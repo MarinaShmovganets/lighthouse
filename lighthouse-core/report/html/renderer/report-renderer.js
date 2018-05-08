@@ -105,7 +105,7 @@ class ReportRenderer {
       const navItem = this._dom.find('.lh-leftnav__item', itemsTmpl);
       navItem.href = `#${category.id}`;
 
-      this._dom.find('.leftnav-item__category', navItem).textContent = category.name;
+      this._dom.find('.leftnav-item__category', navItem).textContent = category.title;
       const score = this._dom.find('.leftnav-item__score', navItem);
       score.classList.add(`lh-audit--${Util.calculateRating(category.score)}`);
       score.textContent = Math.round(100 * category.score);
@@ -189,7 +189,7 @@ class ReportRenderer {
    */
   static smooshAuditResultsIntoCategories(audits, reportCategories) {
     for (const category of reportCategories) {
-      category.audits.forEach(auditMeta => {
+      category.auditRefs.forEach(auditMeta => {
         const result = audits[auditMeta.id];
         auditMeta.result = result;
       });
@@ -234,12 +234,12 @@ ReportRenderer.AuditJSON; // eslint-disable-line no-unused-expressions
 
 /**
  * @typedef {{
- *     name: string,
+ *     title: string,
  *     id: string,
  *     score: (number|null),
  *     description: (string|undefined),
  *     manualDescription: string,
- *     audits: !Array<!ReportRenderer.AuditJSON>
+ *     auditRefs: !Array<!ReportRenderer.AuditJSON>
  * }}
  */
 ReportRenderer.CategoryJSON; // eslint-disable-line no-unused-expressions

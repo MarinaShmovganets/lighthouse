@@ -60,9 +60,9 @@ declare global {
       } | string;
 
       export interface CategoryJson {
-        name: string;
+        title: string;
         description: string;
-        audits: CategoryMemberJson[];
+        auditRefs: CategoryMemberJson[];
       }
 
       export interface GroupJson {
@@ -103,7 +103,7 @@ declare global {
       // TODO: For now, these are unchanged from JSON and Result versions. Need to harmonize.
       export interface CategoryMember extends CategoryMemberJson {}
       export interface Category extends CategoryJson {
-        audits: CategoryMember[];
+        auditRefs: CategoryMember[];
       }
       export interface Group extends GroupJson {}
     }

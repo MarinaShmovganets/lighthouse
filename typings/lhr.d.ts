@@ -41,7 +41,7 @@ declare global {
         /** The string identifier of the category. */
         id: string;
         /** The human-friendly name of the category */
-        name: string;
+        title: string;
         /** A more detailed description of the category and its importance. */
         description?: string;
         /** A description for the manual audits in the category. */
@@ -49,7 +49,7 @@ declare global {
         /** The overall score of the category, the weighted average of all its audits. */
         score: number|null;
         /** An array of references to all the audit members of this category. */
-        audits: CategoryMember[];
+        auditRefs: CategoryMember[];
       }
 
       export interface CategoryMember {
