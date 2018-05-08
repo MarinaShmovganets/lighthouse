@@ -116,7 +116,6 @@
       height: var(--report-header-height);
       max-width: 100%; /* support text-overflow on url */
       position: relative;
-      z-index: 1;
       padding-top: var(--section-indent);
     }
     .lh-metadata {
@@ -124,10 +123,10 @@
       padding-right: calc(var(--default-padding) / 2);
       line-height: 20px;
       color: var(--report-header-color);
-      overflow-x: hidden;
+      z-index: 1;
+      position: relative;
     }
     .lh-metadata__results {
-      overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
@@ -157,7 +156,7 @@
       position: relative;
       width: 100%;
     }
-    .lh-product-info {
+    .lh-product-info, .lh-toolbar__metadata {
       align-items: center;
       color: #5F6369;
       display: flex;
@@ -178,11 +177,19 @@
       top: 0;
       width: 100%;
       will-change: transform;
-      z-index: 1;
     }
     .lh-toolbar .lh-container {
       position: relative;
       height: 50px;
+    }
+    .lh-toolbar__metadata {
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .lh-toolbar__url {
+      color: currentColor;
+      display: block;
+      white-space: nowrap;
     }
     .lh-export {
       position: absolute;
@@ -265,15 +272,14 @@
       top: 100%;
       position: absolute;
       width: 100%;
-      background-color: var(--report-header-bg-color);
+      background-color: var(--header-bg-color);
       border-top: 1px solid var(--report-secondary-border-color);
       border-bottom: 1px solid var(--report-secondary-border-color);
-    }
-    .lh-env__title {
-      font-size: var(--header-font-size);
+      font-size: 12px;
     }
     .lh-env__items {
       margin: var(--default-padding) 0 0 0;
+      padding-left: calc(var(--default-padding) * 2);
     }
     .lh-config__timestamp {
       margin-right: 6px;
@@ -371,6 +377,8 @@
         <span class="lh-product-info__version"></span>
       </div>
 
+      <div class="lh-toolbar__metadata"><a href="" class="lh-toolbar__url" target="_blank" rel="noopener"></a></div>
+
       <div class="lh-export">
         <button class="report-icon report-icon--share lh-export__button" title="Export report"></button>
         <div class="lh-export__dropdown">
@@ -395,7 +403,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: var(--report-header-bg-color);
+      background-color: var(--header-bg-color);
       border-top: 1px solid var(--report-secondary-border-color);
     }
 

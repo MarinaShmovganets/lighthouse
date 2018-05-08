@@ -25,20 +25,24 @@ class ReportUIFeatures {
     this._document = this._dom.document();
     /** @private {boolean} */
     this._copyAttempt = false;
-    /** @type {!Element} **/
+    /** @type {!Element} */
     this.exportButton; // eslint-disable-line no-unused-expressions
-    /** @type {!Element} **/
+    /** @type {!Element} */
     this.headerSticky; // eslint-disable-line no-unused-expressions
-    /** @type {!Element} **/
+    /** @type {!Element} */
     this.headerBackground; // eslint-disable-line no-unused-expressions
-    /** @type {!Element} **/
+    /** @type {!Element} */
     this.lighthouseIcon; // eslint-disable-line no-unused-expressions
-    /** @type {!Element} **/
+    /** @type {!Element} */
     this.scoresShadowWrapper; // eslint-disable-line no-unused-expressions
-    /** @type {!Element} **/
+    /** @type {!Element} */
     this.productInfo; // eslint-disable-line no-unused-expressions
-    /** @type {!Element} **/
+    /** @type {!Element} */
     this.toolbar; // eslint-disable-line no-unused-expressions
+    /** @type {!Element} */
+    this.toolbarMetadata; // eslint-disable-line no-unused-expressions
+    /** @type {!Element} */
+    this.env; // eslint-disable-line no-unused-expressions
     /** @type {!number} */
     this.headerOverlap = 0;
     /** @type {!number} */
@@ -111,7 +115,8 @@ class ReportUIFeatures {
   _setupHeaderAnimation() {
     /** @type {!Element} **/
     const scoresWrapper = this._dom.find('.lh-scores-wrapper', this._document);
-    this.headerOverlap = /** @type {!number} **/ (scoresWrapper.computedStyleMap().get('margin-top').value);
+    this.headerOverlap = /** @type {!number} */
+      (scoresWrapper.computedStyleMap().get('margin-top').value);
 
     this.headerSticky = this._dom.find('.lh-header-sticky', this._document);
     this.headerBackground = this._dom.find('.lh-header-bg', this._document);
@@ -119,6 +124,8 @@ class ReportUIFeatures {
     this.scoresShadowWrapper = this._dom.find('.lh-scores-wrapper__shadow', this._document);
     this.productInfo = this._dom.find('.lh-product-info', this._document);
     this.toolbar = this._dom.find('.lh-toolbar', this._document);
+    this.toolbarMetadata = this._dom.find('.lh-toolbar__metadata', this._document);
+    this.env = this._dom.find('.lh-env', this._document);
 
     this.headerHeight = this.headerBackground.computedStyleMap().get('height').value;
 
@@ -205,8 +212,13 @@ class ReportUIFeatures {
       animateScrollPercentage}px)`;
     this.exportButton.style.transform = `scale(${1 - 0.2 * animateScrollPercentage})`;
     // start showing the productinfo when we are at the 50% mark of our animation
-    this.productInfo.style.opacity =
+    this.productInfo.style.opacity = this.toolbarMetadata.style.opacity =
       animateScrollPercentage < 0.5 ? 0 : (animateScrollPercentage - 0.5) * 2;
+    this.env.style.transform = `translateY(${Math.max(
+      0,
+      headerTransitionHeightDiff * animateScrollPercentage - 6
+    )}px)`;
+
 
     this.isAnimatingHeader = false;
   }

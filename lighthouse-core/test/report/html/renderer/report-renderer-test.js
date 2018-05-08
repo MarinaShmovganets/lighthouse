@@ -86,7 +86,8 @@ describe('ReportRenderer', () => {
       const oldReport = Array.from(renderer.renderReport(sampleResults, container).children);
       const newReport = Array.from(renderer.renderReport(sampleResults, container).children);
       assert.ok(!oldReport.find(node => container.contains(node)), 'old report was removed');
-      assert.ok(newReport.find(node => container.contains(node)), 'new report appended to container');
+      assert.ok(newReport.find(node => container.contains(node)),
+        'new report appended to container');
     });
 
     it('renders a header', () => {

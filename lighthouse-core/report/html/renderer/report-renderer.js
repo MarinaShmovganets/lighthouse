@@ -62,6 +62,9 @@ class ReportRenderer {
     const url = this._dom.find('.lh-metadata__url', header);
     url.href = report.finalUrl;
     url.textContent = report.finalUrl;
+    const toolbarUrl = this._dom.find('.lh-toolbar__url', header);
+    toolbarUrl.href = report.finalUrl;
+    toolbarUrl.textContent = report.finalUrl;
 
     this._dom.find('.lh-env__item__ua', header).textContent = report.userAgent;
 
