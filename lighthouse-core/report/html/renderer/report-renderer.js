@@ -111,7 +111,7 @@ class ReportRenderer {
 
   /**
    * @param {!ReportRenderer.ReportJSON} report
-   * @return {!Element}
+   * @return {!DocumentFragment}
    */
   _renderReport(report) {
     const headerStickyContainer = this._dom.createElement('div', 'lh-header-sticky');

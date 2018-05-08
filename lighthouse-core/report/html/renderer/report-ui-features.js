@@ -109,8 +109,9 @@ class ReportUIFeatures {
   }
 
   _setupHeaderAnimation() {
+    /** @type {!Element} **/
     const scoresWrapper = this._dom.find('.lh-scores-wrapper', this._document);
-    this.headerOverlap = scoresWrapper.computedStyleMap().get('margin-top').value;
+    this.headerOverlap = /** @type {!number} **/ (scoresWrapper.computedStyleMap().get('margin-top').value);
 
     this.headerSticky = this._dom.find('.lh-header-sticky', this._document);
     this.headerBackground = this._dom.find('.lh-header-bg', this._document);
@@ -174,10 +175,10 @@ class ReportUIFeatures {
   }
 
   onScroll() {
-    this.latestKnownScrollY = this._dom._window.scrollY;
+    this.latestKnownScrollY = window.scrollY;
 
     if (!this.isAnimatingHeader) {
-      this._dom._window.requestAnimationFrame(this.animateHeader.bind(this));
+      window.requestAnimationFrame(this.animateHeader.bind(this));
     }
     this.isAnimatingHeader = true;
   }

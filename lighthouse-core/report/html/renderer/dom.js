@@ -14,8 +14,6 @@ class DOM {
   constructor(document) {
     /** @private {!Document} */
     this._document = document;
-    /** @private {!Window} */
-    this._window = document.defaultView;
   }
 
   /**
@@ -152,13 +150,6 @@ class DOM {
    */
   document() {
     return this._document;
-  }
-
-  /**
-   * @return {!Window}
-   */
-  window() {
-    return this._window;
   }
 
   /**
