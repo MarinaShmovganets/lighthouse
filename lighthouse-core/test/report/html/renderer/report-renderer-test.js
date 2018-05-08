@@ -83,10 +83,10 @@ describe('ReportRenderer', () => {
 
     it('renders additional reports by replacing the existing one', () => {
       const container = renderer._dom._document.body;
-      const oldReport = renderer.renderReport(sampleResults, container);
-      const newReport = renderer.renderReport(sampleResults, container);
-      assert.ok(!container.contains(oldReport), 'old report was removed');
-      assert.ok(container.contains(newReport), 'new report appended to container');
+      const oldReport = Array.from(renderer.renderReport(sampleResults, container).children);
+      const newReport = Array.from(renderer.renderReport(sampleResults, container).children);
+      assert.ok(!oldReport.find(node => container.contains(node)), 'old report was removed');
+      assert.ok(newReport.find(node => container.contains(node)), 'new report appended to container');
     });
 
     it('renders a header', () => {
