@@ -125,6 +125,7 @@ class Runner {
         categories = ReportScoring.scoreAllCategories(opts.config.categories, resultsById);
       }
 
+      /** @type {LH.Result} */
       const lhr = {
         userAgent: artifacts.UserAgent,
         lighthouseVersion,
