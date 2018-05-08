@@ -59,6 +59,7 @@ class ReportUIFeatures {
     this.onKeyDown = this.onKeyDown.bind(this);
     this.printShortCutDetect = this.printShortCutDetect.bind(this);
     this.onScroll = this.onScroll.bind(this);
+    this.onChevronClick = this.onChevronClick.bind(this);
   }
 
   /**
@@ -130,6 +131,9 @@ class ReportUIFeatures {
     this.headerHeight = this.headerBackground.computedStyleMap().get('height').value;
 
     this._document.addEventListener('scroll', this.onScroll, {passive: true});
+
+    const toolbarChevron = this._dom.find('.lh-toggle-arrow', this.toolbar);
+    toolbarChevron.addEventListener('click', this.onChevronClick);
   }
 
   /**
@@ -188,6 +192,16 @@ class ReportUIFeatures {
       window.requestAnimationFrame(this.animateHeader.bind(this));
     }
     this.isAnimatingHeader = true;
+  }
+
+  onChevronClick() {
+    const toggle = this._dom.find('.lh-config__settings-toggle', this._document);
+
+    if (toggle.hasAttribute('open')) {
+      toggle.removeAttribute('open');
+    } else {
+      toggle.setAttribute('open', true);
+    }
   }
 
   animateHeader() {
