@@ -222,8 +222,15 @@ class ReportUIFeatures {
         animateScrollPercentage})`;
     this.lighthouseIcon.style.opacity = Math.max(0, 1 - animateScrollPercentage);
     this.scoresShadowWrapper.style.opacity = 1 - animateScrollPercentage;
-    this.scoresShadowWrapper.parentElement.style.borderRadius = (1 - animateScrollPercentage) * 8 + 'px';
-    this.scoresShadowWrapper.parentElement.style.boxShadow = `0 4px 2px -2px rgba(0, 0, 0, ${animateScrollPercentage * .2})`;
+    const scoresContainer = this.scoresShadowWrapper.parentElement;
+    scoresContainer.style.borderRadius = (1 - animateScrollPercentage) * 8 + 'px';
+    scoresContainer.style.boxShadow = `0 4px 2px -2px rgba(0, 0, 0, ${animateScrollPercentage * .2})`;
+    const scoreScale = scoresContainer.querySelector('.lh-scorescale');
+    scoreScale.style.opacity = `${1 - animateScrollPercentage}`;
+    const scoreHeader = scoresContainer.querySelector('.lh-scores-header');
+    const delta = 32 * animateScrollPercentage;
+    scoreHeader.style.paddingBottom = `${32 - delta}px`;
+    scoresContainer.style.marginBottom = `${delta}px`;
     this.toolbar.style.transform = `translateY(${headerTransitionHeightDiff *
       animateScrollPercentage}px)`;
     this.exportButton.style.transform = `scale(${1 - 0.2 * animateScrollPercentage})`;
