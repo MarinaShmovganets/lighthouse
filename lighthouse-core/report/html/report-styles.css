@@ -733,6 +733,7 @@
   color: var(--medium-75-gray);
   padding: calc(var(--section-indent) * 2) var(--section-indent) 0 0;
   text-align: right;
+  transform-origin: bottom right;
 }
 
 .lh-scorescale-range {
