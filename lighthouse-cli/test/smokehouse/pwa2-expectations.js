@@ -96,7 +96,7 @@ module.exports = [
       },
       'webapp-install-banner': {
         // TODO(phulce): assert the checks when we put them in details
-        score: 0,
+        score: 1,
       },
       'splash-screen': {
         // TODO(phulce): assert the checks when we put them in details
