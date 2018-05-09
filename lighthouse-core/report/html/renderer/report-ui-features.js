@@ -224,7 +224,8 @@ class ReportUIFeatures {
     this.scoresShadowWrapper.style.opacity = 1 - animateScrollPercentage;
     const scoresContainer = this.scoresShadowWrapper.parentElement;
     scoresContainer.style.borderRadius = (1 - animateScrollPercentage) * 8 + 'px';
-    scoresContainer.style.boxShadow = `0 4px 2px -2px rgba(0, 0, 0, ${animateScrollPercentage * .2})`;
+    scoresContainer.style.boxShadow =
+        `0 4px 2px -2px rgba(0, 0, 0, ${animateScrollPercentage * 0.2})`;
     const scoreScale = scoresContainer.querySelector('.lh-scorescale');
     scoreScale.style.opacity = `${1 - animateScrollPercentage}`;
     const scoreHeader = scoresContainer.querySelector('.lh-scores-header');
