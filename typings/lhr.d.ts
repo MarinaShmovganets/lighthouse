@@ -49,10 +49,10 @@ declare global {
         /** The overall score of the category, the weighted average of all its audits. */
         score: number|null;
         /** An array of references to all the audit members of this category. */
-        auditRefs: CategoryMember[];
+        auditRefs: AuditRef[];
       }
 
-      export interface CategoryMember {
+      export interface AuditRef {
         /** Matches the `id` of an Audit.Result. */
         id: string;
         /** The weight of the audit's score in the overall category score. */
