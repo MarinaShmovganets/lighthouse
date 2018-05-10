@@ -62,10 +62,9 @@ class UsesRelPreloadAudit extends Audit {
    * @param {Set<string>} urls The array of byte savings results per resource
    * @param {LH.Gatherer.Simulation.GraphNode} graph
    * @param {LH.Gatherer.Simulation.Simulator} simulator
-   * @param {LH.WebInspector.NetworkRequest} mainResource
    * @return {{wastedMs: number, results: Array<{url: string, wastedMs: number}>}}
    */
-  static computeWasteWithGraph(urls, graph, simulator, mainResource) {
+  static computeWasteWithGraph(urls, graph, simulator) {
     if (!urls.size) {
       return {wastedMs: 0, results: []};
     }
@@ -164,8 +163,7 @@ class UsesRelPreloadAudit extends Audit {
       }
     }
 
-    const {results, wastedMs} = UsesRelPreloadAudit.computeWasteWithGraph(urls, graph, simulator,
-        mainResource);
+    const {results, wastedMs} = UsesRelPreloadAudit.computeWasteWithGraph(urls, graph, simulator);
     // sort results by wastedTime DESC
     results.sort((a, b) => b.wastedMs - a.wastedMs);
 

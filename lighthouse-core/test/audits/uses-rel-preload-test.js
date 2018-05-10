@@ -54,6 +54,7 @@ describe('Performance: uses-rel-preload audit', () => {
     const scriptNode = buildNode(3, 'http://www.example.com/script.js');
     const scriptAddedNode = buildNode(4, 'http://www.example.com/script-added.js');
 
+    mainDocumentNode.setIsMainDocument(true);
     mainDocumentNode.addDependency(rootNode);
     scriptNode.addDependency(mainDocumentNode);
     scriptAddedNode.addDependency(scriptNode);

@@ -108,7 +108,7 @@ describe('DependencyGraph/Node', () => {
     it('should copy isMainDocument', () => {
       const node = new Node(1);
       node.setIsMainDocument(true);
-      const networkNode = new Node(1);
+      const networkNode = new NetworkNode({});
       networkNode.setIsMainDocument(true);
 
       assert.ok(node.cloneWithoutRelationships().isMainDocument());
