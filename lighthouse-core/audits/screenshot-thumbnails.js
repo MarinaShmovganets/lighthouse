@@ -77,7 +77,7 @@ class ScreenshotThumbnails extends Audit {
     const speedline = await artifacts.requestSpeedline(trace);
 
     // Make the minimum time range 3s so sites that load super quickly don't get a single screenshot
-    let minimumTimelineDuration = 3000;
+    let minimumTimelineDuration = context.options.minimumTimelineDuration || 3000;
     // Ensure thumbnails cover the full range of the trace (TTI can be later than visually complete)
     if (context.settings.throttlingMethod !== 'simulate') {
       const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
