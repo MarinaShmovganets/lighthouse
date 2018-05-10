@@ -195,7 +195,7 @@ describe('Performance: uses-rel-preload audit', () => {
     });
   });
 
-  it('does no throw on a real trace/devtools log', async () => {
+  it('does not throw on a real trace/devtools log', async () => {
     const artifacts = Object.assign({
       URL: {finalUrl: 'https://pwa.rocks/'},
       traces: {

@@ -73,7 +73,6 @@ class UsesRelPreloadAudit extends Audit {
     // Preload changes the ordering of requests, simulate the original graph with flexible ordering
     // to have a reasonable baseline for comparison.
     const simulationBeforeChanges = simulator.simulate(graph, {flexibleOrdering: true});
-
     const modifiedGraph = graph.cloneWithRelationships();
 
     /** @type {Array<LH.Gatherer.Simulation.GraphNetworkNode>} */
@@ -84,12 +83,10 @@ class UsesRelPreloadAudit extends Audit {
       if (node.type !== 'network') return;
 
       const networkNode = /** @type {LH.Gatherer.Simulation.GraphNetworkNode} */ (node);
-      if (networkNode.record && urls.has(networkNode.record.url)) {
-        nodesToPreload.push(networkNode);
-      }
-
-      if (networkNode.record && networkNode.record.url === mainResource.url) {
+      if (node.isMainDocument()) {
         mainDocumentNode = networkNode;
+      } else if (networkNode.record && urls.has(networkNode.record.url)) {
+        nodesToPreload.push(networkNode);
       }
     });
 
