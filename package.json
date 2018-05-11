@@ -48,6 +48,7 @@
     "coveralls": "cat unit-coverage.lcov | coveralls",
     "codecov": "codecov -f unit-coverage.lcov -F unit && codecov -f smoke-coverage.lcov -F smoke",
 
+    "now-start": "node -e \"const lhr = require('./lighthouse-core/test/results/sample_v2.json'); const html = require('./lighthouse-core/report/report-generator').generateReportHtml(lhr); fs.writeFileSync('./lighthouse-cli/test/fixtures/golden.report.html', html);\"; node ./lighthouse-cli/test/fixtures/static-server.js; ",
     "closure": "cd lighthouse-core && node closure/closure-type-checking.js",
     "devtools": "bash lighthouse-core/scripts/roll-to-devtools.sh",
     "compile-devtools": "bash lighthouse-core/scripts/compile-against-devtools.sh",
