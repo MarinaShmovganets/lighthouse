@@ -258,11 +258,12 @@ class Node {
   /**
    * Returns whether the given node has a cycle in its dependent graph by performing a DFS.
    * @param {Node} node
-   * @param {'dependents'|'dependencies'|'all'} [direction]
+   * @param {'dependents'|'dependencies'|'both'} [direction]
    * @return {boolean}
    */
-  static hasCycle(node, direction = 'all') {
-    if (direction === 'all') {
+  static hasCycle(node, direction = 'both') {
+    // Checking 'both' is the default entrypoint to recursively check both directions
+    if (direction === 'both') {
       return Node.hasCycle(node, 'dependents') || Node.hasCycle(node, 'dependencies');
     }
 
@@ -296,10 +297,10 @@ class Node {
       const nodesToExplore = direction === 'dependents' ?
         currentNode._dependents :
         currentNode._dependencies;
-      for (const dependent of nodesToExplore) {
-        if (toVisit.includes(dependent)) continue;
-        toVisit.push(dependent);
-        depthAdded.set(dependent, currentPath.length);
+      for (const nextNode of nodesToExplore) {
+        if (toVisit.includes(nextNode)) continue;
+        toVisit.push(nextNode);
+        depthAdded.set(nextNode, currentPath.length);
       }
     }
 
