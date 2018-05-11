@@ -49,6 +49,11 @@ class Logger {
    */
   error(msg) {
     this.log(msg);
+
+    // Rethrow to make sure it's auditable as an error.
+    setTimeout(_ => {
+      throw new Error(msg);
+    }, 0);
   }
 
   /**
