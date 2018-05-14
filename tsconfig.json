@@ -24,6 +24,6 @@
     "lighthouse-core/test/**/*.js",
     "lighthouse-core/closure/**/*.js",
     "lighthouse-core/third_party/src/**/*.js",
-    "lighthouse-core/report/html/renderer/**/*.js",
+    "lighthouse-core/report/html/renderer/**/*.js"
   ]
 }
