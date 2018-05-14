@@ -238,9 +238,13 @@ class ReportUIFeatures {
     scoresContainer.style.marginBottom = `${delta}px`;
     this.toolbar.style.transform = `translateY(${headerTransitionHeightDiff *
       animateScrollPercentage}px)`;
-    this.exportButton.parentElement.style.transform = `translateY(${headerTransitionHeightDiff *
-      animateScrollPercentage}px)`;
     this.exportButton.style.transform = `scale(${1 - 0.2 * animateScrollPercentage})`;
+    // fix stacking context
+    const exportParent = this.exportButton.parentElement;
+    if (exportParent) {
+      exportParent.style.transform = `translateY(${headerTransitionHeightDiff *
+        animateScrollPercentage}px)`;
+    }
     // start showing the productinfo when we are at the 50% mark of our animation
     const opacity = animateScrollPercentage < 0.5 ? 0 : (animateScrollPercentage - 0.5) * 2;
     this.productInfo.style.opacity = this.toolbarMetadata.style.opacity = opacity.toString();
