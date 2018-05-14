@@ -197,12 +197,12 @@ if (typeof module !== 'undefined' && module.exports) {
 /**
  * @typedef {{
       rawValue: (number|boolean|undefined),
-      name: string,
+      id: string,
+      title: string,
       description: string,
       explanation?: string,
       errorMessage?: string,
       displayValue?: string|Array<string|number>,
-      helpText: string,
       scoreDisplayMode: string,
       error: boolean,
       score: (number|null),

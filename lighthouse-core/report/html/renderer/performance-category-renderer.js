@@ -22,18 +22,18 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
   _renderMetric(audit) {
     const tmpl = this.dom.cloneTemplate('#tmpl-lh-metric', this.templateContext);
     const element = this.dom.find('.lh-metric', tmpl);
-    element.id = audit.result.name;
+    element.id = audit.result.id;
     const rating = Util.calculateRating(audit.result.score, audit.result.scoreDisplayMode);
     element.classList.add(`lh-metric--${rating}`);
 
     const titleEl = this.dom.find('.lh-metric__title', tmpl);
-    titleEl.textContent = audit.result.description;
+    titleEl.textContent = audit.result.title;
 
     const valueEl = this.dom.find('.lh-metric__value', tmpl);
     valueEl.textContent = Util.formatDisplayValue(audit.result.displayValue);
 
     const descriptionEl = this.dom.find('.lh-metric__description', tmpl);
-    descriptionEl.appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.helpText));
+    descriptionEl.appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.description));
 
     if (audit.result.scoreDisplayMode === 'error') {
       descriptionEl.textContent = '';
@@ -55,10 +55,10 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const tmpl = this.dom.cloneTemplate('#tmpl-lh-opportunity', this.templateContext);
     const element = this.dom.find('.lh-load-opportunity', tmpl);
     element.classList.add(`lh-load-opportunity--${Util.calculateRating(audit.result.score)}`);
-    element.id = audit.result.name;
+    element.id = audit.result.id;
 
     const titleEl = this.dom.find('.lh-load-opportunity__title', tmpl);
-    titleEl.textContent = audit.result.description;
+    titleEl.textContent = audit.result.title;
     this.dom.find('.lh-audit__index', element).textContent = `${index + 1}`;
 
     if (audit.result.errorMessage || audit.result.explanation) {
@@ -79,7 +79,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const displayValue = Util.formatDisplayValue(audit.result.displayValue);
     const sparklineWidthPct = `${summaryInfo.wastedMs / scale * 100}%`;
     const wastedMs = Util.formatSeconds(summaryInfo.wastedMs, 0.01);
-    const auditDescription = this.dom.convertMarkdownLinkSnippets(audit.result.helpText);
+    const auditDescription = this.dom.convertMarkdownLinkSnippets(audit.result.description);
     this.dom.find('.lh-load-opportunity__sparkline', tmpl).title = displayValue;
     this.dom.find('.lh-load-opportunity__wasted-stat', tmpl).title = displayValue;
     this.dom.find('.lh-sparkline__bar', tmpl).style.width = sparklineWidthPct;
@@ -155,7 +155,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const thumbnailAudit = category.auditRefs.find(audit => audit.id === 'screenshot-thumbnails');
     const thumbnailResult = thumbnailAudit && thumbnailAudit.result;
     if (thumbnailResult && thumbnailResult.details) {
-      timelineEl.id = thumbnailResult.name;
+      timelineEl.id = thumbnailResult.id;
       const filmstripEl = this.detailsRenderer.render(thumbnailResult.details);
       timelineEl.appendChild(filmstripEl);
     }
@@ -166,9 +166,11 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
         .sort((auditA, auditB) => this._getWastedMs(auditB) - this._getWastedMs(auditA));
 
     if (opportunityAudits.length) {
+      // Scale the sparklines relative to savings, minimum 2s to not overstate small savings
+      const minimumScale = 2000;
       const wastedMsValues = opportunityAudits.map(audit => this._getWastedMs(audit));
       const maxWaste = Math.max(...wastedMsValues);
-      const scale = Math.ceil(maxWaste / 1000) * 1000;
+      const scale = Math.max(Math.ceil(maxWaste / 1000) * 1000, minimumScale);
       const groupEl = this.renderAuditGroup(groups['load-opportunities'], {expandable: false});
       const tmpl = this.dom.cloneTemplate('#tmpl-lh-opportunity-header', this.templateContext);
       const headerEl = this.dom.find('.lh-load-opportunity__header', tmpl);

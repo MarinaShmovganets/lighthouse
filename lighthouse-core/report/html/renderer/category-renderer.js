@@ -39,7 +39,7 @@ class CategoryRenderer {
   renderAudit(audit, index) {
     const tmpl = this.dom.cloneTemplate('#tmpl-lh-audit', this.templateContext);
     const auditEl = this.dom.find('.lh-audit', tmpl);
-    auditEl.id = audit.result.name;
+    auditEl.id = audit.result.id;
     const scoreDisplayMode = audit.result.scoreDisplayMode;
 
     if (audit.result.displayValue) {
@@ -48,9 +48,9 @@ class CategoryRenderer {
     }
 
     const titleEl = this.dom.find('.lh-audit__title', auditEl);
-    titleEl.appendChild(this.dom.convertMarkdownCodeSnippets(audit.result.description));
+    titleEl.appendChild(this.dom.convertMarkdownCodeSnippets(audit.result.title));
     this.dom.find('.lh-audit__description', auditEl)
-      .appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.helpText));
+      .appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.description));
 
     // Append audit details to header section so the entire audit is within a <details>.
     const header = /** @type {HTMLDetailsElement} */ (this.dom.find('details', auditEl));
