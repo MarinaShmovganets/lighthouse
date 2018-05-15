@@ -56,7 +56,7 @@ class NetworkNode extends Node {
    * @return {boolean}
    */
   get fromDiskCache() {
-    return this._record._fromDiskCache;
+    return !!this._record._fromDiskCache;
   }
 
   /**
