@@ -11,6 +11,8 @@
   },
   "devDependencies": {
     "babel-plugin-syntax-object-rest-spread": "^6.13.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babelify": "^8.0.0",
     "brfs": "^1.6.1",
     "browserify": "^16.2.0",
     "del": "^2.2.0",

@@ -11,6 +11,7 @@ const debug = require('gulp-debug');
 const eslint = require('gulp-eslint');
 const livereload = require('gulp-livereload');
 const babel = require('babel-core');
+const babelify = require('babelify');
 const tap = require('gulp-tap');
 const zip = require('gulp-zip');
 const gulpReplace = require('gulp-replace');
@@ -141,6 +142,11 @@ gulp.task('browserify-lighthouse', () => {
         bundle = bundle.require(artifact, {expose: artifact.replace(corePath, './')});
       });
 
+      bundle.transform(babelify.configure({
+        plugins: [
+          [require.resolve('babel-plugin-transform-object-rest-spread'), {'useBuiltIns': true}],
+        ],
+      }));
       // Inject the new browserified contents back into our gulp pipeline
       file.contents = bundle.bundle();
     }))
