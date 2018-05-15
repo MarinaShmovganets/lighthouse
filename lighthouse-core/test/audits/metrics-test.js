@@ -37,7 +37,7 @@ describe('Performance: metrics', () => {
       firstCPUIdleTs: undefined,
       interactive: 4309,
       interactiveTs: undefined,
-      speedIndex: 1501,
+      speedIndex: 1461,
       speedIndexTs: undefined,
       estimatedInputLatency: 104,
       estimatedInputLatencyTs: undefined,
