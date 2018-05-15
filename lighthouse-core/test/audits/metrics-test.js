@@ -29,9 +29,9 @@ describe('Performance: metrics', () => {
     const result = await Audit.audit(artifacts, {settings});
 
     assert.deepStrictEqual(result.details.items[0], {
-      firstContentfulPaint: 1272,
+      firstContentfulPaint: 1038,
       firstContentfulPaintTs: undefined,
-      firstMeaningfulPaint: 2029,
+      firstMeaningfulPaint: 1949,
       firstMeaningfulPaintTs: undefined,
       firstCPUIdle: 4309,
       firstCPUIdleTs: undefined,
