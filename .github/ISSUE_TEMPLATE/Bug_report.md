@@ -17,8 +17,13 @@ about: File an issue ticket to help us improve
 **What is the expected behavior?**
 
 
-**Other relevant information:**
+**Environment Information**:
+Affected Channels:
+- [ ] CLI
+- [ ] Node Module
+- [ ] Extension
+- [ ] DevTools
+
 Lighthouse version:
 Node.js version:
 Operating System:
-Additional tools:

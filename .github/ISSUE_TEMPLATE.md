@@ -1,13 +1,14 @@
 <!-- Before creating an issue please make sure you are using the latest version. -->
 
 <!-- If this is a feature request use this portion of the template and delete the bug portion -->
-**Describe the *feature* request**
+<!-- If this is a new audit please review the audit doc https://github.com/GoogleChrome/lighthouse/blob/master/docs/new-audits.md -->
+**Describe the *feature* request.**
 
 
 **What is motivation or use case for changing this?**
 
 
-**Please mention other relevant information such as the browser version, Node.js version, Lighthouse version, and Operating System.**
+**Where should this feature be implemented (CLI/DevTools/Extension/Node Module)?**
 
 
 <!-- If this is a bug report use this portion of the template and delete the feature request portion -->
@@ -15,13 +16,26 @@
 **Describe the *bug* issue**
 
 
+<!-- Have you searched for similar open issues? -->
+<!-- If yours is a duplicate, consider commenting with additional info or +1'ing instead. -->
+Related issues: <!-- #9000 -->
+
 **What is the current behavior?**
 
 
 **What is the expected behavior?**
 
 
-**Provide the steps to reproduce if this is a bug**
+**Provide the steps to reproduce**
 
 
-**Please mention other relevant information such as the browser version, Node.js version, Lighthouse version, and Operating System.**
+**Environment Information**:
+Affected Channels:
+- [ ] CLI
+- [ ] Node Module
+- [ ] Extension
+- [ ] DevTools
+
+Lighthouse version:
+Node.js version:
+Operating System:

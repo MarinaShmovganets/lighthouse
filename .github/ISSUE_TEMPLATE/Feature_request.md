@@ -6,8 +6,9 @@ about: Suggest an idea to us!
 
 <!-- Before creating an feature request please make sure you are using the latest version. -->
 
-## Feature request
+<!-- If this is a new audit please review the audit doc https://github.com/GoogleChrome/lighthouse/blob/master/docs/new-audits.md -->
 
+## Feature request
 
 **Summary of the feature request?**
 <!-- Describe to us the need for this change -->

@@ -8,5 +8,5 @@
 
 <!-- Link any documentation or information that would help understand this change -->
 
-**Other information**
+**Related Issues/PRs**
 <!-- Provide any additional information we might need to understand the pull request -->
