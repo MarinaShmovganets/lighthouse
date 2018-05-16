@@ -175,7 +175,7 @@ class LighthouseReportViewer {
   }
 
   /**
-   * Opens new tab with compatible report viewer version
+   * Opens legacy viewer in current tab, then renders report
    * @param {!ReportRenderer.ReportJSON} reportJson
    * @private
    */
@@ -183,6 +183,7 @@ class LighthouseReportViewer {
     const warnMsg = `Version mismatch between viewer and JSON. Opening compatible viewer...`;
     logger.log(warnMsg, false);
 
+    // Place report in IDB, then navigate current tab to the legacy viewer
     const viewerPath = new URL('../viewer2x/', location.href);
     idbKeyval.set('2xreport', json).then(_ => {
       window.location.href = viewerPath;
