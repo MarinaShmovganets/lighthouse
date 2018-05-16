@@ -81,7 +81,7 @@ class LighthouseReportViewer {
   }
 
   /**
-   * Attempts to pull gist id from URL and render report from it.
+   * Attempts to read v2.x report from IDB (saved in latest viewer) and render report
    * @return {!Promise<undefined>}
    * @private
    */
