@@ -213,23 +213,38 @@ class Simulator {
    */
   _estimateTimeRemaining(node) {
     if (node.type === Node.TYPES.CPU) {
-      const timingData = this._nodeTimings.get(node);
-      const multiplier = /** @type {CpuNode} */ (node).didPerformLayout()
-        ? this._layoutTaskMultiplier
-        : this._cpuSlowdownMultiplier;
-      const totalDuration = Math.min(
-        Math.round(/** @type {CpuNode} */ (node).event.dur / 1000 * multiplier),
-        DEFAULT_MAXIMUM_CPU_TASK_DURATION
-      );
-      const estimatedTimeElapsed = totalDuration - timingData.timeElapsed;
-      this._setTimingData(node, {estimatedTimeElapsed});
-      return estimatedTimeElapsed;
+      return this._estimateCPUTimeRemaining(/** @type {CpuNode} */ (node));
+    } else if (node.type === Node.TYPES.NETWORK) {
+      return this._estimateNetworkTimeRemaining(/** @type {NetworkNode} */ (node));
+    } else {
+      throw new Error('Unsupported');
     }
+  }
 
-    if (node.type !== Node.TYPES.NETWORK) throw new Error('Unsupported');
+  /**
+   * @param {CpuNode} cpuNode
+   * @return {number}
+   */
+  _estimateCPUTimeRemaining(cpuNode) {
+    const timingData = this._nodeTimings.get(cpuNode);
+    const multiplier = cpuNode.didPerformLayout()
+      ? this._layoutTaskMultiplier
+      : this._cpuSlowdownMultiplier;
+    const totalDuration = Math.min(
+      Math.round(cpuNode.event.dur / 1000 * multiplier),
+      DEFAULT_MAXIMUM_CPU_TASK_DURATION
+    );
+    const estimatedTimeElapsed = totalDuration - timingData.timeElapsed;
+    this._setTimingData(cpuNode, {estimatedTimeElapsed});
+    return estimatedTimeElapsed;
+  }
 
-    const networkNode = /** @type {NetworkNode} */ (node);
-    const timingData = this._nodeTimings.get(node);
+  /**
+   * @param {NetworkNode} networkNode
+   * @return {number}
+   */
+  _estimateNetworkTimeRemaining(networkNode) {
+    const timingData = this._nodeTimings.get(networkNode);
 
     let timeElapsed = 0;
     if (networkNode.fromDiskCache) {
@@ -249,7 +264,7 @@ class Simulator {
     }
 
     const estimatedTimeElapsed = timeElapsed + timingData.timeElapsedOvershoot;
-    this._setTimingData(node, {estimatedTimeElapsed});
+    this._setTimingData(networkNode, {estimatedTimeElapsed});
     return estimatedTimeElapsed;
   }
 
