@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global DOM, ViewerUIFeatures, ReportRenderer, DragAndDrop, GithubApi, logger */
+/* global DOM, ViewerUIFeatures, ReportRenderer, DragAndDrop, GithubApi, logger, idbKeyval */
 
 /**
  * Class that manages viewing Lighthouse reports.
@@ -180,14 +180,12 @@ class LighthouseReportViewer {
    * @private
    */
   _loadInLegacyViewerVersion(json) {
-    const warnMsg = `Version mismatch between viewer and JSON.
-    Opening new tab with compatible viewer.`;
-    const viewerPath = '/lighthouse/viewer2x/';
-
+    const warnMsg = `Version mismatch between viewer and JSON. Opening compatible viewer...`;
     logger.log(warnMsg, false);
-    ViewerUIFeatures.openTabAndSendJsonReport(json, viewerPath).then(_ => {
-      window.close();
-      logger.log(`${warnMsg} You can close this tab.`, false);
+
+    const viewerPath = new URL('../viewer2x/', location.href);
+    idbKeyval.set('2xreport', json).then(_ => {
+      window.location.href = viewerPath;
     });
   }
 
