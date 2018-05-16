@@ -27,8 +27,8 @@ module_path="$lhroot_path/node_modules/lh-compile-devtools"
 
 # extra deep frontend_path used because of the hardcoded os.pardir's here:
 # https://github.com/ChromeDevTools/devtools-frontend/blob/157d472fd748/scripts/build/generate_protocol_externs.py#L39-L43
-frontend_path="$module_path/two-more/almost-there/temp-devtoolsfrontend"
-protocol_path="$module_path/temp-devtoolsprotocol"
+frontend_path="$module_path/two-more/almost-there/devtools-frontend"
+protocol_path="$module_path/devtools-protocol"
 
 # clone if they're not there
 if [ ! -d "$frontend_path" ]; then
