@@ -175,7 +175,7 @@ class LighthouseReportViewer {
   }
 
   /**
-   * Opens legacy viewer in current tab, then renders report
+   * Stores v2.x report in IDB, then navigates to legacy viewer in current tab
    * @param {!ReportRenderer.ReportJSON} reportJson
    * @private
    */

@@ -49,7 +49,7 @@ class ViewerUIFeatures extends ReportUIFeatures {
   /**
    * @override
    */
-  sendJsonReport() {
+  openTabAndSendJsonReport() {
     throw new Error('Cannot send JSON to Viewer from Viewer.');
   }
 

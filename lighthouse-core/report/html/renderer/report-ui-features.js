@@ -10,8 +10,6 @@
  * the report.
  */
 
-const VIEWER_ORIGIN = 'https://googlechrome.github.io';
-
 /* globals self URL Blob CustomEvent getFilenamePrefix window */
 
 class ReportUIFeatures {
@@ -353,6 +351,7 @@ class ReportUIFeatures {
    * @protected
    */
   static openTabAndSendJsonReport(reportJson, viewerPath) {
+    const VIEWER_ORIGIN = 'https://googlechrome.github.io';
     // Chrome doesn't allow us to immediately postMessage to a popup right
     // after it's created. Normally, we could also listen for the popup window's
     // load event, however it is cross-domain and won't fire. Instead, listen
