@@ -39,8 +39,14 @@ class Interactive extends MetricArtifact {
           // Consider network records that had 4xx/5xx status code as "failed"
           record.statusCode < 400;
     });
-    return NetworkRecorder.findNetworkQuietPeriods(filteredNetworkRecords,
+
+    const periods = NetworkRecorder.findNetworkQuietPeriods(filteredNetworkRecords,
       ALLOWED_CONCURRENT_REQUESTS, traceEndTsInMs);
+    periods.forEach(period => {
+      if (period.start === -Infinity) period.start = 0;
+    });
+
+    return periods;
   }
 
   /**
