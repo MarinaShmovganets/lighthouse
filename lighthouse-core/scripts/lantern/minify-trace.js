@@ -51,6 +51,7 @@ function filterTraceEvents(events) {
   if (!startedInPageEvt) throw new Error('Could not find TracingStartedInPage');
 
   return events.filter(evt => {
+    if (evt.name === 'Screenshot') return true;
     if (evt.pid !== startedInPageEvt.pid || !includedTraceEventNames.has(evt.name)) return false;
     return !toplevelTaskNames.includes(evt.name) || evt.dur > 1000;
   });
