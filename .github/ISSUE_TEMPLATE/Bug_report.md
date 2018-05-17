@@ -12,7 +12,7 @@ about: File an issue ticket to help us improve
 
 
 **Provide the steps to reproduce.**
-
+1. Run LH on <affected url>
 
 **What is the expected behavior?**
 
@@ -27,3 +27,5 @@ Affected Channels:
 Lighthouse version:
 Node.js version:
 Operating System:
+
+**Related issues**
