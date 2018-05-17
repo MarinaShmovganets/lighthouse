@@ -353,9 +353,8 @@ class ReportUIFeatures {
   /**
    * Opens a new tab to the online viewer and sends the local page's JSON results
    * to the online viewer using postMessage.
-   * @param {!ReportRenderer.ReportJSON} reportJson
+   * @param {ReportJSON} reportJson
    * @param {string} viewerPath
-   * @suppress {reportUnknownTypes}
    * @protected
    */
   static openTabAndSendJsonReport(reportJson, viewerPath) {
@@ -377,7 +376,9 @@ class ReportUIFeatures {
     });
 
     // The popup's window.name is keyed by version+url+fetchTime, so we reuse/select tabs correctly
-    const fetchTime = json.fetchTime || json.generatedTime;
+    // @ts-ignore - If this is a v2 LHR, use old `generatedTime`.
+    const fallbackFetchTime = /** @type {string} */ (json.generatedTime);
+    const fetchTime = json.fetchTime || fallbackFetchTime;
     const windowName = `${json.lighthouseVersion}-${json.requestedUrl}-${fetchTime}`;
     const popup = window.open(`${VIEWER_ORIGIN}${viewerPath}`, windowName);
   }

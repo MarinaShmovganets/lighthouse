@@ -20,7 +20,7 @@ class Logger {
 
   /**
    * Shows a butter bar.
-   * @param {!string} msg The message to show.
+   * @param {string} msg The message to show.
    * @param {boolean=} autoHide True to hide the message after a duration.
    *     Default is true.
    */
