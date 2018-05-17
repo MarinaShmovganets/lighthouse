@@ -22,10 +22,10 @@ const inputTraceRaw = fs.readFileSync(inputTracePath, 'utf8');
 /** @type {LH.Trace} */
 const inputTrace = JSON.parse(inputTraceRaw);
 
-const toplevelTaskNames = [
+const toplevelTaskNames = new Set([
   'TaskQueueManager::ProcessTaskFromWorkQueue',
   'ThreadControllerImpl::DoWork',
-];
+]);
 
 const traceEventsToAlwaysKeep = new Set([
   'Screenshot',
@@ -42,14 +42,7 @@ const traceEventsToAlwaysKeep = new Set([
   'EventDispatch',
 ]);
 
-const traceEventsToKeepProcess = new Set([
-  ...toplevelTaskNames,
-  'firstPaint',
-  'firstContentfulPaint',
-  'firstMeaningfulPaint',
-  'firstMeaningfulPaintCandidate',
-  'loadEventEnd',
-  'domContentLoadedEventEnd',
+const traceEventsToKeepInToplevelTask = new Set([
   'TimerInstall',
   'TimerFire',
   'InvalidateLayout',
@@ -60,6 +53,17 @@ const traceEventsToKeepProcess = new Set([
   'v8.compile',
 ]);
 
+const traceEventsToKeepInProcess = new Set([
+  ...toplevelTaskNames,
+  ...traceEventsToKeepInToplevelTask,
+  'firstPaint',
+  'firstContentfulPaint',
+  'firstMeaningfulPaint',
+  'firstMeaningfulPaintCandidate',
+  'loadEventEnd',
+  'domContentLoadedEventEnd',
+]);
+
 /**
  * @param {LH.TraceEvent[]} events
  */
@@ -67,16 +71,38 @@ function filterTraceEvents(events) {
   const startedInPageEvt = events.find(evt => evt.name === 'TracingStartedInPage');
   if (!startedInPageEvt) throw new Error('Could not find TracingStartedInPage');
 
-  const filtered = events.filter(evt => {
-    if (toplevelTaskNames.includes(evt.name) && evt.dur < 1000) return false;
-    if (evt.pid === startedInPageEvt.pid && traceEventsToKeepProcess.has(evt.name)) return true;
+  // Filter out event names we don't care about and tasks <1ms
+  let filtered = events.filter(evt => {
+    if (toplevelTaskNames.has(evt.name) && evt.dur < 1000) return false;
+    if (evt.pid === startedInPageEvt.pid && traceEventsToKeepInProcess.has(evt.name)) return true;
     return traceEventsToAlwaysKeep.has(evt.name);
   });
 
-  const screenshotTimestamps = filtered.filter(evt => evt.name === 'Screenshot').map(evt => evt.ts)
+  // Filter out events not inside a toplevel task
+  const toplevelRanges = filtered
+    .filter(evt => toplevelTaskNames.has(evt.name))
+    .map(evt => [evt.ts, evt.ts + evt.dur]);
+
+  /** @param {LH.TraceEvent} e */
+  const isInToplevelTask = e => toplevelRanges.some(([start, end]) => e.ts >= start && e.ts <= end);
+
+  filtered = filtered.filter((evt, index) => {
+    if (!traceEventsToKeepInToplevelTask.has(evt.name)) return true;
+    if (!isInToplevelTask(evt)) return false;
+
+    if (evt.ph === 'B') {
+      const endEvent = filtered.slice(index).find(e => e.name === evt.name && e.ph === 'E');
+      return endEvent && isInToplevelTask(endEvent);
+    } else {
+      return true;
+    }
+  });
+
+  // Filter down the screenshots to key moments + 2fps animations
+  const screenshotTimestamps = filtered.filter(evt => evt.name === 'Screenshot').map(evt => evt.ts);
 
   let lastScreenshotTs = -Infinity;
-  const throttled = filtered.filter((evt, index) => {
+  filtered = filtered.filter(evt => {
     if (evt.name !== 'Screenshot') return true;
     const timeSinceLastScreenshot = evt.ts - lastScreenshotTs;
     const nextScreenshotTs = screenshotTimestamps.find(ts => ts > evt.ts);
@@ -88,7 +114,7 @@ function filterTraceEvents(events) {
     return shouldKeep;
   });
 
-  return throttled;
+  return filtered;
 }
 
 const filteredEvents = filterTraceEvents(inputTrace.traceEvents);
