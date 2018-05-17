@@ -65,6 +65,7 @@
   --lh-audit-hgap: 12px;
   --lh-audit-group-vpadding: 8px;
   --lh-section-vpadding: 12px;
+  --chevron-size: 12px;
   --pass-icon-url: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><title>check</title><path fill="hsl(139, 70%, 30%)" d="M24 4C12.95 4 4 12.95 4 24c0 11.04 8.95 20 20 20 11.04 0 20-8.96 20-20 0-11.05-8.96-20-20-20zm-4 30L10 24l2.83-2.83L20 28.34l15.17-15.17L38 16 20 34z"/></svg>');
   --average-icon-url: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><title>info</title><path fill="hsl(31, 100%, 45%)" d="M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm2 30h-4V22h4v12zm0-16h-4v-4h4v4z"/></svg>');
   --fail-icon-url: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><title>warn</title><path fill="hsl(1, 73%, 45%)" d="M2 42h44L24 4 2 42zm24-6h-4v-4h4v4zm0-8h-4v-8h4v8z"/></svg>');
@@ -894,39 +895,40 @@ summary.lh-passed-audits-summary {
  */
 
 .lh-chevron {
-  width: 12px;
-  height: 12px;
+  --chevron-angle: 42deg;
+  width: var(--chevron-size);
+  height: var(--chevron-size);
   margin-top: calc((var(--body-line-height) - 12px) / 2);
 }
 
 .lh-chevron__lines {
   transition: transform 0.4s;
-  transform: translateY(20px);
+  transform: translateY(var(--body-line-height));
 }
 .lh-chevron__line {
- stroke: hsl(216, 5%, 39%);
- transform-origin: 50px 50px;
- stroke-width: 15px;
+ stroke: var(--display-value-gray);
+ stroke-width: var(--chevron-size);
  stroke-linecap: square;
+ transform-origin: 50%;
+ transform: rotate(var(--chevron-angle));
  transition: transform 300ms, stroke 300ms;
- transform: rotate(42deg);
 }
 
 .lh-audit-group > .lh-audit-group__summary > .lh-chevron .lh-chevron__line-right,
 .lh-audit-group[open] > .lh-audit-group__summary > .lh-chevron .lh-chevron__line-left,
 .lh-audit > .lh-expandable-details .lh-chevron__line-right,
 .lh-audit > .lh-expandable-details[open] .lh-chevron__line-left {
- transform: rotate(-42deg);
+ transform: rotate(calc(var(--chevron-angle) * -1));
 }
 
 .lh-audit-group[open] > .lh-audit-group__summary > .lh-chevron .lh-chevron__line-right,
 .lh-audit > .lh-expandable-details[open] .lh-chevron__line-right {
-  transform: rotate(42deg);
+  transform: rotate(var(--chevron-angle));
 }
 
 .lh-audit-group[open] > .lh-audit-group__summary > .lh-chevron .lh-chevron__lines,
 .lh-audit > .lh-expandable-details[open] .lh-chevron__lines {
- transform: translateY(-13px);
+ transform: translateY(calc(var(--chevron-size) * -1));
 }
 
 
