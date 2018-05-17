@@ -893,7 +893,6 @@ summary.lh-passed-audits-summary {
 /* Chevron
    https://codepen.io/paulirish/pen/LmzEmK
  */
-
 .lh-chevron {
   --chevron-angle: 42deg;
   width: var(--chevron-size);
