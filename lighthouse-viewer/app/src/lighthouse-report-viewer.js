@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global DOM, ViewerUIFeatures, ReportRenderer, DragAndDrop, GithubApi, logger */
+/* global DOM, ViewerUIFeatures, ReportRenderer, DragAndDrop, GithubApi, logger, idbKeyval */
 
 /**
  * Class that manages viewing Lighthouse reports.
@@ -113,6 +113,11 @@ class LighthouseReportViewer {
   _replaceReportHtml(json) {
     this._validateReportJson(json);
 
+    if (!json.lighthouseVersion.startsWith('3')) {
+      this._loadInLegacyViewerVersion(json);
+      return;
+    }
+
     const dom = new DOM(document);
     const renderer = new ReportRenderer(dom);
 
@@ -164,10 +169,25 @@ class LighthouseReportViewer {
       } catch (e) {
         throw new Error('Could not parse JSON file.');
       }
-
       this._reportIsFromGist = false;
       this._replaceReportHtml(json);
     }).catch(err => logger.error(err.message));
+  }
+
+  /**
+   * Stores v2.x report in IDB, then navigates to legacy viewer in current tab
+   * @param {!ReportRenderer.ReportJSON} reportJson
+   * @private
+   */
+  _loadInLegacyViewerVersion(json) {
+    const warnMsg = `Version mismatch between viewer and JSON. Opening compatible viewer...`;
+    logger.log(warnMsg, false);
+
+    // Place report in IDB, then navigate current tab to the legacy viewer
+    const viewerPath = new URL('../viewer2x/', location.href);
+    idbKeyval.set('2xreport', json).then(_ => {
+      window.location.href = viewerPath;
+    });
   }
 
   /**
@@ -296,6 +316,10 @@ class LighthouseReportViewer {
       if (e.source === self.opener && e.data.lhresults) {
         this._reportIsFromGist = false;
         this._replaceReportHtml(e.data.lhresults);
+
+        if (self.opener && !self.opener.closed) {
+          self.opener.postMessage({rendered: true}, '*');
+        }
         if (window.ga) {
           window.ga('send', 'event', 'report', 'open in viewer');
         }
