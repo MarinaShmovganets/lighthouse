@@ -19,12 +19,23 @@ const toplevelTaskNames = [
   'ThreadControllerImpl::DoWork',
 ];
 
-const includedTraceEventNames = new Set([
-  ...toplevelTaskNames,
+const traceEventsToAlwaysKeep = new Set([
   'Screenshot',
   'TracingStartedInBrowser',
   'TracingStartedInPage',
   'navigationStart',
+  'ParseAuthorStyleSheet',
+  'ParseHTML',
+  'PlatformResourceSendRequest',
+  'ResourceSendRequest',
+  'ResourceReceiveResponse',
+  'ResourceFinish',
+  'ResourceReceivedData',
+  'EventDispatch',
+])
+
+const traceEventsToKeepProcess = new Set([
+  ...toplevelTaskNames,
   'firstPaint',
   'firstContentfulPaint',
   'firstMeaningfulPaint',
@@ -39,9 +50,7 @@ const includedTraceEventNames = new Set([
   'XHRReadyStateChange',
   'FunctionCall',
   'v8.compile',
-  'ParseAuthorStyleSheet',
-  'ResourceSendRequest',
-]);
+])
 
 /**
  * @param {LH.TraceEvent[]} events
@@ -51,9 +60,9 @@ function filterTraceEvents(events) {
   if (!startedInPageEvt) throw new Error('Could not find TracingStartedInPage');
 
   return events.filter(evt => {
-    if (evt.name === 'Screenshot') return true;
-    if (evt.pid !== startedInPageEvt.pid || !includedTraceEventNames.has(evt.name)) return false;
-    return !toplevelTaskNames.includes(evt.name) || evt.dur > 1000;
+    if (toplevelTaskNames.includes(evt.name) && evt.dur < 1000) return false;
+    if (evt.pid === startedInPageEvt.pid && traceEventsToKeepProcess.has(evt.name)) return true;
+    return traceEventsToAlwaysKeep.has(evt.name);
   });
 }
 

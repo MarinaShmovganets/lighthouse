@@ -14,7 +14,7 @@ const inputDevtoolsLogRaw = fs.readFileSync(inputDevtoolsLogPath, 'utf8');
 /** @type {LH.DevtoolsLog} */
 const inputDevtoolsLog = JSON.parse(inputDevtoolsLogRaw);
 
-const includedHeaders = new Set([
+const headersToKeep = new Set([
   // Request headers
   'accept',
   'accept-encoding',
@@ -37,7 +37,7 @@ function cleanHeaders(headers) {
   if (!headers) return;
 
   for (const [k, v] of Object.entries(headers)) {
-    if (!includedHeaders.has(k.toLowerCase())) headers[k] = undefined;
+    if (!headersToKeep.has(k.toLowerCase())) headers[k] = undefined;
   }
 }
 
