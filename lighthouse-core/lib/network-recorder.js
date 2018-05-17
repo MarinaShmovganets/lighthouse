@@ -107,9 +107,15 @@ class NetworkRecorder extends EventEmitter {
         return;
       }
 
+      // QUIC network requests don't always "finish" even when they're done loading data
+      // Use receivedHeaders instead, see https://github.com/GoogleChrome/lighthouse/issues/5254
+      const isQUIC = record._responseHeaders && record._responseHeaders
+          .find(header => header.name.toLowerCase() === 'alt-svc' && /quic/.test(header.value));
+      const receivedHeaders = record._timing && record._timing.receiveHeadersEnd > 0;
+
       // convert the network record timestamp to ms
       timeBoundaries.push({time: record.startTime * 1000, isStart: true});
-      if (record.finished) {
+      if (record.finished || (isQUIC && receivedHeaders && record.endTime)) {
         timeBoundaries.push({time: record.endTime * 1000, isStart: false});
       }
     });
@@ -119,7 +125,7 @@ class NetworkRecorder extends EventEmitter {
       .sort((a, b) => a.time - b.time);
 
     let numInflightRequests = 0;
-    let quietPeriodStart = 0;
+    let quietPeriodStart = -Infinity;
     /** @type {Array<{start: number, end: number}>} */
     const quietPeriods = [];
     timeBoundaries.forEach(boundary => {
