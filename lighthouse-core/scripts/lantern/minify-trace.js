@@ -67,11 +67,28 @@ function filterTraceEvents(events) {
   const startedInPageEvt = events.find(evt => evt.name === 'TracingStartedInPage');
   if (!startedInPageEvt) throw new Error('Could not find TracingStartedInPage');
 
-  return events.filter(evt => {
+  const filtered = events.filter(evt => {
     if (toplevelTaskNames.includes(evt.name) && evt.dur < 1000) return false;
     if (evt.pid === startedInPageEvt.pid && traceEventsToKeepProcess.has(evt.name)) return true;
     return traceEventsToAlwaysKeep.has(evt.name);
   });
+
+  const screenshotTimestamps = filtered.filter(evt => evt.name === 'Screenshot').map(evt => evt.ts)
+
+  let lastScreenshotTs = -Infinity;
+  const throttled = filtered.filter((evt, index) => {
+    if (evt.name !== 'Screenshot') return true;
+    const timeSinceLastScreenshot = evt.ts - lastScreenshotTs;
+    const nextScreenshotTs = screenshotTimestamps.find(ts => ts > evt.ts);
+    const timeUntilNextScreenshot = nextScreenshotTs ? nextScreenshotTs - evt.ts : Infinity;
+    const threshold = 500 * 1000; // Throttle to ~2fps
+    // Keep the frame if it's been more than 500ms since the last frame we kept or the next frame won't happen for at least 500ms
+    const shouldKeep = timeUntilNextScreenshot > threshold || timeSinceLastScreenshot > threshold;
+    if (shouldKeep) lastScreenshotTs = evt.ts;
+    return shouldKeep;
+  });
+
+  return throttled;
 }
 
 const filteredEvents = filterTraceEvents(inputTrace.traceEvents);
