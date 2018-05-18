@@ -7,6 +7,24 @@
 
 /* global DOM, ViewerUIFeatures, ReportRenderer, DragAndDrop, GithubApi, logger, idbKeyval */
 
+/** @typedef {import('../../../lighthouse-core/report/html/renderer/report-renderer.js').ReportJSON} ReportJSON */
+
+/**
+ * Guaranteed context.querySelector. Always returns an element or throws if
+ * nothing matches query.
+ * @param {string} query
+ * @param {ParentNode} context
+ * @return {HTMLElement}
+ */
+function find(query, context) {
+  /** @type {?HTMLElement} */
+  const result = context.querySelector(query);
+  if (result === null) {
+    throw new Error(`query ${query} not found`);
+  }
+  return result;
+}
+
 /**
  * Class that manages viewing Lighthouse reports.
  */
@@ -22,7 +40,7 @@ class LighthouseReportViewer {
 
     /**
      * Used for tracking whether to offer to upload as a gist.
-     * @private {boolean}
+     * @type {boolean}
      */
     this._reportIsFromGist = false;
 
@@ -40,22 +58,32 @@ class LighthouseReportViewer {
    * @private
    */
   _addEventListeners() {
+    // @ts-ignore - tsc thinks document can't listen for `copy`
     document.addEventListener('paste', this._onPaste);
 
-    const gistUrlInput = document.querySelector('.js-gist-url');
+    const gistUrlInput = find('.js-gist-url', document);
     gistUrlInput.addEventListener('change', this._onUrlInputChange);
 
     // Hidden file input to trigger manual file selector.
-    const fileInput = document.querySelector('#hidden-file-input');
+    const fileInput = find('#hidden-file-input', document);
     fileInput.addEventListener('change', e => {
-      this._onFileLoad(e.target.files[0]);
-      e.target.value = null;
+      if (!e.target) {
+        return;
+      }
+
+      const inputTarget = /** @type {HTMLInputElement} */ (e.target);
+      if (inputTarget.files) {
+        this._onFileLoad(inputTarget.files[0]);
+      }
+      inputTarget.value = '';
     });
 
     // A click on the visual placeholder will trigger the hidden file input.
-    const placeholderTarget = document.querySelector('.viewer-placeholder-inner');
+    const placeholderTarget = find('.viewer-placeholder-inner', document);
     placeholderTarget.addEventListener('click', e => {
-      if (e.target.localName !== 'input') {
+      const target = /** @type {?Element} */ (e.target);
+
+      if (target && target.localName !== 'input') {
         fileInput.click();
       }
     });
@@ -63,7 +91,7 @@ class LighthouseReportViewer {
 
   /**
    * Attempts to pull gist id from URL and render report from it.
-   * @return {!Promise<undefined>}
+   * @return {Promise<void>}
    * @private
    */
   _loadFromDeepLink() {
@@ -76,12 +104,12 @@ class LighthouseReportViewer {
     return this._github.getGistFileContentAsJson(gistId).then(reportJson => {
       this._reportIsFromGist = true;
       this._replaceReportHtml(reportJson);
-    }).catch(err => logger.error(err.message));
+    }).catch(err => window.logger.error(err.message));
   }
 
   /**
    * Basic Lighthouse report JSON validation.
-   * @param {!ReportRenderer.ReportJSON} reportJson
+   * @param {ReportJSON} reportJson
    * @private
    */
   _validateReportJson(reportJson) {
@@ -99,7 +127,7 @@ class LighthouseReportViewer {
       // reports will start to throw this warning when the viewer rev's its
       // minor LH version.
       // See https://github.com/GoogleChrome/lighthouse/issues/1108
-      logger.warn('Results may not display properly.\n' +
+      window.logger.warn('Results may not display properly.\n' +
                   'Report was created with an earlier version of ' +
                   `Lighthouse (${reportJson.lighthouseVersion}). The latest ` +
                   `version is ${window.LH_CURRENT_VERSION}.`);
@@ -107,7 +135,7 @@ class LighthouseReportViewer {
   }
 
   /**
-   * @param {!ReportRenderer.ReportJSON} json
+   * @param {ReportJSON} json
    * @private
    */
   _replaceReportHtml(json) {
@@ -121,7 +149,7 @@ class LighthouseReportViewer {
     const dom = new DOM(document);
     const renderer = new ReportRenderer(dom);
 
-    const container = document.querySelector('main');
+    const container = find('main', document);
     try {
       renderer.renderReport(json, container);
 
@@ -130,13 +158,13 @@ class LighthouseReportViewer {
       let saveCallback = null;
       if (!this._reportIsFromGist) {
         saveCallback = this._onSaveJson;
-        history.pushState({}, null, LighthouseReportViewer.APP_URL);
+        history.pushState({}, undefined, LighthouseReportViewer.APP_URL);
       }
 
       const features = new ViewerUIFeatures(dom, saveCallback);
       features.initFeatures(json);
     } catch (e) {
-      logger.error(`Error rendering report: ${e.message}`);
+      window.logger.error(`Error rendering report: ${e.message}`);
       dom.resetTemplates(); // TODO(bckenny): hack
       container.textContent = '';
       throw e;
@@ -155,8 +183,8 @@ class LighthouseReportViewer {
 
   /**
    * Updates the page's HTML with contents of the JSON file passed in.
-   * @param {!File} file
-   * @return {!Promise<undefined>}
+   * @param {File} file
+   * @return {Promise<void>}
    * @throws file was not valid JSON generated by Lighthouse or an unknown file
    *     type was used.
    * @private
@@ -171,36 +199,36 @@ class LighthouseReportViewer {
       }
       this._reportIsFromGist = false;
       this._replaceReportHtml(json);
-    }).catch(err => logger.error(err.message));
+    }).catch(err => window.logger.error(err.message));
   }
 
   /**
    * Stores v2.x report in IDB, then navigates to legacy viewer in current tab
-   * @param {!ReportRenderer.ReportJSON} reportJson
+   * @param {ReportJSON} reportJson
    * @private
    */
-  _loadInLegacyViewerVersion(json) {
+  _loadInLegacyViewerVersion(reportJson) {
     const warnMsg = `Version mismatch between viewer and JSON. Opening compatible viewer...`;
-    logger.log(warnMsg, false);
+    window.logger.log(warnMsg, false);
 
     // Place report in IDB, then navigate current tab to the legacy viewer
     const viewerPath = new URL('../viewer2x/', location.href);
-    idbKeyval.set('2xreport', json).then(_ => {
-      window.location.href = viewerPath;
+    idbKeyval.set('2xreport', reportJson).then(_ => {
+      window.location.href = viewerPath.href;
     });
   }
 
   /**
    * Reads a file and returns its content as a string.
-   * @param {!File} file
-   * @return {!Promise<string>}
+   * @param {File} file
+   * @return {Promise<string>}
    * @private
    */
   _readFile(file) {
     return new Promise((resolve, reject) => {
-      const reader = new window.FileReader();
+      const reader = new FileReader();
       reader.onload = function(e) {
-        resolve(e.target.result);
+        resolve(e.target && e.target.result);
       };
       reader.onerror = reject;
       reader.readAsText(file);
@@ -209,8 +237,8 @@ class LighthouseReportViewer {
 
   /**
    * Saves the current report by creating a gist on GitHub.
-   * @param {!ReportRenderer.ReportJSON} reportJson
-   * @return {!Promise<string>} id of the created gist.
+   * @param {ReportJSON} reportJson
+   * @return {Promise<string|void>} id of the created gist.
    * @private
    */
   _onSaveJson(reportJson) {
@@ -225,14 +253,15 @@ class LighthouseReportViewer {
       }
 
       this._reportIsFromGist = true;
-      history.pushState({}, null, `${LighthouseReportViewer.APP_URL}?gist=${id}`);
+      history.pushState({}, undefined, `${LighthouseReportViewer.APP_URL}?gist=${id}`);
 
       return id;
-    }).catch(err => logger.log(err.message));
+    }).catch(err => window.logger.log(err.message));
   }
 
   /**
    * Enables pasting a JSON report or gist URL on the page.
+   * @param {ClipboardEvent} e
    * @private
    */
   _onPaste(e) {
@@ -241,7 +270,7 @@ class LighthouseReportViewer {
     // Try paste as gist URL.
     try {
       const url = new URL(e.clipboardData.getData('text'));
-      this._loadFromGistURL(url);
+      this._loadFromGistURL(url.href);
 
       if (window.ga) {
         window.ga('send', 'event', 'report', 'paste-link');
@@ -254,7 +283,7 @@ class LighthouseReportViewer {
     try {
       const json = JSON.parse(e.clipboardData.getData('text'));
       this._reportIsFromGist = false;
-      this._replaceReportHTML(json);
+      this._replaceReportHtml(json);
 
       if (window.ga) {
         window.ga('send', 'event', 'report', 'paste');
@@ -266,44 +295,47 @@ class LighthouseReportViewer {
 
   /**
    * Handles changes to the gist url input.
+   * @param {Event} e
    * @private
    */
   _onUrlInputChange(e) {
     e.stopPropagation();
 
-    if (!e.target.value) {
+    if (!e.target) {
       return;
     }
 
+    const inputElement = /** @type {HTMLInputElement} */ (e.target);
+
     try {
-      this._loadFromGistURL(e.target.value);
+      this._loadFromGistURL(inputElement.value);
     } catch (err) {
-      logger.error('Invalid URL');
+      window.logger.error('Invalid URL');
     }
   }
 
   /**
    * Loads report json from gist URL, if valid. Updates page URL with gist ID
    * and loads from github.
-   * @param {string} url Gist URL.
+   * @param {string} urlStr Gist URL.
    * @private
    */
-  _loadFromGistURL(url) {
+  _loadFromGistURL(urlStr) {
     try {
-      url = new URL(url);
+      const url = new URL(urlStr);
 
       if (url.origin !== 'https://gist.github.com') {
-        logger.error('URL was not a gist');
+        window.logger.error('URL was not a gist');
         return;
       }
 
       const match = url.pathname.match(/[a-f0-9]{5,}/);
       if (match) {
-        history.pushState({}, null, `${LighthouseReportViewer.APP_URL}?gist=${match[0]}`);
+        history.pushState({}, undefined, `${LighthouseReportViewer.APP_URL}?gist=${match[0]}`);
         this._loadFromDeepLink();
       }
     } catch (err) {
-      logger.error('Invalid URL');
+      window.logger.error('Invalid URL');
     }
   }
 
@@ -333,6 +365,7 @@ class LighthouseReportViewer {
   }
 }
 
+// @ts-ignore - node export for testing.
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = LighthouseReportViewer;
 }

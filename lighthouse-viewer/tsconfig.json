@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "commonjs",
+    "target": "ES2017",
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    // "listFiles": true,
+    "typeRoots": [
+      "@types",
+      "../typings",
+      "./types",
+    ],
+
+    "diagnostics": true
+  },
+  "include": [
+    "app/src/**/*.js",
+    "../typings/*.d.ts",
+    "./types/*.d.ts",
+  ],
+}
