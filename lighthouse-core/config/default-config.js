@@ -290,8 +290,8 @@ module.exports = {
           'not automatically checked by Lighthouse. They do not affect your score but it\'s important that you verify them manually.',
       auditRefs: [
         // Most difficult and critical for good UX
+        {id: 'load-fast-enough-for-pwa', weight: 7}, // can't be green in the category without being fast
         {id: 'works-offline', weight: 5},
-        {id: 'load-fast-enough-for-pwa', weight: 5},
         // Encompasses most of the other checks
         {id: 'webapp-install-banner', weight: 3},
         // Important but not too difficult
