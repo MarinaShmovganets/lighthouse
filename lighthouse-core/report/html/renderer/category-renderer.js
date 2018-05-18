@@ -92,7 +92,7 @@ class CategoryRenderer {
   }
 
   /**
-   * @return {!Element}
+   * @return {!HTMLElement}
    */
   _createChevron() {
     const chevronTmpl = this.dom.cloneTemplate('#tmpl-lh-chevron', this.templateContext);
