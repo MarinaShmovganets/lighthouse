@@ -33,7 +33,7 @@ class GithubApi {
       return Promise.reject(new Error('Save already in progress'));
     }
 
-    window.logger.log('Saving report to GitHub...', false);
+    logger.log('Saving report to GitHub...', false);
     this._saving = true;
 
     return this._auth.getAccessToken()
@@ -62,7 +62,7 @@ class GithubApi {
       })
       .then(resp => resp.json())
       .then(json => {
-        window.logger.log('Saved!');
+        logger.log('Saved!');
         this._saving = false;
         return json.id;
       }).catch(err => {
@@ -77,7 +77,7 @@ class GithubApi {
    * @return {Promise<ReportJSON>}
    */
   getGistFileContentAsJson(id) {
-    window.logger.log('Fetching report from GitHub...', false);
+    logger.log('Fetching report from GitHub...', false);
 
     return this._auth.getAccessTokenIfLoggedIn().then(accessToken => {
       const headers = new Headers();
@@ -98,7 +98,7 @@ class GithubApi {
           const remaining = Number(resp.headers.get('X-RateLimit-Remaining'));
           const limit = Number(resp.headers.get('X-RateLimit-Limit'));
           if (remaining < 10) {
-            window.logger.warn('Approaching GitHub\'s rate limit. ' +
+            logger.warn('Approaching GitHub\'s rate limit. ' +
                         `${limit - remaining}/${limit} requests used. Consider signing ` +
                         'in to increase this limit.');
           }
@@ -139,7 +139,7 @@ class GithubApi {
       // report. Future requests for the id will either still be invalid or will
       // not return a 304 and so will be overwritten.
       return idbKeyval.set(id, response).then(_ => {
-        window.logger.hide();
+        logger.hide();
         // @ts-ignore - TODO(bckenny): tsc unable to flatten promise chain here
         return response.content;
       });

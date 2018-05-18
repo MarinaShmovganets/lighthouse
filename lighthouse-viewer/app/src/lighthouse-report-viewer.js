@@ -104,7 +104,7 @@ class LighthouseReportViewer {
     return this._github.getGistFileContentAsJson(gistId).then(reportJson => {
       this._reportIsFromGist = true;
       this._replaceReportHtml(reportJson);
-    }).catch(err => window.logger.error(err.message));
+    }).catch(err => logger.error(err.message));
   }
 
   /**
@@ -127,7 +127,7 @@ class LighthouseReportViewer {
       // reports will start to throw this warning when the viewer rev's its
       // minor LH version.
       // See https://github.com/GoogleChrome/lighthouse/issues/1108
-      window.logger.warn('Results may not display properly.\n' +
+      logger.warn('Results may not display properly.\n' +
                   'Report was created with an earlier version of ' +
                   `Lighthouse (${reportJson.lighthouseVersion}). The latest ` +
                   `version is ${window.LH_CURRENT_VERSION}.`);
@@ -164,7 +164,7 @@ class LighthouseReportViewer {
       const features = new ViewerUIFeatures(dom, saveCallback);
       features.initFeatures(json);
     } catch (e) {
-      window.logger.error(`Error rendering report: ${e.message}`);
+      logger.error(`Error rendering report: ${e.message}`);
       dom.resetTemplates(); // TODO(bckenny): hack
       container.textContent = '';
       throw e;
@@ -199,7 +199,7 @@ class LighthouseReportViewer {
       }
       this._reportIsFromGist = false;
       this._replaceReportHtml(json);
-    }).catch(err => window.logger.error(err.message));
+    }).catch(err => logger.error(err.message));
   }
 
   /**
@@ -209,7 +209,7 @@ class LighthouseReportViewer {
    */
   _loadInLegacyViewerVersion(reportJson) {
     const warnMsg = `Version mismatch between viewer and JSON. Opening compatible viewer...`;
-    window.logger.log(warnMsg, false);
+    logger.log(warnMsg, false);
 
     // Place report in IDB, then navigate current tab to the legacy viewer
     const viewerPath = new URL('../viewer2x/', location.href);
@@ -256,7 +256,7 @@ class LighthouseReportViewer {
       history.pushState({}, undefined, `${LighthouseReportViewer.APP_URL}?gist=${id}`);
 
       return id;
-    }).catch(err => window.logger.log(err.message));
+    }).catch(err => logger.log(err.message));
   }
 
   /**
@@ -310,7 +310,7 @@ class LighthouseReportViewer {
     try {
       this._loadFromGistURL(inputElement.value);
     } catch (err) {
-      window.logger.error('Invalid URL');
+      logger.error('Invalid URL');
     }
   }
 
@@ -325,7 +325,7 @@ class LighthouseReportViewer {
       const url = new URL(urlStr);
 
       if (url.origin !== 'https://gist.github.com') {
-        window.logger.error('URL was not a gist');
+        logger.error('URL was not a gist');
         return;
       }
 
@@ -335,7 +335,7 @@ class LighthouseReportViewer {
         this._loadFromDeepLink();
       }
     } catch (err) {
-      window.logger.error('Invalid URL');
+      logger.error('Invalid URL');
     }
   }
 

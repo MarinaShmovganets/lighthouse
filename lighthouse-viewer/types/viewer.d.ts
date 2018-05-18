@@ -19,6 +19,7 @@ import '@firebase/auth-types';
 declare global {
   var ReportGenerator: typeof _ReportGenerator;
   var Logger: typeof _Logger;
+  var logger: _Logger;
   var LighthouseReportViewer: typeof _LighthouseReportViewer;
   var DragAndDrop: typeof _DragAndDrop;
   var GithubApi: typeof _GithubApi;

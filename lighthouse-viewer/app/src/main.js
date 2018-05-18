@@ -36,7 +36,7 @@ Promise.all(loadPolyfillPromises).then(_ => {
   if (!logEl) {
     throw new Error('logger element not found');
   }
-  // TODO: switch all global uses of window.logger to `lh-log` events.
+  // TODO: switch all global uses of logger to `lh-log` events.
   window.logger = new Logger(logEl);
 
   // Listen for log events from main report.

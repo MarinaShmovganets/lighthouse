@@ -21,7 +21,7 @@ class FirebaseAuth {
     this._provider = new firebase.auth.GithubAuthProvider();
     this._provider.addScope('gist');
 
-    const firebaseApp = firebase.initializeApp({
+    firebase.initializeApp({
       apiKey: 'AIzaSyApMz8FHTyJNqqUtA51tik5Mro8j-2qMcM',
       authDomain: 'lighthouse-viewer.firebaseapp.com',
       databaseURL: 'https://lighthouse-viewer.firebaseio.com',
