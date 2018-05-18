@@ -128,11 +128,11 @@
       height: var(--report-header-height);
       max-width: 100%; /* support text-overflow on url */
       position: relative;
-      padding-top: var(--section-indent);
     }
     .lh-metadata {
       flex: 1 1 0;
-      padding-right: calc(var(--default-padding) / 2);
+      padding: calc(var(--section-padding) / 2);
+      padding-left: var(--section-indent);
       line-height: 20px;
       color: var(--report-header-color);
       z-index: 1;
@@ -197,8 +197,7 @@
       will-change: transform;
     }
     .lh-toolbar__metadata {
-      left: 50%;
-      transform: translate(-50%, -50%);
+      left: 25%;
     }
     .lh-toolbar__url {
       color: currentColor;
@@ -291,9 +290,8 @@
       position: absolute;
       width: 100%;
       background-color: var(--header-bg-color);
-      border-top: 1px solid var(--report-secondary-border-color);
-      border-bottom: 1px solid var(--report-secondary-border-color);
       font-size: 12px;
+      box-shadow: inset var(--report-border-color) 0px -1px 0px 1px;
     }
     .lh-env__items {
       margin: var(--default-padding) 0 0 0;
@@ -317,10 +315,6 @@
       .lh-export__dropdown {
         right: 0;
         left: initial;
-      }
-      .lh-header {
-        padding: 0 var(--default-padding);
-        margin-left: 0;
       }
     }
     @media print {
@@ -381,7 +375,7 @@
       <div class="lh-metadata">
         <div class="lh-metadata__results"><a href="" class="lh-metadata__url" target="_blank" rel="noopener"></a></div>
         <div class="lh-config">
-          <span class="lh-config__timestamp"></span> &bullet;
+          <span class="lh-config__timestamp"></span>
           <details class="lh-config__settings-toggle">
             <summary>
               <span>Runtime settings</span>
