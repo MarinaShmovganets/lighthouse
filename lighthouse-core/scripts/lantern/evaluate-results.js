@@ -84,11 +84,22 @@ function evaluateBuckets(metric, lanternMetric) {
   const rank = Math.round(rankErrors.reduce((x, y) => x + y) / rankErrors.length * 1000) / 10;
   const buckets = `${good.length}/${ok.length}/${bad.length}`;
   console.log(
-    `Evaluating ${metric} vs. ${lanternMetric}: ${rank}% ${MAPE}% - ${buckets}`
+    metric.padEnd(30),
+    lanternMetric.padEnd(25),
+    `${rank}%`.padEnd(12),
+    `${MAPE}%`.padEnd(10),
+    buckets.padEnd(15)
   );
 }
 
 console.log('----    Metric Stats    ----');
+console.log(
+  'metric'.padEnd(30),
+  'estimate'.padEnd(25),
+  'rank error'.padEnd(12),
+  'MAPE'.padEnd(10),
+  'Good/OK/Bad'.padEnd(15)
+);
 evaluateBuckets('firstContentfulPaint', 'optimisticFCP');
 evaluateBuckets('firstContentfulPaint', 'pessimisticFCP');
 evaluateBuckets('firstContentfulPaint', 'roughEstimateOfFCP');
