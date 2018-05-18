@@ -3400,10 +3400,6 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@2.9.1-insiders.20180516:
-  version "2.9.1-insiders.20180516"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.1-insiders.20180516.tgz#aab5261edb2c162c2d0c1754bb3092d4ff6efed0"
-
 uglify-es@^3.0.15:
   version "3.0.15"
   resolved "https://registry.yarnpkg.com/uglify-es/-/uglify-es-3.0.15.tgz#4a23d0e9cb5f25f7bb3f1f0bbe0bb364e600d047"
