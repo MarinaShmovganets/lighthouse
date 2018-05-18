@@ -377,7 +377,11 @@ class Simulator {
       }
 
       if (!nodesInProgress.size) {
-        throw new Error('Failed to start a node, potential mismatch in original execution');
+        // interplay between fromDiskCache and connectionReused can be incorrect
+        // proceed with flexibleOrdering if we can, otherwise give up
+        if (this._flexibleOrdering) throw new Error('Failed to start a node');
+        this._flexibleOrdering = true;
+        continue;
       }
 
       // set the available throughput for all connections based on # inflight
