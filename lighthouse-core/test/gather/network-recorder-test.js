@@ -37,7 +37,6 @@ describe('network recorder', function() {
 
       const periods = NetworkRecorder.findNetworkQuietPeriods(records, 0);
       assert.deepStrictEqual(periods, [
-        {start: -Infinity, end: 0},
         {start: 1000, end: 2000},
         {start: 3000, end: 4000},
         {start: 5000, end: Infinity},
@@ -55,7 +54,6 @@ describe('network recorder', function() {
 
       const periods = NetworkRecorder.findNetworkQuietPeriods(records, 2);
       assert.deepStrictEqual(periods, [
-        {start: -Infinity, end: 0},
         {start: 1500, end: Infinity},
       ]);
     });
@@ -74,7 +72,6 @@ describe('network recorder', function() {
 
       const periods = NetworkRecorder.findNetworkQuietPeriods(records, 2);
       assert.deepStrictEqual(periods, [
-        {start: -Infinity, end: 0},
         {start: 1500, end: 2000},
         {start: 3000, end: 4000},
         {start: 5000, end: 5500},
@@ -89,7 +86,6 @@ describe('network recorder', function() {
 
       const periods = NetworkRecorder.findNetworkQuietPeriods(records, 0);
       assert.deepStrictEqual(periods, [
-        {start: -Infinity, end: 0},
         {start: 1000, end: Infinity},
       ]);
     });
@@ -108,7 +104,6 @@ describe('network recorder', function() {
 
       const periods = NetworkRecorder.findNetworkQuietPeriods(records, 0);
       assert.deepStrictEqual(periods, [
-        {start: -Infinity, end: 0},
         {start: 2000, end: Infinity},
       ]);
     });

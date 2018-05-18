@@ -90,6 +90,19 @@ class NetworkRecorder extends EventEmitter {
   }
 
   /**
+   * QUIC network requests don't always "finish" even when they're done loading data, use recievedHeaders
+   * @see https://github.com/GoogleChrome/lighthouse/issues/5254
+   * @param {LH.WebInspector.NetworkRequest} record
+   * @return {boolean}
+   */
+  static _isQUICAndFinished(record) {
+    const isQUIC = record._responseHeaders && record._responseHeaders
+        .some(header => header.name.toLowerCase() === 'alt-svc' && /quic/.test(header.value));
+    const receivedHeaders = record._timing && record._timing.receiveHeadersEnd > 0;
+    return !!(isQUIC && receivedHeaders && record.endTime);
+  }
+
+  /**
    * Finds all time periods where the number of inflight requests is less than or equal to the
    * number of allowed concurrent requests.
    * @param {Array<LH.WebInspector.NetworkRequest>} networkRecords
@@ -107,15 +120,9 @@ class NetworkRecorder extends EventEmitter {
         return;
       }
 
-      // QUIC network requests don't always "finish" even when they're done loading data
-      // Use receivedHeaders instead, see https://github.com/GoogleChrome/lighthouse/issues/5254
-      const isQUIC = record._responseHeaders && record._responseHeaders
-          .find(header => header.name.toLowerCase() === 'alt-svc' && /quic/.test(header.value));
-      const receivedHeaders = record._timing && record._timing.receiveHeadersEnd > 0;
-
       // convert the network record timestamp to ms
       timeBoundaries.push({time: record.startTime * 1000, isStart: true});
-      if (record.finished || (isQUIC && receivedHeaders && record.endTime)) {
+      if (record.finished || NetworkRecorder._isQUICAndFinished(record)) {
         timeBoundaries.push({time: record.endTime * 1000, isStart: false});
       }
     });
@@ -125,7 +132,7 @@ class NetworkRecorder extends EventEmitter {
       .sort((a, b) => a.time - b.time);
 
     let numInflightRequests = 0;
-    let quietPeriodStart = -Infinity;
+    let quietPeriodStart = 0;
     /** @type {Array<{start: number, end: number}>} */
     const quietPeriods = [];
     timeBoundaries.forEach(boundary => {
@@ -149,7 +156,7 @@ class NetworkRecorder extends EventEmitter {
       quietPeriods.push({start: quietPeriodStart, end: endTime});
     }
 
-    return quietPeriods;
+    return quietPeriods.filter(period => period.start !== period.end);
   }
 
   /**
