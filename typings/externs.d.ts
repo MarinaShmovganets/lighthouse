@@ -137,6 +137,12 @@ declare global {
       cat: string;
       args: {
         data?: {
+          persistentIds?: boolean;
+          frames?: {
+            frame: string;
+            parent?: string;
+            processId?: number;
+          }[];
           page?: string;
           readyState?: number;
           requestId?: string;
