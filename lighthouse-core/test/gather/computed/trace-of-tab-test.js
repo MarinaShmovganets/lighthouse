@@ -123,7 +123,6 @@ describe('Trace of Tab computed artifact:', () => {
         'name': 'TracingStartedInBrowser',
         'args': {'data': {
           'frameTreeNodeId': 1,
-          'persistentIds': true,
           'frames': [{
             'frame': 'B192D1F3355A6F961EC8F0B01623C1FB',
             'url': 'http://www.example.com/',

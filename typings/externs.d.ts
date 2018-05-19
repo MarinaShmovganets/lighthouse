@@ -137,8 +137,6 @@ declare global {
       cat: string;
       args: {
         data?: {
-          name?: string;
-          persistentIds?: boolean;
           frames?: {
             frame: string;
             parent?: string;
@@ -155,6 +153,7 @@ declare global {
           url?: string;
         };
         frame?: string;
+        name?: string;
       };
       pid: number;
       tid: number;

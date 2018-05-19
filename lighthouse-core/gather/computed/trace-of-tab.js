@@ -44,9 +44,9 @@ class TraceOfTab extends ComputedArtifact {
     const keyEvents = trace.traceEvents
       .filter(e => {
         return e.cat.includes('blink.user_timing') ||
-          e.cat.includes('loading') ||
-          e.cat.includes('devtools.timeline') ||
-          e.cat === '__metadata';
+            e.cat.includes('loading') ||
+            e.cat.includes('devtools.timeline') ||
+            e.cat === '__metadata';
       })
       // @ts-ignore - stableSort added to Array by WebInspector.
       .stableSort((event0, event1) => event0.ts - event1.ts);
@@ -55,10 +55,9 @@ class TraceOfTab extends ComputedArtifact {
     /** @type {LH.TraceEvent|undefined} */
     let startedInPageEvt;
     const startedInBrowserEvt = keyEvents.find(e => e.name === 'TracingStartedInBrowser');
-    // `persistentIds` is a signal that the frame data will be attached, prefer it when available.
     if (startedInBrowserEvt && startedInBrowserEvt.args.data &&
-        startedInBrowserEvt.args.data.persistentIds) {
-      const mainFrame = (startedInBrowserEvt.args.data.frames || []).find(frame => !frame.parent);
+        startedInBrowserEvt.args.data.frames) {
+      const mainFrame = startedInBrowserEvt.args.data.frames.find(frame => !frame.parent);
       const pid = mainFrame && mainFrame.processId;
       const threadNameEvt = keyEvents.find(e => e.pid === pid && e.ph === 'M' &&
         e.cat === '__metadata' && e.name === 'thread_name' && e.args.name === 'CrRendererMain');
