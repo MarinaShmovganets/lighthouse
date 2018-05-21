@@ -10,8 +10,8 @@ about: Suggest an idea to us!
 
 ## Feature request
 
-**Summary of the feature request?**
-<!-- Describe to us the need for this change -->
+**Summary**
+<!-- Describe what you want to be added -->
 <!-- Are you willing to work on this yourself? -->
 
 
