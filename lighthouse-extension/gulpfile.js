@@ -141,6 +141,11 @@ gulp.task('browserify-lighthouse', () => {
         bundle = bundle.require(artifact, {expose: artifact.replace(corePath, './')});
       });
 
+      // browerify's url shim doesn't work with .URL in node_modules, so expose our own
+      // @see https://github.com/GoogleChrome/lighthouse/issues/5273
+      const pathToURLShim = require.resolve('../lighthouse-core/lib/url-shim.js');
+      bundle = bundle.require(pathToURLShim, {expose: 'url'});
+
       // Inject the new browserified contents back into our gulp pipeline
       file.contents = bundle.bundle();
     }))
