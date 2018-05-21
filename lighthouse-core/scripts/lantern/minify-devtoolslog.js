@@ -8,6 +8,10 @@
 
 /* eslint-disable no-console */
 
+/**
+ * @fileoverview Minifies a devtools log by removing noisy header values, eliminating data URIs, etc.
+ */
+
 const fs = require('fs');
 const path = require('path');
 
@@ -40,7 +44,7 @@ const headersToKeep = new Set([
   'x-robots-tag',
 ]);
 
-/** @param {any} headers */
+/** @param {Partial<LH.Crdp.Network.Headers>} [headers] */
 function cleanHeaders(headers) {
   if (!headers) return;
 
@@ -54,7 +58,7 @@ function cleanDataURI(obj) {
   obj.url = obj.url.replace(/^(data:.*?base64,).*/, '$1FILLER');
 }
 
-/** @param {LH.Crdp.Network.ResponseReceivedEvent['response']} [response] */
+/** @param {LH.Crdp.Network.Response} [response] */
 function cleanResponse(response) {
   if (!response) return;
   cleanDataURI(response);
