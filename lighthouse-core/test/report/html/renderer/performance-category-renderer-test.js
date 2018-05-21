@@ -106,6 +106,7 @@ describe('PerfCategoryRenderer', () => {
       group: 'load-opportunities',
       result: {
         score: null, scoreDisplayMode: 'error', errorMessage: 'Yikes!!', title: 'Bug #2',
+        description: '',
       },
     };
 
@@ -122,7 +123,7 @@ describe('PerfCategoryRenderer', () => {
       group: 'load-opportunities',
       result: {
         score: 0, scoreDisplayMode: 'numeric',
-        rawValue: 100, explanation: 'Yikes!!', title: 'Bug #2',
+        rawValue: 100, explanation: 'Yikes!!', title: 'Bug #2', description: '',
       },
     };
 

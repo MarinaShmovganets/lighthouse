@@ -60,10 +60,8 @@ class CategoryRenderer {
 
     const titleEl = this.dom.find('.lh-audit__title', auditEl);
     titleEl.appendChild(this.dom.convertMarkdownCodeSnippets(audit.result.title));
-    if (audit.result.description) {
-      this.dom.find('.lh-audit__description', auditEl)
+    this.dom.find('.lh-audit__description', auditEl)
         .appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.description));
-    }
 
     const header = /** @type {HTMLDetailsElement} */ (this.dom.find('details', auditEl));
     if (audit.result.details && audit.result.details.type) {
