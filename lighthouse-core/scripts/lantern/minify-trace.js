@@ -76,6 +76,7 @@ const traceEventsToKeepInProcess = new Set([
  * @param {LH.TraceEvent[]} events
  */
 function filterOutUnnecessaryTasksByNameAndDuration(events) {
+  // TODO(phulce): update this once https://github.com/GoogleChrome/lighthouse/pull/5271 lands
   const startedInPageEvt = events.find(evt => evt.name === 'TracingStartedInPage');
   if (!startedInPageEvt) throw new Error('Could not find TracingStartedInPage');
 
