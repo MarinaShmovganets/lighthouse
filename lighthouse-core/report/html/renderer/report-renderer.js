@@ -68,9 +68,8 @@ class ReportRenderer {
     const toolbarUrl = /** @type {HTMLAnchorElement}*/ (this._dom.find('.lh-toolbar__url', header));
     url.href = url.textContent = toolbarUrl.href = toolbarUrl.textContent = report.finalUrl;
 
-    const emuDescs = Util.getEmulationDescriptions(report.configSettings || {});
-    const emuEl = /** @type {HTMLAnchorElement}*/ (this._dom.find('.lh-config__emulation', header));
-    emuEl.textContent = emuDescs.summary;
+    const emulationDescriptions = Util.getEmulationDescriptions(report.configSettings || {});
+    this._dom.find('.lh-config__emulation', header).textContent = emulationDescriptions.summary;
     return header;
   }
 
