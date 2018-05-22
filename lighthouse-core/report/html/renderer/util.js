@@ -351,7 +351,7 @@ class Util {
         networkThrottling = `${Util.formatNumber(requestLatencyMs)}${NBSP}ms HTTP RTT, ` +
           `${Util.formatNumber(throttling.downloadThroughputKbps)}${NBSP}Kbps down, ` +
           `${Util.formatNumber(throttling.uploadThroughputKbps)}${NBSP}Kbps up (DevTools)`;
-        summary = 'Throttled Fast 3G network';
+        summary = 'Throttled Fast–3G network';
         break;
       }
       case 'simulate': {
@@ -359,7 +359,7 @@ class Util {
         cpuThrottling = `${Util.formatNumber(cpuSlowdownMultiplier)}x slowdown (Simulated)`;
         networkThrottling = `${Util.formatNumber(rttMs)}${NBSP}ms TCP RTT, ` +
           `${Util.formatNumber(throughputKbps)}${NBSP}Kbps throughput (Simulated)`;
-        summary = 'Simulated Fast 3G network';
+        summary = 'Simulated Fast–3G network';
         break;
       }
       default:
