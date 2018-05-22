@@ -68,6 +68,9 @@ class ReportRenderer {
     const toolbarUrl = /** @type {HTMLAnchorElement}*/ (this._dom.find('.lh-toolbar__url', header));
     url.href = url.textContent = toolbarUrl.href = toolbarUrl.textContent = report.finalUrl;
 
+    const emuDescs = Util.getEmulationDescriptions(report.configSettings || {});
+    const emuEl = /** @type {HTMLAnchorElement}*/ (this._dom.find('.lh-config__emulation', header));
+    emuEl.textContent = emuDescs.summary;
     return header;
   }
 
@@ -79,6 +82,7 @@ class ReportRenderer {
     const footer = this._dom.cloneTemplate('#tmpl-lh-footer', this._templateContext);
 
     const env = this._dom.find('.lh-env__items', footer);
+    env.id = 'runtime-settings';
     const envValues = Util.getEnvironmentDisplayValues(report.configSettings || {});
     [
       {name: 'URL', description: report.finalUrl},
@@ -87,7 +91,7 @@ class ReportRenderer {
       {name: 'User agent', description: report.userAgent},
     ].forEach(runtime => {
       const item = this._dom.cloneTemplate('#tmpl-lh-env__items', env);
-      this._dom.find('.lh-env__name', item).textContent = runtime.name;
+      this._dom.find('.lh-env__name', item).textContent = `${runtime.name}:`;
       this._dom.find('.lh-env__description', item).textContent = runtime.description;
       env.appendChild(item);
     });

@@ -281,22 +281,15 @@
       display: none;
     }
     .lh-config {
-      display: flex;
-    }
-
-    .lh-config__timestamp {
-      margin-right: 6px;
-    }
-    .lh-config__settings-toggle {
-      margin-left: 6px;
-    }
-    .lh-config__timestamp,
-    .lh-config__settings-toggle summary {
       color: var(--secondary-text-color);
     }
-    .lh-config__settings-toggle summary {
-      display: flex;
-      align-items: center;
+    .lh-config__timestamp {
+      font-size: var(--caption-font-size);
+      display: block;
+    }
+    a.lh-config__emulation {
+      color: inherit;
+      text-decoration: none;
     }
     @media screen and (max-width: 964px) {
       .lh-export__dropdown {
@@ -357,6 +350,7 @@
         <div class="lh-metadata__results"><a href="" class="lh-metadata__url" target="_blank" rel="noopener"></a></div>
         <div class="lh-config">
           <span class="lh-config__timestamp"></span>
+          <a href="#runtime-settings" class="lh-config__emulation"></a>
         </div>
       </div>
     </div>
@@ -416,10 +410,11 @@
     }
     span.lh-env__name {
       font-weight: bold;
+      color: var(--secondary-text-color);
     }
     span.lh-env__description {
       font-family: var(--monospace-font-family);
-      font-size-adjust: 0.5;
+      font-size: var(--caption-font-size);
       padding-left: 5px;
     }
   </style>
@@ -429,7 +424,7 @@
       <ul class="lh-env__items">
         <template id="tmpl-lh-env__items">
           <li class="lh-env__item">
-            <span class="lh-env__name"></span>:
+            <span class="lh-env__name"></span>
             <span class="lh-env__description"></span>
           </li>
         </template>
