@@ -7,10 +7,17 @@
 
 /* globals self, Util, CategoryRenderer */
 
+/** @typedef {import('./dom.js')} DOM */
+/** @typedef {import('./report-renderer.js').CategoryJSON} CategoryJSON */
+/** @typedef {import('./report-renderer.js').GroupJSON} GroupJSON */
+/** @typedef {import('./report-renderer.js').AuditJSON} AuditJSON */
+/** @typedef {import('./details-renderer.js').OpportunitySummary} OpportunitySummary */
+/** @typedef {import('./details-renderer.js').FilmstripDetails} FilmstripDetails */
+
 class PerformanceCategoryRenderer extends CategoryRenderer {
   /**
-   * @param {!ReportRenderer.AuditJSON} audit
-   * @return {!Element}
+   * @param {AuditJSON} audit
+   * @return {Element}
    */
   _renderMetric(audit) {
     const tmpl = this.dom.cloneTemplate('#tmpl-lh-metric', this.templateContext);
@@ -31,7 +38,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     if (audit.result.scoreDisplayMode === 'error') {
       descriptionEl.textContent = '';
       valueEl.textContent = 'Error!';
-      const tooltip = this.dom.createChildOf(descriptionEl, 'span', 'lh-error-tooltip-content');
+      const tooltip = this.dom.createChildOf(descriptionEl, 'span');
       tooltip.textContent = audit.result.errorMessage || 'Report error: no metric information';
     }
 
@@ -39,49 +46,36 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
   }
 
   /**
-   * @param {!ReportRenderer.AuditJSON} audit
+   * @param {AuditJSON} audit
    * @param {number} index
    * @param {number} scale
-   * @return {!Element}
+   * @return {Element}
    */
   _renderOpportunity(audit, index, scale) {
-    const tmpl = this.dom.cloneTemplate('#tmpl-lh-opportunity', this.templateContext);
-    const element = this.dom.find('.lh-load-opportunity', tmpl);
-    element.classList.add(`lh-load-opportunity--${Util.calculateRating(audit.result.score)}`);
+    const oppTmpl = this.dom.cloneTemplate('#tmpl-lh-opportunity', this.templateContext);
+    const element = this.populateAuditValues(audit, index, oppTmpl);
     element.id = audit.result.id;
 
-    const titleEl = this.dom.find('.lh-load-opportunity__title', tmpl);
-    titleEl.textContent = audit.result.title;
-    this.dom.find('.lh-audit__index', element).textContent = `${index + 1}`;
-
-    if (audit.result.errorMessage || audit.result.explanation) {
-      const debugStrEl = this.dom.createChildOf(titleEl, 'div', 'lh-debug');
-      debugStrEl.textContent = audit.result.errorMessage || audit.result.explanation;
-    }
-    if (audit.result.scoreDisplayMode === 'error') return element;
-
     const details = audit.result.details;
-    const summaryInfo = /** @type {!DetailsRenderer.OpportunitySummary}
-    */ (details && details.summary);
-    if (!summaryInfo || !summaryInfo.wastedMs) {
+    if (!details) {
+      return element;
+    }
+    const summaryInfo = /** @type {OpportunitySummary} */ (details.summary);
+    if (!summaryInfo || !summaryInfo.wastedMs || audit.result.scoreDisplayMode === 'error') {
       return element;
     }
 
-    const displayValue = Util.formatDisplayValue(audit.result.displayValue);
+    // Overwrite the displayValue with opportunity's wastedMs
+    const displayEl = this.dom.find('.lh-audit__display-text', element);
     const sparklineWidthPct = `${summaryInfo.wastedMs / scale * 100}%`;
-    const wastedMs = Util.formatSeconds(summaryInfo.wastedMs, 0.01);
-    const auditDescription = this.dom.convertMarkdownLinkSnippets(audit.result.description);
-    this.dom.find('.lh-load-opportunity__sparkline', tmpl).title = displayValue;
-    this.dom.find('.lh-load-opportunity__wasted-stat', tmpl).title = displayValue;
-    this.dom.find('.lh-sparkline__bar', tmpl).style.width = sparklineWidthPct;
-    this.dom.find('.lh-load-opportunity__wasted-stat', tmpl).textContent = wastedMs;
-    this.dom.find('.lh-load-opportunity__description', tmpl).appendChild(auditDescription);
+    this.dom.find('.lh-sparkline__bar', element).style.width = sparklineWidthPct;
+    displayEl.textContent = Util.formatSeconds(summaryInfo.wastedMs, 0.01);
 
-    // If there's no `type`, then we only used details for `summary`
-    if (details.type) {
-      const detailsElem = this.detailsRenderer.render(details);
-      detailsElem.classList.add('lh-details');
-      element.appendChild(detailsElem);
+    // Set [title] tooltips
+    if (audit.result.displayValue) {
+      const displayValue = Util.formatDisplayValue(audit.result.displayValue);
+      this.dom.find('.lh-load-opportunity__sparkline', element).title = displayValue;
+      displayEl.title = displayValue;
     }
 
     return element;
@@ -91,7 +85,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
    * Get an audit's wastedMs to sort the opportunity by, and scale the sparkline width
    * Opportunties with an error won't have a summary object, so MIN_VALUE is returned to keep any
    * erroring opportunities last in sort order.
-   * @param {!ReportRenderer.AuditJSON} audit
+   * @param {AuditJSON} audit
    * @return {number}
    */
   _getWastedMs(audit) {
@@ -107,6 +101,9 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
   }
 
   /**
+   * @param {CategoryJSON} category
+   * @param {Object<string, GroupJSON>} groups
+   * @return {Element}
    * @override
    */
   render(category, groups) {
@@ -135,7 +132,6 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
         'lh-metrics__disclaimer lh-metrics__disclaimer');
     estValuesEl.textContent = 'Values are estimated and may vary.';
 
-    metricAuditsEl.open = true;
     metricAuditsEl.classList.add('lh-audit-group--metrics');
     element.appendChild(metricAuditsEl);
 
@@ -145,9 +141,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const thumbnailResult = thumbnailAudit && thumbnailAudit.result;
     if (thumbnailResult && thumbnailResult.details) {
       timelineEl.id = thumbnailResult.id;
-      const thumbnailDetails = /** @type {!DetailsRenderer.FilmstripDetails} */
-          (thumbnailResult.details);
-      const filmstripEl = this.detailsRenderer.render(thumbnailDetails);
+      const filmstripEl = this.detailsRenderer.render(thumbnailResult.details);
       timelineEl.appendChild(filmstripEl);
     }
 
@@ -168,7 +162,6 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
       groupEl.appendChild(headerEl);
       opportunityAudits.forEach((item, i) =>
           groupEl.appendChild(this._renderOpportunity(item, i, scale)));
-      groupEl.open = true;
       groupEl.classList.add('lh-audit-group--opportunities');
       element.appendChild(groupEl);
     }
@@ -185,7 +178,6 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     if (diagnosticAudits.length) {
       const groupEl = this.renderAuditGroup(groups['diagnostics'], {expandable: false});
       diagnosticAudits.forEach((item, i) => groupEl.appendChild(this.renderAudit(item, i)));
-      groupEl.open = true;
       groupEl.classList.add('lh-audit-group--diagnostics');
       element.appendChild(groupEl);
     }

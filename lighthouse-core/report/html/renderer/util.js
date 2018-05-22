@@ -18,10 +18,6 @@ const RATINGS = {
   ERROR: {label: 'error'},
 };
 
-/**
- * @fileoverview
- * @suppress {reportUnknownTypes} see https://github.com/GoogleChrome/lighthouse/pull/4778#issuecomment-373549391
- */
 class Util {
   static get PASS_THRESHOLD() {
     return PASS_THRESHOLD;
@@ -36,11 +32,11 @@ class Util {
    * @return {string}
    */
   static formatDisplayValue(displayValue) {
-    if (typeof displayValue === 'undefined') return '';
     if (typeof displayValue === 'string') return displayValue;
+    if (!displayValue) return '';
 
     const replacementRegex = /%([0-9]*(\.[0-9]+)?d|s)/;
-    const template = /** @type {string} */ (displayValue.shift());
+    const template = /** @type {string} */ (displayValue[0]);
     if (typeof template !== 'string') {
       // First value should always be the format string, but we don't want to fail to build
       // a report, return a placeholder.
@@ -48,7 +44,7 @@ class Util {
     }
 
     let output = template;
-    for (const replacement of displayValue) {
+    for (const replacement of displayValue.slice(1)) {
       if (!replacementRegex.test(output)) {
         // eslint-disable-next-line no-console
         console.warn('Too many replacements given');
@@ -195,9 +191,9 @@ class Util {
       return 'None';
     }
 
-    /** @type {!Array<string>} */
+    /** @type {Array<string>} */
     const parts = [];
-    const unitLabels = /** @type {!Object<string, number>} */ ({
+    const unitLabels = /** @type {Object<string, number>} */ ({
       d: 60 * 60 * 24,
       h: 60 * 60,
       m: 60,
@@ -217,8 +213,8 @@ class Util {
   }
 
   /**
-   * @param {!URL} parsedUrl
-   * @param {{numPathParts: (number|undefined), preserveQuery: (boolean|undefined), preserveHost: (boolean|undefined)}=} options
+   * @param {URL} parsedUrl
+   * @param {{numPathParts?: number, preserveQuery?: boolean, preserveHost?: boolean}=} options
    * @return {string}
    */
   static getURLDisplayName(parsedUrl, options) {
@@ -378,6 +374,5 @@ class Util {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = Util;
 } else {
-  // @ts-ignore
   self.Util = Util;
 }

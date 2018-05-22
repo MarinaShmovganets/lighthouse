@@ -1,6 +1,6 @@
 {
   "name": "lighthouse",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.0-alpha.2",
   "description": "Lighthouse",
   "main": "./lighthouse-core/index.js",
   "bin": {
@@ -28,7 +28,7 @@
 
     "debug": "node --inspect-brk ./lighthouse-cli/index.js",
     "start": "node ./lighthouse-cli/index.js",
-    "test": "yarn lint --quiet && yarn unit && yarn type-check && yarn closure && yarn diff:sample-json",
+    "test": "yarn lint --quiet && yarn unit && yarn type-check && yarn diff:sample-json",
     "test-extension": "cd lighthouse-extension && yarn test",
     "test-viewer": "cd lighthouse-viewer && yarn pptr-test",
 
@@ -48,7 +48,6 @@
     "coveralls": "cat unit-coverage.lcov | coveralls",
     "codecov": "codecov -f unit-coverage.lcov -F unit && codecov -f smoke-coverage.lcov -F smoke",
 
-    "closure": "cd lighthouse-core && node closure/closure-type-checking.js",
     "devtools": "bash lighthouse-core/scripts/roll-to-devtools.sh",
     "compile-devtools": "bash lighthouse-core/scripts/compile-against-devtools.sh",
     "chrome": "node lighthouse-core/scripts/manual-chrome-launcher.js",
@@ -58,12 +57,13 @@
     "bundlesize": "bundlesize",
     "plots-smoke": "bash plots/test/smoke.sh",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile changelog.md --same-file",
-    "type-check": "tsc -p .",
+    "type-check": "tsc -p . && cd ./lighthouse-viewer && yarn type-check",
     "update:sample-artifacts": "node lighthouse-core/scripts/update-report-fixtures.js -G",
     "update:sample-json": "node ./lighthouse-cli -A=./lighthouse-core/test/results/artifacts --throttling-method=devtools --output=json --output-path=./lighthouse-core/test/results/sample_v2.json http://localhost/dobetterweb/dbw_tester.html && node lighthouse-core/scripts/cleanup-LHR-for-diff.js ./lighthouse-core/test/results/sample_v2.json --only-remove-timing",
     "diff:sample-json": "bash lighthouse-core/scripts/assert-golden-lhr-unchanged.sh",
     "update:crdp-typings": "node lighthouse-core/scripts/extract-crdp-mapping.js",
-    "mixed-content": "./lighthouse-cli/index.js --chrome-flags='--headless' --config-path=./lighthouse-core/config/mixed-content.js"
+    "mixed-content": "./lighthouse-cli/index.js --chrome-flags='--headless' --config-path=./lighthouse-core/config/mixed-content.js",
+    "minify-latest-run": "./lighthouse-core/scripts/lantern/minify-trace.js ./latest-run/defaultPass.trace.json ./latest-run/defaultPass.trace.min.json && ./lighthouse-core/scripts/lantern/minify-devtoolslog.js ./latest-run/defaultPass.devtoolslog.json ./latest-run/defaultPass.devtoolslog.min.json"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.60",
@@ -88,7 +88,6 @@
     "cz-customizable": "^5.2.0",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
-    "google-closure-compiler": "^20170521.0.0",
     "gulp": "^3.9.1",
     "gulp-replace": "^0.5.4",
     "gulp-util": "^3.0.7",
@@ -97,9 +96,10 @@
     "npm-run-posix-or-windows": "^2.0.2",
     "nyc": "^11.6.0",
     "postinstall-prepare": "^1.0.1",
+    "pretty-json-stringify": "^0.0.2",
     "puppeteer": "1.4.0",
     "sinon": "^2.3.5",
-    "typescript": "2.9.0-dev.20180323",
+    "typescript": "2.9.1-insiders.20180516",
     "vscode-chrome-debug-core": "^3.23.8",
     "zone.js": "^0.7.3"
   },
