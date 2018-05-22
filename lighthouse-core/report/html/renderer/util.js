@@ -314,15 +314,15 @@ class Util {
 
     return [
       {
-        name: 'Device Emulation',
+        name: 'Device emulation',
         description: emulationDesc.deviceEmulation,
       },
       {
-        name: 'Network Throttling',
+        name: 'Network throttling',
         description: emulationDesc.networkThrottling,
       },
       {
-        name: 'CPU Throttling',
+        name: 'CPU throttling',
         description: emulationDesc.cpuThrottling,
       },
     ];
