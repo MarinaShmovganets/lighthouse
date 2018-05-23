@@ -18,7 +18,7 @@ about: Report something working incorrectly
 
 **Environment Information**:
 
-Affected Channels: CLI, Node, Extension, DevTools
+Affected Channels: <!-- CLI, Node, Extension, DevTools -->
 
 Lighthouse version:
 
