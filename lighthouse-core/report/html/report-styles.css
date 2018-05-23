@@ -604,7 +604,10 @@
 
 }
 .lh-debug--warnings {
-  color: var(--average-color);
+  border: 1px solid var(--average-color);
+  border-radius: 4px;
+  margin: 8px 0 4px 0 !important;
+  padding: 8px;
 }
 .lh-debug--warnings ul {
   margin: 0;
@@ -658,8 +661,7 @@
   font-size: var(--body-font-size);
   margin: var(--section-padding);
   padding: var(--section-padding);
-  background-color: hsla(40, 100%, 91%, 1);
-  color: var(--secondary-text-color);
+  /* color: var(--secondary-text-color); */
 }
 .lh-run-warnings li {
   margin-bottom: calc(var(--header-line-height) / 2);
