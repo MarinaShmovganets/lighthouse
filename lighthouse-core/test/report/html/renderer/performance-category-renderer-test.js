@@ -101,7 +101,7 @@ describe('PerfCategoryRenderer', () => {
   });
 
   it('renders performance opportunities with an errorMessage', () => {
-    const auditWithDebug = {
+    const auditWithError = {
       score: 0,
       group: 'load-opportunities',
       result: {
@@ -110,15 +110,15 @@ describe('PerfCategoryRenderer', () => {
       },
     };
 
-    const fakeCategory = Object.assign({}, category, {auditRefs: [auditWithDebug]});
+    const fakeCategory = Object.assign({}, category, {auditRefs: [auditWithError]});
     const categoryDOM = renderer.render(fakeCategory, sampleResults.categoryGroups);
     const tooltipEl = categoryDOM.querySelector('.lh-audit--load-opportunity .tooltip--error');
-    assert.ok(tooltipEl, 'did not render debug');
+    assert.ok(tooltipEl, 'did not render error message');
     assert.ok(/Yikes!!/.test(tooltipEl.textContent));
   });
 
   it('renders performance opportunities\' explanation', () => {
-    const auditWithDebug = {
+    const auditWithExplanation = {
       score: 0,
       group: 'load-opportunities',
       result: {
@@ -127,12 +127,12 @@ describe('PerfCategoryRenderer', () => {
       },
     };
 
-    const fakeCategory = Object.assign({}, category, {auditRefs: [auditWithDebug]});
+    const fakeCategory = Object.assign({}, category, {auditRefs: [auditWithExplanation]});
     const categoryDOM = renderer.render(fakeCategory, sampleResults.categoryGroups);
 
     const selector = '.lh-audit--load-opportunity .lh-audit-explanation';
     const tooltipEl = categoryDOM.querySelector(selector);
-    assert.ok(tooltipEl, 'did not render debug');
+    assert.ok(tooltipEl, 'did not render explanation text');
     assert.ok(/Yikes!!/.test(tooltipEl.textContent));
   });
 

@@ -87,7 +87,7 @@ describe('CategoryRenderer', () => {
     assert.ok(auditDOM.matches('.lh-audit--informative'));
   });
 
-  it('renders audits with warnings', () => {
+  it('renders audits with a warning', () => {
     const auditResult = {
       title: 'Audit',
       description: 'Learn more',
@@ -95,7 +95,23 @@ describe('CategoryRenderer', () => {
       score: 1,
     };
     const auditDOM = renderer.renderAudit({id: 'foo', score: 1, result: auditResult});
-    assert.ok(auditDOM.querySelector('.lh-warnings'), 'did not render debug message');
+    const warningEl = auditDOM.querySelector('.lh-warnings');
+    assert.ok(warningEl, 'did not render warning message');
+    assert.ok(warningEl.textContent.includes(auditResult.warnings[0]), 'warning message provided');
+  });
+
+  it('renders audits with multiple warnings', () => {
+    const auditResult = {
+      title: 'Audit',
+      description: 'Learn more',
+      warnings: ['It may not have worked!', 'You should read this, though'],
+      score: 1,
+    };
+    const auditDOM = renderer.renderAudit({id: 'foo', score: 1, result: auditResult});
+    const warningEl = auditDOM.querySelector('.lh-warnings');
+    assert.ok(warningEl, 'did not render warning message');
+    assert.ok(warningEl.textContent.includes(auditResult.warnings[0]), '1st warning provided');
+    assert.ok(warningEl.textContent.includes(auditResult.warnings[1]), '2nd warning provided');
   });
 
   it('renders a category', () => {
