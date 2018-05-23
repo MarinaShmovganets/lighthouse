@@ -189,7 +189,7 @@ class GatherRunner {
     // Headless Chrome gained throttling support in Chrome 63.
     // https://chromium.googlesource.com/chromium/src/+/8931a104b145ccf92390f6f48fba6553a1af92e4
     const minVersion = '63.0.3239.0';
-    if (true) {
+    if (chromeVersion && chromeVersion < minVersion) {
       gathererResults.LighthouseRunWarnings.push('Your site\'s mobile performance may be ' +
           'worse than the numbers presented in this report. Lighthouse could not test on a ' +
           'mobile connection because Headless Chrome does not support network throttling ' +

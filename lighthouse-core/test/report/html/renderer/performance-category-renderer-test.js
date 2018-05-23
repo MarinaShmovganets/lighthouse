@@ -112,7 +112,7 @@ describe('PerfCategoryRenderer', () => {
 
     const fakeCategory = Object.assign({}, category, {auditRefs: [auditWithDebug]});
     const categoryDOM = renderer.render(fakeCategory, sampleResults.categoryGroups);
-    const tooltipEl = categoryDOM.querySelector('.lh-audit--load-opportunity .lh-debug');
+    const tooltipEl = categoryDOM.querySelector('.lh-audit--load-opportunity .tooltip--error');
     assert.ok(tooltipEl, 'did not render debug');
     assert.ok(/Yikes!!/.test(tooltipEl.textContent));
   });
@@ -130,7 +130,8 @@ describe('PerfCategoryRenderer', () => {
     const fakeCategory = Object.assign({}, category, {auditRefs: [auditWithDebug]});
     const categoryDOM = renderer.render(fakeCategory, sampleResults.categoryGroups);
 
-    const tooltipEl = categoryDOM.querySelector('.lh-audit--load-opportunity .lh-debug');
+    const selector = '.lh-audit--load-opportunity .lh-audit-explanation';
+    const tooltipEl = categoryDOM.querySelector(selector);
     assert.ok(tooltipEl, 'did not render debug');
     assert.ok(/Yikes!!/.test(tooltipEl.textContent));
   });

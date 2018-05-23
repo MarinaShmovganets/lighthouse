@@ -69,13 +69,13 @@ describe('CategoryRenderer', () => {
       scoreDisplayMode: 'binary', score: 0,
       result: {description: 'help text', explanation: 'A reason', title: 'Audit title'},
     });
-    assert.ok(audit1.querySelector('.lh-debug'));
+    assert.ok(audit1.querySelector('.lh-audit-explanation'));
 
     const audit2 = renderer.renderAudit({
       scoreDisplayMode: 'binary', score: 0,
       result: {description: 'help text', title: 'Audit title'},
     });
-    assert.ok(!audit2.querySelector('.lh-debug'));
+    assert.ok(!audit2.querySelector('.lh-audit-explanation'));
   });
 
   it('renders an informative audit', () => {

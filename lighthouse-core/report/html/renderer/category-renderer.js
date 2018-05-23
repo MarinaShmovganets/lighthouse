@@ -80,10 +80,10 @@ class CategoryRenderer {
       const textEl = this.dom.find('.lh-audit__display-text', auditEl);
       textEl.textContent = 'Error!';
       textEl.classList.add('tooltip-boundary');
-      const tooltip = this.dom.createChildOf(textEl, 'div', 'tooltip lh-debug');
+      const tooltip = this.dom.createChildOf(textEl, 'div', 'tooltip tooltip--error');
       tooltip.textContent = audit.result.errorMessage || 'Report error: no audit information';
     } else if (audit.result.explanation) {
-      const explEl = this.dom.createChildOf(titleEl, 'div', 'lh-debug lh-debug--explanation');
+      const explEl = this.dom.createChildOf(titleEl, 'div', 'lh-audit-explanation');
       explEl.textContent = audit.result.explanation;
     }
     const warnings = audit.result.warnings;
