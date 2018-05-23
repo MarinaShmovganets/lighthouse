@@ -95,7 +95,7 @@ describe('CategoryRenderer', () => {
       score: 1,
     };
     const auditDOM = renderer.renderAudit({id: 'foo', score: 1, result: auditResult});
-    assert.ok(auditDOM.querySelector('.lh-debug--warnings'), 'did not render debug message');
+    assert.ok(auditDOM.querySelector('.lh-warnings'), 'did not render debug message');
   });
 
   it('renders a category', () => {

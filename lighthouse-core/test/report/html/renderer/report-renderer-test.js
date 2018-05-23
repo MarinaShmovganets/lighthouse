@@ -127,14 +127,14 @@ describe('ReportRenderer', () => {
       const warningResults = Object.assign({}, sampleResults, {runWarnings: []});
       const container = renderer._dom._document.body;
       const output = renderer.renderReport(warningResults, container);
-      assert.strictEqual(output.querySelector('.lh-run-warnings'), null);
+      assert.strictEqual(output.querySelector('.lh-warnings--toplevel'), null);
     });
 
     it('renders a warning section', () => {
       const container = renderer._dom._document.body;
       const output = renderer.renderReport(sampleResults, container);
 
-      const warningEls = output.querySelectorAll('.lh-run-warnings > ul > li');
+      const warningEls = output.querySelectorAll('.lh-warnings--toplevel > ul > li');
       assert.strictEqual(warningEls.length, sampleResults.runWarnings.length);
     });
 

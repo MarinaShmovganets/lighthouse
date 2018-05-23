@@ -107,7 +107,7 @@ class ReportRenderer {
       return this._dom.createElement('div');
     }
 
-    const container = this._dom.cloneTemplate('#tmpl-lh-run-warnings', this._templateContext);
+    const container = this._dom.cloneTemplate('#tmpl-lh-warnings--toplevel', this._templateContext);
     const warnings = this._dom.find('ul', container);
     for (const warningString of report.runWarnings) {
       const warning = warnings.appendChild(this._dom.createElement('li'));

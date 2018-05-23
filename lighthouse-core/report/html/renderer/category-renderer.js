@@ -90,7 +90,7 @@ class CategoryRenderer {
     if (!warnings || warnings.length === 0) return auditEl;
 
     // Add list of warnings or singular warning
-    const warningsEl = this.dom.createChildOf(titleEl, 'div', 'lh-debug lh-debug--warnings');
+    const warningsEl = this.dom.createChildOf(titleEl, 'div', 'lh-warnings');
     if (warnings.length === 1) {
       warningsEl.textContent = `Warning: ${warnings.join('')}`;
     } else {
