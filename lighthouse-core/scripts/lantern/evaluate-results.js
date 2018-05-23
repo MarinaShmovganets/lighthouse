@@ -27,16 +27,16 @@ if (!entries.length) {
   throw new Error('No lantern metrics available, did you run run-all-expectations.js');
 }
 
-/** @type {LanternSiteDefinition[]} */
+/** @type {LanternEvaluation[]} */
 const totalGood = [];
-/** @type {LanternSiteDefinition[]} */
+/** @type {LanternEvaluation[]} */
 const totalOk = [];
-/** @type {LanternSiteDefinition[]} */
+/** @type {LanternEvaluation[]} */
 const totalBad = [];
 
 /**
- * @param {string} metric
- * @param {string} lanternMetric
+ * @param {keyof LanternSiteDefinition} metric
+ * @param {keyof LanternMetrics} lanternMetric
  */
 function evaluateBuckets(metric, lanternMetric) {
   const good = [];
@@ -51,7 +51,7 @@ function evaluateBuckets(metric, lanternMetric) {
 
   const rankErrors = [];
   const percentErrors = [];
-  for (let entry of entries) {
+  for (const entry of entries) {
     // @ts-ignore
     const expected = Math.round(entry[metric]);
     if (expected === 0) continue;
@@ -66,12 +66,12 @@ function evaluateBuckets(metric, lanternMetric) {
 
     rankErrors.push(rankDiffAsPercent);
     percentErrors.push(diffAsPercent);
-    entry = {...entry, expected, actual, diff, rankDiff, rankDiffAsPercent, metric};
+    const evaluation = {...entry, expected, actual, diff, rankDiff, rankDiffAsPercent, metric};
     if (diffAsPercent < GOOD_ABSOLUTE_THRESHOLD || rankDiffAsPercent < GOOD_RANK_THRESHOLD) {
-      good.push(entry);
+      good.push(evaluation);
     } else if (diffAsPercent < OK_ABSOLUTE_THRESHOLD) {
-      ok.push(entry);
-    } else bad.push(entry);
+      ok.push(evaluation);
+    } else bad.push(evaluation);
   }
 
   if (lanternMetric.includes('roughEstimate')) {
@@ -143,11 +143,40 @@ for (const entry of totalBad.sort((a, b) => b.rankDiff - a.rankDiff).slice(0, 10
  * @property {string} url
  * @property {string} tracePath
  * @property {string} devtoolsLogPath
- * @property {*} lantern
- * @property {string} [metric]
- * @property {number} [expected]
- * @property {number} [actual]
- * @property {number} [diff]
- * @property {number} [rankDiff]
- * @property {number} [rankDiffAsPercent]
+ * @property {LanternMetrics} lantern
+ * @property {number} [firstContentfulPaint]
+ * @property {number} [firstMeaningfulPaint]
+ * @property {number} [timeToFirstInteractive]
+ * @property {number} [timeToConsistentlyInteractive]
+ * @property {number} [speedIndex]
  */
+
+/**
+ * @typedef LanternEvaluation
+ * @property {string} url
+ * @property {string} metric
+ * @property {number} expected
+ * @property {number} actual
+ * @property {number} diff
+ * @property {number} rankDiff
+ * @property {number} rankDiffAsPercent
+ */
+
+/**
+ * @typedef LanternMetrics
+ * @property {number} optimisticFCP
+ * @property {number} optimisticFMP
+ * @property {number} optimisticSI
+ * @property {number} optimisticTTFCPUI
+ * @property {number} optimisticTTI
+ * @property {number} pessimisticFCP
+ * @property {number} pessimisticFMP
+ * @property {number} pessimisticSI
+ * @property {number} pessimisticTTFCPUI
+ * @property {number} pessimisticTTI
+ * @property {number} roughEstimateOfFCP
+ * @property {number} roughEstimateOfFMP
+ * @property {number} roughEstimateOfSI
+ * @property {number} roughEstimateOfTTFCPUI
+ * @property {number} roughEstimateOfTTI
+  */
