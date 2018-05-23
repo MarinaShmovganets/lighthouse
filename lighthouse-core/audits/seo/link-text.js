@@ -24,7 +24,7 @@ const BLOCKLIST = new Set([
   'リンク',
   '続きを読む',
   '続く',
-  '全文表示'
+  '全文表示',
 ]);
 
 class LinkText extends Audit {
