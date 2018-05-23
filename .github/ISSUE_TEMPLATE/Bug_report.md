@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: File an issue ticket to help us improve
+about: Report something working incorrectly
 
 ---
 
@@ -17,14 +17,13 @@ about: File an issue ticket to help us improve
 
 
 **Environment Information**:
-Affected Channels:
-- [ ] CLI
-- [ ] Node Module
-- [ ] Extension
-- [ ] DevTools
+
+Affected Channels: CLI, Node, Extension, DevTools
 
 Lighthouse version:
+
 Node.js version:
+
 Operating System:
 
 **Related issues**
