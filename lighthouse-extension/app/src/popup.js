@@ -134,10 +134,6 @@ async function onGenerateReportButtonClick(background, settings) {
     // Close popup once report is opened in a new tab
     window.close();
   } catch (err) {
-    handleError(err);
-  }
-
-  function handleError(err) {
     let message = err.message;
     let includeReportLink = true;
 
