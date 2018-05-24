@@ -115,11 +115,12 @@ class GithubApi {
 
           const etag = resp.headers.get('ETag');
           return resp.json().then(json => {
+            const gistFiles = Object.keys(json.files);
             // Attempt to use first file in gist with report extension.
-            let filename = Object.keys(json.files)
-                .find(filename => filename.endsWith(GithubApi.LH_JSON_EXT));
+            let filename = gistFiles.find(filename => filename.endsWith(GithubApi.LH_JSON_EXT));
+            // Otherwise, fall back to first json file in gist
             if (!filename) {
-              filename = Object.keys(json.files).find(filename => filename.endsWith('.json'));
+              filename = gistFiles.find(filename => filename.endsWith('.json'));
             }
             if (!filename) {
               throw new Error(
