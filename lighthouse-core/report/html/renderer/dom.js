@@ -153,6 +153,7 @@ class DOM {
   }
 
   /**
+   * TODO(paulirish): import and conditionally apply the DevTools frontend subclasses instead of this
    * @return {boolean}
    */
   isDevTools() {

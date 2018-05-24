@@ -2450,7 +2450,7 @@
       "score": 0,
       "scoreDisplayMode": "binary",
       "rawValue": false,
-      "displayValue": "1 vulnerability was detected",
+      "displayValue": "1 vulnerability detected",
       "details": {
         "type": "table",
         "headings": [
