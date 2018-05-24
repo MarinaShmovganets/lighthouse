@@ -116,8 +116,11 @@ class GithubApi {
           const etag = resp.headers.get('ETag');
           return resp.json().then(json => {
             // Attempt to use first file in gist with report extension.
-            const filename = Object.keys(json.files)
+            let filename = Object.keys(json.files)
                 .find(filename => filename.endsWith(GithubApi.LH_JSON_EXT));
+            if (!filename) {
+              filename = Object.keys(json.files).find(filename => filename.endsWith('.json'));
+            }
             if (!filename) {
               throw new Error(
                 `Failed to find a Lighthouse report (*${GithubApi.LH_JSON_EXT}) in gist ${id}`
