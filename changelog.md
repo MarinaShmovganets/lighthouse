@@ -1,5 +1,5 @@
  <a name="3.0.0-beta.0"></a>
-# 3.0.0-beta.0 (2018-05-23)
+# 3.0.0-beta.0 (2018-05-24)
 [Full Changelog](https://github.com/googlechrome/lighthouse/compare/v3.0.0-alpha.2...v3.0.0-beta.0)
 
 ## Core
@@ -19,10 +19,13 @@
 
 ## Extension
 
+* expose URL shim ([#5293](https://github.com/googlechrome/lighthouse/pull/5293))
 * another speculative fix for getCurrentTabURL; more logging ([#5323](https://github.com/googlechrome/lighthouse/pull/5323))
 
 ## Report
 
+* updates for devtools roll ([#5326](https://github.com/googlechrome/lighthouse/pull/5326))
+* audit warnings are no longer top-level ([#5270](https://github.com/googlechrome/lighthouse/pull/5270))
 * move runtime settings to footer ([#5295](https://github.com/googlechrome/lighthouse/pull/5295))
 * avoid paint storms on scrolly header ([#5207](https://github.com/googlechrome/lighthouse/pull/5207))
 * restore missing non-applicable icon ([#5267](https://github.com/googlechrome/lighthouse/pull/5267))
@@ -33,8 +36,10 @@
 
 * github: add github PR and issue templates ([#5163](https://github.com/googlechrome/lighthouse/pull/5163))
 * plots: extend default config ([#5309](https://github.com/googlechrome/lighthouse/pull/5309))
+* scripts: add lantern evaluation scripts ([#5257](https://github.com/googlechrome/lighthouse/pull/5257))
 * scripts: add trace/devtoolslog minification scripts ([#5237](https://github.com/googlechrome/lighthouse/pull/5237))
 * viewer: fix saving as gist ([#5251](https://github.com/googlechrome/lighthouse/pull/5251))
+* remove checkboxes from bug report template ([#5330](https://github.com/googlechrome/lighthouse/pull/5330))
 
  <a name="3.0.0-alpha.2"></a>
 # 3.0.0-alpha.2 (2018-05-16)
