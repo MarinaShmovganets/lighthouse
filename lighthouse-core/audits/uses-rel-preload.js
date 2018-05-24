@@ -112,7 +112,6 @@ class UsesRelPreloadAudit extends Audit {
       const originalNode = originalNodesByRecord.get(node.record);
       const timingAfter = simulationAfterChanges.nodeTimings.get(node);
       const timingBefore = simulationBeforeChanges.nodeTimings.get(originalNode);
-      // @ts-ignore TODO(phulce): fix timing typedef
       const wastedMs = Math.round(timingBefore.endTime - timingAfter.endTime);
       if (wastedMs < THRESHOLD_IN_MS) continue;
       results.push({url: node.record.url, wastedMs});
