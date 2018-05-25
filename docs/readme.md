@@ -48,7 +48,7 @@ launchChromeAndRunLighthouse(url, flags).then( // ...
 
 You can also craft your own config (e.g. [mixed-content-config.js](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/config/mixed-content-config.js)) for custom runs. Also see the [basic custom audit recipe](https://github.com/GoogleChrome/lighthouse/tree/master/docs/recipes/custom-audit).
 
-### A warning about flags
+### Differences from CLI flags
 
 Note that some flag functionality is only available to the CLI. The set of shared flags that work in both node and CLI can be found [in our typedefs](https://github.com/GoogleChrome/lighthouse/blob/8f500e00243e07ef0a80b39334bedcc8ddc8d3d0/typings/externs.d.ts#L68). In most cases, the functionality is not offered in the node module simply because it is easier and more flexible to do it yourself.
 

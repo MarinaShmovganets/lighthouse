@@ -6,7 +6,7 @@ Note 1: if you want a **nice spreadsheet** version of this doc to understand wei
 ![alt text](https://user-images.githubusercontent.com/39191/32397461-2d20c87a-c0a7-11e7-99d8-61576113a710.png)
 *Screenshot of the [scoring spreadsheet](https://docs.google.com/spreadsheets/d/1Cxzhy5ecqJCucdf1M0iOzM8mIxNc7mmx107o5nj38Eo/edit#gid=0)*
 
-Note 2: if you receive a **score of ?** in any Lighthouse category, that indicates an error. Please file an [issue](https://github.com/GoogleChrome/lighthouse/issues) so our team can look into it.
+Note 2: receiving a **score of ?** in any Lighthouse category indicates an error occurred. Please file an [issue](https://github.com/GoogleChrome/lighthouse/issues) so our team can look into it.
 
 # Performance
 
