@@ -14,7 +14,8 @@
 const Audit = require('./audit');
 
 const URL = require('../lib/url-shim');
-const THRESHOLD = 0.05;
+const THRESHOLD_IN_PERCENT = 0.05;
+const THRESHOLD_IN_PX = 2;
 
 /** @typedef {Required<LH.Artifacts.SingleImageUsage>} WellDefinedImage */
 
@@ -40,7 +41,10 @@ class ImageAspectRatio extends Audit {
     const url = URL.elideDataURI(image.src);
     const actualAspectRatio = image.naturalWidth / image.naturalHeight;
     const displayedAspectRatio = image.width / image.height;
-    const doRatiosMatch = Math.abs(actualAspectRatio - displayedAspectRatio) < THRESHOLD;
+
+    const targetDisplayedHeight = image.width / actualAspectRatio;
+    const doRatiosMatch = Math.abs(actualAspectRatio - displayedAspectRatio) < THRESHOLD_IN_PERCENT ||
+      Math.abs(targetDisplayedHeight - image.height) < THRESHOLD_IN_PX;
 
     if (!Number.isFinite(actualAspectRatio) ||
       !Number.isFinite(displayedAspectRatio)) {
