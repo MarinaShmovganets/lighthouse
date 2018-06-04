@@ -46,7 +46,7 @@ class TraceOfTab extends ComputedArtifact {
         return e.cat.includes('blink.user_timing') ||
           e.cat.includes('loading') ||
           e.cat.includes('devtools.timeline') ||
-          e.cat === '__metadata'
+          e.cat === '__metadata';
       })
       // @ts-ignore - stableSort added to Array by WebInspector.
       .stableSort((event0, event1) => event0.ts - event1.ts);
