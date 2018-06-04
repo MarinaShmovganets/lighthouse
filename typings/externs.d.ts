@@ -137,6 +137,7 @@ declare global {
       cat: string;
       args: {
         data?: {
+          name?: string;
           persistentIds?: boolean;
           frames?: {
             frame: string;
