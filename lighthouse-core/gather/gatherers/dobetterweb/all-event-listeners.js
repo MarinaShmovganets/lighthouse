@@ -57,7 +57,10 @@ class EventListeners extends Gatherer {
       })
       .then(result => result.object)
       .catch(() => {
-        return {};
+        return {
+          objectId: null,
+          description: ""
+        };
       });
     }
 
