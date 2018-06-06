@@ -118,6 +118,7 @@ class UserTimings extends Audit {
         const time = item.isMark ? item.startTime : item.duration;
         return {
           name: item.name,
+          startTime: item.startTime,
           timingType: item.isMark ? 'Mark' : 'Measure',
           time,
         };
