@@ -56,6 +56,17 @@ describe('Manifest: short_name_length audit', () => {
     });
   });
 
+  it('succeeds when a manifest contains a name that is already short', () => {
+    const artifacts = generateMockArtifacts();
+    const manifestSrc = JSON.stringify({
+      name: 'Lighthouse',
+    });
+    artifacts.Manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+    return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
+      assert.equal(result.rawValue, true);
+    });
+  });
+
   // Need to disable camelcase check for dealing with short_name.
   /* eslint-disable camelcase */
   it('fails when a manifest contains a too long short_name', () => {
