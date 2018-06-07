@@ -65,12 +65,13 @@ class ManifestValues extends ComputedArtifact {
       {
         id: 'hasShortName',
         failureText: 'Manifest does not have `short_name`',
-        validate: manifestValue => !!manifestValue.short_name.value,
+        validate: manifestValue => !!manifestValue.short_name.value || !!manifestValue.name.value &&
+            manifestValue.name.value.length <= SUGGESTED_SHORTNAME_LENGTH,
       },
       {
         id: 'shortNameLength',
         failureText: 'Manifest `short_name` will be truncated when displayed on the homescreen',
-        validate: manifestValue => !!manifestValue.short_name.value &&
+        validate: manifestValue => !manifestValue.short_name.value ||
             manifestValue.short_name.value.length <= SUGGESTED_SHORTNAME_LENGTH,
       },
       {
