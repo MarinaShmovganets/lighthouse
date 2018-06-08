@@ -128,6 +128,8 @@ module.exports = class NetworkRequest {
       this.transferSize = data.encodedDataLength;
       this._transferSize = data.encodedDataLength;
     }
+
+    this._updateResponseReceivedTimeIfNecessary();
   }
 
   /**
@@ -140,6 +142,8 @@ module.exports = class NetworkRequest {
     this.failed = true;
     this._resourceType = data.type && resourceTypes[data.type];
     this.localizedFailDescription = data.errorText;
+
+    this._updateResponseReceivedTimeIfNecessary();
   }
 
   /**
@@ -157,6 +161,8 @@ module.exports = class NetworkRequest {
     this._onResponse(data.redirectResponse, data.timestamp, data.type);
     this.finished = true;
     this.endTime = data.timestamp;
+
+    this._updateResponseReceivedTimeIfNecessary();
   }
 
   /**
@@ -184,6 +190,29 @@ module.exports = class NetworkRequest {
     this._responseHeaders = NetworkRequest._headersMapToHeadersArray(response.headers);
 
     this._fetchedViaServiceWorker = !!response.fromServiceWorker;
+
+    if (response.timing) this._recomputeTimesWithResourceTiming(response.timing);
+  }
+
+  /**
+   * @param {LH.Crdp.Network.ResourceTiming} timing
+   */
+  _recomputeTimesWithResourceTiming(timing) {
+    // Take startTime and responseReceivedTime from timing data for better accuracy.
+    // Timing's requestTime is a baseline in seconds, rest of the numbers there are ticks in millis.
+    this.startTime = timing.requestTime;
+    const headersReceivedTime = timing.requestTime + timing.receiveHeadersEnd / 1000.0;
+    if (!this._responseReceivedTime || this._responseReceivedTime < 0) {
+      this._responseReceivedTime = headersReceivedTime;
+    }
+
+    this._responseReceivedTime = Math.min(this._responseReceivedTime, headersReceivedTime);
+    this._responseReceivedTime = Math.max(this._responseReceivedTime, this.startTime);
+    this.endTime = Math.max(this.endTime, this._responseReceivedTime);
+  }
+
+  _updateResponseReceivedTimeIfNecessary() {
+    this._responseReceivedTime = Math.min(this.endTime, this._responseReceivedTime);
   }
 
   /**

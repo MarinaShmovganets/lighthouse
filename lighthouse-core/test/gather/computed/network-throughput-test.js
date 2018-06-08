@@ -8,6 +8,8 @@
 /* eslint-env mocha */
 
 const NetworkThroughput = require('../../../gather/computed/network-throughput');
+const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
+const Runner = require('../../../runner');
 const assert = require('assert');
 
 describe('NetworkThroughput', () => {
@@ -92,5 +94,10 @@ describe('NetworkThroughput', () => {
     const extras = {parsedURL: {scheme: 'data'}};
     const result = compute([createRecord(0, 2), createRecord(3, 4, extras)]);
     assert.equal(result, 500);
+  });
+
+  it('should work on real network records', async () => {
+    const artifacts = Runner.instantiateComputedArtifacts();
+    console.log(await artifacts.requestNetworkThroughput(devtoolsLog))
   });
 });
