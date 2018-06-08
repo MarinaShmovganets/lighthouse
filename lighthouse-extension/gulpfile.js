@@ -11,7 +11,7 @@ const acornPath = require.resolve('acorn');
 const astwPath = require.resolve('astw/index.js');
 const astwOriginalContent = fs.readFileSync(astwPath, 'utf8');
 const astwPatchedContent = astwOriginalContent
-  .replace('ecmaVersion: opts.ecmaVersion || 8', 'ecmaVersion: 2018,')
+  .replace('ecmaVersion: opts.ecmaVersion || 8', 'ecmaVersion: 2018')
   .replace(`require('acorn')`, `require(${JSON.stringify(acornPath)})`);
 fs.writeFileSync(astwPath, astwPatchedContent);
 
