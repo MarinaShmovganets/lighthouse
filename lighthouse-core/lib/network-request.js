@@ -27,7 +27,9 @@ module.exports = class NetworkRequest {
     this.parsedURL = /** @type {LH.WebInspector.ParsedURL} */ ({scheme: ''});
 
     this.startTime = -1;
+    /** @type {number} */
     this.endTime = -1;
+    /** @type {number} */
     this._responseReceivedTime = -1;
 
     this.transferSize = 0;

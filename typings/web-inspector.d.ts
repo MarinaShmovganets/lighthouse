@@ -45,6 +45,7 @@ declare global {
       _resourceType?: ResourceType;
       _mimeType: string;
       priority(): Crdp.Network.ResourcePriority;
+      initiatorRequest(): NetworkRequest | undefined;
       _responseHeaders?: HeaderValue[];
 
       _fetchedViaServiceWorker?: boolean;
