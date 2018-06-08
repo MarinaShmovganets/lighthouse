@@ -36,13 +36,11 @@ describe('Performance: user-timings audit', () => {
       assert.equal(auditResult.details.items[0].timingType, 'Measure');
       assert.equal(auditResult.details.items[0].startTime, 0.002);
       assert.equal(auditResult.details.items[0].duration, 1000.965);
-      assert.equal(auditResult.details.items[0].timeToDisplay, 1000.965);
 
       assert.equal(auditResult.details.items[1].name, 'mark_test');
       assert.equal(auditResult.details.items[1].timingType, 'Mark');
       assert.equal(auditResult.details.items[1].startTime, 1000.954);
       assert.equal(auditResult.details.items[1].duration, undefined);
-      assert.equal(auditResult.details.items[1].timeToDisplay, 1000.954);
     });
   });
 

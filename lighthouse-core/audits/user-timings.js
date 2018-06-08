@@ -115,18 +115,16 @@ class UserTimings extends Audit {
     return artifacts.requestTraceOfTab(trace).then(tabTrace => {
       const userTimings = this.filterTrace(tabTrace).filter(UserTimings.excludeBlacklisted);
       const tableRows = userTimings.map(item => {
-        const timeToDisplay = item.isMark ? item.startTime : item.duration;
         return {
           name: item.name,
           startTime: item.startTime,
           duration: item.isMark ? undefined : item.duration,
           timingType: item.isMark ? 'Mark' : 'Measure',
-          timeToDisplay,
         };
       }).sort((itemA, itemB) => {
         if (itemA.timingType === itemB.timingType) {
           // If both items are the same type, sort in ascending order by time
-          return itemA.timeToDisplay - itemB.timeToDisplay;
+          return itemA.startTime - itemB.startTime;
         } else if (itemA.timingType === 'Measure') {
           // Put measures before marks
           return -1;
@@ -138,7 +136,8 @@ class UserTimings extends Audit {
       const headings = [
         {key: 'name', itemType: 'text', text: 'Name'},
         {key: 'timingType', itemType: 'text', text: 'Type'},
-        {key: 'timeToDisplay', itemType: 'ms', granularity: 0.01, text: 'Time'},
+        {key: 'startTime', itemType: 'ms', granularity: 0.01, text: 'Start Time'},
+        {key: 'duration', itemType: 'ms', granularity: 0.01, text: 'Duration'},
       ];
 
       const details = Audit.makeTableDetails(headings, tableRows);
