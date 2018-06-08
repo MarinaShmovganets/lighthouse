@@ -18,8 +18,6 @@ declare global {
       _url: string;
       protocol: string;
       parsedURL: ParsedURL;
-      // Use parsedURL.securityOrigin() instead
-      origin: never;
 
       startTime: number;
       endTime: number;
@@ -31,28 +29,31 @@ declare global {
       /** Should use a default of 0 if not defined */
       _resourceSize?: number;
       _fromDiskCache?: boolean;
+      _fromMemoryCache?: boolean;
 
       finished: boolean;
       requestMethod: string;
       statusCode: number;
-      redirectSource?: {
-        url: string;
-      }
+      redirectSource?: {url: string;};
+      redirectDestination?: {url: string;};
       failed?: boolean;
       localizedFailDescription?: string;
 
       _initiator: Crdp.Network.Initiator;
-      _timing: Crdp.Network.ResourceTiming;
-      _resourceType: ResourceType;
+      _timing?: Crdp.Network.ResourceTiming;
+      _resourceType?: ResourceType;
       _mimeType: string;
-      priority(): 'VeryHigh' | 'High' | 'Medium' | 'Low';
-      _responseHeaders?: {name: string, value: string}[];
+      priority(): Crdp.Network.ResourcePriority;
+      _responseHeaders?: HeaderValue[];
 
       _fetchedViaServiceWorker?: boolean;
-      _frameId: Crdp.Page.FrameId;
+      _frameId?: Crdp.Page.FrameId;
       _isLinkPreload?: boolean;
-      initiatorRequest(): NetworkRequest | null;
-      redirects?: NetworkRequest[];
+    }
+
+    export interface HeaderValue {
+      name: string;
+      value: string;
     }
 
     export interface ParsedURL {

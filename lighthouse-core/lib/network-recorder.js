@@ -6,6 +6,7 @@
 'use strict';
 
 const NetworkManager = require('./web-inspector').NetworkManager;
+const NetworkRequest = require('./network-request');
 const EventEmitter = require('events').EventEmitter;
 const log = require('lighthouse-logger');
 
@@ -16,12 +17,15 @@ const IGNORED_NETWORK_SCHEMES = ['data', 'ws'];
 class NetworkRecorder extends EventEmitter {
   /**
    * Creates an instance of NetworkRecorder.
-   * @param {Array<LH.WebInspector.NetworkRequest>} recordArray
    */
-  constructor(recordArray) {
+  constructor() {
     super();
 
-    this._records = recordArray;
+    /** @type {NetworkRequest[]} */
+    this._records = [];
+    /** @type {Map<string, NetworkRequest>} */
+    this._recordsById = new Map();
+
     this.networkManager = NetworkManager.createWithFakeTarget();
 
     this.networkManager.addEventListener(
@@ -32,6 +36,10 @@ class NetworkRecorder extends EventEmitter {
       this.EventTypes.RequestFinished,
       this.onRequestFinished.bind(this)
     );
+  }
+
+  getRecords() {
+    return this._records.slice();
   }
 
   /**
@@ -96,8 +104,11 @@ class NetworkRecorder extends EventEmitter {
    * @return {boolean}
    */
   static _isQUICAndFinished(record) {
-    const isQUIC = record._responseHeaders && record._responseHeaders
-        .some(header => header.name.toLowerCase() === 'alt-svc' && /quic/.test(header.value));
+    const isQUIC =
+      record._responseHeaders &&
+      record._responseHeaders.some(
+        header => header.name.toLowerCase() === 'alt-svc' && /quic/.test(header.value)
+      );
     const receivedHeaders = record._timing && record._timing.receiveHeadersEnd > 0;
     return !!(isQUIC && receivedHeaders && record.endTime);
   }
@@ -162,22 +173,24 @@ class NetworkRecorder extends EventEmitter {
   /**
    * Listener for the DevTools SDK NetworkManager's RequestStarted event, which includes both
    * web socket and normal request creation.
-   * @param {{data: LH.WebInspector.NetworkRequest}} request
+   * @param {NetworkRequest} request
    * @private
    */
   onRequestStarted(request) {
-    this._records.push(request.data);
+    this._records.push(request);
+    this._recordsById.set(request.requestId, request);
+
     this._emitNetworkStatus();
   }
 
   /**
    * Listener for the DevTools SDK NetworkManager's RequestFinished event, which includes
    * request finish, failure, and redirect, as well as the closing of web sockets.
-   * @param {{data: LH.WebInspector.NetworkRequest}} request
+   * @param {NetworkRequest} request
    * @private
    */
   onRequestFinished(request) {
-    this.emit('requestloaded', request.data);
+    this.emit('requestloaded', request);
     this._emitNetworkStatus();
   }
 
@@ -189,64 +202,86 @@ class NetworkRecorder extends EventEmitter {
    * @param {LH.Crdp.Network.RequestWillBeSentEvent} data
    */
   onRequestWillBeSent(data) {
-    // NOTE: data.timestamp -> time, data.type -> resourceType
-    this.networkManager._dispatcher.requestWillBeSent(data.requestId,
-        data.frameId, data.loaderId, data.documentURL, data.request,
-        data.timestamp, data.wallTime, data.initiator, data.redirectResponse,
-        data.type);
+    let originalRequest = this._findRealRequest(data.requestId);
+    if (originalRequest) {
+      // TODO(phulce): log these to sentry?
+      if (!data.redirectResponse) {
+        return;
+      }
+
+      const modifiedData = {...data, requestId: `${originalRequest.requestId}:redirected`};
+      const redirectRequest = new NetworkRequest();
+
+      redirectRequest.onRequestWillBeSent(modifiedData);
+      originalRequest.onRedirectResponse(data);
+
+      originalRequest.redirectDestination = redirectRequest;
+      redirectRequest.redirectSource = originalRequest;
+
+      this.onRequestStarted(redirectRequest);
+      this.onRequestFinished(originalRequest);
+      return;
+    }
+
+    const request = new NetworkRequest();
+    request.onRequestWillBeSent(data);
+    this.onRequestStarted(request);
   }
 
   /**
    * @param {LH.Crdp.Network.RequestServedFromCacheEvent} data
    */
   onRequestServedFromCache(data) {
-    this.networkManager._dispatcher.requestServedFromCache(data.requestId);
+    const request = this._findRealRequest(data.requestId);
+    if (!request) return;
+    request.onRequestServedFromCache();
   }
 
   /**
    * @param {LH.Crdp.Network.ResponseReceivedEvent} data
    */
   onResponseReceived(data) {
-    // NOTE: data.timestamp -> time, data.type -> resourceType
-    this.networkManager._dispatcher.responseReceived(data.requestId,
-        data.frameId, data.loaderId, data.timestamp, data.type, data.response);
+    const request = this._findRealRequest(data.requestId);
+    if (!request) return;
+    request.onResponseReceived(data);
   }
 
   /**
    * @param {LH.Crdp.Network.DataReceivedEvent} data
    */
   onDataReceived(data) {
-    // NOTE: data.timestamp -> time
-    this.networkManager._dispatcher.dataReceived(data.requestId, data.timestamp,
-        data.dataLength, data.encodedDataLength);
+    const request = this._findRealRequest(data.requestId);
+    if (!request) return;
+    request.onDataReceived(data);
   }
 
   /**
    * @param {LH.Crdp.Network.LoadingFinishedEvent} data
    */
   onLoadingFinished(data) {
-    // NOTE: data.timestamp -> finishTime
-    this.networkManager._dispatcher.loadingFinished(data.requestId,
-        data.timestamp, data.encodedDataLength);
+    const request = this._findRealRequest(data.requestId);
+    if (!request) return;
+    request.onLoadingFinished(data);
+    this.onRequestFinished(request);
   }
 
   /**
    * @param {LH.Crdp.Network.LoadingFailedEvent} data
    */
   onLoadingFailed(data) {
-    // NOTE: data.timestamp -> time, data.type -> resourceType,
-    // data.errorText -> localizedDescription
-    this.networkManager._dispatcher.loadingFailed(data.requestId,
-        data.timestamp, data.type, data.errorText, data.canceled,
-        data.blockedReason);
+    const request = this._findRealRequest(data.requestId);
+    if (!request) return;
+    request.onLoadingFailed(data);
+    this.onRequestFinished(request);
   }
 
   /**
    * @param {LH.Crdp.Network.ResourceChangedPriorityEvent} data
    */
   onResourceChangedPriority(data) {
-    this.networkManager._dispatcher.resourceChangedPriority(data.requestId,
-        data.newPriority, data.timestamp);
+    const request = this._findRealRequest(data.requestId);
+    if (!request) return;
+    request.onResourceChangedPriority(data);
   }
 
   /**
@@ -259,15 +294,38 @@ class NetworkRecorder extends EventEmitter {
     }
 
     switch (event.method) {
-      case 'Network.requestWillBeSent': return this.onRequestWillBeSent(event.params);
-      case 'Network.requestServedFromCache': return this.onRequestServedFromCache(event.params);
-      case 'Network.responseReceived': return this.onResponseReceived(event.params);
-      case 'Network.dataReceived': return this.onDataReceived(event.params);
-      case 'Network.loadingFinished': return this.onLoadingFinished(event.params);
-      case 'Network.loadingFailed': return this.onLoadingFailed(event.params);
-      case 'Network.resourceChangedPriority': return this.onResourceChangedPriority(event.params);
-      default: return;
+      case 'Network.requestWillBeSent':
+        return this.onRequestWillBeSent(event.params);
+      case 'Network.requestServedFromCache':
+        return this.onRequestServedFromCache(event.params);
+      case 'Network.responseReceived':
+        return this.onResponseReceived(event.params);
+      case 'Network.dataReceived':
+        return this.onDataReceived(event.params);
+      case 'Network.loadingFinished':
+        return this.onLoadingFinished(event.params);
+      case 'Network.loadingFailed':
+        return this.onLoadingFailed(event.params);
+      case 'Network.resourceChangedPriority':
+        return this.onResourceChangedPriority(event.params);
+      default:
+        return;
     }
+  }
+
+  /**
+   * @param {string} requestId
+   * @return {NetworkRequest|undefined}
+   */
+  _findRealRequest(requestId) {
+    let request = this._recordsById.get(requestId);
+    if (!request) return undefined;
+
+    while (request.redirectDestination) {
+      request = request.redirectDestination;
+    }
+
+    return request;
   }
 
   /**
@@ -276,13 +334,11 @@ class NetworkRecorder extends EventEmitter {
    * @return {Array<LH.WebInspector.NetworkRequest>}
    */
   static recordsFromLogs(devtoolsLog) {
-    /** @type {Array<LH.WebInspector.NetworkRequest>} */
-    const records = [];
-    const nr = new NetworkRecorder(records);
+    const nr = new NetworkRecorder();
     devtoolsLog.forEach(message => {
       nr.dispatch(message);
     });
-    return records;
+    return nr.getRecords();
   }
 }
 

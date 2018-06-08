@@ -429,6 +429,14 @@ class Simulator {
       }
     }
 
+    global.simCount = global.simCount || 0;
+    global.simCount++;
+    if (global.simCount === 2) {
+      for (const [node, timing] of this._computeFinalNodeTimings()) {
+        console.log(node.record.url, node.record.priority(), node.record._resourceType._name, timing.endTime)
+      }
+    }
+
     return {
       timeInMs: totalElapsedTime,
       nodeTimings: this._computeFinalNodeTimings(),
