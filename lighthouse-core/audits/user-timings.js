@@ -142,11 +142,20 @@ class UserTimings extends Audit {
 
       const details = Audit.makeTableDetails(headings, tableRows);
 
+      /** @type {LH.Audit.Product['displayValue']} */
+      let displayValue;
+      if (userTimings.length) {
+        displayValue = [
+          userTimings.length === 1 ? '%d user timing' : '%d user timings',
+          userTimings.length,
+        ];
+      }
+
       return {
         // mark the audit as notApplicable if there were no user timings
         rawValue: userTimings.length === 0,
         notApplicable: userTimings.length === 0,
-        displayValue: userTimings.length ? `${userTimings.length}` : '',
+        displayValue,
         extendedInfo: {
           value: userTimings,
         },
