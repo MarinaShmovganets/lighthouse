@@ -202,14 +202,14 @@ class NetworkRecorder extends EventEmitter {
    * @param {LH.Crdp.Network.RequestWillBeSentEvent} data
    */
   onRequestWillBeSent(data) {
-    let originalRequest = this._findRealRequest(data.requestId);
+    const originalRequest = this._findRealRequest(data.requestId);
     if (originalRequest) {
       // TODO(phulce): log these to sentry?
       if (!data.redirectResponse) {
         return;
       }
 
-      const modifiedData = {...data, requestId: `${originalRequest.requestId}:redirected`};
+      const modifiedData = {...data, requestId: `${originalRequest.requestId}:redirect`};
       const redirectRequest = new NetworkRequest();
 
       redirectRequest.onRequestWillBeSent(modifiedData);
@@ -334,11 +334,47 @@ class NetworkRecorder extends EventEmitter {
    * @return {Array<LH.WebInspector.NetworkRequest>}
    */
   static recordsFromLogs(devtoolsLog) {
-    const nr = new NetworkRecorder();
-    devtoolsLog.forEach(message => {
-      nr.dispatch(message);
-    });
-    return nr.getRecords();
+    const networkRecorder = new NetworkRecorder();
+    // playback all the devtools messages to recreate network records
+    devtoolsLog.forEach(message => networkRecorder.dispatch(message));
+
+    // get out the list of records
+    const records = networkRecorder.getRecords();
+
+    // create a map of all the records by URL to link up initiator
+    // ignore ambiguous/duplicate requests
+    const recordsByURL = new Map();
+    for (const record of records) {
+      recordsByURL.set(record.url, recordsByURL.has(record.url) ? undefined : record);
+    }
+
+    // set the initiator and redirects array
+    for (const record of records) {
+      const stackFrames = (record._initiator.stack && record._initiator.stack.callFrames) || [];
+      const initiatorURL = record._initiator.url || (stackFrames[0] && stackFrames[0].url);
+      const initiator = recordsByURL.get(initiatorURL) || record.redirectSource;
+      if (initiator) {
+        record.setInitiatorRequest(initiator);
+      }
+
+      // TODO(phulce): add more test coverage for this
+      let finalRecord = record;
+      while (finalRecord.redirectDestination) finalRecord = finalRecord.redirectDestination;
+      if (finalRecord === record || finalRecord.redirects) continue;
+
+      const redirects = [];
+      for (
+        let redirect = finalRecord.redirectSource;
+        redirect;
+        redirect = redirect.redirectSource
+      ) {
+        redirects.push(redirect);
+      }
+
+      finalRecord.redirects = redirects;
+    }
+
+    return records;
   }
 }
 

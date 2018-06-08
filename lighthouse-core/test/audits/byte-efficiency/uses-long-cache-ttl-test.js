@@ -22,7 +22,7 @@ function networkRecord(options = {}) {
     _url: options.url || 'https://example.com/asset',
     statusCode: options.statusCode || 200,
     _resourceType: options.resourceType || WebInspector.resourceTypes.Script,
-    _transferSize: options.transferSize || 10000,
+    _transferSize: options._transferSize || 10000,
     _responseHeaders: headers,
   };
 }
@@ -53,7 +53,7 @@ describe('Cache headers audit', () => {
   it('detects low value max-age headers', () => {
     networkRecords = [
       networkRecord({headers: {'cache-control': 'max-age=3600'}}), // an hour
-      networkRecord({headers: {'cache-control': 'max-age=3600'}, transferSize: 100000}), // an hour
+      networkRecord({headers: {'cache-control': 'max-age=3600'}, _transferSize: 100000}), // an hour
       networkRecord({headers: {'cache-control': 'max-age=86400'}}), // a day
       networkRecord({headers: {'cache-control': 'max-age=31536000'}}), // a year
     ];
@@ -150,7 +150,7 @@ describe('Cache headers audit', () => {
   it('ignores potentially uncacheable records', () => {
     networkRecords = [
       networkRecord({statusCode: 500}),
-      networkRecord({url: 'https://example.com/dynamic.js?userId=crazy', transferSize: 10}),
+      networkRecord({url: 'https://example.com/dynamic.js?userId=crazy', _transferSize: 10}),
       networkRecord({url: 'data:image/jpeg;base64,what'}),
       networkRecord({resourceType: WebInspector.resourceTypes.XHR}),
     ];

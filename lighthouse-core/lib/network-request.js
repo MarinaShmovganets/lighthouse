@@ -41,6 +41,7 @@ module.exports = class NetworkRequest {
     this.statusCode = -1;
     this.redirectSource = /** @type {NetworkRequest|undefined} */ (undefined);
     this.redirectDestination = /** @type {NetworkRequest|undefined} */ (undefined);
+    this.redirects = /** @type {NetworkRequest[]|undefined} */ (undefined);
     this.failed = false;
     this.localizedFailDescription = '';
 
@@ -49,6 +50,7 @@ module.exports = class NetworkRequest {
     this._resourceType = /** @type {LH.WebInspector.ResourceType|undefined} */ (undefined);
     this._mimeType = '';
     this.priority = () => /** @type {LH.Crdp.Network.ResourcePriority} */ ('Low');
+    this.initiatorRequest = () => /** @type {NetworkRequest|undefined} */ (undefined);
     this._responseHeaders = /** @type {LH.WebInspector.HeaderValue[]} */ ([]);
 
     this._fetchedViaServiceWorker = false;
@@ -65,6 +67,13 @@ module.exports = class NetworkRequest {
    */
   clone() {
     return Object.assign(new NetworkRequest(), this);
+  }
+
+  /**
+   * @param {NetworkRequest} initiator
+   */
+  setInitiatorRequest(initiator) {
+    this.initiatorRequest = () => initiator;
   }
 
   /**

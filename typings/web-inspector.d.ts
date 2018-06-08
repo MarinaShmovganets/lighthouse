@@ -36,6 +36,7 @@ declare global {
       statusCode: number;
       redirectSource?: {url: string;};
       redirectDestination?: {url: string;};
+      redirects?: NetworkRequest[];
       failed?: boolean;
       localizedFailDescription?: string;
 

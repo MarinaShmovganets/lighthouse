@@ -90,7 +90,7 @@ class UsesRelPreconnectAudit extends Audit {
           // filter out all resources where timing info was invalid
           !UsesRelPreconnectAudit.hasValidTiming(record) ||
           // filter out all resources that are loaded by the document
-          record.initiatorRequest() === mainResource ||
+          record._initiator.url === mainResource.url ||
           // filter out urls that do not have an origin (data, ...)
           !record.parsedURL || !record.parsedURL.securityOrigin() ||
           // filter out all resources that have the same origin
