@@ -339,13 +339,14 @@ class NetworkRecorder extends EventEmitter {
     devtoolsLog.forEach(message => networkRecorder.dispatch(message));
 
     // get out the list of records
+
     const records = networkRecorder.getRecords();
 
     // create a map of all the records by URL to link up initiator
-    // ignore ambiguous/duplicate requests
     const recordsByURL = new Map();
     for (const record of records) {
-      recordsByURL.set(record.url, recordsByURL.has(record.url) ? undefined : record);
+      if (recordsByURL.has(record.url)) continue;
+      recordsByURL.set(record.url, record);
     }
 
     // set the initiator and redirects array

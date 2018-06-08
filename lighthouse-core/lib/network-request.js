@@ -90,7 +90,8 @@ module.exports = class NetworkRequest {
     this._url = data.request.url;
     this.parsedURL = {
       scheme: url.protocol.split(':')[0],
-      host: url.host,
+      // Intentional, DevTools uses different terminalogy
+      host: url.hostname,
       securityOrigin: () => url.origin,
     };
 
@@ -103,7 +104,7 @@ module.exports = class NetworkRequest {
     this.priority = () => data.request.initialPriority;
 
     this._frameId = data.frameId;
-    this._isLinkPreload = data.initiator.type === 'preload';
+    this._isLinkPreload = data.initiator.type === 'preload' || !!data.request.isLinkPreload;
   }
 
   onRequestServedFromCache() {
