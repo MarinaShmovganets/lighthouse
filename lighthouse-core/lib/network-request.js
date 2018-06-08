@@ -61,6 +61,13 @@ module.exports = class NetworkRequest {
   }
 
   /**
+   * @return {NetworkRequest}
+   */
+  clone() {
+    return Object.assign(new NetworkRequest(), this);
+  }
+
+  /**
    * @param {LH.Crdp.Network.RequestWillBeSentEvent} data
    */
   onRequestWillBeSent(data) {
@@ -70,7 +77,6 @@ module.exports = class NetworkRequest {
     const url = new URL(data.request.url);
     this.url = data.request.url;
     this._url = data.request.url;
-    this.protocol = url.protocol;
     this.parsedURL = {
       scheme: url.protocol.split(':')[0],
       host: url.host,
@@ -161,6 +167,8 @@ module.exports = class NetworkRequest {
   _onResponse(response, timestamp, resourceType) {
     this.connectionId = String(response.connectionId);
     this.connectionReused = response.connectionReused;
+
+    if (response.protocol) this.protocol = response.protocol;
 
     this._responseReceivedTime = timestamp;
 
