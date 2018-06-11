@@ -63,6 +63,7 @@ declare global {
       onlyAudits?: string[] | null;
       onlyCategories?: string[] | null;
       skipAudits?: string[] | null;
+      skipNavigation?: boolean;
     }
 
     export interface Flags extends SharedFlagsSettings {

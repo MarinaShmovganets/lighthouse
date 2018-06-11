@@ -106,7 +106,9 @@ class GatherRunner {
     log.log('status', 'Initializing…');
     const resetStorage = !options.settings.disableStorageReset;
     // Enable emulation based on settings
-    await driver.assertNoSameOriginServiceWorkerClients(options.requestedUrl);
+    if (!options.settings.skipNavigation) {
+      await driver.assertNoSameOriginServiceWorkerClients(options.requestedUrl);
+    }
     const userAgent = await driver.getUserAgent();
     gathererResults.UserAgent = [userAgent];
     GatherRunner.warnOnHeadless(userAgent, gathererResults);
@@ -201,11 +203,13 @@ class GatherRunner {
    * @return {Promise<void>}
    */
   static async beforePass(passContext, gathererResults) {
+    if (!passContext.settings.skipNavigation) {
+      const blankPage = passContext.passConfig.blankPage;
+      const blankDuration = passContext.passConfig.blankDuration;
+      await GatherRunner.loadBlank(passContext.driver, blankPage, blankDuration);
+    }
     const blockedUrls = (passContext.passConfig.blockedUrlPatterns || [])
       .concat(passContext.settings.blockedUrlPatterns || []);
-    const blankPage = passContext.passConfig.blankPage;
-    const blankDuration = passContext.passConfig.blankDuration;
-    await GatherRunner.loadBlank(passContext.driver, blankPage, blankDuration);
     // Set request blocking before any network activity
     // No "clearing" is done at the end of the pass since blockUrlPatterns([]) will unset all if
     // neccessary at the beginning of the next pass.
@@ -250,7 +254,7 @@ class GatherRunner {
     if (recordTrace) await driver.beginTrace(settings);
 
     // Navigate.
-    await GatherRunner.loadPage(driver, passContext);
+    if (!passContext.settings.skipNavigation) await GatherRunner.loadPage(driver, passContext);
     log.log('statusEnd', status);
 
     for (const gathererDefn of gatherers) {
@@ -292,6 +296,7 @@ class GatherRunner {
     let pageLoadError = GatherRunner.getPageLoadError(passContext.url, networkRecords);
     // If the driver was offline, a page load error is expected, so do not save it.
     if (!driver.online) pageLoadError = undefined;
+    if (passContext.settings.skipNavigation) pageLoadError = undefined;
 
     if (pageLoadError) {
       gathererResults.LighthouseRunWarnings.push('Lighthouse was unable to reliably load the ' +
@@ -407,7 +412,7 @@ class GatherRunner {
 
     try {
       await driver.connect();
-      await GatherRunner.loadBlank(driver);
+      if (!options.settings.skipNavigation) await GatherRunner.loadBlank(driver);
       await GatherRunner.setupDriver(driver, gathererResults, options);
       let firstPass = true;
       // Run each pass
