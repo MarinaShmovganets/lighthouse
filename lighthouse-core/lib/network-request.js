@@ -171,6 +171,7 @@ module.exports = class NetworkRequest {
   onRedirectResponse(data) {
     if (!data.redirectResponse) throw new Error('Missing redirectResponse data');
     this._onResponse(data.redirectResponse, data.timestamp, data.type);
+    this._resourceType = undefined;
     this.finished = true;
     this.endTime = data.timestamp;
 

@@ -358,7 +358,6 @@ class NetworkRecorder extends EventEmitter {
         record.setInitiatorRequest(initiator);
       }
 
-      // TODO(phulce): add more test coverage for this
       let finalRecord = record;
       while (finalRecord.redirectDestination) finalRecord = finalRecord.redirectDestination;
       if (finalRecord === record || finalRecord.redirects) continue;
@@ -369,7 +368,7 @@ class NetworkRecorder extends EventEmitter {
         redirect;
         redirect = redirect.redirectSource
       ) {
-        redirects.push(redirect);
+        redirects.unshift(redirect);
       }
 
       finalRecord.redirects = redirects;
