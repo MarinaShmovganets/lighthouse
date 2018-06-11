@@ -30,12 +30,6 @@ describe('Byte efficiency base audit', () => {
       _timing: {receiveHeadersEnd: 0},
     };
 
-    // Object.defineProperty(networkRecord, 'transferSize', {
-    //   get() {
-    //     return this.transferSize;
-    //   },
-    // });
-
     graph = new NetworkNode(networkRecord);
     // add a CPU node to force improvement to TTI
     graph.addDependent(new CPUNode({tid: 1, ts: 0, dur: 100 * 1000}));
