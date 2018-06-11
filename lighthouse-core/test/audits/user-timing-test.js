@@ -30,7 +30,7 @@ describe('Performance: user-timings audit', () => {
       assert.equal(blackListedUTs.length, 0, 'Blacklisted usertimings included in results');
 
       assert.equal(auditResult.rawValue, false);
-      assert.equal(auditResult.displayValue, 2);
+      assert.deepStrictEqual(auditResult.displayValue, ['%d user timings', 2]);
 
       assert.equal(auditResult.details.items[0].name, 'measure_test');
       assert.equal(auditResult.details.items[0].timingType, 'Measure');
