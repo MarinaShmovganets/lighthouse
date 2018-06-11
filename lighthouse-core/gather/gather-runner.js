@@ -251,7 +251,7 @@ class GatherRunner {
 
     // Navigate.
     await GatherRunner.loadPage(driver, passContext);
-    await log.log('statusEnd', status);
+    log.log('statusEnd', status);
 
     for (const gathererDefn of gatherers) {
       const gatherer = gathererDefn.instance;
