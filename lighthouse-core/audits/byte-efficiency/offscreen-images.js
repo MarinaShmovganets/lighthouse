@@ -111,8 +111,10 @@ class OffscreenImages extends ByteEfficiencyAudit {
     }
 
     return images.filter(image => {
+      // Filter out images that had little waste
       if (image.wastedBytes < IGNORE_THRESHOLD_IN_BYTES) return false;
       if (image.wastedPercent < IGNORE_THRESHOLD_IN_PERCENT) return false;
+      // Filter out images that started after the last long task
       const imageRequestStartTime = startTimesByURL.get(image.url) || 0;
       return imageRequestStartTime < lastLongTaskStartTime - IGNORE_THRESHOLD_IN_MS;
     });
