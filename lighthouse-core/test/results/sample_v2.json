@@ -288,7 +288,6 @@
       "score": null,
       "scoreDisplayMode": "not-applicable",
       "rawValue": true,
-      "displayValue": "",
       "details": {
         "type": "table",
         "headings": [],
@@ -486,7 +485,19 @@
       "score": 0,
       "scoreDisplayMode": "binary",
       "rawValue": false,
-      "explanation": "Failures: No manifest was fetched,\nSite does not register a service worker."
+      "explanation": "Failures: No manifest was fetched,\nSite does not register a service worker.",
+      "details": {
+        "items": [
+          {
+            "failures": [
+              "No manifest was fetched",
+              "Site does not register a service worker"
+            ],
+            "isParseFailure": true,
+            "parseFailureReason": "No manifest was fetched"
+          }
+        ]
+      }
     },
     "splash-screen": {
       "id": "splash-screen",
@@ -495,7 +506,18 @@
       "score": 0,
       "scoreDisplayMode": "binary",
       "rawValue": false,
-      "explanation": "Failures: No manifest was fetched."
+      "explanation": "Failures: No manifest was fetched.",
+      "details": {
+        "items": [
+          {
+            "failures": [
+              "No manifest was fetched"
+            ],
+            "isParseFailure": true,
+            "parseFailureReason": "No manifest was fetched"
+          }
+        ]
+      }
     },
     "themed-omnibox": {
       "id": "themed-omnibox",
@@ -504,7 +526,20 @@
       "score": 0,
       "scoreDisplayMode": "binary",
       "rawValue": false,
-      "explanation": "Failures: No manifest was fetched,\nNo `<meta name=\"theme-color\">` tag found."
+      "explanation": "Failures: No manifest was fetched,\nNo `<meta name=\"theme-color\">` tag found.",
+      "details": {
+        "items": [
+          {
+            "failures": [
+              "No manifest was fetched",
+              "No `<meta name=\"theme-color\">` tag found"
+            ],
+            "themeColor": null,
+            "isParseFailure": true,
+            "parseFailureReason": "No manifest was fetched"
+          }
+        ]
+      }
     },
     "manifest-short-name-length": {
       "id": "manifest-short-name-length",
@@ -1224,7 +1259,8 @@
               "type": "node",
               "selector": "div > h2",
               "path": "3,HTML,1,BODY,0,DIV,0,H2",
-              "snippet": "<h2>"
+              "snippet": "<h2>Do better web tester page</h2>",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 1.32 (foreground color: #ffc0cb, background color: #eeeeee, font size: 18.0pt, font weight: bold). Expected contrast ratio of 3:1"
             }
           },
           {
@@ -1232,9 +1268,16 @@
               "type": "node",
               "selector": "div > span",
               "path": "3,HTML,1,BODY,0,DIV,1,SPAN",
-              "snippet": "<span>"
+              "snippet": "<span>Hi there!</span>",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 1.32 (foreground color: #ffc0cb, background color: #eeeeee, font size: 12.0pt, font weight: normal). Expected contrast ratio of 4.5:1"
             }
           }
+        ],
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143"
         ]
       }
     },
@@ -1310,9 +1353,16 @@
               "type": "node",
               "selector": "html",
               "path": "3,HTML",
-              "snippet": "<html manifest=\"clock.appcache\">"
+              "snippet": "<html manifest=\"clock.appcache\">",
+              "explanation": "Fix any of the following:\n  The <html> element does not have a lang attribute"
             }
           }
+        ],
+        "impact": "serious",
+        "tags": [
+          "cat.language",
+          "wcag2a",
+          "wcag311"
         ]
       }
     },
@@ -1346,7 +1396,8 @@
               "type": "node",
               "selector": "body > img[src$=\"lighthouse-480x318.jpg\"]:nth-child(5)",
               "path": "3,HTML,1,BODY,5,IMG",
-              "snippet": "<img src=\"lighthouse-480x318.jpg\" width=\"480\" height=\"57\">"
+              "snippet": "<img src=\"lighthouse-480x318.jpg\" width=\"480\" height=\"57\">",
+              "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty or not visible\n  Element has no title attribute or the title attribute is empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\""
             }
           },
           {
@@ -1354,7 +1405,8 @@
               "type": "node",
               "selector": "body > img[src$=\"lighthouse-480x318.jpg\"]:nth-child(6)",
               "path": "3,HTML,1,BODY,7,IMG",
-              "snippet": "<img src=\"lighthouse-480x318.jpg\" width=\"480\" height=\"318\">"
+              "snippet": "<img src=\"lighthouse-480x318.jpg\" width=\"480\" height=\"318\">",
+              "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty or not visible\n  Element has no title attribute or the title attribute is empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\""
             }
           },
           {
@@ -1362,9 +1414,18 @@
               "type": "node",
               "selector": "body > img:nth-child(20)",
               "path": "3,HTML,1,BODY,36,IMG",
-              "snippet": "<img src=\"blob:http://localhost:10200/ae0eac03-ab9b-4a6a-b299-f5212153e277\">"
+              "snippet": "<img src=\"blob:http://localhost:10200/ae0eac03-ab9b-4a6a-b299-f5212153e277\">",
+              "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty or not visible\n  Element has no title attribute or the title attribute is empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\""
             }
           }
+        ],
+        "impact": "critical",
+        "tags": [
+          "cat.text-alternatives",
+          "wcag2a",
+          "wcag111",
+          "section508",
+          "section508.22.a"
         ]
       }
     },
@@ -1398,7 +1459,8 @@
               "type": "node",
               "selector": "body > input[type=\"password\"]:nth-child(17)",
               "path": "3,HTML,1,BODY,31,INPUT",
-              "snippet": "<input type=\"password\" onpaste=\"event.preventDefault();\">"
+              "snippet": "<input type=\"password\" onpaste=\"event.preventDefault();\">",
+              "explanation": "Fix any of the following:\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty or not visible\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  Element has no title attribute or the title attribute is empty"
             }
           },
           {
@@ -1406,7 +1468,8 @@
               "type": "node",
               "selector": "body > input[type=\"password\"]:nth-child(18)",
               "path": "3,HTML,1,BODY,33,INPUT",
-              "snippet": "<input type=\"password\">"
+              "snippet": "<input type=\"password\">",
+              "explanation": "Fix any of the following:\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty or not visible\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  Element has no title attribute or the title attribute is empty"
             }
           },
           {
@@ -1414,9 +1477,19 @@
               "type": "node",
               "selector": "body > input[type=\"password\"]:nth-child(19)",
               "path": "3,HTML,1,BODY,35,INPUT",
-              "snippet": "<input type=\"password\" onpaste=\"return false;\">"
+              "snippet": "<input type=\"password\" onpaste=\"return false;\">",
+              "explanation": "Fix any of the following:\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty or not visible\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  Element has no title attribute or the title attribute is empty"
             }
           }
+        ],
+        "impact": "critical",
+        "tags": [
+          "cat.forms",
+          "wcag2a",
+          "wcag332",
+          "wcag131",
+          "section508",
+          "section508.22.n"
         ]
       }
     },
@@ -1450,7 +1523,8 @@
               "type": "node",
               "selector": "body > a:nth-child(15)",
               "path": "3,HTML,1,BODY,27,A",
-              "snippet": "<a href=\"javascript:void(0)\" target=\"_blank\">"
+              "snippet": "<a href=\"javascript:void(0)\" target=\"_blank\"></a>",
+              "explanation": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty or not visible\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\""
             }
           },
           {
@@ -1458,9 +1532,20 @@
               "type": "node",
               "selector": "body > a[href$=\"mailto:inbox@email.com\"]",
               "path": "3,HTML,1,BODY,29,A",
-              "snippet": "<a href=\"mailto:inbox@email.com\" target=\"_blank\">"
+              "snippet": "<a href=\"mailto:inbox@email.com\" target=\"_blank\"></a>",
+              "explanation": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty or not visible\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\""
             }
           }
+        ],
+        "impact": "serious",
+        "tags": [
+          "cat.name-role-value",
+          "wcag2a",
+          "wcag111",
+          "wcag412",
+          "wcag244",
+          "section508",
+          "section508.22.a"
         ]
       }
     },
@@ -1869,7 +1954,7 @@
       "id": "render-blocking-resources",
       "title": "Eliminate render-blocking resources",
       "description": "Resources are blocking the first paint of your page. Consider delivering critical JS/CSS inline and deferring all non-critical JS/styles. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).",
-      "score": 0,
+      "score": 0.46,
       "scoreDisplayMode": "numeric",
       "rawValue": 1129,
       "displayValue": "5 resources delayed first paint by 1129ms",
@@ -2067,7 +2152,7 @@
       "id": "uses-text-compression",
       "title": "Enable text compression",
       "description": "Text-based responses should be served with compression (gzip, deflate or brotli) to minimize total network bytes. [Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer).",
-      "score": 0.9,
+      "score": 0.88,
       "scoreDisplayMode": "numeric",
       "rawValue": 150,
       "displayValue": [
