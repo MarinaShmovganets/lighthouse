@@ -6,8 +6,8 @@
 
 declare global {
   module LH.WebInspector {
-    // TODO(bckenny): standardize on underscored internal API
-    // externs for chrome-devtools-frontend/front_end/sdk/NetworkRequest.js
+    // TODO(phulce): standardize on non-underscored property names
+    // externs for old chrome-devtools-frontend/front_end/sdk/NetworkRequest.js
     export interface NetworkRequest {
       requestId: string;
       _requestId: string;
@@ -18,6 +18,7 @@ declare global {
       _url: string;
       protocol: string;
       parsedURL: ParsedURL;
+      documentURL: string;
 
       startTime: number;
       endTime: number;

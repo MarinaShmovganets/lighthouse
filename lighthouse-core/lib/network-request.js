@@ -25,6 +25,7 @@ module.exports = class NetworkRequest {
     this._url = '';
     this.protocol = '';
     this.parsedURL = /** @type {LH.WebInspector.ParsedURL} */ ({scheme: ''});
+    this.documentURL = '';
 
     this.startTime = -1;
     /** @type {number} */
@@ -87,6 +88,7 @@ module.exports = class NetworkRequest {
     const url = new URL(data.request.url);
     this.url = data.request.url;
     this._url = data.request.url;
+    this.documentURL = data.documentURL;
     this.parsedURL = {
       scheme: url.protocol.split(':')[0],
       // Intentional, DevTools uses different terminalogy
