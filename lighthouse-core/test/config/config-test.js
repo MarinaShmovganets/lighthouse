@@ -70,7 +70,7 @@ describe('Config', () => {
       passes: [{
         gatherers: [
           myGatherer1,
-          {instance: myGatherer2}
+          {instance: myGatherer2},
         ],
       }],
     };
