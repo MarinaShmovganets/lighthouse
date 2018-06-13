@@ -18,6 +18,7 @@ declare global {
       _url: string;
       protocol: string;
       parsedURL: ParsedURL;
+      isSecure: boolean;
       documentURL: string;
 
       startTime: number;

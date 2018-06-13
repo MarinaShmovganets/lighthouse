@@ -320,7 +320,6 @@ class NetworkRecorder extends EventEmitter {
     devtoolsLog.forEach(message => networkRecorder.dispatch(message));
 
     // get out the list of records
-
     const records = networkRecorder.getRecords();
 
     // create a map of all the records by URL to link up initiator

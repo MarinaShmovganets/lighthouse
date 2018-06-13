@@ -14,6 +14,8 @@
 const URL = require('./url-shim');
 const resourceTypes = require('../../third-party/devtools/ResourceType').TYPES;
 
+const SECURE_SCHEMES = ['data', 'https', 'wss', 'blob', 'chrome', 'chrome-extension', 'about'];
+
 module.exports = class NetworkRequest {
   constructor() {
     this.requestId = '';
@@ -24,6 +26,7 @@ module.exports = class NetworkRequest {
     this.url = '';
     this._url = '';
     this.protocol = '';
+    this.isSecure = false;
     this.parsedURL = /** @type {LH.WebInspector.ParsedURL} */ ({scheme: ''});
     this.documentURL = '';
 
@@ -95,6 +98,7 @@ module.exports = class NetworkRequest {
       host: url.hostname,
       securityOrigin: () => url.origin,
     };
+    this.isSecure = SECURE_SCHEMES.includes(this.parsedURL.scheme);
 
     this.startTime = data.timestamp;
 

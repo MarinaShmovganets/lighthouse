@@ -32,18 +32,6 @@ class MixedContent extends Audit {
   }
 
   /**
-   * Checks whether the resource was securely loaded.
-   * We special-case data: URLs, as they inherit the security state of their
-   * referring document url, and so are trivially "upgradeable" for mixed-content purposes.
-   *
-   * @param {LH.WebInspector.NetworkRequest} record
-   * @return {boolean}
-   */
-  static isSecureRecord(record) {
-    return record.protocol === 'data';
-  }
-
-  /**
    * Upgrades a URL to use HTTPS.
    *
    * @param {string} url
@@ -99,15 +87,15 @@ class MixedContent extends Audit {
 
     return Promise.all(computedArtifacts).then(([defaultRecords, upgradedRecords]) => {
       const insecureRecords = defaultRecords.filter(
-          record => !MixedContent.isSecureRecord(record));
+          record => !record.isSecure);
       const secureRecords = defaultRecords.filter(
-          record => MixedContent.isSecureRecord(record));
+          record => record.isSecure);
 
       const upgradePassHosts = new Set();
       const upgradePassSecureHosts = new Set();
       upgradedRecords.forEach(record => {
         upgradePassHosts.add(new URL(record.url).hostname);
-        if (MixedContent.isSecureRecord(record) && record.finished && !record.failed) {
+        if (record.isSecure && record.finished && !record.failed) {
           upgradePassSecureHosts.add(new URL(record.url).hostname);
         }
       });
