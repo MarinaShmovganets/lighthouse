@@ -61,7 +61,7 @@ class ResourceType {
   constructor(name, title, category, isTextType) {
     this._name = name;
     this._title = title;
-    this._category = {title: category};
+    this._category = category;
     this._isTextType = isTextType;
   }
 
@@ -130,7 +130,7 @@ class ResourceType {
   }
 
   /**
-   * @return {{title: string}}
+   * @return {string}
    */
   category() {
     return this._category;

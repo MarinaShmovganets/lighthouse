@@ -63,15 +63,11 @@ declare global {
     }
 
     export interface ResourceType {
-      _category: ResourceCategory;
+      _category: string;
       name(): string;
       _name: string;
       title(): string;
       isTextType(): boolean;
-    }
-
-    export interface ResourceCategory {
-      title: string;
     }
   }
 }
