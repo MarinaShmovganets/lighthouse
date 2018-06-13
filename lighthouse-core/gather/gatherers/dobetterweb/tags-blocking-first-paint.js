@@ -116,7 +116,7 @@ class TagsBlockingFirstPaint extends Gatherer {
       if (isHtml || isParserScriptOrStyle || (isFailedRequest && isParserGenerated)) {
         prev[record._url] = {
           isLinkPreload: record.isLinkPreload,
-          transferSize: record._transferSize,
+          transferSize: record.transferSize,
           startTime: record._startTime,
           endTime: record._endTime,
         };

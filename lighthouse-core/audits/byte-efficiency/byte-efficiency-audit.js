@@ -155,7 +155,6 @@ class UnusedBytes extends Audit {
 
       const wastedBytes = result.wastedBytes;
       networkNode.record.transferSize = Math.max(original - wastedBytes, 0);
-      networkNode.record._transferSize = Math.max(original - wastedBytes, 0);
     });
 
     const simulationAfterChanges = simulator.simulate(graph);
@@ -167,7 +166,6 @@ class UnusedBytes extends Audit {
       const originalTransferSize = originalTransferSizes.get(networkNode.record.requestId);
       if (originalTransferSize === undefined) return;
       networkNode.record.transferSize = originalTransferSize;
-      networkNode.record._transferSize = originalTransferSize;
     });
 
     const savingsOnOverallLoad = simulationBeforeChanges.timeInMs - simulationAfterChanges.timeInMs;

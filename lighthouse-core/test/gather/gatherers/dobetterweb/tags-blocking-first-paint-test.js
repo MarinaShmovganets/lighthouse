@@ -16,7 +16,7 @@ const traceData = {
     {
       _url: 'http://google.com/css/style.css',
       _mimeType: 'text/css',
-      _transferSize: 10,
+      transferSize: 10,
       _startTime: 10,
       _endTime: 10,
       finished: true,
@@ -26,7 +26,7 @@ const traceData = {
     {
       _url: 'http://google.com/wc/select.html',
       _mimeType: 'text/html',
-      _transferSize: 11,
+      transferSize: 11,
       _startTime: 11,
       _endTime: 11,
       finished: true,
@@ -36,7 +36,7 @@ const traceData = {
     {
       _url: 'http://google.com/js/app.json',
       _mimeType: 'application/json',
-      _transferSize: 24,
+      transferSize: 24,
       _startTime: 24,
       _endTime: 24,
       finished: true,
@@ -46,7 +46,7 @@ const traceData = {
     {
       _url: 'http://google.com/js/app.js',
       _mimeType: 'text/javascript',
-      _transferSize: 12,
+      transferSize: 12,
       _startTime: 12,
       _endTime: 22,
       finished: true,
@@ -56,7 +56,7 @@ const traceData = {
     {
       _url: 'http://google.com/wc/import.html',
       _mimeType: 'text/html',
-      _transferSize: 13,
+      transferSize: 13,
       _startTime: 13,
       _endTime: 13,
       finished: true,
@@ -66,7 +66,7 @@ const traceData = {
     {
       _url: 'http://google.com/css/ignored.css',
       _mimeType: 'text/css',
-      _transferSize: 16,
+      transferSize: 16,
       _startTime: 16,
       _endTime: 16,
       finished: true,
@@ -76,7 +76,7 @@ const traceData = {
     {
       _url: 'http://google.com/js/ignored.js',
       _mimeType: 'text/javascript',
-      _transferSize: 16,
+      transferSize: 16,
       _startTime: 16,
       _endTime: 16,
       finished: true,
@@ -86,7 +86,7 @@ const traceData = {
     {
       _url: 'http://google.com/js/also-ignored.js',
       _mimeType: 'text/javascript',
-      _transferSize: 12,
+      transferSize: 12,
       _startTime: 12,
       _endTime: 22,
       finished: false,

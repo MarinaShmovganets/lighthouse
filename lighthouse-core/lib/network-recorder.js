@@ -25,21 +25,10 @@ class NetworkRecorder extends EventEmitter {
     this._records = [];
     /** @type {Map<string, NetworkRequest>} */
     this._recordsById = new Map();
-
-    this.networkManager = NetworkManager.createWithFakeTarget();
-
-    this.networkManager.addEventListener(
-      this.EventTypes.RequestStarted,
-      this.onRequestStarted.bind(this)
-    );
-    this.networkManager.addEventListener(
-      this.EventTypes.RequestFinished,
-      this.onRequestFinished.bind(this)
-    );
   }
 
   getRecords() {
-    return this._records.slice();
+    return Array.from(this._records);
   }
 
   /**
@@ -294,22 +283,14 @@ class NetworkRecorder extends EventEmitter {
     }
 
     switch (event.method) {
-      case 'Network.requestWillBeSent':
-        return this.onRequestWillBeSent(event.params);
-      case 'Network.requestServedFromCache':
-        return this.onRequestServedFromCache(event.params);
-      case 'Network.responseReceived':
-        return this.onResponseReceived(event.params);
-      case 'Network.dataReceived':
-        return this.onDataReceived(event.params);
-      case 'Network.loadingFinished':
-        return this.onLoadingFinished(event.params);
-      case 'Network.loadingFailed':
-        return this.onLoadingFailed(event.params);
-      case 'Network.resourceChangedPriority':
-        return this.onResourceChangedPriority(event.params);
-      default:
-        return;
+      case 'Network.requestWillBeSent': return this.onRequestWillBeSent(event.params);
+      case 'Network.requestServedFromCache': return this.onRequestServedFromCache(event.params);
+      case 'Network.responseReceived': return this.onResponseReceived(event.params);
+      case 'Network.dataReceived': return this.onDataReceived(event.params);
+      case 'Network.loadingFinished': return this.onLoadingFinished(event.params);
+      case 'Network.loadingFailed': return this.onLoadingFailed(event.params);
+      case 'Network.resourceChangedPriority': return this.onResourceChangedPriority(event.params);
+      default: return;
     }
   }
 

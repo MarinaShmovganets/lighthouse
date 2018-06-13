@@ -33,7 +33,6 @@ module.exports = class NetworkRequest {
     this._responseReceivedTime = -1;
 
     this.transferSize = 0;
-    this._transferSize = 0;
     this._resourceSize = 0;
     this._fromDiskCache = false;
     this._fromMemoryCache = false;
@@ -59,7 +58,7 @@ module.exports = class NetworkRequest {
     this._frameId = /** @type {string|undefined} */ ('');
     this._isLinkPreload = false;
 
-    // Make sure we're compitable with NetworkRequest
+    // Make sure we're compatible with old WebInspector.NetworkRequest
     // eslint-disable-next-line no-unused-vars
     const record = /** @type {LH.WebInspector.NetworkRequest} */ (this);
   }
@@ -126,7 +125,6 @@ module.exports = class NetworkRequest {
     this._resourceSize += data.dataLength;
     if (data.encodedDataLength !== -1) {
       this.transferSize += data.encodedDataLength;
-      this._transferSize += data.encodedDataLength;
     }
   }
 
@@ -138,7 +136,6 @@ module.exports = class NetworkRequest {
     this.endTime = data.timestamp;
     if (data.encodedDataLength >= 0) {
       this.transferSize = data.encodedDataLength;
-      this._transferSize = data.encodedDataLength;
     }
 
     this._updateResponseReceivedTimeIfNecessary();
@@ -192,7 +189,6 @@ module.exports = class NetworkRequest {
     this._responseReceivedTime = timestamp;
 
     this.transferSize = response.encodedDataLength;
-    this._transferSize = response.encodedDataLength;
     if (typeof response.fromDiskCache === 'boolean') this._fromDiskCache = response.fromDiskCache;
 
     this.statusCode = response.status;
@@ -200,7 +196,7 @@ module.exports = class NetworkRequest {
     this._timing = response.timing;
     if (resourceType) this._resourceType = resourceTypes[resourceType];
     this._mimeType = response.mimeType;
-    this._responseHeaders = NetworkRequest._headersMapToHeadersArray(response.headers);
+    this._responseHeaders = NetworkRequest._headersDictToHeadersArray(response.headers);
 
     this._fetchedViaServiceWorker = !!response.fromServiceWorker;
 
@@ -208,6 +204,8 @@ module.exports = class NetworkRequest {
   }
 
   /**
+   * Resolve differences between conflicting timing signals. Based on the property setters in DevTools.
+   * @see https://github.com/ChromeDevTools/devtools-frontend/blob/56a99365197b85c24b732ac92b0ac70feed80179/front_end/sdk/NetworkRequest.js#L485-L502
    * @param {LH.Crdp.Network.ResourceTiming} timing
    */
   _recomputeTimesWithResourceTiming(timing) {
@@ -229,13 +227,15 @@ module.exports = class NetworkRequest {
   }
 
   /**
-   * @param {LH.Crdp.Network.Headers} headersMap
+   * Based on DevTools NetworkManager.
+   * @see https://github.com/ChromeDevTools/devtools-frontend/blob/3415ee28e86a3f4bcc2e15b652d22069938df3a6/front_end/sdk/NetworkManager.js#L285-L297
+   * @param {LH.Crdp.Network.Headers} headersDict
    * @return {Array<LH.WebInspector.HeaderValue>}
    */
-  static _headersMapToHeadersArray(headersMap) {
+  static _headersDictToHeadersArray(headersDict) {
     const result = [];
-    for (const name of Object.keys(headersMap)) {
-      const values = headersMap[name].split('\n');
+    for (const name of Object.keys(headersDict)) {
+      const values = headersDict[name].split('\n');
       for (let i = 0; i < values.length; ++i) {
         result.push({name: name, value: values[i]});
       }
