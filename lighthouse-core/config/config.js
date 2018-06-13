@@ -423,12 +423,16 @@ class Config {
 
     const newAudits = audits.map(audit => {
       if (typeof audit === 'string') {
+        // just 'path/to/audit'
         return {path: audit, options: {}};
       } else if ('implementation' in audit && typeof audit.implementation.audit === 'function') {
+        // {implementation: AuditClass, ...}
         return audit;
       } else if ('path' in audit && typeof audit.path === 'string') {
+        // {path: 'path/to/audit', ...}
         return audit;
       } else if ('audit' in audit && typeof audit.audit === 'function') {
+        // just AuditClass
         return {implementation: audit, options: {}};
       } else {
         throw new Error('Invalid Audit type ' + JSON.stringify(audit));
@@ -507,7 +511,7 @@ class Config {
   static filterConfigIfNeeded(config) {
     const settings = config.settings;
     if (!settings.onlyCategories && !settings.onlyAudits && !settings.skipAudits) {
-      return config;
+      return;
     }
 
     // 1. Filter to just the chosen categories/audits
@@ -570,11 +574,9 @@ class Config {
       if (!foundCategory) {
         const parentKeyName = skipAuditIds.includes(auditId) ? 'skipAudits' : 'onlyAudits';
         log.warn('config', `unrecognized audit in '${parentKeyName}': ${auditId}`);
-      } else {
-        if (auditIds.includes(auditId) && categoryIds.includes(foundCategory)) {
-          log.warn('config', `${auditId} in 'onlyAudits' is already included by ` +
-              `${foundCategory} in 'onlyCategories'`);
-        }
+      } else if (auditIds.includes(auditId) && categoryIds.includes(foundCategory)) {
+        log.warn('config', `${auditId} in 'onlyAudits' is already included by ` +
+            `${foundCategory} in 'onlyCategories'`);
       }
     }
 
@@ -725,6 +727,32 @@ class Config {
   }
 
   /**
+   * @param {string} path
+   * @param {{}=} options
+   * @param {Array<string>} coreAuditList
+   * @param {string=} configPath
+   * @return {LH.Config.GathererDefn}
+   */
+  static requireGathererFromPath(path, options, coreAuditList, configPath) {
+    const coreGatherer = coreAuditList.find(a => a === `${path}.js`);
+
+    let requirePath = `../gather/gatherers/${path}`;
+    if (!coreGatherer) {
+      // Otherwise, attempt to find it elsewhere. This throws if not found.
+      requirePath = Runner.resolvePlugin(path, configPath, 'gatherer');
+    }
+
+    const GathererClass = /** @type {GathererConstructor} */ (require(requirePath));
+
+    return {
+      instance: new GathererClass(),
+      implementation: GathererClass,
+      path,
+      options: options || {},
+    };
+  }
+
+  /**
    * Takes an array of passes with every property now initialized except the
    * gatherers and requires them, (relative to the optional `configPath` if
    * provided) using `Runner.resolvePlugin`, returning an array of full Passes.
@@ -756,24 +784,9 @@ class Config {
             options: gathererDefn.options || {},
           };
         } else if (gathererDefn.path) {
-          // See if the gatherer is a Lighthouse core gatherer
           const path = gathererDefn.path;
-          const coreGatherer = coreList.find(a => a === `${path}.js`);
-
-          let requirePath = `../gather/gatherers/${path}`;
-          if (!coreGatherer) {
-            // Otherwise, attempt to find it elsewhere. This throws if not found.
-            requirePath = Runner.resolvePlugin(path, configPath, 'gatherer');
-          }
-
-          const GathererClass = /** @type {GathererConstructor} */ (require(requirePath));
-
-          return {
-            instance: new GathererClass(),
-            implementation: GathererClass,
-            path,
-            options: gathererDefn.options || {},
-          };
+          const options = gathererDefn.options;
+          return Config.requireGathererFromPath(path, options, coreList, configPath);
         } else {
           throw new Error('Invalid expanded Gatherer: ' + JSON.stringify(gathererDefn));
         }

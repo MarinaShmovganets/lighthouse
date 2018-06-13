@@ -690,7 +690,7 @@ describe('Config', () => {
       const config = new Config(configCopy);
       configCopy.settings.onlyCategories = null;
       assert.equal(config.passes.length, 1, 'did not filter config');
-      assert.deepStrictEqual(configCopy, origConfig, 'no mutations');
+      assert.deepStrictEqual(configCopy, origConfig, 'had mutations');
     });
 
     it('should generate the same filtered config, extended or original', () => {
@@ -707,7 +707,7 @@ describe('Config', () => {
       const extendedConfig = new Config(extended);
 
       assert.equal(config.passes.length, 1, 'did not filter config');
-      assert.deepStrictEqual(config, extendedConfig, 'no mutations');
+      assert.deepStrictEqual(config, extendedConfig, 'had mutations');
     });
 
     it('should filter out other passes if passed Performance', () => {
