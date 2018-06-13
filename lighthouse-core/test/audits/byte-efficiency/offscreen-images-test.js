@@ -51,7 +51,12 @@ function generateInteractiveFunc(desiredTimeInSeconds) {
 }
 
 describe('OffscreenImages audit', () => {
+  let context;
   const DEFAULT_DIMENSIONS = {innerWidth: 1920, innerHeight: 1080};
+
+  beforeEach(() => {
+    context = {settings: {throttlingMethod: 'devtools'}};
+  });
 
   it('handles images without network record', () => {
     return UnusedImages.audit_({
@@ -62,7 +67,7 @@ describe('OffscreenImages audit', () => {
       traces: {},
       devtoolsLogs: {},
       requestInteractive: generateInteractiveFunc(2),
-    }, [], {}).then(auditResult => {
+    }, [], context).then(auditResult => {
       assert.equal(auditResult.items.length, 0);
     });
   });
@@ -80,7 +85,7 @@ describe('OffscreenImages audit', () => {
       traces: {},
       devtoolsLogs: {},
       requestInteractive: generateInteractiveFunc(2),
-    }, [], {}).then(auditResult => {
+    }, [], context).then(auditResult => {
       assert.equal(auditResult.items.length, 0);
     });
   });
@@ -104,7 +109,7 @@ describe('OffscreenImages audit', () => {
       traces: {},
       devtoolsLogs: {},
       requestInteractive: generateInteractiveFunc(2),
-    }, [], {}).then(auditResult => {
+    }, [], context).then(auditResult => {
       assert.equal(auditResult.items.length, 4);
     });
   });
@@ -118,7 +123,7 @@ describe('OffscreenImages audit', () => {
       traces: {},
       devtoolsLogs: {},
       requestInteractive: generateInteractiveFunc(2),
-    }, [], {}).then(auditResult => {
+    }, [], context).then(auditResult => {
       assert.equal(auditResult.items.length, 1);
       assert.equal(auditResult.items[0].wastedBytes, 100 * 1024);
     });
@@ -137,7 +142,7 @@ describe('OffscreenImages audit', () => {
       traces: {},
       devtoolsLogs: {},
       requestInteractive: generateInteractiveFunc(2),
-    }, [], {}).then(auditResult => {
+    }, [], context).then(auditResult => {
       assert.equal(auditResult.items.length, 1);
     });
   });
@@ -152,12 +157,13 @@ describe('OffscreenImages audit', () => {
       traces: {},
       devtoolsLogs: {},
       requestInteractive: generateInteractiveFunc(2),
-    }, [], {}, [], {}).then(auditResult => {
+    }, [], context, [], context).then(auditResult => {
       assert.equal(auditResult.items.length, 0);
     });
   });
 
   it('disregards images loaded after last long task (Lantern)', () => {
+    context = {settings: {throttlingMethod: 'simulate'}};
     const recordA = {url: 'a', resourceSize: 100 * 1024, requestId: 'a'};
     const recordB = {url: 'b', resourceSize: 100 * 1024, requestId: 'b'};
 
@@ -179,7 +185,7 @@ describe('OffscreenImages audit', () => {
       traces: {},
       devtoolsLogs: {},
       requestInteractive: async () => ({pessimisticEstimate: {nodeTimings: timings}}),
-    }, [], {}, [], {}).then(auditResult => {
+    }, [], context, [], context).then(auditResult => {
       assert.equal(auditResult.items.length, 1);
       assert.equal(auditResult.items[0].url, 'a');
     });
