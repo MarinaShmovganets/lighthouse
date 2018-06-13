@@ -190,9 +190,10 @@ class OffscreenImages extends ByteEfficiencyAudit {
       const unfilteredResults = Array.from(resultsMap.values());
       const lanternInteractive = /** @type {LH.Artifacts.LanternMetric} */ (interactive);
       // Filter out images that were loaded after all CPU activity
-      const items = interactive.timestamp ?
-        OffscreenImages.filterObservedResults(unfilteredResults, interactive.timestamp) :
-        OffscreenImages.filterLanternResults(unfilteredResults, lanternInteractive);
+      const items = context.settings.throttlingMethod === 'simulate' ?
+        OffscreenImages.filterLanternResults(unfilteredResults, lanternInteractive) :
+        // @ts-ignore - .timestamp will exist if throttlingMethod isn't lantern
+        OffscreenImages.filterObservedResults(unfilteredResults, interactive.timestamp);
 
       /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
       const headings = [
