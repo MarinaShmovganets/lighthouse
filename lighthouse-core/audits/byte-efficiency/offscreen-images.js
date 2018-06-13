@@ -145,7 +145,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
    * @return {number}
    */
   static computeWasteWithTTIGraph(results, graph, simulator) {
-    return ByteEfficiencyAudit.computeWasteWithTTIGraph(results, graph, simulator,
+    return super.computeWasteWithTTIGraph(results, graph, simulator,
       {includeLoad: false});
   }
 
