@@ -23,7 +23,7 @@ const Connection = require('./gather/connections/connection.js'); // eslint-disa
 class Runner {
   /**
    * @param {Connection} connection
-   * @param {{config: LH.Config, url: string, driverMock?: Driver}} opts
+   * @param {{config: LH.Config, url?: string, driverMock?: Driver}} opts
    * @return {Promise<LH.RunnerResult|undefined>}
    */
   static async run(connection, opts) {
@@ -67,27 +67,21 @@ class Runner {
           throw new Error('Cannot run audit mode on different URL');
         }
       } else {
-        // save the requestedUrl provided by the user
-        const rawRequestedUrl = opts.url;
-        if (typeof rawRequestedUrl !== 'string' || rawRequestedUrl.length === 0) {
-          throw new Error(`You must provide a url to the runner. '${rawRequestedUrl}' provided.`);
+        if (typeof opts.url !== 'string' || opts.url.length === 0) {
+          throw new Error(`You must provide a url to the runner. '${opts.url}' provided.`);
         }
 
-        let parsedURL;
         try {
-          parsedURL = new URL(opts.url);
+          // Use canonicalized URL (with trailing slashes and such)
+          requestedUrl = new URL(opts.url).href;
         } catch (e) {
-          throw new Error('The url provided should have a proper protocol and hostname.');
+          // Prepend https:// if user was lazy and just went with an unqualified URL
+          try {
+            requestedUrl = new URL(`https://${opts.url}`).href;
+          } catch (e){
+            throw new Error('The url provided should have a proper protocol and hostname.');
+          }
         }
-
-        // If the URL isn't https and is also not localhost complain to the user.
-        if (parsedURL.protocol !== 'https:' && parsedURL.hostname !== 'localhost') {
-          log.warn('Lighthouse', 'The URL provided should be on HTTPS');
-          log.warn('Lighthouse', 'Performance stats might be skewed redirecting to HTTPS.');
-        }
-
-        // canonicalize URL with any trailing slashes neccessary
-        requestedUrl = parsedURL.href;
 
         artifacts = await Runner._gatherArtifactsFromBrowser(requestedUrl, opts, connection);
         // -G means save these to ./latest-run, etc.
