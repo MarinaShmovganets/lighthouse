@@ -78,7 +78,7 @@ class Runner {
           // Prepend https:// if user was lazy and just went with an unqualified URL
           try {
             requestedUrl = new URL(`https://${opts.url}`).href;
-          } catch (e){
+          } catch (e) {
             throw new Error('The url provided should have a proper protocol and hostname.');
           }
         }
