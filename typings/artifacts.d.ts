@@ -134,10 +134,14 @@ declare global {
       export interface Accessibility {
         violations: {
           id: string;
+          impact: string;
+          tags: string[];
           nodes: {
             path: string;
+            html: string;
             snippet: string;
             target: string[];
+            failureSummary?: string;
           }[];
         }[];
         notApplicable: {
@@ -307,11 +311,13 @@ declare global {
         bottomUpGroupBy(grouping: string): DevtoolsTimelineModelNode;
       }
 
+      export type ManifestValueCheckID = 'hasStartUrl'|'hasIconsAtLeast192px'|'hasIconsAtLeast512px'|'hasPWADisplayValue'|'hasBackgroundColor'|'hasThemeColor'|'hasShortName'|'hasName'|'shortNameLength';
+
       export interface ManifestValues {
         isParseFailure: boolean;
         parseFailureReason: string | undefined;
         allChecks: {
-          id: string;
+          id: ManifestValueCheckID;
           failureText: string;
           passing: boolean;
         }[];
