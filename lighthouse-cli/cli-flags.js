@@ -136,8 +136,10 @@ function getFlags(manualArgv) {
       .default('port', 0)
       .default('hostname', 'localhost')
       .check(/** @param {!LH.Flags} argv */ (argv) => {
-        // Make sure lighthouse has been passed a url, or at least one of --list-all-audits
-        // or --list-trace-categories. If not, stop the program and ask for a url
+        // Lighthouse doesn't need a URL if...
+        //   - We're in auditMode (and we have artifacts already)
+        //   - We're just listing the available options.
+        // If one of these don't apply, stop the program and ask for a url.
         const isListMode = argv.listAllAudits || argv.listTraceCategories;
         const isOnlyAuditMode = !!argv.auditMode && !argv.gatherMode;
         if (!isListMode && !isOnlyAuditMode && argv._.length === 0) {

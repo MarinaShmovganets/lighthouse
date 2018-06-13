@@ -75,12 +75,7 @@ class Runner {
           // Use canonicalized URL (with trailing slashes and such)
           requestedUrl = new URL(opts.url).href;
         } catch (e) {
-          // Prepend https:// if user was lazy and just went with an unqualified URL
-          try {
-            requestedUrl = new URL(`https://${opts.url}`).href;
-          } catch (e) {
-            throw new Error('The url provided should have a proper protocol and hostname.');
-          }
+          throw new Error('The url provided should have a proper protocol and hostname.');
         }
 
         artifacts = await Runner._gatherArtifactsFromBrowser(requestedUrl, opts, connection);
