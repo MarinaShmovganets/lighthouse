@@ -98,16 +98,14 @@ class GatherRunner {
 
   /**
    * @param {Driver} driver
-   * @param {LH.BaseArtifacts} baseArtifacts
    * @param {{requestedUrl: string, settings: LH.Config.Settings}} options
    * @return {Promise<void>}
    */
-  static async setupDriver(driver, baseArtifacts, options) {
+  static async setupDriver(driver, options) {
     log.log('status', 'Initializing…');
     const resetStorage = !options.settings.disableStorageReset;
     // Enable emulation based on settings
     await driver.assertNoSameOriginServiceWorkerClients(options.requestedUrl);
-    GatherRunner.warnOnHeadless(baseArtifacts);
     await driver.beginEmulation(options.settings);
     await driver.enableRuntimeEvents();
     await driver.cacheNatives();
@@ -170,23 +168,6 @@ class GatherRunner {
       const error = new LHError(errorCode, {reason: errorReason});
       log.error('GatherRunner', error.message, url);
       return error;
-    }
-  }
-
-  /**
-   * Add run warning if running in Headless Chrome.
-   * @param {LH.BaseArtifacts} baseArtifacts
-   */
-  static warnOnHeadless(baseArtifacts) {
-    const chromeVersion = baseArtifacts.UserAgent.split(/HeadlessChrome\/(.*) /)[1];
-    // Headless Chrome gained throttling support in Chrome 63.
-    // https://chromium.googlesource.com/chromium/src/+/8931a104b145ccf92390f6f48fba6553a1af92e4
-    const minVersion = '63.0.3239.0';
-    if (chromeVersion && chromeVersion < minVersion) {
-      baseArtifacts.LighthouseRunWarnings.push('Your site\'s mobile performance may be ' +
-          'worse than the numbers presented in this report. Lighthouse could not test on a ' +
-          'mobile connection because Headless Chrome does not support network throttling ' +
-          'prior to version ' + minVersion + '. The version used was ' + chromeVersion);
     }
   }
 
@@ -412,7 +393,7 @@ class GatherRunner {
       await driver.connect();
       const baseArtifacts = await GatherRunner.getBaseArtifacts(options);
       await GatherRunner.loadBlank(driver);
-      await GatherRunner.setupDriver(driver, baseArtifacts, options);
+      await GatherRunner.setupDriver(driver, options);
 
       // Run each pass
       let firstPass = true;
