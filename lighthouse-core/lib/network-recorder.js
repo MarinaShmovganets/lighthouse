@@ -93,11 +93,8 @@ class NetworkRecorder extends EventEmitter {
    * @return {boolean}
    */
   static _isQUICAndFinished(record) {
-    const isQUIC =
-      record._responseHeaders &&
-      record._responseHeaders.some(
-        header => header.name.toLowerCase() === 'alt-svc' && /quic/.test(header.value)
-      );
+    const isQUIC = record._responseHeaders && record._responseHeaders
+      .some(header => header.name.toLowerCase() === 'alt-svc' && /quic/.test(header.value));
     const receivedHeaders = record._timing && record._timing.receiveHeadersEnd > 0;
     return !!(isQUIC && receivedHeaders && record.endTime);
   }
@@ -183,38 +180,40 @@ class NetworkRecorder extends EventEmitter {
     this._emitNetworkStatus();
   }
 
-  // The below methods proxy network data into the DevTools SDK network layer.
-  // There are a few differences between the debugging protocol naming and
-  // the parameter naming used in NetworkManager. These are noted below.
+  // The below methods proxy network data into the NetworkRequest object which mimics the
+  // DevTools SDK network layer.
 
   /**
    * @param {LH.Crdp.Network.RequestWillBeSentEvent} data
    */
   onRequestWillBeSent(data) {
     const originalRequest = this._findRealRequest(data.requestId);
-    if (originalRequest) {
-      // TODO(phulce): log these to sentry?
-      if (!data.redirectResponse) {
-        return;
-      }
-
-      const modifiedData = {...data, requestId: `${originalRequest.requestId}:redirect`};
-      const redirectRequest = new NetworkRequest();
-
-      redirectRequest.onRequestWillBeSent(modifiedData);
-      originalRequest.onRedirectResponse(data);
-
-      originalRequest.redirectDestination = redirectRequest;
-      redirectRequest.redirectSource = originalRequest;
-
-      this.onRequestStarted(redirectRequest);
-      this.onRequestFinished(originalRequest);
+    // This is a simple new request, create the NetworkRequest object and finish.
+    if (!originalRequest) {
+      const request = new NetworkRequest();
+      request.onRequestWillBeSent(data);
+      this.onRequestStarted(request);
       return;
     }
 
-    const request = new NetworkRequest();
-    request.onRequestWillBeSent(data);
-    this.onRequestStarted(request);
+    // TODO(phulce): log these to sentry?
+    if (!data.redirectResponse) {
+      return;
+    }
+
+    // On redirect, another requestWillBeSent message is fired for the same requestId.
+    // Update the previous network request and create a new one for the redirect.
+    const modifiedData = {...data, requestId: `${originalRequest.requestId}:redirect`};
+    const redirectRequest = new NetworkRequest();
+
+    redirectRequest.onRequestWillBeSent(modifiedData);
+    originalRequest.onRedirectResponse(data);
+
+    originalRequest.redirectDestination = redirectRequest;
+    redirectRequest.redirectSource = originalRequest;
+
+    this.onRequestStarted(redirectRequest);
+    this.onRequestFinished(originalRequest);
   }
 
   /**
@@ -295,6 +294,11 @@ class NetworkRecorder extends EventEmitter {
   }
 
   /**
+   * Redirected requests all have identical requestIds over the protocol. Once a request has been
+   * redirected all future messages referrencing that requestId are about the new destination, not
+   * the original. This method is a helper for finding the real request object to which the current
+   * message is referring.
+   *
    * @param {string} requestId
    * @return {NetworkRequest|undefined}
    */
