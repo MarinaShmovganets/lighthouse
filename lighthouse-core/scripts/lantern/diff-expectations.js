@@ -26,6 +26,8 @@ if (!fs.existsSync(COMPUTED_PATH) || !fs.existsSync(EXPECTED_PATH)) {
   throw new Error('Usage $0 <computed file>');
 }
 
+let exitCode = 0;
+
 try {
   const computedResults = require(COMPUTED_PATH);
   const expectedResults = require(EXPECTED_PATH);
@@ -46,8 +48,11 @@ try {
   } catch (err) {
     console.log('❌  FAIL    Changes between expected and computed!\n');
     console.log(err.stdout.toString());
+    exitCode = 1;
   }
 } finally {
   fs.unlinkSync(TMP_COMPUTED);
   fs.unlinkSync(TMP_EXPECTED);
 }
+
+process.exit(exitCode);
