@@ -94,7 +94,7 @@ module.exports = class NetworkRequest {
     this.documentURL = data.documentURL;
     this.parsedURL = {
       scheme: url.protocol.split(':')[0],
-      // Intentional, DevTools uses different terminalogy
+      // Intentional, DevTools uses different terminology
       host: url.hostname,
       securityOrigin: () => url.origin,
     };
