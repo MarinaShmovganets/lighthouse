@@ -11,26 +11,27 @@
 const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
+const constants = require('./constants');
 
-const COMPUTED_INPUT_ARG = process.argv[2] || './lantern-data/lantern-computed.json';
-const COMPUTED_PATH = path.join(process.cwd(), COMPUTED_INPUT_ARG);
-const EXPECTED_PATH = path.join(__dirname, '../../test/fixtures/lantern-expectations.json');
+const INPUT_PATH = process.argv[2] || constants.SITE_INDEX_WITH_GOLDEN_WITH_COMPUTED_PATH;
+const HEAD_PATH = path.resolve(process.cwd(), INPUT_PATH);
+const MASTER_PATH = constants.MASTER_COMPUTED_PATH;
 
-const TMP_DIR = path.join(process.cwd(), '.tmp');
-const TMP_COMPUTED = path.join(TMP_DIR, 'computed.json');
-const TMP_EXPECTED = path.join(TMP_DIR, 'expected.json');
+const TMP_DIR = path.join(__dirname, '../../../.tmp');
+const TMP_HEAD_PATH = path.join(TMP_DIR, 'HEAD-for-diff.json');
+const TMP_MASTER_PATH = path.join(TMP_DIR, 'master-for-diff.json');
 
 if (!fs.existsSync(TMP_DIR)) fs.mkdirSync(TMP_DIR);
 
-if (!fs.existsSync(COMPUTED_PATH) || !fs.existsSync(EXPECTED_PATH)) {
+if (!fs.existsSync(HEAD_PATH) || !fs.existsSync(MASTER_PATH)) {
   throw new Error('Usage $0 <computed file>');
 }
 
 let exitCode = 0;
 
 try {
-  const computedResults = require(COMPUTED_PATH);
-  const expectedResults = require(EXPECTED_PATH);
+  const computedResults = require(HEAD_PATH);
+  const expectedResults = require(MASTER_PATH);
 
   const sites = [];
   for (const entry of computedResults.sites) {
@@ -39,11 +40,11 @@ try {
     sites.push({url: entry.url, ...lanternValues});
   }
 
-  fs.writeFileSync(TMP_COMPUTED, JSON.stringify({sites}, null, 2));
-  fs.writeFileSync(TMP_EXPECTED, JSON.stringify(expectedResults, null, 2));
+  fs.writeFileSync(TMP_HEAD_PATH, JSON.stringify({sites}, null, 2));
+  fs.writeFileSync(TMP_MASTER_PATH, JSON.stringify(expectedResults, null, 2));
 
   try {
-    execSync(`git --no-pager diff --color=always --no-index ${TMP_EXPECTED} ${TMP_COMPUTED}`);
+    execSync(`git --no-pager diff --color=always --no-index ${TMP_MASTER_PATH} ${TMP_HEAD_PATH}`);
     console.log('✅  PASS    No changes between expected and computed!');
   } catch (err) {
     console.log('❌  FAIL    Changes between expected and computed!\n');
@@ -51,8 +52,8 @@ try {
     exitCode = 1;
   }
 } finally {
-  fs.unlinkSync(TMP_COMPUTED);
-  fs.unlinkSync(TMP_EXPECTED);
+  fs.unlinkSync(TMP_HEAD_PATH);
+  fs.unlinkSync(TMP_MASTER_PATH);
 }
 
 process.exit(exitCode);

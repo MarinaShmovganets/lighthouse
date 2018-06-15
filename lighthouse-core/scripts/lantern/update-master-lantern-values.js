@@ -12,20 +12,20 @@ const fs = require('fs');
 const path = require('path');
 const execFileSync = require('child_process').execFileSync;
 const prettyJSONStringify = require('pretty-json-stringify');
+const constants = require('./constants');
 
-const INPUT_PATH = process.argv[2] || './lantern-data/lantern-expectations.json';
-const EXPECTATIONS_PATH = path.resolve(process.cwd(), INPUT_PATH);
-const EXPECTATIONS_DIR = path.dirname(EXPECTATIONS_PATH);
-const COMPUTED_PATH = path.join(EXPECTATIONS_DIR, 'lantern-computed.json');
-const RUN_ALL_SCRIPT_PATH = path.join(__dirname, 'run-all-expectations.js');
-const OUTPUT_PATH = path.join(__dirname, '../../test/fixtures/lantern-expectations.json');
+const INPUT_PATH = process.argv[2] || constants.SITE_INDEX_WITH_GOLDEN_PATH;
+const SITE_INDEX_PATH = path.resolve(process.cwd(), INPUT_PATH);
+const HEAD_COMPUTED_PATH = constants.SITE_INDEX_WITH_GOLDEN_WITH_COMPUTED_PATH;
+const RUN_ALL_SCRIPT_PATH = path.join(__dirname, 'run-on-all-assets.js');
+const OUTPUT_PATH = constants.MASTER_COMPUTED_PATH;
 
-if (!fs.existsSync(COMPUTED_PATH) || process.env.FORCE) {
-  if (!fs.existsSync(EXPECTATIONS_PATH)) throw new Error('Usage $0 <expectations file>');
-  execFileSync(RUN_ALL_SCRIPT_PATH, [EXPECTATIONS_PATH]);
+if (!fs.existsSync(HEAD_COMPUTED_PATH) || process.env.FORCE) {
+  if (!fs.existsSync(SITE_INDEX_PATH)) throw new Error('Usage $0 <expectations file>');
+  execFileSync(RUN_ALL_SCRIPT_PATH, [SITE_INDEX_PATH]);
 }
 
-const computedResults = require(COMPUTED_PATH);
+const computedResults = require(HEAD_COMPUTED_PATH);
 
 const sites = [];
 for (const entry of computedResults.sites) {

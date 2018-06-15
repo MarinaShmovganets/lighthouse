@@ -24,11 +24,11 @@ fi
 printf "Lantern files affected!\n\nDownloading test set...\n"
 "$LH_ROOT/lighthouse-core/scripts/lantern/download-traces.sh"
 
-printf "\n\nRunning all expectations...\n"
-"$LH_ROOT/lighthouse-core/scripts/lantern/run-all-expectations.js"
+printf "\n\nRunning lantern on all sites...\n"
+"$LH_ROOT/lighthouse-core/scripts/lantern/run-on-all-assets.js"
 
 printf "\n\n"
-"$LH_ROOT/lighthouse-core/scripts/lantern/evaluate-results.js"
+"$LH_ROOT/lighthouse-core/scripts/lantern/print-correlations.js"
 
-printf "\n\nComparing to golden expectations...\n"
-"$LH_ROOT/lighthouse-core/scripts/lantern/diff-expectations.js"
+printf "\n\nComparing to master computed values...\n"
+"$LH_ROOT/lighthouse-core/scripts/lantern/assert-master-lantern-values-unchanged.js"
