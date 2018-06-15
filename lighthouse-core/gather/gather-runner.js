@@ -236,8 +236,10 @@ class GatherRunner {
       // Abuse the passContext to pass through gatherer options
       passContext.options = gathererDefn.options || {};
       const artifactPromise = Promise.resolve().then(_ => gatherer.pass(passContext));
+
       const gathererResult = gathererResults[gatherer.name] || [];
       gathererResult.push(artifactPromise);
+      gathererResults[gatherer.name] = gathererResult;
       await GatherRunner.recoverOrThrow(artifactPromise);
     }
   }
@@ -302,8 +304,10 @@ class GatherRunner {
         Promise.reject(pageLoadError) :
         // Wrap gatherer response in promise, whether rejected or not.
         Promise.resolve().then(_ => gatherer.afterPass(passContext, passData));
+
       const gathererResult = gathererResults[gatherer.name] || [];
       gathererResult.push(artifactPromise);
+      gathererResults[gatherer.name] = gathererResult;
       await GatherRunner.recoverOrThrow(artifactPromise);
       log.verbose('statusEnd', status);
     }
