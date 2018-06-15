@@ -42,7 +42,6 @@ class ViewerUIFeatures extends ReportUIFeatures {
    * @override
    */
   getReportHtml() {
-    // @ts-ignore - TODO(bckenny): remove ignore when this.json is an LHR instead of LH.ReportResult.
     return ReportGenerator.generateReportHtml(this.json);
   }
 
