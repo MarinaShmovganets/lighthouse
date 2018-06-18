@@ -30,8 +30,8 @@ async function run() {
   if (process.env.LANTERN_DEBUG && pessimisticTTINodeTimings) {
     const outputTraceFile = path.basename(tracePath).replace(/.trace.json$/, '.lantern.trace.json');
     const outputTracePath = path.join(__dirname, '../../../.tmp', outputTraceFile);
-    const traceEvents = traceSaver.convertNodeTimingsToTrace(pessimisticTTINodeTimings);
-    fs.writeFileSync(outputTracePath, JSON.stringify({traceEvents}, null, 2));
+    const trace = traceSaver.convertNodeTimingsToTrace(pessimisticTTINodeTimings);
+    fs.writeFileSync(outputTracePath, JSON.stringify(trace, null, 2));
   }
 }
 
