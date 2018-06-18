@@ -66,9 +66,7 @@ declare global {
 
     export interface ResourceType {
       _category: string;
-      name(): string;
       _name: string;
-      title(): string;
       isTextType(): boolean;
     }
   }
