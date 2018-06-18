@@ -203,7 +203,13 @@ class NetworkRecorder extends EventEmitter {
 
     // On redirect, another requestWillBeSent message is fired for the same requestId.
     // Update the previous network request and create a new one for the redirect.
-    const modifiedData = {...data, requestId: `${originalRequest.requestId}:redirect`};
+    const modifiedData = {
+      ...data,
+      // Copy over the initiator as well to match DevTools behavior
+      // TODO(phulce): abandon this DT hack and update Lantern graph to handle it
+      initiator: originalRequest._initiator,
+      requestId: `${originalRequest.requestId}:redirect`,
+    };
     const redirectRequest = new NetworkRequest();
 
     redirectRequest.onRequestWillBeSent(modifiedData);

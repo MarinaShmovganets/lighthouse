@@ -206,7 +206,8 @@ module.exports = class NetworkRequest {
 
     this._fetchedViaServiceWorker = !!response.fromServiceWorker;
 
-    if (response.timing) this._recomputeTimesWithResourceTiming(response.timing);
+    if (this._fromMemoryCache) this._timing = undefined;
+    if (this._timing) this._recomputeTimesWithResourceTiming(this._timing);
   }
 
   /**
