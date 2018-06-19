@@ -53,15 +53,12 @@ class ResourceType {
   }
 };
 
-/**
- * Keep these in sync with WebCore::InspectorPageAgent::resourceTypeJson
- */
+/** @type {Record<LH.Crdp.Page.ResourceType, ResourceType>} */
 ResourceType.TYPES = {
   XHR: new ResourceType('xhr', 'XHR', 'XHR', true),
   Fetch: new ResourceType('fetch', 'Fetch', 'XHR', true),
   EventSource: new ResourceType('eventsource', 'EventSource', 'XHR', true),
   Script: new ResourceType('script', 'Script', 'Script', true),
-  Snippet: new ResourceType('snippet', 'Snippet', 'Script', true),
   Stylesheet: new ResourceType('stylesheet', 'Stylesheet', 'Stylesheet', true),
   Image: new ResourceType('image', 'Image', 'Image', false),
   Media: new ResourceType('media', 'Media', 'Media', false),
@@ -70,11 +67,7 @@ ResourceType.TYPES = {
   TextTrack: new ResourceType('texttrack', 'TextTrack', 'Other', true),
   WebSocket: new ResourceType('websocket', 'WebSocket', 'WebSocket', false),
   Other: new ResourceType('other', 'Other', 'Other', false),
-  SourceMapScript: new ResourceType('sm-script', 'Script', 'Script', true),
-  SourceMapStyleSheet:
-      new ResourceType('sm-stylesheet', 'Stylesheet', 'Stylesheet', true),
   Manifest: new ResourceType('manifest', 'Manifest', 'Manifest', true),
-  SignedExchange: new ResourceType('signed-exchange', 'SignedExchange', 'Other', false),
 };
 
 module.exports = ResourceType;

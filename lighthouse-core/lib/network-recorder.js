@@ -94,7 +94,7 @@ class NetworkRecorder extends EventEmitter {
    */
   static _isQUICAndFinished(record) {
     const isQUIC = record._responseHeaders && record._responseHeaders
-      .some(header => header.name.toLowerCase() === 'alt-svc' && /quic/.test(header.value));
+        .some(header => header.name.toLowerCase() === 'alt-svc' && /quic/.test(header.value));
     const receivedHeaders = record._timing && record._timing.receiveHeadersEnd > 0;
     return !!(isQUIC && receivedHeaders && record.endTime);
   }
@@ -202,7 +202,7 @@ class NetworkRecorder extends EventEmitter {
     }
 
     // On redirect, another requestWillBeSent message is fired for the same requestId.
-    // Update the previous network request and create a new one for the redirect.
+    // Update/finish the previous network request and create a new one for the redirect.
     const modifiedData = {
       ...data,
       // Copy over the initiator as well to match DevTools behavior
@@ -210,15 +210,15 @@ class NetworkRecorder extends EventEmitter {
       initiator: originalRequest._initiator,
       requestId: `${originalRequest.requestId}:redirect`,
     };
-    const redirectRequest = new NetworkRequest();
+    const redirectedRequest = new NetworkRequest();
 
-    redirectRequest.onRequestWillBeSent(modifiedData);
+    redirectedRequest.onRequestWillBeSent(modifiedData);
     originalRequest.onRedirectResponse(data);
 
-    originalRequest.redirectDestination = redirectRequest;
-    redirectRequest.redirectSource = originalRequest;
+    originalRequest.redirectDestination = redirectedRequest;
+    redirectedRequest.redirectSource = originalRequest;
 
-    this.onRequestStarted(redirectRequest);
+    this.onRequestStarted(redirectedRequest);
     this.onRequestFinished(originalRequest);
   }
 

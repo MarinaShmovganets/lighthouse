@@ -45,34 +45,35 @@ module.exports = class NetworkRequest {
     this.finished = false;
     this.requestMethod = '';
     this.statusCode = -1;
-    this.redirectSource = /** @type {NetworkRequest|undefined} */ (undefined);
-    this.redirectDestination = /** @type {NetworkRequest|undefined} */ (undefined);
-    this.redirects = /** @type {NetworkRequest[]|undefined} */ (undefined);
+    /** @type {NetworkRequest|undefined} The network request that redirected to this one */
+    this.redirectSource = undefined;
+    /** @type {NetworkRequest|undefined} The network request that this one redirected to */
+    this.redirectDestination = undefined;
+    /** @type {NetworkRequest[]|undefined} The chain of network requests that redirected to this one */
+    this.redirects = undefined;
     this.failed = false;
     this.localizedFailDescription = '';
 
     this._initiator = /** @type {LH.Crdp.Network.Initiator} */ ({type: 'other'});
-    this._timing = /** @type {LH.Crdp.Network.ResourceTiming|undefined} */ (undefined);
-    this._resourceType = /** @type {LH.WebInspector.ResourceType|undefined} */ (undefined);
+    /** @type {LH.Crdp.Network.ResourceTiming|undefined} */
+    this._timing = undefined;
+    /** @type {LH.WebInspector.ResourceType|undefined} */
+    this._resourceType = undefined;
     this._mimeType = '';
     this.priority = () => /** @type {LH.Crdp.Network.ResourcePriority} */ ('Low');
-    this.initiatorRequest = () => /** @type {NetworkRequest|undefined} */ (undefined);
-    this._responseHeaders = /** @type {LH.WebInspector.HeaderValue[]} */ ([]);
+    /** @type {() => NetworkRequest|undefined} */
+    this.initiatorRequest = () => undefined;
+    /** @type {LH.WebInspector.HeaderValue[]} */
+    this._responseHeaders = [];
 
     this._fetchedViaServiceWorker = false;
-    this._frameId = /** @type {string|undefined} */ ('');
+    /** @type {string|undefined} */
+    this._frameId = '';
     this._isLinkPreload = false;
 
     // Make sure we're compatible with old WebInspector.NetworkRequest
     // eslint-disable-next-line no-unused-vars
     const record = /** @type {LH.WebInspector.NetworkRequest} */ (this);
-  }
-
-  /**
-   * @return {NetworkRequest}
-   */
-  clone() {
-    return Object.assign(new NetworkRequest(), this);
   }
 
   /**
@@ -227,7 +228,7 @@ module.exports = class NetworkRequest {
     // Take startTime and responseReceivedTime from timing data for better accuracy.
     // Timing's requestTime is a baseline in seconds, rest of the numbers there are ticks in millis.
     this.startTime = timing.requestTime;
-    const headersReceivedTime = timing.requestTime + timing.receiveHeadersEnd / 1000.0;
+    const headersReceivedTime = timing.requestTime + timing.receiveHeadersEnd / 1000;
     if (!this._responseReceivedTime || this._responseReceivedTime < 0) {
       this._responseReceivedTime = headersReceivedTime;
     }
@@ -237,6 +238,10 @@ module.exports = class NetworkRequest {
     this.endTime = Math.max(this.endTime, this._responseReceivedTime);
   }
 
+  /**
+   * Update responseReceivedTime to the endTime if endTime is earlier.
+   * A response can't be received after the entire request finished.
+   */
   _updateResponseReceivedTimeIfNecessary() {
     this._responseReceivedTime = Math.min(this.endTime, this._responseReceivedTime);
   }
