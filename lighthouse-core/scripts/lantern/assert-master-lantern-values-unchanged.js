@@ -11,9 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const constants = require('./constants');
-
-// @ts-ignore
-const chalk = require('chalk');
+const chalk = require('chalk').default;
 
 const INPUT_PATH = process.argv[2] || constants.SITE_INDEX_WITH_GOLDEN_WITH_COMPUTED_PATH;
 const HEAD_PATH = path.resolve(process.cwd(), INPUT_PATH);
@@ -26,10 +24,10 @@ if (!fs.existsSync(HEAD_PATH) || !fs.existsSync(MASTER_PATH)) {
 const computedResults = require(HEAD_PATH);
 const expectedResults = require(MASTER_PATH);
 
-/** @type {{url: string, maxDiff: number, diffsForSite: DiffForSite[]}[]} */
+/** @type {Array<{url: string, maxDiff: number, diffsForSite: Array<DiffForSite>}>} */
 const diffs = [];
 for (const entry of computedResults.sites) {
-  // @ts-ignore - should always exist
+  // @ts-ignore - over-aggressive implicit any on candidate
   const expectedLantern = expectedResults.sites.find(candidate => entry.url === candidate.url);
   const actualLantern = entry.lantern;
 
@@ -56,7 +54,7 @@ if (diffs.length) {
     console.log(chalk.magenta(site.url));
     site.diffsForSite.sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff)).forEach(entry => {
       const metric = `    - ${entry.metricName.padEnd(25)}`;
-      const diff = entry.diff > 0 ? chalk.yellow(`+${entry.diff}`) : chalk.cyan(entry.diff);
+      const diff = entry.diff > 0 ? chalk.yellow(`+${entry.diff}`) : chalk.cyan(`${entry.diff}`);
       const actual = `${entry.actual} ${chalk.gray('(HEAD)')}`;
       const expected = `${entry.expected} ${chalk.gray('(master)')}`;
       console.log(`${metric}${diff}\t${actual}\tvs.\t${expected}`);
