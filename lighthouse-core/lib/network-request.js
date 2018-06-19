@@ -20,7 +20,8 @@ module.exports = class NetworkRequest {
   constructor() {
     this.requestId = '';
     this._requestId = '';
-    this.connectionId = '';
+    // TODO(phulce): remove default DevTools connectionId
+    this.connectionId = '0';
     this.connectionReused = false;
 
     this.url = '';
@@ -138,6 +139,8 @@ module.exports = class NetworkRequest {
    * @param {LH.Crdp.Network.LoadingFinishedEvent} data
    */
   onLoadingFinished(data) {
+    if (this.finished) return;
+
     this.finished = true;
     this.endTime = data.timestamp;
     if (data.encodedDataLength >= 0) {
@@ -151,6 +154,8 @@ module.exports = class NetworkRequest {
    * @param {LH.Crdp.Network.LoadingFailedEvent} data
    */
   onLoadingFailed(data) {
+    if (this.finished) return;
+
     this.finished = true;
     this.endTime = data.timestamp;
 
@@ -187,6 +192,9 @@ module.exports = class NetworkRequest {
    * @param {LH.Crdp.Network.ResponseReceivedEvent['type']=} resourceType
    */
   _onResponse(response, timestamp, resourceType) {
+    this.url = response.url;
+    this._url = response.url;
+
     this.connectionId = String(response.connectionId);
     this.connectionReused = response.connectionReused;
 
