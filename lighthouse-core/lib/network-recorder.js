@@ -218,6 +218,7 @@ class NetworkRecorder extends EventEmitter {
     originalRequest.redirectDestination = redirectedRequest;
     redirectedRequest.redirectSource = originalRequest;
 
+    // Start the redirect request before finishing the original so we don't get erroneous quiet periods
     this.onRequestStarted(redirectedRequest);
     this.onRequestFinished(originalRequest);
   }

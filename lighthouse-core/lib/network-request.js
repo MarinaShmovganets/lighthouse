@@ -12,7 +12,7 @@
  */
 
 const URL = require('./url-shim');
-const resourceTypes = require('../../third-party/devtools/ResourceType').TYPES;
+const ResourceType = require('../../third-party/devtools/ResourceType');
 
 const SECURE_SCHEMES = ['data', 'https', 'wss', 'blob', 'chrome', 'chrome-extension', 'about'];
 
@@ -57,7 +57,7 @@ module.exports = class NetworkRequest {
     this._initiator = /** @type {LH.Crdp.Network.Initiator} */ ({type: 'other'});
     /** @type {LH.Crdp.Network.ResourceTiming|undefined} */
     this._timing = undefined;
-    /** @type {LH.WebInspector.ResourceType|undefined} */
+    /** @type {ResourceType|undefined} */
     this._resourceType = undefined;
     this._mimeType = '';
     this.priority = () => /** @type {LH.Crdp.Network.ResourcePriority} */ ('Low');
@@ -107,7 +107,7 @@ module.exports = class NetworkRequest {
     this.requestMethod = data.request.method;
 
     this._initiator = data.initiator;
-    this._resourceType = data.type && resourceTypes[data.type];
+    this._resourceType = data.type && ResourceType.TYPES[data.type];
     this.priority = () => data.request.initialPriority;
 
     this._frameId = data.frameId;
@@ -140,6 +140,7 @@ module.exports = class NetworkRequest {
    * @param {LH.Crdp.Network.LoadingFinishedEvent} data
    */
   onLoadingFinished(data) {
+    // On some requests DevTools can send duplicate events, prefer the first one for best timing data
     if (this.finished) return;
 
     this.finished = true;
@@ -155,13 +156,14 @@ module.exports = class NetworkRequest {
    * @param {LH.Crdp.Network.LoadingFailedEvent} data
    */
   onLoadingFailed(data) {
+    // On some requests DevTools can send duplicate events, prefer the first one for best timing data
     if (this.finished) return;
 
     this.finished = true;
     this.endTime = data.timestamp;
 
     this.failed = true;
-    this._resourceType = data.type && resourceTypes[data.type];
+    this._resourceType = data.type && ResourceType.TYPES[data.type];
     this.localizedFailDescription = data.errorText;
 
     this._updateResponseReceivedTimeIfNecessary();
@@ -209,7 +211,7 @@ module.exports = class NetworkRequest {
     this.statusCode = response.status;
 
     this._timing = response.timing;
-    if (resourceType) this._resourceType = resourceTypes[resourceType];
+    if (resourceType) this._resourceType = ResourceType.TYPES[resourceType];
     this._mimeType = response.mimeType;
     this._responseHeaders = NetworkRequest._headersDictToHeadersArray(response.headers);
 
