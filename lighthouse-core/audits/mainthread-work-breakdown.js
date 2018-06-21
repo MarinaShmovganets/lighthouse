@@ -97,8 +97,8 @@ class MainThreadWorkBreakdown extends Audit {
       {key: 'category', itemType: 'text', text: 'Work'},
       {key: 'duration', itemType: 'ms', granularity: 1, text: 'Time spent'},
     ];
-
-    results.sort((a, b) => categoryTotals[b.group] - categoryTotals[a.group]);
+    // @ts-ignore - stableSort added to Array by WebInspector
+    results.stableSort((a, b) => categoryTotals[b.group] - categoryTotals[a.group]);
     const tableDetails = MainThreadWorkBreakdown.makeTableDetails(headings, results);
 
     const score = Audit.computeLogNormalScore(

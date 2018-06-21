@@ -37,12 +37,11 @@ class TraceOfTab extends ComputedArtifact {
    * @param {(e: LH.TraceEvent) => boolean} filter
    */
   static filteredStableSort(traceEvents, filter) {
+    // create an array of the indices that we want to keep
     const indices = [];
-    let destIndex = 0;
     for (let srcIndex = 0; srcIndex < traceEvents.length; srcIndex++) {
       if (filter(traceEvents[srcIndex])) {
-        indices[destIndex] = srcIndex
-        destIndex++
+        indices.push(srcIndex);
       }
     }
 
