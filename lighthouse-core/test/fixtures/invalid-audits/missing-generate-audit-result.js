@@ -9,9 +9,9 @@
 class MissingRequiredArtifacts {
   static get meta() {
     return {
-      name: 'missing-required-artifacts',
-      description: 'Missing required artifacts',
-      helpText: 'This is missing required artifacts',
+      id: 'missing-required-artifacts',
+      title: 'Missing required artifacts',
+      description: 'This is missing required artifacts',
       requiredArtifacts: ['HTML'],
     };
   }

@@ -73,8 +73,8 @@ describe('Audit', () => {
       class FailingAudit extends Audit {
         static get meta() {
           return {
-            description: 'Passing',
-            failureDescription: 'Failing',
+            title: 'Passing',
+            failureTitle: 'Failing',
           };
         }
       }

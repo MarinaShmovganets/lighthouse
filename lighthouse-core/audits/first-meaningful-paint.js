@@ -14,9 +14,10 @@ class FirstMeaningfulPaint extends Audit {
    */
   static get meta() {
     return {
-      name: 'first-meaningful-paint',
-      description: 'First Meaningful Paint',
-      helpText: 'First Meaningful Paint measures when the primary content of a page is visible. ' +
+      id: 'first-meaningful-paint',
+      title: 'First Meaningful Paint',
+      // eslint-disable-next-line max-len
+      description: 'First Meaningful Paint measures when the primary content of a page is visible. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint).',
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces'],

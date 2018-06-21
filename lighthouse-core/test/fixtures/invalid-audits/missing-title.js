@@ -11,9 +11,8 @@ const LighthouseAudit = require('../../../audits/audit');
 class MissingRequiredArtifacts extends LighthouseAudit {
   static get meta() {
     return {
-      name: 'missing-description',
-      description: 'Missing required artifacts',
-      failureDescription: 'Missing required artifacts is failing',
+      id: 'missing-title',
+      description: 'This is missing required title (and failureTitle)',
       requiredArtifacts: ['HTML'],
     };
   }
