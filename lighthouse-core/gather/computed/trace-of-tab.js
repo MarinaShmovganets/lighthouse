@@ -52,12 +52,12 @@ class TraceOfTab extends ComputedArtifact {
     });
 
     // create a new array using the target indices from previous sort step
-    const sortedArray = new Array(indices.length);
+    const sorted = [];
     for (let i = 0; i < indices.length; i++) {
-      sortedArray[i] = traceEvents[indices[i]];
+      sorted.push(traceEvents[indices[i]]);
     }
 
-    return sortedArray;
+    return sorted;
   }
 
 
