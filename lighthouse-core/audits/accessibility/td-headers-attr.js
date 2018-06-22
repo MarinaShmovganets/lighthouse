@@ -24,10 +24,9 @@ class TDHeadersAttr extends AxeAudit {
           'to other cells of that same table.',
       failureTitle: 'Cells in a `<table>` element that use the `[headers]` ' +
           'attribute refers to other cells of that same table.',
-      // eslint-disable-next-line max-len
-      description: 'Screen readers have features to make navigating tables easier. Ensuring `<td>` ' +
-          'cells using the `[headers]` attribute only refer to other cells in the same table may ' +
-          'improve the experience for screen reader users. ' +
+      description: 'Screen readers have features to make navigating tables easier. Ensuring ' +
+          '`<td>` cells using the `[headers]` attribute only refer to other cells in the same ' +
+          'table may improve the experience for screen reader users. ' +
           '[Learn more](https://dequeuniversity.com/rules/axe/2.2/td-headers-attr?application=lighthouse).',
       requiredArtifacts: ['Accessibility'],
     };

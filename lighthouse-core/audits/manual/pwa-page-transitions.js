@@ -18,9 +18,8 @@ class PWAPageTransitions extends ManualAudit {
   static get meta() {
     return Object.assign({
       id: 'pwa-page-transitions',
-      // eslint-disable-next-line max-len
-      description: 'Transitions should feel snappy as you tap around, even on a slow network, a key ' +
-          'to perceived performance. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist#page-transitions-dont-feel-like-they-block-on-the-network).',
+      description: 'Transitions should feel snappy as you tap around, even on a slow network, a ' +
+          'key to perceived performance. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist#page-transitions-dont-feel-like-they-block-on-the-network).',
       title: 'Page transitions don\'t feel like they block on the network',
     }, super.partialMeta);
   }

@@ -8,7 +8,7 @@
 const defaultConfigPath = './default-config.js';
 const defaultConfig = require('./default-config.js');
 const fullConfig = require('./full-config.js');
-const constants = require('./constants.js');
+const constants = require('./constants');
 
 const isDeepEqual = require('lodash.isequal');
 const log = require('lighthouse-logger');

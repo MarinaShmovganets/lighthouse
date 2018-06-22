@@ -6,7 +6,7 @@
 
 'use strict';
 
-class MissingRequiredArtifacts {
+class MissingGenerateAuditResult {
   static get meta() {
     return {
       id: 'missing-required-artifacts',
@@ -23,4 +23,4 @@ class MissingRequiredArtifacts {
   }
 }
 
-module.exports = MissingRequiredArtifacts;
+module.exports = MissingGenerateAuditResult;

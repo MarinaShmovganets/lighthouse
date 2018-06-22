@@ -23,9 +23,8 @@ class THHasDataCells extends AxeAudit {
           'data cells they describe.',
       failureTitle: '`<th>` elements and elements with ' +
           '`[role="columnheader"/"rowheader"]` do not have data cells they describe.',
-      // eslint-disable-next-line max-len
-      description: 'Screen readers have features to make navigating tables easier. Ensuring table ' +
-          'headers always refer to some set of cells may improve the experience for screen ' +
+      description: 'Screen readers have features to make navigating tables easier. Ensuring ' +
+          'table headers always refer to some set of cells may improve the experience for screen ' +
           'reader users. ' +
           '[Learn more](https://dequeuniversity.com/rules/axe/2.2/th-has-data-cells?application=lighthouse).',
       requiredArtifacts: ['Accessibility'],

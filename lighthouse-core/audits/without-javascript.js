@@ -16,9 +16,8 @@ class WithoutJavaScript extends Audit {
       id: 'without-javascript',
       title: 'Contains some content when JavaScript is not available',
       failureTitle: 'Does not provide fallback content when JavaScript is not available',
-      // eslint-disable-next-line max-len
-      description: 'Your app should display some content when JavaScript is disabled, even if it\'s ' +
-          'just a warning to the user that JavaScript is required to use the app. ' +
+      description: 'Your app should display some content when JavaScript is disabled, even if ' +
+          'it\'s just a warning to the user that JavaScript is required to use the app. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/no-js).',
       requiredArtifacts: ['HTMLWithoutJavaScript'],
     };

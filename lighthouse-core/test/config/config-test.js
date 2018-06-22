@@ -8,7 +8,7 @@
 const Config = require('../../config/config');
 const assert = require('assert');
 const path = require('path');
-const defaultConfig = require('../../config/default-config');
+const defaultConfig = require('../../config/default-config.js');
 const log = require('lighthouse-logger');
 const Gatherer = require('../../gather/gatherers/gatherer');
 const Audit = require('../../audits/audit');
@@ -230,7 +230,7 @@ describe('Config', () => {
 
     assert.throws(_ => new Config({
       audits: [
-        class BinaryButNoFailureDescAudit extends Audit {
+        class BinaryButNoFailureTitleAudit extends Audit {
           static get meta() {
             return {
               id: 'no-failure-title',
@@ -254,10 +254,10 @@ describe('Config', () => {
 
     assert.throws(_ => new Config({
       audits: [
-        class EmptyStringHelpTextAudit extends Audit {
+        class EmptyStringDescriptionAudit extends Audit {
           static get meta() {
             return {
-              id: 'empty-string-help-text',
+              id: 'empty-string-description',
               title: 'title',
               description: '',
               requiredArtifacts: [],

@@ -24,9 +24,8 @@ class ResponsesAreCompressed extends ByteEfficiencyAudit {
       id: 'uses-text-compression',
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
       title: 'Enable text compression',
-      // eslint-disable-next-line max-len
-      description: 'Text-based responses should be served with compression (gzip, deflate or brotli)' +
-        ' to minimize total network bytes.' +
+      description: 'Text-based responses should be served with compression (gzip, deflate or' +
+        ' brotli) to minimize total network bytes.' +
         ' [Learn more](https://developers.google.com/web/tools/lighthouse/audits/text-compression).',
       requiredArtifacts: ['ResponseCompression', 'devtoolsLogs'],
     };

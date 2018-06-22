@@ -17,9 +17,8 @@ class WorksOffline extends Audit {
       id: 'works-offline',
       title: 'Responds with a 200 when offline',
       failureTitle: 'Does not respond with a 200 when offline',
-      // eslint-disable-next-line max-len
-      description: 'If you\'re building a Progressive Web App, consider using a service worker so ' +
-          'that your app can work offline. ' +
+      description: 'If you\'re building a Progressive Web App, consider using a service worker ' +
+          'so that your app can work offline. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/http-200-when-offline).',
       requiredArtifacts: ['Offline', 'URL'],
     };

@@ -16,9 +16,8 @@ class FirstContentfulPaint extends Audit {
     return {
       id: 'first-contentful-paint',
       title: 'First Contentful Paint',
-      // eslint-disable-next-line max-len
-      description: 'First contentful paint marks the time at which the first text/image is painted. ' +
-          `[Learn more](https://developers.google.com/web/fundamentals/performance/user-centric-performance-metrics#first_paint_and_first_contentful_paint).`,
+      description: 'First contentful paint marks the time at which the first text/image is ' +
+          `painted. [Learn more](https://developers.google.com/web/fundamentals/performance/user-centric-performance-metrics#first_paint_and_first_contentful_paint).`,
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces', 'devtoolsLogs'],
     };
