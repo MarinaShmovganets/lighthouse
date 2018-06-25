@@ -5,10 +5,10 @@
  */
 'use strict';
 
-const Node = require('./node');
+const BaseNode = require('./base-node');
 const WebInspector = require('../web-inspector');
 
-class NetworkNode extends Node {
+class NetworkNode extends BaseNode {
   /**
    * @param {LH.WebInspector.NetworkRequest} networkRecord
    */
@@ -19,7 +19,7 @@ class NetworkNode extends Node {
   }
 
   get type() {
-    return Node.TYPES.NETWORK;
+    return BaseNode.TYPES.NETWORK;
   }
 
   /**

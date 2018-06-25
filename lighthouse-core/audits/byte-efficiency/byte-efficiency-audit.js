@@ -10,7 +10,7 @@ const linearInterpolation = require('../../lib/statistics').linearInterpolation;
 const Interactive = require('../../gather/computed/metrics/lantern-interactive');
 
 /** @typedef {import('../../lib/dependency-graph/simulator/simulator')} Simulator */
-/** @typedef {import('../../lib/dependency-graph/node.js').NodeType} NodeType */
+/** @typedef {import('../../lib/dependency-graph/base-node.js').NodeType} NodeType */
 
 const KB_IN_BYTES = 1024;
 

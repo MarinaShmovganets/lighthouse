@@ -10,13 +10,13 @@
 'use strict';
 
 const Audit = require('../audit');
-const Node = require('../../lib/dependency-graph/node');
+const BaseNode = require('../../lib/dependency-graph/base-node');
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
 const UnusedCSS = require('./unused-css-rules');
 const WebInspector = require('../../lib/web-inspector');
 
 /** @typedef {import('../../lib/dependency-graph/simulator/simulator')} Simulator */
-/** @typedef {import('../../lib/dependency-graph/node.js').NodeType} NodeType */
+/** @typedef {import('../../lib/dependency-graph/base-node.js').NodeType} NodeType */
 /** @typedef {import('../../lib/dependency-graph/network-node.js')} NetworkNode */
 
 // Because of the way we detect blocking stylesheets, asynchronously loaded
@@ -149,7 +149,7 @@ class RenderBlockingResources extends Audit {
     const minimalFCPGraph = /** @type {NetworkNode} */ (fcpGraph.cloneWithRelationships(node => {
       // If a node can be deferred, exclude it from the new FCP graph
       const canDeferRequest = deferredIds.has(node.id);
-      if (node.type !== Node.TYPES.NETWORK) return !canDeferRequest;
+      if (node.type !== BaseNode.TYPES.NETWORK) return !canDeferRequest;
 
       const isStylesheet =
         node.record._resourceType === WebInspector.resourceTypes.Stylesheet;

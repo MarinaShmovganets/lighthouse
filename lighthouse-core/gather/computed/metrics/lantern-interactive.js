@@ -6,10 +6,10 @@
 'use strict';
 
 const MetricArtifact = require('./lantern-metric');
-const Node = require('../../../lib/dependency-graph/node');
+const BaseNode = require('../../../lib/dependency-graph/base-node');
 const WebInspector = require('../../../lib/web-inspector');
 
-/** @typedef {Node.NodeType} NodeType */
+/** @typedef {BaseNode.NodeType} NodeType */
 
 // Any CPU task of 20 ms or more will end up being a critical long task on mobile
 const CRITICAL_LONG_TASK_THRESHOLD = 20;
@@ -40,7 +40,7 @@ class Interactive extends MetricArtifact {
 
     return dependencyGraph.cloneWithRelationships(node => {
       // Include everything that might be a long task
-      if (node.type === Node.TYPES.CPU) {
+      if (node.type === BaseNode.TYPES.CPU) {
         return node.event.dur > minimumCpuTaskDuration;
       }
 
@@ -100,7 +100,7 @@ class Interactive extends MetricArtifact {
     // @ts-ignore TS can't infer how the object invariants change
     return Array.from(nodeTimings.entries())
       .filter(([node, timing]) => {
-        if (node.type !== Node.TYPES.CPU) return false;
+        if (node.type !== BaseNode.TYPES.CPU) return false;
         return timing.duration > duration;
       })
       .map(([_, timing]) => timing.endTime)

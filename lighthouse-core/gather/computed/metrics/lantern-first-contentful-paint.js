@@ -6,9 +6,9 @@
 'use strict';
 
 const MetricArtifact = require('./lantern-metric');
-const Node = require('../../../lib/dependency-graph/node');
+const BaseNode = require('../../../lib/dependency-graph/base-node');
 
-/** @typedef {Node.NodeType} NodeType */
+/** @typedef {BaseNode.NodeType} NodeType */
 
 class FirstContentfulPaint extends MetricArtifact {
   get name() {
@@ -42,7 +42,7 @@ class FirstContentfulPaint extends MetricArtifact {
     return dependencyGraph.cloneWithRelationships(node => {
       if (node.endTime > fcp && !node.isMainDocument()) return false;
       // Include EvaluateScript tasks for blocking scripts
-      if (node.type === Node.TYPES.CPU) {
+      if (node.type === BaseNode.TYPES.CPU) {
         return node.isEvaluateScriptFor(blockingScriptUrls);
       }
 
@@ -65,7 +65,7 @@ class FirstContentfulPaint extends MetricArtifact {
     return dependencyGraph.cloneWithRelationships(node => {
       if (node.endTime > fcp && !node.isMainDocument()) return false;
       // Include EvaluateScript tasks for blocking scripts
-      if (node.type === Node.TYPES.CPU) {
+      if (node.type === BaseNode.TYPES.CPU) {
         return node.isEvaluateScriptFor(blockingScriptUrls);
       }
 

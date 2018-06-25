@@ -5,14 +5,14 @@
  */
 'use strict';
 
-const Node = require('../node');
+const BaseNode = require('../base-node');
 const NetworkNode = require('../network-node'); // eslint-disable-line no-unused-vars
 const CpuNode = require('../cpu-node'); // eslint-disable-line no-unused-vars
 const TcpConnection = require('./tcp-connection');
 const ConnectionPool = require('./connection-pool');
 const mobile3G = require('../../../config/constants').throttling.mobile3G;
 
-/** @typedef {Node.NodeType} NodeType */
+/** @typedef {BaseNode.NodeType} NodeType */
 
 // see https://cs.chromium.org/search/?q=kDefaultMaxNumDelayableRequestsPerClient&sq=package:chromium&type=cs
 const DEFAULT_MAXIMUM_CONCURRENT_REQUESTS = 10;
@@ -77,7 +77,7 @@ class Simulator {
     /** @type {LH.WebInspector.NetworkRequest[]} */
     const records = [];
     graph.getRootNode().traverse(node => {
-      if (node.type === Node.TYPES.NETWORK) {
+      if (node.type === BaseNode.TYPES.NETWORK) {
         records.push(node.record);
       }
     });
@@ -183,7 +183,7 @@ class Simulator {
    * @param {number} totalElapsedTime
    */
   _startNodeIfPossible(node, totalElapsedTime) {
-    if (node.type === Node.TYPES.CPU) {
+    if (node.type === BaseNode.TYPES.CPU) {
       // Start a CPU task if there's no other CPU task in process
       if (this._numberInProgress(node.type) === 0) {
         this._markNodeAsInProgress(node, totalElapsedTime);
@@ -193,7 +193,7 @@ class Simulator {
       return;
     }
 
-    if (node.type !== Node.TYPES.NETWORK) throw new Error('Unsupported');
+    if (node.type !== BaseNode.TYPES.NETWORK) throw new Error('Unsupported');
 
     // If a network request is cached, we can always start it, so skip the connection checks
     if (!node.fromDiskCache) {
@@ -228,9 +228,9 @@ class Simulator {
    * @return {number}
    */
   _estimateTimeRemaining(node) {
-    if (node.type === Node.TYPES.CPU) {
+    if (node.type === BaseNode.TYPES.CPU) {
       return this._estimateCPUTimeRemaining(node);
-    } else if (node.type === Node.TYPES.NETWORK) {
+    } else if (node.type === BaseNode.TYPES.NETWORK) {
       return this._estimateNetworkTimeRemaining(node);
     } else {
       throw new Error('Unsupported');
@@ -307,13 +307,13 @@ class Simulator {
     const timingData = this._getTimingData(node);
     const isFinished = timingData.estimatedTimeElapsed === timePeriodLength;
 
-    if (node.type === Node.TYPES.CPU || node.fromDiskCache) {
+    if (node.type === BaseNode.TYPES.CPU || node.fromDiskCache) {
       return isFinished
         ? this._markNodeAsComplete(node, totalElapsedTime)
         : (timingData.timeElapsed += timePeriodLength);
     }
 
-    if (node.type !== Node.TYPES.NETWORK) throw new Error('Unsupported');
+    if (node.type !== BaseNode.TYPES.NETWORK) throw new Error('Unsupported');
 
     const record = node.record;
     // If we're updating the progress, we already acquired a connection for this record, definitely non-null
@@ -375,7 +375,7 @@ class Simulator {
    * @return {LH.Gatherer.Simulation.Result}
    */
   simulate(graph, options) {
-    if (Node.hasCycle(graph)) {
+    if (BaseNode.hasCycle(graph)) {
       throw new Error('Cannot simulate graph with cycle');
     }
 

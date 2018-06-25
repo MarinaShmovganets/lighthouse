@@ -29,7 +29,7 @@ declare global {
     }
 
     namespace Simulation {
-      export type GraphNode = import('../lighthouse-core/lib/dependency-graph/node').NodeType;
+      export type GraphNode = import('../lighthouse-core/lib/dependency-graph/base-node').NodeType;
       export type GraphNetworkNode = _NetworkNode;
       export type GraphCPUNode = _CPUNode;
       export type Simulator = _Simulator;

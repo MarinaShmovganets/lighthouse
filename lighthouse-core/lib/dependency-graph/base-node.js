@@ -6,7 +6,7 @@
 'use strict';
 
 /**
- * A union of all types derived from Node, allowing type check disrimination
+ * A union of all types derived from Node, allowing type check discrimination
  * based on `node.type`. If a new node type is created, it should be added here.
  * @typedef {import('./cpu-node.js') | import('./network-node.js')} NodeType
  */
@@ -23,7 +23,7 @@
  * This allows particular optimizations in this class so that we do no need to check for cycles as
  * these methods are called and we can always start traversal at the root node.
  */
-class Node {
+class BaseNode {
   /**
    * @param {string} id
    */
@@ -44,7 +44,7 @@ class Node {
   }
 
   /**
-   * @return {typeof Node.TYPES[keyof typeof Node.TYPES]}
+   * @return {typeof BaseNode.TYPES[keyof typeof BaseNode.TYPES]}
    */
   get type() {
     throw new Error('Unimplemented');
@@ -103,7 +103,7 @@ class Node {
    * @return {NodeType}
    */
   getRootNode() {
-    let rootNode = /** @type {NodeType} */ (/** @type {Node} */ (this));
+    let rootNode = /** @type {NodeType} */ (/** @type {BaseNode} */ (this));
     while (rootNode._dependencies.length) {
       rootNode = rootNode._dependencies[0];
     }
@@ -115,7 +115,7 @@ class Node {
    * @param {NodeType} node
    */
   addDependent(node) {
-    node.addDependency(/** @type {NodeType} */ (/** @type {Node} */ (this)));
+    node.addDependency(/** @type {NodeType} */ (/** @type {BaseNode} */ (this)));
   }
 
   /**
@@ -126,7 +126,7 @@ class Node {
       return;
     }
 
-    node._dependents.push(/** @type {NodeType} */ (/** @type {Node} */ (this)));
+    node._dependents.push(/** @type {NodeType} */ (/** @type {BaseNode} */ (this)));
     this._dependencies.push(node);
   }
 
@@ -134,7 +134,7 @@ class Node {
    * @param {NodeType} node
    */
   removeDependent(node) {
-    node.removeDependency(/** @type {NodeType} */ (/** @type {Node} */ (this)));
+    node.removeDependency(/** @type {NodeType} */ (/** @type {BaseNode} */ (this)));
   }
 
   /**
@@ -145,7 +145,7 @@ class Node {
       return;
     }
 
-    const thisIndex = node._dependents.indexOf(/** @type {NodeType} */ (/** @type {Node} */(this)));
+    const thisIndex = node._dependents.indexOf(/** @type {NodeType} */ (/** @type {BaseNode} */(this)));
     node._dependents.splice(thisIndex, 1);
     this._dependencies.splice(this._dependencies.indexOf(node), 1);
   }
@@ -161,7 +161,7 @@ class Node {
    * @return {NodeType}
    */
   cloneWithoutRelationships() {
-    const node = /** @type {NodeType} */ (new Node(this.id));
+    const node = /** @type {NodeType} */ (new BaseNode(this.id));
     node.setIsMainDocument(this._isMainDocument);
     return node;
   }
@@ -220,7 +220,7 @@ class Node {
    * @param {function(NodeType): NodeType[]} getNext
    */
   _traversePaths(iterator, getNext) {
-    const stack = [[/** @type {NodeType} */(/** @type {Node} */(this))]];
+    const stack = [[/** @type {NodeType} */(/** @type {BaseNode} */(this))]];
     while (stack.length) {
       /** @type {NodeType[]} */
       // @ts-ignore - stack has length so it's guaranteed to have an item
@@ -269,7 +269,7 @@ class Node {
   static hasCycle(node, direction = 'both') {
     // Checking 'both' is the default entrypoint to recursively check both directions
     if (direction === 'both') {
-      return Node.hasCycle(node, 'dependents') || Node.hasCycle(node, 'dependencies');
+      return BaseNode.hasCycle(node, 'dependents') || BaseNode.hasCycle(node, 'dependencies');
     }
 
     const visited = new Set();
@@ -313,9 +313,9 @@ class Node {
   }
 }
 
-Node.TYPES = /** @type {{NETWORK: 'network', CPU: 'cpu'}} */({
+BaseNode.TYPES = /** @type {{NETWORK: 'network', CPU: 'cpu'}} */({
   NETWORK: 'network',
   CPU: 'cpu',
 });
 
-module.exports = Node;
+module.exports = BaseNode;

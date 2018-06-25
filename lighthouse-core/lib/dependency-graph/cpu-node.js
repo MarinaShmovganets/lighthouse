@@ -5,9 +5,9 @@
  */
 'use strict';
 
-const Node = require('./node');
+const BaseNode = require('./base-node');
 
-class CPUNode extends Node {
+class CPUNode extends BaseNode {
   /**
    * @param {LH.TraceEvent} parentEvent
    * @param {LH.TraceEvent[]=} childEvents
@@ -21,7 +21,7 @@ class CPUNode extends Node {
   }
 
   get type() {
-    return Node.TYPES.CPU;
+    return BaseNode.TYPES.CPU;
   }
 
   /**
