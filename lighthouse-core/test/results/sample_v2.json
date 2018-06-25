@@ -676,37 +676,37 @@
         ],
         "items": [
           {
-            "group": "ScriptEvaluation",
+            "group": "scriptEvaluation",
             "groupLabel": "Script Evaluation",
             "duration": 1148.6020000000003
           },
           {
-            "group": "Other",
+            "group": "other",
             "groupLabel": "Other",
             "duration": 177.20099999999977
           },
           {
-            "group": "StyleLayout",
+            "group": "styleLayout",
             "groupLabel": "Style & Layout",
             "duration": 127.39700000000006
           },
           {
-            "group": "ParseHTML",
+            "group": "parseHTML",
             "groupLabel": "Parse HTML & CSS",
             "duration": 53.677
           },
           {
-            "group": "GarbageCollection",
+            "group": "garbageCollection",
             "groupLabel": "Garbage Collection",
             "duration": 26.198999999999998
           },
           {
-            "group": "ScriptParseCompile",
+            "group": "scriptParseCompile",
             "groupLabel": "Script Parsing & Compilation",
             "duration": 7.818999999999999
           },
           {
-            "group": "PaintCompositeRender",
+            "group": "paintCompositeRender",
             "groupLabel": "Rendering",
             "duration": 7.673999999999999
           }
