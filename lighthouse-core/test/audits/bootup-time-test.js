@@ -33,7 +33,7 @@ describe('Performance: bootup-time audit', () => {
     return BootupTime.audit(artifacts, {options: auditOptions}).then(output => {
       assert.equal(output.details.items.length, 4);
       assert.equal(output.score, 1);
-      assert.equal(Math.round(output.rawValue), 176);
+      assert.equal(Math.round(output.rawValue), 155);
 
       assert.deepEqual(roundedValueOf(output, 'https://pwa.rocks/script.js'), {[groupIdToName.scripting]: 31.8, [groupIdToName.styleLayout]: 5.5, [groupIdToName.scriptParseCompile]: 1.3});
       assert.deepEqual(roundedValueOf(output, 'https://www.googletagmanager.com/gtm.js?id=GTM-Q5SW'), {[groupIdToName.scripting]: 25, [groupIdToName.scriptParseCompile]: 5.5, [groupIdToName.styleLayout]: 1.2});
@@ -45,6 +45,39 @@ describe('Performance: bootup-time audit', () => {
     });
   }).timeout(10000);
 
+  it('should summarize js exec timing costs', () => {
+    const executionTimings = new Map([
+      ['file-a.js', {
+        'Parsing HTML & CSS': 150,
+        'Script Parsing & Compile': 10,
+        'Script Evaluation': 5,
+      }],
+      ['file-b.js', {'Style & Layout': 270}],
+      ['file-c.js', {'Script Evaluation': 330}],
+      ['file-d.js', {'Script Evaluation': 410}],
+    ]);
+
+    const {results, totalBootupTime} = BootupTime.execCostsByURL(executionTimings, {
+      options: BootupTime.defaultOptions,
+    });
+    const expected = [
+      {
+        url: 'file-d.js',
+        sum: 410,
+        scripting: 410,
+        scriptParseCompile: 0,
+      },
+      {
+        url: 'file-c.js',
+        sum: 330,
+        scripting: 330,
+        scriptParseCompile: 0,
+      },
+    ];
+    assert.deepStrictEqual(results, expected, 'non-js groups (and sums < 50) filtered out');
+    assert.equal(totalBootupTime, 10 + 5 + 330 + 410);
+  });
+
   it('should compute the correct values when simulated', async () => {
     const artifacts = Object.assign({
       traces: {defaultPass: acceptableTrace},
@@ -55,8 +88,8 @@ describe('Performance: bootup-time audit', () => {
     const output = await BootupTime.audit(artifacts, {options, settings});
 
     assert.equal(output.details.items.length, 7);
-    assert.equal(output.score, 0.99);
-    assert.equal(Math.round(output.rawValue), 528);
+    assert.equal(output.score, 1);
+    assert.equal(Math.round(output.rawValue), 464);
 
     assert.deepEqual(roundedValueOf(output, 'https://pwa.rocks/script.js'), {[groupIdToName.scripting]: 95.3, [groupIdToName.styleLayout]: 16.4, [groupIdToName.scriptParseCompile]: 3.9});
   });
