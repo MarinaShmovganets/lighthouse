@@ -9,7 +9,7 @@ const ComputedArtifact = require('../computed-artifact');
 const Node = require('../../../lib/dependency-graph/node');
 const NetworkNode = require('../../../lib/dependency-graph/network-node'); // eslint-disable-line no-unused-vars
 const Simulator = require('../../../lib/dependency-graph/simulator/simulator'); // eslint-disable-line no-unused-vars
-const WebInspector = require('../../../lib/web-inspector');
+const NetworkRequest = require('../../../lib/network-request');
 
 class LanternMetricArtifact extends ComputedArtifact {
   /**
@@ -23,7 +23,7 @@ class LanternMetricArtifact extends ComputedArtifact {
     dependencyGraph.traverse(node => {
       if (node.type === Node.TYPES.CPU) return;
       const asNetworkNode = /** @type {NetworkNode} */ (node);
-      if (asNetworkNode.record._resourceType !== WebInspector.resourceTypes.Script) return;
+      if (asNetworkNode.record._resourceType !== NetworkRequest.TYPES.Script) return;
       if (condition && !condition(asNetworkNode)) return;
       scriptUrls.add(asNetworkNode.record.url);
     });

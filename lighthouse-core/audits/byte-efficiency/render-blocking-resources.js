@@ -13,7 +13,7 @@ const Audit = require('../audit');
 const Node = require('../../lib/dependency-graph/node');
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
 const UnusedCSS = require('./unused-css-rules');
-const WebInspector = require('../../lib/web-inspector');
+const NetworkRequest = require('../../lib/network-request');
 
 const Simulator = require('../../lib/dependency-graph/simulator/simulator'); // eslint-disable-line no-unused-vars
 const NetworkNode = require('../../lib/dependency-graph/network-node.js'); // eslint-disable-line no-unused-vars
@@ -154,7 +154,7 @@ class RenderBlockingResources extends Audit {
       const networkNode = /** @type {NetworkNode} */ (node);
 
       const isStylesheet =
-        networkNode.record._resourceType === WebInspector.resourceTypes.Stylesheet;
+        networkNode.record._resourceType === NetworkRequest.TYPES.Stylesheet;
       if (canDeferRequest && isStylesheet) {
         // We'll inline the used bytes of the stylesheet and assume the rest can be deferred
         const wastedBytes = wastedCssBytesByUrl.get(networkNode.record.url) || 0;

@@ -44,7 +44,7 @@ declare global {
 
       _initiator: Crdp.Network.Initiator;
       _timing?: Crdp.Network.ResourceTiming;
-      _resourceType?: ResourceType;
+      _resourceType?: Crdp.Page.ResourceType;
       _mimeType: string;
       priority(): Crdp.Network.ResourcePriority;
       initiatorRequest(): NetworkRequest | undefined;

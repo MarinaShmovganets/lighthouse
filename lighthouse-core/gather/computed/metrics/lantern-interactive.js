@@ -9,7 +9,7 @@ const MetricArtifact = require('./lantern-metric');
 const Node = require('../../../lib/dependency-graph/node');
 const CPUNode = require('../../../lib/dependency-graph/cpu-node'); // eslint-disable-line no-unused-vars
 const NetworkNode = require('../../../lib/dependency-graph/network-node'); // eslint-disable-line no-unused-vars
-const WebInspector = require('../../../lib/web-inspector');
+const NetworkRequest = require('../../../lib/network-request');
 
 // Any CPU task of 20 ms or more will end up being a critical long task on mobile
 const CRITICAL_LONG_TASK_THRESHOLD = 20;
@@ -46,8 +46,8 @@ class Interactive extends MetricArtifact {
 
       const asNetworkNode = /** @type {NetworkNode} */ (node);
       // Include all scripts and high priority requests, exclude all images
-      const isImage = asNetworkNode.record._resourceType === WebInspector.resourceTypes.Image;
-      const isScript = asNetworkNode.record._resourceType === WebInspector.resourceTypes.Script;
+      const isImage = asNetworkNode.record._resourceType === NetworkRequest.TYPES.Image;
+      const isScript = asNetworkNode.record._resourceType === NetworkRequest.TYPES.Script;
       return (
         !isImage &&
         (isScript ||

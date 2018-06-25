@@ -6,7 +6,7 @@
 'use strict';
 
 const Node = require('./node');
-const WebInspector = require('../web-inspector');
+const NetworkRequest = require('../network-request');
 
 class NetworkNode extends Node {
   /**
@@ -64,8 +64,8 @@ class NetworkNode extends Node {
    */
   hasRenderBlockingPriority() {
     const priority = this._record.priority();
-    const isScript = this._record._resourceType === WebInspector.resourceTypes.Script;
-    const isDocument = this._record._resourceType === WebInspector.resourceTypes.Document;
+    const isScript = this._record._resourceType === NetworkRequest.TYPES.Script;
+    const isDocument = this._record._resourceType === NetworkRequest.TYPES.Document;
     const isBlockingScript = priority === 'High' && isScript;
     const isBlockingHtmlImport = priority === 'High' && isDocument;
     return priority === 'VeryHigh' || isBlockingScript || isBlockingHtmlImport;
