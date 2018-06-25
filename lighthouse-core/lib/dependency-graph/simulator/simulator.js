@@ -6,13 +6,13 @@
 'use strict';
 
 const BaseNode = require('../base-node');
-const NetworkNode = require('../network-node'); // eslint-disable-line no-unused-vars
-const CpuNode = require('../cpu-node'); // eslint-disable-line no-unused-vars
 const TcpConnection = require('./tcp-connection');
 const ConnectionPool = require('./connection-pool');
 const mobile3G = require('../../../config/constants').throttling.mobile3G;
 
 /** @typedef {BaseNode.Node} Node */
+/** @typedef {import('../network-node')} NetworkNode */
+/** @typedef {import('../cpu-node')} CpuNode */
 
 // see https://cs.chromium.org/search/?q=kDefaultMaxNumDelayableRequestsPerClient&sq=package:chromium&type=cs
 const DEFAULT_MAXIMUM_CONCURRENT_REQUESTS = 10;

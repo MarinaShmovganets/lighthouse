@@ -6,7 +6,7 @@
 'use strict';
 
 /**
- * A union of all types derived from Node, allowing type check discrimination
+ * A union of all types derived from BaseNode, allowing type check discrimination
  * based on `node.type`. If a new node type is created, it should be added here.
  * @typedef {import('./cpu-node.js') | import('./network-node.js')} Node
  */
