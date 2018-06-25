@@ -9,7 +9,7 @@ const MetricArtifact = require('./lantern-metric');
 const BaseNode = require('../../../lib/dependency-graph/base-node');
 const WebInspector = require('../../../lib/web-inspector');
 
-/** @typedef {BaseNode.NodeType} NodeType */
+/** @typedef {BaseNode.Node} Node */
 
 // Any CPU task of 20 ms or more will end up being a critical long task on mobile
 const CRITICAL_LONG_TASK_THRESHOLD = 20;
@@ -31,8 +31,8 @@ class Interactive extends MetricArtifact {
   }
 
   /**
-   * @param {NodeType} dependencyGraph
-   * @return {NodeType}
+   * @param {Node} dependencyGraph
+   * @return {Node}
    */
   getOptimisticGraph(dependencyGraph) {
     // Adjust the critical long task threshold for microseconds
@@ -57,8 +57,8 @@ class Interactive extends MetricArtifact {
   }
 
   /**
-   * @param {NodeType} dependencyGraph
-   * @return {NodeType}
+   * @param {Node} dependencyGraph
+   * @return {Node}
    */
   getPessimisticGraph(dependencyGraph) {
     return dependencyGraph;

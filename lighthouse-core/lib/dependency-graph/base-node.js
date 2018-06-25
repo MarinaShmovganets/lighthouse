@@ -8,7 +8,7 @@
 /**
  * A union of all types derived from Node, allowing type check discrimination
  * based on `node.type`. If a new node type is created, it should be added here.
- * @typedef {import('./cpu-node.js') | import('./network-node.js')} NodeType
+ * @typedef {import('./cpu-node.js') | import('./network-node.js')} Node
  */
 
 /**
@@ -30,9 +30,9 @@ class BaseNode {
   constructor(id) {
     this._id = id;
     this._isMainDocument = false;
-    /** @type {NodeType[]} */
+    /** @type {Node[]} */
     this._dependents = [];
-    /** @type {NodeType[]} */
+    /** @type {Node[]} */
     this._dependencies = [];
   }
 
@@ -79,14 +79,14 @@ class BaseNode {
   }
 
   /**
-   * @return {NodeType[]}
+   * @return {Node[]}
    */
   getDependents() {
     return this._dependents.slice();
   }
 
   /**
-   * @return {NodeType[]}
+   * @return {Node[]}
    */
   getDependencies() {
     return this._dependencies.slice();
@@ -100,10 +100,10 @@ class BaseNode {
   }
 
   /**
-   * @return {NodeType}
+   * @return {Node}
    */
   getRootNode() {
-    let rootNode = /** @type {NodeType} */ (/** @type {BaseNode} */ (this));
+    let rootNode = /** @type {Node} */ (/** @type {BaseNode} */ (this));
     while (rootNode._dependencies.length) {
       rootNode = rootNode._dependencies[0];
     }
@@ -112,40 +112,40 @@ class BaseNode {
   }
 
   /**
-   * @param {NodeType} node
+   * @param {Node} node
    */
   addDependent(node) {
-    node.addDependency(/** @type {NodeType} */ (/** @type {BaseNode} */ (this)));
+    node.addDependency(/** @type {Node} */ (/** @type {BaseNode} */ (this)));
   }
 
   /**
-   * @param {NodeType} node
+   * @param {Node} node
    */
   addDependency(node) {
     if (this._dependencies.includes(node)) {
       return;
     }
 
-    node._dependents.push(/** @type {NodeType} */ (/** @type {BaseNode} */ (this)));
+    node._dependents.push(/** @type {Node} */ (/** @type {BaseNode} */ (this)));
     this._dependencies.push(node);
   }
 
   /**
-   * @param {NodeType} node
+   * @param {Node} node
    */
   removeDependent(node) {
-    node.removeDependency(/** @type {NodeType} */ (/** @type {BaseNode} */ (this)));
+    node.removeDependency(/** @type {Node} */ (/** @type {BaseNode} */ (this)));
   }
 
   /**
-   * @param {NodeType} node
+   * @param {Node} node
    */
   removeDependency(node) {
     if (!this._dependencies.includes(node)) {
       return;
     }
 
-    const thisIndex = node._dependents.indexOf(/** @type {NodeType} */ (/** @type {BaseNode} */(this)));
+    const thisIndex = node._dependents.indexOf(/** @type {Node} */ (/** @type {BaseNode} */(this)));
     node._dependents.splice(thisIndex, 1);
     this._dependencies.splice(this._dependencies.indexOf(node), 1);
   }
@@ -158,10 +158,10 @@ class BaseNode {
 
   /**
    * Clones the node's information without adding any dependencies/dependents.
-   * @return {NodeType}
+   * @return {Node}
    */
   cloneWithoutRelationships() {
-    const node = /** @type {NodeType} */ (new BaseNode(this.id));
+    const node = /** @type {Node} */ (new BaseNode(this.id));
     node.setIsMainDocument(this._isMainDocument);
     return node;
   }
@@ -170,13 +170,13 @@ class BaseNode {
    * Clones the entire graph connected to this node filtered by the optional predicate. If a node is
    * included by the predicate, all nodes along the paths between the two will be included. If the
    * node that was called clone is not included in the resulting filtered graph, the method will throw.
-   * @param {function(NodeType):boolean} [predicate]
-   * @return {NodeType}
+   * @param {function(Node):boolean} [predicate]
+   * @return {Node}
    */
   cloneWithRelationships(predicate) {
     const rootNode = this.getRootNode();
 
-    /** @type {function(NodeType): boolean} */
+    /** @type {function(Node): boolean} */
     let shouldIncludeNode = () => true;
     if (predicate) {
       const idsToInclude = new Set();
@@ -216,13 +216,13 @@ class BaseNode {
   /**
    * Traverses all paths in the graph, calling iterator on each node visited. Decides which nodes to
    * visit with the getNext function.
-   * @param {function(NodeType, NodeType[])} iterator
-   * @param {function(NodeType): NodeType[]} getNext
+   * @param {function(Node, Node[])} iterator
+   * @param {function(Node): Node[]} getNext
    */
   _traversePaths(iterator, getNext) {
-    const stack = [[/** @type {NodeType} */(/** @type {BaseNode} */(this))]];
+    const stack = [[/** @type {Node} */(/** @type {BaseNode} */(this))]];
     while (stack.length) {
-      /** @type {NodeType[]} */
+      /** @type {Node[]} */
       // @ts-ignore - stack has length so it's guaranteed to have an item
       const path = stack.shift();
       const node = path[0];
@@ -238,8 +238,8 @@ class BaseNode {
   /**
    * Traverses all connected nodes exactly once, calling iterator on each. Decides which nodes to
    * visit with the getNext function.
-   * @param {function(NodeType, NodeType[])} iterator
-   * @param {function(NodeType): NodeType[]} [getNext] Defaults to returning the dependents.
+   * @param {function(Node, Node[])} iterator
+   * @param {function(Node): Node[]} [getNext] Defaults to returning the dependents.
    */
   traverse(iterator, getNext) {
     if (!getNext) {
@@ -262,7 +262,7 @@ class BaseNode {
 
   /**
    * Returns whether the given node has a cycle in its dependent graph by performing a DFS.
-   * @param {NodeType} node
+   * @param {Node} node
    * @param {'dependents'|'dependencies'|'both'} [direction]
    * @return {boolean}
    */
@@ -273,7 +273,7 @@ class BaseNode {
     }
 
     const visited = new Set();
-    /** @type {NodeType[]} */
+    /** @type {Node[]} */
     const currentPath = [];
     const toVisit = [node];
     const depthAdded = new Map([[node, 0]]);
@@ -281,7 +281,7 @@ class BaseNode {
     // Keep going while we have nodes to visit in the stack
     while (toVisit.length) {
       // Get the last node in the stack (DFS uses stack, not queue)
-      /** @type {NodeType} */
+      /** @type {Node} */
       // @ts-ignore - toVisit has length so it's guaranteed to have an item
       const currentNode = toVisit.pop();
 

@@ -16,7 +16,7 @@ const UnusedCSS = require('./unused-css-rules');
 const WebInspector = require('../../lib/web-inspector');
 
 /** @typedef {import('../../lib/dependency-graph/simulator/simulator')} Simulator */
-/** @typedef {import('../../lib/dependency-graph/base-node.js').NodeType} NodeType */
+/** @typedef {import('../../lib/dependency-graph/base-node.js').Node} Node */
 /** @typedef {import('../../lib/dependency-graph/network-node.js')} NetworkNode */
 
 // Because of the way we detect blocking stylesheets, asynchronously loaded
@@ -28,10 +28,10 @@ const MINIMUM_WASTED_MS = 50;
 /**
  * Given a simulation's nodeTimings, return an object with the nodes/timing keyed by network URL
  * @param {LH.Gatherer.Simulation.Result['nodeTimings']} nodeTimings
- * @return {Object<string, {node: NodeType, nodeTiming: LH.Gatherer.Simulation.NodeTiming}>}
+ * @return {Object<string, {node: Node, nodeTiming: LH.Gatherer.Simulation.NodeTiming}>}
  */
 function getNodesAndTimingByUrl(nodeTimings) {
-  /** @type {Object<string, {node: NodeType, nodeTiming: LH.Gatherer.Simulation.NodeTiming}>} */
+  /** @type {Object<string, {node: Node, nodeTiming: LH.Gatherer.Simulation.NodeTiming}>} */
   const urlMap = {};
   const nodes = Array.from(nodeTimings.keys());
   nodes.forEach(node => {
@@ -137,7 +137,7 @@ class RenderBlockingResources extends Audit {
    * thing.
    *
    * @param {Simulator} simulator
-   * @param {NodeType} fcpGraph
+   * @param {Node} fcpGraph
    * @param {Set<string>} deferredIds
    * @param {Map<string, number>} wastedCssBytesByUrl
    * @return {number}

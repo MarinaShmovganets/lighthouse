@@ -8,7 +8,7 @@
 const MetricArtifact = require('./lantern-metric');
 const BaseNode = require('../../../lib/dependency-graph/base-node');
 
-/** @typedef {BaseNode.NodeType} NodeType */
+/** @typedef {BaseNode.Node} Node */
 
 class FirstContentfulPaint extends MetricArtifact {
   get name() {
@@ -27,9 +27,9 @@ class FirstContentfulPaint extends MetricArtifact {
   }
 
   /**
-   * @param {NodeType} dependencyGraph
+   * @param {Node} dependencyGraph
    * @param {LH.Artifacts.TraceOfTab} traceOfTab
-   * @return {NodeType}
+   * @return {Node}
    */
   getOptimisticGraph(dependencyGraph, traceOfTab) {
     const fcp = traceOfTab.timestamps.firstContentfulPaint;
@@ -52,9 +52,9 @@ class FirstContentfulPaint extends MetricArtifact {
   }
 
   /**
-   * @param {NodeType} dependencyGraph
+   * @param {Node} dependencyGraph
    * @param {LH.Artifacts.TraceOfTab} traceOfTab
-   * @return {NodeType}
+   * @return {Node}
    */
   getPessimisticGraph(dependencyGraph, traceOfTab) {
     const fcp = traceOfTab.timestamps.firstContentfulPaint;

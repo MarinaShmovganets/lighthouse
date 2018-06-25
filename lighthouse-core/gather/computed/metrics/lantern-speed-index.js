@@ -8,7 +8,7 @@
 const MetricArtifact = require('./lantern-metric');
 const BaseNode = require('../../../lib/dependency-graph/base-node');
 
-/** @typedef {BaseNode.NodeType} NodeType */
+/** @typedef {BaseNode.Node} Node */
 
 class SpeedIndex extends MetricArtifact {
   get name() {
@@ -30,16 +30,16 @@ class SpeedIndex extends MetricArtifact {
   }
 
   /**
-   * @param {NodeType} dependencyGraph
-   * @return {NodeType}
+   * @param {Node} dependencyGraph
+   * @return {Node}
    */
   getOptimisticGraph(dependencyGraph) {
     return dependencyGraph;
   }
 
   /**
-   * @param {NodeType} dependencyGraph
-   * @return {NodeType}
+   * @param {Node} dependencyGraph
+   * @return {Node}
    */
   getPessimisticGraph(dependencyGraph) {
     return dependencyGraph;

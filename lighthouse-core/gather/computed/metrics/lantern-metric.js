@@ -9,13 +9,13 @@ const ComputedArtifact = require('../computed-artifact');
 const BaseNode = require('../../../lib/dependency-graph/base-node');
 const ResourceType = require('../../../../third-party/devtools/ResourceType');
 
-/** @typedef {BaseNode.NodeType} NodeType */
+/** @typedef {BaseNode.Node} Node */
 /** @typedef {import('../../../lib/dependency-graph/network-node')} NetworkNode */
 /** @typedef {import('../../../lib/dependency-graph/simulator/simulator')} Simulator */
 
 class LanternMetricArtifact extends ComputedArtifact {
   /**
-   * @param {NodeType} dependencyGraph
+   * @param {Node} dependencyGraph
    * @param {function(NetworkNode):boolean=} condition
    * @return {Set<string>}
    */
@@ -41,18 +41,18 @@ class LanternMetricArtifact extends ComputedArtifact {
   }
 
   /**
-   * @param {NodeType} dependencyGraph
+   * @param {Node} dependencyGraph
    * @param {LH.Artifacts.TraceOfTab} traceOfTab
-   * @return {NodeType}
+   * @return {Node}
    */
   getOptimisticGraph(dependencyGraph, traceOfTab) { // eslint-disable-line no-unused-vars
     throw new Error('Optimistic graph unimplemented!');
   }
 
   /**
-   * @param {NodeType} dependencyGraph
+   * @param {Node} dependencyGraph
    * @param {LH.Artifacts.TraceOfTab} traceOfTab
-   * @return {NodeType}
+   * @return {Node}
    */
   getPessimisticGraph(dependencyGraph, traceOfTab) { // eslint-disable-line no-unused-vars
     throw new Error('Pessmistic graph unimplemented!');

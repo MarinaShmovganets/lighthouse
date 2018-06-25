@@ -12,7 +12,7 @@ const TcpConnection = require('./tcp-connection');
 const ConnectionPool = require('./connection-pool');
 const mobile3G = require('../../../config/constants').throttling.mobile3G;
 
-/** @typedef {BaseNode.NodeType} NodeType */
+/** @typedef {BaseNode.Node} Node */
 
 // see https://cs.chromium.org/search/?q=kDefaultMaxNumDelayableRequestsPerClient&sq=package:chromium&type=cs
 const DEFAULT_MAXIMUM_CONCURRENT_REQUESTS = 10;
@@ -61,7 +61,7 @@ class Simulator {
 
     // Properties reset on every `.simulate` call but duplicated here for type checking
     this._flexibleOrdering = false;
-    /** @type {Map<NodeType, NodeTimingIntermediate>} */
+    /** @type {Map<Node, NodeTimingIntermediate>} */
     this._nodeTimings = new Map();
     /** @type {Map<string, number>} */
     this._numberInProgressByType = new Map();
@@ -71,7 +71,7 @@ class Simulator {
   }
 
   /**
-   * @param {NodeType} graph
+   * @param {Node} graph
    */
   _initializeConnectionPool(graph) {
     /** @type {LH.WebInspector.NetworkRequest[]} */
@@ -107,7 +107,7 @@ class Simulator {
   }
 
   /**
-   * @param {NodeType} node
+   * @param {Node} node
    * @param {NodeTimingIntermediate} values
    */
   _setTimingData(node, values) {
@@ -117,7 +117,7 @@ class Simulator {
   }
 
   /**
-   * @param {NodeType} node
+   * @param {Node} node
    * @return {NodeTimingIntermediate}
    */
   _getTimingData(node) {
@@ -127,7 +127,7 @@ class Simulator {
   }
 
   /**
-   * @param {NodeType} node
+   * @param {Node} node
    * @param {number} queuedTime
    */
   _markNodeAsReadyToStart(node, queuedTime) {
@@ -137,7 +137,7 @@ class Simulator {
   }
 
   /**
-   * @param {NodeType} node
+   * @param {Node} node
    * @param {number} startTime
    */
   _markNodeAsInProgress(node, startTime) {
@@ -148,7 +148,7 @@ class Simulator {
   }
 
   /**
-   * @param {NodeType} node
+   * @param {Node} node
    * @param {number} endTime
    */
   _markNodeAsComplete(node, endTime) {
@@ -179,7 +179,7 @@ class Simulator {
   }
 
   /**
-   * @param {NodeType} node
+   * @param {Node} node
    * @param {number} totalElapsedTime
    */
   _startNodeIfPossible(node, totalElapsedTime) {
@@ -224,7 +224,7 @@ class Simulator {
 
   /**
    * Estimates the number of milliseconds remaining given current condidtions before the node is complete.
-   * @param {NodeType} node
+   * @param {Node} node
    * @return {number}
    */
   _estimateTimeRemaining(node) {
@@ -299,7 +299,7 @@ class Simulator {
 
   /**
    * Given a time period, computes the progress toward completion that the node made durin that time.
-   * @param {NodeType} node
+   * @param {Node} node
    * @param {number} timePeriodLength
    * @param {number} totalElapsedTime
    */
@@ -341,7 +341,7 @@ class Simulator {
   }
 
   _computeFinalNodeTimings() {
-    /** @type {Map<NodeType, LH.Gatherer.Simulation.NodeTiming>} */
+    /** @type {Map<Node, LH.Gatherer.Simulation.NodeTiming>} */
     const nodeTimings = new Map();
     for (const [node, timing] of this._nodeTimings) {
       nodeTimings.set(node, {
@@ -370,7 +370,7 @@ class Simulator {
    * wait around for a warm connection to be available if the original record was fetched on a warm
    * connection).
    *
-   * @param {NodeType} graph
+   * @param {Node} graph
    * @param {{flexibleOrdering?: boolean, label?: string}=} options
    * @return {LH.Gatherer.Simulation.Result}
    */

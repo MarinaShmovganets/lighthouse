@@ -9,7 +9,7 @@ const LanternMetricArtifact = require('./lantern-metric');
 const BaseNode = require('../../../lib/dependency-graph/base-node');
 const EstimatedInputLatency = require('./estimated-input-latency');
 
-/** @typedef {BaseNode.NodeType} NodeType */
+/** @typedef {BaseNode.Node} Node */
 
 class LanternEstimatedInputLatency extends LanternMetricArtifact {
   get name() {
@@ -28,16 +28,16 @@ class LanternEstimatedInputLatency extends LanternMetricArtifact {
   }
 
   /**
-   * @param {NodeType} dependencyGraph
-   * @return {NodeType}
+   * @param {Node} dependencyGraph
+   * @return {Node}
    */
   getOptimisticGraph(dependencyGraph) {
     return dependencyGraph;
   }
 
   /**
-   * @param {NodeType} dependencyGraph
-   * @return {NodeType}
+   * @param {Node} dependencyGraph
+   * @return {Node}
    */
   getPessimisticGraph(dependencyGraph) {
     return dependencyGraph;

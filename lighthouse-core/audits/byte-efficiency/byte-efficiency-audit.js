@@ -10,7 +10,7 @@ const linearInterpolation = require('../../lib/statistics').linearInterpolation;
 const Interactive = require('../../gather/computed/metrics/lantern-interactive');
 
 /** @typedef {import('../../lib/dependency-graph/simulator/simulator')} Simulator */
-/** @typedef {import('../../lib/dependency-graph/base-node.js').NodeType} NodeType */
+/** @typedef {import('../../lib/dependency-graph/base-node.js').Node} Node */
 
 const KB_IN_BYTES = 1024;
 
@@ -125,7 +125,7 @@ class UnusedBytes extends Audit {
    * - (if includeLoad is true or not provided) end time of the last node in the graph
    *
    * @param {Array<LH.Audit.ByteEfficiencyItem>} results The array of byte savings results per resource
-   * @param {NodeType} graph
+   * @param {Node} graph
    * @param {Simulator} simulator
    * @param {{includeLoad?: boolean, label?: string}=} options
    * @return {number}
@@ -180,7 +180,7 @@ class UnusedBytes extends Audit {
 
   /**
    * @param {ByteEfficiencyProduct} result
-   * @param {NodeType} graph
+   * @param {Node} graph
    * @param {Simulator} simulator
    * @return {LH.Audit.Product}
    */
