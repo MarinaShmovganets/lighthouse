@@ -14,9 +14,16 @@ const TracingProcessor = require('../../../lib/traces/tracing-processor.js');
 const assert = require('assert');
 
 describe('MainResource computed artifact', () => {
+  const args = {data: {}};
+  const baseTs = 1241250325;
+  let boilerplateTrace;
   let computedArtifacts;
 
   beforeEach(() => {
+    boilerplateTrace = [
+      {ph: 'I', name: 'TracingStartedInPage', ts: baseTs, args},
+      {ph: 'I', name: 'navigationStart', ts: baseTs, args},
+    ];
     computedArtifacts = Runner.instantiateComputedArtifacts();
   });
 
@@ -45,16 +52,15 @@ describe('MainResource computed artifact', () => {
   });
 
   it('should compute parent/child correctly', async () => {
-    const baseTs = 1241250325;
     const traceEvents = [
-      {ph: 'I', name: 'TracingStartedInPage', ts: baseTs},
+      ...boilerplateTrace,
       {ph: 'X', name: 'TaskA', ts: baseTs, dur: 100e3},
       {ph: 'B', name: 'TaskB', ts: baseTs + 5e3},
       {ph: 'X', name: 'TaskC', ts: baseTs + 10e3, dur: 30e3},
       {ph: 'E', name: 'TaskB', ts: baseTs + 55e3},
     ];
 
-    traceEvents.forEach(evt => evt.args = {data: {}});
+    traceEvents.forEach(evt => Object.assign(evt, {cat: 'devtools.timeline', args}));
 
     const tasks = await computedArtifacts.requestMainThreadTasks({traceEvents});
     assert.equal(tasks.length, 3);
@@ -64,10 +70,10 @@ describe('MainResource computed artifact', () => {
     const taskC = tasks.find(task => task.event.name === 'TaskC');
     assert.deepStrictEqual(taskA, {
       parent: undefined,
-      attributableURL: undefined,
+      attributableURLs: [],
 
       children: [taskB],
-      event: traceEvents[1],
+      event: traceEvents[2],
       startTime: 0,
       endTime: 100,
       duration: 100,
@@ -77,15 +83,46 @@ describe('MainResource computed artifact', () => {
 
     assert.deepStrictEqual(taskB, {
       parent: taskA,
-      attributableURL: undefined,
+      attributableURLs: [],
 
       children: [taskC],
-      event: traceEvents[2],
+      event: traceEvents[3],
       startTime: 5,
       endTime: 55,
       duration: 50,
       selfTime: 20,
       group: taskGroups.other,
     });
+  });
+
+  it('should compute attributableURLs correclty', async () => {
+    const baseTs = 1241250325;
+    const url = s => ({args: {data: {url: s}}});
+    const stackFrames = f => ({args: {data: {stackTrace: f.map(url => ({url}))}}});
+
+    const traceEvents = [
+      ...boilerplateTrace,
+      {ph: 'X', name: 'TaskA', ts: baseTs, dur: 100e3, ...url('about:blank')},
+      {ph: 'B', name: 'TaskB', ts: baseTs + 5e3, ...stackFrames(['urlB.1', 'urlB.2'])},
+      {ph: 'X', name: 'EvaluateScript', ts: baseTs + 10e3, dur: 30e3, ...url('urlC')},
+      {ph: 'X', name: 'TaskD', ts: baseTs + 15e3, dur: 5e3, ...stackFrames(['urlD'])},
+      {ph: 'E', name: 'TaskB', ts: baseTs + 55e3},
+    ];
+
+    traceEvents.forEach(evt => {
+      evt.cat = 'devtools.timeline';
+      evt.args = evt.args || args;
+    });
+
+    const tasks = await computedArtifacts.requestMainThreadTasks({traceEvents});
+    const taskA = tasks.find(task => task.event.name === 'TaskA');
+    const taskB = tasks.find(task => task.event.name === 'TaskB');
+    const taskC = tasks.find(task => task.event.name === 'EvaluateScript');
+    const taskD = tasks.find(task => task.event.name === 'TaskD');
+
+    assert.deepStrictEqual(taskA.attributableURLs, []);
+    assert.deepStrictEqual(taskB.attributableURLs, ['urlB.1', 'urlB.2']);
+    assert.deepStrictEqual(taskC.attributableURLs, ['urlB.1', 'urlB.2', 'urlC']);
+    assert.deepStrictEqual(taskD.attributableURLs, ['urlB.1', 'urlB.2', 'urlC', 'urlD']);
   });
 });

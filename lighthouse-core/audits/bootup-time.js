@@ -40,21 +40,39 @@ class BootupTime extends Audit {
   }
 
   /**
-   * @param {LH.Artifacts.TaskNode[]} tasks
-   * @param {number} multiplier
-   * @return {Map<string, Object<keyof taskGroups, number>>}
+   * @param {LH.WebInspector.NetworkRequest[]} records
    */
-  static getExecutionTimingsByURL(tasks, multiplier) {
+  static getJavaScriptURLs(records) {
+    /** @type {Set<string>} */
+    const urls = new Set();
+    for (const record of records) {
+      if (record._resourceType && record._resourceType._name === 'script') {
+        urls.add(record.url);
+      }
+    }
+
+    return urls;
+  }
+
+  /**
+   * @param {LH.Artifacts.TaskNode[]} tasks
+   * @param {Set<string>} jsURLs
+   * @return {Map<string, Object<string, number>>}
+   */
+  static getExecutionTimingsByURL(tasks, jsURLs) {
     /** @type {Map<string, Object<string, number>>} */
     const result = new Map();
 
     for (const task of tasks) {
-      if (!task.attributableURL || task.attributableURL === 'about:blank') continue;
+      const jsURL = task.attributableURLs.find(url => jsURLs.has(url));
+      const fallbackURL = task.attributableURLs[0];
+      const attributableURL = jsURL || fallbackURL;
+      if (!attributableURL || attributableURL === 'about:blank') continue;
 
-      const timingByGroupId = result.get(task.attributableURL) || {};
+      const timingByGroupId = result.get(attributableURL) || {};
       const originalTime = timingByGroupId[task.group.id] || 0;
-      timingByGroupId[task.group.id] = originalTime + task.selfTime * multiplier;
-      result.set(task.attributableURL, timingByGroupId);
+      timingByGroupId[task.group.id] = originalTime + task.selfTime;
+      result.set(attributableURL, timingByGroupId);
     }
 
     return result;
@@ -68,22 +86,29 @@ class BootupTime extends Audit {
   static async audit(artifacts, context) {
     const settings = context.settings || {};
     const trace = artifacts.traces[BootupTime.DEFAULT_PASS];
+    const devtoolsLog = artifacts.devtoolsLogs[BootupTime.DEFAULT_PASS];
+    const networkRecords = await artifacts.requestNetworkRecords(devtoolsLog);
     const tasks = await artifacts.requestMainThreadTasks(trace);
     const multiplier = settings.throttlingMethod === 'simulate' ?
       settings.throttling.cpuSlowdownMultiplier : 1;
 
-    const executionTimings = BootupTime.getExecutionTimingsByURL(tasks, multiplier);
+    const jsURLs = BootupTime.getJavaScriptURLs(networkRecords);
+    const executionTimings = BootupTime.getExecutionTimingsByURL(tasks, jsURLs);
 
     let totalBootupTime = 0;
     const results = Array.from(executionTimings)
       .map(([url, timingByGroupId]) => {
         // Add up the totalBootupTime for all the taskGroups
         let bootupTimeForURL = 0;
-        for (const timespanMs of Object.values(timingByGroupId)) {
-          bootupTimeForURL += timespanMs;
+        for (const [groupId, timespanMs] of Object.entries(timingByGroupId)) {
+          timingByGroupId[groupId] = timespanMs * multiplier;
+          bootupTimeForURL += timespanMs * multiplier;
         }
 
-        totalBootupTime += bootupTimeForURL;
+        // Add up all the execution time of shown URLs
+        if (bootupTimeForURL >= context.options.thresholdInMs) {
+          totalBootupTime += bootupTimeForURL;
+        }
 
         const scriptingTotal = timingByGroupId[taskGroups.scriptEvaluation.id] || 0;
         const parseCompileTotal = timingByGroupId[taskGroups.scriptParseCompile.id] || 0;

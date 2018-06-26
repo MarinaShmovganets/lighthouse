@@ -43,16 +43,15 @@ class MainThreadWorkBreakdown extends Audit {
 
   /**
    * @param {LH.Artifacts.TaskNode[]} tasks
-   * @param {number} multiplier
    * @return {Map<string, number>}
    */
-  static getExecutionTimingsByGroup(tasks, multiplier) {
+  static getExecutionTimingsByGroup(tasks) {
     /** @type {Map<string, number>} */
     const result = new Map();
 
     for (const task of tasks) {
       const originalTime = result.get(task.group.id) || 0;
-      result.set(task.group.id, originalTime + task.selfTime * multiplier);
+      result.set(task.group.id, originalTime + task.selfTime);
     }
 
     return result;
@@ -71,11 +70,12 @@ class MainThreadWorkBreakdown extends Audit {
     const multiplier = settings.throttlingMethod === 'simulate' ?
       settings.throttling.cpuSlowdownMultiplier : 1;
 
-    const executionTimings = MainThreadWorkBreakdown.getExecutionTimingsByGroup(tasks, multiplier);
+    const executionTimings = MainThreadWorkBreakdown.getExecutionTimingsByGroup(tasks);
 
     let totalExecutionTime = 0;
     const categoryTotals = {};
-    const results = Array.from(executionTimings).map(([groupId, duration]) => {
+    const results = Array.from(executionTimings).map(([groupId, rawDuration]) => {
+      const duration = rawDuration * multiplier;
       totalExecutionTime += duration;
 
       const categoryTotal = categoryTotals[groupId] || 0;

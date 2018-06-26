@@ -18,8 +18,8 @@ const errorTrace = require('../fixtures/traces/airhorner_no_fcp.json');
 
 const acceptableTraceExpectations = {
   parseHTML: 14,
-  styleLayout: 338,
-  paintCompositeRender: 58,
+  styleLayout: 308,
+  paintCompositeRender: 87,
   scriptEvaluation: 215,
   scriptParseCompile: 25,
   garbageCollection: 48,
@@ -27,8 +27,8 @@ const acceptableTraceExpectations = {
 };
 const siteWithRedirectTraceExpectations = {
   parseHTML: 84,
-  styleLayout: 281,
-  paintCompositeRender: 6,
+  styleLayout: 275,
+  paintCompositeRender: 12,
   scriptEvaluation: 145,
   scriptParseCompile: 38,
   garbageCollection: 46,
@@ -36,8 +36,8 @@ const siteWithRedirectTraceExpectations = {
 };
 const loadTraceExpectations = {
   parseHTML: 25,
-  styleLayout: 150,
-  paintCompositeRender: 24,
+  styleLayout: 131,
+  paintCompositeRender: 44,
   scriptEvaluation: 347,
   garbageCollection: 3,
   other: 382,

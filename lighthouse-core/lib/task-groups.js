@@ -32,8 +32,6 @@ const taskGroups = {
       'UpdateLayoutTree',
       'InvalidateLayout',
       'Layout',
-      'UpdateLayer',
-      'UpdateLayerTree',
     ],
   },
   paintCompositeRender: {
@@ -51,6 +49,8 @@ const taskGroups = {
       'Rasterize',
       'RasterTask',
       'ScrollLayer',
+      'UpdateLayer',
+      'UpdateLayerTree',
       'CompositeLayers',
     ],
   },
@@ -65,7 +65,7 @@ const taskGroups = {
     traceEventNames: [
       'EventDispatch',
       'EvaluateScript',
-      'EvaluateModule',
+      'v8.evaluateModule',
       'FunctionCall',
       'TimerFire',
       'FireIdleCallback',

@@ -678,7 +678,7 @@
           {
             "group": "scriptEvaluation",
             "groupLabel": "Script Evaluation",
-            "duration": 1148.6020000000003
+            "duration": 1148.6240000000003
           },
           {
             "group": "other",
@@ -688,12 +688,12 @@
           {
             "group": "styleLayout",
             "groupLabel": "Style & Layout",
-            "duration": 127.39700000000006
+            "duration": 121.584
           },
           {
             "group": "parseHTML",
             "groupLabel": "Parse HTML & CSS",
-            "duration": 53.677
+            "duration": 53.65500000000001
           },
           {
             "group": "garbageCollection",
@@ -701,14 +701,14 @@
             "duration": 26.198999999999998
           },
           {
+            "group": "paintCompositeRender",
+            "groupLabel": "Rendering",
+            "duration": 13.486999999999998
+          },
+          {
             "group": "scriptParseCompile",
             "groupLabel": "Script Parsing & Compilation",
             "duration": 7.818999999999999
-          },
-          {
-            "group": "paintCompositeRender",
-            "groupLabel": "Rendering",
-            "duration": 7.673999999999999
           }
         ]
       }
@@ -719,10 +719,10 @@
       "description": "Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/bootup).",
       "score": 0.92,
       "scoreDisplayMode": "numeric",
-      "rawValue": 1159.2930000000001,
+      "rawValue": 1150.932,
       "displayValue": [
         "%10d ms",
-        1159.2930000000001
+        1150.932
       ],
       "details": {
         "type": "table",
@@ -754,7 +754,7 @@
         "items": [
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
-            "total": 968.6280000000002,
+            "total": 966.9800000000001,
             "scripting": 957.494,
             "scriptParseCompile": 2.777
           },
@@ -772,7 +772,7 @@
           }
         ],
         "summary": {
-          "wastedMs": 1159.2930000000001
+          "wastedMs": 1150.932
         }
       }
     },

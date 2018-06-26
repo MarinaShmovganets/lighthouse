@@ -11,6 +11,7 @@ const Runner = require('../../runner.js');
 const assert = require('assert');
 
 const acceptableTrace = require('../fixtures/traces/progressive-app-m60.json');
+const acceptableDevtoolsLogs = require('../fixtures/traces/progressive-app-m60.devtools.log.json');
 const errorTrace = require('../fixtures/traces/airhorner_no_fcp.json');
 
 describe('Performance: bootup-time audit', () => {
@@ -25,9 +26,8 @@ describe('Performance: bootup-time audit', () => {
 
   it('should compute the correct BootupTime values', () => {
     const artifacts = Object.assign({
-      traces: {
-        [BootupTime.DEFAULT_PASS]: acceptableTrace,
-      },
+      traces: {[BootupTime.DEFAULT_PASS]: acceptableTrace},
+      devtoolsLogs: {[BootupTime.DEFAULT_PASS]: acceptableDevtoolsLogs},
     }, Runner.instantiateComputedArtifacts());
 
     return BootupTime.audit(artifacts, {options: auditOptions}).then(output => {
@@ -36,7 +36,7 @@ describe('Performance: bootup-time audit', () => {
       assert.deepEqual(roundedValueOf(output, 'https://www.google-analytics.com/plugins/ua/linkid.js'), {scripting: 25.2, scriptParseCompile: 1.2, total: 26.4});
       assert.deepEqual(roundedValueOf(output, 'https://www.google-analytics.com/analytics.js'), {scripting: 40.6, scriptParseCompile: 9.6, total: 53.4});
 
-      assert.equal(Math.round(output.rawValue), 250);
+      assert.equal(Math.round(output.rawValue), 221);
       assert.equal(output.details.items.length, 4);
       assert.equal(output.score, 1);
     });
@@ -45,6 +45,7 @@ describe('Performance: bootup-time audit', () => {
   it('should compute the correct values when simulated', async () => {
     const artifacts = Object.assign({
       traces: {defaultPass: acceptableTrace},
+      devtoolsLogs: {defaultPass: acceptableDevtoolsLogs},
     }, Runner.instantiateComputedArtifacts());
 
     const options = auditOptions;
@@ -53,16 +54,15 @@ describe('Performance: bootup-time audit', () => {
 
     assert.deepEqual(roundedValueOf(output, 'https://pwa.rocks/script.js'), {scripting: 95.3, scriptParseCompile: 3.9, total: 110.5});
 
-    assert.equal(output.details.items.length, 8);
+    assert.equal(output.details.items.length, 7);
     assert.equal(output.score, 0.98);
-    assert.equal(Math.round(output.rawValue), 750);
+    assert.equal(Math.round(output.rawValue), 709);
   });
 
   it('should get no data when no events are present', () => {
     const artifacts = Object.assign({
-      traces: {
-        [BootupTime.DEFAULT_PASS]: errorTrace,
-      },
+      traces: {defaultPass: errorTrace},
+      devtoolsLogs: {defaultPass: []},
     }, Runner.instantiateComputedArtifacts());
 
     return BootupTime.audit(artifacts, {options: auditOptions})

@@ -6,7 +6,6 @@
 'use strict';
 
 const ComputedArtifact = require('./computed-artifact');
-const TraceProcessor = require('../../lib/traces/tracing-processor');
 const {taskGroups, taskNameToGroup} = require('../../lib/task-groups');
 
 /**
@@ -23,7 +22,7 @@ const {taskGroups, taskNameToGroup} = require('../../lib/task-groups');
  *
  * Each task will have its group/classification, start time, end time,
  * duration, and self time computed. Each task will potentially have a parent, children, and an
- * attributeableURL for the script that was executing/forced this execution.
+ * attributableURL for the script that was executing/forced this execution.
  */
 
 /** @typedef {import('../../lib/task-groups.js').TaskGroup} TaskGroup */
@@ -37,7 +36,7 @@ const {taskGroups, taskNameToGroup} = require('../../lib/task-groups');
  * @prop {number} endTime
  * @prop {number} duration
  * @prop {number} selfTime
- * @prop {string|undefined} attributableURL
+ * @prop {string[]} attributableURLs
  * @prop {TaskGroup} group
  */
 
@@ -60,8 +59,8 @@ class MainThreadTasks extends ComputedArtifact {
       children: [],
 
       // These properties will be filled in later
+      attributableURLs: [],
       group: taskGroups.other,
-      attributableURL: undefined,
       duration: NaN,
       selfTime: NaN,
     };
@@ -74,20 +73,16 @@ class MainThreadTasks extends ComputedArtifact {
   }
 
   /**
-   * @param {LH.TraceEvent[]} traceEvents
+   * @param {LH.TraceEvent[]} mainThreadEvents
    * @return {TaskNode[]}
    */
-  static _createTasksFromEvents(traceEvents) {
-    const {startedInPageEvt} = TraceProcessor.findTracingStartedEvt(traceEvents);
-
+  static _createTasksFromEvents(mainThreadEvents) {
     /** @type {TaskNode[]} */
     const tasks = [];
     /** @type {TaskNode|undefined} */
     let currentTask;
 
-    for (const event of traceEvents) {
-      // Only look at main thread events
-      if (event.pid !== startedInPageEvt.pid || event.tid !== startedInPageEvt.tid) continue;
+    for (const event of mainThreadEvents) {
       // Only look at X (Complete), B (Begin), and E (End) events as they have most data
       if (event.ph !== 'X' && event.ph !== 'B' && event.ph !== 'E') continue;
 
@@ -148,16 +143,39 @@ class MainThreadTasks extends ComputedArtifact {
 
   /**
    * @param {TaskNode} task
-   * @param {string} [parentURL]
+   * @param {string[]} parentURLs
    */
-  static _computeRecursiveAttributableURL(task, parentURL) {
+  static _computeRecursiveAttributableURLs(task, parentURLs) {
     const argsData = task.event.args.data || {};
-    const stackFrames = argsData.stackTrace || [{url: undefined}];
-    const taskURL = argsData.url || (stackFrames[0] && stackFrames[0].url);
+    const stackFrameURLs = (argsData.stackTrace || []).map(entry => entry.url);
 
-    task.attributableURL = parentURL || taskURL;
+    let taskURLs = [];
+    switch (task.event.name) {
+      case 'v8.compile':
+      case 'v8.compileModule':
+      case 'EvaluateScript':
+      case 'v8.evaluateModule':
+      case 'FunctionCall':
+        taskURLs = [argsData.url].concat(stackFrameURLs);
+        break;
+      default:
+        taskURLs = stackFrameURLs;
+        break;
+    }
+
+    /** @type {string[]} */
+    const attributableURLs = Array.from(parentURLs);
+    for (const url of taskURLs) {
+      // Don't add empty URLs
+      if (!url) continue;
+      // Don't add consecutive, duplicate URLs
+      if (attributableURLs[attributableURLs.length - 1] === url) continue;
+      attributableURLs.push(url);
+    }
+
+    task.attributableURLs = attributableURLs;
     task.children.forEach(child =>
-      MainThreadTasks._computeRecursiveAttributableURL(child, task.attributableURL));
+      MainThreadTasks._computeRecursiveAttributableURLs(child, attributableURLs));
   }
 
   /**
@@ -171,7 +189,6 @@ class MainThreadTasks extends ComputedArtifact {
   }
 
   /**
-   *
    * @param {LH.TraceEvent[]} traceEvents
    * @return {TaskNode[]}
    */
@@ -183,10 +200,11 @@ class MainThreadTasks extends ComputedArtifact {
       if (task.parent) continue;
 
       MainThreadTasks._computeRecursiveSelfTime(task);
-      MainThreadTasks._computeRecursiveAttributableURL(task);
+      MainThreadTasks._computeRecursiveAttributableURLs(task, []);
       MainThreadTasks._computeRecursiveTaskGroup(task);
     }
 
+    // Rebase all the times to be relative to start of trace in ms
     const firstTs = (tasks[0] || {startTime: 0}).startTime;
     for (const task of tasks) {
       task.startTime = (task.startTime - firstTs) / 1000;
@@ -205,10 +223,12 @@ class MainThreadTasks extends ComputedArtifact {
 
   /**
    * @param {LH.Trace} trace
+   * @param {LH.Artifacts} artifacts
    * @return {Promise<Array<TaskNode>>} networkRecords
    */
-  async compute_(trace) {
-    return MainThreadTasks.getMainThreadTasks(trace.traceEvents);
+  async compute_(trace, artifacts) {
+    const {mainThreadEvents} = await artifacts.requestTraceOfTab(trace);
+    return MainThreadTasks.getMainThreadTasks(mainThreadEvents);
   }
 }
 
