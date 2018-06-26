@@ -306,8 +306,6 @@ function deprecationsTest() {
     MediaStreamTrack.getSources(); // Should eventually FAIL
   } catch(e) {}
 
-  console.timeline(); // Should eventually FAIL
-
   // FAIL
   const xhr = new XMLHttpRequest();
   xhr.open('GET', 'dbw_tester.html', false);
