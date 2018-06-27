@@ -25,7 +25,7 @@ class ManifestShortNameLength extends MultiCheckAudit {
 
   /**
    * @param {LH.Artifacts} artifacts
-   * @return {Promise<{failures: Array<string>, manifestValues: LH.Artifacts.ManifestValues}>}
+   * @return {Promise<{failures: Array<string>, manifestValues: LH.Artifacts.ManifestValues, notApplicable?: boolean}>}
    */
   static audit_(artifacts) {
     /** @type {Array<string>} */
@@ -36,15 +36,24 @@ class ManifestShortNameLength extends MultiCheckAudit {
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
       const result = {warnings, failures, manifestValues};
 
-      if (manifestValues.isParseFailure && manifestValues.parseFailureReason) {
-        failures.push(manifestValues.parseFailureReason);
+      // If there's no valid manifest, this audit is not applicable
+      if (manifestValues.isParseFailure) {
+        result.notApplicable = true;
         return result;
       }
 
-      const shortNameCheckIds = ['hasShortName', 'shortNameLength'];
-      manifestValues.allChecks.filter(item => shortNameCheckIds.includes(item.id)).forEach(item => {
-        if (!item.passing) failures.push(item.failureText);
-      });
+      const shortNameCheck = manifestValues.allChecks.find(i => i.id === 'hasShortName');
+      const shortNameLengthCheck = manifestValues.allChecks.find(i => i.id === 'shortNameLength');
+
+      // If there's no short_name present, this audit is not applicable
+      if (shortNameCheck && !shortNameCheck.passing) {
+        result.notApplicable = true;
+        return result;
+      }
+
+      if (shortNameLengthCheck && !shortNameLengthCheck.passing) {
+        failures.push(shortNameLengthCheck.failureText);
+      }
 
       return result;
     });

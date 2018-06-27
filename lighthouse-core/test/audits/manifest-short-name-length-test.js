@@ -30,8 +30,8 @@ describe('Manifest: short_name_length audit', () => {
     artifacts.Manifest = null;
 
     return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
-      assert.strictEqual(result.rawValue, false);
-      assert.strictEqual(result.explanation, undefined);
+      assert.strictEqual(result.rawValue, true);
+      assert.strictEqual(result.notApplicable, true);
     });
   });
 
@@ -39,8 +39,8 @@ describe('Manifest: short_name_length audit', () => {
     const artifacts = generateMockArtifacts();
     artifacts.Manifest = manifestParser('{}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
     return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
-      assert.equal(result.rawValue, false);
-      assert.equal(result.explanation, 'Failures: Manifest does not have `short_name`.');
+      assert.strictEqual(result.rawValue, true);
+      assert.strictEqual(result.notApplicable, true);
     });
   });
 
@@ -51,10 +51,9 @@ describe('Manifest: short_name_length audit', () => {
     });
     artifacts.Manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
     return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
-      assert.equal(result.rawValue, false);
-      assert.notEqual(result.explanation, undefined);
-      assert.ok(result.explanation.includes('Manifest does not have `short_name`'));
-      assert.ok(!result.explanation.includes('without truncation'));
+      assert.strictEqual(result.rawValue, true);
+      assert.strictEqual(result.notApplicable, true);
+      assert.equal(result.explanation, undefined);
     });
   });
 
@@ -68,7 +67,7 @@ describe('Manifest: short_name_length audit', () => {
     artifacts.Manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
     return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
       assert.equal(result.rawValue, false);
-      assert.ok(result.explanation.includes('without truncation'));
+      assert.ok(result.explanation.includes('without truncation'), result.explanation);
       assert.ok(!result.explanation.includes('Manifest does not have `short_name`'));
     });
   });
