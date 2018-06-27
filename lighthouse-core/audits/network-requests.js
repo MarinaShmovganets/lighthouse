@@ -46,7 +46,7 @@ class NetworkRequests extends Audit {
           transferSize: record.transferSize,
           statusCode: record.statusCode,
           mimeType: record._mimeType,
-          resourceType: (record._resourceType || 'other').toLowerCase(),
+          resourceType: record._resourceType,
         };
       });
 
