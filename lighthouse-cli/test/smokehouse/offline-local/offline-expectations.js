@@ -12,8 +12,8 @@
  */
 module.exports = [
   {
-    initialUrl: 'http://localhost:10200/online-only.html',
-    url: 'http://localhost:10200/online-only.html',
+    requestedUrl: 'http://localhost:10200/online-only.html',
+    finalUrl: 'http://localhost:10200/online-only.html',
     audits: {
       'is-on-https': {
         score: 1,
@@ -34,9 +34,6 @@ module.exports = [
         score: 1,
       },
       'no-document-write': {
-        score: 1,
-      },
-      'no-mutation-events': {
         score: 1,
       },
       'no-websql': {
@@ -64,12 +61,10 @@ module.exports = [
         score: 1,
       },
       'user-timings': {
-        score: 1,
-        displayValue: '',
+        scoreDisplayMode: 'not-applicable',
       },
       'critical-request-chains': {
-        score: 1,
-        displayValue: '',
+        scoreDisplayMode: 'not-applicable',
       },
       'webapp-install-banner': {
         score: 0,
@@ -81,22 +76,22 @@ module.exports = [
         score: 0,
       },
       'aria-valid-attr': {
-        notApplicable: true,
+        scoreDisplayMode: 'not-applicable',
       },
       'aria-allowed-attr': {
-        notApplicable: true,
+        scoreDisplayMode: 'not-applicable',
       },
       'color-contrast': {
         score: 1,
       },
       'image-alt': {
-        notApplicable: true,
+        scoreDisplayMode: 'not-applicable',
       },
       'label': {
-        notApplicable: true,
+        scoreDisplayMode: 'not-applicable',
       },
       'tabindex': {
-        notApplicable: true,
+        scoreDisplayMode: 'not-applicable',
       },
       'content-width': {
         score: 1,
@@ -105,8 +100,8 @@ module.exports = [
   },
 
   {
-    initialUrl: 'http://localhost:10503/offline-ready.html',
-    url: 'http://localhost:10503/offline-ready.html',
+    requestedUrl: 'http://localhost:10503/offline-ready.html',
+    finalUrl: 'http://localhost:10503/offline-ready.html',
     audits: {
       'is-on-https': {
         score: 1,
@@ -127,12 +122,10 @@ module.exports = [
         score: 1,
       },
       'user-timings': {
-        score: 1,
-        displayValue: '',
+        scoreDisplayMode: 'not-applicable',
       },
       'critical-request-chains': {
-        score: 1,
-        displayValue: '',
+        scoreDisplayMode: 'not-applicable',
       },
       'webapp-install-banner': {
         score: 1,
@@ -144,10 +137,10 @@ module.exports = [
         score: 0,
       },
       'aria-valid-attr': {
-        notApplicable: true,
+        scoreDisplayMode: 'not-applicable',
       },
       'aria-allowed-attr': {
-        notApplicable: true,
+        scoreDisplayMode: 'not-applicable',
       },
       'color-contrast': {
         score: 1,
@@ -156,10 +149,10 @@ module.exports = [
         score: 0,
       },
       'label': {
-        notApplicable: true,
+        scoreDisplayMode: 'not-applicable',
       },
       'tabindex': {
-        notApplicable: true,
+        scoreDisplayMode: 'not-applicable',
       },
       'content-width': {
         score: 1,

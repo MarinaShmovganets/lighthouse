@@ -22,7 +22,7 @@ function networkRecord(options = {}) {
     _url: options.url || 'https://example.com/asset',
     statusCode: options.statusCode || 200,
     _resourceType: options.resourceType || WebInspector.resourceTypes.Script,
-    _transferSize: options.transferSize || 10000,
+    transferSize: options.transferSize || 10000,
     _responseHeaders: headers,
   };
 }
@@ -37,22 +37,6 @@ describe('Cache headers audit', () => {
       requestNetworkRecords: () => Promise.resolve(networkRecords),
       requestNetworkThroughput: () => Promise.resolve(1000),
     };
-  });
-
-  describe('#linearInterpolation', () => {
-    it('correctly interpolates when slope is 2', () => {
-      const slopeOf2 = x => CacheHeadersAudit.linearInterpolation(0, 0, 10, 20, x);
-      assert.equal(slopeOf2(-10), -20);
-      assert.equal(slopeOf2(5), 10);
-      assert.equal(slopeOf2(10), 20);
-    });
-
-    it('correctly interpolates when slope is 0', () => {
-      const slopeOf0 = x => CacheHeadersAudit.linearInterpolation(0, 0, 10, 0, x);
-      assert.equal(slopeOf0(-10), 0);
-      assert.equal(slopeOf0(5), 0);
-      assert.equal(slopeOf0(10), 0);
-    });
   });
 
   it('detects missing cache headers', () => {
@@ -166,7 +150,7 @@ describe('Cache headers audit', () => {
   it('ignores potentially uncacheable records', () => {
     networkRecords = [
       networkRecord({statusCode: 500}),
-      networkRecord({url: 'https://example.com/dynamic.js?userId=crazy'}),
+      networkRecord({url: 'https://example.com/dynamic.js?userId=crazy', transferSize: 10}),
       networkRecord({url: 'data:image/jpeg;base64,what'}),
       networkRecord({resourceType: WebInspector.resourceTypes.XHR}),
     ];

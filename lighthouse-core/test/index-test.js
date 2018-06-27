@@ -73,7 +73,7 @@ describe('Module Tests', function() {
     return lighthouse('SOME_URL', {}, {
       passes: [{
         gatherers: [
-          'url',
+          'viewport',
         ],
       }],
       audits: [
@@ -88,7 +88,7 @@ describe('Module Tests', function() {
   });
 
   it('should return formatted LHR when given no categories', function() {
-    const exampleUrl = 'https://example.com/';
+    const exampleUrl = 'https://www.reddit.com/r/nba';
     return lighthouse(exampleUrl, {
       output: 'html',
     }, {
@@ -102,14 +102,13 @@ describe('Module Tests', function() {
       assert.ok(/<html/.test(results.report), 'did not create html report');
       assert.ok(results.artifacts.ViewportDimensions, 'did not set artifacts');
       assert.ok(results.lhr.lighthouseVersion);
-      assert.ok(results.lhr.fetchedAt);
-      assert.equal(results.lhr.url, exampleUrl);
-      assert.equal(results.lhr.initialUrl, exampleUrl);
-      assert.ok(Array.isArray(results.lhr.reportCategories));
-      assert.equal(results.lhr.reportCategories.length, 0);
+      assert.ok(results.lhr.fetchTime);
+      assert.equal(results.lhr.finalUrl, exampleUrl);
+      assert.equal(results.lhr.requestedUrl, exampleUrl);
+      assert.equal(Object.values(results.lhr.categories).length, 0);
       assert.ok(results.lhr.audits.viewport);
       assert.strictEqual(results.lhr.audits.viewport.score, 0);
-      assert.ok(results.lhr.audits.viewport.debugString);
+      assert.ok(results.lhr.audits.viewport.explanation);
       assert.ok(results.lhr.timing);
       assert.equal(typeof results.lhr.timing.total, 'number');
     });

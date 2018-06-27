@@ -14,14 +14,14 @@ const SECURE_DOMAINS = ['localhost', '127.0.0.1'];
 
 class HTTPS extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'is-on-https',
-      description: 'Uses HTTPS',
-      failureDescription: 'Does not use HTTPS',
-      helpText: 'All sites should be protected with HTTPS, even ones that don\'t handle ' +
+      id: 'is-on-https',
+      title: 'Uses HTTPS',
+      failureTitle: 'Does not use HTTPS',
+      description: 'All sites should be protected with HTTPS, even ones that don\'t handle ' +
           'sensitive data. HTTPS prevents intruders from tampering with or passively listening ' +
           'in on the communications between your app and your users, and is a prerequisite for ' +
           'HTTP/2 and many new web platform APIs. ' +
@@ -31,18 +31,18 @@ class HTTPS extends Audit {
   }
 
   /**
-   * @param {{scheme: string, domain: string}} record
+   * @param {{parsedURL: {scheme: string, host: string}, protocol: string}} record
    * @return {boolean}
    */
   static isSecureRecord(record) {
-    return SECURE_SCHEMES.includes(record.scheme) ||
+    return SECURE_SCHEMES.includes(record.parsedURL.scheme) ||
            SECURE_SCHEMES.includes(record.protocol) ||
-           SECURE_DOMAINS.includes(record.domain);
+           SECURE_DOMAINS.includes(record.parsedURL.host);
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
+   * @param {LH.Artifacts} artifacts
+   * @return {Promise<LH.Audit.Product>}
    */
   static audit(artifacts) {
     const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];

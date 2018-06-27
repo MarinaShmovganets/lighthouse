@@ -25,13 +25,13 @@ function generateMockArtifacts() {
 /* eslint-env mocha */
 
 describe('Manifest: short_name_length audit', () => {
-  it('fails with no debugString if page had no manifest', () => {
+  it('fails with no explanation if page had no manifest', () => {
     const artifacts = generateMockArtifacts();
     artifacts.Manifest = null;
 
     return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
       assert.strictEqual(result.rawValue, false);
-      assert.ok(result.debugString.includes('No manifest was fetched'));
+      assert.strictEqual(result.explanation, undefined);
     });
   });
 
@@ -40,7 +40,7 @@ describe('Manifest: short_name_length audit', () => {
     artifacts.Manifest = manifestParser('{}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
     return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
       assert.equal(result.rawValue, false);
-      assert.equal(result.debugString, 'Failures: Manifest does not have `short_name`.');
+      assert.equal(result.explanation, 'Failures: Manifest does not have `short_name`.');
     });
   });
 
@@ -52,9 +52,9 @@ describe('Manifest: short_name_length audit', () => {
     artifacts.Manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
     return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
       assert.equal(result.rawValue, false);
-      assert.notEqual(result.debugString, undefined);
-      assert.ok(result.debugString.includes('Manifest does not have `short_name`'));
-      assert.ok(!result.debugString.includes('without truncation'));
+      assert.notEqual(result.explanation, undefined);
+      assert.ok(result.explanation.includes('Manifest does not have `short_name`'));
+      assert.ok(!result.explanation.includes('without truncation'));
     });
   });
 
@@ -68,8 +68,8 @@ describe('Manifest: short_name_length audit', () => {
     artifacts.Manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
     return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
       assert.equal(result.rawValue, false);
-      assert.ok(result.debugString.includes('without truncation'));
-      assert.ok(!result.debugString.includes('Manifest does not have `short_name`'));
+      assert.ok(result.explanation.includes('without truncation'));
+      assert.ok(!result.explanation.includes('Manifest does not have `short_name`'));
     });
   });
 
@@ -81,7 +81,7 @@ describe('Manifest: short_name_length audit', () => {
     artifacts.Manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
     return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
       assert.equal(result.rawValue, true);
-      assert.equal(result.debugString, undefined);
+      assert.equal(result.explanation, undefined);
     });
   });
   /* eslint-enable camelcase */

@@ -15,7 +15,7 @@ const puppeteer = require('../../node_modules/puppeteer/index.js');
 const lighthouseExtensionPath = path.resolve(__dirname, '../dist');
 const config = require(path.resolve(__dirname, '../../lighthouse-core/config/default-config.js'));
 
-const getAuditsOfCategory = category => config.categories[category].audits;
+const getAuditsOfCategory = category => config.categories[category].auditRefs;
 
 describe('Lighthouse chrome extension', function() {
   // eslint-disable-next-line no-console
@@ -27,12 +27,24 @@ describe('Lighthouse chrome extension', function() {
   let extensionPage;
   let originalManifest;
 
-  function getAuditElementsCount({category, selector}) {
+  function getAuditElementsIds({category, selector}) {
     return extensionPage.evaluate(
-      ({category, selector}) =>
-        document.querySelector(`#${category}`).parentNode.querySelectorAll(selector).length,
-      {category, selector}
+      ({category, selector}) => {
+        const elems = document.querySelector(`#${category}`).parentNode.querySelectorAll(selector);
+        return Array.from(elems).map(el => el.id);
+      }, {category, selector}
     );
+  }
+
+  function getCategoryElementsIds() {
+    return extensionPage.evaluate(
+      () => {
+        const elems = Array.from(document.querySelectorAll(`.lh-category`));
+        return elems.map(el => {
+          const permalink = el.querySelector('.lh-permalink');
+          return permalink && permalink.id;
+        });
+      });
   }
 
   before(async function() {
@@ -105,31 +117,31 @@ describe('Lighthouse chrome extension', function() {
 
 
   const selectors = {
-    audits: '.lh-audit,.lh-perf-metric,.lh-perf-hint',
-    titles: '.lh-score__title, .lh-perf-hint__title, .lh-perf-metric__title',
+    audits: '.lh-audit, .lh-metric',
+    titles: '.lh-audit__title, .lh-metric__title',
   };
 
   it('should contain all categories', async () => {
-    const categories = await extensionPage.$$(`#${lighthouseCategories.join(',#')}`);
-    assert.equal(
-      categories.length,
-      lighthouseCategories.length,
-      `${categories.join(' ')} does not match ${lighthouseCategories.join(' ')}`
+    const categories = await getCategoryElementsIds();
+    assert.deepStrictEqual(
+      categories.sort(),
+      lighthouseCategories.sort(),
+      `all categories not found`
     );
   });
 
   it('should contain audits of all categories', async () => {
     for (const category of lighthouseCategories) {
-      let expected = getAuditsOfCategory(category).length;
+      let expected = getAuditsOfCategory(category);
       if (category === 'performance') {
-        expected = getAuditsOfCategory(category).filter(a => !!a.group).length;
+        expected = getAuditsOfCategory(category).filter(a => !!a.group);
       }
+      expected = expected.map(audit => audit.id);
+      const elementIds = await getAuditElementsIds({category, selector: selectors.audits});
 
-      const elementCount = await getAuditElementsCount({category, selector: selectors.audits});
-
-      assert.equal(
-        expected,
-        elementCount,
+      assert.deepStrictEqual(
+        elementIds.sort(),
+        expected.sort(),
         `${category} does not have the correct amount of audits`
       );
     }
@@ -142,6 +154,7 @@ describe('Lighthouse chrome extension', function() {
   });
 
   it('should not have any audit errors', async () => {
+    // TODO(phulce): rework these to look at the tooltips
     function getDebugStrings(elems, selectors) {
       return elems.map(el => {
         const audit = el.closest(selectors.audits);
@@ -153,8 +166,14 @@ describe('Lighthouse chrome extension', function() {
       });
     }
 
-    const auditErrors = await extensionPage.$$eval('.lh-debug', getDebugStrings, selectors);
+    const errorSelectors = '.lh-audit-explanation, .tooltip-error';
+    const auditErrors = await extensionPage.$$eval(errorSelectors, getDebugStrings, selectors);
     const errors = auditErrors.filter(item => item.debugString.includes('Audit error:'));
     assert.deepStrictEqual(errors, [], 'Audit errors found within the report');
+  });
+
+  it('should pass the is-crawlable audit', async () => {
+    // this audit has regressed in the extension twice, so make sure it passes
+    assert.ok(await extensionPage.$('#is-crawlable.lh-audit--pass'), 'did not pass is-crawlable');
   });
 });

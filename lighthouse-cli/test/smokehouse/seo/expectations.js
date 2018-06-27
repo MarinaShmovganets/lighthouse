@@ -33,8 +33,8 @@ const passHeaders = headersParam([[
  */
 module.exports = [
   {
-    initialUrl: BASE_URL + 'seo-tester.html?' + passHeaders,
-    url: BASE_URL + 'seo-tester.html?' + passHeaders,
+    requestedUrl: BASE_URL + 'seo-tester.html?' + passHeaders,
+    finalUrl: BASE_URL + 'seo-tester.html?' + passHeaders,
     audits: {
       'viewport': {
         score: 1,
@@ -73,24 +73,19 @@ module.exports = [
       },
       'robots-txt': {
         rawValue: true,
-        notApplicable: true,
+        scoreDisplayMode: 'not-applicable',
       },
     },
   },
   {
-    initialUrl: BASE_URL + 'seo-failure-cases.html?status_code=403&' + failureHeaders,
-    url: BASE_URL + 'seo-failure-cases.html?status_code=403&' + failureHeaders,
+    requestedUrl: BASE_URL + 'seo-failure-cases.html?status_code=403&' + failureHeaders,
+    finalUrl: BASE_URL + 'seo-failure-cases.html?status_code=403&' + failureHeaders,
     audits: {
       'viewport': {
         score: 0,
       },
       'document-title': {
         score: 0,
-        extendedInfo: {
-          value: {
-            id: 'document-title',
-          },
-        },
       },
       'meta-description': {
         score: 0,
@@ -101,7 +96,7 @@ module.exports = [
       },
       'font-size': {
         rawValue: false,
-        debugString: 'Text is illegible because of a missing viewport config',
+        explanation: 'Text is illegible because of a missing viewport config',
       },
       'link-text': {
         score: 0,
@@ -138,7 +133,7 @@ module.exports = [
       },
       'canonical': {
         score: 0,
-        debugString: 'Multiple conflicting URLs (https://example.com, https://example.com/)',
+        explanation: 'Multiple conflicting URLs (https://example.com, https://example.com/)',
       },
     },
   },

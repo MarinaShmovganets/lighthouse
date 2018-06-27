@@ -57,6 +57,7 @@ describe('ReportRenderer', () => {
     const detailsRenderer = new DetailsRenderer(dom);
     const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
     renderer = new ReportRenderer(dom, categoryRenderer);
+    sampleResults.reportCategories = Object.values(sampleResults.categories);
   });
 
   after(() => {
@@ -75,9 +76,7 @@ describe('ReportRenderer', () => {
     it('should render a report', () => {
       const container = renderer._dom._document.body;
       const output = renderer.renderReport(sampleResults, container);
-      assert.ok(container.contains(output), 'report appended to container');
-      assert.ok(output.classList.contains('lh-container'));
-      assert.ok(output.querySelector('.lh-header'), 'has a header');
+      assert.ok(output.querySelector('.lh-header-sticky'), 'has a header');
       assert.ok(output.querySelector('.lh-report'), 'has report body');
       assert.equal(output.querySelectorAll('.lh-gauge').length,
           sampleResults.reportCategories.length * 2, 'renders category gauges');
@@ -85,10 +84,11 @@ describe('ReportRenderer', () => {
 
     it('renders additional reports by replacing the existing one', () => {
       const container = renderer._dom._document.body;
-      const oldReport = renderer.renderReport(sampleResults, container);
-      const newReport = renderer.renderReport(sampleResults, container);
-      assert.ok(!container.contains(oldReport), 'old report was removed');
-      assert.ok(container.contains(newReport), 'new report appended to container');
+      const oldReport = Array.from(renderer.renderReport(sampleResults, container).children);
+      const newReport = Array.from(renderer.renderReport(sampleResults, container).children);
+      assert.ok(!oldReport.find(node => container.contains(node)), 'old report was removed');
+      assert.ok(newReport.find(node => container.contains(node)),
+        'new report appended to container');
     });
 
     it('renders a header', () => {
@@ -97,21 +97,10 @@ describe('ReportRenderer', () => {
 
       assert.ok(header.querySelector('.lh-config__timestamp').textContent.match(TIMESTAMP_REGEX),
           'formats the generated datetime');
-      assert.equal(header.querySelector('.lh-metadata__url').textContent, sampleResults.url);
+      assert.equal(header.querySelector('.lh-metadata__url').textContent, sampleResults.finalUrl);
       const url = header.querySelector('.lh-metadata__url');
-      assert.equal(url.textContent, sampleResults.url);
-      assert.equal(url.href, sampleResults.url);
-
-      const userAgent = header.querySelector('.lh-env__item__ua');
-      assert.equal(userAgent.textContent, sampleResults.userAgent, 'user agent populated');
-
-      // Check runtime settings were populated.
-      const names = Array.from(header.querySelectorAll('.lh-env__name')).slice(1);
-      const descriptions = header.querySelectorAll('.lh-env__description');
-      sampleResults.runtimeConfig.environment.forEach((env, i) => {
-        assert.equal(names[i].textContent, env.name);
-        assert.equal(descriptions[i].textContent, env.description);
-      });
+      assert.equal(url.textContent, sampleResults.finalUrl);
+      assert.equal(url.href, sampleResults.finalUrl);
     });
 
     it('should not mutate a report object', () => {
@@ -121,48 +110,38 @@ describe('ReportRenderer', () => {
       assert.deepStrictEqual(sampleResults, originalResults);
     }).timeout(2000);
 
-    it('renders a left nav', () => {
-      const header = renderer._renderReportNav(sampleResults);
-      const categoryCount = sampleResults.reportCategories.length;
-      assert.equal(header.querySelectorAll('.lh-leftnav__item').length, categoryCount);
-
-      const categories = header.querySelectorAll('.leftnav-item__category');
-      const scores = header.querySelectorAll('.leftnav-item__score');
-      sampleResults.reportCategories.forEach((cat, i) => {
-        assert.equal(categories[i].textContent, cat.name);
-        assert.equal(Number(scores[i].textContent), cat.score * 100);
-      });
-    });
-
     it('renders no warning section when no lighthouseRunWarnings occur', () => {
+      const warningResults = Object.assign({}, sampleResults, {runWarnings: []});
       const container = renderer._dom._document.body;
-      const output = renderer.renderReport(sampleResults, container);
-      assert.strictEqual(output.querySelector('.lh-run-warnings'), null);
+      const output = renderer.renderReport(warningResults, container);
+      assert.strictEqual(output.querySelector('.lh-warnings--toplevel'), null);
     });
 
     it('renders a warning section', () => {
-      const runWarnings = [
-        'Less bad thing',
-        'Really bad thing',
-        'LH should maybe just retire now',
-      ];
-      const warningResults = Object.assign({}, sampleResults, {runWarnings});
       const container = renderer._dom._document.body;
-      const output = renderer.renderReport(warningResults, container);
+      const output = renderer.renderReport(sampleResults, container);
 
-      const warningEls = output.querySelectorAll('.lh-run-warnings > ul > li');
-      assert.strictEqual(warningEls.length, runWarnings.length);
-      warningEls.forEach((warningEl, index) => {
-        const warningText = warningEl.textContent;
-        assert.strictEqual(warningText, runWarnings[index]);
-      });
+      const warningEls = output.querySelectorAll('.lh-warnings--toplevel > ul > li');
+      assert.strictEqual(warningEls.length, sampleResults.runWarnings.length);
     });
 
     it('renders a footer', () => {
       const footer = renderer._renderReportFooter(sampleResults);
       const footerContent = footer.querySelector('.lh-footer').textContent;
-      assert.ok(footerContent.includes('Generated by Lighthouse 2'), 'includes lh version');
+      assert.ok(/Generated by Lighthouse \d/.test(footerContent), 'includes lh version');
       assert.ok(footerContent.match(TIMESTAMP_REGEX), 'includes timestamp');
+
+      // Check runtime settings were populated.
+      const names = Array.from(footer.querySelectorAll('.lh-env__name'));
+      const descriptions = Array.from(footer.querySelectorAll('.lh-env__description'));
+      assert.ok(names.length >= 3);
+      assert.ok(descriptions.length >= 3);
+
+      const descriptionsTxt = descriptions.map(el => el.textContent).join('\n');
+      assert.ok(/Nexus/.test(descriptionsTxt), 'should have added device emulation');
+      assert.ok(/RTT/.test(descriptionsTxt), 'should have added network');
+      assert.ok(/\dx/.test(descriptionsTxt), 'should have added CPU');
+      assert.ok(descriptionsTxt.includes(sampleResults.userAgent), 'user agent populated');
     });
   });
 

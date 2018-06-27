@@ -63,7 +63,7 @@ const SMOKETESTS = [{
   id: 'offline',
   expectations: 'offline-local/offline-expectations.js',
   config: smokehouseDir + 'offline-config.js',
-  batch: 'parallel-second',
+  batch: 'offline',
 }, {
   id: 'byte',
   expectations: 'byte-efficiency/expectations.js',
@@ -75,9 +75,9 @@ const SMOKETESTS = [{
   config: 'lighthouse-core/config/perf-config.js',
   batch: 'perf-metric',
 }, {
-  id: 'ttci',
-  expectations: 'tricky-ttci/expectations.js',
-  config: 'lighthouse-core/config/default-config.js',
+  id: 'tti',
+  expectations: 'tricky-tti/expectations.js',
+  config: 'lighthouse-core/config/perf-config.js',
   batch: 'parallel-second',
 }];
 
@@ -104,6 +104,7 @@ function displaySmokehouseOutput(result) {
  * Run smokehouse in child processes for selected smoketests
  * Display output from each as soon as they finish, but resolve function when ALL are complete
  * @param {Array<SmoketestDfn>} smokes
+ * @return {Promise<Array<{id: string, error?: Error}>>}
  */
 async function runSmokehouse(smokes) {
   const cmdPromises = [];
@@ -176,17 +177,34 @@ async function cli() {
   const argv = process.argv.slice(2);
   const batches = getSmoketestBatches(argv);
 
+  const smokeDefns = new Map();
   const smokeResults = [];
   for (const [batchName, batch] of batches) {
     console.log(`Smoketest batch: ${batchName || 'default'}`);
+    for (const defn of batch) {
+      smokeDefns.set(defn.id, defn);
+    }
+
     const results = await runSmokehouse(batch);
     smokeResults.push(...results);
   }
 
+  let failingTests = smokeResults.filter(result => !!result.error);
+
+  // Automatically retry failed tests in CI to prevent flakes
+  if (failingTests.length && (process.env.RETRY_SMOKES || process.env.CI)) {
+    console.log('Retrying failed tests...');
+    for (const failedResult of failingTests) {
+      const resultIndex = smokeResults.indexOf(failedResult);
+      const smokeDefn = smokeDefns.get(failedResult.id);
+      smokeResults[resultIndex] = (await runSmokehouse([smokeDefn]))[0];
+    }
+  }
+
+  failingTests = smokeResults.filter(result => !!result.error);
+
   await new Promise(resolve => server.close(resolve));
   await new Promise(resolve => serverForOffline.close(resolve));
-
-  const failingTests = smokeResults.filter(result => !!result.error);
 
   if (failingTests.length) {
     const testNames = failingTests.map(t => t.id).join(', ');

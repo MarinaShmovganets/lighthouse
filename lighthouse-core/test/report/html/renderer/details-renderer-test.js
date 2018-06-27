@@ -81,8 +81,6 @@ describe('DetailsRenderer', () => {
 
       const frames = [...el.querySelectorAll('.lh-filmstrip__frame')];
       assert.equal(frames.length, 2);
-      assert.equal(frames[0].textContent, '1 s');
-      assert.equal(frames[1].textContent, '3 s');
 
       const thumbnails = [...el.querySelectorAll('.lh-filmstrip__thumbnail')];
       assert.equal(thumbnails.length, 2);
@@ -112,8 +110,7 @@ describe('DetailsRenderer', () => {
         ],
       });
 
-      assert.equal(el.localName, 'details');
-      assert.ok(el.querySelector('table'), 'did not render table');
+      assert.equal(el.localName, 'table', 'did not render table');
       assert.ok(el.querySelector('img'), 'did not render recursive items');
       assert.equal(el.querySelectorAll('th').length, 3, 'did not render header items');
       assert.equal(el.querySelectorAll('td').length, 6, 'did not render table cells');
@@ -154,7 +151,7 @@ describe('DetailsRenderer', () => {
 
     it('renders text URLs', () => {
       const urlText = 'https://example.com/';
-      const displayUrlText = '/(example.com)';
+      const displayUrlText = 'https://example.com';
       const el = renderer.render({
         type: 'url',
         value: urlText,

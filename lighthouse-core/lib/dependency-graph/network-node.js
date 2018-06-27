@@ -5,23 +5,21 @@
  */
 'use strict';
 
-const Node = require('./node');
+const BaseNode = require('./base-node');
 const WebInspector = require('../web-inspector');
 
-class NetworkNode extends Node {
+class NetworkNode extends BaseNode {
   /**
    * @param {LH.WebInspector.NetworkRequest} networkRecord
    */
   constructor(networkRecord) {
     super(networkRecord.requestId);
+    /** @private */
     this._record = networkRecord;
   }
 
-  /**
-   * @return {string}
-   */
   get type() {
-    return Node.TYPES.NETWORK;
+    return BaseNode.TYPES.NETWORK;
   }
 
   /**
@@ -42,13 +40,6 @@ class NetworkNode extends Node {
    * @return {LH.WebInspector.NetworkRequest}
    */
   get record() {
-    // Ensure that the record has an origin value
-    if (this._record.origin === undefined) {
-      this._record.origin = this._record.parsedURL
-        ? `${this._record.parsedURL.scheme}://${this._record.parsedURL.host}`
-        : null;
-    }
-
     return this._record;
   }
 
@@ -57,6 +48,13 @@ class NetworkNode extends Node {
    */
   get initiatorType() {
     return this._record._initiator && this._record._initiator.type;
+  }
+
+  /**
+   * @return {boolean}
+   */
+  get fromDiskCache() {
+    return !!this._record._fromDiskCache;
   }
 
   /**
@@ -75,7 +73,9 @@ class NetworkNode extends Node {
    * @return {NetworkNode}
    */
   cloneWithoutRelationships() {
-    return new NetworkNode(this._record);
+    const node = new NetworkNode(this._record);
+    node.setIsMainDocument(this._isMainDocument);
+    return node;
   }
 }
 

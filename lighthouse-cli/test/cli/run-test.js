@@ -34,7 +34,7 @@ describe('CLI run', function() {
       assert.equal(results.audits.viewport.rawValue, false);
 
       // passed results match saved results
-      assert.strictEqual(results.fetchedAt, lhr.fetchedAt);
+      assert.strictEqual(results.fetchTime, lhr.fetchTime);
       assert.strictEqual(results.url, lhr.url);
       assert.strictEqual(results.audits.viewport.rawValue, lhr.audits.viewport.rawValue);
       assert.strictEqual(
@@ -50,6 +50,14 @@ describe('CLI run', function() {
 describe('flag coercing', () => {
   it('should force to array', () => {
     assert.deepStrictEqual(getFlags(`--only-audits foo chrome://version`).onlyAudits, ['foo']);
+  });
+});
+
+
+describe('saveResults', () => {
+  it('will quit early if we\'re in gather mode', async () => {
+    const result = await run.saveResults(undefined, {gatherMode: true});
+    assert.equal(result, undefined);
   });
 });
 

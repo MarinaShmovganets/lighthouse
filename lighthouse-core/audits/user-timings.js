@@ -7,27 +7,31 @@
 
 const Audit = require('./audit');
 
+/** @typedef {{name: string, isMark: true, args: LH.TraceEvent['args'], startTime: number}} MarkEvent */
+/** @typedef {{name: string, isMark: false, args: LH.TraceEvent['args'], startTime: number, endTime: number, duration: number}} MeasureEvent */
+
 class UserTimings extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'user-timings',
-      description: 'User Timing marks and measures',
-      helpText: 'Consider instrumenting your app with the User Timing API to create custom, ' +
+      id: 'user-timings',
+      scoreDisplayMode: Audit.SCORING_MODES.INFORMATIVE,
+      title: 'User Timing marks and measures',
+      description: 'Consider instrumenting your app with the User Timing API to create custom, ' +
           'real-world measurements of key user experiences. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/user-timing).',
       requiredArtifacts: ['traces'],
-      informative: true,
     };
   }
 
   /**
-   * @param {!Object} tabTrace
-   * @return {!Array<!UserTimingsExtendedInfo>}
+   * @param {LH.Artifacts.TraceOfTab} tabTrace
+   * @return {Array<MarkEvent|MeasureEvent>}
    */
   static filterTrace(tabTrace) {
+    /** @type {Array<MarkEvent|MeasureEvent>} */
     const userTimings = [];
     const measuresStartTimes = {};
 
@@ -69,6 +73,7 @@ class UserTimings extends Audit {
           args: ut.args,
           startTime: measuresStartTimes[ut.name],
           endTime: ut.ts,
+          duration: ut.ts - measuresStartTimes[ut.name],
         });
       }
     });
@@ -78,15 +83,15 @@ class UserTimings extends Audit {
       ut.startTime = (ut.startTime - tabTrace.navigationStartEvt.ts) / 1000;
       if (!ut.isMark) {
         ut.endTime = (ut.endTime - tabTrace.navigationStartEvt.ts) / 1000;
-        ut.duration = ut.endTime - ut.startTime;
+        ut.duration = ut.duration / 1000;
       }
     });
 
     return userTimings;
   }
 
-  /*
-   * @return {!Array<string>}
+  /**
+   * @return {Array<string>}
    */
   static get blacklistedPrefixes() {
     return ['goog_'];
@@ -94,32 +99,32 @@ class UserTimings extends Audit {
 
   /**
    * We remove mark/measures entered by third parties not of interest to the user
-   * @param {!UserTimingsExtendedInfo} artifacts
+   * @param {MarkEvent|MeasureEvent} evt
    * @return {boolean}
    */
-  static excludeBlacklisted(timing) {
-    return UserTimings.blacklistedPrefixes.every(prefix => !timing.name.startsWith(prefix));
+  static excludeBlacklisted(evt) {
+    return UserTimings.blacklistedPrefixes.every(prefix => !evt.name.startsWith(prefix));
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
+   * @param {LH.Artifacts} artifacts
+   * @return {Promise<LH.Audit.Product>}
    */
   static audit(artifacts) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     return artifacts.requestTraceOfTab(trace).then(tabTrace => {
       const userTimings = this.filterTrace(tabTrace).filter(UserTimings.excludeBlacklisted);
       const tableRows = userTimings.map(item => {
-        const time = item.isMark ? item.startTime : item.duration;
         return {
           name: item.name,
+          startTime: item.startTime,
+          duration: item.isMark ? undefined : item.duration,
           timingType: item.isMark ? 'Mark' : 'Measure',
-          time,
         };
       }).sort((itemA, itemB) => {
         if (itemA.timingType === itemB.timingType) {
           // If both items are the same type, sort in ascending order by time
-          return itemA.time - itemB.time;
+          return itemA.startTime - itemB.startTime;
         } else if (itemA.timingType === 'Measure') {
           // Put measures before marks
           return -1;
@@ -131,15 +136,26 @@ class UserTimings extends Audit {
       const headings = [
         {key: 'name', itemType: 'text', text: 'Name'},
         {key: 'timingType', itemType: 'text', text: 'Type'},
-        {key: 'time', itemType: 'ms', granularity: 0.01, text: 'Time'},
+        {key: 'startTime', itemType: 'ms', granularity: 0.01, text: 'Start Time'},
+        {key: 'duration', itemType: 'ms', granularity: 0.01, text: 'Duration'},
       ];
 
       const details = Audit.makeTableDetails(headings, tableRows);
 
+      /** @type {LH.Audit.Product['displayValue']} */
+      let displayValue;
+      if (userTimings.length) {
+        displayValue = [
+          userTimings.length === 1 ? '%d user timing' : '%d user timings',
+          userTimings.length,
+        ];
+      }
+
       return {
-        // mark the audit as failed if there are user timings to display
+        // mark the audit as notApplicable if there were no user timings
         rawValue: userTimings.length === 0,
-        displayValue: userTimings.length,
+        notApplicable: userTimings.length === 0,
+        displayValue,
         extendedInfo: {
           value: userTimings,
         },

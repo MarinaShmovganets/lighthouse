@@ -9,20 +9,18 @@ const Audit = require('./audit');
 const WebInspector = require('../lib/web-inspector');
 const Util = require('../report/html/renderer/util');
 const {groupIdToName, taskToGroup} = require('../lib/task-groups');
-const THRESHOLD_IN_MS = 10;
 
 class BootupTime extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      category: 'Performance',
-      name: 'bootup-time',
-      description: 'JavaScript boot-up time',
-      failureDescription: 'JavaScript boot-up time is too high',
+      id: 'bootup-time',
+      title: 'JavaScript boot-up time',
+      failureTitle: 'JavaScript boot-up time is too high',
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
-      helpText: 'Consider reducing the time spent parsing, compiling, and executing JS. ' +
+      description: 'Consider reducing the time spent parsing, compiling, and executing JS. ' +
         'You may find delivering smaller JS payloads helps with this. [Learn ' +
         'more](https://developers.google.com/web/tools/lighthouse/audits/bootup).',
       requiredArtifacts: ['traces'],
@@ -30,7 +28,7 @@ class BootupTime extends Audit {
   }
 
   /**
-   * @return {LH.Audit.ScoreOptions}
+   * @return {LH.Audit.ScoreOptions & {thresholdInMs: number}}
    */
   static get defaultOptions() {
     return {
@@ -38,15 +36,18 @@ class BootupTime extends Audit {
       // <500ms ~= 100, >2s is yellow, >3.5s is red
       scorePODR: 600,
       scoreMedian: 3500,
+      thresholdInMs: 50,
     };
   }
 
   /**
-   * @param {DevtoolsTimelineModel} timelineModel
-   * @return {!Map<string, Number>}
+   * Returns a mapping of URL to counts of event groups.
+   * @param {LH.Artifacts.DevtoolsTimelineModel} timelineModel
+   * @return {Map<string, Object<string, number>>}
    */
   static getExecutionTimingsByURL(timelineModel) {
     const bottomUpByURL = timelineModel.bottomUpGroupBy('URL');
+    /** @type {Map<string, Object<string, number>>} */
     const result = new Map();
 
     bottomUpByURL.children.forEach((perUrlNode, url) => {
@@ -55,6 +56,7 @@ class BootupTime extends Audit {
         return;
       }
 
+      /** @type {Object<string, number>} */
       const taskGroups = {};
       perUrlNode.children.forEach((perTaskPerUrlNode) => {
         // eventStyle() returns a string like 'Evaluate Script'
@@ -71,63 +73,71 @@ class BootupTime extends Audit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
+   * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
-   * @return {!AuditResult}
+   * @return {Promise<LH.Audit.Product>}
    */
-  static audit(artifacts, context) {
+  static async audit(artifacts, context) {
+    const settings = context.settings || {};
     const trace = artifacts.traces[BootupTime.DEFAULT_PASS];
-    return artifacts.requestDevtoolsTimelineModel(trace).then(devtoolsTimelineModel => {
-      const executionTimings = BootupTime.getExecutionTimingsByURL(devtoolsTimelineModel);
-      let totalBootupTime = 0;
-      const extendedInfo = {};
+    const devtoolsTimelineModel = await artifacts.requestDevtoolsTimelineModel(trace);
+    const executionTimings = BootupTime.getExecutionTimingsByURL(devtoolsTimelineModel);
+    let totalBootupTime = 0;
+    /** @type {Object<string, Object<string, number>>} */
+    const extendedInfo = {};
 
-      const headings = [
-        {key: 'url', itemType: 'url', text: 'URL'},
-        {key: 'scripting', itemType: 'text', text: groupIdToName.scripting},
-        {key: 'scriptParseCompile', itemType: 'text', text: groupIdToName.scriptParseCompile},
-      ];
+    const headings = [
+      {key: 'url', itemType: 'url', text: 'URL'},
+      {key: 'scripting', granularity: 1, itemType: 'ms', text: groupIdToName.scripting},
+      {key: 'scriptParseCompile', granularity: 1, itemType: 'ms',
+        text: groupIdToName.scriptParseCompile},
+    ];
 
-      // map data in correct format to create a table
-      const results = Array.from(executionTimings)
-        .map(([url, groups]) => {
-          // Add up the totalBootupTime for all the taskGroups
-          totalBootupTime += Object.keys(groups).reduce((sum, name) => sum += groups[name], 0);
-          extendedInfo[url] = groups;
+    const multiplier = settings.throttlingMethod === 'simulate' ?
+      settings.throttling.cpuSlowdownMultiplier : 1;
+    // map data in correct format to create a table
+    const results = Array.from(executionTimings)
+      .map(([url, groups]) => {
+        // Add up the totalBootupTime for all the taskGroups
+        for (const [name, value] of Object.entries(groups)) {
+          groups[name] = value * multiplier;
+          totalBootupTime += value * multiplier;
+        }
 
-          const scriptingTotal = groups[groupIdToName.scripting] || 0;
-          const parseCompileTotal = groups[groupIdToName.scriptParseCompile] || 0;
-          return {
-            url: url,
-            sum: scriptingTotal + parseCompileTotal,
-            // Only reveal the javascript task costs
-            // Later we can account for forced layout costs, etc.
-            scripting: Util.formatMilliseconds(scriptingTotal, 1),
-            scriptParseCompile: Util.formatMilliseconds(parseCompileTotal, 1),
-          };
-        })
-        .filter(result => result.sum >= THRESHOLD_IN_MS)
-        .sort((a, b) => b.sum - a.sum);
+        extendedInfo[url] = groups;
 
-      const summary = {wastedMs: totalBootupTime};
-      const details = BootupTime.makeTableDetails(headings, results, summary);
+        const scriptingTotal = groups[groupIdToName.scripting] || 0;
+        const parseCompileTotal = groups[groupIdToName.scriptParseCompile] || 0;
+        return {
+          url: url,
+          sum: scriptingTotal + parseCompileTotal,
+          // Only reveal the javascript task costs
+          // Later we can account for forced layout costs, etc.
+          scripting: scriptingTotal,
+          scriptParseCompile: parseCompileTotal,
+        };
+      })
+      .filter(result => result.sum >= context.options.thresholdInMs)
+      .sort((a, b) => b.sum - a.sum);
 
-      const score = Audit.computeLogNormalScore(
-        totalBootupTime,
-        context.options.scorePODR,
-        context.options.scoreMedian
-      );
+    const summary = {wastedMs: totalBootupTime};
+    const details = BootupTime.makeTableDetails(headings, results, summary);
 
-      return {
-        score,
-        rawValue: totalBootupTime,
-        displayValue: Util.formatMilliseconds(totalBootupTime),
-        details,
-        extendedInfo: {
-          value: extendedInfo,
-        },
-      };
-    });
+    const score = Audit.computeLogNormalScore(
+      totalBootupTime,
+      context.options.scorePODR,
+      context.options.scoreMedian
+    );
+
+    return {
+      score,
+      rawValue: totalBootupTime,
+      displayValue: [Util.MS_DISPLAY_VALUE, totalBootupTime],
+      details,
+      extendedInfo: {
+        value: extendedInfo,
+      },
+    };
   }
 }
 

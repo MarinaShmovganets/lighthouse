@@ -21,8 +21,8 @@ module.exports = {
   ],
   categories: {
     'performance': {
-      audits: [
-        {id: 'unused-javascript', weight: 0, group: 'perf-hint'},
+      auditRefs: [
+        {id: 'unused-javascript', weight: 0, group: 'load-opportunities'},
       ],
     },
   },

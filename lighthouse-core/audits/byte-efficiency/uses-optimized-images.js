@@ -16,78 +16,71 @@ const IGNORE_THRESHOLD_IN_BYTES = 4096;
 
 class UsesOptimizedImages extends ByteEfficiencyAudit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'uses-optimized-images',
-      description: 'Optimize images',
-      informative: true,
+      id: 'uses-optimized-images',
+      title: 'Efficiently encode images',
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
-      helpText: 'Optimized images load faster and consume less cellular data. ' +
+      description: 'Optimized images load faster and consume less cellular data. ' +
         '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/optimize-images).',
       requiredArtifacts: ['OptimizedImages', 'devtoolsLogs'],
     };
   }
 
   /**
-   * @param {{originalSize: number, webpSize: number, jpegSize: number}} image
-   * @param {string} type
+   * @param {{originalSize: number, jpegSize: number}} image
    * @return {{bytes: number, percent: number}}
    */
-  static computeSavings(image, type) {
-    const bytes = image.originalSize - image[type + 'Size'];
+  static computeSavings(image) {
+    const bytes = image.originalSize - image.jpegSize;
     const percent = 100 * bytes / image.originalSize;
     return {bytes, percent};
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!Audit.HeadingsResult}
+   * @param {LH.Artifacts} artifacts
+   * @return {ByteEfficiencyAudit.ByteEfficiencyProduct}
    */
   static audit_(artifacts) {
     const images = artifacts.OptimizedImages;
 
-    const failedImages = [];
-    const results = [];
-    images.forEach(image => {
+    /** @type {Array<{url: string, fromProtocol: boolean, isCrossOrigin: boolean, totalBytes: number, wastedBytes: number}>} */
+    const items = [];
+    const warnings = [];
+    for (const image of images) {
       if (image.failed) {
-        failedImages.push(image);
-        return;
+        warnings.push(`Unable to decode ${URL.getURLDisplayName(image.url)}`);
+        continue;
       } else if (/(jpeg|bmp)/.test(image.mimeType) === false ||
                  image.originalSize < image.jpegSize + IGNORE_THRESHOLD_IN_BYTES) {
-        return;
+        continue;
       }
 
       const url = URL.elideDataURI(image.url);
-      const jpegSavings = UsesOptimizedImages.computeSavings(image, 'jpeg');
+      const jpegSavings = UsesOptimizedImages.computeSavings(image);
 
-      results.push({
+      items.push({
         url,
         fromProtocol: image.fromProtocol,
         isCrossOrigin: !image.isSameOrigin,
         totalBytes: image.originalSize,
         wastedBytes: jpegSavings.bytes,
       });
-    });
-
-    let debugString;
-    if (failedImages.length) {
-      const urls = failedImages.map(image => URL.getURLDisplayName(image.url));
-      debugString = `Lighthouse was unable to decode some of your images: ${urls.join(', ')}`;
     }
 
+    /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
     const headings = [
-      {key: 'url', itemType: 'thumbnail', text: ''},
-      {key: 'url', itemType: 'url', text: 'URL'},
-      {key: 'totalBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1, text: 'Original'},
-      {key: 'wastedBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1,
-        text: 'Potential Savings'},
+      {key: 'url', valueType: 'thumbnail', label: ''},
+      {key: 'url', valueType: 'url', label: 'URL'},
+      {key: 'totalBytes', valueType: 'bytes', label: 'Original'},
+      {key: 'wastedBytes', valueType: 'bytes', label: 'Potential Savings'},
     ];
 
     return {
-      debugString,
-      results,
+      warnings,
+      items,
       headings,
     };
   }

@@ -10,14 +10,14 @@ const Audit = require('../audit');
 
 class ExternalAnchorsUseRelNoopenerAudit extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'external-anchors-use-rel-noopener',
-      description: 'Links to cross-origin destinations are safe',
-      failureDescription: 'Links to cross-origin destinations are unsafe',
-      helpText: 'Add `rel="noopener"` or `rel="noreferrer"` to any external links to improve ' +
+      id: 'external-anchors-use-rel-noopener',
+      title: 'Links to cross-origin destinations are safe',
+      failureTitle: 'Links to cross-origin destinations are unsafe',
+      description: 'Add `rel="noopener"` or `rel="noreferrer"` to any external links to improve ' +
           'performance and prevent security vulnerabilities. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/noopener).',
       requiredArtifacts: ['URL', 'AnchorsWithNoRelNoopener'],
@@ -25,11 +25,12 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
+   * @param {LH.Artifacts} artifacts
+   * @return {LH.Audit.Product}
    */
   static audit(artifacts) {
-    let debugString;
+    /** @type {string[]} */
+    const warnings = [];
     const pageHost = new URL(artifacts.URL.finalUrl).host;
     // Filter usages to exclude anchors that are same origin
     // TODO: better extendedInfo for anchors with no href attribute:
@@ -40,9 +41,9 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
         try {
           return new URL(anchor.href).host !== pageHost;
         } catch (err) {
-          debugString = 'Lighthouse was unable to determine the destination ' +
-              'of some anchor tags. If they are not used as hyperlinks, ' +
-              'consider removing the _blank target.';
+          // TODO(phulce): make this message better with anchor.outerHTML
+          warnings.push('Unable to determine the destination for anchor tag. ' +
+            'If not used as a hyperlink, consider removing target=_blank.');
           return true;
         }
       })
@@ -75,7 +76,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
         value: failingAnchors,
       },
       details,
-      debugString,
+      warnings,
     };
   }
 }

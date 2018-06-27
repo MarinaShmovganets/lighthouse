@@ -156,6 +156,8 @@
 <!-- PASS(image-aspect-ratio) -->
 <img src="lighthouse-480x318.jpg" width="480" height="318">
 
+<!-- FAIL(efficient-animated-content): animated gif found -->
+<img src="lighthouse-rotating.gif" width="811" height="462">
 
 <!-- Some websites overwrite the original Error object. The captureJSCallUsage function
   relies on the native Error object and prepareStackTrace from V8. When overwriting the stack
@@ -204,39 +206,6 @@ function documentWriteTest() {
 
 function websqlTest() {
   const db = openDatabase('mydb', '1.0', 'my first database', 1024);
-}
-
-function mutationEvenTest() {
-  // FAIL
-  document.addEventListener('DOMNodeInserted', function(e) {
-    console.log('DOMNodeInserted');
-  });
-
-  // FAIL
-  document.addEventListener('DOMNodeRemoved', function(e) {
-    console.log('DOMNodeRemoved');
-  });
-
-  // FAIL
-  document.body.addEventListener('DOMNodeInserted', function(e) {
-    console.log('DOMNodeInserted');
-  });
-
-  // FAIL
-  const el = document.querySelector('#touchmove-section');
-  el.addEventListener('DOMNodeInserted', function(e) {
-    console.log('DOMNodeInserted on element');
-  });
-
-  // FAIL
-  window.addEventListener('DOMNodeInserted', function(e) {
-    console.log('DOMNodeInserted');
-  });
-
-  // PASS - not MutationEvents
-  window.addEventListener('DOMContentLoaded', function(e) {
-    console.log('DOMContentLoaded');
-  });
 }
 
 function passiveEventsListenerTest() {
@@ -333,11 +302,6 @@ function deprecationsTest() {
 
   // TODO: some deprecated API messages are not currently being logged correctly.
   // See: https://crbug.com/680832
-  try {
-    MediaStreamTrack.getSources(); // Should eventually FAIL
-  } catch(e) {}
-
-  console.timeline(); // Should eventually FAIL
 
   // FAIL
   const xhr = new XMLHttpRequest();
@@ -362,7 +326,6 @@ if (location.search === '') {
   dateNowTest();
   consoleTimeTest();
   websqlTest();
-  mutationEvenTest();
   passiveEventsListenerTest();
   geolocationOnStartTest();
   notificationOnStartTest();
@@ -384,9 +347,6 @@ if (location.search === '') {
   }
   if (params.has('websql')) {
     websqlTest();
-  }
-  if (params.has('mutationEvents')) {
-    mutationEvenTest();
   }
   if (params.has('passiveEvents')) {
     passiveEventsListenerTest();

@@ -11,30 +11,30 @@ declare global {
      */
     export interface Result {
       /** The URL that was supplied to Lighthouse and initially navigated to. */
-      initialUrl: string;
+      requestedUrl: string;
       /** The post-redirects URL that Lighthouse loaded. */
-      url: string;
+      finalUrl: string;
       /** The ISO-8601 timestamp of when the results were generated. */
-      fetchedAt: string;
+      fetchTime: string;
       /** The version of Lighthouse with which these results were generated. */
       lighthouseVersion: string;
       /** An object containing the results of the audits, keyed by the audits' `id` identifier. */
       audits: Record<string, Audit.Result>;
       /** The top-level categories, their overall scores, and member audits. */
-      reportCategories: Result.Category[];
+      categories: Record<string, Result.Category>;
       /** Descriptions of the groups referenced by CategoryMembers. */
-      reportGroups?: Record<string, Result.Group>;
+      categoryGroups?: Record<string, Result.ReportGroup>;
 
 
       // Additional non-LHR-lite information.
-      /** Description of the runtime configuration used for gathering these results. */
-      runtimeConfig: Result.RuntimeConfig;
+      /** The config settings used for these results. */
+      configSettings: Config.Settings;
       /** List of top-level warnings for this Lighthouse run. */
       runWarnings: string[];
       /** The User-Agent string of the browser used run Lighthouse for these results. */
       userAgent: string;
-      /** Deprecated. Use fetchedAt instead. */
-      generatedTime?: string;
+      /** Execution timings for the Lighthouse run */
+      timing: {total: number, [t: string]: number};
     }
 
     // Result namespace
@@ -43,16 +43,18 @@ declare global {
         /** The string identifier of the category. */
         id: string;
         /** The human-friendly name of the category */
-        name: string;
+        title: string;
         /** A more detailed description of the category and its importance. */
-        description: string;
+        description?: string;
+        /** A description for the manual audits in the category. */
+        manualDescription?: string;
         /** The overall score of the category, the weighted average of all its audits. */
-        score: number;
+        score: number|null;
         /** An array of references to all the audit members of this category. */
-        audits: CategoryMember[];
+        auditRefs: AuditRef[];
       }
 
-      export interface CategoryMember {
+      export interface AuditRef {
         /** Matches the `id` of an Audit.Result. */
         id: string;
         /** The weight of the audit's score in the overall category score. */
@@ -61,11 +63,11 @@ declare global {
         group?: string;
       }
 
-      export interface Group {
+      export interface ReportGroup {
         /** The title of the display group. */
         title: string;
         /** A brief description of the purpose of the display group. */
-        description: string;
+        description?: string;
       }
 
       /**
@@ -78,6 +80,20 @@ declare global {
         }[];
         blockedUrlPatterns: string[];
         extraHeaders: Crdp.Network.Headers;
+      }
+
+      export module Audit {
+        export interface OpportunityDetailsItem {
+          url: string;
+          wastedBytes?: number;
+          totalBytes?: number;
+          wastedMs?: number;
+          [p: string]: number | boolean | string | undefined;
+        }
+
+        export interface OpportunityDetails extends ResultLite.Audit.OpportunityDetails {
+          items: OpportunityDetailsItem[];
+        }
       }
     }
   }

@@ -69,12 +69,12 @@ describe('Audit', () => {
       assert.throws(_ => Audit.generateAuditResult(B, {}), /requires a rawValue/);
     });
 
-    it('chooses the failureDescription if score is failing', () => {
+    it('chooses the failureTitle if score is failing', () => {
       class FailingAudit extends Audit {
         static get meta() {
           return {
-            description: 'Passing',
-            failureDescription: 'Failing',
+            title: 'Passing',
+            failureTitle: 'Failing',
           };
         }
       }
@@ -82,14 +82,21 @@ describe('Audit', () => {
       const auditResult = Audit.generateAuditResult(FailingAudit, {rawValue: false});
       assert.ok(Number.isFinite(auditResult.score));
       assert.equal(auditResult.score, 0);
-      assert.equal(auditResult.description, 'Failing');
+      assert.equal(auditResult.title, 'Failing');
     });
   });
 
   it('sets state of non-applicable audits', () => {
     const providedResult = {rawValue: true, notApplicable: true};
     const result = Audit.generateAuditResult(B, providedResult);
-    assert.equal(result.score, 1);
-    assert.equal(result.informative, true);
+    assert.equal(result.score, null);
+    assert.equal(result.scoreDisplayMode, 'not-applicable');
+  });
+
+  it('sets state of failed audits', () => {
+    const providedResult = {rawValue: true, errorMessage: 'It did not work'};
+    const result = Audit.generateAuditResult(B, providedResult);
+    assert.equal(result.score, null);
+    assert.equal(result.scoreDisplayMode, 'error');
   });
 });

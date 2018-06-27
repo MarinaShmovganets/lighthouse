@@ -18,7 +18,7 @@ const sampleLhr = __dirname + '/../../lighthouse-core/test/results/sample_v2.jso
 
 const config = require(path.resolve(__dirname, '../../lighthouse-core/config/default-config.js'));
 const lighthouseCategories = Object.keys(config.categories);
-const getAuditsOfCategory = category => config.categories[category].audits;
+const getAuditsOfCategory = category => config.categories[category].auditRefs;
 
 // TODO: should be combined in some way with lighthouse-extension/test/extension-test.js
 describe('Lighthouse Viewer', function() {
@@ -29,12 +29,24 @@ describe('Lighthouse Viewer', function() {
   let viewerPage;
   const pageErrors = [];
 
-  function getAuditElementsCount({category, selector}) {
+  function getAuditElementsIds({category, selector}) {
     return viewerPage.evaluate(
-      ({category, selector}) =>
-        document.querySelector(`#${category}`).parentNode.querySelectorAll(selector).length,
-      {category, selector}
+      ({category, selector}) => {
+        const elems = document.querySelector(`#${category}`).parentNode.querySelectorAll(selector);
+        return Array.from(elems).map(el => el.id);
+      }, {category, selector}
     );
+  }
+
+  function getCategoryElementsIds() {
+    return viewerPage.evaluate(
+      () => {
+        const elems = Array.from(document.querySelectorAll(`.lh-category`));
+        return elems.map(el => {
+          const permalink = el.querySelector('.lh-permalink');
+          return permalink && permalink.id;
+        });
+      });
   }
 
   before(async function() {
@@ -54,6 +66,10 @@ describe('Lighthouse Viewer', function() {
   });
 
   after(async function() {
+    // Log any page load errors encountered in case before() failed.
+    // eslint-disable-next-line no-console
+    console.error(pageErrors);
+
     await Promise.all([
       new Promise(resolve => server.close(resolve)),
       browser && browser.close(),
@@ -62,8 +78,8 @@ describe('Lighthouse Viewer', function() {
 
 
   const selectors = {
-    audits: '.lh-audit, .lh-perf-metric, .lh-perf-hint',
-    titles: '.lh-score__title, .lh-perf-hint__title, .lh-perf-metric__title',
+    audits: '.lh-audit, .lh-metric',
+    titles: '.lh-audit__title, .lh-metric__title',
   };
 
   it('should load with no errors', async () => {
@@ -71,27 +87,27 @@ describe('Lighthouse Viewer', function() {
   });
 
   it('should contain all categories', async () => {
-    const categories = await viewerPage.$$(`#${lighthouseCategories.join(',#')}`);
-    assert.equal(
-      categories.length,
-      lighthouseCategories.length,
-      `${categories.join(' ')} does not match ${lighthouseCategories.join(' ')}`
+    const categories = await getCategoryElementsIds();
+    assert.deepStrictEqual(
+      categories.sort(),
+      lighthouseCategories.sort(),
+      `all categories not found`
     );
   });
 
   it('should contain audits of all categories', async () => {
     for (const category of lighthouseCategories) {
-      let expected = getAuditsOfCategory(category).length;
+      let expected = getAuditsOfCategory(category);
       if (category === 'performance') {
-        expected = getAuditsOfCategory(category).filter(a => !!a.group).length;
+        expected = getAuditsOfCategory(category).filter(a => !!a.group);
       }
+      expected = expected.map(audit => audit.id);
+      const elementIds = await getAuditElementsIds({category, selector: selectors.audits});
 
-      const elementCount = await getAuditElementsCount({category, selector: selectors.audits});
-
-      assert.equal(
-        expected,
-        elementCount,
-        `${category} does not have the correct amount of audits`
+      assert.deepStrictEqual(
+        elementIds.sort(),
+        expected.sort(),
+        `${category} does not have the identical audits`
       );
     }
   });
@@ -103,6 +119,7 @@ describe('Lighthouse Viewer', function() {
   });
 
   it('should not have any unexpected audit errors', async () => {
+    // TODO(phulce): rework these to look at the tooltips
     function getDebugStrings(elems, selectors) {
       return elems.map(el => {
         const audit = el.closest(selectors.audits);
@@ -114,7 +131,8 @@ describe('Lighthouse Viewer', function() {
       });
     }
 
-    const auditErrors = await viewerPage.$$eval('.lh-debug', getDebugStrings, selectors);
+    const errorSelectors = '.lh-audit-explanation, .tooltip-error';
+    const auditErrors = await viewerPage.$$eval(errorSelectors, getDebugStrings, selectors);
     const errors = auditErrors.filter(item => item.debugString.includes('Audit error:'));
     const unexpectedErrrors = errors.filter(item => {
       return !item.debugString.includes('Required RobotsTxt gatherer did not run');

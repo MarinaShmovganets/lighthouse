@@ -25,19 +25,19 @@ class DOMSize extends Audit {
   }
 
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'dom-size',
-      description: 'Avoids an excessive DOM size',
-      failureDescription: 'Uses an excessive DOM size',
-      helpText: 'Browser engineers recommend pages contain fewer than ' +
+      id: 'dom-size',
+      title: 'Avoids an excessive DOM size',
+      failureTitle: 'Uses an excessive DOM size',
+      description: 'Browser engineers recommend pages contain fewer than ' +
         `~${Util.formatNumber(DOMSize.MAX_DOM_NODES)} DOM nodes. The sweet spot is a tree ` +
         `depth < ${MAX_DOM_TREE_DEPTH} elements and fewer than ${MAX_DOM_TREE_WIDTH} ` +
         'children/parent element. A large DOM can increase memory usage, cause longer ' +
         '[style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), ' +
-        'and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/fundamentals/performance/rendering/).',
+        'and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/tools/lighthouse/audits/dom-size).',
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['DOMStats'],
     };
@@ -48,17 +48,19 @@ class DOMSize extends Audit {
    */
   static get defaultOptions() {
     return {
-      // see https://www.desmos.com/calculator/9cyxpm5qgp
-      scorePODR: 2400,
-      scoreMedian: 3000,
+      // 25th and 50th percentiles HTTPArchive -> 50 and 75
+      // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
+      // see https://www.desmos.com/calculator/vqot3wci4g
+      scorePODR: 700,
+      scoreMedian: 1400,
     };
   }
 
 
   /**
-   * @param {!Artifacts} artifacts
+   * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
-   * @return {!AuditResult}
+   * @return {LH.Audit.Product}
    */
   static audit(artifacts, context) {
     const stats = artifacts.DOMStats;
@@ -83,15 +85,21 @@ class DOMSize extends Audit {
       },
       {
         totalNodes: '',
-        depth: stats.depth.snippet,
-        width: stats.width.snippet,
+        depth: {
+          type: 'code',
+          value: stats.depth.snippet,
+        },
+        width: {
+          type: 'code',
+          value: stats.width.snippet,
+        },
       },
     ];
 
     return {
       score,
       rawValue: stats.totalDOMNodes,
-      displayValue: `${Util.formatNumber(stats.totalDOMNodes)} nodes`,
+      displayValue: ['%d nodes', stats.totalDOMNodes],
       extendedInfo: {
         value: items,
       },

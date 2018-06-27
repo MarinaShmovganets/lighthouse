@@ -10,50 +10,36 @@
  */
 module.exports = [
   {
-    initialUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
-    url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+    requestedUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+    finalUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
     audits: {
       'errors-in-console': {
         score: 0,
-        rawValue: '>3',
         details: {
           items: {
-            length: '>3',
+            length: 6,
           },
         },
       },
       'is-on-https': {
         score: 0,
-        extendedInfo: {
-          value: {
+        details: {
+          items: {
             length: 1,
           },
         },
       },
       'uses-http2': {
         score: 0,
-        extendedInfo: {
-          value: {
-            results: {
-              length: 17,
-            },
-          },
-        },
         details: {
           items: {
-            length: 17,
+            length: '>15',
           },
         },
       },
       'external-anchors-use-rel-noopener': {
         score: 0,
-        debugString: 'Lighthouse was unable to determine the destination of some anchor tags. ' +
-                     'If they are not used as hyperlinks, consider removing the _blank target.',
-        extendedInfo: {
-          value: {
-            length: 3,
-          },
-        },
+        warnings: [/Unable to determine/],
         details: {
           items: {
             length: 3,
@@ -62,36 +48,16 @@ module.exports = [
       },
       'appcache-manifest': {
         score: 0,
-        debugString: 'Found <html manifest="clock.appcache">.',
+        displayValue: 'Found "clock.appcache"',
       },
       'geolocation-on-start': {
         score: 0,
       },
       'no-document-write': {
         score: 0,
-        extendedInfo: {
-          value: {
-            length: 3,
-          },
-        },
         details: {
           items: {
             length: 3,
-          },
-        },
-      },
-      'no-mutation-events': {
-        score: 0,
-        extendedInfo: {
-          value: {
-            results: {
-              length: 6,
-            },
-          },
-        },
-        details: {
-          items: {
-            length: 6,
           },
         },
       },
@@ -105,7 +71,7 @@ module.exports = [
       },
       'no-websql': {
         score: 0,
-        debugString: 'Found database "mydb", version: 1.0.',
+        displayValue: 'Found "mydb" (v1.0)',
       },
       'notification-on-start': {
         score: 0,
@@ -121,8 +87,8 @@ module.exports = [
       },
       'uses-passive-event-listeners': {
         score: 0,
-        extendedInfo: {
-          value: {
+        details: {
+          items: {
             // Note: Originally this was 7 but M56 defaults document-level
             // listeners to passive. See https://www.chromestatus.com/features/5093566007214080
             // Note: It was 4, but {passive:false} doesn't get a warning as of M63: crbug.com/770208
@@ -133,11 +99,6 @@ module.exports = [
       },
       'deprecations': {
         score: 0,
-        extendedInfo: {
-          value: {
-            length: 3,
-          },
-        },
         details: {
           items: {
             length: 3,
@@ -146,8 +107,8 @@ module.exports = [
       },
       'password-inputs-can-be-pasted-into': {
         score: 0,
-        extendedInfo: {
-          value: {
+        details: {
+          items: {
             length: 2,
           },
         },
@@ -161,6 +122,19 @@ module.exports = [
             },
             length: 1,
           },
+        },
+      },
+      'efficient-animated-content': {
+        score: '<0.5',
+        details: {
+          overallSavingsMs: '>2000',
+          items: [
+            {
+              url: 'http://localhost:10200/dobetterweb/lighthouse-rotating.gif',
+              totalBytes: 934285,
+              wastedBytes: 682028,
+            },
+          ],
         },
       },
     },

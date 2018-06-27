@@ -6,60 +6,68 @@
 'use strict';
 
 const Audit = require('./audit');
-const Util = require('../report/html/renderer/util');
 
 const TTFB_THRESHOLD = 600;
 
 class TTFBMetric extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'time-to-first-byte',
-      description: 'Keep server response times low (TTFB)',
-      informative: true,
-      helpText: 'Time To First Byte identifies the time at which your server sends a response.' +
-        ' [Learn more](https://developers.google.com/web/tools/chrome-devtools/network-performance/issues).',
+      id: 'time-to-first-byte',
+      title: 'Keep server response times low (TTFB)',
+      description: 'Time To First Byte identifies the time at which your server sends a response.' +
+        ' [Learn more](https://developers.google.com/web/tools/lighthouse/audits/ttfb).',
       requiredArtifacts: ['devtoolsLogs', 'URL'],
     };
   }
 
+  /**
+   * @param {LH.WebInspector.NetworkRequest} record
+   */
   static caclulateTTFB(record) {
     const timing = record._timing;
-
-    return timing.receiveHeadersEnd - timing.sendEnd;
+    return timing ? timing.receiveHeadersEnd - timing.sendEnd : 0;
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
+   * @param {LH.Artifacts} artifacts
+   * @return {Promise<LH.Audit.Product>}
    */
   static audit(artifacts) {
     const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
 
     return artifacts.requestNetworkRecords(devtoolsLogs)
       .then((networkRecords) => {
+        /** @type {LH.Audit.DisplayValue} */
         let displayValue = '';
 
         const finalUrl = artifacts.URL.finalUrl;
         const finalUrlRequest = networkRecords.find(record => record._url === finalUrl);
+        if (!finalUrlRequest) {
+          throw new Error(`finalUrl '${finalUrl} not found in network records.`);
+        }
         const ttfb = TTFBMetric.caclulateTTFB(finalUrlRequest);
         const passed = ttfb < TTFB_THRESHOLD;
 
         if (!passed) {
-          displayValue = `Root document took ${Util.formatMilliseconds(ttfb, 1)} `;
+          displayValue = ['Root document took %10d', ttfb];
         }
+
+        /** @type {LH.Result.Audit.OpportunityDetails} */
+        const details = {
+          type: 'opportunity',
+          overallSavingsMs: ttfb - TTFB_THRESHOLD,
+          headings: [],
+          items: [],
+        };
 
         return {
           rawValue: ttfb,
           score: Number(passed),
           displayValue,
-          details: {
-            summary: {
-              wastedMs: ttfb - TTFB_THRESHOLD,
-            },
-          },
+          details,
           extendedInfo: {
             value: {
               wastedMs: ttfb - TTFB_THRESHOLD,

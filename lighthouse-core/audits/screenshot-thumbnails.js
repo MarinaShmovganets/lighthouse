@@ -12,16 +12,18 @@ const jpeg = require('jpeg-js');
 const NUMBER_OF_THUMBNAILS = 10;
 const THUMBNAIL_WIDTH = 120;
 
+/** @typedef {LH.Artifacts.Speedline['frames'][0]} SpeedlineFrame */
+
 class ScreenshotThumbnails extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'screenshot-thumbnails',
-      informative: true,
-      description: 'Screenshot Thumbnails',
-      helpText: 'This is what the load of your site looked like.',
+      id: 'screenshot-thumbnails',
+      scoreDisplayMode: Audit.SCORING_MODES.INFORMATIVE,
+      title: 'Screenshot Thumbnails',
+      description: 'This is what the load of your site looked like.',
       requiredArtifacts: ['traces', 'devtoolsLogs'],
     };
   }
@@ -30,8 +32,8 @@ class ScreenshotThumbnails extends Audit {
    * Scales down an image to THUMBNAIL_WIDTH using nearest neighbor for speed, maintains aspect
    * ratio of the original thumbnail.
    *
-   * @param {{width: number, height: number, data: !Array<number>}} imageData
-   * @return {{width: number, height: number, data: !Array<number>}}
+   * @param {ReturnType<SpeedlineFrame['getParsedImage']>} imageData
+   * @return {{width: number, height: number, data: Uint8Array}}
    */
   static scaleImageToThumbnail(imageData) {
     const scaledWidth = THUMBNAIL_WIDTH;
@@ -63,26 +65,27 @@ class ScreenshotThumbnails extends Audit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
+   * @param {LH.Artifacts} artifacts
+   * @param {LH.Audit.Context} context
+   * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
+    /** @type {Map<SpeedlineFrame, string>} */
     const cachedThumbnails = new Map();
 
     const speedline = await artifacts.requestSpeedline(trace);
 
-    let minimumTimelineDuration = 0;
+    // Make the minimum time range 3s so sites that load super quickly don't get a single screenshot
+    let minimumTimelineDuration = context.options.minimumTimelineDuration || 3000;
     // Ensure thumbnails cover the full range of the trace (TTI can be later than visually complete)
     if (context.settings.throttlingMethod !== 'simulate') {
       const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
       const metricComputationData = {trace, devtoolsLog, settings: context.settings};
-      const ttci = artifacts.requestConsistentlyInteractive(metricComputationData);
+      const tti = artifacts.requestInteractive(metricComputationData);
       try {
-        minimumTimelineDuration = (await ttci).timing;
-      } catch (_) {
-        minimumTimelineDuration = 0;
-      }
+        minimumTimelineDuration = Math.max((await tti).timing, minimumTimelineDuration);
+      } catch (_) {}
     }
 
     const thumbnails = [];
@@ -99,6 +102,8 @@ class ScreenshotThumbnails extends Audit {
     for (let i = 1; i <= NUMBER_OF_THUMBNAILS; i++) {
       const targetTimestamp = speedline.beginning + timelineEnd * i / NUMBER_OF_THUMBNAILS;
 
+      /** @type {SpeedlineFrame} */
+      // @ts-ignore - there will always be at least one frame by this point. TODO: use nonnullable assertion in TS2.9
       let frameForTimestamp = null;
       if (i === NUMBER_OF_THUMBNAILS) {
         frameForTimestamp = analyzedFrames[analyzedFrames.length - 1];

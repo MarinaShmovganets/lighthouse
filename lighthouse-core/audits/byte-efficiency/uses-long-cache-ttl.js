@@ -6,27 +6,28 @@
 'use strict';
 
 const assert = require('assert');
+// @ts-ignore - typed where used.
 const parseCacheControl = require('parse-cache-control');
 const Audit = require('../audit');
 const WebInspector = require('../../lib/web-inspector');
 const URL = require('../../lib/url-shim');
+const linearInterpolation = require('../../lib/statistics').linearInterpolation;
 
 // Ignore assets that have very high likelihood of cache hit
 const IGNORE_THRESHOLD_IN_PERCENT = 0.925;
 
 class CacheHeaders extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      category: 'Caching',
-      name: 'uses-long-cache-ttl',
-      description: 'Uses efficient cache policy on static assets',
-      failureDescription: 'Uses inefficient cache policy on static assets',
-      helpText:
+      id: 'uses-long-cache-ttl',
+      title: 'Uses efficient cache policy on static assets',
+      failureTitle: 'Uses inefficient cache policy on static assets',
+      description:
         'A long cache lifetime can speed up repeat visits to your page. ' +
-        '[Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching#cache-control).',
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/cache-policy).',
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['devtoolsLogs'],
     };
@@ -37,24 +38,12 @@ class CacheHeaders extends Audit {
    */
   static get defaultOptions() {
     return {
-      // see https://www.desmos.com/calculator/zokzso8umm
+      // 50th and 75th percentiles HTTPArchive -> 50 and 75
+      // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
+      // see https://www.desmos.com/calculator/8meohdnjbl
       scorePODR: 4 * 1024,
-      scoreMedian: 768 * 1024,
+      scoreMedian: 128 * 1024,
     };
-  }
-
-  /**
-   * Interpolates the y value at a point x on the line defined by (x0, y0) and (x1, y1)
-   * @param {number} x0
-   * @param {number} y0
-   * @param {number} x1
-   * @param {number} y1
-   * @param {number} x
-   * @return {number}
-   */
-  static linearInterpolation(x0, y0, x1, y1, x) {
-    const slope = (y1 - y0) / (x1 - x0);
-    return y0 + (x - x0) * slope;
   }
 
   /**
@@ -88,7 +77,7 @@ class CacheHeaders extends Audit {
     const lowerDecile = (upperDecileIndex - 1) / 10;
 
     // Approximate the real likelihood with linear interpolation
-    return CacheHeaders.linearInterpolation(
+    return linearInterpolation(
       lowerDecileValue,
       lowerDecile,
       upperDecileValue,
@@ -101,22 +90,24 @@ class CacheHeaders extends Audit {
    * Computes the user-specified cache lifetime, 0 if explicit no-cache policy is in effect, and null if not
    * user-specified. See https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
    *
-   * @param {!Map<string,string>} headers
-   * @param {!Object} cacheControl Follows the potential settings of cache-control, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+   * @param {Map<string, string>} headers
+   * @param {{'no-cache'?: boolean,'no-store'?: boolean, 'max-age'?: number}} cacheControl Follows the potential settings of cache-control, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
    * @return {?number}
    */
   static computeCacheLifetimeInSeconds(headers, cacheControl) {
     if (cacheControl) {
       // Cache-Control takes precendence over expires
       if (cacheControl['no-cache'] || cacheControl['no-store']) return 0;
-      if (Number.isFinite(cacheControl['max-age'])) return Math.max(cacheControl['max-age'], 0);
+      const maxAge = cacheControl['max-age'];
+      if (maxAge !== undefined && Number.isFinite(maxAge)) return Math.max(maxAge, 0);
     } else if ((headers.get('pragma') || '').includes('no-cache')) {
       // The HTTP/1.0 Pragma header can disable caching if cache-control is not set, see https://tools.ietf.org/html/rfc7234#section-5.4
       return 0;
     }
 
-    if (headers.has('expires')) {
-      const expires = new Date(headers.get('expires')).getTime();
+    const expiresHeaders = headers.get('expires');
+    if (expiresHeaders) {
+      const expires = new Date(expiresHeaders).getTime();
       // Invalid expires values MUST be treated as already expired
       if (!expires) return 0;
       return Math.max(0, Math.ceil((expires - Date.now()) / 1000));
@@ -160,9 +151,9 @@ class CacheHeaders extends Audit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
+   * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
-   * @return {!AuditResult}
+   * @return {Promise<LH.Audit.Product>}
    */
   static audit(artifacts, context) {
     const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
@@ -174,8 +165,9 @@ class CacheHeaders extends Audit {
       for (const record of records) {
         if (!CacheHeaders.isCacheableAsset(record)) continue;
 
+        /** @type {Map<string, string>} */
         const headers = new Map();
-        for (const header of record._responseHeaders) {
+        for (const header of record._responseHeaders || []) {
           headers.set(header.name.toLowerCase(), header.value);
         }
 
@@ -193,7 +185,7 @@ class CacheHeaders extends Audit {
         if (cacheHitProbability > IGNORE_THRESHOLD_IN_PERCENT) continue;
 
         const url = URL.elideDataURI(record._url);
-        const totalBytes = record._transferSize;
+        const totalBytes = record.transferSize || 0;
         const wastedBytes = (1 - cacheHitProbability) * totalBytes;
 
         totalWastedBytes += wastedBytes;

@@ -7,122 +7,118 @@
 
 /* globals self, Util, CategoryRenderer */
 
+/** @typedef {import('./dom.js')} DOM */
+/** @typedef {import('./details-renderer.js').FilmstripDetails} FilmstripDetails */
+/** @typedef {LH.Result.Audit.OpportunityDetails} OpportunityDetails */
+
 class PerformanceCategoryRenderer extends CategoryRenderer {
   /**
-   * @param {!ReportRenderer.AuditJSON} audit
-   * @return {!Element}
+   * @param {LH.ReportResult.AuditRef} audit
+   * @return {Element}
    */
   _renderMetric(audit) {
-    const tmpl = this.dom.cloneTemplate('#tmpl-lh-perf-metric', this.templateContext);
-    const element = this.dom.find('.lh-perf-metric', tmpl);
-    element.classList.add(`lh-perf-metric--${Util.calculateRating(audit.result.score)}`);
+    const tmpl = this.dom.cloneTemplate('#tmpl-lh-metric', this.templateContext);
+    const element = this.dom.find('.lh-metric', tmpl);
+    element.id = audit.result.id;
+    const rating = Util.calculateRating(audit.result.score, audit.result.scoreDisplayMode);
+    element.classList.add(`lh-metric--${rating}`);
 
-    const titleEl = this.dom.find('.lh-perf-metric__title', tmpl);
-    titleEl.textContent = audit.result.description;
+    const titleEl = this.dom.find('.lh-metric__title', tmpl);
+    titleEl.textContent = audit.result.title;
 
-    const valueEl = this.dom.find('.lh-perf-metric__value span', tmpl);
-    valueEl.textContent = audit.result.displayValue;
+    const valueEl = this.dom.find('.lh-metric__value', tmpl);
+    valueEl.textContent = Util.formatDisplayValue(audit.result.displayValue);
 
-    const descriptionEl = this.dom.find('.lh-perf-metric__description', tmpl);
-    descriptionEl.appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.helpText));
+    const descriptionEl = this.dom.find('.lh-metric__description', tmpl);
+    descriptionEl.appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.description));
 
-    if (typeof audit.result.rawValue !== 'number') {
-      const debugStrEl = this.dom.createChildOf(element, 'div', 'lh-debug');
-      debugStrEl.textContent = audit.result.debugString || 'Report error: no metric information';
-      return element;
+    if (audit.result.scoreDisplayMode === 'error') {
+      descriptionEl.textContent = '';
+      valueEl.textContent = 'Error!';
+      const tooltip = this.dom.createChildOf(descriptionEl, 'span');
+      tooltip.textContent = audit.result.errorMessage || 'Report error: no metric information';
     }
 
     return element;
   }
 
   /**
-   * @param {!ReportRenderer.AuditJSON} audit
+   * @param {LH.ReportResult.AuditRef} audit
+   * @param {number} index
    * @param {number} scale
-   * @return {!Element}
+   * @return {Element}
    */
-  _renderPerfHintAudit(audit, scale) {
-    const tooltipAttrs = {title: audit.result.displayValue};
+  _renderOpportunity(audit, index, scale) {
+    const oppTmpl = this.dom.cloneTemplate('#tmpl-lh-opportunity', this.templateContext);
+    const element = this.populateAuditValues(audit, index, oppTmpl);
+    element.id = audit.result.id;
 
-    const element = this.dom.createElement('details', [
-      'lh-perf-hint',
-      `lh-perf-hint--${Util.calculateRating(audit.result.score)}`,
-      'lh-expandable-details',
-    ].join(' '));
-
-    const summary = this.dom.createChildOf(element, 'summary', 'lh-perf-hint__summary ' +
-      'lh-expandable-details__summary');
-    const titleEl = this.dom.createChildOf(summary, 'div', 'lh-perf-hint__title');
-    titleEl.textContent = audit.result.description;
-
-    this.dom.createChildOf(summary, 'div', 'lh-toggle-arrow', {title: 'See resources'});
-
-    if (audit.result.error) {
-      const debugStrEl = this.dom.createChildOf(summary, 'div', 'lh-debug');
-      debugStrEl.textContent = audit.result.debugString || 'Audit error';
+    if (!audit.result.details || audit.result.scoreDisplayMode === 'error') {
+      return element;
+    }
+    // TODO(bckenny): remove cast when details is fully discriminated based on `type`.
+    const details = /** @type {OpportunityDetails} */ (audit.result.details);
+    if (details.type !== 'opportunity') {
       return element;
     }
 
-    const details = audit.result.details;
-    const summaryInfo = /** @type {!DetailsRenderer.OpportunitySummary}
-        */ (details && details.summary);
-    // eslint-disable-next-line no-console
-    console.assert(summaryInfo, 'Missing `summary` for perf-hint audit');
-    // eslint-disable-next-line no-console
-    console.assert(typeof summaryInfo.wastedMs === 'number',
-        'Missing numeric `summary.wastedMs` for perf-hint audit');
-    if (!summaryInfo || !summaryInfo.wastedMs) {
-      return element;
-    }
+    // Overwrite the displayValue with opportunity's wastedMs
+    const displayEl = this.dom.find('.lh-audit__display-text', element);
+    const sparklineWidthPct = `${details.overallSavingsMs / scale * 100}%`;
+    this.dom.find('.lh-sparkline__bar', element).style.width = sparklineWidthPct;
+    displayEl.textContent = Util.formatSeconds(details.overallSavingsMs, 0.01);
 
-    const sparklineContainerEl = this.dom.createChildOf(summary, 'div', 'lh-perf-hint__sparkline',
-        tooltipAttrs);
-    const sparklineEl = this.dom.createChildOf(sparklineContainerEl, 'div', 'lh-sparkline');
-    const sparklineBarEl = this.dom.createChildOf(sparklineEl, 'div', 'lh-sparkline__bar');
-    sparklineBarEl.style.width = summaryInfo.wastedMs / scale * 100 + '%';
-
-    const statsEl = this.dom.createChildOf(summary, 'div', 'lh-perf-hint__stats', tooltipAttrs);
-    const statsMsEl = this.dom.createChildOf(statsEl, 'div', 'lh-perf-hint__primary-stat');
-    statsMsEl.textContent = Util.formatMilliseconds(summaryInfo.wastedMs);
-
-    if (summaryInfo.wastedBytes) {
-      const statsKbEl = this.dom.createChildOf(statsEl, 'div', 'lh-perf-hint__secondary-stat');
-      statsKbEl.textContent = Util.formatBytesToKB(summaryInfo.wastedBytes);
-    }
-
-    const descriptionEl = this.dom.createChildOf(element, 'div', 'lh-perf-hint__description');
-    descriptionEl.appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.helpText));
-
-    if (audit.result.debugString) {
-      const debugStrEl = this.dom.createChildOf(summary, 'div', 'lh-debug');
-      debugStrEl.textContent = audit.result.debugString;
-    }
-
-    // If there's no `type`, then we only used details for `summary`
-    if (details.type) {
-      element.appendChild(this.detailsRenderer.render(details));
+    // Set [title] tooltips
+    if (audit.result.displayValue) {
+      const displayValue = Util.formatDisplayValue(audit.result.displayValue);
+      this.dom.find('.lh-load-opportunity__sparkline', element).title = displayValue;
+      displayEl.title = displayValue;
     }
 
     return element;
   }
 
   /**
+   * Get an audit's wastedMs to sort the opportunity by, and scale the sparkline width
+   * Opportunties with an error won't have a details object, so MIN_VALUE is returned to keep any
+   * erroring opportunities last in sort order.
+   * @param {LH.ReportResult.AuditRef} audit
+   * @return {number}
+   */
+  _getWastedMs(audit) {
+    if (audit.result.details && audit.result.details.type === 'opportunity') {
+      // TODO(bckenny): remove cast when details is fully discriminated based on `type`.
+      const details = /** @type {OpportunityDetails} */ (audit.result.details);
+      if (typeof details.overallSavingsMs !== 'number') {
+        throw new Error('non-opportunity details passed to _getWastedMs');
+      }
+      return details.overallSavingsMs;
+    } else {
+      return Number.MIN_VALUE;
+    }
+  }
+
+  /**
+   * @param {LH.ReportResult.Category} category
+   * @param {Object<string, LH.Result.ReportGroup>} groups
+   * @return {Element}
    * @override
    */
   render(category, groups) {
     const element = this.dom.createElement('div', 'lh-category');
     this.createPermalinkSpan(element, category.id);
-    element.appendChild(this.renderCategoryScore(category));
-
-    const metricAudits = category.audits.filter(audit => audit.group === 'perf-metric');
-    const metricAuditsEl = this.renderAuditGroup(groups['perf-metric'], {expandable: false});
+    element.appendChild(this.renderCategoryHeader(category));
 
     // Metrics
+    const metricAudits = category.auditRefs.filter(audit => audit.group === 'metrics');
+    const metricAuditsEl = this.renderAuditGroup(groups['metrics'], {expandable: false});
+
     const keyMetrics = metricAudits.filter(a => a.weight >= 3);
     const otherMetrics = metricAudits.filter(a => a.weight < 3);
 
-    const metricsBoxesEl = this.dom.createChildOf(metricAuditsEl, 'div', 'lh-metrics-container');
-    const metricsColumn1El = this.dom.createChildOf(metricsBoxesEl, 'div', 'lh-metrics-column');
-    const metricsColumn2El = this.dom.createChildOf(metricsBoxesEl, 'div', 'lh-metrics-column');
+    const metricsBoxesEl = this.dom.createChildOf(metricAuditsEl, 'div', 'lh-metric-container');
+    const metricsColumn1El = this.dom.createChildOf(metricsBoxesEl, 'div', 'lh-metric-column');
+    const metricsColumn2El = this.dom.createChildOf(metricsBoxesEl, 'div', 'lh-metric-column');
 
     keyMetrics.forEach(item => {
       metricsColumn1El.appendChild(this._renderMetric(item));
@@ -130,48 +126,65 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     otherMetrics.forEach(item => {
       metricsColumn2El.appendChild(this._renderMetric(item));
     });
+    const estValuesEl = this.dom.createChildOf(metricsColumn2El, 'div',
+        'lh-metrics__disclaimer lh-metrics__disclaimer');
+    estValuesEl.textContent = 'Values are estimated and may vary.';
+
+    metricAuditsEl.classList.add('lh-audit-group--metrics');
+    element.appendChild(metricAuditsEl);
 
     // Filmstrip
-    const timelineEl = this.dom.createChildOf(metricAuditsEl, 'div', 'lh-timeline');
-    const thumbnailAudit = category.audits.find(audit => audit.id === 'screenshot-thumbnails');
+    const timelineEl = this.dom.createChildOf(element, 'div', 'lh-filmstrip-container');
+    const thumbnailAudit = category.auditRefs.find(audit => audit.id === 'screenshot-thumbnails');
     const thumbnailResult = thumbnailAudit && thumbnailAudit.result;
     if (thumbnailResult && thumbnailResult.details) {
-      const thumbnailDetails = /** @type {!DetailsRenderer.FilmstripDetails} */
-          (thumbnailResult.details);
-      const filmstripEl = this.detailsRenderer.render(thumbnailDetails);
+      timelineEl.id = thumbnailResult.id;
+      const filmstripEl = this.detailsRenderer.render(thumbnailResult.details);
       timelineEl.appendChild(filmstripEl);
     }
 
-    metricAuditsEl.open = true;
-    element.appendChild(metricAuditsEl);
-
     // Opportunities
-    const hintAudits = category.audits
-        .filter(audit => audit.group === 'perf-hint' && audit.result.score < 1)
-        .sort((auditA, auditB) => auditB.result.rawValue - auditA.result.rawValue);
-    if (hintAudits.length) {
-      const maxWaste = Math.max(...hintAudits.map(audit => audit.result.rawValue));
-      const scale = Math.ceil(maxWaste / 1000) * 1000;
-      const hintAuditsEl = this.renderAuditGroup(groups['perf-hint'], {expandable: false});
-      hintAudits.forEach(item => hintAuditsEl.appendChild(this._renderPerfHintAudit(item, scale)));
-      hintAuditsEl.open = true;
-      element.appendChild(hintAuditsEl);
+    const opportunityAudits = category.auditRefs
+        .filter(audit => audit.group === 'load-opportunities' && !Util.showAsPassed(audit.result))
+        .sort((auditA, auditB) => this._getWastedMs(auditB) - this._getWastedMs(auditA));
+
+    if (opportunityAudits.length) {
+      // Scale the sparklines relative to savings, minimum 2s to not overstate small savings
+      const minimumScale = 2000;
+      const wastedMsValues = opportunityAudits.map(audit => this._getWastedMs(audit));
+      const maxWaste = Math.max(...wastedMsValues);
+      const scale = Math.max(Math.ceil(maxWaste / 1000) * 1000, minimumScale);
+      const groupEl = this.renderAuditGroup(groups['load-opportunities'], {expandable: false});
+      const tmpl = this.dom.cloneTemplate('#tmpl-lh-opportunity-header', this.templateContext);
+      const headerEl = this.dom.find('.lh-load-opportunity__header', tmpl);
+      groupEl.appendChild(headerEl);
+      opportunityAudits.forEach((item, i) =>
+          groupEl.appendChild(this._renderOpportunity(item, i, scale)));
+      groupEl.classList.add('lh-audit-group--opportunities');
+      element.appendChild(groupEl);
     }
 
     // Diagnostics
-    const infoAudits = category.audits
-        .filter(audit => audit.group === 'perf-info' && audit.result.score < 1);
-    if (infoAudits.length) {
-      const infoAuditsEl = this.renderAuditGroup(groups['perf-info'], {expandable: false});
-      infoAudits.forEach(item => infoAuditsEl.appendChild(this.renderAudit(item)));
-      infoAuditsEl.open = true;
-      element.appendChild(infoAuditsEl);
+    const diagnosticAudits = category.auditRefs
+        .filter(audit => audit.group === 'diagnostics' && !Util.showAsPassed(audit.result))
+        .sort((a, b) => {
+          const scoreA = a.result.scoreDisplayMode === 'informative' ? 100 : Number(a.result.score);
+          const scoreB = b.result.scoreDisplayMode === 'informative' ? 100 : Number(b.result.score);
+          return scoreA - scoreB;
+        });
+
+    if (diagnosticAudits.length) {
+      const groupEl = this.renderAuditGroup(groups['diagnostics'], {expandable: false});
+      diagnosticAudits.forEach((item, i) => groupEl.appendChild(this.renderAudit(item, i)));
+      groupEl.classList.add('lh-audit-group--diagnostics');
+      element.appendChild(groupEl);
     }
 
-    const passedElements = category.audits
-        .filter(audit => (audit.group === 'perf-hint' || audit.group === 'perf-info') &&
-            audit.result.score === 1)
-        .map(audit => this.renderAudit(audit));
+    // Passed audits
+    const passedElements = category.auditRefs
+        .filter(audit => (audit.group === 'load-opportunities' || audit.group === 'diagnostics') &&
+            Util.showAsPassed(audit.result))
+        .map((audit, i) => this.renderAudit(audit, i));
 
     if (!passedElements.length) return element;
 

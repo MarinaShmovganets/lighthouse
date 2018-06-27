@@ -9,14 +9,14 @@ const MultiCheckAudit = require('./multi-check-audit');
 
 class ManifestShortNameLength extends MultiCheckAudit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'manifest-short-name-length',
-      description: 'The `short_name` won\'t be truncated on the homescreen',
-      failureDescription: 'The `short_name` will be truncated on the homescreen',
-      helpText: 'Make your app\'s `short_name` fewer than 12 characters to ' +
+      id: 'manifest-short-name-length',
+      title: 'The `short_name` won\'t be truncated on the homescreen',
+      failureTitle: 'The `short_name` will be truncated on the homescreen',
+      description: 'Make your app\'s `short_name` fewer than 12 characters to ' +
           'ensure that it\'s not truncated on homescreens. [Learn ' +
           'more](https://developers.google.com/web/tools/lighthouse/audits/manifest-short_name-is-not-truncated).',
       requiredArtifacts: ['Manifest'],
@@ -24,17 +24,19 @@ class ManifestShortNameLength extends MultiCheckAudit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
+   * @param {LH.Artifacts} artifacts
+   * @return {Promise<{failures: Array<string>, manifestValues: LH.Artifacts.ManifestValues}>}
    */
   static audit_(artifacts) {
+    /** @type {Array<string>} */
     const failures = [];
+    /** @type {Array<string>} */
     const warnings = [];
 
     return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
       const result = {warnings, failures, manifestValues};
 
-      if (manifestValues.isParseFailure) {
+      if (manifestValues.isParseFailure && manifestValues.parseFailureReason) {
         failures.push(manifestValues.parseFailureReason);
         return result;
       }

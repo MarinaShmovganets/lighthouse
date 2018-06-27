@@ -7,7 +7,7 @@
 declare global {
   module LH.Audit {
     export interface Context {
-      options: Object; // audit options
+      options: Record<string, any>; // audit options
       settings: Config.Settings;
     }
 
@@ -16,35 +16,45 @@ declare global {
       scoreMedian: number;
     }
 
-    export interface ScoringModes {
+    export interface ScoreDisplayModes {
       NUMERIC: 'numeric';
       BINARY: 'binary';
+      MANUAL: 'manual';
+      INFORMATIVE: 'informative';
+      NOT_APPLICABLE: 'not-applicable';
+      ERROR: 'error';
     }
 
-    export type ScoringModeValue = Audit.ScoringModes[keyof Audit.ScoringModes];
+    export type ScoreDisplayMode = Audit.ScoreDisplayModes[keyof Audit.ScoreDisplayModes];
+
+    interface DisplayValueArray extends Array<string|number> {
+      0: string;
+    }
+
+    export type DisplayValue = string | DisplayValueArray;
 
     export interface Meta {
-      name: string;
+      id: string;
+      title: string;
+      failureTitle?: string;
       description: string;
-      helpText: string;
       requiredArtifacts: Array<keyof Artifacts>;
-      failureDescription?: string;
-      informative?: boolean;
-      manual?: boolean;
-      scoreDisplayMode?: Audit.ScoringModeValue;
+      scoreDisplayMode?: Audit.ScoreDisplayMode;
     }
 
     export interface Heading {
       key: string;
       itemType: string;
       text: string;
+      displayUnit?: string;
+      granularity?: number;
     }
 
-    export interface HeadingsResult {
-      results: number;
-      headings: Array<Audit.Heading>;
-      passes: boolean;
-      debugString?: string;
+    export interface ByteEfficiencyItem extends Result.Audit.OpportunityDetailsItem {
+      url: string;
+      wastedBytes: number;
+      totalBytes: number;
+      wastedPercent?: number;
     }
 
     // TODO: placeholder typedefs until Details are typed
@@ -57,45 +67,95 @@ declare global {
     export interface DetailsRendererDetailsJSON {
       type: 'table';
       headings: Array<Audit.Heading>;
-      items: Array<{[x: string]: string}>;
-      summary: DetailsRendererDetailsSummary;
+      items: Array<{[x: string]: DetailsItem}>;
+      summary?: DetailsRendererDetailsSummary;
+    }
+
+    export interface DetailsRendererCodeDetailJSON {
+      type: 'code',
+      value: string;
+    }
+
+    export type DetailsItem = string | number | DetailsRendererNodeDetailsJSON |
+      DetailsRendererLinkDetailsJSON | DetailsRendererCodeDetailJSON | undefined |
+      boolean | DetailsRendererUrlDetailsJSON;
+
+    export interface DetailsRendererNodeDetailsJSON {
+      type: 'node';
+      path?: string;
+      selector?: string;
+      snippet?: string;
+    }
+
+    export interface DetailsRendererLinkDetailsJSON {
+      type: 'link';
+      text: string;
+      url: string;
+    }
+
+    export interface DetailsRendererUrlDetailsJSON {
+      type: 'url';
+      value: string;
     }
 
     // Type returned by Audit.audit(). Only rawValue is required.
     export interface Product {
       rawValue: boolean | number | null;
-      displayValue?: string;
-      debugString?: string;
+      displayValue?: DisplayValue;
+      explanation?: string;
+      errorMessage?: string;
+      warnings?: string[];
       score?: number;
-      extendedInfo?: {value: string};
+      extendedInfo?: {[p: string]: any};
+      /** Overrides scoreDisplayMode with not-applicable if set to true */
       notApplicable?: boolean;
-      error?: boolean;
-      // TODO: define details
+      // TODO(bckenny): define details
       details?: object;
     }
 
     /* Audit result returned in Lighthouse report. All audits offer a description and score of 0-1 */
     export interface Result {
       rawValue: boolean | number | null;
-      displayValue: string;
-      debugString?: string;
-      score: number;
-      scoreDisplayMode: ScoringModeValue;
+      displayValue?: DisplayValue;
+      explanation?: string;
+      errorMessage?: string;
+      warnings?: string[];
+      score: number|null;
+      scoreDisplayMode: ScoreDisplayMode;
+      title: string;
+      id: string;
       description: string;
-      extendedInfo?: {value: string};
-      notApplicable?: boolean;
-      error?: boolean;
-      name: string;
-      helpText?: string;
-      informative?: boolean;
-      manual?: boolean;
-      // TODO: define details
-      details?: object;
+      // TODO(bckenny): define details
+      details?: any;
     }
 
     export interface Results {
       [metric: string]: Result;
     }
+
+    export type SimpleCriticalRequestNode = {
+      [id: string]: {
+        request: {
+          url: string;
+          startTime: number;
+          endTime: number;
+          _responseReceivedTime: number;
+          transferSize: number;
+        };
+        children: SimpleCriticalRequestNode;
+      }
+    }
+
+    type MultiCheckAuditP1 = Partial<Record<Artifacts.ManifestValueCheckID, boolean>>;
+    type MultiCheckAuditP2 = Partial<Artifacts.ManifestValues>;
+    interface MultiCheckAuditP3 {
+      failures: Array<string>;
+      warnings?: undefined;
+      manifestValues?: undefined;
+      allChecks?: undefined;
+    }
+
+    export type MultiCheckAuditDetails = MultiCheckAuditP1 & MultiCheckAuditP2 & MultiCheckAuditP3;
   }
 }
 

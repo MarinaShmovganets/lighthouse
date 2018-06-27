@@ -11,21 +11,20 @@ const IGNORE_THRESHOLD_IN_BYTES = 2048;
 
 class UnusedJavaScript extends ByteEfficiencyAudit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'unused-javascript',
-      description: 'Unused JavaScript',
-      informative: true,
+      id: 'unused-javascript',
+      title: 'Unused JavaScript',
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
-      helpText: 'Remove unused JavaScript to reduce bytes consumed by network activity.',
+      description: 'Remove unused JavaScript to reduce bytes consumed by network activity.',
       requiredArtifacts: ['JsUsage', 'devtoolsLogs'],
     };
   }
 
   /**
-   * @param {!JsUsageArtifact} script
+   * @param {LH.Crdp.Profiler.ScriptCoverage} script
    * @return {{unusedLength: number, contentLength: number}}
    */
   static computeWaste(script) {
@@ -61,9 +60,9 @@ class UnusedJavaScript extends ByteEfficiencyAudit {
   }
 
   /**
-   * @param {!Array<{unusedLength: number, contentLength: number}>} wasteData
+   * @param {Array<{unusedLength: number, contentLength: number}>} wasteData
    * @param {LH.WebInspector.NetworkRequest} networkRecord
-   * @return {{url: string, totalBytes: number, wastedBytes: number, wastedPercent: number}}
+   * @return {LH.Audit.ByteEfficiencyItem}
    */
   static mergeWaste(wasteData, networkRecord) {
     let unusedLength = 0;
@@ -87,10 +86,12 @@ class UnusedJavaScript extends ByteEfficiencyAudit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!Audit.HeadingsResult}
+   * @param {LH.Artifacts} artifacts
+   * @param {Array<LH.WebInspector.NetworkRequest>} networkRecords
+   * @return {ByteEfficiencyAudit.ByteEfficiencyProduct}
    */
   static audit_(artifacts, networkRecords) {
+    /** @type {Map<string, Array<LH.Crdp.Profiler.ScriptCoverage>>} */
     const scriptsByUrl = new Map();
     for (const script of artifacts.JsUsage) {
       const scripts = scriptsByUrl.get(script.url) || [];
@@ -98,23 +99,22 @@ class UnusedJavaScript extends ByteEfficiencyAudit {
       scriptsByUrl.set(script.url, scripts);
     }
 
-    const results = [];
+    const items = [];
     for (const [url, scripts] of scriptsByUrl.entries()) {
       const networkRecord = networkRecords.find(record => record.url === url);
       if (!networkRecord) continue;
       const wasteData = scripts.map(UnusedJavaScript.computeWaste);
-      const result = UnusedJavaScript.mergeWaste(wasteData, networkRecord);
-      if (result.wastedBytes <= IGNORE_THRESHOLD_IN_BYTES) continue;
-      results.push(result);
+      const item = UnusedJavaScript.mergeWaste(wasteData, networkRecord);
+      if (item.wastedBytes <= IGNORE_THRESHOLD_IN_BYTES) continue;
+      items.push(item);
     }
 
     return {
-      results,
+      items,
       headings: [
-        {key: 'url', itemType: 'url', text: 'URL'},
-        {key: 'totalBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1, text: 'Original'},
-        {key: 'wastedBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1,
-          text: 'Potential Savings'},
+        {key: 'url', valueType: 'url', label: 'URL'},
+        {key: 'totalBytes', valueType: 'bytes', label: 'Original'},
+        {key: 'wastedBytes', valueType: 'bytes', label: 'Potential Savings'},
       ],
     };
   }

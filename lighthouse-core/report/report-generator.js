@@ -69,10 +69,12 @@ class ReportGenerator {
 
     // Possible TODO: tightly couple headers and row values
     const header = ['category', 'name', 'title', 'type', 'score'];
-    const table = lhr.reportCategories.map(category => {
-      return category.audits.map(catAudit => {
-        const audit = lhr.audits[catAudit.id];
-        return [category.name, audit.name, audit.description, audit.scoreDisplayMode, audit.score]
+    const table = Object.values(lhr.categories).map(category => {
+      return category.auditRefs.map(auditRef => {
+        const audit = lhr.audits[auditRef.id];
+        // CSV validator wants all scores to be numeric, use -1 for now
+        const numericScore = audit.score === null ? -1 : audit.score;
+        return [category.title, audit.id, audit.title, audit.scoreDisplayMode, numericScore]
           .map(value => value.toString())
           .map(escape);
       });
@@ -86,24 +88,31 @@ class ReportGenerator {
   /**
    * Creates the results output in a format based on the `mode`.
    * @param {LH.Result} lhr
-   * @param {'json'|'html'|'csv'} outputMode
-   * @return {string}
+   * @param {LH.Config.Settings['output']} outputModes
+   * @return {string|string[]}
    */
-  static generateReport(lhr, outputMode) {
-    // HTML report.
-    if (outputMode === 'html') {
-      return ReportGenerator.generateReportHtml(lhr);
-    }
-    // CSV report.
-    if (outputMode === 'csv') {
-      return ReportGenerator.generateReportCSV(lhr);
-    }
-    // JSON report.
-    if (outputMode === 'json') {
-      return JSON.stringify(lhr, null, 2);
-    }
+  static generateReport(lhr, outputModes) {
+    const outputAsArray = Array.isArray(outputModes);
+    if (typeof outputModes === 'string') outputModes = [outputModes];
 
-    throw new Error('Invalid output mode: ' + outputMode);
+    const output = outputModes.map(outputMode => {
+      // HTML report.
+      if (outputMode === 'html') {
+        return ReportGenerator.generateReportHtml(lhr);
+      }
+      // CSV report.
+      if (outputMode === 'csv') {
+        return ReportGenerator.generateReportCSV(lhr);
+      }
+      // JSON report.
+      if (outputMode === 'json') {
+        return JSON.stringify(lhr, null, 2);
+      }
+
+      throw new Error('Invalid output mode: ' + outputMode);
+    });
+
+    return outputAsArray ? output : output[0];
   }
 }
 

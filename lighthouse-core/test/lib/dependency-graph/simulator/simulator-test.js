@@ -20,9 +20,8 @@ function request(opts) {
   return Object.assign({
     requestId: opts.requestId || nextRequestId++,
     url,
-    origin: url,
     transferSize: opts.transferSize || 1000,
-    parsedURL: {scheme},
+    parsedURL: {scheme, securityOrigin: () => url},
     _timing: opts.timing,
   }, opts);
 }
@@ -90,6 +89,19 @@ describe('DependencyGraph/Simulator', () => {
       assertNodeTiming(result, nodeB, {startTime: 800, endTime: 1600});
       assertNodeTiming(result, nodeC, {startTime: 1600, endTime: 2400});
       assertNodeTiming(result, nodeD, {startTime: 2400, endTime: 3200});
+    });
+
+    it('should simulate cached network graphs', () => {
+      const nodeA = new NetworkNode(request({startTime: 0, endTime: 1, _fromDiskCache: true}));
+      const nodeB = new NetworkNode(request({startTime: 0, endTime: 3, _fromDiskCache: true}));
+      nodeA.addDependent(nodeB);
+
+      const simulator = new Simulator({serverResponseTimeByOrigin});
+      const result = simulator.simulate(nodeA);
+      // should be ~8ms each for A, B
+      assert.equal(result.timeInMs, 16);
+      assertNodeTiming(result, nodeA, {startTime: 0, endTime: 8});
+      assertNodeTiming(result, nodeB, {startTime: 8, endTime: 16});
     });
 
     it('should simulate basic CPU queue graphs', () => {
@@ -212,6 +224,16 @@ describe('DependencyGraph/Simulator', () => {
       const resultB = simulator.simulate(nodeE);
       // should be 800ms for E and 800ms for F/G
       assert.equal(resultB.timeInMs, 800 + 800);
+    });
+
+    it('should throw (not hang) on graphs with cycles', () => {
+      const rootNode = new NetworkNode(request({}));
+      const depNode = new NetworkNode(request({}));
+      rootNode.addDependency(depNode);
+      depNode.addDependency(rootNode);
+
+      const simulator = new Simulator({serverResponseTimeByOrigin});
+      assert.throws(() => simulator.simulate(rootNode), /cycle/);
     });
   });
 });

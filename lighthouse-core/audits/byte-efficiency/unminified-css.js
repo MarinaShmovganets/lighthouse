@@ -16,16 +16,15 @@ const IGNORE_THRESHOLD_IN_BYTES = 2048;
  */
 class UnminifiedCSS extends ByteEfficiencyAudit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'unminified-css',
-      description: 'Minify CSS',
-      informative: true,
+      id: 'unminified-css',
+      title: 'Minify CSS',
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
-      helpText: 'Minifying CSS files can reduce network payload sizes. ' +
-        '[Learn more](https://developers.google.com/speed/docs/insights/MinifyResources).',
+      description: 'Minifying CSS files can reduce network payload sizes. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/minify-css).',
       requiredArtifacts: ['CSSUsage', 'devtoolsLogs'],
     };
   }
@@ -92,10 +91,10 @@ class UnminifiedCSS extends ByteEfficiencyAudit {
   }
 
   /**
-   * @param {{content: string, header: {sourceURL: string}}} stylesheet
-   * @param {?LH.WebInspector.NetworkRequest} networkRecord
+   * @param {LH.Artifacts.CSSStyleSheetInfo} stylesheet
+   * @param {LH.WebInspector.NetworkRequest=} networkRecord
    * @param {string} pageUrl
-   * @return {{minifiedLength: number, contentLength: number}}
+   * @return {{url: string, totalBytes: number, wastedBytes: number, wastedPercent: number}}
    */
   static computeWaste(stylesheet, networkRecord, pageUrl) {
     const content = stylesheet.content;
@@ -104,7 +103,7 @@ class UnminifiedCSS extends ByteEfficiencyAudit {
     let url = stylesheet.header.sourceURL;
     if (!url || url === pageUrl) {
       const contentPreview = UnusedCSSRules.determineContentPreview(stylesheet.content);
-      url = {type: 'code', value: contentPreview};
+      url = contentPreview;
     }
 
     const totalBytes = ByteEfficiencyAudit.estimateTransferSize(networkRecord, content.length,
@@ -121,12 +120,13 @@ class UnminifiedCSS extends ByteEfficiencyAudit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!Audit.HeadingsResult}
+   * @param {LH.Artifacts} artifacts
+   * @param {Array<LH.WebInspector.NetworkRequest>} networkRecords
+   * @return {ByteEfficiencyAudit.ByteEfficiencyProduct}
    */
   static audit_(artifacts, networkRecords) {
     const pageUrl = artifacts.URL.finalUrl;
-    const results = [];
+    const items = [];
     for (const stylesheet of artifacts.CSSUsage.stylesheets) {
       const networkRecord = networkRecords
         .find(record => record.url === stylesheet.header.sourceURL);
@@ -137,17 +137,17 @@ class UnminifiedCSS extends ByteEfficiencyAudit {
       // If the ratio is minimal, the file is likely already minified, so ignore it.
       // If the total number of bytes to be saved is quite small, it's also safe to ignore.
       if (result.wastedPercent < IGNORE_THRESHOLD_IN_PERCENT ||
-          result.wastedBytes < IGNORE_THRESHOLD_IN_BYTES) continue;
-      results.push(result);
+          result.wastedBytes < IGNORE_THRESHOLD_IN_BYTES ||
+          !Number.isFinite(result.wastedBytes)) continue;
+      items.push(result);
     }
 
     return {
-      results,
+      items,
       headings: [
-        {key: 'url', itemType: 'url', text: 'URL'},
-        {key: 'totalBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1, text: 'Original'},
-        {key: 'wastedBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1,
-          text: 'Potential Savings'},
+        {key: 'url', valueType: 'url', label: 'URL'},
+        {key: 'totalBytes', valueType: 'bytes', label: 'Original'},
+        {key: 'wastedBytes', valueType: 'bytes', label: 'Potential Savings'},
       ],
     };
   }

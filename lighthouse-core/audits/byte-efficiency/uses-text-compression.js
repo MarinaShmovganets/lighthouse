@@ -17,30 +17,29 @@ const IGNORE_THRESHOLD_IN_PERCENT = 0.1;
 
 class ResponsesAreCompressed extends ByteEfficiencyAudit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'uses-text-compression',
-      informative: true,
+      id: 'uses-text-compression',
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
-      description: 'Enable text compression',
-      helpText: 'Text-based responses should be served with compression (gzip, deflate or brotli)' +
-        ' to minimize total network bytes.' +
-        ' [Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer).',
+      title: 'Enable text compression',
+      description: 'Text-based responses should be served with compression (gzip, deflate or' +
+        ' brotli) to minimize total network bytes.' +
+        ' [Learn more](https://developers.google.com/web/tools/lighthouse/audits/text-compression).',
       requiredArtifacts: ['ResponseCompression', 'devtoolsLogs'],
     };
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @param {number} networkThroughput
-   * @return {!Audit.HeadingsResult}
+   * @param {LH.Artifacts} artifacts
+   * @return {ByteEfficiencyAudit.ByteEfficiencyProduct}
    */
   static audit_(artifacts) {
     const uncompressedResponses = artifacts.ResponseCompression;
 
-    const results = [];
+    /** @type {Array<LH.Audit.ByteEfficiencyItem>} */
+    const items = [];
     uncompressedResponses.forEach(record => {
       const originalSize = record.resourceSize;
       const gzipSize = record.gzipSize;
@@ -57,28 +56,28 @@ class ResponsesAreCompressed extends ByteEfficiencyAudit {
 
       // remove duplicates
       const url = URL.elideDataURI(record.url);
-      const isDuplicate = results.find(res => res.url === url &&
-        res.totalBytes === record.resourceSize);
+      const isDuplicate = items.find(item => item.url === url &&
+        item.totalBytes === record.resourceSize);
       if (isDuplicate) {
         return;
       }
 
-      results.push({
+      items.push({
         url,
         totalBytes: originalSize,
         wastedBytes: gzipSavings,
       });
     });
 
+    /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
     const headings = [
-      {key: 'url', itemType: 'url', text: 'Uncompressed resource URL'},
-      {key: 'totalBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1, text: 'Original'},
-      {key: 'wastedBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1,
-        text: 'GZIP Savings'},
+      {key: 'url', valueType: 'url', label: 'Uncompressed resource URL'},
+      {key: 'totalBytes', valueType: 'bytes', label: 'Original'},
+      {key: 'wastedBytes', valueType: 'bytes', label: 'GZIP Savings'},
     ];
 
     return {
-      results,
+      items,
       headings,
     };
   }

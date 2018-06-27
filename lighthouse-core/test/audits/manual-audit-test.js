@@ -14,17 +14,16 @@ const assert = require('assert');
 class TestAudit extends ManualAudit {
   static get meta() {
     return Object.assign({
-      name: 'manual-audit',
-      helpText: 'Some help text.',
-    }, super.meta);
+      id: 'manual-audit',
+      description: 'Some help text.',
+    }, super.partialMeta);
   }
 }
 
 describe('ManualAudit', () => {
   it('sets defaults', () => {
-    assert.equal(TestAudit.meta.name, 'manual-audit');
+    assert.equal(TestAudit.meta.id, 'manual-audit');
     assert.equal(TestAudit.meta.requiredArtifacts.length, 0);
-    assert.equal(TestAudit.meta.informative, true);
-    assert.equal(TestAudit.meta.manual, true);
+    assert.equal(TestAudit.meta.scoreDisplayMode, 'manual');
   });
 });

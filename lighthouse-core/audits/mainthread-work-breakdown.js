@@ -17,16 +17,15 @@ const {taskToGroup} = require('../lib/task-groups');
 
 class MainThreadWorkBreakdown extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      category: 'Performance',
-      name: 'mainthread-work-breakdown',
-      description: 'Minimizes main thread work',
-      failureDescription: 'Has significant main thread work',
+      id: 'mainthread-work-breakdown',
+      title: 'Minimizes main thread work',
+      failureTitle: 'Has significant main thread work',
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
-      helpText: 'Consider reducing the time spent parsing, compiling and executing JS. ' +
+      description: 'Consider reducing the time spent parsing, compiling and executing JS. ' +
         'You may find delivering smaller JS payloads helps with this.',
       requiredArtifacts: ['traces'],
     };
@@ -44,8 +43,8 @@ class MainThreadWorkBreakdown extends Audit {
   }
 
   /**
-   * @param {!DevtoolsTimelineModel} timelineModel
-   * @return {!Map<string, number>}
+   * @param {LH.Artifacts.DevtoolsTimelineModel} timelineModel
+   * @return {Map<string, number>}
    */
   static getExecutionTimingsByCategory(timelineModel) {
     const bottomUpByName = timelineModel.bottomUpGroupBy('EventName');
@@ -58,61 +57,65 @@ class MainThreadWorkBreakdown extends Audit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
+   * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
-   * @return {!AuditResult}
+   * @return {Promise<LH.Audit.Product>}
    */
-  static audit(artifacts, context) {
+  static async audit(artifacts, context) {
+    const settings = context.settings || {};
     const trace = artifacts.traces[MainThreadWorkBreakdown.DEFAULT_PASS];
 
-    return artifacts.requestDevtoolsTimelineModel(trace)
-      .then(devtoolsTimelineModel => {
-        const executionTimings = MainThreadWorkBreakdown.getExecutionTimingsByCategory(
-          devtoolsTimelineModel
-        );
-        let totalExecutionTime = 0;
+    const devtoolsTimelineModel = await artifacts.requestDevtoolsTimelineModel(trace);
+    const executionTimings = MainThreadWorkBreakdown.getExecutionTimingsByCategory(
+      devtoolsTimelineModel
+    );
+    let totalExecutionTime = 0;
 
-        const extendedInfo = {};
-        const categoryTotals = {};
-        const results = Array.from(executionTimings).map(([eventName, duration]) => {
-          totalExecutionTime += duration;
-          extendedInfo[eventName] = duration;
-          const groupName = taskToGroup[eventName];
+    const multiplier = settings.throttlingMethod === 'simulate' ?
+      settings.throttling.cpuSlowdownMultiplier : 1;
 
-          const categoryTotal = categoryTotals[groupName] || 0;
-          categoryTotals[groupName] = categoryTotal + duration;
+    const extendedInfo = {};
+    const categoryTotals = {};
+    const results = Array.from(executionTimings).map(([eventName, duration]) => {
+      duration *= multiplier;
+      totalExecutionTime += duration;
+      extendedInfo[eventName] = duration;
+      const groupName = taskToGroup[eventName];
 
-          return {
-            category: eventName,
-            group: groupName,
-            duration: Util.formatMilliseconds(duration, 1),
-          };
-        });
+      const categoryTotal = categoryTotals[groupName] || 0;
+      categoryTotals[groupName] = categoryTotal + duration;
 
-        const headings = [
-          {key: 'group', itemType: 'text', text: 'Category'},
-          {key: 'category', itemType: 'text', text: 'Work'},
-          {key: 'duration', itemType: 'text', text: 'Time spent'},
-        ];
-        results.stableSort((a, b) => categoryTotals[b.group] - categoryTotals[a.group]);
-        const tableDetails = MainThreadWorkBreakdown.makeTableDetails(headings, results);
+      return {
+        category: eventName,
+        group: groupName,
+        duration: duration,
+      };
+    });
 
-        const score = Audit.computeLogNormalScore(
-          totalExecutionTime,
-          context.options.scorePODR,
-          context.options.scoreMedian
-        );
+    const headings = [
+      {key: 'group', itemType: 'text', text: 'Category'},
+      {key: 'category', itemType: 'text', text: 'Work'},
+      {key: 'duration', itemType: 'ms', granularity: 1, text: 'Time spent'},
+    ];
+    // @ts-ignore - stableSort added to Array by WebInspector
+    results.stableSort((a, b) => categoryTotals[b.group] - categoryTotals[a.group]);
+    const tableDetails = MainThreadWorkBreakdown.makeTableDetails(headings, results);
 
-        return {
-          score,
-          rawValue: totalExecutionTime,
-          displayValue: Util.formatMilliseconds(totalExecutionTime),
-          details: tableDetails,
-          extendedInfo: {
-            value: extendedInfo,
-          },
-        };
-      });
+    const score = Audit.computeLogNormalScore(
+      totalExecutionTime,
+      context.options.scorePODR,
+      context.options.scoreMedian
+    );
+
+    return {
+      score,
+      rawValue: totalExecutionTime,
+      displayValue: [Util.MS_DISPLAY_VALUE, totalExecutionTime],
+      details: tableDetails,
+      extendedInfo: {
+        value: extendedInfo,
+      },
+    };
   }
 }
 

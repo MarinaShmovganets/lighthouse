@@ -6,12 +6,12 @@
 'use strict';
 
 /**
- * Expected Lighthouse audit values for --perf tests
+ * Expected Lighthouse audit values for --preset=perf tests
  */
 module.exports = [
   {
-    initialUrl: 'http://localhost:10200/preload.html',
-    url: 'http://localhost:10200/preload.html',
+    requestedUrl: 'http://localhost:10200/preload.html',
+    finalUrl: 'http://localhost:10200/preload.html',
     audits: {
       'speed-index': {
         score: '>=0.80',
@@ -22,7 +22,7 @@ module.exports = [
       'first-cpu-idle': {
         score: '>=0.90',
       },
-      'consistently-interactive': {
+      'interactive': {
         score: '>=0.90',
       },
       'time-to-first-byte': {
@@ -45,11 +45,19 @@ module.exports = [
           },
         },
       },
+      'uses-rel-preconnect': {
+        score: '<1',
+        details: {
+          items: {
+            length: 1,
+          },
+        },
+      },
     },
   },
   {
-    initialUrl: 'http://localhost:10200/perf/fonts.html',
-    url: 'http://localhost:10200/perf/fonts.html',
+    requestedUrl: 'http://localhost:10200/perf/fonts.html',
+    finalUrl: 'http://localhost:10200/perf/fonts.html',
     audits: {
       'font-display': {
         score: 0,

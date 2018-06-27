@@ -23,7 +23,7 @@ function getFlags(manualArgv) {
       .version(() => pkg.version)
       .showHelpOnFail(false, 'Specify --help for available options')
 
-      .usage('lighthouse <url>')
+      .usage('lighthouse <url> <options>')
       .example(
           'lighthouse <url> --view', 'Opens the HTML report in a browser after the run completes')
       .example(
@@ -58,7 +58,7 @@ function getFlags(manualArgv) {
       .group(
         [
           'save-assets', 'list-all-audits', 'list-trace-categories', 'additional-trace-categories',
-          'config-path', 'chrome-flags', 'perf', 'mixed-content', 'port', 'hostname',
+          'config-path', 'preset', 'chrome-flags', 'port', 'hostname',
           'max-wait-for-load', 'enable-error-reporting', 'gather-mode', 'audit-mode',
           'only-audits', 'only-categories', 'skip-audits',
         ],
@@ -86,11 +86,10 @@ function getFlags(manualArgv) {
         'additional-trace-categories':
             'Additional categories to capture with the trace (comma-delimited).',
         'config-path': 'The path to the config JSON.',
-        'mixed-content': 'Use the mixed-content auditing configuration.',
+        'preset': 'Use a built-in configuration.',
         'chrome-flags':
             `Custom flags to pass to Chrome (space-delimited). For a full list of flags, see http://bit.ly/chrome-flags
-            Additionally, use the CHROME_PATH environment variable to use a specific Chrome binary. Requires Chromium version 54.0 or later. If omitted, any detected Chrome Canary or Chrome stable will be used.`,
-        'perf': 'Use a performance-test-only configuration',
+            Additionally, use the CHROME_PATH environment variable to use a specific Chrome binary. Requires Chromium version 66.0 or later. If omitted, any detected Chrome Canary or Chrome stable will be used.`,
         'hostname': 'The hostname to use for the debugging protocol.',
         'port': 'The port to use for the debugging protocol. Use 0 for a random port',
         'max-wait-for-load':
@@ -117,28 +116,33 @@ function getFlags(manualArgv) {
       // boolean values
       .boolean([
         'disable-storage-reset', 'disable-device-emulation', 'save-assets', 'list-all-audits',
-        'list-trace-categories', 'perf', 'view', 'verbose', 'quiet', 'help',
-        'mixed-content',
+        'list-trace-categories', 'view', 'verbose', 'quiet', 'help',
       ])
       .choices('output', printer.getValidOutputOptions())
       .choices('throttling-method', ['devtools', 'provided', 'simulate'])
+      .choices('preset', ['full', 'perf', 'mixed-content'])
       // force as an array
       // note MUST use camelcase versions or only the kebab-case version will be forced
       .array('blockedUrlPatterns')
       .array('onlyAudits')
       .array('onlyCategories')
       .array('skipAudits')
+      .array('output')
       .string('extraHeaders')
 
       // default values
       .default('chrome-flags', '')
-      .default('output', 'html')
+      .default('output', ['html'])
       .default('port', 0)
       .default('hostname', 'localhost')
       .check(/** @param {!LH.Flags} argv */ (argv) => {
-        // Make sure lighthouse has been passed a url, or at least one of --list-all-audits
-        // or --list-trace-categories. If not, stop the program and ask for a url
-        if (!argv.listAllAudits && !argv.listTraceCategories && argv._.length === 0) {
+        // Lighthouse doesn't need a URL if...
+        //   - We're in auditMode (and we have artifacts already)
+        //   - We're just listing the available options.
+        // If one of these don't apply, stop the program and ask for a url.
+        const isListMode = argv.listAllAudits || argv.listTraceCategories;
+        const isOnlyAuditMode = !!argv.auditMode && !argv.gatherMode;
+        if (!isListMode && !isOnlyAuditMode && argv._.length === 0) {
           throw new Error('Please provide a url');
         }
 

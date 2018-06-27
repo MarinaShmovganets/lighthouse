@@ -18,6 +18,7 @@
 
 const ComputedArtifact = require('./computed-artifact');
 const log = require('lighthouse-logger');
+const TracingProcessor = require('../../lib/traces/tracing-processor');
 const LHError = require('../../lib/errors');
 const Sentry = require('../../lib/sentry');
 
@@ -32,29 +33,55 @@ class TraceOfTab extends ComputedArtifact {
   }
 
   /**
+   * @param {LH.TraceEvent[]} traceEvents
+   * @param {(e: LH.TraceEvent) => boolean} filter
+   */
+  static filteredStableSort(traceEvents, filter) {
+    // create an array of the indices that we want to keep
+    const indices = [];
+    for (let srcIndex = 0; srcIndex < traceEvents.length; srcIndex++) {
+      if (filter(traceEvents[srcIndex])) {
+        indices.push(srcIndex);
+      }
+    }
+
+    // sort by ts, if there's no ts difference sort by index
+    indices.sort((indexA, indexB) => {
+      const result = traceEvents[indexA].ts - traceEvents[indexB].ts;
+      return result ? result : indexA - indexB;
+    });
+
+    // create a new array using the target indices from previous sort step
+    const sorted = [];
+    for (let i = 0; i < indices.length; i++) {
+      sorted.push(traceEvents[indices[i]]);
+    }
+
+    return sorted;
+  }
+
+
+  /**
    * Finds key trace events, identifies main process/thread, and returns timings of trace events
    * in milliseconds since navigation start in addition to the standard microsecond monotonic timestamps.
-   * @param {{traceEvents: !Array}} trace
-   * @return {LH.Artifacts.TraceOfTab}
+   * @param {LH.Trace} trace
+   * @return {Promise<LH.Artifacts.TraceOfTab>}
   */
-  compute_(trace) {
+  async compute_(trace) {
     // Parse the trace for our key events and sort them by timestamp. Note: sort
     // *must* be stable to keep events correctly nested.
-    const keyEvents = trace.traceEvents
-      .filter(e => {
-        return e.cat.includes('blink.user_timing') ||
+    const keyEvents = TraceOfTab.filteredStableSort(trace.traceEvents, e => {
+      return e.cat.includes('blink.user_timing') ||
           e.cat.includes('loading') ||
           e.cat.includes('devtools.timeline') ||
-          e.name === 'TracingStartedInPage';
-      })
-      .stableSort((event0, event1) => event0.ts - event1.ts);
+          e.cat === '__metadata';
+    });
 
-    // The first TracingStartedInPage in the trace is definitely our renderer thread of interest
-    // Beware: the tracingStartedInPage event can appear slightly after a navigationStart
-    const startedInPageEvt = keyEvents.find(e => e.name === 'TracingStartedInPage');
-    if (!startedInPageEvt) throw new LHError(LHError.errors.NO_TRACING_STARTED);
+    // Find the inspected frame
+    const {startedInPageEvt, frameId} = TracingProcessor.findTracingStartedEvt(keyEvents);
+
     // Filter to just events matching the frame ID for sanity
-    const frameEvents = keyEvents.filter(e => e.args.frame === startedInPageEvt.args.data.page);
+    const frameEvents = keyEvents.filter(e => e.args.frame === frameId);
 
     // Our navStart will be the last frame navigation in the trace
     const navigationStart = frameEvents.filter(e => e.name === 'navigationStart').pop();
@@ -80,6 +107,7 @@ class TraceOfTab extends ComputedArtifact {
     // However, if no candidates were found (a bogus trace, likely), we fail.
     if (!firstMeaningfulPaint) {
       // Track this with Sentry since it's likely a bug we should investigate.
+      // @ts-ignore TODO(bckenny): Sentry type checking
       Sentry.captureMessage('No firstMeaningfulPaint found, using fallback', {level: 'warning'});
 
       const fmpCand = 'firstMeaningfulPaintCandidate';
@@ -99,9 +127,8 @@ class TraceOfTab extends ComputedArtifact {
 
     // subset all trace events to just our tab's process (incl threads other than main)
     // stable-sort events to keep them correctly nested.
-    const processEvents = trace.traceEvents
-      .filter(e => e.pid === startedInPageEvt.pid)
-      .stableSort((event0, event1) => event0.ts - event1.ts);
+    const processEvents = TraceOfTab
+      .filteredStableSort(trace.traceEvents, e => e.pid === startedInPageEvt.pid);
 
     const mainThreadEvents = processEvents
       .filter(e => e.tid === startedInPageEvt.tid);
@@ -128,9 +155,12 @@ class TraceOfTab extends ComputedArtifact {
       timings[metric] = (timestamps[metric] - navigationStart.ts) / 1000;
     });
 
+    // @ts-ignore - TODO(bckenny): many of these are actually `|undefined`, but
+    // undefined case needs to be handled throughout codebase. See also note for
+    // LH.Artifacts.TraceOfTab.
     return {
-      timings,
-      timestamps,
+      timings: /** @type {LH.Artifacts.TraceTimes} */ (timings),
+      timestamps: /** @type {LH.Artifacts.TraceTimes} */ (timestamps),
       processEvents,
       mainThreadEvents,
       startedInPageEvt,

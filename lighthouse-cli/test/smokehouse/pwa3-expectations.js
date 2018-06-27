@@ -5,14 +5,18 @@
  */
 'use strict';
 
+const pwaDetailsExpectations = require('./pwa-expectations').PWA_DETAILS_EXPECTATIONS;
+
+const pwaRocksExpectations = {...pwaDetailsExpectations, hasIconsAtLeast512px: false};
+
 /**
  * Expected Lighthouse audit values for various sites with stable(ish) PWA
  * results.
  */
 module.exports = [
   {
-    initialUrl: 'https://pwa.rocks',
-    url: 'https://pwa.rocks/',
+    requestedUrl: 'https://pwa.rocks',
+    finalUrl: 'https://pwa.rocks/',
     audits: {
       'is-on-https': {
         score: 1,
@@ -37,63 +41,15 @@ module.exports = [
       },
       'webapp-install-banner': {
         score: 1,
-        extendedInfo: {
-          value: {
-            manifestValues: {
-              allChecks: [
-                {id: 'hasStartUrl', passing: true},
-                {id: 'hasIconsAtLeast192px', passing: true},
-                {id: 'hasIconsAtLeast512px', passing: false},
-                {id: 'hasPWADisplayValue', passing: true},
-                {id: 'hasBackgroundColor', passing: true},
-                {id: 'hasThemeColor', passing: true},
-                {id: 'hasShortName', passing: true},
-                {id: 'shortNameLength', passing: true},
-                {id: 'hasName', passing: true},
-              ],
-            },
-          },
-        },
+        details: {items: [pwaRocksExpectations]},
       },
       'splash-screen': {
         score: 0,
-        extendedInfo: {
-          value: {
-            manifestValues: {
-              allChecks: [
-                {id: 'hasStartUrl', passing: true},
-                {id: 'hasIconsAtLeast192px', passing: true},
-                {id: 'hasIconsAtLeast512px', passing: false},
-                {id: 'hasPWADisplayValue', passing: true},
-                {id: 'hasBackgroundColor', passing: true},
-                {id: 'hasThemeColor', passing: true},
-                {id: 'hasShortName', passing: true},
-                {id: 'shortNameLength', passing: true},
-                {id: 'hasName', passing: true},
-              ],
-            },
-          },
-        },
+        details: {items: [pwaRocksExpectations]},
       },
       'themed-omnibox': {
         score: 0,
-        extendedInfo: {
-          value: {
-            manifestValues: {
-              allChecks: [
-                {id: 'hasStartUrl', passing: true},
-                {id: 'hasIconsAtLeast192px', passing: true},
-                {id: 'hasIconsAtLeast512px', passing: false},
-                {id: 'hasPWADisplayValue', passing: true},
-                {id: 'hasBackgroundColor', passing: true},
-                {id: 'hasThemeColor', passing: true},
-                {id: 'hasShortName', passing: true},
-                {id: 'shortNameLength', passing: true},
-                {id: 'hasName', passing: true},
-              ],
-            },
-          },
-        },
+        details: {items: [pwaRocksExpectations]},
       },
       'content-width': {
         score: 1,
@@ -101,16 +57,16 @@ module.exports = [
 
       // "manual" audits. Just verify in the results.
       'pwa-cross-browser': {
-        score: 0,
-        manual: true,
+        score: null,
+        scoreDisplayMode: 'manual',
       },
       'pwa-page-transitions': {
-        score: 0,
-        manual: true,
+        score: null,
+        scoreDisplayMode: 'manual',
       },
       'pwa-each-page-has-url': {
-        score: 0,
-        manual: true,
+        score: null,
+        scoreDisplayMode: 'manual',
       },
     },
   },

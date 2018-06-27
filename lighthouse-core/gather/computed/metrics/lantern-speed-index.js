@@ -6,8 +6,9 @@
 'use strict';
 
 const MetricArtifact = require('./lantern-metric');
-const Node = require('../../../lib/dependency-graph/node');
-const CPUNode = require('../../../lib/dependency-graph/cpu-node'); // eslint-disable-line no-unused-vars
+const BaseNode = require('../../../lib/dependency-graph/base-node');
+
+/** @typedef {BaseNode.Node} Node */
 
 class SpeedIndex extends MetricArtifact {
   get name() {
@@ -19,9 +20,12 @@ class SpeedIndex extends MetricArtifact {
    */
   get COEFFICIENTS() {
     return {
-      intercept: 200,
-      optimistic: 1.16,
-      pessimistic: 0.57,
+      // Negative intercept is OK because estimate is Math.max(FCP, Speed Index) and
+      // the optimistic estimate is based on the real observed speed index rather than a real
+      // lantern graph.
+      intercept: -250,
+      optimistic: 1.4,
+      pessimistic: 0.65,
     };
   }
 
@@ -47,7 +51,7 @@ class SpeedIndex extends MetricArtifact {
    * @return {LH.Gatherer.Simulation.Result}
    */
   getEstimateFromSimulation(simulationResult, extras) {
-    const fcpTimeInMs = extras.fcpResult.timing;
+    const fcpTimeInMs = extras.fcpResult.pessimisticEstimate.timeInMs;
     const estimate = extras.optimistic
       ? extras.speedline.speedIndex
       : SpeedIndex.computeLayoutBasedSpeedIndex(simulationResult.nodeTimings, fcpTimeInMs);
@@ -58,13 +62,13 @@ class SpeedIndex extends MetricArtifact {
   }
 
   /**
-   * @param {LH.Artifacts.MetricComputationData} data
-   * @param {Object} artifacts
+   * @param {LH.Artifacts.MetricComputationDataInput} data
+   * @param {LH.ComputedArtifacts} artifacts
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   async compute_(data, artifacts) {
     const speedline = await artifacts.requestSpeedline(data.trace);
-    const fcpResult = await artifacts.requestLanternFirstContentfulPaint(data, artifacts);
+    const fcpResult = await artifacts.requestLanternFirstContentfulPaint(data);
     const metricResult = await this.computeMetricWithGraphs(data, artifacts, {
       speedline,
       fcpResult,
@@ -84,7 +88,7 @@ class SpeedIndex extends MetricArtifact {
    * different methods. Read more in the evaluation doc.
    *
    * @see https://docs.google.com/document/d/1qJWXwxoyVLVadezIp_Tgdk867G3tDNkkVRvUJSH3K1E/edit#
-   * @param {Map<Node, LH.Gatherer.Simulation.NodeTiming>} nodeTimings
+   * @param {LH.Gatherer.Simulation.Result['nodeTimings']} nodeTimings
    * @param {number} fcpTimeInMs
    * @return {number}
    */
@@ -92,11 +96,9 @@ class SpeedIndex extends MetricArtifact {
     /** @type {Array<{time: number, weight: number}>} */
     const layoutWeights = [];
     for (const [node, timing] of nodeTimings.entries()) {
-      if (node.type !== Node.TYPES.CPU) continue;
-      if (!timing.startTime || !timing.endTime) continue;
+      if (node.type !== BaseNode.TYPES.CPU) continue;
 
-      const cpuNode = /** @type {CPUNode} */ (node);
-      if (cpuNode.childEvents.some(x => x.name === 'Layout')) {
+      if (node.childEvents.some(x => x.name === 'Layout')) {
         const timingWeight = Math.max(Math.log2(timing.endTime - timing.startTime), 0);
         layoutWeights.push({time: timing.endTime, weight: timingWeight});
       }

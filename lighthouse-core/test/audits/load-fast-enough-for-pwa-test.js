@@ -22,7 +22,7 @@ function generateArtifacts(ttiValue) {
     traces: {
       [Audit.DEFAULT_PASS]: {traceEvents: []},
     },
-    requestConsistentlyInteractive: () => Promise.resolve({
+    requestInteractive: () => Promise.resolve({
       timing: ttiValue,
     }),
   };
@@ -43,7 +43,8 @@ describe('PWA: load-fast-enough-for-pwa audit', () => {
     return FastPWAAudit.audit(generateArtifacts(15000), {settings}).then(result => {
       assert.equal(result.score, false, 'not failing a long TTI value');
       assert.equal(result.rawValue, 15000);
-      assert.ok(result.debugString);
+      assert.deepEqual(result.displayValue, ['Interactive at %d\xa0s', 15]);
+      assert.ok(result.explanation);
     });
   });
 
@@ -66,6 +67,6 @@ describe('PWA: load-fast-enough-for-pwa audit', () => {
 
     const settings = {throttlingMethod: 'provided', throttling: {rttMs: 40, throughput: 100000}};
     const result = await FastPWAAudit.audit(artifacts, {settings});
-    assert.equal(Math.round(result.rawValue), 5308);
+    assert.equal(Math.round(result.rawValue), 4309);
   });
 });

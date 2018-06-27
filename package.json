@@ -1,6 +1,6 @@
 {
   "name": "lighthouse",
-  "version": "2.9.1",
+  "version": "3.0.0-beta.0",
   "description": "Lighthouse",
   "main": "./lighthouse-core/index.js",
   "bin": {
@@ -28,9 +28,10 @@
 
     "debug": "node --inspect-brk ./lighthouse-cli/index.js",
     "start": "node ./lighthouse-cli/index.js",
-    "test": "yarn lint --quiet && yarn unit && yarn type-check && yarn closure && yarn diff:sample-json",
+    "test": "yarn lint --quiet && yarn unit && yarn type-check && yarn diff:sample-json",
     "test-extension": "cd lighthouse-extension && yarn test",
     "test-viewer": "cd lighthouse-viewer && yarn pptr-test",
+    "test-lantern": "bash lighthouse-core/scripts/test-lantern.sh",
 
     "unit-core": "mocha --reporter dot \"lighthouse-core/test/**/*-test.js\"",
     "unit-cli": "mocha --reporter dot \"lighthouse-cli/test/**/*-test.js\"",
@@ -48,7 +49,6 @@
     "coveralls": "cat unit-coverage.lcov | coveralls",
     "codecov": "codecov -f unit-coverage.lcov -F unit && codecov -f smoke-coverage.lcov -F smoke",
 
-    "closure": "cd lighthouse-core && node closure/closure-type-checking.js",
     "devtools": "bash lighthouse-core/scripts/roll-to-devtools.sh",
     "compile-devtools": "bash lighthouse-core/scripts/compile-against-devtools.sh",
     "chrome": "node lighthouse-core/scripts/manual-chrome-launcher.js",
@@ -58,26 +58,30 @@
     "bundlesize": "bundlesize",
     "plots-smoke": "bash plots/test/smoke.sh",
     "changelog": "conventional-changelog --config ./build/changelog-generator/index.js --infile changelog.md --same-file",
-    "type-check": "tsc -p .",
+    "type-check": "tsc -p . && cd ./lighthouse-viewer && yarn type-check",
     "update:sample-artifacts": "node lighthouse-core/scripts/update-report-fixtures.js -G",
-    "update:sample-json": "node ./lighthouse-cli -A=./lighthouse-core/test/results/artifacts --output=json --output-path=./lighthouse-core/test/results/sample_v2.json http://localhost/dobetterweb/dbw_tester.html && node lighthouse-core/scripts/cleanup-LHR-for-diff.js ./lighthouse-core/test/results/sample_v2.json --only-remove-timing",
+    "update:sample-json": "node ./lighthouse-cli -A=./lighthouse-core/test/results/artifacts --throttling-method=devtools --output=json --output-path=./lighthouse-core/test/results/sample_v2.json && node lighthouse-core/scripts/cleanup-LHR-for-diff.js ./lighthouse-core/test/results/sample_v2.json --only-remove-timing",
     "diff:sample-json": "bash lighthouse-core/scripts/assert-golden-lhr-unchanged.sh",
     "update:crdp-typings": "node lighthouse-core/scripts/extract-crdp-mapping.js",
-    "mixed-content": "./lighthouse-cli/index.js --chrome-flags='--headless' --config-path=./lighthouse-core/config/mixed-content.js"
+    "mixed-content": "./lighthouse-cli/index.js --chrome-flags='--headless' --preset=mixed-content",
+    "minify-latest-run": "./lighthouse-core/scripts/lantern/minify-trace.js ./latest-run/defaultPass.trace.json ./latest-run/defaultPass.trace.min.json && ./lighthouse-core/scripts/lantern/minify-devtoolslog.js ./latest-run/defaultPass.devtoolslog.json ./latest-run/defaultPass.devtoolslog.min.json"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.60",
     "@types/configstore": "^2.1.1",
-    "@types/css-font-loading-module": "^0.0.1",
+    "@types/css-font-loading-module": "^0.0.2",
     "@types/inquirer": "^0.0.35",
+    "@types/jpeg-js": "^0.3.0",
     "@types/lodash.isequal": "^4.5.2",
     "@types/node": "*",
     "@types/opn": "^3.0.28",
+    "@types/semver": "^5.5.0",
     "@types/update-notifier": "^1.0.2",
     "@types/ws": "^4.0.1",
     "@types/yargs": "^8.0.2",
     "babel-core": "^6.26.0",
     "bundlesize": "^0.14.4",
+    "chalk": "^2.4.1",
     "codecov": "^2.2.0",
     "commitizen": "^2.9.6",
     "conventional-changelog-cli": "^1.3.4",
@@ -86,7 +90,6 @@
     "cz-customizable": "^5.2.0",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
-    "google-closure-compiler": "^20170521.0.0",
     "gulp": "^3.9.1",
     "gulp-replace": "^0.5.4",
     "gulp-util": "^3.0.7",
@@ -95,9 +98,10 @@
     "npm-run-posix-or-windows": "^2.0.2",
     "nyc": "^11.6.0",
     "postinstall-prepare": "^1.0.1",
-    "puppeteer": "^1.1.1",
+    "pretty-json-stringify": "^0.0.2",
+    "puppeteer": "1.4.0",
     "sinon": "^2.3.5",
-    "typescript": "2.9.0-dev.20180323",
+    "typescript": "2.9.1-insiders.20180516",
     "vscode-chrome-debug-core": "^3.23.8",
     "zone.js": "^0.7.3"
   },
@@ -122,7 +126,7 @@
     "rimraf": "^2.6.1",
     "robots-parser": "^2.0.1",
     "semver": "^5.3.0",
-    "speedline": "1.3.0",
+    "speedline": "1.3.3",
     "update-notifier": "^2.1.0",
     "ws": "3.3.2",
     "yargs": "3.32.0",
@@ -145,7 +149,7 @@
   "bundlesize": [
     {
       "path": "./lighthouse-extension/dist/scripts/lighthouse-background.js",
-      "threshold": "400 Kb"
+      "threshold": "426 Kb"
     },
     {
       "path": "./lighthouse-viewer/dist/src/viewer.js",

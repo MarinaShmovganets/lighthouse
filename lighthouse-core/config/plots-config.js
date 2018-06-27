@@ -6,13 +6,14 @@
 'use strict';
 
 module.exports = {
+  extends: 'lighthouse:default',
   settings: {
     onlyAudits: [
       'first-meaningful-paint',
       'speed-index',
       'estimated-input-latency',
       'first-cpu-idle',
-      'consistently-interactive',
+      'interactive',
     ],
   },
 };

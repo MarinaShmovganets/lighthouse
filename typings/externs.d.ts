@@ -4,7 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import _Crdp from '../node_modules/vscode-chrome-debug-core/lib/crdp/crdp';
+import _Crdp from 'vscode-chrome-debug-core/lib/crdp/crdp';
 import _StrictEventEmitter from '../third-party/strict-event-emitter-types/index';
 import { EventEmitter } from 'events';
 
@@ -21,6 +21,18 @@ declare global {
   } & {
     [P in K]+?: T[P]
   }
+
+  /**
+   * Exclude void from T
+   */
+  type NonVoid<T> = T extends void ? never : T;
+
+  /** Remove properties K from T. */
+  type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
+  /** Obtain the type of the first parameter of a function. */
+  type FirstParamType<T extends (arg1: any, ...args: any[]) => any> =
+    T extends (arg1: infer P, ...args: any[]) => any ? P : any;
 
   module LH {
     // re-export useful type modules under global LH module.
@@ -40,8 +52,10 @@ declare global {
       cpuSlowdownMultiplier?: number
     }
 
+    export type OutputMode = 'json' | 'html' | 'csv';
+
     interface SharedFlagsSettings {
-      output?: 'json' | 'html' | 'csv';
+      output?: OutputMode|OutputMode[];
       maxWaitForLoad?: number;
       blockedUrlPatterns?: string[] | null;
       additionalTraceCategories?: string | null;
@@ -57,30 +71,31 @@ declare global {
     }
 
     export interface Flags extends SharedFlagsSettings {
-      _: string[];
+      // Used by both core/ and cli/
       port: number;
-      chromeFlags: string;
+      hostname: string;
       output: any;
+      logLevel: 'silent'|'error'|'info'|'verbose';
+
+      // Just used by cli/
+      _: string[];
+      chromeFlags: string;
       outputPath: string;
       saveAssets: boolean;
       view: boolean;
-      logLevel: string;
-      hostname: string;
       enableErrorReporting: boolean;
       listAllAudits: boolean;
       listTraceCategories: boolean;
       configPath?: string;
-      perf: boolean;
-      mixedContent: boolean;
+      preset?: 'full'|'mixed-content'|'perf';
       verbose: boolean;
       quiet: boolean;
-
       extraHeaders?: string;
     }
 
     export interface RunnerResult {
       lhr: Result;
-      report: string;
+      report: string|string[];
       artifacts: Artifacts;
     }
 
@@ -119,16 +134,38 @@ declare global {
       [futureProps: string]: any;
     }
 
+    /**
+     * @see https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview
+     */
     export interface TraceEvent {
       name: string;
+      cat: string;
       args: {
         data?: {
-          url?: string
+          frames?: {
+            frame: string;
+            parent?: string;
+            processId?: number;
+          }[];
+          page?: string;
+          readyState?: number;
+          requestId?: string;
+          stackTrace?: {
+            url: string
+          }[];
+          styleSheetUrl?: string;
+          timerId?: string;
+          url?: string;
         };
+        frame?: string;
+        name?: string;
       };
+      pid: number;
       tid: number;
       ts: number;
       dur: number;
+      ph: 'B'|'b'|'D'|'E'|'e'|'F'|'I'|'M'|'N'|'n'|'O'|'R'|'S'|'T'|'X';
+      s?: 't';
     }
 
     export interface DevToolsJsonTarget {

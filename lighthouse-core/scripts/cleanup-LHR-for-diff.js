@@ -24,10 +24,11 @@ writeFileSync(filename, cleanAndFormatLHR(data), 'utf8');
  */
 function cleanAndFormatLHR(lhrString) {
   const lhr = JSON.parse(lhrString);
+  delete lhr.configSettings.auditMode;
   delete lhr.timing;
   if (extraFlag !== '--only-remove-timing') {
     for (const auditResult of Object.values(lhr.audits)) {
-      auditResult.helpText = '**Excluded from diff**';
+      auditResult.description = '**Excluded from diff**';
     }
   }
   return JSON.stringify(lhr, null, 2);

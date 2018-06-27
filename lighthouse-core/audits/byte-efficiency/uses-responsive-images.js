@@ -18,19 +18,17 @@ const Sentry = require('../../lib/sentry');
 const URL = require('../../lib/url-shim');
 
 const IGNORE_THRESHOLD_IN_BYTES = 2048;
-const WASTEFUL_THRESHOLD_IN_BYTES = 25 * 1024;
 
 class UsesResponsiveImages extends ByteEfficiencyAudit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'uses-responsive-images',
-      description: 'Properly size images',
-      informative: true,
+      id: 'uses-responsive-images',
+      title: 'Properly size images',
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
-      helpText:
+      description:
         'Serve images that are appropriately-sized to save cellular data ' +
         'and improve load time. ' +
         '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/oversized-images).',
@@ -39,11 +37,16 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
   }
 
   /**
-   * @param {!Object} image
+   * @param {LH.Artifacts.SingleImageUsage} image
    * @param {number} DPR devicePixelRatio
-   * @return {?Object}
+   * @return {null|Error|LH.Audit.ByteEfficiencyItem};
    */
   static computeWaste(image, DPR) {
+    // Nothing can be done without network info.
+    if (!image.networkRecord) {
+      return null;
+    }
+
     const url = URL.elideDataURI(image.src);
     const actualPixels = image.naturalWidth * image.naturalHeight;
     const usedPixels = image.clientWidth * image.clientHeight * Math.pow(DPR, 2);
@@ -66,19 +69,20 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
       totalBytes,
       wastedBytes,
       wastedPercent: 100 * wastedRatio,
-      isWasteful: wastedBytes > WASTEFUL_THRESHOLD_IN_BYTES,
     };
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!Audit.HeadingsResult}
+   * @param {LH.Artifacts} artifacts
+   * @return {ByteEfficiencyAudit.ByteEfficiencyProduct}
    */
   static audit_(artifacts) {
     const images = artifacts.ImageUsage;
     const DPR = artifacts.ViewportDimensions.devicePixelRatio;
 
-    let debugString;
+    /** @type {string[]} */
+    const warnings = [];
+    /** @type {Map<string, LH.Audit.ByteEfficiencyItem>} */
     const resultsMap = new Map();
     images.forEach(image => {
       // TODO: give SVG a free pass until a detail per pixel metric is available
@@ -90,8 +94,9 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
       if (!processed) return;
 
       if (processed instanceof Error) {
-        debugString = processed.message;
-        Sentry.captureException(processed, {tags: {audit: this.meta.name}, level: 'warning'});
+        warnings.push(processed.message);
+        // @ts-ignore TODO(bckenny): Sentry type checking
+        Sentry.captureException(processed, {tags: {audit: this.meta.id}, level: 'warning'});
         return;
       }
 
@@ -102,20 +107,20 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
       }
     });
 
-    const results = Array.from(resultsMap.values())
+    const items = Array.from(resultsMap.values())
         .filter(item => item.wastedBytes > IGNORE_THRESHOLD_IN_BYTES);
 
+    /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
     const headings = [
-      {key: 'url', itemType: 'thumbnail', text: ''},
-      {key: 'url', itemType: 'url', text: 'URL'},
-      {key: 'totalBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1, text: 'Original'},
-      {key: 'wastedBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1,
-        text: 'Potential Savings'},
+      {key: 'url', valueType: 'thumbnail', label: ''},
+      {key: 'url', valueType: 'url', label: 'URL'},
+      {key: 'totalBytes', valueType: 'bytes', label: 'Original'},
+      {key: 'wastedBytes', valueType: 'bytes', label: 'Potential Savings'},
     ];
 
     return {
-      debugString,
-      results,
+      warnings,
+      items,
       headings,
     };
   }

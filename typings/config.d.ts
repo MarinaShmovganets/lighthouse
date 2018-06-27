@@ -4,31 +4,22 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import * as Gatherer from '../lighthouse-core/gather/gatherers/gatherer.js';
-import * as Audit from '../lighthouse-core/audits/audit.js';
+import Gatherer = require('../lighthouse-core/gather/gatherers/gatherer.js');
+import Audit = require('../lighthouse-core/audits/audit.js');
 
 declare global {
   module LH {
-    /**
-     * The full, normalized Lighthouse Config.
-     */
-    export interface Config {
-      settings: Config.Settings;
-      passes?: Config.Pass[];
-      audits?: Config.AuditDefn[];
-      categories?: Record<string, Config.Category>;
-      groups?: Record<string, Config.Group>;
-    }
-
     module Config {
       /**
        * The pre-normalization Lighthouse Config format.
        */
       export interface Json {
+        extends?: 'lighthouse:default' | 'lighthouse:full' | string | boolean;
         settings?: SettingsJson;
-        passes?: PassJson[];
-        categories?: Record<string, CategoryJson>;
-        groups?: GroupJson[];
+        passes?: PassJson[] | null;
+        audits?: Config.AuditJson[] | null;
+        categories?: Record<string, CategoryJson> | null;
+        groups?: Record<string, Config.GroupJson> | null;
       }
 
       export interface SettingsJson extends SharedFlagsSettings {
@@ -45,7 +36,7 @@ declare global {
         blockedUrlPatterns?: string[];
         blankPage?: string;
         blankDuration?: number;
-        gatherers: GathererJson[];
+        gatherers?: GathererJson[];
       }
 
       export type GathererJson = {
@@ -57,12 +48,12 @@ declare global {
       } | {
         instance: InstanceType<typeof Gatherer>;
         options?: {};
-      } | string;
+      } | Gatherer | typeof Gatherer | string;
 
       export interface CategoryJson {
-        name: string;
+        title: string;
         description: string;
-        audits: CategoryMemberJson[];
+        auditRefs: AuditRefJson[];
       }
 
       export interface GroupJson {
@@ -70,40 +61,58 @@ declare global {
         description: string;
       }
 
+      export type AuditJson = {
+        path: string,
+        options?: {};
+      } | {
+        implementation: typeof Audit;
+        options?: {};
+      } | typeof Audit | string;
+
       /**
        * Reference to an audit member of a category and how its score should be
        * weighted and how its results grouped with other members.
        */
-      export interface CategoryMemberJson {
+      export interface AuditRefJson {
         id: string;
         weight: number;
         group?: string;
       }
 
-      // TODO(bckenny): we likely don't want to require all these
-      export type Settings = Required<SettingsJson>;
+      export interface Settings extends Required<SettingsJson> {
+        throttling: Required<ThrottlingSettings>;
+      }
 
       export interface Pass extends Required<PassJson> {
         gatherers: GathererDefn[];
       }
 
       export interface GathererDefn {
-        implementation: typeof Gatherer;
+        implementation?: typeof Gatherer;
         instance: InstanceType<typeof Gatherer>;
+        path?: string;
         options: {};
       }
 
       export interface AuditDefn {
         implementation: typeof Audit;
+        path?: string;
         options: {};
       }
 
       // TODO: For now, these are unchanged from JSON and Result versions. Need to harmonize.
-      export interface CategoryMember extends CategoryMemberJson {}
+      export interface AuditRef extends AuditRefJson {}
       export interface Category extends CategoryJson {
-        audits: CategoryMember[];
+        auditRefs: AuditRef[];
       }
       export interface Group extends GroupJson {}
+
+      export type MergeOptionsOfItems = <T extends {path?: string, options: Record<string, any>}>(items: T[]) => T[];
+
+      export type Merge = {
+        <T extends Record<string, any>, U extends Record<string, any>>(base: T|null|undefined, extension: U, overwriteArrays?: boolean): T & U;
+        <T extends Array<any>, U extends Array<any>>(base: T|null|undefined, extension: T, overwriteArrays?: boolean): T & U;
+      }
     }
   }
 }

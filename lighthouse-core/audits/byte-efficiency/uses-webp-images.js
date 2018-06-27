@@ -9,22 +9,20 @@
 'use strict';
 
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
-const OptimizedImages = require('./uses-optimized-images');
 const URL = require('../../lib/url-shim');
 
 const IGNORE_THRESHOLD_IN_BYTES = 8192;
 
 class UsesWebPImages extends ByteEfficiencyAudit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'uses-webp-images',
-      description: 'Serve images in next-gen formats',
-      informative: true,
+      id: 'uses-webp-images',
+      title: 'Serve images in next-gen formats',
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
-      helpText: 'Image formats like JPEG 2000, JPEG XR, and WebP often provide better ' +
+      description: 'Image formats like JPEG 2000, JPEG XR, and WebP often provide better ' +
         'compression than PNG or JPEG, which means faster downloads and less data consumption. ' +
         '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/webp).',
       requiredArtifacts: ['OptimizedImages', 'devtoolsLogs'],
@@ -32,51 +30,56 @@ class UsesWebPImages extends ByteEfficiencyAudit {
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!Audit.HeadingsResult}
+   * @param {{originalSize: number, webpSize: number}} image
+   * @return {{bytes: number, percent: number}}
+   */
+  static computeSavings(image) {
+    const bytes = image.originalSize - image.webpSize;
+    const percent = 100 * bytes / image.originalSize;
+    return {bytes, percent};
+  }
+
+  /**
+   * @param {LH.Artifacts} artifacts
+   * @return {ByteEfficiencyAudit.ByteEfficiencyProduct}
    */
   static audit_(artifacts) {
     const images = artifacts.OptimizedImages;
 
-    const failedImages = [];
-    const results = [];
-    images.forEach(image => {
+    /** @type {Array<LH.Audit.ByteEfficiencyItem>} */
+    const items = [];
+    const warnings = [];
+    for (const image of images) {
       if (image.failed) {
-        failedImages.push(image);
-        return;
+        warnings.push(`Unable to decode ${URL.getURLDisplayName(image.url)}`);
+        continue;
       } else if (image.originalSize < image.webpSize + IGNORE_THRESHOLD_IN_BYTES) {
-        return;
+        continue;
       }
 
       const url = URL.elideDataURI(image.url);
-      const webpSavings = OptimizedImages.computeSavings(image, 'webp');
+      const webpSavings = UsesWebPImages.computeSavings(image);
 
-      results.push({
+      items.push({
         url,
         fromProtocol: image.fromProtocol,
         isCrossOrigin: !image.isSameOrigin,
         totalBytes: image.originalSize,
         wastedBytes: webpSavings.bytes,
       });
-    });
-
-    let debugString;
-    if (failedImages.length) {
-      const urls = failedImages.map(image => URL.getURLDisplayName(image.url));
-      debugString = `Lighthouse was unable to decode some of your images: ${urls.join(', ')}`;
     }
 
+    /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
     const headings = [
-      {key: 'url', itemType: 'thumbnail', text: ''},
-      {key: 'url', itemType: 'url', text: 'URL'},
-      {key: 'totalBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1, text: 'Original'},
-      {key: 'wastedBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1,
-        text: 'Potential Savings'},
+      {key: 'url', valueType: 'thumbnail', label: ''},
+      {key: 'url', valueType: 'url', label: 'URL'},
+      {key: 'totalBytes', valueType: 'bytes', label: 'Original'},
+      {key: 'wastedBytes', valueType: 'bytes', label: 'Potential Savings'},
     ];
 
     return {
-      debugString,
-      results,
+      warnings,
+      items,
       headings,
     };
   }

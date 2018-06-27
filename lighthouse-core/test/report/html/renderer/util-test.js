@@ -10,8 +10,22 @@ const Util = require('../../../../report/html/renderer/util.js');
 const NBSP = '\xa0';
 
 /* eslint-env mocha */
+/* eslint-disable no-console */
 
 describe('util helpers', () => {
+  let origConsoleWarn;
+  let consoleWarnCalls;
+
+  beforeEach(() => {
+    origConsoleWarn = console.warn;
+    consoleWarnCalls = [];
+    console.warn = msg => consoleWarnCalls.push(msg);
+  });
+
+  afterEach(() => {
+    console.warn = origConsoleWarn;
+  });
+
   it('formats a number', () => {
     assert.strictEqual(Util.formatNumber(10), '10');
     assert.strictEqual(Util.formatNumber(100.01), '100');
@@ -52,5 +66,80 @@ describe('util helpers', () => {
     assert.equal(Util.calculateRating(0.75), 'pass');
     assert.equal(Util.calculateRating(0.80), 'pass');
     assert.equal(Util.calculateRating(1.00), 'pass');
+  });
+
+  it('builds device emulation string', () => {
+    const get = opts => Util.getEmulationDescriptions(opts).deviceEmulation;
+    assert.equal(get({disableDeviceEmulation: true}), 'No emulation');
+    assert.equal(get({disableDeviceEmulation: false}), 'Emulated Nexus 5X');
+  });
+
+  it('builds throttling strings when provided', () => {
+    const descriptions = Util.getEmulationDescriptions({throttlingMethod: 'provided'});
+    assert.equal(descriptions.cpuThrottling, 'Provided by environment');
+    assert.equal(descriptions.networkThrottling, 'Provided by environment');
+  });
+
+  it('builds throttling strings when devtools', () => {
+    const descriptions = Util.getEmulationDescriptions({
+      throttlingMethod: 'devtools',
+      throttling: {
+        cpuSlowdownMultiplier: 4.5,
+        requestLatencyMs: 565,
+        downloadThroughputKbps: 1400.00000000001,
+        uploadThroughputKbps: 600,
+      },
+    });
+
+    // eslint-disable-next-line max-len
+    assert.equal(descriptions.networkThrottling, '565\xa0ms HTTP RTT, 1,400\xa0Kbps down, 600\xa0Kbps up (DevTools)');
+    assert.equal(descriptions.cpuThrottling, '4.5x slowdown (DevTools)');
+  });
+
+  it('builds throttling strings when simulate', () => {
+    const descriptions = Util.getEmulationDescriptions({
+      throttlingMethod: 'simulate',
+      throttling: {
+        cpuSlowdownMultiplier: 2,
+        rttMs: 150,
+        throughputKbps: 1600,
+      },
+    });
+
+    // eslint-disable-next-line max-len
+    assert.equal(descriptions.networkThrottling, '150\xa0ms TCP RTT, 1,600\xa0Kbps throughput (Simulated)');
+    assert.equal(descriptions.cpuThrottling, '2x slowdown (Simulated)');
+  });
+
+  it('formats display values', () => {
+    const format = arg => Util.formatDisplayValue(arg);
+    assert.equal(format(undefined), '');
+    assert.equal(format('Foo %s %d'), 'Foo %s %d');
+    assert.equal(format([]), 'UNKNOWN');
+    assert.equal(format(['%s %s', 'Hello', 'formatDisplayValue']), 'Hello formatDisplayValue');
+    assert.equal(format(['%s%', 99.9]), '99.9%');
+    assert.equal(format(['%d%', 99.9]), '100%');
+    assert.equal(format(['%s ms', 12345.678]), '12,345.678 ms');
+    assert.equal(format(['%10d ms', 12345.678]), '12,350 ms');
+    assert.equal(format(['%.01d ms', 12345.678]), '12,345.68 ms');
+    // handle edge cases
+    assert.equal(format(['%.01s literal', 1234]), '%.01s literal');
+    assert.equal(format(['%1.01.1d junk', 1234]), '%1.01.1d junk');
+  });
+
+  it('warns on improper display value formatting', () => {
+    assert.equal(Util.formatDisplayValue(['%s']), '%s');
+    assert.equal(Util.formatDisplayValue(['%s', 'foo', 'bar']), 'foo');
+    assert.deepEqual(consoleWarnCalls, [
+      'Not enough replacements given',
+      'Too many replacements given',
+    ]);
+  });
+
+  it('does not mutate the provided array', () => {
+    const displayValue = ['one:%s, two:%s', 'foo', 'bar'];
+    const cloned = JSON.parse(JSON.stringify(displayValue));
+    Util.formatDisplayValue(displayValue);
+    assert.deepStrictEqual(displayValue, cloned, 'displayValue was mutated');
   });
 });

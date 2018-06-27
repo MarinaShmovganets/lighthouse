@@ -7,139 +7,177 @@
 
 /* globals self, Util */
 
+/** @typedef {import('./dom.js')} DOM */
+/** @typedef {import('./report-renderer.js')} ReportRenderer */
+/** @typedef {import('./details-renderer.js')} DetailsRenderer */
+/** @typedef {import('./util.js')} Util */
+
 class CategoryRenderer {
   /**
-   * @param {!DOM} dom
-   * @param {!DetailsRenderer} detailsRenderer
+   * @param {DOM} dom
+   * @param {DetailsRenderer} detailsRenderer
    */
   constructor(dom, detailsRenderer) {
-    /** @protected {!DOM} */
+    /** @type {DOM} */
     this.dom = dom;
-    /** @protected {!DetailsRenderer} */
+    /** @type {DetailsRenderer} */
     this.detailsRenderer = detailsRenderer;
-    /** @protected {!Document|!Element} */
+    /** @type {ParentNode} */
     this.templateContext = this.dom.document();
 
     this.detailsRenderer.setTemplateContext(this.templateContext);
   }
 
   /**
-   * @param {!ReportRenderer.AuditJSON} audit
-   * @return {!Element}
+   * @param {LH.ReportResult.AuditRef} audit
+   * @param {number} index
+   * @return {Element}
    */
-  _renderAuditScore(audit) {
-    const tmpl = this.dom.cloneTemplate('#tmpl-lh-audit-score', this.templateContext);
+  renderAudit(audit, index) {
+    const tmpl = this.dom.cloneTemplate('#tmpl-lh-audit', this.templateContext);
+    return this.populateAuditValues(audit, index, tmpl);
+  }
 
+  /**
+   * Populate an DOM tree with audit details. Used by renderAudit and renderOpportunity
+   * @param {LH.ReportResult.AuditRef} audit
+   * @param {number} index
+   * @param {DocumentFragment} tmpl
+   * @return {Element}
+   */
+  populateAuditValues(audit, index, tmpl) {
+    const auditEl = this.dom.find('.lh-audit', tmpl);
+    auditEl.id = audit.result.id;
     const scoreDisplayMode = audit.result.scoreDisplayMode;
-    const description = audit.result.helpText;
-    let title = audit.result.description;
 
     if (audit.result.displayValue) {
-      title += `:  ${audit.result.displayValue}`;
+      const displayValue = Util.formatDisplayValue(audit.result.displayValue);
+      this.dom.find('.lh-audit__display-text', auditEl).textContent = displayValue;
     }
 
-    if (audit.result.debugString) {
-      const debugStrEl = tmpl.appendChild(this.dom.createElement('div', 'lh-debug'));
-      debugStrEl.textContent = audit.result.debugString;
-    }
+    const titleEl = this.dom.find('.lh-audit__title', auditEl);
+    titleEl.appendChild(this.dom.convertMarkdownCodeSnippets(audit.result.title));
+    this.dom.find('.lh-audit__description', auditEl)
+        .appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.description));
 
-    // Append audit details to header section so the entire audit is within a <details>.
-    const header = /** @type {!HTMLDetailsElement} */ (this.dom.find('.lh-score__header', tmpl));
+    const header = /** @type {HTMLDetailsElement} */ (this.dom.find('details', auditEl));
     if (audit.result.details && audit.result.details.type) {
-      header.appendChild(this.detailsRenderer.render(audit.result.details));
+      const elem = this.detailsRenderer.render(audit.result.details);
+      elem.classList.add('lh-details');
+      header.appendChild(elem);
     }
+    this.dom.find('.lh-audit__index', auditEl).textContent = `${index + 1}`;
 
-    const scoreEl = this.dom.find('.lh-score', tmpl);
-    if (audit.result.informative) {
-      scoreEl.classList.add('lh-score--informative');
-    }
-    if (audit.result.manual) {
-      scoreEl.classList.add('lh-score--manual');
-    }
+    // Add chevron SVG to the end of the summary
+    this.dom.find('.lh-chevron-container', auditEl).appendChild(this._createChevron());
+    this._setRatingClass(auditEl, audit.result.score, scoreDisplayMode);
 
-    return this._populateScore(tmpl, audit.result.score, scoreDisplayMode, title, description);
+    if (audit.result.scoreDisplayMode === 'error') {
+      auditEl.classList.add(`lh-audit--error`);
+      const textEl = this.dom.find('.lh-audit__display-text', auditEl);
+      textEl.textContent = 'Error!';
+      textEl.classList.add('tooltip-boundary');
+      const tooltip = this.dom.createChildOf(textEl, 'div', 'tooltip tooltip--error');
+      tooltip.textContent = audit.result.errorMessage || 'Report error: no audit information';
+    } else if (audit.result.explanation) {
+      const explEl = this.dom.createChildOf(titleEl, 'div', 'lh-audit-explanation');
+      explEl.textContent = audit.result.explanation;
+    }
+    const warnings = audit.result.warnings;
+    if (!warnings || warnings.length === 0) return auditEl;
+
+    // Add list of warnings or singular warning
+    const warningsEl = this.dom.createChildOf(titleEl, 'div', 'lh-warnings');
+    if (warnings.length === 1) {
+      warningsEl.textContent = `Warning: ${warnings.join('')}`;
+    } else {
+      warningsEl.textContent = 'Warnings: ';
+      const warningsUl = this.dom.createChildOf(warningsEl, 'ul');
+      for (const warning of warnings) {
+        const item = this.dom.createChildOf(warningsUl, 'li');
+        item.textContent = warning;
+      }
+    }
+    return auditEl;
   }
 
   /**
-   * @param {!DocumentFragment|!Element} element DOM node to populate with values.
-   * @param {number} score
+   * @return {HTMLElement}
+   */
+  _createChevron() {
+    const chevronTmpl = this.dom.cloneTemplate('#tmpl-lh-chevron', this.templateContext);
+    const chevronEl = this.dom.find('.lh-chevron', chevronTmpl);
+    return chevronEl;
+  }
+
+  /**
+   * @param {Element} element DOM node to populate with values.
+   * @param {number|null} score
    * @param {string} scoreDisplayMode
-   * @param {string} title
-   * @param {string} description
-   * @return {!Element}
+   * @return {Element}
    */
-  _populateScore(element, score, scoreDisplayMode, title, description) {
-    // Fill in the blanks.
-    const scoreOutOf100 = Math.round(score * 100);
-    const valueEl = this.dom.find('.lh-score__value', element);
-    valueEl.textContent = Util.formatNumber(scoreOutOf100);
-    valueEl.classList.add(`lh-score__value--${Util.calculateRating(score)}`,
-        `lh-score__value--${scoreDisplayMode}`);
-
-    this.dom.find('.lh-score__title', element).appendChild(
-        this.dom.convertMarkdownCodeSnippets(title));
-    this.dom.find('.lh-score__description', element)
-        .appendChild(this.dom.convertMarkdownLinkSnippets(description));
-
-    return /** @type {!Element} **/ (element);
+  _setRatingClass(element, score, scoreDisplayMode) {
+    const rating = Util.calculateRating(score, scoreDisplayMode);
+    element.classList.add(`lh-audit--${rating}`, `lh-audit--${scoreDisplayMode}`);
+    return element;
   }
 
   /**
-   * @param {!ReportRenderer.CategoryJSON} category
-   * @return {!Element}
+   * @param {LH.ReportResult.Category} category
+   * @return {Element}
    */
-  renderCategoryScore(category) {
-    const tmpl = this.dom.cloneTemplate('#tmpl-lh-category-score', this.templateContext);
+  renderCategoryHeader(category) {
+    const tmpl = this.dom.cloneTemplate('#tmpl-lh-category-header', this.templateContext);
 
     const gaugeContainerEl = this.dom.find('.lh-score__gauge', tmpl);
     const gaugeEl = this.renderScoreGauge(category);
     gaugeContainerEl.appendChild(gaugeEl);
 
-    const {score, name, description} = category;
-    return this._populateScore(tmpl, score, 'numeric', name, description);
-  }
+    this.dom.find('.lh-category-header__title', tmpl).appendChild(
+      this.dom.convertMarkdownCodeSnippets(category.title));
+    if (category.description) {
+      const descEl = this.dom.convertMarkdownLinkSnippets(category.description);
+      this.dom.find('.lh-category-header__description', tmpl).appendChild(descEl);
+    }
 
-  /**
-   * @param {!ReportRenderer.AuditJSON} audit
-   * @return {!Element}
-   */
-  renderAudit(audit) {
-    const element = this.dom.createElement('div', 'lh-audit');
-    element.appendChild(this._renderAuditScore(audit));
-    return element;
+    return /** @type {Element} */ (tmpl.firstElementChild);
   }
 
   /**
    * Renders the group container for a group of audits. Individual audit elements can be added
    * directly to the returned element.
-   * @param {!ReportRenderer.GroupJSON} group
-   * @param {{expandable: boolean}} opts
-   * @return {!Element}
+   * @param {LH.Result.ReportGroup} group
+   * @param {{expandable: boolean, itemCount?: number}} opts
+   * @return {Element}
    */
   renderAuditGroup(group, opts) {
     const expandable = opts.expandable;
-    const element = this.dom.createElement(expandable ? 'details' : 'div', 'lh-audit-group');
-    const summmaryEl = this.dom.createChildOf(element, 'summary', 'lh-audit-group__summary');
+    const groupEl = this.dom.createElement(expandable ? 'details' : 'div', 'lh-audit-group');
+    const summmaryEl = this.dom.createChildOf(groupEl, 'summary', 'lh-audit-group__summary');
     const headerEl = this.dom.createChildOf(summmaryEl, 'div', 'lh-audit-group__header');
-    this.dom.createChildOf(summmaryEl, 'div',
-      `lh-toggle-arrow  ${expandable ? '' : ' lh-toggle-arrow-unexpandable'}`, {
-        title: 'See audits',
-      });
+    const itemCountEl = this.dom.createChildOf(summmaryEl, 'div', 'lh-audit-group__itemcount');
+    if (expandable) {
+      const chevronEl = summmaryEl.appendChild(this._createChevron());
+      chevronEl.title = 'Show audits';
+    }
 
     if (group.description) {
       const auditGroupDescription = this.dom.createElement('div', 'lh-audit-group__description');
       auditGroupDescription.appendChild(this.dom.convertMarkdownLinkSnippets(group.description));
-      element.appendChild(auditGroupDescription);
+      groupEl.appendChild(auditGroupDescription);
     }
     headerEl.textContent = group.title;
 
-    return element;
+    if (opts.itemCount) {
+      itemCountEl.textContent = `${opts.itemCount} audits`;
+    }
+    return groupEl;
   }
 
   /**
    * Find the total number of audits contained within a section.
    * Accounts for nested subsections like Accessibility.
-   * @param {!Array<!Element>} elements
+   * @param {Array<Element>} elements
    * @return {number}
    */
   _getTotalAuditsLength(elements) {
@@ -157,72 +195,60 @@ class CategoryRenderer {
   }
 
   /**
-   * @param {!Array<!Element>} elements
-   * @return {!Element}
+   * @param {Array<Element>} elements
+   * @return {Element}
    */
   _renderFailedAuditsSection(elements) {
-    const failedElem = this.renderAuditGroup({
-      title: `${this._getTotalAuditsLength(elements)} Failed Audits`,
-    }, {expandable: false});
+    const failedElem = this.dom.createElement('div');
     failedElem.classList.add('lh-failed-audits');
     elements.forEach(elem => failedElem.appendChild(elem));
     return failedElem;
   }
 
   /**
-   * @param {!Array<!Element>} elements
-   * @return {!Element}
+   * @param {Array<Element>} elements
+   * @return {Element}
    */
   renderPassedAuditsSection(elements) {
     const passedElem = this.renderAuditGroup({
-      title: `${this._getTotalAuditsLength(elements)} Passed Audits`,
-    }, {expandable: true});
+      title: `Passed audits`,
+    }, {expandable: true, itemCount: this._getTotalAuditsLength(elements)});
     passedElem.classList.add('lh-passed-audits');
     elements.forEach(elem => passedElem.appendChild(elem));
     return passedElem;
   }
 
   /**
-   * @param {!Array<!Element>} elements
-   * @return {!Element}
+   * @param {Array<Element>} elements
+   * @return {Element}
    */
   _renderNotApplicableAuditsSection(elements) {
     const notApplicableElem = this.renderAuditGroup({
-      title: `${this._getTotalAuditsLength(elements)} Not Applicable Audits`,
-    }, {expandable: true});
-    notApplicableElem.classList.add('lh-audit-group--notapplicable');
+      title: `Not applicable`,
+    }, {expandable: true, itemCount: this._getTotalAuditsLength(elements)});
+    notApplicableElem.classList.add('lh-audit-group--not-applicable');
     elements.forEach(elem => notApplicableElem.appendChild(elem));
     return notApplicableElem;
   }
 
   /**
-   * @param {!Array<!ReportRenderer.AuditJSON>} manualAudits
-   * @param {!Object<string, !ReportRenderer.GroupJSON>} groupDefinitions
-   * @param {!Element} element Parent container to add the manual audits to.
+   * @param {Array<LH.ReportResult.AuditRef>} manualAudits
+   * @param {string} [manualDescription]
+   * @return {Element}
    */
-  _renderManualAudits(manualAudits, groupDefinitions, element) {
-    // While we could support rendering multiple groups of manual audits, it doesn't
-    // seem desirable for UX or renderer complexity. So we'll throw.
-    const groupsIds = new Set(manualAudits.map(a => a.group));
-    /* eslint-disable no-console */
-    console.assert(groupsIds.size <= 1, 'More than 1 manual audit group found.');
-    console.assert(!groupsIds.has(undefined), 'Some manual audits don\'t belong to a group');
-    /* eslint-enable no-console */
-    if (!groupsIds.size) return;
-
-    const groupId = /** @type {string} */ (Array.from(groupsIds)[0]);
-    const auditGroupElem = this.renderAuditGroup(groupDefinitions[groupId], {expandable: true});
+  _renderManualAudits(manualAudits, manualDescription) {
+    const group = {title: 'Additional items to manually check', description: manualDescription};
+    const auditGroupElem = this.renderAuditGroup(group,
+        {expandable: true, itemCount: manualAudits.length});
     auditGroupElem.classList.add('lh-audit-group--manual');
-
-    manualAudits.forEach(audit => {
-      auditGroupElem.appendChild(this.renderAudit(audit));
+    manualAudits.forEach((audit, i) => {
+      auditGroupElem.appendChild(this.renderAudit(audit, i));
     });
-
-    element.appendChild(auditGroupElem);
+    return auditGroupElem;
   }
 
   /**
-   * @param {!Document|!Element} context
+   * @param {ParentNode} context
    */
   setTemplateContext(context) {
     this.templateContext = context;
@@ -230,51 +256,62 @@ class CategoryRenderer {
   }
 
   /**
-   * @param {!ReportRenderer.CategoryJSON} category
-   * @return {!DocumentFragment}
+   * @param {LH.ReportResult.Category} category
+   * @return {DocumentFragment}
    */
   renderScoreGauge(category) {
     const tmpl = this.dom.cloneTemplate('#tmpl-lh-gauge', this.templateContext);
-    const wrapper = this.dom.find('.lh-gauge__wrapper', tmpl);
+    const wrapper = /** @type {HTMLAnchorElement} */ (this.dom.find('.lh-gauge__wrapper', tmpl));
     wrapper.href = `#${category.id}`;
     wrapper.classList.add(`lh-gauge__wrapper--${Util.calculateRating(category.score)}`);
 
+    // Cast `null` to 0
+    const numericScore = Number(category.score);
     const gauge = this.dom.find('.lh-gauge', tmpl);
     // 329 is ~= 2 * Math.PI * gauge radius (53)
     // https://codepen.io/xgad/post/svg-radial-progress-meters
     // score of 50: `stroke-dasharray: 164.5 329`;
-    this.dom.find('.lh-gauge-arc', gauge).style.strokeDasharray = `${category.score * 329} 329`;
+    /** @type {?SVGCircleElement} */
+    const gaugeArc = gauge.querySelector('.lh-gauge-arc');
+    if (gaugeArc) {
+      gaugeArc.style.strokeDasharray = `${numericScore * 329} 329`;
+    }
 
-    const scoreOutOf100 = Math.round(category.score * 100);
-    this.dom.find('.lh-gauge__percentage', tmpl).textContent = scoreOutOf100;
-    this.dom.find('.lh-gauge__label', tmpl).textContent = category.name;
+    const scoreOutOf100 = Math.round(numericScore * 100);
+    const percentageEl = this.dom.find('.lh-gauge__percentage', tmpl);
+    percentageEl.textContent = scoreOutOf100.toString();
+    if (category.score === null) {
+      percentageEl.textContent = '?';
+      percentageEl.title = 'Errors occurred while auditing';
+    }
+
+    this.dom.find('.lh-gauge__label', tmpl).textContent = category.title;
     return tmpl;
   }
 
   /**
-   * @param {!ReportRenderer.CategoryJSON} category
-   * @param {!Object<string, !ReportRenderer.GroupJSON>} groupDefinitions
-   * @return {!Element}
+   * @param {LH.ReportResult.Category} category
+   * @param {Object<string, LH.Result.ReportGroup>} [groupDefinitions]
+   * @return {Element}
    */
   render(category, groupDefinitions) {
     const element = this.dom.createElement('div', 'lh-category');
     this.createPermalinkSpan(element, category.id);
-    element.appendChild(this.renderCategoryScore(category));
+    element.appendChild(this.renderCategoryHeader(category));
 
-    const manualAudits = category.audits.filter(audit => audit.result.manual);
-    const nonManualAudits = category.audits.filter(audit => !manualAudits.includes(audit));
+    const auditRefs = category.auditRefs;
+    const manualAudits = auditRefs.filter(audit => audit.result.scoreDisplayMode === 'manual');
+    const nonManualAudits = auditRefs.filter(audit => !manualAudits.includes(audit));
 
-    const auditsGroupedByGroup = /** @type {!Object<string,
-      {passed: !Array<!ReportRenderer.AuditJSON>,
-      failed: !Array<!ReportRenderer.AuditJSON>,
-      notApplicable: !Array<!ReportRenderer.AuditJSON>}>} */ ({});
+    /** @type {Object<string, {passed: Array<LH.ReportResult.AuditRef>, failed: Array<LH.ReportResult.AuditRef>, notApplicable: Array<LH.ReportResult.AuditRef>}>} */
+    const auditsGroupedByGroup = {};
     const auditsUngrouped = {passed: [], failed: [], notApplicable: []};
 
-    nonManualAudits.forEach(audit => {
+    nonManualAudits.forEach(auditRef => {
       let group;
 
-      if (audit.group) {
-        const groupId = audit.group;
+      if (auditRef.group) {
+        const groupId = auditRef.group;
 
         if (auditsGroupedByGroup[groupId]) {
           group = auditsGroupedByGroup[groupId];
@@ -286,62 +323,61 @@ class CategoryRenderer {
         group = auditsUngrouped;
       }
 
-      if (audit.result.notApplicable) {
-        group.notApplicable.push(audit);
-      } else if (audit.result.score === 1 && !audit.result.debugString) {
-        group.passed.push(audit);
+      if (auditRef.result.scoreDisplayMode === 'not-applicable') {
+        group.notApplicable.push(auditRef);
+      } else if (Util.showAsPassed(auditRef.result)) {
+        group.passed.push(auditRef);
       } else {
-        group.failed.push(audit);
+        group.failed.push(auditRef);
       }
     });
 
-    const failedElements = /** @type {!Array<!Element>} */ ([]);
-    const passedElements = /** @type {!Array<!Element>} */ ([]);
-    const notApplicableElements = /** @type {!Array<!Element>} */ ([]);
+    const failedElements = /** @type {Array<Element>} */ ([]);
+    const passedElements = /** @type {Array<Element>} */ ([]);
+    const notApplicableElements = /** @type {Array<Element>} */ ([]);
 
-    auditsUngrouped.failed.forEach((/** @type {!ReportRenderer.AuditJSON} */ audit) =>
-      failedElements.push(this.renderAudit(audit)));
-    auditsUngrouped.passed.forEach((/** @type {!ReportRenderer.AuditJSON} */ audit) =>
-      passedElements.push(this.renderAudit(audit)));
-    auditsUngrouped.notApplicable.forEach((/** @type {!ReportRenderer.AuditJSON} */ audit) =>
-      notApplicableElements.push(this.renderAudit(audit)));
-
-    let hasFailedGroups = false;
+    auditsUngrouped.failed.forEach((audit, i) => failedElements.push(this.renderAudit(audit, i)));
+    auditsUngrouped.passed.forEach((audit, i) => passedElements.push(this.renderAudit(audit, i)));
+    auditsUngrouped.notApplicable.forEach((audit, i) => notApplicableElements.push(
+        this.renderAudit(audit, i)));
 
     Object.keys(auditsGroupedByGroup).forEach(groupId => {
+      if (!groupDefinitions) return; // We never reach here if there aren't groups, but TSC needs convincing
+
       const group = groupDefinitions[groupId];
       const groups = auditsGroupedByGroup[groupId];
 
       if (groups.failed.length) {
         const auditGroupElem = this.renderAuditGroup(group, {expandable: false});
-        groups.failed.forEach(item => auditGroupElem.appendChild(this.renderAudit(item)));
-        auditGroupElem.open = true;
+        groups.failed.forEach((item, i) => auditGroupElem.appendChild(this.renderAudit(item, i)));
+        auditGroupElem.classList.add('lh-audit-group--unadorned');
         failedElements.push(auditGroupElem);
-
-        hasFailedGroups = true;
       }
 
       if (groups.passed.length) {
         const auditGroupElem = this.renderAuditGroup(group, {expandable: true});
-        groups.passed.forEach(item => auditGroupElem.appendChild(this.renderAudit(item)));
+        groups.passed.forEach((item, i) => auditGroupElem.appendChild(this.renderAudit(item, i)));
+        auditGroupElem.classList.add('lh-audit-group--unadorned');
         passedElements.push(auditGroupElem);
       }
 
       if (groups.notApplicable.length) {
         const auditGroupElem = this.renderAuditGroup(group, {expandable: true});
-        groups.notApplicable.forEach(item => auditGroupElem.appendChild(this.renderAudit(item)));
+        groups.notApplicable.forEach((item, i) =>
+            auditGroupElem.appendChild(this.renderAudit(item, i)));
+        auditGroupElem.classList.add('lh-audit-group--unadorned');
         notApplicableElements.push(auditGroupElem);
       }
     });
 
     if (failedElements.length) {
-      // if failed audits are grouped skip the 'X Failed Audits' header
-      if (hasFailedGroups) {
-        failedElements.forEach(elem => element.appendChild(elem));
-      } else {
-        const failedElem = this._renderFailedAuditsSection(failedElements);
-        element.appendChild(failedElem);
-      }
+      const failedElem = this._renderFailedAuditsSection(failedElements);
+      element.appendChild(failedElem);
+    }
+
+    if (manualAudits.length) {
+      const manualEl = this._renderManualAudits(manualAudits, category.manualDescription);
+      element.appendChild(manualEl);
     }
 
     if (passedElements.length) {
@@ -354,15 +390,12 @@ class CategoryRenderer {
       element.appendChild(notApplicableElem);
     }
 
-    // Render manual audits after passing.
-    this._renderManualAudits(manualAudits, groupDefinitions, element);
-
     return element;
   }
 
   /**
    * Create a non-semantic span used for hash navigation of categories
-   * @param {!Element} element
+   * @param {Element} element
    * @param {string} id
    */
   createPermalinkSpan(element, id) {

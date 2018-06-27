@@ -6,26 +6,28 @@
 'use strict';
 
 const ComputedArtifact = require('../computed-artifact');
-const Node = require('../../../lib/dependency-graph/node');
-const NetworkNode = require('../../../lib/dependency-graph/network-node'); // eslint-disable-line no-unused-vars
-const Simulator = require('../../../lib/dependency-graph/simulator/simulator'); // eslint-disable-line no-unused-vars
-const WebInspector = require('../../../lib/web-inspector');
+const BaseNode = require('../../../lib/dependency-graph/base-node');
+const ResourceType = require('../../../../third-party/devtools/ResourceType');
+
+/** @typedef {BaseNode.Node} Node */
+/** @typedef {import('../../../lib/dependency-graph/network-node')} NetworkNode */
+/** @typedef {import('../../../lib/dependency-graph/simulator/simulator')} Simulator */
 
 class LanternMetricArtifact extends ComputedArtifact {
   /**
-   * @param {!Node} dependencyGraph
+   * @param {Node} dependencyGraph
    * @param {function(NetworkNode):boolean=} condition
-   * @return {!Set<string>}
+   * @return {Set<string>}
    */
   static getScriptUrls(dependencyGraph, condition) {
+    /** @type {Set<string>} */
     const scriptUrls = new Set();
 
     dependencyGraph.traverse(node => {
-      if (node.type === Node.TYPES.CPU) return;
-      const asNetworkNode = /** @type {NetworkNode} */ (node);
-      if (asNetworkNode.record._resourceType !== WebInspector.resourceTypes.Script) return;
-      if (condition && !condition(asNetworkNode)) return;
-      scriptUrls.add(asNetworkNode.record.url);
+      if (node.type === BaseNode.TYPES.CPU) return;
+      if (node.record._resourceType !== ResourceType.TYPES.Script) return;
+      if (condition && !condition(node)) return;
+      scriptUrls.add(node.record.url);
     });
 
     return scriptUrls;
@@ -39,18 +41,18 @@ class LanternMetricArtifact extends ComputedArtifact {
   }
 
   /**
-   * @param {!Node} dependencyGraph
+   * @param {Node} dependencyGraph
    * @param {LH.Artifacts.TraceOfTab} traceOfTab
-   * @return {!Node}
+   * @return {Node}
    */
   getOptimisticGraph(dependencyGraph, traceOfTab) { // eslint-disable-line no-unused-vars
     throw new Error('Optimistic graph unimplemented!');
   }
 
   /**
-   * @param {!Node} dependencyGraph
+   * @param {Node} dependencyGraph
    * @param {LH.Artifacts.TraceOfTab} traceOfTab
-   * @return {!Node}
+   * @return {Node}
    */
   getPessimisticGraph(dependencyGraph, traceOfTab) { // eslint-disable-line no-unused-vars
     throw new Error('Pessmistic graph unimplemented!');
@@ -66,13 +68,14 @@ class LanternMetricArtifact extends ComputedArtifact {
   }
 
   /**
-   * @param {{trace: Object, devtoolsLog: Object, settings: LH.Config.Settings, simulator?: Simulator}} data
-   * @param {Object} artifacts
+   * @param {LH.Artifacts.MetricComputationDataInput} data
+   * @param {LH.ComputedArtifacts} artifacts
    * @param {any=} extras
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   async computeMetricWithGraphs(data, artifacts, extras) {
     const {trace, devtoolsLog, settings} = data;
+    const metricName = this.name.replace('Lantern', '');
     const graph = await artifacts.requestPageDependencyGraph({trace, devtoolsLog});
     const traceOfTab = await artifacts.requestTraceOfTab(trace);
     /** @type {Simulator} */
@@ -82,11 +85,18 @@ class LanternMetricArtifact extends ComputedArtifact {
     const optimisticGraph = this.getOptimisticGraph(graph, traceOfTab);
     const pessimisticGraph = this.getPessimisticGraph(graph, traceOfTab);
 
-    const optimisticSimulation = simulator.simulate(optimisticGraph);
-    const pessimisticSimulation = simulator.simulate(pessimisticGraph);
+    let simulateOptions = {label: `optimistic${metricName}`};
+    const optimisticSimulation = simulator.simulate(optimisticGraph, simulateOptions);
+
+    simulateOptions = {label: `optimisticFlex${metricName}`, flexibleOrdering: true};
+    const optimisticFlexSimulation = simulator.simulate(optimisticGraph, simulateOptions);
+
+    simulateOptions = {label: `pessimistic${metricName}`};
+    const pessimisticSimulation = simulator.simulate(pessimisticGraph, simulateOptions);
 
     const optimisticEstimate = this.getEstimateFromSimulation(
-      optimisticSimulation,
+      optimisticSimulation.timeInMs < optimisticFlexSimulation.timeInMs ?
+        optimisticSimulation : optimisticFlexSimulation,
       Object.assign({}, extras, {optimistic: true})
     );
 
@@ -95,8 +105,11 @@ class LanternMetricArtifact extends ComputedArtifact {
       Object.assign({}, extras, {optimistic: false})
     );
 
+    // Estimates under 1s don't really follow the normal curve fit, minimize the impact of the intercept
+    const interceptMultiplier = this.COEFFICIENTS.intercept > 0 ?
+      Math.min(1, optimisticEstimate.timeInMs / 1000) : 1;
     const timing =
-      this.COEFFICIENTS.intercept +
+      this.COEFFICIENTS.intercept * interceptMultiplier +
       this.COEFFICIENTS.optimistic * optimisticEstimate.timeInMs +
       this.COEFFICIENTS.pessimistic * pessimisticEstimate.timeInMs;
 
@@ -110,12 +123,12 @@ class LanternMetricArtifact extends ComputedArtifact {
   }
 
   /**
-   * @param {LH.Artifacts.MetricComputationData} data
-   * @param {Object} artifacts
+   * @param {LH.Artifacts.MetricComputationDataInput} data
+   * @param {LH.ComputedArtifacts} computedArtifacts
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
-  compute_(data, artifacts) {
-    return this.computeMetricWithGraphs(data, artifacts);
+  compute_(data, computedArtifacts) {
+    return this.computeMetricWithGraphs(data, computedArtifacts);
   }
 }
 

@@ -8,13 +8,12 @@
 /** @fileoverview
  *  This audit evaluates if a page's load performance is fast enough for it to be considered a PWA.
  *  We are doublechecking that the network requests were throttled (or slow on their own)
- *  Afterwards, we report if the TTFI is less than 10 seconds.
+ *  Afterwards, we report if the TTI is less than 10 seconds.
  */
 
 const isDeepEqual = require('lodash.isequal');
 const Audit = require('./audit');
 const mobile3GThrottling = require('../config/constants').throttling.mobile3G;
-const Util = require('../report/html/renderer/util.js');
 
 // Maximum TTI to be considered "fast" for PWA baseline checklist
 //   https://developers.google.com/web/progressive-web-apps/checklist
@@ -22,14 +21,14 @@ const MAXIMUM_TTI = 10 * 1000;
 
 class LoadFastEnough4Pwa extends Audit {
   /**
-   * @return {!AuditMeta}
+   * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      name: 'load-fast-enough-for-pwa',
-      description: 'Page load is fast enough on 3G',
-      failureDescription: 'Page load is not fast enough on 3G',
-      helpText:
+      id: 'load-fast-enough-for-pwa',
+      title: 'Page load is fast enough on 3G',
+      failureTitle: 'Page load is not fast enough on 3G',
+      description:
         'A fast page load over a 3G network ensures a good mobile user experience. ' +
         '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/fast-3g).',
       requiredArtifacts: ['traces', 'devtoolsLogs'],
@@ -39,7 +38,7 @@ class LoadFastEnough4Pwa extends Audit {
   /**
    * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
-   * @return {LH.AuditResult}
+   * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
@@ -55,19 +54,25 @@ class LoadFastEnough4Pwa extends Audit {
         : Object.assign({}, context.settings, settingOverrides);
 
     const metricComputationData = {trace, devtoolsLog, settings};
-    const tti = await artifacts.requestConsistentlyInteractive(metricComputationData);
+    const tti = await artifacts.requestInteractive(metricComputationData);
 
     const score = Number(tti.timing < MAXIMUM_TTI);
 
-    let debugString;
+    /** @type {LH.Audit.DisplayValue|undefined} */
+    let displayValue;
+    /** @type {string|undefined} */
+    let explanation;
     if (!score) {
-      // eslint-disable-next-line max-len
-      debugString = `First Interactive was ${Util.formatMilliseconds(tti.timing)}. More details in the "Performance" section.`;
+      displayValue = [`Interactive at %d\xa0s`, tti.timing / 1000];
+      explanation = 'Your page loads too slowly and is not interactive within 10 seconds. ' +
+        'Look at the opportunities and diagnostics in the "Performance" section to learn how to ' +
+        'improve.';
     }
 
     return {
       score,
-      debugString,
+      displayValue,
+      explanation,
       rawValue: tti.timing,
     };
   }
