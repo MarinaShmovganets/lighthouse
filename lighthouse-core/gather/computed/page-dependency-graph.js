@@ -10,9 +10,9 @@ const NetworkNode = require('../../lib/dependency-graph/network-node');
 const CPUNode = require('../../lib/dependency-graph/cpu-node');
 const NetworkAnalyzer = require('../../lib/dependency-graph/simulator/network-analyzer');
 const TracingProcessor = require('../../lib/traces/tracing-processor');
-const WebInspector = require('../../lib/web-inspector');
+const NetworkRequest = require('../../lib/network-request');
 
-const Node = require('../../lib/dependency-graph/node.js'); // eslint-disable-line no-unused-vars
+/** @typedef {import('../../lib/dependency-graph/base-node.js').Node} Node */
 
 // Tasks smaller than 10 ms have minimal impact on simulation
 const MINIMUM_TASK_DURATION_OF_INTEREST = 10;
@@ -155,7 +155,7 @@ class PageDependencyGraphArtifact extends ComputedArtifact {
       const networkNode = networkNodeOutput.idToNodeMap.get(reqId);
       if (!networkNode ||
           // Ignore all non-XHRs
-          networkNode.record._resourceType !== WebInspector.resourceTypes.XHR ||
+          networkNode.record._resourceType !== NetworkRequest.TYPES.XHR ||
           // Ignore all network nodes that started before this CPU task started
           // A network request that started earlier could not possibly have been started by this task
           networkNode.startTime <= cpuNode.startTime) return;
