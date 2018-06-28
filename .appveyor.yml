@@ -38,7 +38,7 @@ test_script:
   # FIXME: Exclude Appveyor from running `perf` smoketest until we fix the flake.
   #     https://github.com/GoogleChrome/lighthouse/issues/5053
   # - yarn smoke
-  - node lighthouse-cli/index.js https://www.chromestatus.com/ --config-path=/Users/paulirish/code/lighthouse/lighthouse-cli/test/smokehouse/pwa-config.js --output-path=smokehouse-55623.report.json --output=json --port=0
+  - node lighthouse-cli/index.js https://www.chromestatus.com/ --config-path=lighthouse-cli/test/smokehouse/pwa-config.js --output-path=smokehouse-55623.report.json --output=json --port=0
 
 cache:
   #- chrome-win32 -> appveyor.yml,package.json

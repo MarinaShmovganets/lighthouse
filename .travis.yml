@@ -33,7 +33,7 @@ before_script:
   - yarn build-all
 script:
   - yarn bundlesize
-  - node lighthouse-cli/index.js https://www.chromestatus.com/ --config-path=/Users/paulirish/code/lighthouse/lighthouse-cli/test/smokehouse/pwa-config.js --output-path=smokehouse-55623.report.json --output=json --port=0
+  - node lighthouse-cli/index.js https://www.chromestatus.com/ --config-path=lighthouse-cli/test/smokehouse/pwa-config.js --output-path=smokehouse-55623.report.json --output=json --port=0
   # _JAVA_OPTIONS is breaking parsing of compiler output. See #3338.
   - unset _JAVA_OPTIONS
   # FIXME(paulirish): re-enable after a roll of LH->CDT
