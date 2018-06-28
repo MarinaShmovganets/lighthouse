@@ -151,12 +151,18 @@ class MainThreadTasks extends ComputedArtifact {
 
     let taskURLs = [];
     switch (task.event.name) {
+      /**
+       * Some trace events reference a specific script URL that triggered them.
+       * Use this URL as the higher precedence attributable URL.
+       * @see https://cs.chromium.org/chromium/src/third_party/blink/renderer/devtools/front_end/timeline/TimelineUIUtils.js?type=cs&q=_initEventStyles+-f:out+f:devtools&sq=package:chromium&g=0&l=678-744
+       */
       case 'v8.compile':
-      case 'v8.compileModule':
       case 'EvaluateScript':
-      case 'v8.evaluateModule':
       case 'FunctionCall':
         taskURLs = [argsData.url].concat(stackFrameURLs);
+        break;
+      case 'v8.compileModule':
+        taskURLs = [task.event.args.fileName].concat(stackFrameURLs);
         break;
       default:
         taskURLs = stackFrameURLs;

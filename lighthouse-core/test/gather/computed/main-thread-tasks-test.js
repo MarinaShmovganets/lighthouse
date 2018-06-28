@@ -52,6 +52,12 @@ describe('MainResource computed artifact', () => {
   });
 
   it('should compute parent/child correctly', async () => {
+    /*
+    An artistic rendering of the below trace:
+    █████████████████████████████TaskA██████████████████████████████████████████████
+          ████████████████TaskB███████████████████
+               ████TaskC██████
+    */
     const traceEvents = [
       ...boilerplateTrace,
       {ph: 'X', name: 'TaskA', ts: baseTs, dur: 100e3},
@@ -95,11 +101,18 @@ describe('MainResource computed artifact', () => {
     });
   });
 
-  it('should compute attributableURLs correclty', async () => {
+  it('should compute attributableURLs correctly', async () => {
     const baseTs = 1241250325;
     const url = s => ({args: {data: {url: s}}});
     const stackFrames = f => ({args: {data: {stackTrace: f.map(url => ({url}))}}});
 
+    /*
+    An artistic rendering of the below trace:
+    █████████████████████████████TaskA██████████████████████████████████████████████
+          ████████████████TaskB███████████████████
+               ████EvaluateScript██████
+                   █D█
+    */
     const traceEvents = [
       ...boilerplateTrace,
       {ph: 'X', name: 'TaskA', ts: baseTs, dur: 100e3, ...url('about:blank')},
