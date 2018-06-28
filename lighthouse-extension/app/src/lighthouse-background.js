@@ -81,7 +81,7 @@ if (typeof module !== 'undefined' && module.exports) {
   };
 }
 
-if (window) {
+if (typeof window !== 'undefined') {
   // Expose on window for devtools, other consumers of file.
   // @ts-ignore
   window.runLighthouseInWorker = runLighthouseInWorker;
