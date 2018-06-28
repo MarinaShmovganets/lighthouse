@@ -21,7 +21,7 @@ class MultiCheckAudit extends Audit {
   }
 
   /**
-   * @param {{failures: Array<string>, warnings?: Array<string>, manifestValues?: LH.Artifacts.ManifestValues, notApplicable?: boolean}} result
+   * @param {{failures: Array<string>, warnings?: Array<string>, manifestValues?: LH.Artifacts.ManifestValues}} result
    * @return {LH.Audit.Product}
    */
   static createAuditProduct(result) {
@@ -41,13 +41,6 @@ class MultiCheckAudit extends Audit {
     }
 
     const details = {items: [detailsItem]};
-
-    if (result.notApplicable) {
-      return {
-        rawValue: true,
-        notApplicable: true,
-      };
-    }
 
     // If we fail, share the failures
     if (result.failures.length > 0) {

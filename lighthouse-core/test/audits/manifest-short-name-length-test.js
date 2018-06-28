@@ -25,7 +25,7 @@ function generateMockArtifacts() {
 /* eslint-env mocha */
 
 describe('Manifest: short_name_length audit', () => {
-  it('fails with no explanation if page had no manifest', () => {
+  it('marked as notApplicable if page had no manifest', () => {
     const artifacts = generateMockArtifacts();
     artifacts.Manifest = null;
 
@@ -35,7 +35,7 @@ describe('Manifest: short_name_length audit', () => {
     });
   });
 
-  it('fails when an empty manifest is present', () => {
+  it('marked as notApplicable if manifest is present but empty', () => {
     const artifacts = generateMockArtifacts();
     artifacts.Manifest = manifestParser('{}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
     return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
@@ -44,7 +44,7 @@ describe('Manifest: short_name_length audit', () => {
     });
   });
 
-  it('fails when a manifest contains no short_name', () => {
+  it('marked as notApplicable when a manifest contains no short_name', () => {
     const artifacts = generateMockArtifacts();
     const manifestSrc = JSON.stringify({
       name: 'i\'m much longer than the recommended size',
@@ -68,11 +68,11 @@ describe('Manifest: short_name_length audit', () => {
     return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
       assert.equal(result.rawValue, false);
       assert.ok(result.explanation.includes('without truncation'), result.explanation);
-      assert.ok(!result.explanation.includes('Manifest does not have `short_name`'));
+      assert.equal(result.notApplicable, undefined);
     });
   });
 
-  it('succeeds when a manifest contains a short_name', () => {
+  it('passes when a manifest contains a short_name', () => {
     const artifacts = generateMockArtifacts();
     const manifestSrc = JSON.stringify({
       short_name: 'Lighthouse',
@@ -81,6 +81,7 @@ describe('Manifest: short_name_length audit', () => {
     return ManifestShortNameLengthAudit.audit(artifacts).then(result => {
       assert.equal(result.rawValue, true);
       assert.equal(result.explanation, undefined);
+      assert.equal(result.notApplicable, undefined);
     });
   });
   /* eslint-enable camelcase */

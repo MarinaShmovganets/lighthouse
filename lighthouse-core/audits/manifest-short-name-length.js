@@ -5,9 +5,9 @@
  */
 'use strict';
 
-const MultiCheckAudit = require('./multi-check-audit');
+const Audit = require('./audit');
 
-class ManifestShortNameLength extends MultiCheckAudit {
+class ManifestShortNameLength extends Audit {
   /**
    * @return {LH.Audit.Meta}
    */
@@ -25,38 +25,39 @@ class ManifestShortNameLength extends MultiCheckAudit {
 
   /**
    * @param {LH.Artifacts} artifacts
-   * @return {Promise<{failures: Array<string>, manifestValues: LH.Artifacts.ManifestValues, notApplicable?: boolean}>}
+   * @return {Promise<LH.Audit.Product>}
    */
-  static audit_(artifacts) {
-    /** @type {Array<string>} */
-    const failures = [];
-    /** @type {Array<string>} */
-    const warnings = [];
+  static async audit(artifacts) {
+    const manifestValues = await artifacts.requestManifestValues(artifacts.Manifest);
+    // If there's no valid manifest, this audit is not applicable
+    if (manifestValues.isParseFailure) {
+      return {
+        rawValue: true,
+        notApplicable: true,
+      };
+    }
 
-    return artifacts.requestManifestValues(artifacts.Manifest).then(manifestValues => {
-      const result = {warnings, failures, manifestValues};
+    const shortNameCheck = manifestValues.allChecks.find(i => i.id === 'hasShortName');
+    const shortNameLengthCheck = manifestValues.allChecks.find(i => i.id === 'shortNameLength');
 
-      // If there's no valid manifest, this audit is not applicable
-      if (manifestValues.isParseFailure) {
-        result.notApplicable = true;
-        return result;
-      }
-
-      const shortNameCheck = manifestValues.allChecks.find(i => i.id === 'hasShortName');
-      const shortNameLengthCheck = manifestValues.allChecks.find(i => i.id === 'shortNameLength');
-
-      // If there's no short_name present, this audit is not applicable
-      if (shortNameCheck && !shortNameCheck.passing) {
-        result.notApplicable = true;
-        return result;
-      }
-
-      if (shortNameLengthCheck && !shortNameLengthCheck.passing) {
-        failures.push(shortNameLengthCheck.failureText);
-      }
-
-      return result;
-    });
+    // If there's no short_name present, this audit is not applicable
+    if (shortNameCheck && !shortNameCheck.passing) {
+      return {
+        rawValue: true,
+        notApplicable: true,
+      };
+    }
+    // Shortname is present, but it's too long
+    if (shortNameLengthCheck && !shortNameLengthCheck.passing) {
+      return {
+        rawValue: false,
+        explanation: `Failure: ${shortNameLengthCheck.failureText}.`,
+      };
+    }
+    // Has a shortname that's under the threshold
+    return {
+      rawValue: true,
+    };
   }
 }
 
