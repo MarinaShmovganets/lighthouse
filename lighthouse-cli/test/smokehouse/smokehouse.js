@@ -92,10 +92,8 @@ function runLighthouse(url, configPath, isDebug) {
     process.exit(runResults.status);
   }
 
-//   if (isDebug) {
-    console.log(`STDOUT: ${runResults.stdout}`);
-    console.error(`STDERR: ${runResults.stderr}`);
-//   }
+  console.log(`STDOUT: ${runResults.stdout}`);
+  console.error(`STDERR: ${runResults.stderr}`);
 
   const lhr = fs.readFileSync(outputPath, 'utf8');
   if (isDebug) {
