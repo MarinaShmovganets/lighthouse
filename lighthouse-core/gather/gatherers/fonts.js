@@ -125,7 +125,7 @@ function getFontFaceFromStylesheets() {
       newNode.addEventListener('load', function onload() {
         newNode.removeEventListener('load', onload);
         try {
-          const stylesheet = Array.from(document.styleSheets).find(sh => sh.ownerNode === newNode);
+          const stylesheet = Array.from(document.styleSheets).find(s => s.ownerNode === newNode);
           if (stylesheet) {
             const cssStylesheet = /** @type {CSSStyleSheet} */ (stylesheet);
             resolve(getSheetsFontFaces(cssStylesheet));
@@ -154,7 +154,7 @@ function getFontFaceFromStylesheets() {
     const cssStylesheet = /** @type {CSSStyleSheet} */ (stylesheet);
 
     try {
-      // cssRules can be null or this access can throw when CORS isn't enabled, throw a matching error message.
+      // cssRules can be null or this access can throw when CORS isn't enabled; throw a matching error message.
       if (!cssStylesheet.cssRules) {
         throw new Error('Failed to read cssRules');
       }

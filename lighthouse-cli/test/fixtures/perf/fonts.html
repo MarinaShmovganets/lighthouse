@@ -6,14 +6,16 @@
         font-family: 'Lobster';
         font-style: normal;
         font-weight: 400;
-        src: url('./lobster-v20-latin-regular.woff2') format('woff2');
+        /* We don't need `local` but keep around for testing robustness of our regex */
+        src: local('Lobster'), url('./lobster-v20-latin-regular.woff2') format('woff2');
       }
       @font-face {
         font-family: 'Lobster Two';
         font-style: normal;
         font-weight: 700;
         font-display: optional;
-        src: url("./lobster-two-v10-latin-700.woff2?delay=4000") format('woff2');
+        /* We don't need `local` but keep around for testing robustness of our regex */
+        src: local("Lobster Two"), url("./lobster-two-v10-latin-700.woff2?delay=4000") format('woff2');
       }
       .webfont {
         font-family: Lobster, sans-serif;
