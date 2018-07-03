@@ -28,6 +28,22 @@ class Util {
   }
 
   /**
+   *
+   * @param {string} message
+   * @param {any=} values
+   * @param {string | string[]=} locales
+   * @param {any=} formats
+   * @return string
+   */
+  static i18n(message, values, locales, formats) {
+    /** @type {typeof IntlMessageFormat} */
+    const MessageFormat = IntlMessageFormat; // eslint-disable-line no-undef
+    // TODO(i18n): create a cache of these msgs
+    const msg = new MessageFormat(message, locales || MessageFormat.defaultLocale, formats);
+    return msg.format(values);
+  }
+
+  /**
    * @param {string|Array<string|number>=} displayValue
    * @return {string}
    */

@@ -75,10 +75,10 @@ class CategoryRenderer {
     if (audit.result.scoreDisplayMode === 'error') {
       auditEl.classList.add(`lh-audit--error`);
       const textEl = this.dom.find('.lh-audit__display-text', auditEl);
-      textEl.textContent = 'Error!';
+      textEl.textContent = Util.i18n(CR.strings.errorBang);
       textEl.classList.add('tooltip-boundary');
       const tooltip = this.dom.createChildOf(textEl, 'div', 'tooltip tooltip--error');
-      tooltip.textContent = audit.result.errorMessage || 'Report error: no audit information';
+      tooltip.textContent = audit.result.errorMessage || Util.i18n(CR.strings.errNoAuditInfo);
     } else if (audit.result.explanation) {
       const explEl = this.dom.createChildOf(titleEl, 'div', 'lh-audit-explanation');
       explEl.textContent = audit.result.explanation;
@@ -89,9 +89,10 @@ class CategoryRenderer {
     // Add list of warnings or singular warning
     const warningsEl = this.dom.createChildOf(titleEl, 'div', 'lh-warnings');
     if (warnings.length === 1) {
-      warningsEl.textContent = `Warning: ${warnings.join('')}`;
+      // TODO(i18n): Maybe need to construct this differently
+      warningsEl.textContent = `${Util.i18n(CR.strings.warningsColon)} ${warnings.join('')}`;
     } else {
-      warningsEl.textContent = 'Warnings: ';
+      warningsEl.textContent = Util.i18n(CR.strings.warningsColon);
       const warningsUl = this.dom.createChildOf(warningsEl, 'ul');
       for (const warning of warnings) {
         const item = this.dom.createChildOf(warningsUl, 'li');
@@ -158,7 +159,7 @@ class CategoryRenderer {
     const itemCountEl = this.dom.createChildOf(summmaryEl, 'div', 'lh-audit-group__itemcount');
     if (expandable) {
       const chevronEl = summmaryEl.appendChild(this._createChevron());
-      chevronEl.title = 'Show audits';
+      chevronEl.title = Util.i18n(CR.strings.showAudits);
     }
 
     if (group.description) {
@@ -168,8 +169,9 @@ class CategoryRenderer {
     }
     headerEl.textContent = group.title;
 
-    if (opts.itemCount) {
-      itemCountEl.textContent = `${opts.itemCount} audits`;
+    const itemCount = opts.itemCount;
+    if (itemCount) {
+      itemCountEl.textContent = Util.i18n(CR.strings.itemCountAudits, {itemCount});
     }
     return groupEl;
   }
@@ -211,7 +213,7 @@ class CategoryRenderer {
    */
   renderPassedAuditsSection(elements) {
     const passedElem = this.renderAuditGroup({
-      title: `Passed audits`,
+      title: Util.i18n(CR.strings.passedAudits),
     }, {expandable: true, itemCount: this._getTotalAuditsLength(elements)});
     passedElem.classList.add('lh-passed-audits');
     elements.forEach(elem => passedElem.appendChild(elem));
@@ -223,9 +225,10 @@ class CategoryRenderer {
    * @return {Element}
    */
   _renderNotApplicableAuditsSection(elements) {
+    elements = elements.slice(0, 1);
     const notApplicableElem = this.renderAuditGroup({
-      title: `Not applicable`,
-    }, {expandable: true, itemCount: this._getTotalAuditsLength(elements)});
+      title: Util.i18n(CR.strings.notApplicable),
+    }, {expandable: true, itemCount: 1});
     notApplicableElem.classList.add('lh-audit-group--not-applicable');
     elements.forEach(elem => notApplicableElem.appendChild(elem));
     return notApplicableElem;
@@ -237,7 +240,7 @@ class CategoryRenderer {
    * @return {Element}
    */
   _renderManualAudits(manualAudits, manualDescription) {
-    const group = {title: 'Additional items to manually check', description: manualDescription};
+    const group = {title: Util.i18n(CR.strings.addtlItems), description: manualDescription};
     const auditGroupElem = this.renderAuditGroup(group,
         {expandable: true, itemCount: manualAudits.length});
     auditGroupElem.classList.add('lh-audit-group--manual');
@@ -282,7 +285,7 @@ class CategoryRenderer {
     percentageEl.textContent = scoreOutOf100.toString();
     if (category.score === null) {
       percentageEl.textContent = '?';
-      percentageEl.title = 'Errors occurred while auditing';
+      percentageEl.title = Util.i18n(CR.strings.errorsDuringAuditing);
     }
 
     this.dom.find('.lh-gauge__label', tmpl).textContent = category.title;
@@ -403,6 +406,24 @@ class CategoryRenderer {
     permalinkEl.id = id;
   }
 }
+
+const CR = CategoryRenderer;
+CategoryRenderer.strings = {
+  errNoAuditInfo: 'Report error: no audit information',
+  errorBang: 'Error!',
+  warningColor: 'Warning',
+  warningsColon: 'Warnings: ',
+  showAudits: 'Show audits',
+  itemCountAudits: `{itemCount, plural,
+    =0 {0 audits}
+    one {1 audit}
+    other {{itemCount} audits}
+}`,
+  passedAudits: 'Passed audits',
+  notApplicable: 'Not applicable',
+  addtlItems: 'Additional items to manually check',
+  errorsDuringAuditing: 'Errors occurred while auditing',
+};
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = CategoryRenderer;
