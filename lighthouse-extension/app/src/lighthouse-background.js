@@ -24,11 +24,10 @@ const log = require('lighthouse-logger');
 function runLighthouseForConnection(
   connection, url, options, categoryIDs,
   updateBadgeFn = function() { }) {
-  // @ts-ignore - TODO(bckenny): type checking for Config
-  const config = /** @type {LH.Config} */ (new Config({
+  const config = new Config({
     extends: 'lighthouse:default',
     settings: {onlyCategories: categoryIDs},
-  }, options.flags));
+  }, options.flags);
 
   // Add url and config to fresh options object.
   const runOptions = Object.assign({}, options, {url, config});
@@ -80,8 +79,10 @@ if (typeof module !== 'undefined' && module.exports) {
     getDefaultCategories,
     listenForStatus,
   };
-} else {
-  // If not require()d, expose on window for devtools, other consumers of file.
+}
+
+if (typeof window !== 'undefined') {
+  // Expose on window for devtools, other consumers of file.
   // @ts-ignore
   window.runLighthouseInWorker = runLighthouseInWorker;
   // @ts-ignore

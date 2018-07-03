@@ -5,6 +5,7 @@
  */
 'use strict';
 
+const URL = require('../lib/url-shim');
 const Audit = require('./audit');
 const UnusedBytes = require('./byte-efficiency/byte-efficiency-audit');
 const THRESHOLD_IN_MS = 100;
@@ -15,10 +16,10 @@ class UsesRelPreloadAudit extends Audit {
    */
   static get meta() {
     return {
-      name: 'uses-rel-preload',
-      description: 'Preload key requests',
-      helpText: 'Consider using <link rel=preload> to prioritize fetching late-discovered ' +
-        'resources sooner. [Learn more](https://developers.google.com/web/updates/2016/03/link-rel-preload).',
+      id: 'uses-rel-preload',
+      title: 'Preload key requests',
+      description: 'Consider using <link rel=preload> to prioritize fetching late-discovered ' +
+        'resources sooner. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/preload).',
       requiredArtifacts: ['devtoolsLogs', 'traces', 'URL'],
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
     };
@@ -30,7 +31,7 @@ class UsesRelPreloadAudit extends Audit {
    * @param {number=} minLevel
    */
   static _flattenRequests(chains, maxLevel, minLevel = 0) {
-    /** @type {Array<LH.WebInspector.NetworkRequest>} */
+    /** @type {Array<LH.Artifacts.NetworkRequest>} */
     const requests = [];
 
     /**
@@ -55,6 +56,20 @@ class UsesRelPreloadAudit extends Audit {
     flatten(chains, 0);
 
     return requests;
+  }
+
+  /**
+   *
+   * @param {LH.Artifacts.NetworkRequest} request
+   * @param {LH.Artifacts.NetworkRequest} mainResource
+   * @return {boolean}
+   */
+  static shouldPreload(request, mainResource) {
+    if (request.isLinkPreload || request.protocol === 'data') {
+      return false;
+    }
+
+    return URL.rootDomainsMatch(request.url, mainResource.url);
   }
 
   /**
@@ -159,8 +174,8 @@ class UsesRelPreloadAudit extends Audit {
     /** @type {Set<string>} */
     const urls = new Set();
     for (const networkRecord of criticalRequests) {
-      if (!networkRecord._isLinkPreload && networkRecord.protocol !== 'data') {
-        urls.add(networkRecord._url);
+      if (UsesRelPreloadAudit.shouldPreload(networkRecord, mainResource)) {
+        urls.add(networkRecord.url);
       }
     }
 

@@ -34,7 +34,7 @@ function noUrlManifestParser(manifestSrc) {
   return manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
 }
 
-/* eslint-env mocha */
+/* eslint-env jest */
 describe('PWA: splash screen audit', () => {
   describe('basics', () => {
     it('fails if page had no manifest', () => {
@@ -62,7 +62,7 @@ describe('PWA: splash screen audit', () => {
       return SplashScreenAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation);
-        assert.strictEqual(result.extendedInfo.value.failures.length, 4);
+        assert.strictEqual(result.details.items[0].failures.length, 4);
       });
     });
 

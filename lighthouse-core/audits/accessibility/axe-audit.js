@@ -23,7 +23,7 @@ class AxeAudit extends Audit {
     // This means aXe did not find any nodes which matched these checks.
     // Note in Lighthouse we use the phrasing "Not Applicable" (aXe uses "inapplicable", which sounds weird).
     const notApplicables = artifacts.Accessibility.notApplicable || [];
-    const isNotApplicable = notApplicables.find(result => result.id === this.meta.name);
+    const isNotApplicable = notApplicables.find(result => result.id === this.meta.id);
     if (isNotApplicable) {
       return {
         rawValue: true,
@@ -32,7 +32,9 @@ class AxeAudit extends Audit {
     }
 
     const violations = artifacts.Accessibility.violations || [];
-    const rule = violations.find(result => result.id === this.meta.name);
+    const rule = violations.find(result => result.id === this.meta.id);
+    const impact = rule && rule.impact;
+    const tags = rule && rule.tags;
 
     /** @type {Array<{node: LH.Audit.DetailsRendererNodeDetailsJSON}>}>} */
     let items = [];
@@ -42,7 +44,8 @@ class AxeAudit extends Audit {
           type: 'node',
           selector: Array.isArray(node.target) ? node.target.join(' ') : '',
           path: node.path,
-          snippet: node.snippet,
+          snippet: node.html || node.snippet,
+          explanation: node.failureSummary,
         }),
       }));
     }
@@ -56,7 +59,7 @@ class AxeAudit extends Audit {
       extendedInfo: {
         value: rule,
       },
-      details: Audit.makeTableDetails(headings, items),
+      details: {...Audit.makeTableDetails(headings, items), impact, tags},
     };
   }
 }

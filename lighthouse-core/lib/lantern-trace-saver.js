@@ -29,7 +29,7 @@ function convertNodeTimingsToTrace(nodeTimings) {
     if (node.type === 'cpu') {
       // Represent all CPU work that was bundled in a task as an EvaluateScript event
       const cpuNode = /** @type {LH.Gatherer.Simulation.GraphCPUNode} */ (node);
-      traceEvents.push(createFakeEvaluateScriptEvent(cpuNode, timing));
+      traceEvents.push(...createFakeTaskEvents(cpuNode, timing));
     } else {
       const networkNode = /** @type {LH.Gatherer.Simulation.GraphNetworkNode} */ (node);
       // Ignore data URIs as they don't really add much value
@@ -38,10 +38,11 @@ function convertNodeTimingsToTrace(nodeTimings) {
     }
   }
 
-  // Create a fake evaluate script event ~1s after the trace ends for a sane default bounds in DT
+  // Create a fake task event ~1s after the trace ends for a sane default bounds in DT
   traceEvents.push(
-    createFakeEvaluateScriptEvent(
-      {childEvents: []},
+    ...createFakeTaskEvents(
+      // @ts-ignore
+      {childEvents: [], event: {}},
       {
         startTime: lastEventEndTime + 1000,
         endTime: lastEventEndTime + 1001,
@@ -76,35 +77,50 @@ function convertNodeTimingsToTrace(nodeTimings) {
   }
 
   /**
-   * @param {{childEvents: LH.TraceEvent[]}} cpuNode
+   * @param {LH.Gatherer.Simulation.GraphCPUNode} cpuNode
    * @param {{startTime: number, endTime: number}} timing
-   * @return {LH.TraceEvent}
+   * @return {LH.TraceEvent[]}
    */
-  function createFakeEvaluateScriptEvent(cpuNode, timing) {
-    const realEvaluateScriptEvent = cpuNode.childEvents.find(
-      e => e.name === 'EvaluateScript' && !!e.args.data && !!e.args.data.url
-    );
-    // @ts-ignore
-    const scriptUrl = realEvaluateScriptEvent && realEvaluateScriptEvent.args.data.url;
+  function createFakeTaskEvents(cpuNode, timing) {
     const argsData = {
-      url: scriptUrl || '',
+      url: '',
       frame,
       lineNumber: 0,
       columnNumber: 0,
     };
 
-    return {
-      ...baseEvent,
-      ph: 'X',
-      name: 'EvaluateScript',
-      ts: toMicroseconds(timing.startTime),
-      dur: (timing.endTime - timing.startTime) * 1000,
-      args: {data: argsData},
-    };
+    const eventTs = toMicroseconds(timing.startTime);
+
+    /** @type {LH.TraceEvent[]} */
+    const events = [
+      {
+        ...baseEvent,
+        ph: 'X',
+        name: 'Task',
+        ts: eventTs,
+        dur: (timing.endTime - timing.startTime) * 1000,
+        args: {data: argsData},
+      },
+    ];
+
+    const nestedBaseTs = cpuNode.event.ts || 0;
+    const multiplier = (timing.endTime - timing.startTime) * 1000 / cpuNode.event.dur;
+    // https://github.com/ChromeDevTools/devtools-frontend/blob/5429ac8a61ad4fa/front_end/timeline_model/TimelineModel.js#L1129-L1130
+    const netReqEvents = new Set(['ResourceSendRequest', 'ResourceFinish',
+      'ResourceReceiveResponse', 'ResourceReceivedData']);
+    for (const event of cpuNode.childEvents) {
+      if (netReqEvents.has(event.name)) continue;
+      const ts = eventTs + (event.ts - nestedBaseTs) * multiplier;
+      const newEvent = {...event, ...{pid: baseEvent.pid, tid: baseEvent.tid}, ts};
+      if (event.dur) newEvent.dur = event.dur * multiplier;
+      events.push(newEvent);
+    }
+
+    return events;
   }
 
   /**
-   * @param {LH.WebInspector.NetworkRequest} record
+   * @param {LH.Artifacts.NetworkRequest} record
    * @param {LH.Gatherer.Simulation.NodeTiming} timing
    * @return {LH.TraceEvent[]}
    */
@@ -112,9 +128,9 @@ function convertNodeTimingsToTrace(nodeTimings) {
     requestId++;
 
     // 0ms requests get super-messed up rendering
-    // Use 20ms instead so they're still hoverable
+    // Use 0.3ms instead so they're still hoverable, https://github.com/GoogleChrome/lighthouse/pull/5350#discussion_r194563201
     let {startTime, endTime} = timing; // eslint-disable-line prefer-const
-    if (startTime === endTime) endTime += 20;
+    if (startTime === endTime) endTime += 0.3;
 
     const requestData = {requestId: requestId.toString(), frame};
     /** @type {Omit<LH.TraceEvent, 'name'|'ts'|'args'>} */
@@ -124,21 +140,21 @@ function convertNodeTimingsToTrace(nodeTimings) {
       ...requestData,
       requestMethod: record.requestMethod,
       url: record.url,
-      priority: record.priority(),
+      priority: record.priority,
     };
 
     const receiveResponseData = {
       ...requestData,
       statusCode: record.statusCode,
-      mimeType: record._mimeType,
-      encodedDataLength: record._transferSize,
-      fromCache: record._fromDiskCache,
-      fromServiceWorker: record._fetchedViaServiceWorker,
+      mimeType: record.mimeType,
+      encodedDataLength: record.transferSize,
+      fromCache: record.fromDiskCache,
+      fromServiceWorker: record.fetchedViaServiceWorker,
     };
 
     const resourceFinishData = {
       ...requestData,
-      decodedBodyLength: record._resourceSize,
+      decodedBodyLength: record.resourceSize,
       didFail: !!record.failed,
       finishTime: endTime,
     };

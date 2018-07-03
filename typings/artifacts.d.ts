@@ -6,24 +6,40 @@
 
 import parseManifest = require('../lighthouse-core/lib/manifest-parser.js');
 import _LanternSimulator = require('../lighthouse-core/lib/dependency-graph/simulator/simulator.js');
+import _NetworkRequest = require('../lighthouse-core/lib/network-request.js');
 import speedline = require('speedline');
+
+type _TaskNode = import('../lighthouse-core/gather/computed/main-thread-tasks').TaskNode;
 
 type LanternSimulator = InstanceType<typeof _LanternSimulator>;
 
 declare global {
   module LH {
-    export interface Artifacts extends ComputedArtifacts {
-      // Created by by gather-runner
+    export interface Artifacts extends BaseArtifacts, GathererArtifacts, ComputedArtifacts {}
+
+    /** Artifacts always created by GatherRunner. */
+    export interface BaseArtifacts {
+      /** The ISO-8601 timestamp of when the test page was fetched and artifacts collected. */
       fetchTime: string;
+      /** A set of warnings about unexpected things encountered while loading and testing the page. */
       LighthouseRunWarnings: string[];
+      /** The user agent string of the version of Chrome that was used by Lighthouse. */
       UserAgent: string;
+      /** A set of page-load traces, keyed by passName. */
       traces: {[passName: string]: Trace};
+      /** A set of DevTools debugger protocol records, keyed by passName. */
       devtoolsLogs: {[passName: string]: DevtoolsLog};
+      /** An object containing information about the testing configuration used by Lighthouse. */
       settings: Config.Settings;
       /** The URL initially requested and the post-redirects URL that was actually loaded. */
       URL: {requestedUrl: string, finalUrl: string};
+    }
 
-      // Remaining are provided by default gatherers.
+    /**
+     * Artifacts provided by the default gatherers. Augment this interface when adding additional
+     * gatherers.
+     */
+    export interface GathererArtifacts {
       /** The results of running the aXe accessibility tests on the page. */
       Accessibility: Artifacts.Accessibility;
       /** Information on all anchors in the page that aren't nofollow or noreferrer. */
@@ -44,8 +60,6 @@ declare global {
       DOMStats: Artifacts.DOMStats;
       /** Relevant attributes and child properties of all <object>s, <embed>s and <applet>s in the page. */
       EmbeddedContent: Artifacts.EmbeddedContentInfo[];
-      /** Information on all event listeners in the page. */
-      EventListeners: {url: string, type: string, handler?: {description?: string}, objectName: string, line: number, col: number}[];
       /** Information for font faces used in the page. */
       Fonts: Artifacts.Font[];
       /** Information on poorly sized font usage and the text affected by it. */
@@ -68,6 +82,8 @@ declare global {
       MetaDescription: string|null;
       /** The value of the <meta name="robots">'s content attribute, or null. */
       MetaRobots: string|null;
+      /** The URL loaded with interception */
+      MixedContent: {url: string};
       /** The status code of the attempted load of the page while network access is disabled. */
       Offline: number;
       /** Size and compression opportunity information for all the images in the page. */
@@ -100,15 +116,15 @@ declare global {
 
     export interface ComputedArtifacts {
       requestCriticalRequestChains(data: {devtoolsLog: DevtoolsLog, URL: Artifacts['URL']}): Promise<Artifacts.CriticalRequestNode>;
-      requestDevtoolsTimelineModel(trace: Trace): Promise<Artifacts.DevtoolsTimelineModel>;
       requestLoadSimulator(data: {devtoolsLog: DevtoolsLog, settings: Config.Settings}): Promise<LanternSimulator>;
-      requestMainResource(data: {devtoolsLog: DevtoolsLog, URL: Artifacts['URL']}): Promise<WebInspector.NetworkRequest>;
+      requestMainResource(data: {devtoolsLog: DevtoolsLog, URL: Artifacts['URL']}): Promise<Artifacts.NetworkRequest>;
       requestManifestValues(manifest: LH.Artifacts['Manifest']): Promise<LH.Artifacts.ManifestValues>;
       requestNetworkAnalysis(devtoolsLog: DevtoolsLog): Promise<LH.Artifacts.NetworkAnalysis>;
       requestNetworkThroughput(devtoolsLog: DevtoolsLog): Promise<number>;
-      requestNetworkRecords(devtoolsLog: DevtoolsLog): Promise<WebInspector.NetworkRequest[]>;
+      requestNetworkRecords(devtoolsLog: DevtoolsLog): Promise<Artifacts.NetworkRequest[]>;
       requestPageDependencyGraph(data: {trace: Trace, devtoolsLog: DevtoolsLog}): Promise<Gatherer.Simulation.GraphNode>;
-      requestPushedRequests(devtoolsLogs: DevtoolsLog): Promise<WebInspector.NetworkRequest[]>;
+      requestPushedRequests(devtoolsLogs: DevtoolsLog): Promise<Artifacts.NetworkRequest[]>;
+      requestMainThreadTasks(trace: Trace): Promise<Artifacts.TaskNode[]>;
       requestTraceOfTab(trace: Trace): Promise<Artifacts.TraceOfTab>;
       requestScreenshots(trace: Trace): Promise<{timestamp: number, datauri: string}[]>;
       requestSpeedline(trace: Trace): Promise<LH.Artifacts.Speedline>;
@@ -131,13 +147,20 @@ declare global {
     }
 
     module Artifacts {
+      export type NetworkRequest = _NetworkRequest;
+      export type TaskNode = _TaskNode;
+
       export interface Accessibility {
         violations: {
           id: string;
+          impact: string;
+          tags: string[];
           nodes: {
             path: string;
+            html: string;
             snippet: string;
             target: string[];
+            failureSummary?: string;
           }[];
         }[];
         notApplicable: {
@@ -281,37 +304,18 @@ declare global {
       // Computed artifact types below.
       export type CriticalRequestNode = {
         [id: string]: {
-          request: WebInspector.NetworkRequest;
+          request: Artifacts.NetworkRequest;
           children: CriticalRequestNode;
         }
       }
 
-      export interface DevtoolsTimelineFilmStripModel {
-        frames(): Array<{
-          imageDataPromise(): Promise<string>;
-          timestamp: number;
-        }>;
-      }
-
-      export interface DevtoolsTimelineModelNode {
-        children: Map<string, DevtoolsTimelineModelNode>;
-        selfTime: number;
-        // SDK.TracingModel.Event
-        event: {
-          name: string;
-        };
-      }
-
-      export interface DevtoolsTimelineModel {
-        filmStripModel(): Artifacts.DevtoolsTimelineFilmStripModel;
-        bottomUpGroupBy(grouping: string): DevtoolsTimelineModelNode;
-      }
+      export type ManifestValueCheckID = 'hasStartUrl'|'hasIconsAtLeast192px'|'hasIconsAtLeast512px'|'hasPWADisplayValue'|'hasBackgroundColor'|'hasThemeColor'|'hasShortName'|'hasName'|'shortNameLength';
 
       export interface ManifestValues {
         isParseFailure: boolean;
         parseFailureReason: string | undefined;
         allChecks: {
-          id: string;
+          id: ManifestValueCheckID;
           failureText: string;
           passing: boolean;
         }[];
@@ -325,7 +329,7 @@ declare global {
       }
 
       export interface MetricComputationData extends MetricComputationDataInput {
-        networkRecords: Array<WebInspector.NetworkRequest>;
+        networkRecords: Array<Artifacts.NetworkRequest>;
         traceOfTab: TraceOfTab;
       }
 

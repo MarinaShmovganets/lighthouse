@@ -18,18 +18,48 @@
 
 const ComputedArtifact = require('./computed-artifact');
 const log = require('lighthouse-logger');
+const TracingProcessor = require('../../lib/traces/tracing-processor');
 const LHError = require('../../lib/errors');
 const Sentry = require('../../lib/sentry');
 
 // Bring in web-inspector for side effect of adding [].stableSort
 // See https://github.com/GoogleChrome/lighthouse/pull/2415
 // eslint-disable-next-line no-unused-vars
-const WebInspector = require('../../lib/web-inspector');
+const NetworkRequest = require('../../lib/network-request');
 
 class TraceOfTab extends ComputedArtifact {
   get name() {
     return 'TraceOfTab';
   }
+
+  /**
+   * @param {LH.TraceEvent[]} traceEvents
+   * @param {(e: LH.TraceEvent) => boolean} filter
+   */
+  static filteredStableSort(traceEvents, filter) {
+    // create an array of the indices that we want to keep
+    const indices = [];
+    for (let srcIndex = 0; srcIndex < traceEvents.length; srcIndex++) {
+      if (filter(traceEvents[srcIndex])) {
+        indices.push(srcIndex);
+      }
+    }
+
+    // sort by ts, if there's no ts difference sort by index
+    indices.sort((indexA, indexB) => {
+      const result = traceEvents[indexA].ts - traceEvents[indexB].ts;
+      return result ? result : indexA - indexB;
+    });
+
+    // create a new array using the target indices from previous sort step
+    const sorted = [];
+    for (let i = 0; i < indices.length; i++) {
+      sorted.push(traceEvents[indices[i]]);
+    }
+
+    return sorted;
+  }
+
 
   /**
    * Finds key trace events, identifies main process/thread, and returns timings of trace events
@@ -40,23 +70,16 @@ class TraceOfTab extends ComputedArtifact {
   async compute_(trace) {
     // Parse the trace for our key events and sort them by timestamp. Note: sort
     // *must* be stable to keep events correctly nested.
-    /** @type Array<LH.TraceEvent> */
-    const keyEvents = trace.traceEvents
-      .filter(e => {
-        return e.cat.includes('blink.user_timing') ||
+    const keyEvents = TraceOfTab.filteredStableSort(trace.traceEvents, e => {
+      return e.cat.includes('blink.user_timing') ||
           e.cat.includes('loading') ||
           e.cat.includes('devtools.timeline') ||
-          e.name === 'TracingStartedInPage';
-      })
-      // @ts-ignore - stableSort added to Array by WebInspector.
-      .stableSort((event0, event1) => event0.ts - event1.ts);
+          e.cat === '__metadata';
+    });
 
-    // The first TracingStartedInPage in the trace is definitely our renderer thread of interest
-    // Beware: the tracingStartedInPage event can appear slightly after a navigationStart
-    const startedInPageEvt = keyEvents.find(e => e.name === 'TracingStartedInPage');
-    if (!startedInPageEvt) throw new LHError(LHError.errors.NO_TRACING_STARTED);
-    // @ts-ignore - property chain exists for 'TracingStartedInPage' event.
-    const frameId = startedInPageEvt.args.data.page;
+    // Find the inspected frame
+    const {startedInPageEvt, frameId} = TracingProcessor.findTracingStartedEvt(keyEvents);
+
     // Filter to just events matching the frame ID for sanity
     const frameEvents = keyEvents.filter(e => e.args.frame === frameId);
 
@@ -104,11 +127,8 @@ class TraceOfTab extends ComputedArtifact {
 
     // subset all trace events to just our tab's process (incl threads other than main)
     // stable-sort events to keep them correctly nested.
-    /** @type Array<LH.TraceEvent> */
-    const processEvents = trace.traceEvents
-      .filter(e => e.pid === startedInPageEvt.pid)
-      // @ts-ignore - stableSort added to Array by WebInspector.
-      .stableSort((event0, event1) => event0.ts - event1.ts);
+    const processEvents = TraceOfTab
+      .filteredStableSort(trace.traceEvents, e => e.pid === startedInPageEvt.pid);
 
     const mainThreadEvents = processEvents
       .filter(e => e.tid === startedInPageEvt.tid);
