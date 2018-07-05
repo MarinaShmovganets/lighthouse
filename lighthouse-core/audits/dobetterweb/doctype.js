@@ -1,5 +1,5 @@
 /**
- * @license Copyright 2017 Google Inc. All Rights Reserved.
+ * @license Copyright 2018 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
@@ -13,10 +13,10 @@ class Doctype extends Audit {
    */
   static get meta() {
     return {
-      name: 'doctype',
-      description: 'Page has the HTML doctype',
-      failureDescription: 'Page is missing the HTML doctype',
-      helpText: 'Specifying a doctype prevents the browser from switching to quirks-mode.' +
+      id: 'doctype',
+      title: 'Page has the HTML doctype',
+      failureTitle: 'Page is missing the HTML doctype',
+      description: 'Specifying a doctype prevents the browser from switching to quirks-mode.' +
                 'Read more on the ' +
                 '[MDN Web Docs page](https://developer.mozilla.org/en-US/docs/Glossary/Doctype)',
       requiredArtifacts: ['Doctype'],
@@ -36,7 +36,7 @@ class Doctype extends Audit {
     }
 
     // only set constants once we know there is a doctype
-    const doctypeName = artifacts.Doctype ? artifacts.Doctype.name.trim() : '';
+    const doctypeName = artifacts.Doctype.name.trim();
     const doctypePublicId = artifacts.Doctype.publicId;
     const doctypeSystemId = artifacts.Doctype.systemId;
 
@@ -54,13 +54,6 @@ class Doctype extends Audit {
       };
     }
 
-    if (doctypeName.length === 0) {
-      return {
-        rawValue: false,
-        explanation: 'Doctype name attribute cannot be empty',
-      };
-    }
-
     /* Note that the value for name is case sensitive,
        and must be the string `html`. For details see:
        https://html.spec.whatwg.org/multipage/parsing.html#the-initial-insertion-mode */
@@ -71,7 +64,7 @@ class Doctype extends Audit {
     } else {
       return {
         rawValue: false,
-        explanation: 'Doctype name must be the lowercase string html',
+        explanation: 'Doctype name must be the lowercase string `html`',
       };
     }
   }
