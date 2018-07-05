@@ -16,7 +16,8 @@ class Metrics extends Audit {
    */
   static get meta() {
     return {
-      name: 'generate-har',
+      id: 'generate-har',
+      title: 'Generates a HAR file containing requests that were made during the gather phase',
       scoreDisplayMode: Audit.SCORING_MODES.INFORMATIVE,
       description: 'HAR File',
       helpText: 'Makes a har',
@@ -49,123 +50,56 @@ class Metrics extends Audit {
     const timings =
       /** @type {LH.Gatherer.Simulation.Result} */ metric.nodeTimings;
 
-    // Get events from full speed trace. Overwrite the timing information on each of the Network.responseRecieved events.
+    // Get events from full speed trace. Overwrite the timing information on each of the Network.(requestWillBeSent||loadingFinished||loadingFailed) events.
+    const initialDocumentRequest = devtoolsLog.find(event => {
+      return event.method === 'Network.requestWillBeSent' && event.params.documentURL;
+    });
+
+    const initialDocumentResponse = devtoolsLog.find(event => {
+      return (
+        event.method === 'Network.responseReceived' &&
+        event.params.requestId === initialDocumentRequest.params.requestId
+      )
+    });
+
+    const initialDocumentRequestTime = initialDocumentResponse.params.response.timing.requestTime;
 
     const simulatedNetworkNodes = Array.from(timings.entries()).filter(
       ([key]) => key.type === 'network'
     );
 
+    const shiftedRequestTimestamp = (networkEvent, timing) => {
+      const simulatedRequest = simulatedNetworkNodes.find(
+        ([key]) => key._id === networkEvent.params.requestId
+      );
+
+      const [networkRecord, timings] = simulatedRequest;
+
+      return initialDocumentRequestTime + timings[timing] / 1000;
+    };
+
     const events = devtoolsLog.map(event => {
-      if (event.method !== 'Network.responseReceived') return event;
-
-      // Get simulated timings for this request
-      const networkNode = simulatedNetworkNodes.find(
-        ([key]) => key._id === event.params.requestId
-      );
-
-      // Find and update the corresponding Network.responseReceived event
-      event.params.response.timing.sendEnd += networkNode[1].duration;
-
-      console.log(
-        '+',
-        networkNode[1].duration,
-        'to',
-        event.params.response.url
-      );
+      switch (event.method) {
+        case 'Network.requestWillBeSent':
+          event.params.timestamp = shiftedRequestTimestamp(event, 'startTime');
+          break;
+        case 'Network.loadingFinished':
+          event.params.timestamp = shiftedRequestTimestamp(event, 'endTime');
+          break;
+        case 'Network.loadingFailed':
+          event.params.timestamp = shiftedRequestTimestamp(event, 'endTime');
+          break;
+        case 'Network.responseReceived':
+          event.params.response.timing.requestTime = shiftedRequestTimestamp(event, 'startTime');
+          break;
+        default:
+      }
 
       return event;
     });
 
     const har = this.createHarFromEvents(devtoolsLog);
-
-    // const { traceEvents } = traceSaverThings.convertNodeTimingsToTrace(timings);
-
-    // for (const [node] of timings.entries()) {
-    //   if (node.type !== "network") continue;
-
-    //   const networkNode = /** @type {LH.Gatherer.Simulation.GraphNetworkNode} */ (node);
-    //   const record = networkNode.record;
-
-    //   // Replace the timings
-    //   har.log.entries[index].timings = this.calculateRequestTimings(record);
-    // }
-
-    // const harEntries = [];
-    // for (const [node, timing] of timings.entries()) {
-    //   if (node.type !== "network") continue;
-
-    //   const networkNode = /** @type {LH.Gatherer.Simulation.GraphNetworkNode} */ (node);
-    //   const record = networkNode.record;
-    //   const lanternTiming = timing;
-    //   const queryString = URL.parse(record._url, true).query;
-
-    //   const request = {
-    //     method: record.requestMethod,
-    //     url: record._url,
-    //     httpVersion: record.requestHttpVersion(), // TODO // returns unknown, not sure why at this point
-    //     cookies: [], // TODO // record.requestCookies throws an error, will need to follow up on why
-    //     headers: record._requestHeaders,
-    //     queryString,
-    //     headersSize: record._requestHeaders.toString().length, // This isn't really calculatable for h2
-    //     bodySize: record._resourceSize
-    //     // postData
-    //   };
-
-    //   const response = {
-    //     status: record.statusCode,
-    //     statusText: record.statusText,
-    //     httpVersion: record.responseHttpVersion(),
-    //     cookies: [], // TODO
-    //     headers: record._responseHeaders,
-    //     redirectURL: record.redirectSource
-    //       ? record.redirectSource.url
-    //       : undefined,
-    //     headersSize: record._responseHeaders.toString().length,
-    //     // bodySize: payload.response.bodySize,
-    //     _transferSize: record._resourceSize,
-    //     content: {
-    //       size: record._resourceSize,
-    //       mimeType: record._mimeType
-    //       // compression: record.,
-    //       // text: entry.responseBody,
-    //       // encoding
-    //     }
-    //   };
-
-    //   // record._timing
-
-    //   const pageRef = 1;
-    //   const startedDateTime = undefined; // TODO
-    //   const time = record._endTime - record._startTime;
-    //   const timings = {};
-
-    //   const entry = {
-    //     pageRef,
-    //     startedDateTime,
-    //     time,
-    //     request,
-    //     response,
-    //     cache: {},
-    //     _fromDiskCache: undefined, // TODO
-    //     timings,
-    //     serverIPAddress: undefined, // TODO
-    //     connection: undefined, // TODO
-    //     _initiator: record._initiator.type,
-    //     _priority: record.priority()
-    //   };
-
-    //   harEntries.push(entry);
-    // }
-
-    // const pageIndex = 0;
-    // const url = artifacts.URL.finalUrl;
-    // const devtools = null; // Not required, because we're not using `fetchContent: true`
-    // const fetchContent = false;
-    // const page = new Page(pageIndex, url, devtools, fetchContent);
-
-    // const har = CHCHar.create([page]);
-    // debugger;
-    // console.log(traceEvents);
+    console.log(JSON.stringify(har, null, 2))
 
     /** @type {MetricsDetails} */
     const details = {};
