@@ -19,18 +19,6 @@ describe('DOBETTERWEB: doctype audit', () => {
     assert.equal(auditResult.explanation, 'Document must contain a doctype');
   });
 
-  it('fails when the name value is empty', () => {
-    const auditResult = Audit.audit({
-      Doctype: {
-        name: '',
-        publicId: '',
-        systemId: '',
-      },
-    });
-    assert.equal(auditResult.rawValue, false);
-    assert.equal(auditResult.explanation, 'Doctype name attribute cannot be empty');
-  });
-
   it('fails when the value of the name attribute is a value other then lowercase "html"', () => {
     const auditResult = Audit.audit({
       Doctype: {
@@ -40,7 +28,7 @@ describe('DOBETTERWEB: doctype audit', () => {
       },
     });
     assert.equal(auditResult.rawValue, false);
-    assert.equal(auditResult.explanation, 'Doctype name must be the lowercase string html');
+    assert.equal(auditResult.explanation, 'Doctype name must be the lowercase string `html`');
   });
 
   it('fails when the value of the name attribute is not the lowercase string "html"', () => {
@@ -52,7 +40,7 @@ describe('DOBETTERWEB: doctype audit', () => {
       },
     });
     assert.equal(auditResult.rawValue, false);
-    assert.equal(auditResult.explanation, 'Doctype name must be the lowercase string html');
+    assert.equal(auditResult.explanation, 'Doctype name must be the lowercase string `html`');
   });
 
   it('fails when the publicId attribute is not an empty string', () => {
