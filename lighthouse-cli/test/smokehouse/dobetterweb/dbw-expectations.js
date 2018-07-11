@@ -17,7 +17,7 @@ module.exports = [
         score: 0,
         details: {
           items: {
-            length: '>3',
+            length: 6,
           },
         },
       },
@@ -58,14 +58,6 @@ module.exports = [
         details: {
           items: {
             length: 3,
-          },
-        },
-      },
-      'no-mutation-events': {
-        score: 0,
-        details: {
-          items: {
-            length: 6,
           },
         },
       },
