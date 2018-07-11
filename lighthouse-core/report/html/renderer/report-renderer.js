@@ -26,6 +26,12 @@ class ReportRenderer {
     this._dom = dom;
     /** @type {ParentNode} */
     this._templateContext = this._dom.document();
+    /** @type {typeof PerformanceCategoryRenderer} */
+    this._PerfCategoryRenderer = PerformanceCategoryRenderer;
+    /** @type {typeof CategoryRenderer} */
+    this._BaseCategoryRenderer = CategoryRenderer;
+    /** @type {typeof DetailsRenderer} */
+    this._DetailsRenderer = DetailsRenderer;
   }
 
   /**
@@ -150,7 +156,6 @@ class ReportRenderer {
       header = this._renderReportHeader(report);
     }
     headerContainer.appendChild(header);
-    const scoresContainer = this._dom.find('.lh-scores-container', headerContainer);
 
     const container = this._dom.createElement('div', 'lh-container');
     const reportSection = container.appendChild(this._dom.createElement('div', 'lh-report'));
@@ -165,10 +170,10 @@ class ReportRenderer {
       headerContainer.classList.add('lh-header--solo-category');
     }
 
-    const detailsRenderer = new DetailsRenderer(this._dom);
-    const categoryRenderer = new CategoryRenderer(this._dom, detailsRenderer);
+    const detailsRenderer = new this._DetailsRenderer(this._dom);
+    const categoryRenderer = new this._BaseCategoryRenderer(this._dom, detailsRenderer);
     categoryRenderer.setTemplateContext(this._templateContext);
-    const perfCategoryRenderer = new PerformanceCategoryRenderer(this._dom, detailsRenderer);
+    const perfCategoryRenderer = new this._PerfCategoryRenderer(this._dom, detailsRenderer);
     perfCategoryRenderer.setTemplateContext(this._templateContext);
 
     const categories = reportSection.appendChild(this._dom.createElement('div', 'lh-categories'));
@@ -187,6 +192,7 @@ class ReportRenderer {
 
     if (scoreHeader) {
       const scoreScale = this._dom.cloneTemplate('#tmpl-lh-scorescale', this._templateContext);
+      const scoresContainer = this._dom.find('.lh-scores-container', headerContainer);
       scoresContainer.appendChild(scoreHeader);
       scoresContainer.appendChild(scoreScale);
     }
