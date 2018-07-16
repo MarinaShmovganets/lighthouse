@@ -18,7 +18,7 @@ class NetworkRequests extends Audit {
       scoreDisplayMode: Audit.SCORING_MODES.INFORMATIVE,
       title: 'Network Requests',
       description: 'Lists the network requests that were made during page load.',
-      requiredArtifacts: ['devtoolsLogs', 'LighthouseRunWarnings'],
+      requiredArtifacts: ['devtoolsLogs'],
     };
   }
 
@@ -27,7 +27,6 @@ class NetworkRequests extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static audit(artifacts) {
-    const runWarnings = artifacts.LighthouseRunWarnings || [];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     return artifacts.requestNetworkRecords(devtoolsLog).then(records => {
       const earliestStartTime = records.reduce(
@@ -50,11 +49,6 @@ class NetworkRequests extends Audit {
           resourceType: record.resourceType,
         };
       });
-
-      if (results.some(result => result.url.startsWith('chrome-extension'))) {
-        runWarnings.push('Chrome extensions impacted the performance of this page. ' +
-          'Try running Lighthouse in a clean profile to avoid being impacted by extensions.');
-      }
 
       const headings = [
         {key: 'url', itemType: 'url', text: 'URL'},
