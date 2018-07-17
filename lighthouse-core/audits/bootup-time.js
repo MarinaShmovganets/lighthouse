@@ -47,7 +47,7 @@ class BootupTime extends Audit {
     /** @type {Set<string>} */
     const urls = new Set();
     for (const record of records) {
-      if (record.resourceType && record.resourceType === NetworkRequest.TYPES.Script) {
+      if (record.resourceType === NetworkRequest.TYPES.Script) {
         urls.add(record.url);
       }
     }
