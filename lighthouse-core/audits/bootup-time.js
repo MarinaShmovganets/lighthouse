@@ -84,7 +84,7 @@ class BootupTime extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const runWarnings = artifacts.LighthouseRunWarnings || [];
+    const runWarnings = artifacts.LighthouseRunWarnings;
     const settings = context.settings || {};
     const trace = artifacts.traces[BootupTime.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[BootupTime.DEFAULT_PASS];
@@ -130,9 +130,10 @@ class BootupTime extends Audit {
       .sort((a, b) => b.total - a.total);
 
 
+    // TODO: consider moving this to core gathering so you don't need to run the audit for warning
     if (hadExcessiveChromeExtension) {
       runWarnings.push('Chrome extensions impacted the performance of this page. ' +
-        'Try running Lighthouse in a clean profile to avoid being impacted by extensions.');
+        'Try running Lighthouse in a clean Chrome profile to avoid being impacted by extensions.');
     }
 
     const summary = {wastedMs: totalBootupTime};
