@@ -132,8 +132,8 @@ class BootupTime extends Audit {
 
     // TODO: consider moving this to core gathering so you don't need to run the audit for warning
     if (hadExcessiveChromeExtension) {
-      runWarnings.push('Chrome extensions impacted the performance of this page. ' +
-        'Try running Lighthouse in a clean Chrome profile to avoid being impacted by extensions.');
+      runWarnings.push('Chrome extensions negatively affected this page\'s load performance. ' +
+        'Try auditing the page in incognito mode or from a clean Chrome profile.');
     }
 
     const summary = {wastedMs: totalBootupTime};
