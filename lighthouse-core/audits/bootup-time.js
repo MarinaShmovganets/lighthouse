@@ -130,10 +130,10 @@ class BootupTime extends Audit {
       .sort((a, b) => b.total - a.total);
 
 
-      if (hadExcessiveChromeExtension) {
-        runWarnings.push('Chrome extensions impacted the performance of this page. ' +
-          'Try running Lighthouse in a clean profile to avoid being impacted by extensions.');
-      }
+    if (hadExcessiveChromeExtension) {
+      runWarnings.push('Chrome extensions impacted the performance of this page. ' +
+        'Try running Lighthouse in a clean profile to avoid being impacted by extensions.');
+    }
 
     const summary = {wastedMs: totalBootupTime};
 
