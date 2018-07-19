@@ -26,14 +26,14 @@ freshstringsPath="$lh_tmp_path/fresh_strings.json";
 function teardown { rm -f "$currentstringsPath" "$freshstringsPath"; }
 trap teardown EXIT
 
-cp $collectedstringsPath $currentstringsPath
+cp "$collectedstringsPath" "$currentstringsPath"
 
 colorText "Collecting strings..." "$purple"
 set -x
 node "$lhroot_path/lighthouse-core/scripts/i18n/collect-strings.js"
 set +x
 
-cp $collectedstringsPath $freshstringsPath
+cp "$collectedstringsPath" "$freshstringsPath"
 
 colorText "Diff'ing golden strings against the fresh strings" "$purple"
 git --no-pager diff --color=always --no-index "$currentstringsPath" "$freshstringsPath"
@@ -45,6 +45,6 @@ if [ $retVal -eq 0 ]; then
   colorText "✅  PASS. All strings have been collected." "$green"
 else
   colorText "❌  FAIL. Strings have changed." "$red"
-  echo "Commit the changes to `lighthouse-core/lib/locales/` update the strings."
+  echo "Commit the changes to lighthouse-core/lib/locales/ update the strings."
 fi
 exit $retVal
