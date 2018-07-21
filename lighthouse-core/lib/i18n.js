@@ -21,9 +21,9 @@ try {
   // @ts-ignore
   const IntlPolyfill = require('intl');
   // @ts-ignore
-  Intl.NumberFormat = IntlPolyfill.NumberFormat;
+  Intl.NumberFormat = (Intl && Intl.NumberFormat) || IntlPolyfill.NumberFormat;
   // @ts-ignore
-  Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
+  Intl.DateTimeFormat = (Intl && Intl.DateTimeFormat) || IntlPolyfill.DateTimeFormat;
 } catch (_) {}
 
 const UIStrings = {
