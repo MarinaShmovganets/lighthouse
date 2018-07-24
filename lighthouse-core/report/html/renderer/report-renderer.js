@@ -36,7 +36,7 @@ class ReportRenderer {
     // If any mutations happen to the report within the renderers, we want the original object untouched
     const clone = /** @type {LH.ReportResult} */ (JSON.parse(JSON.stringify(report)));
     // Mutate the UIStrings if necessary (while saving originals)
-    ReportRenderer.stashUIStrings();
+    const clonedStrings = JSON.parse(JSON.stringify(Util.UIStrings));
     if (clone.i18n && clone.i18n.rendererFormattedStrings) {
       ReportRenderer.updateAllUIStrings(clone.i18n.rendererFormattedStrings);
     }
@@ -50,7 +50,7 @@ class ReportRenderer {
     container.appendChild(this._renderReport(clone));
 
     // put the UIStrings back into original state
-    ReportRenderer.updateAllUIStrings(ReportRenderer._UIStringsStash);
+    ReportRenderer.updateAllUIStrings(clonedStrings);
 
     return /** @type {Element} **/ (container);
   }
@@ -235,10 +235,6 @@ class ReportRenderer {
     for (const [key, value] of Object.entries(rendererFormattedStrings)) {
       Util.UIStrings[key] = value;
     }
-  }
-
-  static stashUIStrings() {
-    ReportRenderer._UIStringsStash = JSON.parse(JSON.stringify(Util.UIStrings));
   }
 }
 

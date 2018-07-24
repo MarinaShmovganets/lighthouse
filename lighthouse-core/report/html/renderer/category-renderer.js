@@ -89,7 +89,6 @@ class CategoryRenderer {
     // Add list of warnings or singular warning
     const warningsEl = this.dom.createChildOf(titleEl, 'div', 'lh-warnings');
     if (warnings.length === 1) {
-      // TODO(i18n): Maybe need to construct this differently
       warningsEl.textContent = `${Util.UIStrings.warningHeader} ${warnings.join('')}`;
     } else {
       warningsEl.textContent = Util.UIStrings.warningHeader;
