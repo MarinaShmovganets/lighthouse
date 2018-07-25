@@ -1,6 +1,6 @@
 # Lighthouse HTML Report Renderer
 
-[Source on Github](https://github.com/GoogleChrome/lighthouse/tree/master/lighthouse-core/report/html)  | [![Lighthouse package version](https://img.shields.io/npm/v/lighthouse.svg)](https://npmjs.org/package/lighthouse)
+[Source on Github](https://github.com/GoogleChrome/lighthouse/tree/master/lighthouse-core/report/html)
 
 
 ## Overview
