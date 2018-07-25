@@ -224,7 +224,7 @@ function resolveIcuMessageInstanceId(icuMessageInstanceId, locale = 'en-US') {
   const {formattedString} = _formatIcuMessage(locale, icuMessageId,
     icuMessageInstance.icuMessage, icuMessageInstance.values);
 
-  return {icuMessageInstance, formattedString}
+  return {icuMessageInstance, formattedString};
 }
 
 /**
@@ -232,7 +232,6 @@ function resolveIcuMessageInstanceId(icuMessageInstanceId, locale = 'en-US') {
  * @param {LH.Locale} locale
  */
 function replaceIcuMessageInstanceIds(lhr, locale) {
-
   /**
    * @param {*} objectInLHR
    * @param {LH.I18NMessages} icuMessagePaths
