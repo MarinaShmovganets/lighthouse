@@ -232,6 +232,7 @@ class ReportRenderer {
    * @param {LH.I18NRendererStrings} rendererFormattedStrings
    */
   static updateAllUIStrings(rendererFormattedStrings) {
+    // TODO(i18n): don't mutate these here but on the LHR and pass that around everywhere
     for (const [key, value] of Object.entries(rendererFormattedStrings)) {
       Util.UIStrings[key] = value;
     }
