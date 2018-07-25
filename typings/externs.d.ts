@@ -184,9 +184,3 @@ declare global {
     }
   }
 }
-
-declare namespace jest {
-  interface Matchers<R> {
-    toHaveDisplayValue(expected: string | RegExp): R
-  }
-}
