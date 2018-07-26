@@ -3,7 +3,7 @@
     "message": "JavaScript boot-up time"
   },
   "lighthouse-core/audits/bootup-time.js | failureTitle": {
-    "message": "JavaScript boot-up time is too high",
+    "message": "Reduce JavaScript boot-up time",
     "description": "Shown to users as the title of the audit when it is in a failing state."
   },
   "lighthouse-core/audits/bootup-time.js | description": {
@@ -43,7 +43,7 @@
     "message": "Avoids enormous network payloads"
   },
   "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | failureTitle": {
-    "message": "Has enormous network payloads",
+    "message": "Avoid enormous network payloads",
     "description": "Shown to users as the title of the audit when it is in a failing state."
   },
   "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | description": {
@@ -80,7 +80,7 @@
     "message": "Uses efficient cache policy on static assets"
   },
   "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | failureTitle": {
-    "message": "Uses inefficient cache policy on static assets",
+    "message": "Serve static assets with an efficient cache policy",
     "description": "Shown to users as the title of the audit when it is in a failing state."
   },
   "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | description": {
@@ -114,7 +114,7 @@
     "message": "Image formats like JPEG 2000, JPEG XR, and WebP often provide better compression than PNG or JPEG, which means faster downloads and less data consumption. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/webp)."
   },
   "lighthouse-core/audits/critical-request-chains.js | title": {
-    "message": "Critical Request Chains"
+    "message": "Minimize Critical Request Chains"
   },
   "lighthouse-core/audits/critical-request-chains.js | description": {
     "message": "The Critical Request Chains below show you what resources are issued with a high priority. Consider reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources to improve page load. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/critical-request-chains)."
@@ -126,7 +126,7 @@
     "message": "Avoids an excessive DOM size"
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | failureTitle": {
-    "message": "Uses an excessive DOM size",
+    "message": "Avoid an excessive DOM size",
     "description": "Shown to users as the title of the audit when it is in a failing state."
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | description": {
@@ -148,7 +148,7 @@
     "message": "All text remains visible during webfont loads"
   },
   "lighthouse-core/audits/font-display.js | failureTitle": {
-    "message": "Text is invisible while webfonts are loading",
+    "message": "Ensure text remains visible during webfont load",
     "description": "Shown to users as the title of the audit when it is in a failing state."
   },
   "lighthouse-core/audits/font-display.js | description": {
@@ -158,7 +158,7 @@
     "message": "Minimizes main thread work"
   },
   "lighthouse-core/audits/mainthread-work-breakdown.js | failureTitle": {
-    "message": "Has significant main thread work",
+    "message": "Minimize main thread work",
     "description": "Shown to users as the title of the audit when it is in a failing state."
   },
   "lighthouse-core/audits/mainthread-work-breakdown.js | description": {
@@ -210,7 +210,11 @@
     "message": "Redirects introduce additional delays before the page can be loaded. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/redirects)."
   },
   "lighthouse-core/audits/time-to-first-byte.js | title": {
-    "message": "Keep server response times low (TTFB)"
+    "message": "Server response times are low (TTFB)"
+  },
+  "lighthouse-core/audits/time-to-first-byte.js | failureTitle": {
+    "message": "Reduce server response times (TTFB)",
+    "description": "Shown to users as the title of the audit when it is in a failing state."
   },
   "lighthouse-core/audits/time-to-first-byte.js | description": {
     "message": "Time To First Byte identifies the time at which your server sends a response. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/ttfb)."
