@@ -202,10 +202,12 @@ function createMessageInstanceIdFn(filename, fileStrings) {
  * @param {LH.Locale} [locale]
  * @return {string}
  */
-function getDisplayValue(icuMessageIdOrRawString, locale) {
-  return MESSAGE_INSTANCE_ID_REGEX.test(icuMessageIdOrRawString) ?
-    resolveIcuMessageInstanceId(icuMessageIdOrRawString, locale).formattedString :
-    icuMessageIdOrRawString;
+function getFormatted(icuMessageIdOrRawString, locale) {
+  if (MESSAGE_INSTANCE_ID_REGEX.test(icuMessageIdOrRawString)) {
+    return _resolveIcuMessageInstanceId(icuMessageIdOrRawString, locale).formattedString;
+  }
+
+  return icuMessageIdOrRawString;
 }
 
 /**
@@ -213,7 +215,7 @@ function getDisplayValue(icuMessageIdOrRawString, locale) {
  * @param {LH.Locale} [locale]
  * @return {{icuMessageInstance: IcuMessageInstance, formattedString: string}}
  */
-function resolveIcuMessageInstanceId(icuMessageInstanceId, locale = 'en-US') {
+function _resolveIcuMessageInstanceId(icuMessageInstanceId, locale = 'en-US') {
   const matches = icuMessageInstanceId.match(MESSAGE_INSTANCE_ID_REGEX);
   if (!matches) throw new Error(`${icuMessageInstanceId} is not a valid message instance ID`);
 
@@ -245,7 +247,7 @@ function replaceIcuMessageInstanceIds(lhr, locale) {
 
       // Check to see if the value in the LHR looks like a string reference. If it is, replace it.
       if (typeof value === 'string' && MESSAGE_INSTANCE_ID_REGEX.test(value)) {
-        const {icuMessageInstance, formattedString} = resolveIcuMessageInstanceId(value, locale);
+        const {icuMessageInstance, formattedString} = _resolveIcuMessageInstanceId(value, locale);
         const messageInstancesInLHR = icuMessagePaths[icuMessageInstance.icuMessageId] || [];
         const currentPathAsString = _formatPathAsString(currentPathInLHR);
 
@@ -274,7 +276,6 @@ module.exports = {
   getDefaultLocale,
   getRendererFormattedStrings,
   createMessageInstanceIdFn,
-  getDisplayValue,
-  resolveIcuMessageInstanceId,
+  getFormatted,
   replaceIcuMessageInstanceIds,
 };
