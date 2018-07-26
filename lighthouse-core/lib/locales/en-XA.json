@@ -42,7 +42,7 @@
     "message": "[Ļåŕĝé ñéţŵöŕķ þåýļöåðš çöšţ ûšéŕš ŕéåļ möñéý åñð åŕé ĥîĝĥļý çöŕŕéļåţéð ŵîţĥ ļöñĝ ļöåð ţîméš. [Ļéåŕñ möŕé](ĥţţþš://ðévéļöþéŕš.ĝööĝļé.çöm/ŵéб/ţööļš/ļîĝĥţĥöûšé/åûðîţš/ñéţŵöŕķ-þåýļöåðš). one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree twentyfour twentyfive]"
   },
   "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | displayValue": {
-    "message": "[Ţöţåļ šîžé ŵåš {ţöţåļБýţéš, ñûmбéŕ, бýţéš} ĶБ one two three four five six seven eight nine]"
+    "message": "[Ţöţåļ šîžé ŵåš {totalBytes, number, bytes} ĶБ one two three four five six seven eight nine]"
   },
   "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | failureTitle": {
     "message": "[Ĥåš éñöŕmöûš ñéţŵöŕķ þåýļöåðš one two three four five six seven]"
@@ -207,7 +207,7 @@
     "message": "[Ţîmé Ţö Fîŕšţ Бýţé îðéñţîƒîéš ţĥé ţîmé åţ ŵĥîçĥ ýöûŕ šéŕvéŕ šéñðš å ŕéšþöñšé. [Ļéåŕñ möŕé](ĥţţþš://ðévéļöþéŕš.ĝööĝļé.çöm/ŵéб/ţööļš/ļîĝĥţĥöûšé/åûðîţš/ţţƒб). one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree]"
   },
   "lighthouse-core/audits/time-to-first-byte.js | displayValue": {
-    "message": "[Ŕööţ ðöçûméñţ ţööķ {ţîméÎñMš, ñûmбéŕ, mîļļîšéçöñðš} mš one two three four five six seven eight nine ten eleven]"
+    "message": "[Ŕööţ ðöçûméñţ ţööķ {timeInMs, number, milliseconds} mš one two three four five six seven eight nine ten eleven]"
   },
   "lighthouse-core/audits/time-to-first-byte.js | title": {
     "message": "[Ķééþ šéŕvéŕ ŕéšþöñšé ţîméš ļöŵ (ŢŢFБ) one two three four five six seven eight]"
@@ -270,13 +270,13 @@
     "message": "[Þöţéñţîåļ Šåvîñĝš (mš) one two three]"
   },
   "lighthouse-core/lib/i18n.js | displayValueByteSavings": {
-    "message": "[Þöţéñţîåļ šåvîñĝš öƒ {ŵåšţéðБýţéš, ñûmбéŕ, бýţéš} ĶБ one two three four five six seven eight nine ten eleven]"
+    "message": "[Þöţéñţîåļ šåvîñĝš öƒ {wastedBytes, number, bytes} ĶБ one two three four five six seven eight nine ten eleven]"
   },
   "lighthouse-core/lib/i18n.js | displayValueMsSavings": {
-    "message": "[Þöţéñţîåļ šåvîñĝš öƒ {ŵåšţéðMš, ñûmбéŕ, mîļļîšéçöñðš} mš one two three four five six seven eight nine ten eleven]"
+    "message": "[Þöţéñţîåļ šåvîñĝš öƒ {wastedMs, number, milliseconds} mš one two three four five six seven eight nine ten eleven]"
   },
   "lighthouse-core/lib/i18n.js | ms": {
-    "message": "[{ţîméÎñMš, ñûmбéŕ, mîļļîšéçöñðš} mš one two three four]"
+    "message": "[{timeInMs, number, milliseconds} mš one two three four]"
   },
   "lighthouse-core/report/html/renderer/util.js | auditGroupExpandTooltip": {
     "message": "[Šĥöŵ åûðîţš one two]"
