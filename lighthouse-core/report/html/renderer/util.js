@@ -382,7 +382,7 @@ Util.UIStrings = {
   /** Disclaimer shown to users below the metric values (FCP, DCL, etc) to warn them that the numbers they see will likely change slightly the next time they run Lighthouse. */
   varianceDisclaimer: 'Values are estimated and may vary.',
   /** Column heading label for the listing of opportunity audits. Each audit title represents an opportunity. There are only 2 columns, so no strict character limit.  */
-  opportunityResourceColumnLabel: 'Resource to optimize',
+  opportunityResourceColumnLabel: 'Opportunity',
   /** Column heading label for the estimated page load savings of opportunity audits. Estimated Savings is the total amount of time (in seconds) that Lighthouse computed could be reduced from the total page load time, if the suggested action is taken. There are only 2 columns, so no strict character limit.  */
   opportunitySavingsColumnLabel: 'Estimated Savings',
 
