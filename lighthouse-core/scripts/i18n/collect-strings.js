@@ -14,6 +14,11 @@ const esprima = require('esprima');
 
 const LH_ROOT = path.join(__dirname, '../../../');
 const UISTRINGS_REGEX = /UIStrings = (.|\s)*?\};\n/gim;
+const DEFAULT_CONFIG = require('../../config/default-config');
+const OPPORTUNITIES = DEFAULT_CONFIG.categories.performance.auditRefs
+  .filter(ref => ref.group === 'load-opportunities').map(ref => ref.id);
+const METRICS = DEFAULT_CONFIG.categories.performance.auditRefs
+  .filter(ref => ref.group === 'metrics').map(ref => ref.id);
 
 /**
  * @typedef ICUMessageDefn
@@ -31,16 +36,28 @@ const ignoredPathComponents = [
 ];
 
 const defaultDescriptions = {
-  failureTitle: 'Shown to users as the title of the audit when it is in a failing state.',
+  title: 'The title of the audit when it is in a passing state.',
+  metricTitle: 'The name of the metric.',
+  opportunityTitle: 'The action to take to improve their site performance.',
+  failureTitle: 'The title of the audit when it is in a failing state.',
+  displayValue: 'The short summary of the audit details displayed next to a dropdown button.',
 };
 
 // @ts-ignore - @types/esprima lacks all of these
-function computeDescription(ast, property, startRange) {
+function computeDescription(ast, property, startRange, auditId) {
   const endRange = property.range[0];
   for (const comment of ast.comments || []) {
     if (comment.range[0] < startRange) continue;
     if (comment.range[0] > endRange) continue;
     return comment.value.replace('*', '').trim();
+  }
+
+  if (OPPORTUNITIES.includes(auditId) && property.key.name === 'title') {
+    return defaultDescriptions.opportunityTitle;
+  }
+
+  if (METRICS.includes(auditId) && property.key.name === 'title') {
+    return defaultDescriptions.metricTitle;
   }
 
   return defaultDescriptions[property.key.name];
@@ -89,7 +106,8 @@ function collectAllStringsInDir(dir, strings = {}) {
           for (const property of stmt.declarations[0].init.properties) {
             const key = property.key.name;
             const message = exportVars.UIStrings[key];
-            const description = computeDescription(ast, property, lastPropertyEndIndex);
+            const auditId = exportVars.meta && exportVars.meta.id;
+            const description = computeDescription(ast, property, lastPropertyEndIndex, auditId);
             strings[`${relativePath} | ${key}`] = {message, description};
             lastPropertyEndIndex = property.range[1];
           }
