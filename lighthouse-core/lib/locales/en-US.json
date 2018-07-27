@@ -92,7 +92,7 @@
     "description": "Description of a Lighthouse audit that tells the user *why* they should defer loading any content in CSS that isn’t needed at page load. This is displayed after a user expands the section to see more. No word length limits. 'Learn More' becomes link text to additional documentation."
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | title": {
-    "message": "Unused JavaScript",
+    "message": "Remove unused JavaScript",
     "description": "Imperative title of a Lighthouse audit that tells the user to remove JavaScript that is never evaluated during page load. This is displayed in a list of audit titles that Lighthouse generates."
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": {
@@ -148,7 +148,7 @@
     "description": "Description of a Lighthouse audit that tells the user *why* they should use newer and more efficient image formats. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation."
   },
   "lighthouse-core/audits/critical-request-chains.js | title": {
-    "message": "Minimize Critical Request Depth",
+    "message": "Minimize Critical Requests Depth",
     "description": "Imperative title of a Lighthouse audit that tells the user to reduce the depth of critical network requests to enhance initial load of a page. Critical request chains are series of dependent network requests that are important for page rendering. For example, here's a 4-request-deep chain: The biglogo.jpg image is required, but is requested via the styles.css style code, which is requested by the initialize.js javascript, which is requested by the page's HTML. This is displayed in a list of audit titles that Lighthouse generates."
   },
   "lighthouse-core/audits/critical-request-chains.js | description": {
@@ -300,7 +300,7 @@
     "description": "[ICU Syntax] Label for an audit identifying the number of User Timing timestamps present in the page."
   },
   "lighthouse-core/audits/uses-rel-preconnect.js | title": {
-    "message": "Avoid multiple, costly round trips to any origin",
+    "message": "Preconnect to required origins",
     "description": "Imperative title of a Lighthouse audit that tells the user to connect early to internet domains that will be used to load page resources. Origin is the correct term, however 'domain name' could be used if neccsesary. This is displayed in a list of audit titles that Lighthouse generates."
   },
   "lighthouse-core/audits/uses-rel-preconnect.js | description": {
