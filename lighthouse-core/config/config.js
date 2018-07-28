@@ -8,7 +8,8 @@
 const defaultConfigPath = './default-config.js';
 const defaultConfig = require('./default-config.js');
 const fullConfig = require('./full-config.js');
-const constants = require('./constants');
+const constants = require('./constants.js');
+const i18n = require('./../lib/i18n.js');
 
 const isDeepEqual = require('lodash.isequal');
 const log = require('lighthouse-logger');
@@ -401,17 +402,20 @@ class Config {
   }
 
   /**
-   * @param {LH.Config.SettingsJson=} settings
+   * @param {LH.Config.SettingsJson=} settingsJson
    * @param {LH.Flags=} flags
    * @return {LH.Config.Settings}
    */
-  static initSettings(settings = {}, flags) {
+  static initSettings(settingsJson = {}, flags) {
     // Fill in missing settings with defaults
     const {defaultSettings} = constants;
-    const settingWithDefaults = merge(deepClone(defaultSettings), settings, true);
+    const settingWithDefaults = merge(deepClone(defaultSettings), settingsJson, true);
 
     // Override any applicable settings with CLI flags
     const settingsWithFlags = merge(settingWithDefaults || {}, cleanFlagsForSettings(flags), true);
+
+    // Use locale specified in flags or settings, allowing i18n system to select fallback if needed.
+    settingsWithFlags.locale = i18n.lookupLocale((flags && flags.locale) || settingsJson.locale);
 
     return settingsWithFlags;
   }

@@ -10,6 +10,7 @@ const isDeepEqual = require('lodash.isequal');
 const log = require('lighthouse-logger');
 const MessageFormat = require('intl-messageformat').default;
 const MessageParser = require('intl-messageformat-parser');
+const lookupClosestLocale = require('lookup-closest-locale');
 const LOCALES = require('./locales');
 
 const LH_ROOT = path.join(__dirname, '../../');
@@ -67,6 +68,21 @@ const formats = {
 };
 
 /**
+ * Look up the best available locale for the requested language, falling back by
+ * looking at progressively shorter prefixes (`de-CH-1996` -> `de-CH` -> `de`),
+ * and finally returning the default locale ('en-US') if no match is found.
+ * @param {string=} locale
+ * @return {LH.Locale}
+ */
+function lookupLocale(locale = MessageFormat.defaultLocale) {
+  // TODO: could do more work to sniff out defaultLocale
+  const canonicalLocale = Intl.getCanonicalLocales(locale)[0];
+
+  const closestLocale = lookupClosestLocale(canonicalLocale, LOCALES);
+  return closestLocale || 'en-US';
+}
+
+/**
  * @param {string} icuMessage
  * @param {Record<string, *>} [values]
  */
@@ -118,7 +134,7 @@ const _icuMessageInstanceMap = new Map();
  * @return {{formattedString: string, icuMessage: string}}
  */
 function _formatIcuMessage(locale, icuMessageId, icuMessage, values) {
-  const localeMessages = LOCALES[locale] || {};
+  const localeMessages = LOCALES[locale];
   const localeMessage = localeMessages[icuMessageId] && localeMessages[icuMessageId].message;
   // fallback to the original english message if we couldn't find a message in the specified locale
   // better to have an english message than no message at all, in some number cases it won't even matter
@@ -148,15 +164,6 @@ function _formatPathAsString(pathInLHR) {
   }
 
   return pathAsString;
-}
-
-/**
- * @return {LH.Locale}
- */
-function getDefaultLocale() {
-  const defaultLocale = MessageFormat.defaultLocale;
-  if (defaultLocale in LOCALES) return /** @type {LH.Locale} */ (defaultLocale);
-  return 'en-US';
 }
 
 /**
@@ -208,7 +215,7 @@ function createMessageInstanceIdFn(filename, fileStrings) {
 
 /**
  * @param {string} icuMessageIdOrRawString
- * @param {LH.Locale} [locale]
+ * @param {LH.Locale} locale
  * @return {string}
  */
 function getFormatted(icuMessageIdOrRawString, locale) {
@@ -221,10 +228,10 @@ function getFormatted(icuMessageIdOrRawString, locale) {
 
 /**
  * @param {string} icuMessageInstanceId
- * @param {LH.Locale} [locale]
+ * @param {LH.Locale} locale
  * @return {{icuMessageInstance: IcuMessageInstance, formattedString: string}}
  */
-function _resolveIcuMessageInstanceId(icuMessageInstanceId, locale = 'en-US') {
+function _resolveIcuMessageInstanceId(icuMessageInstanceId, locale) {
   const matches = icuMessageInstanceId.match(MESSAGE_INSTANCE_ID_REGEX);
   if (!matches) throw new Error(`${icuMessageInstanceId} is not a valid message instance ID`);
 
@@ -282,7 +289,7 @@ function replaceIcuMessageInstanceIds(lhr, locale) {
 module.exports = {
   _formatPathAsString,
   UIStrings,
-  getDefaultLocale,
+  lookupLocale,
   getRendererFormattedStrings,
   createMessageInstanceIdFn,
   getFormatted,
