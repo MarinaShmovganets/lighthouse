@@ -68,14 +68,17 @@ const formats = {
 };
 
 /**
- * Look up the best available locale for the requested language, falling back by
- * looking at progressively shorter prefixes (`de-CH-1996` -> `de-CH` -> `de`),
- * and finally returning the default locale ('en-US') if no match is found.
+ * Look up the best available locale for the requested language through these fall backs:
+ * - exact match
+ * - progressively shorter prefixes (`de-CH-1996` -> `de-CH` -> `de`)
+ * - the default locale ('en-US') if no match is found
+ *
+ * If `locale` isn't provided, the default is used.
  * @param {string=} locale
  * @return {LH.Locale}
  */
-function lookupLocale(locale = MessageFormat.defaultLocale) {
-  // TODO: could do more work to sniff out defaultLocale
+function lookupLocale(locale) {
+  // TODO: could do more work to sniff out default locale
   const canonicalLocale = Intl.getCanonicalLocales(locale)[0];
 
   const closestLocale = lookupClosestLocale(canonicalLocale, LOCALES);

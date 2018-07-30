@@ -407,6 +407,9 @@ class Config {
    * @return {LH.Config.Settings}
    */
   static initSettings(settingsJson = {}, flags) {
+    // Use locale specified in flags or settings, allowing i18n system to select fallback if needed.
+    const locale = i18n.lookupLocale((flags && flags.locale) || settingsJson.locale);
+
     // Fill in missing settings with defaults
     const {defaultSettings} = constants;
     const settingWithDefaults = merge(deepClone(defaultSettings), settingsJson, true);
@@ -414,8 +417,8 @@ class Config {
     // Override any applicable settings with CLI flags
     const settingsWithFlags = merge(settingWithDefaults || {}, cleanFlagsForSettings(flags), true);
 
-    // Use locale specified in flags or settings, allowing i18n system to select fallback if needed.
-    settingsWithFlags.locale = i18n.lookupLocale((flags && flags.locale) || settingsJson.locale);
+    // Locale is special and comes only from flags/settings
+    settingsWithFlags.locale = locale;
 
     return settingsWithFlags;
   }

@@ -18,7 +18,7 @@ declare global {
   // Augment Intl to include
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales
   namespace Intl {
-    var getCanonicalLocales: (locales: string | Array<string>) => Array<string>;
+    var getCanonicalLocales: (locales?: string | Array<string>) => Array<string>;
   }
 
   /** Make properties K in T optional. */
