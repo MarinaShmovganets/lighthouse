@@ -407,7 +407,9 @@ class Config {
    * @return {LH.Config.Settings}
    */
   static initSettings(settingsJson = {}, flags) {
-    // Use locale specified in flags or settings, allowing i18n system to select fallback if needed.
+    // If a locale is requested in flags or settings, use it. A typical CLI run will not have one,
+    // however `lookupLocale` will always determine which of our supported locales to use (falling
+    // back if necessary).
     const locale = i18n.lookupLocale((flags && flags.locale) || settingsJson.locale);
 
     // Fill in missing settings with defaults
@@ -417,7 +419,7 @@ class Config {
     // Override any applicable settings with CLI flags
     const settingsWithFlags = merge(settingWithDefaults || {}, cleanFlagsForSettings(flags), true);
 
-    // Locale is special and comes only from flags/settings
+    // Locale is special and comes only from flags/settings/lookupLocale.
     settingsWithFlags.locale = locale;
 
     return settingsWithFlags;
