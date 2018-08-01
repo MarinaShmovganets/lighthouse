@@ -148,20 +148,34 @@ describe('util helpers', () => {
   });
 
   describe('getFinalScreenshot', () => {
-    sampleResults.reportCategories = Object.values(sampleResults.categories);
-    const category = sampleResults.reportCategories.find(cat => cat.id === 'performance');
-    ReportRenderer.smooshAuditResultsIntoCategories(sampleResults.audits,
-      sampleResults.reportCategories);
+    const cloneResults = JSON.parse(JSON.stringify(sampleResults));
+    cloneResults.reportCategories = Object.values(cloneResults.categories);
+    ReportRenderer.smooshAuditResultsIntoCategories(cloneResults.audits,
+      cloneResults.reportCategories);
 
     it('gets a datauri as a string', () => {
-      const datauri = Util.getFinalScreenshot(category);
+      const datauri = Util.getFinalScreenshot(cloneResults);
       assert.equal(typeof datauri, 'string');
       assert.ok(datauri.startsWith('data:image/jpeg;base64,'));
     });
 
-    it('returns null if there are no screenshots', () => {
-      const fakeCategory = Object.assign({}, category, {auditRefs: []});
-      const datauri = Util.getFinalScreenshot(fakeCategory);
+    it('returns null if there is no perf category', () => {
+      const lhrWithoutPerf = JSON.parse(JSON.stringify(sampleResults));
+      delete lhrWithoutPerf.categories.performance;
+      lhrWithoutPerf.reportCategories = Object.values(lhrWithoutPerf.categories);
+
+      const datauri = Util.getFinalScreenshot(lhrWithoutPerf);
+      assert.equal(datauri, null);
+    });
+
+    it('returns null if there is no final-screenshot audit', () => {
+      const lhrNoFinalSS = JSON.parse(JSON.stringify(sampleResults));
+      delete lhrNoFinalSS.audits['final-screenshot'];
+      lhrNoFinalSS.reportCategories = Object.values(lhrNoFinalSS.categories);
+      ReportRenderer.smooshAuditResultsIntoCategories(lhrNoFinalSS.audits,
+        lhrNoFinalSS.reportCategories);
+
+      const datauri = Util.getFinalScreenshot(lhrNoFinalSS);
       assert.equal(datauri, null);
     });
   });

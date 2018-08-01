@@ -28,6 +28,6 @@ describe('Final screenshot', () => {
 
     assert.ok(results.rawValue);
     assert.equal(results.details.timestamp, 225414990.064);
+    assert.ok(results.details.data.startsWith('data:image/jpeg;base64,/9j/4AAQSkZJRgABA'));
   });
-
 });
