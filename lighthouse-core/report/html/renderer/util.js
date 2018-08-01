@@ -39,6 +39,55 @@ class Util {
   }
 
   /**
+   *
+   * @param {LH.Result} result
+   * @return {LH.ReportResult}
+   */
+  static prepareReportResult(result) {
+    // If any mutations happen to the report within the renderers, we want the original object untouched
+    const clone = /** @type {LH.ReportResult} */ (JSON.parse(JSON.stringify(result)));
+
+    // If LHR is older (≤3.0.3), it has no locale setting. Set default.
+    if (!clone.configSettings.locale) {
+      clone.configSettings.locale = 'en-US';
+    }
+    Util.setNumberDateLocale(clone.configSettings.locale);
+    if (clone.i18n && clone.i18n.rendererFormattedStrings) {
+      Util.rendererFormattedStrings = clone.i18n.rendererFormattedStrings;
+    }
+
+    // TODO(phulce): we all agree this is technical debt we should fix
+    if (typeof clone.categories !== 'object') throw new Error('No categories provided.');
+    clone.reportCategories = Object.values(clone.categories);
+    Util.smooshAuditResultsIntoCategories(clone.audits, clone.reportCategories);
+    return clone;
+  }
+
+  /**
+   * Place the AuditResult into the auditDfn (which has just weight & group)
+   * @param {Object<string, LH.Audit.Result>} audits
+   * @param {Array<LH.ReportResult.Category>} reportCategories
+   */
+  static smooshAuditResultsIntoCategories(audits, reportCategories) {
+    for (const category of reportCategories) {
+      category.auditRefs.forEach(auditMeta => {
+        const result = audits[auditMeta.id];
+        auditMeta.result = result;
+      });
+    }
+  }
+
+  /**
+   * @param {LH.I18NRendererStrings} rendererFormattedStrings
+   */
+  static updateAllUIStrings(rendererFormattedStrings) {
+    // TODO(i18n): don't mutate these here but on the LHR and pass that around everywhere
+    for (const [key, value] of Object.entries(rendererFormattedStrings)) {
+      Util.UIStrings[key] = value;
+    }
+  }
+
+  /**
    * @param {string|Array<string|number>=} displayValue
    * @return {string}
    */
