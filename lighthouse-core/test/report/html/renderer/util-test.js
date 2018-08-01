@@ -169,10 +169,7 @@ describe('util helpers', () => {
   });
 
   describe('getFinalScreenshot', () => {
-    const cloneResults = JSON.parse(JSON.stringify(sampleResults));
-    cloneResults.reportCategories = Object.values(cloneResults.categories);
-    ReportRenderer.smooshAuditResultsIntoCategories(cloneResults.audits,
-      cloneResults.reportCategories);
+    const cloneResults = Util.prepareReportResult(sampleResults);
 
     it('gets a datauri as a string', () => {
       const datauri = Util.getFinalScreenshot(cloneResults);

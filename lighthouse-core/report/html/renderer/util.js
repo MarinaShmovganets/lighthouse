@@ -59,32 +59,16 @@ class Util {
     // TODO(phulce): we all agree this is technical debt we should fix
     if (typeof clone.categories !== 'object') throw new Error('No categories provided.');
     clone.reportCategories = Object.values(clone.categories);
-    Util.smooshAuditResultsIntoCategories(clone.audits, clone.reportCategories);
-    return clone;
-  }
 
-  /**
-   * Place the AuditResult into the auditDfn (which has just weight & group)
-   * @param {Object<string, LH.Audit.Result>} audits
-   * @param {Array<LH.ReportResult.Category>} reportCategories
-   */
-  static smooshAuditResultsIntoCategories(audits, reportCategories) {
-    for (const category of reportCategories) {
+    // For convenience, smoosh all AuditResults into their auditDfn (which has just weight & group)
+    for (const category of clone.reportCategories) {
       category.auditRefs.forEach(auditMeta => {
-        const result = audits[auditMeta.id];
+        const result = clone.audits[auditMeta.id];
         auditMeta.result = result;
       });
     }
-  }
 
-  /**
-   * @param {LH.I18NRendererStrings} rendererFormattedStrings
-   */
-  static updateAllUIStrings(rendererFormattedStrings) {
-    // TODO(i18n): don't mutate these here but on the LHR and pass that around everywhere
-    for (const [key, value] of Object.entries(rendererFormattedStrings)) {
-      Util.UIStrings[key] = value;
-    }
+    return clone;
   }
 
   /**
