@@ -20,6 +20,10 @@ const UIStrings = {
     =1 {1 user timing}
     other {# user timings}
     }`,
+  columnName: 'Name',
+  columnType: 'Type',
+  columnStartTime: 'Start Time',
+  columnDuration: 'Duration',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -149,10 +153,10 @@ class UserTimings extends Audit {
       });
 
       const headings = [
-        {key: 'name', itemType: 'text', text: 'Name'},
-        {key: 'timingType', itemType: 'text', text: 'Type'},
-        {key: 'startTime', itemType: 'ms', granularity: 0.01, text: 'Start Time'},
-        {key: 'duration', itemType: 'ms', granularity: 0.01, text: 'Duration'},
+        {key: 'name', itemType: 'text', text: UIStrings.columnName},
+        {key: 'timingType', itemType: 'text', text: UIStrings.columnType},
+        {key: 'startTime', itemType: 'ms', granularity: 0.01, text: UIStrings.columnStartTime},
+        {key: 'duration', itemType: 'ms', granularity: 0.01, text: UIStrings.columnDuration},
       ];
 
       const details = Audit.makeTableDetails(headings, tableRows);
