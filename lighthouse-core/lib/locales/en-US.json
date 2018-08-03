@@ -395,6 +395,14 @@
     "message": "Show audits",
     "description": "The tooltip text on an expandable chevron icon. Clicking the icon expands a section to reveal a list of audit results that was hidden by default."
   },
+  "lighthouse-core/report/html/renderer/util.js | crcInitialNavigation": {
+    "message": "Initial Navigation",
+    "description": "String of text shown in a graphical representation of the flow of network requests for the web page. This label represents the initial network request that fetches an HTML page. This navigation may be redirected (eg. Initial navigation to http://example.com redirects to https://www.example.com)."
+  },
+  "lighthouse-core/report/html/renderer/util.js | crcLongestDurationLabel": {
+    "message": "Maximum critical path latency:",
+    "description": "Label of value shown in the summary of critical request chains. Refers to the total amount of time (milliseconds) of the longest critical path chain/sequence of network requests. Example value: 2310 ms"
+  },
   "lighthouse-core/report/html/renderer/util.js | errorLabel": {
     "message": "Error!",
     "description": "A label, shown next to an audit title or metric title, indicating that there was an error computing it. The user can hover on the label to reveal a tooltip with the extended error message. Translation should be short (< 20 characters)."
