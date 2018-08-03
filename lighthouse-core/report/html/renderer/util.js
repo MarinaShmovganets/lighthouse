@@ -39,7 +39,10 @@ class Util {
   }
 
   /**
-   *
+   * Returns a new LHR that's reshaped for slightly better ergonomics within the report rendereer.
+   * Also, sets up the localized UI strings used within renderer and number/date formatting
+   * The LHR passed in is not mutated.
+   * TODO(team): we all agree the LHR shape change is technical debt we should fix
    * @param {LH.Result} result
    * @return {LH.ReportResult}
    */
@@ -53,10 +56,9 @@ class Util {
     }
     Util.setNumberDateLocale(clone.configSettings.locale);
     if (clone.i18n && clone.i18n.rendererFormattedStrings) {
-      Util.rendererFormattedStrings = clone.i18n.rendererFormattedStrings;
+      Util.updateAllUIStrings(clone.i18n.rendererFormattedStrings);
     }
 
-    // TODO(phulce): we all agree this is technical debt we should fix
     if (typeof clone.categories !== 'object') throw new Error('No categories provided.');
     clone.reportCategories = Object.values(clone.categories);
 
@@ -69,6 +71,17 @@ class Util {
     }
 
     return clone;
+  }
+
+
+  /**
+   * @param {LH.I18NRendererStrings} rendererFormattedStrings
+   */
+  static updateAllUIStrings(rendererFormattedStrings) {
+    // TODO(i18n): don't mutate these here but on the LHR and pass that around everywhere
+    for (const [key, value] of Object.entries(rendererFormattedStrings)) {
+      Util.UIStrings[key] = value;
+    }
   }
 
   /**
