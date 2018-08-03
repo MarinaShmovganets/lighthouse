@@ -137,6 +137,7 @@ class Runner {
       };
 
       lhr.i18n = {
+        locale: settings.locale,
         rendererFormattedStrings: i18n.getRendererFormattedStrings(settings.locale),
         icuMessagePaths: i18n.replaceIcuMessageInstanceIds(lhr, settings.locale),
       };

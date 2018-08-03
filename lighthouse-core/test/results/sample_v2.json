@@ -3403,6 +3403,7 @@
     }
   },
   "i18n": {
+    "locale": "en-US",
     "rendererFormattedStrings": {
       "varianceDisclaimer": "Values are estimated and may vary.",
       "opportunityResourceColumnLabel": "Opportunity",
