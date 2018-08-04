@@ -142,9 +142,9 @@
     outline: -webkit-focus-ring-color auto 3px;
 }
 .lh-root summary:focus {
-    outline: 1px solid hsl(217, 89%, 61%);
+    outline: none;
+    box-shadow: 0 0 0 1px hsl(217, 89%, 61%);
 }
-
 
 .lh-root [hidden] {
   display: none !important;
@@ -161,6 +161,8 @@
   --inner-audit-right-padding: calc(var(--text-indent) + 2px);
   padding-left: var(--inner-audit-left-padding);
   padding-right: var(--inner-audit-right-padding);
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 .lh-details {
@@ -318,11 +320,12 @@
 
 .lh-columns {
   display: flex;
+  width: 100%;
 }
 @media screen and (max-width: 640px) {
   .lh-columns {
     flex-wrap: wrap;
-    width: 100%;
+
   }
 }
 
@@ -502,7 +505,8 @@
 
 .lh-filmstrip-container {
   padding: 0 var(--expandable-indent);
-  margin: 0 auto;
+  /* smaller gap between metrics and filmstrip */
+  margin: -16px auto 0 auto;
 }
 
 .lh-filmstrip {
@@ -523,7 +527,7 @@
   max-width: 60px;
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 750px) {
   .lh-filmstrip {
     flex-wrap: wrap;
     justify-content: left;
@@ -539,10 +543,6 @@
   border-bottom: 1px solid var(--report-secondary-border-color);
 }
 
-.lh-audit:last-child  {
-  border-bottom: none;
-}
-
 .lh-audit--error .lh-audit__display-text {
   color: var(--fail-color);
 }
@@ -550,12 +550,7 @@
 /* Audit Group */
 
 .lh-audit-group {
-  padding: var(--lh-audit-group-vpadding) 0;
-  border-bottom: 1px solid var(--report-secondary-border-color);
-}
-
-.lh-audit-group:last-child {
-  border-bottom: none;
+  margin: var(--lh-audit-group-vpadding) 0;
 }
 
 .lh-audit-group__header {
@@ -778,7 +773,6 @@
 .lh-category {
   --circle-size: calc(2.5 * var(--header-font-size));
   padding: var(--section-padding);
-  border-top: 1px solid var(--report-border-color);
 }
 
 .lh-category:first-of-type {
@@ -932,7 +926,7 @@ summary.lh-passed-audits-summary {
 .lh-table-column--url + th.lh-table-column--bytes,
 .lh-table-column--url + .lh-table-column--bytes + th.lh-table-column--bytes,
 .lh-table-column--url + .lh-table-column--bytes + th.lh-table-column--timespanMs {
-  width: var(--bytes-col-width);
+  max-width: var(--bytes-col-width);
 }
 
 .lh-table-column--code {
