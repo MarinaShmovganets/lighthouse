@@ -10,9 +10,15 @@
 /** @type {Record<LH.Locale, LocaleMessages>} */
 const locales = {
   'en-US': require('./en-US.json'), // The 'source' strings, with descriptions
+  'en': require('./en-US.json'), // According to CLDR/ICU, 'en' == 'en-US' dates/numbers (Why?!)
 
-  // TODO: We shouldn't ship all of en-IE, only the ~10 messages that are different from en-US
-  'en': require('./en-IE.json'), // en-* fallback, use non-american English. Applied to en-GB. en-IE, en-SG, en-ZA, en-IN
+  // TODO: en-IE has just ~10 messages that are different from en-US. We should only ship those.
+  'en-AU': require('./en-IE.json'), // Don't fallback to en (which -> en-US)
+  'en-GB': require('./en-IE.json'), // Don't fallback to en (which -> en-US)
+  'en-IE': require('./en-IE.json'), // Don't fallback to en (which -> en-US)
+  'en-SG': require('./en-IE.json'), // Don't fallback to en (which -> en-US)
+  'en-ZA': require('./en-IE.json'), // Don't fallback to en (which -> en-US)
+  'en-IN': require('./en-IE.json'), // Don't fallback to en (which -> en-US)
 
   'gsw': require('./de.json'), // swiss german. identical (for our purposes) to 'de'
 
