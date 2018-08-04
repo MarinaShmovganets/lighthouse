@@ -49,8 +49,8 @@ const locales = {
   'nl': require('./nl.json'),
   'no': require('./no.json'),
   'pl': require('./pl.json'),
-  'pt-PT': require('./pt-PT.json'),
   'pt': require('./pt.json'), // pt-BR identical, so it falls back into pt
+  'pt-PT': require('./pt-PT.json'),
   'ro': require('./ro.json'),
   'ru': require('./ru.json'),
   'sk': require('./sk.json'),
