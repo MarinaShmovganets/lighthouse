@@ -73,7 +73,7 @@ describe('i18n', () => {
     });
 
     it('falls back to en-US if no match is available', () => {
-      expect(i18n.lookupLocale('jk-Latn-DE-1996-a-ext-x-phonebk-i-klingon')).toEqual('en-US');
+      expect(i18n.lookupLocale('jk-Latn-DE-1996-a-ext-x-phonebk-i-klingon')).toEqual('en');
     });
   });
 });
