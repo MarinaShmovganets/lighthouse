@@ -7,18 +7,19 @@
 
 /** @typedef {Record<string, {message: string}>} LocaleMessages */
 
+// The keys within this const must exactly match the LH.Locale type in externs.d.ts
 /** @type {Record<LH.Locale, LocaleMessages>} */
 const locales = {
   'en-US': require('./en-US.json'), // The 'source' strings, with descriptions
   'en': require('./en-US.json'), // According to CLDR/ICU, 'en' == 'en-US' dates/numbers (Why?!)
 
   // TODO: en-GB has just ~10 messages that are different from en-US. We should only ship those.
-  'en-AU': require('./en-GB.json'), // Don't fallback to en (which -> en-US)
-  'en-GB': require('./en-GB.json'), // Don't fallback to en (which -> en-US)
-  'en-IE': require('./en-GB.json'), // Don't fallback to en (which -> en-US)
-  'en-SG': require('./en-GB.json'), // Don't fallback to en (which -> en-US)
-  'en-ZA': require('./en-GB.json'), // Don't fallback to en (which -> en-US)
-  'en-IN': require('./en-GB.json'), // Don't fallback to en (which -> en-US)
+  'en-AU': require('./en-GB.json'), // Alias of 'en-GB'
+  'en-GB': require('./en-GB.json'), // Alias of 'en-GB'
+  'en-IE': require('./en-GB.json'), // Alias of 'en-GB'
+  'en-SG': require('./en-GB.json'), // Alias of 'en-GB'
+  'en-ZA': require('./en-GB.json'), // Alias of 'en-GB'
+  'en-IN': require('./en-GB.json'), // Alias of 'en-GB'
 
   // All locales from here have a messages file, though we allow fallback to the base locale when the files are identical
   'ar-XB': require('./ar-XB.json'), // psuedolocalization
@@ -69,8 +70,7 @@ const locales = {
   'tr': require('./tr.json'),
   'uk': require('./uk.json'),
   'vi': require('./vi.json'),
-  'zh': require('./zh.json'),
-  'zh-CN': require('./zh.json'), // Alias of 'zh'
+  'zh': require('./zh.json'), // zh-CN identical, so it falls back into zh
   'zh-HK': require('./zh-HK.json'),
   'zh-TW': require('./zh-TW.json'),
 };
