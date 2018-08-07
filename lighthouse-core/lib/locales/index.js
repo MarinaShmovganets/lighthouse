@@ -63,6 +63,7 @@ const locales = {
   'tr': require('./tr.json'),
   'uk': require('./uk.json'),
   'vi': require('./vi.json'),
+  'zh': require('./zh-CN.json'),
   'zh-CN': require('./zh-CN.json'),
   'zh-HK': require('./zh-HK.json'),
   'zh-TW': require('./zh-TW.json'),
