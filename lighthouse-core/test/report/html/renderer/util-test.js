@@ -8,8 +8,6 @@
 const assert = require('assert');
 const Util = require('../../../../report/html/renderer/util.js');
 
-const sampleResults = require('../../../results/sample_v2.json');
-
 const NBSP = '\xa0';
 
 /* eslint-env jest */
