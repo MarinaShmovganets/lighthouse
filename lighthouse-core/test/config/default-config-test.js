@@ -11,7 +11,7 @@ const defaultConfig = require('../../config/default-config.js');
 
 /* eslint-env jest */
 
-describe.only('Default Config', () => {
+describe('Default Config', () => {
   it('only has opportunity audits that return opportunities details', async () => {
     const flags = {
       auditMode: __dirname + '/../results/artifacts/',
