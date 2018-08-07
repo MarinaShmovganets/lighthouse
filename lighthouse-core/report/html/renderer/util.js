@@ -52,7 +52,7 @@ class Util {
 
     // If LHR is older (≤3.0.3), it has no locale setting. Set default.
     if (!clone.configSettings.locale) {
-      clone.configSettings.locale = 'en-US';
+      clone.configSettings.locale = 'en';
     }
     Util.setNumberDateLocale(clone.configSettings.locale);
     if (clone.i18n && clone.i18n.rendererFormattedStrings) {

@@ -40,7 +40,7 @@ class ReportRenderer {
   }
 
   /**
-   * @param {LH.ReportResult} result
+   * @param {LH.Result} result
    * @param {Element} container Parent element to render the report into.
    */
   renderReport(result, container) {
@@ -53,7 +53,7 @@ class ReportRenderer {
     container.appendChild(this._renderReport(report));
 
     // put the UIStrings back into original state
-    ReportRenderer.updateAllUIStrings(originalUIStrings);
+    Util.updateAllUIStrings(originalUIStrings);
 
     return /** @type {Element} **/ (container);
   }
@@ -215,16 +215,6 @@ class ReportRenderer {
     reportFragment.appendChild(container);
 
     return reportFragment;
-  }
-
-  /**
-   * @param {LH.I18NRendererStrings} rendererFormattedStrings
-   */
-  static updateAllUIStrings(rendererFormattedStrings) {
-    // TODO(i18n): don't mutate these here but on the LHR and pass that around everywhere
-    for (const [key, value] of Object.entries(rendererFormattedStrings)) {
-      Util.UIStrings[key] = value;
-    }
   }
 }
 
