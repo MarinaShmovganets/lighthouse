@@ -16,7 +16,6 @@ const fastConfig = {
   'extends': 'lighthouse:default',
   'settings': {
     'onlyAudits': ['viewport'],
-    'onlyCategories': ['performance'],
   },
 };
 
@@ -24,7 +23,7 @@ const getFlags = require('../../cli-flags').getFlags;
 
 describe('CLI run', function() {
   it('runLighthouse completes a LH round trip', () => {
-    const url = 'http://example.com';
+    const url = 'chrome://version';
     const filename = path.join(process.cwd(), 'run.ts.results.json');
     const timeoutFlag = `--max-wait-for-load=${9000}`;
     const flags = getFlags(`--output=json --output-path=${filename} ${timeoutFlag} ${url}`);
@@ -32,7 +31,7 @@ describe('CLI run', function() {
       const {lhr} = passedResults;
       assert.ok(fs.existsSync(filename));
       const results = JSON.parse(fs.readFileSync(filename, 'utf-8'));
-//       assert.equal(results.audits.viewport.rawValue, false);
+      assert.equal(results.audits.viewport.rawValue, false);
 
       // passed results match saved results
       assert.strictEqual(results.fetchTime, lhr.fetchTime);
@@ -42,20 +41,6 @@ describe('CLI run', function() {
           Object.keys(results.audits).length,
           Object.keys(lhr.audits).length);
       assert.deepStrictEqual(results.timing, lhr.timing);
-
-      // Verify all opportunities have a defined overallSavingsMs
-      const opportunityIds = lhr.categories.performance.auditRefs
-        .filter(a => a.group === 'load-opportunities')
-        .map(a => a.id);
-      const opportunityResults = Object.values(lhr.audits).filter(audit =>
-        opportunityIds.includes(audit.id)
-      );
-      opportunityResults.forEach(auditResult => {
-        assert.ok(!auditResult.errorMessage, `${auditResult.id}: ${auditResult.errorMessage}`);
-        assert.equal(auditResult.details.type, 'opportunity');
-        assert.ok(auditResult.details.overallSavingsMs !== undefined,
-            `${auditResult.id} has an undefined overallSavingsMs`);
-      });
 
       fs.unlinkSync(filename);
     });
