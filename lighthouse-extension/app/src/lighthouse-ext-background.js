@@ -73,22 +73,22 @@ async function runLighthouseInExtension(flags, categoryIDs) {
  * Run lighthouse for connection and provide similar results as in CLI.
  * @param {Connection} connection
  * @param {string} url
- * @param {LH.Flags & {logAssets: boolean}} flags Lighthouse flags plus logAssets
+ * @param {LH.Flags} flags Lighthouse flags plus logAssets
           Specify outputFormat to change the output format.
  * @param {Array<string>} categoryIDs Name values of categories to include.
+ * @param {{logAssets: boolean}} lrOpts Options coming from Lightrider
  * @return {Promise<string|Array<string>|void>}
  */
-async function runLighthouseAsInCLI(connection, url, flags, categoryIDs) {
+async function runLighthouseAsInCLI(connection, url, flags, categoryIDs, {logAssets}) {
   log.setLevel('info');
-  // TODO(paulirish): update LR to provide flags and map outputFormat -> output
   const results = await background.runLighthouseForConnection(connection, url, flags, categoryIDs);
-  if (results) {
-    if (flags && flags.logAssets) {
-      await assetSaver.logAssets(results.artifacts, results.lhr.audits);
-    }
+  if (!results) return;
 
-    return results.report;
+  if (logAssets) {
+    await assetSaver.logAssets(results.artifacts, results.lhr.audits);
   }
+
+  return results.report;
 }
 
 
