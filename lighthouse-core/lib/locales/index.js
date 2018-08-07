@@ -33,7 +33,7 @@ const locales = {
   'en-XA': require('./en-XA.json'), // psuedolocalization
   'es': require('./es.json'),
   'fi': require('./fi.json'),
-  'fil': require('./tl.json'), // Alias of 'tl'
+  'fil': require('./fil.json'),
   'fr': require('./fr.json'), // fr-CH identical, so it falls back into fr
   'he': require('./he.json'),
   'hi': require('./hi.json'),
@@ -65,7 +65,7 @@ const locales = {
   'ta': require('./ta.json'),
   'te': require('./te.json'),
   'th': require('./th.json'),
-  'tl': require('./tl.json'),
+  'tl': require('./fil.json'), // Alias of 'fil'
   'tr': require('./tr.json'),
   'uk': require('./uk.json'),
   'vi': require('./vi.json'),
