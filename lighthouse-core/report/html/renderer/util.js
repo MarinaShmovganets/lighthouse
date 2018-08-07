@@ -378,13 +378,11 @@ class Util {
   }
 
   /**
-   * @param {LH.ReportResult} result
+   * @param {LH.ReportResult.Category} perfCategory
    * @return {null|string}
    */
-  static getFinalScreenshot(result) {
-    const category = result.reportCategories.find(cat => cat.id === 'performance');
-    if (!category) return null;
-    const auditRef = category.auditRefs.find(audit => audit.id === 'final-screenshot');
+  static getFinalScreenshot(perfCategory) {
+    const auditRef = perfCategory.auditRefs.find(audit => audit.id === 'final-screenshot');
     if (!auditRef || !auditRef.result || auditRef.result.scoreDisplayMode === 'error') return null;
     return auditRef.result.details.data;
   }
