@@ -54,8 +54,18 @@ class PSI {
     scoreGaugeWrapper.removeAttribute('href');
     dom.find('.lh-permalink', perfCategoryEl).remove();
 
-    const finalScreenshotDataUri = Util.getFinalScreenshot(perfCategory);
+    const finalScreenshotDataUri = PSI.getFinalScreenshot(perfCategory);
     return {scoreGaugeEl, perfCategoryEl, finalScreenshotDataUri};
+  }
+
+  /**
+   * @param {LH.ReportResult.Category} perfCategory
+   * @return {null|string}
+   */
+  static getFinalScreenshot(perfCategory) {
+    const auditRef = perfCategory.auditRefs.find(audit => audit.id === 'final-screenshot');
+    if (!auditRef || !auditRef.result || auditRef.result.scoreDisplayMode === 'error') return null;
+    return auditRef.result.details.data;
   }
 }
 

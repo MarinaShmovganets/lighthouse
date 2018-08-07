@@ -378,16 +378,6 @@ class Util {
   }
 
   /**
-   * @param {LH.ReportResult.Category} perfCategory
-   * @return {null|string}
-   */
-  static getFinalScreenshot(perfCategory) {
-    const auditRef = perfCategory.auditRefs.find(audit => audit.id === 'final-screenshot');
-    if (!auditRef || !auditRef.result || auditRef.result.scoreDisplayMode === 'error') return null;
-    return auditRef.result.details.data;
-  }
-
-  /**
    * @param {LH.Config.Settings} settings
    * @return {{deviceEmulation: string, networkThrottling: string, cpuThrottling: string, summary: string}}
    */

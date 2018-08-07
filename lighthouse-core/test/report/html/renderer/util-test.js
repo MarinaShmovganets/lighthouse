@@ -166,24 +166,4 @@ describe('util helpers', () => {
     Util.formatDisplayValue(displayValue);
     assert.deepStrictEqual(displayValue, cloned, 'displayValue was mutated');
   });
-
-  describe('getFinalScreenshot', () => {
-    it('gets a datauri as a string', () => {
-      const cloneResults = Util.prepareReportResult(sampleResults);
-      const perfCategory = cloneResults.reportCategories.find(cat => cat.id === 'performance');
-      const datauri = Util.getFinalScreenshot(perfCategory);
-      assert.equal(typeof datauri, 'string');
-      assert.ok(datauri.startsWith('data:image/jpeg;base64,'));
-    });
-
-    it('returns null if there is no final-screenshot audit', () => {
-      const clonedResults = JSON.parse(JSON.stringify(sampleResults));
-      delete clonedResults.audits['final-screenshot'];
-      const lhrNoFinalSS = Util.prepareReportResult(clonedResults);
-      const perfCategory = lhrNoFinalSS.reportCategories.find(cat => cat.id === 'performance');
-
-      const datauri = Util.getFinalScreenshot(perfCategory);
-      assert.equal(datauri, null);
-    });
-  });
 });
