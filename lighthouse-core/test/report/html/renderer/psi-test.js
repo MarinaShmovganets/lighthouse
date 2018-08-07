@@ -66,5 +66,35 @@ describe('DOM', () => {
       assert.ok(result.scoreGaugeEl.outerHTML.includes('<svg'), 'score gauge comes with SVG');
       assert.ok(result.perfCategoryEl.outerHTML.length > 50000, 'perfCategory HTML is populated');
     });
+
+    it('throws if there is no perf category', () => {
+      const lhrWithoutPerf = JSON.parse(sampleResultsStr);
+      delete lhrWithoutPerf.categories.performance;
+      const lhrWithoutPerfStr = JSON.stringify(lhrWithoutPerf);
+
+      assert.throws(() => {
+        PSI.prepareLabData(lhrWithoutPerfStr, document);
+      }, /no performance category/i);
+    });
+
+    it('throws if there is no perf category', () => {
+      const lhrWithoutPerf = JSON.parse(sampleResultsStr);
+      delete lhrWithoutPerf.categories.performance;
+      const lhrWithoutPerfStr = JSON.stringify(lhrWithoutPerf);
+
+      assert.throws(() => {
+        PSI.prepareLabData(lhrWithoutPerfStr, document);
+      }, /no performance category/i);
+    });
+
+    it('throws if there is no category groups', () => {
+      const lhrWithoutGroups = JSON.parse(sampleResultsStr);
+      delete lhrWithoutGroups.categoryGroups;
+      const lhrWithoutGroupsStr = JSON.stringify(lhrWithoutGroups);
+
+      assert.throws(() => {
+        PSI.prepareLabData(lhrWithoutGroupsStr, document);
+      }, /no category groups/i);
+    });
   });
 });

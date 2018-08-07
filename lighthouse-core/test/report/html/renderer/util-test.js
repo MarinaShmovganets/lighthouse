@@ -170,26 +170,19 @@ describe('util helpers', () => {
   describe('getFinalScreenshot', () => {
     it('gets a datauri as a string', () => {
       const cloneResults = Util.prepareReportResult(sampleResults);
-      const datauri = Util.getFinalScreenshot(cloneResults);
+      const perfCategory = cloneResults.reportCategories.find(cat => cat.id === 'performance');
+      const datauri = Util.getFinalScreenshot(perfCategory);
       assert.equal(typeof datauri, 'string');
       assert.ok(datauri.startsWith('data:image/jpeg;base64,'));
-    });
-
-    it('returns null if there is no perf category', () => {
-      const clonedResults = JSON.parse(JSON.stringify(sampleResults));
-      delete clonedResults.categories.performance;
-      const lhrWithoutPerf = Util.prepareReportResult(clonedResults);
-
-      const datauri = Util.getFinalScreenshot(lhrWithoutPerf);
-      assert.equal(datauri, null);
     });
 
     it('returns null if there is no final-screenshot audit', () => {
       const clonedResults = JSON.parse(JSON.stringify(sampleResults));
       delete clonedResults.audits['final-screenshot'];
       const lhrNoFinalSS = Util.prepareReportResult(clonedResults);
+      const perfCategory = lhrNoFinalSS.reportCategories.find(cat => cat.id === 'performance');
 
-      const datauri = Util.getFinalScreenshot(lhrNoFinalSS);
+      const datauri = Util.getFinalScreenshot(perfCategory);
       assert.equal(datauri, null);
     });
   });
