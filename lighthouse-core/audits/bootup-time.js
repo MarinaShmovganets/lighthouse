@@ -27,7 +27,7 @@ const UIStrings = {
   columnScriptParse: 'Script Parse',
   /** A message displayed in a Lighthouse audit result warning that Chrome extensions on the user's system substantially affected Lighthouse's measurements and instructs the user on how to run again without those extensions. */
   chromeExtensionsWarning: 'Chrome extensions negatively affected this page\'s load' +
-    ' performance. Try auditing the page in incognito mode or from a profile without extensions.',
+    ' performance. Try auditing the page in incognito mode or from a Chrome profile without extensions.',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);

@@ -157,10 +157,11 @@ class UserTimings extends Audit {
       });
 
       const headings = [
-        {key: 'name', itemType: 'text', text: UIStrings.columnName},
-        {key: 'timingType', itemType: 'text', text: UIStrings.columnType},
-        {key: 'startTime', itemType: 'ms', granularity: 0.01, text: UIStrings.columnStartTime},
-        {key: 'duration', itemType: 'ms', granularity: 0.01, text: UIStrings.columnDuration},
+        {key: 'name', itemType: 'text', text: str_(UIStrings.columnName)},
+        {key: 'timingType', itemType: 'text', text: str_(UIStrings.columnType)},
+        {key: 'startTime', itemType: 'ms', granularity: 0.01,
+          text: str_(UIStrings.columnStartTime)},
+        {key: 'duration', itemType: 'ms', granularity: 0.01, text: str_(UIStrings.columnDuration)},
       ];
 
       const details = Audit.makeTableDetails(headings, tableRows);
