@@ -7,8 +7,10 @@
 
 const assert = require('assert');
 const fs = require('fs');
+
 const jsdom = require('jsdom');
 
+const URL = require('../../../../lib/url-shim');
 const PSI = require('../../../../report/html/renderer/psi.js');
 const Util = require('../../../../report/html/renderer/util.js');
 const DOM = require('../../../../report/html/renderer/dom.js');
@@ -30,6 +32,7 @@ const TEMPLATE_FILE = fs.readFileSync(
 describe('DOM', () => {
   let document;
   beforeAll(() => {
+    global.URL = URL; // COMPAT: Needed for Node < 10
     global.Util = Util;
     global.DOM = DOM;
     global.CategoryRenderer = CategoryRenderer;
@@ -45,6 +48,7 @@ describe('DOM', () => {
   });
 
   afterAll(() => {
+    global.URL = undefined;
     global.Util = undefined;
     global.DOM = undefined;
     global.CategoryRenderer = undefined;
