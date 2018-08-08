@@ -17,8 +17,6 @@
     "diagnostics": true
   },
   "include": [
-    "third-party/devtools/*.js",
-
     "lighthouse-cli/**/*.js",
     "lighthouse-core/**/*.js",
     "lighthouse-extension/app/src/*.js",
