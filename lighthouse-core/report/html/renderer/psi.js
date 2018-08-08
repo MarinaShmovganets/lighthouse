@@ -43,7 +43,7 @@ class PSI {
     if (!reportLHR.categoryGroups) throw new Error(`No category groups found.`);
 
     const perfRenderer = new PerformanceCategoryRenderer(dom, new DetailsRenderer(dom));
-    // PSI environment string will assure the categoryHeader and permalink elements are excluded
+    // PSI environment string will ensure the categoryHeader and permalink elements are excluded
     const perfCategoryEl = perfRenderer.render(perfCategory, reportLHR.categoryGroups, 'PSI');
 
     const scoreGaugeEl = dom.find('.lh-score__gauge', perfCategoryEl);
