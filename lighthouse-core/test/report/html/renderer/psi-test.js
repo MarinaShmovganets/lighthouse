@@ -62,16 +62,17 @@ describe('DOM', () => {
       it('reports expected data', () => {
         const result = PSI.prepareLabData(sampleResultsStr, document);
         assert.ok(result.scoreGaugeEl instanceof document.defaultView.Element);
-        assert.ok(result.perfCategoryEl instanceof document.defaultView.Element);
-        assert.equal(typeof result.finalScreenshotDataUri, 'string');
-
-        assert.ok(result.finalScreenshotDataUri.startsWith('data:image/jpeg;base64,'));
         assert.equal(result.scoreGaugeEl.querySelector('.lh-gauge__wrapper').href, '');
         assert.ok(result.scoreGaugeEl.outerHTML.includes('<style>'), 'score gauge comes with CSS');
         assert.ok(result.scoreGaugeEl.outerHTML.includes('<svg'), 'score gauge comes with SVG');
+
+        assert.ok(result.perfCategoryEl instanceof document.defaultView.Element);
         assert.ok(result.perfCategoryEl.outerHTML.length > 50000, 'perfCategory HTML is populated');
         assert.ok(!result.perfCategoryEl.outerHTML.includes('lh-permalink'),
             'PSI\'s perfCategory HTML doesn\'t include a lh-permalink element');
+
+        assert.equal(typeof result.finalScreenshotDataUri, 'string');
+        assert.ok(result.finalScreenshotDataUri.startsWith('data:image/jpeg;base64,'));
       });
 
       it('throws if there is no perf category', () => {
