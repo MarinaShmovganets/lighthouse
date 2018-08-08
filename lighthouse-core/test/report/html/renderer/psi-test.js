@@ -7,10 +7,8 @@
 
 const assert = require('assert');
 const fs = require('fs');
-
 const jsdom = require('jsdom');
 
-const URL = require('../../../../lib/url-shim');
 const PSI = require('../../../../report/html/renderer/psi.js');
 const Util = require('../../../../report/html/renderer/util.js');
 const DOM = require('../../../../report/html/renderer/dom.js');
@@ -32,7 +30,6 @@ const TEMPLATE_FILE = fs.readFileSync(
 describe('DOM', () => {
   let document;
   beforeAll(() => {
-    global.URL = URL; // do i need to do this?
     global.Util = Util;
     global.DOM = DOM;
     global.CategoryRenderer = CategoryRenderer;
@@ -48,7 +45,6 @@ describe('DOM', () => {
   });
 
   afterAll(() => {
-    global.URL = undefined;
     global.Util = undefined;
     global.DOM = undefined;
     global.CategoryRenderer = undefined;
@@ -69,16 +65,6 @@ describe('DOM', () => {
         assert.ok(result.scoreGaugeEl.outerHTML.includes('<style>'), 'score gauge comes with CSS');
         assert.ok(result.scoreGaugeEl.outerHTML.includes('<svg'), 'score gauge comes with SVG');
         assert.ok(result.perfCategoryEl.outerHTML.length > 50000, 'perfCategory HTML is populated');
-      });
-
-      it('throws if there is no perf category', () => {
-        const lhrWithoutPerf = JSON.parse(sampleResultsStr);
-        delete lhrWithoutPerf.categories.performance;
-        const lhrWithoutPerfStr = JSON.stringify(lhrWithoutPerf);
-
-        assert.throws(() => {
-          PSI.prepareLabData(lhrWithoutPerfStr, document);
-        }, /no performance category/i);
       });
 
       it('throws if there is no perf category', () => {

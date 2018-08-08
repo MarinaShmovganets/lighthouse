@@ -21,20 +21,20 @@
 class PSI {
   /**
    * Returns all the elements that PSI needs to render the report
-   * We keep expose this helper method to minimize the 'public' API surface of the renderer
+   * We expose this helper method to minimize the 'public' API surface of the renderer
    * and allow us to refactor without two-sided patches.
    *
    *   const {scoreGaugeEl, perfCategoryEl, finalScreenshotDataUri} = PSI.prepareLabData(
-   *      LHresponseJsonString,
+   *      LHResultJsonString,
    *      document
    *   );
    *
-   * @param {string} LHresponseJsonString
-   * @param {Document} document
+   * @param {string} LHResultJsonString The stringified version of {LH.Result}
+   * @param {Document} document The host page's window.document
    * @return {{scoreGaugeEl: Element, perfCategoryEl: Element, finalScreenshotDataUri: string|null}}
    */
-  static prepareLabData(LHresponseJsonString, document) {
-    const lhResult = /** @type {LH.Result} */ JSON.parse(LHresponseJsonString);
+  static prepareLabData(LHResultJsonString, document) {
+    const lhResult = /** @type {LH.Result} */ JSON.parse(LHResultJsonString);
     const dom = new DOM(document);
 
     const reportLHR = Util.prepareReportResult(lhResult);
