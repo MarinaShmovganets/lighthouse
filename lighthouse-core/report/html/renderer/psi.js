@@ -43,16 +43,14 @@ class PSI {
     if (!reportLHR.categoryGroups) throw new Error(`No category groups found.`);
 
     const perfRenderer = new PerformanceCategoryRenderer(dom, new DetailsRenderer(dom));
-    const perfCategoryEl = perfRenderer.render(perfCategory, reportLHR.categoryGroups);
+    // PSI environment string will assure the categoryHeader and permalink elements are excluded
+    const perfCategoryEl = perfRenderer.render(perfCategory, reportLHR.categoryGroups, 'PSI');
 
     const scoreGaugeEl = dom.find('.lh-score__gauge', perfCategoryEl);
-    const scoreGaugeWrapper = dom.find('.lh-gauge__wrapper', scoreGaugeEl);
-    scoreGaugeWrapper.classList.add('lh-gauge__wrapper--huge');
-    // Remove Performance category title/description
-    dom.find('.lh-category-header', perfCategoryEl).remove();
-    // Remove navigation links
-    scoreGaugeWrapper.removeAttribute('href');
-    dom.find('.lh-permalink', perfCategoryEl).remove();
+    const scoreGaugeWrapperEl = dom.find('.lh-gauge__wrapper', scoreGaugeEl);
+    scoreGaugeWrapperEl.classList.add('lh-gauge__wrapper--huge');
+    // Remove navigation link on gauge
+    scoreGaugeWrapperEl.removeAttribute('href');
 
     const finalScreenshotDataUri = PSI.getFinalScreenshot(perfCategory);
     return {scoreGaugeEl, perfCategoryEl, finalScreenshotDataUri};
