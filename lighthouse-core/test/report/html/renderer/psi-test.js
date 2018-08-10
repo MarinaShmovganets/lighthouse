@@ -99,9 +99,8 @@ describe('DOM', () => {
 
   describe('_getFinalScreenshot', () => {
     it('gets a datauri as a string', () => {
-      const cloneResults = Util.prepareReportResult(sampleResults);
-      const perfCategory = cloneResults.reportCategories.find(cat => cat.id === 'performance');
-      const datauri = prepareLabData._getFinalScreenshot(perfCategory);
+      const LHResultJsonString = JSON.stringify(sampleResults);
+      const datauri = prepareLabData(LHResultJsonString, document).finalScreenshotDataUri;
       assert.equal(typeof datauri, 'string');
       assert.ok(datauri.startsWith('data:image/jpeg;base64,'));
     });
@@ -109,10 +108,8 @@ describe('DOM', () => {
     it('returns null if there is no final-screenshot audit', () => {
       const clonedResults = JSON.parse(JSON.stringify(sampleResults));
       delete clonedResults.audits['final-screenshot'];
-      const lhrNoFinalSS = Util.prepareReportResult(clonedResults);
-      const perfCategory = lhrNoFinalSS.reportCategories.find(cat => cat.id === 'performance');
-
-      const datauri = prepareLabData._getFinalScreenshot(perfCategory);
+      const LHResultJsonString = JSON.stringify(clonedResults);
+      const datauri = prepareLabData(LHResultJsonString, document).finalScreenshotDataUri;
       assert.equal(datauri, null);
     });
   });

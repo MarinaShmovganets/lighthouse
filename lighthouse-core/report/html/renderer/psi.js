@@ -69,8 +69,6 @@ function _getFinalScreenshot(perfCategory) {
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = prepareLabData;
-  module.exports._getFinalScreenshot = _getFinalScreenshot;
 } else {
-  // @ts-ignore we avoid exposing _getFinalScreenshot to the browser
   self.prepareLabData = prepareLabData;
 }
