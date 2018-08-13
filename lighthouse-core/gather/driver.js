@@ -168,6 +168,25 @@ class Driver {
   }
 
   /**
+   * Call protocol methods.
+   * @template {keyof LH.CrdpCommands} C
+   * @param {C} method
+   * @param {LH.CrdpCommands[C]['paramsType']} params,
+   * @return {Promise<LH.CrdpCommands[C]['returnType']>}
+   */
+  sendCommand(method, ...params) {
+    const domainCommand = /^(\w+)\.(enable|disable)$/.exec(method);
+    if (domainCommand) {
+      const enable = domainCommand[2] === 'enable';
+      if (!this._shouldToggleDomain(domainCommand[1], enable)) {
+        return Promise.resolve();
+      }
+    }
+
+    return this._connection.sendCommand(method, ...params);
+  }
+
+  /**
    * Returns whether a domain is currently enabled.
    * @param {string} domain
    * @return {boolean}
@@ -863,28 +882,11 @@ class Driver {
 
     // Enable Page domain to wait for Page.loadEventFired
     return this.sendCommand('Page.enable')
-      // ensure tracing is stopped before we can start
-      // see https://github.com/GoogleChrome/lighthouse/issues/1091
-      .then(_ => this.endTraceIfStarted())
       .then(_ => this.sendCommand('Tracing.start', {
         categories: uniqueCategories.join(','),
         transferMode: 'ReturnAsStream',
         options: 'sampling-frequency=10000', // 1000 is default and too slow.
       }));
-  }
-
-  /**
-   * @return {Promise<void>}
-   */
-  endTraceIfStarted() {
-    return new Promise((resolve) => {
-      const traceCallback = () => resolve();
-      this.once('Tracing.tracingComplete', traceCallback);
-      return this.sendCommand('Tracing.end', undefined, {silent: true}).catch(() => {
-        this.off('Tracing.tracingComplete', traceCallback);
-        traceCallback();
-      });
-    });
   }
 
   /**
@@ -1164,41 +1166,5 @@ Driver.prototype.off = function off(eventName, cb) {
 
   this._eventEmitter.removeListener(eventName, cb);
 };
-
-/** @typedef {LH.CrdpCommands[keyof LH.CrdpCommands]['returnType']} CommandReturnTypes */
-
-/**
- * Loosely-typed internal implementation of `Driver.sendCommand` which is
- * strictly typed externally on exposed Driver interface. Type tightening occurs
- * when assigned to `Driver.prototype` below and typed with
- * `LH.Protocol.SendCommand`.
- * Necessitated by `params` only being optional for some values of `method`.
- * See https://github.com/Microsoft/TypeScript/issues/5453 for needed variadic
- * primitive.
- * @this {Driver}
- * @param {any} method
- * @param {any=} params,
- * @param {{silent?: boolean}=} cmdOpts
- * @return {Promise<CommandReturnTypes>}
- */
-function _sendCommand(method, params, cmdOpts = {}) {
-  const domainCommand = /^(\w+)\.(enable|disable)$/.exec(method);
-  if (domainCommand) {
-    const enable = domainCommand[2] === 'enable';
-    // eslint-disable-next-line no-invalid-this
-    if (!this._shouldToggleDomain(domainCommand[1], enable)) {
-      return Promise.resolve();
-    }
-  }
-
-  // eslint-disable-next-line no-invalid-this
-  return this._connection.sendCommand(method, params, cmdOpts);
-}
-
-/**
- * Call protocol methods.
- * @type {LH.Protocol.SendCommand}
- */
-Driver.prototype.sendCommand = _sendCommand;
 
 module.exports = Driver;

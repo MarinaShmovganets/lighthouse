@@ -12,7 +12,7 @@ const LHError = require('../../lib/errors');
 /**
  * @typedef {LH.StrictEventEmitter<{'protocolevent': LH.Protocol.RawEventMessage}>} CrdpEventMessageEmitter
  * @typedef {LH.CrdpCommands[keyof LH.CrdpCommands]} CommandInfo
- * @typedef {{resolve: function(Promise<CommandInfo['returnType']>): void, method: keyof LH.CrdpCommands, options: {silent?: boolean}}} CommandCallback
+ * @typedef {{resolve: function(Promise<CommandInfo['returnType']>): void, method: keyof LH.CrdpCommands}} CommandCallback
  */
 
 class Connection {
@@ -44,6 +44,25 @@ class Connection {
    */
   wsEndpoint() {
     return Promise.reject(new Error('Not implemented'));
+  }
+
+  /**
+   * Call protocol methods
+   * @template {keyof LH.CrdpCommands} C
+   * @param {C} method
+   * @param {LH.CrdpCommands[C]['paramsType']} paramArgs,
+   * @return {Promise<LH.CrdpCommands[C]['returnType']>}
+   */
+  sendCommand(method, ...paramArgs) {
+    const params = paramArgs.length ? paramArgs[0] : undefined;
+    log.formatProtocol('method => browser', {method, params}, 'verbose');
+    const id = ++this._lastCommandId;
+    const message = JSON.stringify({id, method, params});
+    this.sendRawMessage(message);
+
+    return new Promise(resolve => {
+      this._callbacks.set(id, {method, resolve});
+    });
   }
 
   /**
@@ -98,8 +117,7 @@ class Connection {
       // type and object.result are matching since only linked by object.id.
       return callback.resolve(Promise.resolve().then(_ => {
         if (object.error) {
-          const logLevel = callback.options.silent ? 'verbose' : 'error';
-          log.formatProtocol('method <= browser ERR', {method: callback.method}, logLevel);
+          log.formatProtocol('method <= browser ERR', {method: callback.method}, 'error');
           throw LHError.fromProtocolMessage(callback.method, object.error);
         }
 
@@ -137,34 +155,5 @@ class Connection {
     }
   }
 }
-
-// Declared outside class body because function expressions can be typed via coercive @type
-/**
- * Looser-typed internal implementation of `Connection.sendCommand` which is
- * strictly typed externally on exposed Connection interface. See
- * `Driver.sendCommand` for explanation.
- * @this {Connection}
- * @param {keyof LH.CrdpCommands} method
- * @param {CommandInfo['paramsType']=} params,
- * @param {{silent?: boolean}=} cmdOpts
- * @return {Promise<CommandInfo['returnType']>}
- */
-function _sendCommand(method, params, cmdOpts = {}) {
-  /* eslint-disable no-invalid-this */
-  log.formatProtocol('method => browser', {method, params}, 'verbose');
-  const id = ++this._lastCommandId;
-  const message = JSON.stringify({id, method, params});
-  this.sendRawMessage(message);
-  return new Promise(resolve => {
-    this._callbacks.set(id, {resolve, method, options: cmdOpts});
-  });
-  /* eslint-enable no-invalid-this */
-}
-
-/**
- * Call protocol methods.
- * @type {LH.Protocol.SendCommand}
- */
-Connection.prototype.sendCommand = _sendCommand;
 
 module.exports = Connection;
