@@ -84,9 +84,10 @@ describe('util helpers', () => {
     assert.equal(Util.calculateRating(0.0), 'fail');
     assert.equal(Util.calculateRating(0.10), 'fail');
     assert.equal(Util.calculateRating(0.45), 'fail');
-    assert.equal(Util.calculateRating(0.55), 'average');
+    assert.equal(Util.calculateRating(0.5), 'average');
     assert.equal(Util.calculateRating(0.75), 'average');
     assert.equal(Util.calculateRating(0.80), 'average');
+    assert.equal(Util.calculateRating(0.90), 'pass');
     assert.equal(Util.calculateRating(1.00), 'pass');
   });
 
