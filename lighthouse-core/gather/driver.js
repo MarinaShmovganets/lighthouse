@@ -142,6 +142,52 @@ class Driver {
   }
 
   /**
+   * Bind listeners for protocol events.
+   * @template {keyof LH.CrdpEvents} E
+   * @param {E} eventName
+   * @param {(...args: IsTuple<LH.CrdpEvents[E]>) => void} cb
+   */
+  on(eventName, cb) {
+    if (this._eventEmitter === null) {
+      throw new Error('connect() must be called before attempting to listen to events.');
+    }
+
+    // log event listeners being bound
+    log.formatProtocol('listen for event =>', {method: eventName}, 'verbose');
+    this._eventEmitter.on(eventName, cb);
+  }
+
+  /**
+   * Bind a one-time listener for protocol events. Listener is removed once it
+   * has been called.
+   * @template {keyof LH.CrdpEvents} E
+   * @param {E} eventName
+   * @param {(...args: IsTuple<LH.CrdpEvents[E]>) => void} cb
+   */
+  once(eventName, cb) {
+    if (this._eventEmitter === null) {
+      throw new Error('connect() must be called before attempting to listen to events.');
+    }
+    // log event listeners being bound
+    log.formatProtocol('listen once for event =>', {method: eventName}, 'verbose');
+    this._eventEmitter.once(eventName, cb);
+  }
+
+  /**
+   * Unbind event listener.
+   * @template {keyof LH.CrdpEvents} E
+   * @param {E} eventName
+   * @param {Function} cb
+   */
+  off(eventName, cb) {
+    if (this._eventEmitter === null) {
+      throw new Error('connect() must be called before attempting to remove an event listener.');
+    }
+
+    this._eventEmitter.removeListener(eventName, cb);
+  }
+
+  /**
    * Debounce enabling or disabling domains to prevent driver users from
    * stomping on each other. Maintains an internal count of the times a domain
    * has been enabled. Returns false if the command would have no effect (domain
@@ -1128,46 +1174,5 @@ class Driver {
     });
   }
 }
-
-// Declared outside class body because function expressions can be typed via more expressive @type
-/**
- * Bind listeners for protocol events.
- * @type {CrdpEventEmitter['on']}
- */
-Driver.prototype.on = function on(eventName, cb) {
-  if (this._eventEmitter === null) {
-    throw new Error('connect() must be called before attempting to listen to events.');
-  }
-
-  // log event listeners being bound
-  log.formatProtocol('listen for event =>', {method: eventName}, 'verbose');
-  this._eventEmitter.on(eventName, cb);
-};
-
-/**
- * Bind a one-time listener for protocol events. Listener is removed once it
- * has been called.
- * @type {CrdpEventEmitter['once']}
- */
-Driver.prototype.once = function once(eventName, cb) {
-  if (this._eventEmitter === null) {
-    throw new Error('connect() must be called before attempting to listen to events.');
-  }
-  // log event listeners being bound
-  log.formatProtocol('listen once for event =>', {method: eventName}, 'verbose');
-  this._eventEmitter.once(eventName, cb);
-};
-
-/**
- * Unbind event listener.
- * @type {CrdpEventEmitter['removeListener']}
- */
-Driver.prototype.off = function off(eventName, cb) {
-  if (this._eventEmitter === null) {
-    throw new Error('connect() must be called before attempting to remove an event listener.');
-  }
-
-  this._eventEmitter.removeListener(eventName, cb);
-};
 
 module.exports = Driver;
