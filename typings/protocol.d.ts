@@ -29,6 +29,27 @@ declare global {
      * responses.
      */
     export type RawMessage = RawCommandMessage | RawEventMessage;
+
+    /**
+     * A more strictly-typed EventEmitter interface that checks the association
+     * of event name and listener payload. TEventRecord should be a record mapping
+     * event names to tuples that can contain zero or more items, which will
+     * serve as the arguments to event listener callbacks.
+     * Inspired by work from https://github.com/bterlson/strict-event-emitter-types.
+     */
+    export type StrictEventEmitter<TEventRecord> = {
+      on<E extends keyof TEventRecord>(event: E, listener: (...args: IsTuple<TEventRecord[E]>) => void): void;
+
+      addListener<E extends keyof TEventRecord>(event: E, listener: (...args: IsTuple<TEventRecord[E]>) => void): void;
+
+      removeListener<E extends keyof TEventRecord>(event: E, listener: Function): void;
+
+      removeAllListeners<E extends keyof TEventRecord>(event?: E): void;
+
+      once<E extends keyof TEventRecord>(event: E, listener: (...args: IsTuple<TEventRecord[E]>) => void): void;
+
+      emit<E extends keyof TEventRecord>(event: E, ...request: IsTuple<TEventRecord[E]>): void;
+    }
   }
 }
 

@@ -6,7 +6,6 @@
 
 import _Crdp from 'devtools-protocol/types/protocol';
 import _CrdpMappings from 'devtools-protocol/types/protocol-mapping'
-import _StrictEventEmitter from '../third-party/strict-event-emitter-types/index';
 import { EventEmitter } from 'events';
 
 declare global {
@@ -41,6 +40,9 @@ declare global {
       T[P];
   };
 
+  /** Filter to convince the compiler that T is spreadable. */
+  type IsTuple<T> = T extends any[] ? T : never;
+
   /**
    * Exclude void from T
    */
@@ -58,8 +60,6 @@ declare global {
     export import Crdp = _Crdp;
     export import CrdpEvents = _CrdpMappings.Events;
     export import CrdpCommands = _CrdpMappings.Commands;
-    export type StrictEventEmitter<TEventRecord, TEmitterType = EventEmitter, TEmitRecord = TEventRecord> =
-      _StrictEventEmitter<TEmitterType, TEventRecord, TEmitRecord>;
 
     interface ThrottlingSettings {
       // simulation settings

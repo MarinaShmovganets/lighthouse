@@ -32,7 +32,7 @@ const DEFAULT_NETWORK_QUIET_THRESHOLD = 5000;
 const DEFAULT_CPU_QUIET_THRESHOLD = 0;
 
 /**
- * @typedef {LH.StrictEventEmitter<LH.CrdpEvents>} CrdpEventEmitter
+ * @typedef {LH.Protocol.StrictEventEmitter<LH.CrdpEvents>} CrdpEventEmitter
  */
 
 class Driver {

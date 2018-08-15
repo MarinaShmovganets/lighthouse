@@ -9,8 +9,10 @@ const EventEmitter = require('events').EventEmitter;
 const log = require('lighthouse-logger');
 const LHError = require('../../lib/errors');
 
+// TODO(bckenny): CommandCallback properties should be tied by command type
 /**
- * @typedef {LH.StrictEventEmitter<{'protocolevent': [LH.Protocol.RawEventMessage]}>} CrdpEventMessageEmitter
+ * @typedef {{'protocolevent': [LH.Protocol.RawEventMessage]}} ProtocolEventRecord
+ * @typedef {LH.Protocol.StrictEventEmitter<ProtocolEventRecord>} CrdpEventMessageEmitter
  * @typedef {LH.CrdpCommands[keyof LH.CrdpCommands]} CommandInfo
  * @typedef {{resolve: function(Promise<CommandInfo['returnType']>): void, method: keyof LH.CrdpCommands}} CommandCallback
  */
