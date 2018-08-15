@@ -8,8 +8,11 @@
 // The ideal input response latency, the time between the input task and the
 // first frame of the response.
 const BASE_RESPONSE_LATENCY = 16;
+// m65 and earlier
 const SCHEDULABLE_TASK_TITLE = 'TaskQueueManager::ProcessTaskFromWorkQueue';
+// In m66-68 refactored to this task title, https://crrev.com/c/883346
 const SCHEDULABLE_TASK_TITLE_ALT1 = 'ThreadControllerImpl::DoWork';
+// m69+ DoWork is different and we now need RunTask, see https://bugs.chromium.org/p/chromium/issues/detail?id=871204#c11
 const SCHEDULABLE_TASK_TITLE_ALT2 = 'ThreadControllerImpl::RunTask';
 const LHError = require('../errors');
 
