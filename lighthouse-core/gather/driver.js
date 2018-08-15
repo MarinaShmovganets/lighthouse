@@ -43,9 +43,8 @@ class Driver {
     this._traceCategories = Driver.traceCategories;
     /**
      * An event emitter that enforces mapping between Crdp event names and payload types.
-     * @type {CrdpEventEmitter}
      */
-    this._eventEmitter = new EventEmitter();
+    this._eventEmitter = /** @type {CrdpEventEmitter} */ (new EventEmitter());
     this._connection = connection;
     // currently only used by WPT where just Page and Network are needed
     this._devtoolsLog = new DevtoolsLog(/^(Page|Network)\./);
@@ -74,7 +73,11 @@ class Driver {
       if (this._networkStatusMonitor) {
         this._networkStatusMonitor.dispatch(event);
       }
-      this._eventEmitter.emit(event.method, event.params);
+      if (event.params) {
+        this._eventEmitter.emit(event.method, event.params);
+      } else {
+        this._eventEmitter.emit(event.method);
+      }
     });
   }
 

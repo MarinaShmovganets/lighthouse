@@ -20,26 +20,25 @@ export interface TypeRecord<T, U, V> {
   ' _emitType'?: V
 }
 
+/** Filter to convince the compiler that T is spreadable. */
+type IsTuple<T> = T extends any[] ? T : never;
 
 // EventEmitter method overrides, modified so no overloaded methods.
 export type OverriddenMethods<
   TEventRecord,
   TEmitRecord = TEventRecord
   > = {
-    on<P extends keyof TEventRecord>(event: P, listener: TEventRecord[P] extends void ? () => void : (m: TEventRecord[P], ...args: any[]) => void): void
+    on<P extends keyof TEventRecord>(event: P, listener: (...args: IsTuple<TEventRecord[P]>) => void): void
 
-    addListener<P extends keyof TEventRecord>(event: P, listener: TEventRecord[P] extends void ? () => void : (m: TEventRecord[P], ...args: any[]) => void): void
+    addListener<P extends keyof TEventRecord>(event: P, listener: (...args: IsTuple<TEventRecord[P]>) => void): void
 
-    addEventListener<P extends keyof TEventRecord>(event: P, listener: TEventRecord[P] extends void ? () => void : (m: TEventRecord[P], ...args: any[]) => void): void
+    addEventListener<P extends keyof TEventRecord>(event: P, listener: (...args: IsTuple<TEventRecord[P]>) => void): void
 
     removeListener<P extends keyof TEventRecord>(event: P, listener: Function): any;
 
-    once<P extends keyof TEventRecord>(event: P, listener: TEventRecord[P] extends void ? () => void : (m: TEventRecord[P], ...args: any[]) => void): void
+    once<P extends keyof TEventRecord>(event: P, listener: (...args: IsTuple<TEventRecord[P]>) => void): void
 
-    // TODO(bckenny): breaking change from original. A void TEmitRecord[P] meant
-    // no second parameter, but now a second one is always required and must
-    // extend `void` (e.g. `undefined`).
-    emit<P extends keyof TEmitRecord>(event: P, request: TEmitRecord[P]): void;
+    emit<P extends keyof TEmitRecord>(event: P, ...request: IsTuple<TEmitRecord[P]>): void;
   }
 
 export type OverriddenKeys = keyof OverriddenMethods<any, any>

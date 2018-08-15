@@ -1693,9 +1693,9 @@ detect-newline@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-2.1.0.tgz#f41f1c10be4b00e87b5f13da680759f2c5bfd3e2"
 
-devtools-protocol@^0.0.581326:
+devtools-protocol@ChromeDevTools/devtools-protocol#7ba43dc:
   version "0.0.581326"
-  resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.581326.tgz#defef107c72c6d2381e73fe658829c1b6f0c52c5"
+  resolved "https://codeload.github.com/ChromeDevTools/devtools-protocol/tar.gz/7ba43dc591b478c5398519fb437eca4cd6e8c41c"
 
 devtools-timeline-model@1.1.6:
   version "1.1.6"

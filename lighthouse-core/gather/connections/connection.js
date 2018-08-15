@@ -10,7 +10,7 @@ const log = require('lighthouse-logger');
 const LHError = require('../../lib/errors');
 
 /**
- * @typedef {LH.StrictEventEmitter<{'protocolevent': LH.Protocol.RawEventMessage}>} CrdpEventMessageEmitter
+ * @typedef {LH.StrictEventEmitter<{'protocolevent': [LH.Protocol.RawEventMessage]}>} CrdpEventMessageEmitter
  * @typedef {LH.CrdpCommands[keyof LH.CrdpCommands]} CommandInfo
  * @typedef {{resolve: function(Promise<CommandInfo['returnType']>): void, method: keyof LH.CrdpCommands}} CommandCallback
  */
@@ -21,8 +21,7 @@ class Connection {
     /** @type {Map<number, CommandCallback>} */
     this._callbacks = new Map();
 
-    /** @type {?CrdpEventMessageEmitter} */
-    this._eventEmitter = new EventEmitter();
+    this._eventEmitter = /** @type {?CrdpEventMessageEmitter} */ (new EventEmitter());
   }
 
   /**
@@ -113,8 +112,6 @@ class Connection {
     if (callback) {
       this._callbacks.delete(object.id);
 
-      // @ts-ignore since can't convince compiler that callback.resolve's return
-      // type and object.result are matching since only linked by object.id.
       return callback.resolve(Promise.resolve().then(_ => {
         if (object.error) {
           log.formatProtocol('method <= browser ERR', {method: callback.method}, 'error');

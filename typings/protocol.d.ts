@@ -9,12 +9,6 @@ declare global {
     /**
      * Union of raw (over the wire) message format of all possible Crdp events,
      * of the form `{method: 'Domain.event', params: eventPayload}`.
-     * TODO(bckenny): currently any `void` payloads are defined as having value
-     * `undefined`, even though CrdpEventEmitter will treat those payloads as
-     * not existing. This is due to how we have to expose these emitters to JS.
-     * See https://github.com/bterlson/strict-event-emitter-types/issues/1 for
-     * search for the fix here. Complication should be entirely isolated to
-     * connection.js.
      */
     export type RawEventMessage = RawEventMessageRecord[keyof RawEventMessageRecord];
 
@@ -48,8 +42,8 @@ declare global {
 type RawEventMessageRecord = {
   [K in keyof LH.CrdpEvents]: {
     method: K,
-    // Drop void for `undefined` (so a JS value is valid). See above TODO
-    params: LH.CrdpEvents[K] extends void ? undefined: LH.CrdpEvents[K]
+    // Drop [] for `undefined` (so a JS value is valid).
+    params: LH.CrdpEvents[K] extends [] ? undefined: LH.CrdpEvents[K][number]
   };
 }
 

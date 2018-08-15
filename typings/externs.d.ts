@@ -5,7 +5,7 @@
  */
 
 import _Crdp from 'devtools-protocol/types/protocol';
-import _CrdpMappings from '../typings/crdp-mapping'
+import _CrdpMappings from 'devtools-protocol/types/protocol-mapping'
 import _StrictEventEmitter from '../third-party/strict-event-emitter-types/index';
 import { EventEmitter } from 'events';
 
