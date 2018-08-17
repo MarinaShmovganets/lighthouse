@@ -39,7 +39,7 @@ module.exports = [
       },
       'external-anchors-use-rel-noopener': {
         score: 0,
-        warnings: [/Unable to determine/],
+        warnings: [/Unable to determine.*<a target="_blank">external link/],
         details: {
           items: {
             length: 3,
