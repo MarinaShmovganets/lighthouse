@@ -136,7 +136,7 @@ function getFlags(manualArgv) {
       .default('output', ['html'])
       .default('port', 0)
       .default('hostname', 'localhost')
-      .default('enable-error-reporting', undefined) // Default so prompted by default
+      .default('enable-error-reporting', undefined) // Undefined so prompted by default
       .check(/** @param {LH.CliFlags} argv */ (argv) => {
         // Lighthouse doesn't need a URL if...
         //   - We're in auditMode (and we have artifacts already)
