@@ -185,7 +185,7 @@ async function onGenerateReportButtonClick(background, settings) {
     feedbackEl.textContent = message;
 
     if (includeReportLink) {
-      feedbackEl.className = 'feedback-error';
+      feedbackEl.className = 'feedback feedback-error';
       feedbackEl.appendChild(buildReportErrorLink(err));
     }
 
