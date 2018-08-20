@@ -35,12 +35,12 @@ class StartUrl extends Gatherer {
 
   /**
    * Read the parsed manifest and return failure reasons or the startUrl
-   * @param {?{value?: {start_url: {value?: string, explanation?: string}}, explanation?: string}} manifest
+   * @param {?{value?: {start_url: {value?: string, warning?: string}}, warning?: string}} manifest
    * @return {{isReadFailure: true, reason: string}|{isReadFailure: false, startUrl: string}}
    */
   _readManifestStartUrl(manifest) {
     if (!manifest || !manifest.value) {
-      const detailedMsg = manifest && manifest.explanation;
+      const detailedMsg = manifest && manifest.warning;
 
       if (detailedMsg) {
         return {isReadFailure: true, reason: `Error fetching web app manifest: ${detailedMsg}`};
@@ -50,12 +50,12 @@ class StartUrl extends Gatherer {
     }
 
     // Even if the start URL had an error, the browser will still supply a fallback URL.
-    // Therefore, we only set the explanation here and continue with the fetch.
-    if (manifest.value.start_url.explanation) {
-      return {isReadFailure: true, reason: manifest.value.start_url.explanation};
+    // Therefore, we only set the warning here and continue with the fetch.
+    if (manifest.value.start_url.warning) {
+      return {isReadFailure: true, reason: manifest.value.start_url.warning};
     }
 
-    // @ts-ignore - TODO(bckenny): should actually be testing value above, not explanation
+    // @ts-ignore - TODO(bckenny): should actually be testing value above, not warning
     return {isReadFailure: false, startUrl: manifest.value.start_url.value};
   }
 
