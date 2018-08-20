@@ -108,6 +108,13 @@ class Driver {
   }
 
   /**
+   * @return {Promise<number>}
+   */
+  getBenchmarkIndex() {
+    return this.evaluateAsync(`(${pageFunctions.ultradumbBenchmark.toString()})()`);
+  }
+
+  /**
    * @return {Promise<void>}
    */
   connect() {

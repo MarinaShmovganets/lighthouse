@@ -374,7 +374,9 @@ class GatherRunner {
     return {
       fetchTime: (new Date()).toJSON(),
       LighthouseRunWarnings: [],
-      UserAgent: await options.driver.getUserAgent(),
+      HostUserAgent: await options.driver.getUserAgent(),
+      NetworkUserAgent: '', // updated later
+      BenchmarkIndex: await options.driver.getBenchmarkIndex(),
       traces: {},
       devtoolsLogs: {},
       settings: options.settings,
@@ -419,6 +421,16 @@ class GatherRunner {
 
         // Save devtoolsLog, but networkRecords are discarded and not added onto artifacts.
         baseArtifacts.devtoolsLogs[passConfig.passName] = passData.devtoolsLog;
+
+        const userAgentEntry = passData.devtoolsLog.find(entry =>
+          entry.method === 'Network.requestWillBeSent' &&
+          !!entry.params.request.headers['User-Agent']
+        );
+
+        if (userAgentEntry && !baseArtifacts.NetworkUserAgent) {
+          // @ts-ignore - guaranteed to exist by the find above
+          baseArtifacts.NetworkUserAgent = userAgentEntry.params.request.headers['User-Agent'];
+        }
 
         // If requested by config, save pass's trace.
         if (passData.trace) {

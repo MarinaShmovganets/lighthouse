@@ -16,6 +16,12 @@ declare global {
       [varName: string]: string;
     }
 
+    export interface Environment {
+      hostUserAgent: string;
+      networkUserAgent: string;
+      benchmarkIndex: number;
+    }
+
     /**
      * The full output of a Lighthouse run.
      */
@@ -43,6 +49,8 @@ declare global {
       runWarnings: string[];
       /** The User-Agent string of the browser used run Lighthouse for these results. */
       userAgent: string;
+      /** Information about the environment in which Lighthouse was run. */
+      environment: Environment;
       /** Execution timings for the Lighthouse run */
       timing: {total: number, [t: string]: number};
       /** The record of all formatted string locations in the LHR and their corresponding source values. */
