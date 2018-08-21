@@ -188,7 +188,7 @@ html, body {
   position: absolute;
   color: #fff;
   bottom: 10px;
-  left: 16px;
+  left: 14px; /* 16px - 2px of shadow from the options button */
   width: 180px;
   line-height: 1.45;
 }

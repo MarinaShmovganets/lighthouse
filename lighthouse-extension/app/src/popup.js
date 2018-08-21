@@ -154,11 +154,14 @@ async function onGenerateReportButtonClick(background, settings) {
   }
   isRunning = true;
 
+  // clearing status message
+  const statusMsg = find('.status__msg');
+  statusMsg.textContent = '';
+
   showRunningSubpage();
 
   const feedbackEl = find('.feedback');
   feedbackEl.textContent = '';
-
   const {selectedCategories, useDevTools} = settings;
   /** @type {LH.Flags} */
   const flags = {throttlingMethod: useDevTools ? 'devtools' : 'simulate'};
