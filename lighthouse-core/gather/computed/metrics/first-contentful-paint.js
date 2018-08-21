@@ -17,16 +17,17 @@ class FirstContentfulPaint extends MetricArtifact {
    * @param {LH.Artifacts.MetricComputationData} data
    * @return {Promise<LH.Artifacts.Metric>}
    */
-  computeObservedMetric(data) {
+  async computeObservedMetric(data) {
     const {traceOfTab} = data;
     if (!traceOfTab.timestamps.firstContentfulPaint) {
       throw new LHError(LHError.errors.NO_FCP);
     }
 
-    return Promise.resolve({
-      timing: traceOfTab.timings.firstContentfulPaint,
+    return {
+      // FCP established as existing, so cast
+      timing: /** @type {number} */ (traceOfTab.timings.firstContentfulPaint),
       timestamp: traceOfTab.timestamps.firstContentfulPaint,
-    });
+    };
   }
 }
 

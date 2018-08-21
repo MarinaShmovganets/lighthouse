@@ -22,11 +22,6 @@ const TracingProcessor = require('../../lib/traces/tracing-processor');
 const LHError = require('../../lib/errors');
 const Sentry = require('../../lib/sentry');
 
-// Bring in web-inspector for side effect of adding [].stableSort
-// See https://github.com/GoogleChrome/lighthouse/pull/2415
-// eslint-disable-next-line no-unused-vars
-const NetworkRequest = require('../../lib/network-request');
-
 class TraceOfTab extends ComputedArtifact {
   get name() {
     return 'TraceOfTab';
@@ -133,34 +128,41 @@ class TraceOfTab extends ComputedArtifact {
     const mainThreadEvents = processEvents
       .filter(e => e.tid === startedInPageEvt.tid);
 
+    // traceEnd must exist since at least navigationStart event was verified as existing.
     const traceEnd = trace.traceEvents.reduce((max, evt) => {
       return max.ts > evt.ts ? max : evt;
     });
+    const fakeEndOfTraceEvt = {ts: traceEnd.ts + (traceEnd.dur || 0)};
 
-    const metrics = {
-      navigationStart,
-      firstPaint,
-      firstContentfulPaint,
-      firstMeaningfulPaint,
-      traceEnd: {ts: traceEnd.ts + (traceEnd.dur || 0)},
-      load,
-      domContentLoaded,
+    /** @param {{ts: number}=} event */
+    const getTimestamp = (event) => event && event.ts;
+    /** @type {LH.Artifacts.TraceTimes} */
+    const timestamps = {
+      navigationStart: navigationStart.ts,
+      firstPaint: getTimestamp(firstPaint),
+      firstContentfulPaint: getTimestamp(firstContentfulPaint),
+      firstMeaningfulPaint: getTimestamp(firstMeaningfulPaint),
+      traceEnd: fakeEndOfTraceEvt.ts,
+      load: getTimestamp(load),
+      domContentLoaded: getTimestamp(domContentLoaded),
     };
 
-    const timings = {};
-    const timestamps = {};
+    /** @param {number=} ts */
+    const getTiming = (ts) => ts === undefined ? undefined : (ts - navigationStart.ts) / 1000;
+    /** @type {LH.Artifacts.TraceTimes} */
+    const timings = {
+      navigationStart: 0,
+      firstPaint: getTiming(timestamps.firstPaint),
+      firstContentfulPaint: getTiming(timestamps.firstContentfulPaint),
+      firstMeaningfulPaint: getTiming(timestamps.firstMeaningfulPaint),
+      traceEnd: (timestamps.traceEnd - navigationStart.ts) / 1000,
+      load: getTiming(timestamps.load),
+      domContentLoaded: getTiming(timestamps.domContentLoaded),
+    };
 
-    Object.keys(metrics).forEach(metric => {
-      timestamps[metric] = metrics[metric] && metrics[metric].ts;
-      timings[metric] = (timestamps[metric] - navigationStart.ts) / 1000;
-    });
-
-    // @ts-ignore - TODO(bckenny): many of these are actually `|undefined`, but
-    // undefined case needs to be handled throughout codebase. See also note for
-    // LH.Artifacts.TraceOfTab.
     return {
-      timings: /** @type {LH.Artifacts.TraceTimes} */ (timings),
-      timestamps: /** @type {LH.Artifacts.TraceTimes} */ (timestamps),
+      timings,
+      timestamps,
       processEvents,
       mainThreadEvents,
       startedInPageEvt,

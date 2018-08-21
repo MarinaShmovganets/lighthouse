@@ -15,6 +15,7 @@ const BaseNode = require('../../lib/dependency-graph/base-node');
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
 const UnusedCSS = require('./unused-css-rules');
 const NetworkRequest = require('../../lib/network-request');
+const LHError = require('../../lib/errors');
 
 /** @typedef {import('../../lib/dependency-graph/simulator/simulator')} Simulator */
 /** @typedef {import('../../lib/dependency-graph/base-node.js').Node} Node */
@@ -91,6 +92,9 @@ class RenderBlockingResources extends Audit {
     const metricComputationData = {trace, devtoolsLog, simulator, settings: metricSettings};
     // @ts-ignore - TODO(bckenny): allow optional `throttling` settings
     const fcpSimulation = await artifacts.requestFirstContentfulPaint(metricComputationData);
+    if (!traceOfTab.timestamps.firstContentfulPaint) {
+      throw new LHError(LHError.errors.NO_FCP);
+    }
     const fcpTsInMs = traceOfTab.timestamps.firstContentfulPaint / 1000;
 
     const nodesByUrl = getNodesAndTimingByUrl(fcpSimulation.optimisticEstimate.nodeTimings);
