@@ -234,7 +234,7 @@ if (typeof module !== 'undefined' && module.exports) {
 // @ts-ignore
 window.runLighthouseInExtension = runLighthouseInExtension;
 // @ts-ignore
-window.runLighthouseAsInCLI = runLighthouseInLR;
+window.runLighthouseInLR = runLighthouseInLR;
 // @ts-ignore
 window.getDefaultCategories = background.getDefaultCategories;
 // @ts-ignore
