@@ -100,6 +100,8 @@ async function runLighthouseInLR(connection, url, flags, {preset, categoryIDs, l
   connection.sendCommand('Emulation.setDeviceMetricsOverride',
 		{width: 800, height: 600, deviceScaleFactor: 0, mobile: false});
 
+  // disableStorageReset because it causes render server hang
+  flags.disableStorageReset = true;
   flags.logLevel = flags.logLevel || 'info';
   const config = LR_PRESETS[preset || 'lr-mobile'];
   if (categoryIDs) {

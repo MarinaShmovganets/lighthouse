@@ -8,10 +8,7 @@
 /** @type {LH.Config.Json} */
 const config = {
   extends: 'lighthouse:default',
-  settings: {
-    // disableStorageReset because it causes render server hang
-    disableStorageReset: true,
-  },
+  settings: {},
 };
 
 module.exports = config;

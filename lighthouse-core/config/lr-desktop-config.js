@@ -9,8 +9,6 @@
 const config = {
   extends: 'lighthouse:default',
   settings: {
-    // disableStorageReset because it causes render server hang
-    disableStorageReset: true,
     disableDeviceEmulation: true,
     throttling: {
       // Using a "broadband" connection type
