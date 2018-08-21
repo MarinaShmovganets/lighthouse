@@ -121,7 +121,7 @@ function getFlags(manualArgv) {
       ])
       .choices('output', printer.getValidOutputOptions())
       .choices('throttling-method', ['devtools', 'provided', 'simulate'])
-      .choices('preset', ['full', 'perf', 'mixed-content'])
+      .choices('preset', ['full', 'perf', 'mixed-content', 'lr-mobile', 'lr-desktop'])
       // force as an array
       // note MUST use camelcase versions or only the kebab-case version will be forced
       .array('blockedUrlPatterns')
