@@ -19,7 +19,7 @@ const LHError = require('../errors');
 class TraceProcessor {
   /**
    * There should *always* be at least one top level event, having 0 typically means something is
-   * drastically wrong with the trace and would should just give up early and loudly.
+   * drastically wrong with the trace and we should just give up early and loudly.
    *
    * @param {LH.TraceEvent[]} events
    */
