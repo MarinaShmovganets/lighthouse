@@ -154,9 +154,9 @@ async function onGenerateReportButtonClick(background, settings) {
   }
   isRunning = true;
 
-  // clearing status message
+  // resetting status message
   const statusMsg = find('.status__msg');
-  statusMsg.textContent = '';
+  statusMsg.textContent = 'Starting...';
 
   showRunningSubpage();
 
