@@ -12,11 +12,10 @@ const ExtensionProtocol = require('../../../lighthouse-core/gather/connections/e
 const log = require('lighthouse-logger');
 const assetSaver = require('../../../lighthouse-core/lib/asset-saver.js');
 
-/** @type {Record<'full'|'lr-mobile'|'lr-desktop', LH.Config.Json>} */
+/** @type {Record<'mobile'|'desktop', LH.Config.Json>} */
 const LR_PRESETS = {
-  'full': require('../../../lighthouse-core/config/full-config'),
-  'lr-mobile': require('../../../lighthouse-core/config/lr-mobile-config'),
-  'lr-desktop': require('../../../lighthouse-core/config/lr-desktop-config'),
+  mobile: require('../../../lighthouse-core/config/lr-mobile-config'),
+  desktop: require('../../../lighthouse-core/config/lr-desktop-config'),
 };
 
 /** @typedef {import('../../../lighthouse-core/gather/connections/connection.js')} Connection */
@@ -92,10 +91,10 @@ async function runLighthouseInExtension(flags, categoryIDs) {
  * @param {Connection} connection
  * @param {string} url
  * @param {LH.Flags} flags Lighthouse flags, including `output`
- * @param {{preset?: 'full'|'lr-desktop'|'lr-mobile', categoryIDs?: Array<string>, logAssets: boolean}} lrOpts Options coming from Lightrider
+ * @param {{lrDevice?: 'DESKTOP'|'MOBILE'|'UNKNOWN_DEVICE', categoryIDs?: Array<string>, logAssets: boolean}} lrOpts Options coming from Lightrider
  * @return {Promise<string|Array<string>|void>}
  */
-async function runLighthouseInLR(connection, url, flags, {preset, categoryIDs, logAssets}) {
+async function runLighthouseInLR(connection, url, flags, {lrDevice, categoryIDs, logAssets}) {
   // Override default device to be desktop, since LR default device has viewport 1x1.
   connection.sendCommand('Emulation.setDeviceMetricsOverride',
     {width: 800, height: 600, deviceScaleFactor: 0, mobile: false});
@@ -103,7 +102,7 @@ async function runLighthouseInLR(connection, url, flags, {preset, categoryIDs, l
   // disableStorageReset because it causes render server hang
   flags.disableStorageReset = true;
   flags.logLevel = flags.logLevel || 'info';
-  const config = LR_PRESETS[preset || 'lr-mobile'];
+  const config = lrDevice === 'DESKTOP' ? LR_PRESETS.desktop : LR_PRESETS.mobile;
   if (categoryIDs) {
     config.settings = config.settings || {};
     config.settings.onlyCategories = categoryIDs;
