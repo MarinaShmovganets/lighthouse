@@ -85,10 +85,11 @@ class TraceOfTab extends ComputedArtifact {
     // Find our first paint of this frame
     const firstPaint = frameEvents.find(e => e.name === 'firstPaint' && e.ts > navigationStart.ts);
 
-    // FCP will follow at/after the FP
+    // FCP will follow at/after the FP. Used in so many places we require it.
     const firstContentfulPaint = frameEvents.find(
       e => e.name === 'firstContentfulPaint' && e.ts > navigationStart.ts
     );
+    if (!firstContentfulPaint) throw new LHError(LHError.errors.NO_FCP);
 
     // fMP will follow at/after the FP
     let firstMeaningfulPaint = frameEvents.find(
@@ -140,24 +141,27 @@ class TraceOfTab extends ComputedArtifact {
     const timestamps = {
       navigationStart: navigationStart.ts,
       firstPaint: getTimestamp(firstPaint),
-      firstContentfulPaint: getTimestamp(firstContentfulPaint),
+      firstContentfulPaint: firstContentfulPaint.ts,
       firstMeaningfulPaint: getTimestamp(firstMeaningfulPaint),
       traceEnd: fakeEndOfTraceEvt.ts,
       load: getTimestamp(load),
       domContentLoaded: getTimestamp(domContentLoaded),
     };
 
+
+    /** @param {number} ts */
+    const getTiming = (ts) => (ts - navigationStart.ts) / 1000;
     /** @param {number=} ts */
-    const getTiming = (ts) => ts === undefined ? undefined : (ts - navigationStart.ts) / 1000;
+    const maybeGetTiming = (ts) => ts === undefined ? undefined : getTiming(ts);
     /** @type {LH.Artifacts.TraceTimes} */
     const timings = {
       navigationStart: 0,
-      firstPaint: getTiming(timestamps.firstPaint),
+      firstPaint: maybeGetTiming(timestamps.firstPaint),
       firstContentfulPaint: getTiming(timestamps.firstContentfulPaint),
-      firstMeaningfulPaint: getTiming(timestamps.firstMeaningfulPaint),
-      traceEnd: (timestamps.traceEnd - navigationStart.ts) / 1000,
-      load: getTiming(timestamps.load),
-      domContentLoaded: getTiming(timestamps.domContentLoaded),
+      firstMeaningfulPaint: maybeGetTiming(timestamps.firstMeaningfulPaint),
+      traceEnd: getTiming(timestamps.traceEnd),
+      load: maybeGetTiming(timestamps.load),
+      domContentLoaded: maybeGetTiming(timestamps.domContentLoaded),
     };
 
     return {

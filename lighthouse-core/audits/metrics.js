@@ -117,8 +117,8 @@ class Metrics extends Audit {
  * @property {number} observedNavigationStartTs
  * @property {number=} observedFirstPaint
  * @property {number=} observedFirstPaintTs
- * @property {number=} observedFirstContentfulPaint
- * @property {number=} observedFirstContentfulPaintTs
+ * @property {number} observedFirstContentfulPaint
+ * @property {number} observedFirstContentfulPaintTs
  * @property {number=} observedFirstMeaningfulPaint
  * @property {number=} observedFirstMeaningfulPaintTs
  * @property {number=} observedTraceEnd

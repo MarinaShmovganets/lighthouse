@@ -368,7 +368,7 @@ declare global {
       export interface TraceTimes {
         navigationStart: number;
         firstPaint?: number;
-        firstContentfulPaint?: number;
+        firstContentfulPaint: number;
         firstMeaningfulPaint?: number;
         traceEnd: number;
         load?: number;

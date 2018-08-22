@@ -90,9 +90,6 @@ class Interactive extends MetricArtifact {
    * @return {{cpuQuietPeriod: TimePeriod, networkQuietPeriod: TimePeriod, cpuQuietPeriods: Array<TimePeriod>, networkQuietPeriods: Array<TimePeriod>}}
    */
   static findOverlappingQuietPeriods(longTasks, networkRecords, traceOfTab) {
-    if (!traceOfTab.timestamps.firstContentfulPaint) {
-      throw new LHError(LHError.errors.NO_FCP);
-    }
     const FcpTsInMs = traceOfTab.timestamps.firstContentfulPaint / 1000;
 
     /** @type {function(TimePeriod):boolean} */
@@ -151,9 +148,6 @@ class Interactive extends MetricArtifact {
    */
   computeObservedMetric(data) {
     const {traceOfTab, networkRecords} = data;
-    if (!traceOfTab.timestamps.firstContentfulPaint) {
-      throw new LHError(LHError.errors.NO_FCP);
-    }
 
     if (!traceOfTab.timestamps.domContentLoaded) {
       throw new LHError(LHError.errors.NO_DCL);
