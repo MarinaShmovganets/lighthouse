@@ -17,8 +17,11 @@ declare global {
     }
 
     export interface Environment {
+      /** The user agent string of the version of Chrome used. */
       hostUserAgent: string;
+      /** The user agent string that was sent over the network. */
       networkUserAgent: string;
+      /** The benchmark index number that indicates rough device class. */
       benchmarkIndex: number;
     }
 

@@ -121,9 +121,9 @@ function getOuterHTMLSnippet(element) {
  * @see https://docs.google.com/spreadsheets/d/1E0gZwKsxegudkjJl8Fki_sOwHKpqgXwt8aBAfuUaB8A/edit?usp=sharing
  *
  * The benchmark creates a string of length 100,000 in a loop.
- * The returned index is the number of numbers per second the string can be created.
+ * The returned index is the number of times per second the string can be created.
  *
- *  - 750+ is a desktop-class device, iPhone X, etc
+ *  - 750+ is a desktop-class device, Core i3 PC, iPhone X, etc
  *  - 300+ is a high-end Android phone, Galaxy S8, low-end Chromebook, etc
  *  - 75+ is a mid-tier Android phone, Nexus 5X, etc
  *  - <75 is a budget Android phone, Alcatel Ideal, Galaxy J2, etc
