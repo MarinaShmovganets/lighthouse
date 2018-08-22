@@ -376,7 +376,7 @@ class GatherRunner {
       LighthouseRunWarnings: [],
       HostUserAgent: await options.driver.getUserAgent(),
       NetworkUserAgent: '', // updated later
-      BenchmarkIndex: await options.driver.getBenchmarkIndex(),
+      BenchmarkIndex: 0, // updated later
       traces: {},
       devtoolsLogs: {},
       settings: options.settings,
@@ -399,6 +399,7 @@ class GatherRunner {
       await driver.connect();
       const baseArtifacts = await GatherRunner.getBaseArtifacts(options);
       await GatherRunner.loadBlank(driver);
+      baseArtifacts.BenchmarkIndex = await options.driver.getBenchmarkIndex();
       await GatherRunner.setupDriver(driver, options);
 
       // Run each pass
