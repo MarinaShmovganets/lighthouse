@@ -91,7 +91,7 @@ async function runLighthouseInExtension(flags, categoryIDs) {
  * @param {Connection} connection
  * @param {string} url
  * @param {LH.Flags} flags Lighthouse flags, including `output`
- * @param {{lrDevice?: 'DESKTOP'|'MOBILE'|'UNKNOWN_DEVICE', categoryIDs?: Array<string>, logAssets: boolean}} lrOpts Options coming from Lightrider
+ * @param {{lrDevice?: 'desktop'|'mobile', categoryIDs?: Array<string>, logAssets: boolean}} lrOpts Options coming from Lightrider
  * @return {Promise<string|Array<string>|void>}
  */
 async function runLighthouseInLR(connection, url, flags, {lrDevice, categoryIDs, logAssets}) {
@@ -102,7 +102,7 @@ async function runLighthouseInLR(connection, url, flags, {lrDevice, categoryIDs,
   // disableStorageReset because it causes render server hang
   flags.disableStorageReset = true;
   flags.logLevel = flags.logLevel || 'info';
-  const config = lrDevice === 'DESKTOP' ? LR_PRESETS.desktop : LR_PRESETS.mobile;
+  const config = lrDevice === 'desktop' ? LR_PRESETS.desktop : LR_PRESETS.mobile;
   if (categoryIDs) {
     config.settings = config.settings || {};
     config.settings.onlyCategories = categoryIDs;
