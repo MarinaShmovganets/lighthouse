@@ -93,7 +93,7 @@ module.exports = [
             // listeners to passive. See https://www.chromestatus.com/features/5093566007214080
             // Note: It was 4, but {passive:false} doesn't get a warning as of M63: https://crbug.com/770208
             // Note: It was 3, but wheel events are now also passive as of field trial in M71 https://crbug.com/626196
-            length: '>=2',
+            length: '>=1',
           },
         },
       },

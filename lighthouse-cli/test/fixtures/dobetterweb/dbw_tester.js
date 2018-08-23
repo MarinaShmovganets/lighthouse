@@ -15,16 +15,6 @@ if (location.search === '' || params.has('dateNow')) {
   const d = Date.now();
 }
 
-if (location.search === '' || params.has('passiveEvents')) {
-  document.addEventListener('load', () => {
-    // FAIL - non-passive listener usage in another file.
-    const el = document.querySelector('#touchmove-section');
-    el.addEventListener('touchmove', function(e) {
-      console.log('touchmove');
-    });
-  });
-}
-
 if (location.search === '' || params.has('deprecations')) {
   const div = document.createElement('div');
   div.createShadowRoot();
