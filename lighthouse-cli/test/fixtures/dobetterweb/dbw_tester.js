@@ -17,8 +17,9 @@ if (location.search === '' || params.has('dateNow')) {
 
 if (location.search === '' || params.has('passiveEvents')) {
   // FAIL - non-passive listener usage in another file.
-  document.addEventListener('wheel', e => {
-    console.log('wheel: arrow function');
+  const el = document.querySelector('#touchmove-section');
+  el.addEventListener('touchmove', function(e) {
+    console.log('touchmove');
   });
 }
 
