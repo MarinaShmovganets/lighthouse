@@ -16,10 +16,12 @@ if (location.search === '' || params.has('dateNow')) {
 }
 
 if (location.search === '' || params.has('passiveEvents')) {
-  // FAIL - non-passive listener usage in another file.
-  const el = document.querySelector('#touchmove-section');
-  el.addEventListener('touchmove', function(e) {
-    console.log('touchmove');
+  document.addEventListener('load', () => {
+    // FAIL - non-passive listener usage in another file.
+    const el = document.querySelector('#touchmove-section');
+    el.addEventListener('touchmove', function(e) {
+      console.log('touchmove');
+    });
   });
 }
 
