@@ -11,7 +11,7 @@
 const params = new URLSearchParams(location.search);
 
 if (location.search === '' || params.has('deprecations')) {
-  window.webkitStorageInfo.PERSISTENT; // FAIL
+  window.webkitStorageInfo.PERSISTENT; // FAIL(deprecations)
 }
 
 })();
