@@ -38,39 +38,6 @@ class UsesRelPreloadAudit extends Audit {
   }
 
   /**
-   * @param {LH.Artifacts.CriticalRequestNode} chains
-   * @param {number} maxLevel
-   * @param {number=} minLevel
-   */
-  static _flattenRequests(chains, maxLevel, minLevel = 0) {
-    /** @type {Array<LH.Artifacts.NetworkRequest>} */
-    const requests = [];
-
-    /**
-     * @param {LH.Artifacts.CriticalRequestNode} chains
-     * @param {number} level
-     */
-    const flatten = (chains, level) => {
-      Object.keys(chains).forEach(chain => {
-        if (chains[chain]) {
-          const currentChain = chains[chain];
-          if (level >= minLevel) {
-            requests.push(currentChain.request);
-          }
-
-          if (level < maxLevel) {
-            flatten(currentChain.children, level + 1);
-          }
-        }
-      });
-    };
-
-    flatten(chains, 0);
-
-    return requests;
-  }
-
-  /**
    * @param {LH.Artifacts.NetworkRequest} mainResource
    * @param {LH.Gatherer.Simulation.GraphNode} graph
    * @return {Set<string>}
