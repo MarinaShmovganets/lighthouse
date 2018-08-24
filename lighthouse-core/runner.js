@@ -205,27 +205,35 @@ class Runner {
       }
     }
 
+    // Members of LH.Audit.Context shared across all audits.
+    const auditsContext = {
+      settings,
+      LighthouseRunWarnings: runWarnings,
+      computedCaches: new Map(),
+    };
+
     // Run each audit sequentially
     const auditResults = [];
     for (const auditDefn of audits) {
-      const auditResult = await Runner._runAudit(auditDefn, artifacts, settings, runWarnings);
+      const auditResult = await Runner._runAudit(auditDefn, artifacts, auditsContext);
       auditResults.push(auditResult);
     }
 
     return auditResults;
   }
 
+  /** @typedef {Pick<LH.Audit.Context, 'settings'|'LighthouseRunWarnings'|'computedCaches'>} AuditsContext */
+
   /**
    * Checks that the audit's required artifacts exist and runs the audit if so.
    * Otherwise returns error audit result.
    * @param {LH.Config.AuditDefn} auditDefn
    * @param {LH.Artifacts} artifacts
-   * @param {LH.Config.Settings} settings
-   * @param {Array<string>} runWarnings
+   * @param {AuditsContext} auditsContext
    * @return {Promise<LH.Audit.Result>}
    * @private
    */
-  static async _runAudit(auditDefn, artifacts, settings, runWarnings) {
+  static async _runAudit(auditDefn, artifacts, auditsContext) {
     const audit = auditDefn.implementation;
     const status = `Evaluating: ${i18n.getFormatted(audit.meta.title, 'en-US')}`;
 
@@ -274,8 +282,7 @@ class Runner {
       const auditOptions = Object.assign({}, audit.defaultOptions, auditDefn.options);
       const auditContext = {
         options: auditOptions,
-        settings,
-        LighthouseRunWarnings: runWarnings,
+        ...auditsContext,
       };
 
       const product = await audit.audit(artifacts, auditContext);
@@ -380,6 +387,10 @@ class Runner {
       'metrics', // the sub folder that contains metric names
       'metrics/lantern-metric.js', // lantern metric base class
       'metrics/metric.js', // computed metric base class
+
+      // Computed artifacts switching to the new system.
+      'new-computed-artifact.js',
+      'manifest-values.js',
     ];
 
     const fileList = [
