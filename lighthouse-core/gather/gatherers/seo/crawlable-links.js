@@ -15,7 +15,7 @@ class CrawlableLinks extends Gatherer {
    */
   afterPass(passContext) {
     const expression = `(function() {
-      ${pageFunctions.getElementsInDocument.toString()}; // define function on page
+      ${pageFunctions.getElementsInDocument}; // define function on page
       const selector = 'a[href]:not([rel~="nofollow"])';
       const elements = getElementsInDocument(selector);
       return elements

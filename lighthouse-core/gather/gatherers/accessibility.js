@@ -96,7 +96,7 @@ class Accessibility extends Gatherer {
   afterPass(passContext) {
     const driver = passContext.driver;
     const expression = `(function () {
-      ${pageFunctions.getOuterHTMLSnippet.toString()};
+      ${pageFunctions.getOuterHTMLSnippet};
       ${axeLibSource};
       return (${runA11yChecks.toString()}());
     })()`;

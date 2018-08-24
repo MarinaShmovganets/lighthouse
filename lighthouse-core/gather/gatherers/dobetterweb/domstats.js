@@ -140,7 +140,7 @@ class DOMStats extends Gatherer {
    */
   afterPass(passContext) {
     const expression = `(function() {
-      ${pageFunctions.getOuterHTMLSnippet.toString()};
+      ${pageFunctions.getOuterHTMLSnippet};
       ${createSelectorsLabel.toString()};
       ${elementPathInDOM.toString()};
       return (${getDOMStats.toString()}(document.documentElement));
