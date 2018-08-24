@@ -219,7 +219,7 @@ class Log {
 }
 
 Log.events = new Emitter();
-Log.getTimeEntries = _ => {
+Log.takeTimeEntries = _ => {
   const entries = marky.getEntries();
   marky.clear();
   return entries;
