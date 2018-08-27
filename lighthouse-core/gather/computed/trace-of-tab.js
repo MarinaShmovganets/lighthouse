@@ -78,8 +78,12 @@ class TraceOfTab extends ComputedArtifact {
     // Filter to just events matching the frame ID for sanity
     const frameEvents = keyEvents.filter(e => e.args.frame === frameId);
 
-    // Our navStart will be the last frame navigation in the trace
-    const navigationStart = frameEvents.filter(e => e.name === 'navigationStart').pop();
+    // Our navStart will be the navigation start closest to the first outbound request
+    const requestSentEvt = keyEvents.find(e => e.name === 'ResourceSendRequest');
+    const navigationStartCandidates = frameEvents.filter(e => e.name === 'navigationStart');
+    const navigationStart = navigationStartCandidates
+        .sort((a, b) => Math.abs(a.ts - requestSentEvt.ts) - Math.abs(b.ts - requestSentEvt.ts))
+        .shift();
     if (!navigationStart) throw new LHError(LHError.errors.NO_NAVSTART);
 
     // Find our first paint of this frame
