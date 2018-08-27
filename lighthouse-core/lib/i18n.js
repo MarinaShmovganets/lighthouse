@@ -67,6 +67,7 @@ const formats = {
       maximumFractionDigits: 0,
     },
     seconds: {
+      // Force the seconds to the tenths place for limited output and ease of scanning
       minimumFractionDigits: 1,
       maximumFractionDigits: 1,
     },
@@ -115,9 +116,9 @@ function _preprocessMessageValues(icuMessage, values) {
     // @ts-ignore - el.id is always defined when el.format is defined
     .forEach(el => (clonedValues[el.id] = Math.round(clonedValues[el.id] / 10) * 10));
 
-  // Round all seconds to the nearest tenth
+  // Convert all seconds to the correct unit
   parsed.elements
-    .filter(el => el.format && el.format.style === 'seconds')
+    .filter(el => el.format && el.format.style === 'seconds' && el.id === 'timeInMs')
     // @ts-ignore - el.id is always defined when el.format is defined
     .forEach(el => (clonedValues[el.id] = Math.round(clonedValues[el.id] / 100) / 10));
 
