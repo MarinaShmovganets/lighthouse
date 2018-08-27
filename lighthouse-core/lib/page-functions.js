@@ -145,10 +145,10 @@ function ultradumbBenchmark() {
 }
 
 module.exports = {
-  wrapRuntimeEvalErrorInBrowser: wrapRuntimeEvalErrorInBrowser.toString(),
-  registerPerformanceObserverInPage: registerPerformanceObserverInPage.toString(),
-  checkTimeSinceLastLongTask: checkTimeSinceLastLongTask.toString(),
-  getElementsInDocument: getElementsInDocument.toString(),
-  getOuterHTMLSnippet: getOuterHTMLSnippet.toString(),
-  ultradumbBenchmark: ultradumbBenchmark.toString(),
+  wrapRuntimeEvalErrorInBrowserString: wrapRuntimeEvalErrorInBrowser.toString(),
+  registerPerformanceObserverInPageString: registerPerformanceObserverInPage.toString(),
+  checkTimeSinceLastLongTaskString: checkTimeSinceLastLongTask.toString(),
+  getElementsInDocumentString: getElementsInDocument.toString(),
+  getOuterHTMLSnippetString: getOuterHTMLSnippet.toString(),
+  ultradumbBenchmark: ultradumbBenchmark,
 };
