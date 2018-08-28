@@ -29,6 +29,11 @@ class TraceOfTab extends ComputedArtifact {
     return 'TraceOfTab';
   }
 
+  /**
+   * Returns true if the event is a navigation start event of a document whose URL seems valid.
+   *
+   * @param {LH.TraceEvent} event
+   */
   static isNavigationStartOfInterest(event) {
     return event.name === 'navigationStart' &&
       (!event.args.data || !event.args.documentLoaderURL ||
