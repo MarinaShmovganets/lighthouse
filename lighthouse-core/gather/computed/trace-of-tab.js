@@ -78,21 +78,17 @@ class TraceOfTab extends ComputedArtifact {
     // Filter to just events matching the frame ID for sanity
     const frameEvents = keyEvents.filter(e => e.args.frame === frameId);
 
-    // Our navStart will be the navigation start closest to the first outbound request
-    const requestSentEvt = keyEvents.find(e => e.name === 'ResourceSendRequest');
-    const navigationStart = frameEvents.
-        filter(e => e.name === 'navigationStart').
-        sort((a, b) => Math.abs(a.ts - requestSentEvt.ts) - Math.abs(b.ts - requestSentEvt.ts)).
-        shift();
+    // Our navStart will be the last frame navigation in the trace
+    const navigationStart = frameEvents.filter(e => e.name === 'navigationStart').pop();
     if (!navigationStart) throw new LHError(LHError.errors.NO_NAVSTART);
 
     // Find our first paint of this frame
     const firstPaint = frameEvents.find(e => e.name === 'firstPaint' && e.ts > navigationStart.ts);
 
     // FCP will follow at/after the FP. Used in so many places we require it.
-    const firstContentfulPaints = frameEvents.
-        filter(e => e.name === 'firstContentfulPaint' && e.ts > navigationStart.ts);
-    const firstContentfulPaint = firstContentfulPaints[0];
+    const firstContentfulPaint = frameEvents.find(
+      e => e.name === 'firstContentfulPaint' && e.ts > navigationStart.ts
+    );
     if (!firstContentfulPaint) throw new LHError(LHError.errors.NO_FCP);
 
     // fMP will follow at/after the FP
@@ -181,7 +177,6 @@ class TraceOfTab extends ComputedArtifact {
       loadEvt: load,
       domContentLoadedEvt: domContentLoaded,
       fmpFellBack,
-      hadMultipleNavigations: firstContentfulPaints.length > 1,
     };
   }
 }
