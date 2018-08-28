@@ -36,7 +36,7 @@ class TraceOfTab extends ComputedArtifact {
    */
   static isNavigationStartOfInterest(event) {
     return event.name === 'navigationStart' &&
-      (!event.args.data || !event.args.documentLoaderURL ||
+      (!event.args.data || !event.args.data.documentLoaderURL ||
         ACCEPTABLE_NAVIGATION_URL_REGEX.test(event.args.data.documentLoaderURL));
   }
 
