@@ -57,7 +57,7 @@ Lighthouse has a whole section in the report on improving your performance score
 # PWA
 ### How is the PWA score calculated?
 The PWA score is calculated based on the [Baseline PWA checklist](https://developers.google.com/web/progressive-web-apps/checklist#baseline), which lists 14 requirements. Lighthouse tests for 11 out of the 14 requirements automatically, with the other 3 being manual checks. Each of the 11 audits for the PWA section of the report is weighted equally, so implementing any of the audits correctly will increase your overall score by ~9 points.
-*Note: some metrics in this category have issues with https redirects because of TLS-handshake errors. More specifically you will run into this when using the ```simplehttp2server``` npm package. Subsequent metrics will fail after the https redirects(refs: #5910 & #5910) *
+*Note: some metrics in this category have issues with https redirects because of TLS-handshake errors. More specifically you will run into this when using the ```simplehttp2server``` npm package. Subsequent metrics will fail after the https redirects(refs: #1217 & #5910) *
 
 # Accessibility
 ### How is the accessibility score calculated?
