@@ -447,7 +447,6 @@ class GatherRunner {
       }
       const resetStorage = !options.settings.disableStorageReset;
       if (resetStorage) await driver.clearDataForOrigin(options.requestedUrl);
-      await driver.clearDataForOrigin(options.requestedUrl);
       await GatherRunner.disposeDriver(driver);
       return GatherRunner.collectArtifacts(gathererResults, baseArtifacts);
     } catch (err) {
