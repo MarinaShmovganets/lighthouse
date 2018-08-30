@@ -151,4 +151,5 @@ module.exports = {
   getElementsInDocumentString: getElementsInDocument.toString(),
   getOuterHTMLSnippetString: getOuterHTMLSnippet.toString(),
   ultradumbBenchmark: ultradumbBenchmark,
+  ultradumbBenchmarkString: ultradumbBenchmark.toString(),
 };
