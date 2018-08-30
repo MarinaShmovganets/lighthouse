@@ -41,10 +41,20 @@ describe('CLI run', function() {
           Object.keys(results.audits).length,
           Object.keys(lhr.audits).length);
       assert.deepStrictEqual(results.timing, lhr.timing);
-
       fs.unlinkSync(filename);
     });
   }, 20 * 1000);
+
+  it('runLighthouse fails on file:// URL', () => {
+    const exit = jest.spyOn(process, 'exit').mockImplementation(number => number);
+    const url = 'file:///fake/file/path/index.html';
+    const filename = path.join(process.cwd(), 'run.ts.results.json');
+    const timeoutFlag = `--max-wait-for-load=${9000}`;
+    const flags = getFlags(`--output=json --output-path=${filename} ${timeoutFlag} ${url}`);
+    return run.runLighthouse(url, flags, fastConfig).then(_ => {
+      expect(exit).toHaveBeenCalledWith(1);
+    });
+  });
 });
 
 describe('flag coercing', () => {
