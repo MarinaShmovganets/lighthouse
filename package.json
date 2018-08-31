@@ -90,7 +90,7 @@
     "coveralls": "^2.11.9",
     "csv-validator": "^0.0.3",
     "cz-customizable": "^5.2.0",
-    "devtools-protocol": "ChromeDevTools/devtools-protocol#7ba43dc",
+    "devtools-protocol": "0.0.588129",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "gulp": "^3.9.1",

@@ -145,7 +145,7 @@ class Driver {
    * Bind listeners for protocol events.
    * @template {keyof LH.CrdpEvents} E
    * @param {E} eventName
-   * @param {(...args: IsTuple<LH.CrdpEvents[E]>) => void} cb
+   * @param {(...args: LH.CrdpEvents[E]) => void} cb
    */
   on(eventName, cb) {
     if (this._eventEmitter === null) {
@@ -162,7 +162,7 @@ class Driver {
    * has been called.
    * @template {keyof LH.CrdpEvents} E
    * @param {E} eventName
-   * @param {(...args: IsTuple<LH.CrdpEvents[E]>) => void} cb
+   * @param {(...args: LH.CrdpEvents[E]) => void} cb
    */
   once(eventName, cb) {
     if (this._eventEmitter === null) {

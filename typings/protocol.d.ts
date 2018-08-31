@@ -37,18 +37,18 @@ declare global {
      * serve as the arguments to event listener callbacks.
      * Inspired by work from https://github.com/bterlson/strict-event-emitter-types.
      */
-    export type StrictEventEmitter<TEventRecord> = {
-      on<E extends keyof TEventRecord>(event: E, listener: (...args: IsTuple<TEventRecord[E]>) => void): void;
+    export type StrictEventEmitter<TEventRecord extends Record<keyof TEventRecord, any[]>> = {
+      on<E extends keyof TEventRecord>(event: E, listener: (...args: TEventRecord[E]) => void): void;
 
-      addListener<E extends keyof TEventRecord>(event: E, listener: (...args: IsTuple<TEventRecord[E]>) => void): void;
+      addListener<E extends keyof TEventRecord>(event: E, listener: (...args: TEventRecord[E]) => void): void;
 
       removeListener<E extends keyof TEventRecord>(event: E, listener: Function): void;
 
       removeAllListeners<E extends keyof TEventRecord>(event?: E): void;
 
-      once<E extends keyof TEventRecord>(event: E, listener: (...args: IsTuple<TEventRecord[E]>) => void): void;
+      once<E extends keyof TEventRecord>(event: E, listener: (...args: TEventRecord[E]) => void): void;
 
-      emit<E extends keyof TEventRecord>(event: E, ...request: IsTuple<TEventRecord[E]>): void;
+      emit<E extends keyof TEventRecord>(event: E, ...request: TEventRecord[E]): void;
     }
   }
 }

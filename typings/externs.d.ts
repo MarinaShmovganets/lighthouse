@@ -40,9 +40,6 @@ declare global {
       T[P];
   };
 
-  /** Filter to convince the compiler that T is spreadable. */
-  type IsTuple<T> = T extends any[] ? T : never;
-
   /**
    * Exclude void from T
    */
