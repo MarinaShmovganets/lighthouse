@@ -17,8 +17,8 @@ function loadScript(src) {
     script.src = src;
     script.onload = resolve;
     script.onerror = reject;
-    // @ts-ignore document.head is there.
-    document.head.appendChild(script);
+    // document.head is defined.
+    /** @type {HTMLHeadElement} */ (document.head).appendChild(script);
   });
 }
 
