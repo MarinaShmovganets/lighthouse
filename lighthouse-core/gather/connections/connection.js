@@ -9,7 +9,8 @@ const EventEmitter = require('events').EventEmitter;
 const log = require('lighthouse-logger');
 const LHError = require('../../lib/errors');
 
-// TODO(bckenny): CommandCallback properties should be tied by command type
+// TODO(bckenny): CommandCallback properties should be tied by command type after
+// https://github.com/Microsoft/TypeScript/pull/22348. See driver.js TODO.
 /**
  * @typedef {{'protocolevent': [LH.Protocol.RawEventMessage]}} ProtocolEventRecord
  * @typedef {LH.Protocol.StrictEventEmitter<ProtocolEventRecord>} CrdpEventMessageEmitter
