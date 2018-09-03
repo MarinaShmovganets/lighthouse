@@ -23,6 +23,10 @@ const MINIMAL_LEGIBLE_FONT_SIZE_PX = 12;
 // limit number of protocol calls to make sure that gatherer doesn't take more than 1-2s
 const MAX_NODES_VISITED = 500;
 const MAX_NODES_ANALYZED = 50;
+const nodeTypes = {
+  ELEMENT_NODE: 1,
+  TEXT_NODE: 3,
+};
 
 const Driver = require('../../driver.js'); // eslint-disable-line no-unused-vars
 
@@ -144,7 +148,7 @@ function getFontSizeInformation(driver, node) {
  * @returns {boolean}
  */
 function isNonEmptyTextNode(node) {
-  return node.nodeType === global.Node.TEXT_NODE &&
+  return node.nodeType === nodeTypes.TEXT_NODE &&
     !TEXT_NODE_BLOCK_LIST.has(node.parentNode.nodeName) &&
     getNodeTextLength(node) > 0;
 }

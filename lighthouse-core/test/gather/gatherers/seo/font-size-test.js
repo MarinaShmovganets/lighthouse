@@ -20,14 +20,14 @@ const nodes = [
   {nodeId: 1, nodeName: 'HTML'},
   {nodeId: 2, nodeName: 'HEAD', parentId: 1},
   bodyNode,
-  {nodeId: 4, nodeValue: 'head text', nodeType: global.Node.TEXT_NODE, parentId: 2},
-  {nodeId: 5, nodeValue: smallText, nodeType: global.Node.TEXT_NODE, parentId: 3},
+  {nodeId: 4, nodeValue: 'head text', nodeType: 3, parentId: 2},
+  {nodeId: 5, nodeValue: smallText, nodeType: 3, parentId: 3},
   {nodeId: 6, nodeName: 'H1', parentId: 3},
-  {nodeId: 7, nodeValue: bigText, nodeType: global.Node.TEXT_NODE, parentId: 6},
+  {nodeId: 7, nodeValue: bigText, nodeType: 3, parentId: 6},
   {nodeId: 8, nodeName: 'SCRIPT', parentId: 3},
-  {nodeId: 9, nodeValue: 'script text', nodeType: global.Node.TEXT_NODE, parentId: 8},
+  {nodeId: 9, nodeValue: 'script text', nodeType: 3, parentId: 8},
   failingNode,
-  {nodeId: 11, nodeValue: failingText, nodeType: global.Node.TEXT_NODE, parentId: 10},
+  {nodeId: 11, nodeValue: failingText, nodeType: 3, parentId: 10},
 ];
 
 describe('Font size gatherer', () => {
