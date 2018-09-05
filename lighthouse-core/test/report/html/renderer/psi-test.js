@@ -113,4 +113,12 @@ describe('DOM', () => {
       assert.equal(datauri, null);
     });
   });
+
+  describe('psiDescription', () => {
+    it('provides a description string', () => {
+      const {psiDescription} = prepareLabData(sampleResultsStr, document);
+      assert.equal(typeof psiDescription, 'string');
+      assert.ok(psiDescription.length > 0);
+    });
+  });
 });

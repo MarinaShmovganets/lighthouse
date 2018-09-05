@@ -481,6 +481,9 @@ Util.UIStrings = {
   crcInitialNavigation: 'Initial Navigation',
   /** Label of value shown in the summary of critical request chains. Refers to the total amount of time (milliseconds) of the longest critical path chain/sequence of network requests. Example value: 2310 ms */
   crcLongestDurationLabel: 'Maximum critical path latency:',
+
+  /** Explanation shown to users below performance results to inform them that the test was done with a 3G network connection and to warn them that the numbers they see will likely change slightly the next time they run Lighthouse. 'Lighthouse' becomes link text to additional documentation. */
+  psiDescription: '[Lighthouse](https://developers.google.com/web/tools/lighthouse/) analysis of the current page on emulated 3G. Values are estimated and may vary.',
 };
 
 if (typeof module !== 'undefined' && module.exports) {

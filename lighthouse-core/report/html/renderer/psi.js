@@ -18,6 +18,14 @@
 
 /* globals self DOM PerformanceCategoryRenderer Util DetailsRenderer */
 
+/**
+ * @typedef PreparedLabData
+ * @property {Element} scoreGaugeEl
+ * @property {Element} perfCategoryEl
+ * @property {string|null} finalScreenshotDataUri
+ * @property {string} psiDescription
+ */
+
 
 /**
  * Returns all the elements that PSI needs to render the report
@@ -31,10 +39,10 @@
  *
  * @param {string} LHResultJsonString The stringified version of {LH.Result}
  * @param {Document} document The host page's window.document
- * @return {{scoreGaugeEl: Element, perfCategoryEl: Element, finalScreenshotDataUri: string|null}}
+ * @return {PreparedLabData}
  */
 function prepareLabData(LHResultJsonString, document) {
-  const lhResult = /** @type {LH.Result} */ JSON.parse(LHResultJsonString);
+  const lhResult = /** @type {LH.Result} */ (JSON.parse(LHResultJsonString));
   const dom = new DOM(document);
 
   // Assume fresh styles needed on every call, so mark all template styles as unused.
@@ -57,7 +65,8 @@ function prepareLabData(LHResultJsonString, document) {
   scoreGaugeWrapperEl.removeAttribute('href');
 
   const finalScreenshotDataUri = _getFinalScreenshot(perfCategory);
-  return {scoreGaugeEl, perfCategoryEl, finalScreenshotDataUri};
+  const psiDescription = lhResult.i18n.rendererFormattedStrings.psiDescription;
+  return {scoreGaugeEl, perfCategoryEl, finalScreenshotDataUri, psiDescription};
 }
 
 /**
