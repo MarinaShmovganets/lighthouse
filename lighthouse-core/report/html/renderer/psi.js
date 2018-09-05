@@ -18,14 +18,6 @@
 
 /* globals self DOM PerformanceCategoryRenderer Util DetailsRenderer */
 
-/**
- * @typedef PreparedLabData
- * @property {Element} scoreGaugeEl
- * @property {Element} perfCategoryEl
- * @property {string|null} finalScreenshotDataUri
- * @property {string} psiDescription
- */
-
 
 /**
  * Returns all the elements that PSI needs to render the report
@@ -39,7 +31,7 @@
  *
  * @param {string} LHResultJsonString The stringified version of {LH.Result}
  * @param {Document} document The host page's window.document
- * @return {PreparedLabData}
+ * @return {{scoreGaugeEl: Element, perfCategoryEl: Element, finalScreenshotDataUri: string|null}}
  */
 function prepareLabData(LHResultJsonString, document) {
   const lhResult = /** @type {LH.Result} */ (JSON.parse(LHResultJsonString));
@@ -53,6 +45,11 @@ function prepareLabData(LHResultJsonString, document) {
   if (!perfCategory) throw new Error(`No performance category. Can't make lab data section`);
   if (!reportLHR.categoryGroups) throw new Error(`No category groups found.`);
 
+  // Use custom title and description.
+  reportLHR.categoryGroups.metrics.title = lhResult.i18n.rendererFormattedStrings.labDataTitle;
+  reportLHR.categoryGroups.metrics.description =
+      lhResult.i18n.rendererFormattedStrings.lsPerformanceCategoryDescription;
+
   const perfRenderer = new PerformanceCategoryRenderer(dom, new DetailsRenderer(dom));
   // PSI environment string will ensure the categoryHeader and permalink elements are excluded
   const perfCategoryEl = perfRenderer.render(perfCategory, reportLHR.categoryGroups, 'PSI');
@@ -65,8 +62,7 @@ function prepareLabData(LHResultJsonString, document) {
   scoreGaugeWrapperEl.removeAttribute('href');
 
   const finalScreenshotDataUri = _getFinalScreenshot(perfCategory);
-  const psiDescription = lhResult.i18n.rendererFormattedStrings.psiDescription;
-  return {scoreGaugeEl, perfCategoryEl, finalScreenshotDataUri, psiDescription};
+  return {scoreGaugeEl, perfCategoryEl, finalScreenshotDataUri};
 }
 
 /**
