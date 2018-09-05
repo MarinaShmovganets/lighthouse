@@ -1,0 +1,14 @@
+{
+  "name": "lighthouse_docker",
+  "description": "Lighthouse in Docker",
+  "author": "The Chromium Authors",
+  "license": "Apache-2.0",
+  "main": "server.js",
+  "scripts": {
+    "build": "./docker_build.sh",
+    "build:headful": "./docker_build.sh --headful",
+    "serve": "./docker_run.sh",
+    "serve:headful": "./docker_run.sh --headful",
+    "chrome:version": "docker run -it --rm --cap-add=SYS_ADMIN lighthouse_docker https://example.com --fast --quiet --output=json | node -e \"let f = ''; process.stdin.on('data', d => f += d); process.stdin.on('close', () => console.log(JSON.parse(f).userAgent));\""
+  }
+}
