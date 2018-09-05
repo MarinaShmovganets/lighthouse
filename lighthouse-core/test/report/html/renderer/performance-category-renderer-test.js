@@ -22,6 +22,8 @@ const sampleResultsOrig = require('../../../results/sample_v2.json');
 const TEMPLATE_FILE = fs.readFileSync(__dirname +
     '/../../../../report/html/templates.html', 'utf8');
 
+const PASS_THRESHOLD = 0.9;
+
 describe('PerfCategoryRenderer', () => {
   let category;
   let renderer;
@@ -140,7 +142,7 @@ describe('PerfCategoryRenderer', () => {
     const diagnosticSection = categoryDOM.querySelectorAll('.lh-category > .lh-audit-group')[2];
 
     const diagnosticAudits = category.auditRefs.filter(audit => audit.group === 'diagnostics' &&
-        audit.result.score !== 1 && audit.result.scoreDisplayMode !== 'not-applicable');
+        audit.result.score < PASS_THRESHOLD && audit.result.scoreDisplayMode !== 'not-applicable');
     const diagnosticElements = diagnosticSection.querySelectorAll('.lh-audit');
     assert.equal(diagnosticElements.length, diagnosticAudits.length);
   });
@@ -151,7 +153,8 @@ describe('PerfCategoryRenderer', () => {
 
     const passedAudits = category.auditRefs.filter(audit =>
         audit.group && audit.group !== 'metrics' &&
-        (audit.result.score === 1 || audit.result.scoreDisplayMode === 'not-applicable'));
+        (audit.result.score >= PASS_THRESHOLD ||
+          audit.result.scoreDisplayMode === 'not-applicable'));
     const passedElements = passedSection.querySelectorAll('.lh-audit');
     assert.equal(passedElements.length, passedAudits.length);
   });
