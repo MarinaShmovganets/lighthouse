@@ -163,6 +163,7 @@
   padding-right: var(--inner-audit-right-padding);
   padding-top: 8px;
   padding-bottom: 8px;
+  cursor: default;
 }
 
 .lh-details {
@@ -171,6 +172,7 @@
   margin-bottom: var(--default-padding);
   /* whatever the .lh-details side margins are */
   width: 100%;
+  cursor: default;
 }
 
 .lh-details.flex .lh-code {
@@ -299,6 +301,12 @@
 .lh-audit__header {
   display: flex;
   padding: var(--lh-audit-vpadding) var(--text-indent);
+}
+
+.lh-audit__header,
+.lh-audit-group--manual,
+.lh-passed-audits,
+.lh-audit-group--not-applicable {
   cursor: pointer;
 }
 
@@ -621,6 +629,7 @@
   font-size: var(--body-font-size);
   color: var(--medium-75-gray);
   margin: var(--lh-audit-group-vpadding) 0;
+  cursor: default;
 }
 
 .lh-audit-group--unadorned .lh-audit-group__description {
