@@ -116,7 +116,7 @@ class ScreenshotThumbnails extends Audit {
       }
       let base64Data;
       if (cachedThumbnails.has(frameForTimestamp)) {
-        base64Data = cachedThumbnails.get(frameForTimestamp)
+        base64Data = cachedThumbnails.get(frameForTimestamp);
       } else {
         const imageData = frameForTimestamp.getParsedImage();
         const thumbnailImageData = ScreenshotThumbnails.scaleImageToThumbnail(imageData);
