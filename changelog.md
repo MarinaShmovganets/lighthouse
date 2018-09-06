@@ -7,15 +7,6 @@ Huge thanks to @midzer and @justinribeiro for being so darn helpful. Great stuff
 
 And thanks to @mettamatt for some helpful documentation. Who doesn't love better docs?!
 
-## New Audits
-
-* add a11y manual audit for interactive element affordance ([#5764](https://github.com/googlechrome/lighthouse/pull/5764))
-
-## CLI
-
-* tsc: make LH.Flags type correct and consistent ([#5849](https://github.com/googlechrome/lighthouse/pull/5849))
-* enableErrorReporting must be undefined by default ([#5854](https://github.com/googlechrome/lighthouse/pull/5854))
-
 ## Core
 
 * normalize URL before checking equality ([#5960](https://github.com/googlechrome/lighthouse/pull/5960))
@@ -24,8 +15,7 @@ And thanks to @mettamatt for some helpful documentation. Who doesn't love better
 * export any page-functions as string ([#5902](https://github.com/googlechrome/lighthouse/pull/5902))
 * all ByteEfficiency audits require a trace ([#5840](https://github.com/googlechrome/lighthouse/pull/5840))
 * enhanced noopener output ([#5857](https://github.com/googlechrome/lighthouse/pull/5857))
-(https://github.com/googlechrome/lighthouse/pull/5748))
-* errors: class rename and re-source page load errors ([#5972]
+* errors: class rename and re-source page load errors ([#5972](https://github.com/googlechrome/lighthouse/pull/5972))
 * fix defaultConfig UIStrings and exit code for test ([#5884](https://github.com/googlechrome/lighthouse/pull/5884))
 * remove last debugString references ([#5856](https://github.com/googlechrome/lighthouse/pull/5856))
 * redirects: update redirects to use OpportunityDetails ([#5791](https://github.com/googlechrome/lighthouse/pull/5791))
@@ -82,17 +72,18 @@ And thanks to @mettamatt for some helpful documentation. Who doesn't love better
 
 ## Types
 
-* tsc: don't use index signature in LHErrors ([#5896](https://github.com/googlechrome/lighthouse/pull/5896))
-* tsc: type check config files ([#5858](https://github.com/googlechrome/lighthouse/pull/5858))
-* tsc: don't use index signature in simulator.js ([#5897](https://github.com/googlechrome/lighthouse/pull/5897))
-* tsc: update debugger protocol type checking ([#5836](https://github.com/googlechrome/lighthouse/pull/5836))
-* tsc: remove more reliance on implicit index signatures ([#5874](https://github.com/googlechrome/lighthouse/pull/5874))
-* tsc: update types in emulation.js ([#5830](https://github.com/googlechrome/lighthouse/pull/5830))
-* tsc: tighten traceOfTab timing types ([#5887](https://github.com/googlechrome/lighthouse/pull/5887))
-* tsc: update to ts 3.1 to support new protocol defs ([#5942](https://github.com/googlechrome/lighthouse/pull/5942))
-* tsc: update to latest tsc ([#5581](https://github.com/googlechrome/lighthouse/pull/5581))
-* tsc: NetworkRequest.RESOURCE_TYPES type fix ([#5851](https://github.com/googlechrome/lighthouse/pull/5851))
-* tsc: add explicit index signature in mainthread-work-breakdown ([#5859](https://github.com/googlechrome/lighthouse/pull/5859))
+* don't use index signature in LHErrors ([#5896](https://github.com/googlechrome/lighthouse/pull/5896))
+* type check config files ([#5858](https://github.com/googlechrome/lighthouse/pull/5858))
+* don't use index signature in simulator.js ([#5897](https://github.com/googlechrome/lighthouse/pull/5897))
+* update debugger protocol type checking ([#5836](https://github.com/googlechrome/lighthouse/pull/5836))
+* remove more reliance on implicit index signatures ([#5874](https://github.com/googlechrome/lighthouse/pull/5874))
+* update types in emulation.js ([#5830](https://github.com/googlechrome/lighthouse/pull/5830))
+* tighten traceOfTab timing types ([#5887](https://github.com/googlechrome/lighthouse/pull/5887))
+* update to ts 3.1 to support new protocol defs ([#5942](https://github.com/googlechrome/lighthouse/pull/5942))
+* update to latest tsc ([#5581](https://github.com/googlechrome/lighthouse/pull/5581))
+* NetworkRequest.RESOURCE_TYPES type fix ([#5851](https://github.com/googlechrome/lighthouse/pull/5851))
+* add explicit index signature in mainthread-work-breakdown ([#5859](https://github.com/googlechrome/lighthouse/pull/5859))
+* cli: make LH.Flags type correct and consistent ([#5849](https://github.com/googlechrome/lighthouse/pull/5849))
 
 ## Report
 
@@ -108,6 +99,10 @@ And thanks to @mettamatt for some helpful documentation. Who doesn't love better
 * psi: reset template styles on every call of prepareLabData ([#5877](https://github.com/googlechrome/lighthouse/pull/5877))
 * psi: add lab data summary sentence ([#5961](https://github.com/googlechrome/lighthouse/pull/5961))
 
+## New Audits
+
+* a11y: add manual audit for interactive element affordance ([#5764](https://github.com/googlechrome/lighthouse/pull/5764))
+
 ## Tests
 
 * quiet down collect-scripts during CI ([#5801](https://github.com/googlechrome/lighthouse/pull/5801))
@@ -122,6 +117,7 @@ And thanks to @mettamatt for some helpful documentation. Who doesn't love better
 * snyk: update snyk snapshot ([#5774](https://github.com/googlechrome/lighthouse/pull/5774)), ([#5773](https://github.com/googlechrome/lighthouse/pull/5773)), ([#5762](https://github.com/googlechrome/lighthouse/pull/5762)), ([#5691](https://github.com/googlechrome/lighthouse/pull/5691))
 * depend on speedline-core, rather than the cli ([#5800](https://github.com/googlechrome/lighthouse/pull/5800))
 
+
 ## Docs
 
 * headless: Require Node 8 and apt install chromium ([#5974](https://github.com/googlechrome/lighthouse/pull/5974))
@@ -135,6 +131,7 @@ And thanks to @mettamatt for some helpful documentation. Who doesn't love better
 
 ## Misc
 
+* cli: enableErrorReporting must be undefined by default ([#5854](https://github.com/googlechrome/lighthouse/pull/5854))
 * asset-saver: tweak output format of logAssets ([#5696](https://github.com/googlechrome/lighthouse/pull/5696))
 * logger: add time/timeEnd methods ([#5905](https://github.com/googlechrome/lighthouse/pull/5905))
 * fix grocers apostrophe typo (API's v APIs) ([#5948](https://github.com/googlechrome/lighthouse/pull/5948))
