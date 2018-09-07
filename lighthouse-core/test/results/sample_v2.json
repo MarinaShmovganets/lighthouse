@@ -3598,14 +3598,6 @@
       "lighthouse-core/audits/uses-rel-preconnect.js | title": [
         "audits[uses-rel-preconnect].title"
       ],
-      "lighthouse-core/lib/i18n.js | displayValueMsSavings": [
-        {
-          "values": {
-            "wastedMs": 1129
-          },
-          "path": "audits[render-blocking-resources].displayValue"
-        }
-      ],
       "lighthouse-core/audits/uses-rel-preconnect.js | description": [
         "audits[uses-rel-preconnect].description"
       ],
@@ -3665,6 +3657,14 @@
       ],
       "lighthouse-core/audits/byte-efficiency/render-blocking-resources.js | description": [
         "audits[render-blocking-resources].description"
+      ],
+      "lighthouse-core/lib/i18n.js | displayValueMsSavings": [
+        {
+          "values": {
+            "wastedMs": 1129
+          },
+          "path": "audits[render-blocking-resources].displayValue"
+        }
       ],
       "lighthouse-core/lib/i18n.js | columnWastedMs": [
         "audits[render-blocking-resources].details.headings[2].label"
