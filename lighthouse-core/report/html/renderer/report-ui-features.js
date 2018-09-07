@@ -130,7 +130,8 @@ class ReportUIFeatures {
 
   _setupHeaderAnimation() {
     const scoresWrapper = this._dom.find('.lh-scores-wrapper', this._document);
-    this.headerOverlap = /** @type {number} */ (Number(window.getComputedStyle(scoresWrapper).marginTop.replace('px', '')));
+    this.headerOverlap = /** @type {number} */
+      (Number(window.getComputedStyle(scoresWrapper).marginTop.replace('px', '')));
     this.headerSticky = this._dom.find('.lh-header-sticky', this._document);
     this.headerBackground = this._dom.find('.lh-header-bg', this._document);
     this.lighthouseIcon = this._dom.find('.lh-lighthouse', this._document);
@@ -138,7 +139,8 @@ class ReportUIFeatures {
     this.productInfo = this._dom.find('.lh-product-info', this._document);
     this.toolbar = this._dom.find('.lh-toolbar', this._document);
     this.toolbarMetadata = this._dom.find('.lh-toolbar__metadata', this._document);
-    this.headerHeight = /** @type {number} */ (Number(window.getComputedStyle(this.headerBackground).height.replace('px', '')));
+    this.headerHeight = /** @type {number} */
+      (Number(window.getComputedStyle(this.headerBackground).height.replace('px', '')));
 
     this._document.addEventListener('scroll', this.onScroll, {passive: true});
 
