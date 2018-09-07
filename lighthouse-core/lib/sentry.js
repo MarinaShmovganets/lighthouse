@@ -16,16 +16,10 @@ const SENTRY_URL = 'https://a6bb0da87ee048cc9ae2a345fc09ab2e:63a7029f46f74265981
 const SAMPLE_RATE = 0.1;
 
 const SAMPLED_ERRORS = [
-  // Error code based sampling
-  {pattern: /DOCUMENT_REQUEST$/, rate: 0.1},
-  {pattern: /(IDLE_PERIOD|FMP_TOO_LATE)/, rate: 0.1},
-  {pattern: /^NO_.*/, rate: 0.1},
   // Message based sampling
-  {pattern: /Could not load stylesheet/, rate: 0.01},
-  {pattern: /Failed to decode/, rate: 0.1},
-  {pattern: /All image optimizations failed/, rate: 0.1},
-  {pattern: /No.*resource with given/, rate: 0.01},
-  {pattern: /No.*node with given id/, rate: 0.01},
+  {pattern: /Could not load stylesheet/, rate: 0.1},
+  {pattern: /No.*resource with given/, rate: 0.1},
+  {pattern: /No.*node with given id/, rate: 0.1},
 ];
 
 const noop = () => {};
