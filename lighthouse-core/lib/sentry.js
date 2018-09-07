@@ -13,14 +13,7 @@ const log = require('lighthouse-logger');
 const SENTRY_URL = 'https://a6bb0da87ee048cc9ae2a345fc09ab2e:63a7029f46f74265981b7e005e0f69f8@sentry.io/174697';
 
 // Per-run chance of capturing errors (if enabled).
-const SAMPLE_RATE = 0.1;
-
-const SAMPLED_ERRORS = [
-  // Message based sampling
-  {pattern: /Could not load stylesheet/, rate: 0.1},
-  {pattern: /No.*resource with given/, rate: 0.1},
-  {pattern: /No.*node with given id/, rate: 0.1},
-];
+const SAMPLE_RATE = 0.01;
 
 const noop = () => {};
 
@@ -74,10 +67,6 @@ function init(opts) {
       // Ignore expected errors
       // @ts-ignore Non-standard property added to flag error as not needing capturing.
       if (err.expected) return;
-
-      // Sample known errors that occur at a high frequency
-      const sampledErrorMatch = SAMPLED_ERRORS.find(sample => sample.pattern.test(err.message));
-      if (sampledErrorMatch && sampledErrorMatch.rate <= Math.random()) return;
 
       // Protocol errors all share same stack trace, so add more to fingerprint
       // @ts-ignore - properties added to protocol method LHErrors.
