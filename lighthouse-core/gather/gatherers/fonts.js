@@ -217,7 +217,6 @@ class Fonts extends Gatherer {
           if (dataError.err) {
             const err = new Error(dataError.err.message);
             err.stack = dataError.err.stack || err.stack;
-            // @ts-ignore TODO(bckenny): Sentry type checking
             Sentry.captureException(err, {tags: {gatherer: 'Fonts'}, level: 'warning'});
             return false;
           }
