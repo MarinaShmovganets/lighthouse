@@ -95,14 +95,6 @@ function handleError(err) {
 }
 
 /**
- * @param {string} url
- */
-function isValidUrl(url) {
-  const urlRegex = /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/gi;
-  return urlRegex.test(url);
-}
-
-/**
  * @param {LH.RunnerResult} runnerResult
  * @param {LH.CliFlags} flags
  * @return {Promise<void>}
@@ -151,15 +143,6 @@ async function saveResults(runnerResult, flags) {
  * @return {Promise<LH.RunnerResult|void>}
  */
 function runLighthouse(url, flags, config) {
-  if (url && !isValidUrl(url)) {
-    return Promise.resolve()
-      .then(_ => handleError({
-        name: 'Invalid URL',
-        code: 'INVALID_URL',
-        message: 'The URL you have provided appears to be invalid.',
-      }));
-  }
-
   /** @type {ChromeLauncher.LaunchedChrome|undefined} */
   let launchedChrome;
   const shouldGather = flags.gatherMode || flags.gatherMode === flags.auditMode;
