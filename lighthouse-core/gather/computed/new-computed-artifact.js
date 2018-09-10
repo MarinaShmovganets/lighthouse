@@ -12,16 +12,16 @@ const ArbitraryEqualityMap = require('../../lib/arbitrary-equality-map.js');
  * @template A
  * @template R
  * @param {{name: N, compute_: (artifact: A) => Promise<R>}} computableArtifact
- * @return {{name: N, request: (caches: LH.Audit.Context['computedCache'], artifact: A) => Promise<R>}}
+ * @return {{name: N, request: (context: LH.Audit.Context, artifact: A) => Promise<R>}}
  */
 function makeComputedArtifact(computableArtifact) {
   /**
-   * @param {LH.Audit.Context['computedCache']} caches
+   * @param {LH.Audit.Context} context
    * @param {A} artifact
    */
-  const request = (caches, artifact) => {
-    const cache = caches.get(computableArtifact.name) || new ArbitraryEqualityMap();
-    caches.set(computableArtifact.name, cache);
+  const request = ({computedCache}, artifact) => {
+    const cache = computedCache.get(computableArtifact.name) || new ArbitraryEqualityMap();
+    computedCache.set(computableArtifact.name, cache);
 
     const computed = /** @type {Promise<R>|undefined} */ (cache.get(artifact));
     if (computed) {

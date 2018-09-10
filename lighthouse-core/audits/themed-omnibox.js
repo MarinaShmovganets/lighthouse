@@ -71,7 +71,7 @@ class ThemedOmnibox extends MultiCheckAudit {
     /** @type {Array<string>} */
     const failures = [];
 
-    const manifestValues = await ManifestValues.request(context.computedCache, artifacts.Manifest);
+    const manifestValues = await ManifestValues.request(context, artifacts.Manifest);
     ThemedOmnibox.assessManifest(manifestValues, failures);
     ThemedOmnibox.assessMetaThemecolor(artifacts.ThemeColor, failures);
 

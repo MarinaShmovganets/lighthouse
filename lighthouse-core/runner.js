@@ -205,7 +205,7 @@ class Runner {
       }
     }
 
-    // Members of LH.Audit.Context shared across all audits.
+    // Members of LH.Audit.Context that are shared across all audits.
     const auditsContext = {
       settings,
       LighthouseRunWarnings: runWarnings,
@@ -222,14 +222,12 @@ class Runner {
     return auditResults;
   }
 
-  /** @typedef {Pick<LH.Audit.Context, 'settings'|'LighthouseRunWarnings'|'computedCache'>} AuditsContext */
-
   /**
    * Checks that the audit's required artifacts exist and runs the audit if so.
    * Otherwise returns error audit result.
    * @param {LH.Config.AuditDefn} auditDefn
    * @param {LH.Artifacts} artifacts
-   * @param {AuditsContext} auditsContext
+   * @param {Pick<LH.Audit.Context, 'settings'|'LighthouseRunWarnings'|'computedCache'>} auditsContext
    * @return {Promise<LH.Audit.Result>}
    * @private
    */
