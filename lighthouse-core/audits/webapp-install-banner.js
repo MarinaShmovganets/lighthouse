@@ -128,8 +128,7 @@ class WebappInstallBanner extends MultiCheckAudit {
     /** @type {Array<string>} */
     let offlineWarnings = [];
 
-    const manifestValues = await new ManifestValues().request(context.computedCaches,
-        artifacts.Manifest);
+    const manifestValues = await ManifestValues.request(context.computedCache, artifacts.Manifest);
     const manifestFailures = WebappInstallBanner.assessManifest(manifestValues);
     const swFailures = WebappInstallBanner.assessServiceWorker(artifacts);
     if (!swFailures.length) {

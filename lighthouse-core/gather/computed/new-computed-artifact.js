@@ -8,51 +8,33 @@
 const ArbitraryEqualityMap = require('../../lib/arbitrary-equality-map.js');
 
 /**
- * Base class of computed artifacts. Derived classes should override the
- * `compute_` method with more specific `artifact` and return types to
- * implement a computed artifact.
-*/
-class ComputedArtifact {
+ * @template {string} N
+ * @template A
+ * @template R
+ * @param {{name: N, compute_: (artifact: A) => Promise<R>}} computableArtifact
+ * @return {{name: N, request: (caches: LH.Audit.Context['computedCache'], artifact: A) => Promise<R>}}
+ */
+function makeComputedArtifact(computableArtifact) {
   /**
-   * @return {string}
+   * @param {LH.Audit.Context['computedCache']} caches
+   * @param {A} artifact
    */
-  get name() {
-    throw new Error('name getter not implemented for computed artifact ' + this.constructor.name);
-  }
+  const request = (caches, artifact) => {
+    const cache = caches.get(computableArtifact.name) || new ArbitraryEqualityMap();
+    caches.set(computableArtifact.name, cache);
 
-  /* eslint-disable no-unused-vars */
-  /**
-   * @param {any} artifact
-   * @return {Promise<any>}
-   */
-  async compute_(artifact) {
-    throw new Error('innerCompute() not implemented for computed artifact ' +
-      this.constructor.name);
-  }
-  /* eslint-enable no-unused-vars */
-
-  /**
-   * Request a computed artifact, caching the result based on the input
-   * artifact(s). Types of `artifact` and the return value are inferred from the
-   * `compute_` method on classes derived from ComputedArtifact.
-   * @param {LH.Audit.Context['computedCaches']} caches
-   * @param {FirstParamType<this['compute_']>} artifact
-   * @return {Promise<ReturnType<this['compute_']>>}
-   */
-  async request(caches, artifact) {
-    const cache = caches.get(this.name) || new ArbitraryEqualityMap();
-    caches.set(this.name, cache);
-
-    const computed = /** @type {ReturnType<this['compute_']>|undefined} */ (cache.get(artifact));
+    const computed = /** @type {Promise<R>|undefined} */ (cache.get(artifact));
     if (computed) {
       return computed;
     }
 
-    const artifactPromise = this.compute_(artifact);
+    const artifactPromise = computableArtifact.compute_(artifact);
     cache.set(artifact, artifactPromise);
 
     return artifactPromise;
-  }
+  };
+
+  return Object.assign(computableArtifact, {request});
 }
 
-module.exports = ComputedArtifact;
+module.exports = makeComputedArtifact;

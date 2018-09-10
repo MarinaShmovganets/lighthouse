@@ -17,9 +17,9 @@ declare global {
       /**
        * Nested cache for already-computed computed artifacts. Keyed first on
        * the computed artifact's `name` property, then on input artifact(s).
-       * Values are the computedArtifact result.
+       * Values are Promises resolving to the computedArtifact result.
        */
-      computedCaches: Map<string, ArbitraryEqualityMap>;
+      computedCache: Map<string, ArbitraryEqualityMap>;
     }
 
     export interface ScoreOptions {

@@ -72,8 +72,7 @@ class SplashScreen extends MultiCheckAudit {
     /** @type {Array<string>} */
     const failures = [];
 
-    const manifestValues = await new ManifestValues().request(context.computedCaches,
-        artifacts.Manifest);
+    const manifestValues = await ManifestValues.request(context.computedCache, artifacts.Manifest);
     SplashScreen.assessManifest(manifestValues, failures);
 
     return {

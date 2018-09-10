@@ -34,7 +34,7 @@ function generateMockArtifacts(src = manifestSrc) {
 }
 function generateMockAuditContext() {
   return {
-    computedCaches: new Map(),
+    computedCache: new Map(),
   };
 }
 
