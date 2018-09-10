@@ -159,7 +159,6 @@
   color: #0c50c7;
 }
 
-
 .lh-audit__description {
   --inner-audit-left-padding: calc(var(--text-indent) + var(--lh-audit-index-width) + 2 * var(--audit-item-gap));
   --inner-audit-right-padding: calc(var(--text-indent) + 2px);
