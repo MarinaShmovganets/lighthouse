@@ -199,5 +199,38 @@ describe('Icons helper', () => {
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
       assert.equal(icons.sizeAtLeast(192, manifest.value).length, 1);
     });
+
+    it('succeeds with an icon that has no standalone filename', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: '.png',
+          sizes: '200x200',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 1);
+    });
+
+    it('succeeds with an icon that has a path but no filename', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'path/to/.png',
+          sizes: '200x200',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 1);
+    });
+
+    it('succeeds with an icon that has a path', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'path/to/image.png',
+          sizes: '200x200',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 1);
+    });
   });
 });

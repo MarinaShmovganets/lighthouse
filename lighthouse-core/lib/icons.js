@@ -34,7 +34,7 @@ function sizeAtLeast(sizeRequirement, manifest) {
     // check that the icon has a size, src, and is a png
     if (icon.value.sizes.value &&
         icon.value.src.value &&
-        /.*\/?.*\.png$/.test(icon.value.src.value)) {
+        icon.value.src.value.endsWith('.png')) {
       flattenedSizes.push(...icon.value.sizes.value);
     }
   });
