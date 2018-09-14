@@ -153,10 +153,36 @@ describe('Icons helper', () => {
   });
 
   describe('icons are correct format check', () => {
-    it('succeeds when all icons are pngs', () => {
+    it('succeeds when icon is png', () => {
       const manifestSrc = JSON.stringify({
         icons: [{
           src: 'icon.png',
+          type: 'image/png',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.ok(icons.isPng(manifest.value));
+    });
+
+    it('succeeds when icon is png with a long filepath', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'file/path/icon.png',
+          type: 'image/png',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.ok(icons.isPng(manifest.value));
+    });
+
+    it('succeeds when all icons are png', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'icon.png',
+          type: 'image/png',
+        },
+        {
+          src: 'icon2.png',
           type: 'image/png',
         }],
       });
@@ -172,7 +198,33 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.ok(! icons.isPng(manifest.value));
+      assert.equal(icons.isPng(manifest.value), false);
+    });
+
+    it('fails when an icon is not png with long filepath', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'file/path/icon.jpg',
+          type: 'image/jpg',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.equal(icons.isPng(manifest.value), false);
+    });
+
+    it('fails when any of mutliple icons are not png', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'icon.png',
+          type: 'image/png',
+        },
+        {
+          src: 'icon.jpg',
+          type: 'image/jpg',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.equal(icons.isPng(manifest.value), false);
     });
 
     it('fails when an icon has mixed extension and typehint', () => {
@@ -183,7 +235,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.ok(! icons.isPng(manifest.value));
+      assert.equal(icons.isPng(manifest.value), false);
     });
   });
 });

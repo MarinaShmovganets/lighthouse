@@ -49,8 +49,9 @@ class ManifestValues extends ComputedArtifact {
       },
       {
         id: 'hasPngIcon',
-        failureText: 'Manifest icons are not PNG.',
-        validate: ManifestValues => icons.doExist(ManifestValues)
+        failureText: 'Manifest icons are not PNG',
+        validate: manifestValue => icons.doExist(manifestValue) &&
+          icons.isPng(manifestValue),
       },
       {
         id: 'hasPWADisplayValue',

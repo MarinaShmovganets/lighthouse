@@ -10,13 +10,15 @@ const assert = require('assert');
 const manifestParser = require('../../lib/manifest-parser');
 
 const manifestSrc = JSON.stringify(require('../fixtures/manifest.json'));
+const manifestDirtyJpgSrc = JSON.stringify(require('../fixtures/manifest-dirty-jpg.json'));
 const EXAMPLE_MANIFEST_URL = 'https://example.com/manifest.json';
 const EXAMPLE_DOC_URL = 'https://example.com/index.html';
-const exampleManifest = noUrlManifestParser(manifestSrc);
 
 const Runner = require('../../runner.js');
 
-function generateMockArtifacts() {
+function generateMockArtifacts(src = manifestSrc) {
+  const exampleManifest = manifestParser(src, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+
   const computedArtifacts = Runner.instantiateComputedArtifacts();
   const mockArtifacts = Object.assign({}, computedArtifacts, {
     Manifest: exampleManifest,
@@ -62,7 +64,7 @@ describe('PWA: splash screen audit', () => {
       return SplashScreenAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation);
-        assert.strictEqual(result.details.items[0].failures.length, 4);
+        assert.strictEqual(result.details.items[0].failures.length, 5);
       });
     });
 
@@ -124,6 +126,17 @@ describe('PWA: splash screen audit', () => {
       return SplashScreenAudit.audit(artifacts).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation.includes('icons'), result.explanation);
+      });
+    });
+
+    it('fails if an icon was not PNG', () => {
+      const artifacts = generateMockArtifacts(manifestDirtyJpgSrc);
+
+      return SplashScreenAudit.audit(artifacts).then(result => {
+        assert.strictEqual(result.rawValue, false);
+        assert.ok(result.explanation.includes('icons'), result.explanation);
+        const failures = result.details.items[0].failures;
+        assert.strictEqual(failures.length, 1, failures);
       });
     });
   });

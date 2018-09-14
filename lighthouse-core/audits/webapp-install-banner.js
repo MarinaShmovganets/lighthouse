@@ -67,6 +67,7 @@ class WebappInstallBanner extends MultiCheckAudit {
       'hasStartUrl',
       'hasPWADisplayValue',
       'hasIconsAtLeast192px',
+      'hasPngIcon',
     ];
     manifestValues.allChecks
       .filter(item => bannerCheckIds.includes(item.id))
