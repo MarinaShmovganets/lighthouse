@@ -162,7 +162,7 @@ describe('Icons helper', () => {
       assert.equal(icons.sizeAtLeast(192, manifest.value).length, 0);
     });
 
-    it('fails with mixed files with no good pngs', () => {
+    it('fails with mixed files where no PNGs are big enough', () => {
       const manifestSrc = JSON.stringify({
         icons: [{
           src: 'icon-vector.svg',
@@ -181,7 +181,7 @@ describe('Icons helper', () => {
       assert.equal(icons.sizeAtLeast(192, manifest.value).length, 0);
     });
 
-    it('succeeds with mixed files with good pngs', () => {
+    it('succeeds with mixed files with PNGs that are big enough', () => {
       const manifestSrc = JSON.stringify({
         icons: [{
           src: 'icon-vector.svg',

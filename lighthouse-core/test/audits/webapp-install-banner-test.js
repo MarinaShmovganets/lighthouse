@@ -127,7 +127,7 @@ describe('PWA: webapp install banner audit', () => {
     });
   });
 
-  it('fails if an icon was not PNG', () => {
+  it('fails if icons were present, but no valid PNG present', () => {
     const artifacts = generateMockArtifacts(manifestDirtyJpgSrc);
 
     return WebappInstallBannerAudit.audit(artifacts).then(result => {
