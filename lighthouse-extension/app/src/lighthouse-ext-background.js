@@ -133,7 +133,7 @@ async function runLighthouseInLR(connection, url, flags, {lrDevice, categoryIDs,
           err.message,
     };
 
-    return JSON.stringify(runtimeError, null, 2);
+    return JSON.stringify({runtimeError}, null, 2);
   }
 }
 
