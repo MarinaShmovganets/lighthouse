@@ -74,8 +74,10 @@ class ReportGenerator {
         const audit = lhr.audits[auditRef.id];
         // CSV validator wants all scores to be numeric, use -1 for now
         const numericScore = audit.score === null ? '-1' : audit.score.toString();
-        const displayValue = audit.displayValue ? Array.isArray(audit.displayValue) ? audit.displayValue.join(',') : audit.displayValue : '';
-        return [category.title, audit.id, audit.title, audit.scoreDisplayMode, numericScore, displayValue]
+        const displayValue = audit.displayValue ? Array.isArray(audit.displayValue) ?
+          audit.displayValue.join(',') : audit.displayValue : '';
+        return [category.title, audit.id, audit.title, audit.scoreDisplayMode, numericScore,
+          displayValue]
           .map(escape);
       });
     });
