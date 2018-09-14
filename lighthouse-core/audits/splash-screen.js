@@ -51,7 +51,6 @@ class SplashScreen extends MultiCheckAudit {
       'hasBackgroundColor',
       'hasThemeColor',
       'hasIconsAtLeast512px',
-      'hasPngIcon',
     ];
 
     manifestValues.allChecks

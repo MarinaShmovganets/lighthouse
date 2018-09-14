@@ -31,7 +31,10 @@ function sizeAtLeast(sizeRequirement, manifest) {
   /** @type {Array<string>} */
   const flattenedSizes = [];
   iconValues.forEach(icon => {
-    if (icon.value.sizes.value) {
+    // check that the icon has a size, src, and is a png
+    if (icon.value.sizes.value &&
+        icon.value.src.value &&
+        /.*\/?.*\.png$/.test(icon.value.src.value)) {
       flattenedSizes.push(...icon.value.sizes.value);
     }
   });
@@ -52,35 +55,7 @@ function sizeAtLeast(sizeRequirement, manifest) {
       });
 }
 
-/**
- * @param {NonNullable<LH.Artifacts.Manifest['value']>} manifest
- * @return {boolean} True/False whether the icons are all PNGs
- */
-function isPng(manifest) {
-  // get all icons
-  const iconValues = manifest.icons.value;
-
-  // check that the filetypes are 'png'
-  for (const icon of iconValues) {
-    if (!icon.value.src.value || !icon.value.type.value) {
-      return false;
-    }
-
-    // validate that the src is of format [path]/[filename].[ext]
-    // regex -> .*\/?.*\.(.{3}) -> outputs ['whole match', 'ext']
-    const extension = icon.value.src.value.match(/.*\/?.*\.(.{3})$/);
-
-    const typehint = icon.value.type.value;
-
-    if (extension === null || extension[1] !== 'png' || typehint !== 'image/png') {
-      return false;
-    }
-  }
-  return true;
-}
-
 module.exports = {
   doExist,
   sizeAtLeast,
-  isPng,
 };

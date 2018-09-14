@@ -143,99 +143,61 @@ describe('Icons helper', () => {
     it('fails when an icon uses an invalid string for its size', () => {
       const manifestSrc = JSON.stringify({
         icons: [{
-          src: 'icon-vector.svg',
+          src: 'icon-vector.png',
           sizes: 'any',
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
       assert.equal(icons.sizeAtLeast(192, manifest.value).length, 0);
     });
-  });
 
-  describe('icons are correct format check', () => {
-    it('succeeds when icon is png', () => {
+    it('fails when an icon is big enough but is not png', () => {
       const manifestSrc = JSON.stringify({
         icons: [{
-          src: 'icon.png',
-          type: 'image/png',
+          src: 'icon-vector.svg',
+          sizes: '256x256',
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.ok(icons.isPng(manifest.value));
+      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 0);
     });
 
-    it('succeeds when icon is png with a long filepath', () => {
+    it('fails with mixed files with no good pngs', () => {
       const manifestSrc = JSON.stringify({
         icons: [{
-          src: 'file/path/icon.png',
-          type: 'image/png',
-        }],
-      });
-      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.ok(icons.isPng(manifest.value));
-    });
-
-    it('succeeds when all icons are png', () => {
-      const manifestSrc = JSON.stringify({
-        icons: [{
-          src: 'icon.png',
-          type: 'image/png',
+          src: 'icon-vector.svg',
+          sizes: '256x256',
         },
         {
-          src: 'icon2.png',
-          type: 'image/png',
-        }],
-      });
-      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.ok(icons.isPng(manifest.value));
-    });
-
-    it('fails when an icon is not png', () => {
-      const manifestSrc = JSON.stringify({
-        icons: [{
-          src: 'icon.jpg',
-          type: 'image/jpg',
-        }],
-      });
-      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.isPng(manifest.value), false);
-    });
-
-    it('fails when an icon is not png with long filepath', () => {
-      const manifestSrc = JSON.stringify({
-        icons: [{
-          src: 'file/path/icon.jpg',
-          type: 'image/jpg',
-        }],
-      });
-      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.isPng(manifest.value), false);
-    });
-
-    it('fails when any of mutliple icons are not png', () => {
-      const manifestSrc = JSON.stringify({
-        icons: [{
           src: 'icon.png',
-          type: 'image/png',
+          sizes: '100x100',
         },
         {
-          src: 'icon.jpg',
-          type: 'image/jpg',
+          src: 'path/icon.ico',
+          sizes: '256x256',
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.isPng(manifest.value), false);
+      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 0);
     });
 
-    it('fails when an icon has mixed extension and typehint', () => {
+    it('succeeds with mixed files with good pngs', () => {
       const manifestSrc = JSON.stringify({
         icons: [{
+          src: 'icon-vector.svg',
+          sizes: '100x100',
+        },
+        {
           src: 'icon.png',
-          type: 'image/jpg',
+          sizes: '256x256',
+        },
+        {
+          src: 'path/icon.ico',
+          sizes: '100x100',
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.isPng(manifest.value), false);
+      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 1);
     });
   });
 });
