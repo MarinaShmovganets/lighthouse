@@ -52,7 +52,35 @@ function sizeAtLeast(sizeRequirement, manifest) {
       });
 }
 
+/**
+ * @param {NonNullable<LH.Artifacts.Manifest['value']>} manifest
+ * @return {boolean} True/False whether the icons are all PNGs
+ */
+function isPng(manifest) {
+  // get all icons
+  const iconValues = manifest.icons.value;
+
+  // check that the filetypes are 'png'
+  for (const icon of iconValues) {
+    if (!icon.value.src.value || !icon.value.type.value) {
+      return false;
+    }
+
+    // validate that the src is of format [path]/[filename].[ext]
+    // regex -> .*\/?.*\.(.{3}) -> outputs ['whole match', 'ext']
+    const extension = icon.value.src.value.match(/.*\/?.*\.(.{3})$/);
+
+    const typehint = icon.value.type.value;
+
+    if (extension === null || extension[1] !== 'png' || typehint !== 'image/png') {
+      return false;
+    }
+  }
+  return true;
+}
+
 module.exports = {
   doExist,
   sizeAtLeast,
+  isPng,
 };

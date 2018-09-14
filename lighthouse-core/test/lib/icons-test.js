@@ -151,4 +151,39 @@ describe('Icons helper', () => {
       assert.equal(icons.sizeAtLeast(192, manifest.value).length, 0);
     });
   });
+
+  describe('icons are correct format check', () => {
+    it('succeeds when all icons are pngs', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'icon.png',
+          type: 'image/png',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.ok(icons.isPng(manifest.value));
+    });
+
+    it('fails when an icon is not png', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'icon.jpg',
+          type: 'image/jpg',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.ok(! icons.isPng(manifest.value));
+    });
+
+    it('fails when an icon has mixed extension and typehint', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'icon.png',
+          type: 'image/jpg',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.ok(! icons.isPng(manifest.value));
+    });
+  });
 });

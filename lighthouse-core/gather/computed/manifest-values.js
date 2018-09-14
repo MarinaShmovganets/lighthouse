@@ -48,6 +48,11 @@ class ManifestValues extends ComputedArtifact {
             icons.sizeAtLeast(512, manifestValue).length > 0,
       },
       {
+        id: 'hasPngIcon',
+        failureText: 'Manifest icons are not PNG.',
+        validate: ManifestValues => icons.doExist(ManifestValues)
+      },
+      {
         id: 'hasPWADisplayValue',
         failureText: 'Manifest\'s `display` value is not one of: ' + PWA_DISPLAY_VALUES.join(' | '),
         validate: manifestValue => PWA_DISPLAY_VALUES.includes(manifestValue.display.value),
