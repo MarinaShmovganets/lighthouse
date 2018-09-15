@@ -69,7 +69,7 @@ describe('Icons helper', () => {
       //     }]
       //   }
       // };
-      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 1);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
     });
 
     it('fails when a manifest contains an icon with no size', () => {
@@ -79,7 +79,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 0);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
     });
 
     it('succeeds when a manifest icon exceeds the requirements', () => {
@@ -90,7 +90,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(144, manifest.value).length, 1);
+      assert.equal(icons.pngSizedAtLeast(144, manifest.value).length, 1);
     });
 
     it('fails when a manifest icon doesn\'t meet the requirements', () => {
@@ -101,7 +101,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(256, manifest.value).length, 0);
+      assert.equal(icons.pngSizedAtLeast(256, manifest.value).length, 0);
     });
 
     it('succeeds when there\'s one icon with multiple sizes, and one is valid', () => {
@@ -112,7 +112,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 1);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
     });
 
     it('succeeds when there\'s two icons, one without sizes; the other with a valid size', () => {
@@ -125,7 +125,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 1);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
     });
 
     it('fails when an icon has a valid size, though it\'s non-square.', () => {
@@ -137,7 +137,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 0);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
     });
 
     it('fails when an icon uses an invalid string for its size', () => {
@@ -148,7 +148,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 0);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
     });
 
     it('fails when an icon is big enough but is not png', () => {
@@ -159,7 +159,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 0);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
     });
 
     it('fails with mixed files where no PNGs are big enough', () => {
@@ -178,7 +178,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 0);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
     });
 
     it('succeeds with mixed files with PNGs that are big enough', () => {
@@ -197,7 +197,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 1);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
     });
 
     it('succeeds with an icon that has no standalone filename', () => {
@@ -208,7 +208,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 1);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
     });
 
     it('succeeds with an icon that has a path but no filename', () => {
@@ -219,7 +219,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 1);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
     });
 
     it('succeeds with an icon that has a path', () => {
@@ -230,7 +230,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.sizeAtLeast(192, manifest.value).length, 1);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
     });
   });
 });
