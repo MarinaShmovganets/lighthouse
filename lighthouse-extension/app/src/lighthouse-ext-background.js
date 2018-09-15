@@ -238,28 +238,30 @@ if ('chrome' in window && chrome.runtime) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  // Export for popup.js to import types. We don't want tsc to infer an index
-  // type, so use exports instead of module.exports.
-  exports.runLighthouseInExtension = runLighthouseInExtension;
-  exports.getDefaultCategories = background.getDefaultCategories;
-  exports.isRunning = isRunning;
-  exports.listenForStatus = listenForStatus;
-  exports.saveSettings = saveSettings;
-  exports.loadSettings = loadSettings;
+  // Export for popup.js to import types.
+  module.exports = {
+    runLighthouseInExtension,
+    runLighthouseInLR,
+    getDefaultCategories: background.getDefaultCategories,
+    isRunning,
+    listenForStatus,
+    saveSettings,
+    loadSettings,
+  };
+} else {
+  // Expose on window for extension, other consumers of file.
+  // @ts-ignore
+  window.runLighthouseInExtension = runLighthouseInExtension;
+  // @ts-ignore
+  window.runLighthouseInLR = runLighthouseInLR;
+  // @ts-ignore
+  window.getDefaultCategories = background.getDefaultCategories;
+  // @ts-ignore
+  window.isRunning = isRunning;
+  // @ts-ignore
+  window.listenForStatus = listenForStatus;
+  // @ts-ignore
+  window.loadSettings = loadSettings;
+  // @ts-ignore
+  window.saveSettings = saveSettings;
 }
-
-// Expose on window for extension, other consumers of file.
-// @ts-ignore
-window.runLighthouseInExtension = runLighthouseInExtension;
-// @ts-ignore
-window.runLighthouseInLR = runLighthouseInLR;
-// @ts-ignore
-window.getDefaultCategories = background.getDefaultCategories;
-// @ts-ignore
-window.isRunning = isRunning;
-// @ts-ignore
-window.listenForStatus = listenForStatus;
-// @ts-ignore
-window.loadSettings = loadSettings;
-// @ts-ignore
-window.saveSettings = saveSettings;
