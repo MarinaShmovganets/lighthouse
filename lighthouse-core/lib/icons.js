@@ -30,14 +30,20 @@ function pngSizedAtLeast(sizeRequirement, manifest) {
   const iconValues = manifest.icons.value;
   /** @type {Array<string>} */
   const flattenedSizes = [];
-  iconValues.forEach(icon => {
-    // check that the icon has a size, src, and is a png
-    if (icon.value.sizes.value &&
-        icon.value.src.value &&
-        icon.value.src.value.endsWith('.png')) {
-      flattenedSizes.push(...icon.value.sizes.value);
-    }
-  });
+  iconValues
+    // filter out icons with a typehint that is not 'image/png'
+    .filter(icon => !icon.value.type.value ||
+      (icon.value.type.value &&
+      icon.value.type.value === 'image/png'))
+    // filter out icons that are not png
+    .filter(icon => icon.value.src.value &&
+      icon.value.src.value.endsWith('.png'))
+    .forEach(icon => {
+      // check that the icon has a size
+      if (icon.value.sizes.value) {
+        flattenedSizes.push(...icon.value.sizes.value);
+      }
+    });
 
   return flattenedSizes
       // discard sizes that are not AAxBB (eg. "any")

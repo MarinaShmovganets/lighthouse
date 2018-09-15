@@ -232,5 +232,62 @@ describe('Icons helper', () => {
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
       assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
     });
+
+    it('succeeds with an icon that has a png typehint', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'path/to/image.png',
+          sizes: '200x200',
+          type: 'image/png',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
+    });
+
+    it('succeeds with an icon that has a png typehint with other icons that are invalid', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'path/to/image.png',
+          sizes: '200x200',
+          type: 'image/png',
+        },
+        {
+          src: 'path/to/image.png',
+          sizes: '200x200',
+          type: 'image/jpg',
+        },
+        {
+          src: 'path/to/image.jpg',
+          sizes: '200x200',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
+    });
+
+    it('fails with an icon that has a non png typehint', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'path/to/image.png',
+          sizes: '200x200',
+          type: 'image/jpg',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
+    });
+
+    it('fails with an icon that has a png typehint but is not png', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'path/to/image.jpg',
+          sizes: '200x200',
+          type: 'image/png',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
+    });
   });
 });
