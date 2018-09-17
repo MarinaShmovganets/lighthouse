@@ -289,5 +289,41 @@ describe('Icons helper', () => {
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
       assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
     });
+
+    it('succeeds with a png icon that has query params in url', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'path/to/image.png?param=true',
+          sizes: '200x200',
+          type: 'image/png',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
+    });
+
+    it('fails with a non-png icon that has query params in url', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'path/to/image.jpg?param=true',
+          sizes: '200x200',
+          type: 'image/png',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
+    });
+
+    it('fails with a non-png icon that has a .png extension in the middle', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: 'path/to/image.png.jpg',
+          sizes: '200x200',
+          type: 'image/png',
+        }],
+      });
+      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
+    });
   });
 });

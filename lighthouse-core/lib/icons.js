@@ -5,6 +5,8 @@
  */
 'use strict';
 
+const URL = require('./url-shim.js');
+
 /**
  * @param {NonNullable<LH.Artifacts.Manifest['value']>} manifest
  * @return {boolean} Does the manifest have any icons?
@@ -32,12 +34,12 @@ function pngSizedAtLeast(sizeRequirement, manifest) {
   const flattenedSizes = [];
   iconValues
     // filter out icons with a typehint that is not 'image/png'
-    .filter(icon => !icon.value.type.value ||
+    .filter(icon => (!icon.value.type.value) ||
       (icon.value.type.value &&
       icon.value.type.value === 'image/png'))
     // filter out icons that are not png
     .filter(icon => icon.value.src.value &&
-      icon.value.src.value.endsWith('.png'))
+      new URL(icon.value.src.value).pathname.endsWith('.png'))
     .forEach(icon => {
       // check that the icon has a size
       if (icon.value.sizes.value) {
