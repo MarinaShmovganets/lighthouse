@@ -165,7 +165,7 @@ class GatherRunner {
       errorReason = mainRecord.localizedFailDescription;
     } else if (mainRecord.hasErrorStatusCode()) {
       errorCode = LHError.errors.ERRORED_DOCUMENT_REQUEST;
-      errorReason = `Request returned with status code ${mainRecord.statusCode}`;
+      errorReason = `Status code: ${mainRecord.statusCode}`;
     }
 
     if (errorCode) {
