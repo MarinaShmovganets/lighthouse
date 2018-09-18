@@ -242,7 +242,7 @@ if ('chrome' in window && chrome.runtime) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  // Export for popup.js to import types.
+  // Export for importing types into popup.js, require()ing into unit tests.
   module.exports = {
     runLighthouseInExtension,
     runLighthouseInLR,
@@ -252,8 +252,10 @@ if (typeof module !== 'undefined' && module.exports) {
     saveSettings,
     loadSettings,
   };
-} else {
-  // Expose on window for extension, other consumers of file.
+}
+
+// Expose on window for extension, other browser-residing consumers of file.
+if (typeof window !== 'undefined') {
   // @ts-ignore
   window.runLighthouseInExtension = runLighthouseInExtension;
   // @ts-ignore
