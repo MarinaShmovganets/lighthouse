@@ -122,16 +122,20 @@ async function runLighthouseInLR(connection, url, flags, {lrDevice, categoryIDs,
     return results.report;
   } catch (err) {
     // If an error ruined the entire lighthouse run, attempt to return a meaningful error.
+    let runtimeError;
     if (!(err instanceof LHError) || !err.lhrRuntimeError) {
-      throw err;
+      runtimeError = {
+        code: LHError.UNKNOWN_ERROR,
+        message: `Unknown error encountered with message '${err.message}'`,
+      };
+    } else {
+      runtimeError = {
+        code: err.code,
+        message: err.friendlyMessage ?
+            `${err.friendlyMessage} (${err.message})` :
+            err.message,
+      };
     }
-
-    const runtimeError = {
-      code: err.code,
-      message: err.friendlyMessage ?
-          `${err.friendlyMessage} (${err.message})` :
-          err.message,
-    };
 
     return JSON.stringify({runtimeError}, null, 2);
   }

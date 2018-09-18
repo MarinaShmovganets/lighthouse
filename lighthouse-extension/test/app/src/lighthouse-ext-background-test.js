@@ -12,22 +12,46 @@ const LHError = require('../../../../lighthouse-core/lib/lh-error.js');
 /* eslint-env mocha */
 
 describe('lighthouse-ext-background', () => {
-  it('returns a runtimeError LHR when lighthouse run throws a runtimeError', async () => {
-    const connectionError = new LHError(LHError.errors.FAILED_DOCUMENT_REQUEST);
-    assert.strictEqual(connectionError.lhrRuntimeError, true);
-    const mockConnection = {
-      async connect() {
-        throw connectionError;
-      },
-      async disconnect() {},
-      async sendCommand() {},
-      on() {},
-    };
-    const url = 'https://example.com';
+  describe('#runLighthouseInLR', () => {
+    it('returns a runtimeError LHR when lighthouse throws a runtimeError', async () => {
+      const connectionError = new LHError(LHError.errors.FAILED_DOCUMENT_REQUEST);
+      assert.strictEqual(connectionError.lhrRuntimeError, true);
+      const mockConnection = {
+        async connect() {
+          throw connectionError;
+        },
+        async disconnect() {},
+        async sendCommand() {},
+        on() {},
+      };
+      const url = 'https://example.com';
+      const output = 'json';
 
-    const result = await lhBackground.runLighthouseInLR(mockConnection, url, {output: 'json'}, {});
-    const parsedResult = JSON.parse(result);
-    assert.strictEqual(parsedResult.runtimeError.code, connectionError.code);
-    assert.ok(parsedResult.runtimeError.message.includes(connectionError.friendlyMessage));
+      const result = await lhBackground.runLighthouseInLR(mockConnection, url, {output}, {});
+      const parsedResult = JSON.parse(result);
+      assert.strictEqual(parsedResult.runtimeError.code, connectionError.code);
+      assert.ok(parsedResult.runtimeError.message.includes(connectionError.friendlyMessage));
+    });
+
+    it('returns an unknown-runtimeError LHR when lighthouse throws an unknown error', async () => {
+      const errorMsg = 'Errors are the best!';
+      const connectionError = new Error(errorMsg);
+      assert.strictEqual(connectionError.lhrRuntimeError, undefined);
+      const mockConnection = {
+        async connect() {
+          throw connectionError;
+        },
+        async disconnect() {},
+        async sendCommand() {},
+        on() {},
+      };
+      const url = 'https://example.com';
+      const output = 'json';
+
+      const result = await lhBackground.runLighthouseInLR(mockConnection, url, {output}, {});
+      const parsedResult = JSON.parse(result);
+      assert.strictEqual(parsedResult.runtimeError.code, LHError.UNKNOWN_ERROR);
+      assert.ok(parsedResult.runtimeError.message.includes(errorMsg));
+    });
   });
 });
