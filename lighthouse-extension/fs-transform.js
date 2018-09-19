@@ -21,6 +21,7 @@ module.exports = function() {
     let fileContentsString = fileContents.join('');
     const fsRegExp = /_interopRequireDefault\(_fs\)/gim;
     const fsTimelineRegExp = /_fs2\.default\.readFileSync\(timeline, 'utf-8'\)/gim;
+    const webInspectorRegExp = /\/web-inspector/gim;
     const newPath = 'fs';
 
     if (fsRegExp.test(fileContentsString)) {
@@ -30,6 +31,11 @@ module.exports = function() {
     if (fsTimelineRegExp.test(fileContentsString)) {
       fileContentsString = fileContentsString.replace(fsTimelineRegExp, 'timeline');
     }
+
+    if (webInspectorRegExp.test(fileContentsString)) {
+      fileContentsString = fileContentsString.replace(webInspectorRegExp, '/web-inspector-browser');
+    }
+
     // eslint-disable-next-line no-invalid-this
     this.push(fileContentsString);
     done();
