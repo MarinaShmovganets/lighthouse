@@ -943,15 +943,21 @@ class Driver {
     /** @type {Array<LH.TraceEvent>} */
     const traceEvents = [];
 
-    // setup listener for when a trace bundle is sent
-    this.on('Tracing.dataCollected', data => {
+    /**
+     * Make function to fire when tracing bundle is collected.
+     * @param {LH.Crdp.Tracing.DataCollectedEvent} data
+     */
+    const dataListener = function(data) {
       traceEvents.push(...data.value);
-    });
+    };
+    this.on('Tracing.dataCollected', dataListener);
 
     return new Promise((resolve, reject) => {
       this.once('Tracing.tracingComplete', _ => {
+        this.off('Tracing.dataCollected', dataListener);
         resolve({traceEvents});
       });
+
 
       // Issue the command to stop tracing.
       return this.sendCommand('Tracing.end').catch(reject);
