@@ -202,7 +202,7 @@ gulp.task('compilejs', () => {
     'dist/scripts/lighthouse-ext-background.js'])
     .pipe(tap(file => {
       const minified = babel.transform(file.contents.toString(), opts).code;
-      file.contents = new Buffer(minified);
+      file.contents = Buffer.from(minified, 'utf-8');
       return file;
     }))
     .pipe(header(BANNER))
