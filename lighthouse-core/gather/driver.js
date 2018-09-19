@@ -944,7 +944,7 @@ class Driver {
     const traceEvents = [];
 
     /**
-     * Make function to fire when tracing bundle is collected.
+     * Listener for when dataCollected events fire for each trace chunk
      * @param {LH.Crdp.Tracing.DataCollectedEvent} data
      */
     const dataListener = function(data) {
@@ -958,8 +958,6 @@ class Driver {
         resolve({traceEvents});
       });
 
-
-      // Issue the command to stop tracing.
       return this.sendCommand('Tracing.end').catch(reject);
     });
   }
