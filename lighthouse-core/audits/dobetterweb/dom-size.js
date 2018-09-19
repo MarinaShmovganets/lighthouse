@@ -102,38 +102,26 @@ class DOMSize extends Audit {
       {key: 'observed', itemType: 'text', text: 'Count'},
     ];
 
-    // get identifying snippet parts
-    const divMatcher = /<(\S+).*>/;
-    const identifierMatcher = /(id="\S+"|class="\S+")/;
-
-    const depthNode = divMatcher.exec(stats.depth.snippet);
-    const dIdentifier = identifierMatcher.exec(stats.depth.snippet);
-
-    const widthNode = divMatcher.exec(stats.width.snippet);
-    const wIdentifier = identifierMatcher.exec(stats.width.snippet);
-
     /** @type {Array<Object<string, LH.Audit.DetailsItem>>} */
     const items = [
       {
-        category: 'Total DOM Nodes',
+        category: str_(UIStrings.columnDOMNodes),
         element: '',
         observed: Util.formatNumber(stats.totalDOMNodes),
       },
       {
-        category: 'Max Depth',
+        category: str_(UIStrings.columnDOMDepth),
         element: {
           type: 'code',
-          value: '<' + (depthNode !== null? depthNode[1]: '') +
-            (dIdentifier !== null? ' ' + dIdentifier[1]: '') + '>',
+          value: stats.depth.snippet,
         },
         observed: Util.formatNumber(stats.depth.max),
       },
       {
-        category: 'Max Children',
+        category: str_(UIStrings.columnDOMWidth),
         element: {
           type: 'code',
-          value: '<' + (widthNode !== null? widthNode[1]: '') +
-            (wIdentifier !== null? ' ' + wIdentifier[1]: '') + '>',
+          value: stats.width.snippet,
         },
         observed: Util.formatNumber(stats.width.max),
       },
