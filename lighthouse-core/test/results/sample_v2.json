@@ -2190,35 +2190,40 @@
         "type": "table",
         "headings": [
           {
-            "key": "totalNodes",
+            "key": "category",
             "itemType": "text",
-            "text": "Total DOM Nodes"
+            "text": "Category"
           },
           {
-            "key": "depth",
-            "itemType": "text",
-            "text": "Maximum DOM Depth"
+            "key": "element",
+            "itemType": "code",
+            "text": "Element"
           },
           {
-            "key": "width",
+            "key": "observed",
             "itemType": "text",
-            "text": "Maximum Children"
+            "text": "Observed"
           }
         ],
         "items": [
           {
-            "totalNodes": "53",
-            "depth": "4",
-            "width": "22"
+            "category": "Total DOM Nodes",
+            "element": "",
+            "observed": "53"
           },
           {
-            "totalNodes": "",
-            "depth": {
+            "category": "Maximum DOM Depth",
+            "element": {
               "type": "code"
             },
-            "width": {
+            "observed": "4"
+          },
+          {
+            "category": "Maximum Children",
+            "element": {
               "type": "code"
-            }
+            },
+            "observed": "22"
           }
         ]
       }
@@ -3756,14 +3761,23 @@
           "path": "audits[dom-size].displayValue"
         }
       ],
-      "lighthouse-core/audits/dobetterweb/dom-size.js | columnDOMNodes": [
+      "lighthouse-core/audits/dobetterweb/dom-size.js | columnCategory": [
         "audits[dom-size].details.headings[0].text"
       ],
-      "lighthouse-core/audits/dobetterweb/dom-size.js | columnDOMDepth": [
+      "lighthouse-core/audits/dobetterweb/dom-size.js | columnElement": [
         "audits[dom-size].details.headings[1].text"
       ],
-      "lighthouse-core/audits/dobetterweb/dom-size.js | columnDOMWidth": [
+      "lighthouse-core/audits/dobetterweb/dom-size.js | columnObserved": [
         "audits[dom-size].details.headings[2].text"
+      ],
+      "lighthouse-core/audits/dobetterweb/dom-size.js | categoryDOMNodes": [
+        "audits[dom-size].details.items[0].category"
+      ],
+      "lighthouse-core/audits/dobetterweb/dom-size.js | categoryDOMDepth": [
+        "audits[dom-size].details.items[1].category"
+      ],
+      "lighthouse-core/audits/dobetterweb/dom-size.js | categoryDOMWidth": [
+        "audits[dom-size].details.items[2].category"
       ],
       "lighthouse-core/config/default-config.js | performanceCategoryTitle": [
         "categories.performance.title"

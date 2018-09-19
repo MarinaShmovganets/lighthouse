@@ -118,7 +118,7 @@ function getOuterHTMLSnippet(element, ignore=[]) {
 
   let prunedMatch = match[0];
   ignore.forEach(attribute =>{
-    const ignoreRegex = new RegExp(attribute + '=".*?"'); // /string=".*?"/;
+    const ignoreRegex = new RegExp(attribute + '=".*?"');
     prunedMatch = prunedMatch.split(ignoreRegex).join('');
   });
 

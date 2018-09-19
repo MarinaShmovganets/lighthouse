@@ -32,17 +32,23 @@ const UIStrings = {
     'children/parent element. A large DOM can increase memory usage, cause longer ' +
     '[style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), ' +
     'and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/tools/lighthouse/audits/dom-size).',
-  /** Label for the total number of DOM nodes found in the page. */
-  columnDOMNodes: 'Total DOM Nodes',
-  /** Label for the numeric value of the maximum depth in the page's DOM tree. */
-  columnDOMDepth: 'Maximum DOM Depth',
-  /** Label for the value of the maximum number of children any DOM node in the page has. */
-  columnDOMWidth: 'Maximum Children',
+  /** Table column header for the type of analytic found. */
+  columnCategory: 'Category',
+  /** Table column header for DOM Element's snippet. */
+  columnElement: 'Element',
+  /** Table column header for the observed analytic's value. */
+  columnObserved: 'Observed',
   /** [ICU Syntax] Label for an audit identifying the number of DOM nodes found in the page. */
   displayValue: `{itemCount, plural,
     =1 {1 node}
     other {# nodes}
     }`,
+  /** Label for the total number of DOM nodes found in the page. */
+  categoryDOMNodes: 'Total DOM Nodes',
+  /** Label for the numeric value of the maximum depth in the page's DOM tree. */
+  categoryDOMDepth: 'Maximum DOM Depth',
+  /** Label for the value of the maximum number of children any DOM node in the page has. */
+  categoryDOMWidth: 'Maximum Children',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -96,21 +102,20 @@ class DOMSize extends Audit {
     );
 
     const headings = [
-      // TODO i18n new UI text
-      {key: 'category', itemType: 'text', text: 'Category'},
-      {key: 'element', itemType: 'code', text: 'Element'},
-      {key: 'observed', itemType: 'text', text: 'Count'},
+      {key: 'category', itemType: 'text', text: str_(UIStrings.columnCategory)},
+      {key: 'element', itemType: 'code', text: str_(UIStrings.columnElement)},
+      {key: 'observed', itemType: 'text', text: str_(UIStrings.columnObserved)},
     ];
 
     /** @type {Array<Object<string, LH.Audit.DetailsItem>>} */
     const items = [
       {
-        category: str_(UIStrings.columnDOMNodes),
+        category: str_(UIStrings.categoryDOMNodes),
         element: '',
         observed: Util.formatNumber(stats.totalDOMNodes),
       },
       {
-        category: str_(UIStrings.columnDOMDepth),
+        category: str_(UIStrings.categoryDOMDepth),
         element: {
           type: 'code',
           value: stats.depth.snippet,
@@ -118,7 +123,7 @@ class DOMSize extends Audit {
         observed: Util.formatNumber(stats.depth.max),
       },
       {
-        category: str_(UIStrings.columnDOMWidth),
+        category: str_(UIStrings.categoryDOMWidth),
         element: {
           type: 'code',
           value: stats.width.snippet,

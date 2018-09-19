@@ -159,17 +159,29 @@
     "message": "Minimize Critical Requests Depth",
     "description": "Imperative title of a Lighthouse audit that tells the user to reduce the depth of critical network requests to enhance initial load of a page. Critical request chains are series of dependent network requests that are important for page rendering. For example, here's a 4-request-deep chain: The biglogo.jpg image is required, but is requested via the styles.css style code, which is requested by the initialize.js javascript, which is requested by the page's HTML. This is displayed in a list of audit titles that Lighthouse generates."
   },
-  "lighthouse-core/audits/dobetterweb/dom-size.js | columnDOMDepth": {
+  "lighthouse-core/audits/dobetterweb/dom-size.js | categoryDOMDepth": {
     "message": "Maximum DOM Depth",
     "description": "Label for the numeric value of the maximum depth in the page's DOM tree."
   },
-  "lighthouse-core/audits/dobetterweb/dom-size.js | columnDOMNodes": {
+  "lighthouse-core/audits/dobetterweb/dom-size.js | categoryDOMNodes": {
     "message": "Total DOM Nodes",
     "description": "Label for the total number of DOM nodes found in the page."
   },
-  "lighthouse-core/audits/dobetterweb/dom-size.js | columnDOMWidth": {
+  "lighthouse-core/audits/dobetterweb/dom-size.js | categoryDOMWidth": {
     "message": "Maximum Children",
     "description": "Label for the value of the maximum number of children any DOM node in the page has."
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | columnCategory": {
+    "message": "Category",
+    "description": "Table column header for the type of analytic found."
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | columnElement": {
+    "message": "Element",
+    "description": "Table column header for DOM Element's snippet."
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | columnObserved": {
+    "message": "Observed",
+    "description": "Table column header for the observed analytic's value."
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | description": {
     "message": "Browser engineers recommend pages contain fewer than ~1,500 DOM nodes. The sweet spot is a tree depth < 32 elements and fewer than 60 children/parent element. A large DOM can increase memory usage, cause longer [style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/tools/lighthouse/audits/dom-size).",
