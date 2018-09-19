@@ -940,7 +940,7 @@ class Driver {
    * @return {Promise<LH.Trace>}
    */
   endTrace() {
-    /** @type {Array<LH.TraceEvent>}>} */
+    /** @type {Array<LH.TraceEvent>} */
     const traceEvents = [];
 
     // setup listener for when a trace bundle is sent
