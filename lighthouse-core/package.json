@@ -1,0 +1,15 @@
+{
+  "name": "lighthouse-core",
+  "private": true,
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {},
+  "devDependencies": {},
+  "resolutions": {},
+  "dependencies": {},
+  "browser": {
+    "./lib/web-inspector.js": "./lib/web-inspector-browser.js",
+    "vm": false
+  }
+}
