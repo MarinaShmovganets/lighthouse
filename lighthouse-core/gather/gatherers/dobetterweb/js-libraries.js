@@ -37,6 +37,7 @@ function detectLibraries() {
           name: name,
           version: result.version,
           npmPkgName: lib.npm,
+          id: lib.icon,
         });
       }
     } catch (e) {}
