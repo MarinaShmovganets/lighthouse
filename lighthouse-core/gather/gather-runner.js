@@ -333,7 +333,6 @@ class GatherRunner {
     /** @type {Partial<LH.GathererArtifacts>} */
     const gathererArtifacts = {};
 
-    const pageLoadFailures = [];
     const resultsEntries = /** @type {GathererResultsEntries} */ (Object.entries(gathererResults));
     for (const [gathererName, phaseResultsPromises] of resultsEntries) {
       if (gathererArtifacts[gathererName] !== undefined) continue;
@@ -349,17 +348,10 @@ class GatherRunner {
         // An error result must be non-fatal to not have caused an exit by now,
         // so return it to runner to handle turning it into an error audit.
         gathererArtifacts[gathererName] = err;
-        // Track page load errors separately, so we can fail loudly if needed.
-        if (LHError.isPageLoadError(err)) pageLoadFailures.push(err);
       }
 
       if (gathererArtifacts[gathererName] === undefined) {
         throw new Error(`${gathererName} failed to provide an artifact.`);
-      }
-
-      // Fail the run if more than 50% of all artifacts failed due to page load failure.
-      if (pageLoadFailures.length > Object.keys(gathererArtifacts).length * 0.5) {
-        throw LHError.fromLighthouseError(pageLoadFailures[0]);
       }
     }
 
