@@ -32,11 +32,11 @@ const UIStrings = {
     'children/parent element. A large DOM can increase memory usage, cause longer ' +
     '[style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), ' +
     'and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/tools/lighthouse/audits/dom-size).',
-  /** Table column header for the type of analytic found. */
+  /** Table column header for the type of statistic. These statistics describe how big the DOM is (count of DOM nodes, children, depth). */
   columnCategory: 'Category',
-  /** Table column header for DOM Element's snippet. */
+  /** Table column header for the DOM element. Each DOM element is described with its HTML representation. */
   columnElement: 'Element',
-  /** Table column header for the observed analytic's value. */
+  /** Table column header for the observed value of the DOM statistic. */
   columnObserved: 'Observed',
   /** [ICU Syntax] Label for an audit identifying the number of DOM nodes found in the page. */
   displayValue: `{itemCount, plural,
