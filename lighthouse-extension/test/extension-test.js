@@ -71,7 +71,7 @@ describe('Lighthouse chrome extension', function() {
     });
 
     const page = await browser.newPage();
-    await page.goto('https://www.paulirish.com', {waitUntil: 'networkidle2'});
+    await page.goto('https://www.google.com', {waitUntil: 'networkidle2'});
     const targets = await browser.targets();
     const extensionTarget = targets.find(({_targetInfo}) => {
       return _targetInfo.title === 'Lighthouse' && _targetInfo.type === 'background_page';
