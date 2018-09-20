@@ -80,7 +80,7 @@ declare global {
       /** Information on size and loading for all the images in the page. */
       ImageUsage: Artifacts.SingleImageUsage[];
       /** Information on JS libraries and versions used by the page. */
-      JSLibraries: {name: string, version: string, npmPkgName: string, id: string}[];
+      JSLibraries: {name: string, version: string, npmPkgName: string}[];
       /** JS coverage information for code used during page load. */
       JsUsage: Crdp.Profiler.ScriptCoverage[];
       /** Parsed version of the page's Web App Manifest, or null if none found. */
