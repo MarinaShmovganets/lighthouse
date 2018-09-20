@@ -107,7 +107,7 @@ class NetworkRecorder extends EventEmitter {
    */
   static _isFrameRootRequestAndFinished(record) {
     const isFrameRootRequest = record.url === record.documentURL;
-    const responseReceived = Number.isFinite(record.responseReceivedTime);
+    const responseReceived = record.responseReceivedTime > 0;
     return !!(isFrameRootRequest && responseReceived && record.endTime);
   }
 
