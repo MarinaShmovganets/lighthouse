@@ -20,11 +20,6 @@ describe('DetailsRenderer', () => {
     dom = new DOM(document);
   });
 
-  afterAll(() => {
-    global.URL = undefined;
-    global.Util = undefined;
-  });
-
   describe('get outer HTML snippets', () => {
     it('gets full HTML snippet', () => {
       assert.equal(pageFunctions.getOuterHTMLSnippet(

@@ -33,22 +33,22 @@ const UIStrings = {
     '[style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), ' +
     'and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/tools/lighthouse/audits/dom-size).',
   /** Table column header for the type of statistic. These statistics describe how big the DOM is (count of DOM nodes, children, depth). */
-  columnCategory: 'Category',
+  columnStatistic: 'Statistic',
   /** Table column header for the DOM element. Each DOM element is described with its HTML representation. */
   columnElement: 'Element',
   /** Table column header for the observed value of the DOM statistic. */
-  columnObserved: 'Observed',
+  columnValue: 'Value',
   /** [ICU Syntax] Label for an audit identifying the number of DOM nodes found in the page. */
   displayValue: `{itemCount, plural,
     =1 {1 node}
     other {# nodes}
     }`,
   /** Label for the total number of DOM nodes found in the page. */
-  categoryDOMNodes: 'Total DOM Nodes',
+  statisticDOMNodes: 'Total DOM Nodes',
   /** Label for the numeric value of the maximum depth in the page's DOM tree. */
-  categoryDOMDepth: 'Maximum DOM Depth',
-  /** Label for the numeric value of the maximum number of children any DOM node in the page has. The element described will have the most children in the page. */
-  categoryDOMWidth: 'Maximum Children',
+  statisticDOMDepth: 'Maximum DOM Depth',
+  /** Label for the numeric value of the maximum number of children any DOM element in the page has. The element described will have the most children in the page. */
+  statisticDOMWidth: 'Maximum Child Elements',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -102,33 +102,33 @@ class DOMSize extends Audit {
     );
 
     const headings = [
-      {key: 'category', itemType: 'text', text: str_(UIStrings.columnCategory)},
+      {key: 'statistic', itemType: 'text', text: str_(UIStrings.columnStatistic)},
       {key: 'element', itemType: 'code', text: str_(UIStrings.columnElement)},
-      {key: 'observed', itemType: 'text', text: str_(UIStrings.columnObserved)},
+      {key: 'value', itemType: 'text', text: str_(UIStrings.columnValue)},
     ];
 
     /** @type {Array<Object<string, LH.Audit.DetailsItem>>} */
     const items = [
       {
-        category: str_(UIStrings.categoryDOMNodes),
+        statistic: str_(UIStrings.statisticDOMNodes),
         element: '',
-        observed: Util.formatNumber(stats.totalDOMNodes),
+        value: Util.formatNumber(stats.totalDOMNodes),
       },
       {
-        category: str_(UIStrings.categoryDOMDepth),
+        statistic: str_(UIStrings.statisticDOMDepth),
         element: {
           type: 'code',
           value: stats.depth.snippet,
         },
-        observed: Util.formatNumber(stats.depth.max),
+        value: Util.formatNumber(stats.depth.max),
       },
       {
-        category: str_(UIStrings.categoryDOMWidth),
+        statistic: str_(UIStrings.statisticDOMWidth),
         element: {
           type: 'code',
           value: stats.width.snippet,
         },
-        observed: Util.formatNumber(stats.width.max),
+        value: Util.formatNumber(stats.width.max),
       },
     ];
 

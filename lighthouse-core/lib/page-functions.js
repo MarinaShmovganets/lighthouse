@@ -107,7 +107,7 @@ function getElementsInDocument(selector) {
 /**
  * Gets the opening tag text of the given node.
  * @param {Element} element
- * @param {Array<string>=} ignoreAttrs Optionally provides an array of attribute tags to not include in HTML the snippet
+ * @param {Array<string>=} ignoreAttrs An optional array of attribute tags to not include in the HTML snippet.
  * @return {string}
  */
 /* istanbul ignore next */
