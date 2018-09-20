@@ -47,7 +47,7 @@ const UIStrings = {
   categoryDOMNodes: 'Total DOM Nodes',
   /** Label for the numeric value of the maximum depth in the page's DOM tree. */
   categoryDOMDepth: 'Maximum DOM Depth',
-  /** Label for the value of the maximum number of children any DOM node in the page has. */
+  /** Label for the numeric value of the maximum number of children any DOM node in the page has. The element described will have the most children in the page. */
   categoryDOMWidth: 'Maximum Children',
 };
 
