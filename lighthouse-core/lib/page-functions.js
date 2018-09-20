@@ -111,18 +111,17 @@ function getElementsInDocument(selector) {
  * @return {string}
  */
 /* istanbul ignore next */
-function getOuterHTMLSnippet(element, ignore=[]) {
-  const reOpeningTag = /^.*?>/;
-  const match = element.outerHTML.match(reOpeningTag);
-  if (!(match && match[0])) return '';
+function getOuterHTMLSnippet(element, ignoreAttrs=[]) {
+  const clone = element.cloneNode();
 
-  let prunedMatch = match[0];
-  ignore.forEach(attribute =>{
-    const ignoreRegex = new RegExp(attribute + '=".*?"');
-    prunedMatch = prunedMatch.split(ignoreRegex).join('');
+  ignoreAttrs.forEach(attribute =>{
+    clone.removeAttribute(attribute);
   });
 
-  return prunedMatch;
+  const reOpeningTag = /^.*?>/;
+  const match = clone.outerHTML.match(reOpeningTag);
+
+  return (match && match[0]) || '';
 }
 
 /**
