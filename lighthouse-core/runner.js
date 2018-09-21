@@ -206,7 +206,7 @@ class Runner {
     }
 
     // Members of LH.Audit.Context that are shared across all audits.
-    const auditsContext = {
+    const sharedAuditContext = {
       settings,
       LighthouseRunWarnings: runWarnings,
       computedCache: new Map(),
@@ -215,7 +215,7 @@ class Runner {
     // Run each audit sequentially
     const auditResults = [];
     for (const auditDefn of audits) {
-      const auditResult = await Runner._runAudit(auditDefn, artifacts, auditsContext);
+      const auditResult = await Runner._runAudit(auditDefn, artifacts, sharedAuditContext);
       auditResults.push(auditResult);
     }
 
@@ -227,11 +227,11 @@ class Runner {
    * Otherwise returns error audit result.
    * @param {LH.Config.AuditDefn} auditDefn
    * @param {LH.Artifacts} artifacts
-   * @param {Pick<LH.Audit.Context, 'settings'|'LighthouseRunWarnings'|'computedCache'>} auditsContext
+   * @param {Pick<LH.Audit.Context, 'settings'|'LighthouseRunWarnings'|'computedCache'>} sharedAuditContext
    * @return {Promise<LH.Audit.Result>}
    * @private
    */
-  static async _runAudit(auditDefn, artifacts, auditsContext) {
+  static async _runAudit(auditDefn, artifacts, sharedAuditContext) {
     const audit = auditDefn.implementation;
     const status = `Evaluating: ${i18n.getFormatted(audit.meta.title, 'en-US')}`;
 
@@ -280,7 +280,7 @@ class Runner {
       const auditOptions = Object.assign({}, audit.defaultOptions, auditDefn.options);
       const auditContext = {
         options: auditOptions,
-        ...auditsContext,
+        ...sharedAuditContext,
       };
 
       const product = await audit.audit(artifacts, auditContext);
