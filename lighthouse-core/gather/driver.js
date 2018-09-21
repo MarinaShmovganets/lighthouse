@@ -314,6 +314,11 @@ class Driver {
       this.sendCommand('Runtime.evaluate', evaluationParams).then(response => {
         clearTimeout(asyncTimeout);
 
+        if (response.exceptionDetails) {
+          // An error occurred before we could even create a Promise, should be *very* rare
+          return reject(new Error('an unexpected driver error occurred'));
+        }
+
         // Protocol should always return a 'result' object, but it is sometimes undefined
         // see https://github.com/GoogleChrome/lighthouse/issues/6026
         if (response.result === undefined) {
@@ -322,10 +327,7 @@ class Driver {
 
         const value = response.result.value;
 
-        if (response.exceptionDetails) {
-          // An error occurred before we could even create a Promise, should be *very* rare
-          reject(new Error('an unexpected driver error occurred'));
-        } else if (value && value.__failedInBrowser) {
+        if (value && value.__failedInBrowser) {
           reject(Object.assign(new Error(), value));
         } else {
           resolve(value);
