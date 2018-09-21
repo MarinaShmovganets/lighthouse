@@ -313,6 +313,13 @@ class Driver {
 
       this.sendCommand('Runtime.evaluate', evaluationParams).then(result => {
         clearTimeout(asyncTimeout);
+
+        // Protocol should always return a 'result' object, but it is sometimes undefined
+        // see https://github.com/GoogleChrome/lighthouse/issues/6026
+        if (result.result === undefined) {
+          return reject(new Error('Driver did not sent a result object'));
+        }
+
         const value = result.result.value;
 
         if (result.exceptionDetails) {
