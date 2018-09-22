@@ -316,7 +316,7 @@ class Driver {
 
         if (response.exceptionDetails) {
           // An error occurred before we could even create a Promise, should be *very* rare
-          return reject(new Error('Evaluation exception: ${response.exceptionDetails.text}'));
+          return reject(new Error(`Evaluation exception: ${response.exceptionDetails.text}`));
         }
 
         // Protocol should always return a 'result' object, but it is sometimes undefined.  See #6026.
