@@ -328,7 +328,7 @@ class Driver {
         const value = response.result.value;
 
         if (value && value.__failedInBrowser) {
-          reject(Object.assign(new Error(), value));
+          return reject(Object.assign(new Error(), value));
         } else {
           resolve(value);
         }
