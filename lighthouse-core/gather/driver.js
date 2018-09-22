@@ -321,7 +321,7 @@ class Driver {
 
         // Protocol should always return a 'result' object, but it is sometimes undefined.  See #6026.
         if (response.result === undefined) {
-          return reject(new Error('Runtime.evaluate response omits a result'));
+          return reject(new Error('Runtime.evaluate response did not contain a "result" object'));
         }
 
         const value = response.result.value;
