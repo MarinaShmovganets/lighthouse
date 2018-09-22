@@ -316,13 +316,12 @@ class Driver {
 
         if (response.exceptionDetails) {
           // An error occurred before we could even create a Promise, should be *very* rare
-          return reject(new Error('an unexpected driver error occurred'));
+          return reject(new Error('Evaluation exception: ${response.exceptionDetails.text}'));
         }
 
-        // Protocol should always return a 'result' object, but it is sometimes undefined
-        // see https://github.com/GoogleChrome/lighthouse/issues/6026
+        // Protocol should always return a 'result' object, but it is sometimes undefined.  See #6026.
         if (response.result === undefined) {
-          return reject(new Error('Driver did not sent a result object'));
+          return reject(new Error('Runtime.evaluate response omits a result'));
         }
 
         const value = response.result.value;
