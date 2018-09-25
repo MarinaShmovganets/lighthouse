@@ -10,52 +10,15 @@
  * Stubbery to allow portions of the DevTools frontend to be used in lighthouse. `SDK`
  * technically lives on the global object but should be accessed through a normal `require` call.
  */
-module.exports = (function() {
-  if (global.SDK) {
-    return global.SDK;
-  }
+const vm = require('vm');
+const fs = require('fs');
+const buildWebInspector = require('./build-web-inspector');
+const context = vm.createContext({module: {}});
+context.global = context;
+context.require = moduleId => {
+  const moduleContent = fs.readFileSync(require.resolve(moduleId));
+  vm.runInContext(moduleContent, context);
+};
+const webInspector = vm.runInContext(`(${buildWebInspector.toString()})()`, context);
 
-  // Dependencies for effective CSS rule calculation. Global pollution!
-  global.SDK = {};
-  global.TextUtils = {};
-  global.Node = {
-    ELEMENT_NODE: 1,
-    TEXT_NODE: 3,
-  };
-  global.Protocol = {
-    CSS: {
-      StyleSheetOrigin: {
-        Injected: 'injected',
-        UserAgent: 'user-agent',
-        Inspector: 'inspector',
-        Regular: 'regular',
-      },
-    },
-  };
-
-  /**
-   * The single prototype augmentation needed from 'chrome-devtools-frontend/front_end/platform/utilities.js'.
-   * @return {Array<number>}
-   */
-  String.prototype.computeLineEndings = function() { // eslint-disable-line no-extend-native
-    const endings = [];
-    for (let i = 0; i < this.length; i++) {
-      if (this.charAt(i) === '\n') {
-        endings.push(i);
-      }
-    }
-    endings.push(this.length);
-    return endings;
-  };
-
-  require('chrome-devtools-frontend/front_end/text_utils/Text.js');
-  require('chrome-devtools-frontend/front_end/text_utils/TextRange.js');
-  require('chrome-devtools-frontend/front_end/sdk/CSSMatchedStyles.js');
-  require('chrome-devtools-frontend/front_end/sdk/CSSMedia.js');
-  require('chrome-devtools-frontend/front_end/sdk/CSSMetadata.js');
-  require('chrome-devtools-frontend/front_end/sdk/CSSProperty.js');
-  require('chrome-devtools-frontend/front_end/sdk/CSSRule.js');
-  require('chrome-devtools-frontend/front_end/sdk/CSSStyleDeclaration.js');
-
-  return global.SDK;
-})();
+module.exports = webInspector;
