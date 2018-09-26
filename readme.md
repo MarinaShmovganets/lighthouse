@@ -165,7 +165,7 @@ Lighthouse can produce a report as JSON or HTML.
 
 HTML report:
 
-![Lighthouse report](/assets/example_audit.png)
+<img src="assets/example_audit.png" alt="Lighthouse example audit" width="500px">
 
 ### Online Viewer
 
@@ -332,9 +332,8 @@ We'd love help writing audits, fixing bugs, and making the tool more useful!
 See [Contributing](./CONTRIBUTING.md) to get started.
 
 ---
-
 <p align="center">
-  <img src="https://cloud.githubusercontent.com/assets/39191/22478294/23f662f6-e79e-11e6-8de3-ffd7be7bf628.png" alt="Lighthouse logo" height="150">
+  <img src="assets/lighthouse-logo.png" alt="Lighthouse logo" height="150">
   <br>
   <b>Lighthouse</b>, ˈlītˌhous (n): a <s>tower or other structure</s> tool containing a beacon light
   to warn or guide <s>ships at sea</s> developers.
