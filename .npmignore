@@ -24,10 +24,8 @@ lighthouse-logger/
 node_modules/
 results/
 lantern-data/
-
-plots/
-
 latest-run/
+plots/
 
 # generated files
 **/pages/scripts/lighthouse-report.js
@@ -39,6 +37,7 @@ closure-error.log
 last-run-results.html
 latest.artifacts.log
 npm-debug.log
+yarn-error.log
 results.html
 
 # dev files
