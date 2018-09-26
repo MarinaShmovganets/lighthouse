@@ -48,7 +48,7 @@ async function lighthouse(url, flags = {}, configJSON, connection) {
   flags.logLevel = flags.logLevel || 'error';
   log.setLevel(flags.logLevel);
 
-  const config = generateConfig(flags, configJSON);
+  const config = generateConfig(configJSON, flags);
 
   connection = connection || new ChromeProtocol(flags.port, flags.hostname);
 
@@ -58,13 +58,13 @@ async function lighthouse(url, flags = {}, configJSON, connection) {
 
 /**
  * Generate a Lighthouse Config.
- * @param {LH.Flags=} flags Optional settings for the Lighthouse run. If present,
- *   they will override any settings in the config.
  * @param {LH.Config.Json=} configJson Configuration for the Lighthouse run. If
  *   not present, the default config is used.
+ * @param {LH.Flags=} flags Optional settings for the Lighthouse run. If present,
+ *   they will override any settings in the config.
  * @return {Config}
  */
-function generateConfig(flags, configJson) {
+function generateConfig(configJson, flags) {
   return new Config(configJson, flags);
 }
 

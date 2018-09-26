@@ -99,7 +99,7 @@ function getFlags(manualArgv) {
         'only-audits': 'Only run the specified audits',
         'only-categories': 'Only run the specified categories',
         'skip-audits': 'Run everything except these audits',
-        'print-config': 'Print the full config that the current options will run with and exit.',
+        'print-config': 'Print the full, normalized config for the given config and options, then exit.',
       })
       // set aliases
       .alias({'gather-mode': 'G', 'audit-mode': 'A'})
@@ -140,14 +140,13 @@ function getFlags(manualArgv) {
       .default('enable-error-reporting', undefined) // Undefined so prompted by default
       .check(/** @param {LH.CliFlags} argv */ (argv) => {
         // Lighthouse doesn't need a URL if...
-        //   - We're in auditMode (and we have artifacts already)
         //   - We're just listing the available options.
         //   - We're just printing the config.
-        // If one of these don't apply, stop the program and ask for a url.
-        const isListMode = argv.listAllAudits || argv.listTraceCategories;
+        //   - We're in auditMode (and we have artifacts already)
+        // If one of these don't apply, if no URL, stop the program and ask for one.
+        const isPrintSomethingMode = argv.listAllAudits || argv.listTraceCategories || argv.printConfig;
         const isOnlyAuditMode = !!argv.auditMode && !argv.gatherMode;
-        const isPrintConfigMode = argv.printConfig;
-        if (isListMode || isOnlyAuditMode || isPrintConfigMode) {
+        if (isPrintSomethingMode || isOnlyAuditMode) {
           return true;
         } else if (argv._.length > 0) {
           return true;

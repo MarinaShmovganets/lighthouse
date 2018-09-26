@@ -371,7 +371,7 @@ class Config {
    * Audit `implementation` and `instance` do not survive this process.
    * @return {string}
    */
-  print() {
+  getPrintString() {
     const jsonConfig = deepClone(this);
 
     if (jsonConfig.passes) {

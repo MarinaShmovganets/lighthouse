@@ -75,9 +75,8 @@ describe('CLI Tests', function() {
       const config = JSON.parse(ret.stdout);
       assert.strictEqual(config.settings.output[0], 'html');
       assert.strictEqual(config.settings.auditMode, false);
-      assert.ok(Array.isArray(config.passes));
-      assert.ok(Array.isArray(config.audits));
-      config.audits.forEach(audit => assert.ok(audit.path));
+
+      expect(config).toMatchSnapshot();
     });
 
     it('should print the overridden config and exit immediately after', () => {
@@ -91,9 +90,9 @@ describe('CLI Tests', function() {
       const config = JSON.parse(ret.stdout);
       assert.strictEqual(config.settings.output[0], 'json');
       assert.strictEqual(config.settings.auditMode, true);
-      assert.ok(Array.isArray(config.passes));
-      assert.ok(Array.isArray(config.audits));
       assert.strictEqual(config.audits.length, 1);
+
+      expect(config).toMatchSnapshot();
     });
   });
 });

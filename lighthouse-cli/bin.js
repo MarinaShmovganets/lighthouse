@@ -97,8 +97,8 @@ if (cliFlags.extraHeaders) {
  */
 async function run() {
   if (cliFlags.printConfig) {
-    const config = generateConfig(cliFlags, configJson);
-    process.stdout.write(config.print());
+    const config = generateConfig(configJson, cliFlags);
+    process.stdout.write(config.getPrintString());
     return;
   }
 

@@ -975,7 +975,7 @@ describe('Config', () => {
     });
   });
 
-  describe('#print', () => {
+  describe('#getDisplayString', () => {
     it('doesn\'t include empty gatherer/audit options in output', () => {
       const gOpt = 'gathererOption';
       const aOpt = 'auditOption';
@@ -994,7 +994,7 @@ describe('Config', () => {
         ],
       };
 
-      const printed = new Config(configJson).print();
+      const printed = new Config(configJson).getPrintString();
       const printedConfig = JSON.parse(printed);
 
       // Check that options weren't completely eliminated.
@@ -1019,13 +1019,13 @@ describe('Config', () => {
     });
 
     it('prints localized category titles', () => {
-      const printed = new Config(defaultConfig).print();
+      const printed = new Config(defaultConfig).getPrintString();
       const printedConfig = JSON.parse(printed);
       let localizableCount = 0;
 
       Object.entries(printedConfig.categories).forEach(([printedCategoryId, printedCategory]) => {
         const origTitle = origConfig.categories[printedCategoryId].title;
-        if (i18n.MESSAGE_INSTANCE_ID_REGEX.test(origTitle)) localizableCount++;
+        if (i18n.isIcuMessage(origTitle)) localizableCount++;
         const i18nOrigTitle = i18n.getFormatted(origTitle, origConfig.settings.locale);
 
         assert.strictEqual(printedCategory.title, i18nOrigTitle);
@@ -1038,10 +1038,10 @@ describe('Config', () => {
     it('prints a valid ConfigJson that can make an identical Config', () => {
       // depends on defaultConfig having a `path` for all gatherers and audits.
       const firstConfig = new Config(defaultConfig);
-      const firstPrint = firstConfig.print();
+      const firstPrint = firstConfig.getPrintString();
 
       const secondConfig = new Config(JSON.parse(firstPrint));
-      const secondPrint = secondConfig.print();
+      const secondPrint = secondConfig.getPrintString();
 
       assert.strictEqual(firstPrint, secondPrint);
     });
