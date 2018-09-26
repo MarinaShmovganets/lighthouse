@@ -265,8 +265,12 @@ function _resolveIcuMessageInstanceId(icuMessageInstanceId, locale) {
 }
 
 /**
- * @param {LH.Result} lhr
+ * Recursively walk the input object, looking for property values that are
+ * string references and replace them with their localized values. Primarily
+ * used with the full LHR as input.
+ * @param {*} lhr
  * @param {LH.Locale} locale
+ * @return {LH.I18NMessages}
  */
 function replaceIcuMessageInstanceIds(lhr, locale) {
   /**
@@ -315,4 +319,5 @@ module.exports = {
   createMessageInstanceIdFn,
   getFormatted,
   replaceIcuMessageInstanceIds,
+  MESSAGE_INSTANCE_ID_REGEX,
 };
