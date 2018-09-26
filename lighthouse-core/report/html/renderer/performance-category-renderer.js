@@ -112,7 +112,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
   /**
    * @param {LH.ReportResult.Category} category
    * @param {Object<string, LH.Result.ReportGroup>} groups
-   * @param {string=} environment 'PSI' and undefined are the only valid values
+   * @param {'PSI'=} environment 'PSI' and undefined are the only valid values
    * @return {Element}
    * @override
    */
