@@ -59,7 +59,6 @@ cd ..; rm -rf tmp; mkdir tmp; cd tmp
 npm init -y
 npm install ../lighthouse-pristine/lighthouse-*.tgz
 npm explore lighthouse -- npm run smoke
-npm explore lighthouse -- npm run smokehouse
 npm explore lighthouse -- npm run chrome # try the manual launcher
 npm explore lighthouse -- npm run fast -- http://example.com
 cd ..; rm -rf ./tmp;
