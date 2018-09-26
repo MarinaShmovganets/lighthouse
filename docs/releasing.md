@@ -99,8 +99,8 @@ echo "Go here: https://chrome.google.com/webstore/developer/edit/blipmdconlkpine
 echo "Upload the package zip to CWS dev dashboard"
 
 echo "Verify the npm package won't include unncessary files"
-yarn global add pkgfiles
-pkgfiles   # publishable size should be ~2MB
+npm pack --dry-run
+npx pkgfiles
 
 echo "ship it"
 npm publish
