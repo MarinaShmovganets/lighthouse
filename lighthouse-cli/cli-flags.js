@@ -56,7 +56,7 @@ function getFlags(manualArgv) {
 
       .group(
         [
-          'save-assets', 'list-all-audits', 'list-trace-categories', 'additional-trace-categories',
+          'save-assets', 'list-all-audits', 'list-trace-categories', 'print-config', 'additional-trace-categories',
           'config-path', 'preset', 'chrome-flags', 'port', 'hostname',
           'max-wait-for-load', 'enable-error-reporting', 'gather-mode', 'audit-mode',
           'only-audits', 'only-categories', 'skip-audits',
