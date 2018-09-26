@@ -100,7 +100,7 @@ function getFlags(manualArgv) {
         'only-audits': 'Only run the specified audits',
         'only-categories': 'Only run the specified categories',
         'skip-audits': 'Run everything except these audits',
-        'print-config': 'Print the full, normalized config for the given config and options, then exit.',
+        'print-config': 'Print the normalized config for the given config and options, then exit.',
       })
       // set aliases
       .alias({'gather-mode': 'G', 'audit-mode': 'A'})
