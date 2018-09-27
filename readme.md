@@ -10,7 +10,7 @@ Lighthouse is integrated directly into the Chrome Developer Tools, under the "Au
 
 **Run it**: open Chrome DevTools, select the Audits panel, and hit "Run audits".
 
-<img src="https://raw.githubusercontent.com/GoogleChrome/lighthouse/HEAD/assets/example_dev_tools.png" alt="Lighthouse integration in Chrome DevTools" width="500px">
+<img src="https://raw.githubusercontent.com/GoogleChrome/lighthouse/e7997b3db01de3553d8cb208a40f3d4fd350195c/assets/example_dev_tools.png" alt="Lighthouse integration in Chrome DevTools" width="500px">
 
 ## Using the Chrome extension
 
@@ -165,7 +165,7 @@ Lighthouse can produce a report as JSON or HTML.
 
 HTML report:
 
-<img src="https://raw.githubusercontent.com/GoogleChrome/lighthouse/HEAD/assets/example_audit.png" alt="Lighthouse example audit" width="500px">
+<img src="https://raw.githubusercontent.com/GoogleChrome/lighthouse/443ff2c8a297dfd2297dfaca86c4966a87c8574a/assets/example_audit.png" alt="Lighthouse example audit" width="500px">
 
 ### Online Viewer
 
@@ -333,7 +333,7 @@ See [Contributing](./CONTRIBUTING.md) to get started.
 
 ---
 <p align="center">
-  <img src="https://raw.githubusercontent.com/GoogleChrome/lighthouse/HEAD/assets/lighthouse-logo.png" alt="Lighthouse logo" height="150">
+  <img src="https://raw.githubusercontent.com/GoogleChrome/lighthouse/8b3d7f052b2e64dd857e741d7395647f487697e7/assets/lighthouse-logo.png" alt="Lighthouse logo" height="150">
   <br>
   <b>Lighthouse</b>, ˈlītˌhous (n): a <s>tower or other structure</s> tool containing a beacon light
   to warn or guide <s>ships at sea</s> developers.
