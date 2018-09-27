@@ -72,7 +72,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
 // Expose only in DevTools' worker
 // @ts-ignore
-if (typeof self !== 'undefined' && self instanceof self.WorkerGlobalScope) {
+if (typeof self !== 'undefined') {
   // @ts-ignore
   self.runLighthouseInWorker = runLighthouseInWorker;
   // @ts-ignore
