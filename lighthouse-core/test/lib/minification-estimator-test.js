@@ -5,8 +5,14 @@
  */
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const assert = require('assert');
 const {computeCSSTokenLength, computeJSTokenLength} = require('../../lib/minification-estimator');
+
+
+const nodeModulesPath = path.join(__dirname, '../../../node_modules');
+const angularFullScript = fs.readFileSync(path.join(nodeModulesPath, 'angular/angular.js'), 'utf8');
 
 /* eslint-env jest */
 
@@ -183,6 +189,12 @@ describe('minification estimator', () => {
       `;
 
       assert.equal(computeJSTokenLength(js), 9);
+    });
+
+    it('should handle large, real javscript files', () => {
+      assert.equal(angularFullScript.length, 1364217);
+      // 1 - 405199 / 1364217 = estimated 70% smaller minified
+      assert.equal(computeJSTokenLength(angularFullScript), 405199);
     });
   });
 });
