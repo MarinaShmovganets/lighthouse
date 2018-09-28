@@ -13,12 +13,12 @@ const path = require('path');
  *
  *   index.js     : only calls bin.js's begin()
  *   cli-flags.js : leverages yargs to read argv, outputs LH.CliFlags
- *   bin.js       : CLI args postprocessing. cwd, list/print commands
- *   run.js       : chrome-launcher stuff, calling lighthouse-core, sending output to Printer
+ *   bin.js       : CLI args processing. cwd, list/print commands
+ *   run.js       : chrome-launcher bits, calling lighthouse-core, output to Printer
  *
- *   index ----> bin               ----> run                             ----> printer
- *                 ⭏--> cli.flags --⭎       ⭏                             ⭎
- *                                          --> lighthouse-core/index --⭎
+ *   index ---->    bin    ---->      run      ----> printer
+ *                  ⭏  ⭎               ⭏  ⭎
+ *               cli-flags        lh-core/index
  */
 
 const commands = require('./commands/commands.js');
