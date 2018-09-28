@@ -6,13 +6,10 @@
 'use strict';
 
 const fs = require('fs');
-const path = require('path');
 const assert = require('assert');
 const {computeCSSTokenLength, computeJSTokenLength} = require('../../lib/minification-estimator');
 
-
-const nodeModulesPath = path.join(__dirname, '../../../node_modules');
-const angularFullScript = fs.readFileSync(path.join(nodeModulesPath, 'angular/angular.js'), 'utf8');
+const angularFullScript = fs.readFileSync(require.resolve('angular/angular.js'), 'utf8');
 
 /* eslint-env jest */
 
