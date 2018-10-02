@@ -320,7 +320,7 @@ class NetworkRecorder extends EventEmitter {
    */
   _findRealRequest(requestId) {
     let request = this._recordsById.get(requestId);
-    if (!request) return undefined;
+    if (!request || !request.isValid) return undefined;
 
     while (request.redirectDestination) {
       request = request.redirectDestination;
