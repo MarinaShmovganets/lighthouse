@@ -7,6 +7,7 @@ assets/
 build/
 coverage/
 
+lighthouse-core/script/*
 lighthouse-core/test/
 lighthouse-core/third_party/src/
 lighthouse-viewer/
@@ -16,6 +17,10 @@ lighthouse-logger/
 
 # keep the chrome launcher script
 !lighthouse-core/scripts/manual-chrome-launcher.js
+
+# keep the download chrome script
+# helpfull in CI (https://github.com/GoogleChrome/lighthouse/issues/6150)
+!lighthouse-core/scripts/download-chrome.sh
 
 # keep smokehouse tests, etc
 !lighthouse-cli/test
