@@ -7,7 +7,7 @@ assets/
 build/
 coverage/
 
-lighthouse-core/script/*
+lighthouse-core/scripts/*
 lighthouse-core/test/
 lighthouse-core/third_party/src/
 lighthouse-viewer/
