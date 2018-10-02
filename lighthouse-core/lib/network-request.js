@@ -58,6 +58,7 @@ module.exports = class NetworkRequest {
     this.url = '';
     this.protocol = '';
     this.isSecure = false;
+    this.isValid = false;
     this.parsedURL = /** @type {ParsedURL} */ ({scheme: ''});
     this.documentURL = '';
 
@@ -125,27 +126,31 @@ module.exports = class NetworkRequest {
   onRequestWillBeSent(data) {
     this.requestId = data.requestId;
 
-    const url = new URL(data.request.url);
-    this.url = data.request.url;
-    this.documentURL = data.documentURL;
-    this.parsedURL = {
-      scheme: url.protocol.split(':')[0],
-      // Intentional, DevTools uses different terminology
-      host: url.hostname,
-      securityOrigin: url.origin,
-    };
-    this.isSecure = SECURE_SCHEMES.includes(this.parsedURL.scheme);
+    try {
+      // try to construct the url and fill in request
+      const url = new URL(data.request.url);
+      this.isValid = true;
+      this.url = data.request.url;
+      this.documentURL = data.documentURL;
+      this.parsedURL = {
+        scheme: url.protocol.split(':')[0],
+        // Intentional, DevTools uses different terminology
+        host: url.hostname,
+        securityOrigin: url.origin,
+      };
+      this.isSecure = SECURE_SCHEMES.includes(this.parsedURL.scheme);
 
-    this.startTime = data.timestamp;
+      this.startTime = data.timestamp;
 
-    this.requestMethod = data.request.method;
+      this.requestMethod = data.request.method;
 
-    this.initiator = data.initiator;
-    this.resourceType = data.type && RESOURCE_TYPES[data.type];
-    this.priority = data.request.initialPriority;
+      this.initiator = data.initiator;
+      this.resourceType = data.type && RESOURCE_TYPES[data.type];
+      this.priority = data.request.initialPriority;
 
-    this.frameId = data.frameId;
-    this.isLinkPreload = data.initiator.type === 'preload' || !!data.request.isLinkPreload;
+      this.frameId = data.frameId;
+      this.isLinkPreload = data.initiator.type === 'preload' || !!data.request.isLinkPreload;
+    } catch (e) {} // isValid left false, all other data is blank
   }
 
   onRequestServedFromCache() {
