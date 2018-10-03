@@ -57,6 +57,13 @@ const gatherers = LighthouseRunner.getGathererList()
 const computedArtifacts = LighthouseRunner.getComputedGathererList()
     .map(f => '../lighthouse-core/gather/computed/' + f.replace(/\.js$/, ''));
 
+const locales = fs.readdirSync('../lighthouse-core/lib/i18n/locales/')
+    .map(f => require.resolve(`../lighthouse-core/lib/i18n/locales/${f}`));
+
+const isDevtools = (file) => new RegExp(`${CONSUMERS.DEVTOOLS}$`).test(file);
+const isExtension = (file) => new RegExp(`${CONSUMERS.EXTENSION}$`).test(file);
+// const isLightrider = (file) => new RegExp(`${CONSUMERS.LIGHTRIDER}$`).test(file);
+
 gulp.task('extras', () => {
   return gulp.src([
     'app/*.*',
@@ -139,10 +146,13 @@ gulp.task('browserify-lighthouse', () => {
       bundle.ignore(require.resolve('../lighthouse-core/gather/connections/cri.js'));
 
       // Prevent the DevTools background script from getting the stringified HTML.
-      // eslint-disable-next-line
-      console.log(file.path);
-      if (/lighthouse-background/.test(file.path)) {
+      if (isDevtools(file.path)) {
         bundle.ignore(require.resolve('../lighthouse-core/report/html/html-report-assets.js'));
+      }
+
+      if (isDevtools(file.path) || isExtension(file.path)) {
+        // eslint-disable-next-line
+        bundle.ignore(locales);
       }
 
       // Expose the audits, gatherers, and computed artifacts so they can be dynamically loaded.
