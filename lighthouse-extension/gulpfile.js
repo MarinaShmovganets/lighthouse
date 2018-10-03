@@ -34,6 +34,13 @@ const pkg = require('../package.json');
 
 const distDir = 'dist';
 
+// list of all consumers we build for (easier to understand which file is used for which)
+const CONSUMERS = {
+  DEVTOOLS: 'lighthouse-background.js',
+  EXTENSION: 'lighthouse-ext-background.js',
+  LIGHTRIDER: 'lighthouse-lr-background.js',
+};
+
 const VERSION = pkg.version;
 const COMMIT_HASH = require('child_process')
   .execSync('git rev-parse HEAD')
@@ -96,7 +103,7 @@ gulp.task('chromeManifest', () => {
   const manifestOpts = {
     buildnumber: false,
     background: {
-      target: 'scripts/lighthouse-ext-background.js',
+      target: `scripts/${CONSUMERS.EXTENSION}`,
     },
   };
   return gulp.src('app/manifest.json')
@@ -114,10 +121,7 @@ function applyBrowserifyTransforms(bundle) {
 }
 
 gulp.task('browserify-lighthouse', () => {
-  return gulp.src([
-    'app/src/lighthouse-background.js',
-    'app/src/lighthouse-ext-background.js',
-  ], {read: false})
+  return gulp.src(Object.values(CONSUMERS).map(consumer => `app/src/${consumer}`), {read: false})
     .pipe(tap(file => {
       let bundle = browserify(file.path); // , {debug: true}); // for sourcemaps
       bundle = applyBrowserifyTransforms(bundle);
@@ -135,6 +139,8 @@ gulp.task('browserify-lighthouse', () => {
       bundle.ignore(require.resolve('../lighthouse-core/gather/connections/cri.js'));
 
       // Prevent the DevTools background script from getting the stringified HTML.
+      // eslint-disable-next-line
+      console.log(file.path);
       if (/lighthouse-background/.test(file.path)) {
         bundle.ignore(require.resolve('../lighthouse-core/report/html/html-report-assets.js'));
       }
@@ -197,9 +203,7 @@ gulp.task('compilejs', () => {
     // sourceMaps: 'both'
   };
 
-  return gulp.src([
-    'dist/scripts/lighthouse-background.js',
-    'dist/scripts/lighthouse-ext-background.js'])
+  return gulp.src(Object.values(CONSUMERS).map(consumer => `dist/scripts/${consumer}`))
     .pipe(tap(file => {
       const minified = babel.transform(file.contents.toString(), opts).code;
       file.contents = new Buffer(minified);
