@@ -36,7 +36,7 @@ describe('lighthouse-lr-background', () => {
     it('returns an unknown-runtimeError LHR when lighthouse throws an unknown error', async () => {
       const errorMsg = 'Errors are the best!';
       const connectionError = new Error(errorMsg);
-      assert.strictEqual(connectionError.message, undefined);
+      assert.strictEqual(connectionError.lhrRuntimeError, undefined);
       const mockConnection = {
         async connect() {
           throw connectionError;
