@@ -130,7 +130,7 @@ gulp.task('browserify-lighthouse', () => {
   const consumerSources = Object.values(CONSUMERS).map(consumer => `app/src/${consumer}`);
   return gulp.src(consumerSources, {read: false})
     .pipe(tap(file => {
-      let bundle = browserify(file.path); // , {debug: true}); // for sourcemaps
+      let bundle = browserify(file.path, {debug: true}); // for sourcemaps
       bundle = applyBrowserifyTransforms(bundle);
 
       // scripts will need some additional transforms, ignores and requires…
