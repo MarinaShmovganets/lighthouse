@@ -60,9 +60,8 @@ const computedArtifacts = LighthouseRunner.getComputedGathererList()
 const locales = fs.readdirSync('../lighthouse-core/lib/i18n/locales/')
     .map(f => require.resolve(`../lighthouse-core/lib/i18n/locales/${f}`));
 
-const isDevtools = (file) => new RegExp(`${CONSUMERS.DEVTOOLS}$`).test(file);
-const isExtension = (file) => new RegExp(`${CONSUMERS.EXTENSION}$`).test(file);
-// const isLightrider = (file) => new RegExp(`${CONSUMERS.LIGHTRIDER}$`).test(file);
+const isDevtools = file => file.endsWith(CONSUMERS.DEVTOOLS);
+const isExtension = file => file.endsWith(CONSUMERS.EXTENSION);
 
 gulp.task('extras', () => {
   return gulp.src([
@@ -128,7 +127,8 @@ function applyBrowserifyTransforms(bundle) {
 }
 
 gulp.task('browserify-lighthouse', () => {
-  return gulp.src(Object.values(CONSUMERS).map(consumer => `app/src/${consumer}`), {read: false})
+  const consumerSources = Object.values(CONSUMERS).map(consumer => `app/src/${consumer}`);
+  return gulp.src(consumerSources, {read: false})
     .pipe(tap(file => {
       let bundle = browserify(file.path); // , {debug: true}); // for sourcemaps
       bundle = applyBrowserifyTransforms(bundle);
@@ -151,7 +151,6 @@ gulp.task('browserify-lighthouse', () => {
       }
 
       if (isDevtools(file.path) || isExtension(file.path)) {
-        // eslint-disable-next-line
         bundle.ignore(locales);
       }
 
@@ -213,7 +212,8 @@ gulp.task('compilejs', () => {
     // sourceMaps: 'both'
   };
 
-  return gulp.src(Object.values(CONSUMERS).map(consumer => `dist/scripts/${consumer}`))
+  const compiledSources = Object.values(CONSUMERS).map(consumer => `dist/scripts/${consumer}`);
+  return gulp.src(compiledSources)
     .pipe(tap(file => {
       const minified = babel.transform(file.contents.toString(), opts).code;
       file.contents = new Buffer(minified);

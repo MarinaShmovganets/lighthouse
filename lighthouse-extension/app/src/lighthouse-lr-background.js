@@ -6,9 +6,7 @@
 'use strict';
 
 const lighthouse = require('../../../lighthouse-core/index');
-const background = require('./lighthouse-background');
 
-const log = require('lighthouse-logger');
 const assetSaver = require('../../../lighthouse-core/lib/asset-saver.js');
 const LHError = require('../../../lighthouse-core/lib/lh-error.js');
 
@@ -70,17 +68,10 @@ async function runLighthouseInLR(connection, url, flags, {lrDevice, categoryIDs,
   }
 }
 
-/** @param {(status: [string, string, string]) => void} listenCallback */
-function listenForStatus(listenCallback) {
-  log.events.addListener('status', listenCallback);
-}
-
 if (typeof module !== 'undefined' && module.exports) {
   // Export for importing types into popup.js, require()ing into unit tests.
   module.exports = {
-    getDefaultCategories: background.getDefaultCategories,
     runLighthouseInLR,
-    listenForStatus,
   };
 }
 
@@ -88,8 +79,4 @@ if (typeof module !== 'undefined' && module.exports) {
 if (typeof window !== 'undefined') {
   // @ts-ignore
   window.runLighthouseInLR = runLighthouseInLR;
-  // @ts-ignore
-  window.getDefaultCategories = background.getDefaultCategories;
-  // @ts-ignore
-  window.listenForStatus = listenForStatus;
 }
