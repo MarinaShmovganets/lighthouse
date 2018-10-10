@@ -71,9 +71,9 @@ const locales = fs.readdirSync('../lighthouse-core/lib/i18n/locales/')
     .map(f => require.resolve(`../lighthouse-core/lib/i18n/locales/${f}`));
 
 const isDevtools = file =>
-  file.endsWith(CONSUMERS.DEVTOOLS.src) || file.endsWith(CONSUMERS.DEVTOOLS.dist);
+  file.endsWith(CONSUMERS.DEVTOOLS.src);
 const isExtension = file =>
-  file.endsWith(CONSUMERS.EXTENSION.src) || file.endsWith(CONSUMERS.EXTENSION.dist);
+  file.endsWith(CONSUMERS.EXTENSION.src);
 
 gulp.task('extras', () => {
   return gulp.src([
