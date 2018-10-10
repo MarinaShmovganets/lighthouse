@@ -134,7 +134,6 @@ class CriticalRequestChains extends Audit {
       } else {
         chain = {
           request: simpleRequest,
-          // children: {},
         };
         flattendChains[opts.id] = chain;
       }
@@ -144,7 +143,6 @@ class CriticalRequestChains extends Audit {
           // Note: cast should be Partial<>, but filled in when child node is traversed.
           const childChain = /** @type {LH.Audit.SimpleCriticalRequestNode[string]} */ ({
             request: {},
-            // children: {},
           });
           chainMap.set(chainId, childChain);
           if (!chain.children) {
