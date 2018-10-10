@@ -74,7 +74,9 @@ class CriticalRequestChains extends Audit {
         });
 
         // Carry on walking.
-        walk(child.children, depth + 1, startTime);
+        if (child.children) {
+          walk(child.children, depth + 1, startTime);
+        }
       }, '');
     }
 
@@ -132,21 +134,25 @@ class CriticalRequestChains extends Audit {
       } else {
         chain = {
           request: simpleRequest,
-          children: {},
+          // children: {},
         };
         flattendChains[opts.id] = chain;
       }
 
-      for (const chainId of Object.keys(opts.node.children)) {
-        // Note: cast should be Partial<>, but filled in when child node is traversed.
-        const childChain = /** @type {LH.Audit.SimpleCriticalRequestNode[string]} */ ({
-          request: {},
-          children: {},
-        });
-        chainMap.set(chainId, childChain);
-        chain.children[chainId] = childChain;
+      if (opts.node.children) {
+        for (const chainId of Object.keys(opts.node.children)) {
+          // Note: cast should be Partial<>, but filled in when child node is traversed.
+          const childChain = /** @type {LH.Audit.SimpleCriticalRequestNode[string]} */ ({
+            request: {},
+            // children: {},
+          });
+          chainMap.set(chainId, childChain);
+          if (!chain.children) {
+            chain.children = {};
+          }
+          chain.children[chainId] = childChain;
+        }
       }
-
       chainMap.set(opts.id, chain);
     }
 
@@ -172,15 +178,14 @@ class CriticalRequestChains extends Audit {
       function walk(node, depth) {
         const children = Object.keys(node);
 
-        // Since a leaf node indicates the end of a chain, we can inspect the number
-        // of child nodes, and, if the count is zero, increment the count.
-        if (children.length === 0) {
-          chainCount++;
-        }
-
         children.forEach(id => {
           const child = node[id];
-          walk(child.children, depth + 1);
+          if (child.children) {
+            walk(child.children, depth + 1);
+          } else {
+            // if the node doesn't have a children field, then it is a leaf, so +1
+            chainCount++;
+          }
         }, '');
       }
       // Convert
