@@ -7,23 +7,26 @@
 
 const Audit = require('../../audits/font-display.js');
 const assert = require('assert');
+const Runner = require('../../runner.js');
+const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 
 /* eslint-env jest */
 
 describe('Performance: Font Display audit', () => {
-  let artifacts;
   let networkRecords;
   let stylesheet;
 
   beforeEach(() => {
     stylesheet = {content: ''};
-    artifacts = {
-      devtoolsLogs: {[Audit.DEFAULT_PASS]: []},
-      requestNetworkRecords: () => Promise.resolve(networkRecords),
+  });
+
+  function getArtifacts() {
+    return Object.assign({
+      devtoolsLogs: {[Audit.DEFAULT_PASS]: networkRecordsToDevtoolsLog(networkRecords)},
       URL: {finalUrl: 'https://example.com/foo/bar/page'},
       CSSUsage: {stylesheets: [stylesheet]},
-    };
-  });
+    }, Runner.instantiateComputedArtifacts());
+  }
 
   it('fails when not all fonts have a correct font-display rule', async () => {
     stylesheet.content = `
@@ -58,7 +61,7 @@ describe('Performance: Font Display audit', () => {
       },
     ];
 
-    const result = await Audit.audit(artifacts);
+    const result = await Audit.audit(getArtifacts());
     const items = [
       {url: networkRecords[0].url, wastedMs: 2000},
       {url: networkRecords[1].url, wastedMs: 3000},
@@ -104,7 +107,7 @@ describe('Performance: Font Display audit', () => {
       },
     ];
 
-    const result = await Audit.audit(artifacts);
+    const result = await Audit.audit(getArtifacts());
     assert.strictEqual(result.rawValue, true);
     assert.deepEqual(result.details.items, []);
   });
