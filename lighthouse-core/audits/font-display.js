@@ -11,6 +11,7 @@ const PASSING_FONT_DISPLAY_REGEX = /block|fallback|optional|swap/;
 const CSS_URL_REGEX = /url\((.*?)\)/;
 const CSS_URL_GLOBAL_REGEX = new RegExp(CSS_URL_REGEX, 'g');
 const i18n = require('../lib/i18n/i18n.js');
+const Sentry = require('../lib/sentry.js');
 
 const UIStrings = {
   /** Title of a diagnostic audit that provides detail on if all the text on a webpage was visible while the page was loading its webfonts. This descriptive title is shown to users when the amount is acceptable and no user action is required. */
@@ -41,42 +42,52 @@ class FontDisplay extends Audit {
   }
 
   /**
-   *
    * @param {LH.Artifacts} artifacts
    */
   static findPassingFontDisplayDeclarations(artifacts) {
     /** @type {Set<string>} */
     const passingURLs = new Set();
 
+    // Go through all the stylesheets to find all @font-face declarations
     for (const stylesheet of artifacts.CSSUsage.stylesheets) {
+      // Eliminate newlines so we can more easily scan through with a regex
       const newlinesStripped = stylesheet.content.replace(/\n/g, ' ');
+      // Find the @font-faces
       const fontFaceDeclarations = newlinesStripped.match(/@font-face\s*{(.*?)}/g) || [];
+      // Go through all the @font-face declarations to find a declared `font-display: ` property
       for (const declaration of fontFaceDeclarations) {
         const rawFontDisplay = declaration.match(/font-display:(.*?);/);
+        // If they didn't have a font-display property, it's the default, and it's failing; bail
         if (!rawFontDisplay) continue;
+        // If they don't have one of the passing font-display values, it's failing; bail
         const hasPassingFontDisplay = PASSING_FONT_DISPLAY_REGEX.test(rawFontDisplay[0]);
         if (!hasPassingFontDisplay) continue;
 
+        // If it's passing, we'll try to find the URL it's referencing.
         const rawFontURLs = declaration.match(CSS_URL_GLOBAL_REGEX);
+        // If no URLs, we can't really do anything; bail
         if (!rawFontURLs) continue;
 
         const relativeURLs = rawFontURLs
           // @ts-ignore - guaranteed to match from previous regex, pull URL group out
           .map(s => s.match(CSS_URL_REGEX)[1].trim())
-          // remove any optional quotes before/after
           .map(s => {
-            const firstChar = s.charAt(0);
-            if (firstChar === s.charAt(s.length - 1) && (firstChar === '"' || firstChar === '\'')) {
+            // remove any quotes surrounding the URL
+            if (/^('|").*\1$/.test(s)) {
               return s.substr(1, s.length - 2);
             }
 
             return s;
           });
 
-        const absoluteURLs = relativeURLs.map(url => new URL(url, artifacts.URL.finalUrl));
-
-        for (const url of absoluteURLs) {
-          passingURLs.add(url.href);
+        // Convert the relative CSS URL to an absolute URL and add it to the passing set
+        for (const relativeURL of relativeURLs) {
+          try {
+            const absoluteURL = new URL(relativeURL, artifacts.URL.finalUrl)
+            passingURLs.add(absoluteURL.href);
+          } catch (err) {
+            Sentry.captureException(err, {tags: {audit: this.meta.id}});
+          }
         }
       }
     }
