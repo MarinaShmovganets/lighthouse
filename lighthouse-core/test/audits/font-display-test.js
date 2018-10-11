@@ -119,7 +119,7 @@ describe('Performance: Font Display audit', () => {
   });
 
   it('should handle real-world font-face declarations', async () => {
-    /* eslint-disable max-len */
+    /* eslint-disable max-len, no-useless-escape */
     stylesheet.content = `
       @font-face{font-family:CNN Clock;src:url(//edition.i.cdn.cnn.com/.a/fonts/cnn/3.7.2/cnnclock-black.eot) format("embedded-opentype"),url(//edition.i.cdn.cnn.com/.a/fonts/cnn/3.7.2/cnnclock-black.woff2) format("woff2"),url(//edition.i.cdn.cnn.com/.a/fonts/cnn/3.7.2/cnnclock-black.woff) format("woff"),url(//edition.i.cdn.cnn.com/.a/fonts/cnn/3.7.2/cnnclock-black.ttf) format("truetype");font-weight:900;font-style:normal}
       @font-face{font-family:FAVE-CNN;src:url(
@@ -128,7 +128,7 @@ describe('Performance: Font Display audit', () => {
       @font-face{font-family:\'FontAwesome\';src:url(\'../fonts/fontawesome-webfont.eot?v=4.6.1\');src:url(\'../fonts/fontawesome-webfont.eot?#iefix&v=4.6.1\') format(\'embedded-opentype\'),url(\'../fonts/fontawesome-webfont.woff2?v=4.6.1\') format(\'woff2\'),url(\'../fonts/fontawesome-webfont.woff?v=4.6.1\') format(\'woff\'),url(\'../fonts/fontawesome-webfont.ttf?v=4.6.1\') format(\'truetype\'),url(\'../fonts/fontawesome-webfont.svg?v=4.6.1#fontawesomeregular\') format(\'svg\');font-weight:normal;font-style:normal;font-display:swap;}
       @font-face {   font-family: \'Lato\';   font-style: normal;   font-weight: 900;   src: local(\'Lato Black\'), local(\'Lato-Black\'), url(https://fonts.gstatic.com/s/lato/v14/S6u9w4BMUTPHh50XSwiPGQ3q5d0.woff2) format(\'woff2\');   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
     `;
-    /* eslint-enable max-len */
+    /* eslint-enable max-len, no-useless-escape */
 
     networkRecords = [
       {
