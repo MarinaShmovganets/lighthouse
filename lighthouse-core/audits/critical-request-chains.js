@@ -174,9 +174,9 @@ class CriticalRequestChains extends Audit {
        * @param {number} depth
        */
       function walk(node, depth) {
-        const children = Object.keys(node);
+        const childIds = Object.keys(node);
 
-        children.forEach(id => {
+        childIds.forEach(id => {
           const child = node[id];
           if (child.children) {
             walk(child.children, depth + 1);
