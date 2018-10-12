@@ -278,7 +278,9 @@ describe('Icons helper', () => {
       assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
     });
 
-    it('fails with an icon that has a png typehint but is not png', () => {
+    it('succeeds with an icon that has a png typehint but is not png', () => {
+      // We will believe your typehints until such time that we can fetch the image and decode it
+      // TODO: fetch images and decode them to check real filetype like in Chrome
       const manifestSrc = JSON.stringify({
         icons: [{
           src: 'path/to/image.jpg',
@@ -287,7 +289,7 @@ describe('Icons helper', () => {
         }],
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
+      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
     });
 
     it('succeeds with a png icon that has query params in url', () => {
@@ -300,30 +302,6 @@ describe('Icons helper', () => {
       });
       const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
       assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 1);
-    });
-
-    it('fails with a non-png icon that has query params in url', () => {
-      const manifestSrc = JSON.stringify({
-        icons: [{
-          src: 'path/to/image.jpg?param=true',
-          sizes: '200x200',
-          type: 'image/png',
-        }],
-      });
-      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
-    });
-
-    it('fails with a non-png icon that has a .png extension in the middle', () => {
-      const manifestSrc = JSON.stringify({
-        icons: [{
-          src: 'path/to/image.png.jpg',
-          sizes: '200x200',
-          type: 'image/png',
-        }],
-      });
-      const manifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      assert.equal(icons.pngSizedAtLeast(192, manifest.value).length, 0);
     });
   });
 });

@@ -33,13 +33,13 @@ function pngSizedAtLeast(sizeRequirement, manifest) {
   /** @type {Array<string>} */
   const flattenedSizes = [];
   iconValues
+    // filter out icons with no typehint + extension is not .png
     // filter out icons with a typehint that is not 'image/png'
-    .filter(icon => (!icon.value.type.value) ||
+    .filter(icon => (!icon.value.type.value && (icon.value.src.value &&
+      new URL(icon.value.src.value).pathname.endsWith('.png'))) ||
       (icon.value.type.value &&
       icon.value.type.value === 'image/png'))
     // filter out icons that are not png
-    .filter(icon => icon.value.src.value &&
-      new URL(icon.value.src.value).pathname.endsWith('.png'))
     .forEach(icon => {
       // check that the icon has a size
       if (icon.value.sizes.value) {
