@@ -19,15 +19,17 @@ Lighthouse audits that surface in the report should be:
 ```
 #### Provide a basic description of the audit
 #### How would the audit appear in the report? 
-  - What detailed info is shown in all cases, or just failure cases?
-  - How would passing/failing be defined?
+<!-- How would the test look when passing? Would there be additional details available?
+     How would the test look when failing? What additional details are available? 
+     If the details are tabular, what are the columns?
+     If not obvious, how would passing/failing be defined? -->
 #### How is this audit different from existing ones?
 #### What % of developers/pages will this impact? 
-_(Estimates OK, data points preferred)_
+<!-- (Estimates OK, data points preferred) -->
 #### How is the new audit making a better web for end users?
-_(Data points preferred)_
+<!-- (Data points preferred) -->
 #### What is the resourcing situation? 
-  - Who will create the audits, write the documentation, and maintain both?
+<!-- Who will create the audits, write the documentation, and maintain both? -->
 #### Any other links or documentation that we should check out?
 ```
 3. Once the proposal is submitted, then Lighthouse team will take a look and followup. We will discuss possible implementation approaches, and associated runtime overhead.
