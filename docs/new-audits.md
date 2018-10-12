@@ -22,8 +22,10 @@ Lighthouse audits that surface in the report should be:
   - What detailed info is shown in all cases, or just failure cases?
   - How would passing/failing be defined?
 #### How is this audit different from existing ones?
-#### What % of developers/pages will this impact? (estimates OK, data points preferred) 
-#### How is the new audit making a better web for end users? (data points preferred)
+#### What % of developers/pages will this impact? 
+_(Estimates OK, data points preferred)_
+#### How is the new audit making a better web for end users?
+_(Data points preferred)_
 #### What is the resourcing situation? 
   - Who will create the audits, write the documentation, and maintain both?
 #### Any other links or documentation that we should check out?
