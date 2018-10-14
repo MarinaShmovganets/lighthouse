@@ -123,7 +123,7 @@ describe('GatherRunner', function() {
     const options = {url, driver, config, settings};
 
     const results = await GatherRunner.run([], options);
-    expect(results.HostUserAgent).toEqual(fakeDriver.browserVersion.userAgent);
+    expect(results.HostUserAgent).toEqual(fakeDriver.protocolGetVersionResponse.userAgent);
     expect(results.HostUserAgent).toMatch(/Chrome\/\d+/);
   });
 

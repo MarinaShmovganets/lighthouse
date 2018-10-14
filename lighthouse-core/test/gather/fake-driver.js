@@ -5,7 +5,8 @@
  */
 'use strict';
 
-const browserVersion = {
+// https://chromedevtools.github.io/devtools-protocol/tot/Browser#method-getVersion
+const protocolGetVersionResponse = {
   protocolVersion: '1.3',
   product: 'Chrome/71.0.3577.0',
   revision: '@fc334a55a70eec12fc77853c53979f81e8496c21',
@@ -16,7 +17,7 @@ const browserVersion = {
 
 const fakeDriver = {
   getBrowserVersion() {
-    return Promise.resolve(browserVersion);
+    return Promise.resolve(Object.assign({}, protocolGetVersionResponse, {milestone: 71}));
   },
   getBenchmarkIndex() {
     return Promise.resolve(125.2);
@@ -83,4 +84,4 @@ const fakeDriver = {
 };
 
 module.exports = fakeDriver;
-module.exports.browserVersion = browserVersion;
+module.exports.protocolGetVersionResponse = protocolGetVersionResponse;

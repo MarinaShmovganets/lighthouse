@@ -13,7 +13,7 @@ const Connection = require('../../gather/connections/connection.js');
 const Element = require('../../lib/element.js');
 const assert = require('assert');
 const EventEmitter = require('events').EventEmitter;
-const {browserVersion} = require('./fake-driver');
+const {protocolGetVersionResponse} = require('./fake-driver');
 
 const connection = new Connection();
 const driverStub = new Driver(connection);
@@ -64,7 +64,7 @@ connection.sendCommand = function(command, params) {
 
   switch (command) {
     case 'Browser.getVersion':
-      return Promise.resolve(browserVersion);
+      return Promise.resolve(protocolGetVersionResponse);
     case 'DOM.getDocument':
       return Promise.resolve({root: {nodeId: 249}});
     case 'DOM.querySelector':
@@ -259,22 +259,21 @@ describe('Browser Driver', () => {
     });
   });
 
-  it('will adjust traceCategories based on chrome version', () => {
+  it('will adjust traceCategories based on chrome version', async () => {
     // m70 doesn't have disabled-by-default-lighthouse, so 'toplevel' is used instead.
-    const m70BrowserVersion = Object.assign({}, browserVersion, {
+    const m70ProtocolGetVersionResponse = Object.assign({}, protocolGetVersionResponse, {
       product: 'Chrome/70.0.3577.0',
       // eslint-disable-next-line max-len
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3577.0 Safari/537.36',
     });
-    createOnceMethodResponse('Browser.getVersion', m70BrowserVersion);
+    createOnceMethodResponse('Browser.getVersion', m70ProtocolGetVersionResponse);
 
     // eslint-disable-next-line max-len
-    return driverStub.beginTrace().then(() => {
-      const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
-      const categories = traceCmd.params.categories;
-      assert.ok(categories.includes('toplevel'), 'contains old toplevel category');
-      assert.equal(categories.indexOf('disabled-by-default-lighthouse'), -1, 'excludes new cat');
-    });
+    await driverStub.beginTrace();
+    const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
+    const categories = traceCmd.params.categories;
+    assert.ok(categories.includes('toplevel'), 'contains old toplevel category');
+    assert.equal(categories.indexOf('disabled-by-default-lighthouse'), -1, 'excludes new cat');
   });
 
   it('should send the Network.setExtraHTTPHeaders command when there are extra-headers', () => {
