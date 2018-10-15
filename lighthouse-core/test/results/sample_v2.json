@@ -2619,7 +2619,7 @@
       "scoreDisplayMode": "binary",
       "rawValue": true,
       "displayValue": [
-        "%.1d% legible text",
+        "%.1d%% legible text",
         100
       ],
       "details": {
