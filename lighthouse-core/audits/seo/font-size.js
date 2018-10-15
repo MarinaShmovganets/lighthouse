@@ -266,7 +266,7 @@ class FontSize extends Audit {
     }
 
     /** @type {LH.Audit.DisplayValue} */
-    const displayValue = ['%.1d% legible text', percentageOfPassingText];
+    const displayValue = ['%.1d%% legible text', percentageOfPassingText];
     const details = Audit.makeTableDetails(headings, tableData);
     const passed = percentageOfPassingText >= MINIMAL_PERCENTAGE_OF_LEGIBLE_TEXT;
 
