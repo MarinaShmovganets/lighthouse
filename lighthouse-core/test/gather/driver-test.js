@@ -49,7 +49,7 @@ function createActiveWorker(id, url, controlledClients, status = 'activated') {
 }
 
 function createOnceMethodResponse(method, response) {
-  assert.deepEqual(sendCommandMockResponses.has(method), false, 'stub response already defined');
+  assert.equal(sendCommandMockResponses.has(method), false, 'stub response already defined');
   sendCommandMockResponses.set(method, response);
 }
 
