@@ -59,13 +59,13 @@ async function copyPopup() {
  * @return {Promise<void>}
  */
 async function copyAssets() {
-  await cpy('app/*.html', distDir);
-  await cpy('app/styles/**/*.css', `${distDir}/styles`);
-  await cpy('app/images/**/*', `${distDir}/images`);
-  await cpy('app/manifest.json', distDir);
-
-  // locales (currently non-functional)
-  await cpy('_locales/**', `../${distDir}`, {
+  return cpy([
+    '*.html',
+    'styles/**/*.css',
+    'images/**/*',
+    'manifest.json',
+    '_locales/**', // currently non-functional
+  ], `../${distDir}`, {
     cwd: 'app',
     parents: true,
   });
