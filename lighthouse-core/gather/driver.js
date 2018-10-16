@@ -469,6 +469,7 @@ class Driver {
    * @private
    */
   _waitForNetworkIdle(networkQuietThresholdMs) {
+    let hasDCLFired = false;
     /** @type {NodeJS.Timer|undefined} */
     let idleTimeout;
     /** @type {(() => void)} */
@@ -484,6 +485,28 @@ class Driver {
     const networkStatusMonitor = this._networkStatusMonitor;
 
     const promise = new Promise((resolve, reject) => {
+      const logStatus = () => {
+        if (!hasDCLFired) {
+          log.verbose('Driver', 'Waiting on DomContentLoaded');
+          return;
+        }
+
+        const inflightRecords = networkStatusMonitor.getInflightRecords();
+        // If there are more than 20 inflight requests, load is still in full swing.
+        // Wait until it calms down a bit to be a little less spammy.
+        if (inflightRecords.length < 20) {
+          for (const record of inflightRecords) {
+            log.verbose('Driver', `Waiting on ${record.url.slice(0, 120)} to finish`);
+          }
+        }
+      };
+
+      const removeLogStatusListeners = () => {
+        networkStatusMonitor.removeListener('requeststarted', logStatus);
+        networkStatusMonitor.removeListener('requestloaded', logStatus);
+        networkStatusMonitor.removeListener('network-2-busy', logStatus);
+      };
+
       const onIdle = () => {
         // eslint-disable-next-line no-use-before-define
         networkStatusMonitor.once('network-2-busy', onBusy);
@@ -499,6 +522,7 @@ class Driver {
       };
 
       const domContentLoadedListener = () => {
+        hasDCLFired = true;
         if (networkStatusMonitor.is2Idle()) {
           onIdle();
         } else {
@@ -506,8 +530,13 @@ class Driver {
         }
       };
 
+      networkStatusMonitor.on('requeststarted', logStatus);
+      networkStatusMonitor.on('requestloaded', logStatus);
+      networkStatusMonitor.on('network-2-busy', logStatus);
+
       this.once('Page.domContentEventFired', domContentLoadedListener);
       cancel = () => {
+        removeLogStatusListeners();
         idleTimeout && clearTimeout(idleTimeout);
         this.off('Page.domContentEventFired', domContentLoadedListener);
         networkStatusMonitor.removeListener('network-2-busy', onBusy);
