@@ -15,11 +15,6 @@ const Sentry = require('../../lib/sentry');
 describe('Sentry', () => {
   let configPayload;
   let originalSentry;
-  let originalMathRandom;
-  let ravenConfigFn;
-  let ravenMergeContextFn;
-  let ravenCaptureExceptionFn;
-  let mathRandomFn;
 
   beforeEach(() => {
     configPayload = {
@@ -28,37 +23,33 @@ describe('Sentry', () => {
       environmentData: {},
     };
 
+    // We need to save the Sentry delegate object because every call to `.init` mutates the methods.
+    // We want to have a fresh state for every test.
     originalSentry = {...Sentry};
-    originalMathRandom = Math.random;
-    ravenConfigFn = jest.fn().mockReturnValue({install: jest.fn()});
-    ravenMergeContextFn = jest.fn();
-    ravenCaptureExceptionFn = jest.fn().mockImplementation((err, opts, cb) => cb());
-    mathRandomFn = jest.fn().mockReturnValue(0.001);
 
-    Math.random = mathRandomFn;
-    raven.config = ravenConfigFn;
-    raven.mergeContext = ravenMergeContextFn;
-    raven.captureException = ravenCaptureExceptionFn;
+    raven.config = jest.fn().mockReturnValue({install: jest.fn()});
+    raven.mergeContext = jest.fn();
+    raven.captureException = jest.fn().mockImplementation((err, opts, cb) => cb());
+    Sentry._shouldSample = jest.fn().mockReturnValue(true);
   });
 
   afterEach(() => {
-    // Reset the methods on the Sentry object
+    // Reset the methods on the Sentry object, see note above.
     Object.assign(Sentry, originalSentry);
-    Math.random = originalMathRandom;
   });
 
   describe('.init', () => {
     it('should noop when !enableErrorReporting', () => {
       Sentry.init({url: 'http://example.com', flags: {}});
-      expect(ravenConfigFn).not.toHaveBeenCalled();
+      expect(raven.config).not.toHaveBeenCalled();
       Sentry.init({url: 'http://example.com', flags: {enableErrorReporting: false}});
-      expect(ravenConfigFn).not.toHaveBeenCalled();
+      expect(raven.config).not.toHaveBeenCalled();
     });
 
     it('should noop when not picked for sampling', () => {
-      mathRandomFn.mockReturnValue(0.5);
+      Sentry._shouldSample.mockReturnValue(false);
       Sentry.init({url: 'http://example.com', flags: {enableErrorReporting: true}});
-      expect(ravenConfigFn).not.toHaveBeenCalled();
+      expect(raven.config).not.toHaveBeenCalled();
     });
 
     it('should initialize the raven client when enableErrorReporting', () => {
@@ -72,9 +63,9 @@ describe('Sentry', () => {
         environmentData: {},
       });
 
-      expect(ravenConfigFn).toHaveBeenCalled();
-      expect(ravenMergeContextFn).toHaveBeenCalled();
-      expect(ravenMergeContextFn.mock.calls[0][0]).toEqual({
+      expect(raven.config).toHaveBeenCalled();
+      expect(raven.mergeContext).toHaveBeenCalled();
+      expect(raven.mergeContext.mock.calls[0][0]).toEqual({
         extra: {
           url: 'http://example.com',
           deviceEmulation: true,
@@ -91,8 +82,8 @@ describe('Sentry', () => {
       const error = new Error('oops');
       await Sentry.captureException(error);
 
-      expect(ravenCaptureExceptionFn).toHaveBeenCalled();
-      expect(ravenCaptureExceptionFn.mock.calls[0][0]).toBe(error);
+      expect(raven.captureException).toHaveBeenCalled();
+      expect(raven.captureException.mock.calls[0][0]).toBe(error);
     });
 
     it('should skip expected errors', async () => {
@@ -101,7 +92,7 @@ describe('Sentry', () => {
       error.expected = true;
       await Sentry.captureException(error);
 
-      expect(ravenCaptureExceptionFn).not.toHaveBeenCalled();
+      expect(raven.captureException).not.toHaveBeenCalled();
     });
 
     it('should skip duplicate audit errors', async () => {
@@ -110,7 +101,7 @@ describe('Sentry', () => {
       await Sentry.captureException(error, {tags: {audit: 'my-audit'}});
       await Sentry.captureException(error, {tags: {audit: 'my-audit'}});
 
-      expect(ravenCaptureExceptionFn).toHaveBeenCalledTimes(1);
+      expect(raven.captureException).toHaveBeenCalledTimes(1);
     });
 
     it('should still allow different audit errors', async () => {
@@ -120,7 +111,7 @@ describe('Sentry', () => {
       await Sentry.captureException(errorA, {tags: {audit: 'my-audit'}});
       await Sentry.captureException(errorB, {tags: {audit: 'my-audit'}});
 
-      expect(ravenCaptureExceptionFn).toHaveBeenCalledTimes(2);
+      expect(raven.captureException).toHaveBeenCalledTimes(2);
     });
 
     it('should skip duplicate gatherer errors', async () => {
@@ -129,7 +120,7 @@ describe('Sentry', () => {
       await Sentry.captureException(error, {tags: {gatherer: 'my-gatherer'}});
       await Sentry.captureException(error, {tags: {gatherer: 'my-gatherer'}});
 
-      expect(ravenCaptureExceptionFn).toHaveBeenCalledTimes(1);
+      expect(raven.captureException).toHaveBeenCalledTimes(1);
     });
   });
 });
