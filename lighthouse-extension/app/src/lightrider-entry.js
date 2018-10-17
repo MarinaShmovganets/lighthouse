@@ -9,6 +9,7 @@ const lighthouse = require('../../../lighthouse-core/index');
 
 const assetSaver = require('../../../lighthouse-core/lib/asset-saver.js');
 const LHError = require('../../../lighthouse-core/lib/lh-error.js');
+const preprocessor = require('../../../lighthouse-core/lib/proto-preprocessor.js');
 
 /** @type {Record<'mobile'|'desktop', LH.Config.Json>} */
 const LR_PRESETS = {
@@ -27,7 +28,7 @@ const LR_PRESETS = {
  * @return {Promise<string|Array<string>|void>}
  */
 async function runLighthouseInLR(connection, url, flags, {lrDevice, categoryIDs, logAssets}) {
-  // Certain fixes need to kick-in under LR, see https://github.com/GoogleChrome/lighthouse/issues/5839
+  // Certain fixes need to kick in under LR, see https://github.com/GoogleChrome/lighthouse/issues/5839
   global.isLightRider = true;
 
   // disableStorageReset because it causes render server hang
@@ -46,6 +47,12 @@ async function runLighthouseInLR(connection, url, flags, {lrDevice, categoryIDs,
     if (logAssets) {
       await assetSaver.logAssets(results.artifacts, results.lhr.audits);
     }
+
+    // pre process the LHR for proto
+    if (flags.output === 'json' && typeof results.report === 'string') {
+      return preprocessor.processForProto(results.report);
+    }
+
     return results.report;
   } catch (err) {
     // If an error ruined the entire lighthouse run, attempt to return a meaningful error.
@@ -69,13 +76,13 @@ async function runLighthouseInLR(connection, url, flags, {lrDevice, categoryIDs,
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  // Export for importing types into popup.js, require()ing into unit tests.
+  // Export for require()ing into unit tests.
   module.exports = {
     runLighthouseInLR,
   };
 }
 
-// Expose on window for extension, other browser-residing consumers of file.
+// Expose on window for browser-residing consumers of file.
 if (typeof window !== 'undefined') {
   // @ts-ignore
   window.runLighthouseInLR = runLighthouseInLR;
