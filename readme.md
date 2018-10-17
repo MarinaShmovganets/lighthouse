@@ -276,6 +276,8 @@ This section details services that have integrated Lighthouse data. If you're wo
 ## Related Projects
 Other awesome open source projects that use Lighthouse.
 
+* **[lighthouse-gh-reporter](https://github.com/addyosmani/webpack-lighthouse-plugin)** - give Lighthouse-CI the power of put reports as a comment on your pull requests.
+
 * **[webpack-lighthouse-plugin](https://github.com/addyosmani/webpack-lighthouse-plugin)** - run Lighthouse from a Webpack build.
 * **[lighthouse-mocha-example](https://github.com/justinribeiro/lighthouse-mocha-example)** - gather performance metrics via Lighthouse and tests them in Mocha
 * **[pwmetrics](https://github.com/paulirish/pwmetrics/)** - gather performance metrics
