@@ -151,7 +151,7 @@ class GatherRunner {
    * @param {LH.Crdp.Security.SecurityStateChangedEvent} securityState
    * @return {LHError|undefined}
    */
-  static getPageLoadError(url, networkRecords, securityState) {
+  static getPageLoadError(url, networkRecords, {securityState, explanations}) {
     const mainRecord = networkRecords.find(record => {
       // record.url is actual request url, so needs to be compared without any URL fragment.
       return URL.equalWithExcludedFragments(record.url, url);
@@ -166,9 +166,9 @@ class GatherRunner {
     } else if (mainRecord.hasErrorStatusCode()) {
       errorDef = {...LHError.errors.ERRORED_DOCUMENT_REQUEST};
       errorDef.message += ` Status code: ${mainRecord.statusCode}.`;
-    } else if (securityState.securityState === 'insecure') {
+    } else if (securityState === 'insecure') {
       errorDef = {...LHError.errors.INSECURE_DOCUMENT_REQUEST};
-      const insecureDescriptions = securityState.explanations
+      const insecureDescriptions = explanations
         .filter(exp => exp.securityState === 'insecure')
         .map(exp => exp.description);
       errorDef.message += ` ${insecureDescriptions.join(' ')}`;
