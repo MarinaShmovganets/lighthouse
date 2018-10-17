@@ -22,6 +22,16 @@ function processForProto(result) {
   /** @type {LH.Result} */
   const reportJson = JSON.parse(result);
 
+  // Clean up the configSettings
+  if ('configSettings' in reportJson) {
+    // make sure the 'output' field is an array
+    if ('output' in reportJson.configSettings) {
+      if (!Array.isArray(reportJson.configSettings.output)) {
+        reportJson.configSettings.output = [reportJson.configSettings.output];
+      }
+    }
+  }
+
   // Clean up actions that require 'audits' to exist
   if ('audits' in reportJson) {
     Object.keys(reportJson.audits).forEach(auditName => {
