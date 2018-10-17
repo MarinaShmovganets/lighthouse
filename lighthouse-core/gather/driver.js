@@ -1205,7 +1205,7 @@ class Driver {
       this.sendCommand('Page.handleJavaScriptDialog', {
         accept: true,
         promptText: 'Lighthouse prompt response',
-      });
+      }).catch(err => log.warn('Driver', err));
     });
   }
 }
