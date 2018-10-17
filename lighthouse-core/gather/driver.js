@@ -858,12 +858,12 @@ class Driver {
       const err = new LHError(LHError.errors.SECURITY_STATE_TIMEOUT);
       const asyncTimeout = setTimeout((_ => reject(err)), timeout);
 
-      this.sendCommand('Security.enable');
       this.once('Security.securityStateChanged', state => {
         clearTimeout(asyncTimeout);
         resolve(state);
         this.sendCommand('Security.disable');
       });
+      this.sendCommand('Security.enable');
     });
   }
 
