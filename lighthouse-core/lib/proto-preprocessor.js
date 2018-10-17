@@ -25,7 +25,7 @@ function processForProto(result) {
   // Clean up the configSettings
   if (reportJson.configSettings) {
     // make sure the 'output' field is an array
-    if ('output' in reportJson.configSettings) {
+    if (reportJson.configSettings.output) {
       if (!Array.isArray(reportJson.configSettings.output)) {
         reportJson.configSettings.output = [reportJson.configSettings.output];
       }
