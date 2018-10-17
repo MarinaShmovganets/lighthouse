@@ -69,7 +69,7 @@ message LighthouseResult {
     string host_user_agent = 2;
 
     // The benchmark index that indicates rough device class
-    int32 benchmark_index = 3;
+    double benchmark_index = 3;
   }
 
   // The environment that the audit was run in
