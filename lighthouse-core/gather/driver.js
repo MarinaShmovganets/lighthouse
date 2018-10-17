@@ -82,31 +82,49 @@ class Driver {
 
   static get traceCategories() {
     return [
-      '-*', // exclude default
-      'toplevel',
+      // Exclude default categories. We'll be selective to minimize trace size
+      '-*',
+
+      // Used instead of 'toplevel' in Chrome 71+
+      'disabled-by-default-lighthouse',
+
+      // All compile/execute events are captured by parent events in devtools.timeline..
+      // But the v8 category provides some nice context for only <0.5% of the trace size
+      'v8',
+      // Same situation here. This category is there for RunMicrotasks only, but with other teams
+      // accidentally excluding microtasks, we don't want to assume a parent event will always exist
       'v8.execute',
-      'blink.console',
+
+      // For extracting UserTiming marks/measures
       'blink.user_timing',
-      'benchmark',
-      'loading',
-      'latencyInfo',
+
+      // Not mandatory but not used much
+      'blink.console',
+
+      // Most the events we need come in on these two
       'devtools.timeline',
       'disabled-by-default-devtools.timeline',
-      'disabled-by-default-devtools.timeline.frame',
+
+      // Up to 450 (https://goo.gl/rBfhn4) JPGs added to the trace
+      'disabled-by-default-devtools.screenshot',
+
+      // This doesn't add its own events, but adds a `stackTrace` property to devtools.timeline events
       'disabled-by-default-devtools.timeline.stack',
-      // Flipped off until bugs.chromium.org/p/v8/issues/detail?id=5820 is fixed in Stable
+
+      // CPU sampling profiler data only enabled for debugging purposes
       // 'disabled-by-default-v8.cpu_profiler',
       // 'disabled-by-default-v8.cpu_profiler.hires',
-      'disabled-by-default-devtools.screenshot',
     ];
   }
 
   /**
-   * @return {Promise<string>}
+   * @return {Promise<LH.Crdp.Browser.GetVersionResponse & {milestone: number}>}
    */
-  getUserAgent() {
-    // FIXME: use Browser.getVersion instead
-    return this.evaluateAsync('navigator.userAgent');
+  async getBrowserVersion() {
+    const version = await this.sendCommand('Browser.getVersion');
+    const match = version.product.match(/\/(\d+)/); // eg 'Chrome/71.0.3577.0'
+    const milestone = match ? parseInt(match[1]) : 0;
+    return Object.assign(version, {milestone});
   }
 
   /**
@@ -919,10 +937,19 @@ class Driver {
    * @param {{additionalTraceCategories?: string|null}=} settings
    * @return {Promise<void>}
    */
-  beginTrace(settings) {
+  async beginTrace(settings) {
     const additionalCategories = (settings && settings.additionalTraceCategories &&
         settings.additionalTraceCategories.split(',')) || [];
     const traceCategories = this._traceCategories.concat(additionalCategories);
+
+    // In Chrome <71, gotta use the chatty 'toplevel' cat instead of our own.
+    // TODO(COMPAT): Once m71 ships to stable, drop this section
+    const milestone = (await this.getBrowserVersion()).milestone;
+    if (milestone < 71) {
+      const toplevelIndex = traceCategories.indexOf('disabled-by-default-lighthouse');
+      traceCategories[toplevelIndex] = 'toplevel';
+    }
+
     const uniqueCategories = Array.from(new Set(traceCategories));
 
     // Check any domains that could interfere with or add overhead to the trace.
