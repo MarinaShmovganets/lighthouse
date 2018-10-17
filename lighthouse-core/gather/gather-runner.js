@@ -148,10 +148,9 @@ class GatherRunner {
    * Returns an error if the original network request failed or wasn't found.
    * @param {string} url The URL of the original requested page.
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
-   * @param {LH.Crdp.Security.SecurityStateChangedEvent} securityState
    * @return {LHError|undefined}
    */
-  static getPageLoadError(url, networkRecords, {securityState, explanations}) {
+  static getPageLoadError(url, networkRecords) {
     const mainRecord = networkRecords.find(record => {
       // record.url is actual request url, so needs to be compared without any URL fragment.
       return URL.equalWithExcludedFragments(record.url, url);
@@ -166,16 +165,26 @@ class GatherRunner {
     } else if (mainRecord.hasErrorStatusCode()) {
       errorDef = {...LHError.errors.ERRORED_DOCUMENT_REQUEST};
       errorDef.message += ` Status code: ${mainRecord.statusCode}.`;
-    } else if (securityState === 'insecure') {
-      errorDef = {...LHError.errors.INSECURE_DOCUMENT_REQUEST};
-      const insecureDescriptions = explanations
-        .filter(exp => exp.securityState === 'insecure')
-        .map(exp => exp.description);
-      errorDef.message += ` ${insecureDescriptions.join(' ')}`;
     }
 
     if (errorDef) {
       return new LHError(errorDef);
+    }
+  }
+
+  /**
+   * Returns an error if the original network request failed or wasn't found.
+   * @param {LH.Crdp.Security.SecurityStateChangedEvent} securityState
+   * @return {LHError|undefined}
+   */
+  static checkForSecurityIssue({securityState, explanations}) {
+    if (securityState === 'insecure') {
+      const errorDef = {...LHError.errors.INSECURE_DOCUMENT_REQUEST};
+      const insecureDescriptions = explanations
+        .filter(exp => exp.securityState === 'insecure')
+        .map(exp => exp.description);
+      errorDef.message += ` ${insecureDescriptions.join(' ')}`;
+      return new LHError(errorDef, {fatal: true});
     }
   }
 
@@ -278,9 +287,7 @@ class GatherRunner {
     const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
     log.verbose('statusEnd', status);
 
-    const securityState = await driver.getSecurityState();
-    let pageLoadError = GatherRunner.getPageLoadError(passContext.url,
-      networkRecords, securityState);
+    let pageLoadError = GatherRunner.getPageLoadError(passContext.url, networkRecords);
     // If the driver was offline, a page load error is expected, so do not save it.
     if (!driver.online) pageLoadError = undefined;
 
@@ -289,13 +296,18 @@ class GatherRunner {
       passContext.LighthouseRunWarnings.push(pageLoadError.friendlyMessage);
     }
 
+    const securityState = await driver.getSecurityState();
+    const securityError = this.checkForSecurityIssue(securityState);
+    if (securityError) {
+      throw securityError;
+    }
+
     // Expose devtoolsLog, networkRecords, and trace (if present) to gatherers
     /** @type {LH.Gatherer.LoadData} */
     const passData = {
       networkRecords,
       devtoolsLog,
       trace,
-      pageLoadError,
     };
 
     if (!pageLoadError) {
@@ -448,12 +460,6 @@ class GatherRunner {
           // Copy redirected URL to artifact in the first pass only.
           baseArtifacts.URL.finalUrl = passContext.url;
           firstPass = false;
-        }
-
-        const pageLoadError = passData.pageLoadError;
-        if (pageLoadError && pageLoadError.code === LHError.errors.INSECURE_DOCUMENT_REQUEST.code) {
-          // Some protocol commands will hang, so let's just bail. See #6287
-          break;
         }
       }
       const resetStorage = !options.settings.disableStorageReset;

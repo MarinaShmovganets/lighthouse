@@ -34,10 +34,6 @@ class TestGathererNoArtifact extends Gatherer {
 
 const fakeDriver = require('./fake-driver');
 
-const secureSecurityState = {
-  securityState: 'secure',
-};
-
 function getMockedEmulationDriver(emulationFn, netThrottleFn, cpuThrottleFn,
   blockUrlFn, extraHeadersFn) {
   const Driver = require('../../gather/driver');
@@ -633,14 +629,14 @@ describe('GatherRunner', function() {
       const url = 'http://the-page.com';
       const mainRecord = new NetworkRequest();
       mainRecord.url = url;
-      assert.ok(!GatherRunner.getPageLoadError(url, [mainRecord], secureSecurityState));
+      assert.ok(!GatherRunner.getPageLoadError(url, [mainRecord]));
     });
 
     it('passes when the page is loaded, ignoring any fragment', () => {
       const url = 'http://example.com/#/page/list';
       const mainRecord = new NetworkRequest();
       mainRecord.url = 'http://example.com';
-      assert.ok(!GatherRunner.getPageLoadError(url, [mainRecord], secureSecurityState));
+      assert.ok(!GatherRunner.getPageLoadError(url, [mainRecord]));
     });
 
     it('fails when page fails to load', () => {
@@ -649,7 +645,7 @@ describe('GatherRunner', function() {
       mainRecord.url = url;
       mainRecord.failed = true;
       mainRecord.localizedFailDescription = 'foobar';
-      const error = GatherRunner.getPageLoadError(url, [mainRecord], secureSecurityState);
+      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
       assert.equal(error.message, 'FAILED_DOCUMENT_REQUEST');
       assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
     });
@@ -657,7 +653,7 @@ describe('GatherRunner', function() {
     it('fails when page times out', () => {
       const url = 'http://the-page.com';
       const records = [];
-      const error = GatherRunner.getPageLoadError(url, records, secureSecurityState);
+      const error = GatherRunner.getPageLoadError(url, records);
       assert.equal(error.message, 'NO_DOCUMENT_REQUEST');
       assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
     });
@@ -667,7 +663,7 @@ describe('GatherRunner', function() {
       const mainRecord = new NetworkRequest();
       mainRecord.url = url;
       mainRecord.statusCode = 404;
-      const error = GatherRunner.getPageLoadError(url, [mainRecord], secureSecurityState);
+      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
       assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
       assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
     });
@@ -677,9 +673,18 @@ describe('GatherRunner', function() {
       const mainRecord = new NetworkRequest();
       mainRecord.url = url;
       mainRecord.statusCode = 500;
-      const error = GatherRunner.getPageLoadError(url, [mainRecord], secureSecurityState);
+      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
       assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
       assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
+    });
+  });
+
+  describe('#checkForSecurityIssue', () => {
+    it('succeeds when page is secure', () => {
+      const secureSecurityState = {
+        securityState: 'secure',
+      };
+      assert.ok(!GatherRunner.checkForSecurityIssue(secureSecurityState));
     });
 
     it('fails when page is insecure', () => {
@@ -700,10 +705,7 @@ describe('GatherRunner', function() {
         ],
         securityState: 'insecure',
       };
-      const url = 'http://the-page.com';
-      const mainRecord = new NetworkRequest();
-      mainRecord.url = url;
-      const error = GatherRunner.getPageLoadError(url, [mainRecord], insecureSecurityState);
+      const error = GatherRunner.checkForSecurityIssue(insecureSecurityState);
       assert.equal(error.message, 'INSECURE_DOCUMENT_REQUEST');
       /* eslint-disable-next-line max-len */
       assert.equal(error.friendlyMessage, 'The URL you have provided does not have valid security credentials. reason 1. reason 2.');
