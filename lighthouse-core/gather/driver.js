@@ -850,6 +850,24 @@ class Driver {
   }
 
   /**
+   * @param {number} [timeout]
+   * @return {Promise<LH.Crdp.Security.SecurityStateChangedEvent>}
+   */
+  getSecurityState(timeout = 1000) {
+    return new Promise((resolve, reject) => {
+      const err = new LHError(LHError.errors.SECURITY_STATE_TIMEOUT);
+      const asyncTimeout = setTimeout((_ => reject(err)), timeout);
+
+      this.sendCommand('Security.enable');
+      this.once('Security.securityStateChanged', (e) => {
+        clearTimeout(asyncTimeout);
+        resolve(e);
+        this.sendCommand('Security.disable').catch(reject);
+      });
+    });
+  }
+
+  /**
    * @param {string} name The name of API whose permission you wish to query
    * @return {Promise<string>} The state of permissions, resolved in a promise.
    *    See https://developer.mozilla.org/en-US/docs/Web/API/Permissions/query.

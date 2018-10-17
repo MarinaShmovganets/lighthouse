@@ -146,11 +146,12 @@ class GatherRunner {
 
   /**
    * Returns an error if the original network request failed or wasn't found.
+   * @param {Driver} driver
    * @param {string} url The URL of the original requested page.
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
-   * @return {LHError|undefined}
+   * @return {Promise<LHError|undefined>}
    */
-  static getPageLoadError(url, networkRecords) {
+  static async getPageLoadError(driver, url, networkRecords) {
     const mainRecord = networkRecords.find(record => {
       // record.url is actual request url, so needs to be compared without any URL fragment.
       return URL.equalWithExcludedFragments(record.url, url);
@@ -165,6 +166,20 @@ class GatherRunner {
     } else if (mainRecord.hasErrorStatusCode()) {
       errorDef = {...LHError.errors.ERRORED_DOCUMENT_REQUEST};
       errorDef.message += ` Status code: ${mainRecord.statusCode}.`;
+    } else if (!mainRecord.finished) {
+      // could be security error
+      const securityState = await driver.getSecurityState();
+      if (securityState.securityState === 'insecure') {
+        errorDef = {...LHError.errors.INSECURE_DOCUMENT_REQUEST};
+        const insecureDescriptions = securityState.explanations
+          .filter(exp => exp.securityState === 'insecure')
+          .map(exp => exp.description)
+          .join(' ');
+        errorDef.message += ` Insecure: ${insecureDescriptions}`;
+      } else {
+        // Not sure what the error is. Could be just a redirect. For now,
+        // treat as no error.
+      }
     }
 
     if (errorDef) {
@@ -251,7 +266,7 @@ class GatherRunner {
    * object containing trace and network data.
    * @param {LH.Gatherer.PassContext} passContext
    * @param {Partial<GathererResults>} gathererResults
-   * @return {Promise<LH.Gatherer.LoadData>}
+   * @return {Promise<[LH.Gatherer.LoadData, LH.LighthouseError | undefined]>}
    */
   static async afterPass(passContext, gathererResults) {
     const driver = passContext.driver;
@@ -271,7 +286,8 @@ class GatherRunner {
     const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
     log.verbose('statusEnd', status);
 
-    let pageLoadError = GatherRunner.getPageLoadError(passContext.url, networkRecords);
+    let pageLoadError = await GatherRunner.getPageLoadError(driver,
+      passContext.url, networkRecords);
     // If the driver was offline, a page load error is expected, so do not save it.
     if (!driver.online) pageLoadError = undefined;
 
@@ -288,8 +304,12 @@ class GatherRunner {
       trace,
     };
 
-    // Disable throttling so the afterPass analysis isn't throttled
-    await driver.setThrottling(passContext.settings, {useThrottling: false});
+    if (!pageLoadError) {
+      // Disable throttling so the afterPass analysis isn't throttled
+      // This will hang if there was a security error. But, there is no
+      // need to throttle if there is such an error. See #6287
+      await driver.setThrottling(passContext.settings, {useThrottling: false});
+    }
 
     for (const gathererDefn of gatherers) {
       const gatherer = gathererDefn.instance;
@@ -313,7 +333,7 @@ class GatherRunner {
     }
 
     // Resolve on tracing data using passName from config.
-    return passData;
+    return [passData, pageLoadError];
   }
 
   /**
@@ -410,7 +430,8 @@ class GatherRunner {
         await driver.setThrottling(options.settings, passConfig);
         await GatherRunner.beforePass(passContext, gathererResults);
         await GatherRunner.pass(passContext, gathererResults);
-        const passData = await GatherRunner.afterPass(passContext, gathererResults);
+        const [passData, pageLoadError] =
+          await GatherRunner.afterPass(passContext, gathererResults);
 
         // Save devtoolsLog, but networkRecords are discarded and not added onto artifacts.
         baseArtifacts.devtoolsLogs[passConfig.passName] = passData.devtoolsLog;
@@ -434,6 +455,11 @@ class GatherRunner {
           // Copy redirected URL to artifact in the first pass only.
           baseArtifacts.URL.finalUrl = passContext.url;
           firstPass = false;
+        }
+
+        if (pageLoadError && pageLoadError.code === LHError.errors.INSECURE_DOCUMENT_REQUEST.code) {
+          // Some protocol commands will hang, so let's just bail. See #6287
+          break;
         }
       }
       const resetStorage = !options.settings.disableStorageReset;

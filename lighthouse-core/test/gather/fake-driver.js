@@ -81,6 +81,11 @@ const fakeDriver = {
   setExtraHTTPHeaders() {
     return Promise.resolve();
   },
+  getSecurityState() {
+    return Promise.resolve({
+      securityState: 'secure',
+    });
+  },
 };
 
 module.exports = fakeDriver;

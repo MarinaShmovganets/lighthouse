@@ -142,6 +142,12 @@ const ERRORS = {
     message: strings.pageLoadFailed,
     lhrRuntimeError: true,
   },
+  /* Used when security error prevents page load. */
+  INSECURE_DOCUMENT_REQUEST: {
+    code: 'INSECURE_DOCUMENT_REQUEST',
+    message: strings.pageLoadFailedInsecure,
+    lhrRuntimeError: true,
+  },
 
   // Protocol internal failures
   TRACING_ALREADY_STARTED: {
@@ -167,6 +173,12 @@ const ERRORS = {
   REQUEST_CONTENT_TIMEOUT: {
     code: 'REQUEST_CONTENT_TIMEOUT',
     message: strings.requestContentTimeout,
+  },
+
+  // Protocol timeout failures
+  SECURITY_STATE_TIMEOUT: {
+    code: 'SECURITY_STATE_TIMEOUT',
+    message: strings.securityStateTimeout,
   },
 
   // URL parsing failures

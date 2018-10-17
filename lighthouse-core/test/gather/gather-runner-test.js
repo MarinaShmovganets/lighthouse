@@ -493,10 +493,11 @@ describe('GatherRunner', function() {
       ],
     };
 
-    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []}).then(passData => {
-      assert.equal(calledTrace, true);
-      assert.equal(passData.trace, fakeTraceData);
-    });
+    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []})
+      .then(([passData]) => {
+        assert.equal(calledTrace, true);
+        assert.equal(passData.trace, fakeTraceData);
+      });
   });
 
   it('tells the driver to begin devtoolsLog collection', () => {
@@ -543,10 +544,11 @@ describe('GatherRunner', function() {
       ],
     };
 
-    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []}).then(vals => {
-      assert.equal(calledDevtoolsLogCollect, true);
-      assert.strictEqual(vals.devtoolsLog[0], fakeDevtoolsMessage);
-    });
+    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []})
+      .then(([passData]) => {
+        assert.equal(calledDevtoolsLogCollect, true);
+        assert.strictEqual(passData.devtoolsLog[0], fakeDevtoolsMessage);
+      });
   });
 
   it('does as many passes as are required', () => {
@@ -625,57 +627,88 @@ describe('GatherRunner', function() {
   });
 
   describe('#getPageLoadError', () => {
-    it('passes when the page is loaded', () => {
+    it('passes when the page is loaded', async () => {
       const url = 'http://the-page.com';
       const mainRecord = new NetworkRequest();
       mainRecord.url = url;
-      assert.ok(!GatherRunner.getPageLoadError(url, [mainRecord]));
+      assert.ok(!await GatherRunner.getPageLoadError(fakeDriver, url, [mainRecord]));
     });
 
-    it('passes when the page is loaded, ignoring any fragment', () => {
+    it('passes when the page is loaded, ignoring any fragment', async () => {
       const url = 'http://example.com/#/page/list';
       const mainRecord = new NetworkRequest();
       mainRecord.url = 'http://example.com';
-      assert.ok(!GatherRunner.getPageLoadError(url, [mainRecord]));
+      assert.ok(!await GatherRunner.getPageLoadError(fakeDriver, url, [mainRecord]));
     });
 
-    it('fails when page fails to load', () => {
+    it('fails when page fails to load', async () => {
       const url = 'http://the-page.com';
       const mainRecord = new NetworkRequest();
       mainRecord.url = url;
       mainRecord.failed = true;
       mainRecord.localizedFailDescription = 'foobar';
-      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
+      const error = await GatherRunner.getPageLoadError(fakeDriver, url, [mainRecord]);
       assert.equal(error.message, 'FAILED_DOCUMENT_REQUEST');
       assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
     });
 
-    it('fails when page times out', () => {
+    it('fails when page times out', async () => {
       const url = 'http://the-page.com';
       const records = [];
-      const error = GatherRunner.getPageLoadError(url, records);
+      const error = await GatherRunner.getPageLoadError(fakeDriver, url, records);
       assert.equal(error.message, 'NO_DOCUMENT_REQUEST');
       assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
     });
 
-    it('fails when page returns with a 404', () => {
+    it('fails when page returns with a 404', async () => {
       const url = 'http://the-page.com';
       const mainRecord = new NetworkRequest();
       mainRecord.url = url;
       mainRecord.statusCode = 404;
-      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
+      const error = await GatherRunner.getPageLoadError(fakeDriver, url, [mainRecord]);
       assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
       assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
     });
 
-    it('fails when page returns with a 500', () => {
+    it('fails when page returns with a 500', async () => {
       const url = 'http://the-page.com';
       const mainRecord = new NetworkRequest();
       mainRecord.url = url;
       mainRecord.statusCode = 500;
-      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
+      const error = await GatherRunner.getPageLoadError(fakeDriver, url, [mainRecord]);
       assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
       assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
+    });
+
+    it('fails when page is insecure', async () => {
+      const mockDriver = Object.assign({}, fakeDriver, {
+        async getSecurityState() {
+          return {
+            explanations: [
+              {
+                description: 'reason 1.',
+                securityState: 'insecure',
+              },
+              {
+                description: 'blah.',
+                securityState: 'info',
+              },
+              {
+                description: 'reason 2.',
+                securityState: 'insecure',
+              },
+            ],
+            securityState: 'insecure',
+          };
+        },
+      });
+      const url = 'http://the-page.com';
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      const error = await GatherRunner.getPageLoadError(mockDriver, url, [mainRecord]);
+      assert.equal(error.message, 'INSECURE_DOCUMENT_REQUEST');
+      /* eslint-disable-next-line max-len */
+      assert.equal(error.friendlyMessage, 'The URL you have provided does not have a valid security certificate. Insecure: reason 1. reason 2.');
     });
   });
 
