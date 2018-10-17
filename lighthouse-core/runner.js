@@ -125,7 +125,7 @@ class Runner {
         environment: {
           networkUserAgent: artifacts.NetworkUserAgent,
           hostUserAgent: artifacts.HostUserAgent,
-          benchmarkIndex: artifacts.BenchmarkIndex,
+          benchmarkIndex: parseInt(artifacts.BenchmarkIndex.toString()),
         },
         lighthouseVersion,
         fetchTime: artifacts.fetchTime,

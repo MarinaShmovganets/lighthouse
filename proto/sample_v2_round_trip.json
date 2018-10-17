@@ -3262,7 +3262,7 @@
         "throttlingMethod": "devtools"
     }, 
     "environment": {
-        "benchmarkIndex": 1000.0, 
+        "benchmarkIndex": 1000, 
         "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3358.0 Safari/537.36", 
         "networkUserAgent": "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) AppleWebKit/537.36(KHTML, like Gecko) Chrome/66.0.3359.30 Mobile Safari/537.36"
     }, 
