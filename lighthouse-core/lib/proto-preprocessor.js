@@ -23,7 +23,7 @@ function processForProto(result) {
   const reportJson = JSON.parse(result);
 
   // Clean up the configSettings
-  if ('configSettings' in reportJson) {
+  if (reportJson.configSettings) {
     // make sure the 'output' field is an array
     if ('output' in reportJson.configSettings) {
       if (!Array.isArray(reportJson.configSettings.output)) {
