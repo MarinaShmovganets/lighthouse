@@ -146,12 +146,12 @@ class GatherRunner {
 
   /**
    * Returns an error if the original network request failed or wasn't found.
-   * @param {Driver} driver
    * @param {string} url The URL of the original requested page.
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
-   * @return {Promise<LHError|undefined>}
+   * @param {LH.Crdp.Security.SecurityStateChangedEvent} securityState
+   * @return {LHError|undefined}
    */
-  static async getPageLoadError(driver, url, networkRecords) {
+  static getPageLoadError(url, networkRecords, securityState) {
     const mainRecord = networkRecords.find(record => {
       // record.url is actual request url, so needs to be compared without any URL fragment.
       return URL.equalWithExcludedFragments(record.url, url);
@@ -166,20 +166,12 @@ class GatherRunner {
     } else if (mainRecord.hasErrorStatusCode()) {
       errorDef = {...LHError.errors.ERRORED_DOCUMENT_REQUEST};
       errorDef.message += ` Status code: ${mainRecord.statusCode}.`;
-    } else if (!mainRecord.finished) {
-      // could be security error
-      const securityState = await driver.getSecurityState();
-      if (securityState.securityState === 'insecure') {
-        errorDef = {...LHError.errors.INSECURE_DOCUMENT_REQUEST};
-        const insecureDescriptions = securityState.explanations
-          .filter(exp => exp.securityState === 'insecure')
-          .map(exp => exp.description)
-          .join(' ');
-        errorDef.message += ` Insecure: ${insecureDescriptions}`;
-      } else {
-        // Not sure what the error is. Could be just a redirect. For now,
-        // treat as no error.
-      }
+    } else if (securityState.securityState === 'insecure') {
+      errorDef = {...LHError.errors.INSECURE_DOCUMENT_REQUEST};
+      const insecureDescriptions = securityState.explanations
+        .filter(exp => exp.securityState === 'insecure')
+        .map(exp => exp.description);
+      errorDef.message += ` ${insecureDescriptions.join(' ')}`;
     }
 
     if (errorDef) {
@@ -286,8 +278,9 @@ class GatherRunner {
     const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
     log.verbose('statusEnd', status);
 
-    let pageLoadError = await GatherRunner.getPageLoadError(driver,
-      passContext.url, networkRecords);
+    const securityState = await driver.getSecurityState();
+    let pageLoadError = GatherRunner.getPageLoadError(passContext.url,
+      networkRecords, securityState);
     // If the driver was offline, a page load error is expected, so do not save it.
     if (!driver.online) pageLoadError = undefined;
 
