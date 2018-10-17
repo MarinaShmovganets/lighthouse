@@ -59,7 +59,7 @@ class LighthouseError extends Error {
     }
 
     // otherwise fallback to building a generic Error
-    let errMsg = `(${method}): ${protocolError.message}`;
+    let errMsg = `(${method}): ${JSON.stringify(protocolError.message)}`;
     if (protocolError.data) errMsg += ` (${protocolError.data})`;
     const error = new Error(`Protocol error ${errMsg}`);
     return Object.assign(error, {protocolMethod: method, protocolError: protocolError.message});
