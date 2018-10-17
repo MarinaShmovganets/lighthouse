@@ -64,11 +64,11 @@ describe('Font size gatherer', () => {
     const driver = {
       on() {},
       off() {},
-      sendCommand(command, params) {
+      async sendCommand(command, params) {
         let result;
         if (command === 'CSS.getComputedStyleForNode') {
           if (params.nodeId === failingNode.nodeId) {
-            return Promise.reject();
+            throw new Error('This is the failing node');
           }
 
           result = {
@@ -88,10 +88,10 @@ describe('Font size gatherer', () => {
           };
         }
 
-        return Promise.resolve(result);
+        return result;
       },
-      getNodesInDocument() {
-        return Promise.resolve(nodes);
+      async getNodesInDocument() {
+        return nodes;
       },
     };
 

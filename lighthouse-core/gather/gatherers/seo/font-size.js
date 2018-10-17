@@ -9,8 +9,10 @@
  * @fileoverview Extracts information about illegible text from the page.
  *
  * In effort to keep this audit's execution time around 1s, maximum number of protocol calls was limited.
- * Firstly, number of visited nodes (text nodes for which font size was checked) is capped. Secondly, number of failing nodes that are analyzed (for which detailed CSS information is extracted) is also limited.
+ * Firstly, number of visited nodes (text nodes for which font size was checked) is capped.
+ * Secondly, number of failing nodes that are analyzed (for which detailed CSS information is extracted) is also limited.
  *
+ * The applicable CSS rule is also determined by the code here with some simplifications (namely !important is ignored).
  * This gatherer collects stylesheet metadata by itself, instead of relying on the styles gatherer which is slow (because it parses the stylesheet content).
  */
 
@@ -69,6 +71,7 @@ function hasFontSizeDeclaration(style) {
 
 /**
  * Computes the CSS specificity of a given selector, i.e. #id > .class > div
+ * LIMITATION: !important is not respected
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
  * @see https://www.smashingmagazine.com/2010/04/css-specificity-and-inheritance/
@@ -96,7 +99,7 @@ function computeSelectorSpecificity(selector) {
 }
 
 /**
- * Finds the most specific directly matched CSS rule from the list.
+ * Finds the most specific directly matched CSS font-size rule from the list.
  *
  * @param {Array<LH.Crdp.CSS.RuleMatch>} [matchedCSSRules]
  * @returns {NodeFontData['cssRule']|undefined}
@@ -152,7 +155,7 @@ function findInheritedCSSRule(inheritedEntries = []) {
 }
 
 /**
- * Returns effective CSS rule for given CSS property.
+ * Returns the governing/winning CSS font-size rule for the set of styles given.
  * This is roughly a stripped down version of the CSSMatchedStyle class in DevTools.
  *
  * @see https://cs.chromium.org/chromium/src/third_party/blink/renderer/devtools/front_end/sdk/CSSMatchedStyles.js?q=CSSMatchedStyles+f:devtools+-f:out&sq=package:chromium&dr=C&l=59-134
@@ -207,13 +210,13 @@ async function fetchSourceRule(driver, node) {
 
 /**
  * @param {Driver} driver
- * @param {LH.Artifacts.FontSize.DomNodeWithParent} node text node
+ * @param {LH.Artifacts.FontSize.DomNodeWithParent} textNode text node
  * @returns {Promise<?NodeFontData>}
  */
-async function fetchComputedFontSize(driver, node) {
+async function fetchComputedFontSize(driver, textNode) {
   try {
     const {computedStyle} = await driver.sendCommand('CSS.getComputedStyleForNode', {
-      nodeId: node.parentId,
+      nodeId: textNode.parentId,
     });
 
     const fontSizeProperty = computedStyle.find(({name}) => name === FONT_SIZE_PROPERTY_NAME);
@@ -221,8 +224,8 @@ async function fetchComputedFontSize(driver, node) {
     return {
       // @ts-ignore - font size property guaranteed to be returned in getComputedStyle
       fontSize: parseInt(fontSizeProperty.value, 10),
-      textLength: getNodeTextLength(node),
-      node: /** @type {LH.Artifacts.FontSize.DomNodeWithParent} */ (node.parentNode),
+      textLength: getNodeTextLength(textNode),
+      node: textNode.parentNode,
     };
   } catch (err) {
     Sentry.captureException(err, {tags: {gatherer: 'FontSize'}});
