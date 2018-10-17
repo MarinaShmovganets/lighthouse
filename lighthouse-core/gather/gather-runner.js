@@ -310,12 +310,7 @@ class GatherRunner {
       trace,
     };
 
-    if (!pageLoadError) {
-      // Disable throttling so the afterPass analysis isn't throttled
-      // This will hang if there was a security error. But, there is no
-      // need to throttle if there is such an error. See #6287
-      await driver.setThrottling(passContext.settings, {useThrottling: false});
-    }
+    await driver.setThrottling(passContext.settings, {useThrottling: false});
 
     for (const gathererDefn of gatherers) {
       const gatherer = gathererDefn.instance;
