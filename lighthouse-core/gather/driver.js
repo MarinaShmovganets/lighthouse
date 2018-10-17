@@ -859,10 +859,10 @@ class Driver {
       const asyncTimeout = setTimeout((_ => reject(err)), timeout);
 
       this.sendCommand('Security.enable');
-      this.once('Security.securityStateChanged', (e) => {
+      this.once('Security.securityStateChanged', state => {
         clearTimeout(asyncTimeout);
-        resolve(e);
-        this.sendCommand('Security.disable').catch(reject);
+        resolve(state);
+        this.sendCommand('Security.disable');
       });
     });
   }

@@ -497,11 +497,10 @@ describe('GatherRunner', function() {
       ],
     };
 
-    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []})
-      .then(([passData]) => {
-        assert.equal(calledTrace, true);
-        assert.equal(passData.trace, fakeTraceData);
-      });
+    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []}).then(passData => {
+      assert.equal(calledTrace, true);
+      assert.equal(passData.trace, fakeTraceData);
+    });
   });
 
   it('tells the driver to begin devtoolsLog collection', () => {
@@ -548,11 +547,10 @@ describe('GatherRunner', function() {
       ],
     };
 
-    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []})
-      .then(([passData]) => {
-        assert.equal(calledDevtoolsLogCollect, true);
-        assert.strictEqual(passData.devtoolsLog[0], fakeDevtoolsMessage);
-      });
+    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []}).then(passData => {
+      assert.equal(calledDevtoolsLogCollect, true);
+      assert.strictEqual(passData.devtoolsLog[0], fakeDevtoolsMessage);
+    });
   });
 
   it('does as many passes as are required', () => {

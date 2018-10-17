@@ -26,6 +26,7 @@ declare global {
       networkRecords: Array<Artifacts.NetworkRequest>;
       devtoolsLog: DevtoolsLog;
       trace?: Trace;
+      pageLoadError?: LighthouseError;
     }
 
     namespace Simulation {

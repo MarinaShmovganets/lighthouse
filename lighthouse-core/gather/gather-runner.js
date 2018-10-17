@@ -258,7 +258,7 @@ class GatherRunner {
    * object containing trace and network data.
    * @param {LH.Gatherer.PassContext} passContext
    * @param {Partial<GathererResults>} gathererResults
-   * @return {Promise<[LH.Gatherer.LoadData, LH.LighthouseError | undefined]>}
+   * @return {Promise<LH.Gatherer.LoadData>}
    */
   static async afterPass(passContext, gathererResults) {
     const driver = passContext.driver;
@@ -295,6 +295,7 @@ class GatherRunner {
       networkRecords,
       devtoolsLog,
       trace,
+      pageLoadError,
     };
 
     if (!pageLoadError) {
@@ -326,7 +327,7 @@ class GatherRunner {
     }
 
     // Resolve on tracing data using passName from config.
-    return [passData, pageLoadError];
+    return passData;
   }
 
   /**
@@ -423,8 +424,7 @@ class GatherRunner {
         await driver.setThrottling(options.settings, passConfig);
         await GatherRunner.beforePass(passContext, gathererResults);
         await GatherRunner.pass(passContext, gathererResults);
-        const [passData, pageLoadError] =
-          await GatherRunner.afterPass(passContext, gathererResults);
+        const passData = await GatherRunner.afterPass(passContext, gathererResults);
 
         // Save devtoolsLog, but networkRecords are discarded and not added onto artifacts.
         baseArtifacts.devtoolsLogs[passConfig.passName] = passData.devtoolsLog;
@@ -450,6 +450,7 @@ class GatherRunner {
           firstPass = false;
         }
 
+        const pageLoadError = passData.pageLoadError;
         if (pageLoadError && pageLoadError.code === LHError.errors.INSECURE_DOCUMENT_REQUEST.code) {
           // Some protocol commands will hang, so let's just bail. See #6287
           break;
