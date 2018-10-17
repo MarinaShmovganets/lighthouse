@@ -112,6 +112,7 @@ class GatherRunner {
     await driver.cacheNatives();
     await driver.registerPerformanceObserver();
     await driver.dismissJavaScriptDialogs();
+    await driver.listenForSecurityStateChanges();
     if (resetStorage) await driver.clearDataForOrigin(options.requestedUrl);
   }
 
@@ -296,8 +297,7 @@ class GatherRunner {
       passContext.LighthouseRunWarnings.push(pageLoadError.friendlyMessage);
     }
 
-    const securityState = await driver.getSecurityState();
-    const securityError = this.checkForSecurityIssue(securityState);
+    const securityError = this.checkForSecurityIssue(driver.getSecurityState());
     if (securityError) {
       throw securityError;
     }

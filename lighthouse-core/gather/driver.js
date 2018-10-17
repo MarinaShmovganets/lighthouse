@@ -849,22 +849,19 @@ class Driver {
     });
   }
 
-  /**
-   * @param {number} [timeout]
-   * @return {Promise<LH.Crdp.Security.SecurityStateChangedEvent>}
-   */
-  getSecurityState(timeout = 1000) {
-    return new Promise((resolve, reject) => {
-      const err = new LHError(LHError.errors.SECURITY_STATE_TIMEOUT);
-      const asyncTimeout = setTimeout((_ => reject(err)), timeout);
-
-      this.once('Security.securityStateChanged', state => {
-        clearTimeout(asyncTimeout);
-        resolve(state);
-        this.sendCommand('Security.disable');
-      });
-      this.sendCommand('Security.enable');
+  async listenForSecurityStateChanges() {
+    this.on('Security.securityStateChanged', state => {
+      this.lastSecurityState = state;
     });
+    await this.sendCommand('Security.enable');
+  }
+
+  /**
+   * @return {LH.Crdp.Security.SecurityStateChangedEvent}
+   */
+  getSecurityState() {
+    // @ts-ignore
+    return this.lastSecurityState;
   }
 
   /**

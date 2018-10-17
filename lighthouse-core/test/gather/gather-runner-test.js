@@ -321,6 +321,7 @@ describe('GatherRunner', function() {
       clearDataForOrigin: createCheck('calledClearStorage'),
       blockUrlPatterns: asyncFunc,
       setExtraHTTPHeaders: asyncFunc,
+      listenForSecurityStateChanges: asyncFunc,
     };
 
     return GatherRunner.setupDriver(driver, {settings: {}}).then(_ => {
@@ -379,6 +380,7 @@ describe('GatherRunner', function() {
       clearDataForOrigin: createCheck('calledClearStorage'),
       blockUrlPatterns: asyncFunc,
       setExtraHTTPHeaders: asyncFunc,
+      listenForSecurityStateChanges: asyncFunc,
     };
 
     return GatherRunner.setupDriver(driver, {
