@@ -860,7 +860,12 @@ class Driver {
    * @return {LH.Crdp.Security.SecurityStateChangedEvent}
    */
   getSecurityState() {
-    // @ts-ignore
+    if (!this.lastSecurityState) {
+      // happens if 'listenForSecurityStateChanges' is not called,
+      // or if some assumptions about the Security domain are wrong
+      throw new Error('Expected a security state.');
+    }
+
     return this.lastSecurityState;
   }
 

@@ -686,7 +686,7 @@ describe('GatherRunner', function() {
       const secureSecurityState = {
         securityState: 'secure',
       };
-      assert.ok(!GatherRunner.checkForSecurityIssue(secureSecurityState));
+      GatherRunner.assertNoSecurityIssues(secureSecurityState);
     });
 
     it('fails when page is insecure', () => {
@@ -707,10 +707,14 @@ describe('GatherRunner', function() {
         ],
         securityState: 'insecure',
       };
-      const error = GatherRunner.checkForSecurityIssue(insecureSecurityState);
-      assert.equal(error.message, 'INSECURE_DOCUMENT_REQUEST');
-      /* eslint-disable-next-line max-len */
-      assert.equal(error.friendlyMessage, 'The URL you have provided does not have valid security credentials. reason 1. reason 2.');
+      try {
+        GatherRunner.assertNoSecurityIssues(insecureSecurityState);
+        assert.fail('expected INSECURE_DOCUMENT_REQUEST LHError');
+      } catch (err) {
+        assert.equal(err.message, 'INSECURE_DOCUMENT_REQUEST');
+        /* eslint-disable-next-line max-len */
+        assert.equal(err.friendlyMessage, 'The URL you have provided does not have valid security credentials. reason 1. reason 2.');
+      }
     });
   });
 
