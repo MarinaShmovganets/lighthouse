@@ -174,7 +174,7 @@ class GatherRunner {
   }
 
   /**
-   * Returns an error if the security state is insecure.
+   * Throws an error if the security state is insecure.
    * @param {LH.Crdp.Security.SecurityStateChangedEvent} securityState
    * @throws {LHError}
    */

@@ -649,6 +649,7 @@ describe('GatherRunner', function() {
       mainRecord.localizedFailDescription = 'foobar';
       const error = GatherRunner.getPageLoadError(url, [mainRecord]);
       assert.equal(error.message, 'FAILED_DOCUMENT_REQUEST');
+      assert.equal(error.code, 'FAILED_DOCUMENT_REQUEST');
       assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
     });
 
@@ -657,6 +658,7 @@ describe('GatherRunner', function() {
       const records = [];
       const error = GatherRunner.getPageLoadError(url, records);
       assert.equal(error.message, 'NO_DOCUMENT_REQUEST');
+      assert.equal(error.code, 'NO_DOCUMENT_REQUEST');
       assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
     });
 
@@ -667,6 +669,7 @@ describe('GatherRunner', function() {
       mainRecord.statusCode = 404;
       const error = GatherRunner.getPageLoadError(url, [mainRecord]);
       assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
+      assert.equal(error.code, 'ERRORED_DOCUMENT_REQUEST');
       assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
     });
 
@@ -677,6 +680,7 @@ describe('GatherRunner', function() {
       mainRecord.statusCode = 500;
       const error = GatherRunner.getPageLoadError(url, [mainRecord]);
       assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
+      assert.equal(error.code, 'ERRORED_DOCUMENT_REQUEST');
       assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
     });
   });
@@ -712,6 +716,7 @@ describe('GatherRunner', function() {
         assert.fail('expected INSECURE_DOCUMENT_REQUEST LHError');
       } catch (err) {
         assert.equal(err.message, 'INSECURE_DOCUMENT_REQUEST');
+        assert.equal(err.code, 'INSECURE_DOCUMENT_REQUEST');
         /* eslint-disable-next-line max-len */
         assert.equal(err.friendlyMessage, 'The URL you have provided does not have valid security credentials. reason 1. reason 2.');
       }
