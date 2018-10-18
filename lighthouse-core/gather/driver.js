@@ -78,6 +78,13 @@ class Driver {
       // properties. See https://github.com/Microsoft/TypeScript/pull/22348.
       this._eventEmitter.emit(event.method, event.params);
     });
+
+    /**
+     * Used for monitoring network status events during gotoURL.
+     * @type {?LH.Crdp.Security.SecurityStateChangedEvent}
+     * @private
+     */
+    this._lastSecurityState = null;
   }
 
   static get traceCategories() {
@@ -851,7 +858,7 @@ class Driver {
 
   async listenForSecurityStateChanges() {
     this.on('Security.securityStateChanged', state => {
-      this.lastSecurityState = state;
+      this._lastSecurityState = state;
     });
     await this.sendCommand('Security.enable');
   }
@@ -860,13 +867,13 @@ class Driver {
    * @return {LH.Crdp.Security.SecurityStateChangedEvent}
    */
   getSecurityState() {
-    if (!this.lastSecurityState) {
+    if (!this._lastSecurityState) {
       // happens if 'listenForSecurityStateChanges' is not called,
       // or if some assumptions about the Security domain are wrong
       throw new Error('Expected a security state.');
     }
 
-    return this.lastSecurityState;
+    return this._lastSecurityState;
   }
 
   /**
