@@ -14,6 +14,5 @@ module.exports = {
   pageLoadFailedInsecure: `The URL you have provided does not have valid security credentials.`,
   internalChromeError: `An internal Chrome error occurred. Please restart Chrome and try re-running Lighthouse.`,
   requestContentTimeout: 'Fetching resource content has exceeded the allotted time',
-  securityStateTimeout: 'Fetching security state has exceeded the allotted time',
   urlInvalid: `The URL you have provided appears to be invalid.`,
 };

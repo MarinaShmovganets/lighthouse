@@ -174,7 +174,7 @@ class GatherRunner {
   }
 
   /**
-   * Returns an error if the original network request failed or wasn't found.
+   * Returns an error if the security state is insecure.
    * @param {LH.Crdp.Security.SecurityStateChangedEvent} securityState
    * @return {LHError|undefined}
    */
@@ -185,7 +185,7 @@ class GatherRunner {
         .filter(exp => exp.securityState === 'insecure')
         .map(exp => exp.description);
       errorDef.message += ` ${insecureDescriptions.join(' ')}`;
-      return new LHError(errorDef, {fatal: true});
+      return new LHError(errorDef);
     }
   }
 
@@ -310,6 +310,7 @@ class GatherRunner {
       trace,
     };
 
+    // Disable throttling so the afterPass analysis isn't throttled
     await driver.setThrottling(passContext.settings, {useThrottling: false});
 
     for (const gathererDefn of gatherers) {

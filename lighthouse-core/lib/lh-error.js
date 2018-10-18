@@ -175,12 +175,6 @@ const ERRORS = {
     message: strings.requestContentTimeout,
   },
 
-  // Protocol timeout failures
-  SECURITY_STATE_TIMEOUT: {
-    code: 'SECURITY_STATE_TIMEOUT',
-    message: strings.securityStateTimeout,
-  },
-
   // URL parsing failures
   INVALID_URL: {
     code: 'INVALID_URL',
