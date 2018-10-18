@@ -685,7 +685,7 @@ describe('GatherRunner', function() {
     });
   });
 
-  describe('#checkForSecurityIssue', () => {
+  describe('#assertNoSecurityIssues', () => {
     it('succeeds when page is secure', () => {
       const secureSecurityState = {
         securityState: 'secure',
