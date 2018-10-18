@@ -20,6 +20,7 @@ declare global {
         audits?: Config.AuditJson[] | null;
         categories?: Record<string, CategoryJson> | null;
         groups?: Record<string, Config.GroupJson> | null;
+        plugins?: Array<string>,
       }
 
       export interface SettingsJson extends SharedFlagsSettings {
@@ -106,6 +107,15 @@ declare global {
         auditRefs: AuditRef[];
       }
       export interface Group extends GroupJson {}
+
+      export interface Plugin {
+        audits: Array<{
+          path: string;
+          options?: {};
+        }>;
+        category: LH.Config.Category;
+        // TODO(bckenny): groups
+      }
 
       export type MergeOptionsOfItems = <T extends {path?: string, options: Record<string, any>}>(items: T[]) => T[];
 

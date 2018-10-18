@@ -345,6 +345,18 @@ class Config {
     // The directory of the config path, if one was provided.
     const configDir = configPath ? path.dirname(configPath) : undefined;
 
+    if (configJSON.plugins) {
+      for (const pluginName of configJSON.plugins) {
+        const filename = `lighthouse-plugin-${pluginName}`;
+        const pluginPath = Config.resolveModule(filename, configDir, 'plugin');
+        const plugin = /** {LH.Config.Plugin} */ (require(pluginPath));
+        // TODO(bckenny): should do more checking of plugin input
+        configJSON.audits = (configJSON.audits || []).concat(plugin.audits);
+        configJSON.categories = configJSON.categories || {};
+        configJSON.categories[pluginName] = plugin.category;
+      }
+    }
+
     const settings = Config.initSettings(configJSON.settings, flags);
 
     // Augment passes with necessary defaults and require gatherers.
