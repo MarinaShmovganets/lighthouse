@@ -137,17 +137,6 @@ describe('Images: aspect-ratio audit', () => {
     },
   });
 
-  testImage('has invalid natural sizing information', {
-    rawValue: true,
-    warning: 'Invalid image sizing information https://google.com/logo.png',
-    clientSize: [100, 100],
-    naturalSize: [0, 0],
-    props: {
-      isCss: false,
-      usesObjectFit: false,
-    },
-  });
-
   it('skips svg images', () => {
     const result = ImageAspectRatioAudit.audit({
       ImageUsage: [
