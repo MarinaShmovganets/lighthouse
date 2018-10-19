@@ -290,7 +290,7 @@ describe('Runner', () => {
 
     // TODO: need to support save/load of artifact errors.
     // See https://github.com/GoogleChrome/lighthouse/issues/4984
-    it.skip('outputs an error audit result when required artifact was a Error', () => {
+    it.skip('outputs an error audit result when required artifact was an Error', () => {
       const errorMessage = 'blurst of times';
       const artifactError = new Error(errorMessage);
 
