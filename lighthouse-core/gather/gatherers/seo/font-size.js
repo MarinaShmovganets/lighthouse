@@ -22,8 +22,8 @@ const FONT_SIZE_PROPERTY_NAME = 'font-size';
 const TEXT_NODE_BLOCK_LIST = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT']);
 const MINIMAL_LEGIBLE_FONT_SIZE_PX = 12;
 // limit number of protocol calls to make sure that gatherer doesn't take more than 1-2s
-const MAX_NODES_VISITED = 500;
-const MAX_NODES_ANALYZED = 50;
+const MAX_NODES_VISITED = 500; // number of nodes to get the text length and compute font-size
+const MAX_NODES_SOURCE_RULE_FETCHED = 50; // number of nodes to fetch the source font-size rule
 
 /** DevTools uses a numeric enum for nodeType */
 const TEXT_NODE_TYPE = 3;
@@ -136,7 +136,7 @@ function findMostSpecificMatchedCSSRule(matchedCSSRules = []) {
 }
 
 /**
- * Finds the most specific directly matched CSS rule from the list.
+ * Finds the most specific directly matched CSS font-size rule from the list.
  *
  * @param {Array<LH.Crdp.CSS.InheritedStyleEntry>} [inheritedEntries]
  * @returns {NodeFontData['cssRule']|undefined}
@@ -278,23 +278,21 @@ class FontSize extends Gatherer {
       }
     }
 
-    const nodesToAnalyze = failingNodes
-      .sort((a, b) => b.textLength - a.textLength)
-      .slice(0, MAX_NODES_ANALYZED);
-
-    return {totalTextLength, visitedTextLength, failingTextLength, nodesToAnalyze};
+    return {totalTextLength, visitedTextLength, failingTextLength, failingNodes};
   }
 
   /**
-   *
    * @param {LH.Gatherer.PassContext['driver']} driver
-   * @param {Array<NodeFontData>} nodesToAnalyze
+   * @param {Array<NodeFontData>} failingNodes
    */
-  static async analyzeFailingNodes(driver, nodesToAnalyze) {
-    const analysisPromises = nodesToAnalyze.map(async failingNode => {
-      failingNode.cssRule = await fetchSourceRule(driver, failingNode.node);
-      return failingNode;
-    });
+  static async fetchFailingNodeSourceRules(driver, failingNodes) {
+    const analysisPromises = failingNodes
+      .sort((a, b) => b.textLength - a.textLength)
+      .slice(0, MAX_NODES_SOURCE_RULE_FETCHED)
+      .map(async failingNode => {
+        failingNode.cssRule = await fetchSourceRule(driver, failingNode.node);
+        return failingNode;
+      });
 
     const analyzedFailingNodesData = await Promise.all(analysisPromises);
 
@@ -326,13 +324,13 @@ class FontSize extends Gatherer {
       totalTextLength,
       visitedTextLength,
       failingTextLength,
-      nodesToAnalyze,
+      failingNodes,
     } = await FontSize.fetchNodesToAnalyze(passContext.driver);
 
     const {
       analyzedFailingNodesData,
       analyzedFailingTextLength,
-    } = await FontSize.analyzeFailingNodes(passContext.driver, nodesToAnalyze);
+    } = await FontSize.fetchFailingNodeSourceRules(passContext.driver, failingNodes);
 
     passContext.driver.off('CSS.styleSheetAdded', onStylesheetAdd);
 

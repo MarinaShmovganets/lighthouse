@@ -65,13 +65,12 @@ describe('Font size gatherer', () => {
       on() {},
       off() {},
       async sendCommand(command, params) {
-        let result;
         if (command === 'CSS.getComputedStyleForNode') {
           if (params.nodeId === failingNode.nodeId) {
             throw new Error('This is the failing node');
           }
 
-          result = {
+          return {
             computedStyle: [
               {
                 name: 'font-size',
@@ -80,15 +79,13 @@ describe('Font size gatherer', () => {
             ],
           };
         } else if (command === 'CSS.getMatchedStylesForNode') {
-          result = {
+          return {
             inlineStyle: null,
             attributesStyle: null,
             matchedCSSRules: [],
             inherited: [],
           };
         }
-
-        return result;
       },
       async getNodesInDocument() {
         return nodes;
