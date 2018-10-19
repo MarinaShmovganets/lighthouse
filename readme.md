@@ -276,8 +276,6 @@ This section details services that have integrated Lighthouse data. If you're wo
 ## Related Projects
 Other awesome open source projects that use Lighthouse.
 
-* **[lighthouse-gh-reporter](https://github.com/addyosmani/webpack-lighthouse-plugin)** - give Lighthouse-CI the power of put reports as a comment on your pull requests.
-
 * **[webpack-lighthouse-plugin](https://github.com/addyosmani/webpack-lighthouse-plugin)** - run Lighthouse from a Webpack build.
 * **[lighthouse-mocha-example](https://github.com/justinribeiro/lighthouse-mocha-example)** - gather performance metrics via Lighthouse and tests them in Mocha
 * **[pwmetrics](https://github.com/paulirish/pwmetrics/)** - gather performance metrics
@@ -292,6 +290,8 @@ Other awesome open source projects that use Lighthouse.
 * **[Garie](https://github.com/boyney123/garie)** — An open source tool for monitoring performance using Lighthouse,  PageSpeed Insights, [Prometheus](https://prometheus.io/), [Grafana](https://grafana.com/) and [Docker](https://www.docker.com/).
 * **[lighthouse-ci](https://github.com/andreasonny83/lighthouse-ci)** - Run Lighthouse and assert scores satisfy your custom thresholds.
 * **[lighthouse4u](https://github.com/godaddy/lighthouse4u)** - LH4U provides Google Lighthouse as a service, surfaced by both a friendly UI+API, and backed by Elastic Search for easy querying and visualization.
+
+* **[lighthouse-gh-reporter](https://github.com/carlesnunez/lighthouse-gh-reporter)** - give Lighthouse-CI the power of put reports as a comment on your pull requests.
 
 ## FAQ
 
