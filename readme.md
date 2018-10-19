@@ -291,7 +291,7 @@ Other awesome open source projects that use Lighthouse.
 * **[lighthouse-ci](https://github.com/andreasonny83/lighthouse-ci)** - Run Lighthouse and assert scores satisfy your custom thresholds.
 * **[lighthouse4u](https://github.com/godaddy/lighthouse4u)** - LH4U provides Google Lighthouse as a service, surfaced by both a friendly UI+API, and backed by Elastic Search for easy querying and visualization.
 
-* **[lighthouse-gh-reporter](https://github.com/carlesnunez/lighthouse-gh-reporter)** - give Lighthouse-CI the power of put reports as a comment on your pull requests.
+* **[lighthouse-gh-reporter](https://github.com/carlesnunez/lighthouse-gh-reporter)** - give Lighthouse-CI the power to make reports as a comment on your pull requests.
 
 ## FAQ
 
