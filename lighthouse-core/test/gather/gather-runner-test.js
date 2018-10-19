@@ -915,7 +915,7 @@ describe('GatherRunner', function() {
       });
     });
 
-    it('supports sync and async throwing of non-fatal errors from gatherers', () => {
+    it('supports sync and async throwing of errors from gatherers', () => {
       const gatherers = [
         // sync
         new class BeforeSync extends Gatherer {
@@ -972,38 +972,6 @@ describe('GatherRunner', function() {
           assert.strictEqual(errorArtifact.message, gathererName);
         });
       });
-    });
-
-    it('rejects if a gatherer returns a fatal error', () => {
-      const errorMessage = 'Gather Failed in pass()';
-      const err = new Error(errorMessage);
-      err.fatal = true;
-      const gatherers = [
-        // sync
-        new class GathererSuccess extends Gatherer {
-          afterPass() {
-            return 1;
-          }
-        }(),
-        new class GathererFailure extends Gatherer {
-          pass() {
-            return Promise.reject(err);
-          }
-        },
-      ].map(instance => ({instance}));
-      const passes = [{
-        blankDuration: 0,
-        gatherers,
-      }];
-
-      return GatherRunner.run(passes, {
-        driver: fakeDriver,
-        requestedUrl: 'https://example.com',
-        settings: {},
-        config: new Config({}),
-      }).then(
-        _ => assert.ok(false),
-        err => assert.strictEqual(err.message, errorMessage));
     });
 
     it('rejects if a gatherer does not provide an artifact', () => {
