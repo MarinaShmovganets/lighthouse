@@ -183,7 +183,7 @@ class GatherRunner {
       passContext.options = gathererDefn.options || {};
       const artifactPromise = Promise.resolve().then(_ => gatherer.beforePass(passContext));
       gathererResults[gatherer.name] = [artifactPromise];
-      await artifactPromise;
+      await artifactPromise.catch(() => {});
     }
   }
 
@@ -227,7 +227,7 @@ class GatherRunner {
       const gathererResult = gathererResults[gatherer.name] || [];
       gathererResult.push(artifactPromise);
       gathererResults[gatherer.name] = gathererResult;
-      await artifactPromise;
+      await artifactPromise.catch(() => {});
     }
   }
 
@@ -294,7 +294,7 @@ class GatherRunner {
       const gathererResult = gathererResults[gatherer.name] || [];
       gathererResult.push(artifactPromise);
       gathererResults[gatherer.name] = gathererResult;
-      await artifactPromise;
+      await artifactPromise.catch(() => {});
       log.verbose('statusEnd', status);
     }
 
