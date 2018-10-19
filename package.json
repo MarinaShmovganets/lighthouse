@@ -171,7 +171,7 @@
   },
   "bundlesize": [
     {
-      "path": "./dist/lighthouse-ext-bundle.js",
+      "path": "./dist/extension/scripts/lighthouse-ext-bundle.js",
       "threshold": "520 Kb"
     },
     {
