@@ -10,12 +10,14 @@ const fs = require('fs');
 const archiver = require('archiver');
 const cpy = require('cpy');
 const makeDir = require('make-dir');
-const bundleBuilder = require('./bundle-builder.js');
+const bundleBuilder = require('./build-bundle.js');
+
+const sourceName = 'extension-entry.js';
+const distName = 'lighthouse-ext-bundle.js';
 
 const sourceDir = __dirname + '/../clients/extension';
-const sourceName = 'extension-entry.js';
 const distDir = __dirname + '/../dist/extension';
-const distName = 'lighthouse-ext-bundle.js';
+
 const manifestVersion = require(`${sourceDir}/manifest.json`).version;
 
 /**

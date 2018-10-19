@@ -140,12 +140,19 @@ async function build(entryPath, distPath) {
   minifyScript(distPath);
 }
 
-// @ts-ignore Test if called from the CLI or as a module.
-if (require.main === module) {
+/**
+ * @param {Array<string>} argv
+ */
+async function cli(argv) {
   // Take paths relative to cwd and build.
-  const [entryPath, distPath] = process.argv.slice(2)
+  const [entryPath, distPath] = argv.slice(2)
     .map(filePath => path.resolve(process.cwd(), filePath));
   build(entryPath, distPath);
+}
+
+// @ts-ignore Test if called from the CLI or as a module.
+if (require.main === module) {
+  cli(process.argv);
 } else {
   module.exports = {
     /** The commit hash for the current HEAD. */
