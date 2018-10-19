@@ -327,7 +327,7 @@ class GatherRunner {
         // Typecast pretends artifact always provided here, but checked below for top-level `throw`.
         gathererArtifacts[gathererName] = /** @type {NonVoid<PhaseResult>} */ (artifact);
       } catch (err) {
-        // return error runner to handle turning it into an error audit.
+        // Return error to runner to handle turning it into an error audit.
         gathererArtifacts[gathererName] = err;
       }
 
