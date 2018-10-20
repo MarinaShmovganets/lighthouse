@@ -44,7 +44,7 @@ enum LighthouseError {
   READ_FAILED = 16;
   // Used when security error prevents page load.
   INSECURE_DOCUMENT_REQUEST = 17;
-  // Used when security error prevents page load.
+  // Used when protocol command times out.
   PROTOCOL_TIMEOUT = 18;
 }
 
