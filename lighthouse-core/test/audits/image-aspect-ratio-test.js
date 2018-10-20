@@ -137,6 +137,16 @@ describe('Images: aspect-ratio audit', () => {
     },
   });
 
+  testImage('is placeholder image', {
+    rawValue: true,
+    clientSize: [300, 220],
+    naturalSize: [1, 1],
+    props: {
+      isCss: false,
+      usesObjectFit: false,
+    },
+  });
+
   it('skips svg images', () => {
     const result = ImageAspectRatioAudit.audit({
       ImageUsage: [
