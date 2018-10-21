@@ -1,11 +1,9 @@
 # Lantern
 
 ## Overview
-
 Project Lantern is an ongoing effort to reduce the run time of Lighthouse and improve audit quality by modeling page activity and simulating browser execution. This document details the accuracy of these models and captures the expected natural variability.
 
 ## Accuracy
-
 All of the following accuracy stats are reported on a set of 300 URLs sampled from the Alexa top 1000, HTTPArchive dataset, and miscellaneous ad landing pages. Median was collected for *9 runs* in one environment and compared to the median of *9 runs* in a second environment.
 
 Stats were collected using the [trace-evaluation](https://github.com/patrickhulce/lighthouse-trace-evaluations) scripts. Table cells contain [Spearman's rho](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient) and [MAPE](https://en.wikipedia.org/wiki/Mean_absolute_percentage_error) for the respective metric.
@@ -23,7 +21,7 @@ Stats were collected using the [trace-evaluation](https://github.com/patrickhulc
 | Unthrottled LH predicting WPT | .691 : 33.8% | .635 : 33.7% | .712 : 66.4% |
 | Default LH predicting WPT | .855 : 22.3% | .813 : 27.0% | .889 : 32.3% |
 
-## Conclusions
+## Conclusions ##
 
 ### Lantern Accuracy Conclusions
 We conclude that Lantern is ~6-13% more inaccurate than DevTools throttling. When evaluating rank performance, Lantern achieves correlations within ~.04-.07 of DevTools throttling.
