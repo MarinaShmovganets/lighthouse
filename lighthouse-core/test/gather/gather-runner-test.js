@@ -12,6 +12,7 @@ const GatherRunner = require('../../gather/gather-runner');
 const assert = require('assert');
 const Config = require('../../config/config');
 const unresolvedPerfLog = require('./../fixtures/unresolved-perflog.json');
+const NetworkRequest = require('../../lib/network-request.js');
 
 class TestGatherer extends Gatherer {
   constructor() {
@@ -52,9 +53,6 @@ function getMockedEmulationDriver(emulationFn, netThrottleFn, cpuThrottleFn,
     }
     cleanBrowserCaches() {}
     clearDataForOrigin() {}
-    getUserAgent() {
-      return Promise.resolve('Fake user agent');
-    }
   };
   const EmulationMock = class extends Connection {
     sendCommand(command, params) {
@@ -106,16 +104,38 @@ describe('GatherRunner', function() {
     });
   });
 
-  it('collects user agent as an artifact', () => {
+  it('collects benchmark as an artifact', async () => {
     const url = 'https://example.com';
     const driver = fakeDriver;
     const config = new Config({});
     const settings = {};
     const options = {url, driver, config, settings};
 
-    return GatherRunner.run([], options).then(results => {
-      assert.equal(results.UserAgent, 'Fake user agent', 'did not find expected user agent string');
-    });
+    const results = await GatherRunner.run([], options);
+    expect(Number.isFinite(results.BenchmarkIndex)).toBeTruthy();
+  });
+
+  it('collects host user agent as an artifact', async () => {
+    const url = 'https://example.com';
+    const driver = fakeDriver;
+    const config = new Config({});
+    const settings = {};
+    const options = {url, driver, config, settings};
+
+    const results = await GatherRunner.run([], options);
+    expect(results.HostUserAgent).toEqual(fakeDriver.protocolGetVersionResponse.userAgent);
+    expect(results.HostUserAgent).toMatch(/Chrome\/\d+/);
+  });
+
+  it('collects network user agent as an artifact', async () => {
+    const url = 'https://example.com';
+    const driver = fakeDriver;
+    const config = new Config({passes: [{}]});
+    const settings = {};
+    const options = {url, driver, config, settings};
+
+    const results = await GatherRunner.run(config.passes, options);
+    expect(results.NetworkUserAgent).toContain('Mozilla');
   });
 
   it('collects requested and final URLs as an artifact', () => {
@@ -154,7 +174,7 @@ describe('GatherRunner', function() {
     );
 
     return GatherRunner.setupDriver(driver, {
-      settings: {},
+      settings: {emulatedFormFactor: 'mobile'},
     }).then(_ => {
       assert.ok(tests.calledDeviceEmulation, 'did not call device emulation');
       assert.deepEqual(tests.calledNetworkEmulation, {
@@ -193,6 +213,25 @@ describe('GatherRunner', function() {
     });
   });
 
+  it('uses correct emulation form factor', async () => {
+    let emulationParams;
+    const driver = getMockedEmulationDriver(
+      params => emulationParams = params,
+      () => true,
+      () => true
+    );
+
+    await GatherRunner.setupDriver(driver, {settings: {emulatedFormFactor: 'mobile'}});
+    expect(emulationParams).toMatchObject({mobile: true});
+
+    await GatherRunner.setupDriver(driver, {settings: {emulatedFormFactor: 'desktop'}});
+    expect(emulationParams).toMatchObject({mobile: false});
+
+    emulationParams = undefined;
+    await GatherRunner.setupDriver(driver, {settings: {emulatedFormFactor: 'none'}});
+    expect(emulationParams).toBe(undefined);
+  });
+
   it('stops throttling when not devtools', () => {
     const tests = {
       calledDeviceEmulation: false,
@@ -211,6 +250,7 @@ describe('GatherRunner', function() {
 
     return GatherRunner.setupDriver(driver, {
       settings: {
+        emulatedFormFactor: 'mobile',
         throttlingMethod: 'provided',
       },
     }).then(_ => {
@@ -230,6 +270,7 @@ describe('GatherRunner', function() {
     };
     const createEmulationCheck = variable => (...args) => {
       tests[variable] = args;
+
       return true;
     };
     const driver = getMockedEmulationDriver(
@@ -240,6 +281,7 @@ describe('GatherRunner', function() {
 
     return GatherRunner.setupDriver(driver, {
       settings: {
+        emulatedFormFactor: 'mobile',
         throttlingMethod: 'devtools',
         throttling: {
           requestLatencyMs: 100,
@@ -279,6 +321,7 @@ describe('GatherRunner', function() {
       clearDataForOrigin: createCheck('calledClearStorage'),
       blockUrlPatterns: asyncFunc,
       setExtraHTTPHeaders: asyncFunc,
+      listenForSecurityStateChanges: asyncFunc,
     };
 
     return GatherRunner.setupDriver(driver, {settings: {}}).then(_ => {
@@ -337,6 +380,7 @@ describe('GatherRunner', function() {
       clearDataForOrigin: createCheck('calledClearStorage'),
       blockUrlPatterns: asyncFunc,
       setExtraHTTPHeaders: asyncFunc,
+      listenForSecurityStateChanges: asyncFunc,
     };
 
     return GatherRunner.setupDriver(driver, {
@@ -501,9 +545,9 @@ describe('GatherRunner', function() {
       ],
     };
 
-    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []}).then(vals => {
+    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []}).then(passData => {
       assert.equal(calledDevtoolsLogCollect, true);
-      assert.strictEqual(vals.devtoolsLog[0], fakeDevtoolsMessage);
+      assert.strictEqual(passData.devtoolsLog[0], fakeDevtoolsMessage);
     });
   });
 
@@ -585,30 +629,97 @@ describe('GatherRunner', function() {
   describe('#getPageLoadError', () => {
     it('passes when the page is loaded', () => {
       const url = 'http://the-page.com';
-      const records = [{url}];
-      assert.ok(!GatherRunner.getPageLoadError(url, records));
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      assert.ok(!GatherRunner.getPageLoadError(url, [mainRecord]));
     });
 
     it('passes when the page is loaded, ignoring any fragment', () => {
       const url = 'http://example.com/#/page/list';
-      const records = [{url: 'http://example.com'}];
-      assert.ok(!GatherRunner.getPageLoadError(url, records));
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = 'http://example.com';
+      assert.ok(!GatherRunner.getPageLoadError(url, [mainRecord]));
     });
 
-    it('throws when page fails to load', () => {
+    it('fails when page fails to load', () => {
       const url = 'http://the-page.com';
-      const records = [{url, failed: true, localizedFailDescription: 'foobar'}];
-      const error = GatherRunner.getPageLoadError(url, records);
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      mainRecord.failed = true;
+      mainRecord.localizedFailDescription = 'foobar';
+      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
       assert.equal(error.message, 'FAILED_DOCUMENT_REQUEST');
-      assert.ok(/Your page failed to load/.test(error.friendlyMessage));
+      assert.equal(error.code, 'FAILED_DOCUMENT_REQUEST');
+      assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
     });
 
-    it('throws when page times out', () => {
+    it('fails when page times out', () => {
       const url = 'http://the-page.com';
       const records = [];
       const error = GatherRunner.getPageLoadError(url, records);
       assert.equal(error.message, 'NO_DOCUMENT_REQUEST');
-      assert.ok(/Your page failed to load/.test(error.friendlyMessage));
+      assert.equal(error.code, 'NO_DOCUMENT_REQUEST');
+      assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
+    });
+
+    it('fails when page returns with a 404', () => {
+      const url = 'http://the-page.com';
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      mainRecord.statusCode = 404;
+      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
+      assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
+      assert.equal(error.code, 'ERRORED_DOCUMENT_REQUEST');
+      assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
+    });
+
+    it('fails when page returns with a 500', () => {
+      const url = 'http://the-page.com';
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      mainRecord.statusCode = 500;
+      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
+      assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
+      assert.equal(error.code, 'ERRORED_DOCUMENT_REQUEST');
+      assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
+    });
+  });
+
+  describe('#assertNoSecurityIssues', () => {
+    it('succeeds when page is secure', () => {
+      const secureSecurityState = {
+        securityState: 'secure',
+      };
+      GatherRunner.assertNoSecurityIssues(secureSecurityState);
+    });
+
+    it('fails when page is insecure', () => {
+      const insecureSecurityState = {
+        explanations: [
+          {
+            description: 'reason 1.',
+            securityState: 'insecure',
+          },
+          {
+            description: 'blah.',
+            securityState: 'info',
+          },
+          {
+            description: 'reason 2.',
+            securityState: 'insecure',
+          },
+        ],
+        securityState: 'insecure',
+      };
+      try {
+        GatherRunner.assertNoSecurityIssues(insecureSecurityState);
+        assert.fail('expected INSECURE_DOCUMENT_REQUEST LHError');
+      } catch (err) {
+        assert.equal(err.message, 'INSECURE_DOCUMENT_REQUEST');
+        assert.equal(err.code, 'INSECURE_DOCUMENT_REQUEST');
+        /* eslint-disable-next-line max-len */
+        assert.equal(err.friendlyMessage, 'The URL you have provided does not have valid security credentials. reason 1. reason 2.');
+      }
     });
   });
 

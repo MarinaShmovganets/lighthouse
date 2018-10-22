@@ -56,7 +56,6 @@ class LighthouseReportViewer {
    * @private
    */
   _addEventListeners() {
-    // @ts-ignore - tsc thinks document can't listen for `paste`
     document.addEventListener('paste', this._onPaste);
 
     const gistUrlInput = find('.js-gist-url', document);
@@ -156,7 +155,7 @@ class LighthouseReportViewer {
       let saveCallback = null;
       if (!this._reportIsFromGist) {
         saveCallback = this._onSaveJson;
-        history.pushState({}, undefined, LighthouseReportViewer.APP_URL);
+        history.pushState({}, '', LighthouseReportViewer.APP_URL);
       }
 
       const features = new ViewerUIFeatures(dom, saveCallback);
@@ -226,7 +225,13 @@ class LighthouseReportViewer {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = function(e) {
-        resolve(e.target && e.target.result);
+        const readerTarget = /** @type {?FileReader} */ (e.target);
+        const result = /** @type {?string} */ (readerTarget && readerTarget.result);
+        if (!result) {
+          reject('Could not read file');
+          return;
+        }
+        resolve(result);
       };
       reader.onerror = reject;
       reader.readAsText(file);
@@ -251,7 +256,7 @@ class LighthouseReportViewer {
       }
 
       this._reportIsFromGist = true;
-      history.pushState({}, undefined, `${LighthouseReportViewer.APP_URL}?gist=${id}`);
+      history.pushState({}, '', `${LighthouseReportViewer.APP_URL}?gist=${id}`);
 
       return id;
     }).catch(err => logger.log(err.message));
@@ -329,7 +334,7 @@ class LighthouseReportViewer {
 
       const match = url.pathname.match(/[a-f0-9]{5,}/);
       if (match) {
-        history.pushState({}, undefined, `${LighthouseReportViewer.APP_URL}?gist=${match[0]}`);
+        history.pushState({}, '', `${LighthouseReportViewer.APP_URL}?gist=${match[0]}`);
         this._loadFromDeepLink();
       }
     } catch (err) {
@@ -363,7 +368,7 @@ class LighthouseReportViewer {
   }
 }
 
-// @ts-ignore - node export for testing.
+// node export for testing.
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = LighthouseReportViewer;
 }

@@ -10,12 +10,14 @@ const GatherRunner = require('../gather/gather-runner');
 const driverMock = require('./gather/fake-driver');
 const Config = require('../config/config');
 const Audit = require('../audits/audit');
+const Gatherer = require('../gather/gatherers/gatherer.js');
 const assetSaver = require('../lib/asset-saver');
 const fs = require('fs');
 const assert = require('assert');
 const path = require('path');
 const sinon = require('sinon');
 const rimraf = require('rimraf');
+const LHError = require('../lib/lh-error.js');
 
 /* eslint-env jest */
 
@@ -35,6 +37,13 @@ describe('Runner', () => {
   beforeEach(() => {
     resetSpies();
   });
+
+  const basicAuditMeta = {
+    id: 'test-audit',
+    title: 'A test audit',
+    description: 'An audit for testing',
+    requiredArtifacts: [],
+  };
 
   describe('Gather Mode & Audit Mode', () => {
     const url = 'https://example.com';
@@ -94,7 +103,7 @@ describe('Runner', () => {
 
     it('-A throws if the URL changes', async () => {
       const settings = {auditMode: artifactsPath, disableDeviceEmulation: true};
-      const opts = {url: 'https://example.com', config: generateConfig(settings), driverMock};
+      const opts = {url: 'https://differenturl.com', config: generateConfig(settings), driverMock};
       try {
         await Runner.run(null, opts);
         assert.fail('should have thrown');
@@ -209,7 +218,7 @@ describe('Runner', () => {
 
     return Runner.run({}, {config}).then(results => {
       const audits = results.lhr.audits;
-      assert.equal(audits['user-timings'].displayValue[1], 2);
+      assert.equal(audits['user-timings'].displayValue, '2 user timings');
       assert.equal(audits['user-timings'].rawValue, false);
     });
   });
@@ -482,14 +491,6 @@ describe('Runner', () => {
     });
   });
 
-  it('can create computed artifacts', () => {
-    const computedArtifacts = Runner.instantiateComputedArtifacts();
-    assert.ok(Object.keys(computedArtifacts).length, 'there are a few computed artifacts');
-    Object.keys(computedArtifacts).forEach(artifactRequest => {
-      assert.equal(typeof computedArtifacts[artifactRequest], 'function');
-    });
-  });
-
   it('results include artifacts when given artifacts and audits', () => {
     const config = new Config({
       settings: {
@@ -544,6 +545,93 @@ describe('Runner', () => {
         'Also a warning',
       ]);
     });
+  });
+
+  it('includes any LighthouseRunWarnings from audits in LHR', () => {
+    const warningString = 'Really important audit warning!';
+
+    const config = new Config({
+      settings: {
+        auditMode: __dirname + '/fixtures/artifacts/empty-artifacts/',
+      },
+      audits: [
+        class WarningAudit extends Audit {
+          static get meta() {
+            return basicAuditMeta;
+          }
+          static audit(artifacts, context) {
+            context.LighthouseRunWarnings.push(warningString);
+            return {
+              rawValue: 5,
+            };
+          }
+        },
+      ],
+    });
+
+    return Runner.run(null, {config, driverMock}).then(results => {
+      assert.deepStrictEqual(results.lhr.runWarnings, [warningString]);
+    });
+  });
+
+  it('includes any LighthouseRunWarnings from errored audits in LHR', () => {
+    const warningString = 'Audit warning just before a terrible error!';
+
+    const config = new Config({
+      settings: {
+        auditMode: __dirname + '/fixtures/artifacts/empty-artifacts/',
+      },
+      audits: [
+        class WarningAudit extends Audit {
+          static get meta() {
+            return basicAuditMeta;
+          }
+          static audit(artifacts, context) {
+            context.LighthouseRunWarnings.push(warningString);
+            throw new Error('Terrible.');
+          }
+        },
+      ],
+    });
+
+    return Runner.run(null, {config, driverMock}).then(results => {
+      assert.deepStrictEqual(results.lhr.runWarnings, [warningString]);
+    });
+  });
+
+  it('includes a top-level runtimeError when a gatherer throws one', async () => {
+    const NO_FCP = LHError.errors.NO_FCP;
+    class RuntimeErrorGatherer extends Gatherer {
+      afterPass() {
+        throw new LHError(NO_FCP);
+      }
+    }
+    class WarningAudit extends Audit {
+      static get meta() {
+        return {
+          id: 'test-audit',
+          title: 'A test audit',
+          description: 'An audit for testing',
+          requiredArtifacts: ['RuntimeErrorGatherer'],
+        };
+      }
+      static audit() {
+        throw new Error('Should not get here');
+      }
+    }
+
+    const config = new Config({
+      passes: [{gatherers: [RuntimeErrorGatherer]}],
+      audits: [WarningAudit],
+    });
+    const {lhr} = await Runner.run(null, {url: 'https://example.com/', config, driverMock});
+
+    // Audit error included the runtimeError
+    assert.strictEqual(lhr.audits['test-audit'].scoreDisplayMode, 'error');
+    assert.ok(lhr.audits['test-audit'].errorMessage.includes(NO_FCP.code));
+    // And it bubbled up to the runtimeError.
+    assert.strictEqual(lhr.runtimeError.code, NO_FCP.code);
+    assert.ok(lhr.runtimeError.message.includes(NO_FCP.message));
   });
 
   it('can handle array of outputs', async () => {

@@ -17,8 +17,6 @@ last-run-results.html
 
 *.trace.json
 *.devtoolslog.json
-*.screenshots.html
-*.screenshots.json
 *.report.html
 *.report.dom.html
 *.report.json
@@ -42,3 +40,9 @@ yarn-error.log
 /chrome.zip
 
 plots/out**
+
+*__pycache__
+*.pyc
+proto/scripts/*_pb2.*
+proto/scripts/*_pb.*
+proto/scripts/*_processed.json

@@ -6,7 +6,7 @@
 'use strict';
 
 const log = require('lighthouse-logger');
-const LHError = require('../lib/errors');
+const LHError = require('../lib/lh-error');
 const URL = require('../lib/url-shim');
 const NetworkRecorder = require('../lib/network-recorder.js');
 const constants = require('../config/constants');
@@ -54,10 +54,11 @@ const Driver = require('../gather/driver.js'); // eslint-disable-line no-unused-
  *     ii. all gatherers' afterPass()
  *
  * 3. Teardown
- *   A. GatherRunner.disposeDriver()
- *   B. collect all artifacts and return them
+ *   A. clearDataForOrigin
+ *   B. GatherRunner.disposeDriver()
+ *   C. collect all artifacts and return them
  *     i. collectArtifacts() from completed passes on each gatherer
- *     ii. add trace data and computed artifact methods
+ *     ii. add trace and devtoolsLog data
  */
 class GatherRunner {
   /**
@@ -111,6 +112,7 @@ class GatherRunner {
     await driver.cacheNatives();
     await driver.registerPerformanceObserver();
     await driver.dismissJavaScriptDialogs();
+    await driver.listenForSecurityStateChanges();
     if (resetStorage) await driver.clearDataForOrigin(options.requestedUrl);
   }
 
@@ -155,19 +157,35 @@ class GatherRunner {
       return URL.equalWithExcludedFragments(record.url, url);
     });
 
-    let errorCode;
-    let errorReason;
+    let errorDef;
     if (!mainRecord) {
-      errorCode = LHError.errors.NO_DOCUMENT_REQUEST;
+      errorDef = LHError.errors.NO_DOCUMENT_REQUEST;
     } else if (mainRecord.failed) {
-      errorCode = LHError.errors.FAILED_DOCUMENT_REQUEST;
-      errorReason = mainRecord.localizedFailDescription;
+      errorDef = {...LHError.errors.FAILED_DOCUMENT_REQUEST};
+      errorDef.message += ` ${mainRecord.localizedFailDescription}.`;
+    } else if (mainRecord.hasErrorStatusCode()) {
+      errorDef = {...LHError.errors.ERRORED_DOCUMENT_REQUEST};
+      errorDef.message += ` Status code: ${mainRecord.statusCode}.`;
     }
 
-    if (errorCode) {
-      const error = new LHError(errorCode, {reason: errorReason});
-      log.error('GatherRunner', error.message, url);
-      return error;
+    if (errorDef) {
+      return new LHError(errorDef);
+    }
+  }
+
+  /**
+   * Throws an error if the security state is insecure.
+   * @param {LH.Crdp.Security.SecurityStateChangedEvent} securityState
+   * @throws {LHError}
+   */
+  static assertNoSecurityIssues({securityState, explanations}) {
+    if (securityState === 'insecure') {
+      const errorDef = {...LHError.errors.INSECURE_DOCUMENT_REQUEST};
+      const insecureDescriptions = explanations
+        .filter(exp => exp.securityState === 'insecure')
+        .map(exp => exp.description);
+      errorDef.message += ` ${insecureDescriptions.join(' ')}`;
+      throw new LHError(errorDef);
     }
   }
 
@@ -275,10 +293,11 @@ class GatherRunner {
     if (!driver.online) pageLoadError = undefined;
 
     if (pageLoadError) {
-      passContext.LighthouseRunWarnings.push('Lighthouse was unable to reliably load the ' +
-        'page you requested. Make sure you are testing the correct URL and that the server is ' +
-        'properly responding to all requests.');
+      log.error('GatherRunner', pageLoadError.message, passContext.url);
+      passContext.LighthouseRunWarnings.push(pageLoadError.friendlyMessage);
     }
+
+    this.assertNoSecurityIssues(driver.getSecurityState());
 
     // Expose devtoolsLog, networkRecords, and trace (if present) to gatherers
     /** @type {LH.Gatherer.LoadData} */
@@ -329,7 +348,6 @@ class GatherRunner {
     /** @type {Partial<LH.GathererArtifacts>} */
     const gathererArtifacts = {};
 
-    const pageLoadFailures = [];
     const resultsEntries = /** @type {GathererResultsEntries} */ (Object.entries(gathererResults));
     for (const [gathererName, phaseResultsPromises] of resultsEntries) {
       if (gathererArtifacts[gathererName] !== undefined) continue;
@@ -345,24 +363,17 @@ class GatherRunner {
         // An error result must be non-fatal to not have caused an exit by now,
         // so return it to runner to handle turning it into an error audit.
         gathererArtifacts[gathererName] = err;
-        // Track page load errors separately, so we can fail loudly if needed.
-        if (LHError.isPageLoadError(err)) pageLoadFailures.push(err);
       }
 
       if (gathererArtifacts[gathererName] === undefined) {
         throw new Error(`${gathererName} failed to provide an artifact.`);
-      }
-
-      // Fail the run if more than 50% of all artifacts failed due to page load failure.
-      if (pageLoadFailures.length > Object.keys(gathererArtifacts).length * 0.5) {
-        throw pageLoadFailures[0];
       }
     }
 
     // Take only unique LighthouseRunWarnings.
     baseArtifacts.LighthouseRunWarnings = Array.from(new Set(baseArtifacts.LighthouseRunWarnings));
 
-    // TODO(bckenny): drop cast when ComputedArtifacts not included in Artifacts
+    // TODO(bckenny): correct Partial<LH.GathererArtifacts> at this point to drop cast.
     return /** @type {LH.Artifacts} */ ({...baseArtifacts, ...gathererArtifacts});
   }
 
@@ -374,7 +385,9 @@ class GatherRunner {
     return {
       fetchTime: (new Date()).toJSON(),
       LighthouseRunWarnings: [],
-      UserAgent: await options.driver.getUserAgent(),
+      HostUserAgent: (await options.driver.getBrowserVersion()).userAgent,
+      NetworkUserAgent: '', // updated later
+      BenchmarkIndex: 0, // updated later
       traces: {},
       devtoolsLogs: {},
       settings: options.settings,
@@ -397,6 +410,7 @@ class GatherRunner {
       await driver.connect();
       const baseArtifacts = await GatherRunner.getBaseArtifacts(options);
       await GatherRunner.loadBlank(driver);
+      baseArtifacts.BenchmarkIndex = await options.driver.getBenchmarkIndex();
       await GatherRunner.setupDriver(driver, options);
 
       // Run each pass
@@ -420,6 +434,16 @@ class GatherRunner {
         // Save devtoolsLog, but networkRecords are discarded and not added onto artifacts.
         baseArtifacts.devtoolsLogs[passConfig.passName] = passData.devtoolsLog;
 
+        const userAgentEntry = passData.devtoolsLog.find(entry =>
+          entry.method === 'Network.requestWillBeSent' &&
+          !!entry.params.request.headers['User-Agent']
+        );
+
+        if (userAgentEntry && !baseArtifacts.NetworkUserAgent) {
+          // @ts-ignore - guaranteed to exist by the find above
+          baseArtifacts.NetworkUserAgent = userAgentEntry.params.request.headers['User-Agent'];
+        }
+
         // If requested by config, save pass's trace.
         if (passData.trace) {
           baseArtifacts.traces[passConfig.passName] = passData.trace;
@@ -431,6 +455,8 @@ class GatherRunner {
           firstPass = false;
         }
       }
+      const resetStorage = !options.settings.disableStorageReset;
+      if (resetStorage) await driver.clearDataForOrigin(options.requestedUrl);
       await GatherRunner.disposeDriver(driver);
       return GatherRunner.collectArtifacts(gathererResults, baseArtifacts);
     } catch (err) {

@@ -7,7 +7,7 @@
 
 /* eslint-env jest */
 
-const Runner = require('../../../runner.js');
+const MainThreadTasks = require('../../../gather/computed/main-thread-tasks.js');
 const taskGroups = require('../../../lib/task-groups.js').taskGroups;
 const pwaTrace = require('../../fixtures/traces/progressive-app.json');
 const TracingProcessor = require('../../../lib/traces/tracing-processor.js');
@@ -17,18 +17,18 @@ describe('MainResource computed artifact', () => {
   const args = {data: {}};
   const baseTs = 1241250325;
   let boilerplateTrace;
-  let computedArtifacts;
 
   beforeEach(() => {
     boilerplateTrace = [
       {ph: 'I', name: 'TracingStartedInPage', ts: baseTs, args},
       {ph: 'I', name: 'navigationStart', ts: baseTs, args},
+      {ph: 'R', name: 'firstContentfulPaint', ts: baseTs + 1, args},
     ];
-    computedArtifacts = Runner.instantiateComputedArtifacts();
   });
 
   it('should get all main thread tasks from a trace', async () => {
-    const tasks = await computedArtifacts.requestMainThreadTasks({traceEvents: pwaTrace});
+    const context = {computedCache: new Map()};
+    const tasks = await MainThreadTasks.request({traceEvents: pwaTrace}, context);
     const toplevelTasks = tasks.filter(task => !task.parent);
     assert.equal(tasks.length, 2305);
     assert.equal(toplevelTasks.length, 296);
@@ -68,7 +68,8 @@ describe('MainResource computed artifact', () => {
 
     traceEvents.forEach(evt => Object.assign(evt, {cat: 'devtools.timeline', args}));
 
-    const tasks = await computedArtifacts.requestMainThreadTasks({traceEvents});
+    const context = {computedCache: new Map()};
+    const tasks = await MainThreadTasks.request({traceEvents}, context);
     assert.equal(tasks.length, 3);
 
     const taskA = tasks.find(task => task.event.name === 'TaskA');
@@ -79,7 +80,7 @@ describe('MainResource computed artifact', () => {
       attributableURLs: [],
 
       children: [taskB],
-      event: traceEvents[2],
+      event: traceEvents[3],
       startTime: 0,
       endTime: 100,
       duration: 100,
@@ -92,7 +93,7 @@ describe('MainResource computed artifact', () => {
       attributableURLs: [],
 
       children: [taskC],
-      event: traceEvents[3],
+      event: traceEvents[4],
       startTime: 5,
       endTime: 55,
       duration: 50,
@@ -127,7 +128,8 @@ describe('MainResource computed artifact', () => {
       evt.args = evt.args || args;
     });
 
-    const tasks = await computedArtifacts.requestMainThreadTasks({traceEvents});
+    const context = {computedCache: new Map()};
+    const tasks = await MainThreadTasks.request({traceEvents}, context);
     const taskA = tasks.find(task => task.event.name === 'TaskA');
     const taskB = tasks.find(task => task.event.name === 'TaskB');
     const taskC = tasks.find(task => task.event.name === 'EvaluateScript');

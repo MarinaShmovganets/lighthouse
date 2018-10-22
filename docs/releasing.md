@@ -54,17 +54,16 @@ echo "Test the extension"
 
 echo "Test a fresh local install"
 # (starting from lighthouse-pristine root...)
-yarn pack
+npm pack
 cd ..; rm -rf tmp; mkdir tmp; cd tmp
 npm init -y
 npm install ../lighthouse-pristine/lighthouse-*.tgz
 npm explore lighthouse -- npm run smoke
-npm explore lighthouse -- npm run smokehouse
 npm explore lighthouse -- npm run chrome # try the manual launcher
 npm explore lighthouse -- npm run fast -- http://example.com
 cd ..; rm -rf ./tmp;
 
-cd lighthouse-pristine; command rm -f lighthouse-*.tgz
+cd ../lighthouse-pristine; command rm -f lighthouse-*.tgz
 
 echo "Test the lighthouse-viewer build"
 # Manual test for now:
@@ -94,14 +93,14 @@ git push --tags
 echo "Rebuild extension and viewer to get the latest, tagged master commit"
 yarn build-all;
 
-# zip the extension files, but remove lh-background as it's not needed
-cd lighthouse-extension; command rm -f dist/scripts/lighthouse-background.js; gulp package; cd ..
+# zip the extension files
+cd lighthouse-extension; gulp package; cd ..
 echo "Go here: https://chrome.google.com/webstore/developer/edit/blipmdconlkpinefehnmjammfjpmpbjk "
 echo "Upload the package zip to CWS dev dashboard"
 
 echo "Verify the npm package won't include unncessary files"
-yarn global add pkgfiles
-pkgfiles   # publishable size should be ~2MB
+npm pack --dry-run
+npx pkgfiles
 
 echo "ship it"
 npm publish

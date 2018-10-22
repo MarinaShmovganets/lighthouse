@@ -9,23 +9,12 @@
  * and total number of nodes used on the page.
  */
 
-/* global ShadowRoot */
+/* global ShadowRoot, getOuterHTMLSnippet */
 
 'use strict';
 
 const Gatherer = require('../gatherer');
-
-/**
- * Gets the opening tag text of the given node.
- * @param {Element} element
- * @return {?string}
- */
-/* istanbul ignore next */
-function getOuterHTMLSnippet(element) {
-  const reOpeningTag = /^.*?>/;
-  const match = element.outerHTML.match(reOpeningTag);
-  return match && match[0];
-}
+const pageFunctions = require('../../../lib/page-functions');
 
 /**
  * Constructs a pretty label from element's selectors. For example, given
@@ -134,12 +123,13 @@ function getDOMStats(element, deep=true) {
     depth: {
       max: result.maxDepth,
       pathToElement: elementPathInDOM(deepestNode),
-      snippet: getOuterHTMLSnippet(deepestNode),
+      // ignore style since it will provide no additional context, and is often long
+      snippet: getOuterHTMLSnippet(deepestNode, ['style']),
     },
     width: {
       max: result.maxWidth,
       pathToElement: elementPathInDOM(parentWithMostChildren),
-      snippet: getOuterHTMLSnippet(parentWithMostChildren),
+      snippet: getOuterHTMLSnippet(parentWithMostChildren, ['style']),
     },
   };
 }
@@ -151,7 +141,7 @@ class DOMStats extends Gatherer {
    */
   afterPass(passContext) {
     const expression = `(function() {
-      ${getOuterHTMLSnippet.toString()};
+      ${pageFunctions.getOuterHTMLSnippetString};
       ${createSelectorsLabel.toString()};
       ${elementPathInDOM.toString()};
       return (${getDOMStats.toString()}(document.documentElement));

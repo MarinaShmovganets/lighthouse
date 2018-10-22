@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/** @typedef {typeof import('./lighthouse-ext-background.js') & {console: typeof console}} BackgroundPage */
+/** @typedef {typeof import('./extension-entry.js') & {console: typeof console}} BackgroundPage */
 
 /**
  * Error strings that indicate a problem in how Lighthouse was run, not in
@@ -25,6 +25,8 @@ const NON_BUG_ERROR_MESSAGES = {
   'Unable to load the page': 'Unable to load the page. Please verify the url you ' +
       'are trying to review.',
   'Cannot access contents of the page': 'Lighthouse can only audit URLs that start' +
+      ' with http:// or https://.',
+  'INVALID_URL': 'Lighthouse can only audit URLs that start' +
       ' with http:// or https://.',
 };
 
@@ -154,17 +156,20 @@ async function onGenerateReportButtonClick(background, settings) {
   }
   isRunning = true;
 
+  // resetting status message
+  const statusMsg = find('.status__msg');
+  statusMsg.textContent = 'Starting...';
+
   showRunningSubpage();
 
   const feedbackEl = find('.feedback');
   feedbackEl.textContent = '';
-
   const {selectedCategories, useDevTools} = settings;
-  // TODO(bckenny): make flags workable as a type.
-  const flags = /** @type {LH.Flags} */ ({throttlingMethod: useDevTools ? 'devtools' : 'simulate'});
+  /** @type {LH.Flags} */
+  const flags = {throttlingMethod: useDevTools ? 'devtools' : 'simulate'};
 
   try {
-    await background.runLighthouseInExtension({flags}, selectedCategories);
+    await background.runLighthouseInExtension(flags, selectedCategories);
 
     // Close popup once report is opened in a new tab
     window.close();
@@ -185,7 +190,7 @@ async function onGenerateReportButtonClick(background, settings) {
     feedbackEl.textContent = message;
 
     if (includeReportLink) {
-      feedbackEl.className = 'feedback-error';
+      feedbackEl.className = 'feedback feedback-error';
       feedbackEl.appendChild(buildReportErrorLink(err));
     }
 
@@ -231,7 +236,7 @@ async function initPopup() {
 
   /**
    * Really the Window of the background page, but since we only want what's exposed
-   * on window in lighthouse-ext-background.js, use its module API as the type.
+   * on window in extension-entry.js, use its module API as the type.
    * @type {BackgroundPage}
    */
   const background = await new Promise(resolve => chrome.runtime.getBackgroundPage(resolve));
