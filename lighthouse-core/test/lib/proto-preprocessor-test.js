@@ -39,7 +39,7 @@ describe('processing for proto', () => {
     expect({}).toMatchObject(JSON.parse(output));
   });
 
-  it('ignores non-default runtimeErrors', () => {
+  it('non-default runtimeErrors are untouched', () => {
     const input = {
       'runtimeError': {
         'code': 'ERROR_NO_DOCUMENT_REQUEST',
