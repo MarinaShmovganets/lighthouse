@@ -365,18 +365,23 @@ class Simulator {
     }
   }
 
+  /**
+   * @return {Map<Node, LH.Gatherer.Simulation.NodeTiming>}
+   */
   _computeFinalNodeTimings() {
-    /** @type {Map<Node, LH.Gatherer.Simulation.NodeTiming>} */
-    const nodeTimings = new Map();
+    /** @type {Array<[CpuNode | NetworkNode, LH.Gatherer.Simulation.NodeTiming]>} */
+    const nodeTimingEntries = [];
     for (const [node, timing] of this._nodeTimings) {
-      nodeTimings.set(node, {
+      nodeTimingEntries.push([node, {
         startTime: timing.startTime,
         endTime: timing.endTime,
         duration: timing.endTime - timing.startTime,
-      });
+      }]);
     }
 
-    return nodeTimings;
+    // Most consumers will want the entries sorted by startTime, so insert them in that order
+    nodeTimingEntries.sort((a, b) => a[1].startTime - b[1].startTime);
+    return new Map(nodeTimingEntries);
   }
 
   /**
