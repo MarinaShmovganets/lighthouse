@@ -36,7 +36,7 @@ describe('processing for proto', () => {
 
     const output = processForProto(JSON.stringify(input));
 
-    expect({}).toMatchObject(JSON.parse(output));
+    expect(JSON.parse(output)).not.toHaveProperty('runtimeError');
   });
 
   it('non-default runtimeErrors are untouched', () => {
