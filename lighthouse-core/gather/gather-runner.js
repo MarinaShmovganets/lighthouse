@@ -112,6 +112,7 @@ class GatherRunner {
     await driver.cacheNatives();
     await driver.registerPerformanceObserver();
     await driver.dismissJavaScriptDialogs();
+    await driver.listenForSecurityStateChanges();
     if (resetStorage) await driver.clearDataForOrigin(options.requestedUrl);
   }
 
@@ -126,20 +127,6 @@ class GatherRunner {
       // See https://github.com/GoogleChrome/lighthouse/issues/1583
       if (!(/close\/.*status: 500$/.test(err.message))) {
         log.error('GatherRunner disconnect', err.message);
-      }
-    });
-  }
-
-  /**
-   * Test any error output from the promise, absorbing non-fatal errors and
-   * throwing on fatal ones so that run is stopped.
-   * @param {Promise<*>} promise
-   * @return {Promise<void>}
-   */
-  static recoverOrThrow(promise) {
-    return promise.catch(err => {
-      if (err.fatal) {
-        throw err;
       }
     });
   }
@@ -173,6 +160,22 @@ class GatherRunner {
   }
 
   /**
+   * Throws an error if the security state is insecure.
+   * @param {LH.Crdp.Security.SecurityStateChangedEvent} securityState
+   * @throws {LHError}
+   */
+  static assertNoSecurityIssues({securityState, explanations}) {
+    if (securityState === 'insecure') {
+      const errorDef = {...LHError.errors.INSECURE_DOCUMENT_REQUEST};
+      const insecureDescriptions = explanations
+        .filter(exp => exp.securityState === 'insecure')
+        .map(exp => exp.description);
+      errorDef.message += ` ${insecureDescriptions.join(' ')}`;
+      throw new LHError(errorDef);
+    }
+  }
+
+  /**
    * Navigates to about:blank and calls beforePass() on gatherers before tracing
    * has started and before navigation to the target page.
    * @param {LH.Gatherer.PassContext} passContext
@@ -197,7 +200,7 @@ class GatherRunner {
       passContext.options = gathererDefn.options || {};
       const artifactPromise = Promise.resolve().then(_ => gatherer.beforePass(passContext));
       gathererResults[gatherer.name] = [artifactPromise];
-      await GatherRunner.recoverOrThrow(artifactPromise);
+      await artifactPromise.catch(() => {});
     }
   }
 
@@ -241,7 +244,7 @@ class GatherRunner {
       const gathererResult = gathererResults[gatherer.name] || [];
       gathererResult.push(artifactPromise);
       gathererResults[gatherer.name] = gathererResult;
-      await GatherRunner.recoverOrThrow(artifactPromise);
+      await artifactPromise.catch(() => {});
     }
   }
 
@@ -280,6 +283,8 @@ class GatherRunner {
       passContext.LighthouseRunWarnings.push(pageLoadError.friendlyMessage);
     }
 
+    this.assertNoSecurityIssues(driver.getSecurityState());
+
     // Expose devtoolsLog, networkRecords, and trace (if present) to gatherers
     /** @type {LH.Gatherer.LoadData} */
     const passData = {
@@ -308,7 +313,7 @@ class GatherRunner {
       const gathererResult = gathererResults[gatherer.name] || [];
       gathererResult.push(artifactPromise);
       gathererResults[gatherer.name] = gathererResult;
-      await GatherRunner.recoverOrThrow(artifactPromise);
+      await artifactPromise.catch(() => {});
       log.verbose('statusEnd', status);
     }
 
@@ -319,7 +324,7 @@ class GatherRunner {
   /**
    * Takes the results of each gatherer phase for each gatherer and uses the
    * last produced value (that's not undefined) as the artifact for that
-   * gatherer. If a non-fatal error was rejected from a gatherer phase,
+   * gatherer. If an error was rejected from a gatherer phase,
    * uses that error object as the artifact instead.
    * @param {Partial<GathererResults>} gathererResults
    * @param {LH.BaseArtifacts} baseArtifacts
@@ -341,8 +346,7 @@ class GatherRunner {
         // Typecast pretends artifact always provided here, but checked below for top-level `throw`.
         gathererArtifacts[gathererName] = /** @type {NonVoid<PhaseResult>} */ (artifact);
       } catch (err) {
-        // An error result must be non-fatal to not have caused an exit by now,
-        // so return it to runner to handle turning it into an error audit.
+        // Return error to runner to handle turning it into an error audit.
         gathererArtifacts[gathererName] = err;
       }
 
