@@ -182,11 +182,11 @@ class Simulator {
   }
 
   /**
-   * @param {Node[]} nodes
+   * @param {Set<Node>} nodes
    * @return {Node[]}
    */
-  _sortNodesByStartTime(nodes) {
-    return nodes.slice().sort((nodeA, nodeB) => {
+  _getNodesSortedByStartTime(nodes) {
+    return Array.from(nodes).sort((nodeA, nodeB) => {
       // Sort nodes by startTime to match original execution order
       return nodeA.startTime - nodeB.startTime;
     });
@@ -369,7 +369,7 @@ class Simulator {
    * @return {Map<Node, LH.Gatherer.Simulation.NodeTiming>}
    */
   _computeFinalNodeTimings() {
-    /** @type {Array<[CpuNode | NetworkNode, LH.Gatherer.Simulation.NodeTiming]>} */
+    /** @type {Array<[Node, LH.Gatherer.Simulation.NodeTiming]>} */
     const nodeTimingEntries = [];
     for (const [node, timing] of this._nodeTimings) {
       nodeTimingEntries.push([node, {
@@ -435,7 +435,7 @@ class Simulator {
     // loop as long as we have nodes in the queue or currently in progress
     while (nodesReadyToStart.size || nodesInProgress.size) {
       // move all possible queued nodes to in progress
-      for (const node of this._sortNodesByStartTime(Array.from(nodesReadyToStart))) {
+      for (const node of this._getNodesSortedByStartTime(nodesReadyToStart)) {
         this._startNodeIfPossible(node, totalElapsedTime);
       }
 

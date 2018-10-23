@@ -8,7 +8,6 @@
 const LanternFirstCPUIdle = require('../../../../gather/computed/metrics/lantern-first-cpu-idle.js'); // eslint-disable-line max-len
 const assert = require('assert');
 
-const LanternFCPUI = require('../../../../gather/computed/metrics/lantern-first-cpu-idle');
 const trace = require('../../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../../../fixtures/traces/progressive-app-m60.devtools.log.json');
 
@@ -42,7 +41,7 @@ describe('Metrics: Lantern TTFCPUI', () => {
         [{type: 'cpu'}, {startTime: 400, endTime: 500, duration: 100}],
       ]);
 
-      assert.equal(LanternFCPUI.getFirstCPUIdleWindowStart(tasks, 0), 700);
+      assert.equal(LanternFirstCPUIdle.getFirstCPUIdleWindowStart(tasks, 0), 700);
     });
   });
 });
