@@ -207,7 +207,7 @@ message LighthouseResult {
     // nullable list of strings
     google.protobuf.Value skip_audits = 15;
 
-    // Flag indidcating this audit was audit only or not
+    // Flag indicating whether this Lighthouse run was audit-only.
     google.protobuf.BoolValue audit_mode = 16;
   }
 
