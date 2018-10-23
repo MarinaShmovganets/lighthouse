@@ -4,6 +4,8 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
+// This comment required for LightRider import compatibility
+
 // Canonical list of errors created by Lighthouse.
 enum LighthouseError {
   // No error in Lighthouse; the results are reliable.
