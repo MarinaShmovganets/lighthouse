@@ -217,14 +217,14 @@ message LighthouseResult {
   // i18n info in version 1 message format
   I18n i18n = 13;
 
-  // Message containing timing information about the LHR
+  // Message containing the performance timing data for the Lighthouse run
   message Timing {
-    // The total time taken by the LHR
-     google.protobuf.DoubleValue total = 1;
-  }
+    // The total duration of Lighthouse's run
+    google.protobuf.DoubleValue total = 1;
+ }
 
-  // The timing information for the LHR
-  Timing timing = 14;
+ // The performance timing data for the Lighthouse run
+ Timing timing = 14;
 }
 
 // Message containing a category 
