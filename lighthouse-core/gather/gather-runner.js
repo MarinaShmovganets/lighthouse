@@ -26,22 +26,22 @@ const Driver = require('../gather/driver.js'); // eslint-disable-line no-unused-
  * Execution sequence when GatherRunner.run() is called:
  *
  * 1. Setup
- *   B. driver.connect()
- *   C. GatherRunner.setupDriver()
- *     i. navigate to a blank page
- *     ii. assertNoSameOriginServiceWorkerClients
- *     iii. retrieve and save userAgent
- *     iv. beginEmulation
- *     v. enableRuntimeEvents
- *     vi. evaluateScriptOnLoad rescue native Promise from potential polyfill
- *     vii. register a performance observer
- *     viii. register dialog dismisser
- *     iv. clearDataForOrigin
+ *   A. driver.connect()
+ *   B. GatherRunner.setupDriver()
+ *     i. assertNoSameOriginServiceWorkerClients
+ *     ii. retrieve and save userAgent
+ *     iii. beginEmulation
+ *     iv. enableRuntimeEvents
+ *     v. evaluateScriptOnLoad rescue native Promise from potential polyfill
+ *     vi. register a performance observer
+ *     vii. register dialog dismisser
+ *     viii. clearDataForOrigin
  *
  * 2. For each pass in the config:
  *   A. GatherRunner.beforePass()
- *     i. Enable network request blocking for specified patterns
- *     ii. all gatherers' beforePass()
+ *     i. navigate to about:blank
+ *     ii. Enable network request blocking for specified patterns
+ *     iii. all gatherers' beforePass()
  *   B. GatherRunner.pass()
  *     i. cleanBrowserCaches() (if it's a perf run)
  *     ii. beginDevtoolsLog()
@@ -392,7 +392,7 @@ class GatherRunner {
       await driver.connect();
       const baseArtifacts = await GatherRunner.getBaseArtifacts(options);
       // In the devtools/extension case, we can't still be on the site while trying to clear state
-      // So we first navigate to a blank page, then apply our emulation & setup
+      // So we first navigate to about:blank, then apply our emulation & setup
       await GatherRunner.loadBlank(driver);
       baseArtifacts.BenchmarkIndex = await options.driver.getBenchmarkIndex();
       await GatherRunner.setupDriver(driver, options);
