@@ -878,7 +878,7 @@ class Driver {
    * Return the body of the response with the given ID. Rejects if getting the
    * body times out.
    * @param {string} requestId
-   * @param {number} timeout
+   * @param {number} [timeout]
    * @return {Promise<string>}
    */
   async getRequestContent(requestId, timeout = 1000) {
