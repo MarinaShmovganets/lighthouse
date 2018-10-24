@@ -105,9 +105,6 @@ class GatherRunner {
   static async setupDriver(driver, options) {
     log.log('status', 'Initializing…');
     const resetStorage = !options.settings.disableStorageReset;
-    // In the devtools/extension case, we can't still be on the site while trying to clear state
-    // So we first navigate to a blank page, then apply our emulation & setup
-    await GatherRunner.loadBlank(driver);
     await driver.assertNoSameOriginServiceWorkerClients(options.requestedUrl);
     await driver.beginEmulation(options.settings);
     await driver.enableRuntimeEvents();
@@ -394,6 +391,8 @@ class GatherRunner {
     try {
       await driver.connect();
       const baseArtifacts = await GatherRunner.getBaseArtifacts(options);
+      // In the devtools/extension case, we can't still be on the site while trying to clear state
+      // So we first navigate to a blank page, then apply our emulation & setup
       await GatherRunner.loadBlank(driver);
       baseArtifacts.BenchmarkIndex = await options.driver.getBenchmarkIndex();
       await GatherRunner.setupDriver(driver, options);
