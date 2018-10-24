@@ -199,7 +199,8 @@ class Runner {
    * @return {Promise<Array<LH.Audit.Result>>}
    */
   static async _runAudits(settings, audits, artifacts, runWarnings) {
-    log.time({msg: 'Analyzing and running audits...', id: 'lh:runner:auditing'});
+    const status = {msg: 'Analyzing and running audits...', id: 'lh:runner:auditing'};
+    log.time(status);
 
     if (artifacts.settings) {
       const overrides = {
@@ -231,7 +232,7 @@ class Runner {
       auditResults.push(auditResult);
     }
 
-    log.timeEnd({msg: 'Analyzing and running audits...', id: 'lh:runner:auditing'});
+    log.timeEnd(status);
     return auditResults;
   }
 
