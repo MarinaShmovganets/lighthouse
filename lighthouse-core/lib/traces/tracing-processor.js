@@ -198,15 +198,13 @@ class TraceProcessor {
 
   /**
    * @param {LH.TraceEvent[]} events
-   * @return {{pid: number, tid: number, frameId: string, ts: number}}
+   * @return {{pid: number, tid: number, frameId: string}}
    */
   static findMainFrameIds(events) {
     /** @type {number|undefined} */
     let pid;
     /** @type {number|undefined} */
     let tid;
-    /** @type {number|undefined} */
-    let ts;
     /** @type {string|undefined} */
     let frameId;
 
@@ -221,12 +219,10 @@ class TraceProcessor {
       const threadNameEvt = events.find(e => e.pid === pid && e.ph === 'M' &&
         e.cat === '__metadata' && e.name === 'thread_name' && e.args.name === 'CrRendererMain');
       tid = threadNameEvt && threadNameEvt.tid;
-
-      ts = startedInBrowserEvt.ts;
     }
 
     // Support legacy browser versions that do not emit TracingStartedInBrowser event.
-    if (!pid || !tid || !frameId || ts === undefined) {
+    if (!pid || !tid || !frameId) {
       // The first TracingStartedInPage in the trace is definitely our renderer thread of interest
       // Beware: the tracingStartedInPage event can appear slightly after a navigationStart
       const startedInPageEvt = events.find(e => e.name === 'TracingStartedInPage');
@@ -234,11 +230,10 @@ class TraceProcessor {
         pid = startedInPageEvt.pid;
         tid = startedInPageEvt.tid;
         frameId = startedInPageEvt.args.data.page;
-        ts = startedInPageEvt.ts;
       }
     }
 
-    if (!pid || !tid || !frameId || ts === undefined) {
+    if (!pid || !tid || !frameId) {
       throw new LHError(LHError.errors.NO_TRACING_STARTED);
     }
 
@@ -246,7 +241,6 @@ class TraceProcessor {
       pid,
       tid,
       frameId,
-      ts,
     };
   }
 

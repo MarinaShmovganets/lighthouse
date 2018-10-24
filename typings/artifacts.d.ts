@@ -360,7 +360,7 @@ declare global {
         /** The subset of trace events from the page's main thread, sorted by timestamp. */
         mainThreadEvents: Array<TraceEvent>;
         /** Various ids for the current trace context. */
-        mainFrameIds: {pid: number, tid: number, frameId: string, ts: number};
+        mainFrameIds: {pid: number, tid: number, frameId: string};
         /** The trace event marking navigationStart. */
         navigationStartEvt: TraceEvent;
         /** The trace event marking firstPaint, if it was found. */
