@@ -201,47 +201,43 @@ class TraceProcessor {
    * @return {{pid: number, tid: number, frameId: string}}
    */
   static findMainFrameIds(events) {
-    /** @type {number|undefined} */
-    let pid;
-    /** @type {number|undefined} */
-    let tid;
-    /** @type {string|undefined} */
-    let frameId;
-
     // Prefer the newer TracingStartedInBrowser event first, if it exists
     const startedInBrowserEvt = events.find(e => e.name === 'TracingStartedInBrowser');
     if (startedInBrowserEvt && startedInBrowserEvt.args.data &&
         startedInBrowserEvt.args.data.frames) {
       const mainFrame = startedInBrowserEvt.args.data.frames.find(frame => !frame.parent);
-      frameId = mainFrame && mainFrame.frame;
-      pid = mainFrame && mainFrame.processId;
+      const frameId = mainFrame && mainFrame.frame;
+      const pid = mainFrame && mainFrame.processId;
 
       const threadNameEvt = events.find(e => e.pid === pid && e.ph === 'M' &&
         e.cat === '__metadata' && e.name === 'thread_name' && e.args.name === 'CrRendererMain');
-      tid = threadNameEvt && threadNameEvt.tid;
-    }
+      const tid = threadNameEvt && threadNameEvt.tid;
 
-    // Support legacy browser versions that do not emit TracingStartedInBrowser event.
-    if (!pid || !tid || !frameId) {
-      // The first TracingStartedInPage in the trace is definitely our renderer thread of interest
-      // Beware: the tracingStartedInPage event can appear slightly after a navigationStart
-      const startedInPageEvt = events.find(e => e.name === 'TracingStartedInPage');
-      if (startedInPageEvt && startedInPageEvt.args && startedInPageEvt.args.data) {
-        pid = startedInPageEvt.pid;
-        tid = startedInPageEvt.tid;
-        frameId = startedInPageEvt.args.data.page;
+      if (pid && tid && frameId) {
+        return {
+          pid,
+          tid,
+          frameId,
+        };
       }
     }
 
-    if (!pid || !tid || !frameId) {
-      throw new LHError(LHError.errors.NO_TRACING_STARTED);
+    // Support legacy browser versions that do not emit TracingStartedInBrowser event.
+    // The first TracingStartedInPage in the trace is definitely our renderer thread of interest
+    // Beware: the tracingStartedInPage event can appear slightly after a navigationStart
+    const startedInPageEvt = events.find(e => e.name === 'TracingStartedInPage');
+    if (startedInPageEvt && startedInPageEvt.args && startedInPageEvt.args.data) {
+      const frameId = startedInPageEvt.args.data.page;
+      if (frameId) {
+        return {
+          pid: startedInPageEvt.pid,
+          tid: startedInPageEvt.tid,
+          frameId,
+        };
+      }
     }
 
-    return {
-      pid,
-      tid,
-      frameId,
-    };
+    throw new LHError(LHError.errors.NO_TRACING_STARTED);
   }
 
   /**

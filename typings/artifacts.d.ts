@@ -359,7 +359,7 @@ declare global {
         processEvents: Array<TraceEvent>;
         /** The subset of trace events from the page's main thread, sorted by timestamp. */
         mainThreadEvents: Array<TraceEvent>;
-        /** Various ids for the current trace context. */
+        /** IDs for the trace's main frame, process, and thread. */
         mainFrameIds: {pid: number, tid: number, frameId: string};
         /** The trace event marking navigationStart. */
         navigationStartEvt: TraceEvent;
