@@ -126,8 +126,17 @@ class Runner {
       // Summarize all the timings and drop onto the LHR
       log.timeEnd(runnerStatus);
 
-      const timingEntries = artifacts.Timing || [];
-      timingEntries.push(...log.takeTimeEntries());
+      const timingEntriesFromArtifacts = /** @type {PerformanceEntry[]} */ artifacts.Timing || [];
+      const timingEntriesFromRunner = log.takeTimeEntries();
+      const timingEntriesKeyValues = [
+        ...timingEntriesFromArtifacts,
+        ...timingEntriesFromRunner,
+      ].map(entry => {
+        /** @type {[string, PerformanceEntry]} */
+        const kv = [entry.name, entry];
+        return kv;
+      });
+      const timingEntries = Array.from(new Map(timingEntriesKeyValues).values());
       const runnerEntry = timingEntries.find(e => e.name === 'lh:runner:run');
 
       /** @type {LH.Result} */
