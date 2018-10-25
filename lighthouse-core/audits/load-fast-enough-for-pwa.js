@@ -52,12 +52,12 @@ class LoadFastEnough4Pwa extends Audit {
     // Otherwise, we'll force the usage of lantern slow 4G.
     const settingOverrides = {throttlingMethod: 'simulate', throttling: mobileThrottling};
 
-    // Override settings for interactive if provided throttling was used and network
+    // Override settings for interactive if provided throttling was used or network
     // throttling was not consistent with standard `mobile network throttling`
     const override = context.settings.throttlingMethod === 'provided' ||
       !isDeepEqual(context.settings.throttling, mobileThrottling);
 
-    const displayValueFinal = override?displayValueTextWithOverride: displayValueText;
+    const displayValueFinal = override ? displayValueTextWithOverride : displayValueText;
 
     const settings = override ? Object.assign({}, context.settings, settingOverrides):
       context.settings;

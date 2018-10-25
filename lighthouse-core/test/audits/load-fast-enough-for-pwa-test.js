@@ -75,11 +75,11 @@ describe('PWA: load-fast-enough-for-pwa audit', () => {
 
     const settings = {throttlingMethod: 'provided', throttling: {rttMs: 40, throughput: 100000}};
     const result = await FastPWAAudit.audit(artifacts, {settings, computedCache: new Map()});
-    expect(result.rawValue).toBeGreaterThan(2000);
+    expect(result.rawValue).toBeGreaterThan(2000); // If not overridden this would be 1582
     expect(Math.round(result.rawValue)).toMatchSnapshot();
   });
 
-  it('overrides when throttling is modified but method is not provided', async () => {
+  it('overrides when throttling is modified but method is not "provided"', async () => {
     const artifacts = {
       traces: {defaultPass: trace},
       devtoolsLogs: {defaultPass: devtoolsLog},
@@ -87,10 +87,10 @@ describe('PWA: load-fast-enough-for-pwa audit', () => {
 
     const settings = {throttlingMethod: 'devtools', throttling: {rttMs: 40, throughput: 100000}};
     const result = await FastPWAAudit.audit(artifacts, {settings, computedCache: new Map()});
-    expect(result.rawValue).toBeGreaterThan(2000);
+    expect(result.rawValue).toBeGreaterThan(2000); // If not overridden this would be 1582
   });
 
-  it('override with simulated result fails a bad simulated TTI value', async () => {
+  it('overrides when throttling is "provided" and fails the simulated TTI value', async () => {
     const topLevelTasks = [
       {ts: 1000, duration: 1000},
       {ts: 3000, duration: 1000},
