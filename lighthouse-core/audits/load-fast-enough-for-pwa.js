@@ -59,7 +59,7 @@ class LoadFastEnough4Pwa extends Audit {
 
     const displayValueFinal = override ? displayValueTextWithOverride : displayValueText;
 
-    const settings = override ? Object.assign({}, context.settings, settingOverrides):
+    const settings = override ? Object.assign({}, context.settings, settingOverrides) :
       context.settings;
 
     const metricComputationData = {trace, devtoolsLog, settings};
