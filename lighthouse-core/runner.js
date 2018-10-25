@@ -126,19 +126,6 @@ class Runner {
       // Summarize all the timings and drop onto the LHR
       log.timeEnd(runnerStatus);
 
-      const timingEntriesFromArtifacts = /** @type {PerformanceEntry[]} */ artifacts.Timing || [];
-      const timingEntriesFromRunner = log.takeTimeEntries();
-      const timingEntriesKeyValues = [
-        ...timingEntriesFromArtifacts,
-        ...timingEntriesFromRunner,
-      ].map(entry => {
-        /** @type {[string, PerformanceEntry]} */
-        const kv = [entry.name, entry];
-        return kv;
-      });
-      const timingEntries = Array.from(new Map(timingEntriesKeyValues).values());
-      const runnerEntry = timingEntries.find(e => e.name === 'lh:runner:run');
-
       /** @type {LH.Result} */
       const lhr = {
         userAgent: artifacts.HostUserAgent,
@@ -157,7 +144,7 @@ class Runner {
         configSettings: settings,
         categories,
         categoryGroups: runOpts.config.groups || undefined,
-        timing: {entries: timingEntries, total: runnerEntry && runnerEntry.duration || 0},
+        timing: this._getTiming(artifacts),
         i18n: {
           rendererFormattedStrings: i18n.getRendererFormattedStrings(settings.locale),
           icuMessagePaths: {},
@@ -175,6 +162,22 @@ class Runner {
       await Sentry.captureException(err, {level: 'fatal'});
       throw err;
     }
+  }
+
+  /**
+   * @param {LH.Artifacts} artifacts
+   * @return {LH.Result.Timing}
+   */
+  static _getTiming(artifacts) {
+    const timingEntriesFromArtifacts = artifacts.Timing || [];
+    const timingEntriesFromRunner = log.takeTimeEntries();
+    const timingEntriesKeyValues = [
+      ...timingEntriesFromArtifacts,
+      ...timingEntriesFromRunner,
+    ].map(entry => /** @type {[string, PerformanceEntry]} */ ([entry.name, entry]));
+    const timingEntries = Array.from(new Map(timingEntriesKeyValues).values());
+    const runnerEntry = timingEntries.find(e => e.name === 'lh:runner:run');
+    return {entries: timingEntries, total: runnerEntry && runnerEntry.duration || 0};
   }
 
   /**
