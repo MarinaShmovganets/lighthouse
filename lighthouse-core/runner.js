@@ -122,8 +122,6 @@ class Runner {
       }
 
       log.timeEnd(resultsStatus);
-
-      // Summarize all the timings and drop onto the LHR
       log.timeEnd(runnerStatus);
 
       /** @type {LH.Result} */
@@ -165,6 +163,9 @@ class Runner {
   }
 
   /**
+   * This handles both the auditMode case where gatherer entries need to be merged in and
+   * the gather/audit case where timingEntriesFromRunner contains all entries from this run,
+   * including those also in timingEntriesFromArtifacts.
    * @param {LH.Artifacts} artifacts
    * @return {LH.Result.Timing}
    */

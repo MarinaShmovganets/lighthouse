@@ -25,7 +25,7 @@ function printErrorAndQuit(msg) {
   console.error(`ERROR:
   > ${msg}
   > Example:
-  >     yarn timing results.json
+  >     yarn timing-trace results.json
   `);
   process.exit(1);
 }

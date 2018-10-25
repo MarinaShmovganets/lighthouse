@@ -306,14 +306,9 @@ declare global {
         }[];
       }
 
-      export interface MeasureEntry {
-        name: string;
-        startTime: number;
-        duration: number;
-        entryType: string;
+      export interface MeasureEntry extends PerformanceEntry {
         /** Whether timing entry was collected during artifact gathering. */
         gather?: boolean;
-        toJSON: any;
       }
 
       export interface MetricComputationDataInput {
