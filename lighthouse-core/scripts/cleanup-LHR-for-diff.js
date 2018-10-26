@@ -26,16 +26,13 @@ function cleanAndFormatLHR(lhrString) {
   /** @type {LH.Result} */
   const lhr = JSON.parse(lhrString);
 
-  // Set to predictable and typical value
-  lhr.configSettings.auditMode = false;
-
-  // Set timing values, which change from run-to-run, to predicable values
+  // Set timing values, which change from run to run, to predicable values
   lhr.timing.total = 12345.6789;
-  lhr.timing.entries.forEach((entry, i) => {
-    // @ts-ignore
+  lhr.timing.entries.forEach(entry => {
+    // @ts-ignore - write to readonly property
     entry.duration = 100;
-    // @ts-ignore
-    entry.startTime = 100 * i + i; // 1ms gap between them
+    // @ts-ignore - write to readonly property
+    entry.startTime = 0; // Not realsitic, but avoids a lot of diff churn
   });
 
   if (extraFlag !== '--only-remove-timing') {
