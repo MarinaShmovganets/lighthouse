@@ -3473,12 +3473,6 @@
             {
                 "duration": 100.0, 
                 "entryType": "measure", 
-                "name": "lh:audit:manifest-short-name-length", 
-                "startTime": 0.0
-            }, 
-            {
-                "duration": 100.0, 
-                "entryType": "measure", 
                 "name": "lh:audit:content-width", 
                 "startTime": 0.0
             }, 

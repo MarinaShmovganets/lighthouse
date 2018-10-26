@@ -3594,12 +3594,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:manifest-short-name-length",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:content-width",
         "duration": 100,
         "entryType": "measure"
