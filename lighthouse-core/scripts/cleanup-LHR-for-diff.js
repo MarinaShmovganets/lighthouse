@@ -23,9 +23,19 @@ writeFileSync(filename, cleanAndFormatLHR(data), 'utf8');
  * @return {string}
  */
 function cleanAndFormatLHR(lhrString) {
+  /** @type {LH.Result} */
   const lhr = JSON.parse(lhrString);
-  delete lhr.configSettings.auditMode;
-  delete lhr.timing;
+
+  // Set to predictable and typical value
+  lhr.configSettings.auditMode = false;
+
+  // Set timing values, which change from run-to-run, to predicable values
+  lhr.timing.total = 12345.6789;
+  lhr.timing.entries.forEach((entry, i) => {
+    entry.duration = 100;
+    entry.startTime = 100 * i + i; // 1ms gap between them
+  });
+
   if (extraFlag !== '--only-remove-timing') {
     for (const auditResult of Object.values(lhr.audits)) {
       auditResult.description = '**Excluded from diff**';
