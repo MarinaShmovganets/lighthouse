@@ -16,9 +16,7 @@ class OfflineStartUrl extends Audit {
       id: 'offline-start-url',
       title: 'start_url responds with a 200 when offline',
       failureTitle: 'start_url does not respond with a 200 when offline',
-      description: 'If you\'re building a Progressive Web App, consider using a service worker ' +
-          'so that your app can work offline. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/http-200-when-offline).',
+      description: 'A service worker enables your web app to be reliable in unpredictable network conditions. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/http-200-when-offline).',
       requiredArtifacts: ['Manifest', 'StartUrl'],
     };
   }
@@ -33,8 +31,9 @@ class OfflineStartUrl extends Audit {
     const warnings = [];
     const manifest = artifacts.Manifest;
     if (manifest && manifest.value && manifest.value.start_url.warning) {
-      warnings.push('There was an error in the manifest and so the start_url fell back to the ' +
-          `document URL. Error message: '${manifest.value.start_url.warning}'.`);
+      const manifestWarning = manifest.value.start_url.warning;
+      warnings.push('We couldn\'t read the start_url from the manifest. As a result, the ' +
+          `start_url was assumed to be the document's URL. Error message: '${manifestWarning}'.`);
     }
 
     const hasOfflineStartUrl = artifacts.StartUrl.statusCode === 200;
