@@ -30,9 +30,6 @@ function processForProto(result) {
         reportJson.configSettings.output = [reportJson.configSettings.output];
       }
     }
-
-    // Remove until we resolve its string|boolean state
-    delete reportJson.configSettings.auditMode;
   }
 
   // Remove runtimeError if it is NO_ERROR
