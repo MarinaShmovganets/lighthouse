@@ -2937,6 +2937,11 @@
           "group": "pwa-fast-reliable"
         },
         {
+          "id": "offline-start-url",
+          "weight": 1,
+          "group": "pwa-fast-reliable"
+        },
+        {
           "id": "is-on-https",
           "weight": 2,
           "group": "pwa-installable"
@@ -2948,7 +2953,7 @@
         },
         {
           "id": "webapp-install-banner",
-          "weight": 3,
+          "weight": 2,
           "group": "pwa-installable"
         },
         {

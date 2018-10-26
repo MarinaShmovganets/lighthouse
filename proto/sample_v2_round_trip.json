@@ -3050,6 +3050,11 @@
                     "weight": 5.0
                 }, 
                 {
+                    "group": "pwa-fast-reliable", 
+                    "id": "offline-start-url", 
+                    "weight": 1.0
+                }, 
+                {
                     "group": "pwa-installable", 
                     "id": "is-on-https", 
                     "weight": 2.0
@@ -3062,7 +3067,7 @@
                 {
                     "group": "pwa-installable", 
                     "id": "webapp-install-banner", 
-                    "weight": 3.0
+                    "weight": 2.0
                 }, 
                 {
                     "group": "pwa-engaging", 
