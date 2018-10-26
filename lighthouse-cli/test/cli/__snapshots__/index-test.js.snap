@@ -812,13 +812,13 @@ Object {
       "auditRefs": Array [
         Object {
           "group": "pwa-fast-reliable",
-          "id": "works-offline",
-          "weight": 5,
+          "id": "load-fast-enough-for-pwa",
+          "weight": 7,
         },
         Object {
           "group": "pwa-fast-reliable",
-          "id": "load-fast-enough-for-pwa",
-          "weight": 7,
+          "id": "works-offline",
+          "weight": 5,
         },
         Object {
           "group": "pwa-installable",
@@ -852,13 +852,13 @@ Object {
         },
         Object {
           "group": "pwa-engaging",
-          "id": "viewport",
-          "weight": 2,
+          "id": "content-width",
+          "weight": 1,
         },
         Object {
           "group": "pwa-engaging",
-          "id": "content-width",
-          "weight": 1,
+          "id": "viewport",
+          "weight": 2,
         },
         Object {
           "group": "pwa-engaging",
