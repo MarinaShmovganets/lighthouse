@@ -103,6 +103,9 @@ Object {
       "path": "metrics",
     },
     Object {
+      "path": "offline-start-url",
+    },
+    Object {
       "path": "manual/pwa-cross-browser",
     },
     Object {

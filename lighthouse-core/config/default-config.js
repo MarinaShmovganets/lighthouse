@@ -132,6 +132,7 @@ const defaultConfig = {
     'font-display',
     'network-requests',
     'metrics',
+    'offline-start-url',
     'manual/pwa-cross-browser',
     'manual/pwa-page-transitions',
     'manual/pwa-each-page-has-url',

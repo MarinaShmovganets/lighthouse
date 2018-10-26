@@ -115,6 +115,7 @@ function checkSameOrigin(url1, url2) {
  * @param {*} jsonInput
  * @param {string} manifestUrl
  * @param {string} documentUrl
+ * @return {{raw: any, value: string, warning?: string}}
  */
 function parseStartUrl(jsonInput, manifestUrl, documentUrl) {
   const raw = jsonInput.start_url;
@@ -129,8 +130,10 @@ function parseStartUrl(jsonInput, manifestUrl, documentUrl) {
   }
   const parsedAsString = parseString(raw);
   if (!parsedAsString.value) {
-    parsedAsString.value = documentUrl;
-    return parsedAsString;
+    return {
+      ...parsedAsString,
+      value: documentUrl,
+    };
   }
 
   // 8.10(4) - construct URL with raw as input and manifestUrl as the base.

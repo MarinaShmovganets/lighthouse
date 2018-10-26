@@ -1630,6 +1630,14 @@
             "scoreDisplayMode": "not_applicable", 
             "title": "`<object>` elements have `[alt]` text"
         }, 
+        "offline-start-url": {
+            "description": "If you're building a Progressive Web App, consider using a service worker so that your app can work offline. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/http-200-when-offline).", 
+            "id": "offline-start-url", 
+            "score": 0.0, 
+            "scoreDisplayMode": "binary", 
+            "title": "start_url does not respond with a 200 when offline", 
+            "warnings": []
+        }, 
         "offscreen-content-hidden": {
             "description": "Offscreen content is hidden with display: none or aria-hidden=true. [Learn more](https://developers.google.com/web/fundamentals/accessibility/how-to-review#try_it_with_a_screen_reader).", 
             "id": "offscreen-content-hidden", 
