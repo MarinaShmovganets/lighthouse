@@ -32,7 +32,9 @@ function cleanAndFormatLHR(lhrString) {
   // Set timing values, which change from run-to-run, to predicable values
   lhr.timing.total = 12345.6789;
   lhr.timing.entries.forEach((entry, i) => {
+    // @ts-ignore
     entry.duration = 100;
+    // @ts-ignore
     entry.startTime = 100 * i + i; // 1ms gap between them
   });
 
