@@ -3033,13 +3033,13 @@
             "auditRefs": [
                 {
                     "group": "pwa-fast-reliable", 
-                    "id": "works-offline", 
-                    "weight": 5.0
+                    "id": "load-fast-enough-for-pwa", 
+                    "weight": 7.0
                 }, 
                 {
                     "group": "pwa-fast-reliable", 
-                    "id": "load-fast-enough-for-pwa", 
-                    "weight": 7.0
+                    "id": "works-offline", 
+                    "weight": 5.0
                 }, 
                 {
                     "group": "pwa-installable", 
@@ -3073,13 +3073,13 @@
                 }, 
                 {
                     "group": "pwa-engaging", 
-                    "id": "viewport", 
-                    "weight": 2.0
+                    "id": "content-width", 
+                    "weight": 1.0
                 }, 
                 {
                     "group": "pwa-engaging", 
-                    "id": "content-width", 
-                    "weight": 1.0
+                    "id": "viewport", 
+                    "weight": 2.0
                 }, 
                 {
                     "group": "pwa-engaging", 

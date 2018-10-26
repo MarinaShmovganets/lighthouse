@@ -2918,13 +2918,13 @@
       "manualDescription": "These checks are required by the baseline [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
       "auditRefs": [
         {
-          "id": "works-offline",
-          "weight": 5,
+          "id": "load-fast-enough-for-pwa",
+          "weight": 7,
           "group": "pwa-fast-reliable"
         },
         {
-          "id": "load-fast-enough-for-pwa",
-          "weight": 7,
+          "id": "works-offline",
+          "weight": 5,
           "group": "pwa-fast-reliable"
         },
         {
@@ -2958,13 +2958,13 @@
           "group": "pwa-engaging"
         },
         {
-          "id": "viewport",
-          "weight": 2,
+          "id": "content-width",
+          "weight": 1,
           "group": "pwa-engaging"
         },
         {
-          "id": "content-width",
-          "weight": 1,
+          "id": "viewport",
+          "weight": 2,
           "group": "pwa-engaging"
         },
         {
@@ -3808,6 +3808,15 @@
       ],
       "lighthouse-core/config/default-config.js | diagnosticsGroupDescription": [
         "categoryGroups.diagnostics.description"
+      ],
+      "lighthouse-core/config/default-config.js | pwaFastReliableGroupTitle": [
+        "categoryGroups[pwa-fast-reliable].title"
+      ],
+      "lighthouse-core/config/default-config.js | pwaInstallableGroupTitle": [
+        "categoryGroups[pwa-installable].title"
+      ],
+      "lighthouse-core/config/default-config.js | pwaEngagingGroupTitle": [
+        "categoryGroups[pwa-engaging].title"
       ]
     }
   }

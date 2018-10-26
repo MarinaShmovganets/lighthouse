@@ -31,6 +31,12 @@ const UIStrings = {
   diagnosticsGroupTitle: 'Diagnostics',
   /** Description of the diagnostics section of the Performance category. Within this section are audits with non-imperative titles that provide more detail on the page's page load performance characteristics. Whereas the 'Opportunities' suggest an action along with expected time savings, diagnostics do not. Within this section, the user may read the details and deduce additional actions they could take. */
   diagnosticsGroupDescription: 'More information about the performance of your application.',
+  /** Title of the Fast and Reliable section of the web app category. Within this section are audits that check if the web site loaded quickly and can reliably load even if the internet connection is very slow or goes offline. */
+  pwaFastReliableGroupTitle: 'Fast and reliable',
+  /** Title of the Installable section of the web app category. Within this section are audits that check if Chrome supports installing the web site as an app on their device. */
+  pwaInstallableGroupTitle: 'Installable',
+  /** Title of the Engaging section of the web app category. Within this section are audits that check if the developer has taken advantage of features to make their web page more enjoyable and engaging for the user. */
+  pwaEngagingGroupTitle: 'Engaging',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -225,13 +231,13 @@ const defaultConfig = {
       description: str_(UIStrings.diagnosticsGroupDescription),
     },
     'pwa-fast-reliable': {
-      title: 'Fast and reliable',
+      title: str_(UIStrings.pwaFastReliableGroupTitle),
     },
     'pwa-installable': {
-      title: 'Installable',
+      title: str_(UIStrings.pwaInstallableGroupTitle),
     },
     'pwa-engaging': {
-      title: 'Engaging',
+      title: str_(UIStrings.pwaEngagingGroupTitle),
     },
     'a11y-color-contrast': {
       title: 'Color Contrast Is Satisfactory',
@@ -326,22 +332,19 @@ const defaultConfig = {
           'not automatically checked by Lighthouse. They do not affect your score but it\'s important that you verify them manually.',
       auditRefs: [
         // Fast and Reliable
-        {id: 'works-offline', weight: 5, group: 'pwa-fast-reliable'},
         {id: 'load-fast-enough-for-pwa', weight: 7, group: 'pwa-fast-reliable'},
-
+        {id: 'works-offline', weight: 5, group: 'pwa-fast-reliable'},
         // Installable
         {id: 'is-on-https', weight: 2, group: 'pwa-installable'},
         {id: 'service-worker', weight: 1, group: 'pwa-installable'},
         {id: 'webapp-install-banner', weight: 3, group: 'pwa-installable'},
-
         // Engaging
-        {id: 'redirects-http', weight: 2, group: 'pwa-engaging'}, // Arguably not engaging
+        {id: 'redirects-http', weight: 2, group: 'pwa-engaging'},
         {id: 'splash-screen', weight: 1, group: 'pwa-engaging'},
         {id: 'themed-omnibox', weight: 1, group: 'pwa-engaging'},
-        {id: 'viewport', weight: 2, group: 'pwa-engaging'},
         {id: 'content-width', weight: 1, group: 'pwa-engaging'},
+        {id: 'viewport', weight: 2, group: 'pwa-engaging'},
         {id: 'without-javascript', weight: 1, group: 'pwa-engaging'},
-
         // Manual audits
         {id: 'pwa-cross-browser', weight: 0},
         {id: 'pwa-page-transitions', weight: 0},
