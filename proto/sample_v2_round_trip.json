@@ -1631,7 +1631,7 @@
             "title": "`<object>` elements have `[alt]` text"
         }, 
         "offline-start-url": {
-            "description": "If you're building a Progressive Web App, consider using a service worker so that your app can work offline. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/http-200-when-offline).", 
+            "description": "A service worker enables your web app to be reliable in unpredictable network conditions. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/http-200-when-offline).", 
             "id": "offline-start-url", 
             "score": 0.0, 
             "scoreDisplayMode": "binary", 
