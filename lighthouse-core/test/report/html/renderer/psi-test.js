@@ -20,8 +20,11 @@ const CriticalRequestChainRenderer =
     require('../../../../report/html/renderer/crc-details-renderer');
 
 const sampleResultsStr = fs.readFileSync(__dirname + '/../../../results/sample_v2.json', 'utf-8');
-const sampleResults = JSON.parse(sampleResultsStr)
-;
+const sampleResultsRoundtripStr = fs.readFileSync(
+  __dirname + '/../../../../../proto/sample_v2_round_trip.json',
+  'utf-8'
+);
+
 const TEMPLATE_FILE = fs.readFileSync(
   __dirname + '/../../../../report/html/templates.html',
   'utf8'
@@ -59,6 +62,21 @@ describe('DOM', () => {
 
   describe('psi prepareLabData helpers', () => {
     describe('prepareLabData', () => {
+      it('succeeds with LHResult object (roundtrip) input', () => {
+        const roundTripLHResult = /** @type {LH.Result} */ JSON.parse(sampleResultsRoundtripStr);
+        const result = prepareLabData(roundTripLHResult, document);
+
+        // sanity check that the report exists and has some content
+        assert.ok(result.perfCategoryEl instanceof document.defaultView.Element);
+        assert.ok(result.perfCategoryEl.outerHTML.length > 50000, 'perfCategory HTML is populated');
+        assert.ok(!result.perfCategoryEl.outerHTML.includes('lh-permalink'),
+            'PSI\'s perfCategory HTML doesn\'t include a lh-permalink element');
+        // Assume using default locale.
+        const titleEl = result.perfCategoryEl.querySelector('.lh-audit-group--metrics')
+          .querySelector('.lh-audit-group__header');
+        assert.equal(titleEl.textContent, Util.UIStrings.labDataTitle);
+      });
+
       it('reports expected data', () => {
         const result = prepareLabData(sampleResultsStr, document);
         assert.ok(result.scoreGaugeEl instanceof document.defaultView.Element);
@@ -114,14 +132,13 @@ describe('DOM', () => {
 
   describe('_getFinalScreenshot', () => {
     it('gets a datauri as a string', () => {
-      const LHResultJsonString = JSON.stringify(sampleResults);
-      const datauri = prepareLabData(LHResultJsonString, document).finalScreenshotDataUri;
+      const datauri = prepareLabData(sampleResultsStr, document).finalScreenshotDataUri;
       assert.equal(typeof datauri, 'string');
       assert.ok(datauri.startsWith('data:image/jpeg;base64,'));
     });
 
     it('returns null if there is no final-screenshot audit', () => {
-      const clonedResults = JSON.parse(JSON.stringify(sampleResults));
+      const clonedResults = JSON.parse(sampleResultsStr);
       delete clonedResults.audits['final-screenshot'];
       const LHResultJsonString = JSON.stringify(clonedResults);
       const datauri = prepareLabData(LHResultJsonString, document).finalScreenshotDataUri;
