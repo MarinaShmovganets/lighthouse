@@ -24,7 +24,7 @@ function processForProto(result) {
 
   // Clean up the configSettings
   // Note: This is not strictly required for conversion if protobuf parsing is set to
-  //       'ignore unknown fields' in the language of conversion.
+  // 'ignore unknown fields' in the language of conversion.
   if (reportJson.configSettings) {
     // The settings that are in both proto and LHR
     const {emulatedFormFactor, locale, onlyCategories} = reportJson.configSettings;
