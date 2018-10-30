@@ -3668,6 +3668,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:offline-start-url",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:pwa-cross-browser",
         "duration": 100,
         "entryType": "measure"

@@ -3546,6 +3546,12 @@
             {
                 "duration": 100.0, 
                 "entryType": "measure", 
+                "name": "lh:audit:offline-start-url", 
+                "startTime": 0.0
+            }, 
+            {
+                "duration": 100.0, 
+                "entryType": "measure", 
                 "name": "lh:audit:pwa-cross-browser", 
                 "startTime": 0.0
             }, 
