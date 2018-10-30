@@ -77,7 +77,7 @@ describe('DOM', () => {
         assert.equal(titleEl.textContent, Util.UIStrings.labDataTitle);
       });
 
-      it('reports expected data', () => {
+      it('succeeds with stringified LHResult input', () => {
         const result = prepareLabData(sampleResultsStr, document);
         assert.ok(result.scoreGaugeEl instanceof document.defaultView.Element);
         assert.equal(result.scoreGaugeEl.querySelector('.lh-gauge__wrapper').href, '');
