@@ -70,8 +70,8 @@ echo "Test the lighthouse-viewer build"
 # Start a server in dist/viewer/ and open the page in a tab. You should see the viewer.
 # Drop in a results.json or paste an existing gist url (e.g. https://gist.github.com/ebidel/b9fd478b5f40bf5fab174439dc18f83a).
 # Check for errors!
-node lighthouse-cli/test/fixtures/static-server.js
-# go to http://localhost:10503/dist/viewer/index.html
+cd dist/viewer ; python -m SimpleHTTPServer
+# go to http://localhost:8000/
 
 # * Update changelog *
 git fetch --tags
