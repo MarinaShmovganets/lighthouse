@@ -1,19 +1,17 @@
  <a name="4.0.0-alpha.0"></a>
 # 4.0.0-alpha.0 (2018-10-31)
-[Full Changelog](https://github.com/googlechrome/lighthouse/compare/v3.2.0...v4.0.0-alpha.0)
+[Full Changelog](https://github.com/googlechrome/lighthouse/compare/v3.2.1...v4.0.0-alpha.0)
+
+## New Contributors!
+Thanks to @carlesnunez and @justin0022 for their first contributions!
+
+Thanks to @CodeDem for improving how the image-aspect-ratio audit handles small images!
+
+Huge thanks to myself (@Hoten) for joining Lighthouse! Go me!
 
 ## New Audits
 
 * offline-start-url ([#6397](https://github.com/googlechrome/lighthouse/pull/6397))
-
-## CLI
-
-* docs: update docs for --output-path re: multiple output types ([#6339](https://github.com/googlechrome/lighthouse/pull/6339))
-
-## Clients
-
-* simplify viewer build process ([#6426](https://github.com/googlechrome/lighthouse/pull/6426))
-* reorganize file structure and build process ([#6344](https://github.com/googlechrome/lighthouse/pull/6344))
 
 ## Core
 
@@ -30,7 +28,6 @@
 * driver: address bckenny feedback on #6117 ([#6285](https://github.com/googlechrome/lighthouse/pull/6285))
 * driver: reduce required traceCategories again ([54baf91](https://github.com/googlechrome/lighthouse/commit/54baf91))
 * driver: recover from rejection on handleJavaScriptDialog ([#6327](https://github.com/googlechrome/lighthouse/pull/6327))
-* emulation: set desktop viewport to 1350x940 ([#6131](https://github.com/googlechrome/lighthouse/pull/6131))
 * emulation: fix missing space in mobile UA ([#6161](https://github.com/googlechrome/lighthouse/pull/6161))
 * icons: defer to manifest-icon type hint for image type ([#6230](https://github.com/googlechrome/lighthouse/pull/6230))
 * network: handle invalid NetworkRequests ([#6157](https://github.com/googlechrome/lighthouse/pull/6157))
@@ -49,9 +46,25 @@
 * remove last dependency on WebInspector ([#6209](https://github.com/googlechrome/lighthouse/pull/6209))
 * add timeout to all protocol commands ([#6347](https://github.com/googlechrome/lighthouse/pull/6347))
 * don't load blank page twice in first pass ([#6369](https://github.com/googlechrome/lighthouse/pull/6369))
-* await js-libraries detection ([#6141](https://github.com/googlechrome/lighthouse/pull/6141))
 * refactor finding of trace start ([#6370](https://github.com/googlechrome/lighthouse/pull/6370))
 * increase Page.navigate timeout ([#6412](https://github.com/googlechrome/lighthouse/pull/6412))
+
+## Report
+
+* fix tooltip hover animation ([#6288](https://github.com/googlechrome/lighthouse/pull/6288))
+* reframe Fast 3G as Slow 4G ([#6163](https://github.com/googlechrome/lighthouse/pull/6163))
+* fix html report viewing bugs for Safari ([#6143](https://github.com/googlechrome/lighthouse/pull/6143))
+* dom-size: right-align the value column ([#6372](https://github.com/googlechrome/lighthouse/pull/6372))
+
+## Clients
+
+* simplify viewer build process ([#6426](https://github.com/googlechrome/lighthouse/pull/6426))
+* reorganize file structure and build process ([#6344](https://github.com/googlechrome/lighthouse/pull/6344))
+* build: ignore all locales from devtools & extension build ([#6170](https://github.com/googlechrome/lighthouse/pull/6170))
+* lr: skip early emulation now that lr-desktop is defined ([#6158](https://github.com/googlechrome/lighthouse/pull/6158))
+* split browserifying and extension packaging into separate scripts ([#6295](https://github.com/googlechrome/lighthouse/pull/6295))
+* simplify bundle building ([#6282](https://github.com/googlechrome/lighthouse/pull/6282))
+* stop report bug prompt for file:// urls ([#6278](https://github.com/googlechrome/lighthouse/pull/6278))
 
 ## Deps
 
@@ -68,30 +81,13 @@
 * readme: change image references be commit hash raw gh urls ([#6116](https://github.com/googlechrome/lighthouse/pull/6116))
 * add primer on viewing the timing data ([#6393](https://github.com/googlechrome/lighthouse/pull/6393))
 * typo fix ([#6335](https://github.com/googlechrome/lighthouse/pull/6335))
-
-## Extension
-
-* build: ignore all locales from devtools & extension build ([#6170](https://github.com/googlechrome/lighthouse/pull/6170))
-* lr: skip early emulation now that lr-desktop is defined ([#6158](https://github.com/googlechrome/lighthouse/pull/6158))
-* split browserifying and extension packaging into separate scripts ([#6295](https://github.com/googlechrome/lighthouse/pull/6295))
-* simplify bundle building ([#6282](https://github.com/googlechrome/lighthouse/pull/6282))
-* stop report bug prompt for file:// urls ([#6278](https://github.com/googlechrome/lighthouse/pull/6278))
+* Remove "sh" format for CLI --help output ([#6311](https://github.com/googlechrome/lighthouse/pull/6311))
+* update docs for --output-path re: multiple output types ([#6339](https://github.com/googlechrome/lighthouse/pull/6339))
 
 ## I18n
 
 * roll latest messages from TC ([#6388](https://github.com/googlechrome/lighthouse/pull/6388))
 * update test for new canonical locale codes ([#6360](https://github.com/googlechrome/lighthouse/pull/6360))
-
-## Readme
-
-* Remove "sh" format for CLI --help output ([#6311](https://github.com/googlechrome/lighthouse/pull/6311))
-
-## Report
-
-* fix tooltip hover animation ([#6288](https://github.com/googlechrome/lighthouse/pull/6288))
-* reframe Fast 3G as Slow 4G ([#6163](https://github.com/googlechrome/lighthouse/pull/6163))
-* fix html report viewing bugs for Safari ([#6143](https://github.com/googlechrome/lighthouse/pull/6143))
-* dom-size: right-align the value column ([#6372](https://github.com/googlechrome/lighthouse/pull/6372))
 
 ## Tests
 
@@ -102,10 +98,10 @@
 * add trace creator ([#6196](https://github.com/googlechrome/lighthouse/pull/6196))
 * add networkRecord-to-devtoolsLog mocking utility ([#6171](https://github.com/googlechrome/lighthouse/pull/6171))
 * add angular test for JS minification ([#6138](https://github.com/googlechrome/lighthouse/pull/6138))
+* run node 10 on Travis ([#6361](https://github.com/googlechrome/lighthouse/pull/6361))
 
 ## Misc
 
-* proto: made default LighthouseError enum 'UNDEFINED' ([#6334](https://github.com/googlechrome/lighthouse/pull/6334))
 * tweaks for devtools client ([#6127](https://github.com/googlechrome/lighthouse/pull/6127))
 * simplify proto npm scripts ([#6406](https://github.com/googlechrome/lighthouse/pull/6406))
 * add cli module diagram ([#6129](https://github.com/googlechrome/lighthouse/pull/6129))
@@ -116,13 +112,13 @@
 * only allow 1 error from each audit/gatherer ([#6215](https://github.com/googlechrome/lighthouse/pull/6215))
 * Revert "core(driver): stringify protocol error messages (#6302)" ([#6328](https://github.com/googlechrome/lighthouse/pull/6328))
 * fix typo in feature request template ([#6431](https://github.com/googlechrome/lighthouse/pull/6431))
-* tests: run node 10 on Travis ([#6361](https://github.com/googlechrome/lighthouse/pull/6361))
 * remove plots/ ([#6346](https://github.com/googlechrome/lighthouse/pull/6346))
 * build: cleanup extension package zip using gulp ([#6210](https://github.com/googlechrome/lighthouse/pull/6210))
 * build: rename bundled files (devtools/ext/lr) ([#6179](https://github.com/googlechrome/lighthouse/pull/6179))
 * eslint: enforce infix-op spacing ([#6382](https://github.com/googlechrome/lighthouse/pull/6382))
 * logger: isVerbose(), getTimeEntries() ([#6383](https://github.com/googlechrome/lighthouse/pull/6383))
 * logging: add hanging request logging in driver ([#6297](https://github.com/googlechrome/lighthouse/pull/6297))
+* proto: made default LighthouseError enum 'UNDEFINED' ([#6334](https://github.com/googlechrome/lighthouse/pull/6334))
 * proto: align proto whitespace ([#6374](https://github.com/googlechrome/lighthouse/pull/6374))
 * proto: convert int32's into DoubleValue in proto ([#6332](https://github.com/googlechrome/lighthouse/pull/6332))
 * proto: adjust configSetting.output in preprocessor ([#6310](https://github.com/googlechrome/lighthouse/pull/6310))
@@ -132,12 +128,14 @@
 * proto: reduce configSettings in proto to minimum ([88b2829](https://github.com/googlechrome/lighthouse/commit/88b2829))
 * yarn: update lockfile for micromatch ([#6384](https://github.com/googlechrome/lighthouse/pull/6384))
 
-## New Contributors!
-Thanks to @carlesnunez and @justin0022 for their first contributions!
+<a name="3.2.1"></a>
+# 3.2.1 (2018-10-01)
+[Full Changelog](https://github.com/googlechrome/lighthouse/compare/v3.2.0...v3.2.1)
 
-Thanks to @CodeDem for improving how the image-aspect-ratio audit handles small images!
+## Core
 
-Huge thanks to myself (@Hoten) for joining Lighthouse! Go me!
+* emulation: set desktop viewport to 1350x940 ([#6131](https://github.com/googlechrome/lighthouse/pull/6131))
+* await js-libraries detection ([#6141](https://github.com/googlechrome/lighthouse/pull/6141))
 
  <a name="3.2.0"></a>
 # 3.2.0 (2018-09-27)
