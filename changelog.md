@@ -1,6 +1,6 @@
  <a name="4.0.0-alpha.0"></a>
 # 4.0.0-alpha.0 (2018-10-31)
-[Full Changelog](https://github.com/googlechrome/lighthouse/compare/v3.2.1...v4.0.0-alpha.0)
+[Full Changelog](https://github.com/googlechrome/lighthouse/compare/v3.2.0...v4.0.0-alpha.0)
 
 ## New Contributors!
 Thanks to @carlesnunez and @justin0022 for their first contributions!
