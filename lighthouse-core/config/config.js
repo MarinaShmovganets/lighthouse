@@ -66,8 +66,8 @@ function validateCategories(categories, audits, groups) {
 
   const auditsKeyedById = new Map((audits || []).map(audit =>
     /** @type {[string, LH.Config.AuditDefn]} */
-    ([audit.implementation.meta.id, audit]))
-  );
+    ([audit.implementation.meta.id, audit])
+  ));
 
   Object.keys(categories).forEach(categoryId => {
     categories[categoryId].auditRefs.forEach((auditRef, index) => {
