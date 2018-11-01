@@ -843,6 +843,10 @@ class Driver {
     const passContext = /** @type {Partial<LH.Gatherer.PassContext>} */ (options.passContext || {});
     const disableJS = passContext.disableJavaScript || false;
 
+    if (waitForNavigated && waitForLoad) {
+      throw new Error('Cannot use both waitForNavigated and waitForLoad, pick just one');
+    }
+
     await this._beginNetworkStatusMonitoring(url);
     await this._clearIsolatedContextId();
 

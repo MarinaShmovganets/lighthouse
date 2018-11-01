@@ -70,10 +70,7 @@ class GatherRunner {
    * @param {string=} url
    * @return {Promise<void>}
    */
-  static async loadBlank(
-      driver,
-      url = constants.defaultPassConfig.blankPage
-  ) {
+  static async loadBlank(driver, url = constants.defaultPassConfig.blankPage) {
     const status = {msg: 'Resetting state with about:blank', id: 'lh:gather:loadBlank'};
     log.time(status);
     await driver.gotoURL(url, {waitForNavigated: true});
