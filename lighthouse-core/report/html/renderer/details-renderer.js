@@ -127,7 +127,8 @@ class DetailsRenderer {
       displayedHost = parsed.file === '/' ? '' : `(${parsed.hostname})`;
       title = url;
     } catch (/** @type {!Error} */ e) {
-      if (!e.name.startsWith('TypeError')) {
+      // All browsers throw a TypeError except Edge they throw a regular Error with Invalid argument as a message
+      if (!e.name.startsWith('TypeError') && !e.message.startsWith('Invalid argument')) {
         throw e;
       }
       displayedPath = url;
