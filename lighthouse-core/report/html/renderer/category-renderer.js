@@ -43,7 +43,7 @@ class CategoryRenderer {
   /**
    * Display info per top-level clump. Define on class to avoid race with Util init.
    */
-  get _clumpInfo() {
+  get _clumpDisplayInfo() {
     return {
       'failed': {
         className: 'lh-failed-audits',
@@ -293,23 +293,21 @@ class CategoryRenderer {
    *   ├── …
    *   ⋮
    * @param {TopLevelClumpId} clumpId
-   * @param {Array<LH.ReportResult.AuditRef>} auditRefs
-   * @param {Object<string, LH.Result.ReportGroup>} groupDefinitions
-   * @param {string} [description] Optional description for clump (e.g. manualDescription)
+   * @param {{auditRefs: Array<LH.ReportResult.AuditRef>, groupDefinitions: Object<string, LH.Result.ReportGroup>, description?: string}} clumpOpts
    * @return {Element}
    */
-  renderClump(clumpId, auditRefs, groupDefinitions, description) {
+  renderClump(clumpId, {auditRefs, groupDefinitions, description}) {
     if (clumpId === 'failed') {
       // Failed audit clump is always expanded and not nested in an lh-audit-group.
       const failedElem = this.renderUnexpandableClump(auditRefs, groupDefinitions);
-      failedElem.classList.add(this._clumpInfo['failed'].className);
+      failedElem.classList.add(this._clumpDisplayInfo.failed.className);
       return failedElem;
     }
 
     const expandable = true;
     const elements = this._renderGroupedAudits(auditRefs, groupDefinitions, {expandable});
 
-    const clumpInfo = this._clumpInfo[clumpId];
+    const clumpInfo = this._clumpDisplayInfo[clumpId];
     // TODO: renderAuditGroup shouldn't be used to render a clump (since it *contains* audit groups).
     const groupDef = {title: clumpInfo.title, description};
     const opts = {expandable, itemCount: auditRefs.length};
@@ -412,8 +410,8 @@ class CategoryRenderer {
       if (clumpRefs.length === 0) continue;
 
       const description = clumpId === 'manual' ? category.manualDescription : undefined;
-      const clumpElem = this.renderClump(clumpId, clumpRefs, groupDefinitions,
-          description);
+      const clumpElem = this.renderClump(clumpId, {auditRefs: clumpRefs, groupDefinitions,
+        description});
       element.appendChild(clumpElem);
     }
 

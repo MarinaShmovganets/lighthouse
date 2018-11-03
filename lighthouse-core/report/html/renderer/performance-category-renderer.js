@@ -215,7 +215,11 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
 
     if (!passedAudits.length) return element;
 
-    const passedElem = this.renderClump('passed', passedAudits, groups);
+    const clumpOpts = {
+      auditRefs: passedAudits,
+      groupDefinitions: groups,
+    };
+    const passedElem = this.renderClump('passed', clumpOpts);
     element.appendChild(passedElem);
     return element;
   }
