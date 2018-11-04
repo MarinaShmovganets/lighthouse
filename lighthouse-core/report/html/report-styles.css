@@ -125,11 +125,6 @@
   100% { opacity: 0.6;}
 }
 
-/* Edge doesn't recognize these, so we preemptively set to display:block */
-details, summary {
-  display: block;
-}
-
 .lh-root * {
   box-sizing: border-box;
 }
@@ -324,11 +319,6 @@ details, summary {
 }
 .lh-audit-group > summary::-webkit-details-marker,
 .lh-expandable-details > summary::-webkit-details-marker {
-  display: none;
-}
-/* Reverse css of edge polyfill (https://github.com/javan/details-element-polyfill/blob/master/src/details-element-polyfill/polyfill.sass) */
-.lh-audit-group > summary:before,
-.lh-expandable-details > summary:before {
   display: none;
 }
 
