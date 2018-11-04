@@ -310,13 +310,18 @@
   background-color: #F8F9FA;
 }
 
-/* Hide the expandable arrow icon, cross-browser */
+/* Hide the expandable arrow icon, three ways: via the CSS Counter Styles spec, for webkit/blink browsers, hiding the polyfilled icon */
+/* https://github.com/javan/details-element-polyfill/blob/master/src/details-element-polyfill/polyfill.sass */
 .lh-audit-group > summary,
 .lh-expandable-details > summary {
   list-style-type: none;
 }
 .lh-audit-group > summary::-webkit-details-marker,
 .lh-expandable-details > summary::-webkit-details-marker {
+  display: none;
+}
+.lh-audit-group > summary:before,
+.lh-expandable-details > summary:before {
   display: none;
 }
 
