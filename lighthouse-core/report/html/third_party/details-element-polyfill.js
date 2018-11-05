@@ -3,8 +3,14 @@ Details Element Polyfill 2.0.4
 Copyright © 2018 Javan Makhmali
  */
 
+// COMPAT: Remove when Edge supports <details>/<summary>
+
 (function() {
   var addAttributesForSummary, eventIsSignificant, findClosestElementWithTagName, findElementsWithTagName, onTogglingTrigger, polyfillFocusAndARIA, polyfillProperties, polyfillStyles, polyfillToggle, polyfillToggleEvent, support, triggerToggle, triggerToggleIfToggled;
+
+  // Exit early if we're not in a page
+  // This line added by Lighthouse
+  if (typeof document === 'undefined' || !('createElement' in document)) return;
 
   support = {
     element: (function() {
