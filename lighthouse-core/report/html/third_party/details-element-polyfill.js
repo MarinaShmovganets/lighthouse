@@ -4,10 +4,6 @@ Copyright © 2018 Javan Makhmali
  */
 
 (function() {
-
-
-}).call(this);
-(function() {
   var addAttributesForSummary, eventIsSignificant, findClosestElementWithTagName, findElementsWithTagName, onTogglingTrigger, polyfillFocusAndARIA, polyfillProperties, polyfillStyles, polyfillToggle, polyfillToggleEvent, support, triggerToggle, triggerToggleIfToggled;
 
   support = {
@@ -289,9 +285,5 @@ Copyright © 2018 Javan Makhmali
   if (support.element && !support.toggleEvent) {
     polyfillToggleEvent();
   }
-
-}).call(this);
-(function() {
-
 
 }).call(this);
