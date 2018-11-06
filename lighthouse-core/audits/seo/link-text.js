@@ -8,7 +8,6 @@
 const Audit = require('../audit');
 const URL = require('../../lib/url-shim');
 const BLOCKLIST = new Set([
-  '', // no description is also bad
   'click here',
   'click this',
   'go',
@@ -56,7 +55,7 @@ class LinkText extends Audit {
       .map(link => {
         return {
           href: link.href,
-          text: link.text.trim().length ? link.text : '<NO TEXT>',
+          text: link.text.trim(),
         };
       });
 
