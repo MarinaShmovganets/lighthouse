@@ -35,7 +35,7 @@ class CrawlableLinks extends Gatherer {
     })()`;
 
     /** @type {LH.Artifacts['CrawlableLinks']} */
-    const links = await passContext.driver.evaluateAsync(expression);
+    const links = await passContext.driver.evaluateAsync(expression, {useIsolation: true});
     return links.filter(link => typeof link.href === 'string' && link.href);
   }
 }
