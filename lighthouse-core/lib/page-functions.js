@@ -84,7 +84,7 @@ function checkTimeSinceLastLongTask() {
  */
 /* istanbul ignore next */
 function getElementsInDocument(selector) {
-  const realMatchesFn = window.__ElementMatches || Element.prototype.matches;
+  const realMatchesFn = window.__ElementMatches || window.Element.prototype.matches;
   /** @type {Array<Element>} */
   const results = [];
 
