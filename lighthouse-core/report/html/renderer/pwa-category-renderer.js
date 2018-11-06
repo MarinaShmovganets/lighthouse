@@ -31,12 +31,13 @@ class PwaCategoryRenderer extends CategoryRenderer {
 
     const auditRefs = category.auditRefs;
 
-    // Regular audits aren't split up into clumps, they're all top-level grouped.
+    // Regular audits aren't split up into pass/fail/not-applicable clumps, they're
+    // all put in a top-level clump that isn't expandable/collapsable.
     const regularAuditRefs = auditRefs.filter(ref => ref.result.scoreDisplayMode !== 'manual');
     const auditsElem = this.renderUnexpandableClump(regularAuditRefs, groupDefinitions);
     categoryElem.appendChild(auditsElem);
 
-    // Manual audits are still clumped.
+    // Manual audits are still in a manual clump.
     const manualAuditRefs = auditRefs.filter(ref => ref.result.scoreDisplayMode === 'manual');
     const manualElem = this.renderClump('manual',
       {auditRefs: manualAuditRefs, groupDefinitions, description: category.manualDescription});
