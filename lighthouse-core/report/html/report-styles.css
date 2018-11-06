@@ -64,6 +64,7 @@
   --navitem-vpadding: calc(var(--navitem-line-height) / 2);
   --lh-score-highlight-bg: hsla(0, 0%, 90%, 0.2);
   --lh-score-icon-background-size: 24px;
+  --lh-group-icon-background-size: var(--lh-score-icon-background-size);
   --lh-score-margin: 12px;
   --lh-table-header-bg: #f8f9fa;
   --lh-table-higlight-bg: hsla(0, 0%, 75%, 0.1);
@@ -623,14 +624,17 @@ details, summary {
 .lh-audit-group--pwa-fast-reliable .lh-audit-group__header::before {
   content: '';
   background-image: var(--pwa-fast-reliable-gray-url);
+  background-size: var(--lh-group-icon-background-size);
 }
 .lh-audit-group--pwa-installable .lh-audit-group__header::before {
   content: '';
   background-image: var(--pwa-installable-gray-url);
+  background-size: var(--lh-group-icon-background-size);
 }
 .lh-audit-group--pwa-engaging .lh-audit-group__header::before {
   content: '';
   background-image: var(--pwa-engaging-gray-url);
+  background-size: var(--lh-group-icon-background-size);
 }
 
 /* Removing too much whitespace */
