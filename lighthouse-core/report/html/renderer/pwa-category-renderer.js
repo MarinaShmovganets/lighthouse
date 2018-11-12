@@ -47,6 +47,42 @@ class PwaCategoryRenderer extends CategoryRenderer {
   }
 
   /**
+   * @param {LH.ReportResult.Category} category
+   * @return {DocumentFragment}
+   */
+  renderScoreGauge(category) {
+    // Defer to parent-gauge style if category error.
+    if (category.score === null) {
+      return super.renderScoreGauge(category);
+    }
+
+    const tmpl = this.dom.cloneTemplate('#tmpl-lh-gauge--pwa', this.templateContext);
+    const wrapper = /** @type {HTMLAnchorElement} */ (this.dom.find('.lh-gauge--pwa__wrapper',
+      tmpl));
+    wrapper.href = `#${category.id}`;
+
+    const passingGroupIds = this._getPassingGroupIds(category.auditRefs);
+    let className = 'lh-badged-na';
+    if (passingGroupIds.has('pwa-fast-reliable')) {
+      if (passingGroupIds.has('pwa-installable')) {
+        if (passingGroupIds.has('pwa-optimized')) {
+          className = 'lh-badged-all';
+        } else {
+          className = 'lh-badged-fast-reliable-installable';
+        }
+      } else {
+        className = 'lh-badged-fast-reliable';
+      }
+    } else if (passingGroupIds.has('pwa-installable')) {
+      className = 'lh-badged-installable';
+    }
+    wrapper.classList.add(className);
+
+    this.dom.find('.lh-gauge__label', tmpl).textContent = category.title;
+    return tmpl;
+  }
+
+  /**
    * Returns the group IDs whose audits are all considered passing.
    * @param {Array<LH.ReportResult.AuditRef>} auditRefs
    * @return {Set<string>}

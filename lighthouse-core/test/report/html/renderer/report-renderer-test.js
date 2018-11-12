@@ -79,7 +79,7 @@ describe('ReportRenderer', () => {
       const output = renderer.renderReport(sampleResults, container);
       assert.ok(output.querySelector('.lh-header-sticky'), 'has a header');
       assert.ok(output.querySelector('.lh-report'), 'has report body');
-      assert.equal(output.querySelectorAll('.lh-gauge').length,
+      assert.equal(output.querySelectorAll('.lh-gauge__wrapper, .lh-gauge--pwa__wrapper').length,
           sampleResults.reportCategories.length * 2, 'renders category gauges');
     });
 
