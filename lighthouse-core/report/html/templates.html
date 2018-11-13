@@ -582,23 +582,24 @@ limitations under the License.
       height: calc(3 * var(--header-font-size));
       display: none;
     }
-
-    .lh-badged-na .lh-gauge--pwa--na {
+    
+    .lh-gauge--pwa__wrapper:not(.lh-badged--pwa-fast-reliable):not(.lh-badged--pwa-installable) .lh-gauge--pwa--na {
       display: block;
     }
-    .lh-badged-all .lh-gauge--pwa--all {
+    
+    .lh-gauge--pwa__wrapper:not(.lh-badged--pwa-fast-reliable).lh-badged--pwa-installable .lh-gauge--pwa--installable {
       display: block;
     }
-
-    .lh-badged-installable .lh-gauge--pwa--installable {
-      display: block;
-    }
-
-    .lh-badged-fast-reliable .lh-gauge--pwa--fast-reliable {
+    
+    .lh-gauge--pwa__wrapper.lh-badged--pwa-fast-reliable:not(.lh-badged--pwa-installable) .lh-gauge--pwa--fast-reliable {
       display: block;
     }
 
-    .lh-badged-fast-reliable-installable .lh-gauge--pwa--fast-reliable-installable {
+    .lh-gauge--pwa__wrapper.lh-badged--pwa-fast-reliable.lh-badged--pwa-installable:not(.lh-badged--pwa-optimized) .lh-gauge--pwa--fast-reliable-installable {
+      display: block;
+    }
+
+    .lh-gauge--pwa__wrapper.lh-badged--pwa-fast-reliable.lh-badged--pwa-installable.lh-badged--pwa-optimized .lh-gauge--pwa--all {
       display: block;
     }
 

@@ -62,21 +62,9 @@ class PwaCategoryRenderer extends CategoryRenderer {
     wrapper.href = `#${category.id}`;
 
     const passingGroupIds = this._getPassingGroupIds(category.auditRefs);
-    let className = 'lh-badged-na';
-    if (passingGroupIds.has('pwa-fast-reliable')) {
-      if (passingGroupIds.has('pwa-installable')) {
-        if (passingGroupIds.has('pwa-optimized')) {
-          className = 'lh-badged-all';
-        } else {
-          className = 'lh-badged-fast-reliable-installable';
-        }
-      } else {
-        className = 'lh-badged-fast-reliable';
-      }
-    } else if (passingGroupIds.has('pwa-installable')) {
-      className = 'lh-badged-installable';
+    for (const passingGroupId of passingGroupIds) {
+      wrapper.classList.add(`lh-badged--${passingGroupId}`);
     }
-    wrapper.classList.add(className);
 
     this.dom.find('.lh-gauge__label', tmpl).textContent = category.title;
     return tmpl;
