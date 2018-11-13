@@ -247,7 +247,7 @@ class ReportUIFeatures {
     this.toolbar.style.transform = `translateY(${heightDiff * scrollPct}px)`;
     const exportParent = this.exportButton.parentElement;
     if (exportParent) {
-      exportParent.style.transform = `translateY(${heightDiff * scrollPct}px)`;
+      exportParent.style.transform = `translateY(${heightDiff * scrollPct}px) translateZ(1px)`;
     }
     this.exportButton.style.transform = `scale(${1 - 0.2 * scrollPct})`;
     // Start showing the productinfo when we are at the 50% mark of our animation
