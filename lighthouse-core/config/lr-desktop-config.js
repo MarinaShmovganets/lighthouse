@@ -18,6 +18,7 @@ const config = {
       throughputKbps: 10 * 1024,
       cpuSlowdownMultiplier: 1,
     },
+    skipAudits: ['uses-http2'],
   },
 };
 
