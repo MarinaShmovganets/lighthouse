@@ -10,7 +10,7 @@
 * lib: add chrome-extension to URL allowedProtocols and add test ([#6447](https://github.com/googlechrome/lighthouse/pull/6447))
 * pwa: audit and report group renames ([#6494](https://github.com/googlechrome/lighthouse/pull/6494))
 * seo: properly handle anchors in SVG ([#6483](https://github.com/googlechrome/lighthouse/pull/6483))
-* increase protocol timeout to 30s ([#6531](https://github.com/googlechrome/lighthouse/pull/6531))
+* increase protocol timeout to 30s ([#6505](https://github.com/googlechrome/lighthouse/pull/6505), [#6531](https://github.com/googlechrome/lighthouse/pull/6531))
 
 ## Report
 
@@ -29,7 +29,6 @@
 
 * build: fix viewer deploy ([#6449](https://github.com/googlechrome/lighthouse/pull/6449))
 * timing: move timing-trace to async events ([#6440](https://github.com/googlechrome/lighthouse/pull/6440))
-* increase generic protocol timeout to 10s (#6475) ([#6505](https://github.com/googlechrome/lighthouse/pull/6505))
 * update puppeteer to version 1.10.0 ([#6493](https://github.com/googlechrome/lighthouse/pull/6493))
 * readme: use official appveyor badge ([#6443](https://github.com/googlechrome/lighthouse/pull/6443))
 * i18n: convert accessibility audits ([#6229](https://github.com/googlechrome/lighthouse/pull/6229))
