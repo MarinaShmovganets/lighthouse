@@ -574,35 +574,10 @@ limitations under the License.
   </a>
 </template>
 
+
 <!-- Lighthouse PWA badge gauge -->
 <template id="tmpl-lh-gauge--pwa">
   <style>
-    .lh-gauge--pwa {
-      width: calc(3 * var(--header-font-size));
-      height: calc(3 * var(--header-font-size));
-      display: none;
-    }
-    
-    .lh-gauge--pwa__wrapper:not(.lh-badged--pwa-fast-reliable):not(.lh-badged--pwa-installable) .lh-gauge--pwa--na {
-      display: block;
-    }
-    
-    .lh-gauge--pwa__wrapper:not(.lh-badged--pwa-fast-reliable).lh-badged--pwa-installable .lh-gauge--pwa--installable {
-      display: block;
-    }
-    
-    .lh-gauge--pwa__wrapper.lh-badged--pwa-fast-reliable:not(.lh-badged--pwa-installable) .lh-gauge--pwa--fast-reliable {
-      display: block;
-    }
-
-    .lh-gauge--pwa__wrapper.lh-badged--pwa-fast-reliable.lh-badged--pwa-installable:not(.lh-badged--pwa-optimized) .lh-gauge--pwa--fast-reliable-installable {
-      display: block;
-    }
-
-    .lh-gauge--pwa__wrapper.lh-badged--pwa-fast-reliable.lh-badged--pwa-installable.lh-badged--pwa-optimized .lh-gauge--pwa--all {
-      display: block;
-    }
-
     .lh-gauge--pwa__wrapper {
       display: inline-flex;
       align-items: center;
@@ -611,6 +586,42 @@ limitations under the License.
       flex: 1;
       min-width: auto;
       position: relative;
+    }
+    .lh-gauge--pwa {
+      width: calc(3 * var(--header-font-size));
+      height: calc(3 * var(--header-font-size));
+    }
+    .lh-gauge--pwa .lh-gauge--pwa__component {
+      display: none;
+    }
+    .lh-gauge--pwa__wrapper:not(.lh-badged--all) .lh-gauge--pwa__logo > path {
+      /* Gray logo unless everything is passing. */
+      fill: #B0B0B0;
+    }
+
+    /* No passing groups. */
+    .lh-gauge--pwa__wrapper:not([class*='lh-badged--']) .lh-gauge--pwa__na-line {
+      display: inline;
+    }
+
+    /* Just fast and reliable. */
+    .lh-gauge--pwa__wrapper.lh-badged--pwa-fast-reliable:not(.lh-badged--pwa-installable) .lh-gauge--pwa__fast-reliable-badge {
+      display: inline;
+    }
+
+    /* Just installable. */
+    .lh-gauge--pwa__wrapper.lh-badged--pwa-installable:not(.lh-badged--pwa-fast-reliable) .lh-gauge--pwa__installable-badge {
+      display: inline;
+    }
+
+    /* Fast and reliable and installable. */
+    .lh-gauge--pwa__wrapper.lh-badged--pwa-fast-reliable.lh-badged--pwa-installable .lh-gauge--pwa__fast-reliable-installable-badges {
+      display: inline;
+    }
+
+    /* All passing groups. */
+    .lh-gauge--pwa__wrapper.lh-badged--all .lh-gauge--pwa__check-circle {
+      display: inline;
     }
 
     .lh-gauge__label {
@@ -623,162 +634,75 @@ limitations under the License.
   </style>
 
   <a href="#" class="lh-gauge--pwa__wrapper">
-    <!-- PWA: N/A -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" class="lh-gauge--pwa lh-gauge--pwa--na">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" class="lh-gauge--pwa">
       <defs>
-        <linearGradient x1="50%" y1="2.14956647%" x2="50%" y2="97.6447669%" id="linearGradient-na-1">
+        <linearGradient id="lh-gauge--pwa__bg-disk__gradient" x1="50%" y1="2.15%" x2="50%" y2="97.645%">
           <stop stop-color="#F1F3F4" offset="0%"></stop>
           <stop stop-color="#DEE6EA" offset="100%"></stop>
         </linearGradient>
-      </defs>
-      <g id="PWA---na" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g>
-          <circle id="Oval-Copy-11" fill="url(#linearGradient-na-1)" fill-rule="nonzero" cx="30" cy="30" r="30"></circle>
-          <g id="PWA-logo---grayed-out" transform="translate(18.000000, 12.000000)" fill="#B0B0B0">
-            <g id="PWA_LOGO_SOURCE-Copy">
-              <polygon id="Path" points="17.6633607 7.38739592 18.3566803 5.64128571 20.3585656 5.64128571 19.4085246 2.99253061 20.5967213 6.46942041e-06 24 8.99917959 21.4902049 8.99917959 20.9086475 7.38739592"></polygon>
-              <polygon id="Path" points="15.5221721 8.99920408 19.1654508 1.91746531e-05 16.750082 3.11326531e-05 14.2578689 5.81550612 12.4856557 4.30905306e-05 10.6290861 4.30905306e-05 8.72620082 5.81550612 7.3842418 3.16551429 6.16981967 6.89166122 7.40281967 8.99920408 9.77984016 8.99920408 11.4993934 3.78397959 13.1388934 8.99920408"></polygon>
-              <path d="M2.2927377,5.90991429 L3.78047951,5.90991429 C4.23114344,5.90991429 4.63244262,5.85982041 4.98437705,5.75963265 L5.36912705,4.57912653 L6.44444262,1.27978776 C6.3625082,1.15045102 6.26896721,1.02816367 6.16381967,0.912941633 C5.61170902,0.304310204 4.80392213,4.97467347e-06 3.74043443,4.97467347e-06 L-4.69020491e-08,4.97467347e-06 L-4.69020491e-08,8.99917959 L2.2927377,8.99917959 L2.2927377,5.90991429 Z M4.2619918,2.0703551 C4.47764754,2.28651429 4.58546311,2.57577551 4.58546311,2.93816327 C4.58546311,3.30333061 4.49063115,3.59294694 4.30097951,3.80701224 C4.09306967,4.04486939 3.7102377,4.16379184 3.1525082,4.16379184 L2.2927377,4.16379184 L2.2927377,1.74609796 L3.15882787,1.74609796 C3.67862705,1.74609796 4.04634836,1.85418367 4.2619918,2.0703551 Z" id="Shape" fill-rule="nonzero"></path>
-            </g>
-          </g>
-          <rect id="Rectangle" fill="#FFFFFF" fill-rule="nonzero" x="20" y="32" width="20" height="4" rx="2"></rect>
-        </g>
-      </g>
-    </svg>
-
-    <!-- PWA: ALL -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 61 60" class="lh-gauge--pwa lh-gauge--pwa--all" >
-      <defs>
-        <linearGradient x1="50%" y1="2.14956647%" x2="50%" y2="97.6447669%" id="linearGradient-all-1">
-          <stop stop-color="#F1F3F4" offset="0%"></stop>
-          <stop stop-color="#DEE6EA" offset="100%"></stop>
-        </linearGradient>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-all-2">
+        <linearGradient id="lh-gauge--pwa__check-circle__gradient" x1="50%" y1="0%" x2="50%" y2="100%">
           <stop stop-color="#00C852" offset="0%"></stop>
           <stop stop-color="#009688" offset="100%"></stop>
         </linearGradient>
-      </defs>
-      <g id="PWA---full" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Group-Copy-2">
-          <g transform="translate(0.646961, 0.000000)">
-            <circle id="Oval-Copy-8" fill="url(#linearGradient-all-1)" fill-rule="nonzero" cx="30" cy="30" r="30"></circle>
-            <g id="PWA-Logo" transform="translate(18.000000, 12.000000)">
-              <g id="PWA_LOGO_SOURCE">
-                <polygon id="Path" fill="#3D3D3D" points="17.6633607 7.38739592 18.3566803 5.64128571 20.3585656 5.64128571 19.4085246 2.99253061 20.5967213 6.46942041e-06 24 8.99917959 21.4902049 8.99917959 20.9086475 7.38739592"></polygon>
-                <polygon id="Path" fill="#304FFE" points="15.5221721 8.99920408 19.1654508 1.91746531e-05 16.750082 3.11326531e-05 14.2578689 5.81550612 12.4856557 4.30905306e-05 10.6290861 4.30905306e-05 8.72620082 5.81550612 7.3842418 3.16551429 6.16981967 6.89166122 7.40281967 8.99920408 9.77984016 8.99920408 11.4993934 3.78397959 13.1388934 8.99920408"></polygon>
-                <path d="M2.2927377,5.90991429 L3.78047951,5.90991429 C4.23114344,5.90991429 4.63244262,5.85982041 4.98437705,5.75963265 L5.36912705,4.57912653 L6.44444262,1.27978776 C6.3625082,1.15045102 6.26896721,1.02816367 6.16381967,0.912941633 C5.61170902,0.304310204 4.80392213,4.97467347e-06 3.74043443,4.97467347e-06 L-4.69020491e-08,4.97467347e-06 L-4.69020491e-08,8.99917959 L2.2927377,8.99917959 L2.2927377,5.90991429 Z M4.2619918,2.0703551 C4.47764754,2.28651429 4.58546311,2.57577551 4.58546311,2.93816327 C4.58546311,3.30333061 4.49063115,3.59294694 4.30097951,3.80701224 C4.09306967,4.04486939 3.7102377,4.16379184 3.1525082,4.16379184 L2.2927377,4.16379184 L2.2927377,1.74609796 L3.15882787,1.74609796 C3.67862705,1.74609796 4.04634836,1.85418367 4.2619918,2.0703551 Z" id="Shape" fill="#3D3D3D" fill-rule="nonzero"></path>
-              </g>
-            </g>
-            <circle id="Oval-Copy-7" fill="#FFFFFF" fill-rule="nonzero" cx="30" cy="40" r="12"></circle>
-            <g id="ic_check_circle_black_24dp-(2)-copy-3" transform="translate(18.000000, 28.000000)">
-              <polygon id="Path" points="0 0 24 0 24 24 0 24"></polygon>
-              <path d="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M10,17 L5,12 L6.41,10.59 L10,14.17 L17.59,6.58 L19,8 L10,17 Z" id="Shape" fill="url(#linearGradient-all-2)" fill-rule="nonzero"></path>
-            </g>
-          </g>
-        </g>
-      </g>
-    </svg>
-
-    <!-- PWA: installable -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" class="lh-gauge--pwa lh-gauge--pwa--installable" >
-      <defs>
-        <linearGradient x1="50%" y1="2.14956647%" x2="50%" y2="97.6447669%" id="linearGradient-installable-1">
-          <stop stop-color="#F1F3F4" offset="0%"></stop>
-          <stop stop-color="#DEE6EA" offset="100%"></stop>
-        </linearGradient>
-        <linearGradient x1="76.0562252%" y1="82.9952053%" x2="24.1112374%" y2="24.735178%" id="linearGradient-installable-2">
+        <linearGradient id="lh-gauge--pwa__installable__shadow-gradient" x1="76.056%" x2="24.111%" y1="82.995%" y2="24.735%">
           <stop stop-color="#A5D6A7" offset="0%"></stop>
           <stop stop-color="#80CBC4" offset="100%"></stop>
         </linearGradient>
-      </defs>
-      <g id="PWA---installable" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g>
-          <circle id="Oval-Copy-11" fill="url(#linearGradient-installable-1)" fill-rule="nonzero" cx="30" cy="30" r="30"></circle>
-          <path d="M53.6288215,48.4866859 C49.3565922,53.9395761 43.2377596,57.8763424 36.2135865,59.3557221 L23,46.1421356 L37.1421356,32 L53.6288215,48.4866859 Z" id="Path-Copy" fill="url(#linearGradient-installable-2)" fill-rule="nonzero"></path>
-          <g id="PWA-logo---grayed-out" transform="translate(18.000000, 12.000000)" fill="#B0B0B0">
-            <g id="PWA_LOGO_SOURCE-Copy">
-              <polygon id="Path" points="17.6633607 7.38739592 18.3566803 5.64128571 20.3585656 5.64128571 19.4085246 2.99253061 20.5967213 6.46942041e-06 24 8.99917959 21.4902049 8.99917959 20.9086475 7.38739592"></polygon>
-              <polygon id="Path" points="15.5221721 8.99920408 19.1654508 1.91746531e-05 16.750082 3.11326531e-05 14.2578689 5.81550612 12.4856557 4.30905306e-05 10.6290861 4.30905306e-05 8.72620082 5.81550612 7.3842418 3.16551429 6.16981967 6.89166122 7.40281967 8.99920408 9.77984016 8.99920408 11.4993934 3.78397959 13.1388934 8.99920408"></polygon>
-              <path d="M2.2927377,5.90991429 L3.78047951,5.90991429 C4.23114344,5.90991429 4.63244262,5.85982041 4.98437705,5.75963265 L5.36912705,4.57912653 L6.44444262,1.27978776 C6.3625082,1.15045102 6.26896721,1.02816367 6.16381967,0.912941633 C5.61170902,0.304310204 4.80392213,4.97467347e-06 3.74043443,4.97467347e-06 L-4.69020491e-08,4.97467347e-06 L-4.69020491e-08,8.99917959 L2.2927377,8.99917959 L2.2927377,5.90991429 Z M4.2619918,2.0703551 C4.47764754,2.28651429 4.58546311,2.57577551 4.58546311,2.93816327 C4.58546311,3.30333061 4.49063115,3.59294694 4.30097951,3.80701224 C4.09306967,4.04486939 3.7102377,4.16379184 3.1525082,4.16379184 L2.2927377,4.16379184 L2.2927377,1.74609796 L3.15882787,1.74609796 C3.67862705,1.74609796 4.04634836,1.85418367 4.2619918,2.0703551 Z" id="Shape" fill-rule="nonzero"></path>
-            </g>
-          </g>
-          <g id="Sub---installable" transform="translate(20.000000, 29.000000)" fill-rule="nonzero">
-            <circle id="Oval-Copy-12" fill="#FFFFFF" cx="10" cy="10" r="10"></circle>
-            <path d="M10,4.16666667 C6.78,4.16666667 4.16666667,6.78 4.16666667,10 C4.16666667,13.22 6.78,15.8333333 10,15.8333333 C13.22,15.8333333 15.8333333,13.22 15.8333333,10 C15.8333333,6.78 13.22,4.16666667 10,4.16666667 Z M12.9166667,10.5833333 L10.5833333,10.5833333 L10.5833333,12.9166667 L9.41666667,12.9166667 L9.41666667,10.5833333 L7.08333333,10.5833333 L7.08333333,9.41666667 L9.41666667,9.41666667 L9.41666667,7.08333333 L10.5833333,7.08333333 L10.5833333,9.41666667 L12.9166667,9.41666667 L12.9166667,10.5833333 Z" id="Shape" fill="#009688"></path>
-          </g>
-        </g>
-      </g>
-    </svg>
-
-    <!-- PWA: fast-reliable -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" class="lh-gauge--pwa lh-gauge--pwa--fast-reliable" >
-      <defs>
-      <linearGradient x1="50%" y1="2.14956647%" x2="50%" y2="97.6447669%" id="linearGradient-fast-reliable-1">
-        <stop stop-color="#F1F3F4" offset="0%"></stop>
-        <stop stop-color="#DEE6EA" offset="100%"></stop>
-      </linearGradient>
-      <linearGradient x1="76.0562252%" y1="82.9952053%" x2="25.6782195%" y2="26.4926607%" id="linearGradient-fast-reliable-2">
-        <stop stop-color="#64B5F6" offset="0%"></stop>
-        <stop stop-color="#2979FF" offset="100%"></stop>
-      </linearGradient>
-      </defs>
-      <g id="PWA---fast-reliable" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g>
-          <circle id="Oval-Copy-4" fill="url(#linearGradient-fast-reliable-1)" fill-rule="nonzero" cx="30" cy="30" r="30"></circle>
-          <path d="M53.6288215,48.4866859 C49.3565922,53.9395761 43.2377596,57.8763424 36.2135865,59.3557221 L23,46.1421356 L37.1421356,32 L53.6288215,48.4866859 Z" id="Path" fill="url(#linearGradient-fast-reliable-2)" fill-rule="nonzero"></path>
-          <g id="PWA-logo---grayed-out" transform="translate(18.000000, 12.000000)" fill="#B0B0B0">
-            <g id="PWA_LOGO_SOURCE-Copy">
-              <polygon id="Path" points="17.6633607 7.38739592 18.3566803 5.64128571 20.3585656 5.64128571 19.4085246 2.99253061 20.5967213 6.46942041e-06 24 8.99917959 21.4902049 8.99917959 20.9086475 7.38739592"></polygon>
-              <polygon id="Path" points="15.5221721 8.99920408 19.1654508 1.91746531e-05 16.750082 3.11326531e-05 14.2578689 5.81550612 12.4856557 4.30905306e-05 10.6290861 4.30905306e-05 8.72620082 5.81550612 7.3842418 3.16551429 6.16981967 6.89166122 7.40281967 8.99920408 9.77984016 8.99920408 11.4993934 3.78397959 13.1388934 8.99920408"></polygon>
-              <path d="M2.2927377,5.90991429 L3.78047951,5.90991429 C4.23114344,5.90991429 4.63244262,5.85982041 4.98437705,5.75963265 L5.36912705,4.57912653 L6.44444262,1.27978776 C6.3625082,1.15045102 6.26896721,1.02816367 6.16381967,0.912941633 C5.61170902,0.304310204 4.80392213,4.97467347e-06 3.74043443,4.97467347e-06 L-4.69020491e-08,4.97467347e-06 L-4.69020491e-08,8.99917959 L2.2927377,8.99917959 L2.2927377,5.90991429 Z M4.2619918,2.0703551 C4.47764754,2.28651429 4.58546311,2.57577551 4.58546311,2.93816327 C4.58546311,3.30333061 4.49063115,3.59294694 4.30097951,3.80701224 C4.09306967,4.04486939 3.7102377,4.16379184 3.1525082,4.16379184 L2.2927377,4.16379184 L2.2927377,1.74609796 L3.15882787,1.74609796 C3.67862705,1.74609796 4.04634836,1.85418367 4.2619918,2.0703551 Z" id="Shape" fill-rule="nonzero"></path>
-            </g>
-          </g>
-          <g id="Sub---fast-reliable" transform="translate(20.000000, 29.000000)" fill-rule="nonzero">
-            <circle id="Oval-Copy-5" fill="#FFFFFF" cx="10" cy="10" r="10"></circle>
-            <path d="M10,3.58333333 L15.25,5.91666667 L15.25,9.41666667 C15.25,12.6541667 13.01,15.6816667 10,16.4166667 C6.99,15.6816667 4.75,12.6541667 4.75,9.41666667 L4.75,5.91666667 L10,3.58333333 Z M9.53160523,14.3168551 C9.53160523,14.3168551 10.4462924,12.706819 12.2850003,9.49141351 L12.3176677,9.42141194 C12.3596687,9.33741006 12.3270013,9.18340661 12.0983295,9.18340661 L10.4649595,9.18340661 L10.9316366,5.91666667 L10.4649595,5.91666667 C9.26093249,8.03538086 8.35557885,9.62208311 7.75356535,10.686107 C7.74423181,10.7047741 7.80956661,10.583438 7.72089795,10.7421082 C7.6322293,10.9007785 7.62756252,11.0501151 7.89823526,11.0501151 L9.53160523,11.0501151 L9.0649281,14.3168551 L9.53160523,14.3168551 Z" id="Shape" fill="#304FFE"></path>
-          </g>
-        </g>
-      </g>
-    </svg>
-
-    <!-- PWA: fast-reliable-installable -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" class="lh-gauge--pwa lh-gauge--pwa--fast-reliable-installable" >
-      <defs>
-        <linearGradient x1="50%" y1="2.14956647%" x2="50%" y2="97.6447669%" id="linearGradient-fast-reliable-installable-1">
-          <stop stop-color="#F1F3F4" offset="0%"></stop>
-          <stop stop-color="#DEE6EA" offset="100%"></stop>
-        </linearGradient>
-        <linearGradient x1="76.0562252%" y1="82.9952053%" x2="26.5802643%" y2="27.5043686%" id="linearGradient-fast-reliable-installable-2">
+        <linearGradient id="lh-gauge--pwa__fast-reliable__shadow-gradient" x1="76.056%" y1="82.995%" x2="25.678%" y2="26.493%">
           <stop stop-color="#64B5F6" offset="0%"></stop>
           <stop stop-color="#2979FF" offset="100%"></stop>
         </linearGradient>
-        <linearGradient x1="76.0562252%" y1="82.9952053%" x2="24.1112374%" y2="24.735178%" id="linearGradient-fast-reliable-installable-3">
-          <stop stop-color="#A5D6A7" offset="0%"></stop>
-          <stop stop-color="#80CBC4" offset="100%"></stop>
-        </linearGradient>
+
+        <g id="lh-gauge--pwa__fast-reliable-badge">
+          <circle fill="#FFFFFF" cx="10" cy="10" r="10"></circle>
+          <path fill="#304FFE" d="M10 3.58l5.25 2.34v3.5c0 3.23-2.24 6.26-5.25 7-3.01-.74-5.25-3.77-5.25-7v-3.5L10 3.58zm-.47 10.74l2.76-4.83.03-.07c.04-.08 0-.24-.22-.24h-1.64l.47-3.26h-.47l-2.7 4.77c-.02.01.05-.1-.04.05-.09.16-.1.31.18.31h1.63l-.47 3.27h.47z"/>
+        </g>
+        <g id="lh-gauge--pwa__installable-badge">
+          <circle fill="#FFFFFF" cx="10" cy="10" r="10"></circle>
+          <path fill="#009688" d="M10 4.167A5.835 5.835 0 0 0 4.167 10 5.835 5.835 0 0 0 10 15.833 5.835 5.835 0 0 0 15.833 10 5.835 5.835 0 0 0 10 4.167zm2.917 6.416h-2.334v2.334H9.417v-2.334H7.083V9.417h2.334V7.083h1.166v2.334h2.334v1.166z"/>
+        </g>
       </defs>
-      <g id="PWA---fast-reliable-installable" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g>
-          <circle id="Oval-Copy-2" fill="url(#linearGradient-fast-reliable-installable-1)" fill-rule="nonzero" cx="30" cy="30" r="30"></circle>
-          <path d="M24.3211055,59.4632411 L11,46.1421356 L25.1421356,32 L47.5069195,54.3647839 C42.5800676,57.9111403 36.5339735,60 30,60 C28.0584347,60 26.1599481,59.8155586 24.3211055,59.4632411 Z" id="Path" fill="url(#linearGradient-fast-reliable-installable-2)" fill-rule="nonzero"></path>
-          <path d="M57.9818606,40.839725 C55.4850846,47.2804826 50.8286598,52.6446001 44.901264,56.0433996 L35,46.1421356 L49.1421356,32 L57.9818606,40.839725 Z" id="Path" fill="url(#linearGradient-fast-reliable-installable-3)" fill-rule="nonzero"></path>
-          <g id="PWA-logo---grayed-out" transform="translate(18.000000, 12.000000)" fill="#B0B0B0">
-            <g id="PWA_LOGO_SOURCE-Copy">
-              <polygon id="Path" points="17.6633607 7.38739592 18.3566803 5.64128571 20.3585656 5.64128571 19.4085246 2.99253061 20.5967213 6.46942041e-06 24 8.99917959 21.4902049 8.99917959 20.9086475 7.38739592"></polygon>
-              <polygon id="Path" points="15.5221721 8.99920408 19.1654508 1.91746531e-05 16.750082 3.11326531e-05 14.2578689 5.81550612 12.4856557 4.30905306e-05 10.6290861 4.30905306e-05 8.72620082 5.81550612 7.3842418 3.16551429 6.16981967 6.89166122 7.40281967 8.99920408 9.77984016 8.99920408 11.4993934 3.78397959 13.1388934 8.99920408"></polygon>
-              <path d="M2.2927377,5.90991429 L3.78047951,5.90991429 C4.23114344,5.90991429 4.63244262,5.85982041 4.98437705,5.75963265 L5.36912705,4.57912653 L6.44444262,1.27978776 C6.3625082,1.15045102 6.26896721,1.02816367 6.16381967,0.912941633 C5.61170902,0.304310204 4.80392213,4.97467347e-06 3.74043443,4.97467347e-06 L-4.69020491e-08,4.97467347e-06 L-4.69020491e-08,8.99917959 L2.2927377,8.99917959 L2.2927377,5.90991429 Z M4.2619918,2.0703551 C4.47764754,2.28651429 4.58546311,2.57577551 4.58546311,2.93816327 C4.58546311,3.30333061 4.49063115,3.59294694 4.30097951,3.80701224 C4.09306967,4.04486939 3.7102377,4.16379184 3.1525082,4.16379184 L2.2927377,4.16379184 L2.2927377,1.74609796 L3.15882787,1.74609796 C3.67862705,1.74609796 4.04634836,1.85418367 4.2619918,2.0703551 Z" id="Shape" fill-rule="nonzero"></path>
-            </g>
+
+      <g stroke="none" fill-rule="nonzero">
+        <!-- Background and PWA logo (color by default) -->
+        <circle fill="url(#lh-gauge--pwa__bg-disk__gradient)" cx="30" cy="30" r="30"></circle>
+        <g class="lh-gauge--pwa__logo">
+          <path fill="#3D3D3D" d="M35.66 19.39l.7-1.75h2L37.4 15 38.6 12l3.4 9h-2.51l-.58-1.61z"/>
+          <path fill="#304FFE" d="M33.52 21l3.65-9h-2.42l-2.5 5.82L30.5 12h-1.86l-1.9 5.82-1.35-2.65-1.21 3.72L25.4 21h2.38l1.72-5.2 1.64 5.2z"/>
+          <path fill="#3D3D3D" fill-rule="nonzero" d="M20.3 17.91h1.48c.45 0 .85-.05 1.2-.15l.39-1.18 1.07-3.3a2.64 2.64 0 0 0-.28-.37c-.55-.6-1.36-.91-2.42-.91H18v9h2.3V17.9zm1.96-3.84c.22.22.33.5.33.87 0 .36-.1.65-.29.87-.2.23-.59.35-1.15.35h-.86v-2.41h.87c.52 0 .89.1 1.1.32z"/>
+        </g>
+
+        <!-- No badges. -->
+        <rect class="lh-gauge--pwa__component lh-gauge--pwa__na-line" fill="#FFFFFF" x="20" y="32" width="20" height="4" rx="2"></rect>
+
+        <!-- Just fast and reliable. -->
+        <g class="lh-gauge--pwa__component lh-gauge--pwa__fast-reliable-badge" transform="translate(20, 29)">
+          <path fill="url(#lh-gauge--pwa__fast-reliable__shadow-gradient)" d="M33.63 19.49A30 30 0 0 1 16.2 30.36L3 17.14 17.14 3l16.49 16.49z"/>
+          <use xlink:href="#lh-gauge--pwa__fast-reliable-badge" />
+        </g>
+
+        <!-- Just installable. -->
+        <g class="lh-gauge--pwa__component lh-gauge--pwa__installable-badge" transform="translate(20, 29)">
+          <path fill="url(#lh-gauge--pwa__installable__shadow-gradient)" d="M33.629 19.487c-4.272 5.453-10.391 9.39-17.415 10.869L3 17.142 17.142 3 33.63 19.487z"/>
+          <use xlink:href="#lh-gauge--pwa__installable-badge" />
+        </g>
+
+        <!-- Fast and reliable and installable. -->
+        <g class="lh-gauge--pwa__component lh-gauge--pwa__fast-reliable-installable-badges">
+          <g transform="translate(8, 29)"> <!-- fast and reliable -->
+            <path fill="url(#lh-gauge--pwa__fast-reliable__shadow-gradient)" d="M16.321 30.463L3 17.143 17.142 3l22.365 22.365A29.864 29.864 0 0 1 22 31c-1.942 0-3.84-.184-5.679-.537z"/>
+            <use xlink:href="#lh-gauge--pwa__fast-reliable-badge" />
           </g>
-          <circle id="Oval" fill="#FFFFFF" fill-rule="nonzero" cx="18" cy="39" r="10"></circle>
-          <circle id="Oval-Copy" fill="#FFFFFF" fill-rule="nonzero" cx="42" cy="39" r="10"></circle>
-          <g id="ic_verified_user_black_24dp-copy-3" transform="translate(11.000000, 32.000000)">
-            <polygon id="Path" points="0 0 14 0 14 14 0 14"></polygon>
-            <path d="M7,0.583333333 L12.25,2.91666667 L12.25,6.41666667 C12.25,9.65416667 10.01,12.6816667 7,13.4166667 C3.99,12.6816667 1.75,9.65416667 1.75,6.41666667 L1.75,2.91666667 L7,0.583333333 Z M6.53160523,11.3168551 C6.53160523,11.3168551 7.44629241,9.70681897 9.28500032,6.49141351 L9.31766772,6.42141194 C9.35966866,6.33741006 9.32700127,6.18340661 9.09832947,6.18340661 L7.4649595,6.18340661 L7.93163663,2.91666667 L7.4649595,2.91666667 C6.26093249,5.03538086 5.35557885,6.62208311 4.75356535,7.68610698 C4.74423181,7.70477406 4.80956661,7.58343801 4.72089795,7.74210823 C4.6322293,7.90077846 4.62756252,8.05011514 4.89823526,8.05011514 L6.53160523,8.05011514 L6.0649281,11.3168551 L6.53160523,11.3168551 Z" id="Shape" fill="#304FFE" fill-rule="nonzero"></path>
+          <g transform="translate(32, 29)"> <!-- installable -->
+            <path fill="url(#lh-gauge--pwa__installable__shadow-gradient)" d="M25.982 11.84a30.107 30.107 0 0 1-13.08 15.203L3 17.143 17.142 3l8.84 8.84z"/>
+            <use xlink:href="#lh-gauge--pwa__installable-badge" />
           </g>
-          <g id="ic_add_circle_black_24dp-(1)-copy" transform="translate(35.000000, 32.000000)">
-            <polygon id="Path" points="0 0 14 0 14 14 0 14"></polygon>
-            <path d="M7,1.16666667 C3.78,1.16666667 1.16666667,3.78 1.16666667,7 C1.16666667,10.22 3.78,12.8333333 7,12.8333333 C10.22,12.8333333 12.8333333,10.22 12.8333333,7 C12.8333333,3.78 10.22,1.16666667 7,1.16666667 Z M9.91666667,7.58333333 L7.58333333,7.58333333 L7.58333333,9.91666667 L6.41666667,9.91666667 L6.41666667,7.58333333 L4.08333333,7.58333333 L4.08333333,6.41666667 L6.41666667,6.41666667 L6.41666667,4.08333333 L7.58333333,4.08333333 L7.58333333,6.41666667 L9.91666667,6.41666667 L9.91666667,7.58333333 Z" id="Shape" fill="#009688" fill-rule="nonzero"></path>
-          </g>
+        </g>
+
+        <!-- Full PWA. -->
+        <g class="lh-gauge--pwa__component lh-gauge--pwa__check-circle" transform="translate(18, 28)">
+          <circle fill="#FFFFFF" cx="12" cy="12" r="12"></circle>
+          <path fill="url(#lh-gauge--pwa__check-circle__gradient)" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
         </g>
       </g>
     </svg>
