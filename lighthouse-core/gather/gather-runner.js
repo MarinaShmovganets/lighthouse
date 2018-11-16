@@ -150,11 +150,18 @@ class GatherRunner {
     if (!mainRecord) {
       errorDef = LHError.errors.NO_DOCUMENT_REQUEST;
     } else if (mainRecord.failed) {
-      if (mainRecord.localizedFailDescription === 'net::ERR_NAME_NOT_RESOLVED') {
+      const netErr = mainRecord.localizedFailDescription;
+      // Match all resolution and DNS failures
+      // https://cs.chromium.org/chromium/src/net/base/net_error_list.h?rcl=cd62979b
+      if (
+        netErr.startsWith('net::ERR_NAME_NOT_RESOLVED') ||
+        netErr.startsWith('net::ERR_NAME_RESOLUTION_FAILED') ||
+        netErr.startsWith('net::ERR_DNS_')
+      ) {
         errorDef = {...LHError.errors.DNS_FAILURE};
       } else {
         errorDef = {...LHError.errors.FAILED_DOCUMENT_REQUEST};
-        errorDef.message += ` ${mainRecord.localizedFailDescription}.`;
+        errorDef.message += ` ${netErr}.`;
       }
     } else if (mainRecord.hasErrorStatusCode()) {
       errorDef = {...LHError.errors.ERRORED_DOCUMENT_REQUEST};
