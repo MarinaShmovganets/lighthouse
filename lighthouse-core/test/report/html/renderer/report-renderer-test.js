@@ -104,6 +104,31 @@ describe('ReportRenderer', () => {
       assert.equal(url.href, sampleResults.finalUrl);
     });
 
+    it('renders special score gauges after the mainstream ones', () => {
+      const container = renderer._dom._document.body;
+      const output = renderer.renderReport(sampleResults, container);
+
+      const allGaugeCount = output
+        .querySelectorAll('.lh-scores-header > a[class*="lh-gauge"]').length;
+      const regularGaugeCount = output
+        .querySelectorAll('.lh-scores-header > .lh-gauge__wrapper').length;
+
+      // Not all gauges are regular.
+      assert.ok(regularGaugeCount < allGaugeCount);
+
+      const scoresHeaderElem = output.querySelector('.lh-scores-header');
+      for (let i = 0; i < scoresHeaderElem.children.length; i++) {
+        const gauge = scoresHeaderElem.children[i];
+
+        if (i < regularGaugeCount) {
+          assert.ok(gauge.classList.contains('lh-gauge__wrapper'));
+        } else {
+          assert.ok(!gauge.classList.contains('lh-gauge__wrapper'));
+          assert.ok(gauge.classList.contains('lh-gauge--pwa__wrapper'));
+        }
+      }
+    });
+
     it('should not mutate a report object', () => {
       const container = renderer._dom._document.body;
       const originalResults = JSON.parse(JSON.stringify(sampleResults));
