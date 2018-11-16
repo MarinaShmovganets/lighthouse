@@ -182,6 +182,13 @@ const ERRORS = {
     lhrRuntimeError: true,
   },
 
+  // Protocol timeout failures
+  DNS_FAILURE: {
+    code: 'DNS_FAILURE',
+    message: strings.dnsFailure,
+    lhrRuntimeError: true,
+  },
+
   // Hey! When adding a new error type, update lighthouse-result.proto too.
 };
 

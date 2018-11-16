@@ -150,8 +150,12 @@ class GatherRunner {
     if (!mainRecord) {
       errorDef = LHError.errors.NO_DOCUMENT_REQUEST;
     } else if (mainRecord.failed) {
-      errorDef = {...LHError.errors.FAILED_DOCUMENT_REQUEST};
-      errorDef.message += ` ${mainRecord.localizedFailDescription}.`;
+      if (mainRecord.localizedFailDescription === 'net::ERR_NAME_NOT_RESOLVED') {
+        errorDef = {...LHError.errors.DNS_FAILURE};
+      } else {
+        errorDef = {...LHError.errors.FAILED_DOCUMENT_REQUEST};
+        errorDef.message += ` ${mainRecord.localizedFailDescription}.`;
+      }
     } else if (mainRecord.hasErrorStatusCode()) {
       errorDef = {...LHError.errors.ERRORED_DOCUMENT_REQUEST};
       errorDef.message += ` Status code: ${mainRecord.statusCode}.`;
