@@ -35,7 +35,6 @@ const SMOKETESTS = [{
   config: smokehouseDir + 'error-config.js',
   batch: 'errors',
 }, {
-}, {
   id: 'pwa',
   expectations: smokehouseDir + 'pwa-expectations.js',
   config: smokehouseDir + 'pwa-config.js',
