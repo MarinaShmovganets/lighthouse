@@ -188,7 +188,7 @@ const ERRORS = {
     lhrRuntimeError: true,
   },
 
-  // DNS failure on main document (no resolution, broken DNS)
+  // DNS failure on main document (no resolution, timed out, etc)
   DNS_FAILURE: {
     code: 'DNS_FAILURE',
     message: strings.dnsFailure,

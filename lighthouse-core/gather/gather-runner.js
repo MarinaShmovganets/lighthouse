@@ -127,7 +127,7 @@ class GatherRunner {
     } catch (err) {
       // Ignore disconnecting error if browser was already closed.
       // See https://github.com/GoogleChrome/lighthouse/issues/1583
-      if (!(/close\/.*status: 500$/.test(err.message))) {
+      if (!/close\/.*status: 500$/.test(err.message)) {
         log.error('GatherRunner disconnect', err.message);
       }
     }
@@ -154,11 +154,11 @@ class GatherRunner {
       // Match all resolution and DNS failures
       // https://cs.chromium.org/chromium/src/net/base/net_error_list.h?rcl=cd62979b
       if (
-        netErr.startsWith('net::ERR_NAME_NOT_RESOLVED') ||
-        netErr.startsWith('net::ERR_NAME_RESOLUTION_FAILED') ||
+        netErr === 'net::ERR_NAME_NOT_RESOLVED' ||
+        netErr === 'net::ERR_NAME_RESOLUTION_FAILED' ||
         netErr.startsWith('net::ERR_DNS_')
       ) {
-        errorDef = {...LHError.errors.DNS_FAILURE};
+        errorDef = LHError.errors.DNS_FAILURE;
       } else {
         errorDef = {...LHError.errors.FAILED_DOCUMENT_REQUEST};
         errorDef.message += ` ${netErr}.`;
@@ -199,8 +199,9 @@ class GatherRunner {
   static async beforePass(passContext, gathererResults) {
     const bpStatus = {msg: `Running beforePass methods`, id: `lh:gather:beforePass`};
     log.time(bpStatus, 'verbose');
-    const blockedUrls = (passContext.passConfig.blockedUrlPatterns || [])
-      .concat(passContext.settings.blockedUrlPatterns || []);
+    const blockedUrls = (passContext.passConfig.blockedUrlPatterns || []).concat(
+      passContext.settings.blockedUrlPatterns || []
+    );
 
     // Set request blocking before any network activity
     // No "clearing" is done at the end of the pass since blockUrlPatterns([]) will unset all if
@@ -347,10 +348,10 @@ class GatherRunner {
       passContext.options = gathererDefn.options || {};
 
       // If there was a pageLoadError, fail every afterPass with it rather than bail completely.
-      const artifactPromise = pageLoadError ?
-        Promise.reject(pageLoadError) :
-        // Wrap gatherer response in promise, whether rejected or not.
-        Promise.resolve().then(_ => gatherer.afterPass(passContext, passData));
+      const artifactPromise = pageLoadError
+        ? Promise.reject(pageLoadError)
+        : // Wrap gatherer response in promise, whether rejected or not.
+          Promise.resolve().then(_ => gatherer.afterPass(passContext, passData));
 
       const gathererResult = gathererResults[gatherer.name] || [];
       gathererResult.push(artifactPromise);
@@ -414,7 +415,7 @@ class GatherRunner {
    */
   static async getBaseArtifacts(options) {
     return {
-      fetchTime: (new Date()).toJSON(),
+      fetchTime: new Date().toJSON(),
       LighthouseRunWarnings: [],
       HostUserAgent: (await options.driver.getBrowserVersion()).userAgent,
       NetworkUserAgent: '', // updated later
@@ -472,9 +473,10 @@ class GatherRunner {
         // Save devtoolsLog, but networkRecords are discarded and not added onto artifacts.
         baseArtifacts.devtoolsLogs[passConfig.passName] = passData.devtoolsLog;
 
-        const userAgentEntry = passData.devtoolsLog.find(entry =>
-          entry.method === 'Network.requestWillBeSent' &&
-          !!entry.params.request.headers['User-Agent']
+        const userAgentEntry = passData.devtoolsLog.find(
+          entry =>
+            entry.method === 'Network.requestWillBeSent' &&
+            !!entry.params.request.headers['User-Agent']
         );
 
         if (userAgentEntry && !baseArtifacts.NetworkUserAgent) {
