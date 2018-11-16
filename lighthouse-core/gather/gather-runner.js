@@ -311,6 +311,8 @@ class GatherRunner {
     const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
     log.timeEnd(status);
 
+    this.assertNoSecurityIssues(driver.getSecurityState());
+
     let pageLoadError = GatherRunner.getPageLoadError(passContext.url, networkRecords);
     // If the driver was offline, a page load error is expected, so do not save it.
     if (!driver.online) pageLoadError = undefined;
@@ -319,8 +321,6 @@ class GatherRunner {
       log.error('GatherRunner', pageLoadError.message, passContext.url);
       passContext.LighthouseRunWarnings.push(pageLoadError.friendlyMessage);
     }
-
-    this.assertNoSecurityIssues(driver.getSecurityState());
 
     // Expose devtoolsLog, networkRecords, and trace (if present) to gatherers
     /** @type {LH.Gatherer.LoadData} */
