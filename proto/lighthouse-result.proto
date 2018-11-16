@@ -47,6 +47,8 @@ enum LighthouseError {
   INSECURE_DOCUMENT_REQUEST = 16;
   // Used when protocol command times out.
   PROTOCOL_TIMEOUT = 17;
+  // DNS timed out for the main document request.
+  DNS_FAILURE = 18;
 }
 
 // The overarching Lighthouse Response object (LHR)
