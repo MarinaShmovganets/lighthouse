@@ -478,7 +478,6 @@ limitations under the License.
 <template id="tmpl-lh-gauge">
   <style>
     .lh-gauge__wrapper {
-      --circle-size: calc(3 * var(--header-font-size));
       --circle-size-half: calc(var(--circle-size) / 2);
       --circle-background: hsl(216, 12%, 92%);
       --circle-border-width: 9;
@@ -588,8 +587,8 @@ limitations under the License.
       position: relative;
     }
     .lh-gauge--pwa {
-      width: calc(3 * var(--header-font-size));
-      height: calc(3 * var(--header-font-size));
+      width: var(--circle-size);
+      height: var(--circle-size);
     }
     .lh-gauge--pwa .lh-gauge--pwa__component {
       display: none;
