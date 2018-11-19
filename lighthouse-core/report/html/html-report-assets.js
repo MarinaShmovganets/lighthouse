@@ -7,15 +7,13 @@
 
 const fs = require('fs');
 
-// COMPAT: Remove when Microsoft Edge supports <details>/<summary>
-// https://developer.microsoft.com/en-us/microsoft-edge/platform/status/detailssummary/?q=details
-const detailsPath = require.resolve('details-element-polyfill/dist/details-element-polyfill.js');
-
 const REPORT_TEMPLATE = fs.readFileSync(__dirname + '/report-template.html', 'utf8');
 const REPORT_JAVASCRIPT = [
   fs.readFileSync(__dirname + '/renderer/util.js', 'utf8'),
   fs.readFileSync(__dirname + '/renderer/dom.js', 'utf8'),
-  fs.readFileSync(detailsPath),
+  // COMPAT: Remove when Microsoft Edge supports <details>/<summary>
+  // https://developer.microsoft.com/en-us/microsoft-edge/platform/status/detailssummary/?q=details
+  fs.readFileSync(require.resolve('details-element-polyfill/dist/details-element-polyfill.js')),
   fs.readFileSync(__dirname + '/renderer/details-renderer.js', 'utf8'),
   fs.readFileSync(__dirname + '/renderer/crc-details-renderer.js', 'utf8'),
   fs.readFileSync(__dirname + '/../../lib/file-namer.js', 'utf8'),
