@@ -259,7 +259,7 @@ class Driver {
   }
 
   /**
-   * timeout is used for the next call to 'sendCommand'. If 0, no timeout is used.
+   * timeout is used for the next call to 'sendCommand'.
    * NOTE: This can eventually be replaced when TypeScript
    * resolves https://github.com/Microsoft/TypeScript/issues/5453.
    * @param {number} timeout
