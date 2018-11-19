@@ -269,7 +269,7 @@ class Driver {
   }
 
   /**
-   * Call protocol methods.
+   * Call protocol methods, with a timeout.
    * To configure the timeout for the next call, use 'setNextProtocolTimeout'.
    * @template {keyof LH.CrdpCommands} C
    * @param {C} method
@@ -279,6 +279,31 @@ class Driver {
   sendCommand(method, ...params) {
     const timeout = this._nextProtocolTimeout;
     this._nextProtocolTimeout = DEFAULT_PROTOCOL_TIMEOUT;
+    return new Promise(async (resolve, reject) => {
+      const asyncTimeout = setTimeout((() => {
+        const err = new LHError(LHError.errors.PROTOCOL_TIMEOUT);
+        err.message += ` Method: ${method}`;
+        reject(err);
+      }), timeout);
+      try {
+        const result = await this.innerSendCommand(method, ...params);
+        resolve(result);
+      } catch (err) {
+        reject(err);
+      } finally {
+        clearTimeout(asyncTimeout);
+      }
+    });
+  }
+
+  /**
+   * Call protocol methods.
+   * @template {keyof LH.CrdpCommands} C
+   * @param {C} method
+   * @param {LH.CrdpCommands[C]['paramsType']} params
+   * @return {Promise<LH.CrdpCommands[C]['returnType']>}
+   */
+  innerSendCommand(method, ...params) {
     const domainCommand = /^(\w+)\.(enable|disable)$/.exec(method);
     if (domainCommand) {
       const enable = domainCommand[2] === 'enable';
@@ -286,26 +311,7 @@ class Driver {
         return Promise.resolve();
       }
     }
-    return new Promise(async (resolve, reject) => {
-      let asyncTimeout;
-      if (timeout > 0) {
-        asyncTimeout = setTimeout((() => {
-          const err = new LHError(LHError.errors.PROTOCOL_TIMEOUT);
-          err.message += ` Method: ${method}`;
-          reject(err);
-        }), timeout);
-      }
-      try {
-        const result = await this._connection.sendCommand(method, ...params);
-        resolve(result);
-      } catch (err) {
-        reject(err);
-      } finally {
-        if (asyncTimeout) {
-          clearTimeout(asyncTimeout);
-        }
-      }
-    });
+    return this._connection.sendCommand(method, ...params);
   }
 
   /**
@@ -846,8 +852,8 @@ class Driver {
     // happen _after_ onload: https://crbug.com/768961
     this.sendCommand('Page.enable');
     this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS});
-    this.setNextProtocolTimeout(0); // We don't need a timeout for Page.navigate. See #6413.
-    this.sendCommand('Page.navigate', {url});
+    // No timeout needed for Page.navigate. See #6413.
+    this.innerSendCommand('Page.navigate', {url});
 
     if (waitForLoad) {
       const passConfig = /** @type {Partial<LH.Config.Pass>} */ (passContext.passConfig || {});
