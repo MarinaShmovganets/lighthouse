@@ -241,11 +241,19 @@ describe('Browser Driver', () => {
   });
 
   it('.sendCommand timesout when commands take too long', async () => {
-    const driver = new Driver(connection);
-    driver._innerSendCommand = () => {
-      return new Promise(resolve => setTimeout(resolve, 15));
-    };
-
+    class SlowConnection extends EventEmitter {
+      connect() {
+        return Promise.resolve();
+      }
+      disconnect() {
+        return Promise.resolve();
+      }
+      sendCommand() {
+        return new Promise(resolve => setTimeout(resolve, 15));
+      }
+    }
+    const slowConnection = new SlowConnection();
+    const driver = new Driver(slowConnection);
     driver.setNextProtocolTimeout(25);
     await driver.sendCommand('Page.enable');
 
@@ -254,7 +262,7 @@ describe('Browser Driver', () => {
       await driver.sendCommand('Page.disable');
       assert.fail('expected driver.sendCommand to timeout');
     } catch (err) {
-      // :)
+      assert.equal(err.code, 'PROTOCOL_TIMEOUT');
     }
   });
 
