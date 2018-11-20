@@ -12,7 +12,7 @@ const assert = require('assert');
 const makeComputedArtifact = require('../../computed/computed-artifact.js');
 
 describe('ComputedArtifact base class', () => {
-  it.skip('caches computed artifacts by strict equality', async () => {
+  it('caches computed artifacts by strict equality', async () => {
     let computeCounter = 0;
 
     const TestComputedArtifact = makeComputedArtifact(class TestComputedArtifact {
