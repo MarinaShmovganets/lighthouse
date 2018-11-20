@@ -108,6 +108,7 @@ describe('Offline: service worker audit', () => {
     const swOpts = [{
       status: 'activated',
       scriptURL: 'https://example.com/serviceworker/sw.js',
+      // can happen when 'Service-Worker-Allowed' header widens max scope.
       scopeURL: 'https://example.com/',
     }];
 
