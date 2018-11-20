@@ -240,6 +240,24 @@ describe('Browser Driver', () => {
     });
   });
 
+  it('.sendCommand timesout when commands take too long', async () => {
+    const driver = new Driver(connection);
+    driver._innerSendCommand = () => {
+      return new Promise(resolve => setTimeout(resolve, 15));
+    };
+
+    driver.setNextProtocolTimeout(25);
+    await driver.sendCommand('Page.enable');
+
+    driver.setNextProtocolTimeout(5);
+    try {
+      await driver.sendCommand('Page.disable');
+      assert.fail('expected driver.sendCommand to timeout');
+    } catch (err) {
+      // :)
+    }
+  });
+
   it('will request default traceCategories', () => {
     return driverStub.beginTrace().then(() => {
       const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');

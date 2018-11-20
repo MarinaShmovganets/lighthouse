@@ -286,7 +286,7 @@ class Driver {
         reject(err);
       }), timeout);
       try {
-        const result = await this.innerSendCommand(method, ...params);
+        const result = await this._innerSendCommand(method, ...params);
         resolve(result);
       } catch (err) {
         reject(err);
@@ -298,12 +298,13 @@ class Driver {
 
   /**
    * Call protocol methods.
+   * @private
    * @template {keyof LH.CrdpCommands} C
    * @param {C} method
    * @param {LH.CrdpCommands[C]['paramsType']} params
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
-  innerSendCommand(method, ...params) {
+  _innerSendCommand(method, ...params) {
     const domainCommand = /^(\w+)\.(enable|disable)$/.exec(method);
     if (domainCommand) {
       const enable = domainCommand[2] === 'enable';
@@ -895,7 +896,7 @@ class Driver {
     this.sendCommand('Page.enable');
     this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS});
     // No timeout needed for Page.navigate. See #6413.
-    this.innerSendCommand('Page.navigate', {url});
+    this._innerSendCommand('Page.navigate', {url});
 
     if (waitForNavigated) {
       await this._waitForFrameNavigated();
