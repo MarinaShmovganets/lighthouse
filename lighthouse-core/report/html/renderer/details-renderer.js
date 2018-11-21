@@ -166,7 +166,6 @@ class DetailsRenderer {
     a.target = '_blank';
     a.textContent = details.text;
     a.href = url.href;
-
     return a;
   }
 
@@ -311,6 +310,10 @@ class DetailsRenderer {
               const codeValue = /** @type {(number|string|undefined)} */ (value);
               itemElement = this._renderCode({value: codeValue});
             }
+            break;
+          }
+          case 'link': {
+            itemElement = this._renderLink(/** @type {LinkDetailsJSON} */ {url: value, text: value})
             break;
           }
           case 'timespanMs': {

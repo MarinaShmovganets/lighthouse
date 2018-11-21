@@ -82,7 +82,7 @@ class UsesWebPImages extends ByteEfficiencyAudit {
     /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
     const headings = [
       {key: 'url', valueType: 'thumbnail', label: ''},
-      {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
+      {key: 'url', valueType: 'link', label: str_(i18n.UIStrings.columnURL)},
       {key: 'totalBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnSize)},
       {key: 'wastedBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnWastedBytes)},
     ];
