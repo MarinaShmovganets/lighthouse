@@ -166,6 +166,7 @@ class DetailsRenderer {
     a.target = '_blank';
     a.textContent = details.text;
     a.href = url.href;
+
     return a;
   }
 
