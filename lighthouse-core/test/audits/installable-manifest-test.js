@@ -98,7 +98,7 @@ describe('PWA: webapp install banner audit', () => {
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation.includes('short_name'), result.explanation);
-        
+
         const details = result.details.items[0];
         assert.strictEqual(details.failures.length, 1, details.failures);
         assert.strictEqual(details.hasStartUrl, true);
@@ -114,7 +114,7 @@ describe('PWA: webapp install banner audit', () => {
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation.includes('name'), result.explanation);
-        
+
         const details = result.details.items[0];
         assert.strictEqual(details.failures.length, 1, details.failures);
         assert.strictEqual(details.hasStartUrl, true);
@@ -130,7 +130,7 @@ describe('PWA: webapp install banner audit', () => {
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation.includes('PNG icon'), result.explanation);
-        
+
         const details = result.details.items[0];
         assert.strictEqual(details.failures.length, 1, details.failures);
         assert.strictEqual(details.hasStartUrl, true);
@@ -146,7 +146,7 @@ describe('PWA: webapp install banner audit', () => {
     return InstallableManifestAudit.audit(artifacts, context).then(result => {
       assert.strictEqual(result.rawValue, false);
       assert.ok(result.explanation.includes('PNG icon'), result.explanation);
-      
+
       const details = result.details.items[0];
       assert.strictEqual(details.failures.length, 1, details.failures);
       assert.strictEqual(details.hasStartUrl, true);
