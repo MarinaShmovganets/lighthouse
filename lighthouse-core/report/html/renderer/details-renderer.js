@@ -314,7 +314,7 @@ class DetailsRenderer {
             break;
           }
           case 'link': {
-            itemElement = this._renderLink(/** @type {LinkDetailsJSON} */ {url: value, text: value})
+            itemElement = this._renderLink({url: value, text: value});
             break;
           }
           case 'timespanMs': {
