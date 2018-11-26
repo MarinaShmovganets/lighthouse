@@ -24,10 +24,6 @@
 </h4>
 
 <script>
-  function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-
   async function registerServiceWorker(qs = '') {
     if (!('serviceWorker' in navigator)) return
 
@@ -45,7 +41,7 @@
   }
 
   if (window.location.search.includes('slow')) {
-    setTimeout(() => registerServiceWorker('?delay=5000&slow'), 500);
+    window.addEventListener('load', () => registerServiceWorker('?delay=5000&slow'));
   } else {
     registerServiceWorker();
   }
