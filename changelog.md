@@ -14,12 +14,10 @@
 
 ## Report
 
-* fix pwa-optimized badge gauge ([#6670](https://github.com/googlechrome/lighthouse/pull/6670))
-* add PWA category badge gauge ([#6526](https://github.com/googlechrome/lighthouse/pull/6526))
+* add PWA category badge gauge ([#6526](https://github.com/googlechrome/lighthouse/pull/6526), [#6670](https://github.com/googlechrome/lighthouse/pull/6670))
 * give passed-opportunities group an icon ([#6594](https://github.com/googlechrome/lighthouse/pull/6594))
 * safari: fix dropdown overlap translateZ ([#6546](https://github.com/googlechrome/lighthouse/pull/6546))
-* use details-element-polyfill from node_modules ([#6593](https://github.com/googlechrome/lighthouse/pull/6593))
-* import <detail> polyfill as string, not Buffer ([#6607](https://github.com/googlechrome/lighthouse/pull/6607))
+* use details-element-polyfill from node_modules ([#6593](https://github.com/googlechrome/lighthouse/pull/6593), [#6607](https://github.com/googlechrome/lighthouse/pull/6607))
 
 ## CLI
 
