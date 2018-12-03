@@ -20,6 +20,9 @@ class Scripts extends Gatherer {
   async afterPass(passContext, loadData) {
     const driver = passContext.driver;
 
+    // Obviously slower
+    await new Promise(resolve => setTimeout(resolve, 300))
+
     /** @type {Object<string, string>} */
     const scriptContentMap = {};
     const scriptRecords = loadData.networkRecords
