@@ -210,9 +210,9 @@ describe('Performance: uses-rel-preload audit', () => {
     });
   });
   
-  it(`shouldn't suggest preload for protocol scheme`, () => {
+  it(`shouldn't suggest preload for protocol intent`, () => {
     const networkRecords = getMockNetworkRecords();
-    networkRecords[2].protocol = 'scheme';
+    networkRecords[2].protocol = 'intent';
 
     const artifacts = mockArtifacts(networkRecords, defaultMainResourceUrl);
     const context = {settings: {}, computedCache: new Map()};
