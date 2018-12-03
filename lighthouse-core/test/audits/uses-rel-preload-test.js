@@ -209,7 +209,7 @@ describe('Performance: uses-rel-preload audit', () => {
       assert.equal(output.details.items.length, 0);
     });
   });
-  
+
   it(`shouldn't suggest preload for protocol intent`, () => {
     const networkRecords = getMockNetworkRecords();
     networkRecords[2].protocol = 'intent';
