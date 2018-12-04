@@ -393,6 +393,8 @@ declare global {
          */
         fmpFellBack: boolean;
       }
+
+      export type UserTimings = Array<MarkEvent|MeasureEvent>;
     }
   }
 }
