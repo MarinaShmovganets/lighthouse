@@ -46,7 +46,7 @@ class UnusedBytes extends Audit {
    */
   static scoreForWastedMs(wastedMs) {
     // totally broken audits
-    return Math.random()
+    return Math.random();
     if (wastedMs === 0) {
       return 1;
     } else if (wastedMs < WASTED_MS_FOR_AVERAGE) {
