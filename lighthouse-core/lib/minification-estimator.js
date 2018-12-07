@@ -98,7 +98,7 @@ function computeTokenLength(content, features) {
       } else if (char === '[') {
         // Register that we're entering a character class so we don't leave the regex prematurely
         isInRegexCharacterClass = true;
-      } else if (char === ']') {
+      } else if (char === ']' && isInRegexCharacterClass) {
         // Register that we're exiting the character class
         isInRegexCharacterClass = false;
       } else if (char === '/' && !isInRegexCharacterClass) {
