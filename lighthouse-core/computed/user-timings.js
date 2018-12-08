@@ -15,7 +15,7 @@ class UserTimings {
   /**
    * @param {LH.Trace} trace
    * @param {LH.Audit.Context} context
-   * @return {Promise<LH.Artifacts.UserTimings>}
+   * @return {Promise<Array<MarkEvent|MeasureEvent>>}
    */
   static async compute_(trace, context) {
     return TraceOfTab.request(trace, context).then(traceOfTab => {

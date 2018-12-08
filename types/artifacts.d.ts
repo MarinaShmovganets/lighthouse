@@ -394,7 +394,14 @@ declare global {
         fmpFellBack: boolean;
       }
 
-      export type UserTimings = Array<MarkEvent|MeasureEvent>;
+      export type UserTimings = {
+        [id: string]: {
+          name: string;
+          isMark: boolean;
+          args: TraceEvent['args'];
+          startTime: number;
+        }
+      }
     }
   }
 }
