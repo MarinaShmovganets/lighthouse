@@ -732,7 +732,7 @@
     "description": "Description of a Lighthouse audit that tells the user *why* they need to use a larger font size. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation."
   },
   "lighthouse-core/audits/seo/font-size.js | displayValue": {
-    "message": "{percentageOfPassingText, number, percent} % legible text",
+    "message": "{percentFormatted, number, percent4SigFig} legible text",
     "description": "[ICU Syntax] Label for the audit identifying font sizes that are too small."
   },
   "lighthouse-core/audits/seo/font-size.js | failureTitle": {
