@@ -6,7 +6,7 @@
 'use strict';
 
 const Gatherer = require('./gatherer.js');
-const getElementsInDocumentString = require('../../lib/page-functions.js').getElementsInDocumentString;
+const getElementsInDocumentString = require('../../lib/page-functions.js').getElementsInDocumentString; // eslint-disable-line max-len
 
 class LinkElements extends Gatherer {
   /**
