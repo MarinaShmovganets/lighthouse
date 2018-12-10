@@ -22,17 +22,17 @@ const i18n = require('../lib/i18n/i18n.js');
 const MAXIMUM_TTI = 10 * 1000;
 
 const UIStrings = {
-  /** */
+  /** Imperative title of a Lighthouse audit that tells the user that their page has loaded fast enough to be considered a Progressive Web App. This is displayed in a list of audit titles that Lighthouse generates. */
   title: 'Page load is fast enough on mobile networks',
-  /** */
+  /** Imperative title of a Lighthouse audit that tells the user that their page has loaded fast enough to be considered a Progressive Web App. This imperative title is shown to users when the web page has loaded too slowly to be considered a Progressive Web App. */
   failureTitle: 'Page load is not fast enough on mobile networks',
-  /** */
+  /** Description of a Lighthouse audit that tells the user *why* they need to load fast enough on mobile networks. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description:
     'A fast page load over a cellular network ensures a good mobile user experience. ' +
     '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/fast-3g).',
-  /** */
+  /** [ICU Syntax] Label for the audit identifying the time it took for the page to become interactive. */
   displayValueText: 'Interactive at {timing, number, seconds}\xa0s',
-  /** */
+  /** [ICU Syntax] Label for the audit identifying the time it took for the page to become interactive on a mobile network. */
   displayValueTextWithOverride: 'Interactive on simulated mobile network at ' +
   '{timing, number, seconds}\xa0s',
 };
