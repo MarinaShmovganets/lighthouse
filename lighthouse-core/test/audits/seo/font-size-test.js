@@ -163,4 +163,23 @@ describe('SEO: Font size audit', () => {
     assert.equal(auditResult.rawValue, false);
     assert.ok(auditResult.explanation.includes('50%'));
   });
+
+  it('maintains 2 trailing decimal places', () => {
+    const artifacts = {
+      URL,
+      Viewport: validViewport,
+      FontSize: {
+        totalTextLength: 323,
+        visitedTextLength: 323,
+        failingTextLength: 33,
+        analyzedFailingTextLength: 33,
+        analyzedFailingNodesData: [
+          {textLength: 11, fontSize: 10, node: {nodeId: 1, localName: 'p', attributes: []}},
+          {textLength: 22, fontSize: 11, node: {nodeId: 2, localName: 'p', attributes: []}},
+        ],
+      },
+    };
+    const auditResult = FontSizeAudit.audit(artifacts);
+    expect(auditResult.displayValue).toBeDisplayString('89.78% legible text');
+  });
 });
