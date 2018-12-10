@@ -117,9 +117,9 @@ class PwaCategoryRenderer extends CategoryRenderer {
 
     const tips = [];
     for (const groupId of groupIds) {
-      const groupAudits = auditRefs.filter(ref => ref.group === groupId);
-      const auditCount = groupAudits.length;
-      const passedCount = groupAudits.filter(ref => Util.showAsPassed(ref.result)).length;
+      const groupAuditRefs = auditRefs.filter(ref => ref.group === groupId);
+      const auditCount = groupAuditRefs.length;
+      const passedCount = groupAuditRefs.filter(ref => Util.showAsPassed(ref.result)).length;
 
       const title = groupDefinitions[groupId].title;
       tips.push(`${title}: ${passedCount}/${auditCount}`);

@@ -172,6 +172,7 @@ describe('PwaCategoryRenderer', () => {
 
       // All tooltips should have x/x audits passed.
       const tips = gaugeElem.title.split(', ');
+      assert.strictEqual(tips.length, groupIds.length);
       for (const tip of tips) {
         assert.ok(/(\d+)\/\1$/.test(tip));
       }
@@ -191,6 +192,7 @@ describe('PwaCategoryRenderer', () => {
 
       // All tooltips should have 0/x audits passed.
       const tips = gaugeElem.title.split(', ');
+      assert.strictEqual(tips.length, groupIds.length);
       for (const tip of tips) {
         assert.ok(/0\/\d+$/.test(tip));
       }
@@ -205,7 +207,9 @@ describe('PwaCategoryRenderer', () => {
 
       const categoryElem = pwaRenderer.render(category, sampleResults.categoryGroups);
       const gaugeElem = categoryElem.querySelector('.lh-gauge--pwa__wrapper');
+
       const tips = gaugeElem.title.split(', ');
+      assert.strictEqual(tips.length, groupIds.length);
 
       for (const groupId of groupIds) {
         const expectedCount = groupId === failingGroupId ? 0 : 1;
