@@ -115,9 +115,9 @@ async function compileJs() {
     .transform('brfs');
 
   /** @type {Promise<string>} */
-  const generatorJsPromise = new Promise(resolve => {
+  const generatorJsPromise = new Promise((resolve, reject) => {
     generatorBrowserify.bundle((err, src) => {
-      if (err) throw err;
+      if (err) return reject(err);
       resolve(src.toString());
     });
   });
