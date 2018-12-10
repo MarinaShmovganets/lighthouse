@@ -1064,7 +1064,7 @@ Object {
           "path": "accessibility",
         },
         Object {
-          "path": "external-resource-links",
+          "path": "link-elements",
         },
         Object {
           "path": "dobetterweb/anchors-with-no-rel-noopener",
