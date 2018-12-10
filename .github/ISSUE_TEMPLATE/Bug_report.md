@@ -6,6 +6,8 @@ about: Report something working incorrectly
 
 <!-- Before creating an issue please make sure you are using the latest version and have checked for duplicate issues. -->
 
+<!-- Before creating an Accessibility issue please test that it is reproducible upstream with axe deque.com/axe/ first. -->
+
 #### Provide the steps to reproduce
 1. Run LH on <affected url>
 
