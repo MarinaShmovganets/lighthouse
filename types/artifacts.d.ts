@@ -173,10 +173,10 @@ declare global {
 
       /** @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#Attributes */
       export interface LinkElement {
-        rel?: string
-        href?: string
-        as?: string
-        crossorigin?: string
+        rel: string
+        href: string
+        as: string
+        crossOrigin: string|null
       }
 
       export interface Font {

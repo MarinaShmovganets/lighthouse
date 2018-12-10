@@ -5,8 +5,8 @@
  */
 'use strict';
 
-const Gatherer = require('./gatherer');
-const getElementsInDocumentString = require('../../lib/page-functions').getElementsInDocumentString;
+const Gatherer = require('./gatherer.js');
+const getElementsInDocumentString = require('../../lib/page-functions.js').getElementsInDocumentString;
 
 class LinkElements extends Gatherer {
   /**
@@ -27,7 +27,7 @@ class LinkElements extends Gatherer {
           rel: link.rel,
           href: link.href,
           as: link.as,
-          crossorigin: link.crossorigin,
+          crossOrigin: link.crossOrigin,
         };
       });
     })()`, {useIsolation: true});

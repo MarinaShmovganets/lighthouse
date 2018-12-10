@@ -29,8 +29,9 @@ const UIStrings = {
   description:
     'Consider adding preconnect or dns-prefetch resource hints to establish early ' +
     `connections to important third-party origins. [Learn more](https://developers.google.com/web/fundamentals/performance/resource-prioritization#preconnect).`,
-  /** A warning message that is shown when the user tried to follow the advice of the audit, but it's not working as expected. Forgetting to set the `crossorigin` HTML attribute on the link is a common mistake when adding preconnect links. */
-  crossoriginWarning: 'A preconnect link was found for "{securityOrigin}" but was not used.',
+  /** A warning message that is shown when the user tried to follow the advice of the audit, but it's not working as expected. Forgetting to set the `crossorigin` HTML attribute, or setting it to an incorrect value, on the link is a common mistake when adding preconnect links. */
+  crossoriginWarning: 'A preconnect <link> was found for "{securityOrigin}" but was not used ' +
+    'by the browser. Check that you are using the `crossorigin` attribute properly.',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -89,8 +90,6 @@ class UsesRelPreconnectAudit extends Audit {
   static async audit(artifacts, context) {
     const devtoolsLog = artifacts.devtoolsLogs[UsesRelPreconnectAudit.DEFAULT_PASS];
     const settings = context.settings;
-    const preconnectLinks = artifacts.LinkElements.filter(el => el.rel === 'preconnect');
-    const preconnectOrigins = new Set(preconnectLinks.map(link => URL.getOrigin(link.href || '')));
     let maxWasted = 0;
     /** @type {string[]} */
     const warnings = [];
@@ -130,6 +129,9 @@ class UsesRelPreconnectAudit extends Audit {
         origins.set(securityOrigin, records);
       });
 
+    const preconnectLinks = artifacts.LinkElements.filter(el => el.rel === 'preconnect');
+    const preconnectOrigins = new Set(preconnectLinks.map(link => URL.getOrigin(link.href || '')));
+
     /** @type {Array<{url: string, wastedMs: number}>}*/
     let results = [];
     origins.forEach(records => {
@@ -161,6 +163,7 @@ class UsesRelPreconnectAudit extends Audit {
       if (wastedMs < IGNORE_THRESHOLD_IN_MS) return;
 
       if (preconnectOrigins.has(securityOrigin)) {
+        // Add a warning for any origin the user tried to preconnect to but failed
         warnings.push(str_(UIStrings.crossoriginWarning, {securityOrigin}));
         return;
       }
