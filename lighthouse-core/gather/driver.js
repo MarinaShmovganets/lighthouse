@@ -652,11 +652,7 @@ class Driver {
       throw new Error('_waitForCPUIdle.cancel() called before it was defined');
     };
     const promise = new Promise(async (resolve, reject) => {
-      try {
-        await checkForQuiet(this, resolve);
-      } catch (e) {
-        reject(e);
-      }
+      checkForQuiet(this, resolve).catch(reject);
       cancel = () => {
         cancelled = true;
         if (lastTimeout) clearTimeout(lastTimeout);
