@@ -892,9 +892,6 @@ class Driver {
     await this._beginNetworkStatusMonitoring(url);
     await this._clearIsolatedContextId();
 
-    // These can 'race' and that's OK.
-    // We don't want to wait for Page.navigate's resolution, as it can now
-    // happen _after_ onload: https://crbug.com/768961
     await this.sendCommand('Page.enable');
     await this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS});
     // No timeout needed for Page.navigate. See #6413.
