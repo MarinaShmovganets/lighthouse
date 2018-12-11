@@ -628,33 +628,35 @@ class Driver {
     /**
      * @param {Driver} driver
      * @param {() => void} resolve
+     * @return {Promise<void>}
      */
-    function checkForQuiet(driver, resolve) {
-      if (cancelled) return Promise.resolve();
+    async function checkForQuiet(driver, resolve) {
+      if (cancelled) return;
+      const timeSinceLongTask = await driver.evaluateAsync(checkForQuietExpression);
+      if (cancelled) return;
 
-      return driver.evaluateAsync(checkForQuietExpression)
-        .then(timeSinceLongTask => {
-          if (cancelled) return Promise.resolve();
-
-          if (typeof timeSinceLongTask === 'number') {
-            if (timeSinceLongTask >= waitForCPUQuiet) {
-              log.verbose('Driver', `CPU has been idle for ${timeSinceLongTask} ms`);
-              resolve();
-            } else {
-              log.verbose('Driver', `CPU has been idle for ${timeSinceLongTask} ms`);
-              const timeToWait = waitForCPUQuiet - timeSinceLongTask;
-              lastTimeout = setTimeout(() => checkForQuiet(driver, resolve), timeToWait);
-            }
-          }
-        });
+      if (typeof timeSinceLongTask === 'number') {
+        if (timeSinceLongTask >= waitForCPUQuiet) {
+          log.verbose('Driver', `CPU has been idle for ${timeSinceLongTask} ms`);
+          resolve();
+        } else {
+          log.verbose('Driver', `CPU has been idle for ${timeSinceLongTask} ms`);
+          const timeToWait = waitForCPUQuiet - timeSinceLongTask;
+          lastTimeout = setTimeout(() => checkForQuiet(driver, resolve), timeToWait);
+        }
+      }
     }
 
     /** @type {(() => void)} */
     let cancel = () => {
       throw new Error('_waitForCPUIdle.cancel() called before it was defined');
     };
-    const promise = new Promise((resolve, reject) => {
-      checkForQuiet(this, resolve).catch(reject);
+    const promise = new Promise(async (resolve, reject) => {
+      try {
+        await checkForQuiet(this, resolve);
+      } catch (e) {
+        reject(e);
+      }
       cancel = () => {
         cancelled = true;
         if (lastTimeout) clearTimeout(lastTimeout);
