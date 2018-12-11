@@ -891,13 +891,11 @@ class Driver {
     await this.sendCommand('Page.enable');
     await this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS});
     // No timeout needed for Page.navigate. See #6413.
-    this._innerSendCommand('Page.navigate', {url});
+    const waitforPageNavigateCmd = this._innerSendCommand('Page.navigate', {url});
 
     if (waitForNavigated) {
       await this._waitForFrameNavigated();
-    }
-
-    if (waitForLoad) {
+    } else if (waitForLoad) {
       const passConfig = /** @type {Partial<LH.Config.Pass>} */ (passContext.passConfig || {});
       let {pauseAfterLoadMs, networkQuietThresholdMs, cpuQuietThresholdMs} = passConfig;
       let maxWaitMs = passContext.settings && passContext.settings.maxWaitForLoad;
@@ -912,6 +910,9 @@ class Driver {
       await this._waitForFullyLoaded(pauseAfterLoadMs, networkQuietThresholdMs, cpuQuietThresholdMs,
           maxWaitMs);
     }
+
+    // Awaiting so that errors can be properly processed.
+    await waitforPageNavigateCmd;
 
     return this._endNetworkStatusMonitoring();
   }
