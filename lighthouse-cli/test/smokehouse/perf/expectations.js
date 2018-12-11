@@ -47,6 +47,9 @@ module.exports = [
       },
       'uses-rel-preconnect': {
         score: '<1',
+        warnings: {
+          length: 1,
+        },
         details: {
           items: {
             length: 1,
