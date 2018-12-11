@@ -73,7 +73,7 @@ const formats = {
     },
     percent4SigFig: {
       // Force allow up to two digits after decimal place in percentages. (Intl.NumberFormat options)
-      maximumFractionDigits: 4,
+      maximumFractionDigits: 2,
       style: 'percent',
     },
   },
