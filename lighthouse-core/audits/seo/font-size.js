@@ -23,7 +23,7 @@ const UIStrings = {
       'visitors to “pinch to zoom” in order to read. Strive to have >60% of page text ≥12px. ' +
       '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/font-sizes).',
   /** [ICU Syntax] Label for the audit identifying font sizes that are too small. */
-  displayValue: '{percentFormatted, number, percent4SigFig} legible text',
+  displayValue: '{decimalProportion, number, extendedPercent} legible text',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -279,9 +279,9 @@ class FontSize extends Audit {
       });
     }
 
-    const percentFormatted = (percentageOfPassingText / 100).toFixed(4);
+    const decimalProportion = (percentageOfPassingText / 100).toFixed(4);
     /** @type {LH.Audit.DisplayValue} */
-    const displayValue = str_(UIStrings.displayValue, {percentFormatted});
+    const displayValue = str_(UIStrings.displayValue, {decimalProportion});
     const details = Audit.makeTableDetails(headings, tableData);
     const passed = percentageOfPassingText >= MINIMAL_PERCENTAGE_OF_LEGIBLE_TEXT;
 
