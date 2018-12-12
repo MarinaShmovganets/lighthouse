@@ -325,7 +325,9 @@ function replaceIcuMessageInstanceIds(inputObject, locale) {
 }
 
 module.exports = {
+  _preprocessMessageValues,
   _formatPathAsString,
+  _formatIcuMessage,
   UIStrings,
   lookupLocale,
   getRendererFormattedStrings,

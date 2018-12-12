@@ -76,4 +76,48 @@ describe('i18n', () => {
       expect(i18n.lookupLocale('jk-Latn-DE-1996-a-ext-x-phonebk-i-klingon')).toEqual('en');
     });
   });
+
+  describe('#_formatIcuMessage', () => {
+    it('formats a basic message', () => {
+      expect(i18n._formatIcuMessage('en', '', 'Hello World')
+        .formattedString).toEqual('Hello World');
+    });
+
+    it('formats a message with bytes', () => {
+      expect(i18n._formatIcuMessage('en', '', 'Hello {in, number, bytes} World', {in: 1875})
+      .formattedString).toEqual('Hello 2 World');
+    });
+
+    it('formats a message with milliseconds', () => {
+      expect(i18n._formatIcuMessage('en', '', 'Hello {in, number, milliseconds} World', {in: 432})
+      .formattedString).toEqual('Hello 430 World');
+    });
+
+    it('formats a message with bytes', () => {
+      expect(i18n._formatIcuMessage('en', '', 'Hello {in, number, seconds} World', {in: 753})
+      .formattedString).toEqual('Hello 753.0 World');
+    });
+
+    it('formats a message with bytes', () => {
+      expect(i18n._formatIcuMessage('en', '', 'Hello {in, number, extendedPercent} World',
+      {in: 0.43078}).formattedString).toEqual('Hello 43.08% World');
+    });
+  });
+
+  describe('#_preprocessMessageValues', () => {
+    it('preprocesses milliseconds', () => {
+      expect(i18n._preprocessMessageValues('Hello {in, number, milliseconds} World', {in: 739}))
+        .toEqual({in: 740});
+    });
+
+    it('preprocesses seconds when timeInMs', () => {
+      expect(i18n._preprocessMessageValues('Hello {timeInMs, number, seconds} World',
+        {timeInMs: 739432})).toEqual({timeInMs: 739.4});
+    });
+
+    it('preprocesses bytes', () => {
+      expect(i18n._preprocessMessageValues('Hello {in, number, bytes} World', {in: 739432}))
+        .toEqual({in: 722.1015625});
+    });
+  });
 });
