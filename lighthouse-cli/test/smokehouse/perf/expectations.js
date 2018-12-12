@@ -48,6 +48,7 @@ module.exports = [
       'uses-rel-preconnect': {
         score: '<1',
         warnings: {
+          0: /fonts.googleapis/,
           length: 1,
         },
         details: {
