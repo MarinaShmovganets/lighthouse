@@ -176,7 +176,7 @@ declare global {
         rel: string
         href: string
         as: string
-        crossOrigin: string|null
+        crossOrigin: 'anonymous'|'use-credentials'|null
       }
 
       export interface Font {
