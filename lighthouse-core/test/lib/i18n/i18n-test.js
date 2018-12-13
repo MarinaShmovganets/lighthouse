@@ -77,7 +77,7 @@ describe('i18n', () => {
     });
   });
 
-  describe('#_formatIcuMessage', () => {
+  describe('Message values are properly formatted', () => {
     // Message strings won't be in locale files, so will fall back to values given here.
     const UIStrings = {
       helloWorld: 'Hello World',

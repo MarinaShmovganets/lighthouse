@@ -69,7 +69,7 @@ class LoadFastEnough4Pwa extends Audit {
     const override = context.settings.throttlingMethod === 'provided' ||
       !isDeepEqual(context.settings.throttling, mobileThrottling);
 
-    const displayValueFinal = override ?
+    const displayValueTemplate = override ?
       UIStrings.displayValueTextWithOverride : UIStrings.displayValueText;
 
     const settings = override ? Object.assign({}, context.settings, settingOverrides) :
@@ -85,7 +85,7 @@ class LoadFastEnough4Pwa extends Audit {
     /** @type {string|undefined} */
     let explanation;
     if (!score) {
-      displayValue = str_(displayValueFinal, {timeInMs: tti.timing});
+      displayValue = str_(displayValueTemplate, {timeInMs: tti.timing});
       explanation = 'Your page loads too slowly and is not interactive within 10 seconds. ' +
         'Look at the opportunities and diagnostics in the "Performance" section to learn how to ' +
         'improve.';
