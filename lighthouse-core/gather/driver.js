@@ -651,7 +651,7 @@ class Driver {
     let cancel = () => {
       throw new Error('_waitForCPUIdle.cancel() called before it was defined');
     };
-    const promise = new Promise(async (resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       checkForQuiet(this, resolve).catch(reject);
       cancel = () => {
         cancelled = true;
@@ -911,7 +911,7 @@ class Driver {
           maxWaitMs);
     }
 
-    // Awaiting so that errors can be properly processed.
+    // Bring `Page.navigate` errors back into the promise chain. See #6739.
     await waitforPageNavigateCmd;
 
     return this._endNetworkStatusMonitoring();
