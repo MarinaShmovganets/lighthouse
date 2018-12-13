@@ -78,46 +78,45 @@ describe('i18n', () => {
   });
 
   describe('#_formatIcuMessage', () => {
+    // Message strings won't be in locale files, so will fall back to values given here.
+    const UIStrings = {
+      helloWorld: 'Hello World',
+      helloBytesWorld: 'Hello {in, number, bytes} World',
+      helloMsWorld: 'Hello {in, number, milliseconds} World',
+      helloSecWorld: 'Hello {in, number, seconds} World',
+      helloTimeInMsWorld: 'Hello {timeInMs, number, seconds} World',
+      helloPercentWorld: 'Hello {in, number, extendedPercent} World',
+    };
+    const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
+
     it('formats a basic message', () => {
-      expect(i18n._formatIcuMessage('en', '', 'Hello World')
-        .formattedString).toEqual('Hello World');
+      const helloStr = str_(UIStrings.helloWorld);
+      expect(helloStr).toBeDisplayString('Hello World');
     });
 
     it('formats a message with bytes', () => {
-      expect(i18n._formatIcuMessage('en', '', 'Hello {in, number, bytes} World', {in: 1875})
-      .formattedString).toEqual('Hello 2 World');
+      const helloBytesStr = str_(UIStrings.helloBytesWorld, {in: 1875});
+      expect(helloBytesStr).toBeDisplayString('Hello 2 World');
     });
 
     it('formats a message with milliseconds', () => {
-      expect(i18n._formatIcuMessage('en', '', 'Hello {in, number, milliseconds} World', {in: 432})
-      .formattedString).toEqual('Hello 430 World');
+      const helloMsStr = str_(UIStrings.helloMsWorld, {in: 432});
+      expect(helloMsStr).toBeDisplayString('Hello 430 World');
     });
 
-    it('formats a message with bytes', () => {
-      expect(i18n._formatIcuMessage('en', '', 'Hello {in, number, seconds} World', {in: 753})
-      .formattedString).toEqual('Hello 753.0 World');
+    it('formats a message with seconds', () => {
+      const helloSecStr = str_(UIStrings.helloSecWorld, {in: 753});
+      expect(helloSecStr).toBeDisplayString('Hello 753.0 World');
     });
 
-    it('formats a message with bytes', () => {
-      expect(i18n._formatIcuMessage('en', '', 'Hello {in, number, extendedPercent} World',
-      {in: 0.43078}).formattedString).toEqual('Hello 43.08% World');
-    });
-  });
-
-  describe('#_preprocessMessageValues', () => {
-    it('preprocesses milliseconds', () => {
-      expect(i18n._preprocessMessageValues('Hello {in, number, milliseconds} World', {in: 739}))
-        .toEqual({in: 740});
+    it('formats a message with seconds timeInMs', () => {
+      const helloTimeInMsStr = str_(UIStrings.helloTimeInMsWorld, {timeInMs: 753543});
+      expect(helloTimeInMsStr).toBeDisplayString('Hello 753.5 World');
     });
 
-    it('preprocesses seconds when timeInMs', () => {
-      expect(i18n._preprocessMessageValues('Hello {timeInMs, number, seconds} World',
-        {timeInMs: 739432})).toEqual({timeInMs: 739.4});
-    });
-
-    it('preprocesses bytes', () => {
-      expect(i18n._preprocessMessageValues('Hello {in, number, bytes} World', {in: 739432}))
-        .toEqual({in: 722.1015625});
+    it('formats a message with extended percent', () => {
+      const helloPercentStr = str_(UIStrings.helloPercentWorld, {in: 0.43078});
+      expect(helloPercentStr).toBeDisplayString('Hello 43.08% World');
     });
   });
 });
