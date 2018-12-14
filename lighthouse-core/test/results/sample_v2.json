@@ -4920,7 +4920,7 @@
       "lighthouse-core/audits/seo/font-size.js | displayValue": [
         {
           "values": {
-            "decimalProportion": "1.0000"
+            "decimalProportion": 1
           },
           "path": "audits[font-size].displayValue"
         }
