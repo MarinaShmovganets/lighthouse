@@ -12,7 +12,7 @@ const UIStrings = {
   /** Error message explaining that the Lighthouse run was not able to collect screenshots through Chrome.*/
   didntCollectScreenshots: `Chrome didn't collect any screenshots during the page load. Please make sure there is content visible on the page, and then try re-running Lighthouse.`,
   /** Error message explaining that the network trace was not able to be recorded for the Lighthouse run. */
-  badTraceRecording: 'Something went wrong with recording the trace over your page load. Please run Lighthouse again.',
+  badTraceRecording: 'Something went wrong with recording the trace over your page load. Please run Lighthouse again. ({traceCode})',
   /** Error message explaining that the page loaded too slowly to perform a Lighthouse run.  */
   pageLoadTookTooLong: 'Your page took too long to load. Please follow the opportunities in the report to reduce your page load time, and then try re-running Lighthouse.',
   /** Error message explaining that Lighthouse could not load the requested URL and the steps that might be taken to fix the unreliability. */
@@ -46,6 +46,7 @@ const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
  * @property {string} message
  * @property {RegExp} [pattern]
  * @property {boolean} [lhrRuntimeError] True if it should appear in the top-level LHR.runtimeError property.
+ * @property {object} [defaultProperties] Optional default properties to use for i18n.
  */
 
 class LighthouseError extends Error {
@@ -57,21 +58,12 @@ class LighthouseError extends Error {
     super(errorDefinition.code);
     this.name = 'LHError';
     this.code = errorDefinition.code;
-    this.friendlyMessage = str_(errorDefinition.message, properties);
+    const mergedProperties = {...errorDefinition.defaultProperties, ...properties};
+    this.friendlyMessage = str_(errorDefinition.message, mergedProperties);
     this.lhrRuntimeError = !!errorDefinition.lhrRuntimeError;
     if (properties) Object.assign(this, properties);
 
     Error.captureStackTrace(this, LighthouseError);
-  }
-
-  /**
-   * @param {LighthouseError} err
-   * @return {LighthouseError}
-   */
-  static fromLighthouseError(err) {
-    const {code, friendlyMessage: message, ...rest} = err;
-    // Note: {...rest} convinces tsc 3.1 that it's assignable to a Record.
-    return new LighthouseError({code, message}, {...rest});
   }
 
   /**
@@ -127,25 +119,40 @@ const ERRORS = {
     code: 'NO_TRACING_STARTED',
     message: UIStrings.badTraceRecording,
     lhrRuntimeError: true,
+    defaultProperties: {
+      traceCode: 'NO_TRACING_STARTED',
+    },
   },
   NO_NAVSTART: {
     code: 'NO_NAVSTART',
     message: UIStrings.badTraceRecording,
     lhrRuntimeError: true,
+    defaultProperties: {
+      traceCode: 'NO_NAVSTART',
+    },
   },
   NO_FCP: {
     code: 'NO_FCP',
     message: UIStrings.badTraceRecording,
     lhrRuntimeError: true,
+    defaultProperties: {
+      traceCode: 'NO_FCP',
+    },
   },
   NO_DCL: {
     code: 'NO_DCL',
     message: UIStrings.badTraceRecording,
     lhrRuntimeError: true,
+    defaultProperties: {
+      traceCode: 'NO_DCL',
+    },
   },
   NO_FMP: {
     code: 'NO_FMP',
     message: UIStrings.badTraceRecording,
+    defaultProperties: {
+      traceCode: 'NO_FMP',
+    },
   },
 
   // TTI calculation failures

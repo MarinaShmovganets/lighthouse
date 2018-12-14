@@ -928,7 +928,7 @@
     "description": "Used to show the duration in seconds that something lasted. The {timeInMs} placeholder will be replaced with the time duration, shown in seconds (e.g. 5.2 s)"
   },
   "lighthouse-core/lib/lh-error.js | badTraceRecording": {
-    "message": "Something went wrong with recording the trace over your page load. Please run Lighthouse again.",
+    "message": "Something went wrong with recording the trace over your page load. Please run Lighthouse again. ({traceCode})",
     "description": "Error message explaining that the network trace was not able to be recorded for the Lighthouse run."
   },
   "lighthouse-core/lib/lh-error.js | didntCollectScreenshots": {
