@@ -607,7 +607,7 @@ describe('Runner', () => {
     // And it bubbled up to the runtimeError.
     assert.strictEqual(lhr.runtimeError.code, NO_FCP.code);
     expect(lhr.runtimeError.message)
-      .toBeDisplayString(/A first contentful .*(NO_FCP)/);
+      .toBeDisplayString(/Something .*(NO_FCP)/);
   });
 
   it('localized errors thrown from driver', async () => {

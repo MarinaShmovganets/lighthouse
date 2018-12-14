@@ -10,19 +10,11 @@ const i18n = require('./i18n/i18n.js');
 /* eslint-disable max-len */
 const UIStrings = {
   /** Error message explaining that the Lighthouse run was not able to collect screenshots through Chrome.*/
-  didntCollectScreenshots: `Chrome didn't collect any screenshots during the page load. Please make sure there is content visible on the page, and then try re-running Lighthouse.`,
-  /** Error message explaining that tracing was unable to start for the given page. */
-  noTracingStarted: 'Network tracing for this page was unable to start. Please run Lighthouse again. (NO_TRACING_STARTED)',
-  /** Error message explaining that a First Contentful Paint was not able to be constructed from the page's tracing events. */
-  noFirstContentfulPaint: 'A first contentful paint could not be derived for this page. Please run Lighthouse again. (NO_FCP)',
-  /** Error message explaining that a First Meaningful Paint was not able to be constructed from the page's tracing events. */
-  noFirstMeaningfulPaint: 'A first meaningful paint could not be derived for this page. Please run Lighthouse again. (NO_FMP)',
-  /** Error message explaining that the DOM content for the page could not be loaded. */
-  noDomContentLoaded: 'The DOM content could not be loaded for this page. Please run Lighthouse again. (NO_DCL)',
-  /** Error message explaining that page navigation couldn't be started for the requested page. */
-  noNavigationStarted: 'Navigation could not be started for this page. Please run Lighthouse again. (NO_NAVSTART)',
+  didntCollectScreenshots: `Chrome didn't collect any screenshots during the page load. Please make sure there is content visible on the page, and then try re-running Lighthouse. ({errorCode})`,
+  /** Error message explaining that the network trace was not able to be recorded for the Lighthouse run. */
+  badTraceRecording: 'Something went wrong with recording the trace over your page load. Please run Lighthouse again. ({errorCode})',
   /** Error message explaining that the page loaded too slowly to perform a Lighthouse run.  */
-  pageLoadTookTooLong: 'Your page took too long to load. Please follow the opportunities in the report to reduce your page load time, and then try re-running Lighthouse.',
+  pageLoadTookTooLong: 'Your page took too long to load. Please follow the opportunities in the report to reduce your page load time, and then try re-running Lighthouse. ({errorCode})',
   /** Error message explaining that Lighthouse could not load the requested URL and the steps that might be taken to fix the unreliability. */
   pageLoadFailed: 'Lighthouse was unable to reliably load the page you requested. Make sure you are testing the correct URL and that the server is properly responding to all requests.',
   /** Error message explaining that Lighthouse could not load the requested URL and the steps that might be taken to fix the unreliability. */
@@ -65,7 +57,7 @@ class LighthouseError extends Error {
     super(errorDefinition.code);
     this.name = 'LHError';
     this.code = errorDefinition.code;
-    this.friendlyMessage = str_(errorDefinition.message, properties);
+    this.friendlyMessage = str_(errorDefinition.message, {errorCode: this.code, ...properties});
     this.lhrRuntimeError = !!errorDefinition.lhrRuntimeError;
     if (properties) Object.assign(this, properties);
 
@@ -123,27 +115,27 @@ const ERRORS = {
   // Trace parsing errors
   NO_TRACING_STARTED: {
     code: 'NO_TRACING_STARTED',
-    message: UIStrings.noTracingStarted,
+    message: UIStrings.badTraceRecording,
     lhrRuntimeError: true,
   },
   NO_NAVSTART: {
     code: 'NO_NAVSTART',
-    message: UIStrings.noNavigationStarted,
+    message: UIStrings.badTraceRecording,
     lhrRuntimeError: true,
   },
   NO_FCP: {
     code: 'NO_FCP',
-    message: UIStrings.noFirstContentfulPaint,
+    message: UIStrings.badTraceRecording,
     lhrRuntimeError: true,
   },
   NO_DCL: {
     code: 'NO_DCL',
-    message: UIStrings.noDomContentLoaded,
+    message: UIStrings.badTraceRecording,
     lhrRuntimeError: true,
   },
   NO_FMP: {
     code: 'NO_FMP',
-    message: UIStrings.noFirstMeaningfulPaint,
+    message: UIStrings.badTraceRecording,
   },
 
   // TTI calculation failures
