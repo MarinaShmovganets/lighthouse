@@ -109,10 +109,9 @@ declare global {
       export interface Group extends GroupJson {}
 
       export interface Plugin {
-        audits: Array<{
-          path: string;
-          options?: {};
-        }>;
+        /** Optionally provide more audits to run in addition to those specified by the base config. */
+        audits?: Array<{path: string}>;
+        /** Provide a category to display the plugin results in the report. */
         category: LH.Config.Category;
         // TODO(bckenny): groups
       }

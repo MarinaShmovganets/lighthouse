@@ -16,6 +16,7 @@ const log = require('lighthouse-logger');
 const path = require('path');
 const Audit = require('../audits/audit.js');
 const Runner = require('../runner.js');
+const ConfigPlugin = require('./config-plugin.js');
 
 /** @typedef {typeof import('../gather/gatherers/gatherer.js')} GathererConstructor */
 /** @typedef {InstanceType<GathererConstructor>} Gatherer */
@@ -345,17 +346,8 @@ class Config {
     // The directory of the config path, if one was provided.
     const configDir = configPath ? path.dirname(configPath) : undefined;
 
-    if (configJSON.plugins) {
-      for (const pluginName of configJSON.plugins) {
-        const filename = `lighthouse-plugin-${pluginName}`;
-        const pluginPath = Config.resolveModule(filename, configDir, 'plugin');
-        const plugin = /** {LH.Config.Plugin} */ (require(pluginPath));
-        // TODO(bckenny): should do more checking of plugin input
-        configJSON.audits = (configJSON.audits || []).concat(plugin.audits);
-        configJSON.categories = configJSON.categories || {};
-        configJSON.categories[pluginName] = plugin.category;
-      }
-    }
+    // Validate and merge in plugins (if any).
+    configJSON = Config.mergePlugins(configJSON, configDir);
 
     const settings = Config.initSettings(configJSON.settings, flags);
 
@@ -448,6 +440,28 @@ class Config {
     }
 
     return merge(baseJSON, extendJSON);
+  }
+
+  /**
+   * @param {LH.Config.Json} configJSON
+   * @param {string=} configDir
+   * @return {LH.Config.Json}
+   */
+  static mergePlugins(configJSON, configDir) {
+    const pluginNames = configJSON.plugins;
+
+    if (pluginNames) {
+      for (const pluginName of pluginNames) {
+        const filename = `lighthouse-plugin-${pluginName}`;
+        const pluginPath = Config.resolveModule(filename, configDir, 'plugin');
+        const rawPluginJson = require(pluginPath);
+        const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
+
+        configJSON = Config.extendConfigJSON(configJSON, pluginJson);
+      }
+    }
+
+    return configJSON;
   }
 
   /**
