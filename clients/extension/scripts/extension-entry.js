@@ -104,7 +104,7 @@ async function runLighthouseInExtension(flags, categoryIDs) {
   const reportHtml = /** @type {string} */ (runnerResult.report);
   const blobURL = createReportPageAsBlob(reportHtml);
   await new Promise(resolve => chrome.windows.create({url: blobURL}, resolve));
-  
+
   return runnerResult;
 }
 
