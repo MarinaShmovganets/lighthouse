@@ -57,6 +57,7 @@ class LighthouseError extends Error {
     super(errorDefinition.code);
     this.name = 'LHError';
     this.code = errorDefinition.code;
+    // Insert the i18n reference with errorCode and all additional ICU replacement properties.
     this.friendlyMessage = str_(errorDefinition.message, {errorCode: this.code, ...properties});
     this.lhrRuntimeError = !!errorDefinition.lhrRuntimeError;
     if (properties) Object.assign(this, properties);
