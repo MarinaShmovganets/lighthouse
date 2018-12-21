@@ -125,8 +125,14 @@ class ReportRenderer {
       if (!runtime.description) return;
 
       const item = this._dom.cloneTemplate('#tmpl-lh-env__items', env);
+      const description = this._dom.find('.lh-env__description', item);
       this._dom.find('.lh-env__name', item).textContent = `${runtime.name}:`;
-      this._dom.find('.lh-env__description', item).textContent = runtime.description;
+      description.textContent = runtime.description;
+
+      if (runtime.name === 'URL') {
+        description.classList.add('is-url');
+      }
+
       env.appendChild(item);
     });
 
