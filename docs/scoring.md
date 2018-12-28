@@ -33,7 +33,7 @@ The metric results are not weighted equally. Currently the weights are:
 
 * 3X - first contentful paint
 * 1X - first meaningful paint
-* 3X - first cpu idle
+* 2X - first cpu idle
 * 5X - time to interactive
 * 4X - speed index
 * 0X - estimated input latency
