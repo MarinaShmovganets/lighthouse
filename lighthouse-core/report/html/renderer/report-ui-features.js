@@ -45,7 +45,7 @@ class ReportUIFeatures {
     /** @type {HTMLElement} */
     this.headerBackground; // eslint-disable-line no-unused-expressions
     /** @type {HTMLElement} */
-    this.headerMetadata; // eslint-disable-line no-unused-expressions
+    this.headerContent; // eslint-disable-line no-unused-expressions
     /** @type {HTMLElement} */
     this.lighthouseIcon; // eslint-disable-line no-unused-expressions
     /** @type {!HTMLElement} */
@@ -136,7 +136,7 @@ class ReportUIFeatures {
     this.headerOverlap = parseFloat(computedMarginTop || '0');
     this.headerSticky = this._dom.find('.lh-header-sticky', this._document);
     this.headerBackground = this._dom.find('.lh-header-bg', this._document);
-    this.headerMetadata = this._dom.find('.lh-metadata', this._document);
+    this.headerContent = this._dom.find('.lh-header', this._document);
     this.lighthouseIcon = this._dom.find('.lh-lighthouse', this._document);
     this.scoresWrapperBg = this._dom.find('.lh-scores-wrapper__background', this._document);
     this.productInfo = this._dom.find('.lh-product-info', this._document);
@@ -230,9 +230,8 @@ class ReportUIFeatures {
     this.headerBackground.style.transform = `translateY(${scrollPct * this.headerOverlap}px)`;
     this.lighthouseIcon.style.transform =
       `translate3d(0,` +
-      ` calc(-${scrollPct * this.headerOverlap * -1}px), 0) scale(${1 - scrollPct})`;
-    this.lighthouseIcon.style.opacity = (1 - scrollPct).toString();
-    this.headerMetadata.style.opacity = (1 - scrollPct).toString();
+      `-${scrollPct * this.headerOverlap * -1}px, 0) scale(${1 - scrollPct})`;
+    this.headerContent.style.opacity = (1 - scrollPct).toString();
 
     // Switch up the score background & shadows
     this.scoresWrapperBg.style.opacity = (1 - scrollPct).toString();
