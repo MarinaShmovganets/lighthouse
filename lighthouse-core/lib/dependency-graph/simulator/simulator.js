@@ -91,7 +91,7 @@ class Simulator {
   }
 
   /**
-   * Initializes the various state data structures such as _nodesReadyToStart and _nodesCompleted.
+   * Initializes the various state data structures such _nodeTimings and the _node Sets by state.
    */
   _initializeAuxiliaryData() {
     this._nodeTimings = new Map();
@@ -99,6 +99,8 @@ class Simulator {
 
     this._nodes = {};
     this._cachedNodeListByStartTime = [];
+    // NOTE: We don't actually need *all* of these sets, but the clarity that each node progresses
+    // through the system is quite nice.
     for (const state of Object.values(NodeState)) {
       this._nodes[state] = new Set();
     }

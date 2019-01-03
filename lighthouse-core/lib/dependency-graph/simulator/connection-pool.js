@@ -95,14 +95,31 @@ module.exports = class ConnectionPool {
 
   /**
    * @param {Array<TcpConnection>} connections
+   * @param {{ignoreConnectionReused?: boolean, observedConnectionWasReused: boolean}} options
    */
-  _findConnectionWithLargestCongestionWindow(connections) {
-    if (!connections.length) return null;
+  _findAvailableConnectionWithLargestCongestionWindow(connections, options) {
+    const {ignoreConnectionReused, observedConnectionWasReused} = options;
 
-    let maxConnection = connections[0];
-    for (let i = 1; i < connections.length; i++) {
+    /** @type {TcpConnection|null} */
+    let maxConnection = null;
+    for (let i = 0; i < connections.length; i++) {
       const connection = connections[i];
-      const currentMax = maxConnection.congestionWindow;
+
+      // Normally, we want to make sure the connection warmth matches the state of the record
+      // we're acquiring for. Do this check first since it's the common case and cheaper than our
+      // "in use" check below.
+      // Use the _warmed property instead of the getter because this is a surprisingly hot code path.
+      if (!ignoreConnectionReused && connection._warmed !== observedConnectionWasReused) {
+        continue;
+      }
+
+      // Connections that are in use are never available.
+      if (this._connectionsInUse.has(connection)) {
+        continue;
+      }
+
+      // This connection is a match and is available! Update our max if it has a larger congestionWindow
+      const currentMax = (maxConnection && maxConnection.congestionWindow) || -Infinity;
       if (connection.congestionWindow > currentMax) maxConnection = connection;
     }
 
@@ -128,25 +145,14 @@ module.exports = class ConnectionPool {
     }
 
     const origin = String(record.parsedURL.securityOrigin);
+    const observedConnectionWasReused = !!this._connectionReusedByRequestId.get(record.requestId);
     /** @type {TcpConnection[]} */
     const connections = this._connectionsByOrigin.get(origin) || [];
-    const observedConnectionWasReused = !!this._connectionReusedByRequestId.get(record.requestId);
-    // Find the set of available connections based on the acquire options
-    const availableConnections = connections
-      .filter(connection => {
-        // Normally, we want to make sure the connection warmth matches the state of the record
-        // we're acquiring for. Do this check first since it's the common case and cheaper than our
-        // "in use" check below.
-        // Use the _warmed property instead of the getter because this is a surprisingly hot code path.
-        if (!options.ignoreConnectionReused && connection._warmed !== observedConnectionWasReused) {
-          return false;
-        }
+    const connectionToUse = this._findAvailableConnectionWithLargestCongestionWindow(connections, {
+      ignoreConnectionReused: options.ignoreConnectionReused,
+      observedConnectionWasReused,
+    });
 
-        // Either way, connections that are in use are never available. Just return ones that are free!
-        return !this._connectionsInUse.has(connection);
-      });
-
-    const connectionToUse = this._findConnectionWithLargestCongestionWindow(availableConnections);
     if (!connectionToUse) return null;
 
     this._connectionsInUse.add(connectionToUse);
