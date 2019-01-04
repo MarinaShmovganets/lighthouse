@@ -180,7 +180,7 @@ describe('ReportRenderer', () => {
     assert.equal(renderer._templateContext, otherDocument);
   });
 
-  it('renders `not_applicable` audits as `not-applicable`', () => {
+  it('renders `not_applicable` audits as `notApplicable`', () => {
     const clonedSampleResult = JSON.parse(JSON.stringify(sampleResultsOrig));
 
     let notApplicableCount = 0;

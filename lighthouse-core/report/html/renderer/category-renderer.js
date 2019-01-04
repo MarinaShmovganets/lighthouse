@@ -282,7 +282,7 @@ class CategoryRenderer {
 
   /**
    * Renders a clump (a grouping of groups), under a status of failed, manual,
-   * passed, or not-applicable. The result ends up something like:
+   * passed, or notApplicable. The result ends up something like:
    *
    * clump (e.g. 'failed')
    *   ├── audit 1 (w/o group)
