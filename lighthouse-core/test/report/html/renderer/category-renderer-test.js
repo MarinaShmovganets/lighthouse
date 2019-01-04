@@ -63,36 +63,24 @@ describe('CategoryRenderer', () => {
       auditDOM.classList.contains(`lh-audit--${auditRef.result.scoreDisplayMode.toLowerCase()}`));
   });
 
-  it('handles an audit with no scoreDisplayMode', () => {
-    const audit1 = renderer.renderAudit({
-      score: 0,
-      result: {
-        description: 'help text',
-        explanation: 'A reason',
-        title: 'Audit title',
-      },
-    });
-    assert.ok(audit1.classList.contains('lh-audit--fail'));
-  });
-
   it('renders an audit explanation when appropriate', () => {
     const audit1 = renderer.renderAudit({
-      score: 0,
       result: {
-        scoreDisplayMode: 'binary',
-        description: 'help text',
-        explanation: 'A reason',
         title: 'Audit title',
+        explanation: 'A reason',
+        description: 'help text',
+        scoreDisplayMode: 'binary',
+        score: 0,
       },
     });
     assert.ok(audit1.querySelector('.lh-audit-explanation'));
 
     const audit2 = renderer.renderAudit({
-      score: 0,
       result: {
-        scoreDisplayMode: 'binary',
-        description: 'help text',
         title: 'Audit title',
+        description: 'help text',
+        scoreDisplayMode: 'binary',
+        score: 0,
       },
     });
     assert.ok(!audit2.querySelector('.lh-audit-explanation'));
@@ -100,8 +88,13 @@ describe('CategoryRenderer', () => {
 
   it('renders an informative audit', () => {
     const auditDOM = renderer.renderAudit({
-      id: 'informative', score: 0,
-      result: {title: 'It informs', description: 'help text', scoreDisplayMode: 'informative'},
+      id: 'informative',
+      result: {
+        title: 'It informs',
+        description: 'help text',
+        scoreDisplayMode: 'informative',
+        score: 0,
+      },
     });
 
     assert.ok(auditDOM.matches('.lh-audit--informative'));
@@ -111,10 +104,11 @@ describe('CategoryRenderer', () => {
     const auditResult = {
       title: 'Audit',
       description: 'Learn more',
+      scoreDisplayMode: 'informative',
       warnings: ['It may not have worked!'],
       score: 1,
     };
-    const auditDOM = renderer.renderAudit({id: 'foo', score: 1, result: auditResult});
+    const auditDOM = renderer.renderAudit({id: 'foo', result: auditResult});
     const warningEl = auditDOM.querySelector('.lh-warnings');
     assert.ok(warningEl, 'did not render warning message');
     assert.ok(warningEl.textContent.includes(auditResult.warnings[0]), 'warning message provided');
@@ -124,10 +118,11 @@ describe('CategoryRenderer', () => {
     const auditResult = {
       title: 'Audit',
       description: 'Learn more',
+      scoreDisplayMode: 'informative',
       warnings: ['It may not have worked!', 'You should read this, though'],
       score: 1,
     };
-    const auditDOM = renderer.renderAudit({id: 'foo', score: 1, result: auditResult});
+    const auditDOM = renderer.renderAudit({id: 'foo', result: auditResult});
     const warningEl = auditDOM.querySelector('.lh-warnings');
     assert.ok(warningEl, 'did not render warning message');
     assert.ok(warningEl.textContent.includes(auditResult.warnings[0]), '1st warning provided');
