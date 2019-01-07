@@ -997,7 +997,7 @@ describe('Config', () => {
     });
   });
 
-  describe('#getPrintString', () => {
+  describe('#getDisplayString', () => {
     it('doesn\'t include empty gatherer/audit options in output', () => {
       const gOpt = 'gathererOption';
       const aOpt = 'auditOption';
