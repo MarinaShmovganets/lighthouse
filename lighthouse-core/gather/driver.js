@@ -790,9 +790,9 @@ class Driver {
     /** @type {NodeJS.Timer|undefined} */
     let maxTimeoutHandle;
 
-    // Noop if offline or localhost
-    const isLocalhost = new URL(this._monitoredUrl || '').hostname !== 'localhost';
-    const waitForSecurityCheck = this.online && isLocalhost ? this._waitForSecurityCheck() : {
+    // Noop if offline or not https
+    const isHttps = new URL(this._monitoredUrl || '').protocol === 'https:';
+    const waitForSecurityCheck = this.online && isHttps ? this._waitForSecurityCheck() : {
       promise: Promise.resolve(),
       cancel: () => {},
     };
