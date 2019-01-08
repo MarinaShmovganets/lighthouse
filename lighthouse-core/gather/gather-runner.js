@@ -6,10 +6,11 @@
 'use strict';
 
 const log = require('lighthouse-logger');
-const LHError = require('../lib/lh-error');
-const URL = require('../lib/url-shim');
+const manifestParser = require('../lib/manifest-parser.js');
+const LHError = require('../lib/lh-error.js');
+const URL = require('../lib/url-shim.js');
 const NetworkRecorder = require('../lib/network-recorder.js');
-const constants = require('../config/constants');
+const constants = require('../config/constants.js');
 
 const Driver = require('../gather/driver.js'); // eslint-disable-line no-unused-vars
 
@@ -419,12 +420,48 @@ class GatherRunner {
       HostUserAgent: (await options.driver.getBrowserVersion()).userAgent,
       NetworkUserAgent: '', // updated later
       BenchmarkIndex: 0, // updated later
+      AppManifest: null, // updated later
       traces: {},
       devtoolsLogs: {},
       settings: options.settings,
       URL: {requestedUrl: options.requestedUrl, finalUrl: ''},
       Timing: [],
     };
+  }
+
+  /**
+   * Uses the debugger protocol to fetch the manifest from within the context of
+   * the target page, reusing any credentials, emulation, etc, already established
+   * there.
+   *
+   * Returns the parsed manifest or null if the page had no manifest. If the manifest
+   * was unparseable as JSON, manifest.value will be undefined and manifest.warning
+   * will have the reason. See manifest-parser.js for more information.
+   *
+   * @param {LH.Gatherer.PassContext} passContext
+   * @return {Promise<LH.Artifacts['Manifest']>}
+   */
+  static async getAppManifest(passContext) {
+    if (passContext.baseArtifacts.AppManifest) return passContext.baseArtifacts.AppManifest;
+
+    const BOM_LENGTH = 3;
+    const BOM_FIRSTCHAR = 65279;
+
+    const manifestPromise = passContext.driver.getAppManifest();
+    /** @type {Promise<void>} */
+    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 3000));
+
+    const response = await Promise.race([manifestPromise, timeoutPromise]);
+    if (!response) {
+      return null;
+    }
+
+    const isBomEncoded = response.data.charCodeAt(0) === BOM_FIRSTCHAR;
+    if (isBomEncoded) {
+      response.data = Buffer.from(response.data).slice(BOM_LENGTH).toString();
+    }
+
+    return manifestParser(response.data, response.url, passContext.url);
   }
 
   /**
@@ -456,6 +493,7 @@ class GatherRunner {
           url: options.requestedUrl,
           settings: options.settings,
           passConfig,
+          baseArtifacts,
           // *pass() functions and gatherers can push to this warnings array.
           LighthouseRunWarnings: baseArtifacts.LighthouseRunWarnings,
         };
@@ -467,6 +505,7 @@ class GatherRunner {
         }
         await GatherRunner.beforePass(passContext, gathererResults);
         await GatherRunner.pass(passContext, gathererResults);
+        baseArtifacts.AppManifest = await GatherRunner.getAppManifest(passContext);
         const passData = await GatherRunner.afterPass(passContext, gathererResults);
 
         // Save devtoolsLog, but networkRecords are discarded and not added onto artifacts.
