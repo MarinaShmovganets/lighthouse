@@ -98,6 +98,7 @@ connection.sendCommand = function(command, params) {
     case 'Network.getResponseBody':
       return new Promise(res => setTimeout(res, MAX_WAIT_FOR_PROTOCOL + 20));
     case 'Page.enable':
+    case 'Page.navigate':
     case 'Network.enable':
     case 'Tracing.start':
     case 'ServiceWorker.enable':
@@ -107,6 +108,7 @@ connection.sendCommand = function(command, params) {
     case 'Network.setExtraHTTPHeaders':
     case 'Network.emulateNetworkConditions':
     case 'Emulation.setCPUThrottlingRate':
+    case 'Emulation.setScriptExecutionDisabled':
       return Promise.resolve({});
     case 'Tracing.end':
       return Promise.reject(new Error('tracing not started'));
@@ -226,12 +228,6 @@ describe('Browser Driver', () => {
     }
     const replayConnection = new ReplayConnection();
     const driver = new Driver(replayConnection);
-    driver._waitForSecurityCheck = () => {
-      return {
-        promise: Promise.resolve(),
-        cancel: () => {},
-      };
-    };
 
     // Redirect in log will go through
     const startUrl = 'http://en.wikipedia.org/';
@@ -547,15 +543,31 @@ describe('Multiple tab check', () => {
     });
   });
 
-  describe('._waitForSecurityCheck', () => {
+  describe('Security check', () => {
     it('does not reject when page is secure', async () => {
       const secureSecurityState = {
+        explanations: [],
         securityState: 'secure',
       };
-      driverStub.on = createOnceStub({
+      driverStub.on = driverStub.once = createOnceStub({
         'Security.securityStateChanged': secureSecurityState,
+        'Page.loadEventFired': {},
+        'Page.domContentEventFired': {},
       });
-      await driverStub._waitForSecurityCheck().promise;
+
+      const startUrl = 'https://www.example.com';
+      const loadOptions = {
+        waitForLoad: true,
+        passContext: {
+          passConfig: {
+            networkQuietThresholdMs: 1,
+          },
+          settings: {
+            maxWaitForLoad: 1,
+          },
+        },
+      };
+      await driverStub.gotoURL(startUrl, loadOptions);
     });
 
     it('rejects when page is insecure', async () => {
@@ -579,9 +591,20 @@ describe('Multiple tab check', () => {
       driverStub.on = createOnceStub({
         'Security.securityStateChanged': insecureSecurityState,
       });
+
+      const startUrl = 'https://www.example.com';
+      const loadOptions = {
+        waitForLoad: true,
+        passContext: {
+          passConfig: {
+            networkQuietThresholdMs: 1,
+          },
+        },
+      };
+
       try {
-        await driverStub._waitForSecurityCheck().promise;
-        assert.fail('_waitForSecurityCheck should have rejected');
+        await driverStub.gotoURL(startUrl, loadOptions);
+        assert.fail('security check should have rejected');
       } catch (err) {
         assert.equal(err.message, 'INSECURE_DOCUMENT_REQUEST');
         assert.equal(err.code, 'INSECURE_DOCUMENT_REQUEST');

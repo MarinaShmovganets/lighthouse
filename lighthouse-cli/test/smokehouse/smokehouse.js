@@ -16,7 +16,7 @@ const log = require('lighthouse-logger');
 
 const PROTOCOL_TIMEOUT_EXIT_CODE = 67;
 const PAGE_HUNG_EXIT_CODE = 68;
-const INSECRE_DOCUMENT_REQUEST_EXIT_CODE = 69;
+const INSECURE_DOCUMENT_REQUEST_EXIT_CODE = 69;
 const RETRIES = 3;
 const NUMERICAL_EXPECTATION_REGEXP = /^(<=?|>=?)((\d|\.)+)$/;
 
@@ -91,7 +91,7 @@ function runLighthouse(url, configPath, isDebug) {
     process.exit(1);
   } else if (runResults.status !== 0
      && runResults.status !== PAGE_HUNG_EXIT_CODE
-     && runResults.status !== INSECRE_DOCUMENT_REQUEST_EXIT_CODE) {
+     && runResults.status !== INSECURE_DOCUMENT_REQUEST_EXIT_CODE) {
     console.error(`Lighthouse run failed with exit code ${runResults.status}. stderr to follow:`);
     console.error(runResults.stderr);
     process.exit(runResults.status);
@@ -106,7 +106,7 @@ function runLighthouse(url, configPath, isDebug) {
     return {requestedUrl: url, finalUrl: url, errorCode: 'PAGE_HUNG', audits: {}};
   }
 
-  if (runResults.status === INSECRE_DOCUMENT_REQUEST_EXIT_CODE) {
+  if (runResults.status === INSECURE_DOCUMENT_REQUEST_EXIT_CODE) {
     return {requestedUrl: url, finalUrl: url, errorCode: 'INSECURE_DOCUMENT_REQUEST', audits: {}};
   }
 

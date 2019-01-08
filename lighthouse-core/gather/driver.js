@@ -32,8 +32,6 @@ const DEFAULT_CPU_QUIET_THRESHOLD = 0;
 // Controls how long to wait for a response after sending a DevTools protocol command.
 const DEFAULT_PROTOCOL_TIMEOUT = 30000;
 
-const SECURE_SCHEMES = ['data', 'https', 'wss', 'blob', 'chrome', 'chrome-extension', 'about'];
-
 /**
  * @typedef {LH.Protocol.StrictEventEmitter<LH.CrdpEvents>} CrdpEventEmitter
  */
@@ -508,61 +506,6 @@ class Driver {
   }
 
   /**
-   * Listener that resolves or rejects on the first interesting security state change.
-   * If the first change is secure, we resolve.
-   * Otherwise, we reject.
-   * We can expect the security state to always change because this function
-   * is only used to move about:blank (neutral) -> the target url (something not neutral).
-   * @return {{promise: Promise<void>, cancel: function(): void}}
-   * @private
-   */
-  _waitForSecurityCheck() {
-    /** @type {(() => void)} */
-    let cancel = () => {
-      throw new Error('_waitForSecurityCheck.cancel() called before it was defined');
-    };
-
-    const promise = new Promise(async (resolve, reject) => {
-      /**
-       * @param {LH.Crdp.Security.SecurityStateChangedEvent} event
-       */
-      const securityStateChangedListener = ({securityState, explanations}) => {
-        // ignore until there is something meaningful to derive security from
-        if (securityState === 'neutral' && !explanations.length) {
-          return;
-        }
-
-        if (securityState === 'insecure') {
-          cancel();
-          const insecureDescriptions = explanations
-            .filter(exp => exp.securityState === 'insecure')
-            .map(exp => exp.description);
-          const err = new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {
-            securityMessages: insecureDescriptions.join(' '),
-          });
-          reject(err);
-        } else {
-          cancel();
-          resolve();
-        }
-      };
-
-      this.on('Security.securityStateChanged', securityStateChangedListener);
-      this.sendCommand('Security.enable').catch(() => {});
-
-      cancel = () => {
-        this.off('Security.securityStateChanged', securityStateChangedListener);
-        this.sendCommand('Security.disable').catch(() => {});
-      };
-    });
-
-    return {
-      promise,
-      cancel,
-    };
-  }
-
-  /**
    * Returns a promise that resolve when a frame has been navigated.
    * Used for detecting that our about:blank reset has been completed.
    */
@@ -792,14 +735,6 @@ class Driver {
     /** @type {NodeJS.Timer|undefined} */
     let maxTimeoutHandle;
 
-    // Noop if offline or not https
-    // https: => https
-    const protocol = new URL(this._monitoredUrl || '').protocol.replace(/:$/, '');
-    const isSecureProtocol = SECURE_SCHEMES.includes(protocol);
-    const waitForSecurityCheck = this.online && isSecureProtocol ? this._waitForSecurityCheck() : {
-      promise: Promise.resolve(),
-      cancel: () => {},
-    };
     // Listener for onload. Resolves pauseAfterLoadMs ms after load.
     const waitForLoadEvent = this._waitForLoadEvent(pauseAfterLoadMs);
     // Network listener. Resolves when the network has been idle for networkQuietThresholdMs.
@@ -807,11 +742,43 @@ class Driver {
     // CPU listener. Resolves when the CPU has been idle for cpuQuietThresholdMs after network idle.
     /** @type {{promise: Promise<void>, cancel: function(): void}|null} */
     let waitForCPUIdle = null;
+    const cancelAll = () => {
+      waitForLoadEvent.cancel();
+      waitForNetworkIdle.cancel();
+      waitForCPUIdle && waitForCPUIdle.cancel();
+    };
+
+    // Promise that only rejects when ann insecure security state is encountered
+    let securityCheckCleanup = () => {};
+    const securityCheckPromise = new Promise((_, reject) => {
+      /**
+       * @param {LH.Crdp.Security.SecurityStateChangedEvent} event
+       */
+      const securityStateChangedListener = ({securityState, explanations}) => {
+        if (securityState === 'insecure') {
+          maxTimeoutHandle && clearTimeout(maxTimeoutHandle);
+          securityCheckCleanup();
+          cancelAll();
+          const insecureDescriptions = explanations
+            .filter(exp => exp.securityState === 'insecure')
+            .map(exp => exp.description);
+          const err = new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {
+            securityMessages: insecureDescriptions.join(' '),
+          });
+          reject(err);
+        }
+      };
+      securityCheckCleanup = () => {
+        this.off('Security.securityStateChanged', securityStateChangedListener);
+        this.sendCommand('Security.disable').catch(() => {});
+      };
+      this.on('Security.securityStateChanged', securityStateChangedListener);
+      this.sendCommand('Security.enable').catch(() => {});
+    });
 
     // Wait for both load promises. Resolves on cleanup function the clears load
     // timeout timer.
     const loadPromise = Promise.all([
-      waitForSecurityCheck.promise,
       waitForLoadEvent.promise,
       waitForNetworkIdle.promise,
     ]).then(() => {
@@ -831,10 +798,7 @@ class Driver {
     }).then(_ => {
       return async () => {
         log.warn('Driver', 'Timed out waiting for page load. Checking if page is hung...');
-        waitForSecurityCheck.cancel();
-        waitForLoadEvent.cancel();
-        waitForNetworkIdle.cancel();
-        waitForCPUIdle && waitForCPUIdle.cancel();
+        cancelAll();
 
         if (await this.isPageHung()) {
           log.warn('Driver', 'Page appears to be hung, killing JavaScript...');
@@ -847,9 +811,11 @@ class Driver {
 
     // Wait for load or timeout and run the cleanup function the winner returns.
     const cleanupFn = await Promise.race([
+      securityCheckPromise,
       loadPromise,
       maxTimeoutPromise,
     ]);
+    securityCheckCleanup();
     await cleanupFn();
   }
 
