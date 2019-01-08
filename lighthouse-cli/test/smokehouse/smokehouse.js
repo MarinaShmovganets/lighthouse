@@ -206,8 +206,8 @@ function findDifference(path, actual, expected) {
 
 /**
  * Collate results into comparisons of actual and expected scores on each audit.
- * @param {{finalUrl: string, audits: !Array}} actual
- * @param {{finalUrl: string, audits: !Array}} expected
+ * @param {{finalUrl: string, audits: !Array, errorCode: string}} actual
+ * @param {{finalUrl: string, audits: !Array, errorCode: string}} expected
  * @return {{finalUrl: !Object, audits: !Array<!Object>}}
  */
 function collateResults(actual, expected) {
@@ -238,6 +238,12 @@ function collateResults(actual, expected) {
       equal: actual.finalUrl === expected.finalUrl,
     },
     audits: collatedAudits,
+    errorCode: {
+      category: 'error code',
+      actual: actual.errorCode,
+      expected: expected.errorCode,
+      equal: actual.errorCode === expected.errorCode,
+    },
   };
 }
 
@@ -281,11 +287,12 @@ function reportAssertion(assertion) {
 /**
  * Log all the comparisons between actual and expected test results, then print
  * summary. Returns count of passed and failed tests.
- * @param {{finalUrl: !Object, audits: !Array<!Object>}} results
+ * @param {{finalUrl: !Object, audits: !Array<!Object>, errorCode: !Object}} results
  * @return {{passed: number, failed: number}}
  */
 function report(results) {
   reportAssertion(results.finalUrl);
+  reportAssertion(results.errorCode);
 
   let correctCount = 0;
   let failedCount = 0;
