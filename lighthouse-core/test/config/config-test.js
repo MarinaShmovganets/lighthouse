@@ -697,24 +697,47 @@ describe('Config', () => {
   });
 
   describe('mergePlugins', () => {
-    it('should append audits', () => {
+    const configFixturePath = __dirname + '/../fixtures/config-plugins/';
 
+    it('should append audits', () => {
+      const configJson = {
+        audits: ['viewport', 'metrics'],
+        plugins: ['simple'],
+      };
+      const config = new Config(configJson, {configPath: configFixturePath});
+      assert.deepStrictEqual(config.audits.map(a => a.path),
+        ['viewport', 'metrics', 'redirects', 'user-timings']);
     });
 
     it('should append a category', () => {
-
-    });
-
-    it('should throw if no category is provided', () => {
-
-    });
-
-    it('should throw if the plugin is not found', () => {
-
+      const configJson = {
+        extends: 'lighthouse:default',
+        plugins: ['simple'],
+      };
+      const config = new Config(configJson, {configPath: configFixturePath});
+      const categoryNames = Object.keys(config.categories);
+      assert.ok(categoryNames.length > 1);
+      assert.strictEqual(categoryNames[categoryNames.length - 1], 'simple');
+      assert.strictEqual(config.categories.simple.title, 'Simple');
     });
 
     it('should throw if the plugin is invalid', () => {
+      const configJson = {
+        extends: 'lighthouse:default',
+        plugins: ['no-category'],
+      };
+      // Required to have a `category`, so plugin is invalid.
+      assert.throws(() => new Config(configJson, {configPath: configFixturePath}),
+        /^Error: lighthouse-plugin-no-category has no valid category/);
+    });
 
+    it('should throw if the plugin is not found', () => {
+      const configJson = {
+        extends: 'lighthouse:default',
+        plugins: ['not-a-plugin'],
+      };
+      assert.throws(() => new Config(configJson, {configPath: configFixturePath}),
+        /^Error: Unable to locate plugin: lighthouse-plugin-not-a-plugin/);
     });
   });
 
