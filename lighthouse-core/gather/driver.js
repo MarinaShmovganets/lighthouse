@@ -32,6 +32,8 @@ const DEFAULT_CPU_QUIET_THRESHOLD = 0;
 // Controls how long to wait for a response after sending a DevTools protocol command.
 const DEFAULT_PROTOCOL_TIMEOUT = 30000;
 
+const SECURE_SCHEMES = ['data', 'https', 'wss', 'blob', 'chrome', 'chrome-extension', 'about'];
+
 /**
  * @typedef {LH.Protocol.StrictEventEmitter<LH.CrdpEvents>} CrdpEventEmitter
  */
@@ -791,8 +793,10 @@ class Driver {
     let maxTimeoutHandle;
 
     // Noop if offline or not https
-    const isHttps = new URL(this._monitoredUrl || '').protocol === 'https:';
-    const waitForSecurityCheck = this.online && isHttps ? this._waitForSecurityCheck() : {
+    // https: => https
+    const protocol = new URL(this._monitoredUrl || '').protocol.replace(/:$/, '');
+    const isSecureProtocol = SECURE_SCHEMES.includes(protocol);
+    const waitForSecurityCheck = this.online && isSecureProtocol ? this._waitForSecurityCheck() : {
       promise: Promise.resolve(),
       cancel: () => {},
     };
