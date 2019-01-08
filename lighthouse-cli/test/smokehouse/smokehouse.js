@@ -15,6 +15,7 @@ const yargs = require('yargs');
 const log = require('lighthouse-logger');
 
 const PROTOCOL_TIMEOUT_EXIT_CODE = 67;
+const PAGE_HUNG_EXIT_CODE = 68;
 const RETRIES = 3;
 const NUMERICAL_EXPECTATION_REGEXP = /^(<=?|>=?)((\d|\.)+)$/;
 
@@ -87,7 +88,7 @@ function runLighthouse(url, configPath, isDebug) {
   if (runResults.status === PROTOCOL_TIMEOUT_EXIT_CODE) {
     console.error(`Lighthouse debugger connection timed out ${RETRIES} times. Giving up.`);
     process.exit(1);
-  } else if (runResults.status !== 0) {
+  } else if (runResults.status !== 0 && runResults.status !== PAGE_HUNG_EXIT_CODE) {
     console.error(`Lighthouse run failed with exit code ${runResults.status}. stderr to follow:`);
     console.error(runResults.stderr);
     process.exit(runResults.status);
@@ -98,10 +99,14 @@ function runLighthouse(url, configPath, isDebug) {
     console.error(`STDERR: ${runResults.stderr}`);
   }
 
+  if (runResults.status === PAGE_HUNG_EXIT_CODE) {
+    return {requestedUrl: url, finalUrl: url, errorCode: 'PAGE_HUNG', audits: {}};
+  }
+
   const lhr = fs.readFileSync(outputPath, 'utf8');
   if (isDebug) {
     console.log('LHR output available at: ', outputPath);
-  } else {
+  } else if (fs.existsSync(outputPath)) {
     fs.unlinkSync(outputPath);
   }
 
@@ -194,8 +199,8 @@ function findDifference(path, actual, expected) {
 
 /**
  * Collate results into comparisons of actual and expected scores on each audit.
- * @param {{finalUrl: string, audits: !Array}} actual
- * @param {{finalUrl: string, audits: !Array}} expected
+ * @param {{finalUrl: string, audits: !Array, errorCode: string}} actual
+ * @param {{finalUrl: string, audits: !Array, errorCode: string}} expected
  * @return {{finalUrl: !Object, audits: !Array<!Object>}}
  */
 function collateResults(actual, expected) {
@@ -226,6 +231,12 @@ function collateResults(actual, expected) {
       equal: actual.finalUrl === expected.finalUrl,
     },
     audits: collatedAudits,
+    errorCode: {
+      category: 'error code',
+      actual: actual.errorCode,
+      expected: expected.errorCode,
+      equal: actual.errorCode === expected.errorCode,
+    },
   };
 }
 
@@ -269,11 +280,12 @@ function reportAssertion(assertion) {
 /**
  * Log all the comparisons between actual and expected test results, then print
  * summary. Returns count of passed and failed tests.
- * @param {{finalUrl: !Object, audits: !Array<!Object>}} results
+ * @param {{finalUrl: !Object, audits: !Array<!Object>, errorCode: !Object}} results
  * @return {{passed: number, failed: number}}
  */
 function report(results) {
   reportAssertion(results.finalUrl);
+  reportAssertion(results.errorCode);
 
   let correctCount = 0;
   let failedCount = 0;

@@ -56,7 +56,6 @@ class LighthouseReportViewer {
    * @private
    */
   _addEventListeners() {
-    // @ts-ignore - tsc thinks document can't listen for `paste`
     document.addEventListener('paste', this._onPaste);
 
     const gistUrlInput = find('.js-gist-url', document);
@@ -139,10 +138,12 @@ class LighthouseReportViewer {
   _replaceReportHtml(json) {
     this._validateReportJson(json);
 
-    if (!json.lighthouseVersion.startsWith('3')) {
+    if (json.lighthouseVersion.startsWith('2')) {
       this._loadInLegacyViewerVersion(json);
       return;
     }
+
+    // TODO: viewer3x :)
 
     const dom = new DOM(document);
     const renderer = new ReportRenderer(dom);
@@ -369,7 +370,7 @@ class LighthouseReportViewer {
   }
 }
 
-// @ts-ignore - node export for testing.
+// node export for testing.
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = LighthouseReportViewer;
 }
