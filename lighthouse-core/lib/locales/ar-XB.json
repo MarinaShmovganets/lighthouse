@@ -162,7 +162,7 @@
     "message": "‏‮Minimizes‬‏ ‏‮main‬‏ ‏‮thread‬‏ ‏‮work‬‏"
   },
   "lighthouse-core/audits/metrics/estimated-input-latency.js | description": {
-    "message": "‏‮Estimated Input Latency is an estimate‬‏ ‏‮of‬‏ ‏‮how‬‏ ‏‮long‬‏ ‏‮your‬‏ ‏‮app‬‏ ‏‮takes‬‏ ‏‮to‬‏ ‏‮respond‬‏ ‏‮to‬‏ ‏‮user‬‏ ‏‮input‬‏, ‏‮in‬‏ ‏‮milliseconds‬‏, ‏‮during‬‏ ‏‮the‬‏ ‏‮busiest‬‏ 5‏‮s‬‏ ‏‮window‬‏ ‏‮of‬‏ ‏‮page‬‏ ‏‮load‬‏. ‏‮If‬‏ ‏‮your‬‏ ‏‮latency‬‏ ‏‮is‬‏ ‏‮higher‬‏ ‏‮than‬‏ 50 ‏‮ms‬‏, ‏‮users‬‏ ‏‮may‬‏ ‏‮perceive‬‏ ‏‮your‬‏ ‏‮app‬‏ ‏‮as‬‏ ‏‮laggy‬‏. [‏‮Learn‬‏ ‏‮more‬‏](‏‮https‬‏://‏‮developers‬‏.‏‮google‬‏.‏‮com‬‏/‏‮web‬‏/‏‮tools‬‏/‏‮lighthouse‬‏/‏‮audits‬‏/‏‮estimated‬‏-‏‮input‬‏-‏‮latency‬‏)."
+    "message": "‏‮The‬‏ ‏‮score‬‏ ‏‮above‬‏ ‏‮is‬‏ ‏‮an‬‏ ‏‮estimate‬‏ ‏‮of‬‏ ‏‮how‬‏ ‏‮long‬‏ ‏‮your‬‏ ‏‮app‬‏ ‏‮takes‬‏ ‏‮to‬‏ ‏‮respond‬‏ ‏‮to‬‏ ‏‮user‬‏ ‏‮input‬‏, ‏‮in‬‏ ‏‮milliseconds‬‏, ‏‮during‬‏ ‏‮the‬‏ ‏‮busiest‬‏ 5‏‮s‬‏ ‏‮window‬‏ ‏‮of‬‏ ‏‮page‬‏ ‏‮load‬‏. ‏‮If‬‏ ‏‮your‬‏ ‏‮latency‬‏ ‏‮is‬‏ ‏‮higher‬‏ ‏‮than‬‏ 50 ‏‮ms‬‏, ‏‮users‬‏ ‏‮may‬‏ ‏‮perceive‬‏ ‏‮your‬‏ ‏‮app‬‏ ‏‮as‬‏ ‏‮laggy‬‏. [‏‮Learn‬‏ ‏‮more‬‏](‏‮https‬‏://‏‮developers‬‏.‏‮google‬‏.‏‮com‬‏/‏‮web‬‏/‏‮tools‬‏/‏‮lighthouse‬‏/‏‮audits‬‏/‏‮estimated‬‏-‏‮input‬‏-‏‮latency‬‏)."
   },
   "lighthouse-core/audits/metrics/estimated-input-latency.js | title": {
     "message": "‏‮Estimated‬‏ ‏‮Input‬‏ ‏‮Latency‬‏"
@@ -186,7 +186,7 @@
     "message": "‏‮First‬‏ ‏‮Meaningful‬‏ ‏‮Paint‬‏"
   },
   "lighthouse-core/audits/metrics/interactive.js | description": {
-    "message": "‏‮nteractive‬‏ ‏‮is the amount of time it takes for the page to become‬‏ ‏‮fully‬‏ ‏‮interactive‬‏. [‏‮Learn‬‏ ‏‮more‬‏](‏‮https‬‏://‏‮developers‬‏.‏‮google‬‏.‏‮com‬‏/‏‮web‬‏/‏‮tools‬‏/‏‮lighthouse‬‏/‏‮audits‬‏/‏‮consistently‬‏-‏‮interactive‬‏ ot emiT)."
+    "message": "‏‮Interactive‬‏ ‏‮marks‬‏ ‏‮the‬‏ ‏‮time‬‏ ‏‮at‬‏ ‏‮which‬‏ ‏‮the‬‏ ‏‮page‬‏ ‏‮is‬‏ ‏‮fully‬‏ ‏‮interactive‬‏. [‏‮Learn‬‏ ‏‮more‬‏](‏‮https‬‏://‏‮developers‬‏.‏‮google‬‏.‏‮com‬‏/‏‮web‬‏/‏‮tools‬‏/‏‮lighthouse‬‏/‏‮audits‬‏/‏‮consistently‬‏-‏‮interactive‬‏)."
   },
   "lighthouse-core/audits/metrics/interactive.js | title": {
     "message": "‏‮Time‬‏ ‏‮to‬‏ ‏‮Interactive‬‏"
