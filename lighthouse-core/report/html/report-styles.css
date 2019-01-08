@@ -54,6 +54,7 @@
   --metric-timeline-rule-color: #b3b3b3;
   --display-value-gray: hsl(216, 5%, 39%);
   --report-width: calc(60 * var(--body-font-size));
+  --report-min-width: 400px;
   /* Edge doesn't support calc(var(calc())) */
   --report-width-half: calc(30 * var(--body-font-size));
   --report-header-height: 161px;
@@ -603,7 +604,7 @@
   content: '';
   background-image: var(--check-icon-url);
 }
-.lh-clump--not-applicable > summary .lh-audit-group__header::before {
+.lh-clump--notapplicable > summary .lh-audit-group__header::before {
   content: '';
   background-image: var(--remove-circle-icon-url);
 }
@@ -711,6 +712,7 @@
   position: sticky;
   top: 0;
   width: 100%;
+  min-width: var(--report-min-width);
   z-index: 2;
   will-change: transform;
 }
@@ -728,6 +730,7 @@
 
 .lh-report {
   background-color: #fff;
+  min-width: var(--report-min-width);
 }
 @media screen {
   .lh-report {
@@ -784,7 +787,7 @@
 }
 
 .lh-scores-header .lh-gauge__wrapper,
-.lh-scores-header .lh-gauge--pwa__wrapper, {
+.lh-scores-header .lh-gauge--pwa__wrapper {
   margin: 0 4px;
 }
 
@@ -915,7 +918,6 @@
   .lh-report {
     margin-left: 0;
     width: 100%;
-    min-width: 400px;
   }
 }
 
