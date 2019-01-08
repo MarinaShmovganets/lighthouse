@@ -99,6 +99,7 @@ connection.sendCommand = function(command, params) {
       return new Promise(res => setTimeout(res, MAX_WAIT_FOR_PROTOCOL + 20));
     case 'Page.enable':
     case 'Page.navigate':
+    case 'Page.setLifecycleEventsEnabled':
     case 'Network.enable':
     case 'Tracing.start':
     case 'ServiceWorker.enable':
