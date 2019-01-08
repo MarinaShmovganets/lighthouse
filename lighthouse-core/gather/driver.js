@@ -748,7 +748,7 @@ class Driver {
       waitForCPUIdle && waitForCPUIdle.cancel();
     };
 
-    // Promise that only rejects when ann insecure security state is encountered
+    // Promise that only rejects when an insecure security state is encountered
     let securityCheckCleanup = () => {};
     const securityCheckPromise = new Promise((_, reject) => {
       /**
