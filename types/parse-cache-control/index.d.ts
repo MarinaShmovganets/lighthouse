@@ -14,6 +14,6 @@ declare module 'parse-cache-control' {
     'private'?: boolean;
   }
 
-  function ParseCacheControl(headers?: string): CacheHeaders;
+  function ParseCacheControl(headers?: string): CacheHeaders | null;
   export = ParseCacheControl;
 }

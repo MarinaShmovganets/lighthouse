@@ -238,7 +238,9 @@ class CacheHeaders extends Audit {
 
         results.push({
           url,
-          cacheControl,
+          // Include cacheControl in results, but cast as any so table types
+          // are happy. cacheControl is not shown in the table so this is OK.
+          cacheControl: /** @type {any} */ (cacheControl),
           cacheLifetimeMs: cacheLifetimeInSeconds * 1000,
           cacheHitProbability,
           totalBytes,
