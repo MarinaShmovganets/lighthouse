@@ -786,12 +786,7 @@
   border: 0;
 }
 
-<<<<<<< HEAD
 .lh-scores-header .lh-gauge__wrapper {
-=======
-.lh-scores-header .lh-gauge__wrapper,
-.lh-scores-header .lh-gauge--pwa__wrapper {
->>>>>>> master
   margin: 0 4px;
 }
 
