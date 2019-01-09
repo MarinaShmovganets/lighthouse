@@ -169,7 +169,7 @@ class CacheHeaders extends Audit {
    */
   static shouldProcessRecord(headers, cacheControl, cacheLifetimeInSeconds, cacheHitProbability) {
     // The HTTP/1.0 Pragma header can disable caching if cache-control is not set, see https://tools.ietf.org/html/rfc7234#section-5.4
-    if ((headers.get('pragma') || '').includes('no-cache')) {
+    if (!cacheControl && (headers.get('pragma') || '').includes('no-cache')) {
       return false;
     }
 
@@ -183,8 +183,13 @@ class CacheHeaders extends Audit {
       return false;
     }
 
-    if (cacheLifetimeInSeconds !== null && cacheLifetimeInSeconds <= 0) return false;
+    // Ignore if cacheLifetimeInSeconds is defined and a nonpositive number.
+    if (cacheLifetimeInSeconds !== null &&
+      (!Number.isFinite(cacheLifetimeInSeconds) || cacheLifetimeInSeconds <= 0)) {
+      return false;
+    }
 
+    // Ignore assets whose cache lifetime is already high enough
     if (cacheHitProbability > IGNORE_THRESHOLD_IN_PERCENT) return false;
 
     return true;

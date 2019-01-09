@@ -74,6 +74,22 @@ describe('Cache headers audit', () => {
     });
   });
 
+  it('ignores nonpositive and nonfinite max-age headers', () => {
+    const infinityMaxAgeStringValue = '1'.repeat(400);
+    assert.equal(Number.parseInt(infinityMaxAgeStringValue), Infinity);
+    const networkRecords = [
+      networkRecord({headers: {'cache-control': 'max-age=' + infinityMaxAgeStringValue}}),
+      networkRecord({headers: {'cache-control': 'max-age=-' + infinityMaxAgeStringValue}}),
+      networkRecord({headers: {'cache-control': 'max-age=-100'}}),
+    ];
+
+    const context = {options, computedCache: new Map()};
+    return CacheHeadersAudit.audit(getArtifacts(networkRecords), context).then(result => {
+      const items = result.details.items;
+      assert.equal(items.length, 0);
+    });
+  });
+
   it('detects low value expires headers', () => {
     const expiresIn = seconds => new Date(Date.now() + seconds * 1000).toGMTString();
     const closeEnough = (actual, exp) => assert.ok(Math.abs(actual - exp) <= 1, 'invalid expires');
