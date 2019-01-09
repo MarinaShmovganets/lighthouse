@@ -793,9 +793,6 @@
 .lh-scores-header .lh-gauge--pwa__wrapper {
   margin-right: 4px;
   padding-left: 3px; /* 4px - 1px border */
-}
-
-.lh-scores-header .lh-gauge--pwa__wrapper {
   border-left: 1px solid var(--report-secondary-border-color)
 }
 
