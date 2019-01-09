@@ -737,6 +737,48 @@ class Driver {
   }
 
   /**
+   * Return a promise that resolves when an insecure security state is encountered
+   * and a method to cancel internal listeners.
+   * @return {{promise: Promise<LHError>, cancel: function(): void}}
+   * @private
+   */
+  _waitForSecurityCheck() {
+    /** @type {(() => void)} */
+    let cancel = () => {
+      throw new Error('_waitForSecurityCheck.cancel() called before it was defined');
+    };
+
+    const promise = new Promise((resolve, reject) => {
+      /**
+       * @param {LH.Crdp.Security.SecurityStateChangedEvent} event
+       */
+      const securityStateChangedListener = ({securityState, explanations}) => {
+        if (securityState === 'insecure') {
+          cancel();
+          const insecureDescriptions = explanations
+            .filter(exp => exp.securityState === 'insecure')
+            .map(exp => exp.description);
+          const err = new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {
+            securityMessages: insecureDescriptions.join(' '),
+          });
+          resolve(err);
+        }
+      };
+      cancel = () => {
+        this.off('Security.securityStateChanged', securityStateChangedListener);
+        this.sendCommand('Security.disable').catch(() => {});
+      };
+      this.on('Security.securityStateChanged', securityStateChangedListener);
+      this.sendCommand('Security.enable').catch(() => {});
+    });
+
+    return {
+      promise,
+      cancel,
+    };
+  }
+
+  /**
    * Returns whether the page appears to be hung.
    * @return {Promise<boolean>}
    */
@@ -793,32 +835,13 @@ class Driver {
       waitForCPUIdle.cancel();
     };
 
-    // Promise that only rejects when an insecure security state is encountered
-    let securityCheckCleanup = () => {};
-    const securityCheckPromise = new Promise((_, reject) => {
-      /**
-       * @param {LH.Crdp.Security.SecurityStateChangedEvent} event
-       */
-      const securityStateChangedListener = ({securityState, explanations}) => {
-        if (securityState === 'insecure') {
-          maxTimeoutHandle && clearTimeout(maxTimeoutHandle);
-          securityCheckCleanup();
-          cancelAll();
-          const insecureDescriptions = explanations
-            .filter(exp => exp.securityState === 'insecure')
-            .map(exp => exp.description);
-          const err = new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {
-            securityMessages: insecureDescriptions.join(' '),
-          });
-          reject(err);
-        }
+    const waitForSecurityCheck = this._waitForSecurityCheck();
+    const securityCheckPromise = waitForSecurityCheck.promise.then((err) => {
+      return function() {
+        maxTimeoutHandle && clearTimeout(maxTimeoutHandle);
+        cancelAll();
+        throw err;
       };
-      securityCheckCleanup = () => {
-        this.off('Security.securityStateChanged', securityStateChangedListener);
-        this.sendCommand('Security.disable').catch(() => {});
-      };
-      this.on('Security.securityStateChanged', securityStateChangedListener);
-      this.sendCommand('Security.enable').catch(() => {});
     });
 
     // Wait for both load promises. Resolves on cleanup function the clears load
@@ -834,6 +857,7 @@ class Driver {
       return function() {
         log.verbose('Driver', 'loadEventFired and network considered idle');
         maxTimeoutHandle && clearTimeout(maxTimeoutHandle);
+        waitForSecurityCheck.cancel();
       };
     });
 
@@ -844,6 +868,7 @@ class Driver {
     }).then(_ => {
       return async () => {
         log.warn('Driver', 'Timed out waiting for page load. Checking if page is hung...');
+        waitForSecurityCheck.cancel();
         cancelAll();
 
         if (await this.isPageHung()) {
@@ -855,13 +880,12 @@ class Driver {
       };
     });
 
-    // Wait for load or timeout and run the cleanup function the winner returns.
+    // Wait for security issue, load or timeout and run the cleanup function the winner returns.
     const cleanupFn = await Promise.race([
-      securityCheckPromise, // will only ever reject
+      securityCheckPromise,
       loadPromise,
       maxTimeoutPromise,
     ]);
-    securityCheckCleanup();
     await cleanupFn();
   }
 
