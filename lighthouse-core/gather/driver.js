@@ -539,14 +539,17 @@ class Driver {
       /** @param {LH.Crdp.Page.LifecycleEventEvent} e */
       const lifecycleListener = e => {
         if (e.name === 'firstContentfulPaint') {
+          cancel();
           resolve();
-          this.off('Page.lifecycleEvent', lifecycleListener);
         }
       };
 
       this.on('Page.lifecycleEvent', lifecycleListener);
 
+      let canceled = false;
       cancel = () => {
+        if (canceled) return;
+        canceled = true;
         this.off('Page.lifecycleEvent', lifecycleListener);
       };
     });
@@ -627,7 +630,10 @@ class Driver {
       networkStatusMonitor.on('network-2-busy', logStatus);
 
       this.once('Page.domContentEventFired', domContentLoadedListener);
+      let canceled = false;
       cancel = () => {
+        if (canceled) return;
+        canceled = true;
         idleTimeout && clearTimeout(idleTimeout);
         this.off('Page.domContentEventFired', domContentLoadedListener);
         networkStatusMonitor.removeListener('network-2-busy', onBusy);
@@ -659,7 +665,7 @@ class Driver {
 
     /** @type {NodeJS.Timer|undefined} */
     let lastTimeout;
-    let cancelled = false;
+    const cancelled = false;
 
     const checkForQuietExpression = `(${pageFunctions.checkTimeSinceLastLongTaskString})()`;
     /**
@@ -691,7 +697,6 @@ class Driver {
     const promise = new Promise((resolve, reject) => {
       checkForQuiet(this, resolve).catch(reject);
       cancel = () => {
-        cancelled = true;
         if (lastTimeout) clearTimeout(lastTimeout);
         reject(new Error('Wait for CPU idle cancelled'));
       };
@@ -724,7 +729,10 @@ class Driver {
       };
       this.once('Page.loadEventFired', loadListener);
 
+      let canceled = false;
       cancel = () => {
+        if (canceled) return;
+        canceled = true;
         this.off('Page.loadEventFired', loadListener);
         loadTimeout && clearTimeout(loadTimeout);
       };
@@ -764,7 +772,10 @@ class Driver {
           resolve(err);
         }
       };
+      let canceled = false;
       cancel = () => {
+        if (canceled) return;
+        canceled = true;
         this.off('Security.securityStateChanged', securityStateChangedListener);
         this.sendCommand('Security.disable').catch(() => {});
       };
@@ -828,18 +839,10 @@ class Driver {
     const waitForNetworkIdle = this._waitForNetworkIdle(networkQuietThresholdMs);
     // CPU listener. Resolves when the CPU has been idle for cpuQuietThresholdMs after network idle.
     let waitForCPUIdle = this._waitForNothing();
-    const cancelAll = () => {
-      waitForFCP.cancel();
-      waitForLoadEvent.cancel();
-      waitForNetworkIdle.cancel();
-      waitForCPUIdle.cancel();
-    };
 
     const waitForSecurityCheck = this._waitForSecurityCheck();
     const securityCheckPromise = waitForSecurityCheck.promise.then((err) => {
       return function() {
-        maxTimeoutHandle && clearTimeout(maxTimeoutHandle);
-        cancelAll();
         throw err;
       };
     });
@@ -856,8 +859,6 @@ class Driver {
     }).then(() => {
       return function() {
         log.verbose('Driver', 'loadEventFired and network considered idle');
-        maxTimeoutHandle && clearTimeout(maxTimeoutHandle);
-        waitForSecurityCheck.cancel();
       };
     });
 
@@ -868,9 +869,6 @@ class Driver {
     }).then(_ => {
       return async () => {
         log.warn('Driver', 'Timed out waiting for page load. Checking if page is hung...');
-        waitForSecurityCheck.cancel();
-        cancelAll();
-
         if (await this.isPageHung()) {
           log.warn('Driver', 'Page appears to be hung, killing JavaScript...');
           await this.sendCommand('Emulation.setScriptExecutionDisabled', {value: true});
@@ -886,6 +884,14 @@ class Driver {
       loadPromise,
       maxTimeoutPromise,
     ]);
+
+    maxTimeoutHandle && clearTimeout(maxTimeoutHandle);
+    waitForFCP.cancel();
+    waitForLoadEvent.cancel();
+    waitForNetworkIdle.cancel();
+    waitForCPUIdle.cancel();
+    waitForSecurityCheck.cancel();
+
     await cleanupFn();
   }
 
