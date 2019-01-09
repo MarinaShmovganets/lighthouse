@@ -857,7 +857,7 @@ class Driver {
 
     // Wait for load or timeout and run the cleanup function the winner returns.
     const cleanupFn = await Promise.race([
-      securityCheckPromise,
+      securityCheckPromise, // will only ever reject
       loadPromise,
       maxTimeoutPromise,
     ]);
