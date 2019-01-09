@@ -182,7 +182,7 @@ function getEffectiveFontRule({inlineStyle, matchedCSSRules, inherited}) {
  * @returns {number}
  */
 function getNodeTextLength(node) {
-  return !node.nodeValue ? 0 : node.nodeValue.trim().length;
+  return !node.nodeValue ? 0 : Array.from(node.nodeValue.trim()).length;
 }
 
 /**
