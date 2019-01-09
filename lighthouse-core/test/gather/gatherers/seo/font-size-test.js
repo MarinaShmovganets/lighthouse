@@ -95,7 +95,8 @@ describe('Font size gatherer', () => {
     const artifact = await fontSizeGather.afterPass({driver});
     const expectedFailingTextLength = Array.from(smallText.trim()).length;
     const expectedVisitedTextLength = Array.from(bigText.trim()).length + expectedFailingTextLength;
-    const expectedTotalTextLength = Array.from(failingText.trim()).length + expectedVisitedTextLength;
+    const expectedTotalTextLength = Array.from(failingText.trim()).length +
+      expectedVisitedTextLength;
     const expectedAnalyzedFailingTextLength = expectedFailingTextLength;
 
     expect(artifact).toEqual({
