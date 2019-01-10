@@ -104,9 +104,9 @@ class CacheHeaders extends Audit {
   }
 
   /**
-   * Return max-age if defined, and null if not
+   * Return max-age if defined, otherwise expires header if defined, and null if not.
    * @param {Map<string, string>} headers
-   * @param {ReturnType<import('parse-cache-control')>} cacheControl
+   * @param {ReturnType<typeof parseCacheControl>} cacheControl
    * @return {?number}
    */
   static computeCacheLifetimeInSeconds(headers, cacheControl) {
@@ -162,12 +162,10 @@ class CacheHeaders extends Audit {
 
   /**
    * @param {Map<string, string>} headers
-   * @param {ReturnType<import('parse-cache-control')>} cacheControl
-   * @param {?number} cacheLifetimeInSeconds
-   * @param {number} cacheHitProbability
+   * @param {ReturnType<typeof parseCacheControl>} cacheControl
    * @returns {boolean}
    */
-  static shouldProcessRecord(headers, cacheControl, cacheLifetimeInSeconds, cacheHitProbability) {
+  static shouldProcessRecord(headers, cacheControl) {
     // The HTTP/1.0 Pragma header can disable caching if cache-control is not set, see https://tools.ietf.org/html/rfc7234#section-5.4
     if (!cacheControl && (headers.get('pragma') || '').includes('no-cache')) {
       return false;
@@ -182,15 +180,6 @@ class CacheHeaders extends Audit {
         cacheControl['private'])) {
       return false;
     }
-
-    // Ignore if cacheLifetimeInSeconds is defined and a nonpositive number.
-    if (cacheLifetimeInSeconds !== null &&
-      (!Number.isFinite(cacheLifetimeInSeconds) || cacheLifetimeInSeconds <= 0)) {
-      return false;
-    }
-
-    // Ignore assets whose cache lifetime is already high enough
-    if (cacheHitProbability > IGNORE_THRESHOLD_IN_PERCENT) return false;
 
     return true;
   }
@@ -223,17 +212,23 @@ class CacheHeaders extends Audit {
         }
 
         const cacheControl = parseCacheControl(headers.get('cache-control'));
-        let cacheLifetimeInSeconds = CacheHeaders.computeCacheLifetimeInSeconds(
-          headers, cacheControl);
-        const cacheHitProbability = CacheHeaders.getCacheHitProbability(
-          cacheLifetimeInSeconds || 0);
-
-        if (!this.shouldProcessRecord(
-          headers, cacheControl, cacheLifetimeInSeconds, cacheHitProbability)) {
+        if (!this.shouldProcessRecord(headers, cacheControl)) {
           continue;
         }
 
+        // Ignore if cacheLifetimeInSeconds is defined and a nonpositive number.
+        let cacheLifetimeInSeconds = CacheHeaders.computeCacheLifetimeInSeconds(
+          headers, cacheControl);
+        if (cacheLifetimeInSeconds !== null &&
+          (!Number.isFinite(cacheLifetimeInSeconds) || cacheLifetimeInSeconds <= 0)) {
+          continue;
+        }
         cacheLifetimeInSeconds = cacheLifetimeInSeconds || 0;
+
+        // Ignore assets whose cache lifetime is already high enough
+        const cacheHitProbability = CacheHeaders.getCacheHitProbability(cacheLifetimeInSeconds);
+        if (cacheHitProbability > IGNORE_THRESHOLD_IN_PERCENT) continue;
+
         const url = URL.elideDataURI(record.url);
         const totalBytes = record.transferSize || 0;
         const wastedBytes = (1 - cacheHitProbability) * totalBytes;
@@ -245,6 +240,7 @@ class CacheHeaders extends Audit {
           url,
           // Include cacheControl in results, but cast as any so table types
           // are happy. cacheControl is not shown in the table so this is OK.
+          // TODO(bckenny): fix DetailsItem
           cacheControl: /** @type {any} */ (cacheControl),
           cacheLifetimeMs: cacheLifetimeInSeconds * 1000,
           cacheHitProbability,
