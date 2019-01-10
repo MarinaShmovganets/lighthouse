@@ -205,12 +205,12 @@ describe('ReportRenderer', () => {
       'has party colored light beam');
   });
 
-  it('renders `not_applicable` audits as `not-applicable`', () => {
+  it('renders `not_applicable` audits as `notApplicable`', () => {
     const clonedSampleResult = JSON.parse(JSON.stringify(sampleResultsOrig));
 
     let notApplicableCount = 0;
     Object.values(clonedSampleResult.audits).forEach(audit => {
-      if (audit.scoreDisplayMode === 'not-applicable') {
+      if (audit.scoreDisplayMode === 'notApplicable') {
         notApplicableCount++;
         audit.scoreDisplayMode = 'not_applicable';
       }
@@ -221,8 +221,7 @@ describe('ReportRenderer', () => {
     const container = renderer._dom._document.body;
     const reportElement = renderer.renderReport(sampleResults, container);
     const notApplicableElementCount = reportElement
-      .querySelectorAll('.lh-audit--not-applicable').length;
-
+      .querySelectorAll('.lh-audit--notapplicable').length;
     assert.strictEqual(notApplicableCount, notApplicableElementCount);
   });
 });
