@@ -748,7 +748,7 @@ class Driver {
   /**
    * Return a promise that resolves when an insecure security state is encountered
    * and a method to cancel internal listeners.
-   * @return {{promise: Promise<LHError>, cancel: function(): void}}
+   * @return {{promise: Promise<LH.Crdp.Security.SecurityStateExplanation[]>, cancel: function(): void}}
    * @private
    */
   _waitForSecurityCheck() {
@@ -764,13 +764,7 @@ class Driver {
       const securityStateChangedListener = ({securityState, explanations}) => {
         if (securityState === 'insecure') {
           cancel();
-          const insecureDescriptions = explanations
-            .filter(exp => exp.securityState === 'insecure')
-            .map(exp => exp.description);
-          const err = new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {
-            securityMessages: insecureDescriptions.join(' '),
-          });
-          resolve(err);
+          resolve(explanations);
         }
       };
       let canceled = false;
@@ -842,8 +836,14 @@ class Driver {
     let waitForCPUIdle = this._waitForNothing();
 
     const waitForSecurityCheck = this._waitForSecurityCheck();
-    const securityCheckPromise = waitForSecurityCheck.promise.then((err) => {
+    const securityCheckPromise = waitForSecurityCheck.promise.then(explanations => {
       return function() {
+        const insecureDescriptions = explanations
+          .filter(exp => exp.securityState === 'insecure')
+          .map(exp => exp.description);
+        const err = new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {
+          securityMessages: insecureDescriptions.join(' '),
+        });
         throw err;
       };
     });
