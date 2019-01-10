@@ -24,11 +24,7 @@ describe('Manifest gatherer', () => {
     return manifestGather.afterPass({
       driver: {
         getAppManifest() {
-          return Promise.resolve({
-            data: '{}',
-            errors: [],
-            url: EXAMPLE_MANIFEST_URL,
-          });
+          return Promise.resolve();
         },
       },
       url: EXAMPLE_DOC_URL,

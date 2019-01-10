@@ -318,6 +318,36 @@ describe('Browser Driver', () => {
       assert.equal(sendCommandParams[0], undefined);
     });
   });
+
+  describe('.getAppManifest', () => {
+    it('should return null when no manifest', async () => {
+      const sendCommand = jest.spyOn(connection, 'sendCommand');
+      sendCommand.mockResolvedValueOnce({data: undefined, url: '/manifest'});
+      const result = await driverStub.getAppManifest();
+      expect(result).toEqual(null);
+    });
+
+    it('should return the manifest', async () => {
+      const manifest = {name: 'The App'};
+      const sendCommand = jest.spyOn(connection, 'sendCommand');
+      sendCommand.mockResolvedValueOnce({data: JSON.stringify(manifest), url: '/manifest'});
+      const result = await driverStub.getAppManifest();
+      expect(result).toEqual({data: JSON.stringify(manifest), url: '/manifest'});
+    });
+
+    it('should handle BOM-encoded manifest', async () => {
+      const fs = require('fs');
+      const manifestWithoutBOM = fs.readFileSync(__dirname + '/../fixtures/manifest.json')
+        .toString();
+      const manifestWithBOM = fs.readFileSync(__dirname + '/../fixtures/manifest-bom.json')
+        .toString();
+
+      const sendCommand = jest.spyOn(connection, 'sendCommand');
+      sendCommand.mockResolvedValueOnce({data: manifestWithBOM, url: '/manifest'});
+      const result = await driverStub.getAppManifest();
+      expect(result).toEqual({data: manifestWithoutBOM, url: '/manifest'});
+    });
+  });
 });
 
 describe('Multiple tab check', () => {

@@ -442,7 +442,10 @@ class GatherRunner {
    * @return {Promise<LH.Artifacts['Manifest']>}
    */
   static async getWebAppManifest(passContext) {
+    // If we already have a manifest, return it.
     if (passContext.baseArtifacts.WebAppManifest) return passContext.baseArtifacts.WebAppManifest;
+    // If we're not on the first pass and we didn't already have a manifest, don't try again.
+    if (!passContext.isFirstPass) return null;
     const response = await passContext.driver.getAppManifest();
     if (!response) return null;
     return manifestParser(response.data, response.url, passContext.url);
@@ -472,6 +475,7 @@ class GatherRunner {
       let isFirstPass = true;
       for (const passConfig of passes) {
         const passContext = {
+          isFirstPass,
           driver: options.driver,
           // If the main document redirects, we'll update this to keep track
           url: options.requestedUrl,

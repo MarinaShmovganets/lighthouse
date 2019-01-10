@@ -12,6 +12,7 @@ import Driver = require('../lighthouse-core/gather/driver');
 declare global {
   module LH.Gatherer {
     export interface PassContext {
+      isFirstPass: boolean
       url: string;
       driver: Driver;
       disableJavaScript?: boolean;
