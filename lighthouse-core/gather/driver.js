@@ -665,7 +665,7 @@ class Driver {
 
     /** @type {NodeJS.Timer|undefined} */
     let lastTimeout;
-    const cancelled = false;
+    let canceled = false;
 
     const checkForQuietExpression = `(${pageFunctions.checkTimeSinceLastLongTaskString})()`;
     /**
@@ -674,9 +674,9 @@ class Driver {
      * @return {Promise<void>}
      */
     async function checkForQuiet(driver, resolve) {
-      if (cancelled) return;
+      if (canceled) return;
       const timeSinceLongTask = await driver.evaluateAsync(checkForQuietExpression);
-      if (cancelled) return;
+      if (canceled) return;
 
       if (typeof timeSinceLongTask === 'number') {
         if (timeSinceLongTask >= waitForCPUQuiet) {
@@ -697,8 +697,9 @@ class Driver {
     const promise = new Promise((resolve, reject) => {
       checkForQuiet(this, resolve).catch(reject);
       cancel = () => {
+        canceled = true;
         if (lastTimeout) clearTimeout(lastTimeout);
-        reject(new Error('Wait for CPU idle cancelled'));
+        reject(new Error('Wait for CPU idle canceled'));
       };
     });
 
