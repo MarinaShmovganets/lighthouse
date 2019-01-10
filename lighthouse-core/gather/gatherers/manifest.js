@@ -8,8 +8,7 @@
 const Gatherer = require('./gatherer');
 
 /**
- * The artifact produced is the fetched manifest string, if any, passed through
- * the manifest parser.
+ * TODO(phulce): delete this file and move usages over to WebAppManifest
  */
 class Manifest extends Gatherer {
   /**
@@ -17,7 +16,7 @@ class Manifest extends Gatherer {
    * @return {Promise<LH.Artifacts['Manifest']>}
    */
   async afterPass(passContext) {
-    return passContext.baseArtifacts.AppManifest;
+    return passContext.baseArtifacts.WebAppManifest;
   }
 }
 
