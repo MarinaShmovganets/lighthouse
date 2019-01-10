@@ -16,7 +16,7 @@ class StartUrl extends Gatherer {
    * @return {Promise<LH.Artifacts['StartUrl']>}
    */
   async afterPass(passContext) {
-    const manifest = passContext.baseArtifacts.AppManifest;
+    const manifest = passContext.baseArtifacts.WebAppManifest;
     const startUrlInfo = this._readManifestStartUrl(manifest);
     if (startUrlInfo.isReadFailure) {
       return {statusCode: -1, explanation: startUrlInfo.reason};
