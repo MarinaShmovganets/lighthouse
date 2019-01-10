@@ -420,7 +420,7 @@ class GatherRunner {
       HostUserAgent: (await options.driver.getBrowserVersion()).userAgent,
       NetworkUserAgent: '', // updated later
       BenchmarkIndex: 0, // updated later
-      AppManifest: null, // updated later
+      WebAppManifest: null, // updated later
       traces: {},
       devtoolsLogs: {},
       settings: options.settings,
@@ -441,26 +441,10 @@ class GatherRunner {
    * @param {LH.Gatherer.PassContext} passContext
    * @return {Promise<LH.Artifacts['Manifest']>}
    */
-  static async getAppManifest(passContext) {
-    if (passContext.baseArtifacts.AppManifest) return passContext.baseArtifacts.AppManifest;
-
-    const BOM_LENGTH = 3;
-    const BOM_FIRSTCHAR = 65279;
-
-    const manifestPromise = passContext.driver.getAppManifest();
-    /** @type {Promise<void>} */
-    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 3000));
-
-    const response = await Promise.race([manifestPromise, timeoutPromise]);
-    if (!response) {
-      return null;
-    }
-
-    const isBomEncoded = response.data.charCodeAt(0) === BOM_FIRSTCHAR;
-    if (isBomEncoded) {
-      response.data = Buffer.from(response.data).slice(BOM_LENGTH).toString();
-    }
-
+  static async getWebAppManifest(passContext) {
+    if (passContext.baseArtifacts.WebAppManifest) return passContext.baseArtifacts.WebAppManifest;
+    const response = await passContext.driver.getAppManifest();
+    if (!response) return null;
     return manifestParser(response.data, response.url, passContext.url);
   }
 
@@ -505,7 +489,7 @@ class GatherRunner {
         }
         await GatherRunner.beforePass(passContext, gathererResults);
         await GatherRunner.pass(passContext, gathererResults);
-        baseArtifacts.AppManifest = await GatherRunner.getAppManifest(passContext);
+        baseArtifacts.WebAppManifest = await GatherRunner.getWebAppManifest(passContext);
         const passData = await GatherRunner.afterPass(passContext, gathererResults);
 
         // Save devtoolsLog, but networkRecords are discarded and not added onto artifacts.
