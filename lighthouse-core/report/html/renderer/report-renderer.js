@@ -213,6 +213,7 @@ class ReportRenderer {
       this._dom.find('.lh-header', headerContainer).addEventListener('click', _ => {
         headerContainer.classList.toggle('fireworks-paused');
       });
+      this._dom.find('#animate-hue-rotate', headerContainer).setAttribute('begin', '1s');
     }
 
     if (scoreHeader) {
