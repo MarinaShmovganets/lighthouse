@@ -33,7 +33,7 @@ const config = {
     // SELECT QUANTILES(fullyLoaded, 21) FROM [httparchive:summary_pages.2018_12_15_desktop] LIMIT 1000
     {path: 'metrics/interactive', options: {scorePODR: 2000, scoreMedian: 4500}},
     {path: 'metrics/first-cpu-idle', options: {scorePODR: 2000, scoreMedian: 4500}},
-  ]
+  ],
 };
 
 module.exports = config;
