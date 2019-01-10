@@ -697,6 +697,7 @@ class Driver {
     const promise = new Promise((resolve, reject) => {
       checkForQuiet(this, resolve).catch(reject);
       cancel = () => {
+        if (canceled) return;
         canceled = true;
         if (lastTimeout) clearTimeout(lastTimeout);
         reject(new Error('Wait for CPU idle canceled'));
@@ -748,13 +749,13 @@ class Driver {
   /**
    * Return a promise that resolves when an insecure security state is encountered
    * and a method to cancel internal listeners.
-   * @return {{promise: Promise<LH.Crdp.Security.SecurityStateExplanation[]>, cancel: function(): void}}
+   * @return {{promise: Promise<string>, cancel: function(): void}}
    * @private
    */
-  _waitForSecurityCheck() {
+  _monitorForInsecureState() {
     /** @type {(() => void)} */
     let cancel = () => {
-      throw new Error('_waitForSecurityCheck.cancel() called before it was defined');
+      throw new Error('_monitorForInsecureState.cancel() called before it was defined');
     };
 
     const promise = new Promise((resolve, reject) => {
@@ -764,7 +765,10 @@ class Driver {
       const securityStateChangedListener = ({securityState, explanations}) => {
         if (securityState === 'insecure') {
           cancel();
-          resolve(explanations);
+          const insecureDescriptions = explanations
+            .filter(exp => exp.securityState === 'insecure')
+            .map(exp => exp.description);
+          resolve(insecureDescriptions.join(' '));
         }
       };
       let canceled = false;
@@ -772,6 +776,7 @@ class Driver {
         if (canceled) return;
         canceled = true;
         this.off('Security.securityStateChanged', securityStateChangedListener);
+        // TODO(@patrickhulce): cancel() should really be a promise itself to handle things like this
         this.sendCommand('Security.disable').catch(() => {});
       };
       this.on('Security.securityStateChanged', securityStateChangedListener);
@@ -835,16 +840,10 @@ class Driver {
     // CPU listener. Resolves when the CPU has been idle for cpuQuietThresholdMs after network idle.
     let waitForCPUIdle = this._waitForNothing();
 
-    const waitForSecurityCheck = this._waitForSecurityCheck();
-    const securityCheckPromise = waitForSecurityCheck.promise.then(explanations => {
+    const monitorForInsecureState = this._monitorForInsecureState();
+    const securityCheckPromise = monitorForInsecureState.promise.then(securityMessages => {
       return function() {
-        const insecureDescriptions = explanations
-          .filter(exp => exp.securityState === 'insecure')
-          .map(exp => exp.description);
-        const err = new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {
-          securityMessages: insecureDescriptions.join(' '),
-        });
-        throw err;
+        throw new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {securityMessages});
       };
     });
 
@@ -891,7 +890,7 @@ class Driver {
     waitForLoadEvent.cancel();
     waitForNetworkIdle.cancel();
     waitForCPUIdle.cancel();
-    waitForSecurityCheck.cancel();
+    monitorForInsecureState.cancel();
 
     await cleanupFn();
   }

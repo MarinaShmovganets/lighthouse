@@ -27,7 +27,8 @@ function createOnceStub(events) {
     await Promise.resolve();
 
     if (events[eventName]) {
-      return cb(events[eventName]);
+      setTimeout(_ => cb(events[eventName]), 0);
+      return;
     }
 
     throw Error(`Stub not implemented: ${eventName}`);
