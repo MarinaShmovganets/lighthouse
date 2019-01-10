@@ -83,9 +83,6 @@ describe('ReportRenderer', () => {
           sampleResults.reportCategories.length * 2, 'renders category gauges');
       // no fireworks
       assert.ok(output.querySelector('.score100') === null, 'has no fireworks treatment');
-      // no party beam
-      assert.ok(output.querySelector('#animate-hue-rotate').getAttribute('begin') === '',
-      'has regular colored light beam');
     });
 
     it('renders additional reports by replacing the existing one', () => {
@@ -200,9 +197,6 @@ describe('ReportRenderer', () => {
         sampleResults.reportCategories.length * 2, 'renders category gauges');
     // fireworks!
     assert.ok(output.querySelector('.score100'), 'has fireworks treatment');
-    // party beam
-    assert.ok(output.querySelector('#animate-hue-rotate').getAttribute('begin') === '1s',
-      'has party colored light beam');
   });
 
   it('renders `not_applicable` audits as `notApplicable`', () => {
