@@ -15,9 +15,6 @@ const assert = require('assert');
 const EventEmitter = require('events').EventEmitter;
 const {protocolGetVersionResponse} = require('./fake-driver');
 
-const connection = new Connection();
-const driverStub = new Driver(connection);
-
 const redirectDevtoolsLog = require('../fixtures/wikipedia-redirect.devtoolslog.json');
 const MAX_WAIT_FOR_PROTOCOL = 20;
 
@@ -57,7 +54,7 @@ function createOnceMethodResponse(method, response) {
   sendCommandMockResponses.set(method, response);
 }
 
-connection.sendCommand = function(command, params) {
+function sendCommandStub(command, params) {
   sendCommandParams.push({command, params});
 
   if (sendCommandMockResponses.has(command)) {
@@ -117,9 +114,16 @@ connection.sendCommand = function(command, params) {
     default:
       throw Error(`Stub not implemented: ${command}`);
   }
-};
+}
 
 /* eslint-env jest */
+
+let driverStub;
+beforeEach(() => {
+  const connection = new Connection();
+  connection.sendCommand = sendCommandStub;
+  driverStub = new Driver(connection);
+});
 
 describe('Browser Driver', () => {
   beforeEach(() => {
