@@ -272,11 +272,10 @@ class CategoryRenderer {
    * @param {Object<string, LH.Result.ReportGroup>} groupDefinitions
    * @return {Element}
    */
-  renderFailedClump(auditRefs, groupDefinitions) {
+  renderUnexpandableClump(auditRefs, groupDefinitions) {
     const clumpElement = this.dom.createElement('div');
     const elements = this._renderGroupedAudits(auditRefs, groupDefinitions);
     elements.forEach(elem => clumpElement.appendChild(elem));
-    failedElem.classList.add('lh-clump', this._clumpDisplayInfo.failed.className);
     return clumpElement;
   }
 
@@ -304,7 +303,9 @@ class CategoryRenderer {
   renderClump(clumpId, {auditRefs, groupDefinitions, description}) {
     if (clumpId === 'failed') {
       // Failed audit clump is always expanded and not nested in an lh-audit-group.
-      return this.renderFailedClump(auditRefs, groupDefinitions);
+      const failedElem = this.renderUnexpandableClump(auditRefs, groupDefinitions);
+      failedElem.classList.add('lh-clump', this._clumpDisplayInfo.failed.className);
+      return failedElem;
     }
 
     const clumpInfo = this._clumpDisplayInfo[clumpId];
