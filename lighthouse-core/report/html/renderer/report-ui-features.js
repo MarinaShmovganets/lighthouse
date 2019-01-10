@@ -290,7 +290,7 @@ class ReportUIFeatures {
    * Jumps to respective audit on page load if hash is provided in URL.
    * Collapsed content is opened automatically.
    * If found, scroll to element in viewport.
-   * Element is highlighted via CSS selector.
+   * Finally focus is set on element.
    */
   _jumpToAudit() {
     const hash = window.location.hash;
@@ -314,6 +314,13 @@ class ReportUIFeatures {
       top: audit.offsetTop - headerContainer.clientHeight,
       behavior: 'smooth',
     });
+    // Set focus on the element (once the scroll animation completes) to visually denote the target.
+    setTimeout(_ => {
+      const summary = audit.querySelector('summary');
+      if (summary instanceof HTMLElement) {
+        summary.focus({preventScroll: true});
+      }
+    }, 1000);
   }
 
   /**
