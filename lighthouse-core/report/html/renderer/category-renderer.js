@@ -272,10 +272,11 @@ class CategoryRenderer {
    * @param {Object<string, LH.Result.ReportGroup>} groupDefinitions
    * @return {Element}
    */
-  renderUnexpandableClump(auditRefs, groupDefinitions) {
+  renderFailedClump(auditRefs, groupDefinitions) {
     const clumpElement = this.dom.createElement('div');
     const elements = this._renderGroupedAudits(auditRefs, groupDefinitions);
     elements.forEach(elem => clumpElement.appendChild(elem));
+    failedElem.classList.add('lh-clump', this._clumpDisplayInfo.failed.className);
     return clumpElement;
   }
 
@@ -293,7 +294,8 @@ class CategoryRenderer {
    *      ├── audit 5
    *      └── audit 6
    * clump (e.g. 'manual')
-   *   ├── …
+   *   ├── audit 1
+   *   ├── audit 2
    *   ⋮
    * @param {TopLevelClumpId} clumpId
    * @param {{auditRefs: Array<LH.ReportResult.AuditRef>, groupDefinitions: Object<string, LH.Result.ReportGroup>, description?: string}} clumpOpts
@@ -302,12 +304,8 @@ class CategoryRenderer {
   renderClump(clumpId, {auditRefs, groupDefinitions, description}) {
     if (clumpId === 'failed') {
       // Failed audit clump is always expanded and not nested in an lh-audit-group.
-      const failedElem = this.renderUnexpandableClump(auditRefs, groupDefinitions);
-      failedElem.classList.add('lh-clump', this._clumpDisplayInfo.failed.className);
-      return failedElem;
+      return this.renderFailedClump(auditRefs, groupDefinitions);
     }
-
-    const elements = this._renderGroupedAudits(auditRefs, groupDefinitions);
 
     const clumpInfo = this._clumpDisplayInfo[clumpId];
     // TODO: renderAuditGroup shouldn't be used to render a clump (since it *contains* audit groups).
@@ -316,7 +314,8 @@ class CategoryRenderer {
     const clumpElem = this.renderAuditGroup(groupDef, groupOpts);
     clumpElem.classList.add('lh-clump', clumpInfo.className);
 
-    elements.forEach(elem => clumpElem.appendChild(elem));
+    // For all non-failed clumps, we don't group
+    clumpElem.append(...auditRefs.map(this.renderAudit.bind(this)));
 
     return clumpElem;
   }
