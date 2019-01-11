@@ -596,6 +596,10 @@
   vertical-align: middle;
 }
 
+.lh-clump--warning > summary .lh-audit-group__header::before {
+  content: '';
+  background-image: var(--search-icon-url);
+}
 .lh-clump--manual > summary .lh-audit-group__header::before {
   content: '';
   background-image: var(--search-icon-url);
