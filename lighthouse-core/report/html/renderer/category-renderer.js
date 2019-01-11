@@ -254,7 +254,7 @@ class CategoryRenderer {
   }
 
   /**
-   * Take a set of audits and render in a top-level expandable clump that starts
+   * Take a set of audits and render in a top-level, expandable clump that starts
    * in a collapsed state.
    * @param {Exclude<TopLevelClumpId, 'failed'>} clumpId
    * @param {{auditRefs: Array<LH.ReportResult.AuditRef>, description?: string}} clumpOpts
@@ -395,18 +395,18 @@ class CategoryRenderer {
     }
 
     // Render each clump.
-    for (const [clumpId, clumpRefs] of clumps) {
-      if (clumpRefs.length === 0) continue;
+    for (const [clumpId, auditRefs] of clumps) {
+      if (auditRefs.length === 0) continue;
 
       if (clumpId === 'failed') {
-        const clumpElem = this.renderUnexpandableClump(clumpRefs, groupDefinitions);
+        const clumpElem = this.renderUnexpandableClump(auditRefs, groupDefinitions);
         clumpElem.classList.add(`lh-clump--failed`);
         element.appendChild(clumpElem);
         continue;
       }
 
       const description = clumpId === 'manual' ? category.manualDescription : undefined;
-      const clumpElem = this.renderClump(clumpId, {auditRefs: clumpRefs, description});
+      const clumpElem = this.renderClump(clumpId, {auditRefs, description});
       element.appendChild(clumpElem);
     }
 
