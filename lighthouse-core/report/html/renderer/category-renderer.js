@@ -357,10 +357,12 @@ class CategoryRenderer {
       return scoreDisplayMode;
     }
 
-    if (this._auditHasWarning(auditRef)) {
-      return 'warning';
-    } else if (Util.showAsPassed(auditRef.result)) {
-      return 'passed';
+    if (Util.showAsPassed(auditRef.result)) {
+      if (this._auditHasWarning(auditRef)) {
+        return 'warning';
+      } else {
+        return 'passed';
+      }
     } else {
       return 'failed';
     }

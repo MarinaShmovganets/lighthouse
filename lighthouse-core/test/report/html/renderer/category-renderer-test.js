@@ -328,15 +328,25 @@ describe('CategoryRenderer', () => {
   describe('clumping passed/failed/warning/manual', () => {
     it('separates audits in the DOM', () => {
       const category = sampleResults.reportCategories.find(c => c.id === 'pwa');
-      const elem = renderer.render(category, sampleResults.categoryGroups);
+      const categoryClone = JSON.parse(JSON.stringify(category));
+      // give the first two passing grades warnings
+      let forcedWarningsCounter = 0;
+      for (const audit of categoryClone.auditRefs) {
+        if (audit.result.score === 1) {
+          audit.result.warnings = ['Some warning'];
+          if (++forcedWarningsCounter === 2) break;
+        }
+      }
+
+      const elem = renderer.render(categoryClone, sampleResults.categoryGroups);
       const passedAudits = elem.querySelectorAll('.lh-clump--passed .lh-audit');
       const failedAudits = elem.querySelectorAll('.lh-clump--failed .lh-audit');
       const warningAudits = elem.querySelectorAll('.lh-clump--warning .lh-audit');
       const manualAudits = elem.querySelectorAll('.lh-clump--manual .lh-audit');
 
-      assert.equal(passedAudits.length, 4);
+      assert.equal(passedAudits.length, 2);
       assert.equal(failedAudits.length, 8);
-      assert.equal(warningAudits.length, 0);
+      assert.equal(warningAudits.length, 2);
       assert.equal(manualAudits.length, 3);
     });
 
