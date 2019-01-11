@@ -19,11 +19,9 @@ const redirectDevtoolsLog = require('../fixtures/wikipedia-redirect.devtoolslog.
 const MAX_WAIT_FOR_PROTOCOL = 20;
 
 function createOnceStub(events) {
-  return async (eventName, cb) => {
-    // wait a tick b/c real events never fire immediately
-    await Promise.resolve();
-
+  return (eventName, cb) => {
     if (events[eventName]) {
+      // wait a tick b/c real events never fire immediately
       setTimeout(_ => cb(events[eventName]), 0);
       return;
     }
