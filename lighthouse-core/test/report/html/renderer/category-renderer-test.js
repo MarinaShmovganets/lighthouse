@@ -231,7 +231,6 @@ describe('CategoryRenderer', () => {
       const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
       const passedAudits = category.auditRefs.filter(audit =>
           audit.result.scoreDisplayMode !== 'notApplicable' && audit.result.score === 1);
-      const passedAuditTags = new Set(passedAudits.map(audit => audit.group));
 
       const passedAuditGroups = categoryDOM.querySelectorAll('.lh-clump--passed .lh-audit-group');
       const passedAuditsElems = categoryDOM.querySelectorAll('.lh-clump--passed .lh-audit');
