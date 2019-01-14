@@ -10,6 +10,7 @@ const LanternMetric = require('./lantern-metric.js');
 const BaseNode = require('../../lib/dependency-graph/base-node.js');
 const Speedline = require('../speedline.js');
 const LanternFirstContentfulPaint = require('./lantern-first-contentful-paint.js');
+const defaultThrottling = require('../../config/constants.js').throttling;
 
 /** @typedef {BaseNode.Node} Node */
 
@@ -25,6 +26,25 @@ class LanternSpeedIndex extends LanternMetric {
       intercept: -250,
       optimistic: 1.4,
       pessimistic: 0.65,
+    };
+  }
+
+  /**
+   * @param {number} rttMs
+   * @return {LH.Gatherer.Simulation.MetricCoefficients}
+   */
+  static scaleCoefficients(rttMs) { // eslint-disable-line no-unused-vars
+    // We want to multiply our default coefficients based on how much farther from baseline our
+    // new throttling settings are compared to the defaults.
+    // We will use a baseline of 30 ms RTT (where Speed Index should be a ~50/50 blend of optimistic/pessimistic).
+    const defaultCoefficients = this.COEFFICIENTS;
+    const defaultRttExcess = defaultThrottling.mobileSlow4G.rttMs - 30;
+    const multiplier = Math.max((rttMs - 30) / defaultRttExcess, 0);
+
+    return {
+      intercept: defaultCoefficients.intercept * multiplier,
+      optimistic: 0.5 + (defaultCoefficients.optimistic - 0.5) * multiplier,
+      pessimistic: 0.5 + (defaultCoefficients.pessimistic - 0.5) * multiplier,
     };
   }
 
