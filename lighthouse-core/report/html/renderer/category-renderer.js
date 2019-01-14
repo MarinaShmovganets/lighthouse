@@ -369,8 +369,8 @@ class CategoryRenderer {
   }
 
   /**
-   * Renders a set of top level sections (clumps), under a status of failed, manual,
-   * passed, or notApplicable. The result ends up something like:
+   * Renders a set of top level sections (clumps), under a status of failed, warnning,
+   * manual, passed, or notApplicable. The result ends up something like:
    *
    * failed clump
    *   ├── audit 1 (w/o group)

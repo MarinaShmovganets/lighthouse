@@ -129,17 +129,6 @@ describe('CategoryRenderer', () => {
     assert.ok(warningEl.textContent.includes(auditResult.warnings[1]), '2nd warning provided');
   });
 
-  it('expands warning audit group', () => {
-    const category = sampleResults.reportCategories.find(c => c.id === 'pwa');
-    const categoryClone = JSON.parse(JSON.stringify(category));
-    categoryClone.auditRefs[0].result.warnings = ['Some warning'];
-
-    const auditDOM = renderer.render(categoryClone, sampleResults.categoryGroups);
-    const warningClumpEl = auditDOM.querySelector('.lh-clump--warning');
-    const isExpanded = warningClumpEl.hasAttribute('open');
-    assert.ok(isExpanded, 'Warning audit group should be expanded by default');
-  });
-
   it('renders a category', () => {
     const category = sampleResults.reportCategories.find(c => c.id === 'pwa');
     const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
@@ -329,14 +318,10 @@ describe('CategoryRenderer', () => {
     it('separates audits in the DOM', () => {
       const category = sampleResults.reportCategories.find(c => c.id === 'pwa');
       const categoryClone = JSON.parse(JSON.stringify(category));
-      // give the first two passing grades warnings
-      let forcedWarningsCounter = 0;
-      for (const audit of categoryClone.auditRefs) {
-        if (audit.result.score === 1) {
-          audit.result.warnings = ['Some warning'];
-          if (++forcedWarningsCounter === 2) break;
-        }
-      }
+      // Give the first two passing grades warnings
+      const passingRefs = categoryClone.auditRefs.filter(ref => ref.result.score === 1);
+      passingRefs[0].result.warnings = ['Some warning'];
+      passingRefs[1].result.warnings = ['Some warning'];
 
       const elem = renderer.render(categoryClone, sampleResults.categoryGroups);
       const passedAudits = elem.querySelectorAll('.lh-clump--passed .lh-audit');
@@ -360,6 +345,37 @@ describe('CategoryRenderer', () => {
 
       assert.equal(passedAudits.length, 0);
       assert.equal(failedAudits.length, 12);
+    });
+
+    it('expands warning audit group', () => {
+      const category = sampleResults.reportCategories.find(c => c.id === 'pwa');
+      const categoryClone = JSON.parse(JSON.stringify(category));
+      categoryClone.auditRefs[0].result.warnings = ['Some warning'];
+
+      const auditDOM = renderer.render(categoryClone, sampleResults.categoryGroups);
+      const warningClumpEl = auditDOM.querySelector('.lh-clump--warning');
+      const isExpanded = warningClumpEl.hasAttribute('open');
+      assert.ok(isExpanded, 'Warning audit group should be expanded by default');
+    });
+
+    it('only passing audits with warnings show in warnings section', () => {
+      const shouldBeFailed = renderer._getClumpIdForAuditRef({
+        result: {
+          scoreDisplayMode: 'numeric',
+          score: 0,
+          warnings: ['Some warning'],
+        },
+      });
+      assert.equal(shouldBeFailed, 'failed');
+
+      const shouldBeWarning = renderer._getClumpIdForAuditRef({
+        result: {
+          scoreDisplayMode: 'numeric',
+          score: 1,
+          warnings: ['Some warning'],
+        },
+      });
+      assert.equal(shouldBeWarning, 'warning');
     });
   });
 
