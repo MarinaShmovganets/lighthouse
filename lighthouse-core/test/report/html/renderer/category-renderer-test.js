@@ -227,7 +227,7 @@ describe('CategoryRenderer', () => {
 
       // All the group names in the config.
       const groupNames = Array.from(new Set(auditRefs.map(ref => ref.group))).filter(Boolean);
-      assert.ok(groupNames.length > 5); // Make sure there are groups to test.
+      assert.ok(groupNames.length > 5, `not enough groups found in category for test`);
 
       // All the group roots in the DOM.
       const failedGroupElems = Array.from(
@@ -237,7 +237,7 @@ describe('CategoryRenderer', () => {
 
       for (const groupName of groupNames) {
         const groupAuditRefs = auditRefs.filter(ref => ref.group === groupName);
-        assert.ok(groupAuditRefs.length > 0); // Make sure there are audits to find.
+        assert.ok(groupAuditRefs.length > 0, `no auditRefs found with group '${groupName}'`);
 
         const className = `lh-audit-group--${groupName}`;
         const groupElem = failedGroupElems.find(el => el.classList.contains(className));
