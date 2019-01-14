@@ -786,13 +786,12 @@
   border: 0;
 }
 
-.lh-scores-header .lh-gauge__wrapper {
-  margin: 0 4px;
+.lh-scores-header .lh-gauge__wrapper,
+.lh-scores-header .lh-gauge--pwa__wrapper {
+  padding: 0 4px;
 }
 
 .lh-scores-header .lh-gauge--pwa__wrapper {
-  margin-right: 4px;
-  padding-left: 3px; /* 4px - 1px border */
   border-left: 1px solid var(--report-secondary-border-color)
 }
 
