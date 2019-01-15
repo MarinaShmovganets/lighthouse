@@ -1081,14 +1081,6 @@
       "scoreDisplayMode": "manual",
       "rawValue": false
     },
-    "accesskeys": {
-      "id": "accesskeys",
-      "title": "`[accesskey]` values are unique",
-      "description": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more](https://dequeuniversity.com/rules/axe/2.2/accesskeys?application=lighthouse).",
-      "score": null,
-      "scoreDisplayMode": "notApplicable",
-      "rawValue": true
-    },
     "aria-allowed-attr": {
       "id": "aria-allowed-attr",
       "title": "`[aria-*]` attributes match their roles",
@@ -1578,6 +1570,14 @@
       "score": null,
       "scoreDisplayMode": "notApplicable",
       "rawValue": true
+    },
+    "accesskeys": {
+      "id": "accesskeys",
+      "title": "`[accesskey]` values are unique",
+      "description": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more](https://dequeuniversity.com/rules/axe/2.2/accesskeys?application=lighthouse).",
+      "score": null,
+      "scoreDisplayMode": "manual",
+      "rawValue": false
     },
     "custom-controls-labels": {
       "id": "custom-controls-labels",
@@ -2924,11 +2924,6 @@
       "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://developers.google.com/web/fundamentals/accessibility/how-to-review).",
       "auditRefs": [
         {
-          "id": "accesskeys",
-          "weight": 0,
-          "group": "a11y-correct-attributes"
-        },
-        {
           "id": "aria-allowed-attr",
           "weight": 0,
           "group": "a11y-aria"
@@ -3097,6 +3092,10 @@
           "id": "video-description",
           "weight": 0,
           "group": "a11y-describe-contents"
+        },
+        {
+          "id": "accesskeys",
+          "weight": 0
         },
         {
           "id": "logical-tab-order",
@@ -3821,12 +3820,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:accesskeys",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:aria-allowed-attr",
         "duration": 100,
         "entryType": "measure"
@@ -4026,6 +4019,12 @@
       {
         "startTime": 0,
         "name": "lh:audit:video-description",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:accesskeys",
         "duration": 100,
         "entryType": "measure"
       },
@@ -4535,12 +4534,6 @@
       "lighthouse-core/audits/font-display.js | description": [
         "audits[font-display].description"
       ],
-      "lighthouse-core/audits/accessibility/accesskeys.js | title": [
-        "audits.accesskeys.title"
-      ],
-      "lighthouse-core/audits/accessibility/accesskeys.js | description": [
-        "audits.accesskeys.description"
-      ],
       "lighthouse-core/audits/accessibility/aria-allowed-attr.js | title": [
         "audits[aria-allowed-attr].title"
       ],
@@ -4751,6 +4744,12 @@
       ],
       "lighthouse-core/audits/accessibility/video-description.js | description": [
         "audits[video-description].description"
+      ],
+      "lighthouse-core/audits/accessibility/manual/accesskeys.js | title": [
+        "audits.accesskeys.title"
+      ],
+      "lighthouse-core/audits/accessibility/manual/accesskeys.js | description": [
+        "audits.accesskeys.description"
       ],
       "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | failureTitle": [
         "audits[uses-long-cache-ttl].title"

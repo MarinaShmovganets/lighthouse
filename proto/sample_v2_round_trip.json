@@ -4,7 +4,7 @@
             "description": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more](https://dequeuniversity.com/rules/axe/2.2/accesskeys?application=lighthouse).", 
             "id": "accesskeys", 
             "score": null, 
-            "scoreDisplayMode": "notApplicable", 
+            "scoreDisplayMode": "manual", 
             "title": "`[accesskey]` values are unique"
         }, 
         "appcache-manifest": {
@@ -2582,11 +2582,6 @@
         "accessibility": {
             "auditRefs": [
                 {
-                    "group": "a11y-correct-attributes", 
-                    "id": "accesskeys", 
-                    "weight": 0.0
-                }, 
-                {
                     "group": "a11y-aria", 
                     "id": "aria-allowed-attr", 
                     "weight": 0.0
@@ -2754,6 +2749,10 @@
                 {
                     "group": "a11y-describe-contents", 
                     "id": "video-description", 
+                    "weight": 0.0
+                }, 
+                {
+                    "id": "accesskeys", 
                     "weight": 0.0
                 }, 
                 {
@@ -3682,12 +3681,6 @@
             {
                 "duration": 100.0, 
                 "entryType": "measure", 
-                "name": "lh:audit:accesskeys", 
-                "startTime": 0.0
-            }, 
-            {
-                "duration": 100.0, 
-                "entryType": "measure", 
                 "name": "lh:audit:aria-allowed-attr", 
                 "startTime": 0.0
             }, 
@@ -3887,6 +3880,12 @@
                 "duration": 100.0, 
                 "entryType": "measure", 
                 "name": "lh:audit:video-description", 
+                "startTime": 0.0
+            }, 
+            {
+                "duration": 100.0, 
+                "entryType": "measure", 
+                "name": "lh:audit:accesskeys", 
                 "startTime": 0.0
             }, 
             {

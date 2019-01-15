@@ -1,16 +1,4 @@
 {
-  "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more](https://dequeuniversity.com/rules/axe/2.2/accesskeys?application=lighthouse).",
-    "description": "Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation."
-  },
-  "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
-    "message": "`[accesskey]` values are not unique",
-    "description": "Title of an accesibility audit that evaluates if the accesskey HTML attribute values are unique across all elements. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed."
-  },
-  "lighthouse-core/audits/accessibility/accesskeys.js | title": {
-    "message": "`[accesskey]` values are unique",
-    "description": "Title of an accesibility audit that evaluates if the accesskey HTML attribute values are unique across all elements. This title is descriptive of the successful state and is shown to users when no user action is required."
-  },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
     "message": "Each ARIA `role` supports a specific subset of `aria-*` attributes. Mismatching these invalidates the `aria-*` attributes. [Learn more](https://dequeuniversity.com/rules/axe/2.2/aria-allowed-attr?application=lighthouse).",
     "description": "Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation."
@@ -314,6 +302,14 @@
   "lighthouse-core/audits/accessibility/listitem.js | title": {
     "message": "List items (`<li>`) are contained within `<ul>` or `<ol>` parent elements",
     "description": "Title of an accesibility audit that evaluates if any list item elements do not have list parent elements. This title is descriptive of the successful state and is shown to users when no user action is required."
+  },
+  "lighthouse-core/audits/accessibility/manual/accesskeys.js | description": {
+    "message": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more](https://dequeuniversity.com/rules/axe/2.2/accesskeys?application=lighthouse).",
+    "description": "Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation."
+  },
+  "lighthouse-core/audits/accessibility/manual/accesskeys.js | title": {
+    "message": "`[accesskey]` values are unique",
+    "description": "Title of an accesibility audit that evaluates if the accesskey HTML attribute values are unique across all elements. This title is descriptive of the successful state and is shown to users when no user action is required."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
     "message": "Users do not expect a page to refresh automatically, and doing so will move focus back to the top of the page. This may create a frustrating or confusing experience. [Learn more](https://dequeuniversity.com/rules/axe/2.2/meta-refresh?application=lighthouse).",
