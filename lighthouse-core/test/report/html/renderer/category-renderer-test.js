@@ -359,23 +359,45 @@ describe('CategoryRenderer', () => {
     });
 
     it('only passing audits with warnings show in warnings section', () => {
-      const shouldBeFailed = renderer._getClumpIdForAuditRef({
-        result: {
-          scoreDisplayMode: 'numeric',
-          score: 0,
-          warnings: ['Some warning'],
-        },
-      });
-      assert.equal(shouldBeFailed, 'failed');
+      const failingWarning = 'Failed and warned';
+      const passingWarning = 'A passing warning';
+      const category = {
+        id: 'test',
+        title: 'Test',
+        score: 0,
+        auditRefs: [{
+          id: 'failing',
+          result: {
+            id: 'failing',
+            title: 'Failing with warning',
+            description: '',
+            scoreDisplayMode: 'numeric',
+            score: 0,
+            warnings: [failingWarning],
+          },
+        }, {
+          id: 'passing',
+          result: {
+            id: 'passing',
+            title: 'Passing with warning',
+            description: '',
+            scoreDisplayMode: 'numeric',
+            score: 1,
+            warnings: [passingWarning],
+          },
+        }],
+      };
+      const categoryDOM = renderer.render(category);
 
-      const shouldBeWarning = renderer._getClumpIdForAuditRef({
-        result: {
-          scoreDisplayMode: 'numeric',
-          score: 1,
-          warnings: ['Some warning'],
-        },
-      });
-      assert.equal(shouldBeWarning, 'warning');
+      const shouldBeFailed = categoryDOM.querySelectorAll('.lh-clump--failed .lh-audit');
+      assert.strictEqual(shouldBeFailed.length, 1);
+      assert.strictEqual(shouldBeFailed[0].id, 'failing');
+      assert.ok(shouldBeFailed[0].textContent.includes(failingWarning));
+
+      const shouldBeWarning = categoryDOM.querySelectorAll('.lh-clump--warning .lh-audit');
+      assert.strictEqual(shouldBeWarning.length, 1);
+      assert.strictEqual(shouldBeWarning[0].id, 'passing');
+      assert.ok(shouldBeWarning[0].textContent.includes(passingWarning));
     });
   });
 
