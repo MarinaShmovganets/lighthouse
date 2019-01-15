@@ -43,7 +43,7 @@ class LanternMetricArtifact {
   }
 
   /**
-   * Scale the coefficients according to the throttling settings.
+   * Returns the coefficients, scaled by the throttling settings if needed by the metric.
    * Some lantern metrics (speed-index) use components in their estimate that are not
    * from the simulator. In this case, we need to adjust the coefficients as the target throttling
    * settings change.
@@ -51,7 +51,7 @@ class LanternMetricArtifact {
    * @param {number} rttMs
    * @return {LH.Gatherer.Simulation.MetricCoefficients}
    */
-  static scaleCoefficients(rttMs) { // eslint-disable-line no-unused-vars
+  static getScaledCoefficients(rttMs) { // eslint-disable-line no-unused-vars
     return this.COEFFICIENTS;
   }
 
@@ -120,7 +120,7 @@ class LanternMetricArtifact {
       Object.assign({}, extras, {optimistic: false})
     );
 
-    const coefficients = this.scaleCoefficients(simulator.rtt);
+    const coefficients = this.getScaledCoefficients(simulator.rtt);
     // Estimates under 1s don't really follow the normal curve fit, minimize the impact of the intercept
     const interceptMultiplier = coefficients.intercept > 0 ?
       Math.min(1, optimisticEstimate.timeInMs / 1000) : 1;

@@ -33,10 +33,18 @@ class LanternSpeedIndex extends LanternMetric {
    * @param {number} rttMs
    * @return {LH.Gatherer.Simulation.MetricCoefficients}
    */
-  static scaleCoefficients(rttMs) { // eslint-disable-line no-unused-vars
-    // We want to multiply our default coefficients based on how much farther from baseline our
-    // new throttling settings are compared to the defaults.
-    // We will use a baseline of 30 ms RTT (where Speed Index should be a ~50/50 blend of optimistic/pessimistic).
+  static getScaledCoefficients(rttMs) { // eslint-disable-line no-unused-vars
+    // We want to scale our default coefficients based on the speed of the connection.
+    // We will linearly interpolate coefficients for the passed-in rttMs based on two pre-determined points:
+    //   1. Baseline point of 30 ms RTT where Speed Index should be a ~50/50 blend of optimistic/pessimistic.
+    //      30 ms was based on a typical home WiFi connection's actual RTT.
+    //      Coefficients here follow from the fact that the optimistic estimate should be very close
+    //      to reality at this connection speed and the pessimistic estimate compensates for minor
+    //      connection speed differences.
+    //   2. Default throttled point of 150 ms RTT where the default coefficients have been determined to be most accurate.
+    //      Coefficients here were determined through thorough analysis and linear regression on the
+    //      lantern test data set. See lighthouse-core/scripts/test-lantern.sh for more detail.
+    // While the coefficients haven't been analyzed at the interpolated points, it's our current best effort.
     const defaultCoefficients = this.COEFFICIENTS;
     const defaultRttExcess = defaultThrottling.mobileSlow4G.rttMs - 30;
     const multiplier = Math.max((rttMs - 30) / defaultRttExcess, 0);

@@ -50,17 +50,17 @@ Object {
   });
 
   it('should not scale coefficients at default', async () => {
-    const result = LanternSpeedIndex.scaleCoefficients(defaultThrottling.rttMs);
+    const result = LanternSpeedIndex.getScaledCoefficients(defaultThrottling.rttMs);
     expect(result).toEqual(LanternSpeedIndex.COEFFICIENTS);
   });
 
   it('should scale coefficients back', async () => {
-    const result = LanternSpeedIndex.scaleCoefficients(5);
+    const result = LanternSpeedIndex.getScaledCoefficients(5);
     expect(result).toEqual({intercept: -0, pessimistic: 0.5, optimistic: 0.5});
   });
 
   it('should scale coefficients forward', async () => {
-    const result = LanternSpeedIndex.scaleCoefficients(300);
+    const result = LanternSpeedIndex.getScaledCoefficients(300);
     expect(result).toMatchInlineSnapshot(`
 Object {
   "intercept": -562.5,
