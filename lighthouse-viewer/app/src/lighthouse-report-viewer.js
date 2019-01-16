@@ -209,8 +209,8 @@ class LighthouseReportViewer {
     const warnMsg = `Version mismatch between viewer and JSON. Opening compatible viewer...`;
     logger.log(warnMsg, false);
 
+    // TODO: Handle 4x reports if we break viewer compat moving to v5.
     // Place report in IDB, then navigate current tab to the legacy viewer
-    // TODO: viewer4x :)
     const viewerPath = new URL('../viewer2x/', location.href);
     idbKeyval.set('2xreport', reportJson).then(_ => {
       window.location.href = viewerPath.href;
