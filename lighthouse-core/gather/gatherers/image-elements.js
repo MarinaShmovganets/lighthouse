@@ -121,7 +121,7 @@ function determineNaturalSize(url) {
   });
 }
 
-class ImageUsage extends Gatherer {
+class ImageElements extends Gatherer {
   /**
    * @param {Driver} driver
    * @param {LH.Artifacts.SingleImageUsage} element
@@ -142,24 +142,17 @@ class ImageUsage extends Gatherer {
   /**
    * @param {LH.Gatherer.PassContext} passContext
    * @param {LH.Gatherer.LoadData} loadData
-   * @return {Promise<LH.Artifacts['ImageUsage']>}
+   * @return {Promise<LH.Artifacts['ImageElements']>}
    */
   async afterPass(passContext, loadData) {
     const driver = passContext.driver;
     const indexedNetworkRecords = loadData.networkRecords.reduce((map, record) => {
       if (/^image/.test(record.mimeType) && record.finished) {
-        map[record.url] = {
-          url: record.url,
-          resourceSize: Math.min(record.resourceSize || 0, record.transferSize),
-          startTime: record.startTime,
-          endTime: record.endTime,
-          responseReceivedTime: record.responseReceivedTime,
-          mimeType: record.mimeType,
-        };
+        map[record.url] = record;
       }
 
       return map;
-    }, /** @type {Object<string, LH.Artifacts.SingleImageUsage['networkRecord']>} */ ({}));
+    }, /** @type {Object<string, LH.Artifacts.NetworkRequest>} */ ({}));
 
     const expression = `(function() {
       ${pageFunctions.getElementsInDocumentString}; // define function on page
@@ -171,13 +164,16 @@ class ImageUsage extends Gatherer {
 
     const imageUsage = [];
     for (let element of elements) {
-      // link up the image with its network record
-      element.networkRecord = indexedNetworkRecords[element.src];
+      // Pull some of our information directly off the network record.
+      const networkRecord = indexedNetworkRecords[element.src] || {};
+      element.mimeType = networkRecord.mimeType;
+      const {resourceSize = 0, transferSize = 0} = networkRecord;
+      element.resourceSize = Math.min(resourceSize, transferSize);
 
       // Images within `picture` behave strangely and natural size information isn't accurate,
       // CSS images have no natural size information at all. Try to get the actual size if we can.
       // Additional fetch is expensive; don't bother if we don't have a networkRecord for the image.
-      if ((element.isPicture || element.isCss) && element.networkRecord) {
+      if ((element.isPicture || element.isCss) && networkRecord) {
         element = await this.fetchElementWithSizeInformation(driver, element);
       }
 
@@ -188,4 +184,4 @@ class ImageUsage extends Gatherer {
   }
 }
 
-module.exports = ImageUsage;
+module.exports = ImageElements;

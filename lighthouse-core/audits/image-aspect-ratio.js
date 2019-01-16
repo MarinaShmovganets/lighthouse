@@ -29,7 +29,7 @@ class ImageAspectRatio extends Audit {
       failureTitle: 'Displays images with incorrect aspect ratio',
       description: 'Image display dimensions should match natural aspect ratio. ' +
         '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/aspect-ratio).',
-      requiredArtifacts: ['ImageUsage'],
+      requiredArtifacts: ['ImageElements'],
     };
   }
 
@@ -65,7 +65,7 @@ class ImageAspectRatio extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit(artifacts) {
-    const images = artifacts.ImageUsage;
+    const images = artifacts.ImageElements;
 
     /** @type {string[]} */
     const warnings = [];
@@ -75,8 +75,8 @@ class ImageAspectRatio extends Audit {
       // - filter out images that don't have following properties:
       //   networkRecord, width, height, images that use `object-fit`: `cover` or `contain`
       // - filter all svgs as they have no natural dimensions to audit
-      return image.networkRecord &&
-        image.networkRecord.mimeType !== 'image/svg+xml' &&
+      return image.mimeType &&
+        image.mimeType !== 'image/svg+xml' &&
         image.naturalHeight > 5 &&
         image.naturalWidth > 5 &&
         image.width &&

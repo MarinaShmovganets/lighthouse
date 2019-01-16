@@ -82,7 +82,7 @@ declare global {
       /** Whether the page ended up on an HTTPS page after attempting to load the HTTP version. */
       HTTPRedirect: {value: boolean};
       /** Information on size and loading for all the images in the page. */
-      ImageUsage: Artifacts.SingleImageUsage[];
+      ImageElements: Artifacts.SingleImageUsage[];
       /** Information on JS libraries and versions used by the page. */
       JSLibraries: {name: string, version: string, npmPkgName: string}[];
       /** JS coverage information for code used during page load. */
@@ -239,14 +239,8 @@ declare global {
           left: number;
           right: number;
         };
-        networkRecord?: {
-          url: string;
-          resourceSize: number;
-          startTime: number;
-          endTime: number;
-          responseReceivedTime: number;
-          mimeType: string;
-        };
+        resourceSize?: number;
+        mimeType?: string;
         width?: number;
         height?: number;
       }

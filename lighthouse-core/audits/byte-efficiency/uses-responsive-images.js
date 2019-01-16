@@ -42,7 +42,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['ImageUsage', 'ViewportDimensions', 'devtoolsLogs', 'traces'],
+      requiredArtifacts: ['ImageElements', 'ViewportDimensions', 'devtoolsLogs', 'traces'],
     };
   }
 
@@ -53,7 +53,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
    */
   static computeWaste(image, DPR) {
     // Nothing can be done without network info.
-    if (!image.networkRecord) {
+    if (!image.resourceSize) {
       return null;
     }
 
@@ -61,7 +61,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
     const actualPixels = image.naturalWidth * image.naturalHeight;
     const usedPixels = image.clientWidth * image.clientHeight * Math.pow(DPR, 2);
     const wastedRatio = 1 - (usedPixels / actualPixels);
-    const totalBytes = image.networkRecord.resourceSize;
+    const totalBytes = image.resourceSize;
     const wastedBytes = Math.round(totalBytes * wastedRatio);
 
     // If the image has 0 dimensions, it's probably hidden/offscreen, so let the offscreen-images
@@ -87,7 +87,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
    * @return {ByteEfficiencyAudit.ByteEfficiencyProduct}
    */
   static audit_(artifacts) {
-    const images = artifacts.ImageUsage;
+    const images = artifacts.ImageElements;
     const DPR = artifacts.ViewportDimensions.devicePixelRatio;
 
     /** @type {string[]} */
@@ -96,7 +96,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
     const resultsMap = new Map();
     images.forEach(image => {
       // TODO: give SVG a free pass until a detail per pixel metric is available
-      if (!image.networkRecord || image.networkRecord.mimeType === 'image/svg+xml') {
+      if (!image.resourceSize || image.mimeType === 'image/svg+xml') {
         return;
       }
 

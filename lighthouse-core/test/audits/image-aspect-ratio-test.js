@@ -18,7 +18,7 @@ function generateRecord(url = 'https://google.com/logo.png', mimeType = 'image/p
 
 function generateImage(clientSize, naturalSize, networkRecord, props, src = 'https://google.com/logo.png') {
   Object.assign(networkRecord || {}, {url: src});
-  const image = {src, networkRecord};
+  const image = {src, ...networkRecord};
   Object.assign(image, clientSize, naturalSize, props);
   return image;
 }
@@ -28,7 +28,7 @@ describe('Images: aspect-ratio audit', () => {
     const description = `identifies when an image ${condition}`;
     it(description, () => {
       const result = ImageAspectRatioAudit.audit({
-        ImageUsage: [
+        ImageElements: [
           generateImage(
             {width: data.clientSize[0], height: data.clientSize[1]},
             {naturalWidth: data.naturalSize[0], naturalHeight: data.naturalSize[1]},
@@ -149,7 +149,7 @@ describe('Images: aspect-ratio audit', () => {
 
   it('skips svg images', () => {
     const result = ImageAspectRatioAudit.audit({
-      ImageUsage: [
+      ImageElements: [
         generateImage(
           {width: 150, height: 150},
           {},
