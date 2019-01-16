@@ -138,12 +138,11 @@ class LighthouseReportViewer {
   _replaceReportHtml(json) {
     this._validateReportJson(json);
 
+    // Redirect to old viewer if a v2 report. v3 and v4 both handled by v4 viewer.
     if (json.lighthouseVersion.startsWith('2')) {
       this._loadInLegacyViewerVersion(json);
       return;
     }
-
-    // TODO: viewer3x :)
 
     const dom = new DOM(document);
     const renderer = new ReportRenderer(dom);
@@ -202,7 +201,7 @@ class LighthouseReportViewer {
   }
 
   /**
-   * Stores v2.x report in IDB, then navigates to legacy viewer in current tab
+   * Stores v2.x report in IDB, then navigates to legacy viewer in current tab.
    * @param {LH.ReportResult} reportJson
    * @private
    */
@@ -211,6 +210,7 @@ class LighthouseReportViewer {
     logger.log(warnMsg, false);
 
     // Place report in IDB, then navigate current tab to the legacy viewer
+    // TODO: viewer4x :)
     const viewerPath = new URL('../viewer2x/', location.href);
     idbKeyval.set('2xreport', reportJson).then(_ => {
       window.location.href = viewerPath.href;
