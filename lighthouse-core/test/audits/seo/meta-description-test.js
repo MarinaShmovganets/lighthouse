@@ -11,16 +11,19 @@ const assert = require('assert');
 /* eslint-env jest */
 
 describe('SEO: description audit', () => {
+  const makeMetaElements = content => typeof content === 'string' ?
+    [{name: 'description', content}] : [];
+
   it('fails when HTML does not contain a description meta tag', () => {
     const auditResult = Audit.audit({
-      MetaDescription: null,
+      MetaElements: makeMetaElements(null),
     });
     assert.equal(auditResult.rawValue, false);
   });
 
   it('fails when HTML contains an empty description meta tag', () => {
     const auditResult = Audit.audit({
-      MetaDescription: '',
+      MetaElements: makeMetaElements(''),
     });
     assert.equal(auditResult.rawValue, false);
     assert.ok(auditResult.explanation.includes('empty'), auditResult.explanation);
@@ -28,7 +31,7 @@ describe('SEO: description audit', () => {
 
   it('fails when description consists only of whitespace', () => {
     const auditResult = Audit.audit({
-      MetaDescription: '\t\xa0',
+      MetaElements: makeMetaElements('\t\xa0'),
     });
     assert.equal(auditResult.rawValue, false);
     assert.ok(auditResult.explanation.includes('empty'), auditResult.explanation);
@@ -36,7 +39,7 @@ describe('SEO: description audit', () => {
 
   it('passes when a description text is provided', () => {
     return assert.equal(Audit.audit({
-      MetaDescription: 'description text',
+      MetaElements: makeMetaElements('description text'),
     }).rawValue, true);
   });
 });
