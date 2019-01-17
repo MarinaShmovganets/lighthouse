@@ -26,7 +26,7 @@ function generateRecord({
   };
 }
 
-function generateSize(width, height, prefix = 'client') {
+function generateSize(width, height, prefix = 'displayed') {
   const size = {};
   size[`${prefix}Width`] = width;
   size[`${prefix}Height`] = height;
@@ -41,9 +41,9 @@ function generateImage(size, coords, networkRecord, src = 'https://google.com/lo
 
   const clientRect = {
     top: y,
-    bottom: y + size.clientHeight,
+    bottom: y + size.displayedHeight,
     left: x,
-    right: x + size.clientWidth,
+    right: x + size.displayedWidth,
   };
   const image = {src, clientRect, ...networkRecord};
   Object.assign(image, size);

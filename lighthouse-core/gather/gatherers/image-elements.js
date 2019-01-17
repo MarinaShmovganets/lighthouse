@@ -15,7 +15,7 @@ const Driver = require('../driver.js'); // eslint-disable-line no-unused-vars
 
 /* global window, getElementsInDocument, Image */
 
-/** @return {Array<LH.Artifacts.SingleImageUsage>} */
+/** @return {Array<LH.Artifacts.ImageElement>} */
 /* istanbul ignore next */
 function collectImageElementInfo() {
   /** @param {Element} element */
@@ -37,21 +37,20 @@ function collectImageElementInfo() {
     return element.localName === 'img';
   }));
 
-  /** @type {Array<LH.Artifacts.SingleImageUsage>} */
+  /** @type {Array<LH.Artifacts.ImageElement>} */
   const htmlImages = allImageElements.map(element => {
     const computedStyle = window.getComputedStyle(element);
     return {
       // currentSrc used over src to get the url as determined by the browser
       // after taking into account srcset/media/sizes/etc.
       src: element.currentSrc,
-      width: element.width,
-      height: element.height,
-      clientWidth: element.clientWidth,
-      clientHeight: element.clientHeight,
+      displayedWidth: element.width,
+      displayedHeight: element.height,
       clientRect: getClientRect(element),
       naturalWidth: element.naturalWidth,
       naturalHeight: element.naturalHeight,
       isCss: false,
+      resourceSize: 0, // this will get overwritten below
       isPicture: !!element.parentElement && element.parentElement.tagName === 'PICTURE',
       usesObjectFit: ['cover', 'contain', 'scale-down', 'none'].includes(
         computedStyle.getPropertyValue('object-fit')
@@ -84,8 +83,8 @@ function collectImageElementInfo() {
 
     images.push({
       src: url,
-      clientWidth: element.clientWidth,
-      clientHeight: element.clientHeight,
+      displayedWidth: element.clientWidth,
+      displayedHeight: element.clientHeight,
       clientRect: getClientRect(element),
       // CSS Images do not expose natural size, we'll determine the size later
       naturalWidth: Number.MAX_VALUE,
@@ -93,10 +92,11 @@ function collectImageElementInfo() {
       isCss: true,
       isPicture: false,
       usesObjectFit: false,
+      resourceSize: 0, // this will get overwritten below
     });
 
     return images;
-  }, /** @type {Array<LH.Artifacts.SingleImageUsage>} */ ([]));
+  }, /** @type {Array<LH.Artifacts.ImageElement>} */ ([]));
 
   return htmlImages.concat(cssImages);
 }
@@ -124,8 +124,8 @@ function determineNaturalSize(url) {
 class ImageElements extends Gatherer {
   /**
    * @param {Driver} driver
-   * @param {LH.Artifacts.SingleImageUsage} element
-   * @return {Promise<LH.Artifacts.SingleImageUsage>}
+   * @param {LH.Artifacts.ImageElement} element
+   * @return {Promise<LH.Artifacts.ImageElement>}
    */
   async fetchElementWithSizeInformation(driver, element) {
     const url = JSON.stringify(element.src);
@@ -159,7 +159,7 @@ class ImageElements extends Gatherer {
       return (${collectImageElementInfo.toString()})();
     })()`;
 
-    /** @type {Array<LH.Artifacts.SingleImageUsage>} */
+    /** @type {Array<LH.Artifacts.ImageElement>} */
     const elements = await driver.evaluateAsync(expression);
 
     const imageUsage = [];

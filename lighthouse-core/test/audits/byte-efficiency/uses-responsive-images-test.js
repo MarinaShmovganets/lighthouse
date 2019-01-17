@@ -19,7 +19,7 @@ function generateRecord(resourceSizeInKb, durationInMs, mimeType = 'image/png') 
   };
 }
 
-function generateSize(width, height, prefix = 'client') {
+function generateSize(width, height, prefix = 'displayed') {
   const size = {};
   size[`${prefix}Width`] = width;
   size[`${prefix}Height`] = height;

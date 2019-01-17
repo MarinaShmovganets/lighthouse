@@ -69,7 +69,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
   }
 
   /**
-   * @param {LH.Artifacts.SingleImageUsage} image
+   * @param {LH.Artifacts.ImageElement} image
    * @param {{innerWidth: number, innerHeight: number}} viewportDimensions
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
    * @return {null|Error|WasteResult}
@@ -81,7 +81,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
     }
 
     const url = URL.elideDataURI(image.src);
-    const totalPixels = image.clientWidth * image.clientHeight;
+    const totalPixels = image.displayedWidth * image.displayedHeight;
     const visiblePixels = this.computeVisiblePixels(image.clientRect, viewportDimensions);
     // Treat images with 0 area as if they're offscreen. See https://github.com/GoogleChrome/lighthouse/issues/1914
     const wastedRatio = totalPixels === 0 ? 1 : 1 - visiblePixels / totalPixels;

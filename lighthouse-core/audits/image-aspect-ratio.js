@@ -16,7 +16,7 @@ const Audit = require('./audit');
 const URL = require('../lib/url-shim');
 const THRESHOLD_PX = 2;
 
-/** @typedef {Required<LH.Artifacts.SingleImageUsage>} WellDefinedImage */
+/** @typedef {Required<LH.Artifacts.ImageElement>} WellDefinedImage */
 
 class ImageAspectRatio extends Audit {
   /**
@@ -40,10 +40,10 @@ class ImageAspectRatio extends Audit {
   static computeAspectRatios(image) {
     const url = URL.elideDataURI(image.src);
     const actualAspectRatio = image.naturalWidth / image.naturalHeight;
-    const displayedAspectRatio = image.width / image.height;
+    const displayedAspectRatio = image.displayedWidth / image.displayedHeight;
 
-    const targetDisplayHeight = image.width / actualAspectRatio;
-    const doRatiosMatch = Math.abs(targetDisplayHeight - image.height) < THRESHOLD_PX;
+    const targetDisplayHeight = image.displayedWidth / actualAspectRatio;
+    const doRatiosMatch = Math.abs(targetDisplayHeight - image.displayedHeight) < THRESHOLD_PX;
 
     if (!Number.isFinite(actualAspectRatio) ||
       !Number.isFinite(displayedAspectRatio)) {
@@ -52,7 +52,7 @@ class ImageAspectRatio extends Audit {
 
     return {
       url,
-      displayedAspectRatio: `${image.width} x ${image.height}
+      displayedAspectRatio: `${image.displayedWidth} x ${image.displayedHeight}
         (${displayedAspectRatio.toFixed(2)})`,
       actualAspectRatio: `${image.naturalWidth} x ${image.naturalHeight}
         (${actualAspectRatio.toFixed(2)})`,
@@ -79,8 +79,8 @@ class ImageAspectRatio extends Audit {
         image.mimeType !== 'image/svg+xml' &&
         image.naturalHeight > 5 &&
         image.naturalWidth > 5 &&
-        image.width &&
-        image.height &&
+        image.displayedWidth &&
+        image.displayedHeight &&
         !image.usesObjectFit;
     }).forEach(image => {
       const wellDefinedImage = /** @type {WellDefinedImage} */ (image);

@@ -47,7 +47,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
   }
 
   /**
-   * @param {LH.Artifacts.SingleImageUsage} image
+   * @param {LH.Artifacts.ImageElement} image
    * @param {number} DPR devicePixelRatio
    * @return {null|Error|LH.Audit.ByteEfficiencyItem};
    */
@@ -59,7 +59,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
 
     const url = URL.elideDataURI(image.src);
     const actualPixels = image.naturalWidth * image.naturalHeight;
-    const usedPixels = image.clientWidth * image.clientHeight * Math.pow(DPR, 2);
+    const usedPixels = image.displayedWidth * image.displayedHeight * Math.pow(DPR, 2);
     const wastedRatio = 1 - (usedPixels / actualPixels);
     const totalBytes = image.resourceSize;
     const wastedBytes = Math.round(totalBytes * wastedRatio);

@@ -780,10 +780,8 @@
   "ImageElements": [
     {
       "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
-      "width": 480,
-      "height": 57,
-      "clientWidth": 480,
-      "clientHeight": 57,
+      "displayedWidth": 480,
+      "displayedHeight": 57,
       "clientRect": {
         "top": 103.8125,
         "bottom": 160.8125,
@@ -800,10 +798,8 @@
     },
     {
       "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
-      "width": 480,
-      "height": 318,
-      "clientWidth": 480,
-      "clientHeight": 318,
+      "displayedWidth": 480,
+      "displayedHeight": 318,
       "clientRect": {
         "top": 164.8125,
         "bottom": 482.8125,
@@ -820,10 +816,8 @@
     },
     {
       "src": "blob:http://localhost:10200/ae0eac03-ab9b-4a6a-b299-f5212153e277",
-      "width": 16,
-      "height": 16,
-      "clientWidth": 16,
-      "clientHeight": 16,
+      "displayedWidth": 16,
+      "displayedHeight": 16,
       "clientRect": {
         "top": 559.8125,
         "bottom": 575.8125,
