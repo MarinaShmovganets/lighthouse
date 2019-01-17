@@ -9,16 +9,9 @@ const ImageAspectRatioAudit = require('../../audits/image-aspect-ratio.js');
 const assert = require('assert');
 
 /* eslint-env jest */
-function generateRecord(url = 'https://google.com/logo.png', mimeType = 'image/png') {
-  return {
-    url,
-    mimeType,
-  };
-}
 
-function generateImage(clientSize, naturalSize, networkRecord, props, src = 'https://google.com/logo.png') {
-  Object.assign(networkRecord || {}, {url: src});
-  const image = {src, ...networkRecord};
+function generateImage(clientSize, naturalSize, props, src = 'https://google.com/logo.png') {
+  const image = {src, mimeType: 'image/png'};
   Object.assign(image, clientSize, naturalSize, props);
   return image;
 }
@@ -32,7 +25,6 @@ describe('Images: aspect-ratio audit', () => {
           generateImage(
             {displayedWidth: data.clientSize[0], displayedHeight: data.clientSize[1]},
             {naturalWidth: data.naturalSize[0], naturalHeight: data.naturalSize[1]},
-            generateRecord(),
             data.props
           ),
         ],
@@ -154,10 +146,7 @@ describe('Images: aspect-ratio audit', () => {
           {width: 150, height: 150},
           {},
           {
-            url: 'https://google.com/logo.png',
             mimeType: 'image/svg+xml',
-          },
-          {
             isCss: false,
             usesObjectFit: false,
           }
