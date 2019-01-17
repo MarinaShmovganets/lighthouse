@@ -1117,7 +1117,6 @@ describe('GatherRunner', function() {
 
     beforeEach(() => {
       passContext = {
-        isFirstPass: true,
         url: 'https://example.com/index.html',
         baseArtifacts: {},
         driver: fakeDriver,
@@ -1141,18 +1140,6 @@ describe('GatherRunner', function() {
         name: {value: 'App', raw: 'App'},
         start_url: {value: passContext.url, raw: undefined},
       });
-    });
-
-    it('should return previous result when already set', async () => {
-      passContext.baseArtifacts.WebAppManifest = {value: {name: 'App'}};
-      const result = await GatherRunner.getWebAppManifest(passContext);
-      expect(result).toEqual({value: {name: 'App'}});
-    });
-
-    it('should not try to fetch on 2nd/3rd passes', async () => {
-      passContext.isFirstPass = false;
-      const result = await GatherRunner.getWebAppManifest(passContext);
-      expect(result).toEqual(null);
     });
   });
 });

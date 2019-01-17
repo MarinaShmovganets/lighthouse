@@ -29,7 +29,7 @@ class StartUrl extends Gatherer {
 
   /**
    * Read the parsed manifest and return failure reasons or the startUrl
-   * @param {LH.Artifacts['Manifest']} manifest
+   * @param {LH.Artifacts.Manifest|null} manifest
    * @return {{isReadFailure: true, reason: string}|{isReadFailure: false, startUrl: string}}
    */
   _readManifestStartUrl(manifest) {
@@ -55,6 +55,7 @@ class StartUrl extends Gatherer {
    * @return {Promise<{statusCode: number, explanation: string}>}
    */
   _attemptStartURLFetch(driver, startUrl) {
+    // TODO(phulce): clean up this setTimeout once the response has happened
     // Wait up to 3s to get a matched network request from the fetch() to work
     const timeoutPromise = new Promise(resolve =>
       setTimeout(

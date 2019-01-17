@@ -53,7 +53,7 @@ function createOnceMethodResponse(method, response) {
   sendCommandMockResponses.set(method, response);
 }
 
-connection.sendCommand = function(command, params) {
+function fakeSendCommand(command, params) {
   sendCommandParams.push({command, params});
 
   if (sendCommandMockResponses.has(command)) {
@@ -108,12 +108,13 @@ connection.sendCommand = function(command, params) {
     default:
       throw Error(`Stub not implemented: ${command}`);
   }
-};
+}
 
 /* eslint-env jest */
 
 describe('Browser Driver', () => {
   beforeEach(() => {
+    connection.sendCommand = fakeSendCommand;
     sendCommandParams = [];
     sendCommandMockResponses.clear();
   });
@@ -321,16 +322,15 @@ describe('Browser Driver', () => {
 
   describe('.getAppManifest', () => {
     it('should return null when no manifest', async () => {
-      const sendCommand = jest.spyOn(connection, 'sendCommand');
-      sendCommand.mockResolvedValueOnce({data: undefined, url: '/manifest'});
+      connection.sendCommand = jest.fn().mockResolvedValueOnce({data: undefined, url: '/manifest'});
       const result = await driverStub.getAppManifest();
       expect(result).toEqual(null);
     });
 
     it('should return the manifest', async () => {
       const manifest = {name: 'The App'};
-      const sendCommand = jest.spyOn(connection, 'sendCommand');
-      sendCommand.mockResolvedValueOnce({data: JSON.stringify(manifest), url: '/manifest'});
+      connection.sendCommand = jest.fn()
+        .mockResolvedValueOnce({data: JSON.stringify(manifest), url: '/manifest'});
       const result = await driverStub.getAppManifest();
       expect(result).toEqual({data: JSON.stringify(manifest), url: '/manifest'});
     });
@@ -342,8 +342,8 @@ describe('Browser Driver', () => {
       const manifestWithBOM = fs.readFileSync(__dirname + '/../fixtures/manifest-bom.json')
         .toString();
 
-      const sendCommand = jest.spyOn(connection, 'sendCommand');
-      sendCommand.mockResolvedValueOnce({data: manifestWithBOM, url: '/manifest'});
+      connection.sendCommand = jest.fn()
+        .mockResolvedValueOnce({data: manifestWithBOM, url: '/manifest'});
       const result = await driverStub.getAppManifest();
       expect(result).toEqual({data: manifestWithoutBOM, url: '/manifest'});
     });
@@ -352,7 +352,9 @@ describe('Browser Driver', () => {
 
 describe('Multiple tab check', () => {
   beforeEach(() => {
+    connection.sendCommand = fakeSendCommand;
     sendCommandParams = [];
+    sendCommandMockResponses.clear();
   });
 
   it('will pass if there are no current service workers', () => {
