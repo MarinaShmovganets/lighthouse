@@ -201,7 +201,7 @@ describe('CategoryRenderer', () => {
       const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
 
       const gauge = categoryDOM.querySelector('.lh-gauge__percentage');
-      assert.equal(gauge.textContent.trim(), '35', 'score is 0-100');
+      assert.equal(gauge.textContent.trim(), '33', 'score is 0-100');
 
       const score = categoryDOM.querySelector('.lh-category-header');
       const value = categoryDOM.querySelector('.lh-gauge__percentage');
@@ -215,26 +215,48 @@ describe('CategoryRenderer', () => {
       assert.ok(description.querySelector('a'), 'description contains converted markdown links');
     });
 
-    // TODO waiting for decision regarding this header
-    it.skip('renders the failed audits grouped by group', () => {
-      const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
-      const failedAudits = category.auditRefs.filter(audit => {
-        return audit.result.score !== 1 && !audit.result.scoreDisplayMode === 'notApplicable';
+    it('renders the failed audits grouped by group', () => {
+      // Fail all the audits.
+      const categoryClone = JSON.parse(JSON.stringify(category));
+      const auditRefs = categoryClone.auditRefs;
+      auditRefs.forEach(ref => {
+        ref.result.score = 0;
+        ref.result.scoreDisplayMode = 'binary';
       });
-      const failedAuditTags = new Set(failedAudits.map(audit => audit.group));
+      const categoryDOM = renderer.render(categoryClone, sampleResults.categoryGroups);
 
-      const failedAuditGroups = categoryDOM.querySelectorAll('.lh-category > div.lh-audit-group');
-      assert.equal(failedAuditGroups.length, failedAuditTags.size);
+      // All the group names in the config.
+      const groupNames = Array.from(new Set(auditRefs.map(ref => ref.group))).filter(Boolean);
+      assert.ok(groupNames.length > 5, `not enough groups found in category for test`);
+
+      // All the group roots in the DOM.
+      const failedGroupElems = Array.from(
+          categoryDOM.querySelectorAll('.lh-clump--failed > .lh-audit-group'));
+
+      assert.strictEqual(failedGroupElems.length, groupNames.length);
+
+      for (const groupName of groupNames) {
+        const groupAuditRefs = auditRefs.filter(ref => ref.group === groupName);
+        assert.ok(groupAuditRefs.length > 0, `no auditRefs found with group '${groupName}'`);
+
+        const className = `lh-audit-group--${groupName}`;
+        const groupElem = failedGroupElems.find(el => el.classList.contains(className));
+        const groupAuditElems = groupElem.querySelectorAll('.lh-audit');
+
+        assert.strictEqual(groupAuditElems.length, groupAuditRefs.length);
+      }
     });
 
-    it('renders the passed audits grouped by group', () => {
+    it('renders the passed audits ungrouped', () => {
       const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
       const passedAudits = category.auditRefs.filter(audit =>
           audit.result.scoreDisplayMode !== 'notApplicable' && audit.result.score === 1);
-      const passedAuditTags = new Set(passedAudits.map(audit => audit.group));
 
       const passedAuditGroups = categoryDOM.querySelectorAll('.lh-clump--passed .lh-audit-group');
-      assert.equal(passedAuditGroups.length, passedAuditTags.size);
+      const passedAuditsElems = categoryDOM.querySelectorAll('.lh-clump--passed .lh-audit');
+
+      assert.equal(passedAuditGroups.length, 0);
+      assert.equal(passedAuditsElems.length, passedAudits.length);
     });
 
     it('renders all the audits', () => {
@@ -293,30 +315,43 @@ describe('CategoryRenderer', () => {
     });
 
     it('gives each group a selectable class', () => {
+      const categoryClone = JSON.parse(JSON.stringify(category));
+      // Force all results to be Failed for accurate counting of groups.
+      categoryClone.auditRefs.forEach(ref => {
+        ref.result.score = 0;
+        ref.result.scoreDisplayMode = 'binary';
+      });
       const categoryGroupIds = new Set(category.auditRefs.filter(a => a.group).map(a => a.group));
       assert.ok(categoryGroupIds.size > 6); // Ensure there's something to test.
 
-      const categoryElem = renderer.render(category, sampleResults.categoryGroups);
+      const categoryElem = renderer.render(categoryClone, sampleResults.categoryGroups);
 
       categoryGroupIds.forEach(groupId => {
         const selector = `.lh-audit-group--${groupId}`;
-        // Could be multiple results (e.g. found in both passed and failed clumps).
-        assert.ok(categoryElem.querySelectorAll(selector).length >= 1,
+        assert.equal(categoryElem.querySelectorAll(selector).length, 1,
           `could not find '${selector}'`);
       });
     });
   });
 
-  describe('clumping passed/failed/manual', () => {
+  describe('clumping passed/failed/warning/manual', () => {
     it('separates audits in the DOM', () => {
       const category = sampleResults.reportCategories.find(c => c.id === 'pwa');
-      const elem = renderer.render(category, sampleResults.categoryGroups);
+      const categoryClone = JSON.parse(JSON.stringify(category));
+      // Give the first two passing grades warnings
+      const passingRefs = categoryClone.auditRefs.filter(ref => ref.result.score === 1);
+      passingRefs[0].result.warnings = ['Some warning'];
+      passingRefs[1].result.warnings = ['Some warning'];
+
+      const elem = renderer.render(categoryClone, sampleResults.categoryGroups);
       const passedAudits = elem.querySelectorAll('.lh-clump--passed .lh-audit');
       const failedAudits = elem.querySelectorAll('.lh-clump--failed .lh-audit');
+      const warningAudits = elem.querySelectorAll('.lh-clump--warning .lh-audit');
       const manualAudits = elem.querySelectorAll('.lh-clump--manual .lh-audit');
 
-      assert.equal(passedAudits.length, 4);
+      assert.equal(passedAudits.length, 2);
       assert.equal(failedAudits.length, 8);
+      assert.equal(warningAudits.length, 2);
       assert.equal(manualAudits.length, 3);
     });
 
@@ -330,6 +365,59 @@ describe('CategoryRenderer', () => {
 
       assert.equal(passedAudits.length, 0);
       assert.equal(failedAudits.length, 12);
+    });
+
+    it('expands warning audit group', () => {
+      const category = sampleResults.reportCategories.find(c => c.id === 'pwa');
+      const categoryClone = JSON.parse(JSON.stringify(category));
+      categoryClone.auditRefs[0].result.warnings = ['Some warning'];
+
+      const auditDOM = renderer.render(categoryClone, sampleResults.categoryGroups);
+      const warningClumpEl = auditDOM.querySelector('.lh-clump--warning');
+      const isExpanded = warningClumpEl.hasAttribute('open');
+      assert.ok(isExpanded, 'Warning audit group should be expanded by default');
+    });
+
+    it('only passing audits with warnings show in warnings section', () => {
+      const failingWarning = 'Failed and warned';
+      const passingWarning = 'A passing warning';
+      const category = {
+        id: 'test',
+        title: 'Test',
+        score: 0,
+        auditRefs: [{
+          id: 'failing',
+          result: {
+            id: 'failing',
+            title: 'Failing with warning',
+            description: '',
+            scoreDisplayMode: 'numeric',
+            score: 0,
+            warnings: [failingWarning],
+          },
+        }, {
+          id: 'passing',
+          result: {
+            id: 'passing',
+            title: 'Passing with warning',
+            description: '',
+            scoreDisplayMode: 'numeric',
+            score: 1,
+            warnings: [passingWarning],
+          },
+        }],
+      };
+      const categoryDOM = renderer.render(category);
+
+      const shouldBeFailed = categoryDOM.querySelectorAll('.lh-clump--failed .lh-audit');
+      assert.strictEqual(shouldBeFailed.length, 1);
+      assert.strictEqual(shouldBeFailed[0].id, 'failing');
+      assert.ok(shouldBeFailed[0].textContent.includes(failingWarning));
+
+      const shouldBeWarning = categoryDOM.querySelectorAll('.lh-clump--warning .lh-audit');
+      assert.strictEqual(shouldBeWarning.length, 1);
+      assert.strictEqual(shouldBeWarning[0].id, 'passing');
+      assert.ok(shouldBeWarning[0].textContent.includes(passingWarning));
     });
   });
 
