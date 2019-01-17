@@ -161,14 +161,15 @@ class CacheHeaders extends Audit {
   }
 
   /**
+   * Returns true if headers suggest a record should not be cached for a long time.
    * @param {Map<string, string>} headers
    * @param {ReturnType<typeof parseCacheControl>} cacheControl
    * @returns {boolean}
    */
-  static shouldProcessRecord(headers, cacheControl) {
+  static shouldSkipRecord(headers, cacheControl) {
     // The HTTP/1.0 Pragma header can disable caching if cache-control is not set, see https://tools.ietf.org/html/rfc7234#section-5.4
     if (!cacheControl && (headers.get('pragma') || '').includes('no-cache')) {
-      return false;
+      return true;
     }
 
     // Ignore assets where policy implies they should not be cached long periods
@@ -178,10 +179,10 @@ class CacheHeaders extends Audit {
         cacheControl['no-cache'] ||
         cacheControl['no-store'] ||
         cacheControl['private'])) {
-      return false;
+      return true;
     }
 
-    return true;
+    return false;
   }
 
   /**
@@ -212,11 +213,11 @@ class CacheHeaders extends Audit {
         }
 
         const cacheControl = parseCacheControl(headers.get('cache-control'));
-        if (!this.shouldProcessRecord(headers, cacheControl)) {
+        if (this.shouldSkipRecord(headers, cacheControl)) {
           continue;
         }
 
-        // Ignore if cacheLifetimeInSeconds is defined and a nonpositive number.
+        // Ignore if cacheLifetimeInSeconds is a nonpositive number.
         let cacheLifetimeInSeconds = CacheHeaders.computeCacheLifetimeInSeconds(
           headers, cacheControl);
         if (cacheLifetimeInSeconds !== null &&
