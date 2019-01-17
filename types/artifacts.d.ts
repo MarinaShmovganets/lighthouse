@@ -89,7 +89,7 @@ declare global {
       JsUsage: Crdp.Profiler.ScriptCoverage[];
       /** Parsed version of the page's Web App Manifest, or null if none found. */
       Manifest: Artifacts.Manifest | null;
-      /** The value of the <meta>elements in the head. */
+      /** The values of the <meta> elements in the head. */
       MetaElements: Array<{name: string, content?: string}>;
       /** The URL loaded with interception */
       MixedContent: {url: string};
@@ -120,6 +120,7 @@ declare global {
     module Artifacts {
       export type NetworkRequest = _NetworkRequest;
       export type TaskNode = _TaskNode;
+      export type MetaElement = LH.Artifacts['MetaElements'][0];
 
       export interface Accessibility {
         violations: {

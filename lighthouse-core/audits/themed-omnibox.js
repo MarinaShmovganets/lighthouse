@@ -43,7 +43,7 @@ class ThemedOmnibox extends MultiCheckAudit {
   }
 
   /**
-   * @param {LH.Artifacts['MetaElements'][0]|undefined} themeColorMeta
+   * @param {LH.Artifacts.MetaElement|undefined} themeColorMeta
    * @param {Array<string>} failures
    */
   static assessMetaThemecolor(themeColorMeta, failures) {

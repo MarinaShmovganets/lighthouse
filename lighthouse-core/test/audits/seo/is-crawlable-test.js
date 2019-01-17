@@ -12,7 +12,7 @@ const networkRecordsToDevtoolsLog = require('../../network-records-to-devtools-l
 /* eslint-env jest */
 
 describe('SEO: Is page crawlable audit', () => {
-  const makeMetaElements = content => content ? [{name: 'robots', content}] : [];
+  const makeMetaElements = content => [{name: 'robots', content}];
 
   it('fails when page is blocked from indexing with a robots metatag', () => {
     const robotsValues = [
@@ -80,7 +80,7 @@ describe('SEO: Is page crawlable audit', () => {
     const artifacts = {
       devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
       URL: {finalUrl},
-      MetaElements: makeMetaElements(null),
+      MetaElements: [],
       RobotsTxt: {},
     };
 
@@ -123,7 +123,7 @@ describe('SEO: Is page crawlable audit', () => {
       const artifacts = {
         devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
         URL: {finalUrl},
-        MetaElements: makeMetaElements(null),
+        MetaElements: [],
         RobotsTxt: {},
       };
 
@@ -150,7 +150,7 @@ describe('SEO: Is page crawlable audit', () => {
     const artifacts = {
       devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
       URL: {finalUrl},
-      MetaElements: makeMetaElements(null),
+      MetaElements: [],
       RobotsTxt: {},
     };
 
@@ -170,7 +170,7 @@ describe('SEO: Is page crawlable audit', () => {
     const artifacts = {
       devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
       URL: {finalUrl},
-      MetaElements: makeMetaElements(null),
+      MetaElements: [],
       RobotsTxt: {},
     };
 
@@ -193,7 +193,7 @@ describe('SEO: Is page crawlable audit', () => {
     const artifacts = {
       devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
       URL: {finalUrl},
-      MetaElements: makeMetaElements(null),
+      MetaElements: [],
       RobotsTxt: {},
     };
 
@@ -241,7 +241,7 @@ describe('SEO: Is page crawlable audit', () => {
       const artifacts = {
         devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
         URL: {finalUrl},
-        MetaElements: makeMetaElements(null),
+        MetaElements: [],
         RobotsTxt: robotsTxt,
       };
 
@@ -280,7 +280,7 @@ describe('SEO: Is page crawlable audit', () => {
       const artifacts = {
         devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
         URL: {finalUrl},
-        MetaElements: makeMetaElements(null),
+        MetaElements: [],
         RobotsTxt: robotsTxt,
       };
 

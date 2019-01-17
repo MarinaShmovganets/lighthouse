@@ -11,12 +11,11 @@ const assert = require('assert');
 /* eslint-env jest */
 
 describe('SEO: description audit', () => {
-  const makeMetaElements = content => typeof content === 'string' ?
-    [{name: 'description', content}] : [];
+  const makeMetaElements = content => [{name: 'description', content}];
 
   it('fails when HTML does not contain a description meta tag', () => {
     const auditResult = Audit.audit({
-      MetaElements: makeMetaElements(null),
+      MetaElements: [],
     });
     assert.equal(auditResult.rawValue, false);
   });

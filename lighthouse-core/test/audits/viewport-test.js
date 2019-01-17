@@ -11,11 +11,11 @@ const assert = require('assert');
 /* eslint-env jest */
 
 describe('Mobile-friendly: viewport audit', () => {
-  const makeMetaElements = viewport => viewport ? [{name: 'viewport', content: viewport}] : [];
+  const makeMetaElements = viewport => [{name: 'viewport', content: viewport}];
 
   it('fails when HTML does not contain a viewport meta tag', () => {
     return assert.equal(Audit.audit({
-      MetaElements: makeMetaElements(null),
+      MetaElements: [],
     }).rawValue, false);
   });
 
