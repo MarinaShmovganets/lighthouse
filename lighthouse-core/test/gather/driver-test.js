@@ -117,10 +117,11 @@ function sendCommandStub(command, params) {
 /* eslint-env jest */
 
 let driverStub;
+let connectionStub;
 beforeEach(() => {
-  const connection = new Connection();
-  connection.sendCommand = sendCommandStub;
-  driverStub = new Driver(connection);
+  connectionStub = new Connection();
+  connectionStub.sendCommand = sendCommandStub;
+  driverStub = new Driver(connectionStub);
 });
 
 describe('Browser Driver', () => {
@@ -332,14 +333,15 @@ describe('Browser Driver', () => {
 
   describe('.getAppManifest', () => {
     it('should return null when no manifest', async () => {
-      connection.sendCommand = jest.fn().mockResolvedValueOnce({data: undefined, url: '/manifest'});
+      connectionStub.sendCommand = jest.fn()
+        .mockResolvedValueOnce({data: undefined, url: '/manifest'});
       const result = await driverStub.getAppManifest();
       expect(result).toEqual(null);
     });
 
     it('should return the manifest', async () => {
       const manifest = {name: 'The App'};
-      connection.sendCommand = jest.fn()
+      connectionStub.sendCommand = jest.fn()
         .mockResolvedValueOnce({data: JSON.stringify(manifest), url: '/manifest'});
       const result = await driverStub.getAppManifest();
       expect(result).toEqual({data: JSON.stringify(manifest), url: '/manifest'});
@@ -352,7 +354,7 @@ describe('Browser Driver', () => {
       const manifestWithBOM = fs.readFileSync(__dirname + '/../fixtures/manifest-bom.json')
         .toString();
 
-      connection.sendCommand = jest.fn()
+      connectionStub.sendCommand = jest.fn()
         .mockResolvedValueOnce({data: manifestWithBOM, url: '/manifest'});
       const result = await driverStub.getAppManifest();
       expect(result).toEqual({data: manifestWithoutBOM, url: '/manifest'});
