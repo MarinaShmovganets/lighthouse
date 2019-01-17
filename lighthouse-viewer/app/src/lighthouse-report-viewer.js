@@ -106,7 +106,7 @@ class LighthouseReportViewer {
 
   /**
    * Basic Lighthouse report JSON validation.
-   * @param {LH.ReportResult} reportJson
+   * @param {LH.Result} reportJson
    * @private
    */
   _validateReportJson(reportJson) {
@@ -132,7 +132,7 @@ class LighthouseReportViewer {
   }
 
   /**
-   * @param {LH.ReportResult} json
+   * @param {LH.Result} json
    * @private
    */
   _replaceReportHtml(json) {
@@ -203,7 +203,7 @@ class LighthouseReportViewer {
 
   /**
    * Stores v2.x report in IDB, then navigates to legacy viewer in current tab
-   * @param {LH.ReportResult} reportJson
+   * @param {LH.Result} reportJson
    * @private
    */
   _loadInLegacyViewerVersion(reportJson) {
@@ -242,7 +242,7 @@ class LighthouseReportViewer {
 
   /**
    * Saves the current report by creating a gist on GitHub.
-   * @param {LH.ReportResult} reportJson
+   * @param {LH.Result} reportJson
    * @return {Promise<string|void>} id of the created gist.
    * @private
    */
