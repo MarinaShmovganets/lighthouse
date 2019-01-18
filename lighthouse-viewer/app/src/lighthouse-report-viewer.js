@@ -135,6 +135,8 @@ class LighthouseReportViewer {
    * @param {LH.Result} json
    * @private
    */
+  // TODO: Really, `json` should really have type `unknown` and
+  // we can have _validateReportJson verify that it's an LH.Result
   _replaceReportHtml(json) {
     this._validateReportJson(json);
 
