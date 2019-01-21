@@ -221,7 +221,7 @@ class NetworkRecorder extends EventEmitter {
       return;
     }
 
-    // TODO: https://github.com/GoogleChrome/lighthouse/issues/7041
+    // TODO: beacon to Sentry, https://github.com/GoogleChrome/lighthouse/issues/7041
     if (!data.redirectResponse) {
       return;
     }

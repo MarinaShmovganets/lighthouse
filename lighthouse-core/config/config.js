@@ -184,7 +184,6 @@ function cleanFlagsForSettings(flags = {}) {
   return settings;
 }
 
-// TODO: https://github.com/GoogleChrome/lighthouse/issues/7046
 /**
  * More widely typed than exposed merge() function, below.
  * @param {Object<string, any>|Array<any>|undefined|null} base

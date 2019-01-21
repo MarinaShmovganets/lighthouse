@@ -5,8 +5,6 @@
  */
 'use strict';
 
-// TODO: https://github.com/GoogleChrome/lighthouse/issues/7039
-
 /**
  * Expected Lighthouse audit values for byte efficiency tests
  */

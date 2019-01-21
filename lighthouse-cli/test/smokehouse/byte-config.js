@@ -22,7 +22,6 @@ module.exports = {
       'unused-css-rules',
       'unused-javascript',
     ],
-    // TODO: https://github.com/GoogleChrome/lighthouse/issues/7039
     throttlingMethod: 'devtools',
   },
 };

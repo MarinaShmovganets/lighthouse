@@ -289,7 +289,6 @@ class NetworkAnalyzer {
         );
       }
 
-      // TODO: https://github.com/GoogleChrome/lighthouse/issues/7045
       const firstRecord = originRecords.reduce((a, b) => (a.startTime > b.startTime ? b : a));
       connectionWasReused.set(firstRecord.requestId, false);
     }
@@ -447,7 +446,6 @@ class NetworkAnalyzer {
    * @return {LH.Artifacts.NetworkRequest}
    */
   static findMainDocument(records) {
-    // TODO: https://github.com/GoogleChrome/lighthouse/issues/7045
     const documentRequests = records.filter(record => record.resourceType ===
         NetworkRequest.TYPES.Document);
     // The main document is the earliest document request, using position in networkRecords array to break ties.
