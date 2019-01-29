@@ -7,18 +7,7 @@
 
 const Audit = require('../audit.js');
 const regular3G = require('../../config/constants.js').throttling.mobileRegluar3G;
-const i18n = require('../../lib/i18n/i18n.js');
 const ComputedFcp = require('../../computed/metrics/first-contentful-paint.js');
-
-const UIStrings = {
-  /** The name of the metric that marks the time at which the first text or image is painted by the browser, on a 3G network. Shown to users as the label for the numeric metric value. Ideally fits within a ~40 character limit. */
-  title: 'First Contentful Paint (3G)',
-  /** Description of the First Contentful Paint (FCP) metric, which marks the time at which the first text or image is painted by the browser. This is displayed within a tooltip when the user hovers on the metric name to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
-  description: 'First Contentful Paint 3G marks the time at which the first text or image is ' +
-      `painted while on a 3G network. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-contentful-paint).`,
-};
-
-const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class FirstContentfulPaint3G extends Audit {
   /**
@@ -27,8 +16,9 @@ class FirstContentfulPaint3G extends Audit {
   static get meta() {
     return {
       id: 'first-contentful-paint-3g',
-      title: str_(UIStrings.title),
-      description: str_(UIStrings.description),
+      title: 'First Contentful Paint (3G)',
+      description: 'First Contentful Paint 3G marks the time at which the first text or image is ' +
+        `painted while on a 3G network. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-contentful-paint).`,
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces', 'devtoolsLogs'],
     };
@@ -66,10 +56,9 @@ class FirstContentfulPaint3G extends Audit {
         context.options.scoreMedian
       ),
       rawValue: metricResult.timing,
-      displayValue: str_(i18n.UIStrings.seconds, {timeInMs: metricResult.timing}),
+      displayValue: `${metricResult.timing}s`,
     };
   }
 }
 
 module.exports = FirstContentfulPaint3G;
-module.exports.UIStrings = UIStrings;
