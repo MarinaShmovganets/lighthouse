@@ -322,7 +322,6 @@ describe('GatherRunner', function() {
       clearDataForOrigin: createCheck('calledClearStorage'),
       blockUrlPatterns: asyncFunc,
       setExtraHTTPHeaders: asyncFunc,
-      listenForSecurityStateChanges: asyncFunc,
     };
 
     return GatherRunner.setupDriver(driver, {settings: {}}).then(_ => {
@@ -382,7 +381,6 @@ describe('GatherRunner', function() {
       clearDataForOrigin: createCheck('calledClearStorage'),
       blockUrlPatterns: asyncFunc,
       setExtraHTTPHeaders: asyncFunc,
-      listenForSecurityStateChanges: asyncFunc,
     };
 
     return GatherRunner.setupDriver(driver, {
@@ -646,7 +644,8 @@ describe('GatherRunner', function() {
       const error = GatherRunner.getPageLoadError(url, [mainRecord]);
       assert.equal(error.message, 'FAILED_DOCUMENT_REQUEST');
       assert.equal(error.code, 'FAILED_DOCUMENT_REQUEST');
-      assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
+      expect(error.friendlyMessage)
+        .toBeDisplayString(/^Lighthouse was unable to reliably load.*foobar/);
     });
 
     it('fails when page times out', () => {
@@ -655,7 +654,7 @@ describe('GatherRunner', function() {
       const error = GatherRunner.getPageLoadError(url, records);
       assert.equal(error.message, 'NO_DOCUMENT_REQUEST');
       assert.equal(error.code, 'NO_DOCUMENT_REQUEST');
-      assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
+      expect(error.friendlyMessage).toBeDisplayString(/^Lighthouse was unable to reliably load/);
     });
 
     it('fails when page returns with a 404', () => {
@@ -666,7 +665,8 @@ describe('GatherRunner', function() {
       const error = GatherRunner.getPageLoadError(url, [mainRecord]);
       assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
       assert.equal(error.code, 'ERRORED_DOCUMENT_REQUEST');
-      assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
+      expect(error.friendlyMessage)
+        .toBeDisplayString(/^Lighthouse was unable to reliably load.*404/);
     });
 
     it('fails when page returns with a 500', () => {
@@ -677,7 +677,8 @@ describe('GatherRunner', function() {
       const error = GatherRunner.getPageLoadError(url, [mainRecord]);
       assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
       assert.equal(error.code, 'ERRORED_DOCUMENT_REQUEST');
-      assert.ok(/^Lighthouse was unable to reliably load/.test(error.friendlyMessage));
+      expect(error.friendlyMessage)
+        .toBeDisplayString(/^Lighthouse was unable to reliably load.*500/);
     });
 
     it('fails when page domain doesn\'t resolve', () => {
@@ -689,45 +690,7 @@ describe('GatherRunner', function() {
       const error = GatherRunner.getPageLoadError(url, [mainRecord]);
       assert.equal(error.message, 'DNS_FAILURE');
       assert.equal(error.code, 'DNS_FAILURE');
-      assert.ok(/^DNS servers could not resolve/.test(error.friendlyMessage));
-    });
-  });
-
-  describe('#assertNoSecurityIssues', () => {
-    it('succeeds when page is secure', () => {
-      const secureSecurityState = {
-        securityState: 'secure',
-      };
-      GatherRunner.assertNoSecurityIssues(secureSecurityState);
-    });
-
-    it('fails when page is insecure', () => {
-      const insecureSecurityState = {
-        explanations: [
-          {
-            description: 'reason 1.',
-            securityState: 'insecure',
-          },
-          {
-            description: 'blah.',
-            securityState: 'info',
-          },
-          {
-            description: 'reason 2.',
-            securityState: 'insecure',
-          },
-        ],
-        securityState: 'insecure',
-      };
-      try {
-        GatherRunner.assertNoSecurityIssues(insecureSecurityState);
-        assert.fail('expected INSECURE_DOCUMENT_REQUEST LHError');
-      } catch (err) {
-        assert.equal(err.message, 'INSECURE_DOCUMENT_REQUEST');
-        assert.equal(err.code, 'INSECURE_DOCUMENT_REQUEST');
-        /* eslint-disable-next-line max-len */
-        assert.equal(err.friendlyMessage, 'The URL you have provided does not have valid security credentials. reason 1. reason 2.');
-      }
+      expect(error.friendlyMessage).toBeDisplayString(/^DNS servers could not resolve/);
     });
   });
 
@@ -1071,7 +1034,8 @@ describe('GatherRunner', function() {
         config: new Config({}),
       }).then(artifacts => {
         assert.equal(artifacts.LighthouseRunWarnings.length, 1);
-        assert.ok(/DNS servers could not resolve/.test(artifacts.LighthouseRunWarnings[0]));
+        expect(artifacts.LighthouseRunWarnings[0])
+          .toBeDisplayString(/DNS servers could not resolve/);
       });
     });
 
@@ -1104,6 +1068,38 @@ describe('GatherRunner', function() {
         .then(_ => {
           assert.ok(true);
         });
+    });
+  });
+
+  describe('.getWebAppManifest', () => {
+    const MANIFEST_URL = 'https://example.com/manifest.json';
+    let passContext;
+
+    beforeEach(() => {
+      passContext = {
+        url: 'https://example.com/index.html',
+        baseArtifacts: {},
+        driver: fakeDriver,
+      };
+    });
+
+    it('should pass through manifest when null', async () => {
+      const getAppManifest = jest.spyOn(fakeDriver, 'getAppManifest');
+      getAppManifest.mockResolvedValueOnce(null);
+      const result = await GatherRunner.getWebAppManifest(passContext);
+      expect(result).toEqual(null);
+    });
+
+    it('should parse the manifest when found', async () => {
+      const manifest = {name: 'App'};
+      const getAppManifest = jest.spyOn(fakeDriver, 'getAppManifest');
+      getAppManifest.mockResolvedValueOnce({data: JSON.stringify(manifest), url: MANIFEST_URL});
+      const result = await GatherRunner.getWebAppManifest(passContext);
+      expect(result).toHaveProperty('raw', JSON.stringify(manifest));
+      expect(result.value).toMatchObject({
+        name: {value: 'App', raw: 'App'},
+        start_url: {value: passContext.url, raw: undefined},
+      });
     });
   });
 });
