@@ -324,6 +324,7 @@ class TapTargets extends Gatherer {
       ${pageFunctions.getNodePathString};
       ${pageFunctions.getNodeSelectorString};
       ${gatherTapTargets.toString()};
+
       return gatherTapTargets();
     })()`;
 
