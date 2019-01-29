@@ -8,11 +8,17 @@
 const Audit = require('../audit.js');
 const regular3G = require('../../config/constants.js').throttling.mobileRegluar3G;
 const i18n = require('../../lib/i18n/i18n.js');
-const FCP = require('./first-contentful-paint.js');
 const ComputedFcp = require('../../computed/metrics/first-contentful-paint.js');
 
-const i18nFilename = require.resolve('./first-contentful-paint.js');
-const str_ = i18n.createMessageInstanceIdFn(i18nFilename, FCP.UIStrings);
+const UIStrings = {
+  /** The name of the metric that marks the time at which the first text or image is painted by the browser, on a 3G network. Shown to users as the label for the numeric metric value. Ideally fits within a ~40 character limit. */
+  title: 'First Contentful Paint (3G)',
+  /** Description of the First Contentful Paint (FCP) metric, which marks the time at which the first text or image is painted by the browser. This is displayed within a tooltip when the user hovers on the metric name to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'First Contentful Paint 3G marks the time at which the first text or image is ' +
+      `painted while on a 3G network. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-contentful-paint).`,
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class FirstContentfulPaint3G extends Audit {
   /**
@@ -21,8 +27,8 @@ class FirstContentfulPaint3G extends Audit {
   static get meta() {
     return {
       id: 'first-contentful-paint-3g',
-      title: str_(FCP.UIStrings.title),
-      description: str_(FCP.UIStrings.description),
+      title: str_(UIStrings.title),
+      description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces', 'devtoolsLogs'],
     };
@@ -66,3 +72,4 @@ class FirstContentfulPaint3G extends Audit {
 }
 
 module.exports = FirstContentfulPaint3G;
+module.exports.UIStrings = UIStrings;
