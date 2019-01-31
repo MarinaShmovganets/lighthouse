@@ -31,6 +31,17 @@ const SOURCE_PARAMS = new Set([
   'source',
   'src',
 ]);
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  title: 'Document avoids plugins',
+  failureTitle: 'Document uses plugins',
+  description: 'Search engines can\'t index plugin content, and ' +
+    'many devices restrict plugins or don\'t support them. ' +
+    '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/plugins).',
+}
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 /**
  * Verifies if given MIME type matches any known plugin MIME type
@@ -73,11 +84,9 @@ class Plugins extends Audit {
   static get meta() {
     return {
       id: 'plugins',
-      title: 'Document avoids plugins',
-      failureTitle: 'Document uses plugins',
-      description: 'Search engines can\'t index plugin content, and ' +
-        'many devices restrict plugins or don\'t support them. ' +
-        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/plugins).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['EmbeddedContent'],
     };
   }
@@ -154,3 +163,4 @@ class Plugins extends Audit {
 }
 
 module.exports = Plugins;
+module.exports.UIStrings = UIStrings;

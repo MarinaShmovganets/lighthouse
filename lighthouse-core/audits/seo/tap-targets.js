@@ -24,7 +24,17 @@ const FINGER_SIZE_PX = 48;
 // to the finger area tapping on the intended element
 const MAX_ACCEPTABLE_OVERLAP_SCORE_RATIO = 0.25;
 
+const i18n = require('../../lib/i18n/i18n.js');
 
+const UIStrings = {
+  title: 'Tap targets are sized appropriately',
+  failureTitle: 'Tap targets are not sized appropriately',
+  description:'Interactive elements like buttons and links should be large enough (48x48px), and have enough space around them,' +
+    'to be easy enough to tap without overlapping onto other elements. ' +
+    '[Learn more](https://developers.google.com/web/fundamentals/accessibility/accessible-styles#multi-device_responsive_design).',
+}
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 /**
  * @param {LH.Artifacts.Rect} cr
  */
@@ -244,10 +254,9 @@ class TapTargets extends Audit {
   static get meta() {
     return {
       id: 'tap-targets',
-      title: 'Tap targets are sized appropriately',
-      failureTitle: 'Tap targets are not sized appropriately',
-      description:
-        'Interactive elements like buttons and links should be large enough (48x48px), and have enough space around them, to be easy enough to tap without overlapping onto other elements. [Learn more](https://developers.google.com/web/fundamentals/accessibility/accessible-styles#multi-device_responsive_design).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['MetaElements', 'TapTargets'],
     };
   }
@@ -298,7 +307,7 @@ class TapTargets extends Audit {
 TapTargets.FINGER_SIZE_PX = FINGER_SIZE_PX;
 
 module.exports = TapTargets;
-
+module.exports.UIStrings = UIStrings;
 
 /** @typedef {{
   overlapScoreRatio: number;

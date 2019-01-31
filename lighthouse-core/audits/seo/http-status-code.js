@@ -9,6 +9,17 @@ const Audit = require('../audit');
 const MainResource = require('../../computed/main-resource.js');
 const HTTP_UNSUCCESSFUL_CODE_LOW = 400;
 const HTTP_UNSUCCESSFUL_CODE_HIGH = 599;
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  title: 'Page has successful HTTP status code',
+  failureTitle: 'Page has unsuccessful HTTP status code',
+  description: 'Pages with unsuccessful HTTP status codes may not be indexed properly. ' +
+  '[Learn more]' +
+  '(https://developers.google.com/web/tools/lighthouse/audits/successful-http-code).',
+}
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class HTTPStatusCode extends Audit {
   /**
@@ -17,11 +28,9 @@ class HTTPStatusCode extends Audit {
   static get meta() {
     return {
       id: 'http-status-code',
-      title: 'Page has successful HTTP status code',
-      failureTitle: 'Page has unsuccessful HTTP status code',
-      description: 'Pages with unsuccessful HTTP status codes may not be indexed properly. ' +
-      '[Learn more]' +
-      '(https://developers.google.com/web/tools/lighthouse/audits/successful-http-code).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['devtoolsLogs', 'URL'],
     };
   }
@@ -55,3 +64,4 @@ class HTTPStatusCode extends Audit {
 }
 
 module.exports = HTTPStatusCode;
+module.exports.UIStrings = UIStrings;

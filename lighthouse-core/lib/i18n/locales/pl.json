@@ -1,4 +1,85 @@
 {
+  "lighthouse-core/audits/seo/tap-targets.js | description": {
+    "message": "Elementy interaktywne, takie jak przyciski i łącza, powinny być wystarczająco duże (48 x 48 pikseli) i mieć wystarczająco dużo miejsca wokół nich, być łatwym do dotknięcia bez nakładania się na inne elementy. [Więcej informacji](https://developers.google.com/web/fundamentals/accessibility/accessible-styles#multi-device_responsive_design)."
+  },
+  "lighthouse-core/audits/seo/tap-targets.js | failureTitle": {
+    "message": "Elementy dotykowe mają nieodpowiedni rozmiar"
+  },
+  "lighthouse-core/audits/seo/tap-targets.js | title": {
+    "message": "Elementy dotykowe mają odpowiedni rozmiar"
+  },  
+  "lighthouse-core/audits/seo/robots-txt.js | description": {
+    "message": "Jeśli plik robots.txt jest zniekształcony, roboty mogą nie być w stanie zrozumieć, w jaki sposób ma zostać zaindeksowane lub zaindeksowane witryna."
+  },
+  "lighthouse-core/audits/seo/robots-txt.js | failureTitle": {
+    "message": "Plik robots.txt nie jest prawidłowy"
+  },
+  "lighthouse-core/audits/seo/robots-txt.js | title": {
+    "message": "Plik robots.txt jest prawidłowy"
+  },
+  "lighthouse-core/audits/seo/plugins.js | description": {
+    "message": "Wyszukiwarki nie mogą indeksować treści wtyczek, a wiele urządzeń ogranicza wtyczki lub ich nie obsługuje.[Więcej informacji](https://developers.google.com/web/tools/lighthouse/audits/plugins)."
+  },
+  "lighthouse-core/audits/seo/plugins.js | failureTitle": {
+    "message": "Dokument używa wtyczek"
+  },
+  "lighthouse-core/audits/seo/plugins.js | title": {
+    "message": "Dokument unika wtyczek"
+  },
+  "lighthouse-core/audits/seo/meta-description.js | description": {
+    "message": "Meta-opisy mogą być zawarte w wynikach wyszukiwania w celu podsumowania zawartości strony.[Więcej informacji](https://developers.google.com/web/tools/lighthouse/audits/description)."
+  },
+  "lighthouse-core/audits/seo/meta-description.js | failureTitle": {
+    "message": "Dokument nie posiada opis meta"
+  },
+  "lighthouse-core/audits/seo/meta-description.js | title": {
+    "message": "Dokument posiada opis meta"
+  },
+  "lighthouse-core/audits/seo/link-text.js | description": {
+    "message": "Opisowy tekst linku ułatwia wyszukiwarkom zrozumienie treści.[Więcej informacji](https://developers.google.com/web/tools/lighthouse/audits/descriptive-link-text)."
+  },
+  "lighthouse-core/audits/seo/link-text.js | failureTitle": {
+    "message": "Linki nie mają tekstu opisowego"
+  },
+  "lighthouse-core/audits/seo/link-text.js | title": {
+    "message": "Linki mają opisowy tekst"
+  },
+  "lighthouse-core/audits/seo/is-crawlable.js | description": {
+    "message": "Wyszukiwarki nie mogą uwzględnić Twoich stron w wynikach wyszukiwania, jeśli nie mają uprawnień do ich zaindeksowania.[Więcej informacji](https://developers.google.com/web/tools/lighthouse/audits/indexing)."
+  },
+  "lighthouse-core/audits/seo/is-crawlable.js | failureTitle": {
+    "message": "Strona jest zablokowana przed indeksowaniem"
+  },
+  "lighthouse-core/audits/seo/is-crawlable.js | title": {
+    "message": "Strona nie jest blokowana przed indeksowaniem"
+  },
+  "lighthouse-core/audits/seo/http-status-code.js | description": {
+    "message": "Strony z nieprawidłowymi kodami statusu HTTP mogą nie być poprawnie indeksowane.[Więcej informacji] (https://developers.google.com/web/tools/lighthouse/audits/successful-http-code)"
+  },
+  "lighthouse-core/audits/seo/http-status-code.js | failureTitle": {
+    "message": "Strona zwraca nieprawidłowy kod statusu HTTP"
+  },
+  "lighthouse-core/audits/seo/http-status-code.js | title": {
+    "message": "Strona zwraca odpowiedni kod statusu HTTP"
+  },
+  "lighthouse-core/audits/seo/hreflang.js | description": {
+    "message": "Linki hreflang informują wyszukiwarki, jaka wersja strony powinna być wyświetlana w wynikach wyszukiwania dla danego języka lub regionu. [Więcej informacji](https://developers.google.com/web/tools/lighthouse/audits/hreflang)."
+  },
+  "lighthouse-core/audits/seo/hreflang.js | failureTitle": {
+    "message": "Dokument nie posiada prawidłowego `hreflang`"
+  },
+  "lighthouse-core/audits/seo/hreflang.js | title": {
+    "message": "Dokument posiada prawdiłowy `hreflang`"
+  },
+  "lighthouse-core/audits/seo/canonical.js | description": {
+    "message": "Kanoniczne linki sugerują, który adres URL wyświetlać w wynikach wyszukiwania. [Więcej informacji](https://developers.google.com/web/tools/lighthouse/audits/canonical)."
+  },
+  "lighthouse-core/audits/seo/canonical.js | failureTitle": {
+    "message": "Dokument nie posiada prawidłowego `rel=canonical`"
+  },
+  "lighthouse-core/audits/seo/canonical.js | title": {
+    "message": "Dokument posiada prawidłowy `rel=canonical`"
+  },
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
     "message": "Klawisze dostępu umożliwiają szybkie ustawienie fokusu na określonej części strony. Aby nawigacja działała dobrze, każdy klawisz dostępu musi być unikalny. [Więcej informacji](https://dequeuniversity.com/rules/axe/2.2/accesskeys?application=lighthouse)."
   },

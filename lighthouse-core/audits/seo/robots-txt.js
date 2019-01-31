@@ -31,6 +31,16 @@ const DIRECTIVE_SAFELIST = new Set([
   'request-rate', 'visit-time', 'noindex', // not officially supported, but used in the wild
 ]);
 const SITEMAP_VALID_PROTOCOLS = new Set(['https:', 'http:', 'ftp:']);
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  title: 'robots.txt is valid',
+  failureTitle: 'robots.txt is not valid',
+  description: 'If your robots.txt file is malformed, crawlers may not be able to understand ' +
+  'how you want your website to be crawled or indexed.',
+}
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 /**
  * @param {string} directiveName
@@ -161,10 +171,9 @@ class RobotsTxt extends Audit {
   static get meta() {
     return {
       id: 'robots-txt',
-      title: 'robots.txt is valid',
-      failureTitle: 'robots.txt is not valid',
-      description: 'If your robots.txt file is malformed, crawlers may not be able to understand ' +
-      'how you want your website to be crawled or indexed.',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['RobotsTxt'],
     };
   }
@@ -228,3 +237,4 @@ class RobotsTxt extends Audit {
 }
 
 module.exports = RobotsTxt;
+module.exports.UIStrings = UIStrings;

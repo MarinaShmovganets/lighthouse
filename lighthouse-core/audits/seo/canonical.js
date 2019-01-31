@@ -10,6 +10,16 @@ const LinkHeader = require('http-link-header');
 const URL = require('../../lib/url-shim');
 const MainResource = require('../../computed/main-resource.js');
 const LINK_HEADER = 'link';
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  title: 'Document has a valid `rel=canonical`',
+  failureTitle: 'Document does not have a valid `rel=canonical`',
+  description: 'Canonical links suggest which URL to show in search results. ' +
+    '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/canonical).',
+}
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 /**
  * @param {string} headerValue
@@ -62,10 +72,9 @@ class Canonical extends Audit {
   static get meta() {
     return {
       id: 'canonical',
-      title: 'Document has a valid `rel=canonical`',
-      failureTitle: 'Document does not have a valid `rel=canonical`',
-      description: 'Canonical links suggest which URL to show in search results. ' +
-        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/canonical).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Canonical', 'Hreflang', 'URL'],
     };
   }
@@ -175,3 +184,4 @@ class Canonical extends Audit {
 }
 
 module.exports = Canonical;
+module.exports.UIStrings = UIStrings;

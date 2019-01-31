@@ -18,6 +18,16 @@ const BLOCKLIST = new Set([
   'more',
   'learn more',
 ]);
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  title: 'Links have descriptive text',
+  failureTitle: 'Links do not have descriptive text',
+  description: 'Descriptive link text helps search engines understand your content. ' +
+  '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/descriptive-link-text).',
+}
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class LinkText extends Audit {
   /**
@@ -26,10 +36,9 @@ class LinkText extends Audit {
   static get meta() {
     return {
       id: 'link-text',
-      title: 'Links have descriptive text',
-      failureTitle: 'Links do not have descriptive text',
-      description: 'Descriptive link text helps search engines understand your content. ' +
-      '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/descriptive-link-text).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['URL', 'CrawlableLinks'],
     };
   }
@@ -81,3 +90,4 @@ class LinkText extends Audit {
 }
 
 module.exports = LinkText;
+module.exports.UIStrings = UIStrings;
