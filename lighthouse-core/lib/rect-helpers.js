@@ -9,48 +9,28 @@
  * @param {LH.Artifacts.Rect} rect
  * @param {{x:number, y:number}} point
  */
-// We sometimes run this as a part of a gatherer script injected into the page, so prevent
-// renaming the function for code coverage.
-/* istanbul ignore next */
 function rectContainsPoint(rect, {x, y}) {
   return rect.left <= x && rect.right >= x && rect.top <= y && rect.bottom >= y;
 }
 
 /**
+ * Returns whether rect2 is contained entirely within rect1;
  * @param {LH.Artifacts.Rect} rect1
  * @param {LH.Artifacts.Rect} rect2
+ * @return {boolean}
  */
 // We sometimes run this as a part of a gatherer script injected into the page, so prevent
 // renaming the function for code coverage.
 /* istanbul ignore next */
 function rectContains(rect1, rect2) {
-  return (
-    // top left corner
-    rectContainsPoint(rect1, {
-      x: rect2.left,
-      y: rect2.top,
-    }) &&
-    // top right corner
-    rectContainsPoint(rect1, {
-      x: rect2.right,
-      y: rect2.top,
-    }) &&
-    // bottom left corner
-    rectContainsPoint(rect1, {
-      x: rect2.left,
-      y: rect2.bottom,
-    }) &&
-    // bottom right corner
-    rectContainsPoint(rect1, {
-      x: rect2.right,
-      y: rect2.bottom,
-    })
-  );
+  return rect2.top >= rect1.top &&
+    rect2.right <= rect1.right &&
+    rect2.bottom <= rect1.bottom &&
+    rect2.left >= rect1.left;
 }
 
 
 const rectContainsString = `
-  ${rectContainsPoint.toString()}
   ${rectContains.toString()};
 `;
 
@@ -69,20 +49,24 @@ function filterOutTinyRects(rects) {
  * @returns {LH.Artifacts.Rect[]}
  */
 function filterOutRectsContainedByOthers(rects) {
-  const rectsToKeep = new Set(rects);
+  const rectsToKeep = [];
 
   for (const rect of rects) {
+    let contained = false;
     for (const possiblyContainingRect of rects) {
       if (rect === possiblyContainingRect) continue;
-      if (!rectsToKeep.has(possiblyContainingRect)) continue;
       if (rectContains(possiblyContainingRect, rect)) {
-        rectsToKeep.delete(rect);
+        contained = true;
         break;
       }
     }
+
+    if (!contained) {
+      rectsToKeep.push(rect);
+    }
   }
 
-  return Array.from(rectsToKeep);
+  return rectsToKeep;
 }
 
 /**
@@ -108,6 +92,56 @@ function rectsTouchOrOverlap(rectA, rectB) {
     rectA.top <= rectB.bottom &&
     rectB.top <= rectA.bottom
   );
+}
+
+/**
+ * Returns a bounding rect for all the passed in rects, with a width and height
+ * of at least `minimumSize`.
+ * @param {LH.Artifacts.Rect[]} rects
+ * @param {number} minimumSize
+ * @return {LH.Artifacts.Rect}
+ */
+function getBoundingRectWithMinimimSize(rects, minimumSize) {
+  if (rects.length === 0) {
+    throw new Error('No rects to take bounds of');
+  }
+
+  let left = Number.MAX_VALUE;
+  let right = -Number.MAX_VALUE;
+  let top = -Number.MAX_VALUE;
+  let bottom = Number.MAX_VALUE;
+  for (const rect of rects) {
+    left = Math.min(left, rect.left);
+    right = Math.max(right, rect.right);
+    top = Math.min(top, rect.top);
+    bottom = Math.max(bottom, rect.bottom);
+  }
+
+  let width = right - left;
+  let height = bottom - top;
+
+  // If too small in width or height, expand from the midpoint to minimumSize.
+  if (width < minimumSize) {
+    const midX = (left + right) / 2;
+    left = midX - minimumSize / 2;
+    right = midX + minimumSize / 2;
+    width = minimumSize;
+  }
+  if (height < minimumSize) {
+    const midY = (top + bottom) / 2;
+    top = midY - minimumSize / 2;
+    bottom = midY + minimumSize / 2;
+    height = minimumSize;
+  }
+
+  return {
+    left,
+    right,
+    top,
+    bottom,
+    width,
+    height,
+  };
 }
 
 /**
@@ -161,32 +195,15 @@ function addRectTopAndBottom({x, y, width, height}) {
  * @param {LH.Artifacts.Rect} rect1
  * @param {LH.Artifacts.Rect} rect2
  */
-function getRectXOverlap(rect1, rect2) {
-  // https://stackoverflow.com/a/9325084/1290545
-  return Math.max(
-    0,
-    Math.min(rect1.right, rect2.right) - Math.max(rect1.left, rect2.left)
-  );
-}
-
-/**
- * @param {LH.Artifacts.Rect} rect1
- * @param {LH.Artifacts.Rect} rect2
- */
-function getRectYOverlap(rect1, rect2) {
-  // https://stackoverflow.com/a/9325084/1290545
-  return Math.max(
-    0,
-    Math.min(rect1.bottom, rect2.bottom) - Math.max(rect1.top, rect2.top)
-  );
-}
-
-/**
- * @param {LH.Artifacts.Rect} rect1
- * @param {LH.Artifacts.Rect} rect2
- */
 function getRectOverlapArea(rect1, rect2) {
-  return getRectXOverlap(rect1, rect2) * getRectYOverlap(rect1, rect2);
+  // https://stackoverflow.com/a/9325084/1290545
+  const rectYOverlap = Math.min(rect1.bottom, rect2.bottom) - Math.max(rect1.top, rect2.top);
+  if (rectYOverlap <= 0) return 0;
+
+  const rectXOverlap = Math.min(rect1.right, rect2.right) - Math.max(rect1.left, rect2.left);
+  if (rectXOverlap <= 0) return 0;
+
+  return rectXOverlap * rectYOverlap;
 }
 
 /**
@@ -244,13 +261,12 @@ module.exports = {
   rectContainsString,
   addRectWidthAndHeight,
   addRectTopAndBottom,
-  getRectXOverlap,
-  getRectYOverlap,
   getRectOverlapArea,
   getRectAtCenter,
   getLargestRect,
   getRectCenterPoint,
   getBoundingRect,
+  getBoundingRectWithMinimimSize,
   rectsTouchOrOverlap,
   allRectsContainedWithinEachOther,
   filterOutRectsContainedByOthers,
