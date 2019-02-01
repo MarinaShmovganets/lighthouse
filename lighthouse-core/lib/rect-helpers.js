@@ -91,13 +91,13 @@ function rectsTouchOrOverlap(rectA, rectB) {
 }
 
 /**
- * Returns a bounding rect for all the passed in rects, with a width and height
- * of at least `minimumSize`.
+ * Returns a bounding rect for all the passed in rects, with padded with half of
+ * `minimumSize` on all sides.
  * @param {LH.Artifacts.Rect[]} rects
  * @param {number} minimumSize
  * @return {LH.Artifacts.Rect}
  */
-function getBoundingRectWithMinimimSize(rects, minimumSize) {
+function getBoundingRectWithPadding(rects, minimumSize) {
   if (rects.length === 0) {
     throw new Error('No rects to take bounds of');
   }
@@ -113,30 +113,20 @@ function getBoundingRectWithMinimimSize(rects, minimumSize) {
     bottom = Math.max(bottom, rect.bottom);
   }
 
-  let width = right - left;
-  let height = bottom - top;
-
-  // If too small in width or height, expand from the midpoint to minimumSize.
-  if (width < minimumSize) {
-    const midX = (left + right) / 2;
-    left = midX - minimumSize / 2;
-    right = midX + minimumSize / 2;
-    width = minimumSize;
-  }
-  if (height < minimumSize) {
-    const midY = (top + bottom) / 2;
-    top = midY - minimumSize / 2;
-    bottom = midY + minimumSize / 2;
-    height = minimumSize;
-  }
+  // Pad on all sides.
+  const halfMinSize = minimumSize / 2;
+  left -= halfMinSize;
+  right += halfMinSize;
+  top -= halfMinSize;
+  bottom += halfMinSize;
 
   return {
     left,
     right,
     top,
     bottom,
-    width,
-    height,
+    width: right - left,
+    height: bottom - top,
   };
 }
 
@@ -262,7 +252,7 @@ module.exports = {
   getLargestRect,
   getRectCenterPoint,
   getBoundingRect,
-  getBoundingRectWithMinimimSize,
+  getBoundingRectWithPadding,
   rectsTouchOrOverlap,
   allRectsContainedWithinEachOther,
   filterOutRectsContainedByOthers,

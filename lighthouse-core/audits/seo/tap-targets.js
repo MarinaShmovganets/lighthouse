@@ -17,7 +17,7 @@ const {
   getRectAtCenter,
   allRectsContainedWithinEachOther,
   getLargestRect,
-  getBoundingRectWithMinimimSize,
+  getBoundingRectWithPadding,
 } = require('../../lib/rect-helpers');
 const {getTappableRectsFromClientRects} = require('../../lib/tappable-rects');
 const i18n = require('../../lib/i18n/i18n.js');
@@ -51,8 +51,7 @@ const MAX_ACCEPTABLE_OVERLAP_SCORE_RATIO = 0.25;
 
 /**
  * Returns a tap target augmented with a bounding rect for quick overlapping
- * rejections. Rect contains all the client rects, with a width and height of at
- * least FINGER_SIZE_PX.
+ * rejections. Rect contains all the client rects, padded to half FINGER_SIZE_PX.
  * @param {LH.Artifacts.TapTarget[]} targets
  * @return {BoundedTapTarget[]}
  */
@@ -60,7 +59,7 @@ function getBoundedTapTargets(targets) {
   return targets.map(tapTarget => {
     return {
       tapTarget,
-      boundingRect: getBoundingRectWithMinimimSize(tapTarget.clientRects, FINGER_SIZE_PX),
+      boundingRect: getBoundingRectWithPadding(tapTarget.clientRects, FINGER_SIZE_PX),
     };
   });
 }
@@ -103,7 +102,7 @@ function getAllOverlapFailures(tooSmallTargets, allTargets) {
       }
 
       if (!rectsTouchOrOverlap(target.boundingRect, maybeOverlappingTarget.boundingRect)) {
-        // Bounding boxes (of at least FINGER_SIZE_PX) don't overlap, skip.
+        // Bounding boxes (padded with half FINGER_SIZE_PX) don't overlap, skip.
         continue;
       }
 
@@ -282,7 +281,7 @@ class TapTargets extends Audit {
       };
     }
 
-    // Augment the targets with bounding rects for quick intersection testing.
+    // Augment the targets with padded bounding rects for quick intersection testing.
     const boundedTapTargets = getBoundedTapTargets(artifacts.TapTargets);
 
     const tooSmallTargets = getTooSmallTargets(boundedTapTargets);
