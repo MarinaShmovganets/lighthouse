@@ -120,7 +120,7 @@ function getAllOverlapFailures(tooSmallTargets, allTargets) {
         // probably intentional (e.g. an item with a delete button inside).
         // We'll miss some problems because of this, but that's better
         // than falsely reporting a failure.
-        return null;
+        continue;
       }
 
       const rectFailure = getOverlapFailureForTargetPair(tappableRects, maybeOverlappingRects);
