@@ -104,8 +104,8 @@ function getBoundingRectWithPadding(rects, minimumSize) {
 
   let left = Number.MAX_VALUE;
   let right = -Number.MAX_VALUE;
-  let top = -Number.MAX_VALUE;
-  let bottom = Number.MAX_VALUE;
+  let top = Number.MAX_VALUE;
+  let bottom = -Number.MAX_VALUE;
   for (const rect of rects) {
     left = Math.min(left, rect.left);
     right = Math.max(right, rect.right);
