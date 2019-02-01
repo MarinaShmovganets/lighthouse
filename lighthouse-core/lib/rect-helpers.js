@@ -49,24 +49,20 @@ function filterOutTinyRects(rects) {
  * @returns {LH.Artifacts.Rect[]}
  */
 function filterOutRectsContainedByOthers(rects) {
-  const rectsToKeep = [];
+  const rectsToKeep = new Set(rects);
 
   for (const rect of rects) {
-    let contained = false;
     for (const possiblyContainingRect of rects) {
       if (rect === possiblyContainingRect) continue;
+      if (!rectsToKeep.has(possiblyContainingRect)) continue;
       if (rectContains(possiblyContainingRect, rect)) {
-        contained = true;
+        rectsToKeep.delete(rect);
         break;
       }
     }
-
-    if (!contained) {
-      rectsToKeep.push(rect);
-    }
   }
 
-  return rectsToKeep;
+  return Array.from(rectsToKeep);
 }
 
 /**
