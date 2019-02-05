@@ -10,8 +10,11 @@ declare global {
       type: 'filmstrip';
       scale: number;
       items: {
+        /** The relative time from navigationStart to this frame, in milliseconds. */
         timing: number;
+        /** The raw timestamp of this frame, in microseconds. */
         timestamp: number;
+        /** The data URL encoding of this frame. */
         data: string;
       }[];
     }
@@ -26,7 +29,7 @@ declare global {
       type: 'opportunity';
       overallSavingsMs: number;
       overallSavingsBytes?: number;
-      headings: TableColumnHeading[];
+      headings: OpportunityColumnHeading[];
       items: OpportunityItem[];
     }
 
@@ -40,20 +43,15 @@ declare global {
       chains: Audit.SimpleCriticalRequestNode;
     }
 
-    // TODO(bckenny)
-    // export interface MultiCheck {}
-    // export interface Table {}
-    // export interface SomeKindOfHiddenThing
-
     // Contents of details below here
 
-    export interface TableColumnHeading {
+    export interface OpportunityColumnHeading {
       /** The name of the property within items being described. */
       key: string;
       /** Readable text label of the field. */
       label: string;
-      // TODO(bckenny): should be just string and let lhr be more specific?
-      valueType: string; // 'url' | 'timespanMs' | 'bytes' | 'thumbnail';
+      /** The data format of the column of values being described. */
+      valueType: string;
     }
     
     export interface OpportunityItem {

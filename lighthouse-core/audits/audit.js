@@ -126,7 +126,7 @@ class Audit {
   }
 
   /**
-   * @param {Array<LH.Audit.Details.TableColumnHeading>} headings
+   * @param {Array<LH.Audit.Details.OpportunityColumnHeading>} headings
    * @param {Array<LH.Audit.Details.OpportunityItem>} items
    * @param {number} overallSavingsMs
    * @param {number=} overallSavingsBytes
