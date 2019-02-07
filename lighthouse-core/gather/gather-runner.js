@@ -423,9 +423,20 @@ class GatherRunner {
    * @return {Promise<LH.Artifacts.Manifest|null>}
    */
   static async getWebAppManifest(passContext) {
-    const response = await passContext.driver.getAppManifest();
-    if (!response) return null;
-    return manifestParser(response.data, response.url, passContext.url);
+    try {
+      const response = await passContext.driver.getAppManifest();
+      if (response) return manifestParser(response.data, response.url, passContext.url);
+    } catch (err) {
+      // LR will timeout fetching the app manifest in some cases
+      // for example, long polling (http://uninterested-badge.surge.sh/index4.html)
+      // or web workers (rarely https://exterkamp.codes/)
+      // see #7147 or b/124008171
+      // instead of failing completely by throwing a protocol timeout error,
+      // just pretend there is no app manifest.
+      log.error('Failed fetching manifest', err);
+    }
+
+    return null;
   }
 
   /**
