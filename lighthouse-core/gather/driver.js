@@ -407,7 +407,7 @@ class Driver {
       if (err.code === 'PROTOCOL_TIMEOUT') {
         // LR will timeout fetching the app manifest in some cases, move on without one.
         // https://github.com/GoogleChrome/lighthouse/issues/7147#issuecomment-461210921
-        log.error('Driver', 'Failed fetching...', err);
+        log.error('Driver', 'Failed fetching manifest', err);
         return null;
       }
 
