@@ -42,6 +42,7 @@ describe('Performance: Font Display audit', () => {
       }
 
       @font-face {
+        font-display: 'optional' // missing a semi-colon, should still fail for being invalid block
         /* try no path with no quotes ' */
         src: url(font.woff);
       }
@@ -72,7 +73,7 @@ describe('Performance: Font Display audit', () => {
       {url: networkRecords[2].url, wastedMs: 1000},
     ];
     assert.strictEqual(result.rawValue, false);
-    assert.deepEqual(result.details.items, items);
+    expect(result.details.items).toEqual(items);
   });
 
   it('resolves URLs relative to stylesheet URL when available', async () => {
@@ -128,7 +129,7 @@ describe('Performance: Font Display audit', () => {
 
     const result = await FontDisplayAudit.audit(getArtifacts(), context);
     assert.strictEqual(result.rawValue, true);
-    assert.deepEqual(result.details.items, []);
+    expect(result.details.items).toEqual([]);
   });
 
   it('passes when all fonts have a correct font-display rule', async () => {
@@ -172,7 +173,7 @@ describe('Performance: Font Display audit', () => {
 
     const result = await FontDisplayAudit.audit(getArtifacts(), context);
     assert.strictEqual(result.rawValue, true);
-    assert.deepEqual(result.details.items, []);
+    expect(result.details.items).toEqual([]);
   });
 
   it('should handle real-world font-face declarations', async () => {
@@ -212,7 +213,7 @@ describe('Performance: Font Display audit', () => {
 
     const result = await FontDisplayAudit.audit(getArtifacts(), context);
     assert.strictEqual(result.rawValue, false);
-    assert.deepEqual(result.details.items.map(item => item.url), [
+    expect(result.details.items.map(item => item.url)).toEqual([
       'https://edition.i.cdn.cnn.com/.a/fonts/cnn/3.7.2/cnnclock-black.woff2',
       'https://registry.api.cnn.io/assets/fave/fonts/2.0.15/cnnsans-bold.woff',
       // FontAwesome should pass
@@ -220,4 +221,26 @@ describe('Performance: Font Display audit', () => {
       'https://fonts.gstatic.com/s/lato/v14/S6u9w4BMUTPHh50XSwiPGQ3q5d0.woff2',
     ]);
   });
+
+  it('passes when font-display is last declaration and is missing a semicolon', async () => {
+    stylesheet.content = `
+      @font-face {
+        src: url(font.woff);
+        font-display: 'optional'
+      }
+    `;
+
+    networkRecords = [
+      {
+        url: 'https://example.com/foo/bar/font.woff',
+        endTime: 2, startTime: 1,
+        resourceType: 'Font',
+      },
+    ];
+
+    const result = await FontDisplayAudit.audit(getArtifacts(), context);
+    assert.strictEqual(result.rawValue, true);
+    expect(result.details.items).toEqual([]);
+  });
+
 });
