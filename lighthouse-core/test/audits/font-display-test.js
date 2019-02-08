@@ -242,5 +242,4 @@ describe('Performance: Font Display audit', () => {
     assert.strictEqual(result.rawValue, true);
     expect(result.details.items).toEqual([]);
   });
-
 });

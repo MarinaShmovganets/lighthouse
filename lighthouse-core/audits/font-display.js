@@ -59,7 +59,7 @@ class FontDisplay extends Audit {
       for (const declaration of fontFaceDeclarations) {
         // Find the font-display value by matching a single token, optionally surrounded by whitespace,
         // followed either by a semicolon or the end of a block.
-        const rawFontDisplay = declaration.match(/font-display:(\s*\S+\s*)(;|\s*})/);
+        const rawFontDisplay = declaration.match(/font-display:(\s*\S+\s*)(;|\s*\})/);
         // If they didn't have a font-display property, it's the default, and it's failing; bail
         if (!rawFontDisplay) continue;
         // If they don't have one of the passing font-display values, it's failing; bail
