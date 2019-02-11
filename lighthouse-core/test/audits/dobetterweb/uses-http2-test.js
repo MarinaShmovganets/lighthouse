@@ -67,7 +67,7 @@ describe('Resources are fetched over http/2', () => {
     clonedNetworkRecords.forEach(record => {
       // convert http 1.x to service worker requests
       if (record.protocol === 'http/1.1') {
-        record.fromServiceWorker = true;
+        record.fetchedViaServiceWorker = true;
       }
     });
 
