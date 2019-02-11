@@ -76,7 +76,7 @@ describe('Resources are fetched over http/2', () => {
     ).then(auditResult => {
       assert.equal(auditResult.rawValue, false);
       assert.ok(auditResult.displayValue.match('1 request not'));
-      expect(auditResult.details).toMatchSnapshot();
+      assert.equal(auditResult.details.items[0].url, 'https://webtide.com/wp-content/themes/clean-retina-pro/library/js/tinynav.js?ver=4.5.4');
     });
   });
 });
