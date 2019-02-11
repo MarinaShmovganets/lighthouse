@@ -304,7 +304,7 @@ describe('.setExtraHTTPHeaders', () => {
     );
 
     await driver.setExtraHTTPHeaders({
-      Cookie: 'monster',
+      'Cookie': 'monster',
       'x-men': 'wolverine',
     });
 
