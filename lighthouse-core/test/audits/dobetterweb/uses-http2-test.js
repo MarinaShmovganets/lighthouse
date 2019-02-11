@@ -65,7 +65,7 @@ describe('Resources are fetched over http/2', () => {
   it('results are correct when some requests are handled by service worker', () => {
     const clonedNetworkRecords = JSON.parse(JSON.stringify(networkRecords));
     clonedNetworkRecords.forEach(record => {
-      // convert http 1.x to service worker requests
+      // convert http 1.1 to service worker requests
       if (record.protocol === 'http/1.1') {
         record.fetchedViaServiceWorker = true;
       }
