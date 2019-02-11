@@ -47,7 +47,7 @@ class LinkText extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
-      requiredArtifacts: ['URL', 'CrawlableLinks'],
+      requiredArtifacts: ['URL', 'AnchorElements'],
     };
   }
 
@@ -56,7 +56,8 @@ class LinkText extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit(artifacts) {
-    const failingLinks = artifacts.CrawlableLinks
+    const failingLinks = artifacts.AnchorElements
+      .filter(link => link.href && !link.rel.includes('nofollow'))
       .filter(link => {
         const href = link.href.toLowerCase();
         if (
@@ -76,6 +77,7 @@ class LinkText extends Audit {
         };
       });
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'href', itemType: 'url', text: 'Link destination'},
       {key: 'text', itemType: 'text', text: 'Link Text'},

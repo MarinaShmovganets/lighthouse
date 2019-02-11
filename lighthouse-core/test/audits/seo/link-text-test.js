@@ -12,15 +12,15 @@ const assert = require('assert');
 
 describe('SEO: link text audit', () => {
   it('fails when link with non descriptive text is found', () => {
-    const invalidLink = {href: 'https://example.com/otherpage.html', text: 'click here'};
+    const invalidLink = {href: 'https://example.com/otherpage.html', text: 'click here', rel: ''};
     const artifacts = {
       URL: {
         finalUrl: 'https://example.com/page.html',
       },
-      CrawlableLinks: [
-        {href: 'https://example.com/otherpage.html', text: 'legit link text'},
+      AnchorElements: [
+        {href: 'https://example.com/otherpage.html', text: 'legit link text', rel: ''},
         invalidLink,
-        {href: 'https://example.com/otherpage.html', text: 'legit link text'},
+        {href: 'https://example.com/otherpage.html', text: 'legit link text', rel: ''},
       ],
     };
 
@@ -29,28 +29,6 @@ describe('SEO: link text audit', () => {
     assert.equal(auditResult.details.items.length, 1);
     assert.equal(auditResult.details.items[0].href, invalidLink.href);
     assert.equal(auditResult.details.items[0].text, invalidLink.text);
-    expect(auditResult.displayValue).toBeDisplayString('1 link found');
-  });
-
-  it('fails when multiple links with non descriptive text is found', () => {
-    const invalidLink = {href: 'https://example.com/otherpage.html', text: 'click here'};
-    const invalidLink2 = {href: 'https://example.com/otherpage.html', text: 'click here'};
-    const artifacts = {
-      URL: {
-        finalUrl: 'https://example.com/page.html',
-      },
-      CrawlableLinks: [
-        {href: 'https://example.com/otherpage.html', text: 'legit link text'},
-        invalidLink,
-        invalidLink2,
-        {href: 'https://example.com/otherpage.html', text: 'legit link text'},
-      ],
-    };
-
-    const auditResult = LinkTextAudit.audit(artifacts);
-    assert.equal(auditResult.rawValue, false);
-    assert.equal(auditResult.details.items.length, 2);
-    expect(auditResult.displayValue).toBeDisplayString('2 links found');
   });
 
   it('ignores links pointing to the main document', () => {
@@ -58,11 +36,11 @@ describe('SEO: link text audit', () => {
       URL: {
         finalUrl: 'https://example.com/page.html',
       },
-      CrawlableLinks: [
-        {href: 'https://example.com/otherpage.html', text: 'legit link text'},
-        {href: 'https://example.com/page.html', text: 'click here'},
-        {href: 'https://example.com/page.html#test', text: 'click here'},
-        {href: 'https://example.com/otherpage.html', text: 'legit link text'},
+      AnchorElements: [
+        {href: 'https://example.com/otherpage.html', text: 'legit link text', rel: ''},
+        {href: 'https://example.com/page.html', text: 'click here', rel: ''},
+        {href: 'https://example.com/page.html#test', text: 'click here', rel: ''},
+        {href: 'https://example.com/otherpage.html', text: 'legit link text', rel: ''},
       ],
     };
 
@@ -75,10 +53,10 @@ describe('SEO: link text audit', () => {
       URL: {
         finalUrl: 'https://example.com/page.html',
       },
-      CrawlableLinks: [
-        {href: 'javascript:alert(1)', text: 'click here'},
-        {href: 'JavaScript:window.location="/otherpage.html"', text: 'click here'},
-        {href: 'JAVASCRIPT:void(0)', text: 'click here'},
+      AnchorElements: [
+        {href: 'javascript:alert(1)', text: 'click here', rel: ''},
+        {href: 'JavaScript:window.location="/otherpage.html"', text: 'click here', rel: ''},
+        {href: 'JAVASCRIPT:void(0)', text: 'click here', rel: ''},
       ],
     };
 
@@ -91,9 +69,37 @@ describe('SEO: link text audit', () => {
       URL: {
         finalUrl: 'https://example.com/page.html',
       },
-      CrawlableLinks: [
-        {href: 'mailto:info@example.com', text: 'click here'},
-        {href: 'mailto:mailmaster@localhost', text: 'click here'},
+      AnchorElements: [
+        {href: 'mailto:info@example.com', text: 'click here', rel: ''},
+        {href: 'mailto:mailmaster@localhost', text: 'click here', rel: ''},
+      ],
+    };
+
+    const auditResult = LinkTextAudit.audit(artifacts);
+    assert.equal(auditResult.rawValue, true);
+  });
+
+  it('ignores links with no href', () => {
+    const artifacts = {
+      URL: {
+        finalUrl: 'https://example.com/page.html',
+      },
+      AnchorElements: [
+        {href: '', text: 'click here', rel: ''},
+      ],
+    };
+
+    const auditResult = LinkTextAudit.audit(artifacts);
+    assert.equal(auditResult.rawValue, true);
+  });
+
+  it('ignores links with nofollow', () => {
+    const artifacts = {
+      URL: {
+        finalUrl: 'https://example.com/page.html',
+      },
+      AnchorElements: [
+        {href: '', text: 'click here', rel: 'noopener nofollow'},
       ],
     };
 
@@ -106,10 +112,10 @@ describe('SEO: link text audit', () => {
       URL: {
         finalUrl: 'https://example.com/page.html',
       },
-      CrawlableLinks: [
-        {href: 'https://example.com/otherpage.html', text: 'legit link text'},
-        {href: 'http://example.com/page.html?test=test', text: 'legit link text'},
-        {href: 'file://Users/user/Desktop/file.png', text: 'legit link text'},
+      AnchorElements: [
+        {href: 'https://example.com/otherpage.html', text: 'legit link text', rel: ''},
+        {href: 'http://example.com/page.html?test=test', text: 'legit link text', rel: ''},
+        {href: 'file://Users/user/Desktop/file.png', text: 'legit link text', rel: ''},
       ],
     };
 

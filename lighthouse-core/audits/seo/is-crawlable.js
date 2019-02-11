@@ -96,7 +96,7 @@ class IsCrawlable extends Audit {
 
     return MainResource.request({devtoolsLog, URL: artifacts.URL}, context)
       .then(mainResource => {
-        /** @type {Array<Object<string, LH.Audit.DetailsItem>>} */
+        /** @type {LH.Audit.Details.Table['items']} */
         const blockingDirectives = [];
 
         if (metaRobots) {
@@ -132,6 +132,7 @@ class IsCrawlable extends Audit {
           }
         }
 
+        /** @type {LH.Audit.Details.Table['headings']} */
         const headings = [
           {key: 'source', itemType: 'code', text: 'Blocking Directive Source'},
         ];
