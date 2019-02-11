@@ -78,14 +78,20 @@ function sendCommandStub(command, params) {
       return Promise.resolve({result: {value: 123}});
     case 'Runtime.getProperties':
       return Promise.resolve({
-        result: params.objectId === 'invalid' ? [] : [{
-          name: 'test',
-          value: {
-            value: '123',
-          },
-        }, {
-          name: 'novalue',
-        }],
+        result:
+          params.objectId === 'invalid'
+            ? []
+            : [
+                {
+                  name: 'test',
+                  value: {
+                    value: '123',
+                  },
+                },
+                {
+                  name: 'novalue',
+                },
+              ],
       });
     case 'Page.getResourceTree':
       return Promise.resolve({frameTree: {frame: {id: 1}}});
@@ -122,14 +128,11 @@ beforeEach(() => {
   connectionStub = new Connection();
   connectionStub.sendCommand = sendCommandStub;
   driverStub = new Driver(connectionStub);
+  sendCommandParams = [];
+  sendCommandMockResponses.clear();
 });
 
-describe('Browser Driver', () => {
-  beforeEach(() => {
-    sendCommandParams = [];
-    sendCommandMockResponses.clear();
-  });
-
+describe('.querySelector(All)', () => {
   it('returns null when DOM.querySelector finds no node', () => {
     return driverStub.querySelector('invalid').then(value => {
       assert.equal(value, null);
@@ -154,7 +157,9 @@ describe('Browser Driver', () => {
       assert.equal(value[0] instanceof Element, true);
     });
   });
+});
 
+describe('.getObjectProperty', () => {
   it('returns value when getObjectProperty finds property name', () => {
     return driverStub.getObjectProperty('test', 'test').then(value => {
       assert.deepEqual(value, 123);
@@ -172,17 +177,25 @@ describe('Browser Driver', () => {
       assert.deepEqual(value, null);
     });
   });
+});
 
+describe('.getRequestContent', () => {
   it('throws if getRequestContent takes too long', () => {
-    return driverStub.getRequestContent('', MAX_WAIT_FOR_PROTOCOL).then(_ => {
-      assert.ok(false, 'long-running getRequestContent supposed to reject');
-    }, e => {
-      assert.equal(e.code, 'PROTOCOL_TIMEOUT');
-      expect(e.friendlyMessage).toBeDisplayString(
-        /^Waiting for DevTools.*Method: Network.getResponseBody/);
-    });
+    return driverStub.getRequestContent('', MAX_WAIT_FOR_PROTOCOL).then(
+      _ => {
+        assert.ok(false, 'long-running getRequestContent supposed to reject');
+      },
+      e => {
+        assert.equal(e.code, 'PROTOCOL_TIMEOUT');
+        expect(e.friendlyMessage).toBeDisplayString(
+          /^Waiting for DevTools.*Method: Network.getResponseBody/
+        );
+      }
+    );
   });
+});
 
+describe('.evaluateAsync', () => {
   it('evaluates an expression', () => {
     return driverStub.evaluateAsync('120 + 3').then(value => {
       assert.deepEqual(value, 123);
@@ -191,22 +204,164 @@ describe('Browser Driver', () => {
   });
 
   it('evaluates an expression in isolation', () => {
-    return driverStub.evaluateAsync('120 + 3', {useIsolation: true}).then(value => {
-      assert.deepEqual(value, 123);
+    return driverStub
+      .evaluateAsync('120 + 3', {useIsolation: true})
+      .then(value => {
+        assert.deepEqual(value, 123);
 
-      assert.ok(sendCommandParams.length > 1, 'did not create execution context');
-      const evaluateCommand = sendCommandParams.find(data => data.command === 'Runtime.evaluate');
-      assert.equal(evaluateCommand.params.contextId, 1);
+        assert.ok(sendCommandParams.length > 1, 'did not create execution context');
+        const evaluateCommand = sendCommandParams.find(data => data.command === 'Runtime.evaluate');
+        assert.equal(evaluateCommand.params.contextId, 1);
 
-      // test repeat isolation evaluations
-      sendCommandParams = [];
-      return driverStub.evaluateAsync('120 + 3', {useIsolation: true});
-    }).then(value => {
-      assert.deepEqual(value, 123);
-      assert.ok(sendCommandParams.length === 1, 'created unnecessary 2nd execution context');
+        // test repeat isolation evaluations
+        sendCommandParams = [];
+        return driverStub.evaluateAsync('120 + 3', {useIsolation: true});
+      })
+      .then(value => {
+        assert.deepEqual(value, 123);
+        assert.ok(sendCommandParams.length === 1, 'created unnecessary 2nd execution context');
+      });
+  });
+});
+
+describe('.sendCommand', () => {
+  it('.sendCommand timesout when commands take too long', async () => {
+    class SlowConnection extends EventEmitter {
+      connect() {
+        return Promise.resolve();
+      }
+      disconnect() {
+        return Promise.resolve();
+      }
+      sendCommand() {
+        return new Promise(resolve => setTimeout(resolve, 15));
+      }
+    }
+    const slowConnection = new SlowConnection();
+    const driver = new Driver(slowConnection);
+    driver.setNextProtocolTimeout(25);
+    await driver.sendCommand('Page.enable');
+
+    driver.setNextProtocolTimeout(5);
+    try {
+      await driver.sendCommand('Page.disable');
+      assert.fail('expected driver.sendCommand to timeout');
+    } catch (err) {
+      assert.equal(err.code, 'PROTOCOL_TIMEOUT');
+    }
+  });
+});
+
+describe('.beginTrace', () => {
+  it('will request default traceCategories', () => {
+    return driverStub.beginTrace().then(() => {
+      const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
+      const categories = traceCmd.params.categories;
+      assert.ok(categories.includes('devtools.timeline'), 'contains devtools.timeline');
     });
   });
 
+  it('will use requested additionalTraceCategories', () => {
+    return driverStub.beginTrace({additionalTraceCategories: 'loading,xtra_cat'}).then(() => {
+      const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
+      const categories = traceCmd.params.categories;
+      assert.ok(categories.includes('blink.user_timing'), 'contains default categories');
+      assert.ok(categories.includes('xtra_cat'), 'contains added categories');
+      assert.ok(
+        categories.indexOf('loading') === categories.lastIndexOf('loading'),
+        'de-dupes categories'
+      );
+    });
+  });
+
+  it('will adjust traceCategories based on chrome version', async () => {
+    // m70 doesn't have disabled-by-default-lighthouse, so 'toplevel' is used instead.
+    const m70ProtocolGetVersionResponse = Object.assign({}, protocolGetVersionResponse, {
+      product: 'Chrome/70.0.3577.0',
+      // eslint-disable-next-line max-len
+      userAgent:
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3577.0 Safari/537.36',
+    });
+    createOnceMethodResponse('Browser.getVersion', m70ProtocolGetVersionResponse);
+
+    // eslint-disable-next-line max-len
+    await driverStub.beginTrace();
+    const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
+    const categories = traceCmd.params.categories;
+    assert.ok(categories.includes('toplevel'), 'contains old toplevel category');
+    assert.equal(categories.indexOf('disabled-by-default-lighthouse'), -1, 'excludes new cat');
+  });
+});
+
+describe('.setExtraHTTPHeaders', () => {
+  it('should send the Network.setExtraHTTPHeaders command when there are extra-headers', () => {
+    return driverStub
+      .setExtraHTTPHeaders({
+        Cookie: 'monster',
+        'x-men': 'wolverine',
+      })
+      .then(() => {
+        assert.equal(sendCommandParams[0].command, 'Network.setExtraHTTPHeaders');
+      });
+  });
+
+  it('should not send the Network.setExtraHTTPHeaders command when there no extra-headers', () => {
+    return driverStub.setExtraHTTPHeaders().then(() => {
+      assert.equal(sendCommandParams[0], undefined);
+    });
+  });
+});
+
+describe('.getAppManifest', () => {
+  it('should return null when no manifest', async () => {
+    connectionStub.sendCommand = jest
+      .fn()
+      .mockResolvedValueOnce({data: undefined, url: '/manifest'});
+    const result = await driverStub.getAppManifest();
+    expect(result).toEqual(null);
+  });
+
+  it('should return the manifest', async () => {
+    const manifest = {name: 'The App'};
+    connectionStub.sendCommand = jest
+      .fn()
+      .mockResolvedValueOnce({data: JSON.stringify(manifest), url: '/manifest'});
+    const result = await driverStub.getAppManifest();
+    expect(result).toEqual({data: JSON.stringify(manifest), url: '/manifest'});
+  });
+
+  it('should handle BOM-encoded manifest', async () => {
+    const fs = require('fs');
+    const manifestWithoutBOM = fs.readFileSync(__dirname + '/../fixtures/manifest.json').toString();
+    const manifestWithBOM = fs
+      .readFileSync(__dirname + '/../fixtures/manifest-bom.json')
+      .toString();
+
+    connectionStub.sendCommand = jest
+      .fn()
+      .mockResolvedValueOnce({data: manifestWithBOM, url: '/manifest'});
+    const result = await driverStub.getAppManifest();
+    expect(result).toEqual({data: manifestWithoutBOM, url: '/manifest'});
+  });
+});
+
+describe('.goOffline', () => {
+  it('should send offline emulation', async () => {
+    await driverStub.goOffline();
+    const emulateCommand = sendCommandParams.find(
+      item => item.command === 'Network.emulateNetworkConditions'
+    );
+    assert.ok(emulateCommand, 'did not call emulate network');
+    assert.deepStrictEqual(emulateCommand.params, {
+      offline: true,
+      latency: 0,
+      downloadThroughput: 0,
+      uploadThroughput: 0,
+    });
+  });
+});
+
+describe('.gotoURL', () => {
   it('will track redirects through gotoURL load', () => {
     const delay = _ => new Promise(resolve => setTimeout(resolve));
 
@@ -254,332 +409,9 @@ describe('Browser Driver', () => {
     });
   });
 
-  it('.sendCommand timesout when commands take too long', async () => {
-    class SlowConnection extends EventEmitter {
-      connect() {
-        return Promise.resolve();
-      }
-      disconnect() {
-        return Promise.resolve();
-      }
-      sendCommand() {
-        return new Promise(resolve => setTimeout(resolve, 15));
-      }
-    }
-    const slowConnection = new SlowConnection();
-    const driver = new Driver(slowConnection);
-    driver.setNextProtocolTimeout(25);
-    await driver.sendCommand('Page.enable');
+  describe('when waitForNavigated', () => {});
 
-    driver.setNextProtocolTimeout(5);
-    try {
-      await driver.sendCommand('Page.disable');
-      assert.fail('expected driver.sendCommand to timeout');
-    } catch (err) {
-      assert.equal(err.code, 'PROTOCOL_TIMEOUT');
-    }
-  });
-
-  it('will request default traceCategories', () => {
-    return driverStub.beginTrace().then(() => {
-      const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
-      const categories = traceCmd.params.categories;
-      assert.ok(categories.includes('devtools.timeline'), 'contains devtools.timeline');
-    });
-  });
-
-  it('will use requested additionalTraceCategories', () => {
-    return driverStub.beginTrace({additionalTraceCategories: 'loading,xtra_cat'}).then(() => {
-      const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
-      const categories = traceCmd.params.categories;
-      assert.ok(categories.includes('blink.user_timing'), 'contains default categories');
-      assert.ok(categories.includes('xtra_cat'), 'contains added categories');
-      assert.ok(categories.indexOf('loading') === categories.lastIndexOf('loading'),
-          'de-dupes categories');
-    });
-  });
-
-  it('will adjust traceCategories based on chrome version', async () => {
-    // m70 doesn't have disabled-by-default-lighthouse, so 'toplevel' is used instead.
-    const m70ProtocolGetVersionResponse = Object.assign({}, protocolGetVersionResponse, {
-      product: 'Chrome/70.0.3577.0',
-      // eslint-disable-next-line max-len
-      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3577.0 Safari/537.36',
-    });
-    createOnceMethodResponse('Browser.getVersion', m70ProtocolGetVersionResponse);
-
-    // eslint-disable-next-line max-len
-    await driverStub.beginTrace();
-    const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
-    const categories = traceCmd.params.categories;
-    assert.ok(categories.includes('toplevel'), 'contains old toplevel category');
-    assert.equal(categories.indexOf('disabled-by-default-lighthouse'), -1, 'excludes new cat');
-  });
-
-  it('should send the Network.setExtraHTTPHeaders command when there are extra-headers', () => {
-    return driverStub.setExtraHTTPHeaders({
-      'Cookie': 'monster',
-      'x-men': 'wolverine',
-    }).then(() => {
-      assert.equal(sendCommandParams[0].command, 'Network.setExtraHTTPHeaders');
-    });
-  });
-
-  it('should not send the Network.setExtraHTTPHeaders command when there no extra-headers', () => {
-    return driverStub.setExtraHTTPHeaders().then(() => {
-      assert.equal(sendCommandParams[0], undefined);
-    });
-  });
-
-  describe('.getAppManifest', () => {
-    it('should return null when no manifest', async () => {
-      connectionStub.sendCommand = jest.fn()
-        .mockResolvedValueOnce({data: undefined, url: '/manifest'});
-      const result = await driverStub.getAppManifest();
-      expect(result).toEqual(null);
-    });
-
-    it('should return the manifest', async () => {
-      const manifest = {name: 'The App'};
-      connectionStub.sendCommand = jest.fn()
-        .mockResolvedValueOnce({data: JSON.stringify(manifest), url: '/manifest'});
-      const result = await driverStub.getAppManifest();
-      expect(result).toEqual({data: JSON.stringify(manifest), url: '/manifest'});
-    });
-
-    it('should handle BOM-encoded manifest', async () => {
-      const fs = require('fs');
-      const manifestWithoutBOM = fs.readFileSync(__dirname + '/../fixtures/manifest.json')
-        .toString();
-      const manifestWithBOM = fs.readFileSync(__dirname + '/../fixtures/manifest-bom.json')
-        .toString();
-
-      connectionStub.sendCommand = jest.fn()
-        .mockResolvedValueOnce({data: manifestWithBOM, url: '/manifest'});
-      const result = await driverStub.getAppManifest();
-      expect(result).toEqual({data: manifestWithoutBOM, url: '/manifest'});
-    });
-  });
-});
-
-describe('Multiple tab check', () => {
-  beforeEach(() => {
-    sendCommandParams = [];
-    sendCommandMockResponses.clear();
-  });
-
-  it('will pass if there are no current service workers', () => {
-    const pageUrl = 'https://example.com/';
-    driverStub.once = createOnceStub({
-      'ServiceWorker.workerRegistrationUpdated': {
-        registrations: [],
-      },
-    });
-
-    driverStub.on = createOnceStub({
-      'ServiceWorker.workerVersionUpdated': {
-        versions: [],
-      },
-    });
-
-    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
-  });
-
-  it('will pass if there is an active service worker for a different origin', () => {
-    const pageUrl = 'https://example.com/';
-    const secondUrl = 'https://example.edu';
-    const swUrl = `${secondUrl}sw.js`;
-
-    const registrations = [
-      createSWRegistration(1, secondUrl),
-    ];
-    const versions = [
-      createActiveWorker(1, swUrl, ['uniqueId']),
-    ];
-
-    driverStub.once = createOnceStub({
-      'ServiceWorker.workerRegistrationUpdated': {
-        registrations,
-      },
-    });
-
-    driverStub.on = createOnceStub({
-      'ServiceWorker.workerVersionUpdated': {
-        versions,
-      },
-    });
-
-    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
-  });
-
-  it('will fail if a service worker with a matching origin has a controlled client', () => {
-    const pageUrl = 'https://example.com/';
-    const swUrl = `${pageUrl}sw.js`;
-    const registrations = [
-      createSWRegistration(1, pageUrl),
-    ];
-    const versions = [
-      createActiveWorker(1, swUrl, ['uniqueId']),
-    ];
-
-    driverStub.once = createOnceStub({
-      'ServiceWorker.workerRegistrationUpdated': {
-        registrations,
-      },
-    });
-
-    driverStub.on = createOnceStub({
-      'ServiceWorker.workerVersionUpdated': {
-        versions,
-      },
-    });
-
-    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl)
-      .then(_ => assert.ok(false),
-          err => {
-            assert.ok(err.message.toLowerCase().includes('multiple tabs'));
-          });
-  });
-
-  it('will succeed if a service worker with a matching origin has no controlled clients', () => {
-    const pageUrl = 'https://example.com/';
-    const swUrl = `${pageUrl}sw.js`;
-    const registrations = [createSWRegistration(1, pageUrl)];
-    const versions = [createActiveWorker(1, swUrl, [])];
-
-    driverStub.once = createOnceStub({
-      'ServiceWorker.workerRegistrationUpdated': {
-        registrations,
-      },
-    });
-
-    driverStub.on = createOnceStub({
-      'ServiceWorker.workerVersionUpdated': {
-        versions,
-      },
-    });
-
-    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
-  });
-
-  it('will wait for serviceworker to be activated', () => {
-    const pageUrl = 'https://example.com/';
-    const swUrl = `${pageUrl}sw.js`;
-    const registrations = [createSWRegistration(1, pageUrl)];
-    const versions = [createActiveWorker(1, swUrl, [], 'installing')];
-
-    driverStub.once = createOnceStub({
-      'ServiceWorker.workerRegistrationUpdated': {
-        registrations,
-      },
-    });
-
-    driverStub.on = (eventName, cb) => {
-      if (eventName === 'ServiceWorker.workerVersionUpdated') {
-        cb({versions});
-
-        setTimeout(() => {
-          cb({
-            versions: [
-              createActiveWorker(1, swUrl, [], 'activated'),
-            ],
-          });
-        }, 1000);
-
-        return;
-      }
-
-      throw Error(`Stub not implemented: ${eventName}`);
-    };
-
-    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
-  });
-
-  describe('.goOnline', () => {
-    it('re-establishes previous throttling settings', async () => {
-      await driverStub.goOnline({
-        passConfig: {useThrottling: true},
-        settings: {
-          throttlingMethod: 'devtools',
-          throttling: {
-            requestLatencyMs: 500,
-            downloadThroughputKbps: 1000,
-            uploadThroughputKbps: 1000,
-          },
-        },
-      });
-
-      const emulateCommand = sendCommandParams
-        .find(item => item.command === 'Network.emulateNetworkConditions');
-      assert.ok(emulateCommand, 'did not call emulate network');
-      assert.deepStrictEqual(emulateCommand.params, {
-        offline: false,
-        latency: 500,
-        downloadThroughput: 1000 * 1024 / 8,
-        uploadThroughput: 1000 * 1024 / 8,
-      });
-    });
-
-    it('clears network emulation when throttling is not devtools', async () => {
-      await driverStub.goOnline({
-        passConfig: {useThrottling: true},
-        settings: {
-          throttlingMethod: 'provided',
-        },
-      });
-
-      const emulateCommand = sendCommandParams
-        .find(item => item.command === 'Network.emulateNetworkConditions');
-      assert.ok(emulateCommand, 'did not call emulate network');
-      assert.deepStrictEqual(emulateCommand.params, {
-        offline: false,
-        latency: 0,
-        downloadThroughput: 0,
-        uploadThroughput: 0,
-      });
-    });
-
-    it('clears network emulation when useThrottling is false', async () => {
-      await driverStub.goOnline({
-        passConfig: {useThrottling: false},
-        settings: {
-          throttlingMethod: 'devtools',
-          throttling: {
-            requestLatencyMs: 500,
-            downloadThroughputKbps: 1000,
-            uploadThroughputKbps: 1000,
-          },
-        },
-      });
-
-      const emulateCommand = sendCommandParams
-        .find(item => item.command === 'Network.emulateNetworkConditions');
-      assert.ok(emulateCommand, 'did not call emulate network');
-      assert.deepStrictEqual(emulateCommand.params, {
-        offline: false,
-        latency: 0,
-        downloadThroughput: 0,
-        uploadThroughput: 0,
-      });
-    });
-  });
-
-  describe('.goOffline', () => {
-    it('should send offline emulation', async () => {
-      await driverStub.goOffline();
-      const emulateCommand = sendCommandParams
-        .find(item => item.command === 'Network.emulateNetworkConditions');
-      assert.ok(emulateCommand, 'did not call emulate network');
-      assert.deepStrictEqual(emulateCommand.params, {
-        offline: true,
-        latency: 0,
-        downloadThroughput: 0,
-        uploadThroughput: 0,
-      });
-    });
-  });
-
-  describe('Security check', () => {
+  describe('when waitForLoad', () => {
     it('does not reject when page is secure', async () => {
       const secureSecurityState = {
         explanations: [],
@@ -645,8 +477,202 @@ describe('Multiple tab check', () => {
         assert.equal(err.message, 'INSECURE_DOCUMENT_REQUEST');
         assert.equal(err.code, 'INSECURE_DOCUMENT_REQUEST');
         /* eslint-disable-next-line max-len */
-        expect(err.friendlyMessage).toBeDisplayString('The URL you have provided does not have valid security credentials. reason 1. reason 2.');
+        expect(err.friendlyMessage).toBeDisplayString(
+          'The URL you have provided does not have valid security credentials. reason 1. reason 2.'
+        );
       }
+    });
+  });
+});
+
+describe('.assertNoSameOriginServiceWorkerClients', () => {
+  it('will pass if there are no current service workers', () => {
+    const pageUrl = 'https://example.com/';
+    driverStub.once = createOnceStub({
+      'ServiceWorker.workerRegistrationUpdated': {
+        registrations: [],
+      },
+    });
+
+    driverStub.on = createOnceStub({
+      'ServiceWorker.workerVersionUpdated': {
+        versions: [],
+      },
+    });
+
+    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
+  });
+
+  it('will pass if there is an active service worker for a different origin', () => {
+    const pageUrl = 'https://example.com/';
+    const secondUrl = 'https://example.edu';
+    const swUrl = `${secondUrl}sw.js`;
+
+    const registrations = [createSWRegistration(1, secondUrl)];
+    const versions = [createActiveWorker(1, swUrl, ['uniqueId'])];
+
+    driverStub.once = createOnceStub({
+      'ServiceWorker.workerRegistrationUpdated': {
+        registrations,
+      },
+    });
+
+    driverStub.on = createOnceStub({
+      'ServiceWorker.workerVersionUpdated': {
+        versions,
+      },
+    });
+
+    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
+  });
+
+  it('will fail if a service worker with a matching origin has a controlled client', () => {
+    const pageUrl = 'https://example.com/';
+    const swUrl = `${pageUrl}sw.js`;
+    const registrations = [createSWRegistration(1, pageUrl)];
+    const versions = [createActiveWorker(1, swUrl, ['uniqueId'])];
+
+    driverStub.once = createOnceStub({
+      'ServiceWorker.workerRegistrationUpdated': {
+        registrations,
+      },
+    });
+
+    driverStub.on = createOnceStub({
+      'ServiceWorker.workerVersionUpdated': {
+        versions,
+      },
+    });
+
+    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl).then(
+      _ => assert.ok(false),
+      err => {
+        assert.ok(err.message.toLowerCase().includes('multiple tabs'));
+      }
+    );
+  });
+
+  it('will succeed if a service worker with a matching origin has no controlled clients', () => {
+    const pageUrl = 'https://example.com/';
+    const swUrl = `${pageUrl}sw.js`;
+    const registrations = [createSWRegistration(1, pageUrl)];
+    const versions = [createActiveWorker(1, swUrl, [])];
+
+    driverStub.once = createOnceStub({
+      'ServiceWorker.workerRegistrationUpdated': {
+        registrations,
+      },
+    });
+
+    driverStub.on = createOnceStub({
+      'ServiceWorker.workerVersionUpdated': {
+        versions,
+      },
+    });
+
+    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
+  });
+
+  it('will wait for serviceworker to be activated', () => {
+    const pageUrl = 'https://example.com/';
+    const swUrl = `${pageUrl}sw.js`;
+    const registrations = [createSWRegistration(1, pageUrl)];
+    const versions = [createActiveWorker(1, swUrl, [], 'installing')];
+
+    driverStub.once = createOnceStub({
+      'ServiceWorker.workerRegistrationUpdated': {
+        registrations,
+      },
+    });
+
+    driverStub.on = (eventName, cb) => {
+      if (eventName === 'ServiceWorker.workerVersionUpdated') {
+        cb({versions});
+
+        setTimeout(() => {
+          cb({
+            versions: [createActiveWorker(1, swUrl, [], 'activated')],
+          });
+        }, 1000);
+
+        return;
+      }
+
+      throw Error(`Stub not implemented: ${eventName}`);
+    };
+
+    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
+  });
+});
+
+describe('.goOnline', () => {
+  it('re-establishes previous throttling settings', async () => {
+    await driverStub.goOnline({
+      passConfig: {useThrottling: true},
+      settings: {
+        throttlingMethod: 'devtools',
+        throttling: {
+          requestLatencyMs: 500,
+          downloadThroughputKbps: 1000,
+          uploadThroughputKbps: 1000,
+        },
+      },
+    });
+
+    const emulateCommand = sendCommandParams.find(
+      item => item.command === 'Network.emulateNetworkConditions'
+    );
+    assert.ok(emulateCommand, 'did not call emulate network');
+    assert.deepStrictEqual(emulateCommand.params, {
+      offline: false,
+      latency: 500,
+      downloadThroughput: (1000 * 1024) / 8,
+      uploadThroughput: (1000 * 1024) / 8,
+    });
+  });
+
+  it('clears network emulation when throttling is not devtools', async () => {
+    await driverStub.goOnline({
+      passConfig: {useThrottling: true},
+      settings: {
+        throttlingMethod: 'provided',
+      },
+    });
+
+    const emulateCommand = sendCommandParams.find(
+      item => item.command === 'Network.emulateNetworkConditions'
+    );
+    assert.ok(emulateCommand, 'did not call emulate network');
+    assert.deepStrictEqual(emulateCommand.params, {
+      offline: false,
+      latency: 0,
+      downloadThroughput: 0,
+      uploadThroughput: 0,
+    });
+  });
+
+  it('clears network emulation when useThrottling is false', async () => {
+    await driverStub.goOnline({
+      passConfig: {useThrottling: false},
+      settings: {
+        throttlingMethod: 'devtools',
+        throttling: {
+          requestLatencyMs: 500,
+          downloadThroughputKbps: 1000,
+          uploadThroughputKbps: 1000,
+        },
+      },
+    });
+
+    const emulateCommand = sendCommandParams.find(
+      item => item.command === 'Network.emulateNetworkConditions'
+    );
+    assert.ok(emulateCommand, 'did not call emulate network');
+    assert.deepStrictEqual(emulateCommand.params, {
+      offline: false,
+      latency: 0,
+      downloadThroughput: 0,
+      uploadThroughput: 0,
     });
   });
 });
