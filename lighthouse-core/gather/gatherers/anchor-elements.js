@@ -35,27 +35,26 @@ function collectAnchorElements() {
   const anchorElements = getElementsInDocument('a'); // eslint-disable-line no-undef
 
   return anchorElements.map(node => {
-    const anchorNode = /** @type {HTMLAnchorElement} */ (node);
-    /** @type {LH.Artifacts.AnchorElement} */
-    const anchorElementInfo = {
-      href: anchorNode.href,
-      text: anchorNode.innerText,
-      rel: anchorNode.rel,
-      target: anchorNode.target,
-      // @ts-ignore - put into scope via stringification
-      outerHTML: getOuterHTMLSnippet(node), // eslint-disable-line no-undef
-    };
+    // @ts-ignore - put into scope via stringification
+    const outerHTML = getOuterHTMLSnippet(node); // eslint-disable-line no-undef
 
-    const href = /** @type {string|SVGAnimatedString} */ (anchorNode.href);
-    const svgNode = /** @type {SVGAElement} */ (node);
-    if (href instanceof SVGAnimatedString) {
-      anchorElementInfo.href = resolveURLOrEmpty(href.baseVal);
-      anchorElementInfo.text = svgNode.textContent || '';
-      anchorElementInfo.rel = '';
-      anchorElementInfo.target = svgNode.target.baseVal || '';
+    if (node instanceof HTMLAnchorElement) {
+      return {
+        href: node.href,
+        text: node.innerText, // we don't want to return hidden text, so use innerText
+        rel: node.rel,
+        target: node.target,
+        outerHTML,
+      };
     }
 
-    return anchorElementInfo;
+    return {
+      href: resolveURLOrEmpty(node.href.baseVal),
+      text: node.textContent || '',
+      rel: '',
+      target: node.target.baseVal || '',
+      outerHTML,
+    };
   });
 }
 
