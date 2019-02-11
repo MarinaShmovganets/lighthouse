@@ -122,37 +122,37 @@ function sendCommandStub(command, params) {
 
 /* eslint-env jest */
 
-let driverStub;
+let driver;
 let connectionStub;
 beforeEach(() => {
   connectionStub = new Connection();
   connectionStub.sendCommand = sendCommandStub;
-  driverStub = new Driver(connectionStub);
+  driver = new Driver(connectionStub);
   sendCommandParams = [];
   sendCommandMockResponses.clear();
 });
 
 describe('.querySelector(All)', () => {
   it('returns null when DOM.querySelector finds no node', () => {
-    return driverStub.querySelector('invalid').then(value => {
+    return driver.querySelector('invalid').then(value => {
       assert.equal(value, null);
     });
   });
 
   it('returns element when DOM.querySelector finds node', () => {
-    return driverStub.querySelector('meta head').then(value => {
+    return driver.querySelector('meta head').then(value => {
       assert.equal(value instanceof Element, true);
     });
   });
 
   it('returns [] when DOM.querySelectorAll finds no node', () => {
-    return driverStub.querySelectorAll('invalid').then(value => {
+    return driver.querySelectorAll('invalid').then(value => {
       assert.deepEqual(value, []);
     });
   });
 
   it('returns element when DOM.querySelectorAll finds node', () => {
-    return driverStub.querySelectorAll('a').then(value => {
+    return driver.querySelectorAll('a').then(value => {
       assert.equal(value.length, 1);
       assert.equal(value[0] instanceof Element, true);
     });
@@ -161,19 +161,19 @@ describe('.querySelector(All)', () => {
 
 describe('.getObjectProperty', () => {
   it('returns value when getObjectProperty finds property name', () => {
-    return driverStub.getObjectProperty('test', 'test').then(value => {
+    return driver.getObjectProperty('test', 'test').then(value => {
       assert.deepEqual(value, 123);
     });
   });
 
   it('returns null when getObjectProperty finds no property name', () => {
-    return driverStub.getObjectProperty('invalid', 'invalid').then(value => {
+    return driver.getObjectProperty('invalid', 'invalid').then(value => {
       assert.deepEqual(value, null);
     });
   });
 
   it('returns null when getObjectProperty finds property name with no value', () => {
-    return driverStub.getObjectProperty('test', 'novalue').then(value => {
+    return driver.getObjectProperty('test', 'novalue').then(value => {
       assert.deepEqual(value, null);
     });
   });
@@ -181,7 +181,7 @@ describe('.getObjectProperty', () => {
 
 describe('.getRequestContent', () => {
   it('throws if getRequestContent takes too long', () => {
-    return driverStub.getRequestContent('', MAX_WAIT_FOR_PROTOCOL).then(
+    return driver.getRequestContent('', MAX_WAIT_FOR_PROTOCOL).then(
       _ => {
         assert.ok(false, 'long-running getRequestContent supposed to reject');
       },
@@ -197,14 +197,14 @@ describe('.getRequestContent', () => {
 
 describe('.evaluateAsync', () => {
   it('evaluates an expression', () => {
-    return driverStub.evaluateAsync('120 + 3').then(value => {
+    return driver.evaluateAsync('120 + 3').then(value => {
       assert.deepEqual(value, 123);
       assert.equal(sendCommandParams[0].command, 'Runtime.evaluate');
     });
   });
 
   it('evaluates an expression in isolation', () => {
-    return driverStub
+    return driver
       .evaluateAsync('120 + 3', {useIsolation: true})
       .then(value => {
         assert.deepEqual(value, 123);
@@ -215,7 +215,7 @@ describe('.evaluateAsync', () => {
 
         // test repeat isolation evaluations
         sendCommandParams = [];
-        return driverStub.evaluateAsync('120 + 3', {useIsolation: true});
+        return driver.evaluateAsync('120 + 3', {useIsolation: true});
       })
       .then(value => {
         assert.deepEqual(value, 123);
@@ -254,7 +254,7 @@ describe('.sendCommand', () => {
 
 describe('.beginTrace', () => {
   it('will request default traceCategories', () => {
-    return driverStub.beginTrace().then(() => {
+    return driver.beginTrace().then(() => {
       const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
       const categories = traceCmd.params.categories;
       assert.ok(categories.includes('devtools.timeline'), 'contains devtools.timeline');
@@ -262,7 +262,7 @@ describe('.beginTrace', () => {
   });
 
   it('will use requested additionalTraceCategories', () => {
-    return driverStub.beginTrace({additionalTraceCategories: 'loading,xtra_cat'}).then(() => {
+    return driver.beginTrace({additionalTraceCategories: 'loading,xtra_cat'}).then(() => {
       const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
       const categories = traceCmd.params.categories;
       assert.ok(categories.includes('blink.user_timing'), 'contains default categories');
@@ -285,7 +285,7 @@ describe('.beginTrace', () => {
     createOnceMethodResponse('Browser.getVersion', m70ProtocolGetVersionResponse);
 
     // eslint-disable-next-line max-len
-    await driverStub.beginTrace();
+    await driver.beginTrace();
     const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
     const categories = traceCmd.params.categories;
     assert.ok(categories.includes('toplevel'), 'contains old toplevel category');
@@ -295,7 +295,7 @@ describe('.beginTrace', () => {
 
 describe('.setExtraHTTPHeaders', () => {
   it('should send the Network.setExtraHTTPHeaders command when there are extra-headers', () => {
-    return driverStub
+    return driver
       .setExtraHTTPHeaders({
         Cookie: 'monster',
         'x-men': 'wolverine',
@@ -306,7 +306,7 @@ describe('.setExtraHTTPHeaders', () => {
   });
 
   it('should not send the Network.setExtraHTTPHeaders command when there no extra-headers', () => {
-    return driverStub.setExtraHTTPHeaders().then(() => {
+    return driver.setExtraHTTPHeaders().then(() => {
       assert.equal(sendCommandParams[0], undefined);
     });
   });
@@ -317,7 +317,7 @@ describe('.getAppManifest', () => {
     connectionStub.sendCommand = jest
       .fn()
       .mockResolvedValueOnce({data: undefined, url: '/manifest'});
-    const result = await driverStub.getAppManifest();
+    const result = await driver.getAppManifest();
     expect(result).toEqual(null);
   });
 
@@ -326,7 +326,7 @@ describe('.getAppManifest', () => {
     connectionStub.sendCommand = jest
       .fn()
       .mockResolvedValueOnce({data: JSON.stringify(manifest), url: '/manifest'});
-    const result = await driverStub.getAppManifest();
+    const result = await driver.getAppManifest();
     expect(result).toEqual({data: JSON.stringify(manifest), url: '/manifest'});
   });
 
@@ -340,14 +340,14 @@ describe('.getAppManifest', () => {
     connectionStub.sendCommand = jest
       .fn()
       .mockResolvedValueOnce({data: manifestWithBOM, url: '/manifest'});
-    const result = await driverStub.getAppManifest();
+    const result = await driver.getAppManifest();
     expect(result).toEqual({data: manifestWithoutBOM, url: '/manifest'});
   });
 });
 
 describe('.goOffline', () => {
   it('should send offline emulation', async () => {
-    await driverStub.goOffline();
+    await driver.goOffline();
     const emulateCommand = sendCommandParams.find(
       item => item.command === 'Network.emulateNetworkConditions'
     );
@@ -417,7 +417,7 @@ describe('.gotoURL', () => {
         explanations: [],
         securityState: 'secure',
       };
-      driverStub.on = driverStub.once = createOnceStub({
+      driver.on = driver.once = createOnceStub({
         'Security.securityStateChanged': secureSecurityState,
         'Page.loadEventFired': {},
         'Page.domContentEventFired': {},
@@ -435,7 +435,7 @@ describe('.gotoURL', () => {
           },
         },
       };
-      await driverStub.gotoURL(startUrl, loadOptions);
+      await driver.gotoURL(startUrl, loadOptions);
     });
 
     it('rejects when page is insecure', async () => {
@@ -456,7 +456,7 @@ describe('.gotoURL', () => {
         ],
         securityState: 'insecure',
       };
-      driverStub.on = createOnceStub({
+      driver.on = createOnceStub({
         'Security.securityStateChanged': insecureSecurityState,
       });
 
@@ -471,7 +471,7 @@ describe('.gotoURL', () => {
       };
 
       try {
-        await driverStub.gotoURL(startUrl, loadOptions);
+        await driver.gotoURL(startUrl, loadOptions);
         assert.fail('security check should have rejected');
       } catch (err) {
         assert.equal(err.message, 'INSECURE_DOCUMENT_REQUEST');
@@ -488,19 +488,19 @@ describe('.gotoURL', () => {
 describe('.assertNoSameOriginServiceWorkerClients', () => {
   it('will pass if there are no current service workers', () => {
     const pageUrl = 'https://example.com/';
-    driverStub.once = createOnceStub({
+    driver.once = createOnceStub({
       'ServiceWorker.workerRegistrationUpdated': {
         registrations: [],
       },
     });
 
-    driverStub.on = createOnceStub({
+    driver.on = createOnceStub({
       'ServiceWorker.workerVersionUpdated': {
         versions: [],
       },
     });
 
-    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
+    return driver.assertNoSameOriginServiceWorkerClients(pageUrl);
   });
 
   it('will pass if there is an active service worker for a different origin', () => {
@@ -511,19 +511,19 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
     const registrations = [createSWRegistration(1, secondUrl)];
     const versions = [createActiveWorker(1, swUrl, ['uniqueId'])];
 
-    driverStub.once = createOnceStub({
+    driver.once = createOnceStub({
       'ServiceWorker.workerRegistrationUpdated': {
         registrations,
       },
     });
 
-    driverStub.on = createOnceStub({
+    driver.on = createOnceStub({
       'ServiceWorker.workerVersionUpdated': {
         versions,
       },
     });
 
-    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
+    return driver.assertNoSameOriginServiceWorkerClients(pageUrl);
   });
 
   it('will fail if a service worker with a matching origin has a controlled client', () => {
@@ -532,19 +532,19 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
     const registrations = [createSWRegistration(1, pageUrl)];
     const versions = [createActiveWorker(1, swUrl, ['uniqueId'])];
 
-    driverStub.once = createOnceStub({
+    driver.once = createOnceStub({
       'ServiceWorker.workerRegistrationUpdated': {
         registrations,
       },
     });
 
-    driverStub.on = createOnceStub({
+    driver.on = createOnceStub({
       'ServiceWorker.workerVersionUpdated': {
         versions,
       },
     });
 
-    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl).then(
+    return driver.assertNoSameOriginServiceWorkerClients(pageUrl).then(
       _ => assert.ok(false),
       err => {
         assert.ok(err.message.toLowerCase().includes('multiple tabs'));
@@ -558,19 +558,19 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
     const registrations = [createSWRegistration(1, pageUrl)];
     const versions = [createActiveWorker(1, swUrl, [])];
 
-    driverStub.once = createOnceStub({
+    driver.once = createOnceStub({
       'ServiceWorker.workerRegistrationUpdated': {
         registrations,
       },
     });
 
-    driverStub.on = createOnceStub({
+    driver.on = createOnceStub({
       'ServiceWorker.workerVersionUpdated': {
         versions,
       },
     });
 
-    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
+    return driver.assertNoSameOriginServiceWorkerClients(pageUrl);
   });
 
   it('will wait for serviceworker to be activated', () => {
@@ -579,13 +579,13 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
     const registrations = [createSWRegistration(1, pageUrl)];
     const versions = [createActiveWorker(1, swUrl, [], 'installing')];
 
-    driverStub.once = createOnceStub({
+    driver.once = createOnceStub({
       'ServiceWorker.workerRegistrationUpdated': {
         registrations,
       },
     });
 
-    driverStub.on = (eventName, cb) => {
+    driver.on = (eventName, cb) => {
       if (eventName === 'ServiceWorker.workerVersionUpdated') {
         cb({versions});
 
@@ -601,13 +601,13 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
       throw Error(`Stub not implemented: ${eventName}`);
     };
 
-    return driverStub.assertNoSameOriginServiceWorkerClients(pageUrl);
+    return driver.assertNoSameOriginServiceWorkerClients(pageUrl);
   });
 });
 
 describe('.goOnline', () => {
   it('re-establishes previous throttling settings', async () => {
-    await driverStub.goOnline({
+    await driver.goOnline({
       passConfig: {useThrottling: true},
       settings: {
         throttlingMethod: 'devtools',
@@ -632,7 +632,7 @@ describe('.goOnline', () => {
   });
 
   it('clears network emulation when throttling is not devtools', async () => {
-    await driverStub.goOnline({
+    await driver.goOnline({
       passConfig: {useThrottling: true},
       settings: {
         throttlingMethod: 'provided',
@@ -652,7 +652,7 @@ describe('.goOnline', () => {
   });
 
   it('clears network emulation when useThrottling is false', async () => {
-    await driverStub.goOnline({
+    await driver.goOnline({
       passConfig: {useThrottling: false},
       settings: {
         throttlingMethod: 'devtools',
