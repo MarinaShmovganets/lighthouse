@@ -80,7 +80,7 @@ class UnusedBytes extends Audit {
           return Math.round(totalBytes * 0.2);
         case 'Script':
         case 'Document':
-          // Scripts and HTMl compress fairly well too.
+          // Scripts and HTML compress fairly well too.
           return Math.round(totalBytes * 0.33);
         default:
           // Otherwise we'll just fallback to the average savings in HTTPArchive
