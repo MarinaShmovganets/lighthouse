@@ -62,11 +62,11 @@ describe('Resources are fetched over http/2', () => {
     });
   });
 
-  it('passes when all resources were requested via service worker', () => {
+  it('results are correct when some requests are handled by service worker', () => {
     const clonedNetworkRecords = JSON.parse(JSON.stringify(networkRecords));
     clonedNetworkRecords.forEach(record => {
       // convert http 1.x to service worker requests
-      if (record.protocol.match(/http\/1.\d+/)) {
+      if (record.protocol === 'http/1.1') {
         record.fromServiceWorker = true;
       }
     });
@@ -74,8 +74,9 @@ describe('Resources are fetched over http/2', () => {
     return UsesHTTP2Audit.audit(
       getArtifacts(clonedNetworkRecords, URL), {computedCache: new Map()}
     ).then(auditResult => {
-      assert.equal(auditResult.rawValue, true);
-      assert.ok(auditResult.displayValue === '');
+      assert.equal(auditResult.rawValue, false);
+      assert.ok(auditResult.displayValue.match('1 request not'));
+      expect(auditResult.details).toMatchSnapshot();
     });
   });
 });
