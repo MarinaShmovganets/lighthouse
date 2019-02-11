@@ -37,12 +37,13 @@ describe('Performance: Font Display audit', () => {
       }
 
       @font-face {
+        font-display: 'optional'; // invalid quotes, should still fail for being invalid rule
         /* try up a directory with ' */
         src: url('../font-b.woff');
       }
 
       @font-face {
-        font-display: 'optional' // missing a semi-colon, should still fail for being invalid block
+        font-display: optional // missing a semi-colon, should still fail for being invalid block
         /* try no path with no quotes ' */
         src: url(font.woff);
       }
@@ -80,25 +81,25 @@ describe('Performance: Font Display audit', () => {
     stylesheet.header.sourceURL = 'https://cdn.example.com/foo/bar/file.css';
     stylesheet.content = `
       @font-face {
-        font-display: 'block';
+        font-display: block;
         /* try with " and same directory */
         src: url("./font-a.woff");
       }
 
       @font-face {
-        font-display: 'block';
+        font-display: block;
         /* try with " and site origin */
         src: url("https://example.com/foo/bar/document-font.woff");
       }
 
       @font-face {
-        font-display: 'fallback';
+        font-display: fallback;
         /* try up a directory with ' */
         src: url('../font-b.woff');
       }
 
       @font-face {
-        font-display: 'optional';
+        font-display: optional;
         /* try no path with no quotes ' */
         src: url(font.woff);
       }
@@ -135,19 +136,19 @@ describe('Performance: Font Display audit', () => {
   it('passes when all fonts have a correct font-display rule', async () => {
     stylesheet.content = `
       @font-face {
-        font-display: 'block';
+        font-display: block;
         /* try with " */
         src: url("./font-a.woff");
       }
 
       @font-face {
-        font-display: 'fallback';
+        font-display: fallback;
         /* try up a directory with ' */
         src: url('../font-b.woff');
       }
 
       @font-face {
-        font-display: 'optional';
+        font-display: optional;
         /* try no path with no quotes ' */
         src: url(font.woff);
       }
@@ -222,24 +223,35 @@ describe('Performance: Font Display audit', () => {
     ]);
   });
 
-  it('passes when font-display is last declaration and is missing a semicolon', async () => {
+  it('handles varied font-display declarations', async () => {
     stylesheet.content = `
       @font-face {
-        src: url(font.woff);
-        font-display: 'optional'
+        src: url(font-0.woff);
+        font-display: swap
       }
+
+      @font-face {src: url(font-1.woff);font-display   : fallback
+      }
+
+      @font-face {
+        src: url(font-2.woff);
+        font-display:optional}
+
+      @font-face {
+        src: url(font-3.woff);
+        font-display    :  swap  ;  }
+
+      @font-face {src: url(font-4.woff);font-display:swap;}
     `;
 
-    networkRecords = [
-      {
-        url: 'https://example.com/foo/bar/font.woff',
-        endTime: 2, startTime: 1,
-        resourceType: 'Font',
-      },
-    ];
+    networkRecords = Array.from({length: 5}).map((_, idx) => ({
+      url: `https://example.com/foo/bar/font-${idx}.woff`,
+      endTime: 2, startTime: 1,
+      resourceType: 'Font',
+    }));
 
     const result = await FontDisplayAudit.audit(getArtifacts(), context);
-    assert.strictEqual(result.rawValue, true);
     expect(result.details.items).toEqual([]);
+    assert.strictEqual(result.rawValue, true);
   });
 });

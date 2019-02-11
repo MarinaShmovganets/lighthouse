@@ -7,7 +7,7 @@
 
 const Audit = require('./audit');
 const URL = require('../lib/url-shim').URL;
-const PASSING_FONT_DISPLAY_REGEX = /block|fallback|optional|swap/;
+const PASSING_FONT_DISPLAY_REGEX = /^(block|fallback|optional|swap)$/;
 const CSS_URL_REGEX = /url\((.*?)\)/;
 const CSS_URL_GLOBAL_REGEX = new RegExp(CSS_URL_REGEX, 'g');
 const i18n = require('../lib/i18n/i18n.js');
@@ -59,11 +59,11 @@ class FontDisplay extends Audit {
       for (const declaration of fontFaceDeclarations) {
         // Find the font-display value by matching a single token, optionally surrounded by whitespace,
         // followed either by a semicolon or the end of a block.
-        const rawFontDisplay = declaration.match(/font-display:(\s*\S+\s*)(;|\s*\})/);
+        const rawFontDisplay = declaration.match(/font-display\s*:(\s*\w+\s*)(;|\})/);
         // If they didn't have a font-display property, it's the default, and it's failing; bail
         if (!rawFontDisplay) continue;
         // If they don't have one of the passing font-display values, it's failing; bail
-        const hasPassingFontDisplay = PASSING_FONT_DISPLAY_REGEX.test(rawFontDisplay[0]);
+        const hasPassingFontDisplay = PASSING_FONT_DISPLAY_REGEX.test(rawFontDisplay[1].trim());
         if (!hasPassingFontDisplay) continue;
 
         // If it's passing, we'll try to find the URL it's referencing.
