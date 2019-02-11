@@ -5,9 +5,6 @@
  */
 'use strict';
 
-let sendCommandParams = [];
-const sendCommandMockResponses = new Map();
-
 const Driver = require('../../gather/driver.js');
 const Connection = require('../../gather/connections/connection.js');
 const Element = require('../../lib/element.js');
@@ -30,37 +27,30 @@ function createOnceStub(events) {
   };
 }
 
-function createSWRegistration(id, url, isDeleted) {
-  return {
-    isDeleted: !!isDeleted,
-    registrationId: id,
-    scopeURL: url,
+function findSendCommandInvocation(command) {
+  expect(connectionStub.sendCommand).toHaveBeenCalledWith(command, expect.anything());
+  return connectionStub.sendCommand.mock.calls.find(call => call[0] === command)[1];
+}
+
+function createSendCommandMockFn() {
+  const mockResponses = [];
+  const mockFn = jest.fn().mockImplementation(command => {
+    const indexOfResponse = mockResponses.findIndex(entry => entry.command === command);
+    if (indexOfResponse === -1) throw new Error(`${command} unimplemented`);
+    const {response} = mockResponses[indexOfResponse];
+    mockResponses.splice(indexOfResponse, 1);
+    return Promise.resolve(response);
+  });
+
+  mockFn.mockSendCommandResponse = (command, response) => {
+    mockResponses.push({command, response});
+    return mockFn;
   };
+
+  return mockFn;
 }
 
-function createActiveWorker(id, url, controlledClients, status = 'activated') {
-  return {
-    registrationId: id,
-    scriptURL: url,
-    controlledClients,
-    status,
-  };
-}
-
-function createOnceMethodResponse(method, response) {
-  assert.equal(sendCommandMockResponses.has(method), false, 'stub response already defined');
-  sendCommandMockResponses.set(method, response);
-}
-
-function sendCommandStub(command, params) {
-  sendCommandParams.push({command, params});
-
-  if (sendCommandMockResponses.has(command)) {
-    const mockResponse = sendCommandMockResponses.get(command);
-    sendCommandMockResponses.delete(command);
-    return Promise.resolve(mockResponse);
-  }
-
+function sendCommandOldStub(command, params) {
   switch (command) {
     case 'Browser.getVersion':
       return Promise.resolve(protocolGetVersionResponse);
@@ -124,12 +114,11 @@ function sendCommandStub(command, params) {
 
 let driver;
 let connectionStub;
+
 beforeEach(() => {
   connectionStub = new Connection();
-  connectionStub.sendCommand = sendCommandStub;
+  connectionStub.sendCommand = sendCommandOldStub;
   driver = new Driver(connectionStub);
-  sendCommandParams = [];
-  sendCommandMockResponses.clear();
 });
 
 describe('.querySelector(All)', () => {
@@ -196,31 +185,44 @@ describe('.getRequestContent', () => {
 });
 
 describe('.evaluateAsync', () => {
-  it('evaluates an expression', () => {
-    return driver.evaluateAsync('120 + 3').then(value => {
-      assert.deepEqual(value, 123);
-      assert.equal(sendCommandParams[0].command, 'Runtime.evaluate');
-    });
+  it('evaluates an expression', async () => {
+    connectionStub.sendCommand = createSendCommandMockFn().mockSendCommandResponse(
+      'Runtime.evaluate',
+      {result: {value: 2}}
+    );
+
+    const value = await driver.evaluateAsync('1 + 1');
+    expect(value).toEqual(2);
+    expect(connectionStub.sendCommand).toHaveBeenCalledWith('Runtime.evaluate', expect.anything());
   });
 
-  it('evaluates an expression in isolation', () => {
-    return driver
-      .evaluateAsync('120 + 3', {useIsolation: true})
-      .then(value => {
-        assert.deepEqual(value, 123);
+  it('evaluates an expression in isolation', async () => {
+    connectionStub.sendCommand = createSendCommandMockFn()
+      .mockSendCommandResponse('Page.getResourceTree', {frameTree: {frame: {id: 1337}}})
+      .mockSendCommandResponse('Page.createIsolatedWorld', {executionContextId: 1})
+      .mockSendCommandResponse('Runtime.evaluate', {result: {value: 2}});
 
-        assert.ok(sendCommandParams.length > 1, 'did not create execution context');
-        const evaluateCommand = sendCommandParams.find(data => data.command === 'Runtime.evaluate');
-        assert.equal(evaluateCommand.params.contextId, 1);
+    const value = await driver.evaluateAsync('1 + 1', {useIsolation: true});
+    expect(value).toEqual(2);
 
-        // test repeat isolation evaluations
-        sendCommandParams = [];
-        return driver.evaluateAsync('120 + 3', {useIsolation: true});
-      })
-      .then(value => {
-        assert.deepEqual(value, 123);
-        assert.ok(sendCommandParams.length === 1, 'created unnecessary 2nd execution context');
-      });
+    // Check that we used the correct frame when creating the isolated context
+    const createWorldInvocation = findSendCommandInvocation('Page.createIsolatedWorld');
+    expect(createWorldInvocation).toMatchObject({frameId: 1337});
+
+    // Check that we used the isolated context when evaluating
+    const evaluateInvocation = findSendCommandInvocation('Runtime.evaluate');
+    expect(evaluateInvocation).toMatchObject({contextId: 1});
+
+    // Make sure we cached the isolated context from last time
+    connectionStub.sendCommand = createSendCommandMockFn().mockSendCommandResponse(
+      'Runtime.evaluate',
+      {result: {value: 2}}
+    );
+    await driver.evaluateAsync('1 + 1', {useIsolation: true});
+    expect(connectionStub.sendCommand).not.toHaveBeenCalledWith(
+      'Page.createIsolatedWorld',
+      expect.anything()
+    );
   });
 });
 
@@ -253,79 +255,89 @@ describe('.sendCommand', () => {
 });
 
 describe('.beginTrace', () => {
-  it('will request default traceCategories', () => {
-    return driver.beginTrace().then(() => {
-      const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
-      const categories = traceCmd.params.categories;
-      assert.ok(categories.includes('devtools.timeline'), 'contains devtools.timeline');
-    });
+  beforeEach(() => {
+    connectionStub.sendCommand = createSendCommandMockFn()
+      .mockSendCommandResponse('Browser.getVersion', protocolGetVersionResponse)
+      .mockSendCommandResponse('Page.enable', {})
+      .mockSendCommandResponse('Tracing.start', {});
   });
 
-  it('will use requested additionalTraceCategories', () => {
-    return driver.beginTrace({additionalTraceCategories: 'loading,xtra_cat'}).then(() => {
-      const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
-      const categories = traceCmd.params.categories;
-      assert.ok(categories.includes('blink.user_timing'), 'contains default categories');
-      assert.ok(categories.includes('xtra_cat'), 'contains added categories');
-      assert.ok(
-        categories.indexOf('loading') === categories.lastIndexOf('loading'),
-        'de-dupes categories'
-      );
-    });
+  it('will request default traceCategories', async () => {
+    await driver.beginTrace();
+
+    const tracingStartInvocation = findSendCommandInvocation('Tracing.start');
+    expect(tracingStartInvocation.categories).toContain('devtools.timeline');
+    expect(tracingStartInvocation.categories).not.toContain('toplevel');
+    expect(tracingStartInvocation.categories).toContain('disabled-by-default-lighthouse');
+  });
+
+  it('will use requested additionalTraceCategories', async () => {
+    await driver.beginTrace({additionalTraceCategories: 'loading,xtra_cat'});
+
+    const tracingStartInvocation = findSendCommandInvocation('Tracing.start');
+    expect(tracingStartInvocation.categories).toContain('blink.user_timing');
+    expect(tracingStartInvocation.categories).toContain('xtra_cat');
+    // Make sure it deduplicates categories too
+    expect(tracingStartInvocation.categories).not.toMatch(/loading.*loading/);
   });
 
   it('will adjust traceCategories based on chrome version', async () => {
-    // m70 doesn't have disabled-by-default-lighthouse, so 'toplevel' is used instead.
-    const m70ProtocolGetVersionResponse = Object.assign({}, protocolGetVersionResponse, {
-      product: 'Chrome/70.0.3577.0',
-      // eslint-disable-next-line max-len
-      userAgent:
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3577.0 Safari/537.36',
-    });
-    createOnceMethodResponse('Browser.getVersion', m70ProtocolGetVersionResponse);
+    connectionStub.sendCommand = createSendCommandMockFn()
+      .mockSendCommandResponse('Browser.getVersion', {product: 'Chrome/70.0.3577.0'})
+      .mockSendCommandResponse('Page.enable', {})
+      .mockSendCommandResponse('Tracing.start', {});
 
-    // eslint-disable-next-line max-len
     await driver.beginTrace();
-    const traceCmd = sendCommandParams.find(obj => obj.command === 'Tracing.start');
-    const categories = traceCmd.params.categories;
-    assert.ok(categories.includes('toplevel'), 'contains old toplevel category');
-    assert.equal(categories.indexOf('disabled-by-default-lighthouse'), -1, 'excludes new cat');
+
+    const tracingStartInvocation = findSendCommandInvocation('Tracing.start');
+    // m70 doesn't have disabled-by-default-lighthouse, so 'toplevel' is used instead.
+    expect(tracingStartInvocation.categories).toContain('toplevel');
+    expect(tracingStartInvocation.categories).not.toContain('disabled-by-default-lighthouse');
   });
 });
 
 describe('.setExtraHTTPHeaders', () => {
-  it('should send the Network.setExtraHTTPHeaders command when there are extra-headers', () => {
-    return driver
-      .setExtraHTTPHeaders({
-        Cookie: 'monster',
-        'x-men': 'wolverine',
-      })
-      .then(() => {
-        assert.equal(sendCommandParams[0].command, 'Network.setExtraHTTPHeaders');
-      });
+  it('should Network.setExtraHTTPHeaders when there are extra-headers', async () => {
+    connectionStub.sendCommand = createSendCommandMockFn().mockSendCommandResponse(
+      'Network.setExtraHTTPHeaders',
+      {}
+    );
+
+    await driver.setExtraHTTPHeaders({
+      Cookie: 'monster',
+      'x-men': 'wolverine',
+    });
+
+    expect(connectionStub.sendCommand).toHaveBeenCalledWith(
+      'Network.setExtraHTTPHeaders',
+      expect.anything()
+    );
   });
 
-  it('should not send the Network.setExtraHTTPHeaders command when there no extra-headers', () => {
-    return driver.setExtraHTTPHeaders().then(() => {
-      assert.equal(sendCommandParams[0], undefined);
-    });
+  it('should Network.setExtraHTTPHeaders when there are extra-headers', async () => {
+    connectionStub.sendCommand = createSendCommandMockFn();
+    await driver.setExtraHTTPHeaders();
+
+    expect(connectionStub.sendCommand).not.toHaveBeenCalled();
   });
 });
 
 describe('.getAppManifest', () => {
   it('should return null when no manifest', async () => {
-    connectionStub.sendCommand = jest
-      .fn()
-      .mockResolvedValueOnce({data: undefined, url: '/manifest'});
+    connectionStub.sendCommand = createSendCommandMockFn().mockSendCommandResponse(
+      'Page.getAppManifest',
+      {data: undefined, url: '/manifest'}
+    );
     const result = await driver.getAppManifest();
     expect(result).toEqual(null);
   });
 
   it('should return the manifest', async () => {
     const manifest = {name: 'The App'};
-    connectionStub.sendCommand = jest
-      .fn()
-      .mockResolvedValueOnce({data: JSON.stringify(manifest), url: '/manifest'});
+    connectionStub.sendCommand = createSendCommandMockFn().mockSendCommandResponse(
+      'Page.getAppManifest',
+      {data: JSON.stringify(manifest), url: '/manifest'}
+    );
     const result = await driver.getAppManifest();
     expect(result).toEqual({data: JSON.stringify(manifest), url: '/manifest'});
   });
@@ -337,9 +349,10 @@ describe('.getAppManifest', () => {
       .readFileSync(__dirname + '/../fixtures/manifest-bom.json')
       .toString();
 
-    connectionStub.sendCommand = jest
-      .fn()
-      .mockResolvedValueOnce({data: manifestWithBOM, url: '/manifest'});
+    connectionStub.sendCommand = createSendCommandMockFn().mockSendCommandResponse(
+      'Page.getAppManifest',
+      {data: manifestWithBOM, url: '/manifest'}
+    );
     const result = await driver.getAppManifest();
     expect(result).toEqual({data: manifestWithoutBOM, url: '/manifest'});
   });
@@ -347,12 +360,13 @@ describe('.getAppManifest', () => {
 
 describe('.goOffline', () => {
   it('should send offline emulation', async () => {
+    connectionStub.sendCommand = createSendCommandMockFn()
+      .mockSendCommandResponse('Network.enable', {})
+      .mockSendCommandResponse('Network.emulateNetworkConditions', {});
+
     await driver.goOffline();
-    const emulateCommand = sendCommandParams.find(
-      item => item.command === 'Network.emulateNetworkConditions'
-    );
-    assert.ok(emulateCommand, 'did not call emulate network');
-    assert.deepStrictEqual(emulateCommand.params, {
+    const emulateInvocation = findSendCommandInvocation('Network.emulateNetworkConditions');
+    expect(emulateInvocation).toEqual({
       offline: true,
       latency: 0,
       downloadThroughput: 0,
@@ -486,6 +500,23 @@ describe('.gotoURL', () => {
 });
 
 describe('.assertNoSameOriginServiceWorkerClients', () => {
+  function createSWRegistration(id, url, isDeleted) {
+    return {
+      isDeleted: !!isDeleted,
+      registrationId: id,
+      scopeURL: url,
+    };
+  }
+
+  function createActiveWorker(id, url, controlledClients, status = 'activated') {
+    return {
+      registrationId: id,
+      scriptURL: url,
+      controlledClients,
+      status,
+    };
+  }
+
   it('will pass if there are no current service workers', () => {
     const pageUrl = 'https://example.com/';
     driver.once = createOnceStub({
@@ -606,6 +637,13 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
 });
 
 describe('.goOnline', () => {
+  beforeEach(() => {
+    connectionStub.sendCommand = createSendCommandMockFn()
+      .mockSendCommandResponse('Network.enable', {})
+      .mockSendCommandResponse('Emulation.setCPUThrottlingRate', {})
+      .mockSendCommandResponse('Network.emulateNetworkConditions', {});
+  });
+
   it('re-establishes previous throttling settings', async () => {
     await driver.goOnline({
       passConfig: {useThrottling: true},
@@ -619,11 +657,8 @@ describe('.goOnline', () => {
       },
     });
 
-    const emulateCommand = sendCommandParams.find(
-      item => item.command === 'Network.emulateNetworkConditions'
-    );
-    assert.ok(emulateCommand, 'did not call emulate network');
-    assert.deepStrictEqual(emulateCommand.params, {
+    const emulateInvocation = findSendCommandInvocation('Network.emulateNetworkConditions');
+    expect(emulateInvocation).toEqual({
       offline: false,
       latency: 500,
       downloadThroughput: (1000 * 1024) / 8,
@@ -639,11 +674,8 @@ describe('.goOnline', () => {
       },
     });
 
-    const emulateCommand = sendCommandParams.find(
-      item => item.command === 'Network.emulateNetworkConditions'
-    );
-    assert.ok(emulateCommand, 'did not call emulate network');
-    assert.deepStrictEqual(emulateCommand.params, {
+    const emulateInvocation = findSendCommandInvocation('Network.emulateNetworkConditions');
+    expect(emulateInvocation).toEqual({
       offline: false,
       latency: 0,
       downloadThroughput: 0,
@@ -664,11 +696,8 @@ describe('.goOnline', () => {
       },
     });
 
-    const emulateCommand = sendCommandParams.find(
-      item => item.command === 'Network.emulateNetworkConditions'
-    );
-    assert.ok(emulateCommand, 'did not call emulate network');
-    assert.deepStrictEqual(emulateCommand.params, {
+    const emulateInvocation = findSendCommandInvocation('Network.emulateNetworkConditions');
+    expect(emulateInvocation).toEqual({
       offline: false,
       latency: 0,
       downloadThroughput: 0,
