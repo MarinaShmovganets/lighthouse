@@ -34,11 +34,11 @@ const SOURCE_PARAMS = new Set([
 const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** Title of a Lighthouse audit that provides detail on the plugin content found in the page. This descriptive title is shown when there is no plugin content on the page that would restrict search indexing. */
+  /** Title of a Lighthouse audit that provides detail on the browser plugins used by the page. This descriptive title is shown when there is no plugin content on the page that would restrict search indexing. */
   title: 'Document avoids plugins',
-  /** Descriptive title of a Lighthouse audit that provides detail on the plugin content found in the page. This imperative title is shown when there is plugin content on the page which cannot be indexed by search engine crawlers. */
+  /** Descriptive title of a Lighthouse audit that provides detail on the browser plugins used by the page. This title is shown when there is plugin content on the page. */
   failureTitle: 'Document uses plugins',
-  /** Description of a Lighthouse audit that tells the user *why* they need to avoid using plugin content. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  /** Description of a Lighthouse audit that tells the user *why* they need to avoid using browser plugins in their content. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Search engines can\'t index plugin content, and ' +
     'many devices restrict plugins or don\'t support them. ' +
     '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/plugins).',
