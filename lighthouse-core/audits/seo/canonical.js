@@ -27,7 +27,7 @@ const UIStrings = {
   /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by a URL being relative instead of absolute. "url" will be replaced by the invalid URL (e.g. https://example.com). */
   explanationRelative: 'Relative URL ({url})',
   /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different hreflang than the current context. "url" will be replaced by the invalid URL (e.g. https://example.com). 'hreflang' is an HTML attribute and should not be translated. */
-  explanationPointsElsewhere: 'Points to another hreflang location ({url})',
+  explanationPointsElsewhere: 'Points to another `hreflang` location ({url})',
   /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different domain. "url" will be replaced by the invalid URL (e.g. https://example.com). */
   explanationDifferentDomain: 'Points to a different domain ({url})',
   /** Explanatory message stating that the page's canonical URL was pointing to a 'root of the same origin' which is a common mistake. The canonical URL should point a different page with the same content whose URL is preferred; however, in this case the canonical URL points to the root page (which is of the same origin) i.e. http://example.com/post1?alt=true -points to-> http://example.com/ when it should point to something like http://example.com/post1. In this context "root" is the starting page of a website, and "origin" is the domain the website is registered under. */
