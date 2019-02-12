@@ -30,7 +30,7 @@ const UIStrings = {
   explanationPointsElsewhere: 'Points to another `hreflang` location ({url})',
   /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different domain. "url" will be replaced by the invalid URL (e.g. https://example.com). */
   explanationDifferentDomain: 'Points to a different domain ({url})',
-  /** Explanatory message stating that the page's canonical URL was pointing to a 'root of the same origin' which is a common mistake. The canonical URL should point a different page with the same content whose URL is preferred; however, in this case the canonical URL points to the root page (which is of the same origin) i.e. http://example.com/post1?alt=true -points to-> http://example.com/ when it should point to something like http://example.com/post1. In this context "root" is the starting page of a website, and "origin" is the domain the website is registered under. */
+  /** Explanatory message stating that the page's canonical URL was pointing to a 'root of the same origin' which is a common mistake. "points" refers to the action of the 'rel=canonical' referencing another link. "root" refers to the starting/home page of the website. "origin" refers to the domain that the website is under. So in this case, the 'rel=canonical's link is referencing a URL that is the homepage of the entire website. */
   explanationRoot: 'Points to a root of the same origin',
 };
 
