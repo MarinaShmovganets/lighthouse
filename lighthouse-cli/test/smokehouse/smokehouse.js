@@ -311,11 +311,23 @@ function reportAssertion(assertion) {
  * @return {{passed: number, failed: number}}
  */
 function report(results) {
-  reportAssertion(results.finalUrl);
-  reportAssertion(results.errorCode);
-
   let correctCount = 0;
   let failedCount = 0;
+
+  reportAssertion(results.finalUrl);
+  if (results.finalUrl.equal) {
+    correctCount++;
+  } else {
+    failedCount++;
+  }
+
+  reportAssertion(results.errorCode);
+  if (results.errorCode.equal) {
+    correctCount++;
+  } else {
+    failedCount++;
+  }
+
   results.audits.forEach(auditAssertion => {
     if (auditAssertion.equal) {
       correctCount++;
