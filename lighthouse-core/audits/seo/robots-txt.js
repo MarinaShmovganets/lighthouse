@@ -42,7 +42,7 @@ const UIStrings = {
   description: 'If your robots.txt file is malformed, crawlers may not be able to understand ' +
   'how you want your website to be crawled or indexed.',
   /** [ICU Syntax] Label for the audit identifying that the robots.txt request has returned a specific HTTP status code. Note: "robots.txt" is a canonical filename and should not be translated. "statusCode" will be replaced with a 3 digit integer which represents the status of the HTTP connectiong for this page. */
-  displayValueHttpError: 'request for robots.txt returned HTTP status: {statusCode, number}',
+  displayValueHttpBadCode: 'request for robots.txt returned HTTP status: {statusCode, number}',
   /** [ICU Syntax] Label for the audit identifying the number of errors that occured while validating the robots.txt file. "itemCount" will be replaced by the integer count of errors encountered. */
   displayValueValidationError: `{itemCount, plural,
     =1 {1 error found}
@@ -210,7 +210,7 @@ class RobotsTxt extends Audit {
     if (status >= HTTP_SERVER_ERROR_CODE_LOW) {
       return {
         rawValue: false,
-        displayValue: str_(UIStrings.displayValueHttpError, {statusCode: status}),
+        displayValue: str_(UIStrings.displayValueHttpBadCode, {statusCode: status}),
       };
     } else if (status >= HTTP_CLIENT_ERROR_CODE_LOW || content === '') {
       return {
