@@ -35,6 +35,7 @@ const PAGE_HUNG_EXIT_CODE = 68;
 const INSECURE_DOCUMENT_REQUEST_EXIT_CODE = 69;
 const RETRIES = 3;
 const NUMERICAL_EXPECTATION_REGEXP = /^(<=?|>=?)((\d|\.)+)$/;
+const VERBOSE = process.env.LH_SMOKE_VERBOSE === '1';
 
 /**
  * Attempt to resolve a path locally. If this fails, attempts to locate the path
@@ -319,11 +320,14 @@ function report(results) {
   let failedCount = 0;
 
   [results.finalUrl, results.errorCode, ...results.audits].forEach(auditAssertion => {
-    reportAssertion(auditAssertion);
     if (auditAssertion.equal) {
       correctCount++;
     } else {
       failedCount++;
+    }
+
+    if (!auditAssertion.equal || VERBOSE) {
+      reportAssertion(auditAssertion);
     }
   });
 
