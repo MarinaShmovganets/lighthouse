@@ -34,21 +34,21 @@ const SITEMAP_VALID_PROTOCOLS = new Set(['https:', 'http:', 'ftp:']);
 const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** Title of a Lighthouse audit that provides detail on the robots.txt file on the page. This descriptive title is shown when the robots.txt file is present and configured correctly. */
+  /** Title of a Lighthouse audit that provides detail on the site's robots.txt file. Note: "robots.txt" is a canonical filename and should not be translated. This descriptive title is shown when the robots.txt file is present and configured correctly. */
   title: 'robots.txt is valid',
-  /** Descriptive title of a Lighthouse audit that provides detail on the robots.txt file on the page. This imperative title is shown when the robots.txt file is misconfigured, which makes the page hard or impossible to scan via web crawler. */
+  /** Descriptive title of a Lighthouse audit that provides detail on the site's robots.txt file. Note: "robots.txt" is a canonical filename and should not be translated. This imperative title is shown when the robots.txt file is misconfigured, which makes the page hard or impossible to scan via web crawler. */
   failureTitle: 'robots.txt is not valid',
-  /** Description of a Lighthouse audit that tells the user *why* they need to have a valid robots.txt file. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  /** Description of a Lighthouse audit that tells the user *why* they need to have a valid robots.txt file. Note: "robots.txt" is a canonical filename and should not be translated. This is displayed after a user expands the section to see more. No character length limits. */
   description: 'If your robots.txt file is malformed, crawlers may not be able to understand ' +
   'how you want your website to be crawled or indexed.',
-  /** [ICU Syntax] Label for the audit identifying that the robots.txt request has returned a specific HTTP status code. */
+  /** [ICU Syntax] Label for the audit identifying that the robots.txt request has returned a specific HTTP status code. Note: "robots.txt" is a canonical filename and should not be translated. "statusCode" will be replaced with a 3 digit integer which represents the status of the HTTP connectiong for this page. */
   displayValueHttpError: 'request for robots.txt returned HTTP status: {statusCode, number}',
-  /** [ICU Syntax] Label for the audit identifying the number of errors that occured while validating the robots.txt file. */
+  /** [ICU Syntax] Label for the audit identifying the number of errors that occured while validating the robots.txt file. "itemCount" will be replaced by the integer count of errors encountered. */
   displayValueValidationError: `{itemCount, plural,
     =1 {1 error found}
     other {# errors found}
     }`,
-  /** Explanatory message stating that there was a failure in an audit caused by Lighthouse not being able to download the robots.txt file for the page.*/
+  /** Explanatory message stating that there was a failure in an audit caused by Lighthouse not being able to download the robots.txt file for the site.  Note: "robots.txt" is a canonical filename and should not be translated. */
   explanation: 'Lighthouse was unable to download a robots.txt file',
 };
 
