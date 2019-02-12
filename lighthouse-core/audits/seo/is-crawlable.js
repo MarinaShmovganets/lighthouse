@@ -18,11 +18,11 @@ const UNAVAILABLE_AFTER = 'unavailable_after';
 const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** Title of a Lighthouse audit that provides detail on the blocking status of their page in regards to search-engine index crawling. This descriptive title is shown when the page is not blocked from indexing and can be crawled. */
+  /** Title of a Lighthouse audit that provides detail on if search-engine crawlers are blocked from indexing the page. This title is shown when the page is not blocked from indexing and can be crawled. */
   title: 'Page isn’t blocked from indexing',
-  /** Descriptive title of a Lighthouse audit that provides detail on the blocking status of their page in regards to search-engine index crawling. This imperative title is shown when the page has been configured to block indexing and therefore cannot be indexed by search engines. */
+  /** Title of a Lighthouse audit that provides detail on if search-engine crawlers are blocked from indexing the page. This title is shown when the page has been configured to block indexing and therefore cannot be indexed by search engines. */
   failureTitle: 'Page is blocked from indexing',
-  /** Description of a Lighthouse audit that tells the user *why* they need to allow crawling on their page. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  /** Description of a Lighthouse audit that tells the user *why* allowing search-engine crawling of their page is beneficial. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Search engines are unable to include your pages in search results ' +
       'if they don\'t have permission to crawl them. [Learn ' +
       'more](https://developers.google.com/web/tools/lighthouse/audits/indexing).',
