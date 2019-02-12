@@ -276,8 +276,12 @@ function reportAssertion(assertion) {
   RegExp.prototype.toJSON = RegExp.prototype.toString;
 
   if (assertion.equal) {
-    console.log(`  ${log.greenify(log.tick)} ${assertion.category}: ` +
-        log.greenify(assertion.actual));
+    if (assertion.actual !== null && typeof assertion.actual === 'object') {
+      console.log(`  ${log.greenify(log.tick)} ${assertion.category}`);
+    } else {
+      console.log(`  ${log.greenify(log.tick)} ${assertion.category}: ` +
+          log.greenify(assertion.actual));
+    }
   } else {
     if (assertion.diff) {
       const diff = assertion.diff;
@@ -314,26 +318,12 @@ function report(results) {
   let correctCount = 0;
   let failedCount = 0;
 
-  reportAssertion(results.finalUrl);
-  if (results.finalUrl.equal) {
-    correctCount++;
-  } else {
-    failedCount++;
-  }
-
-  reportAssertion(results.errorCode);
-  if (results.errorCode.equal) {
-    correctCount++;
-  } else {
-    failedCount++;
-  }
-
-  results.audits.forEach(auditAssertion => {
+  [results.finalUrl, results.errorCode, ...results.audits].forEach(auditAssertion => {
+    reportAssertion(auditAssertion);
     if (auditAssertion.equal) {
       correctCount++;
     } else {
       failedCount++;
-      reportAssertion(auditAssertion);
     }
   });
 
