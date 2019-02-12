@@ -32,7 +32,7 @@ const UIStrings = {
   explanationDifferentDomain: 'Points to a different domain ({url})',
   /** Explanatory message stating that the page's canonical URL was pointing to the domain's root URL, which is a common mistake. "points" refers to the action of the 'rel=canonical' referencing another link. "root" refers to the starting/home page of the website. "domain" refers to the registered domain name of the website. */
   explanationRoot: 'Points to the domain\'s root URL (the homepage), ' +
-    'instead of an equivalent page of content.',
+    'instead of an equivalent page of content',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);

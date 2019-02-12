@@ -294,11 +294,11 @@ class FontSize extends Audit {
 
     let explanation;
     if (!passed) {
-      const percentageOfFailingText = parseFloat((100 - percentageOfPassingText).toFixed(2)) / 100;
+      const percentageOfFailingText = (100 - percentageOfPassingText) / 100;
 
       // if we were unable to visit all text nodes we should disclose that information
       if (visitedTextLength < totalTextLength) {
-        const percentageOfVisitedText = (visitedTextLength / totalTextLength).toFixed(2);
+        const percentageOfVisitedText = (visitedTextLength / totalTextLength);
         explanation = str_(UIStrings.explanationWithDisclaimer,
           {
             decimalProportion: percentageOfFailingText,
