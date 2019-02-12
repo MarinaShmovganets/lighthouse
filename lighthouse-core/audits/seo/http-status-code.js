@@ -14,7 +14,7 @@ const i18n = require('../../lib/i18n/i18n.js');
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on the HTTP status code a page responds with. This descriptive title is shown when the page has responded with a valid HTTP status code. */
   title: 'Page has successful HTTP status code',
-  /** Descriptive title of a Lighthouse audit that provides detail on the HTTP status code a page responds with. This imperative title is shown when the page responds to requests with an HTTP status code that indicates the request was unsuccessful. */
+  /** Descriptive title of a Lighthouse audit that provides detail on the HTTP status code a page responds with. This descriptive title is shown when the page responds to requests with an HTTP status code that indicates the request was unsuccessful. */
   failureTitle: 'Page has unsuccessful HTTP status code',
   /** Description of a Lighthouse audit that tells the user *why* they need to serve pages with a valid HTTP status code. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Pages with unsuccessful HTTP status codes may not be indexed properly. ' +

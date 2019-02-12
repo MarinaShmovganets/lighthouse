@@ -13,24 +13,24 @@ const LINK_HEADER = 'link';
 const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** Title of a Lighthouse audit that provides detail on a page's rel=canonical link. This descriptive title is shown to users when the rel=canonical link is valid. */
+  /** Title of a Lighthouse audit that provides detail on a page's rel=canonical link. This descriptive title is shown to users when the rel=canonical link is valid. "rel=canonical" is an HTML attribute and value and so should not be translated. */
   title: 'Document has a valid `rel=canonical`',
-  /** Descriptive title of a Lighthouse audit that provides detail on a page's rel=canonical link. This imperative title is shown to users when the rel=canonical link is invalid and should be fixed. */
+  /** Title of a Lighthouse audit that provides detail on a page's rel=canonical link. This descriptive title is shown to users when the rel=canonical link is invalid and should be fixed. "rel=canonical" is an HTML attribute and value and so should not be translated. */
   failureTitle: 'Document does not have a valid `rel=canonical`',
   /** Description of a Lighthouse audit that tells the user *why* they need to have a valid rel=canonical link. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Canonical links suggest which URL to show in search results. ' +
     '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/canonical).',
-  /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by multiple URLs conflicting with each other. */
+  /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by multiple URLs conflicting with each other. "urlList" will be replaced by a list of URLs (e.g. https://example.com, https://example2.com, etc ). */
   explanationConflict: 'Multiple conflicting URLs ({urlList})',
-  /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by a URL being invalid. */
+  /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by a URL being invalid. "url" will be replaced by the invalid URL (e.g. https://example.com). */
   explanationInvalid: 'Invalid URL ({url})',
-  /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by a URL being relative instead of absolute. */
+  /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by a URL being relative instead of absolute. "url" will be replaced by the invalid URL (e.g. https://example.com). */
   explanationRelative: 'Relative URL ({url})',
-  /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different hreflang than the current context. */
-  explanationPointsElsewhere: 'Points to another hreflang location ({href})',
-  /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different domain. */
+  /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different hreflang than the current context. "url" will be replaced by the invalid URL (e.g. https://example.com). 'hreflang' is an HTML attribute and should not be translated. */
+  explanationPointsElsewhere: 'Points to another hreflang location ({url})',
+  /** [ICU Syntax] Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different domain. "url" will be replaced by the invalid URL (e.g. https://example.com). */
   explanationDifferentDomain: 'Points to a different domain ({url})',
-  /** Explanatory message stating that the page's canonical URL was pointing to a root of the same origin which is a common mistake. The canonical URL should point a different page with the same content whose URL is preferred, not a parent or root page. */
+  /** Explanatory message stating that the page's canonical URL was pointing to a 'root of the same origin' which is a common mistake. The canonical URL should point a different page with the same content whose URL is preferred; however, in this case the canonical URL points to the root page (which is of the same origin) i.e. http://example.com/post1?alt=true -points to-> http://example.com/ when it should point to something like http://example.com/post1. In this context "root" is the starting page of a website, and "origin" is the domain the website is registered under. */
   explanationRoot: 'Points to a root of the same origin',
 };
 
@@ -169,7 +169,7 @@ class Canonical extends Audit {
           baseURL.href !== canonicalURL.href) {
           return {
             rawValue: false,
-            explanation: str_(UIStrings.explanationPointsElsewhere, {href: baseURL.href}),
+            explanation: str_(UIStrings.explanationPointsElsewhere, {url: baseURL.href}),
           };
         }
 
