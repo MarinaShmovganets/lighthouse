@@ -36,7 +36,7 @@ const i18n = require('../../lib/i18n/i18n.js');
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on the site's robots.txt file. Note: "robots.txt" is a canonical filename and should not be translated. This descriptive title is shown when the robots.txt file is present and configured correctly. */
   title: 'robots.txt is valid',
-  /** Descriptive title of a Lighthouse audit that provides detail on the site's robots.txt file. Note: "robots.txt" is a canonical filename and should not be translated. This imperative title is shown when the robots.txt file is misconfigured, which makes the page hard or impossible to scan via web crawler. */
+  /** Title of a Lighthouse audit that provides detail on the site's robots.txt file. Note: "robots.txt" is a canonical filename and should not be translated. This descriptive title is shown when the robots.txt file is misconfigured, which makes the page hard or impossible to scan via web crawler. */
   failureTitle: 'robots.txt is not valid',
   /** Description of a Lighthouse audit that tells the user *why* they need to have a valid robots.txt file. Note: "robots.txt" is a canonical filename and should not be translated. This is displayed after a user expands the section to see more. No character length limits. */
   description: 'If your robots.txt file is malformed, crawlers may not be able to understand ' +

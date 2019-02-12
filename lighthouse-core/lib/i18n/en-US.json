@@ -793,19 +793,19 @@
   },
   "lighthouse-core/audits/seo/font-size.js | explanation": {
     "message": "{decimalProportion, number, extendedPercent} of text is too small.",
-    "description": "Explanatory message stating that there was a failure in an audit caused by a certain percentage of the text on the page being too small."
+    "description": "Explanatory message stating that there was a failure in an audit caused by a certain percentage of the text on the page being too small. \"decimalProportion\" will be replaced by a percentage between 0 and 100%."
   },
   "lighthouse-core/audits/seo/font-size.js | explanationViewport": {
     "message": "Text is illegible because there's no viewport meta tag optimized for mobile screens.",
-    "description": "Explanatory message stating that there was a failure in an audit caused by a missing page viewport meta tag configuration."
+    "description": "Explanatory message stating that there was a failure in an audit caused by a missing page viewport meta tag configuration. \"viewport\" and \"meta\" are HTML terms and should not be translated."
   },
   "lighthouse-core/audits/seo/font-size.js | explanationWithDisclaimer": {
     "message": "{decimalProportion, number, extendedPercent} of text is too small (based on {decimalProportionVisited, number, extendedPercent} sample).",
-    "description": "Explanatory message stating that there was a failure in an audit caused by a certain percentage of the text on the page being too small, based on a sample size of text that was less than 100% of the text on the page."
+    "description": "Explanatory message stating that there was a failure in an audit caused by a certain percentage of the text on the page being too small, based on a sample size of text that was less than 100% of the text on the page. \"decimalProportion\" will be replaced by a percentage between 0 and 100%."
   },
   "lighthouse-core/audits/seo/font-size.js | failureTitle": {
     "message": "Document doesn't use legible font sizes",
-    "description": "Descriptive title of a Lighthouse audit that provides detail on the font sizes used on the page. This imperative title is shown to users when there is a font that is too small to be read by the user."
+    "description": "Title of a Lighthouse audit that provides detail on the font sizes used on the page. This descriptive title is shown to users when there is a font that may be too small to be read by users."
   },
   "lighthouse-core/audits/seo/font-size.js | title": {
     "message": "Document uses legible font sizes",
@@ -925,7 +925,7 @@
   },
   "lighthouse-core/audits/seo/robots-txt.js | failureTitle": {
     "message": "robots.txt is not valid",
-    "description": "Descriptive title of a Lighthouse audit that provides detail on the site's robots.txt file. Note: \"robots.txt\" is a canonical filename and should not be translated. This imperative title is shown when the robots.txt file is misconfigured, which makes the page hard or impossible to scan via web crawler."
+    "description": "Title of a Lighthouse audit that provides detail on the site's robots.txt file. Note: \"robots.txt\" is a canonical filename and should not be translated. This descriptive title is shown when the robots.txt file is misconfigured, which makes the page hard or impossible to scan via web crawler."
   },
   "lighthouse-core/audits/seo/robots-txt.js | title": {
     "message": "robots.txt is valid",
