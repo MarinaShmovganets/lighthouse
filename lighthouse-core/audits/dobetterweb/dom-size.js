@@ -96,7 +96,7 @@ class DOMSize extends Audit {
     const stats = artifacts.DOMStats;
 
     const score = Audit.computeLogNormalScore(
-      stats.totalDOMNodes,
+      stats.totalBodyNodes,
       context.options.scorePODR,
       context.options.scoreMedian
     );
@@ -113,7 +113,7 @@ class DOMSize extends Audit {
       {
         statistic: str_(UIStrings.statisticDOMNodes),
         element: '',
-        value: Util.formatNumber(stats.totalDOMNodes),
+        value: Util.formatNumber(stats.totalBodyNodes),
       },
       {
         statistic: str_(UIStrings.statisticDOMDepth),
@@ -135,8 +135,8 @@ class DOMSize extends Audit {
 
     return {
       score,
-      rawValue: stats.totalDOMNodes,
-      displayValue: str_(UIStrings.displayValue, {itemCount: stats.totalDOMNodes}),
+      rawValue: stats.totalBodyNodes,
+      displayValue: str_(UIStrings.displayValue, {itemCount: stats.totalBodyNodes}),
       extendedInfo: {
         value: items,
       },

@@ -148,8 +148,8 @@ class DOMStats extends Gatherer {
     })()`;
     return passContext.driver.sendCommand('DOM.enable')
       .then(() => passContext.driver.evaluateAsync(expression, {useIsolation: true}))
-      .then(results => passContext.driver.getElementsInDocument().then(allNodes => {
-        results.totalDOMNodes = allNodes.length;
+      .then(results => passContext.driver.getElementsInDocument('body').then(bodyNodes => {
+        results.totalBodyNodes = bodyNodes.length;
         return passContext.driver.sendCommand('DOM.disable').then(() => results);
       }));
   }

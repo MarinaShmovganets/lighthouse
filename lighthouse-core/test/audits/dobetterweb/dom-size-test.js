@@ -15,7 +15,7 @@ describe('Num DOM nodes audit', () => {
   const numNodes = DOMSize.MAX_DOM_NODES;
   const artifact = {
     DOMStats: {
-      totalDOMNodes: numNodes,
+      totalBodyNodes: numNodes,
       depth: {max: 1, pathToElement: ['html', 'body', 'div', 'span']},
       width: {max: 2, pathToElement: ['html', 'body']},
     },
@@ -32,12 +32,12 @@ describe('Num DOM nodes audit', () => {
   });
 
   it('calculates score hitting top distribution', () => {
-    artifact.DOMStats.totalDOMNodes = 400;
+    artifact.DOMStats.totalBodyNodes = 400;
     assert.equal(DOMSize.audit(artifact, {options}).score, 1);
   });
 
   it('calculates score hitting bottom of distribution', () => {
-    artifact.DOMStats.totalDOMNodes = 5970;
+    artifact.DOMStats.totalBodyNodes = 5970;
     assert.equal(DOMSize.audit(artifact, {options}).score, 0);
   });
 });
