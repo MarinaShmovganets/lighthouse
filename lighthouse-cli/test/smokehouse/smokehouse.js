@@ -35,7 +35,7 @@ const PAGE_HUNG_EXIT_CODE = 68;
 const INSECURE_DOCUMENT_REQUEST_EXIT_CODE = 69;
 const RETRIES = 3;
 const NUMERICAL_EXPECTATION_REGEXP = /^(<=?|>=?)((\d|\.)+)$/;
-const VERBOSE = process.env.LH_SMOKE_VERBOSE === '1';
+const VERBOSE = Boolean(process.env.LH_SMOKE_VERBOSE);
 
 /**
  * Attempt to resolve a path locally. If this fails, attempts to locate the path
@@ -63,7 +63,7 @@ function resolveLocalOrCwd(payloadPath) {
  * @return {ExpectedLHR}
  */
 function runLighthouse(url, configPath, isDebug) {
-  isDebug = isDebug || Boolean(process.env.SMOKEHOUSE_DEBUG);
+  isDebug = isDebug || Boolean(process.env.LH_SMOKE_DEBUG);
 
   const command = 'node';
   const outputPath = `smokehouse-${Math.round(Math.random() * 100000)}.report.json`;
