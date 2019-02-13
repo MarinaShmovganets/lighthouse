@@ -77,7 +77,9 @@ let connectionStub;
 
 beforeEach(() => {
   connectionStub = new Connection();
-  connectionStub.sendCommand = cmd => {throw new Error(`${cmd} not implemented`);};
+  connectionStub.sendCommand = cmd => {
+    throw new Error(`${cmd} not implemented`);
+  };
   driver = new Driver(connectionStub);
 });
 
@@ -155,7 +157,6 @@ describe('.getObjectProperty', () => {
 
 describe('.getRequestContent', () => {
   it('throws if getRequestContent takes too long', async () => {
-
     connectionStub.sendCommand = jest.fn()
       .mockImplementationOnce(() => new Promise(r => setTimeout(r), 5000));
 
@@ -218,7 +219,6 @@ describe('.evaluateAsync', () => {
 
 describe('.sendCommand', () => {
   it('.sendCommand timesout when commands take too long', async () => {
-
     connectionStub.sendCommand = jest.fn()
       .mockImplementationOnce(() => new Promise(r => setTimeout(r), 5000));
 
@@ -507,7 +507,7 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
       .mockResponse('ServiceWorker.enable', {})
       .mockResponse('ServiceWorker.disable', {})
       .mockResponse('ServiceWorker.enable', {})
-      .mockResponse('ServiceWorker.disable', {})
+      .mockResponse('ServiceWorker.disable', {});
   });
 
   function createSWRegistration(id, url, isDeleted) {
