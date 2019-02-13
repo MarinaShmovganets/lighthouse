@@ -266,6 +266,13 @@ function collateResults(actual, expected) {
 }
 
 /**
+ * @param {*} obj
+ */
+function isPlainObject(obj) {
+  return Object.prototype.toString.call(obj) === '[object Object]';
+}
+
+/**
  * Log the result of an assertion of actual and expected results.
  * @param {Comparison} assertion
  */
@@ -277,7 +284,7 @@ function reportAssertion(assertion) {
   RegExp.prototype.toJSON = RegExp.prototype.toString;
 
   if (assertion.equal) {
-    if (assertion.actual !== null && typeof assertion.actual === 'object') {
+    if (isPlainObject(assertion.actual)) {
       console.log(`  ${log.greenify(log.tick)} ${assertion.category}`);
     } else {
       console.log(`  ${log.greenify(log.tick)} ${assertion.category}: ` +
