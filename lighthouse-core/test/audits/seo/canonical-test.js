@@ -143,7 +143,7 @@ describe('SEO: Document has valid canonical link', () => {
     });
   });
 
-  it('passes when canonical points to the root while current URL is also the root', () => {
+  it('passes when canonical points to the root while current URL is also the root', async () => {
     const finalUrl = 'https://example.com/';
     const mainResource = {
       url: finalUrl,
@@ -158,9 +158,8 @@ describe('SEO: Document has valid canonical link', () => {
     };
 
     const context = {computedCache: new Map()};
-    return CanonicalAudit.audit(artifacts, context).then(auditResult => {
-      assert.equal(auditResult.rawValue, true);
-    });
+    const auditResult = await CanonicalAudit.audit(artifacts, context);
+    assert.equal(auditResult.rawValue, true);
   });
 
   it('fails when canonical points to the root while current URL is not the root', () => {
