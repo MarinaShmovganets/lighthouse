@@ -27,12 +27,16 @@ function createOnceStub(events) {
   };
 }
 
-function findSendCommandInvocation(command) {
-  expect(connectionStub.sendCommand).toHaveBeenCalledWith(command, expect.anything());
-  return connectionStub.sendCommand.mock.calls.find(call => call[0] === command)[1];
-}
-
-function createSendCommandMockFn() {
+/**
+ * Creates a jest mock function whose implementation consumes mocked protocol responses matching the
+ * requested command in the order they were mocked.
+ *
+ * It is decorated with two methods:
+ *    - `mockResponse` which pushes protocol message responses for consumption
+ *    - `findInvocation` which asserts that `sendCommand` was invoked with the given command and
+ *      returns the protocol message argument.
+ */
+function createMockSendCommandFn() {
   const mockResponses = [];
   const mockFn = jest.fn().mockImplementation(command => {
     const indexOfResponse = mockResponses.findIndex(entry => entry.command === command);
@@ -42,9 +46,14 @@ function createSendCommandMockFn() {
     return Promise.resolve(response);
   });
 
-  mockFn.mockSendCommandResponse = (command, response) => {
+  mockFn.mockResponse = (command, response) => {
     mockResponses.push({command, response});
     return mockFn;
+  };
+
+  mockFn.findInvocation = command => {
+    expect(mockFn).toHaveBeenCalledWith(command, expect.anything());
+    return mockFn.mock.calls.find(call => call[0] === command)[1];
   };
 
   return mockFn;
@@ -68,20 +77,16 @@ function sendCommandOldStub(command, params) {
       return Promise.resolve({result: {value: 123}});
     case 'Runtime.getProperties':
       return Promise.resolve({
-        result:
-          params.objectId === 'invalid'
-            ? []
-            : [
-                {
-                  name: 'test',
-                  value: {
-                    value: '123',
-                  },
-                },
-                {
-                  name: 'novalue',
-                },
-              ],
+        result: params.objectId === 'invalid' ? [] : [{
+          name: 'test',
+          value: {
+            value: '123',
+          },
+        },
+          {
+            name: 'novalue',
+          },
+        ],
       });
     case 'Page.getResourceTree':
       return Promise.resolve({frameTree: {frame: {id: 1}}});
@@ -186,35 +191,33 @@ describe('.getRequestContent', () => {
 
 describe('.evaluateAsync', () => {
   it('evaluates an expression', async () => {
-    connectionStub.sendCommand = createSendCommandMockFn().mockSendCommandResponse(
-      'Runtime.evaluate',
-      {result: {value: 2}}
-    );
+    connectionStub.sendCommand = createMockSendCommandFn()
+      .mockResponse('Runtime.evaluate', {result: {value: 2}});
 
     const value = await driver.evaluateAsync('1 + 1');
     expect(value).toEqual(2);
-    expect(connectionStub.sendCommand).toHaveBeenCalledWith('Runtime.evaluate', expect.anything());
+    connectionStub.sendCommand.findInvocation('Runtime.evaluate');
   });
 
   it('evaluates an expression in isolation', async () => {
-    connectionStub.sendCommand = createSendCommandMockFn()
-      .mockSendCommandResponse('Page.getResourceTree', {frameTree: {frame: {id: 1337}}})
-      .mockSendCommandResponse('Page.createIsolatedWorld', {executionContextId: 1})
-      .mockSendCommandResponse('Runtime.evaluate', {result: {value: 2}});
+    connectionStub.sendCommand = createMockSendCommandFn()
+      .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: 1337}}})
+      .mockResponse('Page.createIsolatedWorld', {executionContextId: 1})
+      .mockResponse('Runtime.evaluate', {result: {value: 2}});
 
     const value = await driver.evaluateAsync('1 + 1', {useIsolation: true});
     expect(value).toEqual(2);
 
     // Check that we used the correct frame when creating the isolated context
-    const createWorldInvocation = findSendCommandInvocation('Page.createIsolatedWorld');
-    expect(createWorldInvocation).toMatchObject({frameId: 1337});
+    const createWorldArgs = connectionStub.sendCommand.findInvocation('Page.createIsolatedWorld');
+    expect(createWorldArgs).toMatchObject({frameId: 1337});
 
     // Check that we used the isolated context when evaluating
-    const evaluateInvocation = findSendCommandInvocation('Runtime.evaluate');
-    expect(evaluateInvocation).toMatchObject({contextId: 1});
+    const evaluateArgs = connectionStub.sendCommand.findInvocation('Runtime.evaluate');
+    expect(evaluateArgs).toMatchObject({contextId: 1});
 
     // Make sure we cached the isolated context from last time
-    connectionStub.sendCommand = createSendCommandMockFn().mockSendCommandResponse(
+    connectionStub.sendCommand = createMockSendCommandFn().mockResponse(
       'Runtime.evaluate',
       {result: {value: 2}}
     );
@@ -256,49 +259,49 @@ describe('.sendCommand', () => {
 
 describe('.beginTrace', () => {
   beforeEach(() => {
-    connectionStub.sendCommand = createSendCommandMockFn()
-      .mockSendCommandResponse('Browser.getVersion', protocolGetVersionResponse)
-      .mockSendCommandResponse('Page.enable', {})
-      .mockSendCommandResponse('Tracing.start', {});
+    connectionStub.sendCommand = createMockSendCommandFn()
+      .mockResponse('Browser.getVersion', protocolGetVersionResponse)
+      .mockResponse('Page.enable', {})
+      .mockResponse('Tracing.start', {});
   });
 
   it('will request default traceCategories', async () => {
     await driver.beginTrace();
 
-    const tracingStartInvocation = findSendCommandInvocation('Tracing.start');
-    expect(tracingStartInvocation.categories).toContain('devtools.timeline');
-    expect(tracingStartInvocation.categories).not.toContain('toplevel');
-    expect(tracingStartInvocation.categories).toContain('disabled-by-default-lighthouse');
+    const tracingStartArgs = connectionStub.sendCommand.findInvocation('Tracing.start');
+    expect(tracingStartArgs.categories).toContain('devtools.timeline');
+    expect(tracingStartArgs.categories).not.toContain('toplevel');
+    expect(tracingStartArgs.categories).toContain('disabled-by-default-lighthouse');
   });
 
   it('will use requested additionalTraceCategories', async () => {
     await driver.beginTrace({additionalTraceCategories: 'loading,xtra_cat'});
 
-    const tracingStartInvocation = findSendCommandInvocation('Tracing.start');
-    expect(tracingStartInvocation.categories).toContain('blink.user_timing');
-    expect(tracingStartInvocation.categories).toContain('xtra_cat');
+    const tracingStartArgs = connectionStub.sendCommand.findInvocation('Tracing.start');
+    expect(tracingStartArgs.categories).toContain('blink.user_timing');
+    expect(tracingStartArgs.categories).toContain('xtra_cat');
     // Make sure it deduplicates categories too
-    expect(tracingStartInvocation.categories).not.toMatch(/loading.*loading/);
+    expect(tracingStartArgs.categories).not.toMatch(/loading.*loading/);
   });
 
   it('will adjust traceCategories based on chrome version', async () => {
-    connectionStub.sendCommand = createSendCommandMockFn()
-      .mockSendCommandResponse('Browser.getVersion', {product: 'Chrome/70.0.3577.0'})
-      .mockSendCommandResponse('Page.enable', {})
-      .mockSendCommandResponse('Tracing.start', {});
+    connectionStub.sendCommand = createMockSendCommandFn()
+      .mockResponse('Browser.getVersion', {product: 'Chrome/70.0.3577.0'})
+      .mockResponse('Page.enable', {})
+      .mockResponse('Tracing.start', {});
 
     await driver.beginTrace();
 
-    const tracingStartInvocation = findSendCommandInvocation('Tracing.start');
+    const tracingStartArgs = connectionStub.sendCommand.findInvocation('Tracing.start');
     // m70 doesn't have disabled-by-default-lighthouse, so 'toplevel' is used instead.
-    expect(tracingStartInvocation.categories).toContain('toplevel');
-    expect(tracingStartInvocation.categories).not.toContain('disabled-by-default-lighthouse');
+    expect(tracingStartArgs.categories).toContain('toplevel');
+    expect(tracingStartArgs.categories).not.toContain('disabled-by-default-lighthouse');
   });
 });
 
 describe('.setExtraHTTPHeaders', () => {
   it('should Network.setExtraHTTPHeaders when there are extra-headers', async () => {
-    connectionStub.sendCommand = createSendCommandMockFn().mockSendCommandResponse(
+    connectionStub.sendCommand = createMockSendCommandFn().mockResponse(
       'Network.setExtraHTTPHeaders',
       {}
     );
@@ -315,7 +318,7 @@ describe('.setExtraHTTPHeaders', () => {
   });
 
   it('should Network.setExtraHTTPHeaders when there are extra-headers', async () => {
-    connectionStub.sendCommand = createSendCommandMockFn();
+    connectionStub.sendCommand = createMockSendCommandFn();
     await driver.setExtraHTTPHeaders();
 
     expect(connectionStub.sendCommand).not.toHaveBeenCalled();
@@ -324,7 +327,7 @@ describe('.setExtraHTTPHeaders', () => {
 
 describe('.getAppManifest', () => {
   it('should return null when no manifest', async () => {
-    connectionStub.sendCommand = createSendCommandMockFn().mockSendCommandResponse(
+    connectionStub.sendCommand = createMockSendCommandFn().mockResponse(
       'Page.getAppManifest',
       {data: undefined, url: '/manifest'}
     );
@@ -334,7 +337,7 @@ describe('.getAppManifest', () => {
 
   it('should return the manifest', async () => {
     const manifest = {name: 'The App'};
-    connectionStub.sendCommand = createSendCommandMockFn().mockSendCommandResponse(
+    connectionStub.sendCommand = createMockSendCommandFn().mockResponse(
       'Page.getAppManifest',
       {data: JSON.stringify(manifest), url: '/manifest'}
     );
@@ -349,7 +352,7 @@ describe('.getAppManifest', () => {
       .readFileSync(__dirname + '/../fixtures/manifest-bom.json')
       .toString();
 
-    connectionStub.sendCommand = createSendCommandMockFn().mockSendCommandResponse(
+    connectionStub.sendCommand = createMockSendCommandFn().mockResponse(
       'Page.getAppManifest',
       {data: manifestWithBOM, url: '/manifest'}
     );
@@ -360,13 +363,14 @@ describe('.getAppManifest', () => {
 
 describe('.goOffline', () => {
   it('should send offline emulation', async () => {
-    connectionStub.sendCommand = createSendCommandMockFn()
-      .mockSendCommandResponse('Network.enable', {})
-      .mockSendCommandResponse('Network.emulateNetworkConditions', {});
+    connectionStub.sendCommand = createMockSendCommandFn()
+      .mockResponse('Network.enable', {})
+      .mockResponse('Network.emulateNetworkConditions', {});
 
     await driver.goOffline();
-    const emulateInvocation = findSendCommandInvocation('Network.emulateNetworkConditions');
-    expect(emulateInvocation).toEqual({
+    const emulateArgs = connectionStub.sendCommand
+      .findInvocation('Network.emulateNetworkConditions');
+    expect(emulateArgs).toEqual({
       offline: true,
       latency: 0,
       downloadThroughput: 0,
@@ -638,10 +642,10 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
 
 describe('.goOnline', () => {
   beforeEach(() => {
-    connectionStub.sendCommand = createSendCommandMockFn()
-      .mockSendCommandResponse('Network.enable', {})
-      .mockSendCommandResponse('Emulation.setCPUThrottlingRate', {})
-      .mockSendCommandResponse('Network.emulateNetworkConditions', {});
+    connectionStub.sendCommand = createMockSendCommandFn()
+      .mockResponse('Network.enable', {})
+      .mockResponse('Emulation.setCPUThrottlingRate', {})
+      .mockResponse('Network.emulateNetworkConditions', {});
   });
 
   it('re-establishes previous throttling settings', async () => {
@@ -657,8 +661,9 @@ describe('.goOnline', () => {
       },
     });
 
-    const emulateInvocation = findSendCommandInvocation('Network.emulateNetworkConditions');
-    expect(emulateInvocation).toEqual({
+    const emulateArgs = connectionStub.sendCommand
+      .findInvocation('Network.emulateNetworkConditions');
+    expect(emulateArgs).toEqual({
       offline: false,
       latency: 500,
       downloadThroughput: (1000 * 1024) / 8,
@@ -674,8 +679,9 @@ describe('.goOnline', () => {
       },
     });
 
-    const emulateInvocation = findSendCommandInvocation('Network.emulateNetworkConditions');
-    expect(emulateInvocation).toEqual({
+    const emulateArgs = connectionStub.sendCommand
+      .findInvocation('Network.emulateNetworkConditions');
+    expect(emulateArgs).toEqual({
       offline: false,
       latency: 0,
       downloadThroughput: 0,
@@ -696,8 +702,9 @@ describe('.goOnline', () => {
       },
     });
 
-    const emulateInvocation = findSendCommandInvocation('Network.emulateNetworkConditions');
-    expect(emulateInvocation).toEqual({
+    const emulateArgs = connectionStub.sendCommand
+      .findInvocation('Network.emulateNetworkConditions');
+    expect(emulateArgs).toEqual({
       offline: false,
       latency: 0,
       downloadThroughput: 0,
