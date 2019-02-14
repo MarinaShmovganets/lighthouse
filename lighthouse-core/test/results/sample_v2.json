@@ -2158,13 +2158,6 @@
             "wastedBytes": 1108
           },
           {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true",
-            "cacheLifetimeMs": 0,
-            "cacheHitProbability": 0,
-            "totalBytes": 821,
-            "wastedBytes": 821
-          },
-          {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
             "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
@@ -2172,7 +2165,7 @@
             "wastedBytes": 821
           },
           {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
             "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 821,
@@ -2186,7 +2179,14 @@
             "wastedBytes": 821
           },
           {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true",
+            "cacheLifetimeMs": 0,
+            "cacheHitProbability": 0,
+            "totalBytes": 821,
+            "wastedBytes": 821
+          },
+          {
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
             "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 821,
@@ -2264,15 +2264,15 @@
             "totalBytes": 1108
           },
           {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
-            "totalBytes": 821
-          },
-          {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true",
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
             "totalBytes": 821
           },
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
+            "totalBytes": 821
+          },
+          {
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
             "totalBytes": 821
           }
         ]
@@ -3140,14 +3140,6 @@
       "scoreDisplayMode": "notApplicable",
       "rawValue": true
     },
-    "mobile-friendly": {
-      "id": "mobile-friendly",
-      "title": "Page is mobile friendly",
-      "description": "Take the [Mobile-Friendly Test](https://search.google.com/test/mobile-friendly) to check for audits not covered by Lighthouse, like sizing tap targets appropriately. [Learn more](https://developers.google.com/search/mobile-sites/).",
-      "score": null,
-      "scoreDisplayMode": "manual",
-      "rawValue": false
-    },
     "structured-data": {
       "id": "structured-data",
       "title": "Structured data is valid",
@@ -3725,10 +3717,6 @@
           "id": "tap-targets",
           "weight": 1,
           "group": "seo-mobile"
-        },
-        {
-          "id": "mobile-friendly",
-          "weight": 0
         },
         {
           "id": "structured-data",
@@ -4802,12 +4790,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:mobile-friendly",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:structured-data",
         "duration": 100,
         "entryType": "measure"
@@ -5522,12 +5504,6 @@
       ],
       "lighthouse-core/audits/seo/canonical.js | description": [
         "audits.canonical.description"
-      ],
-      "lighthouse-core/audits/seo/manual/mobile-friendly.js | title": [
-        "audits[mobile-friendly].title"
-      ],
-      "lighthouse-core/audits/seo/manual/mobile-friendly.js | description": [
-        "audits[mobile-friendly].description"
       ],
       "lighthouse-core/audits/seo/manual/structured-data.js | title": [
         "audits[structured-data].title"

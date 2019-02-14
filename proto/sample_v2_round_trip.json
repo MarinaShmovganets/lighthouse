@@ -1606,13 +1606,6 @@
             "scoreDisplayMode": "informative", 
             "title": "Metrics"
         }, 
-        "mobile-friendly": {
-            "description": "Take the [Mobile-Friendly Test](https://search.google.com/test/mobile-friendly) to check for audits not covered by Lighthouse, like sizing tap targets appropriately. [Learn more](https://developers.google.com/search/mobile-sites/).", 
-            "id": "mobile-friendly", 
-            "score": null, 
-            "scoreDisplayMode": "manual", 
-            "title": "Page is mobile friendly"
-        }, 
         "network-requests": {
             "description": "Lists the network requests that were made during page load.", 
             "details": {
@@ -2467,15 +2460,15 @@
                     }, 
                     {
                         "totalBytes": 821.0, 
-                        "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200"
-                    }, 
-                    {
-                        "totalBytes": 821.0, 
-                        "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true"
+                        "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100"
                     }, 
                     {
                         "totalBytes": 821.0, 
                         "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true"
+                    }, 
+                    {
+                        "totalBytes": 821.0, 
+                        "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200"
                     }
                 ], 
                 "type": "table"
@@ -2713,13 +2706,6 @@
                         "cacheHitProbability": 0.0, 
                         "cacheLifetimeMs": 0.0, 
                         "totalBytes": 821.0, 
-                        "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true", 
-                        "wastedBytes": 821.0
-                    }, 
-                    {
-                        "cacheHitProbability": 0.0, 
-                        "cacheLifetimeMs": 0.0, 
-                        "totalBytes": 821.0, 
                         "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100", 
                         "wastedBytes": 821.0
                     }, 
@@ -2727,7 +2713,7 @@
                         "cacheHitProbability": 0.0, 
                         "cacheLifetimeMs": 0.0, 
                         "totalBytes": 821.0, 
-                        "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200", 
+                        "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true", 
                         "wastedBytes": 821.0
                     }, 
                     {
@@ -2741,7 +2727,14 @@
                         "cacheHitProbability": 0.0, 
                         "cacheLifetimeMs": 0.0, 
                         "totalBytes": 821.0, 
-                        "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true", 
+                        "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true", 
+                        "wastedBytes": 821.0
+                    }, 
+                    {
+                        "cacheHitProbability": 0.0, 
+                        "cacheLifetimeMs": 0.0, 
+                        "totalBytes": 821.0, 
+                        "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200", 
                         "wastedBytes": 821.0
                     }, 
                     {
@@ -3621,10 +3614,6 @@
                     "group": "seo-mobile", 
                     "id": "tap-targets", 
                     "weight": 1.0
-                }, 
-                {
-                    "id": "mobile-friendly", 
-                    "weight": 0.0
                 }, 
                 {
                     "id": "structured-data", 
@@ -4652,12 +4641,6 @@
                 "duration": 100.0, 
                 "entryType": "measure", 
                 "name": "lh:audit:canonical", 
-                "startTime": 0.0
-            }, 
-            {
-                "duration": 100.0, 
-                "entryType": "measure", 
-                "name": "lh:audit:mobile-friendly", 
                 "startTime": 0.0
             }, 
             {
