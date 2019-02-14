@@ -133,7 +133,7 @@ function getDOMStats(element, deep = true) {
       pathToElement: elementPathInDOM(parentWithMostChildren),
       snippet: getOuterHTMLSnippet(parentWithMostChildren, ['style']),
     },
-    totalBodyNodes: result.numNodes
+    totalBodyNodes: result.numNodes,
   };
 }
 
@@ -151,7 +151,7 @@ class DOMStats extends Gatherer {
       ${elementPathInDOM.toString()};
       return (${getDOMStats.toString()}(document.body));
     })()`;
-    await driver.sendCommand('DOM.enable')
+    await driver.sendCommand('DOM.enable');
     const results = await driver.evaluateAsync(expression, {useIsolation: true});
     await driver.sendCommand('DOM.disable');
     return results;
