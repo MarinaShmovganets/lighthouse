@@ -266,7 +266,7 @@ function collateResults(actual, expected) {
 }
 
 /**
- * @param {*} obj
+ * @param {unknown} obj
  */
 function isPlainObject(obj) {
   return Object.prototype.toString.call(obj) === '[object Object]';
