@@ -88,6 +88,7 @@ function getDOMStats(element, deep = true) {
   let deepestNode = null;
   let maxDepth = 0;
   let maxWidth = 0;
+  let numNodes = 0;
   let parentWithMostChildren = null;
 
   /**
@@ -112,9 +113,10 @@ function getDOMStats(element, deep = true) {
         _calcDOMWidthAndHeight(child.shadowRoot, depth + 1);
       }
       child = child.nextElementSibling;
+      numNodes++;
     }
 
-    return {maxDepth, maxWidth};
+    return {maxDepth, maxWidth, numNodes};
   };
 
   const result = _calcDOMWidthAndHeight(element);
@@ -131,6 +133,7 @@ function getDOMStats(element, deep = true) {
       pathToElement: elementPathInDOM(parentWithMostChildren),
       snippet: getOuterHTMLSnippet(parentWithMostChildren, ['style']),
     },
+    totalBodyNodes: result.numNodes
   };
 }
 
@@ -139,19 +142,19 @@ class DOMStats extends Gatherer {
    * @param {LH.Gatherer.PassContext} passContext
    * @return {Promise<LH.Artifacts['DOMStats']>}
    */
-  afterPass(passContext) {
+  async afterPass(passContext) {
+    const driver = passContext.driver;
+
     const expression = `(function() {
       ${pageFunctions.getOuterHTMLSnippetString};
       ${createSelectorsLabel.toString()};
       ${elementPathInDOM.toString()};
-      return (${getDOMStats.toString()}(document.documentElement));
+      return (${getDOMStats.toString()}(document.body));
     })()`;
-    return passContext.driver.sendCommand('DOM.enable')
-      .then(() => passContext.driver.evaluateAsync(expression, {useIsolation: true}))
-      .then(results => passContext.driver.getElementsInDocument('body').then(bodyNodes => {
-        results.totalBodyNodes = bodyNodes.length;
-        return passContext.driver.sendCommand('DOM.disable').then(() => results);
-      }));
+    await driver.sendCommand('DOM.enable')
+    const results = await driver.evaluateAsync(expression, {useIsolation: true});
+    await driver.sendCommand('DOM.disable');
+    return results;
   }
 }
 
