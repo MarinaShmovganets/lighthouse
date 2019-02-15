@@ -40,7 +40,7 @@ const UIStrings = {
   /** Title of the best practices section of the Accessibility category. Within this section are audits with descriptive titles that highlight common accessibility best practices. */
   a11yBestPracticesGroupTitle: 'Best practices',
   /* Description of the best practices section within the Accessibility category. Within this section are audits with descriptive titles that highlight common accessibility best practices. */
-  a11yBestPracticesGroupDescription: 'These are opportunities to improve the interpretation of your content by users in different locales.',
+  a11yBestPracticesGroupDescription: 'These items highlight common accessibility best practices.',
   /* Title of the color contrast section within the Accessibility category. Within this section are audits with descriptive titles that highlight the color and vision aspects of the page's accessibility that are passing or failing. */
   a11yColorContrastGroupTitle: 'Contrast',
   /* Description of the color contrast section within the Accessibility category. Within this section are audits with descriptive titles that highlight the color and vision aspects of the page's accessibility that are passing or failing. */
