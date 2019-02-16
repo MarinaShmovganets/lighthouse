@@ -3837,7 +3837,7 @@
     },
     "a11y-best-practices": {
       "title": "Best practices",
-      "description": "These are opportunities to improve the interpretation of your content by users in different locales."
+      "description": "These items highlight common accessibility best practices."
     },
     "a11y-color-contrast": {
       "title": "Contrast",
@@ -5566,8 +5566,7 @@
         "categoryGroups[a11y-best-practices].title"
       ],
       "lighthouse-core/config/default-config.js | a11yBestPracticesGroupDescription": [
-        "categoryGroups[a11y-best-practices].description",
-        "categoryGroups[a11y-language].description"
+        "categoryGroups[a11y-best-practices].description"
       ],
       "lighthouse-core/config/default-config.js | a11yColorContrastGroupTitle": [
         "categoryGroups[a11y-color-contrast].title"
@@ -5595,6 +5594,9 @@
       ],
       "lighthouse-core/config/default-config.js | a11yLanguageGroupTitle": [
         "categoryGroups[a11y-language].title"
+      ],
+      "lighthouse-core/config/default-config.js | a11yLanguageGroupDescription": [
+        "categoryGroups[a11y-language].description"
       ],
       "lighthouse-core/config/default-config.js | a11yAudioVideoGroupTitle": [
         "categoryGroups[a11y-audio-video].title"

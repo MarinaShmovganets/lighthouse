@@ -1044,7 +1044,7 @@
     "description": "Title of the navigation section within the Accessibility category. Within this section are audits with descriptive titles that highlight opportunities to provide alternative content for audio and video."
   },
   "lighthouse-core/config/default-config.js | a11yBestPracticesGroupDescription": {
-    "message": "These are opportunities to improve the interpretation of your content by users in different locales.",
+    "message": "These items highlight common accessibility best practices.",
     "description": "Description of the best practices section within the Accessibility category. Within this section are audits with descriptive titles that highlight common accessibility best practices."
   },
   "lighthouse-core/config/default-config.js | a11yBestPracticesGroupTitle": {
