@@ -1007,7 +1007,7 @@ Object {
       "title": "Audio and video",
     },
     "a11y-best-practices": Object {
-      "description": "These are opportunities to improve the interpretation of your content by users in different locales.",
+      "description": "These items highlight common accessibility best practices.",
       "title": "Best practices",
     },
     "a11y-color-contrast": Object {
@@ -1256,7 +1256,7 @@ Object {
       "title": "Audio and video",
     },
     "a11y-best-practices": Object {
-      "description": "These are opportunities to improve the interpretation of your content by users in different locales.",
+      "description": "These items highlight common accessibility best practices.",
       "title": "Best practices",
     },
     "a11y-color-contrast": Object {
