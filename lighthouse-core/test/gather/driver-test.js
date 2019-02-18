@@ -79,8 +79,57 @@ function createMockOnceFn() {
     return mockFn.mock.calls.find(call => call[0] === event)[1];
   };
 
+  mockFn.findListeners = event => {
+    return mockFn.mock.calls.filter(call => call[0] === event).map(call => call[1]);
+  };
+
   return mockFn;
 }
+
+/**
+ * Transparently augments the promise with inspectable functions to query its state.
+ *
+ * @template T
+ * @param {Promise<T>} promise
+ * @return {Promise<T> & {isDone: () => boolean, isResolved: () => boolean, isRejected: () => boolean}}
+ */
+function createInspectablePromise(promise) {
+  let isResolved = false;
+  let isRejected = false;
+  let resolvedValue = undefined;
+  let rejectionError = undefined;
+  const inspectablePromise = promise.then(value => {
+    isResolved = true;
+    resolvedValue = value;
+    return value;
+  }).catch(err => {
+    isRejected = true;
+    rejectionError = err;
+    throw err;
+  });
+
+  inspectablePromise.isDone = () => isResolved || isRejected;
+  inspectablePromise.isResolved = () => isResolved;
+  inspectablePromise.isRejected = () => isRejected;
+  inspectablePromise.getDebugValues = () => ({resolvedValue, rejectionError});
+
+  return inspectablePromise;
+}
+
+expect.extend({
+  toBeDone(received, failureMessage) {
+    const pass = received.isDone();
+
+    const message = () =>
+      [
+        `${this.utils.matcherHint('.toBeDone')}\n`,
+        `Expected promise to be resolved: ${this.utils.printExpected(failureMessage)}`,
+        `  ${this.utils.printReceived(received.getDebugValues())}`,
+      ].join('\n');
+
+    return {message, pass};
+  },
+});
 
 /**
  * In some functions we have lots of promise follow ups that get queued by protocol messages.
@@ -381,6 +430,23 @@ describe('.goOffline', () => {
 });
 
 describe('.gotoURL', () => {
+  function createMockListenerFn() {
+    let resolve, reject;
+    const promise = new Promise((r1, r2) => {
+      resolve = r1;
+      reject = r2;
+    });
+
+    const mockCancelFn = jest.fn();
+    const mockFn = jest.fn().mockReturnValue({promise, cancel: mockCancelFn})
+
+    mockFn.mockResolve = () => resolve();
+    mockFn.mockReject = err => reject(err || new Error('Rejected'));
+    mockFn.getMockCancelFn = () => mockCancelFn;
+
+    return mockFn;
+  }
+
   beforeEach(() => {
     connectionStub.sendCommand = createMockSendCommandFn()
       .mockResponse('Network.enable', {})
@@ -442,9 +508,121 @@ describe('.gotoURL', () => {
     expect(loadedUrl).toEqual(finalUrl);
   });
 
-  describe('when waitForNavigated', () => {});
+  describe('when waitForNavigated', () => {
+    it('waits for Page.frameNavigated', async () => {
+      driver.on = driver.once = createMockOnceFn()
+        .mockEvent('Page.frameNavigated');
+
+      const url = 'https://www.example.com';
+      const loadOptions = {
+        waitForNavigated: true,
+      };
+
+      const loadPromise = driver.gotoURL(url, loadOptions);
+      await flushAllTimersAndMicrotasks();
+      await loadPromise;
+    });
+  });
 
   describe('when waitForLoad', () => {
+    const url = 'https://example.com';
+
+    ['FCP', 'LoadEvent', 'NetworkIdle', 'CPUIdle'].forEach(name => {
+      it(`should wait for ${name}`, async () => {
+
+        driver._waitForFCP = createMockListenerFn();
+        driver._waitForLoadEvent = createMockListenerFn();
+        driver._waitForNetworkIdle = createMockListenerFn();
+        driver._waitForCPUIdle = createMockListenerFn();
+
+        const listener = driver[`_waitFor${name}`];
+        const otherListeners = [
+          driver._waitForFCP,
+          driver._waitForLoadEvent,
+          driver._waitForNetworkIdle,
+          driver._waitForCPUIdle,
+        ].filter(l => l !== listener);
+
+        const loadPromise = createInspectablePromise(driver.gotoURL(url, {
+          waitForFCP: true,
+          waitForLoad: true,
+        }));
+
+        // shouldn't finish all on its own
+        await flushAllTimersAndMicrotasks();
+        expect(loadPromise).not.toBeDone(`Did not wait for anything (${name})`);
+
+        // shouldn't resolve after all the other listeners
+        otherListeners.forEach(listener => listener.mockResolve());
+        await flushAllTimersAndMicrotasks();
+        expect(loadPromise).not.toBeDone(`Did not wait for ${name}`);
+
+        listener.mockResolve();
+        await flushAllTimersAndMicrotasks();
+        expect(loadPromise).toBeDone(`Did not resolve on ${name}`);
+        await loadPromise;
+      });
+    });
+
+    it('should wait for CPU Idle *after* network idle', async () => {
+      driver._waitForLoadEvent = createMockListenerFn();
+      driver._waitForNetworkIdle = createMockListenerFn();
+      driver._waitForCPUIdle = createMockListenerFn();
+
+      const loadPromise = createInspectablePromise(driver.gotoURL(url, {
+        waitForLoad: true,
+      }));
+
+      // shouldn't finish all on its own
+      await flushAllTimersAndMicrotasks();
+      expect(loadPromise).not.toBeDone(`Did not wait for anything`);
+      expect(driver._waitForLoadEvent).toHaveBeenCalled();
+      expect(driver._waitForNetworkIdle).toHaveBeenCalled();
+      expect(driver._waitForCPUIdle).not.toHaveBeenCalled();
+
+      // should have been called now
+      driver._waitForLoadEvent.mockResolve();
+      driver._waitForNetworkIdle.mockResolve();
+      await flushAllTimersAndMicrotasks();
+      expect(driver._waitForCPUIdle).toHaveBeenCalled();
+      expect(loadPromise).not.toBeDone(`Did not wait for CPU idle`);
+
+      driver._waitForCPUIdle.mockResolve();
+      await flushAllTimersAndMicrotasks();
+      expect(loadPromise).toBeDone(`Did not resolve on CPU idle`);
+      await loadPromise;
+    });
+
+    it('should timeout when not resolved fast enough', async () => {
+      driver._waitForLoadEvent = createMockListenerFn();
+      driver._waitForNetworkIdle = createMockListenerFn();
+      driver._waitForCPUIdle = createMockListenerFn();
+
+      const loadPromise = createInspectablePromise(driver.gotoURL(url, {
+        waitForLoad: true,
+        passContext: {
+          passConfig: {},
+          settings: {
+            maxWaitForLoad: 60000,
+          },
+        },
+      }));
+
+      // Resolve load and network to make sure we install CPU
+      driver._waitForLoadEvent.mockResolve();
+      driver._waitForNetworkIdle.mockResolve();
+      await flushAllTimersAndMicrotasks();
+      expect(loadPromise).not.toBeDone(`Did not wait for CPU idle`);
+
+      jest.advanceTimersByTime(60001);
+      await flushAllTimersAndMicrotasks();
+      expect(loadPromise).toBeDone(`Did not wait for timeout`);
+      // Check that we cancelled all our listeners
+      expect(driver._waitForLoadEvent.getMockCancelFn()).toHaveBeenCalled();
+      expect(driver._waitForNetworkIdle.getMockCancelFn()).toHaveBeenCalled();
+      expect(driver._waitForCPUIdle.getMockCancelFn()).toHaveBeenCalled();
+    });
+
     it('does not reject when page is secure', async () => {
       const secureSecurityState = {
         explanations: [],
@@ -452,17 +630,12 @@ describe('.gotoURL', () => {
       };
 
       driver.on = driver.once = createMockOnceFn()
-        .mockEvent('Security.securityStateChanged', secureSecurityState)
-        .mockEvent('Page.loadEventFired')
-        .mockEvent('Page.domContentEventFired');
+        .mockEvent('Security.securityStateChanged', secureSecurityState);
 
       const startUrl = 'https://www.example.com';
       const loadOptions = {
         waitForLoad: true,
         passContext: {
-          passConfig: {
-            networkQuietThresholdMs: 1,
-          },
           settings: {
             maxWaitForLoad: 1,
           },
@@ -628,20 +801,18 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
       .mockEvent('ServiceWorker.workerRegistrationUpdated', {registrations})
       .mockEvent('ServiceWorker.workerVersionUpdated', {versions});
 
-    let hasResolved = false;
-    const assertPromise = driver.assertNoSameOriginServiceWorkerClients(pageUrl).then(() => {
-      hasResolved = true;
-    });
+    const assertPromise = driver.assertNoSameOriginServiceWorkerClients(pageUrl);
+    const inspectable = createInspectablePromise(assertPromise);
 
     // After receiving the empty versions the promise still shouldn't be resolved
     await flushAllTimersAndMicrotasks();
-    expect(hasResolved).toBe(false);
+    expect(inspectable).not.toBeDone();
 
     // After we invoke the listener with the activated versions we expect the promise to have resolved
     const listener = driver.on.findListener('ServiceWorker.workerVersionUpdated');
     listener({versions: activatedVersions});
     await flushAllTimersAndMicrotasks();
-    expect(hasResolved).toBe(true);
+    expect(inspectable).toBeDone();
     await assertPromise;
   });
 });
