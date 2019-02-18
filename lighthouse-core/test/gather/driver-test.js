@@ -51,6 +51,7 @@ function createMockSendCommandFn() {
 
 /**
  * Creates a jest mock function whose implementation invokes `.on`/`.once` listeners after a setTimeout tick.
+ * Closely mirrors `createMockSendCommandFn`.
  *
  * It is decorated with two methods:
  *    - `mockEvent` which pushes protocol event payload for consumption
