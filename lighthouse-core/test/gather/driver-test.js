@@ -431,14 +431,15 @@ describe('.goOffline', () => {
 
 describe('.gotoURL', () => {
   function createMockListenerFn() {
-    let resolve, reject;
+    let resolve;
+    let reject;
     const promise = new Promise((r1, r2) => {
       resolve = r1;
       reject = r2;
     });
 
     const mockCancelFn = jest.fn();
-    const mockFn = jest.fn().mockReturnValue({promise, cancel: mockCancelFn})
+    const mockFn = jest.fn().mockReturnValue({promise, cancel: mockCancelFn});
 
     mockFn.mockResolve = () => resolve();
     mockFn.mockReject = err => reject(err || new Error('Rejected'));
@@ -529,7 +530,6 @@ describe('.gotoURL', () => {
 
     ['FCP', 'LoadEvent', 'NetworkIdle', 'CPUIdle'].forEach(name => {
       it(`should wait for ${name}`, async () => {
-
         driver._waitForFCP = createMockListenerFn();
         driver._waitForLoadEvent = createMockListenerFn();
         driver._waitForNetworkIdle = createMockListenerFn();
