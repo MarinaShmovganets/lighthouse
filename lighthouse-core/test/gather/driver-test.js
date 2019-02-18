@@ -50,6 +50,38 @@ function createMockSendCommandFn() {
 }
 
 /**
+ * Creates a jest mock function whose implementation invokes `.on`/`.once` listeners after a setTimeout tick.
+ *
+ * It is decorated with two methods:
+ *    - `mockEvent` which pushes protocol event payload for consumption
+ *    - `findListener` which asserts that `on` was invoked with the given event name and
+ *      returns the listener .
+ */
+function createMockOnceFn() {
+  const mockEvents = [];
+  const mockFn = jest.fn().mockImplementation((event, listener) => {
+    const indexOfResponse = mockEvents.findIndex(entry => entry.event === event);
+    if (indexOfResponse === -1) return;
+    const {response} = mockEvents[indexOfResponse];
+    mockEvents.splice(indexOfResponse, 1);
+    // Wait a tick because real events never fire immediately
+    setTimeout(() => listener(response), 0);
+  });
+
+  mockFn.mockEvent = (event, response) => {
+    mockEvents.push({event, response});
+    return mockFn;
+  };
+
+  mockFn.findListener = event => {
+    expect(mockFn).toHaveBeenCalledWith(event, expect.anything());
+    return mockFn.mock.calls.find(call => call[0] === event)[1];
+  };
+
+  return mockFn;
+}
+
+/**
  * In some functions we have lots of promise follow ups that get queued by protocol messages.
  * This is a convenience method to easily advance all timers and flush all the queued microtasks.
  */
@@ -58,18 +90,6 @@ async function flushAllTimersAndMicrotasks() {
     jest.advanceTimersByTime(1);
     await Promise.resolve();
   }
-}
-
-function createOnceStub(events) {
-  return (eventName, cb) => {
-    if (events[eventName]) {
-      // wait a tick b/c real events never fire immediately
-      setTimeout(_ => cb(events[eventName]), 0);
-      return;
-    }
-
-    throw Error(`Stub not implemented: ${eventName}`);
-  };
 }
 
 let driver;
@@ -429,11 +449,11 @@ describe('.gotoURL', () => {
         explanations: [],
         securityState: 'secure',
       };
-      driver.on = driver.once = createOnceStub({
-        'Security.securityStateChanged': secureSecurityState,
-        'Page.loadEventFired': {},
-        'Page.domContentEventFired': {},
-      });
+
+      driver.on = driver.once = createMockOnceFn()
+        .mockEvent('Security.securityStateChanged', secureSecurityState)
+        .mockEvent('Page.loadEventFired')
+        .mockEvent('Page.domContentEventFired');
 
       const startUrl = 'https://www.example.com';
       const loadOptions = {
@@ -471,9 +491,8 @@ describe('.gotoURL', () => {
         ],
         securityState: 'insecure',
       };
-      driver.on = createOnceStub({
-        'Security.securityStateChanged': insecureSecurityState,
-      });
+
+      driver.on = driver.once = createMockOnceFn();
 
       const startUrl = 'https://www.example.com';
       const loadOptions = {
@@ -485,14 +504,19 @@ describe('.gotoURL', () => {
         },
       };
 
-      expect.assertions(2);
+      // 2 assertions in the catch block and the 1 implicit in `findListener`
+      expect.assertions(3);
 
       try {
         const loadPromise = driver.gotoURL(startUrl, loadOptions);
         await flushAllTimersAndMicrotasks();
+
+        const listener = driver.on.findListener('Security.securityStateChanged');
+        listener(insecureSecurityState);
+        await flushAllTimersAndMicrotasks();
         await loadPromise;
       } catch (err) {
-        expect(err.code).toEqual('INSECURE_DOCUMENT_REQUEST');
+        expect(err).toMatchObject({code: 'INSECURE_DOCUMENT_REQUEST'});
         expect(err.friendlyMessage).toBeDisplayString(
           'The URL you have provided does not have valid security credentials. reason 1. reason 2.'
         );
@@ -529,18 +553,10 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
 
   it('will pass if there are no current service workers', async () => {
     const pageUrl = 'https://example.com/';
-    driver.once = createOnceStub({
-      'ServiceWorker.workerRegistrationUpdated': {
-        registrations: [],
-      },
-    });
 
-    driver.on = createOnceStub({
-      'ServiceWorker.workerVersionUpdated': {
-        versions: [],
-      },
-    });
-
+    driver.on = driver.once = createMockOnceFn()
+      .mockEvent('ServiceWorker.workerRegistrationUpdated', {registrations: []})
+      .mockEvent('ServiceWorker.workerVersionUpdated', {versions: []});
 
     const assertPromise = driver.assertNoSameOriginServiceWorkerClients(pageUrl);
     await flushAllTimersAndMicrotasks();
@@ -555,17 +571,9 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
     const registrations = [createSWRegistration(1, secondUrl)];
     const versions = [createActiveWorker(1, swUrl, ['uniqueId'])];
 
-    driver.once = createOnceStub({
-      'ServiceWorker.workerRegistrationUpdated': {
-        registrations,
-      },
-    });
-
-    driver.on = createOnceStub({
-      'ServiceWorker.workerVersionUpdated': {
-        versions,
-      },
-    });
+    driver.on = driver.once = createMockOnceFn()
+      .mockEvent('ServiceWorker.workerRegistrationUpdated', {registrations})
+      .mockEvent('ServiceWorker.workerVersionUpdated', {versions});
 
     const assertPromise = driver.assertNoSameOriginServiceWorkerClients(pageUrl);
     await flushAllTimersAndMicrotasks();
@@ -578,17 +586,9 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
     const registrations = [createSWRegistration(1, pageUrl)];
     const versions = [createActiveWorker(1, swUrl, ['uniqueId'])];
 
-    driver.once = createOnceStub({
-      'ServiceWorker.workerRegistrationUpdated': {
-        registrations,
-      },
-    });
-
-    driver.on = createOnceStub({
-      'ServiceWorker.workerVersionUpdated': {
-        versions,
-      },
-    });
+    driver.on = driver.once = createMockOnceFn()
+      .mockEvent('ServiceWorker.workerRegistrationUpdated', {registrations})
+      .mockEvent('ServiceWorker.workerVersionUpdated', {versions});
 
     expect.assertions(1);
 
@@ -607,17 +607,9 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
     const registrations = [createSWRegistration(1, pageUrl)];
     const versions = [createActiveWorker(1, swUrl, [])];
 
-    driver.once = createOnceStub({
-      'ServiceWorker.workerRegistrationUpdated': {
-        registrations,
-      },
-    });
-
-    driver.on = createOnceStub({
-      'ServiceWorker.workerVersionUpdated': {
-        versions,
-      },
-    });
+    driver.on = driver.once = createMockOnceFn()
+      .mockEvent('ServiceWorker.workerRegistrationUpdated', {registrations})
+      .mockEvent('ServiceWorker.workerVersionUpdated', {versions});
 
     const assertPromise = driver.assertNoSameOriginServiceWorkerClients(pageUrl);
     await flushAllTimersAndMicrotasks();
@@ -629,31 +621,26 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
     const swUrl = `${pageUrl}sw.js`;
     const registrations = [createSWRegistration(1, pageUrl)];
     const versions = [createActiveWorker(1, swUrl, [], 'installing')];
+    const activatedVersions = [createActiveWorker(1, swUrl, [], 'activated')];
 
-    driver.once = createOnceStub({
-      'ServiceWorker.workerRegistrationUpdated': {
-        registrations,
-      },
+    driver.on = driver.once = createMockOnceFn()
+      .mockEvent('ServiceWorker.workerRegistrationUpdated', {registrations})
+      .mockEvent('ServiceWorker.workerVersionUpdated', {versions});
+
+    let hasResolved = false;
+    const assertPromise = driver.assertNoSameOriginServiceWorkerClients(pageUrl).then(() => {
+      hasResolved = true;
     });
 
-    driver.on = (eventName, cb) => {
-      if (eventName === 'ServiceWorker.workerVersionUpdated') {
-        cb({versions});
-
-        setTimeout(() => {
-          cb({
-            versions: [createActiveWorker(1, swUrl, [], 'activated')],
-          });
-        }, 50);
-
-        return;
-      }
-
-      throw Error(`Stub not implemented: ${eventName}`);
-    };
-
-    const assertPromise = driver.assertNoSameOriginServiceWorkerClients(pageUrl);
+    // After receiving the empty versions the promise still shouldn't be resolved
     await flushAllTimersAndMicrotasks();
+    expect(hasResolved).toBe(false);
+
+    // After we invoke the listener with the activated versions we expect the promise to have resolved
+    const listener = driver.on.findListener('ServiceWorker.workerVersionUpdated');
+    listener({versions: activatedVersions});
+    await flushAllTimersAndMicrotasks();
+    expect(hasResolved).toBe(true);
     await assertPromise;
   });
 });
