@@ -60,8 +60,8 @@ function createMockSendCommandFn() {
  */
 function createMockOnceFn() {
   const mockEvents = [];
-  const mockFn = jest.fn().mockImplementation((event, listener) => {
-    const indexOfResponse = mockEvents.findIndex(entry => entry.event === event);
+  const mockFn = jest.fn().mockImplementation((eventName, listener) => {
+    const indexOfResponse = mockEvents.findIndex(entry => entry.event === eventName);
     if (indexOfResponse === -1) return;
     const {response} = mockEvents[indexOfResponse];
     mockEvents.splice(indexOfResponse, 1);
@@ -79,10 +79,6 @@ function createMockOnceFn() {
     return mockFn.mock.calls.find(call => call[0] === event)[1];
   };
 
-  mockFn.findListeners = event => {
-    return mockFn.mock.calls.filter(call => call[0] === event).map(call => call[1]);
-  };
-
   return mockFn;
 }
 
@@ -93,7 +89,7 @@ function createMockOnceFn() {
  * @param {Promise<T>} promise
  * @return {Promise<T> & {isDone: () => boolean, isResolved: () => boolean, isRejected: () => boolean}}
  */
-function createInspectablePromise(promise) {
+function makePromiseInspectable(promise) {
   let isResolved = false;
   let isRejected = false;
   let resolvedValue = undefined;
@@ -117,6 +113,13 @@ function createInspectablePromise(promise) {
 }
 
 expect.extend({
+  /**
+   * Asserts that an inspectable promise created by makePromiseInspectable is currently resolved or rejected.
+   * This is useful for situations where we want to test that we are actually waiting for a particular event.
+   *
+   * @param {ReturnType<makePromiseInspectable>} received
+   * @param {string} failureMessage
+   */
   toBeDone(received, failureMessage) {
     const pass = received.isDone();
 
@@ -430,7 +433,7 @@ describe('.goOffline', () => {
 });
 
 describe('.gotoURL', () => {
-  function createMockListenerFn() {
+  function createMockWaitForFn() {
     let resolve;
     let reject;
     const promise = new Promise((r1, r2) => {
@@ -511,16 +514,23 @@ describe('.gotoURL', () => {
 
   describe('when waitForNavigated', () => {
     it('waits for Page.frameNavigated', async () => {
-      driver.on = driver.once = createMockOnceFn()
-        .mockEvent('Page.frameNavigated');
+      driver.on = driver.once = createMockOnceFn();
 
       const url = 'https://www.example.com';
       const loadOptions = {
         waitForNavigated: true,
       };
 
-      const loadPromise = driver.gotoURL(url, loadOptions);
+      const loadPromise = makePromiseInspectable(driver.gotoURL(url, loadOptions));
       await flushAllTimersAndMicrotasks();
+      expect(loadPromise).not.toBeDone('Did not wait for frameNavigated');
+
+      // Use `findListener` instead of `mockEvent` so we can control exactly when the promise resolves
+      const listener = driver.on.findListener('Page.frameNavigated');
+      listener();
+      await flushAllTimersAndMicrotasks();
+      expect(loadPromise).toBeDone('Did not resolve after frameNavigated');
+
       await loadPromise;
     });
   });
@@ -530,20 +540,20 @@ describe('.gotoURL', () => {
 
     ['FCP', 'LoadEvent', 'NetworkIdle', 'CPUIdle'].forEach(name => {
       it(`should wait for ${name}`, async () => {
-        driver._waitForFCP = createMockListenerFn();
-        driver._waitForLoadEvent = createMockListenerFn();
-        driver._waitForNetworkIdle = createMockListenerFn();
-        driver._waitForCPUIdle = createMockListenerFn();
+        driver._waitForFCP = createMockWaitForFn();
+        driver._waitForLoadEvent = createMockWaitForFn();
+        driver._waitForNetworkIdle = createMockWaitForFn();
+        driver._waitForCPUIdle = createMockWaitForFn();
 
-        const listener = driver[`_waitFor${name}`];
-        const otherListeners = [
+        const waitForResult = driver[`_waitFor${name}`];
+        const otherWaitForResults = [
           driver._waitForFCP,
           driver._waitForLoadEvent,
           driver._waitForNetworkIdle,
           driver._waitForCPUIdle,
-        ].filter(l => l !== listener);
+        ].filter(l => l !== waitForResult);
 
-        const loadPromise = createInspectablePromise(driver.gotoURL(url, {
+        const loadPromise = makePromiseInspectable(driver.gotoURL(url, {
           waitForFCP: true,
           waitForLoad: true,
         }));
@@ -553,11 +563,11 @@ describe('.gotoURL', () => {
         expect(loadPromise).not.toBeDone(`Did not wait for anything (${name})`);
 
         // shouldn't resolve after all the other listeners
-        otherListeners.forEach(listener => listener.mockResolve());
+        otherWaitForResults.forEach(result => result.mockResolve());
         await flushAllTimersAndMicrotasks();
         expect(loadPromise).not.toBeDone(`Did not wait for ${name}`);
 
-        listener.mockResolve();
+        waitForResult.mockResolve();
         await flushAllTimersAndMicrotasks();
         expect(loadPromise).toBeDone(`Did not resolve on ${name}`);
         await loadPromise;
@@ -565,11 +575,11 @@ describe('.gotoURL', () => {
     });
 
     it('should wait for CPU Idle *after* network idle', async () => {
-      driver._waitForLoadEvent = createMockListenerFn();
-      driver._waitForNetworkIdle = createMockListenerFn();
-      driver._waitForCPUIdle = createMockListenerFn();
+      driver._waitForLoadEvent = createMockWaitForFn();
+      driver._waitForNetworkIdle = createMockWaitForFn();
+      driver._waitForCPUIdle = createMockWaitForFn();
 
-      const loadPromise = createInspectablePromise(driver.gotoURL(url, {
+      const loadPromise = makePromiseInspectable(driver.gotoURL(url, {
         waitForLoad: true,
       }));
 
@@ -594,11 +604,11 @@ describe('.gotoURL', () => {
     });
 
     it('should timeout when not resolved fast enough', async () => {
-      driver._waitForLoadEvent = createMockListenerFn();
-      driver._waitForNetworkIdle = createMockListenerFn();
-      driver._waitForCPUIdle = createMockListenerFn();
+      driver._waitForLoadEvent = createMockWaitForFn();
+      driver._waitForNetworkIdle = createMockWaitForFn();
+      driver._waitForCPUIdle = createMockWaitForFn();
 
-      const loadPromise = createInspectablePromise(driver.gotoURL(url, {
+      const loadPromise = makePromiseInspectable(driver.gotoURL(url, {
         waitForLoad: true,
         passContext: {
           passConfig: {},
@@ -685,12 +695,13 @@ describe('.gotoURL', () => {
         const loadPromise = driver.gotoURL(startUrl, loadOptions);
         await flushAllTimersAndMicrotasks();
 
+        // Use `findListener` instead of `mockEvent` so we can control exactly when the promise resolves
         const listener = driver.on.findListener('Security.securityStateChanged');
         listener(insecureSecurityState);
         await flushAllTimersAndMicrotasks();
         await loadPromise;
       } catch (err) {
-        expect(err).toMatchObject({code: 'INSECURE_DOCUMENT_REQUEST'});
+        expect(err).toHaveProperty('code', 'INSECURE_DOCUMENT_REQUEST');
         expect(err.friendlyMessage).toBeDisplayString(
           'The URL you have provided does not have valid security credentials. reason 1. reason 2.'
         );
@@ -802,12 +813,13 @@ describe('.assertNoSameOriginServiceWorkerClients', () => {
       .mockEvent('ServiceWorker.workerVersionUpdated', {versions});
 
     const assertPromise = driver.assertNoSameOriginServiceWorkerClients(pageUrl);
-    const inspectable = createInspectablePromise(assertPromise);
+    const inspectable = makePromiseInspectable(assertPromise);
 
     // After receiving the empty versions the promise still shouldn't be resolved
     await flushAllTimersAndMicrotasks();
     expect(inspectable).not.toBeDone();
 
+    // Use `findListener` instead of `mockEvent` so we can control exactly when the promise resolves
     // After we invoke the listener with the activated versions we expect the promise to have resolved
     const listener = driver.on.findListener('ServiceWorker.workerVersionUpdated');
     listener({versions: activatedVersions});
