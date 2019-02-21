@@ -11,6 +11,7 @@ Object {
     "lighthouse-plugin-nice-plugin": Object {
       "auditRefs": Array [
         Object {
+          "group": "group-a",
           "id": "nice-audit",
           "weight": 1,
         },
@@ -22,6 +23,15 @@ Object {
       "description": "A nice plugin for nice testing",
       "manualDescription": undefined,
       "title": "Nice Plugin",
+    },
+  },
+  "groups": Object {
+    "group-a": Object {
+      "title": "Group A",
+    },
+    "group-b": Object {
+      "description": "This description is optional",
+      "title": "Group B",
     },
   },
 }

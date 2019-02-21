@@ -721,6 +721,19 @@ describe('Config', () => {
       assert.strictEqual(config.categories['lighthouse-plugin-simple'].title, 'Simple');
     });
 
+    it('should append a group', () => {
+      const configJson = {
+        extends: 'lighthouse:default',
+        plugins: ['lighthouse-plugin-simple'],
+      };
+      const config = new Config(configJson, {configPath: configFixturePath});
+      const groupIds = Object.keys(config.groups);
+      assert.ok(groupIds.length > 1);
+      assert.strictEqual(groupIds[groupIds.length - 1], 'new-group');
+      assert.strictEqual(config.groups['new-group'].title, 'New Group');
+    });
+
+
     it('should throw if the plugin is invalid', () => {
       const configJson = {
         extends: 'lighthouse:default',

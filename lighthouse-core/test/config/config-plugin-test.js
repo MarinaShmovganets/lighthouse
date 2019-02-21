@@ -21,11 +21,20 @@ function deepClone(val) {
 const nicePluginName = 'lighthouse-plugin-nice-plugin';
 const nicePlugin = {
   audits: [{path: 'not/a/path/audit.js'}],
+  groups: {
+    'group-a': {
+      title: 'Group A',
+    },
+    'group-b': {
+      title: 'Group B',
+      description: 'This description is optional',
+    },
+  },
   category: {
     title: 'Nice Plugin',
     description: 'A nice plugin for nice testing',
     auditRefs: [
-      {id: 'nice-audit', weight: 1},
+      {id: 'nice-audit', weight: 1, group: 'group-a'},
       {id: 'installable-manifest', weight: 220},
     ],
   },
@@ -202,7 +211,7 @@ describe('ConfigPlugin', () => {
         const pluginJson = ConfigPlugin.parsePlugin(nicePlugin, nicePluginName);
 
         const auditRefs = pluginJson.categories[nicePluginName].auditRefs;
-        assert.deepStrictEqual(auditRefs[0], {id: 'nice-audit', weight: 1});
+        assert.deepStrictEqual(auditRefs[0], {id: 'nice-audit', weight: 1, group: 'group-a'});
         assert.deepStrictEqual(auditRefs[1], {id: 'installable-manifest', weight: 220});
       });
 

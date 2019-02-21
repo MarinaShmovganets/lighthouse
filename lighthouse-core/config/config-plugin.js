@@ -84,7 +84,7 @@ class ConfigPlugin {
     }
 
     return auditRefsJson.map(auditRefJson => {
-      const {id, weight, ...invalidRest} = auditRefJson;
+      const {id, weight, group: group, ...invalidRest} = auditRefJson;
       assertNoExcessProperties(invalidRest, pluginName, 'auditRef');
 
       if (typeof id !== 'string') {
@@ -93,10 +93,14 @@ class ConfigPlugin {
       if (typeof weight !== 'number') {
         throw new Error(`${pluginName} has an invalid auditRef weight.`);
       }
+      if (typeof group !== 'string' && typeof group !== 'undefined') {
+        throw new Error(`${pluginName} has an invalid auditRef group.`);
+      }
 
       return {
         id,
         weight,
+        ...group && {group},
       };
     });
   }
@@ -141,6 +145,56 @@ class ConfigPlugin {
     };
   }
 
+
+  /**
+   * Extract and validate groups JSON added by the plugin.
+   * @param {unknown} groupsJson
+   * @param {string} pluginName
+   * @return {Record<string, LH.Config.GroupJson>|undefined}
+   */
+  static _parseGroups(groupsJson, pluginName) {
+    if (groupsJson === undefined) {
+      return undefined;
+    }
+
+    if (!isObjectOfUnknownProperties(groupsJson)) {
+      throw new Error(`${pluginName} group json is not valid.`);
+    }
+
+    if (typeof groupsJson !== 'object') {
+      throw new Error(`${pluginName} has an invalid group type.`);
+    }
+    const groupIds = Object.keys(groupsJson);
+    if (!groupIds.length) {
+      throw new Error(`${pluginName} has an an empty groups object.`);
+    }
+    /** @type {Record<string, LH.Config.GroupJson>} **/
+    const parsedGroupsJson = {};
+    groupIds.forEach(groupId => {
+      if (typeof groupId !== 'string') {
+        throw new Error(`${pluginName} has an invalid group ID.`);
+      }
+      const groupJson = groupsJson[groupId];
+      if (!isObjectOfUnknownProperties(groupJson)) {
+        throw new Error(`${pluginName} has an invalid group.`);
+      }
+      const {title, description, ...invalidRest} = groupJson;
+      assertNoExcessProperties(invalidRest, pluginName, 'group');
+
+      if (typeof title !== 'string') {
+        throw new Error(`${pluginName} has an invalid group name.`);
+      }
+      if (typeof description !== 'string' && typeof description !== 'undefined') {
+        throw new Error(`${pluginName} has an invalid group description.`);
+      }
+      parsedGroupsJson[groupId] = {
+        title,
+        ...description && {description},
+      };
+    });
+    return parsedGroupsJson;
+  }
+
   /**
    * Extracts and validates a ConfigJson from the provided plugin input, throwing
    * if it deviates from the expected object shape.
@@ -156,6 +210,7 @@ class ConfigPlugin {
     }
 
     const {
+      groups: pluginGroupsJson,
       audits: pluginAuditsJson,
       category: pluginCategoryJson,
       ...invalidRest
@@ -164,6 +219,7 @@ class ConfigPlugin {
     assertNoExcessProperties(invalidRest, pluginName);
 
     return {
+      ...pluginGroupsJson && {groups: ConfigPlugin._parseGroups(pluginGroupsJson, pluginName)},
       audits: ConfigPlugin._parseAuditsList(pluginAuditsJson, pluginName),
       categories: {
         [pluginName]: ConfigPlugin._parseCategory(pluginCategoryJson, pluginName),
