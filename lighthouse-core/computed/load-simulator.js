@@ -26,6 +26,8 @@ class LoadSimulator {
       serverResponseTimeByOrigin: networkAnalysis.serverResponseTimeByOrigin,
     };
 
+    // If we have precomputed lantern data, overwrite our observed estimates and use precomputed instead
+    // for increased stability.
     if (precomputedLanternData) {
       options.additionalRttByOrigin = new Map(Object.entries(
         precomputedLanternData.additionalRttByOrigin));
@@ -65,6 +67,24 @@ class LoadSimulator {
     }
 
     return new Simulator(options);
+  }
+
+  /**
+   * @param {LH.Artifacts.NetworkAnalysis} networkAnalysis
+   * @return {LH.PrecomputedLanternData}
+   */
+  static convertAnalysisToSaveableLanternData(networkAnalysis) {
+    /** @type {LH.PrecomputedLanternData} */
+    const lanternData = {additionalRttByOrigin: {}, serverResponseTimeByOrigin: {}};
+    for (const [origin, value] of networkAnalysis.additionalRttByOrigin.entries()) {
+      if (origin.startsWith('http')) lanternData.additionalRttByOrigin[origin] = value;
+    }
+
+    for (const [origin, value] of networkAnalysis.serverResponseTimeByOrigin.entries()) {
+      if (origin.startsWith('http')) lanternData.serverResponseTimeByOrigin[origin] = value;
+    }
+
+    return lanternData;
   }
 }
 

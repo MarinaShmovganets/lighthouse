@@ -87,18 +87,22 @@ describe('Simulator artifact', () => {
     const settings = {throttlingMethod: 'simulate', precomputedLanternData};
     const context = {settings, computedCache: new Map()};
     const simulator = await LoadSimulator.request({devtoolsLog, settings}, context);
-    simulator.simulate(createNetworkNode());
+    const result = simulator.simulate(createNetworkNode());
 
     const {additionalRttByOrigin, serverResponseTimeByOrigin} = simulator._connectionPool._options;
+    // Make sure we passed through the right RTT
     expect(additionalRttByOrigin).toEqual(new Map([
       ['https://pwa.rocks', 1000],
       ['https://www.googletagmanager.com', 500],
       ['https://www.google-analytics.com', 1000],
     ]));
+    // Make sure we passed through the right response time
     expect(serverResponseTimeByOrigin).toEqual(new Map([
       ['https://pwa.rocks', 150],
       ['https://www.googletagmanager.com', 200],
       ['https://www.google-analytics.com', 400],
     ]));
+    // Make sure the simulation used those numbers
+    expect(result.timeInMs).toBeGreaterThan(2000);
   });
 });

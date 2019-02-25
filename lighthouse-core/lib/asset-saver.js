@@ -15,6 +15,7 @@ const Metrics = require('./traces/pwmetrics-events.js');
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 const NetworkAnalysisComputed = require('../computed/network-analysis.js');
+const LoadSimulatorComputed = require('../computed/load-simulator.js');
 
 const artifactsFilename = 'artifacts.json';
 const traceSuffix = '.trace.json';
@@ -281,16 +282,7 @@ async function logAssets(artifacts, audits) {
 async function saveLanternNetworkData(devtoolsLog, outputPath) {
   const context = /** @type {LH.Audit.Context} */ ({computedCache: new Map()});
   const networkAnalysis = await NetworkAnalysisComputed.request(devtoolsLog, context);
-
-  /** @type {LH.PrecomputedLanternData} */
-  const lanternData = {additionalRttByOrigin: {}, serverResponseTimeByOrigin: {}};
-  for (const [origin, value] of networkAnalysis.additionalRttByOrigin.entries()) {
-    if (origin.startsWith('http')) lanternData.additionalRttByOrigin[origin] = value;
-  }
-
-  for (const [origin, value] of networkAnalysis.serverResponseTimeByOrigin.entries()) {
-    if (origin.startsWith('http')) lanternData.serverResponseTimeByOrigin[origin] = value;
-  }
+  const lanternData = LoadSimulatorComputed.convertAnalysisToSaveableLanternData(networkAnalysis);
 
   fs.writeFileSync(outputPath, JSON.stringify(lanternData));
 }
