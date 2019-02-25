@@ -113,7 +113,7 @@ function requestHandler(request, response) {
 
     // Delay the response
     if (delay > 0) {
-      return setTimeout(finishResponse, delay, data);
+      return setTimeout(finishResponse, delay, data, useGzip);
     }
 
     finishResponse(data, useGzip);
