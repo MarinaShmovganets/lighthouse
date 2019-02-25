@@ -23,7 +23,10 @@ describe('Simulator artifact', () => {
   it('returns a simulator for "provided" throttling', async () => {
     const settings = {throttlingMethod: 'provided'};
     const context = {settings, computedCache: new Map()};
-    const simulator = await LoadSimulator.request({devtoolsLog, settings}, context);
+    const simulator = await LoadSimulator.request({
+      devtoolsLog,
+      settings,
+    }, context);
 
     assert.equal(Math.round(simulator._rtt), 3);
     assert.equal(Math.round(simulator._throughput / 1024), 1590);
@@ -35,7 +38,10 @@ describe('Simulator artifact', () => {
     const throttling = {requestLatencyMs: 375, downloadThroughputKbps: 900};
     const settings = {throttlingMethod: 'devtools', throttling};
     const context = {settings, computedCache: new Map()};
-    const simulator = await LoadSimulator.request({devtoolsLog, settings}, context);
+    const simulator = await LoadSimulator.request({
+      devtoolsLog,
+      settings,
+    }, context);
 
     assert.equal(simulator._rtt, 100);
     assert.equal(simulator._throughput / 1024, 1000);
