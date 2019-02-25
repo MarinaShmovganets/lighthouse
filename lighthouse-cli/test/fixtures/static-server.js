@@ -106,6 +106,7 @@ function requestHandler(request, response) {
     }
 
     if (useGzip) {
+      data = zlib.gzipSync(data);
       headers['Content-Encoding'] = 'gzip';
     }
 
@@ -113,10 +114,10 @@ function requestHandler(request, response) {
 
     // Delay the response
     if (delay > 0) {
-      return setTimeout(finishResponse, delay, data, useGzip);
+      return setTimeout(finishResponse, delay, data);
     }
 
-    finishResponse(data, useGzip);
+    finishResponse(data);
   }
 
   function sendRedirect(url) {
@@ -127,12 +128,8 @@ function requestHandler(request, response) {
     response.end();
   }
 
-  function finishResponse(data, useGzip) {
-    if (useGzip) {
-      response.write(zlib.gzipSync(data), 'binary');
-    } else {
-      response.write(data, 'binary');
-    }
+  function finishResponse(data) {
+    response.write(data, 'binary');
     response.end();
   }
 }
