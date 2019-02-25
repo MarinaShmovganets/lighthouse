@@ -71,7 +71,7 @@ describe('ConfigPlugin', () => {
       description: 'A plugin that\'s trying to undermine you.',
       manualDescription: 'Still here.',
       auditRefs: [
-        {id: 'evil-audit', weight: 0},
+        {id: 'evil-audit', weight: 0, group: undefined},
       ],
     };
 
@@ -211,8 +211,10 @@ describe('ConfigPlugin', () => {
         const pluginJson = ConfigPlugin.parsePlugin(nicePlugin, nicePluginName);
 
         const auditRefs = pluginJson.categories[nicePluginName].auditRefs;
-        assert.deepStrictEqual(auditRefs[0], {id: 'nice-audit', weight: 1, group: 'group-a'});
-        assert.deepStrictEqual(auditRefs[1], {id: 'installable-manifest', weight: 220});
+        assert.deepStrictEqual(auditRefs[0],
+          {id: 'nice-audit', weight: 1, group: 'lighthouse-plugin-nice-plugin-group-a'});
+        assert.deepStrictEqual(auditRefs[1],
+          {id: 'installable-manifest', weight: 220, group: undefined});
       });
 
       it('throws if auditRefs is missing', () => {

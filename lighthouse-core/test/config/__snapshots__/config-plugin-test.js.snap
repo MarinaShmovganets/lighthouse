@@ -11,11 +11,12 @@ Object {
     "lighthouse-plugin-nice-plugin": Object {
       "auditRefs": Array [
         Object {
-          "group": "group-a",
+          "group": "lighthouse-plugin-nice-plugin-group-a",
           "id": "nice-audit",
           "weight": 1,
         },
         Object {
+          "group": undefined,
           "id": "installable-manifest",
           "weight": 220,
         },
@@ -26,10 +27,11 @@ Object {
     },
   },
   "groups": Object {
-    "group-a": Object {
+    "lighthouse-plugin-nice-plugin-group-a": Object {
+      "description": undefined,
       "title": "Group A",
     },
-    "group-b": Object {
+    "lighthouse-plugin-nice-plugin-group-b": Object {
       "description": "This description is optional",
       "title": "Group B",
     },

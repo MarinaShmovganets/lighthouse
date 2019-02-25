@@ -729,8 +729,8 @@ describe('Config', () => {
       const config = new Config(configJson, {configPath: configFixturePath});
       const groupIds = Object.keys(config.groups);
       assert.ok(groupIds.length > 1);
-      assert.strictEqual(groupIds[groupIds.length - 1], 'new-group');
-      assert.strictEqual(config.groups['new-group'].title, 'New Group');
+      assert.strictEqual(groupIds[groupIds.length - 1], 'lighthouse-plugin-simple-new-group');
+      assert.strictEqual(config.groups['lighthouse-plugin-simple-new-group'].title, 'New Group');
     });
 
 

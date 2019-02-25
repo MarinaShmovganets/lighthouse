@@ -84,7 +84,7 @@ class ConfigPlugin {
     }
 
     return auditRefsJson.map(auditRefJson => {
-      const {id, weight, group: group, ...invalidRest} = auditRefJson;
+      const {id, weight, group, ...invalidRest} = auditRefJson;
       assertNoExcessProperties(invalidRest, pluginName, 'auditRef');
 
       if (typeof id !== 'string') {
@@ -97,10 +97,11 @@ class ConfigPlugin {
         throw new Error(`${pluginName} has an invalid auditRef group.`);
       }
 
+      const prependedGroup = group ? `${pluginName}-${group}` : group;
       return {
         id,
         weight,
-        ...group && {group},
+        group: prependedGroup,
       };
     });
   }
@@ -164,17 +165,13 @@ class ConfigPlugin {
     if (typeof groupsJson !== 'object') {
       throw new Error(`${pluginName} has an invalid group type.`);
     }
-    const groupIds = Object.keys(groupsJson);
-    if (!groupIds.length) {
+    const groups = Object.entries(groupsJson);
+    if (!groups.length) {
       throw new Error(`${pluginName} has an an empty groups object.`);
     }
     /** @type {Record<string, LH.Config.GroupJson>} **/
     const parsedGroupsJson = {};
-    groupIds.forEach(groupId => {
-      if (typeof groupId !== 'string') {
-        throw new Error(`${pluginName} has an invalid group ID.`);
-      }
-      const groupJson = groupsJson[groupId];
+    groups.forEach(([groupId, groupJson]) => {
       if (!isObjectOfUnknownProperties(groupJson)) {
         throw new Error(`${pluginName} has an invalid group.`);
       }
@@ -182,14 +179,14 @@ class ConfigPlugin {
       assertNoExcessProperties(invalidRest, pluginName, 'group');
 
       if (typeof title !== 'string') {
-        throw new Error(`${pluginName} has an invalid group name.`);
+        throw new Error(`${pluginName} has an invalid group title.`);
       }
       if (typeof description !== 'string' && typeof description !== 'undefined') {
         throw new Error(`${pluginName} has an invalid group description.`);
       }
-      parsedGroupsJson[groupId] = {
+      parsedGroupsJson[`${pluginName}-${groupId}`] = {
         title,
-        ...description && {description},
+        description,
       };
     });
     return parsedGroupsJson;
