@@ -72,7 +72,7 @@ function requestHandler(request, response) {
     }
 
     let delay = 0;
-    let gzip = false;
+    let useGzip = false;
     if (queryString) {
       const params = new URLSearchParams(queryString);
       // set document status-code
@@ -96,7 +96,7 @@ function requestHandler(request, response) {
       }
 
       if (params.has('gzip')) {
-        gzip = Boolean(params.get('gzip'));
+        useGzip = Boolean(params.get('gzip'));
       }
 
       // redirect url to new url if present
@@ -105,7 +105,7 @@ function requestHandler(request, response) {
       }
     }
 
-    if (gzip) {
+    if (useGzip) {
       headers['Content-Encoding'] = 'gzip';
     }
 
@@ -116,7 +116,7 @@ function requestHandler(request, response) {
       return setTimeout(finishResponse, delay, data);
     }
 
-    finishResponse(data, gzip);
+    finishResponse(data, useGzip);
   }
 
   function sendRedirect(url) {
@@ -127,8 +127,8 @@ function requestHandler(request, response) {
     response.end();
   }
 
-  function finishResponse(data, gzip) {
-    if (gzip) {
+  function finishResponse(data, useGzip) {
+    if (useGzip) {
       response.write(zlib.gzipSync(data), 'binary');
     } else {
       response.write(data, 'binary');
