@@ -2158,13 +2158,6 @@
             "wastedBytes": 1108
           },
           {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true",
-            "cacheLifetimeMs": 0,
-            "cacheHitProbability": 0,
-            "totalBytes": 821,
-            "wastedBytes": 821
-          },
-          {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
             "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
@@ -2172,7 +2165,7 @@
             "wastedBytes": 821
           },
           {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
             "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 821,
@@ -2186,7 +2179,14 @@
             "wastedBytes": 821
           },
           {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true",
+            "cacheLifetimeMs": 0,
+            "cacheHitProbability": 0,
+            "totalBytes": 821,
+            "wastedBytes": 821
+          },
+          {
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
             "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
             "totalBytes": 821,
@@ -2264,15 +2264,15 @@
             "totalBytes": 1108
           },
           {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
-            "totalBytes": 821
-          },
-          {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true",
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
             "totalBytes": 821
           },
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
+            "totalBytes": 821
+          },
+          {
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
             "totalBytes": 821
           }
         ]
@@ -2410,8 +2410,8 @@
     },
     "unused-css-rules": {
       "id": "unused-css-rules",
-      "title": "Defer unused CSS",
-      "description": "Remove unused rules from stylesheets to reduce unnecessary bytes consumed by network activity. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/unused-css).",
+      "title": "Remove unused CSS",
+      "description": "Remove dead rules from stylesheets and defer the loading of CSS not used for above-the-fold content to reduce unnecessary bytes consumed by network activity. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/unused-css).",
       "score": 1,
       "scoreDisplayMode": "numeric",
       "rawValue": 0,
@@ -3140,14 +3140,6 @@
       "scoreDisplayMode": "notApplicable",
       "rawValue": true
     },
-    "mobile-friendly": {
-      "id": "mobile-friendly",
-      "title": "Page is mobile friendly",
-      "description": "Take the [Mobile-Friendly Test](https://search.google.com/test/mobile-friendly) to check for audits not covered by Lighthouse, like sizing tap targets appropriately. [Learn more](https://developers.google.com/search/mobile-sites/).",
-      "score": null,
-      "scoreDisplayMode": "manual",
-      "rawValue": false
-    },
     "structured-data": {
       "id": "structured-data",
       "title": "Structured data is valid",
@@ -3726,10 +3718,6 @@
           "id": "tap-targets",
           "weight": 1,
           "group": "seo-mobile"
-        },
-        {
-          "id": "mobile-friendly",
-          "weight": 0
         },
         {
           "id": "structured-data",
@@ -4803,12 +4791,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:mobile-friendly",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:structured-data",
         "duration": 100,
         "entryType": "measure"
@@ -5456,6 +5438,18 @@
       "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMWidth": [
         "audits[dom-size].details.items[2].statistic"
       ],
+      "lighthouse-core/audits/seo/meta-description.js | failureTitle": [
+        "audits[meta-description].title"
+      ],
+      "lighthouse-core/audits/seo/meta-description.js | description": [
+        "audits[meta-description].description"
+      ],
+      "lighthouse-core/audits/seo/http-status-code.js | title": [
+        "audits[http-status-code].title"
+      ],
+      "lighthouse-core/audits/seo/http-status-code.js | description": [
+        "audits[http-status-code].description"
+      ],
       "lighthouse-core/audits/seo/font-size.js | title": [
         "audits[font-size].title"
       ],
@@ -5470,11 +5464,53 @@
           "path": "audits[font-size].displayValue"
         }
       ],
+      "lighthouse-core/audits/seo/link-text.js | title": [
+        "audits[link-text].title"
+      ],
+      "lighthouse-core/audits/seo/link-text.js | description": [
+        "audits[link-text].description"
+      ],
+      "lighthouse-core/audits/seo/is-crawlable.js | failureTitle": [
+        "audits[is-crawlable].title"
+      ],
+      "lighthouse-core/audits/seo/is-crawlable.js | description": [
+        "audits[is-crawlable].description"
+      ],
+      "lighthouse-core/audits/seo/robots-txt.js | failureTitle": [
+        "audits[robots-txt].title"
+      ],
+      "lighthouse-core/audits/seo/robots-txt.js | description": [
+        "audits[robots-txt].description"
+      ],
       "lighthouse-core/audits/seo/tap-targets.js | failureTitle": [
         "audits[tap-targets].title"
       ],
       "lighthouse-core/audits/seo/tap-targets.js | description": [
         "audits[tap-targets].description"
+      ],
+      "lighthouse-core/audits/seo/hreflang.js | title": [
+        "audits.hreflang.title"
+      ],
+      "lighthouse-core/audits/seo/hreflang.js | description": [
+        "audits.hreflang.description"
+      ],
+      "lighthouse-core/audits/seo/plugins.js | title": [
+        "audits.plugins.title"
+      ],
+      "lighthouse-core/audits/seo/plugins.js | description": [
+        "audits.plugins.description"
+      ],
+      "lighthouse-core/audits/seo/canonical.js | title": [
+        "audits.canonical.title"
+      ],
+      "lighthouse-core/audits/seo/canonical.js | description": [
+        "audits.canonical.description"
+      ],
+      "lighthouse-core/audits/seo/manual/structured-data.js | title": [
+        "audits[structured-data].title"
+      ],
+      "lighthouse-core/audits/seo/manual/structured-data.js | description": [
+        "audits[structured-data].description"
       ],
       "lighthouse-core/config/default-config.js | performanceCategoryTitle": [
         "categories.performance.title"
@@ -5487,6 +5523,15 @@
       ],
       "lighthouse-core/config/default-config.js | a11yCategoryManualDescription": [
         "categories.accessibility.manualDescription"
+      ],
+      "lighthouse-core/config/default-config.js | seoCategoryTitle": [
+        "categories.seo.title"
+      ],
+      "lighthouse-core/config/default-config.js | seoCategoryDescription": [
+        "categories.seo.description"
+      ],
+      "lighthouse-core/config/default-config.js | seoCategoryManualDescription": [
+        "categories.seo.manualDescription"
       ],
       "lighthouse-core/config/default-config.js | metricGroupTitle": [
         "categoryGroups.metrics.title"
