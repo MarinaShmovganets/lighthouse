@@ -152,6 +152,6 @@ module.exports = {
   enableCPUThrottling,
   disableCPUThrottling,
   goOffline,
-  NEXUS5X_USERAGENT,
+  MOBILE_USERAGENT: NEXUS5X_USERAGENT,
   DESKTOP_USERAGENT,
 };
