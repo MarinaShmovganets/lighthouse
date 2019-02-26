@@ -93,6 +93,7 @@ describe('ConfigPlugin', () => {
       categories: {
         'lighthouse-plugin-evil': evilCategory,
       },
+      groups: undefined,
     });
     assert.strictEqual(Object.getOwnPropertyDescriptor(pluginJson, 'audits').get, undefined);
   });
@@ -262,6 +263,57 @@ describe('ConfigPlugin', () => {
         assert.throws(() => ConfigPlugin.parsePlugin(pluginClone2, nicePluginName),
           /^Error: lighthouse-plugin-nice-plugin has an invalid auditRef weight/);
       });
+    });
+  });
+
+  describe('`groups`', () => {
+    it('throws if auditRef has an invalid group id', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.category.auditRefs[0].group = 55;
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has an invalid auditRef group/);
+    });
+
+    it('accepts a plugin with no groups', () => {
+      const pluginClone = deepClone(nicePlugin);
+      delete pluginClone.groups;
+      const pluginJson = ConfigPlugin.parsePlugin(pluginClone, nicePluginName);
+      assert.ok(pluginJson);
+    });
+
+    it('throws if groups is not an object', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.groups = [0, 1, 2, 3];
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin groups json is not valid/);
+    });
+
+    it('throws if groups contains non-objects', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.groups['group-b'] = [0, 1, 2, 3];
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has an invalid group/);
+    });
+
+    it('throws if groups is empty', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.groups = {};
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has an empty groups object/);
+    });
+
+    it('throws if group title is invalid', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.groups['group-a'].title = 55;
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has an invalid group title/);
+    });
+
+    it('throws if group description is invalid', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.groups['group-a'].description = 55;
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has an invalid group description/);
     });
   });
 });

@@ -159,15 +159,12 @@ class ConfigPlugin {
     }
 
     if (!isObjectOfUnknownProperties(groupsJson)) {
-      throw new Error(`${pluginName} group json is not valid.`);
+      throw new Error(`${pluginName} groups json is not valid.`);
     }
 
-    if (typeof groupsJson !== 'object') {
-      throw new Error(`${pluginName} has an invalid group type.`);
-    }
     const groups = Object.entries(groupsJson);
     if (!groups.length) {
-      throw new Error(`${pluginName} has an an empty groups object.`);
+      throw new Error(`${pluginName} has an empty groups object.`);
     }
     /** @type {Record<string, LH.Config.GroupJson>} **/
     const parsedGroupsJson = {};
@@ -216,7 +213,7 @@ class ConfigPlugin {
     assertNoExcessProperties(invalidRest, pluginName);
 
     return {
-      ...pluginGroupsJson && {groups: ConfigPlugin._parseGroups(pluginGroupsJson, pluginName)},
+      groups: ConfigPlugin._parseGroups(pluginGroupsJson, pluginName),
       audits: ConfigPlugin._parseAuditsList(pluginAuditsJson, pluginName),
       categories: {
         [pluginName]: ConfigPlugin._parseCategory(pluginCategoryJson, pluginName),
