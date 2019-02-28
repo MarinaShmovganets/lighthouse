@@ -37,8 +37,9 @@ const RETRIES = 3;
 const VERBOSE = Boolean(process.env.LH_SMOKE_VERBOSE);
 const NUMBER_REGEXP = /(?:\d|\.)+/.source;
 const OPS_REGEXP = /<=?|>=?|\+\/-/.source;
+// An optional number, optional whitespace, an operator, optional whitespace, a number.
 const NUMERICAL_EXPECTATION_REGEXP =
-  new RegExp(`^(${NUMBER_REGEXP})?\\s?(${OPS_REGEXP})\\s?(${NUMBER_REGEXP})$`);
+  new RegExp(`^(${NUMBER_REGEXP})?\\s*(${OPS_REGEXP})\\s*(${NUMBER_REGEXP})$`);
 
 /**
  * Attempt to resolve a path locally. If this fails, attempts to locate the path
