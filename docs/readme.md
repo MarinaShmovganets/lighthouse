@@ -82,6 +82,29 @@ log.setLevel(flags.logLevel);
 launchChromeAndRunLighthouse('https://example.com', flags).then(...);
 ```
 
+## Configuration
+In order to configure Lighthouse programmatically, you need to pass the config object as the 3rd argument.
+
+**Example:**
+```js
+{
+  extends: 'lighthouse:default',
+  settings: {
+    onlyAudits: [
+      'first-meaningful-paint',
+      'speed-index-metric',
+      'estimated-input-latency',
+      'first-interactive',
+      'consistently-interactive',
+    ],
+  },
+}
+```
+
+You can extend base configuration from either [lighthouse:default](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/config/default-config.js) or [lighthouse:full](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/config/full-config.js). Alternatively, you can build up your own configuration from scratch to have complete control.
+
+For more information on the types of config you can provide, see [Lighthouse Configuration](https://github.com/GoogleChrome/lighthouse/blob/master/docs/configuration.md).
+
 ## Testing on a site with authentication
 
 When installed globally via `npm i -g lighthouse` or `yarn global add lighthouse`,
@@ -89,8 +112,8 @@ When installed globally via `npm i -g lighthouse` or `yarn global add lighthouse
 instance with an open debugging port.
 
 1. Run `chrome-debug`. This will log the debugging port of your Chrome instance
-1. Navigate to your site and log in.
-1. In a separate terminal tab, run `lighthouse http://mysite.com --port port-number` using the port number from chrome-debug.
+2. Navigate to your site and log in.
+3. In a separate terminal tab, run `lighthouse http://mysite.com --port port-number` using the port number from chrome-debug.
 
 ## Testing on a mobile device
 
