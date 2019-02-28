@@ -56,6 +56,7 @@ Configuration:
   --print-config                 Print the normalized config for the given config and options, then exit.                                  [boolean]
   --additional-trace-categories  Additional categories to capture with the trace (comma-delimited).
   --config-path                  The path to the config JSON.
+                                 An example config file: lighthouse-core/config/lr-desktop-config.js
   --chrome-flags                 Custom flags to pass to Chrome (space-delimited). For a full list of flags, see
                                  http://peter.sh/experiments/chromium-command-line-switches/.
 
