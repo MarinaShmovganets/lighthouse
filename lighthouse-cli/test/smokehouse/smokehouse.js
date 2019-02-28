@@ -152,19 +152,18 @@ function runLighthouse(url, configPath, isDebug) {
 function matchesExpectation(actual, expected) {
   if (typeof actual === 'number' && NUMERICAL_EXPECTATION_REGEXP.test(expected)) {
     const parts = expected.match(NUMERICAL_EXPECTATION_REGEXP);
-    const operator = parts[2];
-    const numbers = [parts[1], parts[3]].filter(p => typeof p !== 'undefined').map(parseFloat);
+    const [, prefixNumber, operator, postfixNumber] = parts;
     switch (operator) {
       case '>':
-        return actual > numbers[0];
+        return actual > postfixNumber;
       case '>=':
-        return actual >= numbers[0];
+        return actual >= postfixNumber;
       case '<':
-        return actual < numbers[0];
+        return actual < postfixNumber;
       case '<=':
-        return actual <= numbers[0];
+        return actual <= postfixNumber;
       case '+/-':
-        return Math.abs(actual - numbers[0]) <= numbers[1];
+        return Math.abs(actual - prefixNumber) <= postfixNumber;
       default:
         throw new Error(`unexpected operator ${operator}`);
     }
