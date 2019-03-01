@@ -166,6 +166,12 @@ lighthouse -GA=./gmailartifacts https://gmail.com
 
 The first time you run the CLI you will be prompted with a message asking you if Lighthouse can anonymously report runtime exceptions. The Lighthouse team uses this information to detect new bugs and avoid regressions. Opting out will not affect your ability to use Lighthouse in any way. [Learn more](https://github.com/GoogleChrome/lighthouse/blob/master/docs/error-reporting.md).
 
+## Using the Node module
+You can also use Lighthouse programmatically with the Node module.
+
+Read [Using Lighthouse programmatically](./docs/readme.md#using-programmatically) for help getting started.\
+Read [Lighthouse Configuration](./docs/configuration.md) to learn more about the configuration options available.
+
 ## Viewing a report
 
 Lighthouse can produce a report as JSON or HTML.
