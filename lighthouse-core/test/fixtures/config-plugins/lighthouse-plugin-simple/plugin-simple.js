@@ -18,6 +18,8 @@ module.exports = {
   ],
   category: {
     title: 'Simple',
-    auditRefs: [],
+    auditRefs: [
+      {id: 'redirects', weight: 1, group: 'new-group'},
+    ],
   },
 };

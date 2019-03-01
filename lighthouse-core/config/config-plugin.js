@@ -159,18 +159,16 @@ class ConfigPlugin {
     }
 
     if (!isObjectOfUnknownProperties(groupsJson)) {
-      throw new Error(`${pluginName} groups json is not valid.`);
+      throw new Error(`${pluginName} groups json is not defined as an object.`);
     }
 
     const groups = Object.entries(groupsJson);
-    if (!groups.length) {
-      throw new Error(`${pluginName} has an empty groups object.`);
-    }
-    /** @type {Record<string, LH.Config.GroupJson>} **/
+
+    /** @type {Record<string, LH.Config.GroupJson>} */
     const parsedGroupsJson = {};
     groups.forEach(([groupId, groupJson]) => {
       if (!isObjectOfUnknownProperties(groupJson)) {
-        throw new Error(`${pluginName} has an invalid group.`);
+        throw new Error(`${pluginName} has a group not defined as an object.`);
       }
       const {title, description, ...invalidRest} = groupJson;
       assertNoExcessProperties(invalidRest, pluginName, 'group');
@@ -204,20 +202,20 @@ class ConfigPlugin {
     }
 
     const {
-      groups: pluginGroupsJson,
       audits: pluginAuditsJson,
       category: pluginCategoryJson,
+      groups: pluginGroupsJson,
       ...invalidRest
     } = pluginJson;
 
     assertNoExcessProperties(invalidRest, pluginName);
 
     return {
-      groups: ConfigPlugin._parseGroups(pluginGroupsJson, pluginName),
       audits: ConfigPlugin._parseAuditsList(pluginAuditsJson, pluginName),
       categories: {
         [pluginName]: ConfigPlugin._parseCategory(pluginCategoryJson, pluginName),
       },
+      groups: ConfigPlugin._parseGroups(pluginGroupsJson, pluginName),
     };
   }
 }
