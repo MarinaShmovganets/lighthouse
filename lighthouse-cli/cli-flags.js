@@ -87,7 +87,8 @@ function getFlags(manualArgv) {
         'list-trace-categories': 'Prints a list of all required trace categories and exits',
         'additional-trace-categories':
             'Additional categories to capture with the trace (comma-delimited).',
-        'config-path': 'The path to the config JSON.',
+        'config-path': `The path to the config JSON. 
+            An example config file: lighthouse-core/config/lr-desktop-config.js`,
         'preset': 'Use a built-in configuration.',
         'chrome-flags':
             `Custom flags to pass to Chrome (space-delimited). For a full list of flags, see https://bit.ly/chrome-flags
