@@ -304,13 +304,17 @@ class NetworkRecorder extends EventEmitter {
   }
 
   /**
+   * Events from targets other than the main frame are proxied through `Target.receivedMessageFromTarget`.
+   * Their payloads are JSON-stringified into the `.message` property
    * @param {LH.Crdp.Target.ReceivedMessageFromTargetEvent} data
    */
   onReceivedMessageFromTarget(data) {
     /** @type {LH.Protocol.RawMessage} */
     const protocolMessage = JSON.parse(data.message);
-    if ('id' in protocolMessage) return;
 
+    // Message was a response to some command, not an event, so we'll ignore it.
+    if ('id' in protocolMessage) return;
+    // Message was an event, replay it through our normal dispatch process.
     this.dispatch(protocolMessage);
   }
 

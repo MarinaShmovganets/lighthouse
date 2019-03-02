@@ -47,7 +47,7 @@ class Driver {
      */
     this._eventEmitter = /** @type {CrdpEventEmitter} */ (new EventEmitter());
     this._connection = connection;
-    // currently used by network-recorder just Page, Network, and Target are needed
+    // Used to save network and lifecycle protocol traffic. Just Page, Network, and Target are needed.
     this._devtoolsLog = new DevtoolsLog(/^(Page|Network|Target)\./);
     this.online = true;
     /** @type {Map<string, number>} */

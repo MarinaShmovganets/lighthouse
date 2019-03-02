@@ -16,6 +16,9 @@ module.exports = [
       'network-requests': {
         details: {
           items: {
+            // The page itself only makes a few requests.
+            // We want to make sure we are finding the iframe's requests (airhorner) while being flexible enough
+            // to allow changes to the live site.
             length: '>10',
           },
         },
