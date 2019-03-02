@@ -93,7 +93,7 @@ declare global {
       output?: OutputMode|OutputMode[];
       // The locale setting
       locale?: Locale;
-      // The maximum amount of time to wait for a page render content in ms, if no content is rendered within this limit the run is aborted with an error
+      // The maximum amount of time to wait for a page content render in ms. If no content is rendered within this limit the run is aborted with an error
       maxWaitForFcp?: number;
       // The maximum amount of time to wait for a page to load in ms
       maxWaitForLoad?: number;
