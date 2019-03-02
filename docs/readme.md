@@ -83,7 +83,7 @@ launchChromeAndRunLighthouse('https://example.com', flags).then(...);
 ```
 
 ## Configuration
-In order to configure Lighthouse programmatically, you need to pass the config object as the 3rd argument.
+In order to extend the Lighthouse configuration programmatically, you need to pass the config object as the 3rd argument. If omitted, a default configuration is used.
 
 **Example:**
 ```js
