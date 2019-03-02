@@ -89,7 +89,8 @@ function getFlags(manualArgv) {
             'Additional categories to capture with the trace (comma-delimited).',
         'config-path': `The path to the config JSON. 
             An example config file: lighthouse-core/config/lr-desktop-config.js`,
-        'preset': 'Use a built-in configuration.',
+        'preset': `Use a built-in configuration.
+            WARNING: If the --config-path flag is provided, this preset will be ignored.`,
         'chrome-flags':
             `Custom flags to pass to Chrome (space-delimited). For a full list of flags, see https://bit.ly/chrome-flags
             Additionally, use the CHROME_PATH environment variable to use a specific Chrome binary. Requires Chromium version 66.0 or later. If omitted, any detected Chrome Canary or Chrome stable will be used.`,
