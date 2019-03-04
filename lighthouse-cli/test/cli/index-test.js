@@ -97,18 +97,4 @@ describe('CLI Tests', function() {
       expect(config).toMatchSnapshot();
     });
   });
-
-  describe('non-zero exit codes', () => {
-    it('should exit with code 1 if the LHR contains an error', () => {
-      const flags = [
-        'chrome://error',
-        `--max-wait-for-load=${9000}`,
-        '--output-path=stdout',
-      ];
-      const ret = spawnSync('node', [indexPath, ...flags], {encoding: 'utf8'});
-
-      // Exit with non-zero code.
-      assert.equal(ret.status, 1);
-    }, 20 * 1000);
-  });
 });
