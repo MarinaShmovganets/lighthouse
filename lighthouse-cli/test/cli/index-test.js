@@ -75,7 +75,6 @@ describe('CLI Tests', function() {
       const config = JSON.parse(ret.stdout);
       assert.strictEqual(config.settings.output[0], 'html');
       assert.strictEqual(config.settings.auditMode, false);
-      assert.equal(ret.status, 0);
 
       expect(config).toMatchSnapshot();
     });
@@ -92,7 +91,6 @@ describe('CLI Tests', function() {
       assert.strictEqual(config.settings.output[0], 'json');
       assert.strictEqual(config.settings.auditMode, true);
       assert.strictEqual(config.audits.length, 1);
-      assert.equal(ret.status, 0);
 
       expect(config).toMatchSnapshot();
     });
