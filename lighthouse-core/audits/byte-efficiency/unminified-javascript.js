@@ -81,11 +81,10 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
     for (const {requestId, inline, content} of artifacts.Scripts) {
       if (!content) continue;
       const networkRecord = networkRecords.find(record => record.requestId === requestId);
-
+      const displayUrl = inline || !networkRecord ?
+        `inline: ${content.substr(0, 40)}...` :
+        networkRecord.url;
       try {
-        const displayUrl = inline || !networkRecord ?
-          `inline: ${content.substr(0, 40)}...` :
-          networkRecord.url;
         const result = UnminifiedJavaScript.computeWaste(content, displayUrl, networkRecord);
         // If the ratio is minimal, the file is likely already minified, so ignore it.
         // If the total number of bytes to be saved is quite small, it's also safe to ignore.
