@@ -6,7 +6,12 @@
  */
 'use strict';
 
-require('./bin.js').begin().catch(err => {
+require('./bin.js').begin().then((lhr) => {
+  // Exit with non-zero exit code if LHR contains runtime error.
+  if (lhr && lhr.lhr.runtimeError) {
+    process.exit(1);
+  }
+}).catch(err => {
   process.stderr.write(err.stack);
   process.exit(1);
 });
