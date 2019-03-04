@@ -29,20 +29,17 @@ module.exports = [
           items: [
             {
               url: 'http://localhost:10200/byte-efficiency/script.js',
-              totalBytes: 53181,
-              wastedBytes: 46481,
-              wastedPercent: 87.40117365133875,
+              wastedBytes: '46481 +/- 100',
+              wastedPercent: '87 +/- 5',
             },
             {
               url: 'inline: \n  function unusedFunction() {\n    // Un...',
-              totalBytes: 6607,
-              wastedBytes: 6581,
-              wastedPercent: 99.60353766392193,
+              wastedBytes: '6581 +/- 100',
+              wastedPercent: '99.6 +/- 0.1',
             },
             {
               url: 'inline: \n  // Used block #1\n  // FILLER DATA JUS...',
-              totalBytes: 6558,
-              wastedBytes: 6558,
+              wastedBytes: '6559 +/- 100',
               wastedPercent: 100,
             },
           ],
@@ -115,6 +112,31 @@ module.exports = [
             {wastedPercent: '<60'},
             {wastedPercent: '<60'},
             {wastedPercent: '<60'},
+          ],
+        },
+      },
+    },
+  },
+  {
+    requestedUrl: 'http://localhost:10200/byte-efficiency/gzip.html',
+    finalUrl: 'http://localhost:10200/byte-efficiency/gzip.html',
+    audits: {
+      'network-requests': {
+        details: {
+          items: [
+            {
+              url: 'http://localhost:10200/byte-efficiency/gzip.html',
+            },
+            {
+              url: 'http://localhost:10200/byte-efficiency/script.js?gzip=1',
+              transferSize: 1136,
+              resourceSize: 52997,
+            },
+            {
+              url: 'http://localhost:10200/byte-efficiency/script.js',
+              transferSize: 53181,
+              resourceSize: 52997,
+            },
           ],
         },
       },

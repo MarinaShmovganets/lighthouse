@@ -5,21 +5,16 @@
  */
 'use strict';
 
-/** @type {LH.Config.Plugin} */
-module.exports = {
-  groups: {
-    'new-group': {
-      title: 'New Group',
-    },
-  },
-  audits: [
-    {path: 'redirects'},
-    {path: 'user-timings'},
-  ],
-  category: {
-    title: 'Simple',
-    auditRefs: [
-      {id: 'redirects', weight: 1, group: 'new-group'},
-    ],
-  },
-};
+/* eslint-disable */
+
+if (window.location.search.includes('setTimeout')) {
+  window.library.setTimeout(() => {
+    window.library.stall(3050);
+  }, 0);
+}
+
+if (window.location.search.includes('fetch')) {
+  window.library.fetch('http://localhost:10200/tricky-main-thread.html').then(() => {
+    window.library.stall(3050);
+  });
+}

@@ -31,13 +31,14 @@ function createMockSendCommandFn() {
   const mockFn = jest.fn().mockImplementation(command => {
     const indexOfResponse = mockResponses.findIndex(entry => entry.command === command);
     if (indexOfResponse === -1) throw new Error(`${command} unimplemented`);
-    const {response} = mockResponses[indexOfResponse];
+    const {response, delay} = mockResponses[indexOfResponse];
     mockResponses.splice(indexOfResponse, 1);
+    if (delay) return new Promise(resolve => setTimeout(() => resolve(response), delay));
     return Promise.resolve(response);
   });
 
-  mockFn.mockResponse = (command, response) => {
-    mockResponses.push({command, response});
+  mockFn.mockResponse = (command, response, delay) => {
+    mockResponses.push({command, response, delay});
     return mockFn;
   };
 
@@ -260,6 +261,34 @@ describe('.evaluateAsync', () => {
     connectionStub.sendCommand.findInvocation('Runtime.evaluate');
   });
 
+  it('uses a high default timeout', async () => {
+    connectionStub.sendCommand = createMockSendCommandFn()
+    .mockResponse('Runtime.evaluate', {result: {value: 2}}, 65000);
+
+    const evaluatePromise = makePromiseInspectable(driver.evaluateAsync('1 + 1'));
+    jest.advanceTimersByTime(30000);
+    await flushAllTimersAndMicrotasks();
+    expect(evaluatePromise).not.toBeDone();
+
+    jest.advanceTimersByTime(30000);
+    await flushAllTimersAndMicrotasks();
+    expect(evaluatePromise).toBeDone();
+    await expect(evaluatePromise).rejects.toBeTruthy();
+  });
+
+  it('uses the specific timeout given', async () => {
+    connectionStub.sendCommand = createMockSendCommandFn()
+    .mockResponse('Runtime.evaluate', {result: {value: 2}}, 10000);
+
+    driver.setNextProtocolTimeout(5000);
+    const evaluatePromise = makePromiseInspectable(driver.evaluateAsync('1 + 1'));
+
+    jest.advanceTimersByTime(5001);
+    await flushAllTimersAndMicrotasks();
+    expect(evaluatePromise).toBeDone();
+    await expect(evaluatePromise).rejects.toBeTruthy();
+  });
+
   it('evaluates an expression in isolation', async () => {
     connectionStub.sendCommand = createMockSendCommandFn()
       .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: 1337}}})
@@ -458,6 +487,7 @@ describe('.gotoURL', () => {
       .mockResponse('Page.setLifecycleEventsEnabled', {})
       .mockResponse('Emulation.setScriptExecutionDisabled', {})
       .mockResponse('Page.navigate', {})
+      .mockResponse('Target.setAutoAttach', {})
       .mockResponse('Runtime.evaluate', {});
   });
 
@@ -899,5 +929,38 @@ describe('.goOnline', () => {
       downloadThroughput: 0,
       uploadThroughput: 0,
     });
+  });
+});
+
+describe('Multi-target management', () => {
+  it('enables the Network domain for iframes', async () => {
+    connectionStub.sendCommand = createMockSendCommandFn()
+      .mockResponse('Target.sendMessageToTarget', {});
+
+    driver._eventEmitter.emit('Target.attachedToTarget', {
+      sessionId: 123,
+      targetInfo: {type: 'iframe'},
+    });
+    await flushAllTimersAndMicrotasks();
+
+    const sendMessageArgs = connectionStub.sendCommand
+      .findInvocation('Target.sendMessageToTarget');
+    expect(sendMessageArgs).toEqual({
+      message: '{"id":1,"method":"Network.enable"}',
+      sessionId: 123,
+    });
+  });
+
+  it('ignores other target types', async () => {
+    connectionStub.sendCommand = createMockSendCommandFn()
+    .mockResponse('Target.sendMessageToTarget', {});
+
+    driver._eventEmitter.emit('Target.attachedToTarget', {
+      sessionId: 123,
+      targetInfo: {type: 'service_worker'},
+    });
+    await flushAllTimersAndMicrotasks();
+
+    expect(connectionStub.sendCommand).not.toHaveBeenCalled();
   });
 });
