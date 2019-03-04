@@ -139,7 +139,7 @@ describe('SEO: Tap targets audit', () => {
       })
     );
     assert.equal(auditResult.rawValue, false);
-    assert.equal(Math.round(auditResult.score * 100), 33);
+    assert.equal(Math.round(auditResult.score * 100), 30);
     const failure = auditResult.details.items[0];
     assert.equal(failure.tapTarget.snippet, '<main></main>');
     assert.equal(failure.overlappingTarget.snippet, '<right></right>');
@@ -194,7 +194,7 @@ describe('SEO: Tap targets audit', () => {
         increaseRightWidth: true,
       })
     );
-    assert.equal(Math.round(auditResult.score * 100), 67);
+    assert.equal(Math.round(auditResult.score * 100), 60);
     const failures = auditResult.details.items;
     // <main> fails, but <right> doesn't
     assert.equal(failures[0].tapTarget.snippet, '<main></main>');
