@@ -48,11 +48,11 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
 
   /**
    * @param {string} scriptContent
-   * @param {boolean} inline
+   * @param {string} displayUrl
    * @param {LH.Artifacts.NetworkRequest|undefined} networkRecord
    * @return {{url: string, totalBytes: number, wastedBytes: number, wastedPercent: number}}
    */
-  static computeWaste(scriptContent, inline, networkRecord) {
+  static computeWaste(scriptContent, displayUrl, networkRecord) {
     const contentLength = scriptContent.length;
     const totalTokenLength = computeTokenLength(scriptContent);
 
@@ -62,9 +62,7 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
     const wastedBytes = Math.round(totalBytes * wastedRatio);
 
     return {
-      url: networkRecord && !inline ?
-        networkRecord.url :
-        `inline: ${scriptContent.substr(0, 40)}...`,
+      url: displayUrl,
       totalBytes,
       wastedBytes,
       wastedPercent: 100 * wastedRatio,
@@ -85,7 +83,10 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
       const networkRecord = networkRecords.find(record => record.requestId === requestId);
 
       try {
-        const result = UnminifiedJavaScript.computeWaste(content, inline, networkRecord);
+        const displayUrl = networkRecord && !inline ?
+          networkRecord.url :
+          `inline: ${content.substr(0, 40)}...`;
+        const result = UnminifiedJavaScript.computeWaste(content, displayUrl, networkRecord);
         // If the ratio is minimal, the file is likely already minified, so ignore it.
         // If the total number of bytes to be saved is quite small, it's also safe to ignore.
         if (result.wastedPercent < IGNORE_THRESHOLD_IN_PERCENT ||

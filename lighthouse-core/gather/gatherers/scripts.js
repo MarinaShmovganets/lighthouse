@@ -36,18 +36,22 @@ class Scripts extends Gatherer {
     })()`, {useIsolation: true});
 
     if (inlineScripts.length) {
+      // TODO: use NetworkAnalyzer.findMainDocument() when
+      // this PR lands: https://github.com/GoogleChrome/lighthouse/pull/7080
+      // Then make requestId not optional.
       const mainResource = loadData.networkRecords.find(request =>
         passContext.url.startsWith(request.url) &&
           URL.equalWithExcludedFragments(request.url, passContext.url));
       if (!mainResource) {
         log.warn('Scripts', 'could not locate mainResource');
       }
+      const requestId = mainResource ? mainResource.requestId : undefined;
       scripts.push(
         ...inlineScripts.map(content => {
           return {
             content,
             inline: true,
-            requestId: mainResource ? mainResource.requestId : undefined,
+            requestId,
           };
         })
       );
