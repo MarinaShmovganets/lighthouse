@@ -194,7 +194,7 @@ describe('SEO: Tap targets audit', () => {
         increaseRightWidth: true,
       })
     );
-    assert.equal(Math.round(auditResult.score * 100), 60);
+    assert.equal(Math.round(auditResult.score * 100), 59);
     const failures = auditResult.details.items;
     // <main> fails, but <right> doesn't
     assert.equal(failures[0].tapTarget.snippet, '<main></main>');

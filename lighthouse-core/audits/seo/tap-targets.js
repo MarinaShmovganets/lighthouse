@@ -308,7 +308,7 @@ class TapTargets extends Audit {
       passingTapTargetRatio = (passingTapTargetCount / tapTargetCount);
       // If there are any failures then we don't want the audit to pass,
       // so keep the score below 90.
-      score = Math.min(passingTapTargetRatio * 0.9, 0.89);
+      score = passingTapTargetRatio * 0.89;
     }
     const displayValue = str_(UIStrings.displayValue, {decimalProportion: passingTapTargetRatio});
 
