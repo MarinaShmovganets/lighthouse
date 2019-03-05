@@ -5,21 +5,24 @@
  */
 'use strict';
 
-/** @type {LH.Config.Plugin} */
-module.exports = {
-  groups: {
-    'new-group': {
-      title: 'New Group',
+/**
+ * Expected Lighthouse audit values for sites with OOPIFS.
+ */
+module.exports = [
+  {
+    requestedUrl: 'http://localhost:10200/oopif.html',
+    finalUrl: 'http://localhost:10200/oopif.html',
+    audits: {
+      'network-requests': {
+        details: {
+          items: {
+            // The page itself only makes a few requests.
+            // We want to make sure we are finding the iframe's requests (airhorner) while being flexible enough
+            // to allow changes to the live site.
+            length: '>10',
+          },
+        },
+      },
     },
   },
-  audits: [
-    {path: 'redirects'},
-    {path: 'user-timings'},
-  ],
-  category: {
-    title: 'Simple',
-    auditRefs: [
-      {id: 'redirects', weight: 1, group: 'new-group'},
-    ],
-  },
-};
+];

@@ -5,21 +5,14 @@
  */
 'use strict';
 
-/** @type {LH.Config.Plugin} */
+/**
+ * Config file for running the OOPIF tests
+ */
 module.exports = {
-  groups: {
-    'new-group': {
-      title: 'New Group',
-    },
-  },
-  audits: [
-    {path: 'redirects'},
-    {path: 'user-timings'},
-  ],
-  category: {
-    title: 'Simple',
-    auditRefs: [
-      {id: 'redirects', weight: 1, group: 'new-group'},
+  extends: 'lighthouse:default',
+  settings: {
+    onlyAudits: [
+      'network-requests',
     ],
   },
 };
