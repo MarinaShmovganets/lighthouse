@@ -54,7 +54,7 @@
 
 ## Deps
 
-* snyk: update snyk snapshot ([#7277](https://github.com/googlechrome/lighthouse/pull/7277), ([#7233](https://github.com/googlechrome/lighthouse/pull/7233), [#7167](https://github.com/googlechrome/lighthouse/pull/7167)), [#7116](https://github.com/googlechrome/lighthouse/pull/7116))
+* snyk: update snyk snapshot ([#7277](https://github.com/googlechrome/lighthouse/pull/7277), [#7233](https://github.com/googlechrome/lighthouse/pull/7233), [#7167](https://github.com/googlechrome/lighthouse/pull/7167), [#7116](https://github.com/googlechrome/lighthouse/pull/7116))
 * updates to weed out transitive vulnerabilities ([#7319](https://github.com/googlechrome/lighthouse/pull/7319))
 * update cssstyle to parse more named colors, CSS4 colors ([#7283](https://github.com/googlechrome/lighthouse/pull/7283))
 
