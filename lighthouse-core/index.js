@@ -36,9 +36,10 @@ const LHError = require('./lib/lh-error.js');
  * @param {LH.Config.Json=} configJSON Configuration for the Lighthouse run. If
  *   not present, the default config is used.
  * @param {Connection=} connection
+ * @param {Array<string>=} plugins
  * @return {Promise<LH.RunnerResult|undefined>}
  */
-async function lighthouse(url, flags = {}, configJSON, connection) {
+async function lighthouse(url, flags = {}, configJSON, connection, plugins) {
   // verify the url is valid and that protocol is allowed
   if (url && (!URL.isValid(url) || !URL.isProtocolAllowed(url))) {
     throw new LHError(LHError.errors.INVALID_URL);
@@ -48,7 +49,7 @@ async function lighthouse(url, flags = {}, configJSON, connection) {
   flags.logLevel = flags.logLevel || 'error';
   log.setLevel(flags.logLevel);
 
-  const config = generateConfig(configJSON, flags);
+  const config = generateConfig(configJSON, flags, plugins);
 
   connection = connection || new ChromeProtocol(flags.port, flags.hostname);
 
@@ -62,10 +63,11 @@ async function lighthouse(url, flags = {}, configJSON, connection) {
  *   not present, the default config is used.
  * @param {LH.Flags=} flags Optional settings for the Lighthouse run. If present,
  *   they will override any settings in the config.
+ * @param {Array<string>=} plugins
  * @return {Config}
  */
-function generateConfig(configJson, flags) {
-  return new Config(configJson, flags);
+function generateConfig(configJson, flags, plugins) {
+  return new Config(configJson, flags, plugins);
 }
 
 lighthouse.generateConfig = generateConfig;

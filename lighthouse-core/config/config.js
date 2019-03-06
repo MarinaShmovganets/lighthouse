@@ -331,8 +331,9 @@ class Config {
    * @implements {LH.Config.Json}
    * @param {LH.Config.Json=} configJSON
    * @param {LH.Flags=} flags
+   * @param {Array<string>=} plugins
    */
-  constructor(configJSON, flags) {
+  constructor(configJSON, flags, plugins) {
     const status = {msg: 'Create config', id: 'lh:init:config'};
     log.time(status, 'verbose');
     let configPath = flags && flags.configPath;
@@ -362,7 +363,7 @@ class Config {
     const configDir = configPath ? path.dirname(configPath) : undefined;
 
     // Validate and merge in plugins (if any).
-    configJSON = Config.mergePlugins(configJSON, configDir);
+    configJSON = Config.mergePlugins(configJSON, plugins, configDir);
 
     const settings = Config.initSettings(configJSON.settings, flags);
 
@@ -459,22 +460,22 @@ class Config {
 
   /**
    * @param {LH.Config.Json} configJSON
+   * @param {Array<string>=} plugins
    * @param {string=} configDir
    * @return {LH.Config.Json}
    */
-  static mergePlugins(configJSON, configDir) {
-    const pluginNames = configJSON.plugins;
+  static mergePlugins(configJSON, plugins = [], configDir) {
+    const configPlugins = configJSON.plugins || [];
+    const pluginNames = new Set([...configPlugins, ...plugins]);
 
-    if (pluginNames) {
-      for (const pluginName of pluginNames) {
-        assertValidPluginName(configJSON, pluginName);
+    for (const pluginName of pluginNames) {
+      assertValidPluginName(configJSON, pluginName);
 
-        const pluginPath = Config.resolveModule(pluginName, configDir, 'plugin');
-        const rawPluginJson = require(pluginPath);
-        const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
+      const pluginPath = Config.resolveModule(pluginName, configDir, 'plugin');
+      const rawPluginJson = require(pluginPath);
+      const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
 
-        configJSON = Config.extendConfigJSON(configJSON, pluginJson);
-      }
+      configJSON = Config.extendConfigJSON(configJSON, pluginJson);
     }
 
     return configJSON;
