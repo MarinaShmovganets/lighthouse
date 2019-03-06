@@ -44,7 +44,7 @@
 * seo: add rel=canonical test for auditing a domain root ([#7228](https://github.com/googlechrome/lighthouse/pull/7228))
 * tap-targets: disable font size and tap targets audit on desktop ([#7393](https://github.com/googlechrome/lighthouse/pull/7393))
 * tap-targets: make tap targets failures more visible ([#7373](https://github.com/googlechrome/lighthouse/pull/7373))
-* tsc: fix audit details type hierarchy ([#7177](https://github.com/googlechrome/lighthouse/pull/7177)), [#7154](https://github.com/googlechrome/lighthouse/pull/7154), [#7285](https://github.com/googlechrome/lighthouse/pull/7285))
+* tsc: fix audit details type hierarchy ([#7177](https://github.com/googlechrome/lighthouse/pull/7177), [#7154](https://github.com/googlechrome/lighthouse/pull/7154), [#7285](https://github.com/googlechrome/lighthouse/pull/7285))
 * unused-css: change title Defer -> Remove ([#7235](https://github.com/googlechrome/lighthouse/pull/7235))
 * give sort fallback for broken test details in node 11 ([#7216](https://github.com/googlechrome/lighthouse/pull/7216))
 * suppress protocol timeout for app manifest bug in LR ([#7184](https://github.com/googlechrome/lighthouse/pull/7184))
