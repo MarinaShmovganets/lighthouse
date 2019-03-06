@@ -2,9 +2,12 @@
 # 4.2.0 (2019-03-06)
 [Full Changelog](https://github.com/googlechrome/lighthouse/compare/v4.1.0...v4.2.0)
 
+## New contributors!
+
+@pra85, @tgfjt, @gidztech and @jburger424. Thank ya!
+
 ## New Audits
 
-* fid: add Max Potential FID to JSON ([#5842](https://github.com/googlechrome/lighthouse/pull/5842))
 * tap-targets: verify tap targets are well sized and distinct ([#5846](https://github.com/googlechrome/lighthouse/pull/5846))
 
 ## CLI
@@ -13,7 +16,11 @@
 
 ## Core
 
+* fid: add Max Potential FID to JSON ([#5842](https://github.com/googlechrome/lighthouse/pull/5842))
 * artifacts: unify AnchorElements into single gatherer ([#7101](https://github.com/googlechrome/lighthouse/pull/7101))
+* artifacts: include inline scripts in Scripts artifact ([#7065](https://github.com/googlechrome/lighthouse/pull/7065))
+* artifacts: create ViewportMeta computed artifact ([#7264](https://github.com/googlechrome/lighthouse/pull/7264))
+* artifacts: add TestedAsMobileDevice base artifact ([#7280](https://github.com/googlechrome/lighthouse/pull/7280))
 * bootup-time: better attribution ([#7059](https://github.com/googlechrome/lighthouse/pull/7059))
 * byte-efficiency: use more optimistic GZIP ratios ([#7210](https://github.com/googlechrome/lighthouse/pull/7210))
 * cache-headers: fix typo in must-revalidate ([#7189](https://github.com/googlechrome/lighthouse/pull/7189))
@@ -37,24 +44,17 @@
 * seo: add rel=canonical test for auditing a domain root ([#7228](https://github.com/googlechrome/lighthouse/pull/7228))
 * tap-targets: disable font size and tap targets audit on desktop ([#7393](https://github.com/googlechrome/lighthouse/pull/7393))
 * tap-targets: make tap targets failures more visible ([#7373](https://github.com/googlechrome/lighthouse/pull/7373))
-* tsc: fix audit details type hierarchy ([#7177](https://github.com/googlechrome/lighthouse/pull/7177))
-* tsc: begin clean up of audit details types ([#7154](https://github.com/googlechrome/lighthouse/pull/7154))
-* tsc: polish switch to new audit-details types ([#7285](https://github.com/googlechrome/lighthouse/pull/7285))
+* tsc: fix audit details type hierarchy ([#7177](https://github.com/googlechrome/lighthouse/pull/7177)), [#7154](https://github.com/googlechrome/lighthouse/pull/7154), [#7285](https://github.com/googlechrome/lighthouse/pull/7285))
 * unused-css: change title Defer -> Remove ([#7235](https://github.com/googlechrome/lighthouse/pull/7235))
 * give sort fallback for broken test details in node 11 ([#7216](https://github.com/googlechrome/lighthouse/pull/7216))
 * suppress protocol timeout for app manifest bug in LR ([#7184](https://github.com/googlechrome/lighthouse/pull/7184))
 * optimize tap-targets audit ([#7130](https://github.com/googlechrome/lighthouse/pull/7130))
 * remove NO_ERROR runtimeError when no error ([#7358](https://github.com/googlechrome/lighthouse/pull/7358))
-* include inline scripts in Scripts artifact ([#7065](https://github.com/googlechrome/lighthouse/pull/7065))
-* create ViewportMeta computed artifact ([#7264](https://github.com/googlechrome/lighthouse/pull/7264))
-* add TestedAsMobileDevice base artifact ([#7280](https://github.com/googlechrome/lighthouse/pull/7280))
+
 
 ## Deps
 
-* snyk: update snyk snapshot ([#7277](https://github.com/googlechrome/lighthouse/pull/7277))
-* snyk: update snyk snapshot ([#7233](https://github.com/googlechrome/lighthouse/pull/7233))
-* snyk: update snyk snapshot ([#7167](https://github.com/googlechrome/lighthouse/pull/7167))
-* snyk: update snyk snapshot ([#7116](https://github.com/googlechrome/lighthouse/pull/7116))
+* snyk: update snyk snapshot ([#7277](https://github.com/googlechrome/lighthouse/pull/7277), ([#7233](https://github.com/googlechrome/lighthouse/pull/7233), [#7167](https://github.com/googlechrome/lighthouse/pull/7167)), [#7116](https://github.com/googlechrome/lighthouse/pull/7116))
 * updates to weed out transitive vulnerabilities ([#7319](https://github.com/googlechrome/lighthouse/pull/7319))
 * update cssstyle to parse more named colors, CSS4 colors ([#7283](https://github.com/googlechrome/lighthouse/pull/7283))
 
@@ -65,6 +65,7 @@
 * improve explanations of extending and using config files ([#7354](https://github.com/googlechrome/lighthouse/pull/7354))
 * update throttling docs to public version ([#7332](https://github.com/googlechrome/lighthouse/pull/7332))
 * readme: add lighthouse-keeper to integrations ([#7399](https://github.com/googlechrome/lighthouse/pull/7399))
+* docs(related-projects) add react-lighthouse-viewer ([#7262](https://github.com/googlechrome/lighthouse/pull/7262))
 * readme: Add Fluxguard to the list of integrations ([#7249](https://github.com/googlechrome/lighthouse/pull/7249))
 * variability: add dedicated variance doc ([#7175](https://github.com/googlechrome/lighthouse/pull/7175))
 
@@ -85,9 +86,7 @@
 
 ## Tests
 
-* refactor driver, more gotoURL tests ([#7270](https://github.com/googlechrome/lighthouse/pull/7270))
-* driver test re-org phase 2 ([#7242](https://github.com/googlechrome/lighthouse/pull/7242))
-* re-organize driver tests by method ([#7212](https://github.com/googlechrome/lighthouse/pull/7212))
+* refactor driver, more gotoURL tests ([#7270](https://github.com/googlechrome/lighthouse/pull/7270), [#7242](https://github.com/googlechrome/lighthouse/pull/7242), [#7212](https://github.com/googlechrome/lighthouse/pull/7212))
 * run node 11 in CI ([#7230](https://github.com/googlechrome/lighthouse/pull/7230))
 * replace non-volatile snapshots with inline literals ([#7217](https://github.com/googlechrome/lighthouse/pull/7217))
 * smokehouse: refactor to enable Smokerider ([#7284](https://github.com/googlechrome/lighthouse/pull/7284))
@@ -102,7 +101,6 @@
 * convert Flags comments to jsdoc for better intellisense ([#7359](https://github.com/googlechrome/lighthouse/pull/7359))
 * export UA strings from emulation.js ([#7318](https://github.com/googlechrome/lighthouse/pull/7318))
 * fix typo in comment ([#7296](https://github.com/googlechrome/lighthouse/pull/7296))
-* docs(related-projects) add react-lighthouse-viewer ([#7262](https://github.com/googlechrome/lighthouse/pull/7262))
 
  <a name="4.1.0"></a>
 # 4.1.0 (2019-01-28)
