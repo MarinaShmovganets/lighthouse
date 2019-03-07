@@ -45,6 +45,7 @@ script:
   # FIXME(paulirish): re-enable after a roll of LH->CDT
   # - yarn compile-devtools
 before_cache:
+  - jest --clearCache
   # the `yarn compile-devtools` task adds these to node_modules, which slows down caching
   - rm -rf ./node_modules/temp-devtoolsfrontend/
   - rm -rf ./node_modules/temp-devtoolsprotocol/
