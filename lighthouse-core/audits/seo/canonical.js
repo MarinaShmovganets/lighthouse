@@ -71,10 +71,10 @@ class Canonical extends Audit {
   }
 
   /**
-   * @param {LH.Artifacts} artifacts
+   * @param {LH.Artifacts.LinkElement[]} linkElements
    * @return {CanonicalURLData}
    */
-  static collectCanonicalURLs(artifacts) {
+  static collectCanonicalURLs(linkElements) {
     /** @type {Set<string>} */
     const uniqueCanonicalURLs = new Set();
     /** @type {Set<string>} */
@@ -84,14 +84,19 @@ class Canonical extends Audit {
     let invalidCanonicalLink;
     /** @type {LH.Artifacts.LinkElement|undefined} */
     let relativeCanonicallink;
-    for (const link of artifacts.LinkElements) {
+    for (const link of linkElements) {
+      // Links in the body aren't canonical references for SEO, skip them
       if (link.source === 'body') continue;
 
       if (link.rel === 'canonical') {
+        // Links that don't have an href aren't canonical references for SEO, skip them
         if (!link.hrefRaw) continue;
 
+        // Links that had an hrefRaw but didn't have a valid href were invalid, flag them
         if (!link.href) invalidCanonicalLink = link;
+        // Links that had a valid href but didn't have a valid hrefRaw must have been relatively resolved, flag them
         else if (!URL.isValid(link.hrefRaw)) relativeCanonicallink = link;
+        // Otherwise, it was a valid canonical URL
         else uniqueCanonicalURLs.add(link.href);
       } else if (link.rel === 'alternate') {
         if (link.href && link.hreflang) hreflangURLs.add(link.href);
@@ -103,9 +108,9 @@ class Canonical extends Audit {
 
   /**
    * @param {CanonicalURLData} canonicalURLData
-   * @return {string|LH.Audit.Product}
+   * @return {LH.Audit.Product|undefined}
    */
-  static findValidCanonicaURLOrFinish(canonicalURLData) {
+  static findInvalidCanonicalURLReason(canonicalURLData) {
     const {uniqueCanonicalURLs, invalidCanonicalLink, relativeCanonicallink} = canonicalURLData;
 
     // the canonical link is totally invalid
@@ -142,8 +147,6 @@ class Canonical extends Audit {
         explanation: str_(UIStrings.explanationConflict, {urlList: canonicalURLs.join(', ')}),
       };
     }
-
-    return canonicalURLs[0];
   }
 
   /**
@@ -199,14 +202,14 @@ class Canonical extends Audit {
 
     const mainResource = await MainResource.request({devtoolsLog, URL: artifacts.URL}, context);
     const baseURL = new URL(mainResource.url);
+    const canonicalURLData = Canonical.collectCanonicalURLs(artifacts.LinkElements);
 
-    const canonicalURLData = Canonical.collectCanonicalURLs(artifacts);
-    const canonicalURLOrAuditProduct = Canonical.findValidCanonicaURLOrFinish(canonicalURLData);
-    // We didn't find a valid canonical URL, we found an error result so go ahead and return it.
-    if (typeof canonicalURLOrAuditProduct === 'object') return canonicalURLOrAuditProduct;
+    // First we'll check that there was a single valid canonical URL.
+    const invalidURLAuditProduct = Canonical.findInvalidCanonicalURLReason(canonicalURLData);
+    if (invalidURLAuditProduct) return invalidURLAuditProduct;
 
-    // We found a valid canonical URL, so we'll just check for common mistakes.
-    const canonicalURL = new URL(canonicalURLOrAuditProduct);
+    // There was a single valid canonical URL, so now we'll just check for common mistakes.
+    const canonicalURL = new URL([...canonicalURLData.uniqueCanonicalURLs][0]);
     const mistakeAuditProduct = Canonical.findCommonCanonicalURLMistakes(
       canonicalURLData,
       canonicalURL,

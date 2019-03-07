@@ -13,6 +13,12 @@ const getElementsInDocumentString = require('../../lib/page-functions.js')
   .getElementsInDocumentString; // eslint-disable-line max-len
 
 /**
+ * @fileoverview
+ * This gatherer collects all the effect `link` elements, both in the page and declared in the
+ * headers of the main resource.
+ */
+
+/**
  *
  * @param {string} url
  * @param {string} finalUrl
@@ -70,7 +76,6 @@ class LinkElements extends Gatherer {
     const finalUrl = passContext.url;
     const records = loadData.networkRecords;
     const mainDocument = NetworkAnalyzer.findMainDocument(records, finalUrl);
-    if (!mainDocument) return [];
 
     /** @type {LH.Artifacts['LinkElements']} */
     const linkElements = [];

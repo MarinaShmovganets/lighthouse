@@ -454,6 +454,7 @@ class NetworkAnalyzer {
       const mainResource = records.find(request => finalURL.startsWith(request.url) &&
         URL.equalWithExcludedFragments(request.url, finalURL));
       if (mainResource) return mainResource;
+      // TODO: beacon !mainResource to Sentry, https://github.com/GoogleChrome/lighthouse/issues/7041
     }
 
     const documentRequests = records.filter(record => record.resourceType ===

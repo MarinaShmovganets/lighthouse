@@ -12,6 +12,10 @@ const networkRecordsToDevtoolsLog = require('../../network-records-to-devtools-l
 /* eslint-env jest */
 
 describe('SEO: Document has valid canonical link', () => {
+  /**
+   * @param {Partial<LH.Artifacts.LinkElement>} overrides
+   * @return {LH.Artifacts.LinkElement}
+   */
   function link(overrides) {
     if (overrides.href && !overrides.hrefRaw) overrides.hrefRaw = overrides.href;
     return {

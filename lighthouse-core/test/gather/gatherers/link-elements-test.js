@@ -10,10 +10,10 @@
 const LinkElements = require('../../../gather/gatherers/link-elements.js');
 
 describe('Link Elements gatherer', () => {
-  let linkElementsInDOM;
-  let passContext;
-  let loadData;
-
+  /**
+   * @param {Partial<LH.Artifact.LinkElement>} overrides
+   * @return {LH.Artifact.LinkElement}
+   */
   function link(overrides) {
     if (overrides.href && !overrides.hrefRaw) overrides.hrefRaw = overrides.href;
     return {
@@ -27,27 +27,22 @@ describe('Link Elements gatherer', () => {
     };
   }
 
-  function setMainDocumentHeaders(headers) {
+  function getPassData({linkElementsInDOM = [], headers = []}) {
     const url = 'https://example.com';
-    loadData.networkRecords.push({url, responseHeaders: headers, resourceType: 'Document'});
-    passContext.url = url;
+    const loadData = {networkRecords: [{url, responseHeaders: headers, resourceType: 'Document'}]};
+    const driver = {evaluateAsync: () => Promise.resolve(linkElementsInDOM)};
+    const passContext = {driver, url};
+    return [passContext, loadData];
   }
 
-  beforeEach(() => {
-    linkElementsInDOM = [];
-    const driver = {evaluateAsync: () => Promise.resolve(linkElementsInDOM)};
-    passContext = {driver, url: ''};
-    loadData = {networkRecords: [{url: '', responseHeaders: [], resourceType: 'Document'}]};
-  });
-
   it('returns elements from DOM', async () => {
-    linkElementsInDOM = [
+    const linkElementsInDOM = [
       link({source: 'head', rel: 'preconnect', href: 'https://cdn.example.com'}),
       link({source: 'head', rel: 'styleSheeT', href: 'https://example.com/a.css'}),
       link({source: 'body', rel: 'ICON', href: 'https://example.com/a.png'}),
     ];
 
-    const result = await new LinkElements().afterPass(passContext, loadData);
+    const result = await new LinkElements().afterPass(...getPassData({linkElementsInDOM}));
     expect(result).toEqual([
       link({source: 'head', rel: 'preconnect', href: 'https://cdn.example.com'}),
       link({source: 'head', rel: 'stylesheet', href: 'https://example.com/a.css'}),
@@ -56,14 +51,14 @@ describe('Link Elements gatherer', () => {
   });
 
   it('returns elements from headers', async () => {
-    setMainDocumentHeaders([
+    const headers = [
       {name: 'Link', value: '<https://example.com/>; rel=prefetch; as=image'},
       {name: 'link', value: '<https://example.com/>; rel=preconnect; crossorigin=anonymous'},
       {name: 'Link', value: '<https://example.com/style.css>; rel="preload",</>; rel="canonical"'},
       {name: 'LINK', value: '<https://example.com/>; rel=alternate; hreflang=xx'},
-    ]);
+    ];
 
-    const result = await new LinkElements().afterPass(passContext, loadData);
+    const result = await new LinkElements().afterPass(...getPassData({headers}));
     expect(result).toEqual([
       link({source: 'headers', rel: 'prefetch', href: 'https://example.com/', as: 'image'}),
       link({source: 'headers', rel: 'preconnect', href: 'https://example.com/', crossOrigin: 'anonymous'}), // eslint-disable-line max-len
@@ -74,16 +69,16 @@ describe('Link Elements gatherer', () => {
   });
 
   it('combines elements from headers and DOM', async () => {
-    linkElementsInDOM = [
+    const linkElementsInDOM = [
       link({source: 'head', rel: 'styleSheeT', href: 'https://example.com/a.css'}),
       link({source: 'body', rel: 'ICON', href: 'https://example.com/a.png'}),
     ];
 
-    setMainDocumentHeaders([
+    const headers = [
       {name: 'Link', value: '<https://example.com/>; rel=prefetch; as=image'},
-    ]);
+    ];
 
-    const result = await new LinkElements().afterPass(passContext, loadData);
+    const result = await new LinkElements().afterPass(...getPassData({linkElementsInDOM, headers}));
     expect(result).toEqual([
       link({source: 'head', rel: 'stylesheet', href: 'https://example.com/a.css'}),
       link({source: 'body', rel: 'icon', href: 'https://example.com/a.png'}),
