@@ -700,7 +700,7 @@ describe('Config', () => {
     // Include a configPath flag so that config.js looks for the plugins in the fixtures dir.
     const configFixturePath = __dirname + '/../fixtures/config-plugins/';
 
-    it('should append audits and a group', () => {
+    it('should append audits', () => {
       const configJson = {
         audits: ['installable-manifest', 'metrics'],
         plugins: ['lighthouse-plugin-simple'],
