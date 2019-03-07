@@ -21,7 +21,7 @@ const fastConfig = {
 
 // Map plugin name to fixture since not actually installed in node_modules/.
 jest.mock('lighthouse-plugin-simple', () => {
-  return require('../../../lighthouse-core/test/fixtures/config-plugins/lighthouse-plugin-simple');
+  return require('../../../lighthouse-core/test/fixtures/config-plugins/lighthouse-plugin-simple/');
 }, {virtual: true});
 
 const getFlags = require('../../cli-flags').getFlags;

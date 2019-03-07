@@ -751,17 +751,18 @@ describe('Config', () => {
         },
       };
       const baseFlags = {configPath: configFixturePath};
-      const simplePlugin = 'lighthouse-plugin-simple';
-      const noGroupsPlugin = 'lighthouse-plugin-no-groups';
+      const simplePluginName = 'lighthouse-plugin-simple';
+      const noGroupsPluginName = 'lighthouse-plugin-no-groups';
 
-      const allConfigConfigJson = {...baseConfigJson, plugins: [simplePlugin, noGroupsPlugin]};
+      const allConfigConfigJson = {...baseConfigJson, plugins: [simplePluginName,
+        noGroupsPluginName]};
       const allPluginsInConfigConfig = new Config(allConfigConfigJson, baseFlags);
 
-      const allFlagsFlags = {...baseFlags, plugins: [simplePlugin, noGroupsPlugin]};
+      const allFlagsFlags = {...baseFlags, plugins: [simplePluginName, noGroupsPluginName]};
       const allPluginsInFlagsConfig = new Config(baseConfigJson, allFlagsFlags);
 
-      const mixedConfigJson = {...baseConfigJson, plugins: [simplePlugin]};
-      const mixedFlags = {...baseFlags, plugins: [noGroupsPlugin]};
+      const mixedConfigJson = {...baseConfigJson, plugins: [simplePluginName]};
+      const mixedFlags = {...baseFlags, plugins: [noGroupsPluginName]};
       const pluginsInConfigAndFlagsConfig = new Config(mixedConfigJson, mixedFlags);
 
       // Double check that we're not comparing empty objects.
