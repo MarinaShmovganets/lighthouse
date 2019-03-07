@@ -331,9 +331,8 @@ class Config {
    * @implements {LH.Config.Json}
    * @param {LH.Config.Json=} configJSON
    * @param {LH.Flags=} flags
-   * @param {Array<string>=} plugins
    */
-  constructor(configJSON, flags, plugins) {
+  constructor(configJSON, flags) {
     const status = {msg: 'Create config', id: 'lh:init:config'};
     log.time(status, 'verbose');
     let configPath = flags && flags.configPath;
@@ -363,7 +362,7 @@ class Config {
     const configDir = configPath ? path.dirname(configPath) : undefined;
 
     // Validate and merge in plugins (if any).
-    configJSON = Config.mergePlugins(configJSON, plugins, configDir);
+    configJSON = Config.mergePlugins(configJSON, flags, configDir);
 
     const settings = Config.initSettings(configJSON.settings, flags);
 
@@ -460,13 +459,14 @@ class Config {
 
   /**
    * @param {LH.Config.Json} configJSON
-   * @param {Array<string>=} plugins
+   * @param {LH.Flags=} flags
    * @param {string=} configDir
    * @return {LH.Config.Json}
    */
-  static mergePlugins(configJSON, plugins = [], configDir) {
+  static mergePlugins(configJSON, flags, configDir) {
     const configPlugins = configJSON.plugins || [];
-    const pluginNames = new Set([...configPlugins, ...plugins]);
+    const flagPlugins = (flags && flags.plugins) || [];
+    const pluginNames = new Set([...configPlugins, ...flagPlugins]);
 
     for (const pluginName of pluginNames) {
       assertValidPluginName(configJSON, pluginName);

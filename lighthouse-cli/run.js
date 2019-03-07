@@ -183,10 +183,9 @@ async function potentiallyKillChrome(launchedChrome) {
  * @param {string} url
  * @param {LH.CliFlags} flags
  * @param {LH.Config.Json|undefined} config
- * @param {Array<string>=} plugins
  * @return {Promise<LH.RunnerResult|undefined>}
  */
-async function runLighthouse(url, flags, config, plugins) {
+async function runLighthouse(url, flags, config) {
   /** @param {any} reason */
   async function handleTheUnhandled(reason) {
     process.stderr.write(`Unhandled Rejection. Reason: ${reason}\n`);
@@ -207,7 +206,7 @@ async function runLighthouse(url, flags, config, plugins) {
       flags.port = launchedChrome.port;
     }
 
-    const runnerResult = await lighthouse(url, flags, config, undefined, plugins);
+    const runnerResult = await lighthouse(url, flags, config);
 
     // If in gatherMode only, there will be no runnerResult.
     if (runnerResult) {

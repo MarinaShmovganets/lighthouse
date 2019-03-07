@@ -99,16 +99,6 @@ describe('CLI bin', function() {
     });
   });
 
-  describe('plugins', () => {
-    it('should use the cli flag plugins', async () => {
-      const plugins = ['lighthouse-plugin-binnnn'];
-      cliFlags = {...cliFlags, plugins};
-      await bin.begin();
-
-      expect(getRunLighthouseArgs()[3]).toEqual(plugins);
-    });
-  });
-
   describe('logging', () => {
     it('should have info by default', async () => {
       await bin.begin();

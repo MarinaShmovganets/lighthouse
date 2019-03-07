@@ -147,7 +147,7 @@ async function begin() {
     });
   }
 
-  return runLighthouse(url, cliFlags, configJson, cliFlags.plugins);
+  return runLighthouse(url, cliFlags, configJson);
 }
 
 module.exports = {

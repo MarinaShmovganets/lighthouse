@@ -741,25 +741,36 @@ describe('Config', () => {
       assert.strictEqual(config.categories['lighthouse-plugin-simple'].title, 'Simple');
     });
 
-    it('should load plugins from the config and from passed-in flag list', () => {
-      const configJson = {
+    it('should load plugins from the config and from passed-in flags', () => {
+      const baseConfigJson = {
         audits: ['installable-manifest'],
-        plugins: ['lighthouse-plugin-simple'],
         categories: {
           myManifest: {
             auditRefs: [{id: 'installable-manifest', weight: 9000}],
           },
         },
       };
-      const flagPlugins = ['lighthouse-plugin-no-groups'];
-      const config = new Config(configJson, {configPath: configFixturePath}, flagPlugins);
+      const baseFlags = {configPath: configFixturePath};
+      const simplePlugin = 'lighthouse-plugin-simple';
+      const noGroupsPlugin = 'lighthouse-plugin-no-groups';
 
-      assert.deepStrictEqual(config.audits.map(a => a.path),
-        ['installable-manifest', 'redirects', 'user-timings', 'uses-rel-preload']);
+      const allConfigConfigJson = {...baseConfigJson, plugins: [simplePlugin, noGroupsPlugin]};
+      const allPluginsInConfigConfig = new Config(allConfigConfigJson, baseFlags);
 
-      const categoryNames = Object.keys(config.categories);
+      const allFlagsFlags = {...baseFlags, plugins: [simplePlugin, noGroupsPlugin]};
+      const allPluginsInFlagsConfig = new Config(baseConfigJson, allFlagsFlags);
+
+      const mixedConfigJson = {...baseConfigJson, plugins: [simplePlugin]};
+      const mixedFlags = {...baseFlags, plugins: [noGroupsPlugin]};
+      const pluginsInConfigAndFlagsConfig = new Config(mixedConfigJson, mixedFlags);
+
+      // Double check that we're not comparing empty objects.
+      const categoryNames = Object.keys(allPluginsInConfigConfig.categories);
       assert.deepStrictEqual(categoryNames,
         ['myManifest', 'lighthouse-plugin-simple', 'lighthouse-plugin-no-groups']);
+
+      assert.deepStrictEqual(allPluginsInConfigConfig, allPluginsInFlagsConfig);
+      assert.deepStrictEqual(allPluginsInConfigConfig, pluginsInConfigAndFlagsConfig);
     });
 
     it('should throw if the plugin is invalid', () => {

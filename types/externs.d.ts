@@ -142,6 +142,8 @@ declare global {
       logLevel?: 'silent'|'error'|'info'|'verbose';
       /** The path to the config JSON. */
       configPath?: string;
+      /** Run the specified plugins. */
+      plugins?: string[];
     }
 
     /**
@@ -175,8 +177,6 @@ declare global {
       precomputedLanternDataPath?: string;
       /** Path to the file where precomputed lantern data should be written to. */
       lanternDataOutputPath?: string;
-      /** Run the specified plugins. */
-      plugins?: string[];
 
       // The following are given defaults in cli-flags, so are not optional like in Flags or SharedFlagsSettings.
       output: OutputMode[];

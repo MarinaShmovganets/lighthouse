@@ -37,10 +37,12 @@ describe('CLI run', function() {
     beforeAll(async () => {
       const url = 'chrome://version';
       const timeoutFlag = `--max-wait-for-load=${9000}`;
-      const flags = getFlags(`--output=json --output-path=${filename} ${timeoutFlag} ${url}`);
-      const plugins = ['lighthouse-plugin-simple'];
+      const pluginsFlag = '--plugins=lighthouse-plugin-simple';
 
-      const rawResult = await run.runLighthouse(url, flags, fastConfig, plugins);
+      // eslint-disable-next-line max-len
+      const flags = getFlags(`--output=json --output-path=${filename} ${pluginsFlag} ${timeoutFlag} ${url}`);
+
+      const rawResult = await run.runLighthouse(url, flags, fastConfig);
 
       if (!rawResult) {
         return assert.fail('no results');
