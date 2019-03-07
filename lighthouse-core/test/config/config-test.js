@@ -697,6 +697,7 @@ describe('Config', () => {
   });
 
   describe('mergePlugins', () => {
+    // Include a configPath flag so that config.js looks for the plugins in the fixtures dir.
     const configFixturePath = __dirname + '/../fixtures/config-plugins/';
 
     it('should append audits and a group', () => {
@@ -705,11 +706,24 @@ describe('Config', () => {
         plugins: ['lighthouse-plugin-simple'],
       };
       const config = new Config(configJson, {configPath: configFixturePath});
-      const groupIds = Object.keys(config.groups);
       assert.deepStrictEqual(config.audits.map(a => a.path),
         ['installable-manifest', 'metrics', 'redirects', 'user-timings']);
-      assert.ok(groupIds.length === 1);
-      assert.strictEqual(groupIds[groupIds.length - 1], 'lighthouse-plugin-simple-new-group');
+    });
+
+    it('should append and use plugin-prefixed groups', () => {
+      const configJson = {
+        audits: ['installable-manifest', 'metrics'],
+        plugins: ['lighthouse-plugin-simple'],
+        groups: {
+          configGroup: {title: 'This is a group in the base config'},
+        },
+      };
+      const config = new Config(configJson, {configPath: configFixturePath});
+
+      const groupIds = Object.keys(config.groups);
+      assert.ok(groupIds.length === 2);
+      assert.strictEqual(groupIds[0], 'configGroup');
+      assert.strictEqual(groupIds[1], 'lighthouse-plugin-simple-new-group');
       assert.strictEqual(config.groups['lighthouse-plugin-simple-new-group'].title, 'New Group');
       assert.strictEqual(config.categories['lighthouse-plugin-simple'].auditRefs[0].group,
         'lighthouse-plugin-simple-new-group');
@@ -725,6 +739,27 @@ describe('Config', () => {
       assert.ok(categoryNames.length > 1);
       assert.strictEqual(categoryNames[categoryNames.length - 1], 'lighthouse-plugin-simple');
       assert.strictEqual(config.categories['lighthouse-plugin-simple'].title, 'Simple');
+    });
+
+    it('should load plugins from the config and from passed-in flag list', () => {
+      const configJson = {
+        audits: ['installable-manifest'],
+        plugins: ['lighthouse-plugin-simple'],
+        categories: {
+          myManifest: {
+            auditRefs: [{id: 'installable-manifest', weight: 9000}],
+          },
+        },
+      };
+      const flagPlugins = ['lighthouse-plugin-no-groups'];
+      const config = new Config(configJson, {configPath: configFixturePath}, flagPlugins);
+
+      assert.deepStrictEqual(config.audits.map(a => a.path),
+        ['installable-manifest', 'redirects', 'user-timings', 'uses-rel-preload']);
+
+      const categoryNames = Object.keys(config.categories);
+      assert.deepStrictEqual(categoryNames,
+        ['myManifest', 'lighthouse-plugin-simple', 'lighthouse-plugin-no-groups']);
     });
 
     it('should throw if the plugin is invalid', () => {
