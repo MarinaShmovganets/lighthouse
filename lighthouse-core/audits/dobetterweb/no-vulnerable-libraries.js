@@ -16,8 +16,6 @@ const Audit = require('../audit');
 const Sentry = require('../../lib/sentry');
 const semver = require('semver');
 const snykDatabase = require('../../../third-party/snyk/snapshot.json');
-/** @type {?SnykDB} */
-let snykDBForTest;
 
 const SEMVER_REGEX = /^(\d+\.\d+\.\d+)[^-0-9]+/;
 
@@ -46,14 +44,7 @@ class NoVulnerableLibrariesAudit extends Audit {
    * @return {SnykDB}
    */
   static get snykDB() {
-    return snykDBForTest || snykDatabase;
-  }
-
-  /**
-   * @param {?SnykDB} mockSnykDb
-   */
-  static setSnykDBForTest(mockSnykDb) {
-    snykDBForTest = mockSnykDb;
+    return snykDatabase;
   }
 
   /**
@@ -88,10 +79,10 @@ class NoVulnerableLibrariesAudit extends Audit {
   /**
    * @param {string} normalizedVersion
    * @param {{name: string, version: string, npmPkgName: string|undefined}} lib
+   * @param {SnykDB} snykDB
    * @return {Array<Vulnerability>}
    */
-  static getVulnerabilities(normalizedVersion, lib) {
-    const snykDB = NoVulnerableLibrariesAudit.snykDB;
+  static getVulnerabilities(normalizedVersion, lib, snykDB) {
     if (!lib.npmPkgName || !snykDB.npm[lib.npmPkgName]) {
       return [];
     }
@@ -145,6 +136,8 @@ class NoVulnerableLibrariesAudit extends Audit {
    */
   static audit(artifacts) {
     const foundLibraries = artifacts.JSLibraries;
+    const snykDB = NoVulnerableLibrariesAudit.snykDB;
+
     if (!foundLibraries.length) {
       return {
         rawValue: true,
@@ -157,7 +150,7 @@ class NoVulnerableLibrariesAudit extends Audit {
 
     const libraryVulns = foundLibraries.map(lib => {
       const version = this.normalizeVersion(lib.version) || '';
-      const vulns = this.getVulnerabilities(version, lib);
+      const vulns = this.getVulnerabilities(version, lib, snykDB);
       const vulnCount = vulns.length;
       totalVulns += vulnCount;
 

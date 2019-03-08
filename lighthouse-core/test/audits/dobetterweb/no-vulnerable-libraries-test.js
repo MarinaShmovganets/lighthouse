@@ -43,7 +43,7 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
     assert.equal(auditResult.details.items[0].detectedLib.url, 'https://snyk.io/vuln/npm:angular?lh=1.1.4&utm_source=lighthouse&utm_medium=ref&utm_campaign=audit');
   });
 
-  describe('handles vuln details correctly', () => {
+  it('fails when libraries w/ vulnerabilities are detected (anywhere in the semver array)', () => {
     // Vulnerability with an array of semver ranges
     const mockSnykDb = {
       npm: {
@@ -52,33 +52,22 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
         ],
       },
     };
-    beforeEach(() => {
-      origSnykDb = NoVulnerableLibrariesAudit.snykDB;
-      NoVulnerableLibrariesAudit.setSnykDBForTest(mockSnykDb);
-    });
-    afterEach(() => {
-      NoVulnerableLibrariesAudit.setSnykDBForTest(undefined);
-    });
-
-    it('fails when libraries w/ vulnerabilities are detected (in the semver range array)', () => {
-      const auditResult = NoVulnerableLibrariesAudit.audit({
-        JSLibraries: [{name: 'Badlib', version: '3.0.0', npmPkgName: 'badlib'}],
-      });
-      expect(auditResult.details.items).toMatchInlineSnapshot(`
+    const JSLibraries = [{name: 'Badlib', version: '3.0.0', npmPkgName: 'badlib'}];
+    const vulns = NoVulnerableLibrariesAudit.getVulnerabilities(
+      '3.0.0',
+      JSLibraries[0],
+      mockSnykDb
+    );
+    expect(vulns).toMatchInlineSnapshot(`
 Array [
   Object {
-    "detectedLib": Object {
-      "text": "Badlib@3.0.0",
-      "type": "link",
-      "url": "https://snyk.io/vuln/npm:badlib?lh=3.0.0&utm_source=lighthouse&utm_medium=ref&utm_campaign=audit",
-    },
-    "highestSeverity": "Medium",
-    "vulnCount": 1,
+    "library": "Badlib@3.0.0",
+    "numericSeverity": 2,
+    "severity": "medium",
+    "url": "https://snyk.io/vuln/badlibvuln:12345",
   },
 ]
 `);
-      assert.equal(auditResult.rawValue, false);
-    });
   });
 
   it('handles ill-specified versions', () => {
