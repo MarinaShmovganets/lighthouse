@@ -86,6 +86,7 @@ class Canonical extends Audit {
     let relativeCanonicallink;
     for (const link of linkElements) {
       // Links in the body aren't canonical references for SEO, skip them
+      /** @see https://html.spec.whatwg.org/multipage/links.html#body-ok */
       if (link.source === 'body') continue;
 
       if (link.rel === 'canonical') {

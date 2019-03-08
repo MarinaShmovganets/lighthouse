@@ -67,7 +67,7 @@ declare global {
       DOMStats: Artifacts.DOMStats;
       /** Relevant attributes and child properties of all <object>s, <embed>s and <applet>s in the page. */
       EmbeddedContent: Artifacts.EmbeddedContentInfo[];
-      /** All the link elements on the page or equivalently declared in `Link` headers. */
+      /** All the link elements on the page or equivalently declared in `Link` headers. @see https://html.spec.whatwg.org/multipage/links.html */
       LinkElements: Artifacts.LinkElement[];
       /** Information for font faces used in the page. */
       Fonts: Artifacts.Font[];
