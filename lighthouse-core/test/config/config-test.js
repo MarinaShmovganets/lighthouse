@@ -1044,7 +1044,7 @@ describe('Config', () => {
       assert.throws(_ => loadGatherer('/fake-non-existent-gatherer'), /locate gatherer/);
     });
 
-    it.only('loads a gatherer from node_modules/', () => {
+    it('loads a gatherer from node_modules/', () => {
       // Use a lighthouse dep as a stand in for a module.
       assert.throws(_ => loadGatherer('lighthouse-logger'), function(err) {
         // Should throw a gatherer validation error, but *not* a gatherer not found error.

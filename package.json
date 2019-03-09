@@ -41,7 +41,7 @@
     "unit:silentcoverage": "nyc --silent yarn unit:ci && nyc report --reporter text-lcov > unit-coverage.lcov",
     "coverage": "nyc yarn unit:ci && nyc report --reporter html",
     "smoke:silentcoverage": "nyc --silent yarn smoke && nyc report --reporter text-lcov > smoke-coverage.lcov",
-    "coverage:smoke": "nyc yarn smoke pwa && nyc report --reporter html",
+    "coverage:smoke": "nyc yarn smoke && nyc report --reporter html",
     "coveralls": "cat unit-coverage.lcov | coveralls",
     "codecov": "codecov -f unit-coverage.lcov -F unit && codecov -f smoke-coverage.lcov -F smoke",
     "devtools": "bash lighthouse-core/scripts/roll-to-devtools.sh",
