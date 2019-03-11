@@ -164,7 +164,7 @@ lighthouse -GA=./gmailartifacts https://gmail.com
 
 #### Notes on Error Reporting
 
-The first time you run the CLI, you will be prompted with a message asking you if Lighthouse can anonymously report runtime exceptions. The Lighthouse team uses this information to detect new bugs and avoid regressions. Opting out will not affect your ability to use Lighthouse in any way. [Learn more](https://github.com/GoogleChrome/lighthouse/blob/master/docs/error-reporting.md).
+The first time you run the CLI you will be prompted with a message asking you if Lighthouse can anonymously report runtime exceptions. The Lighthouse team uses this information to detect new bugs and avoid regressions. Opting out will not affect your ability to use Lighthouse in any way. [Learn more](https://github.com/GoogleChrome/lighthouse/blob/master/docs/error-reporting.md).
 
 ## Using the Node module
 You can also use Lighthouse programmatically with the Node module.
@@ -324,7 +324,7 @@ Yes! Details in [Lighthouse configuration](./docs/configuration.md).
 ### How does Lighthouse use network throttling, and how can I make it better?
 
 Good question. Network and CPU throttling are applied by default in a Lighthouse run. The network
-attempts to emulate slow 4G, and the CPU is slowed down 4x from your machine's default speed. If you
+attempts to emulate slow 4G connectivity and the CPU is slowed down 4x from your machine's default speed. If you
 prefer to run Lighthouse without throttling, you'll have to use the CLI and disable it with the
 `--throttling.*` flags mentioned above.
 
