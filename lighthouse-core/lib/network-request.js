@@ -297,12 +297,11 @@ module.exports = class NetworkRequest {
 
   /**
    * LR loses transfer size information, but passes it in the 'X-TotalFetchedSize' header.
+   * 'X-TotalFetchedSize' is the canonical transfer size in LR. Nothing should supersede it.
    */
   _updateTransferSizeForLightRiderIfNecessary() {
     // Bail if we're not in LightRider, this only applies there.
     if (!global.isLightRider) return;
-    // Bail if we somehow already have transfer size data.
-    if (this.transferSize) return;
 
     const totalFetchedSize = this.responseHeaders.find(item => item.name === 'X-TotalFetchedSize');
     // Bail if the header was missing.
