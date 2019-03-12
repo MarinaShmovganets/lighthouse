@@ -7,7 +7,6 @@
 
 module.exports = {
   collectCoverage: false,
-  coverageReporters: ['none'],
   collectCoverageFrom: [
     '**/lighthouse-core/**/*.js',
     '**/lighthouse-cli/**/*.js',
