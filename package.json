@@ -36,10 +36,10 @@
     "cli-unit": "yarn unit-cli",
     "viewer-unit": "yarn unit-viewer",
     "watch": "yarn unit-core --watch",
-    "unit:silentcoverage": "nyc --hook-run-in-context --silent npm run unit:ci && nyc report --reporter text-lcov > unit-coverage.lcov",
-    "coverage": "nyc --hook-run-in-context npm run unit:ci && nyc report --reporter html",
-    "smoke:silentcoverage": "nyc --silent npm run smoke && nyc report --reporter text-lcov > smoke-coverage.lcov",
-    "coverage:smoke": "nyc npm run smoke && nyc report --reporter html",
+    "unit:cicoverage": "nyc --all --hook-run-in-context npm run unit:ci && nyc report --reporter text-lcov > unit-coverage.lcov",
+    "coverage": "yarn unit:cicoverage && nyc report --reporter html",
+    "smoke:cicoverage": "nyc npm run smoke && nyc report --reporter text-lcov > smoke-coverage.lcov",
+    "coverage:smoke": "yarn smoke:cicoverage && nyc report --reporter html",
     "coveralls": "cat unit-coverage.lcov | coveralls",
     "codecov": "codecov -f unit-coverage.lcov -F unit && codecov -f smoke-coverage.lcov -F smoke",
     "devtools": "bash lighthouse-core/scripts/roll-to-devtools.sh",
@@ -184,14 +184,18 @@
   ],
   "nyc": {
     "reporter": [
-      "lcov",
-      "text"
+      "text-summary"
     ],
     "tempDirectory": "./coverage",
+    "include": [
+      "**/lighthouse-core/**/*.js",
+      "**/lighthouse-cli/**/*.js",
+      "**/lighthouse-viewer/**/*.js"
+    ],
     "exclude": [
       "**/third_party/**",
       "**/test/",
-      "clients/"
+      "**/scripts/"
     ]
   },
   "homepage": "https://github.com/GoogleChrome/lighthouse#readme",
