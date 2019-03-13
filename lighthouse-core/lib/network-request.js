@@ -305,9 +305,11 @@ module.exports = class NetworkRequest {
    * the accumulated total. We do this so that if the request is aborted or fails, we still get
    * a value via the accumulation.
    *
-   * In Lightrider, we do not have true value for encodedDataLength, and we get the actual size
-   * of the encoded data via a special response header. Because the values are totally bogus,
-   * we do no accumulation.
+   * In Lightrider, due to instrumentation limitations, our values for encodedDataLength are bogus
+   * and not valid. However the resource's true encodedDataLength/transferSize is shared via a
+   * special response header, X-TotalFetchedSize. In this situation, we read this value from
+   * responseReceived, use it for the transferSize and ignore the encodedDataLength values in
+   * both dataReceived and loadingFinished.
    */
   _updateTransferSizeForLightrider() {
     // Bail if we somehow already have transfer size data.
