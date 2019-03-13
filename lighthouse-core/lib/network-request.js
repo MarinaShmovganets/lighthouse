@@ -172,7 +172,7 @@ module.exports = class NetworkRequest {
    */
   onDataReceived(data) {
     this.resourceSize += data.dataLength;
-    if (!global.isLightRider && data.encodedDataLength !== -1) {
+    if (!global.isLightrider && data.encodedDataLength !== -1) {
       this.transferSize += data.encodedDataLength;
     }
   }
@@ -186,7 +186,7 @@ module.exports = class NetworkRequest {
 
     this.finished = true;
     this.endTime = data.timestamp;
-    if (!global.isLightRider && data.encodedDataLength >= 0) {
+    if (!global.isLightrider && data.encodedDataLength >= 0) {
       this.transferSize = data.encodedDataLength;
     }
 
@@ -258,7 +258,7 @@ module.exports = class NetworkRequest {
     // of the encoded data via a special response header. Because the values are totally bogus,
     // we do no accumulation. Besides, it is unneccessary as we know the length of the encoded
     // data as soon as we get an onResponseReceived by inspecting the headers.
-    if (global.isLightRider) {
+    if (global.isLightrider) {
       this._updateTransferSizeForLightRider();
     } else {
       this.transferSize = response.encodedDataLength;
