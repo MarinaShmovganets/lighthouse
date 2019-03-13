@@ -67,6 +67,7 @@ module.exports = class NetworkRequest {
     /** @type {number} */
     this.responseReceivedTime = -1;
 
+    // Go read the comment on _updateTransferSizeForLightrider.
     this.transferSize = 0;
     this.resourceSize = 0;
     this.fromDiskCache = false;
@@ -299,11 +300,11 @@ module.exports = class NetworkRequest {
    * 'X-TotalFetchedSize' is the canonical transfer size in LR. Nothing should supersede it.
    *
    * The total length of the encoded data is spread out among multiple events. The sum of the
-   * values in onResponseReceived and all the onDataReceived events will equal the value
-   * seen on the onLoadingFinished event. As we process onResonseReceived and onDataReceived
-   * we accumulate the total encodedDataLength. When we process onLoadingFinished, we override
-   * the accumulated total. We do this so that if the request is aborted or fails, we still get
-   * a value via the accumulation.
+   * values in onResponseReceived and all the onDataReceived events typically equals the value
+   * seen on the onLoadingFinished event. In <1% of cases we see the values differ. As we process
+   * onResonseReceived and onDataReceived we accumulate the total encodedDataLength. When we
+   * process onLoadingFinished, we override the accumulated total. We do this so that if the
+   * request is aborted or fails, we still get a value via the accumulation.
    *
    * In Lightrider, due to instrumentation limitations, our values for encodedDataLength are bogus
    * and not valid. However the resource's true encodedDataLength/transferSize is shared via a
