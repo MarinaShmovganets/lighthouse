@@ -172,7 +172,7 @@ module.exports = class NetworkRequest {
    */
   onDataReceived(data) {
     this.resourceSize += data.dataLength;
-    if (!global.isLightrider && data.encodedDataLength !== -1) {
+    if (data.encodedDataLength !== -1) {
       this.transferSize += data.encodedDataLength;
     }
   }
@@ -186,11 +186,12 @@ module.exports = class NetworkRequest {
 
     this.finished = true;
     this.endTime = data.timestamp;
-    if (!global.isLightrider && data.encodedDataLength >= 0) {
+    if (data.encodedDataLength >= 0) {
       this.transferSize = data.encodedDataLength;
     }
 
     this._updateResponseReceivedTimeIfNecessary();
+    this._updateTransferSizeForLightrider();
   }
 
   /**
@@ -208,6 +209,7 @@ module.exports = class NetworkRequest {
     this.localizedFailDescription = data.errorText;
 
     this._updateResponseReceivedTimeIfNecessary();
+    this._updateTransferSizeForLightrider();
   }
 
   /**
@@ -256,13 +258,8 @@ module.exports = class NetworkRequest {
     // a value via the accumulation.
     // In Lightrider, we do not have true value for encodedDataLength, and we get the actual size
     // of the encoded data via a special response header. Because the values are totally bogus,
-    // we do no accumulation. Besides, it is unneccessary as we know the length of the encoded
-    // data as soon as we get an onResponseReceived by inspecting the headers.
-    if (global.isLightrider) {
-      this._updateTransferSizeForLightRider();
-    } else {
-      this.transferSize = response.encodedDataLength;
-    }
+    // we do no accumulation.
+    this.transferSize = response.encodedDataLength;
     if (typeof response.fromDiskCache === 'boolean') this.fromDiskCache = response.fromDiskCache;
 
     this.statusCode = response.status;
@@ -311,7 +308,9 @@ module.exports = class NetworkRequest {
    * LR loses transfer size information, but passes it in the 'X-TotalFetchedSize' header.
    * 'X-TotalFetchedSize' is the canonical transfer size in LR. Nothing should supersede it.
    */
-  _updateTransferSizeForLightRider() {
+  _updateTransferSizeForLightrider() {
+    if (!global.isLightrider) return;
+
     const totalFetchedSize = this.responseHeaders.find(item => item.name === 'X-TotalFetchedSize');
     // Bail if the header was missing.
     if (!totalFetchedSize) return;
