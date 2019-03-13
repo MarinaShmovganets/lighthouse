@@ -245,6 +245,9 @@ module.exports = class NetworkRequest {
 
     this.responseReceivedTime = timestamp;
 
+    this.responseHeadersText = response.headersText || '';
+    this.responseHeaders = NetworkRequest._headersDictToHeadersArray(response.headers);
+
     // The total length of the encoded data is spread out among multiple events. The sum of the
     // values in onResponseReceived and all the onDataReceived events will equal the value
     // seen on the onLoadingFinished event. As we process onResonseReceived and onDataReceived
@@ -267,8 +270,6 @@ module.exports = class NetworkRequest {
     this.timing = response.timing;
     if (resourceType) this.resourceType = RESOURCE_TYPES[resourceType];
     this.mimeType = response.mimeType;
-    this.responseHeadersText = response.headersText || '';
-    this.responseHeaders = NetworkRequest._headersDictToHeadersArray(response.headers);
 
     this.fetchedViaServiceWorker = !!response.fromServiceWorker;
 
