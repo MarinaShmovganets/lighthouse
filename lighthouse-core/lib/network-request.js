@@ -172,7 +172,7 @@ module.exports = class NetworkRequest {
    */
   onDataReceived(data) {
     this.resourceSize += data.dataLength;
-    if (data.encodedDataLength !== -1) {
+    if (!global.isLightRider && data.encodedDataLength !== -1) {
       this.transferSize += data.encodedDataLength;
     }
   }
@@ -186,12 +186,11 @@ module.exports = class NetworkRequest {
 
     this.finished = true;
     this.endTime = data.timestamp;
-    if (data.encodedDataLength >= 0) {
+    if (!global.isLightRider && data.encodedDataLength >= 0) {
       this.transferSize = data.encodedDataLength;
     }
 
     this._updateResponseReceivedTimeIfNecessary();
-    this._updateTransferSizeForLightRiderIfNecessary();
   }
 
   /**
@@ -246,7 +245,21 @@ module.exports = class NetworkRequest {
 
     this.responseReceivedTime = timestamp;
 
-    this.transferSize = response.encodedDataLength;
+    // The total length of the encoded data is spread out among multiple events. The sum of the
+    // values in onResponseReceived and all the onDataReceived events will equal the value
+    // seen on the onLoadingFinished event. As we process onResonseReceived and onDataReceived
+    // we accumulate the total encodedDataLength. When we process onLoadingFinished, we override
+    // the accumulated total. We do this so that if the request is aborted or fails, we still get
+    // a value via the accumulation.
+    // In Lightrider, we do not have true value for encodedDataLength, and we get the actual size
+    // of the encoded data via a special response header. Because the values are totally bogus,
+    // we do no accumulation. Besides, it is unneccessary as we know the length of the encoded
+    // data as soon as we get an onResponseReceived by inspecting the headers.
+    if (global.isLightRider) {
+      this._updateTransferSizeForLightRider();
+    } else {
+      this.transferSize = response.encodedDataLength;
+    }
     if (typeof response.fromDiskCache === 'boolean') this.fromDiskCache = response.fromDiskCache;
 
     this.statusCode = response.status;
@@ -261,8 +274,6 @@ module.exports = class NetworkRequest {
 
     if (this.fromMemoryCache) this.timing = undefined;
     if (this.timing) this._recomputeTimesWithResourceTiming(this.timing);
-
-    this._updateTransferSizeForLightRiderIfNecessary();
   }
 
   /**
@@ -299,10 +310,7 @@ module.exports = class NetworkRequest {
    * LR loses transfer size information, but passes it in the 'X-TotalFetchedSize' header.
    * 'X-TotalFetchedSize' is the canonical transfer size in LR. Nothing should supersede it.
    */
-  _updateTransferSizeForLightRiderIfNecessary() {
-    // Bail if we're not in LightRider, this only applies there.
-    if (!global.isLightRider) return;
-
+  _updateTransferSizeForLightRider() {
     const totalFetchedSize = this.responseHeaders.find(item => item.name === 'X-TotalFetchedSize');
     // Bail if the header was missing.
     if (!totalFetchedSize) return;
