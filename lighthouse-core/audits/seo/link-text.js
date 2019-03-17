@@ -43,7 +43,7 @@ const BLOCKLIST = new Set([
   'este',
   'enlace',
   'este enlace',
-  'empezar', 
+  'empezar',
 ]);
 const i18n = require('../../lib/i18n/i18n.js');
 
