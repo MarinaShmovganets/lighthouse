@@ -557,9 +557,14 @@ class Driver {
    * @return {{promise: Promise<void>, cancel: function(): void}}
    */
   _waitForever() {
-    return {promise: new Promise(() => null), cancel() {}};
+    let cancel = () => {};
+    return {
+      promise: new Promise(resolve => {
+        cancel = resolve;
+      }),
+      cancel
+    };
   }
-
 
   /**
    * Returns a promise that resolve when a frame has been navigated.
