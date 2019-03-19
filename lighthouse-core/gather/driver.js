@@ -899,6 +899,7 @@ class Driver {
     // CPU listener. Resolves when the CPU has been idle for cpuQuietThresholdMs after network idle.
     let waitForCPUIdle = this._waitForNothing();
 
+    /** @type {{promise: Promise<string | void>, cancel: () => void}} */
     const monitorForInsecureState = ignoreHttpsErrors
       ? this._waitForever()
       : this._monitorForInsecureState();
