@@ -905,7 +905,9 @@ class Driver {
       : this._monitorForInsecureState();
     const securityCheckPromise = monitorForInsecureState.promise.then(securityMessages => {
       return function() {
-        throw new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {securityMessages});
+        throw new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {
+          securityMessages: securityMessages || ''
+        });
       };
     });
 
