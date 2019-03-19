@@ -91,6 +91,7 @@ class GatherRunner {
     const finalUrl = await driver.gotoURL(passContext.url, {
       waitForFCP: passContext.passConfig.recordTrace,
       waitForLoad: true,
+      ignoreHttpsErrors: passContext.settings.ignoreHttpsErrors,
       passContext,
     });
     passContext.url = finalUrl;
@@ -232,6 +233,7 @@ class GatherRunner {
     };
     log.time(status);
 
+    if (settings.ignoreHttpsErrors) await driver.setIgnoreHttpsErrors();
     // Clear disk & memory cache if it's a perf run
     if (isPerfRun) await driver.cleanBrowserCaches();
     // Always record devtoolsLog

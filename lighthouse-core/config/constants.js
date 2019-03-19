@@ -64,6 +64,7 @@ const defaultSettings = {
   onlyAudits: null,
   onlyCategories: null,
   skipAudits: null,
+  ignoreHttpsErrors: false,
 };
 
 /** @type {LH.Config.Pass} */

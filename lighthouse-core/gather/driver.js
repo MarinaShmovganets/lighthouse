@@ -869,7 +869,7 @@ class Driver {
    * @private
    */
   async _waitForFullyLoaded(pauseAfterLoadMs, networkQuietThresholdMs, cpuQuietThresholdMs,
-      maxWaitForLoadedMs, maxWaitForFCPMs) {
+      maxWaitForLoadedMs, maxWaitForFCPMs, ignoreHttpsErrors) {
     /** @type {NodeJS.Timer|undefined} */
     let maxTimeoutHandle;
 
@@ -885,7 +885,9 @@ class Driver {
     const monitorForInsecureState = this._monitorForInsecureState();
     const securityCheckPromise = monitorForInsecureState.promise.then(securityMessages => {
       return function() {
-        throw new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {securityMessages});
+        if (!ignoreHttpsErrors) {
+          throw new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {securityMessages});
+        }
       };
     });
 
@@ -1024,7 +1026,7 @@ class Driver {
    * possible workaround.
    * Resolves on the url of the loaded page, taking into account any redirects.
    * @param {string} url
-   * @param {{waitForFCP?: boolean, waitForLoad?: boolean, waitForNavigated?: boolean, passContext?: LH.Gatherer.PassContext}} options
+   * @param {{waitForFCP?: boolean, waitForLoad?: boolean, waitForNavigated?: boolean, passContext?: LH.Gatherer.PassContext, ignoreHttpsErrors?: boolean}} options
    * @return {Promise<string>}
    */
   async gotoURL(url, options = {}) {
@@ -1033,6 +1035,7 @@ class Driver {
     const waitForLoad = options.waitForLoad || false;
     const passContext = /** @type {Partial<LH.Gatherer.PassContext>} */ (options.passContext || {});
     const disableJS = passContext.disableJavaScript || false;
+    const ignoreHttpsErrors = options.ignoreHttpsErrors || false;
 
     if (waitForNavigated && (waitForFCP || waitForLoad)) {
       throw new Error('Cannot use both waitForNavigated and another event, pick just one');
@@ -1071,7 +1074,7 @@ class Driver {
 
       if (!waitForFCP) maxFCPMs = undefined;
       await this._waitForFullyLoaded(pauseAfterLoadMs, networkQuietThresholdMs, cpuQuietThresholdMs,
-          maxWaitMs, maxFCPMs);
+          maxWaitMs, maxFCPMs, ignoreHttpsErrors);
     }
 
     // Bring `Page.navigate` errors back into the promise chain. See https://github.com/GoogleChrome/lighthouse/pull/6739.
@@ -1453,6 +1456,14 @@ class Driver {
     });
 
     await this.sendCommand('Page.enable');
+  }
+
+  /**
+   * Set chrome security settings to ignore certificate errors.
+   * @return {Promise<void>}
+   */
+  async setIgnoreHttpsErrors() {
+    await this.sendCommand('Security.setIgnoreCertificateErrors', {ignore: true});
   }
 }
 

@@ -127,6 +127,8 @@ declare global {
       channel?: string
       /** Precomputed lantern estimates to use instead of observed analysis. */
       precomputedLanternData?: PrecomputedLanternData | null;
+      /** Ignore HTTPS errors during navigation */
+      ignoreHttpsErrors?: boolean;
     }
 
     /**

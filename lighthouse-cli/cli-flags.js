@@ -87,7 +87,7 @@ function getFlags(manualArgv) {
         'list-trace-categories': 'Prints a list of all required trace categories and exits',
         'additional-trace-categories':
             'Additional categories to capture with the trace (comma-delimited).',
-        'config-path': `The path to the config JSON. 
+        'config-path': `The path to the config JSON.
             An example config file: lighthouse-core/config/lr-desktop-config.js`,
         'preset': `Use a built-in configuration.
             WARNING: If the --config-path flag is provided, this preset will be ignored.`,
@@ -106,6 +106,7 @@ function getFlags(manualArgv) {
         'skip-audits': 'Run everything except these audits',
         'plugins': 'Run the specified plugins',
         'print-config': 'Print the normalized config for the given config and options, then exit.',
+        'ignore-https-errors': 'Whether to ignore HTTPS errors during navigation. Defaults to false',
       })
       // set aliases
       .alias({'gather-mode': 'G', 'audit-mode': 'A'})
@@ -124,7 +125,7 @@ function getFlags(manualArgv) {
       // boolean values
       .boolean([
         'disable-storage-reset', 'disable-device-emulation', 'save-assets', 'list-all-audits',
-        'list-trace-categories', 'view', 'verbose', 'quiet', 'help', 'print-config',
+        'list-trace-categories', 'view', 'verbose', 'quiet', 'help', 'print-config', 'ignore-https-errors'
       ])
       .choices('output', printer.getValidOutputOptions())
       .choices('emulated-form-factor', ['mobile', 'desktop', 'none'])
