@@ -106,12 +106,14 @@ class GatherRunner {
     const status = {msg: 'Initializing…', id: 'lh:gather:setupDriver'};
     log.time(status);
     const resetStorage = !options.settings.disableStorageReset;
+    const ignoreHttpsErrors = options.settings.ignoreHttpsErrors;
     await driver.assertNoSameOriginServiceWorkerClients(options.requestedUrl);
     await driver.beginEmulation(options.settings);
     await driver.enableRuntimeEvents();
     await driver.cacheNatives();
     await driver.registerPerformanceObserver();
     await driver.dismissJavaScriptDialogs();
+    if (ignoreHttpsErrors) await driver.setIgnoreHttpsErrors();
     if (resetStorage) await driver.clearDataForOrigin(options.requestedUrl);
     log.timeEnd(status);
   }
@@ -233,7 +235,6 @@ class GatherRunner {
     };
     log.time(status);
 
-    if (settings.ignoreHttpsErrors) await driver.setIgnoreHttpsErrors();
     // Clear disk & memory cache if it's a perf run
     if (isPerfRun) await driver.cleanBrowserCaches();
     // Always record devtoolsLog
