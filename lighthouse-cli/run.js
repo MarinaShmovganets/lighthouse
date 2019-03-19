@@ -64,25 +64,25 @@ function getDebuggableChrome(flags) {
 
 /** @return {never} */
 function showConnectionError() {
-  log.error('CLI runtime', 'Unable to connect to Chrome');
+  log.error('CLI', 'Unable to connect to Chrome');
   return process.exit(_RUNTIME_ERROR_CODE);
 }
 
 /** @return {never} */
 function showProtocolTimeoutError() {
-  log.error('CLI runtime', 'Debugger protocol timed out while connecting to Chrome.');
+  log.error('CLI', 'Debugger protocol timed out while connecting to Chrome.');
   return process.exit(_PROTOCOL_TIMEOUT_EXIT_CODE);
 }
 
 /** @param {LH.LighthouseError} err @return {never} */
 function showPageHungError(err) {
-  log.error('CLI runtime', 'Page hung:', err.friendlyMessage);
+  log.error('CLI', 'Page hung:', err.friendlyMessage);
   return process.exit(_PAGE_HUNG_EXIT_CODE);
 }
 
 /** @param {LH.LighthouseError} err @return {never} */
 function showInsecureDocumentRequestError(err) {
-  log.error('CLI runtime', 'Insecure document request:', err.friendlyMessage);
+  log.error('CLI', 'Insecure document request:', err.friendlyMessage);
   return process.exit(_INSECURE_DOCUMENT_REQUEST_EXIT_CODE);
 }
 
@@ -91,9 +91,9 @@ function showInsecureDocumentRequestError(err) {
  * @return {never}
  */
 function showRuntimeError(err) {
-  log.error('CLI runtime', 'Runtime error encountered:', err.friendlyMessage || err.message);
+  log.error('CLI', 'Runtime error encountered:', err.friendlyMessage || err.message);
   if (err.stack) {
-    log.error('CLI runtime', err.stack);
+    log.error('CLI', err.stack);
   }
   return process.exit(_RUNTIME_ERROR_CODE);
 }
