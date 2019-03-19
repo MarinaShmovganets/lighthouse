@@ -125,7 +125,7 @@ function getFlags(manualArgv) {
       // boolean values
       .boolean([
         'disable-storage-reset', 'disable-device-emulation', 'save-assets', 'list-all-audits',
-        'list-trace-categories', 'view', 'verbose', 'quiet', 'help', 'print-config', 'ignore-https-errors'
+        'list-trace-categories', 'view', 'verbose', 'quiet', 'help', 'print-config', 'ignore-https-errors',
       ])
       .choices('output', printer.getValidOutputOptions())
       .choices('emulated-form-factor', ['mobile', 'desktop', 'none'])
