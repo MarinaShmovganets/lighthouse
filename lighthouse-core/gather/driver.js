@@ -551,6 +551,17 @@ class Driver {
   }
 
   /**
+   * Returns a promise that never resolves.
+   * Used for placeholder conditions that we don't want race with, but still want to satisfy the same
+   * interface.
+   * @return {{promise: Promise<void>, cancel: function(): void}}
+   */
+  _waitForever() {
+    return {promise: new Promise(() => null), cancel() {}};
+  }
+
+
+  /**
    * Returns a promise that resolve when a frame has been navigated.
    * Used for detecting that our about:blank reset has been completed.
    */
@@ -883,12 +894,12 @@ class Driver {
     // CPU listener. Resolves when the CPU has been idle for cpuQuietThresholdMs after network idle.
     let waitForCPUIdle = this._waitForNothing();
 
-    const monitorForInsecureState = this._monitorForInsecureState();
+    const monitorForInsecureState = ignoreHttpsErrors
+      ? this._waitForever()
+      : this._monitorForInsecureState();
     const securityCheckPromise = monitorForInsecureState.promise.then(securityMessages => {
       return function() {
-        if (!ignoreHttpsErrors) {
-          throw new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {securityMessages});
-        }
+        throw new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {securityMessages});
       };
     });
 
