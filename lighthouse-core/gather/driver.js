@@ -1464,7 +1464,17 @@ class Driver {
    * @return {Promise<void>}
    */
   async setIgnoreHttpsErrors() {
-    await this.sendCommand('Security.setIgnoreCertificateErrors', {ignore: true});
+    // the devtools protocol also has an experimental Security.setIgnoreCertificateErrors
+    //   https://chromedevtools.github.io/devtools-protocol/tot/Security#method-setIgnoreCertificateErrors
+    // It can be used instead of the following when it becomes stable.
+    this.on('Security.certificateError', event => {
+      this.sendCommand('Security.handleCertificateError', {
+        eventId: event.eventId,
+        action: 'continue',
+      }).catch(err => log.warn('Driver', err));
+    });
+    await this.sendCommand('Security.enable');
+    await this.sendCommand('Security.setOverrideCertificateErrors', {override: true});
   }
 }
 
