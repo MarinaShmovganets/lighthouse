@@ -865,6 +865,7 @@ class Driver {
    * @param {number} cpuQuietThresholdMs
    * @param {number} maxWaitForLoadedMs
    * @param {number=} maxWaitForFCPMs
+   * @param {boolean} ignoreHttpsErrors
    * @return {Promise<void>}
    * @private
    */
