@@ -3183,7 +3183,8 @@
     "precomputedLanternData": null,
     "onlyAudits": null,
     "onlyCategories": null,
-    "skipAudits": null
+    "skipAudits": null,
+    "ignoreHttpsErrors": false
   },
   "categories": {
     "performance": {
