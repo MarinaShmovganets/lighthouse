@@ -562,7 +562,7 @@ class Driver {
       promise: new Promise(resolve => {
         cancel = resolve;
       }),
-      cancel
+      cancel,
     };
   }
 
@@ -906,7 +906,7 @@ class Driver {
     const securityCheckPromise = monitorForInsecureState.promise.then(securityMessages => {
       return function() {
         throw new LHError(LHError.errors.INSECURE_DOCUMENT_REQUEST, {
-          securityMessages: securityMessages || ''
+          securityMessages: securityMessages || '',
         });
       };
     });
