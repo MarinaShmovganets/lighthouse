@@ -315,10 +315,14 @@ class Driver {
    * @param {string[]} parentSessionIds The list of session ids of the parents from oldest to youngest.
    */
   _handleTargetAttached(event, parentSessionIds) {
-    // We're only interested in network requests from iframes for now as those are "part of the page".
-    if (event.targetInfo.type !== 'iframe') return;
-
     const sessionIds = parentSessionIds.concat([event.sessionId]);
+
+    // We're only interested in network requests from iframes for now as those are "part of the page".
+    if (event.targetInfo.type !== 'iframe') {
+      this.sendMessageToTarget(sessionIds, 'Runtime.runIfWaitingForDebugger');
+      return;
+    }
+
     // Events from subtargets will be stringified and sent back on `Target.receivedMessageFromTarget`.
     // We want to receive information about network requests from iframes, so enable the Network domain.
     this.sendMessageToTarget(sessionIds, 'Network.enable');

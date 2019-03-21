@@ -1069,16 +1069,22 @@ describe('Multi-target management', () => {
     });
   });
 
-  it('ignores other target types', async () => {
+  it('ignores other target types, but still resumes them', async () => {
     connectionStub.sendCommand = createMockSendCommandFn()
       .mockResponse('Target.sendMessageToTarget', {});
 
     driver._eventEmitter.emit('Target.attachedToTarget', {
-      sessionId: 123,
+      sessionId: 'SW1',
       targetInfo: {type: 'service_worker'},
     });
     await flushAllTimersAndMicrotasks();
 
-    expect(connectionStub.sendCommand).not.toHaveBeenCalled();
+
+    const sendMessageArgs = connectionStub.sendCommand
+      .findInvocation('Target.sendMessageToTarget');
+    expect(sendMessageArgs).toEqual({
+      message: JSON.stringify({id: 1, method: 'Runtime.runIfWaitingForDebugger'}),
+      sessionId: 'SW1',
+    });
   });
 });
