@@ -42,8 +42,7 @@ script:
   - yarn i18n:checks
   # _JAVA_OPTIONS is breaking parsing of `compile-devtools` output. See #3338.
   - unset _JAVA_OPTIONS
-  # FIXME(paulirish): re-enable after a roll of LH->CDT
-  # - yarn compile-devtools
+  - yarn compile-devtools
 before_cache:
   # the `yarn compile-devtools` task adds these to node_modules, which slows down caching
   - rm -rf ./node_modules/temp-devtoolsfrontend/
