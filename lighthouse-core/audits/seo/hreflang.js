@@ -83,6 +83,7 @@ class Hreflang extends Audit {
     for (const link of artifacts.LinkElements) {
       if (link.rel !== 'alternate') continue;
       if (!link.hreflang || isValidHreflang(link.hreflang)) continue;
+      if (link.source === 'body') continue;
 
       if (link.source === 'head') {
         invalidHreflangs.push({
