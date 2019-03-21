@@ -7,7 +7,7 @@
  
 ## To run
 
-- Install somehow.
+- Install as a (peer) dependency, parallel to `lighthouse`.
 - `npx lighthouse https://example.com --plugins=lighthouse-plugin-example --view`
 
 The input to `--plugins` will be loaded from `node_modules/`.
