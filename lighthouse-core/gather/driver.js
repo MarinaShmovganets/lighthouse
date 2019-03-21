@@ -47,8 +47,8 @@ class Driver {
      */
     this._eventEmitter = /** @type {CrdpEventEmitter} */ (new EventEmitter());
     this._connection = connection;
-    // Used to save network and lifecycle protocol traffic. Just Page, Network, and Target are needed.
-    this._devtoolsLog = new DevtoolsLog(/^(Page|Network|Target)\./);
+    // Used to save network and lifecycle protocol traffic. Just Page and Network are needed.
+    this._devtoolsLog = new DevtoolsLog(/^(Page|Network)\./);
     this.online = true;
     /** @type {Map<string, number>} */
     this._domainEnabledCounts = new Map();
@@ -70,31 +70,23 @@ class Driver {
     this._monitoredUrl = null;
 
     /**
-     * Used for sending messages to subtargets
+     * Used for sending messages to subtargets. Each message needs a unique ID even if we don't bother
+     * reading back the result of each command.
+     *
      * @type {number}
      * @private
      */
     this._targetProxyMessageId = 0;
 
     this.on('Target.attachedToTarget', event => {
-      this._handleTargetAttached(event, []);
+      this._handleTargetAttached(event, []).catch(this._handleEventError);
     });
 
     this.on('Target.receivedMessageFromTarget', event => {
-      this._handleReceivedMessageFromTarget(event, []);
+      this._handleReceivedMessageFromTarget(event, []).catch(this._handleEventError);
     });
 
-    connection.on('protocolevent', event => {
-      this._devtoolsLog.record(event);
-      if (this._networkStatusMonitor) {
-        this._networkStatusMonitor.dispatch(event);
-      }
-
-      // @ts-ignore TODO(bckenny): tsc can't type event.params correctly yet,
-      // typing as property of union instead of narrowing from union of
-      // properties. See https://github.com/Microsoft/TypeScript/pull/22348.
-      this._eventEmitter.emit(event.method, event.params);
-    });
+    connection.on('protocolevent', this._handleProtocolEvent.bind(this));
 
     /**
      * @type {number}
@@ -277,10 +269,32 @@ class Driver {
   }
 
   /**
-   * @param {LH.CrdpEvents['Target.receivedMessageFromTarget'][0]} event
+   * @param {LH.Protocol.RawEventMessage} event
+   */
+  _handleProtocolEvent(event) {
+    this._devtoolsLog.record(event);
+    if (this._networkStatusMonitor) {
+      this._networkStatusMonitor.dispatch(event);
+    }
+
+    // @ts-ignore TODO(bckenny): tsc can't type event.params correctly yet,
+    // typing as property of union instead of narrowing from union of
+    // properties. See https://github.com/Microsoft/TypeScript/pull/22348.
+    this._eventEmitter.emit(event.method, event.params);
+  }
+
+  /**
+   * @param {Error} error
+   */
+  _handleEventError(error) {
+    log.error('Driver', 'Unhandled event error', error.message);
+  }
+
+  /**
+   * @param {LH.Crdp.Target.ReceivedMessageFromTargetEvent} event
    * @param {string[]} parentSessionIds The list of session ids of the parents from oldest to youngest.
    */
-  _handleReceivedMessageFromTarget(event, parentSessionIds) {
+  async _handleReceivedMessageFromTarget(event, parentSessionIds) {
     const {sessionId, message} = event;
     /** @type {LH.Protocol.RawMessage} */
     const protocolMessage = JSON.parse(message);
@@ -294,44 +308,44 @@ class Driver {
 
     if (protocolMessage.method === 'Target.receivedMessageFromTarget') {
       // Unravel any messages from subtargets by recursively processing
-      this._handleReceivedMessageFromTarget(protocolMessage.params, sessionIdPath);
+      await this._handleReceivedMessageFromTarget(protocolMessage.params, sessionIdPath);
     }
 
     if (protocolMessage.method === 'Target.attachedToTarget') {
       // Process any attachedToTarget messages from subtargets
-      this._handleTargetAttached(protocolMessage.params, sessionIdPath);
+      await this._handleTargetAttached(protocolMessage.params, sessionIdPath);
     }
 
     if (protocolMessage.method.startsWith('Network')) {
-      // Make sure the message gets added to our devtools log for replay later.
-      this._devtoolsLog.record(protocolMessage);
-      // Also dispatch the event to our status monitor for in-the-moment network quiet detection.
-      if (this._networkStatusMonitor) this._networkStatusMonitor.dispatch(protocolMessage);
+      this._handleProtocolEvent(protocolMessage);
     }
   }
 
   /**
-   * @param {LH.CrdpEvents['Target.attachedToTarget'][0]} event
+   * @param {LH.Crdp.Target.AttachedToTargetEvent} event
    * @param {string[]} parentSessionIds The list of session ids of the parents from oldest to youngest.
    */
-  _handleTargetAttached(event, parentSessionIds) {
+  async _handleTargetAttached(event, parentSessionIds) {
     const sessionIdPath = parentSessionIds.concat([event.sessionId]);
 
     // We're only interested in network requests from iframes for now as those are "part of the page".
+    // Make sure we still resume the target JS execution though, so it doesn't get stuck.
     if (event.targetInfo.type !== 'iframe') {
-      this.sendMessageToTarget(sessionIdPath, 'Runtime.runIfWaitingForDebugger');
+      await this.sendMessageToTarget(sessionIdPath, 'Runtime.runIfWaitingForDebugger');
       return;
     }
 
     // Events from subtargets will be stringified and sent back on `Target.receivedMessageFromTarget`.
     // We want to receive information about network requests from iframes, so enable the Network domain.
-    this.sendMessageToTarget(sessionIdPath, 'Network.enable');
-    this.sendMessageToTarget(sessionIdPath, 'Runtime.runIfWaitingForDebugger');
+    await this.sendMessageToTarget(sessionIdPath, 'Network.enable');
     // We also want to receive information about subtargets of subtargets, so make sure we autoattach recursively.
-    this.sendMessageToTarget(sessionIdPath, 'Target.setAutoAttach', {
+    await this.sendMessageToTarget(sessionIdPath, 'Target.setAutoAttach', {
       autoAttach: true,
+      // Pause targets on startup so we don't miss anything
       waitForDebuggerOnStart: true,
     });
+
+    await this.sendMessageToTarget(sessionIdPath, 'Runtime.runIfWaitingForDebugger');
   }
 
   /**
@@ -350,7 +364,7 @@ class Driver {
     const reverseSessionIdPath = sessionIdPath.slice().reverse();
 
     this._targetProxyMessageId++;
-    /** @type {LH.CrdpCommands['Target.sendMessageToTarget']['paramsType'][0]} */
+    /** @type {LH.Crdp.Target.SendMessageToTargetRequest} */
     let payload = {
       sessionId: reverseSessionIdPath[0],
       message: JSON.stringify({id: this._targetProxyMessageId, method, params: params[0]}),
@@ -1140,6 +1154,7 @@ class Driver {
     // Enable auto-attaching to subtargets so we receive iframe information
     await this.sendCommand('Target.setAutoAttach', {
       autoAttach: true,
+      // Pause targets on startup so we don't miss anything
       waitForDebuggerOnStart: true,
     });
 
