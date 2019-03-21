@@ -9,7 +9,7 @@
 module.exports = {
   // Additional audit to run on information Lighthouse gathered.
   audits: [{
-    path: 'lighthouse-plugin-preload-as/audits/preload-as.js',
+    path: 'lighthouse-plugin-example/audits/preload-as.js',
   }],
 
   // A new category in the report for the new audit's output.

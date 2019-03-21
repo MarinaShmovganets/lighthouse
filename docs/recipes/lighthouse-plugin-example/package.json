@@ -1,5 +1,5 @@
 {
-  "name": "lighthouse-plugin-preload-as",
+  "name": "lighthouse-plugin-example",
   "private": true,
   "main": "./plugin.js",
   "peerDependencies": {

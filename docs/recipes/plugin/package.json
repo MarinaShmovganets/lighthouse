@@ -1,7 +1,0 @@
-{
-  "name": "plugin-lighthouse-recipe",
-  "private": true,
-  "dependencies": {
-    "lighthouse": "^4.2.0"
-  }
-}
