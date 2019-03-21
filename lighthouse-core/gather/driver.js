@@ -292,7 +292,7 @@ class Driver {
 
   /**
    * @param {LH.Crdp.Target.ReceivedMessageFromTargetEvent} event
-   * @param {string[]} parentSessionIds The list of session ids of the parents from oldest to youngest.
+   * @param {string[]} parentSessionIds The list of session ids of the parents from youngest to oldest.
    */
   async _handleReceivedMessageFromTarget(event, parentSessionIds) {
     const {sessionId, message} = event;
@@ -304,7 +304,7 @@ class Driver {
 
     // We receive messages from the outermost subtarget which wraps the messages from the inner subtargets.
     // We are recursively processing them from outside in, so build the list of parentSessionIds accordingly.
-    const sessionIdPath = parentSessionIds.concat([sessionId]);
+    const sessionIdPath = [event.sessionId, ...parentSessionIds];
 
     if (protocolMessage.method === 'Target.receivedMessageFromTarget') {
       // Unravel any messages from subtargets by recursively processing
@@ -323,14 +323,15 @@ class Driver {
 
   /**
    * @param {LH.Crdp.Target.AttachedToTargetEvent} event
-   * @param {string[]} parentSessionIds The list of session ids of the parents from oldest to youngest.
+   * @param {string[]} parentSessionIds The list of session ids of the parents from youngest to oldest.
    */
   async _handleTargetAttached(event, parentSessionIds) {
-    const sessionIdPath = parentSessionIds.concat([event.sessionId]);
+    const sessionIdPath = [event.sessionId, ...parentSessionIds];
 
     // We're only interested in network requests from iframes for now as those are "part of the page".
-    // Make sure we still resume the target JS execution though, so it doesn't get stuck.
+    // If it's not an iframe, just resume it and move on.
     if (event.targetInfo.type !== 'iframe') {
+      // We suspended the target when we auto-attached, so make sure it goes back to being normal.
       await this.sendMessageToTarget(sessionIdPath, 'Runtime.runIfWaitingForDebugger');
       return;
     }
@@ -345,6 +346,7 @@ class Driver {
       waitForDebuggerOnStart: true,
     });
 
+    // We suspended the target when we auto-attached, so make sure it goes back to being normal.
     await this.sendMessageToTarget(sessionIdPath, 'Runtime.runIfWaitingForDebugger');
   }
 
@@ -353,24 +355,20 @@ class Driver {
    * commands as necessary.
    *
    * @template {keyof LH.CrdpCommands} C
-   * @param {string[]} sessionIdPath List of session ids to send to, from oldest-youngest/outside-in.
+   * @param {string[]} sessionIdPath List of session ids to send to, from youngest-oldest/inside-out.
    * @param {C} method
    * @param {LH.CrdpCommands[C]['paramsType']} params
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
   sendMessageToTarget(sessionIdPath, method, ...params) {
-    // We build our final message by wrapping the messages in `Target.sendMessageToTarget`, so
-    // we need to iterate from the inside out.
-    const reverseSessionIdPath = sessionIdPath.slice().reverse();
-
     this._targetProxyMessageId++;
     /** @type {LH.Crdp.Target.SendMessageToTargetRequest} */
     let payload = {
-      sessionId: reverseSessionIdPath[0],
+      sessionId: sessionIdPath[0],
       message: JSON.stringify({id: this._targetProxyMessageId, method, params: params[0]}),
     };
 
-    for (const sessionId of reverseSessionIdPath.slice(1)) {
+    for (const sessionId of sessionIdPath.slice(1)) {
       this._targetProxyMessageId++;
       payload = {
         sessionId,
