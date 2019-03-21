@@ -290,16 +290,16 @@ class Driver {
 
     // We receive messages from the outermost subtarget which wraps the messages from the inner subtargets.
     // We are recursively processing them from outside in, so build the list of parentSessionIds accordingly.
-    const sessionIds = parentSessionIds.concat([sessionId]);
+    const sessionIdPath = parentSessionIds.concat([sessionId]);
 
     if (protocolMessage.method === 'Target.receivedMessageFromTarget') {
       // Unravel any messages from subtargets by recursively processing
-      this._handleReceivedMessageFromTarget(protocolMessage.params, sessionIds);
+      this._handleReceivedMessageFromTarget(protocolMessage.params, sessionIdPath);
     }
 
     if (protocolMessage.method === 'Target.attachedToTarget') {
       // Process any attachedToTarget messages from subtargets
-      this._handleTargetAttached(protocolMessage.params, sessionIds);
+      this._handleTargetAttached(protocolMessage.params, sessionIdPath);
     }
 
     if (protocolMessage.method.startsWith('Network')) {
@@ -315,20 +315,20 @@ class Driver {
    * @param {string[]} parentSessionIds The list of session ids of the parents from oldest to youngest.
    */
   _handleTargetAttached(event, parentSessionIds) {
-    const sessionIds = parentSessionIds.concat([event.sessionId]);
+    const sessionIdPath = parentSessionIds.concat([event.sessionId]);
 
     // We're only interested in network requests from iframes for now as those are "part of the page".
     if (event.targetInfo.type !== 'iframe') {
-      this.sendMessageToTarget(sessionIds, 'Runtime.runIfWaitingForDebugger');
+      this.sendMessageToTarget(sessionIdPath, 'Runtime.runIfWaitingForDebugger');
       return;
     }
 
     // Events from subtargets will be stringified and sent back on `Target.receivedMessageFromTarget`.
     // We want to receive information about network requests from iframes, so enable the Network domain.
-    this.sendMessageToTarget(sessionIds, 'Network.enable');
-    this.sendMessageToTarget(sessionIds, 'Runtime.runIfWaitingForDebugger');
+    this.sendMessageToTarget(sessionIdPath, 'Network.enable');
+    this.sendMessageToTarget(sessionIdPath, 'Runtime.runIfWaitingForDebugger');
     // We also want to receive information about subtargets of subtargets, so make sure we autoattach recursively.
-    this.sendMessageToTarget(sessionIds, 'Target.setAutoAttach', {
+    this.sendMessageToTarget(sessionIdPath, 'Target.setAutoAttach', {
       autoAttach: true,
       waitForDebuggerOnStart: true,
     });
@@ -339,21 +339,24 @@ class Driver {
    * commands as necessary.
    *
    * @template {keyof LH.CrdpCommands} C
-   * @param {string[]} sessionIds List of session ids to send to, from oldest-youngest/outside-in.
+   * @param {string[]} sessionIdPath List of session ids to send to, from oldest-youngest/outside-in.
    * @param {C} method
    * @param {LH.CrdpCommands[C]['paramsType']} params
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
-  sendMessageToTarget(sessionIds, method, ...params) {
-    const reversed = sessionIds.slice().reverse();
+  sendMessageToTarget(sessionIdPath, method, ...params) {
+    // We build our final message by wrapping the messages in `Target.sendMessageToTarget`, so
+    // we need to iterate from the inside out.
+    const reverseSessionIdPath = sessionIdPath.slice().reverse();
+
     this._targetProxyMessageId++;
     /** @type {LH.CrdpCommands['Target.sendMessageToTarget']['paramsType'][0]} */
     let payload = {
-      sessionId: reversed[0],
+      sessionId: reverseSessionIdPath[0],
       message: JSON.stringify({id: this._targetProxyMessageId, method, params: params[0]}),
     };
 
-    for (const sessionId of reversed.slice(1)) {
+    for (const sessionId of reverseSessionIdPath.slice(1)) {
       this._targetProxyMessageId++;
       payload = {
         sessionId,
