@@ -304,7 +304,7 @@ class Driver {
 
     // We receive messages from the outermost subtarget which wraps the messages from the inner subtargets.
     // We are recursively processing them from outside in, so build the list of parentSessionIds accordingly.
-    const sessionIdPath = [event.sessionId, ...parentSessionIds];
+    const sessionIdPath = [sessionId, ...parentSessionIds];
 
     if (protocolMessage.method === 'Target.receivedMessageFromTarget') {
       // Unravel any messages from subtargets by recursively processing
