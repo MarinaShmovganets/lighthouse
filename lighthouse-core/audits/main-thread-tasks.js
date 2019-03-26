@@ -32,7 +32,7 @@ class MainThreadTasks extends Audit {
     const tasks = await MainThreadTasksComputed.request(trace, context);
 
     const results = tasks
-      .filter(task => task.duration > 5 && task.parent)
+      .filter(task => task.duration > 5 && !task.parent)
       .map(task => {
         return {
           type: task.group.id,
