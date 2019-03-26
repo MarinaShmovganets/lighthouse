@@ -227,6 +227,26 @@ describe('DependencyGraph/Node', () => {
       assert.deepEqual(ids, ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']);
     });
 
+    it('should include a shortest traversal path to every dependent node', () => {
+      const graph = createComplexGraph();
+      const paths = [];
+      graph.nodeA.traverse((node, traversalPath) => {
+        assert.strictEqual(node.id, traversalPath[0].id);
+        paths.push(traversalPath.map(node => node.id));
+      });
+
+      assert.deepStrictEqual(paths, [
+        ['A'],
+        ['B', 'A'],
+        ['C', 'A'],
+        ['D', 'B', 'A'],
+        ['E', 'D', 'B', 'A'],
+        ['F', 'E', 'D', 'B', 'A'],
+        ['G', 'E', 'D', 'B', 'A'],
+        ['H', 'G', 'E', 'D', 'B', 'A'],
+      ]);
+    });
+
     it('should respect getNext', () => {
       const graph = createComplexGraph();
       const ids = [];
