@@ -207,6 +207,15 @@ describe('DependencyGraph/Node', () => {
       assert.equal(clonedIdMap.get('G'), undefined);
       assert.equal(clonedIdMap.get('H'), undefined);
     });
+
+    it('should throw if original node is not in cloned graph', () => {
+      const graph = createComplexGraph();
+      assert.throws(
+        // clone from root to nodeB, but called on nodeD
+        _ => graph.nodeD.cloneWithRelationships(node => node.id === 'B'),
+        /^Error: Cloned graph missing node$/
+      );
+    });
   });
 
   describe('.traverse', () => {
