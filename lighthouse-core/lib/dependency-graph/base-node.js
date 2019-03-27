@@ -181,17 +181,22 @@ class BaseNode {
 
     // Walk down dependents.
     rootNode.traverse(node => {
-      // Find new and includable nodes.
       if (idsToIncludedClones.has(node.id)) return;
-      if (predicate && !predicate(node)) return;
 
-      // Walk back up finding dependencies that aren't already cloned, ensuring
-      // all nodes in the paths back to the root are cloned.
-      node.traverse(
-        node => idsToIncludedClones.set(node.id, node.cloneWithoutRelationships()),
-        // Dependencies already cloned have already cloned ancestors, so no need to visit again.
-        node => node._dependencies.filter(parent => !idsToIncludedClones.has(parent.id))
-      );
+      if (predicate === undefined) {
+        // No condition for entry, so clone every node.
+        idsToIncludedClones.set(node.id, node.cloneWithoutRelationships());
+        return;
+      }
+
+      if (predicate(node)) {
+        // Node included, so walk back up dependencies, cloning nodes from here back to the root.
+        node.traverse(
+          node => idsToIncludedClones.set(node.id, node.cloneWithoutRelationships()),
+          // Dependencies already cloned have already cloned ancestors, so no need to visit again.
+          node => node._dependencies.filter(parent => !idsToIncludedClones.has(parent.id))
+        );
+      }
     });
 
     // Copy dependencies between nodes.
