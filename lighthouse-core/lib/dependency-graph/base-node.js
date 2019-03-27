@@ -185,9 +185,11 @@ class BaseNode {
       if (idsToIncludedClones.has(node.id)) return;
       if (predicate && !predicate(node)) return;
 
-      // Walk back up dependencies, cloning all nodes in the path to this one.
+      // Walk back up finding dependencies that aren't already cloned, ensuring
+      // all nodes in the paths back to the root are cloned.
       node.traverse(
         node => idsToIncludedClones.set(node.id, node.cloneWithoutRelationships()),
+        // Dependencies already cloned have already cloned ancestors, so no need to visit again.
         node => node._dependencies.filter(parent => !idsToIncludedClones.has(parent.id))
       );
     });
@@ -224,8 +226,10 @@ class BaseNode {
       getNextNodes = node => node.getDependents();
     }
 
+    /** @type {Node[][]} */
+    // @ts-ignore - only traverses graphs of Node, so force tsc to treat `this` as one
+    const queue = [[this]];
     const visited = new Set([this.id]);
-    const queue = [[/** @type {Node} */(/** @type {BaseNode} */(this))]];
 
     while (queue.length) {
       /** @type {Node[]} */
