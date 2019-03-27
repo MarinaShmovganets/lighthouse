@@ -32,6 +32,7 @@ class MainThreadTasks extends Audit {
     const tasks = await MainThreadTasksComputed.request(trace, context);
 
     const results = tasks
+      // Filter to just the sizable toplevel tasks; toplevel tasks are tasks without a parent.
       .filter(task => task.duration > 5 && !task.parent)
       .map(task => {
         return {
