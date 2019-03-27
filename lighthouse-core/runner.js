@@ -180,6 +180,12 @@ class Runner {
       // As entries can share a name, dedupe based on the startTime timestamp
     ].map(entry => /** @type {[number, PerformanceEntry]} */ ([entry.startTime, entry]));
     const timingEntries = Array.from(new Map(timingEntriesKeyValues).values());
+    for (const timing of timingEntries) {
+      // @ts-ignore - ignore readonly
+      timing.startTime = parseFloat(timing.startTime.toFixed(2));
+      // @ts-ignore - ignore readonly
+      timing.duration = parseFloat(timing.duration.toFixed(2));
+    }
     const runnerEntry = timingEntries.find(e => e.name === 'lh:runner:run');
     return {entries: timingEntries, total: runnerEntry && runnerEntry.duration || 0};
   }
