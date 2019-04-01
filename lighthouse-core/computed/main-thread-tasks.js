@@ -124,7 +124,8 @@ class MainThreadTasks {
         currentTask = newTask;
       } else {
         if (currentTask.event.ph !== 'B') {
-          throw new Error(`Fatal trace logic error - expected start event, got ${currentTask.event.ph}`);
+          throw new Error(
+            `Fatal trace logic error - expected start event, got ${currentTask.event.ph}`);
         }
 
         // We're ending an event, update the end time and the currentTask to its parent
