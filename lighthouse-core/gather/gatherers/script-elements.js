@@ -25,7 +25,7 @@ function collectAllScriptElements() {
       src: script.src || null,
       async: script.async,
       defer: script.defer,
-      source: script.closest('head') ? 'head' : 'body',
+      source: /** @type {'head'|'body'} */ (script.closest('head') ? 'head' : 'body'),
       content: script.src ? null : script.text,
       requestId: null,
     };
