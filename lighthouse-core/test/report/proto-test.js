@@ -66,12 +66,12 @@ describe('round trip JSON comparison to everything', () => {
   beforeEach(() => {
     sampleJson = JSON.parse(preprocessor.processForProto(sample));
 
-    // Proto conversion turns null summaries into an empty object. This is OK,
+    // Proto conversion turns empty summaries into null. This is OK,
     // and is handled in the PSI roundtrip just fine, but messes up the easy
-    // jest sub-object matcher. So, we put null back in its place.
-    for (const audit of Object.values(sampleJson.audits)) {
-      if (audit.details && JSON.stringify(audit.details.summary) === '{}') {
-        audit.details.summary = null;
+    // jest sub-object matcher. So, we put the empty object back in its place.
+    for (const audit of Object.values(roundTripJson.audits)) {
+      if (audit.details && audit.details.summary === null) {
+        audit.details.summary = {};
       }
     }
   });
