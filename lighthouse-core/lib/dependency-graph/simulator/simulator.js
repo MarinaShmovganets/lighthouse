@@ -141,8 +141,9 @@ class Simulator {
 
   /**
    * @param {Node} node
+   * @param {number} queuedTime
    */
-  _markNodeAsReadyToStart(node) {
+  _markNodeAsReadyToStart(node, queuedTime) {
     const firstNodeIndexWithGreaterStartTime = this._cachedNodeListByStartTime
       .findIndex(candidate => candidate.startTime > node.startTime);
     const insertionIndex = firstNodeIndexWithGreaterStartTime === -1 ?
@@ -151,6 +152,7 @@ class Simulator {
 
     this._nodes[NodeState.ReadyToStart].add(node);
     this._nodes[NodeState.NotReadyToStart].delete(node);
+    this._setTimingData(node, {queuedTime});
   }
 
   /**
@@ -184,7 +186,7 @@ class Simulator {
       if (dependencies.some(dep => !this._nodes[NodeState.Complete].has(dep))) continue;
 
       // Otherwise add it to the queue
-      this._markNodeAsReadyToStart(dependent);
+      this._markNodeAsReadyToStart(dependent, endTime);
     }
   }
 
@@ -442,7 +444,7 @@ class Simulator {
     let iteration = 0;
 
     // root node is always ready to start
-    this._markNodeAsReadyToStart(rootNode);
+    this._markNodeAsReadyToStart(rootNode, totalElapsedTime);
 
     // loop as long as we have nodes in the queue or currently in progress
     while (nodesReadyToStart.size || nodesInProgress.size) {
@@ -499,6 +501,7 @@ module.exports = Simulator;
  * @typedef NodeTimingIntermediate
  * @property {number} [startTime]
  * @property {number} [endTime]
+ * @property {number} [queuedTime] Helpful for debugging.
  * @property {number} [estimatedTimeElapsed]
  * @property {number} [timeElapsed]
  * @property {number} [timeElapsedOvershoot]
