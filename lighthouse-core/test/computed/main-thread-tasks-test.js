@@ -227,7 +227,6 @@ describe('MainResource computed artifact', () => {
 
       const context = {computedCache: new Map()};
       const promise = MainThreadTasks.request({traceEvents}, context);
-      console.log(await promise.catch(err => err.stack))
       await expect(promise).rejects.toBeTruthy();
     });
   }

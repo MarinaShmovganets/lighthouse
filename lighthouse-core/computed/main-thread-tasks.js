@@ -153,10 +153,12 @@ class MainThreadTasks {
    */
   static _computeRecursiveSelfTime(task, parent) {
     if (parent) {
-      if (task.startTime < parent.startTime)
-        throw new Error('Fatal trace logic error - child cannot start before parent')
-      if (task.endTime > parent.endTime)
-        throw new Error('Fatal trace logic error - child cannot end after parent')
+      if (task.startTime < parent.startTime) {
+        throw new Error('Fatal trace logic error - child cannot start before parent');
+      }
+      if (task.endTime > parent.endTime) {
+        throw new Error('Fatal trace logic error - child cannot end after parent');
+      }
     }
 
     const childTime = task.children
