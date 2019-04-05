@@ -70,18 +70,18 @@ declare global {
     export interface Product {
       rawValue: boolean | number | null;
       displayValue?: string;
-      /** An explanation of audit-related issues encountered on the test page. */
+      /** An explanation of why the audit failed on the test page. */
       explanation?: string;
       /** Error message from any exception thrown while running this audit. */
       errorMessage?: string;
       warnings?: string[];
-      /** The scored value determined by the audit, in the range `0-1`, or null if `scoreDisplayMode` indicates not scored. */
+      /** The scored value of the audit, provided in the range `0-1`, or null if `scoreDisplayMode` indicates not scored. */
       score?: number;
       /** Deprecated and does not make its way into the Lighthouse report. */
       extendedInfo?: {[p: string]: any};
       /** Overrides scoreDisplayMode with notApplicable if set to true */
       notApplicable?: boolean;
-      /** Extra information provided by some types of audits. */
+      /** Extra information about the page provided by some types of audits, in one of several possible forms that can be rendered in the HTML report. */
       details?: Audit.Details;
     }
 
@@ -89,12 +89,12 @@ declare global {
     export interface Result {
       rawValue: boolean | number | null;
       displayValue?: string;
-      /** An explanation of audit-related issues encountered on the test page. */
+      /** An explanation of why the audit failed on the test page. */
       explanation?: string;
       /** Error message from any exception thrown while running this audit. */
       errorMessage?: string;
       warnings?: string[];
-      /** The scored value determined by the audit, in the range `0-1`, or null if `scoreDisplayMode` indicates not scored. */
+      /** The scored value of the audit, provided in the range `0-1`, or null if `scoreDisplayMode` indicates not scored. */
       score: number|null;
       /**
        * A string identifying how the score should be interpreted:
@@ -112,7 +112,7 @@ declare global {
       id: string;
       /** A more detailed description that describes why the audit is important and links to Lighthouse documentation on the audit; markdown links supported. */
       description: string;
-      /** Extra information provided by some types of audits. */
+      /** Extra information about the page provided by some types of audits, in one of several possible forms that can be rendered in the HTML report. */
       details?: Audit.Details;
     }
 
