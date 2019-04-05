@@ -309,6 +309,8 @@ class NetworkAnalyzer {
   static estimateRTTByOrigin(records, options) {
     const {
       forceCoarseEstimates = false,
+      // coarse estimates include lots of extra time and noise
+      // multiply by some factor to deflate the estimates a bit.
       coarseEstimateMultiplier = 0.3,
       useDownloadEstimates = true,
       useSendStartEstimates = true,
@@ -465,7 +467,7 @@ module.exports = NetworkAnalyzer;
 
 /**
  * @typedef NetworkAnalyzer.RTTEstimateOptions
- * @property {boolean} [forceCoarseEstimates] TCP connection handshake information will be used when available, but for testing it's useful to see how the coarse estimates compare with higher fidelity data.
+ * @property {boolean} [forceCoarseEstimates] TCP connection handshake information will be used when available, but in some circumstances this data can be unreliable. This flag exposes an option to ignore the handshake data and use the coarse download/TTFB timing data.
  * @property {number} [coarseEstimateMultiplier] Coarse estimates include lots of extra time and noise multiply by some factor to deflate the estimates a bit.
  * @property {boolean} [useDownloadEstimates] Useful for testing to isolate the different methods of estimation.
  * @property {boolean} [useSendStartEstimates] Useful for testing to isolate the different methods of estimation.
