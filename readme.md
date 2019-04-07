@@ -280,7 +280,7 @@ This section details services that have integrated Lighthouse data. If you're wo
 
 * **[Fluxguard](https://fluxguard.com/)** - Fluxguard provides website DOM change monitoring orchestrated with Google Puppeteer, and audited by Lighthouse. Fluxguard is a freemium product, with monthly monitoring of up to 75 pages for free.
 
-* **[Foo](https://www.foo.software)** - Foo continuously captures performance audits with Lighthouse, notifies of change, and provides visualization. Users can choose to be notified via email, Slack and PagerDuty. A dashboard with charts show changes by day, week or month and provide detailed reports.
+* **[Foo](https://www.foo.software)** - Foo continuously captures performance audits with Lighthouse, notifies of change, and provides visualization. Users can choose to be notified via email, Slack and PagerDuty. A dashboard with charts show changes by day, week or month and provide detailed reports. Foo is a paid service available with tiers of pricing. Free trials aren't offered at this time, but a [demo dashboard](https://www.foo.software/demo/dashboard) is publicly available for viewing.
 
 * **[HTTPArchive](http://httparchive.org/)** - HTTPArchive tracks how the web is built by crawling 500k pages with Web Page Test, including Lighthouse results, and stores the information in BigQuery where it is [publicly available](https://discuss.httparchive.org/t/quickstart-guide-to-exploring-the-http-archive/682).
 
