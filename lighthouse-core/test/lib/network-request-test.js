@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const NetworkRequest = require('../../lib/network-request');
+const NetworkRequest = require('../../lib/network-request.js');
 const assert = require('assert');
 
 /* eslint-env jest */
