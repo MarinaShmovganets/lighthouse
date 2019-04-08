@@ -94,8 +94,7 @@ class NetworkRequest {
     this.fromDiskCache = false;
     this.fromMemoryCache = false;
 
-    // Statistics to be passed to Lightrider from _updateTimingsForLightrider.
-    /** @type {LightriderStatistics|undefined} */
+    /** @type {LightriderStatistics|undefined} Extra timing information available only when run in Lightrider. */
     this.lrStatistics = undefined;
 
     this.finished = false;
@@ -413,8 +412,6 @@ class NetworkRequest {
     const requestMsHeader = this.responseHeaders.find(item => item.name === HEADER_REQ);
     const responseMsHeader = this.responseHeaders.find(item => item.name === HEADER_RES);
 
-    // TODO(exterkamp): NaN checking
-    // Make sure all Times are initialized and are non-negative.
     const TCPMs = TCPMsHeader ? Math.max(0, parseInt(TCPMsHeader.value)) : 0;
     const SSLMs = SSLMsHeader ? Math.max(0, parseInt(SSLMsHeader.value)) : 0;
     const requestMs = requestMsHeader ? Math.max(0, parseInt(requestMsHeader.value)) : 0;

@@ -156,5 +156,39 @@ describe('network request', function() {
       assert.equal(req.endTime, 2);
       assert.equal(req.responseReceivedTime, 1);
     });
+
+    it('Updates lrStatistics', function() {
+      const req = getRequest();
+      global.isLightrider = true;
+      req.responseHeaders = [{name: NetworkRequest.HEADER_TOTAL, value: 10000},
+        {name: NetworkRequest.HEADER_TCP, value: 5000},
+        {name: NetworkRequest.HEADER_REQ, value: 2500},
+        {name: NetworkRequest.HEADER_SSL, value: 1000},
+        {name: NetworkRequest.HEADER_RES, value: 2500}];
+
+      assert.equal(req.startTime, 0);
+      assert.equal(req.endTime, 2);
+      assert.equal(req.responseReceivedTime, 1);
+      req._updateTimingsForLightrider();
+      assert.equal(req.lrStatistics.TCPMs, 5000);
+      assert.equal(req.lrStatistics.requestMs, 2500);
+      assert.equal(req.lrStatistics.responseMs, 2500);
+    });
+
+    it('Doesn\'t update lrStatistics with NaN', function() {
+      const req = getRequest();
+      global.isLightrider = true;
+      req.responseHeaders = [{name: NetworkRequest.HEADER_TOTAL, value: 10000},
+        {name: NetworkRequest.HEADER_TCP, value: NaN},
+        {name: NetworkRequest.HEADER_REQ, value: 2500},
+        {name: NetworkRequest.HEADER_SSL, value: 1000},
+        {name: NetworkRequest.HEADER_RES, value: 2500}];
+
+      assert.equal(req.startTime, 0);
+      assert.equal(req.endTime, 2);
+      assert.equal(req.responseReceivedTime, 1);
+      req._updateTimingsForLightrider();
+      assert.equal(req.lrStatistics, undefined);
+    });
   });
 });
