@@ -367,7 +367,7 @@ class NetworkRequest {
    * both dataReceived and loadingFinished.
    */
   _updateTransferSizeForLightrider() {
-    // Bail if we somehow already have transfer size data.
+    // Bail if we aren't in Lightrider.
     if (!global.isLightrider) return;
 
     const totalFetchedSize = this.responseHeaders.find(item => item.name === HEADER_FETCHED_SIZE);
@@ -386,11 +386,6 @@ class NetworkRequest {
   _updateTimingsForLightrider() {
     // Bail if we aren't in Lightrider.
     if (!global.isLightrider) return;
-
-    // Bail if timing is not initialized.
-    if (!this.timing) {
-      return;
-    }
 
     // For more info on timing nomenclature: https://www.w3.org/TR/resource-timing-2/#processing-model
 

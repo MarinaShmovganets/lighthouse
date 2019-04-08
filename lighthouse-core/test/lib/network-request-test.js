@@ -10,6 +10,10 @@ const assert = require('assert');
 
 /* eslint-env jest */
 describe('network request', function() {
+  afterEach(() => {
+    global.isLightrider = undefined;
+  });
+
   function getRequest() {
     const req = new NetworkRequest();
     req.transferSize = 100;
