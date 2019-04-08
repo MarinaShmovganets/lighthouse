@@ -412,7 +412,7 @@ class NetworkRequest {
     const requestMsHeader = this.responseHeaders.find(item => item.name === HEADER_REQ);
     const responseMsHeader = this.responseHeaders.find(item => item.name === HEADER_RES);
 
-    // Make sure all Times are initialized and are non-negative.
+    // Make sure all times are initialized and are non-negative.
     const TCPMs = TCPMsHeader ? Math.max(0, parseInt(TCPMsHeader.value)) : 0;
     const SSLMs = SSLMsHeader ? Math.max(0, parseInt(SSLMsHeader.value)) : 0;
     const requestMs = requestMsHeader ? Math.max(0, parseInt(requestMsHeader.value)) : 0;

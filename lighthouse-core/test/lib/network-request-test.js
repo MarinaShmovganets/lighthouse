@@ -25,23 +25,23 @@ describe('NetworkRequest', () => {
 
     it('does nothing if not Lightrider', () => {
       const req = getRequest();
-      expect(req.transferSize).toBe(100);
+      expect(req.transferSize).toStrictEqual(100);
 
       const devtoolsLog = networkRecordsToDevtoolsLog([req]);
       const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
-      expect(record.transferSize).toBe(100);
+      expect(record.transferSize).toStrictEqual(100);
     });
 
     it('updates transfer size if Lightrider', () => {
       const req = getRequest();
-      expect(req.transferSize).toBe(100);
+      expect(req.transferSize).toStrictEqual(100);
 
       const devtoolsLog = networkRecordsToDevtoolsLog([req]);
       global.isLightrider = true;
       const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
-      expect(record.transferSize).toBe(10);
+      expect(record.transferSize).toStrictEqual(10);
     });
 
     it('does nothing if header is non float', () => {
@@ -49,25 +49,25 @@ describe('NetworkRequest', () => {
       req.responseHeaders = [
         {name: NetworkRequest.HEADER_FETCHED_SIZE, value: 'ten'},
       ];
-      expect(req.transferSize).toBe(100);
+      expect(req.transferSize).toStrictEqual(100);
 
       const devtoolsLog = networkRecordsToDevtoolsLog([req]);
       global.isLightrider = true;
       const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
-      expect(record).toMatchObject(req);
+      expect(record.transferSize).toStrictEqual(100);
     });
 
     it('does nothing if no header is set', () => {
       const req = getRequest();
       req.responseHeaders = [];
-      expect(req.transferSize).toBe(100);
+      expect(req.transferSize).toStrictEqual(100);
 
       const devtoolsLog = networkRecordsToDevtoolsLog([req]);
       global.isLightrider = true;
       const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
-      expect(record).toMatchObject(req);
+      expect(record.transferSize).toStrictEqual(100);
     });
   });
 
@@ -97,9 +97,9 @@ describe('NetworkRequest', () => {
       global.isLightrider = true;
       const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
-      expect(record.startTime).toBe(0);
-      expect(record.endTime).toBe(2);
-      expect(record.responseReceivedTime).toBe(1);
+      expect(record.startTime).toStrictEqual(0);
+      expect(record.endTime).toStrictEqual(2);
+      expect(record.responseReceivedTime).toStrictEqual(1);
       expect(record.lrStatistics).toStrictEqual({
         endTimeDeltaMs: -8000,
         TCPMs: 5000,
@@ -117,6 +117,7 @@ describe('NetworkRequest', () => {
       const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
       expect(record).toMatchObject(req);
+      expect(record.lrStatistics).toStrictEqual(undefined);
     });
 
     it('does nothing if no HEADER_TOTAL', () => {
@@ -130,12 +131,13 @@ describe('NetworkRequest', () => {
       const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
       expect(record).toMatchObject(req);
+      expect(record.lrStatistics).toStrictEqual(undefined);
     });
 
     it('does nothing if header timings do not add up', () => {
       const req = getRequest();
       const tcpHeader = req.responseHeaders[1];
-      expect(tcpHeader.name).toBe(NetworkRequest.HEADER_TCP);
+      expect(tcpHeader.name).toStrictEqual(NetworkRequest.HEADER_TCP);
       tcpHeader.value = '5001';
 
       const devtoolsLog = networkRecordsToDevtoolsLog([req]);
@@ -143,12 +145,13 @@ describe('NetworkRequest', () => {
       const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
       expect(record).toMatchObject(req);
+      expect(record.lrStatistics).toStrictEqual(undefined);
     });
 
     it('does nothing if SSL time exceeds TCP time', () => {
       const req = getRequest();
       const sslHeader = req.responseHeaders[3];
-      expect(sslHeader.name).toBe(NetworkRequest.HEADER_SSL);
+      expect(sslHeader.name).toStrictEqual(NetworkRequest.HEADER_SSL);
       sslHeader.value = '5500';
 
       const devtoolsLog = networkRecordsToDevtoolsLog([req]);
@@ -157,12 +160,13 @@ describe('NetworkRequest', () => {
       const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
       expect(record).toMatchObject(req);
+      expect(record.lrStatistics).toStrictEqual(undefined);
     });
 
     it('does not update lrStatistics when a timing header parses as NaN', () => {
       const req = getRequest();
       const tcpHeader = req.responseHeaders[1];
-      expect(tcpHeader.name).toBe(NetworkRequest.HEADER_TCP);
+      expect(tcpHeader.name).toStrictEqual(NetworkRequest.HEADER_TCP);
       tcpHeader.value = 'Not a number';
 
       const devtoolsLog = networkRecordsToDevtoolsLog([req]);
@@ -170,6 +174,7 @@ describe('NetworkRequest', () => {
       const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
       expect(record).toMatchObject(req);
+      expect(record.lrStatistics).toStrictEqual(undefined);
     });
   });
 });
