@@ -6,189 +6,170 @@
 'use strict';
 
 const NetworkRequest = require('../../lib/network-request.js');
-const assert = require('assert');
+const NetworkRecorder = require('../../lib/network-recorder.js');
+const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 
 /* eslint-env jest */
-describe('network request', function() {
+describe('NetworkRequest', () => {
   afterEach(() => {
     global.isLightrider = undefined;
   });
 
-  function getRequest() {
-    const req = new NetworkRequest();
-    req.transferSize = 100;
-    req.responseHeaders = [{name: NetworkRequest.HEADER_FETCHED_SIZE, value: 10}];
-    return req;
-  }
+  describe('update transfer size for Lightrider', () => {
+    function getRequest() {
+      return {
+        transferSize: 100,
+        responseHeaders: [{name: NetworkRequest.HEADER_FETCHED_SIZE, value: '10'}],
+      };
+    }
 
-  describe('update transfer size for lightrider', function() {
-    it('does nothing if not Lightrider', function() {
+    it('does nothing if not Lightrider', () => {
       const req = getRequest();
-      global.isLightrider = false;
+      expect(req.transferSize).toBe(100);
 
-      assert.equal(req.transferSize, 100);
-      req._updateTransferSizeForLightrider();
-      assert.equal(req.transferSize, 100);
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+      expect(record.transferSize).toBe(100);
     });
 
-    it('updates transfer size', function() {
+    it('updates transfer size if Lightrider', () => {
       const req = getRequest();
-      global.isLightrider = true;
+      expect(req.transferSize).toBe(100);
 
-      assert.equal(req.transferSize, 100);
-      req._updateTransferSizeForLightrider();
-      assert.equal(req.transferSize, 10);
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+      global.isLightrider = true;
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+      expect(record.transferSize).toBe(10);
     });
 
-    it('does nothing if header is non float', function() {
+    it('does nothing if header is non float', () => {
       const req = getRequest();
-      global.isLightrider = true;
-      req.responseHeaders = [{name: NetworkRequest.HEADER_FETCHED_SIZE, value: 'ten'}];
+      req.responseHeaders = [
+        {name: NetworkRequest.HEADER_FETCHED_SIZE, value: 'ten'},
+      ];
+      expect(req.transferSize).toBe(100);
 
-      assert.equal(req.transferSize, 100);
-      req._updateTransferSizeForLightrider();
-      assert.equal(req.transferSize, 100);
-      assert.notEqual(req.transferSize, NaN);
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+      global.isLightrider = true;
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+      expect(record).toMatchObject(req);
     });
 
-    it('does nothing if no header is set', function() {
+    it('does nothing if no header is set', () => {
       const req = getRequest();
-      global.isLightrider = true;
       req.responseHeaders = [];
+      expect(req.transferSize).toBe(100);
 
-      assert.equal(req.transferSize, 100);
-      req._updateTransferSizeForLightrider();
-      assert.equal(req.transferSize, 100);
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+      global.isLightrider = true;
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+      expect(record).toMatchObject(req);
     });
   });
 
-  describe('update fetch stats for Lightrider', function() {
+  describe('update fetch stats for Lightrider', () => {
     function getRequest() {
-      const req = new NetworkRequest();
-      // units = seconds
-      req.startTime = 0;
-      req.endTime = 2;
-      req.responseReceivedTime = 1;
-      req.timing = {
-        requestTime: -1,
-        proxyStart: -1,
-        proxyEnd: -1,
-        dnsStart: -1,
-        dnsEnd: -1,
-        connectStart: -1,
-        connectEnd: -1,
-        sslStart: -1,
-        sslEnd: -1,
-        workerStart: -1,
-        workerReady: -1,
-        sendStart: -1,
-        sendEnd: -1,
-        pushStart: -1,
-        pushEnd: -1,
-        receiveHeadersEnd: -1,
-      };
+      return {
+        // units = seconds
+        startTime: 0,
+        endTime: 2,
+        responseReceivedTime: 1,
 
-      // units = ms
-      req.responseHeaders = [{name: NetworkRequest.HEADER_TOTAL, value: 10000},
-        {name: NetworkRequest.HEADER_TCP, value: 5000},
-        {name: NetworkRequest.HEADER_REQ, value: 2500},
-        {name: NetworkRequest.HEADER_SSL, value: 1000},
-        {name: NetworkRequest.HEADER_RES, value: 2500}];
-      return req;
+        // units = ms
+        responseHeaders: [
+          {name: NetworkRequest.HEADER_TOTAL, value: '10000'},
+          {name: NetworkRequest.HEADER_TCP, value: '5000'},
+          {name: NetworkRequest.HEADER_REQ, value: '2500'},
+          {name: NetworkRequest.HEADER_SSL, value: '1000'},
+          {name: NetworkRequest.HEADER_RES, value: '2500'},
+        ],
+      };
     }
 
-    it('does nothing if not Lightrider', function() {
+    it('updates lrStatistics if in Lightrider', () => {
       const req = getRequest();
+
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+      global.isLightrider = true;
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+      expect(record.startTime).toBe(0);
+      expect(record.endTime).toBe(2);
+      expect(record.responseReceivedTime).toBe(1);
+      expect(record.lrStatistics).toStrictEqual({
+        endTimeDeltaMs: -8000,
+        TCPMs: 5000,
+        requestMs: 2500,
+        responseMs: 2500,
+      });
+    });
+
+    it('does nothing if not Lightrider', () => {
+      const req = getRequest();
+      req.responseHeaders = [];
+
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
       global.isLightrider = false;
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
-      assert.equal(req.startTime, 0);
-      assert.equal(req.endTime, 2);
-      assert.equal(req.responseReceivedTime, 1);
-      req._updateTimingsForLightrider();
-      assert.equal(req.startTime, 0);
-      assert.equal(req.endTime, 2);
-      assert.equal(req.responseReceivedTime, 1);
+      expect(record).toMatchObject(req);
     });
 
-    it('does nothing if no TotalTime', function() {
+    it('does nothing if no HEADER_TOTAL', () => {
       const req = getRequest();
-      global.isLightrider = true;
-      req.responseHeaders = req.responseHeaders.filter(item => item.name
-        !== NetworkRequest.HEADER_TOTAL);
+      req.responseHeaders = req.responseHeaders.filter(item => {
+        return item.name !== NetworkRequest.HEADER_TOTAL;
+      });
 
-      assert.equal(req.startTime, 0);
-      assert.equal(req.endTime, 2);
-      assert.equal(req.responseReceivedTime, 1);
-      req._updateTimingsForLightrider();
-      assert.equal(req.startTime, 0);
-      assert.equal(req.endTime, 2);
-      assert.equal(req.responseReceivedTime, 1);
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+      global.isLightrider = true;
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+      expect(record).toMatchObject(req);
     });
 
-    it('does nothing if Header timings don\'t add up', function() {
+    it('does nothing if header timings do not add up', () => {
       const req = getRequest();
-      global.isLightrider = true;
-      req.responseHeaders = [{name: NetworkRequest.HEADER_TOTAL, value: 10000},
-        {name: NetworkRequest.HEADER_TCP, value: 5001},
-        {name: NetworkRequest.HEADER_REQ, value: 2500},
-        {name: NetworkRequest.HEADER_SSL, value: 1000},
-        {name: NetworkRequest.HEADER_RES, value: 2500}];
+      const tcpHeader = req.responseHeaders[1];
+      expect(tcpHeader.name).toBe(NetworkRequest.HEADER_TCP);
+      tcpHeader.value = '5001';
 
-      assert.equal(req.startTime, 0);
-      assert.equal(req.endTime, 2);
-      assert.equal(req.responseReceivedTime, 1);
-      req._updateTimingsForLightrider();
-      assert.equal(req.startTime, 0);
-      assert.equal(req.endTime, 2);
-      assert.equal(req.responseReceivedTime, 1);
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+      global.isLightrider = true;
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+      expect(record).toMatchObject(req);
     });
 
-    it('does nothing if timing is not initialized', function() {
+    it('does nothing if SSL time exceeds TCP time', () => {
       const req = getRequest();
-      global.isLightrider = true;
-      req.timing = undefined;
+      const sslHeader = req.responseHeaders[3];
+      expect(sslHeader.name).toBe(NetworkRequest.HEADER_SSL);
+      sslHeader.value = '5500';
 
-      assert.equal(req.startTime, 0);
-      assert.equal(req.endTime, 2);
-      assert.equal(req.responseReceivedTime, 1);
-      req._updateTimingsForLightrider();
-      assert.equal(req.startTime, 0);
-      assert.equal(req.endTime, 2);
-      assert.equal(req.responseReceivedTime, 1);
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+
+      global.isLightrider = true;
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+      expect(record).toMatchObject(req);
     });
 
-    it('Updates lrStatistics', function() {
+    it('does not update lrStatistics when a timing header parses as NaN', () => {
       const req = getRequest();
+      const tcpHeader = req.responseHeaders[1];
+      expect(tcpHeader.name).toBe(NetworkRequest.HEADER_TCP);
+      tcpHeader.value = 'Not a number';
+
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
       global.isLightrider = true;
-      req.responseHeaders = [{name: NetworkRequest.HEADER_TOTAL, value: 10000},
-        {name: NetworkRequest.HEADER_TCP, value: 5000},
-        {name: NetworkRequest.HEADER_REQ, value: 2500},
-        {name: NetworkRequest.HEADER_SSL, value: 1000},
-        {name: NetworkRequest.HEADER_RES, value: 2500}];
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
-      assert.equal(req.startTime, 0);
-      assert.equal(req.endTime, 2);
-      assert.equal(req.responseReceivedTime, 1);
-      req._updateTimingsForLightrider();
-      assert.equal(req.lrStatistics.TCPMs, 5000);
-      assert.equal(req.lrStatistics.requestMs, 2500);
-      assert.equal(req.lrStatistics.responseMs, 2500);
-    });
-
-    it('Doesn\'t update lrStatistics with NaN', function() {
-      const req = getRequest();
-      global.isLightrider = true;
-      req.responseHeaders = [{name: NetworkRequest.HEADER_TOTAL, value: 10000},
-        {name: NetworkRequest.HEADER_TCP, value: NaN},
-        {name: NetworkRequest.HEADER_REQ, value: 2500},
-        {name: NetworkRequest.HEADER_SSL, value: 1000},
-        {name: NetworkRequest.HEADER_RES, value: 2500}];
-
-      assert.equal(req.startTime, 0);
-      assert.equal(req.endTime, 2);
-      assert.equal(req.responseReceivedTime, 1);
-      req._updateTimingsForLightrider();
-      assert.equal(req.lrStatistics, undefined);
+      expect(record).toMatchObject(req);
     });
   });
 });
