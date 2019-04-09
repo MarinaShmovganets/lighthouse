@@ -451,9 +451,10 @@ class NetworkRequest {
     }
 
     const origEnd = this.endTime;
-    // EndTime and responseReceivedTime are in seconds, so conversion is necessary.
+    // `this.endTime` and `this.responseReceivedTime` are in seconds, so convert from milliseconds.
     this.endTime = this.startTime + (totalMs / 1000);
     this.responseReceivedTime = this.startTime + ((TCPMs + requestMs) / 1000);
+
     this.timing.connectStart = 0;
     this.timing.connectEnd = TCPMs;
     this.timing.sslStart = TCPMs - SSLMs;
@@ -461,6 +462,7 @@ class NetworkRequest {
     this.timing.sendStart = TCPMs;
     this.timing.sendEnd = TCPMs;
     this.timing.receiveHeadersEnd = TCPMs + requestMs;
+
     this.lrStatistics = {
       endTimeDeltaMs: (origEnd - this.endTime) * 1000,
       TCPMs: TCPMs,
