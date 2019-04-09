@@ -7,6 +7,7 @@
 
 const log = require('lighthouse-logger');
 const manifestParser = require('../lib/manifest-parser.js');
+const stacksGatherer = require('../lib/gatherer-stacks');
 const LHError = require('../lib/lh-error.js');
 const URL = require('../lib/url-shim.js');
 const NetworkRecorder = require('../lib/network-recorder.js');
@@ -402,6 +403,7 @@ class GatherRunner {
       NetworkUserAgent: '', // updated later
       BenchmarkIndex: 0, // updated later
       WebAppManifest: null, // updated later
+      Stacks: null, // updated later
       traces: {},
       devtoolsLogs: {},
       settings: options.settings,
@@ -471,6 +473,7 @@ class GatherRunner {
         await GatherRunner.pass(passContext, gathererResults);
         if (isFirstPass) {
           baseArtifacts.WebAppManifest = await GatherRunner.getWebAppManifest(passContext);
+          baseArtifacts.Stacks = await stacksGatherer(passContext);
         }
         const passData = await GatherRunner.afterPass(passContext, gathererResults);
 

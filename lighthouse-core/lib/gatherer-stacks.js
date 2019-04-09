@@ -13,7 +13,6 @@
 
 'use strict';
 
-const Gatherer = require('../gatherer');
 const fs = require('fs');
 const libDetectorSource = fs.readFileSync(
   require.resolve('js-library-detector/library/libraries.js'),
@@ -59,29 +58,27 @@ function detectLibraries() {
   return libraries;
 }
 
-class Stacks extends Gatherer {
-  /**
-   * @param {LH.Gatherer.PassContext} passContext
-   * @return {Promise<LH.Artifacts['Stacks']>}
-   */
-  async afterPass(passContext) {
-    const expression = `(function () {
-      ${libDetectorSource};
-      return (${detectLibraries.toString()}());
-    })()`;
+/**
+ * @param {LH.Gatherer.PassContext} passContext
+ * @return {Promise<LH.Artifacts['Stacks']>}
+ */
+async function getStacks(passContext) {
+  const expression = `(function () {
+    ${libDetectorSource};
+    return (${detectLibraries.toString()}());
+  })()`;
 
-    const jsLibraries = /** @type {JSLibrary[]} */ (await passContext.driver.evaluateAsync(
-      expression
-    ));
+  const jsLibraries = /** @type {JSLibrary[]} */ (await passContext.driver.evaluateAsync(
+    expression
+  ));
 
-    return jsLibraries.map(lib => ({
-      detector: 'js',
-      id: lib.npm || lib.iconName,
-      name: lib.name,
-      version: lib.version,
-      npm: lib.npm,
-    }));
-  }
+  return jsLibraries.map(lib => ({
+    detector: /** @type {'js'} */ ('js'),
+    id: lib.npm || lib.iconName,
+    name: lib.name,
+    version: lib.version,
+    npm: lib.npm,
+  }));
 }
 
-module.exports = Stacks;
+module.exports = getStacks;

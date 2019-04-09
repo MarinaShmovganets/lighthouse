@@ -78,7 +78,7 @@ class NoVulnerableLibrariesAudit extends Audit {
 
   /**
    * @param {string} normalizedVersion
-   * @param {{name: string, version: string, npm: string|undefined}} lib
+   * @param {{name: string, version: string, npm?: string}} lib
    * @return {Array<Vulnerability>}
    */
   static getVulnerabilities(normalizedVersion, lib) {
@@ -127,7 +127,7 @@ class NoVulnerableLibrariesAudit extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit(artifacts) {
-    const foundLibraries = artifacts.Stacks.filter(stack => stack.detector === 'js');
+    const foundLibraries = (artifacts.Stacks || []).filter(stack => stack.detector === 'js');
     if (!foundLibraries.length) {
       return {
         rawValue: true,

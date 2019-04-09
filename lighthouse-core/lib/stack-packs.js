@@ -14,32 +14,34 @@ const stackPacksToInclude = [{
 
 /**
  * @param {LH.Artifacts} artifacts
- * @return {Array<LH.StackPack>}
+ * @return {Array<LH.Result.StackPack>}
  */
 function getStackPacks(artifacts) {
-  /** @type {Array<LH.StackPack>} */
+  /** @type {Array<LH.Result.StackPack>} */
   const packs = [];
 
-  for (const pageStack of artifacts.Stacks) {
-    const stackPackToIncl = stackPacksToInclude.find(stackPackToIncl =>
-      stackPackToIncl.requiredStacks.includes(`${pageStack.detector}:${pageStack.id}`));
-    if (!stackPackToIncl) {
-      continue;
-    }
+  if (artifacts.Stacks) {
+    for (const pageStack of artifacts.Stacks) {
+      const stackPackToIncl = stackPacksToInclude.find(stackPackToIncl =>
+        stackPackToIncl.requiredStacks.includes(`${pageStack.detector}:${pageStack.id}`));
+      if (!stackPackToIncl) {
+        continue;
+      }
 
-    // Grab the full pack definition
-    const matchedPack = stackPacks.find(pack => pack.id === stackPackToIncl.packId);
-    if (!matchedPack) {
-      // we couldn't find a pack that's in our inclusion list, this is weird.
-      continue;
-    }
+      // Grab the full pack definition
+      const matchedPack = stackPacks.find(pack => pack.id === stackPackToIncl.packId);
+      if (!matchedPack) {
+        // we couldn't find a pack that's in our inclusion list, this is weird.
+        continue;
+      }
 
-    packs.push({
-      id: matchedPack.id,
-      title: matchedPack.title,
-      iconDataURL: matchedPack.iconDataURL,
-      descriptions: matchedPack.descriptions,
-    });
+      packs.push({
+        id: matchedPack.id,
+        title: matchedPack.title,
+        iconDataURL: matchedPack.iconDataURL,
+        descriptions: matchedPack.descriptions,
+      });
+    }
   }
 
   return packs;
