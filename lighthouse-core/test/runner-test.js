@@ -21,6 +21,8 @@ const LHError = require('../lib/lh-error.js');
 
 /* eslint-env jest */
 
+jest.mock('../lib/gatherer-stacks', () => () => Promise.resolve([]));
+
 describe('Runner', () => {
   const saveArtifactsSpy = sinon.spy(assetSaver, 'saveArtifacts');
   const loadArtifactsSpy = sinon.spy(assetSaver, 'loadArtifacts');
