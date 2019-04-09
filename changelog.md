@@ -33,6 +33,7 @@ Thanks to @rdlabo and @yashrajbharti for their first contributions!
 * remove hreflang gatherer ([#7477](https://github.com/googlechrome/lighthouse/pull/7477))
 * tap-targets: exclude sticky elements from tap targets audit ([#7603](https://github.com/googlechrome/lighthouse/pull/7603))
 * vuln-libs: match against all semver ranges provided by snyk ([#7402](https://github.com/googlechrome/lighthouse/pull/7402))
+* uses-http2: ignore requests from service-worker ([#7197](https://github.com/googlechrome/lighthouse/pull/7197))
 
 ## Deps
 
@@ -44,10 +45,6 @@ Thanks to @rdlabo and @yashrajbharti for their first contributions!
 * add plugin recipe ([#6965](https://github.com/googlechrome/lighthouse/pull/6965))
 * readme: Foo integration ([#8035](https://github.com/googlechrome/lighthouse/pull/8035))
 * url-shim: add comment about public suffix lst ([#7671](https://github.com/googlechrome/lighthouse/pull/7671))
-
-## Fix
-
-* uses-http2: ignore requests from service-worker ([#7197](https://github.com/googlechrome/lighthouse/pull/7197))
 
 ## I18n
 
