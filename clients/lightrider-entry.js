@@ -21,23 +21,34 @@ const LR_PRESETS = {
 
 /**
  * Run lighthouse for connection and provide similar results as in CLI.
+ *
+ * If configOverride is provided, lrDevice and categoryIDs are ignored.
  * @param {Connection} connection
  * @param {string} url
  * @param {LH.Flags} flags Lighthouse flags, including `output`
- * @param {{lrDevice?: 'desktop'|'mobile', categoryIDs?: Array<string>, logAssets: boolean}} lrOpts Options coming from Lightrider
+ * @param {{lrDevice?: 'desktop'|'mobile', categoryIDs?: Array<string>, logAssets: boolean, keepRawValues: boolean, configOverride?: LH.Config.Json}} lrOpts Options coming from Lightrider
  * @return {Promise<string|Array<string>|void>}
  */
-async function runLighthouseInLR(connection, url, flags, {lrDevice, categoryIDs, logAssets}) {
+async function runLighthouseInLR(connection, url, flags, lrOpts) {
+  const {lrDevice, categoryIDs, logAssets, keepRawValues, configOverride} = lrOpts;
+
   // Certain fixes need to kick in under LR, see https://github.com/GoogleChrome/lighthouse/issues/5839
-  global.isLightRider = true;
+  global.isLightrider = true;
 
   // disableStorageReset because it causes render server hang
   flags.disableStorageReset = true;
   flags.logLevel = flags.logLevel || 'info';
-  const config = lrDevice === 'desktop' ? LR_PRESETS.desktop : LR_PRESETS.mobile;
-  if (categoryIDs) {
-    config.settings = config.settings || {};
-    config.settings.onlyCategories = categoryIDs;
+  flags.channel = 'lr';
+
+  let config;
+  if (configOverride) {
+    config = configOverride;
+  } else {
+    config = lrDevice === 'desktop' ? LR_PRESETS.desktop : LR_PRESETS.mobile;
+    if (categoryIDs) {
+      config.settings = config.settings || {};
+      config.settings.onlyCategories = categoryIDs;
+    }
   }
 
   try {
@@ -50,7 +61,7 @@ async function runLighthouseInLR(connection, url, flags, {lrDevice, categoryIDs,
 
     // pre process the LHR for proto
     if (flags.output === 'json' && typeof results.report === 'string') {
-      return preprocessor.processForProto(results.report);
+      return preprocessor.processForProto(results.report, {keepRawValues});
     }
 
     return results.report;

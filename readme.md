@@ -182,7 +182,7 @@ HTML report:
 
 ### Online Viewer
 
-Running Lighthouse with the `--output=json` flag generates a json dump of the run.
+Running Lighthouse with the `--output=json` flag generates a JSON dump of the run.
 You can view this report online by visiting <https://googlechrome.github.io/lighthouse/viewer/>
 and dragging the file onto the app. You can also use the "Export" button from the
 top of any Lighthouse HTML report and open the report in the
@@ -225,7 +225,7 @@ _click to watch the video_
 
 ## Develop
 
-Read on for the basics of hacking on Lighthouse. Also see [Contributing](./CONTRIBUTING.md)
+Read on for the basics of hacking on Lighthouse. Also, see [Contributing](./CONTRIBUTING.md)
 for detailed information.
 
 ### Setup
@@ -280,7 +280,11 @@ This section details services that have integrated Lighthouse data. If you're wo
 
 * **[Fluxguard](https://fluxguard.com/)** - Fluxguard provides website DOM change monitoring orchestrated with Google Puppeteer, and audited by Lighthouse. Fluxguard is a freemium product, with monthly monitoring of up to 75 pages for free.
 
+* **[Foo](https://www.foo.software)** - Foo continuously monitors performance with Lighthouse and provides a timeline chart by day, week, or month. Users can receive alerts via email, Slack, and PagerDuty. Foo is a paid service with several tiers of pricing.
+
 * **[HTTPArchive](http://httparchive.org/)** - HTTPArchive tracks how the web is built by crawling 500k pages with Web Page Test, including Lighthouse results, and stores the information in BigQuery where it is [publicly available](https://discuss.httparchive.org/t/quickstart-guide-to-exploring-the-http-archive/682).
+
+* **[Lighthouse Keeper](https://lighthouse-keeper.com/)** - Lighthouse Keeper monitors your pages' Lighthouse scores and notifies you if they drop below your thresholds. Lighthouse Keeper is a free service that monitors up to 3 URLs once per day.
 
 * **[SpeedCurve](https://speedcurve.com)** — SpeedCurve is a tool for continuously monitoring web performance across different browsers, devices, and regions. It can aggregate any metric including Lighthouse scores across multiple pages and sites, and allows you to set performance budgets with Slack or email alerts. SpeedCurve is a paid product with a free 30-day trial.
 
@@ -324,7 +328,7 @@ Yes! Details in [Lighthouse configuration](./docs/configuration.md).
 ### How does Lighthouse use network throttling, and how can I make it better?
 
 Good question. Network and CPU throttling are applied by default in a Lighthouse run. The network
-attempts to emulate slow 4G and the CPU is slowed down 4x from your machine's default speed. If you
+attempts to emulate slow 4G connectivity and the CPU is slowed down 4x from your machine's default speed. If you
 prefer to run Lighthouse without throttling, you'll have to use the CLI and disable it with the
 `--throttling.*` flags mentioned above.
 

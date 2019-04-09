@@ -104,6 +104,7 @@ function getFlags(manualArgv) {
         'only-audits': 'Only run the specified audits',
         'only-categories': 'Only run the specified categories',
         'skip-audits': 'Run everything except these audits',
+        'plugins': 'Run the specified plugins',
         'print-config': 'Print the normalized config for the given config and options, then exit.',
       })
       // set aliases
@@ -136,7 +137,9 @@ function getFlags(manualArgv) {
       .array('onlyCategories')
       .array('skipAudits')
       .array('output')
+      .array('plugins')
       .string('extraHeaders')
+      .string('channel')
       .string('precomputedLanternDataPath')
       .string('lanternDataOutputPath')
 
@@ -146,6 +149,7 @@ function getFlags(manualArgv) {
       .default('port', 0)
       .default('hostname', 'localhost')
       .default('enable-error-reporting', undefined) // Undefined so prompted by default
+      .default('channel', 'cli')
       .check(/** @param {LH.CliFlags} argv */ (argv) => {
         // Lighthouse doesn't need a URL if...
         //   - We're just listing the available options.

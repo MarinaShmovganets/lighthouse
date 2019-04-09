@@ -23,6 +23,8 @@ declare global {
       fetchTime: string;
       /** A set of warnings about unexpected things encountered while loading and testing the page. */
       LighthouseRunWarnings: string[];
+      /** Whether the page was loaded on either a real or emulated mobile device. */
+      TestedAsMobileDevice: boolean;
       /** The user agent string of the version of Chrome used. */
       HostUserAgent: string;
       /** The user agent string that Lighthouse used to load the page. */
@@ -58,8 +60,6 @@ declare global {
       AppCacheManifest: string | null;
       /** Array of all URLs cached in CacheStorage. */
       CacheContents: string[];
-      /** Href values of link[rel=canonical] nodes found in HEAD (or null, if no href attribute). */
-      Canonical: (string | null)[];
       /** Console deprecation and intervention warnings logged by Chrome during page load. */
       ChromeConsoleMessages: Crdp.Log.EntryAddedEvent[];
       /** CSS coverage information for styles used by page's final state. */
@@ -71,7 +71,7 @@ declare global {
       DOMStats: Artifacts.DOMStats;
       /** Relevant attributes and child properties of all <object>s, <embed>s and <applet>s in the page. */
       EmbeddedContent: Artifacts.EmbeddedContentInfo[];
-      /** All the link elements on the page. */
+      /** All the link elements on the page or equivalently declared in `Link` headers. @see https://html.spec.whatwg.org/multipage/links.html */
       LinkElements: Artifacts.LinkElement[];
       /** Information for font faces used in the page. */
       Fonts: Artifacts.Font[];
@@ -105,8 +105,8 @@ declare global {
       RobotsTxt: {status: number|null, content: string|null};
       /** Set of exceptions thrown during page load. */
       RuntimeExceptions: Crdp.Runtime.ExceptionThrownEvent[];
-      /** The content of all scripts loaded by the page, keyed by networkRecord requestId. */
-      Scripts: Record<string, string>;
+      /** Information on all script elements in the page. Also contains the content of all requested scripts and the networkRecord requestId that contained their content. Note, HTML documents will have one entry per script tag, all with the same requestId. */
+      ScriptElements: Array<Artifacts.ScriptElement>;
       /** Version information for all ServiceWorkers active after the first page load. */
       ServiceWorker: {versions: Crdp.ServiceWorker.ServiceWorkerVersion[], registrations: Crdp.ServiceWorker.ServiceWorkerRegistration[]};
       /** The status of an offline fetch of the page's start_url. -1 and a explanation if missing or there was an error. */
@@ -170,10 +170,33 @@ declare global {
 
       /** @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#Attributes */
       export interface LinkElement {
-        rel: string
-        href: string
+        /** The `rel` attribute of the link, normalized to lower case. @see https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types */
+        rel: 'alternate'|'canonical'|'dns-prefetch'|'preconnect'|'preload'|'stylesheet'|string;
+        /** The `href` attribute of the link or `null` if it was invalid in the header. */
+        href: string | null
+        /** The raw value of the `href` attribute. Only different from `href` when source is 'header' */
+        hrefRaw: string
+        /** The `hreflang` attribute of the link */
+        hreflang: string
+        /** The `as` attribute of the link */
         as: string
+        /** The `crossOrigin` attribute of the link */
         crossOrigin: 'anonymous'|'use-credentials'|null
+        /** Where the link was found, either in the DOM or in the headers of the main document */
+        source: 'head'|'body'|'headers'
+      }
+
+      export interface ScriptElement {
+        type: string | null
+        src: string | null
+        async: boolean
+        defer: boolean
+        /** Where the script was discovered, either in the head, the body, or network records. */
+        source: 'head'|'body'|'network'
+        /** The content of the inline script or the network record with the matching URL, null if the script had a src and no network record could be found. */
+        content: string | null
+        /** The ID of the network request that matched the URL of the src or the main document if inline, null if no request could be found. */
+        requestId: string | null
       }
 
       /** @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#Attributes */
@@ -261,13 +284,10 @@ declare global {
 
       export interface OptimizedImage {
         failed: false;
-        fromProtocol: boolean;
         originalSize: number;
-        jpegSize: number;
-        webpSize: number;
+        jpegSize?: number;
+        webpSize?: number;
 
-        isSameOrigin: boolean;
-        isBase64DataUri: boolean;
         requestId: string;
         url: string;
         mimeType: string;
@@ -278,8 +298,6 @@ declare global {
         failed: true;
         errMsg: string;
 
-        isSameOrigin: boolean;
-        isBase64DataUri: boolean;
         requestId: string;
         url: string;
         mimeType: string;
@@ -371,7 +389,6 @@ declare global {
       }
 
       export interface NetworkAnalysis {
-        records: Array<NetworkRequest>;
         rtt: number;
         additionalRttByOrigin: Map<string, number>;
         serverResponseTimeByOrigin: Map<string, number>;

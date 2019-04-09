@@ -663,6 +663,19 @@ describe('.gotoURL', () => {
       expect(driver._waitForCPUIdle.getMockCancelFn()).toHaveBeenCalled();
     });
 
+    it('should cleanup listeners even when waits reject', async () => {
+      driver._waitForLoadEvent = createMockWaitForFn();
+
+      const loadPromise = makePromiseInspectable(driver.gotoURL(url, {waitForLoad: true}));
+
+      driver._waitForLoadEvent.mockReject();
+      await flushAllTimersAndMicrotasks();
+      expect(loadPromise).toBeDone('Did not reject load promise when load rejected');
+      await expect(loadPromise).rejects.toBeTruthy();
+      // Make sure we still cleaned up our listeners
+      expect(driver._waitForLoadEvent.getMockCancelFn()).toHaveBeenCalled();
+    });
+
     it('does not reject when page is secure', async () => {
       const secureSecurityState = {
         explanations: [],
@@ -737,6 +750,58 @@ describe('.gotoURL', () => {
         );
       }
     });
+  });
+});
+
+describe('._waitForFCP', () => {
+  it('should not resolve until FCP fires', async () => {
+    driver.on = driver.once = createMockOnceFn();
+
+    const waitPromise = makePromiseInspectable(driver._waitForFCP(60 * 1000).promise);
+    const listener = driver.on.findListener('Page.lifecycleEvent');
+
+    await flushAllTimersAndMicrotasks();
+    expect(waitPromise).not.toBeDone('Resolved without FCP');
+
+    listener({name: 'domContentLoaded'});
+    await flushAllTimersAndMicrotasks();
+    expect(waitPromise).not.toBeDone('Resolved on wrong event');
+
+    listener({name: 'firstContentfulPaint'});
+    await flushAllTimersAndMicrotasks();
+    expect(waitPromise).toBeDone('Did not resolve with FCP');
+    await waitPromise;
+  });
+
+  it('should timeout', async () => {
+    driver.on = driver.once = createMockOnceFn();
+
+    const waitPromise = makePromiseInspectable(driver._waitForFCP(5000).promise);
+
+    await flushAllTimersAndMicrotasks();
+    expect(waitPromise).not.toBeDone('Resolved before timeout');
+
+    jest.advanceTimersByTime(5001);
+    await flushAllTimersAndMicrotasks();
+    expect(waitPromise).toBeDone('Did not resolve after timeout');
+    await expect(waitPromise).rejects.toMatchObject({code: 'NO_FCP'});
+  });
+
+  it('should be cancellable', async () => {
+    driver.on = driver.once = createMockOnceFn();
+    driver.off = jest.fn();
+
+    const {promise: rawPromise, cancel} = driver._waitForFCP(5000);
+    const waitPromise = makePromiseInspectable(rawPromise);
+
+    await flushAllTimersAndMicrotasks();
+    expect(waitPromise).not.toBeDone('Resolved before timeout');
+
+    cancel();
+    await flushAllTimersAndMicrotasks();
+    expect(waitPromise).toBeDone('Did not cancel promise');
+    expect(driver.off).toHaveBeenCalled();
+    await expect(waitPromise).rejects.toMatchObject({message: 'Wait for FCP canceled'});
   });
 });
 
@@ -935,6 +1000,8 @@ describe('.goOnline', () => {
 describe('Multi-target management', () => {
   it('enables the Network domain for iframes', async () => {
     connectionStub.sendCommand = createMockSendCommandFn()
+      .mockResponse('Target.sendMessageToTarget', {})
+      .mockResponse('Target.sendMessageToTarget', {})
       .mockResponse('Target.sendMessageToTarget', {});
 
     driver._eventEmitter.emit('Target.attachedToTarget', {
@@ -951,16 +1018,73 @@ describe('Multi-target management', () => {
     });
   });
 
-  it('ignores other target types', async () => {
+  it('enables the Network domain for iframes of iframes of iframes', async () => {
     connectionStub.sendCommand = createMockSendCommandFn()
-    .mockResponse('Target.sendMessageToTarget', {});
+      .mockResponse('Target.sendMessageToTarget', {})
+      .mockResponse('Target.sendMessageToTarget', {})
+      .mockResponse('Target.sendMessageToTarget', {});
+
+    driver._eventEmitter.emit('Target.receivedMessageFromTarget', {
+      sessionId: 'Outer',
+      message: JSON.stringify({
+        method: 'Target.receivedMessageFromTarget',
+        params: {
+          sessionId: 'Middle',
+          message: JSON.stringify({
+            method: 'Target.attachedToTarget',
+            params: {
+              sessionId: 'Inner',
+              targetInfo: {type: 'iframe'},
+            },
+          }),
+        },
+      }),
+    });
+
+    await flushAllTimersAndMicrotasks();
+
+    const sendMessageArgs = connectionStub.sendCommand
+      .findInvocation('Target.sendMessageToTarget');
+    const stringified = `{
+      "id": 3,
+      "method": "Target.sendMessageToTarget",
+      "params": {
+        "sessionId": "Middle",
+        "message": "{
+          \\"id\\": 2,
+          \\"method\\": \\"Target.sendMessageToTarget\\",
+          \\"params\\": {
+            \\"sessionId\\": \\"Inner\\",
+            \\"message\\":\\ "{
+              \\\\\\"id\\\\\\":1,
+              \\\\\\"method\\\\\\":\\\\\\"Network.enable\\\\\\"
+            }\\"
+          }}"
+        }
+      }`.replace(/\s+/g, '');
+
+    expect(sendMessageArgs).toEqual({
+      message: stringified,
+      sessionId: 'Outer',
+    });
+  });
+
+  it('ignores other target types, but still resumes them', async () => {
+    connectionStub.sendCommand = createMockSendCommandFn()
+      .mockResponse('Target.sendMessageToTarget', {});
 
     driver._eventEmitter.emit('Target.attachedToTarget', {
-      sessionId: 123,
+      sessionId: 'SW1',
       targetInfo: {type: 'service_worker'},
     });
     await flushAllTimersAndMicrotasks();
 
-    expect(connectionStub.sendCommand).not.toHaveBeenCalled();
+
+    const sendMessageArgs = connectionStub.sendCommand
+      .findInvocation('Target.sendMessageToTarget');
+    expect(sendMessageArgs).toEqual({
+      message: JSON.stringify({id: 1, method: 'Runtime.runIfWaitingForDebugger'}),
+      sessionId: 'SW1',
+    });
   });
 });

@@ -12,13 +12,14 @@ const assert = require('assert');
 
 const getFakeContext = () => ({computedCache: new Map()});
 
-function auditTapTargets(tapTargets, metaElements = [{
+function auditTapTargets(tapTargets, {MetaElements = [{
   name: 'viewport',
   content: 'width=device-width',
-}]) {
+}], TestedAsMobileDevice = true} = {}) {
   const artifacts = {
     TapTargets: tapTargets,
-    MetaElements: metaElements,
+    MetaElements,
+    TestedAsMobileDevice,
   };
 
   return TapTargetsAudit.audit(artifacts, getFakeContext());
@@ -141,7 +142,7 @@ describe('SEO: Tap targets audit', () => {
       })
     );
     assert.equal(auditResult.rawValue, false);
-    assert.equal(Math.round(auditResult.score * 100), 33);
+    assert.equal(Math.round(auditResult.score * 100), 30);
     const failure = auditResult.details.items[0];
     assert.equal(failure.tapTarget.snippet, '<main></main>');
     assert.equal(failure.overlappingTarget.snippet, '<right></right>');
@@ -196,18 +197,26 @@ describe('SEO: Tap targets audit', () => {
         increaseRightWidth: true,
       })
     );
-    assert.equal(Math.round(auditResult.score * 100), 67);
+    assert.equal(Math.round(auditResult.score * 100), 59);
     const failures = auditResult.details.items;
     // <main> fails, but <right> doesn't
     assert.equal(failures[0].tapTarget.snippet, '<main></main>');
   });
 
   it('fails if no meta viewport tag is provided', async () => {
-    const auditResult = await auditTapTargets([], []);
+    const auditResult = await auditTapTargets([], {MetaElements: []});
     assert.equal(auditResult.rawValue, false);
 
     expect(auditResult.explanation).toBeDisplayString(
       /* eslint-disable max-len */
       'Tap targets are too small because there\'s no viewport meta tag optimized for mobile screens');
+  });
+
+  it('is not applicable on desktop', async () => {
+    const auditResult = await auditTapTargets(getBorderlineTapTargets({
+      overlapSecondClientRect: true,
+    }), {TestedAsMobileDevice: false});
+    assert.equal(auditResult.rawValue, true);
+    assert.equal(auditResult.notApplicable, true);
   });
 });
