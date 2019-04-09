@@ -100,13 +100,15 @@ describe('NetworkRequest', () => {
       expect(record.startTime).toStrictEqual(0);
       expect(record.endTime).toStrictEqual(10);
       expect(record.responseReceivedTime).toStrictEqual(7.5);
-      expect(record.timing.connectStart).toStrictEqual(0);
-      expect(record.timing.connectEnd).toStrictEqual(5000);
-      expect(record.timing.sslStart).toStrictEqual(4000);
-      expect(record.timing.sslEnd).toStrictEqual(5000);
-      expect(record.timing.sendStart).toStrictEqual(5000);
-      expect(record.timing.sendEnd).toStrictEqual(5000);
-      expect(record.timing.receiveHeadersEnd).toStrictEqual(7500);
+      expect(record.timing).toMatchObject({
+        connectStart: 0,
+        connectEnd: 5000,
+        sslStart: 4000,
+        sslEnd: 5000,
+        sendStart: 5000,
+        sendEnd: 5000,
+        receiveHeadersEnd: 7500,
+      });
       expect(record.lrStatistics).toStrictEqual({
         endTimeDeltaMs: -8000,
         TCPMs: 5000,
@@ -199,13 +201,15 @@ describe('NetworkRequest', () => {
       expect(record.startTime).toStrictEqual(0);
       expect(record.endTime).toStrictEqual(10);
       expect(record.responseReceivedTime).toStrictEqual(0);
-      expect(record.timing.connectStart).toStrictEqual(0);
-      expect(record.timing.connectEnd).toStrictEqual(0);
-      expect(record.timing.sslStart).toStrictEqual(0);
-      expect(record.timing.sslEnd).toStrictEqual(0);
-      expect(record.timing.sendStart).toStrictEqual(0);
-      expect(record.timing.sendEnd).toStrictEqual(0);
-      expect(record.timing.receiveHeadersEnd).toStrictEqual(0);
+      expect(record.timing).toMatchObject({
+        connectStart: 0,
+        connectEnd: 0,
+        sslStart: 0,
+        sslEnd: 0,
+        sendStart: 0,
+        sendEnd: 0,
+        receiveHeadersEnd: 0,
+      });
       expect(record.lrStatistics).toStrictEqual({
         endTimeDeltaMs: -8000,
         TCPMs: 0,
@@ -227,13 +231,15 @@ describe('NetworkRequest', () => {
       expect(record.startTime).toStrictEqual(0);
       expect(record.endTime).toStrictEqual(10);
       expect(record.responseReceivedTime).toStrictEqual(1);
-      expect(record.timing.connectStart).toStrictEqual(0);
-      expect(record.timing.connectEnd).toStrictEqual(1000);
-      expect(record.timing.sslStart).toStrictEqual(1000);
-      expect(record.timing.sslEnd).toStrictEqual(1000);
-      expect(record.timing.sendStart).toStrictEqual(1000);
-      expect(record.timing.sendEnd).toStrictEqual(1000);
-      expect(record.timing.receiveHeadersEnd).toStrictEqual(1000);
+      expect(record.timing).toMatchObject({
+        connectStart: 0,
+        connectEnd: 1000,
+        sslStart: 1000,
+        sslEnd: 1000,
+        sendStart: 1000,
+        sendEnd: 1000,
+        receiveHeadersEnd: 1000,
+      });
       expect(record.lrStatistics).toStrictEqual({
         endTimeDeltaMs: -8000,
         TCPMs: 1000,
@@ -257,14 +263,16 @@ describe('NetworkRequest', () => {
       expect(lrRecord.startTime).toStrictEqual(0);
       expect(lrRecord.endTime).toStrictEqual(10);
       expect(lrRecord.responseReceivedTime).toStrictEqual(7.5);
-      expect(lrRecord.timing.proxyStart).toStrictEqual(-1);
-      expect(lrRecord.timing.connectStart).toStrictEqual(0);
-      expect(lrRecord.timing.connectEnd).toStrictEqual(5000);
-      expect(lrRecord.timing.sslStart).toStrictEqual(4000);
-      expect(lrRecord.timing.sslEnd).toStrictEqual(5000);
-      expect(lrRecord.timing.sendStart).toStrictEqual(5000);
-      expect(lrRecord.timing.sendEnd).toStrictEqual(5000);
-      expect(lrRecord.timing.receiveHeadersEnd).toStrictEqual(7500);
+      expect(lrRecord.timing).toMatchObject({
+        proxyStart: -1,
+        connectStart: 0,
+        connectEnd: 5000,
+        sslStart: 4000,
+        sslEnd: 5000,
+        sendStart: 5000,
+        sendEnd: 5000,
+        receiveHeadersEnd: 7500,
+      });
       expect(lrRecord.lrStatistics).toStrictEqual({
         endTimeDeltaMs: -8000,
         TCPMs: 5000,
@@ -288,14 +296,16 @@ describe('NetworkRequest', () => {
       expect(lrRecord.startTime).toStrictEqual(0);
       expect(lrRecord.endTime).toStrictEqual(10);
       expect(lrRecord.responseReceivedTime).toStrictEqual(7.5);
-      expect(lrRecord.timing.proxyStart).toStrictEqual(17);
-      expect(lrRecord.timing.connectStart).toStrictEqual(0);
-      expect(lrRecord.timing.connectEnd).toStrictEqual(5000);
-      expect(lrRecord.timing.sslStart).toStrictEqual(4000);
-      expect(lrRecord.timing.sslEnd).toStrictEqual(5000);
-      expect(lrRecord.timing.sendStart).toStrictEqual(5000);
-      expect(lrRecord.timing.sendEnd).toStrictEqual(5000);
-      expect(lrRecord.timing.receiveHeadersEnd).toStrictEqual(7500);
+      expect(lrRecord.timing).toMatchObject({
+        proxyStart: 17,
+        connectStart: 0,
+        connectEnd: 5000,
+        sslStart: 4000,
+        sslEnd: 5000,
+        sendStart: 5000,
+        sendEnd: 5000,
+        receiveHeadersEnd: 7500,
+      });
       expect(lrRecord.lrStatistics).toStrictEqual({
         endTimeDeltaMs: -8000,
         TCPMs: 5000,
