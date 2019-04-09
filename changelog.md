@@ -6,12 +6,10 @@
 
 Thanks to @rdlabo and @yashrajbharti for their first contributions!
 
-## Clients
+## Report
 
-* devtools: refactor build script ([#7421](https://github.com/googlechrome/lighthouse/pull/7421), [#7567](https://github.com/googlechrome/lighthouse/pull/7567))
-* lr: always use transferSize from X-TotalFetchedSize header ([#7478](https://github.com/googlechrome/lighthouse/pull/7478))
-* lr: gather network timing numbers from headers ([#7888](https://github.com/googlechrome/lighthouse/pull/7888))
-* lr: add custom config support ([#7613](https://github.com/googlechrome/lighthouse/pull/7613))
+* include utm params in links to docs ([#7441](https://github.com/googlechrome/lighthouse/pull/7441))
+* fix PWA badge from disappearing on scroll ([#7512](https://github.com/googlechrome/lighthouse/pull/7512))
 
 ## Core
 
@@ -35,29 +33,18 @@ Thanks to @rdlabo and @yashrajbharti for their first contributions!
 * vuln-libs: match against all semver ranges provided by snyk ([#7402](https://github.com/googlechrome/lighthouse/pull/7402))
 * uses-http2: ignore requests from service-worker ([#7197](https://github.com/googlechrome/lighthouse/pull/7197))
 
-## Deps
-
-* update nyc to latest ([#7431](https://github.com/googlechrome/lighthouse/pull/7431))
-* snyk: update snyk snapshot ([#7392](https://github.com/googlechrome/lighthouse/pull/7392), [#7589](https://github.com/googlechrome/lighthouse/pull/7589), [#7943](https://github.com/googlechrome/lighthouse/pull/7943))
-
 ## Docs
 
 * add plugin recipe ([#6965](https://github.com/googlechrome/lighthouse/pull/6965))
 * readme: Foo integration ([#8035](https://github.com/googlechrome/lighthouse/pull/8035))
 * url-shim: add comment about public suffix lst ([#7671](https://github.com/googlechrome/lighthouse/pull/7671))
 
-## I18n
+## Clients
 
-* Hindi for seo and a11y ([#7786](https://github.com/googlechrome/lighthouse/pull/7786), [#8070](https://github.com/googlechrome/lighthouse/pull/8070))
-* add new translations for SEO; updates for a11y and perf ([#7720](https://github.com/googlechrome/lighthouse/pull/7720))
-
-## Renderer
-
-* fix PWA badge from disappearing on scroll ([#7512](https://github.com/googlechrome/lighthouse/pull/7512))
-
-## Report
-
-* include utm params in links to docs ([#7441](https://github.com/googlechrome/lighthouse/pull/7441))
+* devtools: refactor build script ([#7421](https://github.com/googlechrome/lighthouse/pull/7421), [#7567](https://github.com/googlechrome/lighthouse/pull/7567))
+* lr: always use transferSize from X-TotalFetchedSize header ([#7478](https://github.com/googlechrome/lighthouse/pull/7478))
+* lr: gather network timing numbers from headers ([#7888](https://github.com/googlechrome/lighthouse/pull/7888))
+* lr: add custom config support ([#7613](https://github.com/googlechrome/lighthouse/pull/7613))
 
 ## Tests
 
@@ -82,6 +69,16 @@ Thanks to @rdlabo and @yashrajbharti for their first contributions!
 * remove obsolete unused files ([#7476](https://github.com/googlechrome/lighthouse/pull/7476))
 * cli: add --plugins flag to load from the command line ([#7407](https://github.com/googlechrome/lighthouse/pull/7407))
 * gather: update comment re: ClientRect copying ([#7785](https://github.com/googlechrome/lighthouse/pull/7785))
+
+## Deps
+
+* update nyc to latest ([#7431](https://github.com/googlechrome/lighthouse/pull/7431))
+* snyk: update snyk snapshot ([#7392](https://github.com/googlechrome/lighthouse/pull/7392), [#7589](https://github.com/googlechrome/lighthouse/pull/7589), [#7943](https://github.com/googlechrome/lighthouse/pull/7943))
+
+## I18n
+
+* Hindi for seo and a11y ([#7786](https://github.com/googlechrome/lighthouse/pull/7786), [#8070](https://github.com/googlechrome/lighthouse/pull/8070))
+* add new translations for SEO; updates for a11y and perf ([#7720](https://github.com/googlechrome/lighthouse/pull/7720))
 
  <a name="4.2.0"></a>
 # 4.2.0 (2019-03-06)
