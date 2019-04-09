@@ -52,10 +52,10 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
         ],
       },
     };
-    const JSLibraries = [{name: 'Badlib', version: '3.0.0', npmPkgName: 'badlib'}];
+    const Stacks = [{detector: 'js', name: 'Badlib', version: '3.0.0', npm: 'badlib'}];
     const vulns = NoVulnerableLibrariesAudit.getVulnerabilities(
       '3.0.0',
-      JSLibraries[0],
+      Stacks[0],
       mockSnykDb
     );
     expect(vulns).toMatchInlineSnapshot(`
