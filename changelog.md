@@ -8,7 +8,7 @@ Thanks to @rdlabo and @yashrajbharti for their first contributions!
 
 ## Clients
 
-* devtools: refactor build script ([#7567](https://github.com/googlechrome/lighthouse/pull/7567), [#7421](https://github.com/googlechrome/lighthouse/pull/7421))
+* devtools: refactor build script ([#7421](https://github.com/googlechrome/lighthouse/pull/7421), [#7567](https://github.com/googlechrome/lighthouse/pull/7567))
 * lr: always use transferSize from X-TotalFetchedSize header ([#7478](https://github.com/googlechrome/lighthouse/pull/7478))
 * lr: gather network timing numbers from headers ([#7888](https://github.com/googlechrome/lighthouse/pull/7888))
 * lr: add custom config support ([#7613](https://github.com/googlechrome/lighthouse/pull/7613))
