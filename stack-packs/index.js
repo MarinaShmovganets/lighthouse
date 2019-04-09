@@ -8,7 +8,7 @@
 
 /** @type {import('./stack-packs').Pack[]} */
 const stackPacks = [
-  require('./packs/wordpress'),
+  require('./packs/wordpress.js'),
 ];
 
 module.exports = stackPacks;
