@@ -52,7 +52,7 @@ enum LighthouseError {
   // DNS failure on main document (no resolution, timed out, etc)
   DNS_FAILURE = 19;
   // A timeout in the initial connection to the debugger protocol.
-  CRI_TIMEOUT: 20;
+  CRI_TIMEOUT = 20;
 }
 
 // The overarching Lighthouse Response object (LHR)
