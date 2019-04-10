@@ -103,12 +103,12 @@ function findDifference(path, actual, expected) {
 }
 
 /**
- * @param {string} name
+ * @param {string} name – description of what's being asserted on (e.g. the result of a certain audit)
  * @param {any} actualResult
  * @param {any} expectedResult
- * @returns {Smokehouse.Comparison}
+ * @return {Smokehouse.Comparison}
  */
-function makeAssertion(name, actualResult, expectedResult) {
+function makeComparison(name, actualResult, expectedResult) {
   const diff = findDifference(name, actualResult, expectedResult);
 
   return {
@@ -121,7 +121,7 @@ function makeAssertion(name, actualResult, expectedResult) {
 }
 
 /**
- * Collate results into comparisons of actual and expected scores on each audit.
+ * Collate results into comparisons of actual and expected scores on each audit/artifact.
  * @param {Smokehouse.ExpectedRunResult} actual
  * @param {Smokehouse.ExpectedRunResult} expected
  * @return {Smokehouse.Comparison[]}
@@ -138,23 +138,21 @@ function collateResults(actual, expected) {
       }
 
       const expectedResult = (expected.artifacts || {})[artifactName];
-      return makeAssertion(artifactName + ' artifact', actualResult, expectedResult);
+      return makeComparison(artifactName + ' artifact', actualResult, expectedResult);
     });
   }
 
   /** @type {Smokehouse.Comparison[]} */
   let auditAssertions = [];
-  if (expected.lhr.audits) {
-    auditAssertions = Object.keys(expected.lhr.audits).map(auditName => {
-      const actualResult = actual.lhr.audits[auditName];
-      if (!actualResult) {
-        throw new Error(`Config did not trigger run of expected audit ${auditName}`);
-      }
+  auditAssertions = Object.keys(expected.lhr.audits).map(auditName => {
+    const actualResult = actual.lhr.audits[auditName];
+    if (!actualResult) {
+      throw new Error(`Config did not trigger run of expected audit ${auditName}`);
+    }
 
-      const expectedResult = expected.lhr.audits[auditName];
-      return makeAssertion(auditName + ' audit', actualResult, expectedResult);
-    });
-  }
+    const expectedResult = expected.lhr.audits[auditName];
+    return makeComparison(auditName + ' audit', actualResult, expectedResult);
+  });
 
   return [
     {

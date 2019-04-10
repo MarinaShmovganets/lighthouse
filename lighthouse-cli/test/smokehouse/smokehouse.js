@@ -57,12 +57,10 @@ function runLighthouse(url, configPath, isDebug) {
     `--config-path=${configPath}`,
     `--output-path=${outputPath}`,
     '--output=json',
+    `-GA=${artifactsDirectory}`,
     '--quiet',
     '--port=0',
   ];
-
-  // Save artifacts
-  args.push(`-GA=${artifactsDirectory}`);
 
   if (process.env.APPVEYOR) {
     // Appveyor is hella slow already, disable CPU throttling so we're not 16x slowdown
