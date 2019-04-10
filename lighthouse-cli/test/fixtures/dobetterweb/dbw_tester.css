@@ -5,8 +5,9 @@
  */
 
 body {
-  background-color: #eee;
+  background-color: #EEE;
 }
+
 .doesnotapply {
   display: flexbox; /* FAIL */
 }

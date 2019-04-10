@@ -19,15 +19,16 @@
 }
 
 :root {
-  --lh-blue-color: #304ffe;
-  --lh-bg-color: #f5f5f5;
+  --lh-blue-color: #304FFE;
+  --lh-bg-color: #F5F5F5;
 }
 
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   padding: 0;
   margin: 0;
   width: 390px;
@@ -103,11 +104,11 @@ html, body {
   font-weight: 500;
   font-size: 12px;
   border: none;
-  color: #fff;
-  background-color: #2979ff;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.50);
+  color: #FFF;
+  background-color: #2979FF;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   border-radius: 2px;
-  padding: 7px 12px 5px 12px
+  padding: 7px 12px 5px 12px;
 }
 
 .button--generate {
@@ -130,7 +131,7 @@ html, body {
   background-color: rgba(239, 83, 80, 0.81);
   text-decoration: none;
   padding: 3px 5px;
-  font-size: .8em;
+  font-size: 0.8em;
   text-align: center;
   display: inline;
   margin-left: 5px;
@@ -148,7 +149,7 @@ html, body {
   flex-direction: column;
   opacity: 0;
   will-change: opacity;
-  transition: opacity 0.150s cubic-bezier(0,0,0.41,1);
+  transition: opacity 0.15s cubic-bezier(0, 0, 0.41, 1);
   text-align: center;
   padding: 16px;
 }
@@ -161,7 +162,7 @@ html, body {
 .status {
   align-items: center;
   justify-content: flex-start;
-  background-color: #fff;
+  background-color: #FFF;
 }
 
 .subpage--visible.status .lighthouse-effects__wrapper {
@@ -181,7 +182,7 @@ html, body {
 .feedback {
   background-color: var(--lh-blue-color);
   position: absolute;
-  color: #fff;
+  color: #FFF;
   bottom: 10px;
   left: 14px; /* 16px - 2px of shadow from the options button */
   width: 180px;
@@ -189,7 +190,7 @@ html, body {
 }
 
 .feedback-error {
-  font-size: .9em;
+  font-size: 0.9em;
   min-height: 38px;
 }
 

@@ -1,0 +1,18 @@
+{
+  "files": [
+    "docs/**/*.html",
+    "clients/extension/*.html",
+    "lighthouse-cli/test/fixtures/**/*.html",
+    "lighthouse-core/report/html/*.html",
+    "lighthouse-viewer/app/**/*.html"
+  ],
+  "indentation": {
+    "char": "space",
+    "number": 2
+  },
+  "attributes": {
+    "quotes": "double",
+    "whitespace": 0,
+    "vertical-align": false
+  }
+}

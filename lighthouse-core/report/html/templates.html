@@ -99,23 +99,23 @@ limitations under the License.
 <template id="tmpl-lh-opportunity">
   <div class="lh-audit lh-audit--load-opportunity">
     <details class="lh-expandable-details">
-        <summary>
-          <div class="lh-audit__header lh-expandable-details__summary">
-            <div class="lh-load-opportunity__cols">
-              <div class="lh-load-opportunity__col lh-load-opportunity__col--one">
-                <span class="lh-audit__index"></span>
-                <div class="lh-audit__title"></div>
+      <summary>
+        <div class="lh-audit__header lh-expandable-details__summary">
+          <div class="lh-load-opportunity__cols">
+            <div class="lh-load-opportunity__col lh-load-opportunity__col--one">
+              <span class="lh-audit__index"></span>
+              <div class="lh-audit__title"></div>
+            </div>
+            <div class="lh-load-opportunity__col lh-load-opportunity__col--two">
+              <div class="lh-load-opportunity__sparkline">
+                <div class="lh-sparkline"><div class="lh-sparkline__bar"></div></div>
               </div>
-              <div class="lh-load-opportunity__col lh-load-opportunity__col--two">
-                <div class="lh-load-opportunity__sparkline">
-                  <div class="lh-sparkline"><div class="lh-sparkline__bar"></div></div>
-                </div>
-                <div class="lh-audit__display-text"></div>
-                <div class="lh-chevron-container" title="See resources"></div>
-              </div>
+              <div class="lh-audit__display-text"></div>
+              <div class="lh-chevron-container" title="See resources"></div>
             </div>
           </div>
-        </summary>
+        </div>
+      </summary>
       <div class="lh-audit__description"></div>
     </details>
   </div>
@@ -144,10 +144,12 @@ limitations under the License.
       background: white;
       border-radius: 8px;
     }
+
     .lh-scores-wrapper__shadow {
       border-radius: 0;
-      box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 0px -2px
+      box-shadow: rgba(0, 0, 0, 0.2) 0 3px 0 -2px;
     }
+
     .lh-scores-container {
       padding-bottom: calc(var(--section-indent) / 2);
       position: relative;
@@ -169,6 +171,7 @@ limitations under the License.
     :root {
       --report-header-overlap-top: 30px;
     }
+
     .lh-header-bg {
       background-color: var(--header-bg-color);
       height: var(--report-header-height);
@@ -179,6 +182,7 @@ limitations under the License.
       will-change: transform;
       contain: strict;
     }
+
     .lh-lighthouse {
       position: absolute;
       bottom: -4px;
@@ -187,12 +191,14 @@ limitations under the License.
       transform-origin: bottom right;
       will-change: transform, opacity;
     }
+
     .lh-header {
       width: 100%;
       height: var(--report-header-height);
       max-width: 100%; /* support text-overflow on url */
       position: relative;
     }
+
     .lh-metadata {
       flex: 1 1 0;
       padding: calc(var(--section-padding) / 2);
@@ -203,20 +209,25 @@ limitations under the License.
       position: relative;
       max-width: 60%;
     }
+
     .lh-metadata__results {
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
     }
+
     .lh-metadata__url {
       color: currentColor;
     }
+
     .lh-scores-wrapper {
       margin-top: -30px;
     }
+
     .lh-scores-wrapper__shadow {
       opacity: 0;
     }
+
     .lh-scores-wrapper__background,
     .lh-scores-wrapper__shadow {
       box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.1);
@@ -225,7 +236,8 @@ limitations under the License.
       transform-origin: top;
     }
 
-    .lh-product-info, .lh-toolbar__metadata {
+    .lh-product-info,
+    .lh-toolbar__metadata {
       align-items: center;
       white-space: nowrap;
       color: #5F6369;
@@ -236,10 +248,12 @@ limitations under the License.
       transform: translateY(-50%);
       will-change: opacity;
     }
+
     .lh-product-info__icon {
       height: 20px;
       margin-right: var(--default-padding);
     }
+
     .lh-toolbar {
       height: 50px;
       position: absolute;
@@ -248,17 +262,20 @@ limitations under the License.
       display: flex;
       width: calc(100% - 70px);  /* give room for export */
     }
+
     .lh-toolbar__metadata {
       overflow: hidden;
       text-overflow: ellipsis;
       width: 100%;
     }
+
     .lh-toolbar__url {
       color: currentColor;
       display: block;
       white-space: nowrap;
       margin-right: 2px;
     }
+
     .lh-export {
       position: absolute;
       right: var(--section-indent);
@@ -267,9 +284,10 @@ limitations under the License.
       will-change: transform;
       z-index: 2;
     }
+
     .lh-export__button {
-      background-color: #fff;
-      border: 1px solid #dadada;
+      background-color: #FFF;
+      border: 1px solid #DADADA;
       border-radius: 2px;
       cursor: pointer;
       outline: none;
@@ -280,29 +298,33 @@ limitations under the License.
       background-position: 50% 50%;
       will-change: transform;
     }
+
     .lh-export__button:focus,
     .lh-export__button.active {
-      box-shadow: 1px 1px 3px #ccc;
+      box-shadow: 1px 1px 3px #CCC;
     }
+
     .lh-export__button.active + .lh-export__dropdown {
       opacity: 1;
       clip: rect(0, 164px, 200px, 0);
     }
+
     .lh-export__dropdown {
       position: absolute;
-      background-color: #fff;
+      background-color: #FFF;
       border: 1px solid var(--report-border-color);
       border-radius: 3px;
       padding: calc(var(--default-padding) / 2) 0;
       cursor: pointer;
       top: 36px;
       right: 0;
-      box-shadow: 1px 1px 3px #ccc;
+      box-shadow: 1px 1px 3px #CCC;
       min-width: 125px;
       clip: rect(0, 164px, 0, 0);
       opacity: 0;
-      transition: all 200ms cubic-bezier(0,0,0.2,1);
+      transition: all 200ms cubic-bezier(0, 0, 0.2, 1);
     }
+
     .lh-export__dropdown a {
       display: block;
       color: currentColor;
@@ -311,11 +333,13 @@ limitations under the License.
       padding: 0 12px;
       line-height: 2;
     }
+
     .lh-export__dropdown a:hover,
     .lh-export__dropdown a:focus {
-      background-color: #efefef;
+      background-color: #EFEFEF;
       outline: none;
     }
+
     .lh-export__dropdown .report-icon {
       cursor: pointer;
       background-repeat: no-repeat;
@@ -324,40 +348,47 @@ limitations under the License.
       background-color: transparent;
       text-indent: 18px;
     }
+
     /* copy icon needs slight adjustments to look great */
     .lh-export__dropdown .report-icon--copy {
       background-size: 16px;
       background-position: 9px 50%;
     }
+
     /* save-as-gist option hidden in report */
     .lh-export__dropdown .lh-export--gist {
       display: none;
     }
+
     .lh-config {
       color: var(--secondary-text-color);
     }
+
     .lh-config__timestamp {
       font-size: var(--caption-font-size);
       display: block;
     }
+
     a.lh-config__emulation {
       color: inherit;
       text-decoration: none;
     }
+
     @media screen and (max-width: 964px) {
       .lh-export__dropdown {
         right: 0;
         left: initial;
       }
     }
+
     @media print {
       .lh-header {
         position: static;
         margin-left: 0;
       }
     }
-/*
-    TODO: Enable animating the clouds
+
+    /* TODO: Enable animating the clouds
     .lh-lighthouse__clouds {
       animation: panacross 30s linear infinite;
       animation-play-state: paused;
@@ -372,11 +403,15 @@ limitations under the License.
     .score100 .lh-header-bg {
       background-color: hsl(234, 64%, 19%);
     }
-    .score100 .lh-metadata, .score100 .lh-toolbar__metadata, .score100 .lh-product-info {
-      color: #fff;
+
+    .score100 .lh-metadata,
+    .score100 .lh-toolbar__metadata,
+    .score100 .lh-product-info {
+      color: #FFF;
     }
+
     .score100 .lh-config {
-      color: #eee;
+      color: #EEE;
     }
 
     /* CSS Fireworks. Originally by Eddie Lin
@@ -385,23 +420,27 @@ limitations under the License.
     .pyro {
       display: none;
     }
+
     .score100 .pyro {
       display: block;
     }
+
     .score100 .lh-lighthouse stop:first-child {
       stop-color: hsla(200, 12%, 95%, 0);
     }
+
     .score100 .lh-lighthouse stop:last-child {
       stop-color: hsla(65, 81%, 76%, 1);
     }
 
-    .pyro > .before, .pyro > .after {
+    .pyro > .before,
+    .pyro > .after {
       position: absolute;
       width: 5px;
       height: 5px;
       border-radius: 2.5px;
-      box-shadow: 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff, 0 0 #fff;
-      animation: 1s bang ease-out infinite backwards,  1s gravity ease-in infinite backwards,  5s position linear infinite backwards;
+      box-shadow: 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF, 0 0 #FFF;
+      animation: 1s bang ease-out infinite backwards, 1s gravity ease-in infinite backwards, 5s position linear infinite backwards;
       animation-delay: 1s, 1s, 1s;
     }
 
@@ -409,39 +448,51 @@ limitations under the License.
       animation-delay: 2.25s, 2.25s, 2.25s;
       animation-duration: 1.25s, 1.25s, 6.25s;
     }
+
     .fireworks-paused .pyro > div {
       animation-play-state: paused;
     }
 
     @keyframes bang {
       to {
-        box-shadow: -70px -115.67px #47ebbc, -28px -99.67px #eb47a4, 58px -31.67px #7eeb47, 13px -141.67px #eb47c5, -19px 6.33px #7347eb, -2px -74.67px #ebd247, 24px -151.67px #eb47e0, 57px -138.67px #b4eb47, -51px -104.67px #479eeb, 62px 8.33px #ebcf47, -93px 0.33px #d547eb, -16px -118.67px #47bfeb, 53px -84.67px #47eb83, 66px -57.67px #eb47bf, -93px -65.67px #91eb47, 30px -13.67px #86eb47, -2px -59.67px #83eb47, -44px 1.33px #eb47eb, 61px -58.67px #47eb73, 5px -22.67px #47e8eb, -66px -28.67px #ebe247, 42px -123.67px #eb5547, -75px 26.33px #7beb47, 15px -52.67px #a147eb, 36px -51.67px #eb8347, -38px -12.67px #eb5547, -46px -59.67px #47eb81, 78px -114.67px #eb47ba, 15px -156.67px #eb47bf, -36px 1.33px #eb4783, -72px -86.67px #eba147, 31px -46.67px #ebe247, -68px 29.33px #47e2eb, -55px 19.33px #ebe047, -56px 27.33px #4776eb, -13px -91.67px #eb5547, -47px -138.67px #47ebc7, -18px -96.67px #eb47ac, 11px -88.67px #4783eb, -67px -28.67px #47baeb, 53px 10.33px #ba47eb, 11px 19.33px #5247eb, -5px -11.67px #eb4791, -68px -4.67px #47eba7, 95px -37.67px #eb478b, -67px -162.67px #eb5d47, -54px -120.67px #eb6847, 49px -12.67px #ebe047, 88px 8.33px #47ebda, 97px 33.33px #eb8147, 6px -71.67px #ebbc47;
+        box-shadow: -70px -115.67px #47EBBC, -28px -99.67px #EB47A4, 58px -31.67px #7EEB47, 13px -141.67px #EB47C5, -19px 6.33px #7347EB, -2px -74.67px #EBD247, 24px -151.67px #EB47E0, 57px -138.67px #B4EB47, -51px -104.67px #479EEB, 62px 8.33px #EBCF47, -93px 0.33px #D547EB, -16px -118.67px #47BFEB, 53px -84.67px #47EB83, 66px -57.67px #EB47BF, -93px -65.67px #91EB47, 30px -13.67px #86EB47, -2px -59.67px #83EB47, -44px 1.33px #EB47EB, 61px -58.67px #47EB73, 5px -22.67px #47E8EB, -66px -28.67px #EBE247, 42px -123.67px #EB5547, -75px 26.33px #7BEB47, 15px -52.67px #A147EB, 36px -51.67px #EB8347, -38px -12.67px #EB5547, -46px -59.67px #47EB81, 78px -114.67px #EB47BA, 15px -156.67px #EB47BF, -36px 1.33px #EB4783, -72px -86.67px #EBA147, 31px -46.67px #EBE247, -68px 29.33px #47E2EB, -55px 19.33px #EBE047, -56px 27.33px #4776EB, -13px -91.67px #EB5547, -47px -138.67px #47EBC7, -18px -96.67px #EB47AC, 11px -88.67px #4783EB, -67px -28.67px #47BAEB, 53px 10.33px #BA47EB, 11px 19.33px #5247EB, -5px -11.67px #EB4791, -68px -4.67px #47EBA7, 95px -37.67px #EB478B, -67px -162.67px #EB5D47, -54px -120.67px #EB6847, 49px -12.67px #EBE047, 88px 8.33px #47EBDA, 97px 33.33px #EB8147, 6px -71.67px #EBBC47;
       }
     }
+
     @keyframes gravity {
       to {
         transform: translateY(80px);
         opacity: 0;
       }
     }
+
     @keyframes position {
-      0%, 19.9% {
+      0%,
+      19.9% {
         margin-top: 4%;
         margin-left: 47%;
       }
-      20%, 39.9% {
+
+      20%,
+      39.9% {
         margin-top: 7%;
         margin-left: 30%;
       }
-      40%, 59.9% {
+
+      40%,
+      59.9% {
         margin-top: 6%;
         margin-left: 70%;
       }
-      60%, 79.9% {
+
+      60%,
+      79.9% {
         margin-top: 3%;
         margin-left: 20%;
       }
-      80%, 99.9% {
+
+      80%,
+      99.9% {
         margin-top: 3%;
         margin-left: 80%;
       }
@@ -453,7 +504,7 @@ limitations under the License.
       <div class="after"></div>
     </div>
   </div>
-  
+
 
   <div class="lh-header-container">
     <div class="lh-header">
@@ -461,7 +512,7 @@ limitations under the License.
         <svg width="217" height="148" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <defs>
             <mask id="a" x="-56" y="-54" width="284" height="202" maskUnits="userSpaceOnUse">
-              <path d="M-56-54h284v202H-56z" fill="#fff"></path>
+              <path d="M-56-54h284v202H-56z" fill="#FFF"></path>
             </mask>
             <linearGradient id="b" x1="-525.16" y1="560.08" x2="-524.23" y2="560.08" gradientTransform="matrix(91 0 0 -77 47797 43181)" gradientUnits="userSpaceOnUse">
               <stop offset="0" stop-color="#FFFFFF00"/>
@@ -472,7 +523,7 @@ limitations under the License.
             <!-- lighthouse building elements -->
             <path d="M95 47h24v2H95z" fill="#ec5548"/>
             <path d="M95 59h24v7H95z" fill="#ec5548"/>
-            <path d="M97.63 66h19.74l2.63 47H95z" fill="#fff"/>
+            <path d="M97.63 66h19.74l2.63 47H95z" fill="#FFF"/>
             <path d="M107 38a10 10 0 0 1 10 10v1H97v-1a10 10 0 0 1 10-10zM96.77 82.23l21-10.7.63 11.87-22.31 11.87zM95 110.8L119.1 98l.9 14H95z" fill="#ec5548"/>
             <path d="M0 148a177.58 177.58 0 0 1 217 0z" fill="#e8eaed"/>
             <!-- lighthouse beam elements -->
@@ -481,7 +532,7 @@ limitations under the License.
             <path d="M7 16l91 33.18v10L7 93z" fill="url(#b)"/>
           </g>
           <g mask="url(#a)" class="lh-lighthouse__clouds">
-            <path d="M60 .19A9.77 9.77 0 0 1 61.93 0a9.44 9.44 0 0 1 9.24 7.83A7.24 7.24 0 0 1 79 14.45v.73A7.37 7.37 0 0 1 76.2 21h-31a7.44 7.44 0 0 1-1.2-4.09 7.31 7.31 0 0 1 7.26-7.36 6.84 6.84 0 0 1 1.28.1v-.11A9.51 9.51 0 0 1 60 .19m79.78 22.31h-17.9a4.37 4.37 0 0 1-.63-2.25 4.2 4.2 0 0 1 4.16-4.25 4.37 4.37 0 0 1 .72.06V16a5.35 5.35 0 0 1 10.64-1h.33a4.2 4.2 0 0 1 4.15 4.25 4.29 4.29 0 0 1-1.47 3.25zM163 62h-24.15a5.1 5.1 0 0 1-.85-2.81 5.65 5.65 0 0 1 6.59-5.19v-.08a7.07 7.07 0 0 1 7.24-6.92 7.15 7.15 0 0 1 7.17 5.64h.44a5.46 5.46 0 0 1 5.6 5.32A5.19 5.19 0 0 1 163 62z" fill="#fff"/>
+            <path d="M60 .19A9.77 9.77 0 0 1 61.93 0a9.44 9.44 0 0 1 9.24 7.83A7.24 7.24 0 0 1 79 14.45v.73A7.37 7.37 0 0 1 76.2 21h-31a7.44 7.44 0 0 1-1.2-4.09 7.31 7.31 0 0 1 7.26-7.36 6.84 6.84 0 0 1 1.28.1v-.11A9.51 9.51 0 0 1 60 .19m79.78 22.31h-17.9a4.37 4.37 0 0 1-.63-2.25 4.2 4.2 0 0 1 4.16-4.25 4.37 4.37 0 0 1 .72.06V16a5.35 5.35 0 0 1 10.64-1h.33a4.2 4.2 0 0 1 4.15 4.25 4.29 4.29 0 0 1-1.47 3.25zM163 62h-24.15a5.1 5.1 0 0 1-.85-2.81 5.65 5.65 0 0 1 6.59-5.19v-.08a7.07 7.07 0 0 1 7.24-6.92 7.15 7.15 0 0 1 7.17 5.64h.44a5.46 5.46 0 0 1 5.6 5.32A5.19 5.19 0 0 1 163 62z" fill="#FFF"/>
           </g>
         </svg>
       </div>
@@ -523,6 +574,7 @@ limitations under the License.
         <a href="#" class="report-icon report-icon--open lh-export--gist" data-action="save-gist">Save as Gist</a>
       </div>
     </div>
+  </div>
 </template>
 
 
@@ -534,21 +586,26 @@ limitations under the License.
       border-top: 1px solid var(--report-secondary-border-color);
       padding: var(--section-indent) calc(var(--default-padding) * 2);
     }
+
     .lh-footer .lh-generated {
       text-align: center;
       border-top: 1px solid var(--report-border-color);
       padding-top: var(--default-padding);
     }
+
     .lh-env {
       padding: var(--default-padding) 0;
     }
+
     .lh-env__items {
       padding-left: 16px;
     }
+
     span.lh-env__name {
       font-weight: bold;
       color: var(--secondary-text-color);
     }
+
     span.lh-env__description {
       font-family: var(--monospace-font-family);
       font-size: var(--caption-font-size);
@@ -585,45 +642,61 @@ limitations under the License.
       --circle-border-width: 9;
       --inset-size: calc(var(--circle-size) - 2 * var(--circle-border-width));
       --transition-length: 1s;
+
+      display: inline-flex;
+      align-items: center;
+      flex-direction: column;
+      text-decoration: none;
+      flex: 1;
+      min-width: auto;
+      position: relative;
+
+      /* Contain the layout style paint & layers during animation */
+      contain: content;
+      will-change: opacity; /* Only using for layer promotion */
     }
 
     .lh-gauge__wrapper--pass,
     .lh-gauge__wrapper--pass .lh-gauge {
       --circle-color: var(--pass-color);
+
       color: var(--circle-color);
     }
 
     .lh-gauge__wrapper--average,
     .lh-gauge__wrapper--average .lh-gauge {
       --circle-color: var(--average-color);
+
       color: var(--circle-color);
     }
 
     .lh-gauge__wrapper--fail,
     .lh-gauge__wrapper--fail .lh-gauge {
       --circle-color: var(--fail-color);
+
       color: var(--circle-color);
     }
 
     .lh-gauge {
-        max-width: 360px;
-        max-height: 360px;
-        stroke-linecap: round;
-        width: var(--circle-size);
-        height: var(--circle-size);
+      max-width: 360px;
+      max-height: 360px;
+      stroke-linecap: round;
+      width: var(--circle-size);
+      height: var(--circle-size);
     }
 
     .lh-gauge-base {
-        fill: none;
-        stroke: var(--circle-background);
-        stroke-width: var(--circle-border-width);
+      fill: none;
+      stroke: var(--circle-background);
+      stroke-width: var(--circle-border-width);
     }
+
     .lh-gauge-arc {
-        fill: none;
-        stroke: var(--circle-color);
-        stroke-width: var(--circle-border-width);
-        animation: load-gauge var(--transition-length) ease forwards;
-        animation-delay: 250ms;
+      fill: none;
+      stroke: var(--circle-color);
+      stroke-width: var(--circle-border-width);
+      animation: load-gauge var(--transition-length) ease forwards;
+      animation-delay: 250ms;
     }
 
     @keyframes load-gauge {
@@ -632,6 +705,7 @@ limitations under the License.
 
     .lh-gauge__percentage {
       --spacer: calc((var(--circle-size) - var(--inset-size)) / 2);
+
       width: 100%;
       height: var(--inset-size);
       position: absolute;
@@ -642,20 +716,6 @@ limitations under the License.
       top: calc(var(--circle-size) / 3);
     }
 
-    .lh-gauge__wrapper {
-      display: inline-flex;
-      align-items: center;
-      flex-direction: column;
-      text-decoration: none;
-      flex: 1;
-      min-width: auto;
-      position: relative;
-
-      /* Contain the layout style paint & layers during animation*/
-      contain: content;
-      will-change: opacity; /* Only using for layer promotion */
-    }
-
     .lh-gauge__label {
       font-size: var(--body-font-size);
       line-height: var(--body-line-height);
@@ -663,7 +723,6 @@ limitations under the License.
       text-align: center;
       color: black;
     }
-
   </style>
   <a href="#" class="lh-gauge__wrapper">
     <svg viewBox="0 0 120 120" class="lh-gauge" fill="none" stroke-width="2">
@@ -688,14 +747,18 @@ limitations under the License.
       min-width: auto;
       position: relative;
     }
+
     .lh-gauge--pwa {
       width: var(--circle-size);
       height: var(--circle-size);
     }
+
     .lh-gauge--pwa .lh-gauge--pwa__component {
       display: none;
     }
+
     .lh-gauge--pwa__wrapper:not(.lh-badged--all) .lh-gauge--pwa__logo > path {
+
       /* Gray logo unless everything is passing. */
       fill: #B0B0B0;
     }
@@ -704,6 +767,7 @@ limitations under the License.
     .lh-gauge--pwa__wrapper:not([class*='lh-badged--']) .lh-gauge--pwa__na-line {
       display: inline;
     }
+
     /* Just optimized. Same n/a line as no passing groups. */
     .lh-gauge--pwa__wrapper.lh-badged--pwa-optimized .lh-gauge--pwa__na-line {
       display: inline;
@@ -827,44 +891,56 @@ limitations under the License.
         float: left;
         background-position: top left;
       }
+
       .lh-crc .horiz-down {
         background: url('data:image/svg+xml;utf8,<svg width="16" height="26" viewBox="0 0 16 26" xmlns="http://www.w3.org/2000/svg"><g fill="%23D8D8D8" fill-rule="evenodd"><path d="M16 12v2H-2v-2z"/><path d="M9 12v14H7V12z"/></g></svg>');
       }
+
       .lh-crc .right {
         background: url('data:image/svg+xml;utf8,<svg width="16" height="26" viewBox="0 0 16 26" xmlns="http://www.w3.org/2000/svg"><path d="M16 12v2H0v-2z" fill="%23D8D8D8" fill-rule="evenodd"/></svg>');
       }
+
       .lh-crc .up-right {
         background: url('data:image/svg+xml;utf8,<svg width="16" height="26" viewBox="0 0 16 26" xmlns="http://www.w3.org/2000/svg"><path d="M7 0h2v14H7zm2 12h7v2H9z" fill="%23D8D8D8" fill-rule="evenodd"/></svg>');
       }
+
       .lh-crc .vert-right {
         background: url('data:image/svg+xml;utf8,<svg width="16" height="26" viewBox="0 0 16 26" xmlns="http://www.w3.org/2000/svg"><path d="M7 0h2v27H7zm2 12h7v2H9z" fill="%23D8D8D8" fill-rule="evenodd"/></svg>');
       }
+
       .lh-crc .vert {
         background: url('data:image/svg+xml;utf8,<svg width="16" height="26" viewBox="0 0 16 26" xmlns="http://www.w3.org/2000/svg"><path d="M7 0h2v26H7z" fill="%23D8D8D8" fill-rule="evenodd"/></svg>');
       }
+
       .lh-crc .crc-tree {
         font-size: 14px;
         width: 100%;
         overflow-x: auto;
       }
+
       .lh-crc .crc-node {
         height: 26px;
         line-height: 26px;
         white-space: nowrap;
       }
+
       .lh-crc .crc-node__tree-value {
         margin-left: 10px;
       }
+
       .lh-crc .crc-node__chain-duration {
         font-weight: 700;
       }
+
       .lh-crc .crc-node__tree-hostname {
         color: #595959;
       }
+
       .lh-crc .crc-initial-nav {
         color: #595959;
         font-style: italic;
       }
+
       .lh-crc__summary-value {
         margin-bottom: 10px;
       }
@@ -896,138 +972,151 @@ limitations under the License.
 
 <!-- Lighthouse snippet component -->
 <template id="tmpl-lh-snippet">
-    <div class="lh-snippet">
-      <style>
-          :root {
-            --snippet-highlight-light: #fbf1f2;
-            --snippet-highlight-dark: #ffd6d8;
-          }
-          
-         .lh-snippet__header {
-          position: relative;
-          overflow: hidden;
-          padding: 10px;
-          border-bottom: none;
-          color: var(--subheader-color);
-          background: var(--medium-50-gray);
-          border: 1px solid var(--report-secondary-border-color);
-        }
-        .lh-snippet__title {
-          font-weight: bold;
-          float: left;
-        }
-        .lh-snippet__node {
-          float: left;
-          margin-left: 4px;
-        }
-        .lh-snippet__toggle-expand {
-          padding: 1px 7px;
-          margin-top: -1px;
-          margin-right: -7px;
-          float: right;
-          background: transparent;
-          border: none;
-          cursor: pointer;
-          font-size: 14px;
-          color: #0c50c7;
-        }
+  <div class="lh-snippet">
+    <style>
+      :root {
+        --snippet-highlight-light: #FBF1F2;
+        --snippet-highlight-dark: #FFD6D8;
+      }
 
-        .lh-snippet__snippet {
-          overflow: auto;
-          border: 1px solid var(--report-secondary-border-color);
-        }
-        /* Container needed so that all children grow to the width of the scroll container */
-        .lh-snippet__snippet-inner {
-          display: inline-block;
-          min-width: 100%;
-        }
+      .lh-snippet__header {
+        position: relative;
+        overflow: hidden;
+        padding: 10px;
+        border-bottom: none;
+        color: var(--subheader-color);
+        background: var(--medium-50-gray);
+        border: 1px solid var(--report-secondary-border-color);
+      }
 
-        .lh-snippet:not(.lh-snippet--expanded) .lh-snippet__show-if-expanded {
-          display: none;
-        }
-        .lh-snippet.lh-snippet--expanded .lh-snippet__show-if-collapsed {
-          display: none;
-        }
+      .lh-snippet__title {
+        font-weight: bold;
+        float: left;
+      }
 
-        .lh-snippet__line {
-          background: white;
-          white-space: pre;
-          display: flex;
-        }        
-        .lh-snippet__line:not(.lh-snippet__line--message):first-child {
-          padding-top: 4px;
-        }
-        .lh-snippet__line:not(.lh-snippet__line--message):last-child {
-          padding-bottom: 4px;
-        }
-        .lh-snippet__line--content-highlighted {
-          background: var(--snippet-highlight-dark);
-        }
-        .lh-snippet__line--message {
-          background: var(--snippet-highlight-light);
-        }
-        .lh-snippet__line--message .lh-snippet__line-number {
-          padding-top: 10px;
-          padding-bottom: 10px;
-        }
-        .lh-snippet__line--message code {
-          padding: 10px;
-          padding-left: 5px;
-          color: var(--fail-color);
-          font-family: var(--text-font-family);
-        }
-        .lh-snippet__line--message code {
-          white-space: normal;
-        }
-        .lh-snippet__line-icon {
-          padding-top: 10px;
-          display: none;
-        }
-        .lh-snippet__line--message .lh-snippet__line-icon {
-          display: block;
-        }
-        .lh-snippet__line-icon:before {
-          content: "";
-          display: inline-block;
-          vertical-align: middle;
-          margin-right: 4px;
-          width: var(--lh-score-icon-width);
-          height: var(--lh-score-icon-width);
-          background-image: var(--fail-icon-url);
-        }
-        .lh-snippet__line-number {
-          flex-shrink: 0;
-          width: 40px;
-          text-align: right;
-          font-family: monospace;
-          padding-right: 5px;
-          margin-right: 5px;
-          color: var(--medium-75-gray);
-          user-select: none;
-        }
-      </style>
-      <template id="tmpl-lh-snippet__header">
-        <div class="lh-snippet__header">
-          <div class="lh-snippet__title"></div>
-          <div class="lh-snippet__node"></div>
-          <button class="lh-snippet__toggle-expand">
-            <span class="lh-snippet__btn-label-collapse lh-snippet__show-if-expanded"></span>
-            <span class="lh-snippet__btn-label-expand lh-snippet__show-if-collapsed"></span>
-          </button>
-        </div>
-      </template>
-      <template id="tmpl-lh-snippet__content">
-        <div class="lh-snippet__snippet">
-          <div class="lh-snippet__snippet-inner"></div>
-        </div>
-      </template>
-      <template id="tmpl-lh-snippet__line">
-          <div class="lh-snippet__line">
-            <div class="lh-snippet__line-number"></div>
-            <div class="lh-snippet__line-icon"></div>
-            <code></code>
-          </div>
-        </template>   
-    </div>
-  </template>
-  
+      .lh-snippet__node {
+        float: left;
+        margin-left: 4px;
+      }
+
+      .lh-snippet__toggle-expand {
+        padding: 1px 7px;
+        margin-top: -1px;
+        margin-right: -7px;
+        float: right;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        color: #0C50C7;
+      }
+
+      .lh-snippet__snippet {
+        overflow: auto;
+        border: 1px solid var(--report-secondary-border-color);
+      }
+
+      /* Container needed so that all children grow to the width of the scroll container */
+      .lh-snippet__snippet-inner {
+        display: inline-block;
+        min-width: 100%;
+      }
+
+      .lh-snippet:not(.lh-snippet--expanded) .lh-snippet__show-if-expanded {
+        display: none;
+      }
+
+      .lh-snippet.lh-snippet--expanded .lh-snippet__show-if-collapsed {
+        display: none;
+      }
+
+      .lh-snippet__line {
+        background: white;
+        white-space: pre;
+        display: flex;
+      }
+
+      .lh-snippet__line:not(.lh-snippet__line--message):first-child {
+        padding-top: 4px;
+      }
+
+      .lh-snippet__line:not(.lh-snippet__line--message):last-child {
+        padding-bottom: 4px;
+      }
+
+      .lh-snippet__line--content-highlighted {
+        background: var(--snippet-highlight-dark);
+      }
+
+      .lh-snippet__line--message {
+        background: var(--snippet-highlight-light);
+      }
+
+      .lh-snippet__line--message .lh-snippet__line-number {
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+
+      .lh-snippet__line--message code {
+        padding: 10px;
+        padding-left: 5px;
+        color: var(--fail-color);
+        font-family: var(--text-font-family);
+        white-space: normal;
+      }
+
+      .lh-snippet__line-icon {
+        padding-top: 10px;
+        display: none;
+      }
+
+      .lh-snippet__line--message .lh-snippet__line-icon {
+        display: block;
+      }
+
+      .lh-snippet__line-icon::before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 4px;
+        width: var(--lh-score-icon-width);
+        height: var(--lh-score-icon-width);
+        background-image: var(--fail-icon-url);
+      }
+
+      .lh-snippet__line-number {
+        flex-shrink: 0;
+        width: 40px;
+        text-align: right;
+        font-family: monospace;
+        padding-right: 5px;
+        margin-right: 5px;
+        color: var(--medium-75-gray);
+        user-select: none;
+      }
+    </style>
+    <template id="tmpl-lh-snippet__header">
+      <div class="lh-snippet__header">
+        <div class="lh-snippet__title"></div>
+        <div class="lh-snippet__node"></div>
+        <button class="lh-snippet__toggle-expand">
+          <span class="lh-snippet__btn-label-collapse lh-snippet__show-if-expanded"></span>
+          <span class="lh-snippet__btn-label-expand lh-snippet__show-if-collapsed"></span>
+        </button>
+      </div>
+    </template>
+    <template id="tmpl-lh-snippet__content">
+      <div class="lh-snippet__snippet">
+        <div class="lh-snippet__snippet-inner"></div>
+      </div>
+    </template>
+    <template id="tmpl-lh-snippet__line">
+      <div class="lh-snippet__line">
+        <div class="lh-snippet__line-number"></div>
+        <div class="lh-snippet__line-icon"></div>
+        <code></code>
+      </div>
+    </template>
+  </div>
+</template>
+

@@ -9,7 +9,7 @@
 }
 
 :root {
-  --lh-background-color: #304ffe;
+  --lh-background-color: #304FFE;
 }
 
 .drop_zone {
@@ -22,13 +22,18 @@
   right: 0;
   bottom: 0;
   visibility: hidden;
+
+  /* app z-indexes */
+  z-index: 3;
 }
+
 .drop_zone.dropping {
   visibility: visible;
   font-size: var(--heading-font-size);
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(255, 255, 255, 0.8);
   color: var(--unknown-color);
 }
+
 .drop_zone.dropping::after {
   content: 'Drop report here';
   border: 2px dashed currentColor;
@@ -40,8 +45,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fff;
+  background-color: #FFF;
 }
+
 .viewer-placeholder {
   height: 100vh;
   display: flex;
@@ -50,38 +56,45 @@
   color: #555;
   font-weight: 300;
 }
+
 .viewer-placeholder-inner {
   display: flex;
   align-items: center;
   border-radius: 5px;
   padding: 16px;
   max-width: 80vw;
-  border: 2px dashed rgba(0,0,0,0.2);
+  border: 2px dashed rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  background-color: #fff;
+  background-color: #FFF;
 }
+
 .viewer-placeholder-inner.dropping {
   border-color: currentColor;
 }
+
 .viewer-placeholder__heading {
   font-weight: 300;
   margin: 0;
 }
+
 .viewer-placeholder__help {
   margin-top: 12px;
   line-height: 1.6;
 }
+
 .viewer-placeholder-logo {
   width: 140px;
   height: 140px;
 }
+
 .viewer-placeholder__url {
   padding: 8px;
   width: 100%;
-  border: 1px solid #eee;
+  border: 1px solid #EEE;
   margin-top: 16px;
   display: none;
 }
+
 .share:disabled {
   opacity: 0.2;
   cursor: default;
@@ -92,10 +105,12 @@
     display: block;
     text-align: center;
   }
+
   .viewer-placeholder-logo {
     width: 100px;
     height: 100px;
   }
+
   .viewer-placeholder__url {
     display: block;
   }
@@ -105,14 +120,10 @@
   .viewer-placeholder-inner {
     padding: 40px 32px;
   }
+
   .viewer-placeholder-logo {
     margin-right: 16px;
   }
-}
-
-/* app z-indexes */
-.drop_zone {
-  z-index: 3;
 }
 
 /* open-in-viewer option hidden in Viewer */
