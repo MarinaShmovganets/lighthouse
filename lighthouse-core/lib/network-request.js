@@ -428,27 +428,25 @@ class NetworkRequest {
       return;
     }
 
-    // Init blank timing if needed.
-    if (this.timing === undefined) {
-      this.timing = {
-        requestTime: this.startTime,
-        proxyStart: -1,
-        proxyEnd: -1,
-        dnsStart: -1,
-        dnsEnd: -1,
-        connectStart: -1,
-        connectEnd: -1,
-        sslStart: -1,
-        sslEnd: -1,
-        workerStart: -1,
-        workerReady: -1,
-        sendStart: -1,
-        sendEnd: -1,
-        pushStart: -1,
-        pushEnd: -1,
-        receiveHeadersEnd: -1,
-      };
-    }
+    // Init timing.
+    this.timing = {
+      requestTime: this.startTime,
+      proxyStart: -1,
+      proxyEnd: -1,
+      dnsStart: -1,
+      dnsEnd: -1,
+      connectStart: -1,
+      connectEnd: -1,
+      sslStart: -1,
+      sslEnd: -1,
+      workerStart: -1,
+      workerReady: -1,
+      sendStart: -1,
+      sendEnd: -1,
+      pushStart: -1,
+      pushEnd: -1,
+      receiveHeadersEnd: -1,
+    };
 
     const origEnd = this.endTime;
     // `this.endTime` and `this.responseReceivedTime` are in seconds, so convert from milliseconds.
