@@ -122,8 +122,8 @@ function makeComparison(name, actualResult, expectedResult) {
 
 /**
  * Collate results into comparisons of actual and expected scores on each audit/artifact.
- * @param {Smokehouse.ExpectedRunResult} actual
- * @param {Smokehouse.ExpectedRunResult} expected
+ * @param {Smokehouse.ExpectedRunnerResult} actual
+ * @param {Smokehouse.ExpectedRunnerResult} expected
  * @return {Smokehouse.Comparison[]}
  */
 function collateResults(actual, expected) {

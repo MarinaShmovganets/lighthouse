@@ -43,7 +43,7 @@ function resolveLocalOrCwd(payloadPath) {
  * @param {string} url
  * @param {string} configPath
  * @param {boolean=} isDebug
- * @return {Smokehouse.ExpectedRunResult}
+ * @return {Smokehouse.ExpectedRunnerResult}
  */
 function runLighthouse(url, configPath, isDebug) {
   isDebug = isDebug || Boolean(process.env.LH_SMOKE_DEBUG);
@@ -136,7 +136,7 @@ const cli = yargs
   .argv;
 
 const configPath = resolveLocalOrCwd(cli['config-path']);
-/** @type {Smokehouse.ExpectedRunResult[]} */
+/** @type {Smokehouse.ExpectedRunnerResult[]} */
 const expectations = require(resolveLocalOrCwd(cli['expectations-path']));
 
 // Loop sequentially over expectations, comparing against Lighthouse run, and

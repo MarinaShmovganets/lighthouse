@@ -21,7 +21,7 @@
 
   export type ExpectedLHR = Pick<LH.Result, 'audits' | 'finalUrl' | 'requestedUrl'>
 
-  export type ExpectedRunResult = {
+  export type ExpectedRunnerResult = {
     errorCode?: string;
     lhr: ExpectedLHR,
     artifacts?: Partial<LH.Artifacts>
