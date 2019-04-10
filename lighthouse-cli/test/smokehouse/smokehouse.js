@@ -117,7 +117,7 @@ function runLighthouse(url, configPath, isDebug) {
   }
 
   const artifacts = JSON.parse(
-    fs.readFileSync(`${artifactsDirectory}/artifacts.json`).toString());
+    fs.readFileSync(`${artifactsDirectory}/artifacts.json`, 'utf8'));
 
   return {
     errorCode,
