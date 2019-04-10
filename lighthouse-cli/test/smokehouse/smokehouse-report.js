@@ -103,7 +103,7 @@ function findDifference(path, actual, expected) {
 }
 
 /**
- * @param {string} name – description of what's being asserted on (e.g. the result of a certain audit)
+ * @param {string} name – name of the value being asserted on (e.g. the result of a certain audit)
  * @param {any} actualResult
  * @param {any} expectedResult
  * @return {Smokehouse.Comparison}
@@ -112,7 +112,7 @@ function makeComparison(name, actualResult, expectedResult) {
   const diff = findDifference(name, actualResult, expectedResult);
 
   return {
-    category: name,
+    name,
     actual: actualResult,
     expected: expectedResult,
     equal: !diff,
@@ -156,13 +156,13 @@ function collateResults(actual, expected) {
 
   return [
     {
-      category: 'error code',
+      name: 'error code',
       actual: actual.errorCode,
       expected: expected.errorCode,
       equal: actual.errorCode === expected.errorCode,
     },
     {
-      category: 'final url',
+      name: 'final url',
       actual: actual.lhr.finalUrl,
       expected: expected.lhr.finalUrl,
       equal: actual.lhr.finalUrl === expected.lhr.finalUrl,
@@ -192,9 +192,9 @@ function reportAssertion(assertion) {
 
   if (assertion.equal) {
     if (isPlainObject(assertion.actual)) {
-      console.log(`  ${log.greenify(log.tick)} ${assertion.category}`);
+      console.log(`  ${log.greenify(log.tick)} ${assertion.name}`);
     } else {
-      console.log(`  ${log.greenify(log.tick)} ${assertion.category}: ` +
+      console.log(`  ${log.greenify(log.tick)} ${assertion.name}: ` +
           log.greenify(assertion.actual));
     }
   } else {
@@ -211,7 +211,7 @@ function reportAssertion(assertion) {
 `;
       console.log(msg);
     } else {
-      console.log(`  ${log.redify(log.cross)} ${assertion.category}:
+      console.log(`  ${log.redify(log.cross)} ${assertion.name}:
               expected: ${JSON.stringify(assertion.expected)}
                  found: ${JSON.stringify(assertion.actual)}
 `);

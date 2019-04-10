@@ -12,7 +12,7 @@
   }
 
   export interface Comparison {
-    category: string;
+    name: string;
     actual: any;
     expected: any;
     equal: boolean;
