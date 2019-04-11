@@ -17,12 +17,13 @@ const fs = require('fs');
 const libDetectorSource = fs.readFileSync(
   require.resolve('js-library-detector/library/libraries.js'), 'utf8');
 
+/** @typedef {false | {version: string|null}} JSLibraryDetectorTestResult */
 /**
  * @typedef JSLibraryDetectorTest
  * @property {string} icon Essentially an id, useful if no npm name is detected.
  * @property {string} url
  * @property {string|null} npm npm module name, if applicable to library.
- * @property {function(Window): false|{version: string|null} | Promise<false|{version: string|null}>} test Returns false if library is not present, otherwise returns an object that contains the library version (set to null if the version is not detected).
+ * @property {function(Window): JSLibraryDetectorTestResult | Promise<JSLibraryDetectorTestResult>} test Returns false if library is not present, otherwise returns an object that contains the library version (set to null if the version is not detected).
  */
 
 /**
@@ -47,7 +48,7 @@ async function detectLibraries() {
   // @ts-ignore - injected libDetectorSource var
   const libraryDetectorTests = d41d8cd98f00b204e9800998ecf8427e_LibraryDetectorTests; // eslint-disable-line 
 
-  for await (const [name, lib] of Object.entries(libraryDetectorTests)) {
+  for (const [name, lib] of Object.entries(libraryDetectorTests)) {
     try {
       const result = await lib.test(window);
       if (result) {

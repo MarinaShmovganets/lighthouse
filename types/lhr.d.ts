@@ -114,7 +114,7 @@ declare global {
         title: string;
         /** A base64 data url to be used as the stack pack's icon. */
         iconDataURL: string;
-        /** A set of descriptions for some of Lighthouse's audits, keyed by the audits' `id`. */
+        /** A set of descriptions for some of Lighthouse's audits, keyed by audit `id`. */
         descriptions: Record<string, string>;
       }
     }
