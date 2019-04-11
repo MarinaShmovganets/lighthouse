@@ -130,14 +130,15 @@ function collateResults(actual, expected) {
   /** @type {Smokehouse.Comparison[]} */
   let artifactAssertions = [];
   if (expected.artifacts) {
-    const artifactNames = /** @type {(keyof LH.Artifacts)[]} */ (Object.keys(expected.artifacts));
+    const expectedArtifacts = expected.artifacts;
+    const artifactNames = /** @type {(keyof LH.Artifacts)[]} */ (Object.keys(expectedArtifacts));
     artifactAssertions = artifactNames.map(artifactName => {
       const actualResult = (actual.artifacts || {})[artifactName];
       if (!actualResult) {
         throw new Error(`Config run did not generate artifact ${artifactName}`);
       }
 
-      const expectedResult = (expected.artifacts || {})[artifactName];
+      const expectedResult = expectedArtifacts[artifactName];
       return makeComparison(artifactName + ' artifact', actualResult, expectedResult);
     });
   }
