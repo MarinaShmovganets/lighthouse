@@ -29,7 +29,7 @@ class CriticalRequestChains {
     }
 
     // Whenever a request is a redirect not all props are filled in correctly (resourceType is undefined)
-    // so we loop until we find the final request so we use the correct data #6675
+    // so we loop until we find the final request so we use the correct data https://github.com/GoogleChrome/lighthouse/issues/6675
     while (request.redirectDestination) {
       request = request.redirectDestination;
     }

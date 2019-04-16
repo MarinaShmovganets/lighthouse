@@ -342,7 +342,7 @@ describe('CriticalRequestChain gatherer: extractChain function', () => {
     networkRecords[2].mimeType = 'text/html';
     networkRecords[2].resourceType = NetworkRequest.TYPES.Document;
     networkRecords[2].frameId = '3';
-    // 4rd record is an iframe in the page with a redirect #6675
+    // 4rd record is an iframe in the page with a redirect https://github.com/GoogleChrome/lighthouse/issues/6675
     networkRecords[3].url = 'https://example.com/redirect-iframe';
     networkRecords[3].resourceType = undefined;
     networkRecords[3].statusCode = 302;
