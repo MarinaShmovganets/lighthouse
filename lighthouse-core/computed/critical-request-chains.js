@@ -28,8 +28,10 @@ class CriticalRequestChains {
       return false;
     }
 
-    // Whenever a request is a redirect not all props are filled in correctly (resourceType is undefined)
-    // so we loop until we find the final request so we use the correct data https://github.com/GoogleChrome/lighthouse/issues/6675
+    // Whenever a request is a redirect, we don't know if it's critical until we resolve the final
+    // destination. At that point we can assign all the properties (priority, resourceType) of the
+    // final request back to the redirect(s) that led to it.
+    // See https://github.com/GoogleChrome/lighthouse/pull/6704
     while (request.redirectDestination) {
       request = request.redirectDestination;
     }
