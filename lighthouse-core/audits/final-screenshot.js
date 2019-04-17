@@ -33,21 +33,19 @@ class FinalScreenshot extends Audit {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const traceOfTab = await TraceOfTab.request(trace, context);
     const screenshots = await Screenshots.request(trace, context);
+    const {navigationStart} = traceOfTab.timestamps;
     const finalScreenshot = screenshots[screenshots.length - 1];
 
     if (!finalScreenshot) {
       throw new LHError(LHError.errors.NO_SCREENSHOTS);
     }
 
-    // trace-of-tab uses microseconds for the timestamp, so we'll convert for consistency
-    const finalScreenshotTs = finalScreenshot.timestamp * 1000;
-
     return {
       score: 1,
       details: {
         type: 'screenshot',
-        timing: Math.round((finalScreenshotTs - traceOfTab.timestamps.navigationStart) / 1000),
-        timestamp: finalScreenshotTs,
+        timing: Math.round((finalScreenshot.timestamp - navigationStart) / 1000),
+        timestamp: finalScreenshot.timestamp,
         data: finalScreenshot.datauri,
       },
     };
