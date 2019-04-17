@@ -40,6 +40,8 @@ function runA11yChecks() {
       'area-alt': {enabled: false},
       'blink': {enabled: false},
       'server-side-image-map': {enabled: false},
+      'aria-hidden-focus': {enabled: false},
+      'form-field-multiple-labels': {enabled: false},
     },
     // @ts-ignore
   }).then(axeResult => {
