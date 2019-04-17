@@ -43,7 +43,7 @@ class FinalScreenshot extends Audit {
     const finalScreenshotTs = finalScreenshot.timestamp * 1000;
 
     return {
-      rawValue: true,
+      score: 1,
       details: {
         type: 'screenshot',
         timing: Math.round((finalScreenshotTs - traceOfTab.timestamps.navigationStart) / 1000),
