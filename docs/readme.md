@@ -119,7 +119,7 @@ instance with an open debugging port.
 
 Lighthouse can run against a real mobile device. You can follow the [Remote Debugging on Android (Legacy Workflow)](https://developer.chrome.com/devtools/docs/remote-debugging-legacy) up through step 3.3, but the TL;DR is install & run adb, enable USB debugging, then port forward 9222 from the device to the machine with Lighthouse.
 
-You'll likely want to use the CLI flags `--emulated-form-factor --throttling.cpuSlowdownMultiplier`.
+You'll likely want to use the CLI flags `--emulated-form-factor=none --throttling.cpuSlowdownMultiplier=1` to disable any additional emulation.
 
 ```sh
 $ adb kill-server
