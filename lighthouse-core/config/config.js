@@ -25,7 +25,7 @@ const ConfigPlugin = require('./config-plugin.js');
  * @param {Config['passes']} passes
  * @param {Config['audits']} audits
  */
-function assertValidPasses(passes, audits) {
+function validatePasses(passes, audits) {
   if (!Array.isArray(passes)) {
     return;
   }
@@ -60,7 +60,7 @@ function assertValidPasses(passes, audits) {
  * @param {Config['audits']} audits
  * @param {Config['groups']} groups
  */
-function assertValidCategories(categories, audits, groups) {
+function validateCategories(categories, audits, groups) {
   if (!categories) {
     return;
   }
@@ -96,6 +96,51 @@ function assertValidCategories(categories, audits, groups) {
       }
     });
   });
+}
+
+/**
+ * @param {typeof Audit} auditDefinition
+ * @param {string=} auditPath
+ */
+function assertValidAudit(auditDefinition, auditPath) {
+  const auditName = auditPath ||
+    (auditDefinition && auditDefinition.meta && auditDefinition.meta.id);
+
+  if (typeof auditDefinition.audit !== 'function' || auditDefinition.audit === Audit.audit) {
+    throw new Error(`${auditName} has no audit() method.`);
+  }
+
+  if (typeof auditDefinition.meta.id !== 'string') {
+    throw new Error(`${auditName} has no meta.id property, or the property is not a string.`);
+  }
+
+  if (typeof auditDefinition.meta.title !== 'string') {
+    throw new Error(
+      `${auditName} has no meta.title property, or the property is not a string.`
+    );
+  }
+
+  // If it'll have a ✔ or ✖ displayed alongside the result, it should have failureTitle
+  if (typeof auditDefinition.meta.failureTitle !== 'string' &&
+    auditDefinition.meta.scoreDisplayMode === Audit.SCORING_MODES.BINARY) {
+    throw new Error(`${auditName} has no failureTitle and should.`);
+  }
+
+  if (typeof auditDefinition.meta.description !== 'string') {
+    throw new Error(
+      `${auditName} has no meta.description property, or the property is not a string.`
+    );
+  } else if (auditDefinition.meta.description === '') {
+    throw new Error(
+      `${auditName} has an empty meta.description string. Please add a description for the UI.`
+    );
+  }
+
+  if (!Array.isArray(auditDefinition.meta.requiredArtifacts)) {
+    throw new Error(
+      `${auditName} has no meta.requiredArtifacts property, or the property is not an array.`
+    );
+  }
 }
 
 /**
@@ -339,8 +384,8 @@ class Config {
 
     Config.filterConfigIfNeeded(this);
 
-    assertValidPasses(this.passes, this.audits);
-    assertValidCategories(this.categories, this.audits, this.groups);
+    validatePasses(this.passes, this.audits);
+    validateCategories(this.categories, this.audits, this.groups);
 
     // TODO(bckenny): until tsc adds @implements support, assert that Config is a ConfigJson.
     /** @type {LH.Config.Json} */
