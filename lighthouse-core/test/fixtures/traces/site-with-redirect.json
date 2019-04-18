@@ -145472,7 +145472,7 @@
   ],
   "metadata": {
     "clock-domain": "MAC_MACH_ABSOLUTE_TIME",
-    "command_line": "/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary --disable-translate --disable-extensions --disable-background-networking --safebrowsing-disable-auto-update --disable-sync --metrics-recording-only --disable-default-apps --no-first-run --remote-debugging-port=9222 --user-data-dir=/var/folders/27/4lg910r1093dznwq5z2yq_qw007s90/T/lighthouse.XXXXXXX.JJbMKCU2 --flag-switches-begin --flag-switches-end about:blank",
+    "command_line": "/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary --disable-translate --disable-extensions --disable-background-networking --disable-sync --metrics-recording-only --disable-default-apps --no-first-run --remote-debugging-port=9222 --user-data-dir=/var/folders/27/4lg910r1093dznwq5z2yq_qw007s90/T/lighthouse.XXXXXXX.JJbMKCU2 --flag-switches-begin --flag-switches-end about:blank",
     "cpu-brand": "Intel(R) Core(TM) i7-4980HQ CPU @ 2.80GHz",
     "cpu-family": 6,
     "cpu-model": 70,
