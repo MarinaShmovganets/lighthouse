@@ -81,7 +81,9 @@ class DOM {
    * @param {Document} document
    */
   removeCommentNodes(document) {
-    const walker = document.createTreeWalker(document, 128, null);
+    // NodeFilter is undefined in node context.
+    const NodeFilter_SHOW_COMMENT = 128;
+    const walker = document.createTreeWalker(document, NodeFilter_SHOW_COMMENT, null);
 
     const commentNodes = [];
     let currentNode;
