@@ -82,19 +82,19 @@ class DOM {
    */
   removeCommentNodes(document) {
     // NodeFilter is undefined in node context.
-    const NodeFilter_SHOW_COMMENT = 128;
-    const walker = document.createTreeWalker(document, NodeFilter_SHOW_COMMENT, null);
+    const NodeFilterShowComment = 128;
+    const walker = document.createTreeWalker(document, NodeFilterShowComment, null);
 
+    /** @type {ChildNode[]} */
     const commentNodes = [];
     let currentNode;
     while (currentNode = walker.nextNode()) {
+      // @ts-ignore It's a child.
       commentNodes.push(currentNode);
     }
 
     for (const node of commentNodes) {
-      if (node.parentNode) {
-        node.parentNode.removeChild(node);
-      }
+      node.remove();
     }
   }
 
