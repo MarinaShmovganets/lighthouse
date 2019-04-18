@@ -140,4 +140,11 @@ describe('DOM', () => {
           '<code>more code</code>, and yet event <code>more</code>.');
     });
   });
+
+  it('removeCommentNodes', () => {
+    const node = dom.createElement('div');
+    node.innerHTML = '<div>hello<!-- snip --><div>world<!-- snip --></div></div>';
+    dom.removeCommentNodes(node);
+    assert.equal(node.innerHTML, '<div>hello<div>world</div></div>');
+  });
 });

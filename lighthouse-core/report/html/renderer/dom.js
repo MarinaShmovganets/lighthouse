@@ -78,6 +78,21 @@ class DOM {
   }
 
   /**
+   * @param {Node} node
+   */
+  removeCommentNodes(node) {
+    for (const child of Array.from(node.childNodes)) {
+      // Comment node
+      if (child.nodeType === 8) {
+        child.remove();
+      // Element node
+      } else if (child.nodeType === 1) {
+        this.removeCommentNodes(child);
+      }
+    }
+  }
+
+  /**
    * @param {string} selector
    * @param {ParentNode} context
    * @return {DocumentFragment} A clone of the template content.
@@ -98,6 +113,7 @@ class DOM {
     }
     template.setAttribute('data-stamped', 'true');
 
+    this.removeCommentNodes(clone);
     return clone;
   }
 
