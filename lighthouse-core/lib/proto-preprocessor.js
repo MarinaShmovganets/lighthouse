@@ -17,11 +17,8 @@ const fs = require('fs');
 
 /**
   * @param {string} result
-  * @param {{keepRawValues?: boolean}} opts
   */
-function processForProto(result, opts = {}) {
-  const {keepRawValues = false} = opts;
-
+function processForProto(result) {
   /** @type {LH.Result} */
   const reportJson = JSON.parse(result);
 
@@ -56,13 +53,8 @@ function processForProto(result, opts = {}) {
           audit.scoreDisplayMode = 'notApplicable';
         }
       }
-      // Drop numeric values until we decide what to do with the optional type in proto.
-      // https://github.com/GoogleChrome/lighthouse/issues/6199
-      if (!keepRawValues && 'numericValue' in audit) {
-        delete audit.numericValue;
-      }
-      // Normalize displayValue to always be a string, not an array. #6200
 
+      // Normalize displayValue to always be a string, not an array. #6200
       if (Array.isArray(audit.displayValue)) {
         /** @type {Array<any>}*/
         const values = [];
