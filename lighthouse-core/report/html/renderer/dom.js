@@ -78,16 +78,20 @@ class DOM {
   }
 
   /**
-   * @param {Node} node
+   * @param {Document} document
    */
-  removeCommentNodes(node) {
-    for (const child of Array.from(node.childNodes)) {
-      // Comment node
-      if (child.nodeType === 8) {
-        child.remove();
-      // Element node
-      } else if (child.nodeType === 1) {
-        this.removeCommentNodes(child);
+  removeCommentNodes(document) {
+    const walker = document.createTreeWalker(document, 128, null);
+
+    const commentNodes = [];
+    let currentNode;
+    while (currentNode = walker.nextNode()) {
+      commentNodes.push(currentNode);
+    }
+
+    for (const node of commentNodes) {
+      if (node.parentNode) {
+        node.parentNode.removeChild(node);
       }
     }
   }
@@ -113,7 +117,6 @@ class DOM {
     }
     template.setAttribute('data-stamped', 'true');
 
-    this.removeCommentNodes(clone);
     return clone;
   }
 

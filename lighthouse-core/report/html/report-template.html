@@ -38,6 +38,7 @@ limitations under the License.
   <script>
     function __initLighthouseReport__() {
       const dom = new DOM(document);
+      dom.removeCommentNodes(document);
       const renderer = new ReportRenderer(dom);
 
       const container = document.querySelector('main');

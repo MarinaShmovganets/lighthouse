@@ -142,9 +142,9 @@ describe('DOM', () => {
   });
 
   it('removeCommentNodes', () => {
-    const node = dom.createElement('div');
-    node.innerHTML = '<div>hello<!-- snip --><div>world<!-- snip --></div></div>';
-    dom.removeCommentNodes(node);
-    assert.equal(node.innerHTML, '<div>hello<div>world</div></div>');
+    const _jsdom = new jsdom.JSDOM('<div>hello<!-- snip --><div>world<!-- snip --></div></div>');
+    dom.removeCommentNodes(_jsdom.window.document);
+    assert.equal(_jsdom.serialize(),
+      '<html><head></head><body><div>hello<div>world</div></div></body></html>');
   });
 });
