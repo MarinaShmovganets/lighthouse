@@ -581,16 +581,16 @@ describe('Config', () => {
         extends: 'lighthouse:full',
         settings: {
           disableStorageReset: true,
-          disableDeviceEmulation: false,
+          emulatedFormFactor: 'mobile',
         },
       },
-      {disableDeviceEmulation: true}
+      {emulatedFormFactor: 'desktop'}
     );
 
     assert.ok(config, 'failed to generate config');
     assert.ok(typeof config.settings.maxWaitForLoad === 'number', 'missing setting from default');
     assert.ok(config.settings.disableStorageReset, 'missing setting from extension config');
-    assert.ok(config.settings.disableDeviceEmulation, 'missing setting from flags');
+    assert.ok(config.settings.emulatedFormFactor === 'desktop', 'missing setting from flags');
   });
 
   it('inherits default settings when undefined', () => {
@@ -1103,8 +1103,8 @@ describe('Config', () => {
         passes: [{
           passName: 'defaultPass',
           gatherers: [
-            // `options` merged into default `scripts` gatherer.
-            {path: 'scripts', options: {gOpt}},
+            // `options` merged into default `script-elements` gatherer.
+            {path: 'script-elements', options: {gOpt}},
           ],
         }],
         audits: [
@@ -1117,7 +1117,8 @@ describe('Config', () => {
       const printedConfig = JSON.parse(printed);
 
       // Check that options weren't completely eliminated.
-      const scriptsGatherer = printedConfig.passes[0].gatherers.find(g => g.path === 'scripts');
+      const scriptsGatherer = printedConfig.passes[0].gatherers
+        .find(g => g.path === 'script-elements');
       assert.strictEqual(scriptsGatherer.options.gOpt, gOpt);
       const metricsAudit = printedConfig.audits.find(a => a.path === 'metrics');
       assert.strictEqual(metricsAudit.options.aOpt, aOpt);

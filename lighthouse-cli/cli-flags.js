@@ -32,7 +32,7 @@ function getFlags(manualArgv) {
           'lighthouse <url> --output=json --output-path=./report.json --save-assets',
           'Save trace, screenshots, and named JSON report.')
       .example(
-          'lighthouse <url> --disable-device-emulation --throttling-method=provided',
+          'lighthouse <url> --emulated-form-factor=none --throttling-method=provided',
           'Disable device emulation and all throttling')
       .example(
           'lighthouse <url> --chrome-flags="--window-size=412,660"',
@@ -70,7 +70,6 @@ function getFlags(manualArgv) {
         'blocked-url-patterns': 'Block any network requests to the specified URL patterns',
         'disable-storage-reset':
             'Disable clearing the browser cache and other storage APIs before a run',
-        'disable-device-emulation': 'Disable all device form factor emulation. Deprecated: use --emulated-form-factor=none instead',
         'emulated-form-factor': 'Controls the emulated device form factor (mobile vs. desktop) if not disabled',
         'throttling-method': 'Controls throttling method',
         'throttling.rttMs': 'Controls simulated network RTT (TCP layer)',
@@ -82,7 +81,7 @@ function getFlags(manualArgv) {
         'gather-mode':
             'Collect artifacts from a connected browser and save to disk. (Artifacts folder path may optionally be provided). If audit-mode is not also enabled, the run will quit early.',
         'audit-mode': 'Process saved artifacts from disk. (Artifacts folder path may be provided, otherwise defaults to ./latest-run/)',
-        'save-assets': 'Save the trace contents & screenshots to disk',
+        'save-assets': 'Save the trace contents & devtools logs to disk',
         'list-all-audits': 'Prints a list of all available audits and exits',
         'list-trace-categories': 'Prints a list of all required trace categories and exits',
         'additional-trace-categories':
@@ -124,7 +123,7 @@ function getFlags(manualArgv) {
 
       // boolean values
       .boolean([
-        'disable-storage-reset', 'disable-device-emulation', 'save-assets', 'list-all-audits',
+        'disable-storage-reset', 'save-assets', 'list-all-audits',
         'list-trace-categories', 'view', 'verbose', 'quiet', 'help', 'print-config', 'ignore-https-errors',
       ])
       .choices('output', printer.getValidOutputOptions())

@@ -77,6 +77,20 @@ class Util {
       category.auditRefs.forEach(auditMeta => {
         const result = clone.audits[auditMeta.id];
         auditMeta.result = result;
+
+        // attach the stackpacks to the auditRef object
+        if (clone.stackPacks) {
+          clone.stackPacks.forEach(pack => {
+            if (pack.descriptions[auditMeta.id]) {
+              auditMeta.result.stackPacks = auditMeta.result.stackPacks || [];
+              auditMeta.result.stackPacks.push({
+                title: pack.title,
+                iconDataURL: pack.iconDataURL,
+                description: pack.descriptions[auditMeta.id],
+              });
+            }
+          });
+        }
       });
     }
 
@@ -92,46 +106,6 @@ class Util {
     for (const [key, value] of Object.entries(rendererFormattedStrings)) {
       Util.UIStrings[key] = value;
     }
-  }
-
-  /**
-   * @param {string|Array<string|number>=} displayValue
-   * @return {string}
-   */
-  static formatDisplayValue(displayValue) {
-    if (typeof displayValue === 'string') return displayValue;
-    if (!displayValue) return '';
-
-    const replacementRegex = /%([0-9]*(\.[0-9]+)?d|s)/;
-    const template = /** @type {string} */ (displayValue[0]);
-    if (typeof template !== 'string') {
-      // First value should always be the format string, but we don't want to fail to build
-      // a report, return a placeholder.
-      return 'UNKNOWN';
-    }
-
-    let output = template;
-    for (const replacement of displayValue.slice(1)) {
-      if (!replacementRegex.test(output)) {
-        // eslint-disable-next-line no-console
-        console.warn('Too many replacements given');
-        break;
-      }
-
-      output = output.replace(replacementRegex, match => {
-        const granularity = Number(match.match(/[0-9.]+/)) || 1;
-        return match === '%s' ?
-          replacement.toLocaleString() :
-          (Math.round(Number(replacement) / granularity) * granularity).toLocaleString();
-      });
-    }
-
-    if (replacementRegex.test(output)) {
-      // eslint-disable-next-line no-console
-      console.warn('Not enough replacements given');
-    }
-
-    return output;
   }
 
   /**
@@ -426,10 +400,8 @@ class Util {
     }
 
     let deviceEmulation = 'No emulation';
-    if (!settings.disableDeviceEmulation) {
-      if (settings.emulatedFormFactor === 'mobile') deviceEmulation = 'Emulated Nexus 5X';
-      if (settings.emulatedFormFactor === 'desktop') deviceEmulation = 'Emulated Desktop';
-    }
+    if (settings.emulatedFormFactor === 'mobile') deviceEmulation = 'Emulated Nexus 5X';
+    if (settings.emulatedFormFactor === 'desktop') deviceEmulation = 'Emulated Desktop';
 
     return {
       deviceEmulation,
@@ -530,8 +502,6 @@ Util.UIStrings = {
 
   /** Label shown preceding any important warnings that may have invalidated the entire report. For example, if the user has Chrome extensions installed, they may add enough performance overhead that Lighthouse's performance metrics are unreliable. If shown, this will be displayed at the top of the report UI. */
   toplevelWarningsMessage: 'There were issues affecting this run of Lighthouse:',
-  /** Label preceding a pictorial explanation of the scoring scale: 0-50 is red (bad), 50-90 is orange (ok), 90-100 is green (good). These colors are used throughout the report to provide context for how good/bad a particular result is. */
-  scorescaleLabel: 'Score scale:',
 
   /** String of text shown in a graphical representation of the flow of network requests for the web page. This label represents the initial network request that fetches an HTML page. This navigation may be redirected (eg. Initial navigation to http://example.com redirects to https://www.example.com). */
   crcInitialNavigation: 'Initial Navigation',

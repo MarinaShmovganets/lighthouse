@@ -8,12 +8,6 @@ import _Crdp from 'devtools-protocol/types/protocol';
 import _CrdpMappings from 'devtools-protocol/types/protocol-mapping'
 
 declare global {
-  // Augment global Error type to include node's optional `code` property
-  // see https://nodejs.org/api/errors.html#errors_error_code
-  interface Error {
-    code?: string;
-  }
-
   // Augment Intl to include
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales
   namespace Intl {
@@ -107,8 +101,6 @@ declare global {
       gatherMode?: boolean | string;
       /** Flag indicating that the browser storage should not be reset for the audit. */
       disableStorageReset?: boolean;
-      /** Flag indicating that there shouldn't be any emulation during the run. */
-      disableDeviceEmulation?: boolean;
       /** The form factor the emulation should use. */
       emulatedFormFactor?: 'mobile'|'desktop'|'none';
       /** The method used to throttle the network. */
@@ -202,10 +194,6 @@ declare global {
       id: string;
       weight: number;
       group: string;
-    }
-
-    export interface LighthouseError extends Error {
-      friendlyMessage?: string;
     }
 
     /**

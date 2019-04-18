@@ -74,9 +74,10 @@ class MainThreadTasks {
   /**
    * @param {LH.TraceEvent[]} mainThreadEvents
    * @param {PriorTaskData} priorTaskData
+   * @param {number} traceEndTs
    * @return {TaskNode[]}
    */
-  static _createTasksFromEvents(mainThreadEvents, priorTaskData) {
+  static _createTasksFromEvents(mainThreadEvents, priorTaskData, traceEndTs) {
     /** @type {TaskNode[]} */
     const tasks = [];
     /** @type {TaskNode|undefined} */
@@ -108,7 +109,7 @@ class MainThreadTasks {
       if (!currentTask) {
         // We can't start a task with an end event
         if (event.ph === 'E') {
-          throw new Error('Fatal trace logic error');
+          throw new Error('Fatal trace logic error - unexpected end event');
         }
 
         currentTask = MainThreadTasks._createNewTaskNode(event);
@@ -124,7 +125,8 @@ class MainThreadTasks {
         currentTask = newTask;
       } else {
         if (currentTask.event.ph !== 'B') {
-          throw new Error('Fatal trace logic error');
+          throw new Error(
+            `Fatal trace logic error - expected start event, got ${currentTask.event.ph}`);
         }
 
         // We're ending an event, update the end time and the currentTask to its parent
@@ -133,16 +135,29 @@ class MainThreadTasks {
       }
     }
 
+    // Starting from the last and bottom-most task, we finish any tasks that didn't end yet.
+    while (currentTask && !Number.isFinite(currentTask.endTime)) {
+      // The last event didn't finish before tracing stopped, use traceEnd timestamp instead.
+      currentTask.endTime = traceEndTs;
+      currentTask = currentTask.parent;
+    }
+
+    // At this point we expect all tasks to have a finite startTime and endTime.
     return tasks;
   }
 
   /**
    * @param {TaskNode} task
+   * @param {TaskNode|undefined} parent
    * @return {number}
    */
-  static _computeRecursiveSelfTime(task) {
+  static _computeRecursiveSelfTime(task, parent) {
+    if (parent && task.endTime > parent.endTime) {
+      throw new Error('Fatal trace logic error - child cannot end after parent');
+    }
+
     const childTime = task.children
-      .map(MainThreadTasks._computeRecursiveSelfTime)
+      .map(child => MainThreadTasks._computeRecursiveSelfTime(child, task))
       .reduce((sum, child) => sum + child, 0);
     task.duration = task.endTime - task.startTime;
     task.selfTime = task.duration - childTime;
@@ -215,18 +230,19 @@ class MainThreadTasks {
 
   /**
    * @param {LH.TraceEvent[]} traceEvents
+   * @param {number} traceEndTs
    * @return {TaskNode[]}
    */
-  static getMainThreadTasks(traceEvents) {
+  static getMainThreadTasks(traceEvents, traceEndTs) {
     const timers = new Map();
     const priorTaskData = {timers};
-    const tasks = MainThreadTasks._createTasksFromEvents(traceEvents, priorTaskData);
+    const tasks = MainThreadTasks._createTasksFromEvents(traceEvents, priorTaskData, traceEndTs);
 
     // Compute the recursive properties we couldn't compute earlier, starting at the toplevel tasks
     for (const task of tasks) {
       if (task.parent) continue;
 
-      MainThreadTasks._computeRecursiveSelfTime(task);
+      MainThreadTasks._computeRecursiveSelfTime(task, undefined);
       MainThreadTasks._computeRecursiveAttributableURLs(task, [], priorTaskData);
       MainThreadTasks._computeRecursiveTaskGroup(task);
     }
@@ -254,8 +270,8 @@ class MainThreadTasks {
    * @return {Promise<Array<TaskNode>>} networkRecords
    */
   static async compute_(trace, context) {
-    const {mainThreadEvents} = await TraceOfTab.request(trace, context);
-    return MainThreadTasks.getMainThreadTasks(mainThreadEvents);
+    const {mainThreadEvents, timestamps} = await TraceOfTab.request(trace, context);
+    return MainThreadTasks.getMainThreadTasks(mainThreadEvents, timestamps.traceEnd);
   }
 }
 

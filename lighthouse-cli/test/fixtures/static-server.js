@@ -69,6 +69,16 @@ function requestHandler(request, response) {
       headers['Content-Type'] = 'text/css';
     } else if (filePath.endsWith('.svg')) {
       headers['Content-Type'] = 'image/svg+xml';
+    } else if (filePath.endsWith('.png')) {
+      headers['Content-Type'] = 'image/png';
+    } else if (filePath.endsWith('.gif')) {
+      headers['Content-Type'] = 'image/gif';
+    } else if (filePath.endsWith('.jpg') || filePath.endsWith('.jpeg')) {
+      headers['Content-Type'] = 'image/jpeg';
+    } else if (filePath.endsWith('.webp')) {
+      headers['Content-Type'] = 'image/webp';
+    } else if (filePath.endsWith('.json')) {
+      headers['Content-Type'] = 'application/json';
     }
 
     let delay = 0;

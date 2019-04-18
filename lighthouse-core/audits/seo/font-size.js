@@ -220,7 +220,7 @@ class FontSize extends Audit {
     if (!artifacts.TestedAsMobileDevice) {
       // Font size isn't important to desktop SEO
       return {
-        rawValue: true,
+        score: 1,
         notApplicable: true,
       };
     }
@@ -228,7 +228,7 @@ class FontSize extends Audit {
     const viewportMeta = await ComputedViewportMeta.request(artifacts, context);
     if (!viewportMeta.isMobileOptimized) {
       return {
-        rawValue: false,
+        score: 0,
         explanation: str_(UIStrings.explanationViewport),
       };
     }
@@ -243,7 +243,7 @@ class FontSize extends Audit {
 
     if (totalTextLength === 0) {
       return {
-        rawValue: true,
+        score: 1,
       };
     }
 
@@ -296,7 +296,6 @@ class FontSize extends Audit {
     }
 
     const decimalProportion = (percentageOfPassingText / 100);
-    /** @type {LH.Audit.DisplayValue} */
     const displayValue = str_(UIStrings.displayValue, {decimalProportion});
     const details = Audit.makeTableDetails(headings, tableData);
     const passed = percentageOfPassingText >= MINIMAL_PERCENTAGE_OF_LEGIBLE_TEXT;
@@ -320,7 +319,7 @@ class FontSize extends Audit {
     }
 
     return {
-      rawValue: passed,
+      score: Number(passed),
       details,
       displayValue,
       explanation,

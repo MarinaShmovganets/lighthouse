@@ -14,6 +14,8 @@ const Config = require('../../config/config');
 const unresolvedPerfLog = require('./../fixtures/unresolved-perflog.json');
 const NetworkRequest = require('../../lib/network-request.js');
 
+jest.mock('../../lib/stack-collector.js', () => () => Promise.resolve([]));
+
 class TestGatherer extends Gatherer {
   constructor() {
     super();
@@ -226,35 +228,6 @@ describe('GatherRunner', function() {
         latency: 0, downloadThroughput: 0, uploadThroughput: 0, offline: false,
       });
       assert.ok(!tests.calledCpuEmulation, 'called cpu emulation');
-    });
-  });
-
-  it('stops device emulation when disableDeviceEmulation flag is true', () => {
-    const tests = {
-      calledDeviceEmulation: false,
-      calledNetworkEmulation: false,
-      calledCpuEmulation: false,
-    };
-    const createEmulationCheck = variable => () => {
-      tests[variable] = true;
-      return true;
-    };
-    const driver = getMockedEmulationDriver(
-      createEmulationCheck('calledDeviceEmulation', false),
-      createEmulationCheck('calledNetworkEmulation', true),
-      createEmulationCheck('calledCpuEmulation', true)
-    );
-
-    return GatherRunner.setupDriver(driver, {
-      settings: {
-        disableDeviceEmulation: true,
-        throttlingMethod: 'devtools',
-        throttling: {},
-      },
-    }).then(_ => {
-      assert.equal(tests.calledDeviceEmulation, false);
-      assert.equal(tests.calledNetworkEmulation, true);
-      assert.equal(tests.calledCpuEmulation, true);
     });
   });
 

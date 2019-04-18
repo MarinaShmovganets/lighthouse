@@ -94,8 +94,6 @@ describe('util helpers', () => {
 
   it('builds device emulation string', () => {
     const get = opts => Util.getEmulationDescriptions(opts).deviceEmulation;
-    assert.equal(get({disableDeviceEmulation: true}), 'No emulation');
-    assert.equal(get({disableDeviceEmulation: false}), 'No emulation');
     assert.equal(get({emulatedFormFactor: 'none'}), 'No emulation');
     assert.equal(get({emulatedFormFactor: 'mobile'}), 'Emulated Nexus 5X');
     assert.equal(get({emulatedFormFactor: 'desktop'}), 'Emulated Desktop');
@@ -136,38 +134,6 @@ describe('util helpers', () => {
     // eslint-disable-next-line max-len
     assert.equal(descriptions.networkThrottling, '150\xa0ms TCP RTT, 1,600\xa0Kbps throughput (Simulated)');
     assert.equal(descriptions.cpuThrottling, '2x slowdown (Simulated)');
-  });
-
-  it('formats display values', () => {
-    const format = arg => Util.formatDisplayValue(arg);
-    assert.equal(format(undefined), '');
-    assert.equal(format('Foo %s %d'), 'Foo %s %d');
-    assert.equal(format([]), 'UNKNOWN');
-    assert.equal(format(['%s %s', 'Hello', 'formatDisplayValue']), 'Hello formatDisplayValue');
-    assert.equal(format(['%s%', 99.9]), '99.9%');
-    assert.equal(format(['%d%', 99.9]), '100%');
-    assert.equal(format(['%s ms', 12345.678]), '12,345.678 ms');
-    assert.equal(format(['%10d ms', 12345.678]), '12,350 ms');
-    assert.equal(format(['%.01d ms', 12345.678]), '12,345.68 ms');
-    // handle edge cases
-    assert.equal(format(['%.01s literal', 1234]), '%.01s literal');
-    assert.equal(format(['%1.01.1d junk', 1234]), '%1.01.1d junk');
-  });
-
-  it('warns on improper display value formatting', () => {
-    assert.equal(Util.formatDisplayValue(['%s']), '%s');
-    assert.equal(Util.formatDisplayValue(['%s', 'foo', 'bar']), 'foo');
-    assert.deepEqual(consoleWarnCalls, [
-      'Not enough replacements given',
-      'Too many replacements given',
-    ]);
-  });
-
-  it('does not mutate the provided array', () => {
-    const displayValue = ['one:%s, two:%s', 'foo', 'bar'];
-    const cloned = JSON.parse(JSON.stringify(displayValue));
-    Util.formatDisplayValue(displayValue);
-    assert.deepStrictEqual(displayValue, cloned, 'displayValue was mutated');
   });
 
   describe('#prepareReportResult', () => {

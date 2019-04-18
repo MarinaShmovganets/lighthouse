@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * @license Copyright 2019 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -5,15 +7,15 @@
  */
 'use strict';
 
-const browserify = require('browserify');
+/* eslint-disable no-console */
 const fs = require('fs');
+const path = require('path');
 
-const distDir = __dirname + '/../dist';
-const outFile = `${distDir}/report-generator.js`;
-const generatorFilename = `./lighthouse-core/report/report-generator.js`;
-browserify(generatorFilename, {standalone: 'ReportGenerator'})
-  .transform('brfs')
-  .bundle((err, src) => {
-    if (err) throw err;
-    fs.writeFileSync(outFile, src.toString());
-  });
+const ReportGenerator = require('../../lighthouse-core/report/report-generator.js');
+const lhr = /** @type {LH.Result} */ (require('../../lighthouse-core/test/results/sample_v2.json'));
+
+console.log('🕒 Generating report for sample_v2.json...');
+const html = ReportGenerator.generateReport(lhr, 'html');
+const filename = path.join(__dirname, '../../dist/index.html');
+fs.writeFileSync(filename, html, {encoding: 'utf-8'});
+console.log('✅', filename, 'written.');

@@ -7,6 +7,7 @@
 
 const log = require('lighthouse-logger');
 const manifestParser = require('../lib/manifest-parser.js');
+const stacksGatherer = require('../lib/stack-collector.js');
 const LHError = require('../lib/lh-error.js');
 const URL = require('../lib/url-shim.js');
 const NetworkRecorder = require('../lib/network-recorder.js');
@@ -131,7 +132,7 @@ class GatherRunner {
     } catch (err) {
       // Ignore disconnecting error if browser was already closed.
       // See https://github.com/GoogleChrome/lighthouse/issues/1583
-      if (!(/close\/.*status: 500$/.test(err.message))) {
+      if (!(/close\/.*status: (500|404)$/.test(err.message))) {
         log.error('GatherRunner disconnect', err.message);
       }
     }
@@ -414,6 +415,7 @@ class GatherRunner {
       NetworkUserAgent: '', // updated later
       BenchmarkIndex: 0, // updated later
       WebAppManifest: null, // updated later
+      Stacks: [], // updated later
       traces: {},
       devtoolsLogs: {},
       settings: options.settings,
@@ -481,10 +483,17 @@ class GatherRunner {
         }
         await GatherRunner.beforePass(passContext, gathererResults);
         await GatherRunner.pass(passContext, gathererResults);
+
         if (isFirstPass) {
+          // Fetch the manifest, if it exists. Currently must be fetched before gatherers' `afterPass`.
           baseArtifacts.WebAppManifest = await GatherRunner.getWebAppManifest(passContext);
         }
+
         const passData = await GatherRunner.afterPass(passContext, gathererResults);
+
+        if (isFirstPass) {
+          baseArtifacts.Stacks = await stacksGatherer(passContext);
+        }
 
         // Save devtoolsLog, but networkRecords are discarded and not added onto artifacts.
         baseArtifacts.devtoolsLogs[passConfig.passName] = passData.devtoolsLog;

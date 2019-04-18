@@ -75,14 +75,31 @@ class CategoryRenderer {
     const scoreDisplayMode = audit.result.scoreDisplayMode;
 
     if (audit.result.displayValue) {
-      const displayValue = Util.formatDisplayValue(audit.result.displayValue);
-      this.dom.find('.lh-audit__display-text', auditEl).textContent = displayValue;
+      this.dom.find('.lh-audit__display-text', auditEl).textContent = audit.result.displayValue;
     }
 
     const titleEl = this.dom.find('.lh-audit__title', auditEl);
     titleEl.appendChild(this.dom.convertMarkdownCodeSnippets(audit.result.title));
     this.dom.find('.lh-audit__description', auditEl)
         .appendChild(this.dom.convertMarkdownLinkSnippets(audit.result.description));
+
+    if (audit.result.stackPacks) {
+      audit.result.stackPacks.forEach(pack => {
+        const packElm = this.dom.createElement('div');
+        packElm.classList.add('lh-audit__stackpack');
+
+        const packElmImg = this.dom.createElement('img');
+        packElmImg.classList.add('lh-audit__stackpack__img');
+        packElmImg.src = pack.iconDataURL;
+        packElmImg.alt = pack.title;
+        packElm.appendChild(packElmImg);
+
+        packElm.appendChild(this.dom.convertMarkdownLinkSnippets(pack.description));
+
+        this.dom.find('.lh-audit__stackpacks', auditEl)
+          .appendChild(packElm);
+      });
+    }
 
     const header = /** @type {HTMLDetailsElement} */ (this.dom.find('details', auditEl));
     if (audit.result.details) {
@@ -160,8 +177,6 @@ class CategoryRenderer {
     const gaugeEl = this.renderScoreGauge(category, groupDefinitions);
     gaugeContainerEl.appendChild(gaugeEl);
 
-    this.dom.find('.lh-category-header__title', tmpl).appendChild(
-      this.dom.convertMarkdownCodeSnippets(category.title));
     if (category.description) {
       const descEl = this.dom.convertMarkdownLinkSnippets(category.description);
       this.dom.find('.lh-category-header__description', tmpl).appendChild(descEl);
@@ -319,13 +334,13 @@ class CategoryRenderer {
     // Cast `null` to 0
     const numericScore = Number(category.score);
     const gauge = this.dom.find('.lh-gauge', tmpl);
-    // 329 is ~= 2 * Math.PI * gauge radius (53)
+    // 352 is ~= 2 * Math.PI * gauge radius (56)
     // https://codepen.io/xgad/post/svg-radial-progress-meters
-    // score of 50: `stroke-dasharray: 164.5 329`;
+    // score of 50: `stroke-dasharray: 176 352`;
     /** @type {?SVGCircleElement} */
     const gaugeArc = gauge.querySelector('.lh-gauge-arc');
     if (gaugeArc) {
-      gaugeArc.style.strokeDasharray = `${numericScore * 329} 329`;
+      gaugeArc.style.strokeDasharray = `${numericScore * 352} 352`;
     }
 
     const scoreOutOf100 = Math.round(numericScore * 100);
