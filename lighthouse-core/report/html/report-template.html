@@ -38,11 +38,11 @@ limitations under the License.
   <script>
     function __initLighthouseReport__() {
       const dom = new DOM(document);
-      dom.removeCommentNodes(document);
       const renderer = new ReportRenderer(dom);
 
       const container = document.querySelector('main');
       renderer.renderReport(window.__LIGHTHOUSE_JSON__, container);
+      dom.removeCommentNodes(document);
 
       // Hook in JS features and page-level event listeners after the report
       // is in the document.
