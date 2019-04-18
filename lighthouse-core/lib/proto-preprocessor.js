@@ -56,9 +56,10 @@ function processForProto(result, opts = {}) {
           audit.scoreDisplayMode = 'notApplicable';
         }
       }
-      // Drop raw values. https://github.com/GoogleChrome/lighthouse/issues/6199
-      if (!keepRawValues && 'rawValue' in audit) {
-        delete audit.rawValue;
+      // Drop numeric values until we decide what to do with the optional type in proto.
+      // https://github.com/GoogleChrome/lighthouse/issues/6199
+      if (!keepRawValues && 'numericValue' in audit) {
+        delete audit.numericValue;
       }
       // Normalize displayValue to always be a string, not an array. #6200
 
