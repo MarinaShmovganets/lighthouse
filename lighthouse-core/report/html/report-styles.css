@@ -106,13 +106,13 @@
   --score-container-width: 160px;
   --score-number-font-size-big: 42px;
   --score-number-font-size: 34px;
+  --score-shape-margin: 7px 12px 0 4px;
   --score-shape-size: 12px;
   --score-title-font-size-big: 28px;
   --score-title-font-size: 20px;
   --score-title-line-height-big: 36px;
   --score-title-line-height: 26px;
   --section-padding: 40px;
-  --shape-margin: 7px 12px 0 4px;
   --topbar-bg: var(--color-black-100);
   --topbar-height: 36px;
   --topbar-icon-size: 24px;
@@ -154,13 +154,13 @@
     --score-container-width: 112px;
     --score-number-font-size-big: 34px;
     --score-number-font-size: 26px;
+    --score-shape-margin: 5px 12px 0 2px;
     --score-shape-size: 10px;
     --score-title-font-size-big: 22px;
     --score-title-font-size: 14px;
     --score-title-line-height-big: 26px;
     --score-title-line-height: 20px;
     --section-padding: 24px;
-    --shape-margin: 5px 12px 0 2px;
     --topbar-height: 32px;
     --topbar-icon-size: 20px;
   }
@@ -314,7 +314,7 @@
 .lh-audit__score-icon {
   width: var(--score-shape-size);
   height: var(--score-shape-size);
-  margin: var(--shape-margin);
+  margin: var(--score-shape-margin);
 }
 
 .lh-audit--pass .lh-audit__display-text {
@@ -492,7 +492,7 @@
   width: var(--score-shape-size);
   height: var(--score-shape-size);
   display: inline-block;
-  margin: var(--shape-margin);
+  margin: var(--score-shape-margin);
 }
 
 .lh-metric--pass .lh-metric__value {
