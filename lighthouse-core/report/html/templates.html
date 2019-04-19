@@ -481,8 +481,7 @@ limitations under the License.
     }
 
     .lh-category .lh-gauge {
-      width: var(--gauge-circle-size-big);
-      height: var(--gauge-circle-size-big);
+      --gauge-circle-size: var(--gauge-circle-size-big);
     }
 
     .lh-gauge-base {
@@ -516,15 +515,8 @@ limitations under the License.
     }
 
     .lh-category .lh-gauge__percentage {
-      font-size: var(--score-number-fontsize-big);
-      line-height: var(--score-number-fontsize-big);
-      top: calc(var(--gauge-circle-size-big) / 3);
-    }
-
-    .lh-category .lh-gauge__percentage {
-      font-size: var(--score-number-font-size-big);
-      line-height: var(--score-number-font-size-big);
-      top: calc(var(--gauge-circle-size-big) / 3);
+      --gauge-circle-size: var(--gauge-circle-size-big);
+      --score-number-fontsize: var(--score-number-fontsize-big);
     }
 
     .lh-gauge__wrapper {
@@ -550,9 +542,8 @@ limitations under the License.
     }
 
     .lh-category .lh-gauge__label {
-      font-size: var(--score-title-font-size-big);
-      line-height: var(--score-title-line-height-big);
-      margin: calc(0.5 * var(--score-title-line-height-big));
+      --score-title-font-size: var(--score-title-font-size-big);
+      --score-title-line-height: var(--score-title-line-height-big);
     }
 
   </style>
