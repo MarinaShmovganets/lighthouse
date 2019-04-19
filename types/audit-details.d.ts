@@ -13,7 +13,8 @@ declare global {
       Details.List |
       Details.Opportunity |
       Details.Screenshot |
-      Details.Table;
+      Details.Table |
+      Details.LightWallet;
 
     // Details namespace.
     export module Details {
@@ -170,6 +171,34 @@ declare global {
       export interface UrlValue {
         type: 'url';
         value: string;
+      }
+
+      export interface LightWallet {
+        type: 'lightwallet';
+        timings?: {
+          [id: string]: BudgetResult;
+        };
+        resourceSizes?: {
+          [id: string]: BudgetResult;
+        };
+        resourceCounts?: {
+          [id: string]: BudgetResult;
+        };
+        diagnostics: {
+          [id: string]: {
+            count: number;
+            size: number;
+          }
+        }
+      }
+
+      export interface BudgetResult {
+        id: string;
+        budget: number;
+        difference: number;
+        actual: number;
+        score: string;
+        tolerance?: number;
       }
 
       /**
