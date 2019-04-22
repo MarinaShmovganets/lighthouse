@@ -1023,13 +1023,13 @@
     "message": "Razmislite o tem, da bi GIF naložili v storitev, prek katere bo na voljo za vdelavo kot videposnetek v obliki HTML5."
   },
   "stack-packs/packs/wordpress.js | offscreen_images": {
-    "message": "Namestite [vtičnik za postopno nalaganje za WordPress](https://wordpress.org/plugins/search/lazy+load/), ki omogoča odlog nalaganja slik, ki niso na zaslonu, ali preidite na temo, ki ponuja to funkcijo. Razmislite tudi o uporabo [vtičnika AMP](https://wordpress.org/plugins/amp/)."
+    "message": "Namestite [vtičnik za postopno nalaganje za WordPress](https://wordpress.org/plugins/search/lazy+load/), ki omogoča odlog nalaganja slik, ki niso na zaslonu, ali preidite na temo, ki ponuja to funkcijo. Razmislite tudi o uporabi [vtičnika AMP](https://wordpress.org/plugins/amp/)."
   },
   "stack-packs/packs/wordpress.js | render_blocking_resources": {
     "message": "Na voljo je več vtičnikov za WordPress, ki vam lahko pomagajo [uvrstiti nujna sredstva](https://wordpress.org/plugins/search/critical+css/) ali [odložiti manj pomembna sredstva](https://wordpress.org/plugins/search/defer+css+javascript/). Upoštevajte, da lahko optimizacije, ki jih ponujajo ti vtičniki, pokvarijo delovanje funkcij vaših tem ali vtičnikov, zato boste verjetno morali spremeniti kodo."
   },
   "stack-packs/packs/wordpress.js | time_to_first_byte": {
-    "message": "Teme, vtičniki in strežniške specifikacije prispevajo k odzivnem času strežnika. Razmislite o tem, da bi poiskali bolj optimizirano temo, skrbno izbrali optimizacijski vtičnik in/ali nadgradili strežnik."
+    "message": "Teme, vtičniki in strežniške specifikacije prispevajo k odzivnemu času strežnika. Razmislite o tem, da bi poiskali bolj optimizirano temo, skrbno izbrali optimizacijski vtičnik in/ali nadgradili strežnik."
   },
   "stack-packs/packs/wordpress.js | total_byte_weight": {
     "message": "Razmislite o tem, da bi na seznamih objav prikazali izvlečke (npr. z oznako »more«), zmanjšali število objav, prikazanih na posamezni strani, daljše objave razdelili na več strani ali uporabili vtičnik za odloženo nalaganje komentarjev."

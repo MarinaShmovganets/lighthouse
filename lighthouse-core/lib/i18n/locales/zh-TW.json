@@ -600,7 +600,7 @@
     "message": "{decimalProportion, number, extendedPercent} 的文字太小。"
   },
   "lighthouse-core/audits/seo/font-size.js | explanationViewport": {
-    "message": "文字難以辨識，這是因為網頁沒有針對行動裝置螢幕設定合適的檢視點中繼標記。"
+    "message": "文字難以辨識，這是因為網頁沒有針對行動裝置螢幕設定合適的可視區域中繼標記。"
   },
   "lighthouse-core/audits/seo/font-size.js | explanationWithDisclaimer": {
     "message": "{decimalProportion, number, extendedPercent} 的文字太小 (以 {decimalProportionVisited, number, extendedPercent} 範例為準)。"
@@ -702,7 +702,7 @@
     "message": "{decimalProportion, number, percent} 的輕觸目標大小適中"
   },
   "lighthouse-core/audits/seo/tap-targets.js | explanationViewportMetaNotOptimized": {
-    "message": "輕觸目標太小，這是因為網頁沒有針對行動裝置螢幕設定合適的檢視點中繼標記"
+    "message": "輕觸目標太小，這是因為網頁沒有針對行動裝置螢幕設定合適的可視區域中繼標記"
   },
   "lighthouse-core/audits/seo/tap-targets.js | failureTitle": {
     "message": "輕觸目標未設定成適當大小"

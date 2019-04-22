@@ -1059,6 +1059,6 @@
     "message": "คุณเปิดใช้การบีบอัดข้อความในการกำหนดค่าเว็บเซิร์ฟเวอร์ได้"
   },
   "stack-packs/packs/wordpress.js | uses_webp_images": {
-    "message": "ลองใช้[ปลั๊กอิน](https://wordpress.org/plugins/search/convert+webp/) หรือบริการที่จะแปลงรูปภาพที่อัปโหลดทั้งหมดเป็นรูปแบบที่มีประสิทธิภาพสูงสุด"
+    "message": "ลองใช้[ปลั๊กอิน](https://wordpress.org/plugins/search/convert+webp/) หรือบริการที่จะแปลงรูปภาพที่อัปโหลดเป็นรูปแบบที่เหมาะสมที่สุดโดยอัตโนมัติ"
   }
 }

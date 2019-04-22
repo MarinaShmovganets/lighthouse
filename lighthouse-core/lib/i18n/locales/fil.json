@@ -447,10 +447,10 @@
     "message": "Value"
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | description": {
-    "message": "Browser engineers recommend pages contain fewer than ~1,500 DOM elements. The sweet spot is a tree depth < 32 elements and fewer than 60 children/parent element. A large DOM can increase memory usage, cause longer [style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/tools/lighthouse/audits/dom-size)."
+    "message": "Inirerekomenda ng mga engineer ng browser ang mga page na naglalaman ng mas kaunti sa ~1,500 element ng DOM. Ang pinakamainam ay isang lalim ng tree na < 32 element at mas kaunti sa 60 child/parent na element. Kapag malaki ang DOM, puwedeng tumaas ang paggamit ng memory, magdulot ng mas mahahabang [pagkalkula ng istilo](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), at magdulot ng mamahaling [mga reflow ng layout](https://developers.google.com/speed/articles/reflow). [Matuto pa](https://developers.google.com/web/tools/lighthouse/audits/dom-size)."
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | displayValue": {
-    "message": "{itemCount, plural,\n    =1 {1 element}\n    other {# elements}\n    }"
+    "message": "{itemCount,plural, =1{1 element}one{# element}other{# na element}}"
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | failureTitle": {
     "message": "Umiwas sa masyadong malaking DOM"
@@ -459,7 +459,7 @@
     "message": "Maximum na Lalim ng DOM"
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMElements": {
-    "message": "Total DOM Elements"
+    "message": "Kabuuang Element ng DOM"
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMWidth": {
     "message": "Maximum na Mga Child na Elemento"
@@ -927,7 +927,7 @@
     "message": "Nagkaroon ng problema sa pag-record ng trace sa pag-load ng iyong page. Paganahing muli ang Lighthouse. ({errorCode})"
   },
   "lighthouse-core/lib/lh-error.js | criTimeout": {
-    "message": "Timeout waiting for initial Debugger Protocol connection."
+    "message": "Naghihintay ng timeout para sa paunang koneksyon sa Protocol ng Debugger."
   },
   "lighthouse-core/lib/lh-error.js | didntCollectScreenshots": {
     "message": "Hindi nangolekta ang Chrome ng anumang screenshot habang nilo-load ang page. Pakitiyak na may nakikitang content sa page, at pagkatapos ay subukang muling paganahin ang Lighthouse. ({errorCode})"
@@ -1020,45 +1020,45 @@
     "message": "Mga Babala: "
   },
   "stack-packs/packs/wordpress.js | efficient_animated_content": {
-    "message": "Consider uploading your GIF to a service which will make it available to embed as an HTML5 video."
+    "message": "Pag-isipang i-upload ang iyong GIF sa isang serbisyo kung saan gagawin itong available para i-embed bilang HTML5 video."
   },
   "stack-packs/packs/wordpress.js | offscreen_images": {
-    "message": "Install a [lazy-load WordPress plugin](https://wordpress.org/plugins/search/lazy+load/) that provides the ability to defer any offscreen images, or switch to a theme that provides that functionality. Also consider using [the AMP plugin](https://wordpress.org/plugins/amp/)."
+    "message": "Mag-install ng [lazy-load na plugin sa WordPress](https://wordpress.org/plugins/search/lazy+load/) na nagbibigay ng kakayahang ipagpaliban ang anumang offsreen na larawan, o lumipat sa isang temang nagbibigay ng naturang functionality. Pag-isipan ding gamitin [ang AMP na plugin](https://wordpress.org/plugins/amp/)."
   },
   "stack-packs/packs/wordpress.js | render_blocking_resources": {
-    "message": "There are a number of WordPress plugins that can help you [inline critical assets](https://wordpress.org/plugins/search/critical+css/) or [defer less important resources](https://wordpress.org/plugins/search/defer+css+javascript/). Beware that optimizations provided by these plugins may break features of your theme or plugins, so you will likely need to make code changes."
+    "message": "May ilang plugin sa WordPress na makakatulong sa iyong [i-inline ang mahahalagang asset](https://wordpress.org/plugins/search/critical+css/) o [ipagpaliban ang mas hindi mahahalagang resource](https://wordpress.org/plugins/search/defer+css+javascript/). Tandaang puwedeng makasira sa mga feature ng iyong tema o mga plugin ang mga pag-optimize na mula sa mga plugin na ito, kaya malamang na kakailanganin mong gumawa ng mga pagbabago sa code."
   },
   "stack-packs/packs/wordpress.js | time_to_first_byte": {
-    "message": "Themes, plugins, and server specifications all contribute to server response time. Consider finding a more optimized theme, carefully selecting an optimization plugin, and/or upgrading your server."
+    "message": "Nakakaapekto ang mga tema, plugin, at detalye ng server sa oras ng pagtugon ng server. Pag-isipang maghanap ng mas naka-optimize na tema, nang maingat na pumipili ng plugin sa pag-optimize, at/o ina-upgrade ang iyong server."
   },
   "stack-packs/packs/wordpress.js | total_byte_weight": {
-    "message": "Consider showing excerpts in your post lists (e.g. via the more tag), reducing the number of posts shown on a given page, breaking your long posts into multiple pages, or using a plugin to lazy-load comments."
+    "message": "Pag-isipang magpakita ng mga sipi sa iyong mga listahan ng post (hal. sa pamamagitan ng tag na higit pa), bawasan ang bilang ng post na ipinapakita sa isang page, hatiin ang mahahaba mong post sa maraming page, o gumamit ng plugin sa mga lazy-load na komento."
   },
   "stack-packs/packs/wordpress.js | unminified_css": {
-    "message": "A number of [WordPress plugins](https://wordpress.org/plugins/search/minify+css/) can speed up your site by concatenating, minifying, and compressing your styles. You may also want to use a build process to do this minification up-front if possible."
+    "message": "Puwedeng pabilisin ng ilang [plugin sa WordPress](https://wordpress.org/plugins/search/minify+css/) ang iyong site sa pamamagitan ng pagsasama, pagpapaliit, at pagko-compress ng mga istilo mo. Puwede ka ring gumamit ng proseso ng pagbuo para gawin ang pagpapaliit na ito nang mas maaga kung posible."
   },
   "stack-packs/packs/wordpress.js | unminified_javascript": {
-    "message": "A number of [WordPress plugins](https://wordpress.org/plugins/search/minify+javascript/) can speed up your site by concatenating, minifying, and compressing your scripts. You may also want to use a build process to do this minification up front if possible."
+    "message": "Puwedeng pabilisin ng ilang [plugin sa Wordpress](https://wordpress.org/plugins/search/minify+javascript/) ang iyong site sa pamamagitan ng pagsasama, pagpapaliit, at pagko-compress ng mga script mo. Puwede ka ring gumamit ng proseso ng pagbuo para gawin ang pagpapaliit na ito nang mas maaga kung posible."
   },
   "stack-packs/packs/wordpress.js | unused_css_rules": {
-    "message": "Consider reducing, or switching, the number of [WordPress plugins](https://wordpress.org/plugins/) loading unused CSS in your page. To identify plugins that are adding extraneous CSS, try running [code coverage](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) in Chrome DevTools. You can identify the theme/plugin responsible from the URL of the stylesheet. Look out for plugins that have many stylesheets in the list which have a lot of red in code coverage. A plugin should only enqueue a stylesheet if it is actually used on the page."
+    "message": "Pag-isipang bawasan o ilipat ang ilang [plugin sa WordPress](https://wordpress.org/plugins/) nang nilo-load ang mga hindi nagamit na CSS sa iyong page. Para tukuyin ang mga plugin na nagdaragdag ng hindi nauugnay na CSS, subukang patakbuhin ang [sakop ng code](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) sa Chrome DevTools. Puwede mong tukuyin ang nauugnay na tema/plugin mula sa URL ng stylesheet. Abangan ang mga plugin na maraming stylesheet sa listahang maraming pula sa sakop ng code. Dapat lang i-enqueue ng plugin ang isang stylesheet kung talagang ginagamit ito sa page."
   },
   "stack-packs/packs/wordpress.js | unused_javascript": {
-    "message": "Consider reducing, or switching, the number of [WordPress plugins](https://wordpress.org/plugins/) loading unused JavaScript in your page. To identify plugins that are adding extraneous JS, try running [code coverage](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) in Chrome DevTools. You can identify the theme/plugin responsible from the URL of the script. Look out for plugins that have many scripts in the list which have a lot of red in code coverage. A plugin should only enqueue a script if it is actually used on the page."
+    "message": "Pag-isipang bawasan, o baguhin, ang bilang ng [plugin sa WordPress](https://wordpress.org/plugins/) nang nilo-load ang hindi nagamit na JavaScript sa iyong page. Para tukuyin ang mga plugin na nagdaragdag ng mga hindi nauugnay na JS, subukang patakbuhin ang [sakop ng code](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) sa Chrome DevTools. Puwede mong tukuyin ang nauugnay na tema/plugin mula sa URL ng script. Abangan ang mga plugin na maraming script sa listahang maraming pula sa sakop ng code. Dapat lang i-enqueue ng plugin ang isang script kung talagang ginagamit ito sa page."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "Read about [Browser Caching in WordPress](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching)."
+    "message": "Magbasa tungkol sa [Pag-cache ng browser sa WordPress](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching)."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
-    "message": "Consider using an [image optimization WordPress plugin](https://wordpress.org/plugins/search/optimize+images/) that compresses your images while retaining quality."
+    "message": "Pag-isipang gumamit ng [plugin sa WordPress para sa pag-optimize ng larawan](https://wordpress.org/plugins/search/optimize+images/) na nagko-compress ng iyong mga larawan habang pinapanatili ang kalidad."
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "Upload images directly through the [media library](https://codex.wordpress.org/Media_Library_Screen) to ensure that the required image sizes are available, and then insert them from the media library or use the image widget to ensure the optimal image sizes are used (including those for the responsive breakpoints). Avoid using `Full Size` images unless the dimensions are adequate for their usage. [Learn More](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)."
+    "message": "Direktang i-upload ang mga larawan sa pamamagitan ng [library ng media](https://codex.wordpress.org/Media_Library_Screen) para tiyaking available ang mga kinakailangang laki ng larawan, at pagkatapos ay ipasok ang mga ito sa library ng media o gamitin ang widget ng larawan para tiyaking ginagamit ang mga pinakanaaangkop na laki ng larawan (kabilang ang mga para sa tumutugong breakpoint). Iwasang gamitin ang mga larawang nasa `Buong Laki` maliban kung sapat ang mga dimensyon para sa paggamit ng mga ito. [Matuto pa](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)."
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
-    "message": "You can enable text compression in your web server configuration."
+    "message": "Puwede mong i-enable ang pag-compress ng text sa configuration ng iyong server sa web."
   },
   "stack-packs/packs/wordpress.js | uses_webp_images": {
-    "message": "Consider using a [plugin](https://wordpress.org/plugins/search/convert+webp/) or service that will automatically convert your uploaded images to the optimal formats."
+    "message": "Pag-isipang gumamit ng [plugin](https://wordpress.org/plugins/search/convert+webp/) o serbisyong awtomatikong magko-convert sa iyong mga na-upload na larawan sa mga pinakanaaangkop na format."
   }
 }

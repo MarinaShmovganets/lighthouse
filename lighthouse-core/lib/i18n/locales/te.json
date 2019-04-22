@@ -447,10 +447,10 @@
     "message": "విలువ"
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | description": {
-    "message": "Browser engineers recommend pages contain fewer than ~1,500 DOM elements. The sweet spot is a tree depth < 32 elements and fewer than 60 children/parent element. A large DOM can increase memory usage, cause longer [style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/tools/lighthouse/audits/dom-size)."
+    "message": "బ్రౌజర్ ఇంజినీర్‌లు ~1,500 కంటే తక్కువ DOM మూలకాలు కలిగి ఉండే పేజీలను సిఫార్సు చేస్తారు. వృక్ష పటం భాగాలు < 32 మూలకాలు మరియు 60 కంటే తక్కువ ఉప మూలకాలు/మూలాధార మూలకాలు కలిగి ఉన్నవి అత్యుత్తమమైనవి. పెద్ద DOM మెమరీ వినియోగాన్ని పెంచవచ్చు, సుదీర్ఘ [శైలి గణనలు](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations)కు దారి తీయవచ్చు, అలాగే ఖరీదైన [లేఅవుట్ రీఫ్లోలు](https://developers.google.com/speed/articles/reflow) ఉత్పాదించవచ్చు. [మరింత తెలుసుకోండి](https://developers.google.com/web/tools/lighthouse/audits/dom-size)."
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | displayValue": {
-    "message": "{itemCount, plural,\n    =1 {1 element}\n    other {# elements}\n    }"
+    "message": "{itemCount,plural, =1{1 మూలకం}other{# మూలకాలు}}"
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | failureTitle": {
     "message": "అధిక DOM పరిమాణాన్ని నివారించండి"
@@ -459,7 +459,7 @@
     "message": "DOM గరిష్ట గాఢత్వము"
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMElements": {
-    "message": "Total DOM Elements"
+    "message": "మొత్తం DOM మూలకాలు"
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMWidth": {
     "message": "పిల్ల మూలకాల గరిష్ట సంఖ్య"
@@ -927,7 +927,7 @@
     "message": "మీ పేజీ లోడ్ చేసే సమయంలో స్థితిగతిని రికార్డ్ చేస్తున్నప్పుడు ఏదో తప్పు జరిగింది. దయచేసి Lighthouseని మళ్లీ అమలు చేయండి. ({errorCode})"
   },
   "lighthouse-core/lib/lh-error.js | criTimeout": {
-    "message": "Timeout waiting for initial Debugger Protocol connection."
+    "message": "ప్రారంభ డీబగ్గర్ ప్రోటోకాల్ కనెక్షన్ నిరీక్షణ సమయం గడువు ముగిసింది."
   },
   "lighthouse-core/lib/lh-error.js | didntCollectScreenshots": {
     "message": "పేజీ లోడ్ సమయంలో Chrome ఎలాంటి స్క్రీన్‌షాట్‌లను సేకరించలేదు. దయచేసి పేజీలో కనిపించే కంటెంట్ ఉందని నిర్ధారించుకుని, ఆపై Lighthouseని తిరిగి అమలు చేయడం ప్రయత్నించండి. ({errorCode})"
@@ -1020,45 +1020,45 @@
     "message": "హెచ్చరికలు: "
   },
   "stack-packs/packs/wordpress.js | efficient_animated_content": {
-    "message": "Consider uploading your GIF to a service which will make it available to embed as an HTML5 video."
+    "message": "మీ GIFను HTML5 వీడియోగా పొందుపరచగల సౌలభ్యం అందించే సేవకు అప్‌లోడ్ చేయడానికి ప్రయత్నించండి."
   },
   "stack-packs/packs/wordpress.js | offscreen_images": {
-    "message": "Install a [lazy-load WordPress plugin](https://wordpress.org/plugins/search/lazy+load/) that provides the ability to defer any offscreen images, or switch to a theme that provides that functionality. Also consider using [the AMP plugin](https://wordpress.org/plugins/amp/)."
+    "message": "ఏవైనా ఆఫ్‌స్క్రీన్ చిత్రాలు ఉంటే, వాటిని మినహాయించగల సామర్థ్యం కలిగి ఉండే లేదా ఆ కార్యశీలతను అందించే థీమ్‌కు మార్చగలిగే [లేజీ-లోడ్ WordPress ప్లగ్ఇన్](https://wordpress.org/plugins/search/lazy+load/)ను ఇన్‌స్టాల్ చేసుకోండి. అలాగే, [AMP ప్లగ్ఇన్](https://wordpress.org/plugins/amp/) ఉపయోగించడం కూడా పరిశీలించండి."
   },
   "stack-packs/packs/wordpress.js | render_blocking_resources": {
-    "message": "There are a number of WordPress plugins that can help you [inline critical assets](https://wordpress.org/plugins/search/critical+css/) or [defer less important resources](https://wordpress.org/plugins/search/defer+css+javascript/). Beware that optimizations provided by these plugins may break features of your theme or plugins, so you will likely need to make code changes."
+    "message": "[కీలకమైన ఆస్తులను రేఖాక్రమంలో ఉంచడానికి](https://wordpress.org/plugins/search/critical+css/) లేదా [తక్కువ ప్రాముఖ్యత ఉన్న వనరులను మినహాయించడానికి](https://wordpress.org/plugins/search/defer+css+javascript/) మీకు సహాయపడగల అనేక WordPress ప్లగ్ఇన్‌లు ఉన్నాయి. ఈ ప్లగ్ఇన్‌ల ద్వారా అందించబడే ఆప్టిమైజేషన్‌లు మీ థీమ్ లేదా ప్లగ్ఇన్‌ల ఫీచర్‌లను విడగొట్టవచ్చని గుర్తుంచుకోండి, దీని వలన మీరు కోడ్ మార్పులను చేయాల్సి రావచ్చు."
   },
   "stack-packs/packs/wordpress.js | time_to_first_byte": {
-    "message": "Themes, plugins, and server specifications all contribute to server response time. Consider finding a more optimized theme, carefully selecting an optimization plugin, and/or upgrading your server."
+    "message": "థీమ్‌లు, ప్లగ్ఇన్‌లు, సర్వర్ లక్షణాలన్నీ కూడా సర్వర్ ప్రతిస్పందన సమయానికి దోహదం చేస్తాయి. మరింత ఆప్టిమైజ్ చేయబడిన థీమ్‌ను కనుగొనడానికి, చాలా జాగ్రత్తగా ఆప్టిమైజేషన్ ప్లగ్ఇన్‌ను ఎంచుకోవడానికి మరియు/లేదా మీ సర్వర్‌ను అప్‌గ్రేడ్ చేయడానికి ప్రయత్నించండి."
   },
   "stack-packs/packs/wordpress.js | total_byte_weight": {
-    "message": "Consider showing excerpts in your post lists (e.g. via the more tag), reducing the number of posts shown on a given page, breaking your long posts into multiple pages, or using a plugin to lazy-load comments."
+    "message": "ఇవ్వబడిన పేజీలో చూపబడే పోస్ట్‌ల సంఖ్యను తగ్గించడం, మీ పొడవైన పోస్ట్‌లను బహుళ పేజీలుగా విడగొట్టడం లేదా మందకొడి లోడింగ్ వ్యాఖ్యల కోసం ప్లగ్ఇన్‌ను ఉపయోగించడం ద్వారా (అంటే, మరిన్ని ట్యాగ్ ద్వారా) మీ పోస్ట్ జాబితాలలో సారాంశాలను చూపడానికి ప్రయత్నించండి."
   },
   "stack-packs/packs/wordpress.js | unminified_css": {
-    "message": "A number of [WordPress plugins](https://wordpress.org/plugins/search/minify+css/) can speed up your site by concatenating, minifying, and compressing your styles. You may also want to use a build process to do this minification up-front if possible."
+    "message": "అనేక [WordPress ప్లగ్ఇన్‌లు](https://wordpress.org/plugins/search/minify+css/) మీ శైలులను క్రమపరచడం, చిన్నవిగా చేయడం, కుదించడం ద్వారా మీ సైట్‌ను మరింత వేగవంతం చేయవచ్చు. వీలైతే, ఈ కనిష్టీకరణను ముందుగానే నిర్వహించేలా కూడా మీరు ఒక బిల్డ్ ప్రాసెస్‌ను ఉపయోగించాలని కోరుకోవచ్చు."
   },
   "stack-packs/packs/wordpress.js | unminified_javascript": {
-    "message": "A number of [WordPress plugins](https://wordpress.org/plugins/search/minify+javascript/) can speed up your site by concatenating, minifying, and compressing your scripts. You may also want to use a build process to do this minification up front if possible."
+    "message": "అనేక [WordPress ప్లగ్ఇన్‌లు](https://wordpress.org/plugins/search/minify+javascript/) మీ స్క్రిప్ట్‌లను క్రమపరచడం, చిన్నవిగా చేయడం, కుదించడం ద్వారా మీ సైట్‌ను మరింత వేగవంతం చేయవచ్చు. వీలైతే, ఈ కనిష్టీకరణను ముందుగానే నిర్వహించేలా కూడా మీరు ఒక బిల్డ్ ప్రాసెస్‌ను ఉపయోగించాలని కోరుకోవచ్చు."
   },
   "stack-packs/packs/wordpress.js | unused_css_rules": {
-    "message": "Consider reducing, or switching, the number of [WordPress plugins](https://wordpress.org/plugins/) loading unused CSS in your page. To identify plugins that are adding extraneous CSS, try running [code coverage](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) in Chrome DevTools. You can identify the theme/plugin responsible from the URL of the stylesheet. Look out for plugins that have many stylesheets in the list which have a lot of red in code coverage. A plugin should only enqueue a stylesheet if it is actually used on the page."
+    "message": "మీ పేజీలో ఉపయోగించని CSSను లోడ్ చేస్తున్న [WordPress ప్లగ్ఇన్‌లు] (https://wordpress.org/plugins/) సంఖ్యను తగ్గించడం లేదా మార్చడం పరిగణలోకి తీసుకోండి. అదనపు CSSను జోడిస్తున్న ప్లగ్ఇన్‌లను గుర్తించడానికి, Chrome DevToolsలో [కోడ్ కవరేజీ](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) అమలు చేయడానికి ప్రయత్నించండి. మీరు స్టైల్‌షీట్‌ యొక్క URL నుండి కారణమైన థీమ్/ప్లగ్ఇన్‌ను గుర్తించవచ్చు. కోడ్ కవరేజ్‌లో ఎక్కువ ఎరుపు రంగు కలిగి ఉన్న జాబితాలో అనేక స్టైల్‌షీట్‌లను కలిగి ఉన్న ప్లగ్ఇన్‌లను వెతకండి. ప్లగ్ఇన్ అన్నది పేజీలో వాస్తవానికి ఉపయోగించిన స్టైల్‌షీట్‌ను మాత్రమే జాబితాలో కలిగి ఉండాలి."
   },
   "stack-packs/packs/wordpress.js | unused_javascript": {
-    "message": "Consider reducing, or switching, the number of [WordPress plugins](https://wordpress.org/plugins/) loading unused JavaScript in your page. To identify plugins that are adding extraneous JS, try running [code coverage](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) in Chrome DevTools. You can identify the theme/plugin responsible from the URL of the script. Look out for plugins that have many scripts in the list which have a lot of red in code coverage. A plugin should only enqueue a script if it is actually used on the page."
+    "message": "మీ పేజీలో ఉపయోగించని JavaScriptను లోడ్ చేస్తున్న [WordPress ప్లగ్ఇన్‌లు] (https://wordpress.org/plugins/) సంఖ్యను తగ్గించడం లేదా మార్చడం పరిగణనలోకి తీసుకోండి. అదనపు JSను జోడించే ప్లగ్ఇన్‌లను గుర్తించడానికి, Chrome DevToolsలో [కోడ్ కవరేజీ] (https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) అమలు చేయడానికి ప్రయత్నించండి. మీరు స్క్రిప్ట్ యొక్క URL నుండి కారణమైన థీమ్/ ప్లగ్ఇన్‌ను గుర్తించవచ్చు. కోడ్ కవరేజ్‌లో ఎక్కువ ఎరుపు కలిగి ఉన్న జాబితాలో అనేక స్క్రిప్ట్‌లను కలిగి ఉన్న ప్లగ్ఇన్‌లను వెతకండి. ప్లగ్ఇన్ అన్నది పేజీలో వాస్తవానికి ఉపయోగించిన స్క్రిప్ట్‌ను మాత్రమే జాబితాలో కలిగి ఉండాలి."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "Read about [Browser Caching in WordPress](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching)."
+    "message": "[WordPressలో బ్రౌజర్ కాష్ విధానం](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching) గురించి చదవండి."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
-    "message": "Consider using an [image optimization WordPress plugin](https://wordpress.org/plugins/search/optimize+images/) that compresses your images while retaining quality."
+    "message": "నాణ్యత తగ్గకుండా మీ చిత్రాలను కుదించే [చిత్రం ఆప్టిమైజేషన్ WordPress ప్లగ్ఇన్](https://wordpress.org/plugins/search/optimize+images/)ను ఉపయోగించడం పరిశీలించండి."
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "Upload images directly through the [media library](https://codex.wordpress.org/Media_Library_Screen) to ensure that the required image sizes are available, and then insert them from the media library or use the image widget to ensure the optimal image sizes are used (including those for the responsive breakpoints). Avoid using `Full Size` images unless the dimensions are adequate for their usage. [Learn More](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)."
+    "message": "అవసరమైన చిత్ర పరిమాణాలు అందుబాటులో ఉన్నాయో లేదో నిర్ధారించుకోవడానికి చిత్రాలను నేరుగా [మీడియా లైబ్రరీ] (https://codex.wordpress.org/Media_Library_Screen) ద్వారా అప్‌లోడ్ చేయండి, ఆపై వాటిని మీడియా లైబ్రరీ నుండి చొప్పించండి లేదా అనుకూలమైన చిత్ర పరిమాణాలను ఉపయోగించారని నిర్ధారించుకోవడానికి (ప్రతిస్పందనాత్మక బ్రేక్ పాయింట్‌లు కలిగి ఉండే వాటికి కూడా) చిత్ర విడ్జెట్‌ను ఉపయోగించండి. కొలతలు వాటి వినియోగానికి తగినట్లుగా ఉంటే మినహా, `పూర్తి పరిమాణం` చిత్రాలను వినియోగించడం నివారించండి. [మరింత తెలుసుకోండి](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)."
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
-    "message": "You can enable text compression in your web server configuration."
+    "message": "మీరు మీ వెబ్ సర్వర్ కన్ఫిగరేషన్‌లో వచన కుదింపును ప్రారంభించవచ్చు."
   },
   "stack-packs/packs/wordpress.js | uses_webp_images": {
-    "message": "Consider using a [plugin](https://wordpress.org/plugins/search/convert+webp/) or service that will automatically convert your uploaded images to the optimal formats."
+    "message": "మీరు అప్‌లోడ్ చేసిన చిత్రాలను అనుకూలమైన ఫార్మాట్‌లలోకి ఆటోమేటిక్‌గా మార్చే [ప్లగ్ఇన్](https://wordpress.org/plugins/search/convert+webp/) లేదా సేవను ఉపయోగించడం పరిశీలించండి."
   }
 }
