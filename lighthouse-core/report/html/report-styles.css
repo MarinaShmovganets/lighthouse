@@ -987,6 +987,7 @@
 .lh-table {
   --image-preview-size: 24px;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .lh-table thead {
