@@ -104,7 +104,7 @@ describe('ReportRenderer', () => {
       assert.ok(header.querySelector('.lh-scores-container'), 'contains score container');
     });
 
-    it('renders score gauges in this order: mainstream, pwa, plugins', () => {
+    it('renders score gauges in this order: default, pwa, plugins', () => {
       const sampleResultsCopy = JSON.parse(JSON.stringify(sampleResults));
       sampleResultsCopy.categories['lighthouse-plugin-someplugin'] = {
         id: 'lighthouse-plugin-someplugin',
