@@ -830,7 +830,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding-top: var(--section-indent);
 }
 .lh-scores-header__solo {
   padding: 0;
