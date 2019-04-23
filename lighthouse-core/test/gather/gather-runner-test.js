@@ -519,7 +519,7 @@ describe('GatherRunner', function() {
       ],
     };
 
-    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []}).then(passData => {
+    return GatherRunner.endRecording({url, driver, passConfig}).then(passData => {
       assert.equal(calledTrace, true);
       assert.equal(passData.trace, fakeTraceData);
     });
@@ -568,7 +568,7 @@ describe('GatherRunner', function() {
       ],
     };
 
-    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []}).then(passData => {
+    return GatherRunner.endRecording({url, driver, passConfig}).then(passData => {
       assert.equal(calledDevtoolsLogCollect, true);
       assert.strictEqual(passData.devtoolsLog[0], fakeDevtoolsMessage);
     });
