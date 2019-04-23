@@ -89,12 +89,22 @@ class GatherRunner {
    * @return {Promise<void>}
    */
   static async loadPage(driver, passContext) {
+    const gatherers = passContext.passConfig.gatherers;
+    const status = {
+      msg: 'Loading page & waiting for onload',
+      id: `lh:gather:loadPage-${passContext.passConfig.passName}`,
+      args: [gatherers.map(g => g.instance.name).join(', ')],
+    };
+    log.time(status);
+
     const finalUrl = await driver.gotoURL(passContext.url, {
       waitForFCP: passContext.passConfig.recordTrace,
       waitForLoad: true,
       passContext,
     });
     passContext.url = finalUrl;
+
+    log.timeEnd(status);
   }
 
   /**
@@ -176,6 +186,26 @@ class GatherRunner {
   }
 
   /**
+   * Initialize network settings for the pass, e.g. throttling, blocked URLs,
+   * and manual request headers.
+   * @param {LH.Gatherer.PassContext} passContext
+   * @return {Promise<void>}
+   */
+  static async setupPassNetwork(passContext) {
+    const passConfig = passContext.passConfig;
+    await passContext.driver.setThrottling(passContext.settings, passConfig);
+
+    const blockedUrls = (passContext.passConfig.blockedUrlPatterns || [])
+      .concat(passContext.settings.blockedUrlPatterns || []);
+
+    // Set request blocking before any network activity
+    // No "clearing" is done at the end of the pass since blockUrlPatterns([]) will unset all if
+    // neccessary at the beginning of the next pass.
+    await passContext.driver.blockUrlPatterns(blockedUrls);
+    await passContext.driver.setExtraHTTPHeaders(passContext.settings.extraHeaders);
+  }
+
+  /**
    * Calls beforePass() on gatherers before tracing
    * has started and before navigation to the target page.
    * @param {LH.Gatherer.PassContext} passContext
@@ -185,14 +215,6 @@ class GatherRunner {
   static async beforePass(passContext, gathererResults) {
     const bpStatus = {msg: `Running beforePass methods`, id: `lh:gather:beforePass`};
     log.time(bpStatus, 'verbose');
-    const blockedUrls = (passContext.passConfig.blockedUrlPatterns || [])
-      .concat(passContext.settings.blockedUrlPatterns || []);
-
-    // Set request blocking before any network activity
-    // No "clearing" is done at the end of the pass since blockUrlPatterns([]) will unset all if
-    // neccessary at the beginning of the next pass.
-    await passContext.driver.blockUrlPatterns(blockedUrls);
-    await passContext.driver.setExtraHTTPHeaders(passContext.settings.extraHeaders);
 
     for (const gathererDefn of passContext.passConfig.gatherers) {
       const gatherer = gathererDefn.instance;
@@ -212,41 +234,34 @@ class GatherRunner {
   }
 
   /**
-   * Navigates to requested URL and then runs pass() on gatherers while trace
-   * (if requested) is still being recorded.
+   * Beging recording devtoolsLog and trace (if requested).
+   * @param {LH.Gatherer.PassContext} passContext
+   * @return {Promise<void>}
+   */
+  static async beginRecording(passContext) {
+    const {driver, passConfig, settings} = passContext;
+
+    // Always record devtoolsLog
+    await driver.beginDevtoolsLog();
+
+    if (passConfig.recordTrace) {
+      await driver.beginTrace(settings);
+    }
+  }
+
+  /**
+   * Run pass() on gatherers.
    * @param {LH.Gatherer.PassContext} passContext
    * @param {Partial<GathererResults>} gathererResults
    * @return {Promise<void>}
    */
   static async pass(passContext, gathererResults) {
-    const driver = passContext.driver;
     const config = passContext.passConfig;
-    const settings = passContext.settings;
     const gatherers = config.gatherers;
-
-    const recordTrace = config.recordTrace;
-    const isPerfRun = !settings.disableStorageReset && recordTrace && config.useThrottling;
-
-    const status = {
-      msg: 'Loading page & waiting for onload',
-      id: `lh:gather:loadPage-${passContext.passConfig.passName}`,
-      args: [gatherers.map(g => g.instance.name).join(', ')],
-    };
-    log.time(status);
-
-    // Clear disk & memory cache if it's a perf run
-    if (isPerfRun) await driver.cleanBrowserCaches();
-    // Always record devtoolsLog
-    await driver.beginDevtoolsLog();
-    // Begin tracing if requested by config.
-    if (recordTrace) await driver.beginTrace(settings);
-
-    // Navigate.
-    await GatherRunner.loadPage(driver, passContext);
-    log.timeEnd(status);
 
     const pStatus = {msg: `Running pass methods`, id: `lh:gather:pass`};
     log.time(pStatus, 'verbose');
+
     for (const gathererDefn of gatherers) {
       const gatherer = gathererDefn.instance;
       // Abuse the passContext to pass through gatherer options
@@ -263,7 +278,7 @@ class GatherRunner {
       gathererResults[gatherer.name] = gathererResult;
       await artifactPromise.catch(() => {});
     }
-    log.timeEnd(status);
+
     log.timeEnd(pStatus);
   }
 
@@ -522,13 +537,21 @@ class GatherRunner {
    * @return {Promise<Partial<GathererResults>>}
    */
   static async runPass(passContext) {
-    const passConfig = passContext.passConfig;
-    await passContext.driver.setThrottling(passContext.settings, passConfig);
-
     /** @type {Partial<GathererResults>} */
     const gathererResults = {};
+    const {driver, settings, passConfig} = passContext;
+    const isPerfPass = !settings.disableStorageReset && passConfig.recordTrace && passConfig.useThrottling;
 
+    // On about:blank.
+    await GatherRunner.setupPassNetwork(passContext);
+    if (isPerfPass) await driver.cleanBrowserCaches(); // Clear disk & memory cache if it's a perf run
     await GatherRunner.beforePass(passContext, gathererResults);
+    await GatherRunner.beginRecording(passContext);
+
+    // Navigate.
+    await GatherRunner.loadPage(driver, passContext);
+
+    // On test page.
     await GatherRunner.pass(passContext, gathererResults);
     const passData = await GatherRunner.afterPass(passContext, gathererResults);
 

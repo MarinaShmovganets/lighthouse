@@ -102,7 +102,9 @@ describe('GatherRunner', function() {
     const passContext = {
       requestedUrl: url1,
       settings: {},
-      passConfig: {},
+      passConfig: {
+        gatherers: [],
+      },
     };
 
     return GatherRunner.loadPage(driver, passContext).then(_ => {
@@ -420,7 +422,7 @@ describe('GatherRunner', function() {
       receivedUrlPatterns = params.urls;
     });
 
-    return GatherRunner.beforePass({
+    return GatherRunner.setupPassNetwork({
       driver,
       settings: {
         blockedUrlPatterns: ['http://*.evil.com', '.jpg', '.woff2'],
@@ -441,7 +443,7 @@ describe('GatherRunner', function() {
       receivedUrlPatterns = params.urls;
     });
 
-    return GatherRunner.beforePass({
+    return GatherRunner.setupPassNetwork({
       driver,
       settings: {},
       passConfig: {gatherers: []},
@@ -459,7 +461,7 @@ describe('GatherRunner', function() {
       'x-men': 'wolverine',
     };
 
-    return GatherRunner.beforePass({
+    return GatherRunner.setupPassNetwork({
       driver,
       settings: {
         extraHeaders: headers,
@@ -471,7 +473,7 @@ describe('GatherRunner', function() {
       ));
   });
 
-  it('tells the driver to begin tracing', () => {
+  it('tells the driver to begin tracing', async () => {
     let calledTrace = false;
     const driver = {
       beginTrace() {
@@ -494,9 +496,8 @@ describe('GatherRunner', function() {
     };
     const settings = {};
 
-    return GatherRunner.pass({driver, passConfig, settings}, {TestGatherer: []}).then(_ => {
-      assert.equal(calledTrace, true);
-    });
+    await GatherRunner.beginRecording({driver, passConfig, settings}, {TestGatherer: []});
+    assert.equal(calledTrace, true);
   });
 
   it('tells the driver to end tracing', () => {
@@ -524,7 +525,7 @@ describe('GatherRunner', function() {
     });
   });
 
-  it('tells the driver to begin devtoolsLog collection', () => {
+  it('tells the driver to begin devtoolsLog collection', async () => {
     let calledDevtoolsLogCollect = false;
     const driver = {
       beginDevtoolsLog() {
@@ -543,9 +544,8 @@ describe('GatherRunner', function() {
     };
     const settings = {};
 
-    return GatherRunner.pass({driver, passConfig, settings}, {TestGatherer: []}).then(_ => {
-      assert.equal(calledDevtoolsLogCollect, true);
-    });
+    await GatherRunner.beginRecording({driver, passConfig, settings}, {TestGatherer: []});
+    assert.equal(calledDevtoolsLogCollect, true);
   });
 
   it('tells the driver to end devtoolsLog collection', () => {
