@@ -17,6 +17,8 @@ const fs = require('fs');
 const libDetectorSource = fs.readFileSync(
   require.resolve('js-library-detector/library/libraries.js'), 'utf8');
 
+/** @typedef {import('./../gather/driver.js')} Driver */
+
 /** @typedef {false | {version: string|null}} JSLibraryDetectorTestResult */
 /**
  * @typedef JSLibraryDetectorTest
@@ -66,17 +68,17 @@ async function detectLibraries() {
 }
 
 /**
- * @param {LH.Gatherer.PassContext} passContext
+ * @param {Driver} driver
  * @return {Promise<LH.Artifacts['Stacks']>}
  */
-async function collectStacks(passContext) {
+async function collectStacks(driver) {
   const expression = `(function () {
     ${libDetectorSource};
     return (${detectLibraries.toString()}());
   })()`;
 
   /** @type {JSLibrary[]} */
-  const jsLibraries = await passContext.driver.evaluateAsync(expression);
+  const jsLibraries = await driver.evaluateAsync(expression);
 
   return jsLibraries.map(lib => ({
     detector: /** @type {'js'} */ ('js'),

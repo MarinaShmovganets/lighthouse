@@ -460,11 +460,10 @@ class GatherRunner {
       baseArtifacts.BenchmarkIndex = await options.driver.getBenchmarkIndex();
       await GatherRunner.setupDriver(driver, options);
 
-      // Run each pass
       let isFirstPass = true;
       for (const passConfig of passes) {
         const passContext = {
-          driver: options.driver,
+          driver,
           // If the main document redirects, we'll update this to keep track
           url: options.requestedUrl,
           settings: options.settings,
@@ -474,49 +473,38 @@ class GatherRunner {
           LighthouseRunWarnings: baseArtifacts.LighthouseRunWarnings,
         };
 
-        await driver.setThrottling(options.settings, passConfig);
         if (!isFirstPass) {
           // Already on blank page if driver was just set up.
           await GatherRunner.loadBlank(driver, passConfig.blankPage);
         }
-        await GatherRunner.beforePass(passContext, gathererResults);
-        await GatherRunner.pass(passContext, gathererResults);
 
-        if (isFirstPass) {
-          // Fetch the manifest, if it exists. Currently must be fetched before gatherers' `afterPass`.
-          baseArtifacts.WebAppManifest = await GatherRunner.getWebAppManifest(passContext);
-        }
+        const passResults = await GatherRunner.runPass(passContext);
+        Object.assign(gathererResults, passResults);
 
-        const passData = await GatherRunner.afterPass(passContext, gathererResults);
-
-        if (isFirstPass) {
-          baseArtifacts.Stacks = await stacksGatherer(passContext);
-        }
-
-        // Save devtoolsLog, but networkRecords are discarded and not added onto artifacts.
-        baseArtifacts.devtoolsLogs[passConfig.passName] = passData.devtoolsLog;
-
-        const userAgentEntry = passData.devtoolsLog.find(entry =>
-          entry.method === 'Network.requestWillBeSent' &&
-          !!entry.params.request.headers['User-Agent']
-        );
-
-        if (userAgentEntry && !baseArtifacts.NetworkUserAgent) {
-          // @ts-ignore - guaranteed to exist by the find above
-          baseArtifacts.NetworkUserAgent = userAgentEntry.params.request.headers['User-Agent'];
-        }
-
-        // If requested by config, save pass's trace.
-        if (passData.trace) {
-          baseArtifacts.traces[passConfig.passName] = passData.trace;
-        }
-
+        // TODO(bckenny): move into collect base or whatever?
         if (isFirstPass) {
           // Copy redirected URL to artifact in the first pass only.
           baseArtifacts.URL.finalUrl = passContext.url;
+
+          // Fetch the manifest, if it exists. Currently must be fetched before `start-url` gatherer.
+          baseArtifacts.WebAppManifest = await GatherRunner.getWebAppManifest(passContext);
+
+          baseArtifacts.Stacks = await stacksGatherer(driver);
+
+          const devtoolsLog = baseArtifacts.devtoolsLogs[passConfig.passName];
+          const userAgentEntry = devtoolsLog.find(entry =>
+            entry.method === 'Network.requestWillBeSent' &&
+            !!entry.params.request.headers['User-Agent']
+          );
+          if (userAgentEntry) {
+            // @ts-ignore - guaranteed to exist by the find above
+            baseArtifacts.NetworkUserAgent = userAgentEntry.params.request.headers['User-Agent'];
+          }
+
           isFirstPass = false;
         }
       }
+
       const resetStorage = !options.settings.disableStorageReset;
       if (resetStorage) await driver.clearDataForOrigin(options.requestedUrl);
       await GatherRunner.disposeDriver(driver);
@@ -526,6 +514,31 @@ class GatherRunner {
       GatherRunner.disposeDriver(driver);
       throw err;
     }
+  }
+
+  /**
+   * Starting from about:blank, load the page and run gatherers for this pass.
+   * @param {LH.Gatherer.PassContext} passContext
+   * @return {Promise<Partial<GathererResults>>}
+   */
+  static async runPass(passContext) {
+    const passConfig = passContext.passConfig;
+    await passContext.driver.setThrottling(passContext.settings, passConfig);
+
+    /** @type {Partial<GathererResults>} */
+    const gathererResults = {};
+
+    await GatherRunner.beforePass(passContext, gathererResults);
+    await GatherRunner.pass(passContext, gathererResults);
+    const passData = await GatherRunner.afterPass(passContext, gathererResults);
+
+    // Save devtoolsLog and trace (if requested by passConfig).
+    const baseArtifacts = passContext.baseArtifacts;
+    baseArtifacts.devtoolsLogs[passConfig.passName] = passData.devtoolsLog;
+    if (passData.trace) baseArtifacts.traces[passConfig.passName] = passData.trace;
+
+    // TODO(bckenny): actually collect here
+    return gathererResults;
   }
 }
 
