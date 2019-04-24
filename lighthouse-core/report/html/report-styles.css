@@ -829,6 +829,10 @@
   border: 0;
 }
 
+.lh-gauge__wrapper {
+  padding: var(--score-container-padding);
+}
+
 .lh-scores-header .lh-gauge__wrapper,
 .lh-scores-header .lh-gauge--pwa__wrapper {
   width: var(--score-container-width);
@@ -919,7 +923,6 @@
   max-width: 400px;
   width: auto;
   margin: 0px auto;
-  padding: var(--score-container-padding);
 }
 
 .lh-category-header .lh-audit__title {

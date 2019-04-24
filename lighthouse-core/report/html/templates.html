@@ -513,7 +513,7 @@ limitations under the License.
       content: "";
       position: absolute;
       right: -6px;
-      bottom: -2px;
+      bottom: 5px;
       display: block;
       z-index: 100;
       box-shadow: 0 0 4px rgba(0,0,0,.2);
@@ -537,7 +537,7 @@ limitations under the License.
       font-size: var(--score-number-font-size);
       line-height: var(--score-number-font-size);
       text-align: center;
-      top: calc(var(--gauge-circle-size) / 3);
+      top: calc(var(--score-container-padding) + var(--gauge-circle-size) / 3);
     }
 
     .lh-category .lh-gauge__percentage {
