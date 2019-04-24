@@ -118,6 +118,8 @@
   --score-title-font-size: 20px;
   --score-title-line-height-big: 36px;
   --score-title-line-height: 26px;
+  --scorescale-height: 6px;
+  --scorescale-width: 18px;
   --section-padding: 40px;
   --topbar-bg: var(--color-black-100);
   --topbar-height: 36px;
@@ -862,8 +864,8 @@
 
 .lh-scorescale-range::before {
   content: '';
-  width: 18px;
-  height: 6px;
+  width: var(--scorescale-width);
+  height: var(--scorescale-height);
   border-radius: 10px;
   display: block;
   margin-right: 10px;
