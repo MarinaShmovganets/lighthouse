@@ -688,11 +688,6 @@
   background-image: var(--pwa-optimized-color-url);
 }
 
-/* Removing too much whitespace */
-.lh-audit-group--metrics {
-  margin-top: calc(var(--gauge-circle-size)/2 * -1);
-  border-bottom: none;
-}
 .lh-audit-group--metrics .lh-audit-group__summary {
   margin-top: 0;
   margin-bottom: 0;
@@ -924,6 +919,7 @@
   max-width: 400px;
   width: auto;
   margin: 0px auto;
+  padding: var(--score-container-padding);
 }
 
 .lh-category-header .lh-audit__title {
