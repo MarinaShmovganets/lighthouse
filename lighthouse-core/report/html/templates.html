@@ -500,10 +500,12 @@ limitations under the License.
 
     .lh-gauge__svg-wrapper {
       position: relative;
-      /* The wrapper adds some height to the element. display: inline-block doesn't
-          work for some reason, so instead just shave off the extra height. */
-      margin-bottom: -7px;
+      height: var(--gauge-circle-size);
     }
+    .lh-category .lh-gauge__svg-wrapper {
+      --gauge-circle-size: var(--gauge-circle-size-big);
+    }
+
     /* The plugin badge overlay */
     .lh-gauge__wrapper--plugin .lh-gauge__svg-wrapper::before {
       width: var(--plugin-badge-size);
