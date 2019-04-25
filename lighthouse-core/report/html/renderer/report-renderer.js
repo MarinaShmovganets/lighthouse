@@ -256,8 +256,9 @@ class ReportRenderer {
     // }
 
     if (scoreHeader) {
-      scoreHeader.append(
-        ...this._renderScoreGauges(report, categoryRenderer, specificCategoryRenderers));
+      const scoreGauges =
+        this._renderScoreGauges(report, categoryRenderer, specificCategoryRenderers);
+      scoreHeader.append(...scoreGauges);
       const scoreScale = this._dom.cloneTemplate('#tmpl-lh-scorescale', this._templateContext);
       const scoresContainer = this._dom.find('.lh-scores-container', headerContainer);
       scoresContainer.appendChild(scoreHeader);
@@ -277,10 +278,9 @@ class ReportRenderer {
       const stickyHeader = this._dom.createElement('div', 'lh-sticky-header');
       this._dom.createChildOf(stickyHeader, 'div', 'lh-highlighter');
 
-      // The sticky header is just the score gauges, but styled to be smaller. Just
-      // clone the gauges from the score header.
-      stickyHeader.append(
-        ...this._renderScoreGauges(report, categoryRenderer, specificCategoryRenderers));
+      const scoreGauges =
+        this._renderScoreGauges(report, categoryRenderer, specificCategoryRenderers);
+      stickyHeader.append(...scoreGauges);
 
       reportFragment.appendChild(stickyHeader);
     }
