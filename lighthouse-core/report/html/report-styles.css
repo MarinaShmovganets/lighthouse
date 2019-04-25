@@ -396,7 +396,7 @@
 /* Expandable Details (Audit Groups, Audits) */
 .lh-audit__header {
   display: flex;
-  padding: var(--lh-audit-vpadding) var(--text-indent);
+  padding: var(--lh-audit-vpadding) 0;
 }
 
 .lh-audit--load-opportunity .lh-audit__header {
