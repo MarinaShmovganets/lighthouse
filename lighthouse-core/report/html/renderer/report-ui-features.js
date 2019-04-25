@@ -405,8 +405,6 @@ class ReportUIFeatures {
     const topbarBottom = this.topbarEl.getBoundingClientRect().bottom;
     const scoreScaleTop = this.scoreScaleEl.getBoundingClientRect().top;
     const showStickyHeader = topbarBottom >= scoreScaleTop;
-    this.stickyHeaderEl.classList.toggle('lh-sticky-header--visible', showStickyHeader);
-    if (!showStickyHeader) return;
 
     // Highlight mini gauge when section is in view.
     // In view = the last category that starts above the middle of the window.
@@ -419,7 +417,11 @@ class ReportUIFeatures {
     // Category order matches gauge order in sticky header.
     const gaugeWrapperEls = this.stickyHeaderEl.querySelectorAll('.lh-gauge__wrapper');
     const gaugeToHighlight = gaugeWrapperEls[highlightIndex];
-    this.highlightEl.style.left = gaugeToHighlight.getBoundingClientRect().left + 'px';
+    const offset = gaugeToHighlight.getBoundingClientRect().left + 'px';
+
+    // Mutate at end to avoid layout thrashing.
+    this.stickyHeaderEl.classList.toggle('lh-sticky-header--visible', showStickyHeader);
+    this.highlightEl.style.left = offset;
   }
 }
 
