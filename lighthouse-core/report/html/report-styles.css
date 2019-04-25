@@ -648,6 +648,17 @@
   border-bottom: 1px solid var(--report-secondary-border-color);
 }
 
+/*
+* Apply border-top to just the first audit.
+*/
+.lh-audit {
+  border-top: 1px solid var(--report-secondary-border-color);
+}
+.lh-audit ~ .lh-audit {
+  border-top: none;
+}
+
+
 .lh-audit--error .lh-audit__display-text {
   color: var(--color-fail);
 }
