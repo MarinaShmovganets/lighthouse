@@ -406,6 +406,7 @@ class ReportUIFeatures {
     const scoreScaleTop = this.scoreScaleEl.getBoundingClientRect().top;
     const showStickyHeader = topbarBottom >= scoreScaleTop;
     this.stickyHeaderEl.classList.toggle('lh-sticky-header--visible', showStickyHeader);
+    if (!showStickyHeader) return;
 
     // Highlight mini gauge when section is in view.
     // In view = the last category that starts above the middle of the window.
@@ -416,8 +417,6 @@ class ReportUIFeatures {
       categoriesAboveTheMiddle.length > 0 ? categoriesAboveTheMiddle.length - 1 : 0;
 
     // Category order matches gauge order in sticky header.
-    // TODO(hoten): not 100% true yet, need to order gauges like: core, pwa, plugins. Remove
-    // this comment when that is done.
     const gaugeWrapperEls = this.stickyHeaderEl.querySelectorAll('.lh-gauge__wrapper');
     const gaugeToHighlight = gaugeWrapperEls[highlightIndex];
     this.highlightEl.style.left = gaugeToHighlight.getBoundingClientRect().left + 'px';
