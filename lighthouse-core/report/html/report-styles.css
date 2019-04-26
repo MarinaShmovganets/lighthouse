@@ -722,6 +722,8 @@
 .lh-audit-group__header {
   font-size: var(--body-font-size);
   margin: 0 0 var(--lh-audit-group-vpadding);
+  /* When the header takes 100% width, the chevron becomes small. */
+  max-width: calc(100% - var(--chevron-size));
 }
 
 .lh-audit-group__header span.lh-audit-group__title {
