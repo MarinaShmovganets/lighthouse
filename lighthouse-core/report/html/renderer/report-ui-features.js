@@ -31,8 +31,9 @@
  * @param {HTMLTableElement} tableEl
  * @return {Array<HTMLTableRowElement>}
  */
-const getTableRows = tableEl => /** @type {Array<HTMLTableRowElement>} */
-  (Array.from(tableEl.tBodies[0].children));
+function getTableRows(tableEl) {
+  return Array.from(tableEl.tBodies[0].rows);
+}
 
 class ReportUIFeatures {
   /**
@@ -136,68 +137,73 @@ class ReportUIFeatures {
       'uses-rel-preconnect',
     ];
 
-    // get all tables with a text url
+    // Get all tables with a text url column.
     /** @type {Array<HTMLTableElement>} */
     const tables = Array.from(this._document.querySelectorAll('.lh-table'));
     const tablesWithUrls = tables
       .filter(el => el.querySelector('td.lh-table-column--url'))
-      .filter(el => !thirdPartyFilterAuditExclusions.includes(
-        /** @type {Element} */(el.closest('.lh-audit')).id));
+      .filter(el => {
+        const containingAudit = el.closest('.lh-audit');
+        if (!containingAudit) throw new Error('.lh-table not within audit');
+        return !thirdPartyFilterAuditExclusions.includes(containingAudit.id);
+      });
 
     tablesWithUrls.forEach((tableEl, index) => {
       const thirdPartyRows = this._getThirdPartyRows(tableEl, this.json.finalUrl);
-      // no 3rd parties, no checkbox!
-      if (!thirdPartyRows.size) {
-        return;
-      }
+      // No 3rd parties, no checkbox!
+      if (!thirdPartyRows.size) return;
+
       // create input box
       const filterTemplate = this._dom.cloneTemplate('#tmpl-lh-3p-filter', this._document);
-      const filterInput = /** @type {HTMLInputElement} */ (filterTemplate.querySelector('input'));
+      const filterInput = this._dom.find('input', filterTemplate);
       const id = `lh-3p-filter-label--${index}`;
 
-      filterInput.setAttribute('id', id);
+      filterInput.id = id;
       filterInput.addEventListener('change', e => {
-        // remove elements from the dom and keep track of them to readd on uncheck
-        // why removing instead of hiding? nth-child(even) background-colors keep working
-        if (e.target instanceof HTMLInputElement && e.target.checked) {
+        // Remove rows from the dom and keep track of them to readd on uncheck.
+        // Why removing instead of hiding? To keep nth-child(even) background-colors working.
+        if (e.target instanceof HTMLInputElement && !e.target.checked) {
+          for (const row of thirdPartyRows.values()) {
+            row.remove();
+          }
+        } else {
+          // Add row elements back to original positions.
           for (const [position, row] of thirdPartyRows.entries()) {
             const childrenArr = getTableRows(tableEl);
             tableEl.tBodies[0].insertBefore(row, childrenArr[position]);
           }
-        } else {
-          for (const position of thirdPartyRows.keys()) {
-            const row = /** @type {HTMLTableRowElement} */ (thirdPartyRows.get(position));
-            row.remove();
-          }
         }
       });
 
-      if (tableEl.parentNode) {
-        this._dom.find('label', filterTemplate).setAttribute('for', id);
-        this._dom.find('.lh-3p-filter-count', filterTemplate).textContent =
+      this._dom.find('label', filterTemplate).setAttribute('for', id);
+      this._dom.find('.lh-3p-filter-count', filterTemplate).textContent =
           `${thirdPartyRows.size}`;
-        this._dom.find('.lh-3p-ui-string', filterTemplate).textContent =
-          `${Util.UIStrings.thirdPartyResourcesLabel}`;
-        // Finally, add checkbox to the DOM
-        tableEl.parentNode.insertBefore(filterTemplate, tableEl);
-      }
+      this._dom.find('.lh-3p-ui-string', filterTemplate).textContent =
+          Util.UIStrings.thirdPartyResourcesLabel;
+
+      // Finally, add checkbox to the DOM.
+      if (!tableEl.parentNode) return; // Keep tsc happy.
+      tableEl.parentNode.insertBefore(filterTemplate, tableEl);
     });
   }
 
   /**
+   * From a table with URL entries, finds the rows containing third-party URLs
+   * and returns a Map of those rows, mapping from row index to row Element.
    * @param {HTMLTableElement} el
    * @param {string} finalUrl
    * @return {Map<number, HTMLTableRowElement>}
    */
   _getThirdPartyRows(el, finalUrl) {
-    /** @type {NodeListOf<HTMLElement>} */
-    const urlItems = el.querySelectorAll('.lh-text__url');
-    const rootDomain = Util.getRootDomain(finalUrl);
+    const urlItems = this._dom.findAll('.lh-text__url', el);
+    const finalUrlRootDomain = Util.getRootDomain(finalUrl);
+
     /** @type {Map<number, HTMLTableRowElement>} */
     const thirdPartyRows = new Map();
     for (const urlItem of urlItems) {
-      const datasetUrl = urlItem.dataset.url || '';
-      const isThirdParty = Util.getRootDomain(datasetUrl) !== rootDomain;
+      const datasetUrl = urlItem.dataset.url;
+      if (!datasetUrl) continue;
+      const isThirdParty = Util.getRootDomain(datasetUrl) !== finalUrlRootDomain;
       if (!isThirdParty) continue;
 
       const urlRowEl = urlItem.closest('tr');

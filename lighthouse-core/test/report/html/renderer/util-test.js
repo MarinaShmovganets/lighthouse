@@ -6,7 +6,6 @@
 'use strict';
 
 const assert = require('assert');
-const URL = require('url').URL;
 const Util = require('../../../../report/html/renderer/util.js');
 const sampleResult = require('../../../results/sample_v2.json');
 
@@ -14,6 +13,7 @@ const NBSP = '\xa0';
 
 /* eslint-env jest */
 /* eslint-disable no-console */
+/* global URL */
 
 describe('util helpers', () => {
   let origConsoleWarn;

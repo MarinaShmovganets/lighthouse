@@ -29,6 +29,7 @@ describe('ReportUIFeatures', () => {
   let renderer;
   let reportUIFeatures;
   let sampleResults;
+  let dom;
 
   beforeAll(() => {
     global.Util = Util;
@@ -70,7 +71,7 @@ describe('ReportUIFeatures', () => {
       };
     };
 
-    const dom = new DOM(document.window.document);
+    dom = new DOM(document.window.document);
     const detailsRenderer = new DetailsRenderer(dom);
     const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
     renderer = new ReportRenderer(dom, categoryRenderer);
@@ -93,7 +94,7 @@ describe('ReportUIFeatures', () => {
     global.HTMLInputElement = undefined;
   });
 
-  describe('initFeature', () => {
+  describe('initFeatures', () => {
     it('should init a report', () => {
       // render a report onto the UIFeature dom
       const container = reportUIFeatures._dom._document.querySelector('main');
@@ -104,45 +105,60 @@ describe('ReportUIFeatures', () => {
       assert.ok(reportUIFeatures.json);
     });
 
-    it('filters out third party resources in details tables when checkbox is clicked', () => {
-      // console.log(Object.keys(sampleResults.categories.performance));
-      const lhr = JSON.parse(JSON.stringify(sampleResults));
-      lhr.requestedUrl = lhr.finalUrl = 'http://www.example.com';
-      const webpAuditItemTemplate = sampleResults.audits['uses-webp-images'].details.items[0];
-      lhr.audits['uses-webp-images'].details.items = [
-        {
-          ...webpAuditItemTemplate,
-          url: 'http://www.example.com/img1.jpg',
-        },
-        {
-          ...webpAuditItemTemplate,
-          url: 'http://www.cdn.com/img2.jpg',
-        },
-        {
-          ...webpAuditItemTemplate,
-          url: 'http://www.notexample.com/img3.jpg',
-        },
-      ];
+    describe('thrid-party filtering', () => {
+      let container;
 
-      // render a report onto the UIFeature dom
-      const container = reportUIFeatures._dom._document.querySelector('main');
-      renderer.renderReport(lhr, container);
-      reportUIFeatures.initFeatures(lhr);
+      beforeAll(() => {
+        const lhr = JSON.parse(JSON.stringify(sampleResults));
+        lhr.requestedUrl = lhr.finalUrl = 'http://www.example.com';
+        const webpAuditItemTemplate = sampleResults.audits['uses-webp-images'].details.items[0];
+        // Interleave first/third party URLs to test restoring order.
+        lhr.audits['uses-webp-images'].details.items = [
+          {
+            ...webpAuditItemTemplate,
+            url: 'http://www.cdn.com/img1.jpg', // Third party, will be filtered.
+          },
+          {
+            ...webpAuditItemTemplate,
+            url: 'http://www.example.com/img2.jpg', // First party, not filtered.
+          },
+          {
+            ...webpAuditItemTemplate,
+            url: 'http://www.notexample.com/img3.jpg', // Third party, will be filtered.
+          },
+        ];
 
-      const filterToggle =
-        reportUIFeatures._dom.find('#uses-webp-images .lh-3p-filter-input', container);
+        // render a report onto the UIFeature dom
+        container = dom.find('main', dom._document);
+        renderer.renderReport(lhr, container);
+        reportUIFeatures.initFeatures(lhr);
+      });
 
-      function getUrls() {
-        return reportUIFeatures._dom
-          .findAll('#uses-webp-images .lh-details .lh-text__url .lh-text:first-child', container)
-          .map(el => el.textContent);
-      }
+      it('filters out third party resources in details tables when checkbox is clicked', () => {
+        const filterCheckbox = dom.find('#uses-webp-images .lh-3p-filter-input', container);
 
-      expect(getUrls()).toEqual(['/img1.jpg', '/img2.jpg', '/img3.jpg']);
-      filterToggle.click();
-      expect(getUrls()).toEqual(['/img1.jpg']);
-      filterToggle.click();
-      expect(getUrls()).toEqual(['/img1.jpg', '/img2.jpg', '/img3.jpg']);
+        function getUrlsInTable() {
+          return dom
+            .findAll('#uses-webp-images .lh-details .lh-text__url .lh-text:first-child', container)
+            .map(el => el.textContent);
+        }
+
+        expect(getUrlsInTable()).toEqual(['/img1.jpg', '/img2.jpg', '/img3.jpg']);
+        filterCheckbox.click();
+        expect(getUrlsInTable()).toEqual(['/img2.jpg']);
+        filterCheckbox.click();
+        expect(getUrlsInTable()).toEqual(['/img1.jpg', '/img2.jpg', '/img3.jpg']);
+      });
+
+      it('adds no filter for audits that do not need them', () => {
+        const checkboxClassName = 'lh-3p-filter-input';
+
+        const yesCheckbox = dom.find(`#uses-webp-images .${checkboxClassName}`, container);
+        expect(yesCheckbox).toBeTruthy();
+
+        expect(() => dom.find(`#uses-rel-preconnect .${checkboxClassName}`, container))
+          .toThrowError('query #uses-rel-preconnect .lh-3p-filter-input not found');
+      });
     });
   });
 });
