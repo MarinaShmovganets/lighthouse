@@ -1344,8 +1344,8 @@
     "description": "Label for button that shows all lines of the snippet when clicked"
   },
   "lighthouse-core/report/html/renderer/util.js | thirdPartyResourcesLabel": {
-    "message": "Show 3rd party resources",
-    "description": "This label is shown above a table next to the checkbox to hide 3rd party resources"
+    "message": "Show 3rd-party resources",
+    "description": "This label is for a checkbox above a table of items loaded by a web page. The checkbox is used to show or hide third-party (or \"3rd-party\") resources in the table, where \"third-party resources\" refers to items loaded by a web page from URLs that aren't controlled by the owner of the web page."
   },
   "lighthouse-core/report/html/renderer/util.js | toplevelWarningsMessage": {
     "message": "There were issues affecting this run of Lighthouse:",
