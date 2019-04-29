@@ -168,10 +168,10 @@ class ReportUIFeatures {
       });
 
       if (tableEl.parentNode) {
-        /** @type {Element} */ (filterTemplate.querySelector('label')).setAttribute('for', id);
-        /** @type {Element} */ (filterTemplate.querySelector('.lh-3p-filter-count')).textContent =
+        this._dom.find('label', filterTemplate).setAttribute('for', id);
+        this._dom.find('.lh-3p-filter-count', filterTemplate).textContent =
           `${thirdPartyRows.size}`;
-        /** @type {Element} */ (filterTemplate.querySelector('.lh-3p-ui-string')).textContent =
+        this._dom.find('.lh-3p-ui-string', filterTemplate).textContent =
           `${Util.UIStrings.thirdPartyResourcesLabel}`;
         // Finally, add checkbox to the DOM
         tableEl.parentNode.insertBefore(filterTemplate, tableEl);
