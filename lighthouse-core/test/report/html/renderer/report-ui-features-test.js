@@ -118,11 +118,10 @@ describe('ReportUIFeatures', () => {
           ...webpAuditItemTemplate,
           url: 'http://www.cdn.com/img2.jpg',
         },
-        // TODO
-        // {
-        //   ...webpAuditItemTemplate,
-        //   url: "http://www.notexample.com/img3.jpg",
-        // },
+        {
+          ...webpAuditItemTemplate,
+          url: 'http://www.notexample.com/img3.jpg',
+        },
       ];
 
       // render a report onto the UIFeature dom
@@ -139,11 +138,11 @@ describe('ReportUIFeatures', () => {
           .map(el => el.textContent);
       }
 
-      expect(getUrls()).toEqual(['/img1.jpg', '/img2.jpg']);
+      expect(getUrls()).toEqual(['/img1.jpg', '/img2.jpg', '/img3.jpg']);
       filterToggle.click();
       expect(getUrls()).toEqual(['/img1.jpg']);
       filterToggle.click();
-      expect(getUrls()).toEqual(['/img1.jpg', '/img2.jpg']);
+      expect(getUrls()).toEqual(['/img1.jpg', '/img2.jpg', '/img3.jpg']);
     });
   });
 });

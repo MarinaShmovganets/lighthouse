@@ -191,13 +191,9 @@ class ReportUIFeatures {
     /** @type {Map<number, HTMLTableRowElement>} */
     const thirdPartyRows = new Map();
     for (const urlItem of urlItems) {
-      const datasetUrl = (urlItem.dataset.url || '');
-      // the : check is used for domains that specify a port (google.com:8080/index.html)
-      const isThirdParty = !datasetUrl.includes(`${rootDomain}/`) &&
-        !datasetUrl.includes(`${rootDomain}:`);
-      if (!isThirdParty) {
-        continue;
-      }
+      const datasetUrl = urlItem.dataset.url || '';
+      const isThirdParty = Util.getRootDomain(datasetUrl) !== rootDomain;
+      if (!isThirdParty) continue;
 
       const urlRowEl = urlItem.closest('tr');
       if (urlRowEl) {
