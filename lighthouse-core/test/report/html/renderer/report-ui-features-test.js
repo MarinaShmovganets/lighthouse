@@ -60,6 +60,8 @@ describe('ReportUIFeatures', () => {
       };
     };
 
+    global.HTMLInputElement = document.window.HTMLInputElement;
+
     global.window = document.window;
     global.window.getComputedStyle = function() {
       return {
@@ -88,6 +90,7 @@ describe('ReportUIFeatures', () => {
     global.PerformanceCategoryRenderer = undefined;
     global.PwaCategoryRenderer = undefined;
     global.window = undefined;
+    global.HTMLInputElement = undefined;
   });
 
   describe('initFeature', () => {
@@ -99,6 +102,48 @@ describe('ReportUIFeatures', () => {
       assert.equal(reportUIFeatures.json, undefined);
       reportUIFeatures.initFeatures(sampleResults);
       assert.ok(reportUIFeatures.json);
+    });
+
+    it('filters out third party resources in details tables when checkbox is clicked', () => {
+      // console.log(Object.keys(sampleResults.categories.performance));
+      const lhr = JSON.parse(JSON.stringify(sampleResults));
+      lhr.requestedUrl = lhr.finalUrl = 'http://www.example.com';
+      const webpAuditItemTemplate = sampleResults.audits['uses-webp-images'].details.items[0];
+      lhr.audits['uses-webp-images'].details.items = [
+        {
+          ...webpAuditItemTemplate,
+          url: 'http://www.example.com/img1.jpg',
+        },
+        {
+          ...webpAuditItemTemplate,
+          url: 'http://www.cdn.com/img2.jpg',
+        },
+        // TODO
+        // {
+        //   ...webpAuditItemTemplate,
+        //   url: "http://www.notexample.com/img3.jpg",
+        // },
+      ];
+
+      // render a report onto the UIFeature dom
+      const container = reportUIFeatures._dom._document.querySelector('main');
+      renderer.renderReport(lhr, container);
+      reportUIFeatures.initFeatures(lhr);
+
+      const filterToggle =
+        reportUIFeatures._dom.find('#uses-webp-images .lh-3p-filter-input', container);
+
+      function getUrls() {
+        return reportUIFeatures._dom
+          .findAll('#uses-webp-images .lh-details .lh-text__url .lh-text:first-child', container)
+          .map(el => el.textContent);
+      }
+
+      expect(getUrls()).toEqual(['/img1.jpg', '/img2.jpg']);
+      filterToggle.click();
+      expect(getUrls()).toEqual(['/img1.jpg']);
+      filterToggle.click();
+      expect(getUrls()).toEqual(['/img1.jpg', '/img2.jpg']);
     });
   });
 });
