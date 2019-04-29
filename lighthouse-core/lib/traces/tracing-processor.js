@@ -247,7 +247,9 @@ class TraceProcessor {
     const firstResourceSendEvt = events.find(e => e.name === 'ResourceSendRequest');
     // We know that these properties exist if we found the events, but TSC doesn't.
     if (navStartEvt && navStartEvt.args && navStartEvt.args.data &&
-        firstResourceSendEvt && firstResourceSendEvt.tid === navStartEvt.tid) {
+        firstResourceSendEvt &&
+        firstResourceSendEvt.pid === navStartEvt.pid &&
+        firstResourceSendEvt.tid === navStartEvt.tid) {
       const frameId = navStartEvt.args.frame;
       if (frameId) {
         return {
