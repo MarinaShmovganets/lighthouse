@@ -105,7 +105,7 @@ describe('ReportUIFeatures', () => {
       assert.ok(reportUIFeatures.json);
     });
 
-    describe('thrid-party filtering', () => {
+    describe('third-party filtering', () => {
       let container;
 
       beforeAll(() => {
@@ -159,6 +159,34 @@ describe('ReportUIFeatures', () => {
         expect(() => dom.find(`#uses-rel-preconnect .${checkboxClassName}`, container))
           .toThrowError('query #uses-rel-preconnect .lh-3p-filter-input not found');
       });
+    });
+  });
+
+  describe('metric description toggles', () => {
+    let container;
+    let metricsAuditGroup;
+    let toggle;
+    const showClass = 'lh-audit-group--metrics__show-descriptions';
+
+    beforeAll(() => {
+      // render a report onto the UIFeature dom
+      container = dom.find('main', dom._document);
+      renderer.renderReport(sampleResults, container);
+      reportUIFeatures.initFeatures(sampleResults);
+      metricsAuditGroup = dom.find('.lh-audit-group--metrics', container);
+      toggle = dom.find('.lh-metrics-toggle__input', metricsAuditGroup);
+    });
+
+    it('descriptions hidden by default', () => {
+      assert.ok(!metricsAuditGroup.classList.contains(showClass));
+    });
+
+    it('can toggle description visibility', () => {
+      assert.ok(!metricsAuditGroup.classList.contains(showClass));
+      toggle.click();
+      assert.ok(metricsAuditGroup.classList.contains(showClass));
+      toggle.click();
+      assert.ok(!metricsAuditGroup.classList.contains(showClass));
     });
   });
 });
