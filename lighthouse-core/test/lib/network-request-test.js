@@ -214,5 +214,29 @@ describe('NetworkRequest', () => {
         responseMs: 9000,
       });
     });
+
+    it('does not override existing timing properties', function() {
+      const req = getRequest();
+      req.timing = {proxyStart: 17, sslStart: 35};
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+
+      const noLRRecord = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+      expect(noLRRecord.timing.proxyStart).toStrictEqual(17);
+      expect(noLRRecord.timing.sslStart).toStrictEqual(35);
+
+      global.isLightrider = true;
+      const lrRecord = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+      expect(lrRecord.timing).toMatchObject({
+        proxyStart: 17,
+        sslStart: 35,
+      });
+      expect(lrRecord.lrStatistics).toStrictEqual({
+        endTimeDeltaMs: -8000,
+        TCPMs: 5000,
+        requestMs: 2500,
+        responseMs: 2500,
+      });
+    });
   });
 });
