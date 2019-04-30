@@ -31,8 +31,8 @@ if [[ -n "$(git status --porcelain)" ]]; then
 fi
 
 # Checkout a new branch for the version commit
-git fetch origin master
-git checkout origin/master
+git fetch origin v4
+git checkout origin/v4
 git log -n 1
 git branch -D "$BRANCH_NAME" || true
 git checkout -b "$BRANCH_NAME"
