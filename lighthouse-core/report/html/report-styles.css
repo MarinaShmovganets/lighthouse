@@ -597,29 +597,31 @@
   align-items: center;
   justify-content: center;
   padding: 2px 5px;
+  width: 50%;
+  height: 28px;
 }
 .lh-metrics-toggle__input:not(:checked) + label .lh-metrics-toggle__icon--less,
 .lh-metrics-toggle__input:checked + label .lh-metrics-toggle__icon--more {
   background-color: var(--color-blue);
+  --color-metric-toggle-lines: var(--color-white);
 }
 .lh-metrics-toggle__lines {
   fill: var(--color-metric-toggle-lines);
 }
-.lh-metrics-toggle__input:not(:checked) + label .lh-metrics-toggle__icon--less .lh-metrics-toggle__lines,
-.lh-metrics-toggle__input:checked + label .lh-metrics-toggle__icon--more .lh-metrics-toggle__lines {
-  --color-metric-toggle-lines: var(--color-white);
-}
 .lh-metrics-toggle label .lh-metrics-toggle__icon--less {
-  width: 50%;
-  height: 28px;
   padding-left: 8px;
 }
 .lh-metrics-toggle label .lh-metrics-toggle__icon--more {
-  width: 50%;
-  height: 28px;
   padding-right: 8px;
 }
 
+/* Pushes the metric description toggle button to the right. */
+.lh-audit-group--metrics .lh-audit-group__header {
+  display: flex;
+}
+.lh-audit-group--metrics .lh-audit-group__header span.lh-audit-group__title {
+  flex: 1;
+}
 
 .lh-metric .lh-metric__innerwrap::before {
   content: '';
@@ -853,14 +855,6 @@
 
 .lh-audit-group__header span.lh-audit-group__title {
   font-weight: bold;
-}
-
-/* Pushes the metric description toggle button to the right. */
-.lh-audit-group--metrics .lh-audit-group__header {
-  display: flex;
-}
-.lh-audit-group--metrics .lh-audit-group__header span.lh-audit-group__title {
-  flex: 1;
 }
 
 .lh-audit-group__header span.lh-audit-group__itemcount {
