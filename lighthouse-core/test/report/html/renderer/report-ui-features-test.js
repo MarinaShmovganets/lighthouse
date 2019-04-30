@@ -171,7 +171,7 @@ describe('ReportUIFeatures', () => {
     const toggleClass = 'lh-metrics-toggle__input';
     const showClass = 'lh-audit-group--metrics__show-descriptions';
 
-    describe('works', () => {
+    describe('works if there is a performance category', () => {
       beforeAll(() => {
         container = render(sampleResults);
         metricsAuditGroup = dom.find(`.${metricsClass}`, container);
