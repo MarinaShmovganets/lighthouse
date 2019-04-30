@@ -5,6 +5,7 @@
 ## Core
 
 * support traces missing TracingStartedInBrowser ([#7122](https://github.com/googlechrome/lighthouse/pull/7122))
+* driver: only fail security state if scheme is not cryptographic ([#8338](https://github.com/googlechrome/lighthouse/pull/8338))
 
 ## Clients
 
