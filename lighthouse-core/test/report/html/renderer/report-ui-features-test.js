@@ -26,10 +26,22 @@ const TEMPLATE_FILE_REPORT = fs.readFileSync(__dirname +
   '/../../../../report/html/report-template.html', 'utf8');
 
 describe('ReportUIFeatures', () => {
-  let renderer;
-  let reportUIFeatures;
   let sampleResults;
   let dom;
+
+  /**
+   * @param {LH.JSON} lhr
+   */
+  function render(lhr) {
+    const detailsRenderer = new DetailsRenderer(dom);
+    const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
+    const renderer = new ReportRenderer(dom, categoryRenderer);
+    const reportUIFeatures = new ReportUIFeatures(dom);
+    const container = dom.find('main', dom._document);
+    renderer.renderReport(lhr, container);
+    reportUIFeatures.initFeatures(lhr);
+    return container;
+  }
 
   beforeAll(() => {
     global.Util = Util;
@@ -72,11 +84,7 @@ describe('ReportUIFeatures', () => {
     };
 
     dom = new DOM(document.window.document);
-    const detailsRenderer = new DetailsRenderer(dom);
-    const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
-    renderer = new ReportRenderer(dom, categoryRenderer);
     sampleResults = Util.prepareReportResult(sampleResultsOrig);
-    reportUIFeatures = new ReportUIFeatures(dom);
   });
 
   afterAll(() => {
@@ -96,13 +104,8 @@ describe('ReportUIFeatures', () => {
 
   describe('initFeatures', () => {
     it('should init a report', () => {
-      // render a report onto the UIFeature dom
-      const container = reportUIFeatures._dom._document.querySelector('main');
-      renderer.renderReport(sampleResults, container);
-
-      assert.equal(reportUIFeatures.json, undefined);
-      reportUIFeatures.initFeatures(sampleResults);
-      assert.ok(reportUIFeatures.json);
+      const container = render(sampleResults);
+      assert.equal(dom.findAll('.lh-category', container).length, 5);
     });
 
     describe('third-party filtering', () => {
@@ -129,9 +132,7 @@ describe('ReportUIFeatures', () => {
         ];
 
         // render a report onto the UIFeature dom
-        container = dom.find('main', dom._document);
-        renderer.renderReport(lhr, container);
-        reportUIFeatures.initFeatures(lhr);
+        container = render(lhr);
       });
 
       it('filters out third party resources in details tables when checkbox is clicked', () => {
@@ -166,16 +167,15 @@ describe('ReportUIFeatures', () => {
     let container;
     let metricsAuditGroup;
     let toggle;
+    const metricsClass = 'lh-audit-group--metrics';
+    const toggleClass = 'lh-metrics-toggle__input';
     const showClass = 'lh-audit-group--metrics__show-descriptions';
 
     describe('works', () => {
       beforeAll(() => {
-        // render a report onto the UIFeature dom
-        container = dom.find('main', dom._document);
-        renderer.renderReport(sampleResults, container);
-        reportUIFeatures.initFeatures(sampleResults);
-        metricsAuditGroup = dom.find('.lh-audit-group--metrics', container);
-        toggle = dom.find('.lh-metrics-toggle__input', metricsAuditGroup);
+        container = render(sampleResults);
+        metricsAuditGroup = dom.find(`.${metricsClass}`, container);
+        toggle = dom.find(`.${toggleClass}`, metricsAuditGroup);
       });
 
       it('descriptions hidden by default', () => {
@@ -194,13 +194,9 @@ describe('ReportUIFeatures', () => {
     it('report still works if performance category does not run', () => {
       const lhr = JSON.parse(JSON.stringify(sampleResults));
       delete lhr.categories.performance;
-
-      // render a report onto the UIFeature dom
-      container = dom.find('main', dom._document);
-      renderer.renderReport(lhr, container);
-      reportUIFeatures.initFeatures(lhr);
-      assert.ok(!container.querySelector('.lh-audit-group--metrics'));
-      assert.ok(!container.querySelector('.lh-metrics-toggle__input'));
+      container = render(lhr);
+      assert.ok(!container.querySelector(`.${metricsClass}`));
+      assert.ok(!container.querySelector(`.${toggleClass}`));
     });
   });
 });
