@@ -268,10 +268,10 @@ class ReportUIFeatures {
     this.metricDescriptionToggleEl = /** @type {HTMLInputElement} */ (metricDescriptionToggleEl);
     this.metricAuditGroup = this._dom.find('.lh-audit-group--metrics', this._document);
     this.metricDescriptionToggleEl.addEventListener('input', this._toggleMetricDescription);
-    const toggle = () => this.metricDescriptionToggleEl.click();
-    for (const el of this._dom.findAll('.lh-metric', this._document)) {
-      el.addEventListener('click', toggle);
-    }
+    this.metricAuditGroup.addEventListener('click', e => {
+      const el = /** @type {HTMLElement} */ (e.target);
+      if (el.closest('.lh-metric__title')) this.metricDescriptionToggleEl.click();
+    });
   }
 
   _toggleMetricDescription() {
