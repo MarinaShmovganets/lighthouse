@@ -168,25 +168,39 @@ describe('ReportUIFeatures', () => {
     let toggle;
     const showClass = 'lh-audit-group--metrics__show-descriptions';
 
-    beforeAll(() => {
+    describe('works', () => {
+      beforeAll(() => {
+        // render a report onto the UIFeature dom
+        container = dom.find('main', dom._document);
+        renderer.renderReport(sampleResults, container);
+        reportUIFeatures.initFeatures(sampleResults);
+        metricsAuditGroup = dom.find('.lh-audit-group--metrics', container);
+        toggle = dom.find('.lh-metrics-toggle__input', metricsAuditGroup);
+      });
+
+      it('descriptions hidden by default', () => {
+        assert.ok(!metricsAuditGroup.classList.contains(showClass));
+      });
+
+      it('can toggle description visibility', () => {
+        assert.ok(!metricsAuditGroup.classList.contains(showClass));
+        toggle.click();
+        assert.ok(metricsAuditGroup.classList.contains(showClass));
+        toggle.click();
+        assert.ok(!metricsAuditGroup.classList.contains(showClass));
+      });
+    });
+
+    it('report still works if performance category does not run', () => {
+      const lhr = JSON.parse(JSON.stringify(sampleResults));
+      delete lhr.categories.performance;
+
       // render a report onto the UIFeature dom
       container = dom.find('main', dom._document);
-      renderer.renderReport(sampleResults, container);
-      reportUIFeatures.initFeatures(sampleResults);
-      metricsAuditGroup = dom.find('.lh-audit-group--metrics', container);
-      toggle = dom.find('.lh-metrics-toggle__input', metricsAuditGroup);
-    });
-
-    it('descriptions hidden by default', () => {
-      assert.ok(!metricsAuditGroup.classList.contains(showClass));
-    });
-
-    it('can toggle description visibility', () => {
-      assert.ok(!metricsAuditGroup.classList.contains(showClass));
-      toggle.click();
-      assert.ok(metricsAuditGroup.classList.contains(showClass));
-      toggle.click();
-      assert.ok(!metricsAuditGroup.classList.contains(showClass));
+      renderer.renderReport(lhr, container);
+      reportUIFeatures.initFeatures(lhr);
+      assert.ok(!container.querySelector('.lh-audit-group--metrics'));
+      assert.ok(!container.querySelector('.lh-metrics-toggle__input'));
     });
   });
 });
