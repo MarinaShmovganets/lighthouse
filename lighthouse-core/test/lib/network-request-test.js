@@ -176,5 +176,43 @@ describe('NetworkRequest', () => {
       expect(record).toMatchObject(req);
       expect(record.lrStatistics).toStrictEqual(undefined);
     });
+
+    it('treats negative timings as 0', function() {
+      const req = getRequest();
+      req.responseHeaders = [{name: NetworkRequest.HEADER_TOTAL, value: '10000'},
+        {name: NetworkRequest.HEADER_TCP, value: '-1'},
+        {name: NetworkRequest.HEADER_REQ, value: '-1'},
+        {name: NetworkRequest.HEADER_SSL, value: '-1'},
+        {name: NetworkRequest.HEADER_RES, value: '10000'}];
+
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+      global.isLightrider = true;
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+      expect(record.lrStatistics).toStrictEqual({
+        endTimeDeltaMs: -8000,
+        TCPMs: 0,
+        requestMs: 0,
+        responseMs: 10000,
+      });
+    });
+
+    it('treats missing timings as 0', function() {
+      const req = getRequest();
+      req.responseHeaders = [{name: NetworkRequest.HEADER_TOTAL, value: '10000'},
+        {name: NetworkRequest.HEADER_TCP, value: '1000'},
+        {name: NetworkRequest.HEADER_RES, value: '9000'}];
+
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+      global.isLightrider = true;
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+      expect(record.lrStatistics).toStrictEqual({
+        endTimeDeltaMs: -8000,
+        TCPMs: 1000,
+        requestMs: 0,
+        responseMs: 9000,
+      });
+    });
   });
 });
