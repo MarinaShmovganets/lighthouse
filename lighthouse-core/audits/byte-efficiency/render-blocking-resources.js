@@ -73,7 +73,7 @@ class RenderBlockingResources extends Audit {
       // This audit also looks at CSSUsage but has a graceful fallback if it failed, so do not mark
       // it as a "requiredArtifact".
       // TODO: look into adding an `optionalArtifacts` property that captures this
-      requiredArtifacts: ['URL', 'TagsBlockingFirstPaint', 'traces'],
+      requiredArtifacts: ['URL', 'TagsBlockingFirstPaint', 'traces', 'devtoolsLogs'],
     };
   }
 
