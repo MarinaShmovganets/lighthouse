@@ -325,6 +325,9 @@ class Runner {
         ...sharedAuditContext,
       };
 
+      // Only pass the declared `requiredArtifacts` to the audit
+      // The type is masquerading as `LH.Artifacts` but will only contain a subset of the keys
+      // to prevent consumers from unnecessary type assertions.
       const requiredArtifacts = audit.meta.requiredArtifacts
         .reduce((requiredArtifacts, artifactName) => {
           requiredArtifacts[artifactName] = artifacts[artifactName];
