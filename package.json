@@ -161,9 +161,6 @@
     "yargs": "3.32.0",
     "yargs-parser": "7.0.0"
   },
-  "resolutions": {
-    "chrome-launcher/@types/node": "*"
-  },
   "repository": "GoogleChrome/lighthouse",
   "keywords": [
     "google",
