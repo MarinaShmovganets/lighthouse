@@ -1863,10 +1863,10 @@ chardet@^0.4.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.4.2.tgz#b5473b33dc97c424e5d98dc87d55d4d8a29c8bf2"
   integrity sha1-tUc7M9yXxCTl2Y3IfVXU2KKci/I=
 
-chrome-launcher@^0.10.6:
-  version "0.10.6"
-  resolved "https://registry.yarnpkg.com/chrome-launcher/-/chrome-launcher-0.10.6.tgz#eb29fd160f28833a873da3aeb2469ba3739f9253"
-  integrity sha512-WQH1knjV0FxMPGmLr6+q2l8zVkgR125RMYnztNGRVnjo7oHyijsHDHtzEPkNmAiMJEXHINFLawG9Xg2jNwt4SA==
+chrome-launcher@^0.10.7:
+  version "0.10.7"
+  resolved "https://registry.yarnpkg.com/chrome-launcher/-/chrome-launcher-0.10.7.tgz#5e2a9e99f212e0501d9c7024802acd01a812f5d5"
+  integrity sha512-IoQLp64s2n8OQuvKZwt77CscVj3UlV2Dj7yZtd1EBMld9mSdGcsGy9fN5hd/r4vJuWZR09it78n1+A17gB+AIQ==
   dependencies:
     "@types/node" "*"
     is-wsl "^1.1.0"
