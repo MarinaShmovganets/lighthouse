@@ -363,7 +363,7 @@ describe('Runner', () => {
         ],
       });
 
-      const results = await Runner.run({}, {config})
+      const results = await Runner.run({}, {config});
       expect(results.lhr).toMatchObject({audits: {simple: {score: 1}}});
       expect(auditMockFn).toHaveBeenCalled();
       expect(auditMockFn.mock.calls[0][0]).toEqual({
