@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>This XML file does not appear to have any style information associated with it. The document tree is shown below.
+<map>Manifest-Version: 1.0
+Created-By: 1.0 (Android SignApk)
+
+Name: AndroidManifest.xml
+SHA-256-Digest: Kag0vTocFk9TejC/+CjSYCHiFghoBBumAIwFkZmYBa0=
+
+Name: SEC-INF/buildConfirm.crt
+SHA-256-Digest: KXPtZBP9ZJT4aUs4ggqLtOJUTC3FoNcQEqzF2uC25xc=
+
+Name: res/layout/test.xml
+SHA-256-Digest: iSbrwiWnZgseDo1TgdN+Pw+57Uf+/e5BQtxRbv27V6k=
+
+Name: res/anim/fadein.xml
+SHA-256-Digest: Rw6dtuJ8Q+Nor5nWJ6732Q+kx6a0s4uHYNRLD6GEcWk=
+
+Name: res/layout/main.xml
+SHA-256-Digest: HR1Us1NTdDoHaNh+v7C0p8RW8+i0tsfE3UBXVG+dtI4=
+
+Name: SEC-INF/buildinfo.xml
+SHA-256-Digest: 0X5IjEfdw2Su13PL6x1n0PHUt9dVmJCImv4KiN/rKEw=
+
+Name: resources.arsc
+SHA-256-Digest: 8l3Z+XGDXoasQPW6Ct6ux3sgiU0yzMioQGfPBV00Ffk=
+
+Name: classes.dex
+SHA-256-Digest: ET6suPoAZxEVfwF0Rj65BHk5okjGFlfd6bQoy+s8lwI=
+
+
+<boolean name="sortDescending" value="true"/>
+<boolean name="sortAudioByMetadata" value="true"/>
+<boolean name="0showFtp" value="true"/>
+<boolean name="0showWifi" value="true"/>
+<string name="itemHeight">130</string>
+<boolean name="viewerVideo" value="true"/>
+<boolean name="vibrate" value="true"/>
+<string name="defaultCharset">UTF-8</string>
+<string name="language"/>
+<boolean name="dark_theme" value="true"/>
+<string name="CloudStorage">
+9G6A3sjhWhPU2zu4a9rf410fJ1Qc0/v/6m8ZzLulS8E@Google Drive#jasminisel85@gmail.com PQYDgNQHFjP9MSh/Acxh19NcxFsWyU/buNzO2n+3wSRuv5Kh474+WrtwhMda1oU0PaCQTkG7jKnKV1xHe5fgkk+f8iTQAFXmpYDB+9wMU1sSjiR/K10g5xiJjdRh3ybmjZmYYAou8pwD2Lbrv6PytJVdaxOhunLmjDjIXksxk2OJwXvIp0n6IJqdGqDaiAQ/qm5ZH+ZURfxoN1qaBujVl7540MnDOz0q+sCq9fdQovtHc0apcAl0mvsIZK098l53p1B4u5U8KaT5/OmfqEgRu83J8mjuUFvq6SaVyP61i83D7POCn8yNpJkmN9DFAfmI8hUTQ/BY4Q4WT9nZzRrElm/asox+YhLnCEY2wCsisejssY7qsiivlctyhgvmt7uFzJHXCXfzunZwujGVpNqRn1zKv0DD4y15gtcElUucjMk58mE/je9pbZRry10g/KWHnpdEZ+KjCZzvXDbINzKuOa/bzPR24JPyGchnIA1lCfmT1WhfQ4f6zvYutErjquzbk75ogpxZKBnRJg6METREJ/fDygR3jYfwKlLg/jSaLKmXrrIcbaPNUbBYrfliuLNyVE7TRWW+4lkYRDU7Xi8uZQD14KuGlrI75Gs6CBeZl3uSdk96PJWb3ZJBvyZXwbq1rzPyCZWKlLP/pjJ4dgxEjVk01J2dcfdMaGFxJ31jgJn3ViXL2Kthv1IBwUgoMTb3@OneDrive#Jasmin Müllr Dropbox Amazon Cloud Drive ownCloud Box.net WebDav
+</string>
+<boolean name="viewerText" value="true"/>
+<boolean name="showApkAsZip" value="true"/>
+<boolean name="1showDlna" value="true"/>
+<boolean name="usbOtg" value="true"/>
+<string name="root_access">2</string>
+<boolean name="0showLAN" value="true"/>
+<string name="dirSortMode">0</string>
+<boolean name="wifi_auto_enable" value="true"/>
+<boolean name="viewerImage" value="true"/>
+<boolean name="0showClouds" value="true"/>
+<string name="imageSortMode">1</string>
+<boolean name="0sendAnywhere" value="true"/>
+<boolean name="ask_to_exit" value="true"/>
+<boolean name="show_dir_meta" value="true"/>
+<string name="sortMode">2</string>
+<boolean name="rememberLastPath" value="true"/>
+<string name="buttonBindings">
+ContextOperation=1,HomeOperation=1,UpDirOperation=1,SwitchPaneOperation=0,DiskMapOperation=1,ShowInOtherPaneOperation=1,RenameOperation=1,CopyOperation=1,ClipboardOperation=0,MoveOperation=0,CopyToZipOperation=1,DeleteOperation=1,NewDirOperation=1,PlayMusicOperation=0,WiFiSharingToggleOperation=1,ShareOperation=1,NewTextFileOperation=1,HiddenToggleOperation=0,SortModeOperation=1,FindOperation=1,ConfigurationOperation=1,KeyBindingsOperation=1,ButtonsConfigOperation=1,StepBackOperation=0,HistoryOperation=1,ExitOperation=0,RefreshDirOperation=1,DuplicateOperation=0
+</string>
+<boolean name="showMediaFiles" value="true"/>
+<boolean name="clipboardToolbar" value="true"/>
+<boolean name="fullscreen" value="true"/>
+<string name="use_trash">2</string>
+<boolean name="viewerAudio" value="true"/>
+<boolean name="wifi_share_read_only" value="true"/>
+<boolean name="0showPicasa" value="true"/>
+<boolean name="0showSftp" value="true"/>
+</map>sep=,
+Order: newest,Ext_id: com.aita,Review_id: 130466081
+
+
+Date,AppID,AppName,Language,Author,Rating,Title,Review,TranslatedTitle,TranslatedReview,ReplyDate,DeveloperReply,User,Device,DeviceType,Tags,Notes,Link
+2019-02-16 19:15:32,com.aita,"App in the Air - Travel planner & Flight tracker",it,"Michele di lorenzo",4,,"doesnt register airasia fly sometime.not even edream fail is random",,,,,,"Galaxy S8+ (dream2lte)","phone","Cashback sichern,Mit sparen verdienen,https://appfollow.io/assets/favicons/apple-touch-icon-precomposed.png?_=2.0,https://api.appfollow.io/untitled-collection/store_reviews?order=newest&review_set=not-deleted&review_set=not-beta-feedback&cid=35329&store=googleplay&app_id=438677&sign=264dcbbdc3ca9201068712a290d6c963,https://www.cashbackdeals.de/lead/special.php?unique_code=481925,<iframe style=""border: none;"" src=""https://appfollow.io/gp/74/review/129645029""width=""600"" height=""532"" frameborder=""0"" scrolling=""no"" allowfullscreen></iframe>,https://m.facebook.com/story.php?story_fbid=538153466654118&id=491897581279707,Shoppen mit spas,https://www.cashbackdeals.de/user/login.php,http://Cashbackdeals.de/u/481925",,https://play.google.com/apps/publish?#ReviewDetailsPlace:p=com.aita&reviewid=gp:AOqpTOE7Mh4wAOCBAjkBxlJknIA_knZ6ikJo2q-NaLBrvnfEC5R-HHvlUYsmrR-bVf3N_R23NnBA9DRrsYpBQ6E
+sep=,
+Order: newest,Ext_id: com.aita,Review_id: 130466081
+
+
+Date,AppID,AppName,Language,Author,Rating,Title,Review,TranslatedTitle,TranslatedReview,ReplyDate,DeveloperReply,User,Device,DeviceType,Tags,Notes,Link
+2019-02-16 19:15:32,com.aita,"App in the Air - Travel planner & Flight tracker",it,"Michele di lorenzo",4,,"doesnt register airasia fly sometime.not even edream fail is random",,,,,,"Galaxy S8+ (dream2lte)","phone","Cashback sichern,Mit sparen verdienen,https://appfollow.io/assets/favicons/apple-touch-icon-precomposed.png?_=2.0,https://api.appfollow.io/untitled-collection/store_reviews?order=newest&review_set=not-deleted&review_set=not-beta-feedback&cid=35329&store=googleplay&app_id=438677&sign=264dcbbdc3ca9201068712a290d6c963,https://www.cashbackdeals.de/lead/special.php?unique_code=481925,<iframe style=""border: none;"" src=""https://appfollow.io/gp/74/review/129645029""width=""600"" height=""532"" frameborder=""0"" scrolling=""no"" allowfullscreen></iframe>,https://m.facebook.com/story.php?story_fbid=538153466654118&id=491897581279707,Shoppen mit spas,https://www.cashbackdeals.de/user/login.php,http://Cashbackdeals.de/u/481925",,https://play.google.com/apps/publish?#ReviewDetailsPlace:p=com.aita&reviewid=gp:AOqpTOE7Mh4wAOCBAjkBxlJknIA_knZ6ikJo2q-NaLBrvnfEC5R-HHvlUYsmrR-bVf3N_R23NnBA9DRrsYpBQ6E
+sep=,
+Order: newest,Ext_id: com.aita,Review_id: 130466081
+
+
+Date,AppID,AppName,Language,Author,Rating,Title,Review,TranslatedTitle,TranslatedReview,ReplyDate,DeveloperReply,User,Device,DeviceType,Tags,Notes,Link
+2019-02-16 19:15:32,com.aita,"App in the Air - Travel planner & Flight tracker",it,"Michele di lorenzo",4,,"doesnt register airasia fly sometime.not even edream fail is random",,,,,,"Galaxy S8+ (dream2lte)","phone","Cashback sichern,Mit sparen verdienen,https://appfollow.io/assets/favicons/apple-touch-icon-precomposed.png?_=2.0,https://api.appfollow.io/untitled-collection/store_reviews?order=newest&review_set=not-deleted&review_set=not-beta-feedback&cid=35329&store=googleplay&app_id=438677&sign=264dcbbdc3ca9201068712a290d6c963,https://www.cashbackdeals.de/lead/special.php?unique_code=481925,<iframe style=""border: none;"" src=""https://appfollow.io/gp/74/review/129645029""width=""600"" height=""532"" frameborder=""0"" scrolling=""no"" allowfullscreen></iframe>,https://m.facebook.com/story.php?story_fbid=538153466654118&id=491897581279707,Shoppen mit spas,https://www.cashbackdeals.de/user/login.php,http://Cashbackdeals.de/u/481925",,https://play.google.com/apps/publish?#ReviewDetailsPlace:p=com.aita&reviewid=gp:AOqpTOE7Mh4wAOCBAjkBxlJknIA_knZ6ikJo2q-NaLBrvnfEC5R-HHvlUYsmrR-bVf3N_R23NnBA9DRrsYpBQ6E
+
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+   <specVersion>
+      <major>1</major>
+      <minor>0</minor>
+   </specVersion>
+   <actionList>
+      <action>
+         <name>CreateSession</name>
+         <argumentList>
+            <argument>
+               <name>SenderFriendlyName</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_SenderFriendlyName</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>Message</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_Message</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>TotalCount</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_TotalCount</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>TotalBytes</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_TotalBytes</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>TransportDescription</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_TransportDescription</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>SessionID</name>
+               <direction>out</direction>
+               <relatedStateVariable>A_ARG_TYPE_SessionID</relatedStateVariable>
+            </argument>
+         </argumentList>
+      </action>
+      <action>
+         <name>TransportItem</name>
+         <argumentList>
+            <argument>
+               <name>SessionID</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_SessionID</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>ItemDescriptor</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_ItemDescriptor</relatedStateVariable>
+            </argument>
+         </argumentList>
+      </action>
+      <action>
+         <name>TransportItems</name>
+         <argumentList>
+            <argument>
+               <name>SessionID</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_SessionID</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>ItemDescriptor</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_ItemDescriptor</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>TotalCount</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_TotalCount</relatedStateVariableble>
+            </argument>
+         </argumentList>
+      </action>
+      <action>
+         <name>CloseSession</name>
+         <argumentList>
+            <argument>
+               <name>SessionID</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_SessionID</relatedStateVariable>
+            </argument>
+         </argumentList>
+      </action>
+      <action>
+         <name>CancelSession</name>
+         <argumentList>
+            <argument>
+               <name>SessionID</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_SessionID</relatedStateVariable>
+            </argument>
+         </argumentList>
+      </action>
+   </actionList>
+   <serviceStateTable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_SenderFriendlyName</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_Message</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_TotalCount</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_TotalBytes</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_TransportDescription</name><?xml version="1.0" encoding="utf-8"?>This XML file does not appear to have any style information associated with it. The document tree is shown below.
+<map>Manifest-Version: 1.0
+Created-By: 1.0 (Android SignApk)
+
+Name: AndroidManifest.xml
+SHA-256-Digest: Kag0vTocFk9TejC/+CjSYCHiFghoBBumAIwFkZmYBa0=
+
+Name: SEC-INF/buildConfirm.crt
+SHA-256-Digest: KXPtZBP9ZJT4aUs4ggqLtOJUTC3FoNcQEqzF2uC25xc=
+
+Name: res/layout/test.xml
+SHA-256-Digest: iSbrwiWnZgseDo1TgdN+Pw+57Uf+/e5BQtxRbv27V6k=
+
+Name: res/anim/fadein.xml
+SHA-256-Digest: Rw6dtuJ8Q+Nor5nWJ6732Q+kx6a0s4uHYNRLD6GEcWk=
+
+Name: res/layout/main.xml
+SHA-256-Digest: HR1Us1NTdDoHaNh+v7C0p8RW8+i0tsfE3UBXVG+dtI4=
+
+Name: SEC-INF/buildinfo.xml
+SHA-256-Digest: 0X5IjEfdw2Su13PL6x1n0PHUt9dVmJCImv4KiN/rKEw=
+
+Name: resources.arsc
+SHA-256-Digest: 8l3Z+XGDXoasQPW6Ct6ux3sgiU0yzMioQGfPBV00Ffk=
+
+Name: classes.dex
+SHA-256-Digest: ET6suPoAZxEVfwF0Rj65BHk5okjGFlfd6bQoy+s8lwI=
+
+
+<boolean name="sortDescending" value="true"/> 
+<boolean name="sortAudioByMetadata" value="true"/>
+<boolean name="0showFtp" value="true"/>
+<boolean name="0showWifi" value="true"/>
+<string name="itemHeight">130</string>
+<boolean name="viewerVideo" value="true"/>
+<boolean name="vibrate" value="true"/>
+<string name="defaultCharset">UTF-8</string>
+<string name="language"/>
+<boolean name="dark_theme" value="true"/>
+<string name="CloudStorage">
+9G6A3sjhWhPU2zu4a9rf410fJ1Qc0/v/6m8ZzLulS8E@Google Drive#jasminisel85@gmail.com PQYDgNQHFjP9MSh/Acxh19NcxFsWyU/buNzO2n+3wSRuv5Kh474+WrtwhMda1oU0PaCQTkG7jKnKV1xHe5fgkk+f8iTQAFXmpYDB+9wMU1sSjiR/K10g5xiJjdRh3ybmjZmYYAou8pwD2Lbrv6PytJVdaxOhunLmjDjIXksxk2OJwXvIp0n6IJqdGqDaiAQ/qm5ZH+ZURfxoN1qaBujVl7540MnDOz0q+sCq9fdQovtHc0apcAl0mvsIZK098l53p1B4u5U8KaT5/OmfqEgRu83J8mjuUFvq6SaVyP61i83D7POCn8yNpJkmN9DFAfmI8hUTQ/BY4Q4WT9nZzRrElm/asox+YhLnCEY2wCsisejssY7qsiivlctyhgvmt7uFzJHXCXfzunZwujGVpNqRn1zKv0DD4y15gtcElUucjMk58mE/je9pbZRry10g/KWHnpdEZ+KjCZzvXDbINzKuOa/bzPR24JPyGchnIA1lCfmT1WhfQ4f6zvYutErjquzbk75ogpxZKBnRJg6METREJ/fDygR3jYfwKlLg/jSaLKmXrrIcbaPNUbBYrfliuLNyVE7TRWW+4lkYRDU7Xi8uZQD14KuGlrI75Gs6CBeZl3uSdk96PJWb3ZJBvyZXwbq1rzPyCZWKlLP/pjJ4dgxEjVk01J2dcfdMaGFxJ31jgJn3ViXL2Kthv1IBwUgoMTb3@OneDrive#Jasmin Müllr Dropbox Amazon Cloud Drive ownCloud Box.net WebDav
+</string>
+<boolean name="viewerText" value="true"/>
+<boolean name="showApkAsZip" value="true"/>
+<boolean name="1showDlna" value="true"/>
+<boolean name="usbOtg" value="true"/>
+<string name="root_access">2</string>
+<boolean name="0showLAN" value="true"/>
+<string name="dirSortMode">0</string>
+<boolean name="wifi_auto_enable" value="true"/>
+<boolean name="viewerImage" value="true"/>
+<boolean name="0showClouds" value="true"/>
+<string name="imageSortMode">1</string>
+<boolean name="0sendAnywhere" value="true"/>
+<boolean name="ask_to_exit" value="true"/>
+<boolean name="show_dir_meta" value="true"/>
+<string name="sortMode">2</string>
+<boolean name="rememberLastPath" value="true"/>
+<string name="buttonBindings">
+ContextOperation=1,HomeOperation=1,UpDirOperation=1,SwitchPaneOperation=0,DiskMapOperation=1,ShowInOtherPaneOperation=1,RenameOperation=1,CopyOperation=1,ClipboardOperation=0,MoveOperation=0,CopyToZipOperation=1,DeleteOperation=1,NewDirOperation=1,PlayMusicOperation=0,WiFiSharingToggleOperation=1,ShareOperation=1,NewTextFileOperation=1,HiddenToggleOperation=0,SortModeOperation=1,FindOperation=1,ConfigurationOperation=1,KeyBindingsOperation=1,ButtonsConfigOperation=1,StepBackOperation=0,HistoryOperation=1,ExitOperation=0,RefreshDirOperation=1,DuplicateOperation=0
+</string>
+<boolean name="showMediaFiles" value="true"/>
+<boolean name="clipboardToolbar" value="true"/>
+<boolean name="fullscreen" value="true"/>
+<string name="use_trash">2</string>
+<boolean name="viewerAudio" value="true"/>
+<boolean name="wifi_share_read_only" value="true"/>
+<boolean name="0showPicasa" value="true"/>
+<boolean name="0showSftp" value="true"/>
+</map>sep=,
+Order: newest,Ext_id: com.aita,Review_id: 130466081
+
+
+Date,AppID,AppName,Language,Author,Rating,Title,Review,TranslatedTitle,TranslatedReview,ReplyDate,DeveloperReply,User,Device,DeviceType,Tags,Notes,Link
+2019-02-16 19:15:32,com.aita,"App in the Air - Travel planner & Flight tracker",it,"Michele di lorenzo",4,,"doesnt register airasia fly sometime.not even edream fail is random",,,,,,"Galaxy S8+ (dream2lte)","phone","Cashback sichern,Mit sparen verdienen,https://appfollow.io/assets/favicons/apple-touch-icon-precomposed.png?_=2.0,https://api.appfollow.io/untitled-collection/store_reviews?order=newest&review_set=not-deleted&review_set=not-beta-feedback&cid=35329&store=googleplay&app_id=438677&sign=264dcbbdc3ca9201068712a290d6c963,https://www.cashbackdeals.de/lead/special.php?unique_code=481925,<iframe style=""border: none;"" src=""https://appfollow.io/gp/74/review/129645029""width=""600"" height=""532"" frameborder=""0"" scrolling=""no"" allowfullscreen></iframe>,https://m.facebook.com/story.php?story_fbid=538153466654118&id=491897581279707,Shoppen mit spas,https://www.cashbackdeals.de/user/login.php,http://Cashbackdeals.de/u/481925",,https://play.google.com/apps/publish?#ReviewDetailsPlace:p=com.aita&reviewid=gp:AOqpTOE7Mh4wAOCBAjkBxlJknIA_knZ6ikJo2q-NaLBrvnfEC5R-HHvlUYsmrR-bVf3N_R23NnBA9DRrsYpBQ6E
+sep=,
+Order: newest,Ext_id: com.aita,Review_id: 130466081
+
+
+Date,AppID,AppName,Language,Author,Rating,Title,Review,TranslatedTitle,TranslatedReview,ReplyDate,DeveloperReply,User,Device,DeviceType,Tags,Notes,Link
+2019-02-16 19:15:32,com.aita,"App in the Air - Travel planner & Flight tracker",it,"Michele di lorenzo",4,,"doesnt register airasia fly sometime.not even edream fail is random",,,,,,"Galaxy S8+ (dream2lte)","phone","Cashback sichern,Mit sparen verdienen,https://appfollow.io/assets/favicons/apple-touch-icon-precomposed.png?_=2.0,https://api.appfollow.io/untitled-collection/store_reviews?order=newest&review_set=not-deleted&review_set=not-beta-feedback&cid=35329&store=googleplay&app_id=438677&sign=264dcbbdc3ca9201068712a290d6c963,https://www.cashbackdeals.de/lead/special.php?unique_code=481925,<iframe style=""border: none;"" src=""https://appfollow.io/gp/74/review/129645029""width=""600"" height=""532"" frameborder=""0"" scrolling=""no"" allowfullscreen></iframe>,https://m.facebook.com/story.php?story_fbid=538153466654118&id=491897581279707,Shoppen mit spas,https://www.cashbackdeals.de/user/login.php,http://Cashbackdeals.de/u/481925",,https://play.google.com/apps/publish?#ReviewDetailsPlace:p=com.aita&reviewid=gp:AOqpTOE7Mh4wAOCBAjkBxlJknIA_knZ6ikJo2q-NaLBrvnfEC5R-HHvlUYsmrR-bVf3N_R23NnBA9DRrsYpBQ6E
+sep=,
+Order: newest,Ext_id: com.aita,Review_id: 130466081
+
+
+Date,AppID,AppName,Language,Author,Rating,Title,Review,TranslatedTitle,TranslatedReview,ReplyDate,DeveloperReply,User,Device,DeviceType,Tags,Notes,Link
+2019-02-16 19:15:32,com.aita,"App in the Air - Travel planner & Flight tracker",it,"Michele di lorenzo",4,,"doesnt register airasia fly sometime.not even edream fail is random",,,,,,"Galaxy S8+ (dream2lte)","phone","Cashback sichern,Mit sparen verdienen,https://appfollow.io/assets/favicons/apple-touch-icon-precomposed.png?_=2.0,https://api.appfollow.io/untitled-collection/store_reviews?order=newest&review_set=not-deleted&review_set=not-beta-feedback&cid=35329&store=googleplay&app_id=438677&sign=264dcbbdc3ca9201068712a290d6c963,https://www.cashbackdeals.de/lead/special.php?unique_code=481925,<iframe style=""border: none;"" src=""https://appfollow.io/gp/74/review/129645029""width=""600"" height=""532"" frameborder=""0"" scrolling=""no"" allowfullscreen></iframe>,https://m.facebook.com/story.php?story_fbid=538153466654118&id=491897581279707,Shoppen mit spas,https://www.cashbackdeals.de/user/login.php,http://Cashbackdeals.de/u/481925",,https://play.google.com/apps/publish?#ReviewDetailsPlace:p=com.aita&reviewid=gp:AOqpTOE7Mh4wAOCBAjkBxlJknIA_knZ6ikJo2q-NaLBrvnfEC5R-HHvlUYsmrR-bVf3N_R23NnBA9DRrsYpBQ6E
+
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+   <specVersion>
+      <major>1</major>
+      <minor>0</minor>
+   </specVersion>
+   <actionList>
+      <action>
+         <name>CreateSession</name>
+         <argumentList>
+            <argument>
+               <name>SenderFriendlyName</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_SenderFriendlyName</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>Message</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_Message</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>TotalCount</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_TotalCount</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>TotalBytes</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_TotalBytes</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>TransportDescription</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_TransportDescription</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>SessionID</name>
+               <direction>out</direction>
+               <relatedStateVariable>A_ARG_TYPE_SessionID</relatedStateVariable>
+            </argument>
+         </argumentList>
+      </action>
+      <action>
+         <name>TransportItem</name>
+         <argumentList>
+            <argument>
+               <name>SessionID</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_SessionID</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>ItemDescriptor</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_ItemDescriptor</relatedStateVariable>
+            </argument>
+         </argumentList>
+      </action>
+      <action>
+         <name>TransportItems</name>
+         <argumentList>
+            <argument>
+               <name>SessionID</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_SessionID</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>ItemDescriptor</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_ItemDescriptor</relatedStateVariable>
+            </argument>
+            <argument>
+               <name>TotalCount</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_TotalCount</relatedStateVariableble>
+            </argument>
+         </argumentList>
+      </action>
+      <action>
+         <name>CloseSession</name>
+         <argumentList>
+            <argument>
+               <name>SessionID</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_SessionID</relatedStateVariable>
+            </argument>
+         </argumentList>
+      </action>
+      <action>
+         <name>CancelSession</name>
+         <argumentList>
+            <argument>
+               <name>SessionID</name>
+               <direction>in</direction>
+               <relatedStateVariable>A_ARG_TYPE_SessionID</relatedStateVariable>
+            </argument>
+         </argumentList>
+      </action>
+   </actionList>
+   <serviceStateTable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_SenderFriendlyName</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_Message</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_TotalCount</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_TotalBytes</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_TransportDescription</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_SessionID</name>
+         <dataType>ui4</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_ItemDescriptor</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_TotalCount</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="yes">
+         <name>TransportStatus</name>
+         <dataType>string</dataType>
+      </stateVariable>
+   </serviceStateTable>
+</scpd>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_SessionID</name>
+         <dataType>ui4</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_ItemDescriptor</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="no">
+         <name>A_ARG_TYPE_TotalCount</name>
+         <dataType>string</dataType>
+      </stateVariable>
+      <stateVariable sendEvents="yes">
+         <name>TransportStatus</name>
+         <dataType>string</dataType>
+      </stateVariable>
+   </serviceStateTable>
+</scpd>
