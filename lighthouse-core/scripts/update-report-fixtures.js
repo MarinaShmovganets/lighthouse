@@ -63,7 +63,7 @@ async function update(artifactName) {
     // Revert everything except the one artifact
     const newArtifacts = await assetSaver.loadArtifacts(artifactPath);
     if (!(artifactName in newArtifacts) && !(artifactName in oldArtifacts)) {
-      throw Error('Unknown artifact name: ' + artifactName);
+      console.warn(`❌ Unknown artifact name: '${artifactName}'. Reverting artifacts...`); // eslint-disable-line no-console
     }
     const finalArtifacts = oldArtifacts;
     finalArtifacts[artifactName] = newArtifacts[artifactName];
