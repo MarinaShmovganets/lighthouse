@@ -21,7 +21,7 @@ If you're new to Lighthouse development, start by reading up on the overall [arc
 
 ### What is a Lighthouse Plugin?
 
-Lighthouse plugins are a way to extend the functionality of Lighthouse with insight from domain experts (that's you!) and easily share this extra functionality with other Lighthouse users. At its core, a plugin is a node module that implements a set of checks that will get run by Lighthouse and added to the report as a new category.
+Lighthouse plugins are a way to extend the functionality of Lighthouse with insight from domain experts (that's you!) and easily share this extra functionality with other Lighthouse users. At its core, a plugin is a node module that implements a set of checks that will be run by Lighthouse and added to the report as a new category.
 
 ![picture of Lighthouse plugin results in the HTML report](https://user-images.githubusercontent.com/2301202/57053947-24fc9b80-6c57-11e9-8853-df3a174fcf2c.png)
 
@@ -33,7 +33,7 @@ Plugins are easily shared and have a stable API that won't change between minor 
 | -------------------------------------------- | ------ | ------------- |
 | Include your own custom audits               | ✅     | ✅            |
 | Add a custom category                        | ✅     | ✅            |
-| Easily shareable and extensible              | ✅     | ❌            |
+| Easily shareable and extensible on NPM       | ✅     | ❌            |
 | Semver-stable API                            | ✅     | ❌            |
 | Gather custom data from the page (artifacts) | ❌     | ✅            |
 | Modify core categories                       | ❌     | ✅            |
@@ -157,9 +157,11 @@ Defines the display strings of the plugin's category and configures audit scorin
 Defines the audit groups used for display in the HTML report.
 
 **Example of Category with Groups**
+
 <img alt="audit group with groups" src="https://user-images.githubusercontent.com/2301202/56936017-86d3ce80-6aba-11e9-9a43-39bf3810b551.png" width=550>
 
 **Example of Category _without_ Groups**
+
 <img alt="audit group without groups" src="https://user-images.githubusercontent.com/2301202/56936043-c0a4d500-6aba-11e9-9e37-0bc131010a37.png" width=550>
 
 It is an object whose keys are the group IDs and whose values are objects with the following properties:
@@ -173,7 +175,7 @@ A plugin audit is a class that implements at least two properties: `meta` and `a
 
 #### `meta`
 
-The `meta` property is a static getter for the metadata of an audit. It should return an object with the following properties:
+The `meta` property is a static getter for the metadata of an [audit](#custom-audits). It should return an object with the following properties:
 
 - `id: string` **REQUIRED** - The string identifier of the audit, in kebab case, typically matching the file name.
 - `title: string` **REQUIRED** - Short, user-visible title for the audit when successful.
@@ -214,11 +216,11 @@ The following artifacts are available for use in the audits of Lighthouse plugin
 - `ViewportDimensions`
 - `WebAppManifest`
 
-While Lighthouse has more artifacts with information about the page than this list, those artifacts are considered experimental and their structure or existence could change at any time. Use only if you are comfortable living on the bleeding edge and can tolerate unannounced breaking changes.
+While Lighthouse has more artifacts with information about the page than are in this list, those artifacts are considered experimental and their structure or existence could change at any time. Only use artifacts not on the list above if you are comfortable living on the bleeding edge and can tolerate unannounced breaking changes.
 
 #### Using Network Requests
 
-You might have noticed that a simple array of network requests is missing from the list above. The source information for network requests made by the page is actually contained in the `devtoolsLogs` artifact, which contains all the of DevTools Protocol traffic recording during page load. The request objects are derived from this message log at audit time.
+You might have noticed that a simple array of network requests is missing from the list above. The source information for network requests made by the page is actually contained in the `devtoolsLogs` artifact, which contains all the of DevTools Protocol traffic recorded during page load. The network request objects are derived from this message log at audit time.
 
 See below for an example of an audit that processes network requests.
 
@@ -320,7 +322,7 @@ Write audit descriptions that provide brief context for why the audit is importa
 
 1. Weight each audit by its importance.
 1. Differentiate scores within an audit by returning a number _between_ `0` and `1`. Scores greater than `0.9` will be hidden in "Passed Audits" section by default.
-1. Don't inflate scores unnecessarily by marking audits as not applicable. When an audit's advice doesn't apply, simply `return {notApplicable: true}`.
+1. Avoid inflating scores unnecessarily by marking audits as not applicable. When an audit's advice doesn't apply, simply `return {score: null, notApplicable: true}`.
 
 ### Common Mistakes
 
@@ -333,7 +335,7 @@ Most audits will have a specific use case in mind that will apply to most elemen
 **Examples:**
 
 - Non-network network requests (`blob:`, `data:`, `file:`, etc)
-- Non-script scripts (`type="x-shader/x-vertex"`, `type="application/ld+json"`, etc)
+- Non-javascript scripts (`type="x-shader/x-vertex"`, `type="application/ld+json"`, etc)
 - Tracking pixel images (images with size 1x1, 0x0, etc)
 
 #### Forgetting to Normalize
@@ -349,3 +351,4 @@ Most artifacts will try to represent as truthfully as possible what was observed
 ## Examples
 
 - [Google AdSpeed Insights](https://github.com/googleads/ad-speed-insights) - a well-written, but complex, plugin
+- [Lighthouse Plugin Recipe](./recipes/lighthouse-plugin-example)
