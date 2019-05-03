@@ -99,9 +99,9 @@ class ReportUIFeatures {
     window.addEventListener('resize', this._updateStickyHeaderOnScroll);
     this._setupMetricDescriptionToggleElements();
     const topbarLogo = this._dom.find('.lh-topbar__logo', this._document);
-    topbarLogo.addEventListener('click', this._toggleDarkTheme);
+    topbarLogo.addEventListener('click', () => this._toggleDarkTheme);
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      this._toggleDarkTheme();
+      this._toggleDarkTheme(true);
     }
   }
 
@@ -546,9 +546,10 @@ class ReportUIFeatures {
 
   /**
    * @private
+   * @param {boolean | undefined} force
    */
-  _toggleDarkTheme() {
-    this._document.body.classList.toggle('dark');
+  _toggleDarkTheme(force) {
+    this._document.body.classList.toggle('dark', force);
   }
 
   _updateStickyHeaderOnScroll() {
