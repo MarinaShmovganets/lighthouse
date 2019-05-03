@@ -8,6 +8,7 @@
 const cli = require('../../lighthouse-cli/run.js');
 const cliFlags = require('../../lighthouse-cli/cli-flags.js');
 const assetSaver = require('../lib/asset-saver.js');
+
 const artifactPath = 'lighthouse-core/test/results/artifacts';
 
 const {server} = require('../../lighthouse-cli/test/fixtures/static-server.js');
