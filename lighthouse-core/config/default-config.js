@@ -79,7 +79,8 @@ const UIStrings = {
   seoCategoryManualDescription: 'Run these additional validators on your site to check additional SEO best practices.',
   /* Title of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight opportunities to make a page more usable on mobile devices. */
   seoMobileGroupTitle: 'Mobile Friendly',
-  /* Description of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight opportunities to make a page more usable on mobile devices. */
+  /* Description of the navigation section within the Search Engine Optimization (SEO) category. Within this section are 
+   with descriptive titles that highlight opportunities to make a page more usable on mobile devices. */
   seoMobileGroupDescription: 'Make sure your pages are mobile friendly so users don’t have to pinch or zoom ' +
   'in order to read the content pages. [Learn more](https://developers.google.com/search/mobile-sites/).',
   /* Title of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight ways to make a website content more easily understood by search engine crawler bots. */
@@ -395,6 +396,10 @@ const defaultConfig = {
       title: str_(UIStrings.a11yCategoryTitle),
       description: str_(UIStrings.a11yCategoryDescription),
       manualDescription: str_(UIStrings.a11yCategoryManualDescription),
+      // Audit weights are meant to match the aXe scoring system of
+      // minor, serious, and critical.
+      // See the audits listed at dequeuniversity.com/rules/axe/3.2.
+      // Click on an audit and check the right hand column to see its severity.
       auditRefs: [
         {id: 'accesskeys', weight: 3, group: 'a11y-navigation'},
         {id: 'aria-allowed-attr', weight: 10, group: 'a11y-aria'},
