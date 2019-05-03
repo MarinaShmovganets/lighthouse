@@ -156,6 +156,11 @@ Defines the display strings of the plugin's category and configures audit scorin
 
 Defines the audit groups used for display in the HTML report.
 
+It is an object whose keys are the group IDs and whose values are objects with the following properties:
+
+- `title: string` **REQUIRED** - The display name of the group in the report.
+- `description: string` _OPTIONAL_ - A more detailed description of the group's purpose.
+
 **Example of Category with Groups**
 
 <img alt="audit group with groups" src="https://user-images.githubusercontent.com/2301202/56936017-86d3ce80-6aba-11e9-9a43-39bf3810b551.png" width=550>
@@ -163,11 +168,6 @@ Defines the audit groups used for display in the HTML report.
 **Example of Category _without_ Groups**
 
 <img alt="audit group without groups" src="https://user-images.githubusercontent.com/2301202/56936043-c0a4d500-6aba-11e9-9e37-0bc131010a37.png" width=550>
-
-It is an object whose keys are the group IDs and whose values are objects with the following properties:
-
-- `title: string` **REQUIRED** - The display name of the group in the report.
-- `description: string` _OPTIONAL_ - A more detailed description of the group's purpose.
 
 ### Plugin Audits
 
