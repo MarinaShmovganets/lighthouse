@@ -100,6 +100,9 @@ class ReportUIFeatures {
     this._setupMetricDescriptionToggleElements();
     const topbarLogo = this._dom.find('.lh-topbar__logo', this._document);
     topbarLogo.addEventListener('click', this._toggleDarkTheme);
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      this._toggleDarkTheme();
+    }
   }
 
   /**
