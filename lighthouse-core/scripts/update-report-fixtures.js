@@ -7,7 +7,7 @@
 
 const cli = require('../../lighthouse-cli/run.js');
 const cliFlags = require('../../lighthouse-cli/cli-flags.js');
-const assetSaver = require('../lib/asset-saver');
+const assetSaver = require('../lib/asset-saver.js');
 const artifactPath = 'lighthouse-core/test/results/artifacts';
 
 const {server} = require('../../lighthouse-cli/test/fixtures/static-server.js');
@@ -35,7 +35,7 @@ const budgetedConfig = {
 
 /**
  * Update the report artifacts. If artifactName is set only that artifact will be updated.
- * @param {keyof LH.Artifacts} artifactName?
+ * @param {keyof LH.Artifacts=} artifactName
  */
 async function update(artifactName) {
   // get an available port
