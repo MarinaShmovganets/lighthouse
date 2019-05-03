@@ -79,7 +79,7 @@ const UIStrings = {
   seoCategoryManualDescription: 'Run these additional validators on your site to check additional SEO best practices.',
   /* Title of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight opportunities to make a page more usable on mobile devices. */
   seoMobileGroupTitle: 'Mobile Friendly',
-  /* Description of the navigation section within the Search Engine Optimization (SEO) category. Within this section are with descriptive titles that highlight opportunities to make a page more usable on mobile devices. */
+  /* Description of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight opportunities to make a page more usable on mobile devices. */
   seoMobileGroupDescription: 'Make sure your pages are mobile friendly so users don’t have to pinch or zoom ' +
   'in order to read the content pages. [Learn more](https://developers.google.com/search/mobile-sites/).',
   /* Title of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight ways to make a website content more easily understood by search engine crawler bots. */
