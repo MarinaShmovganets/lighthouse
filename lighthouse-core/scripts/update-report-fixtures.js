@@ -7,7 +7,7 @@
 
 const cli = require('../../lighthouse-cli/run.js');
 const cliFlags = require('../../lighthouse-cli/cli-flags.js');
-const fs = require('fs');
+const assetSaver = require('../lib/asset-saver');
 const artifactPath = 'lighthouse-core/test/results/artifacts';
 
 const {server} = require('../../lighthouse-cli/test/fixtures/static-server.js');
@@ -35,7 +35,7 @@ const budgetedConfig = {
 
 /**
  * Update the report artifacts. If artifactName is set only that artifact will be updated.
- * @param {string=} artifactName
+ * @param {keyof LH.Artifacts} artifactName?
  */
 async function update(artifactName) {
   // get an available port
@@ -46,7 +46,7 @@ async function update(artifactName) {
     res(address.port);
   }));
 
-  const oldArtifacts = readArtifacts();
+  const oldArtifacts = await assetSaver.loadArtifacts(artifactPath);
 
   const url = `http://localhost:${port}/dobetterweb/dbw_tester.html`;
   const rawFlags = [
@@ -60,18 +60,11 @@ async function update(artifactName) {
 
   if (artifactName) {
     // Revert everything except the one artifact
-    const newArtifacts = readArtifacts();
+    const newArtifacts = await assetSaver.loadArtifacts(artifactPath);
     const finalArtifacts = oldArtifacts;
     finalArtifacts[artifactName] = newArtifacts[artifactName];
-    fs.writeFileSync(
-      artifactPath + '/artifacts.json',
-      JSON.stringify(finalArtifacts, null, 2) + '\n'
-    );
+    await assetSaver.saveArtifacts(finalArtifacts, artifactPath);
   }
 }
 
-function readArtifacts() {
-  return JSON.parse(fs.readFileSync(artifactPath + '/artifacts.json', 'utf8'));
-}
-
-update(process.argv[2]);
+update(/** @type {keyof LH.Artifacts} */ (process.argv[2]));
