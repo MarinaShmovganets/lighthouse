@@ -87,6 +87,7 @@ class ReportUIFeatures {
 
     this.json = report;
     this._setupMediaQueryListeners();
+    this._setupSmoothScroll();
     this._setupExportButton();
     this._setupThirdPartyFilter();
     this._setupStickyHeaderElements();
@@ -117,6 +118,17 @@ class ReportUIFeatures {
     mediaQuery.addListener(this.onMediaQueryChange);
     // Ensure the handler is called on init
     this.onMediaQueryChange(mediaQuery);
+  }
+
+  _setupSmoothScroll() {
+    for (const el of this._dom.findAll('a.lh-gauge__wrapper', this._document)) {
+      const anchorElement = /** @type {HTMLAnchorElement} */ (el);
+      anchorElement.addEventListener('click', e => {
+        e.preventDefault();
+        window.history.pushState({}, '', anchorElement.hash);
+        this._dom.find(anchorElement.hash, this._document).scrollIntoView({behavior: 'smooth'});
+      });
+    }
   }
 
   /**
