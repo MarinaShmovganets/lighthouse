@@ -76,7 +76,7 @@
   --lh-audit-group-vpadding: 8px;
   --lh-section-vpadding: 12px;
   --chevron-size: 12px;
-  --inner-audit-left-padding: calc(var(--text-indent) + var(--lh-audit-index-width) + 2 * var(--audit-item-gap));
+  --inner-audit-left-padding: calc(var(--score-shape-size) + var(--score-shape-margin-left) + var(--score-shape-margin-right));
 
   /* Palette. */
   --color-black-100: #F5F5F5;
