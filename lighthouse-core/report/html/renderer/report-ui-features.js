@@ -99,8 +99,25 @@ class ReportUIFeatures {
     window.addEventListener('resize', this._updateStickyHeaderOnScroll);
     this._setupMetricDescriptionToggleElements();
     const topbarLogo = this._dom.find('.lh-topbar__logo', this._document);
-    topbarLogo.addEventListener('click', () => this._toggleDarkTheme);
+    topbarLogo.addEventListener('click', () => this._toggleDarkTheme());
+
+    let turnOffTheLights = false;
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      turnOffTheLights = true;
+    }
+
+    // Fireworks.
+    const scoresAll100 = Object.values(report.categories).every(cat => cat.score === 1);
+    if (!this._dom.isDevTools() && scoresAll100) {
+      turnOffTheLights = true;
+      const scoresContainer = this._dom.find('.lh-scores-container', this._document);
+      scoresContainer.classList.add('score100');
+      scoresContainer.addEventListener('click', _ => {
+        scoresContainer.classList.toggle('fireworks-paused');
+      });
+    }
+
+    if (turnOffTheLights) {
       this._toggleDarkTheme(true);
     }
   }
