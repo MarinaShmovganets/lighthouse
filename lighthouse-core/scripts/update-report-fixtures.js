@@ -50,7 +50,7 @@ async function update(artifactName) {
 
   const url = `http://localhost:${port}/dobetterweb/dbw_tester.html`;
   const rawFlags = [
-    '--gather-mode=' + artifactPath,
+    `--gather-mode=${artifactPath}`,
     '--throttling-method=devtools',
     url,
   ].join(' ');
