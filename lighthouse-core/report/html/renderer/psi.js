@@ -64,7 +64,9 @@ function prepareLabData(LHResult, document) {
   scoreGaugeWrapperEl.removeAttribute('href');
 
   const finalScreenshotDataUri = _getFinalScreenshot(perfCategory);
-  const scoreScaleEl = dom.cloneTemplate('#tmpl-lh-scorescale', dom.document()).firstElementChild;
+
+  const clonedScoreTemplate = dom.cloneTemplate('#tmpl-lh-scorescale', dom.document());
+  const scoreScaleEl = dom.find('.lh-scorescale', clonedScoreTemplate);
 
   return {scoreGaugeEl, perfCategoryEl, finalScreenshotDataUri, scoreScaleEl};
 }
