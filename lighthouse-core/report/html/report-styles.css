@@ -122,8 +122,7 @@
   --score-number-font-size: 28px;
   --score-shape-margin-left: 4px;
   --score-shape-margin-right: 12px;
-  --score-shape-margin-top: 7px;
-  --score-shape-margin: var(--score-shape-margin-top) var(--score-shape-margin-right) 0 var(--score-shape-margin-left);
+  --score-shape-margin: 0 var(--score-shape-margin-right) 0 var(--score-shape-margin-left);
   --score-shape-size: 12px;
   --score-title-font-size-big: 28px;
   --score-title-font-size: 20px;
@@ -217,7 +216,6 @@
     --score-number-font-size-big: 34px;
     --score-number-font-size: 26px;
     --score-shape-margin-left: 2px;
-    --score-shape-margin-top: 7px;
     --score-shape-size: 10px;
     --score-title-font-size-big: 22px;
     --score-title-font-size: 14px;
@@ -502,6 +500,7 @@
 /* Expandable Details (Audit Groups, Audits) */
 .lh-audit__header {
   display: flex;
+  align-items: center;
   font-weight: 500;
   padding: var(--lh-audit-vpadding) 0;
 }
@@ -574,6 +573,7 @@
 
 .lh-metric__innerwrap {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 10px var(--text-indent);
@@ -723,6 +723,7 @@
 
 .lh-load-opportunity__col--one {
   flex: 5;
+  align-items: center;
   margin-right: 2px;
 }
 .lh-load-opportunity__col--two {
