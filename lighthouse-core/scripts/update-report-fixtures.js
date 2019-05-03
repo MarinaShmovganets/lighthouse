@@ -67,4 +67,4 @@ async function update(artifactName) {
   }
 }
 
-update(/** @type {keyof LH.Artifacts} */ (process.argv[2]));
+update(/** @type {keyof LH.Artifacts | undefined} */ (process.argv[2]));
