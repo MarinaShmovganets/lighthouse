@@ -35,7 +35,7 @@ const budgetedConfig = {
 
 /**
  * Update the report artifacts. If artifactName is set only that artifact will be updated.
- * @param {keyof LH.Artifacts} artifactName?
+ * @param {keyof LH.Artifacts=} artifactName
  */
 async function update(artifactName) {
   // get an available port
