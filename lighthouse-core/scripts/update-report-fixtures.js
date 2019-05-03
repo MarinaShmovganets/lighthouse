@@ -61,6 +61,9 @@ async function update(artifactName) {
   if (artifactName) {
     // Revert everything except the one artifact
     const newArtifacts = await assetSaver.loadArtifacts(artifactPath);
+    if (!(artifactName in newArtifacts) && !(artifactName in oldArtifacts)) {
+      throw Error('Unknown artifact name: ' + artifactName);
+    }
     const finalArtifacts = oldArtifacts;
     finalArtifacts[artifactName] = newArtifacts[artifactName];
     await assetSaver.saveArtifacts(finalArtifacts, artifactPath);
