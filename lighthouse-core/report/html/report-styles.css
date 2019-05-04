@@ -85,6 +85,7 @@
   --color-black-600: #757575;
   --color-black-800: #424242;
   --color-black-900: #212121;
+  --off-black: #1b1b1b;
   --color-black: #000000;
   --color-blue: #2962FF;
   --color-green-700: #018642;
@@ -178,10 +179,10 @@
   --color-black-400: var(--color-black-600);
   --color-black-600: var(--color-black-500);
 
-  --topbar-bg: var(--color-black);
+  --topbar-bg: var(--off-black);
   --plugin-badge-bg: var(--color-black-800);
   --header-bg-color: var(--color-black-900);
-  --env-item-bg: rgba(0, 0, 0, 0.5);
+  --env-item-bg: var(--off-black);
   --report-secondary-border-color: var(--color-black-200);
 
   --body-background-color: var(--color-black-900);
