@@ -600,14 +600,16 @@
   padding: var(--expandable-padding);
 }
 
-/* no-JS toggle */
-.lh-metrics-toggle__input:checked ~ .lh-columns .lh-metric__description {
-  display: block;
-}
-
 .lh-metric__value {
   white-space: nowrap; /* No wrapping between metric value and the icon */
   font-weight: 500;
+}
+
+/* No-JS toggle switch
+   Keep selector sync'd w/ `magicSelector` in report-ui-features-test.js
+ */
+ .lh-metrics-toggle__input:checked ~ .lh-columns .lh-metric__description {
+  display: block;
 }
 
 .lh-metrics-toggle__input {
@@ -617,6 +619,7 @@
   right: 0;
   width: 74px;
   height: 28px;
+  top: -3px;
 }
 .lh-metrics-toggle__label {
   display: flex;
@@ -625,6 +628,7 @@
   overflow: hidden;
   position: absolute;
   right: 0;
+  top: -3px;
   pointer-events: none;
 }
 .lh-metrics-toggle__input:focus + label {
