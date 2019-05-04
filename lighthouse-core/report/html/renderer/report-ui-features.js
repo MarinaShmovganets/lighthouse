@@ -563,7 +563,7 @@ class ReportUIFeatures {
 
   /**
    * @private
-   * @param {boolean | undefined} force
+   * @param {boolean} [force]
    */
   _toggleDarkTheme(force) {
     this._document.body.classList.toggle('dark', force);
