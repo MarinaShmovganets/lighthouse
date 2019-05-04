@@ -163,31 +163,34 @@ describe('ReportUIFeatures', () => {
     });
   });
 
+  // This is done all in CSS, but tested here.
   describe('metric description toggles', () => {
     let container;
-    let metricsAuditGroup;
     let toggle;
-    const metricsClass = 'lh-audit-group--metrics';
-    const toggleClass = 'lh-metrics-toggle__input';
-    const showClass = 'lh-audit-group--metrics__show-descriptions';
+    const metricsSelector = '.lh-audit-group--metrics';
+    const toggleSelector = '.lh-metrics-toggle__input';
+    const magicSelector = '.lh-metrics-toggle__input:checked ~ .lh-columns .lh-metric__description';
+    let getDescriptionsAfterCheckedToggle;
 
     describe('works if there is a performance category', () => {
       beforeAll(() => {
         container = render(sampleResults);
-        metricsAuditGroup = dom.find(`.${metricsClass}`, container);
-        toggle = dom.find(`.${toggleClass}`, metricsAuditGroup);
+        const metricsAuditGroup = dom.find(metricsSelector, container);
+        toggle = dom.find(toggleSelector, metricsAuditGroup);
+        // In the CSS, our magicSelector will flip display from `none` to `block`
+        getDescriptionsAfterCheckedToggle = _ => dom.findAll(magicSelector, metricsAuditGroup);
       });
 
       it('descriptions hidden by default', () => {
-        assert.ok(!metricsAuditGroup.classList.contains(showClass));
+        assert.ok(getDescriptionsAfterCheckedToggle().length === 0);
       });
 
       it('can toggle description visibility', () => {
-        assert.ok(!metricsAuditGroup.classList.contains(showClass));
+        assert.ok(getDescriptionsAfterCheckedToggle().length === 0);
         toggle.click();
-        assert.ok(metricsAuditGroup.classList.contains(showClass));
+        assert.ok(getDescriptionsAfterCheckedToggle().length > 2);
         toggle.click();
-        assert.ok(!metricsAuditGroup.classList.contains(showClass));
+        assert.ok(getDescriptionsAfterCheckedToggle().length === 0);
       });
     });
 
@@ -195,8 +198,8 @@ describe('ReportUIFeatures', () => {
       const lhr = JSON.parse(JSON.stringify(sampleResults));
       delete lhr.categories.performance;
       container = render(lhr);
-      assert.ok(!container.querySelector(`.${metricsClass}`));
-      assert.ok(!container.querySelector(`.${toggleClass}`));
+      assert.ok(!container.querySelector(metricsSelector));
+      assert.ok(!container.querySelector(toggleSelector));
     });
   });
 });
