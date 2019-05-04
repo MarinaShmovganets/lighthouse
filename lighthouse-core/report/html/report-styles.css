@@ -710,9 +710,7 @@
 }
 
 .lh-load-opportunity__header .lh-load-opportunity__col {
-  background-color: var(--medium-50-gray);
   color: var(--medium-75-gray);
-  text-align: center;
   display: unset;
   line-height: calc(2.3 * var(--body-font-size));
 }
@@ -728,6 +726,7 @@
 }
 .lh-load-opportunity__col--two {
   flex: 4;
+  text-align: right;
 }
 
 .lh-audit--load-opportunity .lh-audit__display-text {
