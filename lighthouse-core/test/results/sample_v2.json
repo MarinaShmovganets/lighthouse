@@ -478,11 +478,11 @@
     },
     "ios-pwa-icon": {
       "id": "ios-pwa-icon",
-      "title": "Web app does not have a valid iOS touch icon",
-      "description": "In order to be installable as an iOS PWA web apps must have a valid apple-touch-icon. [Learn More](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).",
+      "title": "Site does not have a valid iOS touch icon",
+      "description": "In order to be installable as an iOS PWA sites must have a valid apple-touch-icon. [Learn More](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).",
       "score": 0,
       "scoreDisplayMode": "binary",
-      "explanation": "No `apple-touch-icon` link found."
+      "explanation": "No valid `apple-touch-icon` link found."
     },
     "splash-screen": {
       "id": "splash-screen",
@@ -4929,6 +4929,15 @@
       ],
       "lighthouse-core/audits/redirects.js | description": [
         "audits.redirects.description"
+      ],
+      "lighthouse-core/audits/ios-pwa-icon.js | failureTitle": [
+        "audits[ios-pwa-icon].title"
+      ],
+      "lighthouse-core/audits/ios-pwa-icon.js | description": [
+        "audits[ios-pwa-icon].description"
+      ],
+      "lighthouse-core/audits/ios-pwa-icon.js | explanation": [
+        "audits[ios-pwa-icon].explanation"
       ],
       "lighthouse-core/audits/mainthread-work-breakdown.js | title": [
         "audits[mainthread-work-breakdown].title"

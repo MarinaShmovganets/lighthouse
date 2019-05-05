@@ -5,11 +5,28 @@
  */
 'use strict';
 
-const Audit = require('./audit');
+const Audit = require('./audit.js');
+const i18n = require('../lib/i18n/i18n.js');
 
 /**
- * @fileoverview Audits if a page's web app has a valid icon for iOS installability.
+ * @fileoverview Audits if a page's web app has an icon link for iOS installability.
  */
+
+const UIStrings = {
+  /** Title of a Lighthouse audit that tells the user that their site contains a vaild touch icon. This descriptive title is shown when the page contains a valid iOS touch icon. "iOS" is the name of the Apple operating system and should not be translated. */
+  title: 'Site a valid iOS touch icon',
+  /** Title of a Lighthouse audit that tells the user that their site contains a vaild touch icon. This descriptive title is shown when the page does not contain a valid iOS touch icon. "iOS" is the name of the Apple operating system and should not be translated. */
+  failureTitle: 'Site does not have a valid iOS touch icon',
+  /** Description of a Lighthouse audit that tells the user what having a valid apple-touch-icon does. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description:
+  'In order to be installable as an iOS PWA ' +
+  'sites must have a valid apple-touch-icon. ' +
+  '[Learn More](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).',
+  /** Explanatory message stating that there was a failure in an audit caused by the page having an invalid apple-touch-icon link. `apple-touch-icon` is a HTML tag value and should not be translated. */
+  explanation: 'No valid `apple-touch-icon` link found.',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class IosPwaIcon extends Audit {
   /**
@@ -18,11 +35,9 @@ class IosPwaIcon extends Audit {
   static get meta() {
     return {
       id: 'ios-pwa-icon',
-      title: 'Web app has a valid iOS touch icon',
-      failureTitle: 'Web app does not have a valid iOS touch icon',
-      description: 'In order to be installable as an iOS PWA '
-        + 'web apps must have a valid apple-touch-icon. '
-        + '[Learn More](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['LinkElements'],
     };
   }
@@ -33,14 +48,15 @@ class IosPwaIcon extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit(artifacts, _) {
-    const appleTouchIcons = artifacts.LinkElements.filter(el => el.rel === 'apple-touch-icon');
+    const appleTouchIcons = artifacts.LinkElements.filter(
+      el => el.rel === 'apple-touch-icon' && el.href !== undefined);
 
     // Audit passes if an `apple-touch-icon` exists.
     const passed = appleTouchIcons.length !== 0;
 
     let explanation;
     if (!passed) {
-      explanation = 'No `apple-touch-icon` link found.';
+      explanation = str_(UIStrings.explanation);
     }
 
     return {
@@ -51,3 +67,4 @@ class IosPwaIcon extends Audit {
 }
 
 module.exports = IosPwaIcon;
+module.exports.UIStrings = UIStrings;

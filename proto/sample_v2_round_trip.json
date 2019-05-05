@@ -1041,12 +1041,12 @@
             "title": "Interactive elements indicate their purpose and state"
         },
         "ios-pwa-icon": {
-            "description": "In order to be installable as an iOS PWA web apps must have a valid apple-touch-icon. [Learn More](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).",
-            "explanation": "No `apple-touch-icon` link found.",
+            "description": "In order to be installable as an iOS PWA sites must have a valid apple-touch-icon. [Learn More](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).",
+            "explanation": "No valid `apple-touch-icon` link found.",
             "id": "ios-pwa-icon",
             "score": 0.0,
             "scoreDisplayMode": "binary",
-            "title": "Web app does not have a valid iOS touch icon"
+            "title": "Site does not have a valid iOS touch icon"
         },
         "is-crawlable": {
             "description": "Search engines are unable to include your pages in search results if they don't have permission to crawl them. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/indexing).",
