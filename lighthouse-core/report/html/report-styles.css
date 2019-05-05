@@ -85,6 +85,7 @@
   --color-black-600: #757575;
   --color-black-800: #424242;
   --color-black-900: #212121;
+  --off-black: #111111;
   --color-black: #000000;
   --color-blue: #2962FF;
   --color-green-700: #018642;
@@ -135,6 +136,7 @@
   --topbar-height: 36px;
   --topbar-icon-size: 24px;
   --topbar-padding: 0 8px;
+  --metrics-toggle-color: var(--color-black-200);
 
   --color-average-secondary: var(--color-orange-700);
   --color-average: var(--color-orange);
@@ -180,7 +182,8 @@
   --topbar-bg: var(--color-black);
   --plugin-badge-bg: var(--color-black-800);
   --header-bg-color: var(--color-black-900);
-  --env-item-bg: rgba(0, 0, 0, 0.5);
+  --env-item-bg: var(--color-black);
+  --report-secondary-border-color: var(--color-black-200);
 
   --body-background-color: var(--color-black-900);
   --body-text-color: var(--color-black-100);
@@ -297,6 +300,23 @@
 }
 
 .lh-container {
+  /*
+  Text wrapping in the report is so much FUN!
+  We have a `word-break: break-word;` globally here to prevent a few common scenarios, namely
+  long non-breakable text (usually URLs) found in:
+    1. The footer
+    2. .lh-node (outerHTML)
+    3. .lh-code
+
+  With that sorted, the next challenge is appropriate column sizing and text wrapping inside our
+  .lh-details tables. Even more fun.
+    * We don't want table headers ("Potential Savings (ms)") to wrap or their column values, but
+    we'd be happy for the URL column to wrap if the URLs are particularly long.
+    * We want the narrow columns to remain narrow, providing the most column width for URL
+    * We don't want the table to extend past 100% width.
+    * Long URLs in the URL column can wrap. Util.getURLDisplayName maxes them out at 64 characters,
+      but they do not get any overflow:ellipsis treatment.
+  */
   word-break: break-word;
 }
 
@@ -387,7 +407,6 @@
 .lh-node {
   display: block;
   font-family: var(--monospace-font-family);
-  word-break: break-word;
   color: hsl(174, 100%, 27%);
 }
 
@@ -627,6 +646,11 @@
 .lh-metrics-toggle__lines {
   fill: var(--color-metric-toggle-lines);
 }
+
+.lh-metrics-toggle label {
+  background-color: var(--metrics-toggle-color);
+}
+
 .lh-metrics-toggle label .lh-metrics-toggle__icon--less {
   padding-left: 8px;
 }
@@ -948,7 +972,6 @@
   white-space: normal;
   margin-top: 0;
   font-size: 85%;
-  word-break: break-word;
 }
 
 .lh-warnings {
@@ -1150,7 +1173,8 @@
 }
 .lh-table thead th {
   font-weight: normal;
-  word-wrap: normal;
+  /* See text-wrapping comment on .lh-container. */
+  word-break: normal;
 }
 
 .lh-table tbody tr:nth-child(even) {
@@ -1177,6 +1201,7 @@
 .lh-table-column--ms,
 .lh-table-column--numeric {
   text-align: right;
+  word-break: normal;
 }
 
 
@@ -1186,7 +1211,6 @@
 
 .lh-table-column--url {
   min-width: 250px;
-  white-space: nowrap;
 }
 
 /* Keep columns narrow if they follow the URL column */
@@ -1199,18 +1223,13 @@
   width: 12%;
 }
 
-.lh-text__url {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .lh-text__url:hover {
   text-decoration: underline dotted #999;
   text-decoration-skip-ink: auto;
 }
 
 .lh-text__url > .lh-text, .lh-text__url-host {
-  display: inline-block;
+  display: inline;
 }
 
 .lh-text__url-host {

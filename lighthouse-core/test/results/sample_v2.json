@@ -1273,6 +1273,13 @@
       "explanation": "No usable web app manifest found on page.",
       "warnings": []
     },
+    "performance-budget": {
+      "id": "performance-budget",
+      "title": "Performance budget",
+      "description": "Keep the quantity and size of network requests under the targets set by the provided performance budget.",
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
+    },
     "resource-summary": {
       "id": "resource-summary",
       "title": "Keep request counts low and transfer sizes small",
@@ -3238,6 +3245,10 @@
           "group": "diagnostics"
         },
         {
+          "id": "performance-budget",
+          "weight": 0
+        },
+        {
           "id": "resource-summary",
           "weight": 0,
           "group": "diagnostics"
@@ -3335,12 +3346,12 @@
         },
         {
           "id": "bypass",
-          "weight": 10,
+          "weight": 3,
           "group": "a11y-navigation"
         },
         {
           "id": "color-contrast",
-          "weight": 6,
+          "weight": 3,
           "group": "a11y-color-contrast"
         },
         {
@@ -3355,12 +3366,12 @@
         },
         {
           "id": "document-title",
-          "weight": 2,
+          "weight": 3,
           "group": "a11y-names-labels"
         },
         {
           "id": "duplicate-id",
-          "weight": 5,
+          "weight": 1,
           "group": "a11y-best-practices"
         },
         {
@@ -3370,7 +3381,7 @@
         },
         {
           "id": "html-has-lang",
-          "weight": 4,
+          "weight": 3,
           "group": "a11y-language"
         },
         {
@@ -3380,7 +3391,7 @@
         },
         {
           "id": "image-alt",
-          "weight": 8,
+          "weight": 10,
           "group": "a11y-names-labels"
         },
         {
@@ -3400,7 +3411,7 @@
         },
         {
           "id": "link-name",
-          "weight": 9,
+          "weight": 3,
           "group": "a11y-names-labels"
         },
         {
@@ -3420,12 +3431,12 @@
         },
         {
           "id": "meta-viewport",
-          "weight": 3,
+          "weight": 10,
           "group": "a11y-best-practices"
         },
         {
           "id": "object-alt",
-          "weight": 4,
+          "weight": 3,
           "group": "a11y-names-labels"
         },
         {
@@ -3504,7 +3515,7 @@
         }
       ],
       "id": "accessibility",
-      "score": 0.36
+      "score": 0.38
     },
     "best-practices": {
       "title": "Best Practices",
@@ -3740,6 +3751,10 @@
     "load-opportunities": {
       "title": "Opportunities",
       "description": "These optimizations can speed up your page load."
+    },
+    "budgets": {
+      "title": "Budgets",
+      "description": "Performance budgets set standards for the performance of your site."
     },
     "diagnostics": {
       "title": "Diagnostics",
@@ -4211,13 +4226,19 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:resource-summary",
+        "name": "lh:audit:performance-budget",
         "duration": 100,
         "entryType": "measure"
       },
       {
         "startTime": 0,
         "name": "lh:computed:ResourceSummary",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:resource-summary",
         "duration": 100,
         "entryType": "measure"
       },
@@ -4997,6 +5018,12 @@
       "lighthouse-core/audits/network-server-latency.js | description": [
         "audits[network-server-latency].description"
       ],
+      "lighthouse-core/audits/performance-budget.js | title": [
+        "audits[performance-budget].title"
+      ],
+      "lighthouse-core/audits/performance-budget.js | description": [
+        "audits[performance-budget].description"
+      ],
       "lighthouse-core/audits/resource-summary.js | title": [
         "audits[resource-summary].title"
       ],
@@ -5540,6 +5567,12 @@
       ],
       "lighthouse-core/config/default-config.js | loadOpportunitiesGroupDescription": [
         "categoryGroups[load-opportunities].description"
+      ],
+      "lighthouse-core/config/default-config.js | budgetsGroupTitle": [
+        "categoryGroups.budgets.title"
+      ],
+      "lighthouse-core/config/default-config.js | budgetsGroupDescription": [
+        "categoryGroups.budgets.description"
       ],
       "lighthouse-core/config/default-config.js | diagnosticsGroupTitle": [
         "categoryGroups.diagnostics.title"
