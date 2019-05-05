@@ -20,6 +20,14 @@
             "scoreDisplayMode": "binary",
             "title": "Uses Application Cache"
         },
+        "apple-touch-icon": {
+            "description": "In order to have a custom icon on iOS once installed, a site must have a valid apple-touch-icon. [Learn More](https://developers.google.com/web/fundamentals/design-and-ux/browser-customization/).",
+            "id": "apple-touch-icon",
+            "score": 0.0,
+            "scoreDisplayMode": "binary",
+            "title": "Does not provide a valid apple-touch-icon",
+            "warnings": []
+        },
         "aria-allowed-attr": {
             "description": "Each ARIA `role` supports a specific subset of `aria-*` attributes. Mismatching these invalidates the `aria-*` attributes. [Learn more](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse).",
             "id": "aria-allowed-attr",
@@ -1039,14 +1047,6 @@
             "score": null,
             "scoreDisplayMode": "manual",
             "title": "Interactive elements indicate their purpose and state"
-        },
-        "ios-pwa-icon": {
-            "description": "In order to be installable as an iOS PWA sites must have a valid apple-touch-icon. [Learn More](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).",
-            "explanation": "No valid `apple-touch-icon` link found.",
-            "id": "ios-pwa-icon",
-            "score": 0.0,
-            "scoreDisplayMode": "binary",
-            "title": "Site does not have a valid iOS touch icon"
         },
         "is-crawlable": {
             "description": "Search engines are unable to include your pages in search results if they don't have permission to crawl them. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/indexing).",
@@ -3530,11 +3530,6 @@
                     "weight": 2.0
                 },
                 {
-                    "group": "pwa-installable",
-                    "id": "ios-pwa-icon",
-                    "weight": 1.0
-                },
-                {
                     "group": "pwa-optimized",
                     "id": "redirects-http",
                     "weight": 2.0
@@ -3562,6 +3557,11 @@
                 {
                     "group": "pwa-optimized",
                     "id": "without-javascript",
+                    "weight": 1.0
+                },
+                {
+                    "group": "pwa-optimized",
+                    "id": "apple-touch-icon",
                     "weight": 1.0
                 },
                 {
@@ -4092,7 +4092,7 @@
             {
                 "duration": 100.0,
                 "entryType": "measure",
-                "name": "lh:audit:ios-pwa-icon",
+                "name": "lh:audit:apple-touch-icon",
                 "startTime": 0.0
             },
             {

@@ -423,6 +423,26 @@
     "message": "`<video>` elements contain a `<track>` element with `[kind=\"description\"]`",
     "description": "Title of an accesibility audit that evaluates if all video elements have child track elements that contain a description of the video content. This title is descriptive of the successful state and is shown to users when no user action is required."
   },
+  "lighthouse-core/audits/apple-touch-icon.js | description": {
+    "message": "In order to have a custom icon on iOS once installed, a site must have a valid apple-touch-icon. [Learn More](https://developers.google.com/web/fundamentals/design-and-ux/browser-customization/).",
+    "description": "Description of a Lighthouse audit that tells the user what having a valid apple-touch-icon does. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation."
+  },
+  "lighthouse-core/audits/apple-touch-icon.js | explanation": {
+    "message": "`apple-touch-icon`'s `href` attribute is not valid",
+    "description": "Explanatory message stating that there was a failure in an audit caused by the page's `apple-touch-icon` having an invalide `href` attribute. `apple-touch-icon` and `href` are HTML tag values and should not be translated."
+  },
+  "lighthouse-core/audits/apple-touch-icon.js | failureTitle": {
+    "message": "Does not provide a valid apple-touch-icon",
+    "description": "Title of a Lighthouse audit that tells the user that their site contains a vaild touch icon. This descriptive title is shown when the page does not contain a valid iOS touch icon."
+  },
+  "lighthouse-core/audits/apple-touch-icon.js | precomposedWarning": {
+    "message": "`apple-touch-icon-precomposed` is out of date, `apple-touch-icon` is preferred.",
+    "description": "Warning that HTML attribute `apple-touch-icon-precomposed` should not be used in favor of `apple-touch-icon`.  \"apple-touch-icon-precomposed\" and \"apple-touch-icon\" are HTML attributes and should not be translated."
+  },
+  "lighthouse-core/audits/apple-touch-icon.js | title": {
+    "message": "Provides a valid apple-touch-icon",
+    "description": "Title of a Lighthouse audit that tells the user that their site contains a vaild touch icon. This descriptive title is shown when the page contains a valid iOS touch icon."
+  },
   "lighthouse-core/audits/bootup-time.js | chromeExtensionsWarning": {
     "message": "Chrome extensions negatively affected this page's load performance. Try auditing the page in incognito mode or from a Chrome profile without extensions.",
     "description": "A message displayed in a Lighthouse audit result warning that Chrome extensions on the user's system substantially affected Lighthouse's measurements and instructs the user on how to run again without those extensions."
@@ -634,22 +654,6 @@
   "lighthouse-core/audits/font-display.js | title": {
     "message": "All text remains visible during webfont loads",
     "description": "Title of a diagnostic audit that provides detail on if all the text on a webpage was visible while the page was loading its webfonts. This descriptive title is shown to users when the amount is acceptable and no user action is required."
-  },
-  "lighthouse-core/audits/ios-pwa-icon.js | description": {
-    "message": "In order to be installable as an iOS PWA sites must have a valid apple-touch-icon. [Learn More](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).",
-    "description": "Description of a Lighthouse audit that tells the user what having a valid apple-touch-icon does. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation."
-  },
-  "lighthouse-core/audits/ios-pwa-icon.js | explanation": {
-    "message": "No valid `apple-touch-icon` link found.",
-    "description": "Explanatory message stating that there was a failure in an audit caused by the page having an invalid apple-touch-icon link. `apple-touch-icon` is a HTML tag value and should not be translated."
-  },
-  "lighthouse-core/audits/ios-pwa-icon.js | failureTitle": {
-    "message": "Site does not have a valid iOS touch icon",
-    "description": "Title of a Lighthouse audit that tells the user that their site contains a vaild touch icon. This descriptive title is shown when the page does not contain a valid iOS touch icon. \"iOS\" is the name of the Apple operating system and should not be translated."
-  },
-  "lighthouse-core/audits/ios-pwa-icon.js | title": {
-    "message": "Site a valid iOS touch icon",
-    "description": "Title of a Lighthouse audit that tells the user that their site contains a vaild touch icon. This descriptive title is shown when the page contains a valid iOS touch icon. \"iOS\" is the name of the Apple operating system and should not be translated."
   },
   "lighthouse-core/audits/load-fast-enough-for-pwa.js | description": {
     "message": "A fast page load over a cellular network ensures a good mobile user experience. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/fast-3g).",

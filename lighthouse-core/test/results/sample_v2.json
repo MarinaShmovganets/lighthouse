@@ -476,13 +476,13 @@
         ]
       }
     },
-    "ios-pwa-icon": {
-      "id": "ios-pwa-icon",
-      "title": "Site does not have a valid iOS touch icon",
-      "description": "In order to be installable as an iOS PWA sites must have a valid apple-touch-icon. [Learn More](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).",
+    "apple-touch-icon": {
+      "id": "apple-touch-icon",
+      "title": "Does not provide a valid apple-touch-icon",
+      "description": "In order to have a custom icon on iOS once installed, a site must have a valid apple-touch-icon. [Learn More](https://developers.google.com/web/fundamentals/design-and-ux/browser-customization/).",
       "score": 0,
       "scoreDisplayMode": "binary",
-      "explanation": "No valid `apple-touch-icon` link found."
+      "warnings": []
     },
     "splash-screen": {
       "id": "splash-screen",
@@ -3669,11 +3669,6 @@
           "group": "pwa-installable"
         },
         {
-          "id": "ios-pwa-icon",
-          "weight": 1,
-          "group": "pwa-installable"
-        },
-        {
           "id": "redirects-http",
           "weight": 2,
           "group": "pwa-optimized"
@@ -3700,6 +3695,11 @@
         },
         {
           "id": "without-javascript",
+          "weight": 1,
+          "group": "pwa-optimized"
+        },
+        {
+          "id": "apple-touch-icon",
           "weight": 1,
           "group": "pwa-optimized"
         },
@@ -4088,7 +4088,7 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:ios-pwa-icon",
+        "name": "lh:audit:apple-touch-icon",
         "duration": 100,
         "entryType": "measure"
       },
@@ -4930,14 +4930,11 @@
       "lighthouse-core/audits/redirects.js | description": [
         "audits.redirects.description"
       ],
-      "lighthouse-core/audits/ios-pwa-icon.js | failureTitle": [
-        "audits[ios-pwa-icon].title"
+      "lighthouse-core/audits/apple-touch-icon.js | failureTitle": [
+        "audits[apple-touch-icon].title"
       ],
-      "lighthouse-core/audits/ios-pwa-icon.js | description": [
-        "audits[ios-pwa-icon].description"
-      ],
-      "lighthouse-core/audits/ios-pwa-icon.js | explanation": [
-        "audits[ios-pwa-icon].explanation"
+      "lighthouse-core/audits/apple-touch-icon.js | description": [
+        "audits[apple-touch-icon].description"
       ],
       "lighthouse-core/audits/mainthread-work-breakdown.js | title": [
         "audits[mainthread-work-breakdown].title"

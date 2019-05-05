@@ -5,11 +5,11 @@
  */
 'use strict';
 
-const IosPwaIcon = require('../../audits/ios-pwa-icon.js');
+const IosPwaIcon = require('../../audits/apple-touch-icon.js');
 
 /* eslint-env jest */
 
-describe('PWA: ios-pwa-icon audit', () => {
+describe('PWA: apple-touch-icon audit', () => {
   it(`fails when apple-touch-icon is not present`, async () => {
     const artifacts = {
       LinkElements: [],
