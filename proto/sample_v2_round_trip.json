@@ -1040,6 +1040,14 @@
             "scoreDisplayMode": "manual",
             "title": "Interactive elements indicate their purpose and state"
         },
+        "ios-pwa-icon": {
+            "description": "In order to be installable as an iOS PWA web apps must have a valid apple-touch-icon. [Learn More](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).",
+            "explanation": "No `apple-touch-icon` link found.",
+            "id": "ios-pwa-icon",
+            "score": 0.0,
+            "scoreDisplayMode": "binary",
+            "title": "Web app does not have a valid iOS touch icon"
+        },
         "is-crawlable": {
             "description": "Search engines are unable to include your pages in search results if they don't have permission to crawl them. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/indexing).",
             "details": {
@@ -1100,7 +1108,7 @@
                         "name": "WordPress"
                     }
                 ],
-                "summary": {},
+                "summary": null,
                 "type": "table"
             },
             "id": "js-libraries",
@@ -1227,7 +1235,7 @@
             "details": {
                 "headings": [],
                 "items": [],
-                "summary": {},
+                "summary": null,
                 "type": "table"
             },
             "id": "link-text",
@@ -1883,7 +1891,7 @@
                         "vulnCount": 2.0
                     }
                 ],
-                "summary": {},
+                "summary": null,
                 "type": "table"
             },
             "displayValue": "2 vulnerabilities detected",
@@ -3522,6 +3530,11 @@
                     "weight": 2.0
                 },
                 {
+                    "group": "pwa-installable",
+                    "id": "ios-pwa-icon",
+                    "weight": 1.0
+                },
+                {
                     "group": "pwa-optimized",
                     "id": "redirects-http",
                     "weight": 2.0
@@ -3567,7 +3580,7 @@
             "description": "These checks validate the aspects of a Progressive Web App. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist).",
             "id": "pwa",
             "manualDescription": "These checks are required by the baseline [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
-            "score": 0.42,
+            "score": 0.41,
             "title": "Progressive Web App"
         },
         "seo": {
@@ -4074,6 +4087,12 @@
                 "duration": 100.0,
                 "entryType": "measure",
                 "name": "lh:computed:ManifestValues",
+                "startTime": 0.0
+            },
+            {
+                "duration": 100.0,
+                "entryType": "measure",
+                "name": "lh:audit:ios-pwa-icon",
                 "startTime": 0.0
             },
             {

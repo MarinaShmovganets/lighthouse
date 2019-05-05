@@ -476,6 +476,14 @@
         ]
       }
     },
+    "ios-pwa-icon": {
+      "id": "ios-pwa-icon",
+      "title": "Web app does not have a valid iOS touch icon",
+      "description": "In order to be installable as an iOS PWA web apps must have a valid apple-touch-icon. [Learn More](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).",
+      "score": 0,
+      "scoreDisplayMode": "binary",
+      "explanation": "No `apple-touch-icon` link found."
+    },
     "splash-screen": {
       "id": "splash-screen",
       "title": "Is not configured for a custom splash screen",
@@ -3661,6 +3669,11 @@
           "group": "pwa-installable"
         },
         {
+          "id": "ios-pwa-icon",
+          "weight": 1,
+          "group": "pwa-installable"
+        },
+        {
           "id": "redirects-http",
           "weight": 2,
           "group": "pwa-optimized"
@@ -3704,7 +3717,7 @@
         }
       ],
       "id": "pwa",
-      "score": 0.42
+      "score": 0.41
     }
   },
   "categoryGroups": {
@@ -4070,6 +4083,12 @@
       {
         "startTime": 0,
         "name": "lh:computed:ManifestValues",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:ios-pwa-icon",
         "duration": 100,
         "entryType": "measure"
       },
