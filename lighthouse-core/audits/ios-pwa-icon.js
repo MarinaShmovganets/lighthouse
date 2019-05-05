@@ -8,8 +8,7 @@
 const Audit = require('./audit');
 
 /**
- * @fileoverview
- * Audits if the page's web app has a valid icon for iOS installability.
+ * @fileoverview Audits if a page's web app has a valid icon for iOS installability.
  */
 
 class IosPwaIcon extends Audit {
@@ -19,11 +18,11 @@ class IosPwaIcon extends Audit {
   static get meta() {
     return {
       id: 'ios-pwa-icon',
-      title: 'Web app has a valid iOS PWA icon',
-      // title: 'Web app manifest meets the installability requirements',
-      failureTitle: 'Web app does not have a valid iOS PWA icon',
-      description: 'In order to be installable as an iOS PWA, '
-        + 'web apps must have a valid iOS icon.',
+      title: 'Web app has a valid iOS touch icon',
+      failureTitle: 'Web app does not have a valid iOS touch icon',
+      description: 'In order to be installable as an iOS PWA '
+        + 'web apps must have a valid apple-touch-icon. '
+        + '[Learn More](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).',
       requiredArtifacts: ['LinkElements'],
     };
   }
@@ -31,7 +30,7 @@ class IosPwaIcon extends Audit {
   /**
    * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} _
-   * @return {Promise<LH.Audit.Product>}
+   * @return {LH.Audit.Product}
    */
   static audit(artifacts, _) {
     const appleTouchIcons = artifacts.LinkElements.filter(el => el.rel === 'apple-touch-icon');
@@ -41,7 +40,7 @@ class IosPwaIcon extends Audit {
 
     let explanation;
     if (!passed) {
-      explanation = 'No Apple touch icon link found.';
+      explanation = 'No `apple-touch-icon` link found.';
     }
 
     return {
