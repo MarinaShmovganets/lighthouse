@@ -179,10 +179,10 @@
   --color-black-400: var(--color-black-600);
   --color-black-600: var(--color-black-500);
 
-  --topbar-bg: var(--off-black);
+  --topbar-bg: var(--color-black);
   --plugin-badge-bg: var(--color-black-800);
   --header-bg-color: var(--color-black-900);
-  --env-item-bg: var(--off-black);
+  --env-item-bg: var(--color-black);
   --report-secondary-border-color: var(--color-black-200);
 
   --body-background-color: var(--color-black-900);
