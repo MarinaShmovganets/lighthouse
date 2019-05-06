@@ -19,7 +19,7 @@ const UIStrings = {
   failureTitle: 'Does not provide a valid apple-touch-icon',
   /** Description of a Lighthouse audit that tells the user what having a valid apple-touch-icon does. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. "apple-touch-icon" is an HTML attribute and should not be translated. */
   description: 'For ideal appearance on iOS when users add to the home screen, define an ' +
-  '`apple-touch-icon`. It must point to a non-transparent 192px (or 180px) square PNG.' +
+  'apple-touch-icon. It must point to a non-transparent 192px (or 180px) square PNG. ' +
   '[Learn More](https://developers.google.com/web/fundamentals/design-and-ux/browser-customization/).',
   /** Warning that HTML attribute `apple-touch-icon-precomposed` should not be used in favor of `apple-touch-icon`.  "apple-touch-icon-precomposed" and "apple-touch-icon" are HTML attributes and should not be translated. */
   precomposedWarning: '`apple-touch-icon-precomposed` is out of date, ' +
