@@ -31,7 +31,7 @@ const Driver = require('../gather/driver.js'); // eslint-disable-line no-unused-
  *   C. GatherRunner.setupDriver()
  *     i. assertNoSameOriginServiceWorkerClients
  *     ii. beginEmulation
- *     iii. enableRuntimeEvents
+ *     iii. enableRuntimeEvents/enableAsyncStacks
  *     iv. evaluateScriptOnLoad rescue native Promise from potential polyfill
  *     v. register a performance observer
  *     vi. register dialog dismisser
@@ -108,6 +108,7 @@ class GatherRunner {
     await driver.assertNoSameOriginServiceWorkerClients(options.requestedUrl);
     await driver.beginEmulation(options.settings);
     await driver.enableRuntimeEvents();
+    await driver.enableAsyncStacks();
     await driver.cacheNatives();
     await driver.registerPerformanceObserver();
     await driver.dismissJavaScriptDialogs();

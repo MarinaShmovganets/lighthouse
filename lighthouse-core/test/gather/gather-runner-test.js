@@ -41,6 +41,9 @@ function getMockedEmulationDriver(emulationFn, netThrottleFn, cpuThrottleFn,
     enableRuntimeEvents() {
       return Promise.resolve();
     }
+    enableAsyncStacks() {
+      return Promise.resolve();
+    }
     assertNoSameOriginServiceWorkerClients() {
       return Promise.resolve();
     }
@@ -273,6 +276,7 @@ describe('GatherRunner', function() {
       setThrottling: asyncFunc,
       dismissJavaScriptDialogs: asyncFunc,
       enableRuntimeEvents: asyncFunc,
+      enableAsyncStacks: asyncFunc,
       cacheNatives: asyncFunc,
       registerPerformanceObserver: asyncFunc,
       cleanBrowserCaches: createCheck('calledCleanBrowserCaches'),
@@ -331,6 +335,7 @@ describe('GatherRunner', function() {
       setThrottling: asyncFunc,
       dismissJavaScriptDialogs: asyncFunc,
       enableRuntimeEvents: asyncFunc,
+      enableAsyncStacks: asyncFunc,
       cacheNatives: asyncFunc,
       registerPerformanceObserver: asyncFunc,
       cleanBrowserCaches: createCheck('calledCleanBrowserCaches'),
