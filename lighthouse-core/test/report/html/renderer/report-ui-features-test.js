@@ -162,44 +162,4 @@ describe('ReportUIFeatures', () => {
       });
     });
   });
-
-  // This is done all in CSS, but tested here.
-  describe('metric description toggles', () => {
-    let container;
-    let toggle;
-    const metricsSelector = '.lh-audit-group--metrics';
-    const toggleSelector = '.lh-metrics-toggle__input';
-    const magicSelector = '.lh-metrics-toggle__input:checked ~ .lh-columns .lh-metric__description';
-    let getDescriptionsAfterCheckedToggle;
-
-    describe('works if there is a performance category', () => {
-      beforeAll(() => {
-        container = render(sampleResults);
-        const metricsAuditGroup = dom.find(metricsSelector, container);
-        toggle = dom.find(toggleSelector, metricsAuditGroup);
-        // In the CSS, our magicSelector will flip display from `none` to `block`
-        getDescriptionsAfterCheckedToggle = _ => dom.findAll(magicSelector, metricsAuditGroup);
-      });
-
-      it('descriptions hidden by default', () => {
-        assert.ok(getDescriptionsAfterCheckedToggle().length === 0);
-      });
-
-      it('can toggle description visibility', () => {
-        assert.ok(getDescriptionsAfterCheckedToggle().length === 0);
-        toggle.click();
-        assert.ok(getDescriptionsAfterCheckedToggle().length > 2);
-        toggle.click();
-        assert.ok(getDescriptionsAfterCheckedToggle().length === 0);
-      });
-    });
-
-    it('report still works if performance category does not run', () => {
-      const lhr = JSON.parse(JSON.stringify(sampleResults));
-      delete lhr.categories.performance;
-      container = render(lhr);
-      assert.ok(!container.querySelector(metricsSelector));
-      assert.ok(!container.querySelector(toggleSelector));
-    });
-  });
 });

@@ -605,9 +605,8 @@
   font-weight: 500;
 }
 
-/* No-JS toggle switch
-   Keep selector sync'd w/ `magicSelector` in report-ui-features-test.js
- */
+/* No-JS toggle switch */
+/* Keep this selector sync'd w/ `magicSelector` in report-ui-features-test.js */
  .lh-metrics-toggle__input:checked ~ .lh-columns .lh-metric__description {
   display: block;
 }
