@@ -398,6 +398,7 @@ class ReportUIFeatures {
       }
       case 'toggle-dark': {
         this._toggleDarkTheme();
+        break;
       }
     }
 
