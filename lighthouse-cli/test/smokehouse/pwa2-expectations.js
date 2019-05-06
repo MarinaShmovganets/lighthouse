@@ -63,6 +63,9 @@ module.exports = [
         },
         'apple-touch-icon': {
           score: 1,
+          warnings: [
+            /apple-touch-icon-precomposed/,
+          ],
         },
 
         // "manual" audits. Just verify in the results.

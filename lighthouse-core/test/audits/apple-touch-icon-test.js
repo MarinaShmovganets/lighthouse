@@ -10,10 +10,12 @@ const AppleTouchIcon = require('../../audits/apple-touch-icon.js');
 /* eslint-env jest */
 
 describe('PWA: apple-touch-icon audit', () => {
-  it(`fails when apple-touch-icon is not present`, async () => {
+  it(`fails when apple-touch-icon is not present`, () => {
     const artifacts = {
-      URL: {finalUrl: 'https://example.com/'},
-      LinkElements: [],
+      LinkElements: [
+        {rel: 'iOS-touch-thing', href: 'https://example.com/else.png'},
+        {rel: 'something else', href: 'https://example.com/else.png'},
+      ],
     };
 
     const {score} = AppleTouchIcon.audit(artifacts);
@@ -21,9 +23,8 @@ describe('PWA: apple-touch-icon audit', () => {
     expect(score).toBe(0);
   });
 
-  it(`fails when apple-touch-icon does not have an href`, async () => {
+  it(`fails when apple-touch-icon does not have an href`, () => {
     const artifacts = {
-      URL: {finalUrl: 'https://example.com/'},
       LinkElements: [{rel: 'apple-touch-icon'}],
     };
 
@@ -32,9 +33,8 @@ describe('PWA: apple-touch-icon audit', () => {
     expect(score).toBe(0);
   });
 
-  it(`warns when apple-touch-icon-precomposed exists`, async () => {
+  it(`passes but warns when apple-touch-icon-precomposed only`, () => {
     const artifacts = {
-      URL: {finalUrl: 'https://example.com/'},
       LinkElements: [{rel: 'apple-touch-icon-precomposed', href: 'https://example.com/touch-icon.png'}],
     };
 
@@ -42,12 +42,25 @@ describe('PWA: apple-touch-icon audit', () => {
 
     expect(score).toBe(1);
     expect(warnings[0]).toBeDisplayString('`apple-touch-icon-precomposed` is ' +
-      'out of date, `apple-touch-icon` is preferred.');
+      'out of date; `apple-touch-icon` is preferred.');
   });
 
-  it(`passes when apple-touch-icon is on page`, async () => {
+  it(`passes with no warning when precomposed with normal`, () => {
     const artifacts = {
-      URL: {finalUrl: 'https://example.com/'},
+      LinkElements: [
+        {rel: 'apple-touch-icon', href: 'https://example.com/touch-icon.png'},
+        {rel: 'apple-touch-icon-precomposed', href: 'https://example.com/touch-icon.png'},
+      ],
+    };
+
+    const {score, warnings} = AppleTouchIcon.audit(artifacts);
+
+    expect(score).toBe(1);
+    expect(warnings).toEqual([]);
+  });
+
+  it(`passes when apple-touch-icon is on page`, () => {
+    const artifacts = {
       LinkElements: [{rel: 'apple-touch-icon', href: 'https://example.com/touch-icon.png'}],
     };
 
@@ -56,10 +69,26 @@ describe('PWA: apple-touch-icon audit', () => {
     expect(score).toBe(1);
   });
 
-  it(`passes when apple-touch-icon is on page with href requiring base_url`, async () => {
+  it(`passes with multiple apple-touch-icons on page`, () => {
     const artifacts = {
-      URL: {finalUrl: 'https://example.com/'},
-      LinkElements: [{rel: 'apple-touch-icon', href: 'touch-icon.png'}],
+      LinkElements: [
+        {rel: 'apple-touch-icon', sizes: '152x152', href: 'https://example.com/touch-icon.png'},
+        {rel: 'apple-touch-icon', sizes: '180x180', href: 'https://example.com/touch-icon.png'},
+      ],
+    };
+
+    const {score} = AppleTouchIcon.audit(artifacts);
+
+    expect(score).toBe(1);
+  });
+
+  it(`passes when lots of LinkElements`, () => {
+    const artifacts = {
+      LinkElements: [
+        {rel: 'iOS-touch-thing', href: 'https://example.com/else.png'},
+        {rel: 'apple-touch-icon', href: 'https://example.com/touch-icon.png'},
+        {rel: 'something else', href: 'https://example.com/else.png'},
+      ],
     };
 
     const {score} = AppleTouchIcon.audit(artifacts);

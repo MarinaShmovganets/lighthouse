@@ -25,7 +25,7 @@
             "id": "apple-touch-icon",
             "score": 0.0,
             "scoreDisplayMode": "binary",
-            "title": "Does not provide a valid apple-touch-icon",
+            "title": "Does not provide a valid `apple-touch-icon`",
             "warnings": []
         },
         "aria-allowed-attr": {
