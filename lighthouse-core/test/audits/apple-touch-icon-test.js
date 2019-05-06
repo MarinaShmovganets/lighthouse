@@ -12,33 +12,33 @@ const AppleTouchIcon = require('../../audits/apple-touch-icon.js');
 describe('PWA: apple-touch-icon audit', () => {
   it(`fails when apple-touch-icon is not present`, async () => {
     const artifacts = {
+      URL: {finalUrl: 'https://example.com/'},
       LinkElements: [],
     };
 
-    const context = {settings: {}, computedCache: new Map()};
-    const {score} = AppleTouchIcon.audit(artifacts, context);
+    const {score} = AppleTouchIcon.audit(artifacts);
 
     expect(score).toBe(0);
   });
 
   it(`fails when apple-touch-icon does not have an href`, async () => {
     const artifacts = {
+      URL: {finalUrl: 'https://example.com/'},
       LinkElements: [{rel: 'apple-touch-icon'}],
     };
 
-    const context = {settings: {}, computedCache: new Map()};
-    const {score} = AppleTouchIcon.audit(artifacts, context);
+    const {score} = AppleTouchIcon.audit(artifacts);
 
     expect(score).toBe(0);
   });
 
   it(`fails when apple-touch-icon href is invalid`, async () => {
     const artifacts = {
+      URL: {finalUrl: 'not-a-base-url'},
       LinkElements: [{rel: 'apple-touch-icon', href: 'not-a-url'}],
     };
 
-    const context = {settings: {}, computedCache: new Map()};
-    const {score, explanation} = AppleTouchIcon.audit(artifacts, context);
+    const {score, explanation} = AppleTouchIcon.audit(artifacts);
 
     expect(score).toBe(0);
     expect(explanation).toBeDisplayString('`apple-touch-icon`\'s `href` attribute is not valid');
@@ -46,11 +46,11 @@ describe('PWA: apple-touch-icon audit', () => {
 
   it(`warns when apple-touch-icon-precomposed exists`, async () => {
     const artifacts = {
+      URL: {finalUrl: 'https://example.com/'},
       LinkElements: [{rel: 'apple-touch-icon-precomposed', href: 'https://example.com/touch-icon.png'}],
     };
 
-    const context = {settings: {}, computedCache: new Map()};
-    const {score, warnings} = AppleTouchIcon.audit(artifacts, context);
+    const {score, warnings} = AppleTouchIcon.audit(artifacts);
 
     expect(score).toBe(1);
     expect(warnings[0]).toBeDisplayString('`apple-touch-icon-precomposed` is ' +
@@ -59,11 +59,11 @@ describe('PWA: apple-touch-icon audit', () => {
 
   it(`passes when apple-touch-icon is on page`, async () => {
     const artifacts = {
+      URL: {finalUrl: 'https://example.com/'},
       LinkElements: [{rel: 'apple-touch-icon', href: 'https://example.com/touch-icon.png'}],
     };
 
-    const context = {settings: {}, computedCache: new Map()};
-    const {score} = AppleTouchIcon.audit(artifacts, context);
+    const {score} = AppleTouchIcon.audit(artifacts);
 
     expect(score).toBe(1);
   });
@@ -74,8 +74,7 @@ describe('PWA: apple-touch-icon audit', () => {
       LinkElements: [{rel: 'apple-touch-icon', href: 'touch-icon.png'}],
     };
 
-    const context = {settings: {}, computedCache: new Map()};
-    const {score} = AppleTouchIcon.audit(artifacts, context);
+    const {score} = AppleTouchIcon.audit(artifacts);
 
     expect(score).toBe(1);
   });
