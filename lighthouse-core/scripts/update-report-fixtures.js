@@ -7,6 +7,8 @@
 
 const cli = require('../../lighthouse-cli/run.js');
 const cliFlags = require('../../lighthouse-cli/cli-flags.js');
+const assetSaver = require('../lib/asset-saver.js');
+const artifactPath = 'lighthouse-core/test/results/artifacts';
 
 const {server} = require('../../lighthouse-cli/test/fixtures/static-server.js');
 
@@ -32,9 +34,10 @@ const budgetedConfig = {
 };
 
 /**
- * Update the report artifacts
+ * Update the report artifacts. If artifactName is set only that artifact will be updated.
+ * @param {keyof LH.Artifacts=} artifactName
  */
-async function update() {
+async function update(artifactName) {
   // get an available port
   server.listen(0, 'localhost');
   const port = await new Promise(res => server.on('listening', () => {
@@ -43,15 +46,28 @@ async function update() {
     res(address.port);
   }));
 
+  const oldArtifacts = await assetSaver.loadArtifacts(artifactPath);
+
   const url = `http://localhost:${port}/dobetterweb/dbw_tester.html`;
   const rawFlags = [
-    '--gather-mode=lighthouse-core/test/results/artifacts',
+    `--gather-mode=${artifactPath}`,
     '--throttling-method=devtools',
     url,
   ].join(' ');
   const flags = cliFlags.getFlags(rawFlags);
   await cli.runLighthouse(url, flags, budgetedConfig);
   await new Promise(res => server.close(res));
+
+  if (artifactName) {
+    // Revert everything except the one artifact
+    const newArtifacts = await assetSaver.loadArtifacts(artifactPath);
+    if (!(artifactName in newArtifacts) && !(artifactName in oldArtifacts)) {
+      throw Error('Unknown artifact name: ' + artifactName);
+    }
+    const finalArtifacts = oldArtifacts;
+    finalArtifacts[artifactName] = newArtifacts[artifactName];
+    await assetSaver.saveArtifacts(finalArtifacts, artifactPath);
+  }
 }
 
-update();
+update(/** @type {keyof LH.Artifacts | undefined} */ (process.argv[2]));
