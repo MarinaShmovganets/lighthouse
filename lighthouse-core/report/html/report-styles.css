@@ -1198,6 +1198,12 @@
 .lh-table td {
   padding: 8px 6px;
 }
+.lh-table th:first-child {
+  padding-left: 0;
+}
+.lh-table th:last-child {
+  padding-right: 0;
+}
 
 /* Looks unnecessary, but mostly for keeping the <th>s left-aligned */
 .lh-table-column--text,
