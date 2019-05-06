@@ -566,7 +566,7 @@
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 10px var(--text-indent);
+  padding: 10px 0;
 }
 
 .lh-metric__details {
@@ -894,7 +894,7 @@
 }
 
 .lh-audit-group__header span.lh-audit-group__title {
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .lh-audit-group__header span.lh-audit-group__itemcount {
