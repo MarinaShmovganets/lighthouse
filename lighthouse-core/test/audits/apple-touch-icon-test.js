@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const IosPwaIcon = require('../../audits/apple-touch-icon.js');
+const AppleTouchIcon = require('../../audits/apple-touch-icon.js');
 
 /* eslint-env jest */
 
@@ -16,7 +16,7 @@ describe('PWA: apple-touch-icon audit', () => {
     };
 
     const context = {settings: {}, computedCache: new Map()};
-    const {score} = IosPwaIcon.audit(artifacts, context);
+    const {score} = AppleTouchIcon.audit(artifacts, context);
 
     expect(score).toBe(0);
   });
@@ -27,7 +27,7 @@ describe('PWA: apple-touch-icon audit', () => {
     };
 
     const context = {settings: {}, computedCache: new Map()};
-    const {score} = IosPwaIcon.audit(artifacts, context);
+    const {score} = AppleTouchIcon.audit(artifacts, context);
 
     expect(score).toBe(0);
   });
@@ -38,7 +38,7 @@ describe('PWA: apple-touch-icon audit', () => {
     };
 
     const context = {settings: {}, computedCache: new Map()};
-    const {score, explanation} = IosPwaIcon.audit(artifacts, context);
+    const {score, explanation} = AppleTouchIcon.audit(artifacts, context);
 
     expect(score).toBe(0);
     expect(explanation).toBeDisplayString('`apple-touch-icon`\'s `href` attribute is not valid');
@@ -50,7 +50,7 @@ describe('PWA: apple-touch-icon audit', () => {
     };
 
     const context = {settings: {}, computedCache: new Map()};
-    const {score, warnings} = IosPwaIcon.audit(artifacts, context);
+    const {score, warnings} = AppleTouchIcon.audit(artifacts, context);
 
     expect(score).toBe(1);
     expect(warnings[0]).toBeDisplayString('`apple-touch-icon-precomposed` is ' +
@@ -63,7 +63,7 @@ describe('PWA: apple-touch-icon audit', () => {
     };
 
     const context = {settings: {}, computedCache: new Map()};
-    const {score} = IosPwaIcon.audit(artifacts, context);
+    const {score} = AppleTouchIcon.audit(artifacts, context);
 
     expect(score).toBe(1);
   });
@@ -75,7 +75,7 @@ describe('PWA: apple-touch-icon audit', () => {
     };
 
     const context = {settings: {}, computedCache: new Map()};
-    const {score} = IosPwaIcon.audit(artifacts, context);
+    const {score} = AppleTouchIcon.audit(artifacts, context);
 
     expect(score).toBe(1);
   });
