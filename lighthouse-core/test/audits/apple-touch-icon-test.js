@@ -16,10 +16,9 @@ describe('PWA: apple-touch-icon audit', () => {
     };
 
     const context = {settings: {}, computedCache: new Map()};
-    const {score, explanation} = IosPwaIcon.audit(artifacts, context);
+    const {score} = IosPwaIcon.audit(artifacts, context);
 
     expect(score).toBe(0);
-    expect(explanation).toBeDisplayString('No valid `apple-touch-icon` link found.');
   });
 
   it(`fails when apple-touch-icon does not have an href`, async () => {
@@ -28,10 +27,34 @@ describe('PWA: apple-touch-icon audit', () => {
     };
 
     const context = {settings: {}, computedCache: new Map()};
+    const {score} = IosPwaIcon.audit(artifacts, context);
+
+    expect(score).toBe(0);
+  });
+
+  it(`fails when apple-touch-icon href is invalid`, async () => {
+    const artifacts = {
+      LinkElements: [{rel: 'apple-touch-icon', href: 'not-a-url'}],
+    };
+
+    const context = {settings: {}, computedCache: new Map()};
     const {score, explanation} = IosPwaIcon.audit(artifacts, context);
 
     expect(score).toBe(0);
-    expect(explanation).toBeDisplayString('No valid `apple-touch-icon` link found.');
+    expect(explanation).toBeDisplayString('`apple-touch-icon`\'s `href` attribute is not valid');
+  });
+
+  it(`warns when apple-touch-icon-precomposed exists`, async () => {
+    const artifacts = {
+      LinkElements: [{rel: 'apple-touch-icon-precomposed', href: 'https://example.com/touch-icon.png'}],
+    };
+
+    const context = {settings: {}, computedCache: new Map()};
+    const {score, warnings} = IosPwaIcon.audit(artifacts, context);
+
+    expect(score).toBe(1);
+    expect(warnings[0]).toBeDisplayString('`apple-touch-icon-precomposed` is ' +
+      'out of date, `apple-touch-icon` is preferred.');
   });
 
   it(`passes when apple-touch-icon is on page`, async () => {
@@ -40,9 +63,20 @@ describe('PWA: apple-touch-icon audit', () => {
     };
 
     const context = {settings: {}, computedCache: new Map()};
-    const {score, explanation} = IosPwaIcon.audit(artifacts, context);
+    const {score} = IosPwaIcon.audit(artifacts, context);
 
     expect(score).toBe(1);
-    expect(explanation).toBeUndefined();
+  });
+
+  it(`passes when apple-touch-icon is on page with href requiring base_url`, async () => {
+    const artifacts = {
+      URL: {finalUrl: 'https://example.com/'},
+      LinkElements: [{rel: 'apple-touch-icon', href: 'touch-icon.png'}],
+    };
+
+    const context = {settings: {}, computedCache: new Map()};
+    const {score} = IosPwaIcon.audit(artifacts, context);
+
+    expect(score).toBe(1);
   });
 });

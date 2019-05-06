@@ -70,7 +70,7 @@ Object {
       "path": "installable-manifest",
     },
     Object {
-      "path": "ios-pwa-icon",
+      "path": "apple-touch-icon",
     },
     Object {
       "path": "splash-screen",
@@ -897,11 +897,6 @@ Object {
           "weight": 2,
         },
         Object {
-          "group": "pwa-installable",
-          "id": "ios-pwa-icon",
-          "weight": 1,
-        },
-        Object {
           "group": "pwa-optimized",
           "id": "redirects-http",
           "weight": 2,
@@ -929,6 +924,11 @@ Object {
         Object {
           "group": "pwa-optimized",
           "id": "without-javascript",
+          "weight": 1,
+        },
+        Object {
+          "group": "pwa-optimized",
+          "id": "apple-touch-icon",
           "weight": 1,
         },
         Object {
