@@ -6,7 +6,6 @@
 'use strict';
 
 const Audit = require('./audit.js');
-const URL = require('../lib/url-shim');
 const i18n = require('../lib/i18n/i18n.js');
 
 /**
@@ -25,13 +24,11 @@ const UIStrings = {
   /** Warning that HTML attribute `apple-touch-icon-precomposed` should not be used in favor of `apple-touch-icon`.  "apple-touch-icon-precomposed" and "apple-touch-icon" are HTML attributes and should not be translated. */
   precomposedWarning: '`apple-touch-icon-precomposed` is out of date, ' +
   '`apple-touch-icon` is preferred.',
-  /** Explanatory message stating that there was a failure in an audit caused by the page's `apple-touch-icon` having an invalide `href` attribute. `apple-touch-icon` and `href` are HTML tag values and should not be translated. */
-  explanation: '`apple-touch-icon`\'s `href` attribute is not valid',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
-class IosPwaIcon extends Audit {
+class AppleTouchIcon extends Audit {
   /**
    * @return {LH.Audit.Meta}
    */
@@ -50,22 +47,9 @@ class IosPwaIcon extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit(artifacts) {
-    let explanation;
     const appleTouchIcons = artifacts.LinkElements
       .filter(el => el.rel === 'apple-touch-icon' || el.rel === 'apple-touch-icon-precomposed')
-      .filter(el => {
-        if (!el.href) {
-          return false;
-        }
-        // Check that the href is valid
-        try {
-          new URL(el.href, artifacts.URL.finalUrl);
-          return true;
-        } catch (e) {
-          explanation = str_(UIStrings.explanation);
-          return false;
-        }
-      });
+      .filter(el => !!el.href);
 
     // Audit passes if an `apple-touch-icon` exists.
     const passed = appleTouchIcons.length !== 0;
@@ -78,10 +62,9 @@ class IosPwaIcon extends Audit {
     return {
       score: passed ? 1 : 0,
       warnings,
-      explanation,
     };
   }
 }
 
-module.exports = IosPwaIcon;
+module.exports = AppleTouchIcon;
 module.exports.UIStrings = UIStrings;

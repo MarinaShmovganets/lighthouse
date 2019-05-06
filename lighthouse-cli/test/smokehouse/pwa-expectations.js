@@ -67,7 +67,7 @@ module.exports = [
           score: 1,
         },
         'apple-touch-icon': {
-          score: 0,
+          score: 1,
         },
 
         // "manual" audits. Just verify in the results.
@@ -129,6 +129,9 @@ module.exports = [
           details: {items: [pwaDetailsExpectations]},
         },
         'content-width': {
+          score: 1,
+        },
+        'apple-touch-icon': {
           score: 1,
         },
 

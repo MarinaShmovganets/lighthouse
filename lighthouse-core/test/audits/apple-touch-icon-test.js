@@ -32,18 +32,6 @@ describe('PWA: apple-touch-icon audit', () => {
     expect(score).toBe(0);
   });
 
-  it(`fails when apple-touch-icon href is invalid`, async () => {
-    const artifacts = {
-      URL: {finalUrl: 'not-a-base-url'},
-      LinkElements: [{rel: 'apple-touch-icon', href: 'not-a-url'}],
-    };
-
-    const {score, explanation} = AppleTouchIcon.audit(artifacts);
-
-    expect(score).toBe(0);
-    expect(explanation).toBeDisplayString('`apple-touch-icon`\'s `href` attribute is not valid');
-  });
-
   it(`warns when apple-touch-icon-precomposed exists`, async () => {
     const artifacts = {
       URL: {finalUrl: 'https://example.com/'},

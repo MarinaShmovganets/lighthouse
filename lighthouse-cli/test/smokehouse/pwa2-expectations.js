@@ -62,7 +62,7 @@ module.exports = [
           score: 1,
         },
         'apple-touch-icon': {
-          score: 0,
+          score: 1,
         },
 
         // "manual" audits. Just verify in the results.
@@ -125,6 +125,9 @@ module.exports = [
         },
         'content-width': {
           score: 1,
+        },
+        'apple-touch-icon': {
+          score: 0,
         },
 
         // "manual" audits. Just verify in the results.
