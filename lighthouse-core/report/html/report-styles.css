@@ -894,7 +894,7 @@
 }
 
 .lh-audit-group__header span.lh-audit-group__title {
-  font-weight: 700;
+  font-weight: bold;
 }
 
 .lh-audit-group__header span.lh-audit-group__itemcount {
