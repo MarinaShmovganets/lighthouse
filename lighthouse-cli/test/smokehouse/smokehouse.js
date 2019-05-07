@@ -116,8 +116,11 @@ function runLighthouse(url, configPath, isDebug) {
     }
   }
 
-  const artifacts = JSON.parse(
-    fs.readFileSync(`${artifactsDirectory}/artifacts.json`, 'utf8'));
+  // Artifacts are undefined if they weren't written to disk (e.g. if there was an error).
+  let artifacts;
+  try {
+    artifacts = JSON.parse(fs.readFileSync(`${artifactsDirectory}/artifacts.json`, 'utf8'));
+  } catch (e) {}
 
   return {
     errorCode,
