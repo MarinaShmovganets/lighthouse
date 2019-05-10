@@ -13,7 +13,7 @@ const URL = require('../lib/url-shim.js');
 const NetworkRecorder = require('../lib/network-recorder.js');
 const constants = require('../config/constants.js');
 
-const Driver = require('../gather/driver.js'); // eslint-disable-line no-unused-vars
+/** @typedef {import('../gather/driver.js')} Driver */
 
 /** @typedef {import('./gatherers/gatherer.js').PhaseResult} PhaseResult */
 /**
@@ -23,44 +23,9 @@ const Driver = require('../gather/driver.js'); // eslint-disable-line no-unused-
  * @typedef {Record<keyof LH.GathererArtifacts, Array<PhaseResult|Promise<PhaseResult>>>} GathererResults
  */
 /** @typedef {Array<[keyof GathererResults, GathererResults[keyof GathererResults]]>} GathererResultsEntries */
+
 /**
  * Class that drives browser to load the page and runs gatherer lifecycle hooks.
- * Execution sequence when GatherRunner.run() is called:
- *
- * 1. Setup
- *   A. driver.connect()
- *   B. GatherRunner.setupDriver()
- *     i. assertNoSameOriginServiceWorkerClients
- *     ii. retrieve and save userAgent
- *     iii. beginEmulation
- *     iv. enableRuntimeEvents/enableAsyncStacks
- *     v. evaluateScriptOnLoad rescue native Promise from potential polyfill
- *     vi. register a performance observer
- *     vii. register dialog dismisser
- *     viii. clearDataForOrigin
- *
- * 2. For each pass in the config:
- *   A. GatherRunner.beforePass()
- *     i. navigate to about:blank
- *     ii. Enable network request blocking for specified patterns
- *     iii. all gatherers' beforePass()
- *   B. GatherRunner.pass()
- *     i. cleanBrowserCaches() (if it's a perf run)
- *     ii. beginDevtoolsLog()
- *     iii. beginTrace (if requested)
- *     iv. GatherRunner.loadPage()
- *       a. navigate to options.url (and wait for onload)
- *     v. all gatherers' pass()
- *   C. GatherRunner.afterPass()
- *     i. endTrace (if requested) & endDevtoolsLog & endThrottling
- *     ii. all gatherers' afterPass()
- *
- * 3. Teardown
- *   A. clearDataForOrigin
- *   B. GatherRunner.disposeDriver()
- *   C. collect all artifacts and return them
- *     i. collectArtifacts() from completed passes on each gatherer
- *     ii. add trace and devtoolsLog data
  */
 class GatherRunner {
   /**
@@ -463,6 +428,33 @@ class GatherRunner {
   }
 
   /**
+   * Populates the important base artifacts from a fully loaded test page.
+   * @param {LH.Gatherer.PassContext} passContext
+   */
+  static async collectBaseArtifacts(passContext) {
+    const baseArtifacts = passContext.baseArtifacts;
+
+    // Copy redirected URL to artifact in the first pass only.
+    baseArtifacts.URL.finalUrl = passContext.url;
+
+    // Fetch the manifest, if it exists. Currently must be fetched before `start-url` gatherer.
+    baseArtifacts.WebAppManifest = await GatherRunner.getWebAppManifest(passContext);
+
+    // TODO(bckenny): move back to passContext
+    baseArtifacts.Stacks = await stacksGatherer(passContext.driver);
+
+    const devtoolsLog = baseArtifacts.devtoolsLogs[passContext.passConfig.passName];
+    const userAgentEntry = devtoolsLog.find(entry =>
+      entry.method === 'Network.requestWillBeSent' &&
+      !!entry.params.request.headers['User-Agent']
+    );
+    if (userAgentEntry) {
+      // @ts-ignore - guaranteed to exist by the find above
+      baseArtifacts.NetworkUserAgent = userAgentEntry.params.request.headers['User-Agent'];
+    }
+  }
+
+  /**
    * @param {Array<LH.Config.Pass>} passes
    * @param {{driver: Driver, requestedUrl: string, settings: LH.Config.Settings}} options
    * @return {Promise<LH.Artifacts>}
@@ -495,34 +487,11 @@ class GatherRunner {
           LighthouseRunWarnings: baseArtifacts.LighthouseRunWarnings,
         };
 
-        if (!isFirstPass) {
-          // Already on blank page if driver was just set up.
-          await GatherRunner.loadBlank(driver, passConfig.blankPage);
-        }
-
         const passResults = await GatherRunner.runPass(passContext);
         Object.assign(gathererResults, passResults);
 
-        // TODO(bckenny): move into collect base or whatever?
         if (isFirstPass) {
-          // Copy redirected URL to artifact in the first pass only.
-          baseArtifacts.URL.finalUrl = passContext.url;
-
-          // Fetch the manifest, if it exists. Currently must be fetched before `start-url` gatherer.
-          baseArtifacts.WebAppManifest = await GatherRunner.getWebAppManifest(passContext);
-
-          baseArtifacts.Stacks = await stacksGatherer(driver);
-
-          const devtoolsLog = baseArtifacts.devtoolsLogs[passConfig.passName];
-          const userAgentEntry = devtoolsLog.find(entry =>
-            entry.method === 'Network.requestWillBeSent' &&
-            !!entry.params.request.headers['User-Agent']
-          );
-          if (userAgentEntry) {
-            // @ts-ignore - guaranteed to exist by the find above
-            baseArtifacts.NetworkUserAgent = userAgentEntry.params.request.headers['User-Agent'];
-          }
-
+          await GatherRunner.collectBaseArtifacts(passContext);
           isFirstPass = false;
         }
       }
@@ -558,7 +527,8 @@ class GatherRunner {
     const gathererResults = {};
     const {driver, passConfig} = passContext;
 
-    // On about:blank.
+    // Setup on about:blank.
+    await GatherRunner.loadBlank(driver, passConfig.blankPage);
     await GatherRunner.setupPassNetwork(passContext);
     const isPerfPass = GatherRunner.isPerfPass(passContext);
     if (isPerfPass) await driver.cleanBrowserCaches(); // Clear disk & memory cache if it's a perf run
