@@ -354,7 +354,7 @@ describe('GatherRunner', function() {
     });
   });
 
-  it('clears the disk & memory cache on a perf run', () => {
+  it('clears the disk & memory cache on a perf run', async () => {
     const asyncFunc = () => Promise.resolve();
     const tests = {
       calledCleanBrowserCaches: false,
@@ -368,8 +368,15 @@ describe('GatherRunner', function() {
       beginTrace: asyncFunc,
       gotoURL: asyncFunc,
       cleanBrowserCaches: createCheck('calledCleanBrowserCaches'),
+      setThrottling: asyncFunc,
+      blockUrlPatterns: asyncFunc,
+      setExtraHTTPHeaders: asyncFunc,
+      endTrace: asyncFunc,
+      endDevtoolsLog: () => [],
+      getBrowserVersion: async () => ({userAgent: ''}),
     };
     const passConfig = {
+      passName: 'default',
       recordTrace: true,
       useThrottling: true,
       gatherers: [],
@@ -377,9 +384,16 @@ describe('GatherRunner', function() {
     const settings = {
       disableStorageReset: false,
     };
-    return GatherRunner.pass({driver, passConfig, settings}, {TestGatherer: []}).then(_ => {
-      assert.equal(tests.calledCleanBrowserCaches, true);
-    });
+    const requestedUrl = 'https://example.com';
+    const passContext = {
+      driver,
+      passConfig,
+      settings,
+      baseArtifacts: await GatherRunner.getBaseArtifacts({driver, settings, requestedUrl}),
+    };
+
+    await GatherRunner.runPass(passContext, {TestGatherer: []});
+    assert.equal(tests.calledCleanBrowserCaches, true);
   });
 
   it('does not clear origin storage with flag --disable-storage-reset', () => {
@@ -937,20 +951,32 @@ describe('GatherRunner', function() {
       });
     });
 
-    it('produces a LighthouseRunWarnings artifact from array of warnings', () => {
-      const LighthouseRunWarnings = [
+    it('produces a deduped LighthouseRunWarnings artifact from array of warnings', async () => {
+      const runWarnings = [
         'warning0',
         'warning1',
         'warning2',
       ];
 
-      const baseArtifacts = {
-        LighthouseRunWarnings,
-      };
+      class WarningGatherer extends Gatherer {
+        afterPass(passContext) {
+          passContext.LighthouseRunWarnings.push(...runWarnings, ...runWarnings);
+          assert.strictEqual(passContext.LighthouseRunWarnings.length, runWarnings.length * 2);
 
-      return GatherRunner.collectArtifacts({}, baseArtifacts).then(artifacts => {
-        assert.deepStrictEqual(artifacts.LighthouseRunWarnings, LighthouseRunWarnings);
+          return '';
+        }
+      }
+
+      const passes = [{
+        gatherers: [{instance: new WarningGatherer()}],
+      }];
+      const artifacts = await GatherRunner.run(passes, {
+        driver: fakeDriver,
+        requestedUrl: 'https://example.com',
+        settings: {},
+        config: new Config({}),
       });
+      assert.deepStrictEqual(artifacts.LighthouseRunWarnings, runWarnings);
     });
 
     it('supports sync and async throwing of errors from gatherers', () => {
