@@ -103,8 +103,10 @@ class GatherRunner {
 
     log.time(status);
     try {
+      // If storage was cleared for the run, clear at the end so Lighthouse specifics aren't cached.
       const resetStorage = !options.settings.disableStorageReset;
       if (resetStorage) await driver.clearDataForOrigin(options.requestedUrl);
+
       await driver.disconnect();
     } catch (err) {
       // Ignore disconnecting error if browser was already closed.
@@ -122,7 +124,7 @@ class GatherRunner {
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
    * @return {LHError|undefined}
    */
-  static getPageLoadError(url, networkRecords) {
+  static getNetworkError(url, networkRecords) {
     const mainRecord = networkRecords.find(record => {
       // record.url is actual request url, so needs to be compared without any URL fragment.
       return URL.equalWithExcludedFragments(record.url, url);
@@ -152,6 +154,21 @@ class GatherRunner {
         {statusCode: `${mainRecord.statusCode}`}
       );
     }
+  }
+
+  /**
+   * Returns an error if the page load should be considered failed, e.g. from a
+   * main document request failure, a security issue, etc.
+   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.LoadData} loadData
+   */
+  static getPageLoadError(passContext, loadData) {
+    const networkError = GatherRunner.getNetworkError(passContext.url, loadData.networkRecords);
+
+    //  If the driver was offline, the load will fail without offline support. Ignore this case.
+    if (!passContext.driver.online) return;
+
+    return networkError;
   }
 
   /**
@@ -324,7 +341,7 @@ class GatherRunner {
    * failed with the given pageLoadError.
    * @param {LH.Gatherer.PassContext} passContext
    * @param {LHError} pageLoadError
-   * @return {Partial<LH.GathererArtifacts>}
+   * @return {{pageLoadError: LHError, artifacts: Partial<LH.GathererArtifacts>}}
    */
   static generatePageLoadErrorArtifacts(passContext, pageLoadError) {
     /** @type {Partial<Record<keyof LH.GathererArtifacts, LHError>>} */
@@ -334,8 +351,11 @@ class GatherRunner {
       errorArtifacts[gatherer.name] = pageLoadError;
     }
 
-    // @ts-ignore - TODO(bckenny): figure out how to usefully type errored artifacts.
-    return errorArtifacts;
+    return {
+      pageLoadError,
+      // @ts-ignore - TODO(bckenny): figure out how to usefully type errored artifacts.
+      artifacts: errorArtifacts,
+    };
   }
 
   /**
@@ -344,7 +364,7 @@ class GatherRunner {
    * gatherer. If an error was rejected from a gatherer phase,
    * uses that error object as the artifact instead.
    * @param {Partial<GathererResults>} gathererResults
-   * @return {Promise<Partial<LH.GathererArtifacts>>}
+   * @return {Promise<{artifacts: Partial<LH.GathererArtifacts>}>}
    */
   static async collectArtifacts(gathererResults) {
     /** @type {Partial<LH.GathererArtifacts>} */
@@ -369,7 +389,9 @@ class GatherRunner {
       }
     }
 
-    return gathererArtifacts;
+    return {
+      artifacts: gathererArtifacts,
+    };
   }
 
   /**
@@ -496,8 +518,8 @@ class GatherRunner {
           baseArtifacts,
           LighthouseRunWarnings: baseArtifacts.LighthouseRunWarnings,
         };
-        const passArtifacts = await GatherRunner.runPass(passContext);
-        Object.assign(artifacts, passArtifacts);
+        const passResults = await GatherRunner.runPass(passContext);
+        Object.assign(artifacts, passResults.artifacts);
 
         if (isFirstPass) {
           await GatherRunner.populateBaseArtifacts(passContext);
@@ -528,7 +550,7 @@ class GatherRunner {
   /**
    * Starting from about:blank, load the page and run gatherers for this pass.
    * @param {LH.Gatherer.PassContext} passContext
-   * @return {Promise<Partial<LH.GathererArtifacts>>}
+   * @return {Promise<{artifacts: Partial<LH.GathererArtifacts>, pageLoadError?: LHError}>}
    */
   static async runPass(passContext) {
     /** @type {Partial<GathererResults>} */
@@ -557,10 +579,9 @@ class GatherRunner {
     if (loadData.trace) baseArtifacts.traces[passConfig.passName] = loadData.trace;
 
     // If there were any load errors, treat all gatherers as if they errored.
-    let pageLoadError = GatherRunner.getPageLoadError(passContext.url, loadData.networkRecords);
-    if (!driver.online) pageLoadError = undefined; //  If the driver was offline, ignore the expected load error.
+    const pageLoadError = GatherRunner.getPageLoadError(passContext, loadData);
     if (pageLoadError) {
-      log.error('GatherRunner', pageLoadError.message, passContext.url);
+      log.error('GatherRunner', pageLoadError.friendlyMessage, passContext.url);
       passContext.LighthouseRunWarnings.push(pageLoadError.friendlyMessage);
       return GatherRunner.generatePageLoadErrorArtifacts(passContext, pageLoadError);
     }

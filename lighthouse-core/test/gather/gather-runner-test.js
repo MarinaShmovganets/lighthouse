@@ -657,19 +657,19 @@ describe('GatherRunner', function() {
       });
   });
 
-  describe('#getPageLoadError', () => {
+  describe('#getNetworkError', () => {
     it('passes when the page is loaded', () => {
       const url = 'http://the-page.com';
       const mainRecord = new NetworkRequest();
       mainRecord.url = url;
-      assert.ok(!GatherRunner.getPageLoadError(url, [mainRecord]));
+      assert.ok(!GatherRunner.getNetworkError(url, [mainRecord]));
     });
 
     it('passes when the page is loaded, ignoring any fragment', () => {
       const url = 'http://example.com/#/page/list';
       const mainRecord = new NetworkRequest();
       mainRecord.url = 'http://example.com';
-      assert.ok(!GatherRunner.getPageLoadError(url, [mainRecord]));
+      assert.ok(!GatherRunner.getNetworkError(url, [mainRecord]));
     });
 
     it('fails when page fails to load', () => {
@@ -678,7 +678,7 @@ describe('GatherRunner', function() {
       mainRecord.url = url;
       mainRecord.failed = true;
       mainRecord.localizedFailDescription = 'foobar';
-      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
+      const error = GatherRunner.getNetworkError(url, [mainRecord]);
       assert.equal(error.message, 'FAILED_DOCUMENT_REQUEST');
       assert.equal(error.code, 'FAILED_DOCUMENT_REQUEST');
       expect(error.friendlyMessage)
@@ -688,7 +688,7 @@ describe('GatherRunner', function() {
     it('fails when page times out', () => {
       const url = 'http://the-page.com';
       const records = [];
-      const error = GatherRunner.getPageLoadError(url, records);
+      const error = GatherRunner.getNetworkError(url, records);
       assert.equal(error.message, 'NO_DOCUMENT_REQUEST');
       assert.equal(error.code, 'NO_DOCUMENT_REQUEST');
       expect(error.friendlyMessage).toBeDisplayString(/^Lighthouse was unable to reliably load/);
@@ -699,7 +699,7 @@ describe('GatherRunner', function() {
       const mainRecord = new NetworkRequest();
       mainRecord.url = url;
       mainRecord.statusCode = 404;
-      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
+      const error = GatherRunner.getNetworkError(url, [mainRecord]);
       assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
       assert.equal(error.code, 'ERRORED_DOCUMENT_REQUEST');
       expect(error.friendlyMessage)
@@ -711,7 +711,7 @@ describe('GatherRunner', function() {
       const mainRecord = new NetworkRequest();
       mainRecord.url = url;
       mainRecord.statusCode = 500;
-      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
+      const error = GatherRunner.getNetworkError(url, [mainRecord]);
       assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
       assert.equal(error.code, 'ERRORED_DOCUMENT_REQUEST');
       expect(error.friendlyMessage)
@@ -724,7 +724,7 @@ describe('GatherRunner', function() {
       mainRecord.url = url;
       mainRecord.failed = true;
       mainRecord.localizedFailDescription = 'net::ERR_NAME_NOT_RESOLVED';
-      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
+      const error = GatherRunner.getNetworkError(url, [mainRecord]);
       assert.equal(error.message, 'DNS_FAILURE');
       assert.equal(error.code, 'DNS_FAILURE');
       expect(error.friendlyMessage).toBeDisplayString(/^DNS servers could not resolve/);
@@ -943,7 +943,7 @@ describe('GatherRunner', function() {
         ],
       };
 
-      return GatherRunner.collectArtifacts(gathererResults, {}).then(artifacts => {
+      return GatherRunner.collectArtifacts(gathererResults, {}).then(({artifacts}) => {
         assert.strictEqual(artifacts.AfterGatherer, 97);
         assert.strictEqual(artifacts.PassGatherer, 284);
         assert.strictEqual(artifacts.SingleErrorGatherer, recoverableError);
