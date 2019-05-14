@@ -429,6 +429,8 @@ class GatherRunner {
 
   /**
    * Populates the important base artifacts from a fully loaded test page.
+   * Currently must be run before `start-url` gatherer so that `WebAppManifest`
+   * is populated for it.
    * @param {LH.Gatherer.PassContext} passContext
    */
   static async collectBaseArtifacts(passContext) {
@@ -437,11 +439,10 @@ class GatherRunner {
     // Copy redirected URL to artifact in the first pass only.
     baseArtifacts.URL.finalUrl = passContext.url;
 
-    // Fetch the manifest, if it exists. Currently must be fetched before `start-url` gatherer.
+    // Fetch the manifest, if it exists.
     baseArtifacts.WebAppManifest = await GatherRunner.getWebAppManifest(passContext);
 
-    // TODO(bckenny): move back to passContext
-    baseArtifacts.Stacks = await stacksGatherer(passContext.driver);
+    baseArtifacts.Stacks = await stacksGatherer(passContext);
 
     const devtoolsLog = baseArtifacts.devtoolsLogs[passContext.passConfig.passName];
     const userAgentEntry = devtoolsLog.find(entry =>

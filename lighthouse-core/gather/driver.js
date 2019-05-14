@@ -1479,12 +1479,12 @@ class Driver {
    * Clear the network cache on disk and in memory.
    * @return {Promise<void>}
    */
-  async cleanBrowserCaches() {
+  cleanBrowserCaches() {
     // Wipe entire disk cache
-    await this.sendCommand('Network.clearBrowserCache');
-    // Toggle 'Disable Cache' to evict the memory cache
-    await this.sendCommand('Network.setCacheDisabled', {cacheDisabled: true});
-    await this.sendCommand('Network.setCacheDisabled', {cacheDisabled: false});
+    return this.sendCommand('Network.clearBrowserCache')
+      // Toggle 'Disable Cache' to evict the memory cache
+      .then(_ => this.sendCommand('Network.setCacheDisabled', {cacheDisabled: true}))
+      .then(_ => this.sendCommand('Network.setCacheDisabled', {cacheDisabled: false}));
   }
 
   /**
