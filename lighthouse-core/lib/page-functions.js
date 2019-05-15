@@ -224,17 +224,19 @@ function getNodeSelector(node) {
  */
 /* istanbul ignore next */
 function getNodeTitle(node) {
+  if (node.tagName === 'HTML' || node.tagName === 'BODY') {
+    // too broad, contains all page content
+    return null;
+  }
   let title = node.innerText || node.getAttribute('alt') || node.getAttribute('aria-label');
-  if (!title) {
+  if (title) {
+    return truncate(title, 80);
+  } else {
     const nodeToUseForTitle = node.querySelector('[alt], [aria-label]');
     if (nodeToUseForTitle) {
-      title = nodeToUseForTitle.getAttribute('alt') || nodeToUseForTitle.getAttribute('aria-label');
+      title = getNodeTitle(nodeToUseForTitle);
     }
   }
-  if (title) {
-    title = truncate(title, 80);
-  }
-  return title;
 }
 
 /**
