@@ -59,4 +59,18 @@ describe('Page Functions', () => {
       assert.equal(pageFunctions.getNodeSelector(childEl), 'div#wrapper > div.child');
     });
   });
+
+  describe('getNodeTitle', () => {
+    it('Returns innerText if element has visible text', () => {
+      const el = dom.createElement('div');
+      el.innerText = 'Hello';
+      assert.equal(pageFunctions.getNodeTitle(el), 'Hello');
+    });
+    it('Falls back to children and alt/aria-label if a title can\'t be determined', () => {
+      const el = dom.createElement('div');
+      const childEl = dom.createElement('div', '', {'aria-label': 'Something'});
+      el.appendChild(childEl);
+      assert.equal(pageFunctions.getNodeTitle(el), 'Something');
+    });
+  });
 });

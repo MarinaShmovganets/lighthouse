@@ -228,13 +228,13 @@ function getNodeTitle(node) {
     // too broad, contains all page content
     return null;
   }
-  let title = node.innerText || node.getAttribute('alt') || node.getAttribute('aria-label');
+  const title = node.innerText || node.getAttribute('alt') || node.getAttribute('aria-label');
   if (title) {
     return truncate(title, 80);
   } else {
     const nodeToUseForTitle = node.querySelector('[alt], [aria-label]');
     if (nodeToUseForTitle) {
-      title = getNodeTitle(nodeToUseForTitle);
+      return getNodeTitle(nodeToUseForTitle);
     }
   }
 }
@@ -264,6 +264,7 @@ module.exports = {
   getNodePathString: getNodePath.toString(),
   getNodeSelectorString: getNodeSelector.toString(),
   getNodeSelector: getNodeSelector,
+  getNodeTitle: getNodeTitle,
   getNodeTitleString: getNodeTitle.toString(),
   truncateString: truncate.toString(),
 };
