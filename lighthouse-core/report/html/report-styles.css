@@ -388,10 +388,15 @@
 }
 
 /* Node */
-.lh-node {
-  display: block;
+.lh-node__snippet {
   font-family: var(--monospace-font-family);
   color: hsl(174, 100%, 27%);
+  font-size: 12px;
+}
+.lh-node__title {
+  color: black;
+  font-family: var(--text-font-family);
+  margin-bottom: 10px;
 }
 
 /* Score */

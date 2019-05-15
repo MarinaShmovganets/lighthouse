@@ -145,6 +145,7 @@ declare global {
             snippet: string;
             target: string[];
             failureSummary?: string;
+            title?: string;
           }[];
         }[];
         notApplicable: {
@@ -337,11 +338,12 @@ declare global {
       }
 
       export interface TapTarget {
-        snippet: string,
-        selector: string,
-        path: string,
-        href: string,
-        clientRects: Rect[]
+        snippet: string;
+        selector: string;
+        title?: string;
+        path: string;
+        href: string;
+        clientRects: Rect[];
       }
 
       export interface ViewportDimensions {

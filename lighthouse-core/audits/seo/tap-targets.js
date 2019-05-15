@@ -251,6 +251,7 @@ function targetToTableNode(target) {
     snippet: target.snippet,
     path: target.path,
     selector: target.selector,
+    title: target.title,
   };
 }
 

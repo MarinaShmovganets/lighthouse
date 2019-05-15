@@ -218,6 +218,38 @@ function getNodeSelector(node) {
   return parts.join(' > ');
 }
 
+/**
+ * @param {Element} node
+ * @returns {string}
+ */
+/* istanbul ignore next */
+function getNodeTitle(node) {
+  let title = node.innerText || node.getAttribute('alt') || node.getAttribute('aria-label');
+  if (!title) {
+    const nodeToUseForTitle = node.querySelector('[alt], [aria-label]');
+    if (nodeToUseForTitle) {
+      title = nodeToUseForTitle.getAttribute('alt') || nodeToUseForTitle.getAttribute('aria-label');
+    }
+  }
+  if (title) {
+    title = truncate(title, 80);
+  }
+  return title;
+}
+
+/**
+ * @param {string} str
+ * @param {number} maxLength
+ * @returns {string}
+ */
+/* istanbul ignore next */
+function truncate(str, maxLength) {
+  if (str.length <= maxLength) {
+    return str;
+  }
+  return str.slice(0, maxLength - 1) + '…';
+}
+
 module.exports = {
   wrapRuntimeEvalErrorInBrowserString: wrapRuntimeEvalErrorInBrowser.toString(),
   registerPerformanceObserverInPageString: registerPerformanceObserverInPage.toString(),
@@ -230,4 +262,6 @@ module.exports = {
   getNodePathString: getNodePath.toString(),
   getNodeSelectorString: getNodeSelector.toString(),
   getNodeSelector: getNodeSelector,
+  getNodeTitleString: getNodeTitle.toString(),
+  truncateString: truncate.toString(),
 };

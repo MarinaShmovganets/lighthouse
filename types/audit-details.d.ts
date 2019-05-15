@@ -161,6 +161,7 @@ declare global {
         path?: string;
         selector?: string;
         snippet?: string;
+        title?: string;
       }
 
       /**
