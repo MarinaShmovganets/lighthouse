@@ -167,7 +167,9 @@ async function onGenerateReportButtonClick(background, settings) {
   const flags = {throttlingMethod: useDevTools ? 'devtools' : 'simulate'};
 
   try {
-    await background.runLighthouseInExtension(flags, selectedCategories);
+    if (siteURL) {
+      await background.runLighthouseInExtension(siteURL.href, flags, selectedCategories);
+    }
 
     // Close popup once report is opened in a new tab
     window.close();
