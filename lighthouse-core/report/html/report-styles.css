@@ -396,7 +396,6 @@
 .lh-node__title {
   color: var(--body-text-color);
   font-family: var(--text-font-family);
-  margin-bottom: 10px;
 }
 
 /* Score */
