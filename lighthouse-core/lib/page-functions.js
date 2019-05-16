@@ -187,7 +187,7 @@ function getNodePath(node) {
 
 /**
  * @param {Element} node
- * @returns {string}
+ * @return {string}
  */
 /* istanbul ignore next */
 function getNodeSelector(node) {
@@ -242,7 +242,7 @@ function getNodeTitle(node) {
 /**
  * @param {string} str
  * @param {number} maxLength
- * @returns {string}
+ * @return {string}
  */
 /* istanbul ignore next */
 function truncate(str, maxLength) {
