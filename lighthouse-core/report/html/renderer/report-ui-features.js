@@ -173,10 +173,10 @@ class ReportUIFeatures {
       });
 
     tablesWithUrls.forEach((tableEl, index) => {
-      const numRows = this._getUrlItems(tableEl).length;
-      const thirdPartyRows = this._getThirdPartyRows(tableEl, this.json.finalUrl);
+      const urlItems = this._getUrlItems(tableEl);
+      const thirdPartyRows = this._getThirdPartyRows(tableEl, urlItems, this.json.finalUrl);
       // If all or none of the rows are 3rd party, no checkbox!
-      if (thirdPartyRows.size === numRows || !thirdPartyRows.size) return;
+      if (thirdPartyRows.size === urlItems.length || !thirdPartyRows.size) return;
 
       // create input box
       const filterTemplate = this._dom.cloneTemplate('#tmpl-lh-3p-filter', this._document);
@@ -217,10 +217,10 @@ class ReportUIFeatures {
    * and returns a Map of those rows, mapping from row index to row Element.
    * @param {HTMLTableElement} el
    * @param {string} finalUrl
+   * @param {Array<HTMLElement>} urlItems
    * @return {Map<number, HTMLTableRowElement>}
    */
-  _getThirdPartyRows(el, finalUrl) {
-    const urlItems = this._getUrlItems(el);
+  _getThirdPartyRows(el, urlItems, finalUrl) {
     const finalUrlRootDomain = Util.getRootDomain(finalUrl);
 
     /** @type {Map<number, HTMLTableRowElement>} */
