@@ -59,6 +59,8 @@ declare global {
     export interface PublicGathererArtifacts {
       /** Console deprecation and intervention warnings logged by Chrome during page load. */
       ConsoleMessages: Crdp.Log.EntryAddedEvent[];
+      /** All the IFrame elements in the page.*/
+      IFrameElements: Artifacts.IFrameElement[];
       /** Information on size and loading for all the images in the page. Natural size information for `picture` and CSS images is only available if the image was one of the largest 50 images. */
       ImageElements: Artifacts.ImageElement[];
       /** All the link elements on the page or equivalently declared in `Link` headers. @see https://html.spec.whatwg.org/multipage/links.html */
@@ -177,6 +179,21 @@ declare global {
         data: string | null;
         code: string | null;
         params: {name: string; value: string}[];
+      }
+
+      export interface IFrameElement {
+        /** The `id` attribute of the IFrame. */
+        id: string,
+        /** The `src` attribute of the IFrame. */
+        src: string,
+        /** The IFrame's ClientRect. @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect */
+        clientRect: ClientRect,
+        /** The visibility of the IFrame. */
+        isVisible: boolean,
+        /** If the IFrame or an ancestor of the IFrame is fixed in position. */
+        isFixed: boolean,
+        /** The Frame of the IFrame. @see https://chromedevtools.github.io/devtools-protocol/tot/Page#type-Frame */
+        frame: Crdp.Page.Frame,
       }
 
       /** @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#Attributes */
