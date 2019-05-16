@@ -1143,7 +1143,7 @@
             "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute",
             "path": "3,HTML",
             "snippet": "<html manifest=\"clock.appcache\">",
-            "title": null
+            "title": "html"
           }
         ]
       },
@@ -1169,7 +1169,8 @@
             ],
             "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute or the title attribute is empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
             "path": "3,HTML,1,BODY,10,IMG",
-            "snippet": "<img src=\"lighthouse-480x318.jpg\" width=\"480\" height=\"57\">"
+            "snippet": "<img src=\"lighthouse-480x318.jpg\" width=\"480\" height=\"57\">",
+            "title": "img"
           },
           {
             "impact": "critical",
@@ -1179,7 +1180,8 @@
             ],
             "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute or the title attribute is empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
             "path": "3,HTML,1,BODY,12,IMG",
-            "snippet": "<img src=\"lighthouse-480x318.jpg\" width=\"480\" height=\"318\">"
+            "snippet": "<img src=\"lighthouse-480x318.jpg\" width=\"480\" height=\"318\">",
+            "title": "img"
           },
           {
             "impact": "critical",
@@ -1189,7 +1191,8 @@
             ],
             "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute or the title attribute is empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
             "path": "3,HTML,1,BODY,14,IMG",
-            "snippet": "<img src=\"lighthouse-rotating.gif\" width=\"811\" height=\"462\">"
+            "snippet": "<img src=\"lighthouse-rotating.gif\" width=\"811\" height=\"462\">",
+            "title": "img"
           },
           {
             "impact": "critical",
@@ -1198,8 +1201,9 @@
               "img:nth-child(30)"
             ],
             "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute or the title attribute is empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
-            "path": "3,HTML,1,BODY,49,IMG",
-            "snippet": "<img src=\"blob:http://localhost:62824/289254fd-ef1d-4c1a-96a8-ba291caa2140\">"
+            "path": "3,HTML,1,BODY,53,IMG",
+            "snippet": "<img src=\"blob:http://localhost:52281/459dbcc0-ca5f-47ef-b78f-e04d79c9e3fa\">",
+            "title": "img"
           }
         ]
       },
@@ -1226,7 +1230,8 @@
             ],
             "failureSummary": "Fix any of the following:\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  Element has no title attribute or the title attribute is empty",
             "path": "3,HTML,1,BODY,48,INPUT",
-            "snippet": "<input type=\"password\" onpaste=\"event.preventDefault();\">"
+            "snippet": "<input type=\"password\" onpaste=\"event.preventDefault();\">",
+            "title": "input"
           },
           {
             "impact": "critical",
@@ -1236,7 +1241,8 @@
             ],
             "failureSummary": "Fix any of the following:\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  Element has no title attribute or the title attribute is empty",
             "path": "3,HTML,1,BODY,50,INPUT",
-            "snippet": "<input type=\"password\">"
+            "snippet": "<input type=\"password\">",
+            "title": "input"
           },
           {
             "impact": "critical",
@@ -1246,7 +1252,8 @@
             ],
             "failureSummary": "Fix any of the following:\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  Element has no title attribute or the title attribute is empty",
             "path": "3,HTML,1,BODY,52,INPUT",
-            "snippet": "<input type=\"password\" onpaste=\"return false;\">"
+            "snippet": "<input type=\"password\" onpaste=\"return false;\">",
+            "title": "input"
           }
         ]
       },
@@ -1273,7 +1280,8 @@
             ],
             "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
             "path": "3,HTML,1,BODY,44,A",
-            "snippet": "<a href=\"javascript:void(0)\" target=\"_blank\">"
+            "snippet": "<a href=\"javascript:void(0)\" target=\"_blank\">",
+            "title": "a"
           },
           {
             "impact": "serious",
@@ -1283,7 +1291,8 @@
             ],
             "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
             "path": "3,HTML,1,BODY,46,A",
-            "snippet": "<a href=\"mailto:inbox@email.com\" target=\"_blank\">"
+            "snippet": "<a href=\"mailto:inbox@email.com\" target=\"_blank\">",
+            "title": "a"
           }
         ]
       },
@@ -1309,7 +1318,8 @@
             ],
             "failureSummary": "Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute or the title attribute is empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
             "path": "3,HTML,1,BODY,2,OBJECT",
-            "snippet": "<object id=\"5934a\">"
+            "snippet": "<object id=\"5934a\">",
+            "title": "object"
           },
           {
             "impact": "serious",
@@ -1319,7 +1329,8 @@
             ],
             "failureSummary": "Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute or the title attribute is empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
             "path": "3,HTML,1,BODY,3,OBJECT",
-            "snippet": "<object id=\"5934b\">"
+            "snippet": "<object id=\"5934b\">",
+            "title": "object"
           }
         ]
       }

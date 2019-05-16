@@ -876,7 +876,7 @@
                             "path": "3,HTML",
                             "selector": "html",
                             "snippet": "<html manifest=\"clock.appcache\">",
-                            "title": null,
+                            "title": "html",
                             "type": "node"
                         }
                     }
@@ -930,6 +930,7 @@
                             "path": "3,HTML,1,BODY,10,IMG",
                             "selector": "img[height=\"\\35 7\"]",
                             "snippet": "<img src=\"lighthouse-480x318.jpg\" width=\"480\" height=\"57\">",
+                            "title": "img",
                             "type": "node"
                         }
                     },
@@ -939,6 +940,7 @@
                             "path": "3,HTML,1,BODY,12,IMG",
                             "selector": "img[height=\"\\33 18\"]",
                             "snippet": "<img src=\"lighthouse-480x318.jpg\" width=\"480\" height=\"318\">",
+                            "title": "img",
                             "type": "node"
                         }
                     },
@@ -948,15 +950,17 @@
                             "path": "3,HTML,1,BODY,14,IMG",
                             "selector": "img[src$=\"lighthouse-rotating\\.gif\"]",
                             "snippet": "<img src=\"lighthouse-rotating.gif\" width=\"811\" height=\"462\">",
+                            "title": "img",
                             "type": "node"
                         }
                     },
                     {
                         "node": {
                             "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute or the title attribute is empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
-                            "path": "3,HTML,1,BODY,49,IMG",
+                            "path": "3,HTML,1,BODY,53,IMG",
                             "selector": "img:nth-child(30)",
                             "snippet": "<img src=\"blob:http://localhost:62824/289254fd-ef1d-4c1a-96a8-ba291caa2140\">",
+                            "title": "img",
                             "type": "node"
                         }
                     }
@@ -1111,7 +1115,7 @@
                         "name": "WordPress"
                     }
                 ],
-                "summary": {},
+                "summary": null,
                 "type": "table"
             },
             "id": "js-libraries",
@@ -1148,6 +1152,7 @@
                             "path": "3,HTML,1,BODY,48,INPUT",
                             "selector": "input[onpaste=\"event\\.preventDefault\\(\\)\\;\"]",
                             "snippet": "<input type=\"password\" onpaste=\"event.preventDefault();\">",
+                            "title": "input",
                             "type": "node"
                         }
                     },
@@ -1157,6 +1162,7 @@
                             "path": "3,HTML,1,BODY,50,INPUT",
                             "selector": "input:nth-child(28)",
                             "snippet": "<input type=\"password\">",
+                            "title": "input",
                             "type": "node"
                         }
                     },
@@ -1166,6 +1172,7 @@
                             "path": "3,HTML,1,BODY,52,INPUT",
                             "selector": "input[onpaste=\"return\\ false\\;\"]",
                             "snippet": "<input type=\"password\" onpaste=\"return false;\">",
+                            "title": "input",
                             "type": "node"
                         }
                     }
@@ -1213,6 +1220,7 @@
                             "path": "3,HTML,1,BODY,44,A",
                             "selector": "a[href=\"javascript\\:void\\(0\\)\"]",
                             "snippet": "<a href=\"javascript:void(0)\" target=\"_blank\"></a>",
+                            "title": "a",
                             "type": "node"
                         }
                     },
@@ -1222,6 +1230,7 @@
                             "path": "3,HTML,1,BODY,46,A",
                             "selector": "a[href$=\"mailto\\:inbox\\@email\\.com\"]",
                             "snippet": "<a href=\"mailto:inbox@email.com\" target=\"_blank\"></a>",
+                            "title": "a",
                             "type": "node"
                         }
                     }
@@ -1238,7 +1247,7 @@
             "details": {
                 "headings": [],
                 "items": [],
-                "summary": {},
+                "summary": null,
                 "type": "table"
             },
             "id": "link-text",
@@ -1894,7 +1903,7 @@
                         "vulnCount": 2.0
                     }
                 ],
-                "summary": {},
+                "summary": null,
                 "type": "table"
             },
             "displayValue": "2 vulnerabilities detected",
@@ -1959,6 +1968,7 @@
                             "path": "3,HTML,1,BODY,2,OBJECT",
                             "selector": "#\\35 934a",
                             "snippet": "<object id=\"5934a\"></object>",
+                            "title": "object",
                             "type": "node"
                         }
                     },
@@ -1968,6 +1978,7 @@
                             "path": "3,HTML,1,BODY,3,OBJECT",
                             "selector": "#\\35 934b",
                             "snippet": "<object id=\"5934b\"></object>",
+                            "title": "object",
                             "type": "node"
                         }
                     }
