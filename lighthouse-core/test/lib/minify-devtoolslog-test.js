@@ -17,7 +17,7 @@ describe('minify-devtoolslog', () => {
     const artifacts = {traces: {defaultPass: trace}, devtoolsLogs: {defaultPass: devtoolsLog}};
     const context = {settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
     const {details: {items: [before]}} = await MetricsAudit.audit(artifacts, context);
-    const beforeSize = JSON.stringify(devtoolsLog).length
+    const beforeSize = JSON.stringify(devtoolsLog).length;
 
     const minifiedDevtoolsLog = minifyDevtoolsLog(devtoolsLog);
     artifacts.devtoolsLogs.defaultPass = minifiedDevtoolsLog;

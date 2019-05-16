@@ -17,7 +17,7 @@ describe('minify-trace', () => {
     const artifacts = {traces: {defaultPass: trace}, devtoolsLogs: {defaultPass: devtoolsLog}};
     const context = {settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
     const {details: {items: [before]}} = await MetricsAudit.audit(artifacts, context);
-    const beforeSize = JSON.stringify(trace).length
+    const beforeSize = JSON.stringify(trace).length;
 
     const minifiedTrace = minifyTrace(trace);
     artifacts.traces.defaultPass = minifiedTrace;
@@ -29,7 +29,7 @@ describe('minify-trace', () => {
       // Speed Index is expected to be different because of screenshot throttling.
       // Trace End can also be different if the last event was unimportant.
       if (/speedIndex|traceEnd/i.test(key)) {
-        delete before[key]
+        delete before[key];
         delete after[key];
       }
     }

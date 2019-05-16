@@ -32,7 +32,7 @@ ${outputTrace.traceEvents.map(e => '    ' + JSON.stringify(e)).join(',\n')}
 
 /** @param {string} s */
 const size = s => Math.round(s.length / 1024) + 'kb';
-const eventDelta = inputTrace.traceEvents.length - outputTrace.traceEvents.length
+const eventDelta = inputTrace.traceEvents.length - outputTrace.traceEvents.length;
 console.log(`Reduced trace from ${size(inputTraceRaw)} to ${size(output)}`);
 console.log(`Filtered out ${eventDelta} trace events`);
 fs.writeFileSync(outputTracePath, output);
