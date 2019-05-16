@@ -219,8 +219,8 @@ function getNodeSelector(node) {
 }
 
 /**
- * @param {Element} node
- * @returns {string}
+ * @param {HTMLElement} node
+ * @returns {string|null}
  */
 /* istanbul ignore next */
 function getNodeTitle(node) {
@@ -234,9 +234,10 @@ function getNodeTitle(node) {
   } else {
     const nodeToUseForTitle = node.querySelector('[alt], [aria-label]');
     if (nodeToUseForTitle) {
-      return getNodeTitle(nodeToUseForTitle);
+      return getNodeTitle(/** @type {HTMLElement} */ (nodeToUseForTitle));
     }
   }
+  return null;
 }
 
 /**
