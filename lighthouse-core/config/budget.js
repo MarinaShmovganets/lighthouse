@@ -47,14 +47,14 @@ class Budget {
   }
 
   /**
-   * Asserts that arr has no duplicate strings, throwing an error if it does.
-   * `arrayName` is included for nicer logging.
-   * @param {Array<string>} arr
+   * Asserts that `strings` has no duplicate strings in it, throwing an error if
+   * it does. `arrayName` is included for nicer logging.
+   * @param {Array<string>} strings
    * @param {string} arrayName
    */
-  static assertNoDuplicateStrings(arr, arrayName) {
+  static assertNoDuplicateStrings(strings, arrayName) {
     const foundStrings = new Set();
-    for (const string of arr) {
+    for (const string of strings) {
       if (foundStrings.has(string)) {
         throw new Error(`${arrayName} has duplicate entry of type '${string}'`);
       }
@@ -153,7 +153,7 @@ class Budget {
       if (isArrayOfUnknownObjects(resourceSizes)) {
         budget.resourceSizes = resourceSizes.map(Budget.validateResourceBudget);
         Budget.assertNoDuplicateStrings(budget.resourceSizes.map(r => r.resourceType),
-          `budget[${index}].resourceSizes`);
+          `budgets[${index}].resourceSizes`);
       } else if (resourceSizes !== undefined) {
         throw new Error(`Invalid resourceSizes entry in budget at index ${index}`);
       }
@@ -161,7 +161,7 @@ class Budget {
       if (isArrayOfUnknownObjects(resourceCounts)) {
         budget.resourceCounts = resourceCounts.map(Budget.validateResourceBudget);
         Budget.assertNoDuplicateStrings(budget.resourceCounts.map(r => r.resourceType),
-          `budget[${index}].resourceCounts`);
+          `budgets[${index}].resourceCounts`);
       } else if (resourceCounts !== undefined) {
         throw new Error(`Invalid resourceCounts entry in budget at index ${index}`);
       }
@@ -169,7 +169,7 @@ class Budget {
       if (isArrayOfUnknownObjects(timings)) {
         budget.timings = timings.map(Budget.validateTimingBudget);
         Budget.assertNoDuplicateStrings(budget.timings.map(r => r.metric),
-          `budget[${index}].timings`);
+          `budgets[${index}].timings`);
       } else if (timings !== undefined) {
         throw new Error(`Invalid timings entry in budget at index ${index}`);
       }
