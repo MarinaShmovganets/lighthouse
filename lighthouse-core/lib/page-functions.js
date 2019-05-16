@@ -220,7 +220,7 @@ function getNodeSelector(node) {
 
 /**
  * @param {HTMLElement} node
- * @returns {string|null}
+ * @return {string|null}
  */
 /* istanbul ignore next */
 function getNodeTitle(node) {
