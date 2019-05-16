@@ -394,7 +394,7 @@
   font-size: 12px;
 }
 .lh-node__title {
-  color: black;
+  color: var(--body-text-color);
   font-family: var(--text-font-family);
   margin-bottom: 10px;
 }
