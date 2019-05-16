@@ -23,8 +23,12 @@ declare global {
       fetchTime: string;
       /** A set of warnings about unexpected things encountered while loading and testing the page. */
       LighthouseRunWarnings: string[];
-      /** The user agent string of the version of Chrome that was used by Lighthouse. */
-      UserAgent: string;
+      /** The user agent string of the version of Chrome used. */
+      HostUserAgent: string;
+      /** The user agent string that Lighthouse used to load the page. */
+      NetworkUserAgent: string;
+      /** The benchmark index that indicates rough device class. */
+      BenchmarkIndex: number;
       /** A set of page-load traces, keyed by passName. */
       traces: {[passName: string]: Trace};
       /** A set of DevTools debugger protocol records, keyed by passName. */
@@ -121,7 +125,6 @@ declare global {
       requestCriticalRequestChains(data: {devtoolsLog: DevtoolsLog, URL: Artifacts['URL']}): Promise<Artifacts.CriticalRequestNode>;
       requestLoadSimulator(data: {devtoolsLog: DevtoolsLog, settings: Config.Settings}): Promise<LanternSimulator>;
       requestMainResource(data: {devtoolsLog: DevtoolsLog, URL: Artifacts['URL']}): Promise<Artifacts.NetworkRequest>;
-      requestManifestValues(manifest: LH.Artifacts['Manifest']): Promise<LH.Artifacts.ManifestValues>;
       requestNetworkAnalysis(devtoolsLog: DevtoolsLog): Promise<LH.Artifacts.NetworkAnalysis>;
       requestNetworkThroughput(devtoolsLog: DevtoolsLog): Promise<number>;
       requestNetworkRecords(devtoolsLog: DevtoolsLog): Promise<Artifacts.NetworkRequest[]>;

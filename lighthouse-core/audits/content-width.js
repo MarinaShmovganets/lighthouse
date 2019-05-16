@@ -19,7 +19,7 @@ class ContentWidth extends Audit {
       description: 'If the width of your app\'s content doesn\'t match the width ' +
           'of the viewport, your app might not be optimized for mobile screens. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/content-sized-correctly-for-viewport).',
-      requiredArtifacts: ['ViewportDimensions'],
+      requiredArtifacts: ['ViewportDimensions', 'HostUserAgent'],
     };
   }
 
@@ -29,21 +29,42 @@ class ContentWidth extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit(artifacts, context) {
+<<<<<<< HEAD
+=======
+    const userAgent = artifacts.HostUserAgent;
+>>>>>>> origin/branch-3.2.x
     const viewportWidth = artifacts.ViewportDimensions.innerWidth;
     const windowWidth = artifacts.ViewportDimensions.outerWidth;
     const widthsMatch = viewportWidth === windowWidth;
 
+<<<<<<< HEAD
     if (context.settings.disableDeviceEmulation) {
+=======
+    // TODO(phulce): refactor this `isMobile` boolean to be on context
+    const isMobileHost = userAgent.includes('Android') || userAgent.includes('Mobile');
+    const isMobile = context.settings.emulatedFormFactor === 'mobile' ||
+      (context.settings.emulatedFormFactor !== 'desktop' && isMobileHost);
+
+    if (isMobile) {
+      return {
+        rawValue: widthsMatch,
+        explanation: this.createExplanation(widthsMatch, artifacts.ViewportDimensions),
+      };
+    } else {
+>>>>>>> origin/branch-3.2.x
       return {
         rawValue: true,
         notApplicable: true,
       };
     }
+<<<<<<< HEAD
 
     return {
       rawValue: widthsMatch,
       explanation: this.createExplanation(widthsMatch, artifacts.ViewportDimensions),
     };
+=======
+>>>>>>> origin/branch-3.2.x
   }
 
   /**

@@ -1,10 +1,19 @@
 {
   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3358.0 Safari/537.36",
-  "lighthouseVersion": "3.0.3",
+  "environment": {
+    "networkUserAgent": "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) AppleWebKit/537.36(KHTML, like Gecko) Chrome/66.0.3359.30 Mobile Safari/537.36",
+    "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3358.0 Safari/537.36",
+    "benchmarkIndex": 1000
+  },
+  "lighthouseVersion": "3.2.1",
   "fetchTime": "2018-03-13T00:55:45.840Z",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "runWarnings": [],
+  "runtimeError": {
+    "code": "NO_ERROR",
+    "message": ""
+  },
   "audits": {
     "is-on-https": {
       "id": "is-on-https",
@@ -79,7 +88,7 @@
       "score": 0.51,
       "scoreDisplayMode": "numeric",
       "rawValue": 3969.135,
-      "displayValue": "3,970 ms"
+      "displayValue": "4.0 s"
     },
     "first-meaningful-paint": {
       "id": "first-meaningful-paint",
@@ -88,7 +97,7 @@
       "score": 0.51,
       "scoreDisplayMode": "numeric",
       "rawValue": 3969.136,
-      "displayValue": "3,970 ms"
+      "displayValue": "4.0 s"
     },
     "load-fast-enough-for-pwa": {
       "id": "load-fast-enough-for-pwa",
@@ -105,7 +114,7 @@
       "score": 0.74,
       "scoreDisplayMode": "numeric",
       "rawValue": 4417,
-      "displayValue": "4,420 ms"
+      "displayValue": "4.4 s"
     },
     "screenshot-thumbnails": {
       "id": "screenshot-thumbnails",
@@ -265,7 +274,7 @@
       "score": 0.72,
       "scoreDisplayMode": "numeric",
       "rawValue": 4927.278,
-      "displayValue": "4,930 ms"
+      "displayValue": "4.9 s"
     },
     "interactive": {
       "id": "interactive",
@@ -274,7 +283,7 @@
       "score": 0.78,
       "scoreDisplayMode": "numeric",
       "rawValue": 4927.278,
-      "displayValue": "4,930 ms"
+      "displayValue": "4.9 s"
     },
     "user-timings": {
       "id": "user-timings",
@@ -588,7 +597,7 @@
     },
     "deprecations": {
       "id": "deprecations",
-      "title": "Uses deprecated API's",
+      "title": "Uses deprecated APIs",
       "description": "Deprecated APIs will eventually be removed from the browser. [Learn more](https://www.chromestatus.com/features#deprecated).",
       "score": 0,
       "scoreDisplayMode": "binary",
@@ -641,7 +650,7 @@
       "score": 0.96,
       "scoreDisplayMode": "numeric",
       "rawValue": 1548.5690000000002,
-      "displayValue": "1,550 ms",
+      "displayValue": "1.5 s",
       "details": {
         "type": "table",
         "headings": [
@@ -703,7 +712,7 @@
       "score": 0.92,
       "scoreDisplayMode": "numeric",
       "rawValue": 1150.932,
-      "displayValue": "1,150 ms",
+      "displayValue": "1.2 s",
       "details": {
         "type": "table",
         "headings": [
@@ -763,7 +772,7 @@
       "score": 1,
       "scoreDisplayMode": "numeric",
       "rawValue": 0,
-      "displayValue": "Potential savings of 0 ms",
+      "displayValue": "",
       "details": {
         "type": "opportunity",
         "headings": [],
@@ -778,7 +787,7 @@
       "score": 1,
       "scoreDisplayMode": "numeric",
       "rawValue": 0,
-      "displayValue": "Potential savings of 0 ms",
+      "displayValue": "",
       "details": {
         "type": "opportunity",
         "headings": [],
@@ -2185,35 +2194,40 @@
         "type": "table",
         "headings": [
           {
-            "key": "totalNodes",
+            "key": "statistic",
             "itemType": "text",
-            "text": "Total DOM Nodes"
+            "text": "Statistic"
           },
           {
-            "key": "depth",
-            "itemType": "text",
-            "text": "Maximum DOM Depth"
+            "key": "element",
+            "itemType": "code",
+            "text": "Element"
           },
           {
-            "key": "width",
+            "key": "value",
             "itemType": "text",
-            "text": "Maximum Children"
+            "text": "Value"
           }
         ],
         "items": [
           {
-            "totalNodes": "53",
-            "depth": "4",
-            "width": "22"
+            "statistic": "Total DOM Nodes",
+            "element": "",
+            "value": "53"
           },
           {
-            "totalNodes": "",
-            "depth": {
+            "statistic": "Maximum DOM Depth",
+            "element": {
               "type": "code"
             },
-            "width": {
+            "value": "4"
+          },
+          {
+            "statistic": "Maximum Child Elements",
+            "element": {
               "type": "code"
-            }
+            },
+            "value": "22"
           }
         ]
       }
@@ -2372,9 +2386,40 @@
             "vulnCount": 1,
             "detectedLib": {
               "text": "jQuery@2.1.1",
-              "url": "https://snyk.io/vuln/npm:jquery?lh@2.1.1",
+              "url": "https://snyk.io/vuln/npm:jquery?lh=2.1.1",
               "type": "link"
             }
+          }
+        ],
+        "summary": {}
+      }
+    },
+    "js-libraries": {
+      "id": "js-libraries",
+      "title": "Detected JavaScript libraries",
+      "description": "All front-end JavaScript libraries detected on the page.",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "rawValue": true,
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "name",
+            "itemType": "text",
+            "text": "Name"
+          },
+          {
+            "key": "version",
+            "itemType": "text",
+            "text": "Version"
+          }
+        ],
+        "items": [
+          {
+            "name": "jQuery",
+            "version": "2.1.1",
+            "npm": "jquery"
           }
         ],
         "summary": {}
@@ -2734,6 +2779,7 @@
     "gatherMode": false,
     "disableStorageReset": false,
     "disableDeviceEmulation": false,
+    "emulatedFormFactor": "mobile",
     "locale": "en-US",
     "blockedUrlPatterns": null,
     "additionalTraceCategories": null,
@@ -3247,6 +3293,10 @@
           "weight": 1
         },
         {
+          "id": "js-libraries",
+          "weight": 0
+        },
+        {
           "id": "notification-on-start",
           "weight": 1
         },
@@ -3407,6 +3457,8 @@
       "crcLongestDurationLabel": "Maximum critical path latency:",
       "errorLabel": "Error!",
       "errorMissingAuditInfo": "Report error: no audit information",
+      "labDataTitle": "Lab Data",
+      "lsPerformanceCategoryDescription": "[Lighthouse](https://developers.google.com/web/tools/lighthouse/) analysis of the current page on emulated 3G. Values are estimated and may vary.",
       "manualAuditsGroupTitle": "Additional items to manually check",
       "notApplicableAuditsGroupTitle": "Not applicable",
       "opportunityResourceColumnLabel": "Opportunity",
@@ -3424,7 +3476,7 @@
       "lighthouse-core/audits/metrics/first-contentful-paint.js | description": [
         "audits[first-contentful-paint].description"
       ],
-      "lighthouse-core/lib/i18n.js | ms": [
+      "lighthouse-core/lib/i18n/i18n.js | seconds": [
         {
           "values": {
             "timeInMs": 3969.135
@@ -3442,12 +3494,6 @@
             "timeInMs": 4417
           },
           "path": "audits[speed-index].displayValue"
-        },
-        {
-          "values": {
-            "timeInMs": 16
-          },
-          "path": "audits[estimated-input-latency].displayValue"
         },
         {
           "values": {
@@ -3491,6 +3537,14 @@
       ],
       "lighthouse-core/audits/metrics/estimated-input-latency.js | description": [
         "audits[estimated-input-latency].description"
+      ],
+      "lighthouse-core/lib/i18n/i18n.js | ms": [
+        {
+          "values": {
+            "timeInMs": 16
+          },
+          "path": "audits[estimated-input-latency].displayValue"
+        }
       ],
       "lighthouse-core/audits/time-to-first-byte.js | title": [
         "audits[time-to-first-byte].title"
@@ -3553,7 +3607,7 @@
       "lighthouse-core/audits/mainthread-work-breakdown.js | columnCategory": [
         "audits[mainthread-work-breakdown].details.headings[0].text"
       ],
-      "lighthouse-core/lib/i18n.js | columnTimeSpent": [
+      "lighthouse-core/lib/i18n/i18n.js | columnTimeSpent": [
         "audits[mainthread-work-breakdown].details.headings[1].text"
       ],
       "lighthouse-core/audits/bootup-time.js | title": [
@@ -3562,7 +3616,7 @@
       "lighthouse-core/audits/bootup-time.js | description": [
         "audits[bootup-time].description"
       ],
-      "lighthouse-core/lib/i18n.js | columnURL": [
+      "lighthouse-core/lib/i18n/i18n.js | columnURL": [
         "audits[bootup-time].details.headings[0].text",
         "audits[uses-long-cache-ttl].details.headings[0].text",
         "audits[total-byte-weight].details.headings[0].text",
@@ -3585,26 +3639,6 @@
       ],
       "lighthouse-core/audits/uses-rel-preload.js | description": [
         "audits[uses-rel-preload].description"
-      ],
-      "lighthouse-core/lib/i18n.js | displayValueMsSavings": [
-        {
-          "values": {
-            "wastedMs": 0
-          },
-          "path": "audits[uses-rel-preload].displayValue"
-        },
-        {
-          "values": {
-            "wastedMs": 0
-          },
-          "path": "audits[uses-rel-preconnect].displayValue"
-        },
-        {
-          "values": {
-            "wastedMs": 1129
-          },
-          "path": "audits[render-blocking-resources].displayValue"
-        }
       ],
       "lighthouse-core/audits/uses-rel-preconnect.js | title": [
         "audits[uses-rel-preconnect].title"
@@ -3632,10 +3666,10 @@
           "path": "audits[uses-long-cache-ttl].displayValue"
         }
       ],
-      "lighthouse-core/lib/i18n.js | columnCacheTTL": [
+      "lighthouse-core/lib/i18n/i18n.js | columnCacheTTL": [
         "audits[uses-long-cache-ttl].details.headings[1].text"
       ],
-      "lighthouse-core/lib/i18n.js | columnSize": [
+      "lighthouse-core/lib/i18n/i18n.js | columnSize": [
         "audits[uses-long-cache-ttl].details.headings[2].text",
         "audits[total-byte-weight].details.headings[1].text",
         "audits[render-blocking-resources].details.headings[1].label",
@@ -3669,7 +3703,15 @@
       "lighthouse-core/audits/byte-efficiency/render-blocking-resources.js | description": [
         "audits[render-blocking-resources].description"
       ],
-      "lighthouse-core/lib/i18n.js | columnWastedMs": [
+      "lighthouse-core/lib/i18n/i18n.js | displayValueMsSavings": [
+        {
+          "values": {
+            "wastedMs": 1129
+          },
+          "path": "audits[render-blocking-resources].displayValue"
+        }
+      ],
+      "lighthouse-core/lib/i18n/i18n.js | columnWastedMs": [
         "audits[render-blocking-resources].details.headings[2].label"
       ],
       "lighthouse-core/audits/byte-efficiency/unminified-css.js | title": [
@@ -3684,7 +3726,7 @@
       "lighthouse-core/audits/byte-efficiency/unminified-javascript.js | description": [
         "audits[unminified-javascript].description"
       ],
-      "lighthouse-core/lib/i18n.js | displayValueByteSavings": [
+      "lighthouse-core/lib/i18n/i18n.js | displayValueByteSavings": [
         {
           "values": {
             "wastedBytes": 30470
@@ -3704,7 +3746,7 @@
           "path": "audits[uses-text-compression].displayValue"
         }
       ],
-      "lighthouse-core/lib/i18n.js | columnWastedBytes": [
+      "lighthouse-core/lib/i18n/i18n.js | columnWastedBytes": [
         "audits[unminified-javascript].details.headings[2].label",
         "audits[uses-webp-images].details.headings[3].label",
         "audits[uses-text-compression].details.headings[2].label"
@@ -3759,14 +3801,23 @@
           "path": "audits[dom-size].displayValue"
         }
       ],
-      "lighthouse-core/audits/dobetterweb/dom-size.js | columnDOMNodes": [
+      "lighthouse-core/audits/dobetterweb/dom-size.js | columnStatistic": [
         "audits[dom-size].details.headings[0].text"
       ],
-      "lighthouse-core/audits/dobetterweb/dom-size.js | columnDOMDepth": [
+      "lighthouse-core/audits/dobetterweb/dom-size.js | columnElement": [
         "audits[dom-size].details.headings[1].text"
       ],
-      "lighthouse-core/audits/dobetterweb/dom-size.js | columnDOMWidth": [
+      "lighthouse-core/audits/dobetterweb/dom-size.js | columnValue": [
         "audits[dom-size].details.headings[2].text"
+      ],
+      "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMNodes": [
+        "audits[dom-size].details.items[0].statistic"
+      ],
+      "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMDepth": [
+        "audits[dom-size].details.items[1].statistic"
+      ],
+      "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMWidth": [
+        "audits[dom-size].details.items[2].statistic"
       ],
       "lighthouse-core/config/default-config.js | performanceCategoryTitle": [
         "categories.performance.title"

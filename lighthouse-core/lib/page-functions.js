@@ -57,7 +57,6 @@ function registerPerformanceObserverInPage() {
   window.____lhPerformanceObserver = observer;
 }
 
-
 /**
  * Used by _waitForCPUIdle and executed in the context of the page, returns time since last long task.
  */
@@ -108,19 +107,58 @@ function getElementsInDocument(selector) {
 /**
  * Gets the opening tag text of the given node.
  * @param {Element} element
+ * @param {Array<string>=} ignoreAttrs An optional array of attribute tags to not include in the HTML snippet.
  * @return {string}
  */
 /* istanbul ignore next */
-function getOuterHTMLSnippet(element) {
+function getOuterHTMLSnippet(element, ignoreAttrs=[]) {
+  const clone = element.cloneNode();
+
+  ignoreAttrs.forEach(attribute =>{
+    clone.removeAttribute(attribute);
+  });
+
   const reOpeningTag = /^.*?>/;
-  const match = element.outerHTML.match(reOpeningTag);
-  return match && match[0] || '';
+  const match = clone.outerHTML.match(reOpeningTag);
+
+  return (match && match[0]) || '';
+}
+
+/**
+ * Computes a memory/CPU performance benchmark index to determine rough device class.
+ * @see https://docs.google.com/spreadsheets/d/1E0gZwKsxegudkjJl8Fki_sOwHKpqgXwt8aBAfuUaB8A/edit?usp=sharing
+ *
+ * The benchmark creates a string of length 100,000 in a loop.
+ * The returned index is the number of times per second the string can be created.
+ *
+ *  - 750+ is a desktop-class device, Core i3 PC, iPhone X, etc
+ *  - 300+ is a high-end Android phone, Galaxy S8, low-end Chromebook, etc
+ *  - 75+ is a mid-tier Android phone, Nexus 5X, etc
+ *  - <75 is a budget Android phone, Alcatel Ideal, Galaxy J2, etc
+ */
+/* istanbul ignore next */
+function ultradumbBenchmark() {
+  const start = Date.now();
+  let iterations = 0;
+
+  while (Date.now() - start < 500) {
+    let s = ''; // eslint-disable-line no-unused-vars
+    for (let j = 0; j < 100000; j++) s += 'a';
+
+    iterations++;
+  }
+
+  const durationInSeconds = (Date.now() - start) / 1000;
+  return iterations / durationInSeconds;
 }
 
 module.exports = {
-  wrapRuntimeEvalErrorInBrowser,
-  registerPerformanceObserverInPage,
-  checkTimeSinceLastLongTask,
-  getElementsInDocument,
-  getOuterHTMLSnippet,
+  wrapRuntimeEvalErrorInBrowserString: wrapRuntimeEvalErrorInBrowser.toString(),
+  registerPerformanceObserverInPageString: registerPerformanceObserverInPage.toString(),
+  checkTimeSinceLastLongTaskString: checkTimeSinceLastLongTask.toString(),
+  getElementsInDocumentString: getElementsInDocument.toString(),
+  getOuterHTMLSnippetString: getOuterHTMLSnippet.toString(),
+  getOuterHTMLSnippet: getOuterHTMLSnippet,
+  ultradumbBenchmark: ultradumbBenchmark,
+  ultradumbBenchmarkString: ultradumbBenchmark.toString(),
 };

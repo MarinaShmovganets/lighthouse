@@ -4,6 +4,8 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+import LHError = require('../lighthouse-core/lib/lh-error.js');
+
 declare global {
   module LH {
     export type I18NMessageEntry = string | {path: string, values: any};
@@ -14,6 +16,15 @@ declare global {
 
     export interface I18NRendererStrings {
       [varName: string]: string;
+    }
+
+    export interface Environment {
+      /** The user agent string of the version of Chrome used. */
+      hostUserAgent: string;
+      /** The user agent string that was sent over the network. */
+      networkUserAgent: string;
+      /** The benchmark index number that indicates rough device class. */
+      benchmarkIndex: number;
     }
 
     /**
@@ -41,12 +52,16 @@ declare global {
       configSettings: Config.Settings;
       /** List of top-level warnings for this Lighthouse run. */
       runWarnings: string[];
+      /** A top-level error message that, if present, indicates a serious enough problem that this Lighthouse result may need to be discarded. */
+      runtimeError: {code: string, message: string};
       /** The User-Agent string of the browser used run Lighthouse for these results. */
       userAgent: string;
+      /** Information about the environment in which Lighthouse was run. */
+      environment: Environment;
       /** Execution timings for the Lighthouse run */
       timing: {total: number, [t: string]: number};
       /** The record of all formatted string locations in the LHR and their corresponding source values. */
-      i18n?: {rendererFormattedStrings: I18NRendererStrings, icuMessagePaths: I18NMessages};
+      i18n: {rendererFormattedStrings: I18NRendererStrings, icuMessagePaths: I18NMessages};
     }
 
     // Result namespace

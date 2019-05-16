@@ -9,7 +9,12 @@
 const config = {
   extends: 'lighthouse:default',
   settings: {
+<<<<<<< HEAD
     disableDeviceEmulation: false, // HACK FOR NOW
+=======
+    maxWaitForLoad: 35 * 1000,
+    emulatedFormFactor: 'desktop',
+>>>>>>> origin/branch-3.2.x
     throttling: {
       // Using a "broadband" connection type
       // Corresponds to "Dense 4G 25th percentile" in https://docs.google.com/document/d/1Ft1Bnq9-t4jK5egLSOc28IL4TvR-Tt0se_1faTA4KTY/edit#heading=h.bb7nfy2x9e5v
