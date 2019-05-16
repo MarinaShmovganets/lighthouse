@@ -124,8 +124,10 @@ describe('ReportUIFeatures', () => {
         const lhr = JSON.parse(JSON.stringify(sampleResults));
         lhr.requestedUrl = lhr.finalUrl = 'http://www.example.com';
         const webpAuditItemTemplate = sampleResults.audits['uses-webp-images'].details.items[0];
-        const renderBlockingAuditItemTemplate = sampleResults.audits['render-blocking-resources'].details.items[0];
-        const textCompressionAuditItemTemplate = sampleResults.audits['uses-text-compression'].details.items[0];
+        const renderBlockingAuditItemTemplate =
+          sampleResults.audits['render-blocking-resources'].details.items[0];
+        const textCompressionAuditItemTemplate =
+          sampleResults.audits['uses-text-compression'].details.items[0];
         // Interleave first/third party URLs to test restoring order.
         lhr.audits['uses-webp-images'].details.items = [
           {
@@ -213,7 +215,7 @@ describe('ReportUIFeatures', () => {
 
       it('adds no filter for audits with tables containing only first party resources', () => {
         const checkboxClassName = 'lh-3p-filter-input';
-        
+
         expect(() => dom.find(`#uses-text-compression .${checkboxClassName}`, container))
           .toThrowError('query #uses-text-compression .lh-3p-filter-input not found');
       });
