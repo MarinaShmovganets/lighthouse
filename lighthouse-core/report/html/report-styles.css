@@ -390,7 +390,7 @@
 /* Node */
 .lh-node__snippet {
   font-family: var(--monospace-font-family);
-  color: hsl(174, 100%, 27%);
+  color: var(--color-green-700);
   font-size: 12px;
 }
 .lh-node__title {
