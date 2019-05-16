@@ -224,20 +224,19 @@ function getNodeSelector(node) {
  */
 /* istanbul ignore next */
 function getNodeTitle(node) {
-  if (node.tagName === 'HTML' || node.tagName === 'BODY') {
-    // too broad, contains all page content
-    return null;
-  }
-  const title = node.innerText || node.getAttribute('alt') || node.getAttribute('aria-label');
-  if (title) {
-    return truncate(title, 80);
-  } else {
-    const nodeToUseForTitle = node.querySelector('[alt], [aria-label]');
-    if (nodeToUseForTitle) {
-      return getNodeTitle(/** @type {HTMLElement} */ (nodeToUseForTitle));
+  const tagName = node.tagName.toLowerCase();
+  if (tagName !== 'html' && tagName !== 'body') {
+    const title = node.innerText || node.getAttribute('alt') || node.getAttribute('aria-label');
+    if (title) {
+      return truncate(title, 80);
+    } else {
+      const nodeToUseForTitle = node.querySelector('[alt], [aria-label]');
+      if (nodeToUseForTitle) {
+        return getNodeTitle(/** @type {HTMLElement} */ (nodeToUseForTitle));
+      }
     }
   }
-  return null;
+  return tagName;
 }
 
 /**

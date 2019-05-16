@@ -77,5 +77,13 @@ describe('Page Functions', () => {
       el.setAttribute('alt', Array(100).fill('a').join(''));
       assert.equal(pageFunctions.getNodeTitle(el).length, 80);
     });
+    it('Uses tag name for html tags', () => {
+      const el = dom.createElement('html');
+      assert.equal(pageFunctions.getNodeTitle(el), 'html');
+    });
+    it('Uses tag name if there is no better label', () => {
+      const el = dom.createElement('div');
+      assert.equal(pageFunctions.getNodeTitle(el), 'div');
+    });
   });
 });
