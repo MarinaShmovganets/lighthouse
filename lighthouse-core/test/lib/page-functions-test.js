@@ -72,5 +72,10 @@ describe('Page Functions', () => {
       el.appendChild(childEl);
       assert.equal(pageFunctions.getNodeTitle(el), 'Something');
     });
+    it('Truncates long text', () => {
+      const el = dom.createElement('div');
+      el.setAttribute('alt', Array(100).fill('a').join(''));
+      assert.equal(pageFunctions.getNodeTitle(el).length, 80);
+    });
   });
 });
