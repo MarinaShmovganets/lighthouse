@@ -148,5 +148,3 @@ function minifyTrace(inputTrace) {
 }
 
 module.exports = {minifyTrace};
-
-
