@@ -13,12 +13,13 @@ const pageFunctions = require('../../lib/page-functions.js');
 /**
  * @return {LH.Artifacts['IFrameElements']}
  */
+/* istanbul ignore next */
 function collectIFrameElements() {
   // @ts-ignore - put into scope via stringification
   const iFrameElements = getElementsInDocument('iframe'); // eslint-disable-line no-undef
   return iFrameElements.map(/** @param {HTMLIFrameElement} node */ (node) => {
     // @ts-ignore
-    const clientRect = getClientRect(node).toJSON();
+    const clientRect = getClientRect(node).toJSON(); // eslint-disable-line no-undef
     // Marking 1x1 as non-visible to ignore tracking pixels.
     const isVisible = (clientRect.width > 1 && clientRect.height > 1);
     return {
@@ -27,7 +28,7 @@ function collectIFrameElements() {
       clientRect,
       isVisible,
       // @ts-ignore
-      isFixed: isVisible && isFixed(node),
+      isFixed: isVisible && isFixed(node), // eslint-disable-line no-undef
     };
   });
 }
