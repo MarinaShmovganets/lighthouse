@@ -205,7 +205,7 @@ module.exports = [
                  '\n        too small target\n      </a>',
                   'path': '2,HTML,1,BODY,3,DIV,21,DIV,0,A',
                   'selector': 'body > div > div > a',
-                  'title': 'too small target',
+                  'nodeLabel': 'too small target',
                 },
                 'overlappingTarget': {
                   'type': 'node',
@@ -214,7 +214,7 @@ module.exports = [
                   '\n        big enough target\n      </a>',
                   'path': '2,HTML,1,BODY,3,DIV,21,DIV,1,A',
                   'selector': 'body > div > div > a',
-                  'title': 'big enough target',
+                  'nodeLabel': 'big enough target',
                 },
                 'size': '100x30',
                 'width': 100,
