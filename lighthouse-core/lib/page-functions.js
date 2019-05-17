@@ -218,6 +218,63 @@ function getNodeSelector(node) {
   return parts.join(' > ');
 }
 
+/**
+ * @param {HTMLElement} element
+ * @param {String} attr
+ * @return {String}
+ */
+/* istanbul ignore next */
+function getStyleAttrValue(element, attr) {
+  // Check style before computedStyle as computedStyle is expensive.
+  return element.style[attr] || window.getComputedStyle(element)[attr];
+}
+
+/**
+ * @param {HTMLElement} element
+ * @return {Boolean}
+ */
+/* istanbul ignore next */
+function hasScrollableAncestor(element) {
+  let currentEl = element.parentElement;
+  while (currentEl) {
+    if (currentEl.scrollHeight > currentEl.clientHeight) {
+      const yScroll = getStyleAttrValue(currentEl, 'overflowY');
+      if (yScroll) {
+        return true;
+      }
+    }
+    currentEl = currentEl.parentElement;
+  }
+  return false;
+}
+
+/**
+ * @param {?HTMLElement} element
+ * @return {Boolean}
+ */
+/* istanbul ignore next */
+function isFixed(element) {
+  let currentEl = element;
+  while (currentEl) {
+    const position = getStyleAttrValue(currentEl, 'position');
+    // Only truly fixed if an ancestor is scrollable.
+    if (position === 'fixed' && hasScrollableAncestor(currentEl)) {
+      return true;
+    }
+    currentEl = currentEl.parentElement;
+  }
+  return false;
+}
+
+/**
+ * @param {HTMLIFrameElement} element
+ * @return {DOMRect | ClientRect}
+ */
+/* istanbul ignore next */
+function getClientRect(element) {
+  return element.getBoundingClientRect();
+}
+
 module.exports = {
   wrapRuntimeEvalErrorInBrowserString: wrapRuntimeEvalErrorInBrowser.toString(),
   registerPerformanceObserverInPageString: registerPerformanceObserverInPage.toString(),
@@ -230,4 +287,8 @@ module.exports = {
   getNodePathString: getNodePath.toString(),
   getNodeSelectorString: getNodeSelector.toString(),
   getNodeSelector: getNodeSelector,
+  getStyleAttrValueString: getStyleAttrValue.toString(),
+  hasScrollableAncestorString: hasScrollableAncestor.toString(),
+  isFixedString: isFixed.toString(),
+  getClientRectString: getClientRect.toString(),
 };

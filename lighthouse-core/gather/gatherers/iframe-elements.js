@@ -11,63 +11,6 @@ const pageFunctions = require('../../lib/page-functions.js');
 /* eslint-env browser, node */
 
 /**
- * TODO(jburger): Move to page-functions.js once integrated with Lighthouse.
- * @param {HTMLElement} element
- * @param {String} attr
- * @return {String}
- */
-function getStyleAttrValue(element, attr) {
-  // Check style before computedStyle as computedStyle is expensive.
-  // @ts-ignore
-  return element.style[attr] || window.getComputedStyle(element)[attr];
-}
-
-/**
- * TODO(jburger): Move to page-functions.js once integrated with Lighthouse.
- * @param {HTMLElement} element
- * @return {Boolean}
- */
-function hasScrollableAncestor(element) {
-  let currentEl = element.parentElement;
-  while (currentEl) {
-    if (currentEl.scrollHeight > currentEl.clientHeight) {
-      const yScroll = getStyleAttrValue(currentEl, 'overflowY');
-      if (yScroll) {
-        return true;
-      }
-    }
-    currentEl = currentEl.parentElement;
-  }
-  return false;
-}
-
-/**
- * TODO(jburger): Move to page-functions.js once integrated with Lighthouse.
- * @param {?HTMLElement} element
- * @return {Boolean}
- */
-function isFixed(element) {
-  let currentEl = element;
-  while (currentEl) {
-    const position = getStyleAttrValue(currentEl, 'position');
-    // Only truly fixed if an ancestor is scrollable.
-    if (position === 'fixed' && hasScrollableAncestor(currentEl)) {
-      return true;
-    }
-    currentEl = currentEl.parentElement;
-  }
-  return false;
-}
-
-/**
- * TODO(jburger): Move to page-functions.js once integrated with Lighthouse.
- * @param {HTMLIFrameElement} element
- * @return {DOMRect | ClientRect}
- */
-function getClientRect(element) {
-  return element.getBoundingClientRect();
-}
-/**
  * @return {LH.Artifacts['IFrameElements']}
  */
 function collectIFrameElements() {
@@ -83,6 +26,7 @@ function collectIFrameElements() {
       src: node.src,
       clientRect,
       isVisible,
+      // @ts-ignore
       isFixed: isVisible && isFixed(node),
     };
   });
@@ -114,10 +58,10 @@ class IFrameElements extends Gatherer {
     const expression = `(() => {
       ${pageFunctions.getOuterHTMLSnippetString};
       ${pageFunctions.getElementsInDocumentString};
-      ${getClientRect};
-      ${getStyleAttrValue};
-      ${hasScrollableAncestor};
-      ${isFixed};
+      ${pageFunctions.getClientRectString};
+      ${pageFunctions.getStyleAttrValueString};
+      ${pageFunctions.hasScrollableAncestorString};
+      ${pageFunctions.isFixedString};
       return (${collectIFrameElements})();
     })()`;
 
