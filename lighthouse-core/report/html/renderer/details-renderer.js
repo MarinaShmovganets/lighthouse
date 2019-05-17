@@ -354,7 +354,6 @@ class DetailsRenderer {
     const element = this._dom.createElement('span', 'lh-node');
     if (item.nodeLabel) {
       const titleEl = this._dom.createElement('div');
-      titleEl.classList.add('lh-node__node-label');
       titleEl.textContent = item.nodeLabel;
       element.appendChild(titleEl);
     }
