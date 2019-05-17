@@ -219,41 +219,39 @@ function getNodeSelector(node) {
 }
 
 /**
- * @param {HTMLElement} element
- * @param {String} attr
- * @return {String}
- */
-/* istanbul ignore next */
-function getStyleAttrValue(element, attr) {
-  // Check style before computedStyle as computedStyle is expensive.
-  return element.style[attr] || window.getComputedStyle(element)[attr];
-}
-
-/**
- * @param {HTMLElement} element
- * @return {Boolean}
- */
-/* istanbul ignore next */
-function hasScrollableAncestor(element) {
-  let currentEl = element.parentElement;
-  while (currentEl) {
-    if (currentEl.scrollHeight > currentEl.clientHeight) {
-      const yScroll = getStyleAttrValue(currentEl, 'overflowY');
-      if (yScroll) {
-        return true;
-      }
-    }
-    currentEl = currentEl.parentElement;
-  }
-  return false;
-}
-
-/**
  * @param {?HTMLElement} element
- * @return {Boolean}
+ * @return {boolean}
  */
 /* istanbul ignore next */
-function isFixed(element) {
+function isPositionFixed(element) {
+  /**
+   * @param {HTMLElement} element
+   * @return {boolean}
+   */
+  function hasScrollableAncestor(element) {
+    let currentEl = element.parentElement;
+    while (currentEl) {
+      if (currentEl.scrollHeight > currentEl.clientHeight) {
+        const yScroll = getStyleAttrValue(currentEl, 'overflowY');
+        if (yScroll) {
+          return true;
+        }
+      }
+      currentEl = currentEl.parentElement;
+    }
+    return false;
+  }
+
+  /**
+   * @param {HTMLElement} element
+   * @param {string} attr
+   * @return {string}
+   */
+  function getStyleAttrValue(element, attr) {
+    // Check style before computedStyle as computedStyle is expensive.
+    return element.style[attr] || window.getComputedStyle(element)[attr];
+  }
+
   let currentEl = element;
   while (currentEl) {
     const position = getStyleAttrValue(currentEl, 'position');
@@ -264,15 +262,6 @@ function isFixed(element) {
     currentEl = currentEl.parentElement;
   }
   return false;
-}
-
-/**
- * @param {HTMLIFrameElement} element
- * @return {DOMRect | ClientRect}
- */
-/* istanbul ignore next */
-function getClientRect(element) {
-  return element.getBoundingClientRect();
 }
 
 module.exports = {
@@ -287,8 +276,5 @@ module.exports = {
   getNodePathString: getNodePath.toString(),
   getNodeSelectorString: getNodeSelector.toString(),
   getNodeSelector: getNodeSelector,
-  getStyleAttrValueString: getStyleAttrValue.toString(),
-  hasScrollableAncestorString: hasScrollableAncestor.toString(),
-  isFixedString: isFixed.toString(),
-  getClientRectString: getClientRect.toString(),
+  isPositionFixedString: isPositionFixed.toString(),
 };

@@ -18,8 +18,8 @@ function collectIFrameElements() {
   // @ts-ignore - put into scope via stringification
   const iFrameElements = getElementsInDocument('iframe'); // eslint-disable-line no-undef
   return iFrameElements.map(/** @param {HTMLIFrameElement} node */ (node) => {
-    // @ts-ignore
-    const clientRect = getClientRect(node).toJSON(); // eslint-disable-line no-undef
+    // @ts-ignore - put into scope via stringification
+    const clientRect = node.getBoundingClientRect().toJSON(); // eslint-disable-line no-undef
     // Marking 1x1 as non-visible to ignore tracking pixels.
     const isVisible = (clientRect.width > 1 && clientRect.height > 1);
     return {
@@ -27,13 +27,12 @@ function collectIFrameElements() {
       src: node.src,
       clientRect,
       isVisible,
-      // @ts-ignore
-      isFixed: isVisible && isFixed(node), // eslint-disable-line no-undef
+      // @ts-ignore - put into scope via stringification
+      isPositionFixed: isVisible && isPositionFixed(node), // eslint-disable-line no-undef
     };
   });
 }
 
-/** @inheritdoc */
 class IFrameElements extends Gatherer {
   /**
    * @param {LH.Gatherer.PassContext} passContext
@@ -59,10 +58,7 @@ class IFrameElements extends Gatherer {
     const expression = `(() => {
       ${pageFunctions.getOuterHTMLSnippetString};
       ${pageFunctions.getElementsInDocumentString};
-      ${pageFunctions.getClientRectString};
-      ${pageFunctions.getStyleAttrValueString};
-      ${pageFunctions.hasScrollableAncestorString};
-      ${pageFunctions.isFixedString};
+      ${pageFunctions.isPositionFixedString};
       return (${collectIFrameElements})();
     })()`;
 

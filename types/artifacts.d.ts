@@ -191,7 +191,7 @@ declare global {
         /** The visibility of the IFrame. */
         isVisible: boolean,
         /** If the IFrame or an ancestor of the IFrame is fixed in position. */
-        isFixed: boolean,
+        isPositionFixed: boolean,
         /** The Frame of the IFrame. @see https://chromedevtools.github.io/devtools-protocol/tot/Page#type-Frame */
         frame: Crdp.Page.Frame,
       }
