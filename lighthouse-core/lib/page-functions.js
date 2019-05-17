@@ -223,7 +223,7 @@ function getNodeSelector(node) {
  * @return {string|null}
  */
 /* istanbul ignore next */
-function getNodeTitle(node) {
+function getNodeLabel(node) {
   const tagName = node.tagName.toLowerCase();
   if (tagName !== 'html' && tagName !== 'body') {
     const title = node.innerText || node.getAttribute('alt') || node.getAttribute('aria-label');
@@ -232,7 +232,7 @@ function getNodeTitle(node) {
     } else {
       const nodeToUseForTitle = node.querySelector('[alt], [aria-label]');
       if (nodeToUseForTitle) {
-        return getNodeTitle(/** @type {HTMLElement} */ (nodeToUseForTitle));
+        return getNodeLabel(/** @type {HTMLElement} */ (nodeToUseForTitle));
       }
     }
   }
@@ -264,7 +264,7 @@ module.exports = {
   getNodePathString: getNodePath.toString(),
   getNodeSelectorString: getNodeSelector.toString(),
   getNodeSelector: getNodeSelector,
-  getNodeTitle: getNodeTitle,
-  getNodeTitleString: getNodeTitle.toString(),
+  getNodeLabel: getNodeLabel,
+  getNodeLabelString: getNodeLabel.toString(),
   truncateString: truncate.toString(),
 };

@@ -352,10 +352,10 @@ class DetailsRenderer {
    */
   renderNode(item) {
     const element = this._dom.createElement('span', 'lh-node');
-    if (item.title) {
+    if (item.nodeLabel) {
       const titleEl = this._dom.createElement('div');
-      titleEl.classList.add('lh-node__title');
-      titleEl.textContent = item.title;
+      titleEl.classList.add('lh-node__node-label');
+      titleEl.textContent = item.nodeLabel;
       element.appendChild(titleEl);
     }
     if (item.snippet) {

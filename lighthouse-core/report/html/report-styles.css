@@ -393,7 +393,7 @@
   color: var(--color-green-700);
   font-size: 12px;
 }
-.lh-node__title {
+.lh-node__node-label {
   color: var(--body-text-color);
   font-family: var(--text-font-family);
 }

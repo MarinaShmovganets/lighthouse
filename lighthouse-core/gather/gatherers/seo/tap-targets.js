@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global getComputedStyle, getElementsInDocument, Node, getNodePath, getNodeSelector, getNodeTitle, truncate */
+/* global getComputedStyle, getElementsInDocument, Node, getNodePath, getNodeSelector, getNodeLabel, truncate */
 
 const Gatherer = require('../gatherer');
 const pageFunctions = require('../../../lib/page-functions.js');
@@ -282,8 +282,8 @@ function gatherTapTargets() {
       path: getNodePath(tapTargetElement),
       // @ts-ignore - getNodeSelector put into scope via stringification
       selector: getNodeSelector(tapTargetElement),
-      // @ts-ignore - getNodeTitle put into scope via stringification
-      title: getNodeTitle(tapTargetElement),
+      // @ts-ignore - getNodeLabel put into scope via stringification
+      nodeLabel: getNodeLabel(tapTargetElement),
       href: /** @type {HTMLAnchorElement} */(tapTargetElement)['href'] || '',
     });
   });
@@ -313,7 +313,7 @@ class TapTargets extends Gatherer {
       ${rectContainsString};
       ${pageFunctions.getNodePathString};
       ${pageFunctions.getNodeSelectorString};
-      ${pageFunctions.getNodeTitleString};
+      ${pageFunctions.getNodeLabelString};
       ${gatherTapTargets.toString()};
 
       return gatherTapTargets();

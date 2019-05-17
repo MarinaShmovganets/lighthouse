@@ -145,7 +145,7 @@ declare global {
             snippet: string;
             target: string[];
             failureSummary?: string;
-            title?: string;
+            nodeLabel?: string;
           }[];
         }[];
         notApplicable: {
@@ -340,7 +340,7 @@ declare global {
       export interface TapTarget {
         snippet: string;
         selector: string;
-        title?: string;
+        nodeLabel?: string;
         path: string;
         href: string;
         clientRects: Rect[];
