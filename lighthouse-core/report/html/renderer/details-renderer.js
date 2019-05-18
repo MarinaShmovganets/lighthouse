@@ -353,9 +353,9 @@ class DetailsRenderer {
   renderNode(item) {
     const element = this._dom.createElement('span', 'lh-node');
     if (item.nodeLabel) {
-      const titleEl = this._dom.createElement('div');
-      titleEl.textContent = item.nodeLabel;
-      element.appendChild(titleEl);
+      const nodeLabelEl = this._dom.createElement('div');
+      nodeLabelEl.textContent = item.nodeLabel;
+      element.appendChild(nodeLabelEl);
     }
     if (item.snippet) {
       const snippetEl = this._dom.createElement('div');

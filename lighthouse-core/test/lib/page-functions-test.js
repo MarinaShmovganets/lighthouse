@@ -66,23 +66,29 @@ describe('Page Functions', () => {
       el.innerText = 'Hello';
       assert.equal(pageFunctions.getNodeLabel(el), 'Hello');
     });
+
     it('Falls back to children and alt/aria-label if a title can\'t be determined', () => {
       const el = dom.createElement('div');
       const childEl = dom.createElement('div', '', {'aria-label': 'Something'});
       el.appendChild(childEl);
       assert.equal(pageFunctions.getNodeLabel(el), 'Something');
     });
+
     it('Truncates long text', () => {
       const el = dom.createElement('div');
       el.setAttribute('alt', Array(100).fill('a').join(''));
       assert.equal(pageFunctions.getNodeLabel(el).length, 80);
     });
+
     it('Uses tag name for html tags', () => {
       const el = dom.createElement('html');
       assert.equal(pageFunctions.getNodeLabel(el), 'html');
     });
+
     it('Uses tag name if there is no better label', () => {
       const el = dom.createElement('div');
+      const childEl = dom.createElement('span');
+      el.appendChild(childEl);
       assert.equal(pageFunctions.getNodeLabel(el), 'div');
     });
   });

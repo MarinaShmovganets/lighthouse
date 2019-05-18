@@ -219,20 +219,26 @@ function getNodeSelector(node) {
 }
 
 /**
+ * Generate a human-readable label for the given element, based on end-user facing
+ * strings like the innerText or alt attribute.
+ * Falls back to the tagName if no useful label is found.
  * @param {HTMLElement} node
  * @return {string|null}
  */
 /* istanbul ignore next */
 function getNodeLabel(node) {
   const tagName = node.tagName.toLowerCase();
+  // html and body content is too broad to be useful, since they contain all page content
   if (tagName !== 'html' && tagName !== 'body') {
-    const title = node.innerText || node.getAttribute('alt') || node.getAttribute('aria-label');
-    if (title) {
-      return truncate(title, 80);
+    const nodeLabel = node.innerText || node.getAttribute('alt') || node.getAttribute('aria-label');
+    if (nodeLabel) {
+      return truncate(nodeLabel, 80);
     } else {
-      const nodeToUseForTitle = node.querySelector('[alt], [aria-label]');
-      if (nodeToUseForTitle) {
-        return getNodeLabel(/** @type {HTMLElement} */ (nodeToUseForTitle));
+      // If no useful label was found then try to get one from a child.
+      // E.g. if an a tag contains an image but no text we want the image alt/aria-label attribute.
+      const nodeToUseForLabel = node.querySelector('[alt], [aria-label]');
+      if (nodeToUseForLabel) {
+        return getNodeLabel(/** @type {HTMLElement} */ (nodeToUseForLabel));
       }
     }
   }
