@@ -16,7 +16,7 @@
  *    - lighthouse-core/lib/traces/tracing-processor.js
  */
 
-const TracingProcessor = require('./traces/tracing-processor');
+const TracingProcessor = require('./traces/tracing-processor.js');
 
 const toplevelTaskNames = new Set([
   'RunTask', // m71+
@@ -74,8 +74,8 @@ function filterOutUnnecessaryTasksByNameAndDuration(events) {
   const {pid} = TracingProcessor.findMainFrameIds(events);
 
   return events.filter(evt => {
-    // if (toplevelTaskNames.has(evt.name)) return true;
-    // if (toplevelTaskNames.has(evt.name) && evt.dur < 1000) return false;
+    if (toplevelTaskNames.has(evt.name)) return true;
+    if (toplevelTaskNames.has(evt.name) && evt.dur < 1000) return false;
     if (evt.pid === pid && traceEventsToKeepInProcess.has(evt.name)) return true;
     return traceEventsToAlwaysKeep.has(evt.name);
   });

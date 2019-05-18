@@ -29,7 +29,7 @@ const headersToKeep = new Set([
   'x-robots-tag',
 ]);
 
-/** @param {Partial<LH.Crdp.Network.Headers>} [headers] */
+/** @param {LH.Crdp.Network.Headers} [headers] */
 function cleanHeaders(headers) {
   if (!headers) return;
 

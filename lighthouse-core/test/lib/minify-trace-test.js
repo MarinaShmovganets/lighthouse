@@ -28,6 +28,7 @@ describe('minify-trace', () => {
     for (const key of Object.keys(after)) {
       // Speed Index is expected to be different because of screenshot throttling.
       // Trace End can also be different if the last event was unimportant.
+      // There are many different `observed*` and `*Ts` versions, so remove with a regex.
       if (/speedIndex|traceEnd/i.test(key)) {
         delete before[key];
         delete after[key];

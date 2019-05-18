@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const minifyDevtoolsLog = require('../../lib/minify-devtoolslog.js').minifyDevtoolsLog;
+const {minifyDevtoolsLog} = require('../../lib/minify-devtoolslog.js');
 const trace = require('../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../fixtures/traces/progressive-app-m60.devtools.log.json');
 const MetricsAudit = require('../../audits/metrics.js');
@@ -21,7 +21,7 @@ describe('minify-devtoolslog', () => {
 
     const minifiedDevtoolsLog = minifyDevtoolsLog(devtoolsLog);
     artifacts.devtoolsLogs.defaultPass = minifiedDevtoolsLog;
-    context.computedCache.clear();
+    context.computedCache.clear(); // not strictly necessary, but we'll be safe
     const {details: {items: [after]}} = await MetricsAudit.audit(artifacts, context);
     const afterSize = JSON.stringify(minifiedDevtoolsLog).length;
 
