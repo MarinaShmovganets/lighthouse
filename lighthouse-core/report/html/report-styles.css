@@ -100,6 +100,8 @@
   --color-white: #FFFFFF;
   --color-blue-200: #90CAF9;
   --color-blue-900: #0D47A1;
+  --color-teal-300: #00d6c1;
+  --color-teal-700: #008577;
 
 
   /* TODO(cjamcl) clean up unused variables. */
@@ -175,6 +177,7 @@
 .lh-vars.dark {
   --color-red-700: var(--color-red);
   --color-green-700: var(--color-green);
+  --color-teal-700: var(--color-teal-300);
   --color-orange-700: var(--color-orange);
 
   --color-black-200: var(--color-black-800);
@@ -390,7 +393,7 @@
 /* Node */
 .lh-node__snippet {
   font-family: var(--monospace-font-family);
-  color: var(--color-green-700);
+  color: var(--color-teal-700);
   font-size: 12px;
 }
 
