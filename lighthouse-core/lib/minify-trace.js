@@ -74,7 +74,6 @@ function filterOutUnnecessaryTasksByNameAndDuration(events) {
   const {pid} = TracingProcessor.findMainFrameIds(events);
 
   return events.filter(evt => {
-    if (toplevelTaskNames.has(evt.name)) return true;
     if (toplevelTaskNames.has(evt.name) && evt.dur < 1000) return false;
     if (evt.pid === pid && traceEventsToKeepInProcess.has(evt.name)) return true;
     return traceEventsToAlwaysKeep.has(evt.name);
