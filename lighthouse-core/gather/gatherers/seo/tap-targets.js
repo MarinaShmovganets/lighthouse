@@ -237,6 +237,19 @@ function elementIsPositionFixedStickyOrAbsolute(element) {
 }
 
 /**
+ * @param {string} str
+ * @param {number} maxLength
+ * @return {string}
+ */
+/* istanbul ignore next */
+function truncate(str, maxLength) {
+  if (str.length <= maxLength) {
+    return str;
+  }
+  return str.slice(0, maxLength - 1) + '…';
+}
+
+/**
  * @returns {LH.Artifacts.TapTarget[]}
  */
 /* istanbul ignore next */
@@ -305,7 +318,7 @@ class TapTargets extends Gatherer {
       ${elementIsVisible.toString()};
       ${elementHasAncestorTapTarget.toString()};
       ${getVisibleClientRects.toString()};
-      ${pageFunctions.truncateString};
+      ${truncate.toString()};
       ${getClientRects.toString()};
       ${hasTextNodeSiblingsFormingTextBlock.toString()};
       ${elementIsInTextBlock.toString()};

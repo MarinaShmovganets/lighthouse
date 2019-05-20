@@ -227,6 +227,18 @@ function getNodeSelector(node) {
  */
 /* istanbul ignore next */
 function getNodeLabel(node) {
+  /**
+   * @param {string} str
+   * @param {number} maxLength
+   * @return {string}
+   */
+  function truncate(str, maxLength) {
+    if (str.length <= maxLength) {
+      return str;
+    }
+    return str.slice(0, maxLength - 1) + '…';
+  }
+
   const tagName = node.tagName.toLowerCase();
   // html and body content is too broad to be useful, since they contain all page content
   if (tagName !== 'html' && tagName !== 'body') {
@@ -245,19 +257,6 @@ function getNodeLabel(node) {
   return tagName;
 }
 
-/**
- * @param {string} str
- * @param {number} maxLength
- * @return {string}
- */
-/* istanbul ignore next */
-function truncate(str, maxLength) {
-  if (str.length <= maxLength) {
-    return str;
-  }
-  return str.slice(0, maxLength - 1) + '…';
-}
-
 module.exports = {
   wrapRuntimeEvalErrorInBrowserString: wrapRuntimeEvalErrorInBrowser.toString(),
   registerPerformanceObserverInPageString: registerPerformanceObserverInPage.toString(),
@@ -272,5 +271,4 @@ module.exports = {
   getNodeSelector: getNodeSelector,
   getNodeLabel: getNodeLabel,
   getNodeLabelString: getNodeLabel.toString(),
-  truncateString: truncate.toString(),
 };
