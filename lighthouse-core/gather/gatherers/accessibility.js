@@ -80,7 +80,6 @@ class Accessibility extends Gatherer {
       ${pageFunctions.getOuterHTMLSnippetString};
       ${pageFunctions.getNodePathString};
       ${pageFunctions.getNodeLabelString};
-      ${pageFunctions.truncateString};
       ${axeLibSource};
       return (${runA11yChecks.toString()}());
     })()`;

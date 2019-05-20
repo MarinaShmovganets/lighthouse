@@ -227,6 +227,8 @@ function getNodeSelector(node) {
  */
 /* istanbul ignore next */
 function getNodeLabel(node) {
+  // Inline so that audits that import getNodeLabel don't
+  // also need to import truncate
   /**
    * @param {string} str
    * @param {number} maxLength

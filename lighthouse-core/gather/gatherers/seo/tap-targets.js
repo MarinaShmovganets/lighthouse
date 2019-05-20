@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global getComputedStyle, getElementsInDocument, Node, getNodePath, getNodeSelector, getNodeLabel, truncate */
+/* global getComputedStyle, getElementsInDocument, Node, getNodePath, getNodeSelector, getNodeLabel */
 
 const Gatherer = require('../gatherer');
 const pageFunctions = require('../../../lib/page-functions.js');
@@ -289,7 +289,6 @@ function gatherTapTargets() {
 
     targets.push({
       clientRects: visibleClientRects,
-      // @ts-ignore - truncate put into scope via stringification
       snippet: truncate(tapTargetElement.outerHTML, 300),
       // @ts-ignore - getNodePath put into scope via stringification
       path: getNodePath(tapTargetElement),
