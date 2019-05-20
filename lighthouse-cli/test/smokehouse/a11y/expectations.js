@@ -24,7 +24,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#aria-allowed-attr',
-                  'path': '2,HTML,1,BODY,3,SECTION,0,DIV',
                   'snippet': '<div id="aria-allowed-attr" role="alert" aria-checked="true">\n      </div>',
                   'explanation': 'Fix any of the following:\n  ARIA attribute is not allowed: aria-checked="true"',
                   'nodeLabel': 'div',
@@ -41,7 +40,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#aria-required-children',
-                  'path': '2,HTML,1,BODY,7,SECTION,0,DIV',
                   'snippet': '<div id="aria-required-children" role="radiogroup">\n        <div></div>\n      </div>',
                   'explanation': 'Fix any of the following:\n  Required ARIA child role not present: radio',
                   'nodeLabel': 'div',
@@ -58,7 +56,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#aria-required-parent',
-                  'path': '2,HTML,1,BODY,9,SECTION,0,DIV,0,DIV',
                   'snippet': '<div id="aria-required-parent" role="option">\n        </div>',
                   'explanation': 'Fix any of the following:\n  Required ARIA parent role not present: listbox',
                   'nodeLabel': 'div',
@@ -75,7 +72,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': 'div[role="foo"]',
-                  'path': '2,HTML,1,BODY,11,SECTION,0,DIV',
                   'snippet': '<div role="foo"></div>',
                   'explanation': 'Fix all of the following:\n  Role must be one of the valid ARIA roles',
                   'nodeLabel': 'div',
@@ -92,7 +88,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#aria-valid-attr-value',
-                  'path': '2,HTML,1,BODY,15,SECTION,0,DIV',
                   'snippet': '<div id="aria-valid-attr-value" role="checkbox" aria-checked="0">\n      </div>',
                   'explanation': 'Fix all of the following:\n  Invalid ARIA attribute value: aria-checked="0"',
                   'nodeLabel': 'div',
@@ -109,7 +104,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#aria-valid-attr',
-                  'path': '2,HTML,1,BODY,13,SECTION,0,DIV',
                   'snippet': '<div id="aria-valid-attr" role="checkbox" aria-chked="true">\n      </div>',
                   'explanation': 'Fix any of the following:\n  Invalid ARIA attribute name: aria-chked',
                   'nodeLabel': 'div',
@@ -126,7 +120,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#button-name',
-                  'path': '2,HTML,1,BODY,19,SECTION,0,BUTTON',
                   'snippet': '<button id="button-name"></button>',
                   'explanation': 'Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element has a value attribute and the value attribute is empty\n  Element has no value attribute or the value attribute is empty\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element\'s default semantics were not overridden with role="presentation"\n  Element\'s default semantics were not overridden with role="none"\n  Element has no title attribute or the title attribute is empty',
                   'nodeLabel': 'button',
@@ -143,7 +136,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': 'html',
-                  'path': '2,HTML',
                   'snippet': '<html>',
                   'explanation': 'Fix any of the following:\n  No valid skip link found\n  Page does not have a header\n  Page does not have a landmark region',
                   'nodeLabel': 'html',
@@ -160,7 +152,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#color-contrast',
-                  'path': '2,HTML,1,BODY,21,SECTION,0,DIV',
                   'snippet': '<div id="color-contrast" style="background-color: red; color: pink;">\n          Hello\n      </div>',
                   'explanation': 'Fix any of the following:\n  Element has insufficient color contrast of 2.59 (foreground color: #ffc0cb, background color: #ff0000, font size: 28.5pt, font weight: normal). Expected contrast ratio of 3:1',
                   'nodeLabel': 'Hello',
@@ -177,7 +168,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#definition-list',
-                  'path': '2,HTML,1,BODY,23,SECTION,0,DL',
                   'snippet': '<dl id="definition-list">\n        <p></p>\n      </dl>',
                   'explanation': 'Fix all of the following:\n  List element has direct children that are not allowed inside <dt> or <dd> elements',
                   'nodeLabel': 'dl',
@@ -194,7 +184,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': 'dd',
-                  'path': '2,HTML,1,BODY,25,SECTION,0,DIV,0,DD',
                   'snippet': '<dd></dd>',
                   'explanation': 'Fix any of the following:\n  Description list item does not have a <dl> parent element',
                   'nodeLabel': 'dd',
@@ -211,7 +200,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': 'html',
-                  'path': '2,HTML',
                   'snippet': '<html>',
                   'explanation': 'Fix any of the following:\n  Document does not have a non-empty <title> element',
                   'nodeLabel': 'html',
@@ -229,7 +217,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': 'section:nth-child(28) > div:nth-child(1)',
-                  'path': '2,HTML,1,BODY,27,SECTION,0,DIV',
                   'snippet': '<div id="duplicate-id"></div>',
                   'explanation': 'Fix any of the following:\n  Document has multiple static elements with the same id attribute',
                   'nodeLabel': 'div',
@@ -246,7 +233,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#frame-title',
-                  'path': '2,HTML,1,BODY,29,SECTION,0,IFRAME',
                   'snippet': '<iframe id="frame-title"></iframe>',
                   'explanation': 'Fix any of the following:\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute or the title attribute is empty\n  Element\'s default semantics were not overridden with role="presentation"\n  Element\'s default semantics were not overridden with role="none"',
                   'nodeLabel': 'iframe',
@@ -263,7 +249,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': 'html',
-                  'path': '2,HTML',
                   'snippet': '<html>',
                   'explanation': 'Fix any of the following:\n  The <html> element does not have a lang attribute',
                   'nodeLabel': 'html',
@@ -280,7 +265,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#image-alt',
-                  'path': '2,HTML,1,BODY,31,SECTION,0,IMG',
                   'snippet': '<img id="image-alt" src="./bogus.jpg">',
                   'explanation': 'Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute or the title attribute is empty\n  Element\'s default semantics were not overridden with role="presentation"\n  Element\'s default semantics were not overridden with role="none"',
                   'nodeLabel': 'img',
@@ -297,7 +281,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#input-image-alt',
-                  'path': '2,HTML,1,BODY,33,SECTION,0,INPUT',
                   'snippet': '<input type="image" id="input-image-alt">',
                   'explanation': 'Fix any of the following:\n  Element has no alt attribute or the alt attribute is empty\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute or the title attribute is empty',
                   'nodeLabel': 'input',
@@ -314,7 +297,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#label',
-                  'path': '2,HTML,1,BODY,35,SECTION,0,FORM,0,INPUT',
                   'snippet': '<input id="label" type="text">',
                   'explanation': 'Fix any of the following:\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  Element has no title attribute or the title attribute is empty',
                   'nodeLabel': 'input',
@@ -339,7 +321,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#link-name',
-                  'path': '2,HTML,1,BODY,39,SECTION,0,A',
                   'snippet': '<a id="link-name" href="google.com"></a>',
                   'explanation': 'Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element\'s default semantics were not overridden with role="presentation"\n  Element\'s default semantics were not overridden with role="none"',
                   'nodeLabel': 'a',
@@ -356,7 +337,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#list',
-                  'path': '2,HTML,1,BODY,41,SECTION,0,UL',
                   'snippet': '<ul id="list">\n        <p></p>\n      </ul>',
                   'explanation': 'Fix all of the following:\n  List element has direct children that are not allowed inside <li> elements',
                   'nodeLabel': 'ul',
@@ -373,7 +353,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#listitem',
-                  'path': '2,HTML,1,BODY,43,SECTION,0,LI',
                   'snippet': '<li id="listitem"></li>',
                   'explanation': 'Fix any of the following:\n  List item does not have a <ul>, <ol> or role="list" parent element',
                   'nodeLabel': 'li',
@@ -390,7 +369,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': 'meta[name="viewport"]',
-                  'path': '2,HTML,0,HEAD,1,META',
                   'snippet': '<meta name="viewport" content="user-scalable=no, maximum-scale=1.0">',
                   'explanation': 'Fix any of the following:\n  user-scalable=no on <meta> tag disables zooming on mobile devices',
                   'nodeLabel': 'meta',
@@ -407,7 +385,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#object-alt',
-                  'path': '2,HTML,1,BODY,45,SECTION,0,OBJECT',
                   'snippet': '<object id="object-alt"></object>',
                   'explanation': 'Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute or the title attribute is empty\n  Element\'s default semantics were not overridden with role="presentation"\n  Element\'s default semantics were not overridden with role="none"',
                   'nodeLabel': 'object',
@@ -424,7 +401,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#tabindex',
-                  'path': '2,HTML,1,BODY,47,SECTION,0,DIV',
                   'snippet': '<div id="tabindex" tabindex="10">\n      </div>',
                   'explanation': 'Fix any of the following:\n  Element has a tabindex greater than 0',
                   'nodeLabel': 'div',
@@ -441,7 +417,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#td-headers-attr',
-                  'path': '2,HTML,1,BODY,53,SECTION,0,TABLE',
                   'snippet': '<table id="td-headers-attr">\n\t\t\t  <tbody><tr><th>FOO</th></tr>\n\t\t\t  <tr><td headers="bogus-td-headers-attr">foo</td></tr>\n\t\t\t</tbody></table>',
                   'explanation': 'Fix all of the following:\n  The headers attribute is not exclusively used to refer to other cells in the table',
                   'nodeLabel': 'FOO\nfoo',
@@ -458,7 +433,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#valid-lang',
-                  'path': '2,HTML,1,BODY,57,SECTION,0,P',
                   'snippet': '<p id="valid-lang" lang="foo">foo</p>',
                   'explanation': 'Fix all of the following:\n  Value of lang attribute not included in the list of valid languages',
                   'nodeLabel': 'foo',
@@ -475,7 +449,6 @@ module.exports = [
                 node: {
                   'type': 'node',
                   'selector': '#accesskeys1',
-                  'path': '2,HTML,1,BODY,1,SECTION,0,BUTTON',
                   'snippet': '<button id="accesskeys1" accesskey="s">Foo</button>',
                   'explanation': 'Fix all of the following:\n  Document has multiple elements with the same accesskey',
                   'nodeLabel': 'Foo',
