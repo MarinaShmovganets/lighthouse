@@ -389,7 +389,7 @@ describe('GatherRunner', function() {
       driver,
       passConfig,
       settings,
-      baseArtifacts: await GatherRunner.getBaseArtifacts({driver, settings, requestedUrl}),
+      baseArtifacts: await GatherRunner.initializeBaseArtifacts({driver, settings, requestedUrl}),
     };
 
     await GatherRunner.runPass(passContext, {TestGatherer: []});

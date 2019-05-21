@@ -178,6 +178,9 @@ class GatherRunner {
    * @return {Promise<void>}
    */
   static async setupPassNetwork(passContext) {
+    const status = {msg: 'Setting up network for the pass trace', id: `lh:gather:setupPassNetwork`};
+    log.time(status);
+
     const passConfig = passContext.passConfig;
     await passContext.driver.setThrottling(passContext.settings, passConfig);
 
@@ -189,6 +192,8 @@ class GatherRunner {
     // neccessary at the beginning of the next pass.
     await passContext.driver.blockUrlPatterns(blockedUrls);
     await passContext.driver.setExtraHTTPHeaders(passContext.settings.extraHeaders);
+
+    log.timeEnd(status);
   }
 
   /**
@@ -197,6 +202,9 @@ class GatherRunner {
    * @return {Promise<void>}
    */
   static async beginRecording(passContext) {
+    const status = {msg: 'Beginning devtoolsLog and trace', id: 'lh:gather:beginRecording'};
+    log.time(status);
+
     const {driver, passConfig, settings} = passContext;
 
     // Always record devtoolsLog
@@ -205,6 +213,8 @@ class GatherRunner {
     if (passConfig.recordTrace) {
       await driver.beginTrace(settings);
     }
+
+    log.timeEnd(status);
   }
 
   /**
@@ -400,7 +410,7 @@ class GatherRunner {
    * @param {{driver: Driver, requestedUrl: string, settings: LH.Config.Settings}} options
    * @return {Promise<LH.BaseArtifacts>}
    */
-  static async getBaseArtifacts(options) {
+  static async initializeBaseArtifacts(options) {
     const hostUserAgent = (await options.driver.getBrowserVersion()).userAgent;
 
     const {emulatedFormFactor} = options.settings;
@@ -502,7 +512,7 @@ class GatherRunner {
       // So we first navigate to about:blank, then apply our emulation & setup
       await GatherRunner.loadBlank(driver);
 
-      const baseArtifacts = await GatherRunner.getBaseArtifacts(options);
+      const baseArtifacts = await GatherRunner.initializeBaseArtifacts(options);
       baseArtifacts.BenchmarkIndex = await options.driver.getBenchmarkIndex();
 
       await GatherRunner.setupDriver(driver, options);
