@@ -1,0 +1,1335 @@
+var __INITIAL_STATE__ = {
+    "application": {
+        "elmoTreatments": {
+            "Trmt_muse_tagmanager_success_page_1": false
+        },
+        "locale": {
+            "timezone": {
+                "determiner": "viaUserProfile",
+                "value": "Europe\u002FBerlin"
+            },
+            "country": "DE",
+            "locale": "de_DE",
+            "language": "de",
+            "directionality": "ltr"
+        },
+        "nonce": "FZRzewBtMO0T7o14d3VhBKQ5sIdK8wyILFuyVtDJ0q4AoXVy",
+        "content": {
+            "account": {
+                "headers": {
+                    "main": "Willkommen {name}"
+                },
+                "activity": {
+                    "balance": "Verfügbares Guthaben in USD (Hauptwährung): {balance}",
+                    "title": "Letzte Kontoaktivitäten",
+                    "headers": {
+                        "date": "Datum",
+                        "type": "Typ",
+                        "name": "Name",
+                        "status": "Status",
+                        "fee": "Gebühr",
+                        "gross": "Brutto"
+                    }
+                },
+                "ffx": {
+                    "advertisement": "Einen Betrag von {fx.from} würde PayPal in {fx.to} umrechnen"
+                }
+            },
+            "errors": {
+                "webisteUrl": "Geben Sie die URL einer Website ein.",
+                "validUrl": "Geben Sie eine gültige URL ein."
+            },
+            "errors\u002F404": {
+                "header": "Datei nicht gefunden",
+                "description": "Die URL \u003Ccode\u003E{url}\u003C\u002Fcode\u003E wurde nicht in einen Pfad aufgelöst."
+            },
+            "errors\u002F500": {
+                "header": "Interner Serverfehler",
+                "description": "Die URL \u003Ccode\u003E{url}\u003C\u002Fcode\u003E hatte den folgenden Fehler: \u003Ccode\u003E{err}\u003C\u002Fcode\u003E."
+            },
+            "errors\u002F503": {
+                "header": "Dienst nicht verfügbar",
+                "description": "Der Dienst ist nicht verfügbar. Versuchen Sie es in Kürze erneut."
+            },
+            "feedback": {
+                "feedbackModal": {
+                    "header": "Sagen Sie uns Ihre Meinung.",
+                    "subheader": "Welche Bewertung geben Sie uns?",
+                    "scaleLow": "Schlecht",
+                    "scaleHigh": "Super!",
+                    "activateButtonText": "Feedback",
+                    "submitButtonText": "Absenden",
+                    "successText": "Vielen Dank für Ihr Feedback!",
+                    "successButtonText": "OK",
+                    "errorText": "Treffen Sie eine Auswahl.",
+                    "textareaPlaceholder": "Was können wir besser machen? (optional)"
+                }
+            },
+            "inc\u002Ffooter": {
+                "footer": {
+                    "copyright": "© 1999–2018 PayPal.",
+                    "copyrightText": "Alle Rechte vorbehalten.",
+                    "linkPrivacy": "Datenschutz",
+                    "linkLegal": "AGB",
+                    "policyUpdates": "AGB-Aktualisierungen",
+                    "linkImprint": "Impressum",
+                    "linkHelp": "Hilfe",
+                    "linkContact": "Kontakt",
+                    "linkFeedback": "Feedback",
+                    "cancel": "Abbrechen",
+                    "confirm": "Bestätigen",
+                    "linkSecurity": "Sicherheit"
+                }
+            },
+            "inc\u002Fheader": {
+                "header": {
+                    "brand": "PayPal",
+                    "skipNavigation": "Hauptmenü",
+                    "logout": "Ausloggen",
+                    "logIn": "Einloggen",
+                    "signUp": "Konto eröffnen"
+                }
+            },
+            "index": {
+                "headers": {
+                    "login": "Loggen Sie sich in Ihr PayPal-Konto ein",
+                    "loggedIn": "Sie sind bereits eingeloggt."
+                },
+                "buttons": {
+                    "login": "Einloggen",
+                    "accountPage": "Seite \"Konto\""
+                },
+                "errorHandle": {
+                    "header": "Es ist ein Fehler aufgetreten – versuchen Sie es erneut",
+                    "tagCreateError": "Es gab ein Problem beim Generieren des Codes.",
+                    "tagUpdateError": "Es gab ein Problem beim Aktualisieren des Codes.",
+                    "tagEditError": "Es gab ein Problem beim Bearbeiten des Codes.",
+                    "tagServerError": "Es gab ein Problem mit dem PayPal-Server.",
+                    "genericMessage": "Leider ist ein Problem aufgetreten. Versuchen Sie es später noch einmal.",
+                    "backButton": "Zurück",
+                    "tryAgain": "Erneut versuchen"
+                },
+                "notEligible": {
+                    "header": "Demnächst verfügbar: PayPal Marketing Solutions",
+                    "error": "PayPal Marketing Solutions ist derzeit nur in den USA verfügbar.",
+                    "link": "Zurück zu PayPal"
+                },
+                "incorrectAccount": {
+                    "header": "Sie sind nicht berechtigt, auf die Einstellungen zuzugreifen",
+                    "error": "Loggen Sie sich aus und loggen Sie sich noch einmal in das richtige PayPal-Konto ein."
+                },
+                "nonMerchant": {
+                    "header": "Diese Seite ist für Privatkonten leider nicht verfügbar.",
+                    "error": "Loggen Sie sich in Ihr Geschäftskonto ein."
+                },
+                "tagManager": {
+                    "title": "PayPal Marketing Solutions"
+                }
+            },
+            "instructions": {
+                "html": {
+                    "name": "HTML",
+                    "step1": "Öffnen Sie die \u003Cstrong\u003EHTML\u003C\u002Fstrong\u003E-Datei für eine Ihrer Webseiten mit einem Texteditor oder dem Bearbeitungstool Ihrer Website-Plattform.",
+                    "step2": "Suchen Sie den Abschnitt im Code, der mit \u003Cstrong\u003E&lt;head&gt;\u003C\u002Fstrong\u003E beginnt und mit \u003Cstrong\u003E&lt;\u002Fhead&gt;\u003C\u002Fstrong\u003E endet. Das ist der HTML-Header, der sich in der Regel am Anfang der \u003Cstrong\u003EHTML\u003C\u002Fstrong\u003E-Datei befindet.",
+                    "step3": "Kopieren Sie den gesamten nachstehenden Code und fügen Sie ihn in die \u003Cstrong\u003EHTML\u003C\u002Fstrong\u003E-Datei in einer Zeile vor dem \u003Cstrong\u003E&lt;\u002Fhead&gt;\u003C\u002Fstrong\u003E-Tag ein. Wen Sie ein Tag-Management-Tool verwenden, fügen Sie den Code als neues Tag in das Tool ein.",
+                    "step4": "Speichern Sie die Änderungen an der \u003Cstrong\u003EHTML\u003C\u002Fstrong\u003E-Datei und stellen Sie diese live."
+                },
+                "woocommerce": {
+                    "name": "WooCommerce",
+                    "step1": "Loggen Sie sich unter \u003Cstrong\u003Ewww.IhreInternetadresse.de\u002Fwp-login.php\u003C\u002Fstrong\u003E in Ihren WooCommerce-Shop ein.",
+                    "step2": "Wählen Sie im Dashboard-Menü \u003Cstrong\u003EAppearance &gt; Editor\u003C\u002Fstrong\u003E.",
+                    "step3": "Suchen Sie ganz rechts auf der Seitenleiste die Datei \u003Cstrong\u003ETheme Footer (footer.php)\u003C\u002Fstrong\u003E und klicken Sie darauf, um die Datei zu laden.",
+                    "step4": "Kopieren Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E.",
+                    "step5": "Scrollen Sie in der Datei \u003Cstrong\u003Efooter.php\u003C\u002Fstrong\u003E ganz nach unten. Fügen Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E vor dem \u003Cstrong\u003Ebody\u003C\u002Fstrong\u003E-End-Tag ein.",
+                    "note5": "Die Skriptplatzierung kann je nach WooCommerce-Design variieren.",
+                    "step6": "Klicken Sie auf \u003Cstrong\u003EUpdate File\u003C\u002Fstrong\u003E."
+                },
+                "magento": {
+                    "name": "Magento",
+                    "step1": "Loggen Sie sich unter \u003Cstrong\u003Ewww.IhreInternetadresse.de\u002Fadmin\u003C\u002Fstrong\u003E in Ihr Magento Admin Panel ein.",
+                    "step2": "Wählen Sie in der Menüleiste \u003Cstrong\u003ESystem\u003C\u002Fstrong\u003E.",
+                    "step3": "Klicken Sie in der Dropdown-Liste auf \u003Cstrong\u003EConfiguration\u003C\u002Fstrong\u003E.",
+                    "step4": "Wählen Sie in der Konfigurationsliste \u003Cstrong\u003EGeneral\u003C\u002Fstrong\u003E die Option \u003Cstrong\u003EDesign\u003C\u002Fstrong\u003E.",
+                    "step5": "Kopieren Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E.",
+                    "step6": "Wählen Sie im Designabschnitt den Bereich \u003Cstrong\u003EFooter\u003C\u002Fstrong\u003E, um die Optionen anzuzeigen.",
+                    "step7": "Fügen Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E in das Feld \u003Cstrong\u003EMiscellaneous HTML\u003C\u002Fstrong\u003E ein.",
+                    "step8": "Speichern Sie Ihre Einstellungen durch Klicken auf den Button \u003Cstrong\u003ESave Config\u003C\u002Fstrong\u003E."
+                },
+                "bigcommerce": {
+                    "name": "BigCommerce",
+                    "step1": "Loggen Sie sich unter \u003Cstrong\u003Ehttps:\u002F\u002Flogin.bigcommerce.com\u002Flogin\u003C\u002Fstrong\u003E bei BigCommerce ein.",
+                    "step2": "Wählen Sie im Hauptmenü die Option \"Theme Design\" aus.",
+                    "step3": "Suchen Sie im Design-Menü die Option \u003Cstrong\u003EScripts\u003C\u002Fstrong\u003E und klicken Sie darauf, um das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E diesem Abschnitt hinzuzufügen.",
+                    "note3": "Die Scripts-Option kann je nach verwendetem Design auch im Seitenmenü zu finden sein.",
+                    "step4": "Kopieren Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E.",
+                    "step5": "Fügen Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E in das Feld \u003Cstrong\u003EFooter\u003C\u002Fstrong\u003E ein.",
+                    "step6": "Klicken Sie in unten rechts auf \u003Cstrong\u003ESave\u003C\u002Fstrong\u003E."
+                },
+                "shopify": {
+                    "name": "Shopify",
+                    "step1": "Loggen Sie sich unter \u003Cstrong\u003Ehttps:\u002F\u002Fwww.shopify.com\u002Flogin\u003C\u002Fstrong\u003E bei Shopify ein.",
+                    "step2": "Klicken Sie im Hauptmenü auf \u003Cstrong\u003EOnline Store\u003C\u002Fstrong\u003E.",
+                    "step3": "Klicken Sie im Menü \u003Cstrong\u003EOnline Store\u003C\u002Fstrong\u003E auf \u003Cstrong\u003EThemes\u003C\u002Fstrong\u003E.",
+                    "step4": "Sie sehen jetzt die Design-Optionen von Shopify. Klicken Sie in oben rechts auf \u003Cstrong\u003EDot Menu\u003C\u002Fstrong\u003E.",
+                    "step5": "Ein Popup-Menü wird angezeigt. Klicken Sie auf \u003Cstrong\u003EEdit HTML\u002FCSS\u003C\u002Fstrong\u003E.",
+                    "step6": "Sie werden zu einem untergeordneten Menü mit den Design-Dateien weitergeleitet. Scrollen Sie nach unten zum Ordner \u003Cstrong\u003ESections\u003C\u002Fstrong\u003E. Klicken Sie auf den Ordner, um ihn zu erweitern.",
+                    "step7": "Klicken Sie auf die Datei mit der Bezeichnung \u003Cstrong\u003Efooter.liquid\u003C\u002Fstrong\u003E. Sie sehen jetzt HTML-Code.",
+                    "note7": "Footer.liquid kann je nach Shopify-Design auch in einem anderen Ordner liegen. Sie können das Skript-Tag in der Datei theme.liquid im Layout-Ordner hinzufügen und nach \u003Cfooter\u003Eplatzieren.",
+                    "step8": "Kopieren Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E.",
+                    "step9": "Scrollen Sie zum Ende der Datei \u003Cstrong\u003Efooter.liquid\u003C\u002Fstrong\u003E. Fügen Sie jetzt das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E am Ende der Datei ein.",
+                    "step10": "Klicken Sie oben rechts auf \u003Cstrong\u003ESave\u003C\u002Fstrong\u003E."
+                },
+                "volusion": {
+                    "name": "Volusion",
+                    "step1": "Loggen Sie sich unter \u003Cstrong\u003Ewww.IhreInternetadresse.de\u002Flogin.asp\u003C\u002Fstrong\u003E bei Volusion ein.",
+                    "step2": "Wählen Sie im Volusion-Dashboard \u003Cstrong\u003EDesign &gt; File Editor\u003C\u002Fstrong\u003E.",
+                    "step3": "Wählen Sie im \u003Cstrong\u003EFile Editor\u003C\u002Fstrong\u003E die Option \u003Cstrong\u003EHTML File\u003C\u002Fstrong\u003E.",
+                    "step4": "Sie sollten jetzt den HTML-Quelltext sehen.",
+                    "step5": "Kopieren Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E.",
+                    "step6": "Blättern Sie in der Datei nach unten. Fügen Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E vor dem \u003Cstrong\u003Ebody\u003C\u002Fstrong\u003E-End-Tag ein.",
+                    "step7": "Klicken Sie oben rechts auf \u003Cstrong\u003ESave\u003C\u002Fstrong\u003E.",
+                    "step8": "Klicken Sie im oberen Bereich auf \u003Cstrong\u003EPublish\u003C\u002Fstrong\u003E."
+                },
+                "googletagmanager": {
+                    "name": "Google Tag Manager",
+                    "step1": "Loggen Sie sich unter \u003Cstrong\u003Ehttps:\u002F\u002Fwww.google.com\u002Fanalytics\u002Ftag-manager\u002F\u003C\u002Fstrong\u003E bei Google Tag Manager ein.",
+                    "step2": "Suchen Sie im Google Tag Manager das Konto und klicken Sie auf den \u003Cstrong\u003EContainer\u003C\u002Fstrong\u003E.",
+                    "step3": "Sie werden zur Ansicht \u003Cstrong\u003EArbeitsbereich\u003C\u002Fstrong\u003E weitergeleitet. Wählen Sie \u003Cstrong\u003ENeues Tag hinzufügen\u003C\u002Fstrong\u003E.",
+                    "step4": "Jetzt können Sie ein neues Tag konfigurieren. Nennen Sie das Tag beispielsweise \u003Cstrong\u003EPayPal\u003C\u002Fstrong\u003E.",
+                    "step5": "Wählen Sie \u003Cstrong\u003ETag-Konfiguration\u003C\u002Fstrong\u003E aus und klicken Sie zum Bearbeiten auf das Tag.",
+                    "step6": "Wählen Sie den Tag-Typ \u003Cstrong\u003EBenutzerdefiniertes HTML\u003C\u002Fstrong\u003E aus.",
+                    "step7": "Kopieren Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E.",
+                    "step8": "Fügen Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E in das HTML-Feld ein.",
+                    "step9": "Wählen Sie als Nächstes \u003Cstrong\u003ETriggerkonfiguration\u003C\u002Fstrong\u003E und klicken Sie zum Bearbeiten.",
+                    "step10": "Wählen Sie den Trigger-Typ \u003Cstrong\u003EAlle Seiten\u002FSeitenansicht\u003C\u002Fstrong\u003E.",
+                    "step11": "Klicken Sie oben rechts auf \u003Cstrong\u003ESpeichern\u003C\u002Fstrong\u003E.",
+                    "step12": "Klicken Sie jetzt oben rechts auf \u003Cstrong\u003EVeröffentlichen\u003C\u002Fstrong\u003E.",
+                    "step13": "Klicken Sie auf \u003Cstrong\u003EVersion konfigurieren\u003C\u002Fstrong\u003E, um den Namen und die Beschreibung der Tag-Version festzulegen.",
+                    "step14": "Geben Sie den \u003Cstrong\u003ENamen\u003C\u002Fstrong\u003E und die \u003Cstrong\u003EBeschreibung\u003C\u002Fstrong\u003E für die \u003Cstrong\u003EPayPal-Skript-Version\u003C\u002Fstrong\u003E ein.",
+                    "step15": "Klicken Sie oben rechts auf \u003Cstrong\u003EVeröffentlichen\u003C\u002Fstrong\u003E.",
+                    "step16": "Öffnen Sie Ihre Website, und prüfen Sie, ob das \u003Cstrong\u003EPayPal-Tag\u003C\u002Fstrong\u003E aktiviert wurde."
+                },
+                "pinnaclecart": {
+                    "name": "PinnacleCart",
+                    "step1": "Loggen Sie sich in Ihr PinnacleCart-Konto ein.",
+                    "step2": "Klicken Sie im Dashboard-Menü auf \u003Cstrong\u003ESettings\u003C\u002Fstrong\u003E.",
+                    "step3": "Klicken Sie auf \u003Cstrong\u003EAdvanced Settings\u003C\u002Fstrong\u003E.",
+                    "step4": "Klicken Sie auf \u003Cstrong\u003ESnippets\u003C\u002Fstrong\u003E.",
+                    "step5": "Klicken Sie oben rechts auf \u003Cstrong\u003EAdd Snippet\u003C\u002Fstrong\u003E.",
+                    "step6": "Kopieren Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E.",
+                    "step7": "Geben Sie einen \u003Cstrong\u003ENamen\u003C\u002Fstrong\u003E für das Snippet ein, beispielsweise \u003Cstrong\u003EPayPal\u003C\u002Fstrong\u003E, und eine eindeutige \u003Cstrong\u003ESnippet-ID\u003C\u002Fstrong\u003E. Wählen Sie unter \u003Cstrong\u003EPage Type\u003C\u002Fstrong\u003E die Option \u003Cstrong\u003EHome Page\u003C\u002Fstrong\u003E aus, um das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E auf der Homepage zu integrieren. Fügen Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E in das Feld \u003Cstrong\u003EContent\u003C\u002Fstrong\u003E ein.",
+                    "step8": "Klicken Sie oben rechts auf \u003Cstrong\u003ESave\u003C\u002Fstrong\u003E."
+                },
+                "shopsite": {
+                    "name": "ShopSite",
+                    "step1": "Loggen Sie sich über die \u003Cstrong\u003EBack Office URL\u003C\u002Fstrong\u003E bei ShopSite ein.",
+                    "step2": "Wählen Sie im Menü \u003Cstrong\u003EPreferences &gt; Layout Settings\u003C\u002Fstrong\u003E.",
+                    "step3": "Kopieren Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E.",
+                    "step4": "Scrollen Sie nach unten zum Abschnitt \u003Cstrong\u003EPage Header and Footer\u003C\u002Fstrong\u003E. Fügen Sie das \u003Cstrong\u003EPayPal-Skript\u003C\u002Fstrong\u003E ganz unten in das Feld \u003Cstrong\u003EFooter\u003C\u002Fstrong\u003E ein.",
+                    "step5": "Scrollen Sie ans Ende des Layoutabschnitts und klicken Sie auf \u003Cstrong\u003ESave Changes\u003C\u002Fstrong\u003E.",
+                    "step6": "Klicken Sie oben rechts auf \u003Cstrong\u003EPublish Changes\u003C\u002Fstrong\u003E."
+                }
+            },
+            "learn": {
+                "info": {
+                    "header": "Was ist PayPal Credit?",
+                    "mainContent": "PayPal Credit ist ein Service von PayPal, der Ihren Kunden einen zinsfreien Zahlungsaufschub bei vollständiger Zahlung innerhalb von sechs Monaten für Einkäufe ab 99 USD bietet.",
+                    "learnMore": "Mehr erfahren"
+                },
+                "benefits": {
+                    "header": "Welche Vorteile hat die Bewerbung von PayPal Credit?",
+                    "listOne": "Sie können ganz einfach Banner auf Ihrer Website hinzufügen und diese jederzeit ein- und ausschalten.",
+                    "listTwo": "Der Transaktionsumfang für Kunden, die PayPal Credit nutzen, ist um bis zu 68% größer.*",
+                    "listThree": "Sie erhalten kostenlosen Einblick in die Einkaufsaktivitäten Ihrer Besucher, die PayPal verwenden.",
+                    "disclaimer": "* Dies ergab eine Studie von Nielsen über den durchschnittlichen Bestellwert mit PayPal Credit für Aktivitäten von April 2015 bis März 2016 (kleine Händler) und zwischen Oktober 2015 und März 2016 (mittelgroße Händler). In der Studie wurden PayPal Credit-Transaktionen mit Kreditkartentransaktionen auf Websites verglichen, die PayPal Credit als Zahlungsmethode oder innerhalb der E-Börse anbieten. Nielsen hat 284.890 Transaktionen von 27 mittelgroßen und kleinen Händlern untersucht. Copyright Nielsen 2016."
+                },
+                "shoppers": {
+                    "header": "Was sehen meine Käufer?",
+                    "mainContent": "Wenn Käufer Ihre Website besuchen, sehen sie eine ausblendbare Nachricht über das Angebot von PayPal Credit. Durch Klicken auf die Nachricht wird das PayPal Credit-Angebot erweitert und zeigt den Kunden weitere Informationen über die verfügbaren Finanzierungsoptionen an."
+                },
+                "ecommerce": {
+                    "header": "Was ist eine E-Commerce-Partnerplattform?",
+                    "mainContent": "Über E-Commerce-Plattformen können Sie online verkaufen, man bezeichnet sie auch als Online-Shops. PayPal arbeitet mit mehreren solchen Plattformen zusammen. Die vollständige Liste der von PayPal zertifizierten Partner finden Sie hier:",
+                    "partners": "https:\u002F\u002Fwww.paypal.com\u002Fus\u002Fwebapps\u002Fmpp\u002Fsolution-providers\u002Feasy-setup-online-stores"
+                },
+                "slower": {
+                    "header": "Verlangsamt der Code meine Website?",
+                    "mainContent": "Nein, der PayPal-Code wird erst dann geladen, wenn Ihre Website vollständig geladen ist."
+                },
+                "disable": {
+                    "header": "Wie deaktiviere ich alle Banner und Analysen?",
+                    "mainContent": "Öffnen Sie die \"Kontoeinstellungen\" und wählen \"Banner und Analysen\", klicken Sie auf \"Einstellungen bearbeiten\" und schließlich \"Deaktivieren\". Wenn Sie den Code deaktivieren, werden Banner und und Analysen für Ihre Website gestoppt."
+                },
+                "collect": {
+                    "header": "Welche Daten erfasst der Code?",
+                    "mainContent": "Wenn der Code auf Ihrer Website integriert ist, werden Daten von PayPal-Kunden gesammelt, die Ihre Website besuchen oder bei Ihnen einkaufen. Unter anderem werden Cookies verwendet und Informationen wie Browser und Gerät, IP-Adresse, Seitenaufrufe und Klicks, URL und Ihre Händler-ID erfasst. Anhand dieser Daten werden Käuferanalysen erstellt."
+                },
+                "install": {
+                    "header": "Wie lange dauert es, den Code zu integrieren?",
+                    "mainContent": "Es ist ganz einfach, den Code für PayPal Marketing Solutions zu integrieren. Es dauert nur 5 Minuten. Führen Sie einfach die Schritte in der Integrationsanleitung für Ihre E-Commerce-Plattform oder für Google Tag Manager aus."
+                },
+                "howLong": {
+                    "header": "Wie lange dauert es, bis das Banner auf meiner Website angezeigt wird?",
+                    "mainContent": "Es dauert ca. 15 Minuten, nachdem Sie das Banner aktiviert haben. Wenn es länger dauert, wenden Sie sich bitte an den Kundenservice."
+                },
+                "shopper": {
+                    "header": "Was ist das Kundendashboard?",
+                    "mainContent": "Im Kundendashboard erhalten Sie Informationen über das Kaufverhalten von PayPal-Kunden, die Ihre Website besuchen. PayPal generiert die Analysen durch die Kombination zusammengefasster und anonymisierter Daten von Ihrer Website mit Daten aus dem eigenen Netzwerk."
+                },
+                "credit": {
+                    "header": "Was sind Kreditanalysen?",
+                    "mainContent": "PayPal erstellt Kreditanalysen, um anonyme und zusammengefasste Informationen über die Besucher Ihrer Website mit PayPal Credit-Konten bereitzustellen."
+                },
+                "tagManager": {
+                    "header": "Was ist ein Tag Manager?",
+                    "mainContent": "Mit einem Tag Manager können Sie ganz einfach Code in Ihre Website einbinden. Wenn Sie Google Tag Manager verwenden, können Sie unsere Anleitung zum Hinzufügen des Codes verwenden. Arbeiten Sie mit einem anderen Tag Manager, befolgen Sie die Anweisungen für benutzerdefinierte Webseiten."
+                }
+            },
+            "learnMoreFAQ": {
+                "header": "Häufige Fragen",
+                "updatedDateLabel": "Aktualisiert:",
+                "date": "2. Oktober 2018",
+                "faqQuestion1": "In welchen Ländern gibt es PayPal Marketing Solutions?",
+                "faqAnswer1Content": "PayPal Marketing Solutions ist in den folgenden Ländern verfügbar:",
+                "usCountry": "USA",
+                "ukCountry": "Großbritannien",
+                "deCountry": "Deutschland",
+                "frCountry": "Frankreich",
+                "itCountry": "Italien",
+                "esCountry": "Spanien",
+                "auCountry": "Australien",
+                "hkCountry": "Hongkong",
+                "c2Country": "China",
+                "sgCountry": "Singapur",
+                "faqQuestion2": "Welche Funktionen sind in jedem Land verfügbar?",
+                "smartIncentivesTitle": "Banner-Toolbox",
+                "smartIncentivesListOne": "Verfügbar in allen Ländern, in denen PayPal Marketing Solutions verfügbar ist",
+                "fastCheckoutTitle": "Schnelle Kaufabwicklung",
+                "fastCheckoutContent": "Informiert Kunden darüber, dass sie schneller mit PayPal bezahlen können",
+                "returnShippingTitle": "Kostenlose Retouren",
+                "returnShippingContent": "Informiert Kunden darüber, dass ihre Rücksendekosten von PayPal bezahlt werden können",
+                "purchaseProtectionTitle": "Käuferschutz",
+                "purchaseProtectionContent": "Teilen Sie Ihren Kunden mit, dass sie eine vollständige Rückzahlung auf viele Einkäufe erhalten können",
+                "smartIncentivesListTwo": "In Deutschland verfügbar",
+                "creditTitle": "Ratenzahlung Powered by PayPal",
+                "creditContent": "Informiert Kunden darüber, dass sie ihren Einkauf in Raten bezahlen können",
+                "smartIncentivesListThree": "Nur in den USA verfügbar",
+                "venmoTitle": "Venmo",
+                "venmoContent": "Informiert Kunden darüber, dass sie mit Venmo auf der Website eines Händlers bezahlen können",
+                "cartRecoveryTitle": "Warenkorb-Wiederherstellung",
+                "cartRecoveryContent": "Nur in Großbritannien und für ausgewählte Händler in den USA verfügbar",
+                "pageTitle": "Häufige Fragen"
+            },
+            "list": {
+                "containersList": {
+                    "profileSettings": "Zurück",
+                    "header": "Kundendashboard und Banner-Toolbox",
+                    "promotionHeader": "Marketing Solutions",
+                    "promotionSubheader": "Indem Sie PayPal Marketing Solutions aktivieren, stimmen Sie den {userAgreementLink} und den {adTermsLink} zu.",
+                    "promotionSubheaderUserAgreementLinkText": "PayPal-Nutzungsbedingungen",
+                    "promotionSubheaderAdTermsLinkText": "Bedingungen für PayPal Marketing Solutions",
+                    "promotionSubheaderTermsLinkText": "Zu den Bedingungen für PayPal Marketing Solutions",
+                    "managePromotionHeader": "Banner-Toolbox",
+                    "yourWebsites": "Ihre Websites",
+                    "addNew": "Neu hinzufügen",
+                    "addNewWebsite": "Neue Website hinzufügen",
+                    "showSettings": "Einstellungen anzeigen für",
+                    "xoContainerLabel": "Möglich mit dem PayPal-Zahlungsbutton"
+                },
+                "creditSettings": {
+                    "header": "Wählen Sie ein oder mehrere Banner aus, die Sie Besuchern anzeigen wollen.",
+                    "messageAlert": "Wenn Sie mehrere Banner auswählen, passt PayPal die Werbebotschaft an die Zielgruppe an.",
+                    "enable": "Aktivieren",
+                    "disable": "Deaktivieren",
+                    "terms": "Durch das Aktivieren von PayPal Marketing Solutions bestätigen Sie, dass Sie den PayPal-Nutzungsbedingungen und diesen Bedingungen zugestimmt haben.",
+                    "termsLink": "PayPal Marketing Solutions.",
+                    "visitorDescription": "Vergessen Sie nicht, Ihre neuen Analysen einzusehen.",
+                    "visitorHeader": "Kundendashboard",
+                    "visitorLink": "Zum Kundendashboard"
+                },
+                "displaySettings": {
+                    "header": "Wo und wie sollen die Banner angezeigt werden?",
+                    "restrictionLabel": "Einschränkungen",
+                    "showButton": "Auf allen Seiten anzeigen",
+                    "dontShowButton": "Auf manchen Seiten nicht anzeigen",
+                    "restrictionText": "Banner nicht auf meiner Homepage einblenden",
+                    "addButton": "Hinzufügen",
+                    "contains": "Enthält",
+                    "equals": "Entspricht",
+                    "edit": "Bearbeiten",
+                    "save": "Speichern",
+                    "homepageUrlPlaceholder": "URL Ihrer Startseite",
+                    "appearanceLabel": "Platzierung auf Website",
+                    "appearanceSlideUp": "Von unten einblenden",
+                    "appearanceSlideLeft": "Von rechts einblenden",
+                    "preview": "Vorschau anzeigen",
+                    "saving": "Speichern...",
+                    "saved": "Gespeichert",
+                    "errorAlert": "Bitte versuchen Sie es erneut.",
+                    "deviceLabel": "Gerät",
+                    "desktop": "Desktop",
+                    "mobile": "Handy (einschließlich Tablets)",
+                    "both": "Alle Geräte"
+                },
+                "colorSettings": {
+                    "previewLabel": "Farbe",
+                    "label": "Banner-Farbe auswählen",
+                    "newLabel": "Hintergrundfarbe",
+                    "subLabel": "Venmo-Banner werden immer im Blau von Venmo angezeigt",
+                    "blueLabel": "Blau",
+                    "blackLabel": "Schwarz",
+                    "whiteLabel": "Weiß",
+                    "blueSubtitle": "Markenfarbe von PayPal oder Venmo",
+                    "nonUSSubtitle": "PayPal-Markenfarbe"
+                },
+                "tagPublished": {
+                    "enable": "Aktivieren",
+                    "disable": "Deaktivieren"
+                },
+                "tagPublishedEdit": {
+                    "header": "PayPal Marketing Solutions",
+                    "mainContent": "Der auf Ihrer Website eingebettete Code generiert Analysen für das Kundendashboard und ermöglicht das Einblenden von Banner mit der Banner-Toolbox. Wenn Sie den Code deaktivieren, werden alle Services sowie die Datenerfassung beendet. Sie können den Code jederzeit aktivieren oder deaktivieren."
+                },
+                "tagInstalled": {
+                    "main": "Das Tag ist auf Ihrer Website installiert und aktiv.",
+                    "viewTagInst": "Code und Anleitung anzeigen"
+                },
+                "updateComplete": {
+                    "header": "Details aktualisiert",
+                    "button": "Fertig"
+                },
+                "installTagAlert": {
+                    "header": "Analysen",
+                    "main": "Wenn Sie den Code bereits auf Ihrer Website hinzugefügt haben, sehen Sie das Kundendashboard unter \"Berichte\", sobald Sie mindestens 50 Besucher auf Ihrer Website hatten.",
+                    "viewTagInst": "Code und Anleitung anzeigen",
+                    "tagActive": "Das Tag ist auf Ihrer Website installiert und aktiv.",
+                    "viewVisitorInsights": "Zum Kundendashboard",
+                    "helpLink": "Sie brauchen Hilfe?"
+                },
+                "dataIsDisabled": {
+                    "header1": "Der Code auf Ihrer Website ist zurzeit deaktiviert.",
+                    "header2": "Die gesammelten Daten werden für Analysen Ihrer Kunden verwendet.",
+                    "detailsBtn": "Details bearbeiten",
+                    "instructions": "Code und Anleitung anzeigen"
+                },
+                "creditAlert": {
+                    "main": "Es kann bis zu 15 Minuten dauern, bis Änderungen wirksam werden."
+                },
+                "promotions": {
+                    "creditHeader": "Ratenzahlung",
+                    "one-touchHeader": "Schnelle Kaufabwicklung",
+                    "creditContent": "Käufer sehen ein Banner, das beschreibt, wie ihnen Ratenzahlung Powered by PayPal mehr Zeit zum Bezahlen ihrer Einkäufe gibt.",
+                    "one-touchContent": "Ihre Website-Besucher sehen ein Banner, auf dem sie daran erinnert werden, dass sie mit PayPal nicht bei jedem Einkauf erneut ihre Finanzdaten eingeben müssen.",
+                    "venmoHeader": "Venmo wird akzeptiert",
+                    "venmoContent": "Käufern wird eine Nachricht angezeigt, dass Sie Venmo akzeptieren.",
+                    "return-shippingHeader": "Kostenlose Retouren",
+                    "return-shippingContent": "Kunden sehen eine Nachricht, dass PayPal bei vielen Einkäufen die Rücksendekosten erstattet. Aktivieren Sie dieses Banner, wenn Sie nicht bereits die Rücksendekosten für Ihre Kunden übernehmen. In den Bedingungen für kostenlose Retouren erfahren Sie mehr darüber, wann Ihre Kunden diesen Service nutzen können, wenn sie auf Ihrer Website einkaufen.",
+                    "purchase-protectionHeader": "Käuferschutz",
+                    "purchase-protectionContent": "Kunden sehen eine Nachricht, dass sie bei berechtigten Einkäufen vom Käuferschutz profitieren können. Wenn die Waren und Dienstleistungen, die Sie verkaufen, nicht für den Käuferschutz berechtigt sind, sollten Sie damit keine Werbung machen. Die vollständigen Bedingungen finden Sie in unserer Käuferschutzrichtlinie.",
+                    "learnMore": "Mehr erfahren",
+                    "preview": "Vorschau",
+                    "mobileOnly": "Nur für Mobilgeräte",
+                    "getInTouchContent": "Sie haben Probleme mit dem Kundendashboard?",
+                    "getInTouchLink": "Wir sind für Sie da."
+                },
+                "containerSettings": {
+                    "editDetails": "Bearbeiten",
+                    "on": "Ein",
+                    "off": "Aus"
+                },
+                "collectVisitorData": {
+                    "header": "Kundendashboard",
+                    "subheader": "Analyseberichte anhand von Besucherdaten erstellen",
+                    "viewReportsLink": "Berichte anzeigen"
+                },
+                "cartRecoveryMessage": {
+                    "header": "Warenkorb-Erinnerung",
+                    "subheader": "Stellen Sie Gewinnverluste wieder her und senden Sie Ihren Kunden eine E-Mail, wenn sie ihren Einkauf nicht abgeschlossen haben.",
+                    "manageLink": "Verwalten",
+                    "setUp": "Einrichten"
+                },
+                "promotionalMessage": {
+                    "header": "Banner-Toolbox",
+                    "subheader": "PayPal-Werbebanner anzeigen und Verkäufe ankurbeln",
+                    "managePromotionsLink": "Einstellungen verwalten",
+                    "setUp": "Einrichten",
+                    "xoContainerLimit": "Nur auf Webseiten mit einem PayPal-Zahlungsbutton werden Daten für das Kundendashboard gesammelt und Banner angezeigt.",
+                    "addToAll": "Auf allen Websites hinzufügen"
+                },
+                "disabledVisitorAlert": {
+                    "main": "Die Datenerfassung muss aktiviert werden, damit Sie das Kundendashboard nutzen können."
+                },
+                "statusMessage": {
+                    "status": "Status:",
+                    "tagInstalled": "Das Tag ist auf Ihrer Website installiert und aktiv."
+                },
+                "addNewWebsite": "Neue Website hinzufügen"
+            },
+            "marketing": {
+                "noTagSettings": {
+                    "header": "PayPal Marketing Solutions",
+                    "subHeader": "Bewerben Sie PayPal Credit, um Ihre Umsätze zu steigern und Unternehmensanalysen zu erhalten.",
+                    "content": "Wenn Ihre Käufer durch PayPal Credit mehr Zeit zum Bezahlen haben, steigt die Wahrscheinlichkeit, dass sie Käufe abschließen und mehr ausgeben. Darüber hinaus profitieren Sie von kostenlosen Geschäftsanalysen.",
+                    "getStarted": "Los geht's",
+                    "learnMore": "Mehr erfahren"
+                },
+                "splashModal": {
+                    "header": "Gut für Sie. Gut für Ihre Kunden.",
+                    "benefitsHeader": "Vorteile für Sie:",
+                    "listOne": "Einfach zu integrieren; Sie können die Banner jederzeit aktivieren oder deaktivieren",
+                    "listTwo": "Der Transaktionsumfang für Kunden, die PayPal Credit nutzen, ist um bis zu 68% größer.*",
+                    "listThree": "Sie erhalten kostenlosen Einblick in das Kaufverhalten von PayPal-Kunden, die Ihre Website besuchen.",
+                    "benefitsCustomer": "Vorteile für Ihre Kunden:",
+                    "customerListOne": "Jetzt kaufen und später bezahlen",
+                    "customerListTwo": "Sie erfahren sofort, ob ihr Kredit genehmigt wurde.",
+                    "customerListThree": "Keine Jahresgebühr",
+                    "contentHeader": "Informieren Sie Ihre Käufer über die Finanzierungsoptionen von PayPal. Sie werden sich darüber freuen, mehr Zeit zum Bezahlen ihrer Einkäufe zu haben, und das kann beeinflussen, wie viel sie auf Ihrer Website ausgeben*. Außerdem erhalten Sie wertvolle Einblicke in das Kaufverhalten Ihrer Kunden.",
+                    "footnoteContent": "* Dies ergab eine Studie von Nielsen über den durchschnittlichen Bestellwert mit PayPal Credit für Aktivitäten von April 2015 bis März 2016 (kleine Händler) und zwischen Oktober 2015 und März 2016 (mittelgroße Händler). In der Studie wurden PayPal Credit-Transaktionen mit Kreditkartentransaktionen auf Websites verglichen, die PayPal Credit als Zahlungsmethode oder innerhalb der E-Börse anbieten. Nielsen hat 284.890 Transaktionen von 27 mittelgroßen und kleinen Händlern untersucht. Copyright Nielsen 2016."
+                },
+                "termsAndConditions": {
+                    "title": "Bedingungen für PayPal Marketing Solutions",
+                    "viewLegalLink": "Alle AGB anzeigen",
+                    "header": "Nutzungsbedingungen für PayPal Marketing Solutions",
+                    "effectiveDateLabel": "Gültig ab:",
+                    "date": "18. September 2017",
+                    "print": "Drucken",
+                    "collectLinkText": "Sammlung von Daten",
+                    "sectionOneListOne": "Sie beachten alle rechtlichen Vorschriften hinsichtlich der {collectLink} Ihrer Kunden und Website-Besucher und haben entsprechende Datenschutzbestimmungen. Sie informieren Ihre Besucher und Kunden verständlich über das Kundendashboard und holen gegebenenfalls erforderliche Zustimmungen ein. ",
+                    "sectionOneListTwo": "Sie dürfen Datenschutzfunktionen weder umgehen noch Besucher oder Kunden mithilfe des Kundendashboards identifizieren.",
+                    "sectionOneListThree": "Sie können das Kundendashboard und\u002Foder die Banner-Toolbox jederzeit in den \u003Cstrong\u003EPayPal Marketing Solutions-Einstellungen\u003C\u002Fstrong\u003E deaktivieren.",
+                    "emea": {
+                        "sectionOneListOne": "Sie beachten alle rechtlichen Vorschriften hinsichtlich der Sammlung von Daten Ihrer Kunden und Website-Besucher und haben entsprechende Datenschutzbestimmungen. Sie informieren Ihre Besucher und Kunden verständlich über das Kundendashboard und holen gegebenenfalls erforderliche Zustimmungen ein. Möglicherweise gelten für Sie weitere Richtlinien, die von PayPal bereitgestellt werden.",
+                        "sectionOneListTwo": "Sie dürfen Datenschutzfunktionen nicht umgehen, das heißt zum Beispiel Berichte anonymisieren und zusammenfassen, die auf Daten Ihrer Kunden und Website-Besucher basieren, oder Besucher oder Kunden mithilfe des Kundendashboards identifizieren.",
+                        "termsLink": "Bedingungen"
+                    },
+                    "promotions": {
+                        "terms": "Durch das Aktivieren von PayPal Marketing Solutions bestätigen Sie, dass Sie den PayPal-Nutzungsbedingungen und diesen Bedingungen zustimmen."
+                    },
+                    "termsLink": "Bedingungen des PayPal Advertising-Programms",
+                    "terms": "Durch das Aktivieren von PayPal Marketing Solutions bestätigen Sie, dass Sie diese Bedingungen und die {agreementLink} gelesen haben und ihnen zustimmen.",
+                    "agreementLink": "PayPal-Nutzungsbedingungen",
+                    "serviceTerms": "Dieser Service ermöglicht es Ihnen, PayPal-Services durch von PayPal gehostete Banner und Buttons auf Ihren Websites oder in Ihren E-Mails an Kunden zu bewerben. PayPal kann die durch dieses Programm bereitgestellten Inhalte jederzeit nach eigenem Ermessen ändern bzw. den Service jederzeit einstellen.",
+                    "damagesTerms": "Sie haften für alle Schäden, die PayPal oder Dritten dadurch entstehen, dass Sie gegen diese Bedingungen verstoßen. Wenn Sie gegen diese Bestimmungen verstoßen, kann PayPal die von Ihnen verwendeten PayPal-Inhalte ändern oder entfernen oder Sie dazu verpflichten, diese Inhalte umgehend zu ändern oder zu entfernen. Außerdem haben wir in dem Fall das Recht, Ihr PayPal-Konto einzuschränken oder zu schließen. Sie dürfen weder PayPal noch PayPal-Inhalte falsch darstellen oder PayPal, seine Produkte oder Dienste in Verruf bringen.",
+                    "tableHeader": "Voraussetzungen für die Nutzung des Service",
+                    "leftHeader": "Das müssen Sie tun",
+                    "leftTermOne": "Sie müssen alle Integrationsanforderungen von PayPal oder autorisierten Dritten erfüllen, einschließlich der Vorgaben in Bezug auf die korrekte Darstellung von Informationen, die mit PayPal zusammenhängen.",
+                    "leftTermTwo": "Verwenden Sie den HTML-Code für PayPal-Inhalte nur so, wie er von PayPal bereitgestellt wurde.",
+                    "leftTermThree": "Verwenden Sie die vollständigen PayPal-Inhalte, einschließlich der verwendeten Links und der Sprache, exakt so, wie sie Ihnen von PayPal zur Verfügung gestellt wurden. Nehmen Sie keine Änderung daran vor.",
+                    "leftTermFour": "Wenn Sie keine PayPal-Zahlungslösung mehr verwenden, müssen Sie umgehend alle PayPal-Inhalte von Ihren Websites oder aus Ihrer Kundenkommunikation entfernen und\u002Foder mit PayPal oder Ihrem Drittanbieter dafür zusammenarbeiten.",
+                    "leftTermFive": "Sie müssen die neuesten PayPal-Inhalte verwenden und diese aktuell halten. Arbeiten Sie mit PayPal zusammen, um die PayPal-Inhalte, die auf Ihren Websites oder in Ihrer Kundenkommunikation angezeigt werden, manuell zu aktualisieren und den HTML-Code zu reparieren oder neu zu integrieren, um zukünftige Updates zu vereinfachen.",
+                    "leftTermSix": "Sie müssen die geltenden Gesetze, Vorschriften und Standards für Werbung, die von Behörden oder Selbstregulierungsgremien der Werbebranche erlassen wurden, einhalten. Dazu zählen auch Standards für digitale Werbung, die von zuständigen Behörden erlassen wurden, z.B. von der Advertising Standards Authority.",
+                    "rightHeader": "Das ist nicht erlaubt",
+                    "rightTermOne": "Sie dürfen PayPal-Inhalte oder deren Darstellung nicht verändern.",
+                    "rightTermTwo": "Sie dürfen keine PayPal-Inhalte von anderen Websites kopieren.",
+                    "rightTermThree": "Sie dürfen keine eigenen PayPal-Inhalte erstellen, anzeigen oder hosten, es sei denn, Sie haben dafür eine schriftliche Genehmigung von PayPal.",
+                    "rightTermFour": "Sie dürfen keine PayPal-Inhalte in sozialen Netzwerken oder auf anderen Plattformen teilen, es sei denn, PayPal hat dies schriftlich genehmigt.",
+                    "rightTermFive": "Sie dürfen keine veralteten PayPal-Inhalte anzeigen."
+                },
+                "demo": {
+                    "websiteName": "Camping-Bestseller",
+                    "tent": "Zelt – 2 Personen",
+                    "tentTwo": "Zelt – 4 Personen",
+                    "cooler": "Kühler",
+                    "backpack": "Rucksack",
+                    "chair": "Stuhl",
+                    "hikingBoots": "Wanderschuhe",
+                    "sleepingBag": "Schlafsack",
+                    "accessories": "Accessoires"
+                },
+                "preview": {
+                    "header": "Vorschaueinstellungen:",
+                    "device": "Gerät",
+                    "desktop": "Desktop",
+                    "mobile": "Handy",
+                    "placement": "Bannerplatzierung",
+                    "slideUp": "Von unten einblenden",
+                    "slideLeft": "Von rechts einblenden",
+                    "banner": "Klicken Sie auf das Banner, um mehr zu sehen.",
+                    "flow": "Banner",
+                    "credit": "Ratenzahlung",
+                    "checkout": "Schnelle Kaufabwicklung",
+                    "venmo": "Venmo wird akzeptiert",
+                    "mobileOnly": "Nur für Mobilgeräte",
+                    "freeReturnShipping": "Kostenlose Retouren",
+                    "buyerProtection": "Käuferschutz",
+                    "color": "Farbe",
+                    "blueLabel": "Blau",
+                    "blackLabel": "Schwarz",
+                    "whiteLabel": "Weiß",
+                    "blueSubTitle": "Markenfarbe von PayPal oder Venmo"
+                },
+                "oneTouchModal": {
+                    "header": "Bewerben Sie eine schnellere Kaufabwicklung mit PayPal",
+                    "subContentOne": "Mit PayPal sparen sich Ihre Kunden beim Bezahlen das Eingeben von Anmeldedaten, Lieferadresse und Bankverbindung. So zahlen sie schnell und bequem und das Risiko von Kaufabbrüchen sinkt. Millionen von PayPal-Kunden weltweit haben außerdem PayPal One Touch™ aktiviert, um gerade auf Mobilgeräten noch schneller zu zahlen.",
+                    "subContentTwo": "Weniger Klicks können mehr Umsatz bedeuten. Bewerben Sie die schnelle Kaufabwicklung mit PayPal.",
+                    "shoppersSee": "Was sehen meine Kunden?",
+                    "shoppersDetail": "Ihre Kunden sehen ein Banner, das sie an die schnelle PayPal-Kaufabwicklung erinnert. Das Banner wird pro Besucher 3 Mal pro Tag eingeblendet. Sie können es jederzeit einfach deaktivieren."
+                },
+                "venmoModal": {
+                    "header": "Lassen Sie Käufer wissen, dass Sie Venmo-Zahlungen akzeptieren",
+                    "subContentOne": "Millionen von Menschen – insbesondere Millennials – senden mit Venmo Zahlungen an Freunde, Familie und Millionen von anerkannten Unternehmen oder teilen sie mit ihnen. Wenn Venmo-Nutzer Ihre Website besuchen, können Sie ihnen Banner anzeigen und sie so wissen lassen, dass Sie auch Venmo akzeptieren.",
+                    "bottomSectionSubContent": "Venmo ist eine soziale Zahlungs-App, die PayPal ähnelt, sich jedoch dadurch auszeichnet, dass Nutzer Zahlungen und Käufe in einem Feed teilen, liken und kommentieren können.",
+                    "bottomSectionHeaderOne": "Wie melde ich mich für den Empfang von Venmo-Zahlungen an?",
+                    "bottomSectionBodyOne": "Wenn Sie auf Ihrer Website bereits PayPal akzeptieren, müssen Sie nichts weiter tun, um Venmo-Zahlungen empfangen zu können. * Wir verwenden Ihre vorhandene PayPal-Integration, um Ihren Kunden automatisch Venmo als Zahlungsmethode anzuzeigen.",
+                    "bottomSectionHeaderTwo": "Was sehen meine Kunden?",
+                    "bottomSectionBodyTwo": "Wenn sich Ihr Kunde für Venmo-Zahlungen entschieden hat, erhält er beim Bezahlen nach dem Klicken auf Ihren PayPal-Zahlungsbutton die Option, mit seinem Venmo-Konto zu zahlen.",
+                    "bottomSectionHeaderThree": "Smart-Buttons verwenden",
+                    "bottomSectionBodyThree": "Mit den Smart-Buttons von PayPal Express können Sie Zahlungsbuttons auf der Zahlungsseite anpassen und verschiedene alternative Zahlungsmethoden, z.B. Venmo und PayPal Credit, hinzufügen.",
+                    "bottomSectionBodyFour": "* Gilt nicht für Abonnementzahlungen."
+                }
+            },
+            "mini": {
+                "agreeContinue": {
+                    "header": "Website-URL bestätigen",
+                    "button": "Zustimmen und weiter",
+                    "message1": "Sie sind berechtigt, das PayPal-Analysetool zu nutzen, das Daten von Käufern auf Ihrer Website erfasst. Diese Informationen werden zum Generieren und Bereitstellen von Analysen über Ihr Unternehmen verwendet. Die Berichte enthalten keine persönlichen Daten. Es gelten die {termsAndConditions}.",
+                    "message2": "Durch das Aktivieren von PayPal Marketing Solutions bestätigen Sie, dass Sie den PayPal-Nutzungsbedingungen und diesen Bedingungen zustimmen.",
+                    "termsAndConditions": "Bedingungen",
+                    "payPalAdvertisingProgram": "PayPal Marketing Solutions"
+                },
+                "settings": {
+                    "header": "PayPal Marketing Solutions verwalten",
+                    "shopperInsights": "Kundendashboard",
+                    "description": "Sie haben die folgenden Funktionen aktiviert:",
+                    "promotions": "Banner-Toolbox",
+                    "viewReports": "Analysen anzeigen",
+                    "learnMore": "Mehr erfahren",
+                    "managePromotions": "Zur Banner-Toolbox",
+                    "marketingLink": "Zu PayPal Marketing Solutions",
+                    "returnTo": "Zurück zu",
+                    "visitorMessage": "Einblicke in das Kaufverhalten Ihrer Kunden und Empfehlungen zur Steigerung Ihrer Verkaufszahlen.",
+                    "promotionsMessage": "Machen Sie mit Bannern auf die schnelle Kaufabwicklung mit PayPal aufmerksam und kurbeln Sie so Ihre Umsätze an.",
+                    "shopperInsightsMessage": "Das Kundendashboard muss aktiviert sein, damit Sie die Banner-Toolbox nutzen können.",
+                    "close": "Schließen"
+                },
+                "completeOnboarding": {
+                    "allSet": "Das war's schon",
+                    "successMessage": "Sie haben PayPal Marketing Solutions aktiviert."
+                },
+                "errorHandle": {
+                    "title": "PayPal Marketing Solutions",
+                    "header": "Es ist ein Fehler aufgetreten – versuchen Sie es erneut",
+                    "tagCreateError": "Es gab ein Problem beim Generieren des Codes.",
+                    "tagUpdateError": "Es gab ein Problem beim Aktualisieren des Codes.",
+                    "tagEditError": "Es gab ein Problem beim Bearbeiten des Codes.",
+                    "tagServerError": "Es gab ein Problem mit dem PayPal-Server.",
+                    "genericMessage": "Leider ist ein Problem aufgetreten. Versuchen Sie es später noch einmal.",
+                    "backButton": "Zurück",
+                    "tryAgain": "Erneut versuchen",
+                    "close": "Schließen",
+                    "logout": "Ausloggen"
+                },
+                "notEligible": {
+                    "header": "Demnächst verfügbar: PayPal Marketing Solutions",
+                    "error": "PayPal Marketing Solutions ist derzeit nur in den USA verfügbar."
+                },
+                "incorrectAccount": {
+                    "header": "Sie sind leider nicht berechtigt, diese Seite anzuzeigen.",
+                    "error": "Loggen Sie sich in das PayPal-Geschäftskonto ein, das Sie mit Ihrem Warenkorb verwenden, um diese Seite anzuzeigen."
+                },
+                "nonMerchant": {
+                    "header": "Diese Seite ist für dieses Konto leider nicht verfügbar",
+                    "error": "Loggen Sie sich mit Ihrem PayPal-Geschäftskonto ein, um diese Seite anzuzeigen."
+                },
+                "miniClose": {
+                    "title": "PayPal Marketing Solutions",
+                    "message": "Sie haben sich ausgeloggt.",
+                    "close": "Schließen"
+                }
+            },
+            "modals": {
+                "otherPlatformModal": {
+                    "header": "Welche Plattform nutzen Sie?",
+                    "subHeader": "Wir arbeiten gemeinsam mit unseren Partner-Plattformen kontinuierlich daran, Verbindungen aufzubauen und Anleitungen zu erstellen, damit Sie Ihren Code einfacher integrieren können.",
+                    "label": "Name der Plattform",
+                    "continue": "Senden",
+                    "cancel": "Abbrechen",
+                    "confirmHeader": "Vielen Dank für Ihre Nachricht",
+                    "confirmSubHeader": "Führen Sie vorerst die Schritte in der Anleitung aus, um den Code manuell hinzuzufügen. Wir informieren Sie, wenn wir eine Integrationslösung dafür haben.",
+                    "viewHtml": "HTML-Anleitung anzeigen"
+                },
+                "editDetailsModal": {
+                    "header": "Details bearbeiten",
+                    "save": "Speichern",
+                    "modalMessage": "Sie müssen PayPal Marketing Solutions neu integrieren?",
+                    "viewInstructions": "Anleitung anzeigen"
+                }
+            },
+            "sidePanel": {
+                "emailDeveloperSideBar": {
+                    "info": "Braucht mein Entwickler einen speziellen Zugang?",
+                    "shareLink": "Ihren Entwicklern stehen alle Anleitungen zur Verfügung, sobald Sie ihnen den Link geben. Sie benötigen keinen weiteren Zugriff, um den Code in Ihre Website einzubinden."
+                },
+                "faqSideBar": {
+                    "header": "Häufige Fragen"
+                },
+                "paypalCreditSideBar": {
+                    "creditQues": "Wie funktioniert der Code?",
+                    "creditAns": "Wenn der Code in Ihre Website integriert ist, können Sie Services wie PayPal Credit-Banner aktivieren und Geschäftsanalysen erzeugen. Der Code erfasst Daten über die Besucher und Kunden Ihrer Website, mit denen Sie Erkenntnisse für Ihr Unternehmen gewinnen können."
+                },
+                "trackingCodeSideBar": {
+                    "trackingQues": "Funktioniert der Code mit meiner E-Commerce-Plattform?",
+                    "trackingAns": "Wenn Sie eine E-Commerce-Plattform oder Google Tag Manager verwenden, können Sie den Code ganz einfach in weniger als 5 Minuten integrieren. Wir haben Anleitungen für gängige Plattformen zusammengestellt. Klicken Sie auf \"Hilfe bei der Installation\", wenn Sie Hilfe bei der Integration des Codes benötigen."
+                },
+                "urlSideBar": {
+                    "urlQues": "Sie wollen die Integrationsanleitung an Ihre Entwickler weitergeben?"
+                },
+                "selectPlatformSideBar": {
+                    "urlQues": "Wenn Sie nicht sicher sind, wie Ihre Website aufgebaut ist, teilen Sie diesen Link mit Ihren Entwicklern."
+                },
+                "learnMoreBar": {
+                    "howItWorks": "So funktioniert's",
+                    "howItWorksContent": "Nachdem Sie die Integration abgeschlossen haben, wird PayPal Marketing Solutions für Ihre Website freigeschaltet. Anhand der über Ihre Website erfassten Daten werden Analysen zu Ihrem Unternehmen erstellt.",
+                    "button": "Mehr erfahren",
+                    "url": "https:\u002F\u002Fwww.paypal.com\u002Fus\u002Fwebapps\u002Fmpp\u002Fpaypal-marketing-solutions"
+                },
+                "previewSideBar": {
+                    "header": "Bannervorschau",
+                    "showMePreview": "Ich möchte sehen, wie diese Banner auf meiner Website aussehen."
+                },
+                "marketingLearnMore": {
+                    "shopperInsights": "Kundendashboard",
+                    "insightsDetails": "Erhalten Sie wertvolle Einblicke in das Kaufverhalten Ihrer Website-Besucher, um deren Einkaufserlebnis weiter zu verbessern.",
+                    "smartIncentives": "Banner-Toolbox",
+                    "incentivesDetails": "Wecken Sie mit zielgerichteter Werbung das Interesse Ihrer Website-Besucher und kurbeln Sie so Ihre Umsätze an.",
+                    "logoTitle": "Marketing Solutions"
+                },
+                "emailInstructionsSideBar": {
+                    "sendInstructions": "Sie wissen nicht genau, wie Ihre Website gebaut ist?",
+                    "sendDeveloperInstructions": "Anleitung an Entwickler senden",
+                    "instructionsDetail": "Wir können Ihrem Entwickler eine E-Mail mit einer Anleitung senden, in der die Integration von PayPal Marketing Solutions in Ihre Website erklärt wird.",
+                    "diffrentPlatform": "Sie verwenden eine andere Plattform?",
+                    "viewAllPlatforms": "Alle Plattformen anzeigen "
+                }
+            },
+            "success": {
+                "title": "PayPal Marketing Solutions",
+                "subtitle": "Willkommen {name}, legen Sie los",
+                "addWebsite": "Sie haben mehrere Websites? {addWebsiteLink}",
+                "addWebsiteLinkText": "Weitere Website hinzufügen",
+                "smartIncentives": {
+                    "title": "Banner-Toolbox",
+                    "description": "Wecken Sie mit zielgerichteter Werbung das Interesse Ihrer Website-Besucher und kurbeln Sie so Ihre Umsätze an.",
+                    "bulletOne": "Bringen Sie Kunden dazu, mehr auszugeben und Einkäufe abzuschließen",
+                    "bulletTwo": "Gestalten Sie ein individuelles Einkaufserlebnis",
+                    "bulletThree": "Wählen Sie die Nachricht und die Platzierung Ihrer Banner-Toolbox aus",
+                    "activateButtonText": "Aktivieren",
+                    "manageButtonText": "Verwalten"
+                },
+                "shopperInsights": {
+                    "title": "Kundendashboard",
+                    "description": "Wenn Ihr Code installiert ist und funktioniert, erfassen wir automatisch Daten. Wir informieren Sie, wenn Ihr Kundendashboard bereit ist.",
+                    "descriptionReady": "Ihr Kundendashboard ist fertig Sie können jetzt Analysen, Benchmarks und Empfehlungen zu Ihren PayPal-Kunden sehen.",
+                    "dataMessage": "Wir suchen nach Daten",
+                    "viewShopperInsights": "Kundendashboard anzeigen"
+                }
+            },
+            "tag": {
+                "createTag": {
+                    "header": "Website eingeben",
+                    "subHeader": "Wir erstellen einen Code, den Sie dann in Ihre Website integrieren.",
+                    "agreeAndcontinue": "Zustimmen und weiter",
+                    "urlLabel": "URL der Website",
+                    "confirmHeader": "Website bestätigen",
+                    "register": "Registrieren",
+                    "select": "Wählen",
+                    "install": "Installieren",
+                    "termsConfirmation": "Sie bestätigen, dass Sie das Recht zur Nutzung des PayPal-Analysetools und zur Erfassung von {collectLink} von Kunden auf Ihrer Website haben. Es gelten die {termsAndCondition}.",
+                    "collectLinkText": "Daten",
+                    "termsLinkText": "Bedingungen",
+                    "tooltipContent": "Über diese URL identifizieren wir Ihre Website, sobald der Code integriert ist.",
+                    "continueInstallation": "Weiter zur Integrationsanleitung",
+                    "emea": {
+                        "termsConfirmation": "Sie bestätigen, dass Sie das Recht zur Nutzung von PayPal Marketing Solutions und zur Erfassung von {collectLink} von Kunden auf Ihrer Website haben. Sie stimmen den {termsAndCondition} zu.",
+                        "collectLinkText": "Daten",
+                        "agreeAndcontinue": "Weiter"
+                    },
+                    "tagHasBeenCreated": {
+                        "header": "Sie haben Ihre Website bereits registriert.",
+                        "subHeaderContinue": "Weiter zur Integrationsanleitung und zum Code",
+                        "continueButton": "Weiter"
+                    },
+                    "faq1": "Was sehen meine Käufer?",
+                    "faq2": "Welche Vorteile hat die Bewerbung von PayPal Credit?",
+                    "faq3": "Welche Daten erfasst der Code?",
+                    "faq4": "Was ist das Kundendashboard?",
+                    "faq5": "Verlangsamt der Code meine Website?",
+                    "faq12": "Was ist PayPal Credit?"
+                },
+                "selectShopping": {
+                    "header": "Wählen Sie Ihre E-Commerce-Plattform aus und führen Sie die Schritte in der Anleitung aus.",
+                    "subHeader": "Wir stellen Ihnen eine Anleitung für die Integration des Codes zur Verfügung.",
+                    "optionOne": "Meine Plattform ist nicht dabei.",
+                    "clipboardText": "In Zwischenablage kopieren",
+                    "copied": "Kopiert",
+                    "emailSubject": "Bitte integrieren Sie dieses Tag für PayPal Marketing Solutions",
+                    "emailBodyGreeting": "Hallo,",
+                    "emailBodyMainText": "bitte fügen Sie dieses PayPal-Tag unserem Website-Header hinzu. Darin enthalten sind einzigartige Informationen über das Verhalten Ihrer Kunden und Banner, mit denen Sie verschiedene Vorteile von PayPal bewerben können. {copySnippet}",
+                    "emailBodyInstructionText": "Hier finden Sie eine detaillierte Anleitung für die Integration des Codes:{breakln}{copyContent}",
+                    "emailThanks": "Viele Grüße",
+                    "shareLinkInfo": "Wenn Sie nicht sicher sind, wie Ihre Website aufgebaut ist, teilen Sie diesen {shareLinkInfoLink} mit Ihren Entwicklern.",
+                    "shareLinkInfoLinkText": "Link"
+                },
+                "selectShoppingProvider": {
+                    "header": "Welche E-Commerce-Plattform nutzen Sie?"
+                },
+                "selectPromotion": {
+                    "header": "Welche PayPal-Banner wollen Sie auf Ihrer Website anzeigen?",
+                    "singlePromotionHeader": "Werben Sie mit PayPal-Bannern auf Ihrer Website",
+                    "xoHeader": "Welche PayPal-Banner wollen Sie auf Ihrer Website anzeigen?",
+                    "subHeader": "Erstellen Sie mit der Banner-Toolbox Werbebanner, mit denen Sie die Besucher Ihrer Website zum Einkaufen anregen können.",
+                    "toolsHeader": "Welche PayPal-Banner wollen Sie auf Ihrer Website anzeigen?",
+                    "toolsSubHeader": "Zusätzlich zur Banner-Toolbox erhalten Sie im Kundendashboard auch Einblicke in das Kundenverhalten.",
+                    "learnMore": "Mehr erfahren",
+                    "learnMoreUrl": "https:\u002F\u002Fwww.paypal.com\u002Fus\u002Fwebapps\u002Fmpp\u002Fpaypal-marketing-solutions",
+                    "preview": "Vorschau",
+                    "insights": {
+                        "header": "Kundendashboard",
+                        "subHeader": "Erhalten Sie wertvolle Einblicke in das Kaufverhalten Ihrer Website-Besucher, um deren Einkaufserlebnis weiter zu verbessern."
+                    },
+                    "credit": {
+                        "header": "Ratenzahlung",
+                        "subHeader": "Käufer sehen ein Banner, das beschreibt, wie ihnen Ratenzahlung Powered by PayPal mehr Zeit zum Bezahlen ihrer Einkäufe gibt."
+                    },
+                    "xo-credit": {
+                        "header": "Ratenzahlung",
+                        "subHeader": "Käufer sehen ein Banner, das beschreibt, wie ihnen Ratenzahlung Powered by PayPal mehr Zeit zum Bezahlen ihrer Einkäufe gibt."
+                    },
+                    "xo-one-touch": {
+                        "header": "Schnelle Kaufabwicklung",
+                        "subHeader": "Ihre Website-Besucher sehen ein Banner, auf dem sie daran erinnert werden, dass sie mit PayPal nicht bei jedem Einkauf erneut ihre Finanzdaten eingeben müssen."
+                    },
+                    "one-touch": {
+                        "header": "Schnelle Kaufabwicklung bewerben",
+                        "subHeader": "Lassen Sie Ihre Kunden wissen, dass Sie bei Ihnen mit PayPal schnell und einfach bezahlen können, und kurbeln Sie so Ihre Verkäufe an."
+                    },
+                    "venmo": {
+                        "header": "Venmo wird akzeptiert",
+                        "subHeader": "Käufern wird eine Nachricht angezeigt, dass Sie Venmo akzeptieren."
+                    },
+                    "return-shipping": {
+                        "header": "Kostenlose Retouren",
+                        "subHeader": "Kunden sehen eine Nachricht, dass PayPal bei vielen Einkäufen die Rücksendekosten erstattet. Aktivieren Sie dieses Banner, wenn Sie nicht bereits die Rücksendekosten für Ihre Kunden übernehmen. In den Bedingungen für Kostenlose Retouren erfahren Sie mehr darüber, wann Ihre Kunden diesen Service nutzen können, wenn sie auf Ihrer Website einkaufen."
+                    },
+                    "purchase-protection": {
+                        "header": "Käuferschutz",
+                        "subHeader": "Kunden sehen eine Nachricht, dass sie bei berechtigten Einkäufen vom Käuferschutz profitieren können. Wenn der Käuferschutz nicht für Ihre angebotenen Waren und Dienstleistungen gilt, sollten Sie damit keine Werbung machen. Die vollständigen Bedingungen finden Sie in unserer Käuferschutzrichtlinie."
+                    },
+                    "continue": "Weiter",
+                    "done": "Fertig",
+                    "customize": "Anpassen, wie das Banner angezeigt wird",
+                    "justInsights": "Nein danke, ich will nur das Kundendashboard.",
+                    "messageAlert": "Sie können mehrere Banner auswählen. PayPal erstellt für jeden Besucher die passendste Nachricht."
+                },
+                "installTag": {
+                    "header": "Integrationsanleitung",
+                    "subheader": "Hier können Sie nachlesen, wie Sie PayPal Marketing Solutions in Ihre Website integrieren.",
+                    "helpLink": "Sie brauchen Hilfe?",
+                    "backButton": "Zurück",
+                    "info": "Führen Sie diese Schritte für jede Ihrer Webseiten aus, auf der Sie Daten über Ihre Besucher sammeln möchten. Beachten Sie, dass einige Websites das Tag speichern und automatisch auf alle Seiten kopieren. In diesem Fall müssen Sie es nicht manuell der HTML-Datei für jede Seite hinzufügen.",
+                    "instructions": "Anleitung",
+                    "skip": "Anleitung überspringen",
+                    "install": "Installieren Sie die",
+                    "app": "App"
+                },
+                "benefits": {
+                    "header": "Wie geht‘s weiter?",
+                    "subHeaderCredit": "Wenn der Code in Ihre Website integriert ist, sammelt er Daten für Ihr Kundendashboard. Und Sie können mit der Banner-Toolbox gezielt Werbung auf Ihrer Website schalten.",
+                    "subHeaderCreditTwo": "In den Einstellungen können Sie Ihr Kundendashboard verwalten und Banner erstellen.",
+                    "goToSettings": "Zu den Einstellungen",
+                    "continueHeader": "Weiter zu PayPal Marketing Solutions, sobald Sie die oben genannten Schritte abgeschlossen haben",
+                    "continue": "Weiter"
+                },
+                "snippetOption": {
+                    "header": "Hier ist der Code, den Sie Ihrer Website hinzufügen",
+                    "subHeader": "Wollen Sie die Integration von Ihrem Entwickler durchführen lassen oder dies selbst tun? Wenn Sie eine E-Commerce-Plattform haben, ist das Hinzufügen des Codes ganz einfach."
+                },
+                "selectPlatform": {
+                    "header": "PayPal Marketing Solutions integrieren und aktivieren",
+                    "subHeader": "Wählen Sie Ihre E-Commerce-Plattform aus, um sich das Kundendashboard zu holen.",
+                    "howWebsiteBuilt": "Sie wissen nicht genau, wie Ihre Website gebaut ist?",
+                    "instructionsDetail": "Wir können Ihrem Entwickler eine E-Mail mit einer Anleitung senden, in der die Integration von PayPal Marketing Solutions in Ihre Website erklärt wird.",
+                    "emailInstructions": "Anleitung senden",
+                    "modalHeader": "Wählen Sie Ihre Plattform aus",
+                    "other": "Sonstige"
+                },
+                "pluginInfoModal": {
+                    "header": "Sie haben PayPal Marketing Solutions aktiviert",
+                    "info": "Sie können das Kundendashboard und die Banner-Toolbox jetzt in Ihren Einstellungen ein- oder ausschalten.",
+                    "settings": "Zu den Einstellungen"
+                }
+            },
+            "validationErrors": {
+                "webisteUrl": "Geben Sie die URL einer Website ein.",
+                "validUrl": "Geben Sie eine gültige URL ein.",
+                "invalidChars": "Darf nicht [ ' ) ( ; &lt; \" \\ &gt; enthalten"
+            },
+            "widget": {
+                "disabled": {
+                    "disabled": "Das Kundendashboard wurde deaktiviert.",
+                    "creditInsights": "Sie erhalten keine Einblicke in das Verhalten von PayPal-Kunden auf Ihrer Website. Sie können das Kundendashboard jederzeit wieder aktivieren.",
+                    "link": "Kundendashboard aktivieren"
+                },
+                "none": {
+                    "link": "Los geht's"
+                },
+                "on": {
+                    "creditInsights": "Gesamtzahl Besucher in den letzten 7 Tagen",
+                    "visitorInsights": "Besucher mit PayPal Credit-Konto",
+                    "link": "Analysen anzeigen "
+                },
+                "unfinished": {
+                    "almostDone": "Nur noch ein Schritt und Sie erfahren mehr zu den PayPal-Kunden, die Ihre Website besuchen.",
+                    "alreadyAdded": "Wenn Sie den Code bereits Ihrer Website hinzugefügt haben, sollten Sie demnächst das Kundendashboard sehen. Wenn Sie ihn noch nicht hinzugefügt haben, schließen Sie die Einrichtung ab.",
+                    "link": "Einrichtung abschließen"
+                },
+                "header": {
+                    "insightsTitle": "Banner-Toolbox und Kundendashboard ",
+                    "title": "PayPal Marketing Solutions",
+                    "new": "Neu",
+                    "promotion": "Banner",
+                    "free": "Kostenlos",
+                    "details": "Details"
+                },
+                "visitorInsights": {
+                    "title": "Kundendashboard",
+                    "header": "Erfahren Sie mehr über PayPal-Kunden in Ihrem Shop",
+                    "content": "Analysieren Sie die Besuche auf Ihrer Website und erhalten Sie Informationen zu PayPal-Kunden und deren Surf- und Kaufverhalten in Ihrem Shop."
+                },
+                "creditPromotions": {
+                    "header": "Wecken Sie mit zielgerichteter Werbung das Interesse Ihrer Website-Besucher",
+                    "link": "Zur Banner-Toolbox"
+                },
+                "xoSummaryTile": {
+                    "title": "PayPal Marketing Solutions",
+                    "content": "PayPal-Kunden in den letzten 30 Tagen:",
+                    "footerContent": "Erhalten Sie wertvolle Informationen über PayPal-Kunden auf Ihren Zahlungsseiten.",
+                    "link": "Zum Kundendashboard"
+                },
+                "smartIncentives": {
+                    "title": "Banner-Toolbox",
+                    "header": "Wecken Sie mit Bannern das Interesse Ihrer Website-Besucher.",
+                    "content": "Erstellen Sie mit der Banner-Toolbox Werbebanner, mit denen Sie die Besucher Ihrer Website zum Einkaufen anregen können.",
+                    "link": "Zur Banner-Toolbox"
+                },
+                "smartIncentivesEnabled": {
+                    "status": "Status",
+                    "header": "Die Banner-Toolbox ist",
+                    "enabled": "aktiviert",
+                    "manageLink": "Zur Banner-Toolbox"
+                },
+                "intigrated": {
+                    "enabledText": "Sie haben das Kundendashboard aktiviert. Wir bereiten Ihre Daten gerade vor. Wir senden Ihnen eine E-Mail, sobald Sie diese unter \"Berichten\" einsehen können."
+                }
+            }
+        },
+        "csrf": "fS4eexcludUGjlJOvLAxbkjEREqEvy8\u002FhJE7I=",
+        "resourceBaseUrl": "https:\u002F\u002Fwww.paypalobjects.com\u002Fweb\u002Fres\u002F71b\u002Fd70cdce824ba61156fd448d9cea3d",
+        "jsBaseUrl": "https:\u002F\u002Fwww.paypalobjects.com\u002Fweb\u002Fres\u002F71b\u002Fd70cdce824ba61156fd448d9cea3d\u002Fjs",
+        "cssBaseUrl": "https:\u002F\u002Fwww.paypalobjects.com\u002Fweb\u002Fres\u002F71b\u002Fd70cdce824ba61156fd448d9cea3d\u002Fcss",
+        "featureFlags": {
+            "dummyFeature2": false,
+            "shopperInsightsNotification": false,
+            "museRecruitment": false
+        },
+        "domainHost": "www.paypal.com",
+        "redirectUrl": null,
+        "entryPoint": "dashboard",
+        "bn": "HAWK_TAGMANAGER",
+        "pn": "HAWK_TAGMANAGER",
+        "appName": "tagmanagernodeweb",
+        "isMinipxFlow": false,
+        "instructionsFlow": false,
+        "xoWidgetTreatment": false,
+        "promotionsFlow": true,
+        "vers": "default"
+    },
+    "containers": {
+        "currentContainerId": "e198feb9-8846-451b-bc19-47c96532d79e",
+        "containers": [{
+            "id": "e198feb9-8846-451b-bc19-47c96532d79e",
+            "owner_type": "PAYPAL",
+            "owner_id": "3X7JN3WQW76U6",
+            "integration_type": "MANUAL",
+            "application_context": {
+                "bn_code": "HAWK_TAGMANAGER",
+                "partner_name": "HAWK_TAGMANAGER",
+                "merchant_country": "DE"
+            },
+            "url": "bit.ly",
+            "published": true,
+            "tags": [{
+                "id": "46e71393-3307-4db0-a5e9-19af2f2fccf7",
+                "tag_definition_id": "analytics",
+                "enabled": true,
+                "configuration": [{
+                    "id": "analytics-id",
+                    "name": "Merchant + website unique analytics tracking id",
+                    "config_value": "",
+                    "config_type": "string",
+                    "config_required": true,
+                    "value": "3X7JN3WQW76U6-1"
+                }],
+                "time_created": "2019-05-04T19:18:31.852Z",
+                "time_updated": "2019-05-04T19:18:40.194Z"
+            }, {
+                "id": "a44141b4-4e2f-4f72-8a92-f7d957b5993b",
+                "tag_definition_id": "credit",
+                "enabled": true,
+                "configuration": [{
+                    "id": "analytics-id",
+                    "name": "Merchant + website unique analytics tracking id",
+                    "config_value": "",
+                    "config_type": "string",
+                    "config_required": true,
+                    "value": "3X7JN3WQW76U6-1"
+                }, {
+                    "id": "variant",
+                    "name": "Variant name",
+                    "config_value": "slide-up",
+                    "config_type": "string",
+                    "config_required": true,
+                    "value": "slide-up"
+                }, {
+                    "id": "flow",
+                    "name": "Flow name",
+                    "config_value": "credit",
+                    "config_type": "string",
+                    "config_required": true,
+                    "value": "one-touch,return-shipping"
+                }, {
+                    "id": "mobile-flow",
+                    "name": "Mobile flow name",
+                    "config_value": "one-touch",
+                    "config_type": "string",
+                    "config_required": true,
+                    "value": ""
+                }, {
+                    "id": "limit",
+                    "name": "Number of times the credit banner is shown per day",
+                    "config_value": "3",
+                    "config_type": "number",
+                    "config_required": false,
+                    "value": "3"
+                }, {
+                    "id": "is-mobile-enabled",
+                    "name": "Mobile Enabled",
+                    "config_value": true,
+                    "config_type": "boolean",
+                    "config_required": false,
+                    "value": "true"
+                }, {
+                    "id": "is-desktop-enabled",
+                    "name": "Desktop Enabled",
+                    "config_value": true,
+                    "config_type": "boolean",
+                    "config_required": false,
+                    "value": "true"
+                }],
+                "time_created": "2019-05-04T19:18:40.194Z",
+                "time_updated": "2019-05-04T19:18:40.194Z"
+            }],
+            "time_created": "2019-05-04T19:18:31.852Z",
+            "time_updated": "2019-05-04T19:18:40.195Z",
+            "snippet": "\n      ;(function(a,t,o,m,s){a[m]=a[m]||[];a[m].push({t:new Date().getTime(),event:'snippetRun'});var f=t.getElementsByTagName(o)[0],e=t.createElement(o),d=m!=='paypalDDL'?'&m='+m:'';e.async=!0;e.src='https:\u002F\u002Fwww.paypal.com\u002Ftagmanager\u002Fpptm.js?id='+s+d;f.parentNode.insertBefore(e,f);})(window,document,'script','paypalDDL','e198feb9-8846-451b-bc19-47c96532d79e');\n    "
+        }],
+        "containerIdPresent": true,
+        "isTagCollectingData": false
+    },
+    "merchant": {
+        "eligiblePromotions": [{
+            "flow": "one-touch"
+        }, {
+            "flow": "return-shipping"
+        }, {
+            "flow": "purchase-protection"
+        }],
+        "eligibleProducts": ["promotions"],
+        "merchantName": "Jasmin Isel",
+        "merchantFirstName": "Jasmin",
+        "custId": "3X7JN3WQW76U6",
+        "visitorData": {
+            "totalCustomerCount": 0,
+            "totalCreditCustomerCount": 0
+        },
+        "merchantRegion": "EMEA"
+    },
+    "ui": {
+        "bannerFlag": "enable",
+        "currentError": "update",
+        "currentSlide": 0,
+        "editDetails": true,
+        "errorAlert": {
+            "enabled": false,
+            "placement": false,
+            "homepage": false,
+            "device": false,
+            "promotions": false,
+            "editContainer": false,
+            "promotionalMessage": false
+        },
+        "errorTag": {
+            "create": {
+                "errorMsg": "tagCreateError",
+                "url": "tagmanager\u002Fcreate"
+            },
+            "update": {
+                "errorMsg": "tagUpdateError",
+                "url": "tagmanager"
+            },
+            "edit": {
+                "errorMsg": "tagEditError",
+                "url": "tagmanager"
+            },
+            "popUp": {
+                "errorMsg": "genericMessage",
+                "url": "tagmanager\u002Fmini"
+            }
+        },
+        "faqSideBar": false,
+        "isUrlEdit": false,
+        "learnMoreContentSelection": "LearnMoreDefault",
+        "loaders": {
+            "plugins": false,
+            "modal": false,
+            "editTagDetailsModal": false,
+            "enabled": false,
+            "placement": false,
+            "homepage": false,
+            "device": false,
+            "promotions": false,
+            "editContainer": false,
+            "promotionalMessage": false
+        },
+        "modals": {
+            "confirm": false,
+            "edit": false,
+            "learnMore": false,
+            "platform": false,
+            "plugins": false,
+            "one-touch": false,
+            "other": false,
+            "credit": false,
+            "venmo": false
+        },
+        "otherPlatformConfirmed": false,
+        "siteForm": {
+            "name": "ShoppingAndMore",
+            "url": "http:\u002F\u002F",
+            "published": "",
+            "otherPlatform": "",
+            "homepageUrl": {
+                "e198feb9-8846-451b-bc19-47c96532d79e": "bit.ly"
+            }
+        },
+        "successAlert": {
+            "enabled": false,
+            "placement": false,
+            "homepage": false,
+            "device": false,
+            "promotions": false,
+            "editContainer": false,
+            "promotionalMessage": false
+        },
+        "platforms": {
+            "shopify": {
+                "displayName": "Shopify",
+                "pluginLink": "https:\u002F\u002Fapps.shopify.com\u002Fpaypal-marketing-solutions",
+                "hasInstructions": true,
+                "imageTop": "-100px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-41px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "bigcommerce": {
+                "displayName": "BigCommerce",
+                "pluginLink": null,
+                "hasInstructions": true,
+                "imageTop": "-2100px",
+                "imageLeft": "-2px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-400px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "magento1": {
+                "displayName": "Magento 1",
+                "pluginLink": "https:\u002F\u002Fmarketplace.magento.com\u002Fitechart-paypal-marketingsolutions.html",
+                "hasInstructions": false,
+                "imageTop": "-200px",
+                "imageLeft": "10px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-100px",
+                "miniImageLeft": "-5px",
+                "miniImageStyleOverides": {}
+            },
+            "magento2": {
+                "displayName": "Magento 2",
+                "pluginLink": "https:\u002F\u002Fmarketplace.magento.com\u002Fitechart-paypal-marketing-solutions.html",
+                "hasInstructions": true,
+                "imageTop": "-300px",
+                "imageLeft": "10px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-150px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "woocommerce": {
+                "displayName": "WooCommerce",
+                "pluginLink": null,
+                "hasInstructions": true,
+                "imageTop": "-400px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-200px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "wordpress": {
+                "displayName": "WordPress",
+                "pluginLink": "https:\u002F\u002Fwordpress.org\u002Fplugins\u002Fpaypal-promotions-and-insights\u002F",
+                "hasInstructions": false,
+                "imageTop": "-500px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-252px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "drupal": {
+                "displayName": "Drupal",
+                "pluginLink": "https:\u002F\u002Fwww.drupal.org\u002Fproject\u002Fpaypal_marketing_solutions",
+                "hasInstructions": false,
+                "imageTop": "-1106px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-252px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "weebly": {
+                "displayName": "Weebly",
+                "pluginLink": "https:\u002F\u002Fwww.weebly.com\u002Fapp-center\u002F746329921",
+                "hasInstructions": false,
+                "imageTop": "-900px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-250px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "oscommerce": {
+                "displayName": "osCommerce",
+                "pluginLink": "https:\u002F\u002Fapps.oscommerce.com\u002FJfKSw&paypal-promotions-and-insights",
+                "hasInstructions": false,
+                "imageTop": "-1810px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-252px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "opencart": {
+                "displayName": "OpenCart",
+                "pluginLink": "https:\u002F\u002Fwww.opencart.com\u002Findex.php?route=marketplace\u002Fextension\u002Finfo&extension_id=32216&filter_search=paypal%20promotions&filter_license=0",
+                "hasInstructions": false,
+                "imageTop": "-1600px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-250px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "cscart": {
+                "displayName": "CS-Cart",
+                "pluginLink": "http:\u002F\u002Fmarketplace.cs-cart.com\u002Fadd-ons\u002Fmarketing\u002Fpaypal-marketing-solutions.html",
+                "hasInstructions": false,
+                "imageTop": "-1500px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-250px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "xcart": {
+                "displayName": "X-Cart",
+                "pluginLink": "https:\u002F\u002Fmarket.x-cart.com\u002Faddons\u002Fpaypal-marketing-solutions.html",
+                "hasInstructions": false,
+                "imageTop": "-1200px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-250px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "zencart": {
+                "displayName": "Zen Cart",
+                "pluginLink": "https:\u002F\u002Fwww.zen-cart.com\u002Fdownloads.php?do=file&id=2173",
+                "hasInstructions": false,
+                "imageTop": "-2000px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-250px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "nopcommerce": {
+                "displayName": "nopCommerce",
+                "pluginLink": "https:\u002F\u002Fwww.nopcommerce.com\u002Fp\u002F2927\u002Fpaypal-promotions-and-insights.aspx",
+                "hasInstructions": false,
+                "imageTop": "-1700px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-250px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "pinnaclecart": {
+                "displayName": "PinnacleCart",
+                "pluginLink": null,
+                "hasInstructions": true,
+                "imageTop": "-600px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-250px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "shopsite": {
+                "displayName": "ShopSite",
+                "pluginLink": null,
+                "hasInstructions": true,
+                "imageTop": "-700px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-30px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "googletagmanager": {
+                "displayName": "Google Tag Manager",
+                "pluginLink": null,
+                "hasInstructions": true,
+                "imageTop": "-800px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "-350px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            },
+            "html": {
+                "displayName": "Other",
+                "pluginLink": null,
+                "hasInstructions": true,
+                "imageTop": "-1px",
+                "imageLeft": "-1px",
+                "imageStyleOverides": {},
+                "miniImageTop": "8px",
+                "miniImageLeft": "-10px",
+                "miniImageStyleOverides": {}
+            }
+        }
+    }
+};
