@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const assert = require('assert');
-const {computeCSSTokenLength, computeJSTokenLength} = require('../../lib/minification-estimator');
+const {computeCSSTokenLength, computeJSTokenLength} = require('../../lib/minification-estimator.js');
 
 const angularFullScript = fs.readFileSync(require.resolve('angular/angular.js'), 'utf8');
 
