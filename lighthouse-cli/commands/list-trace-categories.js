@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const lighthouse = require('../../lighthouse-core.js');
+const lighthouse = require('../../lighthouse-core/');
 
 function listTraceCategories() {
   const traceCategories = lighthouse.traceCategories;

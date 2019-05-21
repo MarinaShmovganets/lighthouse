@@ -24,8 +24,14 @@ function rewriteDirectory(dir) {
         const [_, file] = stmt.match(/require\('(.*)'\);/) || ['', ''];
         if (!file) continue;
         if (!file.startsWith('.')) continue;
+        if (file.endsWith('/')) continue;
         if (file.endsWith('.js')) continue;
         if (file.endsWith('.json')) continue;
+        const fullPathOfDep = path.resolve(dir, file);
+        if (!fs.existsSync(fullPathOfDep)) {
+          console.warn(`Uh-oh! Cannot find dependency "${fullPathOfDep}" in ${name}`);
+          continue;
+        }
 
         console.log(`Fixing "${file}" in ${name}`);
         contents = contents.replace(`require('${file}');`, `require('${file}.js');`);
