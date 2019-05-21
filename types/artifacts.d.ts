@@ -59,7 +59,7 @@ declare global {
     export interface PublicGathererArtifacts {
       /** Console deprecation and intervention warnings logged by Chrome during page load. */
       ConsoleMessages: Crdp.Log.EntryAddedEvent[];
-      /** All the IFrame elements in the page.*/
+      /** All the iframe elements in the page.*/
       IFrameElements: Artifacts.IFrameElement[];
       /** Information on size and loading for all the images in the page. Natural size information for `picture` and CSS images is only available if the image was one of the largest 50 images. */
       ImageElements: Artifacts.ImageElement[];
@@ -182,17 +182,24 @@ declare global {
       }
 
       export interface IFrameElement {
-        /** The `id` attribute of the IFrame. */
+        /** The `id` attribute of the iframe. */
         id: string,
-        /** The `src` attribute of the IFrame. */
+        /** The `src` attribute of the iframe. */
         src: string,
-        /** The IFrame's ClientRect. @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect */
-        clientRect: ClientRect,
-        /** The visibility of the IFrame. */
-        isVisible: boolean,
-        /** If the IFrame or an ancestor of the IFrame is fixed in position. */
+        /** The iframe's ClientRect. @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect */
+        clientRect: {
+          top: number;
+          bottom: number;
+          left: number;
+          right: number;
+          width: number;
+          height: number;
+        },
+        /** The pixel area iframe. */
+        pixelArea: number,
+        /** If the iframe or an ancestor of the iframe is fixed in position. */
         isPositionFixed: boolean,
-        /** The Frame of the IFrame. @see https://chromedevtools.github.io/devtools-protocol/tot/Page#type-Frame */
+        /** The Frame of the iframe. @see https://chromedevtools.github.io/devtools-protocol/tot/Page#type-Frame */
         frame: Crdp.Page.Frame,
       }
 

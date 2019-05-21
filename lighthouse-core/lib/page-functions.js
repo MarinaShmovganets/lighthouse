@@ -219,7 +219,10 @@ function getNodeSelector(node) {
 }
 
 /**
- * @param {?HTMLElement} element
+ * This function checks if an element or an ancestor of an element is `position:fixed`.
+ * In addition we ensure that the element is capable of behaving as a `position:fixed`
+ * element, checking that it lives within a scrollable ancestor.
+ * @param {HTMLElement} element
  * @return {boolean}
  */
 /* istanbul ignore next */
@@ -256,7 +259,7 @@ function isPositionFixed(element) {
   while (currentEl) {
     const position = getStyleAttrValue(currentEl, 'position');
     // Only truly fixed if an ancestor is scrollable.
-    if (position === 'fixed' && hasScrollableAncestor(currentEl)) {
+    if ((position === 'fixed' || position === 'sticky') && hasScrollableAncestor(currentEl)) {
       return true;
     }
     currentEl = currentEl.parentElement;

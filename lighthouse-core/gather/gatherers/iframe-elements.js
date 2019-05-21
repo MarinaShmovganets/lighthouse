@@ -18,15 +18,15 @@ function collectIFrameElements() {
   // @ts-ignore - put into scope via stringification
   const iFrameElements = getElementsInDocument('iframe'); // eslint-disable-line no-undef
   return iFrameElements.map(/** @param {HTMLIFrameElement} node */ (node) => {
-    // @ts-ignore - put into scope via stringification
-    const clientRect = node.getBoundingClientRect().toJSON(); // eslint-disable-line no-undef
+    const clientRect = node.getBoundingClientRect();
     // Marking 1x1 as non-visible to ignore tracking pixels.
-    const isVisible = (clientRect.width > 1 && clientRect.height > 1);
+
+    const {top, bottom, left, right, width, height} = clientRect;
     return {
       id: node.id,
       src: node.src,
-      clientRect,
-      isVisible,
+      clientRect: {top, bottom, left, right, width, height},
+      pixelArea: width * height,
       // @ts-ignore - put into scope via stringification
       isPositionFixed: isVisible && isPositionFixed(node), // eslint-disable-line no-undef
     };
@@ -63,12 +63,11 @@ class IFrameElements extends Gatherer {
     })()`;
 
     /** @type {LH.Artifacts['IFrameElements']} */
-    const elements =
-        await driver.evaluateAsync(expression, {useIsolation: true});
-    for (const el of elements) {
+    const iframeElements = await driver.evaluateAsync(expression, {useIsolation: true});
+    for (const el of iframeElements) {
       el.frame = framesByDomId.get(el.id);
     }
-    return elements;
+    return iframeElements;
   }
 }
 
