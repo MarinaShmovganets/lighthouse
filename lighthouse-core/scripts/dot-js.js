@@ -29,11 +29,11 @@ function rewriteDirectory(dir) {
         if (file.endsWith('.json')) continue;
         const fullPathOfDep = path.resolve(dir, file);
         if (!fs.existsSync(fullPathOfDep)) {
-          console.warn(`Uh-oh! Cannot find dependency "${fullPathOfDep}" in ${name}`);
+          console.warn(`Uh-oh! Cannot find dependency "${fullPathOfDep}" in ${name}`); // eslint-disable-line no-console
           continue;
         }
 
-        console.log(`Fixing "${file}" in ${name}`);
+        console.log(`Fixing "${file}" in ${name}`); // eslint-disable-line no-console
         contents = contents.replace(`require('${file}');`, `require('${file}.js');`);
       }
 
