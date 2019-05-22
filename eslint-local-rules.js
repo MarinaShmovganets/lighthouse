@@ -10,7 +10,26 @@
  * Lighthouse. These are included by the eslint-plugin-local-rules plugin.
  */
 
+const path = require('path');
+
 /** @typedef {import('eslint').Rule.RuleModule} RuleModule */
+
+/**
+ * Use `require.resolve()` to resolve the location of `path` from a location of
+ * `baseDir` and return it. Returns null if unable to resolve a path.
+ * @param {string} path
+ * @param {string} baseDir
+ * @return {string|null}
+ */
+function requireResolveOrNull(path, baseDir) {
+  try {
+    return require.resolve(path, {
+      paths: [baseDir],
+    });
+  } catch (err) {
+    return null;
+  }
+}
 
 /**
  * An eslint rule ensuring that any require() of a local path (aka not a core
@@ -25,7 +44,9 @@ const requireFileExtension = {
       recommended: false,
     },
     schema: [],
+    fixable: 'code',
   },
+
   create(context) {
     return {
       CallExpression(node) {
@@ -36,14 +57,44 @@ const requireFileExtension = {
         const arg0 = node.arguments[0];
         if (arg0.type !== 'Literal' || typeof arg0.value !== 'string') return;
 
-        // If it's a local file, it must have a file extension.
-        const filename = arg0.value;
-        if (!filename.startsWith('.')) return;
-        if (filename.endsWith('.js') || filename.endsWith('.json')) return;
+        const requiredPath = arg0.value;
+
+        // If it's not a local file, we don't care.
+        if (!requiredPath.startsWith('.')) return;
+
+        // Check that `requiredPath` is resolvable from the source file.
+        const contextDirname = path.dirname(context.getFilename());
+        const resolvedRequiredPath = requireResolveOrNull(requiredPath, contextDirname);
+        if (!resolvedRequiredPath) {
+          return context.report({
+            node: node,
+            message: `Cannot resolve module '${requiredPath}'.`,
+          });
+        }
+
+        // If it has a file extension, it's good to go.
+        if (requiredPath.endsWith('.js')) return;
+        if (requiredPath.endsWith('.json')) return;
+
+        // Find the correct file extension/filename ending of the requiredPath.
+        let fixedPath = path.relative(contextDirname, resolvedRequiredPath);
+        if (!fixedPath.startsWith('.')) fixedPath = `./${fixedPath}`;
+
+        // Usually `fixedPath.startsWith(requiredPath)` and this will just add
+        // a suffix to the existing path, but sometimes humans write confusing
+        // paths, e.g. './lighthouse-core/lib/../lib/lh-error.js'. To cover both
+        // cases, double check that the paths resolve to the same file.
+        const resolvedFixedPath = requireResolveOrNull(fixedPath, contextDirname);
 
         context.report({
           node: node,
           message: 'Required path must have a file extension.',
+          fix(fixer) {
+            // If somehow they don't point to the same file, don't try to fix.
+            if (resolvedFixedPath !== resolvedRequiredPath) return null;
+
+            return fixer.replaceText(arg0, `'${fixedPath}'`);
+          },
         });
       },
     };
