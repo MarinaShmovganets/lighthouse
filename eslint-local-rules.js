@@ -76,20 +76,20 @@ const requireFileExtension = {
         if (requiredPath.endsWith('.js')) return;
         if (requiredPath.endsWith('.json')) return;
 
-        // Find the correct file extension/filename ending of the requiredPath.
-        let fixedPath = path.relative(contextDirname, resolvedRequiredPath);
-        if (!fixedPath.startsWith('.')) fixedPath = `./${fixedPath}`;
-
-        // Usually `fixedPath.startsWith(requiredPath)` and this will just add
-        // a suffix to the existing path, but sometimes humans write confusing
-        // paths, e.g. './lighthouse-core/lib/../lib/lh-error.js'. To cover both
-        // cases, double check that the paths resolve to the same file.
-        const resolvedFixedPath = requireResolveOrNull(fixedPath, contextDirname);
-
         context.report({
           node: node,
-          message: 'Required path must have a file extension.',
+          message: 'Local require path must have a file extension.',
           fix(fixer) {
+            // Find the correct file extension/filename ending of the requiredPath.
+            let fixedPath = path.relative(contextDirname, resolvedRequiredPath);
+            if (!fixedPath.startsWith('.')) fixedPath = `./${fixedPath}`;
+
+            // Usually `fixedPath.startsWith(requiredPath)` and this will just add
+            // a suffix to the existing path, but sometimes humans write confusing
+            // paths, e.g. './lighthouse-core/lib/../lib/lh-error.js'. To cover both
+            // cases, double check that the paths resolve to the same file.
+            const resolvedFixedPath = requireResolveOrNull(fixedPath, contextDirname);
+
             // If somehow they don't point to the same file, don't try to fix.
             if (resolvedFixedPath !== resolvedRequiredPath) return null;
 
