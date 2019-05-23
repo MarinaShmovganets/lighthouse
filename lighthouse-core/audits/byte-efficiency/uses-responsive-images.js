@@ -98,7 +98,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
       // Ignore images without resource size information.
       // Give SVG a free pass because creating a "responsive" SVG is of questionable value.
       // Ignore CSS images because it's difficult to determine what is a spritesheet,
-      // and I mean just c'mon https://css-tricks.com/responsive-images-css/.
+      // and the reward-to-effort ratio for responsive CSS images is quite low https://css-tricks.com/responsive-images-css/.
       if (!image.resourceSize || image.mimeType === 'image/svg+xml' || image.isCss) {
         continue;
       }
