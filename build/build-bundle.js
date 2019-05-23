@@ -74,8 +74,8 @@ async function browserifyFile(entryPath, distPath) {
     bundle.ignore(require.resolve('../lighthouse-core/report/html/html-report-assets.js'));
   }
 
-  // Don't include locales in DevTools or the extension for now.
-  if (isDevtools(entryPath) || isExtension(entryPath)) {
+  // Don't include locales in the extension for now.
+  if (isExtension(entryPath)) {
     // @ts-ignore bundle.ignore does accept an array of strings.
     bundle.ignore(locales);
   }
