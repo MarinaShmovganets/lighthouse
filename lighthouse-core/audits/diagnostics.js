@@ -9,6 +9,7 @@ const Audit = require('./audit.js');
 const MainThreadTasksComputed = require('../computed/main-thread-tasks.js');
 const NetworkRecordsComputed = require('../computed/network-records.js');
 const NetworkAnalysisComputed = require('../computed/network-analysis.js');
+const TraceOfTab = require('../computed/trace-of-tab.js');
 const NetworkAnalyzer = require('../lib/dependency-graph/simulator/network-analyzer.js');
 
 class Diagnostics extends Audit {
@@ -36,6 +37,7 @@ class Diagnostics extends Audit {
     const tasks = await MainThreadTasksComputed.request(trace, context);
     const records = await NetworkRecordsComputed.request(devtoolsLog, context);
     const analysis = await NetworkAnalysisComputed.request(devtoolsLog, context);
+    const traceofTab = await TraceOfTab.request(trace, context);
 
     const toplevelTasks = tasks.filter(t => !t.parent);
     const mainDocumentTransferSize = NetworkAnalyzer.findMainDocument(records).transferSize;
@@ -43,6 +45,7 @@ class Diagnostics extends Audit {
     const totalTaskTime = toplevelTasks.reduce((sum, t) => sum + (t.duration || 0), 0);
     const maxRtt = Math.max(...analysis.additionalRttByOrigin.values()) + analysis.rtt;
     const maxServerLatency = Math.max(...analysis.serverResponseTimeByOrigin.values());
+    const traceDuration = traceofTab.timings.traceEnd;
 
     const diagnostics = {
       numRequests: records.length,
@@ -62,6 +65,7 @@ class Diagnostics extends Audit {
       totalByteWeight,
       totalTaskTime,
       mainDocumentTransferSize,
+      traceDuration,
     };
 
     return {

@@ -38,6 +38,7 @@ describe('Diagnostics audit', () => {
       totalByteWeight: 234053,
       totalTaskTime: 1360.2630000000001,
       mainDocumentTransferSize: 5368,
+      traceDuration: 12539.872,
     });
   });
 });
