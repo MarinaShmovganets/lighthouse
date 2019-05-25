@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global document, window, getComputedStyle, getElementsInDocument, Node, getNodePath, getNodeSelector */
+/* global document, window, getComputedStyle, getElementsInDocument, Node, getNodePath, getNodeSelector, getNodeLabel */
 
 const Gatherer = require('../gatherer.js');
 const pageFunctions = require('../../../lib/page-functions.js');
@@ -14,7 +14,7 @@ const {
   getRectArea,
   getRectCenterPoint,
   getLargestRect,
-} = require('../../../lib/rect-helpers');
+} = require('../../../lib/rect-helpers.js');
 
 const TARGET_SELECTORS = [
   'button',
@@ -314,13 +314,9 @@ function gatherTapTargets() {
       path: getNodePath(tapTargetElement),
       // @ts-ignore - getNodeSelector put into scope via stringification
       selector: getNodeSelector(tapTargetElement),
-<<<<<<< HEAD
-      href: /** @type {HTMLAnchorElement} */ (tapTargetElement)['href'] || '',
-=======
       // @ts-ignore - getNodeLabel put into scope via stringification
       nodeLabel: getNodeLabel(tapTargetElement),
       href: /** @type {HTMLAnchorElement} */(tapTargetElement)['href'] || '',
->>>>>>> master
     });
   }
 
