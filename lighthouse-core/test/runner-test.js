@@ -5,13 +5,13 @@
  */
 'use strict';
 
-const Runner = require('../runner');
-const GatherRunner = require('../gather/gather-runner');
-const driverMock = require('./gather/fake-driver');
-const Config = require('../config/config');
-const Audit = require('../audits/audit');
+const Runner = require('../runner.js');
+const GatherRunner = require('../gather/gather-runner.js');
+const driverMock = require('./gather/fake-driver.js');
+const Config = require('../config/config.js');
+const Audit = require('../audits/audit.js');
 const Gatherer = require('../gather/gatherers/gatherer.js');
-const assetSaver = require('../lib/asset-saver');
+const assetSaver = require('../lib/asset-saver.js');
 const fs = require('fs');
 const assert = require('assert');
 const path = require('path');
@@ -99,7 +99,7 @@ describe('Runner', () => {
     });
 
     it('-A throws if the settings change', async () => {
-      const settings = {auditMode: artifactsPath, disableDeviceEmulation: true};
+      const settings = {auditMode: artifactsPath, emulatedFormFactor: 'desktop'};
       const opts = {config: generateConfig(settings), driverMock};
       try {
         await Runner.run(null, opts);
@@ -110,7 +110,7 @@ describe('Runner', () => {
     });
 
     it('-A throws if the URL changes', async () => {
-      const settings = {auditMode: artifactsPath, disableDeviceEmulation: true};
+      const settings = {auditMode: artifactsPath, emulatedFormFactor: 'desktop'};
       const opts = {url: 'https://differenturl.com', config: generateConfig(settings), driverMock};
       try {
         await Runner.run(null, opts);
@@ -339,6 +339,38 @@ describe('Runner', () => {
         assert.ok(auditResult.errorMessage.includes(errorMessage));
       });
     });
+
+    it('only passes the required artifacts to the audit', async () => {
+      class SimpleAudit extends Audit {
+        static get meta() {
+          return {
+            id: 'simple',
+            title: 'Requires some artifacts',
+            failureTitle: 'Artifacts',
+            description: 'Test for always throwing',
+            requiredArtifacts: ['ArtifactA', 'ArtifactC'],
+          };
+        }
+      }
+
+      const auditMockFn = SimpleAudit.audit = jest.fn().mockReturnValue({score: 1});
+      const config = new Config({
+        settings: {
+          auditMode: __dirname + '/fixtures/artifacts/alphabet-artifacts/',
+        },
+        audits: [
+          SimpleAudit,
+        ],
+      });
+
+      const results = await Runner.run({}, {config});
+      expect(results.lhr).toMatchObject({audits: {simple: {score: 1}}});
+      expect(auditMockFn).toHaveBeenCalled();
+      expect(auditMockFn.mock.calls[0][0]).toEqual({
+        ArtifactA: 'apple',
+        ArtifactC: 'cherry',
+      });
+    });
   });
 
   describe('Bad audit behavior handling', () => {
@@ -561,7 +593,8 @@ describe('Runner', () => {
           static audit(artifacts, context) {
             context.LighthouseRunWarnings.push(warningString);
             return {
-              rawValue: 5,
+              numericValue: 5,
+              score: 1,
             };
           }
         },

@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const Audit = require('./audit');
+const Audit = require('./audit.js');
 const ComputedViewportMeta = require('../computed/viewport-meta.js');
 
 class Viewport extends Audit {
@@ -30,7 +30,7 @@ class Viewport extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const viewportMeta = await ComputedViewportMeta.request(artifacts, context);
+    const viewportMeta = await ComputedViewportMeta.request(artifacts.MetaElements, context);
 
     if (!viewportMeta.hasViewportTag) {
       return {

@@ -7,7 +7,6 @@
 
 const lighthouse = require('../../lighthouse-core/index.js');
 
-const assetSaver = require('../../lighthouse-core/lib/asset-saver.js');
 const LHError = require('../../lighthouse-core/lib/lh-error.js');
 const preprocessor = require('../../lighthouse-core/lib/proto-preprocessor.js');
 
@@ -26,11 +25,11 @@ const LR_PRESETS = {
  * @param {Connection} connection
  * @param {string} url
  * @param {LH.Flags} flags Lighthouse flags, including `output`
- * @param {{lrDevice?: 'desktop'|'mobile', categoryIDs?: Array<string>, logAssets: boolean, keepRawValues: boolean, configOverride?: LH.Config.Json}} lrOpts Options coming from Lightrider
+ * @param {{lrDevice?: 'desktop'|'mobile', categoryIDs?: Array<string>, logAssets: boolean, configOverride?: LH.Config.Json}} lrOpts Options coming from Lightrider
  * @return {Promise<string|Array<string>|void>}
  */
 async function runLighthouseInLR(connection, url, flags, lrOpts) {
-  const {lrDevice, categoryIDs, logAssets, keepRawValues, configOverride} = lrOpts;
+  const {lrDevice, categoryIDs, logAssets, configOverride} = lrOpts;
 
   // Certain fixes need to kick in under LR, see https://github.com/GoogleChrome/lighthouse/issues/5839
   global.isLightrider = true;
@@ -52,19 +51,23 @@ async function runLighthouseInLR(connection, url, flags, lrOpts) {
   }
 
   try {
-    const results = await lighthouse(url, flags, config, connection);
-    if (!results) return;
-
-    if (logAssets) {
-      await assetSaver.logAssets(results.artifacts, results.lhr.audits);
-    }
+    const runnerResult = await lighthouse(url, flags, config, connection);
+    if (!runnerResult) return;
 
     // pre process the LHR for proto
-    if (flags.output === 'json' && typeof results.report === 'string') {
-      return preprocessor.processForProto(results.report, {keepRawValues});
+    if (flags.output === 'json' && typeof runnerResult.report === 'string') {
+      // When LR is called with |internal: {keep_raw_response: true, save_lighthouse_assets: true}|,
+      // this code will log artifacts to raw_response.artifacts.
+      if (logAssets) {
+        // @ts-ignore - Regenerate the report, but tack on the artifacts.
+        runnerResult.lhr.artifacts = runnerResult.artifacts;
+        runnerResult.report = JSON.stringify(runnerResult.lhr);
+      }
+
+      return preprocessor.processForProto(runnerResult.report);
     }
 
-    return results.report;
+    return runnerResult.report;
   } catch (err) {
     // If an error ruined the entire lighthouse run, attempt to return a meaningful error.
     let runtimeError;

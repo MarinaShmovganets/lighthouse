@@ -5,13 +5,13 @@
  */
 'use strict';
 
-const Config = require('../../config/config');
+const Config = require('../../config/config.js');
 const assert = require('assert');
 const path = require('path');
 const defaultConfig = require('../../config/default-config.js');
 const log = require('lighthouse-logger');
-const Gatherer = require('../../gather/gatherers/gatherer');
-const Audit = require('../../audits/audit');
+const Gatherer = require('../../gather/gatherers/gatherer.js');
+const Audit = require('../../audits/audit.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
 /* eslint-env jest */
@@ -581,16 +581,16 @@ describe('Config', () => {
         extends: 'lighthouse:full',
         settings: {
           disableStorageReset: true,
-          disableDeviceEmulation: false,
+          emulatedFormFactor: 'mobile',
         },
       },
-      {disableDeviceEmulation: true}
+      {emulatedFormFactor: 'desktop'}
     );
 
     assert.ok(config, 'failed to generate config');
     assert.ok(typeof config.settings.maxWaitForLoad === 'number', 'missing setting from default');
     assert.ok(config.settings.disableStorageReset, 'missing setting from extension config');
-    assert.ok(config.settings.disableDeviceEmulation, 'missing setting from flags');
+    assert.ok(config.settings.emulatedFormFactor === 'desktop', 'missing setting from flags');
   });
 
   it('inherits default settings when undefined', () => {
@@ -739,6 +739,30 @@ describe('Config', () => {
       assert.ok(categoryNames.length > 1);
       assert.strictEqual(categoryNames[categoryNames.length - 1], 'lighthouse-plugin-simple');
       assert.strictEqual(config.categories['lighthouse-plugin-simple'].title, 'Simple');
+    });
+
+    describe('budget setting', () => {
+      it('should be initialized', () => {
+        const configJson = {
+          settings: {
+            budgets: [{
+              resourceCounts: [{
+                resourceType: 'image',
+                budget: 500,
+              }],
+            }],
+          },
+        };
+        const config = new Config(configJson);
+        assert.equal(config.settings.budgets[0].resourceCounts.length, 1);
+        assert.equal(config.settings.budgets[0].resourceCounts[0].resourceType, 'image');
+        assert.equal(config.settings.budgets[0].resourceCounts[0].budget, 500);
+      });
+
+      it('should throw when provided an invalid budget', () => {
+        assert.throws(() => new Config({settings: {budgets: ['invalid123']}}),
+          /Budget file is not defined as an array of budgets/);
+      });
     });
 
     it('should load plugins from the config and from passed-in flags', () => {

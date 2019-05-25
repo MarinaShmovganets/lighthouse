@@ -5,9 +5,9 @@
  */
 'use strict';
 
-const Audit = require('./audit');
-const NetworkRequest = require('../lib/network-request');
-const {taskGroups} = require('../lib/task-groups');
+const Audit = require('./audit.js');
+const NetworkRequest = require('../lib/network-request.js');
+const {taskGroups} = require('../lib/task-groups.js');
 const i18n = require('../lib/i18n/i18n.js');
 const NetworkRecords = require('../computed/network-records.js');
 const MainThreadTasks = require('../computed/main-thread-tasks.js');
@@ -45,7 +45,7 @@ class BootupTime extends Audit {
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['traces'],
+      requiredArtifacts: ['traces', 'devtoolsLogs'],
     };
   }
 
@@ -179,7 +179,7 @@ class BootupTime extends Audit {
 
     return {
       score,
-      rawValue: totalBootupTime,
+      numericValue: totalBootupTime,
       displayValue: totalBootupTime > 0 ?
         str_(i18n.UIStrings.seconds, {timeInMs: totalBootupTime}) : '',
       details,

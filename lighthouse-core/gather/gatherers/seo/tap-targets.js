@@ -7,7 +7,7 @@
 
 /* global document, window, getComputedStyle, getElementsInDocument, Node, getNodePath, getNodeSelector */
 
-const Gatherer = require('../gatherer');
+const Gatherer = require('../gatherer.js');
 const pageFunctions = require('../../../lib/page-functions.js');
 const {
   rectContains,
@@ -170,7 +170,7 @@ function elementIsInTextBlock(element) {
 /**
  * @param {string} str
  * @param {number} maxLength
- * @returns {string}
+ * @return {string}
  */
 /* istanbul ignore next */
 function truncate(str, maxLength) {
@@ -314,7 +314,13 @@ function gatherTapTargets() {
       path: getNodePath(tapTargetElement),
       // @ts-ignore - getNodeSelector put into scope via stringification
       selector: getNodeSelector(tapTargetElement),
+<<<<<<< HEAD
       href: /** @type {HTMLAnchorElement} */ (tapTargetElement)['href'] || '',
+=======
+      // @ts-ignore - getNodeLabel put into scope via stringification
+      nodeLabel: getNodeLabel(tapTargetElement),
+      href: /** @type {HTMLAnchorElement} */(tapTargetElement)['href'] || '',
+>>>>>>> master
     });
   }
 
@@ -346,6 +352,7 @@ class TapTargets extends Gatherer {
       ${rectContains.toString()};
       ${pageFunctions.getNodePathString};
       ${pageFunctions.getNodeSelectorString};
+      ${pageFunctions.getNodeLabelString};
       ${gatherTapTargets.toString()};
 
       return gatherTapTargets();

@@ -12,7 +12,7 @@
 
 'use strict';
 
-const Audit = require('../audit');
+const Audit = require('../audit.js');
 const Util = require('../../report/html/renderer/util.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
@@ -135,7 +135,7 @@ class DOMSize extends Audit {
 
     return {
       score,
-      rawValue: stats.totalBodyElements,
+      numericValue: stats.totalBodyElements,
       displayValue: str_(UIStrings.displayValue, {itemCount: stats.totalBodyElements}),
       extendedInfo: {
         value: items,

@@ -5,8 +5,8 @@
  */
 'use strict';
 
-const Audit = require('./audit');
-const URL = require('../lib/url-shim');
+const Audit = require('./audit.js');
+const URL = require('../lib/url-shim.js');
 const NetworkRecords = require('../computed/network-records.js');
 
 class NetworkRequests extends Audit {
@@ -90,7 +90,7 @@ class NetworkRequests extends Audit {
 
       return {
         score: 1,
-        rawValue: results.length,
+        numericValue: results.length,
         details: tableDetails,
       };
     });

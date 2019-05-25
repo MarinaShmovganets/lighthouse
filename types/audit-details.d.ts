@@ -56,6 +56,7 @@ declare global {
 
       export interface Screenshot {
         type: 'screenshot';
+        timing: number;
         timestamp: number;
         data: string;
       }
@@ -159,7 +160,10 @@ declare global {
         type: 'node';
         path?: string;
         selector?: string;
+        /** An HTML snippet used to identify the node. */
         snippet?: string;
+        /** A human-friendly text descriptor that's used to identify the node more quickly. */
+        nodeLabel?: string;
       }
 
       /**

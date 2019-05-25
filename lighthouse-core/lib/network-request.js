@@ -11,7 +11,7 @@
  * @see https://cs.chromium.org/chromium/src/third_party/blink/renderer/devtools/front_end/sdk/NetworkManager.js
  */
 
-const URL = require('./url-shim');
+const URL = require('./url-shim.js');
 
 const SECURE_SCHEMES = ['data', 'https', 'wss', 'blob', 'chrome', 'chrome-extension', 'about'];
 
@@ -428,41 +428,8 @@ class NetworkRequest {
       return;
     }
 
-    // Init timing.
-    this.timing = {
-      requestTime: this.startTime,
-      proxyStart: -1,
-      proxyEnd: -1,
-      dnsStart: -1,
-      dnsEnd: -1,
-      connectStart: -1,
-      connectEnd: -1,
-      sslStart: -1,
-      sslEnd: -1,
-      workerStart: -1,
-      workerReady: -1,
-      sendStart: -1,
-      sendEnd: -1,
-      pushStart: -1,
-      pushEnd: -1,
-      receiveHeadersEnd: -1,
-    };
-
-    const origEnd = this.endTime;
-    // `this.endTime` and `this.responseReceivedTime` are in seconds, so convert from milliseconds.
-    this.endTime = this.startTime + (totalMs / 1000);
-    this.responseReceivedTime = this.startTime + ((TCPMs + requestMs) / 1000);
-
-    this.timing.connectStart = 0;
-    this.timing.connectEnd = TCPMs;
-    this.timing.sslStart = TCPMs - SSLMs;
-    this.timing.sslEnd = TCPMs;
-    this.timing.sendStart = TCPMs;
-    this.timing.sendEnd = TCPMs;
-    this.timing.receiveHeadersEnd = TCPMs + requestMs;
-
     this.lrStatistics = {
-      endTimeDeltaMs: (origEnd - this.endTime) * 1000,
+      endTimeDeltaMs: (this.endTime - (this.startTime + (totalMs / 1000))) * 1000,
       TCPMs: TCPMs,
       requestMs: requestMs,
       responseMs: responseMs,

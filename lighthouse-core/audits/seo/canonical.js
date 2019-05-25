@@ -5,8 +5,8 @@
  */
 'use strict';
 
-const Audit = require('../audit');
-const URL = require('../../lib/url-shim');
+const Audit = require('../audit.js');
+const URL = require('../../lib/url-shim.js');
 const MainResource = require('../../computed/main-resource.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
@@ -36,19 +36,6 @@ const UIStrings = {
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 /**
- * Returns a primary domain for provided URL (e.g. http://www.example.com -> example.com).
- * Note that it does not take second-level domains into account (.co.uk).
- * @param {URL} url
- * @returns {string}
- */
-function getPrimaryDomain(url) {
-  return url.hostname
-    .split('.')
-    .slice(-2)
-    .join('.');
-}
-
-/**
  * @typedef CanonicalURLData
  * @property {Set<string>} uniqueCanonicalURLs
  * @property {Set<string>} hreflangURLs
@@ -66,7 +53,7 @@ class Canonical extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
-      requiredArtifacts: ['LinkElements', 'URL'],
+      requiredArtifacts: ['LinkElements', 'URL', 'devtoolsLogs'],
     };
   }
 
@@ -173,7 +160,7 @@ class Canonical extends Audit {
 
     // bing and yahoo don't allow canonical URLs pointing to different domains, it's also
     // a common mistake to publish a page with canonical pointing to e.g. a test domain or localhost
-    if (getPrimaryDomain(canonicalURL) !== getPrimaryDomain(baseURL)) {
+    if (!URL.rootDomainsMatch(canonicalURL, baseURL)) {
       return {
         score: 0,
         explanation: str_(UIStrings.explanationDifferentDomain, {url: canonicalURL}),

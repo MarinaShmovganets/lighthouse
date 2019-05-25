@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const pwaDetailsExpectations = require('./pwa-expectations').PWA_DETAILS_EXPECTATIONS;
+const pwaDetailsExpectations = require('./pwa-expectations.js').PWA_DETAILS_EXPECTATIONS;
 
 const jakeExpectations = {...pwaDetailsExpectations, hasShortName: false};
 
@@ -60,6 +60,12 @@ module.exports = [
         },
         'content-width': {
           score: 1,
+        },
+        'apple-touch-icon': {
+          score: 1,
+          warnings: [
+            /apple-touch-icon-precomposed/,
+          ],
         },
 
         // "manual" audits. Just verify in the results.
@@ -122,6 +128,9 @@ module.exports = [
         },
         'content-width': {
           score: 1,
+        },
+        'apple-touch-icon': {
+          score: 0,
         },
 
         // "manual" audits. Just verify in the results.

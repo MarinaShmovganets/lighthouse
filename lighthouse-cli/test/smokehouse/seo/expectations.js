@@ -256,11 +256,13 @@ module.exports = [
                   'type': 'node',
                   'path': '2,HTML,1,BODY,10,DIV,0,DIV,1,A',
                   'selector': 'body > div > div > a',
+                  'nodeLabel': 'too small target',
                 },
                 'overlappingTarget': {
                   'type': 'node',
                   'path': '2,HTML,1,BODY,10,DIV,0,DIV,2,A',
                   'selector': 'body > div > div > a',
+                  'nodeLabel': 'big enough target',
                 },
                 'tapTargetScore': 1440,
                 'overlappingTargetScore': 432,
