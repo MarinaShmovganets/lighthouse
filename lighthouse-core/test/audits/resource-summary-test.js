@@ -14,7 +14,7 @@ describe('Performance: Resource summary audit', () => {
   let artifacts;
   let context;
   beforeEach(() => {
-    context = {computedCache: new Map()};
+    context = {computedCache: new Map(), settings: {}};
 
     artifacts = {
       devtoolsLogs: {

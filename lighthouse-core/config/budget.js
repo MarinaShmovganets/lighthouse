@@ -31,6 +31,22 @@ function isNumber(val) {
   return typeof val === 'number' && !isNaN(val);
 }
 
+/**
+ * @param {unknown} val
+ * @return {val is string}
+ */
+function isString(val) {
+  return typeof val === 'string';
+}
+
+/**
+ * @param {unknown} arr
+ * @return {arr is string[]}
+ */
+function isArrayOfStrings(arr) {
+  return Array.isArray(arr) && arr.every(isString);
+}
+
 class Budget {
   /**
    * Asserts that obj has no own properties, throwing a nice error message if it does.
@@ -147,8 +163,16 @@ class Budget {
       /** @type {LH.Budget} */
       const budget = {};
 
-      const {resourceSizes, resourceCounts, timings, ...invalidRest} = b;
+      const {ownDomains, resourceSizes, resourceCounts, timings, ...invalidRest} = b;
       Budget.assertNoExcessProperties(invalidRest, 'Budget');
+
+      if (isArrayOfStrings(ownDomains)) {
+        budget.ownDomains = ownDomains;
+        Budget.assertNoDuplicateStrings(budget.ownDomains,
+          `budgets[${index}].ownDomains`);
+      } else if (ownDomains !== undefined) {
+        throw new Error(`Invalid ownDomains entry in budget at index ${index}`);
+      }
 
       if (isArrayOfUnknownObjects(resourceSizes)) {
         budget.resourceSizes = resourceSizes.map(Budget.validateResourceBudget);

@@ -11,6 +11,8 @@ declare global {
      * More info: https://github.com/GoogleChrome/lighthouse/issues/6053#issuecomment-428385930
      */
     export interface Budget {
+      /** Own domains, not to count as third-party */
+      ownDomains?: Array<string>;
       /** Budgets based on resource count. */
       resourceCounts?: Array<Budget.ResourceBudget>;
       /** Budgets based on resource size. */

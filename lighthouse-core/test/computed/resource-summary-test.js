@@ -28,7 +28,7 @@ describe('Resource summary computed', () => {
       {url: 'http://cdn.example.com/script.js', resourceType: 'Script', transferSize: 50},
       {url: 'http://third-party.com/file.jpg', resourceType: 'Image', transferSize: 70},
     ]);
-    context = {computedCache: new Map()};
+    context = {computedCache: new Map(), settings: {}};
   });
 
   it('includes all resource types, regardless of whether page contains them', async () => {
@@ -55,7 +55,7 @@ describe('Resource summary computed', () => {
       {url: 'http://third-party.com/another-file.html', resourceType: 'manifest', transferSize: 50},
     ];
 
-    const result = ComputedResourceSummary.summarize(networkRecords, networkRecords[0].url);
+    const result = ComputedResourceSummary.summarize(networkRecords, [networkRecords[0].url]);
     assert.equal(result.other.count, 1);
     assert.equal(result.other.size, 50);
   });

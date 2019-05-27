@@ -373,6 +373,11 @@ class Util {
       return value;
     }
 
+    // Default protocol to https if missing
+    if (!/:\/\//.test(value)) {
+      value = 'https://' + value;
+    }
+
     return new URL(value);
   }
 

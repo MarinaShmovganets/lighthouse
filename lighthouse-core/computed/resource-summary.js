@@ -32,10 +32,10 @@ class ResourceSummary {
 
   /**
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
-   * @param {string} mainResourceURL
+   * @param {string[]} ownDomains
    * @return {Record<LH.Budget.ResourceType,ResourceEntry>}
    */
-  static summarize(networkRecords, mainResourceURL) {
+  static summarize(networkRecords, ownDomains) {
     /** @type {Record<LH.Budget.ResourceType,ResourceEntry>} */
     const resourceSummary = {
       'stylesheet': {count: 0, size: 0},
@@ -58,7 +58,7 @@ class ResourceSummary {
       resourceSummary.total.size += record.transferSize;
 
       // Ignores subdomains: i.e. blog.example.com & example.com would match
-      if (!URL.rootDomainsMatch(record.url, mainResourceURL)) {
+      if (!ownDomains.some(domain => URL.rootDomainsMatch(record.url, domain))) {
         resourceSummary['third-party'].count++;
         resourceSummary['third-party'].size += record.transferSize;
       }
@@ -77,7 +77,9 @@ class ResourceSummary {
       MainResource.request(data, context),
     ]);
 
-    return ResourceSummary.summarize(networkRecords, mainResource.url);
+    const budget = context.settings.budgets ? context.settings.budgets[0] : {};
+    const ownDomains = budget.ownDomains ? budget.ownDomains : [];
+    return ResourceSummary.summarize(networkRecords, [mainResource.url].concat(ownDomains));
   }
 }
 
