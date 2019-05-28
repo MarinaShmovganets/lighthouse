@@ -186,6 +186,8 @@ class Runner {
     // resolution.
     .map(entry => {
       return /** @type {PerformanceEntry} */ ({
+        // Don't spread entry because browser PerformanceEntries can't be spread.
+        // https://github.com/GoogleChrome/lighthouse/issues/8638
         startTime: parseFloat(entry.startTime.toFixed(2)),
         name: entry.name,
         duration: parseFloat(entry.duration.toFixed(2)),
