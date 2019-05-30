@@ -25,9 +25,6 @@
 
 /* globals getFilenamePrefix Util */
 
-/** @typedef {import('./dom.js')} DOM */
-/** @typedef {import('./util.js')} Util */
-
 /**
  * @param {HTMLTableElement} tableEl
  * @return {Array<HTMLTableRowElement>}
