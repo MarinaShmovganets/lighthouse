@@ -11,6 +11,7 @@ const manifestStub = require('../fixtures/manifest.json');
 
 const EXAMPLE_MANIFEST_URL = 'https://example.com/manifest.json';
 const EXAMPLE_DOC_URL = 'https://example.com/index.html';
+const EXAMPLE_MANIFEST_BLOB_URL = 'blob:https://example.com/manifest.json';
 
 /**
  * Simple manifest parsing helper when the manifest URLs aren't material to the
@@ -45,6 +46,16 @@ describe('Manifest Parser', function() {
     // TODO:
     // related_applications
     // prefer_related_applications
+  });
+
+  it('should warn on invalid manifest parser URL', function() {
+    const parsedManifest = manifestParser('{}', 'not a URL', EXAMPLE_DOC_URL);
+    assert.ok(parsedManifest.warning);
+  });
+
+  it('should warn on valid but non-HTTPS manifest parser URL', function() {
+    const parsedManifest = manifestParser('{}', EXAMPLE_MANIFEST_BLOB_URL, EXAMPLE_DOC_URL);
+    assert.ok(parsedManifest.warning);
   });
 
   describe('icon parsing', function() {
@@ -106,6 +117,18 @@ describe('Manifest Parser', function() {
         }],
       });
       const parsedManifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      const icons = parsedManifest.value.icons;
+      assert.equal(icons.value.length, 0);
+    });
+
+    it('parses icons and discards any with invalid base URL values', () => {
+      const manifestSrc = JSON.stringify({
+        icons: [{
+          src: '/valid/path',
+        }],
+      });
+      const parsedManifest = manifestParser(manifestSrc, EXAMPLE_MANIFEST_BLOB_URL,
+        EXAMPLE_DOC_URL);
       const icons = parsedManifest.value.icons;
       assert.equal(icons.value.length, 0);
     });

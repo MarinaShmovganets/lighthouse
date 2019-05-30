@@ -151,7 +151,7 @@ function parseStartUrl(jsonInput, manifestUrl, documentUrl) {
     return {
       raw,
       value: documentUrl,
-      warning: 'ERROR: invalid start_url relative to ${manifestUrl}',
+      warning: `ERROR: invalid start_url relative to ${manifestUrl}`,
     };
   }
 
@@ -229,8 +229,14 @@ function parseIcon(raw, manifestUrl) {
     src.value = undefined;
   }
   if (src.value) {
-    // 9.4(4) - construct URL with manifest URL as the base
-    src.value = new URL(src.value, manifestUrl).href;
+    try {
+      // 9.4(4) - construct URL with manifest URL as the base
+      src.value = new URL(src.value, manifestUrl).href;
+    } catch (_) {
+      // 9.6 "This algorithm will return a URL or undefined."
+      src.warning = `ERROR: invalid icon url will be ignored ${raw.src}`;
+      src.value = undefined;
+    }
   }
 
   const type = parseString(raw.type, true);
@@ -333,7 +339,7 @@ function parseApplication(raw) {
       appUrl.value = new URL(appUrl.value).href;
     } catch (e) {
       appUrl.value = undefined;
-      appUrl.warning = 'ERROR: invalid application URL ${raw.url}';
+      appUrl.warning = `ERROR: invalid application URL ${raw.url}`;
     }
   }
 
@@ -460,10 +466,21 @@ function parse(string, manifestUrl, documentUrl) {
   };
   /* eslint-enable camelcase */
 
+  /** @type {string|undefined} */
+  let manifestUrlWarning;
+  try {
+    const manifestUrlParsed = new URL(manifestUrl);
+    if (manifestUrlParsed.protocol !== 'https:') {
+      manifestUrlWarning = `ERROR: manifest URL not available over https`;
+    }
+  } catch (_) {
+    manifestUrlWarning = `ERROR: invalid manifest URL ${manifestUrl}`;
+  }
+
   return {
     raw: string,
     value: manifest,
-    warning: undefined,
+    warning: manifestUrlWarning,
   };
 }
 
