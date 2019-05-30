@@ -1,19 +1,12 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Beng Eu <beng@bengeu.com>
-David Boyne <david.boyne@bglgroup.co.uk>
- <a name="5.1.0"></a>
+<a name="5.1.0"></a>
 # 5.1.0 (2019-05-30)
 [Full Changelog](https://github.com/googlechrome/lighthouse/compare/v5.0.0...v5.1.0)
 
-## CLI
+## New contributors!
 
-* flags: accept comma-separated array values ([#8933](https://github.com/googlechrome/lighthouse/pull/8933))
-
-## Clients
-
-* devtools: ignore dark mode media query ([#9082](https://github.com/googlechrome/lighthouse/pull/9082))
-* devtools: update version in tests on lh roll ([#8819](https://github.com/googlechrome/lighthouse/pull/8819))
-* lr: insert assets in lhr for logging purposes ([#9002](https://github.com/googlechrome/lighthouse/pull/9002))
+Thanks to our new contributors 👽🐷🐰🐯🐻! 
+Beng Eu <beng@bengeu.com>
+David Boyne <david.boyne@bglgroup.co.uk>
 
 ## Core
 
@@ -26,45 +19,42 @@ David Boyne <david.boyne@bglgroup.co.uk>
 * logging: change log messages for gathering and trace retrieval ([#9029](https://github.com/googlechrome/lighthouse/pull/9029))
 * perf: speed up getNodePath ([#9055](https://github.com/googlechrome/lighthouse/pull/9055))
 * performance-budget: add MP-FID as budget metric ([#8905](https://github.com/googlechrome/lighthouse/pull/8905))
-* report: show nodeLabel for DOM nodes in addition to snippet ([#8961](https://github.com/googlechrome/lighthouse/pull/8961))
 * runner: fix missing timing properties in the browser ([#9072](https://github.com/googlechrome/lighthouse/pull/9072))
 * tap-targets: don't exclude visible position absolute elements from audit ([#7778](https://github.com/googlechrome/lighthouse/pull/7778))
 
-## Devtools
+## Report
 
-* move topbar out of scrollable container ([#9077](https://github.com/googlechrome/lighthouse/pull/9077))
-* enable sticky header, top bar, and report ui features ([#9023](https://github.com/googlechrome/lighthouse/pull/9023))
+* two rows for filmstrip on mobile ([#8563](https://github.com/googlechrome/lighthouse/pull/8563))
+* move gauge styles to main stylesheet ([#8893](https://github.com/googlechrome/lighthouse/pull/8893))
+* show metric descriptions by default when errors exist ([#9054](https://github.com/googlechrome/lighthouse/pull/9054))
+* show fireworks only if all core categories score 100 ([#9073](https://github.com/googlechrome/lighthouse/pull/9073))
+* make gauge font size and positioning dynamic ([#9057](https://github.com/googlechrome/lighthouse/pull/9057))
+* hide 3rd party filter checkbox if all rows are 3rd party ([#8966](https://github.com/googlechrome/lighthouse/pull/8966))
+* fix word breaking of display text, move metric disclaimer ([#9030](https://github.com/googlechrome/lighthouse/pull/9030))
+* show nodeLabel for DOM nodes in addition to snippet ([#8961](https://github.com/googlechrome/lighthouse/pull/8961))
+
+## Clients
+
+* devtools: move topbar out of scrollable container ([#9077](https://github.com/googlechrome/lighthouse/pull/9077))
+* devtools: enable sticky header, top bar, and report ui features ([#9023](https://github.com/googlechrome/lighthouse/pull/9023))
+* devtools: ignore dark mode media query ([#9082](https://github.com/googlechrome/lighthouse/pull/9082))
+* devtools: update version in tests on lh roll ([#8819](https://github.com/googlechrome/lighthouse/pull/8819))
+* lr: insert assets in lhr for logging purposes ([#9002](https://github.com/googlechrome/lighthouse/pull/9002))
+
+## CLI
+
+* flags: accept comma-separated array values ([#8933](https://github.com/googlechrome/lighthouse/pull/8933))
 
 ## Docs
 
 * plugins: add link to field-performance plugin ([#9051](https://github.com/googlechrome/lighthouse/pull/9051))
 * plugins: rename Google AdSpeed Insights to Publisher Ads Audit ([#8906](https://github.com/googlechrome/lighthouse/pull/8906))
-* readme: add lighthouse-plugin-field-performance to plugins ([#9049](https://github.com/googlechrome/lighthouse/pull/9049))
-* readme: add performance-budgets to related projects ([#8971](https://github.com/googlechrome/lighthouse/pull/8971))
+* add lighthouse-plugin-field-performance to plugins ([#9049](https://github.com/googlechrome/lighthouse/pull/9049))
+* add performance-budgets to related projects ([#8971](https://github.com/googlechrome/lighthouse/pull/8971))
 
 ## I18n
 
 * minor fr and ta translation updates ([#8999](https://github.com/googlechrome/lighthouse/pull/8999))
-
-## Renderer
-
-* fix word breaking of display text, move metric disclaimer ([#9030](https://github.com/googlechrome/lighthouse/pull/9030))
-
-## Report
-
-* redesign: two rows for filmstrip on mobile ([#8563](https://github.com/googlechrome/lighthouse/pull/8563))
-* redesign: move gauge styles to main stylesheet ([#8893](https://github.com/googlechrome/lighthouse/pull/8893))
-* show metric descriptions by default when errors exist ([#9054](https://github.com/googlechrome/lighthouse/pull/9054))
-* show fireworks only if all core categories score 100 ([#9073](https://github.com/googlechrome/lighthouse/pull/9073))
-* make gauge font size and positioning dynamic ([#9057](https://github.com/googlechrome/lighthouse/pull/9057))
-* hide 3rd party filter checkbox if all rows are 3rd party ([#8966](https://github.com/googlechrome/lighthouse/pull/8966))
-
-## Tests
-
-* lint: require file extension in require() ([#9017](https://github.com/googlechrome/lighthouse/pull/9017))
-* update a11y sample artifacts ([#9010](https://github.com/googlechrome/lighthouse/pull/9010))
-* remove compile-devtools on travis ([#8988](https://github.com/googlechrome/lighthouse/pull/8988))
-* smoke: re-enable dialog prompt ([#8894](https://github.com/googlechrome/lighthouse/pull/8894))
 
 ## Misc
 
@@ -73,6 +63,13 @@ David Boyne <david.boyne@bglgroup.co.uk>
 * remove unneeded reportCategories from LH.ReportResult ([#9001](https://github.com/googlechrome/lighthouse/pull/9001))
 * update minify-trace scripts; extract to lib/ ([#8968](https://github.com/googlechrome/lighthouse/pull/8968))
 * fix master: tmp revert of scroll change in #8625 ([#9059](https://github.com/googlechrome/lighthouse/pull/9059))
+
+## Tests
+
+* lint: require file extension in require() ([#9017](https://github.com/googlechrome/lighthouse/pull/9017))
+* update a11y sample artifacts ([#9010](https://github.com/googlechrome/lighthouse/pull/9010))
+* remove compile-devtools on travis ([#8988](https://github.com/googlechrome/lighthouse/pull/8988))
+* smoke: re-enable dialog prompt ([#8894](https://github.com/googlechrome/lighthouse/pull/8894))
 
  <a name="5.0.0"></a>
 # 5.0.0 (2019-05-07)
