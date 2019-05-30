@@ -470,8 +470,8 @@ function parse(string, manifestUrl, documentUrl) {
   let manifestUrlWarning;
   try {
     const manifestUrlParsed = new URL(manifestUrl);
-    if (manifestUrlParsed.protocol !== 'https:') {
-      manifestUrlWarning = `ERROR: manifest URL not available over https`;
+    if (!manifestUrlParsed.protocol.startsWith('http')) {
+      manifestUrlWarning = `WARNING: manifest URL not available over a valid network protocol`;
     }
   } catch (_) {
     manifestUrlWarning = `ERROR: invalid manifest URL ${manifestUrl}`;
