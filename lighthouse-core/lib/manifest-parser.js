@@ -332,7 +332,7 @@ function parseIcons(jsonInput, manifestUrl) {
     raw,
     value,
     warning: ignoredIconsWithWarnings.length ?
-      'WARNING: Some icons were ignored due to warnings.' : '',
+      'WARNING: Some icons were ignored due to warnings.' : undefined,
   };
 }
 

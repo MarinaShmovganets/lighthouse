@@ -54,7 +54,7 @@ describe('Manifest Parser', function() {
       .toEqual('ERROR: invalid manifest URL: \'not a URL\'');
   });
 
-  it('should warn on valid but non-HTTPS manifest parser URL', function() {
+  it('should warn on valid but non-(HTTP|HTTPS) manifest parser URL', function() {
     const parsedManifest = manifestParser('{}', EXAMPLE_MANIFEST_BLOB_URL, EXAMPLE_DOC_URL);
     expect(parsedManifest.warning)
       .toEqual('WARNING: manifest URL not available over a valid network protocol');
