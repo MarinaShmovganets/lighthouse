@@ -5,22 +5,22 @@
 ## New contributors!
 
 Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Beng Eu <beng@bengeu.com>
-David Boyne <david.boyne@bglgroup.co.uk>
+@thebengeu
+@boyney123
 
 ## Core
 
+* gather-runner: treat NO_FCP as a pageLoadError ([#8340](https://github.com/googlechrome/lighthouse/pull/8340))
+* logging: change log messages for gathering and trace retrieval ([#9029](https://github.com/googlechrome/lighthouse/pull/9029))
+* tap-targets: don't exclude visible position absolute elements from audit ([#7778](https://github.com/googlechrome/lighthouse/pull/7778))
 * budget: throw error on duplicate budget types ([#8915](https://github.com/googlechrome/lighthouse/pull/8915))
 * config: split out config helpers ([#9003](https://github.com/googlechrome/lighthouse/pull/9003))
-* gather-runner: treat NO_FCP as a pageLoadError ([#8340](https://github.com/googlechrome/lighthouse/pull/8340))
-* gather-runner: always reset scroll position ([#8625](https://github.com/googlechrome/lighthouse/pull/8625))
+* gather-runner: always reset scroll position (reverted) ([#8625](https://github.com/googlechrome/lighthouse/pull/8625))
 * image-elements: drop spritesheet logic ([#8940](https://github.com/googlechrome/lighthouse/pull/8940))
 * refactor gather-runner control flow ([#8964](https://github.com/googlechrome/lighthouse/pull/8964))
-* logging: change log messages for gathering and trace retrieval ([#9029](https://github.com/googlechrome/lighthouse/pull/9029))
 * perf: speed up getNodePath ([#9055](https://github.com/googlechrome/lighthouse/pull/9055))
 * performance-budget: add MP-FID as budget metric ([#8905](https://github.com/googlechrome/lighthouse/pull/8905))
 * runner: fix missing timing properties in the browser ([#9072](https://github.com/googlechrome/lighthouse/pull/9072))
-* tap-targets: don't exclude visible position absolute elements from audit ([#7778](https://github.com/googlechrome/lighthouse/pull/7778))
 
 ## Report
 
