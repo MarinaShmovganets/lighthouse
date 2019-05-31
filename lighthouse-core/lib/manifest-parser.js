@@ -16,7 +16,7 @@ const ALLOWED_DISPLAY_VALUES = [
 ];
 /**
  * All display-mode fallbacks, including when unset, lead to default display mode 'browser'.
- * @see https://w3c.github.io/manifest/#dfn-default-display-mode
+ * @see https://www.w3.org/TR/2016/WD-appmanifest-20160825/#dfn-default-display-mode
  */
 const DEFAULT_DISPLAY_MODE = 'browser';
 
@@ -111,7 +111,7 @@ function checkSameOrigin(url1, url2) {
 }
 
 /**
- * https://w3c.github.io/manifest/#start_url-member
+ * https://www.w3.org/TR/2016/WD-appmanifest-20160825/#start_url-member
  * @param {*} jsonInput
  * @param {string} manifestUrl
  * @param {string} documentUrl
@@ -218,6 +218,7 @@ function parseOrientation(jsonInput) {
 }
 
 /**
+ * @see https://www.w3.org/TR/2016/WD-appmanifest-20160825/#src-member
  * @param {*} raw
  * @param {string} manifestUrl
  */
@@ -233,8 +234,8 @@ function parseIcon(raw, manifestUrl) {
       // 9.4(4) - construct URL with manifest URL as the base
       src.value = new URL(src.value, manifestUrl).href;
     } catch (_) {
-      // 9.6 "This algorithm will return a URL or undefined."
-      src.warning = `ERROR: invalid icon url will be ignored ${raw.src}`;
+      // 9.4 "This algorithm will return a URL or undefined."
+      src.warning = `ERROR: invalid icon url will be ignored: '${raw.src}'`;
       src.value = undefined;
     }
   }
@@ -307,20 +308,31 @@ function parseIcons(jsonInput, manifestUrl) {
     };
   }
 
-  // TODO(bckenny): spec says to skip icons missing `src`, so debug messages on
-  // individual icons are lost. Warn instead?
-  const value = raw
+  const parsedIcons = raw
     // 9.6(3)(1)
     .filter(icon => icon.src !== undefined)
     // 9.6(3)(2)(1)
-    .map(icon => parseIcon(icon, manifestUrl))
+    .map(icon => parseIcon(icon, manifestUrl));
+
+  // NOTE: we still lose the specific message on these icons, but it's not possible to surface them
+  // without a massive change to the structure and paradigms of `manifest-parser`.
+  const ignoredIconsWithWarnings = parsedIcons
+    .filter(icon => {
+      const possibleWarnings = [icon.warning, icon.value.type.warning, icon.value.src.warning,
+        icon.value.sizes.warning, icon.value.density.warning].filter(Boolean);
+      const hasSrc = !!icon.value.src.value;
+        return !!possibleWarnings.length && !hasSrc;
+    });
+
+  const value = parsedIcons
     // 9.6(3)(2)(2)
     .filter(parsedIcon => parsedIcon.value.src.value !== undefined);
 
   return {
     raw,
     value,
-    warning: undefined,
+    warning: ignoredIconsWithWarnings.length ?
+      'WARNING: Some icons were ignored due to warnings.' : '',
   };
 }
 
@@ -474,7 +486,7 @@ function parse(string, manifestUrl, documentUrl) {
       manifestUrlWarning = `WARNING: manifest URL not available over a valid network protocol`;
     }
   } catch (_) {
-    manifestUrlWarning = `ERROR: invalid manifest URL ${manifestUrl}`;
+    manifestUrlWarning = `ERROR: invalid manifest URL: '${manifestUrl}'`;
   }
 
   return {
