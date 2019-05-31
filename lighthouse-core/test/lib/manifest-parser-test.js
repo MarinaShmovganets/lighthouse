@@ -184,7 +184,7 @@ describe('Manifest Parser', function() {
       assert.equal(parsedManifest.value.name.value, 'foo');
     });
 
-    it("doesn't parse non-string", function() {
+    it('doesn\'t parse non-string', function() {
       let parsedManifest = noUrlManifestParser('{"name": {} }');
       expect(parsedManifest.warning).toBeUndefined();
       assert.equal(parsedManifest.value.name.value, undefined);
@@ -208,7 +208,7 @@ describe('Manifest Parser', function() {
       assert.equal(parsedManifest.value.short_name.value, 'foo');
     });
 
-    it("doesn't parse non-string", function() {
+    it('doesn\'t parse non-string', function() {
       let parsedManifest = noUrlManifestParser('{"short_name": {} }');
       expect(parsedManifest.warning).toBeUndefined();
       assert.equal(parsedManifest.value.short_name.value, undefined);

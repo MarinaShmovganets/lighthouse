@@ -321,7 +321,7 @@ function parseIcons(jsonInput, manifestUrl) {
       const possibleWarnings = [icon.warning, icon.value.type.warning, icon.value.src.warning,
         icon.value.sizes.warning, icon.value.density.warning].filter(Boolean);
       const hasSrc = !!icon.value.src.value;
-        return !!possibleWarnings.length && !hasSrc;
+      return !!possibleWarnings.length && !hasSrc;
     });
 
   const value = parsedIcons
