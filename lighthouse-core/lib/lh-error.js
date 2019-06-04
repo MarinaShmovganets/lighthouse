@@ -172,14 +172,6 @@ const ERRORS = {
     message: UIStrings.pageLoadFailedWithStatusCode,
     lhrRuntimeError: true,
   },
-  /* Used when security error prevents page load.
-   * Requires an additional `securityMessages` field for translation.
-   */
-  INSECURE_DOCUMENT_REQUEST: {
-    code: 'INSECURE_DOCUMENT_REQUEST',
-    message: UIStrings.pageLoadFailedInsecure,
-    lhrRuntimeError: true,
-  },
   /* Used when the page stopped responding and did not finish loading. */
   PAGE_HUNG: {
     code: 'PAGE_HUNG',

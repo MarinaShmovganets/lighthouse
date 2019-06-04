@@ -16,8 +16,6 @@ const log = require('lighthouse-logger');
 const {collateResults, report} = require('./smokehouse-report.js');
 
 const PROTOCOL_TIMEOUT_EXIT_CODE = 67;
-const PAGE_HUNG_EXIT_CODE = 68;
-const INSECURE_DOCUMENT_REQUEST_EXIT_CODE = 69;
 const RETRIES = 3;
 
 /**
@@ -45,9 +43,6 @@ function resolveLocalOrCwd(payloadPath) {
  */
 function isUnexpectedFatalResult(exitCode, outputPath) {
   return exitCode !== 0
-    // These runtime errors are currently fatal but "expected" runtime errors we are asserting against.
-    && exitCode !== PAGE_HUNG_EXIT_CODE
-    && exitCode !== INSECURE_DOCUMENT_REQUEST_EXIT_CODE
     // On runtime errors we exit with a error status code, but still output a report.
     // If the report exists, it wasn't a fatal LH error we need to abort on, it's one we're asserting :)
     && !fs.existsSync(outputPath);
@@ -116,15 +111,11 @@ function runLighthouse(url, configPath, isDebug) {
 
   let errorCode;
   let lhr = {requestedUrl: url, finalUrl: url, audits: {}};
-  if (runResults.status === PAGE_HUNG_EXIT_CODE) {
-    errorCode = 'PAGE_HUNG';
-  } else if (runResults.status === INSECURE_DOCUMENT_REQUEST_EXIT_CODE) {
-    errorCode = 'INSECURE_DOCUMENT_REQUEST';
-  } else {
+  if (fs.existsSync(outputPath)) {
     lhr = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
     if (isDebug) {
       console.log('LHR output available at: ', outputPath);
-    } else if (fs.existsSync(outputPath)) {
+    } else {
       fs.unlinkSync(outputPath);
     }
   }
