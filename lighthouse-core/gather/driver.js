@@ -1479,7 +1479,7 @@ class Driver {
         storageTypes: typesToClear,
       });
     } catch (err) {
-      if (/** @type {LighthouseError} */(err).code === 'PROTOCOL_TIMEOUT') {
+      if (/** @type {LH.LighthouseError} */(err).code === 'PROTOCOL_TIMEOUT') {
         log.warn('Driver', 'clearDataForOrigin timed out');
       } else {
         throw err;
