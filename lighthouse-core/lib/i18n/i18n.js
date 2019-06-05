@@ -56,6 +56,12 @@ const UIStrings = {
   columnWastedMs: 'Potential Savings',
   /** Label for the time spent column in data tables, entries will be the number of milliseconds spent during a particular activity */
   columnTimeSpent: 'Time Spent',
+  /** Label for the type of network resource column in data tables, entries will be enumerated kinds of network requests e.g. "Scripts", "Third-Party", "Stylesheet".*/
+  columnResourceType: 'Resource Type',
+  /** Label for the count of network requests column in data tables, entries will be the number of network requests done by a webpage.*/
+  columnRequests: 'Requests',
+  /** Label for the transfer size of network requests column in data tables, entries will be the total bytes transferred of a group of network requests.*/
+  columnTransferSize: 'Transfer Size',
   /** Label for a row in a data table; entries will be the total number and byte size of all resources loaded by a web page. */
   totalResourceType: 'Total',
   /** Label for a row in a data table; entries will be the total number and byte size of all 'Document' resources loaded by a web page. */

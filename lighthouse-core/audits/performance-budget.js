@@ -20,12 +20,6 @@ const UIStrings = {
     =1 {1 request}
     other {# requests}
    }`,
-  /** Table column header for classifying website resources by type, example: "Scripts", "Third-Party", "Stylesheet". */
-  columnResourceType: 'Resource Type',
-  /** Table column header for the count of requests made per resource type. */
-  columnRequests: 'Requests',
-  /** Table column header for the sizes of all network requests of a specific type. */
-  columnTransferSize: 'Transfer Size',
   /** Table column header for how displaying how much larger the size of network requests were than a predetermined budget. */
   columnOverBudget: 'Over Budget',
 };
@@ -138,9 +132,9 @@ class ResourceBudget extends Audit {
 
     /** @type { LH.Audit.Details.Table['headings'] } */
     const headers = [
-      {key: 'label', itemType: 'text', text: str_(UIStrings.columnResourceType)},
-      {key: 'requestCount', itemType: 'numeric', text: str_(UIStrings.columnRequests)},
-      {key: 'size', itemType: 'bytes', text: str_(UIStrings.columnTransferSize)},
+      {key: 'label', itemType: 'text', text: str_(i18n.UIStrings.columnResourceType)},
+      {key: 'requestCount', itemType: 'numeric', text: str_(i18n.UIStrings.columnRequests)},
+      {key: 'size', itemType: 'bytes', text: str_(i18n.UIStrings.columnTransferSize)},
       {key: 'countOverBudget', itemType: 'text', text: ''},
       {key: 'sizeOverBudget', itemType: 'bytes', text: str_(UIStrings.columnOverBudget)},
     ];
