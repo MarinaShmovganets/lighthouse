@@ -97,7 +97,7 @@ function runLighthouse(url, configPath, isDebug) {
     process.exit(runResults.status);
   }
 
-  let lhr = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
+  const lhr = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
   if (isDebug) {
     console.log('LHR output available at: ', outputPath);
   } else {
