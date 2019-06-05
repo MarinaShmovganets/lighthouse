@@ -759,6 +759,22 @@
     "message": "Server Backend Latencies",
     "description": "Descriptive title of a Lighthouse audit that tells the user the server latencies observed from each origin the page connected to. This is displayed in a list of audit titles that Lighthouse generates."
   },
+  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
+    "message": "Over Budget",
+    "description": "Table column header for how displaying how much larger the size of network requests were than a predetermined budget."
+  },
+  "lighthouse-core/audits/performance-budget.js | columnRequests": {
+    "message": "Requests",
+    "description": "Table column header for the count of requests made per resource type."
+  },
+  "lighthouse-core/audits/performance-budget.js | columnResourceType": {
+    "message": "Resource Type",
+    "description": "Table column header for classifying website resources by type, example: \"Scripts\", \"Third-Party\", \"Stylesheet\"."
+  },
+  "lighthouse-core/audits/performance-budget.js | columnTransferSize": {
+    "message": "Transfer Size",
+    "description": "Table column header for the sizes of all network requests of a specific type."
+  },
   "lighthouse-core/audits/performance-budget.js | description": {
     "message": "Keep the quantity and size of network requests under the targets set by the provided performance budget. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/budgets).",
     "description": "Description of a Lighthouse audit where a user sets budgets for the quantity and size of page resources. No character length limits. 'Learn More' becomes link text to additional documentation."
