@@ -439,7 +439,7 @@ class NetworkAnalyzer {
    */
   static findMainDocument(records, finalURL) {
     // Try to find an exact match with the final URL first if we have one
-    // .....
+    // ..... ...
     if (finalURL) {
       // equalWithExcludedFragments is expensive, so check that the finalUrl starts with the request first
       const mainResource = records.find(request => finalURL.startsWith(request.url) &&
