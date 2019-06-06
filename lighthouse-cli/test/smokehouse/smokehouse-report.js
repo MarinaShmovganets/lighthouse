@@ -127,6 +127,7 @@ function makeComparison(name, actualResult, expectedResult) {
  */
 function collateResults(actual, expected) {
   // If actual run had a runtimeError, expected *must* have a runtimeError.
+  // Relies on the fact that an `undefined` argument to makeComparison() can only match `undefined`.
   const runtimeErrorAssertion = makeComparison('runtimeError', actual.lhr.runtimeError,
       expected.lhr.runtimeError);
 
