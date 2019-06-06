@@ -20,7 +20,7 @@ const UIStrings = {
     =1 {1 request}
     other {# requests}
    }`,
-  /** Table column header for how displaying how much larger the size of network requests were than a predetermined budget. */
+  /** Label for a column in a data table; entries will be how much greater the quantity of network requests were than a predetermined budget, or how much larger the size of network requests were than a predetermined budget.*/
   columnOverBudget: 'Over Budget',
 };
 
