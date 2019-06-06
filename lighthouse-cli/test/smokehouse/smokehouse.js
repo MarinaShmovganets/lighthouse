@@ -114,7 +114,7 @@ function runLighthouse(url, configPath, isDebug) {
   }
 
   // There should either be both an error exitCode and a lhr.runtimeError or neither.
-  if (!exitCode !== !lhr.runtimeError) {
+  if (Boolean(exitCode) !== Boolean(lhr.runtimeError)) {
     const runtimeErrorCode = lhr.runtimeError && lhr.runtimeError.code;
     console.error(`Lighthouse did not exit with an error correctly, exiting with ${exitCode} but with runtimeError '${runtimeErrorCode}'`); // eslint-disable-line max-len
     process.exit(1);
