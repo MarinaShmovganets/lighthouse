@@ -346,7 +346,7 @@ class GatherRunner {
       gathererResult.push(artifactPromise);
       gathererResults[gatherer.name] = gathererResult;
       await artifactPromise.catch(() => {});
-      if (scrollPosition) await driver.scrollTo(scrollPosition);
+      await driver.scrollTo(scrollPosition);
       log.timeEnd(status);
     }
     log.timeEnd(apStatus);
