@@ -62,7 +62,7 @@ class ReportUIFeatures {
     this.onMediaQueryChange = this.onMediaQueryChange.bind(this);
     this.onCopy = this.onCopy.bind(this);
     this.onToolsButtonClick = this.onToolsButtonClick.bind(this);
-    this.onExport = this.onExport.bind(this);
+    this.onToolAction = this.onToolAction.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onChevronClick = this.onChevronClick.bind(this);
@@ -210,7 +210,7 @@ class ReportUIFeatures {
     this.toolsButton.addEventListener('click', this.onToolsButtonClick);
 
     const dropdown = this._dom.find('.lh-tools__dropdown', this._document);
-    dropdown.addEventListener('click', this.onExport);
+    dropdown.addEventListener('click', this.onToolAction);
   }
 
   _setupThirdPartyFilter() {
@@ -405,7 +405,7 @@ class ReportUIFeatures {
    * Handler for tool button.
    * @param {Event} e
    */
-  onExport(e) {
+  onToolAction(e) {
     e.preventDefault();
 
     const el = /** @type {?Element} */ (e.target);
