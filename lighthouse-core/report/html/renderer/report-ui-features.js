@@ -19,7 +19,7 @@
 /* eslint-env browser */
 
 /**
- * @fileoverview Adds export button, print, and other dynamic functionality to
+ * @fileoverview Adds tools button, print, and other dynamic functionality to
  * the report.
  */
 
