@@ -317,7 +317,7 @@ Other awesome open source projects that use Lighthouse.
 * **[lighthouse-hue](https://github.com/ebidel/lighthouse-hue)** - set the color of Philips Hue lights based on a Lighthouse score
 * **[lighthouse-lambda](https://github.com/joytocode/lighthouse-lambda)** - Run Lighthouse on AWS Lambda with prebuilt stable desktop Headless Chrome.
 * **[lighthouse-magic-light](https://github.com/manekinekko/lighthouse-magic-light)** set the color of the MagicLight Bluetooth Smart Light Bulb based on Lighthouse score
-* **[lighthouse-mocha-example](https://github.com/justinribeiro/lighthouse-mocha-example)** - gather performance metrics via Lighthouse and tests them in Mocha
+* **[lighthouse-mocha-example](https://github.com/rishichawda/lighthouse-mocha-example)** - Run lighthouse performance tests with Mocha and chrome-launcher
 * **[lighthouse4u](https://github.com/godaddy/lighthouse4u)** - LH4U provides Google Lighthouse as a service, surfaced by both a friendly UI+API, and backed by Elastic Search for easy querying and visualization.
 * **[performance-budgets](https://performance-budgets.netlify.com/)** - Easily assert Lighthouse budgets with Docker.
 * **[pwmetrics](https://github.com/paulirish/pwmetrics/)** - gather performance metrics
