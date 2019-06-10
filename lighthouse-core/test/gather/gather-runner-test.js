@@ -396,6 +396,7 @@ describe('GatherRunner', function() {
       setThrottling: asyncFunc,
       blockUrlPatterns: asyncFunc,
       setExtraHTTPHeaders: asyncFunc,
+      setCookies: asyncFunc,
       endTrace: asyncFunc,
       endDevtoolsLog: () => [],
       getBrowserVersion: async () => ({userAgent: ''}),
@@ -588,7 +589,7 @@ describe('GatherRunner', function() {
     });
     const cookies = [{
       'name': 'cookie1',
-      'value': 'monster'
+      'value': 'monster',
     }];
 
     return GatherRunner.setupPassNetwork({

@@ -176,7 +176,7 @@ describe('CLI bin', function() {
       cliFlags = {...cliFlags, extraCookies: '[{"name":"foo", "value": "bar", "url": "http://localhost"}]'};
       await bin.begin();
 
-      expect(getRunLighthouseArgs()[1]).toHaveProperty('extraCookies', [{"name":"foo", "value": "bar", "url": "http://localhost"}]);
+      expect(getRunLighthouseArgs()[1]).toHaveProperty('extraCookies', [{'name': 'foo', 'value': 'bar', 'url': 'http://localhost'}]);
     });
 
     it('should read extra cookies from file', async () => {
