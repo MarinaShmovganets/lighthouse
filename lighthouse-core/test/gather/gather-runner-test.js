@@ -820,6 +820,69 @@ describe('GatherRunner', function() {
     });
   });
 
+  describe('#getInterstitialError', () => {
+    it('passes when the page is loaded', () => {
+      const url = 'http://the-page.com';
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      expect(GatherRunner.getInterstitialError([mainRecord])).toBeUndefined();
+    });
+
+    it('passes when page fails to load normally', () => {
+      const url = 'http://the-page.com';
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      mainRecord.failed = true;
+      mainRecord.localizedFailDescription = 'foobar';
+      expect(GatherRunner.getInterstitialError([mainRecord])).toBeUndefined();
+    });
+
+    it('passes when page gets a generic interstitial but somehow also loads everything', () => {
+      // This case, AFAIK, is impossible, but we'll err on the side of not tanking the run.
+      const url = 'http://the-page.com';
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      const interstitialRecord = new NetworkRequest();
+      mainRecord.url = 'chrome-error://chromewebdata/';
+      mainRecord.documentURL = 'chrome-error://chromewebdata/';
+      const records = [mainRecord, interstitialRecord];
+      expect(GatherRunner.getInterstitialError(records)).toBeUndefined();
+    });
+
+    it('fails when page gets a generic interstitial', () => {
+      const url = 'http://the-page.com';
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      mainRecord.failed = true;
+      mainRecord.localizedFailDescription = 'foobar';
+      const interstitialRecord = new NetworkRequest();
+      interstitialRecord.url = 'chrome-error://chromewebdata/';
+      interstitialRecord.documentURL = 'chrome-error://chromewebdata/';
+      const records = [mainRecord, interstitialRecord];
+      const error = GatherRunner.getInterstitialError(records);
+      expect(error.message).toEqual('CHROME_INTERSTITIAL_ERROR');
+      expect(error.code).toEqual('CHROME_INTERSTITIAL_ERROR');
+      expect(error.friendlyMessage).toBeDisplayString(/^Chrome prevented/);
+    });
+
+    it('fails when page gets a security interstitial', () => {
+      const url = 'http://the-page.com';
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      mainRecord.failed = true;
+      mainRecord.localizedFailDescription = 'net::ERR_CERT_COMMON_NAME_INVALID';
+      const interstitialRecord = new NetworkRequest();
+      interstitialRecord.url = 'chrome-error://chromewebdata/';
+      interstitialRecord.documentURL = 'chrome-error://chromewebdata/';
+      const records = [mainRecord, interstitialRecord];
+      const error = GatherRunner.getInterstitialError(records);
+      expect(error.message).toEqual('INSECURE_DOCUMENT_REQUEST');
+      expect(error.code).toEqual('INSECURE_DOCUMENT_REQUEST');
+      expect(error.friendlyMessage).toBeDisplayString(/valid security certificate/);
+      expect(error.friendlyMessage).toBeDisplayString(/net::ERR_CERT_COMMON_NAME_INVALID/);
+    });
+  });
+
   describe('artifact collection', () => {
     // Make sure our gatherers never execute in parallel
     it('runs gatherer lifecycle methods strictly in sequence', async () => {
