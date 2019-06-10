@@ -59,8 +59,8 @@ const defaultSettings = {
   locale: 'en-US', // actual default determined by Config using lib/i18n
   blockedUrlPatterns: null,
   additionalTraceCategories: null,
-  extraHeaders: null,
   extraCookies: null,
+  extraHeaders: null,
   precomputedLanternData: null,
   onlyAudits: null,
   onlyCategories: null,
