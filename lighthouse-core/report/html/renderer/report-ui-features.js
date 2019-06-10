@@ -421,12 +421,12 @@ class ReportUIFeatures {
       case 'print-summary':
         this.collapseAllDetails();
         this.closeToolsDropdown();
-        self.print();
+        this._setLightThemeTemporarily(() => self.print());
         break;
       case 'print-expanded':
         this.expandAllDetails();
         this.closeToolsDropdown();
-        self.print();
+        this._setLightThemeTemporarily(() => self.print());
         break;
       case 'save-json': {
         const jsonStr = JSON.stringify(this.json, null, 2);
@@ -461,6 +461,16 @@ class ReportUIFeatures {
 
     this.closeToolsDropdown();
     this._document.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  /**
+   * @param {Function} cb
+   */
+  _setLightThemeTemporarily(cb) {
+    const isDark = this._dom.find('.lh-vars', this._document).classList.contains('dark');
+    this._toggleDarkTheme(false);
+    cb();
+    this._toggleDarkTheme(isDark);
   }
 
   /**
