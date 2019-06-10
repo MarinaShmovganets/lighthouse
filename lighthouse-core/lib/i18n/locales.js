@@ -40,6 +40,7 @@ const locales = {
   'el': require('./locales/el.json'),
   'en-XA': require('./locales/en-XA.json'), // psuedolocalization
   'es': require('./locales/es.json'),
+  'es-419': require('./locales/es-419.json'),
   'fi': require('./locales/fi.json'),
   'fil': require('./locales/fil.json'),
   'fr': require('./locales/fr.json'), // fr-CH identical, so it falls back into fr
