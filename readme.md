@@ -315,10 +315,10 @@ Other awesome open source projects that use Lighthouse.
 * **[lighthouse-cron](https://github.com/thearegee/lighthouse-cron)** - Cron multiple batch Lighthouse audits and emit results for sending to remote server.
 * **[lighthouse-gh-reporter](https://github.com/carlesnunez/lighthouse-gh-reporter)** - Run Lighthouse in CI and report back in a comment on your pull requests
 * **[lighthouse-hue](https://github.com/ebidel/lighthouse-hue)** - set the color of Philips Hue lights based on a Lighthouse score
+* **[lighthouse-jest-example](https://github.com/justinribeiro/lighthouse-jest-example)** - gathers performance metrics via Lighthouse and tests results with Jest; uses Puppeteer to start up come with Chrome with network emulation settings defined by WebPageTest.
 * **[lighthouse-lambda](https://github.com/joytocode/lighthouse-lambda)** - Run Lighthouse on AWS Lambda with prebuilt stable desktop Headless Chrome.
 * **[lighthouse-magic-light](https://github.com/manekinekko/lighthouse-magic-light)** set the color of the MagicLight Bluetooth Smart Light Bulb based on Lighthouse score
 * **[lighthouse-mocha-example](https://github.com/justinribeiro/lighthouse-mocha-example)** - gather performance metrics via Lighthouse and tests them in Mocha
-* **[lighthouse-jest-example](https://github.com/justinribeiro/lighthouse-jest-example)** - gathers performance metrics via Lighthouse and tests results with Jest; uses Puppeteer to start up come with Chrome with network emulation settings defined by WebPageTest.
 * **[lighthouse-persist](https://github.com/foo-software/lighthouse-persist)** - Run Lighthouse and upload HTML reports to an AWS S3 bucket.
 * **[lighthouse4u](https://github.com/godaddy/lighthouse4u)** - LH4U provides Google Lighthouse as a service, surfaced by both a friendly UI+API, and backed by Elastic Search for easy querying and visualization.
 * **[performance-budgets](https://performance-budgets.netlify.com/)** - Easily assert Lighthouse budgets with Docker.
