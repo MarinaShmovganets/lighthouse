@@ -84,6 +84,7 @@ class ReportUIFeatures {
     this._setupToolsButton();
     this._setupThirdPartyFilter();
     this._setUpCollapseDetailsAfterPrinting();
+    this._setUpQuickTabFocus();
     this._resetUIState();
     this._document.addEventListener('keyup', this.onKeyUp);
     this._document.addEventListener('copy', this.onCopy);
@@ -557,6 +558,40 @@ class ReportUIFeatures {
         }
       });
     }
+  }
+
+  /**
+   * Tab + Enter for quick jump document.activeElement to the first interesting element.
+   */
+  _setUpQuickTabFocus() {
+    const firstContentSelectors = [
+      {
+        selector: '.lh-audit--fail summary',
+        label: 'Jump to first failing audit.',
+      },
+      {
+        selector: '.lh-audit--average summary',
+        label: 'Jump to first average audit.',
+      },
+      {
+        selector: '.lh-audit--audit summary',
+        label: 'Jump to first audit.',
+      },
+    ];
+
+    const {selector, label} = firstContentSelectors.find(({selector}) => {
+      const el = this._document.querySelector(selector);
+      return Boolean(el && el instanceof HTMLElement);
+    }) || {selector: '.lh-category-header .lh-gauge__wrapper', label: 'Jump to first category.'};
+
+    const startOfContentEl = this._dom.find(selector, this._document);
+    const quickFocusEl = this._dom.find('.lh-a11y-quick-focus', this._document);
+    quickFocusEl.innerText = label;
+    quickFocusEl.classList.remove('disabled');
+    quickFocusEl.addEventListener('click', (e) => {
+      startOfContentEl.focus();
+      e.preventDefault();
+    });
   }
 
   /**

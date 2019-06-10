@@ -352,7 +352,30 @@ limitations under the License.
         margin-left: 0;
       }
     }
+
+    .lh-a11y-quick-focus {
+      background-color: var(--color-blue);
+      padding: 20px;
+      clip: rect(1px, 1px, 1px, 1px);
+      margin: 0;
+      height: 1px;
+      width: 1px;
+      overflow: hidden;
+      position: absolute;
+    }
+    .lh-a11y-quick-focus.disabled {
+      visibility: hidden;
+    }
+    .lh-a11y-quick-focus:focus {
+      clip: auto;
+      height: auto;
+      width: auto;
+      z-index: 10000; /* lol */
+    }
   </style>
+
+  <!-- This is disabled by default. Enabled in ReportUIFeatures. -->
+  <a href="#" class="lh-a11y-quick-focus disabled" tabindex="1">asd</a>
 
   <div class="lh-topbar">
     <!-- Flat Lighthouse logo.  -->
