@@ -1372,6 +1372,7 @@ Object {
     "disableStorageReset": false,
     "emulatedFormFactor": "mobile",
     "extraHeaders": null,
+    "extraCookies": null,
     "gatherMode": false,
     "locale": "en-US",
     "maxWaitForFcp": 15000,
