@@ -43,7 +43,8 @@ class TraceOfTab {
    * @return {Promise<LH.Artifacts.TraceOfTab>}
   */
   static async compute_(trace) {
-    return LHTraceProcessor.computeTraceOfTab(trace);
+    const traceOfTab = await LHTraceProcessor.computeTraceOfTab(trace, {throwOnNoFCP: true});
+    return /** @type {LH.Artifacts.TraceOfTab} */ (traceOfTab);
   }
 }
 

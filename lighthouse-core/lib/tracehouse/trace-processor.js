@@ -16,6 +16,9 @@
  * 4. Return all those items in one handy bundle.
  */
 
+/** @typedef {Omit<LH.Artifacts.TraceTimes, 'firstContentfulPaint'> & {firstContentfulPaint?: number}} TraceTimesWithoutFCP */
+/** @typedef {Omit<LH.Artifacts.TraceOfTab, 'firstContentfulPaintEvt'|'timings'|'timestamps'> & {timings: TraceTimesWithoutFCP, timestamps: TraceTimesWithoutFCP, firstContentfulPaintEvt?: LH.Artifacts.TraceOfTab['firstContentfulPaintEvt']}} TraceOfTabWithoutFCP */
+
 const log = require('lighthouse-logger');
 
 const ACCEPTABLE_NAVIGATION_URL_REGEX = /^(chrome|https?):/;
@@ -351,9 +354,11 @@ class TraceProcessor {
    * Finds key trace events, identifies main process/thread, and returns timings of trace events
    * in milliseconds since navigation start in addition to the standard microsecond monotonic timestamps.
    * @param {LH.Trace} trace
-   * @return {LH.Artifacts.TraceOfTab}
+   * @param {{throwOnNoFCP?: boolean}} options
+   * @return {TraceOfTabWithoutFCP}
   */
-  static computeTraceOfTab(trace) {
+  static computeTraceOfTab(trace, options = {}) {
+    const {throwOnNoFCP = false} = options;
     // Parse the trace for our key events and sort them by timestamp. Note: sort
     // *must* be stable to keep events correctly nested.
     const keyEvents = this._filteredStableSort(trace.traceEvents, e => {
@@ -377,10 +382,10 @@ class TraceProcessor {
     const firstPaint = frameEvents.find(e => e.name === 'firstPaint' && e.ts > navigationStart.ts);
 
     // FCP will follow at/after the FP. Used in so many places we require it.
-    const firstContentfulPaint = frameEvents.find(
+    let firstContentfulPaint = frameEvents.find(
       e => e.name === 'firstContentfulPaint' && e.ts > navigationStart.ts
     );
-    if (!firstContentfulPaint) throw this.createNoFirstContentfulPaintError();
+    if (!firstContentfulPaint && throwOnNoFCP) throw this.createNoFirstContentfulPaintError();
 
     // fMP will follow at/after the FP
     let firstMeaningfulPaint = frameEvents.find(
@@ -424,27 +429,26 @@ class TraceProcessor {
 
     /** @param {{ts: number}=} event */
     const getTimestamp = (event) => event && event.ts;
-    /** @type {LH.Artifacts.TraceTimes} */
+    /** @type {TraceTimesWithoutFCP} */
     const timestamps = {
       navigationStart: navigationStart.ts,
       firstPaint: getTimestamp(firstPaint),
-      firstContentfulPaint: firstContentfulPaint.ts,
+      firstContentfulPaint: getTimestamp(firstContentfulPaint),
       firstMeaningfulPaint: getTimestamp(firstMeaningfulPaint),
       traceEnd: fakeEndOfTraceEvt.ts,
       load: getTimestamp(load),
       domContentLoaded: getTimestamp(domContentLoaded),
     };
 
-
     /** @param {number} ts */
     const getTiming = (ts) => (ts - navigationStart.ts) / 1000;
     /** @param {number=} ts */
     const maybeGetTiming = (ts) => ts === undefined ? undefined : getTiming(ts);
-    /** @type {LH.Artifacts.TraceTimes} */
+    /** @type {TraceTimesWithoutFCP} */
     const timings = {
       navigationStart: 0,
       firstPaint: maybeGetTiming(timestamps.firstPaint),
-      firstContentfulPaint: getTiming(timestamps.firstContentfulPaint),
+      firstContentfulPaint: maybeGetTiming(timestamps.firstContentfulPaint),
       firstMeaningfulPaint: maybeGetTiming(timestamps.firstMeaningfulPaint),
       traceEnd: getTiming(timestamps.traceEnd),
       load: maybeGetTiming(timestamps.load),

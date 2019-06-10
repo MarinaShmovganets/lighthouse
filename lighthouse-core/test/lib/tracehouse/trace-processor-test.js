@@ -437,7 +437,7 @@ describe('TraceProcessor', () => {
     });
 
     it('throws on traces missing an FCP', () => {
-      expect(() => TraceProcessor.computeTraceOfTab(noFCPtrace))
+      expect(() => TraceProcessor.computeTraceOfTab(noFCPtrace, {throwOnNoFCP: true}))
         .toThrowError('firstContentfulPaint');
     });
   });
