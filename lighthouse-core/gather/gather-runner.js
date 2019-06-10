@@ -210,7 +210,7 @@ class GatherRunner {
     // If the driver was offline, the load will fail without offline support. Ignore this case.
     if (!passContext.driver.online) return;
 
-    // Interstitials
+    // We want to special-case the interstitial beyond FAILED_DOCUMENT_REQUEST. See https://github.com/GoogleChrome/lighthouse/pull/8865#issuecomment-497507618
     if (interstitialError) return interstitialError;
 
     // Network errors are usually the most specific and provide the best reason for why the page failed to load.

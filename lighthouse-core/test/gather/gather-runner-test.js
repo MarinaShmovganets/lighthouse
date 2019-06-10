@@ -843,8 +843,8 @@ describe('GatherRunner', function() {
       const mainRecord = new NetworkRequest();
       mainRecord.url = url;
       const interstitialRecord = new NetworkRequest();
-      mainRecord.url = 'chrome-error://chromewebdata/';
-      mainRecord.documentURL = 'chrome-error://chromewebdata/';
+      interstitialRecord.url = 'data:text/html;base64,abcdef';
+      interstitialRecord.documentURL = 'chrome-error://chromewebdata/';
       const records = [mainRecord, interstitialRecord];
       expect(GatherRunner.getInterstitialError(records)).toBeUndefined();
     });
@@ -856,7 +856,7 @@ describe('GatherRunner', function() {
       mainRecord.failed = true;
       mainRecord.localizedFailDescription = 'foobar';
       const interstitialRecord = new NetworkRequest();
-      interstitialRecord.url = 'chrome-error://chromewebdata/';
+      interstitialRecord.url = 'data:text/html;base64,abcdef';
       interstitialRecord.documentURL = 'chrome-error://chromewebdata/';
       const records = [mainRecord, interstitialRecord];
       const error = GatherRunner.getInterstitialError(records);
@@ -872,7 +872,7 @@ describe('GatherRunner', function() {
       mainRecord.failed = true;
       mainRecord.localizedFailDescription = 'net::ERR_CERT_COMMON_NAME_INVALID';
       const interstitialRecord = new NetworkRequest();
-      interstitialRecord.url = 'chrome-error://chromewebdata/';
+      interstitialRecord.url = 'data:text/html;base64,abcdef';
       interstitialRecord.documentURL = 'chrome-error://chromewebdata/';
       const records = [mainRecord, interstitialRecord];
       const error = GatherRunner.getInterstitialError(records);
