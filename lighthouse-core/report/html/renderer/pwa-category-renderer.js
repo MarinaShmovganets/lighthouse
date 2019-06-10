@@ -21,7 +21,7 @@
 /**
  * An always-increasing counter for making unique SVG ID suffixes.
  */
-const svgSuffixCounter = (() => {
+const getUniqueSuffix = (() => {
   let svgSuffix = 0;
   return function() {
     return svgSuffix++;
@@ -174,9 +174,9 @@ class PwaCategoryRenderer extends CategoryRenderer {
     const defsEl = svgRoot.querySelector('defs');
     if (!defsEl) return;
 
-    const idSuffix = svgSuffixCounter();
-    const elsToUpdate = defsEl.querySelectorAll('[id]');
-    for (const el of elsToUpdate) {
+    const idSuffix = getUniqueSuffix();
+    const elementsToUpdate = defsEl.querySelectorAll('[id]');
+    for (const el of elementsToUpdate) {
       const oldId = el.id;
       const newId = `${oldId}-${idSuffix}`;
       el.id = newId;
