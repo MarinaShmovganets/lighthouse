@@ -382,7 +382,7 @@ class TraceProcessor {
     const firstPaint = frameEvents.find(e => e.name === 'firstPaint' && e.ts > navigationStart.ts);
 
     // FCP will follow at/after the FP. Used in so many places we require it.
-    let firstContentfulPaint = frameEvents.find(
+    const firstContentfulPaint = frameEvents.find(
       e => e.name === 'firstContentfulPaint' && e.ts > navigationStart.ts
     );
     if (!firstContentfulPaint && throwOnNoFCP) throw this.createNoFirstContentfulPaintError();
