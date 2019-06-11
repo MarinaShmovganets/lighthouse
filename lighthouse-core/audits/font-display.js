@@ -26,7 +26,7 @@ const UIStrings = {
     '[Learn more](https://developers.google.com/web/updates/2016/02/font-display).',
   /** A warning message that is shown when Lighthouse couldn't automatically check some of the page's fonts and that the user will need to manually check it. */
   undeclaredFontURLWarning: 'Lighthouse was unable to automatically check the font-display value ' +
-    'for the following URL {fontURL}.',
+    'for the following URL: {fontURL}.',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -87,7 +87,7 @@ class FontDisplay extends Audit {
             return s;
           });
 
-        // Convert the relative CSS URL to an absolute URL and add it to the failing set.
+        // Convert the relative CSS URL to an absolute URL and add it to the target set.
         for (const relativeURL of relativeURLs) {
           try {
             const relativeRoot = URL.isValid(stylesheet.header.sourceURL) ?
