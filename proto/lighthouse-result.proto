@@ -359,6 +359,18 @@ message I18n {
 
     // This label is for a filter checkbox above a table of items
     string third_party_resources_label = 20;
+
+    // The first focus element on the page will show this text
+    string quick_tab_first_failing_audit = 21;
+
+    // The first focus element on the page will show this text
+    string quick_tab_first_average_audit = 22;
+
+    // The first focus element on the page will show this text
+    string quick_tab_first_audit = 23;
+
+    // The first focus element on the page will show this text
+    string quick_tab_first_category = 24;
   }
 
   // The message holding all formatted strings

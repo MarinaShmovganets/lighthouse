@@ -1435,6 +1435,22 @@
     "message": "Passed audits",
     "description": "Section heading shown above a list of audits that are passing. 'Passed' here refers to a passing grade. This section is collapsed by default, as the user should be focusing on the failed audits instead. Users can click this heading to reveal the list."
   },
+  "lighthouse-core/report/html/renderer/util.js | quickTabFirstAudit": {
+    "message": "Skip to first audit",
+    "description": "This label is shown to users who tab-focus to navigate the Lighthouse report. The first focus element on the page will show this text, and hitting enter will move the document's focus to the specified element."
+  },
+  "lighthouse-core/report/html/renderer/util.js | quickTabFirstAverageAudit": {
+    "message": "Skip to first average audit",
+    "description": "This label is shown to users who tab-focus to navigate the Lighthouse report. The first focus element on the page will show this text, and hitting enter will move the document's focus to the specified element."
+  },
+  "lighthouse-core/report/html/renderer/util.js | quickTabFirstCategory": {
+    "message": "Skip to first category",
+    "description": "This label is shown to users who tab-focus to navigate the Lighthouse report. The first focus element on the page will show this text, and hitting enter will move the document's focus to the specified element."
+  },
+  "lighthouse-core/report/html/renderer/util.js | quickTabFirstFailingAudit": {
+    "message": "Skip to first failing audit",
+    "description": "This label is shown to users who tab-focus to navigate the Lighthouse report. The first focus element on the page will show this text, and hitting enter will move the document's focus to the specified element."
+  },
   "lighthouse-core/report/html/renderer/util.js | snippetCollapseButtonLabel": {
     "message": "Collapse snippet",
     "description": "Label for button that only shows a few lines of the snippet when clicked"
