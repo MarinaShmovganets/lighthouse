@@ -586,7 +586,7 @@ class ReportUIFeatures {
 
     const startOfContentEl = this._dom.find(selector, this._document);
     const quickFocusEl = this._dom.find('.lh-a11y-quick-focus', this._document);
-    quickFocusEl.innerText = label;
+    quickFocusEl.textContent = label;
     quickFocusEl.classList.remove('disabled');
     quickFocusEl.addEventListener('click', (e) => {
       startOfContentEl.focus();
