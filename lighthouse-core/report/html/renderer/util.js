@@ -600,6 +600,18 @@ Util.UIStrings = {
 
   /** This label is for a checkbox above a table of items loaded by a web page. The checkbox is used to show or hide third-party (or "3rd-party") resources in the table, where "third-party resources" refers to items loaded by a web page from URLs that aren't controlled by the owner of the web page. */
   thirdPartyResourcesLabel: 'Show 3rd-party resources',
+
+  /** This label is shown to users who tab-focus to navigate the Lighthouse report. The first focus element on the page will show this text, and hitting enter will move the document's focus to the specified element. */
+  quickTabFirstFailingAudit: 'Skip to first failing audit',
+
+  /** This label is shown to users who tab-focus to navigate the Lighthouse report. The first focus element on the page will show this text, and hitting enter will move the document's focus to the specified element. */
+  quickTabFirstAverageAudit: 'Skip to first average audit',
+
+  /** This label is shown to users who tab-focus to navigate the Lighthouse report. The first focus element on the page will show this text, and hitting enter will move the document's focus to the specified element. */
+  quickTabFirstAudit: 'Skip to first audit',
+
+  /** This label is shown to users who tab-focus to navigate the Lighthouse report. The first focus element on the page will show this text, and hitting enter will move the document's focus to the specified element. */
+  quickTabFirstCategory: 'Skip to first category',
 };
 
 if (typeof module !== 'undefined' && module.exports) {

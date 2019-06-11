@@ -564,19 +564,19 @@ class ReportUIFeatures {
     const rules = [
       {
         selector: '.lh-audit--fail summary',
-        label: 'Jump to first failing audit.',
+        label: Util.UIStrings.quickTabFirstFailingAudit,
       },
       {
         selector: '.lh-audit--average summary',
-        label: 'Jump to first average audit.',
+        label: Util.UIStrings.quickTabFirstAverageAudit,
       },
       {
         selector: '.lh-audit--audit summary',
-        label: 'Jump to first audit.',
+        label: Util.UIStrings.quickTabFirstAudit,
       },
       {
         selector: '.lh-category-header .lh-gauge__wrapper',
-        label: 'Jump to first category.',
+        label: Util.UIStrings.quickTabFirstCategory,
       },
     ];
 
