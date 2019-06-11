@@ -38,7 +38,6 @@ async function runLighthouseInLR(connection, url, flags, lrOpts) {
   flags.disableStorageReset = true;
   flags.logLevel = flags.logLevel || 'info';
   flags.channel = 'lr';
-  // flags.output assumed to be unset by Lightrider
 
   let config;
   if (configOverride) {
@@ -58,7 +57,7 @@ async function runLighthouseInLR(connection, url, flags, lrOpts) {
     // When LR is called with |internal: {keep_raw_response: true, save_lighthouse_assets: true}|,
     // this code will log artifacts to raw_response.artifacts.
     if (logAssets) {
-      // @ts-ignore - Regenerate the report, but tack on the artifacts.
+      // @ts-ignore - piggyback the artifacts on the LHR.
       runnerResult.lhr.artifacts = runnerResult.artifacts;
     }
 

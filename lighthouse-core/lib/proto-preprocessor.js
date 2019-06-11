@@ -21,6 +21,7 @@ const fs = require('fs');
   * @return {LH.Result}
   */
 function processForProto(lhr) {
+  /** @type {LH.Result} */
   const reportJson = JSON.parse(JSON.stringify(lhr));
 
   // Clean up the configSettings
