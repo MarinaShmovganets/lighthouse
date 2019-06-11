@@ -582,7 +582,7 @@ class ReportUIFeatures {
 
     const firstValidRule = rules.find(({selector}) => {
       const el = this._document.querySelector(selector);
-      return Boolean(el && el instanceof HTMLElement);
+      return Boolean(el);
     });
 
     if (!firstValidRule) {
