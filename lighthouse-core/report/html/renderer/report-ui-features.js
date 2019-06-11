@@ -560,11 +560,8 @@ class ReportUIFeatures {
     }
   }
 
-  /**
-   * Tab + Enter for quick jump document.activeElement to the first interesting element.
-   */
-  _setUpQuickTabFocus() {
-    const firstContentSelectors = [
+  _getFirstInterestingElement() {
+    const rules = [
       {
         selector: '.lh-audit--fail summary',
         label: 'Jump to first failing audit.',
@@ -577,19 +574,40 @@ class ReportUIFeatures {
         selector: '.lh-audit--audit summary',
         label: 'Jump to first audit.',
       },
+      {
+        selector: '.lh-category-header .lh-gauge__wrapper',
+        label: 'Jump to first category.',
+      },
     ];
 
-    const {selector, label} = firstContentSelectors.find(({selector}) => {
+    const firstValidRule = rules.find(({selector}) => {
       const el = this._document.querySelector(selector);
       return Boolean(el && el instanceof HTMLElement);
-    }) || {selector: '.lh-category-header .lh-gauge__wrapper', label: 'Jump to first category.'};
+    });
 
-    const startOfContentEl = this._dom.find(selector, this._document);
+    if (!firstValidRule) {
+      return null;
+    }
+
+    return {
+      element: this._dom.find(firstValidRule.selector, this._document),
+      label: firstValidRule.label,
+    };
+  }
+
+  /**
+   * Tab + Enter for quick jump document.activeElement to the first interesting element.
+   */
+  _setUpQuickTabFocus() {
+    const firstInterestingElement = this._getFirstInterestingElement();
+    if (!firstInterestingElement) return;
+    const {element, label} = firstInterestingElement;
+
     const quickFocusEl = this._dom.find('.lh-a11y-quick-focus', this._document);
     quickFocusEl.textContent = label;
     quickFocusEl.classList.remove('disabled');
     quickFocusEl.addEventListener('click', (e) => {
-      startOfContentEl.focus();
+      element.focus();
       e.preventDefault();
     });
   }
