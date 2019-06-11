@@ -325,7 +325,7 @@ describe('Performance: Font Display audit', () => {
             src: url("./font-0.woff");
           }
         `,
-        header: {}
+        header: {},
       },
     ];
     const result = await FontDisplayAudit.audit(artifacts, context);
