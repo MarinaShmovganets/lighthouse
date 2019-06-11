@@ -854,7 +854,7 @@ describe('GatherRunner', function() {
       const mainRecord = new NetworkRequest();
       mainRecord.url = url;
       mainRecord.failed = true;
-      mainRecord.localizedFailDescription = 'foobar';
+      mainRecord.localizedFailDescription = 'ERR_CONNECTION_RESET';
       const interstitialRecord = new NetworkRequest();
       interstitialRecord.url = 'data:text/html;base64,abcdef';
       interstitialRecord.documentURL = 'chrome-error://chromewebdata/';
