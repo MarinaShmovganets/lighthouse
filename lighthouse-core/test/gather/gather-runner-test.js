@@ -883,6 +883,72 @@ describe('GatherRunner', function() {
     });
   });
 
+  describe('#getPageLoadError', () => {
+    let navigationError;
+
+    beforeEach(() => {
+      navigationError = new Error('NAVIGATION_ERROR');
+    });
+
+    it('passes when the page is loaded', () => {
+      const passContext = {url: 'http://the-page.com', driver: {online: true}};
+      const mainRecord = new NetworkRequest();
+      const loadData = {networkRecords: [mainRecord]};
+      mainRecord.url = passContext.url;
+      const error = GatherRunner.getPageLoadError(passContext, loadData, undefined);
+      expect(error).toBeUndefined();
+    });
+
+    it('passes when the page is offline', () => {
+      const passContext = {url: 'http://the-page.com', driver: {online: false}};
+      const mainRecord = new NetworkRequest();
+      const loadData = {networkRecords: [mainRecord]};
+      mainRecord.url = passContext.url;
+      mainRecord.failed = true;
+
+      const error = GatherRunner.getPageLoadError(passContext, loadData, undefined);
+      expect(error).toBeUndefined();
+    });
+
+    it('fails with interstitial error first', () => {
+      const passContext = {url: 'http://the-page.com', driver: {online: true}};
+      const mainRecord = new NetworkRequest();
+      const interstitialRecord = new NetworkRequest();
+      const loadData = {networkRecords: [mainRecord, interstitialRecord]};
+
+      mainRecord.url = passContext.url;
+      mainRecord.failed = true;
+      interstitialRecord.url = 'data:text/html;base64,abcdef';
+      interstitialRecord.documentURL = 'chrome-error://chromewebdata/';
+
+      const error = GatherRunner.getPageLoadError(passContext, loadData, navigationError);
+      expect(error.message).toEqual('CHROME_INTERSTITIAL_ERROR');
+    });
+
+    it('fails with network error next', () => {
+      const passContext = {url: 'http://the-page.com', driver: {online: true}};
+      const mainRecord = new NetworkRequest();
+      const loadData = {networkRecords: [mainRecord]};
+
+      mainRecord.url = passContext.url;
+      mainRecord.failed = true;
+
+      const error = GatherRunner.getPageLoadError(passContext, loadData, navigationError);
+      expect(error.message).toEqual('FAILED_DOCUMENT_REQUEST');
+    });
+
+    it('fails with nav error last', () => {
+      const passContext = {url: 'http://the-page.com', driver: {online: true}};
+      const mainRecord = new NetworkRequest();
+      const loadData = {networkRecords: [mainRecord]};
+
+      mainRecord.url = passContext.url;
+
+      const error = GatherRunner.getPageLoadError(passContext, loadData, navigationError);
+      expect(error.message).toEqual('NAVIGATION_ERROR');
+    });
+  });
+
   describe('artifact collection', () => {
     // Make sure our gatherers never execute in parallel
     it('runs gatherer lifecycle methods strictly in sequence', async () => {

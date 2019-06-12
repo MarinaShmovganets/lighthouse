@@ -182,6 +182,9 @@ class GatherRunner {
       .filter(record => !URL.NON_NETWORK_PROTOCOLS.includes(record.protocol) &&
         !record.documentURL.startsWith('chrome-error://'));
     // If at least one request didn't fail, there's no error here.
+    // We don't expect that this case could ever occur, but better safe than sorry.
+    // Note also that in cases of redirects, the initial requests could succeed and we still end up
+    // on the error interstitial page.
     if (!pageNetworkRecords.some(record => record.failed)) return undefined;
 
     // If a request failed with the `net::ERR_CERT_*` collection of errors, then it's a security issue.
