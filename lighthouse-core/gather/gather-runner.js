@@ -181,7 +181,7 @@ class GatherRunner {
     const pageNetworkRecords = networkRecords
       .filter(record => !URL.NON_NETWORK_PROTOCOLS.includes(record.protocol) &&
         !record.documentURL.startsWith('chrome-error://'));
-    // If at least one request didn't fail, there's no error here.
+    // If none of the requests failed, there's no error here.
     // We don't expect that this case could ever occur, but better safe than sorry.
     // Note also that in cases of redirects, the initial requests could succeed and we still end up
     // on the error interstitial page.
