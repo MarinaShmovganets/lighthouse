@@ -138,11 +138,13 @@ function collateResults(actual, expected) {
     const artifactNames = /** @type {(keyof LH.Artifacts)[]} */ (Object.keys(expectedArtifacts));
     artifactAssertions = artifactNames.map(artifactName => {
       const actualResult = (actual.artifacts || {})[artifactName];
-      if (!actualResult) {
+      const expectedResult = expectedArtifacts[artifactName];
+
+      // Actual artifact *must* exist unless expected is explicitly set to `undefined`.
+      if (!actualResult && expectedResult !== undefined) {
         throw new Error(`Config run did not generate artifact ${artifactName}`);
       }
 
-      const expectedResult = expectedArtifacts[artifactName];
       return makeComparison(artifactName + ' artifact', actualResult, expectedResult);
     });
   }

@@ -14,11 +14,11 @@ module.exports = [
       requestedUrl: 'http://localhost:10200/infinite-loop.html',
       finalUrl: 'http://localhost:10200/infinite-loop.html',
       audits: {},
-      // TODO: runtimeError only exists because of selection of audits.
       runtimeError: {code: 'PAGE_HUNG'},
     },
     artifacts: {
-      ViewportDimensions: {code: 'PAGE_HUNG'},
+      // Assert undefined because pageLoadError prevented gatherer from running.
+      ViewportDimensions: undefined,
     },
   },
   {
@@ -26,11 +26,11 @@ module.exports = [
       requestedUrl: 'https://expired.badssl.com',
       finalUrl: 'https://expired.badssl.com/',
       audits: {},
-      // TODO: runtimeError only exists because of selection of audits.
       runtimeError: {code: 'INSECURE_DOCUMENT_REQUEST'},
     },
     artifacts: {
-      ViewportDimensions: {code: 'INSECURE_DOCUMENT_REQUEST'},
+      // Assert undefined because pageLoadError prevented gatherer from running.
+      ViewportDimensions: undefined,
     },
   },
 ];
