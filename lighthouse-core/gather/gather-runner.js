@@ -648,11 +648,6 @@ class GatherRunner {
     // Disable throttling so the afterPass analysis isn't throttled
     await driver.setThrottling(passContext.settings, {useThrottling: false});
 
-    // Save devtoolsLog and trace.
-    const baseArtifacts = passContext.baseArtifacts;
-    baseArtifacts.devtoolsLogs[passConfig.passName] = loadData.devtoolsLog;
-    if (loadData.trace) baseArtifacts.traces[passConfig.passName] = loadData.trace;
-
     // If there were any load errors, treat all gatherers as if they errored.
     const pageLoadError = GatherRunner.getPageLoadError(passContext, loadData, possibleNavError);
     if (pageLoadError) {
@@ -661,7 +656,12 @@ class GatherRunner {
       return GatherRunner.generatePageLoadErrorArtifacts(passContext, pageLoadError);
     }
 
-    // If no error, run `afterPass()` on gatherers and return collected artifacts.
+    // If no error, save devtoolsLog and trace.
+    const baseArtifacts = passContext.baseArtifacts;
+    baseArtifacts.devtoolsLogs[passConfig.passName] = loadData.devtoolsLog;
+    if (loadData.trace) baseArtifacts.traces[passConfig.passName] = loadData.trace;
+
+    // Run `afterPass()` on gatherers and return collected artifacts.
     await GatherRunner.afterPass(passContext, loadData, gathererResults);
     return GatherRunner.collectArtifacts(gathererResults);
   }
