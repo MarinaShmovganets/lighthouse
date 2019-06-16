@@ -11,7 +11,7 @@ about: Report something working incorrectly
 #### Provide the steps to reproduce
 1. Run LH on <affected url>
   
-<!-- If your page is only local, or is liable to change, consider uploading a repor to https://surge.sh/ so that we can more easily debug the problem. -->
+<!-- If your page is only local, or is liable to change, consider uploading a repro to https://surge.sh/ so that we can more easily debug the problem. -->
 
 #### What is the current behavior?
 
