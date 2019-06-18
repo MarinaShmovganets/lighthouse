@@ -628,7 +628,7 @@ class GatherRunner {
    * @param {LH.Gatherer.LoadData} loadData
    * @param {string} passName
    */
-  static _saveLoadData(passContext, loadData, passName) {
+  static _addLoadDataToBaseArtifacts(passContext, loadData, passName) {
     const baseArtifacts = passContext.baseArtifacts;
     baseArtifacts.devtoolsLogs[passName] = loadData.devtoolsLog;
     if (loadData.trace) baseArtifacts.traces[passName] = loadData.trace;
@@ -665,12 +665,13 @@ class GatherRunner {
     if (pageLoadError) {
       log.error('GatherRunner', pageLoadError.friendlyMessage, passContext.url);
       passContext.LighthouseRunWarnings.push(pageLoadError.friendlyMessage);
-      GatherRunner._saveLoadData(passContext, loadData, `pageLoadError-${passConfig.passName}`);
+      GatherRunner._addLoadDataToBaseArtifacts(passContext, loadData,
+          `pageLoadError-${passConfig.passName}`);
       return GatherRunner.generatePageLoadErrorArtifacts(passContext, pageLoadError);
     }
 
     // If no error, save devtoolsLog and trace.
-    GatherRunner._saveLoadData(passContext, loadData, passConfig.passName);
+    GatherRunner._addLoadDataToBaseArtifacts(passContext, loadData, passConfig.passName);
 
     // Run `afterPass()` on gatherers and return collected artifacts.
     await GatherRunner.afterPass(passContext, loadData, gathererResults);
