@@ -776,45 +776,50 @@ describe('GatherRunner', function() {
       });
   });
 
-  it('does not return a trace or devtoolsLog when there was a runtime error', async () => {
+  it('saves trace and devtoolsLog with error prefix when there was a runtime error', async () => {
     const requestedUrl = 'https://example.com';
-    const passes = [{
-      passName: 'firstPass',
-      recordTrace: true,
-      gatherers: [{instance: new TestGatherer()}],
-    }];
     const driver = Object.assign({}, fakeDriver, {
       // resolved URL here does not match any request in the network records, causing a runtime error.
       gotoURL: async _ => requestedUrl,
       online: true,
     });
 
-    const config = new Config({});
-    const options = {driver, requestedUrl, settings: config.settings, config};
-    const artifacts = await GatherRunner.run(passes, options);
+    const config = new Config({
+      passes: [{
+        passName: 'firstPass',
+        recordTrace: true,
+        gatherers: [{instance: new TestGatherer()}],
+      }],
+    });
+    const options = {driver, requestedUrl, settings: config.settings};
+    const artifacts = await GatherRunner.run(config.passes, options);
 
     expect(artifacts.TestGatherer.code).toEqual('NO_DOCUMENT_REQUEST');
-    expect(Object.keys(artifacts.traces)).toHaveLength(0);
-    expect(Object.keys(artifacts.devtoolsLogs)).toHaveLength(0);
+
+    // The only loadData available should be prefixed with `pageLoadError-`.
+    expect(Object.keys(artifacts.traces)).toEqual(['pageLoadError-firstPass']);
+    expect(Object.keys(artifacts.devtoolsLogs)).toEqual(['pageLoadError-firstPass']);
   });
 
   it('does not run additional passes after a runtime error', async () => {
     const t1 = new (class Test1 extends TestGatherer {})();
     const t2 = new (class Test2 extends TestGatherer {})();
     const t3 = new (class Test3 extends TestGatherer {})();
-    const passes = [{
-      passName: 'firstPass',
-      recordTrace: true,
-      gatherers: [{instance: t1}],
-    }, {
-      passName: 'secondPass',
-      recordTrace: true,
-      gatherers: [{instance: t2}],
-    }, {
-      passName: 'thirdPass',
-      recordTrace: true,
-      gatherers: [{instance: t3}],
-    }];
+    const config = new Config({
+      passes: [{
+        passName: 'firstPass',
+        recordTrace: true,
+        gatherers: [{instance: t1}],
+      }, {
+        passName: 'secondPass',
+        recordTrace: true,
+        gatherers: [{instance: t2}],
+      }, {
+        passName: 'thirdPass',
+        recordTrace: true,
+        gatherers: [{instance: t3}],
+      }],
+    });
 
     const requestedUrl = 'https://www.reddit.com/r/nba';
     let firstLoad = true;
@@ -831,11 +836,10 @@ describe('GatherRunner', function() {
       },
       online: true,
     });
-    const config = new Config({});
-    const options = {driver, requestedUrl, settings: config.settings, config};
-    const artifacts = await GatherRunner.run(passes, options);
+    const options = {driver, requestedUrl, settings: config.settings};
+    const artifacts = await GatherRunner.run(config.passes, options);
 
-    // t1.pass() and t2.pass() called, t3.pass(), after the error, was not.
+    // t1.pass() and t2.pass() called; t3.pass(), after the error, was not.
     expect(t1.called).toBe(true);
     expect(t2.called).toBe(true);
     expect(t3.called).toBe(false);
@@ -846,9 +850,9 @@ describe('GatherRunner', function() {
     expect(artifacts.Test2.code).toEqual('NO_FCP');
     expect(artifacts.Test3).toBeUndefined();
 
-    // Only the firstPass has a saved trace and devtoolsLog.
-    expect(Object.keys(artifacts.traces)).toEqual(['firstPass']);
-    expect(Object.keys(artifacts.devtoolsLogs)).toEqual(['firstPass']);
+    // firstPass has a saved trace and devtoolsLog, secondPass has an error trace and log.
+    expect(Object.keys(artifacts.traces)).toEqual(['firstPass', 'pageLoadError-secondPass']);
+    expect(Object.keys(artifacts.devtoolsLogs)).toEqual(['firstPass', 'pageLoadError-secondPass']);
   });
 
   describe('#getNetworkError', () => {
