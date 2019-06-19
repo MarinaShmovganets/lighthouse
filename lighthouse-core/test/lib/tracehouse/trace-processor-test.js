@@ -436,14 +436,8 @@ describe('TraceProcessor', () => {
         .toThrowError('navigationStart');
     });
 
-    it('does not throw on traces missing an FCP by default', () => {
-      expect(() => TraceProcessor.computeTraceOfTab(noFCPtrace))
-        .not.toThrowError('firstContentfulPaint');
-    });
-
-    it('throws on traces missing an FCP', () => {
-      expect(() => TraceProcessor.computeTraceOfTab(noFCPtrace, {throwOnNoFCP: true}))
-        .toThrowError('firstContentfulPaint');
+    it('does not throw on traces missing an FCP', () => {
+      expect(() => TraceProcessor.computeTraceOfTab(noFCPtrace)).not.toThrow();
     });
   });
 });
