@@ -22,13 +22,6 @@ class LHTraceProcessor extends TraceProcessor {
   /**
    * @return {Error}
    */
-  static createNoFirstContentfulPaintError() {
-    return new LHError(LHError.errors.NO_FCP);
-  }
-
-  /**
-   * @return {Error}
-   */
   static createNoTracingStartedError() {
     return new LHError(LHError.errors.NO_TRACING_STARTED);
   }
@@ -43,8 +36,20 @@ class TraceOfTab {
    * @return {Promise<LH.Artifacts.TraceOfTab>}
   */
   static async compute_(trace) {
-    const traceOfTab = await LHTraceProcessor.computeTraceOfTab(trace, {throwOnNoFCP: true});
-    return /** @type {LH.Artifacts.TraceOfTab} */ (traceOfTab);
+    const traceOfTab = await LHTraceProcessor.computeTraceOfTab(trace);
+    const {timings, timestamps, firstContentfulPaintEvt} = traceOfTab;
+    const {firstContentfulPaint: firstContentfulPaintTiming} = timings;
+    const {firstContentfulPaint: firstContentfulPaintTs} = timestamps;
+    if (!firstContentfulPaintEvt || !firstContentfulPaintTiming || !firstContentfulPaintTs) {
+      throw new LHError(LHError.errors.NO_FCP);
+    }
+
+    return {
+      ...traceOfTab,
+      firstContentfulPaintEvt,
+      timings: {...timings, firstContentfulPaint: firstContentfulPaintTiming},
+      timestamps: {...timestamps, firstContentfulPaint: firstContentfulPaintTs},
+    };
   }
 }
 

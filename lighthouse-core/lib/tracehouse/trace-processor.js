@@ -46,13 +46,6 @@ class TraceProcessor {
   /**
    * @return {Error}
    */
-  static createNoFirstContentfulPaintError() {
-    return new Error('No firstContentfulPaint event found');
-  }
-
-  /**
-   * @return {Error}
-   */
   static createNoTracingStartedError() {
     return new Error('No tracingStartedInBrowser event found');
   }
@@ -354,11 +347,9 @@ class TraceProcessor {
    * Finds key trace events, identifies main process/thread, and returns timings of trace events
    * in milliseconds since navigation start in addition to the standard microsecond monotonic timestamps.
    * @param {LH.Trace} trace
-   * @param {{throwOnNoFCP?: boolean}} options
    * @return {TraceOfTabWithoutFCP}
   */
-  static computeTraceOfTab(trace, options = {}) {
-    const {throwOnNoFCP = false} = options;
+  static computeTraceOfTab(trace) {
     // Parse the trace for our key events and sort them by timestamp. Note: sort
     // *must* be stable to keep events correctly nested.
     const keyEvents = this._filteredStableSort(trace.traceEvents, e => {
@@ -385,7 +376,6 @@ class TraceProcessor {
     const firstContentfulPaint = frameEvents.find(
       e => e.name === 'firstContentfulPaint' && e.ts > navigationStart.ts
     );
-    if (!firstContentfulPaint && throwOnNoFCP) throw this.createNoFirstContentfulPaintError();
 
     // fMP will follow at/after the FP
     let firstMeaningfulPaint = frameEvents.find(
