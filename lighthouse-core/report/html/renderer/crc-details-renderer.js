@@ -84,9 +84,10 @@ class CriticalRequestChainRenderer {
    * @param {DOM} dom
    * @param {DocumentFragment} tmpl
    * @param {CRCSegment} segment
+   * @param {DetailsRenderer} detailsRenderer
    * @return {Node}
    */
-  static createChainNode(dom, tmpl, segment) {
+  static createChainNode(dom, tmpl, segment, detailsRenderer) {
     const chainsEl = dom.cloneTemplate('#tmpl-lh-crc__chains', tmpl);
 
     // Hovering over request shows full URL.
@@ -120,12 +121,10 @@ class CriticalRequestChainRenderer {
     }
 
     // Fill in url, host, and request size information.
-    const {file, hostname} = Util.parseURL(segment.node.request.url);
+    const url = segment.node.request.url;
+    const linkEl = detailsRenderer.renderTextURL(url);
     const treevalEl = dom.find('.crc-node__tree-value', chainsEl);
-    const fileEl = /** @type {HTMLAnchorElement} */ (dom.find('.crc-node__tree-file', treevalEl));
-    fileEl.textContent = `${file}`;
-    fileEl.href = segment.node.request.url;
-    dom.find('.crc-node__tree-hostname', treevalEl).textContent = hostname ? `(${hostname})` : '';
+    treevalEl.appendChild(linkEl);
 
     if (!segment.hasChildren) {
       const {startTime, endTime, transferSize} = segment.node.request;
@@ -148,14 +147,15 @@ class CriticalRequestChainRenderer {
    * @param {CRCSegment} segment
    * @param {Element} elem Parent element.
    * @param {LH.Audit.Details.CriticalRequestChain} details
+   * @param {DetailsRenderer} detRenderer
    */
-  static buildTree(dom, tmpl, segment, elem, details) {
-    elem.appendChild(CriticalRequestChainRenderer.createChainNode(dom, tmpl, segment));
+  static buildTree(dom, tmpl, segment, elem, details, detRenderer) {
+    elem.appendChild(CriticalRequestChainRenderer.createChainNode(dom, tmpl, segment, detRenderer));
     if (segment.node.children) {
       for (const key of Object.keys(segment.node.children)) {
         const childSegment = CriticalRequestChainRenderer.createSegment(segment.node.children, key,
           segment.startTime, segment.transferSize, segment.treeMarkers, segment.isLastChild);
-        CriticalRequestChainRenderer.buildTree(dom, tmpl, childSegment, elem, details);
+        CriticalRequestChainRenderer.buildTree(dom, tmpl, childSegment, elem, details, detRenderer);
       }
     }
   }
@@ -164,9 +164,10 @@ class CriticalRequestChainRenderer {
    * @param {DOM} dom
    * @param {ParentNode} templateContext
    * @param {LH.Audit.Details.CriticalRequestChain} details
+   * @param {DetailsRenderer} detRenderer
    * @return {Element}
    */
-  static render(dom, templateContext, details) {
+  static render(dom, templateContext, details, detRenderer) {
     const tmpl = dom.cloneTemplate('#tmpl-lh-crc', templateContext);
     const containerEl = dom.find('.lh-crc', tmpl);
 
@@ -182,7 +183,7 @@ class CriticalRequestChainRenderer {
     for (const key of Object.keys(root.tree)) {
       const segment = CriticalRequestChainRenderer.createSegment(root.tree, key,
           root.startTime, root.transferSize);
-      CriticalRequestChainRenderer.buildTree(dom, tmpl, segment, containerEl, details);
+      CriticalRequestChainRenderer.buildTree(dom, tmpl, segment, containerEl, details, detRenderer);
     }
 
     return dom.find('.lh-crc-container', tmpl);

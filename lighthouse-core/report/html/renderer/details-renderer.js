@@ -53,7 +53,7 @@ class DetailsRenderer {
       case 'table':
         return this._renderTable(details);
       case 'criticalrequestchain':
-        return CriticalRequestChainRenderer.render(this._dom, this._templateContext, details);
+        return CriticalRequestChainRenderer.render(this._dom, this._templateContext, details, this);
       case 'opportunity':
         return this._renderTable(details);
 
@@ -97,7 +97,7 @@ class DetailsRenderer {
    * @param {string} text
    * @return {HTMLElement}
    */
-  _renderTextURL(text) {
+  renderTextURL(text) {
     const url = text;
 
     let displayedPath;
@@ -211,7 +211,7 @@ class DetailsRenderer {
           return this.renderNode(value);
         }
         case 'url': {
-          return this._renderTextURL(value.value);
+          return this.renderTextURL(value.value);
         }
         default: {
           throw new Error(`Unknown valueType: ${value.type}`);
@@ -256,7 +256,7 @@ class DetailsRenderer {
       case 'url': {
         const strValue = String(value);
         if (URL_PREFIXES.some(prefix => strValue.startsWith(prefix))) {
-          return this._renderTextURL(strValue);
+          return this.renderTextURL(strValue);
         } else {
           // Fall back to <pre> rendering if not actually a URL.
           return this._renderCode(strValue);

@@ -94,13 +94,13 @@ describe('DetailsRenderer', () => {
 
     // Main request
     assert.equal(chains.length, 4, 'generates correct number of chain nodes');
-    assert.equal(chains[0].querySelector('.crc-node__tree-hostname').textContent, '(example.com)');
+    assert.equal(chains[0].querySelector('.lh-text__url-host').textContent, '(example.com)');
 
     // Children
     assert.ok(chains[1].querySelector('.crc-node__tree-marker .vert-right'));
     assert.equal(chains[1].querySelectorAll('.crc-node__tree-marker .right').length, 2);
-    assert.equal(chains[1].querySelector('.crc-node__tree-file').textContent, '/b.js');
-    assert.equal(chains[1].querySelector('.crc-node__tree-hostname').textContent, '(example.com)');
+    assert.equal(chains[1].querySelector('.lh-text__url a').textContent, '/b.js');
+    assert.equal(chains[1].querySelector('.lh-text__url-host').textContent, '(example.com)');
     const durationNodes = chains[1].querySelectorAll('.crc-node__chain-duration');
     assert.equal(durationNodes[0].textContent, ' - 5,000\xa0ms, ');
     // Note: actual transferSize is 2000 bytes but formatter formats to KBs.
