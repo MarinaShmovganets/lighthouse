@@ -584,11 +584,14 @@ class GatherRunner {
         }
       }
 
+      await GatherRunner.disposeDriver(driver, options);
       GatherRunner.finalizeBaseArtifacts(baseArtifacts);
       return /** @type {LH.Artifacts} */ ({...baseArtifacts, ...artifacts}); // Cast to drop Partial<>.
-    } finally {
-      // Clean up regardless of error.
+    } catch (err) {
+      // Clean up on error. Don't await so that the root error, not a disposal error, is shown.
       GatherRunner.disposeDriver(driver, options);
+
+      throw err;
     }
   }
 
