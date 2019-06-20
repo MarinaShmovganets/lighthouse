@@ -13,8 +13,13 @@ module.exports = [
     lhr: {
       requestedUrl: 'http://localhost:10200/infinite-loop.html',
       finalUrl: 'http://localhost:10200/infinite-loop.html',
-      audits: {},
       runtimeError: {code: 'PAGE_HUNG'},
+      audits: {
+        'first-contentful-paint': {
+          scoreDisplayMode: 'error',
+          errorMessage: 'Required traces gatherer did not run.',
+        },
+      },
     },
     artifacts: {
       PageLoadError: {code: 'PAGE_HUNG'},
@@ -30,8 +35,13 @@ module.exports = [
     lhr: {
       requestedUrl: 'https://expired.badssl.com',
       finalUrl: 'https://expired.badssl.com/',
-      audits: {},
       runtimeError: {code: 'INSECURE_DOCUMENT_REQUEST'},
+      audits: {
+        'first-contentful-paint': {
+          scoreDisplayMode: 'error',
+          errorMessage: 'Required traces gatherer did not run.',
+        },
+      },
     },
     artifacts: {
       PageLoadError: {code: 'INSECURE_DOCUMENT_REQUEST'},
