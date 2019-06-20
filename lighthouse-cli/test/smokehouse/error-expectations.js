@@ -17,8 +17,13 @@ module.exports = [
       runtimeError: {code: 'PAGE_HUNG'},
     },
     artifacts: {
-      // Assert undefined because pageLoadError prevented gatherer from running.
-      ViewportDimensions: undefined,
+      PageLoadError: {code: 'PAGE_HUNG'},
+      devtoolsLogs: {
+        'pageLoadError-defaultPass': [/* ... */],
+      },
+      traces: {
+        'pageLoadError-defaultPass': {traceEvents: [/* ... */]},
+      },
     },
   },
   {
@@ -29,8 +34,13 @@ module.exports = [
       runtimeError: {code: 'INSECURE_DOCUMENT_REQUEST'},
     },
     artifacts: {
-      // Assert undefined because pageLoadError prevented gatherer from running.
-      ViewportDimensions: undefined,
+      PageLoadError: {code: 'INSECURE_DOCUMENT_REQUEST'},
+      devtoolsLogs: {
+        'pageLoadError-defaultPass': [/* ... */],
+      },
+      traces: {
+        'pageLoadError-defaultPass': {traceEvents: [/* ... */]},
+      },
     },
   },
 ];
