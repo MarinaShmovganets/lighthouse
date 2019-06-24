@@ -18,6 +18,10 @@ const BLOCKLIST = new Set([
   'right here',
   'more',
   'learn more',
+  'home',
+  'login',
+  'menu',
+  'contact us',
   // Japanese
   'ここをクリック',
   'こちらをクリック',
