@@ -157,5 +157,5 @@ collectAllStringsInDir(path.join(LH_ROOT, 'stack-packs/packs'), strings);
 console.log('Collected from Stack Packs!');
 
 writeStringsToLocaleFormat('en-US', strings);
-writeStringsToLocaleFormat('locales/en-XA-local', psuedoLocalizedStrings);
+writeStringsToLocaleFormat('locales/en-XL', psuedoLocalizedStrings);
 console.log('Written to disk!');
