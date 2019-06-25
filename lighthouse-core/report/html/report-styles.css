@@ -29,13 +29,12 @@
 
   For colors: --color-{hue}-{intensity}
 
-  {intensity} is the Material Design tag - 700, A700, etc. Omit "-{intensity}" if there is only one
-  color of that hue.
+  {intensity} is the Material Design tag - 700, A700, etc.
 */
 .lh-vars {
   /* Palette using Material Design Colors
    * https://www.materialui.co/colors */
-  --color-amber: #FFF8E1; /* 50 */
+  --color-amber-50: #FFF8E1;
   --color-blue-200: #90CAF9;
   --color-blue-900: #0D47A1;
   --color-blue-A700: #2962FF;
@@ -997,7 +996,7 @@
   margin-left: auto;
   margin-right: auto;
   width: 50%;
-  background-color: var(--color-amber);
+  background-color: var(--color-amber-50);
 }
 @media screen and (max-width: 964px) {
   .lh-warnings--toplevel {
