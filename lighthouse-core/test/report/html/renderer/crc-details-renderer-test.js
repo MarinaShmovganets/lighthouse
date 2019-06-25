@@ -97,7 +97,8 @@ describe('DetailsRenderer', () => {
 
     // Main request
     assert.equal(chains.length, 4, 'generates correct number of chain nodes');
-    assert.equal(chains[0].querySelector('.lh-text__url-host').textContent, '(example.com)');
+    assert.ok(!chains[0].querySelector('.lh-text__url-host'), 'should be no origin for root url');
+    assert.equal(chains[0].querySelector('.lh-text__url a').textContent, 'https://example.com');
 
     // Children
     assert.ok(chains[1].querySelector('.crc-node__tree-marker .vert-right'));
