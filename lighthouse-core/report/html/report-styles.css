@@ -567,7 +567,7 @@
 
 .lh-metric__innerwrap {
   display: grid;
-  grid-template-columns: 1fr 80% 20%;
+  grid-template-columns: var(--audit-description-padding-left) 10fr 3fr;
   align-items: center;
   padding: 10px 0;
 }
@@ -596,6 +596,7 @@
 .lh-metric__value {
   white-space: nowrap; /* No wrapping between metric value and the icon */
   font-weight: 500;
+  justify-self: end;
 }
 
 /* No-JS toggle switch */
