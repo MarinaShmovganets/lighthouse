@@ -996,14 +996,9 @@
   color: var(--report-text-color-secondary);
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
+  max-width: calc(var(--report-width) - var(--category-padding) * 2);
   background-color: var(--color-amber-50);
   padding: var(--toplevel-warning-padding);
-}
-@media screen and (max-width: 964px) {
-  .lh-warnings--toplevel {
-    width: 100%;
-  }
 }
 
 .lh-warnings ul {
