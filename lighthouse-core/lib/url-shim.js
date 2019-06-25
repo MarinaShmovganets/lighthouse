@@ -175,7 +175,7 @@ class URLShim extends URL {
 
 URLShim.URL = URL;
 
-URLShim.NON_NETWORK_PROTOCOLS = ['blob', 'data', 'intent'];
+URLShim.NON_NETWORK_PROTOCOLS = ['blob', 'data', 'intent', 'mailto', 'javascript'];
 
 URLShim.INVALID_URL_DEBUG_STRING =
     'Lighthouse was unable to determine the URL of some script executions. ' +
