@@ -810,7 +810,7 @@
             "title": "`<frame>` or `<iframe>` elements have a title"
         },
         "geolocation-on-start": {
-            "description": "Users are mistrustful of or confused by sites that request their location without context. Consider tying the request to user gestures instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/geolocation-on-load).",
+            "description": "Users are mistrustful of or confused by sites that request their location without context. Consider tying the request to a user action instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/geolocation-on-load).",
             "details": {
                 "headings": [
                     {

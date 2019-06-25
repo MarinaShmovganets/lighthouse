@@ -709,11 +709,11 @@
   },
   "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | columnRel": {
     "message": "Rel",
-    "description": "Table column header for the `rel=` value from the link."
+    "description": "Label for a column in a data table; entries will be the values of the html \"rel\" attribute from link in a page."
   },
   "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | columnTarget": {
     "message": "Target",
-    "description": "Table column header for the target attribute of the link. Each entry is either an empty string or a string like `_blank`."
+    "description": "Label for a column in a data table; entries will be the target attribute of a link. Each entry is either an empty string or a string like `_blank`."
   },
   "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | description": {
     "message": "Add `rel=\"noopener\"` or `rel=\"noreferrer\"` to any external links to improve performance and prevent security vulnerabilities. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/noopener).",
@@ -721,11 +721,11 @@
   },
   "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | failureTitle": {
     "message": "Links to cross-origin destinations are unsafe",
-    "description": "Title of a Lighthouse audit that provides detail on the cross-origin links that the page contains, and whether they can be considered safe. This descriptive title is shown to users when not all links can be considered safe."
+    "description": "Title of a Lighthouse audit that provides detail on the cross-origin links that the web page contains, and whether the links can be considered safe. This descriptive title is shown to users when not all links can be considered safe."
   },
   "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | title": {
     "message": "Links to cross-origin destinations are safe",
-    "description": "Title of a Lighthouse audit that provides detail on the cross-origin links that the page contains, and whether they can be considered safe. This descriptive title is shown to users when all links are safe."
+    "description": "Title of a Lighthouse audit that provides detail on the cross-origin links that the web page contains, and whether the links can be considered safe. This descriptive title is shown to users when all links are safe."
   },
   "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | warning": {
     "message": "Unable to determine the destination for anchor ({anchorHTML}). If not used as a hyperlink, consider removing target=_blank.",
@@ -745,11 +745,11 @@
   },
   "lighthouse-core/audits/dobetterweb/js-libraries.js | columnName": {
     "message": "Name",
-    "description": "Table column header for the name of the Javascript library."
+    "description": "Label for a column in a data table; entries will be the names of the detected Javascript libraries."
   },
   "lighthouse-core/audits/dobetterweb/js-libraries.js | columnVersion": {
     "message": "Version",
-    "description": "Table column header for the version of the detected Javascript library."
+    "description": "Label for a column in a data table; entries will be the version numbers of the detected Javascript libraries."
   },
   "lighthouse-core/audits/dobetterweb/js-libraries.js | description": {
     "message": "All front-end JavaScript libraries detected on the page.",
@@ -773,15 +773,15 @@
   },
   "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | columnSeverity": {
     "message": "Highest Severity",
-    "description": "Table column header for the severity of the vulnerabilities found within a Javascript library."
+    "description": "Label for a column in a data table; entries will be the severity of the vulnerabilities found within a Javascript library."
   },
   "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | columnVersion": {
     "message": "Library Version",
-    "description": "Table column header for the version of the Javascript library found."
+    "description": "Label for a column in a data table; entries will be the version numbers of the Javascript libraries found."
   },
   "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | columnVuln": {
     "message": "Vulnerability Count",
-    "description": "Table column header for the count of vulnerabilities found within a JavaSscript library."
+    "description": "Label for a column in a data table; entries will be the counts of JavaScript-library vulnerabilities found."
   },
   "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | description": {
     "message": "Some third-party scripts may contain known security vulnerabilities that are easily identified and exploited by attackers. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/vulnerabilities).",
@@ -794,6 +794,18 @@
   "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | failureTitle": {
     "message": "Includes front-end JavaScript libraries with known security vulnerabilities",
     "description": "Title of a Lighthouse audit that provides detail on Javascript libraries the page uses. This descriptive title is shown to users when some detected Javascript libraries have known security vulnerabilities."
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | rowSeverityHigh": {
+    "message": "High",
+    "description": "Table row value for the severity of a high impact, or dangerous Javascript vulnerability.  Part of a ranking scale in the form: low, medium, high."
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | rowSeverityLow": {
+    "message": "Low",
+    "description": "Table row value for the severity of a small, or low impact Javascript vulnerability.  Part of a ranking scale in the form: low, medium, high."
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | rowSeverityMedium": {
+    "message": "Medium",
+    "description": "Table row value for the severity of a Javascript vulnerability.  Part of a ranking scale in the form: low, medium, high."
   },
   "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | title": {
     "message": "Avoids front-end JavaScript libraries with known security vulnerabilities",
@@ -913,7 +925,7 @@
   },
   "lighthouse-core/audits/image-aspect-ratio.js | warningCompute": {
     "message": "Invalid image sizing information {url}",
-    "description": "Warning that the sizing information cannot be collected for an image."
+    "description": "Warning that the size information for an image was nonsensical. `url` will be replaced with the url of that image."
   },
   "lighthouse-core/audits/is-on-https.js | columnInsecureURL": {
     "message": "Insecure URL",

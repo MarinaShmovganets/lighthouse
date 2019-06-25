@@ -34,17 +34,30 @@ const UIStrings = {
     =1 {1 vulnerability detected}
     other {# vulnerabilities detected}
     }`,
-  /** Table column header for the version of the Javascript library found. */
+  /** Label for a column in a data table; entries will be the version numbers of the Javascript libraries found.  */
   columnVersion: 'Library Version',
-  /** Table column header for the count of vulnerabilities found within a JavaSscript library. */
+  /** Label for a column in a data table; entries will be the counts of JavaScript-library vulnerabilities found.  */
   columnVuln: 'Vulnerability Count',
-  /** Table column header for the severity of the vulnerabilities found within a Javascript library. */
+  /** Label for a column in a data table; entries will be the severity of the vulnerabilities found within a Javascript library. */
   columnSeverity: 'Highest Severity',
+  /** Table row value for the severity of a small, or low impact Javascript vulnerability.  Part of a ranking scale in the form: low, medium, high. */
+  rowSeverityLow: 'Low',
+  /** Table row value for the severity of a Javascript vulnerability.  Part of a ranking scale in the form: low, medium, high. */
+  rowSeverityMedium: 'Medium',
+  /** Table row value for the severity of a high impact, or dangerous Javascript vulnerability.  Part of a ranking scale in the form: low, medium, high. */
+  rowSeverityHigh: 'High',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 const SEMVER_REGEX = /^(\d+\.\d+\.\d+)[^-0-9]+/;
+
+/** @type {Object<string, string>} */
+const rowMap = {
+  'low': str_(UIStrings.rowSeverityLow),
+  'medium': str_(UIStrings.rowSeverityMedium),
+  'high': str_(UIStrings.rowSeverityHigh),
+};
 
 /** @typedef {{npm: Object<string, Array<{id: string, severity: string, semver: {vulnerable: Array<string>}}>>}} SnykDB */
 /** @typedef {{severity: string, numericSeverity: number, library: string, url: string}} Vulnerability */
@@ -133,7 +146,7 @@ class NoVulnerableLibrariesAudit extends Audit {
 
     const vulns = matchingVulns.map(vuln => {
       return {
-        severity: vuln.severity,
+        severity: rowMap[vuln.severity],
         numericSeverity: this.severityMap[vuln.severity],
         library: `${lib.name}@${normalizedVersion}`,
         url: 'https://snyk.io/vuln/' + vuln.id,
@@ -179,7 +192,7 @@ class NoVulnerableLibrariesAudit extends Audit {
 
       let highestSeverity;
       if (vulns.length > 0) {
-        highestSeverity = this.highestSeverity(vulns).replace(/^\w/, l => l.toUpperCase());
+        highestSeverity = this.highestSeverity(vulns);
 
         vulnerabilityResults.push({
           highestSeverity,

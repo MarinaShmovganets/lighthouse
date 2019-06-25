@@ -2701,7 +2701,7 @@
     "geolocation-on-start": {
       "id": "geolocation-on-start",
       "title": "Requests the geolocation permission on page load",
-      "description": "Users are mistrustful of or confused by sites that request their location without context. Consider tying the request to user gestures instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/geolocation-on-load).",
+      "description": "Users are mistrustful of or confused by sites that request their location without context. Consider tying the request to a user action instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/geolocation-on-load).",
       "score": 0,
       "scoreDisplayMode": "binary",
       "details": {
@@ -5930,6 +5930,9 @@
       ],
       "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | columnSeverity": [
         "audits[no-vulnerable-libraries].details.headings[2].text"
+      ],
+      "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | rowSeverityMedium": [
+        "audits[no-vulnerable-libraries].details.items[0].highestSeverity"
       ],
       "lighthouse-core/audits/dobetterweb/js-libraries.js | title": [
         "audits[js-libraries].title"

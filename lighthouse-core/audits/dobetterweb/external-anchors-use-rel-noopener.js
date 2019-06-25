@@ -10,9 +10,9 @@ const Audit = require('../audit.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** Title of a Lighthouse audit that provides detail on the cross-origin links that the page contains, and whether they can be considered safe. This descriptive title is shown to users when all links are safe. */
+  /** Title of a Lighthouse audit that provides detail on the cross-origin links that the web page contains, and whether the links can be considered safe. This descriptive title is shown to users when all links are safe. */
   title: 'Links to cross-origin destinations are safe',
-  /** Title of a Lighthouse audit that provides detail on the cross-origin links that the page contains, and whether they can be considered safe. This descriptive title is shown to users when not all links can be considered safe. */
+  /** Title of a Lighthouse audit that provides detail on the cross-origin links that the web page contains, and whether the links can be considered safe. This descriptive title is shown to users when not all links can be considered safe. */
   failureTitle: 'Links to cross-origin destinations are unsafe',
   /** Description of a Lighthouse audit that tells the user why and how they should secure cross-origin links. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Add `rel="noopener"` or `rel="noreferrer"` to any external links to improve ' +
@@ -21,9 +21,9 @@ const UIStrings = {
   /** Warning that some links' destinations cannot be determined and therefore the audit cannot evaluate the link's safety. */
   warning: 'Unable to determine the destination for anchor ({anchorHTML}). ' +
     'If not used as a hyperlink, consider removing target=_blank.',
-  /** Table column header for the target attribute of the link. Each entry is either an empty string or a string like `_blank`. */
+  /** Label for a column in a data table; entries will be the target attribute of a link. Each entry is either an empty string or a string like `_blank`.  */
   columnTarget: 'Target',
-  /** Table column header for the `rel=` value from the link. */
+  /** Label for a column in a data table; entries will be the values of the html "rel" attribute from link in a page.  */
   columnRel: 'Rel',
 };
 
