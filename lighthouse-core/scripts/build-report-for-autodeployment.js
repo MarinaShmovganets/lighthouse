@@ -40,7 +40,7 @@ lhr.categories['lighthouse-plugin-someplugin'] = {
     let html = ReportGenerator.generateReportHtml(lhr);
     for (const variant of ['', '-devtools']) {
       if (variant === '-devtools') {
-        html = html.replace(`"lh-root lh-vars"`, `"lh-root lh-vars lh-devtools"`)
+        html = html.replace(`"lh-root lh-vars"`, `"lh-root lh-vars lh-devtools"`);
       }
       const filepath = `${DIST}/${filename}${variant}/index.html`;
       mkdirp(path.dirname(filepath));
