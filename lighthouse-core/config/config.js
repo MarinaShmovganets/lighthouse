@@ -22,23 +22,27 @@ const {requireAudits, mergeOptionsOfItems, resolveModule} = require('./config-he
 /** @typedef {typeof import('../gather/gatherers/gatherer.js')} GathererConstructor */
 /** @typedef {InstanceType<GathererConstructor>} Gatherer */
 
-/** @type {Array<keyof LH.BaseArtifacts>} */
-const BASE_ARTIFACT_NAMES = [
-  'fetchTime',
-  'LighthouseRunWarnings',
-  'TestedAsMobileDevice',
-  'HostUserAgent',
-  'NetworkUserAgent',
-  'BenchmarkIndex',
-  'WebAppManifest',
-  'Stacks',
-  'traces',
-  'devtoolsLogs',
-  'settings',
-  'URL',
-  'Timing',
-  'PageLoadError',
-];
+/**
+ * Define with object literal so that tsc will require it to stay updated.
+ * @type {Record<keyof LH.BaseArtifacts, ''>}
+ */
+const BASE_ARTIFACT_BLANKS = {
+  fetchTime: '',
+  LighthouseRunWarnings: '',
+  TestedAsMobileDevice: '',
+  HostUserAgent: '',
+  NetworkUserAgent: '',
+  BenchmarkIndex: '',
+  WebAppManifest: '',
+  Stacks: '',
+  traces: '',
+  devtoolsLogs: '',
+  settings: '',
+  URL: '',
+  Timing: '',
+  PageLoadError: '',
+};
+const BASE_ARTIFACT_NAMES = Object.keys(BASE_ARTIFACT_BLANKS);
 
 /**
  * @param {Config['passes']} passes
@@ -50,7 +54,7 @@ function assertValidPasses(passes, audits) {
   }
 
   const requiredGatherers = Config.getGatherersNeededByAudits(audits);
-  /** @type {Set<string>} */
+  // Base artifacts are provided by GatherRunner, so start foundGatherers with them.
   const foundGatherers = new Set(BASE_ARTIFACT_NAMES);
 
   // Log if we are running gathers that are not needed by the audits listed in the config
