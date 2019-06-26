@@ -108,22 +108,25 @@ function createPsuedoLocaleStrings(strings) {
     const psuedoLocalizedString = [];
     let braceCount = 0;
     let useHatForAccentMark = true;
-    for (let i = 0; i < message.length; i++) {
-      const char = message.substr(i, 1);
+    for (const char of message) {
       psuedoLocalizedString.push(char);
-      // Don't touch the characters inside braces
       if (char === '{') {
         braceCount++;
       } else if (char === '}') {
         braceCount--;
-      // Hack to ignore the nested {plural{ICU}braces}.
-      // ex: "{itemCount, plural, =1 {1 l̂ín̂ḱ f̂óûńd̂} other {# ĺîńk̂ś f̂óûńd̂}}"
-      // ex: "{itemCount, plural, =1 {1 l̂ín̂ḱ {nested_replacement} f̂óûńd̂} other {# ĺîńk̂ś {nested_replacement} f̂óûńd̂}}"
-      } else if (braceCount % 2 === 0) {
-        if (/[a-z]/i.test(char)) {
-          psuedoLocalizedString.push(useHatForAccentMark ? `\u0302` : `\u0301`);
-          useHatForAccentMark = !useHatForAccentMark;
-        }
+      }
+
+      // Hack to not change {plural{ICU}braces} nested an odd number of times.
+      // ex: "{itemCount, plural, =1 {1 link found} other {# links found}}"
+      // becomes "{itemCount, plural, =1 {1 l̂ín̂ḱ f̂óûńd̂} other {# ĺîńk̂ś f̂óûńd̂}}"
+      // ex: "{itemCount, plural, =1 {1 link {nested_replacement} found} other {# links {nested_replacement} found}}"
+      // becomes: "{itemCount, plural, =1 {1 l̂ín̂ḱ {nested_replacement} f̂óûńd̂} other {# ĺîńk̂ś {nested_replacement} f̂óûńd̂}}"
+      if (braceCount % 2 === 1) continue;
+
+      // Add diacritical marks to the preceding letter, alternating between a hat ( ̂) and an acute (´).
+      if (/[a-z]/i.test(char)) {
+        psuedoLocalizedString.push(useHatForAccentMark ? `\u0302` : `\u0301`);
+        useHatForAccentMark = !useHatForAccentMark;
       }
     }
 
