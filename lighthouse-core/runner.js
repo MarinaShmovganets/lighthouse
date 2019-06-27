@@ -290,7 +290,7 @@ class Runner {
         const noArtifact = artifacts[artifactName] === undefined;
 
         // If trace/devtoolsLog required, check that DEFAULT_PASS trace/devtoolsLog exists.
-        // TODO: need pass-specific check of traces and devtoolsLogs.
+        // NOTE: for now, not a pass-specific check of traces or devtoolsLogs.
         const noRequiredTrace = artifactName === 'traces' && !artifacts.traces[Audit.DEFAULT_PASS];
         const noRequiredDevtoolsLog = artifactName === 'devtoolsLogs' &&
             !artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
