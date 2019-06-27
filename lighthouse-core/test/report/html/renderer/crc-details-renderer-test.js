@@ -99,11 +99,17 @@ describe('DetailsRenderer', () => {
     assert.equal(chains.length, 4, 'generates correct number of chain nodes');
     assert.ok(!chains[0].querySelector('.lh-text__url-host'), 'should be no origin for root url');
     assert.equal(chains[0].querySelector('.lh-text__url a').textContent, 'https://example.com');
+    assert.equal(chains[0].querySelector('.lh-text__url a').href, 'https://example.com/');
+    assert.equal(chains[0].querySelector('.lh-text__url a').rel, 'noopener');
+    assert.equal(chains[0].querySelector('.lh-text__url a').target, '_blank');
 
     // Children
     assert.ok(chains[1].querySelector('.crc-node__tree-marker .vert-right'));
     assert.equal(chains[1].querySelectorAll('.crc-node__tree-marker .right').length, 2);
     assert.equal(chains[1].querySelector('.lh-text__url a').textContent, '/b.js');
+    assert.equal(chains[1].querySelector('.lh-text__url a').href, 'https://example.com/b.js');
+    assert.equal(chains[1].querySelector('.lh-text__url a').rel, 'noopener');
+    assert.equal(chains[1].querySelector('.lh-text__url a').target, '_blank');
     assert.equal(chains[1].querySelector('.lh-text__url-host').textContent, '(example.com)');
     const durationNodes = chains[1].querySelectorAll('.crc-node__chain-duration');
     assert.equal(durationNodes[0].textContent, ' - 5,000\xa0ms, ');
