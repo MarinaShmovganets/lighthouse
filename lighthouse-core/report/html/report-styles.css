@@ -588,7 +588,7 @@
 
 .lh-metric__description {
   display: none;
-  grid-column-start: 1;
+  grid-column-start: 2;
   grid-column-end: 3;
   color: var(--report-text-color-secondary);
 }
