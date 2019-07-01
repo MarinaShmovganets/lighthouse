@@ -44,14 +44,14 @@ class IFrameElements extends Gatherer {
 
     const {frameTree} = await driver.sendCommand('Page.getFrameTree');
     const framesByDomId = new Map();
-    let toVisit = [frameTree];
+    const toVisit = [frameTree];
 
-    while(toVisit.length) {
+    while (toVisit.length) {
       const tempFrameTree = toVisit.shift();
-      if(tempFrameTree) {
+      if (tempFrameTree) {
         for (const childFrameTree of tempFrameTree.childFrames || []) {
           if (childFrameTree.childFrames) {
-            toVisit.concat(childFrameTree.childFrames)
+            toVisit.concat(childFrameTree.childFrames);
           }
           if (framesByDomId.has(childFrameTree.frame.name)) {
             // DOM ID collision, mark it as null.
@@ -62,19 +62,6 @@ class IFrameElements extends Gatherer {
         }
       }
     }
-
-    // const {frameTree} = await driver.sendCommand('Page.getFrameTree');
-    // const framesByDomId = new Map();
-    // if (frameTree.childFrames) {
-    //   for (const {frame} of frameTree.childFrames || []) {
-    //     if (framesByDomId.has(frame.name)) {
-    //       // DOM ID collision, mark it as null.
-    //       framesByDomId.set(frame.name, null);
-    //     } else {
-    //       framesByDomId.set(frame.name, frame);
-    //     }
-    //   }
-    // }
 
     const expression = `(() => {
       ${pageFunctions.getOuterHTMLSnippetString};
