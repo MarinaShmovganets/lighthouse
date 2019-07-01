@@ -43,8 +43,9 @@ class IFrameElements extends Gatherer {
     const driver = passContext.driver;
 
     const {frameTree} = await driver.sendCommand('Page.getFrameTree');
-    const framesByDomId = new Map();
     const toVisit = [frameTree];
+    /** @type {Map<string | undefined, LH.Crdp.Page.Frame | null>} */
+    const framesByDomId = new Map();
 
     while (toVisit.length) {
       const tempFrameTree = toVisit.shift();
