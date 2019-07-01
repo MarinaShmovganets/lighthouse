@@ -28,7 +28,7 @@ function collectIFrameElements() {
       clientRect: {top, bottom, left, right, width, height},
       pixelArea: width * height,
       // @ts-ignore - put into scope via stringification
-      isPositionFixed: isVisible && isPositionFixed(node), // eslint-disable-line no-undef
+      isPositionFixed: isPositionFixed(node), // eslint-disable-line no-undef
     };
   });
 }
@@ -44,16 +44,37 @@ class IFrameElements extends Gatherer {
 
     const {frameTree} = await driver.sendCommand('Page.getFrameTree');
     const framesByDomId = new Map();
-    if (frameTree.childFrames) {
-      for (const {frame} of frameTree.childFrames) {
-        if (framesByDomId.has(frame.name)) {
-          // DOM ID collision, mark it as null.
-          framesByDomId.set(frame.name, null);
-        } else {
-          framesByDomId.set(frame.name, frame);
+    let toVisit = [frameTree];
+
+    while(toVisit.length) {
+      const tempFrameTree = toVisit.shift();
+      if(tempFrameTree) {
+        for (const childFrameTree of tempFrameTree.childFrames || []) {
+          if (childFrameTree.childFrames) {
+            toVisit.concat(childFrameTree.childFrames)
+          }
+          if (framesByDomId.has(childFrameTree.frame.name)) {
+            // DOM ID collision, mark it as null.
+            framesByDomId.set(childFrameTree.frame.name, null);
+          } else {
+            framesByDomId.set(childFrameTree.frame.name, childFrameTree.frame);
+          }
         }
       }
     }
+
+    // const {frameTree} = await driver.sendCommand('Page.getFrameTree');
+    // const framesByDomId = new Map();
+    // if (frameTree.childFrames) {
+    //   for (const {frame} of frameTree.childFrames || []) {
+    //     if (framesByDomId.has(frame.name)) {
+    //       // DOM ID collision, mark it as null.
+    //       framesByDomId.set(frame.name, null);
+    //     } else {
+    //       framesByDomId.set(frame.name, frame);
+    //     }
+    //   }
+    // }
 
     const expression = `(() => {
       ${pageFunctions.getOuterHTMLSnippetString};
