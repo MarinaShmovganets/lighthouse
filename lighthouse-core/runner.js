@@ -7,18 +7,18 @@
 
 const isDeepEqual = require('lodash.isequal');
 const Driver = require('./gather/driver.js');
-const GatherRunner = require('./gather/gather-runner');
-const ReportScoring = require('./scoring');
-const Audit = require('./audits/audit');
+const GatherRunner = require('./gather/gather-runner.js');
+const ReportScoring = require('./scoring.js');
+const Audit = require('./audits/audit.js');
 const log = require('lighthouse-logger');
 const i18n = require('./lib/i18n/i18n.js');
 const stackPacks = require('./lib/stack-packs.js');
-const assetSaver = require('./lib/asset-saver');
+const assetSaver = require('./lib/asset-saver.js');
 const fs = require('fs');
 const path = require('path');
-const URL = require('./lib/url-shim');
-const Sentry = require('./lib/sentry');
-const generateReport = require('./report/report-generator').generateReport;
+const URL = require('./lib/url-shim.js');
+const Sentry = require('./lib/sentry.js');
+const generateReport = require('./report/report-generator.js').generateReport;
 const LHError = require('./lib/lh-error.js');
 
 /** @typedef {import('./gather/connections/connection.js')} Connection */
@@ -60,7 +60,7 @@ class Runner {
       if (settings.auditMode && !settings.gatherMode) {
         // No browser required, just load the artifacts from disk.
         const path = Runner._getArtifactsPath(settings);
-        artifacts = await assetSaver.loadArtifacts(path);
+        artifacts = assetSaver.loadArtifacts(path);
         requestedUrl = artifacts.URL.requestedUrl;
 
         if (!requestedUrl) {
@@ -186,9 +186,12 @@ class Runner {
     // resolution.
     .map(entry => {
       return /** @type {PerformanceEntry} */ ({
-        ...entry,
-        duration: parseFloat(entry.duration.toFixed(2)),
+        // Don't spread entry because browser PerformanceEntries can't be spread.
+        // https://github.com/GoogleChrome/lighthouse/issues/8638
         startTime: parseFloat(entry.startTime.toFixed(2)),
+        name: entry.name,
+        duration: parseFloat(entry.duration.toFixed(2)),
+        entryType: entry.entryType,
       });
     });
     const runnerEntry = timingEntries.find(e => e.name === 'lh:runner:run');
@@ -234,6 +237,7 @@ class Runner {
         gatherMode: undefined,
         auditMode: undefined,
         output: undefined,
+        channel: undefined,
         budgets: undefined,
       };
       const normalizedGatherSettings = Object.assign({}, artifacts.settings, overrides);
@@ -274,7 +278,7 @@ class Runner {
   static async _runAudit(auditDefn, artifacts, sharedAuditContext) {
     const audit = auditDefn.implementation;
     const status = {
-      msg: `Evaluating: ${i18n.getFormatted(audit.meta.title, 'en-US')}`,
+      msg: `Auditing: ${i18n.getFormatted(audit.meta.title, 'en-US')}`,
       id: `lh:audit:${audit.meta.id}`,
     };
     log.time(status);
@@ -285,14 +289,16 @@ class Runner {
       for (const artifactName of audit.meta.requiredArtifacts) {
         const noArtifact = artifacts[artifactName] === undefined;
 
-        // If trace required, check that DEFAULT_PASS trace exists.
-        // TODO: need pass-specific check of networkRecords and traces.
-        const noTrace = artifactName === 'traces' && !artifacts.traces[Audit.DEFAULT_PASS];
+        // If trace/devtoolsLog required, check that DEFAULT_PASS trace/devtoolsLog exists.
+        // NOTE: for now, not a pass-specific check of traces or devtoolsLogs.
+        const noRequiredTrace = artifactName === 'traces' && !artifacts.traces[Audit.DEFAULT_PASS];
+        const noRequiredDevtoolsLog = artifactName === 'devtoolsLogs' &&
+            !artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
 
-        if (noArtifact || noTrace) {
+        if (noArtifact || noRequiredTrace || noRequiredDevtoolsLog) {
           log.warn('Runner',
               `${artifactName} gatherer, required by audit ${audit.meta.id}, did not run.`);
-          throw new Error(`Required ${artifactName} gatherer did not run.`);
+          throw new LHError(LHError.errors.MISSING_REQUIRED_ARTIFACT, {artifactName});
         }
 
         // If artifact was an error, output error result on behalf of audit.
@@ -310,8 +316,8 @@ class Runner {
             ` encountered an error: ${artifactError.message}`);
 
           // Create a friendlier display error and mark it as expected to avoid duplicates in Sentry
-          const error = new Error(
-              `Required ${artifactName} gatherer encountered an error: ${artifactError.message}`);
+          const error = new LHError(LHError.errors.ERRORED_REQUIRED_ARTIFACT,
+              {artifactName, errorMessage: artifactError.message});
           // @ts-ignore Non-standard property added to Error
           error.expected = true;
           throw error;
@@ -336,7 +342,10 @@ class Runner {
       const product = await audit.audit(requiredArtifacts, auditContext);
       auditResult = Audit.generateAuditResult(audit, product);
     } catch (err) {
-      log.warn(audit.meta.id, `Caught exception: ${err.message}`);
+      // Log error if it hasn't already been logged above.
+      if (err.code !== 'MISSING_REQUIRED_ARTIFACT' && err.code !== 'ERRORED_REQUIRED_ARTIFACT') {
+        log.warn(audit.meta.id, `Caught exception: ${err.message}`);
+      }
 
       Sentry.captureException(err, {tags: {audit: audit.meta.id}, level: 'error'});
       // Errors become error audit result.
@@ -349,12 +358,18 @@ class Runner {
   }
 
   /**
-   * Returns first runtimeError found in artifacts.
+   * Searches a pass's artifacts for any `lhrRuntimeError` error artifacts.
+   * Returns the first one found or `null` if none found.
    * @param {LH.Artifacts} artifacts
    * @return {LH.Result['runtimeError']|undefined}
    */
   static getArtifactRuntimeError(artifacts) {
-    for (const possibleErrorArtifact of Object.values(artifacts)) {
+    const possibleErrorArtifacts = [
+      artifacts.PageLoadError, // Preferentially use `PageLoadError`, if it exists.
+      ...Object.values(artifacts), // Otherwise check amongst all artifacts.
+    ];
+
+    for (const possibleErrorArtifact of possibleErrorArtifacts) {
       if (possibleErrorArtifact instanceof LHError && possibleErrorArtifact.lhrRuntimeError) {
         const errorMessage = possibleErrorArtifact.friendlyMessage || possibleErrorArtifact.message;
 

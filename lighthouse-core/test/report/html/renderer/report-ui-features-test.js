@@ -185,7 +185,7 @@ describe('ReportUIFeatures', () => {
 
         function getUrlsInTable() {
           return dom
-            .findAll('#uses-webp-images .lh-details .lh-text__url .lh-text:first-child', container)
+            .findAll('#uses-webp-images .lh-details .lh-text__url a:first-child', container)
             .map(el => el.textContent);
         }
 
@@ -237,6 +237,32 @@ describe('ReportUIFeatures', () => {
       });
       const container = render(lhr);
       assert.ok(container.querySelector('.score100'), 'has fireworks treatment');
+    });
+
+    it('should not render fireworks if all core categories are not present', () => {
+      const lhr = JSON.parse(JSON.stringify(sampleResults));
+      delete lhr.categories.performance;
+      delete lhr.categoryGroups.performace;
+      Object.values(lhr.categories).forEach(element => {
+        element.score = 1;
+      });
+      const container = render(lhr);
+      assert.ok(container.querySelector('.score100') === null, 'has no fireworks treatment');
+    });
+  });
+
+  describe('metric descriptions', () => {
+    it('with no errors, hide by default', () => {
+      const lhr = JSON.parse(JSON.stringify(sampleResults));
+      const container = render(lhr);
+      assert.ok(!container.querySelector('.lh-metrics-toggle__input').checked);
+    });
+
+    it('with error, show by default', () => {
+      const lhr = JSON.parse(JSON.stringify(sampleResults));
+      lhr.audits['first-contentful-paint'].errorMessage = 'Error.';
+      const container = render(lhr);
+      assert.ok(container.querySelector('.lh-metrics-toggle__input').checked);
     });
   });
 });

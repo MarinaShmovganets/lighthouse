@@ -7,7 +7,6 @@
 
 const lighthouse = require('../../lighthouse-core/index.js');
 
-const assetSaver = require('../../lighthouse-core/lib/asset-saver.js');
 const LHError = require('../../lighthouse-core/lib/lh-error.js');
 const preprocessor = require('../../lighthouse-core/lib/proto-preprocessor.js');
 
@@ -25,9 +24,9 @@ const LR_PRESETS = {
  * If configOverride is provided, lrDevice and categoryIDs are ignored.
  * @param {Connection} connection
  * @param {string} url
- * @param {LH.Flags} flags Lighthouse flags, including `output`
+ * @param {LH.Flags} flags Lighthouse flags
  * @param {{lrDevice?: 'desktop'|'mobile', categoryIDs?: Array<string>, logAssets: boolean, configOverride?: LH.Config.Json}} lrOpts Options coming from Lightrider
- * @return {Promise<string|Array<string>|void>}
+ * @return {Promise<string>}
  */
 async function runLighthouseInLR(connection, url, flags, lrOpts) {
   const {lrDevice, categoryIDs, logAssets, configOverride} = lrOpts;
@@ -52,19 +51,18 @@ async function runLighthouseInLR(connection, url, flags, lrOpts) {
   }
 
   try {
-    const results = await lighthouse(url, flags, config, connection);
-    if (!results) return;
+    const runnerResult = await lighthouse(url, flags, config, connection);
+    if (!runnerResult) throw new Error('Lighthouse finished without a runnerResult');
 
+    // When LR is called with |internal: {keep_raw_response: true, save_lighthouse_assets: true}|,
+    // this code will log artifacts to raw_response.artifacts.
     if (logAssets) {
-      await assetSaver.logAssets(results.artifacts, results.lhr.audits);
+      // @ts-ignore - piggyback the artifacts on the LHR.
+      runnerResult.lhr.artifacts = runnerResult.artifacts;
     }
 
     // pre process the LHR for proto
-    if (flags.output === 'json' && typeof results.report === 'string') {
-      return preprocessor.processForProto(results.report);
-    }
-
-    return results.report;
+    return JSON.stringify(preprocessor.processForProto(runnerResult.lhr));
   } catch (err) {
     // If an error ruined the entire lighthouse run, attempt to return a meaningful error.
     let runtimeError;

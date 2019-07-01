@@ -11,7 +11,7 @@ const assert = require('assert');
 const fs = require('fs');
 const jsdom = require('jsdom');
 const Util = require('../../../../report/html/renderer/util.js');
-const URL = require('../../../../lib/url-shim');
+const URL = require('../../../../lib/url-shim.js');
 const DOM = require('../../../../report/html/renderer/dom.js');
 const DetailsRenderer = require('../../../../report/html/renderer/details-renderer.js');
 const CriticalRequestChainRenderer = require(
@@ -138,7 +138,7 @@ describe('PerfCategoryRenderer', () => {
 
   it('renders the failing diagnostics', () => {
     const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
-    const diagnosticSection = categoryDOM.querySelectorAll('.lh-category > .lh-audit-group')[2];
+    const diagnosticSection = categoryDOM.querySelectorAll('.lh-category > .lh-audit-group')[3];
 
     const diagnosticAudits = category.auditRefs.filter(audit => audit.group === 'diagnostics' &&
         !Util.showAsPassed(audit.result));

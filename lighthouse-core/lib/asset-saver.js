@@ -33,9 +33,9 @@ const devtoolsLogSuffix = '.devtoolslog.json';
  * Load artifacts object from files located within basePath
  * Also save the traces to their own files
  * @param {string} basePath
- * @return {Promise<LH.Artifacts>}
+ * @return {LH.Artifacts}
  */
-async function loadArtifacts(basePath) {
+function loadArtifacts(basePath) {
   log.log('Reading artifacts from disk:', basePath);
 
   if (!fs.existsSync(basePath)) {
@@ -252,28 +252,6 @@ async function saveAssets(artifacts, audits, pathWithBasename) {
 }
 
 /**
- * Log trace(s) and associated devtoolsLog(s) to console.
- * @param {LH.Artifacts} artifacts
- * @param {LH.Audit.Results} audits
- * @return {Promise<void>}
- */
-async function logAssets(artifacts, audits) {
-  const allAssets = await prepareAssets(artifacts, audits);
-  allAssets.map(passAssets => {
-    const dtlogdata = JSON.stringify(passAssets.devtoolsLog);
-    // eslint-disable-next-line no-console
-    console.log(`loggedAsset %%% devtoolslog-${passAssets.passName}.json %%% ${dtlogdata}`);
-    const traceIter = traceJsonGenerator(passAssets.traceData);
-    let traceJson = '';
-    for (const trace of traceIter) {
-      traceJson += trace;
-    }
-    // eslint-disable-next-line no-console
-    console.log(`loggedAsset %%% trace-${passAssets.passName}.json %%% ${traceJson}`);
-  });
-}
-
-/**
  * @param {LH.DevtoolsLog} devtoolsLog
  * @param {string} outputPath
  * @return {Promise<void>}
@@ -292,6 +270,5 @@ module.exports = {
   saveAssets,
   prepareAssets,
   saveTrace,
-  logAssets,
   saveLanternNetworkData,
 };

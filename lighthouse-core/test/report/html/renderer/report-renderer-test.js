@@ -11,7 +11,7 @@ const assert = require('assert');
 const fs = require('fs');
 const jsdom = require('jsdom');
 const Util = require('../../../../report/html/renderer/util.js');
-const URL = require('../../../../lib/url-shim');
+const URL = require('../../../../lib/url-shim.js');
 const DOM = require('../../../../report/html/renderer/dom.js');
 const DetailsRenderer = require('../../../../report/html/renderer/details-renderer.js');
 const ReportUIFeatures = require('../../../../report/html/renderer/report-ui-features.js');
@@ -77,7 +77,7 @@ describe('ReportRenderer', () => {
     it('should render a report', () => {
       const container = renderer._dom._document.body;
       const output = renderer.renderReport(sampleResults, container);
-      assert.ok(output.querySelector('.lh-header-sticky'), 'has a header');
+      assert.ok(output.querySelector('.lh-header-container'), 'has a header');
       assert.ok(output.querySelector('.lh-report'), 'has report body');
       // 3 sets of gauges - one in sticky header, one in scores header, and one in each section.
       assert.equal(output.querySelectorAll('.lh-gauge__wrapper, .lh-gauge--pwa__wrapper').length,
