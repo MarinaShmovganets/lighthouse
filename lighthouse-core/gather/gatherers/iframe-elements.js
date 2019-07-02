@@ -19,8 +19,6 @@ function collectIFrameElements() {
   const iFrameElements = getElementsInDocument('iframe'); // eslint-disable-line no-undef
   return iFrameElements.map(/** @param {HTMLIFrameElement} node */ (node) => {
     const clientRect = node.getBoundingClientRect();
-    // Marking 1x1 as non-visible to ignore tracking pixels.
-
     const {top, bottom, left, right, width, height} = clientRect;
     return {
       id: node.id,
@@ -44,7 +42,7 @@ class IFrameElements extends Gatherer {
 
     const {frameTree} = await driver.sendCommand('Page.getFrameTree');
     const toVisit = [frameTree];
-    /** @type {Map<string | undefined, LH.Crdp.Page.Frame | null>} */
+    /** @type {Map<string | undefined, LH.Crdp.Page.Frame | undefined>} */
     const framesByDomId = new Map();
 
     while (toVisit.length) {
@@ -55,8 +53,8 @@ class IFrameElements extends Gatherer {
             toVisit.concat(childFrameTree.childFrames);
           }
           if (framesByDomId.has(childFrameTree.frame.name)) {
-            // DOM ID collision, mark it as null.
-            framesByDomId.set(childFrameTree.frame.name, null);
+            // DOM ID collision, mark as undefined.
+            framesByDomId.set(childFrameTree.frame.name, undefined);
           } else {
             framesByDomId.set(childFrameTree.frame.name, childFrameTree.frame);
           }
