@@ -162,11 +162,41 @@ function writeEnStringsToLocaleFormat(strings) {
   fs.writeFileSync(fullPath, JSON.stringify(output, null, 2) + '\n');
 }
 
-const strings = collectAllStringsInDir(path.join(LH_ROOT, 'lighthouse-core'));
-console.log('Collected from LH core!');
+function collectPreLocaleStrings(file) {
+  const rawdata = fs.readFileSync(file, 'utf8');
+  const messages = JSON.parse(rawdata);
+  return messages;
+}
 
-collectAllStringsInDir(path.join(LH_ROOT, 'stack-packs/packs'), strings);
-console.log('Collected from Stack Packs!');
+function bakePlaceholders(messages) {
+  for (const key in messages) {
+    if (!Object.prototype.hasOwnProperty.call(messages, key)) continue;
 
-writeEnStringsToLocaleFormat(strings);
-console.log('Written to disk!');
+    delete messages[key]['description'];
+
+    let message = messages[key]['message'];
+    const placeholders = messages[key]['placeholders'];
+
+    for (const placeholder in placeholders) {
+      if (!Object.prototype.hasOwnProperty.call(placeholders, placeholder)) continue;
+
+      const content = placeholders[placeholder]['content'];
+      const re = new RegExp('\\$' + placeholder + '\\$');
+      message = message.replace(re, content);
+    }
+    messages[key]['message'] = message;
+
+    delete messages[key]['placeholders'];
+  }
+  return messages;
+}
+
+function saveLocaleStrings(path, output) {
+  fs.writeFileSync(path, JSON.stringify(output, null, 2) + '\n');
+}
+
+const preLocaleStrings = collectPreLocaleStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/pre-locale/en-US.json'));
+
+const strings = bakePlaceholders(preLocaleStrings);
+
+saveLocaleStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/locales/en-US.json'), strings);
