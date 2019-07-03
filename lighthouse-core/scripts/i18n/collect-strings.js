@@ -19,7 +19,13 @@ const UISTRINGS_REGEX = /UIStrings = (.|\s)*?\};\n/im;
  * @typedef ICUMessageDefn
  * @property {string} message
  * @property {string} [description]
- * @property {*} placeholders
+ * @property {*} [placeholders]
+ */
+
+/**
+ * @typedef ICUPlaceholderDefn
+ * @property {string} content
+ * @property {string} [example]
  */
 
 const ignoredPathComponents = [
@@ -96,10 +102,10 @@ function collectAllStringsInDir(dir, strings = {}) {
               let message = val.message;
               // const prevProp = property.value.properties[1].value.properties[1];
               // const thisProp = property.value.properties[1].value.properties[2];
-              
+
               const description = computeDescription(ast, property, lastPropertyEndIndex);
               /**
-               *  Transform: 
+               *  Transform:
                *  placeholders: {
                *    /** example val *\/
                *    key: value,
@@ -118,12 +124,14 @@ function collectAllStringsInDir(dir, strings = {}) {
               let lastPropEndIndex = property.value.properties[0].range[1];
               let idx = 0;
               const placeholdersMini = val.placeholders;
+              /** @type {*} */
               const placeholders = {};
               Object.entries(placeholdersMini).forEach(entry => {
                 const key = entry[0];
                 const value = entry[1];
                 const thisProp = property.value.properties[1].value.properties[idx];
                 const thisDesc = computeDescription(ast, thisProp, lastPropEndIndex);
+
                 placeholders[key] = {
                   content: value,
                 };
@@ -132,6 +140,7 @@ function collectAllStringsInDir(dir, strings = {}) {
                 }
 
                 // replace {.*} with $.*$
+                // eslint-disable-next-line no-useless-escape
                 message = message.replace(`{${key}}`, `\$${key}\$`);
                 idx++;
                 lastPropEndIndex = thisProp.range[1];
@@ -223,5 +232,6 @@ collectAllStringsInDir(path.join(LH_ROOT, 'stack-packs/packs'), strings);
 console.log('Collected from Stack Packs!');
 
 writeStringsToLocaleFormat('pre-locale/en-US', strings);
+// Generate local pseudolocalized files for debugging while translating
 writeStringsToLocaleFormat('pre-locale/en-XL', psuedoLocalizedStrings);
 console.log('Written to disk!');

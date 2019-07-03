@@ -309,7 +309,7 @@ function getFormattedFromIdAndValues(locale, icuMessageId, values) {
   const icuMessageIdRegex = /(.* \| .*)$/;
   if (!icuMessageIdRegex.test(icuMessageId)) throw new Error('This is not an ICU message ID');
 
-  const {formattedString} = _formatIcuMessage(locale, icuMessageId, undefined, values);
+  const {formattedString} = _formatIcuMessage(locale, icuMessageId, values);
   return formattedString;
 }
 

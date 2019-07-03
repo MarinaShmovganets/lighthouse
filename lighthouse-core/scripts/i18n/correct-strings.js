@@ -11,8 +11,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const LH_ROOT = path.join(__dirname, '../../../');
-
 /**
  * @typedef ICUMessageDefn
  * @property {string} message
@@ -28,12 +26,18 @@ const ignoredPathComponents = [
   '-renderer.js',
 ];
 
+/**
+ * @param {*} file
+ */
 function collectPreLocaleStrings(file) {
   const rawdata = fs.readFileSync(file, 'utf8');
   const messages = JSON.parse(rawdata);
   return messages;
 }
 
+/**
+ * @param {*} messages
+ */
 function bakePlaceholders(messages) {
   for (const key in messages) {
     if (!Object.prototype.hasOwnProperty.call(messages, key)) continue;
@@ -57,29 +61,35 @@ function bakePlaceholders(messages) {
   return messages;
 }
 
+/**
+ * @param {*} path
+ * @param {*} output
+ */
 function saveLocaleStrings(path, output) {
   fs.writeFileSync(path, JSON.stringify(output, null, 2) + '\n');
 }
 
 /**
  * @param {string} dir
- * @param {Map<string, Record<string, ICUMessageDefn>>} strings
+ * @param {string} output
  */
-function collectAllPreLocaleStrings(dir, strings = new Map()) {
+function collectAllPreLocaleStrings(dir, output) {
   for (const name of fs.readdirSync(dir)) {
     const fullPath = path.join(dir, name);
-    const relativePath = path.relative(LH_ROOT, fullPath);
+    const relativePath = fullPath;// path.relative(LH_ROOT, fullPath);
     if (ignoredPathComponents.some(p => fullPath.includes(p))) continue;
 
     if (name.endsWith('.json')) {
       if (!process.env.CI) console.log('Correcting from', relativePath);
       const preLocaleStrings = collectPreLocaleStrings(relativePath);
       const strings = bakePlaceholders(preLocaleStrings);
-      saveLocaleStrings(path.join(LH_ROOT, `lighthouse-core/lib/i18n/locales/${path.basename(name)}`), strings);
+      saveLocaleStrings(output + path.basename(name), strings);
     }
   }
-
-  return strings;
 }
 
-collectAllPreLocaleStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/pre-locale/'));
+// collectAllPreLocaleStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/pre-locale/'));
+
+module.exports = {
+  collectAllPreLocaleStrings,
+};
