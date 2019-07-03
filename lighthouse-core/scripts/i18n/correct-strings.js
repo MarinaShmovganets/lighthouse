@@ -195,8 +195,25 @@ function saveLocaleStrings(path, output) {
   fs.writeFileSync(path, JSON.stringify(output, null, 2) + '\n');
 }
 
-const preLocaleStrings = collectPreLocaleStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/pre-locale/en-US.json'));
+/**
+ * @param {string} dir
+ * @param {Map<string, Record<string, ICUMessageDefn>>} strings
+ */
+function collectAllPreLocaleStrings(dir, strings = new Map()) {
+  for (const name of fs.readdirSync(dir)) {
+    const fullPath = path.join(dir, name);
+    const relativePath = path.relative(LH_ROOT, fullPath);
+    if (ignoredPathComponents.some(p => fullPath.includes(p))) continue;
 
-const strings = bakePlaceholders(preLocaleStrings);
+    if (name.endsWith('.json')) {
+      if (!process.env.CI) console.log('Correcting from', relativePath);
+      const preLocaleStrings = collectPreLocaleStrings(relativePath);
+      const strings = bakePlaceholders(preLocaleStrings);
+      saveLocaleStrings(path.join(LH_ROOT, `lighthouse-core/lib/i18n/locales/${path.basename(name)}`), strings);
+    }
+  }
 
-saveLocaleStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/locales/en-US.json'), strings);
+  return strings;
+}
+
+collectAllPreLocaleStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/pre-locale/'));

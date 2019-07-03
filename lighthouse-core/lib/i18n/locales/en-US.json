@@ -458,6 +458,57 @@
   "lighthouse-core/audits/critical-request-chains.js | title": {
     "message": "Minimize Critical Requests Depth"
   },
+  "lighthouse-core/audits/deprecations.js | columnDeprecate": {
+    "message": "Deprecation / Warning"
+  },
+  "lighthouse-core/audits/deprecations.js | columnLine": {
+    "message": "Line"
+  },
+  "lighthouse-core/audits/deprecations.js | description": {
+    "message": "Deprecated APIs will eventually be removed from the browser. [Learn more](https://www.chromestatus.com/features#deprecated)."
+  },
+  "lighthouse-core/audits/deprecations.js | displayValue": {
+    "message": "{itemCount, plural,\n    =1 {1 warning found}\n    other {# warnings found}\n    }"
+  },
+  "lighthouse-core/audits/deprecations.js | failureTitle": {
+    "message": "Uses deprecated APIs"
+  },
+  "lighthouse-core/audits/deprecations.js | title": {
+    "message": "Avoids deprecated APIs"
+  },
+  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
+    "message": "Application Cache is deprecated. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/appcache)."
+  },
+  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
+    "message": "Found \"{AppCacheManifest}\""
+  },
+  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
+    "message": "Uses Application Cache"
+  },
+  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
+    "message": "Avoids Application Cache"
+  },
+  "lighthouse-core/audits/dobetterweb/doctype.js | description": {
+    "message": "Specifying a doctype prevents the browser from switching to quirks-mode. Read more on the [MDN Web Docs page](https://developer.mozilla.org/en-US/docs/Glossary/Doctype)"
+  },
+  "lighthouse-core/audits/dobetterweb/doctype.js | explanationBadDoctype": {
+    "message": "Doctype name must be the lowercase string `html`"
+  },
+  "lighthouse-core/audits/dobetterweb/doctype.js | explanationNoDoctype": {
+    "message": "Document must contain a doctype"
+  },
+  "lighthouse-core/audits/dobetterweb/doctype.js | explanationPublicId": {
+    "message": "Expected publicId to be an empty string"
+  },
+  "lighthouse-core/audits/dobetterweb/doctype.js | explanationSystemId": {
+    "message": "Expected systemId to be an empty string"
+  },
+  "lighthouse-core/audits/dobetterweb/doctype.js | failureTitle": {
+    "message": "Page lacks the HTML doctype, thus triggering quirks-mode"
+  },
+  "lighthouse-core/audits/dobetterweb/doctype.js | title": {
+    "message": "Page has the HTML doctype"
+  },
   "lighthouse-core/audits/dobetterweb/dom-size.js | columnElement": {
     "message": "Element"
   },
@@ -488,6 +539,141 @@
   "lighthouse-core/audits/dobetterweb/dom-size.js | title": {
     "message": "Avoids an excessive DOM size"
   },
+  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | columnRel": {
+    "message": "Rel"
+  },
+  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | columnTarget": {
+    "message": "Target"
+  },
+  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | description": {
+    "message": "Add `rel=\"noopener\"` or `rel=\"noreferrer\"` to any external links to improve performance and prevent security vulnerabilities. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/noopener)."
+  },
+  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | failureTitle": {
+    "message": "Links to cross-origin destinations are unsafe"
+  },
+  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | title": {
+    "message": "Links to cross-origin destinations are safe"
+  },
+  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | warning": {
+    "message": "Unable to determine the destination for anchor ({anchorHTML}). If not used as a hyperlink, consider removing target=_blank."
+  },
+  "lighthouse-core/audits/dobetterweb/geolocation-on-start.js | description": {
+    "message": "Users are mistrustful of or confused by sites that request their location without context. Consider tying the request to a user action instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/geolocation-on-load)."
+  },
+  "lighthouse-core/audits/dobetterweb/geolocation-on-start.js | failureTitle": {
+    "message": "Requests the geolocation permission on page load"
+  },
+  "lighthouse-core/audits/dobetterweb/geolocation-on-start.js | title": {
+    "message": "Avoids requesting the geolocation permission on page load"
+  },
+  "lighthouse-core/audits/dobetterweb/js-libraries.js | columnName": {
+    "message": "Name"
+  },
+  "lighthouse-core/audits/dobetterweb/js-libraries.js | columnVersion": {
+    "message": "Version"
+  },
+  "lighthouse-core/audits/dobetterweb/js-libraries.js | description": {
+    "message": "All front-end JavaScript libraries detected on the page."
+  },
+  "lighthouse-core/audits/dobetterweb/js-libraries.js | title": {
+    "message": "Detected JavaScript libraries"
+  },
+  "lighthouse-core/audits/dobetterweb/no-document-write.js | description": {
+    "message": "For users on slow connections, external scripts dynamically injected via `document.write()` can delay page load by tens of seconds. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/document-write)."
+  },
+  "lighthouse-core/audits/dobetterweb/no-document-write.js | failureTitle": {
+    "message": "Uses `document.write()`"
+  },
+  "lighthouse-core/audits/dobetterweb/no-document-write.js | title": {
+    "message": "Avoids `document.write()`"
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | columnSeverity": {
+    "message": "Highest Severity"
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | columnVersion": {
+    "message": "Library Version"
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | columnVuln": {
+    "message": "Vulnerability Count"
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | description": {
+    "message": "Some third-party scripts may contain known security vulnerabilities that are easily identified and exploited by attackers. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/vulnerabilities)."
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | displayValue": {
+    "message": "{itemCount, plural,\n    =1 {1 vulnerability detected}\n    other {# vulnerabilities detected}\n    }"
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | failureTitle": {
+    "message": "Includes front-end JavaScript libraries with known security vulnerabilities"
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | rowSeverityHigh": {
+    "message": "High"
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | rowSeverityLow": {
+    "message": "Low"
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | rowSeverityMedium": {
+    "message": "Medium"
+  },
+  "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | title": {
+    "message": "Avoids front-end JavaScript libraries with known security vulnerabilities"
+  },
+  "lighthouse-core/audits/dobetterweb/notification-on-start.js | description": {
+    "message": "Users are mistrustful of or confused by sites that request to send notifications without context. Consider tying the request to user gestures instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/notifications-on-load)."
+  },
+  "lighthouse-core/audits/dobetterweb/notification-on-start.js | failureTitle": {
+    "message": "Requests the notification permission on page load"
+  },
+  "lighthouse-core/audits/dobetterweb/notification-on-start.js | title": {
+    "message": "Avoids requesting the notification permission on page load"
+  },
+  "lighthouse-core/audits/dobetterweb/password-inputs-can-be-pasted-into.js | columnFailingElem": {
+    "message": "Failing Elements"
+  },
+  "lighthouse-core/audits/dobetterweb/password-inputs-can-be-pasted-into.js | description": {
+    "message": "Preventing password pasting undermines good security policy. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/password-pasting)."
+  },
+  "lighthouse-core/audits/dobetterweb/password-inputs-can-be-pasted-into.js | failureTitle": {
+    "message": "Prevents users to paste into password fields"
+  },
+  "lighthouse-core/audits/dobetterweb/password-inputs-can-be-pasted-into.js | title": {
+    "message": "Allows users to paste into password fields"
+  },
+  "lighthouse-core/audits/dobetterweb/uses-http2.js | columnProtocol": {
+    "message": "Protocol"
+  },
+  "lighthouse-core/audits/dobetterweb/uses-http2.js | description": {
+    "message": "HTTP/2 offers many benefits over HTTP/1.1, including binary headers, multiplexing, and server push. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/http2)."
+  },
+  "lighthouse-core/audits/dobetterweb/uses-http2.js | displayValue": {
+    "message": "{itemCount, plural,\n    =1 {1 request not served via HTTP/2}\n    other {# requests not served via HTTP/2}\n    }"
+  },
+  "lighthouse-core/audits/dobetterweb/uses-http2.js | failureTitle": {
+    "message": "Does not use HTTP/2 for all of its resources"
+  },
+  "lighthouse-core/audits/dobetterweb/uses-http2.js | title": {
+    "message": "Uses HTTP/2 for its own resources"
+  },
+  "lighthouse-core/audits/dobetterweb/uses-passive-event-listeners.js | description": {
+    "message": "Consider marking your touch and wheel event listeners as `passive` to improve your page's scroll performance. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/passive-event-listeners)."
+  },
+  "lighthouse-core/audits/dobetterweb/uses-passive-event-listeners.js | failureTitle": {
+    "message": "Does not use passive listeners to improve scrolling performance"
+  },
+  "lighthouse-core/audits/dobetterweb/uses-passive-event-listeners.js | title": {
+    "message": "Uses passive listeners to improve scrolling performance"
+  },
+  "lighthouse-core/audits/errors-in-console.js | columnDesc": {
+    "message": "Description"
+  },
+  "lighthouse-core/audits/errors-in-console.js | description": {
+    "message": "Errors logged to the console indicate unresolved problems. They can come from network request failures and other browser concerns."
+  },
+  "lighthouse-core/audits/errors-in-console.js | failureTitle": {
+    "message": "Browser errors were logged to the console"
+  },
+  "lighthouse-core/audits/errors-in-console.js | title": {
+    "message": "No browser errors logged to the console"
+  },
   "lighthouse-core/audits/font-display.js | description": {
     "message": "Leverage the font-display CSS feature to ensure text is user-visible while webfonts are loading. [Learn more](https://developers.google.com/web/updates/2016/02/font-display)."
   },
@@ -496,6 +682,42 @@
   },
   "lighthouse-core/audits/font-display.js | title": {
     "message": "All text remains visible during webfont loads"
+  },
+  "lighthouse-core/audits/font-display.js | undeclaredFontURLWarning": {
+    "message": "Lighthouse was unable to automatically check the font-display value for the following URL: {fontURL}."
+  },
+  "lighthouse-core/audits/image-aspect-ratio.js | columnActual": {
+    "message": "Aspect Ratio (Actual)"
+  },
+  "lighthouse-core/audits/image-aspect-ratio.js | columnDisplayed": {
+    "message": "Aspect Ratio (Displayed)"
+  },
+  "lighthouse-core/audits/image-aspect-ratio.js | description": {
+    "message": "Image display dimensions should match natural aspect ratio. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/aspect-ratio)."
+  },
+  "lighthouse-core/audits/image-aspect-ratio.js | failureTitle": {
+    "message": "Displays images with incorrect aspect ratio"
+  },
+  "lighthouse-core/audits/image-aspect-ratio.js | title": {
+    "message": "Displays images with correct aspect ratio"
+  },
+  "lighthouse-core/audits/image-aspect-ratio.js | warningCompute": {
+    "message": "Invalid image sizing information {url}"
+  },
+  "lighthouse-core/audits/is-on-https.js | columnInsecureURL": {
+    "message": "Insecure URL"
+  },
+  "lighthouse-core/audits/is-on-https.js | description": {
+    "message": "All sites should be protected with HTTPS, even ones that don't handle sensitive data. HTTPS prevents intruders from tampering with or passively listening in on the communications between your app and your users, and is a prerequisite for HTTP/2 and many new web platform APIs. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/https)."
+  },
+  "lighthouse-core/audits/is-on-https.js | displayValue": {
+    "message": "{itemCount, plural,\n    =1 {1 insecure request found}\n    other {# insecure requests found}\n    }"
+  },
+  "lighthouse-core/audits/is-on-https.js | failureTitle": {
+    "message": "Does not use HTTPS"
+  },
+  "lighthouse-core/audits/is-on-https.js | title": {
+    "message": "Uses HTTPS"
   },
   "lighthouse-core/audits/load-fast-enough-for-pwa.js | description": {
     "message": "A fast page load over a cellular network ensures a good mobile user experience. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/fast-3g)."
@@ -577,6 +799,9 @@
   },
   "lighthouse-core/audits/network-server-latency.js | title": {
     "message": "Server Backend Latencies"
+  },
+  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
+    "message": "Over Budget"
   },
   "lighthouse-core/audits/performance-budget.js | description": {
     "message": "Keep the quantity and size of network requests under the targets set by the provided performance budget. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
@@ -758,6 +983,21 @@
   "lighthouse-core/audits/seo/tap-targets.js | title": {
     "message": "Tap targets are sized appropriately"
   },
+  "lighthouse-core/audits/third-party-summary.js | columnMainThreadTime": {
+    "message": "Main Thread Time"
+  },
+  "lighthouse-core/audits/third-party-summary.js | columnThirdParty": {
+    "message": "Third-Party"
+  },
+  "lighthouse-core/audits/third-party-summary.js | description": {
+    "message": "Third-party code can significantly impact load performance. Limit the number of redundant third-party providers and try to load third-party code after your page has primarily finished loading. [Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript/)."
+  },
+  "lighthouse-core/audits/third-party-summary.js | displayValue": {
+    "message": "{itemCount, plural,\n    =1 {1 Third-Party Found}\n    other {# Third-Parties Found}\n  }"
+  },
+  "lighthouse-core/audits/third-party-summary.js | title": {
+    "message": "Third-Party Usage"
+  },
   "lighthouse-core/audits/time-to-first-byte.js | description": {
     "message": "Time To First Byte identifies the time at which your server sends a response. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/ttfb)."
   },
@@ -866,6 +1106,9 @@
   "lighthouse-core/config/default-config.js | a11yTablesListsVideoGroupTitle": {
     "message": "Tables and lists"
   },
+  "lighthouse-core/config/default-config.js | bestPracticesCategoryTitle": {
+    "message": "Best Practices"
+  },
   "lighthouse-core/config/default-config.js | budgetsGroupDescription": {
     "message": "Performance budgets set standards for the performance of your site."
   },
@@ -941,11 +1184,23 @@
   "lighthouse-core/lib/i18n/i18n.js | columnCacheTTL": {
     "message": "Cache TTL"
   },
+  "lighthouse-core/lib/i18n/i18n.js | columnLocation": {
+    "message": "Location"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | columnRequests": {
+    "message": "Requests"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | columnResourceType": {
+    "message": "Resource Type"
+  },
   "lighthouse-core/lib/i18n/i18n.js | columnSize": {
     "message": "Size"
   },
   "lighthouse-core/lib/i18n/i18n.js | columnTimeSpent": {
     "message": "Time Spent"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | columnTransferSize": {
+    "message": "Transfer Size"
   },
   "lighthouse-core/lib/i18n/i18n.js | columnURL": {
     "message": "URL"
@@ -1007,8 +1262,14 @@
   "lighthouse-core/lib/lh-error.js | dnsFailure": {
     "message": "DNS servers could not resolve the provided domain."
   },
+  "lighthouse-core/lib/lh-error.js | erroredRequiredArtifact": {
+    "message": "Required {artifactName} gatherer encountered an error: {errorMessage}"
+  },
   "lighthouse-core/lib/lh-error.js | internalChromeError": {
     "message": "An internal Chrome error occurred. Please restart Chrome and try re-running Lighthouse."
+  },
+  "lighthouse-core/lib/lh-error.js | missingRequiredArtifact": {
+    "message": "Required {artifactName} gatherer did not run."
   },
   "lighthouse-core/lib/lh-error.js | pageLoadFailed": {
     "message": "Lighthouse was unable to reliably load the page you requested. Make sure you are testing the correct URL and that the server is properly responding to all requests."
@@ -1018,6 +1279,9 @@
   },
   "lighthouse-core/lib/lh-error.js | pageLoadFailedInsecure": {
     "message": "The URL you have provided does not have a valid security certificate. {securityMessages}"
+  },
+  "lighthouse-core/lib/lh-error.js | pageLoadFailedInterstitial": {
+    "message": "Chrome prevented page load with an interstitial. Make sure you are testing the correct URL and that the server is properly responding to all requests."
   },
   "lighthouse-core/lib/lh-error.js | pageLoadFailedWithDetails": {
     "message": "Lighthouse was unable to reliably load the page you requested. Make sure you are testing the correct URL and that the server is properly responding to all requests. (Details: {errorDetails})"
