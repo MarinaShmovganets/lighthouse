@@ -157,9 +157,11 @@ function _preprocessMessageValues(icuMessage, values) {
 /**
  * @typedef IcuMessageInstance
  * @prop {string} icuMessageId
- * @prop {string} icuMessage
  * @prop {*} [values]
  */
+
+// Only used for value lookups, default mapping to en is done with a lookup to the en file,
+// not this pre-baked msg map.
 
 /** @type {Map<string, IcuMessageInstance[]>} */
 const _icuMessageInstanceMap = new Map();
@@ -168,41 +170,33 @@ const _icuMessageInstanceMap = new Map();
  *
  * @param {LH.Locale} locale
  * @param {string} icuMessageId
- * @param {string} icuMessage
  * @param {*} [values]
  * @return {{formattedString: string, icuMessage: string}}
  */
-function _formatIcuMessage(locale, icuMessageId, icuMessage, values) {
+function _formatIcuMessage(locale, icuMessageId, values) {
   const localeMessages = LOCALES[locale];
   let localeMessage = localeMessages[icuMessageId] && localeMessages[icuMessageId].message;
-  // lets try to replace some things :o
-  const placeholders = localeMessages[icuMessageId] && localeMessages[icuMessageId].placeholders;
-  if (placeholders) {
-    // do some regex
-    Object.entries(placeholders).forEach(entry => {
-      const key = entry[0];
-      const value = entry[1];
-      //use key and value here
-      let regexStr = `\$${key}\$`;
-      // console.log(key, value, regexStr);
-      localeMessage = localeMessage.replace(regexStr, value.content);
-      // console.log(localeMessage);
-    });
-    icuMessage = localeMessage;
-  }
 
   // fallback to the original english message if we couldn't find a message in the specified locale
   // better to have an english message than no message at all, in some number cases it won't even matter
-  const messageForMessageFormat = localeMessage || icuMessage;
+  if (!localeMessage) {
+    // Backup message
+    localeMessage = LOCALES['en'][icuMessageId] && LOCALES['en'][icuMessageId].message;
+    if (!localeMessage) {
+      // panic
+      throw Error('ICU replacement message not found in locale, or en.');
+    }
+  }
+
   // when using accented english, force the use of a different locale for number formatting
   const localeForMessageFormat = locale === 'en-XA' ? 'de-DE' : locale;
   // pre-process values for the message format like KB and milliseconds
-  const valuesForMessageFormat = _preprocessMessageValues(icuMessage, values);
+  const valuesForMessageFormat = _preprocessMessageValues(localeMessage, values);
 
-  const formatter = new MessageFormat(messageForMessageFormat, localeForMessageFormat, formats);
+  const formatter = new MessageFormat(localeMessage, localeForMessageFormat, formats);
   const formattedString = formatter.format(valuesForMessageFormat);
 
-  return {formattedString, icuMessage: messageForMessageFormat};
+  return {formattedString, icuMessage: localeMessage};
 }
 
 /** @param {string[]} pathInLHR */
@@ -258,7 +252,7 @@ function createMessageInstanceIdFn(filename, fileStrings) {
 
     let indexOfInstance = icuMessageInstances.findIndex(inst => isDeepEqual(inst.values, values));
     if (indexOfInstance === -1) {
-      icuMessageInstances.push({icuMessageId, icuMessage, values});
+      icuMessageInstances.push({icuMessageId, values});
       indexOfInstance = icuMessageInstances.length - 1;
     }
 
@@ -305,9 +299,9 @@ function _resolveIcuMessageInstanceId(icuMessageInstanceId, locale) {
   const [_, icuMessageId, icuMessageInstanceIndex] = matches;
   const icuMessageInstances = _icuMessageInstanceMap.get(icuMessageId) || [];
   const icuMessageInstance = icuMessageInstances[Number(icuMessageInstanceIndex)];
-
+  // console.log(locale, "-->", icuMessageInstance.icuMessage);
   const {formattedString} = _formatIcuMessage(locale, icuMessageId,
-    icuMessageInstance.icuMessage, icuMessageInstance.values);
+    icuMessageInstance.values);
 
   return {icuMessageInstance, formattedString};
 }
