@@ -386,14 +386,11 @@
   "lighthouse-core/audits/byte-efficiency/unminified-css.js | explanationGender": {
     "message": "Someone minified this, {direct_replace_name}. `<link rel=>` {person, select, female {She minified this CSS.} male {He minified this CSS.} other {They minified this CSS.}}"
   },
-  "lighthouse-core/audits/byte-efficiency/unminified-css.js | explanationGender2": {
-    "message": "Someone minified this, {name}. `<link rel=>` {person, select, female {She minified this CSS.} male {He minified this CSS.} other {They minified this CSS.}}"
-  },
   "lighthouse-core/audits/byte-efficiency/unminified-css.js | title": {
     "message": "Minify CSS like `<link rel=stylesheet>`"
   },
   "lighthouse-core/audits/byte-efficiency/unminified-css.js | warningPlural": {
-    "message": "{itemCount, plural, =1 {# error found}other {# errors found}}"
+    "message": "{itemCount, plural, =1 {# error found} other {# errors found}}"
   },
   "lighthouse-core/audits/byte-efficiency/unminified-javascript.js | description": {
     "message": "Minifying JavaScript files can reduce payload sizes and script parse time. [Learn more](https://developers.google.com/speed/docs/insights/MinifyResources)."

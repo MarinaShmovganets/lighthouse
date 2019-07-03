@@ -49,6 +49,98 @@ function computeDescription(ast, property, startRange) {
   return '';
 }
 
+function convertMessageToPlaceholders(message) {
+  // Basically the same as markdown parsing in dom.js
+  const placeholders = {};
+
+  // replace code snippets
+  let parts = message.split(/`(.*?)`/g); // Split on markdown code slashes
+  let newMessage = '';
+  let idx = 0;
+  while (parts.length) {
+    // Pop off the same number of elements as there are capture groups.
+    const [preambleText, codeText] = parts.splice(0, 2);
+    newMessage += preambleText;
+    if (codeText) {
+      const pName = `MARKDOWN_SNIPPET_${idx++}`;
+      newMessage += `$${pName}$`;
+      placeholders[pName] = {
+        content: `\`${codeText}\``,
+        example: codeText,
+      };
+    }
+  }
+
+  // replace links
+  // Split on markdown links (e.g. [some link](https://...)).
+  parts = newMessage.split(/\[([^\]]*?)\]\((https?:\/\/.*?)\)/g);
+  newMessage = '';
+  idx = 0;
+
+  while (parts.length) {
+    // Pop off the same number of elements as there are capture groups.
+    const [preambleText, linkText, linkHref] = parts.splice(0, 3);
+    newMessage += preambleText;
+
+    // Append link if there are any.
+    if (linkText && linkHref) {
+      const ls = `LINK_START_${idx}`;
+      const le = `LINK_END_${idx++}`;
+      const repr = `$${ls}$${linkText}$${le}$`;
+      newMessage += repr;
+      placeholders[ls] = {
+        content: '[',
+      };
+      placeholders[le] = {
+        content: `](${linkHref})`,
+      };
+    }
+  }
+
+  // replace complex ICU
+  // milliseconds, seconds, bytes, extendedPercent, percent, etc.
+
+  parts = newMessage.split(/\{(\w{2,50}), number, (milliseconds|seconds|bytes|percent|extendedPercent)\}/g);
+  newMessage = '';
+  idx = 0;
+
+  while(parts.length) {
+    // Pop off the same number of elements as there are capture groups.
+    const [preambleText, varName, icuType] = parts.splice(0, 3);
+    newMessage += preambleText;
+
+    // Append link if there are any.
+    if (varName && icuType) {
+      const iName = `COMPLEX_ICU_${idx++}`;
+      newMessage += `$${iName}$`;
+      let example = '0';
+
+      // Make some good examples.
+      switch (icuType) {
+        case 'seconds':
+          example = '2.4';
+          break;
+        case 'percent':
+          example = '54.6%';
+          break;
+        case 'extendedPercent':
+          example = '37.92%';
+          break;
+        default:
+          // Random (but constant) number for examples.
+          example = '499';
+      }
+
+      placeholders[iName] = {
+        content: `{${varName}, number, ${icuType}}`,
+        example: example,
+      };
+    }
+  }
+
+  return {message: newMessage, placeholders};
+}
+
 /**
  * @param {string} dir
  * @param {Record<string, ICUMessageDefn>} strings
@@ -94,7 +186,13 @@ function collectAllStringsInDir(dir, strings = {}) {
             const val = exportVars.UIStrings[key];
             if (typeof val === 'string') {
               const description = computeDescription(ast, property, lastPropertyEndIndex);
-              strings[`${relativePath} | ${key}`] = {message: val, description};
+              const converted = convertMessageToPlaceholders(val);
+
+              if (Object.entries(converted.placeholders).length === 0 && converted.placeholders.constructor === Object) {
+                strings[`${relativePath} | ${key}`] = {message: converted.message, description};
+              } else {
+                strings[`${relativePath} | ${key}`] = {message: converted.message, description, placeholders: converted.placeholders};
+              }
               lastPropertyEndIndex = property.range[1];
             } else {
               // console.log(property.value.properties[0].range[1]);
@@ -102,6 +200,11 @@ function collectAllStringsInDir(dir, strings = {}) {
               let message = val.message;
               // const prevProp = property.value.properties[1].value.properties[1];
               // const thisProp = property.value.properties[1].value.properties[2];
+
+              // search and replace links in message
+
+              // @ts-ignore
+              message = message.replace(/\[/g, nameLink).replace(/\]\(.*\)/g, nameLink);
 
               const description = computeDescription(ast, property, lastPropertyEndIndex);
               /**
@@ -121,30 +224,33 @@ function collectAllStringsInDir(dir, strings = {}) {
                *  }
                */
               // init last prop to the 'messages' end range
-              let lastPropEndIndex = property.value.properties[0].range[1];
-              let idx = 0;
-              const placeholdersMini = val.placeholders;
-              /** @type {*} */
-              const placeholders = {};
-              Object.entries(placeholdersMini).forEach(entry => {
-                const key = entry[0];
-                const value = entry[1];
-                const thisProp = property.value.properties[1].value.properties[idx];
-                const thisDesc = computeDescription(ast, thisProp, lastPropEndIndex);
+              // let lastPropEndIndex = property.value.properties[0].range[1];
+              // let idx = 0;
+              // const placeholdersMini = val.placeholders;
+              // /** @type {*} */
+              // const placeholders = {};
+              // Object.entries(placeholdersMini).forEach(entry => {
+              //   const key = entry[0];
+              //   const value = entry[1];
+              //   const thisProp = property.value.properties[1].value.properties[idx];
+              //   const thisDesc = computeDescription(ast, thisProp, lastPropEndIndex);
 
-                placeholders[key] = {
-                  content: value,
-                };
-                if (thisDesc) {
-                  placeholders[key].example = thisDesc;
-                }
+              //   placeholders[key] = {
+              //     content: value,
+              //   };
+              //   if (thisDesc) {
+              //     placeholders[key].example = thisDesc;
+              //   }
 
-                // replace {.*} with $.*$
-                // eslint-disable-next-line no-useless-escape
-                message = message.replace(`{${key}}`, `\$${key}\$`);
-                idx++;
-                lastPropEndIndex = thisProp.range[1];
-              });
+              //   // replace {.*} with $.*$
+              //   // eslint-disable-next-line no-useless-escape
+              //   message = message.replace(`{${key}}`, `\$${key}\$`);
+              //   idx++;
+              //   lastPropEndIndex = thisProp.range[1];
+              // });
+
+
+              // @ts-ignore
               strings[`${relativePath} | ${key}`] = {message, description, placeholders};
               lastPropertyEndIndex = property.range[1];
             }
