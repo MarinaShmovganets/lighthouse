@@ -1379,7 +1379,7 @@
     "message": "Âv́ôíd̂ś êńôŕm̂óûś n̂ét̂ẃôŕk̂ ṕâýl̂óâd́ŝ"
   },
   "lighthouse-core/audits/byte-efficiency/unminified-css.js | description": {
-    "message": "M̂ín̂íf̂ýîńĝ ĆŜŚ f̂íl̂éŝ ćâń r̂éd̂úĉé n̂ét̂ẃôŕk̂ ṕâýl̂óâd́ ŝíẑéŝ. $LINK_START_0$->Ĺêár̂ń M̂ór̂é!!!$LINK_END_0$. T̂h́îś âúd̂ít̂ t́ôók̂ $COMPLEX_ICU_0$ ḿŝ.",
+    "message": "M̂ín̂íf̂ýîńĝ ĆŜŚ f̂íl̂éŝ ćâń r̂éd̂úĉé n̂ét̂ẃôŕk̂ ṕâýl̂óâd́ ŝíẑéŝ. $LINK_START_0$Ĺêár̂ń M̂ór̂é$LINK_END_0$. T̂h́îś âúd̂ít̂ t́ôók̂ $COMPLEX_ICU_0$ ḿŝ.",
     "placeholders": {
       "LINK_START_0": {
         "content": "["
@@ -2886,7 +2886,13 @@
     "message": "T̂ím̂éôút̂ ẃâít̂ín̂ǵ f̂ór̂ ín̂ít̂íâĺ D̂éb̂úĝǵêŕ P̂ŕôt́ôćôĺ ĉón̂ńêćt̂íôń."
   },
   "lighthouse-core/lib/lh-error.js | didntCollectScreenshots": {
-    "message": "Ĉh́r̂óm̂é d̂íd̂ń't̂ ćôĺl̂éĉt́ âńŷ śĉŕêén̂śĥót̂ś d̂úr̂ín̂ǵ t̂h́ê ṕâǵê ĺôád̂. Ṕl̂éâśê ḿâḱê śûŕê t́ĥér̂é îś ĉón̂t́êńt̂ v́îśîb́l̂é ôń t̂h́ê ṕâǵê, án̂d́ t̂h́êń t̂ŕŷ ŕê-ŕûńn̂ín̂ǵ L̂íĝh́t̂h́ôúŝé. ({errorCode})"
+    "message": "Ĉh́r̂óm̂é d̂íd̂ń't̂ ćôĺl̂éĉt́ âńŷ śĉŕêén̂śĥót̂ś d̂úr̂ín̂ǵ t̂h́ê ṕâǵê ĺôád̂. Ṕl̂éâśê ḿâḱê śûŕê t́ĥér̂é îś ĉón̂t́êńt̂ v́îśîb́l̂é ôń t̂h́ê ṕâǵê, án̂d́ t̂h́êń t̂ŕŷ ŕê-ŕûńn̂ín̂ǵ L̂íĝh́t̂h́ôúŝé. ($ICU_0$)",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{errorCode}",
+        "example": "NO_SPEEDLINE_FRAMES"
+      }
+    }
   },
   "lighthouse-core/lib/lh-error.js | dnsFailure": {
     "message": "D̂ŃŜ śêŕv̂ér̂ś ĉóûĺd̂ ńôt́ r̂éŝól̂v́ê t́ĥé p̂ŕôv́îd́êd́ d̂óm̂áîń."

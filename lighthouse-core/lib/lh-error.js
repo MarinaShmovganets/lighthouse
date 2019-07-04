@@ -9,7 +9,10 @@ const i18n = require('./i18n/i18n.js');
 
 /* eslint-disable max-len */
 const UIStrings = {
-  /** Error message explaining that the Lighthouse run was not able to collect screenshots through Chrome.*/
+  /**
+   * @description Error message explaining that the Lighthouse run was not able to collect screenshots through Chrome.
+   * @example {errorCode} NO_SPEEDLINE_FRAMES
+   * */
   didntCollectScreenshots: `Chrome didn't collect any screenshots during the page load. Please make sure there is content visible on the page, and then try re-running Lighthouse. ({errorCode})`,
   /** Error message explaining that the network trace was not able to be recorded for the Lighthouse run. */
   badTraceRecording: 'Something went wrong with recording the trace over your page load. Please run Lighthouse again. ({errorCode})',

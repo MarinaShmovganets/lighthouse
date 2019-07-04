@@ -43,13 +43,45 @@ function computeDescription(ast, property, startRange) {
   for (const comment of ast.comments || []) {
     if (comment.range[0] < startRange) continue;
     if (comment.range[0] > endRange) continue;
-    return comment.value.replace('*', '').trim();
+    if (comment.value.includes('@description')) {
+      // This is a complex description with description and examples.
+      // console.log(comment.value.replace(/\*/g, '').replace(/ {2}/g, '').trim().split('\n'));
+      /** @type {string} */
+      const vals = comment.value.replace(/\*/g, '').replace(/ {2}/g, '').trim();
+      let parts = vals.match(/@.*(\n|$)/g);
+      let description = '';
+      let examples = {};
+      // console.log(parts);
+      // eslint-disable-next-line guard-for-in
+      for (const i in parts) {
+        let part = parts[i];
+        if (part.startsWith('@description')) {
+          description = part.replace('@description ', '').trim();
+        }
+        if (part.startsWith('@example ')) {
+          // @ts-ignore
+          let key = part.match(/\{\w{2,50}\}/).toString();
+          key = key.substring(1, key.length - 1);
+          let value = part.replace(/@example \{\w{2,50}\} /, '').trim();
+          examples[key] = value;
+        }
+      }
+
+      // if (!desc) {
+      //   break;
+      // }
+      // console.log(desc)
+      // const examples = Array.from(vals.match(/@example (.*) \n?/g));
+      // console.log(desc, examples);
+      return {description, examples};
+    }
+    return {description: comment.value.replace('*', '').trim()};
   }
 
-  return '';
+  return {};
 }
 
-function convertMessageToPlaceholders(message) {
+function convertMessageToPlaceholders(message, examples={}) {
   // Basically the same as markdown parsing in dom.js
   const placeholders = {};
 
@@ -97,7 +129,7 @@ function convertMessageToPlaceholders(message) {
     }
   }
 
-  // replace complex ICU
+  // replace complex ICU numbers
   // milliseconds, seconds, bytes, extendedPercent, percent, etc.
 
   parts = newMessage.split(/\{(\w{2,50}), number, (milliseconds|seconds|bytes|percent|extendedPercent)\}/g);
@@ -137,6 +169,43 @@ function convertMessageToPlaceholders(message) {
       };
     }
   }
+
+  // add examples for direct ICU replacement
+  idx = 0;
+  // eslint-disable-next-line guard-for-in
+  for (const [key, value] of Object.entries(examples)) {
+    console.log(key, value);
+
+    if (!newMessage.includes(`{${key}}`)) continue;
+    const eName = `ICU_${idx++}`;
+    newMessage = newMessage.replace(`{${key}}`, `$${eName}$`);
+    
+    placeholders[eName] = {
+      content: `{${key}}`,
+      example: value,
+    };
+  }
+
+
+  // parts = newMessage.split(/\{(\w{2,50}), example, (.*?)\}/g);
+  // newMessage = '';
+  // idx = 0;
+  // while (parts.length) {
+  //   // Pop off the same number of elements as there are capture groups.
+  //   const [preambleText, varName, exampleText] = parts.splice(0, 3);
+  //   newMessage += preambleText;
+
+  //   // Append link if there are any.
+  //   if (varName && exampleText) {
+  //     const eName = `ICU_${idx++}`;
+  //     newMessage += `$${eName}$`;
+
+  //     placeholders[eName] = {
+  //       content: `{${varName}}`,
+  //       example: exampleText,
+  //     };
+  //   }
+  // }
 
   return {message: newMessage, placeholders};
 }
@@ -184,76 +253,24 @@ function collectAllStringsInDir(dir, strings = {}) {
           for (const property of stmt.declarations[0].init.properties) {
             const key = property.key.name;
             const val = exportVars.UIStrings[key];
-            if (typeof val === 'string') {
-              const description = computeDescription(ast, property, lastPropertyEndIndex);
-              const converted = convertMessageToPlaceholders(val);
 
-              if (Object.entries(converted.placeholders).length === 0 && converted.placeholders.constructor === Object) {
-                strings[`${relativePath} | ${key}`] = {message: converted.message, description};
-              } else {
-                strings[`${relativePath} | ${key}`] = {message: converted.message, description, placeholders: converted.placeholders};
-              }
-              lastPropertyEndIndex = property.range[1];
-            } else {
-              // console.log(property.value.properties[0].range[1]);
-              // console.log(property.value.properties[1].value.properties);
-              let message = val.message;
-              // const prevProp = property.value.properties[1].value.properties[1];
-              // const thisProp = property.value.properties[1].value.properties[2];
+            const res = computeDescription(ast, property, lastPropertyEndIndex);
 
-              // search and replace links in message
+            let description = res.description;
+            let examples = res.examples;
 
-              // @ts-ignore
-              message = message.replace(/\[/g, nameLink).replace(/\]\(.*\)/g, nameLink);
-
-              const description = computeDescription(ast, property, lastPropertyEndIndex);
-              /**
-               *  Transform:
-               *  placeholders: {
-               *    /** example val *\/
-               *    key: value,
-               *    ...
-               *  },
-               *  Into:
-               *  placeholders: {
-               *    key: {
-               *      content: value,
-               *      example: example val,
-               *    },
-               *    ...
-               *  }
-               */
-              // init last prop to the 'messages' end range
-              // let lastPropEndIndex = property.value.properties[0].range[1];
-              // let idx = 0;
-              // const placeholdersMini = val.placeholders;
-              // /** @type {*} */
-              // const placeholders = {};
-              // Object.entries(placeholdersMini).forEach(entry => {
-              //   const key = entry[0];
-              //   const value = entry[1];
-              //   const thisProp = property.value.properties[1].value.properties[idx];
-              //   const thisDesc = computeDescription(ast, thisProp, lastPropEndIndex);
-
-              //   placeholders[key] = {
-              //     content: value,
-              //   };
-              //   if (thisDesc) {
-              //     placeholders[key].example = thisDesc;
-              //   }
-
-              //   // replace {.*} with $.*$
-              //   // eslint-disable-next-line no-useless-escape
-              //   message = message.replace(`{${key}}`, `\$${key}\$`);
-              //   idx++;
-              //   lastPropEndIndex = thisProp.range[1];
-              // });
-
-
-              // @ts-ignore
-              strings[`${relativePath} | ${key}`] = {message, description, placeholders};
-              lastPropertyEndIndex = property.range[1];
+            if (examples) {
+              console.log(examples);
             }
+
+            const converted = convertMessageToPlaceholders(val, examples);
+
+            if (Object.entries(converted.placeholders).length === 0 && converted.placeholders.constructor === Object) {
+              strings[`${relativePath} | ${key}`] = {message: converted.message, description};
+            } else {
+              strings[`${relativePath} | ${key}`] = {message: converted.message, description, placeholders: converted.placeholders};
+            }
+            lastPropertyEndIndex = property.range[1];
           }
         }
       }
