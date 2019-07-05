@@ -45,34 +45,21 @@ function computeDescription(ast, property, startRange) {
     if (comment.range[0] > endRange) continue;
     if (comment.value.includes('@description')) {
       // This is a complex description with description and examples.
-      // console.log(comment.value.replace(/\*/g, '').replace(/ {2}/g, '').trim().split('\n'));
-      /** @type {string} */
-      const vals = comment.value.replace(/\*/g, '').replace(/ {2}/g, '').trim();
-      let parts = vals.match(/@.*(\n|$)/g);
       let description = '';
-      let examples = {};
-      // console.log(parts);
-      // eslint-disable-next-line guard-for-in
-      for (const i in parts) {
-        let part = parts[i];
-        if (part.startsWith('@description')) {
-          description = part.replace('@description ', '').trim();
-        }
-        if (part.startsWith('@example ')) {
-          // @ts-ignore
-          let key = part.match(/\{\w{2,50}\}/).toString();
-          key = key.substring(1, key.length - 1);
-          let value = part.replace(/@example \{\w{2,50}\} /, '').trim();
-          examples[key] = value;
+      const examples = {};
+
+      const r = /@(\w+) ({\w+})?(.*)(\n|$)/g;
+      let myArray;
+      while ((myArray = r.exec(comment.value)) !== null) {
+        const tagName = myArray[1];
+        const placeholder = myArray[2];
+        const message = myArray[3];
+        if (tagName === 'description') {
+          description = message;
+        } else if (tagName === 'example') {
+          examples[placeholder.substring(1,placeholder.length-1)] = message;
         }
       }
-
-      // if (!desc) {
-      //   break;
-      // }
-      // console.log(desc)
-      // const examples = Array.from(vals.match(/@example (.*) \n?/g));
-      // console.log(desc, examples);
       return {description, examples};
     }
     return {description: comment.value.replace('*', '').trim()};
@@ -81,7 +68,12 @@ function computeDescription(ast, property, startRange) {
   return {};
 }
 
-function convertMessageToPlaceholders(message, examples={}) {
+/**
+ * @param {*} message
+ * @param {*} examples
+ */
+function convertMessageToPlaceholders(message, examples = {}) {
+  // console.log(examples);
   // Basically the same as markdown parsing in dom.js
   const placeholders = {};
 
@@ -131,12 +123,11 @@ function convertMessageToPlaceholders(message, examples={}) {
 
   // replace complex ICU numbers
   // milliseconds, seconds, bytes, extendedPercent, percent, etc.
-
   parts = newMessage.split(/\{(\w{2,50}), number, (milliseconds|seconds|bytes|percent|extendedPercent)\}/g);
   newMessage = '';
   idx = 0;
 
-  while(parts.length) {
+  while (parts.length) {
     // Pop off the same number of elements as there are capture groups.
     const [preambleText, varName, icuType] = parts.splice(0, 3);
     newMessage += preambleText;
@@ -174,38 +165,15 @@ function convertMessageToPlaceholders(message, examples={}) {
   idx = 0;
   // eslint-disable-next-line guard-for-in
   for (const [key, value] of Object.entries(examples)) {
-    console.log(key, value);
-
     if (!newMessage.includes(`{${key}}`)) continue;
     const eName = `ICU_${idx++}`;
     newMessage = newMessage.replace(`{${key}}`, `$${eName}$`);
-    
+
     placeholders[eName] = {
       content: `{${key}}`,
       example: value,
     };
   }
-
-
-  // parts = newMessage.split(/\{(\w{2,50}), example, (.*?)\}/g);
-  // newMessage = '';
-  // idx = 0;
-  // while (parts.length) {
-  //   // Pop off the same number of elements as there are capture groups.
-  //   const [preambleText, varName, exampleText] = parts.splice(0, 3);
-  //   newMessage += preambleText;
-
-  //   // Append link if there are any.
-  //   if (varName && exampleText) {
-  //     const eName = `ICU_${idx++}`;
-  //     newMessage += `$${eName}$`;
-
-  //     placeholders[eName] = {
-  //       content: `{${varName}}`,
-  //       example: exampleText,
-  //     };
-  //   }
-  // }
 
   return {message: newMessage, placeholders};
 }
@@ -256,12 +224,8 @@ function collectAllStringsInDir(dir, strings = {}) {
 
             const res = computeDescription(ast, property, lastPropertyEndIndex);
 
-            let description = res.description;
-            let examples = res.examples;
-
-            if (examples) {
-              console.log(examples);
-            }
+            const description = res.description;
+            const examples = res.examples;
 
             const converted = convertMessageToPlaceholders(val, examples);
 
