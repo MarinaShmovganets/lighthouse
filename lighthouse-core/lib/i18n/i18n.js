@@ -165,6 +165,7 @@ function _preprocessMessageValues(icuMessage, values) {
 /**
  * @typedef IcuMessageInstance
  * @prop {string} icuMessageId
+ * @prop {string} icuMessage
  * @prop {*} [values]
  */
 
@@ -179,11 +180,14 @@ const _ICUMsgNotFoundMsg = 'ICU message not found in destination locale';
  *
  * @param {LH.Locale} locale
  * @param {string} icuMessageId
+ * @param {string=} fallbackMessage
  * @param {*} [values]
  * @return {{formattedString: string, icuMessage: string}}
  */
-function _formatIcuMessage(locale, icuMessageId, values) {
+function _formatIcuMessage(locale, icuMessageId, fallbackMessage, values) {
+  // console.log(locale, icuMessageId);
   const localeMessages = LOCALES[locale];
+  if (!localeMessages) throw new Error(`Unsupported locale '${locale}'`);
   let localeMessage = localeMessages[icuMessageId] && localeMessages[icuMessageId].message;
 
   // fallback to the original english message if we couldn't find a message in the specified locale
@@ -191,9 +195,12 @@ function _formatIcuMessage(locale, icuMessageId, values) {
   if (!localeMessage) {
     // Backup message
     localeMessage = LOCALES['en'][icuMessageId] && LOCALES['en'][icuMessageId].message;
-    if (!localeMessage) {
-      // panic
-      throw Error('ICU replacement message not found in locale, or en.');
+    if (!localeMessage && fallbackMessage) {
+      // Use the fallback message at this point.
+      localeMessage = fallbackMessage;
+    } else {
+      // At this point, there is no reasonable string to show to the user, so throw.
+      throw new Error(_ICUMsgNotFoundMsg);
     }
   }
 
@@ -230,6 +237,8 @@ function _formatPathAsString(pathInLHR) {
  */
 function getRendererFormattedStrings(locale) {
   const localeMessages = LOCALES[locale];
+  // console.log(locale);
+  // console.log(localeMessages);
   if (!localeMessages) throw new Error(`Unsupported locale '${locale}'`);
 
   const icuMessageIds = Object.keys(localeMessages).filter(f => f.includes('core/report/html/'));
@@ -245,6 +254,9 @@ function getRendererFormattedStrings(locale) {
 }
 
 /**
+ * Register a file's UIStrings with i18n, return function to
+ * generate the string ids.
+ *
  * @param {string} filename
  * @param {Record<string, string>} fileStrings
  */
@@ -252,7 +264,13 @@ function createMessageInstanceIdFn(filename, fileStrings) {
   /** @type {Record<string, string>} */
   const mergedStrings = {...UIStrings, ...fileStrings};
 
-  /** @param {string} icuMessage @param {*} [values] */
+  /**
+   * Convert a message string & replacement values into an
+   * indexed id value in the form '{messageid} | # {index}'.
+   *
+   * @param {string} icuMessage
+   * @param {*} [values]
+   * */
   const getMessageInstanceIdFn = (icuMessage, values) => {
     const keyname = Object.keys(mergedStrings).find(key => mergedStrings[key] === icuMessage);
     if (!keyname) throw new Error(`Could not locate: ${icuMessage}`);
@@ -264,7 +282,7 @@ function createMessageInstanceIdFn(filename, fileStrings) {
 
     let indexOfInstance = icuMessageInstances.findIndex(inst => isDeepEqual(inst.values, values));
     if (indexOfInstance === -1) {
-      icuMessageInstances.push({icuMessageId, values});
+      icuMessageInstances.push({icuMessageId, icuMessage, values});
       indexOfInstance = icuMessageInstances.length - 1;
     }
 
@@ -309,7 +327,7 @@ function getFormattedFromIdAndValues(locale, icuMessageId, values) {
   const icuMessageIdRegex = /(.* \| .*)$/;
   if (!icuMessageIdRegex.test(icuMessageId)) throw new Error('This is not an ICU message ID');
 
-  const {formattedString} = _formatIcuMessage(locale, icuMessageId, values);
+  const {formattedString} = _formatIcuMessage(locale, icuMessageId, undefined, values);
   return formattedString;
 }
 
@@ -325,9 +343,9 @@ function _resolveIcuMessageInstanceId(icuMessageInstanceId, locale) {
   const [_, icuMessageId, icuMessageInstanceIndex] = matches;
   const icuMessageInstances = _icuMessageInstanceMap.get(icuMessageId) || [];
   const icuMessageInstance = icuMessageInstances[Number(icuMessageInstanceIndex)];
-  // console.log(locale, "-->", icuMessageInstance.icuMessage);
+  // console.log(locale, "-->", icuMessageId);
   const {formattedString} = _formatIcuMessage(locale, icuMessageId,
-    icuMessageInstance.values);
+    icuMessageInstance.icuMessage, icuMessageInstance.values);
 
   return {icuMessageInstance, formattedString};
 }

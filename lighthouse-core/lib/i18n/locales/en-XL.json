@@ -135,7 +135,7 @@
     "message": "D̂óĉúm̂én̂t́ d̂óêśn̂'t́ ĥáv̂é â `<title>` él̂ém̂én̂t́"
   },
   "lighthouse-core/audits/accessibility/document-title.js | title": {
-    "message": "p̂ĺâćêh́ôĺd̂ér̂"
+    "message": "D̂óĉúm̂én̂t́ ĥáŝ á `<title>` êĺêḿêńt̂"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
     "message": "T̂h́ê v́âĺûé ôf́ âń îd́ ât́t̂ŕîb́ût́ê ḿûśt̂ b́ê ún̂íq̂úê t́ô ṕr̂év̂én̂t́ ôt́ĥér̂ ín̂śt̂án̂ćêś f̂ŕôḿ b̂éîńĝ óv̂ér̂ĺôók̂éd̂ b́ŷ áŝśîśt̂ív̂é t̂éĉh́n̂ól̂óĝíêś. [L̂éâŕn̂ ḿôŕê](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
@@ -381,16 +381,10 @@
     "message": "Âv́ôíd̂ś êńôŕm̂óûś n̂ét̂ẃôŕk̂ ṕâýl̂óâd́ŝ"
   },
   "lighthouse-core/audits/byte-efficiency/unminified-css.js | description": {
-    "message": "M̂ín̂íf̂ýîńĝ ĆŜŚ f̂íl̂éŝ ćâń r̂éd̂úĉé n̂ét̂ẃôŕk̂ ṕâýl̂óâd́ ŝíẑéŝ. [Ĺêár̂ń M̂ór̂é](https://developers.google.com/web/tools/lighthouse/audits/minify-css). T̂h́îś âúd̂ít̂ t́ôók̂ {timeInMs, number, milliseconds} ḿŝ."
-  },
-  "lighthouse-core/audits/byte-efficiency/unminified-css.js | explanationGender": {
-    "message": "Ŝóm̂éôńê ḿîńîf́îéd̂ t́ĥíŝ, {direct_replace_name}. `<link rel=>` {person, select, female {Śĥé m̂ín̂íf̂íêd́ t̂h́îś ĈŚŜ.} male {H́ê ḿîńîf́îéd̂ t́ĥíŝ ĆŜŚ.} other {T̂h́êý m̂ín̂íf̂íêd́ t̂h́îś ĈŚŜ.}}"
+    "message": "M̂ín̂íf̂ýîńĝ ĆŜŚ f̂íl̂éŝ ćâń r̂éd̂úĉé n̂ét̂ẃôŕk̂ ṕâýl̂óâd́ ŝíẑéŝ. [Ĺêár̂ń m̂ór̂é](https://developers.google.com/web/tools/lighthouse/audits/minify-css)."
   },
   "lighthouse-core/audits/byte-efficiency/unminified-css.js | title": {
-    "message": "M̂ín̂íf̂ý ĈŚŜ ĺîḱê `<link rel=stylesheet>`"
-  },
-  "lighthouse-core/audits/byte-efficiency/unminified-css.js | warningPlural": {
-    "message": "{itemCount, plural, =1 {# êŕr̂ór̂ f́ôún̂d́} other {# êŕr̂ór̂ś f̂óûńd̂}}"
+    "message": "M̂ín̂íf̂ý ĈŚŜ"
   },
   "lighthouse-core/audits/byte-efficiency/unminified-javascript.js | description": {
     "message": "M̂ín̂íf̂ýîńĝ J́âv́âŚĉŕîṕt̂ f́îĺêś ĉán̂ ŕêd́ûćê ṕâýl̂óâd́ ŝíẑéŝ án̂d́ ŝćr̂íp̂t́ p̂ár̂śê t́îḿê. [Ĺêár̂ń m̂ór̂é](https://developers.google.com/speed/docs/insights/MinifyResources)."

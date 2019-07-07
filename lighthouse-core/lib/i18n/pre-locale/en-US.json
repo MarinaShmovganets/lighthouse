@@ -517,7 +517,7 @@
   },
   "lighthouse-core/audits/accessibility/document-title.js | failureTitle": {
     "message": "Document doesn't have a $MARKDOWN_SNIPPET_0$ element",
-    "description": "title: {",
+    "description": "Title of an accesibility audit that evaluates if the page has a <title> element that describes the page. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed.",
     "placeholders": {
       "MARKDOWN_SNIPPET_0": {
         "content": "`<title>`",
@@ -526,7 +526,14 @@
     }
   },
   "lighthouse-core/audits/accessibility/document-title.js | title": {
-    "message": "placeholder"
+    "message": "Document has a $MARKDOWN_SNIPPET_0$ element",
+    "description": "Title of an accesibility audit that evaluates if the page has a <title> element that describes the page. This title is descriptive of the successful state and is shown to users when no user action is required.",
+    "placeholders": {
+      "MARKDOWN_SNIPPET_0": {
+        "content": "`<title>`",
+        "example": "<title>"
+      }
+    }
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
     "message": "The value of an id attribute must be unique to prevent other instances from being overlooked by assistive technologies. $LINK_START_0$Learn more$LINK_END_0$.",
@@ -1505,7 +1512,7 @@
     "description": "Title of a diagnostic audit that provides detail on large network resources required during page load. 'Payloads' is roughly equivalent to 'resources'. This descriptive title is shown to users when the amount is acceptable and no user action is required."
   },
   "lighthouse-core/audits/byte-efficiency/unminified-css.js | description": {
-    "message": "Minifying CSS files can reduce network payload sizes. $LINK_START_0$Learn More$LINK_END_0$. This audit took $COMPLEX_ICU_0$ ms.",
+    "message": "Minifying CSS files can reduce network payload sizes. $LINK_START_0$Learn more$LINK_END_0$.",
     "description": "(Message Description goes here) Description of a Lighthouse audit that tells the user *why* they should minify (remove whitespace) the page's CSS code. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation.",
     "placeholders": {
       "LINK_START_0": {
@@ -1513,36 +1520,12 @@
       },
       "LINK_END_0": {
         "content": "](https://developers.google.com/web/tools/lighthouse/audits/minify-css)"
-      },
-      "COMPLEX_ICU_0": {
-        "content": "{timeInMs, number, milliseconds}",
-        "example": "499"
-      }
-    }
-  },
-  "lighthouse-core/audits/byte-efficiency/unminified-css.js | explanationGender": {
-    "message": "Someone minified this, {direct_replace_name}. $MARKDOWN_SNIPPET_0$ {person, select, female {She minified this CSS.} male {He minified this CSS.} other {They minified this CSS.}}",
-    "description": "[ICU Syntax] Some gendered (ICU select) explanation...",
-    "placeholders": {
-      "MARKDOWN_SNIPPET_0": {
-        "content": "`<link rel=>`",
-        "example": "<link rel=>"
       }
     }
   },
   "lighthouse-core/audits/byte-efficiency/unminified-css.js | title": {
-    "message": "Minify CSS like $MARKDOWN_SNIPPET_0$",
-    "description": "Imperative title of a Lighthouse audit that tells the user to minify (remove whitespace) the page's CSS code. This is displayed in a list of audit titles that Lighthouse generates.",
-    "placeholders": {
-      "MARKDOWN_SNIPPET_0": {
-        "content": "`<link rel=stylesheet>`",
-        "example": "<link rel=stylesheet>"
-      }
-    }
-  },
-  "lighthouse-core/audits/byte-efficiency/unminified-css.js | warningPlural": {
-    "message": "{itemCount, plural, =1 {# error found} other {# errors found}}",
-    "description": "[ICU Syntax] Some plural warning..."
+    "message": "Minify CSS",
+    "description": "Imperative title of a Lighthouse audit that tells the user to minify (remove whitespace) the page's CSS code. This is displayed in a list of audit titles that Lighthouse generates."
   },
   "lighthouse-core/audits/byte-efficiency/unminified-javascript.js | description": {
     "message": "Minifying JavaScript files can reduce payload sizes and script parse time. $LINK_START_0$Learn more$LINK_END_0$.",
