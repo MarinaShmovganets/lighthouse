@@ -2868,7 +2868,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{errorCode}",
-        "example": " NO_TRACING_STARTED"
+        "example": "NO_TRACING_STARTED"
       }
     }
   },
@@ -2880,7 +2880,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{errorCode}",
-        "example": " NO_SPEEDLINE_FRAMES"
+        "example": "NO_SPEEDLINE_FRAMES"
       }
     }
   },
@@ -2888,11 +2888,15 @@
     "message": "D̂ŃŜ śêŕv̂ér̂ś ĉóûĺd̂ ńôt́ r̂éŝól̂v́ê t́ĥé p̂ŕôv́îd́êd́ d̂óm̂áîń."
   },
   "lighthouse-core/lib/lh-error.js | erroredRequiredArtifact": {
-    "message": "R̂éq̂úîŕêd́ {artifactName} ĝát̂h́êŕêŕ êńĉóûńt̂ér̂éd̂ án̂ ér̂ŕôŕ: $ICU_0$",
+    "message": "R̂éq̂úîŕêd́ $ICU_0$ ĝát̂h́êŕêŕ êńĉóûńt̂ér̂éd̂ án̂ ér̂ŕôŕ: $ICU_1$",
     "placeholders": {
       "ICU_0": {
+        "content": "{artifactName}",
+        "example": "Lighthouse Artifacts"
+      },
+      "ICU_1": {
         "content": "{errorMessage}",
-        "example": " ERRORED_REQUIRED_ARTIFACT"
+        "example": "ERRORED_REQUIRED_ARTIFACT"
       }
     }
   },
@@ -2904,7 +2908,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{artifactName}",
-        "example": " MISSING_REQUIRED_ARTIFACT"
+        "example": "MISSING_REQUIRED_ARTIFACT"
       }
     }
   },
@@ -2919,7 +2923,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{securityMessages}",
-        "example": " net::ERR_CERT_DATE_INVALID"
+        "example": "net::ERR_CERT_DATE_INVALID"
       }
     }
   },
@@ -2931,7 +2935,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{errorDetails}",
-        "example": " FAILED_DOCUMENT_REQUEST"
+        "example": "FAILED_DOCUMENT_REQUEST"
       }
     }
   },
@@ -2940,7 +2944,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{statusCode}",
-        "example": " 404"
+        "example": "404"
       }
     }
   },
@@ -2949,7 +2953,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{errorCode}",
-        "example": " FMP_TOO_LATE_FOR_FCPUI"
+        "example": "FMP_TOO_LATE_FOR_FCPUI"
       }
     }
   },
@@ -2958,7 +2962,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{protocolMethod}",
-        "example": " PROTOCOL_TIMEOUT"
+        "example": "PROTOCOL_TIMEOUT"
       }
     }
   },

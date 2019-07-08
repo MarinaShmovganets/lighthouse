@@ -3283,7 +3283,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{errorCode}",
-        "example": " NO_TRACING_STARTED"
+        "example": "NO_TRACING_STARTED"
       }
     }
   },
@@ -3297,7 +3297,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{errorCode}",
-        "example": " NO_SPEEDLINE_FRAMES"
+        "example": "NO_SPEEDLINE_FRAMES"
       }
     }
   },
@@ -3306,12 +3306,16 @@
     "description": "Error message explaining that the requested page could not be resolved by the DNS server."
   },
   "lighthouse-core/lib/lh-error.js | erroredRequiredArtifact": {
-    "message": "Required {artifactName} gatherer encountered an error: $ICU_0$",
+    "message": "Required $ICU_0$ gatherer encountered an error: $ICU_1$",
     "description": "Error message explaning that there was an error while trying to collect a resource that was required for testing. \"artifactName\" will be replaced with the name of the resource that wasn't collected; \"errorMessage\" will be replaced with a string description of the error that occurred.",
     "placeholders": {
       "ICU_0": {
+        "content": "{artifactName}",
+        "example": "Lighthouse Artifacts"
+      },
+      "ICU_1": {
         "content": "{errorMessage}",
-        "example": " ERRORED_REQUIRED_ARTIFACT"
+        "example": "ERRORED_REQUIRED_ARTIFACT"
       }
     }
   },
@@ -3325,7 +3329,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{artifactName}",
-        "example": " MISSING_REQUIRED_ARTIFACT"
+        "example": "MISSING_REQUIRED_ARTIFACT"
       }
     }
   },
@@ -3343,7 +3347,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{securityMessages}",
-        "example": " net::ERR_CERT_DATE_INVALID"
+        "example": "net::ERR_CERT_DATE_INVALID"
       }
     }
   },
@@ -3357,7 +3361,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{errorDetails}",
-        "example": " FAILED_DOCUMENT_REQUEST"
+        "example": "FAILED_DOCUMENT_REQUEST"
       }
     }
   },
@@ -3367,7 +3371,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{statusCode}",
-        "example": " 404"
+        "example": "404"
       }
     }
   },
@@ -3377,7 +3381,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{errorCode}",
-        "example": " FMP_TOO_LATE_FOR_FCPUI"
+        "example": "FMP_TOO_LATE_FOR_FCPUI"
       }
     }
   },
@@ -3387,7 +3391,7 @@
     "placeholders": {
       "ICU_0": {
         "content": "{protocolMethod}",
-        "example": " PROTOCOL_TIMEOUT"
+        "example": "PROTOCOL_TIMEOUT"
       }
     }
   },
