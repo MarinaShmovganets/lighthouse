@@ -5,7 +5,11 @@
  */
 'use strict';
 
-const IS_ARRAY = {};
+// Just using `[]` actually asserts for an empty array.
+// Use this expectation object to assert an array with at least one element.
+const IS_NONEMPTY_ARRAY = {
+  length: '>0',
+};
 
 /**
  * Expected Lighthouse audit values for sites with various errors.
@@ -26,10 +30,10 @@ module.exports = [
     artifacts: {
       PageLoadError: {code: 'PAGE_HUNG'},
       devtoolsLogs: {
-        'pageLoadError-defaultPass': IS_ARRAY,
+        'pageLoadError-defaultPass': IS_NONEMPTY_ARRAY,
       },
       traces: {
-        'pageLoadError-defaultPass': {traceEvents: IS_ARRAY},
+        'pageLoadError-defaultPass': {traceEvents: IS_NONEMPTY_ARRAY},
       },
     },
   },
@@ -48,10 +52,10 @@ module.exports = [
     artifacts: {
       PageLoadError: {code: 'INSECURE_DOCUMENT_REQUEST'},
       devtoolsLogs: {
-        'pageLoadError-defaultPass': IS_ARRAY,
+        'pageLoadError-defaultPass': IS_NONEMPTY_ARRAY,
       },
       traces: {
-        'pageLoadError-defaultPass': {traceEvents: IS_ARRAY},
+        'pageLoadError-defaultPass': {traceEvents: IS_NONEMPTY_ARRAY},
       },
     },
   },

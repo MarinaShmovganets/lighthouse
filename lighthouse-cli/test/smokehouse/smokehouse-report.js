@@ -104,7 +104,7 @@ function findDifference(path, actual, expected) {
   // {0: x, 1: y, 2: z, length: 5} does not match [x, y, z].
   if (Array.isArray(expected) && actual.length !== expected.length) {
     return {
-      path,
+      path: `${path}.length`,
       actual,
       expected,
     };
