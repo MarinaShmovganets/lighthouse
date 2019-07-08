@@ -7,7 +7,7 @@
 
 // Just using `[]` actually asserts for an empty array.
 // Use this expectation object to assert an array with at least one element.
-const IS_NONEMPTY_ARRAY = {
+const NONEMPTY_ARRAY = {
   length: '>0',
 };
 
@@ -30,10 +30,10 @@ module.exports = [
     artifacts: {
       PageLoadError: {code: 'PAGE_HUNG'},
       devtoolsLogs: {
-        'pageLoadError-defaultPass': IS_NONEMPTY_ARRAY,
+        'pageLoadError-defaultPass': NONEMPTY_ARRAY,
       },
       traces: {
-        'pageLoadError-defaultPass': {traceEvents: IS_NONEMPTY_ARRAY},
+        'pageLoadError-defaultPass': {traceEvents: NONEMPTY_ARRAY},
       },
     },
   },
@@ -52,10 +52,10 @@ module.exports = [
     artifacts: {
       PageLoadError: {code: 'INSECURE_DOCUMENT_REQUEST'},
       devtoolsLogs: {
-        'pageLoadError-defaultPass': IS_NONEMPTY_ARRAY,
+        'pageLoadError-defaultPass': NONEMPTY_ARRAY,
       },
       traces: {
-        'pageLoadError-defaultPass': {traceEvents: IS_NONEMPTY_ARRAY},
+        'pageLoadError-defaultPass': {traceEvents: NONEMPTY_ARRAY},
       },
     },
   },
