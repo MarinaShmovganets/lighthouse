@@ -166,91 +166,116 @@ is done pre-compile time, and the replacement is done at runtime.
 
 #### Translation Pipeline (pre-compile)
 
-file_with_UIStrings.js -> collect-strings.js -> pre-locale/en-US.json -> json
+`file_with_UIStrings.js -> collect-strings.js -> pre-locale/en-US.json -> json
 translated and sent back as messages.json format -> correct-strings ->
-locales/{locale}.json
+locales/{locale}.json`
+
+This is done with yarn commands:
+
+```shell
+# collect UIStrings into pre-locales
+$ yarn i18n:collect-strings
+
+# make the final en-US and en-XL files
+$ yarn i18n:correct-strings
+
+# Send off to translators, and the i18n:correct-strings again
+# once those .json's are done.
+```
 
 #### String Replacement Pipeline (runtime)
 
-file_with_UIStrings.js -> exported to locale.json file -> read by i18n.js ->
-$placeholder$'s replaced -> {ICU} syntax replaced => final string
+`file_with_UIStrings.js -> exported to locale.json file -> read by i18n.js ->
+$placeholder$'s replaced -> {ICU} syntax replaced => final string`
 
 TODO(exterkamp): Simple example
 
-Complex example:
+##### Simple example, no ICU:
 
 1.  string in `file_with_UIStrings.js`
 
     ```javascript
-    /** (Message Description goes here) Description of a Lighthouse audit that tells the user *why* they should minify (remove whitespace) the page's CSS code. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
-    description: {
-      message: 'Minifying CSS files can reduce network payload sizes. {LINK_START}Learn More!!!{LINK_START}. This audit took {MILLISECONDS} ms.',
-      placeholders: {
-        LINK_START: '[',
-        LINK_START: '](https://developers.google.com/web/tools/lighthouse/audits/minify-css)',
-        /** 520 (Placeholder examples go here) */
-        MILLISECONDS: '{timeInMs, number, milliseconds}',
-      },
-    },
+    const UIStrings = {
+      /** Description of a Lighthouse audit that tells the user ...*/
+      description: 'Minifying CSS files can reduce network payload sizes. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/minify-css).',
+    };
     ```
 
-2.  string when exported to locale.json file (en-US)
+2.  string when exported to pre-locale/{locale}.json file (en-US)
 
     ```json
     "lighthouse-core/audits/byte-efficiency/unminified-css.js | description": {
-      "message": "Minifying CSS files can reduce network payload sizes. $LINK_START$Learn More!!!$LINK_START$. This audit took $MILLISECONDS$ ms.",
+      "message": "Minifying CSS files can reduce network payload sizes. $LINK_START_0$Learn more$LINK_END_0$.",
       "description": "(Message Description goes here) Description of a Lighthouse audit that tells the user *why* they should minify (remove whitespace) the page's CSS code. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation.",
       "placeholders": {
-        "LINK_START": {
+        "LINK_START_0": {
           "content": "["
         },
-        "LINK_START": {
+        "LINK_END_0": {
           "content": "](https://developers.google.com/web/tools/lighthouse/audits/minify-css)"
-        },
-        "MILLISECONDS": {
-          "content": "{timeInMs, number, milliseconds}",
-          "example": "520 (Placeholder examples go here)"
         }
       }
     },
     ```
 
-    1.  string when exported back from translators locale.json file (everything
-        but en-US)
+    1.  string when corrected and in locales/{locale}.json file.
 
         ```json
         "lighthouse-core/audits/byte-efficiency/unminified-css.js | description": {
-          "message": "La réduction des fichiers CSS peut réduire la taille des charges utiles de réseau. $LINK_START$En savoir plus$LINK_START$. Cet audit a pris $MILLISECONDS ms",
-          "placeholders": {
-            "LINK_START": {
-              "content": "["
-            },
-            "LINK_START": {
-              "content": "](https://developers.google.com/web/tools/lighthouse/audits/minify-css)"
-            },
-            "MILLISECONDS": {
-              "content": "{timeInMs, number, milliseconds}",
-            }
-          }
+          "message": "Minifying CSS files can reduce network payload sizes. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/minify-css)."
         },
         ```
 
-3.  string when read by i18n.js (initially)
+3.  string when read by i18n.js
 
     ```javascript
-    message = "Minifying CSS files can reduce network payload sizes. $LINK_START$Learn More!!!$LINK_END$. This audit took $MILLISECONDS$ ms."
-    sent_values = {timeInMs: 10}
+    message = "Minifying CSS files can reduce network payload sizes. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/minify-css)."
     ```
 
-4.  string when placeholders replaced (with the static content)
+##### Complex example, with ICU
+
+1.  string in `file_with_UIStrings.js`
 
     ```javascript
-    message = "Minifying CSS files can reduce network payload sizes. [Learn More!!!](https://developers.google.com/web/tools/lighthouse/audits/minify-css). This audit took {timeInMs, number, milliseconds} ms."
-    sent_values = {timeInMs: 10}
+    const UIStrings = {
+      /** Used to summarize the total byte size ...*/
+      displayValue: 'Total size was {totalBytes, number, bytes}\xa0KB',
+    };
     ```
 
-5.  string when ICU syntax has been replaced (with the sent_values)
+2.  string when exported to pre-locale/{locale}.json file (en-US)
+
+    ```json
+    "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | displayValue": {
+      "message": "Total size was $COMPLEX_ICU_0$ KB",
+      "description": "Used to summarize the total byte size of the page and all its network requests. The `{totalBytes}` placeholder will be replaced with the total byte sizes, shown in kilobytes (e.g. 142 KB)",
+      "placeholders": {
+        "COMPLEX_ICU_0": {
+          "content": "{totalBytes, number, bytes}",
+          "example": "499"
+        }
+      }
+    },
+    ```
+
+    1.  string when corrected and in locales/{locale}.json file.
+
+        ```json
+        "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | displayValue": {
+          "message": "Total size was {totalBytes, number, bytes} KB"
+        },
+        ```
+
+3.  string when read by i18n.js
 
     ```javascript
-    message = "Minifying CSS files can reduce network payload sizes. [Learn More!!!](https://developers.google.com/web/tools/lighthouse/audits/minify-css). This audit took 10 ms."
+    message = "Total size was {totalBytes, number, bytes} KB"
+    sent_values = {totalBytes: 10}
+    ```
+
+4.  string when ICU syntax has been replaced (with the sent_values)
+
+    ```javascript
+    message = "Total size was 10 KB"
     ```
