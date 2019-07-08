@@ -166,11 +166,28 @@ is done pre-compile time, and the replacement is done at runtime.
 
 #### Translation Pipeline (pre-compile)
 
-`file_with_UIStrings.js -> collect-strings.js -> pre-locale/en-US.json -> json
-translated and sent back as messages.json format -> correct-strings ->
-locales/{locale}.json`
+1.  `file_with_UIStrings.js` this is where strings start. Optimized for
+    programmer ease of use and not for machine parsing. Uses ICU syntax and
+    markdown control characters inline.
 
-This is done with yarn commands:
+2.  `yarn i18n:collect-strings` collects all UIStrings, and generates the
+    pre-locales. Does some parsing to make sure that common mistakes are
+    avoided.
+
+3.  `pre-locale/en-US.json` this is the well formatted _machine parsable_
+    fileset that is uploaded to be translated, i.e. they use $placeholder$
+    syntax instead of ICU. These will never be used by the internal i18n system,
+    they are solely used to send to translators.
+
+4.  `yarn i18n:correct-strings` collects all pre-locales (or returned .json
+    files of all languages if you're a Googler importing strings) and converts
+    them back to Lighthouse json format and puts them into `locales/`.
+
+5.  `locales/{locale}.json` the Lighthouse json files. Used by the i18n.js
+    system to i18n strings. Uses ICU and not $placeholder$ syntax. Optimized for
+    i18n machine use.
+
+This pipeline is best seen with its component yarn commands:
 
 ```shell
 # collect UIStrings into pre-locales
@@ -181,12 +198,20 @@ $ yarn i18n:correct-strings
 
 # Send off to translators, and the i18n:correct-strings again
 # once those .json's are done.
+$ sh google_import_script_that_calls_correct_strings
 ```
 
 #### String Replacement Pipeline (runtime)
 
 `file_with_UIStrings.js -> exported to locale.json file -> read by i18n.js ->
 $placeholder$'s replaced -> {ICU} syntax replaced => final string`
+
+1.  String called in `.js` file, converted to i18n id.
+
+2.  i18n id in lookup table along with backup message.
+
+3.  Message is looked up via `replaceIcuMessageInstanceIds` &
+    `_formatIcuMessage`.
 
 TODO(exterkamp): Simple example
 
@@ -195,86 +220,61 @@ TODO(exterkamp): Simple example
 1.  string in `file_with_UIStrings.js`
 
     ```javascript
+    // Declare UIStrings
     const UIStrings = {
       /** Description of a Lighthouse audit that tells the user ...*/
       description: 'Minifying CSS files can reduce network payload sizes. ' +
         '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/minify-css).',
     };
+
+    // i18n init
+    const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
+
+    // String called with i18n
+    // Will become id like "lighthouse-core/audits/byte-efficiency/unminified-css.js | description"
+    let description = str_(UIStrings.description);
     ```
 
-2.  string when exported to pre-locale/{locale}.json file (en-US)
-
-    ```json
-    "lighthouse-core/audits/byte-efficiency/unminified-css.js | description": {
-      "message": "Minifying CSS files can reduce network payload sizes. $LINK_START_0$Learn more$LINK_END_0$.",
-      "description": "(Message Description goes here) Description of a Lighthouse audit that tells the user *why* they should minify (remove whitespace) the page's CSS code. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation.",
-      "placeholders": {
-        "LINK_START_0": {
-          "content": "["
-        },
-        "LINK_END_0": {
-          "content": "](https://developers.google.com/web/tools/lighthouse/audits/minify-css)"
-        }
-      }
-    },
-    ```
-
-    1.  string when corrected and in locales/{locale}.json file.
-
-        ```json
-        "lighthouse-core/audits/byte-efficiency/unminified-css.js | description": {
-          "message": "Minifying CSS files can reduce network payload sizes. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/minify-css)."
-        },
-        ```
-
-3.  string when read by i18n.js
+2.  i18n lookup map registered the string (i18n.js)
 
     ```javascript
-    message = "Minifying CSS files can reduce network payload sizes. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/minify-css)."
+    const _icuMessageInstanceMap = new Map();
+
+    // example value in _icuMessageInstanceMap
+    'lighthouse-core/audits/byte-efficiency/unminified-css.js | description': {
+      icuMessageId: 'lighthouse-core/audits/byte-efficiency/unminified-css.js | description'
+      icuMessage: 'Minifying CSS files can reduce network payload sizes. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/minify-css).'
+    }
     ```
 
-##### Complex example, with ICU
+3.  Lookup in `i18n.js`. `_formatIcuMessage` will attempt to lookup in this
+    order:
 
-1.  string in `file_with_UIStrings.js`
+    1.  `locales/{locale}.json` The best result, the string is found in the
+        target locale, and should appear correct.
 
-    ```javascript
-    const UIStrings = {
-      /** Used to summarize the total byte size ...*/
-      displayValue: 'Total size was {totalBytes, number, bytes}\xa0KB',
-    };
-    ```
+    2.  `locales/en.json` _Okay_ result. The string was not found in the target
+        locale, but was in `en`, so show the English string.
 
-2.  string when exported to pre-locale/{locale}.json file (en-US)
+    3.  The fallback message passed to `_formatIcuMessage`. This lookup is
+        subtley different than the en lookup. A string that is provided in the
+        UIStrings, but not en may be part of a swap-locale that is using an old
+        deprecated string, so would need to be populated by UIString replacement
+        here instead.
 
-    ```json
-    "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | displayValue": {
-      "message": "Total size was $COMPLEX_ICU_0$ KB",
-      "description": "Used to summarize the total byte size of the page and all its network requests. The `{totalBytes}` placeholder will be replaced with the total byte sizes, shown in kilobytes (e.g. 142 KB)",
-      "placeholders": {
-        "COMPLEX_ICU_0": {
-          "content": "{totalBytes, number, bytes}",
-          "example": "499"
-        }
-      }
-    },
-    ```
+    4.  Throw `_ICUMsgNotFoundMsg` Error. This is preferrable to showing the
+        user some id control lookup like
+        "lighthouse-core/audits/byte-efficiency/unminified-css.js | description"
 
-    1.  string when corrected and in locales/{locale}.json file.
-
-        ```json
-        "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | displayValue": {
-          "message": "Total size was {totalBytes, number, bytes} KB"
-        },
-        ```
-
-3.  string when read by i18n.js
+    This is also the point at which ICU is replaced by values. So this...
 
     ```javascript
     message = "Total size was {totalBytes, number, bytes} KB"
-    sent_values = {totalBytes: 10}
+    sent_values = {totalBytes: 10.75}
     ```
 
-4.  string when ICU syntax has been replaced (with the sent_values)
+    Becomes...
 
     ```javascript
     message = "Total size was 10 KB"
