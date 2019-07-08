@@ -64,6 +64,8 @@ UIStrings are defined in a simple Object with properties defining the strings.
     };
     ```
 
+### Markdown
+
 Strings can also contain some limited markdown, that will be rendered in the
 report.
 
@@ -87,7 +89,7 @@ report.
 
     To convert a section of text into a link to another URL, enclose the text
     itself in [brackets] and then immediately include a link after it in
-    (parenthesis). Note that "[link text](https://...)" is NOT VALID because of
+    (parenthesis). Note that `[link text] (https://...)` is NOT VALID because of
     the space and will not be converted to a link.
 
     Example usage:
@@ -98,11 +100,77 @@ report.
     };
     ```
 
+### ICU Replacement Syntax
+
+ICU syntax is used throughout Lighthouse strings, and they are specified
+directly in UIStrings. They follow 1 of 3 flavors.
+
+*   Direct replacement
+
+    This is simply a direct replacement of text into a string. Often used for
+    Proper Nouns, code, or other text that is dynamic and added at runtime, but
+    requires no additional formatting.
+
+    Example usage:
+
+    ```javascript
+    const UIStrings = {
+        didntCollectScreenshots: `Chrome didn't .... ({errorCode})`,
+    };
+    ```
+
+    ICU replacements can also use a JSDoc type syntax to specify an example for
+    direct ICU replacements.
+
+    *   To specify the description, use
+
+        `@description <description>`
+
+    *   To specify an example for an ICU replacement, use
+
+        `@example {<ICU variable name>} <example for ICU replacement>`
+
+    ```javascript
+    const UIStrings = {
+        /**
+         * @description Error message explaining ...
+         * @example {errorCode} NO_SPEEDLINE_FRAMES
+         */
+        didntCollectScreenshots: `Chrome didn't .... ({errorCode})`,
+    };
+    ```
+
+*   Complex replacement
+
+    When more complex numerical ICU replacement is needed the syntax is mostly
+    the same as direct replacement. This is often used when replcaing times, or
+    percentages.
+
+    Note: these complex ICU formats are automatically given example values based
+    on their ICU format as specified in `collect-strings.js`
+
+    ```javascript
+    const UIStrings = {
+        displayValueText: 'Interactive at {timeInMs, number, seconds} s',
+    };
+    ```
+
 TODO(exterkamp): explain all the comments and where they go/what they become.
 
 TODO(exterkamp): explain why we can't use some ICU like number formatting.
 
 ### The pipeline
+
+The translation pipeline has 2 distinct stages, the collection and translation
+is done pre-compile time, and the replacement is done at runtime.
+
+#### Translation Pipeline (pre-compile)
+
+file_with_UIStrings.js -> collect-strings.js -> pre-locale/en-US.json -> json
+translated and sent back as messages.json format -> correct-strings ->
+locales/{locale}.json
+
+#### String Replacement Pipeline (runtime)
 
 file_with_UIStrings.js -> exported to locale.json file -> read by i18n.js ->
 $placeholder$'s replaced -> {ICU} syntax replaced => final string
