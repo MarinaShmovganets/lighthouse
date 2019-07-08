@@ -239,8 +239,43 @@ function createPsuedoLocaleStrings(strings) {
   return psuedoLocalizedStrings;
 }
 
+/**
+ * @param {Record<string, ICUMessageDefn>} messages
+ * @returns {Record<string, ICUMessageDefn>}
+ */
+function bakePlaceholders(messages) {
+  for (const key in messages) {
+    if (!Object.prototype.hasOwnProperty.call(messages, key)) continue;
+
+    delete messages[key]['description'];
+
+    let message = messages[key]['message'];
+    const placeholders = messages[key]['placeholders'];
+
+    for (const placeholder in placeholders) {
+      if (!Object.prototype.hasOwnProperty.call(placeholders, placeholder)) continue;
+
+      const content = placeholders[placeholder]['content'];
+      const re = new RegExp('\\$' + placeholder + '\\$');
+      if (!message.match(re)) {
+        throw Error(`Message "${message}" has extra placeholder "${placeholder}"`);
+      }
+      message = message.replace(re, content);
+    }
+
+    // Sanity check that all placeholders are gone
+    if (message.match(/\$\w+\$/)) throw Error(`Message "${message}" is missing placeholder`);
+
+    messages[key]['message'] = message;
+
+    delete messages[key]['placeholders'];
+  }
+  return messages;
+}
+
 module.exports = {
   computeDescription,
   convertMessageToPlaceholders,
   createPsuedoLocaleStrings,
+  bakePlaceholders,
 };

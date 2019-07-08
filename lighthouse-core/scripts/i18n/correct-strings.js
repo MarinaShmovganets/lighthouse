@@ -10,6 +10,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const collUtil = require('./collection-util.js');
 
 /**
  * @typedef ICUMessageDefn
@@ -36,32 +37,6 @@ function collectPreLocaleStrings(file) {
 }
 
 /**
- * @param {*} messages
- */
-function bakePlaceholders(messages) {
-  for (const key in messages) {
-    if (!Object.prototype.hasOwnProperty.call(messages, key)) continue;
-
-    delete messages[key]['description'];
-
-    let message = messages[key]['message'];
-    const placeholders = messages[key]['placeholders'];
-
-    for (const placeholder in placeholders) {
-      if (!Object.prototype.hasOwnProperty.call(placeholders, placeholder)) continue;
-
-      const content = placeholders[placeholder]['content'];
-      const re = new RegExp('\\$' + placeholder + '\\$');
-      message = message.replace(re, content);
-    }
-    messages[key]['message'] = message;
-
-    delete messages[key]['placeholders'];
-  }
-  return messages;
-}
-
-/**
  * @param {*} path
  * @param {*} output
  */
@@ -82,7 +57,7 @@ function collectAllPreLocaleStrings(dir, output) {
     if (name.endsWith('.json')) {
       if (!process.env.CI) console.log('Correcting from', relativePath);
       const preLocaleStrings = collectPreLocaleStrings(relativePath);
-      const strings = bakePlaceholders(preLocaleStrings);
+      const strings = collUtil.bakePlaceholders(preLocaleStrings);
       saveLocaleStrings(output + path.basename(name), strings);
     }
   }
