@@ -1720,8 +1720,14 @@
     }
   },
   "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "Found \"{AppCacheManifest}\"",
-    "description": "Label for the audit identifying uses of the Application Cache."
+    "message": "Found \"$ICU_0$\"",
+    "description": "Label for the audit identifying uses of the Application Cache.",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{AppCacheManifest}",
+        "example": "AppCacheManifest"
+      }
+    }
   },
   "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
     "message": "Uses Application Cache",
@@ -1870,8 +1876,14 @@
     "description": "Title of a Lighthouse audit that provides detail on the cross-origin links that the web page contains, and whether the links can be considered safe. This descriptive title is shown to users when all links are safe."
   },
   "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | warning": {
-    "message": "Unable to determine the destination for anchor ({anchorHTML}). If not used as a hyperlink, consider removing target=_blank.",
-    "description": "Warning that some links' destinations cannot be determined and therefore the audit cannot evaluate the link's safety."
+    "message": "Unable to determine the destination for anchor ($ICU_0$). If not used as a hyperlink, consider removing target=_blank.",
+    "description": "Warning that some links' destinations cannot be determined and therefore the audit cannot evaluate the link's safety.",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{anchorHTML}",
+        "example": "<a>"
+      }
+    }
   },
   "lighthouse-core/audits/dobetterweb/geolocation-on-start.js | description": {
     "message": "Users are mistrustful of or confused by sites that request their location without context. Consider tying the request to a user action instead. $LINK_START_0$Learn more$LINK_END_0$.",
@@ -2126,8 +2138,14 @@
     "description": "Title of a diagnostic audit that provides detail on if all the text on a webpage was visible while the page was loading its webfonts. This descriptive title is shown to users when the amount is acceptable and no user action is required."
   },
   "lighthouse-core/audits/font-display.js | undeclaredFontURLWarning": {
-    "message": "Lighthouse was unable to automatically check the font-display value for the following URL: {fontURL}.",
-    "description": "A warning message that is shown when Lighthouse couldn't automatically check some of the page's fonts and that the user will need to manually check it."
+    "message": "Lighthouse was unable to automatically check the font-display value for the following URL: $ICU_0$.",
+    "description": "A warning message that is shown when Lighthouse couldn't automatically check some of the page's fonts and that the user will need to manually check it.",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{fontURL}",
+        "example": "https://font.cdn.com/"
+      }
+    }
   },
   "lighthouse-core/audits/image-aspect-ratio.js | columnActual": {
     "message": "Aspect Ratio (Actual)",
@@ -2158,8 +2176,14 @@
     "description": "Title of a Lighthouse audit that provides detail on the aspect ratios of all images on the page. This descriptive title is shown to users when all images use correct aspect ratios."
   },
   "lighthouse-core/audits/image-aspect-ratio.js | warningCompute": {
-    "message": "Invalid image sizing information {url}",
-    "description": "Warning that the size information for an image was nonsensical. `url` will be replaced with the url of that image."
+    "message": "Invalid image sizing information $ICU_0$",
+    "description": "Warning that the size information for an image was nonsensical.",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{url}",
+        "example": "https://image.cdn.com/"
+      }
+    }
   },
   "lighthouse-core/audits/is-on-https.js | columnInsecureURL": {
     "message": "Insecure URL",
@@ -2462,30 +2486,58 @@
     }
   },
   "lighthouse-core/audits/seo/canonical.js | explanationConflict": {
-    "message": "Multiple conflicting URLs ({urlList})",
-    "description": "Explanatory message stating that there was a failure in an audit caused by multiple URLs conflicting with each other. \"urlList\" will be replaced by a list of URLs (e.g. https://example.com, https://example2.com, etc )."
+    "message": "Multiple conflicting URLs ($ICU_0$)",
+    "description": "Explanatory message stating that there was a failure in an audit caused by multiple URLs conflicting with each other.",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{urlList}",
+        "example": "https://example.com, https://example2.com"
+      }
+    }
   },
   "lighthouse-core/audits/seo/canonical.js | explanationDifferentDomain": {
-    "message": "Points to a different domain ({url})",
-    "description": "Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different domain. \"url\" will be replaced by the invalid URL (e.g. https://example.com)."
+    "message": "Points to a different domain ($ICU_0$)",
+    "description": "Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different domain.",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{url}",
+        "example": "https://example.com/"
+      }
+    }
   },
   "lighthouse-core/audits/seo/canonical.js | explanationInvalid": {
-    "message": "Invalid URL ({url})",
-    "description": "Explanatory message stating that there was a failure in an audit caused by a URL being invalid. \"url\" will be replaced by the invalid URL (e.g. https://example.com)."
+    "message": "Invalid URL ($ICU_0$)",
+    "description": "Explanatory message stating that there was a failure in an audit caused by a URL being invalid.",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{url}",
+        "example": "https://example.com/"
+      }
+    }
   },
   "lighthouse-core/audits/seo/canonical.js | explanationPointsElsewhere": {
-    "message": "Points to another $MARKDOWN_SNIPPET_0$ location ({url})",
-    "description": "Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different hreflang than the current context. \"url\" will be replaced by the invalid URL (e.g. https://example.com). 'hreflang' is an HTML attribute and should not be translated.",
+    "message": "Points to another $MARKDOWN_SNIPPET_0$ location ($ICU_0$)",
+    "description": "Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different hreflang than the current context.'hreflang' is an HTML attribute and should not be translated.",
     "placeholders": {
       "MARKDOWN_SNIPPET_0": {
         "content": "`hreflang`",
         "example": "hreflang"
+      },
+      "ICU_0": {
+        "content": "{url}",
+        "example": "https://example.com/"
       }
     }
   },
   "lighthouse-core/audits/seo/canonical.js | explanationRelative": {
-    "message": "Relative URL ({url})",
-    "description": "Explanatory message stating that there was a failure in an audit caused by a URL being relative instead of absolute. \"url\" will be replaced by the invalid URL (e.g. https://example.com)."
+    "message": "Relative URL ($ICU_0$)",
+    "description": "Explanatory message stating that there was a failure in an audit caused by a URL being relative instead of absolute.",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{url}",
+        "example": "https://example.com/"
+      }
+    }
   },
   "lighthouse-core/audits/seo/canonical.js | explanationRoot": {
     "message": "Points to the domain's root URL (the homepage), instead of an equivalent page of content",
@@ -2742,8 +2794,14 @@
     "description": "Description of a Lighthouse audit that tells the user *why* they need to have a valid robots.txt file. Note: \"robots.txt\" is a canonical filename and should not be translated. This is displayed after a user expands the section to see more. No character length limits."
   },
   "lighthouse-core/audits/seo/robots-txt.js | displayValueHttpBadCode": {
-    "message": "request for robots.txt returned HTTP status: {statusCode}",
-    "description": "Label for the audit identifying that the robots.txt request has returned a specific HTTP status code. Note: \"robots.txt\" is a canonical filename and should not be translated. \"statusCode\" will be replaced with a 3 digit integer which represents the status of the HTTP connectiong for this page."
+    "message": "request for robots.txt returned HTTP status: $ICU_0$",
+    "description": "Label for the audit identifying that the robots.txt request has returned a specific HTTP status code. Note: \"robots.txt\" is a canonical filename and should not be translated.",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{statusCode}",
+        "example": "500"
+      }
+    }
   },
   "lighthouse-core/audits/seo/robots-txt.js | displayValueValidationError": {
     "message": "{itemCount, plural,\n    =1 {1 error found}\n    other {# errors found}\n    }",
@@ -2902,12 +2960,16 @@
     "description": "Descriptive title of a diagnostic audit that provides details on any timestamps generated by the page. User Timing refers to the 'User Timing API', which enables a website to record specific times as 'marks', or spans of time as 'measures'."
   },
   "lighthouse-core/audits/uses-rel-preconnect.js | crossoriginWarning": {
-    "message": "A preconnect <link> was found for \"{securityOrigin}\" but was not used by the browser. Check that you are using the $MARKDOWN_SNIPPET_0$ attribute properly.",
+    "message": "A preconnect <link> was found for \"$ICU_0$\" but was not used by the browser. Check that you are using the $MARKDOWN_SNIPPET_0$ attribute properly.",
     "description": "A warning message that is shown when the user tried to follow the advice of the audit, but it's not working as expected. Forgetting to set the `crossorigin` HTML attribute, or setting it to an incorrect value, on the link is a common mistake when adding preconnect links.",
     "placeholders": {
       "MARKDOWN_SNIPPET_0": {
         "content": "`crossorigin`",
         "example": "crossorigin"
+      },
+      "ICU_0": {
+        "content": "{securityOrigin}",
+        "example": "<link rel=\"preconnect\" href=\"...\">"
       }
     }
   },
@@ -2928,12 +2990,16 @@
     "description": "Imperative title of a Lighthouse audit that tells the user to connect early to internet domains that will be used to load page resources. Origin is the correct term, however 'domain name' could be used if neccsesary. This is displayed in a list of audit titles that Lighthouse generates."
   },
   "lighthouse-core/audits/uses-rel-preload.js | crossoriginWarning": {
-    "message": "A preload <link> was found for \"{preloadURL}\" but was not used by the browser. Check that you are using the $MARKDOWN_SNIPPET_0$ attribute properly.",
+    "message": "A preload <link> was found for \"$ICU_0$\" but was not used by the browser. Check that you are using the $MARKDOWN_SNIPPET_0$ attribute properly.",
     "description": "A warning message that is shown when the user tried to follow the advice of the audit, but it's not working as expected. Forgetting to set the `crossorigin` HTML attribute, or setting it to an incorrect value, on the link is a common mistake when adding preload links.",
     "placeholders": {
       "MARKDOWN_SNIPPET_0": {
         "content": "`crossorigin`",
         "example": "crossorigin"
+      },
+      "ICU_0": {
+        "content": "{preloadURL}",
+        "example": "<link rel=\"preload\" href=\"...\">"
       }
     }
   },

@@ -1563,7 +1563,13 @@
     }
   },
   "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "F̂óûńd̂ \"{AppCacheManifest}\""
+    "message": "F̂óûńd̂ \"$ICU_0$\"",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{AppCacheManifest}",
+        "example": "AppCacheManifest"
+      }
+    }
   },
   "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
     "message": "Ûśêś Âṕp̂ĺîćât́îón̂ Ćâćĥé"
@@ -1688,7 +1694,13 @@
     "message": "L̂ín̂ḱŝ t́ô ćr̂óŝś-ôŕîǵîń d̂éŝt́îńât́îón̂ś âŕê śâf́ê"
   },
   "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | warning": {
-    "message": "Ûńâb́l̂é t̂ó d̂ét̂ér̂ḿîńê t́ĥé d̂éŝt́îńât́îón̂ f́ôŕ âńĉh́ôŕ ({anchorHTML}). Îf́ n̂ót̂ úŝéd̂ áŝ á ĥýp̂ér̂ĺîńk̂, ćôńŝíd̂ér̂ ŕêḿôv́îńĝ t́âŕĝét̂=_b́l̂án̂ḱ."
+    "message": "Ûńâb́l̂é t̂ó d̂ét̂ér̂ḿîńê t́ĥé d̂éŝt́îńât́îón̂ f́ôŕ âńĉh́ôŕ ($ICU_0$). Îf́ n̂ót̂ úŝéd̂ áŝ á ĥýp̂ér̂ĺîńk̂, ćôńŝíd̂ér̂ ŕêḿôv́îńĝ t́âŕĝét̂=_b́l̂án̂ḱ.",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{anchorHTML}",
+        "example": "<a>"
+      }
+    }
   },
   "lighthouse-core/audits/dobetterweb/geolocation-on-start.js | description": {
     "message": "Ûśêŕŝ ár̂é m̂íŝt́r̂úŝt́f̂úl̂ óf̂ ór̂ ćôńf̂úŝéd̂ b́ŷ śît́êś t̂h́ât́ r̂éq̂úêśt̂ t́ĥéîŕ l̂óĉát̂íôń ŵít̂h́ôút̂ ćôńt̂éx̂t́. Ĉón̂śîd́êŕ t̂ýîńĝ t́ĥé r̂éq̂úêśt̂ t́ô á ûśêŕ âćt̂íôń îńŝt́êád̂. $LINK_START_0$Ĺêár̂ń m̂ór̂é$LINK_END_0$.",
@@ -1901,7 +1913,13 @@
     "message": "Âĺl̂ t́êx́t̂ ŕêḿâín̂ś v̂íŝíb̂ĺê d́ûŕîńĝ ẃêb́f̂ón̂t́ l̂óâd́ŝ"
   },
   "lighthouse-core/audits/font-display.js | undeclaredFontURLWarning": {
-    "message": "L̂íĝh́t̂h́ôúŝé ŵáŝ ún̂áb̂ĺê t́ô áût́ôḿât́îćâĺl̂ý ĉh́êćk̂ t́ĥé f̂ón̂t́-d̂íŝṕl̂áŷ v́âĺûé f̂ór̂ t́ĥé f̂ól̂ĺôẃîńĝ ÚR̂Ĺ: {fontURL}."
+    "message": "L̂íĝh́t̂h́ôúŝé ŵáŝ ún̂áb̂ĺê t́ô áût́ôḿât́îćâĺl̂ý ĉh́êćk̂ t́ĥé f̂ón̂t́-d̂íŝṕl̂áŷ v́âĺûé f̂ór̂ t́ĥé f̂ól̂ĺôẃîńĝ ÚR̂Ĺ: $ICU_0$.",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{fontURL}",
+        "example": "https://font.cdn.com/"
+      }
+    }
   },
   "lighthouse-core/audits/image-aspect-ratio.js | columnActual": {
     "message": "Âśp̂éĉt́ R̂át̂íô (Áĉt́ûál̂)"
@@ -1927,7 +1945,13 @@
     "message": "D̂íŝṕl̂áŷś îḿâǵêś ŵít̂h́ ĉór̂ŕêćt̂ áŝṕêćt̂ ŕât́îó"
   },
   "lighthouse-core/audits/image-aspect-ratio.js | warningCompute": {
-    "message": "Îńv̂ál̂íd̂ ím̂áĝé ŝíẑín̂ǵ îńf̂ór̂ḿât́îón̂ {url}"
+    "message": "Îńv̂ál̂íd̂ ím̂áĝé ŝíẑín̂ǵ îńf̂ór̂ḿât́îón̂ $ICU_0$",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{url}",
+        "example": "https://image.cdn.com/"
+      }
+    }
   },
   "lighthouse-core/audits/is-on-https.js | columnInsecureURL": {
     "message": "Îńŝéĉúr̂é ÛŔL̂"
@@ -2188,25 +2212,53 @@
     }
   },
   "lighthouse-core/audits/seo/canonical.js | explanationConflict": {
-    "message": "M̂úl̂t́îṕl̂é ĉón̂f́l̂íĉt́îńĝ ÚR̂Ĺŝ ({urlList})"
+    "message": "M̂úl̂t́îṕl̂é ĉón̂f́l̂íĉt́îńĝ ÚR̂Ĺŝ ($ICU_0$)",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{urlList}",
+        "example": "https://example.com, https://example2.com"
+      }
+    }
   },
   "lighthouse-core/audits/seo/canonical.js | explanationDifferentDomain": {
-    "message": "P̂óîńt̂ś t̂ó â d́îf́f̂ér̂én̂t́ d̂óm̂áîń ({url})"
+    "message": "P̂óîńt̂ś t̂ó â d́îf́f̂ér̂én̂t́ d̂óm̂áîń ($ICU_0$)",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{url}",
+        "example": "https://example.com/"
+      }
+    }
   },
   "lighthouse-core/audits/seo/canonical.js | explanationInvalid": {
-    "message": "Îńv̂ál̂íd̂ ÚR̂Ĺ ({url})"
+    "message": "Îńv̂ál̂íd̂ ÚR̂Ĺ ($ICU_0$)",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{url}",
+        "example": "https://example.com/"
+      }
+    }
   },
   "lighthouse-core/audits/seo/canonical.js | explanationPointsElsewhere": {
-    "message": "P̂óîńt̂ś t̂ó âńôt́ĥér̂ $MARKDOWN_SNIPPET_0$ ĺôćât́îón̂ ({url})",
+    "message": "P̂óîńt̂ś t̂ó âńôt́ĥér̂ $MARKDOWN_SNIPPET_0$ ĺôćât́îón̂ ($ICU_0$)",
     "placeholders": {
       "MARKDOWN_SNIPPET_0": {
         "content": "`hreflang`",
         "example": "hreflang"
+      },
+      "ICU_0": {
+        "content": "{url}",
+        "example": "https://example.com/"
       }
     }
   },
   "lighthouse-core/audits/seo/canonical.js | explanationRelative": {
-    "message": "R̂él̂át̂ív̂é ÛŔL̂ ({url})"
+    "message": "R̂él̂át̂ív̂é ÛŔL̂ ($ICU_0$)",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{url}",
+        "example": "https://example.com/"
+      }
+    }
   },
   "lighthouse-core/audits/seo/canonical.js | explanationRoot": {
     "message": "P̂óîńt̂ś t̂ó t̂h́ê d́ôḿâín̂'ś r̂óôt́ ÛŔL̂ (t́ĥé ĥóm̂ép̂áĝé), îńŝt́êád̂ óf̂ án̂ éq̂úîv́âĺêńt̂ ṕâǵê óf̂ ćôńt̂én̂t́"
@@ -2430,7 +2482,13 @@
     "message": "Îf́ ŷóûŕ r̂ób̂ót̂ś.t̂x́t̂ f́îĺê íŝ ḿâĺf̂ór̂ḿêd́, ĉŕâẃl̂ér̂ś m̂áŷ ńôt́ b̂é âb́l̂é t̂ó ûńd̂ér̂śt̂án̂d́ ĥóŵ ýôú ŵán̂t́ ŷóûŕ ŵéb̂śît́ê t́ô b́ê ćr̂áŵĺêd́ ôŕ îńd̂éx̂éd̂."
   },
   "lighthouse-core/audits/seo/robots-txt.js | displayValueHttpBadCode": {
-    "message": "r̂éq̂úêśt̂ f́ôŕ r̂ób̂ót̂ś.t̂x́t̂ ŕêt́ûŕn̂éd̂ H́T̂T́P̂ śt̂át̂úŝ: {statusCode}"
+    "message": "r̂éq̂úêśt̂ f́ôŕ r̂ób̂ót̂ś.t̂x́t̂ ŕêt́ûŕn̂éd̂ H́T̂T́P̂ śt̂át̂úŝ: $ICU_0$",
+    "placeholders": {
+      "ICU_0": {
+        "content": "{statusCode}",
+        "example": "500"
+      }
+    }
   },
   "lighthouse-core/audits/seo/robots-txt.js | displayValueValidationError": {
     "message": "{itemCount, plural,\n    =1 {1 êŕr̂ór̂ f́ôún̂d́}\n    other {# êŕr̂ór̂ś f̂óûńd̂}\n    }"
@@ -2561,11 +2619,15 @@
     "message": "Ûśêŕ T̂ím̂ín̂ǵ m̂ár̂ḱŝ án̂d́ m̂éâśûŕêś"
   },
   "lighthouse-core/audits/uses-rel-preconnect.js | crossoriginWarning": {
-    "message": "Â ṕr̂éĉón̂ńêćt̂ <ĺîńk̂> ẃâś f̂óûńd̂ f́ôŕ \"{securityOrigin}\" b̂út̂ ẃâś n̂ót̂ úŝéd̂ b́ŷ t́ĥé b̂ŕôẃŝér̂. Ćĥéĉḱ t̂h́ât́ ŷóû ár̂é ûśîńĝ t́ĥé $MARKDOWN_SNIPPET_0$ ât́t̂ŕîb́ût́ê ṕr̂óp̂ér̂ĺŷ.",
+    "message": "Â ṕr̂éĉón̂ńêćt̂ <ĺîńk̂> ẃâś f̂óûńd̂ f́ôŕ \"$ICU_0$\" b̂út̂ ẃâś n̂ót̂ úŝéd̂ b́ŷ t́ĥé b̂ŕôẃŝér̂. Ćĥéĉḱ t̂h́ât́ ŷóû ár̂é ûśîńĝ t́ĥé $MARKDOWN_SNIPPET_0$ ât́t̂ŕîb́ût́ê ṕr̂óp̂ér̂ĺŷ.",
     "placeholders": {
       "MARKDOWN_SNIPPET_0": {
         "content": "`crossorigin`",
         "example": "crossorigin"
+      },
+      "ICU_0": {
+        "content": "{securityOrigin}",
+        "example": "<link rel=\"preconnect\" href=\"...\">"
       }
     }
   },
@@ -2584,11 +2646,15 @@
     "message": "P̂ŕêćôńn̂éĉt́ t̂ó r̂éq̂úîŕêd́ ôŕîǵîńŝ"
   },
   "lighthouse-core/audits/uses-rel-preload.js | crossoriginWarning": {
-    "message": "Â ṕr̂él̂óâd́ <l̂ín̂ḱ> ŵáŝ f́ôún̂d́ f̂ór̂ \"{preloadURL}\" b́ût́ ŵáŝ ńôt́ ûśêd́ b̂ý t̂h́ê b́r̂óŵśêŕ. Ĉh́êćk̂ t́ĥát̂ ýôú âŕê úŝín̂ǵ t̂h́ê $MARKDOWN_SNIPPET_0$ át̂t́r̂íb̂út̂é p̂ŕôṕêŕl̂ý.",
+    "message": "Â ṕr̂él̂óâd́ <l̂ín̂ḱ> ŵáŝ f́ôún̂d́ f̂ór̂ \"$ICU_0$\" b́ût́ ŵáŝ ńôt́ ûśêd́ b̂ý t̂h́ê b́r̂óŵśêŕ. Ĉh́êćk̂ t́ĥát̂ ýôú âŕê úŝín̂ǵ t̂h́ê $MARKDOWN_SNIPPET_0$ át̂t́r̂íb̂út̂é p̂ŕôṕêŕl̂ý.",
     "placeholders": {
       "MARKDOWN_SNIPPET_0": {
         "content": "`crossorigin`",
         "example": "crossorigin"
+      },
+      "ICU_0": {
+        "content": "{preloadURL}",
+        "example": "<link rel=\"preload\" href=\"...\">"
       }
     }
   },

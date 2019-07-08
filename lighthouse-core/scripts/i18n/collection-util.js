@@ -22,6 +22,7 @@
 // @ts-ignore - @types/esprima lacks all of these
 function computeDescription(ast, property, value, startRange) {
   const endRange = property.range[0];
+  const findIcu = /\{(\w+)\}/g;
   for (const comment of ast.comments || []) {
     if (comment.range[0] < startRange) continue;
     if (comment.range[0] > endRange) continue;
@@ -43,19 +44,26 @@ function computeDescription(ast, property, value, startRange) {
         } else if (tagName === 'example') {
           // Make sure the ICU var exists in string
           if (!value.includes(placeholder)) {
-            throw Error('Example missing ICU replacement');
+            throw Error(`Example missing ICU replacement in message "${message}"`);
           }
           examples[placeholder.substring(1, placeholder.length - 1)] = message;
         }
       }
       // Make sure all ICU vars have examples
-      const rMini = /\{(\w+)\}/g;
-      while ((resArr = rMini.exec(value)) !== null) {
+      while ((resArr = findIcu.exec(value)) !== null) {
         const varName = resArr[1];
-        if (!examples[varName]) throw Error(`Variable '${varName}' is missing example comment`);
+        if (!examples[varName]) {
+          throw Error(`Variable '${varName}' is missing example comment in message "${value}"`);
+        }
       }
       return {description, examples};
     }
+    // Make sure all ICU vars have examples
+    if (value.match(findIcu)) {
+      throw Error(`Variable '${value.match(/.*\{(\w+)\}.*/)[1]}' ` +
+        `is missing example comment in message "${value}"`);
+    }
+
     return {description: comment.value.replace('*', '').trim()};
   }
   return {};
