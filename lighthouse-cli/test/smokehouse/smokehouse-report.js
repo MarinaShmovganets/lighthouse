@@ -98,7 +98,7 @@ function findDifference(path, actual, expected) {
     }
   }
 
-  // If the expected value is an array, assert on the length.
+  // If the expected value is an array, assert the length as well.
   // This still allows for asserting that the first n elements of an array are specified elements,
   // but requires using an object literal (ex: {0: x, 1: y, 2: z} matches [x, y, z, q, w, e] and
   // {0: x, 1: y, 2: z, length: 5} does not match [x, y, z].
