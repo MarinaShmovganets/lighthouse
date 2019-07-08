@@ -104,6 +104,11 @@ describe('Every snyk vulnerability has an upperbound', () => {
   for (const vulns of Object.values(NoVulnerableLibrariesAudit.snykDB.npm)) {
     for (const vuln of vulns) {
       for (const semver of vuln.semver.vulnerable) {
+        // Examples of what semver can be:
+        // <1.12.2
+        // >=1.12.3 <2.2.2
+        // >=2.2.3 <3.0.0
+        // >=3.0.0 <3.10.1 || =3.10.2
         assert.notEqual(semver, '*', 'invalid semver: * is not allowed');
 
         const clauses = semver.split('||');
