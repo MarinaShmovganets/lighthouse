@@ -129,7 +129,6 @@ function lookupLocale(locale) {
  */
 function _preprocessMessageValues(icuMessage, values) {
   if (!values) return;
-  // console.log(icuMessage, values);
   const clonedValues = JSON.parse(JSON.stringify(values));
   const parsed = MessageParser.parse(icuMessage);
   // Throw an error if a message's value isn't provided
