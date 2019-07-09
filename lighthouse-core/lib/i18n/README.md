@@ -2,9 +2,37 @@
 
 ## ICU Syntax
 
-### Ordinals
+More about [complex ICU](http://userguide.icu-project.org/formatparse/messages)
+formatting.
 
-### Selects (Gender)
+### Selects
+
+A select ICU message is used when the message should select a sub-message based
+on the value of a variable `pronoun` in this case.  This is often used for gender
+based selections, but can be used for any enum.  Lighthouse does not use selects
+very often.
+
+```javascript
+displayValue: `{pronoun, select,
+  male {He programmed the link.}
+  female {She programmed the link.}
+  other {They programmed the link}
+  }`,
+```
+
+### Ordinals (Numeric Selects)
+
+An ordinal ICU message is used when the message contains "plurals", wherein a
+sub-message would need to be selected from a list of messages depending on the
+value of `itemCount` (in this example).  They are a flavor of "Selects" that
+have a unique syntax.
+
+```javascript
+displayValue: `{itemCount, plural,
+  =1 {1 link found}
+  other {# links found}
+  }`,
+```
 
 ### Primitive Formatting
 
@@ -119,7 +147,7 @@ directly in UIStrings. They follow 1 of 3 flavors.
     };
     ```
 
-    ICU replacements can also use a JSDoc type syntax to specify an example for
+    ICU replacements must use a JSDoc type syntax to specify an example for
     direct ICU replacements.
 
     *   To specify the description, use
@@ -147,7 +175,8 @@ directly in UIStrings. They follow 1 of 3 flavors.
     percentages.
 
     Note: these complex ICU formats are automatically given example values based
-    on their ICU format as specified in `collect-strings.js`
+    on their ICU format as specified in `collect-strings.js`.  Therefore a normal 
+    description string can be used.
 
     ```javascript
     const UIStrings = {
@@ -203,9 +232,6 @@ $ sh google_import_script_that_calls_correct_strings
 
 #### String Replacement Pipeline (runtime)
 
-`file_with_UIStrings.js -> exported to locale.json file -> read by i18n.js ->
-$placeholder$'s replaced -> {ICU} syntax replaced => final string`
-
 1.  String called in `.js` file, converted to i18n id.
 
 2.  i18n id in lookup table along with backup message.
@@ -213,9 +239,7 @@ $placeholder$'s replaced -> {ICU} syntax replaced => final string`
 3.  Message is looked up via `replaceIcuMessageInstanceIds` &
     `_formatIcuMessage`.
 
-TODO(exterkamp): Simple example
-
-##### Simple example, no ICU:
+##### Example:
 
 1.  string in `file_with_UIStrings.js`
 
