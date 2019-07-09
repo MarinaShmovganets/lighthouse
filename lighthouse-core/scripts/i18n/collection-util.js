@@ -33,11 +33,11 @@ function computeDescription(ast, property, value, startRange) {
       const examples = {};
 
       const r = /@(\w+) ({\w+})?(.*)(\n|$)/g;
-      let resArr;
-      while ((resArr = r.exec(comment.value)) !== null) {
-        const tagName = resArr[1];
-        const placeholder = resArr[2];
-        const message = resArr[3].trim();
+      let matches;
+      while ((matches = r.exec(comment.value)) !== null) {
+        const tagName = matches[1];
+        const placeholder = matches[2];
+        const message = matches[3].trim();
 
         if (tagName === 'description') {
           description = message;
@@ -50,8 +50,8 @@ function computeDescription(ast, property, value, startRange) {
         }
       }
       // Make sure all ICU vars have examples
-      while ((resArr = findIcu.exec(value)) !== null) {
-        const varName = resArr[1];
+      while ((matches = findIcu.exec(value)) !== null) {
+        const varName = matches[1];
         if (!examples[varName]) {
           throw Error(`Variable '${varName}' is missing example comment in message "${value}"`);
         }
@@ -105,85 +105,118 @@ function computeDescription(ast, property, value, startRange) {
  */
 function convertMessageToPlaceholders(message, examples = {}) {
   // Basically the same as markdown parsing in dom.js
-  /** @type {Record<string, ICUPlaceholderDefn>} */
-  const placeholders = {};
+  const icu = {
+    message,
+    placeholders: {},
+  };
 
-  // Sanity checks
-  // Number of backticks is even.
-  if ((message.split('`').length - 1) % 2 !== 0) {
-    throw Error(`Open backtick in message "${message}"`);
-  }
-  // Link markdown is not slightly off.
-  if (message.match(/\[.*\] \(.*\)/)) {
-    throw Error(`Bad Link syntax in message "${message}"`);
-  }
-  // Complex ICU using non-supported format
-  if (message.match(
-    /\{(\w{2,50}), number, (?!milliseconds|seconds|bytes|percent|extendedPercent).*\}/)) {
-    throw Error(`Unsupported ICU format in message "${message}"`);
+  // Process each placeholder type
+  _processPlaceholderMarkdownCode(icu);
+
+  _processPlaceholderMarkdownLink(icu);
+
+  _processPlaceholderComplexIcu(icu);
+
+  _processPlaceholderDirectIcu(icu, examples);
+
+  return icu;
+}
+
+/**
+ * Convert markdown code blocks into placeholders with examples.
+ *
+ * @param {ICUMessageDefn} icu
+ */
+function _processPlaceholderMarkdownCode(icu) {
+  // Check that number of backticks is even.
+  if ((icu.message.split('`').length - 1) % 2 !== 0) {
+    throw Error(`Open backtick in message "${icu.message}"`);
   }
 
-  // replace code snippets
-  let parts = message.split(/`(.*?)`/g); // Split on markdown code slashes
-  let newMessage = '';
+  // Split on markdown code slashes
+  const parts = icu.message.split(/`(.*?)`/g);
+  icu.message = '';
   let idx = 0;
   while (parts.length) {
     // Pop off the same number of elements as there are capture groups.
     const [preambleText, codeText] = parts.splice(0, 2);
-    newMessage += preambleText;
+    icu.message += preambleText;
     if (codeText) {
       const pName = `MARKDOWN_SNIPPET_${idx++}`;
       // Backtick replacement looks unreadable here, so .join() instead.
-      newMessage += ['$', pName, '$'].join('');
-      placeholders[pName] = {
+      icu.message += ['$', pName, '$'].join('');
+      icu.placeholders[pName] = {
         content: ['`', codeText, '`'].join(''),
         example: codeText,
       };
     }
   }
+}
 
-  // replace links
+/**
+ * Convert markdown html links into placeholders.
+ *
+ * @param {ICUMessageDefn} icu
+ */
+function _processPlaceholderMarkdownLink(icu) {
+  // Check that link markdown is not slightly off.
+  if (icu.message.match(/\[.*\] \(.*\)/)) {
+    throw Error(`Bad Link syntax in message "${icu.message}"`);
+  }
+
   // Split on markdown links (e.g. [some link](https://...)).
-  parts = newMessage.split(/\[([^\]]*?)\]\((https?:\/\/.*?)\)/g);
-  newMessage = '';
-  idx = 0;
+  const parts = icu.message.split(/\[([^\]]*?)\]\((https?:\/\/.*?)\)/g);
+  icu.message = '';
+  let idx = 0;
 
   while (parts.length) {
     // Pop off the same number of elements as there are capture groups.
     const [preambleText, linkText, linkHref] = parts.splice(0, 3);
-    newMessage += preambleText;
+    icu.message += preambleText;
 
     // Append link if there are any.
     if (linkText && linkHref) {
       const ls = `LINK_START_${idx}`;
       const le = `LINK_END_${idx++}`;
       const repr = `$${ls}$${linkText}$${le}$`;
-      newMessage += repr;
-      placeholders[ls] = {
+      icu.message += repr;
+      icu.placeholders[ls] = {
         content: '[',
       };
-      placeholders[le] = {
+      icu.placeholders[le] = {
         content: `](${linkHref})`,
       };
     }
   }
+}
 
-  // replace complex ICU numbers
-  // milliseconds, seconds, bytes, extendedPercent, percent, etc.
-  parts = newMessage.split(
+/**
+ * Convert complex ICU syntax into placeholders with examples.
+ *
+ * @param {ICUMessageDefn} icu
+ */
+function _processPlaceholderComplexIcu(icu) {
+  // Check that complex ICU not using non-supported format
+  if (icu.message.match(
+    /\{(\w{2,50}), number, (?!milliseconds|seconds|bytes|percent|extendedPercent).*\}/)) {
+    throw Error(`Unsupported ICU format in message "${icu.message}"`);
+  }
+
+  // Split on complex ICU: {var, number, type}
+  const parts = icu.message.split(
     /\{(\w{2,50}), number, (milliseconds|seconds|bytes|percent|extendedPercent)\}/g);
-  newMessage = '';
-  idx = 0;
+  icu.message = '';
+  let idx = 0;
 
   while (parts.length) {
     // Pop off the same number of elements as there are capture groups.
     const [preambleText, varName, icuType] = parts.splice(0, 3);
-    newMessage += preambleText;
+    icu.message += preambleText;
 
     // Append link if there are any.
     if (varName && icuType) {
       const iName = `COMPLEX_ICU_${idx++}`;
-      newMessage += `$${iName}$`;
+      icu.message += `$${iName}$`;
       let example = '0';
 
       // Make some good examples.
@@ -202,29 +235,35 @@ function convertMessageToPlaceholders(message, examples = {}) {
           example = '499';
       }
 
-      placeholders[iName] = {
+      icu.placeholders[iName] = {
         content: `{${varName}, number, ${icuType}}`,
         example: example,
       };
     }
   }
+}
 
-  // add examples for direct ICU replacement
-  idx = 0;
+/**
+ * Add examples for direct ICU replacement.
+ *
+ * @param {ICUMessageDefn} icu
+ * @param {Record<string, string>} examples
+ */
+function _processPlaceholderDirectIcu(icu, examples) {
+  let tempMessage = icu.message;
+  let idx = 0;
   for (const [key, value] of Object.entries(examples)) {
-    if (!newMessage.includes(`{${key}}`)) continue;
+    if (!icu.message.includes(`{${key}}`)) continue;
     const eName = `ICU_${idx++}`;
-    newMessage = newMessage.replace(`{${key}}`, `$${eName}$`);
+    tempMessage = tempMessage.replace(`{${key}}`, `$${eName}$`);
 
-    placeholders[eName] = {
+    icu.placeholders[eName] = {
       content: `{${key}}`,
       example: value,
     };
   }
-
-  return {message: newMessage, placeholders};
+  icu.message = tempMessage;
 }
-
 
 /**
  * Take a series of messages and apply ĥât̂ markers to the translatable portions
