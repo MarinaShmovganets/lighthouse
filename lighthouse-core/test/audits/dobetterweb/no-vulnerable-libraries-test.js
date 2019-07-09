@@ -8,6 +8,7 @@
 const NoVulnerableLibrariesAudit =
   require('../../../audits/dobetterweb/no-vulnerable-libraries.js');
 const assert = require('assert');
+const semver = require('semver');
 
 /* eslint-env jest */
 describe('Avoids front-end JavaScript libraries with known vulnerabilities', () => {
@@ -100,22 +101,36 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
   });
 });
 
+// https://github.com/npm/node-semver/issues/166#issuecomment-245990039
+function hasUpperBound(rangeString) {
+  const range = new semver.Range(rangeString);
+  if (!range) return false;
+
+  for (const subset of range.set) {
+    // Upperbound exists if...
+
+    // < or <= is in one of the subset's clauses (= gets normalized to >= and <).
+    if (subset.some(comparator => comparator.operator.match(/^</))) {
+      continue;
+    }
+
+    // Subset has a prerelease tag (operator will be empty).
+    if (subset.length === 1 && subset[0].operator === '') {
+      continue;
+    }
+
+    return false;
+  }
+
+  return true;
+}
+
 describe('Every snyk vulnerability has an upperbound', () => {
   for (const vulns of Object.values(NoVulnerableLibrariesAudit.snykDB.npm)) {
     for (const vuln of vulns) {
       for (const semver of vuln.semver.vulnerable) {
-        // Examples of what semver can be:
-        // <1.12.2
-        // >=1.12.3 <2.2.2
-        // >=2.2.3 <3.0.0
-        // >=3.0.0 <3.10.1 || =3.10.2
-        assert.notEqual(semver, '*', 'invalid semver: * is not allowed');
-
-        const clauses = semver.split('||');
-        for (const clause of clauses) {
-          if (!clause.trim().startsWith('=') && !clause.includes('<')) {
-            assert.fail(`invalid semver: ${semver}. Must contain an upper bound`);
-          }
+        if (!hasUpperBound(semver)) {
+          assert.fail(`invalid semver: ${semver}. Must contain an upper bound`);
         }
       }
     }
