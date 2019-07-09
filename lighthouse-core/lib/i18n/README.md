@@ -271,7 +271,7 @@ TODO(exterkamp): Simple example
 
     ```javascript
     message = "Total size was {totalBytes, number, bytes} KB"
-    sent_values = {totalBytes: 10.75}
+    sent_values = {totalBytes: 10240}
     ```
 
     Becomes...

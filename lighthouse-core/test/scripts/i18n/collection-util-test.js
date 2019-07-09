@@ -58,6 +58,25 @@ describe('Compute Description', () => {
     expect(res.description).toBe('Tagged description for Hello World.');
   });
 
+  it.skip('collects complex multi-line description', () => {
+    const justUIStrings =
+    `const UIStrings = {
+      /** 
+       * @description Tagged description for Hello World,
+       * which is a long description, that wraps.
+       */
+      message: 'Hello World',
+    };`;
+
+    const ast = esprima.parse(justUIStrings, {comment: true, range: true});
+
+    const stmt = ast.body[0];
+    const prop = stmt.declarations[0].init.properties[0];
+    const res = collect.computeDescription(ast, prop, 'Hello World', 0);
+    expect(res.description)
+      .toBe('Tagged description for Hello World, which is a long description, that wraps.');
+  });
+
   it('collects complex description with example', () => {
     const justUIStrings =
     `const UIStrings = {
@@ -132,8 +151,7 @@ describe('Convert Message to Placeholder', () => {
   it('passthroughs a basic message unchanged', () => {
     const message = 'Hello World.';
     const res = collect.convertMessageToPlaceholders(message, undefined);
-    expect(res.message).toBe(message);
-    expect(res.placeholders).toEqual({});
+    expect(res).toEqual({message, placeholders: {}});
   });
 
   it('converts code block to placeholder', () => {
@@ -243,7 +261,7 @@ describe('Convert Message to Placeholder', () => {
   it('errors when using non-supported complex ICU format', () => {
     const message = 'Hello World took {var, number, global_int}.';
     expect(() => collect.convertMessageToPlaceholders(message, undefined)).toThrow(
-      /Non supported ICU format in message "Hello World took {var, number, global_int}\."/);
+      /Unsupported ICU format in message "Hello World took {var, number, global_int}\."/);
   });
 
   it('converts direct ICU with examples to placeholders', () => {

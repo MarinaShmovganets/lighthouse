@@ -11,7 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const esprima = require('esprima');
-const collUtil = require('./collection-util.js');
+const collectionUtil = require('./collection-util.js');
 
 const LH_ROOT = path.join(__dirname, '../../../');
 const UISTRINGS_REGEX = /UIStrings = (.|\s)*?\};\n/im;
@@ -81,17 +81,16 @@ function collectAllStringsInDir(dir, strings = {}) {
           for (const property of stmt.declarations[0].init.properties) {
             const key = property.key.name;
             const val = exportVars.UIStrings[key];
-            const res = collUtil.computeDescription(ast, property, val, lastPropertyEndIndex);
+            const {description, examples} = collectionUtil.computeDescription(ast, property, val, lastPropertyEndIndex);
 
-            const description = res.description;
-            const examples = res.examples;
+            const converted = collectionUtil.convertMessageToPlaceholders(val, examples);
 
-            const converted = collUtil.convertMessageToPlaceholders(val, examples);
+            const messageKey = `${relativePath} | ${key}`;
 
             if (Object.entries(converted.placeholders).length === 0 && converted.placeholders.constructor === Object) {
-              strings[`${relativePath} | ${key}`] = {message: converted.message, description};
+              strings[messageKey] = {message: converted.message, description};
             } else {
-              strings[`${relativePath} | ${key}`] = {message: converted.message, description, placeholders: converted.placeholders};
+              strings[messageKey] = {message: converted.message, description, placeholders: converted.placeholders};
             }
             lastPropertyEndIndex = property.range[1];
           }
@@ -123,7 +122,7 @@ function writeStringsToLocaleFormat(locale, strings) {
 }
 
 const strings = collectAllStringsInDir(path.join(LH_ROOT, 'lighthouse-core'));
-const psuedoLocalizedStrings = collUtil.createPsuedoLocaleStrings(strings);
+const psuedoLocalizedStrings = collectionUtil.createPsuedoLocaleStrings(strings);
 console.log('Collected from LH core!');
 
 collectAllStringsInDir(path.join(LH_ROOT, 'stack-packs/packs'), strings);

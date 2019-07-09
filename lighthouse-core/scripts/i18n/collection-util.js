@@ -64,6 +64,7 @@ function computeDescription(ast, property, value, startRange) {
         `is missing example comment in message "${value}"`);
     }
 
+    // The entire comment is the description, so return everything.
     return {description: comment.value.replace('*', '').trim()};
   }
   return {};
@@ -92,7 +93,7 @@ function convertMessageToPlaceholders(message, examples = {}) {
   // Complex ICU using non-supported format
   if (message.match(
     /\{(\w{2,50}), number, (?!milliseconds|seconds|bytes|percent|extendedPercent).*\}/)) {
-    throw Error(`Non supported ICU format in message "${message}"`);
+    throw Error(`Unsupported ICU format in message "${message}"`);
   }
 
   // replace code snippets
@@ -105,9 +106,10 @@ function convertMessageToPlaceholders(message, examples = {}) {
     newMessage += preambleText;
     if (codeText) {
       const pName = `MARKDOWN_SNIPPET_${idx++}`;
-      newMessage += `$${pName}$`;
+      // Backtick replacement looks unreadable here, so .join() instead.
+      newMessage += ['$', pName, '$'].join('');
       placeholders[pName] = {
-        content: `\`${codeText}\``,
+        content: ['`', codeText, '`'].join(''),
         example: codeText,
       };
     }
@@ -252,31 +254,28 @@ function createPsuedoLocaleStrings(strings) {
  * @returns {Record<string, ICUMessageDefn>}
  */
 function bakePlaceholders(messages) {
-  for (const key in messages) {
-    if (!Object.prototype.hasOwnProperty.call(messages, key)) continue;
+  for (const [_, defn] of Object.entries(messages)) {
+    delete defn['description'];
 
-    delete messages[key]['description'];
-
-    let message = messages[key]['message'];
-    const placeholders = messages[key]['placeholders'];
+    let message = defn['message'];
+    const placeholders = defn['placeholders'];
 
     for (const placeholder in placeholders) {
       if (!Object.prototype.hasOwnProperty.call(placeholders, placeholder)) continue;
 
       const content = placeholders[placeholder]['content'];
-      const re = new RegExp('\\$' + placeholder + '\\$');
-      if (!message.match(re)) {
+      if (!message.includes(`$${placeholder}$`)) {
         throw Error(`Message "${message}" has extra placeholder "${placeholder}"`);
       }
-      message = message.replace(re, content);
+      message = message.replace(`$${placeholder}$`, content);
     }
 
     // Sanity check that all placeholders are gone
     if (message.match(/\$\w+\$/)) throw Error(`Message "${message}" is missing placeholder`);
 
-    messages[key]['message'] = message;
+    defn['message'] = message;
 
-    delete messages[key]['placeholders'];
+    delete defn['placeholders'];
   }
   return messages;
 }
