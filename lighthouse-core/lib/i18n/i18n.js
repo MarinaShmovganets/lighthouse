@@ -129,6 +129,7 @@ function lookupLocale(locale) {
  */
 function _preprocessMessageValues(icuMessage, values) {
   if (!values) return;
+
   const clonedValues = JSON.parse(JSON.stringify(values));
   const parsed = MessageParser.parse(icuMessage);
   // Throw an error if a message's value isn't provided
@@ -168,9 +169,6 @@ function _preprocessMessageValues(icuMessage, values) {
  * @prop {*} [values]
  */
 
-// Only used for value lookups, default mapping to en is done with a lookup to the en file,
-// not this pre-baked msg map.
-
 /** @type {Map<string, IcuMessageInstance[]>} */
 const _icuMessageInstanceMap = new Map();
 
@@ -184,7 +182,6 @@ const _ICUMsgNotFoundMsg = 'ICU message not found in destination locale';
  * @return {{formattedString: string, icuMessage: string}}
  */
 function _formatIcuMessage(locale, icuMessageId, fallbackMessage, values) {
-  // console.log(locale, icuMessageId);
   const localeMessages = LOCALES[locale];
   if (!localeMessages) throw new Error(`Unsupported locale '${locale}'`);
   let localeMessage = localeMessages[icuMessageId] && localeMessages[icuMessageId].message;
@@ -236,8 +233,6 @@ function _formatPathAsString(pathInLHR) {
  */
 function getRendererFormattedStrings(locale) {
   const localeMessages = LOCALES[locale];
-  // console.log(locale);
-  // console.log(localeMessages);
   if (!localeMessages) throw new Error(`Unsupported locale '${locale}'`);
 
   const icuMessageIds = Object.keys(localeMessages).filter(f => f.includes('core/report/html/'));
@@ -342,7 +337,7 @@ function _resolveIcuMessageInstanceId(icuMessageInstanceId, locale) {
   const [_, icuMessageId, icuMessageInstanceIndex] = matches;
   const icuMessageInstances = _icuMessageInstanceMap.get(icuMessageId) || [];
   const icuMessageInstance = icuMessageInstances[Number(icuMessageInstanceIndex)];
-  // console.log(locale, "-->", icuMessageId);
+
   const {formattedString} = _formatIcuMessage(locale, icuMessageId,
     icuMessageInstance.icuMessage, icuMessageInstance.values);
 

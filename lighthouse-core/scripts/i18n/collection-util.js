@@ -104,7 +104,6 @@ function computeDescription(ast, property, value, startRange) {
  * @returns {ICUMessageDefn}
  */
 function convertMessageToPlaceholders(message, examples = {}) {
-  // console.log(examples);
   // Basically the same as markdown parsing in dom.js
   /** @type {Record<string, ICUPlaceholderDefn>} */
   const placeholders = {};

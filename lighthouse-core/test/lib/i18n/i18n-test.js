@@ -103,7 +103,6 @@ describe('i18n', () => {
       helloTimeInMsWorld: 'Hello {timeInMs, number, seconds} World',
       helloPercentWorld: 'Hello {in, number, extendedPercent} World',
     };
-
     const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
     it('formats a basic message', () => {
