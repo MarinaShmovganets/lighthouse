@@ -71,8 +71,36 @@ function computeDescription(ast, property, value, startRange) {
 }
 
 /**
- * @param {*} message
- * @param {*} examples
+ * Take a series of lighthouse-i18n-json format ICU messages and converts them
+ * to messages.json format by replacing {ICU} and `markdown` with
+ * $placeholders$. Functional opposite of `bakePlaceholders`. This is commonly
+ * called as one of the first steps in translation, via collect-strings.js.
+ *
+ * Converts this:
+ * messages: {
+ *  "lighthouse-core/audits/seo/canonical.js | explanationDifferentDomain" {
+ *    "message": "Points to a different domain ({url})",
+ *    },
+ *  },
+ * }
+ *
+ * Into this:
+ * messages: {
+ *  "lighthouse-core/audits/seo/canonical.js | explanationDifferentDomain" {
+ *    "message": "Points to a different domain ($ICU_0$)",
+ *    "placeholders": {
+ *      "ICU_0": {
+ *        "content": "{url}",
+ *        "example": "https://example.com/"
+ *      },
+ *    },
+ *  },
+ * }
+ *
+ * Throws if the message violates some basic sanity checking.
+ *
+ * @param {string} message
+ * @param {Record<string, string>} examples
  * @returns {ICUMessageDefn}
  */
 function convertMessageToPlaceholders(message, examples = {}) {
@@ -184,7 +212,6 @@ function convertMessageToPlaceholders(message, examples = {}) {
 
   // add examples for direct ICU replacement
   idx = 0;
-  // eslint-disable-next-line guard-for-in
   for (const [key, value] of Object.entries(examples)) {
     if (!newMessage.includes(`{${key}}`)) continue;
     const eName = `ICU_${idx++}`;
@@ -201,12 +228,15 @@ function convertMessageToPlaceholders(message, examples = {}) {
 
 
 /**
- * @param {Record<string, ICUMessageDefn>} strings
+ * Take a series of messages and apply ĥât̂ markers to the translatable portions
+ * of the text.  Used to generate `en-XL` locale to debug i18n strings.
+ *
+ * @param {Record<string, ICUMessageDefn>} messages
  */
-function createPsuedoLocaleStrings(strings) {
+function createPsuedoLocaleStrings(messages) {
   /** @type {Record<string, ICUMessageDefn>} */
   const psuedoLocalizedStrings = {};
-  for (const [key, defn] of Object.entries(strings)) {
+  for (const [key, defn] of Object.entries(messages)) {
     const message = defn.message;
     const psuedoLocalizedString = [];
     let braceCount = 0;
@@ -250,6 +280,35 @@ function createPsuedoLocaleStrings(strings) {
 }
 
 /**
+ * Take a series of messages.json format ICU messages and converts them to
+ * lighthouse-i18n-json format by replacing $placeholders$ with their {ICU}
+ * values. Functional opposite of `convertMessageToPlaceholders`. This is
+ * commonly called as the last step in translation, via correct-strings.js.
+ *
+ * Converts this:
+ * messages: {
+ *  "lighthouse-core/audits/seo/canonical.js | explanationDifferentDomain" {
+ *    "message": "Points to a different domain ($ICU_0$)",
+ *    "placeholders": {
+ *      "ICU_0": {
+ *        "content": "{url}",
+ *        "example": "https://example.com/"
+ *      },
+ *    },
+ *  },
+ * }
+ *
+ * Into this:
+ * messages: {
+ *  "lighthouse-core/audits/seo/canonical.js | explanationDifferentDomain" {
+ *    "message": "Points to a different domain ({url})",
+ *    },
+ *  },
+ * }
+ *
+ * Throws if there is a $placeholder$ in the message that has no corresponding
+ * value in the placeholders object, or vice versa.
+ *
  * @param {Record<string, ICUMessageDefn>} messages
  * @returns {Record<string, ICUMessageDefn>}
  */
