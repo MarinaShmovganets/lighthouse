@@ -106,6 +106,7 @@ function hasUpperBound(rangeString) {
   const range = new semver.Range(rangeString);
   if (!range) return false;
 
+  // For every subset ...
   for (const subset of range.set) {
     // Upperbound exists if...
 
@@ -119,6 +120,7 @@ function hasUpperBound(rangeString) {
       continue;
     }
 
+    // No upperbound for this subset.
     return false;
   }
 
