@@ -100,7 +100,7 @@ describe('Avoids front-end JavaScript libraries with known vulnerabilities', () 
   });
 });
 
-describe('Every snyk vulnerability has an upperbound', () => {
+describe('every snyk vulnerability has an upper bound', () => {
   for (const vulns of Object.values(NoVulnerableLibrariesAudit.snykDB.npm)) {
     for (const vuln of vulns) {
       for (const semver of vuln.semver.vulnerable) {
