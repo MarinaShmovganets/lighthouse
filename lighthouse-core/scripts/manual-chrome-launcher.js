@@ -19,7 +19,6 @@ const args = process.argv.slice(2);
 const chromeFlags = [];
 let startingUrl;
 let port;
-let shouldEnableExtensions;
 let ignoreDefaultFlags;
 
 if (args.length) {
@@ -28,9 +27,9 @@ if (args.length) {
   const portFlag = providedFlags.find(flag => flag.startsWith('--port='));
   if (portFlag) port = parseInt(portFlag.replace('--port=', ''), 10);
 
-  shouldEnableExtensions = !!providedFlags.find(flag => flag === '--enable-extensions');
+  const enableExtensions = !!providedFlags.find(flag => flag === '--enable-extensions');
   // The basic pattern for enabling Chrome extensions
-  if (shouldEnableExtensions) {
+  if (enableExtensions) {
     ignoreDefaultFlags = true;
     chromeFlags.push(...Launcher.defaultFlags().filter(flag => flag !== '--disable-extensions'));
   }
