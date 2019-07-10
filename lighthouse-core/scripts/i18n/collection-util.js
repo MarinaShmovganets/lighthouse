@@ -56,18 +56,27 @@ function computeDescription(ast, property, value, startRange) {
           throw Error(`Variable '${varName}' is missing example comment in message "${value}"`);
         }
       }
+
+      // Make sure description is not empty
+      if (description.length === 0) throw Error(`Empty @description for message "${value}"`);
       return {description, examples};
     }
+
+    const description = comment.value.replace('*', '').trim();
+
     // Make sure all ICU vars have examples
     if (value.match(findIcu)) {
       throw Error(`Variable '${value.match(/.*\{(\w+)\}.*/)[1]}' ` +
         `is missing example comment in message "${value}"`);
     }
 
+    // Make sure description is not empty
+    if (description.length === 0) throw Error(`Empty description for message "${value}"`);
+
     // The entire comment is the description, so return everything.
-    return {description: comment.value.replace('*', '').trim()};
+    return {description};
   }
-  return {};
+  throw Error(`No Description for message "${value}"`);
 }
 
 /**

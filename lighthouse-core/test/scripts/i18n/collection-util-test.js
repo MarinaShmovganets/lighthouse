@@ -26,7 +26,7 @@ describe('Compute Description', () => {
     expect(res.description).toBe('Description for Hello World.');
   });
 
-  it('collects nothing, when no description present', () => {
+  it('errors when no description present', () => {
     const justUIStrings =
     `const UIStrings = {
         message: 'Hello World',
@@ -37,8 +37,40 @@ describe('Compute Description', () => {
 
     const stmt = ast.body[0];
     const prop = stmt.declarations[0].init.properties[0];
-    const res = collect.computeDescription(ast, prop, 'Hello World', 0);
-    expect(res.description).toBe(undefined);
+    expect(() => collect.computeDescription(ast, prop, 'Hello World', 0))
+      .toThrow(/No Description for message "Hello World"/);
+  });
+
+  it('errors when description is blank', () => {
+    const justUIStrings =
+    `const UIStrings = {
+        /** */
+        message: 'Hello World',
+    };`;
+
+    const ast = esprima.parse(justUIStrings, {comment: true, range: true});
+
+    const stmt = ast.body[0];
+    const prop = stmt.declarations[0].init.properties[0];
+    expect(() => collect.computeDescription(ast, prop, 'Hello World', 0))
+      .toThrow(/Empty description for message "Hello World"/);
+  });
+
+  it('errors when description is blank', () => {
+    const justUIStrings =
+    `const UIStrings = {
+        /** 
+         * @description
+         */
+        message: 'Hello World',
+    };`;
+
+    const ast = esprima.parse(justUIStrings, {comment: true, range: true});
+
+    const stmt = ast.body[0];
+    const prop = stmt.declarations[0].init.properties[0];
+    expect(() => collect.computeDescription(ast, prop, 'Hello World', 0))
+      .toThrow(/Empty @description for message "Hello World"/);
   });
 
   it('collects complex description', () => {
