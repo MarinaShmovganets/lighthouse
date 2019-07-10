@@ -2,30 +2,11 @@
 
 ## ICU Syntax
 
-More about [complex ICU](http://userguide.icu-project.org/formatparse/messages)
-formatting.
-
-### Selects
-
-A select ICU message is used when the message should select a sub-message based
-on the value of a variable `pronoun` in this case.  This is often used for gender
-based selections, but can be used for any enum.  Lighthouse does not use selects
-very often.
-
-```javascript
-displayValue: `{pronoun, select,
-  male {He programmed the link.}
-  female {She programmed the link.}
-  other {They programmed the link}
-  }`,
-```
+More about [complex ICU](http://userguide.icu-project.org/formatparse/messages) formatting.
 
 ### Ordinals (Numeric Selects)
 
-An ordinal ICU message is used when the message contains "plurals", wherein a
-sub-message would need to be selected from a list of messages depending on the
-value of `itemCount` (in this example).  They are a flavor of "Selects" that
-have a unique syntax.
+An ordinal ICU message is used when the message contains "plurals", wherein a sub-message would need to be selected from a list of messages depending on the value of `itemCount` (in this example).  They are a flavor of "Selects" that have a unique syntax.
 
 ```javascript
 displayValue: `{itemCount, plural,
@@ -36,16 +17,31 @@ displayValue: `{itemCount, plural,
 
 ### Primitive Formatting
 
-This include number formatting like `{timeInMs, number, milliseconds}` and
-string replacements like `{some_name}`.
+This include number formatting like `{timeInMs, number, milliseconds}` and string replacements like `{some_name}`.
+
+Note: In the context of Lighthouse we make the distinction between these kinds of ICU formatting.  
+
+* `{timeInMs, number, milliseconds}` is called "Complex ICU" since the replacement is for complex numbers and uses the custom formatters in Lighthouse. The supported complex ICU formats are: milliseconds, seconds, bytes, percent, and extendedPercent.
+
+* `{some_name}` is called "Direct ICU" since the replacement is a direct substitution of ICU with a variable and uses no custom formatting.
+
+### Selects
+
+A select ICU message is used when the message should select a sub-message based on the value of a variable `pronoun` in this case. This is often used for gender based selections, but can be used for any enum.  Lighthouse does not use selects very often.
+
+```javascript
+displayValue: `{pronoun, select,
+  male {He programmed the link.}
+  female {She programmed the link.}
+  other {They programmed the link}
+  }`,
+```
 
 ## message.json Syntax
 
 ### Why we use message.json
 
-It is the
-[Chrome Standard](https://developer.chrome.com/extensions/i18n-messages) for
-i18n messages.
+It is the [Chrome Standard](https://developer.chrome.com/extensions/i18n-messages) for i18n messages.
 
 ### Parts of a message.json message
 
@@ -68,12 +64,9 @@ i18n messages.
 
 ## Our message system
 
-We use UIStrings & i18n.js to extract strings from individual js files into
-locale.json files. This allows us to keep strings close to the code in which
-they are used so that developers can easily understand their context. It also
-comes with its own syntax.
+We use UIStrings & i18n.js to extract strings from individual js files into locale.json files. This allows us to keep strings close to the code in which they are used so that developers can easily understand their context. It also comes with its own syntax.
 
-UIStrings are defined in a simple Object with properties defining the strings.
+UIStrings are defined in an Object with the strings as its properties. JSDoc is used to provide additional information about each string.
 
 *   simple string named "title", with no description:
 
@@ -94,16 +87,11 @@ UIStrings are defined in a simple Object with properties defining the strings.
 
 ### Markdown
 
-Strings can also contain some limited markdown, that will be rendered in the
-report.
+Some strings, like audit descriptions, can also contain a subset of markdown. See [`audit.d.ts`](https://github.com/GoogleChrome/lighthouse/blob/5e52dcca72b35943d14cc7c27613517c425250b9/types/audit.d.ts) for which properties support markdown rendering and will be rendered in the report.
 
-*   Code block.
+*   Inline code block.
 
-    To format some text as code it should be contained in `backticks`. These
-    should be used whenever code is non-translatable. Such as HTML tags or
-    snippets of code. Also note that there is no escape character for using
-    backticks as part of the string, so ONLY use backticks to define code
-    blocks.
+    To format some text as code it should be contained in `backticks`. Any text within the backticks will not be translated. This should be used whenever code is non-translatable. Such as HTML tags or snippets of code. Also note that there is no escape character for using backticks as part of the string, so ONLY use backticks to define code blocks.
 
     Example usage:
 
@@ -115,10 +103,7 @@ report.
 
 *   Link.
 
-    To convert a section of text into a link to another URL, enclose the text
-    itself in [brackets] and then immediately include a link after it in
-    (parenthesis). Note that `[link text] (https://...)` is NOT VALID because of
-    the space and will not be converted to a link.
+    To convert a section of text into a link to another URL, enclose the text itself in [brackets] and then immediately include a link after it in (parentheses). Note that `[link text] (https://...)` is NOT VALID because of the space and will not be converted to a link.
 
     Example usage:
 
@@ -130,25 +115,13 @@ report.
 
 ### ICU Replacement Syntax
 
-ICU syntax is used throughout Lighthouse strings, and they are specified
-directly in UIStrings. They follow 1 of 3 flavors.
+ICU syntax is used throughout Lighthouse strings, and they are specified directly in UIStrings. They follow 1 of 2 flavors.
 
 *   Direct replacement
 
-    This is simply a direct replacement of text into a string. Often used for
-    Proper Nouns, code, or other text that is dynamic and added at runtime, but
-    requires no additional formatting.
+    This is simply a direct replacement of text into a string. Often used for proper nouns, code, or other text that is dynamic and added at runtime, but requires no additional formatting.
 
-    Example usage:
-
-    ```javascript
-    const UIStrings = {
-        didntCollectScreenshots: `Chrome didn't .... ({errorCode})`,
-    };
-    ```
-
-    ICU replacements must use a JSDoc type syntax to specify an example for
-    direct ICU replacements.
+    ICU replacements must use a JSDoc type syntax to specify an example for direct ICU replacements.
 
     *   To specify the description, use
 
@@ -170,16 +143,13 @@ directly in UIStrings. They follow 1 of 3 flavors.
 
 *   Complex replacement
 
-    When more complex numerical ICU replacement is needed the syntax is mostly
-    the same as direct replacement. This is often used when replcaing times, or
-    percentages.
+    When more complex numerical ICU replacement is needed the syntax is mostly the same as direct replacement. This is often used when replcaing times, or percentages.
 
-    Note: these complex ICU formats are automatically given example values based
-    on their ICU format as specified in `collect-strings.js`.  Therefore a normal 
-    description string can be used.
+    Note: these complex ICU formats are automatically given example values based on their ICU format as specified in `collect-strings.js`.  Therefore a normal description string can be used.
 
     ```javascript
     const UIStrings = {
+        /** Description of display value. */
         displayValueText: 'Interactive at {timeInMs, number, seconds} s',
     };
     ```
@@ -188,38 +158,30 @@ TODO(exterkamp): explain all the comments and where they go/what they become.
 
 TODO(exterkamp): explain why we can't use some ICU like number formatting.
 
+TODO(exterkamp): example of plural and ordinal.
+
 ### The pipeline
 
-The translation pipeline has 2 distinct stages, the collection and translation
-is done pre-compile time, and the replacement is done at runtime.
+The translation pipeline has 2 distinct stages, the collection and translation is done at build time, and the replacement is done at runtime.
 
-#### Translation Pipeline (pre-compile)
+#### Translation Pipeline (build time)
 
-1.  `file_with_UIStrings.js` this is where strings start. Optimized for
-    programmer ease of use and not for machine parsing. Uses ICU syntax and
-    markdown control characters inline.
+1.  `file_with_UIStrings.js` this is where strings start. Optimized for programmer ease of use and not for machine parsing. Uses ICU syntax and markdown control characters inline.
 
-2.  `yarn i18n:collect-strings` collects all UIStrings, and generates the
-    pre-locales. Does some parsing to make sure that common mistakes are
-    avoided.
+2.  `yarn i18n:collect-strings` collects all UIStrings, and generates the pre-locale files. Does some parsing to make sure that common mistakes are avoided.
 
-3.  `pre-locale/en-US.json` this is the well formatted _machine parsable_
-    fileset that is uploaded to be translated, i.e. they use $placeholder$
-    syntax instead of ICU. These will never be used by the internal i18n system,
-    they are solely used to send to translators.
+3.  `pre-locale/en-US.json` this is the well formatted _machine parsable_ fileset that is uploaded to be translated, i.e. they use $placeholder$ syntax instead of ICU. These aren't used by Lighthouse's i18n system, they are solely used to send to translators.
 
-4.  `yarn i18n:correct-strings` collects all pre-locales (or returned .json
-    files of all languages if you're a Googler importing strings) and converts
-    them back to Lighthouse json format and puts them into `locales/`.
+    1. Googlers will take the `pre-locale/` files to translators and have the files translated and returned to be consumed by `correct-strings`
 
-5.  `locales/{locale}.json` the Lighthouse json files. Used by the i18n.js
-    system to i18n strings. Uses ICU and not $placeholder$ syntax. Optimized for
-    i18n machine use.
+4.  `yarn i18n:correct-strings` collects all pre-locale files, or returned .json files of all languages if you're a Googler importing strings (see 3.1), and converts them back to Lighthouse json format and puts them into `locales/`.
 
-This pipeline is best seen with its component yarn commands:
+5.  `locales/{locale}.json` the Lighthouse json files. Used by the i18n.js system to localize strings. Uses ICU and not $placeholder$ syntax.
+
+This pipeline is best seen with its component commands:
 
 ```shell
-# collect UIStrings into pre-locales
+# collect UIStrings into pre-locale files
 $ yarn i18n:collect-strings
 
 # make the final en-US and en-XL files
@@ -237,7 +199,7 @@ $ sh google_import_script_that_calls_correct_strings
 2.  i18n id in lookup table along with backup message.
 
 3.  Message is looked up via `replaceIcuMessageInstanceIds` &
-    `_formatIcuMessage`.
+    `getFormatted`.
 
 ##### Example:
 
@@ -247,16 +209,16 @@ $ sh google_import_script_that_calls_correct_strings
     // Declare UIStrings
     const UIStrings = {
       /** Description of a Lighthouse audit that tells the user ...*/
-      description: 'Minifying CSS files can reduce network payload sizes. ' +
+      message: 'Minifying CSS files can reduce network payload sizes. ' +
         '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/minify-css).',
     };
 
-    // i18n init
+    // Init the strings in this file with the i18n system.
     const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
     // String called with i18n
-    // Will become id like "lighthouse-core/audits/byte-efficiency/unminified-css.js | description"
-    let description = str_(UIStrings.description);
+    // Will become id like "lighthouse-core/audits/byte-efficiency/unminified-css.js | message"
+    let message = str_(UIStrings.message);
     ```
 
 2.  i18n lookup map registered the string (i18n.js)
@@ -265,31 +227,22 @@ $ sh google_import_script_that_calls_correct_strings
     const _icuMessageInstanceMap = new Map();
 
     // example value in _icuMessageInstanceMap
-    'lighthouse-core/audits/byte-efficiency/unminified-css.js | description': {
-      icuMessageId: 'lighthouse-core/audits/byte-efficiency/unminified-css.js | description'
+    'lighthouse-core/audits/byte-efficiency/unminified-css.js | message': {
+      icuMessageId: 'lighthouse-core/audits/byte-efficiency/unminified-css.js | message'
       icuMessage: 'Minifying CSS files can reduce network payload sizes. ' +
         '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/minify-css).'
     }
     ```
 
-3.  Lookup in `i18n.js`. `_formatIcuMessage` will attempt to lookup in this
-    order:
+3.  Lookup in `i18n.js`. `replaceIcuMessageInstanceIds` and `getFormatted` will attempt to lookup in this order:
 
-    1.  `locales/{locale}.json` The best result, the string is found in the
-        target locale, and should appear correct.
+    1.  `locales/{locale}.json` The best result, the string is found in the target locale, and should appear correct.
 
-    2.  `locales/en.json` _Okay_ result. The string was not found in the target
-        locale, but was in `en`, so show the English string.
+    2.  `locales/en.json` _Okay_ result. The string was not found in the target locale, but was in `en`, so show the English string.
 
-    3.  The fallback message passed to `_formatIcuMessage`. This lookup is
-        subtley different than the en lookup. A string that is provided in the
-        UIStrings, but not en may be part of a swap-locale that is using an old
-        deprecated string, so would need to be populated by UIString replacement
-        here instead.
+    3.  The fallback message passed to `_formatIcuMessage`. This lookup is subtley different than the en lookup. A string that is provided in the UIStrings, but not en may be part of a swap-locale that is using an old deprecated string, so would need to be populated by UIString replacement here instead.
 
-    4.  Throw `_ICUMsgNotFoundMsg` Error. This is preferrable to showing the
-        user some id control lookup like
-        "lighthouse-core/audits/byte-efficiency/unminified-css.js | description"
+    4.  Throw `_ICUMsgNotFoundMsg` Error. This is preferrable to showing the user some id control lookup like "lighthouse-core/audits/byte-efficiency/unminified-css.js | description"
 
     This is also the point at which ICU is replaced by values. So this...
 
