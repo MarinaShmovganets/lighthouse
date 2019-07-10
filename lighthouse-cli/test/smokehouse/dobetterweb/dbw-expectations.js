@@ -142,9 +142,29 @@ module.exports = [
           score: '<1',
           numericValue: '>100',
           details: {
-            items: {
-              length: 7,
-            },
+            items: [
+              {
+                url: "http://localhost:10200/dobetterweb/dobetterweb/dbw_tester.css?delay=100",
+              },
+              {
+                url: "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
+              },
+              {
+                url: "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
+              },
+              {
+                url: "http://localhost:10200/dobetterweb/dbw_partial_a.html?delay=200",
+              },
+              {
+                url: "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&capped",
+              },
+              {
+                url: "http://localhost:10200/dobetterweb/dbw_tester.js",
+              },
+              {
+                url: "http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000",
+              },
+            ],
           },
         },
         'uses-passive-event-listeners': {
