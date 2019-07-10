@@ -18,7 +18,7 @@ const cachedResources = Runtime.cachedResources;
 
 // Getters are necessary because the DevTools bundling processes
 // resources after this module is resolved. These properties are not
-// read from immeditely, so we can defer reading with getters and everything
+// read from immediately, so we can defer reading with getters and everything
 // is going to be OK.
 module.exports = {
   get REPORT_CSS() {
