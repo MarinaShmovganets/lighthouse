@@ -12,6 +12,7 @@ const LHError = require('../lib/lh-error.js');
 const URL = require('../lib/url-shim.js');
 const NetworkRecorder = require('../lib/network-recorder.js');
 const constants = require('../config/constants.js');
+const i18n = require('../lib/i18n/i18n.js');
 
 /** @typedef {import('../gather/driver.js')} Driver */
 
@@ -409,28 +410,6 @@ class GatherRunner {
   }
 
   /**
-   * Generate a set of artfiacts for the given pass as if all the gatherers
-   * failed with the given pageLoadError.
-   * @param {LH.Gatherer.PassContext} passContext
-   * @param {LHError} pageLoadError
-   * @return {{pageLoadError: LHError, artifacts: Partial<LH.GathererArtifacts>}}
-   */
-  static generatePageLoadErrorArtifacts(passContext, pageLoadError) {
-    /** @type {Partial<Record<keyof LH.GathererArtifacts, LHError>>} */
-    const errorArtifacts = {};
-    for (const gathererDefn of passContext.passConfig.gatherers) {
-      const gatherer = gathererDefn.instance;
-      errorArtifacts[gatherer.name] = pageLoadError;
-    }
-
-    return {
-      pageLoadError,
-      // @ts-ignore - TODO(bckenny): figure out how to usefully type errored artifacts.
-      artifacts: errorArtifacts,
-    };
-  }
-
-  /**
    * Takes the results of each gatherer phase for each gatherer and uses the
    * last produced value (that's not undefined) as the artifact for that
    * gatherer. If an error was rejected from a gatherer phase,
@@ -495,6 +474,7 @@ class GatherRunner {
       settings: options.settings,
       URL: {requestedUrl: options.requestedUrl, finalUrl: options.requestedUrl},
       Timing: [],
+      PageLoadError: null,
     };
   }
 
@@ -594,7 +574,10 @@ class GatherRunner {
         Object.assign(artifacts, passResults.artifacts);
 
         // If we encountered a pageLoadError, don't try to keep loading the page in future passes.
-        if (passResults.pageLoadError) break;
+        if (passResults.pageLoadError) {
+          baseArtifacts.PageLoadError = passResults.pageLoadError;
+          break;
+        }
 
         if (isFirstPass) {
           await GatherRunner.populateBaseArtifacts(passContext);
@@ -606,8 +589,9 @@ class GatherRunner {
       GatherRunner.finalizeBaseArtifacts(baseArtifacts);
       return /** @type {LH.Artifacts} */ ({...baseArtifacts, ...artifacts}); // Cast to drop Partial<>.
     } catch (err) {
-      // cleanup on error
+      // Clean up on error. Don't await so that the root error, not a disposal error, is shown.
       GatherRunner.disposeDriver(driver, options);
+
       throw err;
     }
   }
@@ -660,14 +644,18 @@ class GatherRunner {
     // Disable throttling so the afterPass analysis isn't throttled
     await driver.setThrottling(passContext.settings, {useThrottling: false});
 
-    // If there were any load errors, treat all gatherers as if they errored.
+    // In case of load error, save log and trace with an error prefix, return no artifacts for this pass.
     const pageLoadError = GatherRunner.getPageLoadError(passContext, loadData, possibleNavError);
     if (pageLoadError) {
-      log.error('GatherRunner', pageLoadError.friendlyMessage, passContext.url);
+      const localizedMessage = i18n.getFormatted(pageLoadError.friendlyMessage,
+          passContext.settings.locale);
+      log.error('GatherRunner', localizedMessage, passContext.url);
+
       passContext.LighthouseRunWarnings.push(pageLoadError.friendlyMessage);
       GatherRunner._addLoadDataToBaseArtifacts(passContext, loadData,
           `pageLoadError-${passConfig.passName}`);
-      return GatherRunner.generatePageLoadErrorArtifacts(passContext, pageLoadError);
+
+      return {artifacts: {}, pageLoadError};
     }
 
     // If no error, save devtoolsLog and trace.
