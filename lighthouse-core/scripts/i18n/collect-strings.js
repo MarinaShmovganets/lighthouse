@@ -9,6 +9,7 @@
 /* eslint-disable no-console, max-len */
 
 const fs = require('fs');
+const mkdirp = require('mkdirp').sync;
 const path = require('path');
 const esprima = require('esprima');
 
@@ -359,7 +360,7 @@ function collectAllStringsInDir(dir, strings = {}) {
       collectAllStringsInDir(fullPath, strings);
     } else {
       if (name.endsWith('.js')) {
-        if (!process.env.CI) console.log('Collecting from', relativePath);
+        if (!process.env.CI) console.log('- Collecting from', relativePath);
         const content = fs.readFileSync(fullPath, 'utf8');
         const exportVars = require(fullPath);
         const regexMatches = !!UISTRINGS_REGEX.test(content);
@@ -428,19 +429,19 @@ function writeStringsToLocaleFormat(locale, strings) {
 // @ts-ignore Test if called from the CLI or as a module.
 if (require.main === module) {
   const strings = collectAllStringsInDir(path.join(LH_ROOT, 'lighthouse-core'));
-  const psuedoLocalizedStrings = createPsuedoLocaleStrings(strings);
   console.log('Collected from LH core!');
 
   collectAllStringsInDir(path.join(LH_ROOT, 'stack-packs/packs'), strings);
   console.log('Collected from Stack Packs!');
 
   // Make sure pre-locales exists since it is git-ignored
-  fs.mkdirSync('lighthouse-core/lib/i18n/pre-locale');
+  mkdirp('lighthouse-core/lib/i18n/pre-locale');
 
   writeStringsToLocaleFormat('pre-locale/en-US', strings);
+  console.log('Written to disk!', 'pre-locale/en-US');
   // Generate local pseudolocalized files for debugging while translating
-  writeStringsToLocaleFormat('pre-locale/en-XL', psuedoLocalizedStrings);
-  console.log('Written to disk!');
+  writeStringsToLocaleFormat('pre-locale/en-XL', createPsuedoLocaleStrings(strings));
+  console.log('Written to disk!', 'pre-locale/en-XL');
 }
 
 module.exports = {
