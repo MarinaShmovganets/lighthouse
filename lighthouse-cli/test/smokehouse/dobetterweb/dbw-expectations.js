@@ -72,7 +72,6 @@ module.exports = [
             url: 'http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000',
           },
         },
-        undefined, // marks end of array
       ],
     },
     lhr: {
