@@ -177,27 +177,30 @@ const _ICUMsgNotFoundMsg = 'ICU message not found in destination locale';
  *
  * @param {LH.Locale} locale
  * @param {string} icuMessageId
- * @param {string=} fallbackMessage
+ * @param {string=} uiStringMessage The original string given in 'UIStrings', used as a backup if no locale message can be found
  * @param {*} [values]
  * @return {{formattedString: string, icuMessage: string}}
  */
-function _formatIcuMessage(locale, icuMessageId, fallbackMessage, values) {
+function _formatIcuMessage(locale, icuMessageId, uiStringMessage, values) {
   const localeMessages = LOCALES[locale];
   if (!localeMessages) throw new Error(`Unsupported locale '${locale}'`);
   let localeMessage = localeMessages[icuMessageId] && localeMessages[icuMessageId].message;
 
   // fallback to the original english message if we couldn't find a message in the specified locale
   // better to have an english message than no message at all, in some number cases it won't even matter
-  if (!localeMessage) {
-    // Backup message
-    localeMessage = LOCALES['en'][icuMessageId] && LOCALES['en'][icuMessageId].message;
-    if (!localeMessage && fallbackMessage) {
-      // Use the fallback message at this point.
-      localeMessage = fallbackMessage;
-    } else {
-      // At this point, there is no reasonable string to show to the user, so throw.
-      throw new Error(_ICUMsgNotFoundMsg);
+  if (!localeMessage && uiStringMessage) {
+    // Try to use the original uiStringMessage
+    localeMessage = uiStringMessage;
+
+    // Warn the user that the UIString message != the `en` message ∴ they should update the strings
+    if (LOCALES['en'][icuMessageId] && localeMessage !== LOCALES['en'][icuMessageId].message) {
+      log.warn('i18n', `Message "${icuMessageId}" does not match its 'en' counterpart. ` +
+        `Run 'collect-and-correct' to update.`);
     }
+  }
+  // At this point, there is no reasonable string to show to the user, so throw.
+  if (!localeMessage) {
+    throw new Error(_ICUMsgNotFoundMsg);
   }
 
   // when using accented english, force the use of a different locale for number formatting
