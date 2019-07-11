@@ -125,6 +125,9 @@ console.log('Collected from LH core!');
 collectAllStringsInDir(path.join(LH_ROOT, 'stack-packs/packs'), strings);
 console.log('Collected from Stack Packs!');
 
+// Make sure pre-locales exists since it is git-ignored
+fs.mkdirSync('lighthouse-core/lib/i18n/pre-locale');
+
 writeStringsToLocaleFormat('pre-locale/en-US', strings);
 // Generate local pseudolocalized files for debugging while translating
 writeStringsToLocaleFormat('pre-locale/en-XL', psuedoLocalizedStrings);
