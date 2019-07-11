@@ -97,6 +97,7 @@
   --header-line-height: 24px;
   --highlighter-background-color: var(--report-text-color);
   --icon-square-size: calc(var(--score-icon-size) * 0.88);
+  --image-preview-size: 48px;
   --metric-description-padding: 0 0 2px calc(var(--score-icon-margin-left) + var(--score-icon-size) + var(--score-icon-margin-right));
   --metric-toggle-lines-fill: #7F7F7F;
   --metrics-toggle-background-color: var(--color-gray-200);
@@ -132,7 +133,6 @@
   --stackpack-padding-horizontal: 10px;
   --sticky-header-background-color: var(--report-background-color);
   --table-higlight-background-color: hsla(0, 0%, 75%, 0.1);
-  --image-preview-size: 48px;
   --tools-icon-color: var(--color-gray-600);
   --tools-icon-size: var(--score-icon-background-size);
   --topbar-background-color: var(--color-gray-100);
