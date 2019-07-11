@@ -7,7 +7,7 @@
 
 /* eslint-env jest */
 
-const collect = require('../../../scripts/i18n/collection-util.js');
+const collect = require('../../../scripts/i18n/collect-strings.js');
 const esprima = require('esprima');
 
 describe('Compute Description', () => {
@@ -384,66 +384,5 @@ describe('PseudoLocalizer', () => {
         },
       },
     });
-  });
-});
-
-describe('Baking Placeholders', () => {
-  it('passthroughs a basic message unchanged', () => {
-    const strings = {
-      hello: {
-        message: 'world',
-      },
-    };
-    const res = collect.bakePlaceholders(strings);
-    expect(res).toEqual({
-      hello: {
-        message: 'world',
-      },
-    });
-  });
-
-  it('bakes a placeholder into the output string', () => {
-    const strings = {
-      hello: {
-        message: '$MARKDOWN_SNIPPET_0$',
-        placeholders: {
-          MARKDOWN_SNIPPET_0: {
-            content: '`World`',
-          },
-        },
-      },
-    };
-    const res = collect.bakePlaceholders(strings);
-    expect(res).toEqual({
-      hello: {
-        message: '`World`',
-        placeholders: undefined,
-      },
-    });
-  });
-
-  it('throws when a placeholder cannot be found', () => {
-    const strings = {
-      hello: {
-        message: '$MARKDOWN_SNIPPET_0$',
-      },
-    };
-    expect(() => collect.bakePlaceholders(strings))
-      .toThrow(/Message "\$MARKDOWN_SNIPPET_0\$" is missing placeholder/);
-  });
-
-  it('throws when a placeholder is not in string', () => {
-    const strings = {
-      hello: {
-        message: 'World',
-        placeholders: {
-          MARKDOWN_SNIPPET_0: {
-            content: '`World`',
-          },
-        },
-      },
-    };
-    expect(() => collect.bakePlaceholders(strings))
-      .toThrow(/Message "World" has extra placeholder "MARKDOWN_SNIPPET_0"/);
   });
 });

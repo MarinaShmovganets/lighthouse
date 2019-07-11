@@ -10,12 +10,18 @@
 
 const fs = require('fs');
 const path = require('path');
-const collUtil = require('./collection-util.js');
 
 /**
  * @typedef ICUMessageDefn
  * @property {string} message
  * @property {string} [description]
+ * @property {Record<string, ICUPlaceholderDefn>} [placeholders]
+ */
+
+/**
+ * @typedef ICUPlaceholderDefn
+ * @property {string} content
+ * @property {string} [example]
  */
 
 const ignoredPathComponents = [
@@ -26,6 +32,66 @@ const ignoredPathComponents = [
   '-test.js',
   '-renderer.js',
 ];
+
+/**
+ * Take a series of messages.json format ICU messages and converts them to
+ * lighthouse-i18n-json format by replacing $placeholders$ with their {ICU}
+ * values. Functional opposite of `convertMessageToPlaceholders`. This is
+ * commonly called as the last step in translation, via correct-strings.js.
+ *
+ * Converts this:
+ * messages: {
+ *  "lighthouse-core/audits/seo/canonical.js | explanationDifferentDomain" {
+ *    "message": "Points to a different domain ($ICU_0$)",
+ *    "placeholders": {
+ *      "ICU_0": {
+ *        "content": "{url}",
+ *        "example": "https://example.com/"
+ *      },
+ *    },
+ *  },
+ * }
+ *
+ * Into this:
+ * messages: {
+ *  "lighthouse-core/audits/seo/canonical.js | explanationDifferentDomain" {
+ *    "message": "Points to a different domain ({url})",
+ *    },
+ *  },
+ * }
+ *
+ * Throws if there is a $placeholder$ in the message that has no corresponding
+ * value in the placeholders object, or vice versa.
+ *
+ * @param {Record<string, ICUMessageDefn>} messages
+ * @returns {Record<string, ICUMessageDefn>}
+ */
+function bakePlaceholders(messages) {
+  for (const [_, defn] of Object.entries(messages)) {
+    delete defn['description'];
+
+    let message = defn['message'];
+    const placeholders = defn['placeholders'];
+
+    for (const placeholder in placeholders) {
+      if (!Object.prototype.hasOwnProperty.call(placeholders, placeholder)) continue;
+
+      const content = placeholders[placeholder]['content'];
+      if (!message.includes(`$${placeholder}$`)) {
+        throw Error(`Message "${message}" has extra placeholder "${placeholder}"`);
+      }
+      message = message.replace(`$${placeholder}$`, content);
+    }
+
+    // Sanity check that all placeholders are gone
+    if (message.match(/\$\w+\$/)) throw Error(`Message "${message}" is missing placeholder`);
+
+    defn['message'] = message;
+
+    delete defn['placeholders'];
+  }
+  return messages;
+}
 
 /**
  * @param {*} file
@@ -57,7 +123,7 @@ function collectAllPreLocaleStrings(dir, output) {
     if (name.endsWith('.json')) {
       if (!process.env.CI) console.log('Correcting from', relativePath);
       const preLocaleStrings = collectPreLocaleStrings(relativePath);
-      const strings = collUtil.bakePlaceholders(preLocaleStrings);
+      const strings = bakePlaceholders(preLocaleStrings);
       saveLocaleStrings(output + path.basename(name), strings);
     }
   }
@@ -65,4 +131,5 @@ function collectAllPreLocaleStrings(dir, output) {
 
 module.exports = {
   collectAllPreLocaleStrings,
+  bakePlaceholders,
 };
