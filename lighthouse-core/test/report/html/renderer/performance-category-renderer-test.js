@@ -87,7 +87,10 @@ describe('PerfCategoryRenderer', () => {
         categoryDOM.querySelector('.lh-audit-group--metrics > .lh-metrics__disclaimer');
 
     assert.ok(disclaimerEl.textContent.includes('Values are estimated'));
-    assert.ok(disclaimerEl.querySelector('a'), 'disclaimer contains coverted markdown link');
+    const disclamerLink = disclaimerEl.querySelector('a');
+    assert.ok(disclamerLink, 'disclaimer contains coverted markdown link');
+    const disclamerUrl = new URL(disclamerLink.href);
+    assert.strictEqual(disclamerUrl.hostname, 'github.com');
   });
 
   it('renders the failing performance opportunities', () => {
