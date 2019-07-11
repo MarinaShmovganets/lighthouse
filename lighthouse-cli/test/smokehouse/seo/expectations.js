@@ -117,9 +117,62 @@ module.exports = [
         'font-size': {
           score: 1,
           details: {
-            items: {
-              length: 6,
-            },
+            items: [
+              {
+                source: 'http://localhost:10200/seo/seo-tester.html?extra_header=link%3D%253Chttp%253A%252F%252Flocalhost%253A10200%252Fseo%252F%253E%253B%2Brel%253D%2522canonical%2522:24:12',
+                selector: '.small',
+                coverage: '1.32%',
+                fontSize: '11px',
+              },
+              {
+                source: 'http://localhost:10200/seo/seo-tester.html?extra_header=link%3D%253Chttp%253A%252F%252Flocalhost%253A10200%252Fseo%252F%253E%253B%2Brel%253D%2522canonical%2522:28:55',
+                selector: '.small-2',
+                coverage: '1.32%',
+                fontSize: '11px',
+              },
+              {
+                source: 'User Agent Stylesheet',
+                selector: 'h6',
+                coverage: '1.32%',
+                fontSize: '10px',
+              },
+              {
+                source: 'http://localhost:10200/seo/seo-tester.html?extra_header=link%3D%253Chttp%253A%252F%252Flocalhost%253A10200%252Fseo%252F%253E%253B%2Brel%253D%2522canonical%2522',
+                selector: {
+                  type: 'node',
+                  selector: 'body',
+                  snippet: '<font size="1">',
+                },
+                coverage: '1.32%',
+                fontSize: '10px',
+              },
+              {
+                source: 'http://localhost:10200/seo/seo-tester.html?extra_header=link%3D%253Chttp%253A%252F%252Flocalhost%253A10200%252Fseo%252F%253E%253B%2Brel%253D%2522canonical%2522',
+                selector: {
+                  type: 'node',
+                  selector: 'font',
+                  snippet: '<b>',
+                },
+                coverage: '1.32%',
+                fontSize: '10px',
+              },
+              {
+                source: 'http://localhost:10200/seo/seo-tester.html?extra_header=link%3D%253Chttp%253A%252F%252Flocalhost%253A10200%252Fseo%252F%253E%253B%2Brel%253D%2522canonical%2522',
+                selector: {
+                  type: 'node',
+                  selector: 'body',
+                  snippet: '<p style="font-size:10px">',
+                },
+                coverage: '1.32%',
+                fontSize: '10px',
+              },
+              {
+                source: 'Legible text',
+                selector: '',
+                coverage: '92.11%',
+                fontSize: '≥ 12px',
+              },
+            ],
           },
         },
         'link-text': {

@@ -157,10 +157,17 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
         source = `${url.href}`;
 
         if (range) {
-          // `stylesheet` can be either an external file (stylesheet.startLine will always be 0),
-          // or a <style> block (stylesheet.startLine will vary)
-          const absoluteStartLine = range.startLine + stylesheet.startLine + 1;
-          const absoluteStartColumn = range.startColumn + stylesheet.startColumn + 1;
+          // Add the startLine/startColumn of the <style> element to the range, if stylesheet is inline.
+          // Just use the rule's location if a sourceURL magic comment is present (`hasSourceURL` is true).
+          const addHtmlLocationOffset = stylesheet.isInline && !stylesheet.hasSourceURL;
+
+          const absoluteStartLine = addHtmlLocationOffset ?
+            range.startLine + stylesheet.startLine + 1 :
+            range.startLine + 1;
+          // The column the stylesheet begins on is only relevant if the rule is declared on the same line.
+          const absoluteStartColumn = addHtmlLocationOffset && range.startLine === 0 ?
+            range.startColumn + stylesheet.startColumn :
+            range.startColumn;
 
           source += `:${absoluteStartLine}:${absoluteStartColumn}`;
         }
