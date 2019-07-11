@@ -81,6 +81,15 @@ describe('PerfCategoryRenderer', () => {
     assert.equal(timelineElements.length + nontimelineElements.length, metricAudits.length);
   });
 
+  it('renders the metrics variance disclaimer as markdown', () => {
+    const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
+    const disclaimerEl =
+        categoryDOM.querySelector('.lh-audit-group--metrics > .lh-metrics__disclaimer');
+
+    assert.ok(disclaimerEl.textContent.includes('Values are estimated'));
+    assert.ok(disclaimerEl.querySelector('a'), 'disclaimer contains coverted markdown link');
+  });
+
   it('renders the failing performance opportunities', () => {
     const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
 
