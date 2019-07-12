@@ -24,7 +24,6 @@ function collectIFrameElements() {
       id: node.id,
       src: node.src,
       clientRect: {top, bottom, left, right, width, height},
-      pixelArea: width * height,
       // @ts-ignore - put into scope via stringification
       isPositionFixed: isPositionFixed(node), // eslint-disable-line no-undef
     };
@@ -41,7 +40,7 @@ class IFrameElements extends Gatherer {
     const driver = passContext.driver;
 
     const {frameTree} = await driver.sendCommand('Page.getFrameTree');
-    const toVisit = [frameTree];
+    let toVisit = [frameTree];
     /** @type {Map<string | undefined, LH.Crdp.Page.Frame | undefined>} */
     const framesByDomId = new Map();
 
@@ -50,7 +49,7 @@ class IFrameElements extends Gatherer {
       if (tempFrameTree) {
         for (const childFrameTree of tempFrameTree.childFrames || []) {
           if (childFrameTree.childFrames) {
-            toVisit.concat(childFrameTree.childFrames);
+            toVisit = toVisit.concat(childFrameTree.childFrames);
           }
           if (framesByDomId.has(childFrameTree.frame.name)) {
             // DOM ID collision, mark as undefined.

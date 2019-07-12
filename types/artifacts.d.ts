@@ -198,8 +198,6 @@ declare global {
           width: number;
           height: number;
         },
-        /** The pixel area iframe. */
-        pixelArea: number,
         /** If the iframe or an ancestor of the iframe is fixed in position. */
         isPositionFixed: boolean,
         /** The Frame of the iframe. @see https://chromedevtools.github.io/devtools-protocol/tot/Page#type-Frame */

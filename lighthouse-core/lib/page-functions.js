@@ -243,7 +243,11 @@ function isPositionFixed(element) {
     while (currentEl) {
       if (currentEl.scrollHeight > currentEl.clientHeight) {
         const yScroll = getStyleAttrValue(currentEl, 'overflowY');
-        if (yScroll) {
+        // In case where we reach outermost element (`<html>`), default computed value of visible
+        // will be scrollable.
+        if ((yScroll === 'scroll' || yScroll === 'auto') ||
+        (yScroll === 'visible' && currentEl.parentElement === null)
+        ) {
           return true;
         }
       }
