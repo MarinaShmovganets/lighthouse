@@ -52,7 +52,7 @@ const UIStrings = {
   urlInvalid: 'The URL you have provided appears to be invalid.',
   /**
    * @description Error message explaining that the Chrome Devtools protocol has exceeded the maximum timeout allowed.
-   * @example {protocolMethod} PROTOCOL_TIMEOUT
+   * @example {protocolMethod} Network.enable
    * */
   protocolTimeout: 'Waiting for DevTools protocol response has exceeded the allotted time. (Method: {protocolMethod})',
   /** Error message explaining that the requested page could not be resolved by the DNS server. */
@@ -63,13 +63,13 @@ const UIStrings = {
   criTimeout: 'Timeout waiting for initial Debugger Protocol connection.',
   /**
    * @description Error message explaning that a resource that was required for testing was never collected. "artifactName" will be replaced with the name of the resource that wasn't collected.
-   * @example {artifactName} MISSING_REQUIRED_ARTIFACT
+   * @example {artifactName} WebAppManifest
    * */
   missingRequiredArtifact: 'Required {artifactName} gatherer did not run.',
   /**
    * @description Error message explaning that there was an error while trying to collect a resource that was required for testing. "artifactName" will be replaced with the name of the resource that wasn't collected; "errorMessage" will be replaced with a string description of the error that occurred.
-   * @example {artifactName} Lighthouse Artifacts
-   * @example {errorMessage} ERRORED_REQUIRED_ARTIFACT
+   * @example {artifactName} WebAppManifest
+   * @example {errorMessage} Manifest invalid
    * */
   erroredRequiredArtifact: 'Required {artifactName} gatherer encountered an error: {errorMessage}',
 };
