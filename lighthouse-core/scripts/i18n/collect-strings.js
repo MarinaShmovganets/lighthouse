@@ -100,8 +100,8 @@ function computeDescription(ast, property, value, startRange) {
 }
 
 /**
- * Take a series of lighthouse-i18n-json format ICU messages and converts them
- * to messages.json format by replacing {ICU} and `markdown` with
+ * Take a series of LHL format ICU messages and converts them
+ * to CTC format by replacing {ICU} and `markdown` with
  * $placeholders$. Functional opposite of `bakePlaceholders`. This is commonly
  * called as one of the first steps in translation, via collect-strings.js.
  *
@@ -360,7 +360,7 @@ function collectAllStringsInDir(dir, strings = {}) {
       collectAllStringsInDir(fullPath, strings);
     } else {
       if (name.endsWith('.js')) {
-        if (!process.env.CI) console.log('- Collecting from', relativePath);
+        if (!process.env.CI) console.log('Collecting from', relativePath);
         const content = fs.readFileSync(fullPath, 'utf8');
         const exportVars = require(fullPath);
         const regexMatches = !!UISTRINGS_REGEX.test(content);
