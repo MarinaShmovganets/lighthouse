@@ -37,7 +37,7 @@ displayValue: `{pronoun, select,
   }`,
 ```
 
-## message.json Syntax
+## message.json Syntax (CTC)
 
 ### Why we use message.json
 
@@ -62,7 +62,17 @@ We needed a JS-friendly format supported by Google's Translation Console (TC). T
 }
 ```
 
-## Our message system
+### Why do we call it CTC?
+
+CTC is a name that is distinct and identifies this as the Chrome translation format.  "message.json" is ambiguous in our opinion and so throughout the docs we will refer to files that follow the "message.json" format as being "CTC" files.
+
+## Our message system (LHL)
+
+TODO(exterkamp): explain all the comments and where they go/what they become.
+
+TODO(exterkamp): explain why we can't use some ICU like number formatting.
+
+TODO(exterkamp): example of plural and ordinal.
 
 We use UIStrings & i18n.js to extract strings from individual js files into locale.json files. This allows us to keep strings close to the code in which they are used so that developers can easily understand their context. It also comes with its own syntax.
 
@@ -154,11 +164,9 @@ ICU syntax is used throughout Lighthouse strings, and they are specified directl
     };
     ```
 
-TODO(exterkamp): explain all the comments and where they go/what they become.
+### Why do we call it LHL?
 
-TODO(exterkamp): explain why we can't use some ICU like number formatting.
-
-TODO(exterkamp): example of plural and ordinal.
+LHL is a name that is distinct and identifies this as the LightHouse Locale format. Since both LHL and CTC use `.json` files it is ambiguous, so LHL is the given name for UIString and locale/ formatted json files that are used by the underlying Lighthouse i18n engine.
 
 ### The pipeline
 

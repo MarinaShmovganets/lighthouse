@@ -9,7 +9,6 @@
 /* eslint-disable no-console, max-len */
 
 const fs = require('fs');
-const mkdirp = require('mkdirp').sync;
 const path = require('path');
 const esprima = require('esprima');
 const bakery = require('./bake-strings.js');
@@ -434,9 +433,6 @@ if (require.main === module) {
 
   collectAllStringsInDir(path.join(LH_ROOT, 'stack-packs/packs'), strings);
   console.log('Collected from Stack Packs!');
-
-  // Make sure pre-locales exists since it is git-ignored
-  mkdirp('lighthouse-core/lib/i18n/pre-locale');
 
   writeStringsToCtcFiles('en-US', strings);
   console.log('Written to disk!', 'en-US.ctc.json');

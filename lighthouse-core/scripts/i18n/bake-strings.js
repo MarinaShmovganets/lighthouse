@@ -34,10 +34,10 @@ const ignoredPathComponents = [
 ];
 
 /**
- * Take a series of messages.json format ICU messages and converts them to
- * lighthouse-i18n-json format by replacing $placeholders$ with their {ICU}
- * values. Functional opposite of `convertMessageToPlaceholders`. This is
- * commonly called as the last step in translation, via correct-strings.js.
+ * Take a series of CTC format ICU messages and converts them to LHL format by
+ * replacing $placeholders$ with their {ICU} values. Functional opposite of
+ * `convertMessageToPlaceholders`. This is commonly called as the last step in 
+ * translation.
  *
  * Converts this:
  * messages: {
