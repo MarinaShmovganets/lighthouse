@@ -425,7 +425,7 @@ class GatherRunner {
     for (const [gathererName, phaseResultsPromises] of resultsEntries) {
       try {
         const phaseResults = await Promise.all(phaseResultsPromises);
-        // Take last defined pass result as artifact. If there is none, handled by the undefined check below.
+        // Take the last defined pass result as artifact. If none are defined, the undefined check below handles it.
         const definedResults = phaseResults.filter(element => element !== undefined);
         const artifact = definedResults[definedResults.length - 1];
         // @ts-ignore tsc can't yet express that gathererName is only a single type in each iteration, not a union of types.

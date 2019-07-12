@@ -328,8 +328,7 @@ class ReportUIFeatures {
    * @param {ClipboardEvent} e
    */
   onCopy(e) {
-    // Only handle copy button presses (e.g. ignore the user copying page text) and
-    // when the clipboard is available.
+    // Only handle copy button presses (e.g. ignore the user copying page text).
     if (this._copyAttempt && e.clipboardData) {
       // We want to write our own data to the clipboard, not the user's text selection.
       e.preventDefault();
