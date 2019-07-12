@@ -41,7 +41,7 @@ displayValue: `{pronoun, select,
 
 ### Why we use message.json
 
-It is the [Chrome Standard](https://developer.chrome.com/extensions/i18n-messages) for i18n messages.
+We needed a JS-friendly format supported by Google's Translation Console (TC). The [Chrome extension & Chrome app i18n format](https://developer.chrome.com/extensions/i18n-messages) checks those boxes. 
 
 ### Parts of a message.json message
 
@@ -166,31 +166,64 @@ The translation pipeline has 2 distinct stages, the collection and translation i
 
 #### Translation Pipeline (build time)
 
-1.  `file_with_UIStrings.js` this is where strings start. Optimized for programmer ease of use and not for machine parsing. Uses ICU syntax and markdown control characters inline.
+To a typical developer the pipeline looks like this:
 
-2.  `yarn i18n:collect-strings` collects all UIStrings, and generates the pre-locale files. Does some parsing to make sure that common mistakes are avoided.
+* LH contributor makes any changes to strings. They run yarn i18n, They can now use the en-XL locale to verify things work as intended.
 
-3.  `pre-locale/en-US.json` this is the well formatted _machine parsable_ fileset that is uploaded to be translated, i.e. they use $placeholder$ syntax instead of ICU. These aren't used by Lighthouse's i18n system, they are solely used to send to translators.
+* Googler is ready to kick off the TC pipeline again. They run yarn i18n and then on the google-side: import-source-from-github.sh, submit CL. Wait ~two weeks...
+  
+  * They run export-tc-dump-to-github.sh, and opens a LH PR.
 
-    1. Googlers will take the `pre-locale/` files to translators and have the files translated and returned to be consumed by `correct-strings`
 
-4.  `yarn i18n:correct-strings` collects all pre-locale files, or returned .json files of all languages if you're a Googler importing strings (see 3.1), and converts them back to Lighthouse json format and puts them into `locales/`.
+Paul Irish's ASCII explanation:
 
-5.  `locales/{locale}.json` the Lighthouse json files. Used by the i18n.js system to localize strings. Uses ICU and not $placeholder$ syntax.
+```
+ Source files:                                         Locale files:
++---------------------------+                         +----------------------------------------------
+|                           ++                        | lighthouse-core/lib/i18n/locales/en-US.json |
+| const UIStrings = { ... };|-+                 +---> | lighthouse-core/lib/i18n/locales/en-XL.json |
+|                           |-|                 |     +----------------------------------------------+
++-----------------------------|                 |     |                                             ||
+ +----------------------------|                 |     | lighthouse-core/lib/i18n/locales/*.json     |-<+
+  +---------------------------+                 |     |                                             || |
+                           |                    |     +----------------------------------------------| |
+                           |                    |      +---------------------------------------------+ |
+              $ yarn i18n  +--------------------+                                                      |
+                           |                                                                           |
+                           v                          ▐                       ▐    +---------------+   |
+              +------------+------+                   ▐   Google TC Pipeline  ▐ +->|  *.ctc.json   |---+
+              |  en-US.ctc.json   |  +--------------> ▐      (~2 weeks)       ▐    +---------------+
+              +-------------------+  $ g3/import….sh  ▐                       ▐ $ g3/export….sh
+```
 
-This pipeline is best seen with its component commands:
+LH Contirbutor commands:
 
 ```shell
-# collect UIStrings into pre-locale files
-$ yarn i18n:collect-strings
+# collect UIStrings and bake the en-US & en-XL locales
+$ yarn i18n
 
-# make the final en-US and en-XL files
-$ yarn i18n:correct-strings
-
-# Send off to translators, and the i18n:correct-strings again
-# once those .json's are done.
-$ sh google_import_script_that_calls_correct_strings
+# Test to see that the new translations are valid and apply to all strings
+$ node lighthouse-cli https://example.com/ --view --locale=en-XL
 ```
+
+i18n'ing Googler commands:
+
+```shell
+# collect UIStrings and bake the en-US & en-XL locales
+# (to make sure everything is up to date)
+$ yarn i18n
+
+# Extract the CTC format files to translation console
+$ sh google_export_script.sh
+
+# Wait ~2 weeks for translations
+
+# Import the CTC format files to locales/ and bake them
+$ sh google_import_script.sh
+```
+
+Note: Why do `en-US` and `en-XL` get baked early?  We write all our strings in `en-US` by default, so they do not need to be translated, so it can be immediately baked without going to the translators.  Similarly, `en-XL` is a debugging language, it is an automated version of `en-US` that simply adds markers to `en` strings in order to make it obvious that something has or hasn't been translated.  So neither of these files need to go to translators to be used, and both can be used at develop-time to help developer i18n workflow.
+
 
 #### String Replacement Pipeline (runtime)
 

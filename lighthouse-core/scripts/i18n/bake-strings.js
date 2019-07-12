@@ -113,23 +113,28 @@ function saveLocaleStrings(path, output) {
 /**
  * @param {string} dir
  * @param {string} output
+ * @param {string} extension the file extension of the CTC files, '.ctc.json' is LH default, but '.json' when importing from Translators
+ * @returns {Array<string>}
  */
-function collectAllPreLocaleStrings(dir, output) {
+function collectAndBakeCtcStrings(dir, output, extension = '.ctc.json') {
+  const lhl = [];
   for (const name of fs.readdirSync(dir)) {
     const fullPath = path.join(dir, name);
     const relativePath = fullPath;// path.relative(LH_ROOT, fullPath);
     if (ignoredPathComponents.some(p => fullPath.includes(p))) continue;
 
-    if (name.endsWith('.json')) {
+    if (name.endsWith(extension)) {
       if (!process.env.CI) console.log('Correcting from', relativePath);
       const preLocaleStrings = collectPreLocaleStrings(relativePath);
       const strings = bakePlaceholders(preLocaleStrings);
-      saveLocaleStrings(output + path.basename(name), strings);
+      saveLocaleStrings(output + path.basename(name).replace('.ctc', ''), strings);
+      lhl.push(path.basename(name));
     }
   }
+  return lhl;
 }
 
 module.exports = {
-  collectAllPreLocaleStrings,
+  collectAndBakeCtcStrings,
   bakePlaceholders,
 };

@@ -7,7 +7,7 @@
 
 /* eslint-env jest */
 
-const correct = require('../../../scripts/i18n/correct-strings.js');
+const bakery = require('../../../scripts/i18n/bake-strings.js');
 
 describe('Baking Placeholders', () => {
   it('passthroughs a basic message unchanged', () => {
@@ -16,7 +16,7 @@ describe('Baking Placeholders', () => {
         message: 'world',
       },
     };
-    const res = correct.bakePlaceholders(strings);
+    const res = bakery.bakePlaceholders(strings);
     expect(res).toEqual({
       hello: {
         message: 'world',
@@ -35,7 +35,7 @@ describe('Baking Placeholders', () => {
         },
       },
     };
-    const res = correct.bakePlaceholders(strings);
+    const res = bakery.bakePlaceholders(strings);
     expect(res).toEqual({
       hello: {
         message: '`World`',
@@ -50,7 +50,7 @@ describe('Baking Placeholders', () => {
         message: '$MARKDOWN_SNIPPET_0$',
       },
     };
-    expect(() => correct.bakePlaceholders(strings))
+    expect(() => bakery.bakePlaceholders(strings))
       .toThrow(/Message "\$MARKDOWN_SNIPPET_0\$" is missing placeholder/);
   });
 
@@ -65,7 +65,7 @@ describe('Baking Placeholders', () => {
         },
       },
     };
-    expect(() => correct.bakePlaceholders(strings))
+    expect(() => bakery.bakePlaceholders(strings))
       .toThrow(/Message "World" has extra placeholder "MARKDOWN_SNIPPET_0"/);
   });
 });

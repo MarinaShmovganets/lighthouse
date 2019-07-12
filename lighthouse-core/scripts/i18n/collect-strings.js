@@ -12,6 +12,7 @@ const fs = require('fs');
 const mkdirp = require('mkdirp').sync;
 const path = require('path');
 const esprima = require('esprima');
+const bakery = require('./bake-strings.js');
 
 const LH_ROOT = path.join(__dirname, '../../../');
 const UISTRINGS_REGEX = /UIStrings = (.|\s)*?\};\n/im;
@@ -414,8 +415,8 @@ function collectAllStringsInDir(dir, strings = {}) {
  * @param {string} locale
  * @param {Record<string, ICUMessageDefn>} strings
  */
-function writeStringsToLocaleFormat(locale, strings) {
-  const fullPath = path.join(LH_ROOT, `lighthouse-core/lib/i18n/${locale}.json`);
+function writeStringsToCtcFiles(locale, strings) {
+  const fullPath = path.join(LH_ROOT, `lighthouse-core/lib/i18n/locales/${locale}.ctc.json`);
   /** @type {Record<string, ICUMessageDefn>} */
   const output = {};
   const sortedEntries = Object.entries(strings).sort(([keyA], [keyB]) => keyA.localeCompare(keyB));
@@ -437,11 +438,18 @@ if (require.main === module) {
   // Make sure pre-locales exists since it is git-ignored
   mkdirp('lighthouse-core/lib/i18n/pre-locale');
 
-  writeStringsToLocaleFormat('pre-locale/en-US', strings);
-  console.log('Written to disk!', 'pre-locale/en-US');
+  writeStringsToCtcFiles('en-US', strings);
+  console.log('Written to disk!', 'en-US.ctc.json');
   // Generate local pseudolocalized files for debugging while translating
-  writeStringsToLocaleFormat('pre-locale/en-XL', createPsuedoLocaleStrings(strings));
-  console.log('Written to disk!', 'pre-locale/en-XL');
+  writeStringsToCtcFiles('en-XL', createPsuedoLocaleStrings(strings));
+  console.log('Written to disk!', 'en-XL.ctc.json');
+
+  // Bake the ctc en-US and en-XL files into en-US and en-XL LHL format
+  const lhl = bakery.collectAndBakeCtcStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/locales/'),
+  path.join(LH_ROOT, 'lighthouse-core/lib/i18n/locales/'));
+  lhl.forEach(function(locale) {
+    console.log(`Baked ${locale} into LHL format.`);
+  });
 }
 
 module.exports = {
