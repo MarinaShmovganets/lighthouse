@@ -161,15 +161,15 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
           // Just use the rule's location if a sourceURL magic comment is present (`hasSourceURL` is true).
           const addHtmlLocationOffset = stylesheet.isInline && !stylesheet.hasSourceURL;
 
-          const absoluteStartLine = addHtmlLocationOffset ?
+          const line = addHtmlLocationOffset ?
             range.startLine + stylesheet.startLine + 1 :
             range.startLine + 1;
           // The column the stylesheet begins on is only relevant if the rule is declared on the same line.
-          const absoluteStartColumn = addHtmlLocationOffset && range.startLine === 0 ?
+          const column = addHtmlLocationOffset && range.startLine === 0 ?
             range.startColumn + stylesheet.startColumn :
             range.startColumn;
 
-          source += `:${absoluteStartLine}:${absoluteStartColumn}`;
+          source += `:${line}:${column}`;
         }
       } else {
         // dynamically injected to page
