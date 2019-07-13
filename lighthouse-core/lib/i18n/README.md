@@ -96,7 +96,7 @@ For proper translation, **all** strings must be accompanied by a description, wr
 
 ### Replacements and primitive formatting
 
-Replacements (aka substitutions) include string replacements like `{some_name}` number formatting like `{timeInMs, number, milliseconds}`.
+Replacements (aka substitutions) include string replacements like `{some_name}` and number formatting like `{timeInMs, number, milliseconds}`.
 
 #### Direct ICU replacement
 
