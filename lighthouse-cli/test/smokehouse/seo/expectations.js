@@ -129,6 +129,16 @@ module.exports = [
                 fontSize: '11px',
               },
               {
+                source: /seo-tester-inline-magic\.css:3:14$/,
+                selector: '.small-3',
+                fontSize: '6px',
+              },
+              {
+                source: /seo-tester-styles-magic\.css:3:10$/,
+                selector: '.small-4',
+                fontSize: '6px',
+              },
+              {
                 source: 'User Agent Stylesheet',
                 selector: 'h6',
                 fontSize: '10px',
