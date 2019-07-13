@@ -157,6 +157,7 @@ function getFlags(manualArgv) {
       .choices('emulated-form-factor', ['mobile', 'desktop', 'none'])
       .choices('throttling-method', ['devtools', 'provided', 'simulate'])
       .choices('preset', ['full', 'perf', 'mixed-content'])
+      .choices('only-categories', ['accessibility', 'best-practices', 'performance', 'pwa'])
       // force as an array
       // note MUST use camelcase versions or only the kebab-case version will be forced
       .array('blockedUrlPatterns')
