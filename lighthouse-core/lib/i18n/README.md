@@ -121,7 +121,7 @@ const UIStrings = {
 
 #### Complex ICU replacement
 
-`{timeInMs, number, milliseconds}` is called _Complex ICU_ since the replacement is for complex numbers and uses the custom formatters in Lighthouse. The supported complex ICU formats are: `milliseconds`, `seconds`, `bytes`, `percent`, and `extendedPercent`.
+`{timeInMs, number, milliseconds}` is called _Complex ICU_ since the replacement is for numbers and other complex replacements that use the custom formatters in Lighthouse. The supported complex ICU formats are: `milliseconds`, `seconds`, `bytes`, `percent`, and `extendedPercent`.
 
 These complex ICU formats are automatically given @example values during `yarn i18n`.  Therefore, a normal description string can be used:
 
