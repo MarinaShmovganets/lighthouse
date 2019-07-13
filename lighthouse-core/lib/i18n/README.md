@@ -151,7 +151,7 @@ A select ICU message is used when the message should select a sub-message based 
 displayValue: `{pronoun, select,
   male {He programmed the link.}
   female {She programmed the link.}
-  other {They programmed the link}
+  other {They programmed the link.}
   }`,
 ```
 
