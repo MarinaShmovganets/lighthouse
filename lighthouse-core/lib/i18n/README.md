@@ -104,10 +104,10 @@ Replacements (aka substitutions) include string replacements like `{some_name}` 
 
 ICU replacements must use a JSDoc-like syntax to specify an example for direct ICU replacements:
 
-*   To specify the description, use
-    * `@description <description>`
-*   To specify an example for an ICU replacement, use
-    * `@example {<ICU variable name>} <example for ICU replacement>`
+*   To specify the description, use `@description …`:
+    * `@description Label string used to…`
+*   To specify an example for an ICU replacement, use `@example {…} …`:
+    * `@example {variableName} This is an example ICU replacement`
 
 ```javascript
 const UIStrings = {
