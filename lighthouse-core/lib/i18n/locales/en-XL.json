@@ -813,7 +813,7 @@
     "message": "T̂ó ŝét̂ b́ûd́ĝét̂ś f̂ór̂ t́ĥé q̂úâńt̂ít̂ý âńd̂ śîźê óf̂ ṕâǵê ŕêśôúr̂ćêś, âd́d̂ á b̂úd̂ǵêt́.ĵśôń f̂íl̂é. [L̂éâŕn̂ ḿôŕê](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
   },
   "lighthouse-core/audits/resource-summary.js | displayValue": {
-    "message": "{requestCount, plural, =1 {1 r̂éq̂úêśt̂} other {# ŕêq́ûéŝt́ŝ}} • { byteCount, number, bytes } ḰB̂"
+    "message": "{requestCount, plural, =1 {1 r̂éq̂úêśt̂} other {# ŕêq́ûéŝt́ŝ}} • {byteCount, number, bytes} ḰB̂"
   },
   "lighthouse-core/audits/resource-summary.js | title": {
     "message": "K̂éêṕ r̂éq̂úêśt̂ ćôún̂t́ŝ ĺôẃ âńd̂ t́r̂án̂śf̂ér̂ śîźêś ŝḿâĺl̂"
@@ -1035,7 +1035,7 @@
     "message": "Â ṕr̂él̂óâd́ <l̂ín̂ḱ> ŵáŝ f́ôún̂d́ f̂ór̂ \"{preloadURL}\" b́ût́ ŵáŝ ńôt́ ûśêd́ b̂ý t̂h́ê b́r̂óŵśêŕ. Ĉh́êćk̂ t́ĥát̂ ýôú âŕê úŝín̂ǵ t̂h́ê `crossorigin` át̂t́r̂íb̂út̂é p̂ŕôṕêŕl̂ý."
   },
   "lighthouse-core/audits/uses-rel-preload.js | description": {
-    "message": "Ĉón̂śîd́êŕ ûśîńĝ <ĺîńk̂ ŕêĺ=p̂ŕêĺôád̂> t́ô ṕr̂íôŕît́îźê f́êt́ĉh́îńĝ ŕêśôúr̂ćêś t̂h́ât́ âŕê ćûŕr̂én̂t́l̂ý r̂éq̂úêśt̂éd̂ ĺât́êŕ îń p̂áĝé l̂óâd́. [L̂éâŕn̂ ḿôŕê](https://developers.google.com/web/tools/lighthouse/audits/preload)."
+    "message": "Ĉón̂śîd́êŕ ûśîńĝ `<link rel=preload>` t́ô ṕr̂íôŕît́îźê f́êt́ĉh́îńĝ ŕêśôúr̂ćêś t̂h́ât́ âŕê ćûŕr̂én̂t́l̂ý r̂éq̂úêśt̂éd̂ ĺât́êŕ îń p̂áĝé l̂óâd́. [L̂éâŕn̂ ḿôŕê](https://developers.google.com/web/tools/lighthouse/audits/preload)."
   },
   "lighthouse-core/audits/uses-rel-preload.js | title": {
     "message": "P̂ŕêĺôád̂ ḱêý r̂éq̂úêśt̂ś"

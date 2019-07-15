@@ -813,7 +813,7 @@
     "message": "To set budgets for the quantity and size of page resources, add a budget.json file. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
   },
   "lighthouse-core/audits/resource-summary.js | displayValue": {
-    "message": "{requestCount, plural, =1 {1 request} other {# requests}} • { byteCount, number, bytes } KB"
+    "message": "{requestCount, plural, =1 {1 request} other {# requests}} • {byteCount, number, bytes} KB"
   },
   "lighthouse-core/audits/resource-summary.js | title": {
     "message": "Keep request counts low and transfer sizes small"
@@ -1035,7 +1035,7 @@
     "message": "A preload <link> was found for \"{preloadURL}\" but was not used by the browser. Check that you are using the `crossorigin` attribute properly."
   },
   "lighthouse-core/audits/uses-rel-preload.js | description": {
-    "message": "Consider using <link rel=preload> to prioritize fetching resources that are currently requested later in page load. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/preload)."
+    "message": "Consider using `<link rel=preload>` to prioritize fetching resources that are currently requested later in page load. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/preload)."
   },
   "lighthouse-core/audits/uses-rel-preload.js | title": {
     "message": "Preload key requests"
