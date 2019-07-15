@@ -157,8 +157,8 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
         source = `${url.href}`;
 
         if (range) {
-          let line = stylesheet.startLine + 1;
-          let column = stylesheet.startColumn;
+          let line = range.startLine + 1;
+          let column = range.startColumn;
 
           // Add the startLine/startColumn of the <style> element to the range, if stylesheet
           // is inline.
@@ -168,7 +168,7 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
           // Sources panel.
           const addHtmlLocationOffset = stylesheet.isInline && !stylesheet.hasSourceURL;
           if (addHtmlLocationOffset) {
-            line += range.startLine;
+            line += stylesheet.startLine;
             // The column the stylesheet begins on is only relevant if the rule is declared on the same line.
             if (range.startLine === 0) {
               column += stylesheet.startColumn;
