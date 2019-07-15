@@ -156,6 +156,7 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
         const range = styleDeclaration.range;
         source = `${url.href}`;
 
+        // !!range == has defined location in a source file (.css or .html)
         if (range) {
           let line = range.startLine + 1;
           let column = range.startColumn;
