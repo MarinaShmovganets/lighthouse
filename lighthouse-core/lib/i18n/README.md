@@ -69,10 +69,6 @@ See [Appendix A: How runtime string replacement works](#appendix)
 
 # Writing UIStrings with LHL
 
-❗TODO(exterkamp): explain all the comments and where they go/what they become.
-
-❗TODO(exterkamp): explain why we can't use some ICU like number formatting.
-
 We want to keep strings close to the code in which they are used so that developers can easily understand their context. We use `i18n.js` to extract the `UIStrings` strings from individual js files.
 
 LHL strings in each module are defined in a `UIStrings` object with the strings as its properties. JSDoc is sometimes used to provide additional information about each string.
@@ -142,6 +138,8 @@ displayValue: `{itemCount, plural,
   other {# links found}
   }`,
 ```
+
+Note: Why are direct ICU and complex ICU placeholdered out, but Ordinals are not?  Direct and complex ICU should not contain elements that need to be translated (Direct ICU replaces universal proper nouns, and Complex ICU replaces number formatting), while ordinals do need to be translated.  Ordinals and selects are therefore handled specially, and do not need to be placeholdered out.
 
 ### Selects
 
