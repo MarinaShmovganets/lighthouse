@@ -6017,7 +6017,7 @@
       "lighthouse-core/audits/dobetterweb/js-libraries.js | description": [
         "audits[js-libraries].description"
       ],
-      "lighthouse-core/audits/dobetterweb/js-libraries.js | columnName": [
+      "lighthouse-core/lib/i18n/i18n.js | columnName": [
         "audits[js-libraries].details.headings[0].text"
       ],
       "lighthouse-core/audits/dobetterweb/js-libraries.js | columnVersion": [
