@@ -157,17 +157,23 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
         source = `${url.href}`;
 
         if (range) {
-          // Add the startLine/startColumn of the <style> element to the range, if stylesheet is inline.
-          // Just use the rule's location if a sourceURL magic comment is present (`hasSourceURL` is true).
-          const addHtmlLocationOffset = stylesheet.isInline && !stylesheet.hasSourceURL;
+          let line = stylesheet.startLine + 1;
+          let column = stylesheet.startColumn;
 
-          const line = addHtmlLocationOffset ?
-            range.startLine + stylesheet.startLine + 1 :
-            range.startLine + 1;
-          // The column the stylesheet begins on is only relevant if the rule is declared on the same line.
-          const column = addHtmlLocationOffset && range.startLine === 0 ?
-            range.startColumn + stylesheet.startColumn :
-            range.startColumn;
+          // Add the startLine/startColumn of the <style> element to the range, if stylesheet
+          // is inline.
+          // Always use the rule's location if a sourceURL magic comment is
+          // present (`hasSourceURL` is true) - this makes the line/col relative to the start
+          // of the style tag, which makes them relevant when the "file" is open in DevTool's
+          // Sources panel.
+          const addHtmlLocationOffset = stylesheet.isInline && !stylesheet.hasSourceURL;
+          if (addHtmlLocationOffset) {
+            line += range.startLine;
+            // The column the stylesheet begins on is only relevant if the rule is declared on the same line.
+            if (range.startLine === 0) {
+              column += stylesheet.startColumn;
+            }
+          }
 
           source += `:${line}:${column}`;
         }
