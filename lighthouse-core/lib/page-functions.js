@@ -236,34 +236,19 @@ function getNodeSelector(node) {
 function isPositionFixed(element) {
   /**
    * @param {HTMLElement} element
-   * @return {boolean}
-   */
-  function hasScrollableAncestor(element) {
-    let currentEl = element.parentElement;
-    while (currentEl) {
-      if (currentEl.scrollHeight > currentEl.clientHeight) {
-        const yScroll = getStyleAttrValue(currentEl, 'overflowY');
-        // In case where we reach outermost element (`<html>`), default computed value of visible
-        // will be scrollable.
-        if ((yScroll === 'scroll' || yScroll === 'auto') ||
-        (yScroll === 'visible' && currentEl.parentElement === null)
-        ) {
-          return true;
-        }
-      }
-      currentEl = currentEl.parentElement;
-    }
-    return false;
-  }
-
-  /**
-   * @param {HTMLElement} element
    * @param {string} attr
    * @return {string}
    */
   function getStyleAttrValue(element, attr) {
     // Check style before computedStyle as computedStyle is expensive.
     return element.style[attr] || window.getComputedStyle(element)[attr];
+  }
+
+  // Position fixed/sticky has no effect in case when document does not scroll.
+  const htmlEl = document.querySelector('html');
+  if (htmlEl.scrollHeight <= htmlEl.clientHeight || 
+      ['scroll', 'auto', 'visible'].includes(getStyleAttrValue(htmlEl, 'overflowY'))) {
+    return false;
   }
 
   let currentEl = element;

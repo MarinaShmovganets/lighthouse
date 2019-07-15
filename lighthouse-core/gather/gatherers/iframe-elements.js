@@ -45,19 +45,19 @@ class IFrameElements extends Gatherer {
     const framesByDomId = new Map();
 
     while (toVisit.length) {
-      const tempFrameTree = toVisit.shift();
-      if (tempFrameTree) {
-        for (const childFrameTree of tempFrameTree.childFrames || []) {
-          if (childFrameTree.childFrames) {
-            toVisit = toVisit.concat(childFrameTree.childFrames);
-          }
-          if (framesByDomId.has(childFrameTree.frame.name)) {
-            // DOM ID collision, mark as undefined.
-            framesByDomId.set(childFrameTree.frame.name, undefined);
-          } else {
-            framesByDomId.set(childFrameTree.frame.name, childFrameTree.frame);
-          }
-        }
+      const frameTree = toVisit.shift();
+      // Should never be undefined, but needed for tsc.
+      if (!frameTree) continue;
+      if (framesByDomId.has(frameTree.frame.name)) {
+        // DOM ID collision, mark as undefined.
+        framesByDomId.set(frameTree.frame.name, undefined);
+      } else {
+        framesByDomId.set(frameTree.frame.name, frameTree.frame);
+      }
+
+      // Add children to queue.
+      if (frameTree.childFrames) {
+        toVisit = toVisit.concat(frameTree.childFrames);
       }
     }
 
