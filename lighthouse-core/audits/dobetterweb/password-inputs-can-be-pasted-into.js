@@ -16,7 +16,10 @@ const UIStrings = {
   /** Description of a Lighthouse audit that tells the user why they should allow pasting of content into password fields. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Preventing password pasting undermines good security policy. ' +
       '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/password-pasting).',
-  /** Table column header for the HTML elements that do not allow pasting of content. */
+  /**
+   * @description Table column header for the HTML elements that do not allow pasting of content.
+   * @meaning 979624
+   * */
   columnFailingElem: 'Failing Elements',
 };
 

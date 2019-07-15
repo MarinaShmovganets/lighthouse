@@ -15,6 +15,7 @@ const path = require('path');
  * @typedef ICUMessageDefn
  * @property {string} message
  * @property {string} [description]
+ * @property {string} [meaning]
  * @property {Record<string, ICUPlaceholderDefn>} [placeholders]
  */
 
@@ -68,7 +69,9 @@ const ignoredPathComponents = [
  */
 function bakePlaceholders(messages) {
   for (const [_, defn] of Object.entries(messages)) {
+    // Don't need descriptions or meanings anymore.
     delete defn['description'];
+    delete defn['meaning'];
 
     let message = defn['message'];
     const placeholders = defn['placeholders'];

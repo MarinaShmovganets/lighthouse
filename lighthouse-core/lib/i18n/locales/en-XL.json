@@ -557,9 +557,6 @@
   "lighthouse-core/audits/dobetterweb/geolocation-on-start.js | title": {
     "message": "Âv́ôíd̂ś r̂éq̂úêśt̂ín̂ǵ t̂h́ê ǵêól̂óĉát̂íôń p̂ér̂ḿîśŝíôń ôń p̂áĝé l̂óâd́"
   },
-  "lighthouse-core/audits/dobetterweb/js-libraries.js | columnName": {
-    "message": "N̂ám̂é"
-  },
   "lighthouse-core/audits/dobetterweb/js-libraries.js | columnVersion": {
     "message": "V̂ér̂śîón̂"
   },
@@ -965,9 +962,6 @@
   "lighthouse-core/audits/seo/tap-targets.js | overlappingTargetHeader": {
     "message": "Ôv́êŕl̂áp̂ṕîńĝ T́âŕĝét̂"
   },
-  "lighthouse-core/audits/seo/tap-targets.js | sizeHeader": {
-    "message": "Ŝíẑé"
-  },
   "lighthouse-core/audits/seo/tap-targets.js | tapTargetHeader": {
     "message": "T̂áp̂ T́âŕĝét̂"
   },
@@ -1003,9 +997,6 @@
   },
   "lighthouse-core/audits/user-timings.js | columnDuration": {
     "message": "D̂úr̂át̂íôń"
-  },
-  "lighthouse-core/audits/user-timings.js | columnName": {
-    "message": "N̂ám̂é"
   },
   "lighthouse-core/audits/user-timings.js | columnStartTime": {
     "message": "Ŝt́âŕt̂ T́îḿê"
@@ -1177,6 +1168,9 @@
   },
   "lighthouse-core/lib/i18n/i18n.js | columnLocation": {
     "message": "L̂óĉát̂íôń"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | columnName": {
+    "message": "N̂ám̂é"
   },
   "lighthouse-core/lib/i18n/i18n.js | columnRequests": {
     "message": "R̂éq̂úêśt̂ś"

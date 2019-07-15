@@ -20,6 +20,7 @@ const UISTRINGS_REGEX = /UIStrings = (.|\s)*?\};\n/im;
  * @typedef ICUMessageDefn
  * @property {string} message
  * @property {string} [description]
+ * @property {string} [meaning]
  * @property {Record<string, ICUPlaceholderDefn>} [placeholders]
  */
 
@@ -52,6 +53,9 @@ function computeDescription(ast, property, value, startRange) {
       /** @type {Record<string, string>} */
       const examples = {};
 
+      /** @type {string | undefined} */
+      let meaning = undefined;
+
       const r = /@(\w+) ({\w+})?(.*)(\n|$)/g;
       let matches;
       while ((matches = r.exec(comment.value)) !== null) {
@@ -67,6 +71,8 @@ function computeDescription(ast, property, value, startRange) {
             throw Error(`Example missing ICU replacement in message "${message}"`);
           }
           examples[placeholder.substring(1, placeholder.length - 1)] = message;
+        } else if (tagName === 'meaning') {
+          meaning = message;
         }
       }
       // Make sure all ICU vars have examples
@@ -79,7 +85,7 @@ function computeDescription(ast, property, value, startRange) {
 
       // Make sure description is not empty
       if (description.length === 0) throw Error(`Empty @description for message "${value}"`);
-      return {description, examples};
+      return {description, examples, meaning};
     }
 
     const description = comment.value.replace('*', '').trim();
@@ -389,17 +395,29 @@ function collectAllStringsInDir(dir, strings = {}) {
           for (const property of stmt.declarations[0].init.properties) {
             const key = property.key.name;
             const val = exportVars.UIStrings[key];
-            const {description, examples} = computeDescription(ast, property, val, lastPropertyEndIndex);
+            const {description, examples, meaning} = computeDescription(ast, property, val, lastPropertyEndIndex);
 
             const converted = convertMessageToPlaceholders(val, examples);
 
             const messageKey = `${relativePath} | ${key}`;
 
-            if (Object.entries(converted.placeholders).length === 0 && converted.placeholders.constructor === Object) {
-              strings[messageKey] = {message: converted.message, description};
-            } else {
-              strings[messageKey] = {message: converted.message, description, placeholders: converted.placeholders};
+            /** @type {ICUMessageDefn} */
+            const msg = {
+              message: converted.message,
+              description,
+            };
+
+            if (Object.entries(converted.placeholders).length > 0 &&
+              converted.placeholders.constructor === Object) {
+              msg.placeholders = converted.placeholders;
             }
+
+            if (meaning) {
+              msg.meaning = meaning;
+            }
+
+            strings[messageKey] = msg;
+
             lastPropertyEndIndex = property.range[1];
           }
         }

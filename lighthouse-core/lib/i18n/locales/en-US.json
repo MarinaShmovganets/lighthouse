@@ -557,9 +557,6 @@
   "lighthouse-core/audits/dobetterweb/geolocation-on-start.js | title": {
     "message": "Avoids requesting the geolocation permission on page load"
   },
-  "lighthouse-core/audits/dobetterweb/js-libraries.js | columnName": {
-    "message": "Name"
-  },
   "lighthouse-core/audits/dobetterweb/js-libraries.js | columnVersion": {
     "message": "Version"
   },
@@ -965,9 +962,6 @@
   "lighthouse-core/audits/seo/tap-targets.js | overlappingTargetHeader": {
     "message": "Overlapping Target"
   },
-  "lighthouse-core/audits/seo/tap-targets.js | sizeHeader": {
-    "message": "Size"
-  },
   "lighthouse-core/audits/seo/tap-targets.js | tapTargetHeader": {
     "message": "Tap Target"
   },
@@ -1003,9 +997,6 @@
   },
   "lighthouse-core/audits/user-timings.js | columnDuration": {
     "message": "Duration"
-  },
-  "lighthouse-core/audits/user-timings.js | columnName": {
-    "message": "Name"
   },
   "lighthouse-core/audits/user-timings.js | columnStartTime": {
     "message": "Start Time"
@@ -1177,6 +1168,9 @@
   },
   "lighthouse-core/lib/i18n/i18n.js | columnLocation": {
     "message": "Location"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | columnName": {
+    "message": "Name"
   },
   "lighthouse-core/lib/i18n/i18n.js | columnRequests": {
     "message": "Requests"

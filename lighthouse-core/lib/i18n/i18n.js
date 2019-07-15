@@ -50,9 +50,15 @@ const UIStrings = {
   columnSize: 'Size',
   /** Label for a column in a data table; entries will be the time to live value of the cache header on a web resource. */
   columnCacheTTL: 'Cache TTL',
-  /** Label for a column in a data table; entries will be the number of kilobytes the user could reduce their page by if they implemented the suggestions. */
+  /**
+   * @description Label for a column in a data table; entries will be the number of kilobytes the user could reduce their page by if they implemented the suggestions.
+   * @meaning 601610
+   * */
   columnWastedBytes: 'Potential Savings',
-  /** Label for a column in a data table; entries will be the number of milliseconds the user could reduce page load by if they implemented the suggestions. */
+  /**
+   * @description Label for a column in a data table; entries will be the number of milliseconds the user could reduce page load by if they implemented the suggestions.
+   * @meaning 449166
+   * */
   columnWastedMs: 'Potential Savings',
   /** Label for a column in a data table; entries will be the number of milliseconds spent during a particular activity. */
   columnTimeSpent: 'Time Spent',
@@ -64,6 +70,8 @@ const UIStrings = {
   columnRequests: 'Requests',
   /** Label for a column in a data table; entries will be the number of kilobytes transferred to load a set of files. */
   columnTransferSize: 'Transfer Size',
+  /** Label for the Name column in the User Timing event data table. User Timing API entries are added by the developer of the web page. An example user timing event name: 'pageload_logoimage_done' */
+  columnName: 'Name',
   /** Label for a row in a data table; entries will be the total number and byte size of all resources loaded by a web page. */
   totalResourceType: 'Total',
   /** Label for a row in a data table; entries will be the total number and byte size of all 'Document' resources loaded by a web page. */
