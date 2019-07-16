@@ -127,9 +127,7 @@ function lookupLocale(locale) {
  * @param {string} icuMessage
  * @param {Record<string, *>} [values]
  */
-function _preprocessMessageValues(icuMessage, values) {
-  if (!values) return;
-
+function _preprocessMessageValues(icuMessage, values = {}) {
   const clonedValues = JSON.parse(JSON.stringify(values));
   const parsed = MessageParser.parse(icuMessage);
   // Throw an error if a message's value isn't provided
@@ -374,6 +372,7 @@ function replaceIcuMessageInstanceIds(inputObject, locale) {
 module.exports = {
   _formatPathAsString,
   _ICUMsgNotFoundMsg,
+  _preprocessMessageValues,
   UIStrings,
   lookupLocale,
   getRendererFormattedStrings,

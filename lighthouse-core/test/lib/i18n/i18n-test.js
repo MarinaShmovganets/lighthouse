@@ -134,5 +134,10 @@ describe('i18n', () => {
       const helloPercentStr = str_(UIStrings.helloPercentWorld, {in: 0.43078});
       expect(helloPercentStr).toBeDisplayString('Hello 43.08% World');
     });
+
+    it('throws an error when a value is not provided', () => {
+      expect(_ => i18n.getFormatted(str_(UIStrings.helloBytesWorld, {}), 'en-US'))
+      .toThrow(`ICU Message contains a value reference that wasn't provided`);
+    });
   });
 });
