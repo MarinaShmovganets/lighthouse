@@ -98,13 +98,10 @@ function getElementsInDocument(selector) {
       if (el.shadowRoot) {
         _findAllElements(el.shadowRoot.querySelectorAll('*'));
       }
-      // If the element has a contentWindow (IFrame), dig deeper.
-      // Try/Catch needed in case of cross-origin frame.
-      try {
-        if (el.contentWindow) {
-          _findAllElements(el.contentWindow.document.querySelectorAll('*'));
-        }
-      } catch (e) {}
+      // If the element has a contentDocument (IFrame), dig deeper.
+      if (el.contentDocument) {
+        _findAllElements(el.contentDocument.querySelectorAll('*'));
+      }
     }
   };
   _findAllElements(document.querySelectorAll('*'));
@@ -261,7 +258,6 @@ function isPositionFixed(element) {
   let currentEl = element;
   while (currentEl) {
     const position = getStyleAttrValue(currentEl, 'position');
-    // Only truly fixed if an ancestor is scrollable.
     if ((position === 'fixed' || position === 'sticky')) {
       return true;
     }

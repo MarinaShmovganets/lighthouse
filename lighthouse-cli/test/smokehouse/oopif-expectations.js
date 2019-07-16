@@ -37,6 +37,7 @@ module.exports = [
             height: '>0',
           },
           isPositionFixed: false,
+          frame: undefined,
         },
         {
           id: 'outer-iframe',
