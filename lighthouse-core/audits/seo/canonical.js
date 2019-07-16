@@ -11,10 +11,7 @@ const MainResource = require('../../computed/main-resource.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /**
-   * @description Title of a Lighthouse audit that provides detail on a page's rel=canonical link. This descriptive title is shown to users when the rel=canonical link is valid. "rel=canonical" is an HTML attribute and value and so should not be translated.
-   * @meaning 665744
-   * */
+  /** Title of a Lighthouse audit that provides detail on a page's rel=canonical link. This descriptive title is shown to users when the rel=canonical link is valid. "rel=canonical" is an HTML attribute and value and so should not be translated. */
   title: 'Document has a valid `rel=canonical`',
   /** Title of a Lighthouse audit that provides detail on a page's rel=canonical link. This descriptive title is shown to users when the rel=canonical link is invalid and should be fixed. "rel=canonical" is an HTML attribute and value and so should not be translated. */
   failureTitle: 'Document does not have a valid `rel=canonical`',

@@ -53,9 +53,6 @@ function computeDescription(ast, property, value, startRange) {
       /** @type {Record<string, string>} */
       const examples = {};
 
-      /** @type {string | undefined} */
-      let meaning = undefined;
-
       const r = /@(\w+) ({\w+})?(.*)(\n|$)/g;
       let matches;
       while ((matches = r.exec(comment.value)) !== null) {
@@ -71,8 +68,6 @@ function computeDescription(ast, property, value, startRange) {
             throw Error(`Example missing ICU replacement in message "${message}"`);
           }
           examples[placeholder.substring(1, placeholder.length - 1)] = message;
-        } else if (tagName === 'meaning') {
-          meaning = message;
         }
       }
       // Make sure all ICU vars have examples
@@ -85,7 +80,7 @@ function computeDescription(ast, property, value, startRange) {
 
       // Make sure description is not empty
       if (description.length === 0) throw Error(`Empty @description for message "${value}"`);
-      return {description, examples, meaning};
+      return {description, examples};
     }
 
     const description = comment.value.replace('*', '').trim();
@@ -352,6 +347,12 @@ function createPsuedoLocaleStrings(messages) {
   return psuedoLocalizedStrings;
 }
 
+/** @type {Map<string, string>} */
+const seenStrings = new Map();
+
+/** @type {number} */
+let collisions = 0;
+
 /**
  * @param {string} dir
  * @param {Record<string, ICUMessageDefn>} strings
@@ -395,7 +396,7 @@ function collectAllStringsInDir(dir, strings = {}) {
           for (const property of stmt.declarations[0].init.properties) {
             const key = property.key.name;
             const val = exportVars.UIStrings[key];
-            const {description, examples, meaning} = computeDescription(ast, property, val, lastPropertyEndIndex);
+            const {description, examples} = computeDescription(ast, property, val, lastPropertyEndIndex);
 
             const converted = convertMessageToPlaceholders(val, examples);
 
@@ -412,9 +413,20 @@ function collectAllStringsInDir(dir, strings = {}) {
               msg.placeholders = converted.placeholders;
             }
 
-            if (meaning) {
-              msg.meaning = meaning;
+            // check for duplicates, if duplicate, add description as meaning to both
+            if (seenStrings.has(msg.message)) {
+              msg.meaning = msg.description;
+              const id = seenStrings.get(msg.message);
+              if (!id) throw new Error('Message has collision, but collision not recorded.');
+              if (!strings[id].meaning) {
+                strings[id].meaning = strings[id].description;
+                collisions++;
+              }
+              collisions++;
             }
+
+            seenStrings.set(msg.message, messageKey);
+
 
             strings[messageKey] = msg;
 
@@ -451,6 +463,10 @@ if (require.main === module) {
 
   collectAllStringsInDir(path.join(LH_ROOT, 'stack-packs/packs'), strings);
   console.log('Collected from Stack Packs!');
+
+  if ((collisions) > 0) {
+    console.log(`MEANING COLLISION: ${collisions} string(s) have the same content.`);
+  }
 
   writeStringsToCtcFiles('en-US', strings);
   console.log('Written to disk!', 'en-US.ctc.json');

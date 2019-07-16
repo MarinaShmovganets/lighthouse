@@ -14,10 +14,7 @@ const Audit = require('../audit.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /**
-   * @description Label of a table column that identifies HTML elements that have failed an audit.
-   * @meaning 1014809
-   * */
+  /** Label of a table column that identifies HTML elements that have failed an audit. */
   failingElementsHeader: 'Failing Elements',
 };
 

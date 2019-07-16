@@ -14,10 +14,7 @@ const AxeAudit = require('./axe-audit.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /**
-   * @description Title of an accesibility audit that evaluates if all audio elements have a track element that has captions for screen readers. This title is descriptive of the successful state and is shown to users when no user action is required.
-   * @meaning 727144
-   * */
+  /** Title of an accesibility audit that evaluates if all audio elements have a track element that has captions for screen readers. This title is descriptive of the successful state and is shown to users when no user action is required. */
   title: '`<audio>` elements contain a `<track>` element with `[kind="captions"]`',
   /** Title of an accesibility audit that evaluates if all audio elements have a track element that has captions for screen readers. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
   failureTitle: '`<audio>` elements are missing a `<track>` element with ' +

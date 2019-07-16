@@ -50,15 +50,9 @@ const UIStrings = {
   columnSize: 'Size',
   /** Label for a column in a data table; entries will be the time to live value of the cache header on a web resource. */
   columnCacheTTL: 'Cache TTL',
-  /**
-   * @description Label for a column in a data table; entries will be the number of kilobytes the user could reduce their page by if they implemented the suggestions.
-   * @meaning 601610
-   * */
+  /** Label for a column in a data table; entries will be the number of kilobytes the user could reduce their page by if they implemented the suggestions. */
   columnWastedBytes: 'Potential Savings',
-  /**
-   * @description Label for a column in a data table; entries will be the number of milliseconds the user could reduce page load by if they implemented the suggestions.
-   * @meaning 449166
-   * */
+  /** Label for a column in a data table; entries will be the number of milliseconds the user could reduce page load by if they implemented the suggestions. */
   columnWastedMs: 'Potential Savings',
   /** Label for a column in a data table; entries will be the number of milliseconds spent during a particular activity. */
   columnTimeSpent: 'Time Spent',
