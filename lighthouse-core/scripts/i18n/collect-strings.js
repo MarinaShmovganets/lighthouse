@@ -466,6 +466,7 @@ if (require.main === module) {
   console.log('Collected from Stack Packs!');
 
   if ((collisions) > 0) {
+    // TODO(exterkamp): assert that this number is constant to prevent unexpected dupes.
     console.log(`MEANING COLLISION: ${collisions} string(s) have the same content.`);
   }
 
