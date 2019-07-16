@@ -27,5 +27,48 @@ module.exports = [
         },
       },
     },
+    artifacts: {
+      IFrameElements: [
+        {
+          id: 'oopif',
+          src: 'https://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/',
+          clientRect: {
+            width: '>0',
+            height: '>0',
+          },
+          isPositionFixed: false,
+        },
+        {
+          id: 'outer-iframe',
+          src: 'http://localhost:10200/online-only.html',
+          clientRect: {
+            width: '>0',
+            height: '>0',
+          },
+          isPositionFixed: true,
+          frame: {
+            name: 'outer-iframe',
+            url: 'http://localhost:10200/online-only.html',
+            securityOrigin: 'http://localhost:10200',
+            mimeType: 'text/html',
+          },
+        },
+        {
+          id: 'inner-iframe',
+          src: '',
+          clientRect: {
+            width: '>0',
+            height: '>0',
+          },
+          isPositionFixed: false,
+          frame: {
+            name: 'inner-iframe',
+            url: 'about:blank',
+            securityOrigin: '://',
+            mimeType: 'text/html',
+          },
+        },
+      ],
+    },
   },
 ];

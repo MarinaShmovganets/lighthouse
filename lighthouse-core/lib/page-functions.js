@@ -98,6 +98,13 @@ function getElementsInDocument(selector) {
       if (el.shadowRoot) {
         _findAllElements(el.shadowRoot.querySelectorAll('*'));
       }
+      // If the element has a contentWindow (IFrame), dig deeper.
+      // Try/Catch needed in case of cross-origin frame.
+      try {
+        if (el.contentWindow) {
+          _findAllElements(el.contentWindow.document.querySelectorAll('*'));
+        }
+      } catch (e) {}
     }
   };
   _findAllElements(document.querySelectorAll('*'));
@@ -246,8 +253,8 @@ function isPositionFixed(element) {
 
   // Position fixed/sticky has no effect in case when document does not scroll.
   const htmlEl = document.querySelector('html');
-  if (htmlEl.scrollHeight <= htmlEl.clientHeight || 
-      ['scroll', 'auto', 'visible'].includes(getStyleAttrValue(htmlEl, 'overflowY'))) {
+  if (htmlEl.scrollHeight <= htmlEl.clientHeight ||
+      !['scroll', 'auto', 'visible'].includes(getStyleAttrValue(htmlEl, 'overflowY'))) {
     return false;
   }
 
@@ -255,7 +262,7 @@ function isPositionFixed(element) {
   while (currentEl) {
     const position = getStyleAttrValue(currentEl, 'position');
     // Only truly fixed if an ancestor is scrollable.
-    if ((position === 'fixed' || position === 'sticky') && hasScrollableAncestor(currentEl)) {
+    if ((position === 'fixed' || position === 'sticky')) {
       return true;
     }
     currentEl = currentEl.parentElement;
