@@ -413,11 +413,12 @@ function collectAllStringsInDir(dir, strings = {}) {
               msg.placeholders = converted.placeholders;
             }
 
-            // check for duplicates, if duplicate, add description as meaning to both
+            // check for duplicates, if duplicate, add @description as @meaning to both
             if (seenStrings.has(msg.message)) {
               msg.meaning = msg.description;
               const id = seenStrings.get(msg.message);
-              if (!id) throw new Error('Message has collision, but collision not recorded.');
+              // Shouldn't be able to get here, but ts wants a check.
+              if (!id) throw new Error('Message has collision, but collision not recorded in seen.');
               if (!strings[id].meaning) {
                 strings[id].meaning = strings[id].description;
                 collisions++;
