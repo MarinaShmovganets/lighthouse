@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "Hinahayaan ng mga access key ang mga user na mabilis na makatuon sa isang bahagi ng page. Para sa maayos na navigation, natatangi dapat ang bawat access key. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "Hinahayaan ng mga access key ang mga user na mabilis na makatuon sa isang bahagi ng page. Para sa maayos na navigation, natatangi dapat ang bawat access key. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "Hindi natatangi ang mga value ng `[accesskey]`"
@@ -9,7 +9,7 @@
     "message": "Natatangi ang mga value ng `[accesskey]`"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "Sumusuporta ang bawat `role` ng ARIA sa isang partikular na subset ng attribute na `aria-*.` Kapag hindi tumugma ang mga ito, magiging invalid ang mga attribute na `aria-*.` [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "Sumusuporta ang bawat `role` ng ARIA sa isang partikular na subset ng attribute na `aria-*.` Kapag hindi tumugma ang mga ito, magiging invalid ang mga attribute na `aria-*.` [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "Hindi tumutugma ang mga attribute na`[aria-*]` sa mga tungkulin ng mga ito"
@@ -18,7 +18,7 @@
     "message": "Tumutugma ang mga attribute na `[aria-*]` sa mga tungkulin ng mga ito"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "Ang ilang tungkulin ng ARIA ay may mga kinakailangang attribute na naglalarawan sa status ng element sa mga screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "Ang ilang tungkulin ng ARIA ay may mga kinakailangang attribute na naglalarawan sa status ng element sa mga screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "May mga kulang na kinakailangang attribute na `[aria-*]` ang mga `[role]`"
@@ -27,7 +27,7 @@
     "message": "Mayroon ng lahat ng kinakailangang attribute na `[aria-*]` ang mga `[role]"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "Ang ilang pangunahing tungkulin ng ARIA ay dapat maglaman ng mga partikular na pangalawang tungkulin para maisagawa ang mga nilalayong function ng pagiging accessible ng mga ito. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "Ang ilang pangunahing tungkulin ng ARIA ay dapat maglaman ng mga partikular na pangalawang tungkulin para maisagawa ang mga nilalayong function ng pagiging accessible ng mga ito. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "Kulang ng mga element na may `[role]` na nangangailangan ng mga partikular na pangalawang `[role].`"
@@ -36,7 +36,7 @@
     "message": "May mga umiiral na element na may `[role]` na nangangailangan ng mga partikular na pangalawang `[role]`"
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "Ang ilang pangalawang tungkulin ng ARIA ay laman dapat ng mga partikular na pangunahing tungkulin para maayos na maisagawa ang mga nilalayong function ng pagiging accessible ng mga ito. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "Ang ilang pangalawang tungkulin ng ARIA ay laman dapat ng mga partikular na pangunahing tungkulin para maayos na maisagawa ang mga nilalayong function ng pagiging accessible ng mga ito. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "Hindi nakapaloob ang mga `[role]` sa kinakailangang pangunahing element ng mga ito"
@@ -45,7 +45,7 @@
     "message": "Ang mga `[role]` ay nasa loob ng kailangang pangunahing element ng mga ito"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "Dapat ay may mga valid na value ang mga tungkulin ng ARIA para maisagawa ang mga nilalayong function ng pagiging accessible ng mga ito. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "Dapat ay may mga valid na value ang mga tungkulin ng ARIA para maisagawa ang mga nilalayong function ng pagiging accessible ng mga ito. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "Hindi valid ang mga value ng `[role]`"
@@ -54,7 +54,7 @@
     "message": "Valid ang mga value ng `[role]`"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "Hindi mauunawaan ng mga nakakatulong na teknolohiya, gaya ng mga screen reader, ang mga attribute ng ARIA na may mga invalid na value. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "Hindi mauunawaan ng mga nakakatulong na teknolohiya, gaya ng mga screen reader, ang mga attribute ng ARIA na may mga invalid na value. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "Walang valid na value ang mga attribute na `[aria-*]`"
@@ -63,7 +63,7 @@
     "message": "Mga mga valid na value ang mga attribute na `[aria-*]`"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "Hindi mauunawaan ng mga nakakatulong na teknolohiya, gaya ng mga screen reader, ang mga attribute ng ARIA na may mga invalid na pangalan. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "Hindi mauunawaan ng mga nakakatulong na teknolohiya, gaya ng mga screen reader, ang mga attribute ng ARIA na may mga invalid na pangalan. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "Hindi valid o mali ang spelling ng mga attribute na `[aria-*]`"
@@ -72,7 +72,7 @@
     "message": "Valid at hindi mali ang spelling ng mga attribute na `[aria-*]`"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "Dahil sa mga caption, nagagamit ng mga user na bingi o may problema sa pandinig ang mga element ng audio, na nagbibigay ng napakahalagang impormasyon gaya ng kung sino ang nagsasalita, ano ang sinasabi nila, at iba pang hindi sinasalitang impormasyon. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "Dahil sa mga caption, nagagamit ng mga user na bingi o may problema sa pandinig ang mga element ng audio, na nagbibigay ng napakahalagang impormasyon gaya ng kung sino ang nagsasalita, ano ang sinasabi nila, at iba pang hindi sinasalitang impormasyon. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "Ang mga element na `<audio>` ay kulang ng element na `<track>` na may `[kind=\"captions\"].`"
@@ -84,7 +84,7 @@
     "message": "Mga Hindi Nakapasang Element"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "Kapag walang naa-access na pangalan ang isang button, iaanunsyo ito ng mga screen reader bilang \"button,\" kaya naman hindi ito magagamit ng mga user na umaasa sa mga screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "Kapag walang naa-access na pangalan ang isang button, iaanunsyo ito ng mga screen reader bilang \"button,\" kaya naman hindi ito magagamit ng mga user na umaasa sa mga screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "Walang naa-access na pangalan ang mga button"
@@ -93,7 +93,7 @@
     "message": "May naa-access na pangalan ang mga button"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "Kapag nagdagdag ng mga paraan para i-bypass ang paulit-ulit na content, mas madaling makakapag-navigate sa page ang mga user ng keyboard. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "Kapag nagdagdag ng mga paraan para i-bypass ang paulit-ulit na content, mas madaling makakapag-navigate sa page ang mga user ng keyboard. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "Walang heading, link ng paglaktaw, o rehiyon ng landmark ang page"
@@ -102,7 +102,7 @@
     "message": "Ang page ay naglalaman ng heading, link ng paglaktaw, o rehiyon ng landmark"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "Mahirap o imposibleng basahin para sa maraming user ang text na mababa ang contrast. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "Mahirap o imposibleng basahin para sa maraming user ang text na mababa ang contrast. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "Kulang ang ratio ng contrast ng mga kulay ng background at foreground."
@@ -111,7 +111,7 @@
     "message": "May sapat na ratio ng contrast ang mga kulay ng background at foreground"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "Kapag hindi naka-mark up nang maayos ang mga listahan ng kahulugan, puwedeng gumawa ng nakakalito o hindi tumpak na output ang mga screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "Kapag hindi naka-mark up nang maayos ang mga listahan ng kahulugan, puwedeng gumawa ng nakakalito o hindi tumpak na output ang mga screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "Hindi naglalaman ang mga `<dl>` ng mga nakaayos lang na pangkat na `<dt>` at `<dd>,` at mga element na `<script>` o `<template>.`"
@@ -120,7 +120,7 @@
     "message": "Naglalaman lang ang mga `<dl>` ng mga nakaayos na pangkat na `<dt>` at `<dd>,` at mga element na `<script>` o `<template>.`"
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "Nakapaloob dapat ang mga item sa listahan ng kahulugan (`<dt>` at `<dd>`) sa isang pangunahing element na `<dl>` para matiyak na maayos na maiaanunsyo ng mga screen reader ang mga ito. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "Nakapaloob dapat ang mga item sa listahan ng kahulugan (`<dt>` at `<dd>`) sa isang pangunahing element na `<dl>` para matiyak na maayos na maiaanunsyo ng mga screen reader ang mga ito. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "Hindi nakapaloob sa mga element na`<dl>` ang mga item sa listahan ng kahulugan"
@@ -138,7 +138,7 @@
     "message": "May element na `<title>` ang dokumento"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "Natatangi dapat ang value ng isang id attribute para hindi makaligtaan ng mga nakakatulong na teknolohiya ang iba pang instance. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "Natatangi dapat ang value ng isang id attribute para hindi makaligtaan ng mga nakakatulong na teknolohiya ang iba pang instance. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "Hindi natatangi ang mga attribute na `[id]` sa page"
@@ -147,7 +147,7 @@
     "message": "Natatangi ang mga attribute na `[id]` sa page"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "Umaasa ang mga user ng screen reader sa mga pamagat ng frame para ilarawan ang mga content ng mga frame. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "Umaasa ang mga user ng screen reader sa mga pamagat ng frame para ilarawan ang mga content ng mga frame. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "Walang pamagat ang mga element na`<frame>` o `<iframe>`"
@@ -156,7 +156,7 @@
     "message": "May pamagat ang mga elemento na `<frame>` o `<iframe>`"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "Kung hindi tutukoy ng attribute na lang ang isang page, ipagpapalagay ng screen reader na ang page ay nasa default na wikang pinili ng user noong na-set up ang screen reader. Kung wala talaga sa default na wika ang page, baka hindi maianunsyo nang tama ng screen reader ang text ng page. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "Kung hindi tutukoy ng attribute na lang ang isang page, ipagpapalagay ng screen reader na ang page ay nasa default na wikang pinili ng user noong na-set up ang screen reader. Kung wala talaga sa default na wika ang page, baka hindi maianunsyo nang tama ng screen reader ang text ng page. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "Walang attribute na `[lang]` ang element na `<html>`"
@@ -165,7 +165,7 @@
     "message": "May attribute na `[lang]` ang element na `<html>`"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "Nakakatulong sa mga screen reader ang pagtukoy ng valid na [wika ng BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) na maianunsyo nang tama ang text. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Nakakatulong sa mga screen reader ang pagtukoy ng valid na [wika ng BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) na maianunsyo nang tama ang text. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "Walang valid na value ang element na `<html>` para sa attribute na `[lang]` nito."
@@ -174,7 +174,7 @@
     "message": "May valid na value ang element na`<html>` para sa attribute na `[lang]` nito"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "Layunin dapat ng mga nagbibigay-impormasyong element na magkaroon ng maikli at naglalarawang alternatibong text. Puwedeng balewalain ang mga palamuting element sa pamamagitan ng walang lamang kahaliling attribute. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "Layunin dapat ng mga nagbibigay-impormasyong element na magkaroon ng maikli at naglalarawang alternatibong text. Puwedeng balewalain ang mga palamuting element sa pamamagitan ng walang lamang kahaliling attribute. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "Walang attribute na `[alt]` ang mga element ng larawan"
@@ -183,7 +183,7 @@
     "message": "May mga attribute na `[alt]` ang mga element ng larawan"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "Kapag gumagamit ng larawan bilang button na `<input>,` makakatulong sa mga user ng screen reader ang pagbibigay ng alternatibong text na maunawaan kung para saan ang button. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "Kapag gumagamit ng larawan bilang button na `<input>,` makakatulong sa mga user ng screen reader ang pagbibigay ng alternatibong text na maunawaan kung para saan ang button. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "Walang text na `[alt]` ang mga element na `<input type=\"image\">`"
@@ -192,7 +192,7 @@
     "message": "May text na `[alt]` ang mga element na `<input type=\"image\">`"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "Tinitiyak ng mga label na maayos na naiaanunsyo ng mga nakakatulong na teknolohiya, gaya ng mga screen reader, ang mga kontrol ng form. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "Tinitiyak ng mga label na maayos na naiaanunsyo ng mga nakakatulong na teknolohiya, gaya ng mga screen reader, ang mga kontrol ng form. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "Walang nauugnay na label ang mga element ng form"
@@ -201,7 +201,7 @@
     "message": "May mga nauugnay na label ang mga element ng form"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "Ang isang talahanayang ginagamit para sa mga layunin ng layout ay wala dapat element ng data, gaya ng th o mga element ng caption o attribute ng buod, dahil puwede itong magdulot ng nakakalitong karanasan para sa mga user ng screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "Ang isang talahanayang ginagamit para sa mga layunin ng layout ay wala dapat element ng data, gaya ng th o mga element ng caption o attribute ng buod, dahil puwede itong magdulot ng nakakalitong karanasan para sa mga user ng screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "Hindi iniiwasan ng mga pang-presentation na element na `<table>` ang paggamit ng attribute na `<th>,` `<caption>,` o `[summary].`"
@@ -210,7 +210,7 @@
     "message": "Iniiwasan ng mga pang-presentation na element na `<table>` ang paggamit ng attribute na `<th>,` `<caption>,` o `[summary].`"
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "Pinapaganda ng text ng link (at alternatibong text para sa mga larawan, kapag ginagamit bilang mga link) na nakikita, natatangi, at naitutuon ang karanasan sa navigation para sa mga user ng screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "Pinapaganda ng text ng link (at alternatibong text para sa mga larawan, kapag ginagamit bilang mga link) na nakikita, natatangi, at naitutuon ang karanasan sa navigation para sa mga user ng screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "Walang nakikitang pangalan ang mga link"
@@ -219,7 +219,7 @@
     "message": "May nakikitang pangalan ang mga link"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "May partikular na paraan ng pag-aanunsyo ng mga listahan ang mga screen reader. Makakatulong sa output ng screen reader ang pagtiyak na maayos ang istruktura ng listahan. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "May partikular na paraan ng pag-aanunsyo ng mga listahan ang mga screen reader. Makakatulong sa output ng screen reader ang pagtiyak na maayos ang istruktura ng listahan. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "Hindi naglalaman ang mga listahan ng mga element na `<li>` at element na sumusuporta sa script (`<script>` at `<template>`)."
@@ -228,7 +228,7 @@
     "message": "Naglalaman lang ang mga listahan ng mga element na `<li>` at element na sumusuporta sa script (`<script>` at `<template>`)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "Kailangang nakapaloob sa pangunahing `<ul>` o `<ol>` ang mga item sa listahan (`<li>`) para maayos itong maianunsyo ng mga screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "Kailangang nakapaloob sa pangunahing `<ul>` o `<ol>` ang mga item sa listahan (`<li>`) para maayos itong maianunsyo ng mga screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "Hindi nakapaloob ang mga item sa listahan (`<li>`) sa mga pangunahing element na `<ul>` o `<ol>.`"
@@ -237,7 +237,7 @@
     "message": "Nakapaloob ang mga item sa listahan (`<li>`) sa mga pangunahing element na `<ul>` o `<ol>`"
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "Hindi inaasahan ng mga user na awtomatikong magre-refresh ang isang page, at babalik sa itaas ng page ang focus kapag ginawa ito. Puwede itong magdulot ng nakakainis o nakakalitong karanasan. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "Hindi inaasahan ng mga user na awtomatikong magre-refresh ang isang page, at babalik sa itaas ng page ang focus kapag ginawa ito. Puwede itong magdulot ng nakakainis o nakakalitong karanasan. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "Gumagamit ang dokumento ng `<meta http-equiv=\"refresh\">`"
@@ -246,7 +246,7 @@
     "message": "Hindi gumagamit ng `<meta http-equiv=\"refresh\">` ang dokumento"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "Problema ang pag-disable ng pag-zoom para sa mga user na malabo ang paningin na umaasa sa pag-magnify ng screen para maayos na makita ang mga content ng isang web page. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "Problema ang pag-disable ng pag-zoom para sa mga user na malabo ang paningin na umaasa sa pag-magnify ng screen para maayos na makita ang mga content ng isang web page. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "Ginagamit ang `[user-scalable=\"no\"]` sa element na `<meta name=\"viewport\">` o mas mababa sa 5 ang attribute na `[maximum-scale].`"
@@ -255,7 +255,7 @@
     "message": "Hindi ginagamit ang `[user-scalable=\"no\"]` sa element na `<meta name=\"viewport\">` at hindi mas mababa sa 5 ang attribute na `[maximum-scale].`"
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "Hindi makakapagsalin ng hindi text na content ang mga screen reader. Kapag nagdagdag ng alt text sa mga element na `<object>,` mapapadali ang pagpaparating ng mga screen reader ng kahulugan sa mga user. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "Hindi makakapagsalin ng hindi text na content ang mga screen reader. Kapag nagdagdag ng alt text sa mga element na `<object>,` mapapadali ang pagpaparating ng mga screen reader ng kahulugan sa mga user. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "Walang text na `[alt]` ang mga element na `<object>`"
@@ -264,7 +264,7 @@
     "message": "May text na `[alt]` ang mga element na `<object>`"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "Nagpapahiwatig ng tahasang pagsasaayos ng navigation ang value na mas mataas kaysa sa 0. Bagama't kung tutuusin ay valid ito, madalas itong nagdudulot ng mga nakakainis na karanasan para sa mga user na umaasa sa mga nakakatulong na teknolohiya. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "Nagpapahiwatig ng tahasang pagsasaayos ng navigation ang value na mas mataas kaysa sa 0. Bagama't kung tutuusin ay valid ito, madalas itong nagdudulot ng mga nakakainis na karanasan para sa mga user na umaasa sa mga nakakatulong na teknolohiya. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "Ang ilang element ay may value ng `[tabindex]` na mas mataas sa 0"
@@ -273,7 +273,7 @@
     "message": "Walang element ang may value ng `[tabindex]` na mas mataas sa 0"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "May mga feature ang mga screen reader na mas nagpapadali sa pag-navigate sa mga talahanayan. Kapag tiniyak na ang mga cell na `<td>` na gumagamit sa attribute na `[headers]` ay tumutukoy lang sa iba pang cell sa talahanayang ding iyon, puwedeng mapaganda ang karanasan para sa mga user ng screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "May mga feature ang mga screen reader na mas nagpapadali sa pag-navigate sa mga talahanayan. Kapag tiniyak na ang mga cell na `<td>` na gumagamit sa attribute na `[headers]` ay tumutukoy lang sa iba pang cell sa talahanayang ding iyon, puwedeng mapaganda ang karanasan para sa mga user ng screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "Ang mga cell sa isang element na `<table>` na gumagamit sa attribute na `[headers]` ay tumutukoy sa iba pang cell na nasa talahanayang ding iyon."
@@ -282,7 +282,7 @@
     "message": "Ang mga cell sa isang element na `<table>` na gumagamit sa attribute na `[headers]` ay tumutukoy lang sa iba pang cell sa talahanayang ding iyon."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "May mga feature ang mga screen reader na mas nagpapadali sa pag-navigate sa mga talahanayan. Kapag tiniyak na ang mga header ng talahanayan ay palaging tumutukoy sa isang hanay ng mga cell, puwedeng gumanda ang karanasan para sa mga user ng screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "May mga feature ang mga screen reader na mas nagpapadali sa pag-navigate sa mga talahanayan. Kapag tiniyak na ang mga header ng talahanayan ay palaging tumutukoy sa isang hanay ng mga cell, puwedeng gumanda ang karanasan para sa mga user ng screen reader. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "Ang mga element na `<th>` at element na may `[role=\"columnheader\"/\"rowheader\"]` ay walang cell ng data na inilalarawan ng mga ito."
@@ -291,7 +291,7 @@
     "message": "Ang mga element na `<th>` at element na may `[role=\"columnheader\"/\"rowheader\"]` ay may mga cell ng data na inilalarawan ng mga ito."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "Ang pagtukoy ng valid na [wika ng BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) sa mga element ay nakakatulong sa pagtiyak na tama ang pagbigkas ng screen reader sa text. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Ang pagtukoy ng valid na [wika ng BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) sa mga element ay nakakatulong sa pagtiyak na tama ang pagbigkas ng screen reader sa text. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "Walang valid na value ang mga attribute na `[lang]`"
@@ -300,7 +300,7 @@
     "message": "May valid na value ang mga attribute na`[lang]`"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "Kapag nagbigay ng caption ang isang video, mas madaling maa-access ng mga user na bingi at may problema sa pandinig ang impormasyon nito. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "Kapag nagbigay ng caption ang isang video, mas madaling maa-access ng mga user na bingi at may problema sa pandinig ang impormasyon nito. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "Ang mga element na `<video>` ay hindi naglalaman ng element na`<track>` na may `[kind=\"captions\"].`"
@@ -309,7 +309,7 @@
     "message": "Naglalaman ang mga element na `<video>` ng element na `<track>` na may `[kind=\"captions\"]`"
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "Ang mga audio na paglalarawan ay nagbibigay ng may kaugnayang impormasyon para sa mga video na hindi magagawa ng dialogue, gaya ng mga expression ng mukha at eksena. [Matuto pa](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "Ang mga audio na paglalarawan ay nagbibigay ng may kaugnayang impormasyon para sa mga video na hindi magagawa ng dialogue, gaya ng mga expression ng mukha at eksena. [Matuto pa](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "Ang mga element na `<video>` ay hindi naglalaman ng element na `<track>` na may `[kind=\"description\"].`"

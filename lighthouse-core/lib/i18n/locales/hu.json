@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "A hozzáférési kulcsok segítségével a felhasználók gyorsan fókuszálhatnak az oldal adott részeire. A megfelelő navigáció érdekében az összes hozzáférési kulcsnak egyedinek kell lennie. [További információ](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "A hozzáférési kulcsok segítségével a felhasználók gyorsan fókuszálhatnak az oldal adott részeire. A megfelelő navigáció érdekében az összes hozzáférési kulcsnak egyedinek kell lennie. [További információ](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "Nem egyedi `[accesskey]` értékek"
@@ -9,7 +9,7 @@
     "message": "Az `[accesskey]` értékek egyediek"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "Minden egyes ARIA `role` attribútum `aria-*` attribútumok konkrét alkészletét támogatja. Ha nem megfelelő alkészletet használ, érvényteleníti az `aria-*` attribútumokat. [További információ](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "Minden egyes ARIA `role` attribútum `aria-*` attribútumok konkrét alkészletét támogatja. Ha nem megfelelő alkészletet használ, érvényteleníti az `aria-*` attribútumokat. [További információ](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "Bizonyos `[aria-*]` attribútumok nem felelnek meg a szerepkörüknek"
@@ -18,7 +18,7 @@
     "message": "Az `[aria-*]` attribútumok megfelelnek a szerepkörüknek"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "Bizonyos ARIA-szerepkörök kötelező attribútumokkal rendelkeznek, amelyek az elem állapotát írják le a képernyőolvasók számára. [További információ](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "Bizonyos ARIA-szerepkörök kötelező attribútumokkal rendelkeznek, amelyek az elem állapotát írják le a képernyőolvasók számára. [További információ](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "Egyes `[role]` attribútumok nem rendelkeznek az összes szükséges `[aria-*]` attribútummal"
@@ -27,7 +27,7 @@
     "message": "A `[role]` attribútumok az összes szükséges `[aria-*]` attribútummal rendelkeznek"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "Bizonyos fölérendelt ARIA-szerepköröknek konkrét alárendelt szerepköröket kell tartalmazniuk, hogy megfelelően teljesíthessék a kívánt kisegítő funkciójukat. [További információ](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "Bizonyos fölérendelt ARIA-szerepköröknek konkrét alárendelt szerepköröket kell tartalmazniuk, hogy megfelelően teljesíthessék a kívánt kisegítő funkciójukat. [További információ](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "Hiányoznak olyan `[role]` attribútummal rendelkező elemek, amelyekhez konkrét alárendelt `[role]` attribútumokra van szükség."
@@ -36,7 +36,7 @@
     "message": "Olyan `[role]` attribútummal rendelkező elemek találhatók, amelyekhez konkrét alárendelt `[role]` attribútumokra van szükség."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "Bizonyos alárendelt ARIA-szerepköröket konkrét fölérendelt szerepköröknek kell tartalmazniuk, hogy megfelelően teljesíthessék a kívánt kisegítő funkciójukat. [További információ](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "Bizonyos alárendelt ARIA-szerepköröket konkrét fölérendelt szerepköröknek kell tartalmazniuk, hogy megfelelően teljesíthessék a kívánt kisegítő funkciójukat. [További információ](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "A `[role]` attribútumok nem a kötelező fölérendelt elemükben találhatók"
@@ -45,7 +45,7 @@
     "message": "A `[role]` attribútumok a kötelező fölérendelt elemben találhatók"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "Az ARIA-szerepköröknek érvényes értékekkel kell rendelkezniük, hogy megfelelően teljesíthessék a kívánt kisegítő funkciójukat. [További információ](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "Az ARIA-szerepköröknek érvényes értékekkel kell rendelkezniük, hogy megfelelően teljesíthessék a kívánt kisegítő funkciójukat. [További információ](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "Bizonyos `[role]` attribútumok értékei érvénytelenek"
@@ -54,7 +54,7 @@
     "message": "A `[role]` attribútum értékei érvényesek"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "A kisegítő technológiák (például képernyőolvasók) nem tudják értelmezni az érvénytelen értékkel rendelkező ARIA-attribútumokat. [További információ](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "A kisegítő technológiák (például képernyőolvasók) nem tudják értelmezni az érvénytelen értékkel rendelkező ARIA-attribútumokat. [További információ](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "Bizonyos `[aria-*]` attribútumok nem rendelkeznek érvényes értékekkel"
@@ -63,7 +63,7 @@
     "message": "Az `[aria-*]` attribútumok érvényes értékekkel rendelkeznek"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "A kisegítő technológiák (például képernyőolvasók) nem tudják értelmezni az érvénytelen névvel rendelkező ARIA-attribútumokat. [További információ](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "A kisegítő technológiák (például képernyőolvasók) nem tudják értelmezni az érvénytelen névvel rendelkező ARIA-attribútumokat. [További információ](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "Hiányzó vagy elgépelt `[aria-*]` attribútumok"
@@ -72,7 +72,7 @@
     "message": "Az `[aria-*]` attribútumok érvényesek és nincsenek elgépelve"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "A feliratok használhatóvá teszik az audioelemeket a siket és hallássérült felhasználók számára a fontos információk megadásával (például ki beszél, mit mond, valamint egyéb, nem beszédalapú információk). [További információ](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "A feliratok használhatóvá teszik az audioelemeket a siket és hallássérült felhasználók számára a fontos információk megadásával (például ki beszél, mit mond, valamint egyéb, nem beszédalapú információk). [További információ](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "Hiányzó `<track>` elem `[kind=\"captions\"]` attribútummal bizonyos `<audio>` elemeknél."
@@ -84,7 +84,7 @@
     "message": "Hibás elemek"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "Ha valamelyik gomb nem rendelkezik hozzáférhető névvel, a képernyőolvasók „gombként” jelzik, ami használhatatlanná teszi a képernyőolvasóra hagyatkozó felhasználók számára. [További információ](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "Ha valamelyik gomb nem rendelkezik hozzáférhető névvel, a képernyőolvasók „gombként” jelzik, ami használhatatlanná teszi a képernyőolvasóra hagyatkozó felhasználók számára. [További információ](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "Bizonyos gombok nem rendelkeznek hozzáférhető névvel"
@@ -93,7 +93,7 @@
     "message": "A gombok rendelkeznek kisegítő névvel"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "Az ismétlődő tartalmakat megkerülő módszerek megvalósításával a billentyűzetet használó személyek hatékonyabban navigálhatnak az oldalon. [További információ](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "Az ismétlődő tartalmakat megkerülő módszerek megvalósításával a billentyűzetet használó személyek hatékonyabban navigálhatnak az oldalon. [További információ](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "Az oldal nem tartalmaz címsort, átugró linket vagy igazodásipont-régiót"
@@ -102,7 +102,7 @@
     "message": "Az oldal címsort, átugró linket vagy igazodásipont-régiót tartalmaz"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "Az alacsony kontrasztú szöveg számos felhasználó számára nehezen vagy egyáltalán nem olvasható. [További információ](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "Az alacsony kontrasztú szöveg számos felhasználó számára nehezen vagy egyáltalán nem olvasható. [További információ](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "Nem megfelelő a háttér- és előtérszínek közötti kontrasztarány."
@@ -111,7 +111,7 @@
     "message": "Megfelelő a háttér- és előtérszínek közötti kontrasztarány"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "Ha nem megfelelő a definíciós listák jelölése, a képernyőolvasók zavaros vagy pontatlan szöveget generálhatnak. [További információ](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "Ha nem megfelelő a definíciós listák jelölése, a képernyőolvasók zavaros vagy pontatlan szöveget generálhatnak. [További információ](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "Bizonyos `<dl>` elemek nem csak megfelelően rendezett `<dt>` és `<dd>` csoportokat, `<script>` vagy `<template>` elemeket tartalmaznak."
@@ -120,7 +120,7 @@
     "message": "A `<dl>` elemek csak megfelelően rendezett `<dt>` és `<dd>` csoportokat, `<script>` vagy `<template>` elemeket tartalmaznak."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "A definíciós lista elemeit (`<dt>` és `<dd>`) fölérendelt `<dl>` elembe kell foglalni, hogy a képernyőolvasók megfelelően olvashassák fel őket. [További információ](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "A definíciós lista elemeit (`<dt>` és `<dd>`) fölérendelt `<dl>` elembe kell foglalni, hogy a képernyőolvasók megfelelően olvashassák fel őket. [További információ](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "A definíciós lista elemei nem `<dl>` elemek között találhatók"
@@ -138,7 +138,7 @@
     "message": "A dokumentum rendelkezik `<title>` elemmel"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "Az „id” attribútum értékének egyedinek kell lennie, hogy a kisegítő technológiák ne hagyhassák figyelmen kívül a további előfordulásokat. [További információ](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "Az „id” attribútum értékének egyedinek kell lennie, hogy a kisegítő technológiák ne hagyhassák figyelmen kívül a további előfordulásokat. [További információ](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "Az oldalon található egyes `[id]` attribútumok nem egyediek"
@@ -147,7 +147,7 @@
     "message": "Az oldalon található `[id]` attribútumok egyediek"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "A képernyőolvasók a keretek címeire hagyatkoznak a keret tartalmának bemutatásához. [További információ](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "A képernyőolvasók a keretek címeire hagyatkoznak a keret tartalmának bemutatásához. [További információ](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "Cím nélküli `<frame>` vagy `<iframe>` elemek"
@@ -156,7 +156,7 @@
     "message": "A `<frame>` vagy `<iframe>` elemek rendelkeznek címmel"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "Ha az oldal nem határoz meg „lang” attribútumot, a képernyőolvasó feltételezi, hogy az oldal nyelve megegyezik a felhasználó által a képernyőolvasó beállításakor megadott alapértelmezett nyelvvel. Ha az oldal tényleges nyelve eltér az alapértelmezett nyelvtől, akkor előfordulhat, hogy a képernyőolvasó helytelen kiejtéssel olvassa fel az oldal szövegét. [További információ](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "Ha az oldal nem határoz meg „lang” attribútumot, a képernyőolvasó feltételezi, hogy az oldal nyelve megegyezik a felhasználó által a képernyőolvasó beállításakor megadott alapértelmezett nyelvvel. Ha az oldal tényleges nyelve eltér az alapértelmezett nyelvtől, akkor előfordulhat, hogy a képernyőolvasó helytelen kiejtéssel olvassa fel az oldal szövegét. [További információ](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "A `<html>` elem nem rendelkezik `[lang]` attribútummal"
@@ -165,7 +165,7 @@
     "message": "A `<html>` elem rendelkezik `[lang]` attribútummal"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "Érvényes [BCP 47-nyelv](https://www.w3.org/International/questions/qa-choosing-language-tags#question) megadása segít a képernyőolvasónak a szöveg megfelelő felolvasásában. [További információ](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Érvényes [BCP 47-nyelv](https://www.w3.org/International/questions/qa-choosing-language-tags#question) megadása segít a képernyőolvasónak a szöveg megfelelő felolvasásában. [További információ](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "A `<html>` elem esetében érvénytelen érték van megadva a `[lang]` attribútumnál."
@@ -174,7 +174,7 @@
     "message": "A `<html>` elem esetében érvényes érték van megadva a `[lang]` attribútumnál"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "A tájékoztató elemeknél rövid, leíró alternatív szöveg használata ajánlott. A díszítőelemek figyelmen kívül hagyhatók üres „alt” attribútummal. [További információ](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "A tájékoztató elemeknél rövid, leíró alternatív szöveg használata ajánlott. A díszítőelemek figyelmen kívül hagyhatók üres „alt” attribútummal. [További információ](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "Bizonyos képelemek nem rendelkeznek `[alt]` attribútumokkal"
@@ -183,7 +183,7 @@
     "message": "A képelemek rendelkeznek `[alt]` attribútumokkal"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "Ha képet használ `<input>` gombként, alternatív szöveg megadásával segíthet a képernyőolvasót használó személyek számára a gomb funkciójának megértésében. [További információ](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "Ha képet használ `<input>` gombként, alternatív szöveg megadásával segíthet a képernyőolvasót használó személyek számára a gomb funkciójának megértésében. [További információ](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "Bizonyos `<input type=\"image\">` elemek nem rendelkeznek `[alt]` szöveggel"
@@ -192,7 +192,7 @@
     "message": "Az `<input type=\"image\">` elemek rendelkeznek `[alt]` szöveggel"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "A címkék biztosítják, hogy a formátumvezérlőket megfelelően jelezze a rendszer a kisegítő technológiák (pl. képernyőolvasók) segítségével. [További információ](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "A címkék biztosítják, hogy a formátumvezérlőket megfelelően jelezze a rendszer a kisegítő technológiák (pl. képernyőolvasók) segítségével. [További információ](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "Bizonyos formátumelemek nem rendelkeznek társított címkékkel"
@@ -201,7 +201,7 @@
     "message": "A formátumelemekhez megfelelő címkék vannak társítva"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "Az elrendezési célokat szolgáló táblázat nem tartalmazhat adatelemeket (pl. „th” vagy „caption” elem, illetve „summary” attribútum), mert ez zavaró lehet a képernyőolvasót használó személyek számára. [További információ](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "Az elrendezési célokat szolgáló táblázat nem tartalmazhat adatelemeket (pl. „th” vagy „caption” elem, illetve „summary” attribútum), mert ez zavaró lehet a képernyőolvasót használó személyek számára. [További információ](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "A prezentációs `<table>` elemek nem kerülik a `<th>`, `<caption>` elemek vagy a `[summary]` attribútumok használatát."
@@ -210,7 +210,7 @@
     "message": "A prezentációs `<table>` elemek kerülik a `<th>`, `<caption>` elemek vagy a `[summary]` attribútumok használatát."
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "A felismerhető, egyedi és fókuszálható linkszövegek (és linkként használt képek alternatív szövegei) jobb navigációs élményt biztosítanak a képernyőolvasóra hagyatkozó felhasználók számára. [További információ](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "A felismerhető, egyedi és fókuszálható linkszövegek (és linkként használt képek alternatív szövegei) jobb navigációs élményt biztosítanak a képernyőolvasóra hagyatkozó felhasználók számára. [További információ](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "A linkekhez nem tartozik felismerhető név"
@@ -219,7 +219,7 @@
     "message": "A linkekhez felismerhető név tartozik"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "A képernyőolvasóknak külön módszerük van a listák felolvasására. A megfelelő listastruktúra biztosítása segíti a képernyőolvasók működését. [További információ](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "A képernyőolvasóknak külön módszerük van a listák felolvasására. A megfelelő listastruktúra biztosítása segíti a képernyőolvasók működését. [További információ](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "A listák nem csak `<li>` elemeket és szkriptet támogató elemeket (`<script>` és `<template>`) tartalmaznak."
@@ -228,7 +228,7 @@
     "message": "A listák csak `<li>` elemeket és szkriptet támogató elemeket (`<script>` és `<template>`) tartalmaznak."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "A listaelemeket (`<li>`) fölérendelt `<ul>` vagy `<ol>` elemekben kell elhelyezni, hogy a képernyőolvasók megfelelően olvassák fel őket. [További információ](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "A listaelemeket (`<li>`) fölérendelt `<ul>` vagy `<ol>` elemekben kell elhelyezni, hogy a képernyőolvasók megfelelően olvassák fel őket. [További információ](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "Bizonyos listaelemek (`<li>`) nem fölérendelt `<ul>` vagy `<ol>` elemek között találhatók."
@@ -237,7 +237,7 @@
     "message": "A listaelemek (`<li>`) fölérendelt `<ul>` vagy `<ol>` elemek között találhatók."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "A felhasználók nem számítanak az oldal automatikus frissítésére, ami visszahelyezi a fókuszt az oldal tetejére. Ez frusztráló vagy zavaró élményhez vezethet. [További információ](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "A felhasználók nem számítanak az oldal automatikus frissítésére, ami visszahelyezi a fókuszt az oldal tetejére. Ez frusztráló vagy zavaró élményhez vezethet. [További információ](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "A dokumentum a `<meta http-equiv=\"refresh\">` metacímkét használja"
@@ -246,7 +246,7 @@
     "message": "A dokumentum nem használja a `<meta http-equiv=\"refresh\">` metacímkét"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "A nagyítás letiltása problémát jelent a gyengén látó felhasználók számára, akik a képernyőnagyításra hagyatkoznak ahhoz, hogy megfelelően láthassák a weboldal tartalmát. [További információ](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "A nagyítás letiltása problémát jelent a gyengén látó felhasználók számára, akik a képernyőnagyításra hagyatkoznak ahhoz, hogy megfelelően láthassák a weboldal tartalmát. [További információ](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "A `[user-scalable=\"no\"]` értéket használja a `<meta name=\"viewport\">` elemben vagy a `[maximum-scale]` attribútum értéke ötnél kevesebb."
@@ -255,7 +255,7 @@
     "message": "Nem használja a `[user-scalable=\"no\"]` értéket a `<meta name=\"viewport\">` elemben, és a `[maximum-scale]` attribútum értéke nem kevesebb ötnél."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "A képernyőolvasók nem tudják lefordítani a nem szövegalapú tartalmakat. Ha helyettesítő szöveget ad hozzá az `<object>` elemekhez, segíti a képernyőolvasókat a tartalmak értelmezésében a felhasználók számára. [További információ](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "A képernyőolvasók nem tudják lefordítani a nem szövegalapú tartalmakat. Ha helyettesítő szöveget ad hozzá az `<object>` elemekhez, segíti a képernyőolvasókat a tartalmak értelmezésében a felhasználók számára. [További információ](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "Bizonyos `<object>` elemek nem rendelkeznek `[alt]` szöveggel"
@@ -264,7 +264,7 @@
     "message": "Az `<object>` elemek rendelkeznek `[alt]` szöveggel"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "A 0-nál nagyobb érték explicit navigációs sorrendet jelent. Ez ugyan technikailag érvényes, azonban gyakran frusztráló felhasználói élményt nyújt a kisegítő technológiákra hagyatkozó személyek számára. [További információ](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "A 0-nál nagyobb érték explicit navigációs sorrendet jelent. Ez ugyan technikailag érvényes, azonban gyakran frusztráló felhasználói élményt nyújt a kisegítő technológiákra hagyatkozó személyek számára. [További információ](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "Bizonyos elemek 0-nál nagyobb `[tabindex]` értékkel rendelkeznek"
@@ -273,7 +273,7 @@
     "message": "Egy elemnek sincs 0-nál nagyobb `[tabindex]` értéke"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "A képernyőolvasók rendelkeznek olyan funkciókkal, amelyek egyszerűbbé teszik a táblázatokban való navigációt. Annak biztosításával, hogy a `[headers]` attribútumot használó `<td>` cellák csak ugyanazon táblázat egyéb celláira hivatkoznak, javíthatja a képernyőolvasóra hagyatkozó felhasználók élményét. [További információ](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "A képernyőolvasók rendelkeznek olyan funkciókkal, amelyek egyszerűbbé teszik a táblázatokban való navigációt. Annak biztosításával, hogy a `[headers]` attribútumot használó `<td>` cellák csak ugyanazon táblázat egyéb celláira hivatkoznak, javíthatja a képernyőolvasóra hagyatkozó felhasználók élményét. [További információ](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "A `<table>` elem `[headers]` attribútumot használó cellái ugyanazon táblázat másik celláira hivatkoznak."
@@ -282,7 +282,7 @@
     "message": "A `<table>` elem `[headers]` attribútumot használó cellái csak ugyanazon táblázat másik celláira hivatkoznak."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "A képernyőolvasók rendelkeznek olyan funkciókkal, amelyek egyszerűbbé teszik a táblázatokban való navigációt. Annak biztosításával, hogy a táblák fejlécei mindig adott cellakészletre hivatkoznak, javíthatja a képernyőolvasóra hagyatkozó felhasználók élményét. [További információ](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "A képernyőolvasók rendelkeznek olyan funkciókkal, amelyek egyszerűbbé teszik a táblázatokban való navigációt. Annak biztosításával, hogy a táblák fejlécei mindig adott cellakészletre hivatkoznak, javíthatja a képernyőolvasóra hagyatkozó felhasználók élményét. [További információ](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "Bizonyos `<th>` elemeknél és `[role=\"columnheader\"/\"rowheader\"]` attribútummal rendelkező elemeknél hiányoznak az általuk leírt adatcellák."
@@ -291,7 +291,7 @@
     "message": "A `<th>` elemeknél és `[role=\"columnheader\"/\"rowheader\"]` attribútummal rendelkező elemeknél megtalálhatók az általuk leírt adatcellák."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "Érvényes [BCP 47-nyelv](https://www.w3.org/International/questions/qa-choosing-language-tags#question) elemeknél való megadása segít biztosítani, hogy a szöveget helyes kiejtéssel olvassa fel a képernyőolvasó. [További információ](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Érvényes [BCP 47-nyelv](https://www.w3.org/International/questions/qa-choosing-language-tags#question) elemeknél való megadása segít biztosítani, hogy a szöveget helyes kiejtéssel olvassa fel a képernyőolvasó. [További információ](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "Bizonyos `[lang]` attribútumok nem rendelkeznek érvényes értékkel"
@@ -300,7 +300,7 @@
     "message": "A `[lang]` attribútumok érvényes értékkel rendelkeznek"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "Ha a videóhoz felirat tartozik, a siket és hallássérült felhasználók egyszerűbben hozzájuthatnak a videóban található információkhoz. [További információ](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "Ha a videóhoz felirat tartozik, a siket és hallássérült felhasználók egyszerűbben hozzájuthatnak a videóban található információkhoz. [További információ](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "Bizonyos `<video>` elemek nem tartalmaznak `<track>` elemet `[kind=\"captions\"]` attribútummal."
@@ -309,7 +309,7 @@
     "message": "A `<video>` elemek tartalmaznak `<track>` elemet `[kind=\"captions\"]` attribútummal."
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "Az audiokommentárok olyan fontos információkat nyújtanak a videókhoz, amelyek a párbeszédekből nem derülnek ki (ilyenek például az arckifejezések és a jelenetek leírása). [További információ](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "Az audiokommentárok olyan fontos információkat nyújtanak a videókhoz, amelyek a párbeszédekből nem derülnek ki (ilyenek például az arckifejezések és a jelenetek leírása). [További információ](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "Bizonyos `<video>` elemek nem tartalmaznak `<track>` elemet `[kind=\"description\"]` attribútummal."

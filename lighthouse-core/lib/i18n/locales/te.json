@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "యాక్సెస్ కీలతో వినియోగదారులు పేజీలోని నిర్దిష్ట భాగంపై వేగంగా దృష్టి సారించగలరు. సక్రమమైన నావిగేషన్ కోసం, ప్రతి యాక్సెస్ కీ తప్పనిసరిగా విభిన్నంగా ఉండాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "యాక్సెస్ కీలతో వినియోగదారులు పేజీలోని నిర్దిష్ట భాగంపై వేగంగా దృష్టి సారించగలరు. సక్రమమైన నావిగేషన్ కోసం, ప్రతి యాక్సెస్ కీ తప్పనిసరిగా విభిన్నంగా ఉండాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "`[accesskey]` విలువలు ప్రత్యేకమైనవి కావు"
@@ -9,7 +9,7 @@
     "message": "`[accesskey]` విలువలు విశిష్ఠమైనవి"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "ప్రతి ARIA `role` నిర్దిష్ట సబ్‌సెట్ `aria-*` లక్షణాలకు మద్దతు ఇస్తుంది. వీటిని తప్పుగా సరిపోల్చితే `aria-*` లక్షణాలు చెల్లనివిగా అయిపోతాయి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "ప్రతి ARIA `role` నిర్దిష్ట సబ్‌సెట్ `aria-*` లక్షణాలకు మద్దతు ఇస్తుంది. వీటిని తప్పుగా సరిపోల్చితే `aria-*` లక్షణాలు చెల్లనివిగా అయిపోతాయి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "`[aria-*]` లక్షణాలు వాటి పాత్రలతో సరిపోలలేదు"
@@ -18,7 +18,7 @@
     "message": "`[aria-*]` లక్షణాలు వాటి పాత్రలతో సరిపోలాలి"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "కొన్ని ARIA పాత్రలు మూలకం స్థితిని స్క్రీన్ రీడర్‌లకు వివరించే ఆవశ్యక లక్షణాలను కలిగి ఉన్నాయి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "కొన్ని ARIA పాత్రలు మూలకం స్థితిని స్క్రీన్ రీడర్‌లకు వివరించే ఆవశ్యక లక్షణాలను కలిగి ఉన్నాయి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "`[role]` అన్ని అవసరమైన `[aria-*]` మూలకాలు కలిగి లేదు"
@@ -27,7 +27,7 @@
     "message": "`[role]`లు అన్ని అవసరమైన `[aria-*]` లక్షణాలను కలిగి ఉన్నాయి"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "కొన్ని ARIA మూలాధార పాత్రలు తప్పనిసరిగా నిర్దిష్ట ఉపాంశ పాత్రల కలయికతో వాటి ఉద్దేశిత యాక్సెసిబిలిటీ ఫంక్షన్‌లు సరిగ్గా అమలయ్యే విధంగా ఉండాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "కొన్ని ARIA మూలాధార పాత్రలు తప్పనిసరిగా నిర్దిష్ట ఉపాంశ పాత్రల కలయికతో వాటి ఉద్దేశిత యాక్సెసిబిలిటీ ఫంక్షన్‌లు సరిగ్గా అమలయ్యే విధంగా ఉండాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "నిర్దిష్ట ఉపాంశ `[role]` అవసరమైన `[role]` మూలకాలు కనిపించడం లేదు."
@@ -36,7 +36,7 @@
     "message": "నిర్దిష్ట ఉపాంశ `[role]`లు అవసరమైన `[role]` మూలకాలు ఉన్నాయి."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "కొన్ని ARIA ఉపాంశ పాత్రలు తప్పనిసరిగా నిర్దిష్ట మూలధార పాత్రల కలయికతో వాటి ఉద్దేశిత యాక్సెసిబిలిటీ ఫంక్షన్‌లు సరిగ్గా అమలయ్యే విధంగా ఉండాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "కొన్ని ARIA ఉపాంశ పాత్రలు తప్పనిసరిగా నిర్దిష్ట మూలధార పాత్రల కలయికతో వాటి ఉద్దేశిత యాక్సెసిబిలిటీ ఫంక్షన్‌లు సరిగ్గా అమలయ్యే విధంగా ఉండాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "`[role]`లు వాటి అవసరమైన మూలాధార మూలకంతో లేవు"
@@ -45,7 +45,7 @@
     "message": "`[role]` వాటి అవసరమైన మూలాధార మూలకంతో ఉన్నాయి"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "ARIA పాత్రలు వాటి ఉద్దేశిత యాక్సెసిబిలిటీ ఫంక్షన్‌లను అమలు చేయడానికి తప్పనిసరిగా వాటిలో చెల్లుబాటయ్యే విలువలు ఉండాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "ARIA పాత్రలు వాటి ఉద్దేశిత యాక్సెసిబిలిటీ ఫంక్షన్‌లను అమలు చేయడానికి తప్పనిసరిగా వాటిలో చెల్లుబాటయ్యే విలువలు ఉండాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "`[role]` విలువలు చెల్లుబాటయ్యేవి కావు"
@@ -54,7 +54,7 @@
     "message": "`[role]` విలువలు చెల్లుబాటు అయ్యేవి"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "స్క్రీన్ రీడర్‌ల లాంటి సహాయక సాంకేతిక పరిజ్ఞానాలు చెల్లుబాటు కాని విలువల గల ARIA లక్షణాలను అర్థం చేసుకోలేవు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "స్క్రీన్ రీడర్‌ల లాంటి సహాయక సాంకేతిక పరిజ్ఞానాలు చెల్లుబాటు కాని విలువల గల ARIA లక్షణాలను అర్థం చేసుకోలేవు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "`[aria-*]` లక్షణాలలో చెల్లుబాటయ్యే విలువలు లేవు"
@@ -63,7 +63,7 @@
     "message": "`[aria-*]` లక్షణాలు చెల్లుబాటయ్యే విలువలను కలిగి ఉన్నాయి"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "స్క్రీన్ రీడర్‌ల లాంటి సహాయక సాంకేతిక పరిజ్ఞానాలు చెల్లుబాటు కాని పేర్లు గల ARIA లక్షణాలను అర్థం చేసుకోలేవు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "స్క్రీన్ రీడర్‌ల లాంటి సహాయక సాంకేతిక పరిజ్ఞానాలు చెల్లుబాటు కాని పేర్లు గల ARIA లక్షణాలను అర్థం చేసుకోలేవు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "`[aria-*]` లక్షణాలు చెల్లుబాటు అయ్యేవి కావు లేదా అక్షరదోషాలు ఉన్నాయి"
@@ -72,7 +72,7 @@
     "message": "`[aria-*]` లక్షణాలు చెల్లుబాటు అయ్యేవి, అక్షరదోషాలేవీ లేవు"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "శీర్షికల సహాయంతో ఆడియో మూలకాలలో ఏమి ఉన్నది చెవిటి లేదా వినికిడి సమస్య ఉన్న వినియోగదారులు అర్థం చేసుకోగలరు, దీని ద్వారా ఎవరు మాట్లాడుతున్నారు, ఏమి చెబుతున్నారు లాంటి కీలకమైన సమాచారం, ఇతర సంభాషణేతర సమాచారం అందించబడుతుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "శీర్షికల సహాయంతో ఆడియో మూలకాలలో ఏమి ఉన్నది చెవిటి లేదా వినికిడి సమస్య ఉన్న వినియోగదారులు అర్థం చేసుకోగలరు, దీని ద్వారా ఎవరు మాట్లాడుతున్నారు, ఏమి చెబుతున్నారు లాంటి కీలకమైన సమాచారం, ఇతర సంభాషణేతర సమాచారం అందించబడుతుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "`<audio>` మూలకాలలో `[kind=\"captions\"]`తో `<track>` మూలకం లేదు."
@@ -84,7 +84,7 @@
     "message": "విఫలం అవుతున్న మూలకాలు"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "ఒక బటన్‌కు యాక్సెస్ చేయదగిన పేరు లేనప్పుడు, స్క్రీన్ రీడర్‌లు దీనిని \"బటన్\"గా ప్రకటిస్తాయి, తద్వారా స్క్రీన్ రీడర్‌లపై ఆధారపడే వినియోగదారులకు నిరుపయోగమైనవిగా చేస్తాయి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "ఒక బటన్‌కు యాక్సెస్ చేయదగిన పేరు లేనప్పుడు, స్క్రీన్ రీడర్‌లు దీనిని \"బటన్\"గా ప్రకటిస్తాయి, తద్వారా స్క్రీన్ రీడర్‌లపై ఆధారపడే వినియోగదారులకు నిరుపయోగమైనవిగా చేస్తాయి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "బటన్‌లకు యాక్సెస్‌కి తగిన పేరు లేదు"
@@ -93,7 +93,7 @@
     "message": "బటన్‌లు యాక్సెస్ చేయదగిన పేరును కలిగి ఉన్నాయి"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "పునరావృత కంటెంట్‌ను దాటవేయడానికి మార్గాలను జోడించడం వలన కీబోర్డ్ వినియోగదారులు పేజీలో మరింత సమర్థవంతంగా నావిగేట్ చేయగలరు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "పునరావృత కంటెంట్‌ను దాటవేయడానికి మార్గాలను జోడించడం వలన కీబోర్డ్ వినియోగదారులు పేజీలో మరింత సమర్థవంతంగా నావిగేట్ చేయగలరు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "పేజీలో ముఖ్యశీర్షిక, దాటివేత లింక్ లేదా ల్యాండ్‌మార్క్ ప్రాంతం లేవు"
@@ -102,7 +102,7 @@
     "message": "పేజీలో ముఖ్య శీర్షిక, దాటివేత లింక్ లేదా ల్యాండ్‌మార్క్ ప్రాంతం ఉన్నాయి"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "తక్కువ వర్ణభేద వచనం- చాలా మంది వినియోగదారులు చదవడానికి కష్టసాధ్యమైనది లేదా అసలు సాధ్యం కానిది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "తక్కువ వర్ణభేద వచనం- చాలా మంది వినియోగదారులు చదవడానికి కష్టసాధ్యమైనది లేదా అసలు సాధ్యం కానిది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "నేపథ్యం, ముందువైపు రంగులు తగినంత వర్ణభేద నిష్పత్తితో లేవు"
@@ -111,7 +111,7 @@
     "message": "నేపథ్యం మరియు ముందువైపు రంగులు తగినంత వర్ణభేద నిష్పత్తితో ఉంటున్నాయి"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "నిర్వచన జాబితాలను సరిగ్గా గుర్తు పట్టే విధంగా సెట్ చేయనప్పుడు, స్క్రీన్ రీడర్‌లు అయోమయానికి గురి చేసేలా లేదా అనిర్దిష్టమైన అవుట్‌పుట్‌ను అందించవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "నిర్వచన జాబితాలను సరిగ్గా గుర్తు పట్టే విధంగా సెట్ చేయనప్పుడు, స్క్రీన్ రీడర్‌లు అయోమయానికి గురి చేసేలా లేదా అనిర్దిష్టమైన అవుట్‌పుట్‌ను అందించవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "`<dl>`లకు సంబంధించి కేవలం సక్రమంగా ఆర్డర్ చేసిన ఏకైక `<dt>` మరియు `<dd>` సమూహాలు, `<script>` లేదా `<template>` మూలకాలు లేవు."
@@ -120,7 +120,7 @@
     "message": "`<dl>`లకు సంబంధించి సక్రమంగా ఆర్డర్ చేసిన ఏకైక `<dt>` మరియు `<dd>` సమూహాలు, `<script>` లేదా `<template>` మూలకాలు మాత్రమే ఉన్నాయి."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "స్క్రీన్ రీడర్‌లు నిర్వచన జాబితా అంశాలను (`<dt>` మరియు `<dd>`) సక్రమంగా ప్రకటించడం కోసం వాటిని తప్పనిసరిగా మూలధార `<dl>` మూలకంలో సర్దుబాటు చేయాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "స్క్రీన్ రీడర్‌లు నిర్వచన జాబితా అంశాలను (`<dt>` మరియు `<dd>`) సక్రమంగా ప్రకటించడం కోసం వాటిని తప్పనిసరిగా మూలధార `<dl>` మూలకంలో సర్దుబాటు చేయాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "నిర్వచన జాబిత అంశాలను `<dl>` మూలకాలలో సర్దుబాటు చేయలేదు"
@@ -138,7 +138,7 @@
     "message": "పత్రానికి `<title>` మూలకం ఉంది"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "సహాయకర సాంకేతిక పరిజ్ఞానాల ద్వారా ఇతర సందర్భాలు విస్మరించబడకుండా నిరోధించడానికి id లక్షణం విలువ ప్రత్యేకంగా ఉండాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "సహాయకర సాంకేతిక పరిజ్ఞానాల ద్వారా ఇతర సందర్భాలు విస్మరించబడకుండా నిరోధించడానికి id లక్షణం విలువ ప్రత్యేకంగా ఉండాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "పేజీలోని `[id]` లక్షణాలు విశిష్ఠమైనవి కావు"
@@ -147,7 +147,7 @@
     "message": "పేజీలోని `[id]` లక్షణాలు విశిష్ఠంగా ఉన్నాయి"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "స్క్రీన్ రీడర్ వినియోగదారులు ఫ్రేమ్‌ల కంటెంట్‌లను వివరించడానికి ఫ్రేమ్ శీర్షికలపై ఆధారపడతారు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "స్క్రీన్ రీడర్ వినియోగదారులు ఫ్రేమ్‌ల కంటెంట్‌లను వివరించడానికి ఫ్రేమ్ శీర్షికలపై ఆధారపడతారు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "`<frame>` లేదా `<iframe>` మూలకాలలో శీర్షిక లేదు"
@@ -156,7 +156,7 @@
     "message": "`<frame>` లేదా `<iframe>` మూలకాలు శీర్షికను కలిగి ఉన్నాయి"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "ఒక పేజీ భాషా లక్షణాన్ని పేర్కొనకుంటే, స్క్రీన్ రీడర్‌ను సెట్ చేస్తున్నప్పుడు వినియోగదారు ఎంచుకున్న డిఫాల్ట్ భాషలో పేజీ ఉందని స్క్రీన్ రీడర్ భావిస్తుంది. ఒకవేళ పేజీ డిఫాల్ట్ భాషలో లేదని అనుకుంటే, స్క్రీన్ రీడర్ పేజీ వచనం సరిగ్గా ఉందని ప్రకటించకపోవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "ఒక పేజీ భాషా లక్షణాన్ని పేర్కొనకుంటే, స్క్రీన్ రీడర్‌ను సెట్ చేస్తున్నప్పుడు వినియోగదారు ఎంచుకున్న డిఫాల్ట్ భాషలో పేజీ ఉందని స్క్రీన్ రీడర్ భావిస్తుంది. ఒకవేళ పేజీ డిఫాల్ట్ భాషలో లేదని అనుకుంటే, స్క్రీన్ రీడర్ పేజీ వచనం సరిగ్గా ఉందని ప్రకటించకపోవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "`<html>` మూలకంలో `[lang]` లక్షణం లేదు"
@@ -165,7 +165,7 @@
     "message": "`<html>` మూలకం `[lang]` లక్షణాన్ని కలిగి ఉంది"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "చెల్లుబాటయ్యే [BCP 47 భాష](https://www.w3.org/International/questions/qa-choosing-language-tags#question)ను పేర్కొనడం అన్నది వచనాన్ని సక్రమంగా ప్రకటించడంలో స్క్రీన్ రీడర్‌లకు సహాయపడుతుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "చెల్లుబాటయ్యే [BCP 47 భాష](https://www.w3.org/International/questions/qa-choosing-language-tags#question)ను పేర్కొనడం అన్నది వచనాన్ని సక్రమంగా ప్రకటించడంలో స్క్రీన్ రీడర్‌లకు సహాయపడుతుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "`<html>` మూలకంలో దాని `[lang]` లక్షణానికి చెల్లుబాటయ్యే విలువ లేదు."
@@ -174,7 +174,7 @@
     "message": "`<html>` మూలకం దాని `[lang]` లక్షణానికి చెల్లుబాటయ్యే విలువను కలిగి ఉంది"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "సమాచార మూలకాలు సంక్షిప్తమైన, వివరణాత్మక ప్రత్యామ్నాయ వచనాన్ని లక్ష్యంగా చేసుకోవాలి. అలంకార మూలకాలను ఖాళీ alt లక్షణంతో విస్మరించవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "సమాచార మూలకాలు సంక్షిప్తమైన, వివరణాత్మక ప్రత్యామ్నాయ వచనాన్ని లక్ష్యంగా చేసుకోవాలి. అలంకార మూలకాలను ఖాళీ alt లక్షణంతో విస్మరించవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "చిత్రం మూలకాలలో `[alt]` లక్షణాలు లేవు"
@@ -183,7 +183,7 @@
     "message": "చిత్ర మూలకాలు `[alt]` లక్షణాలను కలిగి ఉన్నాయి"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "ఒక చిత్రం `<input>` బటన్‌గా ఉపయోగిస్తున్నప్పుడు, ప్రత్యామ్నాయ వచనం అందించడమనేది బటన్ ప్రయోజనాన్ని అర్థం చేసుకోవడంలో స్క్రీన్ రీడర్ వినియోగదారులకు సహాయం చేస్తుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "ఒక చిత్రం `<input>` బటన్‌గా ఉపయోగిస్తున్నప్పుడు, ప్రత్యామ్నాయ వచనం అందించడమనేది బటన్ ప్రయోజనాన్ని అర్థం చేసుకోవడంలో స్క్రీన్ రీడర్ వినియోగదారులకు సహాయం చేస్తుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "`<input type=\"image\">` మూలకాలలో `[alt]` వచనం లేదు"
@@ -192,7 +192,7 @@
     "message": "`<input type=\"image\">` మూలకాలు `[alt]` వచనాన్ని కలిగి ఉన్నాయి"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "స్క్రీన్ రీడర్‌ల లాంటి సహాయక సాంకేతిక పరిజ్ఞానాల ద్వారా ఫారమ్ నియంత్రణలు సక్రమంగా ప్రకటించబడుతున్నాయని లేబుల్‌లు నిర్ధారిస్తున్నాయి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "స్క్రీన్ రీడర్‌ల లాంటి సహాయక సాంకేతిక పరిజ్ఞానాల ద్వారా ఫారమ్ నియంత్రణలు సక్రమంగా ప్రకటించబడుతున్నాయని లేబుల్‌లు నిర్ధారిస్తున్నాయి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "ఫారమ్ మూలకాలలో అనుబంధిత లేబుల్‌లు లేవు"
@@ -201,7 +201,7 @@
     "message": "ఫారమ్ మూలకాలు అనుబంధిత లేబుల్‌లను కలిగి ఉన్నాయి"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "లేఅవుట్ ప్రయోజనాల కోసం ఉపయోగించే పట్టికలో th లాంటి డేటా మూలకాలు లేదా శీర్షిక మూలకాలు లేదా సారంశ లక్షణం ఉండకూడదు, ఎందుకంటే ఇది స్క్రీన్ రీడర్ వినియోగదారులకు గందరగోళమైన అనుభవాన్ని అందించవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "లేఅవుట్ ప్రయోజనాల కోసం ఉపయోగించే పట్టికలో th లాంటి డేటా మూలకాలు లేదా శీర్షిక మూలకాలు లేదా సారంశ లక్షణం ఉండకూడదు, ఎందుకంటే ఇది స్క్రీన్ రీడర్ వినియోగదారులకు గందరగోళమైన అనుభవాన్ని అందించవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "ప్రదర్శన సంబంధిత `<table>` మూలకాలు `<th>`, `<caption>` లేదా `[summary]` లక్షణాన్ని ఉపయోగించడం నివారించవు."
@@ -210,7 +210,7 @@
     "message": "ప్రదర్శన సంబంధిత `<table>` మూలకాలు `<th>`, `<caption>` లేదా `[summary]` లక్షణాన్ని ఉపయోగించడం నివారిస్తాయి."
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "కనుగొనదగిన, విశిష్ఠమైన, దృష్టి కేంద్రీకరించగలిగిన లింక్ వచనం (అలాగే చిత్రాలను లింక్‌లుగా ఉపయోగించినప్పుడు వాటి ప్రత్యామ్నాయ వచనం) సహాయంతో స్క్రీన్ రీడర్ వినియోగదారులకు నావిగేషన్ అనుభవం మరింత మెరుగవుతుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "కనుగొనదగిన, విశిష్ఠమైన, దృష్టి కేంద్రీకరించగలిగిన లింక్ వచనం (అలాగే చిత్రాలను లింక్‌లుగా ఉపయోగించినప్పుడు వాటి ప్రత్యామ్నాయ వచనం) సహాయంతో స్క్రీన్ రీడర్ వినియోగదారులకు నావిగేషన్ అనుభవం మరింత మెరుగవుతుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "లింక్‌లలో కనుగొనదగిన పేరు లేదు"
@@ -219,7 +219,7 @@
     "message": "లింక్‌లలో కనుగొనదగిన పేరు ఉంది"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "స్క్రీన్ రీడర్‌లు నిర్దిష్ట రకమైన ప్రకటనల జాబితాలను కలిగి ఉన్నాయి. సక్రమమైన జాబితా నిర్మాణక్రమం నిర్ధారించుకోవడం స్క్రీన్ రీడర్ అవుట్‌పుట్‌కు ఉపకరిస్తుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "స్క్రీన్ రీడర్‌లు నిర్దిష్ట రకమైన ప్రకటనల జాబితాలను కలిగి ఉన్నాయి. సక్రమమైన జాబితా నిర్మాణక్రమం నిర్ధారించుకోవడం స్క్రీన్ రీడర్ అవుట్‌పుట్‌కు ఉపకరిస్తుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "జాబితాలు కేవలం `<li>` మూలకాలు, స్క్రిప్ట్ మద్దతు మూలకాలు (`<script>` మరియు `<template>`)తో ఉండకూడదు."
@@ -228,7 +228,7 @@
     "message": "జాబితాలు కేవలం `<li>` మూలకాలు, స్క్రిప్ట్ మద్దతు మూలకాలు (`<script>` మరియు `<template>`) మాత్రమే కలిగి ఉన్నాయి."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "స్క్రీన్ రీడర్‌ల కోసం జాబితా అంశాలను (`<li>`) మూలాధార అంశం `<ul>`లో ఉంచాలి లేదా `<ol>`ను సక్రమంగా ప్రకటించాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "స్క్రీన్ రీడర్‌ల కోసం జాబితా అంశాలను (`<li>`) మూలాధార అంశం `<ul>`లో ఉంచాలి లేదా `<ol>`ను సక్రమంగా ప్రకటించాలి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "జాబితా అంశాలు (`<li>`) `<ul>` లేదా `<ol>` మూలాధార మూలకాలలో లేవు."
@@ -237,7 +237,7 @@
     "message": "జాబితా అంశాలు (`<li>`) `<ul>` లేదా `<ol>` మూలాధార మూలకాలలో ఉన్నాయి."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "వినియోగదారులు పేజీ ఆటోమేటిక్‌గా రిఫ్రెష్ కావాలని కోరుకోరు. అలా చేయడం వలన దృష్టి కేంద్రీకరణ తిరిగి పేజీ పైభాగంలోకి వెళ్తుంది. ఇది విసుగు తెప్పించే లేదా అయోమయానికి గురి చేసే అనుభవం అందించవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "వినియోగదారులు పేజీ ఆటోమేటిక్‌గా రిఫ్రెష్ కావాలని కోరుకోరు. అలా చేయడం వలన దృష్టి కేంద్రీకరణ తిరిగి పేజీ పైభాగంలోకి వెళ్తుంది. ఇది విసుగు తెప్పించే లేదా అయోమయానికి గురి చేసే అనుభవం అందించవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "పత్రం `<meta http-equiv=\"refresh\">` ఉపయోగిస్తుంది"
@@ -246,7 +246,7 @@
     "message": "పత్రం `<meta http-equiv=\"refresh\">`ని ఉపయోగించడం లేదు"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "జూమ్ చేయగల సామర్థ్యం నిలిపివేస్తే, స్క్రీన్ మ్యాగ్నిఫికేషన్‌పై ఆధారపడే తక్కువ కంటిచూపు ఉన్న వినియోగదారులు వెబ్ పేజీ కంటెంట్‌లను సరిగ్గా చూడలేరు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "జూమ్ చేయగల సామర్థ్యం నిలిపివేస్తే, స్క్రీన్ మ్యాగ్నిఫికేషన్‌పై ఆధారపడే తక్కువ కంటిచూపు ఉన్న వినియోగదారులు వెబ్ పేజీ కంటెంట్‌లను సరిగ్గా చూడలేరు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "`[user-scalable=\"no\"]` అన్నది `<meta name=\"viewport\">` మూలకంలో ఉపయోగించబడింది, అలాగే `[maximum-scale]` లక్షణం 5 కంటే తక్కువ ఉంది."
@@ -255,7 +255,7 @@
     "message": "`[user-scalable=\"no\"]` అన్నది `<meta name=\"viewport\">` మూలకంలో ఉపయోగించలేదు, అలాగే `[maximum-scale]` లక్షణం 5 కంటే తక్కువ లేదు."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "స్క్రీన్ రీడర్‌లు వచనేతర కంటెంట్‌ను అనువదించలేవు. `<object>` మూలకాలకు alt వచనాన్ని జోడించడం వలన స్క్రీన్ రీడర్‌లు వాటి అర్థాన్ని వినియోగదారులకు సరిగ్గా అందించగలుగుతాయి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "స్క్రీన్ రీడర్‌లు వచనేతర కంటెంట్‌ను అనువదించలేవు. `<object>` మూలకాలకు alt వచనాన్ని జోడించడం వలన స్క్రీన్ రీడర్‌లు వాటి అర్థాన్ని వినియోగదారులకు సరిగ్గా అందించగలుగుతాయి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "`<object>` మూలకాలలో `[alt]` వచనం లేదు"
@@ -264,7 +264,7 @@
     "message": "`<object>` మూలకాలు `[alt]` వచనాన్ని కలిగి ఉన్నాయి"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "0 కంటే పెద్ద విలువ విశిష్ఠమైన నావిగేషన్ క్రమాన్ని సూచిస్తుంది. సాంకేతికంగా చెల్లుబాటు అయినప్పటికీ, సహాయక సాంకేతిక పరిజ్ఞానంపై ఆధారపడిన వినియోగదారులకు ఇది తరచూ విసుగు తెప్పించే అనుభవాలను సృష్టిస్తుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "0 కంటే పెద్ద విలువ విశిష్ఠమైన నావిగేషన్ క్రమాన్ని సూచిస్తుంది. సాంకేతికంగా చెల్లుబాటు అయినప్పటికీ, సహాయక సాంకేతిక పరిజ్ఞానంపై ఆధారపడిన వినియోగదారులకు ఇది తరచూ విసుగు తెప్పించే అనుభవాలను సృష్టిస్తుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "కొన్ని మూలకాలు 0 కంటే పెద్దవైన `[tabindex]` విలువను కలిగి ఉన్నాయి"
@@ -273,7 +273,7 @@
     "message": "ఏ మూలకానికి సున్నా కంటే పెద్ద `[tabindex]` విలువ లేదు"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "పట్టికలను నావిగేట్ చేయడం సులభతరం చేసే ఫీచర్‌లను స్క్రీన్ రీడర్‌లు కలిగి ఉన్నాయి. `[headers]` లక్షణాన్ని ఉపయోగిస్తున్న `<td>` సెల్‌లు కేవలం అదే పట్టికలోని ఇతర సెల్‌లను సూచించడం స్క్రీన్ రీడర్ వినియోగదారుల అనుభవాన్ని మెరుగుపరచవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "పట్టికలను నావిగేట్ చేయడం సులభతరం చేసే ఫీచర్‌లను స్క్రీన్ రీడర్‌లు కలిగి ఉన్నాయి. `[headers]` లక్షణాన్ని ఉపయోగిస్తున్న `<td>` సెల్‌లు కేవలం అదే పట్టికలోని ఇతర సెల్‌లను సూచించడం స్క్రీన్ రీడర్ వినియోగదారుల అనుభవాన్ని మెరుగుపరచవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "`<table>` మూలకంలో '[headers]` లక్షణాన్ని ఉపయోగించే సెల్‌లు, అదే పట్టికలోని ఇతర సెల్‌లను సూచిస్తున్నాయి."
@@ -282,7 +282,7 @@
     "message": "`<table>` మూలకంలో '[headers]` లక్షణాన్ని ఉపయోగించే సెల్‌లు కేవలం అదే పట్టికలోని ఇతర సెల్‌లను సూచిస్తున్నాయి."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "పట్టికలను నావిగేట్ చేయడం సులభతరం చేసే ఫీచర్‌లను స్క్రీన్ రీడర్‌లు కలిగి ఉన్నాయి. పట్టిక ముఖ్య శీర్షికలు ఎల్లప్పుడూ కొన్ని సెల్‌ల సెట్‌ను సూచించేలా నిర్ధారించుకోవడం ద్వారా స్క్రీన్ రీడర్ వినియోగదారుల అనుభవాన్ని మెరుగుపరచవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "పట్టికలను నావిగేట్ చేయడం సులభతరం చేసే ఫీచర్‌లను స్క్రీన్ రీడర్‌లు కలిగి ఉన్నాయి. పట్టిక ముఖ్య శీర్షికలు ఎల్లప్పుడూ కొన్ని సెల్‌ల సెట్‌ను సూచించేలా నిర్ధారించుకోవడం ద్వారా స్క్రీన్ రీడర్ వినియోగదారుల అనుభవాన్ని మెరుగుపరచవచ్చు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "`<th>` మూలకాలు, `[role=\"columnheader\"/\"rowheader\"]` కలిగి ఉన్న మూలకాలలో అవి వివరిస్తున్న డేటా సెల్‌లు లేవు."
@@ -291,7 +291,7 @@
     "message": "`<th>` మూలకాలు, `[role=\"columnheader\"/\"rowheader\"]` కలిగి ఉన్న మూలకాలలో అవి వివరిస్తున్న సెల్‌లు ఉన్నాయి."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "మూలకాలలో చెల్లుబాటయ్యే [BCP 47 భాష](https://www.w3.org/International/questions/qa-choosing-language-tags#question) పేర్కొనడమన్నది వచనం స్క్రీన్ రీడర్ ద్వారా సరిగ్గా ఉచ్చరించబడేలా నిర్ధారిస్తుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "మూలకాలలో చెల్లుబాటయ్యే [BCP 47 భాష](https://www.w3.org/International/questions/qa-choosing-language-tags#question) పేర్కొనడమన్నది వచనం స్క్రీన్ రీడర్ ద్వారా సరిగ్గా ఉచ్చరించబడేలా నిర్ధారిస్తుంది. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "`[lang]` లక్షణాలలో చెల్లుబాటయ్యే విలువ లేదు"
@@ -300,7 +300,7 @@
     "message": "`[lang]` లక్షణాలు చెల్లుబాటయ్యే విలువను కలిగి ఉన్నాయి"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "వీడియో, శీర్షికను అందిస్తే, చెవిటి వారు లేదా వినికిడి సమస్య ఉన్న వినియోగదారులు వీడియోలోని సమాచారాన్ని సులభంగా యాక్సెస్ చేయగలుగుతారు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "వీడియో, శీర్షికను అందిస్తే, చెవిటి వారు లేదా వినికిడి సమస్య ఉన్న వినియోగదారులు వీడియోలోని సమాచారాన్ని సులభంగా యాక్సెస్ చేయగలుగుతారు. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "`<video>` మూలకాలలో `[kind=\"captions\"]`తో `<track>` మూలకం లేదు."
@@ -309,7 +309,7 @@
     "message": "`<video>` మూలకాలలో `[kind=\"captions\"]`తో `<track>` మూలకం ఉంది"
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "డైలాగులతో కాకుండా, ముఖంలోని హావభావాలు, దృశ్యాలతో నిండిన వీడియోలకు ఆడియో వివరణలు సంబంధిత సమాచారాన్ని అందిస్తాయి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "డైలాగులతో కాకుండా, ముఖంలోని హావభావాలు, దృశ్యాలతో నిండిన వీడియోలకు ఆడియో వివరణలు సంబంధిత సమాచారాన్ని అందిస్తాయి. [మరింత తెలుసుకోండి](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "`<video>` మూలకాలలో `[kind=\"description\"]`తో `<track>` మూలకం లేదు."

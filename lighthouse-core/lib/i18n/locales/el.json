@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "Τα πλήκτρα πρόσβασης επιτρέπουν στους χρήστες να εστιάσουν γρήγορα σε ένα τμήμα της σελίδας. Για σωστή πλοήγηση, κάθε πλήκτρο πρόσβασης πρέπει να είναι μοναδικό. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "Τα πλήκτρα πρόσβασης επιτρέπουν στους χρήστες να εστιάσουν γρήγορα σε ένα τμήμα της σελίδας. Για σωστή πλοήγηση, κάθε πλήκτρο πρόσβασης πρέπει να είναι μοναδικό. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "Οι τιμές \"[accesskey]\" δεν είναι μοναδικές"
@@ -9,7 +9,7 @@
     "message": "Οι τιμές \"[accesskey]\" είναι μοναδικές"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "Κάθε \"ρόλος\" ARIA υποστηρίζει ένα συγκεκριμένο υποσύνολο χαρακτηριστικών \"aria-*\". Η λανθασμένη αντιστοίχισή τους καθιστά μη έγκυρα τα χαρακτηριστικά \"aria-*\". [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "Κάθε \"ρόλος\" ARIA υποστηρίζει ένα συγκεκριμένο υποσύνολο χαρακτηριστικών \"aria-*\". Η λανθασμένη αντιστοίχισή τους καθιστά μη έγκυρα τα χαρακτηριστικά \"aria-*\". [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "Τα χαρακτηριστικά \"[aria-*]\" δεν αντιστοιχούν στους ρόλους τους"
@@ -18,7 +18,7 @@
     "message": "Τα χαρακτηριστικά \"[aria-*]\" αντιστοιχούν στους ρόλους τους"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "Ορισμένοι ρόλοι ARIA έχουν απαιτούμενα χαρακτηριστικά που περιγράφουν την κατάσταση του στοιχείου στους αναγνώστες οθόνης. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "Ορισμένοι ρόλοι ARIA έχουν απαιτούμενα χαρακτηριστικά που περιγράφουν την κατάσταση του στοιχείου στους αναγνώστες οθόνης. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "Τα \"[role]\" δεν έχουν όλα τα απαιτούμενα χαρακτηριστικά \"[aria-*]\""
@@ -27,7 +27,7 @@
     "message": "Τα \"[role]\" έχουν όλα τα απαιτούμενα χαρακτηριστικά \"[aria-*]\""
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "Ορισμένοι γονικοί ρόλοι ARIA πρέπει να περιέχουν συγκεκριμένους θυγατρικούς ρόλους, για να μπορούν να εκτελέσουν τις προβλεπόμενες λειτουργίες προσβασιμότητας. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "Ορισμένοι γονικοί ρόλοι ARIA πρέπει να περιέχουν συγκεκριμένους θυγατρικούς ρόλους, για να μπορούν να εκτελέσουν τις προβλεπόμενες λειτουργίες προσβασιμότητας. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "Λείπουν στοιχεία με \"[role]\" που απαιτούν συγκεκριμένα θυγατρικά \"[role]\"."
@@ -36,7 +36,7 @@
     "message": "Υπάρχουν στοιχεία με \"[role]\" που απαιτούν συγκεκριμένα θυγατρικά \"[role]\""
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "Ορισμένοι θυγατρικοί ρόλοι ARIA πρέπει να περιέχονται σε συγκεκριμένους γονικούς ρόλους, για να μπορούν να εκτελέσουν σωστά τις προβλεπόμενες λειτουργίες προσβασιμότητας. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "Ορισμένοι θυγατρικοί ρόλοι ARIA πρέπει να περιέχονται σε συγκεκριμένους γονικούς ρόλους, για να μπορούν να εκτελέσουν σωστά τις προβλεπόμενες λειτουργίες προσβασιμότητας. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "Τα \"[role]\" δεν περιέχονται στο απαιτούμενο γονικό στοιχείο τους"
@@ -45,7 +45,7 @@
     "message": "Τα \"[role]\" περιέχονται στο απαιτούμενο γονικό στοιχείο τους"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "Οι ρόλοι ARIA πρέπει να έχουν έγκυρες τιμές, για να μπορούν να εκτελέσουν τις προβλεπόμενες λειτουργίες προσβασιμότητας. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "Οι ρόλοι ARIA πρέπει να έχουν έγκυρες τιμές, για να μπορούν να εκτελέσουν τις προβλεπόμενες λειτουργίες προσβασιμότητας. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "Οι τιμές \"[role]\" δεν είναι έγκυρες"
@@ -54,7 +54,7 @@
     "message": "Οι τιμές \"[role]\" είναι έγκυρες"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "Οι τεχνολογίες για άτομα με ειδικές ανάγκες, όπως οι αναγνώστες οθόνης, δεν μπορούν να ερμηνεύσουν τα χαρακτηριστικά ARIA με μη έγκυρες τιμές. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "Οι τεχνολογίες για άτομα με ειδικές ανάγκες, όπως οι αναγνώστες οθόνης, δεν μπορούν να ερμηνεύσουν τα χαρακτηριστικά ARIA με μη έγκυρες τιμές. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "Τα χαρακτηριστικά \"[aria-*]\" δεν έχουν έγκυρες τιμές"
@@ -63,7 +63,7 @@
     "message": "Τα χαρακτηριστικά \"[aria-*]\" έχουν έγκυρες τιμές"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "Οι τεχνολογίες για άτομα με ειδικές ανάγκες, όπως οι αναγνώστες οθόνης, δεν μπορούν να ερμηνεύσουν τα χαρακτηριστικά ARIA με μη έγκυρα ονόματα. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "Οι τεχνολογίες για άτομα με ειδικές ανάγκες, όπως οι αναγνώστες οθόνης, δεν μπορούν να ερμηνεύσουν τα χαρακτηριστικά ARIA με μη έγκυρα ονόματα. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "Τα χαρακτηριστικά \"[aria-*]\" δεν είναι έγκυρα ή είναι λάθος γραμμένα"
@@ -72,7 +72,7 @@
     "message": "Τα χαρακτηριστικά \"[aria-*]\" είναι έγκυρα και δεν είναι λάθος γραμμένα"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "Οι υπότιτλοι καθιστούν χρησιμοποιήσιμα τα ηχητικά στοιχεία για χρήστες που είναι κωφοί ή έχουν προβλήματα ακοής, παρέχοντας σημαντικές πληροφορίες όπως το ποιος μιλάει, τι λέει και άλλες μη λεκτικές πληροφορίες. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "Οι υπότιτλοι καθιστούν χρησιμοποιήσιμα τα ηχητικά στοιχεία για χρήστες που είναι κωφοί ή έχουν προβλήματα ακοής, παρέχοντας σημαντικές πληροφορίες όπως το ποιος μιλάει, τι λέει και άλλες μη λεκτικές πληροφορίες. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "Από τα στοιχεία \"<audio>\" λείπει ένα στοιχείο \"<track>\" με \"[kind=\"captions\"]\"."
@@ -84,7 +84,7 @@
     "message": "Στοιχεία που απέτυχαν"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "Όταν ένα κουμπί δεν έχει προσβάσιμο όνομα, οι αναγνώστες οθόνης το εκφωνούν ως \"κουμπί\", με αποτέλεσμα να μην είναι χρησιμοποιήσιμο για τους χρήστες που βασίζονται στους αναγνώστες οθόνης. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "Όταν ένα κουμπί δεν έχει προσβάσιμο όνομα, οι αναγνώστες οθόνης το εκφωνούν ως \"κουμπί\", με αποτέλεσμα να μην είναι χρησιμοποιήσιμο για τους χρήστες που βασίζονται στους αναγνώστες οθόνης. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "Τα κουμπιά δεν έχουν προσβάσιμο όνομα"
@@ -93,7 +93,7 @@
     "message": "Τα κουμπιά έχουν προσβάσιμο όνομα"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "Η προσθήκη τρόπων για παράκαμψη του επαναληπτικού περιεχομένου επιτρέπει στους χρήστες του πληκτρολογίου να πλοηγηθούν πιο αποτελεσματικά στη σελίδα. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "Η προσθήκη τρόπων για παράκαμψη του επαναληπτικού περιεχομένου επιτρέπει στους χρήστες του πληκτρολογίου να πλοηγηθούν πιο αποτελεσματικά στη σελίδα. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "Η σελίδα δεν περιέχει κεφαλίδα, σύνδεσμο παράβλεψης ή περιοχή ορόσημου"
@@ -102,7 +102,7 @@
     "message": "Η σελίδα περιέχει κεφαλίδα, σύνδεσμο παράβλεψης ή περιοχή ορόσημου"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "Ένα κείμενο χαμηλής αντίθεσης δυσκολεύει τους χρήστες ή καθιστά αδύνατη την ανάγνωση. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "Ένα κείμενο χαμηλής αντίθεσης δυσκολεύει τους χρήστες ή καθιστά αδύνατη την ανάγνωση. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "Τα χρώματα παρασκηνίου και προσκηνίου δεν έχουν επαρκή αναλογία αντίθεσης."
@@ -111,7 +111,7 @@
     "message": "Τα χρώματα παρασκηνίου και προσκηνίου έχουν επαρκή αναλογία αντίθεσης"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "Όταν οι λίστες ορισμών δεν επισημαίνονται σωστά, οι αναγνώστες οθόνης μπορεί να παράγουν συγκεχυμένα ή ανακριβή αποτελέσματα. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "Όταν οι λίστες ορισμών δεν επισημαίνονται σωστά, οι αναγνώστες οθόνης μπορεί να παράγουν συγκεχυμένα ή ανακριβή αποτελέσματα. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "Τα \"<dl>\" δεν περιέχουν μόνο σωστά ταξινομημένες ομάδες \"<dt>\" και \"<dd>\" και στοιχεία \"<script>\" ή \"<template>\"."
@@ -120,7 +120,7 @@
     "message": "Τα \"<dl>\" περιέχουν μόνο σωστά ταξινομημένες ομάδες \"<dt>\" και \"<dd>\" και στοιχεία \"<script>\" ή \"<template>\"."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "Τα στοιχεία λίστας ορισμών (\"<dt>\" και \"<dd>\") πρέπει να περιτυλίγονται από ένα γονικό στοιχείο \"<dl>\", ώστε οι αναγνώστες οθόνης να μπορούν να τα εκφωνήσουν σωστά. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "Τα στοιχεία λίστας ορισμών (\"<dt>\" και \"<dd>\") πρέπει να περιτυλίγονται από ένα γονικό στοιχείο \"<dl>\", ώστε οι αναγνώστες οθόνης να μπορούν να τα εκφωνήσουν σωστά. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "Τα στοιχεία της λίστας ορισμών δεν περιτυλίγονται από στοιχεία \"<dl>\""
@@ -138,7 +138,7 @@
     "message": "Το έγγραφο έχει στοιχείο \"<title>\""
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "Η τιμή ενός χαρακτηριστικού αναγνωριστικού πρέπει να είναι μοναδική, ώστε οι τεχνολογίες για άτομα με ειδικές ανάγκες να μην παραβλέπουν τις άλλες παρουσίες. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "Η τιμή ενός χαρακτηριστικού αναγνωριστικού πρέπει να είναι μοναδική, ώστε οι τεχνολογίες για άτομα με ειδικές ανάγκες να μην παραβλέπουν τις άλλες παρουσίες. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "Τα χαρακτηριστικά \"[id]\" στη σελίδα δεν είναι μοναδικά"
@@ -147,7 +147,7 @@
     "message": "Τα χαρακτηριστικά \"[id]\" στη σελίδα είναι μοναδικά"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "Οι χρήστες του αναγνώστη οθόνης βασίζονται στους τίτλους των πλαισίων για την περιγραφή του περιεχομένου τους. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "Οι χρήστες του αναγνώστη οθόνης βασίζονται στους τίτλους των πλαισίων για την περιγραφή του περιεχομένου τους. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "Τα στοιχεία \"<frame>\" ή \"<iframe>\" δεν έχουν τίτλο"
@@ -156,7 +156,7 @@
     "message": "Τα στοιχεία \"<frame>\" ή \"<iframe>\" έχουν τίτλο"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "Εάν μια σελίδα δεν προσδιορίζει κάποιο χαρακτηριστικό γλώσσας, ο αναγνώστης οθόνης υποθέτει ότι η σελίδα εμφανίζεται στην προεπιλεγμένη γλώσσα που επέλεξε ο χρήστης κατά τη ρύθμιση του αναγνώστη οθόνης. Εάν η σελίδα δεν εμφανίζεται στην προεπιλεγμένη γλώσσα, τότε ο αναγνώστης οθόνης μπορεί να μην εκφωνήσει σωστά το κείμενο της σελίδας. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "Εάν μια σελίδα δεν προσδιορίζει κάποιο χαρακτηριστικό γλώσσας, ο αναγνώστης οθόνης υποθέτει ότι η σελίδα εμφανίζεται στην προεπιλεγμένη γλώσσα που επέλεξε ο χρήστης κατά τη ρύθμιση του αναγνώστη οθόνης. Εάν η σελίδα δεν εμφανίζεται στην προεπιλεγμένη γλώσσα, τότε ο αναγνώστης οθόνης μπορεί να μην εκφωνήσει σωστά το κείμενο της σελίδας. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "Το στοιχείο \"<html>\" δεν έχει χαρακτηριστικό \"[lang]\""
@@ -165,7 +165,7 @@
     "message": "Το στοιχείο \"<html>\" έχει ένα χαρακτηριστικό \"[lang]\""
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "Ο ορισμός μιας έγκυρης [γλώσσας BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) βοηθά τους αναγνώστες οθόνης να εκφωνήσουν σωστά το κείμενο. [Μάθετε περισότερα](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Ο ορισμός μιας έγκυρης [γλώσσας BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) βοηθά τους αναγνώστες οθόνης να εκφωνήσουν σωστά το κείμενο. [Μάθετε περισότερα](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "Το στοιχείο \"<html>\" δεν έχει έγκυρη τιμή για το χαρακτηριστικό του \"[lang]\"."
@@ -174,7 +174,7 @@
     "message": "Το στοιχείο \"<html>\" έχει έγκυρη τιμή για το χρακτηριστικό του \"[lang]\""
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "Τα πληροφοριακά στοιχεία πρέπει να στοχεύουν σε σύντομο και περιγραφικό εναλλακτικό κείμενο. Τα διακοσμητικά στοιχεία μπορούν να παραβλεφθούν με ένα κενό χαρακτηριστικό alt. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "Τα πληροφοριακά στοιχεία πρέπει να στοχεύουν σε σύντομο και περιγραφικό εναλλακτικό κείμενο. Τα διακοσμητικά στοιχεία μπορούν να παραβλεφθούν με ένα κενό χαρακτηριστικό alt. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "Τα στοιχεία εικόνας δεν έχουν χαρακτηριστικά \"[alt]\""
@@ -183,7 +183,7 @@
     "message": "Τα στοιχεία εικόνας έχουν χαρακτηριστικά \"[alt]\""
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "Όταν μια εικόνα χρησιμοποιείται ως κουμπί \"<input>\", η παροχή εναλλακτικού κειμένου μπορεί να βοηθήσει τους χρήστες του αναγνώστη οθόνης να κατανοήσουν τον σκοπό του κουμπιού. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "Όταν μια εικόνα χρησιμοποιείται ως κουμπί \"<input>\", η παροχή εναλλακτικού κειμένου μπορεί να βοηθήσει τους χρήστες του αναγνώστη οθόνης να κατανοήσουν τον σκοπό του κουμπιού. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "Τα στοιχεία \"<input type=\"image\">\" δεν έχουν κείμενο \"[alt]\""
@@ -192,7 +192,7 @@
     "message": "Τα στοιχεία \"<input type=\"image\">\" έχουν κείμενο \"[alt]\""
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "Οι ετικέτες διασφαλίζουν ότι οι τεχνολογίες για άτομα με ειδικές ανάγκες, όπως οι αναγνώστες οθόνης, εκφωνούν σωστά τα στοιχεία ελέγχου φορμών. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "Οι ετικέτες διασφαλίζουν ότι οι τεχνολογίες για άτομα με ειδικές ανάγκες, όπως οι αναγνώστες οθόνης, εκφωνούν σωστά τα στοιχεία ελέγχου φορμών. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "Τα στοιχεία φρόμας δεν έχουν συσχετισμένες ετικέτες"
@@ -201,7 +201,7 @@
     "message": "Τα στοιχεία φόρμας έχουν συσχετισμένες ετικέτες"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "Ένας πίνακας που χρησιμοποιείται για σκοπούς διάταξης δεν πρέπει να περιλαμβάνει στοιχεία δεδομένων, όπως \"th\" ή \"caption\" ή το χαρακτηριστικό \"summary\", επειδή αυτό μπορεί να δημιουργήσει σύγχυση στους χρήστες του αναγνώστη οθόνης. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "Ένας πίνακας που χρησιμοποιείται για σκοπούς διάταξης δεν πρέπει να περιλαμβάνει στοιχεία δεδομένων, όπως \"th\" ή \"caption\" ή το χαρακτηριστικό \"summary\", επειδή αυτό μπορεί να δημιουργήσει σύγχυση στους χρήστες του αναγνώστη οθόνης. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "Τα στοιχεία παρουσίασης \"<table>\" δεν αποφεύγουν τη χρήση των χαρακτηριστικών \"<th>\", \"<caption>\" ή \"[summary]\"."
@@ -210,7 +210,7 @@
     "message": "Τα στοιχεία παρουσίασης \"<table>\" αποφεύγουν τη χρήση των χαρακτηριστικών \"<th>\", \"<caption>\" ή \"[summary]\"."
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "Το κείμενο συνδέσμων (και το εναλλακτικό κείμενο για εικόνες, όταν χρησιμοποιούνται ως σύνδεσμοι) που είναι διακριτό, μοναδικό και έχει δυνατότητα εστίασης βελτιώνει την εμπειρία πλοήγησης για τους χρήστες των αναγνωστών οθόνης. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "Το κείμενο συνδέσμων (και το εναλλακτικό κείμενο για εικόνες, όταν χρησιμοποιούνται ως σύνδεσμοι) που είναι διακριτό, μοναδικό και έχει δυνατότητα εστίασης βελτιώνει την εμπειρία πλοήγησης για τους χρήστες των αναγνωστών οθόνης. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "Οι σύνδεσμοι δεν έχουν διακριτό όνομα"
@@ -219,7 +219,7 @@
     "message": "Οι σύνδεσμοι έχουν διακριτό όνομα"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "Οι αναγνώστες οθόνης έχουν έναν συγκεκριμένο τρόπο εκφώνησης των λιστών. Μια κατάλληλη δομή λίστας βοηθά τους αναγνώστες οθόνης να παράγουν σωστά αποτελέσματα. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "Οι αναγνώστες οθόνης έχουν έναν συγκεκριμένο τρόπο εκφώνησης των λιστών. Μια κατάλληλη δομή λίστας βοηθά τους αναγνώστες οθόνης να παράγουν σωστά αποτελέσματα. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "Οι λίστες δεν περιέχουν μόνο στοιχεία \"<li>\" και στοιχεία για υποστήριξη σεναρίων (\"<script>\" και \"<template>\")."
@@ -228,7 +228,7 @@
     "message": "Οι λίστες περιέχουν μόνο στοιχεία \"<li>\" και στοιχεία για υποστήριξη σεναρίων (\"<script>\" και \"<template>\")."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "Οι αναγνώστες οθόνες απαιτούν τα στοιχεία λίστας (\"<li>\") να περιέχονται σε ένα γονικό \"<ul>\" ή \"<ol>\", για να εκφωνούνται σωστά. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "Οι αναγνώστες οθόνες απαιτούν τα στοιχεία λίστας (\"<li>\") να περιέχονται σε ένα γονικό \"<ul>\" ή \"<ol>\", για να εκφωνούνται σωστά. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "Τα στοιχεία λίστας (\"<li>\") δεν περιέχονται εντός των γονικών στοιχείων \"<ul>\" ή \"<ol>\"."
@@ -237,7 +237,7 @@
     "message": "Τα στοιχεία λίστας (\"<li>\") περιέχονται εντός των γονικών στοιχείων \"<ul>\" ή \"<ol>\"."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "Οι χρήστες δεν περιμένουν ότι η σελίδα θα ανανεωθεί αυτόματα και ότι η εστίαση θα επιστρέψει στην κορυφή της σελίδας. Αυτό μπορεί να δημιουργήσει δυσαρέσκεια ή σύγχυση. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "Οι χρήστες δεν περιμένουν ότι η σελίδα θα ανανεωθεί αυτόματα και ότι η εστίαση θα επιστρέψει στην κορυφή της σελίδας. Αυτό μπορεί να δημιουργήσει δυσαρέσκεια ή σύγχυση. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "Το έγγραφο χρησιμοποιεί \"<meta http-equiv=\"refresh\">\""
@@ -246,7 +246,7 @@
     "message": "Το έγγραφο δεν χρησιμοποιεί \"<meta http-equiv=\"refresh\">\""
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "Η απενεργοποίηση της δυνατότητας εστίασης αποτελεί πρόβλημα για τους χρήστες με περιορισμένη όραση που βασίζονται στη μεγέθυνση οθόνης, προκειμένου να βλέπουν σωστά τα περιεχόμενα μιας ιστοσελίδας. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "Η απενεργοποίηση της δυνατότητας εστίασης αποτελεί πρόβλημα για τους χρήστες με περιορισμένη όραση που βασίζονται στη μεγέθυνση οθόνης, προκειμένου να βλέπουν σωστά τα περιεχόμενα μιας ιστοσελίδας. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "Το \"[user-scalable=\"no\"]\" χρησιμοποιείται στο στοιχείο \"<meta name=\"viewport\">\" ή το χαρακτηριστικό \"[maximum-scale]\" είναι λιγότερο από 5."
@@ -255,7 +255,7 @@
     "message": "Το \"[user-scalable=\"no\"]\" δεν χρησιμοποιείται στο στοιχείο \"<meta name=\"viewport\">\" και το χαρακτηριστικό \"[maximum-scale]\" δεν είναι λιγότερο από 5."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "Οι αναγνώστες οθόνης δεν μπορούν να μεταφράσουν περιεχόμενο που δεν είναι κείμενο. Η προσθήκη κειμένου alt σε στοιχεία \"<object>\" βοηθά τους αναγνώστες οθόνης να μεταβιβάσουν το νόημα στους χρήστες. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "Οι αναγνώστες οθόνης δεν μπορούν να μεταφράσουν περιεχόμενο που δεν είναι κείμενο. Η προσθήκη κειμένου alt σε στοιχεία \"<object>\" βοηθά τους αναγνώστες οθόνης να μεταβιβάσουν το νόημα στους χρήστες. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "Τα στοιχεία \"<object>\" δεν έχουν κείμενο \"[alt]\""
@@ -264,7 +264,7 @@
     "message": "Τα στοιχεία \"<object>\" έχουν κείμενο \"[alt]\""
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "Μια τιμή μεγαλύτερη από 0 υποδηλώνει μια ρητή σειρά πλοήγησης. Αν και αυτό είναι ορθό από τεχνικής άποψης, συχνά δημιουργεί αρνητική εμπειρία στους χρήστες που βασίζονται στις τεχνολογίες για άτομα με ειδικές ανάγκες. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "Μια τιμή μεγαλύτερη από 0 υποδηλώνει μια ρητή σειρά πλοήγησης. Αν και αυτό είναι ορθό από τεχνικής άποψης, συχνά δημιουργεί αρνητική εμπειρία στους χρήστες που βασίζονται στις τεχνολογίες για άτομα με ειδικές ανάγκες. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "Ορισμένα στοιχεία έχουν τιμή \"[tabindex]\" μεγαλύτερη από 0"
@@ -273,7 +273,7 @@
     "message": "Κανένα στοιχείο δεν έχει τιμή \"[tabindex]\" μεγαλύτερη από 0"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "Οι αναγνώστες οθόνης έχουν λειτουργίες που κάνουν ευκολότερη την πλοήγηση στους πίνακες. Η παραπομπή των κελιών \"<td>\" που χρησιμοποιούν το χαρακτηριστικό \"[headers]\" μόνο σε άλλα κελιά του ίδιου πίνακα μπορεί να βελτιώσει την εμπειρία για τους χρήστες του αναγνώστη οθόνης. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "Οι αναγνώστες οθόνης έχουν λειτουργίες που κάνουν ευκολότερη την πλοήγηση στους πίνακες. Η παραπομπή των κελιών \"<td>\" που χρησιμοποιούν το χαρακτηριστικό \"[headers]\" μόνο σε άλλα κελιά του ίδιου πίνακα μπορεί να βελτιώσει την εμπειρία για τους χρήστες του αναγνώστη οθόνης. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "Τα κελιά σε ένα στοιχείο \"<table>\" που χρησιμοποιούν το χαρακτηριστικό \"[headers]\" παραπέμπουν σε άλλα κελιά του ίδιου πίνακα."
@@ -282,7 +282,7 @@
     "message": "Κελιά σε ένα στοιχείο \"<table>\" που χρησιμοποιούν το χαρακτηριστικό \"[headers]\" παραπέμπουν μόνο σε άλλα κελιά του ίδιου πίνακα."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "Οι αναγνώστες οθόνης έχουν λειτουργίες που κάνουν ευκολότερη την πλοήγηση στους πίνακες. Η παραπομπή των κεφαλίδων πίνακα πάντα σε κάποιο σύνολο κελιών μπορεί να βελτιώσει την εμπειρία για τους χρήστες του αναγνώστη οθόνης. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "Οι αναγνώστες οθόνης έχουν λειτουργίες που κάνουν ευκολότερη την πλοήγηση στους πίνακες. Η παραπομπή των κεφαλίδων πίνακα πάντα σε κάποιο σύνολο κελιών μπορεί να βελτιώσει την εμπειρία για τους χρήστες του αναγνώστη οθόνης. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "Τα στοιχεία \"<th>\" και τα στοιχεία με \"[role=\"columnheader\"/\"rowheader\"]\" δεν έχουν κελιά δεδομένων που περιγράφουν."
@@ -291,7 +291,7 @@
     "message": "Τα στοιχεία \"<th>\" και τα στοιχεία με \"[role=\"columnheader\"/\"rowheader\"]\" έχουν κελιά δεδομένων που περιγράφουν."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "Ο ορισμός μιας έγκυρης [γλώσσας BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) στα στοιχεία διασφαλίζει ότι ο αναγνώστης οθόνης θα εκφωνήσει σωστά το κείμενο. [Μάθετε περισότερα](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Ο ορισμός μιας έγκυρης [γλώσσας BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) στα στοιχεία διασφαλίζει ότι ο αναγνώστης οθόνης θα εκφωνήσει σωστά το κείμενο. [Μάθετε περισότερα](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "Τα χαρακτηριστικά \"[lang]\" δεν έχουν έγκυρη τιμή"
@@ -300,7 +300,7 @@
     "message": "Τα χαρακτηριστικά \"[lang]\" έχουν έγκυρη τιμή"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "Όταν ένα βίντεο περιέχει υπότιτλο, είναι πιο εύκολο για τους χρήστες που είναι κωφοί ή έχουν προβλήματα ακοής να αποκτήσουν πρόσβαση στις πληροφορίες του. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "Όταν ένα βίντεο περιέχει υπότιτλο, είναι πιο εύκολο για τους χρήστες που είναι κωφοί ή έχουν προβλήματα ακοής να αποκτήσουν πρόσβαση στις πληροφορίες του. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "Τα στοιχεία \"<video>\" δεν περιέχουν ένα στοιχείο \"<track>\" με \"[kind=\"captions\"]\"."
@@ -309,7 +309,7 @@
     "message": "Τα στοιχεία \"<video>\" περιέχουν ένα στοιχείο \"<track>\" με \"[kind=\"captions\"]\""
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "Οι ηχητικές περιγραφές παρέχουν σχετικές πληροφορίες για βίντεο, τις οποίες δεν μπορεί να παρέχει ο διάλογος, όπως εκφράσεις προσώπου και σκηνές. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "Οι ηχητικές περιγραφές παρέχουν σχετικές πληροφορίες για βίντεο, τις οποίες δεν μπορεί να παρέχει ο διάλογος, όπως εκφράσεις προσώπου και σκηνές. [Μάθετε περισσότερα](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "Τα στοιχεία \"<video>\" δεν περιέχουν ένα στοιχείο \"<track>\" με \"[kind=\"description\"]\"."

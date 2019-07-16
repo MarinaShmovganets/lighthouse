@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "Naudodami prieigos raktus naudotojai gali greitai suaktyvinti puslapio dalį. Kad naršymas veiktų tinkamai, kiekvienas prieigos raktas turi būti unikalus. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "Naudodami prieigos raktus naudotojai gali greitai suaktyvinti puslapio dalį. Kad naršymas veiktų tinkamai, kiekvienas prieigos raktas turi būti unikalus. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "„[accesskey]“ vertės nėra unikalios"
@@ -9,7 +9,7 @@
     "message": "Elementų „[accesskey]“ vertės unikalios"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "Kiekviename ARIA elemente „role“ palaikoma tik dalis konkrečių atributų „aria-*“. Jei jie nebus suderinti, atributai „aria-*“ taps netinkami. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "Kiekviename ARIA elemente „role“ palaikoma tik dalis konkrečių atributų „aria-*“. Jei jie nebus suderinti, atributai „aria-*“ taps netinkami. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "Atributai „[aria-*]“ neatitinka savo vaidmenų"
@@ -18,7 +18,7 @@
     "message": "Atributai „[aria-*]“ atitinka savo vaidmenis"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "Kai kuriems ARIA vaidmenims reikia atributų, aprašančių elementų būseną ekrano skaitytuvams. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "Kai kuriems ARIA vaidmenims reikia atributų, aprašančių elementų būseną ekrano skaitytuvams. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "Elementuose „[role]“ nėra visų privalomų atributų „[aria-*]“"
@@ -27,7 +27,7 @@
     "message": "Elementuose „[role]“ yra visi reikalingi atributai „[aria-*]“"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "Kai kuriuose ARIA pirminiuose vaidmenyse turi būti konkrečių antrinių vaidmenų, kad būtų galima atlikti numatytas pritaikomumo funkcijas. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "Kai kuriuose ARIA pirminiuose vaidmenyse turi būti konkrečių antrinių vaidmenų, kad būtų galima atlikti numatytas pritaikomumo funkcijas. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "Trūksta elementų su elementais „[role]“, kuriems reikia konkrečių antrinių elementų „[role]“."
@@ -36,7 +36,7 @@
     "message": "Elementai su elementu „[role]“, kuriam reikia konkrečių antrinių elementų „[role]“, nurodyti"
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "Kai kurie ARIA antriniai vaidmenys turi būti konkrečiuose pirminiuose vaidmenyse, kad būtų tinkamai vykdomos numatytosios pritaikomumo funkcijos. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "Kai kurie ARIA antriniai vaidmenys turi būti konkrečiuose pirminiuose vaidmenyse, kad būtų tinkamai vykdomos numatytosios pritaikomumo funkcijos. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "Elementų „[role]“ nėra būtiname pirminiame elemente"
@@ -45,7 +45,7 @@
     "message": "Elementai „[role]“ yra tinkamame pirminiame elemente"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "ARIA vaidmenų vertės turi būti tinkamos, kad būtų galima atlikti numatytas pritaikomumo funkcijas. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "ARIA vaidmenų vertės turi būti tinkamos, kad būtų galima atlikti numatytas pritaikomumo funkcijas. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "Elemento „[role]“ vertės netinkamos"
@@ -54,7 +54,7 @@
     "message": "Elemento „[role]“ vertės tinkamos"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "Pagalbinės technologijos, pvz., ekrano skaitytuvai, negali interpretuoti ARIA atributų su netinkamomis vertėmis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "Pagalbinės technologijos, pvz., ekrano skaitytuvai, negali interpretuoti ARIA atributų su netinkamomis vertėmis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "Atributuose „[aria-*]“ nėra tinkamų verčių"
@@ -63,7 +63,7 @@
     "message": "Atributų „[aria-*]“ vertės tinkamos"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "Pagalbinės technologijos, pvz., ekrano skaitytuvai, negali tinkamai interpretuoti ARIA atributų su netinkamais pavadinimais. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "Pagalbinės technologijos, pvz., ekrano skaitytuvai, negali tinkamai interpretuoti ARIA atributų su netinkamais pavadinimais. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "Atributai „[aria-*]“ netinkami arba jų rašyba neteisinga"
@@ -72,7 +72,7 @@
     "message": "Atributai „[aria-*]“ yra tinkami ir jų rašyba teisinga"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "Nurodžius antraštes garso įrašų elementus gali naudoti kurtieji arba sutrikusios klausos naudotojai. Jiems teikiama labai svarbi informacija, pvz., kas kalba, ką jie sako ir kita ne kalbos informacija. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "Nurodžius antraštes garso įrašų elementus gali naudoti kurtieji arba sutrikusios klausos naudotojai. Jiems teikiama labai svarbi informacija, pvz., kas kalba, ką jie sako ir kita ne kalbos informacija. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "Elementuose „<audio>“ trūksta elemento „<track>“ su atributu „[kind=\"captions\"]“."
@@ -84,7 +84,7 @@
     "message": "Klaidingi elementai"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "Kai nenurodytas neįgaliesiems pritaikytas mygtuko pavadinimas, ekrano skaitytuvai apie jį praneša kaip „button“ (mygtukas), todėl jo negali naudoti ekrano skaitytuvo naudotojai. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "Kai nenurodytas neįgaliesiems pritaikytas mygtuko pavadinimas, ekrano skaitytuvai apie jį praneša kaip „button“ (mygtukas), todėl jo negali naudoti ekrano skaitytuvo naudotojai. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "Nenurodyti neįgaliesiems pritaikyti mygtukų pavadinimai"
@@ -93,7 +93,7 @@
     "message": "Mygtukų pavadinimai pritaikyti neįgaliesiems"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "Pridėjus būdų apeiti pasikartojantį turinį klaviatūros naudotojai galės efektyviau naršyti puslapį. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "Pridėjus būdų apeiti pasikartojantį turinį klaviatūros naudotojai galės efektyviau naršyti puslapį. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "Puslapyje nėra antraštės, praleidimo nuorodos arba orientyro regiono"
@@ -102,7 +102,7 @@
     "message": "Puslapyje yra antraštė, praleidžiama nuoroda arba orientyro regionas"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "Mažo kontrasto tekstą daugumai naudotojų yra sudėtinga arba neįmanoma perskaityti. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "Mažo kontrasto tekstą daugumai naudotojų yra sudėtinga arba neįmanoma perskaityti. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "Nepakankamas fono ir priekinio fono spalvų kontrasto santykis."
@@ -111,7 +111,7 @@
     "message": "Fono ir priekinio plano spalvų kontrasto santykis pakankamas"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "Kai aprašo sąrašai netinkamai pažymėti, ekrano skaitytuvai gali pateikti klaidinančią arba netikslią išvestį. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "Kai aprašo sąrašai netinkamai pažymėti, ekrano skaitytuvai gali pateikti klaidinančią arba netikslią išvestį. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "Elementuose „<dl>“ nurodytos ne tik tinkamai surikiuotos grupės „<dt>“ ir „<dd>“ bei elementai „<script>“ arba „<template>“."
@@ -120,7 +120,7 @@
     "message": "Elementuose „<dl>“ yra tik tinkamai surikiuotos grupės „<dt>“ ir „<dd>“ bei elementai „<script>“ arba „<template>“."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "Aprašo sąrašo elementai („<dt>“ ir „<dd>“) turi būti sujungti elementu „<dl>“, kad ekrano skaitytuvai galėtų apie juos tinkamai pranešti. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "Aprašo sąrašo elementai („<dt>“ ir „<dd>“) turi būti sujungti elementu „<dl>“, kad ekrano skaitytuvai galėtų apie juos tinkamai pranešti. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "Aprašo sąrašo elementai nesujungti elementais „<dl>“"
@@ -138,7 +138,7 @@
     "message": "Dokumente yra elementas „<title>“"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "Atributo „id“ vertė turi būti unikali, kad pagalbinės technologijos nebepraleistų kitų objektų. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "Atributo „id“ vertė turi būti unikali, kad pagalbinės technologijos nebepraleistų kitų objektų. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "Puslapio atributai „[id]“ nėra unikalūs"
@@ -147,7 +147,7 @@
     "message": "Puslapio atributai „[id]“ yra unikalūs"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "Rėmelių pavadinimai ekrano skaitytuvų naudotojams apibūdina rėmelių turinį. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "Rėmelių pavadinimai ekrano skaitytuvų naudotojams apibūdina rėmelių turinį. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "Nėra elementų „<frame>“ arba „<iframe>“ pavadinimo"
@@ -156,7 +156,7 @@
     "message": "Elementuose „<frame>“ arba „<iframe>“ yra pavadinimas"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "Jei puslapyje nenurodytas atributas „lang“, ekrano skaitytuvas manys, kad puslapio kalba atitinka naudotojo pasirinktą numatytąją kalbą, kai buvo nustatomas ekrano skaitytuvas. Jei puslapio kalba neatitinka numatytosios kalbos, gali būti, kad ekrano skaitytuvas netinkamai skaitys puslapio tekstą. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "Jei puslapyje nenurodytas atributas „lang“, ekrano skaitytuvas manys, kad puslapio kalba atitinka naudotojo pasirinktą numatytąją kalbą, kai buvo nustatomas ekrano skaitytuvas. Jei puslapio kalba neatitinka numatytosios kalbos, gali būti, kad ekrano skaitytuvas netinkamai skaitys puslapio tekstą. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "Elemente „<html>“ nėra atributo „[lang]“"
@@ -165,7 +165,7 @@
     "message": "Elemente „<html>“ yra atributas „[lang]“"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "Nurodžius tinkamą [„BCP 47“ kalbą] (https://www.w3.org/International/questions/qa-choosing-language-tags#question) ekrano skaitytuvai gali tinkamai pranešti tekstą. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Nurodžius tinkamą [„BCP 47“ kalbą] (https://www.w3.org/International/questions/qa-choosing-language-tags#question) ekrano skaitytuvai gali tinkamai pranešti tekstą. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "Elemento „<html>“ atributo „[lang]“ vertė netinkama."
@@ -174,7 +174,7 @@
     "message": "Elemento „<html>“ atributo „[lang]“ vertė tinkama"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "Informaciniuose elementuose turėtų būti pateiktas trumpas, aprašomasis alternatyvus tekstas. Dekoratyvinių elementų galima nepaisyti nurodžius tuščią alternatyvų atributą. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "Informaciniuose elementuose turėtų būti pateiktas trumpas, aprašomasis alternatyvus tekstas. Dekoratyvinių elementų galima nepaisyti nurodžius tuščią alternatyvų atributą. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "Vaizdo elementuose nėra atributų „[alt]“"
@@ -183,7 +183,7 @@
     "message": "Vaizdo elementuose yra atributai „[alt]“"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "Kai vaizdas naudojamas kaip mygtukas „<input>“, pateikus alternatyvų tekstą ekrano skaitytuvo naudotojams bus lengviau suprasti mygtuko tekstą. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "Kai vaizdas naudojamas kaip mygtukas „<input>“, pateikus alternatyvų tekstą ekrano skaitytuvo naudotojams bus lengviau suprasti mygtuko tekstą. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "Elementuose „<input type=\"image\">“ nėra „[alt]“ teksto"
@@ -192,7 +192,7 @@
     "message": "Elementuose „<input type=\"image\">“ yra „[alt]“ tekstas"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "Etiketės užtikrina, kad pagalbinės technologijos, pvz., ekrano skaitytuvai, tinkamai praneša apie formų valdiklius. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "Etiketės užtikrina, kad pagalbinės technologijos, pvz., ekrano skaitytuvai, tinkamai praneša apie formų valdiklius. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "Nėra susietų formos elementų etikečių"
@@ -201,7 +201,7 @@
     "message": "Formos elementuose yra atitinkamų etikečių"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "Lentelėje, kuri naudojama išdėstymo tikslais, neturėtų būti duomenų elementų, pvz., elementų „th“ ar „caption“ arba atributo „summary“, nes taip ekrano skaitytuvų naudotojams gali būti teikiama trikdanti patirtis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "Lentelėje, kuri naudojama išdėstymo tikslais, neturėtų būti duomenų elementų, pvz., elementų „th“ ar „caption“ arba atributo „summary“, nes taip ekrano skaitytuvų naudotojams gali būti teikiama trikdanti patirtis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "Pristatomuose elementuose „<table>“ nėra vengiama naudoti atributų „<th>“, „<caption>“ arba „[summary]“."
@@ -210,7 +210,7 @@
     "message": "Pristatomuose elementuose „<table>“ vengiama naudoti atributus „<th>“, „<caption>“ arba „[summary]“."
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "Aiškus ir unikalus nuorodos tekstas (ir alternatyvusis vaizdų tekstas, kai jie naudojami kaip nuorodos), į kurį lengva sutelkti dėmesį, pagerina naršymo patirtį ekrano skaitytuvų naudotojams. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "Aiškus ir unikalus nuorodos tekstas (ir alternatyvusis vaizdų tekstas, kai jie naudojami kaip nuorodos), į kurį lengva sutelkti dėmesį, pagerina naršymo patirtį ekrano skaitytuvų naudotojams. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "Nėra aiškių nuorodų pavadinimų"
@@ -219,7 +219,7 @@
     "message": "Nuorodų pavadinimai aiškūs"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "Ekrano skaitytuvai apie sąrašus praneša tam tikru būdu. Tinkama sąrašo struktūra padeda ekrano skaitytuvams pateikti tinkamą išvestį. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "Ekrano skaitytuvai apie sąrašus praneša tam tikru būdu. Tinkama sąrašo struktūra padeda ekrano skaitytuvams pateikti tinkamą išvestį. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "Sąrašuose pateikiami ne tik elementai „<li>“ ir scenarijaus palaikymo elementai („<script>“ ir „<template>“)."
@@ -228,7 +228,7 @@
     "message": "Sąrašuose pateikiami tik elementai „<li>“ ir scenarijaus palaikymo elementai („<script>“ ir „<template>“)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "Ekrano skaitytuvams reikia, kad sąrašo elementai („<li>“) būtų pirminiame elemente „<ul>“ arba „<ol>“, kad būtų galima apie juos tinkamai pranešti. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "Ekrano skaitytuvams reikia, kad sąrašo elementai („<li>“) būtų pirminiame elemente „<ul>“ arba „<ol>“, kad būtų galima apie juos tinkamai pranešti. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "Sąrašo elementų („<li>“) nėra pirminiuose elementuose „<ul>“ arba „<ol>“."
@@ -237,7 +237,7 @@
     "message": "Sąrašo elementai („<li>“) yra pirminiuose elementuose „<ul>“ arba „<ol>“"
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "Naudotojai nesitiki, kad puslapis bus atnaujintas automatiškai. Tai atlikus sutelkiamas dėmesys į puslapio viršų. Dėl to galima erzinanti arba klaidinanti patirtis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "Naudotojai nesitiki, kad puslapis bus atnaujintas automatiškai. Tai atlikus sutelkiamas dėmesys į puslapio viršų. Dėl to galima erzinanti arba klaidinanti patirtis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "Dokumente naudojama „<meta http-equiv=\"refresh\">“"
@@ -246,7 +246,7 @@
     "message": "Dokumente nenaudojamas atributas „<meta http-equiv=\"refresh\">“"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "Išjungus mastelio keitimą gali kilti problemų sutrikusio regėjimo naudotojams, kurie padidina ekraną, kad tinkamai matytų tinklalapio turinį. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "Išjungus mastelio keitimą gali kilti problemų sutrikusio regėjimo naudotojams, kurie padidina ekraną, kad tinkamai matytų tinklalapio turinį. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "Atributas „[user-scalable=\"no\"]“ naudojamas elemente „<meta name=\"viewport\">“ arba atributas „[maximum-scale]“ yra mažesnis nei 5."
@@ -255,7 +255,7 @@
     "message": "Atributas „[user-scalable=\"no\"]“ nėra naudojamas elemente „<meta name=\"viewport\">“, o atributas „[maximum-scale]“ nėra mažesnis nei 5."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "Ekrano skaitytuvai negali išversti turinio, kuris nėra tekstas. Pridėję alternatyviojo teksto prie elementų „<object>“ padėsite ekrano skaitytuvams perteikti reikšmę naudotojams. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "Ekrano skaitytuvai negali išversti turinio, kuris nėra tekstas. Pridėję alternatyviojo teksto prie elementų „<object>“ padėsite ekrano skaitytuvams perteikti reikšmę naudotojams. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "Elementuose „<object>“ nėra „[alt]“ teksto"
@@ -264,7 +264,7 @@
     "message": "Elementuose „<object>“ yra „[alt]“ tekstas"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "Didesnė nei 0 vertė nurodo naršymo tvarką. Tai techniškai tinkamas sprendimas, bet naudojant šią funkciją pagalbinių technologijų naudotojams dažnai teikiama erzinanti patirtis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "Didesnė nei 0 vertė nurodo naršymo tvarką. Tai techniškai tinkamas sprendimas, bet naudojant šią funkciją pagalbinių technologijų naudotojams dažnai teikiama erzinanti patirtis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "Kai kurių elementų „[tabindex]“ vertė yra didesnė nei 0"
@@ -273,7 +273,7 @@
     "message": "Nėra elemento su didesne nei 0 „[tabindex]“ verte"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "Ekrano skaitytuvuose naudojamos funkcijos, padedančios lengviau naršyti lenteles. Užtikrinus, kad langeliai „<td>“, kuriuose naudojamas atributas „[headers]“, nurodo tik langelius toje pačioje lentelėje, gali būti pagerinta ekrano skaitytuvų naudotojų patirtis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "Ekrano skaitytuvuose naudojamos funkcijos, padedančios lengviau naršyti lenteles. Užtikrinus, kad langeliai „<td>“, kuriuose naudojamas atributas „[headers]“, nurodo tik langelius toje pačioje lentelėje, gali būti pagerinta ekrano skaitytuvų naudotojų patirtis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "Langeliai elemente „<table>“, kuriuose naudojamas atributas „[headers]“, nurodo kitus tos pačios lentelės langelius."
@@ -282,7 +282,7 @@
     "message": "Langeliai elemente „<table>“, kuriuose naudojamas atributas „[headers]“, nurodo tik kitus tos pačios lentelės langelius."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "Ekrano skaitytuvuose naudojamos funkcijos, padedančios lengviau naršyti lenteles. Užtikrinus, kad lentelės antraštės visada nurodo tam tikrą langelių rinkinį, gali būti pagerinta ekrano skaitytuvų naudotojų patirtis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "Ekrano skaitytuvuose naudojamos funkcijos, padedančios lengviau naršyti lenteles. Užtikrinus, kad lentelės antraštės visada nurodo tam tikrą langelių rinkinį, gali būti pagerinta ekrano skaitytuvų naudotojų patirtis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "Elementuose „<th>“ ir elementuose su atributu „[role=\"columnheader\"/\"rowheader\"]“ nėra duomenų langelių, kuriuos jie aprašo."
@@ -291,7 +291,7 @@
     "message": "Elementuose „<th>“ ir elementuose su atributu „[role=\"columnheader\"/\"rowheader\"]“ yra duomenų langelių, kuriuos jie aprašo."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "Nurodžius tinkamą elementų [„BCP 47“ kalbą](https://www.w3.org/International/questions/qa-choosing-language-tags#question) užtikrinama, kad ekrano skaitytuvas tinkamai ištars tekstą. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Nurodžius tinkamą elementų [„BCP 47“ kalbą](https://www.w3.org/International/questions/qa-choosing-language-tags#question) užtikrinama, kad ekrano skaitytuvas tinkamai ištars tekstą. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "Atributuose „[lang]“ nėra tinkamos vertės"
@@ -300,7 +300,7 @@
     "message": "Atributų „[lang]“ vertė tinkama"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "Kai pateikiama vaizdo įrašo antraštė, kurtiems ir sutrikusios klausos naudotojams lengviau pasiekti jos informaciją. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "Kai pateikiama vaizdo įrašo antraštė, kurtiems ir sutrikusios klausos naudotojams lengviau pasiekti jos informaciją. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "Elemente „<video>“ nėra elemento „<track>“ su atributu „[kind=\"captions\"]“."
@@ -309,7 +309,7 @@
     "message": "Elementuose „<video>“ yra elementas „<track>“ su atributu „[kind=\"captions\"]“"
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "Garso įrašų aprašai teikia reikiamą informaciją apie vaizdo įrašus, kurios negalima pateikti dialoge, pvz., susijusios su veido išraiškomis ir scenomis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "Garso įrašų aprašai teikia reikiamą informaciją apie vaizdo įrašus, kurios negalima pateikti dialoge, pvz., susijusios su veido išraiškomis ir scenomis. [Sužinokite daugiau](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "Elementuose „<video>“ nėra elemento „<track>“ su atributu „[kind=\"description\"]“."

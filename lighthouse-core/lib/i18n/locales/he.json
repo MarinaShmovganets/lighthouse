@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "מקשי גישה מאפשרים למשתמשים להתמקד במהירות בחלק מסוים בדף. כדי לאפשר ניווט תקין, כל מקש גישה צריך להיות ייחודי. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "מקשי גישה מאפשרים למשתמשים להתמקד במהירות בחלק מסוים בדף. כדי לאפשר ניווט תקין, כל מקש גישה צריך להיות ייחודי. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "ערכי `[accesskey]` אינם ייחודיים"
@@ -9,7 +9,7 @@
     "message": "ערכי `[accesskey]` הם ייחודיים"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "כל `role` ב-ARIA תומך בקבוצת משנה ספציפית של מאפייני `aria-*‎`. כשיש אי-התאמה ביניהם, מאפייני `aria-*‎` אינם חוקיים. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "כל `role` ב-ARIA תומך בקבוצת משנה ספציפית של מאפייני `aria-*‎`. כשיש אי-התאמה ביניהם, מאפייני `aria-*‎` אינם חוקיים. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "מאפייני `‎[aria-*]‎` אינם תואמים לתפקידים שלהם"
@@ -18,7 +18,7 @@
     "message": "מאפייני ‎`[aria-*]`‎ תואמים לתפקידים שלהם"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "חלק מתפקידי ARIA כוללים מאפיינים נדרשים שמתארים לקוראי המסך את מצב הרכיב. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "חלק מתפקידי ARIA כוללים מאפיינים נדרשים שמתארים לקוראי המסך את מצב הרכיב. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "למאפייני `[role]` אין את כל מאפייני `‎[aria-*]‎` הנדרשים"
@@ -27,7 +27,7 @@
     "message": "למאפיינים `[role]` יש את כל מאפייני‎ `[aria-*]` ‎הנדרשים"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "תפקידי הורה מסוימים ב-ARIA צריכים לכלול תפקידי צאצא ספציפיים כדי לבצע את פונקציות הנגישות שלהם. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "תפקידי הורה מסוימים ב-ARIA צריכים לכלול תפקידי צאצא ספציפיים כדי לבצע את פונקציות הנגישות שלהם. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "חסרים רכיבים עם `[role]` שדורשים מאפייני `[role]` ספציפיים ברמת צאצא."
@@ -36,7 +36,7 @@
     "message": "קיימים רכיבים עם `[role]` שנדרשים עבורם רכיבי `[role]` ספציפיים"
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "חלק מתפקידי הצאצא ב-ARIA חייבים להיכלל בין תפקידי הורה ספציפיים כדי למלא באופן תקין את פונקציות הנגישות שלהם. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "חלק מתפקידי הצאצא ב-ARIA חייבים להיכלל בין תפקידי הורה ספציפיים כדי למלא באופן תקין את פונקציות הנגישות שלהם. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "מאפייני `[role]` אינם בין רכיבי ההורה הנדרשים"
@@ -45,7 +45,7 @@
     "message": "מאפייני `[role]` נמצאים בתוך רכיב ההורה הנדרש שלהם"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "תפקידי ARIA חייבים לכלול ערכים חוקיים כדי לבצע את פונקציות הנגישות שלהם. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "תפקידי ARIA חייבים לכלול ערכים חוקיים כדי לבצע את פונקציות הנגישות שלהם. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "ערכי `[role]` אינם חוקיים"
@@ -54,7 +54,7 @@
     "message": "הערכים של `[role]` חוקיים"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "טכנולוגיות לנגישות, כמו קוראי מסכים, לא יכולות לפענח מאפייני ARIA שהערכים שלהם אינם חוקיים. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "טכנולוגיות לנגישות, כמו קוראי מסכים, לא יכולות לפענח מאפייני ARIA שהערכים שלהם אינם חוקיים. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "למאפייני ‎`[aria-*]`‎ אין ערכים חוקיים"
@@ -63,7 +63,7 @@
     "message": "למאפייני ‎`[aria-*]`‎ יש ערכים חוקיים"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "טכנולוגיות לנגישות, כמו קוראי מסך, לא יכולות לפענח מאפייני ARIA עם שמות לא חוקיים. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "טכנולוגיות לנגישות, כמו קוראי מסך, לא יכולות לפענח מאפייני ARIA עם שמות לא חוקיים. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "מאפייני `‎[aria-*]‎` אינם חוקיים, או שהם כוללים שגיאות איות"
@@ -72,7 +72,7 @@
     "message": "המאפיינים מסוג‎`[aria-*]` ‎חוקיים ואינם כוללים שגיאות איות"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "כתוביות מאפשרות לחרשים ולקויי שמיעה להשתמש ברכיבי אודיו, ומספקות מידע קריטי, כמו זהות הדובר, המילים שנאמרות ומידע אחר שאינו מועבר בדיבור. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "כתוביות מאפשרות לחרשים ולקויי שמיעה להשתמש ברכיבי אודיו, ומספקות מידע קריטי, כמו זהות הדובר, המילים שנאמרות ומידע אחר שאינו מועבר בדיבור. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "ברכיבי `<audio>` חסר רכיב `<track>` עם `‎[kind=\"captions\"]‎`."
@@ -84,7 +84,7 @@
     "message": "רכיבים שנכשלו בבדיקה"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "כשאין ללחצן שם נגיש, קוראי מסך אומרים את המילה \"לחצן\", ובמצב זה הלחצן אינו שימושי לאנשים שמסתמכים על קוראי מסך. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "כשאין ללחצן שם נגיש, קוראי מסך אומרים את המילה \"לחצן\", ובמצב זה הלחצן אינו שימושי לאנשים שמסתמכים על קוראי מסך. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "ללחצנים אין שמות ייחודיים"
@@ -93,7 +93,7 @@
     "message": "ללחצנים יש שם נגיש"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "הוספה של דרכים לעקיפת תוכן שחוזר על עצמו מאפשרת למשתמשי מקלדת לנווט בדף בצורה יעילה יותר. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "הוספה של דרכים לעקיפת תוכן שחוזר על עצמו מאפשרת למשתמשי מקלדת לנווט בדף בצורה יעילה יותר. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "הדף לא כולל כותרת, קישור לדילוג או קטע שמסומן כ-landmark"
@@ -102,7 +102,7 @@
     "message": "הדף כולל כותרת, קישור לדילוג או קטע שמסומן כ-landmark"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "משתמשים רבים מתקשים, או לא מסוגלים כלל, לקרוא טקסט עם ניגודיות צבעים נמוכה. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "משתמשים רבים מתקשים, או לא מסוגלים כלל, לקרוא טקסט עם ניגודיות צבעים נמוכה. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "יחס הניגודיות של צבעי הרקע והחזית אינו מספיק."
@@ -111,7 +111,7 @@
     "message": "יש יחס ניגודיות מספיק בין צבעי הרקע והחזית"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "כשרשימות של הגדרות אינן מסומנות כראוי, קוראי מסך עשויים להקריא טקסט באופן מבלבל או לא מדויק. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "כשרשימות של הגדרות אינן מסומנות כראוי, קוראי מסך עשויים להקריא טקסט באופן מבלבל או לא מדויק. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "רכיבי `<dl>`' לא כוללים רק קבוצות `<dt>` ו-`<dd>` עם סדר תקין, רכיבי `<script>` או `<template>`."
@@ -120,7 +120,7 @@
     "message": "רכיבי `<dl>` כוללים רק קבוצות `<dt>` ו-`<dd>` עם סדר תקין‏, רכיבי `<script>` או `<template>`."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "פריטים ברשימות של הגדרות (`<dt>` ו-`<dd>`) צריכים להופיע בין רכיבי הורה מסוג `<dl>` כדי לוודא שקוראי מסך יוכלו לקרוא אותם כראוי. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "פריטים ברשימות של הגדרות (`<dt>` ו-`<dd>`) צריכים להופיע בין רכיבי הורה מסוג `<dl>` כדי לוודא שקוראי מסך יוכלו לקרוא אותם כראוי. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "פריטים ברשימת הגדרות אינם בין רכיבי `<dl>`"
@@ -138,7 +138,7 @@
     "message": "המסמך כולל רכיב `<title>`"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "הערך של מאפיין זיהוי חייב להיות ייחודי כדי למנוע מטכנולוגיות לנגישות להתעלם ממופעים אחרים. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "הערך של מאפיין זיהוי חייב להיות ייחודי כדי למנוע מטכנולוגיות לנגישות להתעלם ממופעים אחרים. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "מאפייני `[id]` בדף אינם ייחודיים"
@@ -147,7 +147,7 @@
     "message": "מאפייני `[id]` בדף הם ייחודיים"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "משתמשים של קוראי מסכים מסתמכים על כותרות של מסגרות שמתארות את תוכן המסגרות. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "משתמשים של קוראי מסכים מסתמכים על כותרות של מסגרות שמתארות את תוכן המסגרות. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "לרכיבי `<frame>` או `<iframe>` אין כותרת"
@@ -156,7 +156,7 @@
     "message": "רכיבי `<frame>` או `<iframe>` כוללים כותרת"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "אם בדף לא מצוין מאפיין lang, קורא מסך יפעל כאילו שהדף כתוב בשפת ברירת המחדל שהמשתמש בחר במהלך הגדרת קורא המסך. אם שפת הדף אינהשפת ברירת המחדל, ייתכן שקורא המסך לא יקרא בצורה נכונה את הטקסט שבדף. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "אם בדף לא מצוין מאפיין lang, קורא מסך יפעל כאילו שהדף כתוב בשפת ברירת המחדל שהמשתמש בחר במהלך הגדרת קורא המסך. אם שפת הדף אינהשפת ברירת המחדל, ייתכן שקורא המסך לא יקרא בצורה נכונה את הטקסט שבדף. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "לרכיב `<html>` אין מאפיין `[lang]`"
@@ -165,7 +165,7 @@
     "message": "לרכיב `<html>` יש מאפיין `[lang]`"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "ציון של [שפת BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) חוקית עוזר לקוראי מסך להקריא טקסט באופן תקין. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "ציון של [שפת BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) חוקית עוזר לקוראי מסך להקריא טקסט באופן תקין. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "לרכיב `<html>` אין ערך חוקי בשביל מאפיין `[lang]` שלו."
@@ -174,7 +174,7 @@
     "message": "לרכיב `<html>` יש ערך תקין בשביל מאפיין `[lang]` שלו"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "רכיבים אינפורמטיביים צריכים לכלול טקסט חלופי קצר ותיאורי. אפשר להתעלם מרכיבי עיצוב עם מאפיין alt ריק. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "רכיבים אינפורמטיביים צריכים לכלול טקסט חלופי קצר ותיאורי. אפשר להתעלם מרכיבי עיצוב עם מאפיין alt ריק. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "לרכיבי תמונה אין מאפייני `[alt]`"
@@ -183,7 +183,7 @@
     "message": "לרכיבי תמונה יש מאפייני `[alt]`"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "כשתמונה משמשת כלחצן `<input>`, הוספה של טקסט חלופי יכולה לעזור למשתמשים של קוראי מסך להבין מה הלחצן עושה. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "כשתמונה משמשת כלחצן `<input>`, הוספה של טקסט חלופי יכולה לעזור למשתמשים של קוראי מסך להבין מה הלחצן עושה. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "לרכיבי `‎<input type=\"image\">‎` אין טקסט `[alt]`"
@@ -192,7 +192,7 @@
     "message": "לרכיבי `‎<input type=\"image\">‎` יש טקסט `[alt]`"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "בעזרת תוויות אפשר לוודא ששמות של פקדי טפסים מוקראים באופן תקין על-ידי טכנולוגיות לנגישות, כמו קוראי מסך. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "בעזרת תוויות אפשר לוודא ששמות של פקדי טפסים מוקראים באופן תקין על-ידי טכנולוגיות לנגישות, כמו קוראי מסך. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "לא שויכו תוויות אל רכיבי טופס"
@@ -201,7 +201,7 @@
     "message": "לרכיבי טופס יש תוויות המשויכות אליהם"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "טבלה המשמשת לקביעת פריסה אינה יכולה לכלול רכיבי נתונים, כמו רכיבי th, ‏caption או המאפיין summary, מפני שהם יכולים ליצור חוויה מבלבלת עבור משתמשים הנעזרים בקורא מסך. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "טבלה המשמשת לקביעת פריסה אינה יכולה לכלול רכיבי נתונים, כמו רכיבי th, ‏caption או המאפיין summary, מפני שהם יכולים ליצור חוויה מבלבלת עבור משתמשים הנעזרים בקורא מסך. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "רכיבי `<table>` להצגה לא נמנעים משימוש ב-`<th>`, ‏`<caption>` או במאפיין `[summary]`."
@@ -210,7 +210,7 @@
     "message": "רכיבי `<table>` להצגה אינם משתמשים ב-`<th>`‏, `<caption>` או במאפיין `[summary]`."
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "כשהטקסט של קישור מובן, ייחודי ואפשר להתמקד בו, משתמשים שנעזרים בקורא מסך נהנים מחוויית ניווט משופרת. מצב זה נכון גם לגבי טקסט חלופי של תמונות כשנעשה בהן שימוש כקישורים. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "כשהטקסט של קישור מובן, ייחודי ואפשר להתמקד בו, משתמשים שנעזרים בקורא מסך נהנים מחוויית ניווט משופרת. מצב זה נכון גם לגבי טקסט חלופי של תמונות כשנעשה בהן שימוש כקישורים. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "לקישורים אין שמות ייחודיים"
@@ -219,7 +219,7 @@
     "message": "לקישורים יש שמות ייחודיים"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "קוראי מסך מקריאים רשימות בדרך ספציפית. שמירה על מבנה רשימות תקין מאפשרת הקראה תקינה על-ידי קורא המסך. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "קוראי מסך מקריאים רשימות בדרך ספציפית. שמירה על מבנה רשימות תקין מאפשרת הקראה תקינה על-ידי קורא המסך. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "הרשימות אינן כוללות רק רכיבי `<li>` ורכיבים שתומכים בסקריפט (`<script>` ו-`<template>`)."
@@ -228,7 +228,7 @@
     "message": "הרשימות כוללות רק רכיבי `<li>` ורכיבים שתומכים בסקריפט (`<script>` ו-`<template>`)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "כדי שקוראי מסך יוכלו לקרוא כראוי פריטים ברשימות, (`<li>`) הם צריכים להופיע בין רכיבי הורה מסוג `<ul>` או `<ol>`. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "כדי שקוראי מסך יוכלו לקרוא כראוי פריטים ברשימות, (`<li>`) הם צריכים להופיע בין רכיבי הורה מסוג `<ul>` או `<ol>`. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "פריטי רשימה (`<li>`) אינם נמצאים בין רכיבי `<ul>` או `<ol>` ברמת הורה."
@@ -237,7 +237,7 @@
     "message": "פריטים ברשימות (`<li>`) מופיעים בין רכיבי הורה `<ul>` או `<ol>`"
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "משתמשים לא מצפים לרענון אוטומטי של הדף, ושימוש ברענון כזה יחזיר את ההתמקדות אל ראש הדף. מצב כזה יכול ליצור חוויה מתסכלת או מבלבלת. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "משתמשים לא מצפים לרענון אוטומטי של הדף, ושימוש ברענון כזה יחזיר את ההתמקדות אל ראש הדף. מצב כזה יכול ליצור חוויה מתסכלת או מבלבלת. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "המסמך משתמש ב-`‎<meta http-equiv=\"refresh\">‎`"
@@ -246,7 +246,7 @@
     "message": "המסמך לא משתמש ב-‎`<meta http-equiv=\"refresh\">‎`‎"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "השבתת האפשרות להגדיל את התוכן יוצרת בעיה עבור לקויי ראייה שמסתמכים על הגדלת המסך כדי לראות היטב את תוכן דף האינטרנט. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "השבתת האפשרות להגדיל את התוכן יוצרת בעיה עבור לקויי ראייה שמסתמכים על הגדלת המסך כדי לראות היטב את תוכן דף האינטרנט. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "נעשה שימוש ב-`‎[user-scalable=\"no\"]‎` בתוך הרכיב `‎<meta name=\"viewport\">‎`, או שערך המאפיין `[maximum-scale]` קטן מ-5."
@@ -255,7 +255,7 @@
     "message": "לא נעשה שימוש ב-`‎[user-scalable=\"no\"]‎` ברכיב `‎<meta name=\"viewport\">‎` וערך המאפיין `[maximum-scale]` אינו פחות מ-5."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "קוראי מסך לא יכולים לתרגם תוכן שאינו טקסט. הוספה של טקסט alt ברכיבי `<object>` עוזרת לקוראי מסך להעביר למשתמשים את המשמעות. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "קוראי מסך לא יכולים לתרגם תוכן שאינו טקסט. הוספה של טקסט alt ברכיבי `<object>` עוזרת לקוראי מסך להעביר למשתמשים את המשמעות. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "לרכיבי `<object>` אין טקסט `[alt]`"
@@ -264,7 +264,7 @@
     "message": "לרכיבי `<object>` יש טקסט `[alt]`"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "ערך גדול מ-0 מציין סדר ניווט מפורש. למרות שאפשרות זו תקינה מבחינה טכנית, במקרים רבים היא גורמת לחוויה מתסכלת עבור משתמשים שמסתמכים על טכנולוגיות לנגישות. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "ערך גדול מ-0 מציין סדר ניווט מפורש. למרות שאפשרות זו תקינה מבחינה טכנית, במקרים רבים היא גורמת לחוויה מתסכלת עבור משתמשים שמסתמכים על טכנולוגיות לנגישות. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "לחלק מהרכיבים יש ערך `[tabindex]` גדול מ-0"
@@ -273,7 +273,7 @@
     "message": "לאף רכיב אין ערך `[tabindex]` גדול מ-0"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "קוראי מסכים כוללים תכונות שמקלות את הניווט בטבלאות. כשתאי `<td>` שמשתמשים במאפיין `[headers]` מתייחסים רק לתאים אחרים באותה טבלה, משתמשים של קוראי מסך עשויים ליהנות מחוויה טובה יותר. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "קוראי מסכים כוללים תכונות שמקלות את הניווט בטבלאות. כשתאי `<td>` שמשתמשים במאפיין `[headers]` מתייחסים רק לתאים אחרים באותה טבלה, משתמשים של קוראי מסך עשויים ליהנות מחוויה טובה יותר. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "תאים ברכיב `<table>` שמשתמשים במאפיין `[headers]` מתייחסים לתאים אחרים באותה טבלה."
@@ -282,7 +282,7 @@
     "message": "תאים ברכיב `<table>` שמשתמשים במאפיין `[headers]` מתייחסים רק לתאים באותה טבלה."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "קוראי מסכים כוללים תכונות שמקלות את הניווט בטבלאות. הקפדה על כך שכותרות טבלה יתייחסו תמיד לקבוצה כלשהי של תאים, יכולה לשפר את החוויה של משתמשים הנעזרים בקורא מסך. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "קוראי מסכים כוללים תכונות שמקלות את הניווט בטבלאות. הקפדה על כך שכותרות טבלה יתייחסו תמיד לקבוצה כלשהי של תאים, יכולה לשפר את החוויה של משתמשים הנעזרים בקורא מסך. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "לרכיבי `<th>` ולרכיבים עם `‎[role=\"columnheader\"/\"rowheader\"]‎` אין תאים שאותם הם מתארים."
@@ -291,7 +291,7 @@
     "message": "לרכיבי `<th>` ולרכיבים עם `‎[role=\"columnheader\"/\"rowheader\"]‎` יש תאים שאותם הם מתארים."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "ציון של [שפת BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) חוקית ברכיבים עוזר להבטיח שהטקסט יבוטא באופן תקין על-ידי קורא המסך. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "ציון של [שפת BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) חוקית ברכיבים עוזר להבטיח שהטקסט יבוטא באופן תקין על-ידי קורא המסך. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "למאפייני `[lang]` אין ערך חוקי"
@@ -300,7 +300,7 @@
     "message": "למאפייני `[lang]` יש ערך חוקי"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "כשסרטון כולל כתובית, המידע שהוא כולל נגיש יותר לחרשים ולקויי שמיעה. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "כשסרטון כולל כתובית, המידע שהוא כולל נגיש יותר לחרשים ולקויי שמיעה. [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "רכיבי `<video>` אינם מכילים רכיב `<track>` עם `‎[kind=\"captions\"]‎`."
@@ -309,7 +309,7 @@
     "message": "ברכיבי `<video>` יש רכיב `<track>` עם `‎[kind=\"captions\"]‎`"
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "תיאורים קוליים מספקים מידע רלוונטי לגבי סרטונים במקרים שבהם הדבר לא אפשרי בעזרת דיאלוג (למשל: הבעות פנים ונופים). [מידע נוסף](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "תיאורים קוליים מספקים מידע רלוונטי לגבי סרטונים במקרים שבהם הדבר לא אפשרי בעזרת דיאלוג (למשל: הבעות פנים ונופים). [מידע נוסף](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "רכיבי `<video>` לא כוללים רכיב `<track>` עם ‎`[kind=\"description\"]`‎."

@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "Anhand von Tastenkombinationen können Nutzer schnell einen Bereich der Seite in den Fokus rücken. Damit die Navigation wie vorgesehen funktioniert, muss jede Tastenkombination eindeutig sein. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "Anhand von Tastenkombinationen können Nutzer schnell einen Bereich der Seite in den Fokus rücken. Damit die Navigation wie vorgesehen funktioniert, muss jede Tastenkombination eindeutig sein. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "[accesskey]-Werte sind nicht eindeutig"
@@ -9,7 +9,7 @@
     "message": "[accesskey]-Werte sind eindeutig"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "Jede ARIA-Rolle unterstützt eine bestimmte Auswahl an \"aria-*\"-Attributen. Im Falle einer fehlerhaften Zuordnung werden die \"aria-*\"-Attribute ungültig. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "Jede ARIA-Rolle unterstützt eine bestimmte Auswahl an \"aria-*\"-Attributen. Im Falle einer fehlerhaften Zuordnung werden die \"aria-*\"-Attribute ungültig. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "[aria-*]-Attribute stimmen nicht mit ihren Rollen überein"
@@ -18,7 +18,7 @@
     "message": "[aria-*]-Attribute entsprechen ihren Rollen"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "Für einige ARIA-Rollen sind Attribute erforderlich, die Screenreadern den Zustand des Elements beschreiben. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "Für einige ARIA-Rollen sind Attribute erforderlich, die Screenreadern den Zustand des Elements beschreiben. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "[role]-Elemente weisen nicht alle erforderlichen [aria-*]-Attribute auf"
@@ -27,7 +27,7 @@
     "message": "[role]-Elemente weisen alle erforderlichen [aria-*]-Attribute auf"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "Einige übergeordnete ARIA-Rollen müssen bestimmte untergeordnete Rollen enthalten, damit sie die beabsichtigten Hilfsfunktionen erfüllen können. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "Einige übergeordnete ARIA-Rollen müssen bestimmte untergeordnete Rollen enthalten, damit sie die beabsichtigten Hilfsfunktionen erfüllen können. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "Elemente mit \"[role]\", die bestimmte untergeordnete Rollen erfordern, fehlen."
@@ -36,7 +36,7 @@
     "message": "Elemente mit \"[role]\", die bestimmte untergeordnete Rollen erfordern, sind vorhanden"
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "Einige untergeordnete ARIA-Rollen müssen in bestimmten übergeordneten Rollen enthalten sein, damit sie die beabsichtigten Hilfsfunktionen wie vorgesehen erfüllen können. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "Einige untergeordnete ARIA-Rollen müssen in bestimmten übergeordneten Rollen enthalten sein, damit sie die beabsichtigten Hilfsfunktionen wie vorgesehen erfüllen können. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "[role]-Elemente sind nicht ihren jeweils erforderlichen übergeordneten Elementen untergeordnet"
@@ -45,7 +45,7 @@
     "message": "[role]-Elemente sind ihren jeweils erforderlichen übergeordneten Elementen untergeordnet"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "Für ARIA-Rollen müssen gültige Werte angegeben sein, damit sie die beabsichtigten Hilfsfunktionen erfüllen können. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "Für ARIA-Rollen müssen gültige Werte angegeben sein, damit sie die beabsichtigten Hilfsfunktionen erfüllen können. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "[role]-Werte sind nicht gültig"
@@ -54,7 +54,7 @@
     "message": "[role]-Werte sind gültig"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "Hilfstechnologien wie Screenreader können ARIA-Attribute mit ungültigen Werten nicht interpretieren. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "Hilfstechnologien wie Screenreader können ARIA-Attribute mit ungültigen Werten nicht interpretieren. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "[aria-*]-Attribute weisen keine gültigen Werte auf"
@@ -63,7 +63,7 @@
     "message": "Für [aria-*]`-Attribute sind gültige Werte angegeben"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "Hilfstechnologien wie Screenreader können ARIA-Attribute mit ungültigen Namen nicht interpretieren. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "Hilfstechnologien wie Screenreader können ARIA-Attribute mit ungültigen Namen nicht interpretieren. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "[aria-*]-Attribute sind ungültig oder falsch geschrieben"
@@ -72,7 +72,7 @@
     "message": "[aria-*]-Attribute sind gültig und nicht falsch geschrieben"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "Durch Untertitel sind Audioelemente auch für Gehörlose und Hörgeschädigte nutzbar, da sie wichtige Informationen zur sprechenden Person und zum Inhalt des Gesprächs sowie andere nonverbale Informationen enthalten. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "Durch Untertitel sind Audioelemente auch für Gehörlose und Hörgeschädigte nutzbar, da sie wichtige Informationen zur sprechenden Person und zum Inhalt des Gesprächs sowie andere nonverbale Informationen enthalten. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "Den <audio>-Elementen fehlt ein <track>-Element mit \"[kind=\"captions\"]\"."
@@ -84,7 +84,7 @@
     "message": "Fehlerhafte Elemente"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "Wenn eine Schaltfläche keinen zugänglichen Namen hat, wird sie von Screenreadern als \"Schaltfläche\" angesagt, was sie für Nutzer, die auf Screenreader angewiesen sind, unbrauchbar macht. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "Wenn eine Schaltfläche keinen zugänglichen Namen hat, wird sie von Screenreadern als \"Schaltfläche\" angesagt, was sie für Nutzer, die auf Screenreader angewiesen sind, unbrauchbar macht. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "Schaltflächen haben keinen für Screenreader zugänglichen Namen"
@@ -93,7 +93,7 @@
     "message": "Die Namen der Schaltflächen sind für Screenreader zugänglich"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "Wenn Tastaturnutzer sich wiederholende Inhalte überspringen können, sorgt das für eine effizientere Navigation. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "Wenn Tastaturnutzer sich wiederholende Inhalte überspringen können, sorgt das für eine effizientere Navigation. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "Die Seite enthält keine Überschrift, keinen Link zum Überspringen und keinen Landmark-Bereich"
@@ -102,7 +102,7 @@
     "message": "Die Seite enthält eine Überschrift, einen Link zum Überspringen oder einen Landmark-Bereich"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "Text mit geringem Kontrast ist für viele Nutzer schlecht oder gar nicht lesbar. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "Text mit geringem Kontrast ist für viele Nutzer schlecht oder gar nicht lesbar. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "Das Kontrastverhältnis von Hintergrund- und Vordergrundfarben ist nicht ausreichend."
@@ -111,7 +111,7 @@
     "message": "Das Kontrastverhältnis von Hintergrund- und Vordergrundfarben ist ausreichend"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "Wenn Definitionslisten nicht korrekt mit Markup versehen sind, geben Screenreader unter Umständen verwirrende oder falsche Inhalte aus. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "Wenn Definitionslisten nicht korrekt mit Markup versehen sind, geben Screenreader unter Umständen verwirrende oder falsche Inhalte aus. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "<dl>-Elemente enthalten nicht nur in der richtigen Reihenfolge angeordnete <dt>- und <dd>-Gruppen sowie <script>- oder <template>-Elemente."
@@ -120,7 +120,7 @@
     "message": "<dl>-Elemente enthalten nur in der richtigen Reihenfolge angeordnete <dt>- und <dd>-Gruppen sowie <script>- oder <template>-Elemente."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "Definitionslistenelemente (<dt> und <dd>) müssen Teil eines übergeordnetes <dl>-Elements sein, damit sie von Screenreadern richtig angesagt werden können. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "Definitionslistenelemente (<dt> und <dd>) müssen Teil eines übergeordnetes <dl>-Elements sein, damit sie von Screenreadern richtig angesagt werden können. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "Definitionslistenelemente sind nicht in <dl>-Elemente eingefasst"
@@ -138,7 +138,7 @@
     "message": "Dokument verfügt über ein <title>-Element"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "Der Wert eines ID-Attributs muss eindeutig sein, damit andere Instanzen nicht von Hilfstechnologien übersehen werden. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "Der Wert eines ID-Attributs muss eindeutig sein, damit andere Instanzen nicht von Hilfstechnologien übersehen werden. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "[id]-Attribute auf der Seite sind nicht eindeutig"
@@ -147,7 +147,7 @@
     "message": "[id]-Attribute auf der Seite sind eindeutig"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "Nutzer von Screenreadern sind auf Frametitel angewiesen, die die Frameinhalte beschreiben. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "Nutzer von Screenreadern sind auf Frametitel angewiesen, die die Frameinhalte beschreiben. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "<frame>- oder <iframe>-Elemente haben keinen Titel"
@@ -156,7 +156,7 @@
     "message": "Für <frame>- oder <iframe>-Elemente ist ein Titel vorhanden"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "Wenn auf einer Seite kein \"lang\"-Attribut angegeben ist, nimmt ein Screenreader an, dass der Text darauf in der Standardsprache ist, die der Nutzer beim Einrichten des Screenreaders ausgewählt hat. Wenn die Sprache aber nicht der Standardsprache entspricht, gibt der Screenreader den Inhalt der Seite möglicherweise falsch aus. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "Wenn auf einer Seite kein \"lang\"-Attribut angegeben ist, nimmt ein Screenreader an, dass der Text darauf in der Standardsprache ist, die der Nutzer beim Einrichten des Screenreaders ausgewählt hat. Wenn die Sprache aber nicht der Standardsprache entspricht, gibt der Screenreader den Inhalt der Seite möglicherweise falsch aus. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "Für das <html>-Element ist kein [lang]-Attribut angegeben"
@@ -165,7 +165,7 @@
     "message": "Für das <html>-Element ist ein [lang]-Attribut angegeben"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "Durch Angabe einer gültigen [Sprache gemäß BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) kann der Text von einem Screenreader korrekt wiedergegeben werden. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Durch Angabe einer gültigen [Sprache gemäß BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) kann der Text von einem Screenreader korrekt wiedergegeben werden. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "Für das [lang]-Attribut des <html>-Elements ist kein gültiger Wert angegeben."
@@ -174,7 +174,7 @@
     "message": "Für das [lang]-Attribut des <html>-Elements ist ein gültiger Wert angegeben"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "Informative Elemente sollten einen kurzen, beschreibenden alternativen Text haben. Dekorative Elemente können mit einem leeren ALT-Attribut ignoriert werden. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "Informative Elemente sollten einen kurzen, beschreibenden alternativen Text haben. Dekorative Elemente können mit einem leeren ALT-Attribut ignoriert werden. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "Bildelemente haben keine [alt]-Attribute"
@@ -183,7 +183,7 @@
     "message": "Für Bildelemente sind [alt]-Attribute vorhanden"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "Wenn ein Bild als <input>-Schaltfläche verwendet wird, kann die Angabe von alternativem Text Screenreader-Nutzern helfen, den Zweck der Schaltfläche besser zu verstehen. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "Wenn ein Bild als <input>-Schaltfläche verwendet wird, kann die Angabe von alternativem Text Screenreader-Nutzern helfen, den Zweck der Schaltfläche besser zu verstehen. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "<input type=\"image\">-Elemente haben keinen [alt]-Text"
@@ -192,7 +192,7 @@
     "message": "Für <input type=\"image\">-Elemente ist [alt]-Text vorhanden"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "Durch Labels wird gewährleistet, dass Steuerelemente für Formulare von Hilfstechnologien wie Screenreadern richtig angesagt werden. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "Durch Labels wird gewährleistet, dass Steuerelemente für Formulare von Hilfstechnologien wie Screenreadern richtig angesagt werden. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "Die Formularelemente sind nicht mit Labels verknüpft"
@@ -201,7 +201,7 @@
     "message": "Formularelemente sind mit Labels verknüpft"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "Eine für Layoutzwecke verwendete Tabelle sollte keine Datenelemente wie \"th\"- oder \"caption\"-Elemente oder das \"summary\"-Attribut enthalten, weil dies für Nutzer von Screenreadern verwirrend sein kann. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "Eine für Layoutzwecke verwendete Tabelle sollte keine Datenelemente wie \"th\"- oder \"caption\"-Elemente oder das \"summary\"-Attribut enthalten, weil dies für Nutzer von Screenreadern verwirrend sein kann. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "<table>-Präsentationselemente verhindern nicht die Nutzung von \"<th>\", \"<caption>\" oder des [summary]-Attributs."
@@ -210,7 +210,7 @@
     "message": "<table>-Präsentationselemente verhindern die Nutzung von \"<th>\", \"<caption>\" oder des [summary]-Attributs."
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "Linktext, der leicht erkennbar, eindeutig und fokussierbar ist, verbessert die Navigation für Screenreader-Nutzer. Dies gilt auch für alternativen Text für Bilder, die als Links verwendet werden. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "Linktext, der leicht erkennbar, eindeutig und fokussierbar ist, verbessert die Navigation für Screenreader-Nutzer. Dies gilt auch für alternativen Text für Bilder, die als Links verwendet werden. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "Links haben keinen leicht erkennbaren Namen"
@@ -219,7 +219,7 @@
     "message": "Links haben einen leicht erkennbaren Namen"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "Screenreader sagen Listen auf bestimmte Art und Weise an. Eine korrekte Listenstruktur gewährleistet, dass der Screenreader sie richtig ausgibt. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "Screenreader sagen Listen auf bestimmte Art und Weise an. Eine korrekte Listenstruktur gewährleistet, dass der Screenreader sie richtig ausgibt. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "Listen enthalten nicht nur <li>-Elemente und Elemente zur Skriptunterstützung (\"<script>\" und \"<template>\")."
@@ -228,7 +228,7 @@
     "message": "Listen enthalten nur <li>-Elemente und Elemente zur Skriptunterstützung (\"<script>\" und \"<template>\")."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "Listenelemente (<li>) müssen sich in einem übergeordneten <ul>- oder <ol>-Element befinden, damit Screenreader sie richtig ansagen können. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "Listenelemente (<li>) müssen sich in einem übergeordneten <ul>- oder <ol>-Element befinden, damit Screenreader sie richtig ansagen können. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "Listenelemente (<li>) befinden sich nicht in übergeordneten <ul>- oder <ol>-Elementen."
@@ -237,7 +237,7 @@
     "message": "Listenelemente (<li>) befinden sich in übergeordneten <ul>- oder <ol>-Elementen"
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "Nutzer erwarten nicht, dass eine Seite automatisch aktualisiert wird. Dadurch wird der Fokus wieder auf den Seitenanfang verschoben. Das kann für den Nutzer frustrierend oder verwirrend sein. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "Nutzer erwarten nicht, dass eine Seite automatisch aktualisiert wird. Dadurch wird der Fokus wieder auf den Seitenanfang verschoben. Das kann für den Nutzer frustrierend oder verwirrend sein. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "Das Dokument verwendet \"<meta http-equiv=\"refresh\">\""
@@ -246,7 +246,7 @@
     "message": "\"<meta http-equiv=\"refresh\">\" wird vom Dokument nicht verwendet"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "Wenn Sie die Zoomfunktion deaktivieren, haben Nutzer mit eingeschränktem Sehvermögen, die auf die Bildschirmvergrößerung angewiesen sind, möglicherweise Probleme dabei, den Inhalt einer Webseite zu sehen. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "Wenn Sie die Zoomfunktion deaktivieren, haben Nutzer mit eingeschränktem Sehvermögen, die auf die Bildschirmvergrößerung angewiesen sind, möglicherweise Probleme dabei, den Inhalt einer Webseite zu sehen. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "\"[user-scalable=\"no\"]\" wird im <meta name=\"viewport\">-Element verwendet oder das [maximum-scale]-Attribut ist kleiner als 5."
@@ -255,7 +255,7 @@
     "message": "\"[user-scalable=\"no\"]\" wird nicht im <meta name=\"viewport\">-Element verwendet und das [maximum-scale]-Attribut ist nicht kleiner als 5."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "Screenreader können lediglich Textinhalte interpretieren. Wenn Sie <object>-Elementen ALT-Text hinzufügen, kann den Nutzern ihre Bedeutung vermittelt werden. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "Screenreader können lediglich Textinhalte interpretieren. Wenn Sie <object>-Elementen ALT-Text hinzufügen, kann den Nutzern ihre Bedeutung vermittelt werden. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "<object>-Elemente haben keinen [alt]-Text"
@@ -264,7 +264,7 @@
     "message": "[alt]-Text ist für <object>-Elemente vorhanden"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "Ein Wert größer als 0 impliziert eine explizite Navigationsanordnung. Das ist zwar technisch möglich, für Nutzer, die auf Hilfstechnologien angewiesen sind, ist dies jedoch häufig frustrierend. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "Ein Wert größer als 0 impliziert eine explizite Navigationsanordnung. Das ist zwar technisch möglich, für Nutzer, die auf Hilfstechnologien angewiesen sind, ist dies jedoch häufig frustrierend. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "Der [tabindex]-Wert einiger Elemente ist größer als 0"
@@ -273,7 +273,7 @@
     "message": "Kein Element hat einen [tabindex]-Wert größer als 0"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "Screenreader bieten Funktionen, die die Navigation in Tabellen vereinfachen. Wenn Sie dafür sorgen, dass <td>-Zellen, die das [headers]-Attribut verwenden, nur auf andere Zellen in derselben Tabelle verweisen, kann dies für Screenreader-Nutzer hilfreich sein. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "Screenreader bieten Funktionen, die die Navigation in Tabellen vereinfachen. Wenn Sie dafür sorgen, dass <td>-Zellen, die das [headers]-Attribut verwenden, nur auf andere Zellen in derselben Tabelle verweisen, kann dies für Screenreader-Nutzer hilfreich sein. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "Zellen in einem <table>-Element, das das Attribut \"[headers]\" verwendet, verweisen auf andere Zellen derselben Tabelle."
@@ -282,7 +282,7 @@
     "message": "Zellen in einem <table>-Element, die das [headers]-Attribut verwenden, verweisen nur auf andere Zellen in derselben Tabelle."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "Screenreader bieten Funktionen, die die Navigation in Tabellen vereinfachen. Wenn Sie dafür sorgen, dass Tabellenüberschriften immer auf eine Auswahl von Zellen verweisen, kann dies für Screenreader-Nutzer hilfreich sein. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "Screenreader bieten Funktionen, die die Navigation in Tabellen vereinfachen. Wenn Sie dafür sorgen, dass Tabellenüberschriften immer auf eine Auswahl von Zellen verweisen, kann dies für Screenreader-Nutzer hilfreich sein. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "Für <th>-Elemente und Elemente mit \"[role=\"columnheader\"/\"rowheader\"]\" sind keine Datenzellen vorhanden, die sie beschreiben."
@@ -291,7 +291,7 @@
     "message": "Für <th>-Elemente und Elemente mit \"[role=\"columnheader\"/\"rowheader\"]\" sind Datenzellen vorhanden, die sie beschreiben."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "Durch Angabe einer gültigen [Sprache gemäß BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) in Elementen wird sichergestellt, dass der Text von einem Screenreader korrekt ausgesprochen wird. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Durch Angabe einer gültigen [Sprache gemäß BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) in Elementen wird sichergestellt, dass der Text von einem Screenreader korrekt ausgesprochen wird. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "[lang]-Attribute weisen keinen gültigen Wert auf"
@@ -300,7 +300,7 @@
     "message": "[lang]-Attribute weisen einen gültigen Wert auf"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "Bei einem Video mit Untertitel können gehörlose und hörgeschädigte Nutzer einfacher auf die zugehörigen Informationen zugreifen. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "Bei einem Video mit Untertitel können gehörlose und hörgeschädigte Nutzer einfacher auf die zugehörigen Informationen zugreifen. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "<video>-Elemente enthalten kein <track>-Element mit \"[kind=\"captions\"]\"."
@@ -309,7 +309,7 @@
     "message": "<video>-Elemente enthalten ein <track>-Element mit \"[kind=\"captions\"]\""
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "Audiobeschreibungen enthalten relevante Informationen für Videos, die aus dem Dialog nicht ersichtlich sind, zum Beispiel Gesichtsausdrücke und Schauplätze. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "Audiobeschreibungen enthalten relevante Informationen für Videos, die aus dem Dialog nicht ersichtlich sind, zum Beispiel Gesichtsausdrücke und Schauplätze. [Weitere Informationen](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "<video>-Elemente enthalten kein <track>-Element mit \"[kind=\"description\"]\"."

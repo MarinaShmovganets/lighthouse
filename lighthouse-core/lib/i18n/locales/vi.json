@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "Các phím truy cập cho phép người dùng lấy nhanh tiêu điểm vào một phần của trang. Để điều hướng đúng cách, mỗi phím truy cập phải là duy nhất. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "Các phím truy cập cho phép người dùng lấy nhanh tiêu điểm vào một phần của trang. Để điều hướng đúng cách, mỗi phím truy cập phải là duy nhất. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "Các giá trị `[accesskey]` không phải là duy nhất"
@@ -9,7 +9,7 @@
     "message": "Các giá trị `[accesskey]` là duy nhất"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "Mỗi `role` của Ứng dụng Internet phong phú dễ dùng (ARIA) hỗ trợ một tập hợp con cụ thể các thuộc tính `aria-*`. Nếu không trùng khớp, các thuộc tính `aria-*` sẽ trở nên vô hiệu. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "Mỗi `role` của Ứng dụng Internet phong phú dễ dùng (ARIA) hỗ trợ một tập hợp con cụ thể các thuộc tính `aria-*`. Nếu không trùng khớp, các thuộc tính `aria-*` sẽ trở nên vô hiệu. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "Các thuộc tính `[aria-*]` không khớp với vai trò của chúng"
@@ -18,7 +18,7 @@
     "message": "Các thuộc tính `[aria-*]` khớp với vai trò của chúng"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "Một số vai trò ARIA có các thuộc tính bắt buộc mô tả trạng thái của phần tử cho trình đọc màn hình. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "Một số vai trò ARIA có các thuộc tính bắt buộc mô tả trạng thái của phần tử cho trình đọc màn hình. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "`[role]` không có tất cả thuộc tính `[aria-*]` bắt buộc"
@@ -27,7 +27,7 @@
     "message": "`[role]` có tất cả thuộc tính `[aria-*]` bắt buộc"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "Một số vai trò mẹ của Ứng dụng Internet phong phú dễ dùng (ARIA) phải chứa các vai trò con cụ thể để thực hiện những chức năng hỗ trợ tiếp cận chủ định của các vai trò mẹ này. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "Một số vai trò mẹ của Ứng dụng Internet phong phú dễ dùng (ARIA) phải chứa các vai trò con cụ thể để thực hiện những chức năng hỗ trợ tiếp cận chủ định của các vai trò mẹ này. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "Thiếu các phần tử có vai trò `[role]` yêu cầu phải có vai trò `[role]` con cụ thể."
@@ -36,7 +36,7 @@
     "message": "Các phần tử có vai trò `[role]` yêu cầu phải có vai trò con `[role]` cụ thể đang hiện diện"
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "Các vai trò mẹ cụ thể phải chứa một số vai trò con của Ứng dụng Internet phong phú dễ dùng (ARIA) để thực hiện chính xác các chức năng hỗ trợ tiếp cận chủ định của các vai trò mẹ này. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "Các vai trò mẹ cụ thể phải chứa một số vai trò con của Ứng dụng Internet phong phú dễ dùng (ARIA) để thực hiện chính xác các chức năng hỗ trợ tiếp cận chủ định của các vai trò mẹ này. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "`[role]` không có trong phần tử mẹ bắt buộc của chúng"
@@ -45,7 +45,7 @@
     "message": "`[role]` có trong phần tử mẹ bắt buộc của chúng"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "Các vai trò của Ứng dụng Internet phong phú dễ dùng (ARIA) phải có giá trị hợp lệ để thực hiện những chức năng hỗ trợ tiếp cận chủ định của mình. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "Các vai trò của Ứng dụng Internet phong phú dễ dùng (ARIA) phải có giá trị hợp lệ để thực hiện những chức năng hỗ trợ tiếp cận chủ định của mình. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "Các giá trị `[role]` là không hợp lệ"
@@ -54,7 +54,7 @@
     "message": "Các giá trị `[role]` là hợp lệ"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "Các công nghệ hỗ trợ, chẳng hạn như trình đọc màn hình, không thể diễn giải thuộc tính của Ứng dụng Internet phong phú dễ dùng (ARIA) có giá trị không hợp lệ. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "Các công nghệ hỗ trợ, chẳng hạn như trình đọc màn hình, không thể diễn giải thuộc tính của Ứng dụng Internet phong phú dễ dùng (ARIA) có giá trị không hợp lệ. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "Các thuộc tính `[aria-*]` không có giá trị hợp lệ"
@@ -63,7 +63,7 @@
     "message": "Các thuộc tính `[aria-*]` có giá trị hợp lệ"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "Các công nghệ hỗ trợ, chẳng hạn như trình đọc màn hình, không thể diễn giải các thuộc tính của Ứng dụng Internet phong phú dễ dùng (ARIA) có tên không hợp lệ. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "Các công nghệ hỗ trợ, chẳng hạn như trình đọc màn hình, không thể diễn giải các thuộc tính của Ứng dụng Internet phong phú dễ dùng (ARIA) có tên không hợp lệ. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "Các thuộc tính `[aria-*]` là không hợp lệ hoặc viết sai chính tả"
@@ -72,7 +72,7 @@
     "message": "Các thuộc tính `[aria-*]` là hợp lệ và không sai chính tả"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "Phụ đề giúp người điếc hoặc người dùng khiếm thính có thể sử dụng các phần tử âm thanh, cung cấp cho họ những thông tin quan trọng như ai đang nói chuyện, những người đó đang nói gì và các thông tin khác không phải lời nói. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "Phụ đề giúp người điếc hoặc người dùng khiếm thính có thể sử dụng các phần tử âm thanh, cung cấp cho họ những thông tin quan trọng như ai đang nói chuyện, những người đó đang nói gì và các thông tin khác không phải lời nói. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "Các phần tử `<audio>` thiếu một phần tử `<track>` có `[kind=\"captions\"]`."
@@ -84,7 +84,7 @@
     "message": "Các phần tử không đạt"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "Khi một nút không có tên có thể tiếp cận, trình đọc màn hình sẽ thông báo đó là \"nút\", khiến người dùng trình đọc màn hình không sử dụng được nút này. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "Khi một nút không có tên có thể tiếp cận, trình đọc màn hình sẽ thông báo đó là \"nút\", khiến người dùng trình đọc màn hình không sử dụng được nút này. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "Các nút không có tên có thể tiếp cận được"
@@ -93,7 +93,7 @@
     "message": "Các nút có tên tiếp cận được"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "Bằng việc thêm các cách bỏ qua nội dung lặp lại, người dùng bàn phím có thể khám phá trang một cách hiệu quả hơn. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "Bằng việc thêm các cách bỏ qua nội dung lặp lại, người dùng bàn phím có thể khám phá trang một cách hiệu quả hơn. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "Trang này không chứa tiêu đề, đường dẫn liên kết bỏ qua hoặc vùng mốc"
@@ -102,7 +102,7 @@
     "message": "Trang này chứa tiêu đề, phần tử liên kết bỏ qua hoặc vùng mốc"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "Nhiều người dùng gặp khó khăn khi đọc hoặc không thể đọc được văn bản có độ tương phản thấp. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "Nhiều người dùng gặp khó khăn khi đọc hoặc không thể đọc được văn bản có độ tương phản thấp. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "Màu nền trước và nền sau không có đủ tỷ lệ tương phản."
@@ -111,7 +111,7 @@
     "message": "Màu nền trước và nền sau có đủ tỷ lệ tương phản"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "Khi danh sách định nghĩa không được đánh dấu đúng cách, thì trình đọc màn hình có thể đọc thông tin không chính xác hoặc gây nhầm lẫn. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "Khi danh sách định nghĩa không được đánh dấu đúng cách, thì trình đọc màn hình có thể đọc thông tin không chính xác hoặc gây nhầm lẫn. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "`<dl>` không chỉ chứa các nhóm `<dt>` và `<dd>` được sắp xếp đúng cách, các phần tử `<script>` hoặc `<template>`."
@@ -120,7 +120,7 @@
     "message": "`<dl>` chỉ chứa các nhóm `<dt>` và `<dd>` được sắp xếp đúng cách, các phần tử `<script>` hoặc `<template>`."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "Các mục trong danh sách định nghĩa (`<dt>` và `<dd>`) phải được đưa vào một phần tử `<dl>` mẹ để đảm bảo rằng trình đọc màn hình có thể thông báo chính xác các mục này. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "Các mục trong danh sách định nghĩa (`<dt>` và `<dd>`) phải được đưa vào một phần tử `<dl>` mẹ để đảm bảo rằng trình đọc màn hình có thể thông báo chính xác các mục này. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "Các phần tử `<dl>` không bao gồm những mục trong danh sách định nghĩa"
@@ -138,7 +138,7 @@
     "message": "Tài liệu có phần tử `<title>`"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "Giá trị của thuộc tính id phải là duy nhất để ngăn chặn tình trạng công nghệ hỗ trợ bỏ qua các điểm dữ liệu khác. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "Giá trị của thuộc tính id phải là duy nhất để ngăn chặn tình trạng công nghệ hỗ trợ bỏ qua các điểm dữ liệu khác. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "Các thuộc tính `[id]` trên trang này không phải là duy nhất"
@@ -147,7 +147,7 @@
     "message": "Các thuộc tính `[id]` trên trang này là duy nhất"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "Người dùng trình đọc màn hình dựa vào tiêu đề khung để mô tả nội dung của khung. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "Người dùng trình đọc màn hình dựa vào tiêu đề khung để mô tả nội dung của khung. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "Các phần tử `<frame>` hoặc `<iframe>` không có tiêu đề"
@@ -156,7 +156,7 @@
     "message": "Các phần tử `<frame>` hoặc `<iframe>` có tiêu đề"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "Nếu trang không chỉ định một thuộc tính ngôn ngữ, thì trình đọc màn hình sẽ xem như trang đó đang hiển thị bằng ngôn ngữ mặc định mà người dùng đã chọn khi thiết lập trình đọc màn hình. Nếu trên thực tế, trang đó không hiển thị bằng ngôn ngữ mặc định, thì trình đọc màn hình có thể không thông báo văn bản trên trang một cách chính xác. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "Nếu trang không chỉ định một thuộc tính ngôn ngữ, thì trình đọc màn hình sẽ xem như trang đó đang hiển thị bằng ngôn ngữ mặc định mà người dùng đã chọn khi thiết lập trình đọc màn hình. Nếu trên thực tế, trang đó không hiển thị bằng ngôn ngữ mặc định, thì trình đọc màn hình có thể không thông báo văn bản trên trang một cách chính xác. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "Phần tử `<html>` không có thuộc tính `[lang]`"
@@ -165,7 +165,7 @@
     "message": "Phần tử `<html>` có một thuộc tính `[lang]`"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "Việc chỉ định một [BCP 47 language] hợp lệ (https://www.w3.org/International/questions/qa-choosing-language-tags#question) sẽ giúp trình đọc màn hình thông báo văn bản chính xác. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Việc chỉ định một [BCP 47 language] hợp lệ (https://www.w3.org/International/questions/qa-choosing-language-tags#question) sẽ giúp trình đọc màn hình thông báo văn bản chính xác. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "Phần tử `<html>` không có giá trị hợp lệ cho thuộc tính `[lang]` của phần tử này."
@@ -174,7 +174,7 @@
     "message": "Phần tử `<html>` có một giá trị hợp lệ cho thuộc tính `[lang]` của phần tử này"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "Các phần tử thông tin nên là đoạn văn bản thay thế ngắn, có tính mô tả. Có thể bỏ qua phần tử trang trí bằng một thuộc tính alt trống. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "Các phần tử thông tin nên là đoạn văn bản thay thế ngắn, có tính mô tả. Có thể bỏ qua phần tử trang trí bằng một thuộc tính alt trống. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "Các phần tử hình ảnh không có thuộc tính `[alt]`"
@@ -183,7 +183,7 @@
     "message": "Các phần tử hình ảnh có thuộc tính `[alt]`"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "Khi một hình ảnh đang dùng làm nút `<input>`, thì việc cung cấp văn bản thay thế có thể giúp người dùng trình đọc màn hình hiểu rõ mục đích của nút đó. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "Khi một hình ảnh đang dùng làm nút `<input>`, thì việc cung cấp văn bản thay thế có thể giúp người dùng trình đọc màn hình hiểu rõ mục đích của nút đó. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "Các phần tử `<input type=\"image\">` không có văn bản `[alt]`"
@@ -192,7 +192,7 @@
     "message": "Các phần tử `<input type=\"image\">` có văn bản `[alt]`"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "Các nhãn đảm bảo rằng những công nghệ hỗ trợ, chẳng hạn như trình đọc màn hình, thông báo chính xác các phần tử điều kiển của biểu mẫu. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "Các nhãn đảm bảo rằng những công nghệ hỗ trợ, chẳng hạn như trình đọc màn hình, thông báo chính xác các phần tử điều kiển của biểu mẫu. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "Các phần tử biểu mẫu không có nhãn liên kết"
@@ -201,7 +201,7 @@
     "message": "Các phần tử biểu mẫu có nhãn liên quan"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "Bảng đang dùng cho mục đích bố cục không nên bao gồm phần tử dữ liệu, chẳng hạn như phần tử th, phần tử phụ đề hoặc thuộc tính tóm tắt, vì điều này có thể tạo ra trải nghiệm gây bối rối cho người dùng trình đọc màn hình. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "Bảng đang dùng cho mục đích bố cục không nên bao gồm phần tử dữ liệu, chẳng hạn như phần tử th, phần tử phụ đề hoặc thuộc tính tóm tắt, vì điều này có thể tạo ra trải nghiệm gây bối rối cho người dùng trình đọc màn hình. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "Các phần tử `<table>` dạng trình bày không tránh sử dụng `<th>`, `<caption>` hoặc thuộc tính `[summary]`."
@@ -210,7 +210,7 @@
     "message": "Các phần tử `<table>` dạng trình bày tránh sử dụng `<th>`, `<caption>` hoặc thuộc tính `[summary]`."
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "Văn bản liên kết (và văn bản thay thế cho hình ảnh, khi dùng làm liên kết) có thể thấy rõ, duy nhất và có thể lấy tiêu điểm sẽ cải thiện trải nghiệm khám phá cho người dùng trình đọc màn hình. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "Văn bản liên kết (và văn bản thay thế cho hình ảnh, khi dùng làm liên kết) có thể thấy rõ, duy nhất và có thể lấy tiêu điểm sẽ cải thiện trải nghiệm khám phá cho người dùng trình đọc màn hình. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "Các phần tử liên kết không có tên có thể nhận rõ"
@@ -219,7 +219,7 @@
     "message": "Các phần tử liên kết có tên có thể nhận rõ"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "Các trình đọc màn hình có cách riêng để thông báo danh sách. Việc đảm bảo cấu trúc danh sách chính xác hỗ trợ thông tin mà trình đọc màn hình thông báo. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "Các trình đọc màn hình có cách riêng để thông báo danh sách. Việc đảm bảo cấu trúc danh sách chính xác hỗ trợ thông tin mà trình đọc màn hình thông báo. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "Các danh sách không chỉ chứa các phần tử `<li>` và phần tử hỗ trợ tập lệnh (`<script>` và `<template>`)."
@@ -228,7 +228,7 @@
     "message": "Các danh sách chỉ chứa phần tử `<li>` và các phần tử hỗ trợ tập lệnh (`<script>` và `<template>`)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "Trình đọc màn hình yêu cầu các mục thuộc danh sách (`<li>`) phải có trong một `<ul>` hoặc `<ol>` mẹ để được thông báo chính xác. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "Trình đọc màn hình yêu cầu các mục thuộc danh sách (`<li>`) phải có trong một `<ul>` hoặc `<ol>` mẹ để được thông báo chính xác. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "Liệt kê các mục (`<li>`) không có trong các phần tử mẹ `<ul>` hoặc `<ol>`."
@@ -237,7 +237,7 @@
     "message": "Các mục danh sách (`<li>`) có trong các phần tử mẹ `<ul>` hoặc `<ol>`"
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "Người dùng không muốn một trang tự động làm mới, và việc trang tự động làm mới sẽ chuyển tiêu điểm về đầu trang. Điều này có thể tạo ra trải nghiệm khó chịu hoặc gây nhầm lẫn cho người dùng. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "Người dùng không muốn một trang tự động làm mới, và việc trang tự động làm mới sẽ chuyển tiêu điểm về đầu trang. Điều này có thể tạo ra trải nghiệm khó chịu hoặc gây nhầm lẫn cho người dùng. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "Tài liệu này sử dụng `<meta http-equiv=\"refresh\">`"
@@ -246,7 +246,7 @@
     "message": "Tài liệu này không sử dụng `<meta http-equiv=\"refresh\">`"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "Việc tắt tính năng thu phóng sẽ ảnh hưởng đến những người dùng có thị lực kém và dựa vào tính năng phóng to màn hình để xem rõ nội dung của trang web. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "Việc tắt tính năng thu phóng sẽ ảnh hưởng đến những người dùng có thị lực kém và dựa vào tính năng phóng to màn hình để xem rõ nội dung của trang web. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "`[user-scalable=\"no\"]` được sử dụng trong phần tử `<meta name=\"viewport\">` hoặc thuộc tính `[maximum-scale]` nhỏ hơn 5."
@@ -255,7 +255,7 @@
     "message": "`[user-scalable=\"no\"]` không được sử dụng trong phần tử `<meta name=\"viewport\">` và thuộc tính `[maximum-scale]` không nhỏ hơn 5."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "Trình đọc màn hình không thể dịch nội dung không ở dạng văn bản. Việc thêm văn bản thay thế vào các phần tử `<object>` sẽ giúp trình đọc màn hình truyền đạt ý nghĩa cho người dùng. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "Trình đọc màn hình không thể dịch nội dung không ở dạng văn bản. Việc thêm văn bản thay thế vào các phần tử `<object>` sẽ giúp trình đọc màn hình truyền đạt ý nghĩa cho người dùng. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "Các phần tử `<object>` không có văn bản `[alt]`"
@@ -264,7 +264,7 @@
     "message": "Các phần tử `<object>` có văn bản `[alt]`"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "Giá trị lớn hơn 0 ngụ ý thứ tự điều hướng rõ ràng. Mặc dù hợp lệ về mặt kỹ thuật nhưng điều này thường tạo ra trải nghiệm khó chịu cho những người dùng dựa vào công nghệ hỗ trợ. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "Giá trị lớn hơn 0 ngụ ý thứ tự điều hướng rõ ràng. Mặc dù hợp lệ về mặt kỹ thuật nhưng điều này thường tạo ra trải nghiệm khó chịu cho những người dùng dựa vào công nghệ hỗ trợ. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "Một số phần tử có giá trị `[tabindex]` lớn hơn 0"
@@ -273,7 +273,7 @@
     "message": "Không có phần tử nào có giá trị `[tabindex]` lớn hơn 0"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "Trình đọc màn hình có các tính năng giúp người dùng dễ dàng sử dụng bảng hơn. Việc đảm bảo các ô `<td>` sử dụng thuộc tính `[headers]` chỉ tham chiếu các ô khác trong cùng bảng có thể cải thiện trải nghiệm của người dùng trình đọc màn hình. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "Trình đọc màn hình có các tính năng giúp người dùng dễ dàng sử dụng bảng hơn. Việc đảm bảo các ô `<td>` sử dụng thuộc tính `[headers]` chỉ tham chiếu các ô khác trong cùng bảng có thể cải thiện trải nghiệm của người dùng trình đọc màn hình. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "Các ô trong một phần tử `<table>` sử dụng thuộc tính `[headers]` tham chiếu các ô khác trong cùng bảng đó."
@@ -282,7 +282,7 @@
     "message": "Các ô trong phần tử `<table>` sử dụng thuộc tính `[headers]` chỉ tham chiếu các ô khác trong cùng bảng đó."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "Trình đọc màn hình có các tính năng giúp người dùng dễ dàng sử dụng bảng hơn. Việc đảm bảo tiêu đề bảng luôn tham chiếu đến một nhóm ô nào đó có thể cải thiện trải nghiệm của người dùng trình đọc màn hình. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "Trình đọc màn hình có các tính năng giúp người dùng dễ dàng sử dụng bảng hơn. Việc đảm bảo tiêu đề bảng luôn tham chiếu đến một nhóm ô nào đó có thể cải thiện trải nghiệm của người dùng trình đọc màn hình. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "Các phần tử `<th>` và các phần tử có `[role=\"columnheader\"/\"rowheader\"]` không có các ô dữ liệu mà chúng mô tả."
@@ -291,7 +291,7 @@
     "message": "Các phần tử `<th>` và các phần tử có `[role=\"columnheader\"/\"rowheader\"]` có các ô dữ liệu mà chúng mô tả."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "Việc chỉ định một [BCP 47 language] hợp lệ (https://www.w3.org/International/questions/qa-choosing-language-tags#question) cho các phần tử sẽ giúp đảm bảo rằng trình đọc màn hình phát âm văn bản chính xác. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Việc chỉ định một [BCP 47 language] hợp lệ (https://www.w3.org/International/questions/qa-choosing-language-tags#question) cho các phần tử sẽ giúp đảm bảo rằng trình đọc màn hình phát âm văn bản chính xác. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "Các thuộc tính `[lang]` không có giá trị hợp lệ"
@@ -300,7 +300,7 @@
     "message": "Các thuộc tính `[lang]` có một giá trị hợp lệ"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "Khi video có phụ đề, người điếc và người dùng khiếm thính có thể tiếp cận thông tin của video dễ dàng hơn. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "Khi video có phụ đề, người điếc và người dùng khiếm thính có thể tiếp cận thông tin của video dễ dàng hơn. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "Các phần tử `<video>` không chứa phần tử `<track>` có `[kind=\"captions\"]`."
@@ -309,7 +309,7 @@
     "message": "Các phần tử `<video>` chứa một phần tử `<track>` có `[kind=\"captions\"]`"
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "Phần mô tả âm thanh cung cấp thông tin liên quan cho video mà phần hội thoại không thể làm được, chẳng hạn như cảnh và biểu cảm khuôn mặt. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "Phần mô tả âm thanh cung cấp thông tin liên quan cho video mà phần hội thoại không thể làm được, chẳng hạn như cảnh và biểu cảm khuôn mặt. [Tìm hiểu thêm](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "Các phần tử `<video>` không chứa phần tử `<track>` có `[kind=\"description\"]`."

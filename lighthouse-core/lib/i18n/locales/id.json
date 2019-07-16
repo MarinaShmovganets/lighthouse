@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "Kunci akses memungkinkan pengguna memfokuskan bagian halaman dengan cepat. Untuk navigasi yang tepat, setiap kunci akses harus unik. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "Kunci akses memungkinkan pengguna memfokuskan bagian halaman dengan cepat. Untuk navigasi yang tepat, setiap kunci akses harus unik. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "Nilai `[accesskey]` tidak unik"
@@ -9,7 +9,7 @@
     "message": "Nilai `[accesskey]` unik"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "Setiap `role` ARIA mendukung subset tertentu dari atribut `aria-*`. Ketidakcocokan dalam hal tersebut menjadikan atribut `aria-*` tidak valid. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "Setiap `role` ARIA mendukung subset tertentu dari atribut `aria-*`. Ketidakcocokan dalam hal tersebut menjadikan atribut `aria-*` tidak valid. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "Atribut `[aria-*]` tidak cocok dengan perannya"
@@ -18,7 +18,7 @@
     "message": "Atribut `[aria-*]` cocok dengan perannya"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "Beberapa peran ARIA memiliki atribut wajib yang menjelaskan status elemen ke pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "Beberapa peran ARIA memiliki atribut wajib yang menjelaskan status elemen ke pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "`[role]` tidak memiliki semua atribut `[aria-*]` yang diperlukan"
@@ -27,7 +27,7 @@
     "message": "`[role]` memiliki semua atribut `[aria-*]` wajib"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "Beberapa peran induk ARIA harus memuat peran turunan tertentu agar dapat menjalankan fungsi aksesibilitas yang diinginkan. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "Beberapa peran induk ARIA harus memuat peran turunan tertentu agar dapat menjalankan fungsi aksesibilitas yang diinginkan. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "Elemen dengan `[role]` yang memerlukan `[role]` turunan tertentu tidak ada."
@@ -36,7 +36,7 @@
     "message": "Elemen dengan `[role]` yang memerlukan `[role]` turunan tertentu sudah ada"
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "Beberapa peran turunan ARIA harus dimuat oleh peran induk tertentu agar dapat menjalankan fungsi aksesibilitas yang diinginkan dengan tepat. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "Beberapa peran turunan ARIA harus dimuat oleh peran induk tertentu agar dapat menjalankan fungsi aksesibilitas yang diinginkan dengan tepat. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "`[role]` tidak dimuat oleh elemen induk wajibnya"
@@ -45,7 +45,7 @@
     "message": "`[role]` dimuat oleh elemen induk wajibnya"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "Peran ARIA harus memiliki nilai yang valid agar dapat menjalankan fungsi aksesibilitas yang diinginkan. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "Peran ARIA harus memiliki nilai yang valid agar dapat menjalankan fungsi aksesibilitas yang diinginkan. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "Nilai `[role]` tidak valid"
@@ -54,7 +54,7 @@
     "message": "Nilai `[role]` valid"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "Teknologi asistif, seperti pembaca layar, tidak dapat menafsirkan atribut ARIA dengan nilai yang tidak valid. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "Teknologi asistif, seperti pembaca layar, tidak dapat menafsirkan atribut ARIA dengan nilai yang tidak valid. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "Atribut `[aria-*]` tidak memiliki nilai yang valid"
@@ -63,7 +63,7 @@
     "message": "Atribut `[aria-*]` memiliki nilai yang valid"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "Teknologi asistif, seperti pembaca layar, tidak dapat menafsirkan atribut ARIA dengan nama yang tidak valid. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "Teknologi asistif, seperti pembaca layar, tidak dapat menafsirkan atribut ARIA dengan nama yang tidak valid. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "Atribut `[aria-*]` tidak valid atau salah eja"
@@ -72,7 +72,7 @@
     "message": "Atribut `[aria-*]` valid dan tidak salah eja"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "Teks membuat elemen audio mudah digunakan oleh pengguna yang menyandang gangguan pendengaran atau tunarungu, sehingga memberikan informasi penting seperti siapa yang berbicara, apa yang diucapkan, dan informasi non-lisan lainnya. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "Teks membuat elemen audio mudah digunakan oleh pengguna yang menyandang gangguan pendengaran atau tunarungu, sehingga memberikan informasi penting seperti siapa yang berbicara, apa yang diucapkan, dan informasi non-lisan lainnya. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "Elemen `<audio>` tidak memiliki elemen `<track>` dengan `[kind=\"captions\"]`."
@@ -84,7 +84,7 @@
     "message": "Elemen yang Gagal"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "Jika tombol tidak memiliki nama yang dapat diakses, pembaca layar akan mengucapkannya sebagai \"tombol\", yang tidak dapat digunakan oleh pengguna yang mengandalkan pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "Jika tombol tidak memiliki nama yang dapat diakses, pembaca layar akan mengucapkannya sebagai \"tombol\", yang tidak dapat digunakan oleh pengguna yang mengandalkan pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "Tombol tidak memiliki nama yang dapat diakses"
@@ -93,7 +93,7 @@
     "message": "Tombol memiliki nama yang dapat diakses"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "Dengan menambahkan cara untuk mengabaikan konten berulang, pengguna keyboard dapat membuka halaman dengan lebih efisien. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "Dengan menambahkan cara untuk mengabaikan konten berulang, pengguna keyboard dapat membuka halaman dengan lebih efisien. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "Halaman ini tidak memuat judul, link lewati, atau wilayah landmark"
@@ -102,7 +102,7 @@
     "message": "Halaman ini memuat judul, link lewati, atau wilayah landmark"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "Teks yang memiliki kontras rendah sulit atau tidak mungkin dibaca oleh kebanyakan pengguna. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "Teks yang memiliki kontras rendah sulit atau tidak mungkin dibaca oleh kebanyakan pengguna. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "Warna latar belakang dan latar depan tidak memiliki rasio kontras yang cukup."
@@ -111,7 +111,7 @@
     "message": "Warna latar belakang dan latar depan memiliki rasio kontras yang cukup"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "Jika daftar definisi tidak di-markup dengan tepat, pembaca layar dapat menghasilkan output yang membingungkan atau tidak akurat. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "Jika daftar definisi tidak di-markup dengan tepat, pembaca layar dapat menghasilkan output yang membingungkan atau tidak akurat. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "`<dl>` tidak hanya memuat grup `<dt>` dan `<dd>`, `<script>`, atau elemen `<template>` yang diurutkan dengan tepat."
@@ -120,7 +120,7 @@
     "message": "`<dl>` hanya memuat grup `<dt>` dan `<dd>`, `<script>`, atau elemen `<template>` yang diurutkan dengan tepat."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "Item daftar definisi (`<dt>` dan `<dd>`) harus tergabung dalam elemen `<dl>` induk untuk memastikan bahwa pembaca layar dapat mengucapkannya dengan tepat. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "Item daftar definisi (`<dt>` dan `<dd>`) harus tergabung dalam elemen `<dl>` induk untuk memastikan bahwa pembaca layar dapat mengucapkannya dengan tepat. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "Item daftar definisi tidak tergabung dalam elemen `<dl>`"
@@ -138,7 +138,7 @@
     "message": "Dokumen memiliki elemen `<title>`"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "Nilai atribut id harus unik untuk mencegah instance lain terabaikan oleh teknologi asistif. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "Nilai atribut id harus unik untuk mencegah instance lain terabaikan oleh teknologi asistif. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "Atribut `[id]` di halaman ini tidak unik"
@@ -147,7 +147,7 @@
     "message": "Atribut `[id]` di halaman ini unik"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "Pengguna pembaca layar mengandalkan judul bingkai untuk menjelaskan isi bingkai. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "Pengguna pembaca layar mengandalkan judul bingkai untuk menjelaskan isi bingkai. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "Elemen `<frame>` atau `<iframe>` tidak memiliki judul"
@@ -156,7 +156,7 @@
     "message": "Elemen `<frame>` atau `<iframe>` memiliki judul"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "Jika halaman tidak menentukan atribut bahasa, pembaca layar akan mengasumsikan bahwa halaman menggunakan bahasa default yang dipilih pengguna saat menyiapkan pembaca layar. Jika halaman tidak dalam bahasa default, maka pembaca layar mungkin tidak mengucapkan teks di halaman tersebut dengan benar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "Jika halaman tidak menentukan atribut bahasa, pembaca layar akan mengasumsikan bahwa halaman menggunakan bahasa default yang dipilih pengguna saat menyiapkan pembaca layar. Jika halaman tidak dalam bahasa default, maka pembaca layar mungkin tidak mengucapkan teks di halaman tersebut dengan benar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "Elemen `<html>` tidak memiliki atribut `[lang]`"
@@ -165,7 +165,7 @@
     "message": "Elemen `<html>` memiliki atribut `[lang]`"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "Menentukan [BCP 47 language] (https://www.w3.org/International/questions/qa-choosing-language-tags#question) yang valid akan membantu pembaca layar mengucapkan teks dengan tepat. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Menentukan [BCP 47 language] (https://www.w3.org/International/questions/qa-choosing-language-tags#question) yang valid akan membantu pembaca layar mengucapkan teks dengan tepat. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "Elemen `<html>` tidak memiliki nilai yang valid untuk atribut `[lang]`-nya."
@@ -174,7 +174,7 @@
     "message": "Elemen `<html>` memiliki nilai yang valid untuk atribut `[lang]`-nya"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "Elemen informatif harus memberikan teks alternatif yang singkat dan deskriptif. Elemen dekoratif dapat diabaikan dengan atribut alt yang kosong. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "Elemen informatif harus memberikan teks alternatif yang singkat dan deskriptif. Elemen dekoratif dapat diabaikan dengan atribut alt yang kosong. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "Elemen gambar tidak memiliki atribut `[alt]`"
@@ -183,7 +183,7 @@
     "message": "Elemen gambar memiliki atribut `[alt]`"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "Saat suatu gambar digunakan sebagai tombol `<input>`, menyediakan teks alternatif dapat membantu pengguna pembaca layar memahami fungsi tombol tersebut. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "Saat suatu gambar digunakan sebagai tombol `<input>`, menyediakan teks alternatif dapat membantu pengguna pembaca layar memahami fungsi tombol tersebut. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "Elemen `<input type=\"image\">` tidak memiliki teks `[alt]`"
@@ -192,7 +192,7 @@
     "message": "Elemen `<input type=\"image\">` memiliki teks `[alt]`"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "Label memastikan bahwa kontrol bentuk diucapkan dengan tepat oleh teknologi asistif, seperti pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "Label memastikan bahwa kontrol bentuk diucapkan dengan tepat oleh teknologi asistif, seperti pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "Elemen formulir tidak memiliki label yang terkait"
@@ -201,7 +201,7 @@
     "message": "Elemen formulir memiliki label yang terkait"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "Tabel yang digunakan untuk tujuan tata letak sebaiknya tidak mencakup elemen data, seperti elemen th atau teks atau atribut ringkasan, karena hal ini dapat menyebabkan pengalaman yang membingungkan bagi pengguna pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "Tabel yang digunakan untuk tujuan tata letak sebaiknya tidak mencakup elemen data, seperti elemen th atau teks atau atribut ringkasan, karena hal ini dapat menyebabkan pengalaman yang membingungkan bagi pengguna pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "Elemen `<table>` presentasional tidak menghindari penggunaan `<th>`, `<caption>`, atau atribut `[summary]`."
@@ -210,7 +210,7 @@
     "message": "Elemen `<table>` presentasional menghindari penggunaan `<th>`, `<caption>`, atau atribut `[summary]`."
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "Teks link (dan teks alternatif untuk gambar, saat digunakan sebagai link) yang mudah dilihat, unik, dan dapat difokuskan meningkatkan pengalaman navigasi bagi pengguna pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "Teks link (dan teks alternatif untuk gambar, saat digunakan sebagai link) yang mudah dilihat, unik, dan dapat difokuskan meningkatkan pengalaman navigasi bagi pengguna pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "Link tidak memiliki nama yang dapat dikenali"
@@ -219,7 +219,7 @@
     "message": "Link memiliki nama yang dapat dikenali"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "Pembaca layar memiliki cara tertentu untuk membacakan daftar. Memastikan struktur daftar dengan tepat akan membantu output pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "Pembaca layar memiliki cara tertentu untuk membacakan daftar. Memastikan struktur daftar dengan tepat akan membantu output pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "Daftar tidak hanya memuat elemen `<li>` dan skrip yang mendukung elemen (`<script>` dan `<template>`)."
@@ -228,7 +228,7 @@
     "message": "Daftar hanya memuat elemen `<li>` dan skrip yang mendukung elemen (`<script>` dan `<template>`)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "Pembaca layar mengharuskan item daftar (`<li>`) dimuat dalam `<ul>` atau `<ol>` induk agar dapat diucapkan dengan tepat. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "Pembaca layar mengharuskan item daftar (`<li>`) dimuat dalam `<ul>` atau `<ol>` induk agar dapat diucapkan dengan tepat. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "Item daftar (`<li>`) tidak dimuat dalam elemen induk `<ul>` atau `<ol>`."
@@ -237,7 +237,7 @@
     "message": "Item daftar (`<li>`) dimuat dalam elemen induk `<ul>` atau `<ol>`"
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "Pengguna tidak mengharapkan halaman dimuat ulang secara otomatis, karena tindakan tersebut akan memindahkan fokus kembali ke bagian atas halaman. Hal ini dapat menimbulkan pengalaman yang menjengkelkan atau membingungkan. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "Pengguna tidak mengharapkan halaman dimuat ulang secara otomatis, karena tindakan tersebut akan memindahkan fokus kembali ke bagian atas halaman. Hal ini dapat menimbulkan pengalaman yang menjengkelkan atau membingungkan. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "Dokumen ini menggunakan `<meta http-equiv=\"refresh\">`"
@@ -246,7 +246,7 @@
     "message": "Dokumen tidak menggunakan `<meta http-equiv=\"refresh\">`"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "Menonaktifkan zoom akan menimbulkan masalah bagi pengguna dengan gangguan penglihatan yang mengandalkan pembesaran layar untuk melihat konten halaman dengan tepat. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "Menonaktifkan zoom akan menimbulkan masalah bagi pengguna dengan gangguan penglihatan yang mengandalkan pembesaran layar untuk melihat konten halaman dengan tepat. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "`[user-scalable=\"no\"]` digunakan dalam elemen `<meta name=\"viewport\">` atau atribut `[maximum-scale]` kurang dari 5."
@@ -255,7 +255,7 @@
     "message": "`[user-scalable=\"no\"]` tidak digunakan dalam elemen `<meta name=\"viewport\">` dan atribut `[maximum-scale]` tidak kurang dari 5."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "Pembaca layar tidak dapat menerjemahkan konten yang bukan teks. Menambahkan teks alternatif ke elemen `<object>` membantu pembaca layar menyampaikan makna kepada pengguna. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "Pembaca layar tidak dapat menerjemahkan konten yang bukan teks. Menambahkan teks alternatif ke elemen `<object>` membantu pembaca layar menyampaikan makna kepada pengguna. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "Elemen `<object>` tidak memiliki teks `[alt]`"
@@ -264,7 +264,7 @@
     "message": "Elemen `<object>` memiliki teks `[alt]`"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "Nilai yang lebih besar dari 0 menunjukkan pengurutan navigasi eksplisit. Walaupun secara teknis valid, hal ini sering menciptakan pengalaman yang membingungkan bagi pengguna yang mengandalkan teknologi asistif. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "Nilai yang lebih besar dari 0 menunjukkan pengurutan navigasi eksplisit. Walaupun secara teknis valid, hal ini sering menciptakan pengalaman yang membingungkan bagi pengguna yang mengandalkan teknologi asistif. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "Beberapa elemen memiliki nilai `[tabindex]` lebih besar dari 0"
@@ -273,7 +273,7 @@
     "message": "Tidak ada elemen yang memiliki nilai `[tabindex]` lebih besar dari 0"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "Pembaca layar memiliki fitur yang memudahkan navigasi tabel. Memastikan sel `<td>` yang menggunakan atribut `[headers]` hanya merujuk ke sel lain dalam tabel yang sama dapat meningkatkan pengalaman bagi pengguna pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "Pembaca layar memiliki fitur yang memudahkan navigasi tabel. Memastikan sel `<td>` yang menggunakan atribut `[headers]` hanya merujuk ke sel lain dalam tabel yang sama dapat meningkatkan pengalaman bagi pengguna pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "Sel dalam elemen `<table>` yang menggunakan atribut `[headers]` merujuk ke sel lain dalam tabel yang sama."
@@ -282,7 +282,7 @@
     "message": "Sel dalam elemen `<table>` yang menggunakan atribut `[headers]` hanya merujuk ke sel lain dalam tabel yang sama."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "Pembaca layar memiliki fitur yang memudahkan navigasi tabel. Memastikan header tabel selalu merujuk ke sekumpulan sel dapat meningkatkan pengalaman bagi pengguna pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "Pembaca layar memiliki fitur yang memudahkan navigasi tabel. Memastikan header tabel selalu merujuk ke sekumpulan sel dapat meningkatkan pengalaman bagi pengguna pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "Elemen `<th>` dan elemen dengan `[role=\"columnheader\"/\"rowheader\"]` tidak memiliki sel data yang dideskripsikannya."
@@ -291,7 +291,7 @@
     "message": "Elemen `<th>` dan elemen dengan `[role=\"columnheader\"/\"rowheader\"]` memiliki sel data yang dideskripsikannya."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "Menentukan [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) yang valid pada elemen membantu memastikan teks diucapkan dengan benar oleh pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Menentukan [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) yang valid pada elemen membantu memastikan teks diucapkan dengan benar oleh pembaca layar. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "Atribut `[lang]` tidak memiliki nilai yang valid"
@@ -300,7 +300,7 @@
     "message": "Atribut `[lang]` memiliki nilai yang valid"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "Video yang menyediakan teks akan memudahkan pengguna yang menyandang gangguan pendengaran dan tunarungu untuk mengakses informasinya. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "Video yang menyediakan teks akan memudahkan pengguna yang menyandang gangguan pendengaran dan tunarungu untuk mengakses informasinya. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "Elemen `<video>` tidak memuat elemen `<track>` dengan `[kind=\"captions\"]`."
@@ -309,7 +309,7 @@
     "message": "Elemen `<video>` memuat elemen `<track>` dengan `[kind=\"captions\"]`"
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "Deskripsi audio memberikan informasi yang relevan untuk video yang tidak dapat diberikan melalui dialog, seperti ekspresi wajah dan adegan. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "Deskripsi audio memberikan informasi yang relevan untuk video yang tidak dapat diberikan melalui dialog, seperti ekspresi wajah dan adegan. [Pelajari lebih lanjut](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "Elemen `<video>` tidak memuat elemen `<track>` dengan `[kind=\"description\"]`."

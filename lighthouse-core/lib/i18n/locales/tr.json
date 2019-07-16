@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "Erişim anahtarları, kullanıcıların sayfanın bir bölümüne hızlıca odaklanmalarını sağlar. Gezinmenin düzgün bir şekilde gerçekleştirilebilmesi için her bir erişim anahtarının benzersiz olması gerekir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "Erişim anahtarları, kullanıcıların sayfanın bir bölümüne hızlıca odaklanmalarını sağlar. Gezinmenin düzgün bir şekilde gerçekleştirilebilmesi için her bir erişim anahtarının benzersiz olması gerekir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "\"[accesskey]\" değerleri benzersiz değil"
@@ -9,7 +9,7 @@
     "message": "\"[accesskey]\" değerleri benzersiz"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "Her ARIA \"rolü\", belirli bir \"aria-*\" özellik alt kümesini destekler. Bunların uyuşmazlığı, \"aria-*\" özelliklerinin geçersiz kılınmasına neden olur. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "Her ARIA \"rolü\", belirli bir \"aria-*\" özellik alt kümesini destekler. Bunların uyuşmazlığı, \"aria-*\" özelliklerinin geçersiz kılınmasına neden olur. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "\"[aria-*]\" özellikleri, rolleriyle eşleşmiyor"
@@ -18,7 +18,7 @@
     "message": "\"[aria-*]\" özellikleri rolleriyle eşleşiyor"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "Bazı ARIA rolleri, öğenin durumunu ekran okuyuculara açıklayan gerekli özelliklere sahiptir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "Bazı ARIA rolleri, öğenin durumunu ekran okuyuculara açıklayan gerekli özelliklere sahiptir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "\"[role]\" rolleri gereken tüm \"[aria-*]\" özelliklerine sahip değil"
@@ -27,7 +27,7 @@
     "message": "\"[role]\"ler gereken tüm \"[aria-*]\" özelliklerine sahip"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "Bazı ARIA üst rollerinin amaçlanan erişilebilirlik işlevlerini gerçekleştirebilmek için belirli alt rolleri içermesi gerekir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "Bazı ARIA üst rollerinin amaçlanan erişilebilirlik işlevlerini gerçekleştirebilmek için belirli alt rolleri içermesi gerekir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "Belirli alt \"[role]\" rolleri gerektiren, \"[role]\" rolüne sahip öğeler eksik."
@@ -36,7 +36,7 @@
     "message": "Belirli alt \"[role]\"leri gerektiren, \"[role]\"e sahip öğeler mevcut"
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "Bazı ARIA alt rollerinin amaçlanan erişilebilirlik işlevlerini gerektiği gibi gerçekleştirebilmesi için belirli üst rollerin içinde bulunması gerekir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "Bazı ARIA alt rollerinin amaçlanan erişilebilirlik işlevlerini gerektiği gibi gerçekleştirebilmesi için belirli üst rollerin içinde bulunması gerekir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "\"[role]\" rolleri gerekli üst öğelerinin içinde bulunmuyor"
@@ -45,7 +45,7 @@
     "message": "\"[role]\"ler gerekli üst öğelerinin içinde bulunuyor"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "ARIA rollerinin amaçlanan erişilebilirlik işlevlerini gerçekleştirebilmesi için geçerli değerlere sahip olması gerekir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "ARIA rollerinin amaçlanan erişilebilirlik işlevlerini gerçekleştirebilmesi için geçerli değerlere sahip olması gerekir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "\"[role]\" değerleri geçerli değil"
@@ -54,7 +54,7 @@
     "message": "\"[role]\" değerleri geçerli"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "Ekran okuyucular gibi yardımcı teknolojiler geçersiz değerlere sahip ARIA özelliklerini yorumlayamaz. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "Ekran okuyucular gibi yardımcı teknolojiler geçersiz değerlere sahip ARIA özelliklerini yorumlayamaz. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "\"[aria-*]\" özellikleri geçerli değerlere sahip değil"
@@ -63,7 +63,7 @@
     "message": "\"[aria-*]\" özelliklerinin geçerli değerleri var"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "Ekran okuyucular gibi yardımcı teknolojiler geçersiz adlara sahip ARIA özelliklerini yorumlayamaz. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "Ekran okuyucular gibi yardımcı teknolojiler geçersiz adlara sahip ARIA özelliklerini yorumlayamaz. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "\"[aria-*]\" özellikleri geçerli değil veya yanlış yazılmış"
@@ -72,7 +72,7 @@
     "message": "\"[aria-*]\" özellikleri geçerli ve yanlış yazılmamış"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "Altyazılar kimin konuştuğu, neler dediği gibi önemli bilgiler ve konuşma dışında başka bilgiler sağlayarak ses öğelerinin sağır veya işitme engelli kullanıcılar tarafından kullanılabilmesini sağlar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "Altyazılar kimin konuştuğu, neler dediği gibi önemli bilgiler ve konuşma dışında başka bilgiler sağlayarak ses öğelerinin sağır veya işitme engelli kullanıcılar tarafından kullanılabilmesini sağlar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "\"<audio>\" öğelerinde \"[kind=\"captions\"]\" içeren bir \"<track>\" öğesi bulunmuyor."
@@ -84,7 +84,7 @@
     "message": "Başarısız Öğeler"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "Bir düğmenin erişilebilir adı olmadığında ekran okuyucular onu \"düğme\" olarak duyurur ve düğme, ekran okuyuculara bel bağlayan kullanıcılar için kullanılamaz hale gelir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "Bir düğmenin erişilebilir adı olmadığında ekran okuyucular onu \"düğme\" olarak duyurur ve düğme, ekran okuyuculara bel bağlayan kullanıcılar için kullanılamaz hale gelir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "Düğmelerin erişilebilir adları yok"
@@ -93,7 +93,7 @@
     "message": "Düğmeler erişilebilir bir ada sahip"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "Tekrar eden içeriği atlamanın yollarını eklemek, klavye kullanıcılarının sayfada daha verimli bir şekilde gezinmesini sağlar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "Tekrar eden içeriği atlamanın yollarını eklemek, klavye kullanıcılarının sayfada daha verimli bir şekilde gezinmesini sağlar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "Bu sayfa bir başlık, atlama bağlantısı veya önemli nokta bölgesi içermiyor"
@@ -102,7 +102,7 @@
     "message": "Sayfa bir başlık, atlama bağlantısı veya önemli nokta bölgesi içeriyor"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "Birçok kullanıcı, düşük kontrastlı metni okumakta zorlanır veya okuyamaz. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "Birçok kullanıcı, düşük kontrastlı metni okumakta zorlanır veya okuyamaz. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "Arka plan ve ön plan renkleri yeterli kontrast oranına sahip değil."
@@ -111,7 +111,7 @@
     "message": "Arka plan ve ön plan renkleri yeterli kontrast oranına sahip"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "Tanım listeleri gerektiği gibi işaretlenmediğinde ekran okuyucular kafa karışıklığına yol açan veya yanlış çıkışlar sunabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "Tanım listeleri gerektiği gibi işaretlenmediğinde ekran okuyucular kafa karışıklığına yol açan veya yanlış çıkışlar sunabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "\"<dl>\"ler yalnızca gerektiği gibi sıralanmış \"<dt>\" ve \"<dd>\" gruplarını, \"<script>\" veya \"<template>\" öğelerini içermiyor."
@@ -120,7 +120,7 @@
     "message": "\"<dl>\"ler yalnızca gerektiği gibi sıralanmış \"<dt>\" ve \"<dd>\" gruplarını, \"<script>\" veya \"<template>\" öğelerini içeriyor."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "Tanım listesi öğelerinin (\"<dt>\" ve \"<dd>\") ekran okuyucular tarafından düzgün bir şekilde duyurulabilmesi için üst \"<dl>\" öğesinin içine yerleştirilmesi gerekir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "Tanım listesi öğelerinin (\"<dt>\" ve \"<dd>\") ekran okuyucular tarafından düzgün bir şekilde duyurulabilmesi için üst \"<dl>\" öğesinin içine yerleştirilmesi gerekir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "Tanım listesi öğeleri \"<dl>\" öğeleri arasına yerleştirilmemiş"
@@ -138,7 +138,7 @@
     "message": "Dokümanın \"<title>\" öğesi var"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "Kimlik özelliğinin değeri benzersiz olmalıdır. Bunun nedeni, yardımcı teknolojilerin farkına varmadan diğer örnekleri atlamasını önlemektir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "Kimlik özelliğinin değeri benzersiz olmalıdır. Bunun nedeni, yardımcı teknolojilerin farkına varmadan diğer örnekleri atlamasını önlemektir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "Sayfadaki \"[id]\" özellikleri benzersiz değil"
@@ -147,7 +147,7 @@
     "message": "Sayfadaki \"[id]\" özellikleri benzersiz"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "Ekran okuyucu kullanıcıları, çerçevelerin içeriklerinin açıklanması için çerçeve başlıklarından yararlanır. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "Ekran okuyucu kullanıcıları, çerçevelerin içeriklerinin açıklanması için çerçeve başlıklarından yararlanır. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "\"<frame>\" veya \"<iframe>\" öğelerinin başlığı yok"
@@ -156,7 +156,7 @@
     "message": "\"<frame>\" veya \"<iframe>\" öğelerinin başlığı var"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "Sayfa bir lang özelliği belirtmezse, ekran okuyucu, sayfanın kullanıcı ekran okuyucuyu kurarken seçtiği varsayılan dilde olduğunu varsayar. Sayfa aslında varsayılan dilde değilse, ekran okuyucu, sayfanın metnini doğru bir şekilde duyurmayabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "Sayfa bir lang özelliği belirtmezse, ekran okuyucu, sayfanın kullanıcı ekran okuyucuyu kurarken seçtiği varsayılan dilde olduğunu varsayar. Sayfa aslında varsayılan dilde değilse, ekran okuyucu, sayfanın metnini doğru bir şekilde duyurmayabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "\"<html>\" öğesinin \"[lang]\" özelliği yok"
@@ -165,7 +165,7 @@
     "message": "\"<html>\" öğesinin \"[lang]\" özelliği var"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "Geçerli bir [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) belirtilmesi, ekran okuyucuların metni düzgün bir şekilde duyurmasına yardımcı olur. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Geçerli bir [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) belirtilmesi, ekran okuyucuların metni düzgün bir şekilde duyurmasına yardımcı olur. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "\"<html>\" öğesi, \"[lang]\" özelliği için geçerli değere sahip değil."
@@ -174,7 +174,7 @@
     "message": "\"<html>\" öğesi, \"[lang]\" özelliği için geçerli bir değere sahip"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "Bilgilendirme amaçlı öğelerin hedefi, kısa ve açıklayıcı alternatif metinler olmalıdır. Dekoratif öğeler boş bir alt özelliğiyle yoksayılabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "Bilgilendirme amaçlı öğelerin hedefi, kısa ve açıklayıcı alternatif metinler olmalıdır. Dekoratif öğeler boş bir alt özelliğiyle yoksayılabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "Resim öğelerinin \"[alt]\" özellikleri yok"
@@ -183,7 +183,7 @@
     "message": "Resim öğelerinin \"[alt]\" özellikleri var"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "Bir resim \"<input>\" düğmesi olarak kullanılırken alternatif metin sağlamak, ekran okuyucu kullanıcılarının düğmenin amacını anlamalarına yardımcı olabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "Bir resim \"<input>\" düğmesi olarak kullanılırken alternatif metin sağlamak, ekran okuyucu kullanıcılarının düğmenin amacını anlamalarına yardımcı olabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "\"<input type=\"image\">\" öğelerinin \"[alt]\" metni yok"
@@ -192,7 +192,7 @@
     "message": "\"<input type=\"image\">\" öğelerinin \"[alt]\" metni var"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "Etiketler, form kontrollerinin ekran okuyucular gibi yardımcı teknolojiler tarafından düzgün bir şekilde duyurulmasını sağlar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "Etiketler, form kontrollerinin ekran okuyucular gibi yardımcı teknolojiler tarafından düzgün bir şekilde duyurulmasını sağlar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "Form öğelerinin ilişkili etiketleri yok"
@@ -201,7 +201,7 @@
     "message": "Form öğelerinin ilişkili etiketleri var"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "Düzen amaçlı kullanılan bir tablonun, veri öğeleri (ör. th veya başlık öğeleri ya da özet özelliği) içermemesi gerekir. Zira bu durum, ekran okuyucu kullanıcılarının kafa karıştırıcı bir deneyim yaşamalarına neden olabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "Düzen amaçlı kullanılan bir tablonun, veri öğeleri (ör. th veya başlık öğeleri ya da özet özelliği) içermemesi gerekir. Zira bu durum, ekran okuyucu kullanıcılarının kafa karıştırıcı bir deneyim yaşamalarına neden olabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "Sunu amaçlı \"<table>\" öğeleri \"<th>\", \"<caption>\" veya \"[summary]\" özelliğini kullanmaktan kaçınmıyor."
@@ -210,7 +210,7 @@
     "message": "Sunum amaçlı \"<table>\" öğeleri \"<th>\", \"<caption>\" veya \"[summary]\" özelliğini kullanmaktan kaçınıyor."
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "Ayırt edilebilir, benzersiz ve odaklanılabilir bağlantı metni (ve bağlantı olarak kullanıldığında resimler için alternatif metin), ekran okuyucu kullanıcılarına daha iyi bir gezinme deneyimi sunar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "Ayırt edilebilir, benzersiz ve odaklanılabilir bağlantı metni (ve bağlantı olarak kullanıldığında resimler için alternatif metin), ekran okuyucu kullanıcılarına daha iyi bir gezinme deneyimi sunar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "Bağlantıların ayırt edilebilir adları yok"
@@ -219,7 +219,7 @@
     "message": "Bağlantıların ayırt edilebilir adları var"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "Ekran okuyucular listeleri duyurmak için belirli bir yöntem kullanır. Liste yapısının gerektiği gibi olmasını sağlamak, ekran okuyucu çıkışının düzgün olmasına yardımcı olur. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "Ekran okuyucular listeleri duyurmak için belirli bir yöntem kullanır. Liste yapısının gerektiği gibi olmasını sağlamak, ekran okuyucu çıkışının düzgün olmasına yardımcı olur. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "Listeler yalnızca \"<li>\" öğelerini ve komut dosyası destekleyen öğeleri (\"<script>\" ve \"<template>\") içermiyor."
@@ -228,7 +228,7 @@
     "message": "Listeler yalnızca \"<li>\" öğelerini ve komut dosyası destekleyen öğeleri (\"<script>\" ve \"<template>\") içeriyor."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "Ekran okuyucuların liste öğelerini (\"<li>\") düzgün bir şekilde duyurabilmesi için liste öğelerinin, üst \"<ul>\" veya \"<ol>\" öğesinde yer alması gerekir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "Ekran okuyucuların liste öğelerini (\"<li>\") düzgün bir şekilde duyurabilmesi için liste öğelerinin, üst \"<ul>\" veya \"<ol>\" öğesinde yer alması gerekir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "Liste öğeleri (\"<li>\"), \"<ul>\" veya \"<ol>\" üst öğelerinde yer almıyor."
@@ -237,7 +237,7 @@
     "message": "Liste öğeleri (\"<li>\"), \"<ul>\" veya \"<ol>\" üst öğelerinde yer alıyor"
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "Kullanıcılar bir sayfanın otomatik olarak yenileneceğini düşünmez ve bu işlem yeniden sayfanın üst tarafına odaklanılmasına neden olur. Bu durum, can sıkıcı veya kafa karışıklığına yol açan bir deneyime yol açabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "Kullanıcılar bir sayfanın otomatik olarak yenileneceğini düşünmez ve bu işlem yeniden sayfanın üst tarafına odaklanılmasına neden olur. Bu durum, can sıkıcı veya kafa karışıklığına yol açan bir deneyime yol açabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "Doküman \"<meta http-equiv=\"refresh\">\" kullanıyor"
@@ -246,7 +246,7 @@
     "message": "Doküman \"<meta http-equiv=\"refresh\">\" kullanmıyor"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "Yakınlaştırmanın devre dışı bırakılması, az gören ve bir web sayfasının içeriğini düzgün bir şekilde görebilmek için ekran büyütme özelliğinden yararlanan kullanıcılar için sorun teşkil eder. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "Yakınlaştırmanın devre dışı bırakılması, az gören ve bir web sayfasının içeriğini düzgün bir şekilde görebilmek için ekran büyütme özelliğinden yararlanan kullanıcılar için sorun teşkil eder. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "\"[user-scalable=\"no\"]\", \"<meta name=\"viewport\">\" öğesinde kullanılmış veya \"[maximum-scale]\" özelliği 5'ten küçük."
@@ -255,7 +255,7 @@
     "message": "\"[user-scalable=\"no\"]\", \"<meta name=\"viewport\">\" öğesinde kullanılmamış ve \"[maximum-scale]\" özelliği 5'ten küçük değil."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "Ekran okuyucular metin dışı içeriği çeviremez. \"<object>\" öğelerine alternatif metin eklemek, ekran okuyucuların anlamı kullanıcılara iletmesine yardımcı olur. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "Ekran okuyucular metin dışı içeriği çeviremez. \"<object>\" öğelerine alternatif metin eklemek, ekran okuyucuların anlamı kullanıcılara iletmesine yardımcı olur. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "\"<object>\" öğelerinin \"[alt]\" metni yok"
@@ -264,7 +264,7 @@
     "message": "\"<object>\" öğelerinin \"[alt]\" metni var"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "0'dan büyük bir değer, açık bir gezinme sıralamasını belirtir. Bu durum teknik olarak geçerli olsa da yardımcı teknolojilerden yararlanan kullanıcıların genellikle sinir bozucu deneyimler yaşamalarına neden olur. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "0'dan büyük bir değer, açık bir gezinme sıralamasını belirtir. Bu durum teknik olarak geçerli olsa da yardımcı teknolojilerden yararlanan kullanıcıların genellikle sinir bozucu deneyimler yaşamalarına neden olur. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "Bazı öğeler 0'dan büyük bir \"[tabindex]\" değeri içeriyor"
@@ -273,7 +273,7 @@
     "message": "Hiçbir öğe 0'dan büyük \"[tabindex]\" değeri içermiyor"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "Ekran okuyucuların tablolarda daha kolay gezinmeyi sağlayan özellikleri vardır. \"[headers]\" özelliğini kullanan \"<td>\" hücrelerinin yalnızca aynı tablodaki diğer hücrelere atıfta bulunmasını sağlamak, ekran okuyucu kullanıcılarına daha iyi bir deneyim sunabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "Ekran okuyucuların tablolarda daha kolay gezinmeyi sağlayan özellikleri vardır. \"[headers]\" özelliğini kullanan \"<td>\" hücrelerinin yalnızca aynı tablodaki diğer hücrelere atıfta bulunmasını sağlamak, ekran okuyucu kullanıcılarına daha iyi bir deneyim sunabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "\"<table>\" öğesinde olup \"[headers]\" özelliğini kullanan hücreler, aynı tablodaki diğer hücrelere atıfta bulunuyor."
@@ -282,7 +282,7 @@
     "message": "\"<table>\" öğesinde olup \"[headers]\" özelliğini kullanan hücreler yalnızca aynı tablodaki diğer hücrelere atıfta bulunuyor."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "Ekran okuyucuların tablolarda daha kolay gezinmeyi sağlayan özellikleri vardır. Tablo başlıklarının her zaman bazı hücre kümelerine atıfta bulunmasını sağlamak, ekran okuyucu kullanıcılarına daha iyi bir deneyim sunabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "Ekran okuyucuların tablolarda daha kolay gezinmeyi sağlayan özellikleri vardır. Tablo başlıklarının her zaman bazı hücre kümelerine atıfta bulunmasını sağlamak, ekran okuyucu kullanıcılarına daha iyi bir deneyim sunabilir. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "\"<th>\" öğelerinin ve \"[role=\"columnheader\"/\"rowheader\"]\" içeren öğelerin açıkladıkları veri hücreleri yok."
@@ -291,7 +291,7 @@
     "message": "\"<th>\" öğelerinin ve \"[role=\"columnheader\"/\"rowheader\"]\" içeren öğelerin açıkladıkları veri hücreleri var."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "Öğelerde geçerli bir [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) belirtilmesi, ekran okuyucunun metni doğru telaffuz etmesini sağlar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Öğelerde geçerli bir [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) belirtilmesi, ekran okuyucunun metni doğru telaffuz etmesini sağlar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "\"[lang]\" özellikleri geçerli bir değere sahip değil"
@@ -300,7 +300,7 @@
     "message": "\"[lang]\" özellikleri geçerli bir değere sahip"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "Bir videoda altyazının yer alması sağır ve işitme engelli kullanıcıların videonun bilgilerine daha kolay erişmelerini sağlar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "Bir videoda altyazının yer alması sağır ve işitme engelli kullanıcıların videonun bilgilerine daha kolay erişmelerini sağlar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "\"<video>\" öğelerinde \"[kind=\"captions\"]\" içeren bir \"<track>\" öğesi bulunmuyor."
@@ -309,7 +309,7 @@
     "message": "\"<video>\" öğelerinde \"[kind=\"captions\"]\" içeren bir \"<track>\" öğesi bulunuyor"
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "Sesli açıklamalar, videolarla ilgili olarak diyaloğun sağlayamayacağı bilgiler (ör. yüz ifadeleri ve sahneler) sağlar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "Sesli açıklamalar, videolarla ilgili olarak diyaloğun sağlayamayacağı bilgiler (ör. yüz ifadeleri ve sahneler) sağlar. [Daha fazla bilgi](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "\"<video>\" öğelerinde \"[kind=\"description\"]\" içeren bir \"<track>\" öğesi bulunmuyor."

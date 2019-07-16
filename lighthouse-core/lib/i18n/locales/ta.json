@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "பயனர்கள் பக்கத்தின் ஒரு பகுதிக்கு விரைவாகச் செல்ல அணுகல் விசைகள் உதவும். சரியாகச் செல்வதற்கு, ஒவ்வொரு அணுகல் விசையும் தனித்துவமானதாக இருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "பயனர்கள் பக்கத்தின் ஒரு பகுதிக்கு விரைவாகச் செல்ல அணுகல் விசைகள் உதவும். சரியாகச் செல்வதற்கு, ஒவ்வொரு அணுகல் விசையும் தனித்துவமானதாக இருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "`[accesskey]` மதிப்புகள் பிரத்யேகமானவை அல்ல"
@@ -9,7 +9,7 @@
     "message": "`[accesskey]` மதிப்புகள் பிரத்யேகமானவையாக உள்ளன"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "ஒவ்வொரு ARIA `role` உம் குறிப்பிட்ட `aria-*` பண்புக்கூறுகளின் துணைத்தொகுப்பை ஆதரிக்கும். இவை பொருந்தவில்லை எனில் `aria-*` பண்புக்கூறுகள் செல்லுபடியாகாது. [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "ஒவ்வொரு ARIA `role` உம் குறிப்பிட்ட `aria-*` பண்புக்கூறுகளின் துணைத்தொகுப்பை ஆதரிக்கும். இவை பொருந்தவில்லை எனில் `aria-*` பண்புக்கூறுகள் செல்லுபடியாகாது. [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "`[aria-*]` பண்புக்கூறுகள் தங்கள் பங்களிப்புகளுடன் பொருந்தவில்லை"
@@ -18,7 +18,7 @@
     "message": "`[aria-*]` பண்புக்கூறுகள் தங்களுடைய பங்களிப்புகளுடன் பொருந்துகின்றன"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "சில ARIA பங்களிப்புகளில் ஸ்க்ரீன் ரீடர்களுக்கு உறுப்பின் நிலையை விவரிக்கும் தேவையான பண்புக்கூறுகள் உள்ளன. [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "சில ARIA பங்களிப்புகளில் ஸ்க்ரீன் ரீடர்களுக்கு உறுப்பின் நிலையை விவரிக்கும் தேவையான பண்புக்கூறுகள் உள்ளன. [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "`[role]`களுக்குத் தேவையான அனைத்து `[aria-*]` பண்புக்கூறுகளும் இல்லை"
@@ -27,7 +27,7 @@
     "message": "`[role]`களில் தேவையான அனைத்து `[aria-*]` பண்புக்கூறுகளும் உள்ளன"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "சில ARIA முதல்நிலைப் பங்களிப்புகள், அவற்றுக்கான அணுகல்தன்மைச் செயல்பாடுகளைச் செய்ய, குறிப்பிட்ட உபநிலைப் பங்களிப்புகளைக் கொண்டிருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "சில ARIA முதல்நிலைப் பங்களிப்புகள், அவற்றுக்கான அணுகல்தன்மைச் செயல்பாடுகளைச் செய்ய, குறிப்பிட்ட உபநிலைப் பங்களிப்புகளைக் கொண்டிருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "குறிப்பிட்ட உபநிலை `[role]`கள் தேவையான `[role]` உறுப்புகள் விடுபட்டுள்ளன."
@@ -36,7 +36,7 @@
     "message": "குறிப்பிட்ட உபநிலை `[role]`கள் தேவைப்படும் `[role]`கள் உள்ளன"
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "சில ARIA உபநிலைப் பங்களிப்புகள் அவற்றுக்கான அணுகல்தன்மைச் செயல்பாடுகளைச் சரியாகச் செய்வதற்கு, குறிப்பிட்ட முதல்நிலைப் பங்களிப்புகளில் இருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "சில ARIA உபநிலைப் பங்களிப்புகள் அவற்றுக்கான அணுகல்தன்மைச் செயல்பாடுகளைச் சரியாகச் செய்வதற்கு, குறிப்பிட்ட முதல்நிலைப் பங்களிப்புகளில் இருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "`[role]`கள் தங்களுக்குத் தேவையான முதல்நிலை உறுப்புக்குள் இல்லை"
@@ -45,7 +45,7 @@
     "message": "`[role]கள் அவற்றுக்குத் தேவையான முதல்நிலை உறுப்பிற்குள் உள்ளன"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "ARIA பங்களிப்புகள் தங்களுக்கான அணுகல்தன்மைச் செயல்பாடுகளைச் செய்வதற்கு, அவற்றுக்குச் செல்லுபடியாகும் மதிப்புகள் இருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "ARIA பங்களிப்புகள் தங்களுக்கான அணுகல்தன்மைச் செயல்பாடுகளைச் செய்வதற்கு, அவற்றுக்குச் செல்லுபடியாகும் மதிப்புகள் இருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "`[role]` மதிப்புகள் செல்லுபடியாகவில்லை"
@@ -54,7 +54,7 @@
     "message": "`[role]` மதிப்புகள் செல்லுபடியாகின்றன"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "செல்லுபடியாகாத மதிப்புகள் உள்ள ARIA பண்புக்கூறுகளை ஸ்க்ரீன் ரீடர்கள் போன்ற உதவிகரமான தொழில்நுட்பங்களால் புரிந்துகொள்ள இயலாது. [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "செல்லுபடியாகாத மதிப்புகள் உள்ள ARIA பண்புக்கூறுகளை ஸ்க்ரீன் ரீடர்கள் போன்ற உதவிகரமான தொழில்நுட்பங்களால் புரிந்துகொள்ள இயலாது. [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "`[aria-*]` உறுப்புகளுக்குச் செல்லுபடியாகும் மதிப்புகள் இல்லை"
@@ -63,7 +63,7 @@
     "message": "`[aria-*]` பண்புக்கூறுகளில் செல்லுபடியாகும் மதிப்புகள் உள்ளன"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "செல்லுபடியாகாத பெயர்கள் உள்ள ARIA பண்புக்கூறுகளை ஸ்க்ரீன் ரீடர்கள் போன்ற உதவிகரமான தொழில்நுட்பங்களால் புரிந்துகொள்ள இயலாது. [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "செல்லுபடியாகாத பெயர்கள் உள்ள ARIA பண்புக்கூறுகளை ஸ்க்ரீன் ரீடர்கள் போன்ற உதவிகரமான தொழில்நுட்பங்களால் புரிந்துகொள்ள இயலாது. [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "`[aria-*]` பண்புக்கூறுகள் செல்லுபடியாகவில்லை அல்லது தவறாக உள்ளிடப்பட்டுள்ளன"
@@ -72,7 +72,7 @@
     "message": "`[aria-*]` பண்புக்கூறுகள் செல்லுபடியாகின்றன மற்றும் சரியாக உள்ளிடப்பட்டுள்ளன"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "வசனங்களில் காதுகேளாத அல்லது செவித்திறன் குறைவான பயனர்களின் வசதிக்காக யார் என்ன பேசுகிறார்கள் மற்றும் பேச்சல்லாத பிற தகவல்கள் போன்ற முக்கியமான தகவல்களை வழங்குவதன் மூலம் ஆடியோ உறுப்புகளைப் பயனுள்ளதாக்கலாம். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "வசனங்களில் காதுகேளாத அல்லது செவித்திறன் குறைவான பயனர்களின் வசதிக்காக யார் என்ன பேசுகிறார்கள் மற்றும் பேச்சல்லாத பிற தகவல்கள் போன்ற முக்கியமான தகவல்களை வழங்குவதன் மூலம் ஆடியோ உறுப்புகளைப் பயனுள்ளதாக்கலாம். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "`<audio>` உறுப்புகளில் `[kind=\"captions\"]` உள்ள `<track>` உறுப்பு இல்லை."
@@ -84,7 +84,7 @@
     "message": "தோல்வியுற்ற உறுப்புகள்"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "ஒரு பட்டனுக்குத் தெளிவான பெயர் இல்லை என்றால் ஸ்க்ரீன் ரீடர்கள் அதை \"பட்டன்\" என அறிவிக்கும், இது ஸ்க்ரீன் ரீடர்களைப் பயன்படுத்தும் பயனர்களுக்கு உதவியாக இருக்காது. [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "ஒரு பட்டனுக்குத் தெளிவான பெயர் இல்லை என்றால் ஸ்க்ரீன் ரீடர்கள் அதை \"பட்டன்\" என அறிவிக்கும், இது ஸ்க்ரீன் ரீடர்களைப் பயன்படுத்தும் பயனர்களுக்கு உதவியாக இருக்காது. [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "பட்டன்களுக்குத் தெளிவான பெயர் இல்லை"
@@ -93,7 +93,7 @@
     "message": "பட்டன்களுக்கு ஸ்க்ரீன் ரீடர்களால் படிக்கக்கூடிய பெயர்கள் உள்ளன"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "திரும்பத்திரும்ப வரும் உள்ளடக்கத்தை மீறிச் செல்லும் வழிகளைச் சேர்த்தால், பக்கத்தைக் கீபோர்டுப் பயனர்கள் மேலும் திறனுள்ள வகையில் கையாள முடியும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "திரும்பத்திரும்ப வரும் உள்ளடக்கத்தை மீறிச் செல்லும் வழிகளைச் சேர்த்தால், பக்கத்தைக் கீபோர்டுப் பயனர்கள் மேலும் திறனுள்ள வகையில் கையாள முடியும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "பக்கத்தில் தலைப்பு, தவிர்ப்பு இணைப்பு அல்லது இட அடையாள மண்டலம் இல்லை"
@@ -102,7 +102,7 @@
     "message": "பக்கத்தில் தலைப்பு, தவிர்ப்பு இணைப்பு அல்லது இட அடையாள மண்டலம் உள்ளது"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "குறைவான ஒளி மாறுபாடுள்ள உரையைப் படிப்பதற்குப் பெரும்பாலான பயனர்களுக்குக் கடினமாகவோ இயலாததாகவோ இருக்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "குறைவான ஒளி மாறுபாடுள்ள உரையைப் படிப்பதற்குப் பெரும்பாலான பயனர்களுக்குக் கடினமாகவோ இயலாததாகவோ இருக்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "பின்னணி, முன்னணி நிறங்களுக்குப் போதுமான ஒளி மாறுபாடு விகிதம் இல்லை."
@@ -111,7 +111,7 @@
     "message": "பின்னணி, முன்னணி நிறங்கள் போதுமான ஒளி மாறுபாட்டு விகிதத்தைக் கொண்டுள்ளன"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "வரையறைப் பட்டியல்கள் சரியாகக் குறிக்கப்படவில்லை எனில், ஸ்க்ரீன் ரீடர்கள் குழப்பமான அல்லது துல்லியமற்ற வெளியீட்டை தரக்கூடும்.\n [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "வரையறைப் பட்டியல்கள் சரியாகக் குறிக்கப்படவில்லை எனில், ஸ்க்ரீன் ரீடர்கள் குழப்பமான அல்லது துல்லியமற்ற வெளியீட்டை தரக்கூடும்.\n [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "`<dl>`கள் சரியாக வரிசைப்படுத்தப்பட்ட `<dt>` மற்றும் `<dd>` குழுக்கள், `<script>` அல்லது `<template>` உறுப்புகளை மட்டும் கொண்டிருக்கவில்லை."
@@ -120,7 +120,7 @@
     "message": "`<dl>`களில் சரியாக வரிசைப்படுத்தப்பட்ட `<dt>` மற்றும் `<dd>` குழுக்கள், `<script>` அல்லது `<template>` உறுப்புகள் மட்டுமே உள்ளன."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "வரையறைப் பட்டியல் உறுப்புகளை (`<dt>` மற்றும் `<dd>`) ஸ்க்ரீன் ரீடர்கள் சரியாகப் படிப்பதற்கு, அவை ஒரு முதல்நிலை `<dl>` உறுப்பில் உட்பொதிக்கப்பட்டிருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "வரையறைப் பட்டியல் உறுப்புகளை (`<dt>` மற்றும் `<dd>`) ஸ்க்ரீன் ரீடர்கள் சரியாகப் படிப்பதற்கு, அவை ஒரு முதல்நிலை `<dl>` உறுப்பில் உட்பொதிக்கப்பட்டிருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "வரையறைப் பட்டியல் உறுப்புகள் `<dl>` உறுப்புகளுக்குள் உட்பொதிக்கப்படவில்லை"
@@ -138,7 +138,7 @@
     "message": "ஆவணத்தில் `<title>` உறுப்பு உள்ளது"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "உதவிகரமான தொழில்நுட்பங்களால் நேர்வுகள் புறக்கணிக்கப்படுவதைத் தடுக்க, ஐடி பண்புக்கூறின் மதிப்பு தனித்துவமானதாக இருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "உதவிகரமான தொழில்நுட்பங்களால் நேர்வுகள் புறக்கணிக்கப்படுவதைத் தடுக்க, ஐடி பண்புக்கூறின் மதிப்பு தனித்துவமானதாக இருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "பக்கத்திலுள்ள `[id]` பண்புக்கூறுகள் பிரத்யேகமானவையாக இல்லை"
@@ -147,7 +147,7 @@
     "message": "பக்கத்தில் உள்ள `[id]` பண்புக்கூறுகள் பிரத்யேகமானவையாக உள்ளன"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "ஃபிரேம்களில் உள்ள உள்ளடக்கங்களை விவரிப்பதற்கு, அவற்றின் தலைப்பை ஸ்க்ரீன் ரீடர் பயனர்கள் சார்ந்துள்ளனர். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "ஃபிரேம்களில் உள்ள உள்ளடக்கங்களை விவரிப்பதற்கு, அவற்றின் தலைப்பை ஸ்க்ரீன் ரீடர் பயனர்கள் சார்ந்துள்ளனர். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "`<frame>` அல்லது `<iframe>` உறுப்புகளுக்குத் தலைப்பு இல்லை"
@@ -156,7 +156,7 @@
     "message": "`<frame>` அல்லது `<iframe>` உறுப்புகளுக்குத் தலைப்பு உள்ளது"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "மொழிப் பண்புக்கூறைப் பக்கம் குறிப்பிடவில்லை என்றால், ஸ்க்ரீன் ரீடரை அமைக்கும்போது பயனர் தேர்வுசெய்த மொழியையே பக்கத்தின் இயல்பு மொழியாக ஸ்க்ரீன் ரீடர் கருதும். இயல்பு மொழியில் பக்கம் இல்லையென்றால், பக்கத்தின் உரையை ஸ்க்ரீன் ரீடர் சரியாகப் படிக்காமல் போகக்கூடும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "மொழிப் பண்புக்கூறைப் பக்கம் குறிப்பிடவில்லை என்றால், ஸ்க்ரீன் ரீடரை அமைக்கும்போது பயனர் தேர்வுசெய்த மொழியையே பக்கத்தின் இயல்பு மொழியாக ஸ்க்ரீன் ரீடர் கருதும். இயல்பு மொழியில் பக்கம் இல்லையென்றால், பக்கத்தின் உரையை ஸ்க்ரீன் ரீடர் சரியாகப் படிக்காமல் போகக்கூடும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "`<html>` உறுப்பில் `[lang]` பண்புக்கூறு இல்லை"
@@ -165,7 +165,7 @@
     "message": "`<html>` உறுப்பில் `[lang]` பண்புக்கூறு உள்ளது"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "செல்லுபடியாகும் [BCP 47 language]ஐ (https://www.w3.org/International/questions/qa-choosing-language-tags#question) குறிப்பிட்டால், அது உரையை ஸ்க்ரீன் ரீடர் சரியாகப் படிப்பதற்கு உதவியாக இருக்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "செல்லுபடியாகும் [BCP 47 language]ஐ (https://www.w3.org/International/questions/qa-choosing-language-tags#question) குறிப்பிட்டால், அது உரையை ஸ்க்ரீன் ரீடர் சரியாகப் படிப்பதற்கு உதவியாக இருக்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "`<html>` உறுப்பில் அதன் `[lang]` பண்புக்கூறுக்குச் செல்லுபடியாகும் மதிப்பு இல்லை."
@@ -174,7 +174,7 @@
     "message": "`<html>` உறுப்பில் அதன் `[lang]` பண்புக்கூறுக்குச் செல்லுபடியாகும் மதிப்பு உள்ளது"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "தகவல் உறுப்புகள் சுருக்கமான, விளக்கமான மாற்று உரையைக் கொண்டிருக்க வேண்டும். அலங்கார உறுப்புகளில் காலியான மாற்றுப் பண்புக்கூறு இருக்கலாம். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "தகவல் உறுப்புகள் சுருக்கமான, விளக்கமான மாற்று உரையைக் கொண்டிருக்க வேண்டும். அலங்கார உறுப்புகளில் காலியான மாற்றுப் பண்புக்கூறு இருக்கலாம். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "பட உறுப்புகளுக்கு `[alt]` பண்புக்கூறுகள் இல்லை"
@@ -183,7 +183,7 @@
     "message": "பட உறுப்புகளுக்கு `[alt]` பண்புக்கூறுகள் உள்ளன"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "`<input>` பட்டனாக ஒரு படம் பயன்படுத்தப்படும்போது, அந்த பட்டனுக்கான மாற்று உரையை வழங்கினால், அதன் செயல்பாட்டை ஸ்க்ரீன் ரீடர் பயனர்கள் புரிந்துகொள்ள உதவியாக இருக்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "`<input>` பட்டனாக ஒரு படம் பயன்படுத்தப்படும்போது, அந்த பட்டனுக்கான மாற்று உரையை வழங்கினால், அதன் செயல்பாட்டை ஸ்க்ரீன் ரீடர் பயனர்கள் புரிந்துகொள்ள உதவியாக இருக்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "`<input type=\"image\">` உறுப்புகளுக்கு `[alt]` உரை இல்லை"
@@ -192,7 +192,7 @@
     "message": "`<input type=\"image\">` உறுப்புகளுக்கு `[alt]` உரை உள்ளது"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "ஸ்க்ரீன் ரீடர்கள் போன்ற உதவிகரமான தொழில்நுட்பங்களால் சரியாக அறிவிக்கப்படும் வகையில் படிவக் கட்டுப்பாடுகள் இருப்பதை லேபிள்கள் உறுதிசெய்கின்றன. [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "ஸ்க்ரீன் ரீடர்கள் போன்ற உதவிகரமான தொழில்நுட்பங்களால் சரியாக அறிவிக்கப்படும் வகையில் படிவக் கட்டுப்பாடுகள் இருப்பதை லேபிள்கள் உறுதிசெய்கின்றன. [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "படிவ உறுப்புகளுக்கு, தொடர்புடைய லேபிள்கள் இல்லை"
@@ -201,7 +201,7 @@
     "message": "படிவ உறுப்புகளுக்கு, தொடர்புடைய லேபிள்கள் உள்ளன"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "தளவமைப்புக்காகப் பயன்படுத்தப்படும் டேபிளில் th அல்லது வசன உறுப்புகள் அல்லது சுருக்கவிவரப் பண்புக்கூறு போன்ற தரவு உறுப்புகளைச் சேர்க்கக் கூடாது, ஏனெனில் இது ஸ்க்ரீன் ரீடர் பயனர்களுக்குக் குழப்பத்தை ஏற்படுத்தும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "தளவமைப்புக்காகப் பயன்படுத்தப்படும் டேபிளில் th அல்லது வசன உறுப்புகள் அல்லது சுருக்கவிவரப் பண்புக்கூறு போன்ற தரவு உறுப்புகளைச் சேர்க்கக் கூடாது, ஏனெனில் இது ஸ்க்ரீன் ரீடர் பயனர்களுக்குக் குழப்பத்தை ஏற்படுத்தும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "விளக்க `<table>` உறுப்புகள் `<th>`, `<caption>` அல்லது `[summary]` பண்புக்கூறைப் பயன்படுத்துவதைத் தவிர்க்கவில்லை."
@@ -210,7 +210,7 @@
     "message": "விளக்க `<table>` உறுப்புகளில் `<th>`, `<caption>` அல்லது `[summary]` பண்புக்கூறின் உபயோகம் தவிர்க்கப்பட்டுள்ளது."
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "தெளிவான, தனித்துவமான, மையப்படுத்தக்கூடிய இணைப்பு உரை (மற்றும் இணைப்புகளாகப் பயன்படுத்தப்படும் படங்களுக்கான மாற்று உரை) ஸ்க்ரீன் ரீடர் பயனர்களுக்கான வழிகாட்டும் அனுபவத்தை மேம்படுத்தும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "தெளிவான, தனித்துவமான, மையப்படுத்தக்கூடிய இணைப்பு உரை (மற்றும் இணைப்புகளாகப் பயன்படுத்தப்படும் படங்களுக்கான மாற்று உரை) ஸ்க்ரீன் ரீடர் பயனர்களுக்கான வழிகாட்டும் அனுபவத்தை மேம்படுத்தும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "இணைப்புகளுக்குத் தெளிவான பெயர் இல்லை"
@@ -219,7 +219,7 @@
     "message": "இணைப்புகளுக்குத் தெளிவான பெயர்கள் உள்ளன"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "பட்டியல்களை அறிவிப்பதற்கு ஸ்க்ரீன் ரீடர்களுக்கென ஒரு குறிப்பிட்ட வழிமுறை உள்ளது. சரியான பட்டியல் வடிவமைப்பை உறுதிசெய்தால், அது ஸ்க்ரீன் ரீடர் வெளியீட்டுக்கு உதவிசெய்யும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "பட்டியல்களை அறிவிப்பதற்கு ஸ்க்ரீன் ரீடர்களுக்கென ஒரு குறிப்பிட்ட வழிமுறை உள்ளது. சரியான பட்டியல் வடிவமைப்பை உறுதிசெய்தால், அது ஸ்க்ரீன் ரீடர் வெளியீட்டுக்கு உதவிசெய்யும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "பட்டியல்களில் `<li>` உறுப்புகள் மற்றும் ஸ்கிரிப்ட்டை ஆதரிக்கும் உறுப்புகள் (`<script>` மற்றும் `<template>`) மட்டும் இல்லை."
@@ -228,7 +228,7 @@
     "message": "பட்டியல்களில் `<li>` உறுப்புகள் மற்றும் ஸ்கிரிப்ட்டை ஆதரிக்கும் உறுப்புகள் (`<script>` and `<template>`) மட்டும் உள்ளன."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "பட்டியல் உறுப்புகளை (`<li>`) ஸ்க்ரீன் ரீடர்கள் சரியாகப் படிப்பதற்கு, அவை ஒரு முதல்நிலை `<ul>` அல்லது `<ol>`க்குள் இருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "பட்டியல் உறுப்புகளை (`<li>`) ஸ்க்ரீன் ரீடர்கள் சரியாகப் படிப்பதற்கு, அவை ஒரு முதல்நிலை `<ul>` அல்லது `<ol>`க்குள் இருக்க வேண்டும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "(`<li>`) பட்டியல் உறுப்புகள், `<ul>` அல்லது `<ol>` முதல்நிலை உறுப்புகளுக்குள் இல்லை."
@@ -237,7 +237,7 @@
     "message": "பட்டியல் உறுப்புகள் (`<li>`), `<ul>` அல்லது `<ol>` முதல்நிலை உறுப்புகளுக்குள் இல்லை"
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "பக்கம் தானாகப் புதுப்பிக்கும் எனப் பயனர்கள் எதிர்பார்க்க மாட்டார்கள். அவ்வாறு ஏற்பட்டால் பக்கம் மீண்டும் முதலில் இருந்தே காட்டப்படும். இது அவர்களுக்குக் குழப்பத்தை விளைவிக்கக்கூடும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "பக்கம் தானாகப் புதுப்பிக்கும் எனப் பயனர்கள் எதிர்பார்க்க மாட்டார்கள். அவ்வாறு ஏற்பட்டால் பக்கம் மீண்டும் முதலில் இருந்தே காட்டப்படும். இது அவர்களுக்குக் குழப்பத்தை விளைவிக்கக்கூடும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "`<meta http-equiv=\"refresh\">`ஐ ஆவணம் பயன்படுத்துகிறது"
@@ -246,7 +246,7 @@
     "message": "`<meta http-equiv=\"refresh\">`ஐப் படிவம் பயன்படுத்தவில்லை"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "அளவு மாற்றத்தை முடக்கினால், இணையப் பக்கத்தின் உள்ளடக்கத்தைச் சரியாகப் பார்ப்பதற்குத் திரை உருப்பெருக்கச் செயல்பாட்டைச் சார்ந்துள்ள பார்வைக் குறைபாடுள்ள பயனர்களுக்குச் சிக்கல் ஏற்படும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "அளவு மாற்றத்தை முடக்கினால், இணையப் பக்கத்தின் உள்ளடக்கத்தைச் சரியாகப் பார்ப்பதற்குத் திரை உருப்பெருக்கச் செயல்பாட்டைச் சார்ந்துள்ள பார்வைக் குறைபாடுள்ள பயனர்களுக்குச் சிக்கல் ஏற்படும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "`<meta name=\"viewport\">` உறுப்பு அல்லது `[maximum-scale]` பண்புக்கூறில் பயன்படுத்தப்பட்டுள்ள `[user-scalable=\"no\"]` இன் மதிப்பு 5க்கும் குறைவாக உள்ளது."
@@ -255,7 +255,7 @@
     "message": "`<meta name=\"viewport\">` உறுப்பில் `[user-scalable=\"no\"]` பயன்படுத்தப்படவில்லை, `[maximum-scale]` பண்புக்கூறு 5க்குக் குறைவாக இல்லை."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "உரை அல்லாத உள்ளடக்கத்தை ஸ்க்ரீன் ரீடர்களால் மொழிபெயர்க்க முடியாது. `<object>` உறுப்புகளுக்கு மாற்று உரையைச் சேர்ப்பது பயனர்களுக்கு ஸ்க்ரீன் ரீடர்கள் சரியான அர்த்தத்தை வெளிப்படுத்த உதவும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "உரை அல்லாத உள்ளடக்கத்தை ஸ்க்ரீன் ரீடர்களால் மொழிபெயர்க்க முடியாது. `<object>` உறுப்புகளுக்கு மாற்று உரையைச் சேர்ப்பது பயனர்களுக்கு ஸ்க்ரீன் ரீடர்கள் சரியான அர்த்தத்தை வெளிப்படுத்த உதவும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "`<object>` உறுப்புகளுக்கு `[alt]` உரை இல்லை"
@@ -264,7 +264,7 @@
     "message": "`<object>` உறுப்புகளில் `[alt]` உரை உள்ளது"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "0க்கு அதிகமான மதிப்பு, வெளிப்படையான ஒரு வழிகாட்டும் ஆணையைக் குறிப்பிடுகிறது. முறைப்படி செல்லுபடியாகும் என்றாலும், தொழில்நுட்பங்களைச் சார்ந்திருக்கும் மாற்றுத்திறன் பயனர்களுக்கு இது பெரும்பாலும் குழப்பமான அனுபவத்தையே உருவாக்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "0க்கு அதிகமான மதிப்பு, வெளிப்படையான ஒரு வழிகாட்டும் ஆணையைக் குறிப்பிடுகிறது. முறைப்படி செல்லுபடியாகும் என்றாலும், தொழில்நுட்பங்களைச் சார்ந்திருக்கும் மாற்றுத்திறன் பயனர்களுக்கு இது பெரும்பாலும் குழப்பமான அனுபவத்தையே உருவாக்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "சில உறுப்புகளுக்கு `[tabindex]` மதிப்பு 0ஐ விட அதிகமாக உள்ளது"
@@ -273,7 +273,7 @@
     "message": "எந்த உறுப்புக்கும் `[tabindex]` மதிப்பு 0க்கு அதிகமாக இல்லை"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "டேபிள்களில் எளிதாகச் செல்வதற்கு ஸ்க்ரீன் ரீடர்களில் அம்சங்கள் உள்ளன. `[headers]` பண்புக்கூறைப் பயன்படுத்தும் `<td>` கலங்கள் அதே டேபிளில் உள்ள பிற கலங்களை மட்டும் குறிப்பிடுவதை உறுதிசெய்தால், அது ஸ்க்ரீன் ரீடர் பயனர்களின் அனுபவத்தை மேம்படுத்தக்கூடும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "டேபிள்களில் எளிதாகச் செல்வதற்கு ஸ்க்ரீன் ரீடர்களில் அம்சங்கள் உள்ளன. `[headers]` பண்புக்கூறைப் பயன்படுத்தும் `<td>` கலங்கள் அதே டேபிளில் உள்ள பிற கலங்களை மட்டும் குறிப்பிடுவதை உறுதிசெய்தால், அது ஸ்க்ரீன் ரீடர் பயனர்களின் அனுபவத்தை மேம்படுத்தக்கூடும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "`[headers]` பண்புக்கூறைப் பயன்படுத்தும் ஒரு `<table>` உறுப்பிலுள்ள கலங்கள் அதே டேபிளின் பிற கலங்களைக் குறிப்பிடும்."
@@ -282,7 +282,7 @@
     "message": "`[headers]` பண்புக்கூறைப் பயன்படுத்தும் `<table>` உறுப்பிலுள்ள கலங்கள், அதே டேபிளில் உள்ள பிற கலங்களை மட்டுமே குறிப்பிடுகின்றன."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "டேபிள்களில் எளிதாகச் செல்வதற்கு ஸ்க்ரீன் ரீடர்களில் அம்சங்கள் உள்ளன. டேபிள் தலைப்புகள் எப்போதும் சில கலங்களின் தொகுப்பைக் குறிப்பிடுமாறு அமைப்பது ஸ்க்ரீன் ரீடர் பயனர்களின் அனுபவத்தை மேம்படுத்தக்கூடும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "டேபிள்களில் எளிதாகச் செல்வதற்கு ஸ்க்ரீன் ரீடர்களில் அம்சங்கள் உள்ளன. டேபிள் தலைப்புகள் எப்போதும் சில கலங்களின் தொகுப்பைக் குறிப்பிடுமாறு அமைப்பது ஸ்க்ரீன் ரீடர் பயனர்களின் அனுபவத்தை மேம்படுத்தக்கூடும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "`<th>` உறுப்புகள் மற்றும் `[role=\"columnheader\"/\"rowheader\"]` உள்ள உறுப்புகளில் அவை விவரிக்கும் தரவுக் கலங்கள் இல்லை."
@@ -291,7 +291,7 @@
     "message": "`<th>` உறுப்புகள் மற்றும் `[role=\"columnheader\"/\"rowheader\"]` உள்ள உறுப்புகளில் அவை விவரிக்கும் தரவுக் கலங்கள் உள்ளன."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "உறுப்புகளில் செல்லுபடியாகும் [BCP 47 language]ஐ (https://www.w3.org/International/questions/qa-choosing-language-tags#question) குறிப்பிட்டால், அது உரையை ஸ்க்ரீன் ரீடர் சரியாகப் படிப்பதற்கு உதவியாக இருக்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "உறுப்புகளில் செல்லுபடியாகும் [BCP 47 language]ஐ (https://www.w3.org/International/questions/qa-choosing-language-tags#question) குறிப்பிட்டால், அது உரையை ஸ்க்ரீன் ரீடர் சரியாகப் படிப்பதற்கு உதவியாக இருக்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "`[lang]` பண்புக்கூறுகளுக்குச் செல்லுபடியாகும் மதிப்பு இல்லை"
@@ -300,7 +300,7 @@
     "message": "`[lang]` பண்புக்கூறுகளுக்குச் செல்லுபடியாகும் மதிப்பு உள்ளது"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "வீடியோவில் தலைப்பு குறிப்பிடப்பட்டிருந்தால், அதைக் குறித்த தகவல்களைக் காது கேளாத மற்றும் செவித்திறன் குறைபாடுள்ள பயனர்கள் அறிந்துகொள்ள எளிதாக இருக்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "வீடியோவில் தலைப்பு குறிப்பிடப்பட்டிருந்தால், அதைக் குறித்த தகவல்களைக் காது கேளாத மற்றும் செவித்திறன் குறைபாடுள்ள பயனர்கள் அறிந்துகொள்ள எளிதாக இருக்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "`<video>` உறுப்புகளில் `[kind=\"captions\"]` உள்ள `<track>` உறுப்பு இல்லை."
@@ -309,7 +309,7 @@
     "message": "`<video>` உறுப்புகளில் `[kind=\"captions\"]` உள்ள `<track>` உறுப்பு உள்ளது"
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "வீடியோக்களில் வசனங்களால் வெளிப்படுத்த முடியாத முக பாவனைகள், காட்சிகள் போன்றவற்றுக்கான தொடர்புடைய தகவல்களை ஆடியோ விளக்கங்கள் வழங்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "வீடியோக்களில் வசனங்களால் வெளிப்படுத்த முடியாத முக பாவனைகள், காட்சிகள் போன்றவற்றுக்கான தொடர்புடைய தகவல்களை ஆடியோ விளக்கங்கள் வழங்கும். [மேலும் அறிக](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "`<video>` உறுப்புகளில் `[kind=\"description\"]` உள்ள `<track>` உறுப்பு இல்லை."

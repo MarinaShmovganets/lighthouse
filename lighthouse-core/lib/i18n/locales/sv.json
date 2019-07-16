@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "Med åtkomsttangenter kan användaren snabbt flytta fokus till en viss del av sidan. Ingen åtkomsttangent får användas flera gånger om navigeringen ska fungera ordentligt. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "Med åtkomsttangenter kan användaren snabbt flytta fokus till en viss del av sidan. Ingen åtkomsttangent får användas flera gånger om navigeringen ska fungera ordentligt. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "Alla värden på [accesskey] är inte unika"
@@ -9,7 +9,7 @@
     "message": "Alla värden på [accesskey] är unika"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "ARIA-roller har stöd för ett visst antal attribut av typen aria-*. Attributen av typen aria-* fungerar inte om de blandas ihop. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "ARIA-roller har stöd för ett visst antal attribut av typen aria-*. Attributen av typen aria-* fungerar inte om de blandas ihop. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "Alla attribut av typen [aria-*] stämmer inte med elementets roll"
@@ -18,7 +18,7 @@
     "message": "Attributen av typen [aria-*] stämmer med elementets roll"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "Vissa ARIA-roller har obligatoriska attribut som beskriver elementets tillstånd för skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "Vissa ARIA-roller har obligatoriska attribut som beskriver elementets tillstånd för skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "Vissa element med attributet [role] har inte alla obligatoriska attribut av typen [aria-*]"
@@ -27,7 +27,7 @@
     "message": "Alla element med [role]-attribut har alla obligatoriska attribut av typen [aria-*]"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "Vissa överordnade element med ARIA-attributet role måste ha vissa underordnade element med role för att hjälpmedlen ska fungera som avsett. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "Vissa överordnade element med ARIA-attributet role måste ha vissa underordnade element med role för att hjälpmedlen ska fungera som avsett. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "Obligatoriska underordnade element med [role] saknas för vissa element med [role]-attribut."
@@ -36,7 +36,7 @@
     "message": "Inga obligatoriska underordnade element med [role] saknas för element med [role]"
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "Vissa underordnade element med ARIA-attributet role måste ha ett bestämt överordnat element med role för att hjälpmedlen ska fungera som avsett. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "Vissa underordnade element med ARIA-attributet role måste ha ett bestämt överordnat element med role för att hjälpmedlen ska fungera som avsett. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "Det finns element med [role]-attribut utan ett obligatoriskt överordnat element"
@@ -45,7 +45,7 @@
     "message": "Rätt överordnat element används för alla element med [role]-attribut"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "Alla ARIA-rollattribut måste ha giltiga värden om de ska fungera som avsett med hjälpmedlen. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "Alla ARIA-rollattribut måste ha giltiga värden om de ska fungera som avsett med hjälpmedlen. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "Vissa [role]-värden är inte giltiga"
@@ -54,7 +54,7 @@
     "message": "Alla [role]-värden är giltiga"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "Skärmläsare och andra hjälpmedel kan inte tolka ARIA-attribut med ogiltiga värden. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "Skärmläsare och andra hjälpmedel kan inte tolka ARIA-attribut med ogiltiga värden. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "Alla attribut av typen [aria-*] har inte ett giltigt värde"
@@ -63,7 +63,7 @@
     "message": "Alla attribut av typen [aria-*] har giltiga värden"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "Skärmläsare och andra hjälpmedel kan inte tolka ARIA-attribut med ogiltiga namn. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "Skärmläsare och andra hjälpmedel kan inte tolka ARIA-attribut med ogiltiga namn. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "Det finns ogiltiga eller felstavade attribut av typen [aria-*]"
@@ -72,7 +72,7 @@
     "message": "Alla attribut av typen [aria-*] är giltiga och rättstavade"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "Textningen ger döva och hörselskadade viktig information om vem som talar, vad de säger och andra ljud som inte är tal. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "Textningen ger döva och hörselskadade viktig information om vem som talar, vad de säger och andra ljud som inte är tal. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "Alla <audio>-element har inte ett underordnat <track>-element med [kind=\"captions\"]"
@@ -84,7 +84,7 @@
     "message": "Element med fel"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "Utan ett igenkännligt namn läses knappen upp som ”knapp” av skärmläsarna. Det gör knappen oanvändbar för den som behöver använda en skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "Utan ett igenkännligt namn läses knappen upp som ”knapp” av skärmläsarna. Det gör knappen oanvändbar för den som behöver använda en skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "Vissa knappar har inte namn som hjälpmedlen kan använda"
@@ -93,7 +93,7 @@
     "message": "Alla knappar har namn som hjälpmedlen kan använda"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "Om du lägger till ett sätt att hoppa över innehåll som upprepas går det att navigera effektivare på sidan för den som använder tangentbordet. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "Om du lägger till ett sätt att hoppa över innehåll som upprepas går det att navigera effektivare på sidan för den som använder tangentbordet. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "Sidan saknar rubrik, överhoppningslänk eller landmärkesområde"
@@ -102,7 +102,7 @@
     "message": "Sidan har en rubrik, en överhoppningslänk eller ett landmärkesområde"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "Text med låg kontrast blir svårläst eller oläslig för många användare. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "Text med låg kontrast blir svårläst eller oläslig för många användare. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "Kontrasten mellan bakgrundsfärg och förgrundsfärg är inte tillräckligt stor."
@@ -111,7 +111,7 @@
     "message": "Kontrasten mellan bakgrundsfärg och förgrundsfärg är tillräckligt stor"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "Om en definitionslista inte har märkts upp korrekt kan den läsas upp på ett missvisande eller felaktigt sätt av skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "Om en definitionslista inte har märkts upp korrekt kan den läsas upp på ett missvisande eller felaktigt sätt av skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "Alla <dl>-element har inte <dt>- och <dd>-grupper, <script>- eller <template>-element i rätt ordning."
@@ -120,7 +120,7 @@
     "message": "Alla <dl>-element har <dt>- och <dd>-grupper, <script>- eller <template>-element i rätt ordning."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "Alla listposter i definitionslistor (<dt> och <dd>) måste ha överordnade <dl>-element så att de kan presenteras korrekt med skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "Alla listposter i definitionslistor (<dt> och <dd>) måste ha överordnade <dl>-element så att de kan presenteras korrekt med skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "Vissa poster i definitionslistor har inte bäddats in i <dl>-element"
@@ -138,7 +138,7 @@
     "message": "Dokumentet har ett <title>-element"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "Alla id-attribut måste ha unika värden. Hjälpmedelstekniken skulle annars hoppa över dubblettförekomsterna av ett värde. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "Alla id-attribut måste ha unika värden. Hjälpmedelstekniken skulle annars hoppa över dubblettförekomsterna av ett värde. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "Alla [id]-attribut på sidan är inte unika"
@@ -147,7 +147,7 @@
     "message": "Alla [id]-attribut på sidan är unika"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "Med en skärmläsare behövs namn på ramarna som beskriver vad ramen innehåller. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "Med en skärmläsare behövs namn på ramarna som beskriver vad ramen innehåller. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "Vissa <frame>- eller <iframe>-element saknar namn"
@@ -156,7 +156,7 @@
     "message": "Alla <frame>- eller <iframe>-element har namn"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "Om inget lang-attribut har angetts för en sida används skärmläsarens standardspråk, det vill säga det språk som användaren valde när skärmläsaren konfigurerades. Om sidan inte är på det språket kanske texten inte läses upp korrekt. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "Om inget lang-attribut har angetts för en sida används skärmläsarens standardspråk, det vill säga det språk som användaren valde när skärmläsaren konfigurerades. Om sidan inte är på det språket kanske texten inte läses upp korrekt. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "<html>-elementet har inget [lang]-attribut"
@@ -165,7 +165,7 @@
     "message": "<html>-elementet har ett [lang]-attribut"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "Om du anger ett giltigt [språk enligt BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) kan texten uttalas korrekt av skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Om du anger ett giltigt [språk enligt BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) kan texten uttalas korrekt av skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "<html>-elementets [lang]-attribut har inte ett giltigt värde."
@@ -174,7 +174,7 @@
     "message": "<html>-elementets [lang]-attribut har ett giltigt värde"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "Element med informativ funktion bör ha en kort, beskrivande alternativtext. Element som bara har estetisk funktion kan ignoreras genom att alt-attributet lämnas tomt. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "Element med informativ funktion bör ha en kort, beskrivande alternativtext. Element som bara har estetisk funktion kan ignoreras genom att alt-attributet lämnas tomt. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "Vissa bildelement har inte [alt]-attribut"
@@ -183,7 +183,7 @@
     "message": "Alla bildelement har [alt]-attribut"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "Om du anger en alternativ text när en bild används som <input>-knapp blir det lättare för användare med skärmläsare att förstå hur knappen används. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "Om du anger en alternativ text när en bild används som <input>-knapp blir det lättare för användare med skärmläsare att förstå hur knappen används. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "Alla element av typen <input type=\"image\"> har inte [alt]-text"
@@ -192,7 +192,7 @@
     "message": "Alla element av typen <input type=\"image\"> har [alt]-text"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "Etiketterna gör att de olika delarna av ett formulär kan presenteras korrekt för användare med skärmläsare eller andra hjälpmedel. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "Etiketterna gör att de olika delarna av ett formulär kan presenteras korrekt för användare med skärmläsare eller andra hjälpmedel. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "Vissa formulärelement har inte etiketter"
@@ -201,7 +201,7 @@
     "message": "Alla formulärelement har etiketter"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "I en tabell som används i layoutsyfte ska det inte finnas dataelement som th eller caption eller attributet summary, eftersom det kan bli missvisande för den som använder skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "I en tabell som används i layoutsyfte ska det inte finnas dataelement som th eller caption eller attributet summary, eftersom det kan bli missvisande för den som använder skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "Det finns <table>-element som används i layoutsyfte (role=\"presentation\" eller \"none\") men ändå har <th>- eller <caption>-element eller [summary]-attribut. Detta bör undvikas."
@@ -210,7 +210,7 @@
     "message": "Inga <th>- eller <caption>-element eller [summary]-attribut förekommer i <table>-element som används i layoutsyfte (dvs med role=\"presentation\" eller \"none\")."
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "Det blir enklare att navigera för den som använder en skärmläsare om alla länktexter (och alternativtexter för alla bilder som används som länkar) är igenkännliga, unika och möjliga att flytta fokus till. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "Det blir enklare att navigera för den som använder en skärmläsare om alla länktexter (och alternativtexter för alla bilder som används som länkar) är igenkännliga, unika och möjliga att flytta fokus till. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "Vissa länkar har inte ett igenkännligt namn"
@@ -219,7 +219,7 @@
     "message": "Alla länkar har igenkännliga namn"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "Listor presenteras på ett särskilt sätt av skärmläsare. Med rätt liststruktur kan skärmläsarna ge rätt information. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "Listor presenteras på ett särskilt sätt av skärmläsare. Med rätt liststruktur kan skärmläsarna ge rätt information. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "Vissa listor innehåller inte enbart <li>-element eller stödelement för skript (<script> och <template>)."
@@ -228,7 +228,7 @@
     "message": "Alla listor innehåller enbart <li>-element eller stödelement för skript (<script> och <template>)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "För att skärmläsare ska kunna läsa listor ordentligt måste listobjekt (<li>) placeras i en överordnad <ul> eller <ol>. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "För att skärmläsare ska kunna läsa listor ordentligt måste listobjekt (<li>) placeras i en överordnad <ul> eller <ol>. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "Vissa listposter (<li>) saknar ett överordnat <ul>- eller <ol>-element."
@@ -237,7 +237,7 @@
     "message": "Alla listposter (<li>) har ett överordnat <ul>- eller <ol>-element"
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "Användarna förväntar sig inte att en sida ska uppdateras automatiskt, och när det händer flyttas fokus tillbaka till sidans början. Det kan vara både frustrerande och förvirrande. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "Användarna förväntar sig inte att en sida ska uppdateras automatiskt, och när det händer flyttas fokus tillbaka till sidans början. Det kan vara både frustrerande och förvirrande. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "<meta http-equiv=\"refresh\"> används i dokumentet"
@@ -246,7 +246,7 @@
     "message": "<meta http-equiv=\"refresh\"> används inte i dokumentet"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "Att inaktivera förstoring leder till problem för användare med nedsatt syn, som behöver skärmförstoring för att kunna se webbsidan ordentligt. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "Att inaktivera förstoring leder till problem för användare med nedsatt syn, som behöver skärmförstoring för att kunna se webbsidan ordentligt. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "[user-scalable=\"no\"] används i elementet <meta name=\"viewport\"> och värdet på attributet [maximum-scale] är mindre än 5."
@@ -255,7 +255,7 @@
     "message": "[user-scalable=\"no\"] används inte i elementet <meta name=\"viewport\"> och värdet på attributet [maximum-scale] är inte mindre än 5."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "En skärmläsare kan inte tolka innehåll som inte är text. Om du lägger till alt-text i <object>-elementen kan skärmläsarna förmedla ett meningsfullt innehåll till användaren. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "En skärmläsare kan inte tolka innehåll som inte är text. Om du lägger till alt-text i <object>-elementen kan skärmläsarna förmedla ett meningsfullt innehåll till användaren. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "Alla <object>-element har inte [alt]-text"
@@ -264,7 +264,7 @@
     "message": "Alla <object>-element har [alt]-text"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "Med värden större än noll anges en explicit ordningsföljd för navigeringen. Även om detta inte är fel rent tekniskt leder det ofta till en frustrerande upplevelse för den som är beroende av tekniska hjälpmedel. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "Med värden större än noll anges en explicit ordningsföljd för navigeringen. Även om detta inte är fel rent tekniskt leder det ofta till en frustrerande upplevelse för den som är beroende av tekniska hjälpmedel. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "Det finns elementet med ett [tabindex]-värde som är större än 0"
@@ -273,7 +273,7 @@
     "message": "Det finns inga elementet med ett [tabindex]-värde som är större än 0"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "Skärmläsare har funktioner som gör det enklare att navigera i tabeller. Sidan fungerar bättre för den som använder skärmläsare om attributet [headers] i <td>-celler bara refererar till andra celler i samma tabell. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "Skärmläsare har funktioner som gör det enklare att navigera i tabeller. Sidan fungerar bättre för den som använder skärmläsare om attributet [headers] i <td>-celler bara refererar till andra celler i samma tabell. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "Det finns celler i ett <table>-element där attributet [headers] inte hänvisar till andra celler i samma tabell."
@@ -282,7 +282,7 @@
     "message": "I alla celler i ett <table>-element där attributet [headers] används hänvisar det till andra celler i samma tabell."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "Skärmläsare har funktioner som gör det enklare att navigera i tabeller. Det fungerar bättre för den som använder skärmläsare om det inte finns några tabellrubriker som hänger i luften utan att referera till några dataceller. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "Skärmläsare har funktioner som gör det enklare att navigera i tabeller. Det fungerar bättre för den som använder skärmläsare om det inte finns några tabellrubriker som hänger i luften utan att referera till några dataceller. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "Vissa <th>-element och element med [role=\"columnheader\" eller \"rowheader\"] står inte som rubrik för några dataceller."
@@ -291,7 +291,7 @@
     "message": "Alla <th>-element och element med [role=\"columnheader\" eller \"rowheader\"] står som rubriker för andra dataceller."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "Om du anger ett giltigt [språk enligt BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) för elementen uttalas texten korrekt av skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Om du anger ett giltigt [språk enligt BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) för elementen uttalas texten korrekt av skärmläsare. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "Det finns [lang]-attribut som inte har ett giltigt värde"
@@ -300,7 +300,7 @@
     "message": "Alla [lang]-attribut har ett giltigt värde"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "Det blir lättare för döva och hörselskadade att ta del av en video som är textad. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "Det blir lättare för döva och hörselskadade att ta del av en video som är textad. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "Alla <video>-element har inte ett underordnat <track>-element med [kind=\"captions\"]."
@@ -309,7 +309,7 @@
     "message": "Alla <video>-element har ett underordnat <track>-element med [kind=\"captions\"]"
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "Upplästa beskrivningar ger viktig information om videon som inte framgår av dialogen, t.ex. ansiktsuttryck och naturvyer. [Läs mer](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "Upplästa beskrivningar ger viktig information om videon som inte framgår av dialogen, t.ex. ansiktsuttryck och naturvyer. [Läs mer](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "Alla <video>-element har inte ett underordnat <track>-element med [kind=\"description\"]."

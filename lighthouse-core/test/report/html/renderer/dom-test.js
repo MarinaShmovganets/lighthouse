@@ -111,10 +111,10 @@ describe('DOM', () => {
 
     it('handles the case of [text]... [text](url)', () => {
       const text = 'Ensuring `<td>` cells using the `[headers]` are good. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr).';
+          '[Learn more](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr).';
       const result = dom.convertMarkdownLinkSnippets(text);
       assert.equal(result.innerHTML, 'Ensuring `&lt;td&gt;` cells using the `[headers]` are ' +
-          'good. <a rel="noopener" target="_blank" href="https://dequeuniversity.com/rules/axe/3.1/td-headers-attr">Learn more</a>.');
+          'good. <a rel="noopener" target="_blank" href="https://dequeuniversity.com/rules/axe/3.3/td-headers-attr">Learn more</a>.');
     });
 
     it('appends utm params to the URLs with https://developers.google.com origin', () => {

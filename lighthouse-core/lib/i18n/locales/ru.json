@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "Ключи доступа позволяют быстро перейти к нужной части страницы. Каждый из них должен быть уникальным. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "Ключи доступа позволяют быстро перейти к нужной части страницы. Каждый из них должен быть уникальным. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "Значения атрибута [accesskey] не уникальны"
@@ -9,7 +9,7 @@
     "message": "Значения [accesskey] уникальны"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "Для каждой роли ARIA предусмотрен определенный набор атрибутов aria-*. Неверно присвоенные атрибуты будут недействительны. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "Для каждой роли ARIA предусмотрен определенный набор атрибутов aria-*. Неверно присвоенные атрибуты будут недействительны. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "Атрибуты [aria-*] не соответствуют указанным для них ролям"
@@ -18,7 +18,7 @@
     "message": "Атрибуты [aria-*] соответствуют указанным для них ролям"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "С некоторыми ролями ARIA необходимо использовать атрибуты, описывающие состояние элемента для программ чтения с экрана. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "С некоторыми ролями ARIA необходимо использовать атрибуты, описывающие состояние элемента для программ чтения с экрана. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "Для элементов с атрибутом [role] заданы не все необходимые атрибуты [aria-*]"
@@ -27,7 +27,7 @@
     "message": "Для элементов с атрибутом [role] заданы все необходимые атрибуты [aria-*]"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "Некоторые элементы с ролями ARIA должны содержать определенные дочерние роли, иначе связанные с ними функции будут работать неправильно. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "Некоторые элементы с ролями ARIA должны содержать определенные дочерние роли, иначе связанные с ними функции будут работать неправильно. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "Отсутствуют элементы с атрибутом [role], для которых необходимы дочерние элементы с определенными атрибутами [role]"
@@ -36,7 +36,7 @@
     "message": "Элементы с атрибутом [role], для которых необходимы дочерние элементы с определенными атрибутами [role], присутствуют"
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "Некоторые элементы с ролями ARIA должны содержаться в определенных родительских ролях, иначе связанные с ними функции будут работать неправильно. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "Некоторые элементы с ролями ARIA должны содержаться в определенных родительских ролях, иначе связанные с ними функции будут работать неправильно. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "Элементы с атрибутом [role] содержатся не в тех родительских элементах"
@@ -45,7 +45,7 @@
     "message": "Элементы с атрибутом [role] содержатся в необходимых для них родительских элементах"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "Значения ролей ARIA должны быть действительными, иначе связанные с ними функции будут работать неправильно. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "Значения ролей ARIA должны быть действительными, иначе связанные с ними функции будут работать неправильно. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "Значения атрибутов [role] недействительны"
@@ -54,7 +54,7 @@
     "message": "Значения атрибутов [role] действительны"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "Программы чтения с экрана не могут распознать атрибуты ARIA с недействительными значениями. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "Программы чтения с экрана не могут распознать атрибуты ARIA с недействительными значениями. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "Значения атрибутов [aria-*] недействительны"
@@ -63,7 +63,7 @@
     "message": "Значения атрибутов [aria-*] действительны"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "Программы чтения с экрана не могут распознавать атрибуты ARIA с недействительными названиями. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "Программы чтения с экрана не могут распознавать атрибуты ARIA с недействительными названиями. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "Атрибуты [aria-*] недействительны или указаны с ошибками"
@@ -72,7 +72,7 @@
     "message": "Атрибуты [aria-*] действительны и не содержат ошибок"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "Чтобы ваш аудиоконтент был доступен людям с нарушениями слуха, добавьте субтитры. В них можно включить описания сцен, у которых нет звукового сопровождения. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "Чтобы ваш аудиоконтент был доступен людям с нарушениями слуха, добавьте субтитры. В них можно включить описания сцен, у которых нет звукового сопровождения. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "Элементы <audio> не содержат элемент <track> с параметром [kind=\"captions\"]"
@@ -84,7 +84,7 @@
     "message": "Неподходящие элементы"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "Если у кнопки нет названия, доступного программам чтения с экрана, пользователи услышат слово \"кнопка\", но не поймут, для чего она нужна. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "Если у кнопки нет названия, доступного программам чтения с экрана, пользователи услышат слово \"кнопка\", но не поймут, для чего она нужна. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "Названия кнопок недоступны программам чтения с экрана"
@@ -93,7 +93,7 @@
     "message": "Названия кнопок доступны программам чтения с экрана"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "Чтобы пользователям было проще перемещаться по странице с помощью клавиатуры, добавьте возможность пропускать повторяющийся контент. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "Чтобы пользователям было проще перемещаться по странице с помощью клавиатуры, добавьте возможность пропускать повторяющийся контент. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "На странице отсутствует заголовок, ссылка для пропуска или указание региона"
@@ -102,7 +102,7 @@
     "message": "Страница содержит заголовок, ссылку для пропуска контента или указание региона"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "Многие пользователи не разбирают или плохо видят текст с низкой контрастностью. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "Многие пользователи не разбирают или плохо видят текст с низкой контрастностью. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "Цвета фона и переднего плана недостаточно контрастны"
@@ -111,7 +111,7 @@
     "message": "Цвета фона и переднего плана достаточно контрастны"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "Если списки определений размечены некорректно, программы чтения с экрана могут озвучивать их неправильно. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "Если списки определений размечены некорректно, программы чтения с экрана могут озвучивать их неправильно. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "Некоторые группы <dt> и <dd>, а также элементы <script> или <template> указаны в тегах <dl> в неправильном порядке"
@@ -120,7 +120,7 @@
     "message": "Группы <dt> и <dd>, а также элементы <script> или <template> указаны в тегах <dl> в нужном порядке"
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "Чтобы программы чтения с экрана правильно озвучивали список определений, его элементы (<dt> и <dd>) должны быть размещены внутри родительского элемента <dl>. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "Чтобы программы чтения с экрана правильно озвучивали список определений, его элементы (<dt> и <dd>) должны быть размещены внутри родительского элемента <dl>. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "Элементы для списков определений не размещены внутри элементов <dl>"
@@ -138,7 +138,7 @@
     "message": "В документе есть элемент <title>"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "Значение атрибута id должно быть уникальным, так как программы для людей с ограниченными возможностями могут игнорировать повторяющиеся идентификаторы. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "Значение атрибута id должно быть уникальным, так как программы для людей с ограниченными возможностями могут игнорировать повторяющиеся идентификаторы. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "Атрибуты [id] на странице не уникальны"
@@ -147,7 +147,7 @@
     "message": "Атрибуты [id] на странице уникальны"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "Чтобы программы чтения с экрана могли описывать содержимое фреймов, у каждого из них должно быть название (атрибут title). [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "Чтобы программы чтения с экрана могли описывать содержимое фреймов, у каждого из них должно быть название (атрибут title). [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "У элементов <frame> или <iframe> отсутствует атрибут title"
@@ -156,7 +156,7 @@
     "message": "Для элементов <frame> или <iframe> задан атрибут title"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "Если для страницы не указан атрибут lang, программа чтения с экрана предполагает, что текст приведен на языке по умолчанию, выбранном пользователем при установке программы. Если текст написан на другом языке, он может озвучиваться некорректно. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "Если для страницы не указан атрибут lang, программа чтения с экрана предполагает, что текст приведен на языке по умолчанию, выбранном пользователем при установке программы. Если текст написан на другом языке, он может озвучиваться некорректно. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "Для элемента <html> не задан атрибут [lang]"
@@ -165,7 +165,7 @@
     "message": "Для элемента <html> задан атрибут [lang]"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "Чтобы программы чтения с экрана могли правильно озвучивать текст, укажите корректный [языковой тег BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question). [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Чтобы программы чтения с экрана могли правильно озвучивать текст, укажите корректный [языковой тег BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question). [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "Для элемента <html> указано недействительное значение атрибута [lang]"
@@ -174,7 +174,7 @@
     "message": "Для элемента <html> указано действительное значение атрибута [lang]"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "В информационных элементах должен содержаться короткий и ясный альтернативный текст. Если элемент декоративный, то атрибут alt для него можно оставить пустым. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "В информационных элементах должен содержаться короткий и ясный альтернативный текст. Если элемент декоративный, то атрибут alt для него можно оставить пустым. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "Для элементов с изображениями не заданы атрибуты [alt]"
@@ -183,7 +183,7 @@
     "message": "Для элементов с изображениями заданы атрибуты [alt]"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "Если для кнопки в теге <input> используется изображение, добавьте альтернативный текст, описывающий назначение этой кнопки для программ чтения с экрана. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "Если для кнопки в теге <input> используется изображение, добавьте альтернативный текст, описывающий назначение этой кнопки для программ чтения с экрана. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "Элементы <input type=\"image\"> не содержат атрибут [alt]"
@@ -192,7 +192,7 @@
     "message": "Элементы <input type=\"image\"> содержат атрибут [alt]"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "Чтобы программы чтения с экрана могли озвучивать элементы формы, добавьте ярлыки. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "Чтобы программы чтения с экрана могли озвучивать элементы формы, добавьте ярлыки. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "Элементам формы не присвоены соответствующие ярлыки"
@@ -201,7 +201,7 @@
     "message": "Элементам формы присвоены соответствующие ярлыки"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "В таблице, предназначенной для дизайна, не должны содержаться элементы данных, например теги th, caption и атрибут summary: они могут создать трудности для тех, кто использует программы чтения с экрана. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "В таблице, предназначенной для дизайна, не должны содержаться элементы данных, например теги th, caption и атрибут summary: они могут создать трудности для тех, кто использует программы чтения с экрана. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "В описательных элементах <table> используется тег <th>, <caption> или атрибут [summary]"
@@ -210,7 +210,7 @@
     "message": "В описательных элементах <table> не используются теги <th> и <caption> или атрибут [summary]"
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "Текст ссылок, как и альтернативный текст для изображений-ссылок, должен быть различимым для программ чтения с экрана, уникальным и доступным для выбора с помощью таких программ. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "Текст ссылок, как и альтернативный текст для изображений-ссылок, должен быть различимым для программ чтения с экрана, уникальным и доступным для выбора с помощью таких программ. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "Текст ссылок неразличим для программ чтения с экрана"
@@ -219,7 +219,7 @@
     "message": "Текст ссылок различим для программ чтения с экрана"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "Списки должны быть размечены определенным образом, иначе программы чтения с экрана могут озвучивать их неправильно. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "Списки должны быть размечены определенным образом, иначе программы чтения с экрана могут озвучивать их неправильно. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "В списках обнаружены данные, которые не являются элементами <li>, <script> и <template>"
@@ -228,7 +228,7 @@
     "message": "В списках содержатся только элементы <li>, <script> и <template>"
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "Чтобы программы чтения с экрана правильно озвучивали списки, их элементы (<li>) должны содержаться в родительских элементах <ul> или <ol>. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "Чтобы программы чтения с экрана правильно озвучивали списки, их элементы (<li>) должны содержаться в родительских элементах <ul> или <ol>. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "Элементы списка (<li>) не содержатся в родительских элементах <ul> или <ol>"
@@ -237,7 +237,7 @@
     "message": "Элементы списка (<li>) содержатся в родительских элементах <ul> или <ol>"
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "Когда страница обновляется автоматически, фокус программ для чтения с экрана возвращается в ее верхнюю часть. Это может раздражать пользователей и мешать их работе. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "Когда страница обновляется автоматически, фокус программ для чтения с экрана возвращается в ее верхнюю часть. Это может раздражать пользователей и мешать их работе. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "В документе используется метатег <meta http-equiv=\"refresh\">"
@@ -246,7 +246,7 @@
     "message": "В документе не используется метатег <meta http-equiv=\"refresh\">"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "Не отключайте масштабирование: эта функция помогает слабовидящим пользователям читать информацию на страницах. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "Не отключайте масштабирование: эта функция помогает слабовидящим пользователям читать информацию на страницах. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "Параметр [user-scalable=\"no\"] используется в элементе <meta name=\"viewport\">, или значение атрибута [maximum-scale] меньше 5"
@@ -255,7 +255,7 @@
     "message": "Параметр [user-scalable=\"no\"] не используется в элементе <meta name=\"viewport\">, а значение атрибута [maximum-scale] не меньше 5"
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "Чтобы программы чтения с экрана могли озвучивать содержимое элементов <object>, добавьте для этих элементов альтернативный текст. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "Чтобы программы чтения с экрана могли озвучивать содержимое элементов <object>, добавьте для этих элементов альтернативный текст. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "Элементы <object> не содержат атрибут [alt]"
@@ -264,7 +264,7 @@
     "message": "Элементы <object> содержат атрибут [alt]"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "Значение больше 0 подразумевает определенный порядок навигации. Это может создавать трудности для пользователей с ограниченными возможностями. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "Значение больше 0 подразумевает определенный порядок навигации. Это может создавать трудности для пользователей с ограниченными возможностями. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "Для некоторых элементов значение [tabindex] больше 0"
@@ -273,7 +273,7 @@
     "message": "Ни в одном элементе значение [tabindex] не превышает 0"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "Чтобы пользователям было проще перемещаться по таблицам с помощью программ чтения с экрана, убедитесь, что ячейки в тегах <td> с атрибутом [headers] ссылаются только на другие ячейки в той же таблице. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "Чтобы пользователям было проще перемещаться по таблицам с помощью программ чтения с экрана, убедитесь, что ячейки в тегах <td> с атрибутом [headers] ссылаются только на другие ячейки в той же таблице. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "Ячейки таблицы из элемента <table>, использующие атрибут [headers], ссылаются на другие ячейки той же таблицы"
@@ -282,7 +282,7 @@
     "message": "Ячейки таблицы из элемента <table>, использующие атрибут [headers], ссылаются только на другие ячейки той же таблицы"
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "Чтобы пользователям было проще перемещаться по таблицам с помощью программ чтения с экрана, убедитесь, что все заголовки в таблицах ссылаются на набор ячеек. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "Чтобы пользователям было проще перемещаться по таблицам с помощью программ чтения с экрана, убедитесь, что все заголовки в таблицах ссылаются на набор ячеек. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "В тегах <th> и элементах с параметром [role=\"columnheader\"/\"rowheader\"] нет описываемых ими ячеек с данными"
@@ -291,7 +291,7 @@
     "message": "В тегах <th> и элементах с параметром [role=\"columnheader\"/\"rowheader\"] есть описываемые ими ячейки с данными"
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "Чтобы программы чтения с экрана правильно озвучивали текст, укажите для элементов корректный [языковой тег BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question). [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Чтобы программы чтения с экрана правильно озвучивали текст, укажите для элементов корректный [языковой тег BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question). [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "Значения атрибутов [lang] недействительны"
@@ -300,7 +300,7 @@
     "message": "Значения атрибутов [lang] действительны"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "Чтобы информация, озвучиваемая в видео, была доступна людям с нарушениями слуха, добавьте субтитры. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "Чтобы информация, озвучиваемая в видео, была доступна людям с нарушениями слуха, добавьте субтитры. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "Элементы <video> не содержат элемент <track> с параметром [kind=\"captions\"]"
@@ -309,7 +309,7 @@
     "message": "Элементы <video> содержат элемент <track> с параметром [kind=\"captions\"]"
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "Благодаря звуковым описаниям к видео слабовидящие пользователи могут узнавать, что происходит на экране в сценах без аудиосопровождения. [Подробнее…](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "Благодаря звуковым описаниям к видео слабовидящие пользователи могут узнавать, что происходит на экране в сценах без аудиосопровождения. [Подробнее…](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "Элементы <video> не содержат элемент <track> с параметром [kind=\"description\"]"

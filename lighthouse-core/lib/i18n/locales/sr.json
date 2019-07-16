@@ -1,6 +1,6 @@
 {
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
-    "message": "Тастери за приступ омогућавају корисницима да брзо фокусирају део странице. Да би навигација била одговарајућа, сваки тастер за приступ мора да буде јединствен. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/accesskeys?application=lighthouse)."
+    "message": "Тастери за приступ омогућавају корисницима да брзо фокусирају део странице. Да би навигација била одговарајућа, сваки тастер за приступ мора да буде јединствен. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/accesskeys?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
     "message": "Вредности за „[accesskey]“ нису јединствене"
@@ -9,7 +9,7 @@
     "message": "Вредности за „[accesskey]“ су јединствене"
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
-    "message": "Свака ARIA улога „role“ подржава одређени подскуп атрибута „aria-*“. Ако се не подударају, атрибути „aria-*“ биће поништени. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/aria-allowed-attr?application=lighthouse)."
+    "message": "Свака ARIA улога „role“ подржава одређени подскуп атрибута „aria-*“. Ако се не подударају, атрибути „aria-*“ биће поништени. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/aria-allowed-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
     "message": "Атрибути „[aria-*]“ се не подударају са својим улогома"
@@ -18,7 +18,7 @@
     "message": "Атрибути „[aria-*]“ се подударају са својим улогама"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
-    "message": "Поједине ARIA улоге имају обавезне атрибуте који статус елемента описују читачима екрана. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/aria-required-attr?application=lighthouse)."
+    "message": "Поједине ARIA улоге имају обавезне атрибуте који статус елемента описују читачима екрана. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/aria-required-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
     "message": "Улоге „[role]“ немају све обавезне атрибуте „[aria-*]“"
@@ -27,7 +27,7 @@
     "message": "Улоге „[role]“ имају све обавезне атрибуте „[aria-*]“"
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
-    "message": "Поједине надређене ARIA улоге морају да обухватају одређене подређене улоге да би правилно обављале намењене функције приступачности. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/aria-required-children?application=lighthouse)."
+    "message": "Поједине надређене ARIA улоге морају да обухватају одређене подређене улоге да би правилно обављале намењене функције приступачности. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/aria-required-children?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
     "message": "Недостају елементи са улогом „[role]“ који захтевају одређену подређену улогу „[role]“."
@@ -36,7 +36,7 @@
     "message": "Присутни су елементи са улогом „[role]“ који захтевају одређену подређену улогу „[role]“"
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
-    "message": "Поједине подређене ARIA улоге морају да буду обухваћене одређеним надређеним улогама да би правилно обављале намењене функције приступачности. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/aria-required-parent?application=lighthouse)."
+    "message": "Поједине подређене ARIA улоге морају да буду обухваћене одређеним надређеним улогама да би правилно обављале намењене функције приступачности. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/aria-required-parent?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
     "message": "Улоге „[role] нису обухваћене својим обавезним надређеним елементом"
@@ -45,7 +45,7 @@
     "message": "Улоге „[role]“ обухваћене су својим обавезним надређеним елементом"
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | description": {
-    "message": "Вредности ARIA улога морају да буду важеће да би правилно обављале намењене функције приступачности. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/aria-roles?application=lighthouse)."
+    "message": "Вредности ARIA улога морају да буду важеће да би правилно обављале намењене функције приступачности. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/aria-roles?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
     "message": "Вредности за „[role]“ нису важеће"
@@ -54,7 +54,7 @@
     "message": "Вредности за „[role]“ су важеће"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
-    "message": "Технологије за помоћ особама са инвалидитетом, попут читача екрана, не могу да интерпретирају ARIA атрибуте са неважећим вредностима. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr-value?application=lighthouse)."
+    "message": "Технологије за помоћ особама са инвалидитетом, попут читача екрана, не могу да интерпретирају ARIA атрибуте са неважећим вредностима. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr-value?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
     "message": "Вредност атрибута „[aria-*]“ није важећа"
@@ -63,7 +63,7 @@
     "message": "Вредности атрибута „[aria-*]“ су важеће"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
-    "message": "Технологије за помоћ особама са инвалидитетом, попут читача екрана, не могу да интерпретирају ARIA атрибуте са неважећим називима. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse)."
+    "message": "Технологије за помоћ особама са инвалидитетом, попут читача екрана, не могу да интерпретирају ARIA атрибуте са неважећим називима. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/aria-valid-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
     "message": "Атрибути „[aria-*]“ нису важећи или су погрешно написани"
@@ -72,7 +72,7 @@
     "message": "Атрибути „[aria-*]“ су важећи и нису погрешно написани"
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | description": {
-    "message": "Титлови омогућавају да глуви корисници или корисници са оштећењем слуха користе аудио елементе, чиме се пружају важне информације, на пример, информације о томе која особа говори, шта говори, као и друге информације које нису везане за говор. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse)."
+    "message": "Титлови омогућавају да глуви корисници или корисници са оштећењем слуха користе аудио елементе, чиме се пружају важне информације, на пример, информације о томе која особа говори, шта говори, као и друге информације које нису везане за говор. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/audio-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
     "message": "Елементима „<audio>“ недостаје елемент „<track>“ са атрибутом „[kind=\"captions\"]“."
@@ -84,7 +84,7 @@
     "message": "Елементи који нису прошли проверу"
   },
   "lighthouse-core/audits/accessibility/button-name.js | description": {
-    "message": "Када дугме нема назив прилагођен функцији приступачности, читачи екрана га најављују као „дугме“, па корисници који се ослањају на читаче екрана не могу да га користе. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/button-name?application=lighthouse)."
+    "message": "Када дугме нема назив прилагођен функцији приступачности, читачи екрана га најављују као „дугме“, па корисници који се ослањају на читаче екрана не могу да га користе. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/button-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
     "message": "Дугмад нема називе прилагођене функцијама приступачности"
@@ -93,7 +93,7 @@
     "message": "Дугмад има називе прилагођене функцијама приступачности"
   },
   "lighthouse-core/audits/accessibility/bypass.js | description": {
-    "message": "Када се додају начини за заобилажење, садржај који се понавља омогућава да се корисници тастатуре ефикасније крећу кроз страницу. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse)."
+    "message": "Када се додају начини за заобилажење, садржај који се понавља омогућава да се корисници тастатуре ефикасније крећу кроз страницу. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/bypass?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
     "message": "Страница не обухвата наслов, линк за прескакање нити регион оријентира"
@@ -102,7 +102,7 @@
     "message": "Страница обухвата наслов, линк за прескакање или регион оријентира"
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | description": {
-    "message": "Многи корисници веома тешко читају текст са малим контрастом или уопште не могу да га читају. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/color-contrast?application=lighthouse)."
+    "message": "Многи корисници веома тешко читају текст са малим контрастом или уопште не могу да га читају. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/color-contrast?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
     "message": "Боје у позадини и у првом плану немају задовољавајући однос контраста."
@@ -111,7 +111,7 @@
     "message": "Боје у позадини и у првом плану имају задовољавајући однос контраста"
   },
   "lighthouse-core/audits/accessibility/definition-list.js | description": {
-    "message": "Када листе дефиниција нису правилно означене, читачи екрана могу да пружају збуњујући или нетачан излаз. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/definition-list?application=lighthouse)."
+    "message": "Када листе дефиниција нису правилно означене, читачи екрана могу да пружају збуњујући или нетачан излаз. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/definition-list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
     "message": "„<dl>“ не садржи само правилно наручене групе „<dt>“ и „<dd>“, елементе „<script>“ или „<template>“."
@@ -120,7 +120,7 @@
     "message": "„<dl>“ садржи само правилно наручене групе „<dt>“ и „<dd>“, елементе „<script>“ или „<template>“."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
-    "message": "Ставке листе дефиниција („<dt>“ и „<dd>“) морају да буду упаковане у надређени елемент „<dl>“ да би читачи екрана могли да их правилно читају. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/dlitem?application=lighthouse)."
+    "message": "Ставке листе дефиниција („<dt>“ и „<dd>“) морају да буду упаковане у надређени елемент „<dl>“ да би читачи екрана могли да их правилно читају. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/dlitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
     "message": "Ставке листе дефиниција нису упаковане у елементе „<dl>“"
@@ -138,7 +138,7 @@
     "message": "Документ има елемент „<title>“"
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
-    "message": "Вредност атрибута ИД мора да буде јединствена да би се спречило да технологије за помоћ особама са инвалидитетом пропусте друге инстанце. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse)."
+    "message": "Вредност атрибута ИД мора да буде јединствена да би се спречило да технологије за помоћ особама са инвалидитетом пропусте друге инстанце. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/duplicate-id?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
     "message": "Атрибути „[id]“ на страници нису јединствени"
@@ -147,7 +147,7 @@
     "message": "Атрибути „[id]“ на страници су јединствени"
   },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
-    "message": "Корисници читача екрана ослањају се на наслове оквира да би се описао садржај оквира. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/frame-title?application=lighthouse)."
+    "message": "Корисници читача екрана ослањају се на наслове оквира да би се описао садржај оквира. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/frame-title?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
     "message": "Не постоји наслов елемента „<frame>“ или „<iframe>“"
@@ -156,7 +156,7 @@
     "message": "Елементи „<frame>“ или „<iframe>“ имају наслов"
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
-    "message": "Ако за страницу није наведен атрибут за језик, читач екрана претпоставља да је страница на подразумеваном језику који је корисник одабрао током подешавања читача екрана. Ако страница заправо није на подразумеваном језику, читач екрана можда неће правилно читати текст са странице. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/html-has-lang?application=lighthouse)."
+    "message": "Ако за страницу није наведен атрибут за језик, читач екрана претпоставља да је страница на подразумеваном језику који је корисник одабрао током подешавања читача екрана. Ако страница заправо није на подразумеваном језику, читач екрана можда неће правилно читати текст са странице. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/html-has-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
     "message": "Елемент „<html>“ нема атрибут „[lang]“"
@@ -165,7 +165,7 @@
     "message": "Елемент „<html>“ има атрибут „[lang]“"
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
-    "message": "Навођењем важећег кода [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) омогућава се да читач екрана правилно чита текст. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Навођењем важећег кода [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) омогућава се да читач екрана правилно чита текст. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
     "message": "Елемент „<html>“ нема важећу вредност за свој атрибут „[lang]“."
@@ -174,7 +174,7 @@
     "message": "Елемент „<html>“ има важећу вредност за атрибут „[lang]“"
   },
   "lighthouse-core/audits/accessibility/image-alt.js | description": {
-    "message": "Информативни елементи треба да садрже кратки, описни алтернативни текст. Декоративни елементи могу да се занемаре помоћу празног alt атрибута. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/image-alt?application=lighthouse)."
+    "message": "Информативни елементи треба да садрже кратки, описни алтернативни текст. Декоративни елементи могу да се занемаре помоћу празног alt атрибута. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
     "message": "Елементи слике немају атрибуте „[alt]“"
@@ -183,7 +183,7 @@
     "message": "Елементи слика имају атрибуте „[alt]“"
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
-    "message": "Када се слика користи као дугме „<input>“, навођење алтернативног текста може да помогне корисницима да разумеју сврху дугмета. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse)."
+    "message": "Када се слика користи као дугме „<input>“, навођење алтернативног текста може да помогне корисницима да разумеју сврху дугмета. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/input-image-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
     "message": "Елементи „<input type=\"image\">“ немају текст „[alt]“"
@@ -192,7 +192,7 @@
     "message": "Елементи „<input type=\"image\">“ имају текст „[alt]“"
   },
   "lighthouse-core/audits/accessibility/label.js | description": {
-    "message": "Ознаке омогућавају да технологије за помоћ особама са инвалидитетом, попут читача екрана, правилно најављују контроле образаца. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/label?application=lighthouse)."
+    "message": "Ознаке омогућавају да технологије за помоћ особама са инвалидитетом, попут читача екрана, правилно најављују контроле образаца. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/label?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/label.js | failureTitle": {
     "message": "Елементи образаца немају повезане ознаке"
@@ -201,7 +201,7 @@
     "message": "Елементи образаца имају повезане ознаке"
   },
   "lighthouse-core/audits/accessibility/layout-table.js | description": {
-    "message": "Табела која се користи у сврхе распореда не треба да обухвата елементе података, као што су елементи th или титл или атрибут резимеа, јер то може да збуни кориснике читача екрана. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse)."
+    "message": "Табела која се користи у сврхе распореда не треба да обухвата елементе података, као што су елементи th или титл или атрибут резимеа, јер то може да збуни кориснике читача екрана. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/layout-table?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
     "message": "Презентациони елементи „<table>“ не избегавају употребу атрибута „<th>“, „<caption>“ или „[summary]“."
@@ -210,7 +210,7 @@
     "message": "Презентациони елементи „<table>“ избегавају употребу атрибута „<th>“, „<caption>“ или „[summary]“."
   },
   "lighthouse-core/audits/accessibility/link-name.js | description": {
-    "message": "Текст линка (и алтернативни текст за слике када се користи за линкове) који је препознатљив, јединствен и може да се фокусира олакшава кретање за кориснике читача екрана. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/link-name?application=lighthouse)."
+    "message": "Текст линка (и алтернативни текст за слике када се користи за линкове) који је препознатљив, јединствен и може да се фокусира олакшава кретање за кориснике читача екрана. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/link-name?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
     "message": "Назив линкова не може да се препозна"
@@ -219,7 +219,7 @@
     "message": "Назив линкова може да се препозна"
   },
   "lighthouse-core/audits/accessibility/list.js | description": {
-    "message": "Читачи екрана читају листе на посебан начин. Правилна структура листе олакшава разумевање читача екрана. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse)."
+    "message": "Читачи екрана читају листе на посебан начин. Правилна структура листе олакшава разумевање читача екрана. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/list?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/list.js | failureTitle": {
     "message": "Листе не садрже искључиво елементе „<li>“ и елементе које подржавају скрипте („<script>“ и „<template>“)."
@@ -228,7 +228,7 @@
     "message": "Листе садрже искључиво елементе „<li>“ и елементе које подржавају скрипте („<script>“ и „<template>“)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | description": {
-    "message": "Читачи екрана захтевају да ставке листе („<li>“) буду обухваћене надређеним елементима „<ul>“ или „<ol>“ да би могле да се правилно читају. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse)."
+    "message": "Читачи екрана захтевају да ставке листе („<li>“) буду обухваћене надређеним елементима „<ul>“ или „<ol>“ да би могле да се правилно читају. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/listitem?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
     "message": "Ставке листе („<li>“) нису обухваћене надређеним елементима „<ul>“ или „<ol>“."
@@ -237,7 +237,7 @@
     "message": "Ставке листе („<li>“) су обухваћене надређеним елементима „<ul>“ или „<ol>“"
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
-    "message": "Корисници не очекују да се страница аутоматски освежава и тиме се фокус премешта на почетак странице. То може да фрустрира или збуњује кориснике. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse)."
+    "message": "Корисници не очекују да се страница аутоматски освежава и тиме се фокус премешта на почетак странице. То може да фрустрира или збуњује кориснике. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/meta-refresh?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
     "message": "Документ користи „<meta http-equiv=\"refresh\">“"
@@ -246,7 +246,7 @@
     "message": "Документ не користи „<meta http-equiv=\"refresh\">“"
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
-    "message": "Онемогућавање зумирања представља проблем за слабовиде кориснике који се ослањају на увећавање приказа екрана да би могли да виде садржај веб-странице. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/meta-viewport?application=lighthouse)."
+    "message": "Онемогућавање зумирања представља проблем за слабовиде кориснике који се ослањају на увећавање приказа екрана да би могли да виде садржај веб-странице. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/meta-viewport?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
     "message": "„[user-scalable=\"no\"]“ се користи у елементу „<meta name=\"viewport\">“ или је вредност атрибута „[maximum-scale]“ мања од 5."
@@ -255,7 +255,7 @@
     "message": "„[user-scalable=\"no\"]“ се не користи у елементу „<meta name=\"viewport\">“, а вредност атрибута „[maximum-scale]“ није мања од 5."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | description": {
-    "message": "Читачи екрана не могу да преводе садржај који није текст. Додавање alt текста елементима „<object>“ омогућава да читачи екрана лакше пренесу значење корисницима. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/object-alt?application=lighthouse)."
+    "message": "Читачи екрана не могу да преводе садржај који није текст. Додавање alt текста елементима „<object>“ омогућава да читачи екрана лакше пренесу значење корисницима. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/object-alt?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
     "message": "Елементи „<object>“ немају текст „[alt]“"
@@ -264,7 +264,7 @@
     "message": "Елементи „<object>“ имају текст „[alt]“"
   },
   "lighthouse-core/audits/accessibility/tabindex.js | description": {
-    "message": "Вредност већа од 0 означава експлицитно наручивање навигације. Иако је технички исправно, то често фрустрира кориснике који се ослањају на технологије за помоћ особама са инвалидитетом. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/tabindex?application=lighthouse)."
+    "message": "Вредност већа од 0 означава експлицитно наручивање навигације. Иако је технички исправно, то често фрустрира кориснике који се ослањају на технологије за помоћ особама са инвалидитетом. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/tabindex?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
     "message": "Неки елементи имају вредност за „[tabindex]“ која је већа од 0"
@@ -273,7 +273,7 @@
     "message": "Вредност ниједног елемента „[tabindex]“ није већа од 0"
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
-    "message": "Читачи екрана имају функције које олакшавају кретање кроз табеле. Ако се побринете да се ћелије „<td>“ које користе атрибут „[headers]“ односе само на друге ћелије у истој табели, можете да побољшате доживљај за кориснике читача екрана. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse)."
+    "message": "Читачи екрана имају функције које олакшавају кретање кроз табеле. Ако се побринете да се ћелије „<td>“ које користе атрибут „[headers]“ односе само на друге ћелије у истој табели, можете да побољшате доживљај за кориснике читача екрана. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/td-headers-attr?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
     "message": "Ћелије у елементу „<table>“ које користе атрибут „[headers]“ односе се на друге ћелије у тој истој табели."
@@ -282,7 +282,7 @@
     "message": "Ћелије у елементу „<table>“ које користе атрибут „[headers]“ односе се само на друге ћелије у тој истој табели."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
-    "message": "Читачи екрана имају функције које олакшавају кретање кроз табеле. Ако се побринете да се наслови табела увек односе на неку групу ћелија, можете да побољшате доживљај за кориснике читача екрана. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/th-has-data-cells?application=lighthouse)."
+    "message": "Читачи екрана имају функције које олакшавају кретање кроз табеле. Ако се побринете да се наслови табела увек односе на неку групу ћелија, можете да побољшате доживљај за кориснике читача екрана. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/th-has-data-cells?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
     "message": "Елементи „<th>“ и елементи са атрибутом „[role=\"columnheader\"/\"rowheader\"]“ немају ћелије са подацима које описују."
@@ -291,7 +291,7 @@
     "message": "Елементи „<th>“ и елементи са атрибутом „[role=\"columnheader\"/\"rowheader\"]“ имају ћелије са подацима које описују."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | description": {
-    "message": "Навођењем важећег кода [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) у елементима омогућава се да читач екрана правилно чита текст. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/valid-lang?application=lighthouse)."
+    "message": "Навођењем важећег кода [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) у елементима омогућава се да читач екрана правилно чита текст. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/valid-lang?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
     "message": "Вредност атрибута „[lang]“ није важећа"
@@ -300,7 +300,7 @@
     "message": "Вредност атрибута „[lang]“ је важећа"
   },
   "lighthouse-core/audits/accessibility/video-caption.js | description": {
-    "message": "Када је доступан титл за видео, глуви корисници и они са оштећењем слуха лакше могу да приступају информацијама које видео обухвата. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/video-caption?application=lighthouse)."
+    "message": "Када је доступан титл за видео, глуви корисници и они са оштећењем слуха лакше могу да приступају информацијама које видео обухвата. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/video-caption?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
     "message": "Елементи „<video>“ не обухватају елемент „<track>“ са атрибутом „[kind=\"captions\"]“."
@@ -309,7 +309,7 @@
     "message": "Елементи „<video>“ обухватају елемент „<track>“ са атрибутом „[kind=\"captions\"]“"
   },
   "lighthouse-core/audits/accessibility/video-description.js | description": {
-    "message": "Аудио описи пружају релевантне информације за видео снимке које дијалог не може да пружи, попут израза лица и сцена. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse)."
+    "message": "Аудио описи пружају релевантне информације за видео снимке које дијалог не може да пружи, попут израза лица и сцена. [Сазнајте више](https://dequeuniversity.com/rules/axe/3.3/video-description?application=lighthouse)."
   },
   "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
     "message": "Елементи „<video>“ не обухватају елемент „<track>“ са атрибутом „[kind=\"description\"]“."
