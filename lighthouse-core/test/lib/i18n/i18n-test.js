@@ -136,7 +136,7 @@ describe('i18n', () => {
       expect(helloPercentStr).toBeDisplayString('Hello 43.08% World');
     });
 
-    it('throws an error when a value is not provided', () => {
+    it('throws an error when values are needed but not provided', () => {
       expect(_ => i18n.getFormatted(str_(UIStrings.helloBytesWorld), 'en-US'))
       .toThrow(`ICU Message contains a value reference ("in") that wasn't provided`);
     });
