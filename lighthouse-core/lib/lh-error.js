@@ -108,8 +108,8 @@ class LighthouseError extends Error {
    * A JSON.stringify replacer to serialize LHErrors and (as a fallback) Errors.
    * Returns a simplified version of the error object that can be reconstituted
    * as a copy of the original error at parse time.
-   * @param {unknown} err
-   * @return {SerializedBaseError | SerializedLighthouseError}
+   * @param {Error|LighthouseError} err
+   * @return {SerializedBaseError|SerializedLighthouseError}
    */
   static stringifyReplacer(err) {
     if (err instanceof LighthouseError) {
