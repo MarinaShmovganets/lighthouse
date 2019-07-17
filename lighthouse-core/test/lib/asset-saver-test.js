@@ -202,10 +202,8 @@ describe('asset-saver helper', () => {
 
       expect(roundTripArtifacts.ViewportDimensions).toBeInstanceOf(Error);
       expect(roundTripArtifacts.ViewportDimensions.code).toEqual('ECONNREFUSED');
-      // eslint-disable-next-line no-console
-      console.log(roundTripArtifacts.ViewportDimensions.stack);
       expect(roundTripArtifacts.ViewportDimensions.stack).toMatch(
-        /^Error: Connection refused by server.*lighthouse-core\/test\/lib\/asset-saver-test.js/s);
+        /^Error: Connection refused by server.*test[\\/]lib[\\/]asset-saver-test\.js/s);
     });
 
     it('round trips artifacts with an LHError member', async () => {
@@ -226,10 +224,8 @@ describe('asset-saver helper', () => {
       expect(roundTripArtifacts.ScriptElements).toBeInstanceOf(LHError);
       expect(roundTripArtifacts.ScriptElements.code).toEqual('PROTOCOL_TIMEOUT');
       expect(roundTripArtifacts.ScriptElements.protocolMethod).toEqual(protocolMethod);
-      // eslint-disable-next-line no-console
-      console.log(roundTripArtifacts.ScriptElements.stack);
       expect(roundTripArtifacts.ScriptElements.stack).toMatch(
-          /^LHError: PROTOCOL_TIMEOUT.*lighthouse-core\/test\/lib\/asset-saver-test.js/s);
+          /^LHError: PROTOCOL_TIMEOUT.*test[\\/]lib[\\/]asset-saver-test\.js/s);
       expect(roundTripArtifacts.ScriptElements.friendlyMessage)
         .toBeDisplayString(/\(Method: Page\.getFastness\)/);
     });
