@@ -135,7 +135,7 @@ function _preprocessMessageValues(icuMessage, values = {}) {
     .filter(el => el.type === 'argumentElement')
     .forEach(el => {
       if (el.id && (el.id in values) === false) {
-        throw new Error('ICU Message contains a value reference that wasn\'t provided');
+        throw new Error(`ICU Message contains a value reference ("${el.id}") that wasn't provided`);
       }
     });
 
