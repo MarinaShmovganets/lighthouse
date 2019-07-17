@@ -47,6 +47,7 @@ const UIStrings = {
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
+
 /**
  * @typedef LighthouseErrorDefinition
  * @property {string} code
