@@ -159,7 +159,8 @@ function convertMessageToPlaceholders(message, examples = {}) {
  */
 function _processPlaceholderMarkdownCode(icu) {
   // Check that number of backticks is even.
-  if ((icu.message.split('`').length - 1) % 2 !== 0) {
+  const match = icu.message.match(/`/g);
+  if (match && match.length % 2 !== 0) {
     throw Error(`Open backtick in message "${icu.message}"`);
   }
 

@@ -11,6 +11,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const LH_ROOT = path.join(__dirname, '../../../');
+
 /**
  * @typedef ICUMessageDefn
  * @property {string} message
@@ -116,18 +118,17 @@ function saveLocaleStrings(path, output) {
 /**
  * @param {string} dir
  * @param {string} output
- * @param {string} extension the file extension of the CTC files, '.ctc.json' is LH default, but '.json' when importing from Translators
  * @returns {Array<string>}
  */
-function collectAndBakeCtcStrings(dir, output, extension = '.ctc.json') {
+function collectAndBakeCtcStrings(dir, output) {
   const lhl = [];
   for (const name of fs.readdirSync(dir)) {
     const fullPath = path.join(dir, name);
-    const relativePath = fullPath;// path.relative(LH_ROOT, fullPath);
+    const relativePath = path.relative(LH_ROOT, fullPath);
     if (ignoredPathComponents.some(p => fullPath.includes(p))) continue;
 
-    if (name.endsWith(extension)) {
-      if (!process.env.CI) console.log('Correcting from', relativePath);
+    if (name.endsWith('.ctc.json')) {
+      if (!process.env.CI) console.log('Baking', relativePath);
       const preLocaleStrings = collectPreLocaleStrings(relativePath);
       const strings = bakePlaceholders(preLocaleStrings);
       saveLocaleStrings(output + path.basename(name).replace('.ctc', ''), strings);
