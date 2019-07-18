@@ -238,7 +238,13 @@ describe('SEO: Font size audit', () => {
     expect(auditResult.notApplicable).toBe(true);
   });
 
-  it('attributes inline styles to node', async () => {
+  it('attributes inline and attributes styles to node', async () => {
+    const style1 = {
+      type: 'Inline',
+    };
+    const style2 = {
+      type: 'Attributes',
+    };
     const parentNode = {
       attributes: ['id', 'my-parent'],
     };
@@ -247,19 +253,28 @@ describe('SEO: Font size audit', () => {
       MetaElements: makeMetaElements(validViewport),
       FontSize: {
         analyzedFailingNodesData: [
-          {textLength: 10, fontSize: 10, node: {nodeId: 1, parentNode, localName: 'p', attributes: ['class', 'my-p']}},
+          {textLength: 12, fontSize: 10, cssRule: style1,
+            node: {nodeId: 1, parentNode, localName: 'p', attributes: ['class', 'my-p']}},
+          {textLength: 11, fontSize: 10, cssRule: style2,
+            node: {nodeId: 2, parentNode, localName: 'font', attributes: ['size', '10px']}},
         ],
       },
       TestedAsMobileDevice: true,
     };
 
     const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
-    assert.equal(auditResult.details.items.length, 1);
+    assert.equal(auditResult.details.items.length, 2);
     assert.equal(auditResult.details.items[0].source, URL.finalUrl);
     assert.deepEqual(auditResult.details.items[0].selector, {
       type: 'node',
       selector: '#my-parent',
-      snippet: '<p class=\"my-p\">',
+      snippet: '<p class="my-p">',
+    });
+    assert.equal(auditResult.details.items[1].source, URL.finalUrl);
+    assert.deepEqual(auditResult.details.items[1].selector, {
+      type: 'node',
+      selector: '#my-parent',
+      snippet: '<font size="10px">',
     });
   });
 });
