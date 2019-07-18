@@ -129,7 +129,7 @@ function getFlags(manualArgv) {
         'precomputed-lantern-data-path': 'Path to the file where lantern simulation data should be read from, overwriting the lantern observed estimates for RTT and server latency.',
         'lantern-data-output-path': 'Path to the file where lantern simulation data should be written to, can be used in a future run with the `precomputed-lantern-data-path` flag.',
         'only-audits': 'Only run the specified audits',
-        'only-categories': 'Only run the specified categories',
+        'only-categories': 'Only run the specified categories. Available categories: accessibility, best-practices, performance, pwa, seo',
         'skip-audits': 'Run everything except these audits',
         'plugins': 'Run the specified plugins',
         'print-config': 'Print the normalized config for the given config and options, then exit.',
