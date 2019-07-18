@@ -124,8 +124,8 @@ describe('Parsing --chrome-flags', () => {
 
   it('handles flag values with spaces in them (#2817)', () => {
     assert.deepStrictEqual(
-      parseChromeFlags('--user-agent="iPhone UA Test"').chromeFlags,
-      ['--user-agent=iPhone UA Test']
+      parseChromeFlags('--user-agent="iPhone UA Test"'),
+      {chromeFlags: ['--user-agent=iPhone UA Test'], ignoreDefaultFlags: false}
     );
 
     assert.deepStrictEqual(
@@ -141,8 +141,8 @@ describe('Parsing --chrome-flags', () => {
     const remainingDefaultFlags = defaultFlags.slice(1);
 
     assert.deepStrictEqual(
-      parseChromeFlags(`${firstDefaultFlag}=false`).chromeFlags,
-      remainingDefaultFlags
+      parseChromeFlags(`${firstDefaultFlag}=false`),
+      {chromeFlags: remainingDefaultFlags, ignoreDefaultFlags: true}
     );
   });
 
@@ -152,16 +152,18 @@ describe('Parsing --chrome-flags', () => {
       .join(' ');
 
     assert.deepStrictEqual(
-      parseChromeFlags(excludeAllFlags).chromeFlags,
-      []
+      parseChromeFlags(excludeAllFlags),
+      {chromeFlags: [], ignoreDefaultFlags: true}
     );
   });
 
   it('returns all flags as provided', () => {
     assert.deepStrictEqual(
-      parseChromeFlags('--spaces="1 2 3 4" --debug=false --verbose --more-spaces="9 9 9"')
-        .chromeFlags,
-      ['--spaces=1 2 3 4', '--debug=false', '--verbose', '--more-spaces=9 9 9']
+      parseChromeFlags('--spaces="1 2 3 4" --debug=false --verbose --more-spaces="9 9 9"'),
+      {
+        chromeFlags: ['--spaces=1 2 3 4', '--debug=false', '--verbose', '--more-spaces=9 9 9'],
+        ignoreDefaultFlags: false,
+      }
     );
   });
 });
