@@ -135,7 +135,7 @@ describe('Parsing --chrome-flags', () => {
     );
   });
 
-  it('handles ignoring single default flag', () => {
+  it('handles ignoring a default flag', () => {
     const defaultFlags = Launcher.defaultFlags().slice();
     const firstDefaultFlag = defaultFlags[0];
     const remainingDefaultFlags = defaultFlags.slice(1);
@@ -143,6 +143,20 @@ describe('Parsing --chrome-flags', () => {
     assert.deepStrictEqual(
       parseChromeFlags(`${firstDefaultFlag}=false`),
       {chromeFlags: remainingDefaultFlags, ignoreDefaultFlags: true}
+    );
+  });
+
+  it('handles ignoring a default flag while passing additional flags', () => {
+    const defaultFlags = Launcher.defaultFlags().slice();
+    const firstDefaultFlag = defaultFlags[0];
+    const remainingDefaultFlags = defaultFlags.slice(1);
+
+    assert.deepStrictEqual(
+      parseChromeFlags(`${firstDefaultFlag}=false --spaces="1 2 3 4" --debug=false --verbose`),
+      {
+        chromeFlags: [...remainingDefaultFlags, '--spaces=1 2 3 4', '--debug=false', '--verbose'],
+        ignoreDefaultFlags: true,
+      }
     );
   });
 
