@@ -19,8 +19,8 @@ The collection and translation pipeline:
  +----------------------------|                 |     | lighthouse-core/lib/i18n/locales/*.json     |-<+
   +---------------------------+                 |     |                                             || |
                            |                    |     +----------------------------------------------| |
-                           |                    |      +---------------------------------------------+ |
-              $ yarn i18n  +--------------------+                                                      |
+  $ yarn                   |                    |      +---------------------------------------------+ |
+      i18n:collect-strings +--------------------+                                                      |
                            |                                                                           |
                            v                          ▐                       ▐    +---------------+   |
               +------------+------+                   ▐   Google TC Pipeline  ▐ +->|  *.ctc.json   |---+
@@ -36,7 +36,7 @@ To a typical developer, the pipeline looks like this:
 
 ```shell
 # collect UIStrings and bake the en-US & en-XL locales
-$ yarn i18n
+$ yarn i18n:collect-strings
 
 # Test to see that the new translations are valid and apply to all strings
 $ node lighthouse-core/scripts/build-report-for-autodeployment.js && open dist/xl-accented/index.html
@@ -50,7 +50,7 @@ Note: Why do `en-US` and `en-XL` get baked early?  We write all our strings in `
 
 ```shell
 # collect UIStrings (to make sure everything is up to date)
-$ yarn i18n
+$ yarn i18n:collect-strings
 
 # Extract the CTC format files to translation console
 $ sh import-source-from-github.sh
@@ -119,7 +119,7 @@ const UIStrings = {
 
 `{timeInMs, number, milliseconds}` is called _Complex ICU_ since the replacement is for numbers and other complex replacements that use the custom formatters in Lighthouse. The supported complex ICU formats are: `milliseconds`, `seconds`, `bytes`, `percent`, and `extendedPercent`.
 
-These complex ICU formats are automatically given @example values during `yarn i18n`.  Therefore, a normal description string can be used:
+These complex ICU formats are automatically given @example values during `yarn i18n:collect-strings`.  Therefore, a normal description string can be used:
 
 ```javascript
 const UIStrings = {

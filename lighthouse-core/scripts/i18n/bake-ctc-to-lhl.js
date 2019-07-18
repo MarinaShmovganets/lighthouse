@@ -70,10 +70,11 @@ function bakePlaceholders(messages) {
 
     if (placeholders) {
       for (const [placeholder, {content}] of Object.entries(placeholders)) {
-        if (!message.includes(`$${placeholder}$`)) {
+        const escapedPlaceholder = '$' + placeholder + '$';
+        if (!message.includes(escapedPlaceholder)) {
           throw Error(`Provided placeholder "${placeholder}" not found in message "${message}".`);
         }
-        message = message.replace(`$${placeholder}$`, content);
+        message = message.replace(escapedPlaceholder, content);
       }
     }
 
@@ -91,7 +92,7 @@ function bakePlaceholders(messages) {
 /**
  * @param {string} file
  */
-function collectCtcStrings(file) {
+function loadCtcStrings(file) {
   const rawdata = fs.readFileSync(file, 'utf8');
   const messages = JSON.parse(rawdata);
   return messages;
@@ -101,7 +102,7 @@ function collectCtcStrings(file) {
  * @param {string} path
  * @param {Record<string, ICUMessageDefn>} localeStrings
  */
-function saveLocaleStrings(path, localeStrings) {
+function saveLhlStrings(path, localeStrings) {
   fs.writeFileSync(path, JSON.stringify(localeStrings, null, 2) + '\n');
 }
 
@@ -118,10 +119,10 @@ function collectAndBakeCtcStrings(dir, outputDir) {
 
     if (filename.endsWith('.ctc.json')) {
       if (!process.env.CI) console.log('Baking', relativePath);
-      const ctcStrings = collectCtcStrings(relativePath);
+      const ctcStrings = loadCtcStrings(relativePath);
       const strings = bakePlaceholders(ctcStrings);
       const outputFile = outputDir + path.basename(filename).replace('.ctc', '');
-      saveLocaleStrings(outputFile, strings);
+      saveLhlStrings(outputFile, strings);
       lhl.push(path.basename(filename));
     }
   }
