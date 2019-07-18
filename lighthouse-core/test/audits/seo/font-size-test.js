@@ -265,13 +265,13 @@ describe('SEO: Font size audit', () => {
     const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
     assert.equal(auditResult.details.items.length, 2);
     assert.equal(auditResult.details.items[0].source, URL.finalUrl);
-    assert.deepEqual(auditResult.details.items[0].selector, {
+    expect(auditResult.details.items[0].selector).toMatchObject({
       type: 'node',
       selector: '#my-parent',
       snippet: '<p class="my-p">',
     });
     assert.equal(auditResult.details.items[1].source, URL.finalUrl);
-    assert.deepEqual(auditResult.details.items[1].selector, {
+    expect(auditResult.details.items[1].selector).toMatchObject({
       type: 'node',
       selector: '#my-parent',
       snippet: '<font size="10px">',
