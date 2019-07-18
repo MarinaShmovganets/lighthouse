@@ -241,6 +241,7 @@ declare global {
         failingTextLength: number;
         visitedTextLength: number;
         analyzedFailingTextLength: number;
+        /** Elements with a text node that failed size criteria. */
         analyzedFailingNodesData: Array<{
           fontSize: number;
           textLength: number;

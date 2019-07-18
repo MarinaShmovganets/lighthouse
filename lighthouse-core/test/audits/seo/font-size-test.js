@@ -237,4 +237,29 @@ describe('SEO: Font size audit', () => {
     expect(auditResult.score).toBe(1);
     expect(auditResult.notApplicable).toBe(true);
   });
+
+  it('attributes inline styles to node', async () => {
+    const parentNode = {
+      attributes: ['id', 'my-parent'],
+    };
+    const artifacts = {
+      URL,
+      MetaElements: makeMetaElements(validViewport),
+      FontSize: {
+        analyzedFailingNodesData: [
+          {textLength: 10, fontSize: 10, node: {nodeId: 1, parentNode, localName: 'p', attributes: ['class', 'my-p']}},
+        ],
+      },
+      TestedAsMobileDevice: true,
+    };
+
+    const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
+    assert.equal(auditResult.details.items.length, 1);
+    assert.equal(auditResult.details.items[0].source, URL.finalUrl);
+    assert.deepEqual(auditResult.details.items[0].selector, {
+      type: 'node',
+      selector: '#my-parent',
+      snippet: '<p class=\"my-p\">',
+    });
+  });
 });
