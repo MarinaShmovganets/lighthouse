@@ -87,7 +87,7 @@ function collectAllStringsInDir(dir, strings = {}) {
             const message = exportVars.UIStrings[key];
             const description = computeDescription(ast, property, lastPropertyEndIndex);
             const pathKey = relativePath
-              // Windows compat.
+              // Replace Windows path separators with unix path separators for Windows compat.
               .replace(/\\/g, '/');
             strings[`${pathKey} | ${key}`] = {message, description};
             lastPropertyEndIndex = property.range[1];
