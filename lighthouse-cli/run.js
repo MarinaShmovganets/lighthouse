@@ -26,7 +26,12 @@ const _RUNTIME_ERROR_CODE = 1;
 const _PROTOCOL_TIMEOUT_EXIT_CODE = 67;
 
 /**
- * exported for testing
+ * Parse Chrome Flags string using yargs into individual arguments, so they can be passed to
+ * chrome-launcher.
+ * The flags are scanned for any disabled default flags (specified as `${flag}=false`). If any
+ * default flags are disabled, we ignore all default flags then add back any default flags that
+ * were not disabled.
+ * This function is exported for testing.
  * @param {string} flags
  * @return {{chromeFlags: Array<string>, ignoreDefaultFlags: boolean}}
  */
