@@ -66,6 +66,6 @@ describe('Baking Placeholders', () => {
       },
     };
     expect(() => bakery.bakePlaceholders(strings))
-      .toThrow(/Message "World" has extra placeholder "MARKDOWN_SNIPPET_0"/);
+      .toThrow(/Provided placeholder "MARKDOWN_SNIPPET_0" not found in message "World"./);
   });
 });

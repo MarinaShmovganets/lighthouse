@@ -65,15 +65,17 @@ function bakePlaceholders(messages) {
   const bakedMessages = {};
 
   for (const [key, defn] of Object.entries(messages)) {
+
     let message = defn.message;
     const placeholders = defn.placeholders;
 
-    if (!placeholders) continue;
-    for (const [placeholder, {content}] of Object.entries(placeholders)) {
-      if (!message.includes(`$${placeholder}$`)) {
-        throw Error(`Provided placeholder "${placeholder}" not found in message "${message}".`);
+    if (placeholders) {
+      for (const [placeholder, {content}] of Object.entries(placeholders)) {
+        if (!message.includes(`$${placeholder}$`)) {
+          throw Error(`Provided placeholder "${placeholder}" not found in message "${message}".`);
+        }
+        message = message.replace(`$${placeholder}$`, content);
       }
-      message = message.replace(`$${placeholder}$`, content);
     }
 
     // Sanity check that all placeholders are gone
@@ -81,6 +83,7 @@ function bakePlaceholders(messages) {
 
     bakedMessages[key] = {message};
   }
+
   return bakedMessages;
 }
 
