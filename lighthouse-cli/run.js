@@ -61,10 +61,13 @@ function parseChromeFlags(flags = '') {
 
   if (ignoreDefaultFlags) {
     chromeFlags = chromeFlags
-      .filter(flag => (
-        !flag.endsWith('=false') ||
-        !defaultFlags.includes(flag.substring(0, flag.length - 6))
-      ))
+      .filter(flag => {
+        // The flag wasn't an ignored default, let it through.
+        if (!flag.endsWith('=false')) return true;
+        // Keep the flag if it's not a negated default.
+        const flagWithoutNegation = flag.replace(/=false$/, '');
+        return !defaultFlags.includes(flagWithoutNegation);
+      })
       .concat(includedDefaultFlags);
   }
 
