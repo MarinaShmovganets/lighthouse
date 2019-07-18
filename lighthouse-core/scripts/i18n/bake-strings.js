@@ -65,7 +65,6 @@ function bakePlaceholders(messages) {
   const bakedMessages = {};
 
   for (const [key, defn] of Object.entries(messages)) {
-
     let message = defn.message;
     const placeholders = defn.placeholders;
 
