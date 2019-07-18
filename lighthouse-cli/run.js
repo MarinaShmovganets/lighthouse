@@ -28,13 +28,13 @@ const _PROTOCOL_TIMEOUT_EXIT_CODE = 67;
 /**
  * exported for testing
  * @param {string} flags
- * @return {Array<string>}
+ * @return {{chromeFlags: Array<string>, ignoreDefaultFlags: boolean}}
  */
 function parseChromeFlags(flags = '') {
   const parsed = yargsParser(
       flags.trim(), {configuration: {'camel-case-expansion': false, 'boolean-negation': false}});
 
-  return Object
+  let chromeFlags = Object
       .keys(parsed)
       // Remove unnecessary _ item provided by yargs,
       .filter(key => key !== '_')
@@ -46,6 +46,27 @@ function parseChromeFlags(flags = '') {
         // see https://github.com/GoogleChrome/lighthouse/issues/3744
         return `--${key}=${parsed[key]}`;
       });
+
+  const defaultFlags = ChromeLauncher.Launcher.defaultFlags();
+  const excludedDefaultFlags = defaultFlags
+      .filter(flag => chromeFlags.includes(`${flag}=false`));
+  const includedDefaultFlags = defaultFlags
+      .filter(flag => !excludedDefaultFlags.includes(flag));
+  const ignoreDefaultFlags = includedDefaultFlags.length !== defaultFlags.length;
+
+  if (ignoreDefaultFlags) {
+    chromeFlags = chromeFlags
+      .filter(flag => (
+        !flag.endsWith('=false') ||
+        !defaultFlags.includes(flag.substring(0, flag.length - 6))
+      ))
+      .concat(includedDefaultFlags);
+  }
+
+  return {
+    chromeFlags,
+    ignoreDefaultFlags,
+  };
 }
 
 /**
@@ -55,10 +76,13 @@ function parseChromeFlags(flags = '') {
  * @return {Promise<ChromeLauncher.LaunchedChrome>}
  */
 function getDebuggableChrome(flags) {
+  const {chromeFlags, ignoreDefaultFlags} = parseChromeFlags(flags.chromeFlags);
+
   return ChromeLauncher.launch({
     port: flags.port,
-    chromeFlags: parseChromeFlags(flags.chromeFlags),
+    chromeFlags,
     logLevel: flags.logLevel,
+    ignoreDefaultFlags,
   });
 }
 

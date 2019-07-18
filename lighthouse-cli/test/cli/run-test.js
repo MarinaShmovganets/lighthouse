@@ -9,7 +9,7 @@
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
-
+const defaultFlags = require('chrome-launcher').Launcher.defaultFlags;
 const run = require('../../run.js');
 const parseChromeFlags = require('../../run.js').parseChromeFlags;
 const fastConfig = {
@@ -107,36 +107,59 @@ describe('saveResults', () => {
 
 describe('Parsing --chrome-flags', () => {
   it('returns boolean flags that are true as a bare flag', () => {
-    assert.deepStrictEqual(parseChromeFlags('--debug'), ['--debug']);
+    assert.deepStrictEqual(parseChromeFlags('--debug').chromeFlags, ['--debug']);
   });
 
   it('returns boolean flags that are false with value', () => {
-    assert.deepStrictEqual(parseChromeFlags('--debug=false'), ['--debug=false']);
+    assert.deepStrictEqual(parseChromeFlags('--debug=false').chromeFlags, ['--debug=false']);
   });
 
   it('keeps --no-flags untouched, #3003', () => {
-    assert.deepStrictEqual(parseChromeFlags('--no-sandbox'), ['--no-sandbox']);
+    assert.deepStrictEqual(parseChromeFlags('--no-sandbox').chromeFlags, ['--no-sandbox']);
   });
 
   it('handles numeric values', () => {
-    assert.deepStrictEqual(parseChromeFlags('--log-level=0'), ['--log-level=0']);
+    assert.deepStrictEqual(parseChromeFlags('--log-level=0').chromeFlags, ['--log-level=0']);
   });
 
   it('handles flag values with spaces in them (#2817)', () => {
     assert.deepStrictEqual(
-      parseChromeFlags('--user-agent="iPhone UA Test"'),
+      parseChromeFlags('--user-agent="iPhone UA Test"').chromeFlags,
       ['--user-agent=iPhone UA Test']
     );
 
     assert.deepStrictEqual(
-      parseChromeFlags('--host-resolver-rules="MAP www.example.org:443 127.0.0.1:8443"'),
+      parseChromeFlags('--host-resolver-rules="MAP www.example.org:443 127.0.0.1:8443"')
+        .chromeFlags,
       ['--host-resolver-rules=MAP www.example.org:443 127.0.0.1:8443']
+    );
+  });
+
+  it('handles ignoring single default flag', () => {
+    const firstDefaultFlag = defaultFlags()[0];
+    const remainingDefaultFlags = defaultFlags().slice(1);
+
+    assert.deepStrictEqual(
+      parseChromeFlags(`${firstDefaultFlag}=false`).chromeFlags,
+      remainingDefaultFlags
+    );
+  });
+
+  it('handles ignoring all default flags', () => {
+    const excludeAllFlags = defaultFlags()
+      .map(flag => `${flag}=false`)
+      .join(' ');
+
+    assert.deepStrictEqual(
+      parseChromeFlags(excludeAllFlags).chromeFlags,
+      []
     );
   });
 
   it('returns all flags as provided', () => {
     assert.deepStrictEqual(
-      parseChromeFlags('--spaces="1 2 3 4" --debug=false --verbose --more-spaces="9 9 9"'),
+      parseChromeFlags('--spaces="1 2 3 4" --debug=false --verbose --more-spaces="9 9 9"')
+        .chromeFlags,
       ['--spaces=1 2 3 4', '--debug=false', '--verbose', '--more-spaces=9 9 9']
     );
   });
