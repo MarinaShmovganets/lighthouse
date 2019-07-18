@@ -9,6 +9,7 @@ const lighthouse = require('../../lighthouse-core/index.js');
 
 const LHError = require('../../lighthouse-core/lib/lh-error.js');
 const preprocessor = require('../../lighthouse-core/lib/proto-preprocessor.js');
+const assetSaver = require('../../lighthouse-core/lib/asset-saver.js')
 
 /** @type {Record<'mobile'|'desktop', LH.Config.Json>} */
 const LR_PRESETS = {
@@ -64,7 +65,7 @@ async function runLighthouseInLR(connection, url, flags, lrOpts) {
     // pre process the LHR for proto
     const preprocessedLhr = preprocessor.processForProto(runnerResult.lhr);
     // Properly serialize artifact errors for logging.
-    return JSON.stringify(preprocessedLhr, logAssets ? LHError.parseReviver : undefined);
+    return JSON.stringify(preprocessedLhr, logAssets ? assetSaver.stringifyReplacer : undefined);
   } catch (err) {
     // If an error ruined the entire lighthouse run, attempt to return a meaningful error.
     let runtimeError;
