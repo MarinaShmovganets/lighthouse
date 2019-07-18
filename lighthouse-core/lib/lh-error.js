@@ -108,6 +108,7 @@ class LighthouseError extends Error {
    * A JSON.stringify replacer to serialize LHErrors and (as a fallback) Errors.
    * Returns a simplified version of the error object that can be reconstituted
    * as a copy of the original error at parse time.
+   * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#The_replacer_parameter
    * @param {Error|LighthouseError} err
    * @return {SerializedBaseError|SerializedLighthouseError}
    */
@@ -125,10 +126,10 @@ class LighthouseError extends Error {
       };
     }
 
-    // We still have some errors that haven't moved to be LHErrors, so serialize them as well.
+    // Unexpected errors won't be LHErrors, but we want them serialized as well.
     if (err instanceof Error) {
       const {message, stack} = err;
-      // @ts-ignore - code can be helpful for e.g. node errors, so attempt to preserve it.
+      // @ts-ignore - code can be helpful for e.g. node errors, so preserve it if it's present.
       const code = err.code;
       return {
         sentinel: ERROR_SENTINEL,
@@ -145,6 +146,7 @@ class LighthouseError extends Error {
    * A JSON.parse reviver. If any value passed in is a serialized Error or
    * LHError, the error is recreated as the original object. Otherwise, the
    * value is passed through unchanged.
+   * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#Using_the_reviver_parameter
    * @param {string} key
    * @param {any} possibleError
    * @return {any}
@@ -152,6 +154,7 @@ class LighthouseError extends Error {
   static parseReviver(key, possibleError) {
     if (typeof possibleError === 'object' && possibleError !== null) {
       if (possibleError.sentinel === LHERROR_SENTINEL) {
+        // Include sentinel in destructuring so it doesn't end up in `properties`.
         // eslint-disable-next-line no-unused-vars
         const {sentinel, code, stack, ...properties} = /** @type {SerializedLighthouseError} */ (possibleError);
         const errorDefinition = LighthouseError.errors[/** @type {keyof typeof ERRORS} */ (code)];
