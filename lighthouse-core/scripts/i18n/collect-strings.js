@@ -51,16 +51,15 @@ function collectAllStringsInDir(dir) {
   /** @type {Record<string, ICUMessageDefn>} */
   const strings = {};
 
-  const files = glob.sync('**/*.js', {
-    cwd: dir,
+  const files = glob.sync(path.posix.relative(LH_ROOT, dir) + '/**/*.js', {
+    cwd: LH_ROOT,
     // TODO: why doesn't this work ...
     // ignore: ignoredPathComponents,
     // ignore: ['scripts'],
   });
-  for (const relativePath of files) {
-    const absolutePath = path.join(dir, relativePath);
-    const relativePathToRoot = path.relative(LH_ROOT, absolutePath);
-    if (ignoredPathComponents.some(p => absolutePath.includes(p))) continue;
+  for (const relativePathToRoot of files) {
+    const absolutePath = path.join(LH_ROOT, relativePathToRoot);
+    if (ignoredPathComponents.some(p => relativePathToRoot.includes(p))) continue;
     if (!process.env.CI) console.log('Collecting from', relativePathToRoot);
 
     const content = fs.readFileSync(absolutePath, 'utf8');
