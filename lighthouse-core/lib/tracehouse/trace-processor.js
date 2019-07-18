@@ -21,7 +21,7 @@
 
 const log = require('lighthouse-logger');
 
-const ACCEPTABLE_NAVIGATION_URL_REGEX = /^(chrome|https?):/;
+const ACCEPTABLE_NAVIGATION_URL_REGEX = /^(chrome|chrome-extension|https?):/;
 
 // The ideal input response latency, the time between the input task and the
 // first frame of the response.

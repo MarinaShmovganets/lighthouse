@@ -17,6 +17,7 @@ const preactTrace = require('../../fixtures/traces/preactjs.com_ts_of_undefined.
 const noFMPtrace = require('../../fixtures/traces/no_fmp_event.json');
 const noFCPtrace = require('../../fixtures/traces/airhorner_no_fcp.json');
 const noNavStartTrace = require('../../fixtures/traces/no_navstart_event.json');
+const chromeExtensionTrace = require('../../fixtures/traces/chrome_extension_trace.json');
 const backgroundTabTrace = require('../../fixtures/traces/backgrounded-tab-missing-paints.json');
 
 /* eslint-env jest */
@@ -393,6 +394,15 @@ describe('TraceProcessor', () => {
       const trace = TraceProcessor.computeTraceOfTab(tracingStartedInBrowserTrace);
       assert.equal(trace.mainFrameIds.frameId, 'B192D1F3355A6F961EC8F0B01623C1FB');
       assert.equal(trace.navigationStartEvt.ts, 2193564790059);
+    });
+
+    it('handles traces for chrome-extension:// URLs ', () => {
+      const trace = TraceProcessor.computeTraceOfTab(chromeExtensionTrace);
+      assert.equal(trace.mainFrameIds.frameId, 'BE44D5A9A93735519804E869CBD74D0C');
+      assert.equal(trace.navigationStartEvt.ts, 131545829814);
+      assert.equal(trace.firstContentfulPaintEvt.ts, 131545890764);
+      assert.equal(trace.firstMeaningfulPaintEvt.ts, 131545890764);
+      assert.ok(!trace.fmpFellBack);
     });
 
     it('handles no TracingStarted errors in m74+', () => {
