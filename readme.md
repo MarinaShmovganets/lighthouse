@@ -365,7 +365,7 @@ If you're interested in running your own custom audits, check out our
 
 ### How do I contribute?
 
-We'd love to help writing audits, fixing bugs, and making the tool more useful!
+We'd love help writing audits, fixing bugs, and making the tool more useful!
 See [Contributing](./CONTRIBUTING.md) to get started.
 
 ---
