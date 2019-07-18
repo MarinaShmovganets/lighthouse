@@ -9,7 +9,7 @@
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
-const defaultFlags = require('chrome-launcher').Launcher.defaultFlags;
+const Launcher = require('chrome-launcher').Launcher;
 const run = require('../../run.js');
 const parseChromeFlags = require('../../run.js').parseChromeFlags;
 const fastConfig = {
@@ -136,8 +136,9 @@ describe('Parsing --chrome-flags', () => {
   });
 
   it('handles ignoring single default flag', () => {
-    const firstDefaultFlag = defaultFlags()[0];
-    const remainingDefaultFlags = defaultFlags().slice(1);
+    const defaultFlags = Launcher.defaultFlags().slice();
+    const firstDefaultFlag = defaultFlags[0];
+    const remainingDefaultFlags = defaultFlags.slice(1);
 
     assert.deepStrictEqual(
       parseChromeFlags(`${firstDefaultFlag}=false`).chromeFlags,
@@ -146,7 +147,7 @@ describe('Parsing --chrome-flags', () => {
   });
 
   it('handles ignoring all default flags', () => {
-    const excludeAllFlags = defaultFlags()
+    const excludeAllFlags = Launcher.defaultFlags()
       .map(flag => `${flag}=false`)
       .join(' ');
 
