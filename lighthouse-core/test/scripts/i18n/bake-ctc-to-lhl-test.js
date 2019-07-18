@@ -7,7 +7,7 @@
 
 /* eslint-env jest */
 
-const bakery = require('../../../scripts/i18n/bake-strings.js');
+const bakery = require('../../../scripts/i18n/bake-ctc-to-lhl.js');
 
 describe('Baking Placeholders', () => {
   it('passthroughs a basic message unchanged', () => {
@@ -47,11 +47,11 @@ describe('Baking Placeholders', () => {
   it('throws when a placeholder cannot be found', () => {
     const strings = {
       hello: {
-        message: '$MARKDOWN_SNIPPET_0$',
+        message: 'Hello $MARKDOWN_SNIPPET_0$ $MARKDOWN_SNIPPET_1$',
       },
     };
-    expect(() => bakery.bakePlaceholders(strings))
-      .toThrow(/Message "\$MARKDOWN_SNIPPET_0\$" is missing placeholder/);
+    // eslint-disable-next-line max-len
+    expect(() => bakery.bakePlaceholders(strings)).toThrow(/Message "Hello \$MARKDOWN_SNIPPET_0\$ \$MARKDOWN_SNIPPET_1\$" is missing placeholder\(s\): \$MARKDOWN_SNIPPET_0\$,\$MARKDOWN_SNIPPET_1\$/);
   });
 
   it('throws when a placeholder is not in string', () => {

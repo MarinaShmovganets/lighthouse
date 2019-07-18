@@ -78,7 +78,9 @@ function bakePlaceholders(messages) {
     }
 
     // Sanity check that all placeholders are gone
-    if (message.match(/\$\w+\$/)) throw Error(`Message "${message}" is missing placeholder`);
+    if (message.match(/\$\w+\$/)) {
+      throw Error(`Message "${message}" is missing placeholder(s): ${message.match(/\$\w+\$/g)}`);
+    }
 
     bakedMessages[key] = {message};
   }
@@ -89,7 +91,7 @@ function bakePlaceholders(messages) {
 /**
  * @param {string} file
  */
-function collectPreLocaleStrings(file) {
+function collectCtcStrings(file) {
   const rawdata = fs.readFileSync(file, 'utf8');
   const messages = JSON.parse(rawdata);
   return messages;
@@ -116,9 +118,10 @@ function collectAndBakeCtcStrings(dir, outputDir) {
 
     if (filename.endsWith('.ctc.json')) {
       if (!process.env.CI) console.log('Baking', relativePath);
-      const preLocaleStrings = collectPreLocaleStrings(relativePath);
-      const strings = bakePlaceholders(preLocaleStrings);
-      saveLocaleStrings(outputDir + path.basename(filename).replace('.ctc', ''), strings);
+      const ctcStrings = collectCtcStrings(relativePath);
+      const strings = bakePlaceholders(ctcStrings);
+      const outputFile = outputDir + path.basename(filename).replace('.ctc', '');
+      saveLocaleStrings(outputFile, strings);
       lhl.push(path.basename(filename));
     }
   }

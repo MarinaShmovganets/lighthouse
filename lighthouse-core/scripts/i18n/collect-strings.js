@@ -11,24 +11,12 @@
 const fs = require('fs');
 const path = require('path');
 const esprima = require('esprima');
-const bakery = require('./bake-strings.js');
+const bakery = require('./bake-ctc-to-lhl.js');
 
 const LH_ROOT = path.join(__dirname, '../../../');
 const UISTRINGS_REGEX = /UIStrings = (.|\s)*?\};\n/im;
 
-/**
- * @typedef ICUMessageDefn
- * @property {string} message
- * @property {string} [description]
- * @property {string} [meaning]
- * @property {Record<string, ICUPlaceholderDefn>} [placeholders]
- */
-
-/**
- * @typedef ICUPlaceholderDefn
- * @property {string} content
- * @property {string} [example]
- */
+/** @typedef {import('./bake-ctc-to-lhl.js').ICUMessageDefn} ICUMessageDefn */
 
 const ignoredPathComponents = [
   '/.git',
