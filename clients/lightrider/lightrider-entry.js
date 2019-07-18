@@ -62,7 +62,9 @@ async function runLighthouseInLR(connection, url, flags, lrOpts) {
     }
 
     // pre process the LHR for proto
-    return JSON.stringify(preprocessor.processForProto(runnerResult.lhr));
+    const preprocessedLhr = preprocessor.processForProto(runnerResult.lhr);
+    // Properly serialize artifact errors for logging.
+    return JSON.stringify(preprocessedLhr, logAssets ? LHError.parseReviver : undefined);
   } catch (err) {
     // If an error ruined the entire lighthouse run, attempt to return a meaningful error.
     let runtimeError;
