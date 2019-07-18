@@ -22,10 +22,10 @@ const UISTRINGS_REGEX = /UIStrings = (.|\s)*?\};\n/im;
  */
 
 const ignoredPathComponents = [
-  '/.git',
-  '/scripts',
-  '/node_modules',
-  '/test/',
+  `${path.sep}.git`,
+  `${path.sep}scripts`,
+  `${path.sep}node_modules`,
+  `${path.sep}test${path.sep}`,
   '-test.js',
   '-renderer.js',
 ];
@@ -86,7 +86,10 @@ function collectAllStringsInDir(dir, strings = {}) {
             const key = property.key.name;
             const message = exportVars.UIStrings[key];
             const description = computeDescription(ast, property, lastPropertyEndIndex);
-            strings[`${relativePath} | ${key}`] = {message, description};
+            const pathKey = relativePath
+              // Windows compat.
+              .replace(/\\/g, '/');
+            strings[`${pathKey} | ${key}`] = {message, description};
             lastPropertyEndIndex = property.range[1];
           }
         }
