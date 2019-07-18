@@ -23,12 +23,12 @@ const UISTRINGS_REGEX = /UIStrings = (.|\s)*?\};\n/im;
  */
 
 const ignoredPathComponents = [
-  '/.git',
-  '/scripts',
-  '/node_modules',
-  '/test/',
-  '-test.js',
-  '-renderer.js',
+  '**/.git/**',
+  '**/scripts/**',
+  '**/node_modules/**',
+  '**/test/**',
+  '**/*-test.js',
+  '**/*-renderer.js',
 ];
 
 // @ts-ignore - @types/esprima lacks all of these
@@ -53,13 +53,10 @@ function collectAllStringsInDir(dir) {
 
   const files = glob.sync(path.posix.relative(LH_ROOT, dir) + '/**/*.js', {
     cwd: LH_ROOT,
-    // TODO: why doesn't this work ...
-    // ignore: ignoredPathComponents,
-    // ignore: ['scripts'],
+    ignore: ignoredPathComponents,
   });
   for (const relativePathToRoot of files) {
     const absolutePath = path.join(LH_ROOT, relativePathToRoot);
-    if (ignoredPathComponents.some(p => relativePathToRoot.includes(p))) continue;
     if (!process.env.CI) console.log('Collecting from', relativePathToRoot);
 
     const content = fs.readFileSync(absolutePath, 'utf8');
