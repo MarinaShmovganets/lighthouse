@@ -6,7 +6,7 @@
  */
 'use strict';
 
-/* eslint-disable no-console, max-len */
+/* eslint-disable no-console */
 
 const fs = require('fs');
 const path = require('path');
@@ -26,15 +26,6 @@ const LH_ROOT = path.join(__dirname, '../../../');
  * @property {string} content
  * @property {string} [example]
  */
-
-const ignoredPathComponents = [
-  '/.git',
-  '/scripts',
-  '/node_modules',
-  '/test/',
-  '-test.js',
-  '-renderer.js',
-];
 
 /**
  * Take a series of CTC format ICU messages and converts them to LHL format by
@@ -67,23 +58,20 @@ const ignoredPathComponents = [
  * value in the placeholders object, or vice versa.
  *
  * @param {Record<string, ICUMessageDefn>} messages
- * @returns {Record<string, ICUMessageDefn>}
+ * @returns {Record<string, {message: string}>}
  */
 function bakePlaceholders(messages) {
-  for (const [_, defn] of Object.entries(messages)) {
-    // Don't need descriptions or meanings anymore.
-    delete defn['description'];
-    delete defn['meaning'];
+  /** @type {Record<string, ICUMessageDefn>} */
+  const bakedMessages = {};
 
-    let message = defn['message'];
-    const placeholders = defn['placeholders'];
+  for (const [key, defn] of Object.entries(messages)) {
+    let message = defn.message;
+    const placeholders = defn.placeholders;
 
-    for (const placeholder in placeholders) {
-      if (!Object.prototype.hasOwnProperty.call(placeholders, placeholder)) continue;
-
-      const content = placeholders[placeholder]['content'];
+    if (!placeholders) continue;
+    for (const [placeholder, {content}] of Object.entries(placeholders)) {
       if (!message.includes(`$${placeholder}$`)) {
-        throw Error(`Message "${message}" has extra placeholder "${placeholder}"`);
+        throw Error(`Provided placeholder "${placeholder}" not found in message "${message}".`);
       }
       message = message.replace(`$${placeholder}$`, content);
     }
@@ -91,15 +79,13 @@ function bakePlaceholders(messages) {
     // Sanity check that all placeholders are gone
     if (message.match(/\$\w+\$/)) throw Error(`Message "${message}" is missing placeholder`);
 
-    defn['message'] = message;
-
-    delete defn['placeholders'];
+    bakedMessages[key] = {message};
   }
-  return messages;
+  return bakedMessages;
 }
 
 /**
- * @param {*} file
+ * @param {string} file
  */
 function collectPreLocaleStrings(file) {
   const rawdata = fs.readFileSync(file, 'utf8');
@@ -108,31 +94,30 @@ function collectPreLocaleStrings(file) {
 }
 
 /**
- * @param {*} path
- * @param {*} output
+ * @param {string} path
+ * @param {Record<string, ICUMessageDefn>} localeStrings
  */
-function saveLocaleStrings(path, output) {
-  fs.writeFileSync(path, JSON.stringify(output, null, 2) + '\n');
+function saveLocaleStrings(path, localeStrings) {
+  fs.writeFileSync(path, JSON.stringify(localeStrings, null, 2) + '\n');
 }
 
 /**
  * @param {string} dir
- * @param {string} output
+ * @param {string} outputDir
  * @returns {Array<string>}
  */
-function collectAndBakeCtcStrings(dir, output) {
+function collectAndBakeCtcStrings(dir, outputDir) {
   const lhl = [];
-  for (const name of fs.readdirSync(dir)) {
-    const fullPath = path.join(dir, name);
+  for (const filename of fs.readdirSync(dir)) {
+    const fullPath = path.join(dir, filename);
     const relativePath = path.relative(LH_ROOT, fullPath);
-    if (ignoredPathComponents.some(p => fullPath.includes(p))) continue;
 
-    if (name.endsWith('.ctc.json')) {
+    if (filename.endsWith('.ctc.json')) {
       if (!process.env.CI) console.log('Baking', relativePath);
       const preLocaleStrings = collectPreLocaleStrings(relativePath);
       const strings = bakePlaceholders(preLocaleStrings);
-      saveLocaleStrings(output + path.basename(name).replace('.ctc', ''), strings);
-      lhl.push(path.basename(name));
+      saveLocaleStrings(outputDir + path.basename(filename).replace('.ctc', ''), strings);
+      lhl.push(path.basename(filename));
     }
   }
   return lhl;
