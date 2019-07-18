@@ -9,6 +9,7 @@
 /* eslint-disable no-console, max-len */
 
 const fs = require('fs');
+const glob = require('glob');
 const path = require('path');
 const esprima = require('esprima');
 
@@ -22,10 +23,10 @@ const UISTRINGS_REGEX = /UIStrings = (.|\s)*?\};\n/im;
  */
 
 const ignoredPathComponents = [
-  `${path.sep}.git`,
-  `${path.sep}scripts`,
-  `${path.sep}node_modules`,
-  `${path.sep}test${path.sep}`,
+  '/.git',
+  '/scripts',
+  '/node_modules',
+  '/test/',
   '-test.js',
   '-renderer.js',
 ];
@@ -44,55 +45,59 @@ function computeDescription(ast, property, startRange) {
 
 /**
  * @param {string} dir
- * @param {Record<string, ICUMessageDefn>} strings
+ * @return {Record<string, ICUMessageDefn>}
  */
-function collectAllStringsInDir(dir, strings = {}) {
-  for (const name of fs.readdirSync(dir)) {
-    const fullPath = path.join(dir, name);
-    const relativePath = path.relative(LH_ROOT, fullPath);
-    if (ignoredPathComponents.some(p => fullPath.includes(p))) continue;
+function collectAllStringsInDir(dir) {
+  /** @type {Record<string, ICUMessageDefn>} */
+  const strings = {};
 
-    if (fs.statSync(fullPath).isDirectory()) {
-      collectAllStringsInDir(fullPath, strings);
-    } else {
-      if (name.endsWith('.js')) {
-        if (!process.env.CI) console.log('Collecting from', relativePath);
-        const content = fs.readFileSync(fullPath, 'utf8');
-        const exportVars = require(fullPath);
-        const regexMatches = !!UISTRINGS_REGEX.test(content);
-        const exportsUIStrings = !!exportVars.UIStrings;
-        if (!regexMatches && !exportsUIStrings) continue;
+  const files = glob.sync('**/*.js', {
+    cwd: dir,
+    // TODO: why doesn't this work ...
+    // ignore: ignoredPathComponents,
+    // ignore: ['scripts'],
+  });
+  for (const relativePath of files) {
+    const absolutePath = path.join(dir, relativePath);
+    const relativePathToRoot = path.relative(LH_ROOT, absolutePath);
+    if (ignoredPathComponents.some(p => absolutePath.includes(p))) continue;
+    if (!process.env.CI) console.log('Collecting from', relativePathToRoot);
 
-        if (regexMatches && !exportsUIStrings) {
-          throw new Error('UIStrings defined but not exported');
-        }
+    const content = fs.readFileSync(absolutePath, 'utf8');
+    const exportVars = require(absolutePath);
+    const regexMatches = !!UISTRINGS_REGEX.test(content);
+    const exportsUIStrings = !!exportVars.UIStrings;
+    if (!regexMatches && !exportsUIStrings) continue;
 
-        if (exportsUIStrings && !regexMatches) {
-          throw new Error('UIStrings exported but no definition found');
-        }
+    if (regexMatches && !exportsUIStrings) {
+      throw new Error('UIStrings defined but not exported');
+    }
 
-        // @ts-ignore regex just matched
-        const justUIStrings = 'const ' + content.match(UISTRINGS_REGEX)[0];
-        // just parse the UIStrings substring to avoid ES version issues, save time, etc
-        // @ts-ignore - esprima's type definition is supremely lacking
-        const ast = esprima.parse(justUIStrings, {comment: true, range: true});
+    if (exportsUIStrings && !regexMatches) {
+      throw new Error('UIStrings exported but no definition found');
+    }
 
-        for (const stmt of ast.body) {
-          if (stmt.type !== 'VariableDeclaration') continue;
-          if (stmt.declarations[0].id.name !== 'UIStrings') continue;
+    // @ts-ignore regex just matched
+    const justUIStrings = 'const ' + content.match(UISTRINGS_REGEX)[0];
+    // just parse the UIStrings substring to avoid ES version issues, save time, etc
+    // @ts-ignore - esprima's type definition is supremely lacking
+    const ast = esprima.parse(justUIStrings, {comment: true, range: true});
 
-          let lastPropertyEndIndex = 0;
-          for (const property of stmt.declarations[0].init.properties) {
-            const key = property.key.name;
-            const message = exportVars.UIStrings[key];
-            const description = computeDescription(ast, property, lastPropertyEndIndex);
-            const pathKey = relativePath
-              // Replace Windows path separators with unix path separators for Windows compat.
-              .replace(/\\/g, '/');
-            strings[`${pathKey} | ${key}`] = {message, description};
-            lastPropertyEndIndex = property.range[1];
-          }
-        }
+    for (const stmt of ast.body) {
+      if (stmt.type !== 'VariableDeclaration') continue;
+      if (stmt.declarations[0].id.name !== 'UIStrings') continue;
+
+      let lastPropertyEndIndex = 0;
+      for (const property of stmt.declarations[0].init.properties) {
+        const key = property.key.name;
+        const message = exportVars.UIStrings[key];
+        const description = computeDescription(ast, property, lastPropertyEndIndex);
+        const pathKey = relativePathToRoot
+          // TODO: can this be removed? test in windows
+          // Replace Windows path separators with unix path separators for Windows compat.
+          .replace(/\\/g, '/');
+        strings[`${pathKey} | ${key}`] = {message, description};
+        lastPropertyEndIndex = property.range[1];
       }
     }
   }
@@ -102,6 +107,7 @@ function collectAllStringsInDir(dir, strings = {}) {
 
 /**
  * @param {Record<string, ICUMessageDefn>} strings
+ * @return {Record<string, ICUMessageDefn>}
  */
 function createPsuedoLocaleStrings(strings) {
   /** @type {Record<string, ICUMessageDefn>} */
@@ -155,13 +161,18 @@ function writeStringsToLocaleFormat(locale, strings) {
   fs.writeFileSync(fullPath, JSON.stringify(output, null, 2) + '\n');
 }
 
-const strings = collectAllStringsInDir(path.join(LH_ROOT, 'lighthouse-core'));
-const psuedoLocalizedStrings = createPsuedoLocaleStrings(strings);
+const coreStrings = collectAllStringsInDir(path.join(LH_ROOT, 'lighthouse-core'));
 console.log('Collected from LH core!');
 
-collectAllStringsInDir(path.join(LH_ROOT, 'stack-packs/packs'), strings);
+const stackPackStrings = collectAllStringsInDir(path.join(LH_ROOT, 'stack-packs/packs'));
 console.log('Collected from Stack Packs!');
 
+const strings = {
+  ...coreStrings,
+  ...stackPackStrings,
+};
+
+const psuedoLocalizedStrings = createPsuedoLocaleStrings(strings);
 writeStringsToLocaleFormat('en-US', strings);
 writeStringsToLocaleFormat('locales/en-XL', psuedoLocalizedStrings);
 console.log('Written to disk!');
