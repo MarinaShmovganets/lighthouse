@@ -67,8 +67,9 @@ function parseChromeFlags(flags = '') {
         // Keep the flag if it's not a negated default.
         const flagWithoutNegation = flag.replace(/=false$/, '');
         return !defaultFlags.includes(flagWithoutNegation);
-      })
-      .concat(includedDefaultFlags);
+      });
+    // Add non-disabled defaults first to prevent them from being overridden
+    chromeFlags = [...includedDefaultFlags, ...chromeFlags];
   }
 
   return {
