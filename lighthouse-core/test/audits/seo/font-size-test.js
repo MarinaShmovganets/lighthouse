@@ -8,7 +8,10 @@
 const FontSizeAudit = require('../../../audits/seo/font-size.js');
 const assert = require('assert');
 
-const URL = 'https://example.com';
+const URL = {
+  requestedUrl: 'https://example.com',
+  finalUrl: 'https://example.com',
+};
 const validViewport = 'width=device-width';
 
 /* eslint-env jest */
