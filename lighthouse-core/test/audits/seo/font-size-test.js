@@ -239,7 +239,7 @@ describe('SEO: Font size audit', () => {
   });
 
   describe('attributes source location', () => {
-    function runFontSizeAuditWithSingleFailingStyle(style, nodeProperties) {
+    async function runFontSizeAuditWithSingleFailingStyle(style, nodeProperties) {
       const artifacts = {
         URL: {finalUrl: 'http://www.example.com'},
         MetaElements: makeMetaElements(validViewport),
@@ -250,7 +250,9 @@ describe('SEO: Font size audit', () => {
         },
         TestedAsMobileDevice: true,
       };
-      return FontSizeAudit.audit(artifacts, getFakeContext());
+      const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
+      expect(auditResult.details.items).toHaveLength(1);
+      return auditResult;
     }
 
     it('to inline node stylesheet', async () => {
@@ -262,7 +264,6 @@ describe('SEO: Font size audit', () => {
         attributes: ['class', 'my-p'],
       });
 
-      assert.equal(auditResult.details.items.length, 1);
       expect(auditResult.details.items[0].selector).toMatchObject({
         type: 'node',
         selector: '#my-parent',
@@ -279,7 +280,6 @@ describe('SEO: Font size audit', () => {
         attributes: ['size', '10px'],
       });
 
-      assert.equal(auditResult.details.items.length, 1);
       expect(auditResult.details.items[0].selector).toMatchObject({
         type: 'node',
         selector: '#my-parent',
