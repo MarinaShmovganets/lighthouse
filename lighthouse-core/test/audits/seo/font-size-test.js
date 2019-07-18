@@ -238,7 +238,7 @@ describe('SEO: Font size audit', () => {
     expect(auditResult.notApplicable).toBe(true);
   });
 
-  describe('attributes source location', () => {
+  describe('attributes style source', () => {
     async function runFontSizeAuditWithSingleFailingStyle(style, nodeProperties) {
       const artifacts = {
         URL: {finalUrl: 'http://www.example.com'},
@@ -264,6 +264,7 @@ describe('SEO: Font size audit', () => {
         attributes: ['class', 'my-p'],
       });
 
+      expect(auditResult.details.items[0].source).toBe('http://www.example.com');
       expect(auditResult.details.items[0].selector).toMatchObject({
         type: 'node',
         selector: '#my-parent',
@@ -280,6 +281,7 @@ describe('SEO: Font size audit', () => {
         attributes: ['size', '10px'],
       });
 
+      expect(auditResult.details.items[0].source).toBe('http://www.example.com');
       expect(auditResult.details.items[0].selector).toMatchObject({
         type: 'node',
         selector: '#my-parent',
