@@ -51,7 +51,7 @@ function collectAllStringsInDir(dir) {
   /** @type {Record<string, ICUMessageDefn>} */
   const strings = {};
 
-  const files = glob.sync(path.posix.relative(LH_ROOT, dir) + '/**/*.js', {
+  const files = glob.sync(path.relative(LH_ROOT, dir) + '/**/*.js', {
     cwd: LH_ROOT,
     ignore: ignoredPathComponents,
   });
@@ -88,11 +88,7 @@ function collectAllStringsInDir(dir) {
         const key = property.key.name;
         const message = exportVars.UIStrings[key];
         const description = computeDescription(ast, property, lastPropertyEndIndex);
-        const pathKey = relativePathToRoot
-          // TODO: can this be removed? test in windows
-          // Replace Windows path separators with unix path separators for Windows compat.
-          .replace(/\\/g, '/');
-        strings[`${pathKey} | ${key}`] = {message, description};
+        strings[`${relativePathToRoot} | ${key}`] = {message, description};
         lastPropertyEndIndex = property.range[1];
       }
     }
