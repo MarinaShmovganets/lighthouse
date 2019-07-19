@@ -241,7 +241,7 @@ describe('SEO: Font size audit', () => {
   describe('attributes source of style', () => {
     async function runFontSizeAuditWithSingleFailingStyle(style, nodeProperties) {
       const artifacts = {
-        URL: {finalUrl: 'http://www.example.com'},
+        URL,
         MetaElements: makeMetaElements(validViewport),
         FontSize: {
           analyzedFailingNodesData: [
