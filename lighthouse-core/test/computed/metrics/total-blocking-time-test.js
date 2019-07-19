@@ -23,9 +23,9 @@ describe('Metrics: TotalBlockingTime', () => {
       pessimistic: Math.round(result.pessimisticEstimate.timeInMs),
     }).toMatchInlineSnapshot(`
 Object {
-  "optimistic": 726,
-  "pessimistic": 827,
-  "timing": 776,
+  "optimistic": 676,
+  "pessimistic": 777,
+  "timing": 726,
 }
 `);
   });
@@ -34,7 +34,7 @@ Object {
     const settings = {throttlingMethod: 'provided'};
     const context = {settings, computedCache: new Map()};
     const result = await TotalBlockingTime.request({trace, devtoolsLog, settings}, context);
-    expect(result.timing).toBeCloseTo(57.5, 1);
+    expect(result.timing).toBeCloseTo(48.3, 1);
   });
 
   describe('#calculateSumOfBlockingTime', () => {
@@ -68,16 +68,23 @@ Object {
       ).toBe(150);
     });
 
-    it('treats the end of task as blocking time', () => {
-      const fcpTimeMs = 100;
-      const interactiveTimeMs = 200;
-      // The last 50ms of this 100ms task is blocking time, and it happens after FCP, so it's
-      // counted towards TBT.
-      const events = [{start: 50, end: 150, duration: 100}];
+    it('clips before finding blocking regions', () => {
+      const fcpTimeMs = 150;
+      const interactiveTimeMs = 300;
+
+      const events = [
+        // The clipping is done first, so the task becomes [150, 200] after clipping and contributes
+        // 0ms of blocking time. This is in contrast to first calculating the blocking region ([100,
+        // 200]) and then clipping at FCP (150ms), which yields 50ms blocking time.
+        {start: 50, end: 200, duration: 150},
+        // Similarly, the task is first clipped above to be [240, 300], and then contributes 10ms
+        // blocking time.
+        {start: 240, end: 460, duration: 120},
+      ];
 
       expect(
         TotalBlockingTime.calculateSumOfBlockingTime(events, fcpTimeMs, interactiveTimeMs)
-      ).toBe(50);
+      ).toBe(10); // 0ms + 10ms.
     });
 
     // This can happen in the lantern metric case, where we use the optimistic

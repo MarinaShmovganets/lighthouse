@@ -14,7 +14,7 @@ const UIStrings = {
   title: 'Total Blocking Time',
   /** Description of the Total Blocking Time (TBT) metric, which calculates the total duration of blocking time for a page. Blocking times are times when if a page received any input (clicks, taps, and keypresses), the page would be slow at responding. This is displayed within a tooltip when the user hovers on the metric name to see more. No character length limits.*/
   description: 'Sum of all time periods between FCP and Time to Interactive, ' +
-      'when task length exceeded by more than 50ms, expressed in milliseconds.',
+      'when task length exceeded 50ms, expressed in milliseconds.',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);

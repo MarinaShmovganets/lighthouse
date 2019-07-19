@@ -25,8 +25,8 @@ describe('Performance: total-blocking-time audit', () => {
     const context = {options, settings, computedCache: new Map()};
     const output = await TBTAudit.audit(artifacts, context);
 
-    expect(output.numericValue).toBeCloseTo(57.5, 1);
+    expect(output.numericValue).toBeCloseTo(48.3, 1);
     expect(output.score).toBe(1);
-    expect(output.displayValue).toBeDisplayString('60\xa0ms');
+    expect(output.displayValue).toBeDisplayString('50\xa0ms');
   });
 });
