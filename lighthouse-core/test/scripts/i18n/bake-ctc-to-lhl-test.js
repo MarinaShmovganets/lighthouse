@@ -36,10 +36,9 @@ describe('Baking Placeholders', () => {
       },
     };
     const res = bakery.bakePlaceholders(strings);
-    expect(res).toEqual({
+    expect(res).toStrictEqual({
       hello: {
         message: '`World`',
-        placeholders: undefined,
       },
     });
   });
@@ -48,10 +47,15 @@ describe('Baking Placeholders', () => {
     const strings = {
       hello: {
         message: 'Hello $MARKDOWN_SNIPPET_0$ $MARKDOWN_SNIPPET_1$',
+        placeholders: {
+          MARKDOWN_SNIPPET_0: {
+            content: '`World`',
+          },
+        },
       },
     };
     // eslint-disable-next-line max-len
-    expect(() => bakery.bakePlaceholders(strings)).toThrow(/Message "Hello \$MARKDOWN_SNIPPET_0\$ \$MARKDOWN_SNIPPET_1\$" is missing placeholder\(s\): \$MARKDOWN_SNIPPET_0\$,\$MARKDOWN_SNIPPET_1\$/);
+    expect(() => bakery.bakePlaceholders(strings)).toThrow(/Message "Hello `World` \$MARKDOWN_SNIPPET_1\$" is missing placeholder\(s\): \$MARKDOWN_SNIPPET_1\$/);
   });
 
   it('throws when a placeholder is not in string', () => {

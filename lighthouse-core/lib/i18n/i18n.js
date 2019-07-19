@@ -64,7 +64,7 @@ const UIStrings = {
   columnRequests: 'Requests',
   /** Label for a column in a data table; entries will be the number of kilobytes transferred to load a set of files. */
   columnTransferSize: 'Transfer Size',
-  /** Label for the Name column in the User Timing event data table. User Timing API entries are added by the developer of the web page. An example user timing event name: 'pageload_logoimage_done' */
+  /** Label for a column in a data table; entries will be the names of arbitrary objects. */
   columnName: 'Name',
   /** Label for a row in a data table; entries will be the total number and byte size of all resources loaded by a web page. */
   totalResourceType: 'Total',
@@ -193,7 +193,7 @@ function _formatIcuMessage(locale, icuMessageId, uiStringMessage, values) {
     localeMessage = uiStringMessage;
 
     // Warn the user that the UIString message != the `en` message ∴ they should update the strings
-    if (LOCALES['en'][icuMessageId] && localeMessage !== LOCALES['en'][icuMessageId].message) {
+    if (!LOCALES['en'][icuMessageId] || localeMessage !== LOCALES['en'][icuMessageId].message) {
       log.warn('i18n', `Message "${icuMessageId}" does not match its 'en' counterpart. ` +
         `Run 'i18n' to update.`);
     }

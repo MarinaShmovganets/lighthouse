@@ -10,8 +10,9 @@
 
 const fs = require('fs');
 const path = require('path');
+var assert = require('assert');
 const esprima = require('esprima');
-const bakery = require('./bake-ctc-to-lhl.js');
+const collectAndBakeCtcStrings = require('./bake-ctc-to-lhl.js');
 
 const LH_ROOT = path.join(__dirname, '../../../');
 const UISTRINGS_REGEX = /UIStrings = (.|\s)*?\};\n/im;
@@ -455,7 +456,7 @@ if (require.main === module) {
   console.log('Collected from Stack Packs!');
 
   if ((collisions) > 0) {
-    // TODO(exterkamp): assert that this number is constant to prevent unexpected dupes.
+    assert.equal(collisions, 15, 'The number of duplicate strings have changed, update this assertion if that is expected, or reword strings.');
     console.log(`MEANING COLLISION: ${collisions} string(s) have the same content.`);
   }
 
@@ -466,7 +467,7 @@ if (require.main === module) {
   console.log('Written to disk!', 'en-XL.ctc.json');
 
   // Bake the ctc en-US and en-XL files into en-US and en-XL LHL format
-  const lhl = bakery.collectAndBakeCtcStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/locales/'),
+  const lhl = collectAndBakeCtcStrings.collectAndBakeCtcStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/locales/'),
   path.join(LH_ROOT, 'lighthouse-core/lib/i18n/locales/'));
   lhl.forEach(function(locale) {
     console.log(`Baked ${locale} into LHL format.`);

@@ -7,7 +7,6 @@
 
 const i18n = require('./i18n/i18n.js');
 
-// TODO(exterkamp): Get better examples.
 /* eslint-disable max-len */
 const UIStrings = {
   /**
