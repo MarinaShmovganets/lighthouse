@@ -254,7 +254,7 @@ describe('Font size gatherer', () => {
       result = FontSizeGather.getEffectiveFontRule({attributesStyle, inherited});
       expect(result).toMatchObject({type: 'Attributes'});
 
-      result = FontSizeGather.getEffectiveFontRule({matchedCSSRules, inherited});
+      result = FontSizeGather.getEffectiveFontRule({attributesStyle, matchedCSSRules, inherited});
       expect(result.parentRule).toMatchObject({origin: 'regular'});
 
       result = FontSizeGather.getEffectiveFontRule({inherited});
