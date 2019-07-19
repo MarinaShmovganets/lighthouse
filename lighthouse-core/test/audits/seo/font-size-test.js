@@ -238,7 +238,7 @@ describe('SEO: Font size audit', () => {
     expect(auditResult.notApplicable).toBe(true);
   });
 
-  describe('attributes style source', () => {
+  describe('attributes source of style', () => {
     async function runFontSizeAuditWithSingleFailingStyle(style, nodeProperties) {
       const artifacts = {
         URL: {finalUrl: 'http://www.example.com'},
