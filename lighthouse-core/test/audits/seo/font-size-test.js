@@ -264,11 +264,13 @@ describe('SEO: Font size audit', () => {
         attributes: ['class', 'my-p'],
       });
 
-      expect(auditResult.details.items[0].source).toBe('http://www.example.com');
-      expect(auditResult.details.items[0].selector).toMatchObject({
-        type: 'node',
-        selector: '#my-parent',
-        snippet: '<p class="my-p">',
+      expect(auditResult.details.items[0]).toMatchObject({
+        source: URL.finalUrl,
+        selector: {
+          type: 'node',
+          selector: '#my-parent',
+          snippet: '<p class="my-p">',
+        },
       });
     });
 
@@ -281,11 +283,13 @@ describe('SEO: Font size audit', () => {
         attributes: ['size', '10px'],
       });
 
-      expect(auditResult.details.items[0].source).toBe('http://www.example.com');
-      expect(auditResult.details.items[0].selector).toMatchObject({
-        type: 'node',
-        selector: '#my-parent',
-        snippet: '<font size="10px">',
+      expect(auditResult.details.items[0]).toMatchObject({
+        source: URL.finalUrl,
+        selector: {
+          type: 'node',
+          selector: '#my-parent',
+          snippet: '<font size="10px">',
+        },
       });
     });
   });
