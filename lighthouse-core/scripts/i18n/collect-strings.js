@@ -10,7 +10,7 @@
 
 const fs = require('fs');
 const path = require('path');
-var assert = require('assert');
+const assert = require('assert');
 const esprima = require('esprima');
 const collectAndBakeCtcStrings = require('./bake-ctc-to-lhl.js');
 
