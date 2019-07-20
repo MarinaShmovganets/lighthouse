@@ -51,7 +51,8 @@ function collectAllStringsInDir(dir) {
   /** @type {Record<string, ICUMessageDefn>} */
   const strings = {};
 
-  const files = glob.sync(path.relative(LH_ROOT, dir) + '/**/*.js', {
+  const relativeDir = path.join(path.relative(LH_ROOT, dir), '/**/*.js');
+  const files = glob.sync(relativeDir, {
     cwd: LH_ROOT,
     ignore: ignoredPathComponents,
   });
