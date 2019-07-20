@@ -44,15 +44,15 @@ function computeDescription(ast, property, startRange) {
 }
 
 /**
- * @param {string} dir
+ * @param {string} dir absolute path
  * @return {Record<string, ICUMessageDefn>}
  */
 function collectAllStringsInDir(dir) {
   /** @type {Record<string, ICUMessageDefn>} */
   const strings = {};
 
-  const relativeDir = path.join(path.relative(LH_ROOT, dir), '/**/*.js');
-  const files = glob.sync(relativeDir, {
+  const globPattern = path.join(path.relative(LH_ROOT, dir), '/**/*.js');
+  const files = glob.sync(globPattern, {
     cwd: LH_ROOT,
     ignore: ignoredPathComponents,
   });
