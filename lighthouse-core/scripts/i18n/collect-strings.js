@@ -120,29 +120,28 @@ function computeDescription(ast, property, value, startRange) {
  *
  * @param {string} message
  * @param {Record<string, string>} examples
- * @returns {ICUMessageDefn}
+ * @return {ICUMessageDefn}
  */
 function convertMessageToPlaceholders(message, examples = {}) {
-  // Basically the same as markdown parsing in dom.js
-  const icu = {
+  const icuDefn = {
     message,
     placeholders: {},
   };
 
   // Process each placeholder type
-  _processPlaceholderMarkdownCode(icu);
+  _processPlaceholderMarkdownCode(icuDefn);
 
-  _processPlaceholderMarkdownLink(icu);
+  _processPlaceholderMarkdownLink(icuDefn);
 
-  _processPlaceholderComplexIcu(icu);
+  _processPlaceholderComplexIcu(icuDefn);
 
-  _processPlaceholderDirectIcu(icu, examples);
+  _processPlaceholderDirectIcu(icuDefn, examples);
 
-  return icu;
+  return icuDefn;
 }
 
 /**
- * Convert markdown code blocks into placeholders with examples.
+ * Convert code spans into placeholders with examples.
  *
  * @param {ICUMessageDefn} icu
  */
@@ -153,7 +152,7 @@ function _processPlaceholderMarkdownCode(icu) {
     throw Error(`Open backtick in message "${icu.message}"`);
   }
 
-  // Split on markdown code slashes
+  // Split on backticked code spans
   const parts = icu.message.split(/`(.*?)`/g);
   icu.message = '';
   let idx = 0;
@@ -162,11 +161,11 @@ function _processPlaceholderMarkdownCode(icu) {
     const [preambleText, codeText] = parts.splice(0, 2);
     icu.message += preambleText;
     if (codeText) {
-      const pName = `MARKDOWN_SNIPPET_${idx++}`;
+      const placeholderName = `MARKDOWN_SNIPPET_${idx++}`;
       // Backtick replacement looks unreadable here, so .join() instead.
-      icu.message += ['$', pName, '$'].join('');
-      icu.placeholders[pName] = {
-        content: ['`', codeText, '`'].join(''),
+      icu.message += '$' + placeholderName + '$';
+      icu.placeholders[placeholderName] = {
+        content: '`' + codeText + '`',
         example: codeText,
       };
     }
@@ -179,7 +178,8 @@ function _processPlaceholderMarkdownCode(icu) {
  * @param {ICUMessageDefn} icu
  */
 function _processPlaceholderMarkdownLink(icu) {
-  // Check that link markdown is not slightly off.
+  // Check for markdown link common errors, ex:
+  // * [extra] (space between brackets and parens)
   if (icu.message.match(/\[.*\] \(.*\)/)) {
     throw Error(`Bad Link syntax in message "${icu.message}"`);
   }
@@ -196,14 +196,14 @@ function _processPlaceholderMarkdownLink(icu) {
 
     // Append link if there are any.
     if (linkText && linkHref) {
-      const ls = `LINK_START_${idx}`;
-      const le = `LINK_END_${idx++}`;
-      const repr = `$${ls}$${linkText}$${le}$`;
-      icu.message += repr;
-      icu.placeholders[ls] = {
+      const startPlaceholder = `LINK_START_${idx}`;
+      const endPlaceholder = `LINK_END_${idx}`;
+      icu.message += '$' + startPlaceholder + '$' + linkText + '$' + endPlaceholder + '$';
+      idx++;
+      icu.placeholders[startPlaceholder] = {
         content: '[',
       };
-      icu.placeholders[le] = {
+      icu.placeholders[endPlaceholder] = {
         content: `](${linkHref})`,
       };
     }
@@ -212,54 +212,72 @@ function _processPlaceholderMarkdownLink(icu) {
 
 /**
  * Convert complex ICU syntax into placeholders with examples.
+ * Custom formats defined in i18n.js in "format" object.
+ *
+ * Before:
+ *  icu: 'This audit took {timeInMs, number, milliseconds} ms.'
+ * After:
+ *  icu: 'This audit took $COMPLEX_ICU_0' ms.
+ *  placeholders: {
+ *    COMPLEX_IXU_0 {
+ *      content: {timeInMs, number, milliseconds},
+ *      example: 499,
+ *    }
+ *  }
  *
  * @param {ICUMessageDefn} icu
  */
 function _processPlaceholderComplexIcu(icu) {
-  // Check that complex ICU not using non-supported format
-  if (icu.message.match(
-    /\{(\w{2,50}), number, (?!milliseconds|seconds|bytes|percent|extendedPercent).*\}/)) {
-    throw Error(`Unsupported ICU format in message "${icu.message}"`);
-  }
-
   // Split on complex ICU: {var, number, type}
   const parts = icu.message.split(
-    /\{(\w{2,50}), number, (milliseconds|seconds|bytes|percent|extendedPercent)\}/g);
+    /\{(\w+), (\w+), (\w+)\}/g);
   icu.message = '';
   let idx = 0;
 
   while (parts.length) {
-    // Pop off the same number of elements as there are capture groups.
-    const [preambleText, varName, icuType] = parts.splice(0, 3);
+    // Seperate out the match into parts.
+    const [preambleText, rawName, format, formatType] = parts.splice(0, 4);
     icu.message += preambleText;
 
-    // Append link if there are any.
-    if (varName && icuType) {
-      const iName = `COMPLEX_ICU_${idx++}`;
-      icu.message += `$${iName}$`;
-      let example = '0';
-
-      // Make some good examples.
-      switch (icuType) {
-        case 'seconds':
-          example = '2.4';
-          break;
-        case 'percent':
-          example = '54.6%';
-          break;
-        case 'extendedPercent':
-          example = '37.92%';
-          break;
-        default:
-          // Random (but constant) number for examples.
-          example = '499';
-      }
-
-      icu.placeholders[iName] = {
-        content: `{${varName}, number, ${icuType}}`,
-        example: example,
-      };
+    if (!rawName || !format || !formatType) continue;
+    // Check that complex ICU not using non-supported format ex:
+    // * using a second arg anything other than "number"
+    // * using a third arg that is not millis, secs, bytes, %, or extended %
+    if (!format.match(/^number$/)) {
+      throw Error(`Unsupported Complex ICU format var "${format}" in message "${icu.message}"`);
     }
+    if (!formatType.match(/milliseconds|seconds|bytes|percent|extendedPercent/)) {
+      throw Error(`Unsupported Complex ICU type var "${formatType}" in message "${icu.message}"`);
+    }
+
+    // Append ICU replacements if there are any.
+    const placeholderName = `COMPLEX_ICU_${idx++}`;
+    icu.message += `$${placeholderName}$`;
+    let example;
+
+    // Make some good examples.
+    switch (formatType) {
+      case 'seconds':
+        example = '2.4';
+        break;
+      case 'percent':
+        example = '54.6%';
+        break;
+      case 'extendedPercent':
+        example = '37.92%';
+        break;
+      case 'milliseconds':
+      case 'bytes':
+        example = '499';
+        break;
+      default:
+        throw Error('Unknown formatType');
+    }
+
+    icu.placeholders[placeholderName] = {
+      content: `{${rawName}, number, ${formatType}}`,
+      example,
+    };
   }
 }
 
@@ -393,33 +411,32 @@ function collectAllStringsInDir(dir, strings = {}) {
             const messageKey = `${relativePath} | ${key}`;
 
             /** @type {ICUMessageDefn} */
-            const msg = {
+            const icuDefn = {
               message: converted.message,
               description,
             };
 
-            if (Object.entries(converted.placeholders).length > 0 &&
-              converted.placeholders.constructor === Object) {
-              msg.placeholders = converted.placeholders;
+            if (converted.placeholders.constructor === Object) {
+              icuDefn.placeholders = converted.placeholders;
             }
 
             // check for duplicates, if duplicate, add @description as @meaning to both
-            if (seenStrings.has(msg.message)) {
-              msg.meaning = msg.description;
-              const id = seenStrings.get(msg.message);
-              // Shouldn't be able to get here, but ts wants a check.
-              if (!id) throw new Error('Message has collision, but collision not recorded in seen.');
-              if (!strings[id].meaning) {
-                strings[id].meaning = strings[id].description;
+            if (seenStrings.has(icuDefn.message)) {
+              icuDefn.meaning = icuDefn.description;
+              const seenId = seenStrings.get(icuDefn.message);
+              if (seenId) {
+                if (!strings[seenId].meaning) {
+                  strings[seenId].meaning = strings[seenId].description;
+                  collisions++;
+                }
                 collisions++;
               }
-              collisions++;
             }
 
-            seenStrings.set(msg.message, messageKey);
+            seenStrings.set(icuDefn.message, messageKey);
 
 
-            strings[messageKey] = msg;
+            strings[messageKey] = icuDefn;
 
             lastPropertyEndIndex = property.range[1];
           }

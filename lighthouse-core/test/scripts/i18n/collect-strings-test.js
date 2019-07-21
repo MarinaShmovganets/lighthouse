@@ -186,6 +186,21 @@ describe('Convert Message to Placeholder', () => {
     expect(res).toEqual({message, placeholders: {}});
   });
 
+  it('passthroughs an ICU plural unchanged', () => {
+    const message = '{var, select, male{Hello Mr. Programmer.} ' +
+      'female{Hello Ms. Programmer} other{Hello Programmer.}}';
+    const res = collect.convertMessageToPlaceholders(message, undefined);
+    expect(res).toEqual({message, placeholders: {}});
+  });
+
+  // TODO(exterkamp): more strict parsing for this case
+  it.skip('passthroughs an ICU plural, with commas (Complex ICU parsing test), unchanged', () => {
+    const message = '{var, select, male{Hello, Mr, Programmer.} ' +
+      'female{Hello, Ms, Programmer} other{Hello, Programmer.}}';
+    const res = collect.convertMessageToPlaceholders(message, undefined);
+    expect(res).toEqual({message, placeholders: {}});
+  });
+
   it('converts code block to placeholder', () => {
     const message = 'Hello `World`.';
     const res = collect.convertMessageToPlaceholders(message, undefined);
@@ -290,10 +305,39 @@ describe('Convert Message to Placeholder', () => {
     });
   });
 
+  it('replaces within ICU plural', () => {
+    const message = '{var, select, male{time: {timeInSec, number, seconds}} ' +
+      'female{time: {timeInSec, number, seconds}} other{time: {timeInSec, number, seconds}}}';
+    const expectation = '{var, select, male{time: $COMPLEX_ICU_0$} ' +
+      'female{time: $COMPLEX_ICU_1$} other{time: $COMPLEX_ICU_2$}}';
+    const res = collect.convertMessageToPlaceholders(message, undefined);
+    expect(res.message).toEqual(expectation);
+    expect(res.placeholders).toEqual({
+      COMPLEX_ICU_0: {
+        content: '{timeInSec, number, seconds}',
+        example: '2.4',
+      },
+      COMPLEX_ICU_1: {
+        content: '{timeInSec, number, seconds}',
+        example: '2.4',
+      },
+      COMPLEX_ICU_2: {
+        content: '{timeInSec, number, seconds}',
+        example: '2.4',
+      },
+    });
+  });
+
   it('errors when using non-supported complex ICU format', () => {
+    const message = 'Hello World took {var, badFormat, milliseconds}.';
+    expect(() => collect.convertMessageToPlaceholders(message, undefined)).toThrow(
+      /Unsupported Complex ICU format var "badFormat" in message "Hello World took "/);
+  });
+
+  it('errors when using non-supported complex ICU type', () => {
     const message = 'Hello World took {var, number, global_int}.';
     expect(() => collect.convertMessageToPlaceholders(message, undefined)).toThrow(
-      /Unsupported ICU format in message "Hello World took {var, number, global_int}\."/);
+      /Unsupported Complex ICU type var "global_int" in message "Hello World took "/);
   });
 
   it('converts direct ICU with examples to placeholders', () => {

@@ -15,16 +15,16 @@ const LH_ROOT = path.join(__dirname, '../../../');
 
 /**
  * @typedef ICUMessageDefn
- * @property {string} message
- * @property {string} [description]
- * @property {string} [meaning]
- * @property {Record<string, ICUPlaceholderDefn>} [placeholders]
+ * @property {string} message the message that is being translated
+ * @property {string} [description] a string used by translators to give context to the message
+ * @property {string} [meaning] an arbitrary strings used by translators to differentiate messages that have the same message
+ * @property {Record<string, ICUPlaceholderDefn>} [placeholders] a set of values that are to be replaced in a message
  */
 
 /**
  * @typedef ICUPlaceholderDefn
- * @property {string} content
- * @property {string} [example]
+ * @property {string} content the string that will be substituted into a message
+ * @property {string} [example] an example (to assist translators) of what the content may be in the final string
  */
 
 /**
@@ -58,10 +58,10 @@ const LH_ROOT = path.join(__dirname, '../../../');
  * value in the placeholders object, or vice versa.
  *
  * @param {Record<string, ICUMessageDefn>} messages
- * @returns {Record<string, {message: string}>}
+ * @return {Record<string, {message: string}>}
  */
 function bakePlaceholders(messages) {
-  /** @type {Record<string, ICUMessageDefn>} */
+  /** @type {Record<string, {message: string}>} */
   const bakedMessages = {};
 
   for (const [key, defn] of Object.entries(messages)) {
@@ -100,7 +100,7 @@ function loadCtcStrings(file) {
 
 /**
  * @param {string} path
- * @param {Record<string, ICUMessageDefn>} localeStrings
+ * @param {Record<string, {message: string}>} localeStrings
  */
 function saveLhlStrings(path, localeStrings) {
   fs.writeFileSync(path, JSON.stringify(localeStrings, null, 2) + '\n');
@@ -109,7 +109,7 @@ function saveLhlStrings(path, localeStrings) {
 /**
  * @param {string} dir
  * @param {string} outputDir
- * @returns {Array<string>}
+ * @return {Array<string>}
  */
 function collectAndBakeCtcStrings(dir, outputDir) {
   const lhl = [];
