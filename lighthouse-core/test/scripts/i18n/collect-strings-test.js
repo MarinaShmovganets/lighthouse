@@ -128,25 +128,28 @@ describe('Compute Description', () => {
     expect(res.examples['variable']).toBe('Variable example.');
   });
 
-  it('errors when example given without variable', () => {
+  it('collects complex description with multiple examples', () => {
     const justUIStrings =
     `const UIStrings = {
       /** 
        * @description Tagged description for Hello World.
        * @example {variable} Variable example.
+       * @example {variable2} Variable2 example.
        */
-      message: 'Hello World',
+      message: 'Hello World {variable} {variable2}',
     };`;
 
     const ast = esprima.parse(justUIStrings, {comment: true, range: true});
 
     const stmt = ast.body[0];
     const prop = stmt.declarations[0].init.properties[0];
-    expect(() => collect.computeDescription(ast, prop, 'Hello World', 0))
-      .toThrow(/Example missing ICU replacement in message "Variable example."/);
+    const res = collect.computeDescription(ast, prop, 'Hello World {variable} {variable2}', 0);
+    expect(res.description).toBe('Tagged description for Hello World.');
+    expect(res.examples['variable']).toBe('Variable example.');
+    expect(res.examples['variable2']).toBe('Variable2 example.');
   });
 
-  it('errors when variable has no example', () => {
+  it('does not throw when no example for ICU', () => {
     const justUIStrings =
     `const UIStrings = {
       /** 
@@ -159,23 +162,9 @@ describe('Compute Description', () => {
 
     const stmt = ast.body[0];
     const prop = stmt.declarations[0].init.properties[0];
-    expect(() => collect.computeDescription(ast, prop, 'Hello World {variable}', 0)).toThrow(
-      /Variable 'variable' is missing example comment in message "Hello World {variable}"/);
-  });
-
-  it('errors when variable has no example, with basic description', () => {
-    const justUIStrings =
-    `const UIStrings = {
-      /** Tagged description for Hello World. */
-      message: 'Hello World {variable}',
-    };`;
-
-    const ast = esprima.parse(justUIStrings, {comment: true, range: true});
-
-    const stmt = ast.body[0];
-    const prop = stmt.declarations[0].init.properties[0];
-    expect(() => collect.computeDescription(ast, prop, 'Hello World {variable}', 0)).toThrow(
-      /Variable 'variable' is missing example comment in message "Hello World {variable}"/);
+    const res = collect.computeDescription(ast, prop, 'Hello World {variable}', 0);
+    expect(res.description).toBe('Tagged description for Hello World.');
+    expect(res.examples).toEqual({});
   });
 });
 
@@ -353,11 +342,17 @@ describe('Convert Message to Placeholder', () => {
     });
   });
 
-  it('ignores direct ICU with no examples', () => {
+  it('errors when example given without variable', () => {
+    const message = 'Hello name.';
+    expect(() => collect.convertMessageToPlaceholders(message, {name: 'Mary'}))
+      // eslint-disable-next-line max-len
+      .toThrow(/Example 'name' provided, but has not corresponding ICU replacement in message "Hello name."/);
+  });
+
+  it('errors when direct ICU has no examples', () => {
     const message = 'Hello {name}.';
-    const res = collect.convertMessageToPlaceholders(message, undefined);
-    expect(res.message).toBe(message);
-    expect(res.placeholders).toEqual({});
+    expect(() => collect.convertMessageToPlaceholders(message, undefined)).toThrow(
+      /Variable 'name' is missing example comment in message "Hello {name}."/);
   });
 });
 

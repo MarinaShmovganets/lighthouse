@@ -32,7 +32,7 @@ const ignoredPathComponents = [
 // @ts-ignore - @types/esprima lacks all of these
 function computeDescription(ast, property, value, startRange) {
   const endRange = property.range[0];
-  const findIcu = /\{(\w+)\}/g;
+
   for (const comment of ast.comments || []) {
     if (comment.range[0] < startRange) continue;
     if (comment.range[0] > endRange) continue;
@@ -52,18 +52,7 @@ function computeDescription(ast, property, value, startRange) {
         if (tagName === 'description') {
           description = message;
         } else if (tagName === 'example') {
-          // Make sure the ICU var exists in string
-          if (!value.includes(placeholder)) {
-            throw Error(`Example missing ICU replacement in message "${message}"`);
-          }
           examples[placeholder.substring(1, placeholder.length - 1)] = message;
-        }
-      }
-      // Make sure all ICU vars have examples
-      while ((matches = findIcu.exec(value)) !== null) {
-        const varName = matches[1];
-        if (!examples[varName]) {
-          throw Error(`Variable '${varName}' is missing example comment in message "${value}"`);
         }
       }
 
@@ -73,12 +62,6 @@ function computeDescription(ast, property, value, startRange) {
     }
 
     const description = comment.value.replace('*', '').trim();
-
-    // Make sure all ICU vars have examples
-    if (value.match(findIcu)) {
-      throw Error(`Variable '${value.match(/.*\{(\w+)\}.*/)[1]}' ` +
-        `is missing example comment in message "${value}"`);
-    }
 
     // Make sure description is not empty
     if (description.length === 0) throw Error(`Empty description for message "${value}"`);
@@ -291,8 +274,22 @@ function _processPlaceholderCustomFormattedIcu(icu) {
 function _processPlaceholderDirectIcu(icu, examples) {
   let tempMessage = icu.message;
   let idx = 0;
+  const findIcu = /\{(\w+)\}/g;
+
+  let matches;
+  // Make sure all ICU vars have examples
+  while ((matches = findIcu.exec(tempMessage)) !== null) {
+    const varName = matches[1];
+    if (!examples[varName]) {
+      throw Error(`Variable '${varName}' is missing example comment in message "${tempMessage}"`);
+    }
+  }
+
   for (const [key, value] of Object.entries(examples)) {
-    if (!icu.message.includes(`{${key}}`)) continue;
+    // Make sure all examples have ICU vars
+    if (!icu.message.includes(`{${key}}`)) {
+      throw Error(`Example '${key}' provided, but has not corresponding ICU replacement in message "${icu.message}"`);
+    }
     const eName = `ICU_${idx++}`;
     tempMessage = tempMessage.replace(`{${key}}`, `$${eName}$`);
 
