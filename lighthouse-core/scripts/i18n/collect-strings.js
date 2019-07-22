@@ -271,6 +271,7 @@ function _processPlaceholderComplexIcu(icu) {
         example = '499';
         break;
       default:
+        // This shouldn't be possible, but if the above formatType regex fails, this is fallback.
         throw Error('Unknown formatType');
     }
 
