@@ -133,7 +133,7 @@ function convertMessageToPlaceholders(message, examples = {}) {
 
   _processPlaceholderMarkdownLink(icuDefn);
 
-  _processPlaceholderComplexIcu(icuDefn);
+  _processPlaceholderCustomFormattedIcu(icuDefn);
 
   _processPlaceholderDirectIcu(icuDefn, examples);
 
@@ -211,15 +211,15 @@ function _processPlaceholderMarkdownLink(icu) {
 }
 
 /**
- * Convert complex ICU syntax into placeholders with examples.
+ * Convert custom-formatted ICU syntax into placeholders with examples.
  * Custom formats defined in i18n.js in "format" object.
  *
  * Before:
  *  icu: 'This audit took {timeInMs, number, milliseconds} ms.'
  * After:
- *  icu: 'This audit took $COMPLEX_ICU_0' ms.
+ *  icu: 'This audit took $CUSTOM_ICU_0' ms.
  *  placeholders: {
- *    COMPLEX_IXU_0 {
+ *    CUSTOM_ICU_0 {
  *      content: {timeInMs, number, milliseconds},
  *      example: 499,
  *    }
@@ -227,8 +227,8 @@ function _processPlaceholderMarkdownLink(icu) {
  *
  * @param {ICUMessageDefn} icu
  */
-function _processPlaceholderComplexIcu(icu) {
-  // Split on complex ICU: {var, number, type}
+function _processPlaceholderCustomFormattedIcu(icu) {
+  // Split on custom-formatted ICU: {var, number, type}
   const parts = icu.message.split(
     /\{(\w+), (\w+), (\w+)\}/g);
   icu.message = '';
@@ -240,18 +240,18 @@ function _processPlaceholderComplexIcu(icu) {
     icu.message += preambleText;
 
     if (!rawName || !format || !formatType) continue;
-    // Check that complex ICU not using non-supported format ex:
+    // Check that custom-formatted ICU not using non-supported format ex:
     // * using a second arg anything other than "number"
     // * using a third arg that is not millis, secs, bytes, %, or extended %
     if (!format.match(/^number$/)) {
-      throw Error(`Unsupported Complex ICU format var "${format}" in message "${icu.message}"`);
+      throw Error(`Unsupported custom-formatted ICU format var "${format}" in message "${icu.message}"`);
     }
     if (!formatType.match(/milliseconds|seconds|bytes|percent|extendedPercent/)) {
-      throw Error(`Unsupported Complex ICU type var "${formatType}" in message "${icu.message}"`);
+      throw Error(`Unsupported custom-formatted ICU type var "${formatType}" in message "${icu.message}"`);
     }
 
     // Append ICU replacements if there are any.
-    const placeholderName = `COMPLEX_ICU_${idx++}`;
+    const placeholderName = `CUSTOM_ICU_${idx++}`;
     icu.message += `$${placeholderName}$`;
     let example;
 

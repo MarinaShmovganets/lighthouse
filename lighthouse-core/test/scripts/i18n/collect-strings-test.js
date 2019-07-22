@@ -271,34 +271,34 @@ describe('Convert Message to Placeholder', () => {
       .toThrow(/Bad Link syntax in message "Hello \[World\] \(https:\/\/google\.com\/\)\."/);
   });
 
-  it('converts complex ICU to placholders', () => {
+  it('converts custom-formatted ICU to placholders', () => {
     const message = 'Hello World took {timeInMs, number, milliseconds} ms, ' +
       '{timeInSec, number, seconds} s, used {bytes, number, bytes} KB, ' +
       '{perc, number, percent} of {percEx, number, extendedPercent}.';
 
     const res = collect.convertMessageToPlaceholders(message, undefined);
-    const expectation = 'Hello World took $COMPLEX_ICU_0$ ms, ' +
-    '$COMPLEX_ICU_1$ s, used $COMPLEX_ICU_2$ KB, ' +
-    '$COMPLEX_ICU_3$ of $COMPLEX_ICU_4$.';
+    const expectation = 'Hello World took $CUSTOM_ICU_0$ ms, ' +
+    '$CUSTOM_ICU_1$ s, used $CUSTOM_ICU_2$ KB, ' +
+    '$CUSTOM_ICU_3$ of $CUSTOM_ICU_4$.';
     expect(res.message).toBe(expectation);
     expect(res.placeholders).toEqual({
-      COMPLEX_ICU_0: {
+      CUSTOM_ICU_0: {
         content: '{timeInMs, number, milliseconds}',
         example: '499',
       },
-      COMPLEX_ICU_1: {
+      CUSTOM_ICU_1: {
         content: '{timeInSec, number, seconds}',
         example: '2.4',
       },
-      COMPLEX_ICU_2: {
+      CUSTOM_ICU_2: {
         content: '{bytes, number, bytes}',
         example: '499',
       },
-      COMPLEX_ICU_3: {
+      CUSTOM_ICU_3: {
         content: '{perc, number, percent}',
         example: '54.6%',
       },
-      COMPLEX_ICU_4: {
+      CUSTOM_ICU_4: {
         content: '{percEx, number, extendedPercent}',
         example: '37.92%',
       },
@@ -308,36 +308,36 @@ describe('Convert Message to Placeholder', () => {
   it('replaces within ICU plural', () => {
     const message = '{var, select, male{time: {timeInSec, number, seconds}} ' +
       'female{time: {timeInSec, number, seconds}} other{time: {timeInSec, number, seconds}}}';
-    const expectation = '{var, select, male{time: $COMPLEX_ICU_0$} ' +
-      'female{time: $COMPLEX_ICU_1$} other{time: $COMPLEX_ICU_2$}}';
+    const expectation = '{var, select, male{time: $CUSTOM_ICU_0$} ' +
+      'female{time: $CUSTOM_ICU_1$} other{time: $CUSTOM_ICU_2$}}';
     const res = collect.convertMessageToPlaceholders(message, undefined);
     expect(res.message).toEqual(expectation);
     expect(res.placeholders).toEqual({
-      COMPLEX_ICU_0: {
+      CUSTOM_ICU_0: {
         content: '{timeInSec, number, seconds}',
         example: '2.4',
       },
-      COMPLEX_ICU_1: {
+      CUSTOM_ICU_1: {
         content: '{timeInSec, number, seconds}',
         example: '2.4',
       },
-      COMPLEX_ICU_2: {
+      CUSTOM_ICU_2: {
         content: '{timeInSec, number, seconds}',
         example: '2.4',
       },
     });
   });
 
-  it('errors when using non-supported complex ICU format', () => {
+  it('errors when using non-supported custom-formatted ICU format', () => {
     const message = 'Hello World took {var, badFormat, milliseconds}.';
     expect(() => collect.convertMessageToPlaceholders(message, undefined)).toThrow(
-      /Unsupported Complex ICU format var "badFormat" in message "Hello World took "/);
+      /Unsupported custom-formatted ICU format var "badFormat" in message "Hello World took "/);
   });
 
-  it('errors when using non-supported complex ICU type', () => {
+  it('errors when using non-supported custom-formatted ICU type', () => {
     const message = 'Hello World took {var, number, global_int}.';
     expect(() => collect.convertMessageToPlaceholders(message, undefined)).toThrow(
-      /Unsupported Complex ICU type var "global_int" in message "Hello World took "/);
+      /Unsupported custom-formatted ICU type var "global_int" in message "Hello World took "/);
   });
 
   it('converts direct ICU with examples to placeholders', () => {
