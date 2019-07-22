@@ -414,7 +414,8 @@ function collectAllStringsInDir(dir, strings = {}) {
               description,
             };
 
-            if (converted.placeholders.constructor === Object) {
+            // Stop empty placeholders from being added to every message
+            if (Object.entries(converted.placeholders).length > 0) {
               icuDefn.placeholders = converted.placeholders;
             }
 
