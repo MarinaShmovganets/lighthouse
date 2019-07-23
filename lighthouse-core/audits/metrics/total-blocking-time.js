@@ -10,9 +10,9 @@ const ComputedTBT = require('../../computed/metrics/total-blocking-time.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** The name of the metric that calculates the total duration of blocking time for a page. Blocking times are time periods when the page would be slow at responding to user input (clicks, taps, and keypresses will feel janky). Shown to users as the label for the numeric metric value. Ideally fits within a ~40 character limit. */
+  /** The name of a metric that calculates the total duration of blocking time for a web page. Blocking times are time periods when the page would be blocked (prevented) from responding to user input (clicks, taps, and keypresses will feel slow to respond). Shown to users as the label for the numeric metric value. Ideally fits within a ~40 character limit. */
   title: 'Total Blocking Time',
-  /** Description of the Total Blocking Time (TBT) metric, which calculates the total duration of blocking time for a page. Blocking times are times when if a page received any input (clicks, taps, and keypresses), the page would be slow at responding. This is displayed within a tooltip when the user hovers on the metric name to see more. No character length limits.*/
+  /** Description of the Total Blocking Time (TBT) metric, which calculates the total duration of blocking time for a web page. Blocking times are time periods when the page would be blocked (prevented) from responding to user input (clicks, taps, and keypresses will feel slow to respond). This is displayed within a tooltip when the user hovers on the metric name to see more. No character length limits.*/
   description: 'Sum of all time periods between FCP and Time to Interactive, ' +
       'when task length exceeded 50ms, expressed in milliseconds.',
 };

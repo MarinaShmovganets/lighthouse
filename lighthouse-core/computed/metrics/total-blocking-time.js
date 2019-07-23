@@ -59,9 +59,9 @@ class TotalBlockingTime extends ComputedMetric {
 
       // We first perform the clipping, and then calculate Blocking Region. So if we have a 150ms
       // task [0, 150] and FCP happens midway at 50ms, we first clip the task to [50, 150], and then
-      // calculate the Blocking Region to be [100, 150]. There rational here is that tasks before
-      // FCP is unimportant, so we care whether the main thread is busy more than 50ms at a time
-      // only after FCP.
+      // calculate the Blocking Region to be [100, 150]. The rational here is that tasks before FCP
+      // are unimportant, so we care whether the main thread is busy more than 50ms at a time only
+      // after FCP.
       const clippedStart = Math.max(event.start, fcpTimeInMs);
       const clippedEnd = Math.min(event.end, interactiveTimeMs);
       const clippedDuration = clippedEnd - clippedStart;
