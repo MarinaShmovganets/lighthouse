@@ -58,10 +58,9 @@ async function runLighthouseInLR(connection, url, flags, lrOpts) {
     // pre process the LHR for proto
     const preprocessedLhr = preprocessor.processForProto(runnerResult.lhr);
 
+    // When LR is called with |internal: {keep_raw_response: true, save_lighthouse_assets: true}|,
+    // we log artifacts to raw_response.artifacts.
     if (logAssets) {
-      // When LR is called with |internal: {keep_raw_response: true, save_lighthouse_assets: true}|,
-      // this code will log artifacts to raw_response.artifacts.
-
       // Properly serialize artifact errors.
       const artifactsJson = JSON.stringify(runnerResult.artifacts, assetSaver.stringifyReplacer);
 
