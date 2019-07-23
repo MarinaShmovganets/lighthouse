@@ -172,14 +172,14 @@ describe('Convert Message to Placeholder', () => {
   it('passthroughs a basic message unchanged', () => {
     const message = 'Hello World.';
     const res = collect.convertMessageToPlaceholders(message, undefined);
-    expect(res).toEqual({message, placeholders: {}});
+    expect(res).toEqual({message, placeholders: undefined});
   });
 
   it('passthroughs an ICU plural unchanged', () => {
     const message = '{var, select, male{Hello Mr. Programmer.} ' +
       'female{Hello Ms. Programmer} other{Hello Programmer.}}';
     const res = collect.convertMessageToPlaceholders(message, undefined);
-    expect(res).toEqual({message, placeholders: {}});
+    expect(res).toEqual({message, placeholders: undefined});
   });
 
   // TODO(exterkamp): more strict parsing for this case

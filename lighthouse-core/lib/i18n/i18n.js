@@ -193,7 +193,7 @@ function _formatIcuMessage(locale, icuMessageId, uiStringMessage, values) {
     localeMessage = uiStringMessage;
 
     // Warn the user that the UIString message != the `en` message ∴ they should update the strings
-    if (!LOCALES['en'][icuMessageId] || localeMessage !== LOCALES['en'][icuMessageId].message) {
+    if (!LOCALES.en[icuMessageId] || localeMessage !== LOCALES.en[icuMessageId].message) {
       log.warn('i18n', `Message "${icuMessageId}" does not match its 'en' counterpart. ` +
         `Run 'i18n' to update.`);
     }

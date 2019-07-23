@@ -103,13 +103,13 @@ ICU replacements must use a JSDoc-like syntax to specify an example for direct I
 *   To specify the description, use `@description …`:
     * `@description Label string used to…`
 *   To specify an example for an ICU replacement, use `@example {…} …`:
-    * `@example {variableName} This is an example ICU replacement`
+    * `@example {This is an example ICU replacement} variableName`
 
 ```javascript
 const UIStrings = {
     /**
       * @description Error message explaining ...
-      * @example {errorCode} NO_SPEEDLINE_FRAMES
+      * @example {NO_SPEEDLINE_FRAMES} errorCode
       */
     didntCollectScreenshots: `Chrome didn't .... ({errorCode})`,
 };

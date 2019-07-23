@@ -105,7 +105,7 @@ function computeDescription(ast, property, value, startRange) {
  * @param {Record<string, string>} examples
  * @return {ICUMessageDefn}
  */
-function convertMessageToPlaceholders(message, examples = {}) {
+function convertMessageToCtc(message, examples = {}) {
   const icuDefn = {
     message,
     placeholders: {},
@@ -119,6 +119,11 @@ function convertMessageToPlaceholders(message, examples = {}) {
   _processPlaceholderCustomFormattedIcu(icuDefn);
 
   _processPlaceholderDirectIcu(icuDefn, examples);
+
+  if (Object.entries(icuDefn.placeholders).length === 0) {
+    // @ts-ignore - if this is empty then force undefined so that it does not appear in the JSON
+    icuDefn.placeholders = undefined;
+  }
 
   return icuDefn;
 }
@@ -303,7 +308,9 @@ function _processPlaceholderDirectIcu(icu, examples) {
 
 /**
  * Take a series of messages and apply ĥât̂ markers to the translatable portions
- * of the text.  Used to generate `en-XL` locale to debug i18n strings.
+ * of the text.  Used to generate `en-XL` locale to debug i18n strings. This is
+ * done while messages are in `ctc` format, and therefore modifies only the
+ * messages themselves while leaving placeholders untouched.
  *
  * @param {Record<string, ICUMessageDefn>} messages
  */
@@ -404,7 +411,7 @@ function collectAllStringsInDir(dir, strings = {}) {
             const val = exportVars.UIStrings[key];
             const {description, examples} = computeDescription(ast, property, val, lastPropertyEndIndex);
 
-            const converted = convertMessageToPlaceholders(val, examples);
+            const converted = convertMessageToCtc(val, examples);
 
             const messageKey = `${relativePath} | ${key}`;
 
@@ -412,12 +419,8 @@ function collectAllStringsInDir(dir, strings = {}) {
             const icuDefn = {
               message: converted.message,
               description,
+              placeholders: converted.placeholders,
             };
-
-            // Stop empty placeholders from being added to every message
-            if (Object.entries(converted.placeholders).length > 0) {
-              icuDefn.placeholders = converted.placeholders;
-            }
 
             // check for duplicates, if duplicate, add @description as @meaning to both
             if (seenStrings.has(icuDefn.message)) {
@@ -493,5 +496,5 @@ if (require.main === module) {
 module.exports = {
   computeDescription,
   createPsuedoLocaleStrings,
-  convertMessageToPlaceholders,
+  convertMessageToPlaceholders: convertMessageToCtc,
 };
