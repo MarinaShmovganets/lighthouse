@@ -42,17 +42,17 @@ function computeDescription(ast, property, value, startRange) {
       /** @type {Record<string, string>} */
       const examples = {};
 
-      const r = /@(\w+) ({\w+})?(.*)(\n|$)/g;
+      const r = /@(\w+) ({.+})?(.*)(\n|$)/g;
       let matches;
       while ((matches = r.exec(comment.value)) !== null) {
         const tagName = matches[1];
-        const placeholder = matches[2];
-        const message = matches[3].trim();
+        const example = matches[2];
+        const messageOrPlaceholder = matches[3].trim();
 
         if (tagName === 'description') {
-          description = message;
+          description = messageOrPlaceholder;
         } else if (tagName === 'example') {
-          examples[placeholder.substring(1, placeholder.length - 1)] = message;
+          examples[messageOrPlaceholder] = example.substring(1, example.length - 1);
         }
       }
 

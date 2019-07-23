@@ -20,7 +20,7 @@ const UIStrings = {
     '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/noopener).',
   /**
    * @description Warning that some links' destinations cannot be determined and therefore the audit cannot evaluate the link's safety.
-   * @example {anchorHTML} <a target="_blank">
+   * @example {<a target="_blank">} anchorHTML
    * */
   warning: 'Unable to determine the destination for anchor ({anchorHTML}). ' +
     'If not used as a hyperlink, consider removing target=_blank.',

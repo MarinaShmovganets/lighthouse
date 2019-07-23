@@ -20,27 +20,27 @@ const UIStrings = {
     '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/canonical).',
   /**
    * @description Explanatory message stating that there was a failure in an audit caused by multiple URLs conflicting with each other.
-   * @example {urlList} https://example.com, https://example2.com
+   * @example {https://example.com, https://example2.com} urlList
    * */
   explanationConflict: 'Multiple conflicting URLs ({urlList})',
   /**
    * @description Explanatory message stating that there was a failure in an audit caused by a URL being invalid.
-   * @example {url} https://example.com/
+   * @example {https://example.com/} url
    * */
   explanationInvalid: 'Invalid URL ({url})',
   /**
    * @description Explanatory message stating that there was a failure in an audit caused by a URL being relative instead of absolute.
-   * @example {url} https://example.com/
+   * @example {https://example.com/} url
    * */
   explanationRelative: 'Relative URL ({url})',
   /**
    * @description Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different hreflang than the current context.'hreflang' is an HTML attribute and should not be translated.
-   * @example {url} https://example.com/
+   * @example {https://example.com/} url
    */
   explanationPointsElsewhere: 'Points to another `hreflang` location ({url})',
   /**
    * @description Explanatory message stating that there was a failure in an audit caused by a URL pointing to a different domain.
-   * @example {url} https://example.com/
+   * @example {https://example.com/} url
    * */
   explanationDifferentDomain: 'Points to a different domain ({url})',
   /** Explanatory message stating that the page's canonical URL was pointing to the domain's root URL, which is a common mistake. "points" refers to the action of the 'rel=canonical' referencing another link. "root" refers to the starting/home page of the website. "domain" refers to the registered domain name of the website. */

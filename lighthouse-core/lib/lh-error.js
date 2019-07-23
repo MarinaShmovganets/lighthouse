@@ -11,34 +11,34 @@ const i18n = require('./i18n/i18n.js');
 const UIStrings = {
   /**
    * @description Error message explaining that the Lighthouse run was not able to collect screenshots through Chrome.
-   * @example {errorCode} NO_SPEEDLINE_FRAMES
+   * @example {NO_SPEEDLINE_FRAMES} errorCode
    * */
   didntCollectScreenshots: `Chrome didn't collect any screenshots during the page load. Please make sure there is content visible on the page, and then try re-running Lighthouse. ({errorCode})`,
   /**
    * @description Error message explaining that the network trace was not able to be recorded for the Lighthouse run.
-   * @example {errorCode} NO_TRACING_STARTED
+   * @example {NO_TRACING_STARTED} errorCode
    * */
   badTraceRecording: 'Something went wrong with recording the trace over your page load. Please run Lighthouse again. ({errorCode})',
   /**
    * @description Error message explaining that the page loaded too slowly to perform a Lighthouse run.
-   * @example {errorCode} FMP_TOO_LATE_FOR_FCPUI
+   * @example {FMP_TOO_LATE_FOR_FCPUI} errorCode
    * */
   pageLoadTookTooLong: 'Your page took too long to load. Please follow the opportunities in the report to reduce your page load time, and then try re-running Lighthouse. ({errorCode})',
   /** Error message explaining that Lighthouse could not load the requested URL and the steps that might be taken to fix the unreliability. */
   pageLoadFailed: 'Lighthouse was unable to reliably load the page you requested. Make sure you are testing the correct URL and that the server is properly responding to all requests.',
   /**
    * @description Error message explaining that Lighthouse could not load the requested URL and the steps that might be taken to fix the unreliability.
-   * @example {statusCode} 404
+   * @example {404} statusCode
    * */
   pageLoadFailedWithStatusCode: 'Lighthouse was unable to reliably load the page you requested. Make sure you are testing the correct URL and that the server is properly responding to all requests. (Status code: {statusCode})',
   /**
    * @description Error message explaining that Lighthouse could not load the requested URL and the steps that might be taken to fix the unreliability.
-   * @example {errorDetails} FAILED_DOCUMENT_REQUEST
+   * @example {FAILED_DOCUMENT_REQUEST} errorDetails
    * */
   pageLoadFailedWithDetails: 'Lighthouse was unable to reliably load the page you requested. Make sure you are testing the correct URL and that the server is properly responding to all requests. (Details: {errorDetails})',
   /**
    * @description Error message explaining that the security certificate of the page Lighthouse observed was invalid, so the URL cannot be accessed. securityMessages will be replaced with one or more strings from the browser explaining what was insecure about the page load.
-   * @example {securityMessages} net::ERR_CERT_DATE_INVALID
+   * @example {net::ERR_CERT_DATE_INVALID} securityMessages
    * */
   pageLoadFailedInsecure: 'The URL you have provided does not have a valid security certificate. {securityMessages}',
   /** Error message explaining that Chrome prevented the page from loading and displayed an interstitial screen instead, so the URL cannot be accessed. */
@@ -51,7 +51,7 @@ const UIStrings = {
   urlInvalid: 'The URL you have provided appears to be invalid.',
   /**
    * @description Error message explaining that the Chrome Devtools protocol has exceeded the maximum timeout allowed.
-   * @example {protocolMethod} Network.enable
+   * @example {Network.enable} protocolMethod
    * */
   protocolTimeout: 'Waiting for DevTools protocol response has exceeded the allotted time. (Method: {protocolMethod})',
   /** Error message explaining that the requested page could not be resolved by the DNS server. */
@@ -62,13 +62,13 @@ const UIStrings = {
   criTimeout: 'Timeout waiting for initial Debugger Protocol connection.',
   /**
    * @description Error message explaning that a resource that was required for testing was never collected. "artifactName" will be replaced with the name of the resource that wasn't collected.
-   * @example {artifactName} WebAppManifest
+   * @example {WebAppManifest} artifactName
    * */
   missingRequiredArtifact: 'Required {artifactName} gatherer did not run.',
   /**
    * @description Error message explaning that there was an error while trying to collect a resource that was required for testing. "artifactName" will be replaced with the name of the resource that wasn't collected; "errorMessage" will be replaced with a string description of the error that occurred.
-   * @example {artifactName} WebAppManifest
-   * @example {errorMessage} Manifest invalid
+   * @example {WebAppManifest} artifactName
+   * @example {Manifest invalid} errorMessage
    * */
   erroredRequiredArtifact: 'Required {artifactName} gatherer encountered an error: {errorMessage}',
 };

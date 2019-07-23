@@ -23,7 +23,7 @@ const UIStrings = {
     '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/appcache).',
   /**
    * @description Label for the audit identifying uses of the Application Cache.
-   * @example {AppCacheManifest} clock.appcache
+   * @example {clock.appcache} AppCacheManifest
    */
   displayValue: 'Found "{AppCacheManifest}"',
 };

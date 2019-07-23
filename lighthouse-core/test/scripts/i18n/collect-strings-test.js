@@ -114,7 +114,7 @@ describe('Compute Description', () => {
     `const UIStrings = {
       /** 
        * @description Tagged description for Hello World.
-       * @example {variable} Variable example.
+       * @example {Variable example.} variable
        */
       message: 'Hello World {variable}',
     };`;
@@ -125,6 +125,7 @@ describe('Compute Description', () => {
     const prop = stmt.declarations[0].init.properties[0];
     const res = collect.computeDescription(ast, prop, 'Hello World {variable}', 0);
     expect(res.description).toBe('Tagged description for Hello World.');
+    console.log(res)
     expect(res.examples['variable']).toBe('Variable example.');
   });
 
@@ -133,8 +134,8 @@ describe('Compute Description', () => {
     `const UIStrings = {
       /** 
        * @description Tagged description for Hello World.
-       * @example {variable} Variable example.
-       * @example {variable2} Variable2 example.
+       * @example {Variable example.} variable
+       * @example {Variable2 example.} variable2
        */
       message: 'Hello World {variable} {variable2}',
     };`;

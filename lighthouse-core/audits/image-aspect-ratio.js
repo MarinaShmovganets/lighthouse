@@ -25,7 +25,7 @@ const UIStrings = {
     '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/aspect-ratio).',
   /**
    * @description Warning that the size information for an image was nonsensical.
-   * @example {url} https://image.cdn.com/
+   * @example {https://image.cdn.com/} url
    */
   warningCompute: 'Invalid image sizing information {url}',
   /**  Label for a column in a data table; entries in the column will be the numeric aspect ratio of an image as displayed in a web page. */

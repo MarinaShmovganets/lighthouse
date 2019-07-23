@@ -26,7 +26,7 @@ const UIStrings = {
     '[Learn more](https://developers.google.com/web/updates/2016/02/font-display).',
   /**
    * @description A warning message that is shown when Lighthouse couldn't automatically check some of the page's fonts and that the user will need to manually check it.
-   * @example {fontURL} https://font.cdn.com/
+   * @example {https://font.cdn.com/} fontURL
    */
   undeclaredFontURLWarning: 'Lighthouse was unable to automatically check the font-display value ' +
     'for the following URL: {fontURL}.',
