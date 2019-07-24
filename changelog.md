@@ -13,7 +13,7 @@ Thanks to @AngeloGulina, @jamesgeorge007, @johnemau, @kaushikchaubal, @mitchells
 
 ## Notable changes
 * **tracehouse**: performance trace processing has been moved to its own directory in `lib/tracehouse/` to serve as a more standalone library ([9f80524](https://github.com/googlechrome/lighthouse/commit/9f80524), [1af2edd](https://github.com/googlechrome/lighthouse/commit/1af2edd), [7ba6776](https://github.com/googlechrome/lighthouse/commit/7ba6776), [ddff3d6](https://github.com/googlechrome/lighthouse/commit/ddff3d6))
-* certificate security errors are no longer a fatal Lighthouse error, though the Chrome error page will still return few results in the report. See [the docs](https://github.com/GoogleChrome/lighthouse/tree/82835eb6e4bcece5ac1ce9c575a8d2d9ecd995d1/docs#testing-on-a-site-with-an-untrusted-certificate) for testing a page in this situation. ([#8865](https://github.com/googlechrome/lighthouse/pull/8865))
+* certificate security errors are no longer a fatal Lighthouse error, though the Chrome error page will still return few results in the report by default. See [the docs](https://github.com/GoogleChrome/lighthouse/tree/82835eb6e4bcece5ac1ce9c575a8d2d9ecd995d1/docs#testing-on-a-site-with-an-untrusted-certificate) for testing a page in this situation. ([#8865](https://github.com/googlechrome/lighthouse/pull/8865))
 
 ## Core
 
