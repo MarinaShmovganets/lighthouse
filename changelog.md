@@ -1,18 +1,22 @@
  <a name="5.2.0"></a>
 # 5.2.0 (2019-07-24)
-[Full Changelog](https://github.com/googlechrome/lighthouse/compare/v5.1.0...v5.2.0)
 
-## New Contributors!
+Expected DevTools release in Chrome 77 ([September 2019](https://chromestatus.com/features/schedule))
+
+## New contributors!
 Thanks to @AngeloGulina, @jamesgeorge007, @johnemau, @kaushikchaubal, @mitchellsimoens, @NickolasBenakis, @noelyoo, @PatOnTheBack, @rishichawda, and @Remexllee for their first contributions!
 
 ## New Audits
 
-* add third party entity summary ([#9067](https://github.com/googlechrome/lighthouse/pull/9067))
-* add Total Blocking Time metric to JSON output ([#8975](https://github.com/googlechrome/lighthouse/pull/8975), [#9409](https://github.com/googlechrome/lighthouse/pull/9409))
+* `Third-Party Usage`, a new performance diagnostic that shows a breakdown of third-party resources in the page and the time/bytes needed to load them ([#9067](https://github.com/googlechrome/lighthouse/pull/9067))
+* `Total Blocking Time` an experimental new metric that serves as a companion to TTI to help prioritize unblocking the main thread. Since it is currently experimental, it is unscored and appears only in the raw LHR JSON, not in the HTML report. ([#8975](https://github.com/googlechrome/lighthouse/pull/8975), [#9409](https://github.com/googlechrome/lighthouse/pull/9409))
+
+## Notable changes
+* **tracehouse**: performance trace processing has been moved to its own directory in `lib/tracehouse/` to serve as a more standalone library ([9f80524](https://github.com/googlechrome/lighthouse/commit/9f80524), [1af2edd](https://github.com/googlechrome/lighthouse/commit/1af2edd), [7ba6776](https://github.com/googlechrome/lighthouse/commit/7ba6776), [ddff3d6](https://github.com/googlechrome/lighthouse/commit/ddff3d6))
+* certificate security errors are no longer a fatal Lighthouse error, though the Chrome error page will still return few results in the report. See [the docs](https://github.com/GoogleChrome/lighthouse/tree/82835eb6e4bcece5ac1ce9c575a8d2d9ecd995d1/docs#testing-on-a-site-with-an-untrusted-certificate) for testing a page in this situation. ([#8865](https://github.com/googlechrome/lighthouse/pull/8865))
 
 ## Core
 
-* driver: security errors are no longer a fatal or pageload error ([#8865](https://github.com/googlechrome/lighthouse/pull/8865))
 * support saving and loading errors in artifacts ([#9397](https://github.com/googlechrome/lighthouse/pull/9397))
 * config: assert all audit `requiredArtifacts` will be gathered ([#9284](https://github.com/googlechrome/lighthouse/pull/9284))
 * `domstats`: support an empty html body ([#9340](https://github.com/googlechrome/lighthouse/pull/9340))
@@ -29,16 +33,16 @@ Thanks to @AngeloGulina, @jamesgeorge007, @johnemau, @kaushikchaubal, @mitchells
 * `page-functions`: don't try to clone a ShadowRoot ([#9079](https://github.com/googlechrome/lighthouse/pull/9079))
 * perf: speed up `tap-target`'s `isVisible()` ([#9056](https://github.com/googlechrome/lighthouse/pull/9056))
 * tracehouse: allow missing FCP ([#9174](https://github.com/googlechrome/lighthouse/pull/9174))
-* tracehouse: move and organize files in `lib/tracehouse/` ([9f80524](https://github.com/googlechrome/lighthouse/commit/9f80524), [1af2edd](https://github.com/googlechrome/lighthouse/commit/1af2edd), [7ba6776](https://github.com/googlechrome/lighthouse/commit/7ba6776), [ddff3d6](https://github.com/googlechrome/lighthouse/commit/ddff3d6))
 
 ## CLI
-* accept flags from path ([#9109](https://github.com/googlechrome/lighthouse/pull/9109))
+* accept flags from a file ([#9109](https://github.com/googlechrome/lighthouse/pull/9109))
 
 ## Clients
 
 * devtools: audits2->audits and defer reading resources ([#8985](https://github.com/googlechrome/lighthouse/pull/8985), [#9344](https://github.com/googlechrome/lighthouse/pull/9344))
 * devtools: unset overflow in print ([#9274](https://github.com/googlechrome/lighthouse/pull/9274))
-* update `processForProto` method signature, `string` -> `LH.Result` ([#9016](https://github.com/googlechrome/lighthouse/pull/9016))
+* lightrider: update `processForProto` method signature, `string` -> `LH.Result` ([#9016](https://github.com/googlechrome/lighthouse/pull/9016))
+* lightrider: serialize errors in artifacts ([#9410](https://github.com/googlechrome/lighthouse/pull/9410))
 
 ## Deps
 
@@ -57,7 +61,7 @@ Thanks to @AngeloGulina, @jamesgeorge007, @johnemau, @kaushikchaubal, @mitchells
 
 ## Docs
 
-* add i18n overview & authoring documentation ([#9361](https://github.com/googlechrome/lighthouse/pull/9361))
+* add i18n overview and authoring documentation ([#9361](https://github.com/googlechrome/lighthouse/pull/9361))
 * link to good first issues ([#9440](https://github.com/googlechrome/lighthouse/pull/9440))
 * add instructions for testing with self-signed certificate ([#9112](https://github.com/googlechrome/lighthouse/pull/9112))
 * update `understanding-results.md` ([#9226](https://github.com/googlechrome/lighthouse/pull/9226))
@@ -84,7 +88,7 @@ Thanks to @AngeloGulina, @jamesgeorge007, @johnemau, @kaushikchaubal, @mitchells
 * accessibility: add heading role to report category gauge ([#9422](https://github.com/googlechrome/lighthouse/pull/9422))
 * add link to docs on performance scoring ([#9355](https://github.com/googlechrome/lighthouse/pull/9355))
 * use full-bleed image thumbnails ([#9238](https://github.com/googlechrome/lighthouse/pull/9238))
-* show disabled checkbox when all/no urls are third-party ([#9299](https://github.com/googlechrome/lighthouse/pull/9299))
+* show disabled checkbox when all/no urls are third party ([#9299](https://github.com/googlechrome/lighthouse/pull/9299))
 * remove unnecessary attribute in svg ([#9301](https://github.com/googlechrome/lighthouse/pull/9301))
 * make urls clickable ([#9224](https://github.com/googlechrome/lighthouse/pull/9224))
 * use css grid for metrics ([#9273](https://github.com/googlechrome/lighthouse/pull/9273))
@@ -132,6 +136,8 @@ Thanks to @AngeloGulina, @jamesgeorge007, @johnemau, @kaushikchaubal, @mitchells
 * update broken tracing-processor require ([#9123](https://github.com/googlechrome/lighthouse/pull/9123))
 * address release script feedback ([#9111](https://github.com/googlechrome/lighthouse/pull/9111))
 * release script should commit with format vX.Y.Z ([#9090](https://github.com/googlechrome/lighthouse/pull/9090))
+
+[Full 5.2.0 Changelog](https://github.com/googlechrome/lighthouse/compare/v5.1.0...v5.2.0)
 
 <a name="5.1.0"></a>
 # 5.1.0 (2019-05-30)
