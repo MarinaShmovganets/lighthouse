@@ -354,6 +354,19 @@ describe('Convert Message to Placeholder', () => {
     expect(() => collect.convertMessageToPlaceholders(message, undefined)).toThrow(
       /Variable 'name' is missing example comment in message "Hello {name}."/);
   });
+
+  it('throws when message contains double dollar', () => {
+    const message = 'Hello World$$';
+    expect(() => collect.convertMessageToPlaceholders(message)).
+      toThrow(/Ctc messages cannot contain double dollar: Hello World\$\$/);
+  });
+
+  it('throws when message contains double dollar, less obvious edition', () => {
+    const message = 'Hello ${name}';
+    expect(() => collect.convertMessageToPlaceholders(message, {name: 'Mary'})).
+      toThrow(/Ctc messages cannot contain double dollar: Hello \$\$ICU_0\$/);
+  });
+
 });
 
 describe('PseudoLocalizer', () => {

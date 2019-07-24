@@ -120,6 +120,8 @@ function convertMessageToCtc(message, examples = {}) {
 
   _processPlaceholderDirectIcu(icuDefn, examples);
 
+  _ctcSanityChecks(icuDefn);
+
   if (Object.entries(icuDefn.placeholders).length === 0) {
     // @ts-ignore - if this is empty then force undefined so that it does not appear in the JSON
     icuDefn.placeholders = undefined;
@@ -304,6 +306,19 @@ function _processPlaceholderDirectIcu(icu, examples) {
     };
   }
   icu.message = tempMessage;
+}
+
+/**
+ * Do some basic sanity checks to a ctc object to confirm that it is valid. Future
+ * ctc regression catching should go here.
+ *
+ * @param {ICUMessageDefn} icu the ctc output message to verify
+ */
+function _ctcSanityChecks(icu) {
+  // '$$' i.e. "Double Dollar" is always invalid in ctc.
+  if (icu.message.match(/\$\$/)) {
+    throw new Error(`Ctc messages cannot contain double dollar: ${icu.message}`);
+  }
 }
 
 /**
