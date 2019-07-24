@@ -776,6 +776,12 @@
   "lighthouse-core/audits/metrics/speed-index.js | title": {
     "message": "Speed Index"
   },
+  "lighthouse-core/audits/metrics/total-blocking-time.js | description": {
+    "message": "Sum of all time periods between FCP and Time to Interactive, when task length exceeded 50ms, expressed in milliseconds."
+  },
+  "lighthouse-core/audits/metrics/total-blocking-time.js | title": {
+    "message": "Total Blocking Time"
+  },
   "lighthouse-core/audits/network-rtt.js | description": {
     "message": "Network round trip times (RTT) have a large impact on performance. If the RTT to an origin is high, it's an indication that servers closer to the user could improve performance. [Learn more](https://hpbn.co/primer-on-latency-and-bandwidth/)."
   },
