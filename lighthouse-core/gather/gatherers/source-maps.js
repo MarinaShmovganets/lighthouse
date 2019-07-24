@@ -10,25 +10,7 @@
 const log = require('lighthouse-logger');
 const Gatherer = require('./gatherer.js');
 const URL = require('../../lib/url-shim.js');
-
-/**
- * This function fetches source maps; it is careful not to parse the response as JSON, as it will
- * just need to be serialized again over the protocol, and source maps can
- * be huge.
- *
- * @param {string} url
- * @return {Promise<string>}
- */
-/* istanbul ignore next */
-async function fetchSourceMap(url) {
-  // eslint-disable-next-line no-undef
-  const response = await fetch(url);
-  if (response.ok) {
-    return response.text();
-  } else {
-    throw new Error(`Received status code ${response.status} for ${url}`);
-  }
-}
+const fetch = require('../../lib/universal-fetch/index.js');
 
 /**
  * @fileoverview Gets JavaScript source maps.
@@ -42,15 +24,12 @@ class SourceMaps extends Gatherer {
   }
 
   /**
-   * @param {Driver} driver
    * @param {string} sourceMapUrl
    * @return {Promise<LH.Artifacts.RawSourceMap>}
    */
-  async fetchSourceMapInPage(driver, sourceMapUrl) {
-    driver.setNextProtocolTimeout(1500);
+  async fetchSourceMap(sourceMapUrl) {
     /** @type {string} */
-    const sourceMapJson =
-      await driver.evaluateAsync(`(${fetchSourceMap})(${JSON.stringify(sourceMapUrl)})`);
+    const sourceMapJson = (await fetch(sourceMapUrl)).toString();
     return JSON.parse(sourceMapJson);
   }
 
@@ -117,7 +96,7 @@ class SourceMaps extends Gatherer {
       try {
         const map = isSourceMapADataUri ?
           this.parseSourceMapFromDataUrl(sourceMapUrl) :
-          await this.fetchSourceMapInPage(driver, sourceMapUrl);
+          await this.fetchSourceMap(sourceMapUrl);
         sourceMapOrError = {map};
       } catch (err) {
         sourceMapOrError = {errorMessage: err.toString()};
@@ -140,6 +119,10 @@ class SourceMaps extends Gatherer {
    * @return {Promise<LH.Artifacts['SourceMaps']>}
    */
   async afterPass(passContext) {
+    if (!fetch.supported) {
+      return [];
+    }
+
     const driver = passContext.driver;
 
     driver.off('Debugger.scriptParsed', this.onScriptParsed);

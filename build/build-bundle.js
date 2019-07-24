@@ -37,6 +37,8 @@ const locales = fs.readdirSync(__dirname + '/../lighthouse-core/lib/i18n/locales
 const isDevtools = file => path.basename(file).includes('devtools');
 /** @param {string} file */
 const isExtension = file => path.basename(file).includes('extension');
+/** @param {string} file */
+const isLightrider = file => path.basename(file).includes('lightrider');
 
 const BANNER = `// lighthouse, browserified. ${VERSION} (${COMMIT_HASH})\n`;
 const DEBUG = false; // true for sourcemaps
@@ -79,6 +81,20 @@ async function browserifyFile(entryPath, distPath) {
   if (isDevtools(entryPath) || isExtension(entryPath)) {
     // @ts-ignore bundle.ignore does accept an array of strings.
     bundle.ignore(locales);
+  }
+
+  // Shim a minimal fetch interface for each enviroment.
+  // Default is the node implementation.
+  const pathToUniversalFetchHook = './lighthouse-core/lib/universal-fetch/index.js';
+  if (isDevtools(entryPath)) {
+    const pathToShim = require.resolve('../lighthouse-core/lib/universal-fetch/devtools.js');
+    bundle.require(pathToShim, {expose: pathToUniversalFetchHook});
+  } else if (isExtension(entryPath)) {
+    const pathToShim = require.resolve('../lighthouse-core/lib/universal-fetch/extension.js');
+    bundle.require(pathToShim, {expose: pathToUniversalFetchHook});
+  } else if (isLightrider(entryPath)) {
+    const pathToShim = require.resolve('../lighthouse-core/lib/universal-fetch/lightrider.js');
+    bundle.require(pathToShim, {expose: pathToUniversalFetchHook});
   }
 
   // Expose the audits, gatherers, and computed artifacts so they can be dynamically loaded.

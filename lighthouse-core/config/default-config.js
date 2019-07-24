@@ -125,6 +125,7 @@ const defaultConfig = {
       'image-elements',
       'link-elements',
       'meta-elements',
+      'source-maps',
       'script-elements',
       'dobetterweb/appcache',
       'dobetterweb/doctype',
