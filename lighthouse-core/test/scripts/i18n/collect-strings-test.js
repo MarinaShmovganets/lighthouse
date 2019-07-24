@@ -366,7 +366,6 @@ describe('Convert Message to Placeholder', () => {
     expect(() => collect.convertMessageToPlaceholders(message, {name: 'Mary'})).
       toThrow(/Ctc messages cannot contain double dollar: Hello \$\$ICU_0\$/);
   });
-
 });
 
 describe('PseudoLocalizer', () => {
