@@ -78,7 +78,7 @@ Thanks to @AngeloGulina, @jamesgeorge007, @johnemau, @kaushikchaubal, @mitchells
 
 * introduce script to swap in new locale to LHR ([#8755](https://github.com/googlechrome/lighthouse/pull/8755))
 * enable local debug locale, `en-XL` ([#9192](https://github.com/googlechrome/lighthouse/pull/9192))
-* localize audits in `best-practices` ([#9092](https://github.com/googlechrome/lighthouse/pull/9092))
+* begin localization of audits in `best-practices` ([#9092](https://github.com/googlechrome/lighthouse/pull/9092))
 * add `es-419` ([#9171](https://github.com/googlechrome/lighthouse/pull/9171))
 * localize column headers of budget audits ([#9127](https://github.com/googlechrome/lighthouse/pull/9127))
 
