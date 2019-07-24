@@ -68,9 +68,9 @@ async function runLighthouseInLR(connection, url, flags, lrOpts) {
         ...preprocessedLhr,
         artifacts: JSON.parse(artifactsJson),
       });
-    } else {
-      return JSON.stringify(preprocessedLhr);
     }
+
+    return JSON.stringify(preprocessedLhr);
   } catch (err) {
     // If an error ruined the entire lighthouse run, attempt to return a meaningful error.
     let runtimeError;
