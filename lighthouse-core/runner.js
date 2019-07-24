@@ -250,6 +250,7 @@ class Runner {
       settings,
       LighthouseRunWarnings: runWarnings,
       computedCache: new Map(),
+      URL: artifacts.URL,
     };
 
     // Run each audit sequentially
@@ -268,7 +269,7 @@ class Runner {
    * Otherwise returns error audit result.
    * @param {LH.Config.AuditDefn} auditDefn
    * @param {LH.Artifacts} artifacts
-   * @param {Pick<LH.Audit.Context, 'settings'|'LighthouseRunWarnings'|'computedCache'>} sharedAuditContext
+   * @param {Pick<LH.Audit.Context, 'settings'|'LighthouseRunWarnings'|'computedCache'|'URL'>} sharedAuditContext
    * @return {Promise<LH.Audit.Result>}
    * @private
    */

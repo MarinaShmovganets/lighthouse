@@ -21,8 +21,6 @@
 
 const log = require('lighthouse-logger');
 
-const ACCEPTABLE_NAVIGATION_URL_REGEX = /^(chrome|https?):/;
-
 // The ideal input response latency, the time between the input task and the
 // first frame of the response.
 const BASE_RESPONSE_LATENCY = 16;
@@ -54,11 +52,12 @@ class TraceProcessor {
    * Returns true if the event is a navigation start event of a document whose URL seems valid.
    *
    * @param {LH.TraceEvent} event
+   * @param {string} requestedUrl
    */
-  static _isNavigationStartOfInterest(event) {
+  static _isNavigationStartOfInterest(event, requestedUrl) {
     return event.name === 'navigationStart' &&
       (!event.args.data || !event.args.data.documentLoaderURL ||
-        ACCEPTABLE_NAVIGATION_URL_REGEX.test(event.args.data.documentLoaderURL));
+        event.args.data.documentLoaderURL === requestedUrl);
   }
 
   /**
@@ -347,9 +346,10 @@ class TraceProcessor {
    * Finds key trace events, identifies main process/thread, and returns timings of trace events
    * in milliseconds since navigation start in addition to the standard microsecond monotonic timestamps.
    * @param {LH.Trace} trace
+   * @param {LH.Audit.Context} context
    * @return {TraceOfTabWithoutFCP}
   */
-  static computeTraceOfTab(trace) {
+  static computeTraceOfTab(trace, context) {
     // Parse the trace for our key events and sort them by timestamp. Note: sort
     // *must* be stable to keep events correctly nested.
     const keyEvents = this._filteredStableSort(trace.traceEvents, e => {
@@ -366,7 +366,9 @@ class TraceProcessor {
     const frameEvents = keyEvents.filter(e => e.args.frame === mainFrameIds.frameId);
 
     // Our navStart will be the last frame navigation in the trace
-    const navigationStart = frameEvents.filter(this._isNavigationStartOfInterest).pop();
+    const navigationStart = frameEvents
+        .filter((event) => this._isNavigationStartOfInterest(event, context.URL.requestedUrl))
+        .pop();
     if (!navigationStart) throw this.createNoNavstartError();
 
     // Find our first paint of this frame

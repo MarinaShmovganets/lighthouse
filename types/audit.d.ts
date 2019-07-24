@@ -14,6 +14,8 @@ declare global {
       settings: Config.Settings;
       /** Push to this array to add top-level warnings to the LHR. */
       LighthouseRunWarnings: Array<string>;
+      /** The URL initially requested and the post-redirects URL that was actually loaded. */
+      URL: {requestedUrl: string, finalUrl: string};
       /**
        * Nested cache for already-computed computed artifacts. Keyed first on
        * the computed artifact's `name` property, then on input artifact(s).
