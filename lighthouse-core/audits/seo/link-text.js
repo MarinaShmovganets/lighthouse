@@ -52,6 +52,7 @@ const BLOCKLIST = new Set([
   'ir',
   'mais',
   'mais informação',
+  'mais informações',
   'veja mais',
   'mais',
 ]);
