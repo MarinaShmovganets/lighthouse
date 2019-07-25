@@ -46,15 +46,13 @@ const BLOCKLIST = new Set([
   'empezar',
   // Portuguese
   'clique aqui',
-  'ir',
-  'início',
   'inicio',
+  'início',
   'ir',
-  'mais',
   'mais informação',
   'mais informações',
-  'veja mais',
   'mais',
+  'veja mais',
 ]);
 const i18n = require('../../lib/i18n/i18n.js');
 
