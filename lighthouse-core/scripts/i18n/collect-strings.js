@@ -113,9 +113,13 @@ function convertMessageToCtc(message, examples = {}) {
 
   // Process each placeholder type
   _processPlaceholderMarkdownCode(icuDefn);
+
   _processPlaceholderMarkdownLink(icuDefn);
+
   _processPlaceholderCustomFormattedIcu(icuDefn);
+
   _processPlaceholderDirectIcu(icuDefn, examples);
+
   _ctcSanityChecks(icuDefn);
 
   if (Object.entries(icuDefn.placeholders).length === 0) {
