@@ -383,7 +383,7 @@ const seenStrings = new Map();
 let collisions = 0;
 
 /**
- * Collects all LHL messsages defined in UIString from Javascript files in dir, 
+ * Collects all LHL messsages defined in UIString from Javascript files in dir,
  * and converts them into CTC.
  * @param {string} dir absolute path
  * @return {Record<string, ICUMessageDefn>}
