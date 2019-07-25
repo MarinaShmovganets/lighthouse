@@ -113,13 +113,9 @@ function convertMessageToCtc(message, examples = {}) {
 
   // Process each placeholder type
   _processPlaceholderMarkdownCode(icuDefn);
-
   _processPlaceholderMarkdownLink(icuDefn);
-
   _processPlaceholderCustomFormattedIcu(icuDefn);
-
   _processPlaceholderDirectIcu(icuDefn, examples);
-
   _ctcSanityChecks(icuDefn);
 
   if (Object.entries(icuDefn.placeholders).length === 0) {
@@ -427,9 +423,7 @@ function collectAllStringsInDir(dir) {
         const key = property.key.name;
         const val = exportVars.UIStrings[key];
         const {description, examples} = computeDescription(ast, property, val, lastPropertyEndIndex);
-
         const converted = convertMessageToCtc(val, examples);
-
         const messageKey = `${relativePathToRoot} | ${key}`;
 
         /** @type {ICUMessageDefn} */
@@ -453,9 +447,7 @@ function collectAllStringsInDir(dir) {
         }
 
         seenStrings.set(icuDefn.message, messageKey);
-
         strings[messageKey] = icuDefn;
-
         lastPropertyEndIndex = property.range[1];
       }
     }
