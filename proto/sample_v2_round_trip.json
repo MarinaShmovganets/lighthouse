@@ -1116,7 +1116,7 @@
                         "name": "WordPress"
                     }
                 ],
-                "summary": {},
+                "summary": null,
                 "type": "table"
             },
             "id": "js-libraries",
@@ -1248,7 +1248,7 @@
             "details": {
                 "headings": [],
                 "items": [],
-                "summary": {},
+                "summary": null,
                 "type": "table"
             },
             "id": "link-text",
@@ -1905,7 +1905,7 @@
                         "vulnCount": 2.0
                     }
                 ],
-                "summary": {},
+                "summary": null,
                 "type": "table"
             },
             "displayValue": "2 vulnerabilities detected",
@@ -2752,17 +2752,10 @@
         },
         "unused-css-rules": {
             "description": "Remove dead rules from stylesheets and defer the loading of CSS not used for above-the-fold content to reduce unnecessary bytes consumed by network activity. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/unused-css).",
-            "details": {
-                "headings": [],
-                "items": [],
-                "overallSavingsBytes": 0.0,
-                "overallSavingsMs": 0.0,
-                "type": "opportunity"
-            },
+            "errorMessage": "Required SourceMaps gatherer did not run.",
             "id": "unused-css-rules",
-            "numericValue": 0.0,
-            "score": 1.0,
-            "scoreDisplayMode": "numeric",
+            "score": null,
+            "scoreDisplayMode": "error",
             "title": "Remove unused CSS"
         },
         "use-landmarks": {

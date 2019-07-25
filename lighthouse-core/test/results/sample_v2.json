@@ -2475,17 +2475,9 @@
       "id": "unused-css-rules",
       "title": "Remove unused CSS",
       "description": "Remove dead rules from stylesheets and defer the loading of CSS not used for above-the-fold content to reduce unnecessary bytes consumed by network activity. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/unused-css).",
-      "score": 1,
-      "scoreDisplayMode": "numeric",
-      "numericValue": 0,
-      "displayValue": "",
-      "details": {
-        "type": "opportunity",
-        "headings": [],
-        "items": [],
-        "overallSavingsMs": 0,
-        "overallSavingsBytes": 0
-      }
+      "score": null,
+      "scoreDisplayMode": "error",
+      "errorMessage": "Required SourceMaps gatherer did not run."
     },
     "uses-webp-images": {
       "id": "uses-webp-images",
@@ -5876,6 +5868,15 @@
       ],
       "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | description": [
         "audits[unused-css-rules].description"
+      ],
+      "lighthouse-core/lib/lh-error.js | missingRequiredArtifact": [
+        {
+          "values": {
+            "errorCode": "MISSING_REQUIRED_ARTIFACT",
+            "artifactName": "SourceMaps"
+          },
+          "path": "audits[unused-css-rules].errorMessage"
+        }
       ],
       "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": [
         "audits[uses-webp-images].title"

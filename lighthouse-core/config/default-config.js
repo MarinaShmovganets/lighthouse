@@ -123,7 +123,6 @@ const defaultConfig = {
       'console-messages',
       'anchor-elements',
       'image-elements',
-      'source-maps',
       'link-elements',
       'meta-elements',
       'script-elements',
