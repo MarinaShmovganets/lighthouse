@@ -324,6 +324,7 @@ function _ctcSanityChecks(icu) {
  * messages themselves while leaving placeholders untouched.
  *
  * @param {Record<string, ICUMessageDefn>} messages
+ * @return {Record<string, ICUMessageDefn>}
  */
 function createPsuedoLocaleStrings(messages) {
   /** @type {Record<string, ICUMessageDefn>} */
