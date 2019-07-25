@@ -2752,10 +2752,17 @@
         },
         "unused-css-rules": {
             "description": "Remove dead rules from stylesheets and defer the loading of CSS not used for above-the-fold content to reduce unnecessary bytes consumed by network activity. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/unused-css).",
-            "errorMessage": "Required SourceMaps gatherer did not run.",
+            "details": {
+                "headings": [],
+                "items": [],
+                "overallSavingsBytes": 0.0,
+                "overallSavingsMs": 0.0,
+                "type": "opportunity"
+            },
             "id": "unused-css-rules",
-            "score": null,
-            "scoreDisplayMode": "error",
+            "numericValue": 0.0,
+            "score": 1.0,
+            "scoreDisplayMode": "numeric",
             "title": "Remove unused CSS"
         },
         "use-landmarks": {
