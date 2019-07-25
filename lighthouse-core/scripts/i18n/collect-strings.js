@@ -391,9 +391,9 @@ function collectAllStringsInDir(dir) {
     cwd: LH_ROOT,
     ignore: ignoredPathComponents,
   });
-  for (const relativePathToRoot of files) {
-    const absolutePath = path.join(LH_ROOT, relativePathToRoot);
-    if (!process.env.CI) console.log('Collecting from', relativePathToRoot);
+  for (const relativeToRootPath of files) {
+    const absolutePath = path.join(LH_ROOT, relativeToRootPath);
+    if (!process.env.CI) console.log('Collecting from', relativeToRootPath);
 
     const content = fs.readFileSync(absolutePath, 'utf8');
     const exportVars = require(absolutePath);
@@ -425,7 +425,7 @@ function collectAllStringsInDir(dir) {
         const val = exportVars.UIStrings[key];
         const {description, examples} = computeDescription(ast, property, val, lastPropertyEndIndex);
         const converted = convertMessageToCtc(val, examples);
-        const messageKey = `${relativePathToRoot} | ${key}`;
+        const messageKey = `${relativeToRootPath} | ${key}`;
 
         /** @type {ICUMessageDefn} */
         const icuDefn = {
