@@ -86,30 +86,30 @@ class TraceProcessor {
     const otherEventIndices = tsGroupIndices.filter(index => !eEventIndices.includes(index) &&
       !bxEventIndices.includes(index));
 
+    /** @type {Map<number, number>} */
     const effectiveDuration = new Map();
     for (const index of bxEventIndices) {
       const event = traceEvents[index];
       if (event.ph === 'X') {
         effectiveDuration.set(index, event.dur);
       } else {
-        // Find the first 'E' event that matches our name.
+        // Find the first 'E' event *after* the current group of events that matches our name.
+        let duration = Number.MAX_SAFE_INTEGER;
         const startIndex = indexOfTsGroupIndicesStart + tsGroupIndices.length;
         for (let j = startIndex; j < timestampSortedIndices.length; j++) {
           const potentialEndEvent = traceEvents[timestampSortedIndices[j]];
           if (potentialEndEvent.ph === 'E' && potentialEndEvent.name === event.name) {
-            effectiveDuration.set(index, potentialEndEvent.ts - event.ts);
+            duration = potentialEndEvent.ts - event.ts;
             break;
           }
         }
 
-        if (!effectiveDuration.has(index)) {
-          effectiveDuration.set(index, Number.MAX_SAFE_INTEGER);
-        }
+        effectiveDuration.set(index, duration);
       }
     }
 
-    bxEventIndices.sort((indexA, indexB) => (effectiveDuration.get(indexB) -
-      effectiveDuration.get(indexA) || (indexA - indexB)));
+    bxEventIndices.sort((indexA, indexB) => ((effectiveDuration.get(indexB) || 0) -
+      (effectiveDuration.get(indexA) || 0) || (indexA - indexB)));
 
     otherEventIndices.sort((indexA, indexB) => indexA - indexB);
 
@@ -155,6 +155,9 @@ class TraceProcessor {
         traceEvents,
       )
       indices.splice(i, finalIndexOrder.length, ...finalIndexOrder);
+      // We just sorted this set of identical timestamps, so skip over the rest of the group.
+      // -1 because we already have i++.
+      i += tsGroupIndices.length - 1;
     }
 
     // create a new array using the target indices from previous sort step
