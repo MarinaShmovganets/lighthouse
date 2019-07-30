@@ -60,8 +60,7 @@ function getFlags(manualArgv) {
           'Path to JSON file of HTTP Header key/value pairs to send in requests')
       .example(
           'lighthouse <url> --only-categories=performance,pwa',
-          'Only run specific categories.')
-
+          'Only run the specified categories. Available categories: accessibility, best-practices, performance, pwa, seo')
       /**
        * Also accept a file for all of these flags. Yargs will merge in and override the file-based
        * flags with the command-line flags.
