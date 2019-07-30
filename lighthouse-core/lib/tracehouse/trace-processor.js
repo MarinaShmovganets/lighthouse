@@ -75,10 +75,10 @@ class TraceProcessor {
    * @return {number[]}
    */
   static _sortTimestampEventGroup(
-    tsGroupIndices,
-    timestampSortedIndices,
-    indexOfTsGroupIndicesStart,
-    traceEvents
+      tsGroupIndices,
+      timestampSortedIndices,
+      indexOfTsGroupIndicesStart,
+      traceEvents
   ) {
     const eEventIndices = tsGroupIndices.filter(index => traceEvents[index].ph === 'E');
     const bxEventIndices = tsGroupIndices.filter(index => traceEvents[index].ph === 'X' ||
@@ -152,8 +152,8 @@ class TraceProcessor {
         tsGroupIndices,
         indices,
         i,
-        traceEvents,
-      )
+        traceEvents
+      );
       indices.splice(i, finalIndexOrder.length, ...finalIndexOrder);
       // We just sorted this set of identical timestamps, so skip over the rest of the group.
       // -1 because we already have i++.
