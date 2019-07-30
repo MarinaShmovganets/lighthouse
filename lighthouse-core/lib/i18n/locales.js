@@ -17,8 +17,8 @@
 // The keys within this const must exactly match the LH.Locale type in externs.d.ts
 /** @type {Record<LH.Locale, LocaleMessages>} */
 const locales = {
-  'en-US': require('./en-US.json'), // The 'source' strings, with descriptions
-  'en': require('./en-US.json'), // According to CLDR/ICU, 'en' == 'en-US' dates/numbers (Why?!)
+  'en-US': require('./locales/en-US.json'), // The 'source' strings, with descriptions
+  'en': require('./locales/en-US.json'), // According to CLDR/ICU, 'en' == 'en-US' dates/numbers (Why?!)
 
   // TODO: en-GB has just ~10 messages that are different from en-US. We should only ship those.
   'en-AU': require('./locales/en-GB.json'), // Alias of 'en-GB'
@@ -39,6 +39,7 @@ const locales = {
   'de': require('./locales/de.json'), // de-AT, de-CH identical, so they fall back into de
   'el': require('./locales/el.json'),
   'en-XA': require('./locales/en-XA.json'), // psuedolocalization
+  'en-XL': require('./locales/en-XL.json'), // local psuedolocalization
   'es': require('./locales/es.json'),
   'es-419': require('./locales/es-419.json'),
   // Aliases of es-419: https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/supplemental/parentLocales.json
