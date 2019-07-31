@@ -45,12 +45,12 @@ function computeDescription(ast, message) {
     const examples = {};
 
     for (const tag of ast.tags) {
-      const comment = singleLineJsDocComment(tag.comment);
+      const comment = coerceToSingleLineAndTrim(tag.comment);
 
       if (tag.tagName.text === 'description') {
         description = comment;
       } else if (tag.tagName.text === 'example') {
-        const {placeholderName, exampleValue} = parseExample(comment);
+        const {placeholderName, exampleValue} = parseAtExample(comment);
         examples[placeholderName] = exampleValue;
       }
     }
@@ -61,10 +61,10 @@ function computeDescription(ast, message) {
 
   if (ast.comment) {
     // The entire comment is the description, so return everything.
-    return {description: singleLineJsDocComment(ast.comment), examples: {}};
+    return {description: coerceToSingleLineAndTrim(ast.comment), examples: {}};
   }
 
-  throw Error(`No Description for message "${message}"`);
+  throw Error(`Missing description comment for message "${message}"`);
 }
 
 /**
@@ -72,7 +72,7 @@ function computeDescription(ast, message) {
  * @param {string=} comment
  * @return {string}
  */
-function singleLineJsDocComment(comment = '') {
+function coerceToSingleLineAndTrim(comment = '') {
   return comment.replace(/\n/g, ' ').trim();
 }
 
@@ -81,7 +81,7 @@ function singleLineJsDocComment(comment = '') {
  * @param {string} rawExample
  * @return {{placeholderName: string, exampleValue: string}}
  */
-function parseExample(rawExample) {
+function parseAtExample(rawExample) {
   const match = rawExample.match(/^{(?<exampleValue>[^}]+)} (?<placeholderName>.+)$/);
   if (!match || !match.groups) throw new Error('Incorrectly formatted @example');
   const {placeholderName, exampleValue} = match.groups;
@@ -407,7 +407,7 @@ function getIdentifier(node) {
 function parseUIStrings(sourceStr, liveUIStrings) {
   const tsAst = tsc.createSourceFile('uistrings', sourceStr, tsc.ScriptTarget.ES2019, true, tsc.ScriptKind.JS);
 
-  const extractionError = new Error('UIStrings was not extracted correctly by the collect-strings regex.');
+  const extractionError = new Error('UIStrings declaration was not extracted correctly by the collect-strings regex.');
   const uiStringsStatement = tsAst.statements[0];
   if (tsAst.statements.length !== 1) throw extractionError;
   if (!tsc.isVariableStatement(uiStringsStatement)) throw extractionError;
@@ -430,7 +430,7 @@ function parseUIStrings(sourceStr, liveUIStrings) {
 
     // @ts-ignore - Not part of the public tsc interface yet.
     const jsDocComments = tsc.getJSDocCommentsAndTags(property);
-    if (jsDocComments.length === 0) throw new Error(`No Description for message "${message}"`);
+    if (jsDocComments.length === 0) throw new Error(`Missing description comment for message "${message}"`);
     const {description, examples} = computeDescription(jsDocComments[0], message);
 
     parsedMessages[key] = {

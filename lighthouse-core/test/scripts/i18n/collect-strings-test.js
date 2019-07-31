@@ -18,13 +18,13 @@ describe('parseUIStrings', () => {
     const justUIStrings =
     `const UIStrings = {
         /** Description for Hello World. */
-        messageStr: 'Hello World',
+        exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
     const res = collect.parseUIStrings(justUIStrings, liveUIStrings);
 
     expect(res).toEqual({
-      messageStr: {
+      exampleString: {
         message: 'Hello World',
         description: 'Description for Hello World.',
         examples: {},
@@ -35,25 +35,25 @@ describe('parseUIStrings', () => {
   it('errors when no description present', () => {
     const justUIStrings =
     `const UIStrings = {
-        message: 'Hello World',
+      exampleString: 'Hello World',
         /** ^ no description for this one. */
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
 
     expect(() => collect.parseUIStrings(justUIStrings, liveUIStrings))
-      .toThrow(/No Description for message "Hello World"/);
+      .toThrow(/Missing description comment for message "Hello World"/);
   });
 
   it('errors when description is blank', () => {
     const justUIStrings =
     `const UIStrings = {
         /** */
-        message: 'Hello World',
+        exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
 
     expect(() => collect.parseUIStrings(justUIStrings, liveUIStrings))
-      .toThrow(/No Description for message "Hello World"/);
+      .toThrow(/Missing description comment for message "Hello World"/);
   });
 
   it('errors when @description is blank', () => {
@@ -62,7 +62,7 @@ describe('parseUIStrings', () => {
         /** 
          * @description
          */
-        message: 'Hello World',
+        exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
 
@@ -76,13 +76,13 @@ describe('parseUIStrings', () => {
       /** 
        * @description Tagged description for Hello World.
        */
-      messageStr: 'Hello World',
+      exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
     const res = collect.parseUIStrings(justUIStrings, liveUIStrings);
 
     expect(res).toEqual({
-      messageStr: {
+      exampleString: {
         message: 'Hello World',
         description: 'Tagged description for Hello World.',
         examples: {},
@@ -97,13 +97,13 @@ describe('parseUIStrings', () => {
        * @description Tagged description for Hello World,
        *              which is a long, indented(!) description
        */
-      messageStr: 'Hello World',
+      exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
     const res = collect.parseUIStrings(justUIStrings, liveUIStrings);
 
     expect(res).toEqual({
-      messageStr: {
+      exampleString: {
         message: 'Hello World',
         description: 'Tagged description for Hello World, which is a long, indented(!) description',
         examples: {},
@@ -118,13 +118,13 @@ describe('parseUIStrings', () => {
        * Tagged description for Hello World,
        * which is a long description, that wraps.
        */
-      messageStr: 'Hello World',
+      exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
     const res = collect.parseUIStrings(justUIStrings, liveUIStrings);
 
     expect(res).toEqual({
-      messageStr: {
+      exampleString: {
         message: 'Hello World',
         description: 'Tagged description for Hello World, which is a long description, that wraps.',
         examples: {},
@@ -139,13 +139,13 @@ describe('parseUIStrings', () => {
        * @description Tagged description for Hello World.
        * @example {Variable example.} variable
        */
-      messageStr: 'Hello World {variable}',
+      exampleString: 'Hello World {variable}',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
     const res = collect.parseUIStrings(justUIStrings, liveUIStrings);
 
     expect(res).toEqual({
-      messageStr: {
+      exampleString: {
         message: 'Hello World {variable}',
         description: 'Tagged description for Hello World.',
         examples: {
@@ -163,13 +163,13 @@ describe('parseUIStrings', () => {
        * @example {Variable example.} variable
        * @example {Variable2 example.} variable2
        */
-      messageStr: 'Hello World {variable} {variable2}',
+      exampleString: 'Hello World {variable} {variable2}',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
     const res = collect.parseUIStrings(justUIStrings, liveUIStrings);
 
     expect(res).toEqual({
-      messageStr: {
+      exampleString: {
         message: 'Hello World {variable} {variable2}',
         description: 'Tagged description for Hello World.',
         examples: {
@@ -186,13 +186,13 @@ describe('parseUIStrings', () => {
       /** 
        * @description Tagged description for Hello World.
        */
-      messageStr: 'Hello World {variable}',
+      exampleString: 'Hello World {variable}',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
     const res = collect.parseUIStrings(justUIStrings, liveUIStrings);
 
     expect(res).toEqual({
-      messageStr: {
+      exampleString: {
         message: 'Hello World {variable}',
         description: 'Tagged description for Hello World.',
         examples: {},
@@ -207,7 +207,7 @@ describe('parseUIStrings', () => {
          * @description Some description.
          * @example
          */
-        message: 'Hello World',
+        exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
 
@@ -222,7 +222,7 @@ describe('parseUIStrings', () => {
          * @description Some description.
          * @example {missingPlaceholdername}
          */
-        message: 'Hello World',
+        exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
 
@@ -237,7 +237,7 @@ describe('parseUIStrings', () => {
          * @description Some description.
          * @example placeholderName
          */
-        message: 'Hello World',
+        exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
 
@@ -252,35 +252,35 @@ describe('parseUIStrings', () => {
        * @description A description for Hello World.
        * @example {variable value} variable
        */
-      messageStr: 'Hello World {variable}',
+      exampleString: 'Hello World {variable}',
       /**
        * A description without an @tag.
        */
-      messageStr2: 'Just a plain string',
+      exampleString2: 'Just a plain string',
       /** 
        * @description Tagged description for Hello World.
        * @example {50} count
        * @example {none of your beeswax} variables
        */
-      messageStr3: 'A string with {count, number, milliseconds} of {variables}.',
+      exampleString3: 'A string with {count, number, milliseconds} of {variables}.',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
     const res = collect.parseUIStrings(justUIStrings, liveUIStrings);
 
     expect(res).toEqual({
-      messageStr: {
+      exampleString: {
         message: 'Hello World {variable}',
         description: 'A description for Hello World.',
         examples: {
           variable: 'variable value',
         },
       },
-      messageStr2: {
+      exampleString2: {
         message: 'Just a plain string',
         description: 'A description without an @tag.',
         examples: {},
       },
-      messageStr3: {
+      exampleString3: {
         message: 'A string with {count, number, milliseconds} of {variables}.',
         description: 'Tagged description for Hello World.',
         examples: {
