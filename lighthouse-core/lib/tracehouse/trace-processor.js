@@ -68,6 +68,10 @@ class TraceProcessor {
    * 2. Order B/X events by their duration, we want parents to start before child events.
    * 3. If we don't have any of this to go on, just use the position in the original array (stable sort).
    *
+   * Note that the typical group size with the same timestamp will be quite small (<10 or so events),
+   * and the number of groups typically ~1% of total trace, so the same ultra-performance-sensitive consideration
+   * given to functions that run on entire traces does not necessarily apply here.
+   *
    * @param {number[]} tsGroupIndices
    * @param {number[]} timestampSortedIndices
    * @param {number} indexOfTsGroupIndicesStart
