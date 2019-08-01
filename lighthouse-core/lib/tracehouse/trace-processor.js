@@ -80,11 +80,37 @@ class TraceProcessor {
       indexOfTsGroupIndicesStart,
       traceEvents
   ) {
-    const eEventIndices = tsGroupIndices.filter(index => traceEvents[index].ph === 'E');
-    const bxEventIndices = tsGroupIndices.filter(index => traceEvents[index].ph === 'X' ||
-      traceEvents[index].ph === 'B');
-    const otherEventIndices = tsGroupIndices.filter(index => !eEventIndices.includes(index) &&
-      !bxEventIndices.includes(index));
+    /*
+     * We have two different sets of indices going on here.
+
+     *    1. There's the index for an element of `traceEvents`, referred to here as an `ArrayIndex`.
+     *       `timestampSortedIndices` is an array of `ArrayIndex` elements.
+     *    2. There's the index for an element of `timestampSortedIndices`, referred to here as a `TsIndex`.
+     *       A `TsIndex` is therefore an index to an element which is itself an index.
+     *
+     * These two helper functions help resolve this layer of indirection.
+     * Our final return value is an array of `ArrayIndex` in their final sort order.
+     */
+    /** @param {number} i */
+    const lookupArrayIndexByTsIndex = i => timestampSortedIndices[i];
+    /** @param {number} i */
+    const lookupEventByTsIndex = i => traceEvents[lookupArrayIndexByTsIndex(i)];
+
+    /** @type {Array<number>} */
+    const eEventIndices = [];
+    /** @type {Array<number>} */
+    const bxEventIndices = [];
+    /** @type {Array<number>} */
+    const otherEventIndices = [];
+
+    for (const tsIndex of tsGroupIndices) {
+      // See comment above for the distinction between `tsIndex` and `arrayIndex`.
+      const arrayIndex = lookupArrayIndexByTsIndex(tsIndex);
+      const event = lookupEventByTsIndex(tsIndex);
+      if (event.ph === 'E') eEventIndices.push(arrayIndex);
+      else if (event.ph === 'X' || event.ph === 'B') bxEventIndices.push(arrayIndex);
+      else otherEventIndices.push(arrayIndex);
+    }
 
     /** @type {Map<number, number>} */
     const effectiveDuration = new Map();
@@ -93,14 +119,30 @@ class TraceProcessor {
       if (event.ph === 'X') {
         effectiveDuration.set(index, event.dur);
       } else {
-        // Find the first 'E' event *after* the current group of events that matches our name.
+        // Find the next available 'E' event *after* the current group of events that matches our name, pid, and tid.
         let duration = Number.MAX_SAFE_INTEGER;
+        // To find the next "available" 'E' event, we need to account for nested events of the same name.
+        let additionalNestedEventsWithSameName = 0;
         const startIndex = indexOfTsGroupIndicesStart + tsGroupIndices.length;
         for (let j = startIndex; j < timestampSortedIndices.length; j++) {
-          const potentialEndEvent = traceEvents[timestampSortedIndices[j]];
-          if (potentialEndEvent.ph === 'E' && potentialEndEvent.name === event.name) {
-            duration = potentialEndEvent.ts - event.ts;
+          const potentialMatchingEvent = lookupEventByTsIndex(j);
+          const eventMatches = potentialMatchingEvent.name === event.name &&
+            potentialMatchingEvent.pid === event.pid &&
+            potentialMatchingEvent.tid === event.tid;
+
+          // The event doesn't match, just skip it.
+          if (!eventMatches) continue;
+
+          if (potentialMatchingEvent.ph === 'E' && additionalNestedEventsWithSameName === 0) {
+            // It's the next available 'E' event for us, so set the duration and break the loop.
+            duration = potentialMatchingEvent.ts - event.ts;
             break;
+          } else if (potentialMatchingEvent.ph === 'E') {
+            // It's an 'E' event but for a nested event. Decrement our counter and move on.
+            additionalNestedEventsWithSameName--;
+          } else if (potentialMatchingEvent.ph === 'B') {
+            // It's a nested 'B' event. Increment our counter and move on.
+            additionalNestedEventsWithSameName++;
           }
         }
 
@@ -138,10 +180,10 @@ class TraceProcessor {
     // Now we find groups with equal timestamps and order them by their nesting structure.
     for (let i = 0; i < indices.length - 1; i++) {
       const ts = traceEvents[indices[i]].ts;
-      const tsGroupIndices = [indices[i]];
+      const tsGroupIndices = [i];
       for (let j = i + 1; j < indices.length; j++) {
         if (traceEvents[indices[j]].ts !== ts) break;
-        tsGroupIndices.push(indices[j]);
+        tsGroupIndices.push(j);
       }
 
       // We didn't find any other events with the same timestamp, just keep going.
