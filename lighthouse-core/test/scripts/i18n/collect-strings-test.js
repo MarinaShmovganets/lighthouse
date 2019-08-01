@@ -269,7 +269,22 @@ describe('parseUIStrings', () => {
       .toThrow(/Incorrectly formatted @example/);
   });
 
-  it('parses UIStrings with multiple messages', () => {
+  it('throws when an unexpected jsdoc tag is found', () => {
+    const justUIStrings =
+    `const UIStrings = {
+      /**
+       * @description Some description.
+       * @tutorial For some reason
+       */
+      exampleString: 'Hello World',
+    };`;
+    const liveUIStrings = evalJustUIStrings(justUIStrings);
+
+    expect(() => collect.parseUIStrings(justUIStrings, liveUIStrings))
+      .toThrow(/Unexpected tagName "@tutorial"/);
+  });
+
+  it('parses UIStrings with multiple mixed-jsdoced messages', () => {
     const justUIStrings =
     `const UIStrings = {
       /** 
@@ -278,7 +293,8 @@ describe('parseUIStrings', () => {
        */
       exampleString: 'Hello World {variable}',
       /**
-       * A description without an @tag.
+       * A description without an @tag and
+       * across multiple lines.
        */
       exampleString2: 'Just a plain string',
       /** 
@@ -301,7 +317,7 @@ describe('parseUIStrings', () => {
       },
       exampleString2: {
         message: 'Just a plain string',
-        description: 'A description without an @tag.',
+        description: 'A description without an @tag and across multiple lines.',
         examples: {},
       },
       exampleString3: {
@@ -371,7 +387,7 @@ describe('Convert Message to Placeholder', () => {
   it('errors when open backtick', () => {
     const message = '`Hello World.';
     expect(() => collect.convertMessageToCtc(message))
-      .toThrow(/Open backtick in message "`Hello World."/);
+      .toThrow(/Open backtick in message "`Hello World\."/);
   });
 
   it('allows other markdown in code block', () => {
@@ -500,7 +516,7 @@ describe('Convert Message to Placeholder', () => {
   it('errors when direct ICU has no examples', () => {
     const message = 'Hello {name}.';
     expect(() => collect.convertMessageToCtc(message)).toThrow(
-      /Variable 'name' is missing @example comment in message "Hello {name}."/);
+      /Variable 'name' is missing @example comment in message "Hello {name}\."/);
   });
 
   it('throws when message contains double dollar', () => {

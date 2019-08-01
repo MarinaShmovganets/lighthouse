@@ -57,7 +57,8 @@ function computeDescription(ast, message) {
         const {placeholderName, exampleValue} = parseExampleJsDoc(comment);
         examples[placeholderName] = exampleValue;
       } else {
-        throw new Error('bad tag' + tag.tagName.text);
+        // Until a compelling use case for supporting more @tags, throw to catch typos, etc.
+        throw new Error(`Unexpected tagName "@${tag.tagName.text}"`);
       }
     }
 
@@ -80,7 +81,7 @@ function computeDescription(ast, message) {
  */
 function coerceToSingleLineAndTrim(comment = '') {
   // Line breaks within a jsdoc comment should always be replaceable with a space.
-  return comment.replace(/\n/g, ' ').trim();
+  return comment.replace(/\n+/g, ' ').trim();
 }
 
 /**
