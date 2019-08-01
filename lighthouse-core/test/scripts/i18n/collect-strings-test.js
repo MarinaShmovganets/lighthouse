@@ -17,8 +17,8 @@ describe('parseUIStrings', () => {
   it('collects description', () => {
     const justUIStrings =
     `const UIStrings = {
-        /** Description for Hello World. */
-        exampleString: 'Hello World',
+      /** Description for Hello World. */
+      exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
     const res = collect.parseUIStrings(justUIStrings, liveUIStrings);
@@ -36,7 +36,7 @@ describe('parseUIStrings', () => {
     const justUIStrings =
     `const UIStrings = {
       exampleString: 'Hello World',
-        /** ^ no description for this one. */
+      /** ^ no description for this one. */
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
 
@@ -47,8 +47,8 @@ describe('parseUIStrings', () => {
   it('errors when description is blank', () => {
     const justUIStrings =
     `const UIStrings = {
-        /** */
-        exampleString: 'Hello World',
+      /** */
+      exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
 
@@ -59,10 +59,10 @@ describe('parseUIStrings', () => {
   it('errors when @description is blank', () => {
     const justUIStrings =
     `const UIStrings = {
-        /** 
-         * @description
-         */
-        exampleString: 'Hello World',
+      /** 
+       * @description
+       */
+      exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
 
@@ -155,6 +155,30 @@ describe('parseUIStrings', () => {
     });
   });
 
+  it('collects complex multi-line description with example', () => {
+    const justUIStrings =
+    `const UIStrings = {
+      /** 
+       * @description Tagged description for Hello World,
+       *              which is a long, indented(!) {word}
+       * @example {description} word
+       */
+      exampleString: 'Hello World',
+    };`;
+    const liveUIStrings = evalJustUIStrings(justUIStrings);
+    const res = collect.parseUIStrings(justUIStrings, liveUIStrings);
+
+    expect(res).toEqual({
+      exampleString: {
+        message: 'Hello World',
+        description: 'Tagged description for Hello World, which is a long, indented(!) {word}',
+        examples: {
+          word: 'description',
+        },
+      },
+    });
+  });
+
   it('collects complex description with multiple examples', () => {
     const justUIStrings =
     `const UIStrings = {
@@ -203,41 +227,41 @@ describe('parseUIStrings', () => {
   it('throws when @example is blank', () => {
     const justUIStrings =
     `const UIStrings = {
-        /** 
-         * @description Some description.
-         * @example
-         */
-        exampleString: 'Hello World',
+      /** 
+       * @description Some description.
+       * @example
+       */
+      exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
 
     expect(() => collect.parseUIStrings(justUIStrings, liveUIStrings))
-      .toThrow(/Incorrectly formatted @example/);
+      .toThrow(/Incorrectly formatted @example: ""/);
   });
 
   it('throws when @example is missing a placeholder name', () => {
     const justUIStrings =
     `const UIStrings = {
-        /** 
-         * @description Some description.
-         * @example {missingPlaceholdername}
-         */
-        exampleString: 'Hello World',
+      /** 
+       * @description Some description.
+       * @example {missingPlaceholdername}
+       */
+      exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
 
     expect(() => collect.parseUIStrings(justUIStrings, liveUIStrings))
-      .toThrow(/Incorrectly formatted @example/);
+      .toThrow(/Incorrectly formatted @example: "{missingPlaceholdername}"/);
   });
 
   it('throws when @example is missing an exampleValue', () => {
     const justUIStrings =
     `const UIStrings = {
-        /** 
-         * @description Some description.
-         * @example placeholderName
-         */
-        exampleString: 'Hello World',
+      /** 
+       * @description Some description.
+       * @example placeholderName
+       */
+      exampleString: 'Hello World',
     };`;
     const liveUIStrings = evalJustUIStrings(justUIStrings);
 

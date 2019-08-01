@@ -33,11 +33,15 @@ const ignoredPathComponents = [
 
 /**
  * Extract the description and examples (if any) from a jsDoc annotation.
- * @param {import('typescript').JSDoc} ast
+ * @param {import('typescript').JSDoc|undefined} ast
  * @param {string} message
  * @return {{description: string, examples: Record<string, string>}}
  */
 function computeDescription(ast, message) {
+  if (!ast) {
+    throw Error(`Missing description comment for message "${message}"`);
+  }
+
   if (ast.tags) {
     // This is a complex description with description and examples.
     let description = '';
@@ -50,8 +54,10 @@ function computeDescription(ast, message) {
       if (tag.tagName.text === 'description') {
         description = comment;
       } else if (tag.tagName.text === 'example') {
-        const {placeholderName, exampleValue} = parseAtExample(comment);
+        const {placeholderName, exampleValue} = parseExampleJsDoc(comment);
         examples[placeholderName] = exampleValue;
+      } else {
+        throw new Error('bad tag' + tag.tagName.text);
       }
     }
 
@@ -68,22 +74,24 @@ function computeDescription(ast, message) {
 }
 
 /**
- * Line breaks within a jsdoc comment should always be replaceable with a space.
+ * Collapses a jsdoc comment into a single line and trims whitespace.
  * @param {string=} comment
  * @return {string}
  */
 function coerceToSingleLineAndTrim(comment = '') {
+  // Line breaks within a jsdoc comment should always be replaceable with a space.
   return comment.replace(/\n/g, ' ').trim();
 }
 
 /**
- * Parses a tag of the form `@example {exampleValue} placeholderName`.
+ * Parses a string of the form `{exampleValue} placeholderName`, parsed by tsc
+ * as the content of an `@example` tag.
  * @param {string} rawExample
  * @return {{placeholderName: string, exampleValue: string}}
  */
-function parseAtExample(rawExample) {
+function parseExampleJsDoc(rawExample) {
   const match = rawExample.match(/^{(?<exampleValue>[^}]+)} (?<placeholderName>.+)$/);
-  if (!match || !match.groups) throw new Error('Incorrectly formatted @example');
+  if (!match || !match.groups) throw new Error(`Incorrectly formatted @example: "${rawExample}"`);
   const {placeholderName, exampleValue} = match.groups;
   return {placeholderName, exampleValue};
 }
@@ -390,6 +398,7 @@ function createPsuedoLocaleStrings(messages) {
 }
 
 /**
+ * Helper function that retrieves the text identifier of a named node in the tsc AST.
  * @param {import('typescript').NamedDeclaration} node
  * @return {string}
  */
@@ -430,7 +439,6 @@ function parseUIStrings(sourceStr, liveUIStrings) {
 
     // @ts-ignore - Not part of the public tsc interface yet.
     const jsDocComments = tsc.getJSDocCommentsAndTags(property);
-    if (jsDocComments.length === 0) throw new Error(`Missing description comment for message "${message}"`);
     const {description, examples} = computeDescription(jsDocComments[0], message);
 
     parsedMessages[key] = {
@@ -474,12 +482,14 @@ function collectAllStringsInDir(dir) {
     const exportedUIStrings = exportVars.UIStrings;
 
     if (!regexMatch) {
+      // No UIStrings found in the file text or exports, so move to the next.
       if (!exportedUIStrings) continue;
+
       throw new Error('UIStrings exported but no definition found');
     }
 
     if (!exportedUIStrings) {
-      throw new Error('UIStrings defined but not exported');
+      throw new Error('UIStrings defined in file but not exported');
     }
 
     // just parse the UIStrings substring to avoid ES version issues, save time, etc
