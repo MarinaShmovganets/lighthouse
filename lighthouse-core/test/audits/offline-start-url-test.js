@@ -69,6 +69,6 @@ describe('Offline start_url audit', () => {
     assert.strictEqual(result.explanation, undefined);
     assert.strictEqual(result.warnings.length, 1);
     expect(result.warnings[0]).toBeDisplayString(
-      /Lighthouse couldn't read the start_url.*ERROR: start_url.*\./);
+      /Lighthouse couldn't read the `start_url`.*ERROR: start_url.*\./);
   });
 });

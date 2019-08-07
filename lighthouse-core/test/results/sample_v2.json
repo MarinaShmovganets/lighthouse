@@ -43,7 +43,7 @@
     },
     "service-worker": {
       "id": "service-worker",
-      "title": "Does not register a service worker that controls page and start_url",
+      "title": "Does not register a service worker that controls page and `start_url`",
       "description": "The service worker is the technology that enables your app to use many Progressive Web App features, such as offline, add to homescreen, and push notifications. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/registered-service-worker).",
       "score": 0,
       "scoreDisplayMode": "binary"
@@ -1285,7 +1285,7 @@
     },
     "offline-start-url": {
       "id": "offline-start-url",
-      "title": "start_url does not respond with a 200 when offline",
+      "title": "`start_url` does not respond with a 200 when offline",
       "description": "A service worker enables your web app to be reliable in unpredictable network conditions. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/http-200-when-offline).",
       "score": 0,
       "scoreDisplayMode": "binary",
@@ -1541,7 +1541,7 @@
     "pwa-each-page-has-url": {
       "id": "pwa-each-page-has-url",
       "title": "Each page has a URL",
-      "description": "Ensure individual pages are deep linkable via the URLs and that URLs are unique for the purpose of shareability on social media. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist#each-page-has-a-url).",
+      "description": "Ensure individual pages are deep linkable via URL and that URLs are unique for the purpose of shareability on social media. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist#each-page-has-a-url).",
       "score": null,
       "scoreDisplayMode": "manual"
     },

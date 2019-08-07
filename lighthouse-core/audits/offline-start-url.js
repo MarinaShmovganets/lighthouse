@@ -20,8 +20,8 @@ const UIStrings = {
    * @description Warning that the audit couldn't find the start_url and used the page's URL instead.
    * @example {No Manifest Fetched.} manifestWarning
    * */
-  warningCantStart: 'Lighthouse couldn\'t read the `start_url` from the manifest. As a result, the ' +
-    '`start_url` was assumed to be the document\'s URL. Error message: \'{manifestWarning}\'.',
+  warningCantStart: 'Lighthouse couldn\'t read the `start_url` from the manifest. As a result, ' +
+  'the `start_url` was assumed to be the document\'s URL. Error message: \'{manifestWarning}\'.',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
