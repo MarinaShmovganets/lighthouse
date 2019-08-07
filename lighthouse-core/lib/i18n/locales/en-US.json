@@ -765,7 +765,7 @@
     "message": "Site works cross-browser"
   },
   "lighthouse-core/audits/manual/pwa-each-page-has-url.js | description": {
-    "message": "Ensure individual pages are deep linkable via the URLs and that URLs are unique for the purpose of shareability on social media. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist#each-page-has-a-url)."
+    "message": "Ensure individual pages are deep linkable via URL and that URLs are unique for the purpose of shareability on social media. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist#each-page-has-a-url)."
   },
   "lighthouse-core/audits/manual/pwa-each-page-has-url.js | title": {
     "message": "Each page has a URL"
@@ -840,13 +840,13 @@
     "message": "A service worker enables your web app to be reliable in unpredictable network conditions. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/http-200-when-offline)."
   },
   "lighthouse-core/audits/offline-start-url.js | failureTitle": {
-    "message": "start_url does not respond with a 200 when offline"
+    "message": "`start_url` does not respond with a 200 when offline"
   },
   "lighthouse-core/audits/offline-start-url.js | title": {
-    "message": "start_url responds with a 200 when offline"
+    "message": "`start_url` responds with a 200 when offline"
   },
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
-    "message": "Lighthouse couldn't read the start_url from the manifest. As a result, the start_url was assumed to be the document's URL. Error message: '{manifestWarning}'."
+    "message": "Lighthouse couldn't read the `start_url` from the manifest. As a result, the `start_url` was assumed to be the document's URL. Error message: '{manifestWarning}'."
   },
   "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
     "message": "Over Budget"
@@ -1038,22 +1038,22 @@
     "message": "The service worker is the technology that enables your app to use many Progressive Web App features, such as offline, add to homescreen, and push notifications. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/registered-service-worker)."
   },
   "lighthouse-core/audits/service-worker.js | explanationBadManifest": {
-    "message": "This page is controlled by a service worker, however no start_url was found because manifest failed to parse as valid JSON"
+    "message": "This page is controlled by a service worker, however no `start_url` was found because manifest failed to parse as valid JSON"
   },
   "lighthouse-core/audits/service-worker.js | explanationBadStartUrl": {
-    "message": "This page is controlled by a service worker, however the start_url ({startUrl}) is not in the service worker's scope ({scopeUrl})"
+    "message": "This page is controlled by a service worker, however the `start_url` ({startUrl}) is not in the service worker's scope ({scopeUrl})"
   },
   "lighthouse-core/audits/service-worker.js | explanationNoManifest": {
-    "message": "This page is controlled by a service worker, however no start_url was found because no manifest was fetched."
+    "message": "This page is controlled by a service worker, however no `start_url` was found because no manifest was fetched."
   },
   "lighthouse-core/audits/service-worker.js | explanationOutOfScope": {
     "message": "This origin has one or more service workers, however the page ({pageUrl}) is not in scope."
   },
   "lighthouse-core/audits/service-worker.js | failureTitle": {
-    "message": "Does not register a service worker that controls page and start_url"
+    "message": "Does not register a service worker that controls page and `start_url`"
   },
   "lighthouse-core/audits/service-worker.js | title": {
-    "message": "Registers a service worker that controls page and start_url"
+    "message": "Registers a service worker that controls page and `start_url`"
   },
   "lighthouse-core/audits/splash-screen.js | description": {
     "message": "A themed splash screen ensures a high-quality experience when users launch your app from their homescreens. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/custom-splash-screen)."
@@ -1170,7 +1170,7 @@
     "message": "Current page responds with a 200 when offline"
   },
   "lighthouse-core/audits/works-offline.js | warningNoLoad": {
-    "message": "The page may be not loading offline because your test URL ({requested}) was redirected to \"{final}\". Try testing the second URL directly."
+    "message": "The page may not be loading offline because your test URL ({requested}) was redirected to \"{final}\". Try testing the second URL directly."
   },
   "lighthouse-core/config/default-config.js | a11yAriaGroupDescription": {
     "message": "These are opportunities to improve the usage of ARIA in your application which may enhance the experience for users of assistive technology, like a screen reader."
