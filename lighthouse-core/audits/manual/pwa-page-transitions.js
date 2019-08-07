@@ -9,9 +9,9 @@ const ManualAudit = require('./manual-audit.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** Title of a Lighthouse audit that prompts the user to manually check that page transitions (navigating to other pages on a website, etc.) shouldn't feel like they are waiting for the network to load. */
+  /** Title of a Lighthouse audit that prompts the user to manually check that page transitions (navigating to other pages on a website) shouldn't feel like they are waiting for the network to load. */
   title: 'Page transitions don\'t feel like they block on the network',
-  /** Description of a Lighthouse audit that tells the user why they should make the transitions smooth. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  /** Description of a Lighthouse audit that tells the user why they should make transitions in their web app feel fast. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Transitions should feel snappy as you tap around, even on a slow network, a ' +
       'key to perceived performance. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist#page-transitions-dont-feel-like-they-block-on-the-network).',
 };

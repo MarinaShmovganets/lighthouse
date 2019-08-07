@@ -10,20 +10,20 @@ const Audit = require('./audit.js');
 const i18n = require('../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** Title of a Lighthouse audit that provides detail on the offline responsiveness of a site. This descriptive title is shown to users when the page responds even when offline. */
+  /** Title of a Lighthouse audit that provides detail on the offline responsiveness of a website. "200" refers to the HTTP status code when a site responds successfully. This descriptive title is shown to users when the site responds successfully even when offline. */
   title: 'Current page responds with a 200 when offline',
-  /** Title of a Lighthouse audit that provides detail on the offline responsiveness of a site. This descriptive title is shown to users when the page does not respond when offline. */
+  /** Title of a Lighthouse audit that provides detail on the offline responsiveness of a website. "200" refers to the HTTP status code when a site responds successfully. This descriptive title is shown to users when the site does not respond successfully when offline. */
   failureTitle: 'Current page does not respond with a 200 when offline',
-  /** Description of a Lighthouse audit that tells the user why they should respond to requests when offline. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  /** Description of a Lighthouse audit that tells the user why a website should respond to requests when offline. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'If you\'re building a Progressive Web App, consider using a service worker ' +
       'so that your app can work offline. ' +
       '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/http-200-when-offline).',
   /**
-   * @description Warning that the page redirected during offline load and that may affect offline testing.
+   * @description Warning that the web page redirected during testing and that may have affected the offline load test.
    * @example {https://example.com/requested/page} requested
    * @example {https://example.com/final/resolved/page} final
    * */
-  warningNoLoad: 'The page may be not loading offline because your test URL ' +
+  warningNoLoad: 'The page may not be loading offline because your test URL ' +
   `({requested}) was redirected to "{final}". ` +
   'Try testing the second URL directly.',
 };

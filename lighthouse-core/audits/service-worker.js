@@ -11,32 +11,32 @@ const i18n = require('../lib/i18n/i18n.js');
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on a page's service worker. This descriptive title is shown to users when a service worker is registered and valid. */
-  title: 'Registers a service worker that controls page and start_url',
+  title: 'Registers a service worker that controls page and `start_url`',
   /** Title of a Lighthouse audit that provides detail on a page's service worker. This descriptive title is shown to users when a service worker is not present or invalid. */
-  failureTitle: 'Does not register a service worker that controls page and start_url',
+  failureTitle: 'Does not register a service worker that controls page and `start_url`',
   /** Description of a Lighthouse audit that tells the user why they should use a service worker. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'The service worker is the technology that enables your app to use many ' +
     'Progressive Web App features, such as offline, add to homescreen, and push ' +
     'notifications. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/registered-service-worker).',
   /**
-   * @description Explanatory message stating that the page has multiple, or out of scope service workers.
+   * @description Message explaining that the website may have service workers, but none are in scope to control the tested web page.
    * @example {https://example.com/} pageUrl
    * */
   explanationOutOfScope: 'This origin has one or more service workers, however the page ' +
     '({pageUrl}) is not in scope.',
-  /** Explanatory message stating that the page has no manifest. */
+  /** Message explaining that the page has no manifest file so can't specify a starting url. */
   explanationNoManifest: 'This page is controlled by a service worker, however ' +
-    'no start_url was found because no manifest was fetched.',
-  /** Explanatory message stating that the page's manifest is invalid. */
+    'no `start_url` was found because no manifest was fetched.',
+  /** Message explaining that the page had an invalid manifest file so can't specify a starting url. */
   explanationBadManifest: 'This page is controlled by a service worker, however ' +
-    'no start_url was found because manifest failed to parse as valid JSON',
+    'no `start_url` was found because manifest failed to parse as valid JSON',
   /**
-   * @description Explanatory message stating that the manifest's start_url is not in scope, and therefor invalid.
-   * @example {https://example2.com/} startUrl
-   * @example {https://example.com/} scopeUrl
+   * @description Message explaining that the website has a service worker, but none are in scope to control the tested starting url.
+   * @example {https://example.com/} startUrl
+   * @example {https://othersite.com/} scopeUrl
    * */
   explanationBadStartUrl: 'This page is controlled by a service worker, however ' +
-    'the start_url ({startUrl}) is not in the service worker\'s scope ({scopeUrl})',
+    'the `start_url` ({startUrl}) is not in the service worker\'s scope ({scopeUrl})',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);

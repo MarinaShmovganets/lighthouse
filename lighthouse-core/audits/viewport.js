@@ -10,12 +10,12 @@ const ComputedViewportMeta = require('../computed/viewport-meta.js');
 const i18n = require('../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** Title of a Lighthouse audit that provides detail on the viewport meta tag. This descriptive title is shown to users when a viewport tag is set and configured. */
+  /** Title of a Lighthouse audit that provides detail on the viewport meta tag in a web page's html. This descriptive title is shown to users when a viewport tag is set and configured. */
   title: 'Has a `<meta name="viewport">` tag with `width` or `initial-scale`',
-  /** Title of a Lighthouse audit that provides detail on the viewport meta tag. This descriptive title is shown to users when a viewport tag is not set or configured. */
+  /** Title of a Lighthouse audit that provides detail on the viewport meta tag in a web page's html. This descriptive title is shown to users when a viewport tag is not set or configured. */
   failureTitle: 'Does not have a `<meta name="viewport">` tag with `width` ' +
     'or `initial-scale`',
-  /** Description of a Lighthouse audit that tells the user why they should have a viewport meta tag. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  /** Description of a Lighthouse audit that tells the user why they should have a viewport meta tag in their html. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Add a viewport meta tag to optimize your app for mobile screens. ' +
     '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/has-viewport-meta-tag).',
   /** Explanatory message stating that no viewport meta tag exists on the page. */

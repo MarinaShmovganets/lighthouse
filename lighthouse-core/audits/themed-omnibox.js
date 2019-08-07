@@ -11,11 +11,11 @@ const cssParsers = require('cssstyle/lib/parsers');
 const i18n = require('../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** Title of a Lighthouse audit that provides detail on the theme color the page has set for the browser's address bar. This descriptive title is shown to users when an address-bar theme color has been set. */
+  /** Title of a Lighthouse audit that provides detail on the theme color the web page has set for the browser's address bar. This descriptive title is shown to users when an address-bar theme color has been set. */
   title: 'Sets a theme color for the address bar.',
-  /** Title of a Lighthouse audit that provides detail on the theme color the page has set for the browser's address bar. This descriptive title is shown to users when an address-bar theme color has not been set. */
+  /** Title of a Lighthouse audit that provides detail on the theme color the web page has set for the browser's address bar. This descriptive title is shown to users when an address-bar theme color has not been set. */
   failureTitle: 'Does not set a theme color for the address bar.',
-  /** Description of a Lighthouse audit that tells the user why they should set a theme color for the address bar. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  /** Description of a Lighthouse audit that tells the user why they should set a theme color for the browser's address bar. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'The browser address bar can be themed to match your site. ' +
     '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/address-bar).',
 };

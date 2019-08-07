@@ -9,15 +9,15 @@ const Audit = require('./audit.js');
 const i18n = require('../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** Title of a Lighthouse audit that provides detail on the page's ability to return content without Javascript. This descriptive title is shown to users when at least some content is shown when Javascript is not available. */
+  /** Title of a Lighthouse audit that provides detail on the web page's ability to return content with Javascript disabled in the browser. This descriptive title is shown to users when at least some content is shown when Javascript is not available. */
   title: 'Contains some content when JavaScript is not available',
-  /** Title of a Lighthouse audit that provides detail on the page's ability to return content without Javascript. This descriptive title is shown to users when no content is shown when Javascript is not available. */
+  /** Title of a Lighthouse audit that provides detail on the web page's ability to return content with Javascript disabled in the browser. This descriptive title is shown to users when no content is shown when Javascript is not available. */
   failureTitle: 'Does not provide fallback content when JavaScript is not available',
-  /** Description of a Lighthouse audit that tells the user why they should return content even if Javascript is unavailable. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  /** Description of a Lighthouse audit that tells the user why they should return content even if Javascript is unavailable in a browser. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Your app should display some content when JavaScript is disabled, even if ' +
     'it\'s just a warning to the user that JavaScript is required to use the app. ' +
     '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/no-js).',
-  /** Explanatory message stating that the site body should render some (any) content even if the page's scripts cannot be loaded. */
+  /** Message explaining that a website's body should render some (any) content even if the page's JavaScript cannot be loaded. */
   explanation: 'The page body should render some content if its scripts are not available.',
 };
 
