@@ -60,7 +60,7 @@ class ThemedOmnibox extends MultiCheckAudit {
    */
   static assessMetaThemecolor(themeColorMeta, failures) {
     if (!themeColorMeta) {
-      // TODO(exterkamp): i18n
+      // TODO(#7238): i18n
       failures.push('No `<meta name="theme-color">` tag found');
     } else if (!ThemedOmnibox.isValidColor(themeColorMeta.content || '')) {
       failures.push('The theme-color meta tag did not contain a valid CSS color');
