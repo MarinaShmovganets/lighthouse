@@ -1137,10 +1137,10 @@
     "message": "P̂ŕêĺôád̂ ḱêý r̂éq̂úêśt̂ś"
   },
   "lighthouse-core/audits/viewport.js | description": {
-    "message": "Âd́d̂ á v̂íêẃp̂ór̂t́ m̂ét̂á t̂áĝ t́ô óp̂t́îḿîźê ýôúr̂ áp̂ṕ f̂ór̂ ḿôb́îĺê śĉŕêén̂ś. [L̂éâŕn̂ ḿôŕê](https://developers.google.com/web/tools/lighthouse/audits/has-viewport-meta-tag)."
+    "message": "Âd́d̂ á `<meta name=\"viewport\">` t̂áĝ t́ô óp̂t́îḿîźê ýôúr̂ áp̂ṕ f̂ór̂ ḿôb́îĺê śĉŕêén̂ś. [L̂éâŕn̂ ḿôŕê](https://developers.google.com/web/tools/lighthouse/audits/has-viewport-meta-tag)."
   },
   "lighthouse-core/audits/viewport.js | explanationNoTag": {
-    "message": "N̂ó v̂íêẃp̂ór̂t́ m̂ét̂á t̂áĝ f́ôún̂d́"
+    "message": "N̂ó `<meta name=\"viewport\">` t̂áĝ f́ôún̂d́"
   },
   "lighthouse-core/audits/viewport.js | failureTitle": {
     "message": "D̂óêś n̂ót̂ h́âv́ê á `<meta name=\"viewport\">` t̂áĝ ẃît́ĥ `width` ór̂ `initial-scale`"

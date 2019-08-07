@@ -1137,10 +1137,10 @@
     "message": "Preload key requests"
   },
   "lighthouse-core/audits/viewport.js | description": {
-    "message": "Add a viewport meta tag to optimize your app for mobile screens. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/has-viewport-meta-tag)."
+    "message": "Add a `<meta name=\"viewport\">` tag to optimize your app for mobile screens. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/has-viewport-meta-tag)."
   },
   "lighthouse-core/audits/viewport.js | explanationNoTag": {
-    "message": "No viewport meta tag found"
+    "message": "No `<meta name=\"viewport\">` tag found"
   },
   "lighthouse-core/audits/viewport.js | failureTitle": {
     "message": "Does not have a `<meta name=\"viewport\">` tag with `width` or `initial-scale`"
