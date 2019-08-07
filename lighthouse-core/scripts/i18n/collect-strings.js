@@ -174,11 +174,11 @@ function _processPlaceholderMarkdownCode(icu) {
       // Backtick replacement looks unreadable here, so .join() instead.
       icu.message += '$' + placeholderName + '$';
       icu.placeholders[placeholderName] = {
-        content: '`' + segment.codeText + '`',
-        example: segment.codeText,
+        content: '`' + segment.text + '`',
+        example: segment.text,
       };
     } else {
-      icu.message += segment.plainText;
+      icu.message += segment.text;
     }
   }
 }
@@ -207,14 +207,14 @@ function _processPlaceholderMarkdownLink(icu) {
   for (const segment of Util.splitMarkdownLink(message)) {
     if (!segment.isLink) {
       // Plain text segment.
-      icu.message += segment.plainText;
+      icu.message += segment.text;
       continue;
     }
 
     // Otherwise, append any links found.
     const startPlaceholder = `LINK_START_${idx}`;
     const endPlaceholder = `LINK_END_${idx}`;
-    icu.message += '$' + startPlaceholder + '$' + segment.linkText + '$' + endPlaceholder + '$';
+    icu.message += '$' + startPlaceholder + '$' + segment.text + '$' + endPlaceholder + '$';
     idx++;
     icu.placeholders[startPlaceholder] = {
       content: '[',

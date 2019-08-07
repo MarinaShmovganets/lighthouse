@@ -120,7 +120,7 @@ class DOM {
     for (const segment of Util.splitMarkdownLink(text)) {
       if (!segment.isLink) {
         // Plain text segment.
-        element.appendChild(this._document.createTextNode(segment.plainText));
+        element.appendChild(this._document.createTextNode(segment.text));
         continue;
       }
 
@@ -136,7 +136,7 @@ class DOM {
       const a = this.createElement('a');
       a.rel = 'noopener';
       a.target = '_blank';
-      a.textContent = segment.linkText;
+      a.textContent = segment.text;
       a.href = url.href;
       element.appendChild(a);
     }
@@ -154,10 +154,10 @@ class DOM {
     for (const segment of Util.splitMarkdownCodeSpans(markdownText)) {
       if (segment.isCode) {
         const pre = this.createElement('code');
-        pre.textContent = segment.codeText;
+        pre.textContent = segment.text;
         element.appendChild(pre);
       } else {
-        element.appendChild(this._document.createTextNode(segment.plainText));
+        element.appendChild(this._document.createTextNode(segment.text));
       }
     }
 

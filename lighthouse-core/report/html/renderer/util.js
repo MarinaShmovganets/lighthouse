@@ -285,10 +285,10 @@ class Util {
    * into segments that were enclosed in backticks (marked as `isCode === true`)
    * and those that outside the backticks (`isCode === false`).
    * @param {string} text
-   * @return {Array<{isCode: true, codeText: string}|{isCode: false, plainText: string}>}
+   * @return {Array<{isCode: true, text: string}|{isCode: false, text: string}>}
    */
   static splitMarkdownCodeSpans(text) {
-    /** @type {Array<{isCode: true, codeText: string}|{isCode: false, plainText: string}>} */
+    /** @type {Array<{isCode: true, text: string}|{isCode: false, text: string}>} */
     const segments = [];
 
     // Split on backticked code spans.
@@ -300,17 +300,11 @@ class Util {
       if (!text) continue;
 
       // Alternates between plain text and code segments.
-      if (i % 2 === 0) {
-        segments.push({
-          isCode: false,
-          plainText: text,
-        });
-      } else {
-        segments.push({
-          isCode: true,
-          codeText: text,
-        });
-      }
+      const isCode = i % 2 !== 0;
+      segments.push({
+        isCode,
+        text,
+      });
     }
 
     return segments;
@@ -322,21 +316,21 @@ class Util {
    * `isLink === false`), and segments with text content and a URL that did make
    * up a link (marked as `isLink === true`).
    * @param {string} text
-   * @return {Array<{isLink: true, linkText: string, linkHref: string}|{isLink: false, plainText: string}>}
+   * @return {Array<{isLink: true, text: string, linkHref: string}|{isLink: false, text: string}>}
    */
   static splitMarkdownLink(text) {
-    /** @type {Array<{isLink: true, linkText: string, linkHref: string}|{isLink: false, plainText: string}>} */
+    /** @type {Array<{isLink: true, text: string, linkHref: string}|{isLink: false, text: string}>} */
     const segments = [];
 
     const parts = text.split(/\[([^\]]+?)\]\((https?:\/\/.*?)\)/g);
     while (parts.length) {
-      // Pop off the same number of elements as there are capture groups.
+      // Shift off the same number of elements as the pre-split and capture groups.
       const [preambleText, linkText, linkHref] = parts.splice(0, 3);
 
-      if (preambleText) { // Empty plain text is an artifact of splitting, not meaningful.
+      if (preambleText) { // Skip empty text as it's an artifact of splitting, not meaningful.
         segments.push({
           isLink: false,
-          plainText: preambleText,
+          text: preambleText,
         });
       }
 
@@ -344,7 +338,7 @@ class Util {
       if (linkText && linkHref) {
         segments.push({
           isLink: true,
-          linkText,
+          text: linkText,
           linkHref,
         });
       }
