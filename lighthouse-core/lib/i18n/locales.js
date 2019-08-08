@@ -13,6 +13,8 @@
  * CLDR locale inheritance: https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/parentLocales.json
  */
 
+// TODO(paulirish): Centralize locale inheritance (combining this & i18n.lookupLocale()), adopt cldr parentLocale rules.
+
 /** @typedef {Record<string, {message: string}>} LhlMessages */
 
 // The keys within this const must exactly match the LH.Locale type in externs.d.ts
