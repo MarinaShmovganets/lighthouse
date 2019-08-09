@@ -18,7 +18,7 @@ class ContentWidth extends Audit {
       failureTitle: 'Content is not sized correctly for the viewport',
       description: 'If the width of your app\'s content doesn\'t match the width ' +
           'of the viewport, your app might not be optimized for mobile screens. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/content-sized-correctly-for-viewport).',
+          '[Learn more](https://web.dev/content-width).',
       requiredArtifacts: ['ViewportDimensions', 'TestedAsMobileDevice'],
     };
   }

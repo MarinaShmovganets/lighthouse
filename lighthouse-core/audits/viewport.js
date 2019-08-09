@@ -19,7 +19,7 @@ class Viewport extends Audit {
       failureTitle: 'Does not have a `<meta name="viewport">` tag with `width` ' +
           'or `initial-scale`',
       description: 'Add a viewport meta tag to optimize your app for mobile screens. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/has-viewport-meta-tag).',
+          '[Learn more](https://web.dev/viewport).',
       requiredArtifacts: ['MetaElements'],
     };
   }

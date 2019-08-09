@@ -29,7 +29,7 @@ class ThemedOmnibox extends MultiCheckAudit {
       title: 'Sets an address-bar theme color',
       failureTitle: 'Does not set an address-bar theme color',
       description: 'The browser address bar can be themed to match your site. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/address-bar).',
+          '[Learn more](https://web.dev/themed-omnibox).',
       requiredArtifacts: ['WebAppManifest', 'MetaElements'],
     };
   }

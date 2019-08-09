@@ -708,7 +708,7 @@
     "message": "Ûśêś ĤT́T̂ṔŜ"
   },
   "lighthouse-core/audits/load-fast-enough-for-pwa.js | description": {
-    "message": "Â f́âśt̂ ṕâǵê ĺôád̂ óv̂ér̂ á ĉél̂ĺûĺâŕ n̂ét̂ẃôŕk̂ én̂śûŕêś â ǵôód̂ ḿôb́îĺê úŝér̂ éx̂ṕêŕîén̂ćê. [Ĺêár̂ń m̂ór̂é](https://developers.google.com/web/tools/lighthouse/audits/fast-3g)."
+    "message": "Â f́âśt̂ ṕâǵê ĺôád̂ óv̂ér̂ á ĉél̂ĺûĺâŕ n̂ét̂ẃôŕk̂ én̂śûŕêś â ǵôód̂ ḿôb́îĺê úŝér̂ éx̂ṕêŕîén̂ćê. [Ĺêár̂ń m̂ór̂é](https://web.dev/load-fast-enough-for-pwa)."
   },
   "lighthouse-core/audits/load-fast-enough-for-pwa.js | displayValueText": {
     "message": "Îńt̂ér̂áĉt́îv́ê át̂ {timeInMs, number, seconds} ś"

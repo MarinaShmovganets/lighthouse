@@ -33,7 +33,7 @@ class InstallableManifest extends MultiCheckAudit {
       failureTitle: 'Web app manifest does not meet the installability requirements',
       description: 'Browsers can proactively prompt users to add your app to their homescreen, ' +
           'which can lead to higher engagement. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/install-prompt).',
+          '[Learn more](https://web.dev/installable-manifest).',
       requiredArtifacts: ['URL', 'WebAppManifest'],
     };
   }

@@ -16,7 +16,7 @@ class OfflineStartUrl extends Audit {
       id: 'offline-start-url',
       title: 'start_url responds with a 200 when offline',
       failureTitle: 'start_url does not respond with a 200 when offline',
-      description: 'A service worker enables your web app to be reliable in unpredictable network conditions. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/http-200-when-offline).',
+      description: 'A service worker enables your web app to be reliable in unpredictable network conditions. [Learn more](https://web.dev/offline-start-url).',
       requiredArtifacts: ['WebAppManifest', 'StartUrl'],
     };
   }

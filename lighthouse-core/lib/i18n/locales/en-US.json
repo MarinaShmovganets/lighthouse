@@ -708,7 +708,7 @@
     "message": "Uses HTTPS"
   },
   "lighthouse-core/audits/load-fast-enough-for-pwa.js | description": {
-    "message": "A fast page load over a cellular network ensures a good mobile user experience. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/fast-3g)."
+    "message": "A fast page load over a cellular network ensures a good mobile user experience. [Learn more](https://web.dev/load-fast-enough-for-pwa)."
   },
   "lighthouse-core/audits/load-fast-enough-for-pwa.js | displayValueText": {
     "message": "Interactive at {timeInMs, number, seconds} s"

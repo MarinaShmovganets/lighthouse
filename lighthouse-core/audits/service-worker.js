@@ -19,7 +19,7 @@ class ServiceWorker extends Audit {
       failureTitle: 'Does not register a service worker that controls page and start_url',
       description: 'The service worker is the technology that enables your app to use many ' +
          'Progressive Web App features, such as offline, add to homescreen, and push ' +
-         'notifications. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/registered-service-worker).',
+         'notifications. [Learn more](https://web.dev/service-worker).',
       requiredArtifacts: ['URL', 'ServiceWorker', 'WebAppManifest'],
     };
   }
