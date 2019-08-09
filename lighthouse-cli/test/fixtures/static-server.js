@@ -68,7 +68,7 @@ function requestHandler(request, response) {
     const charset = mime.lookup(contentType);
     // `mime.contentType` appends the correct charset too.
     // Note: it seems to miss just one case, svg. Doesn't matter much, we'll just allow
-    // svgs to be sent without the proper encoding.
+    // svgs to fallback to binary encoding. `Content-Type: image/svg+xml` is sufficient for our use case.
     // see https://github.com/jshttp/mime-types/issues/66
     if (contentType) headers['Content-Type'] = mime.contentType(contentType);
 
