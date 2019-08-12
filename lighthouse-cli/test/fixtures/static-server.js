@@ -27,6 +27,7 @@ function requestHandler(request, response) {
   const queryString = requestUrl.search && parseQueryString(requestUrl.search.slice(1));
   let absoluteFilePath = path.join(__dirname, filePath);
 
+  // Create an index page that lists the available test pages.
   if (filePath === '/') {
     const fixturePaths = glob.sync('**/*.html', {cwd: __dirname});
     const html = `
