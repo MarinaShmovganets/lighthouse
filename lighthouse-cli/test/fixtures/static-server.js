@@ -31,8 +31,11 @@ function requestHandler(request, response) {
     const html = `
       <html>
       <h1>Smoke test fixtures</h1>
-      ${fixturePaths.map(p => `<a href=${p}>${p}</a>`).join('<br>')}
+      ${fixturePaths.map(p => `<a href=${encodeURI(p)}>${escape(p)}</a>`).join('<br>')}
     `;
+    response.writeHead(200, {
+      'Content-Security-Policy': `default-src 'none';`,
+    });
     sendResponse(200, html);
     return;
   }
