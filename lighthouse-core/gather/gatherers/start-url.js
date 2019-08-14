@@ -24,6 +24,7 @@ class StartUrl extends Gatherer {
 
     return result;
   }
+
   /**
    * Grab the manifest, extract it's start_url, attempt to `fetch()` it while offline
    * @param {LH.Gatherer.PassContext} passContext
@@ -39,7 +40,7 @@ class StartUrl extends Gatherer {
     try {
       return await this._attemptStartURLFetch(passContext.driver, startUrlInfo.startUrl);
     } catch (err) {
-      return {statusCode: -1, explanation: 'Unable to fetch start URL via service worker.'};
+      return {statusCode: -1, explanation: 'Unable to fetch start_url via service worker.'};
     }
   }
 
@@ -75,7 +76,7 @@ class StartUrl extends Gatherer {
     // Wait up to 3s to get a matched network request from the fetch() to work
     const timeoutPromise = new Promise(resolve =>
       setTimeout(
-        () => resolve({statusCode: -1, explanation: 'Timed out waiting for fetched start_url.'}),
+        () => resolve({statusCode: -1, explanation: 'Timed out waiting for start_url to respond.'}),
         3000
       )
     );
@@ -93,7 +94,7 @@ class StartUrl extends Gatherer {
         if (!response.fromServiceWorker) {
           return resolve({
             statusCode: -1,
-            explanation: 'Fetched start URL but not via service worker.',
+            explanation: 'The start_url did respond, but not via a service worker.',
           });
         }
         // Successful SW-served fetch of the start_URL

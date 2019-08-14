@@ -98,7 +98,7 @@ describe('StartUrl Gatherer', () => {
     expect(mockDriver.goOnline).toHaveBeenCalled();
     expect(result).toEqual({
       statusCode: -1,
-      explanation: 'Unable to fetch start URL via service worker.',
+      explanation: 'Unable to fetch start_url via service worker.',
     });
   });
 
@@ -155,7 +155,7 @@ describe('StartUrl Gatherer', () => {
     expect(mockDriver.goOnline).toHaveBeenCalled();
     expect(result).toEqual({
       statusCode: -1,
-      explanation: 'Fetched start URL but not via service worker.',
+      explanation: 'The start_url did respond, but not via a service worker.',
     });
   });
 
@@ -190,7 +190,7 @@ describe('StartUrl Gatherer', () => {
     expect(mockDriver.goOnline).toHaveBeenCalled();
     expect(result).toEqual({
       statusCode: -1,
-      explanation: 'Timed out waiting for fetched start_url.',
+      explanation: 'Timed out waiting for start_url to respond.',
     });
   });
 });
