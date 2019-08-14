@@ -127,7 +127,7 @@ function lookupLocale(locale) {
 
 /**
  * @param {string} icuMessage
- * @param {Record<string, *>} [values]
+ * @param {Record<string, string | number>} [values]
  */
 function _preprocessMessageValues(icuMessage, values = {}) {
   let clonedValues = JSON.parse(JSON.stringify(values));
@@ -199,7 +199,7 @@ function _processParsedElements(icuElementsList, values = {}) {
  * @typedef IcuMessageInstance
  * @prop {string} icuMessageId
  * @prop {string} icuMessage
- * @prop {*} [values]
+ * @prop {Record<string, string | number>|undefined} [values]
  */
 
 /** @type {Map<string, IcuMessageInstance[]>} */
@@ -211,7 +211,7 @@ const _ICUMsgNotFoundMsg = 'ICU message not found in destination locale';
  * @param {LH.Locale} locale
  * @param {string} icuMessageId
  * @param {string=} uiStringMessage The original string given in 'UIStrings', used as a backup if no locale message can be found
- * @param {*} [values]
+ * @param {Record<string, string | number>} [values]
  * @return {{formattedString: string, icuMessage: string}}
  */
 function _formatIcuMessage(locale, icuMessageId, uiStringMessage, values) {
@@ -299,7 +299,7 @@ function createMessageInstanceIdFn(filename, fileStrings) {
    * indexed id value in the form '{messageid} | # {index}'.
    *
    * @param {string} icuMessage
-   * @param {*} [values]
+   * @param {Record<string, string | number>} [values]
    * */
   const getMessageInstanceIdFn = (icuMessage, values) => {
     const keyname = Object.keys(mergedStrings).find(key => mergedStrings[key] === icuMessage);
@@ -350,7 +350,7 @@ function getFormatted(icuMessageIdOrRawString, locale) {
 /**
  * @param {LH.Locale} locale
  * @param {string} icuMessageId
- * @param {*} [values]
+ * @param {Record<string, string | number>} [values]
  * @return {string}
  */
 function getFormattedFromIdAndValues(locale, icuMessageId, values) {
