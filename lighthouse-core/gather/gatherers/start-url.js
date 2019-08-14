@@ -16,8 +16,7 @@ class StartUrl extends Gatherer {
    * @return {Promise<LH.Artifacts['StartUrl']>}
    */
   async afterPass(passContext) {
-    // Offline pass is not actually offline in `afterPass`,
-    // each gatherer must set and cleanup its own offline state.
+    // `afterPass` is always online, so manually go offline to check start_url.
     await passContext.driver.goOffline();
     const result = await this._determineStartUrlAvailability(passContext);
     await passContext.driver.goOnline(passContext);
@@ -26,7 +25,7 @@ class StartUrl extends Gatherer {
   }
 
   /**
-   * Grab the manifest, extract it's start_url, attempt to `fetch()` it while offline
+   * Grab the manifest, extract its start_url, attempt to `fetch()` it while offline
    * @param {LH.Gatherer.PassContext} passContext
    * @return {Promise<LH.Artifacts['StartUrl']>}
    */
@@ -40,7 +39,7 @@ class StartUrl extends Gatherer {
     try {
       return await this._attemptStartURLFetch(passContext.driver, startUrlInfo.startUrl);
     } catch (err) {
-      return {statusCode: -1, explanation: 'Unable to fetch start_url via service worker.'};
+      return {statusCode: -1, explanation: 'Error while fetching start_url via service worker.'};
     }
   }
 

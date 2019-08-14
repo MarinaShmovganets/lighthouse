@@ -71,8 +71,6 @@ describe('StartUrl Gatherer', () => {
     };
 
     const result = await gatherer.afterPass(passContext);
-    expect(mockDriver.goOffline).toHaveBeenCalled();
-    expect(mockDriver.goOnline).toHaveBeenCalled();
     expect(result).toEqual({
       statusCode: -1,
       explanation:
@@ -98,7 +96,7 @@ describe('StartUrl Gatherer', () => {
     expect(mockDriver.goOnline).toHaveBeenCalled();
     expect(result).toEqual({
       statusCode: -1,
-      explanation: 'Unable to fetch start_url via service worker.',
+      explanation: 'Error while fetching start_url via service worker.',
     });
   });
 
@@ -191,6 +189,38 @@ describe('StartUrl Gatherer', () => {
     expect(result).toEqual({
       statusCode: -1,
       explanation: 'Timed out waiting for start_url to respond.',
+    });
+  });
+
+  it('navigates *while* offline', async () => {
+    const callsAtNavigationTime = [];
+    mockDriver.goOffline = jest.fn();
+    mockDriver.goOnline = jest.fn();
+    mockDriver.evaluateAsync = async () => {
+      callsAtNavigationTime.push(
+        ...mockDriver.goOffline.mock.calls.map(() => 'offline'),
+        ...mockDriver.goOnline.mock.calls.map(() => 'online'),
+      );
+    };
+    mockDriver.on = jest.fn();
+    mockDriver.off = jest.fn();
+
+    const passContext = {
+      baseArtifacts: createArtifactsWithURL('https://example.com/'),
+      driver: mockDriver,
+    };
+
+    const response = {
+      url: 'https://example.com/',
+      status: 200,
+      fromServiceWorker: true,
+    };
+
+    mockDriver.on.mockImplementation((_, onResponseReceived) => onResponseReceived({response}));
+    const result = await gatherer.afterPass(passContext);
+    expect(callsAtNavigationTime).toEqual(['offline']);
+    expect(result).toEqual({
+      statusCode: 200,
     });
   });
 });
