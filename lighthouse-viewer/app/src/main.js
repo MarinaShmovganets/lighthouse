@@ -46,7 +46,7 @@ function main() {
   });
 
   window.viewer = new LighthouseReportViewer();
-};
+}
 
 main();
 
