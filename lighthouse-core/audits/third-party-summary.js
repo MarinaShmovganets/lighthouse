@@ -25,9 +25,12 @@ const UIStrings = {
   /** Label for a table column that displays the name of a third-party provider that potentially links to their website. */
   columnThirdParty: 'Third-Party',
   /** Label for a table column that displays how much time each row spent blocking other work on the main thread, entries will be the number of milliseconds spent. */
-  columnBlockingTime: 'Blocking Time',
+  columnBlockingTime: 'Main-Thread Blocking Time',
   /** Summary text for the result of a Lighthouse audit that identifies the code on the page that the user doesn't control. This text summarizes the number of distinct entities that were found on the page. */
-  displayValue: `Increased Total Blocking Time by {timeInMs, number, milliseconds}\xa0ms`,
+  displayValue: `{itemCount, plural,
+    =1 {1 third-party}
+    other {# third-parties}
+    } blocked the main thread by {timeInMs, number, milliseconds}\xa0ms`,
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -126,11 +129,6 @@ class ThirdPartySummary extends Audit {
 
     const summary = {wastedBytes: 0, wastedMs: 0};
 
-    // Sort by a combined measure of bytes + blocking time.
-    // 1.5KB ~= 1 ms
-    /** @param {{transferSize: number, blockingTime: number}} stats */
-    const computeSortValue = stats => stats.transferSize / 1024 + stats.blockingTime * 1.5;
-
     const results = Array.from(summaryByEntity.entries())
       .map(([entity, stats]) => {
         summary.wastedBytes += stats.transferSize;
@@ -147,7 +145,8 @@ class ThirdPartySummary extends Audit {
           blockingTime: stats.blockingTime,
         };
       })
-      .sort((a, b) => computeSortValue(b) - computeSortValue(a));
+      // Sort by blocking time first, then transfer size to break ties.
+      .sort((a, b) => (b.blockingTime - a.blockingTime) || (b.transferSize - a.transferSize));
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
@@ -167,7 +166,10 @@ class ThirdPartySummary extends Audit {
 
     return {
       score: Number(summary.wastedMs <= PASS_THRESHOLD_IN_MS),
-      displayValue: str_(UIStrings.displayValue, {timeInMs: summary.wastedMs}),
+      displayValue: str_(UIStrings.displayValue, {
+        itemCount: results.length,
+        timeInMs: summary.wastedMs,
+      }),
       details: Audit.makeTableDetails(headings, results, summary),
     };
   }

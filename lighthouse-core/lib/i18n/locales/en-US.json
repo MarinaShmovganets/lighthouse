@@ -972,7 +972,7 @@
     "message": "Tap targets are sized appropriately"
   },
   "lighthouse-core/audits/third-party-summary.js | columnBlockingTime": {
-    "message": "Blocking Time"
+    "message": "Main-Thread Blocking Time"
   },
   "lighthouse-core/audits/third-party-summary.js | columnThirdParty": {
     "message": "Third-Party"
@@ -981,7 +981,7 @@
     "message": "Third-party code can significantly impact load performance. Limit the number of redundant third-party providers and try to load third-party code after your page has primarily finished loading. [Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript/)."
   },
   "lighthouse-core/audits/third-party-summary.js | displayValue": {
-    "message": "Increased Total Blocking Time by {timeInMs, number, milliseconds} ms"
+    "message": "{itemCount, plural,\n    =1 {1 third-party}\n    other {# third-parties}\n    } blocked the main thread by {timeInMs, number, milliseconds} ms"
   },
   "lighthouse-core/audits/third-party-summary.js | failureTitle": {
     "message": "Reduce impact of third-parties"

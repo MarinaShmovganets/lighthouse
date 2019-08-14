@@ -2579,7 +2579,7 @@
                         "granularity": 1.0,
                         "itemType": "ms",
                         "key": "blockingTime",
-                        "text": "Blocking Time"
+                        "text": "Main-Thread Blocking Time"
                     }
                 ],
                 "items": [
@@ -2600,7 +2600,7 @@
                 },
                 "type": "table"
             },
-            "displayValue": "Increased Total Blocking Time by 20\u00a0ms",
+            "displayValue": "1 third-party blocked the main thread by 20\u00a0ms",
             "id": "third-party-summary",
             "score": 1.0,
             "scoreDisplayMode": "binary",

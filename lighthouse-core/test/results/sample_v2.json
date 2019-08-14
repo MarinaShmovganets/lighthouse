@@ -1485,7 +1485,7 @@
       "description": "Third-party code can significantly impact load performance. Limit the number of redundant third-party providers and try to load third-party code after your page has primarily finished loading. [Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript/).",
       "score": 1,
       "scoreDisplayMode": "binary",
-      "displayValue": "Increased Total Blocking Time by 20 ms",
+      "displayValue": "1 third-party blocked the main thread by 20 ms",
       "details": {
         "type": "table",
         "headings": [
@@ -1504,7 +1504,7 @@
             "key": "blockingTime",
             "granularity": 1,
             "itemType": "ms",
-            "text": "Blocking Time"
+            "text": "Main-Thread Blocking Time"
           }
         ],
         "items": [
@@ -5544,6 +5544,7 @@
       "lighthouse-core/audits/third-party-summary.js | displayValue": [
         {
           "values": {
+            "itemCount": 1,
             "timeInMs": 22.918000000000006
           },
           "path": "audits[third-party-summary].displayValue"
