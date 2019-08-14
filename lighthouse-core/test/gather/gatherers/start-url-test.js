@@ -199,7 +199,7 @@ describe('StartUrl Gatherer', () => {
     mockDriver.evaluateAsync = async () => {
       callsAtNavigationTime.push(
         ...mockDriver.goOffline.mock.calls.map(() => 'offline'),
-        ...mockDriver.goOnline.mock.calls.map(() => 'online'),
+        ...mockDriver.goOnline.mock.calls.map(() => 'online')
       );
     };
     mockDriver.on = jest.fn();
