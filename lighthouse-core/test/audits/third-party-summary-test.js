@@ -23,7 +23,9 @@ describe('Third party summary', () => {
     const results = await ThirdPartySummary.audit(artifacts, {computedCache: new Map()});
 
     expect(results.score).toBe(1);
-    expect(results.displayValue).toBeDisplayString('Increased Total Blocking Time by 20 ms');
+    expect(results.displayValue).toBeDisplayString(
+      '2 third-parties blocked the main thread by 20 ms'
+    );
     expect(results.details.items).toEqual([
       {
         entity: {
