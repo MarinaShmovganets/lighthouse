@@ -147,42 +147,36 @@ function _preprocessMessageValues(icuMessage, values = {}) {
  *
  * Note: This function will recursively inspect plural elements for nested arguementElements.
  *
- * @param {Array<import('intl-messageformat-parser').Element>} parsedIcu
- * @param {Map<string, import('intl-messageformat-parser').Element>} elements
+ * @param {Array<import('intl-messageformat-parser').Element>} elementsList
+ * @param {Map<string, import('intl-messageformat-parser').Element>} seenElelementsById
  */
-function _collectAllCustomElementsFromICU(parsedIcu, elements = new Map()) {
+function _collectAllCustomElementsFromICU(elementsList, seenElelementsById = new Map()) {
+  // add argumentElements
+  elementsList
+  .filter(el => el.type === 'argumentElement')
+  // @ts-ignore - el.id is always defined when el.format is defined
+  .forEach(el => seenElelementsById.set(el.id, el));
+
   // Rescurse into Plurals
-  for (const el of parsedIcu) {
+  for (const el of elementsList) {
     if (!el.format || el.format.type !== 'pluralFormat') continue;
     // We need to find all the elements from the plural format sections, but
     // they need to be deduplicated. I.e. "=1{hello {icu}} =other{hello {icu}}"
     // the variable "icu" would appear twice if it wasn't de duplicated.
-    const elemSet = new Map();
+    let childElementsById = new Map();
     // Look at all options of the plural (=1{} =other{}...)
     for (const option of el.format.options) {
-      // Look at each element of each plural option
-      for (const element of option.value.elements) {
-        if (el.type !== 'argumentElement') continue;
-        // If the element is an argument, then add it to the de-dupe map
-        elemSet.set(element.id, element);
-      }
+      // Run collections on each option's elements
+      childElementsById = _collectAllCustomElementsFromICU(option.value.elements,
+        seenElelementsById);
     }
-    const e = Array.from(elemSet.values());
     // Add the nested plural elements to the main elements set
-    const rElements = _collectAllCustomElementsFromICU(e, elements);
-
-    for (const [key, value] of rElements) {
-      elements.set(key, value);
+    for (const [key, value] of childElementsById) {
+      seenElelementsById.set(key, value);
     }
   }
 
-  // add other arguementElements
-  parsedIcu
-    .filter(el => el.type === 'argumentElement')
-    // @ts-ignore - el.id is always defined when el.format is defined
-    .forEach(el => elements.set(el.id, el));
-
-  return elements;
+  return seenElelementsById;
 }
 
 /**
