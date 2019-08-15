@@ -141,8 +141,8 @@ function _preprocessMessageValues(icuMessage, values = {}) {
 }
 
 /**
- * Function to retrieve all 'arguementElement's from an ICU message. An arguementElement
- * is an ICU element that has an arguement attached like {varName, number, bytes}. This
+ * Function to retrieve all 'argumentElement's from an ICU message. An argumentElement
+ * is an ICU element that has an argument attached like {varName, number, bytes}. This
  * differs from 'messageElement's which are just arbitrary text in a message.
  *
  * Note: This function will recursively inspect plural elements for nested arguementElements.
@@ -163,7 +163,7 @@ function _collectAllCustomElementsFromICU(parsedIcu, elements = new Map()) {
       // Look at each element of each plural option
       for (const element of option.value.elements) {
         if (el.type !== 'argumentElement') continue;
-        // If the element is an arguement, then add it to the de-dupe map
+        // If the element is an argument, then add it to the de-dupe map
         elemSet.set(element.id, element);
       }
     }
@@ -186,8 +186,8 @@ function _collectAllCustomElementsFromICU(parsedIcu, elements = new Map()) {
 }
 
 /**
- * This function takes a list of ICU arguementElements and a map of values and
- * will apply Lighthouse custom formatting to the values based on the arguementElement
+ * This function takes a list of ICU argumentElements and a map of values and
+ * will apply Lighthouse custom formatting to the values based on the argumentElement
  * format style.
  *
  * @param {Array<import('intl-messageformat-parser').Element>} icuElementsList
