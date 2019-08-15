@@ -16,8 +16,8 @@ const MainThreadTasks = require('../computed/main-thread-tasks.js');
 const UIStrings = {
   /** Title of a diagnostic audit that provides details about the code on a web page that the user doesn't control (referred to as "third-party code"). This descriptive title is shown to users when the amount is acceptable and no user action is required. */
   title: 'Third-Party usage',
-  /** Title of a diagnostic audit that provides details about the code on a web page that the user doesn't control (referred to as "third-party code"). This imperative title is shown to users when there is a significant amount of third-party execution time that should be reduced. */
-  failureTitle: 'Reduce impact of third-parties',
+  /** Title of a diagnostic audit that provides details about the code on a web page that the user doesn't control (referred to as "third-party code"). This imperative title is shown to users when there is a significant amount of page execution time caused by third-party code that should be reduced. */
+  failureTitle: 'Reduce the impact of third-party code',
   /** Description of a Lighthouse audit that identifies the code on the page that the user doesn't control. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Third-party code can significantly impact load performance. ' +
     'Limit the number of redundant third-party providers and try to load third-party code after ' +
@@ -27,10 +27,7 @@ const UIStrings = {
   /** Label for a table column that displays how much time each row spent blocking other work on the main thread, entries will be the number of milliseconds spent. */
   columnBlockingTime: 'Main-Thread Blocking Time',
   /** Summary text for the result of a Lighthouse audit that identifies the code on a web page that the user doesn't control (referred to as "third-party code"). This text summarizes the number of distinct entities that were found on the page. */
-  displayValue: `{itemCount, plural,
-    =1 {1 third-party}
-    other {# third-parties}
-    } blocked the main thread by {timeInMs, number, milliseconds}\xa0ms`,
+  displayValue: `Third-party code blocked the main thread for {timeInMs, number, milliseconds}\xa0ms`,
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
