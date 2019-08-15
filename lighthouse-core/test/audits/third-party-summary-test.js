@@ -24,7 +24,7 @@ describe('Third party summary', () => {
 
     expect(results.score).toBe(1);
     expect(results.displayValue).toBeDisplayString(
-      '2 third-parties blocked the main thread by 20 ms'
+      'Third-party code blocked the main thread for 20 ms'
     );
     expect(results.details.items).toEqual([
       {

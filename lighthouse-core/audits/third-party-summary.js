@@ -27,7 +27,8 @@ const UIStrings = {
   /** Label for a table column that displays how much time each row spent blocking other work on the main thread, entries will be the number of milliseconds spent. */
   columnBlockingTime: 'Main-Thread Blocking Time',
   /** Summary text for the result of a Lighthouse audit that identifies the code on a web page that the user doesn't control (referred to as "third-party code"). This text summarizes the number of distinct entities that were found on the page. */
-  displayValue: `Third-party code blocked the main thread for {timeInMs, number, milliseconds}\xa0ms`,
+  displayValue: 'Third-party code blocked the main thread for ' +
+    `{timeInMs, number, milliseconds}\xa0ms`,
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
