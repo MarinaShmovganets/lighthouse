@@ -140,22 +140,43 @@ function _preprocessMessageValues(icuMessage, values = {}) {
   return clonedValues;
 }
 
+/**
+ * Function to retrieve all 'arguementElement's from an ICU message. An arguementElement
+ * is an ICU element that has an arguement attached like {varName, number, bytes}. This
+ * differs from 'messageElement's which are just arbitrary text in a message.
+ *
+ * Note: This function will recursively inspect plural elements for nested arguementElements.
+ *
+ * @param {Array<import('intl-messageformat-parser').Element>} parsedIcu
+ * @param {Map<string, import('intl-messageformat-parser').Element>} elements
+ */
 function _collectAllCustomElementsFromICU(parsedIcu, elements = new Map()) {
   // Rescurse into Plurals
-  parsedIcu
-    .filter(el => el.format && el.format.type === 'pluralFormat')
-    .forEach(el => {
-      const elemSet = new Map();
-      el.format.options.forEach(opt => opt.value.elements.forEach(elem => elemSet.set(elem.id, elem)));
-      const e = Array.from(elemSet.values());
+  for (const el of parsedIcu) {
+    if (!el.format || el.format.type !== 'pluralFormat') continue;
+    // We need to find all the elements from the plural format sections, but
+    // they need to be deduplicated. I.e. "=1{hello {icu}} =other{hello {icu}}"
+    // the variable "icu" would appear twice if it wasn't de duplicated.
+    const elemSet = new Map();
+    // Look at all options of the plural (=1{} =other{}...)
+    for (const option of el.format.options) {
+      // Look at each element of each plural option
+      for (const element of option.value.elements) {
+        if (el.type !== 'argumentElement') continue;
+        // If the element is an arguement, then add it to the de-dupe map
+        elemSet.set(element.id, element);
+      }
+    }
+    const e = Array.from(elemSet.values());
+    // Add the nested plural elements to the main elements set
+    const rElements = _collectAllCustomElementsFromICU(e, elements);
 
-      // de dupe into main elements
-      const rElements = _collectAllCustomElementsFromICU(e, elements);
+    for (const [key, value] of rElements) {
+      elements.set(key, value);
+    }
+  }
 
-      rElements.forEach((k, v) => elements[k] = v);
-    });
-
-  // add arguementElements
+  // add other arguementElements
   parsedIcu
     .filter(el => el.type === 'argumentElement')
     // @ts-ignore - el.id is always defined when el.format is defined
@@ -164,6 +185,14 @@ function _collectAllCustomElementsFromICU(parsedIcu, elements = new Map()) {
   return elements;
 }
 
+/**
+ * This function takes a list of ICU arguementElements and a map of values and
+ * will apply Lighthouse custom formatting to the values based on the arguementElement
+ * format style.
+ *
+ * @param {Array<import('intl-messageformat-parser').Element>} icuElementsList
+ * @param {Record<string, string | number>} [values]
+ */
 function _processParsedElements(icuElementsList, values = {}) {
   // Throw an error if a message's value isn't provided
   icuElementsList
