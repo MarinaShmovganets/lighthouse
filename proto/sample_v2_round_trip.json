@@ -2600,7 +2600,7 @@
                 },
                 "type": "table"
             },
-            "displayValue": "1 third-party blocked the main thread by 20\u00a0ms",
+            "displayValue": "Third-party code blocked the main thread for 20\u00a0ms",
             "id": "third-party-summary",
             "score": 1.0,
             "scoreDisplayMode": "binary",

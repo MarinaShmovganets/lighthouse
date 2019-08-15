@@ -1083,10 +1083,10 @@
     "message": "Third-party code can significantly impact load performance. Limit the number of redundant third-party providers and try to load third-party code after your page has primarily finished loading. [Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript/)."
   },
   "lighthouse-core/audits/third-party-summary.js | displayValue": {
-    "message": "{itemCount, plural,\n    =1 {1 third-party}\n    other {# third-parties}\n    } blocked the main thread by {timeInMs, number, milliseconds} ms"
+    "message": "Third-party code blocked the main thread for {timeInMs, number, milliseconds} ms"
   },
   "lighthouse-core/audits/third-party-summary.js | failureTitle": {
-    "message": "Reduce impact of third-parties"
+    "message": "Reduce the impact of third-party code"
   },
   "lighthouse-core/audits/third-party-summary.js | title": {
     "message": "Third-Party usage"
