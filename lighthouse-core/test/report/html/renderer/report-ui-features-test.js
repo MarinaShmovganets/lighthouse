@@ -279,66 +279,66 @@ describe('ReportUIFeatures', () => {
     });
 
     it('click should toggle active class', () => {
-      dropDown.toolsButton.click();
-      assert.ok(dropDown.toolsButton.classList.contains('active'));
+      dropDown._toggleEl.click();
+      assert.ok(dropDown._toggleEl.classList.contains('active'));
 
-      dropDown.toolsButton.click();
-      assert.ok(!dropDown.toolsButton.classList.contains('active'));
+      dropDown._toggleEl.click();
+      assert.ok(!dropDown._toggleEl.classList.contains('active'));
     });
 
 
     it('Escape key removes active class', () => {
-      dropDown.toolsButton.click();
-      assert.ok(dropDown.toolsButton.classList.contains('active'));
+      dropDown._toggleEl.click();
+      assert.ok(dropDown._toggleEl.classList.contains('active'));
 
       const escape = new window.KeyboardEvent('keydown', {keyCode: /* ESC */ 27});
       dom.document().dispatchEvent(escape);
-      assert.ok(!dropDown.toolsButton.classList.contains('active'));
+      assert.ok(!dropDown._toggleEl.classList.contains('active'));
     });
 
     ['ArrowUp', 'ArrowDown', 'Enter', ' '].forEach((code) => {
       it(`'${code}' adds active class`, () => {
         const event = new window.KeyboardEvent('keydown', {code});
-        dropDown.toolsButton.dispatchEvent(event);
-        assert.ok(dropDown.toolsButton.classList.contains('active'));
+        dropDown._toggleEl.dispatchEvent(event);
+        assert.ok(dropDown._toggleEl.classList.contains('active'));
       });
     });
 
     it('ArrowUp on the first menu element should focus the last element', () => {
-      dropDown.toolsButton.click();
+      dropDown._toggleEl.click();
 
       const arrowUp = new window.KeyboardEvent('keydown', {bubbles: true, code: 'ArrowUp'});
-      dropDown.toolsDropDown.firstElementChild.dispatchEvent(arrowUp);
+      dropDown._menuEl.firstElementChild.dispatchEvent(arrowUp);
 
-      assert.strictEqual(dom.document().activeElement, dropDown.toolsDropDown.lastElementChild);
+      assert.strictEqual(dom.document().activeElement, dropDown._menuEl.lastElementChild);
     });
 
     it('ArrowDown on the first menu element should focus the second element', () => {
-      dropDown.toolsButton.click();
+      dropDown._toggleEl.click();
 
-      const {nextElementSibling} = dropDown.toolsDropDown.firstElementChild;
+      const {nextElementSibling} = dropDown._menuEl.firstElementChild;
       const arrowDown = new window.KeyboardEvent('keydown', {bubbles: true, code: 'ArrowDown'});
-      dropDown.toolsDropDown.firstElementChild.dispatchEvent(arrowDown);
+      dropDown._menuEl.firstElementChild.dispatchEvent(arrowDown);
 
       assert.strictEqual(dom.document().activeElement, nextElementSibling);
     });
 
     it('Home on the last menu element should focus the first element', () => {
-      dropDown.toolsButton.click();
+      dropDown._toggleEl.click();
 
-      const {firstElementChild} = dropDown.toolsDropDown;
+      const {firstElementChild} = dropDown._menuEl;
       const home = new window.KeyboardEvent('keydown', {bubbles: true, code: 'Home'});
-      dropDown.toolsDropDown.lastElementChild.dispatchEvent(home);
+      dropDown._menuEl.lastElementChild.dispatchEvent(home);
 
       assert.strictEqual(dom.document().activeElement, firstElementChild);
     });
 
     it('End on the first menu element should focus the last element', () => {
-      dropDown.toolsButton.click();
+      dropDown._toggleEl.click();
 
-      const {lastElementChild} = dropDown.toolsDropDown;
+      const {lastElementChild} = dropDown._menuEl;
       const end = new window.KeyboardEvent('keydown', {bubbles: true, code: 'End'});
-      dropDown.toolsDropDown.firstElementChild.dispatchEvent(end);
+      dropDown._menuEl.firstElementChild.dispatchEvent(end);
 
       assert.strictEqual(dom.document().activeElement, lastElementChild);
     });

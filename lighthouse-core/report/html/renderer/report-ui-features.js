@@ -61,7 +61,7 @@ class ReportUIFeatures {
 
     this.onMediaQueryChange = this.onMediaQueryChange.bind(this);
     this.onCopy = this.onCopy.bind(this);
-    this.onToolAction = this.onToolAction.bind(this);
+    this.onDropDownMenuClick = this.onDropDownMenuClick.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onChevronClick = this.onChevronClick.bind(this);
     this.collapseAllDetails = this.collapseAllDetails.bind(this);
@@ -79,8 +79,7 @@ class ReportUIFeatures {
     this.json = report;
 
     this._setupMediaQueryListeners();
-    this._dropDown.setupToolsDropDown();
-    this._dropDown.toolsDropDown.addEventListener('click', this.onToolAction);
+    this._dropDown.setup(this.onDropDownMenuClick);
     this._setupThirdPartyFilter();
     this._setUpCollapseDetailsAfterPrinting();
     this._resetUIState();
@@ -378,7 +377,7 @@ class ReportUIFeatures {
    * be in their closed state (not opened) and the templates should be unstamped.
    */
   _resetUIState() {
-    this._dropDown.closeToolsDropDown();
+    this._dropDown.close();
     this._dom.resetTemplates();
   }
 
@@ -386,7 +385,7 @@ class ReportUIFeatures {
    * Handler for tool button.
    * @param {Event} e
    */
-  onToolAction(e) {
+  onDropDownMenuClick(e) {
     e.preventDefault();
 
     const el = /** @type {?Element} */ (e.target);
@@ -438,7 +437,7 @@ class ReportUIFeatures {
       }
     }
 
-    this._dropDown.closeToolsDropDown();
+    this._dropDown.close();
   }
 
   _print() {
@@ -452,7 +451,7 @@ class ReportUIFeatures {
   onKeyUp(e) {
     // Ctrl+P - Expands audit details when user prints via keyboard shortcut.
     if ((e.ctrlKey || e.metaKey) && e.keyCode === 80) {
-      this._dropDown.closeToolsDropDown();
+      this._dropDown.close();
     }
   }
 
@@ -624,35 +623,39 @@ class DropDown {
     /** @type {DOM} */
     this._dom = dom;
     /** @type {HTMLElement} */
-    this.toolsButton; // eslint-disable-line no-unused-expressions
+    this._toggleEl; // eslint-disable-line no-unused-expressions
     /** @type {HTMLElement} */
-    this.toolsDropDown; // eslint-disable-line no-unused-expressions
+    this._menuEl; // eslint-disable-line no-unused-expressions
 
     this.onDocumentKeyDown = this.onDocumentKeyDown.bind(this);
-    this.onToolsButtonClick = this.onToolsButtonClick.bind(this);
-    this.onToolsButtonKeydown = this.onToolsButtonKeydown.bind(this);
-    this.onToolsDropDownKeydown = this.onToolsDropDownKeydown.bind(this);
+    this.onToggleClick = this.onToggleClick.bind(this);
+    this.onToggleKeydown = this.onToggleKeydown.bind(this);
+    this.onMenuKeydown = this.onMenuKeydown.bind(this);
 
-    this._getNextDropDownItem = this._getNextDropDownItem.bind(this);
+    this._getNextMenuItem = this._getNextMenuItem.bind(this);
     this._getNextSelectableNode = this._getNextSelectableNode.bind(this);
-    this._getPreviousDropDownItem = this._getPreviousDropDownItem.bind(this);
+    this._getPreviousMenuItem = this._getPreviousMenuItem.bind(this);
   }
 
-  setupToolsDropDown() {
-    this.toolsButton = this._dom.find('.lh-tools__button', this._dom.document());
-    this.toolsButton.addEventListener('click', this.onToolsButtonClick);
-    this.toolsButton.addEventListener('keydown', this.onToolsButtonKeydown);
+  /**
+   * @param {function(MouseEvent): any} menuClickHandler
+   */
+  setup(menuClickHandler) {
+    this._toggleEl = this._dom.find('.lh-tools__button', this._dom.document());
+    this._toggleEl.addEventListener('click', this.onToggleClick);
+    this._toggleEl.addEventListener('keydown', this.onToggleKeydown);
 
-    this.toolsDropDown = this._dom.find('.lh-tools__dropdown', this._dom.document());
-    this.toolsDropDown.addEventListener('keydown', this.onToolsDropDownKeydown);
+    this._menuEl = this._dom.find('.lh-tools__dropdown', this._dom.document());
+    this._menuEl.addEventListener('keydown', this.onMenuKeydown);
+    this._menuEl.addEventListener('click', menuClickHandler);
   }
 
-  closeToolsDropDown() {
-    this.toolsButton.classList.remove('active');
-    this.toolsButton.setAttribute('aria-expanded', 'false');
-    if (this.toolsDropDown.contains(this._dom.document().activeElement)) {
+  close() {
+    this._toggleEl.classList.remove('active');
+    this._toggleEl.setAttribute('aria-expanded', 'false');
+    if (this._menuEl.contains(this._dom.document().activeElement)) {
       // Refocus on the tools button if the drop down last had focus
-      this.toolsButton.focus();
+      this._toggleEl.focus();
     }
     this._dom.document().removeEventListener('keydown', this.onDocumentKeyDown);
   }
@@ -660,19 +663,19 @@ class DropDown {
   /**
    * @param {HTMLElement} firstFocusElement
    */
-  openToolsDropDown(firstFocusElement) {
-    if (this.toolsButton.classList.contains('active')) {
+  open(firstFocusElement) {
+    if (this._toggleEl.classList.contains('active')) {
       // If the drop down is already open focus on the element
       firstFocusElement.focus();
     } else {
       // Wait for drop down transition to complete so options are focusable.
-      this.toolsDropDown.addEventListener('transitionend', () => {
+      this._menuEl.addEventListener('transitionend', () => {
         firstFocusElement.focus();
       }, {once: true});
     }
 
-    this.toolsButton.classList.add('active');
-    this.toolsButton.setAttribute('aria-expanded', 'true');
+    this._toggleEl.classList.add('active');
+    this._toggleEl.setAttribute('aria-expanded', 'true');
     this._dom.document().addEventListener('keydown', this.onDocumentKeyDown);
   }
 
@@ -680,14 +683,14 @@ class DropDown {
    * Click handler for tools button.
    * @param {Event} e
    */
-  onToolsButtonClick(e) {
+  onToggleClick(e) {
     e.preventDefault();
     e.stopImmediatePropagation();
 
-    if (this.toolsButton.classList.contains('active')) {
-      this.closeToolsDropDown();
+    if (this._toggleEl.classList.contains('active')) {
+      this.close();
     } else {
-      this.openToolsDropDown(this._getNextDropDownItem());
+      this.open(this._getNextMenuItem());
     }
   }
 
@@ -695,17 +698,17 @@ class DropDown {
    * Handler for tool button.
    * @param {KeyboardEvent} e
    */
-  onToolsButtonKeydown(e) {
+  onToggleKeydown(e) {
     switch (e.code) {
       case 'ArrowUp':
         e.preventDefault();
-        this.openToolsDropDown(this._getPreviousDropDownItem());
+        this.open(this._getPreviousMenuItem());
         break;
       case 'ArrowDown':
       case 'Enter':
       case ' ':
         e.preventDefault();
-        this.openToolsDropDown(this._getNextDropDownItem());
+        this.open(this._getNextMenuItem());
         break;
       default:
        // no op
@@ -716,25 +719,25 @@ class DropDown {
    * Handler for tool DropDown.
    * @param {KeyboardEvent} e
    */
-  onToolsDropDownKeydown(e) {
+  onMenuKeydown(e) {
     const el = /** @type {?HTMLElement} */ (e.target);
 
     switch (e.code) {
       case 'ArrowUp':
         e.preventDefault();
-        this._getPreviousDropDownItem(el).focus();
+        this._getPreviousMenuItem(el).focus();
         break;
       case 'ArrowDown':
         e.preventDefault();
-        this._getNextDropDownItem(el).focus();
+        this._getNextMenuItem(el).focus();
         break;
       case 'Home':
         e.preventDefault();
-        this._getNextDropDownItem().focus();
+        this._getNextMenuItem().focus();
         break;
       case 'End':
         e.preventDefault();
-        this._getPreviousDropDownItem().focus();
+        this._getPreviousMenuItem().focus();
         break;
       default:
        // no op
@@ -747,7 +750,7 @@ class DropDown {
    */
   onDocumentKeyDown(e) {
     if (e.keyCode === 27) { // ESC
-      this.closeToolsDropDown();
+      this.close();
     }
   }
 
@@ -787,8 +790,8 @@ class DropDown {
    * @param {?Element=} startEl
    * @returns {HTMLElement}
    */
-  _getNextDropDownItem(startEl) {
-    const nodes = Array.from(this.toolsDropDown.childNodes);
+  _getNextMenuItem(startEl) {
+    const nodes = Array.from(this._menuEl.childNodes);
     return /** @type {HTMLElement} */ (this._getNextSelectableNode(nodes, startEl));
   }
 
@@ -796,8 +799,8 @@ class DropDown {
    * @param {?Element=} startEl
    * @returns {HTMLElement}
    */
-  _getPreviousDropDownItem(startEl) {
-    const nodes = Array.from(this.toolsDropDown.childNodes).reverse();
+  _getPreviousMenuItem(startEl) {
+    const nodes = Array.from(this._menuEl.childNodes).reverse();
     return /** @type {HTMLElement} */ (this._getNextSelectableNode(nodes, startEl));
   }
 }
