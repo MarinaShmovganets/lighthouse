@@ -151,15 +151,15 @@ function _preprocessMessageValues(icuMessage, values = {}) {
  *  be stored in a set because they are not equal since their locations are different,
  *  thus they are stored via a Map keyed on the "id" which is the ICU varName.
  *
- * @param {Array<import('intl-messageformat-parser').Element>} elementsList
- * @param {Map<string, import('intl-messageformat-parser').Element>} seenElelementsById
+ * @param {Array<import('intl-messageformat-parser').Element>} icuElements
+ * @param {Map<string, import('intl-messageformat-parser').Element>} seenElementsById
  */
-function _collectAllCustomElementsFromICU(elementsList, seenElelementsById = new Map()) {
-  for (const el of elementsList) {
+function _collectAllCustomElementsFromICU(icuElements, seenElementsById = new Map()) {
+  for (const el of icuElements) {
     // We are only interested in elements that need ICU formatting (argumentElements)
     if (el.type !== 'argumentElement') continue;
     // @ts-ignore - el.id is always defined when el.format is defined
-    seenElelementsById.set(el.id, el);
+    seenElementsById.set(el.id, el);
 
     // Plurals need to be inspected recursively
     if (!el.format || el.format.type !== 'pluralFormat') continue;
@@ -167,11 +167,11 @@ function _collectAllCustomElementsFromICU(elementsList, seenElelementsById = new
     for (const option of el.format.options) {
       // Run collections on each option's elements
       _collectAllCustomElementsFromICU(option.value.elements,
-        seenElelementsById);
+        seenElementsById);
     }
   }
 
-  return seenElelementsById;
+  return seenElementsById;
 }
 
 /**
@@ -179,12 +179,12 @@ function _collectAllCustomElementsFromICU(elementsList, seenElelementsById = new
  * will apply Lighthouse custom formatting to the values based on the argumentElement
  * format style.
  *
- * @param {Array<import('intl-messageformat-parser').Element>} icuElementsList
+ * @param {Array<import('intl-messageformat-parser').Element>} argumentElements
  * @param {Record<string, string | number>} [values]
  */
-function _processParsedElements(icuElementsList, values = {}) {
+function _processParsedElements(argumentElements, values = {}) {
   // Throw an error if a message's value isn't provided
-  icuElementsList
+  argumentElements
     .filter(el => el.type === 'argumentElement')
     .forEach(el => {
       if (el.id && (el.id in values) === false) {
@@ -193,19 +193,19 @@ function _processParsedElements(icuElementsList, values = {}) {
     });
 
   // Round all milliseconds to the nearest 10
-  icuElementsList
+  argumentElements
     .filter(el => el.format && el.format.style === 'milliseconds')
     // @ts-ignore - el.id is always defined when el.format is defined
     .forEach(el => (values[el.id] = Math.round(values[el.id] / 10) * 10));
 
   // Convert all seconds to the correct unit
-  icuElementsList
+  argumentElements
     .filter(el => el.format && el.format.style === 'seconds' && el.id === 'timeInMs')
     // @ts-ignore - el.id is always defined when el.format is defined
     .forEach(el => (values[el.id] = Math.round(values[el.id] / 100) / 10));
 
   // Replace all the bytes with KB
-  icuElementsList
+  argumentElements
     .filter(el => el.format && el.format.style === 'bytes')
     // @ts-ignore - el.id is always defined when el.format is defined
     .forEach(el => (values[el.id] = values[el.id] / 1024));
