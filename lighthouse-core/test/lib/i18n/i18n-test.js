@@ -163,6 +163,11 @@ describe('i18n', () => {
       expect(helloStr).toBeDisplayString('hellos');
     });
 
+    it('throws an error when a plural control value is missing', () => {
+      expect(_ => i18n.getFormatted(str_(UIStrings.helloPlural), 'en-US'))
+      .toThrow(`ICU Message contains a value reference ("itemCount") that wasn't provided`);
+    });
+
     it('formats a message with plurals and nested custom ICU', () => {
       const helloStr = str_(UIStrings.helloPluralNestedICU, {itemCount: 3, in: 1875});
       expect(helloStr).toBeDisplayString('hellos 2');

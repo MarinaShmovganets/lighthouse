@@ -130,49 +130,44 @@ function lookupLocale(locale) {
  * @param {Record<string, string | number>} [values]
  */
 function _preprocessMessageValues(icuMessage, values = {}) {
-  let clonedValues = JSON.parse(JSON.stringify(values));
   const parsed = MessageParser.parse(icuMessage);
 
   const elements = _collectAllCustomElementsFromICU(parsed.elements);
 
-  clonedValues = _processParsedElements(Array.from(elements.values()), clonedValues);
-
-  return clonedValues;
+  return _processParsedElements(Array.from(elements.values()), JSON.parse(JSON.stringify(values)));
 }
 
 /**
  * Function to retrieve all 'argumentElement's from an ICU message. An argumentElement
- * is an ICU element that has an argument attached like {varName, number, bytes}. This
+ * is an ICU element with an argument in it, like '{varName}' or '{varName, number, bytes}'. This
  * differs from 'messageElement's which are just arbitrary text in a message.
  *
- * Note: This function will recursively inspect plural elements for nested arguementElements.
+ * Notes:
+ *  This function will recursively inspect plural elements for nested argumentElements.
+ *
+ *  We need to find all the elements from the plural format sections, but
+ *  they need to be deduplicated. I.e. "=1{hello {icu}} =other{hello {icu}}"
+ *  the variable "icu" would appear twice if it wasn't de duplicated. And they cannot
+ *  be stored in a set because they are not equal since their locations are different,
+ *  thus they are stored via a Map keyed on the "id" which is the ICU varName.
  *
  * @param {Array<import('intl-messageformat-parser').Element>} elementsList
  * @param {Map<string, import('intl-messageformat-parser').Element>} seenElelementsById
  */
 function _collectAllCustomElementsFromICU(elementsList, seenElelementsById = new Map()) {
-  // add argumentElements
-  elementsList
-  .filter(el => el.type === 'argumentElement')
-  // @ts-ignore - el.id is always defined when el.format is defined
-  .forEach(el => seenElelementsById.set(el.id, el));
-
-  // Rescurse into Plurals
   for (const el of elementsList) {
+    // We are only interested in elements that need ICU formatting (argumentElements)
+    if (el.type !== 'argumentElement') continue;
+    // @ts-ignore - el.id is always defined when el.format is defined
+    seenElelementsById.set(el.id, el);
+
+    // Plurals need to be inspected recursively
     if (!el.format || el.format.type !== 'pluralFormat') continue;
-    // We need to find all the elements from the plural format sections, but
-    // they need to be deduplicated. I.e. "=1{hello {icu}} =other{hello {icu}}"
-    // the variable "icu" would appear twice if it wasn't de duplicated.
-    let childElementsById = new Map();
     // Look at all options of the plural (=1{} =other{}...)
     for (const option of el.format.options) {
       // Run collections on each option's elements
-      childElementsById = _collectAllCustomElementsFromICU(option.value.elements,
+      _collectAllCustomElementsFromICU(option.value.elements,
         seenElelementsById);
-    }
-    // Add the nested plural elements to the main elements set
-    for (const [key, value] of childElementsById) {
-      seenElelementsById.set(key, value);
     }
   }
 
