@@ -130,11 +130,12 @@ function lookupLocale(locale) {
  * @param {Record<string, string | number>} [values]
  */
 function _preprocessMessageValues(icuMessage, values = {}) {
+  const clonedValues = JSON.parse(JSON.stringify(values));
   const parsed = MessageParser.parse(icuMessage);
 
   const elements = _collectAllCustomElementsFromICU(parsed.elements);
 
-  return _processParsedElements(Array.from(elements.values()), JSON.parse(JSON.stringify(values)));
+  return _processParsedElements(Array.from(elements.values()), clonedValues);
 }
 
 /**
