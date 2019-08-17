@@ -9,9 +9,12 @@ const path = require('path');
 const isDeepEqual = require('lodash.isequal');
 const log = require('lighthouse-logger');
 const MessageFormat = require('intl-messageformat').default;
-const MessageParser = require('intl-messageformat-parser');
+const MessageParser = require('intl-messageformat-parser').default;
 const lookupClosestLocale = require('lookup-closest-locale');
 const LOCALES = require('./locales.js');
+
+/** @typedef {import('intl-messageformat-parser').Element} MessageElement */
+/** @typedef {import('intl-messageformat-parser').ArgumentElement} ArgumentElement */
 
 const LH_ROOT = path.join(__dirname, '../../../');
 const MESSAGE_INSTANCE_ID_REGEX = /(.* \| .*) # (\d+)$/;
@@ -29,6 +32,10 @@ const MESSAGE_INSTANCE_ID_QUICK_REGEX = / # \d+$/;
 
     Intl.NumberFormat = IntlPolyfill.NumberFormat;
     Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
+
+    // Intl.PluralRules polyfilled on require().
+    // @ts-ignore
+    require('intl-pluralrules');
   } catch (_) {
     log.warn('i18n', 'Failed to install `intl` polyfill');
   }
@@ -128,6 +135,7 @@ function lookupLocale(locale) {
 /**
  * @param {string} icuMessage
  * @param {Record<string, string | number>} [values]
+ * @return {Record<string, string | number>}
  */
 function _preprocessMessageValues(icuMessage, values = {}) {
   const clonedValues = JSON.parse(JSON.stringify(values));
@@ -135,7 +143,7 @@ function _preprocessMessageValues(icuMessage, values = {}) {
 
   const elements = _collectAllCustomElementsFromICU(parsed.elements);
 
-  return _processParsedElements(Array.from(elements.values()), clonedValues);
+  return _processParsedElements(icuMessage, Array.from(elements.values()), clonedValues);
 }
 
 /**
@@ -152,14 +160,15 @@ function _preprocessMessageValues(icuMessage, values = {}) {
  *  be stored in a set because they are not equal since their locations are different,
  *  thus they are stored via a Map keyed on the "id" which is the ICU varName.
  *
- * @param {Array<import('intl-messageformat-parser').Element>} icuElements
- * @param {Map<string, import('intl-messageformat-parser').Element>} seenElementsById
+ * @param {Array<MessageElement>} icuElements
+ * @param {Map<string, ArgumentElement>} seenElementsById
+ * @return {Map<string, ArgumentElement>}
  */
 function _collectAllCustomElementsFromICU(icuElements, seenElementsById = new Map()) {
   for (const el of icuElements) {
     // We are only interested in elements that need ICU formatting (argumentElements)
     if (el.type !== 'argumentElement') continue;
-    // @ts-ignore - el.id is always defined when el.format is defined
+
     seenElementsById.set(el.id, el);
 
     // Plurals need to be inspected recursively
@@ -167,8 +176,7 @@ function _collectAllCustomElementsFromICU(icuElements, seenElementsById = new Ma
     // Look at all options of the plural (=1{} =other{}...)
     for (const option of el.format.options) {
       // Run collections on each option's elements
-      _collectAllCustomElementsFromICU(option.value.elements,
-        seenElementsById);
+      _collectAllCustomElementsFromICU(option.value.elements, seenElementsById);
     }
   }
 
@@ -180,36 +188,40 @@ function _collectAllCustomElementsFromICU(icuElements, seenElementsById = new Ma
  * will apply Lighthouse custom formatting to the values based on the argumentElement
  * format style.
  *
- * @param {Array<import('intl-messageformat-parser').Element>} argumentElements
+ * @param {string} icuMessage
+ * @param {Array<ArgumentElement>} argumentElements
  * @param {Record<string, string | number>} [values]
+ * @return {Record<string, string | number>}
  */
-function _processParsedElements(argumentElements, values = {}) {
-  // Throw an error if a message's value isn't provided
-  argumentElements
-    .filter(el => el.type === 'argumentElement')
-    .forEach(el => {
-      if (el.id && (el.id in values) === false) {
-        throw new Error(`ICU Message contains a value reference ("${el.id}") that wasn't provided`);
-      }
-    });
+function _processParsedElements(icuMessage, argumentElements, values = {}) {
+  for (const {id, format} of argumentElements) {
+    // Throw an error if a message's value isn't provided
+    if (id && (id in values) === false) {
+      // eslint-disable-next-line max-len
+      throw new Error(`ICU Message "${icuMessage}" contains a value reference ("${id}") that wasn't provided`);
+    }
 
-  // Round all milliseconds to the nearest 10
-  argumentElements
-    .filter(el => el.format && el.format.style === 'milliseconds')
-    // @ts-ignore - el.id is always defined when el.format is defined
-    .forEach(el => (values[el.id] = Math.round(values[el.id] / 10) * 10));
+    // Direct `{id}` replacement and non-numeric values need no formatting.
+    if (!format || format.type !== 'numberFormat') continue;
 
-  // Convert all seconds to the correct unit
-  argumentElements
-    .filter(el => el.format && el.format.style === 'seconds' && el.id === 'timeInMs')
-    // @ts-ignore - el.id is always defined when el.format is defined
-    .forEach(el => (values[el.id] = Math.round(values[el.id] / 100) / 10));
+    const value = values[id];
+    if (typeof value !== 'number') {
+      // eslint-disable-next-line max-len
+      throw new Error(`ICU Message "${icuMessage}" contains a numeric reference ("${id}") but provided value was not a number`);
+    }
 
-  // Replace all the bytes with KB
-  argumentElements
-    .filter(el => el.format && el.format.style === 'bytes')
-    // @ts-ignore - el.id is always defined when el.format is defined
-    .forEach(el => (values[el.id] = values[el.id] / 1024));
+    // Format values for known styles.
+    if (format.style === 'milliseconds') {
+      // Round all milliseconds to the nearest 10.
+      values[id] = Math.round(value / 10) * 10;
+    } else if (format.style === 'seconds' && id === 'timeInMs') {
+      // Convert all seconds to the correct unit (currently only for `timeInMs`).
+      values[id] = Math.round(value / 100) / 10;
+    } else if (format.style === 'bytes') {
+      // Replace all the bytes with KB.
+      values[id] = value / 1024;
+    }
+  }
 
   return values;
 }
