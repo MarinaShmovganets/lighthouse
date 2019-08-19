@@ -26,8 +26,8 @@ class ThemedOmnibox extends MultiCheckAudit {
   static get meta() {
     return {
       id: 'themed-omnibox',
-      title: 'Sets an address-bar theme color',
-      failureTitle: 'Does not set an address-bar theme color',
+      title: 'Sets a theme color for the address bar',
+      failureTitle: 'Does not set a theme color for the address bar',
       description: 'The browser address bar can be themed to match your site. ' +
           '[Learn more](https://web.dev/themed-omnibox).',
       requiredArtifacts: ['WebAppManifest', 'MetaElements'],

@@ -18,7 +18,7 @@ class PWAEachPageHasURL extends ManualAudit {
   static get meta() {
     return Object.assign({
       id: 'pwa-each-page-has-url',
-      description: 'Ensure individual pages are deep linkable via the URLs and that URLs are ' +
+      description: 'Ensure individual pages are deep linkable via URL and that URLs are ' +
           'unique for the purpose of shareability on social media. [Learn more](https://web.dev/pwa-each-page-has-url).',
       title: 'Each page has a URL',
     }, super.partialMeta);

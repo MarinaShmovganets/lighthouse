@@ -17,7 +17,7 @@ class RedirectsHTTP extends Audit {
       title: 'Redirects HTTP traffic to HTTPS',
       failureTitle: 'Does not redirect HTTP traffic to HTTPS',
       description: 'If you\'ve already set up HTTPS, make sure that you redirect all HTTP ' +
-         'traffic to HTTPS. [Learn more](https://web.dev/redirects-http).',
+         'traffic to HTTPS to enable secure web features for all your users. [Learn more](https://web.dev/redirects-http).',
       requiredArtifacts: ['HTTPRedirect'],
     };
   }

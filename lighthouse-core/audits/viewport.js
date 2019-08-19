@@ -18,7 +18,7 @@ class Viewport extends Audit {
       title: 'Has a `<meta name="viewport">` tag with `width` or `initial-scale`',
       failureTitle: 'Does not have a `<meta name="viewport">` tag with `width` ' +
           'or `initial-scale`',
-      description: 'Add a viewport meta tag to optimize your app for mobile screens. ' +
+      description: 'Add a `<meta name=\"viewport\">` tag to optimize your app for mobile screens. ' +
           '[Learn more](https://web.dev/viewport).',
       requiredArtifacts: ['MetaElements'],
     };

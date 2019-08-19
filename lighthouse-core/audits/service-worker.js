@@ -15,8 +15,8 @@ class ServiceWorker extends Audit {
   static get meta() {
     return {
       id: 'service-worker',
-      title: 'Registers a service worker that controls page and start_url',
-      failureTitle: 'Does not register a service worker that controls page and start_url',
+      title: 'Registers a service worker that controls page and `start_url`',
+      failureTitle: 'Does not register a service worker that controls page and `start_url`',
       description: 'The service worker is the technology that enables your app to use many ' +
          'Progressive Web App features, such as offline, add to homescreen, and push ' +
          'notifications. [Learn more](https://web.dev/service-worker).',
