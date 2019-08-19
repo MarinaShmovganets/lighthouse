@@ -140,7 +140,6 @@
     "inquirer": "^3.3.0",
     "intl": "^1.2.5",
     "intl-messageformat": "^4.4.0",
-    "intl-messageformat-parser": "^1.8.1",
     "intl-pluralrules": "^1.0.3",
     "jpeg-js": "0.1.2",
     "js-library-detector": "^5.4.0",

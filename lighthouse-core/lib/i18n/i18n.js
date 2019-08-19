@@ -9,7 +9,6 @@ const path = require('path');
 const isDeepEqual = require('lodash.isequal');
 const log = require('lighthouse-logger');
 const MessageFormat = require('intl-messageformat').default;
-const MessageParser = require('intl-messageformat-parser').default;
 const lookupClosestLocale = require('lookup-closest-locale');
 const LOCALES = require('./locales.js');
 
@@ -133,15 +132,16 @@ function lookupLocale(locale) {
 }
 
 /**
+ * Preformat values for the message based on how they're used, like KB or milliseconds.
  * @param {string} icuMessage
+ * @param {MessageFormat} messageFormatter
  * @param {Record<string, string | number>} [values]
  * @return {Record<string, string | number>}
  */
-function _preprocessMessageValues(icuMessage, values = {}) {
+function _preformatValues(icuMessage, messageFormatter, values = {}) {
   const clonedValues = JSON.parse(JSON.stringify(values));
-  const parsed = MessageParser.parse(icuMessage);
 
-  const elements = _collectAllCustomElementsFromICU(parsed.elements);
+  const elements = _collectAllCustomElementsFromICU(messageFormatter.getAst().elements);
 
   return _processParsedElements(icuMessage, Array.from(elements.values()), clonedValues);
 }
@@ -269,12 +269,13 @@ function _formatIcuMessage(locale, icuMessageId, uiStringMessage, values) {
 
   // when using accented english, force the use of a different locale for number formatting
   const localeForMessageFormat = (locale === 'en-XA' || locale === 'en-XL') ? 'de-DE' : locale;
-  // pre-process values for the message format like KB and milliseconds
-  const valuesForMessageFormat = _preprocessMessageValues(localeMessage, values);
 
   const formatter = new MessageFormat(localeMessage, localeForMessageFormat, formats);
-  const formattedString = formatter.format(valuesForMessageFormat);
 
+  // preformat values for the message format like KB and milliseconds
+  const valuesForMessageFormat = _preformatValues(localeMessage, formatter, values);
+
+  const formattedString = formatter.format(valuesForMessageFormat);
   return {formattedString, icuMessage: localeMessage};
 }
 
