@@ -197,8 +197,8 @@ function _processParsedElements(icuMessage, argumentElements, values = {}) {
   for (const {id, format} of argumentElements) {
     // Throw an error if a message's value isn't provided
     if (id && (id in values) === false) {
-      // eslint-disable-next-line max-len
-      throw new Error(`ICU Message "${icuMessage}" contains a value reference ("${id}") that wasn't provided`);
+      throw new Error(`ICU Message "${icuMessage}" contains a value reference ("${id}") ` +
+        `that wasn't provided`);
     }
 
     // Direct `{id}` replacement and non-numeric values need no formatting.
@@ -206,8 +206,8 @@ function _processParsedElements(icuMessage, argumentElements, values = {}) {
 
     const value = values[id];
     if (typeof value !== 'number') {
-      // eslint-disable-next-line max-len
-      throw new Error(`ICU Message "${icuMessage}" contains a numeric reference ("${id}") but provided value was not a number`);
+      throw new Error(`ICU Message "${icuMessage}" contains a numeric reference ("${id}") ` +
+        'but provided value was not a number');
     }
 
     // Format values for known styles.
