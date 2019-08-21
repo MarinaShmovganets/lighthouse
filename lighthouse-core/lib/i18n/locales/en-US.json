@@ -276,7 +276,7 @@
     "message": "Screen readers have features to make navigating tables easier. Ensuring `<td>` cells using the `[headers]` attribute only refer to other cells in the same table may improve the experience for screen reader users. [Learn more](https://web.dev/td-headers-attr/)."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
-    "message": "Cells in a `<table>` element that use the `[headers]` attribute refer to element `id`s not found within the same table."
+    "message": "Cells in a `<table>` element that use the `[headers]` attribute refer to an element `id` not found within the same table."
   },
   "lighthouse-core/audits/accessibility/td-headers-attr.js | title": {
     "message": "Cells in a `<table>` element that use the `[headers]` attribute refer to table cells within the same table."
