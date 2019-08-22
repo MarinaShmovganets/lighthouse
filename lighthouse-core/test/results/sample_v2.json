@@ -37,7 +37,7 @@
     "redirects-http": {
       "id": "redirects-http",
       "title": "Does not redirect HTTP traffic to HTTPS",
-      "description": "If you've already set up HTTPS, make sure that you redirect all HTTP traffic to HTTPS to enable secure web features for all your users. [Learn more](https://web.dev/redirects-http).",
+      "description": "If you've already set up HTTPS, make sure that you redirect all HTTP traffic to HTTPS in order to enable secure web features for all your users. [Learn more](https://web.dev/redirects-http).",
       "score": 0,
       "scoreDisplayMode": "binary"
     },
@@ -515,7 +515,7 @@
     },
     "themed-omnibox": {
       "id": "themed-omnibox",
-      "title": "Does not set a theme color for the address bar",
+      "title": "Does not set a theme color for the address bar.",
       "description": "The browser address bar can be themed to match your site. [Learn more](https://web.dev/themed-omnibox).",
       "score": 0,
       "scoreDisplayMode": "binary",
