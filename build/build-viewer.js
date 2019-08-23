@@ -131,6 +131,7 @@ async function compileJs() {
   const viewJsFiles = await loadFiles(`${sourceDir}/app/src/*.js`);
 
   const contents = [
+    `"use strict";`,
     generatorJs,
     rendererJs,
     idbKeyvalJs,
