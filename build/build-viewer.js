@@ -18,7 +18,7 @@ const glob = promisify(require('glob'));
 const lighthousePackage = require('../package.json');
 const makeDir = require('make-dir');
 const rimraf = require('rimraf');
-const Terser = require('terser');
+const terser = require('terser');
 
 const htmlReportAssets = require('../lighthouse-core/report/html/html-report-assets.js');
 const sourceDir = `${__dirname}/../lighthouse-viewer`;
@@ -141,7 +141,7 @@ async function compileJs() {
   const options = {
     output: {preamble: license}, // Insert license at top.
   };
-  const uglified = Terser.minify(contents, options);
+  const uglified = terser.minify(contents, options);
   if (uglified.error || !uglified.code) {
     throw uglified.error;
   }
