@@ -142,11 +142,11 @@ async function compileJs() {
     output: {preamble: license}, // Insert license at top.
   };
   const uglified = Terser.minify(contents, options);
-  if (uglified.error) {
+  if (uglified.error || !uglified.code) {
     throw uglified.error;
   }
 
-  await safeWriteFileAsync(`${distDir}/src/viewer.js`, /** @type {string} */ (uglified.code));
+  await safeWriteFileAsync(`${distDir}/src/viewer.js`, uglified.code);
 }
 
 /**
