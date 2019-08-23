@@ -30,6 +30,7 @@ before_script:
   - google-chrome-stable --version
   - yarn build-all
 script:
+  - git diff --exit-code # make sure there's no changes to yarn.lock after install
   - yarn bundlesize
   - yarn diff:sample-json
   - yarn lint
