@@ -40,16 +40,16 @@ function equalArguments(goldenArgumentIds, lhlMessage) {
 
 /**
  * Logs a message as removed if it hasn't been logged before.
- * @param {Set<string>} alreadyLoggedCulls
+ * @param {Set<string>} alreadyLoggedPrunes
  * @param {string} messageId
  * @param {string} reason
  */
-function logRemoval(alreadyLoggedCulls, messageId, reason) {
-  if (alreadyLoggedCulls.has(messageId)) return;
+function logRemoval(alreadyLoggedPrunes, messageId, reason) {
+  if (alreadyLoggedPrunes.has(messageId)) return;
 
   // eslint-disable-next-line no-console
   console.log(`Removing message\n\t'${messageId}'\nfrom translations: ${reason}.`);
-  alreadyLoggedCulls.add(messageId);
+  alreadyLoggedPrunes.add(messageId);
 }
 
 /**
@@ -57,22 +57,22 @@ function logRemoval(alreadyLoggedCulls, messageId, reason) {
  * `goldenLocaleArgumentIds` values are assumed to be sorted.
  * @param {Record<string, Array<string>>} goldenLocaleArgumentIds
  * @param {LhlMessages} localeLhl
- * @param {Set<string>} alreadyLoggedCulls Set of culls that have been logged and shouldn't be logged again.
+ * @param {Set<string>} alreadyLoggedPrunes Set of prunes that have been logged and shouldn't be logged again.
  * @return {LhlMessages}
  */
-function cullLocale(goldenLocaleArgumentIds, localeLhl, alreadyLoggedCulls) {
+function pruneLocale(goldenLocaleArgumentIds, localeLhl, alreadyLoggedPrunes) {
   /** @type {LhlMessages} */
   const remainingMessages = {};
 
   for (const [messageId, {message}] of Object.entries(localeLhl)) {
     const goldenArgumentIds = goldenLocaleArgumentIds[messageId];
     if (!goldenArgumentIds) {
-      logRemoval(alreadyLoggedCulls, messageId, 'it is no longer found in Lighthouse');
+      logRemoval(alreadyLoggedPrunes, messageId, 'it is no longer found in Lighthouse');
       continue;
     }
 
     if (!equalArguments(goldenArgumentIds, message)) {
-      logRemoval(alreadyLoggedCulls, messageId,
+      logRemoval(alreadyLoggedPrunes, messageId,
           'its ICU arguments don\'t match the current version of the message');
       continue;
     }
@@ -114,7 +114,7 @@ function getGoldenLocaleArgumentIds(goldenLhl) {
  * translations should no longer be used, it's up to the author to remove them
  * (e.g. by picking a new message id).
  */
-function cullObsoleteLhlMessages() {
+function pruneObsoleteLhlMessages() {
   const goldenLhl = require('../../lib/i18n/locales/en-US.json');
   const goldenLocaleArgumentIds = getGoldenLocaleArgumentIds(goldenLhl);
 
@@ -132,21 +132,21 @@ function cullObsoleteLhlMessages() {
   });
 
   /** @type {Set<string>} */
-  const alreadyLoggedCulls = new Set();
+  const alreadyLoggedPrunes = new Set();
   for (const localePath of localePaths) {
     const absoluteLocalePath = path.join(lhRoot, localePath);
     const localeLhl = require(absoluteLocalePath);
-    const culledLocale = cullLocale(goldenLocaleArgumentIds, localeLhl, alreadyLoggedCulls);
+    const prunedLocale = pruneLocale(goldenLocaleArgumentIds, localeLhl, alreadyLoggedPrunes);
 
-    const stringified = JSON.stringify(culledLocale, null, 2) + '\n';
+    const stringified = JSON.stringify(prunedLocale, null, 2) + '\n';
     fs.writeFileSync(absoluteLocalePath, stringified);
   }
 }
 
 module.exports = {
-  cullObsoleteLhlMessages,
+  pruneObsoleteLhlMessages,
 
   // Exported for testing.
   getGoldenLocaleArgumentIds,
-  cullLocale,
+  pruneLocale,
 };

@@ -7,22 +7,22 @@
 
 /* eslint-env jest */
 
-const cullObsoleteLhlMessages = require('../../../scripts/i18n/cull-obsolete-lhl-messages.js');
+const pruneObsoleteLhlMessages = require('../../../scripts/i18n/prune-obsolete-lhl-messages.js');
 
 /**
- * Cull `localeLhl` based on `goldenLhl`.
+ * Prune `localeLhl` based on `goldenLhl`.
  * @param {Record<string, {message: string}>} goldenLhl
  * @param {Record<string, {message: string}>} localeLhl
  */
-function cullLocale(goldenLhl, localeLhl) {
+function pruneLocale(goldenLhl, localeLhl) {
   // Suppress logging by adding all message ids to the already-logged set.
-  const loggedCulls = new Set(Object.keys(localeLhl));
+  const loggedPrunes = new Set(Object.keys(localeLhl));
 
-  const goldenLocaleArgumentIds = cullObsoleteLhlMessages.getGoldenLocaleArgumentIds(goldenLhl);
-  return cullObsoleteLhlMessages.cullLocale(goldenLocaleArgumentIds, localeLhl, loggedCulls);
+  const goldenLocaleArgumentIds = pruneObsoleteLhlMessages.getGoldenLocaleArgumentIds(goldenLhl);
+  return pruneObsoleteLhlMessages.pruneLocale(goldenLocaleArgumentIds, localeLhl, loggedPrunes);
 }
 
-describe('Cull obsolete translations', () => {
+describe('Prune obsolete translations', () => {
   const goldenLhl = {
     plainString: {
       message: 'Plain string',
@@ -38,8 +38,11 @@ describe('Cull obsolete translations', () => {
   };
 
   it('removes nothing if the messages are exactly the same', () => {
-    const culledLocale = cullLocale(goldenLhl, goldenLhl);
-    expect(culledLocale).toEqual(goldenLhl);
+    // Clone to make sure we aren't getting tricked by references and the object isn't structurally.
+    const localeLhl = JSON.parse(JSON.stringify(goldenLhl));
+
+    const prunedLocale = pruneLocale(goldenLhl, localeLhl);
+    expect(prunedLocale).toEqual(goldenLhl);
   });
 
   it('removes nothing if the text differs but the message and argument ids are the same', () => {
@@ -56,8 +59,8 @@ describe('Cull obsolete translations', () => {
       },
     };
 
-    const culledLocale = cullLocale(goldenLhl, localeLhl);
-    expect(culledLocale).toEqual(localeLhl);
+    const prunedLocale = pruneLocale(goldenLhl, localeLhl);
+    expect(prunedLocale).toEqual(localeLhl);
   });
 
   it('removes messages not in the golden LHL', () => {
@@ -68,8 +71,8 @@ describe('Cull obsolete translations', () => {
       },
     };
 
-    const culledLocale = cullLocale(goldenLhl, localeLhl);
-    expect(culledLocale).toEqual(goldenLhl);
+    const prunedLocale = pruneLocale(goldenLhl, localeLhl);
+    expect(prunedLocale).toEqual(goldenLhl);
   });
 
   it('removes messages with different arguments than found in the golden LHL', () => {
@@ -82,8 +85,8 @@ describe('Cull obsolete translations', () => {
       },
     };
 
-    const culledLocale = cullLocale(goldenLhl, localeLhl);
-    expect(culledLocale).toEqual({
+    const prunedLocale = pruneLocale(goldenLhl, localeLhl);
+    expect(prunedLocale).toEqual({
       plainString: {
         message: 'Plain string',
       },
@@ -100,8 +103,8 @@ describe('Cull obsolete translations', () => {
       },
     };
 
-    const culledLocale = cullLocale(goldenLhl, localeLhl);
-    expect(culledLocale).toEqual({
+    const prunedLocale = pruneLocale(goldenLhl, localeLhl);
+    expect(prunedLocale).toEqual({
       plainString: {
         message: 'Plain string',
       },
@@ -119,8 +122,8 @@ describe('Cull obsolete translations', () => {
       },
     };
 
-    const culledLocale = cullLocale(goldenLhl, localeLhl);
-    expect(culledLocale).toEqual({
+    const prunedLocale = pruneLocale(goldenLhl, localeLhl);
+    expect(prunedLocale).toEqual({
       plainString: {
         message: 'Plain string',
       },
