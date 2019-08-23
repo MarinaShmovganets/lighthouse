@@ -10,7 +10,6 @@ const path = require('path');
 const {promisify} = require('util');
 const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
-const stream = require('stream');
 
 const browserify = require('browserify');
 const cpy = require('cpy');
@@ -97,30 +96,6 @@ async function html() {
   htmlSrc = htmlSrc.replace(/%%LIGHTHOUSE_TEMPLATES%%/, htmlReportAssets.REPORT_TEMPLATES);
 
   await safeWriteFileAsync(`${distDir}/index.html`, htmlSrc);
-}
-
-/**
- * Minifies file which are read by fs.readFileSync (brfs)
- *
- * @param {string} file
- */
-function minifyReadFileContent(file) {
-  return new stream.Transform({
-    transform(chunk, enc, next) {
-      if (file.endsWith('.js')) {
-        const result = terser.minify(chunk.toString());
-        if (result.error) {
-          throw result.error;
-        }
-
-        this.push(result.code);
-      } else {
-        this.push(chunk);
-      }
-
-      next();
-    },
-  });
 }
 
 /**
