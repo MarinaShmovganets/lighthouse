@@ -78,8 +78,9 @@ function bakePlaceholders(messages) {
         if (!message.includes('$' + placeholder + '$')) {
           throw Error(`Provided placeholder "${placeholder}" not found in message "${message}".`);
         }
-        // Need a global replace due to plural ICU copying ICU vars multiple times.
-        const regex = new RegExp(`\\$${placeholder}\\$`, 'g');
+        // Need a global replace due to plural ICU copying placeholders
+        // (and therefore ICU vars) multiple times.
+        const regex = new RegExp('\\$' + placeholder + '\\$', 'g');
         message = message.replace(regex, content);
       }
     }
