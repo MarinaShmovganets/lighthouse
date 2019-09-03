@@ -99,6 +99,30 @@ async function html() {
 }
 
 /**
+ * Minifies file which are read by fs.readFileSync (brfs)
+ *
+ * @param {string} file
+ */
+function minifyReadFileContent(file) {
+  return new stream.Transform({
+    transform(chunk, enc, next) {
+      if (file.endsWith('.js')) {
+        const result = terser.minify(chunk.toString());
+        if (result.error) {
+          throw result.error;
+        }
+
+        this.push(result.code);
+      } else {
+        this.push(chunk);
+      }
+
+      next();
+    },
+  });
+}
+
+/**
  * Combine multiple JS files into single viewer.js file.
  * @return {Promise<void>}
  */
