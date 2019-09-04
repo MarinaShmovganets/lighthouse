@@ -32,23 +32,33 @@ else
   echo -e "\033[96m ✓\033[39m Chromium folder in place."
 fi
 
-report_dir="lighthouse-core/report/html"
 fe_lh_dir="$frontend_dir/audits/lighthouse"
 
 lh_bg_js="dist/lighthouse-dt-bundle.js"
-lh_worker_dir="$frontend_dir/audits_worker/lighthouse"
+fe_worker_dir="$frontend_dir/audits_worker/lighthouse"
 
 # copy lighthouse-dt-bundle (potentially stale)
-cp -pPR "$lh_bg_js" "$lh_worker_dir/lighthouse-dt-bundle.js"
+cp -pPR "$lh_bg_js" "$fe_worker_dir/lighthouse-dt-bundle.js"
 echo -e "\033[96m ✓\033[39m (Potentially stale) lighthouse-dt-bundle copied."
 
 # copy report generator + cached resources into $fe_lh_dir
-# use dir/* format to copy over all files in dt-report-resources directly to $fe_lh_dir 
+# use dir/* format to copy over all files in dt-report-resources directly to $fe_lh_dir
 # dir/ format behavior changes based on if their exists a folder named dir, which can get weird
-cp -r dist/dt-report-resources/* $fe_lh_dir
+cp -r dist/dt-report-resources/* "$fe_lh_dir"
+echo -e "\033[96m ✓\033[39m Report resources copied."
+
+# copy locale JSON files
+lh_locales_dir="lighthouse-core/lib/i18n/locales/"
+fe_locales_dir="$frontend_dir/audits_worker/lighthouse/locales/"
+
+cp -r "$lh_locales_dir" "$fe_locales_dir"
+echo -e "\033[96m ✓\033[39m Locale JSON files copied."
 
 # update expected version string in tests
 VERSION=$(node -e "console.log(require('./package.json').version)")
 sed -i '' -e "s/Version:.*/Version: $VERSION/g" "$tests_dir"/*-expected.txt
+echo -e "\033[96m ✓\033[39m Updated Version string in tests."
 
-echo "Done. To rebase the test expectations, run: yarn --cwd ~/chromium/src/third_party/blink/renderer/devtools test 'http/tests/devtools/audits/*.js' --reset-results"
+echo ""
+echo "Done. To rebase the test expectations, run: "
+echo "    yarn --cwd ~/chromium/src/third_party/blink/renderer/devtools test 'http/tests/devtools/audits/*.js' --reset-results"
