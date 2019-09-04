@@ -117,8 +117,8 @@ describe('i18n', () => {
     it('installs new locale strings', () => {
       const localeData = {
         'lighthouse-core/test/lib/i18n/i18n-test.js | testString': {
-          'message': 'en-XZ cuerda!'
-        }
+          'message': 'en-XZ cuerda!',
+        },
       };
       i18n.registerLocaleData('en-XZ', localeData);
 
@@ -130,24 +130,30 @@ describe('i18n', () => {
 
     it('overwrites existing locale strings', () => {
       const filename = 'lighthouse-core/audits/is-on-https.js';
-      const UIStrings = require('../../../../' + filename).UIStrings;
+      const UIStrings = require('../../../../lighthouse-core/audits/is-on-https.js').UIStrings;
       const str_ = i18n.createMessageInstanceIdFn(filename, UIStrings);
 
       // To start with, we get back the intended string..
-      const formattedStr = i18n.getFormatted(str_(UIStrings.title), 'es-419');
-      expect(formattedStr).toEqual('Usa HTTPS');
+      const origTitle = i18n.getFormatted(str_(UIStrings.title), 'es-419');
+      expect(origTitle).toEqual('Usa HTTPS');
+      const origFailureTitle = i18n.getFormatted(str_(UIStrings.failureTitle), 'es-419');
+      expect(origFailureTitle).toEqual('No usa HTTPS');
 
       // Now we declare and register the new string...
       const localeData = {
         'lighthouse-core/audits/is-on-https.js | title': {
-          'message': 'es-419 uses https!'
-        }
+          'message': 'es-419 uses https!',
+        },
       };
       i18n.registerLocaleData('es-419', localeData);
 
       // And confirm that's what is returned
-      const formattedStr2 = i18n.getFormatted(str_(UIStrings.title), 'es-419');
-      expect(formattedStr2).toEqual('es-419 uses https!');
+      const newTitle = i18n.getFormatted(str_(UIStrings.title), 'es-419');
+      expect(newTitle).toEqual('es-419 uses https!');
+
+      // Meanwhile another string that wasn't set in registerLocaleData just falls back to english
+      const newFailureTitle = i18n.getFormatted(str_(UIStrings.failureTitle), 'es-419');
+      expect(newFailureTitle).toEqual('Does not use HTTPS');
     });
   });
 
