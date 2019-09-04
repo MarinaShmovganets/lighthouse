@@ -129,6 +129,15 @@ describe('i18n', () => {
     });
 
     it('overwrites existing locale strings', () => {
+      const filename = 'lighthouse-core/audits/is-on-https.js';
+      const UIStrings = require('../../../../' + filename).UIStrings;
+      const str_ = i18n.createMessageInstanceIdFn(filename, UIStrings);
+
+      // To start with, we get back the intended string..
+      const formattedStr = i18n.getFormatted(str_(UIStrings.title), 'es-419');
+      expect(formattedStr).toEqual('Usa HTTPS');
+
+      // Now we declare and register the new string...
       const localeData = {
         'lighthouse-core/audits/is-on-https.js | title': {
           'message': 'es-419 uses https!'
@@ -136,10 +145,9 @@ describe('i18n', () => {
       };
       i18n.registerLocaleData('es-419', localeData);
 
-      const UIStrings = {title: 'Uses HTTPS'};
-      const str_ = i18n.createMessageInstanceIdFn('lighthouse-core/audits/is-on-https.js', UIStrings);
-      const formattedStr = i18n.getFormatted(str_(UIStrings.title), 'es-419');
-      expect(formattedStr).toEqual('es-419 uses https!');
+      // And confirm that's what is returned
+      const formattedStr2 = i18n.getFormatted(str_(UIStrings.title), 'es-419');
+      expect(formattedStr2).toEqual('es-419 uses https!');
     });
   });
 
