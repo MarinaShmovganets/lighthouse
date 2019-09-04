@@ -473,6 +473,17 @@ function replaceIcuMessageInstanceIds(inputObject, locale) {
   return icuMessagePaths;
 }
 
+/** @typedef {import('./locales').LhlMessages} LhlMessages */
+
+/**
+ * Populate the i18n string lookup dict with locale data
+ * @param {LH.Locale} locale
+ * @param {LhlMessages} lhlMessages
+ */
+function registerLocaleData(locale, lhlMessages) {
+  LOCALES[locale] = lhlMessages;
+}
+
 module.exports = {
   _formatPathAsString,
   _ICUMsgNotFoundMsg,
@@ -485,4 +496,5 @@ module.exports = {
   replaceIcuMessageInstanceIds,
   isIcuMessage,
   collectAllCustomElementsFromICU,
+  registerLocaleData,
 };
