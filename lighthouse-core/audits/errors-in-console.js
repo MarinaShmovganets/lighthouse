@@ -78,7 +78,7 @@ class ErrorLogs extends Audit {
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'url', itemType: 'url', text: str_(i18n.UIStrings.columnURL)},
-      {key: 'description', itemType: 'text', text: str_(UIStrings.columnDesc)},
+      {key: 'description', itemType: 'code', text: str_(UIStrings.columnDesc)},
     ];
 
     const details = Audit.makeTableDetails(headings, tableRows);
