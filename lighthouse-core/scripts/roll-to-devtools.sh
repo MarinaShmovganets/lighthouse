@@ -52,6 +52,7 @@ echo -e "$check Report resources copied."
 lh_locales_dir="lighthouse-core/lib/i18n/locales"
 fe_locales_dir="$frontend_dir/audits_worker/lighthouse/locales"
 
+mkdir -p "$fe_locales_dir"
 find $lh_locales_dir -name '*.json' ! -name '*.ctc.json'  -exec cp {} "$fe_locales_dir" \;
 echo -e "$check Locale JSON files copied."
 
