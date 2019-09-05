@@ -48,11 +48,11 @@ echo -e "$check (Potentially stale) lighthouse-dt-bundle copied."
 cp -r dist/dt-report-resources/* "$fe_lh_dir"
 echo -e "$check Report resources copied."
 
-# copy locale JSON files
-lh_locales_dir="lighthouse-core/lib/i18n/locales/"
-fe_locales_dir="$frontend_dir/audits_worker/lighthouse/locales/"
+# copy locale JSON files (but not the .ctc.json ones)
+lh_locales_dir="lighthouse-core/lib/i18n/locales"
+fe_locales_dir="$frontend_dir/audits_worker/lighthouse/locales"
 
-cp -r "$lh_locales_dir" "$fe_locales_dir"
+find $lh_locales_dir -name '*.json' ! -name '*.ctc.json'  -exec cp {} "$fe_locales_dir" \;
 echo -e "$check Locale JSON files copied."
 
 # update expected version string in tests
