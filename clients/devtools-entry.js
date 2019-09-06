@@ -53,6 +53,7 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     runLighthouseInWorker,
     listenForStatus,
+    registerLocaleData: lighthouse.registerLocaleData,
   };
 }
 
@@ -63,4 +64,6 @@ if (typeof self !== 'undefined') {
   self.runLighthouseInWorker = runLighthouseInWorker;
   // @ts-ignore
   self.listenForStatus = listenForStatus;
+  // @ts-ignore
+  self.registerLocaleData = lighthouse.registerLocaleData;
 }
