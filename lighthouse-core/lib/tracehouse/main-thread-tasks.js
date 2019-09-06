@@ -110,7 +110,17 @@ class MainThreadTasks {
       priorTaskData.timers.set(timerId, currentTask);
     }
   }
+
   /**
+   * This function takes the start and end events from a thread and creates tasks from them.
+   * We do this by iterating through the start and end event arrays simultaneously. For each start
+   * event we attempt to find its end event.
+   *
+   * Because of this matching of start/end events and the need to be mutating our end events queue,
+   * we reverse the array to more efficiently `.pop()` them off rather than `.shift()` them off.
+   * While it's true the worst case runtime here is O(n^2), ~99.999% of the time the reverse loop is O(1)
+   * because the overwhelmingly common case is that end event for a given start event is simply the very next event in our queue.
+   *
    * @param {LH.TraceEvent[]} taskStartEvents
    * @param {LH.TraceEvent[]} taskEndEvents
    * @param {number} traceEndTs
@@ -120,6 +130,8 @@ class MainThreadTasks {
     /** @type {TaskNode[]} */
     const tasks = [];
     // Create a reversed copy of the array to avoid copying the rest of the queue on every mutation.
+    // i.e. pop() is O(1) while shift() is O(n), we take the earliest ts element off the queue *a lot*
+    // so we'll optimize for having the earliest timestamp events at the end of the array.
     const taskEndEventsReverseQueue = taskEndEvents.slice().reverse();
 
     for (let i = 0; i < taskStartEvents.length; i++) {
@@ -134,6 +146,11 @@ class MainThreadTasks {
       let matchedEventIndex = -1;
       let matchingNestedEventCount = 0;
       let matchingNestedEventIndex = i + 1;
+
+      // We loop through the reversed end events queue from back to front because we still want to
+      // see end events in increasing timestamp order.
+      // While worst case we will loop through all events, the overwhelmingly common case is that
+      // the immediate next event is our event of interest which makes this loop typically O(1).
       for (let j = taskEndEventsReverseQueue.length - 1; j >= 0; j--) {
         const endEvent = taskEndEventsReverseQueue[j];
         // We are considering an end event, so we'll count how many nested events we saw along the way.
@@ -182,7 +199,7 @@ class MainThreadTasks {
 
     if (taskEndEventsReverseQueue.length) {
       throw new Error(
-        `Fatal trace logic error - ${taskEndEventsReverseQueue.length} unmatched E events`
+        `Fatal trace logic error - ${taskEndEventsReverseQueue.length} unmatched end events`
       );
     }
 
@@ -391,14 +408,18 @@ class MainThreadTasks {
   }
 
   /**
-   * @param {LH.TraceEvent[]} traceEvents
+   * @param {LH.TraceEvent[]} mainThreadEvents
    * @param {number} traceEndTs
    * @return {TaskNode[]}
    */
-  static getMainThreadTasks(traceEvents, traceEndTs) {
+  static getMainThreadTasks(mainThreadEvents, traceEndTs) {
     const timers = new Map();
     const priorTaskData = {timers};
-    const tasks = MainThreadTasks._createTasksFromEvents(traceEvents, priorTaskData, traceEndTs);
+    const tasks = MainThreadTasks._createTasksFromEvents(
+      mainThreadEvents,
+      priorTaskData,
+      traceEndTs
+    );
 
     // Compute the recursive properties we couldn't compute earlier, starting at the toplevel tasks
     for (const task of tasks) {
