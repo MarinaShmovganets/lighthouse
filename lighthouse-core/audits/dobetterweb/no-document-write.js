@@ -20,7 +20,7 @@
  *
  * *This Audit*
  * This audit reports on document.write() calls which the intervention didn't stop.
- * (They worked as intended). If that happens, the browser also emit a verbose-level violation
+ * (They worked as intended). If that happens, the browser emits a verbose-level violation
  * console message (hidden by default) that says:
  *     "Parser was blocked due to document.write(<script>)". src: https://cs.chromium.org/chromium/src/third_party/blink/renderer/core/frame/performance_monitor.cc?l=294-300&rcl=40b90cafad9f219e0845879ed8648bdcc96116dc
  */
