@@ -14,7 +14,7 @@
  *  - "some" == mostly third-party situations. src: https://cs.chromium.org/chromium/src/third_party/blink/renderer/core/script/document_write_intervention.cc?l=109&rcl=61a806621861e9abc07b3a57a6f2edae188d1742
  * If this happens, there will be a error message in the console. src: https://cs.chromium.org/chromium/src/third_party/blink/renderer/core/script/document_write_intervention.cc?l=51-61&rcl=61a806621861e9abc07b3a57a6f2edae188d1742
  *  - Lighthouse doesn't report here on that situation, though it'll show up in `errors-in-console`
- * The intercention may also not block the .write() (because the connection wasn't slow),
+ * The intervention may also not block the .write() (because the connection wasn't slow),
  * but it will emit a console warning.
  *  - Lighthouse doesn't highlight this here or in errors-in-console. (TODO: it probably should?).
  *
