@@ -16,7 +16,8 @@
  *  - Lighthouse doesn't report here on that situation, though it'll show up in `errors-in-console`
  * The intervention may also not block the .write() (because the connection wasn't slow),
  * but it will emit a console warning.
- *  - Lighthouse doesn't highlight this here or in errors-in-console. (TODO: it probably should?).
+ *  - Lighthouse will also report that here, as the .write() call succeeded.
+ * Demo URL: https://output.jsbin.com/qopijux/quiet
  *
  * *This Audit*
  * This audit reports on document.write() calls which the intervention didn't stop.
