@@ -114,6 +114,16 @@ describe('i18n', () => {
   });
 
   describe('#registerLocaleData', () => {
+    const moduleLocales = require('../../../lib/i18n/locales.js');
+    const clonedLocales = JSON.parse(JSON.stringify(moduleLocales));
+
+    // Restore locales to original state
+    afterEach(() => {
+      // eslint-disable-next-line no-unused-vars
+      let replacedLocales = require('../../../lib/i18n/locales.js');
+      replacedLocales = clonedLocales;
+    });
+
     it('installs new locale strings', () => {
       const localeData = {
         'lighthouse-core/test/lib/i18n/i18n-test.js | testString': {
