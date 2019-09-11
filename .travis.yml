@@ -24,10 +24,8 @@ install:
   - export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
   - yarn --frozen-lockfile
 before_script:
-  - export DISPLAY=:99.0
   # see comment above about puppeteer
   - export CHROME_PATH="$(which google-chrome-stable)"
-  - sh -e /etc/init.d/xvfb start
   # Print out the Chrome version so we know what we're working with
   - google-chrome-stable --version
   - yarn build-all
@@ -50,3 +48,5 @@ after_success:
   - yarn codecov
 addons:
   chrome: stable
+services:
+  - xvfb
