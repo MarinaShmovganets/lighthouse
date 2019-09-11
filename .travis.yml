@@ -8,7 +8,7 @@ matrix:
     - node_js: "10"
     - node_js: "12"
       if: head_branch IS blank AND branch = master
-dist: trusty
+dist: xenial
 cache:
   yarn: true
   directories:
@@ -17,9 +17,6 @@ cache:
     - /home/travis/.rvm/gems/
 install:
   # Ensure we have the latest Chrome stable.
-  - sudo apt-get update
-  - sudo apt-get install dpkg
-  - sudo apt-get install --only-upgrade google-chrome-stable
   - google-chrome-stable --version
   # if our e2e tests fail in the future it might be that we are not compatible
   # with the latest puppeteer api so we probably need to run on chromimum
