@@ -10,7 +10,7 @@
 1. Install the plugin as a (peer) dependency, parallel to `lighthouse`.
 1. Install `lighthouse` v5 or later.
 2. Install the plugin as a (peer) dependency, parallel to `lighthouse`.
-3. Run `npx lighthouse https://example.com --plugins=lighthouse-plugin-example --view`
+3. Run `npx lighthouse lighthouse https://example.com --plugins=lighthouse-plugin-example --view`
 
 The input to `--plugins` will be loaded from `node_modules/`.
 
