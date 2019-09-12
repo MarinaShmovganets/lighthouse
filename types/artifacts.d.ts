@@ -200,8 +200,6 @@ declare global {
         },
         /** If the iframe or an ancestor of the iframe is fixed in position. */
         isPositionFixed: boolean,
-        /** The Frame of the iframe, undefined if cross-origin. @see https://chromedevtools.github.io/devtools-protocol/tot/Page#type-Frame */
-        frame?: Crdp.Page.Frame,
       }
 
       /** @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#Attributes */

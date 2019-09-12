@@ -37,7 +37,6 @@ module.exports = [
             height: '>0',
           },
           isPositionFixed: false,
-          frame: undefined,
         },
         {
           id: 'outer-iframe',
@@ -47,12 +46,6 @@ module.exports = [
             height: '>0',
           },
           isPositionFixed: true,
-          frame: {
-            name: 'outer-iframe',
-            url: 'http://localhost:10200/online-only.html',
-            securityOrigin: 'http://localhost:10200',
-            mimeType: 'text/html',
-          },
         },
         {
           id: 'inner-iframe',
@@ -62,12 +55,6 @@ module.exports = [
             height: '>0',
           },
           isPositionFixed: false,
-          frame: {
-            name: 'inner-iframe',
-            url: 'about:blank',
-            securityOrigin: '://',
-            mimeType: 'text/html',
-          },
         },
       ],
     },

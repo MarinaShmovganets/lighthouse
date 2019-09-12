@@ -39,28 +39,6 @@ class IFrameElements extends Gatherer {
   async afterPass(passContext) {
     const driver = passContext.driver;
 
-    const {frameTree} = await driver.sendCommand('Page.getFrameTree');
-    let toVisit = [frameTree];
-    /** @type {Map<string | undefined, LH.Crdp.Page.Frame | undefined>} */
-    const framesByDomId = new Map();
-
-    while (toVisit.length) {
-      const frameTree = toVisit.shift();
-      // Should never be undefined, but needed for tsc.
-      if (!frameTree) continue;
-      if (framesByDomId.has(frameTree.frame.name)) {
-        // DOM ID collision, mark as undefined.
-        framesByDomId.set(frameTree.frame.name, undefined);
-      } else {
-        framesByDomId.set(frameTree.frame.name, frameTree.frame);
-      }
-
-      // Add children to queue.
-      if (frameTree.childFrames) {
-        toVisit = toVisit.concat(frameTree.childFrames);
-      }
-    }
-
     const expression = `(() => {
       ${pageFunctions.getOuterHTMLSnippetString};
       ${pageFunctions.getElementsInDocumentString};
@@ -70,9 +48,6 @@ class IFrameElements extends Gatherer {
 
     /** @type {LH.Artifacts['IFrameElements']} */
     const iframeElements = await driver.evaluateAsync(expression, {useIsolation: true});
-    for (const el of iframeElements) {
-      el.frame = framesByDomId.get(el.id);
-    }
     return iframeElements;
   }
 }
