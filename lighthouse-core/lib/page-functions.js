@@ -98,10 +98,6 @@ function getElementsInDocument(selector) {
       if (el.shadowRoot) {
         _findAllElements(el.shadowRoot.querySelectorAll('*'));
       }
-      // If the element has a contentDocument (IFrame), dig deeper.
-      if (el.contentDocument) {
-        _findAllElements(el.contentDocument.querySelectorAll('*'));
-      }
     }
   };
   _findAllElements(document.querySelectorAll('*'));

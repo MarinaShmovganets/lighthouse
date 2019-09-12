@@ -47,15 +47,6 @@ module.exports = [
           },
           isPositionFixed: true,
         },
-        {
-          id: 'inner-iframe',
-          src: '',
-          clientRect: {
-            width: '>0',
-            height: '>0',
-          },
-          isPositionFixed: false,
-        },
       ],
     },
   },
