@@ -330,32 +330,40 @@ describe('Runner', () => {
       });
     });
 
-    // TODO: need to support save/load of artifact errors.
-    // See https://github.com/GoogleChrome/lighthouse/issues/4984
-    it.skip('outputs an error audit result when required artifact was an Error', () => {
-      const errorMessage = 'blurst of times';
-      const artifactError = new Error(errorMessage);
+    it('outputs an error audit result when required artifact was an Error', async () => {
+      // Start with empty-artifacts.
+      const baseArtifacts = assetSaver.loadArtifacts(__dirname +
+          '/fixtures/artifacts/empty-artifacts/');
 
-      const url = 'https://example.com';
+      // Add error and save artifacts using assetSaver to serialize Error object.
+      const errorMessage = 'blurst of times';
+      const artifacts = {
+        ...baseArtifacts,
+        ViewportDimensions: new Error(errorMessage),
+        TestedAsMobileDevice: true,
+      };
+      const artifactsPath = '.tmp/test_artifacts';
+      const resolvedPath = path.resolve(process.cwd(), artifactsPath);
+      await assetSaver.saveArtifacts(artifacts, resolvedPath);
+
+      // Load artifacts via auditMode.
       const config = new Config({
+        settings: {
+          auditMode: resolvedPath,
+        },
         audits: [
+          // requires ViewportDimensions and TestedAsMobileDevice artifacts
           'content-width',
         ],
-
-        artifacts: {
-          // Error objects don't make it through the Config constructor due to
-          // JSON.stringify/parse step, so populate with test error below.
-          ViewportDimensions: null,
-        },
       });
-      config.artifacts.ViewportDimensions = artifactError;
 
-      return Runner.run({}, {url, config}).then(results => {
-        const auditResult = results.lhr.audits['content-width'];
-        assert.strictEqual(auditResult.score, null);
-        assert.strictEqual(auditResult.scoreDisplayMode, 'error');
-        assert.ok(auditResult.errorMessage.includes(errorMessage));
-      });
+      const results = await Runner.run({}, {config});
+      const auditResult = results.lhr.audits['content-width'];
+      assert.strictEqual(auditResult.score, null);
+      assert.strictEqual(auditResult.scoreDisplayMode, 'error');
+      assert.ok(auditResult.errorMessage.includes(errorMessage));
+
+      rimraf.sync(resolvedPath);
     });
 
     it('only passes the required artifacts to the audit', async () => {
@@ -514,20 +522,24 @@ describe('Runner', () => {
   });
 
 
-  it('rejects when not given a URL', () => {
-    return Runner.run({}, {}).then(_ => assert.ok(false), _ => assert.ok(true));
+  it('rejects when not given a URL', async () => {
+    const config = new Config({});
+    await expect(Runner.run({}, {config})).rejects.toThrow('INVALID_URL');
   });
 
-  it('rejects when given a URL of zero length', () => {
-    return Runner.run({}, {url: ''}).then(_ => assert.ok(false), _ => assert.ok(true));
+  it('rejects when given a URL of zero length', async () => {
+    const config = new Config({});
+    await expect(Runner.run({}, {url: '', config})).rejects.toThrow('INVALID_URL');
   });
 
-  it('rejects when given a URL without protocol', () => {
-    return Runner.run({}, {url: 'localhost'}).then(_ => assert.ok(false), _ => assert.ok(true));
+  it('rejects when given a URL without protocol', async () => {
+    const config = new Config({});
+    await expect(Runner.run({}, {url: 'localhost', config})).rejects.toThrow('INVALID_URL');
   });
 
-  it('rejects when given a URL without hostname', () => {
-    return Runner.run({}, {url: 'https://'}).then(_ => assert.ok(false), _ => assert.ok(true));
+  it('rejects when given a URL without hostname', async () => {
+    const config = new Config({});
+    await expect(Runner.run({}, {url: 'https://', config})).rejects.toThrow('INVALID_URL');
   });
 
   it('only supports core audits with names matching their filename', () => {
