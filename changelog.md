@@ -88,12 +88,11 @@ Thanks to our new contributors @alabiaga, @olore, @letanure, and @mfriesenhahn!
 
 * add comment on diff between `document.write()` audit and intervention ([#9644](https://github.com/googlechrome/lighthouse/pull/9644))
 * refactor `collect-strings` to use `glob` and work on windows ([#9406](https://github.com/googlechrome/lighthouse/pull/9406))
-* trim missed `yarn.lock` cruft ([#9603](https://github.com/googlechrome/lighthouse/pull/9603))
+* trim missed `yarn.lock` cruft & deduplicate dependencies ([#9603](https://github.com/googlechrome/lighthouse/pull/9603) & [#9600](https://github.com/googlechrome/lighthouse/pull/9600))
 * replace deprecated `uglify-es` with terser ([#9594](https://github.com/googlechrome/lighthouse/pull/9594))
 * share markdown parsing in collect-strings and the report ([#9514](https://github.com/googlechrome/lighthouse/pull/9514))
 * add note about global.URL in node 10 ([#9449](https://github.com/googlechrome/lighthouse/pull/9449))
 * build: include locale files in devtools roll ([#9639](https://github.com/googlechrome/lighthouse/pull/9639))
-* deduplicate `yarn.lock` dependencies ([#9600](https://github.com/googlechrome/lighthouse/pull/9600))
 
  <a name="5.2.0"></a>
 # 5.2.0 (2019-07-24)
