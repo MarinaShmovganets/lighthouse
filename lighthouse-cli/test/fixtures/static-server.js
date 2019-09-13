@@ -47,12 +47,13 @@ function requestHandler(request, response) {
     absoluteFilePath = path.join(__dirname, '/../../../', filePath);
   }
 
-  // Otherwise, disallow file requests outside of LH folder
+  // Disallow file requests outside of LH folder
   const filePathDir = path.parse(absoluteFilePath).dir;
   if (!filePathDir.startsWith(lhRootDirPath)) {
     return readFileCallback(new Error('Disallowed path'));
   }
 
+  // Check if the file exists, then read it and serve it.
   fs.exists(absoluteFilePath, fsExistsCallback);
 
   function fsExistsCallback(fileExists) {
