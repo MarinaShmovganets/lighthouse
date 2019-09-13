@@ -1,31 +1,15 @@
+<a name="5.3.0"></a>
+# 5.3.0 (2019-09-13)
+
+Expected DevTools release in Chrome 79 ([December 2019](https://chromestatus.com/features/schedule))
+
+## New contributors!
 Thanks to our new contributors 👽🐷🐰🐯🐻! 
 Aaron Labiaga <alabiaga@google.com>
 Brian Olore <brian@olore.net>
 E <psybuzz@users.noreply.github.com>
 luiz tanure <letanure@gmail.com>
 mfriesenhahn <mfriesenhahn@google.com>
- <a name="5.3.0"></a>
-# 5.3.0 (2019-09-13)
-[Full Changelog](https://github.com/googlechrome/lighthouse/compare/v5.2.0...v5.3.0)
-
-## A11y
-
-* rewrite td-headers-attr titles ([#9587](https://github.com/googlechrome/lighthouse/pull/9587))
-
-## Chore
-
-* deduplicate yarn.lock dependencies ([#9600](https://github.com/googlechrome/lighthouse/pull/9600))
-
-## CLI
-
-* list default categories in help text ([#9399](https://github.com/googlechrome/lighthouse/pull/9399))
-
-## Clients
-
-* devtools: fix collapsing-width svg in flexbox ([#9602](https://github.com/googlechrome/lighthouse/pull/9602))
-* devtools: update test command to run only .js files ([#9532](https://github.com/googlechrome/lighthouse/pull/9532))
-* proto: don't filter channel from configSettings ([#9554](https://github.com/googlechrome/lighthouse/pull/9554))
-* viewer: remove polyfills ([#9553](https://github.com/googlechrome/lighthouse/pull/9553))
 
 ## Core
 
@@ -44,6 +28,17 @@ mfriesenhahn <mfriesenhahn@google.com>
 * tracehouse: sort trace events by nesting order ([#9230](https://github.com/googlechrome/lighthouse/pull/9230))
 * add source-maps gatherer ([#9101](https://github.com/googlechrome/lighthouse/pull/9101))
 * unused-css: allow up to 10KB of unused CSS per file ([#9479](https://github.com/googlechrome/lighthouse/pull/9479))
+
+## CLI
+
+* list default categories in help text ([#9399](https://github.com/googlechrome/lighthouse/pull/9399))
+
+## Clients
+
+* devtools: fix collapsing-width svg in flexbox ([#9602](https://github.com/googlechrome/lighthouse/pull/9602))
+* devtools: update test command to run only .js files ([#9532](https://github.com/googlechrome/lighthouse/pull/9532))
+* proto: don't filter channel from configSettings ([#9554](https://github.com/googlechrome/lighthouse/pull/9554))
+* viewer: remove polyfills ([#9553](https://github.com/googlechrome/lighthouse/pull/9553))
 
 ## Deps
 
@@ -76,6 +71,7 @@ mfriesenhahn <mfriesenhahn@google.com>
 * align type names with docs ([#9461](https://github.com/googlechrome/lighthouse/pull/9461))
 * expand placeholder support ([#9114](https://github.com/googlechrome/lighthouse/pull/9114))
 * roll: roll es-419, fr, id, zh-TW locales. correct fr ([#9454](https://github.com/googlechrome/lighthouse/pull/9454))
+* rewrite td-headers-attr titles ([#9587](https://github.com/googlechrome/lighthouse/pull/9587))
 
 ## Report
 
@@ -108,6 +104,7 @@ mfriesenhahn <mfriesenhahn@google.com>
 * add note about global.URL in node 10 ([#9449](https://github.com/googlechrome/lighthouse/pull/9449))
 * build: include locale files in devtools roll ([#9639](https://github.com/googlechrome/lighthouse/pull/9639))
 * viewer: fix favicon typo ([#9629](https://github.com/googlechrome/lighthouse/pull/9629))
+* deduplicate yarn.lock dependencies ([#9600](https://github.com/googlechrome/lighthouse/pull/9600))
 
  <a name="5.2.0"></a>
 # 5.2.0 (2019-07-24)
