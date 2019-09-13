@@ -63,8 +63,9 @@ class DetailsRenderer {
         return null;
 
       default: {
-// Tsc thinks this is unreachable. But renderers should be forward compatible with new unexpected detail types.
-// @ts-ignore
+        // Tsc thinks this is unreachable. But renderers should be forward compatible
+        // with new unexpected detail types.
+        // @ts-ignore
         return this._renderUnknown(details.type, details);
       }
     }
