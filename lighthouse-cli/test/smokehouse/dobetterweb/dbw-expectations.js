@@ -20,7 +20,7 @@ module.exports = [
         {
           tag: {
             tagName: 'LINK',
-            url: 'http://localhost:10200/dobetterweb/dobetterweb/dbw_tester.css?delay=100',
+            url: 'http://localhost:10200/dobetterweb/dbw_tester.css?delay=100',
           },
         },
         {
@@ -85,11 +85,6 @@ module.exports = [
               {
                 source: 'network',
                 description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
-                url: 'http://localhost:10200/dobetterweb/dobetterweb/dbw_tester.css?delay=100',
-              },
-              {
-                source: 'network',
-                description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
                 url: 'http://localhost:10200/dobetterweb/unknown404.css?delay=200',
               },
               {
@@ -106,11 +101,6 @@ module.exports = [
                 source: 'network',
                 description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
                 url: 'http://localhost:10200/favicon.ico',
-              },
-              {
-                source: 'network',
-                description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
-                url: 'http://localhost:10200/dobetterweb/dobetterweb/dbw_tester.css?delay=100',
               },
               {
                 source: 'network',
@@ -182,7 +172,7 @@ module.exports = [
           details: {
             items: [
               {
-                url: 'http://localhost:10200/dobetterweb/dobetterweb/dbw_tester.css?delay=100',
+                url: 'http://localhost:10200/dobetterweb/dbw_tester.css?delay=100',
               },
               {
                 url: 'http://localhost:10200/dobetterweb/unknown404.css?delay=200',
