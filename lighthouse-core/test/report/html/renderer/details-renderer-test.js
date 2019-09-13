@@ -202,9 +202,9 @@ describe('DetailsRenderer', () => {
       };
 
       const el = renderer.render(details);
-      const summaryEl = el.querySelector('summary').textContent;
-      assert.strictEqual(summaryEl,
-        'Details type \'imaginary\' unrecognized by this version of the report renderer.');
+      const summaryEl = el.querySelector('summary');
+      expect(summaryEl.textContent)
+        .toContain('We don\'t know how to render audit details of type `imaginary`');
       assert.strictEqual(el.lastChild.textContent, JSON.stringify(details, null, 2));
     });
   });
@@ -465,9 +465,9 @@ describe('DetailsRenderer', () => {
 
       const el = renderer.render(details);
       const unknownEl = el.querySelector('td.lh-table-column--notRealValueType .lh-unknown');
-      const summaryEl = unknownEl.querySelector('summary').textContent;
-      assert.strictEqual(summaryEl,
-        'Details type \'notRealValueType\' unrecognized by this version of the report renderer.');
+      const summaryEl = unknownEl.querySelector('summary');
+      expect(summaryEl.textContent)
+        .toContain('We don\'t know how to render audit details of type `notRealValueType`');
       assert.strictEqual(unknownEl.lastChild.textContent, '"some string"');
     });
 
@@ -486,9 +486,9 @@ describe('DetailsRenderer', () => {
 
       const el = renderer.render(details);
       const unknownEl = el.querySelector('td.lh-table-column--url .lh-unknown');
-      const summaryEl = unknownEl.querySelector('summary').textContent;
-      assert.strictEqual(summaryEl,
-          'Details type \'imaginaryItem\' unrecognized by this version of the report renderer.');
+      const summaryEl = unknownEl.querySelector('summary');
+      expect(summaryEl.textContent)
+        .toContain('We don\'t know how to render audit details of type `imaginaryItem`');
       assert.strictEqual(unknownEl.lastChild.textContent, JSON.stringify(item, null, 2));
     });
 
