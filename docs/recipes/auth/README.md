@@ -2,8 +2,6 @@
 
 If you just want to view the code for using Lighthouse with Puppeteer, see [example-lh-auth.js](./example-lh-auth.js).
 
-See [the integration test docs](../integration-test) for an example of how to run Lighthouse in your Jest tests on pages in both an authenticated and non-authenticated session.
-
 ## The Example Site
 
 There are two pages on the site:
