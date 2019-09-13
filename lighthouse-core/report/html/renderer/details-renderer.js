@@ -194,7 +194,7 @@ class DetailsRenderer {
    */
   _renderUnknown(type, value) {
     // eslint-disable-next-line no-console
-    console.error(`Unknown valueType: ${type}`, value);
+    console.error(`Unknown details type: ${type}`, value);
     const element = this._dom.createElement('details', 'lh-unknown');
     this._dom.createChildOf(element, 'summary').textContent =
       `Details type '${type}' unrecognized by this version of the report renderer.`;
