@@ -197,7 +197,9 @@ class DetailsRenderer {
     console.error(`Unknown details type: ${type}`, value);
     const element = this._dom.createElement('details', 'lh-unknown');
     this._dom.createChildOf(element, 'summary').textContent =
-      `Details type '${type}' unrecognized by this version of the report renderer.`;
+      `We don't know how to render audit details of type \`${type}\`. ` +
+      'The Lighthouse version that collected this data is likely newer than the Lighthouse ' +
+      'version of the report renderer. Expand for the raw JSON.';
     this._dom.createChildOf(element, 'pre').textContent = JSON.stringify(value, null, 2);
     return element;
   }
