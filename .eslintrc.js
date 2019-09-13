@@ -73,6 +73,14 @@ module.exports = {
     'valid-jsdoc': 0,
     'arrow-parens': 0,
   },
+  overrides: [
+    {
+      files: ['*expectations.js'],
+      rules: {
+        'max-len': 0,
+      },
+    },
+  ],
   parserOptions: {
     ecmaVersion: 2018,
     ecmaFeatures: {
