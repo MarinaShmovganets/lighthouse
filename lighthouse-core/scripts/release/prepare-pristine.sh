@@ -9,10 +9,10 @@ set -euxo pipefail
 # Setup a pristine git environment
 cd ../
 
-if [[ ! -e lighthouse-pristine/ ]]; then
-  git clone git@github.com:GoogleChrome/lighthouse.git lighthouse-pristine
-fi
+# Delete the folder if it already exists. We need it super fresh
+rm -rf lighthouse-pristine
 
+git clone git@github.com:GoogleChrome/lighthouse.git lighthouse-pristine
 cd lighthouse-pristine/
 
 if [[ -n "$(git status --porcelain)" ]]; then
