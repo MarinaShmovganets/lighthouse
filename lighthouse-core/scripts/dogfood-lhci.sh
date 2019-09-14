@@ -40,7 +40,7 @@ npx http-server --port=9090 &
 # Wait for the server to start before hitting it with data.
 sleep 10
 # Install LHCI
-npm install -g @lhci/cli
+npm install -g @lhci/cli@next
 # Collect our LHCI results.
 lhci collect --url=http://localhost:9090/lhci-report.html
 # Upload the results to our canary server.
