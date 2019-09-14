@@ -23,7 +23,7 @@ fi
 
 printf "Determined the following files have been touched:\n\n$CHANGED_FILES\n\n"
 
-if ! echo "$CHANGED_FILES" | grep -E 'report' > /dev/null; then
+if ! echo "$CHANGED_FILES" | grep -E 'report|lhci' > /dev/null; then
   echo "No report files affected, skipping lhci checks."
   exit 0
 fi
