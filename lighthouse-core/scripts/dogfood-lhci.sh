@@ -36,7 +36,7 @@ node "$LH_ROOT_DIR/lighthouse-cli" \
   --quiet --output=html
 
 # Start up a test server.
-npx http-server --port=9090 &
+npx http-server -p 9090 &
 # Wait for the server to start before hitting it with data.
 sleep 10
 # Install LHCI
