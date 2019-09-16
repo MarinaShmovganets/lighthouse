@@ -35,7 +35,7 @@ Puppeteer - a browser automation tool - can be used to programatically setup a s
 
 First, launch Chrome:
 ```js
-// This port will be used by Lighthouse later.
+// This port will be used by Lighthouse later. The specific port is arbitrary.
 const PORT = 8041;
 const browser = await puppeteer.launch({
   args: [`--remote-debugging-port=${PORT}`],
@@ -88,7 +88,10 @@ await page.close();
 
 Now run Lighthouse, using the same port as before:
 ```js
-const result = await lighthouse('http://localhost:8000/dashboard', { port: PORT });
+// The local server is running on port 8000.
+const url = 'http://localhost:8000/dashboard';
+// Direct Lighthouse to use the same port.
+const result = await lighthouse(url, { port: PORT });
 const lhr = result.lhr;
 
 // Direct Puppeteer to close the browser - we're done with it.

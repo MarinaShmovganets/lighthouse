@@ -13,6 +13,7 @@
 const puppeteer = require('puppeteer');
 const lighthouse = require('lighthouse');
 
+// This port will be used by Lighthouse later. The specific port is arbitrary.
 const PORT = 8041;
 
 /**
@@ -48,8 +49,10 @@ async function main() {
   // Setup the browser session to be logged into our site.
   await login(browser);
 
+  // The local server is running on port 8000.
+  const url = 'http://localhost:8000/dashboard';
   // Direct Lighthouse to use the same port.
-  const result = await lighthouse('http://localhost:8000/dashboard', {port: PORT});
+  const result = await lighthouse(url, {port: PORT});
   // Direct Puppeteer to close the browser as we're done with it.
   await browser.close();
 
