@@ -36,6 +36,7 @@ Thanks to our new contributors @alabiaga, @olore, @letanure, and @mfriesenhahn!
 * chrome-launcher: update to 0.11.2 ([#9515](https://github.com/googlechrome/lighthouse/pull/9515))
 * details-element-polyfill: update to 2.4.0 ([#9552](https://github.com/googlechrome/lighthouse/pull/9552))
 * jsonlint-mod: update to 1.7.5 ([#9465](https://github.com/googlechrome/lighthouse/pull/9465))
+* update transitive deps ([#9670](https://github.com/googlechrome/lighthouse/pull/9670))
 
 ## Docs
 
@@ -74,6 +75,7 @@ Thanks to our new contributors @alabiaga, @olore, @letanure, and @mfriesenhahn!
 * remove PWA badge flicker workaround for Chrome ([#9636](https://github.com/googlechrome/lighthouse/pull/9636))
 * add utm params to web.dev links ([#9555](https://github.com/googlechrome/lighthouse/pull/9555))
 * update favicon to new logo ([#9591](https://github.com/googlechrome/lighthouse/pull/9591))
+* unknown details type ([#9557](https://github.com/googlechrome/lighthouse/pull/9557))
 
 ## Tests
 
@@ -83,6 +85,7 @@ Thanks to our new contributors @alabiaga, @olore, @letanure, and @mfriesenhahn!
 * add index page for static server ([#9541](https://github.com/googlechrome/lighthouse/pull/9541))
 * smokehouse: use mime-types + proper encoding for response write ([#9542](https://github.com/googlechrome/lighthouse/pull/9542))
 * retry cli tests up to 3 times in appveyor ([#9512](https://github.com/googlechrome/lighthouse/pull/9512))
+* simplify serving of zone.js ([#9672](https://github.com/googlechrome/lighthouse/pull/9672))
 
 ## Misc
 
