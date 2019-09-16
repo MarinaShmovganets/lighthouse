@@ -75,7 +75,7 @@ Thanks to our new contributors @alabiaga, @olore, @letanure, and @mfriesenhahn!
 * remove PWA badge flicker workaround for Chrome ([#9636](https://github.com/googlechrome/lighthouse/pull/9636))
 * add utm params to web.dev links ([#9555](https://github.com/googlechrome/lighthouse/pull/9555))
 * update favicon to new logo ([#9591](https://github.com/googlechrome/lighthouse/pull/9591))
-* render unknown details type ([#9557](https://github.com/googlechrome/lighthouse/pull/9557))
+* render unstyled json (rather than throwing) when LHR contains unknown details type ([#9557](https://github.com/googlechrome/lighthouse/pull/9557))
 
 ## Tests
 
