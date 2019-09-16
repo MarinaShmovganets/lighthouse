@@ -33,28 +33,15 @@ app.get('/dashboard', (req, res) => {
   if (req.session.user) {
     res.sendFile('./dashboard.html', {root: PUBLIC_DIR});
   } else {
-    res.status(401).sendFile('./unauthenticated.html', {root: PUBLIC_DIR});
+    res.status(401).sendFile('./dashboard-unauthenticated.html', {root: PUBLIC_DIR});
   }
 });
 
 app.get('/', (req, res) => {
   if (req.session.user) {
-    res.send('<span>You are logged in. Go to <a href="/dashboard">the dashboard</a>.</span>');
+    res.sendFile('home.html', {root: PUBLIC_DIR});
   } else {
-    res.send(`
-      <h1>Plz login</h1>
-      <form class="login-form" action="/login" method="post">
-        <label>
-          Email:
-          <input type="email" name="email">
-        </label>
-        <label>
-          Password:
-          <input type="password" name="password">
-        </label>
-        <input type="submit">
-      </form> 
-    `);
+    res.sendFile('home-unauthenticated.html', {root: PUBLIC_DIR});
   }
 });
 
