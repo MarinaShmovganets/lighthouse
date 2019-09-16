@@ -60,6 +60,7 @@ app.get('/', (req, res) => {
 
 app.post('/login', (req, res, next) => {
   const {email, password} = req.body;
+  // super secret login and password ;)
   if (email !== 'admin@example.com' || password !== 'password') {
     return next(createError(401));
   }

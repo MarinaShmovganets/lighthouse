@@ -20,7 +20,7 @@ The server responds with different HTML for each of these pages and session stat
 # be in root lighthouse directory
 yarn # install global project deps
 cd docs/auth
-yarn # install deps related to just this documentation
+yarn # install deps related to just this recipe
 yarn start # start the server on http://localhost:8000
 ```
 
