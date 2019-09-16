@@ -13,7 +13,7 @@ The homepage shows the login form, but only to users that are not signed in.
 
 The dashboard shows a secret to users that are logged in, but shows an error to users that are not.
 
-The server responds with different HTML for each of these pages and session states, so there are four different pages that must have passable Lighthouse SEO scores.
+The server responds with different HTML for each of these pages and session states.
 
 (Optional) To run the server:
 ```sh
