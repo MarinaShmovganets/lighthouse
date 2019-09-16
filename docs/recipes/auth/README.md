@@ -91,6 +91,12 @@ Now run Lighthouse, using the same port as before:
 const result = await lighthouse('http://localhost:8000/dashboard', { port: PORT });
 const lhr = result.lhr;
 
-# Direct Puppeteer to close the browser as we're done with it.
+// Direct Puppeteer to close the browser - we're done with it.
 await browser.close();
+```
+
+All of the above is done in the example script. To run:
+```sh
+# make sure server is running (see beginning of recipe) ...
+node example-lh-auth.js # login via puppeteer and run lighthouse
 ```
