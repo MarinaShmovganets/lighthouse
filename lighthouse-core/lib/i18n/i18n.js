@@ -219,7 +219,7 @@ function _preformatValues(icuMessage, messageFormatter, values) {
       // Replace all the bytes with KB.
       formattedValues[id] = value / 1024;
     } else {
-      // For all other number styles, the value isn't unchanged.
+      // For all other number styles, the value isn't changed.
       formattedValues[id] = value;
     }
   }
