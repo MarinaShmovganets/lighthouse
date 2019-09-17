@@ -173,7 +173,9 @@ function collectAllCustomElementsFromICU(icuElements, seenElementsById = new Map
 }
 
 /**
- * Format values for the message based on how they will be used in the message, like KB or milliseconds.
+ * Returns a copy of the `values` object, with the values formatted based on how
+ * they will be used in the `icuMessage`, e.g. KB or milliseconds. The original
+ * object is unchanged.
  * @param {string} icuMessage
  * @param {MessageFormat} messageFormatter
  * @param {Readonly<Record<string, string | number>>} values
@@ -217,7 +219,7 @@ function _preformatValues(icuMessage, messageFormatter, values) {
       // Replace all the bytes with KB.
       formattedValues[id] = value / 1024;
     } else {
-      // All other numbers passed through unchanged.
+      // For all other number styles, the value isn't unchanged.
       formattedValues[id] = value;
     }
   }
