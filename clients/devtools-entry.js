@@ -8,7 +8,7 @@
 const lighthouse = require('../lighthouse-core/index.js');
 const RawProtocol = require('../lighthouse-core/gather/connections/raw.js');
 const log = require('lighthouse-logger');
-const {registerLocaleData} = require('../lighthouse-core/lib/i18n/i18n.js');
+const {registerLocaleData, lookupLocale} = require('../lighthouse-core/lib/i18n/i18n.js');
 
 /** @typedef {import('../lighthouse-core/gather/connections/connection.js')} Connection */
 
@@ -55,6 +55,7 @@ if (typeof module !== 'undefined' && module.exports) {
     runLighthouseInWorker,
     listenForStatus,
     registerLocaleData,
+    lookupLocale
   };
 }
 
@@ -67,4 +68,6 @@ if (typeof self !== 'undefined') {
   self.listenForStatus = listenForStatus;
   // @ts-ignore
   self.registerLocaleData = registerLocaleData;
+  // @ts-ignore
+  self.lookupLocale = lookupLocale;
 }
