@@ -55,7 +55,7 @@ if (typeof module !== 'undefined' && module.exports) {
     runLighthouseInWorker,
     listenForStatus,
     registerLocaleData,
-    lookupLocale
+    lookupLocale,
   };
 }
 
