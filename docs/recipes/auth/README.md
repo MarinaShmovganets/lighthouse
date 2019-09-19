@@ -24,6 +24,12 @@ yarn # install deps related to just this recipe
 yarn start # start the server on http://localhost:8000
 ```
 
+Now that the server is started, let's login with Puppeteer and then run Lighthouse:
+```sh
+node example-lh-auth.js
+```
+What does this do?  Read on....
+
 ## Process
 
 Puppeteer - a browser automation tool - can be used to programatically setup a session.
