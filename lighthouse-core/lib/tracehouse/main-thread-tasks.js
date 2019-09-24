@@ -77,13 +77,13 @@ class MainThreadTasks {
   /**
    *
    * @param {TaskNode} currentTask
-   * @param {{startTime: number}} nextTask
+   * @param {number} stopTs
    * @param {PriorTaskData} priorTaskData
    * @param {Array<LH.TraceEvent>} reverseEventsQueue
    */
-  static _assignAllTimerInstallsBetweenTasks(
+  static _assignAllTimersUntilTs(
       currentTask,
-      nextTask,
+      stopTs,
       priorTaskData,
       reverseEventsQueue
   ) {
@@ -93,7 +93,7 @@ class MainThreadTasks {
       if (!nextTimerInstallEvent) break;
 
       // Timer event is after our current task; push it back on for next time, and we're done.
-      if (nextTimerInstallEvent.ts > Math.min(nextTask.startTime, currentTask.endTime)) {
+      if (nextTimerInstallEvent.ts > stopTs) {
         reverseEventsQueue.push(nextTimerInstallEvent);
         break;
       }
@@ -154,13 +154,12 @@ class MainThreadTasks {
       for (let j = taskEndEventsReverseQueue.length - 1; j >= 0; j--) {
         const endEvent = taskEndEventsReverseQueue[j];
         // We are considering an end event, so we'll count how many nested events we saw along the way.
-        while (matchingNestedEventIndex < taskStartEvents.length &&
-              taskStartEvents[matchingNestedEventIndex].ts < endEvent.ts) {
+        for (; matchingNestedEventIndex < taskStartEvents.length; matchedEventIndex++) {
+          if (taskStartEvents[matchingNestedEventIndex].ts < endEvent.ts) break;
+
           if (taskStartEvents[matchingNestedEventIndex].name === taskStartEvent.name) {
             matchingNestedEventCount++;
           }
-
-          matchingNestedEventIndex++;
         }
 
         // The event doesn't have a matching name, skip it.
@@ -207,6 +206,9 @@ class MainThreadTasks {
   }
 
   /**
+   * This function iterates through the tasks to set the `.parent`/`.children` properties of tasks
+   * according to their implied nesting structure. If any of these relationships seem impossible based on
+   * the timestamps, this method will throw.
    *
    * @param {TaskNode[]} sortedTasks
    * @param {LH.TraceEvent[]} timerInstallEvents
@@ -221,57 +223,62 @@ class MainThreadTasks {
     for (let i = 0; i < sortedTasks.length; i++) {
       const nextTask = sortedTasks[i];
 
-      // Update `currentTask` based on the elapsed time.
-      // The `nextTask` may be after currentTask has ended.
+      // This inner loop updates what our `currentTask` is at `nextTask.startTime - ε`.
+      // While `nextTask` starts after our `currentTask`, close out the task, popup to the parent, and repeat.
+      // If at the end `currentTask` is undefined, then `nextTask` is a toplevel task.
+      // Otherwise, `nextTask` is a child of `currentTask`.
       while (
         currentTask &&
         Number.isFinite(currentTask.endTime) &&
         currentTask.endTime <= nextTask.startTime
       ) {
-        MainThreadTasks._assignAllTimerInstallsBetweenTasks(
+        MainThreadTasks._assignAllTimersUntilTs(
           currentTask,
-          nextTask,
+          currentTask.endTime,
           priorTaskData,
           timerInstallEventsReverseQueue
         );
         currentTask = currentTask.parent;
       }
 
+      // If there's a `currentTask`, `nextTask` must be a child.
+      // Set the `.parent`/`.children` relationships and timer bookkeeping accordingly.
       if (currentTask) {
         if (nextTask.endTime > currentTask.endTime) {
           const timeDelta = nextTask.endTime - currentTask.endTime;
           // The child task is taking longer than the parent task, which should be impossible.
-          //    If it's less than 1ms, we'll let it slide.
+          //    If it's less than 1ms, we'll let it slide by increasing the duration of the parent.
           //    If it's more, throw an error.
           if (timeDelta < 1000) {
             currentTask.endTime = nextTask.endTime;
             currentTask.duration += timeDelta;
           } else {
+            // If we fell into this error, it's usually because of one of three reasons.
+            //    - We were missing an E event for a child task and we assumed the child ended at the end of the trace.
+            //    - There was slop in the opposite direction (child started 1ms before parent) and the child was assumed to be parent instead.
+            //    - The child timestamp ended more than 1ms after tha parent.
+            // These have more complicated fixes, so handling separately https://github.com/GoogleChrome/lighthouse/pull/9491#discussion_r327331204.
             throw new Error('Fatal trace logic error - child cannot end after parent');
           }
         }
 
-        // We're currently in the middle of a task, so `nextTask` is a child.
         nextTask.parent = currentTask;
         currentTask.children.push(nextTask);
-        MainThreadTasks._assignAllTimerInstallsBetweenTasks(
+        MainThreadTasks._assignAllTimersUntilTs(
           currentTask,
-          nextTask,
+          nextTask.startTime,
           priorTaskData,
           timerInstallEventsReverseQueue
         );
-      } else {
-        // We're not currently in the middle of a task, so `nextTask` is a toplevel task.
-        // Nothing really to do here.
       }
 
       currentTask = nextTask;
     }
 
     if (currentTask) {
-      MainThreadTasks._assignAllTimerInstallsBetweenTasks(
+      MainThreadTasks._assignAllTimersUntilTs(
         currentTask,
-        {startTime: Infinity},
+        currentTask.endTime,
         priorTaskData,
         timerInstallEventsReverseQueue
       );
