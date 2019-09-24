@@ -20,7 +20,7 @@ Within web performance testing, there are four typical styles of throttling:
 
 Lighthouse, by default, uses simulated throttling as it provides both quick evaluation and minimized variance. However, some may want to experiment with more accurate throttling...
 
-[Learn more about how these throttling types behave in example scenarios](https://www.debugbear.com/blog/network-throttling-methods).
+[Learn more about how these throttling types behave in different example scenarios](https://www.debugbear.com/blog/network-throttling-methods).
 
 ## How do I get packet-level throttling?
 
