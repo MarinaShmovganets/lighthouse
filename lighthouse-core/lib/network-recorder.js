@@ -72,11 +72,9 @@ class NetworkRecorder extends EventEmitter {
 
     for (let i = 0; i < this._records.length; i++) {
       const record = this._records[i];
-      if (!NetworkRecorder.isNetworkRecordFinished(record)) {
-        if (IGNORED_NETWORK_SCHEMES.includes(record.parsedURL.scheme)) continue;
-
-        inflightRequests++;
-      }
+      if (NetworkRecorder.isNetworkRecordFinished(record)) continue;
+      if (IGNORED_NETWORK_SCHEMES.includes(record.parsedURL.scheme)) continue;
+      inflightRequests++;
     }
 
     return inflightRequests <= allowedRequests;
