@@ -29,16 +29,16 @@ before_script:
   - google-chrome-stable --version
   - yarn build-all
 script:
-  # - yarn bundlesize
-  # - yarn diff:sample-json
-  # - yarn lint
-  # - yarn unit:cicoverage
-  # - yarn type-check
-  # - yarn smoke:cicoverage
-  # - yarn test-clients
-  # - yarn test-viewer
-  # - yarn test-lantern
-  # - yarn i18n:checks
+  - yarn bundlesize
+  - yarn diff:sample-json
+  - yarn lint
+  - yarn unit:cicoverage
+  - yarn type-check
+  - yarn smoke:cicoverage
+  - yarn test-clients
+  - yarn test-viewer
+  - yarn test-lantern
+  - yarn i18n:checks
   - yarn dogfood-lhci
 before_cache:
   # nyc, jest and other projects store files in here. They mess up the travis build cache.
