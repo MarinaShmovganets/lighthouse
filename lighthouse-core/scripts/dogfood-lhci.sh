@@ -29,20 +29,17 @@ if ! echo "$CHANGED_FILES" | grep -E 'report|lhci' > /dev/null; then
 fi
 
 # Generate an HTML report
-node "$LH_ROOT_DIR/lighthouse-cli" \
-  -A="$LH_ROOT_DIR/lighthouse-core/test/results/artifacts" \
-  --config-path="$LH_ROOT_DIR/lighthouse-core/test/results/sample-config.js" \
-  --output-path="lhci-report.html" \
-  --quiet --output=html
+yarn now-build
+cp ./dist/now/english/index.html ./lighthouse-cli/test/fixtures/lhci.report.html
 
 # Start up a test server.
-npx http-server -p 9090 &
+yarn static-server &
 # Wait for the server to start before hitting it with data.
 sleep 10
 # Install LHCI
 npm install -g @lhci/cli@next
 # Collect our LHCI results.
-lhci collect --url=http://localhost:9090/lhci-report.html
+lhci collect --url=http://localhost:10200/lhci.report.html
 # Upload the results to our canary server.
 lhci upload --serverBaseUrl="$LHCI_CANARY_SERVER_URL" --token="$LHCI_CANARY_SERVER_TOKEN"
 
