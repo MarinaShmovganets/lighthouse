@@ -154,7 +154,7 @@ class MainThreadTasks {
       for (let j = taskEndEventsReverseQueue.length - 1; j >= 0; j--) {
         const endEvent = taskEndEventsReverseQueue[j];
         // We are considering an end event, so we'll count how many nested events we saw along the way.
-        for (; matchingNestedEventIndex < taskStartEvents.length; matchedEventIndex++) {
+        for (; matchingNestedEventIndex < taskStartEvents.length; matchingNestedEventIndex++) {
           if (taskStartEvents[matchingNestedEventIndex].ts < endEvent.ts) break;
 
           if (taskStartEvents[matchingNestedEventIndex].name === taskStartEvent.name) {
