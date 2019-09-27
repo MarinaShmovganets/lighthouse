@@ -299,5 +299,21 @@ describe('network recorder', function() {
       const periods = NetworkRecorder.findNetworkQuietPeriods(records, 0);
       assert.deepStrictEqual(periods, []);
     });
+
+    it('should handle QUIC requests', () => {
+      const quicRequest = {
+        finished: false,
+        responseHeaders: [{name: 'ALT-SVC', value: 'hq=":49288";quic="1,1abadaba,51303334,0"'}],
+        timing: {receiveHeadersEnd: 1.28},
+      };
+
+      const records = [
+        record({startTime: 0, endTime: 1}),
+        record({startTime: 0, endTime: 2, ...quicRequest}),
+      ];
+
+      const periods = NetworkRecorder.findNetworkQuietPeriods(records, 0);
+      assert.deepStrictEqual(periods, []);
+    });
   });
 });
