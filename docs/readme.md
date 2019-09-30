@@ -94,7 +94,7 @@ In order to extend the Lighthouse configuration programmatically, you need to pa
       'first-meaningful-paint',
       'speed-index-metric',
       'estimated-input-latency',
-      'first-interactive',
+      'first-cpu-idle',
       'consistently-interactive',
     ],
   },
