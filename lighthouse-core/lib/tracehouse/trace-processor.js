@@ -605,6 +605,7 @@ class TraceProcessor {
       firstPaintEvt: firstPaint,
       firstContentfulPaintEvt: firstContentfulPaint,
       firstMeaningfulPaintEvt: firstMeaningfulPaint,
+      largestContentfulPaintEvt: largestContentfulPaint,
       loadEvt: load,
       domContentLoadedEvt: domContentLoaded,
       fmpFellBack,

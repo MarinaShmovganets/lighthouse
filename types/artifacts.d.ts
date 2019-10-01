@@ -525,6 +525,8 @@ declare global {
         firstMeaningfulPaintEvt?: TraceEvent;
         /** The trace event marking largestMeaningfulPaint, if it was found. */
         largestMeaningfulPaintEvt?: TraceEvent;
+        /** The trace event marking largestContentfulPaint, if it was found. */
+        largestContentfulPaintEvt?: TraceEvent;
         /** The trace event marking loadEventEnd, if it was found. */
         loadEvt?: TraceEvent;
         /** The trace event marking domContentLoadedEventEnd, if it was found. */

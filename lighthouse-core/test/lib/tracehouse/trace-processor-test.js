@@ -18,6 +18,7 @@ const noFMPtrace = require('../../fixtures/traces/no_fmp_event.json');
 const noFCPtrace = require('../../fixtures/traces/airhorner_no_fcp.json');
 const noNavStartTrace = require('../../fixtures/traces/no_navstart_event.json');
 const backgroundTabTrace = require('../../fixtures/traces/backgrounded-tab-missing-paints.json');
+const lcpTrace = require('../../fixtures/traces/lcp-m79.json');
 
 /* eslint-env jest */
 
@@ -319,6 +320,17 @@ describe('TraceProcessor', () => {
         assert.equal(trace.firstContentfulPaintEvt.ts, 2146737302468);
         assert.equal(trace.firstMeaningfulPaintEvt.ts, 2146740268666);
         assert.ok(trace.fmpFellBack);
+      });
+    });
+
+    describe('finds correct LCP', () => {
+      it('if there was a tracingStartedInPage after the frame\'s navStart', () => {
+        const trace = TraceProcessor.computeTraceOfTab(lcpTrace);
+        assert.equal(trace.mainFrameIds.frameId, '906A10385298DD996B521026AF4DA204');
+        assert.equal(trace.navigationStartEvt.ts, '1671221915754');
+        assert.equal(trace.firstContentfulPaintEvt.ts, '1671226617803');
+        assert.equal(trace.largestContentfulPaintEvt.ts, '1671236939268');
+        assert.ok(!trace.invalidLcp);
       });
     });
 
