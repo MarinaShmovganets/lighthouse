@@ -9,6 +9,7 @@ const TraceProcessor = require('../../../lib/tracehouse/trace-processor.js');
 
 const assert = require('assert');
 const fs = require('fs');
+const createTestTrace = require('../../create-test-trace.js');
 const pwaTrace = require('../../fixtures/traces/progressive-app.json');
 const badNavStartTrace = require('../../fixtures/traces/bad-nav-start-ts.json');
 const lateTracingStartedTrace = require('../../fixtures/traces/tracingstarted-after-navstart.json');
@@ -327,10 +328,26 @@ describe('TraceProcessor', () => {
       it('if there was a tracingStartedInPage after the frame\'s navStart', () => {
         const trace = TraceProcessor.computeTraceOfTab(lcpTrace);
         assert.equal(trace.mainFrameIds.frameId, '906A10385298DD996B521026AF4DA204');
-        assert.equal(trace.navigationStartEvt.ts, '1671221915754');
-        assert.equal(trace.firstContentfulPaintEvt.ts, '1671226617803');
-        assert.equal(trace.largestContentfulPaintEvt.ts, '1671236939268');
+        assert.equal(trace.navigationStartEvt.ts, 1671221915754);
+        assert.equal(trace.firstContentfulPaintEvt.ts, 1671226617803);
+        assert.equal(trace.largestContentfulPaintEvt.ts, 1671236939268);
         assert.ok(!trace.invalidLcp);
+      });
+
+      it('invalidates if last event is ::Invalidate', () => {
+        const invalidLcpTrace = createTestTrace({navigationStart: 0, traceEnd: 2000});
+        const frame = invalidLcpTrace.traceEvents[0].args.frame;
+        const args = {frame};
+        const cat = 'loading,rail,devtools.timeline';
+        invalidLcpTrace.traceEvents.push(...[
+          {name: 'largestContentfulPaint::Candidate', cat, args, ts: 1000, duration: 10},
+          {name: 'largestContentfulPaint::Invalidate', cat, args, ts: 1100, duration: 10},
+        ]);
+        const trace = TraceProcessor.computeTraceOfTab(invalidLcpTrace);
+        // assert.equal(trace.navigationStartEvt.ts, '1671221915754');
+        // assert.equal(trace.firstContentfulPaintEvt.ts, '1671226617803');
+        assert.equal(trace.largestContentfulPaintEvt, undefined);
+        assert.ok(trace.invalidLcp);
       });
     });
 
