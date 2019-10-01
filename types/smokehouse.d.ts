@@ -23,6 +23,7 @@
     audits: Record<string, any>;
     requestedUrl: string;
     finalUrl: string;
+    runWarnings?: Array<string>;
     runtimeError?: {
       code?: any;
       message?: any;

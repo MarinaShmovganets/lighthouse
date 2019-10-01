@@ -61,6 +61,8 @@ declare global {
     export interface PublicGathererArtifacts {
       /** Console deprecation and intervention warnings logged by Chrome during page load. */
       ConsoleMessages: Crdp.Log.EntryAddedEvent[];
+      /** All the iframe elements in the page.*/
+      IFrameElements: Artifacts.IFrameElement[];
       /** Information on size and loading for all the images in the page. Natural size information for `picture` and CSS images is only available if the image was one of the largest 50 images. */
       ImageElements: Artifacts.ImageElement[];
       /** All the link elements on the page or equivalently declared in `Link` headers. @see https://html.spec.whatwg.org/multipage/links.html */
@@ -184,6 +186,24 @@ declare global {
         params: {name: string; value: string}[];
       }
 
+      export interface IFrameElement {
+        /** The `id` attribute of the iframe. */
+        id: string,
+        /** The `src` attribute of the iframe. */
+        src: string,
+        /** The iframe's ClientRect. @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect */
+        clientRect: {
+          top: number;
+          bottom: number;
+          left: number;
+          right: number;
+          width: number;
+          height: number;
+        },
+        /** If the iframe or an ancestor of the iframe is fixed in position. */
+        isPositionFixed: boolean,
+      }
+
       /** @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#Attributes */
       export interface LinkElement {
         /** The `rel` attribute of the link, normalized to lower case. @see https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types */
@@ -205,6 +225,8 @@ declare global {
       export interface ScriptElement {
         type: string | null
         src: string | null
+        /** The `id` property of the script element; null if it had no `id` or if `source` is 'network'. */
+        id: string | null
         async: boolean
         defer: boolean
         /** Path that uniquely identifies the node in the DOM */

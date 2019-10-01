@@ -21,7 +21,7 @@ const expectations = [
         {
           tag: {
             tagName: 'LINK',
-            url: 'http://localhost:10200/dobetterweb/dobetterweb/dbw_tester.css?delay=100',
+            url: 'http://localhost:10200/dobetterweb/dbw_tester.css?delay=100',
           },
         },
         {
@@ -82,9 +82,38 @@ const expectations = [
         'errors-in-console': {
           score: 0,
           details: {
-            items: {
-              length: 8,
-            },
+            items: [
+              {
+                source: 'network',
+                description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
+                url: 'http://localhost:10200/dobetterweb/unknown404.css?delay=200',
+              },
+              {
+                source: 'other',
+                description: 'Application Cache Error event: Manifest fetch failed (404) http://localhost:10200/dobetterweb/clock.appcache',
+                url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+              },
+              {
+                source: 'network',
+                description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
+                url: 'http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000',
+              },
+              {
+                source: 'network',
+                description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
+                url: 'http://localhost:10200/favicon.ico',
+              },
+              {
+                source: 'network',
+                description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
+                url: 'http://localhost:10200/dobetterweb/unknown404.css?delay=200',
+              },
+              {
+                source: 'Runtime.exception',
+                description: /^Error: A distinctive error\s+at http:\/\/localhost:10200\/dobetterweb\/dbw_tester.html:\d+:\d+$/,
+                url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+              },
+            ],
           },
         },
         'is-on-https': {
@@ -144,7 +173,7 @@ const expectations = [
           details: {
             items: [
               {
-                url: 'http://localhost:10200/dobetterweb/dobetterweb/dbw_tester.css?delay=100',
+                url: 'http://localhost:10200/dobetterweb/dbw_tester.css?delay=100',
               },
               {
                 url: 'http://localhost:10200/dobetterweb/unknown404.css?delay=200',
