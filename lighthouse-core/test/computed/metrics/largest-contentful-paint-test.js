@@ -15,7 +15,7 @@ const invalidDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.de
 
 /* eslint-env jest */
 
-describe('Metrics: FCP', () => {
+describe('Metrics: LCP', () => {
   it('should error when computing a simulated value', async () => {
     const settings = {throttlingMethod: 'simulate'};
     const context = {settings, computedCache: new Map()};
