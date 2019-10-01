@@ -362,11 +362,11 @@ module.exports = [
         },
         'dom-size': {
           score: 1,
-          numericValue: 137,
+          numericValue: 141,
           details: {
             items: [
-              {statistic: 'Total DOM Elements', value: '137'},
-              {statistic: 'Maximum DOM Depth', value: '3'},
+              {statistic: 'Total DOM Elements', value: '141'},
+              {statistic: 'Maximum DOM Depth', value: '4'},
               {
                 statistic: 'Maximum Child Elements',
                 value: '100',
