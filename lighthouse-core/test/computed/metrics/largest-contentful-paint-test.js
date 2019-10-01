@@ -10,6 +10,8 @@ const assert = require('assert');
 const LargestContentfulPaint = require('../../../computed/metrics/largest-contentful-paint.js'); // eslint-disable-line max-len
 const trace = require('../../fixtures/traces/lcp-m79.json');
 const devtoolsLog = require('../../fixtures/traces/lcp-m79.devtools.log.json');
+const invalidTrace = require('../../fixtures/traces/progressive-app-m60.json');
+const invalidDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 
 /* eslint-env jest */
 
@@ -28,5 +30,13 @@ describe('Metrics: FCP', () => {
 
     assert.equal(Math.round(result.timing), 15024);
     assert.equal(result.timestamp, 1671236939268);
+  });
+
+  it('should fail to compute an observed value for old trace', async () => {
+    const settings = {throttlingMethod: 'provided'};
+    const context = {settings, computedCache: new Map()};
+    const resultPromise = LargestContentfulPaint.request(
+      {trace: invalidTrace, devtoolsLog: invalidDevtoolsLog, settings}, context);
+    await expect(resultPromise).rejects.toThrow('NO_LCP');
   });
 });
