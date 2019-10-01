@@ -333,6 +333,8 @@ describe('TraceProcessor', () => {
         assert.equal(trace.largestContentfulPaintEvt.ts, 1671236939268);
         assert.equal(trace.timings.firstContentfulPaint, 4702.049);
         assert.equal(trace.timings.largestContentfulPaint, 15023.514);
+        assert.equal(trace.timestamps.firstContentfulPaint, 1671226617803);
+        assert.equal(trace.timestamps.largestContentfulPaint, 1671236939268);
         assert.ok(!trace.lcpInvalidated);
       });
 
