@@ -539,7 +539,7 @@ class TraceProcessor {
         lcpInvalidated = true;
         break;
       }
-      // If the first lcp event is not 'Candidate', keep iterating.
+      // If not an lcp 'Candidate', keep iterating.
       if (e.name !== 'largestContentfulPaint::Candidate') continue;
       // Found the last LCP candidate in the trace, let's use it.
       largestContentfulPaint = e;
