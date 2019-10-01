@@ -528,7 +528,7 @@ class TraceProcessor {
     // by a `largestContentfulPaint::Invalidate` event. In the case that the last candidate is
     // invalidated, the value will be undefined.
     let largestContentfulPaint;
-    let invalidLcp = false;
+    let lcpInvalidated = false;
     // Iterate the events backwards.
     for (let i = frameEvents.length - 1; i >= 0; i--) {
       const e = frameEvents[i];
@@ -536,7 +536,7 @@ class TraceProcessor {
       if (e.ts <= navigationStart.ts) break;
       // If the first lcp event is 'Invalidate', there is inconclusive data to determine LCP.
       if (e.name === 'largestContentfulPaint::Invalidate') {
-        invalidLcp = true;
+        lcpInvalidated = true;
         break;
       }
       // If the first lcp event is not 'Candidate', keep iterating.
@@ -609,7 +609,7 @@ class TraceProcessor {
       loadEvt: load,
       domContentLoadedEvt: domContentLoaded,
       fmpFellBack,
-      invalidLcp,
+      lcpInvalidated,
     };
   }
 }

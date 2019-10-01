@@ -120,7 +120,7 @@ class Metrics extends Audit {
     const details = {
       type: 'debugdata',
       // TODO: Consider not nesting metrics under `items`.
-      items: [metrics, {invalidLcp: traceOfTab.invalidLcp}],
+      items: [metrics, {invalidLcp: traceOfTab.lcpInvalidated}],
     };
 
     return {

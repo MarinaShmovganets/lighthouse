@@ -535,7 +535,7 @@ declare global {
          */
         fmpFellBack: boolean;
         /** Whether LCP was invalidated without a new candidate. */
-        invalidLcp: boolean;
+        lcpInvalidated: boolean;
       }
 
       /** Information on a tech stack (e.g. a JS library) used by the page. */

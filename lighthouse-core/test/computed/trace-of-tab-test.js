@@ -75,6 +75,7 @@ describe('TraceOfTabComputed', () => {
         tts: 866553,
       },
       fmpFellBack: false,
+      lcpInvalidated: false,
       loadEvt: {
         args: {
           frame: '0x25a638821e30',
@@ -122,7 +123,6 @@ describe('TraceOfTabComputed', () => {
         navigationStart: 0,
         traceEnd: 12539.872,
       },
-      invalidLcp: false,
     });
   });
 

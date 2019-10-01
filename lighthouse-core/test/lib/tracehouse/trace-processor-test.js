@@ -331,7 +331,7 @@ describe('TraceProcessor', () => {
         assert.equal(trace.navigationStartEvt.ts, 1671221915754);
         assert.equal(trace.firstContentfulPaintEvt.ts, 1671226617803);
         assert.equal(trace.largestContentfulPaintEvt.ts, 1671236939268);
-        assert.ok(!trace.invalidLcp);
+        assert.ok(!trace.lcpInvalidated);
       });
 
       it('invalidates if last event is ::Invalidate', () => {
@@ -345,7 +345,7 @@ describe('TraceProcessor', () => {
         );
         const trace = TraceProcessor.computeTraceOfTab(invalidLcpTrace);
         assert.equal(trace.largestContentfulPaintEvt, undefined);
-        assert.ok(trace.invalidLcp);
+        assert.ok(trace.lcpInvalidated);
       });
     });
 
