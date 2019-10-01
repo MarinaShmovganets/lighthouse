@@ -534,7 +534,7 @@ class TraceProcessor {
       const e = frameEvents[i];
       // If the event's timestamp is before the navigation start, stop.
       if (e.ts <= navigationStart.ts) break;
-      // If the first lcp event is 'Invalidate', there is inconclusive data to determine LCP.
+      // If the last lcp event in the trace is 'Invalidate', there is inconclusive data to determine LCP.
       if (e.name === 'largestContentfulPaint::Invalidate') {
         lcpInvalidated = true;
         break;
