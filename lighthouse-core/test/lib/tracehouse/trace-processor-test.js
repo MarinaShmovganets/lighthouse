@@ -373,6 +373,19 @@ describe('TraceProcessor', () => {
         assert.equal(trace.largestContentfulPaintEvt, undefined);
         assert.ok(trace.lcpInvalidated);
       });
+
+      it('ignores candidates before navstart', () => {
+        const testTrace = createTestTrace({navigationStart: 1100, traceEnd: 2000});
+        const frame = testTrace.traceEvents[0].args.frame;
+        const args = {frame};
+        const cat = 'loading,rail,devtools.timeline';
+        testTrace.traceEvents.push(
+          {name: 'largestContentfulPaint::Candidate', cat, args, ts: 1000, duration: 10}
+        );
+        const trace = TraceProcessor.computeTraceOfTab(testTrace);
+        assert.equal(trace.largestContentfulPaintEvt, undefined);
+        assert.ok(!trace.lcpInvalidated);
+      });
     });
 
     it('handles traces missing a paints (captured in background tab)', () => {
