@@ -6,15 +6,6 @@
 'use strict';
 /* global window */
 
-/** @type {typeof import('url').URLSearchParams} */
-let URLSearchParams;
-if (typeof window !== 'undefined') {
-  // @ts-ignore
-  URLSearchParams = window.URLSearchParams;
-} else {
-  URLSearchParams = require('url').URLSearchParams;
-}
-
 const BASE_URL = 'http://localhost:10200/seo/';
 
 /**
