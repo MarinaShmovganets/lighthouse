@@ -325,7 +325,7 @@ describe('TraceProcessor', () => {
     });
 
     describe('finds correct LCP', () => {
-      it('if there was a tracingStartedInPage after the frame\'s navStart', () => {
+      it('in a trace', () => {
         const trace = TraceProcessor.computeTraceOfTab(lcpTrace);
         assert.equal(trace.mainFrameIds.frameId, '906A10385298DD996B521026AF4DA204');
         assert.equal(trace.navigationStartEvt.ts, 1671221915754);
