@@ -109,7 +109,6 @@ describe('TraceOfTabComputed', () => {
         firstContentfulPaint: 225414670885,
         firstMeaningfulPaint: 225414955343,
         firstPaint: 225414670868,
-        largestContentfulPaint: undefined,
         load: 225416370913,
         navigationStart: 225414172015,
         traceEnd: 225426711887,
@@ -119,11 +118,11 @@ describe('TraceOfTabComputed', () => {
         firstContentfulPaint: 498.87,
         firstMeaningfulPaint: 783.328,
         firstPaint: 498.853,
-        largestContentfulPaint: undefined,
         load: 2198.898,
         navigationStart: 0,
         traceEnd: 12539.872,
       },
+      invalidLcp: false,
     });
   });
 
