@@ -339,10 +339,10 @@ describe('TraceProcessor', () => {
         const frame = invalidLcpTrace.traceEvents[0].args.frame;
         const args = {frame};
         const cat = 'loading,rail,devtools.timeline';
-        invalidLcpTrace.traceEvents.push(...[
+        invalidLcpTrace.traceEvents.push(
           {name: 'largestContentfulPaint::Candidate', cat, args, ts: 1000, duration: 10},
-          {name: 'largestContentfulPaint::Invalidate', cat, args, ts: 1100, duration: 10},
-        ]);
+          {name: 'largestContentfulPaint::Invalidate', cat, args, ts: 1100, duration: 10}
+        );
         const trace = TraceProcessor.computeTraceOfTab(invalidLcpTrace);
         assert.equal(trace.largestContentfulPaintEvt, undefined);
         assert.ok(trace.invalidLcp);
