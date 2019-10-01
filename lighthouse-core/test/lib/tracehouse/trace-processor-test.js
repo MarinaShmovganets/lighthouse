@@ -338,16 +338,38 @@ describe('TraceProcessor', () => {
         assert.ok(!trace.lcpInvalidated);
       });
 
-      it('invalidates if last event is ::Invalidate', () => {
-        const invalidLcpTrace = createTestTrace({navigationStart: 0, traceEnd: 2000});
-        const frame = invalidLcpTrace.traceEvents[0].args.frame;
+      it('uses latest candidate', () => {
+        const testTrace = createTestTrace({navigationStart: 0, traceEnd: 2000});
+        const frame = testTrace.traceEvents[0].args.frame;
         const args = {frame};
         const cat = 'loading,rail,devtools.timeline';
-        invalidLcpTrace.traceEvents.push(
+        testTrace.traceEvents.push(
+          {name: 'largestContentfulPaint::Candidate', cat, args, ts: 1000, duration: 10},
+          {name: 'largestContentfulPaint::Invalidate', cat, args, ts: 1100, duration: 10},
+          {name: 'largestContentfulPaint::Candidate', cat, args, ts: 1200, duration: 10}
+        );
+        const trace = TraceProcessor.computeTraceOfTab(testTrace);
+        assert.equal(trace.timestamps.largestContentfulPaint, 1200);
+        assert.ok(!trace.lcpInvalidated);
+      });
+
+      it('undefined if no candidates', () => {
+        const testTrace = createTestTrace({navigationStart: 0, traceEnd: 2000});
+        const trace = TraceProcessor.computeTraceOfTab(testTrace);
+        assert.equal(trace.timestamps.largestContentfulPaint, undefined);
+        assert.ok(!trace.lcpInvalidated);
+      });
+
+      it('invalidates if last event is ::Invalidate', () => {
+        const testTrace = createTestTrace({navigationStart: 0, traceEnd: 2000});
+        const frame = testTrace.traceEvents[0].args.frame;
+        const args = {frame};
+        const cat = 'loading,rail,devtools.timeline';
+        testTrace.traceEvents.push(
           {name: 'largestContentfulPaint::Candidate', cat, args, ts: 1000, duration: 10},
           {name: 'largestContentfulPaint::Invalidate', cat, args, ts: 1100, duration: 10}
         );
-        const trace = TraceProcessor.computeTraceOfTab(invalidLcpTrace);
+        const trace = TraceProcessor.computeTraceOfTab(testTrace);
         assert.equal(trace.largestContentfulPaintEvt, undefined);
         assert.ok(trace.lcpInvalidated);
       });
