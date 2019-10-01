@@ -35,7 +35,7 @@ function displaySmokehouseOutput(result) {
 /**
  * Run smokehouse in child processes for the selected smoke tests
  * Display output from each as soon as they finish, but resolve function when ALL are complete
- * @param {Array<Smokehouse.Test>} smokeTests
+ * @param {Array<Smokehouse.TestDfn>} smokeTests
  * @return {Promise<Array<{id: string, error?: Error}>>}
  */
 async function runSmokehouse(smokeTests) {
@@ -67,7 +67,7 @@ async function runSmokehouse(smokeTests) {
 /**
  * Determine batches of smoketests to run, based on argv
  * @param {string[]} argv
- * @return {Map<string|undefined, Array<Smokehouse.Test>>}
+ * @return {Map<string|undefined, Array<Smokehouse.TestDfn>>}
  */
 function getSmoketestBatches(argv) {
   let smokes = [];

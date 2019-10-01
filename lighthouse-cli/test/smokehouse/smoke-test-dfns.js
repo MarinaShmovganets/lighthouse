@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/** @type {Array<Smokehouse.Test>} */
+/** @type {Array<Smokehouse.TestDfn>} */
 const smokeTests = [{
   id: 'a11y',
   expectations: require('./a11y/expectations.js'),

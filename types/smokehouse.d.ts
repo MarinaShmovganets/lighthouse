@@ -34,7 +34,7 @@
     artifacts?: Partial<Record<keyof LH.Artifacts, any>>
   }
 
-  export interface Test {
+  export interface TestDfn {
     id: string;
     expectations: ExpectedRunnerResult[];
     config: LH.Config.Json;
