@@ -9,8 +9,7 @@ const Gatherer = require('./gatherer.js');
 const URL = require('../../lib/url-shim.js').URL;
 const NetworkAnalyzer = require('../../lib/dependency-graph/simulator/network-analyzer.js');
 const LinkHeader = require('http-link-header');
-const getElementsInDocumentString = require('../../lib/page-functions.js')
-  .getElementsInDocumentString; // eslint-disable-line max-len
+const {getElementsInDocumentString} = require('../../lib/page-functions.js');
 
 /**
  * @fileoverview
@@ -42,6 +41,35 @@ function getCrossoriginFromHeader(value) {
   return null;
 }
 
+/**
+ * @return {LH.Artifacts['LinkElements']}
+ */
+function getLinkElementsInDOM() {
+  /** @type {Array<HTMLOrSVGElement>} */
+  // @ts-ignore - getElementsInDocument put into scope via stringification
+  const browserElements = getElementsInDocument('link');
+  /** @type {LH.Artifacts['LinkElements']} */
+  const linkElements = [];
+
+  for (const link of browserElements) {
+    // We're only interested in actual LinkElements, not `<link>` tagName elements inside SVGs.
+    // https://github.com/GoogleChrome/lighthouse/issues/9764
+    if (!(link instanceof HTMLLinkElement)) continue;
+
+    linkElements.push({
+      rel: link.rel,
+      href: link.href,
+      hrefRaw: link.href,
+      hreflang: link.hreflang,
+      as: link.as,
+      crossOrigin: link.crossOrigin,
+      source: link.closest('head') ? 'head' : 'body',
+    })
+  }
+
+  return linkElements;
+}
+
 class LinkElements extends Gatherer {
   /**
    * @param {LH.Gatherer.PassContext} passContext
@@ -52,18 +80,9 @@ class LinkElements extends Gatherer {
     // the values like access from JavaScript does.
     return passContext.driver.evaluateAsync(`(() => {
       ${getElementsInDocumentString};
+      ${getLinkElementsInDOM};
 
-      return getElementsInDocument('link').map(link => {
-        return {
-          rel: link.rel,
-          href: link.href,
-          hrefRaw: link.href,
-          hreflang: link.hreflang,
-          as: link.as,
-          crossOrigin: link.crossOrigin,
-          source: link.closest('head') ? 'head' : 'body',
-        };
-      });
+      return getLinkElementsInDOM();
     })()`, {useIsolation: true});
   }
 
