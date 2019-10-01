@@ -103,18 +103,19 @@ function summarize() {
     /** @type {LH.Result} */
     const lhr = JSON.parse(lhrJson);
 
-    // Sum all measures of the same name.
-    const measuresSummed = lhr.timing.entries.reduce((acc, entry) => {
+    // Group all measures of the same name.
+    /** @type {Record<string, number[]>} */
+    const measuresSummed = {};
+    for (const entry of lhr.timing.entries) {
       if (measureFilter && !measureFilter.test(entry.name)) {
-        return acc;
+        continue;
       }
 
-      acc[entry.name] = acc[entry.name] || [];
-      acc[entry.name].push(entry.duration);
-      return acc;
-    }, /** @type {Record<string, number[]>} */ ({}));
+      const durations = measuresSummed[entry.name] = measuresSummed[entry.name] || [];
+      durations.push(entry.duration);
+    }
 
-    // Push the average of all the measures of each name.
+    // Push the aggregate time of each unique measure.
     for (const [name, durationsForSingleRun] of Object.entries(measuresSummed)) {
       const measuresKey = `${lhr.requestedUrl}@@@${name}`;
       let durations = durationsMap.get(measuresKey);
@@ -122,7 +123,7 @@ function summarize() {
         durations = [];
         durationsMap.set(measuresKey, durations);
       }
-      durations.push(average(durationsForSingleRun));
+      durations.push(sum(durationsForSingleRun));
     }
   }
 
