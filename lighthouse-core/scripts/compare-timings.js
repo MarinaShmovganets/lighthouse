@@ -103,20 +103,20 @@ function summarize() {
     /** @type {LH.Result} */
     const lhr = JSON.parse(lhrJson);
 
-    // Group all entries of the same name.
+    // Group the durations of each entry of the same name.
     /** @type {Record<string, number[]>} */
-    const entriesByName = {};
+    const durationsByName = {};
     for (const entry of lhr.timing.entries) {
       if (measureFilter && !measureFilter.test(entry.name)) {
         continue;
       }
 
-      const durations = entriesByName[entry.name] = entriesByName[entry.name] || [];
+      const durations = durationsByName[entry.name] = durationsByName[entry.name] || [];
       durations.push(entry.duration);
     }
 
     // Push the aggregate time of each unique (by name) entry.
-    for (const [name, durationsForSingleRun] of Object.entries(entriesByName)) {
+    for (const [name, durationsForSingleRun] of Object.entries(durationsByName)) {
       const key = `${lhr.requestedUrl}@@@${name}`;
       let durations = durationsMap.get(key);
       if (!durations) {
