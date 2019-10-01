@@ -344,8 +344,6 @@ describe('TraceProcessor', () => {
           {name: 'largestContentfulPaint::Invalidate', cat, args, ts: 1100, duration: 10},
         ]);
         const trace = TraceProcessor.computeTraceOfTab(invalidLcpTrace);
-        // assert.equal(trace.navigationStartEvt.ts, '1671221915754');
-        // assert.equal(trace.firstContentfulPaintEvt.ts, '1671226617803');
         assert.equal(trace.largestContentfulPaintEvt, undefined);
         assert.ok(trace.invalidLcp);
       });
