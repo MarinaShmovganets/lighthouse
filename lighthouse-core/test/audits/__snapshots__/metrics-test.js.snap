@@ -32,12 +32,12 @@ Object {
   "observedLoadTs": 1671262379989,
   "observedNavigationStart": 0,
   "observedNavigationStartTs": 1671221915754,
-  "observedSpeedIndex": 5713,
-  "observedSpeedIndexTs": 1671227628690,
-  "observedTraceEnd": 45009,
-  "observedTraceEndTs": 1671266924797,
-  "speedIndex": 5713,
-  "speedIndexTs": 1671227628754,
+  "observedSpeedIndex": 5715,
+  "observedSpeedIndexTs": 1671227631023,
+  "observedTraceEnd": 44549,
+  "observedTraceEndTs": 1671266464483,
+  "speedIndex": 5715,
+  "speedIndexTs": 1671227630754,
   "totalBlockingTime": 1935,
 }
 `;

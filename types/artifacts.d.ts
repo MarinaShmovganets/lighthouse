@@ -534,6 +534,8 @@ declare global {
          * firstMeaningfulPaintCandidate events had to be attempted.
          */
         fmpFellBack: boolean;
+        /** Whether LCP was invalidated without a new candidate. */
+        invalidLcp: boolean;
       }
 
       /** Information on a tech stack (e.g. a JS library) used by the page. */
