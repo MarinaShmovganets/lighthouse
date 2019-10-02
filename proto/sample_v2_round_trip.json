@@ -1519,7 +1519,7 @@
                         "totalBlockingTime": 117.0
                     },
                     {
-                        "invalidLcp": false
+                        "lcpInvalidated": false
                     }
                 ],
                 "type": "debugdata"

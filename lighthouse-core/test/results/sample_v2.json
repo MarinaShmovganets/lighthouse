@@ -1281,7 +1281,7 @@
             "observedSpeedIndexTs": 185607736763
           },
           {
-            "invalidLcp": false
+            "lcpInvalidated": false
           }
         ]
       }
