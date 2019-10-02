@@ -11,6 +11,8 @@ const NetworkAnalyzer = require('../../lib/dependency-graph/simulator/network-an
 const LinkHeader = require('http-link-header');
 const {getElementsInDocumentString} = require('../../lib/page-functions.js');
 
+/* globals HTMLLinkElement */
+
 /**
  * @fileoverview
  * This gatherer collects all the effect `link` elements, both in the page and declared in the
@@ -44,10 +46,11 @@ function getCrossoriginFromHeader(value) {
 /**
  * @return {LH.Artifacts['LinkElements']}
  */
+/* istanbul ignore next */
 function getLinkElementsInDOM() {
   /** @type {Array<HTMLOrSVGElement>} */
   // @ts-ignore - getElementsInDocument put into scope via stringification
-  const browserElements = getElementsInDocument('link');
+  const browserElements = getElementsInDocument('link'); // eslint-disable-line no-undef
   /** @type {LH.Artifacts['LinkElements']} */
   const linkElements = [];
 
@@ -64,7 +67,7 @@ function getLinkElementsInDOM() {
       as: link.as,
       crossOrigin: link.crossOrigin,
       source: link.closest('head') ? 'head' : 'body',
-    })
+    });
   }
 
   return linkElements;
