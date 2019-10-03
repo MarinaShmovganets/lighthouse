@@ -152,7 +152,7 @@ The categories property controls how to score and organize the audit results in 
       auditRefs: [
         {id: 'first-meaningful-paint', weight: 2, group: 'metrics'},
         {id: 'first-cpu-idle', weight: 3, group: 'metrics'},
-        {id: 'consistently-interactive', weight: 5, group: 'metrics'},
+        {id: 'interactive', weight: 5, group: 'metrics'},
       ],
     }
   }
