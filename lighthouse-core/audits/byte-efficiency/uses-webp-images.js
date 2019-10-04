@@ -81,7 +81,7 @@ class UsesWebPImages extends ByteEfficiencyAudit {
     const warnings = [];
     for (const image of images) {
       if (image.failed) {
-        warnings.push(`Unable to decode ${URL.getURLDisplayName(image.url)}: ${image.errMsg}`);
+        warnings.push(`Unable to decode ${URL.getURLDisplayName(image.url)}`);
         continue;
       }
 
