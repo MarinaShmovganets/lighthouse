@@ -16,7 +16,6 @@ module.exports = {
     onlyAudits: [
       'first-meaningful-paint',
       'speed-index',
-      'estimated-input-latency',
       'first-cpu-idle',
       'interactive',
     ],
