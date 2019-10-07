@@ -11,7 +11,8 @@ const isDeepEqual = require('lodash.isequal');
 const log = require('lighthouse-logger');
 const MessageFormat = require('intl-messageformat').default;
 const lookupClosestLocale = require('lookup-closest-locale');
-const LOCALES = require('./locales.js');
+const LOCALES = require('./locales');
+const ALIASES = require('./aliases');
 
 /** @typedef {import('intl-messageformat-parser').Element} MessageElement */
 /** @typedef {import('intl-messageformat-parser').ArgumentElement} ArgumentElement */
@@ -119,10 +120,6 @@ const formats = {
 };
 
 
-
-const localeSubs = {
-  'en-US': ['en', 'en-US'],
-}
 /**
  * @param {string} localePath
  * @param {string} rootPath
@@ -134,14 +131,10 @@ function mergeLocales(localePath, rootPath) {
     const relativePrefix = path.relative(LH_ROOT, rootPath).replace(/\\/g, '/');
     if (LOCALES[locale]) {
       const localeToMerge = require(`${fullLocalePath}/${tempPath}`);
-      const subs = localeSubs[locale] || [locale];
-      for (const tempLocale of subs) {
-        for (const [id, message] of Object.entries(localeToMerge)) {
-          const newId = `${relativePrefix}/${id}`;
-          // Don't overwrite existing messages.
-          if (!LOCALES[tempLocale][newId]) {
-            LOCALES[tempLocale][newId] = message;
-          }
+      for (const [id, message] of Object.entries(localeToMerge)) {
+        const newId = `${relativePrefix}/${id}`;
+        if (!LOCALES[locale][newId]) {  // Don't overwrite existing messages.
+          LOCALES[locale][newId] = message;
         }
       }
     }
@@ -160,6 +153,7 @@ function mergeLocales(localePath, rootPath) {
  * @return {LH.Locale}
  */
 function lookupLocale(locale) {
+  locale = ALIASES[locale] || locale;
   // TODO: could do more work to sniff out default locale
   const canonicalLocale = Intl.getCanonicalLocales(locale)[0];
 
