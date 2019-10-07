@@ -31,7 +31,7 @@ const {taskGroups, taskNameToGroup} = require('./task-groups.js');
  * @prop {LH.TraceEvent} event
  * @prop {TaskNode[]} children
  * @prop {TaskNode|undefined} parent
- * @prop {boolean} unbounded
+ * @prop {boolean} unbounded Indicates that the task had an endTime that was inferred rather than specified in the trace. i.e. in the source trace this task was unbounded.
  * @prop {number} startTime
  * @prop {number} endTime
  * @prop {number} duration
