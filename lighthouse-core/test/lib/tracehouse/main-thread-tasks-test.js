@@ -514,6 +514,8 @@ describe('Main Thread Tasks', () => {
     ]);
   });
 
+  // Invalid sets of events.
+  // All of these should have `traceEnd` pushed out to avoid falling into one of our mitigation scenarios.
   const invalidEventSets = [
     [
       // TaskA overlaps with TaskB, X first

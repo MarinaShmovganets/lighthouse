@@ -247,25 +247,28 @@ class MainThreadTasks {
         if (nextTask.endTime > currentTask.endTime) {
           const timeDelta = nextTask.endTime - currentTask.endTime;
           // The child task is taking longer than the parent task, which should be impossible.
-          //    If it's less than 1ms, we'll let it slide by increasing the duration of the parent.
-          //    If it's ending at traceEndTs, it means we were missing the end event. We'll truncate it to the parent.
-          //    Otherwise, throw an error.
+          // In reality these situations happen, so we allow for some flexibility in trace event times.
           if (timeDelta < 1000) {
+            // It's less than 1ms, we'll let it slide by increasing the duration of the parent.
             currentTask.endTime = nextTask.endTime;
             currentTask.duration += timeDelta;
           } else if (nextTask.endTime === priorTaskData.traceEndTs) {
+            // It's ending at traceEndTs, it means we were missing the end event. We'll truncate it to the parent.
             nextTask.endTime = currentTask.endTime;
             nextTask.duration = nextTask.endTime - nextTask.startTime;
           } else {
-            // If we fell into this error, it's usually because of one of two reasons.
+            // None of our workarounds matched. It's time to throw an error.
+            // When we fall into this error, it's usually because of one of two reasons.
             //    - There was slop in the opposite direction (child started 1ms before parent) and the child was assumed to be parent instead.
             //    - The child timestamp ended more than 1ms after tha parent.
             // These have more complicated fixes, so handling separately https://github.com/GoogleChrome/lighthouse/pull/9491#discussion_r327331204.
             /** @type {any} */
             const error = new Error('Fatal trace logic error - child cannot end after parent');
             error.timeDelta = timeDelta;
-            error.nextTask = nextTask;
-            error.currentTask = currentTask;
+            error.nextTaskEvent = nextTask.event;
+            error.nextTaskEndTime = nextTask.endTime;
+            error.currentTaskEvent = currentTask.event;
+            error.currentTaskEndTime = currentTask.endTime;
             throw error;
           }
         }
