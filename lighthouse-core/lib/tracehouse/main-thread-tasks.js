@@ -31,6 +31,7 @@ const {taskGroups, taskNameToGroup} = require('./task-groups.js');
  * @prop {LH.TraceEvent} event
  * @prop {TaskNode[]} children
  * @prop {TaskNode|undefined} parent
+ * @prop {boolean} unbounded
  * @prop {number} startTime
  * @prop {number} endTime
  * @prop {number} duration
@@ -39,7 +40,7 @@ const {taskGroups, taskNameToGroup} = require('./task-groups.js');
  * @prop {TaskGroup} group
  */
 
-/** @typedef {{timers: Map<string, TaskNode>, traceEndTs: number}} PriorTaskData */
+/** @typedef {{timers: Map<string, TaskNode>}} PriorTaskData */
 
 class MainThreadTasks {
   /**
@@ -64,6 +65,7 @@ class MainThreadTasks {
       duration: endTime - startTime,
 
       // These properties will be filled in later
+      unbounded: false,
       parent: undefined,
       children: [],
       attributableURLs: [],
@@ -181,10 +183,12 @@ class MainThreadTasks {
 
       /** @type {Pick<LH.TraceEvent, 'ph'|'ts'>} */
       let taskEndEvent;
+      let unbounded = false;
       if (matchedEventIndex === -1) {
         // If we couldn't find an end event, we'll assume it's the end of the trace.
         // If this creates invalid parent/child relationships it will be caught in the next step.
         taskEndEvent = {ph: 'E', ts: traceEndTs};
+        unbounded = true;
       } else if (matchedEventIndex === taskEndEventsReverseQueue.length - 1) {
         // Use .pop() in the common case where the immediately next event is needed.
         // It's ~25x faster, https://jsperf.com/pop-vs-splice.
@@ -193,7 +197,9 @@ class MainThreadTasks {
         taskEndEvent = taskEndEventsReverseQueue.splice(matchedEventIndex, 1)[0];
       }
 
-      tasks.push(MainThreadTasks._createNewTaskNode(taskStartEvent, taskEndEvent));
+      const task = MainThreadTasks._createNewTaskNode(taskStartEvent, taskEndEvent);
+      task.unbounded = unbounded;
+      tasks.push(task);
     }
 
     if (taskEndEventsReverseQueue.length) {
@@ -252,7 +258,7 @@ class MainThreadTasks {
             // It's less than 1ms, we'll let it slide by increasing the duration of the parent.
             currentTask.endTime = nextTask.endTime;
             currentTask.duration += timeDelta;
-          } else if (nextTask.endTime === priorTaskData.traceEndTs) {
+          } else if (nextTask.unbounded) {
             // It's ending at traceEndTs, it means we were missing the end event. We'll truncate it to the parent.
             nextTask.endTime = currentTask.endTime;
             nextTask.duration = nextTask.endTime - nextTask.startTime;
@@ -432,7 +438,7 @@ class MainThreadTasks {
    */
   static getMainThreadTasks(mainThreadEvents, traceEndTs) {
     const timers = new Map();
-    const priorTaskData = {timers, traceEndTs};
+    const priorTaskData = {timers};
     const tasks = MainThreadTasks._createTasksFromEvents(
       mainThreadEvents,
       priorTaskData,

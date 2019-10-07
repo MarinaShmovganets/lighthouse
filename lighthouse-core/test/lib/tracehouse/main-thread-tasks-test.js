@@ -99,6 +99,7 @@ describe('Main Thread Tasks', () => {
       duration: 100,
       selfTime: 50,
       group: taskGroups.other,
+      unbounded: false,
     });
 
     expect(taskB).toEqual({
@@ -112,6 +113,7 @@ describe('Main Thread Tasks', () => {
       duration: 50,
       selfTime: 20,
       group: taskGroups.other,
+      unbounded: false,
     });
   });
 
@@ -232,6 +234,7 @@ describe('Main Thread Tasks', () => {
       duration: 110,
       selfTime: 5,
       group: taskGroups.other,
+      unbounded: true,
     });
 
     expect(taskB).toEqual({
@@ -245,6 +248,7 @@ describe('Main Thread Tasks', () => {
       duration: 105,
       selfTime: 95,
       group: taskGroups.other,
+      unbounded: true,
     });
   });
 
@@ -362,6 +366,7 @@ describe('Main Thread Tasks', () => {
         duration: 100,
         selfTime: 50,
         group: taskGroups.other,
+        unbounded: false,
       },
       {
         parent: taskA,
@@ -374,6 +379,7 @@ describe('Main Thread Tasks', () => {
         duration: 50,
         selfTime: 50,
         group: taskGroups.other,
+        unbounded: false,
       },
     ]);
   });
@@ -406,6 +412,7 @@ describe('Main Thread Tasks', () => {
         duration: 100,
         selfTime: 100,
         group: taskGroups.other,
+        unbounded: false,
       },
       {
         parent: undefined,
@@ -418,6 +425,7 @@ describe('Main Thread Tasks', () => {
         duration: 0,
         selfTime: 0,
         group: taskGroups.other,
+        unbounded: false,
       },
     ]);
   });
@@ -452,6 +460,7 @@ describe('Main Thread Tasks', () => {
         duration: 100,
         selfTime: 25,
         group: taskGroups.other,
+        unbounded: false,
       },
       {
         parent: taskA,
@@ -464,6 +473,7 @@ describe('Main Thread Tasks', () => {
         duration: 75,
         selfTime: 75,
         group: taskGroups.other,
+        unbounded: false,
       },
     ]);
   });
@@ -498,6 +508,7 @@ describe('Main Thread Tasks', () => {
         duration: 100,
         selfTime: 25,
         group: taskGroups.other,
+        unbounded: false,
       },
       {
         parent: taskA,
@@ -510,6 +521,7 @@ describe('Main Thread Tasks', () => {
         duration: 75,
         selfTime: 75,
         group: taskGroups.other,
+        unbounded: true,
       },
     ]);
   });
@@ -522,14 +534,12 @@ describe('Main Thread Tasks', () => {
       {ph: 'X', name: 'TaskA', pid, tid, ts: baseTs, dur: 100e3, args},
       {ph: 'B', name: 'TaskB', pid, tid, ts: baseTs + 5e3, args},
       {ph: 'E', name: 'TaskB', pid, tid, ts: baseTs + 115e3, args},
-      {ph: 'I', name: 'MarkerToPushOutTraceEnd', pid, tid, ts: baseTs + 200e3, args},
     ],
     [
       // TaskA overlaps with TaskB, B first
       {ph: 'B', name: 'TaskA', pid, tid, ts: baseTs, args},
       {ph: 'X', name: 'TaskB', pid, tid, ts: baseTs + 5e3, dur: 100e3, args},
       {ph: 'E', name: 'TaskA', pid, tid, ts: baseTs + 90e3, args},
-      {ph: 'I', name: 'MarkerToPushOutTraceEnd', pid, tid, ts: baseTs + 200e3, args},
     ],
     [
       // TaskA overlaps with TaskB, both B/E
@@ -537,7 +547,6 @@ describe('Main Thread Tasks', () => {
       {ph: 'B', name: 'TaskB', pid, tid, ts: baseTs + 5e3, args},
       {ph: 'E', name: 'TaskA', pid, tid, ts: baseTs + 90e3, args},
       {ph: 'E', name: 'TaskB', pid, tid, ts: baseTs + 95e3, args},
-      {ph: 'I', name: 'MarkerToPushOutTraceEnd', pid, tid, ts: baseTs + 200e3, args},
     ],
     [
       // TaskA is missing a B event
@@ -549,7 +558,6 @@ describe('Main Thread Tasks', () => {
       // TaskB is missing a B event after an X
       {ph: 'X', name: 'TaskA', pid, tid, ts: baseTs, dur: 100e3, args},
       {ph: 'E', name: 'TaskB', pid, tid, ts: baseTs + 10e3, args},
-      {ph: 'I', name: 'MarkerToPushOutTraceEnd', pid, tid, ts: baseTs + 200e3, args},
     ],
   ];
 
