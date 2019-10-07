@@ -5,6 +5,7 @@
  */
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
 const isDeepEqual = require('lodash.isequal');
 const log = require('lighthouse-logger');
@@ -116,6 +117,37 @@ const formats = {
     },
   },
 };
+
+
+
+const localeSubs = {
+  'en-US': ['en', 'en-US'],
+}
+/**
+ * @param {string} localePath
+ * @param {string} rootPath
+ */
+function mergeLocales(localePath, rootPath) {
+  const fullLocalePath = `${rootPath}/${localePath}`;
+  fs.readdirSync(fullLocalePath).forEach((tempPath) => {
+    const locale = tempPath.replace(/\.json$/, '');
+    const relativePrefix = path.relative(LH_ROOT, rootPath).replace(/\\/g, '/');
+    if (LOCALES[locale]) {
+      const localeToMerge = require(`${fullLocalePath}/${tempPath}`);
+      const subs = localeSubs[locale] || [locale];
+      for (const tempLocale of subs) {
+        for (const [id, message] of Object.entries(localeToMerge)) {
+          const newId = `${relativePrefix}/${id}`;
+          // Don't overwrite existing messages.
+          if (!LOCALES[tempLocale][newId]) {
+            LOCALES[tempLocale][newId] = message;
+          }
+        }
+      }
+    }
+  });
+}
+
 
 /**
  * Look up the best available locale for the requested language through these fall backs:
@@ -499,4 +531,5 @@ module.exports = {
   isIcuMessage,
   collectAllCustomElementsFromICU,
   registerLocaleData,
+  mergeLocales,
 };

@@ -437,9 +437,15 @@ class Config {
       assertValidPluginName(configJSON, pluginName);
 
       const pluginPath = resolveModule(pluginName, configDir, 'plugin');
+
       const rawPluginJson = require(pluginPath);
       const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
 
+      if (rawPluginJson['localePath']) {
+        const pluginParentPath = 
+          pluginPath.replace(new RegExp(`/${pluginName}/.*`,'g'), '');
+        i18n.mergeLocales(rawPluginJson['localePath'], pluginParentPath);
+      }
       configJSON = Config.extendConfigJSON(configJSON, pluginJson);
     }
 

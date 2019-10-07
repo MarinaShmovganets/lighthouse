@@ -205,6 +205,7 @@ class ConfigPlugin {
       audits: pluginAuditsJson,
       category: pluginCategoryJson,
       groups: pluginGroupsJson,
+      localePath,
       ...invalidRest
     } = pluginJson;
 
