@@ -11,8 +11,8 @@ const isDeepEqual = require('lodash.isequal');
 const log = require('lighthouse-logger');
 const MessageFormat = require('intl-messageformat').default;
 const lookupClosestLocale = require('lookup-closest-locale');
-const LOCALES = require('./locales');
-const ALIASES = require('./aliases');
+const LOCALES = require('./locales.js');
+const ALIASES = require('./aliases.js');
 
 /** @typedef {import('intl-messageformat-parser').Element} MessageElement */
 /** @typedef {import('intl-messageformat-parser').ArgumentElement} ArgumentElement */
@@ -133,7 +133,7 @@ function mergeLocales(localePath, rootPath) {
       const localeToMerge = require(`${fullLocalePath}/${tempPath}`);
       for (const [id, message] of Object.entries(localeToMerge)) {
         const newId = `${relativePrefix}/${id}`;
-        if (!LOCALES[locale][newId]) {  // Don't overwrite existing messages.
+        if (!LOCALES[locale][newId]) { // Don't overwrite existing messages.
           LOCALES[locale][newId] = message;
         }
       }

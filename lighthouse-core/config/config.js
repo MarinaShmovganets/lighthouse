@@ -442,8 +442,8 @@ class Config {
       const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
 
       if (rawPluginJson['localePath']) {
-        const pluginParentPath = 
-          pluginPath.replace(new RegExp(`/${pluginName}/.*`,'g'), '');
+        const pluginParentPath =
+          pluginPath.replace(new RegExp(`/${pluginName}/.*`, 'g'), '');
         i18n.mergeLocales(rawPluginJson['localePath'], pluginParentPath);
       }
       configJSON = Config.extendConfigJSON(configJSON, pluginJson);
