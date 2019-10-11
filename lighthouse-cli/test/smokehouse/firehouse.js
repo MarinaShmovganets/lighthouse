@@ -21,14 +21,14 @@ const {collateResults, report} = require('./smokehouse-report.js');
  * @param {Smokehouse.FirehouseOptions} options
  */
 async function runSmokes(options) {
-  const {runLighthouse, filter, skip, modify} = options;
+  const {runLighthouse, urlFilterRegex, skip, modify} = options;
 
   let passingCount = 0;
   let failingCount = 0;
 
   for (const test of smokeTests) {
     for (const expected of test.expectations) {
-      if (filter && !expected.lhr.requestedUrl.match(filter)) {
+      if (urlFilterRegex && !expected.lhr.requestedUrl.match(urlFilterRegex)) {
         continue;
       }
 

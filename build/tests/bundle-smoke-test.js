@@ -54,7 +54,7 @@ async function main() {
 
   const results = await firehouse.runSmokes({
     runLighthouse: runLighthouseFromMinifiedBundle,
-    filter: /byte|dbw/,
+    urlFilterRegex: /byte|dbw/,
   });
 
   await new Promise(resolve => server.close(resolve));
