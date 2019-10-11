@@ -16,10 +16,6 @@ const Audit = require('../audit.js');
 const Util = require('../../report/html/renderer/util.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
-const MAX_DOM_ELEMENTS = 1500;
-const MAX_DOM_TREE_WIDTH = 60;
-const MAX_DOM_TREE_DEPTH = 32;
-
 const UIStrings = {
   /** Title of a diagnostic audit that provides detail on the size of the web page's DOM. The size of a DOM is characterized by the total number of DOM elements and greatest DOM depth. This descriptive title is shown to users when the amount is acceptable and no user action is required. */
   title: 'Avoids an excessive DOM size',
@@ -52,9 +48,6 @@ const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 
 class DOMSize extends Audit {
-  static get MAX_DOM_ELEMENTS() {
-    return MAX_DOM_ELEMENTS;
-  }
 
   /**
    * @return {LH.Audit.Meta}
