@@ -48,7 +48,6 @@ const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 
 class DOMSize extends Audit {
-
   /**
    * @return {LH.Audit.Meta}
    */
