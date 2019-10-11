@@ -10,7 +10,8 @@
 const ErrorLogsAudit = require('../../audits/errors-in-console.js');
 const assert = require('assert');
 
-describe('Console error logs audit', () => {it('passes when no console messages were found', () => {
+describe('Console error logs audit', () => {
+  it('passes when no console messages were found', () => {
     const auditResult = ErrorLogsAudit.audit({
       ConsoleMessages: [],
       RuntimeExceptions: [],
