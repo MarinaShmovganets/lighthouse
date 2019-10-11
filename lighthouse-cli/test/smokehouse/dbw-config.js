@@ -23,7 +23,7 @@ module.exports = {
     ],
   },
   audits: [
-    // Test filtering and reduce churn in test expectations at the same time! \( ﾟヮﾟ)/
-    {path: 'errors-in-console', options: {ignoredPatterns: ['Failed to load resource']}},
+    // Test the `ignoredPatterns` audit option.
+    {path: 'errors-in-console', options: {ignoredPatterns: ['An ignored error']}},
   ],
 };
