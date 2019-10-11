@@ -87,13 +87,13 @@ describe('Console error logs audit', () => {
     assert.equal(auditResult.details.items[0].url, 'http://www.example.com/favicon.ico');
     assert.equal(auditResult.details.items[0].description,
       'The server responded with a status of 404 (Not Found)');
-    assert.equal(auditResult.details.items[1].url, 'http://www.example.com/wsconnect.ws');
-    assert.equal(auditResult.details.items[1].description,
-      'WebSocket connection failed: Unexpected response code: 500');
-    assert.equal(auditResult.details.items[2].url,
+    assert.equal(auditResult.details.items[1].url,
       'http://example.com/fancybox.js');
-    assert.equal(auditResult.details.items[2].description,
+    assert.equal(auditResult.details.items[1].description,
       'TypeError: Cannot read property \'msie\' of undefined');
+    assert.equal(auditResult.details.items[2].url, 'http://www.example.com/wsconnect.ws');
+    assert.equal(auditResult.details.items[2].description,
+      'WebSocket connection failed: Unexpected response code: 500');
   });
 
   it('handle the case when some logs fields are undefined', () => {
