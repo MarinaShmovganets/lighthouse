@@ -5,6 +5,22 @@
  */
 'use strict';
 
+/**
+ * @fileoverview Used to smoke test the build process.
+ *
+ * - The bundled code is a function that, given a module ID, returns the exports of that module.
+ * - We eval the bundle string to get a reference to this function (with some global hacks to
+ *   support unbundleable things).
+ * - We try to locate the lighthouse-core/index.js module by executing this function on every
+ *   possible number. This version of lighthouse-core/index.js will be wired to use all of the
+ *   bundled modules, not node requires.
+ * - Once we find the bundled lighthouse-core/index.js module, we stick it in node's require.cache
+ *   so that all node require invocations for lighthouse-core/index.js will use our bundled module
+ *   instead of the regular one.
+ * - Finally, we kick off the lighthouse-cli/index.js entrypoint that ends up requiring the
+ *   now-replaced lighthouse-core/index.js for its run.
+ */
+
 const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
