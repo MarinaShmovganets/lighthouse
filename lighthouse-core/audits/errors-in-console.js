@@ -28,7 +28,7 @@ const UIStrings = {
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
-/** @typedef {{ignoredPatterns: undefined|Array<RegExp|string>}} AuditOptions */
+/** @typedef {{ignoredPatterns?: Array<RegExp|string>}} AuditOptions */
 
 class ErrorLogs extends Audit {
   /**
@@ -46,9 +46,7 @@ class ErrorLogs extends Audit {
 
   /** @return {AuditOptions} */
   static defaultOptions() {
-    return {
-      ignoredPatterns: undefined,
-    };
+    return {};
   }
 
 
