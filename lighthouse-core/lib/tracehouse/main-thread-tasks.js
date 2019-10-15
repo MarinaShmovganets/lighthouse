@@ -266,8 +266,11 @@ class MainThreadTasks {
             nextTask.startTime - currentTask.startTime < 1000 &&
             !currentTask.children.length
           ) {
-            // The parent started less than 1ms before the child, we'll let it slide by swapping the two,
-            // and increasing the duration of the parent. Below is an artistic rendition of this situation.
+            // The true parent started less than 1ms before the true child, so we're looking at the relationship backwards.
+            // We'll let it slide and fix the situation by swapping the two tasks into their correct positions
+            // and increasing the duration of the parent.
+
+            // Below is an artistic rendition of the heirarchy we are trying to create.
             //   ████████████currentTask.parent██████████████████
             //       █████████nextTask██████████████
             //      ███████currentTask███████
