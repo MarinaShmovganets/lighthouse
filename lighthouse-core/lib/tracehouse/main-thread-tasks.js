@@ -281,7 +281,8 @@ class MainThreadTasks {
             // We'll reassign it to be the parent of `actualParentTask` in a bit.
             const grandparentTask = currentTask.parent;
             if (grandparentTask) {
-              if (grandparentTask.children[grandparentTask.children.length - 1] !== actualChildTask) {
+              const lastGrandparentChildIndex = grandparentTask.children.length - 1;
+              if (grandparentTask.children[lastGrandparentChildIndex] !== actualChildTask) {
                 // The child we need to swap should always be the most recently added child.
                 // But if not then there's a serious bug in this code, so double-check.
                 throw new Error('Fatal trace logic error - impossible children');
