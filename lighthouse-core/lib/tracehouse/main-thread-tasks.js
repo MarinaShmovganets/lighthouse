@@ -267,26 +267,32 @@ class MainThreadTasks {
             !currentTask.children.length
           ) {
             // The parent started less than 1ms before the child, we'll let it slide by swapping the two,
-            // and increasing the duration of the parent.
-            const parentTask = nextTask;
-            const childTask = currentTask;
+            // and increasing the duration of the parent. Below is an artistic rendition of this situation.
+            //   ████████████currentTask.parent██████████████████
+            //       █████████nextTask██████████████
+            //      ███████currentTask███████
+            const actualParentTask = nextTask;
+            const actualChildTask = currentTask;
+
+            // We'll grab the grandparent task to see if we need to fix it.
+            // We'll reassign it to be the parent of `actualParentTask` in a bit.
             const grandparentTask = currentTask.parent;
             if (grandparentTask) {
-              if (grandparentTask.children[grandparentTask.children.length - 1] !== childTask) {
+              if (grandparentTask.children[grandparentTask.children.length - 1] !== actualChildTask) {
                 // The child we need to swap should always be the most recently added child.
                 // But if not then there's a serious bug in this code, so double-check.
                 throw new Error('Fatal trace logic error - impossible children');
               }
 
               grandparentTask.children.pop();
-              grandparentTask.children.push(parentTask);
+              grandparentTask.children.push(actualParentTask);
             }
 
-            parentTask.parent = grandparentTask;
-            parentTask.startTime = childTask.startTime;
-            parentTask.duration = parentTask.endTime - parentTask.startTime;
-            currentTask = parentTask;
-            nextTask = childTask;
+            actualParentTask.parent = grandparentTask;
+            actualParentTask.startTime = actualChildTask.startTime;
+            actualParentTask.duration = actualParentTask.endTime - actualParentTask.startTime;
+            currentTask = actualParentTask;
+            nextTask = actualChildTask;
           } else {
             // None of our workarounds matched. It's time to throw an error.
             // When we fall into this error, it's usually because of one of two reasons.
