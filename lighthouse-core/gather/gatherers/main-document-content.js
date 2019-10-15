@@ -9,22 +9,20 @@ const Gatherer = require('./gatherer.js');
 const NetworkAnalyzer = require('../../lib/dependency-graph/simulator/network-analyzer.js');
 
 /**
- * Collects the content of the initially-requested html document.
+ * Collects the content of the main html document.
  */
-class InitialHtml extends Gatherer {
+class MainDocumentContent extends Gatherer {
   /**
    * @param {LH.Gatherer.PassContext} passContext
    * @param {LH.Gatherer.LoadData} loadData
-   * @return {Promise<LH.Artifacts['InitialHtml']>}
+   * @return {Promise<LH.Artifacts['MainDocumentContent']>}
    */
   async afterPass(passContext, loadData) {
     const mainResource = NetworkAnalyzer.findMainDocument(loadData.networkRecords, passContext.url);
 
     const driver = passContext.driver;
-    const mainContent = await driver.getRequestContent(mainResource.requestId);
-
-    return mainContent;
+    return driver.getRequestContent(mainResource.requestId);
   }
 }
 
-module.exports = InitialHtml;
+module.exports = MainDocumentContent;
