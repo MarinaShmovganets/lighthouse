@@ -1,22 +1,23 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-David Pacassi Torrico <dpacassi@users.noreply.github.com>
-Houssein Djirdeh <houssein@google.com>
-Liran Tal <liran.tal@gmail.com>
-YeonJuan <yeonjuan93@naver.com>
- <a name="5.6.0"></a>
+<a name="5.6.0"></a>
 # 5.6.0 (2019-10-17)
 [Full Changelog](https://github.com/googlechrome/lighthouse/compare/v5.5.0...v5.6.0)
+
+We expect this release to ship in the DevTools of Chrome 79.
+
+## New contributors!
+
+Thanks to @dpacassi, @housseindjirdeh, @lirantal and @yeonjuan for their first contributions!
 
 ## Clients
 
 * lr: don't include html report assets in bundle ([#9828](https://github.com/googlechrome/lighthouse/pull/9828))
+* viewer: minify inlined report-generator bundle ([#9596](https://github.com/googlechrome/lighthouse/pull/9596))
 
 ## Core
 
 * gather: add new MainDocumentContent public artifact ([#9781](https://github.com/googlechrome/lighthouse/pull/9781))
 * stack-packs: add angular, react, amp, and magento packs ([#9797](https://github.com/googlechrome/lighthouse/pull/9797))
 * tracehouse: allow child to start <1ms before parent ([#9786](https://github.com/googlechrome/lighthouse/pull/9786))
-* rename Element to LHElement ([#9832](https://github.com/googlechrome/lighthouse/pull/9832))
 * driver: fix error handling for Runtime.evaluate ([#9831](https://github.com/googlechrome/lighthouse/pull/9831))
 * errors-in-console: add ignoredPatterns option ([#9480](https://github.com/googlechrome/lighthouse/pull/9480))
 * image-elements: cache naturalSize results ([#9818](https://github.com/googlechrome/lighthouse/pull/9818))
@@ -24,11 +25,24 @@ YeonJuan <yeonjuan93@naver.com>
 * optimized-images: log errors ([#9782](https://github.com/googlechrome/lighthouse/pull/9782))
 * seo: support korean in link-text audit ([#9804](https://github.com/googlechrome/lighthouse/pull/9804))
 * tracehouse: allow nested trace events without an end ([#9785](https://github.com/googlechrome/lighthouse/pull/9785))
+* rename Element to LHElement ([#9832](https://github.com/googlechrome/lighthouse/pull/9832))
 
 ## Deps
 
 * update third-party-web to 0.11.0 ([#9849](https://github.com/googlechrome/lighthouse/pull/9849))
 * snyk: update snyk snapshot ([#9793](https://github.com/googlechrome/lighthouse/pull/9793))
+
+## Report
+
+* rephrase titles for 3rdparty & crc ([#9419](https://github.com/googlechrome/lighthouse/pull/9419))
+* rewrite dom-size description ([#9821](https://github.com/googlechrome/lighthouse/pull/9821))
+* update logo in top bar ([#9728](https://github.com/googlechrome/lighthouse/pull/9728))
+* remove some dead code ([#9800](https://github.com/googlechrome/lighthouse/pull/9800))
+
+## I18n
+
+* import: web.dev links and small corrections ([#9846](https://github.com/googlechrome/lighthouse/pull/9846))
+* import translations ([#9802](https://github.com/googlechrome/lighthouse/pull/9802))
 
 ## Docs
 
@@ -38,26 +52,14 @@ YeonJuan <yeonjuan93@naver.com>
 * document 'meaning' field in i18n readme ([#9787](https://github.com/googlechrome/lighthouse/pull/9787))
 * update stale references to audits ([#9760](https://github.com/googlechrome/lighthouse/pull/9760))
 
-## I18n
-
-* import: web.dev links and small corrections ([#9846](https://github.com/googlechrome/lighthouse/pull/9846))
-* import translations ([#9802](https://github.com/googlechrome/lighthouse/pull/9802))
-
-## Report
-
-* viewer: minify inlined report-generator bundle ([#9596](https://github.com/googlechrome/lighthouse/pull/9596))
-* rephrase titles for 3rdparty & crc ([#9419](https://github.com/googlechrome/lighthouse/pull/9419))
-* update logo in top bar ([#9728](https://github.com/googlechrome/lighthouse/pull/9728))
-* remove some dead code ([#9800](https://github.com/googlechrome/lighthouse/pull/9800))
-
 ## Scripts
 
 * compare-timings.js --compare ([#9776](https://github.com/googlechrome/lighthouse/pull/9776))
 
 ## Tests
 
-* build: attempt bundle test three times in CI ([#9830](https://github.com/googlechrome/lighthouse/pull/9830))
 * build: use firehouse smoke test runner to test bundle ([#9791](https://github.com/googlechrome/lighthouse/pull/9791))
+* build: attempt bundle test three times in CI ([#9830](https://github.com/googlechrome/lighthouse/pull/9830))
 * smokehouse: fix tmp directory creation ([#9855](https://github.com/googlechrome/lighthouse/pull/9855))
 * smokehouse: use static requires for test definitions ([#9501](https://github.com/googlechrome/lighthouse/pull/9501))
 
@@ -65,7 +67,6 @@ YeonJuan <yeonjuan93@naver.com>
 
 * build: minify report javascript for lightrider report generator ([#9823](https://github.com/googlechrome/lighthouse/pull/9823))
 * errors-in-console: warn on use of unrecognized audit options ([#9829](https://github.com/googlechrome/lighthouse/pull/9829))
-* rewrite dom-size description ([#9821](https://github.com/googlechrome/lighthouse/pull/9821))
 * more releasing tweaks ([#9772](https://github.com/googlechrome/lighthouse/pull/9772))
 * add compare-timings script ([#9723](https://github.com/googlechrome/lighthouse/pull/9723))
 
