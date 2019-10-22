@@ -6,6 +6,7 @@
 'use strict';
 
 const fs = require('fs');
+const mkdir = fs.promises.mkdir;
 
 const archiver = require('archiver');
 const cpy = require('cpy');
@@ -28,7 +29,7 @@ async function buildEntryPoint() {
   const outFile = `${distDir}/scripts/${distName}`;
   const bundleStream = browserify(inFile).bundle();
 
-  fs.mkdirSync(path.dirname(outFile), {recursive: true});
+  await mkdir(path.dirname(outFile), {recursive: true});
   return new Promise((resolve, reject) => {
     const writeStream = fs.createWriteStream(outFile);
     writeStream.on('finish', resolve);
@@ -61,7 +62,7 @@ function copyAssets() {
  */
 async function packageExtension() {
   const packagePath = `${distDir}/../extension-package`;
-  fs.mkdirSync(packagePath, {recursive: true});
+  await mkdir(packagePath, {recursive: true});
 
   return new Promise((resolve, reject) => {
     const archive = archiver('zip', {
