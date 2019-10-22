@@ -36,20 +36,14 @@ html, body {
   width: 270px;
   background-color: var(--color-bg);
   color: #212121;
+  font-family: var(--report-font-family);
+  font-size: var(--font-size);
+  line-height: 18px;
   user-select: none;
 }
 
 body {
   padding: 16px;
-  font-family: var(--report-font-family);
-  font-size: var(--font-size);
-  line-height: 18px;
-}
-
-.header {
-  padding: 26px;
-  display: flex;
-  flex: 1;
 }
 
 .header__icon {
@@ -63,13 +57,6 @@ body {
 }
 .errormsg:empty {
   display: none;
-}
-
-.button:disabled {
-  background-color: #cccccc;
-  border: none;
-  color: #666666;
-  cursor: not-allowed;
 }
 
 .button--generate {
@@ -86,9 +73,15 @@ body {
   background-color: var(--color-blue);
   transition: 0.1s all;
 }
-.button--generate:not(:disabled):hover {
+.button--generate:hover {
   background-color: #042790;
   border: 1px solid #0535C1;
+}
+.button--generate:disabled {
+  background-color: #cccccc;
+  border: none;
+  color: #666666;
+  cursor: not-allowed;
 }
 
 .section {
@@ -123,7 +116,7 @@ body {
   color: rgb(71, 71, 71);
   cursor: pointer;
 }
-.show-options .button--configure {
+.main--options-visible .button--configure {
   color: var(--color-blue);
 }
 .button--configure.disabled {
@@ -156,6 +149,7 @@ body {
 .section--options input {
   margin-top: 0;
   margin-bottom: 0;
+  margin-right: 8px;
 }
 
 .options__list {
@@ -170,10 +164,10 @@ body {
   display: none;
 }
 
-.show-options .section--options {
+.main--options-visible + .section--options {
   display: block;
 }
 
-.show-options .section--devtools-info {
+.main--options-visible .section--devtools-info {
   display: none;
 }

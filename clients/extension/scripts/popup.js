@@ -8,7 +8,7 @@
 const SettingsController = require('./settings-controller.js');
 
 const VIEWER_URL = 'https://googlechrome.github.io/lighthouse/viewer/';
-const optionsVisibileClass = 'show-options';
+const optionsVisibileClass = 'main--options-visible';
 
 /**
  * Guaranteed context.querySelector. Always returns an element or throws if
@@ -115,7 +115,7 @@ function getSiteUrl() {
       const url = new URL(tabs[0].url);
       if (url.hostname === 'localhost') {
         reject(new Error('Use DevTools to audit pages on localhost.'));
-      } else if (/^(chrome|chrome-extension):/.test(url.protocol)) {
+      } else if (/^(chrome|about)/.test(url.protocol)) {
         reject(new Error(`Cannot audit ${url.protocol}// pages.`));
       } else {
         resolve(url);
@@ -130,7 +130,7 @@ function getSiteUrl() {
 async function initPopup() {
   fillDevToolsShortcut();
 
-  const bodyEl = find('body');
+  const mainEl = find('main');
   const optionsEl = find('.button--configure');
   const generateReportButton = /** @type {HTMLButtonElement} */ (find('.button--generate'));
   const psiDisclaimerEl = find('.psi-disclaimer');
@@ -166,7 +166,7 @@ async function initPopup() {
   });
 
   optionsEl.addEventListener('click', () => {
-    bodyEl.classList.toggle(optionsVisibileClass);
+    mainEl.classList.toggle(optionsVisibileClass);
   });
 
   optionsFormEl.addEventListener('change', () => {

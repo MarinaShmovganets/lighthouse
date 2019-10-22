@@ -9,7 +9,6 @@ const fs = require('fs');
 
 const archiver = require('archiver');
 const cpy = require('cpy');
-const makeDir = require('make-dir');
 const browserify = require('browserify');
 const path = require('path');
 
@@ -29,7 +28,7 @@ async function buildEntryPoint() {
   const outFile = `${distDir}/scripts/${distName}`;
   const bundleStream = browserify(inFile).bundle();
 
-  await makeDir(path.dirname(outFile));
+  fs.mkdirSync(path.dirname(outFile), {recursive: true});
   return new Promise((resolve, reject) => {
     const writeStream = fs.createWriteStream(outFile);
     writeStream.on('finish', resolve);
@@ -62,7 +61,7 @@ function copyAssets() {
  */
 async function packageExtension() {
   const packagePath = `${distDir}/../extension-package`;
-  await makeDir(packagePath);
+  fs.mkdirSync(packagePath, {recursive: true});
 
   return new Promise((resolve, reject) => {
     const archive = archiver('zip', {
