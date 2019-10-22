@@ -242,6 +242,14 @@ class NetworkRecorder extends EventEmitter {
     const request = this._findRealRequestAndSetSource(data.requestId, event.source);
     if (!request) return;
     request.onResponseReceived(data);
+
+    /**
+     * due to a bug in Chromium we have to manually trigger the onLoadingFinished event
+     * see also: https://bugs.chromium.org/p/chromium/issues/detail?id=1016754
+     */
+    if (request.type === 'Fetch') {
+      this.loadingFinished(event);
+    }
   }
 
   /**
