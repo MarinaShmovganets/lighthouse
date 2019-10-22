@@ -8,7 +8,7 @@
 const SettingsController = require('./settings-controller.js');
 
 const VIEWER_URL = 'https://googlechrome.github.io/lighthouse/viewer/';
-const optionsVisibileClass = 'main--options-visible';
+const optionsVisibleClass = 'main--options-visible';
 
 /**
  * Guaranteed context.querySelector. Always returns an element or throws if
@@ -167,7 +167,7 @@ async function initPopup() {
   });
 
   optionsEl.addEventListener('click', () => {
-    mainEl.classList.toggle(optionsVisibileClass);
+    mainEl.classList.toggle(optionsVisibleClass);
   });
 
   optionsFormEl.addEventListener('change', () => {
