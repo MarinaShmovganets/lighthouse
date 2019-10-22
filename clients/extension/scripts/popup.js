@@ -133,6 +133,7 @@ async function initPopup() {
   const mainEl = find('main');
   const optionsEl = find('.button--configure');
   const generateReportButton = /** @type {HTMLButtonElement} */ (find('.button--generate'));
+  const configureButton = /** @type {HTMLButtonElement} */ (find('.button--configure'));
   const psiDisclaimerEl = find('.psi-disclaimer');
   const errorMessageEl = find('.errormsg');
   const optionsFormEl = find('.options__form');
@@ -149,7 +150,7 @@ async function initPopup() {
     // but it's very hard to keep an extension popup alive during a popup
     // so we don't need to handle reacting to it.
     generateReportButton.disabled = true;
-    optionsEl.classList.add('disabled');
+    configureButton.disabled = true;
     psiDisclaimerEl.remove();
     errorMessageEl.textContent = err.message;
     return;

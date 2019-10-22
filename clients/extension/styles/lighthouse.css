@@ -59,6 +59,14 @@ body {
   display: none;
 }
 
+.button {
+  background-color: transparent;
+  border: none;
+}
+.button:focus {
+  outline: none;
+}
+
 .button--generate {
   cursor: pointer;
   font-family: 'Roboto', Arial, sans-serif;
@@ -119,7 +127,7 @@ body {
 .main--options-visible .button--configure {
   color: var(--color-blue);
 }
-.button--configure.disabled {
+.button--configure:disabled {
   color: grey;
   cursor: not-allowed;
 }
