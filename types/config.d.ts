@@ -112,7 +112,7 @@ declare global {
         /** Optionally provide more groups in addition to those specified by the base config. */
         groups?: Record<string, LH.Config.GroupJson>;
         /** TODO(jburger) */
-        localePath?: string;
+        localesPath?: string;
       }
 
       export type MergeOptionsOfItems = <T extends {path?: string, options: Record<string, any>}>(items: T[]) => T[];

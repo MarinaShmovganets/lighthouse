@@ -21,21 +21,14 @@
 /** @type {Record<LH.Locale, LhlMessages>} */
 const locales = {
   'en-US': require('./locales/en-US.json'), // The 'source' strings, with descriptions
-  'en': require('./locales/en-US.json'), // According to CLDR/ICU, 'en' == 'en-US' dates/numbers (Why?!)
 
   // TODO: en-GB has just ~10 messages that are different from en-US. We should only ship those.
-  'en-AU': require('./locales/en-GB.json'), // Alias of 'en-GB'
   'en-GB': require('./locales/en-GB.json'), // Alias of 'en-GB'
-  'en-IE': require('./locales/en-GB.json'), // Alias of 'en-GB'
-  'en-SG': require('./locales/en-GB.json'), // Alias of 'en-GB'
-  'en-ZA': require('./locales/en-GB.json'), // Alias of 'en-GB'
-  'en-IN': require('./locales/en-GB.json'), // Alias of 'en-GB'
 
   // All locales from here have a messages file, though we allow fallback to the base locale when the files are identical
   'ar-XB': require('./locales/ar-XB.json'), // psuedolocalization
   'ar': require('./locales/ar.json'),
   'bg': require('./locales/bg.json'),
-  'bs': require('./locales/hr.json'), // Alias of 'hr'
   'ca': require('./locales/ca.json'),
   'cs': require('./locales/cs.json'),
   'da': require('./locales/da.json'),
@@ -45,30 +38,6 @@ const locales = {
   'en-XL': require('./locales/en-XL.json'), // local psuedolocalization
   'es': require('./locales/es.json'),
   'es-419': require('./locales/es-419.json'),
-  // Aliases of es-419: https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/supplemental/parentLocales.json
-  'es-AR': require('./locales/es-419.json'),
-  'es-BO': require('./locales/es-419.json'),
-  'es-BR': require('./locales/es-419.json'),
-  'es-BZ': require('./locales/es-419.json'),
-  'es-CL': require('./locales/es-419.json'),
-  'es-CO': require('./locales/es-419.json'),
-  'es-CR': require('./locales/es-419.json'),
-  'es-CU': require('./locales/es-419.json'),
-  'es-DO': require('./locales/es-419.json'),
-  'es-EC': require('./locales/es-419.json'),
-  'es-GT': require('./locales/es-419.json'),
-  'es-HN': require('./locales/es-419.json'),
-  'es-MX': require('./locales/es-419.json'),
-  'es-NI': require('./locales/es-419.json'),
-  'es-PA': require('./locales/es-419.json'),
-  'es-PE': require('./locales/es-419.json'),
-  'es-PR': require('./locales/es-419.json'),
-  'es-PY': require('./locales/es-419.json'),
-  'es-SV': require('./locales/es-419.json'),
-  'es-US': require('./locales/es-419.json'),
-  'es-UY': require('./locales/es-419.json'),
-  'es-VE': require('./locales/es-419.json'),
-
   'fi': require('./locales/fi.json'),
   'fil': require('./locales/fil.json'),
   'fr': require('./locales/fr.json'), // fr-CH identical, so it falls back into fr
@@ -76,19 +45,13 @@ const locales = {
   'hi': require('./locales/hi.json'),
   'hr': require('./locales/hr.json'),
   'hu': require('./locales/hu.json'),
-  'gsw': require('./locales/de.json'), // swiss german. identical (for our purposes) to 'de'
   'id': require('./locales/id.json'),
-  'in': require('./locales/id.json'), // Alias of 'id'
   'it': require('./locales/it.json'),
-  'iw': require('./locales/he.json'), // Alias of 'he'
   'ja': require('./locales/ja.json'),
   'ko': require('./locales/ko.json'),
-  'ln': require('./locales/fr.json'), // Alias of 'fr'
   'lt': require('./locales/lt.json'),
   'lv': require('./locales/lv.json'),
-  'mo': require('./locales/ro.json'), // Alias of 'ro'
   'nl': require('./locales/nl.json'),
-  'nb': require('./locales/no.json'), // Alias of 'no'
   'no': require('./locales/no.json'),
   'pl': require('./locales/pl.json'),
   'pt': require('./locales/pt.json'), // pt-BR identical, so it falls back into pt
@@ -103,7 +66,6 @@ const locales = {
   'ta': require('./locales/ta.json'),
   'te': require('./locales/te.json'),
   'th': require('./locales/th.json'),
-  'tl': require('./locales/fil.json'), // Alias of 'fil'
   'tr': require('./locales/tr.json'),
   'uk': require('./locales/uk.json'),
   'vi': require('./locales/vi.json'),

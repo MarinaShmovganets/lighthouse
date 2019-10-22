@@ -441,10 +441,10 @@ class Config {
       const rawPluginJson = require(pluginPath);
       const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
 
-      if (rawPluginJson['localePath']) {
+      if (rawPluginJson['localesPath']) {
         const pluginParentPath =
           pluginPath.replace(new RegExp(`/${pluginName}/.*`, 'g'), '');
-        i18n.mergeLocales(rawPluginJson['localePath'], pluginParentPath);
+        i18n.augmentLocales(rawPluginJson['localesPath'], pluginParentPath);
       }
       configJSON = Config.extendConfigJSON(configJSON, pluginJson);
     }

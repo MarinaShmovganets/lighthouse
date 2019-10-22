@@ -121,16 +121,16 @@ const formats = {
 
 
 /**
- * @param {string} localePath
+ * @param {string} localesPath
  * @param {string} rootPath
  */
-function mergeLocales(localePath, rootPath) {
-  const fullLocalePath = `${rootPath}/${localePath}`;
-  fs.readdirSync(fullLocalePath).forEach((tempPath) => {
+function augmentLocales(localesPath, rootPath) {
+  const fulllocalesPath = `${rootPath}/${localesPath}`;
+  fs.readdirSync(fulllocalesPath).forEach((tempPath) => {
     const locale = tempPath.replace(/\.json$/, '');
     const relativePrefix = path.relative(LH_ROOT, rootPath).replace(/\\/g, '/');
     if (LOCALES[locale]) {
-      const localeToMerge = require(`${fullLocalePath}/${tempPath}`);
+      const localeToMerge = require(`${fulllocalesPath}/${tempPath}`);
       for (const [id, message] of Object.entries(localeToMerge)) {
         const newId = `${relativePrefix}/${id}`;
         if (!LOCALES[locale][newId]) { // Don't overwrite existing messages.
@@ -525,5 +525,5 @@ module.exports = {
   isIcuMessage,
   collectAllCustomElementsFromICU,
   registerLocaleData,
-  mergeLocales,
+  augmentLocales,
 };

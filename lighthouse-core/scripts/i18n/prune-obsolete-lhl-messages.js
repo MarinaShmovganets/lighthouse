@@ -126,21 +126,21 @@ function pruneObsoleteLhlMessages() {
   ];
   const globPattern = 'lighthouse-core/lib/i18n/locales/**/+([-a-zA-Z0-9]).json';
   const lhRoot = `${__dirname}/../../../`;
-  const localePaths = glob.sync(globPattern, {
+  const localesPaths = glob.sync(globPattern, {
     ignore,
     cwd: lhRoot,
   });
 
   /** @type {Set<string>} */
   const alreadyLoggedPrunes = new Set();
-  for (const localePath of localePaths) {
-    const absoluteLocalePath = path.join(lhRoot, localePath);
+  for (const localesPath of localesPaths) {
+    const absolutelocalesPath = path.join(lhRoot, localesPath);
     // readFileSync so that the file is pulled again once updated by a collect-strings run
-    const localeLhl = JSON.parse(fs.readFileSync(absoluteLocalePath, 'utf-8'));
+    const localeLhl = JSON.parse(fs.readFileSync(absolutelocalesPath, 'utf-8'));
     const prunedLocale = pruneLocale(goldenLocaleArgumentIds, localeLhl, alreadyLoggedPrunes);
 
     const stringified = JSON.stringify(prunedLocale, null, 2) + '\n';
-    fs.writeFileSync(absoluteLocalePath, stringified);
+    fs.writeFileSync(absolutelocalesPath, stringified);
   }
 }
 

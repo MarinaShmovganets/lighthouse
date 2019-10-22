@@ -6,7 +6,7 @@
 'use strict';
 
 const aliases = {
-  'en': 'en-US',
+  'en': 'en-US', // According to CLDR/ICU, 'en' == 'en-US' dates/numbers (Why?!)
   'en-AU': 'en-GB',
   'en-IE': 'en-GB',
   'en-SG': 'en-GB',
@@ -14,6 +14,7 @@ const aliases = {
   'en-IN': 'en-GB',
   'ar-XB': 'ar-XB',
   'bs': 'hr',
+  // Aliases of es-419: https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/supplemental/parentLocales.json
   'es-AR': 'es-419',
   'es-BO': 'es-419',
   'es-BR': 'es-419',
