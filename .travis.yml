@@ -17,7 +17,6 @@ cache:
 install:
   # Ensure we have the latest Chrome stable.
   - google-chrome-stable --version
-  - rm -rf node_modules
   - yarn --frozen-lockfile
 before_script:
   # see comment above about puppeteer
