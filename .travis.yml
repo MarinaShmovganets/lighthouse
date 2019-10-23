@@ -20,7 +20,7 @@ install:
   # if our e2e tests fail in the future it might be that we are not compatible
   # with the latest puppeteer api so we probably need to run on chromimum
   # @see https://github.com/GoogleChrome/lighthouse/pull/4640/files#r171425004
-  - export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=0 # test
+  - unset PUPPETEER_SKIP_CHROMIUM_DOWNLOAD # test
   - yarn --frozen-lockfile
 before_script:
   # see comment above about puppeteer
