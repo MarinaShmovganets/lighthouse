@@ -5,7 +5,6 @@
  */
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
 const isDeepEqual = require('lodash.isequal');
 const log = require('lighthouse-logger');
@@ -37,7 +36,7 @@ const MESSAGE_INSTANCE_ID_QUICK_REGEX = / # \d+$/;
   if (!IntlPolyfill.NumberFormat) return;
 
   // Check if global implementation supports a minimum set of locales.
-  const minimumLocales = ['en', 'es', 'ru', 'zh'];
+  const minimumLocales = ['en-US', 'es', 'ru', 'zh'];
   const supportedLocales = Intl.NumberFormat.supportedLocalesOf(minimumLocales);
 
   if (supportedLocales.length !== minimumLocales.length) {
@@ -121,24 +120,16 @@ const formats = {
 
 
 /**
- * @param {string} localesPath
+ * @param {LH.Locale} locale
+ * @param {Map<string, {message: string, description: string}>} messages
  * @param {string} rootPath
  */
-function augmentLocales(localesPath, rootPath) {
-  const fulllocalesPath = `${rootPath}/${localesPath}`;
-  fs.readdirSync(fulllocalesPath).forEach((tempPath) => {
-    const locale = tempPath.replace(/\.json$/, '');
-    const relativePrefix = path.relative(LH_ROOT, rootPath).replace(/\\/g, '/');
-    if (LOCALES[locale]) {
-      const localeToMerge = require(`${fulllocalesPath}/${tempPath}`);
-      for (const [id, message] of Object.entries(localeToMerge)) {
-        const newId = `${relativePrefix}/${id}`;
-        if (!LOCALES[locale][newId]) { // Don't overwrite existing messages.
-          LOCALES[locale][newId] = message;
-        }
-      }
-    }
-  });
+function augmentLocale(locale, messages, rootPath) {
+  const relativePrefix = path.relative(LH_ROOT, rootPath).replace(/\\/g, '/');
+  for (const [id, message] of Object.entries(messages)) {
+    const newId = `${relativePrefix}/${id}`;
+    LOCALES[locale][newId] = message;
+  }
 }
 
 
@@ -146,7 +137,7 @@ function augmentLocales(localesPath, rootPath) {
  * Look up the best available locale for the requested language through these fall backs:
  * - exact match
  * - progressively shorter prefixes (`de-CH-1996` -> `de-CH` -> `de`)
- * - the default locale ('en') if no match is found
+ * - the default locale ('en-US') if no match is found
  *
  * If `locale` isn't provided, the default is used.
  * @param {string=} locale
@@ -158,7 +149,7 @@ function lookupLocale(locale) {
   const canonicalLocale = Intl.getCanonicalLocales(locale)[0];
 
   const closestLocale = lookupClosestLocale(canonicalLocale, LOCALES);
-  return closestLocale || 'en';
+  return closestLocale || 'en-US';
 }
 
 /**
@@ -298,8 +289,8 @@ function _formatIcuMessage(locale, icuMessageId, uiStringMessage, values = {}) {
     localeMessage = uiStringMessage;
 
     // Warn the user that the UIString message != the `en` message ∴ they should update the strings
-    if (!LOCALES.en[icuMessageId] || localeMessage !== LOCALES.en[icuMessageId].message) {
-      log.warn('i18n', `Message "${icuMessageId}" does not match its 'en' counterpart. ` +
+    if (!LOCALES['en-US'][icuMessageId] || localeMessage !== LOCALES['en-US'][icuMessageId].message) {
+      log.warn('i18n', `Message "${icuMessageId}" does not match its 'en-US' counterpart. ` +
         `Run 'i18n' to update.`);
     }
   }
@@ -525,5 +516,5 @@ module.exports = {
   isIcuMessage,
   collectAllCustomElementsFromICU,
   registerLocaleData,
-  augmentLocales,
+  augmentLocale,
 };

@@ -326,10 +326,10 @@ class Config {
     // The directory of the config path, if one was provided.
     const configDir = configPath ? path.dirname(configPath) : undefined;
 
-    // Validate and merge in plugins (if any).
-    configJSON = Config.mergePlugins(configJSON, flags, configDir);
-
     const settings = Config.initSettings(configJSON.settings, flags);
+
+    // Validate and merge in plugins (if any).
+    configJSON = Config.mergePlugins(configJSON, flags, configDir, settings.locale);
 
     // Augment passes with necessary defaults and require gatherers.
     const passesWithDefaults = Config.augmentPassesWithDefaults(configJSON.passes);
@@ -426,9 +426,10 @@ class Config {
    * @param {LH.Config.Json} configJSON
    * @param {LH.Flags=} flags
    * @param {string=} configDir
+   * @param {LH.Locale} locale
    * @return {LH.Config.Json}
    */
-  static mergePlugins(configJSON, flags, configDir) {
+  static mergePlugins(configJSON, flags, configDir, locale) {
     const configPlugins = configJSON.plugins || [];
     const flagPlugins = (flags && flags.plugins) || [];
     const pluginNames = new Set([...configPlugins, ...flagPlugins]);
@@ -441,10 +442,14 @@ class Config {
       const rawPluginJson = require(pluginPath);
       const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
 
-      if (rawPluginJson['localesPath']) {
-        const pluginParentPath =
-          pluginPath.replace(new RegExp(`/${pluginName}/.*`, 'g'), '');
-        i18n.augmentLocales(rawPluginJson['localesPath'], pluginParentPath);
+      if (rawPluginJson['localeStrings'] &&  locale in rawPluginJson['localeStrings']) {
+        const pluginParentPath = 
+          pluginPath.replace(new RegExp(`/${pluginName}/.*`,'g'), '');
+        // Always augment 'en-US' as fallback.
+        i18n.augmentLocale('en-US', rawPluginJson['localeStrings']['en-US'], pluginParentPath);
+        if (locale != 'en-US') {
+          i18n.augmentLocale(locale, rawPluginJson['localeStrings'][locale], pluginParentPath);
+        }
       }
       configJSON = Config.extendConfigJSON(configJSON, pluginJson);
     }

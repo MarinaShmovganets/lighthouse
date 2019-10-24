@@ -206,7 +206,7 @@ class ConfigPlugin {
       category: pluginCategoryJson,
       groups: pluginGroupsJson,
       // TODO(jburger): Assert valid locale path.
-      localesPath,
+      localeStrings,
       ...invalidRest
     } = pluginJson;
 
