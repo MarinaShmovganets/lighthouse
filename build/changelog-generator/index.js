@@ -85,6 +85,7 @@ const writerOpts = {
   groupBy: 'type',
   /** @param {{title: string}} a @param {{title: string}} b */
   commitGroupsSort: (a, b) => {
+    // sort groups by our predefined precedence with all others alphabetical after `Misc`
     const aIndex = titlePrecedence.indexOf(a.title);
     const bIndex = titlePrecedence.indexOf(b.title);
 
