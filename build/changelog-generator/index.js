@@ -31,6 +31,7 @@ process.stderr.write(`
 const titlePrecedence = [
   'New Audits',
   'Core',
+  'CLI',
   'Deps',
   'Report',
   'Clients',
@@ -85,17 +86,24 @@ const writerOpts = {
   groupBy: 'type',
   /** @param {{title: string}} a @param {{title: string}} b */
   commitGroupsSort: (a, b) => {
-    // sort groups by our predefined precedence with all others alphabetical after `Misc`
     const aIndex = titlePrecedence.indexOf(a.title);
     const bIndex = titlePrecedence.indexOf(b.title);
 
+    // If neither value has a title with a predefined order, use an alphabetical comparison.
     if (aIndex === -1 && bIndex === -1) {
       return a.title.localeCompare(b.title);
     }
-    
-    if (aIndex === bIndex) return 0;
-    else if (aIndex > bIndex || aIndex === -1) return 1;
-    else return -1;
+
+    // If just one value has a title with a predefined order, it is greater.
+    if (aIndex === -1 && bIndex >= 0) {
+      return 1;
+    }
+    if (bIndex === -1 && aIndex >= 0) {
+      return -1;
+    }
+
+    // Both values have a title with a predefined order, so do a simple comparison.
+    return aIndex - bIndex;
   },
   commitsSort: ['type', 'scope'],
 };
