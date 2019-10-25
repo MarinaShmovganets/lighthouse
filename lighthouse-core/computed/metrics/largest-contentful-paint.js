@@ -11,7 +11,7 @@ const LHError = require('../../lib/lh-error.js');
 
 /**
  * @fileoverview Computed Largest Contentful Paint (LCP), the paint time of the largest in-viewport contentful element
- * COMPAT: LCP's trace event was first introduced in m78. We can't surface an FCP for older Chrome versions
+ * COMPAT: LCP's trace event was first introduced in m78. We can't surface an LCP for older Chrome versions
  * @see https://github.com/WICG/largest-contentful-paint
  * @see https://wicg.github.io/largest-contentful-paint/
  * @see https://web.dev/largest-contentful-paint
