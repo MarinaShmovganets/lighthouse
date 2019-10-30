@@ -598,7 +598,7 @@ class GatherRunner {
 
   /**
    * Returns whether this pass should clear the caches.
-   * Only if it is a performance run and the appropriate setting is true.
+   * Only if it is a performance run and the settings don't disable it.
    * @param {LH.Gatherer.PassContext} passContext
    * @return {boolean}
    */
