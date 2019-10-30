@@ -310,6 +310,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
         {rel: 'preconnect', href: 'https://cdn6.example.com/'},
         {rel: 'preconnect', href: 'https://cdn7.example.com/'},
         {rel: 'preconnect', href: 'https://cdn8.example.com/'},
+        {rel: 'preconnect', href: 'https://cdn9.example.com/'},
       ],
       devtoolsLogs: {[UsesRelPreconnect.DEFAULT_PASS]: networkRecordsToDevtoolsLog(networkRecords)},
       URL: {finalUrl: mainResource.url},

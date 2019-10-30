@@ -35,7 +35,8 @@ const UIStrings = {
    * */
   crossoriginWarning: 'A preconnect <link> was found for "{securityOrigin}" but was not used ' +
     'by the browser. Check that you are using the `crossorigin` attribute properly.',
-  tooManyPreconnectLinksWarning: 'links shouldn\'t be more than 8 and less than 6',
+  tooManyPreconnectLinksWarning: 'More than 8 preconnect links were found. ' +
+   'Preconnect links should be used sparingly and only to the most important origins.',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -138,7 +139,7 @@ class UsesRelPreconnectAudit extends Audit {
 
     if (preconnectLinks.length >= 6) {
       return {
-        score: 1, warnings: preconnectLinks.length >= 8
+        score: 1, warnings: preconnectLinks.length > 8
           ? [str_(UIStrings.tooManyPreconnectLinksWarning)] : []};
     }
 
