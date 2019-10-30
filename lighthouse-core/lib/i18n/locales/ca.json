@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "Lighthouse no ha pogut llegir l'atribut `start_url` del fitxer de manifest, de manera que s'ha donat per fet que `start_url` era l'URL del document. Missatge d'error: \"{manifestWarning}\"."
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "Per sobre del pressupost"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "Manté la quantitat i la mida de les sol·licituds de xarxa ajustades als objectius establerts al pressupost de rendiment que s'ha proporcionat. [Obtén més informació](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{1 sol·licitud}other{# sol·licituds}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "Pressupost de rendiment"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "Si ja has configurat el format HTTPS, assegura't de redirigir tot el trànsit HTTP cap a HTTPS per activar funcions web segures per a tots els usuaris. [Obtén més informació](https://web.dev/redirects-http)."
   },

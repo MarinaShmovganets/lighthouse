@@ -88,7 +88,7 @@ module.exports = [
             ],
           },
         },
-        'performance-budget': {
+        'resource-budget': {
           score: null,
           details: {
             // Undefined items are asserting that the property isn't included in the table item.

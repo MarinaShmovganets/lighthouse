@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "Lighthouse kan de `start_url` in het manifest niet lezen. Daarom is aangenomen dat de `start_url` de URL van het document is. Foutmelding: '{manifestWarning}'."
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "Over het budget"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "Houd de hoeveelheid en grootte van netwerkverzoeken onder de door het verstrekte prestatiebudget ingestelde doelen. [Meer informatie](https://developers.google.com/web/tools/lighthouse/audits/budgets)"
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{1 verzoek}other{# verzoeken}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "Prestatiebudget"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "Als je HTTPS al hebt ingesteld, zorg je ervoor dat je al het HTTP-verkeer omleidt naar HTTPS om beveiligde webfuncties voor alle gebruikers te activeren. [Meer informatie](https://web.dev/redirects-http)"
   },

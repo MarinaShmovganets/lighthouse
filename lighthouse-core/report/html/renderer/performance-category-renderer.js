@@ -166,7 +166,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     }
 
     // Budgets
-    const budgetAudit = category.auditRefs.find(audit => audit.id === 'performance-budget');
+    const budgetAudit = category.auditRefs.find(audit => audit.id === 'resource-budget');
     if (budgetAudit && budgetAudit.result.details) {
       const table = this.detailsRenderer.render(budgetAudit.result.details);
       if (table) {

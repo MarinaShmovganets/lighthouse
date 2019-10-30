@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "Lighthouse อ่าน `start_url` จากไฟล์ Manifest ไม่ได้ ด้วยเหตุนี้ ระบบจึงสันนิษฐานว่า `start_url` เป็น URL ของเอกสาร ข้อความแสดงข้อผิดพลาด: \"{manifestWarning}\""
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "เกินงบประมาณ"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "ควบคุมให้จำนวนและขนาดของคำขอเครือข่ายอยู่ภายในเป้าหมายที่กำหนดตามงบประมาณประสิทธิภาพที่ให้มา [ดูข้อมูลเพิ่มเติม](https://developers.google.com/web/tools/lighthouse/audits/budgets)"
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{1 คำขอ}other{# คำขอ}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "งบประมาณประสิทธิภาพ"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "หากคุณตั้งค่า HTTPS ไว้แล้ว ให้ตรวจสอบว่าได้เปลี่ยนเส้นทางการเข้าชมผ่าน HTTP ทั้งหมดไปยัง HTTPS เพื่อให้ผู้ใช้ทุกคนใช้ฟีเจอร์เว็บที่ปลอดภัยได้ [ดูข้อมูลเพิ่มเติม](https://web.dev/redirects-http)"
   },

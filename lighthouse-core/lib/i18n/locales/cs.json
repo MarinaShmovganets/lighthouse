@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "Nástroji Lighthouse se v manifestu nepodařilo přečíst atribut `start_url`. Proto se předpokládá, že adresou URL dokumentu je `start_url`. Chybová zpráva: {manifestWarning}"
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "Nad rozpočet"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "Udržujte množství a velikost síťových požadavků pod cílovými hodnotami, které udává poskytnutý rozpočet výkonu. [Další informace](https://developers.google.com/web/tools/lighthouse/audits/budgets)"
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{1 požadavek}few{# požadavky}many{# požadavku}other{# požadavků}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "Rozpočete výkonu"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "Pokud jste protokol HTTPS už nastavili, nezapomeňte veškerý provoz přes protokol HTTP přesměrovat na HTTPS, aby všichni vaši uživatelé měli k dispozici funkce zabezpečeného webu. [Další informace](https://web.dev/redirects-http)"
   },

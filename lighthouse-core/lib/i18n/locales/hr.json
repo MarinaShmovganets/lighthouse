@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "Lighthouse nije mogao pročitati `start_url` iz manifesta. Zbog toga se pretpostavilo da je `start_url` URL dokumenta. Poruka pogreške: \"{manifestWarning}\"."
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "Više od proračuna"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "Zahtjeve za količinom i veličinom mreže održavajte ispod ciljeva utvrđenih danim proračunom za izvršavanje. [Saznajte više](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{Jedan zahtjev}one{Broj zahtjeva: #}few{Broj zahtjeva: #}other{Broj zahtjeva: #}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "Proračun za izvedbu"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "Ako ste već postavili HTTPS, provjerite preusmjeravate li sav HTTP promet na HTTPS kako biste omogućili sigurne web-značajke za sve korisnike. [Saznajte više](https://web.dev/redirects-http)."
   },

@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "تعذّر على Lighthouse قراءة `start_url` من البيان. ونتيجة لذلك، كان من المفترض أن يكون `start_url` هو عنوان URL للمستند. رسالة خطأ: '{manifestWarning}'."
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "تجاوز الميزانية"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "يمكنك الحفاظ على كمية طلبات الشبكة وحجمها ضمن الاستهدافات المحدّدة في ميزانية الأداء المقدّمة. [مزيد من المعلومات](https://developers.google.com/web/tools/lighthouse/audits/budgets)"
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{طلب واحد}zero{# طلب}two{طلبان (#)}few{# طلبات}many{# طلبًا}other{# طلب}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "ميزانية الأداء"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "في حال أعددت HTTPS مسبقًا، تأكّد من إعادة توجيه جميع زيارات HTTP إلى HTTPS من أجل تفعيل ميزات الويب الآمنة لجميع المستخدمين. [مزيد من المعلومات](https://web.dev/redirects-http)"
   },

@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "Lighthouse가 매니페스트에서 `start_url`을(를) 읽지 못했습니다. 그 결과 `start_url`은(는) 문서 URL인 것으로 간주되었습니다. 오류 메시지는 '{manifestWarning}'입니다."
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "예산 초과"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "네트워크 요청의 양과 크기는 제공된 성능 예산에 따라 설정된 목표치 아래로 유지하세요. [자세히 알아보기](https://developers.google.com/web/tools/lighthouse/audits/budgets)"
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{요청 1건}other{요청 #건}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "성능 예산"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "HTTPS를 이미 설정한 경우 모든 사용자가 안전한 웹 기능을 사용하기 위해서는 모든 HTTP 트래픽이 HTTPS로 리디렉션되어야 합니다. [자세히 알아보기](https://web.dev/redirects-http)"
   },

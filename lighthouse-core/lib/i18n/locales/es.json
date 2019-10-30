@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "Lighthouse no ha podido leer la propiedad `start_url` en el archivo de manifiesto. Por ello, se considera que el valor de `start_url` es la URL del documento. Mensaje de error: \"{manifestWarning}\"."
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "Por encima del límite"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "Mantiene la cantidad y el tamaño de las solicitudes de red por debajo de los límites definidos en los límites de rendimiento. [Más información](https://developers.google.com/web/tools/lighthouse/audits/budgets)"
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{1 solicitud}other{# solicitudes}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "Límites de rendimiento"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "Si ya has configurado HTTPS, asegúrate de redirigir todo el tráfico HTTP a HTTPS para habilitar funciones de seguridad web para todos los usuarios. [Más información](https://web.dev/redirects-http)"
   },

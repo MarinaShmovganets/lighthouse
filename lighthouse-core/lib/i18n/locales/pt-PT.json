@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "O Lighthouse não conseguiu ler o `start_url` do manifesto. Como resultado, o `start_url` foi assumido como o URL do documento. Mensagem de erro: \"{manifestWarning}\"."
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "Superior ao orçamento"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "Mantenha a quantidade e o tamanho dos pedidos de rede abaixo dos alvos estabelecidos pelo orçamento de desempenho fornecido. [Saiba mais](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{1 pedido}other{# pedidos}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "Orçamento de desempenho"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "Se já tiver configurado o HTTPS, certifique-se de que redireciona todo o tráfego HTTP para HTTPS de modo a ativar as funcionalidades Web seguras para todos os seus utilizadores. [Saiba mais](https://web.dev/redirects-http)."
   },

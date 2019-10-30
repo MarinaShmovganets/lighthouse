@@ -887,18 +887,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "L̂íĝh́t̂h́ôúŝé ĉóûĺd̂ń't̂ ŕêád̂ t́ĥé `start_url` f̂ŕôḿ t̂h́ê ḿâńîf́êśt̂. Áŝ á r̂éŝúl̂t́, t̂h́ê `start_url` ẃâś âśŝúm̂éd̂ t́ô b́ê t́ĥé d̂óĉúm̂én̂t́'ŝ ÚR̂Ĺ. Êŕr̂ór̂ ḿêśŝáĝé: '{manifestWarning}'."
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "Ôv́êŕ B̂úd̂ǵêt́"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "K̂éêṕ t̂h́ê q́ûán̂t́ît́ŷ án̂d́ ŝíẑé ôf́ n̂ét̂ẃôŕk̂ ŕêq́ûéŝt́ŝ ún̂d́êŕ t̂h́ê t́âŕĝét̂ś ŝét̂ b́ŷ t́ĥé p̂ŕôv́îd́êd́ p̂ér̂f́ôŕm̂án̂ćê b́ûd́ĝét̂. [Ĺêár̂ń m̂ór̂é](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count, plural,\n    =1 {1 r̂éq̂úêśt̂}\n    other {# ŕêq́ûéŝt́ŝ}\n   }"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "P̂ér̂f́ôŕm̂án̂ćê b́ûd́ĝét̂"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "Îf́ ŷóû'v́ê ál̂ŕêád̂ý ŝét̂ úp̂ H́T̂T́P̂Ś, m̂ák̂é ŝúr̂é t̂h́ât́ ŷóû ŕêd́îŕêćt̂ ál̂ĺ ĤT́T̂Ṕ t̂ŕâf́f̂íĉ t́ô H́T̂T́P̂Ś îń ôŕd̂ér̂ t́ô én̂áb̂ĺê śêćûŕê ẃêb́ f̂éât́ûŕêś f̂ór̂ ál̂ĺ ŷóûŕ ûśêŕŝ. [Ĺêár̂ń m̂ór̂é](https://web.dev/redirects-http)."
   },
@@ -913,6 +901,18 @@
   },
   "lighthouse-core/audits/redirects.js | title": {
     "message": "Âv́ôíd̂ ḿûĺt̂íp̂ĺê ṕâǵê ŕêd́îŕêćt̂ś"
+  },
+  "lighthouse-core/audits/resource-budget.js | columnOverBudget": {
+    "message": "Ôv́êŕ B̂úd̂ǵêt́"
+  },
+  "lighthouse-core/audits/resource-budget.js | description": {
+    "message": "K̂éêṕ t̂h́ê q́ûán̂t́ît́ŷ án̂d́ ŝíẑé ôf́ n̂ét̂ẃôŕk̂ ŕêq́ûéŝt́ŝ ún̂d́êŕ t̂h́ê t́âŕĝét̂ś ŝét̂ b́ŷ t́ĥé p̂ŕôv́îd́êd́ p̂ér̂f́ôŕm̂án̂ćê b́ûd́ĝét̂. [Ĺêár̂ń m̂ór̂é](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
+  },
+  "lighthouse-core/audits/resource-budget.js | requestCountOverBudget": {
+    "message": "{count, plural,\n    =1 {1 r̂éq̂úêśt̂}\n    other {# ŕêq́ûéŝt́ŝ}\n   }"
+  },
+  "lighthouse-core/audits/resource-budget.js | title": {
+    "message": "R̂éŝóûŕĉé b̂úd̂ǵêt́"
   },
   "lighthouse-core/audits/resource-summary.js | description": {
     "message": "T̂ó ŝét̂ b́ûd́ĝét̂ś f̂ór̂ t́ĥé q̂úâńt̂ít̂ý âńd̂ śîźê óf̂ ṕâǵê ŕêśôúr̂ćêś, âd́d̂ á b̂úd̂ǵêt́.ĵśôń f̂íl̂é. [L̂éâŕn̂ ḿôŕê](https://developers.google.com/web/tools/lighthouse/audits/budgets)."

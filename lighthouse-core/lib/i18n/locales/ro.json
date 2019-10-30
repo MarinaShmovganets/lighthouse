@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "Lighthouse nu a putut citi `start_url` din manifest. Prin urmare, s-a presupus că `start_url` este adresa URL a documentului. Mesaj de eroare: „{manifestWarning}”."
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "Peste buget"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "Păstrează cantitatea și dimensiunea solicitărilor din rețea sub obiectivele stabilite de bugetul de performanță solicitat. [Află mai multe](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{O solicitare}few{# solicitări}other{# de solicitări}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "Buget de performanță"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "Dacă ai configurat deja HTTPS, redirecționează tot traficul HTTP spre HTTPS, ca să activezi funcțiile web sigure pentru toți utilizatorii. [Află mai multe](https://web.dev/redirects-http)."
   },

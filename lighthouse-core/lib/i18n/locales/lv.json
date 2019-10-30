@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "Rīkā Lighthouse neizdevās no manifesta nolasīt `start_url`. Tāpēc tika pieņemts, ka `start_url` ir dokumenta URL. Kļūdas ziņojums: “{manifestWarning}”."
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "Pārsniegts budžets"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "Saglabājiet tīkla pieprasījumu daudzumu un lielumu zem mērķiem, kas noteikti sniegtajā izpildes budžetā. [Uzziniet vairāk](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{1 pieprasījums}zero{# pieprasījumi}one{# pieprasījums}other{# pieprasījumi}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "Izpildes budžets"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "Ja HTTPS protokols jau ir iestatīts, noteikti novirziet visu HTTP datplūsmu uz HTTPS, lai visiem lietotājiem iespējotu droša tīmekļa funkcijas. [Uzziniet vairāk](https://web.dev/redirects-http)."
   },

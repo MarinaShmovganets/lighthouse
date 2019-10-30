@@ -127,7 +127,7 @@ Object {
       "path": "offline-start-url",
     },
     Object {
-      "path": "performance-budget",
+      "path": "resource-budget",
     },
     Object {
       "path": "resource-summary",
@@ -881,7 +881,7 @@ Object {
         },
         Object {
           "group": "budgets",
-          "id": "performance-budget",
+          "id": "resource-budget",
           "weight": 0,
         },
         Object {

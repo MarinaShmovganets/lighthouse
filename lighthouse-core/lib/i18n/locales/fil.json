@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "Hindi mabasa ng Lighthouse ang `start_url` na galing sa manifest. Dahil dito, ipinagpapalagay na `start_url` ang URL ng dokumento. Mensahe ng error: '{manifestWarning}.'"
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "Lampas sa Badyet"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "Panatilihin ang dami at laki ng mga kahilingan sa network sa ilalim ng mga target na itinakda ng ibinigay na badyet sa performance. [Matuto pa](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{1 kahilingan}one{# kahilingan}other{# na kahilingan}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "Badyet sa performance"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "Kung na-set up mo na ang HTTPS, tiyaking ire-redirect mo sa HTTPS ang lahat ng trapiko sa HTTP para ma-enable ang mga ligtas na feature sa web para sa lahat ng iyong user. [Matuto pa](https://web.dev/redirects-http)."
   },

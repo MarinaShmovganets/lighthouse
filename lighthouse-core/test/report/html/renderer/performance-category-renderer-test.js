@@ -163,7 +163,7 @@ describe('PerfCategoryRenderer', () => {
     const passedSection = categoryDOM.querySelector('.lh-category > .lh-clump--passed');
 
     const passedAudits = category.auditRefs.filter(audit =>
-      audit.group && audit.group !== 'metrics' && audit.id !== 'performance-budget'
+      audit.group && audit.group !== 'metrics' && audit.id !== 'resource-budget'
         && Util.showAsPassed(audit.result));
     const passedElements = passedSection.querySelectorAll('.lh-audit');
     assert.equal(passedElements.length, passedAudits.length);
@@ -198,17 +198,17 @@ describe('PerfCategoryRenderer', () => {
       const header = budgetsGroup.querySelector('.lh-audit-group__header');
       assert.ok(header);
 
-      const budgetTable = budgetsGroup.querySelector('#performance-budget.lh-table');
+      const budgetTable = budgetsGroup.querySelector('#resource-budget.lh-table');
       assert.ok(budgetTable);
 
-      const lhrBudgetEntries = sampleResults.audits['performance-budget'].details.items;
+      const lhrBudgetEntries = sampleResults.audits['resource-budget'].details.items;
       const tableRows = budgetTable.querySelectorAll('tbody > tr');
       assert.strictEqual(tableRows.length, lhrBudgetEntries.length);
     });
 
-    it('does not render a budget table when performance-budget audit is notApplicable', () => {
+    it('does not render a budget table when resource-budget audit is notApplicable', () => {
       const budgetlessCategory = JSON.parse(JSON.stringify(category));
-      const budgetRef = budgetlessCategory.auditRefs.find(a => a.id === 'performance-budget');
+      const budgetRef = budgetlessCategory.auditRefs.find(a => a.id === 'resource-budget');
       budgetRef.result.scoreDisplayMode = 'notApplicable';
       delete budgetRef.result.details;
 

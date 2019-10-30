@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "Lighthouse không đọc được `start_url` trong tệp kê khai. Do đó, `start_url` được giả định là URL của tài liệu. Thông báo lỗi: '{manifestWarning}'."
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "Vượt ngân sách"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "Đảm bảo số lượng và quy mô của yêu cầu mạng thấp hơn mục tiêu đặt ra của ngân sách hiệu suất đã cung cấp. [Tìm hiểu thêm](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{1 yêu cầu}other{# yêu cầu}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "Ngân sách hiệu suất"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "Nếu bạn thiết lập HTTPS từ trước, hãy nhớ chuyển hướng toàn bộ lưu lượng truy cập HTTP tới HTTPS để bật các tính năng web an toàn cho tất cả người dùng. [Tìm hiểu thêm](https://web.dev/redirects-http)"
   },

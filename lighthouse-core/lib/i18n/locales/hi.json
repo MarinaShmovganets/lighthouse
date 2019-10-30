@@ -815,18 +815,6 @@
   "lighthouse-core/audits/offline-start-url.js | warningCantStart": {
     "message": "Lighthouse, मेनिफ़ेस्ट फ़ाइल से `start_url` को नहीं ढूंढ सका. इसी वजह से, `start_url` को दस्तावेज़ का यूआरएल मान लिया गया. गड़बड़ी का मैसेज: '{manifestWarning}'."
   },
-  "lighthouse-core/audits/performance-budget.js | columnOverBudget": {
-    "message": "बजट से ज़्यादा"
-  },
-  "lighthouse-core/audits/performance-budget.js | description": {
-    "message": "नेटवर्क अनुरोधों की संख्या और उनकी क्वालिटी, आपको दिए गए परफ़ॉर्मेंस बजट की ओर से सेट किए गए लक्ष्यों के हिसाब से होनी चाहिए. [ज़्यादा जानें](https://developers.google.com/web/tools/lighthouse/audits/budgets)."
-  },
-  "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": {
-    "message": "{count,plural, =1{अनुरोध}one{# अनुरोध}other{# अनुरोध}}"
-  },
-  "lighthouse-core/audits/performance-budget.js | title": {
-    "message": "परफ़ॉर्मेंस बजट"
-  },
   "lighthouse-core/audits/redirects-http.js | description": {
     "message": "अगर आप एचटीटीपीएस पहले ही सेट अप कर चुके हैं, तो पक्का करें कि अपने सभी उपयोगकर्ताओं के लिए सुरक्षित वेब फ़ीचर चालू करने के मकसद से आप सभी एचटीटीपी ट्रैफ़िक को एचटीटीपीएस पर रीडायरेक्ट करें. [ज़्यादा जानें](https://web.dev/redirects-http)."
   },
