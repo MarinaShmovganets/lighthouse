@@ -166,7 +166,10 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     }
 
     // Budgets
-    const budgetAudit = category.auditRefs.find(audit => audit.id === 'resource-budget');
+    // The 'performance-budget' audit is a fallback for the 'resource-budget' audit.
+    // The 'resource-budget' audit will ultimately replace the 'performance-budget' audit.
+    const budgetAudit = category.auditRefs.find(audit => audit.id === 'resource-budget') ||
+      category.auditRefs.find(audit => audit.id === 'performance-budget');
     if (budgetAudit && budgetAudit.result.details) {
       const table = this.detailsRenderer.render(budgetAudit.result.details);
       if (table) {

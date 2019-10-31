@@ -130,6 +130,9 @@ Object {
       "path": "resource-budget",
     },
     Object {
+      "path": "performance-budget",
+    },
+    Object {
       "path": "resource-summary",
     },
     Object {
@@ -877,6 +880,11 @@ Object {
         Object {
           "group": "diagnostics",
           "id": "font-display",
+          "weight": 0,
+        },
+        Object {
+          "group": "budgets",
+          "id": "performance-budget",
           "weight": 0,
         },
         Object {

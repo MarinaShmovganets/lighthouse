@@ -237,8 +237,9 @@ describe('ReportRenderer', () => {
 
     let notApplicableCount = 0;
     Object.values(clonedSampleResult.audits).forEach(audit => {
-      // The resource-budget audit is omitted from the DOM when it is not applicable
-      if (audit.scoreDisplayMode === 'notApplicable' && audit.id !== 'resource-budget') {
+      // Budget audits are omitted from the DOM when not applicable
+      const isBudgetAudit = ['performance-budget', 'resource-budget'].includes(audit.id);
+      if (audit.scoreDisplayMode === 'notApplicable' && !isBudgetAudit) {
         notApplicableCount++;
         audit.scoreDisplayMode = 'not_applicable';
       }

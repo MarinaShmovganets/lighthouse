@@ -162,9 +162,12 @@ describe('PerfCategoryRenderer', () => {
     const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
     const passedSection = categoryDOM.querySelector('.lh-category > .lh-clump--passed');
 
-    const passedAudits = category.auditRefs.filter(audit =>
-      audit.group && audit.group !== 'metrics' && audit.id !== 'resource-budget'
-        && Util.showAsPassed(audit.result));
+    const passedAudits = category.auditRefs.filter(audit => {
+      // Budget audits are not rendered if there is no budget, so they are excluded from count.
+      const budgetAudit = ['resource-budget', 'performance-budget'].includes(audit.id);
+      return audit.group && audit.group !== 'metrics' && !budgetAudit
+        && Util.showAsPassed(audit.result);
+    });
     const passedElements = passedSection.querySelectorAll('.lh-audit');
     assert.equal(passedElements.length, passedAudits.length);
   });
@@ -189,7 +192,7 @@ describe('PerfCategoryRenderer', () => {
   });
 
   describe('budgets', () => {
-    it('renders a performance budget', () => {
+    it('renders the resource-budget audit', () => {
       const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
 
       const budgetsGroup = categoryDOM.querySelector('.lh-audit-group.lh-audit-group--budgets');
@@ -204,6 +207,12 @@ describe('PerfCategoryRenderer', () => {
       const lhrBudgetEntries = sampleResults.audits['resource-budget'].details.items;
       const tableRows = budgetTable.querySelectorAll('tbody > tr');
       assert.strictEqual(tableRows.length, lhrBudgetEntries.length);
+    });
+
+    it('does not render the performance-budget audit', () => {
+      const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
+      const performanceBudget = categoryDOM.querySelector('#performance-budget');
+      assert.strictEqual(performanceBudget, null);
     });
 
     it('does not render a budget table when resource-budget audit is notApplicable', () => {

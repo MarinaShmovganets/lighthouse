@@ -565,7 +565,7 @@ if (require.main === module) {
   console.log('Collected from Stack Packs!');
 
   if ((collisions) > 0) {
-    assert.equal(collisions, 15, 'The number of duplicate strings have changed, update this assertion if that is expected, or reword strings.');
+    assert.equal(collisions, 21, 'The number of duplicate strings have changed, update this assertion if that is expected, or reword strings.');
     console.log(`MEANING COLLISION: ${collisions} string(s) have the same content.`);
   }
 
