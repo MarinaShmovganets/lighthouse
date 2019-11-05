@@ -21,7 +21,7 @@ See [`SmokehouseOptions`](https://github.com/GoogleChrome/lighthouse/blob/master
 
 The smoke test expectations can assert the values of the Lighthouse result (the `lhr`) and gathered `artifacts` for multiple URLs. The URL to be tested is specified in the expectations's `requestedUrl` field.
 
-The expectations are asserted as a subset of the actual results: all values in the expectectations must be in the actual results, but not all actual results must be asserted.
+The expectations are asserted as a subset of the actual results: all values in the expectations must be in the actual results, but not all actual results must be asserted.
 
 Examples can be found in the [core tests](./test-definitions/).
 

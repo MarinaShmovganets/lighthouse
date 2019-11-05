@@ -20,14 +20,14 @@ const NUMERICAL_EXPECTATION_REGEXP =
   new RegExp(`^(${NUMBER_REGEXP})?\\s*(${OPS_REGEXP})\\s*(${NUMBER_REGEXP})$`);
 
 /**
- * @typedef {object} Difference
+ * @typedef Difference
  * @property {string} path
  * @property {any} actual
  * @property {any} expected
  */
 
 /**
- * @typedef {object} Comparison
+ * @typedef Comparison
  * @property {string} name
  * @property {any} actual
  * @property {any} expected
