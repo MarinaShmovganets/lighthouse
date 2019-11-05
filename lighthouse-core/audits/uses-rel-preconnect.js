@@ -142,7 +142,8 @@ class UsesRelPreconnectAudit extends Audit {
 
     if (preconnectLinks.length >= 6) {
       return {
-        score: 1, warnings: preconnectLinks.length > 8
+        score: 1,
+        warnings: preconnectLinks.length > 8
           ? [str_(UIStrings.tooManyPreconnectLinksWarning)] : []};
     }
 
