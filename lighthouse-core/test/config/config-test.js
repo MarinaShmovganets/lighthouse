@@ -556,6 +556,12 @@ describe('Config', () => {
     assert.deepStrictEqual(config.settings.output, ['html']);
   });
 
+  it('does not throw on "lighthouse:full"', () => {
+    const config = new Config({extends: 'lighthouse:full'}, {output: ['html', 'json']});
+    assert.deepStrictEqual(config.settings.throttlingMethod, 'simulate');
+    assert.deepStrictEqual(config.settings.output, ['html', 'json']);
+  });
+
   it('extends the config', () => {
     class CustomAudit extends Audit {
       static get meta() {
