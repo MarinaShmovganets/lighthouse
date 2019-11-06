@@ -22,6 +22,17 @@ Lighthouse, by default, uses simulated throttling as it provides both quick eval
 
 [Learn more about these throttling types and how they behave in in different scenarios](https://www.debugbear.com/blog/network-throttling-methods).
 
+# DevTools Throttling Deprecation Notice
+
+Starting with Chrome 80, Lighthouse within Chrome DevTools is deprecating the throttling configuration. To wit:
+
+1. `Simulated Throttling` will become the only option
+1. For awhile, you may also use `Applied Throttling` by unchecking the `Simulated Throttling` checkbox
+1. `No Throttling` is removed
+
+We are keeping `Applied Throttling` for now because the `View Trace` button in the report does not show a sensible trace for `Simulated Throttling`. We plan to improve the story around viewing the simulated trace in the future. At that point the `Applied Throttling` option will be removed too.
+
+
 ## How do I get packet-level throttling?
 
 This Performance Calendar article, [Testing with Realistic Networking Conditions](https://calendar.perfplanet.com/2016/testing-with-realistic-networking-conditions/), has a good explanation of packet-level traffic shaping (which applies across TCP/UDP/ICMP) and recommendations.
