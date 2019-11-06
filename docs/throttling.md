@@ -20,18 +20,17 @@ Within web performance testing, there are four typical styles of throttling:
 
 Lighthouse, by default, uses simulated throttling as it provides both quick evaluation and minimized variance. However, some may want to experiment with more accurate throttling... [Learn more about these throttling types and how they behave in in different scenarios](https://www.debugbear.com/blog/network-throttling-methods).
 
-## Audits Panel Throttling Settings
+## DevTools' Audits Panel Throttling
 
 In Chrome 79 and earlier, you could choose between [the throttling types](#types-of-throttling) of Simulated, Applied, and none.
 
-Starting with Chrome 80, the Audits panel is simplifying the throttling configuration. To wit:
+Starting with Chrome 80, the Audits panel is simplifying the throttling configuration:
 
 1. _Simulated throttling_ remains the default setting. This matches the setup of PageSpeed Insights and the Lighthouse CLI default, so this provides cross-tool consistency.
 1. _No throttling_ is removed as it leads to innacurate scoring and misleading metric results.
 1. Within the Audits panel settings, you can uncheck the _Simulated throttling_ checkbox to use _Applied throttling_. For the moment, we are keeping this _Applied throttling_ option available for users of the [`View Trace` button](https://developers.google.com/web/updates/2018/04/devtools#traces). Under applied throttling, the trace matches the metrics values, whereas under Simulated things do not currently match up.
 
 We plan to improve the experience of viewing a trace under simulated throttling. At that point, the _Applied throttling_ option will be removed from the Audits panel. Of course, CLI users can still control the exact [configuration](../#cli-options) of throttling.
-
 
 ## How do I get packet-level throttling?
 
