@@ -22,8 +22,6 @@ else
   frontend_dir="$chromium_dir/third_party/devtools-frontend/src/front_end"
 fi
 
-tests_dir="$frontend_dir/../../../web_tests/http/tests/devtools/audits"
-
 if [[ ! -d "$frontend_dir" || ! -a "$frontend_dir/Runtime.js" ]]; then
   echo -e "\033[31m✖ Error!\033[39m"
   echo "This script requires a devtools frontend folder. We didn't find one here:"
