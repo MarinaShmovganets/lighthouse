@@ -30,6 +30,7 @@ const BASE_ARTIFACT_BLANKS = {
   fetchTime: '',
   LighthouseRunWarnings: '',
   TestedAsMobileDevice: '',
+  HostFormFactor: '',
   HostUserAgent: '',
   NetworkUserAgent: '',
   BenchmarkIndex: '',
