@@ -69,7 +69,8 @@ describe('Metrics: FMP', () => {
   it('should compute an observed value (mobile)', async () => {
     settings = {throttlingMethod: 'provided'};
     const context = {computedCache: new Map()};
-    const result = await FirstMeaningfulPaint.request({trace, devtoolsLog, settings, TestedAsMobileDevice: true}, context);
+    const result = await FirstMeaningfulPaint.request(
+      {trace, devtoolsLog, settings, TestedAsMobileDevice: true}, context);
 
     assert.equal(Math.round(result.timing), 783);
     assert.equal(result.timestamp, 225414955343);

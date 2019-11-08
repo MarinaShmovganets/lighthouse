@@ -56,7 +56,8 @@ describe('Metrics: TTI', () => {
   it('should compute an observed value (mobile)', async () => {
     const settings = {throttlingMethod: 'provided'};
     const context = {settings, computedCache: new Map()};
-    const result = await Interactive.request({trace, devtoolsLog, settings, TestedAsMobileDevice: true}, context);
+    const result = await Interactive.request(
+      {trace, devtoolsLog, settings, TestedAsMobileDevice: true}, context);
 
     assert.equal(Math.round(result.timing), 1582);
     assert.equal(result.timestamp, 225415754204);
