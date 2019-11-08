@@ -9,22 +9,32 @@ const assert = require('assert');
 
 const trace = require('../../fixtures/traces/lcp-m79.json');
 const devtoolsLog = require('../../fixtures/traces/lcp-m79.devtools.log.json');
-const LanternLargestContentfulPaint =
-  require('../../../computed/metrics/lantern-largest-contentful-paint.js');
+const LanternLargestContentfulPaint = require('../../../computed/metrics/lantern-largest-contentful-paint.js');
 
 /* eslint-env jest */
 describe('Metrics: Lantern LCP', () => {
   it('should compute predicted value', async () => {
     const settings = {};
     const computedCache = new Map();
-    const result = await LanternLargestContentfulPaint.request({trace, devtoolsLog, settings},
-       {computedCache});
+    const result = await LanternLargestContentfulPaint.request(
+      {trace, devtoolsLog, settings},
+      {computedCache}
+    );
 
     expect({
       timing: Math.round(result.timing),
       optimistic: Math.round(result.optimisticEstimate.timeInMs),
       pessimistic: Math.round(result.pessimisticEstimate.timeInMs),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(
+      {},
+      `
+Object {
+  "optimistic": 17637,
+  "pessimistic": 17637,
+  "timing": 17637,
+}
+`
+    );
     assert.equal(result.optimisticEstimate.nodeTimings.size, 101);
     assert.equal(result.pessimisticEstimate.nodeTimings.size, 102);
     assert.ok(result.optimisticGraph, 'should have created optimistic graph');
