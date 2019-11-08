@@ -64,12 +64,13 @@ class FirstMeaningfulPaint extends Audit {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const metricComputationData = {trace, devtoolsLog, settings: context.settings};
     const metricResult = await ComputedFmp.request(metricComputationData, context);
+    const scoreOptions = context.options[artifacts.TestedAsMobileDevice ? 'mobile' : 'desktop'];
 
     return {
       score: Audit.computeLogNormalScore(
         metricResult.timing,
-        context.options.scorePODR,
-        context.options.scoreMedian
+        scoreOptions.scorePODR,
+        scoreOptions.scoreMedian
       ),
       numericValue: metricResult.timing,
       displayValue: str_(i18n.UIStrings.seconds, {timeInMs: metricResult.timing}),

@@ -68,6 +68,7 @@ class InteractiveMetric extends Audit {
     const metricComputationData = {trace, devtoolsLog, settings: context.settings};
     const metricResult = await Interactive.request(metricComputationData, context);
     const timeInMs = metricResult.timing;
+    const scoreOptions = context.options[artifacts.TestedAsMobileDevice ? 'mobile' : 'desktop'];
     const extendedInfo = {
       timeInMs,
       timestamp: metricResult.timestamp,
@@ -80,8 +81,8 @@ class InteractiveMetric extends Audit {
     return {
       score: Audit.computeLogNormalScore(
         timeInMs,
-        context.options.scorePODR,
-        context.options.scoreMedian
+        scoreOptions.scorePODR,
+        scoreOptions.scoreMedian
       ),
       numericValue: timeInMs,
       displayValue: str_(i18n.UIStrings.seconds, {timeInMs}),
