@@ -17,6 +17,7 @@ class LanternLargestContentfulPaint extends LanternMetric {
    * @return {LH.Gatherer.Simulation.MetricCoefficients}
    */
   static get COEFFICIENTS() {
+    // TODO: Calibrate
     return {
       intercept: 0,
       optimistic: 0.5,
