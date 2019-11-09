@@ -527,8 +527,6 @@ declare global {
         firstContentfulPaintEvt: TraceEvent;
         /** The trace event marking firstMeaningfulPaint, if it was found. */
         firstMeaningfulPaintEvt?: TraceEvent;
-        /** The trace event marking largestMeaningfulPaint, if it was found. */
-        largestMeaningfulPaintEvt?: TraceEvent;
         /** The trace event marking largestContentfulPaint, if it was found. */
         largestContentfulPaintEvt?: TraceEvent;
         /** The trace event marking loadEventEnd, if it was found. */
