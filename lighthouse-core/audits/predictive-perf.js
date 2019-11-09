@@ -14,7 +14,7 @@ const LanternInteractive = require('../computed/metrics/lantern-interactive.js')
 const LanternFirstCPUIdle = require('../computed/metrics/lantern-first-cpu-idle.js');
 const LanternSpeedIndex = require('../computed/metrics/lantern-speed-index.js');
 const LanternEil = require('../computed/metrics/lantern-estimated-input-latency.js');
-// TODO: we don't have LCP in the lantern test yet
+// TODO: we don't have LCP in the lantern test yet. https://github.com/GoogleChrome/lighthouse/issues/9953
 // const LanternLcp = require('../computed/metrics/lantern-largest-contentful-paint.js');
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
