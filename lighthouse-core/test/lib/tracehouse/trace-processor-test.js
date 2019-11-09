@@ -327,14 +327,27 @@ describe('TraceProcessor', () => {
     describe('finds correct LCP', () => {
       it('in a trace', () => {
         const trace = TraceProcessor.computeTraceOfTab(lcpTrace);
-        assert.equal(trace.mainFrameIds.frameId, '906A10385298DD996B521026AF4DA204');
-        assert.equal(trace.navigationStartEvt.ts, 1671221915754);
-        assert.equal(trace.firstContentfulPaintEvt.ts, 1671226617803);
-        assert.equal(trace.largestContentfulPaintEvt.ts, 1671236939268);
-        assert.equal(trace.timings.firstContentfulPaint, 4702.049);
-        assert.equal(trace.timings.largestContentfulPaint, 15023.514);
-        assert.equal(trace.timestamps.firstContentfulPaint, 1671226617803);
-        assert.equal(trace.timestamps.largestContentfulPaint, 1671236939268);
+        expect({
+          'trace.firstContentfulPaintEvt.ts': trace.firstContentfulPaintEvt.ts,
+          'trace.largestContentfulPaintEvt.ts': trace.largestContentfulPaintEvt.ts,
+          'trace.mainFrameIds.frameId': trace.mainFrameIds.frameId,
+          'trace.navigationStartEvt.ts': trace.navigationStartEvt.ts,
+          'trace.timestamps.firstContentfulPaint': trace.timestamps.firstContentfulPaint,
+          'trace.timestamps.largestContentfulPaint': trace.timestamps.largestContentfulPaint,
+          'trace.timings.firstContentfulPaint': trace.timings.firstContentfulPaint,
+          'trace.timings.largestContentfulPaint': trace.timings.largestContentfulPaint,
+        }).toMatchInlineSnapshot(`
+Object {
+  "trace.firstContentfulPaintEvt.ts": 1865255904816,
+  "trace.largestContentfulPaintEvt.ts": 1865256438474,
+  "trace.mainFrameIds.frameId": "2839C632FC482BD8C6A30C5B7F5AB4EB",
+  "trace.navigationStartEvt.ts": 1865254694830,
+  "trace.timestamps.firstContentfulPaint": 1865255904816,
+  "trace.timestamps.largestContentfulPaint": 1865256438474,
+  "trace.timings.firstContentfulPaint": 1209.986,
+  "trace.timings.largestContentfulPaint": 1743.644,
+}
+`);
         assert.ok(!trace.lcpInvalidated);
       });
 
