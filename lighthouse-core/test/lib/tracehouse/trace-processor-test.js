@@ -328,24 +328,24 @@ describe('TraceProcessor', () => {
       it('in a trace', () => {
         const trace = TraceProcessor.computeTraceOfTab(lcpTrace);
         expect({
-          'trace.firstContentfulPaintEvt.ts': trace.firstContentfulPaintEvt.ts,
-          'trace.largestContentfulPaintEvt.ts': trace.largestContentfulPaintEvt.ts,
-          'trace.mainFrameIds.frameId': trace.mainFrameIds.frameId,
-          'trace.navigationStartEvt.ts': trace.navigationStartEvt.ts,
-          'trace.timestamps.firstContentfulPaint': trace.timestamps.firstContentfulPaint,
-          'trace.timestamps.largestContentfulPaint': trace.timestamps.largestContentfulPaint,
-          'trace.timings.firstContentfulPaint': trace.timings.firstContentfulPaint,
-          'trace.timings.largestContentfulPaint': trace.timings.largestContentfulPaint,
+          'firstContentfulPaintEvt.ts': trace.firstContentfulPaintEvt.ts,
+          'largestContentfulPaintEvt.ts': trace.largestContentfulPaintEvt.ts,
+          'mainFrameIds.frameId': trace.mainFrameIds.frameId,
+          'navigationStartEvt.ts': trace.navigationStartEvt.ts,
+          'timestamps.firstContentfulPaint': trace.timestamps.firstContentfulPaint,
+          'timestamps.largestContentfulPaint': trace.timestamps.largestContentfulPaint,
+          'timings.firstContentfulPaint': trace.timings.firstContentfulPaint,
+          'timings.largestContentfulPaint': trace.timings.largestContentfulPaint,
         }).toMatchInlineSnapshot(`
 Object {
-  "trace.firstContentfulPaintEvt.ts": 1865255904816,
-  "trace.largestContentfulPaintEvt.ts": 1865256438474,
-  "trace.mainFrameIds.frameId": "2839C632FC482BD8C6A30C5B7F5AB4EB",
-  "trace.navigationStartEvt.ts": 1865254694830,
-  "trace.timestamps.firstContentfulPaint": 1865255904816,
-  "trace.timestamps.largestContentfulPaint": 1865256438474,
-  "trace.timings.firstContentfulPaint": 1209.986,
-  "trace.timings.largestContentfulPaint": 1743.644,
+  "firstContentfulPaintEvt.ts": 1865255904816,
+  "largestContentfulPaintEvt.ts": 1865256438474,
+  "mainFrameIds.frameId": "2839C632FC482BD8C6A30C5B7F5AB4EB",
+  "navigationStartEvt.ts": 1865254694830,
+  "timestamps.firstContentfulPaint": 1865255904816,
+  "timestamps.largestContentfulPaint": 1865256438474,
+  "timings.firstContentfulPaint": 1209.986,
+  "timings.largestContentfulPaint": 1743.644,
 }
 `);
         assert.ok(!trace.lcpInvalidated);
