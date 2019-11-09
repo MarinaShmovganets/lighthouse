@@ -16,13 +16,6 @@ const invalidDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.de
 /* eslint-env jest */
 
 describe('Metrics: LCP', () => {
-  // it('should error when computing a simulated value', async () => {
-  //   const settings = {throttlingMethod: 'simulate'};
-  //   const context = {settings, computedCache: new Map()};
-  //   const resultPromise = LargestContentfulPaint.request({trace, devtoolsLog, settings}, context);
-  //   await expect(resultPromise).rejects.toThrow();
-  // });
-
   it('should compute predicted value', async () => {
     const settings = {throttlingMethod: 'simulate'};
     const context = {settings, computedCache: new Map()};
