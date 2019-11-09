@@ -1268,10 +1268,11 @@
         },
         "largest-contentful-paint": {
             "description": "Largest Contentful Paint marks the time at which the largest text or image is painted. [Learn More](https://web.dev/largest-contentful-paint)",
-            "errorMessage": "Something went wrong with recording the trace over your page load. Please run Lighthouse again. (NO_LCP)",
+            "displayValue": "4.9\u00a0s",
             "id": "largest-contentful-paint",
-            "score": null,
-            "scoreDisplayMode": "error",
+            "numericValue": 4927.278,
+            "score": 0.31,
+            "scoreDisplayMode": "numeric",
             "title": "Largest Contentful Paint"
         },
         "layout-table": {
@@ -1583,6 +1584,8 @@
                         "firstMeaningfulPaintTs": 185607289048.0,
                         "interactive": 4927.0,
                         "interactiveTs": 185608247190.0,
+                        "largestContentfulPaint": 4927.0,
+                        "largestContentfulPaintTs": 185608247190.0,
                         "maxPotentialFID": 123.0,
                         "observedDomContentLoaded": 4901.0,
                         "observedDomContentLoadedTs": 185608220734.0,
@@ -1594,6 +1597,8 @@
                         "observedFirstPaintTs": 185607289043.0,
                         "observedFirstVisualChange": 3969.0,
                         "observedFirstVisualChangeTs": 185607288912.0,
+                        "observedLargestContentfulPaint": 4927.0,
+                        "observedLargestContentfulPaintTs": 185608247190.0,
                         "observedLastVisualChange": 4791.0,
                         "observedLastVisualChangeTs": 185608110912.0,
                         "observedLoad": 4924.0,

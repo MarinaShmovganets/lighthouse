@@ -93,9 +93,10 @@
       "id": "largest-contentful-paint",
       "title": "Largest Contentful Paint",
       "description": "Largest Contentful Paint marks the time at which the largest text or image is painted. [Learn More](https://web.dev/largest-contentful-paint)",
-      "score": null,
-      "scoreDisplayMode": "error",
-      "errorMessage": "Something went wrong with recording the trace over your page load. Please run Lighthouse again. (NO_LCP)"
+      "score": 0.31,
+      "scoreDisplayMode": "numeric",
+      "numericValue": 4927.278,
+      "displayValue": "4.9 s"
     },
     "load-fast-enough-for-pwa": {
       "id": "load-fast-enough-for-pwa",
@@ -1259,6 +1260,8 @@
             "firstContentfulPaintTs": 185607289047,
             "firstMeaningfulPaint": 3969,
             "firstMeaningfulPaintTs": 185607289048,
+            "largestContentfulPaint": 4927,
+            "largestContentfulPaintTs": 185608247190,
             "firstCPUIdle": 4927,
             "firstCPUIdleTs": 185608247190,
             "interactive": 4927,
@@ -1276,6 +1279,8 @@
             "observedFirstContentfulPaintTs": 185607289047,
             "observedFirstMeaningfulPaint": 3969,
             "observedFirstMeaningfulPaintTs": 185607289048,
+            "observedLargestContentfulPaint": 4927,
+            "observedLargestContentfulPaintTs": 185608247190,
             "observedTraceEnd": 10281,
             "observedTraceEndTs": 185613601189,
             "observedLoad": 4924,
@@ -5392,6 +5397,12 @@
         },
         {
           "values": {
+            "timeInMs": 4927.278
+          },
+          "path": "audits[largest-contentful-paint].displayValue"
+        },
+        {
+          "values": {
             "timeInMs": 4417
           },
           "path": "audits[speed-index].displayValue"
@@ -5432,14 +5443,6 @@
       ],
       "lighthouse-core/audits/metrics/largest-contentful-paint.js | description": [
         "audits[largest-contentful-paint].description"
-      ],
-      "lighthouse-core/lib/lh-error.js | badTraceRecording": [
-        {
-          "values": {
-            "errorCode": "NO_LCP"
-          },
-          "path": "audits[largest-contentful-paint].errorMessage"
-        }
       ],
       "lighthouse-core/audits/load-fast-enough-for-pwa.js | title": [
         "audits[load-fast-enough-for-pwa].title"

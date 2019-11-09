@@ -16,11 +16,29 @@ const invalidDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.de
 /* eslint-env jest */
 
 describe('Metrics: LCP', () => {
-  it('should error when computing a simulated value', async () => {
+  // it('should error when computing a simulated value', async () => {
+  //   const settings = {throttlingMethod: 'simulate'};
+  //   const context = {settings, computedCache: new Map()};
+  //   const resultPromise = LargestContentfulPaint.request({trace, devtoolsLog, settings}, context);
+  //   await expect(resultPromise).rejects.toThrow();
+  // });
+
+  it('should compute predicted value', async () => {
     const settings = {throttlingMethod: 'simulate'};
     const context = {settings, computedCache: new Map()};
-    const resultPromise = LargestContentfulPaint.request({trace, devtoolsLog, settings}, context);
-    await expect(resultPromise).rejects.toThrow();
+    const result = await LargestContentfulPaint.request({trace, devtoolsLog, settings}, context);
+
+    expect({
+      timing: Math.round(result.timing),
+      optimistic: Math.round(result.optimisticEstimate.timeInMs),
+      pessimistic: Math.round(result.pessimisticEstimate.timeInMs),
+    }).toMatchInlineSnapshot(`
+Object {
+  "optimistic": 17637,
+  "pessimistic": 17637,
+  "timing": 17637,
+}
+`);
   });
 
   it('should compute an observed value', async () => {
@@ -28,15 +46,17 @@ describe('Metrics: LCP', () => {
     const context = {settings, computedCache: new Map()};
     const result = await LargestContentfulPaint.request({trace, devtoolsLog, settings}, context);
 
-    assert.equal(Math.round(result.timing), 15024);
-    assert.equal(result.timestamp, 1671236939268);
+    assert.equal(Math.round(result.timing), 1744);
+    assert.equal(result.timestamp, 1865256438474);
   });
 
   it('should fail to compute an observed value for old trace', async () => {
     const settings = {throttlingMethod: 'provided'};
     const context = {settings, computedCache: new Map()};
     const resultPromise = LargestContentfulPaint.request(
-      {trace: invalidTrace, devtoolsLog: invalidDevtoolsLog, settings}, context);
+      {trace: invalidTrace, devtoolsLog: invalidDevtoolsLog, settings},
+      context
+    );
     await expect(resultPromise).rejects.toThrow('NO_LCP');
   });
 });
