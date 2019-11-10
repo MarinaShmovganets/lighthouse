@@ -8,8 +8,8 @@
 const assert = require('assert');
 
 const LargestContentfulPaint = require('../../../computed/metrics/largest-contentful-paint.js'); // eslint-disable-line max-len
-const trace = require('../../fixtures/traces/lcp-m79.json');
-const devtoolsLog = require('../../fixtures/traces/lcp-m79.devtools.log.json');
+const trace = require('../../fixtures/traces/lcp-m78.json');
+const devtoolsLog = require('../../fixtures/traces/lcp-m78.devtools.log.json');
 const invalidTrace = require('../../fixtures/traces/progressive-app-m60.json');
 const invalidDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 
@@ -27,9 +27,9 @@ describe('Metrics: LCP', () => {
       pessimistic: Math.round(result.pessimisticEstimate.timeInMs),
     }).toMatchInlineSnapshot(`
 Object {
-  "optimistic": 17637,
-  "pessimistic": 17637,
-  "timing": 17637,
+  "optimistic": 3192,
+  "pessimistic": 3495,
+  "timing": 3343,
 }
 `);
   });
@@ -39,8 +39,8 @@ Object {
     const context = {settings, computedCache: new Map()};
     const result = await LargestContentfulPaint.request({trace, devtoolsLog, settings}, context);
 
-    assert.equal(Math.round(result.timing), 1744);
-    assert.equal(result.timestamp, 1865256438474);
+    assert.equal(Math.round(result.timing), 1122);
+    assert.equal(result.timestamp, 713038144775);
   });
 
   it('should fail to compute an observed value for old trace', async () => {

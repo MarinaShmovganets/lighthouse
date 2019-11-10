@@ -7,10 +7,10 @@
 
 const assert = require('assert');
 
-const trace = require('../../fixtures/traces/lcp-m79.json');
-const devtoolsLog = require('../../fixtures/traces/lcp-m79.devtools.log.json');
+const trace = require('../../fixtures/traces/lcp-m78.json');
+const devtoolsLog = require('../../fixtures/traces/lcp-m78.devtools.log.json');
 const LanternLargestContentfulPaint =
-    require('../../../computed/metrics/lantern-largest-contentful-paint.js');
+  require('../../../computed/metrics/lantern-largest-contentful-paint.js');
 
 /* eslint-env jest */
 describe('Metrics: Lantern LCP', () => {
@@ -30,14 +30,14 @@ describe('Metrics: Lantern LCP', () => {
       {},
       `
 Object {
-  "optimistic": 17637,
-  "pessimistic": 17637,
-  "timing": 17637,
+  "optimistic": 3192,
+  "pessimistic": 3495,
+  "timing": 3343,
 }
 `
     );
-    assert.equal(result.optimisticEstimate.nodeTimings.size, 101);
-    assert.equal(result.pessimisticEstimate.nodeTimings.size, 102);
+    assert.equal(result.optimisticEstimate.nodeTimings.size, 17);
+    assert.equal(result.pessimisticEstimate.nodeTimings.size, 18);
     assert.ok(result.optimisticGraph, 'should have created optimistic graph');
     assert.ok(result.pessimisticGraph, 'should have created pessimistic graph');
   });

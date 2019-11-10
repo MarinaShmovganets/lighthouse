@@ -19,7 +19,7 @@ const noFMPtrace = require('../../fixtures/traces/no_fmp_event.json');
 const noFCPtrace = require('../../fixtures/traces/airhorner_no_fcp.json');
 const noNavStartTrace = require('../../fixtures/traces/no_navstart_event.json');
 const backgroundTabTrace = require('../../fixtures/traces/backgrounded-tab-missing-paints.json');
-const lcpTrace = require('../../fixtures/traces/lcp-m79.json');
+const lcpTrace = require('../../fixtures/traces/lcp-m78.json');
 
 /* eslint-env jest */
 
@@ -338,14 +338,14 @@ describe('TraceProcessor', () => {
           'timings.largestContentfulPaint': trace.timings.largestContentfulPaint,
         }).toMatchInlineSnapshot(`
 Object {
-  "firstContentfulPaintEvt.ts": 1865255904816,
-  "largestContentfulPaintEvt.ts": 1865256438474,
-  "mainFrameIds.frameId": "2839C632FC482BD8C6A30C5B7F5AB4EB",
-  "navigationStartEvt.ts": 1865254694830,
-  "timestamps.firstContentfulPaint": 1865255904816,
-  "timestamps.largestContentfulPaint": 1865256438474,
-  "timings.firstContentfulPaint": 1209.986,
-  "timings.largestContentfulPaint": 1743.644,
+  "firstContentfulPaintEvt.ts": 713038144775,
+  "largestContentfulPaintEvt.ts": 713038144775,
+  "mainFrameIds.frameId": "70B6647836A0A07265E532B094184D2A",
+  "navigationStartEvt.ts": 713037023064,
+  "timestamps.firstContentfulPaint": 713038144775,
+  "timestamps.largestContentfulPaint": 713038144775,
+  "timings.firstContentfulPaint": 1121.711,
+  "timings.largestContentfulPaint": 1121.711,
 }
 `);
         assert.ok(!trace.lcpInvalidated);
