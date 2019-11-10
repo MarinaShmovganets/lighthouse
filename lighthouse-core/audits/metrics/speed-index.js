@@ -63,7 +63,7 @@ class SpeedIndex extends Audit {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const metricComputationData = {trace, devtoolsLog, settings: context.settings};
     const metricResult = await ComputedSi.request(metricComputationData, context);
-    const scoreOptions = context.options[artifacts.TestedAsMobileDevice ? 'mobile' : 'desktop'];
+    const scoreOptions = context.options[artifacts.TestedAsMobileDevice === false ? 'desktop' : 'mobile'];
 
     return {
       score: Audit.computeLogNormalScore(

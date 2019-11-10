@@ -68,7 +68,7 @@ class InteractiveMetric extends Audit {
     const metricComputationData = {trace, devtoolsLog, settings: context.settings};
     const metricResult = await Interactive.request(metricComputationData, context);
     const timeInMs = metricResult.timing;
-    const scoreOptions = context.options[artifacts.TestedAsMobileDevice ? 'mobile' : 'desktop'];
+    const scoreOptions = context.options[artifacts.TestedAsMobileDevice === false ? 'desktop' : 'mobile'];
     const extendedInfo = {
       timeInMs,
       timestamp: metricResult.timestamp,

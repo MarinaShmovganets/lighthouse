@@ -22,7 +22,7 @@ describe('Performance: first-meaningful-paint audit', () => {
     const context = {options, settings: {throttlingMethod: 'provided'}, computedCache: new Map()};
     const fmpResult = await FMPAudit.audit(artifacts, context);
 
-    assert.equal(fmpResult.score, 0.96);
+    assert.equal(fmpResult.score, 1);
     assert.equal(fmpResult.numericValue, 783.328);
     expect(fmpResult.displayValue).toBeDisplayString('0.8\xa0s');
   });
