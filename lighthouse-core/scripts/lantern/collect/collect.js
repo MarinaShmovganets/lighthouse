@@ -156,9 +156,12 @@ async function runForWpt(url) {
  * @param {() => Promise<Result>} asyncFn
  */
 async function repeatUntilPass(asyncFn) {
+  let attempt = 0
   // eslint-disable-next-line no-constant-condition
   while (true) {
+    if (attempt > 3) return {}
     try {
+      attempt++
       return await asyncFn();
     } catch (err) {
       log.log(err, 'error....');
@@ -232,9 +235,9 @@ async function main() {
       wptResultsPromises.push(resultPromise);
     }
 
-    // Wait for WPT to finish, because it can take quite awhile to start and we want
-    // to avoid seeing totally different content locally.
-    await Promise.all(wptResultsPromises);
+    // Wait for the first WPT result to finish because we can sit in the queue for a while before we start
+    // and we want to avoid seeing totally different content locally.
+    await Promise.race(wptResultsPromises);
 
     // Must run in series.
     for (let i = 0; i < SAMPLES; i++) {
@@ -243,16 +246,21 @@ async function main() {
       updateProgress();
     }
 
+    // Wait for *all* WPT runs to finish since we just waited on the first one earlier.
+    await Promise.all(wptResultsPromises);
+
     const urlResultSet = {
       url,
-      wpt: wptResults.map((result, i) => {
+      wpt: wptResults.filter(result => result.lhr && result.trace).map((result, i) => {
+        if (!result.lhr || !result.trace) throw new Error('Expected lhr and trace');
         const prefix = `${sanitizedUrl}-mobile-wpt-${i + 1}`;
         return {
           lhr: saveData(`${prefix}-lhr.json`, result.lhr),
           trace: saveData(`${prefix}-trace.json`, result.trace),
         };
       }),
-      unthrottled: unthrottledResults.map((result, i) => {
+      unthrottled: unthrottledResults.filter(result => result.lhr && result.trace).map((result, i) => {
+        if (!result.lhr || !result.trace) throw new Error('Expected lhr and trace');
         if (!result.devtoolsLog) throw new Error('expected devtools log');
 
         const prefix = `${sanitizedUrl}-mobile-unthrottled-${i + 1}`;
@@ -264,16 +272,16 @@ async function main() {
       }),
     };
 
+    // Too many attempts (with 3 retries) failed, so don't both saving results for this URL.
+    if (urlResultSet.wpt.length < SAMPLES / 2 || urlResultSet.unthrottled.length < SAMPLES / 2) {
+      log.log(`too many results for ${url} failed, skipping.`);
+      continue;
+    }
+
     // We just collected NUM_SAMPLES * 2 traces, so let's save our progress.
+    log.log(`collected results for ${url}, saving progress.`);
     summary.push(urlResultSet);
     common.saveSummary(summary);
-  }
-
-  // Sanity check.
-  for (const result of summary) {
-    if (result.wpt.length !== SAMPLES || result.unthrottled.length !== SAMPLES) {
-      throw new Error(`unexpected number of results for ${result.url}`);
-    }
   }
 
   log.progress('archiving ...');
@@ -281,4 +289,8 @@ async function main() {
   log.closeProgress();
 }
 
-main();
+main().catch(err => {
+  if (log) log.closeProgress();
+  process.stderr.write(`Fatal error in collect:\n\n  ${err.stack}`);
+  process.exit(1)
+})
