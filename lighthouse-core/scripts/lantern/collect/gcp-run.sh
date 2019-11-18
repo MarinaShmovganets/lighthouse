@@ -16,7 +16,7 @@ fi
 cd ./lighthouse
 
 git fetch origin
-git checkout -f origin/patrick_collect_gcp
+git checkout -f origin/master
 yarn install
 
 # Setup xvfb for lighthouse
@@ -28,7 +28,7 @@ sleep 5
 source /home/lighthouse/.env
 
 # Run the collection
-DEBUG=1 SAMPLES=9 node --max-old-space-size=4096 ./lighthouse-core/scripts/lantern/collect/collect.js
+DEBUG=1 node --max-old-space-size=4096 ./lighthouse-core/scripts/lantern/collect/collect.js
 
 # Kill xvfb
 kill $!

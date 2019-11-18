@@ -156,19 +156,18 @@ async function runForWpt(url) {
  * Repeats the ascyn function a maximum of maxAttempts times until it passes.
  * The empty object ({}) is returned when maxAttempts is reached.
  * @param {() => Promise<Result>} asyncFn
+ * @param {number} [maxAttempts]
  */
 async function repeatUntilPassOrEmpty(asyncFn, maxAttempts = 3) {
-  let attempt = 0;
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    if (attempt > maxAttempts) return {};
+  for (let i = 0; i < maxAttempts; i++) {
     try {
-      attempt++;
       return await asyncFn();
     } catch (err) {
       log.log(err, 'error....');
     }
   }
+
+  return {};
 }
 
 /**
@@ -253,17 +252,22 @@ async function main() {
 
     const urlResultSet = {
       url,
-      wpt: wptResults.filter(result => result.lhr && result.trace).map((result, i) => {
-        if (!result.lhr || !result.trace) throw new Error('Expected lhr and trace');
-        const prefix = `${sanitizedUrl}-mobile-wpt-${i + 1}`;
-        return {
-          lhr: saveData(`${prefix}-lhr.json`, result.lhr),
-          trace: saveData(`${prefix}-trace.json`, result.trace),
-        };
-      }),
-      unthrottled: unthrottledResults
+      wpt: wptResults
         .filter(result => result.lhr && result.trace)
         .map((result, i) => {
+          // Not possible with filter but ts doesn't know that :)
+          if (!result.lhr || !result.trace) throw new Error('Expected lhr and trace');
+
+          const prefix = `${sanitizedUrl}-mobile-wpt-${i + 1}`;
+          return {
+            lhr: saveData(`${prefix}-lhr.json`, result.lhr),
+            trace: saveData(`${prefix}-trace.json`, result.trace),
+          };
+        }),
+      unthrottled: unthrottledResults
+        .filter(result => result.lhr && result.trace && result.devtoolsLog)
+        .map((result, i) => {
+          // Not possible with filter but ts doesn't know that :)
           if (!result.lhr || !result.trace) throw new Error('Expected lhr and trace');
           if (!result.devtoolsLog) throw new Error('expected devtools log');
 
