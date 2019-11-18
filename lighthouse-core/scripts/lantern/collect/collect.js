@@ -153,15 +153,17 @@ async function runForWpt(url) {
 }
 
 /**
+ * Repeats the ascyn function a maximum of maxAttempts times until it passes.
+ * The empty object ({}) is returned when maxAttempts is reached.
  * @param {() => Promise<Result>} asyncFn
  */
-async function repeatUntilPass(asyncFn) {
-  let attempt = 0
+async function repeatUntilPassOrEmpty(asyncFn, maxAttempts = 3) {
+  let attempt = 0;
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    if (attempt > 3) return {}
+    if (attempt > maxAttempts) return {};
     try {
-      attempt++
+      attempt++;
       return await asyncFn();
     } catch (err) {
       log.log(err, 'error....');
@@ -229,7 +231,7 @@ async function main() {
     // Can run in parallel.
     const wptResultsPromises = [];
     for (let i = 0; i < SAMPLES; i++) {
-      const resultPromise = repeatUntilPass(() => runForWpt(url));
+      const resultPromise = repeatUntilPassOrEmpty(() => runForWpt(url));
       // Push to results array as they finish, so the progress indicator can track progress.
       resultPromise.then((result) => wptResults.push(result)).finally(updateProgress);
       wptResultsPromises.push(resultPromise);
@@ -241,7 +243,7 @@ async function main() {
 
     // Must run in series.
     for (let i = 0; i < SAMPLES; i++) {
-      const resultPromise = repeatUntilPass(() => runUnthrottledLocally(url));
+      const resultPromise = repeatUntilPassOrEmpty(() => runUnthrottledLocally(url));
       unthrottledResults.push(await resultPromise);
       updateProgress();
     }
@@ -259,17 +261,19 @@ async function main() {
           trace: saveData(`${prefix}-trace.json`, result.trace),
         };
       }),
-      unthrottled: unthrottledResults.filter(result => result.lhr && result.trace).map((result, i) => {
-        if (!result.lhr || !result.trace) throw new Error('Expected lhr and trace');
-        if (!result.devtoolsLog) throw new Error('expected devtools log');
+      unthrottled: unthrottledResults
+        .filter(result => result.lhr && result.trace)
+        .map((result, i) => {
+          if (!result.lhr || !result.trace) throw new Error('Expected lhr and trace');
+          if (!result.devtoolsLog) throw new Error('expected devtools log');
 
-        const prefix = `${sanitizedUrl}-mobile-unthrottled-${i + 1}`;
-        return {
-          devtoolsLog: saveData(`${prefix}-devtoolsLog.json`, result.devtoolsLog),
-          lhr: saveData(`${prefix}-lhr.json`, result.lhr),
-          trace: saveData(`${prefix}-trace.json`, result.trace),
-        };
-      }),
+          const prefix = `${sanitizedUrl}-mobile-unthrottled-${i + 1}`;
+          return {
+            devtoolsLog: saveData(`${prefix}-devtoolsLog.json`, result.devtoolsLog),
+            lhr: saveData(`${prefix}-lhr.json`, result.lhr),
+            trace: saveData(`${prefix}-trace.json`, result.trace),
+          };
+        }),
     };
 
     // Too many attempts (with 3 retries) failed, so don't both saving results for this URL.
@@ -292,5 +296,5 @@ async function main() {
 main().catch(err => {
   if (log) log.closeProgress();
   process.stderr.write(`Fatal error in collect:\n\n  ${err.stack}`);
-  process.exit(1)
-})
+  process.exit(1);
+});
