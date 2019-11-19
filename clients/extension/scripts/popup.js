@@ -92,7 +92,7 @@ function fillDevToolsShortcut() {
  * Create the settings from the state of the options form, save in storage, and return it.
  * @returns {SettingsController.Settings}
  */
-function persistSettings() {
+function readSettingsFromDomAndPersist() {
   const optionsEl = find('.section--options');
   // Save settings when options page is closed.
   const checkboxes = /** @type {NodeListOf<HTMLInputElement>} */
@@ -177,7 +177,7 @@ async function initPopup() {
   });
 
   optionsFormEl.addEventListener('change', () => {
-    settings = persistSettings();
+    settings = readSettingsFromDomAndPersist();
   });
 }
 
