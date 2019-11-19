@@ -136,11 +136,6 @@ const expectations = [
           property: '',
         },
         {
-          name: 'description',
-          content: 'Smoke test description',
-          property: '',
-        },
-        {
           name: '',
           content: 'Open Graph smoke test description',
           property: 'og:description',
