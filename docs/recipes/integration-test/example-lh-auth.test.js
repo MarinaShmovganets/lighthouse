@@ -18,6 +18,7 @@
 const puppeteer = require('puppeteer');
 const lighthouse = require('lighthouse');
 const server = require('../auth/server/server.js');
+const {login, logout} = require('../auth/example-lh-auth.js');
 
 const CHROME_DEBUG_PORT = 8042;
 const SERVER_PORT = 10632;
@@ -71,35 +72,6 @@ async function runLighthouse(url) {
   return result.lhr;
 }
 
-/**
- * @param {puppeteer.Browser} browser
- */
-async function login(browser) {
-  const page = await browser.newPage();
-  await page.goto(ORIGIN);
-  await page.waitForSelector('input[type="email"]', {visible: true});
-
-  const emailInput = await page.$('input[type="email"]');
-  await emailInput.type('admin@example.com');
-  const passwordInput = await page.$('input[type="password"]');
-  await passwordInput.type('password');
-  await Promise.all([
-    page.$eval('.login-form', form => form.submit()),
-    page.waitForNavigation(),
-  ]);
-
-  await page.close();
-}
-
-/**
- * @param {puppeteer.Browser} browser
- */
-async function logout(browser) {
-  const page = await browser.newPage();
-  await page.goto(`${ORIGIN}/login`);
-  await page.close();
-}
-
 describe('my site', () => {
   /** @type {import('puppeteer').Browser} */
   let browser;
@@ -126,11 +98,11 @@ describe('my site', () => {
 
   afterEach(async () => {
     await page.close();
-    await logout(browser);
+    await logout(browser, ORIGIN);
   });
 
   describe('/ logged out', () => {
-    it.only('lighthouse', async () => {
+    it('lighthouse', async () => {
       await page.goto(ORIGIN);
       const lhr = await runLighthouse(page.url());
       expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
@@ -147,14 +119,14 @@ describe('my site', () => {
 
   describe('/ logged in', () => {
     it('lighthouse', async () => {
-      await login(browser);
+      await login(browser, ORIGIN);
       await page.goto(ORIGIN);
       const lhr = await runLighthouse(page.url());
       expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
     });
 
     it('login form should not exist', async () => {
-      await login(browser);
+      await login(browser, ORIGIN);
       await page.goto(ORIGIN);
       const emailInput = await page.$('input[type="email"]');
       const passwordInput = await page.$('input[type="password"]');
@@ -172,14 +144,14 @@ describe('my site', () => {
 
   describe('/dashboard logged in', () => {
     it('lighthouse', async () => {
-      await login(browser);
+      await login(browser, ORIGIN);
       await page.goto(`${ORIGIN}/dashboard`);
       const lhr = await runLighthouse(page.url());
       expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
     });
 
     it('has secrets', async () => {
-      await login(browser);
+      await login(browser, ORIGIN);
       await page.goto(`${ORIGIN}/dashboard`);
       expect(await page.content()).toContain('secrets');
     });
