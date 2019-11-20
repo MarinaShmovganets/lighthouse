@@ -74,7 +74,7 @@ const BLOCKLIST = new Set([
   'läs mer',
   'mer',
   'mer info',
-  'mer information'
+  'mer information',
 ]);
 const i18n = require('../../lib/i18n/i18n.js');
 
