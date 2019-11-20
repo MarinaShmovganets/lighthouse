@@ -10,7 +10,7 @@
  * page as integration tests. See docs/recipes/auth/README.md for more.
  */
 
-/** @typedef {import('./node_modules/lighthouse/types/lhr')} LH */
+/** @typedef {import('lighthouse/types/lhr')} LH */
 
 const puppeteer = require('puppeteer');
 const lighthouse = require('lighthouse');
