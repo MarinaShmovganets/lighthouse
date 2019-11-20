@@ -20,13 +20,14 @@ const lighthouse = require('lighthouse');
 const server = require('../auth/server/server.js');
 
 const CHROME_DEBUG_PORT = 8042;
-const SERVER_PORT = 8000;
+const SERVER_PORT = 10632;
+const ORIGIN = `http://localhost:${SERVER_PORT}`;
 
 jest.setTimeout(30000);
 
 // Provide a nice way to assert a score for a category.
 // Note, you could just use `expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9)`,
-// but by using a custom matcher a better error report can be generated.
+// but by using a custom matcher a better error report is generated.
 expect.extend({
   toHaveLighthouseScoreGreaterThanOrEqual(lhr, category, threshold) {
     const score = lhr.categories[category].score;
@@ -75,7 +76,7 @@ async function runLighthouse(url) {
  */
 async function login(browser) {
   const page = await browser.newPage();
-  await page.goto('http://localhost:8000/');
+  await page.goto(ORIGIN);
   await page.waitForSelector('input[type="email"]', {visible: true});
 
   const emailInput = await page.$('input[type="email"]');
@@ -95,7 +96,7 @@ async function login(browser) {
  */
 async function logout(browser) {
   const page = await browser.newPage();
-  await page.goto('http://localhost:8000/logout');
+  await page.goto(`${ORIGIN}/login`);
   await page.close();
 }
 
@@ -129,14 +130,15 @@ describe('my site', () => {
   });
 
   describe('/ logged out', () => {
-    it('lighthouse', async () => {
-      await page.goto('http://localhost:8000/');
+    it.only('lighthouse', async () => {
+      console.log(ORIGIN);
+      await page.goto(ORIGIN);
       const lhr = await runLighthouse(page.url());
       expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
     });
 
     it('login form should exist', async () => {
-      await page.goto('http://localhost:8000/');
+      await page.goto(ORIGIN);
       const emailInput = await page.$('input[type="email"]');
       const passwordInput = await page.$('input[type="password"]');
       expect(emailInput).toBeTruthy();
@@ -147,14 +149,14 @@ describe('my site', () => {
   describe('/ logged in', () => {
     it('lighthouse', async () => {
       await login(browser);
-      await page.goto('http://localhost:8000/');
+      await page.goto(ORIGIN);
       const lhr = await runLighthouse(page.url());
       expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
     });
 
     it('login form should not exist', async () => {
       await login(browser);
-      await page.goto('http://localhost:8000/');
+      await page.goto(ORIGIN);
       const emailInput = await page.$('input[type="email"]');
       const passwordInput = await page.$('input[type="password"]');
       expect(emailInput).toBeFalsy();
@@ -164,7 +166,7 @@ describe('my site', () => {
 
   describe('/dashboard logged out', () => {
     it('has no secrets', async () => {
-      await page.goto('http://localhost:8000/dashboard');
+      await page.goto(`${ORIGIN}/dashboard`);
       expect(await page.content()).not.toContain('secrets');
     });
   });
@@ -172,14 +174,14 @@ describe('my site', () => {
   describe('/dashboard logged in', () => {
     it('lighthouse', async () => {
       await login(browser);
-      await page.goto('http://localhost:8000/dashboard');
+      await page.goto(`${ORIGIN}/dashboard`);
       const lhr = await runLighthouse(page.url());
       expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
     });
 
     it('has secrets', async () => {
       await login(browser);
-      await page.goto('http://localhost:8000/dashboard');
+      await page.goto(`${ORIGIN}/dashboard`);
       expect(await page.content()).toContain('secrets');
     });
   });

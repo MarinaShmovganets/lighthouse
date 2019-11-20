@@ -21,7 +21,7 @@ const PORT = 8041;
  */
 async function login(browser) {
   const page = await browser.newPage();
-  await page.goto('http://localhost:8000');
+  await page.goto('http://localhost:10632');
   await page.waitForSelector('input[type="email"]', {visible: true});
 
   // Fill in and submit login form.
@@ -49,8 +49,8 @@ async function main() {
   // Setup the browser session to be logged into our site.
   await login(browser);
 
-  // The local server is running on port 8000.
-  const url = 'http://localhost:8000/dashboard';
+  // The local server is running on port 10632.
+  const url = 'http://localhost:10632/dashboard';
   // Direct Lighthouse to use the same port.
   const result = await lighthouse(url, {port: PORT});
   // Direct Puppeteer to close the browser as we're done with it.
