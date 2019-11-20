@@ -6,7 +6,8 @@ See [example-lh-auth.test.js](./example-lh-auth.test.js) for an example of how t
 # Be in this folder: docs/recipes/integration-test
 
 # Install deps.
-yarn --cwd ../auth && yarn
+yarn
+yarn --cwd ../auth
 
 # Test.
 yarn test
