@@ -5,6 +5,9 @@
  */
 'use strict';
 
+/* eslint-env jest */
+/* eslint-disable new-cap */
+
 /**
  * @fileoverview Example Jest tests for demonstrating how to run Lighthouse on an authenticated
  * page as integration tests. See docs/recipes/auth/README.md for more.
