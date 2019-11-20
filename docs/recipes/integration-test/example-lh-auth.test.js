@@ -131,7 +131,6 @@ describe('my site', () => {
 
   describe('/ logged out', () => {
     it.only('lighthouse', async () => {
-      console.log(ORIGIN);
       await page.goto(ORIGIN);
       const lhr = await runLighthouse(page.url());
       expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
