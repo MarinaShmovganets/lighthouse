@@ -10,6 +10,7 @@ const path = require('path');
 const glob = require('glob');
 
 const NEW_VERSION = process.argv[2];
+if (!/^\d+\.\d+\.\d+$/.test(NEW_VERSION)) throw new Error('Usage: node bump-versions.json x.x.x')
 const ignore = [
   '**/node_modules/**',
   'docs/recipes/auth/package.json',
@@ -23,8 +24,9 @@ for (const file of glob.sync('**/{package.json,*.md}', {ignore})) {
     pkg.version = NEW_VERSION;
     text = JSON.stringify(pkg, null, 2) + '\n';
   } else {
+    // Replace `package.json`-like examples in markdown files.
     text = fs.readFileSync(file, 'utf-8');
-    text = text.replace(/"lighthouse": ".*"/g, `"lighthouse": "^${NEW_VERSION}"`);
+    text = text.replace(/"lighthouse": ".*?"/g, `"lighthouse": "^${NEW_VERSION}"`);
   }
 
   fs.writeFileSync(file, text);
