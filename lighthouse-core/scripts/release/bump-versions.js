@@ -14,7 +14,7 @@ const ignore = [
   '**/node_modules/**',
   'docs/recipes/auth/package.json',
   'changelog.md',
-]
+];
 
 for (const file of glob.sync('**/{package.json,*.md}', {ignore})) {
   let text;
