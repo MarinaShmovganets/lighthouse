@@ -10,7 +10,7 @@ const path = require('path');
 const glob = require('glob');
 
 const NEW_VERSION = process.argv[2];
-if (!/^\d+\.\d+\.\d+$/.test(NEW_VERSION)) throw new Error('Usage: node bump-versions.json x.x.x')
+if (!/^\d+\.\d+\.\d+$/.test(NEW_VERSION)) throw new Error('Usage: node bump-versions.json x.x.x');
 const ignore = [
   '**/node_modules/**',
   'docs/recipes/auth/package.json',
