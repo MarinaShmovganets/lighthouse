@@ -16,11 +16,6 @@
       "src": "images/lighthouse-logo_512px.png",
       "sizes": "512x512",
       "type": "image/png"
-    },
-    {
-      "src": "images/lighthouse-logo_1024px.png",
-      "sizes": "1024x1024",
-      "type": "image/png"
     }
   ],
   "theme_color": "#304ffe",
