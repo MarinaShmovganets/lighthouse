@@ -293,7 +293,7 @@ This section details services that have integrated Lighthouse data. If you're wo
 
 * **[Lighthouse Keeper](https://lighthouse-keeper.com/)** - Lighthouse Keeper monitors your pages' Lighthouse scores and notifies you if they drop below your thresholds. Lighthouse Keeper is a free service that monitors up to 3 URLs once per day.
 
-* **[PageSpeed Green](https://pagespeed.green/)** - New web performance monitoring service for web pages. For now, you can track PageSpeed performance indicators for unlimited domains and web pages. Coming, running in different regions and CD/CI integration. Powered By Google Lighthouse and Puppeteer. You can easily start using PageSpeed Green with 30-day trial.
+* **[PageSpeed Green](https://pagespeed.green/)** - New web performance monitoring service for web pages. For now, you can track PageSpeed performance indicators for unlimited domains and web pages. Powered By Google Lighthouse and Puppeteer. You can easily start using PageSpeed Green with 30-day trial.
 
 * **[SpeedCurve](https://speedcurve.com)** — SpeedCurve is a tool for continuously monitoring web performance across different browsers, devices, and regions. It can aggregate any metric including Lighthouse scores across multiple pages and sites, and allows you to set performance budgets with Slack or email alerts. SpeedCurve is a paid product with a free 30-day trial.
 
