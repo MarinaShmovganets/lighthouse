@@ -183,7 +183,7 @@ function resolveModule(moduleIdentifier, configDir, category) {
     return require.resolve(cwdPath);
   } catch (e) {}
 
-  let errorString = 'Unable to locate ' + (category ? `${category}: ` : '') +
+  const errorString = 'Unable to locate ' + (category ? `${category}: ` : '') +
     `\`${moduleIdentifier}\`.
      Tried to require() from these locations:
        ${__dirname}

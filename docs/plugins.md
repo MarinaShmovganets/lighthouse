@@ -231,7 +231,7 @@ The following artifacts are available for use in the audits of Lighthouse plugin
 
 While Lighthouse has more artifacts with information about the page than are in this list, those artifacts are considered experimental and their structure or existence could change at any time. Only use artifacts not on the list above if you are comfortable living on the bleeding edge and can tolerate unannounced breaking changes.
 
-If you're interested in other data not mentioned here, please file an issue. We'd love to help.
+If you're interested in other page information not mentioned here, please file an issue. We'd love to help.
 
 #### Using Network Requests
 
