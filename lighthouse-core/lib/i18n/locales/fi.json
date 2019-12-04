@@ -1581,7 +1581,7 @@
     "message": "Sinun kannattaa ehkä poistaa tai vaihtaa toisiin [WordPress-laajennuksia](https://wordpress.org/plugins/), jotka lataavat sivulla käyttämätöntä JavaScriptiä. Etsi tarpeetonta JS:ää lisääviä laajennuksia [tutkimalla koodin testikattavuutta](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) Chromen DevToolsissa. Löydät syynä olevan teeman tai laajennuksen skriptin URL-osoitteen avulla. Etsi laajennuksia, joilla on monia skriptejä luettelossa ja paljon punaista koodin testikattavuudessa. Laajennuksen pitäisi lisätä skripti jonoon vain, jos sitä todella käytetään sivulla."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "Lue lisää [selaimen välimuistin käytöstä WordPressissä](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching)."
+    "message": "Lue lisää [selaimen välimuistin käytöstä WordPressissä](https://wordpress.org/support/article/optimization/#browser-caching)."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
     "message": "Harkitse [WordPressin kuvaoptimointilaajennusta](https://wordpress.org/plugins/search/optimize+images/), joka pakkaa kuvat mutta säilyttää niiden laadun."

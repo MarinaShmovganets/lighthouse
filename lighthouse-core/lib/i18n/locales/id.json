@@ -1581,7 +1581,7 @@
     "message": "Sebaiknya kurangi atau ubah jumlah [plugin WordPress](https://wordpress.org/plugins/) yang memuat JavaScript yang tidak digunakan di halaman Anda. Untuk mengidentifikasi plugin yang menambahkan JS tidak relevan, coba jalankan [cakupan kode](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) di Chrome DevTools. Anda dapat mengidentifikasi tema/plugin yang bertanggung jawab dari URL skrip. Cari plugin dengan banyak skrip dalam daftar yang memiliki banyak warna merah dalam cakupan kode. Plugin sebaiknya hanya menambahkan skrip ke dalam antrean jika memang benar digunakan di halaman."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "Baca [Cache Browser di WordPress](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching)."
+    "message": "Baca [Cache Browser di WordPress](https://wordpress.org/support/article/optimization/#browser-caching)."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
     "message": "Sebaiknya gunakan [plugin WordPress untuk pengoptimalan gambar](https://wordpress.org/plugins/search/optimize+images/) yang mengompresi gambar Anda dengan tetap mempertahankan kualitas."

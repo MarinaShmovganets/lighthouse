@@ -1581,7 +1581,7 @@
     "message": "Спробуйте зменшити кількість [плагінів WordPress](https://wordpress.org/plugins/), що завантажують на сторінці непотрібні фрагменти JavaScript. Щоб визначити плагіни, які додають зайвий код JavaScript, перевірте [покриття коду](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) в Chrome DevTools. Ви можете визначити тему чи плагін через URL-адресу сценарію. У покритті коду знайдіть плагіни з багатьма сценаріями за великим обсягом червоного тексту. Плагін має ставити сценарій у чергу, лише коли він дійсно використовується на сторінці."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "Дізнайтеся про [кешування веб-переглядача у WordPress](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching)."
+    "message": "Дізнайтеся про [кешування веб-переглядача у WordPress](https://wordpress.org/support/article/optimization/#browser-caching)."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
     "message": "Спробуйте [плагін WordPress для оптимізації зображень](https://wordpress.org/plugins/search/optimize+images/), який стискає зображення, але зберігає їх якість."

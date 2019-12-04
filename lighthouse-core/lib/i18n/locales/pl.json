@@ -1581,7 +1581,7 @@
     "message": "Dobrym rozwiązaniem może być ograniczenie liczby [wtyczek WordPressa](https://wordpress.org/plugins/) wczytujących na stronie nieużywany kod JavaScript albo zmiana tych wtyczek na inne. Aby zidentyfikować wtyczki, które dodają nieistotny kod JS, uruchom [zasięg kodu](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) w Chrome DevTools. Możesz zidentyfikować taki motyw/wtyczkę w adresie URL skryptu. Szukaj wtyczek, które mają na liście wiele skryptów z dużą ilością czerwonego koloru w zasięgu kodu. Wtyczka powinna umieszczać skrypt w kolejce, tylko jeśli rzeczywiście jest on używany na stronie."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "Dowiedz się więcej o [pamięci podręcznej przeglądarki w WordPressie](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching)."
+    "message": "Dowiedz się więcej o [pamięci podręcznej przeglądarki w WordPressie](https://wordpress.org/support/article/optimization/#browser-caching)."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
     "message": "Pomocna może być [wtyczka WordPressa do optymalizacji obrazów](https://wordpress.org/plugins/search/optimize+images/), która kompresuje obrazy, zachowując ich jakość."

@@ -1581,7 +1581,7 @@
     "message": "Du kan minska antalet [WordPress-pluginmoduler](https://wordpress.org/plugins/) som läser in JavaScript som inte används på sidan, eller byta ut dem. Testa fliken för [kodtäckning](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) i Chromes utvecklarverktyg om du vill se vilka pluginmoduler som lägger till överflödig JS. Du ser på skriptets webbadress vilket tema eller vilken plugin som koden kommer från. Titta efter pluginmoduler med många skript på listan där en stor del av stapeln är röd. En plugin ska bara ställa ett skript i kö för inläsning om det faktiskt används på sidan."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "Läs mer om [cachelagring i webbläsaren och WordPress](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching)."
+    "message": "Läs mer om [cachelagring i webbläsaren och WordPress](https://wordpress.org/support/article/optimization/#browser-caching)."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
     "message": "Du kan använda en [WordPress-plugin för bildoptimering](https://wordpress.org/plugins/search/optimize+images/) som komprimerar dina bilder utan att göra avkall på kvaliteten."

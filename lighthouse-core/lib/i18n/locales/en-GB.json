@@ -1581,7 +1581,7 @@
     "message": "Consider reducing, or switching, the number of [WordPress plug-ins](https://wordpress.org/plugins/) loading unused JavaScript in your page. To identify plug-ins that are adding extraneous JS, try running [code coverage](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) in Chrome DevTools. You can identify the theme/plug-in responsible from the URL of the script. Look out for plug-ins that have many scripts in the list which have a lot of red in code coverage. A plug-in should only enqueue a script if it is actually used on the page."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "Read about [browser caching in WordPress](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching)."
+    "message": "Read about [browser caching in WordPress](https://wordpress.org/support/article/optimization/#browser-caching)."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
     "message": "Consider using an [image optimisation WordPress plug-in](https://wordpress.org/plugins/search/optimize+images/) that compresses your images while retaining quality."

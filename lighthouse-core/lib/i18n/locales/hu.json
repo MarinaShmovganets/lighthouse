@@ -1581,7 +1581,7 @@
     "message": "Fontolja meg a nem használt JavaScriptet betöltő [WordPress-bővítmények](https://wordpress.org/plugins/) lecserélését vagy számuk csökkentését. A felesleges JavaScriptet elhelyező bővítmények azonosításában a Chrome DevTools [kódlefedettség](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) eszköze is segíthet. A felelős téma vagy bővítmény a szkript URL-je alapján azonosítható. Keressen olyan bővítményeket, amelyeknek több szkriptjében is sok piros szín szerepel a kódlefedettségi listán. Ideális esetben a bővítmények csak az oldalon ténylegesen használt szkripteket állítják sorba."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "További információ a [WordPress böngészős gyorsítótárazásáról](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching)."
+    "message": "További információ a [WordPress böngészős gyorsítótárazásáról](https://wordpress.org/support/article/optimization/#browser-caching)."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
     "message": "Fontolja meg olyan [képoptimalizáló WordPress-bővítmény](https://wordpress.org/plugins/search/optimize+images/) használatát, mellyel minőségromlás nélkül tömöríthetők a képek."

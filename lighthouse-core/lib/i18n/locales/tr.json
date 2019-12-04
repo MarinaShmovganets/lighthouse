@@ -1581,7 +1581,7 @@
     "message": "Sayfanızda kullanılmayan JavaScript'ler yükleyen [WordPress eklentilerinin](https://wordpress.org/plugins/) sayısını azaltmayı veya değiştirmeyi değerlendirin. Gereksiz JS ekleyen eklentileri belirlemek için Chrome Geliştirme Araçlarında [kod kapsamını](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) çalıştırmayı düşünün. Sorumlu temayı/eklentiyi komut dosyasının URL'sinden belirleyebilirsiniz. Listede çok sayıda komut dosyasına sahip olan ve kod kapsamında çok sayıda kırmızı işaret taşıyan eklentileri arayın. Bir eklenti sadece sayfada gerçekten kullanılan bir komut dosyasını kuyruğa almalıdır."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "[WordPress'te Tarayıcı Önbelleği](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching) ile ilgili bilgi edinin."
+    "message": "[WordPress'te Tarayıcı Önbelleği](https://wordpress.org/support/article/optimization/#browser-caching) ile ilgili bilgi edinin."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
     "message": "Kaliteden ödün vermeden resimlerinizi sıkıştıran bir [resim optimizasyonu WordPress eklentisi](https://wordpress.org/plugins/search/optimize+images/) kullanmayı değerlendirin."

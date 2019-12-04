@@ -1698,7 +1698,7 @@
     "message": "Ĉón̂śîd́êŕ r̂éd̂úĉín̂ǵ, ôŕ ŝẃît́ĉh́îńĝ, t́ĥé n̂úm̂b́êŕ ôf́ [Ŵór̂d́P̂ŕêśŝ ṕl̂úĝín̂ś](https://wordpress.org/plugins/) l̂óâd́îńĝ ún̂úŝéd̂ J́âv́âŚĉŕîṕt̂ ín̂ ýôúr̂ ṕâǵê. T́ô íd̂én̂t́îf́ŷ ṕl̂úĝín̂ś t̂h́ât́ âŕê ád̂d́îńĝ éx̂t́r̂án̂éôúŝ J́Ŝ, t́r̂ý r̂ún̂ńîńĝ [ćôd́ê ćôv́êŕâǵê](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) ín̂ Ćĥŕôḿê D́êv́T̂óôĺŝ. Ýôú ĉán̂ íd̂én̂t́îf́ŷ t́ĥé t̂h́êḿê/ṕl̂úĝín̂ ŕêśp̂ón̂śîb́l̂é f̂ŕôḿ t̂h́ê ÚR̂Ĺ ôf́ t̂h́ê śĉŕîṕt̂. Ĺôók̂ óût́ f̂ór̂ ṕl̂úĝín̂ś t̂h́ât́ ĥáv̂é m̂án̂ý ŝćr̂íp̂t́ŝ ín̂ t́ĥé l̂íŝt́ ŵh́îćĥ h́âv́ê á l̂ót̂ óf̂ ŕêd́ îń ĉód̂é ĉóv̂ér̂áĝé. Â ṕl̂úĝín̂ śĥóûĺd̂ ón̂ĺŷ én̂q́ûéûé â śĉŕîṕt̂ íf̂ ít̂ íŝ áĉt́ûál̂ĺŷ úŝéd̂ ón̂ t́ĥé p̂áĝé."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "R̂éâd́ âb́ôút̂ [B́r̂óŵśêŕ Ĉáĉh́îńĝ ín̂ Ẃôŕd̂Ṕr̂éŝś](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching)."
+    "message": "R̂éâd́ âb́ôút̂ [B́r̂óŵśêŕ Ĉáĉh́îńĝ ín̂ Ẃôŕd̂Ṕr̂éŝś](https://wordpress.org/support/article/optimization/#browser-caching)."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
     "message": "Ĉón̂śîd́êŕ ûśîńĝ án̂ [ím̂áĝé ôṕt̂ím̂íẑát̂íôń Ŵór̂d́P̂ŕêśŝ ṕl̂úĝín̂](https://wordpress.org/plugins/search/optimize+images/) t́ĥát̂ ćôḿp̂ŕêśŝéŝ ýôúr̂ ím̂áĝéŝ ẃĥíl̂é r̂ét̂áîńîńĝ q́ûál̂ít̂ý."

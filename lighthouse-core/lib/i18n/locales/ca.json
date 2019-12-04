@@ -1581,7 +1581,7 @@
     "message": "Pots reduir o canviar el nombre de [connectors de WordPress](https://wordpress.org/plugins/) que carreguen fitxers JavaScript no utilitzats a la pàgina. Per identificar els connectors que afegeixen fitxers JavaScript externs, prova d'executar la [cobertura de codi](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) a Chrome DevTools. Pots identificar el tema o el connector responsable a partir de l'URL de l'script. Cerca connectors que tinguin molts scripts a la llista amb molt vermell a la cobertura de codi. Un connector només hauria de tenir un script a la cua si es fa servir a la pàgina."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "Obtén informació sobre la [memòria cau del navegador a WordPress](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching)."
+    "message": "Obtén informació sobre la [memòria cau del navegador a WordPress](https://wordpress.org/support/article/optimization/#browser-caching)."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
     "message": "Pots utilitzar un [connector de WordPress d'optimització d'imatges](https://wordpress.org/plugins/search/optimize+images/) per comprimir les imatges sense perdre qualitat."

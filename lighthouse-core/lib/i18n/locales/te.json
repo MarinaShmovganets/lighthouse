@@ -1581,7 +1581,7 @@
     "message": "మీ పేజీలో ఉపయోగించని JavaScriptను లోడ్ చేస్తున్న '[WordPress ప్లగ్ఇన్‌‌ల](https://wordpress.org/plugins/)' సంఖ్యను తగ్గించడం లేదా మార్చడాన్ని పరిశీలించండి. అదనపు JSను జోడించే ప్లగ్ఇన్‌లను గుర్తించడానికి, Chrome DevToolsలో '[కోడ్ కవరేజీ](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage)' అమలు చేయడానికి ప్రయత్నించండి. అందుకు కారణమైన థీమ్/ప్లగ్ఇన్‌ను స్క్రిప్ట్ యొక్క URL నుండి మీరు గుర్తించవచ్చు. కోడ్ కవరేజ్‌లో ఎక్కువ ఎరుపు రంగు కలిగి ఉన్న జాబితాలో అనేక స్క్రిప్ట్‌లను కలిగి ఉన్న ప్లగ్ఇన్‌లను వెతకండి. నిజంగా ప్లగ్ఇన్‌ను ఆ పేజీలో ఉపయోగించినప్పుడు మాత్రమే స్క్రిప్ట్‌కు జత చేయాలి."
   },
   "stack-packs/packs/wordpress.js | uses_long_cache_ttl": {
-    "message": "[WordPressలో బ్రౌజర్ కాష్ విధానం](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching) గురించి చదవండి."
+    "message": "[WordPressలో బ్రౌజర్ కాష్ విధానం](https://wordpress.org/support/article/optimization/#browser-caching) గురించి చదవండి."
   },
   "stack-packs/packs/wordpress.js | uses_optimized_images": {
     "message": "నాణ్యత తగ్గకుండా మీ చిత్రాలను కుదించే [చిత్రం ఆప్టిమైజేషన్ WordPress ప్లగ్ఇన్‌](https://wordpress.org/plugins/search/optimize+images/)ను ఉపయోగించడం పరిశీలించండి."
