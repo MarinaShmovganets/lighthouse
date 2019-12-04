@@ -1587,7 +1587,7 @@
     "message": "يمكنك استخدام [مكون WordPress الإضافي لتحسين الصورة](https://wordpress.org/plugins/search/optimize+images/) الذي يضغط صورك مع المحافظة على الجودة."
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "يمكنك تحميل الصور مباشرةً من خلال [مكتبة الوسائط](https://codex.wordpress.org/Media_Library_Screen) للتأكّد من توفّر أحجام الصور المطلوبة، ثم إدراجها من مكتبة الوسائط أو استخدام أداة الصورة لضمان استخدام أفضل حجم للصورة (بما في ذلك تلك الخاصة بنقاط فاصلة متجاوبة). يمكنك تجنب استخدام صور `Full Size` إلا إذا كانت الأبعاد كافية لاستخدامها. [مزيد من المعلومات](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)"
+    "message": "يمكنك تحميل الصور مباشرةً من خلال [مكتبة الوسائط](https://wordpress.org/support/article/media-library-screen/) للتأكّد من توفّر أحجام الصور المطلوبة، ثم إدراجها من مكتبة الوسائط أو استخدام أداة الصورة لضمان استخدام أفضل حجم للصورة (بما في ذلك تلك الخاصة بنقاط فاصلة متجاوبة). يمكنك تجنب استخدام صور `Full Size` إلا إذا كانت الأبعاد كافية لاستخدامها. [مزيد من المعلومات](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)"
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
     "message": "يمكنك تفعيل ضغط النص في إعداد خادم الويب."
