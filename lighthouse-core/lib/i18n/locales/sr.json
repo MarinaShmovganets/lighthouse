@@ -1587,7 +1587,7 @@
     "message": "Препоручујемо да користите [WordPress додатну компоненту за оптимизацију слика](https://wordpress.org/plugins/search/optimize+images/) која компримује слике без губитка квалитета."
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "Отпремајте слике директно помоћу [библиотеке медија](https://wordpress.org/support/article/media-library-screen/) да бисте се уверили да су доступне обавезне величине слика, па их уметните у библиотеку медија или користите виџет странице да бисте се уверили да се користе оптималне величине слика (укључујући оне за преломне тачке које се одазивају). Избегавајте коришћење слика `Full Size` ако димензије нису адекватне за њихово коришћење. [Сазнајте више](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)."
+    "message": "Отпремајте слике директно помоћу [библиотеке медија](https://wordpress.org/support/article/media-library-screen/) да бисте се уверили да су доступне обавезне величине слика, па их уметните у библиотеку медија или користите виџет странице да бисте се уверили да се користе оптималне величине слика (укључујући оне за преломне тачке које се одазивају). Избегавајте коришћење слика `Full Size` ако димензије нису адекватне за њихово коришћење. [Сазнајте више](https://wordpress.org/support/article/inserting-images-into-posts-and-pages/)."
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
     "message": "Можете да омогућите компримовање текста у конфигурацији веб-сервера."

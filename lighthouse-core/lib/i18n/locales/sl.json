@@ -1587,7 +1587,7 @@
     "message": "Razmislite o tem, da bi uporabili [vtičnik za optimizacijo slik za WordPress](https://wordpress.org/plugins/search/optimize+images/), ki slike stisne, a ohrani kakovost."
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "Slike naložite neposredno prek [predstavnostne knjižnice](https://wordpress.org/support/article/media-library-screen/) in tako zagotovite, da so na voljo potrebne velikosti slik. Nato jih vstavite iz predstavnostne knjižnice ali uporabite slikovni pripomoček, da zagotovite uporabo optimalnih velikosti slik (vključno s tistimi za odzivne prekinitvene točke). Izogibajte se slikam `Full Size`, razen če so mere primerne za njihovo uporabo. [Več o tem](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)."
+    "message": "Slike naložite neposredno prek [predstavnostne knjižnice](https://wordpress.org/support/article/media-library-screen/) in tako zagotovite, da so na voljo potrebne velikosti slik. Nato jih vstavite iz predstavnostne knjižnice ali uporabite slikovni pripomoček, da zagotovite uporabo optimalnih velikosti slik (vključno s tistimi za odzivne prekinitvene točke). Izogibajte se slikam `Full Size`, razen če so mere primerne za njihovo uporabo. [Več o tem](https://wordpress.org/support/article/inserting-images-into-posts-and-pages/)."
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
     "message": "Stiskanje besedila lahko omogočite v konfiguraciji spletnega strežnika."

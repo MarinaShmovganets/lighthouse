@@ -1587,7 +1587,7 @@
     "message": "建議你使用壓縮圖片時不會影響到畫質的[圖片最佳化 WordPress 外掛程式](https://wordpress.org/plugins/search/optimize+images/)。"
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "你可以直接透過[媒體庫](https://wordpress.org/support/article/media-library-screen/)上傳圖片，確保你可以使用所需的圖片大小，然後透過從媒體庫插入圖片，或使用圖片小工具來確保你使用的是最佳圖片大小 (包括回應式中斷點適用的圖片大小)。除非圖片尺寸符合使用目的，否則請避免使用`Full Size`圖片。[瞭解詳情](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)。"
+    "message": "你可以直接透過[媒體庫](https://wordpress.org/support/article/media-library-screen/)上傳圖片，確保你可以使用所需的圖片大小，然後透過從媒體庫插入圖片，或使用圖片小工具來確保你使用的是最佳圖片大小 (包括回應式中斷點適用的圖片大小)。除非圖片尺寸符合使用目的，否則請避免使用`Full Size`圖片。[瞭解詳情](https://wordpress.org/support/article/inserting-images-into-posts-and-pages/)。"
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
     "message": "你可以在網路伺服器設定中啟用文字壓縮功能。"

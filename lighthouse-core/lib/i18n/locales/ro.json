@@ -1587,7 +1587,7 @@
     "message": "Îți recomandăm să folosești un [plugin WordPress de optimizare a imaginii](https://wordpress.org/plugins/search/optimize+images/) care comprimă imaginile, păstrând calitatea."
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "Încarcă imaginile direct prin [biblioteca de media](https://wordpress.org/support/article/media-library-screen/) pentru a te asigura că sunt disponibile dimensiunile de imagine necesare, apoi inserează-le din biblioteca de media sau folosește widgetul de imagine pentru a te asigura că se folosesc dimensiunile de imagine optime (inclusiv cele pentru punctele de întrerupere adaptabile). Evită să folosești imagini `Full Size`, cu excepția cazului în care dimensiunile sunt adecvate pentru utilizare. [Află mai multe](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)."
+    "message": "Încarcă imaginile direct prin [biblioteca de media](https://wordpress.org/support/article/media-library-screen/) pentru a te asigura că sunt disponibile dimensiunile de imagine necesare, apoi inserează-le din biblioteca de media sau folosește widgetul de imagine pentru a te asigura că se folosesc dimensiunile de imagine optime (inclusiv cele pentru punctele de întrerupere adaptabile). Evită să folosești imagini `Full Size`, cu excepția cazului în care dimensiunile sunt adecvate pentru utilizare. [Află mai multe](https://wordpress.org/support/article/inserting-images-into-posts-and-pages/)."
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
     "message": "Poți activa comprimarea textului în configurarea serverului web."

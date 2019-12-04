@@ -1587,7 +1587,7 @@
     "message": "Apsvarstykite galimybę naudoti [vaizdų optimizavimo „WordPress“ papildinį](https://wordpress.org/plugins/search/optimize+images/), leidžiantį suglaudinti vaizdus išlaikant kokybę."
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "Įkelkite vaizdus tiesiai per [medijos biblioteką](https://wordpress.org/support/article/media-library-screen/), kad būtų pasiekiami reikiami vaizdų dydžiai, tada įterpkite juos iš medijos bibliotekos arba naudokite vaizdų valdiklį, kad užtikrintumėte, jog naudojami optimalaus dydžio vaizdai (įskaitant tuos, kurie naudojami interaktyviems atskaitos taškams). Stenkitės nenaudoti vaizdų „`Full Size`“, nebent galima naudoti tokių matmenų vaizdus. [Sužinokite daugiau](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)."
+    "message": "Įkelkite vaizdus tiesiai per [medijos biblioteką](https://wordpress.org/support/article/media-library-screen/), kad būtų pasiekiami reikiami vaizdų dydžiai, tada įterpkite juos iš medijos bibliotekos arba naudokite vaizdų valdiklį, kad užtikrintumėte, jog naudojami optimalaus dydžio vaizdai (įskaitant tuos, kurie naudojami interaktyviems atskaitos taškams). Stenkitės nenaudoti vaizdų „`Full Size`“, nebent galima naudoti tokių matmenų vaizdus. [Sužinokite daugiau](https://wordpress.org/support/article/inserting-images-into-posts-and-pages/)."
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
     "message": "Galite įgalinti teksto glaudinimą žiniatinklio serverio konfigūracijoje."

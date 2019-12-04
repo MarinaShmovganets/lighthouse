@@ -1587,7 +1587,7 @@
     "message": "Vous pouvez envisager d'utiliser un [plug-in WordPress d'optimisation d'image](https://wordpress.org/plugins/search/optimize+images/) pour compresser vos images sans dégrader leur qualité."
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "Importez des images directement via la [bibliothèque multimédia](https://wordpress.org/support/article/media-library-screen/) pour vous assurer que les tailles d'images requises sont disponibles. Ensuite, insérez-les depuis la bibliothèque multimédia ou utilisez le widget d'image pour vous assurer que les tailles d'images optimales sont utilisées (y compris celles pour les points d'arrêt réactifs). Évitez d'utiliser les images `Full Size`, sauf si les dimensions sont adéquates pour l'utilisation prévue. [En savoir plus](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)"
+    "message": "Importez des images directement via la [bibliothèque multimédia](https://wordpress.org/support/article/media-library-screen/) pour vous assurer que les tailles d'images requises sont disponibles. Ensuite, insérez-les depuis la bibliothèque multimédia ou utilisez le widget d'image pour vous assurer que les tailles d'images optimales sont utilisées (y compris celles pour les points d'arrêt réactifs). Évitez d'utiliser les images `Full Size`, sauf si les dimensions sont adéquates pour l'utilisation prévue. [En savoir plus](https://wordpress.org/support/article/inserting-images-into-posts-and-pages/)"
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
     "message": "Vous pouvez activer la compression du texte dans la configuration de votre serveur Web."

@@ -1587,7 +1587,7 @@
     "message": "품질은 그대로 유지하면서 이미지를 압축해주는 [이미지 최적화 WordPress 플러그인](https://wordpress.org/plugins/search/optimize+images/)을 사용해 보세요."
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "필수 이미지 크기를 사용할 수 있도록 [미디어 라이브러리](https://wordpress.org/support/article/media-library-screen/)에서 직접 이미지를 업로드하세요. 그런 다음 미디어 라이브러리에서 이미지를 삽입하거나 이미지 위젯을 사용하여 최적의 이미지 크기를 사용하는지 확인하세요(반응형 중단점용 이미지 포함). 이미지 크기가 용도에 적합하지 않다면 `Full Size` 이미지는 사용하지 않는 것이 좋습니다. [자세히 알아보기](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)"
+    "message": "필수 이미지 크기를 사용할 수 있도록 [미디어 라이브러리](https://wordpress.org/support/article/media-library-screen/)에서 직접 이미지를 업로드하세요. 그런 다음 미디어 라이브러리에서 이미지를 삽입하거나 이미지 위젯을 사용하여 최적의 이미지 크기를 사용하는지 확인하세요(반응형 중단점용 이미지 포함). 이미지 크기가 용도에 적합하지 않다면 `Full Size` 이미지는 사용하지 않는 것이 좋습니다. [자세히 알아보기](https://wordpress.org/support/article/inserting-images-into-posts-and-pages/)"
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
     "message": "웹 서버 구성에서 텍스트 압축을 사용 설정할 수 있습니다."

@@ -1587,7 +1587,7 @@
     "message": "Hãy cân nhắc sử dụng một [plugin tối ưu hóa hình ảnh của WordPress](https://wordpress.org/plugins/search/optimize+images/) có khả năng nén hình ảnh mà vẫn đảm bảo chất lượng."
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "Trực tiếp tải hình ảnh lên thông qua [thư viện nội dung đa phương tiện](https://wordpress.org/support/article/media-library-screen/) để đảm bảo có các kích thước hình ảnh theo yêu cầu, sau đó chèn hình ảnh từ thư viện nội dung đa phương tiện hoặc sử dụng tiện ích hình ảnh để đảm bảo sử dụng kích thước hình ảnh tối ưu (bao gồm cả các kích thước dành cho điểm ngắt thích ứng). Tránh sử dụng hình ảnh có `Full Size` trừ khi những hình ảnh đó có kích thước phù hợp. [Tìm hiểu thêm](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)."
+    "message": "Trực tiếp tải hình ảnh lên thông qua [thư viện nội dung đa phương tiện](https://wordpress.org/support/article/media-library-screen/) để đảm bảo có các kích thước hình ảnh theo yêu cầu, sau đó chèn hình ảnh từ thư viện nội dung đa phương tiện hoặc sử dụng tiện ích hình ảnh để đảm bảo sử dụng kích thước hình ảnh tối ưu (bao gồm cả các kích thước dành cho điểm ngắt thích ứng). Tránh sử dụng hình ảnh có `Full Size` trừ khi những hình ảnh đó có kích thước phù hợp. [Tìm hiểu thêm](https://wordpress.org/support/article/inserting-images-into-posts-and-pages/)."
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
     "message": "Bạn có thể bật tính năng nén văn bản trong cấu hình máy chủ web."

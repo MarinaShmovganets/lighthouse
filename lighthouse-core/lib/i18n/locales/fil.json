@@ -1587,7 +1587,7 @@
     "message": "Pag-isipang gumamit ng [plugin sa WordPress para sa pag-optimize ng larawan](https://wordpress.org/plugins/search/optimize+images/) na nagko-compress ng iyong mga larawan habang pinapanatili ang kalidad."
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "Direktang i-upload ang mga larawan sa pamamagitan ng [library ng media](https://wordpress.org/support/article/media-library-screen/) para tiyaking available ang mga kinakailangang laki ng larawan, at pagkatapos ay ilagay ang mga ito mula sa library ng media o gamitin ang widget ng larawan para tiyaking ginagamit ang mga pinakaangkop na laki ng larawan (kabilang ang para sa mga tumutugong breakpoint). Iwasang gamitin ang mga larawang nasa `Full Size` maliban kung sapat ang mga dimensyon para sa paggamit ng mga ito. [Matuto Pa](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)."
+    "message": "Direktang i-upload ang mga larawan sa pamamagitan ng [library ng media](https://wordpress.org/support/article/media-library-screen/) para tiyaking available ang mga kinakailangang laki ng larawan, at pagkatapos ay ilagay ang mga ito mula sa library ng media o gamitin ang widget ng larawan para tiyaking ginagamit ang mga pinakaangkop na laki ng larawan (kabilang ang para sa mga tumutugong breakpoint). Iwasang gamitin ang mga larawang nasa `Full Size` maliban kung sapat ang mga dimensyon para sa paggamit ng mga ito. [Matuto Pa](https://wordpress.org/support/article/inserting-images-into-posts-and-pages/)."
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
     "message": "Puwede mong i-enable ang pag-compress ng text sa configuration ng iyong server sa web."

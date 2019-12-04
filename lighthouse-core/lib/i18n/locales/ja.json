@@ -1587,7 +1587,7 @@
     "message": "画質を落とさずに画像を圧縮できる [WordPress の画像最適化プラグイン](https://wordpress.org/plugins/search/optimize+images/)の使用をご検討ください。"
   },
   "stack-packs/packs/wordpress.js | uses_responsive_images": {
-    "message": "[メディア ライブラリ](https://wordpress.org/support/article/media-library-screen/)から直接画像をアップロードして必要な画像サイズを利用できるようにしたうえで、メディア ライブラリから挿入するか、画像ウィジェットを使用して、最適な画像サイズ（レスポンシブ ブレークポイントのサイズを含む）が使用されるようにします。「`Full Size`」の画像は、十分なスペースがある場合を除いて使用しないようにします。[詳細](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size)"
+    "message": "[メディア ライブラリ](https://wordpress.org/support/article/media-library-screen/)から直接画像をアップロードして必要な画像サイズを利用できるようにしたうえで、メディア ライブラリから挿入するか、画像ウィジェットを使用して、最適な画像サイズ（レスポンシブ ブレークポイントのサイズを含む）が使用されるようにします。「`Full Size`」の画像は、十分なスペースがある場合を除いて使用しないようにします。[詳細](https://wordpress.org/support/article/inserting-images-into-posts-and-pages/)"
   },
   "stack-packs/packs/wordpress.js | uses_text_compression": {
     "message": "ウェブサーバーの設定でテキスト圧縮を有効にできます。"
