@@ -5,11 +5,15 @@ branches:
   - master
 matrix:
   include:
+    # Disable yarn installation GPG checks during PR builds
     - node_js: "10"
+      if: head_branch IS NOT blank
+      env:
+      - YARN_GPG=no
+    - node_js: "10"
+      if: head_branch IS blank
     - node_js: "12"
       if: head_branch IS blank AND branch = master
-env:
-  - YARN_GPG=no
 cache:
   yarn: true
   directories:
