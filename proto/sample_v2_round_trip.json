@@ -858,18 +858,6 @@
             "scoreDisplayMode": "binary",
             "title": "Document uses legible font sizes"
         },
-        "form-field-multiple-labels": {
-            "description": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn more](https://web.dev/form-field-multiple-labels/).",
-            "details": {
-                "headings": [],
-                "items": [],
-                "type": "table"
-            },
-            "id": "form-field-multiple-labels",
-            "score": 1.0,
-            "scoreDisplayMode": "binary",
-            "title": "No form fields have multiple labels"
-        },
         "frame-title": {
             "description": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more](https://web.dev/frame-title/).",
             "id": "frame-title",
@@ -3442,11 +3430,6 @@
                 },
                 {
                     "group": "a11y-names-labels",
-                    "id": "form-field-multiple-labels",
-                    "weight": 2.0
-                },
-                {
-                    "group": "a11y-names-labels",
                     "id": "frame-title",
                     "weight": 0.0
                 },
@@ -4786,12 +4769,6 @@
                 "duration": 100.0,
                 "entryType": "measure",
                 "name": "lh:audit:duplicate-id-aria",
-                "startTime": 0.0
-            },
-            {
-                "duration": 100.0,
-                "entryType": "measure",
-                "name": "lh:audit:form-field-multiple-labels",
                 "startTime": 0.0
             },
             {

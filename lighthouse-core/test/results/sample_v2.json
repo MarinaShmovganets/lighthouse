@@ -1797,18 +1797,6 @@
         "items": []
       }
     },
-    "form-field-multiple-labels": {
-      "id": "form-field-multiple-labels",
-      "title": "No form fields have multiple labels",
-      "description": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn more](https://web.dev/form-field-multiple-labels/).",
-      "score": 1,
-      "scoreDisplayMode": "binary",
-      "details": {
-        "type": "table",
-        "headings": [],
-        "items": []
-      }
-    },
     "frame-title": {
       "id": "frame-title",
       "title": "`<frame>` or `<iframe>` elements have a title",
@@ -3818,11 +3806,6 @@
           "group": "a11y-aria"
         },
         {
-          "id": "form-field-multiple-labels",
-          "weight": 2,
-          "group": "a11y-names-labels"
-        },
-        {
           "id": "frame-title",
           "weight": 0,
           "group": "a11y-names-labels"
@@ -4885,12 +4868,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:duplicate-id-aria",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:form-field-multiple-labels",
         "duration": 100,
         "entryType": "measure"
       },
@@ -6001,12 +5978,6 @@
       ],
       "lighthouse-core/audits/accessibility/duplicate-id-aria.js | description": [
         "audits[duplicate-id-aria].description"
-      ],
-      "lighthouse-core/audits/accessibility/form-field-multiple-labels.js | title": [
-        "audits[form-field-multiple-labels].title"
-      ],
-      "lighthouse-core/audits/accessibility/form-field-multiple-labels.js | description": [
-        "audits[form-field-multiple-labels].description"
       ],
       "lighthouse-core/audits/accessibility/frame-title.js | title": [
         "audits[frame-title].title"

@@ -191,15 +191,6 @@
   "lighthouse-core/audits/accessibility/duplicate-id-aria.js | title": {
     "message": "ARIA IDs are unique"
   },
-  "lighthouse-core/audits/accessibility/form-field-multiple-labels.js | description": {
-    "message": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn more](https://web.dev/form-field-multiple-labels/)."
-  },
-  "lighthouse-core/audits/accessibility/form-field-multiple-labels.js | failureTitle": {
-    "message": "Form fields have multiple labels"
-  },
-  "lighthouse-core/audits/accessibility/form-field-multiple-labels.js | title": {
-    "message": "No form fields have multiple labels"
-  },
   "lighthouse-core/audits/accessibility/frame-title.js | description": {
     "message": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more](https://web.dev/frame-title/)."
   },
