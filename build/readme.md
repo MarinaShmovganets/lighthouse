@@ -1,6 +1,6 @@
 # Building Lighthouse
 
-Lighthouse is built into browser-friendly bundles for two `clients`:
+Lighthouse is built into browser-friendly bundles for two clients:
 
 * Chrome DevTools Audits Panel
 * Lightrider, the backend of PageSpeed Insights
@@ -40,15 +40,15 @@ dist
 
 `AuditsService` uses `self.runLighthouseInWorker`, the main export of the big bundle.
 
-`AuditsPanel` uses `new Audits.ReportRenderer(dom)`, which overrides `self.ReportRenderer`, which is [exported](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/report/html/renderer/report-renderer.js#L255) by `report.js`. This renderer takes a Lighthouse result, `templates.html`, and a target DOM element - it then renders the report to the target element.
+`AuditsPanel` uses `new Audits.ReportRenderer(dom)`, which overrides `self.ReportRenderer`, which is [exported](https://github.com/GoogleChrome/lighthouse/blob/ee3a9dfd665135b9dc03c18c9758b27464df07e0/lighthouse-core/report/html/renderer/report-renderer.js#L255) by `report.js`. This renderer takes a Lighthouse result, `templates.html`, and a target DOM element - it then renders the report to the target element.
 
 `AuditsPanel` also registers `report.css`.
 
-`report-generator.js` takes a Lighthouse result and creates an HTML file - it concats all of the report assets to create a singular HTML document. See: https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/report/report-generator.js#L35
+`report-generator.js` takes a Lighthouse result and creates an HTML file - it concats all of the report assets to create a singular HTML document. See: https://github.com/GoogleChrome/lighthouse/blob/ee3a9dfd665135b9dc03c18c9758b27464df07e0/lighthouse-core/report/report-generator.js#L35
 
 A Lighthouse report (including what is shown within the Audits panel) can also Export as HTML. Normally the report just uses `documentElement.outerHTML`, but from DevTools we get quine-y and use `Lighthouse.ReportGenerator`. I only mention this because this is why the report assets are seperate files - there is a dual purpose.
 
-Firstly is to be used to create the report within the Audits Panel DOM. `report.js` exports the renderer, and `report.css` and `templates.html` are pulled from `.cachedResources`.
+1. Create the report within the Audits Panel DOM. `report.js` exports the renderer, and `report.css` and `templates.html` are pulled from `.cachedResources`.
 
-Secondly is to be used to export as HTML. We can't just scrape the outerHTML like we normally do, because we render some thing a bit
-special for DevTools, and we're not the only thing in that DOM (we would get _all_ of DevTools). So we use `Lighthouse.ReportGenerator` (important: this is only used here!) to create this HTML export. It requires all of the report assets, so to prevent double-bundling we [shim](https://github.com/GoogleChrome/lighthouse/blob/master/clients/devtools-report-assets.js) its report assets module to just read from the `.cacheResources`.
+2. Export the report as HTML. We can't just scrape the outerHTML like we normally do, because we render some thing a bit
+special for DevTools, and we're not the only thing in that DOM (we would get _all_ of DevTools). So we use `Lighthouse.ReportGenerator` (important: this is only used here!) to create this HTML export. It requires all of the report assets, so to prevent double-bundling we [shim](https://github.com/GoogleChrome/lighthouse/blob/https://github.com/GoogleChrome/lighthouse/blob/ee3a9dfd665135b9dc03c18c9758b27464df07e0/lighthouse-core/report/report-generator.js#L35/clients/devtools-report-assets.js) its report assets module to just read from the `.cacheResources`.
