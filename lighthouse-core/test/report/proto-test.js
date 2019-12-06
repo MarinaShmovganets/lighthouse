@@ -11,6 +11,19 @@ const preprocessor = require('../../lib/proto-preprocessor.js');
 
 /* eslint-env jest */
 
+/* Proto conversion turns empty summaries into null. This is OK,
+   and is handled in the PSI roundtrip just fine, but messes up the easy
+   jest sub-object matcher. So, we put the empty object back in its place.
+*/
+function coerceNullSummaries(inputJson) {
+  for (const audit of Object.values(inputJson.audits)) {
+    if (audit.details && audit.details.summary === null) {
+      audit.details.summary = {};
+    }
+  }
+}
+coerceNullSummaries(roundTripJson);
+
 describe('round trip JSON comparison subsets', () => {
   let processedLHR;
 
@@ -56,15 +69,6 @@ describe('round trip JSON comparison to everything', () => {
 
   beforeEach(() => {
     processedLHR = preprocessor.processForProto(sampleJson);
-
-    // Proto conversion turns empty summaries into null. This is OK,
-    // and is handled in the PSI roundtrip just fine, but messes up the easy
-    // jest sub-object matcher. So, we put the empty object back in its place.
-    for (const audit of Object.values(roundTripJson.audits)) {
-      if (audit.details && audit.details.summary === null) {
-        audit.details.summary = {};
-      }
-    }
   });
 
   it('has the same JSON overall', () => {
