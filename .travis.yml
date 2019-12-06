@@ -3,7 +3,8 @@ language: node_js
 branches:
   only:
   - master
-# Disable yarn installation GPG checks during PR builds
+# Temporarily disable yarn installation GPG checks. #10075
+# TODO: Remove after https://github.com/yarnpkg/website/pull/1030 lands
 env:
   global:
     - YARN_GPG=no
