@@ -8,6 +8,8 @@ matrix:
     - node_js: "10"
     - node_js: "12"
       if: head_branch IS blank AND branch = master
+env:
+  - YARN_GPG=no
 cache:
   yarn: true
   directories:
