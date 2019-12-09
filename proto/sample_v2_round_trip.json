@@ -1190,7 +1190,7 @@
                         "name": "WordPress"
                     }
                 ],
-                "summary": null,
+                "summary": {},
                 "type": "table"
             },
             "id": "js-libraries",
@@ -1331,7 +1331,7 @@
             "details": {
                 "headings": [],
                 "items": [],
-                "summary": null,
+                "summary": {},
                 "type": "table"
             },
             "id": "link-text",
@@ -1996,7 +1996,7 @@
                         "vulnCount": 2.0
                     }
                 ],
-                "summary": null,
+                "summary": {},
                 "type": "table"
             },
             "displayValue": "2 vulnerabilities detected",
@@ -3572,7 +3572,7 @@
             "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developers.google.com/web/fundamentals/accessibility). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.",
             "id": "accessibility",
             "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://developers.google.com/web/fundamentals/accessibility/how-to-review).",
-            "score": 0.65,
+            "score": 0.66,
             "title": "Accessibility"
         },
         "best-practices": {
