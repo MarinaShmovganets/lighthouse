@@ -569,5 +569,34 @@ describe('DetailsRenderer', () => {
       assert.equal(urlEl.title, 'https://example.com');
       assert.equal(urlEl.textContent, 'https://example.com');
     });
+
+    describe('multi', () => {
+      it('renders multiple', () => {
+        const details = {
+          type: 'table',
+          headings: [{key: 'url', itemType: 'url', multi: {key: 'source', itemType: 'code'}}],
+          items: [
+            {url: 'https://www.example.com', multi: {type: 'multi', source: ['a', 'b']}},
+          ],
+        };
+
+        const el = renderer.render(details);
+        console.log(el.innerHTML);
+        const itemElements = el.querySelectorAll('td.lh-table-column--url');
+
+        // First item's value uses its own type.
+        const codeEl = itemElements[0].firstChild;
+        assert.equal(codeEl.localName, 'pre');
+        assert.ok(codeEl.classList.contains('lh-code'));
+        assert.equal(codeEl.textContent, 'code object');
+
+        // Second item uses the heading's specified type for the column.
+        const urlEl = itemElements[1].firstChild;
+        assert.equal(urlEl.localName, 'div');
+        assert.ok(urlEl.classList.contains('lh-text__url'));
+        assert.equal(urlEl.title, 'https://example.com');
+        assert.equal(urlEl.textContent, 'https://example.com');
+      });
+    });
   });
 });
