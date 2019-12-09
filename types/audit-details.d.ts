@@ -194,7 +194,7 @@ declare global {
 
       /**
        * A value used within a details object, intended to be displayed as a
-       * linkified URL, regardless of the controlling heading's valueTypeMultiValue | .
+       * linkified URL, regardless of the controlling heading's valueType.
        */
       export interface UrlValue {
         type: 'url';
