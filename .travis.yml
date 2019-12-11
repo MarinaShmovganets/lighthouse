@@ -8,7 +8,12 @@ matrix:
     - node_js: "10"
     - node_js: "12"
       if: head_branch IS blank AND branch = master
-cache: false
+cache:
+  yarn: true
+  directories:
+    - node_modules
+    - lantern-data
+    - /home/travis/.rvm/gems/
 install:
   # Ensure we have the latest Chrome stable.
   - google-chrome-stable --version
