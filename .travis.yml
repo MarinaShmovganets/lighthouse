@@ -9,7 +9,6 @@ matrix:
     - node_js: "12"
       if: head_branch IS blank AND branch = master
 cache:
-  yarn: true
   directories:
     - node_modules
     - lantern-data
