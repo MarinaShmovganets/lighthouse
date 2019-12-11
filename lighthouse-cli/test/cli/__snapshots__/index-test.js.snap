@@ -211,6 +211,9 @@ Object {
       "path": "accessibility/duplicate-id-aria",
     },
     Object {
+      "path": "accessibility/form-field-multiple-labels",
+    },
+    Object {
       "path": "accessibility/frame-title",
     },
     Object {
@@ -516,6 +519,11 @@ Object {
           "group": "a11y-aria",
           "id": "duplicate-id-aria",
           "weight": 10,
+        },
+        Object {
+          "group": "a11y-names-labels",
+          "id": "form-field-multiple-labels",
+          "weight": 2,
         },
         Object {
           "group": "a11y-names-labels",
