@@ -331,13 +331,11 @@ class DetailsRenderer {
   }
 
   /**
-   * @param {LH.Audit.Details.TableItem} row
+   * @param {LH.Audit.Details.Value[]} values
    * @param {LH.Audit.Details.OpportunityColumnHeading} heading
    * @return {Element?}
    */
-  _renderSubRows(row, heading) {
-    const values = row[heading.key];
-    if (!Array.isArray(values)) return null;
+  _renderSubRows(values, heading) {
     const subRowsElement = this._dom.createElement('div', 'lh-sub-rows');
     for (const childValue of values) {
       const subRowElement = this._renderTableValue(childValue, heading);
@@ -388,7 +386,9 @@ class DetailsRenderer {
             displayUnit: heading.subRows.displayUnit || heading.displayUnit,
             label: '',
           };
-          const subRowsElement = this._renderSubRows(row, subRowsHeading);
+          const values = row[subRowsHeading.key];
+          if (!Array.isArray(values)) continue;
+          const subRowsElement = this._renderSubRows(values, subRowsHeading);
           if (subRowsElement) valueFragment.appendChild(subRowsElement);
         }
 
