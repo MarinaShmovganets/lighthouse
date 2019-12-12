@@ -140,6 +140,7 @@ class UsesRelPreconnectAudit extends Audit {
     const preconnectLinks = artifacts.LinkElements.filter(el => el.rel === 'preconnect');
     const preconnectOrigins = new Set(preconnectLinks.map(link => URL.getOrigin(link.href || '')));
 
+    // https://twitter.com/_tbansal/status/1197771385172480001
     if (preconnectLinks.length >= 3) {
       return {
         score: 1,
