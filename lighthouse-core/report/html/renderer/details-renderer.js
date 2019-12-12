@@ -314,16 +314,16 @@ class DetailsRenderer {
    * @return {LH.Audit.Details.OpportunityColumnHeading}
    */
   _getCanonicalizedHeading(heading) {
-    let multi;
-    if (heading.multi) {
+    let subRows;
+    if (heading.subRows) {
       // @ts-ignore: It's ok that there is no text.
-      multi = this._getCanonicalizedHeading(heading.multi);
+      subRows = this._getCanonicalizedHeading(heading.subRows);
     }
 
     return {
       key: heading.key,
       valueType: heading.itemType,
-      multi,
+      subRows,
       label: heading.text,
       displayUnit: heading.displayUnit,
       granularity: heading.granularity,
@@ -335,17 +335,17 @@ class DetailsRenderer {
    * @param {LH.Audit.Details.OpportunityColumnHeading} heading
    * @return {Element?}
    */
-  _renderMultiValue(row, heading) {
+  _renderSubRows(row, heading) {
     const values = row[heading.key];
     if (!Array.isArray(values)) return null;
-    const valueElement = this._dom.createElement('div', 'lh-multi-values');
+    const subRowsElement = this._dom.createElement('div', 'lh-sub-rows');
     for (const childValue of values) {
-      const childValueElement = this._renderTableValue(childValue, heading);
-      if (!childValueElement) continue;
-      childValueElement.classList.add('lh-multi-value-entry');
-      valueElement.appendChild(childValueElement);
+      const subRowElement = this._renderTableValue(childValue, heading);
+      if (!subRowElement) continue;
+      subRowElement.classList.add('lh-sub-row');
+      subRowsElement.appendChild(subRowElement);
     }
-    return valueElement;
+    return subRowsElement;
   }
 
   /**
@@ -380,16 +380,16 @@ class DetailsRenderer {
           value !== undefined && !Array.isArray(value) && this._renderTableValue(value, heading);
         if (valueElement) valueFragment.appendChild(valueElement);
 
-        if (heading.multi) {
-          const multiHeading = {
-            key: heading.multi.key,
-            valueType: heading.multi.valueType || heading.valueType,
-            granularity: heading.multi.granularity || heading.granularity,
-            displayUnit: heading.multi.displayUnit || heading.displayUnit,
+        if (heading.subRows) {
+          const subRowsHeading = {
+            key: heading.subRows.key,
+            valueType: heading.subRows.valueType || heading.valueType,
+            granularity: heading.subRows.granularity || heading.granularity,
+            displayUnit: heading.subRows.displayUnit || heading.displayUnit,
             label: '',
           };
-          const multiElement = this._renderMultiValue(row, multiHeading);
-          if (multiElement) valueFragment.appendChild(multiElement);
+          const subRowsElement = this._renderSubRows(row, subRowsHeading);
+          if (subRowsElement) valueFragment.appendChild(subRowsElement);
         }
 
         if (valueFragment.childElementCount) {
