@@ -12,6 +12,8 @@
 const expectations = [
   {
     artifacts: {
+      HostFormFactor: 'desktop',
+      TestedAsMobileDevice: true,
       Stacks: [{
         id: 'jquery',
       }, {
@@ -120,6 +122,21 @@ const expectations = [
           as: '',
           crossOrigin: null,
           source: 'head',
+        },
+      ],
+      MetaElements: [
+        {
+          name: '',
+          content: '',
+        },
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1, minimum-scale=1',
+        },
+        {
+          name: '',
+          content: 'Open Graph smoke test description',
+          property: 'og:description',
         },
       ],
       TagsBlockingFirstPaint: [
@@ -370,10 +387,10 @@ const expectations = [
         },
         'dom-size': {
           score: 1,
-          numericValue: 141,
+          numericValue: 143,
           details: {
             items: [
-              {statistic: 'Total DOM Elements', value: '141'},
+              {statistic: 'Total DOM Elements', value: '143'},
               {statistic: 'Maximum DOM Depth', value: '4'},
               {
                 statistic: 'Maximum Child Elements',

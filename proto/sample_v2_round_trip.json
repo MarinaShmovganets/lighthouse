@@ -456,31 +456,33 @@
                         "text": "Deprecation / Warning"
                     },
                     {
-                        "itemType": "url",
-                        "key": "url",
+                        "itemType": "source-location",
+                        "key": "source",
                         "text": "URL"
-                    },
-                    {
-                        "itemType": "text",
-                        "key": "lineNumber",
-                        "text": "Line"
                     }
                 ],
                 "items": [
                     {
-                        "lineNumber": 322.0,
-                        "source": "deprecation",
-                        "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
+                        "source": {
+                            "column": 6.0,
+                            "line": 322.0,
+                            "type": "source-location",
+                            "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
+                            "urlProvider": "network"
+                        },
                         "value": "Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience. For more help, check https://xhr.spec.whatwg.org/."
                     },
                     {
-                        "lineNumber": 325.0,
-                        "source": "deprecation",
-                        "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
+                        "source": {
+                            "column": 9.0,
+                            "line": 325.0,
+                            "type": "source-location",
+                            "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
+                            "urlProvider": "network"
+                        },
                         "value": "'window.webkitStorageInfo' is deprecated. Please use 'navigator.webkitTemporaryStorage' or 'navigator.webkitPersistentStorage' instead."
                     },
                     {
-                        "source": "deprecation",
                         "value": "/deep/ combinator is no longer supported in CSS dynamic profile.It is now effectively no-op, acting as if it were a descendant combinator. /deep/ combinator will be removed, and will be invalid at M65. You should remove it. See https://www.chromestatus.com/features/4964279606312960 for more details."
                     }
                 ],
@@ -818,7 +820,7 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "url",
+                        "itemType": "source-location",
                         "key": "source",
                         "text": "Source"
                     },
@@ -842,7 +844,10 @@
                     {
                         "coverage": "100.00%",
                         "fontSize": "\u2265 12px",
-                        "source": "Legible text"
+                        "source": {
+                            "type": "code",
+                            "value": "Legible text"
+                        }
                     }
                 ],
                 "type": "table"
@@ -1266,6 +1271,15 @@
             "scoreDisplayMode": "binary",
             "title": "Form elements do not have associated labels"
         },
+        "largest-contentful-paint": {
+            "description": "Largest Contentful Paint marks the time at which the largest text or image is painted. [Learn More](https://web.dev/largest-contentful-paint)",
+            "displayValue": "4.9\u00a0s",
+            "id": "largest-contentful-paint",
+            "numericValue": 4927.278,
+            "score": 0.31,
+            "scoreDisplayMode": "numeric",
+            "title": "Largest Contentful Paint"
+        },
         "layout-table": {
             "description": "A table being used for layout purposes should not include data elements, such as the th or caption elements or the summary attribute, because this can create a confusing experience for screen reader users. [Learn more](https://web.dev/layout-table/).",
             "id": "layout-table",
@@ -1527,7 +1541,7 @@
             "title": "The user's focus is directed to new content added to the page"
         },
         "max-potential-fid": {
-            "description": "The maximum potential First Input Delay that your users could experience is the duration, in milliseconds, of the longest task. [Learn more](https://web.dev/lighthouse-max-potential-fid).",
+            "description": "The maximum potential First Input Delay that your users could experience is the duration of the longest task. [Learn more](https://web.dev/lighthouse-max-potential-fid).",
             "displayValue": "120\u00a0ms",
             "id": "max-potential-fid",
             "numericValue": 122.537,
@@ -1575,6 +1589,8 @@
                         "firstMeaningfulPaintTs": 185607289048.0,
                         "interactive": 4927.0,
                         "interactiveTs": 185608247190.0,
+                        "largestContentfulPaint": 4927.0,
+                        "largestContentfulPaintTs": 185608247190.0,
                         "maxPotentialFID": 123.0,
                         "observedDomContentLoaded": 4901.0,
                         "observedDomContentLoadedTs": 185608220734.0,
@@ -1586,6 +1602,8 @@
                         "observedFirstPaintTs": 185607289043.0,
                         "observedFirstVisualChange": 3969.0,
                         "observedFirstVisualChangeTs": 185607288912.0,
+                        "observedLargestContentfulPaint": 4927.0,
+                        "observedLargestContentfulPaintTs": 185608247190.0,
                         "observedLastVisualChange": 4791.0,
                         "observedLastVisualChangeTs": 185608110912.0,
                         "observedLoad": 4924.0,
@@ -3655,6 +3673,11 @@
                 },
                 {
                     "group": "metrics",
+                    "id": "largest-contentful-paint",
+                    "weight": 0.0
+                },
+                {
+                    "group": "metrics",
                     "id": "speed-index",
                     "weight": 4.0
                 },
@@ -4134,9 +4157,9 @@
                 "unminified-javascript": "A number of [WordPress plugins](https://wordpress.org/plugins/search/minify+javascript/) can speed up your site by concatenating, minifying, and compressing your scripts. You may also want to use a build process to do this minification up front if possible.",
                 "unused-css-rules": "Consider reducing, or switching, the number of [WordPress plugins](https://wordpress.org/plugins/) loading unused CSS in your page. To identify plugins that are adding extraneous CSS, try running [code coverage](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) in Chrome DevTools. You can identify the theme/plugin responsible from the URL of the stylesheet. Look out for plugins that have many stylesheets in the list which have a lot of red in code coverage. A plugin should only enqueue a stylesheet if it is actually used on the page.",
                 "unused-javascript": "Consider reducing, or switching, the number of [WordPress plugins](https://wordpress.org/plugins/) loading unused JavaScript in your page. To identify plugins that are adding extraneous JS, try running [code coverage](https://developers.google.com/web/updates/2017/04/devtools-release-notes#coverage) in Chrome DevTools. You can identify the theme/plugin responsible from the URL of the script. Look out for plugins that have many scripts in the list which have a lot of red in code coverage. A plugin should only enqueue a script if it is actually used on the page.",
-                "uses-long-cache-ttl": "Read about [Browser Caching in WordPress](https://codex.wordpress.org/WordPress_Optimization#Browser_Caching).",
+                "uses-long-cache-ttl": "Read about [Browser Caching in WordPress](https://wordpress.org/support/article/optimization/#browser-caching).",
                 "uses-optimized-images": "Consider using an [image optimization WordPress plugin](https://wordpress.org/plugins/search/optimize+images/) that compresses your images while retaining quality.",
-                "uses-responsive-images": "Upload images directly through the [media library](https://codex.wordpress.org/Media_Library_Screen) to ensure that the required image sizes are available, and then insert them from the media library or use the image widget to ensure the optimal image sizes are used (including those for the responsive breakpoints). Avoid using `Full Size` images unless the dimensions are adequate for their usage. [Learn More](https://codex.wordpress.org/Inserting_Images_into_Posts_and_Pages#Image_Size).",
+                "uses-responsive-images": "Upload images directly through the [media library](https://wordpress.org/support/article/media-library-screen/) to ensure that the required image sizes are available, and then insert them from the media library or use the image widget to ensure the optimal image sizes are used (including those for the responsive breakpoints). Avoid using `Full Size` images unless the dimensions are adequate for their usage. [Learn More](https://wordpress.org/support/article/inserting-images-into-posts-and-pages/).",
                 "uses-text-compression": "You can enable text compression in your web server configuration.",
                 "uses-webp-images": "Consider using a [plugin](https://wordpress.org/plugins/search/convert+webp/) or service that will automatically convert your uploaded images to the optimal formats."
             },
@@ -4253,6 +4276,18 @@
                 "duration": 100.0,
                 "entryType": "measure",
                 "name": "lh:computed:FirstMeaningfulPaint",
+                "startTime": 0.0
+            },
+            {
+                "duration": 100.0,
+                "entryType": "measure",
+                "name": "lh:audit:largest-contentful-paint",
+                "startTime": 0.0
+            },
+            {
+                "duration": 100.0,
+                "entryType": "measure",
+                "name": "lh:computed:LargestContentfulPaint",
                 "startTime": 0.0
             },
             {
@@ -4577,12 +4612,6 @@
                 "duration": 100.0,
                 "entryType": "measure",
                 "name": "lh:computed:TimingSummary",
-                "startTime": 0.0
-            },
-            {
-                "duration": 100.0,
-                "entryType": "measure",
-                "name": "lh:computed:LargestContentfulPaint",
                 "startTime": 0.0
             },
             {

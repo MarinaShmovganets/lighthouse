@@ -29,6 +29,8 @@ declare global {
       LighthouseRunWarnings: string[];
       /** Whether the page was loaded on either a real or emulated mobile device. */
       TestedAsMobileDevice: boolean;
+      /** Device which Chrome is running on. */
+      HostFormFactor: 'desktop'|'mobile';
       /** The user agent string of the version of Chrome used. */
       HostUserAgent: string;
       /** The user agent string that Lighthouse used to load the page. */
@@ -70,7 +72,7 @@ declare global {
       /** All the link elements on the page or equivalently declared in `Link` headers. @see https://html.spec.whatwg.org/multipage/links.html */
       LinkElements: Artifacts.LinkElement[];
       /** The values of the <meta> elements in the head. */
-      MetaElements: Array<{name: string, content?: string}>;
+      MetaElements: Array<{name: string, content?: string, property?: string}>;
       /** Set of exceptions thrown during page load. */
       RuntimeExceptions: Crdp.Runtime.ExceptionThrownEvent[];
       /** Information on all script elements in the page. Also contains the content of all requested scripts and the networkRecord requestId that contained their content. Note, HTML documents will have one entry per script tag, all with the same requestId. */
@@ -130,7 +132,7 @@ declare global {
       /** Source maps of scripts executed in the page. */
       SourceMaps: Array<Artifacts.SourceMap>;
       /** The status of an offline fetch of the page's start_url. -1 and a explanation if missing or there was an error. */
-      StartUrl: {statusCode: number, explanation?: string};
+      StartUrl: {url?: string, statusCode: number, explanation?: string};
       /** Information on <script> and <link> tags blocking first paint. */
       TagsBlockingFirstPaint: Artifacts.TagBlockingFirstPaint[];
       /** Information about tap targets including their position and size. */

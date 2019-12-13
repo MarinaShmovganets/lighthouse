@@ -28,6 +28,9 @@ Object {
       "path": "metrics/first-meaningful-paint",
     },
     Object {
+      "path": "metrics/largest-contentful-paint",
+    },
+    Object {
       "path": "load-fast-enough-for-pwa",
     },
     Object {
@@ -746,6 +749,11 @@ Object {
         },
         Object {
           "group": "metrics",
+          "id": "largest-contentful-paint",
+          "weight": 0,
+        },
+        Object {
+          "group": "metrics",
           "id": "speed-index",
           "weight": 4,
         },
@@ -1313,6 +1321,7 @@ Object {
     "emulatedFormFactor": "mobile",
     "extraHeaders": null,
     "gatherMode": false,
+    "internalDisableDeviceScreenEmulation": false,
     "locale": "en-US",
     "maxWaitForFcp": 30000,
     "maxWaitForLoad": 45000,
@@ -1447,6 +1456,7 @@ Object {
     "emulatedFormFactor": "mobile",
     "extraHeaders": null,
     "gatherMode": false,
+    "internalDisableDeviceScreenEmulation": false,
     "locale": "en-US",
     "maxWaitForFcp": 30000,
     "maxWaitForLoad": 45000,
