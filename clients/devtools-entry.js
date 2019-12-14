@@ -40,6 +40,7 @@ function listenForStatus(listenCallback) {
   log.events.addListener('status', listenCallback);
 }
 
+// For the bundle smoke test.
 if (typeof module !== 'undefined' && module.exports) {
   // Ideally this could be exposed via browserify's `standalone`, but it doesn't
   // work for LH because of https://github.com/browserify/browserify/issues/968

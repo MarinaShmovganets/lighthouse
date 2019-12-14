@@ -17,7 +17,6 @@ const ChromeProtocol = require('../../../../lighthouse-core/gather/connections/c
 // Load bundle, which creates a `global.runBundledLighthouse`.
 require('../../../../dist/lighthouse-dt-bundle.js');
 
-// Import the main lighthouse() signature for easy type verification.
 /** @type {import('../../../../lighthouse-core/index.js')} */
 // @ts-ignore - not worth giving test global an actual type.
 const lighthouse = global.runBundledLighthouse;
