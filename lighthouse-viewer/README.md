@@ -1,3 +1,4 @@
+lighthouse-viewer/README.md
 # Lighthouse Viewer
 
 Online at https://googlechrome.github.io/lighthouse/viewer/
