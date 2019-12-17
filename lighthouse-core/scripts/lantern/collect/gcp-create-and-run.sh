@@ -4,6 +4,8 @@
 
 set -euxo pipefail
 
+CLOUDSDK_CORE_PROJECT=lighthouse-lantern-collect
+
 gcloud compute instances create lantern-collect-instance \
   --image-family=ubuntu-1804-lts --image-project=ubuntu-os-cloud \
   --zone=us-central1-a \
@@ -11,7 +13,12 @@ gcloud compute instances create lantern-collect-instance \
   --machine-type=n1-standard-2
 
 echo "export WPT_KEY=\"$WPT_KEY\"" > .tmp_wpt_key
-gcloud compute scp ./.tmp_wpt_key lantern-collect-instance:/tmp/wpt-key
+# Instance needs time to start up.
+until gcloud compute scp ./.tmp_wpt_key lantern-collect-instance:/tmp/wpt-key
+do
+  echo "Waiting for start up ..."
+  sleep 10
+done
 rm .tmp_wpt_key
 
 gcloud compute scp ./lighthouse-core/scripts/lantern/collect/gcp-setup.sh lantern-collect-instance:/tmp/gcp-setup.sh
@@ -19,11 +26,12 @@ gcloud compute scp ./lighthouse-core/scripts/lantern/collect/gcp-run.sh lantern-
 gcloud compute ssh lantern-collect-instance --command="bash /tmp/gcp-setup.sh"
 gcloud compute ssh lantern-collect-instance --command="sudo -u lighthouse sh -c 'nohup /home/lighthouse/gcp-run.sh > /home/lighthouse/collect.log 2>&1 < /dev/null &'"
 
+set +x
+
 echo "Collection has started."
 echo "Check-in on progress anytime by running..."
 echo "  $ gcloud compute ssh lantern-collect-instance"
 echo "  $ sudo -u lighthouse tail -f /home/lighthouse/collect.log"
-
 
 echo "When complete run..."
 echo "  $ gcloud compute scp lantern-collect-instance:/home/lighthouse/src/lighthouse/dist/collect-lantern-traces.zip ./collect-lantern-traces.zip"
