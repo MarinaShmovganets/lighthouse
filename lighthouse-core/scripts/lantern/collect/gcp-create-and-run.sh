@@ -2,6 +2,8 @@
 
 # This script is assumed to be run from the LH_ROOT directory.
 
+set -euxo pipefail
+
 gcloud compute instances create lantern-collect-instance \
   --image-family=ubuntu-1804-lts --image-project=ubuntu-os-cloud \
   --zone=us-central1-a \
