@@ -14,7 +14,6 @@ cache:
     - node_modules
     - lantern-data
     - /home/travis/.rvm/gems/
-    # - /home/google-cloud-sdk/
 install:
   # Ensure we have the latest Chrome stable.
   - google-chrome-stable --version
@@ -23,11 +22,6 @@ install:
   # see https://github.com/GoogleChrome/lighthouse/pull/9877#discussion_r338389765
   - unset PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
   - yarn --frozen-lockfile
-
-  # Install gsutil
-  # - if [ ! -d "/home/google-cloud-sdk/bin" ]; then rm -rf /home/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
-  # - source /home/travis/google-cloud-sdk/path.bash.inc
-  # - gcloud version
 before_script:
   # see comment above about puppeteer
   - export CHROME_PATH="$(which google-chrome-stable)"
@@ -35,19 +29,19 @@ before_script:
   - google-chrome-stable --version
   - yarn build-all
 script:
-  # - yarn bundlesize
-  # - yarn diff:sample-json
-  # - yarn lint
-  # - yarn unit:cicoverage
-  # - yarn type-check
-  # - yarn smoke:cicoverage
-  # - yarn test-clients
-  # - yarn test-viewer
+  - yarn bundlesize
+  - yarn diff:sample-json
+  - yarn lint
+  - yarn unit:cicoverage
+  - yarn type-check
+  - yarn smoke:cicoverage
+  - yarn test-clients
+  - yarn test-viewer
   - yarn test-lantern
-  # - yarn test-bundle
-  # - yarn i18n:checks
-  # - yarn dogfood-lhci
-  # - yarn test-docs
+  - yarn test-bundle
+  - yarn i18n:checks
+  - yarn dogfood-lhci
+  - yarn test-docs
 before_cache:
   # nyc, jest and other projects store files in here. They mess up the travis build cache.
   - rm -rf ./node_modules/.cache/
