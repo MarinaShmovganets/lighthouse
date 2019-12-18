@@ -24,7 +24,7 @@ rm -rf lantern-data/
 mkdir -p lantern-data/ && cd lantern-data
 echo $VERSION > version
 
-gsutil cp gs://lh-lantern-data/lantern-traces-$VERSION.tar.gz lantern-traces.tar.gz
+curl -o lantern-traces.tar.gz -L https://storage.googleapis.com/lh-lantern-data/lantern-traces-$VERSION.tar.gz
 
 tar -xzf lantern-traces.tar.gz
 rm lantern-traces.tar.gz
