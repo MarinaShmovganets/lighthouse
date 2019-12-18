@@ -10,7 +10,7 @@ DIRNAME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT_PATH="$DIRNAME/../../.."
 cd $LH_ROOT_PATH
 
-if [[ -f lantern-data/version ]] && [["$VERSION" == "$(cat lantern-data/version)"]]; then
+if [[ -f lantern-data/version ]] && [["$VERSION" != "$(cat lantern-data/version)"]]; then
   echo "Deleting old lantern data."
   rm -rf lantern-data/
 fi
