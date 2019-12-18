@@ -312,6 +312,23 @@ const expectations = [
             ],
           },
         },
+        'form-field-multiple-labels': {
+          score: null,
+          details: {
+            items: [
+              {
+                node: {
+                  'type': 'node',
+                  'selector': '#form-field-multiple-labels',
+                  'path': '2,HTML,1,BODY,35,SECTION,2,INPUT',
+                  'snippet': '<input type="checkbox" id="form-field-multiple-labels">',
+                  'explanation': 'Fix all of the following:\n  Multiple label elements is not widely supported in assistive technologies',
+                  'nodeLabel': 'input',
+                },
+              },
+            ],
+          },
+        },
         'frame-title': {
           score: 0,
           details: {
