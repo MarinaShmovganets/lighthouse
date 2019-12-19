@@ -64,11 +64,11 @@ describe('Accessibility: axe-audit', () => {
       assert.equal(output.errorMessage, 'Feature is not supported on your platform');
     });
 
-    it('considers error-free incomplete cases without node matches as audit pass', () => {
+    it('considers error-free incomplete cases without node matches as not applicable', () => {
       class FakeA11yAudit extends AxeAudit {
         static get meta() {
           return {
-            id: 'fake-incomplete-pass',
+            id: 'fake-incomplete-not-applicable',
             title: 'Example title',
             requiredArtifacts: ['Accessibility'],
           };
@@ -77,7 +77,7 @@ describe('Accessibility: axe-audit', () => {
       const artifacts = {
         Accessibility: {
           incomplete: [{
-            id: 'fake-incomplete-pass',
+            id: 'fake-incomplete-not-applicable',
             nodes: [],
             help: 'http://example.com/',
           }],
@@ -85,7 +85,7 @@ describe('Accessibility: axe-audit', () => {
       };
 
       const output = FakeA11yAudit.audit(artifacts);
-      assert.equal(output.score, 1);
+      assert.ok(output.notApplicable);
     });
 
     it('considers error-free incomplete cases with node matches as audit failure', () => {
