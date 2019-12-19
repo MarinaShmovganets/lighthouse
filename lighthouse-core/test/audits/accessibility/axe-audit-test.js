@@ -35,5 +35,53 @@ describe('Accessibility: axe-audit', () => {
       const output = FakeA11yAudit.audit(artifacts);
       assert.equal(output.score, 0);
     });
+
+    it('considers error-free incomplete cases without node matches as audit pass', () => {
+      class FakeA11yAudit extends AxeAudit {
+        static get meta() {
+          return {
+            id: 'fake-incomplete-fail',
+            title: 'Example title',
+            requiredArtifacts: ['Accessibility'],
+          };
+        }
+      }
+      const artifacts = {
+        Accessibility: {
+          incomplete: [{
+            id: 'fake-incomplete-fail',
+            nodes: [],
+            help: 'http://example.com/',
+          }],
+        },
+      };
+
+      const output = FakeA11yAudit.audit(artifacts);
+      assert.equal(output.score, 1);
+    });
+
+    it('considers error-free incomplete cases with node matches as audit failure', () => {
+      class FakeA11yAudit extends AxeAudit {
+        static get meta() {
+          return {
+            id: 'fake-incomplete-fail',
+            title: 'Example title',
+            requiredArtifacts: ['Accessibility'],
+          };
+        }
+      }
+      const artifacts = {
+        Accessibility: {
+          incomplete: [{
+            id: 'fake-incomplete-fail',
+            nodes: [{}],
+            help: 'http://example.com/',
+          }],
+        },
+      };
+
+      const output = FakeA11yAudit.audit(artifacts);
+      assert.equal(output.score, 0);
+    });
   });
 });
