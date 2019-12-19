@@ -41,8 +41,8 @@ class AxeAudit extends Audit {
 
     // Determine how to handle an 'incomplete' result
     // aXe uses this result type to indicate errors, or rules which require manual investigation
-    // If aXe indicates an error, then bubble that error up
-    // If aXe indicates no errors and that no known-bad nodes were found, pass the audit
+    // If aXe reports an error, then bubble that error up to the caller
+    // If axe reports no errors and also found no failing elements, consider the rule inapplicable
     const incomplete = artifacts.Accessibility.incomplete || [];
     const isIncomplete = incomplete.find(result => result.id === this.meta.id);
     if (isIncomplete) {
