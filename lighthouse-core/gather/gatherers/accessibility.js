@@ -62,9 +62,8 @@ function runA11yChecks() {
 
     // We only need violations, and circular references are possible outside of violations
     axeResult = {
-      violations: axeResult.violations,
+      violations: [...axeResult.violations, ...axeResult.incomplete],
       notApplicable: axeResult.inapplicable,
-      incomplete: axeResult.incomplete,
     };
     return axeResult;
   });
