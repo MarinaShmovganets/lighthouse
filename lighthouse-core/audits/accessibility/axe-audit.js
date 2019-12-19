@@ -39,13 +39,19 @@ class AxeAudit extends Audit {
       };
     }
 
-    // Determine whether an 'incomplete' result is an automatic pass
-    // aXe uses this result type to indicate that manual investigation may be required
-    // If aXe indicates an incomplete result with no error & no matching elements, pass the audit
+    // Determine how to handle an 'incomplete' result
+    // aXe uses this result type to indicate errors, or rules which require manual investigation
+    // If aXe indicates an error, then bubble that error up
+    // If aXe indicates no errors and that no known-bad nodes were found, pass the audit
     const incomplete = artifacts.Accessibility.incomplete || [];
     const isIncomplete = incomplete.find(result => result.id === this.meta.id);
-    if (isIncomplete && isIncomplete.error) {
-      return Audit.generateErrorAuditResult(this, isIncomplete.error.message);
+    if (isIncomplete) {
+      if (isIncomplete.error) {
+        return Audit.generateErrorAuditResult(this, isIncomplete.error.message);
+      }
+      if (!isIncomplete.nodes || isIncomplete.nodes.length == 0) {
+        return {score: 1};
+      }
     }
 
     const failureCases = [
