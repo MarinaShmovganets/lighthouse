@@ -44,11 +44,8 @@ class AxeAudit extends Audit {
     // If aXe indicates an incomplete result with no error & no matching elements, pass the audit
     const incomplete = artifacts.Accessibility.incomplete || [];
     const isIncomplete = incomplete.find(result => result.id === this.meta.id);
-    // TODO: Check error cases here
-    if (isIncomplete && (isIncomplete.nodes || []).length === 0) {
-      return {
-        score: 1,
-      };
+    if (isIncomplete && isIncomplete.error) {
+      return Audit.generateErrorAuditResult(this, isIncomplete.error.message);
     }
 
     const failureCases = [
