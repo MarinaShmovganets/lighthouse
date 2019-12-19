@@ -313,7 +313,7 @@ const expectations = [
           },
         },
         'form-field-multiple-labels': {
-          score: null,
+          score: 0,
           details: {
             items: [
               {
