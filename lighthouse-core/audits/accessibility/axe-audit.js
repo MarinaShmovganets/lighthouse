@@ -44,7 +44,7 @@ class AxeAudit extends Audit {
     if (isIncomplete && !isIncomplete.error && !isIncomplete.nodes) {
       return {
         score: 1,
-      }
+      };
     }
 
     const violations = artifacts.Accessibility.violations || [];
