@@ -144,6 +144,11 @@ declare global {
       export type TaskNode = _TaskNode;
       export type MetaElement = LH.Artifacts['MetaElements'][0];
 
+      export interface RuleExecutionError {
+        name: string;
+        message: string;
+      }
+
       export interface FailureCase {
         id: string;
         impact: string;
@@ -156,6 +161,7 @@ declare global {
           failureSummary?: string;
           nodeLabel?: string;
         }[];
+        error?: RuleExecutionError;
       }
 
       export interface Accessibility {
