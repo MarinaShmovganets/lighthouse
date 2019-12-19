@@ -40,7 +40,7 @@ describe('Accessibility: axe-audit', () => {
       class FakeA11yAudit extends AxeAudit {
         static get meta() {
           return {
-            id: 'fake-incomplete-fail',
+            id: 'fake-incomplete-pass',
             title: 'Example title',
             requiredArtifacts: ['Accessibility'],
           };
@@ -49,7 +49,7 @@ describe('Accessibility: axe-audit', () => {
       const artifacts = {
         Accessibility: {
           incomplete: [{
-            id: 'fake-incomplete-fail',
+            id: 'fake-incomplete-pass',
             nodes: [],
             help: 'http://example.com/',
           }],
