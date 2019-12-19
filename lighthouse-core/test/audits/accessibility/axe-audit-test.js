@@ -61,7 +61,7 @@ describe('Accessibility: axe-audit', () => {
       };
 
       const output = FakeA11yAudit.audit(artifacts);
-      assert.equal(output.scoreDisplayMode, 'error');
+      assert.equal(output.errorMessage, 'Feature is not supported on your platform');
     });
 
     it('considers error-free incomplete cases without node matches as audit pass', () => {
