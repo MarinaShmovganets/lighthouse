@@ -47,10 +47,10 @@ class AxeAudit extends Audit {
       };
     }
 
-    const failureCases = [].concat(
+    const failureCases = [
       ...artifacts.Accessibility.violations || [],
       ...artifacts.Accessibility.incomplete || [],
-    );
+    ];
     const rule = failureCases.find(result => result.id === this.meta.id);
     const impact = rule && rule.impact;
     const tags = rule && rule.tags;
