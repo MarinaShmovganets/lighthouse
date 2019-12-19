@@ -41,14 +41,17 @@ class AxeAudit extends Audit {
 
     const incomplete = artifacts.Accessibility.incomplete || [];
     const isIncomplete = incomplete.find(result => result.id === this.meta.id);
-    if (isIncomplete && !isIncomplete.error && !isIncomplete.nodes) {
+    if (isIncomplete && !isIncomplete.error && (isIncomplete.nodes || []).length === 0) {
       return {
         score: 1,
       };
     }
 
-    const violations = artifacts.Accessibility.violations || [];
-    const rule = violations.find(result => result.id === this.meta.id);
+    const failureCases = [].concat(
+      ...artifacts.Accessibility.violations || [],
+      ...artifacts.Accessibility.incomplete || [],
+    );
+    const rule = failureCases.find(result => result.id === this.meta.id);
     const impact = rule && rule.impact;
     const tags = rule && rule.tags;
 
