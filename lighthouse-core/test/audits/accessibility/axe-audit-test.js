@@ -36,6 +36,34 @@ describe('Accessibility: axe-audit', () => {
       assert.equal(output.score, 0);
     });
 
+    it('returns error details to the caller when present', () => {
+      class FakeA11yAudit extends AxeAudit {
+        static get meta() {
+          return {
+            id: 'fake-incomplete-error',
+            title: 'Example title',
+            requiredArtifacts: ['Accessibility'],
+          };
+        }
+      }
+      const artifacts = {
+        Accessibility: {
+          incomplete: [{
+            id: 'fake-incomplete-error',
+            nodes: [],
+            help: 'http://example.com/',
+            error: {
+              name: 'SupportError',
+              message: 'Feature is not supported on your platform',
+            }
+          }],
+        },
+      };
+
+      const output = FakeA11yAudit.audit(artifacts);
+      assert.equal(output.scoreDisplayMode, 'error');
+    });
+
     it('considers error-free incomplete cases without node matches as audit pass', () => {
       class FakeA11yAudit extends AxeAudit {
         static get meta() {
