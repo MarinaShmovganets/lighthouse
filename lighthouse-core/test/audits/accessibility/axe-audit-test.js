@@ -55,7 +55,7 @@ describe('Accessibility: axe-audit', () => {
             error: {
               name: 'SupportError',
               message: 'Feature is not supported on your platform',
-            }
+            },
           }],
         },
       };
