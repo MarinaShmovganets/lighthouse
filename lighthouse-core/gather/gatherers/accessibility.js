@@ -49,7 +49,7 @@ function runA11yChecks() {
   }).then(axeResult => {
     // Augment the node objects with outerHTML snippet & custom path string
     // @ts-ignore
-    axeResult.violations.forEach(v => v.nodes.forEach(node => {
+    [...axeResult.violations, ...axeResult.incomplete].forEach(v => v.nodes.forEach(node => {
       // @ts-ignore - getNodePath put into scope via stringification
       node.path = getNodePath(node.element);
       // @ts-ignore - getOuterHTMLSnippet put into scope via stringification
@@ -61,7 +61,11 @@ function runA11yChecks() {
     }));
 
     // We only need violations, and circular references are possible outside of violations
-    axeResult = {violations: axeResult.violations, notApplicable: axeResult.inapplicable};
+    axeResult = {
+      violations: axeResult.violations,
+      notApplicable: axeResult.inapplicable,
+      incomplete: axeResult.incomplete,
+    };
     return axeResult;
   });
 }

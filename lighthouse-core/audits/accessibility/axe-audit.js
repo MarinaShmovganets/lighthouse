@@ -39,7 +39,10 @@ class AxeAudit extends Audit {
       };
     }
 
-    const violations = artifacts.Accessibility.violations || [];
+    const violations = [
+      ...artifacts.Accessibility.violations || [],
+      ...artifacts.Accessibility.incomplete || [],
+    ];
     const rule = violations.find(result => result.id === this.meta.id);
     const impact = rule && rule.impact;
     const tags = rule && rule.tags;
