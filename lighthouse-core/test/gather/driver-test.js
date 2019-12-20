@@ -74,8 +74,8 @@ expect.extend({
  * In some functions we have lots of promise follow ups that get queued by protocol messages.
  * This is a convenience method to easily advance all timers and flush all the queued microtasks.
  */
-async function flushAllTimersAndMicrotasks() {
-  for (let i = 0; i < 1000; i++) {
+async function flushAllTimersAndMicrotasks(ms = 1000) {
+  for (let i = 0; i < ms; i++) {
     jest.advanceTimersByTime(1);
     await Promise.resolve();
   }
@@ -176,15 +176,7 @@ describe('.getRequestContent', () => {
 
     try {
       const responsePromise = driver.getRequestContent('', driverTimeout);
-
-      // Advance timers by the minimum of the timeouts, wait a microtask, and advance
-      // again. To convince yourself this is necessary, reverse the values for the timeout
-      // variables and comment out the Promise.resolve - you'd expect the test to fail, but
-      // it does not.
-      jest.advanceTimersByTime(Math.min(driverTimeout, mockTimeout) + 1);
-      await Promise.resolve();
-      jest.advanceTimersByTime(Math.max(driverTimeout, mockTimeout) + 1);
-
+      await flushAllTimersAndMicrotasks(Math.max(driverTimeout, mockTimeout) + 1);
       await responsePromise;
     } catch (err) {
       expect(err.code).toEqual('PROTOCOL_TIMEOUT');
@@ -280,7 +272,7 @@ describe('.sendCommand', () => {
   it('.sendCommand timesout when commands take too long', async () => {
     const mockTimeout = 5000;
     connectionStub.sendCommand = jest.fn()
-      .mockImplementationOnce(() => new Promise(r => setTimeout(r, mockTimeout)));
+      .mockImplementation(() => new Promise(r => setTimeout(r, mockTimeout)));
 
     driver.setNextProtocolTimeout(10000);
     const pageEnablePromise = driver.sendCommand('Page.enable');
@@ -291,11 +283,7 @@ describe('.sendCommand', () => {
     driver.setNextProtocolTimeout(driverTimeout);
     const pageDisablePromise = driver.sendCommand('Page.disable');
 
-    // See comment in `throws if getRequestContent takes too long`.
-    jest.advanceTimersByTime(Math.min(driverTimeout, mockTimeout) + 1);
-    await Promise.resolve();
-    jest.advanceTimersByTime(Math.max(driverTimeout, mockTimeout) + 1);
-
+    await flushAllTimersAndMicrotasks(driverTimeout + 1);
     await expect(pageDisablePromise).rejects.toMatchObject({
       code: 'PROTOCOL_TIMEOUT',
     });
