@@ -57,7 +57,7 @@ class AxeAudit extends Audit {
     const isInformative = this.meta.scoreDisplayMode === Audit.SCORING_MODES.INFORMATIVE;
     const passes = artifacts.Accessibility.passes || [];
     const pass = passes.find(result => result.id === this.meta.id);
-    if (isInformative && pass) {
+    if (isInformative && !isIncomplete && pass) {
       return {
         score: 1,
         notApplicable: true,

@@ -88,6 +88,37 @@ describe('Accessibility: axe-audit', () => {
       assert.ok(output.notApplicable);
     });
 
+    it('considers dual-pass-and-incomplete axe result as failure for informative audit', () => {
+      class FakeA11yAudit extends AxeAudit {
+        static get meta() {
+          return {
+            id: 'fake-axe-dual-pass-and-incomplete',
+            title: 'Example title',
+            scoreDisplayMode: 'informative',
+            requiredArtifacts: ['Accessibility'],
+          };
+        }
+      }
+      const artifacts = {
+        Accessibility: {
+          passes: [{
+            id: 'fake-axe-dual-pass-and-incomplete',
+            nodes: [{html: '<input id="single-label-form-element" />'}],
+            help: 'http://example.com/',
+          }],
+          incomplete: [{
+            id: 'fake-axe-dual-pass-and-incomplete',
+            nodes: [{html: '<input id="multi-label-form-element" />'}],
+            help: 'http://example.com/',
+          }],
+        },
+      };
+
+      const output = FakeA11yAudit.audit(artifacts);
+      assert.ok(!output.notApplicable);
+      assert.equal(output.score, 0);
+    });
+
     it('considers error-free incomplete axe result as failure for informative audit', () => {
       class FakeA11yAudit extends AxeAudit {
         static get meta() {
