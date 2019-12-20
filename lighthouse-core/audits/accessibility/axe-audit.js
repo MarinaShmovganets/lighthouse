@@ -48,9 +48,10 @@ class AxeAudit extends Audit {
       return Audit.generateErrorAuditResult(this, isIncomplete.error.message);
     }
 
+    const isInformative = this.meta.scoreDisplayMode === Audit.SCORING_MODES.INFORMATIVE;
     const failureCases = [
-      ...artifacts.Accessibility.violations || [],
-      ...artifacts.Accessibility.incomplete || [],
+      ...(artifacts.Accessibility.violations || []),
+      ...(artifacts.Accessibility.incomplete || []).filter(() => isInformative),
     ];
     const rule = failureCases.find(result => result.id === this.meta.id);
     const impact = rule && rule.impact;

@@ -64,12 +64,13 @@ describe('Accessibility: axe-audit', () => {
       assert.equal(output.errorMessage, 'Feature is not supported on your platform');
     });
 
-    it('considers error-free incomplete cases as audit failure', () => {
+    it('considers error-free incomplete cases as informative audit failure', () => {
       class FakeA11yAudit extends AxeAudit {
         static get meta() {
           return {
             id: 'fake-incomplete-fail',
             title: 'Example title',
+            scoreDisplayMode: 'informative',
             requiredArtifacts: ['Accessibility'],
           };
         }
