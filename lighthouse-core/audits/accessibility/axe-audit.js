@@ -49,12 +49,6 @@ class AxeAudit extends Audit {
       if (isIncomplete.error) {
         return Audit.generateErrorAuditResult(this, isIncomplete.error.message);
       }
-      if (!isIncomplete.nodes || isIncomplete.nodes.length === 0) {
-        return {
-          score: 1,
-          notApplicable: true,
-        };
-      }
     }
 
     const failureCases = [
