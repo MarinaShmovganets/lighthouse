@@ -36,7 +36,7 @@ describe('Accessibility: axe-audit', () => {
       assert.equal(output.score, 0);
     });
 
-    it('returns error details to the caller when present', () => {
+    it('returns axe error message to the caller when present', () => {
       class FakeA11yAudit extends AxeAudit {
         static get meta() {
           return {
@@ -64,7 +64,7 @@ describe('Accessibility: axe-audit', () => {
       assert.equal(output.errorMessage, 'Feature is not supported on your platform');
     });
 
-    it('considers error-free incomplete cases as informative audit failure', () => {
+    it('considers error-free incomplete axe result as failure for informative audits', () => {
       class FakeA11yAudit extends AxeAudit {
         static get meta() {
           return {
