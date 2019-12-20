@@ -39,16 +39,13 @@ class AxeAudit extends Audit {
       };
     }
 
-    // Determine how to handle an 'incomplete' result
+    // Detect errors reported within aXe 'incomplete' results
     // aXe uses this result type to indicate errors, or rules which require manual investigation
-    // If aXe reports an error, then bubble that error up to the caller
-    // If axe reports no errors and also found no failing elements, consider the rule inapplicable
+    // If aXe reports an error, then bubble it up to the caller
     const incomplete = artifacts.Accessibility.incomplete || [];
     const isIncomplete = incomplete.find(result => result.id === this.meta.id);
-    if (isIncomplete) {
-      if (isIncomplete.error) {
-        return Audit.generateErrorAuditResult(this, isIncomplete.error.message);
-      }
+    if (isIncomplete && isIncomplete.error) {
+      return Audit.generateErrorAuditResult(this, isIncomplete.error.message);
     }
 
     const failureCases = [
