@@ -149,7 +149,7 @@ declare global {
         message: string;
       }
 
-      export interface FailureCase {
+      export interface AxeResult {
         id: string;
         impact: string;
         tags: string[];
@@ -165,11 +165,10 @@ declare global {
       }
 
       export interface Accessibility {
-        violations: FailureCase[];
-        notApplicable: {
-          id: string
-        }[];
-        incomplete: FailureCase[];
+        passes: AxeResult[];
+        violations: AxeResult[];
+        notApplicable: AxeResult[];
+        incomplete: AxeResult[];
       }
 
       export interface CSSStyleSheetInfo {
