@@ -51,19 +51,7 @@ class AxeAudit extends Audit {
       return Audit.generateErrorAuditResult(this, isIncomplete.error.message);
     }
 
-    // Handle aXe 'pass' results on informative rules as 'not applicable'
-    // This scenario indicates that no action is required by the web property owner
-    // Since there is no score impact from informative rules, display the rule as not applicable
     const isInformative = this.meta.scoreDisplayMode === Audit.SCORING_MODES.INFORMATIVE;
-    const passes = artifacts.Accessibility.passes || [];
-    const pass = passes.find(result => result.id === this.meta.id);
-    if (isInformative && !isIncomplete && pass) {
-      return {
-        score: 1,
-        notApplicable: true,
-      };
-    }
-
     const failureCases = [
       ...(artifacts.Accessibility.violations || []),
       ...(artifacts.Accessibility.incomplete || []).filter(() => isInformative),
@@ -71,6 +59,18 @@ class AxeAudit extends Audit {
     const rule = failureCases.find(result => result.id === this.meta.id);
     const impact = rule && rule.impact;
     const tags = rule && rule.tags;
+
+    // Handle aXe 'complete pass' results on informative rules as 'not applicable'
+    // This scenario indicates that no action is required by the web property owner
+    // Since there is no score impact from informative rules, display the rule as not applicable
+    const passes = artifacts.Accessibility.passes || [];
+    const pass = passes.find(result => result.id === this.meta.id);
+    if (isInformative && pass && !rule) {
+      return {
+        score: 1,
+        notApplicable: true,
+      };
+    }
 
     /** @type {LH.Audit.Details.Table['items']}>} */
     let items = [];
