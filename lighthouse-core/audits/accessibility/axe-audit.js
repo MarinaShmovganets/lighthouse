@@ -50,7 +50,7 @@ class AxeAudit extends Audit {
       return Audit.generateErrorAuditResult(this, isIncomplete.error.message);
     }
 
-    // Handle passes on informative rules as 'not applicable'
+    // Handle aXe 'pass' results on informative rules as 'not applicable' if no nodes were found
     // This scenario indicates that no action is required by the web property owner
     // Since there is no score impact from informative rules, display the rule as not applicable
     const isInformative = this.meta.scoreDisplayMode === Audit.SCORING_MODES.INFORMATIVE;
