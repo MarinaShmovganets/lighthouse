@@ -64,7 +64,58 @@ describe('Accessibility: axe-audit', () => {
       assert.equal(output.errorMessage, 'Feature is not supported on your platform');
     });
 
-    it('considers error-free incomplete axe result as failure for informative audits', () => {
+    it('considers passing axe result without nodes as not applicable for informative audit', () => {
+      class FakeA11yAudit extends AxeAudit {
+        static get meta() {
+          return {
+            id: 'fake-axe-pass-without-nodes',
+            title: 'Example title',
+            scoreDisplayMode: 'informative',
+            requiredArtifacts: ['Accessibility'],
+          };
+        }
+      }
+      const artifacts = {
+        Accessibility: {
+          passes: [{
+            id: 'fake-axe-pass-without-nodes',
+            nodes: [],
+            help: 'http://example.com/',
+          }],
+        },
+      };
+
+      const output = FakeA11yAudit.audit(artifacts);
+      assert.ok(output.notApplicable);
+    });
+
+    it('considers passing axe result with nodes as pass for informative audit', () => {
+      class FakeA11yAudit extends AxeAudit {
+        static get meta() {
+          return {
+            id: 'fake-axe-pass-with-nodes',
+            title: 'Example title',
+            scoreDisplayMode: 'informative',
+            requiredArtifacts: ['Accessibility'],
+          };
+        }
+      }
+      const artifacts = {
+        Accessibility: {
+          passes: [{
+            id: 'fake-axe-pass-with-nodes',
+            nodes: [{}],
+            help: 'http://example.com/',
+          }],
+        },
+      };
+
+      const output = FakeA11yAudit.audit(artifacts);
+      assert.ok(!output.notApplicable);
+      assert.equal(output.score, 1);
+    });
+
+    it('considers error-free incomplete axe result as failure for informative audit', () => {
       class FakeA11yAudit extends AxeAudit {
         static get meta() {
           return {

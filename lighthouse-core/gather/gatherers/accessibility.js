@@ -63,11 +63,13 @@ function runA11yChecks() {
     };
 
     // Augment the node objects with outerHTML snippet & custom path string
+    axeResult.passes.forEach(augmentAxeNodes);
     axeResult.violations.forEach(augmentAxeNodes);
     axeResult.incomplete.forEach(augmentAxeNodes);
 
     // We only need violations, and circular references are possible outside of violations
     axeResult = {
+      passes: axeResult.passes,
       violations: axeResult.violations,
       notApplicable: axeResult.inapplicable,
       incomplete: axeResult.incomplete,

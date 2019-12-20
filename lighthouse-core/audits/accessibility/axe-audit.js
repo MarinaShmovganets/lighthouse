@@ -50,7 +50,19 @@ class AxeAudit extends Audit {
       return Audit.generateErrorAuditResult(this, isIncomplete.error.message);
     }
 
+    // Handle passes on informative rules as 'not applicable'
+    // This scenario indicates that no action is required by the web property owner
+    // Since there is no score impact from informative rules, display the rule as not applicable
     const isInformative = this.meta.scoreDisplayMode === Audit.SCORING_MODES.INFORMATIVE;
+    const passes = artifacts.Accessibility.passes || [];
+    const pass = passes.find(result => result.id === this.meta.id);
+    if (isInformative && pass && (pass.nodes || []).length === 0) {
+      return {
+        score: 1,
+        notApplicable: true,
+      };
+    }
+
     const failureCases = [
       ...(artifacts.Accessibility.violations || []),
       ...(artifacts.Accessibility.incomplete || []).filter(() => isInformative),
