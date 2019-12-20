@@ -169,7 +169,7 @@ describe('.getRequestContent', () => {
     const mockTimeout = 5000;
     const driverTimeout = 1000;
     connectionStub.sendCommand = jest.fn()
-      .mockImplementationOnce(() => new Promise(r => setTimeout(r, mockTimeout)));
+      .mockImplementation(() => new Promise(r => setTimeout(r, mockTimeout)));
 
     // Fail if we don't reach our two assertions in the catch block
     expect.assertions(2);
