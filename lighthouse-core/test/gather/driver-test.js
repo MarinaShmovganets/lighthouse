@@ -166,15 +166,24 @@ describe('.getObjectProperty', () => {
 
 describe('.getRequestContent', () => {
   it('throws if getRequestContent takes too long', async () => {
+    const mockTimeout = 5000;
+    const driverTimeout = 1000;
     connectionStub.sendCommand = jest.fn()
-      .mockImplementationOnce(() => new Promise(r => setTimeout(r), 5000));
+      .mockImplementationOnce(() => new Promise(r => setTimeout(r, mockTimeout)));
 
     // Fail if we don't reach our two assertions in the catch block
     expect.assertions(2);
 
     try {
-      const responsePromise = driver.getRequestContent('', 1000);
-      jest.advanceTimersByTime(1001);
+      const responsePromise = driver.getRequestContent('', driverTimeout);
+
+      // Advance timers by the minimum of the timeouts, wait a microtask, and advance
+      // again. To convince yourself this is necessary, reverse the values for the timeout
+      // variables and comment out the Promise.resolve - you'd expect the test to fail, but
+      // it does not.
+      jest.advanceTimersByTime(Math.min(driverTimeout, mockTimeout) + 1);
+      await Promise.resolve();
+      jest.advanceTimersByTime(Math.max(driverTimeout, mockTimeout) + 1);
 
       await responsePromise;
     } catch (err) {
@@ -269,17 +278,23 @@ describe('.evaluateAsync', () => {
 
 describe('.sendCommand', () => {
   it('.sendCommand timesout when commands take too long', async () => {
+    const mockTimeout = 5000;
     connectionStub.sendCommand = jest.fn()
-      .mockImplementationOnce(() => new Promise(r => setTimeout(r), 5000));
+      .mockImplementationOnce(() => new Promise(r => setTimeout(r, mockTimeout)));
 
     driver.setNextProtocolTimeout(10000);
     const pageEnablePromise = driver.sendCommand('Page.enable');
-    jest.advanceTimersByTime(5001);
+    jest.advanceTimersByTime(mockTimeout + 1);
     await pageEnablePromise;
 
-    driver.setNextProtocolTimeout(5);
+    const driverTimeout = 5;
+    driver.setNextProtocolTimeout(driverTimeout);
     const pageDisablePromise = driver.sendCommand('Page.disable');
-    jest.advanceTimersByTime(10);
+
+    // See comment in `throws if getRequestContent takes too long`.
+    jest.advanceTimersByTime(Math.min(driverTimeout, mockTimeout) + 1);
+    await Promise.resolve();
+    jest.advanceTimersByTime(Math.max(driverTimeout, mockTimeout) + 1);
 
     await expect(pageDisablePromise).rejects.toMatchObject({
       code: 'PROTOCOL_TIMEOUT',
