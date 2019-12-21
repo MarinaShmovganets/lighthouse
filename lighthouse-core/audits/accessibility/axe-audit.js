@@ -60,12 +60,10 @@ class AxeAudit extends Audit {
     const impact = rule && rule.impact;
     const tags = rule && rule.tags;
 
-    // Handle aXe 'complete pass' results on informative rules as 'not applicable'
+    // Handle absence of aXe failure results for informative rules as 'not applicable'
     // This scenario indicates that no action is required by the web property owner
     // Since there is no score impact from informative rules, display the rule as not applicable
-    const passes = artifacts.Accessibility.passes || [];
-    const pass = passes.find(result => result.id === this.meta.id);
-    if (isInformative && pass && !rule) {
+    if (isInformative && !rule) {
       return {
         score: 1,
         notApplicable: true,
