@@ -314,6 +314,7 @@ const expectations = [
         },
         'form-field-multiple-labels': {
           score: null,
+          scoreDisplayMode: 'informative',
           details: {
             items: [
               {
