@@ -46,9 +46,9 @@ class AxeAudit extends Audit {
     // aXe uses this result type to indicate errors, or rules which require manual investigation
     // If aXe reports an error, then bubble it up to the caller
     const incomplete = artifacts.Accessibility.incomplete || [];
-    const isIncomplete = incomplete.find(result => result.id === this.meta.id);
-    if (isIncomplete && isIncomplete.error) {
-      return Audit.generateErrorAuditResult(this, isIncomplete.error.message);
+    const incompleteResult = incomplete.find(result => result.id === this.meta.id);
+    if (incompleteResult && incompleteResult.error) {
+      return Audit.generateErrorAuditResult(this, incompleteResult.error.message);
     }
 
     const isInformative = this.meta.scoreDisplayMode === Audit.SCORING_MODES.INFORMATIVE;
