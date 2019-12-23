@@ -88,11 +88,11 @@ describe('Accessibility: axe-audit', () => {
       assert.ok(output.notApplicable);
     });
 
-    it('considers dual-pass-and-fail axe result as failure for informative audit', () => {
+    it('considers failing axe result as failure for informative audit', () => {
       class FakeA11yAudit extends AxeAudit {
         static get meta() {
           return {
-            id: 'fake-axe-dual-pass-and-incomplete',
+            id: 'fake-axe-failure-case',
             title: 'Example title',
             scoreDisplayMode: 'informative',
             requiredArtifacts: ['Accessibility'],
@@ -101,19 +101,14 @@ describe('Accessibility: axe-audit', () => {
       }
       const artifacts = {
         Accessibility: {
-          passes: [{
-            id: 'fake-axe-dual-pass-and-incomplete',
-            nodes: [{html: '<input id="single-label-form-element" />'}],
-            help: 'http://example.com/',
-          }],
           incomplete: [{
-            id: 'fake-axe-dual-pass-and-incomplete',
+            id: 'fake-axe-failure-case',
             nodes: [{html: '<input id="multi-label-form-element" />'}],
             help: 'http://example.com/',
           }],
           // TODO: remove: axe-core v3.3.0 backwards-compatibility test
           violations: [{
-            id: 'fake-axe-dual-pass-and-incomplete',
+            id: 'fake-axe-failure-case',
             nodes: [{html: '<input id="multi-label-form-element" />'}],
             help: 'http://example.com/',
           }],
