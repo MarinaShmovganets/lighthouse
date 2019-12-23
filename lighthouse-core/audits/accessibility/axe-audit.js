@@ -52,10 +52,8 @@ class AxeAudit extends Audit {
     }
 
     const isInformative = this.meta.scoreDisplayMode === Audit.SCORING_MODES.INFORMATIVE;
-    const failureCases = [
-      ...(artifacts.Accessibility.violations || []),
-      ...(artifacts.Accessibility.incomplete || []).filter(() => isInformative),
-    ];
+    const violations = artifacts.Accessibility.violations || [];
+    const failureCases = isInformative ? violations.concat(incomplete) : violations;
     const rule = failureCases.find(result => result.id === this.meta.id);
     const impact = rule && rule.impact;
     const tags = rule && rule.tags;
