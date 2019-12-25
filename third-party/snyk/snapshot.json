@@ -89,7 +89,7 @@
     ],
     "knockout":[
       {"id":"npm:knockout:20180213","severity":"medium","semver":{"vulnerable":["<3.5.0-beta"]}},
-      {"id":"npm:knockout:20130701","severity":"medium","semver":{"vulnerable":["<3.0.0 >=2.1.0-pre"]}}
+      {"id":"npm:knockout:20130701","severity":"medium","semver":{"vulnerable":[">=2.1.0-pre <3.0.0"]}}
     ],
     "lodash":[
       {"id":"SNYK-JS-LODASH-450202","severity":"high","semver":{"vulnerable":["<4.17.12"]}},
