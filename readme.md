@@ -291,7 +291,7 @@ This section details services that have integrated Lighthouse data. If you're wo
 
 ### Paid / Tiered
 
-* **[Automated Lighthouse Check](https://www.automated-lighthouse-check.com/)** - Lighthouse-as-a-service offering free and premium plans. Provides monitoring and historical reporting of Lighthouse audits with CircleCI, GitHub, and other integrations supported by documentation. Extra optional features include Slack notifications and PR comment reporting.
+* **[Automated Lighthouse Check](https://www.automated-lighthouse-check.com/)** - Lighthouse-as-a-service offering free and premium plans. Provides monitoring and historical reporting of Lighthouse audits with CircleCI, GitHub, and other integrations. Extra optional features include Slack notifications and PR comment reporting.
 
 * **[Calibre](https://calibreapp.com)** - Calibre is a comprehensive performance monitoring platform running on Lighthouse. See the performance impact of your work before it hits production with GitHub Pull Request Reviews. Track the impact of Third Party scripts. Automate your performance system with a developer-first Node.js API. Try Calibre with a free 15-day trial.
 
