@@ -18,10 +18,11 @@ const pwaDetailsExpectations = {
 };
 
 /**
+ * @type {Array<Smokehouse.ExpectedRunnerResult>}
  * Expected Lighthouse audit values for various sites with stable(ish) PWA
  * results.
  */
-module.exports = [
+const expectations = [
   {
     lhr: {
       requestedUrl: 'https://airhorner.com',
@@ -153,4 +154,7 @@ module.exports = [
   },
 ];
 
-module.exports.PWA_DETAILS_EXPECTATIONS = pwaDetailsExpectations;
+module.exports = {
+  ...expectations,
+  PWA_DETAILS_EXPECTATIONS: pwaDetailsExpectations,
+};

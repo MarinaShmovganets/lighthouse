@@ -10,6 +10,7 @@ const pwaDetailsExpectations = require('./pwa-expectations.js').PWA_DETAILS_EXPE
 const pwaRocksExpectations = {...pwaDetailsExpectations, hasIconsAtLeast512px: false};
 
 /**
+ * @type {Array<Smokehouse.ExpectedRunnerResult>}
  * Expected Lighthouse audit values for various sites with stable(ish) PWA
  * results.
  */
