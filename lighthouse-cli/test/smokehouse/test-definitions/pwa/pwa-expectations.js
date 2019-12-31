@@ -5,17 +5,7 @@
  */
 'use strict';
 
-const pwaDetailsExpectations = {
-  isParseFailure: false,
-  hasStartUrl: true,
-  hasIconsAtLeast192px: true,
-  hasIconsAtLeast512px: true,
-  hasPWADisplayValue: true,
-  hasBackgroundColor: true,
-  hasThemeColor: true,
-  hasShortName: true,
-  hasName: true,
-};
+const pwaDetailsExpectations = require('./pwa-expectations-details.js');
 
 /**
  * @type {Array<Smokehouse.ExpectedRunnerResult>}
@@ -154,7 +144,4 @@ const expectations = [
   },
 ];
 
-module.exports = {
-  ...expectations,
-  PWA_DETAILS_EXPECTATIONS: pwaDetailsExpectations,
-};
+module.exports = expectations;
