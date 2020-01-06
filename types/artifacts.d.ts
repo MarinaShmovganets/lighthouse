@@ -165,10 +165,9 @@ declare global {
       }
 
       export interface Accessibility {
-        passes: AxeResult[];
-        violations: AxeResult[];
-        notApplicable: AxeResult[];
-        incomplete: AxeResult[];
+        violations: Array<AxeResult>;
+        notApplicable: Array<Pick<AxeResult, 'id'>>;
+        incomplete: Array<AxeResult>;
       }
 
       export interface CSSStyleSheetInfo {
