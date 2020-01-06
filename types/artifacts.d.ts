@@ -152,15 +152,15 @@ declare global {
       export interface AxeResult {
         id: string;
         impact: string;
-        tags: string[];
-        nodes: {
+        tags: Array<string>;
+        nodes: Array<{
           path: string;
           html: string;
           snippet: string;
-          target: string[];
+          target: Array<string>;
           failureSummary?: string;
           nodeLabel?: string;
-        }[];
+        }>;
         error?: RuleExecutionError;
       }
 
