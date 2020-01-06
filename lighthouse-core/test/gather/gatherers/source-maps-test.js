@@ -58,7 +58,9 @@ describe('SourceMaps gatherer', () => {
       sendCommandMock
         .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: 1337}}})
         .mockResponse('Page.createIsolatedWorld', {executionContextId: 1})
-        .mockResponse('Runtime.evaluate', ({expression}) => {
+        .mockResponse('Runtime.evaluate', ({expression, contextId}) => {
+          expect(contextId).toBe(driver._isolatedExecutionContextId);
+
           // Check that the source map url was resolved correctly. It'll be somewhere
           // in the code sent to Runtime.evaluate.
           if (resolvedSourceMapUrl && !expression.includes(resolvedSourceMapUrl)) {
@@ -80,13 +82,7 @@ describe('SourceMaps gatherer', () => {
     const sourceMaps = new SourceMaps();
     await sourceMaps.beforePass({driver});
     jest.advanceTimersByTime(1);
-    const result = await sourceMaps.afterPass({driver});
-
-    // Check that we used the isolated context when evaluating.
-    // const evaluateArgs = connectionStub.sendCommand.findInvocation('Runtime.evaluate');
-    // expect(evaluateArgs).toMatchObject({contextId: 1});
-
-    return result;
+    return sourceMaps.afterPass({driver});
   }
 
   function makeJsonDataUrl(data) {
