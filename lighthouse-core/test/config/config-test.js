@@ -891,7 +891,7 @@ describe('Config', () => {
         plugins: ['lighthouse-plugin-not-a-plugin'],
       };
       assert.throws(() => new Config(configJson, {configPath: configFixturePath}),
-        /^Error: Unable to locate plugin: lighthouse-plugin-not-a-plugin/);
+        /^Error: Unable to locate plugin: `lighthouse-plugin-not-a-plugin/);
     });
 
     it('should throw if the plugin name does not begin with "lighthouse-plugin-"', () => {
