@@ -119,8 +119,7 @@ class CategoryRenderer {
       textEl.textContent = strings.errorLabel;
       textEl.classList.add('tooltip-boundary');
       const tooltip = this.dom.createChildOf(textEl, 'div', 'tooltip tooltip--error');
-      tooltip.textContent =
-        audit.result.errorMessage || strings.errorMissingAuditInfo;
+      tooltip.textContent = audit.result.errorMessage || strings.errorMissingAuditInfo;
     } else if (audit.result.explanation) {
       const explEl = this.dom.createChildOf(titleEl, 'div', 'lh-audit-explanation');
       explEl.textContent = audit.result.explanation;
