@@ -1183,7 +1183,7 @@
                             "version": "2.1.1"
                         },
                         {
-                            "id": "jquery"
+                            "id": "jquery-fast"
                         },
                         {
                             "id": "wordpress"
@@ -1208,10 +1208,6 @@
                         "name": "jQuery",
                         "npm": "jquery",
                         "version": "2.1.1"
-                    },
-                    {
-                        "name": "jQuery (Fast path)",
-                        "npm": "jquery"
                     },
                     {
                         "name": "WordPress"
