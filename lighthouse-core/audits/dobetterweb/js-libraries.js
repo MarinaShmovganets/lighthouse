@@ -44,8 +44,8 @@ class JsLibrariesAudit extends Audit {
   static audit(artifacts) {
     const libDetails = artifacts.Stacks
       .filter(stack => stack.detector === 'js')
-      // Don't show the fast paths in the table. `react-path` is a typo in js-library-detector.
-      .filter(stack => !stack.id.endsWith('-fast') && stack.id !== 'react-path')
+      // Don't show the fast paths in the table.
+      .filter(stack => !stack.id.endsWith('-fast'))
       .map(stack => ({
         name: stack.name,
         version: stack.version,
