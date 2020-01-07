@@ -44,6 +44,7 @@ describe('Returns detected front-end JavaScript libraries', () => {
       Stacks: [
         {detector: 'js', id: 'lib1', name: 'lib1', version: '3.10.1', npm: 'lib1'},
         {detector: 'js', id: 'lib2', name: 'lib2', version: undefined, npm: 'lib2'},
+        {detector: 'js', id: 'lib2-fast', name: 'lib2', version: undefined, npm: 'lib2'},
       ],
     });
     const expected = [
@@ -60,5 +61,9 @@ describe('Returns detected front-end JavaScript libraries', () => {
     ];
     assert.equal(auditResult.score, 1);
     assert.deepStrictEqual(auditResult.details.items, expected);
+    assert.deepStrictEqual(auditResult.details.debugData.stacks[2], {
+      id: 'lib2-fast',
+      version: undefined,
+    });
   });
 });
