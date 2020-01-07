@@ -11,6 +11,7 @@ const assert = require('assert');
 const fs = require('fs');
 const jsdom = require('jsdom');
 const Util = require('../../../../report/html/renderer/util.js');
+const I18n = require('../../../../report/html/renderer/i18n.js');
 const DOM = require('../../../../report/html/renderer/dom.js');
 const DetailsRenderer = require('../../../../report/html/renderer/details-renderer.js');
 const CriticalRequestChainRenderer =
@@ -79,12 +80,14 @@ describe('DetailsRenderer', () => {
 
   beforeAll(() => {
     global.Util = Util;
+    global.Util.i18n = new I18n('en', {...Util.UIStrings});
     const {document} = new jsdom.JSDOM(TEMPLATE_FILE).window;
     dom = new DOM(document);
     detailsRenderer = new DetailsRenderer(dom);
   });
 
   afterAll(() => {
+    global.Util.i18n = undefined;
     global.Util = undefined;
   });
 

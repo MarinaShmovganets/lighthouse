@@ -10,6 +10,7 @@ const fs = require('fs');
 const jsdom = require('jsdom');
 const DOM = require('../../../../report/html/renderer/dom.js');
 const Util = require('../../../../report/html/renderer/util.js');
+const I18n = require('../../../../report/html/renderer/i18n.js');
 const DetailsRenderer = require('../../../../report/html/renderer/details-renderer.js');
 const SnippetRenderer = require('../../../../report/html/renderer/snippet-renderer.js');
 const CrcDetailsRenderer = require('../../../../report/html/renderer/crc-details-renderer.js');
@@ -24,6 +25,7 @@ describe('DetailsRenderer', () => {
 
   beforeAll(() => {
     global.Util = Util;
+    global.Util.i18n = new I18n('en', {...Util.UIStrings});
     global.CriticalRequestChainRenderer = CrcDetailsRenderer;
     global.SnippetRenderer = SnippetRenderer;
     const {document} = new jsdom.JSDOM(TEMPLATE_FILE).window;
@@ -33,6 +35,7 @@ describe('DetailsRenderer', () => {
   });
 
   afterAll(() => {
+    global.Util.i18n = undefined;
     global.Util = undefined;
     global.CriticalRequestChainRenderer = undefined;
     global.SnippetRenderer = undefined;
