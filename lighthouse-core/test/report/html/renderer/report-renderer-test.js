@@ -30,7 +30,6 @@ describe('ReportRenderer', () => {
   let sampleResults;
 
   beforeAll(() => {
-    global.URL = URL;
     global.Util = Util;
     global.ReportUIFeatures = ReportUIFeatures;
     global.CriticalRequestChainRenderer = CriticalRequestChainRenderer;
@@ -62,7 +61,6 @@ describe('ReportRenderer', () => {
 
   afterAll(() => {
     global.self = undefined;
-    global.URL = undefined;
     global.Util = undefined;
     global.ReportUIFeatures = undefined;
     global.matchMedia = undefined;

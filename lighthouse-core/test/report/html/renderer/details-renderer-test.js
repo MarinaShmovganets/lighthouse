@@ -24,7 +24,6 @@ describe('DetailsRenderer', () => {
   let renderer;
 
   beforeAll(() => {
-    global.URL = URL;
     global.Util = Util;
     global.CriticalRequestChainRenderer = CrcDetailsRenderer;
     global.SnippetRenderer = SnippetRenderer;
@@ -35,7 +34,6 @@ describe('DetailsRenderer', () => {
   });
 
   afterAll(() => {
-    global.URL = undefined;
     global.Util = undefined;
     global.CriticalRequestChainRenderer = undefined;
     global.SnippetRenderer = undefined;

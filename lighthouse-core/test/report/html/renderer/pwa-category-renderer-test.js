@@ -26,7 +26,6 @@ describe('PwaCategoryRenderer', () => {
   let sampleResults;
 
   beforeAll(() => {
-    global.URL = URL;
     global.Util = Util;
     global.CategoryRenderer = CategoryRenderer;
 
@@ -48,7 +47,6 @@ describe('PwaCategoryRenderer', () => {
   });
 
   afterAll(() => {
-    global.URL = undefined;
     global.Util = undefined;
     global.CategoryRenderer = undefined;
   });

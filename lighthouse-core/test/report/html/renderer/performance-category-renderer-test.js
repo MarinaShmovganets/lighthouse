@@ -28,7 +28,6 @@ describe('PerfCategoryRenderer', () => {
   let sampleResults;
 
   beforeAll(() => {
-    global.URL = URL;
     global.Util = Util;
     global.CriticalRequestChainRenderer = CriticalRequestChainRenderer;
     global.CategoryRenderer = CategoryRenderer;
@@ -47,7 +46,6 @@ describe('PerfCategoryRenderer', () => {
   });
 
   afterAll(() => {
-    global.URL = undefined;
     global.Util = undefined;
     global.CriticalRequestChainRenderer = undefined;
     global.CategoryRenderer = undefined;

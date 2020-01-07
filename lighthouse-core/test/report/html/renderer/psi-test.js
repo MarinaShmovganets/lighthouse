@@ -35,7 +35,6 @@ const TEMPLATE_FILE = fs.readFileSync(
 describe('DOM', () => {
   let document;
   beforeAll(() => {
-    global.URL = URL; // COMPAT: Needed for Node < 10
     global.Util = Util;
     global.DOM = DOM;
     global.CategoryRenderer = CategoryRenderer;
@@ -52,7 +51,6 @@ describe('DOM', () => {
   });
 
   afterAll(() => {
-    global.URL = undefined;
     global.Util = undefined;
     global.DOM = undefined;
     global.CategoryRenderer = undefined;

@@ -79,7 +79,6 @@ describe('DetailsRenderer', () => {
   let detailsRenderer;
 
   beforeAll(() => {
-    global.URL = URL;
     global.Util = Util;
     const {document} = new jsdom.JSDOM(TEMPLATE_FILE).window;
     dom = new DOM(document);
@@ -87,7 +86,6 @@ describe('DetailsRenderer', () => {
   });
 
   afterAll(() => {
-    global.URL = undefined;
     global.Util = undefined;
   });
 

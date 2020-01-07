@@ -21,7 +21,6 @@ describe('DOM', () => {
   let dom;
 
   beforeAll(() => {
-    global.URL = URL;
     global.Util = Util;
     const {document} = new jsdom.JSDOM(TEMPLATE_FILE).window;
     dom = new DOM(document);
@@ -29,7 +28,6 @@ describe('DOM', () => {
   });
 
   afterAll(() => {
-    global.URL = undefined;
     global.Util = undefined;
   });
 

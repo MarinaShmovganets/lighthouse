@@ -27,7 +27,6 @@ describe('CategoryRenderer', () => {
   let sampleResults;
 
   beforeAll(() => {
-    global.URL = URL;
     global.Util = Util;
     global.CriticalRequestChainRenderer = CriticalRequestChainRenderer;
 
@@ -40,7 +39,6 @@ describe('CategoryRenderer', () => {
   });
 
   afterAll(() => {
-    global.URL = undefined;
     global.Util = undefined;
     global.CriticalRequestChainRenderer = undefined;
   });
