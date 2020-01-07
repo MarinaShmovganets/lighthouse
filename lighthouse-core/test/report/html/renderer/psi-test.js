@@ -10,7 +10,6 @@ const fs = require('fs');
 
 const jsdom = require('jsdom');
 
-const URL = require('../../../../lib/url-shim.js');
 const prepareLabData = require('../../../../report/html/renderer/psi.js');
 const Util = require('../../../../report/html/renderer/util.js');
 const DOM = require('../../../../report/html/renderer/dom.js');
