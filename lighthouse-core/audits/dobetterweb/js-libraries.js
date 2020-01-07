@@ -62,10 +62,10 @@ class JsLibrariesAudit extends Audit {
     const debugData = {
       type: /** @type {'debugdata'} */ ('debugdata'),
       stacks: artifacts.Stacks.map(stack => {
-        /** @type {Record<string, string>} */
-        const data = {id: stack.id};
-        if (stack.version) data.version = stack.version;
-        return data;
+        return {
+          id: stack.id,
+          version: stack.version,
+        };
       }),
     };
 
