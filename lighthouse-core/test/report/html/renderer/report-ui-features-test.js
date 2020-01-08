@@ -353,6 +353,22 @@ describe('ReportUIFeatures', () => {
         createDiv = () => dom.document().createElement('div');
       });
 
+      it('should return undefined when nodes is empty', () => {
+        const nodes = [];
+
+        const nextNode = dropDown._getNextSelectableNode(nodes);
+
+        assert.strictEqual(nextNode, undefined);
+      });
+
+      it('should return only node', () => {
+        const nodes = [createDiv()];
+
+        const nextNode = dropDown._getNextSelectableNode(nodes);
+
+        assert.strictEqual(nextNode, nodes[0]);
+      });
+
       it('should return first node when start is undefined', () => {
         const nodes = [createDiv(), createDiv()];
 
