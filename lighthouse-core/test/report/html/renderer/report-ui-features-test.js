@@ -275,6 +275,8 @@ describe('ReportUIFeatures', () => {
     let dropDown;
 
     beforeEach(() => {
+      // render is a prerequisite for initFeatures
+      render(sampleResults);
       window = dom.document().defaultView;
       const features = new ReportUIFeatures(dom);
       features.initFeatures(sampleResults);
