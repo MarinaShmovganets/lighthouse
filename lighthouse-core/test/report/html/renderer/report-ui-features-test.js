@@ -361,12 +361,12 @@ describe('ReportUIFeatures', () => {
         assert.strictEqual(nextNode, undefined);
       });
 
-      it('should return only node', () => {
-        const nodes = [createDiv()];
+      it('should return the only node when start is defined', () => {
+        const node = createDiv();
 
-        const nextNode = dropDown._getNextSelectableNode(nodes);
+        const nextNode = dropDown._getNextSelectableNode([node], node);
 
-        assert.strictEqual(nextNode, nodes[0]);
+        assert.strictEqual(nextNode, node);
       });
 
       it('should return first node when start is undefined', () => {
