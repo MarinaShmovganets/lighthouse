@@ -620,6 +620,7 @@ class DropDown {
     this.onDocumentKeyDown = this.onDocumentKeyDown.bind(this);
     this.onToggleClick = this.onToggleClick.bind(this);
     this.onToggleKeydown = this.onToggleKeydown.bind(this);
+    this.onMenuFocusOut = this.onMenuFocusOut.bind(this);
     this.onMenuKeydown = this.onMenuKeydown.bind(this);
 
     this._getNextMenuItem = this._getNextMenuItem.bind(this);
@@ -647,6 +648,7 @@ class DropDown {
       // Refocus on the tools button if the drop down last had focus
       this._toggleEl.focus();
     }
+    this._menuEl.removeEventListener('focusout', this.onMenuFocusOut);
     this._dom.document().removeEventListener('keydown', this.onDocumentKeyDown);
   }
 
@@ -666,6 +668,7 @@ class DropDown {
 
     this._toggleEl.classList.add('active');
     this._toggleEl.setAttribute('aria-expanded', 'true');
+    this._menuEl.addEventListener('focusout', this.onMenuFocusOut);
     this._dom.document().addEventListener('keydown', this.onDocumentKeyDown);
   }
 
@@ -740,6 +743,21 @@ class DropDown {
    */
   onDocumentKeyDown(e) {
     if (e.keyCode === 27) { // ESC
+      this.close();
+    }
+  }
+
+  /**
+   * Focus out handler for the drop down menu.
+   * @param {Event} e
+   */
+  onMenuFocusOut(e) {
+    // The focusout event is not supported in our current version of typescript (3.5.3)
+    // https://github.com/microsoft/TypeScript/issues/30716
+    const focusEvent = /** @type {FocusEvent} */ (e);
+    const focusedEl = /** @type {?HTMLElement} */ (focusEvent.relatedTarget);
+
+    if (!this._menuEl.contains(focusedEl)) {
       this.close();
     }
   }
