@@ -11,6 +11,7 @@ const assert = require('assert');
 const fs = require('fs');
 const jsdom = require('jsdom');
 const Util = require('../../../../report/html/renderer/util.js');
+const I18n = require('../../../../report/html/renderer/i18n.js');
 const DOM = require('../../../../report/html/renderer/dom.js');
 const DetailsRenderer = require('../../../../report/html/renderer/details-renderer.js');
 const ReportUIFeatures = require('../../../../report/html/renderer/report-ui-features.js');
@@ -45,6 +46,7 @@ describe('ReportUIFeatures', () => {
 
   beforeAll(() => {
     global.Util = Util;
+    global.I18n = I18n;
     global.ReportUIFeatures = ReportUIFeatures;
     global.CriticalRequestChainRenderer = CriticalRequestChainRenderer;
     global.DetailsRenderer = DetailsRenderer;
@@ -86,11 +88,13 @@ describe('ReportUIFeatures', () => {
 
     dom = new DOM(document.window.document);
     sampleResults = Util.prepareReportResult(sampleResultsOrig);
+    render(sampleResults);
   });
 
   afterAll(() => {
     global.self = undefined;
     global.Util = undefined;
+    global.I18n = undefined;
     global.ReportUIFeatures = undefined;
     global.matchMedia = undefined;
     global.self.matchMedia = undefined;
@@ -348,6 +352,22 @@ describe('ReportUIFeatures', () => {
 
       beforeAll(() => {
         createDiv = () => dom.document().createElement('div');
+      });
+
+      it('should return undefined when nodes is empty', () => {
+        const nodes = [];
+
+        const nextNode = dropDown._getNextSelectableNode(nodes);
+
+        assert.strictEqual(nextNode, undefined);
+      });
+
+      it('should return the only node when start is defined', () => {
+        const node = createDiv();
+
+        const nextNode = dropDown._getNextSelectableNode([node], node);
+
+        assert.strictEqual(nextNode, node);
       });
 
       it('should return first node when start is undefined', () => {
