@@ -52,9 +52,7 @@ const GatherRunner = {
  */
 function makeConfig(json) {
   // @ts-ignore: allow recursive partial.
-  const config = new Config(json);
-  if (!config.passes) throw new Error('expected config.passes to exist');
-  return {passes: config.passes, settings: config.settings};
+  return new Config(json);
 }
 
 const LoadFailureMode = {
