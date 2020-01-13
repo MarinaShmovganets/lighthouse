@@ -31,7 +31,6 @@ const ignoredPathComponents = [
   '**/test/**',
   '**/*-test.js',
   '**/*-renderer.js',
-  '**/*-ui-features.js',
 ];
 
 /**
