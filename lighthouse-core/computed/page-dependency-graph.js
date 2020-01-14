@@ -323,13 +323,9 @@ class PageDependencyGraph {
       if (!foundFirstParse && node.childEvents.some(evt => evt.name === 'ParseHTML')) {
         isFirst = foundFirstParse = true;
       }
-      if (isFirst) {
-        // Don't prune.
-        continue;
-      }
 
-      if (node.event.dur >= minimumEvtDur) {
-        // Don't prune this node. The task is long so it will impact simulation.
+      if (isFirst || node.event.dur >= minimumEvtDur) {
+        // Don't prune this node. The task is long / important so it will impact simulation.
         continue;
       }
 
