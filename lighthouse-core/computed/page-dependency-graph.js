@@ -311,7 +311,7 @@ class PageDependencyGraph {
     let foundFirstParse = false;
 
     for (const node of cpuNodes) {
-      // Don't prunt if event is the first ParseHTML/Layout/Paint.
+      // Don't prune if event is the first ParseHTML/Layout/Paint.
       // See https://github.com/GoogleChrome/lighthouse/issues/9627#issuecomment-526699524 for more.
       let isFirst = false;
       if (!foundFirstLayout && node.childEvents.some(evt => evt.name === 'Layout')) {
