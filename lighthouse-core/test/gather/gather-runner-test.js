@@ -490,7 +490,7 @@ describe('GatherRunner', function() {
     expect(artifacts.LighthouseRunWarnings).toHaveLength(1);
     expect(artifacts.PageLoadError).toBeInstanceOf(Error);
     expect(artifacts.PageLoadError).toMatchObject({code: 'ERRORED_DOCUMENT_REQUEST'});
-    // @ts-ignore: Fake gatherer.
+    // @ts-ignore: Test-only gatherer.
     expect(artifacts.TestGatherer).toBeUndefined();
   });
 
@@ -524,7 +524,7 @@ describe('GatherRunner', function() {
     expect(artifacts.LighthouseRunWarnings).toHaveLength(1);
     expect(artifacts.PageLoadError).toBeInstanceOf(Error);
     expect(artifacts.PageLoadError).toMatchObject({code: 'NO_FCP'});
-    // @ts-ignore: Fake gatherer.
+    // @ts-ignore: Test-only gatherer.
     expect(artifacts.TestGatherer).toBeUndefined();
   });
 
@@ -563,7 +563,7 @@ describe('GatherRunner', function() {
     const artifacts = await GatherRunner.run(config.passes, options);
     expect(artifacts.LighthouseRunWarnings).toHaveLength(1);
     expect(artifacts.PageLoadError).toEqual(null);
-    // @ts-ignore: Fake gatherer.
+    // @ts-ignore: Test-only gatherer.
     expect(artifacts.TestGatherer).toBeUndefined();
     expect(artifacts.devtoolsLogs).toHaveProperty('pageLoadError-nextPass');
   });
@@ -769,7 +769,7 @@ describe('GatherRunner', function() {
       ],
     };
 
-    /** @type {any} Using fake gatherer. */
+    /** @type {any} Using Test-only gatherer. */
     const gathererResults = {
       TestGatherer: [],
     };
@@ -838,31 +838,6 @@ describe('GatherRunner', function() {
       });
   });
 
-  it('doesn\'t leave networkRecords as an artifact', () => {
-    const config = makeConfig({
-      passes: [{
-        recordTrace: true,
-        passName: 'firstPass',
-        gatherers: [{instance: new TestGatherer()}],
-      }, {
-        recordTrace: true,
-        passName: 'secondPass',
-        gatherers: [{instance: new TestGatherer()}],
-      }],
-    });
-    const options = {
-      driver: fakeDriver,
-      requestedUrl: 'https://example.com',
-      settings: config.settings,
-    };
-
-    return GatherRunner.run(config.passes, options)
-      .then(artifacts => {
-        // @ts-ignore
-        assert.equal(artifacts.networkRecords, undefined);
-      });
-  });
-
   it('saves trace and devtoolsLog with error prefix when there was a runtime error', async () => {
     const requestedUrl = 'https://example.com';
     const driver = Object.assign({}, fakeDriver, {
@@ -883,7 +858,7 @@ describe('GatherRunner', function() {
     const artifacts = await GatherRunner.run(config.passes, options);
 
     expect(artifacts.PageLoadError).toMatchObject({code: 'NO_DOCUMENT_REQUEST'});
-    // @ts-ignore: Fake gatherer.
+    // @ts-ignore: Test-only gatherer.
     expect(artifacts.TestGatherer).toBeUndefined();
 
     // The only loadData available should be prefixed with `pageLoadError-`.
@@ -935,11 +910,11 @@ describe('GatherRunner', function() {
     expect(t3.called).toBe(false);
 
     // But only t1 has a valid artifact; t2 and t3 aren't defined.
-    // @ts-ignore: Fake gatherer.
+    // @ts-ignore: Test-only gatherer.
     expect(artifacts.Test1).toBe('MyArtifact');
-    // @ts-ignore: Fake gatherer.
+    // @ts-ignore: Test-only gatherer.
     expect(artifacts.Test2).toBeUndefined();
-    // @ts-ignore: Fake gatherer.
+    // @ts-ignore: Test-only gatherer.
     expect(artifacts.Test3).toBeUndefined();
 
     // PageLoadError artifact has the error.
@@ -1321,7 +1296,7 @@ describe('GatherRunner', function() {
         }],
       });
 
-      /** @type {any} Using fake gatherers. */
+      /** @type {any} Using Test-only gatherers. */
       const artifacts = await GatherRunner.run(config.passes, {
         driver: fakeDriver,
         requestedUrl: 'https://example.com',
@@ -1423,7 +1398,7 @@ describe('GatherRunner', function() {
         passes: [{gatherers}],
       });
 
-      /** @type {any} Using fake gatherers. */
+      /** @type {any} Using Test-only gatherers. */
       const artifacts = await GatherRunner.run(config.passes, {
         driver: fakeDriver,
         requestedUrl: 'https://example.com',
@@ -1448,7 +1423,7 @@ describe('GatherRunner', function() {
       const someOtherError = new Error('Bad, bad error.');
 
       // Gatherer results are all expected to be arrays of promises
-      /** @type {any} Using fake gatherers. */
+      /** @type {any} Using Test-only gatherers. */
       const gathererResults = {
         // 97 wins.
         AfterGatherer: [
@@ -1479,7 +1454,7 @@ describe('GatherRunner', function() {
         ],
       };
 
-      /** @type {any} Using fake gatherers. */
+      /** @type {any} Using Test-only gatherers. */
       const {artifacts} = await GatherRunner.collectArtifacts(gathererResults);
       assert.strictEqual(artifacts.AfterGatherer, 97);
       assert.strictEqual(artifacts.PassGatherer, 284);

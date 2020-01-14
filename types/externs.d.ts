@@ -29,7 +29,7 @@ type SplitType<T> =
 type RecursivePartialUnion<T, S=SplitType<T>> = {[P in keyof S]: RecursivePartial<S[P]>};
 
 // Return length of a tuple.
-type GetLength<T extends any[]> = T extends { length: infer L } ? L : never
+type GetLength<T extends any[]> = T extends { length: infer L } ? L : never;
 
 declare global {
   // Augment Intl to include
@@ -53,15 +53,24 @@ declare global {
   /** Make optional all properties on T and any properties on object properties of T. */
   type RecursivePartial<T> = {
     [P in keyof T]+?:
+      // RE: First two conditions.
       // If type is a union, map each individual component and transform the resultant tuple back into a union.
       // Only up to 4 components is supported. For more, modify the following line and `IntersectionOfFunctionsToType`.
+      // Ex: `{passes: PassJson[] | null}` - T[P] doesn't exactly match the array-recursing condition, so without these first couple
+      // conditions, it would fall through to the last condition (would just return T[P]).
+
+      // RE: First condition.
       // Guard against large string unions, which would be unreasonable to support (much more than 3 components is common).
+
       SplitType<T[P]> extends string[] ? T[P] :
       GetLength<SplitType<T[P]>> extends 2|3|4 ? RecursivePartialUnion<T[P]>[number] :
+
       // Recurse into arrays.
       T[P] extends (infer U)[] ? RecursivePartial<U>[] :
+
       // Recurse into objects.
       T[P] extends (object|undefined) ? RecursivePartial<T[P]> :
+
       // Strings, numbers, etc. (terminal types) end here.
       T[P];
   };
