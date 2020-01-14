@@ -55,7 +55,8 @@ declare global {
     [P in keyof T]+?:
       // RE: First two conditions.
       // If type is a union, map each individual component and transform the resultant tuple back into a union.
-      // Only up to 4 components is supported. For more, modify the following line and `IntersectionOfFunctionsToType`.
+      // Only up to 4 components of a union is supported (all but the last few are dropped). For more, modify the second condition
+      // and `IntersectionOfFunctionsToType`.
       // Ex: `{passes: PassJson[] | null}` - T[P] doesn't exactly match the array-recursing condition, so without these first couple
       // conditions, it would fall through to the last condition (would just return T[P]).
 
