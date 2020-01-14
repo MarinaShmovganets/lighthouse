@@ -311,11 +311,6 @@ class PageDependencyGraph {
     let foundFirstParse = false;
 
     for (const node of cpuNodes) {
-      if (node.event.dur >= minimumEvtDur) {
-        // Don't prune this node. The task is long so it will impact simulation.
-        continue;
-      }
-
       // Don't prunt if event is the first ParseHTML/Layout/Paint.
       // See https://github.com/GoogleChrome/lighthouse/issues/9627#issuecomment-526699524 for more.
       let isFirst = false;
@@ -330,6 +325,11 @@ class PageDependencyGraph {
       }
       if (isFirst) {
         // Don't prune.
+        continue;
+      }
+
+      if (node.event.dur >= minimumEvtDur) {
+        // Don't prune this node. The task is long so it will impact simulation.
         continue;
       }
 
