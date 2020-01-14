@@ -66,7 +66,7 @@ declare global {
       wastedPercent?: number;
     }
 
-    /** The shared properties of an Audit.Product whether it has a numericValue or not. We want to enforce `numericUnit` accompanying `numericValue` whenever it is set, so the final Audit.Product type is a */
+    /** The shared properties of an Audit.Product whether it has a numericValue or not. We want to enforce `numericUnit` accompanying `numericValue` whenever it is set, so the final Audit.Product type is a discriminated union on `'numericValue' in audit`*/
     interface ProductBase {
       /** The scored value of the audit, provided in the range `0-1`, or null if `scoreDisplayMode` indicates not scored. */
       score: number | null;
