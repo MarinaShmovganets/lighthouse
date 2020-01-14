@@ -60,7 +60,7 @@ declare global {
       // conditions, it would fall through to the last condition (would just return T[P]).
 
       // RE: First condition.
-      // Guard against large string unions, which would be unreasonable to support (much more than 3 components is common).
+      // Guard against large string unions, which would be unreasonable to support (much more than 4 components is common).
 
       SplitType<T[P]> extends string[] ? T[P] :
       GetLength<SplitType<T[P]>> extends 2|3|4 ? RecursivePartialUnion<T[P]>[number] :
