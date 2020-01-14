@@ -367,7 +367,7 @@ describe('PageDependencyGraph computed artifact:', () => {
       assert.deepEqual(getDependencyIds(nodes[5]), [1, 2]);
     });
 
-    it.only('should not prune short, first tasks of critical events', () => {
+    it('should not prune short, first tasks of critical events', () => {
       const request0 = createRequest(0, '0', 0);
       const networkRecords = [request0];
 
