@@ -1373,17 +1373,17 @@
           {
             "resourceType": "total",
             "label": "Total",
-            "requestCount": 18,
-            "size": 160738,
-            "countOverBudget": "8 requests",
-            "sizeOverBudget": 58338
+            "requestCount": 17,
+            "size": 160517,
+            "countOverBudget": "7 requests",
+            "sizeOverBudget": 58117
           },
           {
             "resourceType": "other",
             "label": "Other",
-            "requestCount": 2,
-            "size": 12861,
-            "sizeOverBudget": 7741
+            "requestCount": 1,
+            "size": 12640,
+            "sizeOverBudget": 7520
           },
           {
             "resourceType": "third-party",
@@ -1435,7 +1435,7 @@
       "description": "To set budgets for the quantity and size of page resources, add a budget.json file. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/budgets).",
       "score": null,
       "scoreDisplayMode": "informative",
-      "displayValue": "18 requests • 157 KB",
+      "displayValue": "17 requests • 157 KB",
       "details": {
         "type": "table",
         "headings": [
@@ -1459,8 +1459,8 @@
           {
             "resourceType": "total",
             "label": "Total",
-            "requestCount": 18,
-            "size": 160738
+            "requestCount": 17,
+            "size": 160517
           },
           {
             "resourceType": "script",
@@ -1483,8 +1483,8 @@
           {
             "resourceType": "other",
             "label": "Other",
-            "requestCount": 2,
-            "size": 12861
+            "requestCount": 1,
+            "size": 12640
           },
           {
             "resourceType": "stylesheet",
@@ -3020,14 +3020,25 @@
             "npm": "jquery"
           },
           {
-            "name": "jQuery (Fast path)",
-            "npm": "jquery"
-          },
-          {
             "name": "WordPress"
           }
         ],
-        "summary": {}
+        "summary": {},
+        "debugData": {
+          "type": "debugdata",
+          "stacks": [
+            {
+              "id": "jquery",
+              "version": "2.1.1"
+            },
+            {
+              "id": "jquery-fast"
+            },
+            {
+              "id": "wordpress"
+            }
+          ]
+        }
       }
     },
     "notification-on-start": {
@@ -5130,6 +5141,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:computed:UnusedCSS",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:computed:FirstContentfulPaint",
         "duration": 100,
         "entryType": "measure"
@@ -5346,8 +5363,17 @@
       "auditGroupExpandTooltip": "Show audits",
       "crcInitialNavigation": "Initial Navigation",
       "crcLongestDurationLabel": "Maximum critical path latency:",
+      "dropdownCopyJSON": "Copy JSON",
+      "dropdownDarkTheme": "Toggle Dark Theme",
+      "dropdownPrintExpanded": "Print Expanded",
+      "dropdownPrintSummary": "Print Summary",
+      "dropdownSaveGist": "Save as Gist",
+      "dropdownSaveHTML": "Save as HTML",
+      "dropdownSaveJSON": "Save as JSON",
+      "dropdownViewer": "Open in Viewer",
       "errorLabel": "Error!",
       "errorMissingAuditInfo": "Report error: no audit information",
+      "footerIssue": "File an issue",
       "labDataTitle": "Lab Data",
       "lsPerformanceCategoryDescription": "[Lighthouse](https://developers.google.com/web/tools/lighthouse/) analysis of the current page on an emulated mobile network. Values are estimated and may vary.",
       "manualAuditsGroupTitle": "Additional items to manually check",
@@ -5355,9 +5381,23 @@
       "opportunityResourceColumnLabel": "Opportunity",
       "opportunitySavingsColumnLabel": "Estimated Savings",
       "passedAuditsGroupTitle": "Passed audits",
+      "runtimeDesktopEmulation": "Emulated Desktop",
+      "runtimeMobileEmulation": "Emulated Nexus 5X",
+      "runtimeNoEmulation": "No emulation",
+      "runtimeSettingsBenchmark": "CPU/Memory Power",
+      "runtimeSettingsCPUThrottling": "CPU throttling",
+      "runtimeSettingsDevice": "Device",
+      "runtimeSettingsFetchTime": "Fetch Time",
+      "runtimeSettingsNetworkThrottling": "Network throttling",
+      "runtimeSettingsTitle": "Runtime Settings",
+      "runtimeSettingsUA": "User agent (host)",
+      "runtimeSettingsUANetwork": "User agent (network)",
+      "runtimeSettingsUrl": "URL",
+      "runtimeUnknown": "Unknown",
       "snippetCollapseButtonLabel": "Collapse snippet",
       "snippetExpandButtonLabel": "Expand snippet",
       "thirdPartyResourcesLabel": "Show 3rd-party resources",
+      "throttlingProvided": "Provided by environment",
       "toplevelWarningsMessage": "There were issues affecting this run of Lighthouse:",
       "varianceDisclaimer": "Values are estimated and may vary. The performance score is [based only on these metrics](https://github.com/GoogleChrome/lighthouse/blob/d2ec9ffbb21de9ad1a0f86ed24575eda32c796f0/docs/scoring.md#how-are-the-scores-weighted).",
       "warningAuditsGroupTitle": "Passed audits but with warnings",
@@ -5780,7 +5820,7 @@
         },
         {
           "values": {
-            "count": 8
+            "count": 7
           },
           "path": "audits[performance-budget].details.items[1].countOverBudget"
         },
@@ -5844,8 +5884,8 @@
       "lighthouse-core/audits/resource-summary.js | displayValue": [
         {
           "values": {
-            "requestCount": 18,
-            "byteCount": 160738
+            "requestCount": 17,
+            "byteCount": 160517
           },
           "path": "audits[resource-summary].displayValue"
         }

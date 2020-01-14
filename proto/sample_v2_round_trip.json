@@ -1183,6 +1183,21 @@
         "js-libraries": {
             "description": "All front-end JavaScript libraries detected on the page. [Learn more](https://web.dev/js-libraries).",
             "details": {
+                "debugData": {
+                    "stacks": [
+                        {
+                            "id": "jquery",
+                            "version": "2.1.1"
+                        },
+                        {
+                            "id": "jquery-fast"
+                        },
+                        {
+                            "id": "wordpress"
+                        }
+                    ],
+                    "type": "debugdata"
+                },
                 "headings": [
                     {
                         "itemType": "text",
@@ -1200,10 +1215,6 @@
                         "name": "jQuery",
                         "npm": "jquery",
                         "version": "2.1.1"
-                    },
-                    {
-                        "name": "jQuery (Fast path)",
-                        "npm": "jquery"
                     },
                     {
                         "name": "WordPress"
@@ -2210,19 +2221,19 @@
                         "sizeOverBudget": 72955.0
                     },
                     {
-                        "countOverBudget": "8 requests",
+                        "countOverBudget": "7 requests",
                         "label": "Total",
-                        "requestCount": 18.0,
+                        "requestCount": 17.0,
                         "resourceType": "total",
-                        "size": 160738.0,
-                        "sizeOverBudget": 58338.0
+                        "size": 160517.0,
+                        "sizeOverBudget": 58117.0
                     },
                     {
                         "label": "Other",
-                        "requestCount": 2.0,
+                        "requestCount": 1.0,
                         "resourceType": "other",
-                        "size": 12861.0,
-                        "sizeOverBudget": 7741.0
+                        "size": 12640.0,
+                        "sizeOverBudget": 7520.0
                     },
                     {
                         "countOverBudget": "1 request",
@@ -2409,9 +2420,9 @@
                 "items": [
                     {
                         "label": "Total",
-                        "requestCount": 18.0,
+                        "requestCount": 17.0,
                         "resourceType": "total",
-                        "size": 160738.0
+                        "size": 160517.0
                     },
                     {
                         "label": "Script",
@@ -2433,9 +2444,9 @@
                     },
                     {
                         "label": "Other",
-                        "requestCount": 2.0,
+                        "requestCount": 1.0,
                         "resourceType": "other",
-                        "size": 12861.0
+                        "size": 12640.0
                     },
                     {
                         "label": "Stylesheet",
@@ -2464,7 +2475,7 @@
                 ],
                 "type": "table"
             },
-            "displayValue": "18 requests \u2022 157 KB",
+            "displayValue": "17 requests \u2022 157 KB",
             "id": "resource-summary",
             "score": null,
             "scoreDisplayMode": "informative",
@@ -4154,8 +4165,17 @@
             "auditGroupExpandTooltip": "Show audits",
             "crcInitialNavigation": "Initial Navigation",
             "crcLongestDurationLabel": "Maximum critical path latency:",
+            "dropdownCopyJSON": "Copy JSON",
+            "dropdownDarkTheme": "Toggle Dark Theme",
+            "dropdownPrintExpanded": "Print Expanded",
+            "dropdownPrintSummary": "Print Summary",
+            "dropdownSaveGist": "Save as Gist",
+            "dropdownSaveHTML": "Save as HTML",
+            "dropdownSaveJSON": "Save as JSON",
+            "dropdownViewer": "Open in Viewer",
             "errorLabel": "Error!",
             "errorMissingAuditInfo": "Report error: no audit information",
+            "footerIssue": "File an issue",
             "labDataTitle": "Lab Data",
             "lsPerformanceCategoryDescription": "[Lighthouse](https://developers.google.com/web/tools/lighthouse/) analysis of the current page on an emulated mobile network. Values are estimated and may vary.",
             "manualAuditsGroupTitle": "Additional items to manually check",
@@ -4163,9 +4183,23 @@
             "opportunityResourceColumnLabel": "Opportunity",
             "opportunitySavingsColumnLabel": "Estimated Savings",
             "passedAuditsGroupTitle": "Passed audits",
+            "runtimeDesktopEmulation": "Emulated Desktop",
+            "runtimeMobileEmulation": "Emulated Nexus 5X",
+            "runtimeNoEmulation": "No emulation",
+            "runtimeSettingsBenchmark": "CPU/Memory Power",
+            "runtimeSettingsCPUThrottling": "CPU throttling",
+            "runtimeSettingsDevice": "Device",
+            "runtimeSettingsFetchTime": "Fetch Time",
+            "runtimeSettingsNetworkThrottling": "Network throttling",
+            "runtimeSettingsTitle": "Runtime Settings",
+            "runtimeSettingsUA": "User agent (host)",
+            "runtimeSettingsUANetwork": "User agent (network)",
+            "runtimeSettingsUrl": "URL",
+            "runtimeUnknown": "Unknown",
             "snippetCollapseButtonLabel": "Collapse snippet",
             "snippetExpandButtonLabel": "Expand snippet",
             "thirdPartyResourcesLabel": "Show 3rd-party resources",
+            "throttlingProvided": "Provided by environment",
             "toplevelWarningsMessage": "There were issues affecting this run of Lighthouse:",
             "varianceDisclaimer": "Values are estimated and may vary. The performance score is [based only on these metrics](https://github.com/GoogleChrome/lighthouse/blob/d2ec9ffbb21de9ad1a0f86ed24575eda32c796f0/docs/scoring.md#how-are-the-scores-weighted).",
             "warningAuditsGroupTitle": "Passed audits but with warnings",
@@ -5026,6 +5060,12 @@
                 "duration": 100.0,
                 "entryType": "measure",
                 "name": "lh:audit:render-blocking-resources",
+                "startTime": 0.0
+            },
+            {
+                "duration": 100.0,
+                "entryType": "measure",
+                "name": "lh:computed:UnusedCSS",
                 "startTime": 0.0
             },
             {
