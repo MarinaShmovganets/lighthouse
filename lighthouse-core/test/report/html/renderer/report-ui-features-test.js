@@ -397,10 +397,12 @@ describe('ReportUIFeatures', () => {
     });
 
     describe('onMenuFocusOut', () => {
-      it('should toggle active class when focus relatedTarget is null', () => {
+      beforeEach(() => {
         dropDown._toggleEl.click();
         assert.ok(dropDown._toggleEl.classList.contains('active'));
+      });
 
+      it('should toggle active class when focus relatedTarget is null', () => {
         const event = new window.FocusEvent('focusout', {relatedTarget: null});
         dropDown.onMenuFocusOut(event);
 
@@ -408,9 +410,6 @@ describe('ReportUIFeatures', () => {
       });
 
       it('should toggle active class when focus relatedTarget is document.body', () => {
-        dropDown._toggleEl.click();
-        assert.ok(dropDown._toggleEl.classList.contains('active'));
-
         const relatedTarget = dom.document().body;
         const event = new window.FocusEvent('focusout', {relatedTarget});
         dropDown.onMenuFocusOut(event);
@@ -419,9 +418,6 @@ describe('ReportUIFeatures', () => {
       });
 
       it('should toggle active class when focus relatedTarget is _toggleEl', () => {
-        dropDown._toggleEl.click();
-        assert.ok(dropDown._toggleEl.classList.contains('active'));
-
         const relatedTarget = dropDown._toggleEl;
         const event = new window.FocusEvent('focusout', {relatedTarget});
         dropDown.onMenuFocusOut(event);
@@ -430,9 +426,6 @@ describe('ReportUIFeatures', () => {
       });
 
       it('should not toggle active class when focus relatedTarget is a menu item', () => {
-        dropDown._toggleEl.click();
-        assert.ok(dropDown._toggleEl.classList.contains('active'));
-
         const relatedTarget = dropDown._getNextMenuItem();
         const event = new window.FocusEvent('focusout', {relatedTarget});
         dropDown.onMenuFocusOut(event);
