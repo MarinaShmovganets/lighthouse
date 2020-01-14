@@ -92,12 +92,25 @@ describe('SEO: Is page crawlable audit', () => {
 
   it('fails when page is blocked from indexing with a header', () => {
     const robotsHeaders = [
-      [{name: 'x-robots-tag', value: 'noindex'}],
-      [{name: 'X-Robots-Tag', value: 'all'}, {name: 'x-robots-tag', value: 'none'}],
-      [{name: 'X-ROBOTS-TAG', value: 'all, none'}],
-      [{name: 'x-robots-tag', value: '    noindex    '}],
-      [{name: 'x-robots-tag', value: 'unavailable_after: 25 Jun 2010 15:00:00 PST'}],
-      [{name: 'x-robots-tag', value: 'all, unavailable_after: 25-Jun-2010 15:00:00 PST'}],
+      [
+        {name: 'x-robots-tag', value: 'noindex'},
+      ],
+      [
+        {name: 'X-Robots-Tag', value: 'all'},
+        {name: 'x-robots-tag', value: 'none'},
+      ],
+      [
+        {name: 'X-ROBOTS-TAG', value: 'all, none'},
+      ],
+      [
+        {name: 'x-robots-tag', value: '    noindex    '},
+      ],
+      [
+        {name: 'x-robots-tag', value: 'unavailable_after: 25 Jun 2010 15:00:00 PST'},
+      ],
+      [
+        {name: 'x-robots-tag', value: 'all, unavailable_after: 25-Jun-2010 15:00:00 PST'},
+      ],
     ];
 
     const allRuns = robotsHeaders.map(headers => {
@@ -307,30 +320,30 @@ describe('SEO: Is page crawlable audit', () => {
       assert.equal(auditResult.details.items.length, 4);
 
       expect(auditResult.details.items).toMatchInlineSnapshot(`
-Array [
-  Object {
-    "source": Object {
-      "snippet": "<meta name=\\"robots\\" content=\\"noindex\\" />",
-      "type": "node",
-    },
-  },
-  Object {
-    "source": "x-robots-tag: none",
-  },
-  Object {
-    "source": "x-robots-tag: noindex",
-  },
-  Object {
-    "source": Object {
-      "column": 0,
-      "line": 1,
-      "type": "source-location",
-      "url": "http://example.com/robots.txt",
-      "urlProvider": "network",
-    },
-  },
-]
-`);
+        Array [
+          Object {
+            "source": Object {
+              "snippet": "<meta name=\\"robots\\" content=\\"noindex\\" />",
+              "type": "node",
+            },
+          },
+          Object {
+            "source": "x-robots-tag: none",
+          },
+          Object {
+            "source": "x-robots-tag: noindex",
+          },
+          Object {
+            "source": Object {
+              "column": 0,
+              "line": 1,
+              "type": "source-location",
+              "url": "http://example.com/robots.txt",
+              "urlProvider": "network",
+            },
+          },
+        ]
+      `);
     });
   });
 });
