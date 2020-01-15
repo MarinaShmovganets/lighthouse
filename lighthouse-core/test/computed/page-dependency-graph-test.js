@@ -403,6 +403,7 @@ describe('PageDependencyGraph computed artifact:', () => {
           name: 'Paint',
         },
         {
+          // ID jumps by 4 between each because each node has 2 CPU tasks and we skip the 2nd of each event type
           id: '1.400000',
           name: 'Layout',
         },
