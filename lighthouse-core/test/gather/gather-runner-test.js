@@ -561,7 +561,10 @@ describe('GatherRunner', function() {
     };
 
     const artifacts = await GatherRunner.run(config.passes, options);
-    expect(artifacts.LighthouseRunWarnings).toHaveLength(1);
+    expect(artifacts.LighthouseRunWarnings).toEqual([
+      'lighthouse-core/gather/gather-runner.js | warningRedirected # 1',
+      'lighthouse-core/lib/lh-error.js | badTraceRecording # 0',
+    ]);
     expect(artifacts.PageLoadError).toEqual(null);
     // @ts-ignore: Test-only gatherer.
     expect(artifacts.TestGatherer).toBeUndefined();
