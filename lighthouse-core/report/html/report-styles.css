@@ -1070,6 +1070,7 @@
 .lh-gauge-arc {
     fill: none;
     stroke: var(--circle-color);
+    stroke-linecap: butt;
     transform-origin: 50% 50%;
     animation: load-gauge var(--transition-length) ease forwards;
     animation-delay: 250ms;
