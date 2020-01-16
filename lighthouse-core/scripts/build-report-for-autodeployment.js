@@ -59,7 +59,32 @@ function addPluginCategory(lhr) {
   lhr.categories['lighthouse-plugin-someplugin'] = {
     id: 'lighthouse-plugin-someplugin',
     title: 'Plugin',
-    score: 0.5,
+    score: 0,
+    auditRefs: [],
+  };
+  lhr.categories['lighthouse-plugin-someplugin-1'] = {
+    id: 'lighthouse-plugin-someplugin-1',
+    title: 'Plugin',
+    score: .01,
+    auditRefs: [],
+  };
+  lhr.categories['lighthouse-plugin-someplugin-11'] = {
+    id: 'lighthouse-plugin-someplugin-11',
+    title: 'Plugin',
+    score: .02,
+    auditRefs: [],
+  };
+  lhr.categories['lighthouse-plugin-someplugin-2'] = {
+    id: 'lighthouse-plugin-someplugin-2',
+    title: 'Plugin',
+    score: .99,
+    auditRefs: [],
+  };
+
+  lhr.categories['lighthouse-plugin-someplugin-3'] = {
+    id: 'lighthouse-plugin-someplugin-3',
+    title: 'Plugin',
+    score: 1,
     auditRefs: [],
   };
 }
