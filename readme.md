@@ -246,7 +246,7 @@ yarn build-all
 ```
 
 #### installing protobuf
-If changing audit output, you'll likely also need to have the protocol-buffer (likely v3.7.1) compiler installed. See the [official installation instructions](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation) and perhaps consult your [favorite package manager](https://formulae.brew.sh/formula/protobuf) for your OS. These are the steps that have worked well for us:
+If changing audit output, you'll need to have the protocol-buffer/protobuf compiler installed. (v3.7.1 is known to be compatible). These are the steps that have worked well for us:
 
 ```sh
 # Download https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-python-3.7.1.zip
@@ -261,6 +261,8 @@ python setup.py test
 python setup.py build --cpp_implementation
 sudo python setup.py install --cpp_implementation
 ```
+
+Also, see the [official installation instructions](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation). Note that using a package manager to install will result in the latest version which **isn't** compatible with our output.
 
 
 ### Run
