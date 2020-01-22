@@ -254,12 +254,12 @@ If changing audit output, you'll likely also need to have the protocol-buffer (l
 # open a shell within that folder
 
 cd python
-/usr/bin/python setup.py build
-/usr/bin/python setup.py test
+python setup.py build
+python setup.py test
 (cd .. && autogen.sh && configure && make)
 (cd .. && sudo make install)
-/usr/bin/python setup.py build --cpp_implementation
-/usr/bin/python setup.py install --cpp_implementation
+python setup.py build --cpp_implementation
+sudo python setup.py install --cpp_implementation
 ```
 
 
