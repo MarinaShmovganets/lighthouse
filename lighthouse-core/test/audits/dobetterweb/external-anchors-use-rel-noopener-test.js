@@ -5,7 +5,8 @@
  */
 'use strict';
 
-const ExternalAnchorsAudit = require('../../../audits/dobetterweb/external-anchors-use-rel-noopener.js');
+const ExternalAnchorsAudit =
+  require('../../../audits/dobetterweb/external-anchors-use-rel-noopener.js');
 const assert = require('assert');
 
 const URL = 'https://google.com/test';
@@ -78,16 +79,16 @@ describe('External anchors use rel="noopener"', () => {
     const auditResult = ExternalAnchorsAudit.audit({
       AnchorElements: [
         {
-          href: 'https://example.com/test', 
-          target: '_blank', 
-          rel: 'nofollow', 
-          devtoolsNodePath: 'devtools'
+          href: 'https://example.com/test',
+          target: '_blank',
+          rel: 'nofollow',
+          devtoolsNodePath: 'devtools',
         },
         {
-          href: 'https://example.com/test1', 
-          target: '_blank', 
+          href: 'https://example.com/test1',
+          target: '_blank',
           rel: '',
-          devtoolsNodePath: 'nodepath'
+          devtoolsNodePath: 'nodepath',
         },
       ],
       URL: {finalUrl: URL},
