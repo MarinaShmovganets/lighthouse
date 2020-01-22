@@ -47,7 +47,6 @@ function collectAnchorElements() {
     if (node instanceof HTMLAnchorElement) {
       return {
         href: node.href,
-        // TODO(blasingame): Deprecate text in favor of nodeLabel
         text: node.innerText, // we don't want to return hidden text, so use innerText
         rel: node.rel,
         target: node.target,
