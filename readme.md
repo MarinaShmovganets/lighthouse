@@ -245,7 +245,23 @@ yarn
 yarn build-all
 ```
 
-If changing audit output, you'll likely also need to have the protocol-buffer compiler installed. See the [official installation instructions](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation) or consult your [favorite package manager](https://formulae.brew.sh/formula/protobuf) for your OS.
+#### installing protobuf
+If changing audit output, you'll likely also need to have the protocol-buffer (likely v3.7.1) compiler installed. See the [official installation instructions](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation) and perhaps consult your [favorite package manager](https://formulae.brew.sh/formula/protobuf) for your OS. These are the steps that have worked well for us:
+
+```sh
+# Download https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-python-3.7.1.zip
+# unzip it
+# open a shell within that folder
+
+cd python
+/usr/bin/python setup.py build
+/usr/bin/python setup.py test
+(cd .. && autogen.sh && configure && make)
+(cd .. && sudo make install)
+/usr/bin/python setup.py build --cpp_implementation
+/usr/bin/python setup.py install --cpp_implementation
+```
+
 
 ### Run
 
