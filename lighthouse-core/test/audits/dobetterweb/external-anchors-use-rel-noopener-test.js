@@ -77,14 +77,27 @@ describe('External anchors use rel="noopener"', () => {
   it('fails when links are from different hosts than the page host', () => {
     const auditResult = ExternalAnchorsAudit.audit({
       AnchorElements: [
-        {href: 'https://example.com/test', target: '_blank', rel: 'nofollow'},
-        {href: 'https://example.com/test1', target: '_blank', rel: ''},
+        {
+          href: 'https://example.com/test', 
+          target: '_blank', 
+          rel: 'nofollow', 
+          devtoolsNodePath: 'devtools'
+        },
+        {
+          href: 'https://example.com/test1', 
+          target: '_blank', 
+          rel: '',
+          devtoolsNodePath: 'nodepath'
+        },
       ],
       URL: {finalUrl: URL},
     });
     assert.equal(auditResult.score, 0);
     assert.equal(auditResult.details.items.length, 2);
     assert.equal(auditResult.details.items[0].node.type, 'node');
+    assert.equal(auditResult.details.items[0].node.path, 'devtools');
+    assert.equal(auditResult.details.items[1].node.type, 'node');
+    assert.equal(auditResult.details.items[1].node.path, 'nodepath');
   });
 
   it('fails when links have no href attribute', () => {

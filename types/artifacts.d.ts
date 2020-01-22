@@ -289,7 +289,7 @@ declare global {
         href: string
         text: string
         target: string
-        path: string
+        devtoolsNodePath: string
         selector: string
         nodeLabel: string
         outerHTML: string

@@ -25,7 +25,7 @@ const UIStrings = {
   warning: 'Unable to determine the destination for anchor ({anchorHTML}). ' +
     'If not used as a hyperlink, consider removing target=_blank.',
   /** Label for a column in a data table; entries will be the HTML elements that failed the audit. Anchors are DOM elements that are links. */
-  failingAnchorsHeader: 'Failing Anchors',
+  columnFailingAnchors: 'Failing Anchors',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -71,7 +71,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
         const item = {
           node: /** @type {LH.Audit.Details.NodeValue} */  ({
             type: 'node',
-            path: anchor.path || '',
+            path: anchor.devtoolsNodePath || '',
             selector: anchor.selector || '',
             nodeLabel: anchor.nodeLabel || '',
             snippet: anchor.outerHTML || '',
@@ -86,7 +86,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'node', itemType: 'node', text: str_(UIStrings.failingAnchorsHeader)},
+      {key: 'node', itemType: 'node', text: str_(UIStrings.columnFailingAnchors)},
     ];
 
     const details = Audit.makeTableDetails(headings, failingAnchors);

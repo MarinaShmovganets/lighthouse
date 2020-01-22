@@ -51,7 +51,7 @@ function collectAnchorElements() {
         text: node.innerText, // we don't want to return hidden text, so use innerText
         rel: node.rel,
         target: node.target,
-        path: nodePath,
+        devtoolsNodePath: nodePath,
         selector,
         nodeLabel,
         outerHTML,
@@ -63,7 +63,7 @@ function collectAnchorElements() {
       text: node.textContent || '',
       rel: '',
       target: node.target.baseVal || '',
-      path: nodePath,
+      devtoolsNodePath: nodePath,
       selector,
       nodeLabel,
       outerHTML,
