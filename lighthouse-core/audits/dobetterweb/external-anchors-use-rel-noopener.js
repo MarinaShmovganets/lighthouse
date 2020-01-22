@@ -68,7 +68,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
         return !anchor.href || anchor.href.toLowerCase().startsWith('http');
       })
       .map(anchor => {
-        const item = {
+        return {
           node: /** @type {LH.Audit.Details.NodeValue} */  ({
             type: 'node',
             path: anchor.devtoolsNodePath || '',
@@ -81,7 +81,6 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
           rel: anchor.rel || '',
           outerHTML: anchor.outerHTML || '',
         };
-        return item;
       });
 
     /** @type {LH.Audit.Details.Table['headings']} */
