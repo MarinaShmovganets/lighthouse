@@ -7,4 +7,4 @@ cd tmp_dir
 npm pack "$lh_dir"
 mv *.tgz "$lh_dir/dist/lighthouse.tgz"
 
-rm -rf $tmp_dir
+rmdir $tmp_dir
