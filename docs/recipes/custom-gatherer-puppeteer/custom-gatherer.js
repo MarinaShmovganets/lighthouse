@@ -22,7 +22,7 @@ async function connect(driver) {
   return {browser, page};
 }
 
-class TimeToSearchable extends Gatherer {
+class CustomGatherer extends Gatherer {
   async afterPass(options) {
     const {driver} = options;
     const {page} = await connect(driver);
@@ -48,4 +48,4 @@ class TimeToSearchable extends Gatherer {
   }
 }
 
-module.exports = TimeToSearchable;
+module.exports = CustomGatherer;

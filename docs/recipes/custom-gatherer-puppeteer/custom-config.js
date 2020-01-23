@@ -9,20 +9,20 @@ module.exports = {
   passes: [{
     passName: 'defaultPass',
     gatherers: [
-      'searchable-gatherer',
+      'custom-gatherer',
     ],
   }],
 
   audits: [
-    'searchable-audit',
+    'custom-audit',
   ],
 
   categories: {
     mysite: {
-      title: 'My site metrics',
-      description: 'Metrics for our super awesome site',
+      title: 'My custom audit',
+      description: 'Super awesome, strings included',
       auditRefs: [
-        {id: 'searchable-audit', weight: 1},
+        {id: 'custom-audit', weight: 1},
       ],
     },
   },

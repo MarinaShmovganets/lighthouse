@@ -7,21 +7,21 @@
 
 const Audit = require('lighthouse').Audit;
 
-class LoadAudit extends Audit {
+class CustomAudit extends Audit {
   static get meta() {
     return {
-      id: 'searchable-audit',
+      id: 'custom-audit',
       title: 'First text input field accepts `123` as input',
       failureTitle: 'First text input field doesn\'t accept `123` as input',
       description: 'Example custom audit which relies on a fancy gatherer.',
 
       // The name of the custom gatherer class that provides input to this audit.
-      requiredArtifacts: ['TimeToSearchable'],
+      requiredArtifacts: ['CustomGatherer'],
     };
   }
 
   static audit(artifacts) {
-    const value = artifacts.TimeToSearchable.value;
+    const value = artifacts.CustomGatherer.value;
     const success = value === '123';
 
     return {
@@ -31,4 +31,4 @@ class LoadAudit extends Audit {
   }
 }
 
-module.exports = LoadAudit;
+module.exports = CustomAudit;
