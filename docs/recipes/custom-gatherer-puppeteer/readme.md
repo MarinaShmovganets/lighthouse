@@ -3,5 +3,5 @@
 > **Tip**: see [Basic Custom Audit Recipe](../custom-audit) for basic information about custom audits.
 
 ```sh
-lighthouse --config-path=custom-config.js https://www.rapidtables.com/convert/weight/pound-to-kg.html
+lighthouse --config-path=custom-config.js https://www.example.com
 ```
