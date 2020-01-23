@@ -1646,9 +1646,10 @@ describe('GatherRunner', function() {
       };
     });
 
-    it('should pass through manifest when null', async () => {
-      const getAppManifest = jest.spyOn(fakeDriver, 'getAppManifest');
-      getAppManifest.mockResolvedValueOnce(null);
+    it('should return null when there is no manifest', async () => {
+      connectionStub.sendCommand
+        .mockResponse('Page.getAppManifest', {})
+        .mockResponse('Page.getInstallabilityErrors', {errors: []});
       const result = await GatherRunner.getWebAppManifest(passContext);
       expect(result).toEqual(null);
     });
