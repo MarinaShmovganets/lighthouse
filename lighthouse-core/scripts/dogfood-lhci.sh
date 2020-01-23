@@ -36,8 +36,6 @@ fi
 # Generate HTML reports in ./dist/now/
 yarn now-build
 
-# Install LHCI
-npm install -g @lhci/cli@0.3.x
 # Collect our LHCI results.
 lhci collect --staticDistDir=./dist/now/english/
 # Upload the results to our canary server.
