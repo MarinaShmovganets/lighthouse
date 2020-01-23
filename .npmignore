@@ -24,10 +24,10 @@ lighthouse-logger/
 # keep smokehouse tests, etc
 !lighthouse-cli/test
 
-node_modules/
+node_modules
 results/
 lantern-data/
-latest-run/
+latest-run
 
 # generated files
 **/pages/scripts/lighthouse-report.js
@@ -50,3 +50,4 @@ results.html
 .eslintignore
 .eslintrc.js
 .travis.yml
+*.tgz
