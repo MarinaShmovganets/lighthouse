@@ -24,9 +24,11 @@ lighthouse-logger/
 # keep smokehouse tests, etc
 !lighthouse-cli/test
 
-node_modules
 results/
 lantern-data/
+
+# ignore all folders named as such
+node_modules
 latest-run
 
 # generated files
