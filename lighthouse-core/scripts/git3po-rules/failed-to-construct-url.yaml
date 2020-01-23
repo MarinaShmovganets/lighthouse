@@ -12,7 +12,7 @@ filters:
       $lt: 2
 actions:
   - type: add_comment
-    body: 'Howdy chief! Appreciate you filing this bug. :clap:
+    body: 'Howdy! Appreciate you filing this bug. :clap:
 
   This is fixed in Chrome 74, which is coming out ~March 12th.
 

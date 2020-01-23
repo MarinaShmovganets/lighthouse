@@ -15,7 +15,7 @@ filters:
       $lt: 2
 actions:
   - type: add_comment
-    body: 'Thanks chief! Appreciate you filing this bug. :clap:
+    body: 'Thanks! Appreciate you filing this bug. :clap:
 
 
   This is a known issue, most well described in #2784. So, **we''ll automatically

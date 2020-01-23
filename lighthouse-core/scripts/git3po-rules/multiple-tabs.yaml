@@ -10,7 +10,7 @@ filters:
     length: 0
 actions:
   - type: add_comment
-    body: 'Howdy chief! Appreciate you filing this bug. :clap:
+    body: 'Howdy! Appreciate you filing this bug. :clap:
 
 
   This is a known issue that is best described in #3024. So, **we''ll automatically

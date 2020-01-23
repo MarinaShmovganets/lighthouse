@@ -13,7 +13,7 @@ filters:
       $lt: 2
 actions:
   - type: add_comment
-    body: 'Howdy chief! Appreciate you filing this bug. :clap:
+    body: 'Howdy! Appreciate you filing this bug. :clap:
 
 
   We think this is the same root issue as #7246. So, **we''ll automatically
