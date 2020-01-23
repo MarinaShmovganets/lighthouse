@@ -5,5 +5,5 @@ cd "$(dirname "$0")"
 
 yarn
 node node_modules/.bin/lighthouse --config-path=custom-config.js https://www.example.com --output=json |
-  jq '.audits["searchable-audit"].score' |
+  jq '.audits["custom-audit"].score' |
   grep -q 1
