@@ -11,10 +11,9 @@ class LoadAudit extends Audit {
   static get meta() {
     return {
       id: 'searchable-audit',
-      title: 'Search box initialized and ready',
-      failureTitle: 'Search box slow to initialize',
-      description: 'Used to measure time from navigationStart to when the search' +
-          ' box is initialized and ready to search.',
+      title: 'First text input field accepts `123` as input',
+      failureTitle: 'First text input field doesn\'t accept `123` as input',
+      description: 'Example custom audit which relies on a fancy gatherer.',
 
       // The name of the custom gatherer class that provides input to this audit.
       requiredArtifacts: ['TimeToSearchable'],
