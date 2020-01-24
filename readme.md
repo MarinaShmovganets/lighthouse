@@ -246,15 +246,17 @@ yarn build-all
 ```
 
 #### installing protobuf
-If changing audit output, you'll need to have the protocol-buffer/protobuf compiler installed. (v3.7.1 is known to be compatible). These are the steps that have worked well for us:
+If changing audit output, you'll need to have v3.7.1 of the protocol-buffer/protobuf compiler installed. (v3.7.1 is known to be compatible, and 3.11.x is known to be **not** compatible.). 
+
+Homebrew should be able to install it correctly: `brew install protobuf@3.7.1`
+
+But if you want to do it manually, these steps that have worked well for us:
 
 ```sh
 mkdir protobuf-install && cd protobuf-install
 curl -L -o protobuf-python-3.7.1.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-python-3.7.1.zip
 unzip protobuf-python-3.7.1.zip
 cd protobuf-3.7.1
-# unzip it
-# open a shell within that folder
 
 cd python
 python setup.py build
@@ -265,7 +267,7 @@ python setup.py build --cpp_implementation
 sudo python setup.py install --cpp_implementation
 ```
 
-Also, see the [official installation instructions](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation). Note that using a package manager to install will result in the latest version which **isn't** compatible with our output.
+Also, see the [official installation instructions](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation).
 
 
 ### Run
