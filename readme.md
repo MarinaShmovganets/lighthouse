@@ -249,7 +249,10 @@ yarn build-all
 If changing audit output, you'll need to have the protocol-buffer/protobuf compiler installed. (v3.7.1 is known to be compatible). These are the steps that have worked well for us:
 
 ```sh
-# Download https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-python-3.7.1.zip
+mkdir protobuf-install && cd protobuf-install
+curl -L -o protobuf-python-3.7.1.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-python-3.7.1.zip
+unzip protobuf-python-3.7.1.zip
+cd protobuf-3.7.1
 # unzip it
 # open a shell within that folder
 
