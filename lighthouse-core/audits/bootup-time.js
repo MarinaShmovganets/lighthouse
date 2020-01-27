@@ -207,6 +207,7 @@ class BootupTime extends Audit {
     return {
       score,
       numericValue: totalBootupTime,
+      numericUnit: 'millisecond',
       displayValue: totalBootupTime > 0 ?
         str_(i18n.UIStrings.seconds, {timeInMs: totalBootupTime}) : '',
       details,

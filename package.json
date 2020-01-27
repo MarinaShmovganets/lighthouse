@@ -12,11 +12,12 @@
   },
   "scripts": {
     "build-all": "npm-run-posix-or-windows build-all:task",
-    "build-all:task": "yarn build-extension & yarn build-devtools & yarn build-lr & yarn build-viewer & wait",
+    "build-all:task": "(yarn build-extension & yarn build-devtools & yarn build-lr & yarn build-viewer & wait) && yarn build-pack",
     "build-all:task:windows": "yarn build-extension && yarn build-devtools && yarn build-lr && yarn build-viewer",
     "build-extension": "node ./build/build-extension.js",
     "build-devtools": "node ./build/build-bundle.js clients/devtools-entry.js dist/lighthouse-dt-bundle.js && node ./build/build-dt-report-resources.js",
     "build-lr": "node ./build/build-lightrider-bundles.js",
+    "build-pack": "bash build/build-pack.sh",
     "build-viewer": "node ./build/build-viewer.js",
     "clean": "rimraf dist proto/scripts/*.json proto/scripts/*_pb2.* proto/scripts/*_pb.* proto/scripts/__pycache__ proto/scripts/*.pyc *.report.html *.report.dom.html *.report.json *.devtoolslog.json *.trace.json lighthouse-core/lib/i18n/locales/*.ctc.json || true",
     "lint": "[ \"$CI\" = true ] && eslint --quiet -f codeframe . || eslint .",
@@ -28,7 +29,7 @@
     "test-clients": "jest \"clients/\"",
     "test-viewer": "yarn unit-viewer && jest lighthouse-viewer/test/viewer-test-pptr.js",
     "test-lantern": "bash lighthouse-core/scripts/test-lantern.sh",
-    "test-docs": "yarn --cwd docs/recipes/auth && jest docs/recipes/integration-test",
+    "test-docs": "yarn --cwd docs/recipes/auth && jest docs/recipes/integration-test && yarn --cwd docs/recipes/custom-gatherer-puppeteer test",
     "unit-core": "jest \"lighthouse-core/\"",
     "unit-cli": "jest \"lighthouse-cli/\"",
     "unit-viewer": "jest \"lighthouse-viewer/.*-test.js\"",
@@ -109,7 +110,7 @@
     "cpy": "^7.0.1",
     "csv-validator": "^0.0.3",
     "cz-customizable": "^5.2.0",
-    "devtools-protocol": "0.0.588129",
+    "devtools-protocol": "0.0.729809",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-local-rules": "0.1.0",
@@ -141,7 +142,7 @@
     "intl-messageformat": "^4.4.0",
     "intl-pluralrules": "^1.0.3",
     "jpeg-js": "0.1.2",
-    "js-library-detector": "^5.6.0",
+    "js-library-detector": "^5.7.0",
     "jsonld": "^1.5.0",
     "jsonlint-mod": "^1.7.5",
     "lighthouse-logger": "^1.2.0",
@@ -180,7 +181,7 @@
     },
     {
       "path": "./dist/lightrider/lighthouse-lr-bundle.js",
-      "maxSize": "1.40 MB"
+      "maxSize": "1.50 MB"
     },
     {
       "path": "./dist/viewer/src/viewer.js",

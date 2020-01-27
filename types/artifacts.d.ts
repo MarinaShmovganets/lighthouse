@@ -289,6 +289,9 @@ declare global {
         href: string
         text: string
         target: string
+        devtoolsNodePath: string
+        selector: string
+        nodeLabel: string
         outerHTML: string
       }
 
@@ -307,7 +310,6 @@ declare global {
       export interface FontSize {
         totalTextLength: number;
         failingTextLength: number;
-        visitedTextLength: number;
         analyzedFailingTextLength: number;
         /** Elements that contain a text node that failed size criteria. */
         analyzedFailingNodesData: Array<{
@@ -435,7 +437,7 @@ declare global {
         }
       }
 
-      export type ManifestValueCheckID = 'hasStartUrl'|'hasIconsAtLeast192px'|'hasIconsAtLeast512px'|'hasPWADisplayValue'|'hasBackgroundColor'|'hasThemeColor'|'hasShortName'|'hasName'|'shortNameLength';
+      export type ManifestValueCheckID = 'hasStartUrl'|'hasIconsAtLeast144px'|'hasIconsAtLeast512px'|'hasPWADisplayValue'|'hasBackgroundColor'|'hasThemeColor'|'hasShortName'|'hasName'|'shortNameLength';
 
       export type ManifestValues = {
         isParseFailure: false;
