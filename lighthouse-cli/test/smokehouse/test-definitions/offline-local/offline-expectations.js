@@ -103,20 +103,20 @@ module.exports = [
   {
     artifacts: {
       WebAppManifest: {
-        manifest: {
-          value: {
-            icons: {
-              value: [
-                {value: {src: {value: 'http://localhost:10503/launcher-icon-0-75x.png'}}},
-                {value: {src: {value: 'http://localhost:10503/launcher-icon-1x.png'}}},
-                {value: {src: {value: 'http://localhost:10503/launcher-icon-1-5x.png'}}},
-                {value: {src: {value: 'http://localhost:10503/launcher-icon-2x.png'}}},
-                {value: {src: {value: 'http://localhost:10503/launcher-icon-3x.png'}}},
-              ],
-            },
+        value: {
+          icons: {
+            value: [
+              {value: {src: {value: 'http://localhost:10503/launcher-icon-0-75x.png'}}},
+              {value: {src: {value: 'http://localhost:10503/launcher-icon-1x.png'}}},
+              {value: {src: {value: 'http://localhost:10503/launcher-icon-1-5x.png'}}},
+              {value: {src: {value: 'http://localhost:10503/launcher-icon-2x.png'}}},
+              {value: {src: {value: 'http://localhost:10503/launcher-icon-3x.png'}}},
+            ],
           },
         },
-        installabilityErrors: [
+      },
+      InstallabilityErrors: {
+        errors: [
           'Downloaded icon was empty or corrupted',
         ],
       },

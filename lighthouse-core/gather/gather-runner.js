@@ -483,6 +483,7 @@ class GatherRunner {
       NetworkUserAgent: '', // updated later
       BenchmarkIndex: 0, // updated later
       WebAppManifest: null, // updated later
+      InstallabilityErrors: {errors: []}, // updated later
       Stacks: [], // updated later
       traces: {},
       devtoolsLogs: {},
@@ -514,6 +515,11 @@ class GatherRunner {
 
     // Fetch the manifest, if it exists.
     baseArtifacts.WebAppManifest = await GatherRunner.getWebAppManifest(passContext);
+
+    if (baseArtifacts.WebAppManifest) {
+      baseArtifacts.InstallabilityErrors =
+        await passContext.driver.sendCommand('Page.getInstallabilityErrors');
+    }
 
     baseArtifacts.Stacks = await stacksGatherer(passContext);
 
@@ -556,13 +562,7 @@ class GatherRunner {
   static async getWebAppManifest(passContext) {
     const response = await passContext.driver.getAppManifest();
     if (!response) return null;
-    const manifest = manifestParser(response.data, response.url, passContext.url);
-    const {errors} = await passContext.driver.sendCommand('Page.getInstallabilityErrors');
-
-    return {
-      manifest,
-      installabilityErrors: errors,
-    };
+    return manifestParser(response.data, response.url, passContext.url);
   }
 
   /**

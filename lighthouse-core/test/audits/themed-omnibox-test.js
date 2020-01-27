@@ -20,7 +20,8 @@ function generateMockArtifacts(src = manifestSrc) {
   const exampleManifest = manifestParser(src, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
 
   return {
-    WebAppManifest: {manifest: exampleManifest, installabilityErrors: []},
+    WebAppManifest: exampleManifest,
+    InstallabilityErrors: {errors: []},
     MetaElements: [{name: 'theme-color', content: '#bada55'}],
   };
 }

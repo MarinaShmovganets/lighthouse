@@ -8,7 +8,7 @@
 const URL = require('./url-shim.js');
 
 /**
- * @param {NonNullable<LH.Artifacts.Manifest['manifest']['value']>} manifest
+ * @param {NonNullable<LH.Artifacts.Manifest['value']>} manifest
  * @return {boolean} Does the manifest have any icons?
  */
 function doExist(manifest) {
@@ -23,7 +23,7 @@ function doExist(manifest) {
 
 /**
  * @param {number} sizeRequirement
- * @param {NonNullable<LH.Artifacts.Manifest['manifest']['value']>} manifest
+ * @param {NonNullable<LH.Artifacts.Manifest['value']>} manifest
  * @return {Array<string>} Value of satisfactory sizes (eg. ['192x192', '256x256'])
  */
 function pngSizedAtLeast(sizeRequirement, manifest) {

@@ -15,7 +15,7 @@ const PWA_DISPLAY_VALUES = ['minimal-ui', 'fullscreen', 'standalone'];
 const SUGGESTED_SHORTNAME_LENGTH = 12;
 
 class ManifestValues {
-  /** @typedef {(val: NonNullable<LH.Artifacts.Manifest['manifest']['value']>, installabilityErrors: string[]) => boolean} Validator */
+  /** @typedef {(val: NonNullable<LH.Artifacts.Manifest['value']>, errors: string[]) => boolean} Validator */
 
   /**
    * @return {Array<{id: LH.Artifacts.ManifestValueCheckID, failureText: string, validate: Validator}>}
@@ -42,7 +42,7 @@ class ManifestValues {
       {
         id: 'fetchesIcon',
         failureText: 'Manifest icon failed to be fetched',
-        validate: (manifestValue, installabilityErrors) => {
+        validate: (manifestValue, errors) => {
           const failedToFetchIconErrors = [
             // kCannotDownloadIconMessage
             'Could not download a required icon from the manifest',
@@ -50,7 +50,7 @@ class ManifestValues {
             'Downloaded icon was empty or corrupted',
           ];
           return icons.doExist(manifestValue) &&
-            !failedToFetchIconErrors.some(error => installabilityErrors.includes(error));
+            !failedToFetchIconErrors.some(error => errors.includes(error));
         },
       },
       {
@@ -91,19 +91,19 @@ class ManifestValues {
 
   /**
    * Returns results of all manifest checks
-   * @param {LH.Artifacts['WebAppManifest']} Manifest
+   * @param {Pick<LH.Artifacts, 'WebAppManifest'|'InstallabilityErrors'>} Manifest
    * @return {Promise<LH.Artifacts.ManifestValues>}
    */
-  static async compute_(Manifest) {
+  static async compute_({WebAppManifest, InstallabilityErrors}) {
     // if the manifest isn't there or is invalid json, we report that and bail
-    if (Manifest === null) {
+    if (WebAppManifest === null) {
       return {
         isParseFailure: true,
         parseFailureReason: 'No manifest was fetched',
         allChecks: [],
       };
     }
-    const manifestValue = Manifest.manifest.value;
+    const manifestValue = WebAppManifest.value;
     if (manifestValue === undefined) {
       return {
         isParseFailure: true,
@@ -117,7 +117,7 @@ class ManifestValues {
       return {
         id: item.id,
         failureText: item.failureText,
-        passing: item.validate(manifestValue, Manifest.installabilityErrors),
+        passing: item.validate(manifestValue, InstallabilityErrors.errors),
       };
     });
 

@@ -18,10 +18,8 @@ describe('StartUrl Gatherer', () => {
 
   function createArtifactsWithURL(url) {
     return {
-      WebAppManifest: {
-        manifest: {value: {start_url: {value: url}}},
-        installabilityErrors: [],
-      },
+      WebAppManifest: {value: {start_url: {value: url}}},
+      InstallabilityErrors: {errors: []},
     };
   }
 
@@ -66,13 +64,11 @@ describe('StartUrl Gatherer', () => {
 
     const passContext = {
       baseArtifacts: {
-        WebAppManifest: {
-          manifest: parseManifest(
-            'this is invalid',
-            'https://example.com/manifest.json',
-            'https://example.com/'),
-          installabilityErrors: [],
-        },
+        WebAppManifest: parseManifest(
+          'this is invalid',
+          'https://example.com/manifest.json',
+          'https://example.com/'),
+        InstallabilityErrors: {errors: []},
       },
       driver: mockDriver,
     };

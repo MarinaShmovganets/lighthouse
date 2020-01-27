@@ -56,8 +56,8 @@ class StartUrl extends Gatherer {
    * @return {{isReadFailure: true, reason: string}|{isReadFailure: false, startUrl: string}}
    */
   _readManifestStartUrl(WebAppManifest) {
-    if (!WebAppManifest || !WebAppManifest.manifest.value) {
-      const detailedMsg = WebAppManifest && WebAppManifest.manifest.warning;
+    if (!WebAppManifest || !WebAppManifest.value) {
+      const detailedMsg = WebAppManifest && WebAppManifest.warning;
 
       if (detailedMsg) {
         return {isReadFailure: true, reason: `Error fetching web app manifest: ${detailedMsg}.`};
@@ -67,7 +67,7 @@ class StartUrl extends Gatherer {
     }
 
     // Even if the start URL had a parser warning, the browser will still supply a fallback URL.
-    return {isReadFailure: false, startUrl: WebAppManifest.manifest.value.start_url.value};
+    return {isReadFailure: false, startUrl: WebAppManifest.value.start_url.value};
   }
 
   /**

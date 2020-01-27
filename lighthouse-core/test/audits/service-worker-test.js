@@ -57,10 +57,7 @@ function createArtifacts(swOpts, finalUrl, manifestJsonOrObject) {
   } else {
     const manifestJson = typeof manifestJsonOrObject === 'object' ?
       JSON.stringify(manifestJsonOrObject) : manifestJsonOrObject;
-    WebAppManifest = {
-      manifest: manifestParser(manifestJson, manifestUrl, finalUrl),
-      installabilityErrors: [],
-    };
+    WebAppManifest = manifestParser(manifestJson, manifestUrl, finalUrl);
   }
 
   return {

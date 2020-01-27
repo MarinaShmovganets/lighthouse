@@ -103,11 +103,11 @@ class ServiceWorker extends Audit {
     if (!WebAppManifest) {
       return str_(UIStrings.explanationNoManifest);
     }
-    if (!WebAppManifest.manifest.value) {
+    if (!WebAppManifest.value) {
       return str_(UIStrings.explanationBadManifest);
     }
 
-    const startUrl = WebAppManifest.manifest.value.start_url.value;
+    const startUrl = WebAppManifest.value.start_url.value;
     if (!startUrl.startsWith(scopeUrl)) {
       return str_(UIStrings.explanationBadStartUrl, {startUrl, scopeUrl});
     }
