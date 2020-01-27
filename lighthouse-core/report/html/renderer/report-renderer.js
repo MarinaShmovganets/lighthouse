@@ -106,7 +106,7 @@ class ReportRenderer {
       {name: 'URL', description: report.finalUrl},
       {name: 'Fetch time', description: Util.formatDateTime(report.fetchTime)},
       ...envValues,
-      {name: 'Mood', description: report.configSettings.channel},
+      {name: 'Channel', description: report.configSettings.channel},
       {name: 'User agent (host)', description: report.userAgent},
       {name: 'User agent (network)', description: report.environment &&
         report.environment.networkUserAgent},
