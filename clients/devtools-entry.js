@@ -56,7 +56,6 @@ if (typeof module !== 'undefined' && module.exports) {
 // @ts-ignore
 if (typeof self !== 'undefined') {
   // TODO: refactor and delete `global.isDevtools`.
-  // @ts-ignore
   global.isDevtools = true;
 
   // @ts-ignore
