@@ -54,7 +54,7 @@ class OfflineStartUrl extends Audit {
     // StartUrl gatherer will give explanations for failures, but need to take manifest parsing
     // warnings from the manifest itself (e.g. invalid `start_url`, so fell back to document URL).
     const warnings = [];
-    const manifest = artifacts.WebAppManifest && artifacts.WebAppManifest;
+    const manifest = artifacts.WebAppManifest;
     if (manifest && manifest.value && manifest.value.start_url.warning) {
       const manifestWarning = manifest.value.start_url.warning;
       warnings.push(str_(UIStrings.warningCantStart, {manifestWarning}));
