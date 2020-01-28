@@ -18,7 +18,7 @@ printf "Determined the following files have been touched:\n\n$CHANGED_FILES\n\n"
 
 if ! echo $CHANGED_FILES | grep -E 'dependency-graph|metrics|lantern|predictive-perf' > /dev/null; then
   echo "No lantern files affected, skipping lantern checks."
-  exit 0
+  # exit 0
 fi
 
 # Google Drive will sometimes respond with a bad result, so we repeat until it works.
