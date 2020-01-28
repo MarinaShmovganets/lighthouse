@@ -242,16 +242,21 @@ describe('Performance: uses-rel-preconnect audit', () => {
     };
 
     const context = {settings: {}, computedCache: new Map()};
-    const {numericValue, extendedInfo} = await UsesRelPreconnect.audit(artifacts, context);
+    const {
+      numericValue,
+      extendedInfo,
+      warnings,
+    } = await UsesRelPreconnect.audit(artifacts, context);
     assert.equal(numericValue, 300);
     assert.equal(extendedInfo.value.length, 2);
     assert.deepStrictEqual(extendedInfo.value, [
       {url: 'https://othercdn.example.com', wastedMs: 300},
       {url: 'http://cdn.example.com', wastedMs: 150},
     ]);
+    assert.equal(warnings.length, 0);
   });
 
-  it(`should return code 1 if preconnect links equal length 3`, async () => {
+  it('should pass with a warning if too many preconnects found', async () => {
     const networkRecords = [
       mainResource,
       {
