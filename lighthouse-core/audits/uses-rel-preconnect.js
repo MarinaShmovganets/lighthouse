@@ -36,9 +36,9 @@ const UIStrings = {
   crossoriginWarning: 'A preconnect <link> was found for "{securityOrigin}" but was not used ' +
     'by the browser. Check that you are using the `crossorigin` attribute properly.',
   /**
-   * @description A warning message that is shown when found more than 8 preconnected links
+   * @description A warning message that is shown when found more than 3 preconnected links
    * */
-  tooManyPreconnectLinksWarning: 'More than 8 preconnect links were found. ' +
+  tooManyPreconnectLinksWarning: 'More than 2 preconnect links were found. ' +
    'Preconnect links should be used sparingly and only to the most important origins.',
 };
 
@@ -140,10 +140,12 @@ class UsesRelPreconnectAudit extends Audit {
     const preconnectLinks = artifacts.LinkElements.filter(el => el.rel === 'preconnect');
     const preconnectOrigins = new Set(preconnectLinks.map(link => URL.getOrigin(link.href || '')));
 
-    if (preconnectLinks.length >= 6) {
+    // https://twitter.com/_tbansal/status/1197771385172480001
+    if (preconnectLinks.length >= 3) {
       return {
-        score: 1, warnings: preconnectLinks.length > 8
-          ? [str_(UIStrings.tooManyPreconnectLinksWarning)] : []};
+        score: 1,
+        warnings: [str_(UIStrings.tooManyPreconnectLinksWarning)],
+      };
     }
 
     /** @type {Array<{url: string, wastedMs: number}>}*/

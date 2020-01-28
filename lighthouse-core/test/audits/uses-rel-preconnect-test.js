@@ -251,7 +251,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
     ]);
   });
 
-  it(`should return code 1 if preconnect links equal length 6`, async () => {
+  it(`should return code 1 if preconnect links equal length 3`, async () => {
     const networkRecords = [
       mainResource,
       {
@@ -271,9 +271,6 @@ describe('Performance: uses-rel-preconnect audit', () => {
         {rel: 'preconnect', href: 'https://cdn1.example.com/'},
         {rel: 'preconnect', href: 'https://cdn2.example.com/'},
         {rel: 'preconnect', href: 'https://cdn3.example.com/'},
-        {rel: 'preconnect', href: 'https://cdn4.example.com/'},
-        {rel: 'preconnect', href: 'https://cdn5.example.com/'},
-        {rel: 'preconnect', href: 'https://cdn6.example.com/'},
       ],
       devtoolsLogs: {[UsesRelPreconnect.DEFAULT_PASS]: networkRecordsToDevtoolsLog(networkRecords)},
       URL: {finalUrl: mainResource.url},
@@ -282,44 +279,6 @@ describe('Performance: uses-rel-preconnect audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const result = await UsesRelPreconnect.audit(artifacts, context);
     assert.equal(result.score, 1);
-    assert.equal(result.warnings.length, 0);
-  });
-
-  it('should return code 1 with warning if links length is equal or more than 8', async () => {
-    const networkRecords = [
-      mainResource,
-      {
-        url: 'http://cdn.example.com/first',
-        initiator: {},
-        startTime: 2,
-        timing: {
-          dnsStart: 100,
-          connectStart: 250,
-          connectEnd: 300,
-          receiveHeadersEnd: 2.3,
-        },
-      },
-    ];
-    const artifacts = {
-      LinkElements: [
-        {rel: 'preconnect', href: 'https://cdn1.example.com/'},
-        {rel: 'preconnect', href: 'https://cdn2.example.com/'},
-        {rel: 'preconnect', href: 'https://cdn3.example.com/'},
-        {rel: 'preconnect', href: 'https://cdn4.example.com/'},
-        {rel: 'preconnect', href: 'https://cdn5.example.com/'},
-        {rel: 'preconnect', href: 'https://cdn6.example.com/'},
-        {rel: 'preconnect', href: 'https://cdn7.example.com/'},
-        {rel: 'preconnect', href: 'https://cdn8.example.com/'},
-        {rel: 'preconnect', href: 'https://cdn9.example.com/'},
-      ],
-      devtoolsLogs: {[UsesRelPreconnect.DEFAULT_PASS]: networkRecordsToDevtoolsLog(networkRecords)},
-      URL: {finalUrl: mainResource.url},
-    };
-
-    const context = {settings: {}, computedCache: new Map()};
-    const result = await UsesRelPreconnect.audit(artifacts, context);
-    assert.equal(result.score, 1);
-    assert.deepStrictEqual(result.warnings,
-      ['lighthouse-core/audits/uses-rel-preconnect.js | tooManyPreconnectLinksWarning # 0']);
+    assert.equal(result.warnings.length, 1);
   });
 });
