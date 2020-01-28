@@ -74,7 +74,7 @@ class I18n {
    * @param {string} date
    * @return {string}
    */
-   formatDateTime(date) {
+  formatDateTime(date) {
     /** @type {Intl.DateTimeFormatOptions} */
     const options = {
       month: 'short', day: 'numeric', year: 'numeric',
