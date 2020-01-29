@@ -182,7 +182,7 @@ describe('Lantern script helpers', () => {
         p50: 50,
         p90: 90,
         p95: 95,
-      })
+      });
     });
   });
 });

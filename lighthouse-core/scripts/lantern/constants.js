@@ -124,7 +124,7 @@ module.exports = {
       diff,
       diffAsPercent,
       metric,
-      lanternMetric
+      lanternMetric,
     };
   },
 

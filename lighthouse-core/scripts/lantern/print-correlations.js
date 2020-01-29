@@ -325,7 +325,7 @@ printPercentile(90);
 printPercentile(95);
 
 if (constants.WARNINGS.length) {
-  console.log('\n')
+  console.log('\n');
   for (const message of new Set(constants.WARNINGS)) {
     console.warn(chalk.yellowBright(message));
   }
