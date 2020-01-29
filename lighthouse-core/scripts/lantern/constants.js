@@ -176,8 +176,12 @@ module.exports = {
    */
   evaluateAllMetrics(siteIndexWithComputed, baselineData) {
     const entries = this.combineBaselineAndComputedDatasets(siteIndexWithComputed, baselineData);
-    /** @param {keyof TargetMetrics} a1 @param {keyof LanternMetrics} a2 */
-    const evaluate = (a1, a2) => ({...this.evaluateAccuracy(entries, a1, a2), evaluations: undefined});
+    /** @param {keyof TargetMetrics} metric @param {keyof LanternMetrics} lanternMetric */
+    const evaluate = (metric, lanternMetric) => {
+      const result = this.evaluateAccuracy(entries, metric, lanternMetric);
+      delete result.evaluations;
+      return result;
+    };
 
     return {
       roughEstimateOfFCP: evaluate('firstContentfulPaint', 'roughEstimateOfFCP'),
