@@ -9,17 +9,33 @@ const constants = require('../../../scripts/lantern/constants.js');
 
 /* eslint-env jest */
 
+/** @typedef {import('../../../scripts/lantern/constants.js').LanternSiteDefinition} LanternSite */
+
 describe('Lantern script helpers', () => {
+  /** @param {{url?: string, wpt3g: number, lantern: number}} param @return {LanternSite} */
+  const getSite = ({url, lantern, wpt3g}) => ({
+    url: url || 'http://example.com',
+    wpt3g: {firstContentfulPaint: wpt3g},
+    lantern: /** @type {LanternSite['lantern']} */ ({roughEstimateOfFCP: lantern}),
+    baseline: /** @type {LanternSite['baseline']} */ ({roughEstimateOfFCP: lantern}),
+  });
+
+  /** @param {{url: string, value: number}} param */
+  const getBaseline = ({url, value}) => /** @type {LanternSite['lantern'] & {url: string}} */ ({
+    url,
+    roughEstimateOfFCP: value,
+  });
+
   describe('#combineBaselineAndComputedDatasets', () => {
     it('should combine the two datasets on URL', () => {
       const siteIndex = {
         sites: [
-          {url: 'urlA', wpt3g: {firstContentfulPaint: 150}, lantern: {roughEstimateOfFCP: 100}},
-          {url: 'urlB', wpt3g: {firstContentfulPaint: 150}, lantern: {roughEstimateOfFCP: 100}},
+          getSite({url: 'urlA', wpt3g: 150, lantern: 100}),
+          getSite({url: 'urlB', wpt3g: 150, lantern: 100}),
         ],
       };
       const baseline = {
-        sites: [{url: 'urlA', roughEstimateOfFCP: 100}, {url: 'urlC', roughEstimateOfFCP: 100}],
+        sites: [getBaseline({url: 'urlA', value: 100}), getBaseline({url: 'urlC', value: 100})],
       };
 
       expect(constants.combineBaselineAndComputedDatasets(siteIndex, baseline)).toEqual([
@@ -34,12 +50,10 @@ describe('Lantern script helpers', () => {
 
     it('should throw on empty data', () => {
       const siteIndex = {
-        sites: [
-          {url: 'urlB', wpt3g: {firstContentfulPaint: 150}, lantern: {roughEstimateOfFCP: 100}},
-        ],
+        sites: [getSite({url: 'urlB', wpt3g: 150, lantern: 100})],
       };
       const baseline = {
-        sites: [{url: 'urlA', roughEstimateOfFCP: 100}, {url: 'urlC', roughEstimateOfFCP: 100}],
+        sites: [getBaseline({url: 'urlA', value: 100}), getBaseline({url: 'urlC', value: 100})],
       };
 
       expect(() => constants.combineBaselineAndComputedDatasets(siteIndex, baseline)).toThrow();
@@ -48,15 +62,13 @@ describe('Lantern script helpers', () => {
 
   describe('#evaluateSite', () => {
     it('should compute the diff', () => {
-      const site = {url: 'http://example.com'};
-      const expectedMetrics = {firstContentfulPaint: 1000};
-      const actualMetrics = {roughEstimateOfFCP: 900};
+      const site = getSite({url: 'http://example.com', wpt3g: 1000, lantern: 900});
 
       expect(
         constants.evaluateSite(
           site,
-          expectedMetrics,
-          actualMetrics,
+          site.wpt3g,
+          site.lantern,
           'firstContentfulPaint',
           'roughEstimateOfFCP'
         )
@@ -72,15 +84,13 @@ describe('Lantern script helpers', () => {
     });
 
     it('should return null on 0-data', () => {
-      const site = {url: 'http://example.com'};
-      const expectedMetrics = {firstContentfulPaint: 0};
-      const actualMetrics = {roughEstimateOfFCP: 900};
+      const site = getSite({url: 'http://example.com', wpt3g: 0, lantern: 900});
 
       expect(
         constants.evaluateSite(
           site,
-          expectedMetrics,
-          actualMetrics,
+          site.wpt3g,
+          site.lantern,
           'firstContentfulPaint',
           'roughEstimateOfFCP'
         )
@@ -89,15 +99,10 @@ describe('Lantern script helpers', () => {
   });
 
   describe('#evaluateAccuracy', () => {
-    const getMetric = ({url, lantern, wpt3g}) => ({
-      url: url || 'http://example.com',
-      wpt3g: {firstContentfulPaint: wpt3g},
-      lantern: {roughEstimateOfFCP: lantern},
-    });
-
+    /** @param {Array<{url?: string, wpt3g: number, lantern: number}>} entries */
     const evaluate = entries =>
       constants.evaluateAccuracy(
-        entries.map(getMetric),
+        entries.map(getSite),
         'firstContentfulPaint',
         'roughEstimateOfFCP'
       );
