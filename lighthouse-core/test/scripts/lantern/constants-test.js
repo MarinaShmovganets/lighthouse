@@ -17,7 +17,6 @@ describe('Lantern script helpers', () => {
     url: url || 'http://example.com',
     wpt3g: {firstContentfulPaint: wpt3g},
     lantern: /** @type {LanternSite['lantern']} */ ({roughEstimateOfFCP: lantern}),
-    baseline: /** @type {LanternSite['baseline']} */ ({roughEstimateOfFCP: lantern}),
   });
 
   /** @param {{url: string, value: number}} param */
@@ -80,6 +79,8 @@ describe('Lantern script helpers', () => {
         diffAsPercent: 0.1,
         metric: 'firstContentfulPaint',
         lanternMetric: 'roughEstimateOfFCP',
+        lantern: site.lantern,
+        wpt3g: site.wpt3g,
       });
     });
 

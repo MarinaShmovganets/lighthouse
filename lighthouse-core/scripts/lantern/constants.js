@@ -17,7 +17,7 @@ const path = require('path');
  * @property {string} url
  * @property {TargetMetrics} wpt3g
  * @property {LanternMetrics} lantern
- * @property {LanternMetrics} baseline
+ * @property {LanternMetrics} [baseline]
  */
 
 /**
