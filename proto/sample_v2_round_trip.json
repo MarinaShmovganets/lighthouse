@@ -1107,23 +1107,11 @@
         },
         "installable-manifest": {
             "description": "Browsers can proactively prompt users to add your app to their homescreen, which can lead to higher engagement. [Learn more](https://web.dev/installable-manifest).",
-            "details": {
-                "items": [
-                    {
-                        "failures": [
-                            "No manifest was fetched"
-                        ],
-                        "isParseFailure": true,
-                        "parseFailureReason": "No manifest was fetched"
-                    }
-                ],
-                "type": "debugdata"
-            },
-            "explanation": "Failures: No manifest was fetched.",
+            "errorMessage": "Required InstallabilityErrors gatherer did not run.",
             "id": "installable-manifest",
-            "score": 0.0,
-            "scoreDisplayMode": "binary",
-            "title": "Web app manifest does not meet the installability requirements"
+            "score": null,
+            "scoreDisplayMode": "error",
+            "title": "Web app manifest meets the installability requirements"
         },
         "interactive": {
             "description": "Time to interactive is the amount of time it takes for the page to become fully interactive. [Learn more](https://web.dev/interactive).",
@@ -2567,23 +2555,11 @@
         },
         "splash-screen": {
             "description": "A themed splash screen ensures a high-quality experience when users launch your app from their homescreens. [Learn more](https://web.dev/splash-screen).",
-            "details": {
-                "items": [
-                    {
-                        "failures": [
-                            "No manifest was fetched"
-                        ],
-                        "isParseFailure": true,
-                        "parseFailureReason": "No manifest was fetched"
-                    }
-                ],
-                "type": "debugdata"
-            },
-            "explanation": "Failures: No manifest was fetched.",
+            "errorMessage": "Required InstallabilityErrors gatherer did not run.",
             "id": "splash-screen",
-            "score": 0.0,
-            "scoreDisplayMode": "binary",
-            "title": "Is not configured for a custom splash screen"
+            "score": null,
+            "scoreDisplayMode": "error",
+            "title": "Configured for a custom splash screen"
         },
         "structured-data": {
             "description": "Run the [Structured Data Testing Tool](https://search.google.com/structured-data/testing-tool/) and the [Structured Data Linter](http://linter.structured-data.org/) to validate structured data. [Learn more](https://web.dev/structured-data).",
@@ -2667,25 +2643,11 @@
         },
         "themed-omnibox": {
             "description": "The browser address bar can be themed to match your site. [Learn more](https://web.dev/themed-omnibox).",
-            "details": {
-                "items": [
-                    {
-                        "failures": [
-                            "No manifest was fetched",
-                            "No `<meta name=\"theme-color\">` tag found"
-                        ],
-                        "isParseFailure": true,
-                        "parseFailureReason": "No manifest was fetched",
-                        "themeColor": null
-                    }
-                ],
-                "type": "debugdata"
-            },
-            "explanation": "Failures: No manifest was fetched,\nNo `<meta name=\"theme-color\">` tag found.",
+            "errorMessage": "Required InstallabilityErrors gatherer did not run.",
             "id": "themed-omnibox",
-            "score": 0.0,
-            "scoreDisplayMode": "binary",
-            "title": "Does not set a theme color for the address bar."
+            "score": null,
+            "scoreDisplayMode": "error",
+            "title": "Sets a theme color for the address bar."
         },
         "third-party-summary": {
             "description": "Third-party code can significantly impact load performance. Limit the number of redundant third-party providers and try to load third-party code after your page has primarily finished loading. [Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript/).",
@@ -3992,7 +3954,7 @@
             "description": "These checks validate the aspects of a Progressive Web App. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist).",
             "id": "pwa",
             "manualDescription": "These checks are required by the baseline [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
-            "score": 0.41,
+            "score": null,
             "title": "Progressive Web App"
         },
         "seo": {
@@ -4548,12 +4510,6 @@
                 "duration": 100.0,
                 "entryType": "measure",
                 "name": "lh:audit:installable-manifest",
-                "startTime": 0.0
-            },
-            {
-                "duration": 100.0,
-                "entryType": "measure",
-                "name": "lh:computed:ManifestValues",
                 "startTime": 0.0
             },
             {

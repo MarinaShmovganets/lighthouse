@@ -487,23 +487,11 @@
     },
     "installable-manifest": {
       "id": "installable-manifest",
-      "title": "Web app manifest does not meet the installability requirements",
+      "title": "Web app manifest meets the installability requirements",
       "description": "Browsers can proactively prompt users to add your app to their homescreen, which can lead to higher engagement. [Learn more](https://web.dev/installable-manifest).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "explanation": "Failures: No manifest was fetched.",
-      "details": {
-        "type": "debugdata",
-        "items": [
-          {
-            "failures": [
-              "No manifest was fetched"
-            ],
-            "isParseFailure": true,
-            "parseFailureReason": "No manifest was fetched"
-          }
-        ]
-      }
+      "score": null,
+      "scoreDisplayMode": "error",
+      "errorMessage": "Required InstallabilityErrors gatherer did not run."
     },
     "apple-touch-icon": {
       "id": "apple-touch-icon",
@@ -515,45 +503,19 @@
     },
     "splash-screen": {
       "id": "splash-screen",
-      "title": "Is not configured for a custom splash screen",
+      "title": "Configured for a custom splash screen",
       "description": "A themed splash screen ensures a high-quality experience when users launch your app from their homescreens. [Learn more](https://web.dev/splash-screen).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "explanation": "Failures: No manifest was fetched.",
-      "details": {
-        "type": "debugdata",
-        "items": [
-          {
-            "failures": [
-              "No manifest was fetched"
-            ],
-            "isParseFailure": true,
-            "parseFailureReason": "No manifest was fetched"
-          }
-        ]
-      }
+      "score": null,
+      "scoreDisplayMode": "error",
+      "errorMessage": "Required InstallabilityErrors gatherer did not run."
     },
     "themed-omnibox": {
       "id": "themed-omnibox",
-      "title": "Does not set a theme color for the address bar.",
+      "title": "Sets a theme color for the address bar.",
       "description": "The browser address bar can be themed to match your site. [Learn more](https://web.dev/themed-omnibox).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "explanation": "Failures: No manifest was fetched,\nNo `<meta name=\"theme-color\">` tag found.",
-      "details": {
-        "type": "debugdata",
-        "items": [
-          {
-            "failures": [
-              "No manifest was fetched",
-              "No `<meta name=\"theme-color\">` tag found"
-            ],
-            "themeColor": null,
-            "isParseFailure": true,
-            "parseFailureReason": "No manifest was fetched"
-          }
-        ]
-      }
+      "score": null,
+      "scoreDisplayMode": "error",
+      "errorMessage": "Required InstallabilityErrors gatherer did not run."
     },
     "content-width": {
       "id": "content-width",
@@ -4242,7 +4204,7 @@
         }
       ],
       "id": "pwa",
-      "score": 0.41
+      "score": null
     }
   },
   "categoryGroups": {
@@ -4632,12 +4594,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:installable-manifest",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:computed:ManifestValues",
         "duration": 100,
         "entryType": "measure"
       },
@@ -5668,11 +5624,34 @@
       "lighthouse-core/audits/redirects.js | description": [
         "audits.redirects.description"
       ],
-      "lighthouse-core/audits/installable-manifest.js | failureTitle": [
+      "lighthouse-core/audits/installable-manifest.js | title": [
         "audits[installable-manifest].title"
       ],
       "lighthouse-core/audits/installable-manifest.js | description": [
         "audits[installable-manifest].description"
+      ],
+      "lighthouse-core/lib/lh-error.js | missingRequiredArtifact": [
+        {
+          "values": {
+            "errorCode": "MISSING_REQUIRED_ARTIFACT",
+            "artifactName": "InstallabilityErrors"
+          },
+          "path": "audits[installable-manifest].errorMessage"
+        },
+        {
+          "values": {
+            "errorCode": "MISSING_REQUIRED_ARTIFACT",
+            "artifactName": "InstallabilityErrors"
+          },
+          "path": "audits[splash-screen].errorMessage"
+        },
+        {
+          "values": {
+            "errorCode": "MISSING_REQUIRED_ARTIFACT",
+            "artifactName": "InstallabilityErrors"
+          },
+          "path": "audits[themed-omnibox].errorMessage"
+        }
       ],
       "lighthouse-core/audits/apple-touch-icon.js | failureTitle": [
         "audits[apple-touch-icon].title"
@@ -5680,13 +5659,13 @@
       "lighthouse-core/audits/apple-touch-icon.js | description": [
         "audits[apple-touch-icon].description"
       ],
-      "lighthouse-core/audits/splash-screen.js | failureTitle": [
+      "lighthouse-core/audits/splash-screen.js | title": [
         "audits[splash-screen].title"
       ],
       "lighthouse-core/audits/splash-screen.js | description": [
         "audits[splash-screen].description"
       ],
-      "lighthouse-core/audits/themed-omnibox.js | failureTitle": [
+      "lighthouse-core/audits/themed-omnibox.js | title": [
         "audits[themed-omnibox].title"
       ],
       "lighthouse-core/audits/themed-omnibox.js | description": [
