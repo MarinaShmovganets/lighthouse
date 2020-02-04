@@ -139,10 +139,11 @@ class UsesRelPreconnectAudit extends Audit {
     const preconnectOrigins = new Set(preconnectLinks.map(link => URL.getOrigin(link.href || '')));
 
     // https://twitter.com/_tbansal/status/1197771385172480001
-    if (preconnectLinks.length >= 3) {
+    if (preconnectLinks.length >= 2) {
       return {
         score: 1,
-        warnings: [str_(UIStrings.tooManyPreconnectLinksWarning)],
+        warnings: preconnectLinks.length >= 3 ?
+          [str_(UIStrings.tooManyPreconnectLinksWarning)] : [],
       };
     }
 
