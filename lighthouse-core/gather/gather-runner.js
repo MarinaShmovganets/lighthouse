@@ -499,7 +499,7 @@ class GatherRunner {
    * Currently must be run before `start-url` gatherer so that `WebAppManifest`
    * will be available to it.
    * @param {LH.Gatherer.PassContext} passContext
-   * @return {LH.Artifacts.} passContext
+   * @return {Promise<LH.Artifacts.InstallabilityErrors>}
    */
   static async getInstallabilityErrors(passContext) {
     const response =
@@ -509,19 +509,21 @@ class GatherRunner {
     // Before M82, `getInstallabilityErrors` was not localized and just english
     // error strings were returned. Convert the values we care about to the new error id format.
     if (!errors) {
-      // @ts-ignore
-      errors = response.errors.map(error => {
+      /** @type {string[]} */
+      // @ts-ignore - Support older protocol data.
+      const m81StyleErrors = response.errors || [];
+      errors = m81StyleErrors.map(error => {
         const englishErrorToErrorId = {
           'Could not download a required icon from the manifest': 'cannot-download-icon',
           'Downloaded icon was empty or corrupted': 'no-icon-available',
         };
         for (const [englishError, errorId] of Object.entries(englishErrorToErrorId)) {
           if (error.includes(englishError)) {
-            return {errorId};
+            return {errorId, errorArguments: []};
           }
         }
-        return null;
-      }).filter(Boolean);
+        return {errorId: '', errorArguments: []};
+      }).filter(error => error.errorId);
     }
 
     return {errors};

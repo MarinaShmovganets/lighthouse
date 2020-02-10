@@ -363,7 +363,7 @@ declare global {
           parentNode?: DomNodeMaybeWithParent;
         }
       }
-      
+
       // TODO(bckenny): real type for parsed manifest.
       export type Manifest = ReturnType<typeof parseManifest>;
 
