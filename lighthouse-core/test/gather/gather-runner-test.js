@@ -35,6 +35,7 @@ const GatherRunner = {
   beginRecording: makeParamsOptional(GatherRunner_.beginRecording),
   collectArtifacts: makeParamsOptional(GatherRunner_.collectArtifacts),
   endRecording: makeParamsOptional(GatherRunner_.endRecording),
+  getInstallabilityErrors: makeParamsOptional(GatherRunner_.getInstallabilityErrors),
   getInterstitialError: makeParamsOptional(GatherRunner_.getInterstitialError),
   getNetworkError: makeParamsOptional(GatherRunner_.getNetworkError),
   getPageLoadError: makeParamsOptional(GatherRunner_.getPageLoadError),
@@ -1630,6 +1631,40 @@ describe('GatherRunner', function() {
         .then(_ => {
           assert.ok(true);
         });
+    });
+  });
+
+  describe('.getInstallabilityErrors', () => {
+    /** @type {RecursivePartial<LH.Gatherer.PassContext>} */
+    let passContext;
+
+    beforeEach(() => {
+      passContext = {
+        driver,
+      };
+    });
+
+    it('should return the response from the protocol, if in >=M82 format', async () => {
+      connectionStub.sendCommand
+        .mockResponse('Page.getInstallabilityErrors', {
+          installabilityErrors: [{errorId: 'no-icon-available', errorArguments: []}],
+        });
+      const result = await GatherRunner.getInstallabilityErrors(passContext);
+      expect(result).toEqual({
+        errors: [{errorId: 'no-icon-available', errorArguments: []}],
+      });
+    });
+
+    it('should transform the response from the protocol, if in <M82 format', async () => {
+      connectionStub.sendCommand
+        .mockResponse('Page.getInstallabilityErrors', {
+          // @ts-ignore
+          errors: ['Downloaded icon was empty or corrupted'],
+        });
+      const result = await GatherRunner.getInstallabilityErrors(passContext);
+      expect(result).toEqual({
+        errors: [{errorId: 'no-icon-available', errorArguments: []}],
+      });
     });
   });
 
