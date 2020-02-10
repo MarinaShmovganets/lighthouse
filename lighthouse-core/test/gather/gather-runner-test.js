@@ -1649,7 +1649,7 @@ describe('GatherRunner', function() {
     it('should return null when there is no manifest', async () => {
       connectionStub.sendCommand
         .mockResponse('Page.getAppManifest', {})
-        .mockResponse('Page.getInstallabilityErrors', {errors: []});
+        .mockResponse('Page.getInstallabilityErrors', {installabilityErrors: []});
       const result = await GatherRunner.getWebAppManifest(passContext);
       expect(result).toEqual(null);
     });
@@ -1658,7 +1658,7 @@ describe('GatherRunner', function() {
       const manifest = {name: 'App'};
       connectionStub.sendCommand
         .mockResponse('Page.getAppManifest', {data: JSON.stringify(manifest), url: MANIFEST_URL})
-        .mockResponse('Page.getInstallabilityErrors', {errors: []});
+        .mockResponse('Page.getInstallabilityErrors', {installabilityErrors: []});
 
       const result = await GatherRunner.getWebAppManifest(passContext);
       expect(result).toHaveProperty('raw', JSON.stringify(manifest));
