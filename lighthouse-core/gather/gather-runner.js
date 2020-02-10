@@ -499,6 +499,39 @@ class GatherRunner {
    * Currently must be run before `start-url` gatherer so that `WebAppManifest`
    * will be available to it.
    * @param {LH.Gatherer.PassContext} passContext
+   * @return {LH.Artifacts.} passContext
+   */
+  static async getInstallabilityErrors(passContext) {
+    const response =
+      await passContext.driver.sendCommand('Page.getInstallabilityErrors');
+    
+    let errors = response.installabilityErrors;
+    // Before M82, `getInstallabilityErrors` was not localized and just english
+    // error strings were returned. Convert the values we care about to the new error id format.
+    if (!errors) {
+      // @ts-ignore
+      errors = response.errors.map(error => {
+        const englishErrorToErrorId = {
+          'Could not download a required icon from the manifest': 'cannot-download-icon',
+          'Downloaded icon was empty or corrupted': 'no-icon-available',
+        };
+        for (const [englishError, errorId] of Object.entries(englishErrorToErrorId)) {
+          if (error.includes(englishError)) {
+            return {errorId};
+          }
+        }
+        return null;
+      }).filter(Boolean);
+    }
+
+    return {errors};
+  }
+
+  /**
+   * Populates the important base artifacts from a fully loaded test page.
+   * Currently must be run before `start-url` gatherer so that `WebAppManifest`
+   * will be available to it.
+   * @param {LH.Gatherer.PassContext} passContext
    */
   static async populateBaseArtifacts(passContext) {
     const baseArtifacts = passContext.baseArtifacts;
@@ -517,8 +550,7 @@ class GatherRunner {
     baseArtifacts.WebAppManifest = await GatherRunner.getWebAppManifest(passContext);
 
     if (baseArtifacts.WebAppManifest) {
-      baseArtifacts.InstallabilityErrors =
-        await passContext.driver.sendCommand('Page.getInstallabilityErrors');
+      baseArtifacts.InstallabilityErrors = await GatherRunner.getInstallabilityErrors(passContext);
     }
 
     baseArtifacts.Stacks = await stacksGatherer(passContext);
