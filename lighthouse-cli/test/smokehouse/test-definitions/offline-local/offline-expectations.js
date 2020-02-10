@@ -117,7 +117,7 @@ module.exports = [
       },
       InstallabilityErrors: {
         errors: [
-          {errorId: 'no-icon-available'}
+          {errorId: 'no-icon-available'},
         ],
       },
     },
