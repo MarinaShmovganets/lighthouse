@@ -495,9 +495,8 @@ class GatherRunner {
   }
 
   /**
-   * Populates the important base artifacts from a fully loaded test page.
-   * Currently must be run before `start-url` gatherer so that `WebAppManifest`
-   * will be available to it.
+   * Creates an Artifacts.InstallabilityErrors, tranforming data from the protocol
+   * for old versions of Chrome.
    * @param {LH.Gatherer.PassContext} passContext
    * @return {Promise<LH.Artifacts.InstallabilityErrors>}
    */
