@@ -53,6 +53,7 @@ body {
 .browser-brand {
   display: none;
 }
+/* see https://developer.chrome.com/extensions/i18n */
 .browser-brand--__MSG_browserBrand__ {
   display: block;
 }
