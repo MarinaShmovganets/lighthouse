@@ -46,16 +46,12 @@ body {
   padding: 16px;
 }
 
-.header__icon {
-  margin: 2px auto 0;
-}
-
-.browser-brand {
+.hidden {
   display: none;
 }
-/* see https://developer.chrome.com/extensions/i18n */
-.browser-brand--__MSG_browserBrand__ {
-  display: block;
+
+.header__icon {
+  margin: 2px auto 0;
 }
 
 .errormsg {

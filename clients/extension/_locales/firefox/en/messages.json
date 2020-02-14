@@ -1,8 +1,0 @@
-{
-  "browserBrand": {
-    "message": "firefox"
-  },
-  "localhostErrorMessage": {
-    "message": "Use the Lighthouse Node CLI to audit pages on localhost."
-  }
-}

@@ -34,20 +34,24 @@ async function buildEntryPoint() {
   const bundleStream = browserify(inFile).bundle();
 
   await mkdir(path.dirname(outFile), {recursive: true});
-  return new Promise((resolve, reject) => {
+  await new Promise((resolve, reject) => {
     const writeStream = fs.createWriteStream(outFile);
     writeStream.on('finish', resolve);
     writeStream.on('error', reject);
 
     bundleStream.pipe(writeStream);
   });
+
+  let outCode = fs.readFileSync(outFile, 'utf-8');
+  outCode = outCode.replace('___BROWSER_BRAND___', browserBrand);
+  fs.writeFileSync(outFile, outCode);
 }
 
 /**
  * @return {Promise<void>}
  */
-async function copyAssets() {
-  await cpy([
+function copyAssets() {
+  return cpy([
     '*.html',
     'styles/**/*.css',
     'images/**/*',
@@ -55,12 +59,6 @@ async function copyAssets() {
   ], distDir, {
     cwd: sourceDir,
     parents: true,
-  });
-
-  await cpy([
-    `_locales/${browserBrand}/en/**`,
-  ], `${distDir}/_locales/en`, {
-    cwd: sourceDir,
   });
 }
 
