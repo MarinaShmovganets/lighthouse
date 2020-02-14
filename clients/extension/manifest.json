@@ -8,7 +8,6 @@
     "16": "images/lh_favicon_16x16.png",
     "128": "images/lh_logo_128x128.png"
   },
-  "default_locale": "en",
   "permissions": [
     "activeTab",
     "storage"
