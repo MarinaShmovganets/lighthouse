@@ -320,6 +320,7 @@ class DetailsRenderer {
       // @ts-ignore: It's ok that there is no text.
       subRows = this._getCanonicalizedHeading(heading.subRows);
       if (!subRows.key) {
+        // eslint-disable-next-line no-console
         console.warn('key should not be null');
       }
       subRows = {...subRows, key: subRows.key || ''};
