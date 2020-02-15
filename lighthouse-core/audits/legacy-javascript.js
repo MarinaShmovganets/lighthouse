@@ -127,8 +127,8 @@ class LegacyJavascript extends Audit {
     } else {
       // Promise =
       // window.Promise =// Promise =Z
-      // but not: SomePromise = 
-      expression += `(?:window\.|[\\s;]+)${property}\\s?=[^=]`;
+      // but not: SomePromise =
+      expression += `(?:window\\.|[\\s;]+)${property}\\s?=[^=]`;
     }
 
     // String.prototype['startsWith'] =

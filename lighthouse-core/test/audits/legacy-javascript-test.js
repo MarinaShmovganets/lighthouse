@@ -47,7 +47,7 @@ const createVariants = (codeSnippets) => {
   }
 
   return variants;
-}
+};
 
 /* eslint-env jest */
 describe('LegacyJavaScript audit', () => {
