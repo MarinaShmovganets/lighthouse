@@ -16,7 +16,7 @@
     "build-all:task:windows": "yarn build-cdt-lib && yarn build-extension && yarn build-devtools && yarn build-lr && yarn build-viewer",
     "build-cdt-lib": "node ./build/build-cdt-lib.js",
     "build-extension": "node ./build/build-extension.js",
-    "build-devtools": "node ./build/build-bundle.js clients/devtools-entry.js dist/lighthouse-dt-bundle.js && node ./build/build-dt-report-resources.js",
+    "build-devtools": "yarn link && yarn link lighthouse && node ./build/build-bundle.js clients/devtools-entry.js dist/lighthouse-dt-bundle.js && node ./build/build-dt-report-resources.js",
     "build-lr": "node ./build/build-lightrider-bundles.js",
     "build-pack": "bash build/build-pack.sh",
     "build-viewer": "node ./build/build-viewer.js",
