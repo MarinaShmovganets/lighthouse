@@ -44,6 +44,9 @@ function runA11yChecks() {
       'html-xml-lang-mismatch': {enabled: false},
       'blink': {enabled: false},
       'server-side-image-map': {enabled: false},
+      'identical-links-same-purpose': {enabled: false},
+      'no-autoplay-audio': {enabled: false},
+      'svg-img-alt': {enabled: false},
     },
     // @ts-ignore
   }).then(axeResult => {
