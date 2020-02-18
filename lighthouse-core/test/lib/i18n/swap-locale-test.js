@@ -21,7 +21,7 @@ describe('swap-locale', () => {
 
     // With ICU string argument values
     expect(lhrEn.audits['dom-size'].displayValue).toEqual('143 elements');
-    expect(lhrEs.audits['dom-size'].displayValue).toEqual('143 elementos');
+    expect(lhrEs.audits['dom-size'].displayValue).toEqual('143 elementos');
 
     // Renderer formatted strings
     expect(lhrEn.i18n.rendererFormattedStrings.labDataTitle).toEqual('Lab Data');
