@@ -151,6 +151,8 @@ echo "Upload the package zip to CWS dev dashboard..."
 # Select `lighthouse-X.X.X.X.zip`
 # _Publish_ at the bottom
 
+# For Firefox: https://addons.mozilla.org/en-US/developers/addon/google-lighthouse/versions/submit/
+
 # * Tell the world!!! *
 echo "Complete the _Release publicity_ tasks documented above"
 
