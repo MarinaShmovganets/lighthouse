@@ -29,9 +29,9 @@ describe('swap-locale', () => {
 
     // Formatted numbers in placeholders.
     expect(lhrEn.audits['render-blocking-resources'].displayValue)
-      .toEqual('Potential savings of 1,130 ms');
+      .toEqual('Potential savings of 880 ms');
     expect(lhrEs.audits['render-blocking-resources'].displayValue)
-      .toEqual('Ahorro potencial de 1.130 ms');
+      .toEqual('Ahorro potencial de 880 ms');
   });
 
   it('can roundtrip back to english correctly', () => {
