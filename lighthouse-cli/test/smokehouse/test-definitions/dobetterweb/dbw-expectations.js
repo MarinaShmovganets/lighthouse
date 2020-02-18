@@ -126,8 +126,9 @@ const expectations = [
       ],
       MetaElements: [
         {
-          name: 'charset',
-          content: 'utf-8',
+          name: '',
+          content: '',
+          charset: 'utf-8',
         },
         {
           name: 'viewport',

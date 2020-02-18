@@ -66,7 +66,7 @@ class CharsetDefined extends Audit {
         .find(header => header.name.toLowerCase() === CONTENT_TYPE_HEADER);
 
       if (contentTypeHeader) {
-        isCharsetSet = contentTypeHeader.value.match(CHARSET_HTTP_REGEX) !== null;
+        isCharsetSet = CHARSET_HTTP_REGEX.test(contentTypeHeader.value);
       }
     }
 
@@ -78,8 +78,10 @@ class CharsetDefined extends Audit {
     if (artifacts.MainDocumentContent.slice(0, 1024).match(CHARSET_HTML_REGEX) !== null) {
       // If so, double-check the DOM attributes, considering both legacy http-equiv and html5 charset styles.
       isCharsetSet = isCharsetSet || artifacts.MetaElements.some(meta => {
-        return (meta.name === 'charset' && meta.content && meta.content.match(IANA_REGEX)) ||
-          (meta.name === 'content-type' && meta.content && meta.content.match(CHARSET_HTTP_REGEX));
+        return (meta.charset && meta.charset.match(IANA_REGEX)) ||
+          (meta.httpEquiv === 'content-type' &&
+          meta.content &&
+          meta.content.match(CHARSET_HTTP_REGEX));
       });
     }
 

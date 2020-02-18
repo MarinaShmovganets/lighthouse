@@ -228,9 +228,9 @@
         "charset": {
             "description": "A character encoding declaration is required. It can be done with a <meta> tagin the first 1024 bytes of the HTML or in the Content-Type HTTP response header. [Learn more](https://www.w3.org/International/questions/qa-html-encoding-declarations).",
             "id": "charset",
-            "score": 1.0,
+            "score": 0.0,
             "scoreDisplayMode": "binary",
-            "title": "Properly defines charset"
+            "title": "Charset declaration is missing or occurs too late in the HTML"
         },
         "color-contrast": {
             "description": "Low-contrast text is difficult or impossible for many users to read. [Learn more](https://web.dev/color-contrast/).",
@@ -3708,7 +3708,7 @@
                 }
             ],
             "id": "best-practices",
-            "score": 0.13,
+            "score": 0.07,
             "title": "Best Practices"
         },
         "performance": {

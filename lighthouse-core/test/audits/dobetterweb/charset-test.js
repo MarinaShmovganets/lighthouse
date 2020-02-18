@@ -36,7 +36,7 @@ describe('Charset defined audit', () => {
   it('succeeds where the page contains the charset meta tag', async () => {
     const htmlContent = HTML_PRE + '<meta charset="utf-8" >' + HTML_POST;
     const [artifacts, context] = generateArtifacts(htmlContent);
-    artifacts.MetaElements = [{name: 'charset', content: 'utf-8'}];
+    artifacts.MetaElements = [{name: '', content: '', charset: 'utf-8'}];
     const auditResult = await CharsetDefinedAudit.audit(artifacts, context);
     assert.equal(auditResult.score, 1);
   });
@@ -45,7 +45,9 @@ describe('Charset defined audit', () => {
     const htmlContent = HTML_PRE +
       '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />' + HTML_POST;
     const [artifacts, context] = generateArtifacts(htmlContent);
-    artifacts.MetaElements = [{name: 'content-type', content: 'text/html; charset=utf-8'}];
+    artifacts.MetaElements = [
+      {name: '', content: 'text/html; charset=utf-8', httpEquiv: 'content-type'},
+    ];
     const auditResult = await CharsetDefinedAudit.audit(artifacts, context);
     assert.equal(auditResult.score, 1);
   });
@@ -78,7 +80,7 @@ describe('Charset defined audit', () => {
     const bigString = new Array(1024).fill(' ').join('');
     const htmlContent = HTML_PRE + bigString + '<meta charset="utf-8" />' + HTML_POST;
     const [artifacts, context] = generateArtifacts(htmlContent);
-    artifacts.MetaElements = [{name: 'charset', content: 'utf-8'}];
+    artifacts.MetaElements = [{name: '', content: '', charset: 'utf-8'}];
     const auditResult = await CharsetDefinedAudit.audit(artifacts, context);
     assert.equal(auditResult.score, 0);
   });
@@ -87,7 +89,7 @@ describe('Charset defined audit', () => {
     const bigString = new Array(900).fill(' ').join('');
     const htmlContent = HTML_PRE + bigString + '<meta charset="utf-8" />' + HTML_POST;
     const [artifacts, context] = generateArtifacts(htmlContent);
-    artifacts.MetaElements = [{name: 'charset', content: 'utf-8'}];
+    artifacts.MetaElements = [{name: '', content: '', charset: 'utf-8'}];
     const auditResult = await CharsetDefinedAudit.audit(artifacts, context);
     assert.equal(auditResult.score, 1);
   });
@@ -98,7 +100,7 @@ describe('Charset defined audit', () => {
     const bigString = new Array(1024 - HTML_PRE.length - charsetHTML.length / 2).fill(' ').join('');
     const htmlContent = HTML_PRE + bigString + charsetHTML + HTML_POST;
     const [artifacts, context] = generateArtifacts(htmlContent);
-    artifacts.MetaElements = [{name: 'charset', content: 'utf-8'}];
+    artifacts.MetaElements = [{name: '', content: '', charset: 'utf-8'}];
     const auditResult = await CharsetDefinedAudit.audit(artifacts, context);
     assert.equal(auditResult.score, 0);
   });
