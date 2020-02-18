@@ -20,8 +20,8 @@ describe('swap-locale', () => {
     expect(lhrEs.audits.plugins.title).toEqual('El documento no usa complementos');
 
     // With ICU string argument values
-    expect(lhrEn.audits['dom-size'].displayValue).toEqual('31 elements');
-    expect(lhrEs.audits['dom-size'].displayValue).toEqual('31 elementos');
+    expect(lhrEn.audits['dom-size'].displayValue).toEqual('143 elements');
+    expect(lhrEs.audits['dom-size'].displayValue).toEqual('143 elementos');
 
     // Renderer formatted strings
     expect(lhrEn.i18n.rendererFormattedStrings.labDataTitle).toEqual('Lab Data');
