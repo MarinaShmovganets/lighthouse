@@ -44,8 +44,8 @@ class CumulativeLayoutShift extends Audit {
   static get defaultOptions() {
     return {
       // TODO(paulirish): Calibrate these
-      scorePODR: 0.1,
-      scoreMedian: 0.5,
+      scorePODR: 0.05,
+      scoreMedian: 0.4,
     };
   }
 
