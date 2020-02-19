@@ -8,8 +8,6 @@
  * @fileoverview Audits a page to ensure charset it configured properly.
  * It must be defined within the first 1024 bytes of the HTML document, defined in the HTTP header, or the document source starts with a BOM.
  *
- * TODO: It doesn't yet validate the encoding is a valid IANA charset name. https://www.iana.org/assignments/character-sets/character-sets.xhtml
- *
  * @see: https://github.com/GoogleChrome/lighthouse/issues/10023
  */
 'use strict';
@@ -32,7 +30,7 @@ const UIStrings = {
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 const CONTENT_TYPE_HEADER = 'content-type';
-// /^[a-zA-Z0-9-_:.()]{2,}$/ matches all known IANA charset names
+// /^[a-zA-Z0-9-_:.()]{2,}$/ matches all known IANA charset names (https://www.iana.org/assignments/character-sets/character-sets.xhtml)
 const IANA_REGEX = /^[a-zA-Z0-9-_:.()]{2,}$/;
 const CHARSET_HTML_REGEX = /<meta[^>]+charset[^<]+>/;
 const CHARSET_HTTP_REGEX = /charset\s*=\s*[a-zA-Z0-9-_:.()]{2,}/;
@@ -75,13 +73,13 @@ class CharsetDefined extends Audit {
     isCharsetSet = isCharsetSet || artifacts.MainDocumentContent.charCodeAt(0) === BOM_FIRSTCHAR;
 
     // Check if charset-ish meta tag is defined within the first 1024 characters(~1024 bytes) of the HTML document
-    if (artifacts.MainDocumentContent.slice(0, 1024).match(CHARSET_HTML_REGEX) !== null) {
+    if (CHARSET_HTML_REGEX.test(artifacts.MainDocumentContent.slice(0, 1024))) {
       // If so, double-check the DOM attributes, considering both legacy http-equiv and html5 charset styles.
       isCharsetSet = isCharsetSet || artifacts.MetaElements.some(meta => {
-        return (meta.charset && meta.charset.match(IANA_REGEX)) ||
+        return (meta.charset && IANA_REGEX.test(meta.charset)) ||
           (meta.httpEquiv === 'content-type' &&
           meta.content &&
-          meta.content.match(CHARSET_HTTP_REGEX));
+          CHARSET_HTTP_REGEX.test(meta.content));
       });
     }
 
