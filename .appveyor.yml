@@ -44,6 +44,7 @@ test_script:
 on_success:
   # Remove module resolution symlinks; this avoids 'Unable to save cache'
   # errors when appveyor runs 7z.exe to save the build cache
+  - yarn unlink lighthouse
   - yarn unlink
 
 cache:
