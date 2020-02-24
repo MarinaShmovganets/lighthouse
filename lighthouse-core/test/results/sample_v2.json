@@ -558,22 +558,10 @@
     "maskable-icon": {
       "id": "maskable-icon",
       "title": "Manifest doesn't have a maskable icon",
-      "description": "A maskable icon ensures that the icon fills the entire shape when installing the app on a device. [Learn more](https://web.dev/maskable-icon/).",
+      "description": "A maskable icon ensures that the image fills the entire shape without being letterboxed when installing the app on a device. [Learn more](https://web.dev/maskable-icon/).",
       "score": 0,
       "scoreDisplayMode": "binary",
-      "explanation": "Failures: No manifest was fetched.",
-      "details": {
-        "type": "debugdata",
-        "items": [
-          {
-            "failures": [
-              "No manifest was fetched"
-            ],
-            "isParseFailure": true,
-            "parseFailureReason": "No manifest was fetched"
-          }
-        ]
-      }
+      "explanation": "No manifest was fetched"
     },
     "content-width": {
       "id": "content-width",

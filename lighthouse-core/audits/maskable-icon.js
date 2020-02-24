@@ -15,8 +15,9 @@ const UIStrings = {
   /** Title of a Lighthouse audit that provides detial on if the manifest contains a maskable icon. this descriptive title is shown to users when the manifest contains no icons that are maskable. */
   failureTitle: 'Manifest doesn\'t have a maskable icon',
   /** Description of a Lighthouse audit that tells the user why they their manifest should have at least one maskable icon. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
-  description: 'A maskable icon ensures that the image fills the entire shape without being letterboxed ' +
-    'when installing the app on a device. [Learn more](https://web.dev/maskable-icon/).',
+  description: 'A maskable icon ensures that the image fills the entire ' +
+    'shape without being letterboxed when installing ' +
+    'the app on a device. [Learn more](https://web.dev/maskable-icon/).',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -55,6 +56,7 @@ class MaskableIcon extends Audit {
     if (manifestValues.isParseFailure) {
       return {
         score: 0,
+        explanation: manifestValues.parseFailureReason,
       };
     }
     const maskableIconCheck = manifestValues.allChecks.find(i => i.id === 'hasMaskableIcon');

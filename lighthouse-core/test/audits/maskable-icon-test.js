@@ -10,7 +10,8 @@ const assert = require('assert');
 const manifestParser = require('../../lib/manifest-parser.js');
 
 const manifestSrc = JSON.stringify(require('../fixtures/manifest.json'));
-const manifestWithMaskableSrc = JSON.stringify(require('../fixtures/manifest-maskable-icon.json'));
+const manifestWithoutMaskableSrc =
+  JSON.stringify(require('../fixtures/manifest-no-maskable-icon.json'));
 const EXAMPLE_MANIFEST_URL = 'https://example.com/manifest.json';
 const EXAMPLE_DOC_URL = 'https://example.com/index.html';
 
@@ -46,14 +47,14 @@ describe('Maskable Icon Audit', () => {
   });
 
   it('fails when the manifest contains no maskable icons', async () => {
-    const artifacts = generateMockArtifacts();
+    const artifacts = generateMockArtifacts(manifestWithoutMaskableSrc);
 
     const auditResult = await MaskableIconAudit.audit(artifacts, context);
     assert.equal(auditResult.score, 0);
   });
 
   it('passes when the manifest contains at least one maskable icon', async () => {
-    const artifacts = generateMockArtifacts(manifestWithMaskableSrc);
+    const artifacts = generateMockArtifacts();
 
     const auditResult = await MaskableIconAudit.audit(artifacts, context);
     assert.equal(auditResult.score, 1);

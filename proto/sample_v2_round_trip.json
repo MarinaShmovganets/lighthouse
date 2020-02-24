@@ -1558,20 +1558,8 @@
             "title": "The user's focus is directed to new content added to the page"
         },
         "maskable-icon": {
-            "description": "A maskable icon ensures that the icon fills the entire shape when installing the app on a device. [Learn more](https://web.dev/maskable-icon/).",
-            "details": {
-                "items": [
-                    {
-                        "failures": [
-                            "No manifest was fetched"
-                        ],
-                        "isParseFailure": true,
-                        "parseFailureReason": "No manifest was fetched"
-                    }
-                ],
-                "type": "debugdata"
-            },
-            "explanation": "Failures: No manifest was fetched.",
+            "description": "A maskable icon ensures that the image fills the entire shape without being letterboxed when installing the app on a device. [Learn more](https://web.dev/maskable-icon/).",
+            "explanation": "No manifest was fetched",
             "id": "maskable-icon",
             "score": 0.0,
             "scoreDisplayMode": "binary",

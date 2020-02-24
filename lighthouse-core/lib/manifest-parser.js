@@ -241,7 +241,11 @@ function parseIcon(raw, manifestUrl) {
   }
 
   const type = parseString(raw.type, true);
+
   const purpose = parseString(raw.purpose, true);
+  if (purpose.value === undefined) {
+    purpose.value = 'any';
+  }
 
   const density = {
     raw: raw.density,

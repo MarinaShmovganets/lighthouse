@@ -64,7 +64,8 @@ describe('Icons helper', () => {
       //       value: {
       //         src: { raw: 'icon.png', value: 'icon.png' },
       //         density: { raw: undefined, value: 1 },
-      //         sizes: { raw: '192x192', value: ['192x192'] }
+      //         sizes: { raw: '192x192', value: ['192x192'] },
+      //         purpose: { raw: 'any', value: 'any' }
       //       }
       //     }]
       //   }
