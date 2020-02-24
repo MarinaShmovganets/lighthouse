@@ -68,7 +68,7 @@ function pngSizedAtLeast(sizeRequirement, manifest) {
 
 /**
  * @param {NonNullable<LH.Artifacts.Manifest['value']>} manifest
- * @return {boolean} Does the manifest icons value contain at least one icon with purpose equal to "maskable"
+ * @return {boolean} Does the manifest icons value contain at least one icon with purpose including "maskable"
  */
 function containsMaskableIcon(manifest) {
   const iconValues = manifest.icons.value;

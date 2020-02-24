@@ -10,12 +10,12 @@ const ManifestValues = require('../computed/manifest-values.js');
 const i18n = require('../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** Title of a Lighthouse audit that provides detail on if the manifest contains a maskable icon. This descriptive title is shown to users when the manifest does contains at least one maskable icon. */
+  /** Title of a Lighthouse audit that provides detail on if the manifest contains a maskable icon. This descriptive title is shown to users when the manifest contains at least one maskable icon. */
   title: 'Manifest has a maskable icon',
   /** Title of a Lighthouse audit that provides detial on if the manifest contains a maskable icon. this descriptive title is shown to users when the manifest contains no icons that are maskable. */
   failureTitle: 'Manifest doesn\'t have a maskable icon',
   /** Description of a Lighthouse audit that tells the user why they their manifest should have at least one maskable icon. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
-  description: 'A maskable icon ensures that the icon fills the entire shape ' +
+  description: 'A maskable icon ensures that the image fills the entire shape without being letterboxed ' +
     'when installing the app on a device. [Learn more](https://web.dev/maskable-icon/).',
 };
 
