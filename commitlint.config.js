@@ -13,11 +13,11 @@ module.exports = {
     'header-max-length': [2, 'always', 80],
     'scope-case': [2, 'always', 'lower-case'],
     'scope-empty': [0, 'never'],
-		'subject-case': [
-			2,
-			'never',
-			['sentence-case', 'start-case', 'pascal-case', 'upper-case']
-		],
+    'subject-case': [
+      2,
+      'never',
+      ['sentence-case', 'start-case', 'pascal-case', 'upper-case'],
+    ],
     'subject-empty': [0, 'never'],
     'subject-full-stop': [2, 'never', '.'],
     'type-case': [2, 'always', 'lower-case'],
