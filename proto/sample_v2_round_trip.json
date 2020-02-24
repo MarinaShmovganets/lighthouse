@@ -438,9 +438,9 @@
             },
             "displayValue": "0.42",
             "id": "cumulative-layout-shift",
-            "numericUnit": "shiftarinos",
+            "numericUnit": "unitless",
             "numericValue": 0.42,
-            "score": 0.59,
+            "score": 0.48,
             "scoreDisplayMode": "numeric",
             "title": "Cumulative Layout Shift"
         },

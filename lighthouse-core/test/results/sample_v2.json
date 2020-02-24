@@ -230,10 +230,10 @@
       "id": "cumulative-layout-shift",
       "title": "Cumulative Layout Shift",
       "description": "Cumulative Layout Shift is the sum of all layout shifts that occurred during a page's load. A layout shift is any movement an element makes once it is visible to the user. All layout shift is recorded, scored, and then aggregated into a cumulative score between 0 and 1; 0 being a perfectly stable page, and >=0.5 being a highly shifting page.",
-      "score": 0.59,
+      "score": 0.48,
       "scoreDisplayMode": "numeric",
       "numericValue": 0.42,
-      "numericUnit": "shiftarinos",
+      "numericUnit": "unitless",
       "displayValue": "0.42",
       "details": {
         "type": "debugdata",
