@@ -44,6 +44,9 @@ const throttling = {
     rttMs: 40,
     throughputKbps: 10 * 1024,
     cpuSlowdownMultiplier: 1,
+    requestLatencyMs: 0, // 0 means unset
+    downloadThroughputKbps: 0,
+    uploadThroughputKbps: 0,
   },
 };
 
