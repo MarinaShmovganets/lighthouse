@@ -18,6 +18,8 @@ const desktopDense4G = require('../lighthouse-core/config/constants.js').throttl
  * Varies the config to use based on device.
  * If `lighthouse-plugin-publisher-ads` is in the list of
  * `categoryIDs` the plugin will also be run.
+ * Counterpart to the CDT code that sets flags. 
+ * @see https://cs.chromium.org/chromium/src/third_party/devtools-frontend/src/front_end/lighthouse/LighthouseController.js?type=cs&q=%22const+RuntimeSettings%22+f:lighthouse+-f:out&g=0&l=250
  * @param {Array<string>} categoryIDs
  * @param {string} device
  * @return {LH.Config.Json}
