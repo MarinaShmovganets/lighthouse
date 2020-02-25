@@ -75,7 +75,7 @@ function containsMaskableIcon(manifest) {
   return iconValues.some(icon => {
     return icon.value.purpose &&
       icon.value.purpose.value &&
-      icon.value.purpose.value.split(' ').includes('maskable');
+      icon.value.purpose.value.includes('maskable');
   });
 }
 
