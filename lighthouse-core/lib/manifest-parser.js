@@ -250,7 +250,7 @@ function parseIcon(raw, manifestUrl) {
     warning: undefined,
   };
   if (raw.purpose !== undefined) {
-    purpose.value = purpose.value.concat(raw.purpose.split(' '));
+    purpose.value = raw.purpose.split(/\s+/).map(purpose => purpose.toLowerCase());
   } else {
     purpose.value.push('any');
   }

@@ -371,7 +371,7 @@ describe('Icons helper', () => {
           src: 'icon.png',
           sizes: '200x200',
           type: 'image/png',
-          purpose: 'any maskable',
+          purpose: 'any Maskable',
         }, {
           src: 'icon-vector.svg',
           sizes: '100x100',
