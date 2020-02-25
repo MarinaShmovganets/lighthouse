@@ -54,5 +54,5 @@ echo -e "$check Locale JSON files copied."
 
 echo ""
 echo "Done. To rebase the test expectations, run: "
-echo "    yarn --cwd ~/chromium/src/third_party/devtools-frontend/src test 'http/tests/devtools/lighthouse/*.js' --reset-results"
+echo "    yarn --cwd ~/chromium/src/third_party/devtools-frontend/src test 'http/tests/devtools/lighthouse/*.js' --layout-tests-dir test/webtests --reset-results"
 echo " (you also need to do `autoninja -C out/Linux chrome blink_tests` in the chromium checkout)"
