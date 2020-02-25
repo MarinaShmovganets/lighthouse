@@ -23,6 +23,33 @@ const IGNORE_THRESHOLD_IN_BYTES = 2048;
 const IGNORE_BUNDLE_SOURCE_THRESHOLD_IN_BYTES = 512;
 
 /**
+ * @param {string[]} strings
+ */
+function commonPrefix(strings) {
+  if (!strings.length) {
+    return '';
+  }
+
+  const maxWord = strings.reduce((a, b) => a > b ? a : b);
+  let prefix = strings.reduce((a, b) => a > b ? b : a);
+  while (!maxWord.startsWith(prefix)) {
+    prefix = prefix.slice(0, -1);
+  }
+
+  return prefix;
+}
+
+/**
+ * @param {string[]} strings
+ * @param {string} commonPrefix
+ * @return {string[]}
+ */
+function trimCommonPrefix(strings, commonPrefix) {
+  if (!commonPrefix) return strings;
+  return strings.map(s => s.startsWith(commonPrefix) ? '…' + s.slice(commonPrefix.length) : s);
+}
+
+/**
  * @typedef WasteData
  * @property {Uint8Array} unusedByIndex
  * @property {number} unusedLength
@@ -132,8 +159,9 @@ class UnusedJavaScript extends ByteEfficiencyAudit {
         };
       });
 
+    const commonSourcePrefix = commonPrefix([...bundle.map._sourceInfos.keys()]);
     Object.assign(item, {
-      sources: topUnusedFilesSizes.map(d => d.key),
+      sources: trimCommonPrefix(topUnusedFilesSizes.map(d => d.key), commonSourcePrefix),
       sourceBytes: topUnusedFilesSizes.map(d => d.total),
       sourceWastedBytes: topUnusedFilesSizes.map(d => d.unused),
     });
