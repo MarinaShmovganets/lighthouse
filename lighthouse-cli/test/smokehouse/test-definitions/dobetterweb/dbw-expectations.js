@@ -128,6 +128,7 @@ const expectations = [
         {
           name: '',
           content: '',
+          charset: 'utf-8',
         },
         {
           name: 'viewport',
@@ -378,19 +379,16 @@ const expectations = [
               name: 'jQuery',
             },
             {
-              name: 'jQuery (Fast path)',
-            },
-            {
               name: 'WordPress',
             }],
           },
         },
         'dom-size': {
           score: 1,
-          numericValue: 141,
+          numericValue: 143,
           details: {
             items: [
-              {statistic: 'Total DOM Elements', value: '141'},
+              {statistic: 'Total DOM Elements', value: '143'},
               {statistic: 'Maximum DOM Depth', value: '4'},
               {
                 statistic: 'Maximum Child Elements',

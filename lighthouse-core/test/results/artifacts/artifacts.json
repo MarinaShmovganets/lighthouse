@@ -463,6 +463,7 @@
     "devicePixelRatio": 2.625
   },
   "WebAppManifest": null,
+  "InstallabilityErrors": {"errors": []},
   "MetaElements": [
     {
       "name": "",
@@ -1840,7 +1841,7 @@
     },
     {
       "detector": "js",
-      "id": "jquery",
+      "id": "jquery-fast",
       "name": "jQuery (Fast path)",
       "npm": "jquery"
     },
