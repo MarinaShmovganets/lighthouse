@@ -242,17 +242,16 @@ function parseIcon(raw, manifestUrl) {
 
   const type = parseString(raw.type, true);
 
+  const parsedPurpose = parseString(raw.purpose);
   const purpose = {
     raw: raw.purpose,
     /** @type {string[]} */
-    value: [],
+    value: ['any'],
     /** @type {string|undefined} */
     warning: undefined,
   };
-  if (raw.purpose !== undefined) {
-    purpose.value = raw.purpose.split(/\s+/).map(purpose => purpose.toLowerCase());
-  } else {
-    purpose.value.push('any');
+  if (parsedPurpose.value !== undefined) {
+    purpose.value = parsedPurpose.value.split(/\s+/).map(value => value.toLowerCase());
   }
 
   const density = {
