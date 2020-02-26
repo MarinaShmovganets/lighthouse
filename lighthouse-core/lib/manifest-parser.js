@@ -245,7 +245,6 @@ function parseIcon(raw, manifestUrl) {
   const parsedPurpose = parseString(raw.purpose);
   const purpose = {
     raw: raw.purpose,
-    /** @type {string[]} */
     value: ['any'],
     /** @type {string|undefined} */
     warning: undefined,
