@@ -190,7 +190,7 @@ function aggregateResults(name) {
     const lhr = JSON.parse(lhrJson);
 
     const metrics = lhr.audits.metrics ?
-      /** @type {!LH.Audit.Details.Table} */ (lhr.audits.metrics.details).items[0] :
+    /** @type {!LH.Audit.Details.Table} */ (lhr.audits.metrics.details).items[0] :
       {};
     const allEntries = {
       metric: Object.entries(metrics).filter(([name]) => !name.endsWith('Ts')),
