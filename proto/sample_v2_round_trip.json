@@ -95,7 +95,7 @@
             "title": "`[role]` values are valid"
         },
         "aria-toggle-field-name": {
-            "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-toggle-field-label/).",
+            "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-toggle-field-name/).",
             "details": {
                 "headings": [],
                 "items": [],
@@ -224,6 +224,13 @@
             "score": null,
             "scoreDisplayMode": "notApplicable",
             "title": "Document has a valid `rel=canonical`"
+        },
+        "charset": {
+            "description": "A character encoding declaration is required. It can be done with a <meta> tag in the first 1024 bytes of the HTML or in the Content-Type HTTP response header. [Learn more](https://www.w3.org/International/questions/qa-html-encoding-declarations).",
+            "id": "charset",
+            "score": 0.0,
+            "scoreDisplayMode": "binary",
+            "title": "Charset declaration is missing or occurs too late in the HTML"
         },
         "color-contrast": {
             "description": "Low-contrast text is difficult or impossible for many users to read. [Learn more](https://web.dev/color-contrast/).",
@@ -1575,6 +1582,14 @@
             "scoreDisplayMode": "manual",
             "title": "The user's focus is directed to new content added to the page"
         },
+        "maskable-icon": {
+            "description": "A maskable icon ensures that the image fills the entire shape without being letterboxed when installing the app on a device. [Learn more](https://web.dev/maskable-icon/).",
+            "explanation": "No manifest was fetched",
+            "id": "maskable-icon",
+            "score": 0.0,
+            "scoreDisplayMode": "binary",
+            "title": "Manifest doesn't have a maskable icon"
+        },
         "max-potential-fid": {
             "description": "The maximum potential First Input Delay that your users could experience is the duration of the longest task. [Learn more](https://web.dev/lighthouse-max-potential-fid).",
             "displayValue": "120\u00a0ms",
@@ -2768,6 +2783,65 @@
             "scoreDisplayMode": "binary",
             "title": "Server response times are low (TTFB)"
         },
+        "timing-budget": {
+            "description": "Set a timing budget to help you keep an eye on the performance of your site. Performant sites load fast and respond to user input events quickly. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/budgets).",
+            "details": {
+                "headings": [
+                    {
+                        "itemType": "text",
+                        "key": "label",
+                        "text": "Metric"
+                    },
+                    {
+                        "itemType": "ms",
+                        "key": "measurement",
+                        "text": "Measurement"
+                    },
+                    {
+                        "itemType": "ms",
+                        "key": "overBudget",
+                        "text": "Over Budget"
+                    }
+                ],
+                "items": [
+                    {
+                        "label": "First CPU Idle",
+                        "measurement": 4927.0,
+                        "metric": "first-cpu-idle",
+                        "overBudget": 2027.0
+                    },
+                    {
+                        "label": "Time to Interactive",
+                        "measurement": 4927.0,
+                        "metric": "interactive",
+                        "overBudget": 2027.0
+                    },
+                    {
+                        "label": "First Meaningful Paint",
+                        "measurement": 3969.0,
+                        "metric": "first-meaningful-paint",
+                        "overBudget": 1969.0
+                    },
+                    {
+                        "label": "First Contentful Paint",
+                        "measurement": 3969.0,
+                        "metric": "first-contentful-paint",
+                        "overBudget": 969.0
+                    },
+                    {
+                        "label": "Max Potential First Input Delay",
+                        "measurement": 123.0,
+                        "metric": "max-potential-fid",
+                        "overBudget": 23.0
+                    }
+                ],
+                "type": "table"
+            },
+            "id": "timing-budget",
+            "score": null,
+            "scoreDisplayMode": "informative",
+            "title": "Timing budget"
+        },
         "total-blocking-time": {
             "description": "Sum of all time periods between FCP and Time to Interactive, when task length exceeded 50ms, expressed in milliseconds. [Learn more](https://web.dev/lighthouse-total-blocking-time).",
             "displayValue": "120\u00a0ms",
@@ -3684,6 +3758,10 @@
                     "weight": 1.0
                 },
                 {
+                    "id": "charset",
+                    "weight": 1.0
+                },
+                {
                     "id": "no-vulnerable-libraries",
                     "weight": 1.0
                 },
@@ -3886,6 +3964,11 @@
                     "weight": 0.0
                 },
                 {
+                    "group": "budgets",
+                    "id": "timing-budget",
+                    "weight": 0.0
+                },
+                {
                     "group": "diagnostics",
                     "id": "resource-summary",
                     "weight": 0.0
@@ -4000,6 +4083,11 @@
                     "weight": 1.0
                 },
                 {
+                    "group": "pwa-optimized",
+                    "id": "maskable-icon",
+                    "weight": 1.0
+                },
+                {
                     "id": "pwa-cross-browser",
                     "weight": 0.0
                 },
@@ -4015,7 +4103,7 @@
             "description": "These checks validate the aspects of a Progressive Web App. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist).",
             "id": "pwa",
             "manualDescription": "These checks are required by the baseline [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
-            "score": 0.41,
+            "score": 0.39,
             "title": "Progressive Web App"
         },
         "seo": {
@@ -4606,7 +4694,25 @@
             {
                 "duration": 100.0,
                 "entryType": "measure",
+                "name": "lh:computed:ManifestValues",
+                "startTime": 0.0
+            },
+            {
+                "duration": 100.0,
+                "entryType": "measure",
                 "name": "lh:audit:themed-omnibox",
+                "startTime": 0.0
+            },
+            {
+                "duration": 100.0,
+                "entryType": "measure",
+                "name": "lh:computed:ManifestValues",
+                "startTime": 0.0
+            },
+            {
+                "duration": 100.0,
+                "entryType": "measure",
+                "name": "lh:audit:maskable-icon",
                 "startTime": 0.0
             },
             {
@@ -4727,6 +4833,12 @@
                 "duration": 100.0,
                 "entryType": "measure",
                 "name": "lh:computed:ResourceSummary",
+                "startTime": 0.0
+            },
+            {
+                "duration": 100.0,
+                "entryType": "measure",
+                "name": "lh:audit:timing-budget",
                 "startTime": 0.0
             },
             {
@@ -5140,6 +5252,12 @@
             {
                 "duration": 100.0,
                 "entryType": "measure",
+                "name": "lh:computed:JSBundles",
+                "startTime": 0.0
+            },
+            {
+                "duration": 100.0,
+                "entryType": "measure",
                 "name": "lh:audit:uses-webp-images",
                 "startTime": 0.0
             },
@@ -5177,6 +5295,12 @@
                 "duration": 100.0,
                 "entryType": "measure",
                 "name": "lh:audit:doctype",
+                "startTime": 0.0
+            },
+            {
+                "duration": 100.0,
+                "entryType": "measure",
+                "name": "lh:audit:charset",
                 "startTime": 0.0
             },
             {
