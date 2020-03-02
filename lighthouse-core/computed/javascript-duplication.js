@@ -16,7 +16,7 @@ class JavascriptDuplication {
     // Trim trailing question mark - b/c webpack.
     source = source.replace(/\?$/, '');
 
-    // Normalize paths for dependencies by keeping everything after the last `node_modules`.
+    // Normalize paths for dependencies by only keeping everything after the last `node_modules`.
     const lastNodeModulesIndex = source.lastIndexOf('node_modules');
     if (lastNodeModulesIndex !== -1) {
       source = source.substring(lastNodeModulesIndex);
