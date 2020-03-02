@@ -62,13 +62,12 @@ class JavascriptDuplication {
       sourceDatasMap.set(rawMap, sourceDatas);
 
       for (let i = 0; i < rawMap.sources.length; i++) {
-        const source = JavascriptDuplication._normalizeSource(rawMap.sources[i]);
-        if (this._shouldIgnoreSource(source)) continue;
+        if (this._shouldIgnoreSource(rawMap.sources[i])) continue;
 
-        const fullSource = (rawMap.sourceRoot || '') + source;
+        const fullSource = (rawMap.sourceRoot || '') + rawMap.sources[i];
         const sourceSize = sizes.files[fullSource];
         sourceDatas.push({
-          source,
+          source: JavascriptDuplication._normalizeSource(rawMap.sources[i]),
           size: sourceSize,
         });
       }
