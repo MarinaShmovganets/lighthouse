@@ -211,22 +211,6 @@ class UnusedBytes extends Audit {
 
     const details = Audit.makeOpportunityDetails(result.headings, results, wastedMs, wastedBytes);
 
-    console.dir({
-      explanation: result.explanation,
-      warnings: result.warnings,
-      displayValue,
-      numericValue: wastedMs,
-      score: UnusedBytes.scoreForWastedMs(wastedMs),
-      extendedInfo: {
-        value: {
-          wastedMs,
-          wastedKb,
-          results,
-        },
-      },
-      details,
-    });
-
     return {
       explanation: result.explanation,
       warnings: result.warnings,
