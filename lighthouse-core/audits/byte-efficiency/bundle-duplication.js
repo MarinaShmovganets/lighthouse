@@ -9,14 +9,14 @@ const ByteEfficiencyAudit = require('./byte-efficiency-audit.js');
 const JavascriptDuplication = require('../../computed/javascript-duplication.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
-// TODO: write these.
 const UIStrings = {
-  /** Imperative title of a Lighthouse audit that tells the user to remove content from their CSS that isn’t needed immediately and instead load that content at a later time. This is displayed in a list of audit titles that Lighthouse generates. */
-  title: 'Remove duplicated modules in JavaScript bundles',
+  /** Imperative title of a Lighthouse audit that tells the user to remove duplicate JavaScript from their code. This is displayed in a list of audit titles that Lighthouse generates. */
+  title: 'Remove duplicate modules in JavaScript bundles',
   /** Description of a Lighthouse audit that tells the user *why* they should defer loading any content in CSS that isn’t needed at page load. This is displayed after a user expands the section to see more. No word length limits. 'Learn More' becomes link text to additional documentation. */
-  description: 'Remove dead rules from stylesheets and defer the loading of CSS not used for ' +
-    'above-the-fold content to reduce unnecessary bytes consumed by network activity. ' +
-    '[Learn more](https://web.dev/unused-css-rules).',
+  description: 'Remove large, duplicate JavaScript modules from bundles ' +
+    'to reduce unnecessary bytes consumed by network activity. ', // +
+  // TODO: we need docs.
+  // '[Learn more](https://web.dev/bundle-duplication).',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -38,6 +38,11 @@ class BundleDuplication extends ByteEfficiencyAudit {
   }
 
   /**
+   * This audit highlights JavaScript modules that appear to be duplicated across all resources,
+   * either within the same bundle or between different bundles. Each details item returned is
+   * a module with subrows for each resource that includes it. The wastedBytes for the details
+   * item is the number of bytes occupied by the sum of all but the largest copy of the module.
+   * wastedBytesByUrl attributes the cost of the bytes to a specific resource, for use by lantern.
    * @param {LH.Artifacts} artifacts
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
    * @param {LH.Audit.Context} context
@@ -45,6 +50,8 @@ class BundleDuplication extends ByteEfficiencyAudit {
    */
   static async audit_(artifacts, networkRecords, context) {
     const sourceDataAggregated = await JavascriptDuplication.request(artifacts, context);
+    const ignoreThresholdInBytes =
+      context.options && context.options.ignoreThresholdInBytes || IGNORE_THRESHOLD_IN_BYTES;
 
     /**
      * @typedef ItemSubrows
@@ -68,9 +75,7 @@ class BundleDuplication extends ByteEfficiencyAudit {
       // matter. Ideally the newest version would be the canonical copy, but version information
       // is not present. Instead, size is used as a heuristic for latest version. This makes the
       // audit conserative in its estimation.
-      // TODO: instead, choose the "first" script in the DOM as the canonical?
 
-      sourceDatas.sort((a, b) => b.size - a.size);
       const urls = [];
       const bytesValues = [];
       let wastedBytesTotal = 0;
@@ -105,7 +110,7 @@ class BundleDuplication extends ByteEfficiencyAudit {
       urls: [],
       sourceBytes: [],
     };
-    for (const item of items.filter(item => item.wastedBytes <= IGNORE_THRESHOLD_IN_BYTES)) {
+    for (const item of items.filter(item => item.wastedBytes <= ignoreThresholdInBytes)) {
       otherItem.wastedBytes += item.wastedBytes;
       for (let i = 0; i < item.urls.length; i++) {
         const url = item.urls[i];
@@ -115,7 +120,7 @@ class BundleDuplication extends ByteEfficiencyAudit {
       }
       items.splice(items.indexOf(item), 1);
     }
-    if (otherItem.wastedBytes) {
+    if (otherItem.wastedBytes > ignoreThresholdInBytes) {
       items.push(otherItem);
     }
 

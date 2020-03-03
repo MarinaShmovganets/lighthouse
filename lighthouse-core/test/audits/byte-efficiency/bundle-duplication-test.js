@@ -21,7 +21,7 @@ function load(name) {
 
 describe('BundleDuplicationAudit computed artifact', () => {
   it('works (simple)', async () => {
-    const context = {computedCache: new Map()};
+    const context = {computedCache: new Map(), options: {ignoreThresholdInBytes: 500}};
     const {map, content} = load('foo.min');
     const artifacts = {
       SourceMaps: [

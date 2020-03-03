@@ -58,15 +58,15 @@ class JavascriptDuplication {
     // Determine size of each `sources` entry.
     for (const {rawMap, sizes} of bundles) {
       /** @type {SourceData[]} */
-      const sourceDatas = [];
-      sourceDatasMap.set(rawMap, sourceDatas);
+      const sourceDataArray = [];
+      sourceDatasMap.set(rawMap, sourceDataArray);
 
       for (let i = 0; i < rawMap.sources.length; i++) {
         if (this._shouldIgnoreSource(rawMap.sources[i])) continue;
 
-        const fullSource = (rawMap.sourceRoot || '') + rawMap.sources[i];
-        const sourceSize = sizes.files[fullSource];
-        sourceDatas.push({
+        const sourceKey = (rawMap.sourceRoot || '') + rawMap.sources[i];
+        const sourceSize = sizes.files[sourceKey];
+        sourceDataArray.push({
           source: JavascriptDuplication._normalizeSource(rawMap.sources[i]),
           size: sourceSize,
         });
@@ -76,10 +76,10 @@ class JavascriptDuplication {
     /** @type {Map<string, Array<{scriptUrl: string, size: number}>>} */
     const sourceDataAggregated = new Map();
     for (const {rawMap, script} of bundles) {
-      const sourceDatas = sourceDatasMap.get(rawMap);
-      if (!sourceDatas) continue;
+      const sourceDataArray = sourceDatasMap.get(rawMap);
+      if (!sourceDataArray) continue;
 
-      for (const sourceData of sourceDatas) {
+      for (const sourceData of sourceDataArray) {
         let data = sourceDataAggregated.get(sourceData.source);
         if (!data) {
           data = [];
@@ -94,6 +94,7 @@ class JavascriptDuplication {
 
     for (const [key, value] of sourceDataAggregated.entries()) {
       if (value.length === 1) sourceDataAggregated.delete(key);
+      else value.sort((a, b) => b.size - a.size);
     }
 
     return sourceDataAggregated;
