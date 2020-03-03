@@ -114,7 +114,7 @@ const expectations = [
                   'type': 'node',
                   'selector': 'div[role="foo"]',
                   'snippet': '<div role="foo"></div>',
-                  'explanation': 'Fix all of the following:\n  Role must be one of the valid ARIA roles',
+                  'explanation': 'Fix all of the following:\n  Role must be one of the valid ARIA roles: foo',
                   'nodeLabel': 'div',
                 },
               },
