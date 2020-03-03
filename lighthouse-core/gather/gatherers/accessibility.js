@@ -35,6 +35,7 @@ function runA11yChecks() {
       'tabindex': {enabled: true},
       'accesskeys': {enabled: true},
       'heading-order': {enabled: true},
+      'meta-viewport': {enabled: true},
       'duplicate-id': {enabled: false},
       'table-fake-caption': {enabled: false},
       'td-has-header': {enabled: false},
