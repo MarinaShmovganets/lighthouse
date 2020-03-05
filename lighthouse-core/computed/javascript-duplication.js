@@ -33,7 +33,7 @@ class JavascriptDuplication {
     if (source.includes('webpack/bootstrap')) return true;
     if (source.includes('(webpack)/buildin')) return true;
 
-    // Ignore shims.
+    // Ignore webpack module shims, i.e. aliases of the form `module.exports = window.jQuery`
     if (source.includes('external ')) return true;
 
     return false;
