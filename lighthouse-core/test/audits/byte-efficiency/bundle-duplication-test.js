@@ -9,6 +9,9 @@
 
 const fs = require('fs');
 const BundleDuplicationAudit = require('../../../audits/byte-efficiency/bundle-duplication.js');
+// const networkRecordsToDevtoolsLog = require('../../network-records-to-devtools-log.js');
+const trace = require('../../fixtures/traces/lcp-m78.json');
+const devtoolsLog = require('../../fixtures/traces/lcp-m78.devtools.log.json');
 
 function load(name) {
   const mapJson = fs.readFileSync(
@@ -248,6 +251,42 @@ describe('BundleDuplicationAudit computed artifact', () => {
         },
       }
     `);
+  });
+
+  it('.audit', async () => {
+    // Use a real trace fixture, but the bundle stuff.
+    const bundleData1 = load('coursehero-bundle-1');
+    const bundleData2 = load('coursehero-bundle-2');
+    const artifacts = {
+      devtoolsLogs: {
+        [BundleDuplicationAudit.DEFAULT_PASS]: devtoolsLog,
+      },
+      traces: {
+        [BundleDuplicationAudit.DEFAULT_PASS]: trace,
+      },
+      SourceMaps: [
+        {
+          scriptUrl: 'https://www.paulirish.com/javascripts/firebase-performance.js',
+          map: bundleData1.map,
+        },
+        {
+          scriptUrl: 'https://www.paulirish.com/javascripts/firebase-app.js',
+          map: bundleData2.map,
+        },
+      ],
+      ScriptElements: [
+        {src: 'https://www.paulirish.com/javascripts/firebase-performance.js', content: bundleData1.content},
+        {src: 'https://www.paulirish.com/javascripts/firebase-app.js', content: bundleData2.content},
+      ],
+    };
+
+    const ultraSlowThrottling = {rttMs: 150, throughputKbps: 100, cpuSlowdownMultiplier: 8};
+    const settings = {throttlingMethod: 'simulate', throttling: ultraSlowThrottling};
+    const context = {settings, computedCache: new Map()};
+    const results = await BundleDuplicationAudit.audit(artifacts, context);
+
+    // Without the `wastedBytesByUrl` this would be zero because the items don't define a url.
+    expect(results.details.overallSavingsMs).toBe(300);
   });
 
   it('_getNodeModuleName', () => {
