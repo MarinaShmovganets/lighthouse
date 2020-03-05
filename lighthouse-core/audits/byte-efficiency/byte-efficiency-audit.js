@@ -146,7 +146,7 @@ class UnusedBytes extends Audit {
 
     const simulationBeforeChanges = simulator.simulate(graph, {label: beforeLabel});
 
-    let wastedBytesByUrl = options.providedWastedBytesByUrl || new Map();
+    const wastedBytesByUrl = options.providedWastedBytesByUrl || new Map();
     if (!options.providedWastedBytesByUrl) {
       for (const {url, wastedBytes} of results) {
         wastedBytesByUrl.set(url, (wastedBytesByUrl.get(url) || 0) + wastedBytes);

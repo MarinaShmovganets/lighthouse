@@ -186,6 +186,22 @@ class BundleDuplication extends ByteEfficiencyAudit {
       items.push(otherItem);
     }
 
+    // Convert bytes to transfer size estimation.
+    for (const [url, bytes] of wastedBytesByUrl.entries()) {
+      const networkRecord = networkRecords.find(n => n.url === url);
+      const script = artifacts.ScriptElements.find(script => script.src === url);
+      if (!networkRecord || !script || script.content === null) {
+        // ?
+        continue;
+      }
+
+      const contentLength = script.content.length;
+      const transferSize =
+        ByteEfficiencyAudit.estimateTransferSize(networkRecord, contentLength, 'Script');
+      const transferRatio = transferSize / contentLength;
+      wastedBytesByUrl.set(url, bytes * transferRatio);
+    }
+
     /** @type {LH.Audit.Details.OpportunityColumnHeading[]} */
     const headings = [
       /* eslint-disable max-len */
