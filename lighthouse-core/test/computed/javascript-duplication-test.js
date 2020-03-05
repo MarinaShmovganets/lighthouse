@@ -7,7 +7,6 @@
 
 /* eslint-env jest */
 
-const assert = require('assert');
 const fs = require('fs');
 const JavascriptDuplication = require('../../computed/javascript-duplication.js');
 
@@ -127,12 +126,12 @@ describe('JavascriptDuplication computed artifact', () => {
         ],
         "node_modules/@babel/runtime/helpers/assertThisInitialized.js" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 294,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 296,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 294,
           },
         ],
         "node_modules/@babel/runtime/helpers/applyDecoratedDescriptor.js" => Array [
@@ -147,22 +146,22 @@ describe('JavascriptDuplication computed artifact', () => {
         ],
         "node_modules/@babel/runtime/helpers/possibleConstructorReturn.js" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 228,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 230,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 228,
           },
         ],
         "node_modules/@babel/runtime/helpers/getPrototypeOf.js" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 338,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 361,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 338,
           },
         ],
         "node_modules/@babel/runtime/helpers/inherits.js" => Array [
@@ -177,12 +176,12 @@ describe('JavascriptDuplication computed artifact', () => {
         ],
         "node_modules/@babel/runtime/helpers/defineProperty.js" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 288,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 290,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 288,
           },
         ],
         "node_modules/@babel/runtime/helpers/extends.js" => Array [
@@ -207,12 +206,12 @@ describe('JavascriptDuplication computed artifact', () => {
         ],
         "node_modules/@babel/runtime/helpers/setPrototypeOf.js" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 260,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 290,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 260,
           },
         ],
         "js/src/common/base-component.ts" => Array [
@@ -287,12 +286,12 @@ describe('JavascriptDuplication computed artifact', () => {
         ],
         "js/src/search/results/store/filter-actions.ts" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 946,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 956,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 946,
           },
         ],
         "js/src/search/results/store/item/resource-types.ts" => Array [
@@ -327,12 +326,12 @@ describe('JavascriptDuplication computed artifact', () => {
         ],
         "js/src/search/results/view/filter/autocomplete-list.tsx" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 1134,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 1143,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 1134,
           },
         ],
         "js/src/search/results/view/filter/autocomplete-filter.tsx" => Array [
@@ -367,12 +366,12 @@ describe('JavascriptDuplication computed artifact', () => {
         ],
         "js/src/common/component/school-search.tsx" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 5316,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 5840,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 5316,
           },
         ],
         "js/src/common/component/search/abstract-taxonomy-search.tsx" => Array [
@@ -387,22 +386,22 @@ describe('JavascriptDuplication computed artifact', () => {
         ],
         "js/src/common/component/search/course-search.tsx" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 544,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 545,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 544,
           },
         ],
         "node_modules/lodash-es/_freeGlobal.js" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 93,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 118,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 93,
           },
         ],
         "node_modules/lodash-es/_root.js" => Array [
@@ -507,32 +506,32 @@ describe('JavascriptDuplication computed artifact', () => {
         ],
         "node_modules/lodash-es/isObject.js" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 79,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 80,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 79,
           },
         ],
         "node_modules/lodash-es/toNumber.js" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 354,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 370,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 354,
           },
         ],
         "node_modules/lodash-es/toFinite.js" => Array [
           Object {
-            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
-            "size": 117,
-          },
-          Object {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
             "size": 118,
+          },
+          Object {
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+            "size": 117,
           },
         ],
         "node_modules/lodash-es/toInteger.js" => Array [

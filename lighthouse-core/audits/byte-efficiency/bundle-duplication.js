@@ -23,6 +23,16 @@ const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 const IGNORE_THRESHOLD_IN_BYTES = 1024;
 
+/**
+ * @param {string} haystack
+ * @param {string} needle
+ * @param {number} startPosition
+ */
+function indexOfOrEnd(haystack, needle, startPosition = 0) {
+  const index = haystack.indexOf(needle, startPosition);
+  return index === -1 ? haystack.length : index;
+}
+
 class BundleDuplication extends ByteEfficiencyAudit {
   /**
    * @return {LH.Audit.Meta}
@@ -38,6 +48,56 @@ class BundleDuplication extends ByteEfficiencyAudit {
   }
 
   /**
+   * @param {string} source
+   */
+  static _getNodeModuleName(source) {
+    const sourceSplit = source.split('node_modules/');
+    source = sourceSplit[sourceSplit.length - 1];
+
+    const indexFirstSlash = indexOfOrEnd(source, '/');
+    if (source[0] === '@') {
+      return source.slice(0, indexOfOrEnd(source, '/', indexFirstSlash + 1));
+    }
+
+    return source.slice(0, indexFirstSlash);
+  }
+
+  /**
+   * @param {LH.Artifacts} artifacts
+   * @param {LH.Audit.Context} context
+   */
+  static async _getDuplicationGroupedByNodeModules(artifacts, context) {
+    const duplication = await JavascriptDuplication.request(artifacts, context);
+
+    /** @type {typeof duplication} */
+    const groupedDuplication = new Map();
+    for (const [source, sourceDatas] of duplication.entries()) {
+      if (!source.includes('node_modules')) {
+        groupedDuplication.set(source, sourceDatas);
+        continue;
+      }
+
+      const normalizedSource = 'node_modules/' + BundleDuplication._getNodeModuleName(source);
+      const aggregatedSourceDatas = groupedDuplication.get(normalizedSource) || [];
+      for (const {scriptUrl, size} of sourceDatas) {
+        let sourceData = aggregatedSourceDatas.find(d => d.scriptUrl === scriptUrl);
+        if (!sourceData) {
+          sourceData = {scriptUrl, size: 0};
+          aggregatedSourceDatas.push(sourceData);
+        }
+        sourceData.size += size;
+      }
+      groupedDuplication.set(normalizedSource, aggregatedSourceDatas);
+    }
+
+    for (const sourceDatas of duplication.values()) {
+      sourceDatas.sort((a, b) => b.size - a.size);
+    }
+
+    return groupedDuplication;
+  }
+
+  /**
    * This audit highlights JavaScript modules that appear to be duplicated across all resources,
    * either within the same bundle or between different bundles. Each details item returned is
    * a module with subrows for each resource that includes it. The wastedBytes for the details
@@ -49,9 +109,11 @@ class BundleDuplication extends ByteEfficiencyAudit {
    * @return {Promise<ByteEfficiencyAudit.ByteEfficiencyProduct>}
    */
   static async audit_(artifacts, networkRecords, context) {
-    const sourceDataAggregated = await JavascriptDuplication.request(artifacts, context);
     const ignoreThresholdInBytes =
       context.options && context.options.ignoreThresholdInBytes || IGNORE_THRESHOLD_IN_BYTES;
+
+    const duplication =
+      await BundleDuplication._getDuplicationGroupedByNodeModules(artifacts, context);
 
     /**
      * @typedef ItemSubrows
@@ -68,7 +130,7 @@ class BundleDuplication extends ByteEfficiencyAudit {
 
     /** @type {Map<string, number>} */
     const wastedBytesByUrl = new Map();
-    for (const [source, sourceDatas] of sourceDataAggregated.entries()) {
+    for (const [source, sourceDatas] of duplication.entries()) {
       // One copy of this module is treated as the canonical version - the rest will have
       // non-zero `wastedBytes`. In the case of all copies being the same version, all sizes are
       // equal and the selection doesn't matter. When the copies are different versions, it does
@@ -126,9 +188,11 @@ class BundleDuplication extends ByteEfficiencyAudit {
 
     /** @type {LH.Audit.Details.OpportunityColumnHeading[]} */
     const headings = [
+      /* eslint-disable max-len */
       {key: 'source', valueType: 'code', subRows: {key: 'urls', valueType: 'url'}, label: str_(i18n.UIStrings.columnName)}, // TODO: or 'Source'?
       {key: '_', valueType: 'bytes', subRows: {key: 'sourceBytes'}, granularity: 0.05, label: str_(i18n.UIStrings.columnSize)},
       {key: 'wastedBytes', valueType: 'bytes', granularity: 0.05, label: str_(i18n.UIStrings.columnWastedBytes)},
+      /* eslint-enable max-len */
     ];
 
     // TODO: show warning somewhere if no source maps.

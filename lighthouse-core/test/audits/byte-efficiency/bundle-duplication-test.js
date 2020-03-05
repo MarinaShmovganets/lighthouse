@@ -105,6 +105,20 @@ describe('BundleDuplicationAudit computed artifact', () => {
             "wastedBytes": 9135,
           },
           Object {
+            "source": "node_modules/@babel/runtime",
+            "sourceBytes": Array [
+              5467,
+              4410,
+            ],
+            "totalBytes": 0,
+            "url": "",
+            "urls": Array [
+              "https://example.com/coursehero-bundle-1.js",
+              "https://example.com/coursehero-bundle-2.js",
+            ],
+            "wastedBytes": 4410,
+          },
+          Object {
             "source": "js/src/utils/service/amplitude-service.ts",
             "sourceBytes": Array [
               1348,
@@ -203,6 +217,20 @@ describe('BundleDuplicationAudit computed artifact', () => {
             "wastedBytes": 3098,
           },
           Object {
+            "source": "node_modules/lodash-es",
+            "sourceBytes": Array [
+              1751,
+              1708,
+            ],
+            "totalBytes": 0,
+            "url": "",
+            "urls": Array [
+              "https://example.com/coursehero-bundle-2.js",
+              "https://example.com/coursehero-bundle-1.js",
+            ],
+            "wastedBytes": 1708,
+          },
+          Object {
             "source": "Other",
             "sourceBytes": Array [],
             "totalBytes": 0,
@@ -211,14 +239,30 @@ describe('BundleDuplicationAudit computed artifact', () => {
               "https://example.com/coursehero-bundle-1.js",
               "https://example.com/coursehero-bundle-2.js",
             ],
-            "wastedBytes": 10519,
+            "wastedBytes": 4460,
           },
         ],
         "wastedBytesByUrl": Map {
-          "https://example.com/coursehero-bundle-2.js" => 88204,
-          "https://example.com/coursehero-bundle-1.js" => 9991,
+          "https://example.com/coursehero-bundle-2.js" => 88606,
+          "https://example.com/coursehero-bundle-1.js" => 9648,
         },
       }
     `);
+  });
+
+  it('_getNodeModuleName', () => {
+    const testCases = [
+      ['node_modules/package/othermodule.js', 'package'],
+      ['node_modules/somemodule/node_modules/package/othermodule.js', 'package'],
+      [
+        'node_modules/somemodule/node_modules/somemodule2/node_modules/somemodule2/othermodule.js',
+        'somemodule2',
+      ],
+      ['node_modules/@lh/ci', '@lh/ci'],
+      ['node_modules/blahblah/node_modules/@lh/ci', '@lh/ci'],
+    ];
+    for (const [input, expected] of testCases) {
+      expect(BundleDuplicationAudit._getNodeModuleName(input)).toBe(expected);
+    }
   });
 });
