@@ -27,6 +27,7 @@ describe('BundleDuplicationAudit computed artifact', () => {
     const context = {computedCache: new Map(), options: {ignoreThresholdInBytes: 500}};
     const {map, content} = load('foo.min');
     const artifacts = {
+      URL: {finalUrl: 'https://example.com'},
       SourceMaps: [
         {scriptUrl: 'https://example.com/foo1.min.js', map},
         {scriptUrl: 'https://example.com/foo2.min.js', map},
@@ -36,7 +37,8 @@ describe('BundleDuplicationAudit computed artifact', () => {
         {src: 'https://example.com/foo2.min.js', content},
       ],
     };
-    const results = await BundleDuplicationAudit.audit_(artifacts, [], context);
+    const networkRecords = [{url: 'https://example.com', resourceType: 'Document'}];
+    const results = await BundleDuplicationAudit.audit_(artifacts, networkRecords, context);
     expect({items: results.items, wastedBytesByUrl: results.wastedBytesByUrl})
       .toMatchInlineSnapshot(`
       Object {
@@ -65,6 +67,7 @@ describe('BundleDuplicationAudit computed artifact', () => {
     const bundleData1 = load('coursehero-bundle-1');
     const bundleData2 = load('coursehero-bundle-2');
     const artifacts = {
+      URL: {finalUrl: 'https://example.com'},
       SourceMaps: [
         {scriptUrl: 'https://example.com/coursehero-bundle-1.js', map: bundleData1.map},
         {scriptUrl: 'https://example.com/coursehero-bundle-2.js', map: bundleData2.map},
@@ -74,7 +77,8 @@ describe('BundleDuplicationAudit computed artifact', () => {
         {src: 'https://example.com/coursehero-bundle-2.js', content: bundleData2.content},
       ],
     };
-    const results = await BundleDuplicationAudit.audit_(artifacts, [], context);
+    const networkRecords = [{url: 'https://example.com', resourceType: 'Document'}];
+    const results = await BundleDuplicationAudit.audit_(artifacts, networkRecords, context);
     expect({items: results.items, wastedBytesByUrl: results.wastedBytesByUrl})
       .toMatchInlineSnapshot(`
       Object {
@@ -258,6 +262,7 @@ describe('BundleDuplicationAudit computed artifact', () => {
     const bundleData1 = load('coursehero-bundle-1');
     const bundleData2 = load('coursehero-bundle-2');
     const artifacts = {
+      URL: {finalUrl: 'https://www.paulirish.com'},
       devtoolsLogs: {
         [BundleDuplicationAudit.DEFAULT_PASS]: devtoolsLog,
       },

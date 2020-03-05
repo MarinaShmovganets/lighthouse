@@ -7,6 +7,7 @@
 
 const ByteEfficiencyAudit = require('./byte-efficiency-audit.js');
 const JavascriptDuplication = require('../../computed/javascript-duplication.js');
+const NetworkAnalyzer = require('../../lib/dependency-graph/simulator/network-analyzer.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
@@ -43,7 +44,7 @@ class BundleDuplication extends ByteEfficiencyAudit {
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['devtoolsLogs', 'traces', 'SourceMaps', 'ScriptElements'],
+      requiredArtifacts: ['devtoolsLogs', 'traces', 'SourceMaps', 'ScriptElements', 'URL'],
     };
   }
 
@@ -187,11 +188,19 @@ class BundleDuplication extends ByteEfficiencyAudit {
     }
 
     // Convert bytes to transfer size estimation.
+    const mainDocumentRecord = await NetworkAnalyzer.findMainDocument(networkRecords);
     for (const [url, bytes] of wastedBytesByUrl.entries()) {
-      const networkRecord = networkRecords.find(n => n.url === url);
+      const networkRecord = url === artifacts.URL.finalUrl ?
+        mainDocumentRecord :
+        networkRecords.find(n => n.url === url);
       const script = artifacts.ScriptElements.find(script => script.src === url);
-      if (!networkRecord || !script || script.content === null) {
-        // ?
+      if (!script || script.content === null) {
+        // This should never happen because we found the wasted bytes from bundles, which required contents in a ScriptElement.
+        continue;
+      }
+      if (!networkRecord) {
+        // This should never happen because we either have a network request for the main document (inline scripts),
+        // or the ScriptElement if for an external resource and so should have a network request.
         continue;
       }
 
