@@ -413,10 +413,10 @@
   "lighthouse-core/audits/bootup-time.js | title": {
     "message": "JavaScript execution time"
   },
-  "lighthouse-core/audits/byte-efficiency/bundle-duplication.js | description": {
+  "lighthouse-core/audits/byte-efficiency/duplicated-javascript.js | description": {
     "message": "Remove large, duplicate JavaScript modules from bundles to reduce unnecessary bytes consumed by network activity. "
   },
-  "lighthouse-core/audits/byte-efficiency/bundle-duplication.js | title": {
+  "lighthouse-core/audits/byte-efficiency/duplicated-javascript.js | title": {
     "message": "Remove duplicate modules in JavaScript bundles"
   },
   "lighthouse-core/audits/byte-efficiency/efficient-animated-content.js | description": {

@@ -413,10 +413,10 @@
   "lighthouse-core/audits/bootup-time.js | title": {
     "message": "Ĵáv̂áŜćr̂íp̂t́ êx́êćût́îón̂ t́îḿê"
   },
-  "lighthouse-core/audits/byte-efficiency/bundle-duplication.js | description": {
+  "lighthouse-core/audits/byte-efficiency/duplicated-javascript.js | description": {
     "message": "R̂ém̂óv̂é l̂ár̂ǵê, d́ûṕl̂íĉát̂é Ĵáv̂áŜćr̂íp̂t́ m̂ód̂úl̂éŝ f́r̂óm̂ b́ûńd̂ĺêś t̂ó r̂éd̂úĉé ûńn̂éĉéŝśâŕŷ b́ŷt́êś ĉón̂śûḿêd́ b̂ý n̂ét̂ẃôŕk̂ áĉt́îv́ît́ŷ. "
   },
-  "lighthouse-core/audits/byte-efficiency/bundle-duplication.js | title": {
+  "lighthouse-core/audits/byte-efficiency/duplicated-javascript.js | title": {
     "message": "R̂ém̂óv̂é d̂úp̂ĺîćât́ê ḿôd́ûĺêś îń Ĵáv̂áŜćr̂íp̂t́ b̂ún̂d́l̂éŝ"
   },
   "lighthouse-core/audits/byte-efficiency/efficient-animated-content.js | description": {
