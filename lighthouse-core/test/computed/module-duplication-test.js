@@ -8,7 +8,7 @@
 /* eslint-env jest */
 
 const fs = require('fs');
-const JavascriptDuplication = require('../../computed/javascript-duplication.js');
+const ModuleDuplication = require('../../computed/module-duplication.js');
 
 function load(name) {
   const mapJson = fs.readFileSync(`${__dirname}/../fixtures/source-maps/${name}.js.map`, 'utf-8');
@@ -16,7 +16,7 @@ function load(name) {
   return {map: JSON.parse(mapJson), content};
 }
 
-describe('JavascriptDuplication computed artifact', () => {
+describe('ModuleDuplication computed artifact', () => {
   it('works (simple)', async () => {
     const context = {computedCache: new Map()};
     const {map, content} = load('foo.min');
@@ -30,7 +30,7 @@ describe('JavascriptDuplication computed artifact', () => {
         {src: 'https://example.com/foo2.min.js', content},
       ],
     };
-    const results = await JavascriptDuplication.request(artifacts, context);
+    const results = await ModuleDuplication.request(artifacts, context);
     expect(results).toMatchInlineSnapshot(`
       Map {
         "node_modules/browser-pack/_prelude.js" => Array [
@@ -81,7 +81,7 @@ describe('JavascriptDuplication computed artifact', () => {
         {src: 'https://example.com/coursehero-bundle-2.js', content: bundleData2.content},
       ],
     };
-    const results = await JavascriptDuplication.request(artifacts, context);
+    const results = await ModuleDuplication.request(artifacts, context);
     expect(results).toMatchInlineSnapshot(`
       Map {
         "Control/assets/js/vendor/ng/select/select.js" => Array [
@@ -570,7 +570,7 @@ describe('JavascriptDuplication computed artifact', () => {
       ['webpack.js?', 'webpack.js'],
     ];
     for (const [input, expected] of testCases) {
-      expect(JavascriptDuplication._normalizeSource(input)).toBe(expected);
+      expect(ModuleDuplication._normalizeSource(input)).toBe(expected);
     }
   });
 });

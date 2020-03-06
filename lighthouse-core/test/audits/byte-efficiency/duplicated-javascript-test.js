@@ -8,8 +8,7 @@
 /* eslint-env jest */
 
 const fs = require('fs');
-const BundleDuplicationAudit = require('../../../audits/byte-efficiency/bundle-duplication.js');
-// const networkRecordsToDevtoolsLog = require('../../network-records-to-devtools-log.js');
+const DuplicatedJavascript = require('../../../audits/byte-efficiency/duplicated-javascript.js');
 const trace = require('../../fixtures/traces/lcp-m78.json');
 const devtoolsLog = require('../../fixtures/traces/lcp-m78.devtools.log.json');
 
@@ -22,7 +21,7 @@ function load(name) {
   return {map: JSON.parse(mapJson), content};
 }
 
-describe('BundleDuplicationAudit computed artifact', () => {
+describe('DuplicatedJavascript computed artifact', () => {
   it('works (simple)', async () => {
     const context = {computedCache: new Map(), options: {ignoreThresholdInBytes: 500}};
     const {map, content} = load('foo.min');
@@ -38,7 +37,7 @@ describe('BundleDuplicationAudit computed artifact', () => {
       ],
     };
     const networkRecords = [{url: 'https://example.com', resourceType: 'Document'}];
-    const results = await BundleDuplicationAudit.audit_(artifacts, networkRecords, context);
+    const results = await DuplicatedJavascript.audit_(artifacts, networkRecords, context);
     expect({items: results.items, wastedBytesByUrl: results.wastedBytesByUrl})
       .toMatchInlineSnapshot(`
       Object {
@@ -78,7 +77,7 @@ describe('BundleDuplicationAudit computed artifact', () => {
       ],
     };
     const networkRecords = [{url: 'https://example.com', resourceType: 'Document'}];
-    const results = await BundleDuplicationAudit.audit_(artifacts, networkRecords, context);
+    const results = await DuplicatedJavascript.audit_(artifacts, networkRecords, context);
     expect({items: results.items, wastedBytesByUrl: results.wastedBytesByUrl})
       .toMatchInlineSnapshot(`
       Object {
@@ -264,10 +263,10 @@ describe('BundleDuplicationAudit computed artifact', () => {
     const artifacts = {
       URL: {finalUrl: 'https://www.paulirish.com'},
       devtoolsLogs: {
-        [BundleDuplicationAudit.DEFAULT_PASS]: devtoolsLog,
+        [DuplicatedJavascript.DEFAULT_PASS]: devtoolsLog,
       },
       traces: {
-        [BundleDuplicationAudit.DEFAULT_PASS]: trace,
+        [DuplicatedJavascript.DEFAULT_PASS]: trace,
       },
       SourceMaps: [
         {
@@ -288,7 +287,7 @@ describe('BundleDuplicationAudit computed artifact', () => {
     const ultraSlowThrottling = {rttMs: 150, throughputKbps: 100, cpuSlowdownMultiplier: 8};
     const settings = {throttlingMethod: 'simulate', throttling: ultraSlowThrottling};
     const context = {settings, computedCache: new Map()};
-    const results = await BundleDuplicationAudit.audit(artifacts, context);
+    const results = await DuplicatedJavascript.audit(artifacts, context);
 
     // Without the `wastedBytesByUrl` this would be zero because the items don't define a url.
     expect(results.details.overallSavingsMs).toBe(300);
@@ -306,7 +305,7 @@ describe('BundleDuplicationAudit computed artifact', () => {
       ['node_modules/blahblah/node_modules/@lh/ci', '@lh/ci'],
     ];
     for (const [input, expected] of testCases) {
-      expect(BundleDuplicationAudit._getNodeModuleName(input)).toBe(expected);
+      expect(DuplicatedJavascript._getNodeModuleName(input)).toBe(expected);
     }
   });
 });

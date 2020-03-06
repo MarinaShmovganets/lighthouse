@@ -8,7 +8,7 @@
 const makeComputedArtifact = require('./computed-artifact.js');
 const JsBundles = require('./js-bundles.js');
 
-class JavascriptDuplication {
+class ModuleDuplication {
   /**
    * @param {string} source
    */
@@ -67,7 +67,7 @@ class JavascriptDuplication {
         const sourceKey = (rawMap.sourceRoot || '') + rawMap.sources[i];
         const sourceSize = sizes.files[sourceKey];
         sourceDataArray.push({
-          source: JavascriptDuplication._normalizeSource(rawMap.sources[i]),
+          source: ModuleDuplication._normalizeSource(rawMap.sources[i]),
           size: sourceSize,
         });
       }
@@ -101,4 +101,4 @@ class JavascriptDuplication {
   }
 }
 
-module.exports = makeComputedArtifact(JavascriptDuplication);
+module.exports = makeComputedArtifact(ModuleDuplication);

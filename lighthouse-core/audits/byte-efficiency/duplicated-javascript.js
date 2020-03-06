@@ -6,7 +6,7 @@
 'use strict';
 
 const ByteEfficiencyAudit = require('./byte-efficiency-audit.js');
-const JavascriptDuplication = require('../../computed/javascript-duplication.js');
+const ModuleDuplication = require('../../computed/module-duplication.js');
 const NetworkAnalyzer = require('../../lib/dependency-graph/simulator/network-analyzer.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
@@ -17,7 +17,7 @@ const UIStrings = {
   description: 'Remove large, duplicate JavaScript modules from bundles ' +
     'to reduce unnecessary bytes consumed by network activity. ', // +
   // TODO: we need docs.
-  // '[Learn more](https://web.dev/bundle-duplication).',
+  // '[Learn more](https://web.dev/duplicated-javascript).',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -34,13 +34,13 @@ function indexOfOrEnd(haystack, needle, startPosition = 0) {
   return index === -1 ? haystack.length : index;
 }
 
-class BundleDuplication extends ByteEfficiencyAudit {
+class DuplicatedJavascript extends ByteEfficiencyAudit {
   /**
    * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      id: 'bundle-duplication',
+      id: 'duplicated-javascript',
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
@@ -68,7 +68,7 @@ class BundleDuplication extends ByteEfficiencyAudit {
    * @param {LH.Audit.Context} context
    */
   static async _getDuplicationGroupedByNodeModules(artifacts, context) {
-    const duplication = await JavascriptDuplication.request(artifacts, context);
+    const duplication = await ModuleDuplication.request(artifacts, context);
 
     /** @type {typeof duplication} */
     const groupedDuplication = new Map();
@@ -78,7 +78,7 @@ class BundleDuplication extends ByteEfficiencyAudit {
         continue;
       }
 
-      const normalizedSource = 'node_modules/' + BundleDuplication._getNodeModuleName(source);
+      const normalizedSource = 'node_modules/' + DuplicatedJavascript._getNodeModuleName(source);
       const aggregatedSourceDatas = groupedDuplication.get(normalizedSource) || [];
       for (const {scriptUrl, size} of sourceDatas) {
         let sourceData = aggregatedSourceDatas.find(d => d.scriptUrl === scriptUrl);
@@ -114,7 +114,7 @@ class BundleDuplication extends ByteEfficiencyAudit {
       context.options && context.options.ignoreThresholdInBytes || IGNORE_THRESHOLD_IN_BYTES;
 
     const duplication =
-      await BundleDuplication._getDuplicationGroupedByNodeModules(artifacts, context);
+      await DuplicatedJavascript._getDuplicationGroupedByNodeModules(artifacts, context);
 
     /**
      * @typedef ItemSubrows
@@ -229,5 +229,5 @@ class BundleDuplication extends ByteEfficiencyAudit {
   }
 }
 
-module.exports = BundleDuplication;
+module.exports = DuplicatedJavascript;
 module.exports.UIStrings = UIStrings;
