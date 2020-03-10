@@ -389,14 +389,14 @@ const defaultConfig = {
     'performance': {
       title: str_(UIStrings.performanceCategoryTitle),
       auditRefs: [
-        {id: 'first-contentful-paint', weight: 25, group: 'metrics'},
+        {id: 'first-contentful-paint', weight: 15, group: 'metrics'},
         {id: 'speed-index', weight: 15, group: 'metrics'},
+        {id: 'largest-contentful-paint', weight: 25, group: 'metrics'},
         {id: 'interactive', weight: 15, group: 'metrics'},
-        {id: 'largest-contentful-paint', weight: 20, group: 'metrics'},
         {id: 'total-blocking-time', weight: 25, group: 'metrics'},
+        {id: 'cumulative-layout-shift', weight: 5, group: 'metrics'},
         // intentionally left out of metrics group so they won't be displayed
         {id: 'first-cpu-idle', weight: 0},
-        {id: 'cumulative-layout-shift', weight: 0},
         {id: 'max-potential-fid', weight: 0},
         {id: 'first-meaningful-paint', weight: 0},
         {id: 'estimated-input-latency', weight: 0},
