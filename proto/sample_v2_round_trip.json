@@ -447,7 +447,7 @@
             "id": "cumulative-layout-shift",
             "numericUnit": "unitless",
             "numericValue": 0.42,
-            "score": 0.48,
+            "score": 0.21,
             "scoreDisplayMode": "numeric",
             "title": "Cumulative Layout Shift"
         },
@@ -4010,7 +4010,7 @@
                 }
             ],
             "id": "performance",
-            "score": 0.66,
+            "score": 0.64,
             "title": "Performance"
         },
         "pwa": {
