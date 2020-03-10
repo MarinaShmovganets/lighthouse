@@ -154,6 +154,7 @@ const defaultConfig = {
   },
   {
     passName: 'offlinePass',
+    loadFailureMode: 'ignore',
     gatherers: [
       'service-worker',
       'offline',
@@ -162,6 +163,7 @@ const defaultConfig = {
   },
   {
     passName: 'redirectPass',
+    loadFailureMode: 'warn',
     // Speed up the redirect pass by blocking stylesheets, fonts, and images
     blockedUrlPatterns: ['*.css', '*.jpg', '*.jpeg', '*.png', '*.gif', '*.svg', '*.ttf', '*.woff', '*.woff2'],
     gatherers: [
@@ -187,6 +189,7 @@ const defaultConfig = {
     'metrics/estimated-input-latency',
     'metrics/total-blocking-time',
     'metrics/max-potential-fid',
+    'metrics/cumulative-layout-shift',
     'errors-in-console',
     'time-to-first-byte',
     'metrics/first-cpu-idle',
@@ -198,6 +201,7 @@ const defaultConfig = {
     'apple-touch-icon',
     'splash-screen',
     'themed-omnibox',
+    'maskable-icon',
     'content-width',
     'image-aspect-ratio',
     'deprecations',
@@ -214,6 +218,7 @@ const defaultConfig = {
     'metrics',
     'offline-start-url',
     'performance-budget',
+    'timing-budget',
     'resource-summary',
     'third-party-summary',
     'manual/pwa-cross-browser',
@@ -286,6 +291,7 @@ const defaultConfig = {
     'byte-efficiency/efficient-animated-content',
     'dobetterweb/appcache-manifest',
     'dobetterweb/doctype',
+    'dobetterweb/charset',
     'dobetterweb/dom-size',
     'dobetterweb/external-anchors-use-rel-noopener',
     'dobetterweb/geolocation-on-start',
@@ -390,6 +396,7 @@ const defaultConfig = {
         {id: 'total-blocking-time', weight: 25, group: 'metrics'},
         // intentionally left out of metrics group so they won't be displayed
         {id: 'first-cpu-idle', weight: 0},
+        {id: 'cumulative-layout-shift', weight: 0},
         {id: 'max-potential-fid', weight: 0},
         {id: 'first-meaningful-paint', weight: 0},
         {id: 'estimated-input-latency', weight: 0},
@@ -418,6 +425,7 @@ const defaultConfig = {
         {id: 'mainthread-work-breakdown', weight: 0, group: 'diagnostics'},
         {id: 'font-display', weight: 0, group: 'diagnostics'},
         {id: 'performance-budget', weight: 0, group: 'budgets'},
+        {id: 'timing-budget', weight: 0, group: 'budgets'},
         {id: 'resource-summary', weight: 0, group: 'diagnostics'},
         {id: 'third-party-summary', weight: 0, group: 'diagnostics'},
         // Audits past this point don't belong to a group and will not be shown automatically
@@ -506,6 +514,7 @@ const defaultConfig = {
         {id: 'external-anchors-use-rel-noopener', weight: 1},
         {id: 'geolocation-on-start', weight: 1},
         {id: 'doctype', weight: 1},
+        {id: 'charset', weight: 1},
         {id: 'no-vulnerable-libraries', weight: 1},
         {id: 'js-libraries', weight: 0},
         {id: 'notification-on-start', weight: 1},
@@ -558,6 +567,7 @@ const defaultConfig = {
         {id: 'viewport', weight: 2, group: 'pwa-optimized'},
         {id: 'without-javascript', weight: 1, group: 'pwa-optimized'},
         {id: 'apple-touch-icon', weight: 1, group: 'pwa-optimized'},
+        {id: 'maskable-icon', weight: 1, group: 'pwa-optimized'},
         // Manual audits
         {id: 'pwa-cross-browser', weight: 0},
         {id: 'pwa-page-transitions', weight: 0},
