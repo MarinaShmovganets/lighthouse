@@ -1,5 +1,5 @@
-# The Travis CI is our full-fledged UI, but this Github workflow
-# runs some basics (build, lint, diff sample json and unit-core)
+# The Travis CI is our full-fledged CI, but this Github workflow
+# runs some basics (build, lint, diff sample json, and unit-core)
 # and it should complete quickly, giving more immediate feedback
 # than waiting for Travis
 
