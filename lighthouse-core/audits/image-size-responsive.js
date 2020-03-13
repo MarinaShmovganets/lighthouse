@@ -4,10 +4,9 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 /**
- * @fileoverview Checks to see if the aspect ratio of the images used on
- *   the page are equal to the aspect ratio of their display sizes. The
- *   audit will list all images that don't match with their display size
- *   aspect ratio.
+ * @fileoverview Checks to see if the size of the visible images used on
+ *   the page are large enough with respect to the pixel ratio. The
+ *   audit will list all visible images that are too small.
  */
 'use strict';
 
@@ -21,18 +20,13 @@ const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on the size of visible images on the page. This descriptive title is shown to users when not all images have correct sizes. */
   failureTitle: 'Displays images with incorrect size',
   /** Description of a Lighthouse audit that tells the user why they should maintain the correct aspect ratios for all images. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
-  description: 'Image display dimensions should match natural aspect ratio. ' +
-    '[Learn more](https://web.dev/image-aspect-ratio).',
-  /**
-   * @description Warning that the size information for an image was nonsensical.
-   * @example {https://image.cdn.com/} url
-   */
-  warningCompute: 'Invalid image sizing information {url}',
-  /**  Label for a column in a data table; entries in the column will be the numeric aspect ratio of an image as displayed in a web page. */
+  description: 'Image natural dimensions should be proportional to the display size and the ' +
+    'pixel ratio. [Learn more](https://web.dev/image-size-responsive).',
+  /**  Label for a column in a data table; entries in the column will be a string representing the displayed size of the image. */
   columnDisplayed: 'Displayed size',
-  /**  Label for a column in a data table; entries in the column will be the numeric aspect ratio of the raw (actual) image. */
+  /**  Label for a column in a data table; entries in the column will be a string representing the actual size of the image. */
   columnActual: 'Actual size',
-  /**  Label for a column in a data table; entries in the column will be the numeric aspect ratio of the raw (actual) image. */
+  /**  Label for a column in a data table; entries in the column will be a string representing the expected size of the image. */
   columnExpected: 'Expected size',
 };
 
