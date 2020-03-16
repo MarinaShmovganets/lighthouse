@@ -21,7 +21,7 @@ const UIStrings = {
   failureTitle: 'Displays images with incorrect size',
   /** Description of a Lighthouse audit that tells the user why they should maintain the correct aspect ratios for all images. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Image natural dimensions should be proportional to the display size and the ' +
-    'pixel ratio. [Learn more](https://web.dev/image-size-responsive).',
+    'pixel ratio to maximize image clarity. [Learn more](https://web.dev/image-size-responsive).',
   /**  Label for a column in a data table; entries in the column will be a string representing the displayed size of the image. */
   columnDisplayed: 'Displayed size',
   /**  Label for a column in a data table; entries in the column will be a string representing the actual size of the image. */
