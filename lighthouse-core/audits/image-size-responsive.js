@@ -110,7 +110,7 @@ function getResult(image, DPR) {
  * Compute the size an image should have given the display dimensions and pixel density.
  *
  * For smaller images, typically icons, the size must be proportional to the density.
- * For larger images some tolerance is allowed as in thise cases the perceived degradation is not
+ * For larger images some tolerance is allowed as in those cases the perceived degradation is not
  * that bad.
  *
  * @param {number} displayedWidth
