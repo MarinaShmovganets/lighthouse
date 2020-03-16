@@ -137,8 +137,8 @@ describe('Images: size audit', () => {
       naturalSize: [5, 5],
       props: {
         clientRect: {
-          top: -201 - 100,
-          bottom: -201,
+          top: -1 - 100,
+          bottom: -1,
           left: 0,
           right: 100,
         },
@@ -151,8 +151,8 @@ describe('Images: size audit', () => {
       naturalSize: [5, 5],
       props: {
         clientRect: {
-          top: -200 - 100,
-          bottom: -200,
+          top: - 100,
+          bottom: 0,
           left: 0,
           right: 100,
         },
@@ -165,8 +165,8 @@ describe('Images: size audit', () => {
       naturalSize: [5, 5],
       props: {
         clientRect: {
-          top: HEIGHT + 201,
-          bottom: HEIGHT + 201 + 100,
+          top: HEIGHT + 1,
+          bottom: HEIGHT + 1 + 100,
           left: 0,
           right: 100,
         },
@@ -179,8 +179,8 @@ describe('Images: size audit', () => {
       naturalSize: [5, 5],
       props: {
         clientRect: {
-          top: HEIGHT + 200,
-          bottom: HEIGHT + 200 + 100,
+          top: HEIGHT,
+          bottom: HEIGHT + 100,
           left: 0,
           right: 100,
         },
@@ -195,8 +195,8 @@ describe('Images: size audit', () => {
         clientRect: {
           top: 0,
           bottom: 100,
-          left: -101 - 100,
-          right: -101,
+          left: -1 - 100,
+          right: -1,
         },
       },
     });
@@ -209,8 +209,8 @@ describe('Images: size audit', () => {
         clientRect: {
           top: 0,
           bottom: 100,
-          left: -100 - 100,
-          right: -100,
+          left: -100,
+          right: 0,
         },
       },
     });
@@ -223,8 +223,8 @@ describe('Images: size audit', () => {
         clientRect: {
           top: 0,
           bottom: 100,
-          left: WIDTH + 101,
-          right: WIDTH + 101 + 100,
+          left: WIDTH + 1,
+          right: WIDTH + 1 + 100,
         },
       },
     });
@@ -237,8 +237,8 @@ describe('Images: size audit', () => {
         clientRect: {
           top: 0,
           bottom: 100,
-          left: WIDTH + 100,
-          right: WIDTH + 100 + 100,
+          left: WIDTH,
+          right: WIDTH + 100,
         },
       },
     });

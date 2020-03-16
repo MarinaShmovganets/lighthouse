@@ -43,10 +43,6 @@ const LARGE_IMAGE_FACTOR = 0.75;
 // considered SMALL.
 const SMALL_IMAGE_THRESHOLD = 64;
 
-// This constants were taken from the OffscreenImages audit.
-const ALLOWABLE_OFFSCREEN_X = 100;
-const ALLOWABLE_OFFSCREEN_Y = 200;
-
 /** @typedef {{url: string, elidedUrl: string, displayedSize: string, actualSize: string, actualPixels: number, expectedSize: string, expectedPixels: number}} Result */
 
 /**
@@ -57,10 +53,10 @@ const ALLOWABLE_OFFSCREEN_Y = 200;
 function isVisible(imageRect, viewportDimensions) {
   return (
     (imageRect.bottom - imageRect.top) * (imageRect.right - imageRect.left) > 0 &&
-    imageRect.top <= viewportDimensions.innerHeight + ALLOWABLE_OFFSCREEN_Y &&
-    imageRect.bottom >= -ALLOWABLE_OFFSCREEN_Y &&
-    imageRect.left <= viewportDimensions.innerWidth + ALLOWABLE_OFFSCREEN_X &&
-    imageRect.right >= -ALLOWABLE_OFFSCREEN_X
+    imageRect.top <= viewportDimensions.innerHeight &&
+    imageRect.bottom >= 0 &&
+    imageRect.left <= viewportDimensions.innerWidth &&
+    imageRect.right >= 0
   );
 }
 
