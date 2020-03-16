@@ -75,7 +75,7 @@ describe('Images: size audit', () => {
     });
   });
 
-  describe('too small', () => {
+  describe('too small to bother testing', () => {
     testImage('is too small along width', {
       score: 1,
       clientSize: [1, 100],
