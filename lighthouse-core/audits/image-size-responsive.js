@@ -141,6 +141,7 @@ function deduplicateAndSortResults(results) {
   const deduplicated = /** @type {Result[]} */ ([]);
   for (const r of results) {
     if (deduplicated.length > 0 && r.url === deduplicated[deduplicated.length - 1].url) {
+      // If the URL was the same, this is a duplicate. Keep the largest image.
       if (deduplicated[deduplicated.length - 1].expectedPixels < r.expectedPixels) {
         deduplicated[deduplicated.length - 1] = r;
       }
