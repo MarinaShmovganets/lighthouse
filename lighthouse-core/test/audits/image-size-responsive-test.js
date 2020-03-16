@@ -325,29 +325,29 @@ describe('Images: size audit', () => {
       },
     });
     assert.equal(result.details.items.length, 1);
-    assert.equal(result.details.items[0].expectedSize, '120 x 60');
+    assert.equal(result.details.items[0].expectedSize, '160 x 80');
   });
 
-  it('sorts images', () => {
+  it('sorts images by size delta', () => {
     const result = ImageSizeResponsiveAudit.audit({
       ImageElements: [
         generateImage(
           {displayedWidth: 80, displayedHeight: 40},
           {naturalWidth: 40, naturalHeight: 20},
           {},
-          'https://C.com/image.png'
+          'image1.png'
         ),
         generateImage(
-          {displayedWidth: 80, displayedHeight: 40},
+          {displayedWidth: 120, displayedHeight: 60},
           {naturalWidth: 40, naturalHeight: 20},
           {},
-          'https://A.com/image.png'
+          'image2.png'
         ),
         generateImage(
-          {displayedWidth: 80, displayedHeight: 40},
+          {displayedWidth: 90, displayedHeight: 45},
           {naturalWidth: 40, naturalHeight: 20},
           {},
-          'https://B.com/image.png'
+          'image3.png'
         ),
       ],
       ViewportDimensions: {
@@ -358,6 +358,24 @@ describe('Images: size audit', () => {
     });
     assert.equal(result.details.items.length, 3);
     const srcs = result.details.items.map(item => item.url);
-    assert.deepEqual(Array.from(srcs), srcs.sort());
+    assert.deepEqual(srcs, ['image2.png', 'image3.png', 'image1.png']);
+  });
+
+  it('shows the right expected size', () => {
+    const result = ImageSizeResponsiveAudit.audit({
+      ImageElements: [
+        generateImage(
+          {displayedWidth: 80, displayedHeight: 40},
+          {naturalWidth: 40, naturalHeight: 20}
+        ),
+      ],
+      ViewportDimensions: {
+        innerWidth: WIDTH,
+        innerHeight: HEIGHT,
+        devicePixelRatio: 2.71,
+      },
+    });
+    assert.equal(result.details.items.length, 1);
+    assert.equal(result.details.items[0].expectedSize, '217 x 109');
   });
 });

@@ -16,10 +16,10 @@ const i18n = require('../lib/i18n/i18n.js');
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on the size of visible images on the page. This descriptive title is shown to users when all images have correct sizes. */
-  title: 'Displays images with correct size',
+  title: 'Displays images with appropriate size',
   /** Title of a Lighthouse audit that provides detail on the size of visible images on the page. This descriptive title is shown to users when not all images have correct sizes. */
-  failureTitle: 'Displays images with incorrect size',
-  /** Description of a Lighthouse audit that tells the user why they should maintain the correct aspect ratios for all images. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  failureTitle: 'Displays images with inappropriate size',
+  /** Description of a Lighthouse audit that tells the user why they should maintain an appropriate size for all images. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Image natural dimensions should be proportional to the display size and the ' +
     'pixel ratio to maximize image clarity. [Learn more](https://web.dev/image-size-responsive).',
   /**  Label for a column in a data table; entries in the column will be a string representing the displayed size of the image. */
@@ -32,12 +32,22 @@ const UIStrings = {
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
-const TOLERANCE = 0.75;
+// Factors used to allow for smaller effective density.
+// A factor of 1 means the actual device pixel density will be used.
+// A factor of 0.5, means half the density is required. For example if the device pixel ratio is 3,
+// then the images should have at least a density of 1.5.
+const SMALL_IMAGE_FACTOR = 1.0;
+const LARGE_IMAGE_FACTOR = 0.75;
 
+// An image has must have both its dimensions lower or equal to the threshold in order to be
+// considered SMALL.
+const SMALL_IMAGE_THRESHOLD = 64;
+
+// This constants were taken from the OffscreenImages audit.
 const ALLOWABLE_OFFSCREEN_X = 100;
 const ALLOWABLE_OFFSCREEN_Y = 200;
 
-/** @typedef {{url: string, elidedUrl: string, displayedSize: string, actualSize: string, expectedSize: string, expectedPixels: number}} Result */
+/** @typedef {{url: string, elidedUrl: string, displayedSize: string, actualSize: string, actualPixels: number, expectedSize: string, expectedPixels: number}} Result */
 
 /**
  * @param {{top: number, bottom: number, left: number, right: number}} imageRect
@@ -84,7 +94,7 @@ function isCandidate(image) {
  */
 function imageHasRightSize(image, DPR) {
   const [expectedWidth, expectedHeight] =
-      expectedImageSize(image.displayedWidth, image.displayedHeight, DPR);
+      allowedImageSize(image.displayedWidth, image.displayedHeight, DPR);
   return image.naturalWidth >= expectedWidth && image.naturalHeight >= expectedHeight;
 }
 
@@ -101,13 +111,15 @@ function getResult(image, DPR) {
     elidedUrl: URL.elideDataURI(image.src),
     displayedSize: `${image.displayedWidth} x ${image.displayedHeight}`,
     actualSize: `${image.naturalWidth} x ${image.naturalHeight}`,
+    actualPixels: image.naturalWidth * image.naturalHeight,
     expectedSize: `${expectedWidth} x ${expectedHeight}`,
     expectedPixels: expectedWidth * expectedHeight,
   };
 }
 
 /**
- * Compute the size an image should have given the display dimensions and pixel density.
+ * Compute the size an image should have given the display dimensions and pixel density in order to
+ * pass the audit.
  *
  * For smaller images, typically icons, the size must be proportional to the density.
  * For larger images some tolerance is allowed as in those cases the perceived degradation is not
@@ -118,14 +130,53 @@ function getResult(image, DPR) {
  * @param {number} DPR
  * @return {[number, number]}
  */
-function expectedImageSize(displayedWidth, displayedHeight, DPR) {
-  let factor = DPR;
-  if (displayedWidth > 64 || displayedHeight > 64) {
-    factor *= TOLERANCE;
+function allowedImageSize(displayedWidth, displayedHeight, DPR) {
+  let factor = SMALL_IMAGE_FACTOR;
+  if (displayedWidth > SMALL_IMAGE_THRESHOLD || displayedHeight > SMALL_IMAGE_THRESHOLD) {
+    factor = LARGE_IMAGE_FACTOR;
   }
-  const width = Math.ceil(factor * displayedWidth);
-  const height = Math.ceil(factor * displayedHeight);
+  const width = Math.ceil(factor * DPR * displayedWidth);
+  const height = Math.ceil(factor * DPR * displayedHeight);
   return [width, height];
+}
+
+/**
+ * Compute the size an image should have given the display dimensions and pixel density.
+ *
+ * @param {number} displayedWidth
+ * @param {number} displayedHeight
+ * @param {number} DPR
+ * @return {[number, number]}
+ */
+function expectedImageSize(displayedWidth, displayedHeight, DPR) {
+  const width = Math.ceil(DPR * displayedWidth);
+  const height = Math.ceil(DPR * displayedHeight);
+  return [width, height];
+}
+
+/**
+ * Remove repeated entries for the same source.
+ *
+ * It will keep the entry with the largest size.
+ *
+ * @param {Result[]} results
+ * @return {Result[]}
+ */
+function deduplicateResultsByUrl(results) {
+  results.sort((a, b) => a.url === b.url ? 0 : (a.url < b. url ? -1 : 1));
+  const deduplicated = /** @type {Result[]} */ ([]);
+  for (const r of results) {
+    const previousResult = deduplicated[deduplicated.length - 1];
+    if (previousResult && previousResult.url === r.url) {
+      // If the URL was the same, this is a duplicate. Keep the largest image.
+      if (previousResult.expectedPixels < r.expectedPixels) {
+        deduplicated[deduplicated.length - 1] = r;
+      }
+    } else {
+      deduplicated.push(r);
+    }
+  }
+  return deduplicated;
 }
 
 /**
@@ -136,20 +187,9 @@ function expectedImageSize(displayedWidth, displayedHeight, DPR) {
  * @param {Result[]} results
  * @return {Result[]}
  */
-function deduplicateAndSortResults(results) {
-  results.sort((a, b) => a.url === b.url ? 0 : (a.url < b. url ? -1 : 1));
-  const deduplicated = /** @type {Result[]} */ ([]);
-  for (const r of results) {
-    if (deduplicated.length > 0 && r.url === deduplicated[deduplicated.length - 1].url) {
-      // If the URL was the same, this is a duplicate. Keep the largest image.
-      if (deduplicated[deduplicated.length - 1].expectedPixels < r.expectedPixels) {
-        deduplicated[deduplicated.length - 1] = r;
-      }
-    } else {
-      deduplicated.push(r);
-    }
-  }
-  return deduplicated;
+function sortResultsBySizeDelta(results) {
+  return results.sort(
+      (a, b) => (b.expectedPixels - b.actualPixels) - (a.expectedPixels - a.actualPixels));
 }
 
 class ImageSizeResponsive extends Audit {
@@ -188,9 +228,11 @@ class ImageSizeResponsive extends Audit {
       {key: 'expectedSize', itemType: 'text', text: str_(UIStrings.columnExpected)},
     ];
 
+    const finalResults = sortResultsBySizeDelta(deduplicateResultsByUrl(results));
+
     return {
       score: Number(results.length === 0),
-      details: Audit.makeTableDetails(headings, deduplicateAndSortResults(results)),
+      details: Audit.makeTableDetails(headings, finalResults),
     };
   }
 }
