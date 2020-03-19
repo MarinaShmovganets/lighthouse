@@ -116,6 +116,24 @@ describe('Images: size audit', () => {
     },
   });
 
+  testImage('uses PixelArt scaling', {
+    score: 1,
+    clientSize: [100, 100],
+    naturalSize: [5, 5],
+    props: {
+      usesPixelArtScaling: true,
+    },
+  });
+
+  testImage('uses srcset density descriptor', {
+    score: 1,
+    clientSize: [100, 100],
+    naturalSize: [5, 5],
+    props: {
+      usesSrcSetDensityDescriptor: true,
+    },
+  });
+
   describe('visibility', () => {
     testImage('has no client area', {
       score: 1,
