@@ -29,15 +29,7 @@ function getClientRect(element) {
   };
 }
 
-/**
- * @param {CSSStyleDeclaration} style
- * @return {boolean}
- */
-function usesPixelArtScaling(style) {
-  return ['pixelated', 'crisp-edges'].includes(
-    style.getPropertyValue('image-rendering')
-  );
-}
+const PIXEL_ART_RENDERING = ['pixelated', 'crisp-edges'];
 
 /**
  * @param {Array<Element>} allElements
@@ -68,7 +60,9 @@ function getHTMLImages(allElements) {
       usesObjectFit: ['cover', 'contain', 'scale-down', 'none'].includes(
         computedStyle.getPropertyValue('object-fit')
       ),
-      usesPixelArtScaling: usesPixelArtScaling(computedStyle),
+      usesPixelArtScaling: ['pixelated', 'crisp-edges'].includes(
+        computedStyle.getPropertyValue('image-rendering')
+      ),
     };
   });
 }
@@ -106,7 +100,9 @@ function getCSSImages(allElements) {
       isCss: true,
       isPicture: false,
       usesObjectFit: false,
-      usesPixelArtScaling: usesPixelArtScaling(style),
+      usesPixelArtScaling: ['pixelated', 'crisp-edges'].includes(
+        style.getPropertyValue('image-rendering')
+      ),
       resourceSize: 0, // this will get overwritten below
     });
   }
