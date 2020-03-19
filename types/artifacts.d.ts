@@ -394,6 +394,11 @@ declare global {
         isPicture: boolean;
         /** Flags whether this element was sized using a non-default `object-fit` CSS property. */
         usesObjectFit: boolean;
+        /** Flags whether this element was rendered using a pixel art scaling method.
+         *  See https://developer.mozilla.org/en-US/docs/Games/Techniques/Crisp_pixel_art_look for
+         *  details.
+         */
+        usesPixelArtScaling: boolean;
         /** The size of the underlying image file in bytes. 0 if the file could not be identified. */
         resourceSize: number;
         /** The MIME type of the underlying image file. */

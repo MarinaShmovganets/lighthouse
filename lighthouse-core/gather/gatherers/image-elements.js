@@ -30,6 +30,16 @@ function getClientRect(element) {
 }
 
 /**
+ * @param {CSSStyleDeclaration} style
+ * @return {boolean}
+ */
+function usesPixelArtScaling(style) {
+  return ['pixelated', 'crisp-edges'].includes(
+    style.getPropertyValue('image-rendering')
+  );
+}
+
+/**
  * @param {Array<Element>} allElements
  * @return {Array<LH.Artifacts.ImageElement>}
  */
@@ -58,6 +68,7 @@ function getHTMLImages(allElements) {
       usesObjectFit: ['cover', 'contain', 'scale-down', 'none'].includes(
         computedStyle.getPropertyValue('object-fit')
       ),
+      usesPixelArtScaling: usesPixelArtScaling(computedStyle),
     };
   });
 }
@@ -95,6 +106,7 @@ function getCSSImages(allElements) {
       isCss: true,
       isPicture: false,
       usesObjectFit: false,
+      usesPixelArtScaling: usesPixelArtScaling(style),
       resourceSize: 0, // this will get overwritten below
     });
   }
