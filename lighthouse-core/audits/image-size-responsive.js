@@ -65,6 +65,8 @@ function isVisible(imageRect, viewportDimensions) {
  * @return {boolean}
  */
 function isCandidate(image) {
+  // TODO: skip images using PixelArt scaling.
+  // See PR https://github.com/GoogleChrome/lighthouse/pull/10481
   if (image.displayedWidth <= 1 || image.displayedHeight <= 1) {
     return false;
   }
@@ -89,6 +91,9 @@ function isCandidate(image) {
  * @return {boolean}
  */
 function imageHasRightSize(image, DPR) {
+  // TODO: in case the image has a srcset with pixel density descriptor, the natural size will not
+  // be the actual image size but rather the image size divided by the density descriptor.
+  // We can approximate it with the devicePixelRatio.
   const [expectedWidth, expectedHeight] =
       allowedImageSize(image.displayedWidth, image.displayedHeight, DPR);
   return image.naturalWidth >= expectedWidth && image.naturalHeight >= expectedHeight;
