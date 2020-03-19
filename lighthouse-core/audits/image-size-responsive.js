@@ -153,7 +153,7 @@ function expectedImageSize(displayedWidth, displayedHeight, DPR) {
 /**
  * Remove repeated entries for the same source.
  *
- * It will keep the entry with the largest size.
+ * It will keep the entry with the largest expected size.
  *
  * @param {Result[]} results
  * @return {Result[]}
@@ -176,9 +176,7 @@ function deduplicateResultsByUrl(results) {
 }
 
 /**
- * Remove repeated entries for the same source and sort them by source.
- *
- * It will keep the entry with the largest size.
+ * Sort entries in descending order by the magnitude of the size deficit, i.e. most pressing issues listed first.
  *
  * @param {Result[]} results
  * @return {Result[]}
