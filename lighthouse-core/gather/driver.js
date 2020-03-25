@@ -24,7 +24,7 @@ const pageFunctions = require('../lib/page-functions.js');
 // eslint-disable-next-line no-unused-vars
 const Connection = require('./connections/connection.js');
 
-// Controls how long to wait after onLoad before continuing
+// Controls how long to wait after FCP before continuing
 const DEFAULT_PAUSE_AFTER_FCP = 0;
 // Controls how long to wait after onLoad before continuing
 const DEFAULT_PAUSE_AFTER_LOAD = 0;
