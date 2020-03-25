@@ -922,7 +922,7 @@ class Driver {
    * @private
    */
   async _waitForFullyLoaded(pauseAfterFcpMs, pauseAfterLoadMs, networkQuietThresholdMs,
-    cpuQuietThresholdMs, maxWaitForLoadedMs, maxWaitForFcpMs) {
+      cpuQuietThresholdMs, maxWaitForLoadedMs, maxWaitForFcpMs) {
     /** @type {NodeJS.Timer|undefined} */
     let maxTimeoutHandle;
 
