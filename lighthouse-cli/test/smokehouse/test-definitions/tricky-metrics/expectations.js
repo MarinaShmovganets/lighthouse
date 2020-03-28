@@ -8,7 +8,7 @@
 /**
  * @type {Array<Smokehouse.ExpectedRunnerResult>}
  * Expected Lighthouse audit values for tricky metrics tests that previously failed to be computed.
- * We only place lower bounds because we are checking that these metrics *can* be computed at that
+ * We only place lower bounds because we are checking that these metrics *can* be computed and that
  * we wait long enough to compute them. Upper bounds aren't very helpful here and tend to cause flaky failures.
  */
 module.exports = [
