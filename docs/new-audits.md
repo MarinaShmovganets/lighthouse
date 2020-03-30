@@ -35,7 +35,7 @@ An audit can return a number of different [detail types](https://github.com/Goog
 
 
 <!--- https://docs.google.com/document/d/1KS6PGPYDfE_TWrRdw55Rd67P-g_MU4KdMetT3cTPHjI/edit#heading=h.32w9jjm4c70w -->
-![Detail type examples](../assets/detail-type-examples.png "Detail type examples")
+![Detail type examples](../assets/detail-type-examples.png)
 
 ## Process for creating a new audit
 
