@@ -26,6 +26,18 @@ class LanternLargestContentfulPaint extends LanternMetric {
   }
 
   /**
+   * @param {Node} node
+   * @return {boolean}
+   */
+  static isLowPriorityImageNode(node) {
+    if (node.type !== 'network') return false;
+
+    const isImage = node.record.resourceType === 'Image';
+    const isLowPriority = node.record.priority === 'Low' || node.record.priority === 'VeryLow';
+    return isImage && isLowPriority;
+  }
+
+  /**
    * TODO: Validate.
    * @param {Node} dependencyGraph
    * @param {LH.Artifacts.TraceOfTab} traceOfTab
@@ -40,11 +52,7 @@ class LanternLargestContentfulPaint extends LanternMetric {
     return LanternFirstContentfulPaint.getFirstPaintBasedGraph(
       dependencyGraph,
       lcp,
-      node => {
-        const isImage = node.record.resourceType === 'Image';
-        const isLowPriority = node.record.priority === 'Low' || node.record.priority === 'VeryLow';
-        return !(isImage && isLowPriority);
-      }
+      node => !LanternLargestContentfulPaint.isLowPriorityImageNode(node)
     );
   }
 
@@ -67,6 +75,21 @@ class LanternLargestContentfulPaint extends LanternMetric {
       // For pessimistic LCP we'll include *all* layout nodes
       node => node.didPerformLayout()
     );
+  }
+
+  /**
+   * @param {LH.Gatherer.Simulation.Result} simulationResult
+   * @param {any=} extras
+   * @return {LH.Gatherer.Simulation.Result}
+   */
+  static getEstimateFromSimulation(simulationResult, extras) { // eslint-disable-line no-unused-vars
+    const nodeTimesNotOffscreenImages = Array.from(simulationResult.nodeTimings.entries())
+      .filter(entry => !LanternLargestContentfulPaint.isLowPriorityImageNode(entry[0]));
+
+    return {
+      timeInMs: Math.max(...nodeTimesNotOffscreenImages.map(entry => entry[1].endTime)),
+      nodeTimings: simulationResult.nodeTimings,
+    };
   }
 
   /**
