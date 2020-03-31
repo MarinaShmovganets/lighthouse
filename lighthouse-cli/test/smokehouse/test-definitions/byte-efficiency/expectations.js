@@ -241,7 +241,7 @@ const expectations = [
                 url: 'http://localhost:10200/byte-efficiency/script.js?gzip=1',
                 transferSize: '1100 +/- 100',
                 resourceSize: '53000 +/- 1000',
-                finished: false,
+                finished: true,
               },
               {
                 url: 'http://localhost:10200/byte-efficiency/script.js',
