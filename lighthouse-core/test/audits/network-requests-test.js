@@ -8,57 +8,11 @@
 const NetworkRequests = require('../../audits/network-requests.js');
 const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 
-const acceptableDevToolsLog = require('../fixtures/traces/progressive-app-m60.devtools.log.json');
 const cutoffLoadDevtoolsLog = require('../fixtures/traces/cutoff-load-m83.devtoolslog.json');
 
 /* eslint-env jest */
 describe('Network requests audit', () => {
-  it('should return network requests', async () => {
-    const artifacts = {
-      devtoolsLogs: {
-        [NetworkRequests.DEFAULT_PASS]: acceptableDevToolsLog,
-      },
-    };
-
-    const output = await NetworkRequests.audit(artifacts, {computedCache: new Map()});
-
-    expect(output.score).toStrictEqual(1);
-    expect(output.details.items.length).toStrictEqual(66);
-    expect(output.details.items[0]).toMatchObject({
-      url: 'https://pwa.rocks/',
-      startTime: 0,
-      endTime: expect.toBeApproximately(280, 0),
-      finished: true,
-      statusCode: 200,
-      transferSize: 5368,
-    });
-  });
-
-  it('should handle times correctly', async () => {
-    const records = [
-      {url: 'https://example.com/0', startTime: 15.0, endTime: 15.5},
-      {url: 'https://example.com/1', startTime: 15.5, endTime: -1},
-    ];
-
-    const artifacts = {
-      devtoolsLogs: {
-        [NetworkRequests.DEFAULT_PASS]: networkRecordsToDevtoolsLog(records),
-      },
-    };
-    const output = await NetworkRequests.audit(artifacts, {computedCache: new Map()});
-
-    expect(output.details.items).toMatchObject([{
-      startTime: 0,
-      endTime: 500,
-      finished: true,
-    }, {
-      startTime: 500,
-      endTime: undefined,
-      finished: true,
-    }]);
-  });
-
-  it('should handle and report unfinished network records', async () => {
+  it('should report finished and unfinished network requests', async () => {
     const artifacts = {
       devtoolsLogs: {
         [NetworkRequests.DEFAULT_PASS]: cutoffLoadDevtoolsLog,
@@ -97,5 +51,29 @@ describe('Network requests audit', () => {
       mimeType: 'application/javascript',
       resourceType: 'Script',
     });
+  });
+
+  it('should handle times correctly', async () => {
+    const records = [
+      {url: 'https://example.com/0', startTime: 15.0, endTime: 15.5},
+      {url: 'https://example.com/1', startTime: 15.5, endTime: -1},
+    ];
+
+    const artifacts = {
+      devtoolsLogs: {
+        [NetworkRequests.DEFAULT_PASS]: networkRecordsToDevtoolsLog(records),
+      },
+    };
+    const output = await NetworkRequests.audit(artifacts, {computedCache: new Map()});
+
+    expect(output.details.items).toMatchObject([{
+      startTime: 0,
+      endTime: 500,
+      finished: true,
+    }, {
+      startTime: 500,
+      endTime: undefined,
+      finished: true,
+    }]);
   });
 });
