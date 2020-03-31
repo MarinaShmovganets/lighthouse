@@ -40,7 +40,11 @@ class LanternLargestContentfulPaint extends LanternMetric {
     return LanternFirstContentfulPaint.getFirstPaintBasedGraph(
       dependencyGraph,
       lcp,
-      _ => true
+      node => {
+        const isImage = node.record.resourceType === 'Image';
+        const isLowPriority = node.record.priority === 'Low' || node.record.priority === 'VeryLow';
+        return !(isImage && isLowPriority);
+      }
     );
   }
 
