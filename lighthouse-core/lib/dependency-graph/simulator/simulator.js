@@ -153,7 +153,7 @@ class Simulator {
    * @param {number} queuedTime
    */
   _markNodeAsReadyToStart(node, queuedTime) {
-    const nodeStartPosition = Simulator._computeNodeStartPosition(node)
+    const nodeStartPosition = Simulator._computeNodeStartPosition(node);
     const firstNodeIndexWithGreaterStartPosition = this._cachedNodeListByStartPosition
       .findIndex(candidate => Simulator._computeNodeStartPosition(candidate) > nodeStartPosition);
     const insertionIndex = firstNodeIndexWithGreaterStartPosition === -1 ?
