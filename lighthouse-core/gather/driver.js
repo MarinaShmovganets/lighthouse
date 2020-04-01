@@ -939,6 +939,7 @@ class Driver {
 
     // Wait for all initial load promises. Resolves on cleanup function the clears load
     // timeout timer.
+    /** @type {Promise<() => Promise<{timedOut: boolean}>>} */
     const loadPromise = Promise.all([
       waitForFCP.promise,
       waitForLoadEvent.promise,
@@ -947,10 +948,13 @@ class Driver {
       waitForCPUIdle = this._waitForCPUIdle(cpuQuietThresholdMs);
       return waitForCPUIdle.promise;
     }).then(() => {
-      return function() {
+      /** @return {Promise<{timedOut: boolean}>} */
+      const cleanupFn = async function() {
         log.verbose('Driver', 'loadEventFired and network considered idle');
         return {timedOut: false};
       };
+
+      return cleanupFn;
     }).catch(err => {
       // Throw the error in the cleanupFn so we still cleanup all our handlers.
       return function() {
@@ -960,6 +964,7 @@ class Driver {
 
     // Last resort timeout. Resolves maxWaitForLoadedMs ms from now on
     // cleanup function that removes loadEvent and network idle listeners.
+    /** @type {Promise<() => Promise<{timedOut: boolean}>>} */
     const maxTimeoutPromise = new Promise((resolve, reject) => {
       maxTimeoutHandle = setTimeout(resolve, maxWaitForLoadedMs);
     }).then(_ => {
