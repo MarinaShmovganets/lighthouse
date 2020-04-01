@@ -918,7 +918,7 @@ class Driver {
    * @param {number} cpuQuietThresholdMs
    * @param {number} maxWaitForLoadedMs
    * @param {number=} maxWaitForFcpMs
-   * @return {Promise<void>}
+   * @return {Promise<{timedOut: boolean}>}
    * @private
    */
   async _waitForFullyLoaded(pauseAfterFcpMs, pauseAfterLoadMs, networkQuietThresholdMs,
@@ -949,6 +949,7 @@ class Driver {
     }).then(() => {
       return function() {
         log.verbose('Driver', 'loadEventFired and network considered idle');
+        return {timedOut: false};
       };
     }).catch(err => {
       // Throw the error in the cleanupFn so we still cleanup all our handlers.
@@ -970,6 +971,8 @@ class Driver {
           await this.sendCommand('Runtime.terminateExecution');
           throw new LHError(LHError.errors.PAGE_HUNG);
         }
+
+        return {timedOut: true};
       };
     });
 
@@ -985,7 +988,7 @@ class Driver {
     waitForNetworkIdle.cancel();
     waitForCPUIdle.cancel();
 
-    await cleanupFn();
+    return cleanupFn();
   }
 
   /**
@@ -1071,7 +1074,7 @@ class Driver {
    * Resolves on the url of the loaded page, taking into account any redirects.
    * @param {string} url
    * @param {{waitForFCP?: boolean, waitForLoad?: boolean, waitForNavigated?: boolean, passContext?: LH.Gatherer.PassContext}} options
-   * @return {Promise<string>}
+   * @return {Promise<{finalUrl: string, timedOut: boolean}>}
    */
   async gotoURL(url, options = {}) {
     const waitForFCP = options.waitForFCP || false;
@@ -1101,6 +1104,7 @@ class Driver {
     // No timeout needed for Page.navigate. See https://github.com/GoogleChrome/lighthouse/pull/6413.
     const waitforPageNavigateCmd = this._innerSendCommand('Page.navigate', undefined, {url});
 
+    let timedOut = false;
     if (waitForNavigated) {
       await this._waitForFrameNavigated();
     } else if (waitForLoad) {
@@ -1120,14 +1124,18 @@ class Driver {
       /* eslint-enable max-len */
 
       if (!waitForFCP) maxFCPMs = undefined;
-      await this._waitForFullyLoaded(pauseAfterFcpMs, pauseAfterLoadMs, networkQuietThresholdMs,
-        cpuQuietThresholdMs, maxWaitMs, maxFCPMs);
+      const loadPromise = await this._waitForFullyLoaded(pauseAfterFcpMs, pauseAfterLoadMs,
+        networkQuietThresholdMs, cpuQuietThresholdMs, maxWaitMs, maxFCPMs);
+      timedOut = loadPromise.timedOut;
     }
 
     // Bring `Page.navigate` errors back into the promise chain. See https://github.com/GoogleChrome/lighthouse/pull/6739.
     await waitforPageNavigateCmd;
 
-    return this._endNetworkStatusMonitoring();
+    return {
+      finalUrl: this._endNetworkStatusMonitoring(),
+      timedOut,
+    };
   }
 
   /**
