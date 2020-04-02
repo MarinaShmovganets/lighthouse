@@ -1419,7 +1419,7 @@
     "message": "The page may not be loading as expected because your test URL ({requested}) was redirected to {final}. Try testing the second URL directly."
   },
   "lighthouse-core/gather/gather-runner.js | warningTimeout": {
-    "message": "The page loaded too slowly to finish within the maximum time limit. Results may be incomplete."
+    "message": "The page loaded too slowly to finish within the time limit. Results may be incomplete."
   },
   "lighthouse-core/lib/i18n/i18n.js | columnCacheTTL": {
     "message": "Cache TTL"
