@@ -27,7 +27,7 @@ const UIStrings = {
   /**
    * @description Warning that Lighthouse timed out while waiting for the page to load.
    */
-  warningTimeout: 'The page loaded too slowly to finish within the maximum time limit. ' +
+  warningTimeout: 'The page loaded too slowly to finish within the time limit. ' +
   'Results may be incomplete.',
 };
 

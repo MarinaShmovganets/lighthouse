@@ -1129,9 +1129,9 @@ class Driver {
       /* eslint-enable max-len */
 
       if (!waitForFcp) maxFCPMs = undefined;
-      const loadPromise = await this._waitForFullyLoaded(pauseAfterFcpMs, pauseAfterLoadMs,
+      const loadResult = await this._waitForFullyLoaded(pauseAfterFcpMs, pauseAfterLoadMs,
         networkQuietThresholdMs, cpuQuietThresholdMs, maxWaitMs, maxFCPMs);
-      timedOut = loadPromise.timedOut;
+      timedOut = loadResult.timedOut;
     }
 
     // Bring `Page.navigate` errors back into the promise chain. See https://github.com/GoogleChrome/lighthouse/pull/6739.
