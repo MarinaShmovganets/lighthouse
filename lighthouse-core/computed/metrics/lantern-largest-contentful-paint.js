@@ -17,7 +17,6 @@ class LanternLargestContentfulPaint extends LanternMetric {
    * @return {LH.Gatherer.Simulation.MetricCoefficients}
    */
   static get COEFFICIENTS() {
-    // TODO: Calibrate
     return {
       intercept: 0,
       optimistic: 0.5,
@@ -38,7 +37,6 @@ class LanternLargestContentfulPaint extends LanternMetric {
   }
 
   /**
-   * TODO: Validate.
    * @param {Node} dependencyGraph
    * @param {LH.Artifacts.TraceOfTab} traceOfTab
    * @return {Node}
@@ -57,7 +55,6 @@ class LanternLargestContentfulPaint extends LanternMetric {
   }
 
   /**
-   * TODO: Validate.
    * @param {Node} dependencyGraph
    * @param {LH.Artifacts.TraceOfTab} traceOfTab
    * @return {Node}
