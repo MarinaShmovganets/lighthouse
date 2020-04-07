@@ -76,6 +76,25 @@ declare global {
       T[P];
   };
 
+  /** Recursively makes all properties of T read-only. */
+  export type Immutable<T> =
+    T extends Function ? T :
+    T extends ReadonlyArray<infer R> ? ImmutableArray<R> :
+    T extends Map<infer K, infer V> ? ImmutableMap<K, V> :
+    T extends Set<infer M> ? ImmutableSet<M> :
+    T extends object ? ImmutableObject<T> :
+    T
+
+  // Intermediate immutable interfaces. Prefer e.g. Immutable<Set<T>> over direct use.
+  // TODO: switch to recursive type references when using tsc ≥ 3.7
+  // see https://github.com/microsoft/TypeScript/issues/13923#issuecomment-557509399
+  interface ImmutableArray<T> extends ReadonlyArray<Immutable<T>> {}
+  interface ImmutableSet<T> extends ReadonlySet<Immutable<T>> {}
+  interface ImmutableMap<K, V> extends ReadonlyMap<Immutable<K>, Immutable<V>> {}
+  type ImmutableObject<T> = {
+    readonly [P in keyof T]: Immutable<T[P]>;
+  }
+
   /**
    * Exclude void from T
    */
