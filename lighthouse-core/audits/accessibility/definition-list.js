@@ -16,7 +16,7 @@ const i18n = require('../../lib/i18n/i18n.js');
 const UIStrings = {
   /** Title of an accesibility audit that evaluates if all the definition list elements have valid markup for screen readers. This title is descriptive of the successful state and is shown to users when no user action is required. */
   title: '`<dl>`\'s contain only properly-ordered `<dt>` and `<dd>` groups, `<script>` ' +
-      ', `<template>` or `<div>` elements.',
+      '`<template>` or `<div>` elements.',
   /** Title of an accesibility audit that evaluates if all the definition list elements have valid markup for screen readers. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
   failureTitle: '`<dl>`\'s do not contain only properly-ordered `<dt>` and `<dd>` ' +
       'groups, `<script>`, `<template>` or `<div>` elements.',
