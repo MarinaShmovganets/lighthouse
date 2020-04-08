@@ -46,6 +46,8 @@ class LanternMaxPotentialFID extends LanternMetricArtifact {
    * @return {LH.Gatherer.Simulation.Result}
    */
   static getEstimateFromSimulation(simulation, extras) {
+    if (!extras.fcpResult) throw new Error('missing fcpResult');
+
     // Intentionally use the opposite FCP estimate, a more pessimistic FCP means that more tasks
     // are excluded from the FID computation, so a higher FCP means lower FID for same work.
     const fcpTimeInMs = extras.optimistic

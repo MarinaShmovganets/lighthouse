@@ -68,6 +68,8 @@ class LanternInteractive extends LanternMetric {
    * @return {LH.Gatherer.Simulation.Result}
    */
   static getEstimateFromSimulation(simulationResult, extras) {
+    if (!extras.fmpResult) throw new Error('missing fmpResult');
+
     const lastTaskAt = LanternInteractive.getLastLongTaskEndTime(simulationResult.nodeTimings);
     const minimumTime = extras.optimistic
       ? extras.fmpResult.optimisticEstimate.timeInMs

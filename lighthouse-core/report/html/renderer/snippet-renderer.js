@@ -130,7 +130,6 @@ class SnippetRenderer {
     // access the full element detail. Just being able to see the outer HTML isn't very useful.
     if (details.node && dom.isDevTools()) {
       const nodeContainer = dom.find('.lh-snippet__node', header);
-      // @ts-ignore: renderNode is protected.
       nodeContainer.appendChild(detailsRenderer.renderNode(details.node));
     }
 

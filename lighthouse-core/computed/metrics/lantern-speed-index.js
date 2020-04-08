@@ -78,6 +78,9 @@ class LanternSpeedIndex extends LanternMetric {
    * @return {LH.Gatherer.Simulation.Result}
    */
   static getEstimateFromSimulation(simulationResult, extras) {
+    if (!extras.fcpResult) throw new Error('missing fcpResult');
+    if (!extras.speedline) throw new Error('missing speedline');
+
     const fcpTimeInMs = extras.fcpResult.pessimisticEstimate.timeInMs;
     const estimate = extras.optimistic
       ? extras.speedline.speedIndex

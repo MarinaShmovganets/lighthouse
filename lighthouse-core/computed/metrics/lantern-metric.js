@@ -18,10 +18,10 @@ const LoadSimulator = require('../load-simulator.js');
 /**
  * @typedef Extras
  * @property {boolean} optimistic
- * @property {LH.Artifacts.LanternMetric} fcpResult
- * @property {LH.Artifacts.LanternMetric} fmpResult
- * @property {LH.Artifacts.LanternMetric} interactiveResult
- * @property {{speedIndex: number}} speedline
+ * @property {LH.Artifacts.LanternMetric=} fcpResult
+ * @property {LH.Artifacts.LanternMetric=} fmpResult
+ * @property {LH.Artifacts.LanternMetric=} interactiveResult
+ * @property {{speedIndex: number}=} speedline
  */
 
 class LanternMetricArtifact {
@@ -94,7 +94,7 @@ class LanternMetricArtifact {
   /**
    * @param {LH.Artifacts.MetricComputationDataInput} data
    * @param {LH.Audit.Context} context
-   * @param {any=} extras
+   * @param {Omit<Extras, 'optimistic'>=} extras
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   static async computeMetricWithGraphs(data, context, extras) {
@@ -120,13 +120,12 @@ class LanternMetricArtifact {
 
     const optimisticEstimate = this.getEstimateFromSimulation(
       optimisticSimulation.timeInMs < optimisticFlexSimulation.timeInMs ?
-        optimisticSimulation : optimisticFlexSimulation,
-      Object.assign({}, extras, {optimistic: true})
+        optimisticSimulation : optimisticFlexSimulation, {...extras, optimistic: true}
     );
 
     const pessimisticEstimate = this.getEstimateFromSimulation(
       pessimisticSimulation,
-      Object.assign({}, extras, {optimistic: false})
+      {...extras, optimistic: false}
     );
 
     const coefficients = this.getScaledCoefficients(simulator.rtt);
