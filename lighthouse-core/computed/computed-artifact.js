@@ -25,9 +25,8 @@ function makeComputedArtifact(computableArtifact) {
    * @return {ReturnType<C['compute_']>}
    */
   const request = (artifacts, context) => {
-    /** @type {Map<string, ArbitraryEqualityMap>} */
-    // @ts-ignore - break immutability solely for this caching-controller function.
-    const computedCache = context.computedCache;
+    // NOTE: break immutability solely for this caching-controller function.
+    const computedCache = /** @type {Map<string, ArbitraryEqualityMap>} */ (context.computedCache);
     const computedName = computableArtifact.name;
 
     const cache = computedCache.get(computedName) || new ArbitraryEqualityMap();
