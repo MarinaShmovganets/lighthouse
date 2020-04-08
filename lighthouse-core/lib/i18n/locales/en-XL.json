@@ -153,7 +153,7 @@
     "message": "`<dl>`'ŝ d́ô ńôt́ ĉón̂t́âín̂ ón̂ĺŷ ṕr̂óp̂ér̂ĺŷ-ór̂d́êŕêd́ `<dt>` âńd̂ `<dd>` ǵr̂óûṕŝ, `<script>`, `<template>` ór̂ `<div>` él̂ém̂én̂t́ŝ."
   },
   "lighthouse-core/audits/accessibility/definition-list.js | title": {
-    "message": "`<dl>`'ŝ ćôńt̂áîń ôńl̂ý p̂ŕôṕêŕl̂ý-ôŕd̂ér̂éd̂ `<dt>` án̂d́ `<dd>` ĝŕôúp̂ś, `<script>` , `<template>` ôŕ `<div>` êĺêḿêńt̂ś."
+    "message": "`<dl>`'ŝ ćôńt̂áîń ôńl̂ý p̂ŕôṕêŕl̂ý-ôŕd̂ér̂éd̂ `<dt>` án̂d́ `<dd>` ĝŕôúp̂ś, `<script>`, `<template>` ôŕ `<div>` êĺêḿêńt̂ś."
   },
   "lighthouse-core/audits/accessibility/dlitem.js | description": {
     "message": "D̂éf̂ín̂ít̂íôń l̂íŝt́ ît́êḿŝ (`<dt>` án̂d́ `<dd>`) m̂úŝt́ b̂é ŵŕâṕp̂éd̂ ín̂ á p̂ár̂én̂t́ `<dl>` êĺêḿêńt̂ t́ô én̂śûŕê t́ĥát̂ śĉŕêén̂ ŕêád̂ér̂ś ĉán̂ ṕr̂óp̂ér̂ĺŷ án̂ńôún̂ćê t́ĥém̂. [Ĺêár̂ń m̂ór̂é](https://web.dev/dlitem/)."
