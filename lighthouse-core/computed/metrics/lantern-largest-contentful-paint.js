@@ -76,10 +76,9 @@ class LanternLargestContentfulPaint extends LanternMetric {
 
   /**
    * @param {LH.Gatherer.Simulation.Result} simulationResult
-   * @param {any=} extras
    * @return {LH.Gatherer.Simulation.Result}
    */
-  static getEstimateFromSimulation(simulationResult, extras) { // eslint-disable-line no-unused-vars
+  static getEstimateFromSimulation(simulationResult) {
     const nodeTimesNotOffscreenImages = Array.from(simulationResult.nodeTimings.entries())
       .filter(entry => !LanternLargestContentfulPaint.isLowPriorityImageNode(entry[0]));
 
