@@ -131,10 +131,10 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@build-tracker/api-client@^1.0.0-beta.14":
-  version "1.0.0-beta.14"
-  resolved "https://registry.yarnpkg.com/@build-tracker/api-client/-/api-client-1.0.0-beta.14.tgz#30032bbeba4757d10806437b439215fabae5e3b4"
-  integrity sha512-maVXOHw3hq+DoZpp8NAc1ougBkNasSW+jfh+e51G6/N5oDqk8n2DmEuQFvqPEvx8DEExKprr0etsRgjyniWDGA==
+"@build-tracker/api-client@^1.0.0-beta.15":
+  version "1.0.0-beta.15"
+  resolved "https://registry.yarnpkg.com/@build-tracker/api-client/-/api-client-1.0.0-beta.15.tgz#1de2e3f926e963fc5488e14f51555559ed6000e4"
+  integrity sha512-1y6BM3Nu6zhLZK8JiVScSfL0GdQLknj6BRGcgduh1FO0bBNBdd8KaTBeC4qzWAEPXQ3KLib+9EWIXF2S+qbX/Q==
   dependencies:
     "@types/cosmiconfig" "^5.0.3"
     "@types/glob" "^7.1.1"
@@ -147,12 +147,12 @@
     path-to-regexp "3.0.0"
     yargs "^15.0.0"
 
-"@build-tracker/cli@^1.0.0-beta.14":
-  version "1.0.0-beta.14"
-  resolved "https://registry.yarnpkg.com/@build-tracker/cli/-/cli-1.0.0-beta.14.tgz#4ab9be8f86bdc53295b2ef02f0983b80f14d700e"
-  integrity sha512-DCEHth2qZSzQAHE2gO1I0YerXt2ApU921Hie81Qjvm5ksEfWIUXZeK74SEs/RZbRUK02L9FYHje3FVEFFWJFBg==
+"@build-tracker/cli@^1.0.0-beta.15":
+  version "1.0.0-beta.15"
+  resolved "https://registry.yarnpkg.com/@build-tracker/cli/-/cli-1.0.0-beta.15.tgz#7a071ee36c7c80932ee494a66a1a43721b6a1e72"
+  integrity sha512-N+BQ6ZwOz2FtFkNqc+Aquz2A6K+2o/7Lqif5XBW5y8ScnI3qhXf9J07q+UndSMQTiwl9HC/+DrdAKTiQSw4G1A==
   dependencies:
-    "@build-tracker/api-client" "^1.0.0-beta.14"
+    "@build-tracker/api-client" "^1.0.0-beta.15"
     "@types/node" "^11.10.4"
     "@types/yargs" "^15.0.0"
     yargs "^15.0.0"
