@@ -25,15 +25,18 @@ class LanternLargestContentfulPaint extends LanternMetric {
   }
 
   /**
+   * Low priority image nodes are usually offscreen and very unlikely to be the
+   * resource that is required for LCP. Our LCP graphs include everything except for these images.
+   *
    * @param {Node} node
    * @return {boolean}
    */
-  static isLowPriorityImageNode(node) {
-    if (node.type !== 'network') return false;
+  static isNotLowPriorityImageNode(node) {
+    if (node.type !== 'network') return true;
 
     const isImage = node.record.resourceType === 'Image';
     const isLowPriority = node.record.priority === 'Low' || node.record.priority === 'VeryLow';
-    return isImage && isLowPriority;
+    return !isImage || !isLowPriority;
   }
 
   /**
@@ -50,7 +53,7 @@ class LanternLargestContentfulPaint extends LanternMetric {
     return LanternFirstContentfulPaint.getFirstPaintBasedGraph(
       dependencyGraph,
       lcp,
-      node => !LanternLargestContentfulPaint.isLowPriorityImageNode(node)
+      LanternLargestContentfulPaint.isNotLowPriorityImageNode,
     );
   }
 
@@ -80,10 +83,11 @@ class LanternLargestContentfulPaint extends LanternMetric {
    */
   static getEstimateFromSimulation(simulationResult) {
     const nodeTimesNotOffscreenImages = Array.from(simulationResult.nodeTimings.entries())
-      .filter(entry => !LanternLargestContentfulPaint.isLowPriorityImageNode(entry[0]));
+      .filter(entry => LanternLargestContentfulPaint.isNotLowPriorityImageNode(entry[0]))
+      .map(entry => entry[1].endTime);
 
     return {
-      timeInMs: Math.max(...nodeTimesNotOffscreenImages.map(entry => entry[1].endTime)),
+      timeInMs: Math.max(...nodeTimesNotOffscreenImages),
       nodeTimings: simulationResult.nodeTimings,
     };
   }
