@@ -53,7 +53,7 @@ class LanternLargestContentfulPaint extends LanternMetric {
     return LanternFirstContentfulPaint.getFirstPaintBasedGraph(
       dependencyGraph,
       lcp,
-      LanternLargestContentfulPaint.isNotLowPriorityImageNode,
+      LanternLargestContentfulPaint.isNotLowPriorityImageNode
     );
   }
 
