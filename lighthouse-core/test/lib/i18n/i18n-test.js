@@ -298,7 +298,7 @@ describe('i18n', () => {
       expect(helloInfinityStr).toBeDisplayString('Hello ∞ World');
 
       const helloNaNStr = str_(UIStrings.helloBytesWorld, {in: NaN});
-      // TODO: workaround can be removed after Node 13 is retired.
+      // TODO(COMPAT): workaround can be removed after Node 13 is retired.
       // expect(helloNaNStr).toBeDisplayString('Hello NaN World');
 
       // Node 13/V8 7.9 and 8.0 have a bug where `({a: NaN}).a.toLocaleString() === "-NaN"`. It
