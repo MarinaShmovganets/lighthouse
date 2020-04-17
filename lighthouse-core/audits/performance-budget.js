@@ -133,11 +133,11 @@ class ResourceBudget extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headers = [
-      {key: 'label', itemType: 'text', text: str_(i18n.UIStrings.columnResourceType)},
-      {key: 'requestCount', itemType: 'numeric', text: str_(i18n.UIStrings.columnRequests)},
-      {key: 'size', itemType: 'bytes', text: str_(i18n.UIStrings.columnTransferSize)},
-      {key: 'countOverBudget', itemType: 'text', text: ''},
-      {key: 'sizeOverBudget', itemType: 'bytes', text: str_(i18n.UIStrings.columnOverBudget)},
+      {key: 'label', valueType: 'text', label: str_(i18n.UIStrings.columnResourceType)},
+      {key: 'requestCount', valueType: 'numeric', label: str_(i18n.UIStrings.columnRequests)},
+      {key: 'size', valueType: 'bytes', label: str_(i18n.UIStrings.columnTransferSize)},
+      {key: 'countOverBudget', valueType: 'text', label: ''},
+      {key: 'sizeOverBudget', valueType: 'bytes', label: str_(i18n.UIStrings.columnOverBudget)},
     ];
 
     return {

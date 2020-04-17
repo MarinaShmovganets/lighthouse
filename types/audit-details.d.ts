@@ -49,7 +49,7 @@ declare global {
         type: 'opportunity';
         overallSavingsMs: number;
         overallSavingsBytes?: number;
-        headings: OpportunityColumnHeading[];
+        headings: TableColumnHeading[];
         items: OpportunityItem[];
         debugData?: DebugData;
       }
@@ -85,38 +85,7 @@ declare global {
       type ItemValueTypes = 'bytes' | 'code' | 'link' | 'ms' | 'multi' | 'node' | 'source-location' | 'numeric' | 'text' | 'thumbnail' | 'timespanMs' | 'url';
       type Value = string | number | boolean | DebugData | NodeValue | SourceLocationValue | LinkValue | UrlValue | CodeValue;
 
-      // TODO(bckenny): unify Table/Opportunity headings and items on next breaking change.
-
       export interface TableColumnHeading {
-        /**
-         * The name of the property within items being described.
-         * If null, subRows must be defined, and the first sub-row will be empty.
-         */
-        key: string|null;
-        /** Readable text label of the field. */
-        text: string;
-        /**
-         * The data format of the column of values being described. Usually
-         * those values will be primitives rendered as this type, but the values
-         * could also be objects with their own type to override this field.
-         */
-        itemType: ItemValueTypes;
-        /**
-         * Optional - defines an inner table of values that correspond to this column.
-         * Key is required - if other properties are not provided, the value for the heading is used.
-         */
-        subRows?: {key: string, itemType?: ItemValueTypes, displayUnit?: string, granularity?: number};
-
-        displayUnit?: string;
-        granularity?: number;
-      }
-
-      export type TableItem = {
-        debugData?: DebugData;
-        [p: string]: undefined | Value | Value[];
-      }
-
-      export interface OpportunityColumnHeading {
         /**
          * The name of the property within items being described.
          * If null, subRows must be defined, and the first sub-row will be empty.
@@ -136,9 +105,13 @@ declare global {
          */
         subRows?: {key: string, valueType?: ItemValueTypes, displayUnit?: string, granularity?: number};
 
-        // NOTE: not used by opportunity details, but used in the renderer until table/opportunity unification.
         displayUnit?: string;
         granularity?: number;
+      }
+
+      export type TableItem = {
+        debugData?: DebugData;
+        [p: string]: undefined | Value | Value[];
       }
 
       export interface OpportunityItem {

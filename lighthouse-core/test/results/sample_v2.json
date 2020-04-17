@@ -23,8 +23,8 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "url",
-            "text": "Insecure URL"
+            "valueType": "url",
+            "label": "Insecure URL"
           }
         ],
         "items": [
@@ -255,13 +255,13 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "description",
-            "itemType": "code",
-            "text": "Description"
+            "valueType": "code",
+            "label": "Description"
           }
         ],
         "items": [
@@ -601,23 +601,23 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "thumbnail",
-            "text": ""
+            "valueType": "thumbnail",
+            "label": ""
           },
           {
             "key": "url",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "displayedAspectRatio",
-            "itemType": "text",
-            "text": "Aspect Ratio (Displayed)"
+            "valueType": "text",
+            "label": "Aspect Ratio (Displayed)"
           },
           {
             "key": "actualAspectRatio",
-            "itemType": "text",
-            "text": "Aspect Ratio (Actual)"
+            "valueType": "text",
+            "label": "Aspect Ratio (Actual)"
           }
         ],
         "items": [
@@ -641,28 +641,28 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "thumbnail",
-            "text": ""
+            "valueType": "thumbnail",
+            "label": ""
           },
           {
             "key": "elidedUrl",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "displayedSize",
-            "itemType": "text",
-            "text": "Displayed size"
+            "valueType": "text",
+            "label": "Displayed size"
           },
           {
             "key": "actualSize",
-            "itemType": "text",
-            "text": "Actual size"
+            "valueType": "text",
+            "label": "Actual size"
           },
           {
             "key": "expectedSize",
-            "itemType": "text",
-            "text": "Expected size"
+            "valueType": "text",
+            "label": "Expected size"
           }
         ],
         "items": [
@@ -690,13 +690,13 @@
         "headings": [
           {
             "key": "value",
-            "itemType": "text",
-            "text": "Deprecation / Warning"
+            "valueType": "text",
+            "label": "Deprecation / Warning"
           },
           {
             "key": "source",
-            "itemType": "source-location",
-            "text": "URL"
+            "valueType": "source-location",
+            "label": "URL"
           }
         ],
         "items": [
@@ -740,14 +740,14 @@
         "headings": [
           {
             "key": "groupLabel",
-            "itemType": "text",
-            "text": "Category"
+            "valueType": "text",
+            "label": "Category"
           },
           {
             "key": "duration",
-            "itemType": "ms",
+            "valueType": "ms",
             "granularity": 1,
-            "text": "Time Spent"
+            "label": "Time Spent"
           }
         ],
         "items": [
@@ -803,26 +803,26 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "total",
             "granularity": 1,
-            "itemType": "ms",
-            "text": "Total CPU Time"
+            "valueType": "ms",
+            "label": "Total CPU Time"
           },
           {
             "key": "scripting",
             "granularity": 1,
-            "itemType": "ms",
-            "text": "Script Evaluation"
+            "valueType": "ms",
+            "label": "Script Evaluation"
           },
           {
             "key": "scriptParseCompile",
             "granularity": 1,
-            "itemType": "ms",
-            "text": "Script Parse"
+            "valueType": "ms",
+            "label": "Script Parse"
           }
         ],
         "items": [
@@ -944,49 +944,49 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "startTime",
-            "itemType": "ms",
+            "valueType": "ms",
             "granularity": 1,
-            "text": "Start Time"
+            "label": "Start Time"
           },
           {
             "key": "endTime",
-            "itemType": "ms",
+            "valueType": "ms",
             "granularity": 1,
-            "text": "End Time"
+            "label": "End Time"
           },
           {
             "key": "transferSize",
-            "itemType": "bytes",
+            "valueType": "bytes",
             "displayUnit": "kb",
             "granularity": 1,
-            "text": "Transfer Size"
+            "label": "Transfer Size"
           },
           {
             "key": "resourceSize",
-            "itemType": "bytes",
+            "valueType": "bytes",
             "displayUnit": "kb",
             "granularity": 1,
-            "text": "Resource Size"
+            "label": "Resource Size"
           },
           {
             "key": "statusCode",
-            "itemType": "text",
-            "text": "Status Code"
+            "valueType": "text",
+            "label": "Status Code"
           },
           {
             "key": "mimeType",
-            "itemType": "text",
-            "text": "MIME Type"
+            "valueType": "text",
+            "label": "MIME Type"
           },
           {
             "key": "resourceType",
-            "itemType": "text",
-            "text": "Resource Type"
+            "valueType": "text",
+            "label": "Resource Type"
           }
         ],
         "items": [
@@ -1205,14 +1205,14 @@
         "headings": [
           {
             "key": "origin",
-            "itemType": "text",
-            "text": "URL"
+            "valueType": "text",
+            "label": "URL"
           },
           {
             "key": "rtt",
-            "itemType": "ms",
+            "valueType": "ms",
             "granularity": 1,
-            "text": "Time Spent"
+            "label": "Time Spent"
           }
         ],
         "items": [
@@ -1241,14 +1241,14 @@
         "headings": [
           {
             "key": "origin",
-            "itemType": "text",
-            "text": "URL"
+            "valueType": "text",
+            "label": "URL"
           },
           {
             "key": "serverResponseTime",
-            "itemType": "ms",
+            "valueType": "ms",
             "granularity": 1,
-            "text": "Time Spent"
+            "label": "Time Spent"
           }
         ],
         "items": [
@@ -1274,15 +1274,15 @@
         "headings": [
           {
             "key": "startTime",
-            "itemType": "ms",
+            "valueType": "ms",
             "granularity": 1,
-            "text": "Start Time"
+            "label": "Start Time"
           },
           {
             "key": "duration",
-            "itemType": "ms",
+            "valueType": "ms",
             "granularity": 1,
-            "text": "End Time"
+            "label": "End Time"
           }
         ],
         "items": [
@@ -1430,28 +1430,28 @@
         "headings": [
           {
             "key": "label",
-            "itemType": "text",
-            "text": "Resource Type"
+            "valueType": "text",
+            "label": "Resource Type"
           },
           {
             "key": "requestCount",
-            "itemType": "numeric",
-            "text": "Requests"
+            "valueType": "numeric",
+            "label": "Requests"
           },
           {
             "key": "size",
-            "itemType": "bytes",
-            "text": "Transfer Size"
+            "valueType": "bytes",
+            "label": "Transfer Size"
           },
           {
             "key": "countOverBudget",
-            "itemType": "text",
-            "text": ""
+            "valueType": "text",
+            "label": ""
           },
           {
             "key": "sizeOverBudget",
-            "itemType": "bytes",
-            "text": "Over Budget"
+            "valueType": "bytes",
+            "label": "Over Budget"
           }
         ],
         "items": [
@@ -1532,18 +1532,18 @@
         "headings": [
           {
             "key": "label",
-            "itemType": "text",
-            "text": "Metric"
+            "valueType": "text",
+            "label": "Metric"
           },
           {
             "key": "measurement",
-            "itemType": "ms",
-            "text": "Measurement"
+            "valueType": "ms",
+            "label": "Measurement"
           },
           {
             "key": "overBudget",
-            "itemType": "ms",
-            "text": "Over Budget"
+            "valueType": "ms",
+            "label": "Over Budget"
           }
         ],
         "items": [
@@ -1592,18 +1592,18 @@
         "headings": [
           {
             "key": "label",
-            "itemType": "text",
-            "text": "Resource Type"
+            "valueType": "text",
+            "label": "Resource Type"
           },
           {
             "key": "requestCount",
-            "itemType": "numeric",
-            "text": "Requests"
+            "valueType": "numeric",
+            "label": "Requests"
           },
           {
             "key": "size",
-            "itemType": "bytes",
-            "text": "Transfer Size"
+            "valueType": "bytes",
+            "label": "Transfer Size"
           }
         ],
         "items": [
@@ -1676,20 +1676,20 @@
         "headings": [
           {
             "key": "entity",
-            "itemType": "link",
-            "text": "Third-Party"
+            "valueType": "link",
+            "label": "Third-Party"
           },
           {
             "key": "transferSize",
             "granularity": 1,
-            "itemType": "bytes",
-            "text": "Transfer Size"
+            "valueType": "bytes",
+            "label": "Transfer Size"
           },
           {
             "key": "blockingTime",
             "granularity": 1,
-            "itemType": "ms",
-            "text": "Main-Thread Blocking Time"
+            "valueType": "ms",
+            "label": "Main-Thread Blocking Time"
           }
         ],
         "items": [
@@ -1870,8 +1870,8 @@
         "headings": [
           {
             "key": "node",
-            "itemType": "node",
-            "text": "Failing Elements"
+            "valueType": "node",
+            "label": "Failing Elements"
           }
         ],
         "items": [
@@ -1994,8 +1994,8 @@
         "headings": [
           {
             "key": "node",
-            "itemType": "node",
-            "text": "Failing Elements"
+            "valueType": "node",
+            "label": "Failing Elements"
           }
         ],
         "items": [
@@ -2039,8 +2039,8 @@
         "headings": [
           {
             "key": "node",
-            "itemType": "node",
-            "text": "Failing Elements"
+            "valueType": "node",
+            "label": "Failing Elements"
           }
         ],
         "items": [
@@ -2116,8 +2116,8 @@
         "headings": [
           {
             "key": "node",
-            "itemType": "node",
-            "text": "Failing Elements"
+            "valueType": "node",
+            "label": "Failing Elements"
           }
         ],
         "items": [
@@ -2184,8 +2184,8 @@
         "headings": [
           {
             "key": "node",
-            "itemType": "node",
-            "text": "Failing Elements"
+            "valueType": "node",
+            "label": "Failing Elements"
           }
         ],
         "items": [
@@ -2268,8 +2268,8 @@
         "headings": [
           {
             "key": "node",
-            "itemType": "node",
-            "text": "Failing Elements"
+            "valueType": "node",
+            "label": "Failing Elements"
           }
         ],
         "items": [
@@ -2433,19 +2433,19 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "cacheLifetimeMs",
-            "itemType": "ms",
-            "text": "Cache TTL",
+            "valueType": "ms",
+            "label": "Cache TTL",
             "displayUnit": "duration"
           },
           {
             "key": "totalBytes",
-            "itemType": "bytes",
-            "text": "Transfer Size",
+            "valueType": "bytes",
+            "label": "Transfer Size",
             "displayUnit": "kb",
             "granularity": 1
           }
@@ -2541,13 +2541,13 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "totalBytes",
-            "itemType": "bytes",
-            "text": "Transfer Size"
+            "valueType": "bytes",
+            "label": "Transfer Size"
           }
         ],
         "items": [
@@ -2942,18 +2942,18 @@
         "headings": [
           {
             "key": "statistic",
-            "itemType": "text",
-            "text": "Statistic"
+            "valueType": "text",
+            "label": "Statistic"
           },
           {
             "key": "element",
-            "itemType": "code",
-            "text": "Element"
+            "valueType": "code",
+            "label": "Element"
           },
           {
             "key": "value",
-            "itemType": "numeric",
-            "text": "Value"
+            "valueType": "numeric",
+            "label": "Value"
           }
         ],
         "items": [
@@ -2995,8 +2995,8 @@
         "headings": [
           {
             "key": "node",
-            "itemType": "node",
-            "text": "Failing Anchors"
+            "valueType": "node",
+            "label": "Failing Anchors"
           }
         ],
         "items": [
@@ -3053,13 +3053,13 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "label",
-            "itemType": "text",
-            "text": "Location"
+            "valueType": "text",
+            "label": "Location"
           }
         ],
         "items": [
@@ -3085,13 +3085,13 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "label",
-            "itemType": "text",
-            "text": "Location"
+            "valueType": "text",
+            "label": "Location"
           }
         ],
         "items": [
@@ -3122,18 +3122,18 @@
         "headings": [
           {
             "key": "detectedLib",
-            "itemType": "link",
-            "text": "Library Version"
+            "valueType": "link",
+            "label": "Library Version"
           },
           {
             "key": "vulnCount",
-            "itemType": "text",
-            "text": "Vulnerability Count"
+            "valueType": "text",
+            "label": "Vulnerability Count"
           },
           {
             "key": "highestSeverity",
-            "itemType": "text",
-            "text": "Highest Severity"
+            "valueType": "text",
+            "label": "Highest Severity"
           }
         ],
         "items": [
@@ -3161,13 +3161,13 @@
         "headings": [
           {
             "key": "name",
-            "itemType": "text",
-            "text": "Name"
+            "valueType": "text",
+            "label": "Name"
           },
           {
             "key": "version",
-            "itemType": "text",
-            "text": "Version"
+            "valueType": "text",
+            "label": "Version"
           }
         ],
         "items": [
@@ -3209,13 +3209,13 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "label",
-            "itemType": "text",
-            "text": "Location"
+            "valueType": "text",
+            "label": "Location"
           }
         ],
         "items": [
@@ -3237,8 +3237,8 @@
         "headings": [
           {
             "key": "node",
-            "itemType": "node",
-            "text": "Failing Elements"
+            "valueType": "node",
+            "label": "Failing Elements"
           }
         ],
         "items": [
@@ -3269,13 +3269,13 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "protocol",
-            "itemType": "text",
-            "text": "Protocol"
+            "valueType": "text",
+            "label": "Protocol"
           }
         ],
         "items": [
@@ -3353,13 +3353,13 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "label",
-            "itemType": "text",
-            "text": "Location"
+            "valueType": "text",
+            "label": "Location"
           }
         ],
         "items": [
@@ -3404,23 +3404,23 @@
         "headings": [
           {
             "key": "source",
-            "itemType": "source-location",
-            "text": "Source"
+            "valueType": "source-location",
+            "label": "Source"
           },
           {
             "key": "selector",
-            "itemType": "code",
-            "text": "Selector"
+            "valueType": "code",
+            "label": "Selector"
           },
           {
             "key": "coverage",
-            "itemType": "text",
-            "text": "% of Page Text"
+            "valueType": "text",
+            "label": "% of Page Text"
           },
           {
             "key": "fontSize",
-            "itemType": "text",
-            "text": "Font Size"
+            "valueType": "text",
+            "label": "Font Size"
           }
         ],
         "items": [
@@ -3480,18 +3480,18 @@
         "headings": [
           {
             "key": "tapTarget",
-            "itemType": "node",
-            "text": "Tap Target"
+            "valueType": "node",
+            "label": "Tap Target"
           },
           {
             "key": "size",
-            "itemType": "text",
-            "text": "Size"
+            "valueType": "text",
+            "label": "Size"
           },
           {
             "key": "overlappingTarget",
-            "itemType": "node",
-            "text": "Overlapping Target"
+            "valueType": "node",
+            "label": "Overlapping Target"
           }
         ],
         "items": [
@@ -5641,7 +5641,7 @@
         }
       ],
       "lighthouse-core/audits/is-on-https.js | columnInsecureURL": [
-        "audits[is-on-https].details.headings[0].text"
+        "audits[is-on-https].details.headings[0].label"
       ],
       "lighthouse-core/audits/redirects-http.js | failureTitle": [
         "audits[redirects-http].title"
@@ -5819,27 +5819,27 @@
         "audits[errors-in-console].description"
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnURL": [
-        "audits[errors-in-console].details.headings[0].text",
-        "audits[image-aspect-ratio].details.headings[1].text",
-        "audits[image-size-responsive].details.headings[1].text",
-        "audits.deprecations.details.headings[1].text",
-        "audits[bootup-time].details.headings[0].text",
-        "audits[network-rtt].details.headings[0].text",
-        "audits[network-server-latency].details.headings[0].text",
-        "audits[uses-long-cache-ttl].details.headings[0].text",
-        "audits[total-byte-weight].details.headings[0].text",
+        "audits[errors-in-console].details.headings[0].label",
+        "audits[image-aspect-ratio].details.headings[1].label",
+        "audits[image-size-responsive].details.headings[1].label",
+        "audits.deprecations.details.headings[1].label",
+        "audits[bootup-time].details.headings[0].label",
+        "audits[network-rtt].details.headings[0].label",
+        "audits[network-server-latency].details.headings[0].label",
+        "audits[uses-long-cache-ttl].details.headings[0].label",
+        "audits[total-byte-weight].details.headings[0].label",
         "audits[render-blocking-resources].details.headings[0].label",
         "audits[unminified-javascript].details.headings[0].label",
         "audits[uses-webp-images].details.headings[1].label",
         "audits[uses-text-compression].details.headings[0].label",
-        "audits[geolocation-on-start].details.headings[0].text",
-        "audits[no-document-write].details.headings[0].text",
-        "audits[notification-on-start].details.headings[0].text",
-        "audits[uses-http2].details.headings[0].text",
-        "audits[uses-passive-event-listeners].details.headings[0].text"
+        "audits[geolocation-on-start].details.headings[0].label",
+        "audits[no-document-write].details.headings[0].label",
+        "audits[notification-on-start].details.headings[0].label",
+        "audits[uses-http2].details.headings[0].label",
+        "audits[uses-passive-event-listeners].details.headings[0].label"
       ],
       "lighthouse-core/audits/errors-in-console.js | columnDesc": [
-        "audits[errors-in-console].details.headings[1].text"
+        "audits[errors-in-console].details.headings[1].label"
       ],
       "lighthouse-core/audits/time-to-first-byte.js | title": [
         "audits[time-to-first-byte].title"
@@ -5938,10 +5938,10 @@
         "audits[image-aspect-ratio].description"
       ],
       "lighthouse-core/audits/image-aspect-ratio.js | columnDisplayed": [
-        "audits[image-aspect-ratio].details.headings[2].text"
+        "audits[image-aspect-ratio].details.headings[2].label"
       ],
       "lighthouse-core/audits/image-aspect-ratio.js | columnActual": [
-        "audits[image-aspect-ratio].details.headings[3].text"
+        "audits[image-aspect-ratio].details.headings[3].label"
       ],
       "lighthouse-core/audits/image-size-responsive.js | failureTitle": [
         "audits[image-size-responsive].title"
@@ -5950,13 +5950,13 @@
         "audits[image-size-responsive].description"
       ],
       "lighthouse-core/audits/image-size-responsive.js | columnDisplayed": [
-        "audits[image-size-responsive].details.headings[2].text"
+        "audits[image-size-responsive].details.headings[2].label"
       ],
       "lighthouse-core/audits/image-size-responsive.js | columnActual": [
-        "audits[image-size-responsive].details.headings[3].text"
+        "audits[image-size-responsive].details.headings[3].label"
       ],
       "lighthouse-core/audits/image-size-responsive.js | columnExpected": [
-        "audits[image-size-responsive].details.headings[4].text"
+        "audits[image-size-responsive].details.headings[4].label"
       ],
       "lighthouse-core/audits/deprecations.js | failureTitle": [
         "audits.deprecations.title"
@@ -5973,7 +5973,7 @@
         }
       ],
       "lighthouse-core/audits/deprecations.js | columnDeprecate": [
-        "audits.deprecations.details.headings[0].text"
+        "audits.deprecations.details.headings[0].label"
       ],
       "lighthouse-core/audits/mainthread-work-breakdown.js | title": [
         "audits[mainthread-work-breakdown].title"
@@ -5982,12 +5982,12 @@
         "audits[mainthread-work-breakdown].description"
       ],
       "lighthouse-core/audits/mainthread-work-breakdown.js | columnCategory": [
-        "audits[mainthread-work-breakdown].details.headings[0].text"
+        "audits[mainthread-work-breakdown].details.headings[0].label"
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnTimeSpent": [
-        "audits[mainthread-work-breakdown].details.headings[1].text",
-        "audits[network-rtt].details.headings[1].text",
-        "audits[network-server-latency].details.headings[1].text"
+        "audits[mainthread-work-breakdown].details.headings[1].label",
+        "audits[network-rtt].details.headings[1].label",
+        "audits[network-server-latency].details.headings[1].label"
       ],
       "lighthouse-core/audits/bootup-time.js | title": [
         "audits[bootup-time].title"
@@ -5996,13 +5996,13 @@
         "audits[bootup-time].description"
       ],
       "lighthouse-core/audits/bootup-time.js | columnTotal": [
-        "audits[bootup-time].details.headings[1].text"
+        "audits[bootup-time].details.headings[1].label"
       ],
       "lighthouse-core/audits/bootup-time.js | columnScriptEval": [
-        "audits[bootup-time].details.headings[2].text"
+        "audits[bootup-time].details.headings[2].label"
       ],
       "lighthouse-core/audits/bootup-time.js | columnScriptParse": [
-        "audits[bootup-time].details.headings[3].text"
+        "audits[bootup-time].details.headings[3].label"
       ],
       "lighthouse-core/audits/uses-rel-preload.js | title": [
         "audits[uses-rel-preload].title"
@@ -6047,26 +6047,26 @@
         "audits[performance-budget].description"
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnResourceType": [
-        "audits[performance-budget].details.headings[0].text",
-        "audits[resource-summary].details.headings[0].text"
+        "audits[performance-budget].details.headings[0].label",
+        "audits[resource-summary].details.headings[0].label"
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnRequests": [
-        "audits[performance-budget].details.headings[1].text",
-        "audits[resource-summary].details.headings[1].text"
+        "audits[performance-budget].details.headings[1].label",
+        "audits[resource-summary].details.headings[1].label"
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnTransferSize": [
-        "audits[performance-budget].details.headings[2].text",
-        "audits[resource-summary].details.headings[2].text",
-        "audits[third-party-summary].details.headings[1].text",
-        "audits[uses-long-cache-ttl].details.headings[2].text",
-        "audits[total-byte-weight].details.headings[1].text",
+        "audits[performance-budget].details.headings[2].label",
+        "audits[resource-summary].details.headings[2].label",
+        "audits[third-party-summary].details.headings[1].label",
+        "audits[uses-long-cache-ttl].details.headings[2].label",
+        "audits[total-byte-weight].details.headings[1].label",
         "audits[render-blocking-resources].details.headings[1].label",
         "audits[unminified-javascript].details.headings[1].label",
         "audits[uses-text-compression].details.headings[1].label"
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnOverBudget": [
-        "audits[performance-budget].details.headings[4].text",
-        "audits[timing-budget].details.headings[2].text"
+        "audits[performance-budget].details.headings[4].label",
+        "audits[timing-budget].details.headings[2].label"
       ],
       "lighthouse-core/lib/i18n/i18n.js | scriptResourceType": [
         "audits[performance-budget].details.items[0].label",
@@ -6137,10 +6137,10 @@
         "audits[timing-budget].description"
       ],
       "lighthouse-core/audits/timing-budget.js | columnTimingMetric": [
-        "audits[timing-budget].details.headings[0].text"
+        "audits[timing-budget].details.headings[0].label"
       ],
       "lighthouse-core/audits/timing-budget.js | columnMeasurement": [
-        "audits[timing-budget].details.headings[1].text"
+        "audits[timing-budget].details.headings[1].label"
       ],
       "lighthouse-core/audits/resource-summary.js | title": [
         "audits[resource-summary].title"
@@ -6172,10 +6172,10 @@
         }
       ],
       "lighthouse-core/audits/third-party-summary.js | columnThirdParty": [
-        "audits[third-party-summary].details.headings[0].text"
+        "audits[third-party-summary].details.headings[0].label"
       ],
       "lighthouse-core/audits/third-party-summary.js | columnBlockingTime": [
-        "audits[third-party-summary].details.headings[2].text"
+        "audits[third-party-summary].details.headings[2].label"
       ],
       "lighthouse-core/audits/manual/pwa-cross-browser.js | title": [
         "audits[pwa-cross-browser].title"
@@ -6286,12 +6286,12 @@
         "audits[color-contrast].description"
       ],
       "lighthouse-core/audits/accessibility/axe-audit.js | failingElementsHeader": [
-        "audits[color-contrast].details.headings[0].text",
-        "audits[html-has-lang].details.headings[0].text",
-        "audits[image-alt].details.headings[0].text",
-        "audits.label.details.headings[0].text",
-        "audits[link-name].details.headings[0].text",
-        "audits[object-alt].details.headings[0].text"
+        "audits[color-contrast].details.headings[0].label",
+        "audits[html-has-lang].details.headings[0].label",
+        "audits[image-alt].details.headings[0].label",
+        "audits.label.details.headings[0].label",
+        "audits[link-name].details.headings[0].label",
+        "audits[object-alt].details.headings[0].label"
       ],
       "lighthouse-core/audits/accessibility/definition-list.js | title": [
         "audits[definition-list].title"
@@ -6464,7 +6464,7 @@
         }
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnCacheTTL": [
-        "audits[uses-long-cache-ttl].details.headings[1].text"
+        "audits[uses-long-cache-ttl].details.headings[1].label"
       ],
       "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | title": [
         "audits[total-byte-weight].title"
@@ -6624,13 +6624,13 @@
         }
       ],
       "lighthouse-core/audits/dobetterweb/dom-size.js | columnStatistic": [
-        "audits[dom-size].details.headings[0].text"
+        "audits[dom-size].details.headings[0].label"
       ],
       "lighthouse-core/audits/dobetterweb/dom-size.js | columnElement": [
-        "audits[dom-size].details.headings[1].text"
+        "audits[dom-size].details.headings[1].label"
       ],
       "lighthouse-core/audits/dobetterweb/dom-size.js | columnValue": [
-        "audits[dom-size].details.headings[2].text"
+        "audits[dom-size].details.headings[2].label"
       ],
       "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMElements": [
         "audits[dom-size].details.items[0].statistic"
@@ -6656,7 +6656,7 @@
         }
       ],
       "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | columnFailingAnchors": [
-        "audits[external-anchors-use-rel-noopener].details.headings[0].text"
+        "audits[external-anchors-use-rel-noopener].details.headings[0].label"
       ],
       "lighthouse-core/audits/dobetterweb/geolocation-on-start.js | failureTitle": [
         "audits[geolocation-on-start].title"
@@ -6665,10 +6665,10 @@
         "audits[geolocation-on-start].description"
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnLocation": [
-        "audits[geolocation-on-start].details.headings[1].text",
-        "audits[no-document-write].details.headings[1].text",
-        "audits[notification-on-start].details.headings[1].text",
-        "audits[uses-passive-event-listeners].details.headings[1].text"
+        "audits[geolocation-on-start].details.headings[1].label",
+        "audits[no-document-write].details.headings[1].label",
+        "audits[notification-on-start].details.headings[1].label",
+        "audits[uses-passive-event-listeners].details.headings[1].label"
       ],
       "lighthouse-core/audits/dobetterweb/no-document-write.js | failureTitle": [
         "audits[no-document-write].title"
@@ -6691,13 +6691,13 @@
         }
       ],
       "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | columnVersion": [
-        "audits[no-vulnerable-libraries].details.headings[0].text"
+        "audits[no-vulnerable-libraries].details.headings[0].label"
       ],
       "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | columnVuln": [
-        "audits[no-vulnerable-libraries].details.headings[1].text"
+        "audits[no-vulnerable-libraries].details.headings[1].label"
       ],
       "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | columnSeverity": [
-        "audits[no-vulnerable-libraries].details.headings[2].text"
+        "audits[no-vulnerable-libraries].details.headings[2].label"
       ],
       "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | rowSeverityMedium": [
         "audits[no-vulnerable-libraries].details.items[0].highestSeverity"
@@ -6709,10 +6709,10 @@
         "audits[js-libraries].description"
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnName": [
-        "audits[js-libraries].details.headings[0].text"
+        "audits[js-libraries].details.headings[0].label"
       ],
       "lighthouse-core/audits/dobetterweb/js-libraries.js | columnVersion": [
-        "audits[js-libraries].details.headings[1].text"
+        "audits[js-libraries].details.headings[1].label"
       ],
       "lighthouse-core/audits/dobetterweb/notification-on-start.js | failureTitle": [
         "audits[notification-on-start].title"
@@ -6727,7 +6727,7 @@
         "audits[password-inputs-can-be-pasted-into].description"
       ],
       "lighthouse-core/audits/dobetterweb/password-inputs-can-be-pasted-into.js | columnFailingElem": [
-        "audits[password-inputs-can-be-pasted-into].details.headings[0].text"
+        "audits[password-inputs-can-be-pasted-into].details.headings[0].label"
       ],
       "lighthouse-core/audits/dobetterweb/uses-http2.js | failureTitle": [
         "audits[uses-http2].title"
@@ -6744,7 +6744,7 @@
         }
       ],
       "lighthouse-core/audits/dobetterweb/uses-http2.js | columnProtocol": [
-        "audits[uses-http2].details.headings[1].text"
+        "audits[uses-http2].details.headings[1].label"
       ],
       "lighthouse-core/audits/dobetterweb/uses-passive-event-listeners.js | failureTitle": [
         "audits[uses-passive-event-listeners].title"
@@ -6811,13 +6811,13 @@
         }
       ],
       "lighthouse-core/audits/seo/tap-targets.js | tapTargetHeader": [
-        "audits[tap-targets].details.headings[0].text"
+        "audits[tap-targets].details.headings[0].label"
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnSize": [
-        "audits[tap-targets].details.headings[1].text"
+        "audits[tap-targets].details.headings[1].label"
       ],
       "lighthouse-core/audits/seo/tap-targets.js | overlappingTargetHeader": [
-        "audits[tap-targets].details.headings[2].text"
+        "audits[tap-targets].details.headings[2].label"
       ],
       "lighthouse-core/audits/seo/hreflang.js | title": [
         "audits.hreflang.title"

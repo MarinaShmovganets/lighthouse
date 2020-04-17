@@ -91,9 +91,9 @@ class DOMSize extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'statistic', itemType: 'text', text: str_(UIStrings.columnStatistic)},
-      {key: 'element', itemType: 'code', text: str_(UIStrings.columnElement)},
-      {key: 'value', itemType: 'numeric', text: str_(UIStrings.columnValue)},
+      {key: 'statistic', valueType: 'text', label: str_(UIStrings.columnStatistic)},
+      {key: 'element', valueType: 'code', label: str_(UIStrings.columnElement)},
+      {key: 'value', valueType: 'numeric', label: str_(UIStrings.columnValue)},
     ];
 
     const i18n = new I18n(context.settings.locale);

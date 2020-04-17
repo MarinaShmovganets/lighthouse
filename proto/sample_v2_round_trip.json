@@ -125,27 +125,27 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "url",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
                         "granularity": 1.0,
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "total",
-                        "text": "Total CPU Time"
+                        "label": "Total CPU Time"
                     },
                     {
                         "granularity": 1.0,
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "scripting",
-                        "text": "Script Evaluation"
+                        "label": "Script Evaluation"
                     },
                     {
                         "granularity": 1.0,
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "scriptParseCompile",
-                        "text": "Script Parse"
+                        "label": "Script Parse"
                     }
                 ],
                 "items": [
@@ -239,9 +239,9 @@
                 },
                 "headings": [
                     {
-                        "itemType": "node",
+                        "valueType": "node",
                         "key": "node",
-                        "text": "Failing Elements"
+                        "label": "Failing Elements"
                     }
                 ],
                 "items": [
@@ -470,14 +470,14 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "value",
-                        "text": "Deprecation / Warning"
+                        "label": "Deprecation / Warning"
                     },
                     {
-                        "itemType": "source-location",
+                        "valueType": "source-location",
                         "key": "source",
-                        "text": "URL"
+                        "label": "URL"
                     }
                 ],
                 "items": [
@@ -575,19 +575,19 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "statistic",
-                        "text": "Statistic"
+                        "label": "Statistic"
                     },
                     {
-                        "itemType": "code",
+                        "valueType": "code",
                         "key": "element",
-                        "text": "Element"
+                        "label": "Element"
                     },
                     {
-                        "itemType": "numeric",
+                        "valueType": "numeric",
                         "key": "value",
-                        "text": "Value"
+                        "label": "Value"
                     }
                 ],
                 "items": [
@@ -667,14 +667,14 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "url",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
-                        "itemType": "code",
+                        "valueType": "code",
                         "key": "description",
-                        "text": "Description"
+                        "label": "Description"
                     }
                 ],
                 "items": [
@@ -726,9 +726,9 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "node",
+                        "valueType": "node",
                         "key": "node",
-                        "text": "Failing Anchors"
+                        "label": "Failing Anchors"
                     }
                 ],
                 "items": [
@@ -846,24 +846,24 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "source-location",
+                        "valueType": "source-location",
                         "key": "source",
-                        "text": "Source"
+                        "label": "Source"
                     },
                     {
-                        "itemType": "code",
+                        "valueType": "code",
                         "key": "selector",
-                        "text": "Selector"
+                        "label": "Selector"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "coverage",
-                        "text": "% of Page Text"
+                        "label": "% of Page Text"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "fontSize",
-                        "text": "Font Size"
+                        "label": "Font Size"
                     }
                 ],
                 "items": [
@@ -903,14 +903,14 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "url",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "label",
-                        "text": "Location"
+                        "label": "Location"
                     }
                 ],
                 "items": [
@@ -968,9 +968,9 @@
                 },
                 "headings": [
                     {
-                        "itemType": "node",
+                        "valueType": "node",
                         "key": "node",
-                        "text": "Failing Elements"
+                        "label": "Failing Elements"
                     }
                 ],
                 "items": [
@@ -1022,9 +1022,9 @@
                 },
                 "headings": [
                     {
-                        "itemType": "node",
+                        "valueType": "node",
                         "key": "node",
-                        "text": "Failing Elements"
+                        "label": "Failing Elements"
                     }
                 ],
                 "items": [
@@ -1081,23 +1081,23 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "thumbnail",
+                        "valueType": "thumbnail",
                         "key": "url"
                     },
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "url",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "displayedAspectRatio",
-                        "text": "Aspect Ratio (Displayed)"
+                        "label": "Aspect Ratio (Displayed)"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "actualAspectRatio",
-                        "text": "Aspect Ratio (Actual)"
+                        "label": "Aspect Ratio (Actual)"
                     }
                 ],
                 "items": [
@@ -1121,28 +1121,28 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "thumbnail",
+                        "valueType": "thumbnail",
                         "key": "url"
                     },
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "elidedUrl",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "displayedSize",
-                        "text": "Displayed size"
+                        "label": "Displayed size"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "actualSize",
-                        "text": "Actual size"
+                        "label": "Actual size"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "expectedSize",
-                        "text": "Expected size"
+                        "label": "Expected size"
                     }
                 ],
                 "items": [
@@ -1224,9 +1224,9 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "url",
-                        "text": "Insecure URL"
+                        "label": "Insecure URL"
                     }
                 ],
                 "items": [
@@ -1262,14 +1262,14 @@
                 },
                 "headings": [
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "name",
-                        "text": "Name"
+                        "label": "Name"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "version",
-                        "text": "Version"
+                        "label": "Version"
                     }
                 ],
                 "items": [
@@ -1307,9 +1307,9 @@
                 },
                 "headings": [
                     {
-                        "itemType": "node",
+                        "valueType": "node",
                         "key": "node",
-                        "text": "Failing Elements"
+                        "label": "Failing Elements"
                     }
                 ],
                 "items": [
@@ -1385,9 +1385,9 @@
                 },
                 "headings": [
                     {
-                        "itemType": "node",
+                        "valueType": "node",
                         "key": "node",
-                        "text": "Failing Elements"
+                        "label": "Failing Elements"
                     }
                 ],
                 "items": [
@@ -1468,15 +1468,15 @@
                 "headings": [
                     {
                         "granularity": 1.0,
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "startTime",
-                        "text": "Start Time"
+                        "label": "Start Time"
                     },
                     {
                         "granularity": 1.0,
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "duration",
-                        "text": "End Time"
+                        "label": "End Time"
                     }
                 ],
                 "items": [
@@ -1557,15 +1557,15 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "groupLabel",
-                        "text": "Category"
+                        "label": "Category"
                     },
                     {
                         "granularity": 1.0,
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "duration",
-                        "text": "Time Spent"
+                        "label": "Time Spent"
                     }
                 ],
                 "items": [
@@ -1728,50 +1728,50 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "url",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
                         "granularity": 1.0,
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "startTime",
-                        "text": "Start Time"
+                        "label": "Start Time"
                     },
                     {
                         "granularity": 1.0,
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "endTime",
-                        "text": "End Time"
+                        "label": "End Time"
                     },
                     {
                         "displayUnit": "kb",
                         "granularity": 1.0,
-                        "itemType": "bytes",
+                        "valueType": "bytes",
                         "key": "transferSize",
-                        "text": "Transfer Size"
+                        "label": "Transfer Size"
                     },
                     {
                         "displayUnit": "kb",
                         "granularity": 1.0,
-                        "itemType": "bytes",
+                        "valueType": "bytes",
                         "key": "resourceSize",
-                        "text": "Resource Size"
+                        "label": "Resource Size"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "statusCode",
-                        "text": "Status Code"
+                        "label": "Status Code"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "mimeType",
-                        "text": "MIME Type"
+                        "label": "MIME Type"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "resourceType",
-                        "text": "Resource Type"
+                        "label": "Resource Type"
                     }
                 ],
                 "items": [
@@ -1986,15 +1986,15 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "origin",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
                         "granularity": 1.0,
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "rtt",
-                        "text": "Time Spent"
+                        "label": "Time Spent"
                     }
                 ],
                 "items": [
@@ -2022,15 +2022,15 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "origin",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
                         "granularity": 1.0,
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "serverResponseTime",
-                        "text": "Time Spent"
+                        "label": "Time Spent"
                     }
                 ],
                 "items": [
@@ -2058,14 +2058,14 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "url",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "label",
-                        "text": "Location"
+                        "label": "Location"
                     }
                 ],
                 "items": [
@@ -2094,19 +2094,19 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "link",
+                        "valueType": "link",
                         "key": "detectedLib",
-                        "text": "Library Version"
+                        "label": "Library Version"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "vulnCount",
-                        "text": "Vulnerability Count"
+                        "label": "Vulnerability Count"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "highestSeverity",
-                        "text": "Highest Severity"
+                        "label": "Highest Severity"
                     }
                 ],
                 "items": [
@@ -2134,14 +2134,14 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "url",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "label",
-                        "text": "Location"
+                        "label": "Location"
                     }
                 ],
                 "items": [
@@ -2173,9 +2173,9 @@
                 },
                 "headings": [
                     {
-                        "itemType": "node",
+                        "valueType": "node",
                         "key": "node",
-                        "text": "Failing Elements"
+                        "label": "Failing Elements"
                     }
                 ],
                 "items": [
@@ -2245,9 +2245,9 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "node",
+                        "valueType": "node",
                         "key": "node",
-                        "text": "Failing Elements"
+                        "label": "Failing Elements"
                     }
                 ],
                 "items": [
@@ -2276,28 +2276,28 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "label",
-                        "text": "Resource Type"
+                        "label": "Resource Type"
                     },
                     {
-                        "itemType": "numeric",
+                        "valueType": "numeric",
                         "key": "requestCount",
-                        "text": "Requests"
+                        "label": "Requests"
                     },
                     {
-                        "itemType": "bytes",
+                        "valueType": "bytes",
                         "key": "size",
-                        "text": "Transfer Size"
+                        "label": "Transfer Size"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "countOverBudget"
                     },
                     {
-                        "itemType": "bytes",
+                        "valueType": "bytes",
                         "key": "sizeOverBudget",
-                        "text": "Over Budget"
+                        "label": "Over Budget"
                     }
                 ],
                 "items": [
@@ -2490,19 +2490,19 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "label",
-                        "text": "Resource Type"
+                        "label": "Resource Type"
                     },
                     {
-                        "itemType": "numeric",
+                        "valueType": "numeric",
                         "key": "requestCount",
-                        "text": "Requests"
+                        "label": "Requests"
                     },
                     {
-                        "itemType": "bytes",
+                        "valueType": "bytes",
                         "key": "size",
-                        "text": "Transfer Size"
+                        "label": "Transfer Size"
                     }
                 ],
                 "items": [
@@ -2695,19 +2695,19 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "node",
+                        "valueType": "node",
                         "key": "tapTarget",
-                        "text": "Tap Target"
+                        "label": "Tap Target"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "size",
-                        "text": "Size"
+                        "label": "Size"
                     },
                     {
-                        "itemType": "node",
+                        "valueType": "node",
                         "key": "overlappingTarget",
-                        "text": "Overlapping Target"
+                        "label": "Overlapping Target"
                     }
                 ],
                 "items": [
@@ -2783,21 +2783,21 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "link",
+                        "valueType": "link",
                         "key": "entity",
-                        "text": "Third-Party"
+                        "label": "Third-Party"
                     },
                     {
                         "granularity": 1.0,
-                        "itemType": "bytes",
+                        "valueType": "bytes",
                         "key": "transferSize",
-                        "text": "Transfer Size"
+                        "label": "Transfer Size"
                     },
                     {
                         "granularity": 1.0,
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "blockingTime",
-                        "text": "Main-Thread Blocking Time"
+                        "label": "Main-Thread Blocking Time"
                     }
                 ],
                 "items": [
@@ -2845,19 +2845,19 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "label",
-                        "text": "Metric"
+                        "label": "Metric"
                     },
                     {
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "measurement",
-                        "text": "Measurement"
+                        "label": "Measurement"
                     },
                     {
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "overBudget",
-                        "text": "Over Budget"
+                        "label": "Over Budget"
                     }
                 ],
                 "items": [
@@ -2914,14 +2914,14 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "url",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
-                        "itemType": "bytes",
+                        "valueType": "bytes",
                         "key": "totalBytes",
-                        "text": "Transfer Size"
+                        "label": "Transfer Size"
                     }
                 ],
                 "items": [
@@ -3089,14 +3089,14 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "url",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "protocol",
-                        "text": "Protocol"
+                        "label": "Protocol"
                     }
                 ],
                 "items": [
@@ -3174,22 +3174,22 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "url",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
                         "displayUnit": "duration",
-                        "itemType": "ms",
+                        "valueType": "ms",
                         "key": "cacheLifetimeMs",
-                        "text": "Cache TTL"
+                        "label": "Cache TTL"
                     },
                     {
                         "displayUnit": "kb",
                         "granularity": 1.0,
-                        "itemType": "bytes",
+                        "valueType": "bytes",
                         "key": "totalBytes",
-                        "text": "Transfer Size"
+                        "label": "Transfer Size"
                     }
                 ],
                 "items": [
@@ -3299,14 +3299,14 @@
             "details": {
                 "headings": [
                     {
-                        "itemType": "url",
+                        "valueType": "url",
                         "key": "url",
-                        "text": "URL"
+                        "label": "URL"
                     },
                     {
-                        "itemType": "text",
+                        "valueType": "text",
                         "key": "label",
-                        "text": "Location"
+                        "label": "Location"
                     }
                 ],
                 "items": [

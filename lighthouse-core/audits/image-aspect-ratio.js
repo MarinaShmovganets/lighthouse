@@ -119,10 +119,10 @@ class ImageAspectRatio extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'url', itemType: 'thumbnail', text: ''},
-      {key: 'url', itemType: 'url', text: str_(i18n.UIStrings.columnURL)},
-      {key: 'displayedAspectRatio', itemType: 'text', text: str_(UIStrings.columnDisplayed)},
-      {key: 'actualAspectRatio', itemType: 'text', text: str_(UIStrings.columnActual)},
+      {key: 'url', valueType: 'thumbnail', label: ''},
+      {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
+      {key: 'displayedAspectRatio', valueType: 'text', label: str_(UIStrings.columnDisplayed)},
+      {key: 'actualAspectRatio', valueType: 'text', label: str_(UIStrings.columnActual)},
     ];
 
     return {

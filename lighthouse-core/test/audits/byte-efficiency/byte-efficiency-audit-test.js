@@ -45,9 +45,9 @@ describe('Byte efficiency base audit', () => {
   });
 
   const baseHeadings = [
-    {key: 'totalBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1, text: ''},
-    {key: 'wastedBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1, text: ''},
-    {key: 'wastedMs', itemType: 'text', text: ''},
+    {key: 'totalBytes', valueType: 'bytes', displayUnit: 'kb', granularity: 1, label: ''},
+    {key: 'wastedBytes', valueType: 'bytes', displayUnit: 'kb', granularity: 1, label: ''},
+    {key: 'wastedMs', valueType: 'text', label: ''},
   ];
 
   describe('#estimateTransferSize', () => {

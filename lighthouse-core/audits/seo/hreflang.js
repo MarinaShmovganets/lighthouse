@@ -101,7 +101,7 @@ class Hreflang extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'source', itemType: 'code', text: 'Source'},
+      {key: 'source', valueType: 'code', label: 'Source'},
     ];
     const details = Audit.makeTableDetails(headings, invalidHreflangs);
 

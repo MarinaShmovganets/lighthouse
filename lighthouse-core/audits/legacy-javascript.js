@@ -346,8 +346,8 @@ class LegacyJavascript extends Audit {
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       /* eslint-disable max-len */
-      {key: 'url', itemType: 'url', subRows: {key: 'locations', itemType: 'source-location'}, text: str_(i18n.UIStrings.columnURL)},
-      {key: null, itemType: 'code', subRows: {key: 'signals'}, text: ''},
+      {key: 'url', valueType: 'url', subRows: {key: 'locations', valueType: 'source-location'}, label: str_(i18n.UIStrings.columnURL)},
+      {key: null, valueType: 'code', subRows: {key: 'signals'}, label: ''},
       /* eslint-enable max-len */
     ];
     const details = Audit.makeTableDetails(headings, tableRows);

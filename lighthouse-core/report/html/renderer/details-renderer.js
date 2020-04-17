@@ -210,7 +210,7 @@ class DetailsRenderer {
    * based on the heading's valueType, unless the value itself has a `type`
    * property to override it.
    * @param {LH.Audit.Details.Value} value
-   * @param {LH.Audit.Details.OpportunityColumnHeading} heading
+   * @param {LH.Audit.Details.TableColumnHeading} heading
    * @return {Element|null}
    */
   _renderTableValue(value, heading) {
@@ -293,11 +293,12 @@ class DetailsRenderer {
   }
 
   /**
+   * TODO(bckenny): remove
    * Get the headings of a table-like details object, converted into the
    * OpportunityColumnHeading type until we have all details use the same
    * heading format.
    * @param {LH.Audit.Details.Table|LH.Audit.Details.Opportunity} tableLike
-   * @return {Array<LH.Audit.Details.OpportunityColumnHeading>}
+   * @return {Array<LH.Audit.Details.TableColumnHeading>}
    */
   _getCanonicalizedHeadingsFromTable(tableLike) {
     if (tableLike.type === 'opportunity') {
@@ -308,11 +309,12 @@ class DetailsRenderer {
   }
 
   /**
+   * TODO(bckenny): remove
    * Get the headings of a table-like details object, converted into the
    * OpportunityColumnHeading type until we have all details use the same
    * heading format.
    * @param {LH.Audit.Details.TableColumnHeading} heading
-   * @return {LH.Audit.Details.OpportunityColumnHeading}
+   * @return {LH.Audit.Details.TableColumnHeading}
    */
   _getCanonicalizedHeading(heading) {
     let subRows;
@@ -328,9 +330,9 @@ class DetailsRenderer {
 
     return {
       key: heading.key,
-      valueType: heading.itemType,
+      valueType: heading.valueType,
       subRows,
-      label: heading.text,
+      label: heading.label,
       displayUnit: heading.displayUnit,
       granularity: heading.granularity,
     };
@@ -338,7 +340,7 @@ class DetailsRenderer {
 
   /**
    * @param {LH.Audit.Details.Value[]} values
-   * @param {LH.Audit.Details.OpportunityColumnHeading} heading
+   * @param {LH.Audit.Details.TableColumnHeading} heading
    * @return {Element}
    */
   _renderSubRows(values, heading) {

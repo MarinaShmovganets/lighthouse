@@ -154,11 +154,11 @@ class ThirdPartySummary extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'entity', itemType: 'link', text: str_(UIStrings.columnThirdParty)},
-      {key: 'transferSize', granularity: 1, itemType: 'bytes',
-        text: str_(i18n.UIStrings.columnTransferSize)},
-      {key: 'blockingTime', granularity: 1, itemType: 'ms',
-        text: str_(UIStrings.columnBlockingTime)},
+      {key: 'entity', valueType: 'link', label: str_(UIStrings.columnThirdParty)},
+      {key: 'transferSize', granularity: 1, valueType: 'bytes',
+        label: str_(i18n.UIStrings.columnTransferSize)},
+      {key: 'blockingTime', granularity: 1, valueType: 'ms',
+        label: str_(UIStrings.columnBlockingTime)},
     ];
 
     if (!results.length) {
