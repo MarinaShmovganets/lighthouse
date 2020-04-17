@@ -49,12 +49,11 @@ class DetailsRenderer {
         return this._renderFilmstrip(details);
       case 'list':
         return this._renderList(details);
+      case 'opportunity':
       case 'table':
         return this._renderTable(details);
       case 'criticalrequestchain':
         return CriticalRequestChainRenderer.render(this._dom, this._templateContext, details, this);
-      case 'opportunity':
-        return this._renderTable(details);
 
       // Internal-only details, not for rendering.
       case 'screenshot':
@@ -209,7 +208,7 @@ class DetailsRenderer {
    * Render a details item value for embedding in a table. Renders the value
    * based on the heading's valueType, unless the value itself has a `type`
    * property to override it.
-   * @param {LH.Audit.Details.Value} value
+   * @param {LH.Audit.Details.ItemValue} value
    * @param {LH.Audit.Details.TableColumnHeading} heading
    * @return {Element|null}
    */
@@ -293,53 +292,7 @@ class DetailsRenderer {
   }
 
   /**
-   * TODO(bckenny): remove
-   * Get the headings of a table-like details object, converted into the
-   * OpportunityColumnHeading type until we have all details use the same
-   * heading format.
-   * @param {LH.Audit.Details.Table|LH.Audit.Details.Opportunity} tableLike
-   * @return {Array<LH.Audit.Details.TableColumnHeading>}
-   */
-  _getCanonicalizedHeadingsFromTable(tableLike) {
-    if (tableLike.type === 'opportunity') {
-      return tableLike.headings;
-    }
-
-    return tableLike.headings.map(heading => this._getCanonicalizedHeading(heading));
-  }
-
-  /**
-   * TODO(bckenny): remove
-   * Get the headings of a table-like details object, converted into the
-   * OpportunityColumnHeading type until we have all details use the same
-   * heading format.
-   * @param {LH.Audit.Details.TableColumnHeading} heading
-   * @return {LH.Audit.Details.TableColumnHeading}
-   */
-  _getCanonicalizedHeading(heading) {
-    let subRows;
-    if (heading.subRows) {
-      // @ts-ignore: It's ok that there is no text.
-      subRows = this._getCanonicalizedHeading(heading.subRows);
-      if (!subRows.key) {
-        // eslint-disable-next-line no-console
-        console.warn('key should not be null');
-      }
-      subRows = {...subRows, key: subRows.key || ''};
-    }
-
-    return {
-      key: heading.key,
-      valueType: heading.valueType,
-      subRows,
-      label: heading.label,
-      displayUnit: heading.displayUnit,
-      granularity: heading.granularity,
-    };
-  }
-
-  /**
-   * @param {LH.Audit.Details.Value[]} values
+   * @param {LH.Audit.Details.ItemValue[]} values
    * @param {LH.Audit.Details.TableColumnHeading} heading
    * @return {Element}
    */
@@ -355,7 +308,7 @@ class DetailsRenderer {
   }
 
   /**
-   * @param {LH.Audit.Details.Table|LH.Audit.Details.Opportunity} details
+   * @param {{headings: Array<LH.Audit.Details.TableColumnHeading>, items: Array<LH.Audit.Details.TableItem>}} details
    * @return {Element}
    */
   _renderTable(details) {
@@ -365,9 +318,7 @@ class DetailsRenderer {
     const theadElem = this._dom.createChildOf(tableElem, 'thead');
     const theadTrElem = this._dom.createChildOf(theadElem, 'tr');
 
-    const headings = this._getCanonicalizedHeadingsFromTable(details);
-
-    for (const heading of headings) {
+    for (const heading of details.headings) {
       const valueType = heading.valueType || 'text';
       const classes = `lh-table-column--${valueType}`;
       const labelEl = this._dom.createElement('div', 'lh-text');
@@ -378,7 +329,7 @@ class DetailsRenderer {
     const tbodyElem = this._dom.createChildOf(tableElem, 'tbody');
     for (const row of details.items) {
       const rowElem = this._dom.createChildOf(tbodyElem, 'tr');
-      for (const heading of headings) {
+      for (const heading of details.headings) {
         const valueFragment = this._dom.createFragment();
 
         if (heading.key === null && !heading.subRows) {
