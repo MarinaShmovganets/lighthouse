@@ -197,7 +197,20 @@ The groups property controls how to visually group audits within a category. For
 
 The stock Lighthouse configurations can be extended if you only need to make small tweaks, such as adding an audit or skipping an audit, but wish to still run most of what Lighthouse offers. When adding the `extends: 'lighthouse:default'` property to your config, the default passes, audits, groups, and categories will be automatically included, allowing you modify settings or add additional audits to a pass.
 
-Please note that you can only extend from `lighthouse:default` using the `extends` property. Other internal configs found in the [lighthouse-core/config](https://github.com/GoogleChrome/lighthouse/tree/master/lighthouse-core/config) directory can be used by importing the config object from file reference, or by using the [`--preset`](https://github.com/GoogleChrome/lighthouse#cli-options) CLI flag.
+Please note that you can only extend from `lighthouse:default` using the `extends` property. Other internal configs found in the [lighthouse-core/config](https://github.com/GoogleChrome/lighthouse/tree/master/lighthouse-core/config) directory can be used by importing the config object from file reference, or by using the [`--config-path`](https://github.com/GoogleChrome/lighthouse#cli-options) CLI flag.
+
+For example:
+
+```js
+const desktopConfig = require('lighthouse/lighthouse-core/config/lr-desktop-config.js');
+lighthouse(url, flags, desktopConfig);
+```
+
+or 
+
+```
+lighthouse --config-path lighthouse-core/config/lr-desktop-config.js
+```
 
 See [more examples below](#more-examples) to view different types of extensions in action.
 
