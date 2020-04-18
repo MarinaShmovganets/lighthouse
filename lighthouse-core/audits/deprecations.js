@@ -82,8 +82,8 @@ class Deprecations extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'value', valueType: 'text', label: str_(UIStrings.columnDeprecate)},
-      {key: 'source', valueType: 'source-location', label: str_(i18n.UIStrings.columnURL)},
+      {key: 'value', itemType: 'text', text: str_(UIStrings.columnDeprecate)},
+      {key: 'source', itemType: 'source-location', text: str_(i18n.UIStrings.columnURL)},
     ];
     const details = Audit.makeTableDetails(headings, deprecations);
 

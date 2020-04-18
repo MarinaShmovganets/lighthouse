@@ -53,7 +53,7 @@ class PasswordInputsCanBePastedIntoAudit extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'node', valueType: 'node', label: str_(UIStrings.columnFailingElem)},
+      {key: 'node', itemType: 'node', text: str_(UIStrings.columnFailingElem)},
     ];
 
     return {

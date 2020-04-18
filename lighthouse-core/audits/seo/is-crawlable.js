@@ -137,7 +137,7 @@ class IsCrawlable extends Audit {
 
         /** @type {LH.Audit.Details.Table['headings']} */
         const headings = [
-          {key: 'source', valueType: 'code', label: 'Blocking Directive Source'},
+          {key: 'source', itemType: 'code', text: 'Blocking Directive Source'},
         ];
         const details = Audit.makeTableDetails(headings, blockingDirectives);
 

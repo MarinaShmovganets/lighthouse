@@ -85,7 +85,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'node', valueType: 'node', label: str_(UIStrings.columnFailingAnchors)},
+      {key: 'node', itemType: 'node', text: str_(UIStrings.columnFailingAnchors)},
     ];
 
     const details = Audit.makeTableDetails(headings, failingAnchors);

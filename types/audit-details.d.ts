@@ -49,7 +49,7 @@ declare global {
         type: 'opportunity';
         overallSavingsMs: number;
         overallSavingsBytes?: number;
-        headings: TableColumnHeading[];
+        headings: OpportunityColumnHeading[];
         items: OpportunityItem[];
         debugData?: DebugData;
       }
@@ -83,10 +83,43 @@ declare global {
 
       /** String enum of possible types of values found within table items. */
       type ItemValueType = 'bytes' | 'code' | 'link' | 'ms' | 'multi' | 'node' | 'source-location' | 'numeric' | 'text' | 'thumbnail' | 'timespanMs' | 'url';
+
       /** Possible types of values found within table items. */
       type ItemValue = string | number | boolean | DebugData | NodeValue | SourceLocationValue | LinkValue | UrlValue | CodeValue;
 
+      // TODO: drop TableColumnHeading, rename OpportunityColumnHeading to TableColumnHeading and
+      // use that for all table-like audit details.
+
       export interface TableColumnHeading {
+        /**
+         * The name of the property within items being described.
+         * If null, subRows must be defined, and the first sub-row will be empty.
+         */
+        key: string|null;
+        /** Readable text label of the field. */
+        text: string;
+        /**
+         * The data format of the column of values being described. Usually
+         * those values will be primitives rendered as this type, but the values
+         * could also be objects with their own type to override this field.
+         */
+        itemType: ItemValueType;
+        /**
+         * Optional - defines an inner table of values that correspond to this column.
+         * Key is required - if other properties are not provided, the value for the heading is used.
+         */
+        subRows?: {key: string, itemType?: ItemValueType, displayUnit?: string, granularity?: number};
+
+        displayUnit?: string;
+        granularity?: number;
+      }
+
+      export interface TableItem {
+        debugData?: DebugData;
+        [p: string]: undefined | ItemValue | ItemValue[];
+      }
+
+      export interface OpportunityColumnHeading {
         /**
          * The name of the property within items being described.
          * If null, subRows must be defined, and the first sub-row will be empty.
@@ -106,13 +139,9 @@ declare global {
          */
         subRows?: {key: string, valueType?: ItemValueType, displayUnit?: string, granularity?: number};
 
+        // NOTE: not used by opportunity details, but used in the renderer until table/opportunity unification.
         displayUnit?: string;
         granularity?: number;
-      }
-
-      export interface TableItem {
-        debugData?: DebugData;
-        [p: string]: undefined | ItemValue | ItemValue[];
       }
 
       /** A more specific table element used for `opportunity` tables. */

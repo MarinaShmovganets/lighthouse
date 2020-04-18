@@ -221,9 +221,9 @@ class NoVulnerableLibrariesAudit extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'detectedLib', valueType: 'link', label: str_(UIStrings.columnVersion)},
-      {key: 'vulnCount', valueType: 'text', label: str_(UIStrings.columnVuln)},
-      {key: 'highestSeverity', valueType: 'text', label: str_(UIStrings.columnSeverity)},
+      {key: 'detectedLib', itemType: 'link', text: str_(UIStrings.columnVersion)},
+      {key: 'vulnCount', itemType: 'text', text: str_(UIStrings.columnVuln)},
+      {key: 'highestSeverity', itemType: 'text', text: str_(UIStrings.columnSeverity)},
     ];
     const details = Audit.makeTableDetails(headings, vulnerabilityResults, {});
 

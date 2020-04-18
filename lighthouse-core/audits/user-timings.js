@@ -94,12 +94,11 @@ class UserTimings extends Audit {
 
       /** @type {LH.Audit.Details.Table['headings']} */
       const headings = [
-        {key: 'name', valueType: 'text', label: str_(i18n.UIStrings.columnName)},
-        {key: 'timingType', valueType: 'text', label: str_(UIStrings.columnType)},
-        {key: 'startTime', valueType: 'ms', granularity: 0.01,
-          label: str_(UIStrings.columnStartTime)},
-        {key: 'duration', valueType: 'ms', granularity: 0.01,
-          label: str_(UIStrings.columnDuration)},
+        {key: 'name', itemType: 'text', text: str_(i18n.UIStrings.columnName)},
+        {key: 'timingType', itemType: 'text', text: str_(UIStrings.columnType)},
+        {key: 'startTime', itemType: 'ms', granularity: 0.01,
+          text: str_(UIStrings.columnStartTime)},
+        {key: 'duration', itemType: 'ms', granularity: 0.01, text: str_(UIStrings.columnDuration)},
       ];
 
       const details = Audit.makeTableDetails(headings, tableRows);

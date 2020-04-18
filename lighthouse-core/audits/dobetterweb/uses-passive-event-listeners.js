@@ -50,8 +50,8 @@ class PassiveEventsAudit extends ViolationAudit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
-      {key: 'label', valueType: 'text', label: str_(i18n.UIStrings.columnLocation)},
+      {key: 'url', itemType: 'url', text: str_(i18n.UIStrings.columnURL)},
+      {key: 'label', itemType: 'text', text: str_(i18n.UIStrings.columnLocation)},
     ];
     // TODO(bckenny): see TODO in geolocation-on-start
     const details = ViolationAudit.makeTableDetails(headings, results);

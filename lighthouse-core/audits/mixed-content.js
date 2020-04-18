@@ -132,7 +132,7 @@ class MixedContent extends Audit {
 
       /** @type {LH.Audit.Details.Table['headings']} */
       const headings = [
-        {key: 'fullUrl', valueType: 'url', label: 'URL'},
+        {key: 'fullUrl', itemType: 'url', text: 'URL'},
       ];
       const details = Audit.makeTableDetails(headings, upgradeableResources);
 

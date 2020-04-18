@@ -81,7 +81,7 @@ class HTTPS extends Audit {
 
       /** @type {LH.Audit.Details.Table['headings']} */
       const headings = [
-        {key: 'url', valueType: 'url', label: str_(UIStrings.columnInsecureURL)},
+        {key: 'url', itemType: 'url', text: str_(UIStrings.columnInsecureURL)},
       ];
 
       return {
