@@ -27,12 +27,22 @@ const _PROTOCOL_TIMEOUT_EXIT_CODE = 67;
 
 /**
  * exported for testing
- * @param {string} flags
+ * @param {string|Array<string>} flags
  * @return {Array<string>}
  */
 function parseChromeFlags(flags = '') {
-  const parsed = yargsParser(
-      flags.trim(), {configuration: {'camel-case-expansion': false, 'boolean-negation': false}});
+  const trimmedFlags = (Array.isArray(flags) ?
+      // Allow multiple --chrome-flags
+      // i.e. `lighthouse --chrome-flags="--user-agent='My Agent'" --chrome-flags="--headless"`
+      flags.join(' ') :
+      // Remove wrapping single or double quotes
+      // i.e. `lighthouse --chrome-flags="--headless --user-agent='My Agent'"
+      flags.replace(/^\s*('|")(.+)\1\s*$/, '$2')
+  ).trim();
+
+  const parsed = yargsParser(trimmedFlags, {
+    configuration: {'camel-case-expansion': false, 'boolean-negation': false},
+  });
 
   return Object
       .keys(parsed)
