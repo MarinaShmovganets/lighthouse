@@ -31,14 +31,17 @@ const _PROTOCOL_TIMEOUT_EXIT_CODE = 67;
  * @return {Array<string>}
  */
 function parseChromeFlags(flags = '') {
-  const trimmedFlags = (Array.isArray(flags) ?
-      // Allow multiple --chrome-flags
-      // i.e. `lighthouse --chrome-flags="--user-agent='My Agent'" --chrome-flags="--headless"`
-      flags.join(' ') :
-      // Remove wrapping single or double quotes
-      // i.e. `lighthouse --chrome-flags="--headless --user-agent='My Agent'"
-      flags.replace(/^\s*('|")(.+)\1\s*$/, '$2')
-  ).trim();
+  // flags will be a string if there is only one chrome-flag parameter:
+  // i.e. `lighthouse --chrome-flags="--user-agent='My Agent' --headless"`
+  // flags will be an array if there are multiple chrome-flags parameters
+  // i.e. `lighthouse --chrome-flags="--user-agent='My Agent'" --chrome-flags="--headless"`
+  const trimmedFlags = (Array.isArray(flags) ? flags : [flags])
+      // `child_process.exceFile` wrappes quotes arround command line arguments to escape them
+      // in this case yargs will not be able to parse multiple flags
+      // i.e. `child_process.execFile("lighthouse", ["http://google.com", "--chrome-flags='--headless --no-sandbox'")`
+      // the following regular expression removes those wrapping quotes:
+      .map((flagsGroup) => flagsGroup.replace(/^\s*('|")(.+)\1\s*$/, '$2').trim())
+      .join(' ');
 
   const parsed = yargsParser(trimmedFlags, {
     configuration: {'camel-case-expansion': false, 'boolean-negation': false},

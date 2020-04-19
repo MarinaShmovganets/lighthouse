@@ -166,4 +166,18 @@ describe('Parsing --chrome-flags', () => {
       ['--no-sandbox', '--log-level=0']
     );
   });
+
+  it('removes wrapping single quotes from arrays', () => {
+    assert.deepStrictEqual(
+      parseChromeFlags(['\'--no-sandbox --log-level=0\'', '--headless']),
+      ['--no-sandbox', '--log-level=0', '--headless']
+    );
+  });
+
+  it('removes wrapping double quotes from arrays', () => {
+    assert.deepStrictEqual(
+      parseChromeFlags(['"--no-sandbox --log-level=0"', '--headless']),
+      ['--no-sandbox', '--log-level=0', '--headless']
+    );
+  });
 });
