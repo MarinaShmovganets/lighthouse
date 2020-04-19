@@ -21,18 +21,27 @@ yarn deploy-viewer
 
 For more information on deployment, see `releasing.md`.
 
-## Gist
+## Usage
 
-http://localhost:8000/?gist=bd1779783a5bbcb348564a58f80f7099
+### Load from Gist
 
-## PSI
+Pass the GitHub Gist identifier as `gist` query parameter.
 
-Example:
-```
-http://localhost:8000/?psiurl=https://www.example.com&category=pwa&category=seo
-```
+e.g., `http://localhost:8000/?gist=bd1779783a5bbcb348564a58f80f7099`
 
-Options:
+### Load from JSON
+
+Pass the absolute URL as `jsonurl` quwery parameter.
+
+e.g., `http://localhost:8000/?josnurl=https://gist.githubusercontent.com/Kikobeats/d570a1aa285c5d1d97bbda10b92fb97f/raw/4b0f14a5914edd25c95b4bd9d09728ab42181c3e/lighthouse.json`
+
+### Load from PageSpeed Insights
+
+Pass target URL `psiurl` query parameter.
+
+e.g., `http://localhost:8000/?psiurl=https://www.example.com&category=pwa&category=seo`
+
+The followings query parameters are also supported as options:
 
 `psiurl` - URL to audit
 `category` - Category to enable. One per category.
