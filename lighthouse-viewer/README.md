@@ -41,7 +41,7 @@ Pass target URL `psiurl` query parameter.
 
 e.g., `http://localhost:8000/?psiurl=https://www.example.com&category=pwa&category=seo`
 
-The followings query parameters are also supported as options:
+The following query parameters are also supported as options:
 
 `psiurl` - URL to audit
 `category` - Category to enable. One per category.
