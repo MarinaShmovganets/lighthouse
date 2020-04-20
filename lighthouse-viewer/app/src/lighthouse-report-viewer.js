@@ -123,10 +123,10 @@ class LighthouseReportViewer {
     } else if (jsonurl) {
       loadPromise = fetch(jsonurl).then(resp => resp.json())
         .then(json => {
-          this._reportIsFromJSON = true
-          this._replaceReportHtml(json)
+          this._reportIsFromJSON = true;
+          this._replaceReportHtml(json);
         })
-        .catch(err => logger.error(err.message))
+        .catch(err => logger.error(err.message));
     }
 
     return loadPromise.finally(() => this._toggleLoadingBlur(false));
