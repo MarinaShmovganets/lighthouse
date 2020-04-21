@@ -47,7 +47,7 @@ expect.extend({
  * Some tests use the result of a LHR processed by our proto serialization.
  * Proto is an annoying dependency to setup, so we allows tests that use it
  * to be skipped when run locally. This makes external contributions simpler.
- * 
+ *
  * Along with the sample LHR, this function returns jest `it` and `describe`
  * functions that will skip if the sample LHR could not be loaded.
  */
