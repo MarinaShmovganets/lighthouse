@@ -39,16 +39,20 @@ jobs:
 
     - run: yarn --frozen-lockfile
     - run: yarn build-all
+    - run: yarn bundlesize
     - run: yarn diff:sample-json
+    - run: yarn tsc -p .
     - run: yarn lint
     - run: yarn unit-core
-    - run: yarn tsc -p .
+    - run: yarn test-clients
+    - run: yarn test-viewer
+    - run: yarn test-lantern
+    - run: yarn test-legacy-javascript
+    - run: yarn test-bundle
+    - run: yarn i18n:checks
+    - run: yarn dogfood-lhci
+    - run: yarn test-docs
+    - run: yarn smoke
 
-    # buildtracker runs `git merge-base HEAD origin/master` which needs more history than depth=1. https://github.com/paularmstrong/build-tracker/issues/106
-    - name: Deepen git fetch (for buildtracker)
-      run: git fetch --deepen=100
-    - name: Store in buildtracker
-      run: yarn bt-cli upload-build
-      env:
-        # https://buildtracker.dev/docs/guides/github-actions#configuration
-        BT_API_AUTH_TOKEN: ${{ secrets.BT_API_AUTH_TOKEN }}
+    # Fail if any changes were written to source files (ex, from: build/build-cdt-lib.js).
+    - run: git diff --exit-code
