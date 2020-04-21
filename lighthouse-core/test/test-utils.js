@@ -47,6 +47,9 @@ expect.extend({
  * Some tests use the result of a LHR processed by our proto serialization.
  * Proto is an annoying dependency to setup, so we allows tests that use it
  * to be skipped when run locally. This makes external contributions simpler.
+ * 
+ * Along with the sample LHR, this function returns jest `it` and `describe`
+ * functions that will skip if the sample LHR could not be loaded.
  */
 function getProtoRoundTrip() {
   let sampleResultsRoundtripStr;
@@ -64,11 +67,7 @@ function getProtoRoundTrip() {
     // Otherwise no proto roundtrip for tests, so skip them.
     // This is fine for running the tests locally.
 
-    itIfProtoExists = (...args) => {
-      // eslint-disable-next-line no-console
-      console.warn('Skipping test - you need to run yarn test-proto first.');
-      it.skip(...args);
-    };
+    itIfProtoExists = it.skip;
     describeIfProtoExists = describe.skip;
   }
 
