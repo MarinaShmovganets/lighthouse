@@ -23,7 +23,7 @@ For more information on deployment, see `releasing.md`.
 
 ## Usage
 
-### Load from Gist
+### Load JSON from Gist
 
 Pass the GitHub Gist identifier as `gist` query parameter.
 
