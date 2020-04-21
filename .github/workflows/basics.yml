@@ -45,12 +45,15 @@ jobs:
     - run: yarn lint
     - run: yarn unit-core
 
-    - name: Run headless Chrome tests
+    - name: yarn test-clients
       uses: GabrielBB/xvfb-action@v1.0
       with:
-        run:
-        - yarn test-clients
-        - yarn smoke
+        run: yarn test-clients
+    
+    - name: yarn smoke
+      uses: GabrielBB/xvfb-action@v1.0
+      with:
+        run: yarn smoke
 
     - run: yarn test-viewer
     - run: yarn test-lantern
