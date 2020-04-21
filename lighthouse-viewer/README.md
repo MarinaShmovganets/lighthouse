@@ -29,7 +29,7 @@ Pass the GitHub Gist identifier as `gist` query parameter.
 
 e.g., `http://localhost:8000/?gist=bd1779783a5bbcb348564a58f80f7099`
 
-### Load from JSON
+### Load JSON from URL
 
 Pass the absolute URL as `jsonurl` query parameter.
 
