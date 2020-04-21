@@ -35,7 +35,7 @@ Pass the absolute URL as `jsonurl` query parameter.
 
 e.g., `http://localhost:8000/?josnurl=https://gist.githubusercontent.com/Kikobeats/d570a1aa285c5d1d97bbda10b92fb97f/raw/4b0f14a5914edd25c95b4bd9d09728ab42181c3e/lighthouse.json`
 
-### Load from PageSpeed Insights
+### Run and load from PageSpeed Insights
 
 Pass target URL `psiurl` query parameter.
 
