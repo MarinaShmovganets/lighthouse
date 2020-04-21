@@ -209,7 +209,7 @@ class LighthouseReportViewer {
       container.textContent = '';
       throw e;
     } finally {
-      this._reportIsFromGist = this._reportIsFromPSI = false;
+      this._reportIsFromGist = this._reportIsFromPSI = this._reportIsFromJSON = false;
     }
 
     // Remove the placeholder UI once the user has loaded a report.
