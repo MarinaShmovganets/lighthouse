@@ -121,7 +121,7 @@ class LighthouseReportViewer {
         this._replaceReportHtml(reportJson);
       }).catch(err => logger.error(err.message));
     } else if (jsonurl) {
-      const firebaseAuth = this._github.getFirebaseAuth(); // new method that needs to be added to return `this._auth`
+      const firebaseAuth = this._github.getFirebaseAuth();
       loadPromise = firebaseAuth.getAccessTokenIfLoggedIn()
         .then(token => token ? Promise.reject(new Error('Can only use jsonurl when not logged in')) : null)
         .then(() => fetch(jsonurl))
