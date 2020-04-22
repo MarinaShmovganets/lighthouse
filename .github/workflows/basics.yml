@@ -43,17 +43,21 @@ jobs:
     - run: yarn diff:sample-json
     - run: yarn tsc -p .
     - run: yarn lint
-    - run: yarn unit-core
+    # - run: yarn unit-core
 
-    - name: yarn test-clients
-      uses: GabrielBB/xvfb-action@v1.0
-      with:
-        run: yarn test-clients
+    # - name: yarn test-clients
+    #   uses: GabrielBB/xvfb-action@v1.0
+    #   with:
+    #     run: yarn test-clients
     
-    - name: yarn smoke
-      uses: GabrielBB/xvfb-action@v1.0
-      with:
-        run: yarn smoke
+    # - name: yarn smoke
+    #   uses: GabrielBB/xvfb-action@v1.0
+    #   with:
+    #     run: yarn smoke
+    
+    - run: sudo apt-get install xvfb
+    - run: xvfb-run --auto-servernum yarn test-clients
+    - run: xvfb-run --auto-servernum yarn smoke
 
     - run: yarn test-viewer
     - run: yarn test-lantern
