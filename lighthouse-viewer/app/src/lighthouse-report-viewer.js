@@ -126,7 +126,7 @@ class LighthouseReportViewer {
         .then(token => {
           return token
             ? Promise.reject(new Error('Can only use jsonurl when not logged in'))
-            : null
+            : null;
         })
         .then(() => fetch(jsonurl))
         .then(resp => resp.json())
