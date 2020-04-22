@@ -1,5 +1,7 @@
 # `legacy-javascript` Validation Tool
 
+Creates many projects using specific babel transforms / polyfills (called variants) and aggregates the results of the LegacyJavascript audit for each.
+
 Run:
 
 ```sh
@@ -19,7 +21,7 @@ There are two outputs to this test:
 * summary-sizes.txt
 * summary-signals.json
 
-`summary-sizes.txt` lists each of the variants (grouped by type) and sorted by their byte size. This is mostly a diagnostic tool and changes in this can be ignored. This is checked in because whenever the lockfile is updated, `summary-sizes.txt` tells us things like if transforms are getting worse. And it is a quick reference for the relative weight of each of these transform/polyfills.
+`summary-sizes.txt` lists each of the variants (grouped by type) and sorted by their byte size. This is mostly a diagnostic tool and changes in this can be ignored. This is checked in for purely informative reasons–whenever lockfile is updated, changes in `summary-sizes.txt` give an indication of how transforms or polyfills might be changing in the developer ecosystem. It's also a quick reference for the relative cost of each of these transform/polyfills.
 
 `summary-signals.json` is for preventing regressions in the audit. `.variantsMissingSignals` should at least have the babel-preset-env=true variant (since this whole test is about finding signals when babel-preset-env is NOT used). There may be more missing variants since it's just a heuristic. The number of these should only go down as the pattern matching improves.
 

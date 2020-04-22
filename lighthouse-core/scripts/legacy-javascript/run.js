@@ -279,9 +279,9 @@ function createSummarySizes() {
     lines.push(path.relative(VARIANT_DIR, variantGroupFolder));
 
     const variants = [];
-    for (const variantFolder of glob.sync(`${variantGroupFolder}/**/main.bundle.min.js `)) {
-      const size = fs.readFileSync(variantFolder).length;
-      variants.push({name: path.relative(variantGroupFolder, variantFolder), size});
+    for (const variantBundle of glob.sync(`${variantGroupFolder}/**/main.bundle.min.js `)) {
+      const size = fs.readFileSync(variantBundle).length;
+      variants.push({name: path.relative(variantGroupFolder, variantBundle), size});
     }
 
     const maxNumberChars = Math.ceil(Math.max(...variants.map(v => Math.log10(v.size))));
