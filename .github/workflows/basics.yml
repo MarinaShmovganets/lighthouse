@@ -7,7 +7,7 @@ name: 💡🏠
 on: [push]
 
 jobs:
-  basics:
+  ci:
 
     runs-on: ubuntu-latest
     strategy:
