@@ -173,8 +173,8 @@ describe('LegacyJavaScript signals', () => {
       'core-js-2-preset-env-esmodules/true',
       'core-js-3-preset-env-esmodules/true',
     ];
-    for (const variant of expectedMissingSignals) {
-      expect(signalSummary.variantsMissingSignals).toContain(variant);
+    for (const expectedVariant of expectedMissingSignals) {
+      expect(signalSummary.variantsMissingSignals).toContain(expectedVariant);
     }
   });
 });
