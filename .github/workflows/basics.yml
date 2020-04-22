@@ -58,11 +58,11 @@ jobs:
     - run: sudo apt-get install xvfb
     - run: xvfb-run --auto-servernum yarn test-clients
     - run: xvfb-run --auto-servernum yarn smoke
+    - run: xvfb-run --auto-servernum yarn test-bundle
 
     - run: yarn test-viewer
     - run: yarn test-lantern
     - run: yarn test-legacy-javascript
-    - run: yarn test-bundle
     - run: yarn i18n:checks
     - run: yarn dogfood-lhci
     - run: yarn test-docs
