@@ -56,7 +56,7 @@ jobs:
     - run: yarn type-check
     - run: yarn lint
     - run: yarn test-proto # Run before unit-core because the roundtrip json is needed for proto tests.
-    - run: yarn unit-core
+    - run: yarn unit
 
     # Run tests that require headfull Chrome.
     - run: sudo apt-get install xvfb
@@ -65,7 +65,6 @@ jobs:
     - run: xvfb-run --auto-servernum yarn test-bundle
     - run: xvfb-run --auto-servernum yarn test-docs
 
-    - run: yarn test-viewer
     - run: yarn test-lantern
     - run: yarn test-legacy-javascript
     - run: yarn i18n:checks
