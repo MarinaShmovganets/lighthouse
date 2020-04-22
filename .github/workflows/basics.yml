@@ -39,7 +39,7 @@ jobs:
     - run: yarn --frozen-lockfile
     - run: yarn build-all
     - run: yarn diff:sample-json
-    - run: yarn tsc -p .
+    - run: yarn type-check
     - run: yarn lint
     - run: yarn unit-core
 
