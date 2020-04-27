@@ -65,6 +65,15 @@ function runA11yChecks() {
         // avoid circular JSON concerns
         node.element = node.any = node.all = node.none = undefined;
       });
+
+      // Ensure errors can be serialized over the protocol
+      if (result.error instanceof Error) {
+        result.error = Object.assign({
+          name: result.error.name,
+          message: result.error.message,
+          stack: result.error.stack,
+        }, result.error);
+      }
     };
 
     // Augment the node objects with outerHTML snippet & custom path string
