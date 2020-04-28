@@ -57,7 +57,8 @@ describe('ReportGenerator', () => {
       const templates = new jsdom.JSDOM(TEMPLATES_FILE);
       assert.equal(page.window.document.querySelectorAll('template[id^="tmpl-"]').length,
         templates.window.document.querySelectorAll('template[id^="tmpl-"]').length,
-        'all templates injected');
+        'all templates injected'
+      );
     });
 
     it('should inject the report CSS', () => {
@@ -99,6 +100,14 @@ describe('ReportGenerator', () => {
 
       const csvOutput = ReportGenerator.generateReport(sampleResults, 'csv');
       fs.writeFileSync(path, csvOutput);
+
+      const lines = csvOutput.split('\n');
+      expect(lines).toHaveLength(145);
+      expect(lines.slice(0, 2).join('\n')).toMatchInlineSnapshot(`
+        "requestedUrl,finalUrl,category,name,title,type,score
+        \\"http://localhost:10200/dobetterweb/dbw_tester.html\\",\\"http://localhost:10200/dobetterweb/dbw_tester.html\\",\\"Performance\\",\\"first-contentful-paint\\",\\"First Contentful Paint\\",\\"numeric\\",\\"0.51\\"
+        "
+      `);
 
       try {
         await csvValidator(path, headers);
