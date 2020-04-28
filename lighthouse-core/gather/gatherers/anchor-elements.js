@@ -47,6 +47,7 @@ function collectAnchorElements() {
     if (node instanceof HTMLAnchorElement) {
       return {
         href: node.href,
+        rawHref: node.getAttribute('href') || '',
         text: node.innerText, // we don't want to return hidden text, so use innerText
         rel: node.rel,
         target: node.target,
@@ -59,6 +60,7 @@ function collectAnchorElements() {
 
     return {
       href: resolveURLOrEmpty(node.href.baseVal),
+      rawHref: node.getAttribute('href') || '',
       text: node.textContent || '',
       rel: '',
       target: node.target.baseVal || '',

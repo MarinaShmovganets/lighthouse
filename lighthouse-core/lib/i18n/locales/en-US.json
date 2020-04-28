@@ -965,6 +965,18 @@
   "lighthouse-core/audits/resource-summary.js | title": {
     "message": "Keep request counts low and transfer sizes small"
   },
+  "lighthouse-core/audits/seo/anchor-href.js | columnFailingAnchors": {
+    "message": "Failing Anchor Elements"
+  },
+  "lighthouse-core/audits/seo/anchor-href.js | description": {
+    "message": "Search engines use hyperlinks to crawl websites"
+  },
+  "lighthouse-core/audits/seo/anchor-href.js | failureTitle": {
+    "message": "Anchors do not have crawlable hyperlinks"
+  },
+  "lighthouse-core/audits/seo/anchor-href.js | title": {
+    "message": "Anchors have crawlable hyperlinks"
+  },
   "lighthouse-core/audits/seo/canonical.js | description": {
     "message": "Canonical links suggest which URL to show in search results. [Learn more](https://web.dev/canonical)."
   },

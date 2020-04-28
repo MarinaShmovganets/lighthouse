@@ -316,7 +316,10 @@ declare global {
       /** @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#Attributes */
       export interface AnchorElement {
         rel: string
+        /** The computed href property: https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-88517319, use `rawHref` for the exact attribute value */
         href: string
+        /** The exact value of the href attribute value, as it is in the DOM */
+        rawHref: string
         text: string
         target: string
         devtoolsNodePath: string
