@@ -68,11 +68,12 @@ function runA11yChecks() {
 
       // Ensure errors can be serialized over the protocol
       if (result.error instanceof Error) {
-        result.error = Object.assign({
+        result.error = {
           name: result.error.name,
           message: result.error.message,
           stack: result.error.stack,
-        }, result.error);
+          errorNode: result.error.errorNode,
+        };
       }
     };
 
