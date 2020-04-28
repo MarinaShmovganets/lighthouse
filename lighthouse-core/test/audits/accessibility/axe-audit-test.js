@@ -60,8 +60,8 @@ describe('Accessibility: axe-audit', () => {
         },
       };
 
-      const output = FakeA11yAudit.audit(artifacts);
-      assert.equal(output.errorMessage, 'axe-core Error: Feature is not supported on your platform');
+      const {errorMessage} = FakeA11yAudit.audit(artifacts);
+      assert.equal(errorMessage, 'axe-core Error: Feature is not supported on your platform');
     });
 
     it('returns axe error message to the caller when errored without a message', () => {
