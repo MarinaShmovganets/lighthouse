@@ -57,8 +57,7 @@ describe('ReportGenerator', () => {
       const templates = new jsdom.JSDOM(TEMPLATES_FILE);
       assert.equal(page.window.document.querySelectorAll('template[id^="tmpl-"]').length,
         templates.window.document.querySelectorAll('template[id^="tmpl-"]').length,
-        'all templates injected'
-      );
+        'all templates injected');
     });
 
     it('should inject the report CSS', () => {
