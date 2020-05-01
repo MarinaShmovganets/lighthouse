@@ -5,17 +5,17 @@
  */
 'use strict';
 
-const Gatherer = require('./gatherer.js');
-const pageFunctions = require('../../lib/page-functions.js');
-const TraceProcessor = require('../../lib/tracehouse/trace-processor.js');
-
-const LH_ATTRIBUTE_MARKER = 'lhtemp';
-
 /**
  * @fileoverview
  * This gatherer find the Largest Contentful Paint element identified in the trace. Since the trace only has the nodeId of the element,
  * we temporarily add an attribute so that we can identify the element in the DOM.
  */
+
+const Gatherer = require('./gatherer.js');
+const pageFunctions = require('../../lib/page-functions.js');
+const TraceProcessor = require('../../lib/tracehouse/trace-processor.js');
+
+const LH_ATTRIBUTE_MARKER = 'lhtemp';
 
 /**
  * @param {string} attributeMarker
