@@ -7,7 +7,7 @@
 
 /**
  * @fileoverview
- * This gatherer find the Largest Contentful Paint element identified in the trace. Since the trace only has the nodeId of the element,
+ * This gatherer identifies the Largest Contentful Paint element from the trace. Since the trace only has the nodeId of the element,
  * we temporarily add an attribute so that we can identify the element in the DOM.
  */
 
