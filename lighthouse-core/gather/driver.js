@@ -1014,6 +1014,7 @@ class Driver {
     this._networkStatusMonitor = new NetworkRecorder();
 
     this._monitoredUrl = startingUrl;
+    // Reset back to empty
     this._monitoredUrlNavigations = [];
 
     return this.sendCommand('Network.enable');
