@@ -3462,8 +3462,8 @@
         "summary": {}
       }
     },
-    "anchor-href": {
-      "id": "anchor-href",
+    "crawlable-anchors": {
+      "id": "crawlable-anchors",
       "title": "Anchors do not have crawlable hyperlinks",
       "description": "Search engines use hyperlinks to crawl websites",
       "score": 0,
@@ -4317,7 +4317,7 @@
           "group": "seo-content"
         },
         {
-          "id": "anchor-href",
+          "id": "crawlable-anchors",
           "weight": 1,
           "group": "seo-crawl"
         },
@@ -5579,7 +5579,7 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:anchor-href",
+        "name": "lh:audit:crawlable-anchors",
         "duration": 100,
         "entryType": "measure"
       },
@@ -6839,14 +6839,14 @@
       "lighthouse-core/audits/seo/link-text.js | description": [
         "audits[link-text].description"
       ],
-      "lighthouse-core/audits/seo/anchor-href.js | failureTitle": [
-        "audits[anchor-href].title"
+      "lighthouse-core/audits/seo/crawlable-anchors.js | failureTitle": [
+        "audits[crawlable-anchors].title"
       ],
-      "lighthouse-core/audits/seo/anchor-href.js | description": [
-        "audits[anchor-href].description"
+      "lighthouse-core/audits/seo/crawlable-anchors.js | description": [
+        "audits[crawlable-anchors].description"
       ],
-      "lighthouse-core/audits/seo/anchor-href.js | columnFailingAnchors": [
-        "audits[anchor-href].details.headings[0].text"
+      "lighthouse-core/audits/seo/crawlable-anchors.js | columnFailingAnchors": [
+        "audits[crawlable-anchors].details.headings[0].text"
       ],
       "lighthouse-core/audits/seo/is-crawlable.js | title": [
         "audits[is-crawlable].title"

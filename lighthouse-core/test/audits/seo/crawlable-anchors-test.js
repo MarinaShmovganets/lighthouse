@@ -5,13 +5,13 @@
  */
 'use strict';
 
-const AnchorHrefAudit = require('../../../audits/seo/anchor-href.js');
+const CrawlableAnchorsAudit = require('../../../audits/seo/crawlable-anchors.js');
 const assert = require('assert');
 
 /* eslint-env jest */
 
 function runAudit(rawHref) {
-  const {score} = AnchorHrefAudit.audit({
+  const {score} = CrawlableAnchorsAudit.audit({
     AnchorElements: [{
       rawHref,
     }],
@@ -20,7 +20,7 @@ function runAudit(rawHref) {
   return score;
 }
 
-describe('SEO: Anchor Href audit', () => {
+describe('SEO: Crawlable anchors audit', () => {
   it('allows crawlable hrefs', () => {
     assert.equal(runAudit('#top'), 1, 'hash fragment identifier');
     assert.equal(runAudit('mailto:name@example.com'), 1, 'email link with a mailto URI');

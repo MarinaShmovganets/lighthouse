@@ -965,18 +965,6 @@
   "lighthouse-core/audits/resource-summary.js | title": {
     "message": "Keep request counts low and transfer sizes small"
   },
-  "lighthouse-core/audits/seo/anchor-href.js | columnFailingAnchors": {
-    "message": "Failing Anchor Elements"
-  },
-  "lighthouse-core/audits/seo/anchor-href.js | description": {
-    "message": "Search engines use hyperlinks to crawl websites"
-  },
-  "lighthouse-core/audits/seo/anchor-href.js | failureTitle": {
-    "message": "Anchors do not have crawlable hyperlinks"
-  },
-  "lighthouse-core/audits/seo/anchor-href.js | title": {
-    "message": "Anchors have crawlable hyperlinks"
-  },
   "lighthouse-core/audits/seo/canonical.js | description": {
     "message": "Canonical links suggest which URL to show in search results. [Learn more](https://web.dev/canonical)."
   },
@@ -1003,6 +991,18 @@
   },
   "lighthouse-core/audits/seo/canonical.js | title": {
     "message": "Document has a valid `rel=canonical`"
+  },
+  "lighthouse-core/audits/seo/crawlable-anchors.js | columnFailingAnchors": {
+    "message": "Failing Anchor Elements"
+  },
+  "lighthouse-core/audits/seo/crawlable-anchors.js | description": {
+    "message": "Search engines use hyperlinks to crawl websites"
+  },
+  "lighthouse-core/audits/seo/crawlable-anchors.js | failureTitle": {
+    "message": "Anchors do not have crawlable hyperlinks"
+  },
+  "lighthouse-core/audits/seo/crawlable-anchors.js | title": {
+    "message": "Anchors have crawlable hyperlinks"
   },
   "lighthouse-core/audits/seo/font-size.js | description": {
     "message": "Font sizes less than 12px are too small to be legible and require mobile visitors to “pinch to zoom” in order to read. Strive to have >60% of page text ≥12px. [Learn more](https://web.dev/font-size)."

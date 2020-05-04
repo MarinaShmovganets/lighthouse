@@ -403,7 +403,7 @@ Object {
       "path": "seo/link-text",
     },
     Object {
-      "path": "seo/anchor-href",
+      "path": "seo/crawlable-anchors",
     },
     Object {
       "path": "seo/is-crawlable",
@@ -1089,7 +1089,7 @@ Object {
         },
         Object {
           "group": "seo-crawl",
-          "id": "anchor-href",
+          "id": "crawlable-anchors",
           "weight": 1,
         },
         Object {

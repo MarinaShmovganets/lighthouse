@@ -21,13 +21,13 @@ const UIStrings = {
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
-class AnchorHref extends Audit {
+class CrawlableAnchors extends Audit {
   /**
    * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      id: 'anchor-href',
+      id: 'crawlable-anchors',
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
@@ -40,7 +40,7 @@ class AnchorHref extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit({AnchorElements: anchorElements}) {
-    const failingAnchorHrefs = anchorElements.filter(({rawHref}) => {
+    const failingAnchors = anchorElements.filter(({rawHref}) => {
       if (!rawHref) {
         return true;
       }
@@ -66,7 +66,7 @@ class AnchorHref extends Audit {
     }];
 
     /** @type {LH.Audit.Details.Table['items']} */
-    const itemsToDisplay = failingAnchorHrefs.map(node => {
+    const itemsToDisplay = failingAnchors.map(node => {
       return {
         node: {
           type: 'node',
@@ -76,11 +76,11 @@ class AnchorHref extends Audit {
     });
 
     return {
-      score: Number(failingAnchorHrefs.length === 0),
+      score: Number(failingAnchors.length === 0),
       details: Audit.makeTableDetails(headings, itemsToDisplay),
     };
   }
 }
 
-module.exports = AnchorHref;
+module.exports = CrawlableAnchors;
 module.exports.UIStrings = UIStrings;
