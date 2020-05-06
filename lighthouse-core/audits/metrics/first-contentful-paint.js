@@ -32,21 +32,21 @@ class FirstContentfulPaint extends Audit {
   }
 
   /**
-   * @return {{mobile: LH.Audit.ScoreOptions, desktop: LH.Audit.ScoreOptions}}
+   * @return {{mobileScoring: LH.Audit.ScoreOptions, desktopScoring: LH.Audit.ScoreOptions}}
    */
   static get defaultOptions() {
     return {
-      mobile: {
-        // 75th and 95th percentiles HTTPArchive -> median and PODR
+      mobileScoring: {
+        // 75th and 95th percentiles HTTPArchive -> median and PODR, then p10 is derived from them.
         // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
-        // see https://www.desmos.com/calculator/2t1ugwykrl
-        scorePODR: 2000,
-        scoreMedian: 4000,
+        // see https://www.desmos.com/calculator/oqlvmezbze
+        p10: 2336,
+        median: 4000,
       },
-      desktop: {
+      desktopScoring: {
         // SELECT QUANTILES(renderStart, 21) FROM [httparchive:summary_pages.2018_12_15_desktop] LIMIT 1000
-        scorePODR: 800,
-        scoreMedian: 1600,
+        p10: 934,
+        median: 1600,
       },
     };
   }
@@ -61,14 +61,13 @@ class FirstContentfulPaint extends Audit {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const metricComputationData = {trace, devtoolsLog, settings: context.settings};
     const metricResult = await ComputedFcp.request(metricComputationData, context);
-    const scoreOptions =
-      context.options[artifacts.TestedAsMobileDevice === false ? 'desktop' : 'mobile'];
+    const isDesktop = artifacts.TestedAsMobileDevice === false;
+    const scoreOptions = context.options[isDesktop ? 'desktopScoring' : 'mobileScoring'];
 
     return {
-      score: Audit.computeLogNormalScore(
-        metricResult.timing,
-        scoreOptions.scorePODR,
-        scoreOptions.scoreMedian
+      score: Audit.computeLogNormalScoreFrom10th(
+        scoreOptions,
+        metricResult.timing
       ),
       numericValue: metricResult.timing,
       numericUnit: 'millisecond',

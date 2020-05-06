@@ -38,21 +38,21 @@ class InteractiveMetric extends Audit {
   }
 
   /**
-   * @return {{mobile: LH.Audit.ScoreOptions, desktop: LH.Audit.ScoreOptions}}
+   * @return {{mobileScoring: LH.Audit.ScoreOptions, desktopScoring: LH.Audit.ScoreOptions}}
    */
   static get defaultOptions() {
     return {
-      mobile: {
-        // 75th and 95th percentiles HTTPArchive -> median and PODR
+      mobileScoring: {
+        // 75th and 95th percentiles HTTPArchive -> median and PODR, then p10 derived from them.
         // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
-        // see https://www.desmos.com/calculator/5xgy0pyrbp
-        scorePODR: 2900,
-        scoreMedian: 7300,
+        // see https://www.desmos.com/calculator/o98tbeyt1t
+        p10: 3785,
+        median: 7300,
       },
-      desktop: {
+      desktopScoring: {
         // SELECT QUANTILES(fullyLoaded, 21) FROM [httparchive:summary_pages.2018_12_15_desktop] LIMIT 1000
-        scorePODR: 2000,
-        scoreMedian: 4500,
+        p10: 2468,
+        median: 4500,
       },
     };
   }
@@ -68,8 +68,8 @@ class InteractiveMetric extends Audit {
     const metricComputationData = {trace, devtoolsLog, settings: context.settings};
     const metricResult = await Interactive.request(metricComputationData, context);
     const timeInMs = metricResult.timing;
-    const scoreOptions =
-      context.options[artifacts.TestedAsMobileDevice === false ? 'desktop' : 'mobile'];
+    const isDesktop = artifacts.TestedAsMobileDevice === false;
+    const scoreOptions = context.options[isDesktop ? 'desktopScoring' : 'mobileScoring'];
     const extendedInfo = {
       timeInMs,
       timestamp: metricResult.timestamp,
@@ -80,10 +80,9 @@ class InteractiveMetric extends Audit {
     };
 
     return {
-      score: Audit.computeLogNormalScore(
-        timeInMs,
-        scoreOptions.scorePODR,
-        scoreOptions.scoreMedian
+      score: Audit.computeLogNormalScoreFrom10th(
+        scoreOptions,
+        timeInMs
       ),
       numericValue: timeInMs,
       numericUnit: 'millisecond',

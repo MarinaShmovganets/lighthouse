@@ -38,9 +38,9 @@ class EstimatedInputLatency extends Audit {
    */
   static get defaultOptions() {
     return {
-      // see https://www.desmos.com/calculator/srv0hqhf7d
-      scorePODR: 50,
-      scoreMedian: 100,
+      // see https://www.desmos.com/calculator/mgd0hjqnal
+      p10: 58,
+      median: 100,
     };
   }
 
@@ -59,10 +59,9 @@ class EstimatedInputLatency extends Audit {
     const metricResult = await ComputedEil.request(metricComputationData, context);
 
     return {
-      score: Audit.computeLogNormalScore(
-        metricResult.timing,
-        context.options.scorePODR,
-        context.options.scoreMedian
+      score: Audit.computeLogNormalScoreFrom10th(
+        {p10: context.options.p10, median: context.options.median},
+        metricResult.timing
       ),
       numericValue: metricResult.timing,
       numericUnit: 'millisecond',

@@ -65,7 +65,7 @@ function getLogNormalDistribution(median, falloff) {
  * percentile value, at which the score will be 0.9. The score represents the
  * amount of the distribution greater than `value`. All values should be in the
  * same units (e.g. milliseconds). See
- *   https://www.desmos.com/calculator/npnmm5ptf3
+ *   https://www.desmos.com/calculator/o98tbeyt1t
  * for an interactive view of the relationship between these parameters and the
  * typical parameterization (location and shape) of the log-normal distribution.
  * @param {{median: number, p10: number}} parameters

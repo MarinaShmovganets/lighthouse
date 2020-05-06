@@ -52,9 +52,9 @@ class MainThreadWorkBreakdown extends Audit {
    */
   static get defaultOptions() {
     return {
-      // see https://www.desmos.com/calculator/s2eqcifkum
-      scorePODR: 1500,
-      scoreMedian: 4000,
+      // see https://www.desmos.com/calculator/vhglu1x8zv
+      p10: 2017,
+      median: 4000,
     };
   }
 
@@ -115,10 +115,9 @@ class MainThreadWorkBreakdown extends Audit {
     results.sort((a, b) => categoryTotals[b.group] - categoryTotals[a.group]);
     const tableDetails = MainThreadWorkBreakdown.makeTableDetails(headings, results);
 
-    const score = Audit.computeLogNormalScore(
-      totalExecutionTime,
-      context.options.scorePODR,
-      context.options.scoreMedian
+    const score = Audit.computeLogNormalScoreFrom10th(
+      {p10: context.options.p10, median: context.options.median},
+      totalExecutionTime
     );
 
     return {

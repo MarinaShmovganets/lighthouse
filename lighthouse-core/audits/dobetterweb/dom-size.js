@@ -64,11 +64,11 @@ class DOMSize extends Audit {
    */
   static get defaultOptions() {
     return {
-      // 25th and 50th percentiles HTTPArchive -> 50 and 75
+      // 25th and 50th percentiles HTTPArchive -> median and derived p10.
       // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
-      // see https://www.desmos.com/calculator/vqot3wci4g
-      scorePODR: 700,
-      scoreMedian: 1400,
+      // see https://www.desmos.com/calculator/tsunbwqt3f
+      p10: 818,
+      median: 1400,
     };
   }
 
@@ -81,10 +81,9 @@ class DOMSize extends Audit {
   static audit(artifacts, context) {
     const stats = artifacts.DOMStats;
 
-    const score = Audit.computeLogNormalScore(
-      stats.totalBodyElements,
-      context.options.scorePODR,
-      context.options.scoreMedian
+    const score = Audit.computeLogNormalScoreFrom10th(
+      {p10: context.options.p10, median: context.options.median},
+      stats.totalBodyElements
     );
 
     /** @type {LH.Audit.Details.Table['headings']} */

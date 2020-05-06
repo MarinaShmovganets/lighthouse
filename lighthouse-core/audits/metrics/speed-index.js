@@ -32,21 +32,21 @@ class SpeedIndex extends Audit {
   }
 
   /**
-   * @return {{mobile: LH.Audit.ScoreOptions, desktop: LH.Audit.ScoreOptions}}
+   * @return {{mobileScoring: LH.Audit.ScoreOptions, desktopScoring: LH.Audit.ScoreOptions}}
    */
   static get defaultOptions() {
     return {
-      mobile: {
-        // 75th and 95th percentiles HTTPArchive -> median and PODR
+      mobileScoring: {
+        // 75th and 95th percentiles HTTPArchive -> median and PODR, then p10 derived from them.
         // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
-        // see https://www.desmos.com/calculator/orvoyu9ygq
-        scorePODR: 2900,
-        scoreMedian: 5800,
+        // see https://www.desmos.com/calculator/dvuzvpl7mi
+        p10: 3387,
+        median: 5800,
       },
-      desktop: {
+      desktopScoring: {
         // SELECT QUANTILES(SpeedIndex, 21) FROM [httparchive:summary_pages.2018_12_15_desktop] LIMIT 1000
-        scorePODR: 1100,
-        scoreMedian: 2300,
+        p10: 1311,
+        median: 2300,
       },
     };
   }
@@ -63,14 +63,13 @@ class SpeedIndex extends Audit {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const metricComputationData = {trace, devtoolsLog, settings: context.settings};
     const metricResult = await ComputedSi.request(metricComputationData, context);
-    const scoreOptions =
-      context.options[artifacts.TestedAsMobileDevice === false ? 'desktop' : 'mobile'];
+    const isDesktop = artifacts.TestedAsMobileDevice === false;
+    const scoreOptions = context.options[isDesktop ? 'desktopScoring' : 'mobileScoring'];
 
     return {
-      score: Audit.computeLogNormalScore(
-        metricResult.timing,
-        scoreOptions.scorePODR,
-        scoreOptions.scoreMedian
+      score: Audit.computeLogNormalScoreFrom10th(
+        scoreOptions,
+        metricResult.timing
       ),
       numericValue: metricResult.timing,
       numericUnit: 'millisecond',

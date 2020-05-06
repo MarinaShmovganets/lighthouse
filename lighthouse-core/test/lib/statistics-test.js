@@ -35,7 +35,7 @@ describe('statistics', () => {
   describe('#getLogNormalScore', () => {
     it('creates a log normal distribution', () => {
       // This curve plotted with the below parameters.
-      // https://www.desmos.com/calculator/vp2o1acdgo
+      // https://www.desmos.com/calculator/ywkivb78cd
       const params = {
         median: 7300,
         p10: 3785,
