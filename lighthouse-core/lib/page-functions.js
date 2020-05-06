@@ -308,17 +308,17 @@ function getNodeLabel(node) {
  */
 function wrapRequestIdleCallback() {
   const nativeRequestIdleCallback = requestIdleCallback;
-  window.requestIdleCallback = (cb, timeout) => {
-    const cbWrap = (deadline) => {
+  window.requestIdleCallback = (cb) => {
+    const cbWrap = (deadline, timeout) => {
       const start = Date.now();
       deadline.__timeRemaining = deadline.timeRemaining;
       deadline.timeRemaining = () => {
         return Math.min(deadline.__timeRemaining(), Math.max(0, 12 - (Date.now() - start)));
       };
       deadline.timeRemaining.toString = () => { return 'function timeRemaining() { [native code] }' };
-      cb(deadline);
+      cb(deadline, timeout);
     }
-    return nativeRequestIdleCallback(cbWrap, timeout);
+    return nativeRequestIdleCallback(cbWrap);
   }
   window.requestIdleCallback.toString = () => { return 'function requestIdleCallback() { [native code] }'; }
 }
