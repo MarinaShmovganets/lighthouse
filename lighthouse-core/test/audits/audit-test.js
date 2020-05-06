@@ -270,4 +270,31 @@ describe('Audit', () => {
       });
     });
   });
+
+  describe('#computeLogNormalScoreFrom10th', () => {
+    it('clamps the score to two decimal places', () => {
+      const params = {
+        median: 1000,
+        p10: 500,
+      };
+
+      assert.strictEqual(Audit.computeLogNormalScoreFrom10th(params, 0), 1);
+      assert.strictEqual(Audit.computeLogNormalScoreFrom10th(params, 250), 0.99);
+      assert.strictEqual(Audit.computeLogNormalScoreFrom10th(params, 1500), 0.23);
+      assert.strictEqual(Audit.computeLogNormalScoreFrom10th(params, 2500), 0.05);
+      assert.strictEqual(Audit.computeLogNormalScoreFrom10th(params, 4000), 0.01);
+      assert.strictEqual(Audit.computeLogNormalScoreFrom10th(params, 4100), 0);
+    });
+  });
+
+  describe('#computeLogNormalScore', () => {
+    it('clamps the score to two decimal places', () => {
+      assert.strictEqual(Audit.computeLogNormalScore(0, 368, 1000), 1);
+      assert.strictEqual(Audit.computeLogNormalScore(250, 368, 1000), 0.99);
+      assert.strictEqual(Audit.computeLogNormalScore(1500, 368, 1000), 0.23);
+      assert.strictEqual(Audit.computeLogNormalScore(2500, 368, 1000), 0.05);
+      assert.strictEqual(Audit.computeLogNormalScore(4000, 368, 1000), 0.01);
+      assert.strictEqual(Audit.computeLogNormalScore(4100, 368, 1000), 0);
+    });
+  });
 });
