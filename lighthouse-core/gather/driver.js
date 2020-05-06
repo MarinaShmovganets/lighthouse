@@ -1472,6 +1472,17 @@ class Driver {
   }
 
   /**
+   * @param {LH.Config.Settings} settings
+   * @return {Promise<void>}
+   */
+  async registerRequestIdleCallbackWrap(settings) {
+    if (settings.throttlingMethod === 'simulate') {
+      const scriptStr = `(${pageFunctions.wrapRequestIdleCallbackString})()`;
+      await this.evaluateScriptOnNewDocument(scriptStr);
+    }
+  }
+
+  /**
    * @param {Array<string>} urls URL patterns to block. Wildcards ('*') are allowed.
    * @return {Promise<void>}
    */

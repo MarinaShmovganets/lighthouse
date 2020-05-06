@@ -303,6 +303,26 @@ function getNodeLabel(node) {
   return tagName;
 }
 
+/**
+ * @return {null}
+ */
+function wrapRequestIdleCallback() {
+  const nativeRequestIdleCallback = requestIdleCallback;
+  window.requestIdleCallback = (cb, timeout) => {
+    const cbWrap = (deadline) => {
+      const start = Date.now();
+      deadline.__timeRemaining = deadline.timeRemaining;
+      deadline.timeRemaining = () => {
+        return Math.min(deadline.__timeRemaining(), Math.max(0, 12 - (Date.now() - start)));
+      };
+      deadline.timeRemaining.toString = () => { return 'function timeRemaining() { [native code] }' };
+      cb(deadline);
+    }
+    return nativeRequestIdleCallback(cbWrap, timeout);
+  }
+  window.requestIdleCallback.toString = () => { return 'function requestIdleCallback() { [native code] }'; }
+}
+
 module.exports = {
   wrapRuntimeEvalErrorInBrowserString: wrapRuntimeEvalErrorInBrowser.toString(),
   registerPerformanceObserverInPageString: registerPerformanceObserverInPage.toString(),
@@ -318,4 +338,5 @@ module.exports = {
   getNodeLabel: getNodeLabel,
   getNodeLabelString: getNodeLabel.toString(),
   isPositionFixedString: isPositionFixed.toString(),
+  wrapRequestIdleCallbackString: wrapRequestIdleCallback.toString(),
 };
