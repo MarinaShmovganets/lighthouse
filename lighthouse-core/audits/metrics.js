@@ -9,7 +9,7 @@ const Audit = require('./audit.js');
 const ComputedTimingSummary = require('../computed/metrics/timing-summary.js');
 
 /** @type {Set<keyof LH.Artifacts.TimingSummary>} */
-const NON_ROUNDED_METRICS = new Set([
+const DECIMAL_METRIC_KEYS = new Set([
   'cumulativeLayoutShift',
   'observedCumulativeLayoutShift',
 ]);
@@ -43,7 +43,7 @@ class Metrics extends Audit {
 
     for (const [name, value] of Object.entries(metrics)) {
       const key = /** @type {keyof LH.Artifacts.TimingSummary} */ (name);
-      if (typeof value === 'number' && !NON_ROUNDED_METRICS.has(key)) {
+      if (typeof value === 'number' && !DECIMAL_METRIC_KEYS.has(key)) {
         metrics[key] = Math.round(value);
       }
     }
