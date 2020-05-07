@@ -38,21 +38,25 @@ class InteractiveMetric extends Audit {
   }
 
   /**
-   * @return {{mobileScoring: LH.Audit.ScoreOptions, desktopScoring: LH.Audit.ScoreOptions}}
+   * @return {{mobile: {scoring: LH.Audit.ScoreOptions}, desktop: {scoring: LH.Audit.ScoreOptions}}}
    */
   static get defaultOptions() {
     return {
-      mobileScoring: {
+      mobile: {
         // 25th and 5th percentiles HTTPArchive -> median and PODR, then p10 derived from them.
         // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
         // see https://www.desmos.com/calculator/o98tbeyt1t
-        p10: 3785,
-        median: 7300,
+        scoring: {
+          p10: 3785,
+          median: 7300,
+        },
       },
-      desktopScoring: {
+      desktop: {
         // SELECT QUANTILES(fullyLoaded, 21) FROM [httparchive:summary_pages.2018_12_15_desktop] LIMIT 1000
-        p10: 2468,
-        median: 4500,
+        scoring: {
+          p10: 2468,
+          median: 4500,
+        },
       },
     };
   }
@@ -69,7 +73,7 @@ class InteractiveMetric extends Audit {
     const metricResult = await Interactive.request(metricComputationData, context);
     const timeInMs = metricResult.timing;
     const isDesktop = artifacts.TestedAsMobileDevice === false;
-    const scoreOptions = context.options[isDesktop ? 'desktopScoring' : 'mobileScoring'];
+    const options = isDesktop ? context.options.desktop : context.options.mobile;
     const extendedInfo = {
       timeInMs,
       timestamp: metricResult.timestamp,
@@ -81,7 +85,7 @@ class InteractiveMetric extends Audit {
 
     return {
       score: Audit.computeLogNormalScore(
-        scoreOptions,
+        options.scoring,
         timeInMs
       ),
       numericValue: timeInMs,
