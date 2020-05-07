@@ -86,7 +86,7 @@ class PredictivePerf extends Audit {
       pessimisticLCP: lcp.pessimisticEstimate.timeInMs,
     };
 
-    const score = Audit.computeLogNormalScoreFrom10th(
+    const score = Audit.computeLogNormalScore(
       {p10: SCORING_P10, median: SCORING_MEDIAN},
       values.roughEstimateOfTTI
     );

@@ -84,7 +84,7 @@ class TotalByteWeight extends ByteEfficiencyAudit {
         itemA.url.localeCompare(itemB.url);
     }).slice(0, 10);
 
-    const score = ByteEfficiencyAudit.computeLogNormalScoreFrom10th(
+    const score = ByteEfficiencyAudit.computeLogNormalScore(
       {p10: context.options.p10, median: context.options.median},
       totalBytes
     );

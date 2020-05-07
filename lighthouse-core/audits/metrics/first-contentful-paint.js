@@ -65,7 +65,7 @@ class FirstContentfulPaint extends Audit {
     const scoreOptions = context.options[isDesktop ? 'desktopScoring' : 'mobileScoring'];
 
     return {
-      score: Audit.computeLogNormalScoreFrom10th(
+      score: Audit.computeLogNormalScore(
         scoreOptions,
         metricResult.timing
       ),

@@ -81,7 +81,7 @@ class DOMSize extends Audit {
   static audit(artifacts, context) {
     const stats = artifacts.DOMStats;
 
-    const score = Audit.computeLogNormalScoreFrom10th(
+    const score = Audit.computeLogNormalScore(
       {p10: context.options.p10, median: context.options.median},
       stats.totalBodyElements
     );

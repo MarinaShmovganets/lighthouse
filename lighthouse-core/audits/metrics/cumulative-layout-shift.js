@@ -63,7 +63,7 @@ class CumulativeLayoutShift extends Audit {
     };
 
     return {
-      score: Audit.computeLogNormalScoreFrom10th(
+      score: Audit.computeLogNormalScore(
         {p10: context.options.p10, median: context.options.median},
         metricResult.value
       ),

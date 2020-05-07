@@ -80,7 +80,7 @@ class InteractiveMetric extends Audit {
     };
 
     return {
-      score: Audit.computeLogNormalScoreFrom10th(
+      score: Audit.computeLogNormalScore(
         scoreOptions,
         timeInMs
       ),

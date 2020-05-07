@@ -264,7 +264,7 @@ class CacheHeaders extends Audit {
           a.url.localeCompare(b.url);
       });
 
-      const score = Audit.computeLogNormalScoreFrom10th(
+      const score = Audit.computeLogNormalScore(
         {p10: context.options.p10, median: context.options.median},
         totalWastedBytes
       );
