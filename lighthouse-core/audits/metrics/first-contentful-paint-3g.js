@@ -29,7 +29,7 @@ class FirstContentfulPaint3G extends Audit {
    */
   static get defaultOptions() {
     return {
-      // 75th and 95th percentiles HTTPArchive on Fast 3G -> multiply by 1.5 for RTT differential -> median and PODR
+      // 25th and 5th percentiles HTTPArchive on Fast 3G -> multiply by 1.5 for RTT differential -> median and PODR
       // p10 is then derived from them.
       // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
       // https://www.desmos.com/calculator/fflcrsn9sj

@@ -64,7 +64,6 @@ class DOMSize extends Audit {
    */
   static get defaultOptions() {
     return {
-      // 25th and 50th percentiles HTTPArchive -> median and derived p10.
       // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
       // see https://www.desmos.com/calculator/tsunbwqt3f
       p10: 818,

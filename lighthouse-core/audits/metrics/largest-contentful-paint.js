@@ -36,9 +36,9 @@ class LargestContentfulPaint extends Audit {
    */
   static get defaultOptions() {
     return {
-      // 75th and 87th percentiles HTTPArchive -> median and p10 points.
+      // 25th and 13th percentiles HTTPArchive -> median and p10 points.
       // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2020_02_01_mobile?pli=1
-      // Gives 2.5s a score of 0.9. https://web.dev/lcp/#what-is-a-good-lcp-score
+      // https://web.dev/lcp/#what-is-a-good-lcp-score
       // see https://www.desmos.com/calculator/1etesp32kt
       p10: 2500,
       median: 4000,

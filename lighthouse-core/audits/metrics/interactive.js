@@ -43,7 +43,7 @@ class InteractiveMetric extends Audit {
   static get defaultOptions() {
     return {
       mobileScoring: {
-        // 75th and 95th percentiles HTTPArchive -> median and PODR, then p10 derived from them.
+        // 25th and 5th percentiles HTTPArchive -> median and PODR, then p10 derived from them.
         // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
         // see https://www.desmos.com/calculator/o98tbeyt1t
         p10: 3785,

@@ -39,7 +39,7 @@ class CumulativeLayoutShift extends Audit {
    */
   static get defaultOptions() {
     return {
-      // Calibrated to assure 0.1 gets a score of 0.9. https://web.dev/cls/#what-is-a-good-cls-score
+      // https://web.dev/cls/#what-is-a-good-cls-score
       // This 0.1 target score was determined through both manual evaluation and large-scale analysis.
       // see https://www.desmos.com/calculator/ksp7q91nop
       p10: 0.1,

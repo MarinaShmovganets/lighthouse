@@ -37,7 +37,7 @@ class FirstContentfulPaint extends Audit {
   static get defaultOptions() {
     return {
       mobileScoring: {
-        // 75th and 95th percentiles HTTPArchive -> median and PODR, then p10 is derived from them.
+        // 25th and 5th percentiles HTTPArchive -> median and PODR, then p10 is derived from them.
         // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
         // see https://www.desmos.com/calculator/oqlvmezbze
         p10: 2336,
