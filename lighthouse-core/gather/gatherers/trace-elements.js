@@ -18,6 +18,16 @@ const RectHelpers = require('../../lib/rect-helpers.js');
 
 const LH_ATTRIBUTE_MARKER = 'lhtemp';
 
+ /**
+ * @this {HTMLElement}
+ * @param {string} LH_ATTRIBUTE_MARKER
+ * @param {string} metricName
+ */
+function setAttributeMarker(LH_ATTRIBUTE_MARKER, metricName) {
+  const elem = this.nodeType === document.ELEMENT_NODE && this || this.parentElement;
+  if (elem) elem.setAttribute(LH_ATTRIBUTE_MARKER, metricName);
+};
+
 /**
  * @param {string} attributeMarker
  * @return {LH.Artifacts['TraceElements']}
@@ -137,23 +147,24 @@ class TraceElements extends Gatherer {
       backendNodeIds.push(lcpNodeId);
     }
     backendNodeIds.push(...clsNodeIds);
+
     // DOM.getDocument is necessary for pushNodesByBackendIdsToFrontend to properly retrieve nodeIds.
-    await driver.sendCommand('DOM.getDocument', {depth: -1, pierce: true});
-    const translatedIds = await driver.sendCommand('DOM.pushNodesByBackendIdsToFrontend',
-      {backendNodeIds: backendNodeIds});
+    const doc = await driver.sendCommand('DOM.getDocument', {depth: -1, pierce: true});
 
     // Mark the elements so we can find them in the page.
     for (let i = 0; i < backendNodeIds.length; i++) {
       const metricName =
         lcpNodeId === backendNodeIds[i] ? 'largest-contentful-paint' : 'cumulative-layout-shift';
-      const nodeDetails = await driver.sendCommand('DOM.describeNode', {nodeId: translatedIds.nodeIds[i]});
-      if (nodeDetails.node.nodeType != 1) {
-        continue;
-      }
-      await driver.sendCommand('DOM.setAttributeValue', {
-        nodeId: translatedIds.nodeIds[i],
-        name: LH_ATTRIBUTE_MARKER,
-        value: metricName,
+
+      const resolveNodeResponse =
+        await driver.sendCommand('DOM.resolveNode', {backendNodeId: backendNodeIds[i]});
+      const objectId = resolveNodeResponse.object.objectId;
+
+      const res = await driver.sendCommand('Runtime.callFunctionOn', {
+        objectId,
+        functionDeclaration: `function () {
+          (${setAttributeMarker})('${LH_ATTRIBUTE_MARKER}', '${metricName}');
+        }`,
       });
     }
 
@@ -167,6 +178,7 @@ class TraceElements extends Gatherer {
       return (${collectTraceElements})('${LH_ATTRIBUTE_MARKER}');
     })()`;
 
+    console.log(await driver.evaluateAsync(expression, {useIsolation: true}));
     return driver.evaluateAsync(expression, {useIsolation: true});
   }
 }
