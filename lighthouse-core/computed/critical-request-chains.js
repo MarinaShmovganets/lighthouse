@@ -7,7 +7,9 @@
 
 const makeComputedArtifact = require('./computed-artifact.js');
 const NetworkRequest = require('../lib/network-request.js');
-const assert = require('assert').strict;
+// Can't use strict here.
+// https://github.com/GoogleChrome/lighthouse/issues/10732
+const assert = require('assert');
 const NetworkRecords = require('./network-records.js');
 const MainResource = require('./main-resource.js');
 
