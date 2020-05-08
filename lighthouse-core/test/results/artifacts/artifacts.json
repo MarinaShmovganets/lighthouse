@@ -1750,6 +1750,7 @@
     {
       "href": "https://www.google.com/",
       "rawHref": "https://www.google.com/",
+      "name": "",
       "text": "external link",
       "rel": "",
       "target": "_blank",
@@ -1761,6 +1762,7 @@
     {
       "href": "",
       "rawHref": "",
+      "name": "",
       "text": "external link",
       "rel": "",
       "target": "_blank",
@@ -1772,6 +1774,7 @@
     {
       "href": "https://www.google.com/",
       "rawHref": "https://www.google.com/",
+      "name": "",
       "text": "external link",
       "rel": "nofollow",
       "target": "_blank",
@@ -1783,6 +1786,7 @@
     {
       "href": "https://www.google.com/",
       "rawHref": "https://www.google.com/",
+      "name": "",
       "text": "external link that uses rel noopener and another unrelated rel attribute",
       "rel": "noopener nofollow",
       "target": "_blank",
@@ -1794,6 +1798,7 @@
     {
       "href": "https://www.google.com/",
       "rawHref": "https://www.google.com/",
+      "name": "",
       "text": "external link that uses rel noreferrer and another unrelated rel attribute",
       "rel": "noreferrer nofollow",
       "target": "_blank",
@@ -1805,6 +1810,7 @@
     {
       "href": "https://www.google.com/",
       "rawHref": "https://www.google.com/",
+      "name": "",
       "text": "external link that uses rel noopener",
       "rel": "noopener",
       "target": "_blank",
@@ -1816,6 +1822,7 @@
     {
       "href": "https://www.google.com/",
       "rawHref": "https://www.google.com/",
+      "name": "",
       "text": "external link that uses rel noreferrer",
       "rel": "noreferrer",
       "target": "_blank",
@@ -1827,6 +1834,7 @@
     {
       "href": "https://www.google.com/",
       "rawHref": "https://www.google.com/",
+      "name": "",
       "text": "external link that uses rel noopener and noreferrer",
       "rel": "noopener noreferrer",
       "target": "_blank",
@@ -1836,8 +1844,9 @@
       "outerHTML": "<a href=\"https://www.google.com/\" target=\"_blank\" rel=\"noopener noreferrer\">"
     },
     {
-      "href": "http://localhost:54106/dobetterweb/doesnotexist",
+      "href": "http://localhost:51938/dobetterweb/doesnotexist",
       "rawHref": "./doesnotexist",
+      "name": "",
       "text": "internal link is ok",
       "rel": "",
       "target": "_blank",
@@ -1849,6 +1858,7 @@
     {
       "href": "javascript:void(0)",
       "rawHref": "javascript:void(0)",
+      "name": "",
       "text": "",
       "rel": "",
       "target": "_blank",
@@ -1860,6 +1870,7 @@
     {
       "href": "mailto:inbox@email.com",
       "rawHref": "mailto:inbox@email.com",
+      "name": "",
       "text": "",
       "rel": "",
       "target": "_blank",

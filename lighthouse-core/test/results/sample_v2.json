@@ -3510,7 +3510,7 @@
           {
             "node": {
               "type": "node",
-              "snippet": "<a target=\"_blank\">"
+              "snippet": "<a target=\"_blank\">external link"
             }
           },
           {

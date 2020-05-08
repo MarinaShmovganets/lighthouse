@@ -48,6 +48,7 @@ function collectAnchorElements() {
       return {
         href: node.href,
         rawHref: node.getAttribute('href') || '',
+        name: node.name,
         text: node.innerText, // we don't want to return hidden text, so use innerText
         rel: node.rel,
         target: node.target,
@@ -72,6 +73,28 @@ function collectAnchorElements() {
   });
 }
 
+/**
+ * @param {LH.Gatherer.PassContext['driver']} driver
+ * @param {string} devtoolsNodePath
+ */
+async function getEventListeners(driver, devtoolsNodePath) {
+  const {nodeId} = await driver.sendCommand('DOM.pushNodeByPathToFrontend', {
+    path: devtoolsNodePath
+  });
+
+  const {object: {objectId = ''}} = await driver.sendCommand('DOM.resolveNode', {
+    nodeId
+  });
+
+  const response = await driver.sendCommand('DOMDebugger.getEventListeners', {
+    objectId
+  });
+
+  if (response.listeners.length > 0) {
+    return response;
+  }
+}
+
 class AnchorElements extends Gatherer {
   /**
    * @param {LH.Gatherer.PassContext} passContext
@@ -89,8 +112,22 @@ class AnchorElements extends Gatherer {
       return (${collectAnchorElements})();
     })()`;
 
-    /** @type {Array<LH.Artifacts.AnchorElement>} */
-    return driver.evaluateAsync(expression, {useIsolation: true});
+    /** @type {LH.Artifacts['AnchorElements']} */
+    const anchors = await driver.evaluateAsync(expression, {useIsolation: true});
+    await driver.sendCommand('DOM.enable');
+
+    // DOM.getDocument is necessary for pushNodesByBackendIdsToFrontend to properly retrieve nodeIds.
+    await driver.sendCommand('DOM.getDocument', {depth: -1, pierce: true});
+    const anchorsWithEventListeners = anchors.map(async anchor => {
+      return {
+        ...anchor,
+        ...await getEventListeners(driver, anchor.devtoolsNodePath)
+      }
+    });
+
+    const result = await Promise.all(anchorsWithEventListeners);
+    await driver.sendCommand('DOM.disable');
+    return result;
   }
 }
 

@@ -40,20 +40,20 @@ class CrawlableAnchors extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit({AnchorElements: anchorElements}) {
-    const failingAnchors = anchorElements.filter(({rawHref}) => {
-      if (!rawHref) {
-        return true;
-      }
-
-      if (rawHref === '#') {
-        return true;
-      }
-
-      if (rawHref.startsWith('javascript:')) {
-        return true;
-      }
-
+    const failingAnchors = anchorElements.filter(({rawHref, listeners = [], name = ''}) => {
       if (rawHref.startsWith('file:')) {
+        return true;
+      }
+
+      const hasClickHandler = listeners.some(({type}) => type === 'click');
+
+      if (hasClickHandler || name.trim().length > 0) return;
+
+      if (rawHref === '') {
+        return true;
+      }
+
+      if (rawHref.startsWith('javascript:void(0)')) {
         return true;
       }
     });
@@ -70,7 +70,7 @@ class CrawlableAnchors extends Audit {
       return {
         node: {
           type: 'node',
-          snippet: node.outerHTML,
+          snippet: node.outerHTML + node.text,
         },
       };
     });

@@ -322,12 +322,14 @@ declare global {
         href: string
         /** The exact value of the href attribute value, as it is in the DOM */
         rawHref: string
+        name?: string
         text: string
         target: string
         devtoolsNodePath: string
         selector: string
         nodeLabel: string
         outerHTML: string
+        listeners?: Array<Crdp.DOMDebugger.EventListener>
       }
 
       export interface Font {
