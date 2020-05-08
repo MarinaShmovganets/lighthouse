@@ -18,15 +18,15 @@ const RectHelpers = require('../../lib/rect-helpers.js');
 
 const LH_ATTRIBUTE_MARKER = 'lhtemp';
 
- /**
+/**
  * @this {HTMLElement}
  * @param {string} LH_ATTRIBUTE_MARKER
  * @param {string} metricName
  */
 function setAttributeMarker(LH_ATTRIBUTE_MARKER, metricName) {
-  const elem = this.nodeType === document.ELEMENT_NODE && this || this.parentElement;
+  const elem = this.nodeType === document.ELEMENT_NODE ? this : this.parentElement;
   if (elem) elem.setAttribute(LH_ATTRIBUTE_MARKER, metricName);
-};
+}
 
 /**
  * @param {string} attributeMarker
@@ -148,22 +148,18 @@ class TraceElements extends Gatherer {
     }
     backendNodeIds.push(...clsNodeIds);
 
-    // DOM.getDocument is necessary for pushNodesByBackendIdsToFrontend to properly retrieve nodeIds.
-    const doc = await driver.sendCommand('DOM.getDocument', {depth: -1, pierce: true});
-
     // Mark the elements so we can find them in the page.
     for (let i = 0; i < backendNodeIds.length; i++) {
       const metricName =
         lcpNodeId === backendNodeIds[i] ? 'largest-contentful-paint' : 'cumulative-layout-shift';
-
       const resolveNodeResponse =
         await driver.sendCommand('DOM.resolveNode', {backendNodeId: backendNodeIds[i]});
       const objectId = resolveNodeResponse.object.objectId;
-
-      const res = await driver.sendCommand('Runtime.callFunctionOn', {
+      await driver.sendCommand('Runtime.callFunctionOn', {
         objectId,
         functionDeclaration: `function () {
-          (${setAttributeMarker})('${LH_ATTRIBUTE_MARKER}', '${metricName}');
+          ${setAttributeMarker};
+          setAttributeMarker.call(this, '${LH_ATTRIBUTE_MARKER}', '${metricName}');
         }`,
       });
     }
