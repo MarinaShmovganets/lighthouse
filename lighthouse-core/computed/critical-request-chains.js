@@ -7,9 +7,6 @@
 
 const makeComputedArtifact = require('./computed-artifact.js');
 const NetworkRequest = require('../lib/network-request.js');
-// Can't use strict here.
-// https://github.com/GoogleChrome/lighthouse/issues/10732
-const assert = require('assert');
 const NetworkRecords = require('./network-records.js');
 const MainResource = require('./main-resource.js');
 
@@ -23,7 +20,9 @@ class CriticalRequestChains {
    * @return {boolean}
    */
   static isCritical(request, mainResource) {
-    assert.ok(mainResource, 'mainResource not provided');
+    if (!mainResource) {
+      throw new Error('mainResource not provided');
+    }
 
     // Treat any preloaded resource as non-critical
     if (request.isLinkPreload) {
