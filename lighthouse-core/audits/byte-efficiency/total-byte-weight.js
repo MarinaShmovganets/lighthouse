@@ -45,10 +45,11 @@ class TotalByteWeight extends ByteEfficiencyAudit {
    */
   static get defaultOptions() {
     return {
-      // see https://www.desmos.com/calculator/gpmjeykbwr
-      // ~75th and ~90th percentiles http://httparchive.org/interesting.php?a=All&l=Feb%201%202017&s=All#bytesTotal
-      scorePODR: 2500 * 1024,
-      scoreMedian: 4000 * 1024,
+      // see https://www.desmos.com/calculator/h7kfv68jre
+      // ~25th and ~10th percentiles, with resulting p10 computed.
+      // http://httparchive.org/interesting.php?a=All&l=Feb%201%202017&s=All#bytesTotal
+      p10: 2667 * 1024,
+      median: 4000 * 1024,
     };
   }
 
@@ -84,15 +85,14 @@ class TotalByteWeight extends ByteEfficiencyAudit {
     }).slice(0, 10);
 
     const score = ByteEfficiencyAudit.computeLogNormalScore(
-      totalBytes,
-      context.options.scorePODR,
-      context.options.scoreMedian
+      {p10: context.options.p10, median: context.options.median},
+      totalBytes
     );
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'url', itemType: 'url', text: str_(i18n.UIStrings.columnURL)},
-      {key: 'totalBytes', itemType: 'bytes', text: str_(i18n.UIStrings.columnSize)},
+      {key: 'totalBytes', itemType: 'bytes', text: str_(i18n.UIStrings.columnTransferSize)},
     ];
 
     const tableDetails = ByteEfficiencyAudit.makeTableDetails(headings, results);

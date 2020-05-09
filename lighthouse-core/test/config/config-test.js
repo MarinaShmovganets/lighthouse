@@ -6,7 +6,7 @@
 'use strict';
 
 const Config = require('../../config/config.js');
-const assert = require('assert');
+const assert = require('assert').strict;
 const path = require('path');
 const defaultConfig = require('../../config/default-config.js');
 const log = require('lighthouse-logger');
@@ -833,6 +833,7 @@ describe('Config', () => {
 
     assert.equal(config.settings.throttlingMethod, 'devtools');
     assert.equal(config.passes[0].passName, 'defaultPass');
+    assert.ok(config.passes[0].pauseAfterFcpMs >= 5000, 'did not adjust fcp quiet ms');
     assert.ok(config.passes[0].pauseAfterLoadMs >= 5000, 'did not adjust load quiet ms');
     assert.ok(config.passes[0].cpuQuietThresholdMs >= 5000, 'did not adjust cpu quiet ms');
     assert.ok(config.passes[0].networkQuietThresholdMs >= 5000, 'did not adjust network quiet ms');
@@ -1160,8 +1161,21 @@ describe('Config', () => {
       };
       const extendedConfig = new Config(extended);
 
+      // When gatherers have instance properties that are bind()'d, they'll not match.
+      // Gatherers in each config will still be compared via the constructor on .implementation.
+      // https://github.com/GoogleChrome/lighthouse/pull/10090#discussion_r382864319
+      function deleteInstancesForTest(config) {
+        for (const pass of config.passes) {
+          for (const gatherer of pass.gatherers) {
+            delete gatherer.instance;
+          }
+        }
+      }
+      deleteInstancesForTest(extendedConfig);
+      deleteInstancesForTest(config);
+
       assert.equal(config.passes.length, 1, 'did not filter config');
-      assert.deepStrictEqual(config, extendedConfig, 'had mutations');
+      expect(config).toEqual(extendedConfig); // ensure we didn't have mutations
     });
 
     it('should filter out other passes if passed Performance', () => {

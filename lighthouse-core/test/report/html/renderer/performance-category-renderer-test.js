@@ -7,7 +7,7 @@
 
 /* eslint-env jest, browser */
 
-const assert = require('assert');
+const assert = require('assert').strict;
 const fs = require('fs');
 const jsdom = require('jsdom');
 const Util = require('../../../../report/html/renderer/util.js');
@@ -91,7 +91,7 @@ describe('PerfCategoryRenderer', () => {
     const disclamerLink = disclaimerEl.querySelector('a');
     assert.ok(disclamerLink, 'disclaimer contains coverted markdown link');
     const disclamerUrl = new URL(disclamerLink.href);
-    assert.strictEqual(disclamerUrl.hostname, 'github.com');
+    assert.strictEqual(disclamerUrl.hostname, 'web.dev');
   });
 
   it('renders the failing performance opportunities', () => {
