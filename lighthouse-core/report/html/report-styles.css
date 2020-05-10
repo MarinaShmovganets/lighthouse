@@ -60,14 +60,14 @@
   --color-white: #FFFFFF;
 
   /* Context-specific colors */
-  --color-average: var(--color-orange);
   --color-average-secondary: var(--color-orange-700);
-  --color-fail: var(--color-red);
+  --color-average: var(--color-orange);
   --color-fail-secondary: var(--color-red-700);
+  --color-fail: var(--color-red);
   --color-hover: var(--color-gray-50);
   --color-informative: var(--color-blue-900);
-  --color-pass: var(--color-green);
   --color-pass-secondary: var(--color-green-700);
+  --color-pass: var(--color-green);
 
   /* Component variables */
   --audit-description-padding-left: calc(var(--score-icon-size) + var(--score-icon-margin-left) + var(--score-icon-margin-right));
@@ -194,7 +194,7 @@
     --topbar-background-color: var(--color-gray);
   	--toplevel-warning-background-color: #544B40;
   	--toplevel-warning-message-text-color: var(--color-orange-700);
-	  --toplevel-warning-text-color: var(--color-gray-100);    
+	--toplevel-warning-text-color: var(--color-gray-100);    
 
     /* SVGs */
     --plugin-icon-url: var(--plugin-icon-url-dark);
@@ -1033,8 +1033,8 @@
 }
 
 .lh-warnings__msg {
-	color: var(--toplevel-warning-message-text-color);
-	margin: 0;
+  color: var(--toplevel-warning-message-text-color);
+  margin: 0;
 }
 
 .lh-warnings ul {
