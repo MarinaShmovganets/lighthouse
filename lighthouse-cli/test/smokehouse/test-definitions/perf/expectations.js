@@ -170,36 +170,36 @@ module.exports = [
       },
     },
   },
-  {
-    lhr: {
-      requestedUrl: 'http://localhost:10200/perf/trace-elements.html',
-      finalUrl: 'http://localhost:10200/perf/trace-elements.html',
-      audits: {
-        'largest-contentful-paint-element': {
-          score: null,
-          displayValue: '1 element found',
-          details: {
-            items: [
-              {
-                node: {
-                  type: 'node',
-                  nodeLabel: 'img',
-                  path: '0,HTML,1,BODY,0,DIV,0,IMG',
-                },
-              },
-            ],
-          },
-        },
-        'layout-shift-elements': {
-          score: null,
-          displayValue: '2 elements found',
-          details: {
-            items: {
-              length: 2,
-            },
-          },
-        },
-      },
-    },
-  },
+  // {
+  //   lhr: {
+  //     requestedUrl: 'http://localhost:10200/perf/trace-elements.html',
+  //     finalUrl: 'http://localhost:10200/perf/trace-elements.html',
+  //     audits: {
+  //       'largest-contentful-paint-element': {
+  //         score: null,
+  //         displayValue: '1 element found',
+  //         details: {
+  //           items: [
+  //             {
+  //               node: {
+  //                 type: 'node',
+  //                 nodeLabel: 'img',
+  //                 path: '0,HTML,1,BODY,0,DIV,0,IMG',
+  //               },
+  //             },
+  //           ],
+  //         },
+  //       },
+  //       'layout-shift-elements': {
+  //         score: null,
+  //         displayValue: '2 elements found',
+  //         details: {
+  //           items: {
+  //             length: 2,
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
 ];

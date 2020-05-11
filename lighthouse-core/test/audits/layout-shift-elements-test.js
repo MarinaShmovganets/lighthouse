@@ -26,6 +26,8 @@ describe('Performance: layout-shift-elements audit', () => {
     expect(auditResult.score).toEqual(1);
     expect(auditResult.displayValue).toBeDisplayString('1 element found');
     expect(auditResult.details.items).toHaveLength(1);
+    expect(auditResult.details.items[0]).toHaveProperty('node');
+    expect(auditResult.details.items[0].node).toHaveProperty('type', 'node');
   });
 
   it('correctly surfaces multiple CLS elements', async () => {
