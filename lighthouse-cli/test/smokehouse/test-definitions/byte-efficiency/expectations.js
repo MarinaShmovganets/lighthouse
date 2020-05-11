@@ -225,7 +225,7 @@ const expectations = [
               1: {wastedPercent: '87 +/- 5', url: /lighthouse-2048x1356.webp\?size0/},
               2: {wastedPercent: '53 +/- 5', url: /lighthouse-480x320.jpg/},
               3: {wastedPercent: '75 +/- 5', url: /lighthouse-480x320.webp/},
-              length: 3,
+              length: 4,
             },
           },
         },
