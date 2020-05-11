@@ -1119,16 +1119,16 @@
     "message": "Tap targets are sized appropriately"
   },
   "lighthouse-core/audits/server-response-time.js | description": {
-    "message": "Server Response Time identifies the time at which your server sends a response. [Learn more](https://web.dev/time-to-first-byte)."
+    "message": "Keep the server response time for the main document short because all other requests depend on it. [Learn more](https://web.dev/time-to-first-byte)."
   },
   "lighthouse-core/audits/server-response-time.js | displayValue": {
     "message": "Root document took {timeInMs, number, milliseconds} ms"
   },
   "lighthouse-core/audits/server-response-time.js | failureTitle": {
-    "message": "Reduce server response times"
+    "message": "Reduce initial server response time"
   },
   "lighthouse-core/audits/server-response-time.js | title": {
-    "message": "Server response times are low"
+    "message": "Initial server response time was short"
   },
   "lighthouse-core/audits/service-worker.js | description": {
     "message": "The service worker is the technology that enables your app to use many Progressive Web App features, such as offline, add to homescreen, and push notifications. [Learn more](https://web.dev/service-worker)."

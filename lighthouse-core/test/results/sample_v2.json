@@ -295,8 +295,8 @@
     },
     "server-response-time": {
       "id": "server-response-time",
-      "title": "Server response times are low",
-      "description": "Server Response Time identifies the time at which your server sends a response. [Learn more](https://web.dev/time-to-first-byte).",
+      "title": "Initial server response time was short",
+      "description": "Keep the server response time for the main document short because all other requests depend on it. [Learn more](https://web.dev/time-to-first-byte).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "numericValue": 570.5630000000001,
