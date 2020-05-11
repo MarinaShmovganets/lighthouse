@@ -183,7 +183,8 @@ module.exports = [
               {
                 node: {
                   type: 'node',
-                  nodeLabel: 'Please don\'t move me',
+                  nodeLabel: 'img',
+                  path: '0,HTML,1,BODY,0,DIV,0,IMG',
                 },
               },
             ],
@@ -191,10 +192,10 @@ module.exports = [
         },
         'layout-shift-elements': {
           score: null,
-          displayValue: '1 element found',
+          displayValue: '2 elements found',
           details: {
             items: {
-              length: 1,
+              length: 2,
             },
           },
         },

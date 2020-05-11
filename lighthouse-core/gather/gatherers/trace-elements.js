@@ -16,46 +16,29 @@ const pageFunctions = require('../../lib/page-functions.js');
 const TraceProcessor = require('../../lib/tracehouse/trace-processor.js');
 const RectHelpers = require('../../lib/rect-helpers.js');
 
-const LH_ATTRIBUTE_MARKER = 'lhtemp';
-
 /**
  * @this {HTMLElement}
- * @param {string} LH_ATTRIBUTE_MARKER
  * @param {string} metricName
- */
-function setAttributeMarker(LH_ATTRIBUTE_MARKER, metricName) {
-  const elem = this.nodeType === document.ELEMENT_NODE ? this : this.parentElement;
-  if (elem) elem.setAttribute(LH_ATTRIBUTE_MARKER, metricName);
-}
-
-/**
- * @param {string} attributeMarker
- * @return {LH.Artifacts['TraceElements']}
+ * @return {LH.Artifacts.TraceElement | undefined}
  */
 /* istanbul ignore next */
-function collectTraceElements(attributeMarker) {
-  /** @type {Array<HTMLElement>} */
-  // @ts-ignore - put into scope via stringification
-  const markedElements = getElementsInDocument('[' + attributeMarker + ']'); // eslint-disable-line no-undef
-  /** @type {LH.Artifacts['TraceElements']} */
-  const TraceElements = [];
-  for (const element of markedElements) {
-    const metricName = element.getAttribute(attributeMarker) || '';
-    element.removeAttribute(attributeMarker);
-    // @ts-ignore - put into scope via stringification
-    TraceElements.push({
+function setAttributeMarker(metricName) {
+  const elem = this.nodeType === document.ELEMENT_NODE ? this : this.parentElement; // eslint-disable-line no-undef
+  let traceElement;
+  if (elem) {
+    traceElement = {
       metricName,
       // @ts-ignore - put into scope via stringification
-      devtoolsNodePath: getNodePath(element), // eslint-disable-line no-undef
+      devtoolsNodePath: getNodePath(elem), // eslint-disable-line no-undef
       // @ts-ignore - put into scope via stringification
-      selector: getNodeSelector(element), // eslint-disable-line no-undef
+      selector: getNodeSelector(elem), // eslint-disable-line no-undef
       // @ts-ignore - put into scope via stringification
-      nodeLabel: getNodeLabel(element), // eslint-disable-line no-undef
+      nodeLabel: getNodeLabel(elem), // eslint-disable-line no-undef
       // @ts-ignore - put into scope via stringification
-      snippet: getOuterHTMLSnippet(element), // eslint-disable-line no-undef
-    });
+      snippet: getOuterHTMLSnippet(elem), // eslint-disable-line no-undef
+    };
   }
-  return TraceElements;
+  return traceElement;
 }
 
 class TraceElements extends Gatherer {
@@ -148,34 +131,33 @@ class TraceElements extends Gatherer {
     }
     backendNodeIds.push(...clsNodeIds);
 
-    // Mark the elements so we can find them in the page.
+    const traceElements = [];
     for (let i = 0; i < backendNodeIds.length; i++) {
       const metricName =
         lcpNodeId === backendNodeIds[i] ? 'largest-contentful-paint' : 'cumulative-layout-shift';
       const resolveNodeResponse =
         await driver.sendCommand('DOM.resolveNode', {backendNodeId: backendNodeIds[i]});
       const objectId = resolveNodeResponse.object.objectId;
-      await driver.sendCommand('Runtime.callFunctionOn', {
+      const response = await driver.sendCommand('Runtime.callFunctionOn', {
         objectId,
         functionDeclaration: `function () {
-          ${setAttributeMarker};
-          setAttributeMarker.call(this, '${LH_ATTRIBUTE_MARKER}', '${metricName}');
+          ${setAttributeMarker.toString()};
+          ${pageFunctions.getNodePathString};
+          ${pageFunctions.getNodeSelectorString};
+          ${pageFunctions.getNodeLabelString};
+          ${pageFunctions.getOuterHTMLSnippetString};
+          return setAttributeMarker.call(this, '${metricName}');
         }`,
+        returnByValue: true,
+        awaitPromise: true,
       });
+
+      if (response && response.result && response.result.value) {
+        traceElements.push(response.result.value);
+      }
     }
 
-    const expression = `(() => {
-      ${pageFunctions.getElementsInDocumentString};
-      ${pageFunctions.getNodePathString};
-      ${pageFunctions.getNodeSelectorString};
-      ${pageFunctions.getNodeLabelString};
-      ${pageFunctions.getOuterHTMLSnippetString};
-
-      return (${collectTraceElements})('${LH_ATTRIBUTE_MARKER}');
-    })()`;
-
-    console.log(await driver.evaluateAsync(expression, {useIsolation: true}));
-    return driver.evaluateAsync(expression, {useIsolation: true});
+    return traceElements;
   }
 }
 
