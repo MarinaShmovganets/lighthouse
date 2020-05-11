@@ -170,6 +170,7 @@ module.exports = [
       },
     },
   },
+  // TODO: uncomment when Chrome m83 lands
   // {
   //   lhr: {
   //     requestedUrl: 'http://localhost:10200/perf/trace-elements.html',
