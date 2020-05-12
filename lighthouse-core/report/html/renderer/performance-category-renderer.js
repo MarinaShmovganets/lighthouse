@@ -132,16 +132,9 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     metricAuditsEl.append(..._toggleEl.childNodes);
 
     const metricAudits = category.auditRefs.filter(audit => audit.group === 'metrics');
-
-    const keyMetrics = metricAudits.slice(0, 3);
-    const otherMetrics = metricAudits.slice(3);
-
     const metricsBoxesEl = this.dom.createChildOf(metricAuditsEl, 'div', 'lh-metrics-container');
 
-    keyMetrics.forEach(item => {
-      metricsBoxesEl.appendChild(this._renderMetric(item));
-    });
-    otherMetrics.forEach(item => {
+    metricAudits.forEach(item => {
       metricsBoxesEl.appendChild(this._renderMetric(item));
     });
 
