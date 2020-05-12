@@ -27,21 +27,32 @@ class LargestContentfulPaint extends Audit {
       title: str_(i18n.UIStrings.largestContentfulPaintMetric),
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['traces', 'devtoolsLogs'],
+      requiredArtifacts: ['traces', 'devtoolsLogs', 'TestedAsMobileDevice'],
     };
   }
 
   /**
-   * @return {LH.Audit.ScoreOptions}
+   * @return {{mobile: {scoring: LH.Audit.ScoreOptions}, desktop: {scoring: LH.Audit.ScoreOptions}}}
    */
   static get defaultOptions() {
     return {
-      // 25th and 13th percentiles HTTPArchive -> median and p10 points.
-      // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2020_02_01_mobile?pli=1
-      // https://web.dev/lcp/#what-is-a-good-lcp-score
-      // see https://www.desmos.com/calculator/1etesp32kt
-      p10: 2500,
-      median: 4000,
+      mobile: {
+        // 25th and 13th percentiles HTTPArchive -> median and p10 points.
+        // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2020_02_01_mobile?pli=1
+        // https://web.dev/lcp/#what-is-a-good-lcp-score
+        // see https://www.desmos.com/calculator/1etesp32kt
+        scoring: {
+          p10: 2500,
+          median: 4000,
+        },
+      },
+      desktop: {
+        // SELECT QUANTILES(lcp, 10), QUANTILES(lcp, 30) FROM [httparchive.pages.2020_04_01_desktop]
+        scoring: {
+          p10: 1500,
+          median: 2500,
+        },
+      },
     };
   }
 
@@ -56,9 +67,12 @@ class LargestContentfulPaint extends Audit {
     const metricComputationData = {trace, devtoolsLog, settings: context.settings};
     const metricResult = await ComputedLcp.request(metricComputationData, context);
 
+    const isDesktop = artifacts.TestedAsMobileDevice === false;
+    const options = isDesktop ? context.options.desktop : context.options.mobile;
+
     return {
       score: Audit.computeLogNormalScore(
-        {p10: context.options.p10, median: context.options.median},
+        options.scoring,
         metricResult.timing
       ),
       numericValue: metricResult.timing,
