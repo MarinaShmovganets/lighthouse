@@ -47,10 +47,17 @@ class LargestContentfulPaint extends Audit {
         },
       },
       desktop: {
-        // SELECT QUANTILES(lcp, 10), QUANTILES(lcp, 30) FROM [httparchive.pages.2020_04_01_desktop]
+        // 25th and 5th percentiles HTTPArchive -> median and p10 points.
+        // SELECT
+        //   APPROX_QUANTILES(lcpValue, 100)[OFFSET(5)] AS p05_lcp,
+        //   APPROX_QUANTILES(lcpValue, 100)[OFFSET(25)] AS p25_lcp
+        // FROM (
+        //   SELECT CAST(JSON_EXTRACT_SCALAR(payload, "$['_chromeUserTiming.LargestContentfulPaint']") AS NUMERIC) AS lcpValue
+        //   FROM `httparchive.pages.2020_04_01_desktop`
+        // )
         scoring: {
-          p10: 1500,
-          median: 2500,
+          p10: 1200,
+          median: 2400,
         },
       },
     };

@@ -28,19 +28,19 @@ function generateContext({throttlingMethod}) {
 describe('Performance: largest-contentful-paint audit', () => {
   it('adjusts scoring based on form factor', async () => {
     const artifactsMobile = generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice: true});
-    const contextMobile = generateContext({throttlingMethod: 'simulate'});
+    const contextMobile = generateContext({throttlingMethod: 'provided'});
 
     const outputMobile = await LCPAudit.audit(artifactsMobile, contextMobile);
-    expect(outputMobile.numericValue).toBeCloseTo(2758.2, 1);
-    expect(outputMobile.score).toBe(0.84);
-    expect(outputMobile.displayValue).toBeDisplayString('2.8\xa0s');
+    expect(outputMobile.numericValue).toBeCloseTo(1121.711, 1);
+    expect(outputMobile.score).toBe(1);
+    expect(outputMobile.displayValue).toBeDisplayString('1.1\xa0s');
 
     const artifactsDesktop = generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice: false});
-    const contextDesktop = generateContext({throttlingMethod: 'simulate'});
+    const contextDesktop = generateContext({throttlingMethod: 'provided'});
 
     const outputDesktop = await LCPAudit.audit(artifactsDesktop, contextDesktop);
-    expect(outputDesktop.numericValue).toBeCloseTo(2758.2, 1);
-    expect(outputDesktop.score).toBe(0.4);
-    expect(outputDesktop.displayValue).toBeDisplayString('2.8\xa0s');
+    expect(outputDesktop.numericValue).toBeCloseTo(1121.711, 1);
+    expect(outputDesktop.score).toBe(0.92);
+    expect(outputDesktop.displayValue).toBeDisplayString('1.1\xa0s');
   });
 });

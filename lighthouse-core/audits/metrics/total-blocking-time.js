@@ -49,7 +49,14 @@ class TotalBlockingTime extends Audit {
         },
       },
       desktop: {
-        // SELECT QUANTILES(tbt, 40), QUANTILES(tbt, 60) FROM [httparchive.pages.2020_04_01_desktop]
+        // Chosen in HTTP Archive desktop results to approximate curve easing described above.
+        // SELECT
+        //   APPROX_QUANTILES(tbtValue, 100)[OFFSET(40)] AS p40_tbt,
+        //   APPROX_QUANTILES(tbtValue, 100)[OFFSET(60)] AS p60_tbt
+        // FROM (
+        //   SELECT CAST(JSON_EXTRACT_SCALAR(payload, '$._TotalBlockingTime') AS NUMERIC) AS tbtValue
+        //   FROM `httparchive.pages.2020_04_01_desktop`
+        // )
         scoring: {
           p10: 150,
           median: 350,

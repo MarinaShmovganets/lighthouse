@@ -11,6 +11,9 @@ const defaultOptions = TBTAudit.defaultOptions;
 const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 
+const lcpTrace = require('../../fixtures/traces/lcp-m78.json');
+const lcpDevtoolsLog = require('../../fixtures/traces/lcp-m78.devtools.log.json');
+
 function generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice}) {
   return {
     traces: {[TBTAudit.DEFAULT_PASS]: trace},
@@ -37,20 +40,22 @@ describe('Performance: total-blocking-time audit', () => {
   });
 
   it('adjusts scoring based on form factor', async () => {
-    const artifactsMobile = generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice: true});
-    const contextMobile = generateContext({throttlingMethod: 'simulate'});
+    const artifactsMobile = generateArtifacts({trace: lcpTrace,
+      devtoolsLog: lcpDevtoolsLog, TestedAsMobileDevice: true});
+    const contextMobile = generateContext({throttlingMethod: 'provided'});
 
     const outputMobile = await TBTAudit.audit(artifactsMobile, contextMobile);
-    expect(outputMobile.numericValue).toBeCloseTo(726.5, 1);
-    expect(outputMobile.score).toBe(0.37);
-    expect(outputMobile.displayValue).toBeDisplayString('730\xa0ms');
+    expect(outputMobile.numericValue).toBeCloseTo(333, 1);
+    expect(outputMobile.score).toBe(0.85);
+    expect(outputMobile.displayValue).toBeDisplayString('330\xa0ms');
 
-    const artifactsDesktop = generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice: false});
-    const contextDesktop = generateContext({throttlingMethod: 'simulate'});
+    const artifactsDesktop = generateArtifacts({trace: lcpTrace,
+      devtoolsLog: lcpDevtoolsLog, TestedAsMobileDevice: false});
+    const contextDesktop = generateContext({throttlingMethod: 'provided'});
 
     const outputDesktop = await TBTAudit.audit(artifactsDesktop, contextDesktop);
-    expect(outputDesktop.numericValue).toBeCloseTo(726.5, 1);
-    expect(outputDesktop.score).toBe(0.13);
-    expect(outputDesktop.displayValue).toBeDisplayString('730\xa0ms');
+    expect(outputDesktop.numericValue).toBeCloseTo(333, 1);
+    expect(outputDesktop.score).toBe(0.53);
+    expect(outputDesktop.displayValue).toBeDisplayString('330\xa0ms');
   });
 });
