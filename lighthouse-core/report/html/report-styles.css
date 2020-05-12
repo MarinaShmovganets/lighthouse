@@ -141,7 +141,7 @@
   --topbar-logo-size: 24px;
   --topbar-padding: 0 8px;
   --toplevel-warning-background-color: var(--color-orange-50);
-  --toplevel-warning-message-text-color: var(--report-text-color);
+  --toplevel-warning-message-text-color: #BD4200;
   --toplevel-warning-padding: 18px;
   --toplevel-warning-text-color: var(--report-text-color);
 
