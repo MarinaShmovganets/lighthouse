@@ -489,8 +489,7 @@ class Util {
 
 /**
  * Some parts of the report renderer require data found on the LHR. Instead of wiring it
- * through, we have this global. This property is optional so that existing rendering clients
- * won't break.
+ * through, we have this global.
  * @type {LH.ReportResult | null}
  */
 Util.reportJson = null;
