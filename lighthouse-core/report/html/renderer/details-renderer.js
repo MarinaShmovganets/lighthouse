@@ -40,13 +40,6 @@ class DetailsRenderer {
   }
 
   /**
-   * @param {LH.Result} report
-   */
-  setLighthouseReport(report) {
-    this.report = report;
-  }
-
-  /**
    * @param {LH.Audit.Details} details
    * @return {Element|null}
    */

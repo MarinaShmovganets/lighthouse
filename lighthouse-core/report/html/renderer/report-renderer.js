@@ -191,9 +191,9 @@ class ReportRenderer {
       ...report.i18n.rendererFormattedStrings,
     });
     Util.i18n = i18n;
+    Util.reportJson = report;
 
     const detailsRenderer = new DetailsRenderer(this._dom);
-    detailsRenderer.setLighthouseReport(report);
     const categoryRenderer = new CategoryRenderer(this._dom, detailsRenderer);
 
     /** @type {Record<string, CategoryRenderer>} */

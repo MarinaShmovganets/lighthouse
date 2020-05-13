@@ -121,11 +121,10 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
       return [audit.id, value];
     });
     const paramPairs = [...metricPairs];
-    const report = this.detailsRenderer.report;
 
-    if (report) {
-      paramPairs.push(['device', report.configSettings.emulatedFormFactor]);
-      paramPairs.push(['version', report.lighthouseVersion]);
+    if (Util.reportJson) {
+      paramPairs.push(['device', Util.reportJson.configSettings.emulatedFormFactor]);
+      paramPairs.push(['version', Util.reportJson.lighthouseVersion]);
     }
 
     const params = new URLSearchParams(paramPairs);

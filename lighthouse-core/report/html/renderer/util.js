@@ -487,6 +487,14 @@ class Util {
   }
 }
 
+/**
+ * Some parts of the report renderer require data found on the LHR. Instead of wiring it
+ * through, we have this global. This property is optional so that existing rendering clients
+ * won't break.
+ * @type {LH.ReportResult | null}
+ */
+Util.reportJson = null;
+
 /** @type {I18n} */
 // @ts-ignore: Is set in report renderer.
 Util.i18n = null;
