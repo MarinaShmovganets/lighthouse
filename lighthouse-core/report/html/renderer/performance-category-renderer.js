@@ -121,14 +121,14 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
       return [audit.id, value];
     });
     const paramPairs = [...metricPairs];
+    const report = this.detailsRenderer.report;
 
-    if (this.detailsRenderer.report && this.detailsRenderer.report.configSettings.emulatedFormFactor !== 'none') {
-      paramPairs.push(['device', this.detailsRenderer.report.configSettings.emulatedFormFactor]);
+    if (report && report.configSettings.emulatedFormFactor !== 'none') {
+      paramPairs.push(['device', report.configSettings.emulatedFormFactor]);
     }
 
-    if (this.detailsRenderer.report) {
-      const majorVersion = this.detailsRenderer.report.lighthouseVersion.split('.')[0];
-      paramPairs.push(['version', majorVersion]);
+    if (report) {
+      paramPairs.push(['version', report.lighthouseVersion]);
     }
 
     const params = new URLSearchParams(paramPairs);
