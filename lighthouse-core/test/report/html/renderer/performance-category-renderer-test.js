@@ -92,6 +92,9 @@ describe('PerfCategoryRenderer', () => {
     assert.ok(disclamerLink, 'disclaimer contains coverted markdown link');
     const disclamerUrl = new URL(disclamerLink.href);
     assert.strictEqual(disclamerUrl.hostname, 'web.dev');
+    const calcLink = disclaimerEl.querySelector('a.lh-calclink');
+    assert.ok(calcLink, 'disclaimer contains scorecalc link');
+    assert.strictEqual(new URL(calcLink.href).hostname, 'googlechrome.github.io');
   });
 
   it('renders the failing performance opportunities', () => {
@@ -268,7 +271,8 @@ describe('PerfCategoryRenderer', () => {
     let toggle;
     const metricsSelector = '.lh-audit-group--metrics';
     const toggleSelector = '.lh-metrics-toggle__input';
-    const magicSelector = '.lh-metrics-toggle__input:checked ~ .lh-columns .lh-metric__description';
+    const magicSelector =
+      '.lh-metrics-toggle__input:checked ~ .lh-metrics-container .lh-metric__description';
     let getDescriptionsAfterCheckedToggle;
 
     describe('works if there is a performance category', () => {

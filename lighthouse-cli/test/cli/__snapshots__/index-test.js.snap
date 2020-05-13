@@ -58,7 +58,7 @@ Object {
       "path": "errors-in-console",
     },
     Object {
-      "path": "time-to-first-byte",
+      "path": "server-response-time",
     },
     Object {
       "path": "metrics/first-cpu-idle",
@@ -152,6 +152,9 @@ Object {
     },
     Object {
       "path": "largest-contentful-paint-element",
+    },
+    Object {
+      "path": "layout-shift-elements",
     },
     Object {
       "path": "manual/pwa-cross-browser",
@@ -860,7 +863,7 @@ Object {
         },
         Object {
           "group": "load-opportunities",
-          "id": "time-to-first-byte",
+          "id": "server-response-time",
           "weight": 0,
         },
         Object {
@@ -941,6 +944,11 @@ Object {
         Object {
           "group": "diagnostics",
           "id": "largest-contentful-paint-element",
+          "weight": 0,
+        },
+        Object {
+          "group": "diagnostics",
+          "id": "layout-shift-elements",
           "weight": 0,
         },
         Object {
