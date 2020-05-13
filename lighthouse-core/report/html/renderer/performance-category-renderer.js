@@ -122,7 +122,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     });
     const paramPairs = [...metricPairs];
 
-    if (this.detailsRenderer.report && this.detailsRenderer.report.configSettings.emulatedFormFactor !== 'none') {
+    if (this.detailsRenderer.report) {
       paramPairs.push(['device', this.detailsRenderer.report.configSettings.emulatedFormFactor]);
     }
 
