@@ -123,11 +123,8 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const paramPairs = [...metricPairs];
     const report = this.detailsRenderer.report;
 
-    if (report && report.configSettings.emulatedFormFactor !== 'none') {
-      paramPairs.push(['device', report.configSettings.emulatedFormFactor]);
-    }
-
     if (report) {
+      paramPairs.push(['device', report.configSettings.emulatedFormFactor]);
       paramPairs.push(['version', report.lighthouseVersion]);
     }
 
