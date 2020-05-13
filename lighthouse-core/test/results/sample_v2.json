@@ -14,7 +14,7 @@
     "is-on-https": {
       "id": "is-on-https",
       "title": "Does not use HTTPS",
-      "description": "All sites should be protected with HTTPS, even ones that don't handle sensitive data. HTTPS prevents intruders from tampering with or passively listening in on the communications between your app and your users, and is a prerequisite for HTTP/2 and many new web platform APIs. [Learn more](https://web.dev/is-on-https).",
+      "description": "All sites should be protected with HTTPS, even ones that don't handle sensitive data. This includes avoiding [mixed content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/what-is-mixed-content), where some resources are loaded over HTTP despite the initial request being servedover HTTPS. HTTPS prevents intruders from tampering with or passively listening in on the communications between your app and your users, and is a prerequisite for HTTP/2 and many new web platform APIs. [Learn more](https://web.dev/is-on-https).",
       "score": 0,
       "scoreDisplayMode": "binary",
       "displayValue": "1 insecure request found",
@@ -85,7 +85,7 @@
       "id": "largest-contentful-paint",
       "title": "Largest Contentful Paint",
       "description": "Largest Contentful Paint marks the time at which the largest text or image is painted. [Learn More](https://web.dev/lighthouse-largest-contentful-paint)",
-      "score": 0.31,
+      "score": 0.28,
       "scoreDisplayMode": "numeric",
       "numericValue": 4927.278,
       "numericUnit": "millisecond",
@@ -293,10 +293,10 @@
         ]
       }
     },
-    "time-to-first-byte": {
-      "id": "time-to-first-byte",
-      "title": "Server response times are low (TTFB)",
-      "description": "Time To First Byte identifies the time at which your server sends a response. [Learn more](https://web.dev/time-to-first-byte).",
+    "server-response-time": {
+      "id": "server-response-time",
+      "title": "Initial server response time was short",
+      "description": "Keep the server response time for the main document short because all other requests depend on it. [Learn more](https://web.dev/time-to-first-byte).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "numericValue": 570.5630000000001,
@@ -1380,7 +1380,7 @@
             "estimatedInputLatency": 16,
             "totalBlockingTime": 117,
             "maxPotentialFID": 123,
-            "cumulativeLayoutShift": 0,
+            "cumulativeLayoutShift": 0.42,
             "observedNavigationStart": 0,
             "observedNavigationStartTs": 185603319912,
             "observedFirstPaint": 3969,
@@ -1397,6 +1397,7 @@
             "observedLoadTs": 185608244374,
             "observedDomContentLoaded": 4901,
             "observedDomContentLoadedTs": 185608220734,
+            "observedCumulativeLayoutShift": 0.42,
             "observedFirstVisualChange": 3969,
             "observedFirstVisualChangeTs": 185607288912,
             "observedLastVisualChange": 4791,
@@ -1601,7 +1602,7 @@
             "text": "Requests"
           },
           {
-            "key": "size",
+            "key": "transferSize",
             "itemType": "bytes",
             "text": "Transfer Size"
           }
@@ -1734,6 +1735,62 @@
               "selector": "body > div > p",
               "nodeLabel": "This domain is for use in illustrative examples in documents. You may use this …",
               "snippet": "<p class=\"paragraph\">"
+            }
+          }
+        ]
+      }
+    },
+    "layout-shift-elements": {
+      "id": "layout-shift-elements",
+      "title": "Avoid large layout shifts",
+      "description": "These DOM elements contribute most to the CLS of the page.",
+      "score": null,
+      "scoreDisplayMode": "informative",
+      "displayValue": "4 elements found",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "itemType": "node",
+            "text": "Element"
+          }
+        ],
+        "items": [
+          {
+            "node": {
+              "type": "node",
+              "path": "1,HTML,1,BODY,2,DIV,0,DIV,0,DIV,0,ARTICLE,1,DIV,3,H5",
+              "selector": "div.blog-index > article > div.entry-content > h5",
+              "nodeLabel": "Debugging Node.js with Chrome DevTools",
+              "snippet": "<h5>"
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "path": "1,HTML,1,BODY,2,DIV,0,DIV,0,DIV,0,ARTICLE,1,DIV,4,P",
+              "selector": "div.blog-index > article > div.entry-content > p",
+              "nodeLabel": "The canonical guide to using the Chrome DevTools UI for debugging Node.js. It d…",
+              "snippet": "<p>"
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "path": "1,HTML,1,BODY,2,DIV,0,DIV,0,DIV,0,ARTICLE,1,DIV,5,HR",
+              "selector": "div.blog-index > article > div.entry-content > hr",
+              "nodeLabel": "hr",
+              "snippet": "<hr>"
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "path": "1,HTML,1,BODY,2,DIV,0,DIV,0,DIV,0,ARTICLE,1,DIV,6,P",
+              "selector": "div.blog-index > article > div.entry-content > p",
+              "nodeLabel": "Aside from that, I’ve been busy working on Lighthouse, performance metrics, too…",
+              "snippet": "<p>"
             }
           }
         ]
@@ -3871,7 +3928,7 @@
           "group": "load-opportunities"
         },
         {
-          "id": "time-to-first-byte",
+          "id": "server-response-time",
           "weight": 0,
           "group": "load-opportunities"
         },
@@ -3952,6 +4009,11 @@
         },
         {
           "id": "largest-contentful-paint-element",
+          "weight": 0,
+          "group": "diagnostics"
+        },
+        {
+          "id": "layout-shift-elements",
           "weight": 0,
           "group": "diagnostics"
         },
@@ -4518,7 +4580,7 @@
     },
     "load-opportunities": {
       "title": "Opportunities",
-      "description": "These suggestions can help your page load faster. They don't [directly affect](https://github.com/GoogleChrome/lighthouse/blob/d2ec9ffbb21de9ad1a0f86ed24575eda32c796f0/docs/scoring.md#how-are-the-scores-weighted) the Performance score."
+      "description": "These suggestions can help your page load faster. They don't [directly affect](https://web.dev/performance-scoring/) the Performance score."
     },
     "budgets": {
       "title": "Budgets",
@@ -4526,7 +4588,7 @@
     },
     "diagnostics": {
       "title": "Diagnostics",
-      "description": "More information about the performance of your application. These numbers don't [directly affect](https://github.com/GoogleChrome/lighthouse/blob/d2ec9ffbb21de9ad1a0f86ed24575eda32c796f0/docs/scoring.md#how-are-the-scores-weighted) the Performance score."
+      "description": "More information about the performance of your application. These numbers don't [directly affect](https://web.dev/performance-scoring/) the Performance score."
     },
     "pwa-fast-reliable": {
       "title": "Fast and reliable"
@@ -4826,7 +4888,7 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:time-to-first-byte",
+        "name": "lh:audit:server-response-time",
         "duration": 100,
         "entryType": "measure"
       },
@@ -5115,6 +5177,12 @@
       {
         "startTime": 0,
         "name": "lh:audit:largest-contentful-paint-element",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:layout-shift-elements",
         "duration": 100,
         "entryType": "measure"
       },
@@ -5706,6 +5774,7 @@
   "i18n": {
     "rendererFormattedStrings": {
       "auditGroupExpandTooltip": "Show audits",
+      "calculatorLink": "See calculator.",
       "crcInitialNavigation": "Initial Navigation",
       "crcLongestDurationLabel": "Maximum critical path latency:",
       "dropdownCopyJSON": "Copy JSON",
@@ -5745,7 +5814,7 @@
       "thirdPartyResourcesLabel": "Show 3rd-party resources",
       "throttlingProvided": "Provided by environment",
       "toplevelWarningsMessage": "There were issues affecting this run of Lighthouse:",
-      "varianceDisclaimer": "Values are estimated and may vary. The performance score is [based only on these metrics](https://github.com/GoogleChrome/lighthouse/blob/d2ec9ffbb21de9ad1a0f86ed24575eda32c796f0/docs/scoring.md#how-are-the-scores-weighted).",
+      "varianceDisclaimer": "Values are estimated and may vary. The [performance score is calculated](https://web.dev/performance-scoring/) directly from these metrics.",
       "warningAuditsGroupTitle": "Passed audits but with warnings",
       "warningHeader": "Warnings: "
     },
@@ -5965,18 +6034,18 @@
       "lighthouse-core/audits/errors-in-console.js | columnDesc": [
         "audits[errors-in-console].details.headings[1].text"
       ],
-      "lighthouse-core/audits/time-to-first-byte.js | title": [
-        "audits[time-to-first-byte].title"
+      "lighthouse-core/audits/server-response-time.js | title": [
+        "audits[server-response-time].title"
       ],
-      "lighthouse-core/audits/time-to-first-byte.js | description": [
-        "audits[time-to-first-byte].description"
+      "lighthouse-core/audits/server-response-time.js | description": [
+        "audits[server-response-time].description"
       ],
-      "lighthouse-core/audits/time-to-first-byte.js | displayValue": [
+      "lighthouse-core/audits/server-response-time.js | displayValue": [
         {
           "values": {
             "timeInMs": 570.5630000000001
           },
-          "path": "audits[time-to-first-byte].displayValue"
+          "path": "audits[server-response-time].displayValue"
         }
       ],
       "lighthouse-core/lib/i18n/i18n.js | firstCPUIdleMetric": [
@@ -6317,7 +6386,22 @@
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnElement": [
         "audits[largest-contentful-paint-element].details.headings[0].text",
+        "audits[layout-shift-elements].details.headings[0].text",
         "audits[dom-size].details.headings[1].text"
+      ],
+      "lighthouse-core/audits/layout-shift-elements.js | title": [
+        "audits[layout-shift-elements].title"
+      ],
+      "lighthouse-core/audits/layout-shift-elements.js | description": [
+        "audits[layout-shift-elements].description"
+      ],
+      "lighthouse-core/audits/layout-shift-elements.js | displayValue": [
+        {
+          "values": {
+            "nodeCount": 4
+          },
+          "path": "audits[layout-shift-elements].displayValue"
+        }
       ],
       "lighthouse-core/audits/manual/pwa-cross-browser.js | title": [
         "audits[pwa-cross-browser].title"
@@ -7171,8 +7255,8 @@
       "stack-packs/packs/wordpress.js | uses_responsive_images": [
         "stackPacks[0].descriptions[uses-responsive-images]"
       ],
-      "stack-packs/packs/wordpress.js | time_to_first_byte": [
-        "stackPacks[0].descriptions[time-to-first-byte]"
+      "stack-packs/packs/wordpress.js | server_response_time": [
+        "stackPacks[0].descriptions[server-response-time]"
       ]
     }
   },
@@ -7195,7 +7279,7 @@
         "uses-optimized-images": "Consider using an [image optimization WordPress plugin](https://wordpress.org/plugins/search/optimize+images/) that compresses your images while retaining quality.",
         "uses-text-compression": "You can enable text compression in your web server configuration.",
         "uses-responsive-images": "Upload images directly through the [media library](https://wordpress.org/support/article/media-library-screen/) to ensure that the required image sizes are available, and then insert them from the media library or use the image widget to ensure the optimal image sizes are used (including those for the responsive breakpoints). Avoid using `Full Size` images unless the dimensions are adequate for their usage. [Learn More](https://wordpress.org/support/article/inserting-images-into-posts-and-pages/).",
-        "time-to-first-byte": "Themes, plugins, and server specifications all contribute to server response time. Consider finding a more optimized theme, carefully selecting an optimization plugin, and/or upgrading your server."
+        "server-response-time": "Themes, plugins, and server specifications all contribute to server response time. Consider finding a more optimized theme, carefully selecting an optimization plugin, and/or upgrading your server."
       }
     }
   ]
