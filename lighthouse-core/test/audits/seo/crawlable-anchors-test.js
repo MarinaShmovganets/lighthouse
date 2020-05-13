@@ -5,17 +5,23 @@
  */
 'use strict';
 
-const CrawlableAnchorsAudit = require('../../../audits/seo/crawlable-anchors.js');
 const assert = require('assert');
+const CrawlableAnchorsAudit = require('../../../audits/seo/crawlable-anchors.js');
 
 /* eslint-env jest */
 
-function runAudit({rawHref, listeners, name = ''}) {
+function runAudit({
+  rawHref = '',
+  onclick = '',
+  name = '',
+  hasClickHandler = onclick.trim().length,
+}) {
   const {score} = CrawlableAnchorsAudit.audit({
     AnchorElements: [{
       rawHref,
       name,
-      ...(listeners && listeners.length && {listeners}),
+      hasClickHandler,
+      onclick,
     }],
   });
 
@@ -24,52 +30,73 @@ function runAudit({rawHref, listeners, name = ''}) {
 
 describe('SEO: Crawlable anchors audit', () => {
   it('allows crawlable anchors', () => {
-    assert.equal(runAudit({rawHref:'#top'}), 1, 'hash fragment identifier');
-    assert.equal(runAudit({rawHref:'mailto:name@example.com'}), 1, 'email link with a mailto URI');
-    assert.equal(runAudit({rawHref:'https://example.com'}), 1, 'absolute HTTPs URL');
-    assert.equal(runAudit({rawHref:'foo'}), 1, 'relative URL');
-    assert.equal(runAudit({rawHref:'/foo'}), 1, 'relative URL');
-    assert.equal(runAudit({rawHref:'#:~:text=string'}), 1, 'hyperlink with a text fragment');
-    assert.equal(runAudit({rawHref:'ftp://myname@host.dom'}), 1, 'an FTP hyperlink');
-    assert.equal(runAudit({rawHref:'http://172.217.20.78'}), 1, 'IP address based link');
-    assert.equal(runAudit({rawHref:'//example.com'}), 1, 'protocol relative link');
-    assert.equal(runAudit({rawHref:'?query=string'}), 1, 'relative link which specifies a query string');
-    assert.equal(runAudit({rawHref:'tel:5555555'}), 1, 'email link with a tel URI');
-    assert.equal(runAudit({rawHref:'#'}), 1, 'link with only a hash symbol');
-    assert.equal(runAudit({rawHref:'', name: 'name'}), 1, 'link with a name attribute');
+    assert.equal(runAudit({rawHref: '#top'}), 1, 'hash fragment identifier');
+    assert.equal(runAudit({rawHref: 'mailto:name@example.com'}), 1, 'email link with a mailto URI');
+    assert.equal(runAudit({rawHref: 'https://example.com'}), 1, 'absolute HTTPs URL');
+    assert.equal(runAudit({rawHref: 'foo'}), 1, 'relative URL');
+    assert.equal(runAudit({rawHref: '/foo'}), 1, 'relative URL');
+    assert.equal(runAudit({rawHref: '#:~:text=string'}), 1, 'hyperlink with a text fragment');
+    assert.equal(runAudit({rawHref: 'ftp://myname@host.dom'}), 1, 'an FTP hyperlink');
+    assert.equal(runAudit({rawHref: 'http://172.217.20.78'}), 1, 'IP address based link');
+    assert.equal(runAudit({rawHref: '//example.com'}), 1, 'protocol relative link');
+    assert.equal(runAudit({rawHref: 'tel:5555555'}), 1, 'email link with a tel URI');
+    assert.equal(runAudit({rawHref: '#'}), 1, 'link with only a hash symbol');
+    assert.equal(runAudit({
+      rawHref: '?query=string',
+    }), 1, 'relative link which specifies a query string');
   });
 
-  it('allows certain anchors which use event listeners on themselves', () => {
+  it('allows anchors which use a name attribute', () => {
+    assert.equal(runAudit({name: 'name'}), 1, 'link with a name attribute');
+  });
+
+  it('allows anchors which use event listeners on themselves', () => {
+    assert.equal(runAudit({hasClickHandler: true}), 1, 'presence of a click handler is a pass');
+
     const auditResultJavaScriptURI = runAudit({
-      rawHref:'javascript:void(0)',
-      listeners: [{type: 'click'}],
+      rawHref: 'javascript:void(0)',
+      hasClickHandler: true,
     });
-    assert.equal(auditResultJavaScriptURI, 1, 'hyperlink with a `javascript:` URI');
-
-    const auditResultEmptyQuotes = runAudit({
-      rawHref:'',
-      listeners: [{type: 'click'}],
-    });
-    assert.equal(auditResultEmptyQuotes, 1, 'link with empty quotes for the href attribute');
-  });
-
-  it('checks the validity of the listeners', () => {
-    const auditResultBadEvent = runAudit({
-      rawHref:'',
-      listeners: [{type: 'no'}],
-    });
-    assert.equal(auditResultBadEvent, 0, 'link with unsupported event listener');
-
-    const auditResultGoodEvent = runAudit({
-      rawHref:'',
-      listeners: [{type: 'no'}, {type: 'click'}],
-    });
-    assert.equal(auditResultGoodEvent, 1, 'link with one supported and one unsupported event listener');
+    const assertionMessage = 'hyperlink with a `javascript:` URI and a click handler';
+    assert.equal(auditResultJavaScriptURI, 1, assertionMessage);
   });
 
   it('disallows uncrawlable anchors', () => {
-    assert.equal(runAudit({rawHref:'javascript:void(0)'}), 0, 'hyperlink with a `javascript:` URI');
-    assert.equal(runAudit({rawHref:''}), 0, 'link with empty quotes for the href attribute');
-    assert.equal(runAudit({rawHref:'file:///image.png'}), 0, 'hyperlink with a `file:` URI');
+    assert.equal(runAudit({}), 0, 'link with no meaningful attributes and no event handlers');
+    assert.equal(runAudit({rawHref: 'file:///image.png'}), 0, 'hyperlink with a `file:` URI');
+    assert.equal(runAudit({name: ' '}), 0, 'name attribute with only space characters');
+    assert.equal(runAudit({rawHref: ' '}), 0, 'href attribute with only space characters');
+    const assertionMessage = 'onclick attribute with only space characters';
+    assert.equal(runAudit({rawHref: ' ', onclick: ' '}), 0, assertionMessage);
+  });
+
+  it('disallows javascript:void expressions in the onclick attribute', () => {
+    const javaScriptVoidVariations = [
+      'javascript:void(0)',
+      'javascript: void(0)',
+      'javascript : void(0)',
+      'javascript : void ( 0 )',
+      'javascript: void 0',
+      'javascript:void 0',
+    ];
+
+    for (const javaScriptVoidVariation of javaScriptVoidVariations) {
+      assert.equal(runAudit({rawHref: javaScriptVoidVariation}), 0, 'javascript:void variations');
+    }
+  });
+
+  it('disallows window.location and window.open assignments in an onclick attribute', () => {
+    const onclickVariations = [
+      'window.location=',
+      'window.location =',
+      'window.open()',
+      `window.open('')`,
+      'window.open(`http://example.com`)',
+      'window.open ( )',
+    ];
+
+    for (const onclickVariation of onclickVariations) {
+      assert.equal(runAudit({onclick: onclickVariation}), 0, 'URL changing onclick strings');
+    }
   });
 });

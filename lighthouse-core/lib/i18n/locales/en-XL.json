@@ -1008,10 +1008,10 @@
     "message": "D̂óĉúm̂én̂t́ ĥáŝ á v̂ál̂íd̂ `rel=canonical`"
   },
   "lighthouse-core/audits/seo/crawlable-anchors.js | columnFailingAnchors": {
-    "message": "F̂áîĺîńĝ Án̂ćĥór̂ Él̂ém̂én̂t́ŝ"
+    "message": "Ûńĉŕâẃl̂áb̂ĺê Án̂ćĥór̂ Él̂ém̂én̂t́"
   },
   "lighthouse-core/audits/seo/crawlable-anchors.js | description": {
-    "message": "Ŝéâŕĉh́ êńĝín̂éŝ úŝé ĥýp̂ér̂ĺîńk̂ś t̂ó ĉŕâẃl̂ ẃêb́ŝít̂éŝ"
+    "message": "Ŝéâŕĉh́ êńĝín̂éŝ úŝé ĥýp̂ér̂ĺîńk̂ś t̂ó ĉŕâẃl̂ ẃêb́ŝít̂éŝ. Én̂śûŕê t́ĥát̂ t́ĥé `href` ât́t̂ŕîb́ût́ê óf̂ án̂ćĥór̂ él̂ém̂én̂t́ŝ ĺîńk̂ś t̂ó âń âṕp̂ŕôṕr̂íât́ê d́êśt̂ín̂át̂íôń, ŝó m̂ór̂é p̂áĝéŝ óf̂ t́ĥé ŝít̂é ĉán̂ b́ê d́îśĉóv̂ér̂éd̂. [Ĺêár̂ń M̂ór̂é](https://support.google.com/webmasters/answer/9112205)"
   },
   "lighthouse-core/audits/seo/crawlable-anchors.js | failureTitle": {
     "message": "Âńĉh́ôŕŝ d́ô ńôt́ ĥáv̂é ĉŕâẃl̂áb̂ĺê h́ŷṕêŕl̂ín̂ḱŝ"

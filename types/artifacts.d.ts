@@ -329,7 +329,8 @@ declare global {
         selector: string
         nodeLabel: string
         outerHTML: string
-        listeners?: Array<Crdp.DOMDebugger.EventListener>
+        onclick: string
+        hasClickHandler: boolean
       }
 
       export interface Font {

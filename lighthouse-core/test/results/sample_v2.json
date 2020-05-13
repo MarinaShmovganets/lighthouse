@@ -3133,7 +3133,7 @@
               "nodeLabel": "internal link is ok",
               "snippet": "<a href=\"./doesnotexist\" target=\"_blank\">"
             },
-            "href": "http://localhost:54106/dobetterweb/doesnotexist",
+            "href": "http://localhost:51938/dobetterweb/doesnotexist",
             "target": "_blank",
             "rel": "",
             "outerHTML": "<a href=\"./doesnotexist\" target=\"_blank\">"
@@ -3551,7 +3551,7 @@
     "crawlable-anchors": {
       "id": "crawlable-anchors",
       "title": "Anchors do not have crawlable hyperlinks",
-      "description": "Search engines use hyperlinks to crawl websites",
+      "description": "Search engines use hyperlinks to crawl websites. Ensure that the `href` attribute of anchor elements links to an appropriate destination, so more pages of the site can be discovered. [Learn More](https://support.google.com/webmasters/answer/9112205)",
       "score": 0,
       "scoreDisplayMode": "binary",
       "details": {
@@ -3560,19 +3560,25 @@
           {
             "key": "node",
             "itemType": "node",
-            "text": "Failing Anchor Elements"
+            "text": "Uncrawlable Anchor Element"
           }
         ],
         "items": [
           {
             "node": {
               "type": "node",
-              "snippet": "<a target=\"_blank\">external link"
+              "path": "3,HTML,1,BODY,38,A",
+              "selector": "body > a",
+              "nodeLabel": "external link",
+              "snippet": "<a target=\"_blank\">"
             }
           },
           {
             "node": {
               "type": "node",
+              "path": "3,HTML,1,BODY,54,A",
+              "selector": "body > a",
+              "nodeLabel": "a",
               "snippet": "<a href=\"javascript:void(0)\" target=\"_blank\">"
             }
           }

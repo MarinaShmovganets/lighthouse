@@ -48,6 +48,8 @@ function collectAnchorElements() {
       return {
         href: node.href,
         rawHref: node.getAttribute('href') || '',
+        onclick: node.getAttribute('onclick') || '',
+        hasClickHandler: false,
         name: node.name,
         text: node.innerText, // we don't want to return hidden text, so use innerText
         rel: node.rel,
@@ -62,6 +64,8 @@ function collectAnchorElements() {
     return {
       href: resolveURLOrEmpty(node.href.baseVal),
       rawHref: node.getAttribute('href') || '',
+      onclick: node.getAttribute('onclick') || '',
+      hasClickHandler: false,
       text: node.textContent || '',
       rel: '',
       target: node.target.baseVal || '',
@@ -79,20 +83,18 @@ function collectAnchorElements() {
  */
 async function getEventListeners(driver, devtoolsNodePath) {
   const {nodeId} = await driver.sendCommand('DOM.pushNodeByPathToFrontend', {
-    path: devtoolsNodePath
+    path: devtoolsNodePath,
   });
 
   const {object: {objectId = ''}} = await driver.sendCommand('DOM.resolveNode', {
-    nodeId
+    nodeId,
   });
 
   const response = await driver.sendCommand('DOMDebugger.getEventListeners', {
-    objectId
+    objectId,
   });
 
-  if (response.listeners.length > 0) {
-    return response;
-  }
+  return response.listeners;
 }
 
 class AnchorElements extends Gatherer {
@@ -116,13 +118,16 @@ class AnchorElements extends Gatherer {
     const anchors = await driver.evaluateAsync(expression, {useIsolation: true});
     await driver.sendCommand('DOM.enable');
 
-    // DOM.getDocument is necessary for pushNodesByBackendIdsToFrontend to properly retrieve nodeIds.
+    // DOM.getDocument is necessary for pushNodesByBackendIdsToFrontend to properly retrieve nodeIds if the `DOM` domain was enabled before this gatherer, invoke it to be safe.
     await driver.sendCommand('DOM.getDocument', {depth: -1, pierce: true});
     const anchorsWithEventListeners = anchors.map(async anchor => {
+      const eventListeners = await getEventListeners(driver, anchor.devtoolsNodePath);
+      const hasClickHandler = eventListeners.some(({type}) => type === 'click');
+
       return {
         ...anchor,
-        ...await getEventListeners(driver, anchor.devtoolsNodePath)
-      }
+        hasClickHandler,
+      };
     });
 
     const result = await Promise.all(anchorsWithEventListeners);

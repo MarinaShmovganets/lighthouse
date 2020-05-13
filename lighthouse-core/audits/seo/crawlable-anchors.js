@@ -14,9 +14,9 @@ const UIStrings = {
   /** Descriptive title of a Lighthouse audit that provides detail on whether anchors have hyperlinks which can be crawled by search engines. This descriptive title is shown when there are hyperlinks which are not crawlable by search engines. */
   failureTitle: 'Anchors do not have crawlable hyperlinks',
   /** Description of a Lighthouse audit that tells the user why hyperlinks should be crawlable. This is displayed after a user expands the section to see more. 'Learn More' becomes link text to additional documentation. */
-  description: 'Search engines use hyperlinks to crawl websites',
+  description: 'Search engines use hyperlinks to crawl websites. Ensure that the `href` attribute of anchor elements links to an appropriate destination, so more pages of the site can be discovered. [Learn More](https://support.google.com/webmasters/answer/9112205)',
   /** Label for a column in a data table; entries will be the HTML anchor elements that failed the audit. Anchors are DOM elements that are links. */
-  columnFailingAnchors: 'Failing Anchor Elements',
+  columnFailingAnchors: 'Uncrawlable Anchor Element',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -40,12 +40,31 @@ class CrawlableAnchors extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit({AnchorElements: anchorElements}) {
-    const failingAnchors = anchorElements.filter(({rawHref, listeners = [], name = ''}) => {
+    const failingAnchors = anchorElements.filter(({
+      rawHref,
+      hasClickHandler,
+      onclick = '',
+      name = '',
+    }) => {
+      onclick = onclick.replace( /\s/g, '');
+      name = name.trim();
+      rawHref = rawHref.replace( /\s/g, '');
+
+      const windowLocationRegExp = /window.location=/;
+      const windowOpenRegExp = /window.open\(/;
+      const javaScriptVoidRegExp = /javascript:void(\(|)0(\)|)/;
+
       if (rawHref.startsWith('file:')) {
         return true;
       }
 
-      const hasClickHandler = listeners.some(({type}) => type === 'click');
+      if (windowLocationRegExp.test(onclick)) {
+        return true;
+      }
+
+      if (windowOpenRegExp.test(onclick)) {
+        return true;
+      }
 
       if (hasClickHandler || name.trim().length > 0) return;
 
@@ -53,7 +72,7 @@ class CrawlableAnchors extends Audit {
         return true;
       }
 
-      if (rawHref.startsWith('javascript:void(0)')) {
+      if (javaScriptVoidRegExp.test(rawHref)) {
         return true;
       }
     });
@@ -66,11 +85,14 @@ class CrawlableAnchors extends Audit {
     }];
 
     /** @type {LH.Audit.Details.Table['items']} */
-    const itemsToDisplay = failingAnchors.map(node => {
+    const itemsToDisplay = failingAnchors.map(anchor => {
       return {
         node: {
           type: 'node',
-          snippet: node.outerHTML + node.text,
+          path: anchor.devtoolsNodePath || '',
+          selector: anchor.selector || '',
+          nodeLabel: anchor.nodeLabel || '',
+          snippet: anchor.outerHTML || '',
         },
       };
     });
