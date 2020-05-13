@@ -193,9 +193,8 @@ class ReportRenderer {
     Util.i18n = i18n;
 
     const detailsRenderer = new DetailsRenderer(this._dom);
+    detailsRenderer.setLighthouseReport(report);
     const categoryRenderer = new CategoryRenderer(this._dom, detailsRenderer);
-    categoryRenderer.setTemplateContext(this._templateContext);
-    categoryRenderer.setLighthouseReport(report);
 
     /** @type {Record<string, CategoryRenderer>} */
     const specificCategoryRenderers = {
@@ -204,7 +203,6 @@ class ReportRenderer {
     };
     Object.values(specificCategoryRenderers).forEach(renderer => {
       renderer.setTemplateContext(this._templateContext);
-      renderer.setLighthouseReport(report);
     });
 
     const headerContainer = this._dom.createElement('div');

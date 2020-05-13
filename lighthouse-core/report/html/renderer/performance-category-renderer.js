@@ -122,12 +122,12 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     });
     const paramPairs = [...metricPairs];
 
-    if (this.report && this.report.configSettings.emulatedFormFactor !== 'none') {
-      paramPairs.push(['device', this.report.configSettings.emulatedFormFactor]);
+    if (this.detailsRenderer.report && this.detailsRenderer.report.configSettings.emulatedFormFactor !== 'none') {
+      paramPairs.push(['device', this.detailsRenderer.report.configSettings.emulatedFormFactor]);
     }
 
-    if (this.report) {
-      const majorVersion = this.report.lighthouseVersion.split('.')[0];
+    if (this.detailsRenderer.report) {
+      const majorVersion = this.detailsRenderer.report.lighthouseVersion.split('.')[0];
       paramPairs.push(['version', majorVersion]);
     }
 
