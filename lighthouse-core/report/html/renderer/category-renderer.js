@@ -320,6 +320,13 @@ class CategoryRenderer {
   }
 
   /**
+   * @param {LH.Result} report
+   */
+  setLighthouseReport(report) {
+    this.report = report;
+  }
+
+  /**
    * @param {LH.ReportResult.Category} category
    * @param {Record<string, LH.Result.ReportGroup>} groupDefinitions
    * @return {DocumentFragment}
