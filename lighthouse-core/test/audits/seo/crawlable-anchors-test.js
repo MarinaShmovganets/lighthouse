@@ -14,13 +14,13 @@ function runAudit({
   rawHref = '',
   onclick = '',
   name = '',
-  hasClickHandler = onclick.trim().length,
+  listeners = onclick.trim().length ? [{type: 'click'}] : [],
 }) {
   const {score} = CrawlableAnchorsAudit.audit({
     AnchorElements: [{
       rawHref,
       name,
-      hasClickHandler,
+      listeners,
       onclick,
     }],
   });
@@ -50,15 +50,28 @@ describe('SEO: Crawlable anchors audit', () => {
     assert.equal(runAudit({name: 'name'}), 1, 'link with a name attribute');
   });
 
-  it('allows anchors which use event listeners on themselves', () => {
-    assert.equal(runAudit({hasClickHandler: true}), 1, 'presence of a click handler is a pass');
+  it('handles anchor elements which use event listeners', () => {
+    const auditResultClickPresent = runAudit({
+      listeners: [{type: 'click'}],
+    });
+    assert.equal(auditResultClickPresent, 1, 'presence of a click handler is a pass');
 
     const auditResultJavaScriptURI = runAudit({
       rawHref: 'javascript:void(0)',
-      hasClickHandler: true,
+      listeners: [{type: 'click'}],
     });
     const assertionMessage = 'hyperlink with a `javascript:` URI and a click handler';
     assert.equal(auditResultJavaScriptURI, 1, assertionMessage);
+
+    const auditResultNonClickListener = runAudit({
+      listeners: [{type: 'nope'}],
+    });
+    assert.equal(auditResultNonClickListener, 0, 'no click event is a fail');
+
+    const auditResultMixtureOfListeners = runAudit({
+      listeners: [{type: 'nope'}, {type: 'another'}, {type: 'click'}],
+    });
+    assert.equal(auditResultMixtureOfListeners, 1, 'at least one click listener is a pass');
   });
 
   it('disallows uncrawlable anchors', () => {
@@ -70,33 +83,61 @@ describe('SEO: Crawlable anchors audit', () => {
     assert.equal(runAudit({rawHref: ' ', onclick: ' '}), 0, assertionMessage);
   });
 
-  it('disallows javascript:void expressions in the onclick attribute', () => {
-    const javaScriptVoidVariations = [
+  it('handles javascript:void expressions in the onclick attribute', () => {
+    const expectedAuditFailures = [
       'javascript:void(0)',
       'javascript: void(0)',
       'javascript : void(0)',
       'javascript : void ( 0 )',
       'javascript: void 0',
       'javascript:void 0',
+      // The audit logic removes all whitespace from the string and considers this a fail
+      'javascript:void0',
     ];
 
-    for (const javaScriptVoidVariation of javaScriptVoidVariations) {
-      assert.equal(runAudit({rawHref: javaScriptVoidVariation}), 0, 'javascript:void variations');
+    for (const javaScriptVoidVariation of expectedAuditFailures) {
+      const auditResult = runAudit({rawHref: javaScriptVoidVariation});
+      assert.equal(auditResult, 0, 'javascript:void failing variations');
+    }
+
+    const expectedAuditPasses = [
+      'javascript:void',
+      'javascript:void()',
+      'javascript:0',
+    ];
+
+    for (const javaScriptVoidVariation of expectedAuditPasses) {
+      const auditResult = runAudit({rawHref: javaScriptVoidVariation});
+      assert.equal(auditResult, 1, 'javascript:void passing variations');
     }
   });
 
-  it('disallows window.location and window.open assignments in an onclick attribute', () => {
-    const onclickVariations = [
+  it('handles window.location and window.open assignments in an onclick attribute', () => {
+    const expectedAuditFailures = [
       'window.location=',
       'window.location =',
       'window.open()',
       `window.open('')`,
       'window.open(`http://example.com`)',
       'window.open ( )',
+      `window.open('foo', 'name', 'resizable)`,
     ];
 
-    for (const onclickVariation of onclickVariations) {
-      assert.equal(runAudit({onclick: onclickVariation}), 0, 'URL changing onclick strings');
+    for (const onclickVariation of expectedAuditFailures) {
+      const auditResult = runAudit({onclick: onclickVariation});
+      assert.equal(auditResult, 0, 'URL changing onclick strings');
+    }
+
+    const expectedAuditPasses = [
+      'windowAlocation',
+      'window.location.href',
+      'window.Location =',
+      'windowLopen()',
+    ];
+
+    for (const onclickVariation of expectedAuditPasses) {
+      const auditResult = runAudit({onclick: onclickVariation});
+      assert.equal(auditResult, 1, 'onclick strings which do not change the URL');
     }
   });
 });

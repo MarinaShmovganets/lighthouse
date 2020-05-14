@@ -42,7 +42,7 @@ class CrawlableAnchors extends Audit {
   static audit({AnchorElements: anchorElements}) {
     const failingAnchors = anchorElements.filter(({
       rawHref,
-      hasClickHandler,
+      listeners = [],
       onclick = '',
       name = '',
     }) => {
@@ -50,31 +50,19 @@ class CrawlableAnchors extends Audit {
       name = name.trim();
       rawHref = rawHref.replace( /\s/g, '');
 
-      const windowLocationRegExp = /window.location=/;
-      const windowOpenRegExp = /window.open\(/;
+      const windowLocationRegExp = /window\.location=/;
+      const windowOpenRegExp = /window\.open\(/;
       const javaScriptVoidRegExp = /javascript:void(\(|)0(\)|)/;
 
-      if (rawHref.startsWith('file:')) {
-        return true;
-      }
+      if (rawHref.startsWith('file:')) return true;
+      if (windowLocationRegExp.test(onclick)) return true;
+      if (windowOpenRegExp.test(onclick)) return true;
 
-      if (windowLocationRegExp.test(onclick)) {
-        return true;
-      }
-
-      if (windowOpenRegExp.test(onclick)) {
-        return true;
-      }
-
+      const hasClickHandler = listeners.some(({type}) => type === 'click');
       if (hasClickHandler || name.trim().length > 0) return;
 
-      if (rawHref === '') {
-        return true;
-      }
-
-      if (javaScriptVoidRegExp.test(rawHref)) {
-        return true;
-      }
+      if (rawHref === '') return true;
+      if (javaScriptVoidRegExp.test(rawHref)) return true;
     });
 
     /** @type {LH.Audit.Details.Table['headings']} */

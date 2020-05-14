@@ -330,7 +330,9 @@ declare global {
         nodeLabel: string
         outerHTML: string
         onclick: string
-        hasClickHandler: boolean
+        listeners?: Array<{
+          type: Crdp.DOMDebugger.EventListener['type']
+        }>
       }
 
       export interface Font {

@@ -49,7 +49,6 @@ function collectAnchorElements() {
         href: node.href,
         rawHref: node.getAttribute('href') || '',
         onclick: node.getAttribute('onclick') || '',
-        hasClickHandler: false,
         name: node.name,
         text: node.innerText, // we don't want to return hidden text, so use innerText
         rel: node.rel,
@@ -65,7 +64,6 @@ function collectAnchorElements() {
       href: resolveURLOrEmpty(node.href.baseVal),
       rawHref: node.getAttribute('href') || '',
       onclick: node.getAttribute('onclick') || '',
-      hasClickHandler: false,
       text: node.textContent || '',
       rel: '',
       target: node.target.baseVal || '',
@@ -94,7 +92,7 @@ async function getEventListeners(driver, devtoolsNodePath) {
     objectId,
   });
 
-  return response.listeners;
+  return response.listeners.map(({type}) => ({type}));
 }
 
 class AnchorElements extends Gatherer {
@@ -121,12 +119,11 @@ class AnchorElements extends Gatherer {
     // DOM.getDocument is necessary for pushNodesByBackendIdsToFrontend to properly retrieve nodeIds if the `DOM` domain was enabled before this gatherer, invoke it to be safe.
     await driver.sendCommand('DOM.getDocument', {depth: -1, pierce: true});
     const anchorsWithEventListeners = anchors.map(async anchor => {
-      const eventListeners = await getEventListeners(driver, anchor.devtoolsNodePath);
-      const hasClickHandler = eventListeners.some(({type}) => type === 'click');
+      const listeners = await getEventListeners(driver, anchor.devtoolsNodePath);
 
       return {
         ...anchor,
-        hasClickHandler,
+        listeners,
       };
     });
 
