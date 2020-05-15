@@ -1014,10 +1014,10 @@
     "message": "Search engines may use href attributes on links to crawl websites. Ensure that the `href` attribute of anchor elements links to an appropriate destination, so more pages of the site can be discovered. [Learn More](https://support.google.com/webmasters/answer/9112205)"
   },
   "lighthouse-core/audits/seo/crawlable-anchors.js | failureTitle": {
-    "message": "Links do not have crawlable href attributes"
+    "message": "Links are not crawlable"
   },
   "lighthouse-core/audits/seo/crawlable-anchors.js | title": {
-    "message": "Links have potentially-crawlable href attributes"
+    "message": "Links are crawlable"
   },
   "lighthouse-core/audits/seo/font-size.js | description": {
     "message": "Font sizes less than 12px are too small to be legible and require mobile visitors to “pinch to zoom” in order to read. Strive to have >60% of page text ≥12px. [Learn more](https://web.dev/font-size)."
