@@ -16,7 +16,7 @@ const UIStrings = {
   /** Description of a Lighthouse audit that tells the user why href attributes on links should be crawlable. This is displayed after a user expands the section to see more. 'Learn More' becomes link text to additional documentation. */
   description: 'Search engines may use href attributes on links to crawl websites. Ensure that the `href` attribute of anchor elements links to an appropriate destination, so more pages of the site can be discovered. [Learn More](https://support.google.com/webmasters/answer/9112205)',
   /** Label for a column in a data table; entries will be the HTML anchor elements that failed the audit. Anchors are DOM elements that are links. */
-  columnFailingAnchors: 'Uncrawlable Anchor Element',
+  columnFailingLink: 'Uncrawlable Link',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -69,7 +69,7 @@ class CrawlableAnchors extends Audit {
     const headings = [{
       key: 'node',
       itemType: 'node',
-      text: str_(UIStrings.columnFailingAnchors),
+      text: str_(UIStrings.columnFailingLink),
     }];
 
     /** @type {LH.Audit.Details.Table['items']} */

@@ -3560,7 +3560,7 @@
           {
             "key": "node",
             "itemType": "node",
-            "text": "Uncrawlable Anchor Element"
+            "text": "Uncrawlable Link"
           }
         ],
         "items": [
@@ -7019,7 +7019,7 @@
       "lighthouse-core/audits/seo/crawlable-anchors.js | description": [
         "audits[crawlable-anchors].description"
       ],
-      "lighthouse-core/audits/seo/crawlable-anchors.js | columnFailingAnchors": [
+      "lighthouse-core/audits/seo/crawlable-anchors.js | columnFailingLink": [
         "audits[crawlable-anchors].details.headings[0].text"
       ],
       "lighthouse-core/audits/seo/is-crawlable.js | title": [
