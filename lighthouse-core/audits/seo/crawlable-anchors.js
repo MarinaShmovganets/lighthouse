@@ -9,12 +9,12 @@ const Audit = require('../audit.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
-  /** Title of a Lighthouse audit that provides detail on whether anchors have hyperlinks which can be crawled by search engines. This descriptive title is shown when all hyperlinks on the page are crawlable. */
-  title: 'Anchors have crawlable hyperlinks',
-  /** Descriptive title of a Lighthouse audit that provides detail on whether anchors have hyperlinks which can be crawled by search engines. This descriptive title is shown when there are hyperlinks which are not crawlable by search engines. */
-  failureTitle: 'Anchors do not have crawlable hyperlinks',
-  /** Description of a Lighthouse audit that tells the user why hyperlinks should be crawlable. This is displayed after a user expands the section to see more. 'Learn More' becomes link text to additional documentation. */
-  description: 'Search engines use hyperlinks to crawl websites. Ensure that the `href` attribute of anchor elements links to an appropriate destination, so more pages of the site can be discovered. [Learn More](https://support.google.com/webmasters/answer/9112205)',
+  /** Title of a Lighthouse audit that provides detail on whether links have potentially-crawlable href attributes. This descriptive title is shown when all links on the page are potentially-crawlable. */
+  title: 'Links have potentially-crawlable href attributes',
+  /** Descriptive title of a Lighthouse audit that provides detail on whether links have potentially-crawlable href attributes. This descriptive title is shown when there are href attributes which are not crawlable by search engines. */
+  failureTitle: 'Links do not have crawlable href attributes',
+  /** Description of a Lighthouse audit that tells the user why href attributes on links should be crawlable. This is displayed after a user expands the section to see more. 'Learn More' becomes link text to additional documentation. */
+  description: 'Search engines may use href attributes on links to crawl websites. Ensure that the `href` attribute of anchor elements links to an appropriate destination, so more pages of the site can be discovered. [Learn More](https://support.google.com/webmasters/answer/9112205)',
   /** Label for a column in a data table; entries will be the HTML anchor elements that failed the audit. Anchors are DOM elements that are links. */
   columnFailingAnchors: 'Uncrawlable Anchor Element',
 };
