@@ -36,8 +36,11 @@ const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 // A factor of 1 means the actual device pixel density will be used.
 // A factor of 0.5, means half the density is required. For example if the device pixel ratio is 3,
 // then the images should have at least a density of 1.5.
+// Note that the resulting DPR will be quantized.
 const SMALL_IMAGE_FACTOR = 1.0;
-const LARGE_IMAGE_FACTOR = 0.75;
+// After quantiation, an initial DPR of 2, will get converted to 1.5. An a DPR of 3 will transform
+// to a DPR of 2.
+const LARGE_IMAGE_FACTOR = 0.8;
 
 // An image has must have both its dimensions lower or equal to the threshold in order to be
 // considered SMALL.
@@ -137,8 +140,9 @@ function allowedImageSize(displayedWidth, displayedHeight, DPR) {
   if (displayedWidth > SMALL_IMAGE_THRESHOLD || displayedHeight > SMALL_IMAGE_THRESHOLD) {
     factor = LARGE_IMAGE_FACTOR;
   }
-  const width = Math.ceil(factor * DPR * displayedWidth);
-  const height = Math.ceil(factor * DPR * displayedHeight);
+  const allowedDpr = quantizeDpr(factor * quantizeDpr(DPR));
+  const width = Math.ceil(allowedDpr * displayedWidth);
+  const height = Math.ceil(allowedDpr * displayedHeight);
   return [width, height];
 }
 
@@ -235,6 +239,28 @@ class ImageSizeResponsive extends Audit {
       details: Audit.makeTableDetails(headings, finalResults),
     };
   }
+}
+
+/**
+ * Return a quantized version of the DPR.
+ *
+ * This is to relax the required size of the image, as there are some densities that are not that
+ * common, and the default DPR used in some contexts by lightouse is 2.625.
+ *
+ * This is also used to compute a final dpr when the image is too large. For example, if the factor
+ * is set to 0.8 and the DPR is 4, then the resulting DPR would be 3.
+ *
+ * @param {number} dpr
+ * @return {number}
+ */
+function quantizeDpr(dpr) {
+  if (dpr >= 2) {
+    return Math.floor(dpr);
+  }
+  if (dpr >= 1.5) {
+    return 1.5;
+  }
+  return 1.0;
 }
 
 module.exports = ImageSizeResponsive;
