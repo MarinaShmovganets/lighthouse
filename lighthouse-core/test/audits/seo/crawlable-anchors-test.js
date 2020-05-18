@@ -97,7 +97,7 @@ describe('SEO: Crawlable anchors audit', () => {
 
     for (const javaScriptVoidVariation of expectedAuditFailures) {
       const auditResult = runAudit({rawHref: javaScriptVoidVariation});
-      assert.equal(auditResult, 0, 'javascript:void failing variations');
+      assert.equal(auditResult, 0, `'${javaScriptVoidVariation}' should fail the audit`);
     }
 
     const expectedAuditPasses = [
@@ -108,7 +108,7 @@ describe('SEO: Crawlable anchors audit', () => {
 
     for (const javaScriptVoidVariation of expectedAuditPasses) {
       const auditResult = runAudit({rawHref: javaScriptVoidVariation});
-      assert.equal(auditResult, 1, 'javascript:void passing variations');
+      assert.equal(auditResult, 1, `'${javaScriptVoidVariation}' should pass the audit`);
     }
   });
 
@@ -125,7 +125,7 @@ describe('SEO: Crawlable anchors audit', () => {
 
     for (const onclickVariation of expectedAuditFailures) {
       const auditResult = runAudit({onclick: onclickVariation});
-      assert.equal(auditResult, 0, 'URL changing onclick strings');
+      assert.equal(auditResult, 0, `'${onclickVariation}' should fail the audit`);
     }
 
     const expectedAuditPasses = [
@@ -137,7 +137,7 @@ describe('SEO: Crawlable anchors audit', () => {
 
     for (const onclickVariation of expectedAuditPasses) {
       const auditResult = runAudit({onclick: onclickVariation});
-      assert.equal(auditResult, 1, 'onclick strings which do not change the URL');
+      assert.equal(auditResult, 1, `'${onclickVariation}' should pass the audit`);
     }
   });
 });
