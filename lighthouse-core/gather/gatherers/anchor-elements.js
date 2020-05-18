@@ -30,6 +30,12 @@ function collectAnchorElements() {
     }
   };
 
+  /** @param {HTMLAnchorElement|SVGAElement} node */
+  function getTruncatedOnclick(node) {
+    const onclick = node.getAttribute('onclick') || '';
+    return onclick.slice(0, 1024);
+  }
+
   /** @type {Array<HTMLAnchorElement|SVGAElement>} */
   // @ts-ignore - put into scope via stringification
   const anchorElements = getElementsInDocument('a'); // eslint-disable-line no-undef
@@ -48,7 +54,7 @@ function collectAnchorElements() {
       return {
         href: node.href,
         rawHref: node.getAttribute('href') || '',
-        onclick: node.getAttribute('onclick') || '',
+        onclick: getTruncatedOnclick(node),
         name: node.name,
         text: node.innerText, // we don't want to return hidden text, so use innerText
         rel: node.rel,
@@ -63,7 +69,7 @@ function collectAnchorElements() {
     return {
       href: resolveURLOrEmpty(node.href.baseVal),
       rawHref: node.getAttribute('href') || '',
-      onclick: node.getAttribute('onclick') || '',
+      onclick: getTruncatedOnclick(node),
       text: node.textContent || '',
       rel: '',
       target: node.target.baseVal || '',
