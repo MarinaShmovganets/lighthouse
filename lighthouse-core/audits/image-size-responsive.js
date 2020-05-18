@@ -260,7 +260,10 @@ function quantizeDpr(dpr) {
   if (dpr >= 1.5) {
     return 1.5;
   }
-  return 1.0;
+  if (dpr >= 1.0) {
+    return 1.0;
+  }
+  return dpr;
 }
 
 module.exports = ImageSizeResponsive;

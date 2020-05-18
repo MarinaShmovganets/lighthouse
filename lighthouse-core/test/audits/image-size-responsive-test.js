@@ -279,13 +279,13 @@ describe('Images: size audit', () => {
       testImage('has right size', {
         score: 1,
         clientSize: [65, 65],
-        naturalSize: [65, 65],
+        naturalSize: [52, 52],
       });
 
       testImage('has an invalid size', {
         score: 0,
         clientSize: [65, 65],
-        naturalSize: [64, 64],
+        naturalSize: [51, 51],
       });
     });
 
