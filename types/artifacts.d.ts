@@ -324,6 +324,7 @@ declare global {
         rawHref: string
         name?: string
         text: string
+        role: string
         target: string
         devtoolsNodePath: string
         selector: string

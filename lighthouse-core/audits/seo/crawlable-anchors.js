@@ -45,10 +45,14 @@ class CrawlableAnchors extends Audit {
       listeners = [],
       onclick = '',
       name = '',
+      role = '',
     }) => {
       onclick = onclick.replace( /\s/g, '');
-      name = name.trim();
       rawHref = rawHref.replace( /\s/g, '');
+      name = name.trim();
+      role = role.trim();
+
+      if (role.length > 0) return;
 
       const windowLocationRegExp = /window\.location=/;
       const windowOpenRegExp = /window\.open\(/;
@@ -59,7 +63,7 @@ class CrawlableAnchors extends Audit {
       if (windowOpenRegExp.test(onclick)) return true;
 
       const hasClickHandler = listeners.some(({type}) => type === 'click');
-      if (hasClickHandler || name.trim().length > 0) return;
+      if (hasClickHandler || name.length > 0) return;
 
       if (rawHref === '') return true;
       if (javaScriptVoidRegExp.test(rawHref)) return true;

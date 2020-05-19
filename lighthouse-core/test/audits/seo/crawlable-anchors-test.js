@@ -12,6 +12,7 @@ const CrawlableAnchorsAudit = require('../../../audits/seo/crawlable-anchors.js'
 
 function runAudit({
   rawHref = '',
+  role = '',
   onclick = '',
   name = '',
   listeners = onclick.trim().length ? [{type: 'click'}] : [],
@@ -22,6 +23,7 @@ function runAudit({
       name,
       listeners,
       onclick,
+      role,
     }],
   });
 
@@ -48,6 +50,16 @@ describe('SEO: Crawlable anchors audit', () => {
 
   it('allows anchors which use a name attribute', () => {
     assert.equal(runAudit({name: 'name'}), 1, 'link with a name attribute');
+  });
+
+  it('handles anchors with a role attribute', () => {
+    const auditResult = runAudit({
+      role: 'some-role',
+      rawHref: 'javascript:void(0)',
+    });
+    assert.equal(auditResult, 1, 'Href value has no effect when a role is present');
+    assert.equal(runAudit({role: 'a'}), 1, 'Using a role attribute value is an immediate pass');
+    assert.equal(runAudit({role: ' '}), 0, 'A role value of a space character fails the audit');
   });
 
   it('handles anchor elements which use event listeners', () => {

@@ -55,6 +55,7 @@ function collectAnchorElements() {
         href: node.href,
         rawHref: node.getAttribute('href') || '',
         onclick: getTruncatedOnclick(node),
+        role: node.getAttribute('role') || '',
         name: node.name,
         text: node.innerText, // we don't want to return hidden text, so use innerText
         rel: node.rel,
@@ -70,6 +71,7 @@ function collectAnchorElements() {
       href: resolveURLOrEmpty(node.href.baseVal),
       rawHref: node.getAttribute('href') || '',
       onclick: getTruncatedOnclick(node),
+      role: node.getAttribute('role') || '',
       text: node.textContent || '',
       rel: '',
       target: node.target.baseVal || '',
