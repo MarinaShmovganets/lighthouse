@@ -1,4 +1,4 @@
-# 6.0.0 (2020-05-18)
+# 6.0.0 (2020-05-19)
 [Raw commit changelog](https://github.com/GoogleChrome/lighthouse/compare/v5.6.0...v6.0.0)
 
 We expect this release to ship in the DevTools of Chrome 84.
