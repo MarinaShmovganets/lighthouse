@@ -15,11 +15,11 @@
 /** @typedef {{name: string, expression: string}} Pattern */
 /** @typedef {{name: string, line: number, column: number}} PatternMatchResult */
 
-const thirdPartyWeb = require('third-party-web/httparchive-nostats-subset');
 const Audit = require('./audit.js');
 const NetworkRecords = require('../computed/network-records.js');
 const JSBundles = require('../computed/js-bundles.js');
 const i18n = require('../lib/i18n/i18n.js');
+const thirdPartyWeb = require('../lib/third-party-web.js');
 
 const UIStrings = {
   /** Title of a Lighthouse audit that tells the user about legacy polyfills and transforms used on the page. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -31,21 +31,6 @@ const UIStrings = {
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
-
-/**
- * @param {string} url
- * @param {import('third-party-web').IEntity | undefined} mainDocumentEntity
- */
-function isThirdParty(url, mainDocumentEntity) {
-  try {
-    const entity = thirdPartyWeb.getEntity(url);
-    if (!entity) return false;
-    if (entity === mainDocumentEntity) return false;
-    return true;
-  } catch (_) {
-    return false;
-  }
-}
 
 /**
  * Takes a list of patterns (consisting of a name identifier and a RegExp expression string)
@@ -396,7 +381,7 @@ class LegacyJavascript extends Audit {
     // Only fail if first party code has legacy code.
     const mainDocumentEntity = thirdPartyWeb.getEntity(artifacts.URL.finalUrl);
     const foundSignalInFirstPartyCode = tableRows.some(row => {
-      return !isThirdParty(row.url, mainDocumentEntity);
+      return thirdPartyWeb.isFirstParty(row.url, mainDocumentEntity);
     });
     return {
       score: foundSignalInFirstPartyCode ? 0 : 1,
