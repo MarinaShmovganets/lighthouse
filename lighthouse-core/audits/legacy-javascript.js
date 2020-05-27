@@ -15,11 +15,10 @@
 /** @typedef {{name: string, expression: string}} Pattern */
 /** @typedef {{name: string, line: number, column: number}} PatternMatchResult */
 
+const thirdPartyWeb = require('third-party-web/httparchive-nostats-subset');
 const Audit = require('./audit.js');
 const NetworkRecords = require('../computed/network-records.js');
-const MainResource = require('../computed/main-resource.js');
 const JSBundles = require('../computed/js-bundles.js');
-const URL = require('../lib/url-shim.js');
 const i18n = require('../lib/i18n/i18n.js');
 
 const UIStrings = {
@@ -32,6 +31,21 @@ const UIStrings = {
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
+
+/**
+ * @param {string} url
+ * @param {import('third-party-web').IEntity | undefined} mainDoucumentEntity
+ */
+function isThirdParty(url, mainDoucumentEntity) {
+  try {
+    const entity = thirdPartyWeb.getEntity(url);
+    if (!entity) return false;
+    if (entity === mainDoucumentEntity) return false;
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
 
 /**
  * Takes a list of patterns (consisting of a name identifier and a RegExp expression string)
@@ -338,10 +352,6 @@ class LegacyJavascript extends Audit {
   static async audit(artifacts, context) {
     const devtoolsLog = artifacts.devtoolsLogs[LegacyJavascript.DEFAULT_PASS];
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
-    const mainResource = await MainResource.request({
-      URL: artifacts.URL,
-      devtoolsLog,
-    }, context);
     const bundles = await JSBundles.request(artifacts, context);
 
     /** @type {Array<{url: string, signals: string[], locations: LH.Audit.Details.SourceLocationValue[]}>} */
@@ -384,9 +394,9 @@ class LegacyJavascript extends Audit {
     const details = Audit.makeTableDetails(headings, tableRows);
 
     // Only fail if first party code has legacy code.
-    // TODO(cjamcl): Use third-party-web.
+    const mainDocumentEntity = thirdPartyWeb.getEntity(artifacts.URL.finalUrl);
     const foundSignalInFirstPartyCode = tableRows.some(row => {
-      return URL.rootDomainsMatch(row.url, mainResource.url);
+      return !isThirdParty(row.url, mainDocumentEntity);
     });
     return {
       score: foundSignalInFirstPartyCode ? 0 : 1,
