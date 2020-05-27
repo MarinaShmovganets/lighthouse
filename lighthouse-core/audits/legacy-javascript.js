@@ -34,13 +34,13 @@ const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 /**
  * @param {string} url
- * @param {import('third-party-web').IEntity | undefined} mainDoucumentEntity
+ * @param {import('third-party-web').IEntity | undefined} mainDocumentEntity
  */
-function isThirdParty(url, mainDoucumentEntity) {
+function isThirdParty(url, mainDocumentEntity) {
   try {
     const entity = thirdPartyWeb.getEntity(url);
     if (!entity) return false;
-    if (entity === mainDoucumentEntity) return false;
+    if (entity === mainDocumentEntity) return false;
     return true;
   } catch (_) {
     return false;
