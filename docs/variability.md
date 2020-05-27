@@ -89,9 +89,36 @@ If your machine has really limited resources or creating a clean environment has
 
 ### Run Lighthouse Multiple Times
 
-When creating your thresholds for failure, either mental or programmatic, use aggregate values like the median, 90th percentile, or even min instead of single tests.
+When creating your thresholds for failure, either mental or programmatic, use aggregate values like the median, 90th percentile, or even min/max instead of single test results.
 
-The median Lighthouse score of 5 runs is twice as stable as 1 run, and tools like [lighthouse-ci](https://github.com/GoogleChrome/lighthouse-ci/) can run Lighthouse multiple times for you automatically. Using the minimum value is also a big improvement over not testing at all and is incredibly simple to implement, just run Lighthouse up to 5 times until it passes!
+The median Lighthouse score of 5 runs is twice as stable as 1 run, and tools like [lighthouse-ci](https://github.com/GoogleChrome/lighthouse-ci/) can run Lighthouse multiple times for you automatically.
+
+```bash
+npx -p lighthouse-ci lhci collect --url https://example.com -n 5
+npx -p lighthouse-ci lhci upload --target filesystem --outputDir ./path/to/dump/reports
+```
+
+You can then process the reports that are output to the filesystem. Read the [Lighthouse CI documentation](https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/configuration.md#outputdir) for more.
+
+If you're running Lighthouse directly via node, you can also use the `computeMedianRun` function to determine the median using a blend of the performance metrics.
+
+```js
+const lighthouse = require('lighthouse');
+const chromeLauncher = require('chrome-launcher');
+const {computeMedianRun} = require('lighthouse/lighthouse-core/lib/median-run.js');
+
+(async () => {
+  const chrome = await chromeLauncher.launch();
+  const results = [];
+  for (let i = 0; i < 5; i++) {
+    const {lhr} = await lighthouse('http://example.com', {port: chrome.port});
+    results.push(lhr);
+  }
+
+  const median = computeMedianRun(results);
+  console.log('Median performance score was', median.categories.performance.score * 100);
+})();
+```
 
 ## Related Documentation
 
