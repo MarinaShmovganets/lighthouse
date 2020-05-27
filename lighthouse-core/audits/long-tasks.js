@@ -66,7 +66,7 @@ class LongTasks extends Audit {
     // TODO(beytoven): Add start time that matches with the simulated throttling
     const results = longtasks.map(task => ({
       url: BootupTime.getAttributableURLForTask(task, jsURLs),
-      duration: task.duration * multiplier,
+      duration: task.duration,
     }));
 
     /** @type {LH.Audit.Details.Table['headings']} */

@@ -18,14 +18,19 @@ const TASK_URL = 'https://pwa.rocks/';
  * @param {Number} duration
  * @param {Boolean} withChildTasks
  */
-function generateTraceWithLongTasks(
-  count,
-  duration = 200,
-  withChildTasks = false
-) {
+function generateTraceWithLongTasks({count, duration = 200, withChildTasks = false}) {
   const baseTs = 1000;
   const traceTasks = [];
   for (let i = 1; i <= count; i++) {
+    /* Generates a top-level task w/ the following breakdown:
+    task -> {
+      ts,
+      duration,
+      children -> [{ts, duration, url}, ...],
+    }
+    Child tasks should start after the parent task and end before it.
+    Top-level tasks will take on the attributable URL from it's children.
+    */
     const ts = baseTs * i;
     const task = {ts, duration};
     task.children = [];
@@ -51,7 +56,7 @@ function generateTraceWithLongTasks(
 describe('Long tasks audit', () => {
   it('should pass and be non-applicable if there are no long tasks', async () => {
     const artifacts = {
-      traces: {defaultPass: generateTraceWithLongTasks(0)},
+      traces: {defaultPass: generateTraceWithLongTasks({count: 0})},
       devtoolsLogs: {defaultPass: devtoolsLog},
     };
     const result = await LongTasks.audit(artifacts, {computedCache: new Map()});
@@ -63,7 +68,7 @@ describe('Long tasks audit', () => {
 
   it('should return a list of long tasks with duration >= 50 ms', async () => {
     const artifacts = {
-      traces: {defaultPass: generateTraceWithLongTasks(4)},
+      traces: {defaultPass: generateTraceWithLongTasks({count: 4})},
       devtoolsLogs: {defaultPass: devtoolsLog},
     };
     const result = await LongTasks.audit(artifacts, {computedCache: new Map()});
@@ -93,7 +98,7 @@ describe('Long tasks audit', () => {
       devtoolsLogs: {defaultPass: devtoolsLog},
     };
     const result = await LongTasks.audit(artifacts, {computedCache: new Map()});
-    // expect(result.score).toBe(0);
+    expect(result.score).toBe(0);
     expect(result.details.items).toHaveLength(2);
     expect(result.displayValue).toBeDisplayString('2 long tasks found');
 
@@ -106,7 +111,7 @@ describe('Long tasks audit', () => {
 
   it('should not filter out tasks with duration >= 50 ms only after throttling', async () => {
     const artifacts = {
-      traces: {defaultPass: generateTraceWithLongTasks(4, 45)},
+      traces: {defaultPass: generateTraceWithLongTasks({count: 4, duration: 45})},
       devtoolsLogs: {defaultPass: devtoolsLog},
     };
     const context = {
@@ -131,7 +136,7 @@ describe('Long tasks audit', () => {
   });
 
   it('should populate url when tasks have an attributable url', async () => {
-    const trace = generateTraceWithLongTasks(1, 300, true);
+    const trace = generateTraceWithLongTasks({count: 1, duration: 300, withChildTasks: true});
     const artifacts = {
       traces: {defaultPass: trace},
       devtoolsLogs: {defaultPass: devtoolsLog},
