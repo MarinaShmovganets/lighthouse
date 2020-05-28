@@ -23,6 +23,8 @@ function getMedianSortValue(lhr, medianFcp, medianInteractive) {
 }
 
 /**
+ * We want the run that's closest to the median of the FCP and the median of the TTI. 
+ * We're using the squared distance for that (https://en.wikipedia.org/wiki/Euclidean_distance).
  * @param {Array<LH.Result>} runs
  * @return {LH.Result|undefined}
  */
