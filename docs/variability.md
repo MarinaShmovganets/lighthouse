@@ -115,6 +115,10 @@ for (let i = 0; i < 5; i++) {
     'https://example.com',
     '--output=json'
   ]);
+  if (status !== 0) {
+    console.log('Lighthouse failed, skipping run...');
+    continue;
+  }
   results.push(JSON.parse(stdout));
 }
 
