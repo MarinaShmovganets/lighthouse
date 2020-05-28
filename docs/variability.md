@@ -102,11 +102,10 @@ You can then process the reports that are output to the filesystem. Read the [Li
 
 ```js
 const fs = require('fs');
-const {computeMedianRun} = require('lighthouse/lighthouse-core/lib/median-run.js');
 const lhciManifest = require('./path/to/dump/reports/manifest.json');
-const results = lhciManifest.map(entry => JSON.parse(fs.readFileSync(entry.jsonPath, 'utf-8')));
-const median = computeMedianRun(results);
-console.log('Median performance score was', median.categories.performance.score * 100);
+const medianEntry = lhciManifest.find(entry => entry.isRepresentativeRun)
+const medianResult = JSON.parse(fs.readFileSync(entry.jsonPath, 'utf-8'));
+console.log('Median performance score was', medianResult.categories.performance.score * 100);
 ```
 
 If you're running Lighthouse directly via node, you can also use the `computeMedianRun` function to determine the median using a blend of the performance metrics.
