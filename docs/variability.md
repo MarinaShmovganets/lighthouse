@@ -94,11 +94,20 @@ When creating your thresholds for failure, either mental or programmatic, use ag
 The median Lighthouse score of 5 runs is twice as stable as 1 run, and tools like [lighthouse-ci](https://github.com/GoogleChrome/lighthouse-ci/) can run Lighthouse multiple times for you automatically.
 
 ```bash
-npx -p lighthouse-ci lhci collect --url https://example.com -n 5
-npx -p lighthouse-ci lhci upload --target filesystem --outputDir ./path/to/dump/reports
+npx -p @lhci/cli lhci collect --url https://example.com -n 5
+npx -p @lhci/cli lhci upload --target filesystem --outputDir ./path/to/dump/reports
 ```
 
 You can then process the reports that are output to the filesystem. Read the [Lighthouse CI documentation](https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/configuration.md#outputdir) for more.
+
+```js
+const fs = require('fs');
+const {computeMedianRun} = require('lighthouse/lighthouse-core/lib/median-run.js');
+const lhciManifest = require('./path/to/dump/reports/manifest.json');
+const results = lhciManifest.map(entry => JSON.parse(fs.readFileSync(entry.jsonPath, 'utf-8')));
+const median = computeMedianRun(results);
+console.log('Median performance score was', median.categories.performance.score * 100);
+```
 
 If you're running Lighthouse directly via node, you can also use the `computeMedianRun` function to determine the median using a blend of the performance metrics.
 
