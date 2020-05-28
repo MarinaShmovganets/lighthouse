@@ -103,21 +103,23 @@ You can then process the reports that are output to the filesystem. Read the [Li
 If you're running Lighthouse directly via node, you can also use the `computeMedianRun` function to determine the median using a blend of the performance metrics.
 
 ```js
-const lighthouse = require('lighthouse');
-const chromeLauncher = require('chrome-launcher');
+const spawnSync = require('child_process').spawnSync;
+const lighthouseCli = require.resolve('lighthouse/lighthouse-cli');
 const {computeMedianRun} = require('lighthouse/lighthouse-core/lib/median-run.js');
 
-(async () => {
-  const chrome = await chromeLauncher.launch();
-  const results = [];
-  for (let i = 0; i < 5; i++) {
-    const {lhr} = await lighthouse('http://example.com', {port: chrome.port});
-    results.push(lhr);
-  }
+const results = [];
+for (let i = 0; i < 5; i++) {
+  console.log(`Running Lighthouse attempt #${i + 1}...`);
+  const {status = -1, stdout} = spawnSync('node', [
+    lighthouseCli,
+    'https://example.com',
+    '--output=json'
+  ]);
+  results.push(JSON.parse(stdout));
+}
 
-  const median = computeMedianRun(results);
-  console.log('Median performance score was', median.categories.performance.score * 100);
-})();
+const median = computeMedianRun(results);
+console.log('Median performance score was', median.categories.performance.score * 100);
 ```
 
 ## Related Documentation
