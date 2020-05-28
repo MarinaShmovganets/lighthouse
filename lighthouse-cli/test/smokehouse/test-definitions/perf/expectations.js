@@ -162,7 +162,6 @@ module.exports = [
       audits: {
         'largest-contentful-paint-element': {
           score: null,
-          displayValue: '1 element found',
           details: {
             items: [
               {
@@ -175,15 +174,16 @@ module.exports = [
             ],
           },
         },
-        'layout-shift-elements': {
-          score: null,
-          displayValue: '2 elements found',
-          details: {
-            items: {
-              length: 2,
-            },
-          },
-        },
+         // TODO: uncomment when Chrome m84 lands
+        // 'layout-shift-elements': {
+        //   score: null,
+        //   displayValue: '2 elements found',
+        //   details: {
+        //     items: {
+        //       length: 2,
+        //     },
+        //   },
+        // },
         'long-tasks': {
           score: null,
           details: {
