@@ -8,37 +8,27 @@ The example below shows how to run Lighthouse programmatically as a Node module.
 assumes you've installed Lighthouse as a dependency (`yarn add --dev lighthouse`).
 
 ```javascript
+const fs = require('fs');
 const lighthouse = require('lighthouse');
 const chromeLauncher = require('chrome-launcher');
-const fs = require('fs');
 const log = require('lighthouse-logger');
 
-function launchChromeAndRunLighthouse(url, opts, config = null) {
-  log.setLevel(opts.logLevel);
+(async () => {
+  log.setLevel('info');
+  const chrome = await chromeLauncher.launch({chromeFlags: ['--headless']});
+  const options = {output: 'html', onlyCategories: ['performance'], port: chrome.port};
+  const runnerResult = await lighthouse('https://example.com', options);
 
-  return chromeLauncher.launch({chromeFlags: opts.chromeFlags}).then(chrome => {
-    opts.port = chrome.port;
-    return lighthouse(url, opts, config).then(runnerResult => {
-      const reportHTML = runnerResult.report;
+  // `.report` is the HTML report as a string
+  const reportHtml = runnerResult.report;
+  fs.writeFileSync('lhreport.html', reportHtml);
 
-      //workaround to save the report
-      fs.writeFileSync('lhreport.html', reportHTML);
-      return chrome.kill().then(() => runnerResult.lhr);
-    });
-  });
-}
+  // `.lhr` is the Lighthouse Result as a JS object
+  console.log('Report is done for', lhr.finalUrl);
+  console.log('Performance score was', lhr.categories.performance.score * 100);
 
-const opts = {
-  output: 'html',
-  chromeFlags: ['--headless'],
-  logLevel: 'info',
-  onlyCategories: ['performance'],
-};
-
-launchChromeAndRunLighthouse('https://roboamp.com', opts).then(lhr => {
-  console.log('report is done');
-  // `lhr` contains LHR object.
-});
+  await chrome.kill();
+})();
 ```
 
 ### Performance-only Lighthouse run
