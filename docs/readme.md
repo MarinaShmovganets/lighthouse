@@ -24,8 +24,8 @@ const log = require('lighthouse-logger');
   fs.writeFileSync('lhreport.html', reportHtml);
 
   // `.lhr` is the Lighthouse Result as a JS object
-  console.log('Report is done for', lhr.finalUrl);
-  console.log('Performance score was', lhr.categories.performance.score * 100);
+  console.log('Report is done for', runnerResult.lhr.finalUrl);
+  console.log('Performance score was', runnerResult.lhr.categories.performance.score * 100);
 
   await chrome.kill();
 })();
