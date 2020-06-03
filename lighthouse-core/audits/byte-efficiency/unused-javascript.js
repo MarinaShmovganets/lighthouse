@@ -20,7 +20,7 @@ const UIStrings = {
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
-const IGNORE_THRESHOLD_IN_BYTES = 20 * 1000;
+const IGNORE_THRESHOLD_IN_BYTES = 20 * 1024;
 const IGNORE_BUNDLE_SOURCE_THRESHOLD_IN_BYTES = 512;
 
 /**
