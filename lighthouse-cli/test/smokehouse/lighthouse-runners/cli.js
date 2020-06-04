@@ -36,6 +36,15 @@ async function runLighthouse(url, configJson, testRunnerOptions = {}) {
 
   const {isDebug} = testRunnerOptions;
   return internalRun(url, tmpPath, configJson, isDebug)
+    .catch(e => {
+      if (e instanceof ChildProcessError) {
+        // eslint-disable no-console
+        console.log('stdout', e.stdout);
+        console.log('stderr', e.stderr);
+        // eslint-enable no-console
+      }
+      throw e;
+    })
     // Wait for internalRun() before rimraffing scratch directory.
     .finally(() => !isDebug && rimraf(tmpPath));
 }
