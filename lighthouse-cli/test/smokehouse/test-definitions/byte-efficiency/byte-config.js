@@ -35,7 +35,7 @@ const config = {
     ],
   }],
   audits: [
-    {path: 'unused-javascript', options: {
+    {path: 'byte-efficiency/unused-javascript', options: {
       // Lower the threshold so we don't need huge resources to make a test.
       unusedThreshold: 2000,
     }},
