@@ -159,7 +159,7 @@ const expectations = [
                   items: [
                     {source: '…./b.js', sourceBytes: '4417 +/- 50', sourceWastedBytes: '2191 +/- 50'},
                     {source: '…./c.js', sourceBytes: '2200 +/- 50', sourceWastedBytes: '2182 +/- 50'},
-                    {source: '…./b.js', sourceBytes: '2809 +/- 50', sourceWastedBytes: '1259 +/- 50'},
+                    {source: '…webpack/bootstrap', sourceBytes: '2809 +/- 50', sourceWastedBytes: '1259 +/- 50'},
                   ],
                 },
               },
