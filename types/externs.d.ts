@@ -314,6 +314,7 @@ declare global {
             old_rect?: Array<number>,
             new_rect?: Array<number>,
           }>;
+          score?: number,
         };
         frame?: string;
         name?: string;

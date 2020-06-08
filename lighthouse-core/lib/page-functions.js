@@ -303,6 +303,23 @@ function getNodeLabel(node) {
   return tagName;
 }
 
+/**
+ * Function for getting the viewport dimensions.
+ */
+/* instanbul ignore next */
+function getPageViewportDimensions() {
+  // window.innerWidth to get the scrollable size of the window (irrespective of zoom)
+  // window.outerWidth to get the size of the visible area
+  // window.devicePixelRatio to get ratio of logical pixels to physical pixels
+  return {
+    innerWidth: window.innerWidth,
+    innerHeight: window.innerHeight,
+    outerWidth: window.outerWidth,
+    outerHeight: window.outerHeight,
+    devicePixelRatio: window.devicePixelRatio,
+  };
+}
+
 module.exports = {
   wrapRuntimeEvalErrorInBrowserString: wrapRuntimeEvalErrorInBrowser.toString(),
   registerPerformanceObserverInPageString: registerPerformanceObserverInPage.toString(),
@@ -318,4 +335,5 @@ module.exports = {
   getNodeLabel: getNodeLabel,
   getNodeLabelString: getNodeLabel.toString(),
   isPositionFixedString: isPositionFixed.toString(),
+  getPageViewportDimensionsString: getPageViewportDimensions.toString(),
 };
