@@ -30,11 +30,11 @@
 
 ## Using Lighthouse in Chrome DevTools
 
-Lighthouse is integrated directly into the Chrome Developer Tools, under the "Audits" panel.
+Lighthouse is integrated directly into the Chrome DevTools, under the "Lighthouse" panel.
 
 **Installation**: install [Chrome](https://www.google.com/chrome/browser).
 
-**Run it**: open Chrome DevTools, select the Audits panel, and hit "Run audits".
+**Run it**: open Chrome DevTools, select the Lighthouse panel, and hit "Generate report".
 
 <img src="https://raw.githubusercontent.com/GoogleChrome/lighthouse/e7997b3db01de3553d8cb208a40f3d4fd350195c/assets/example_dev_tools.png" alt="Lighthouse integration in Chrome DevTools" width="500px">
 
