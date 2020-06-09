@@ -119,12 +119,28 @@ class TraceElements extends Gatherer {
     const maxViewportDimension = Math.max(viewportHeight, viewportWidth);
     let cls = 0;
 
+    console.log(shiftEvents);
+    for (let i = 0; i < shiftEvents.length - 1; i++) {
+      let cur = shiftEvents[i];
+      let next = shiftEvents[i + 1];
+      if (next.had_recent_input) continue;
+
+      const expectedScoreOnNext = next.cumulative_score - cur.cumulative_score;
+      console.log({
+        clsOnNext: next.cumulative_score,
+        scoreOnNext: next.score,
+        expectedScoreOnNext,
+        // should always be true.
+        matches: Math.abs(expectedScoreOnNext - next.score) < 0.000001,
+      });
+    }
+
     shiftEvents.forEach(event => {
       if (!event || !event.impacted_nodes) {
         return;
       }
 
-      console.log(event.score);
+      console.log(event);
       cls += event.score ? event.score : 0;
 
       event.impacted_nodes.forEach(node => {
