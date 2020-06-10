@@ -12,7 +12,7 @@
  * ./lighthouse-core/scripts/legacy-javascript - verification tool.
  */
 
-/** @typedef {{name: string, expression: string, estimator?: (result: PatternMatchResult) => number}} Pattern */
+/** @typedef {{name: string, expression: string}} Pattern */
 /** @typedef {{name: string, line: number, column: number}} PatternMatchResult */
 /** @typedef {{url: string, subItems: {type: 'subitems', items: SubItem[]}}} Item */
 /** @typedef {{signal: string, location: LH.Audit.Details.SourceLocationValue}} SubItem */
