@@ -188,7 +188,6 @@ class LegacyJavascript extends Audit {
       ['Number.isInteger', 'es6.number.is-integer'],
       ['Number.isSafeInteger', 'es6.number.is-safe-integer'],
       ['Number.parseInt', 'es6.number.parse-int'],
-      ['Object.create', 'es6.object.create'],
       ['Object.defineProperties', 'es6.object.define-properties'],
       ['Object.defineProperty', 'es6.object.define-property'],
       ['Object.freeze', 'es6.object.freeze'],

@@ -235,6 +235,8 @@ describe('LegacyJavaScript signals', () => {
       const expectedMissingSignals = [
         'core-js-2-preset-env-esmodules/true',
         'core-js-3-preset-env-esmodules/true',
+        'core-js-2-preset-env-esmodules/true_and_bugfixes',
+        'core-js-3-preset-env-esmodules/true_and_bugfixes',
       ];
       for (const expectedVariant of expectedMissingSignals) {
         expect(signalSummary.variantsMissingSignals).toContain(expectedVariant);

@@ -1,11 +1,10 @@
 all-legacy-polyfills
-  85634        all-legacy-polyfills-core-js-3/main.bundle.min.js
-  56090        all-legacy-polyfills-core-js-2/main.bundle.min.js
+  85169        all-legacy-polyfills-core-js-3/main.bundle.min.js
+  55778        all-legacy-polyfills-core-js-2/main.bundle.min.js
 
 core-js-2-only-polyfill
   14974        es6-reflect-construct/main.bundle.min.js
   12832        es7-object-get-own-property-descriptors/main.bundle.min.js
-  12423        es6-object-create/main.bundle.min.js
   12278        es6-array-from/main.bundle.min.js
   11669        es6-object-get-own-property-names/main.bundle.min.js
   11506        es6-array-find-index/main.bundle.min.js
@@ -73,7 +72,6 @@ core-js-3-only-polyfill
   25876        es-array-fill/main.bundle.min.js
   25831        es-array-some/main.bundle.min.js
   25447        es-reflect-construct/main.bundle.min.js
-  23064        es-object-create/main.bundle.min.js
   22760        es-array-reduce-right/main.bundle.min.js
   22722        es-array-reduce/main.bundle.min.js
   22249        es-date-to-iso-string/main.bundle.min.js
