@@ -9,7 +9,7 @@ const LongTasks = require('../../audits/long-tasks.js');
 const createTestTrace = require('../create-test-trace.js');
 const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 
-const BASE_TS = 1000;
+const BASE_TS = 12345e3;
 const TASK_URL = 'https://pwa.rocks';
 
 /* eslint-env jest */
@@ -20,7 +20,7 @@ const TASK_URL = 'https://pwa.rocks';
  * @param {Boolean} withChildTasks
  */
 function generateTraceWithLongTasks({count, duration = 200, withChildTasks = false}) {
-  const traceTasks = [];
+  const traceTasks = [{ts: BASE_TS, duration: 0}];
   for (let i = 1; i <= count; i++) {
     /* Generates a top-level task w/ the following breakdown:
     task -> {
@@ -31,7 +31,7 @@ function generateTraceWithLongTasks({count, duration = 200, withChildTasks = fal
     Child tasks should start after the parent task and end before it.
     Top-level tasks will take on the attributable URL from it's children.
     */
-    const ts = BASE_TS * i;
+    const ts = BASE_TS + i * 1000;
     const task = {ts, duration};
     task.children = [];
     if (withChildTasks) {
@@ -50,6 +50,7 @@ function generateTraceWithLongTasks({count, duration = 200, withChildTasks = fal
   }
   return createTestTrace({
     topLevelTasks: traceTasks,
+    navigationStart: BASE_TS,
   });
 }
 
@@ -75,10 +76,10 @@ describe('Long tasks audit', () => {
     };
     const result = await LongTasks.audit(artifacts, {computedCache: new Map()});
     expect(result.details.items).toMatchObject([
-      {url: 'Unattributable', duration: 200},
-      {url: 'Unattributable', duration: 200},
-      {url: 'Unattributable', duration: 200},
-      {url: 'Unattributable', duration: 200},
+      {url: 'Unattributable', duration: 200, startTime: 1000},
+      {url: 'Unattributable', duration: 200, startTime: 2000},
+      {url: 'Unattributable', duration: 200, startTime: 3000},
+      {url: 'Unattributable', duration: 200, startTime: 4000},
     ]);
     expect(result.score).toBe(0);
     expect(result.displayValue).toBeDisplayString('4 long tasks found');
@@ -87,21 +88,24 @@ describe('Long tasks audit', () => {
 
   it('should filter out tasks with duration less than 50 ms', async () => {
     const trace = createTestTrace({
+      navigationStart: BASE_TS,
       topLevelTasks: [
-        {ts: 1000, duration: 30},
-        {ts: 2000, duration: 100},
-        {ts: 3000, duration: 25},
-        {ts: 4000, duration: 50},
+        {ts: BASE_TS, duration: 1},
+        {ts: BASE_TS + 1000, duration: 30},
+        {ts: BASE_TS + 2000, duration: 100},
+        {ts: BASE_TS + 3000, duration: 25},
+        {ts: BASE_TS + 4000, duration: 50},
       ],
     });
     const artifacts = {
       traces: {defaultPass: trace},
       devtoolsLogs: {defaultPass: devtoolsLog},
     };
+
     const result = await LongTasks.audit(artifacts, {computedCache: new Map()});
     expect(result.details.items).toMatchObject([
-      {url: 'Unattributable', duration: 100, startTime: 2000 - BASE_TS},
-      {url: 'Unattributable', duration: 50, startTime: 4000 - BASE_TS},
+      {url: 'Unattributable', duration: 100, startTime: 2000},
+      {url: 'Unattributable', duration: 50, startTime: 4000},
     ]);
     expect(result.score).toBe(0);
     expect(result.displayValue).toBeDisplayString('2 long tasks found');
@@ -149,7 +153,7 @@ describe('Long tasks audit', () => {
     };
     const result = await LongTasks.audit(artifacts, {computedCache: new Map()});
     expect(result.details.items).toMatchObject([
-      {url: TASK_URL, duration: 300, startTime: 0},
+      {url: TASK_URL, duration: 300, startTime: 1000},
     ]);
     expect(result.score).toBe(0);
     expect(result.displayValue).toBeDisplayString('1 long task found');

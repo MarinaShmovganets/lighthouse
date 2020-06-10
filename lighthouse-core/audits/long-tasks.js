@@ -9,7 +9,6 @@ const Audit = require('./audit.js');
 const NetworkRecords = require('../computed/network-records.js');
 const i18n = require('../lib/i18n/i18n.js');
 const MainThreadTasks = require('../computed/main-thread-tasks.js');
-const TraceOfTab = require('../computed/trace-of-tab.js');
 const BootupTime = require('./bootup-time.js');
 const PageDependencyGraph = require('../computed/page-dependency-graph.js');
 const LoadSimulator = require('../computed/load-simulator.js');
@@ -56,7 +55,6 @@ class LongTasks extends Audit {
     const settings = context.settings || {};
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const tasks = await MainThreadTasks.request(trace, context);
-    const traceOfTab = await TraceOfTab.request(trace, context);
     const devtoolsLog = artifacts.devtoolsLogs[LongTasks.DEFAULT_PASS];
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
 
@@ -75,12 +73,7 @@ class LongTasks extends Audit {
     } else {
       for (const task of tasks) {
         if (task.unbounded || task.parent) continue;
-
-        taskTimingsByEvent.set(task.event, {
-          startTime: task.startTime - traceOfTab.timestamps.navigationStart,
-          endTime: task.endTime - traceOfTab.timestamps.navigationStart,
-          duration: task.duration,
-        });
+        taskTimingsByEvent.set(task.event, task);
       }
     }
 
