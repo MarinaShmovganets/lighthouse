@@ -53,7 +53,7 @@ module.exports = class ConnectionPool {
       const connections = [];
       const originResponseTime = serverResponseTimeByOrigin.get(origin);
       const additionalRtt = additionalRttByOrigin.get(origin) || 0;
-      const responseTime = Number.isFinite(originResponseTime) ? originResponseTime :
+      const responseTime = typeof originResponseTime === 'number' ? originResponseTime :
         DEFAULT_SERVER_RESPONSE_TIME;
 
       for (const record of records) {
