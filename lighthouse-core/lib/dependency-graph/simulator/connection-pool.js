@@ -51,8 +51,10 @@ module.exports = class ConnectionPool {
     const recordsByOrigin = NetworkAnalyzer.groupByOrigin(this._records);
     for (const [origin, records] of recordsByOrigin.entries()) {
       const connections = [];
+      const originResponseTime = serverResponseTimeByOrigin.get(origin);
       const additionalRtt = additionalRttByOrigin.get(origin) || 0;
-      const responseTime = serverResponseTimeByOrigin.get(origin) || DEFAULT_SERVER_RESPONSE_TIME;
+      const responseTime = Number.isFinite(originResponseTime) ? originResponseTime :
+        DEFAULT_SERVER_RESPONSE_TIME;
 
       for (const record of records) {
         if (connectionReused.get(record.requestId)) continue;
