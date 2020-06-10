@@ -12,8 +12,10 @@
  * ./lighthouse-core/scripts/legacy-javascript - verification tool.
  */
 
-/** @typedef {{name: string, expression: string}} Pattern */
+/** @typedef {{name: string, expression: string, estimator?: (result: PatternMatchResult) => number}} Pattern */
 /** @typedef {{name: string, line: number, column: number}} PatternMatchResult */
+/** @typedef {{url: string, subItems: {type: 'subitems', items: SubItem[]}}} Item */
+/** @typedef {{signal: string, location: LH.Audit.Details.SourceLocationValue}} SubItem */
 
 const Audit = require('./audit.js');
 const NetworkRecords = require('../computed/network-records.js');
@@ -358,9 +360,8 @@ class LegacyJavascript extends Audit {
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
     const bundles = await JSBundles.request(artifacts, context);
 
-    /** @typedef {{signal: string, location: LH.Audit.Details.SourceLocationValue}} SubItem */
-    /** @type {Array<{url: string, subItems: LH.Audit.Details.TableSubItems}>} */
-    const tableRows = [];
+    /** @type {Item[]} */
+    const items = [];
     let signalCount = 0;
 
     // TODO(cjamcl): Use SourceMaps, and only pattern match if maps are not available.
@@ -372,8 +373,8 @@ class LegacyJavascript extends Audit {
     const urlToMatchResults =
       this.detectAcrossScripts(matcher, artifacts.ScriptElements, networkRecords, bundles);
     urlToMatchResults.forEach((matches, url) => {
-      /** @type {typeof tableRows[number]} */
-      const row = {
+      /** @type {typeof items[number]} */
+      const item = {
         url,
         subItems: {
           type: 'subitems',
@@ -393,10 +394,10 @@ class LegacyJavascript extends Audit {
             urlProvider: 'network',
           },
         };
-        row.subItems.items.push(subItem);
+        item.subItems.items.push(subItem);
       }
-      tableRows.push(row);
-      signalCount += row.subItems.items.length;
+      items.push(item);
+      signalCount += item.subItems.items.length;
     });
 
     /** @type {LH.Audit.Details.Table['headings']} */
@@ -406,11 +407,11 @@ class LegacyJavascript extends Audit {
       {key: null, itemType: 'code', subHeading: {key: 'signal'}, text: ''},
       /* eslint-enable max-len */
     ];
-    const details = Audit.makeTableDetails(headings, tableRows);
+    const details = Audit.makeTableDetails(headings, items);
 
     // Only fail if first party code has legacy code.
     const mainDocumentEntity = thirdPartyWeb.getEntity(artifacts.URL.finalUrl);
-    const foundSignalInFirstPartyCode = tableRows.some(row => {
+    const foundSignalInFirstPartyCode = items.some(row => {
       return thirdPartyWeb.isFirstParty(row.url, mainDocumentEntity);
     });
     return {
