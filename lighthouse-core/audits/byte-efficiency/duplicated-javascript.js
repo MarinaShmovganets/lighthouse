@@ -7,7 +7,7 @@
 
 /** @typedef {import('./byte-efficiency-audit.js').ByteEfficiencyProduct} ByteEfficiencyProduct */
 /** @typedef {LH.Audit.ByteEfficiencyItem & {source: string, subItems: {type: 'subitems', items: SubItem[]}}} Item */
-/** @typedef {{url: string, sourceBytes: number}} SubItem */
+/** @typedef {{url: string, sourceTransferBytes: number}} SubItem */
 
 const ByteEfficiencyAudit = require('./byte-efficiency-audit.js');
 const ModuleDuplication = require('../../computed/module-duplication.js');
@@ -84,19 +84,19 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
 
       const normalizedSource = 'node_modules/' + DuplicatedJavascript._getNodeModuleName(source);
       const aggregatedSourceDatas = groupedDuplication.get(normalizedSource) || [];
-      for (const {scriptUrl, size} of sourceDatas) {
+      for (const {scriptUrl, resourceSize} of sourceDatas) {
         let sourceData = aggregatedSourceDatas.find(d => d.scriptUrl === scriptUrl);
         if (!sourceData) {
-          sourceData = {scriptUrl, size: 0};
+          sourceData = {scriptUrl, resourceSize: 0};
           aggregatedSourceDatas.push(sourceData);
         }
-        sourceData.size += size;
+        sourceData.resourceSize += resourceSize;
       }
       groupedDuplication.set(normalizedSource, aggregatedSourceDatas);
     }
 
     for (const sourceDatas of duplication.values()) {
-      sourceDatas.sort((a, b) => b.size - a.size);
+      sourceDatas.sort((a, b) => b.resourceSize - a.resourceSize);
     }
 
     return groupedDuplication;
@@ -184,11 +184,11 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
           continue;
         }
 
-        const transferSize = Math.round(sourceData.size * transferRatio);
+        const transferSize = Math.round(sourceData.resourceSize * transferRatio);
 
         subItems.push({
           url,
-          sourceBytes: transferSize,
+          sourceTransferBytes: transferSize,
         });
 
         if (i === 0) continue;
@@ -235,7 +235,7 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
     const headings = [
       /* eslint-disable max-len */
       {key: 'source', valueType: 'code', subHeading: {key: 'urls', valueType: 'url'}, label: str_(i18n.UIStrings.columnSource)},
-      {key: '_', valueType: 'bytes', subHeading: {key: 'sourceBytes'}, granularity: 0.05, label: str_(i18n.UIStrings.columnTransferSize)},
+      {key: '_', valueType: 'bytes', subHeading: {key: 'sourceTransferBytes'}, granularity: 0.05, label: str_(i18n.UIStrings.columnTransferSize)},
       {key: 'wastedBytes', valueType: 'bytes', granularity: 0.05, label: str_(i18n.UIStrings.columnWastedBytes)},
       /* eslint-enable max-len */
     ];
