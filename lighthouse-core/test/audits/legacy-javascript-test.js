@@ -144,13 +144,13 @@ describe('LegacyJavaScript audit', () => {
       'String.prototype[\'repeat\'] = function() {}',
       'Object.defineProperty(String.prototype, "repeat", function() {})',
       'Object.defineProperty(String.prototype, \'repeat\', function() {})',
-      // Currently are no polyfills that declare a class. May be in the future.
-      // 'Object.defineProperty(window, \'WeakMap\', function() {})',
       '$export($export.S,"Object",{values:function values(t){return i(t)}})',
+      'String.raw = function() {}',
+      // Currently are no polyfills that declare a class. Maybe in the future.
+      // 'Object.defineProperty(window, \'WeakMap\', function() {})',
       // 'WeakMap = function() {}',
       // 'window.WeakMap = function() {}',
       // 'function WeakMap() {}',
-      'String.raw = function() {}',
     ];
     const variants = createVariants(codeSnippets);
     const scripts = variants.map((code, i) => {
