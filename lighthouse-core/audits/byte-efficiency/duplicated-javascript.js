@@ -234,7 +234,7 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
     /** @type {LH.Audit.Details.OpportunityColumnHeading[]} */
     const headings = [
       /* eslint-disable max-len */
-      {key: 'source', valueType: 'code', subHeading: {key: 'urls', valueType: 'url'}, label: str_(i18n.UIStrings.columnSource)},
+      {key: 'source', valueType: 'code', subHeading: {key: 'url', valueType: 'url'}, label: str_(i18n.UIStrings.columnSource)},
       {key: '_', valueType: 'bytes', subHeading: {key: 'sourceTransferBytes'}, granularity: 0.05, label: str_(i18n.UIStrings.columnTransferSize)},
       {key: 'wastedBytes', valueType: 'bytes', granularity: 0.05, label: str_(i18n.UIStrings.columnWastedBytes)},
       /* eslint-enable max-len */
