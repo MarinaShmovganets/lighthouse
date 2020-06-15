@@ -16,7 +16,7 @@ const pageFunctions = require('../../lib/page-functions.js');
 const TraceProcessor = require('../../lib/tracehouse/trace-processor.js');
 const RectHelpers = require('../../lib/rect-helpers.js');
 
-/** @typedef {{height: Number, width: Number}} ViewportDimensions */
+/** @typedef {{nodeId: Number, score?: Number}} TraceElementData */
 
 /**
  * @this {HTMLElement}
@@ -54,122 +54,68 @@ class TraceElements extends Gatherer {
   }
 
   /**
-   * @param {Number} index
-   * @param {Number} upperBound 
-   */
-  static getInboundIndex(index, upperBound) {
-    if (index < 0) return 0;
-    if (index > upperBound) return upperBound;
-    return index;
-  }
-
-  /**
-   * @param {Number} start
-   * @param {Number} length 
-   * @param {Number} viewportLength
-   */
-  static getClippedLength(start, length, viewportLength) {
-    if (start + length < 0) return 0;
-    if (start + length > viewportLength) return viewportLength - start;
-    return length;
-  }
-
-  /**
-   * 
-   * @param {Array<number>} rect 
-   * @param {Number} viewportWidth 
-   * @param {Number} viewportHeight 
-   */
-  static getClippedRectArgs(rect, viewportWidth, viewportHeight) {
-    return {
-      x: TraceElements.getInboundIndex(rect[0], viewportWidth),
-      y: TraceElements.getInboundIndex(rect[1], viewportHeight),
-      width: TraceElements.getClippedLength(rect[0], rect[2], viewportWidth),
-      height: TraceElements.getClippedLength(rect[1], rect[3], viewportHeight),
-    };
-  }
-
-  /**
    * @param {Array<number>} rect
-   * @param {Number} viewportWidth
-   * @param {Number} viewportHeight
    * @return {LH.Artifacts.Rect}
    */
-  static traceRectToLHRect(rect, viewportWidth, viewportHeight) {
-    const rectArgs = TraceElements.getClippedRectArgs(rect, viewportWidth, viewportHeight);
+  static traceRectToLHRect(rect) {
+    const rectArgs = {
+      x: rect[0],
+      y: rect[1],
+      width: rect[2],
+      height: rect[3],
+    };
     return RectHelpers.addRectTopAndBottom(rectArgs);
   }
 
   /**
    * @param {Array<LH.TraceEvent>} mainThreadEvents
-   * @param {LH.Artifacts.ViewportDimensions} dimensions
-   * @return {Array<number>}
+   * @return {Array<TraceElementData>}
    */
-  static getCLSNodeIdsFromMainThreadEvents(mainThreadEvents, dimensions) {
-    const clsPerNodeMap = new Map();
-    /** @type {Set<number>} */
-    const clsNodeIds = new Set();
+  static getLayoutShiftElements(mainThreadEvents) {
+    const clsPerNode = new Map();
     const shiftEvents = mainThreadEvents
       .filter(e => e.name === 'LayoutShift')
       .map(e => e.args && e.args.data);
 
-    const viewportHeight = dimensions.outerHeight;
-    const viewportWidth = dimensions.outerWidth;
-    const viewportArea = viewportHeight * viewportWidth;
-    const maxViewportDimension = Math.max(viewportHeight, viewportWidth);
-    let cls = 0;
-
-    console.log(shiftEvents);
-    for (let i = 0; i < shiftEvents.length - 1; i++) {
-      let cur = shiftEvents[i];
-      let next = shiftEvents[i + 1];
-      if (next.had_recent_input) continue;
-
-      const expectedScoreOnNext = next.cumulative_score - cur.cumulative_score;
-      console.log({
-        clsOnNext: next.cumulative_score,
-        scoreOnNext: next.score,
-        expectedScoreOnNext,
-        // should always be true.
-        matches: Math.abs(expectedScoreOnNext - next.score) < 0.000001,
-      });
-    }
-
     shiftEvents.forEach(event => {
-      if (!event || !event.impacted_nodes) {
+      if (!event || !event.impacted_nodes || !event.score || event.had_recent_input) {
         return;
       }
 
-      console.log(event);
-      cls += event.score ? event.score : 0;
+      let totalAreaOfImpact = 0;
+      const pixelsMovedPerNode = new Map();
 
       event.impacted_nodes.forEach(node => {
         if (!node.node_id || !node.old_rect || !node.new_rect) {
           return;
         }
 
-        const oldRect = TraceElements.traceRectToLHRect(node.old_rect, viewportWidth, viewportHeight);
-        const newRect = TraceElements.traceRectToLHRect(node.new_rect, viewportWidth, viewportHeight);
+        const oldRect = TraceElements.traceRectToLHRect(node.old_rect);
+        const newRect = TraceElements.traceRectToLHRect(node.new_rect);
         const areaOfImpact = RectHelpers.getRectArea(oldRect) +
           RectHelpers.getRectArea(newRect) -
           RectHelpers.getRectOverlapArea(oldRect, newRect);
 
-        const distance_fraction = areaOfImpact / viewportArea;
+        pixelsMovedPerNode.set(node.node_id, areaOfImpact);
 
-        let prevShiftTotal = 0;
-        if (clsPerNodeMap.has(node.node_id)) {
-          prevShiftTotal += clsPerNodeMap.get(node.node_id);
-        }
-        clsPerNodeMap.set(node.node_id, prevShiftTotal + areaOfImpact);
-        clsNodeIds.add(node.node_id);
+        totalAreaOfImpact += areaOfImpact;
+      });
+
+      [...pixelsMovedPerNode.entries()].forEach(entry => {
+        const prevCLSContribution = clsPerNode.has(entry[0]) ? clsPerNode.get(entry[0]) : 0;
+        const clsContribution = (entry[1] / totalAreaOfImpact) * Number(event.score);
+        clsPerNode.set(entry[0], prevCLSContribution + clsContribution);
       });
     });
 
-    console.log(cls);
-
-    const topFive = [...clsPerNodeMap.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5).map(entry => Number(entry[0]));
+    const topFive = [...clsPerNode.entries()]
+    .sort((a, b) => b[1] - a[1]).slice(0, 5)
+    .map(entry => {
+      return {
+        nodeId: Number(entry[0]),
+        score: Number(entry[1]),
+      };
+    });
 
     return topFive;
   }
@@ -184,28 +130,26 @@ class TraceElements extends Gatherer {
     if (!loadData.trace) {
       throw new Error('Trace is missing!');
     }
-    /** @type {LH.Artifacts.ViewportDimensions} */
-    const dimensions = await driver.evaluateAsync(`(${pageFunctions.getPageViewportDimensionsString}())`,
-      {useIsolation: true});
 
     const {largestContentfulPaintEvt, mainThreadEvents} =
       TraceProcessor.computeTraceOfTab(loadData.trace);
-    /** @type {Array<number>} */
-    const backendNodeIds = [];
+    /** @type {Array<TraceElementData>} */
+    const backendNodeData = [];
 
     const lcpNodeId = TraceElements.getNodeIDFromTraceEvent(largestContentfulPaintEvt);
-    const clsNodeIds = TraceElements.getCLSNodeIdsFromMainThreadEvents(mainThreadEvents, dimensions);
+    const clsNodeData = TraceElements.getLayoutShiftElements(mainThreadEvents);
     if (lcpNodeId) {
-      backendNodeIds.push(lcpNodeId);
+      backendNodeData.push({nodeId: lcpNodeId});
     }
-    backendNodeIds.push(...clsNodeIds);
+    backendNodeData.push(...clsNodeData);
 
     const traceElements = [];
-    for (let i = 0; i < backendNodeIds.length; i++) {
+    for (let i = 0; i < backendNodeData.length; i++) {
+      const backendNodeId = backendNodeData[i].nodeId;
       const metricName =
-        lcpNodeId === backendNodeIds[i] ? 'largest-contentful-paint' : 'cumulative-layout-shift';
+        lcpNodeId === backendNodeId ? 'largest-contentful-paint' : 'cumulative-layout-shift';
       const resolveNodeResponse =
-        await driver.sendCommand('DOM.resolveNode', {backendNodeId: backendNodeIds[i]});
+        await driver.sendCommand('DOM.resolveNode', {backendNodeId: backendNodeId});
       const objectId = resolveNodeResponse.object.objectId;
       const response = await driver.sendCommand('Runtime.callFunctionOn', {
         objectId,
@@ -222,7 +166,7 @@ class TraceElements extends Gatherer {
       });
 
       if (response && response.result && response.result.value) {
-        traceElements.push(response.result.value);
+        traceElements.push({...response.result.value, score: backendNodeData[i].score});
       }
     }
 
