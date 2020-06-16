@@ -141,6 +141,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
         value = audit.id === 'cumulative-layout-shift' ?
           clampTo2Decimals(audit.result.numericValue) :
           Math.round(audit.result.numericValue);
+        value = String(value);
       } else {
         value = 'null';
       }
