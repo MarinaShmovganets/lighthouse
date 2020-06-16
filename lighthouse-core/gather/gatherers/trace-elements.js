@@ -16,7 +16,7 @@ const pageFunctions = require('../../lib/page-functions.js');
 const TraceProcessor = require('../../lib/tracehouse/trace-processor.js');
 const RectHelpers = require('../../lib/rect-helpers.js');
 
-/** @typedef {{nodeId: Number, score?: Number}} TraceElementData */
+/** @typedef {{nodeId: number, score?: number}} TraceElementData */
 
 /**
  * @this {HTMLElement}
@@ -68,10 +68,16 @@ class TraceElements extends Gatherer {
   }
 
   /**
+   * This function finds the top (up to 5) elements that contribute to the CLS score of the page.
+   * Each layout shift event has a 'score' which is the amount added to the CLS as a result of the given shift(s).
+   * We calculate the score per element by taking the 'score' of each layout shift event and
+   * distributing it between all the nodes that were shifted, proportianal to the impact region of
+   * each shifted element.
    * @param {Array<LH.TraceEvent>} mainThreadEvents
    * @return {Array<TraceElementData>}
    */
-  static getLayoutShiftElements(mainThreadEvents) {
+  static getTopLayoutShiftElements(mainThreadEvents) {
+    /** @type {Map<number, number>} */
     const clsPerNode = new Map();
     const shiftEvents = mainThreadEvents
       .filter(e => e.name === 'LayoutShift')
@@ -83,6 +89,7 @@ class TraceElements extends Gatherer {
       }
 
       let totalAreaOfImpact = 0;
+      /** @type {Map<number, number>} */
       const pixelsMovedPerNode = new Map();
 
       event.impacted_nodes.forEach(node => {
@@ -97,23 +104,23 @@ class TraceElements extends Gatherer {
           RectHelpers.getRectOverlapArea(oldRect, newRect);
 
         pixelsMovedPerNode.set(node.node_id, areaOfImpact);
-
         totalAreaOfImpact += areaOfImpact;
       });
 
-      [...pixelsMovedPerNode.entries()].forEach(entry => {
-        const prevCLSContribution = clsPerNode.has(entry[0]) ? clsPerNode.get(entry[0]) : 0;
-        const clsContribution = (entry[1] / totalAreaOfImpact) * Number(event.score);
-        clsPerNode.set(entry[0], prevCLSContribution + clsContribution);
-      });
+      for (const [nodeId, pixelsMoved] of pixelsMovedPerNode.entries()) {
+        let clsContribution = clsPerNode.get(nodeId) || 0;
+        clsContribution += (pixelsMoved / totalAreaOfImpact) * Number(event.score);
+        clsPerNode.set(nodeId, clsContribution);
+      }
     });
 
     const topFive = [...clsPerNode.entries()]
-    .sort((a, b) => b[1] - a[1]).slice(0, 5)
-    .map(entry => {
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([nodeId, clsContribution]) => {
       return {
-        nodeId: Number(entry[0]),
-        score: Number(entry[1]),
+        nodeId: nodeId,
+        score: clsContribution,
       };
     });
 
@@ -137,7 +144,7 @@ class TraceElements extends Gatherer {
     const backendNodeData = [];
 
     const lcpNodeId = TraceElements.getNodeIDFromTraceEvent(largestContentfulPaintEvt);
-    const clsNodeData = TraceElements.getLayoutShiftElements(mainThreadEvents);
+    const clsNodeData = TraceElements.getTopLayoutShiftElements(mainThreadEvents);
     if (lcpNodeId) {
       backendNodeData.push({nodeId: lcpNodeId});
     }
