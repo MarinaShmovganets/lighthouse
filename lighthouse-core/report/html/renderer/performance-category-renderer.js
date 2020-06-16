@@ -136,8 +136,14 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const clampTo2Decimals = val => Math.round(val * 100) / 100;
 
     const metricPairs = v5andv6metrics.map(audit => {
-      const value = typeof audit.result.numericValue !== 'undefined' ?
-        clampTo2Decimals(audit.result.numericValue).toString() : 'null';
+      let value;
+      if (typeof audit.result.numericValue === 'number') {
+        value = audit.id === 'cumulative-layout-shift' ?
+          clampTo2Decimals(audit.result.numericValue) :
+          Math.round(audit.result.numericValue);
+      } else {
+        value = 'null';
+      }
       return [acronymMapping[audit.id] || audit.id, value];
     });
     const paramPairs = [...metricPairs];
