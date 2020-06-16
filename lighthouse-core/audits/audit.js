@@ -5,6 +5,7 @@
  */
 'use strict';
 
+const {isUnderTest} = require('../lib/lh-env.js');
 const statistics = require('../lib/statistics.js');
 const Util = require('../report/html/renderer/util.js');
 
@@ -89,7 +90,7 @@ class Audit {
     // If there are no items, there's nothing to check.
     if (!items.length) return;
     // Only do this in tests for now.
-    if (typeof describe === 'undefined' && !process.env.CI) return;
+    if (!isUnderTest) return;
 
     for (const heading of headings) {
       // `null` heading key means it's a column for subrows only
