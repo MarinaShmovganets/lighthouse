@@ -155,7 +155,7 @@ class TraceElements extends Gatherer {
       const backendNodeId = backendNodeData[i].nodeId;
       const metricName =
         lcpNodeId === backendNodeId ? 'largest-contentful-paint' : 'cumulative-layout-shift';
-      const objectId = await driver.resolveNodeIdToObjectId(backendNodeIds[i]);
+      const objectId = await driver.resolveNodeIdToObjectId(backendNodeId);
       if (!objectId) continue;
       const response = await driver.sendCommand('Runtime.callFunctionOn', {
         objectId,
