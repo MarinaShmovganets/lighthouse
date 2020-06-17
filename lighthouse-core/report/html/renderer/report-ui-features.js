@@ -257,11 +257,9 @@ class ReportUIFeatures {
           // Iterate subsequent associated sub item rows.
           do {
             rowEl.classList.toggle('lh-row--hidden', shouldHide);
-
             // Adjust for zebra styling.
-            rowEl.classList.remove('lh-row--even');
-            rowEl.classList.remove('lh-row--odd');
-            if (!shouldHide) rowEl.classList.add(even ? 'lh-row--even' : 'lh-row--odd');
+            rowEl.classList.toggle('lh-row--even', !shouldHide && even);
+            rowEl.classList.toggle('lh-row--odd', !shouldHide && !even);
 
             rowEl = /** @type {HTMLElement} */ (rowEl.nextElementSibling);
           } while (rowEl && rowEl.classList.contains('lh-sub-item-row'));
