@@ -123,7 +123,7 @@ describe('Long tasks audit', () => {
       settings: {
         precomputedLanternData: {
           additionalRttByOrigin: {[TASK_URL]: 0},
-          serverResponseTimeByOrigin: {[TASK_URL]: 0},
+          serverResponseTimeByOrigin: {[TASK_URL]: 100},
         },
         throttlingMethod: 'simulate',
         throttling: {
@@ -135,10 +135,10 @@ describe('Long tasks audit', () => {
     };
     const result = await LongTasks.audit(artifacts, context);
     expect(result.details.items).toMatchObject([
-      {duration: 100, startTime: 500},
       {duration: 100, startTime: 600},
       {duration: 100, startTime: 700},
       {duration: 100, startTime: 800},
+      {duration: 100, startTime: 900},
     ]);
     expect(result.score).toBe(0);
     expect(result.details.items).toHaveLength(4);
