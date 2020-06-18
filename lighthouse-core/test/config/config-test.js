@@ -160,7 +160,7 @@ describe('Config', () => {
             'ViewportDimensions', // from gatherer
           ],
           __internalOptionalArtifacts: [
-            'SourceMaps', // Not in the config.
+            'SourceMapsBlah', // Not in the config.
           ],
         };
       }
@@ -230,7 +230,7 @@ describe('Config', () => {
             'ViewportDimensions', // from gatherer
           ],
           __internalOptionalArtifacts: [
-            'SourceMaps', // Not in the config.
+            'SourceMapsBlah', // Not in the config.
           ],
         };
       }
@@ -271,13 +271,6 @@ describe('Config', () => {
 
     const config = new Config({
       extends: 'lighthouse:default',
-      // TODO(cjamcl): remove when source-maps is in default config.
-      passes: [{
-        passName: 'defaultPass',
-        gatherers: [
-          'source-maps',
-        ],
-      }],
       audits: [ButWillStillTakeYourCrap],
     }, {
       // Trigger filtering logic.
@@ -300,7 +293,7 @@ describe('Config', () => {
             'ViewportDimensions', // from gatherer
           ],
           __internalOptionalArtifacts: [
-            'SourceMaps', // Not in the config.
+            'SourceMapsBlah', // Not in the config.
           ],
         };
       }
