@@ -39,10 +39,12 @@ jobs:
     #     pip install protobuf==3.7.1
     
     # Chrome Stable is already installed by default.
-    - name: Install Chrome Canary
-      run: sh lighthouse-core/scripts/download-chrome-canary.sh
+    # - name: Install Chrome Canary
+    #   run: sh lighthouse-core/scripts/download-chrome-canary.sh
+    - name: Install Chrome ToT
+      run: CHROME_PATH=~/chrome-tot sh lighthouse-core/scripts/download-chrome.sh
     
-    - run: which google-chrome-canary
+    - run: echo $CHROME_PATH
     - run: exit 1
 
     # Cache yarn deps. thx https://github.com/actions/cache/blob/master/examples.md#node---yarn
