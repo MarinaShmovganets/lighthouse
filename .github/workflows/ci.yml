@@ -46,7 +46,7 @@ jobs:
       env:
         CHROME_PATH: /home/runner/chrome-tot
     
-    - run: ls /home/runner/chrome-tot
+    - run: ls /home/runner/
     # - run: exit 1
 
     # Cache yarn deps. thx https://github.com/actions/cache/blob/master/examples.md#node---yarn
