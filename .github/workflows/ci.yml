@@ -4,7 +4,7 @@
 
 name: 💡🏠
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   ci:
@@ -39,8 +39,6 @@ jobs:
         pip install protobuf==3.7.1
     
     # Chrome Stable is already installed by default.
-    # - name: Install Chrome Canary
-    #   run: sh lighthouse-core/scripts/download-chrome-canary.sh
     - name: Install Chrome ToT
       run: bash lighthouse-core/scripts/download-chrome.sh
       env:
