@@ -8,8 +8,6 @@
 
 # Download chrome inside of our CI env.
 
-echo "CHROME_PATH $CHROME_PATH"
-
 if [ "$APPVEYOR" == "True" ]; then
   url="https://download-chromium.appspot.com/dl/Win?type=snapshots"
 else
