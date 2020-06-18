@@ -43,6 +43,8 @@ jobs:
     #   run: sh lighthouse-core/scripts/download-chrome-canary.sh
     - name: Install Chrome ToT
       run: CHROME_PATH=~/chrome-tot bash lighthouse-core/scripts/download-chrome.sh
+      env:
+        CHROME_PATH: /home/runner/chrome-tot
     
     - run: ls ~/chrome-tot
     # - run: exit 1
@@ -74,7 +76,9 @@ jobs:
     - name: Smoke (stable)
       run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2
     - name: Smoke (ToT)
-      run: CHROME_PATH=~/chrome-tot xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2
+      run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2
+      env:
+        CHROME_PATH: /home/runner/chrome-tot
     - run: xvfb-run --auto-servernum yarn test-bundle
     - run: xvfb-run --auto-servernum yarn test-docs
 
