@@ -46,6 +46,7 @@ jobs:
       env:
         CHROME_PATH: /home/runner/chrome-tot
     - run: mv chrome-linux /home/runner/chrome-linux-tot
+    - run: ls /home/runner/chrome-linux-tot
     - run: /home/runner/chrome-linux-tot --version
     - run: exit 1
 
