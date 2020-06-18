@@ -71,14 +71,16 @@ jobs:
     - run: sudo apt-get install xvfb
     - run: xvfb-run --auto-servernum yarn unit
     - run: xvfb-run --auto-servernum yarn test-clients
+    - run: xvfb-run --auto-servernum yarn test-bundle
+    - run: xvfb-run --auto-servernum yarn test-docs
+
     - name: Smoke (ToT)
       run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2
       env:
         CHROME_PATH: /home/runner/chrome-linux-tot/chrome
     - name: Smoke (stable)
       run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2
-    - run: xvfb-run --auto-servernum yarn test-bundle
-    - run: xvfb-run --auto-servernum yarn test-docs
+    
 
     - run: yarn test-lantern
     - run: yarn test-legacy-javascript

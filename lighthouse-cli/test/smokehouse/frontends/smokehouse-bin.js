@@ -117,7 +117,6 @@ async function begin() {
   process.exit(exitCode);
 }
 
-console.log(process.env.CHROME_PATH);
 begin().catch(e => {
   console.error(e);
   process.exit(1);
