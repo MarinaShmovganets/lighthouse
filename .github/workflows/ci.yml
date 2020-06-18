@@ -46,9 +46,6 @@ jobs:
       env:
         CHROME_PATH: /home/runner/chrome-tot
     - run: mv chrome-linux /home/runner/chrome-linux-tot
-    - run: ls /home/runner/chrome-linux-tot
-    - run: /home/runner/chrome-linux-tot --version
-    - run: exit 1
 
     # Cache yarn deps. thx https://github.com/actions/cache/blob/master/examples.md#node---yarn
     - name: Get yarn cache directory path
@@ -77,7 +74,7 @@ jobs:
     - name: Smoke (ToT)
       run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2
       env:
-        CHROME_PATH: /home/runner/chrome-linux-tot
+        CHROME_PATH: /home/runner/chrome-linux-tot/chrome
     - name: Smoke (stable)
       run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2
     - run: xvfb-run --auto-servernum yarn test-bundle
