@@ -40,10 +40,10 @@ jobs:
     
     # Chrome Stable is already installed by default.
     - name: Install Chrome ToT
-      run: bash lighthouse-core/scripts/download-chrome.sh
+      working-directory: /home/runner
+      run: bash lighthouse-core/scripts/download-chrome.sh && mv chrome-linux chrome-linux-tot
       env:
-        CHROME_PATH: /home/runner/chrome-linux-tot
-    - run: mv chrome-linux /home/runner/chrome-linux-tot
+        CHROME_PATH: /home/runner/chrome-linux-to
 
     # Cache yarn deps. thx https://github.com/actions/cache/blob/master/examples.md#node---yarn
     - name: Get yarn cache directory path
