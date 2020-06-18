@@ -42,7 +42,7 @@ jobs:
     # - name: Install Chrome Canary
     #   run: sh lighthouse-core/scripts/download-chrome-canary.sh
     - name: Install Chrome ToT
-      run: CHROME_PATH=~/chrome-tot sh lighthouse-core/scripts/download-chrome.sh
+      run: CHROME_PATH=~/chrome-tot bash lighthouse-core/scripts/download-chrome.sh
     
     - run: echo $CHROME_PATH
     - run: exit 1
