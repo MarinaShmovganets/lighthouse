@@ -45,9 +45,7 @@ jobs:
       run: bash lighthouse-core/scripts/download-chrome.sh
       env:
         CHROME_PATH: /home/runner/chrome-tot
-    
-    - run: ls
-    # - run: exit 1
+    - run: mv chrome-linux chrome-linux-tot
 
     # Cache yarn deps. thx https://github.com/actions/cache/blob/master/examples.md#node---yarn
     - name: Get yarn cache directory path
@@ -73,12 +71,12 @@ jobs:
     - run: sudo apt-get install xvfb
     - run: xvfb-run --auto-servernum yarn unit
     - run: xvfb-run --auto-servernum yarn test-clients
-    - name: Smoke (stable)
-      run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2
     - name: Smoke (ToT)
       run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2
       env:
-        CHROME_PATH: /home/runner/chrome-tot
+        CHROME_PATH: /home/runner/chrome-linux-tot
+    - name: Smoke (stable)
+      run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2
     - run: xvfb-run --auto-servernum yarn test-bundle
     - run: xvfb-run --auto-servernum yarn test-docs
 
