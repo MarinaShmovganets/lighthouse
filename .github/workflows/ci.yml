@@ -42,11 +42,11 @@ jobs:
     # - name: Install Chrome Canary
     #   run: sh lighthouse-core/scripts/download-chrome-canary.sh
     - name: Install Chrome ToT
-      run: CHROME_PATH=~/chrome-tot bash lighthouse-core/scripts/download-chrome.sh
+      run: bash lighthouse-core/scripts/download-chrome.sh
       env:
         CHROME_PATH: /home/runner/chrome-tot
     
-    - run: ls /home/runner/
+    - run: ls
     # - run: exit 1
 
     # Cache yarn deps. thx https://github.com/actions/cache/blob/master/examples.md#node---yarn
