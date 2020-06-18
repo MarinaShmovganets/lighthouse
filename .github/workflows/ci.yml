@@ -45,7 +45,7 @@ jobs:
       run: bash lighthouse-core/scripts/download-chrome.sh
       env:
         CHROME_PATH: /home/runner/chrome-tot
-    - run: mv chrome-linux chrome-linux-tot
+    - run: mv chrome-linux /home/runner/chrome-linux-tot
 
     # Cache yarn deps. thx https://github.com/actions/cache/blob/master/examples.md#node---yarn
     - name: Get yarn cache directory path
