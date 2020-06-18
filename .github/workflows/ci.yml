@@ -4,7 +4,7 @@
 
 name: 💡🏠
 
-on: [pull_request, push]
+on: [pull_request]
 
 jobs:
   build:
@@ -25,27 +25,13 @@ jobs:
     - run: yarn --frozen-lockfile
     - run: yarn build-all
 
-
-    # Fail if any changes were written to source files (ex, from: build/build-cdt-lib.js).
-    - run: git diff --exit-code
-
-    # buildtracker runs `git merge-base HEAD origin/master` which needs more history than depth=1. https://github.com/paularmstrong/build-tracker/issues/106
-    - name: Deepen git fetch (for buildtracker)
-      run: git fetch --deepen=100
-    - name: Store in buildtracker
-      # TODO(paulirish): Don't allow this to fail the build. https://github.com/paularmstrong/build-tracker/issues/200
-      run: yarn bt-cli upload-build || true
-      env:
-        # https://buildtracker.dev/docs/guides/github-actions#configuration
-        BT_API_AUTH_TOKEN: ${{ secrets.BT_API_AUTH_TOKEN }}
-
     - name: Upload dist
       uses: actions/upload-artifact@v1
       with:
         name: dist
         path: dist/
 
-  misc:
+  unit:
     runs-on: ubuntu-latest
     strategy:
       # e.g. if lint fails, continue to the unit tests anyway
@@ -62,19 +48,12 @@ jobs:
 
     - run: yarn --frozen-lockfile
 
-    # Run tests that require headfull Chrome.
-    - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum yarn test-clients
-    - run: xvfb-run --auto-servernum yarn test-bundle
-    - run: xvfb-run --auto-servernum yarn test-docs
-
     - run: yarn diff:sample-json
     - run: yarn type-check
     - run: yarn lint
     - run: yarn test-lantern
     - run: yarn test-legacy-javascript
     - run: yarn i18n:checks
-    - run: yarn dogfood-lhci
 
     - name: Setup protoc
       uses: arduino/setup-protoc@7ad700d
@@ -96,19 +75,41 @@ jobs:
     - run: sudo apt-get install xvfb
     - run: xvfb-run --auto-servernum yarn unit
 
-  # smoke:
-  #   runs-on: ubuntu-latest
+    # Run tests that require headfull Chrome.
+    - run: sudo apt-get install xvfb
+    - run: xvfb-run --auto-servernum yarn test-clients
+    - run: xvfb-run --auto-servernum yarn test-bundle
+    - run: xvfb-run --auto-servernum yarn test-docs
 
-  #   steps:
-  #   - name: git clone
-  #     uses: actions/checkout@v2
+    - run: yarn dogfood-lhci
 
-  #   - name: Use Node.js 10.x
-  #     uses: actions/setup-node@v1
-  #     with:
-  #       node-version: 10.x
+    # Fail if any changes were written to source files (ex, from: build/build-cdt-lib.js).
+    - run: git diff --exit-code
 
-  #   - run: yarn --frozen-lockfile
+    # buildtracker runs `git merge-base HEAD origin/master` which needs more history than depth=1. https://github.com/paularmstrong/build-tracker/issues/106
+    - name: Deepen git fetch (for buildtracker)
+      run: git fetch --deepen=100
+    - name: Store in buildtracker
+      # TODO(paulirish): Don't allow this to fail the build. https://github.com/paularmstrong/build-tracker/issues/200
+      run: yarn bt-cli upload-build || true
+      env:
+        # https://buildtracker.dev/docs/guides/github-actions#configuration
+        BT_API_AUTH_TOKEN: ${{ secrets.BT_API_AUTH_TOKEN }}
 
-  #   - run: sudo apt-get install xvfb
-  #   - run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2
+
+  smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: git clone
+      uses: actions/checkout@v2
+
+    - name: Use Node.js 10.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.x
+
+    - run: yarn --frozen-lockfile
+
+    - run: sudo apt-get install xvfb
+    - run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2
