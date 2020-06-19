@@ -83,6 +83,9 @@ class Audit {
   }
 
   /**
+   * This catches typos in the `key` property of a heading definition of table/opportunity details.
+   * Throws an error if any of keys referenced by headings don't exist in at least one of the items.
+   *
    * @param {LH.Audit.Details.Table['headings']|LH.Audit.Details.Opportunity['headings']} headings
    * @param {LH.Audit.Details.Opportunity['items']|LH.Audit.Details.Table['items']} items
    */
