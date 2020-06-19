@@ -201,13 +201,6 @@ describe('Config', () => {
 
     const config = new Config({
       extends: 'lighthouse:default',
-      // TODO(cjamcl): remove when source-maps is in default config.
-      passes: [{
-        passName: 'defaultPass',
-        gatherers: [
-          'source-maps',
-        ],
-      }],
       audits: [ButWillStillTakeYourCrap],
     }, {
       // Trigger filtering logic.
@@ -334,13 +327,6 @@ describe('Config', () => {
 
     const config = new Config({
       extends: 'lighthouse:default',
-      // TODO(cjamcl): remove when source-maps is in default config.
-      passes: [{
-        passName: 'defaultPass',
-        gatherers: [
-          'source-maps',
-        ],
-      }],
       audits: [ButWillStillTakeYourCrap],
     }, {
       // Trigger filtering logic.
