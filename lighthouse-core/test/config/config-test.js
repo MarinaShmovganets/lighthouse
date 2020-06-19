@@ -160,7 +160,7 @@ describe('Config', () => {
             'ViewportDimensions', // from gatherer
           ],
           __internalOptionalArtifacts: [
-            'SourceMapsBlah', // Not in the config.
+            'NotInTheConfig',
           ],
         };
       }
@@ -210,38 +210,6 @@ describe('Config', () => {
       .toEqual(['viewport-dimensions', 'source-maps']);
   });
 
-  // eslint-disable-next-line max-len
-  it('does not throw when an audit requests an optional artifact with no gatherer supplying it', async () => {
-    class DoesntNeedYourCrap extends Audit {
-      static get meta() {
-        return {
-          id: 'optional-artifact-audit',
-          title: 'none',
-          description: 'none',
-          requiredArtifacts: [
-            'URL', // base artifact
-            'ViewportDimensions', // from gatherer
-          ],
-          __internalOptionalArtifacts: [
-            'SourceMapsBlah', // Not in the config.
-          ],
-        };
-      }
-
-      static audit() {}
-    }
-
-    // Shouldn't throw.
-    const config = new Config({
-      extends: 'lighthouse:default',
-      audits: [DoesntNeedYourCrap],
-    }, {
-      // Trigger filtering logic.
-      onlyAudits: ['optional-artifact-audit'],
-    });
-    expect(config.passes[0].gatherers.map(g => g.path)).toEqual(['viewport-dimensions']);
-  });
-
   it('should keep optional artifacts in gatherers after filter', async () => {
     class ButWillStillTakeYourCrap extends Audit {
       static get meta() {
@@ -286,7 +254,7 @@ describe('Config', () => {
             'ViewportDimensions', // from gatherer
           ],
           __internalOptionalArtifacts: [
-            'SourceMapsBlah', // Not in the config.
+            'NotInTheConfig',
           ],
         };
       }
