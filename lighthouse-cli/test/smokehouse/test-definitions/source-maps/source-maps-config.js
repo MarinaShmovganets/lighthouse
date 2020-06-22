@@ -12,5 +12,7 @@
 /** @type {LH.Config.Json} */
 module.exports = {
   extends: 'lighthouse:default',
-  audits: ['unused-javascript'],
+  settings: {
+    onlyAudits: ['unused-javascript'],
+  },
 };
