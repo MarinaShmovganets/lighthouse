@@ -29,6 +29,20 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
     };
   }
 
+  /**
+   * @param {Array<{nodeId: number, score: number}>} shiftScores
+   */
+  function sumScores(shiftScores) {
+    let sum = 0;
+    shiftScores.forEach(shift => sum += shift.score);
+    return sum;
+  }
+
+  function expectEqualFloat(actual, expected) {
+    const diff = Math.abs(actual - expected);
+    expect(diff).toBeLessThanOrEqual(Number.EPSILON);
+  }
+
   it('returns layout shift data sorted by impact area', () => {
     const traceEvents = [
       makeTraceEvent(1, [
@@ -50,6 +64,8 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
       {nodeId: 25, score: 0.6},
       {nodeId: 60, score: 0.4},
     ]);
+    const total = sumScores(result);
+    expectEqualFloat(total, 1.0);
   });
 
   it('combines scores for the same nodeId accross multiple shift events', () => {
@@ -80,6 +96,8 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
       {nodeId: 60, score: 0.7},
       {nodeId: 25, score: 0.6},
     ]);
+    const total = sumScores(result);
+    expectEqualFloat(total, 1.3);
   });
 
   it('returns only the top five values', () => {
@@ -135,5 +153,7 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
       {nodeId: 6, score: 0.25},
       {nodeId: 7, score: 0.25},
     ]);
+    const total = sumScores(result);
+    expectEqualFloat(total, 2.5);
   });
 });
