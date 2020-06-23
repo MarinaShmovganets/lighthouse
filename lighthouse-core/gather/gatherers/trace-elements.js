@@ -109,7 +109,7 @@ class TraceElements extends Gatherer {
 
       for (const [nodeId, pixelsMoved] of pixelsMovedPerNode.entries()) {
         let clsContribution = clsPerNode.get(nodeId) || 0;
-        clsContribution += (pixelsMoved / totalAreaOfImpact) * Number(event.score);
+        clsContribution += (pixelsMoved / totalAreaOfImpact) * event.score;
         clsPerNode.set(nodeId, clsContribution);
       }
     });
