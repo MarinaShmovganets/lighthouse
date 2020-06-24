@@ -23,9 +23,9 @@ describe('Performance: user-timings audit', () => {
     const artifacts = generateArtifactsWithTrace(traceEvents);
     return UserTimingsAudit.audit(artifacts, {computedCache: new Map()}).then(auditResult => {
       const excludedUTs = auditResult.details.items.filter(timing => {
-        return UserTimingsAudit.blacklistedPrefixes.some(prefix => timing.name.startsWith(prefix));
+        return UserTimingsAudit.excludedPrefixes.some(prefix => timing.name.startsWith(prefix));
       });
-      assert.equal(excludedUTs.length, 0, 'Excluded usertimings included in results');
+      assert.equal(excludedUTs.length, 0, 'excluded usertimings included in results');
 
       assert.equal(auditResult.score, 0);
       expect(auditResult.displayValue).toBeDisplayString('2 user timings');
