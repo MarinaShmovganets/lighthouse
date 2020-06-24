@@ -3288,44 +3288,7 @@
             }
           }
         ],
-        "summary": {},
-        "debugData": {
-          "type": "debugdata",
-          "vulnerableLibs": [
-            {
-              "name": "jQuery",
-              "npmPkgName": "jquery",
-              "version": "2.1.1",
-              "vulns": [
-                {
-                  "severity": "Medium",
-                  "numericSeverity": 2,
-                  "library": "jQuery@2.1.1",
-                  "url": "https://snyk.io/vuln/SNYK-JS-JQUERY-567880"
-                },
-                {
-                  "severity": "Medium",
-                  "numericSeverity": 2,
-                  "library": "jQuery@2.1.1",
-                  "url": "https://snyk.io/vuln/SNYK-JS-JQUERY-565129"
-                },
-                {
-                  "severity": "Medium",
-                  "numericSeverity": 2,
-                  "library": "jQuery@2.1.1",
-                  "url": "https://snyk.io/vuln/SNYK-JS-JQUERY-174006"
-                },
-                {
-                  "severity": "Medium",
-                  "numericSeverity": 2,
-                  "library": "jQuery@2.1.1",
-                  "url": "https://snyk.io/vuln/npm:jquery:20150627"
-                }
-              ],
-              "highestSeverity": "Medium"
-            }
-          ]
-        }
+        "summary": {}
       }
     },
     "js-libraries": {
@@ -7037,12 +7000,7 @@
         "audits[no-vulnerable-libraries].details.headings[2].text"
       ],
       "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | rowSeverityMedium": [
-        "audits[no-vulnerable-libraries].details.items[0].highestSeverity",
-        "audits[no-vulnerable-libraries].details.debugData.vulnerableLibs[0].vulns[0].severity",
-        "audits[no-vulnerable-libraries].details.debugData.vulnerableLibs[0].vulns[1].severity",
-        "audits[no-vulnerable-libraries].details.debugData.vulnerableLibs[0].vulns[2].severity",
-        "audits[no-vulnerable-libraries].details.debugData.vulnerableLibs[0].vulns[3].severity",
-        "audits[no-vulnerable-libraries].details.debugData.vulnerableLibs[0].highestSeverity"
+        "audits[no-vulnerable-libraries].details.items[0].highestSeverity"
       ],
       "lighthouse-core/audits/dobetterweb/js-libraries.js | title": [
         "audits[js-libraries].title"
