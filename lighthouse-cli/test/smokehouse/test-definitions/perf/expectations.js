@@ -68,7 +68,7 @@ module.exports = [
       audits: {
         'resource-summary': {
           score: null,
-          displayValue: '10 requests • 164 KB',
+          displayValue: '10 requests • 164 KiB',
           details: {
             items: [
               {resourceType: 'total', requestCount: 10, transferSize: '168000±1000'},
@@ -192,8 +192,37 @@ module.exports = [
               0: {
                 url: 'http://localhost:10200/perf/delayed-element.js',
                 duration: '>500',
+                startTime: '5000 +/- 5000', // make sure it's on the right time scale, but nothing more
               },
             },
+          },
+        },
+      },
+    },
+  },
+  {
+    lhr: {
+      requestedUrl: 'http://localhost:10200/perf/trace-elements.html?missing',
+      finalUrl: 'http://localhost:10200/perf/trace-elements.html?missing',
+      audits: {
+        'largest-contentful-paint-element': {
+          score: null,
+          details: {
+            items: [
+              {
+                node: {
+                  type: 'node',
+                  selector: 'body',
+                },
+              },
+            ],
+          },
+        },
+        'layout-shift-elements': {
+          score: null,
+          scoreDisplayMode: 'notApplicable',
+          details: {
+            items: [],
           },
         },
       },
