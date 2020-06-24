@@ -123,18 +123,19 @@ jobs:
       with:
         node-version: 10.x
 
+    - name: Define ToT chrome path
+      if: matrix.chrome-channel == 'ToT'
+      run: echo "::set-env name=CHROME_PATH::/home/runner/chrome-linux-tot/chrome"
+
     # Chrome Stable is already installed by default.
     - name: Install Chrome ToT
       if: matrix.chrome-channel == 'ToT'
       working-directory: /home/runner
       run: bash $GITHUB_WORKSPACE/lighthouse-core/scripts/download-chrome.sh && mv chrome-linux chrome-linux-tot
-      env:
-        CHROME_PATH: /home/runner/chrome-linux-tot
 
     - run: yarn --frozen-lockfile
 
     - run: sudo apt-get install xvfb
-    - name: Set $CHROME_PATH
-      run: bash .github/workflows/set-chrome-path.sh ${{matrix.chrome-channel}}
+
     - name: Run smoke tests
       run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2 --invert-match ${{ matrix.smoke-test-invert }} $SMOKE_GROUP_1
