@@ -69,15 +69,20 @@ class LargestContentfulPaint extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const milestone = Number((artifacts.HostUserAgent.match(/Chrome\/(\d+)/) || [])[1]);
-    if (milestone < 79) {
-      throw new Error('LCP metric not supported in this version of Chrome.');
-    }
-
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const metricComputationData = {trace, devtoolsLog, settings: context.settings};
-    const metricResult = await ComputedLcp.request(metricComputationData, context);
+
+    let metricResult;
+    try {
+      metricResult = await ComputedLcp.request(metricComputationData, context);
+    } catch (err) {
+      const milestone = Number((artifacts.HostUserAgent.match(/Chrome\/(\d+)/) || [])[1]);
+      if (milestone < 79 && err.code === 'NO_LCP') {
+        throw new Error('LCP metric not supported in this version of Chrome.');
+      }
+      throw err;
+    }
 
     const isDesktop = artifacts.TestedAsMobileDevice === false;
     const options = isDesktop ? context.options.desktop : context.options.mobile;
