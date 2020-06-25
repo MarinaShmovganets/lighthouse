@@ -4,6 +4,6 @@
   },
   "dependencies": {
     "jest": "^24.9.0",
-    "lighthouse": "file:../../../dist/lighthouse.tgz"
+    "lighthouse": "^6.1.0"
   }
 }

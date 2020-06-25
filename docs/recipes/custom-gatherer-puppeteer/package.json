@@ -5,7 +5,7 @@
     "test": "sh test.sh"
   },
   "devDependencies": {
-    "lighthouse": "file:../../../dist/lighthouse.tgz"
+    "lighthouse": "^6.1.0"
   },
   "dependencies": {
     "puppeteer-core": "^2.0.0"

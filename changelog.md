@@ -1,19 +1,20 @@
+<a name="6.1.0"></a>
+# 6.1.0 (2020-06-25)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.0.0...v6.1.0)
+
+We expect this release to ship in the DevTools of [Chrome 85](https://chromiumdash.appspot.com/schedule).
+
+## New Contributors
+
 Thanks to our new contributors 👽🐷🐰🐯🐻! 
 Loftie Ellis <lpellis@gmail.com>
 Marvin Frachet <marvin.frachet@gmail.com>
 Matt Hobbs <matthew.hobbs@digital.cabinet-office.gov.uk>
 Peter Marshall <p.s.marshall0@gmail.com>
 Umar Hansa <umar.hansa@gmail.com>
- <a name="6.1.0"></a>
-# 6.1.0 (2020-06-25)
-[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.0.0...v6.1.0)
-
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of Chrome XX.
 
 ## Notable Changes
 ~~ TODO: Move notable changes here ~~
-
 
 ## New Audits
 
