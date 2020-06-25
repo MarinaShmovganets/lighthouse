@@ -631,11 +631,6 @@ class GatherRunner {
 
       await GatherRunner.setupDriver(driver, options);
 
-      const milestone = (await driver.getBrowserVersion()).milestone;
-      if (milestone < 83) {
-        log.error('GatherRunner', 'Chrome version too low to support LCP metric');
-      }
-
       let isFirstPass = true;
       for (const passConfig of passConfigs) {
         /** @type {LH.Gatherer.PassContext} */

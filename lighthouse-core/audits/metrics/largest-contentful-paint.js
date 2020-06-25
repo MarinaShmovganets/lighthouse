@@ -27,7 +27,7 @@ class LargestContentfulPaint extends Audit {
       title: str_(i18n.UIStrings.largestContentfulPaintMetric),
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['traces', 'devtoolsLogs', 'TestedAsMobileDevice'],
+      requiredArtifacts: ['HostUserAgent', 'traces', 'devtoolsLogs', 'TestedAsMobileDevice'],
     };
   }
 
@@ -69,6 +69,12 @@ class LargestContentfulPaint extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
+    const milestone = Number((artifacts.HostUserAgent.match(/Chrome\/(\d+)/) || [])[1]);
+    console.log(milestone);
+    if (milestone < 79) {
+      throw new Error('LCP metric not supported in this version of Chrome.');
+    }
+
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const metricComputationData = {trace, devtoolsLog, settings: context.settings};
