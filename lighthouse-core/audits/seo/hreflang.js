@@ -123,19 +123,25 @@ class Hreflang extends Audit {
 
       if (!source || !reasons.length) continue;
 
-      for (const reason of reasons) {
-        invalidHreflangs.push({
-          source,
-          reason,
-        });
-      }
+      invalidHreflangs.push({
+        source,
+        subItems: {
+          type: 'subitems',
+          items: reasons.map(reason => ({reason})),
+        },
+      });
     }
 
     /** @type {LH.Audit.Details.Table['headings']} */
-    const headings = [
-      {key: 'source', itemType: 'code', text: 'Source'},
-      {key: 'reason', itemType: 'text', text: 'Reason'},
-    ];
+    const headings = [{
+      key: 'source',
+      itemType: 'code',
+      subItemsHeading: {
+        key: 'reason',
+        itemType: 'text',
+      },
+      text: '',
+    }];
 
     const details = Audit.makeTableDetails(headings, invalidHreflangs);
 
