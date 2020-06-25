@@ -14,8 +14,10 @@ Peter Marshall @psmarshall
 
 ## Notable Changes
 
-* If a page has publicly-accessible JavaScript source maps, Lighthouse will collect them to enhance the `unused-javascript` audit. In future versions of Lighthouse, source maps will be used for entirely new audits.
-* The report now uses `KiB` instead of `KB`. This is simply a label change; the value was and still is equal to `1024 bytes`.
+* If a page has publicly-accessible JavaScript source maps, Lighthouse will collect them to enhance the `unused-javascript` audit. In future versions of Lighthouse, source maps will be used for entirely new audits [#10990](https://github.com/GoogleChrome/lighthouse/pull/10990)
+* The report now uses `KiB` instead of `KB`. This is simply a label change; the value was and still is equal to `1024 bytes` [#10870](https://github.com/GoogleChrome/lighthouse/pull/10870)
+
+<img src="https://i.imgur.com/1gSdPw5.png" alt="Unused JavaScript with source maps" width="500px">
 
 ## New Audits
 
@@ -24,7 +26,6 @@ Peter Marshall @psmarshall
 
 ## Core
 
-* add source-maps gatherer to default config ([#10990](https://github.com/GoogleChrome/lighthouse/pull/10990))
 * unused-javascript: increase threshold to 20KiB ([#10906](https://github.com/GoogleChrome/lighthouse/pull/10906))
 * layout-shift-elements: surface CLS contribution per shifted element ([#10968](https://github.com/GoogleChrome/lighthouse/pull/10968))
 * emulation: bump chrome versions ([#10787](https://github.com/GoogleChrome/lighthouse/pull/10787))
@@ -34,7 +35,6 @@ Peter Marshall @psmarshall
 * median-run: add computeMedianRun to lib ([#10859](https://github.com/GoogleChrome/lighthouse/pull/10859))
 * preload: ignore cross-frame requests ([#10847](https://github.com/GoogleChrome/lighthouse/pull/10847))
 * new inspector issues gatherer for Audit.IssueAdded events ([#10664](https://github.com/GoogleChrome/lighthouse/pull/10664))
-* renderer: fix null Util.i18n in PSI renderer ([#10822](https://github.com/GoogleChrome/lighthouse/pull/10822))
 * subRow refactor, rename to subItem ([#10867](https://github.com/GoogleChrome/lighthouse/pull/10867))
 
 ## Experimental
@@ -57,7 +57,6 @@ Features hidden behind the `--preset=experimental` flag.
 
 ## Report
 
-* use KiB instead of KB ([#10870](https://github.com/GoogleChrome/lighthouse/pull/10870))
 * metrics: use css grid so metrics are aligned ([#10789](https://github.com/GoogleChrome/lighthouse/pull/10789))
 * don't dim disclaimer anchor links ([#10981](https://github.com/GoogleChrome/lighthouse/pull/10981))
 * use acronyms and round metrics for shorter calc url ([#10954](https://github.com/GoogleChrome/lighthouse/pull/10954))
@@ -67,6 +66,7 @@ Features hidden behind the `--preset=experimental` flag.
 * fix zebra styling, sub item rows for 3p filter ([#10978](https://github.com/GoogleChrome/lighthouse/pull/10978))
 * updated method signature typing to remove focusevent cast ([#10858](https://github.com/GoogleChrome/lighthouse/pull/10858))
 * adjust LCP element description ([#11018](https://github.com/GoogleChrome/lighthouse/pull/11018))
+* renderer: fix null Util.i18n in PSI renderer ([#10822](https://github.com/GoogleChrome/lighthouse/pull/10822))
 
 ## Clients
 
