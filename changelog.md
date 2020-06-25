@@ -17,7 +17,7 @@ Peter Marshall @psmarshall
 * If a page has publicly-accessible JavaScript source maps, Lighthouse will collect them to enhance the `unused-javascript` audit. In future versions of Lighthouse, source maps will be used for entirely new audits [#10990](https://github.com/GoogleChrome/lighthouse/pull/10990)
 * The report now uses `KiB` instead of `KB`. This is simply a label change; the value was and still is equal to `1024 bytes` [#10870](https://github.com/GoogleChrome/lighthouse/pull/10870)
 
-<img src="https://i.imgur.com/1gSdPw5.png" alt="Unused JavaScript with source maps" width="500px">
+<img src="https://i.imgur.com/1gSdPw5.png" alt="Unused JavaScript with source maps" width="800px">
 
 ## New Audits
 
