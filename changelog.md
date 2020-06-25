@@ -6,11 +6,12 @@ We expect this release to ship to DevTools in [Chrome 85](https://chromiumdash.a
 
 ## New Contributors
 
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Loftie Ellis @lpellis
-Marvin Frachet @mfrachet 
-Matt Hobbs @Nooshu 
-Peter Marshall @psmarshall 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
+* Loftie Ellis @lpellis
+* Marvin Frachet @mfrachet 
+* Matt Hobbs @Nooshu 
+* Peter Marshall @psmarshall 
 
 ## Notable Changes
 
