@@ -216,7 +216,7 @@ describe('CategoryRenderer', () => {
     let a11yCategory;
 
     beforeEach(()=> {
-      a11yCategory = sampleResults.categories.accessibility;
+      a11yCategory = JSON.parse(JSON.stringify(sampleResults.categories.accessibility));
     });
 
     it('renders not applicable audits if the category contains them', () => {
