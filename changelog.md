@@ -1,3 +1,104 @@
+Thanks to our new contributors 👽🐷🐰🐯🐻! 
+Loftie Ellis <lpellis@gmail.com>
+Marvin Frachet <marvin.frachet@gmail.com>
+Matt Hobbs <matthew.hobbs@digital.cabinet-office.gov.uk>
+Peter Marshall <p.s.marshall0@gmail.com>
+Umar Hansa <umar.hansa@gmail.com>
+ <a name="6.1.0"></a>
+# 6.1.0 (2020-06-25)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.0.0...v6.1.0)
+
+~~ TODO: https://chromiumdash.appspot.com/schedule ~~
+We expect this release to ship in the DevTools of Chrome XX.
+
+## Notable Changes
+~~ TODO: Move notable changes here ~~
+
+
+## New Audits
+
+* add long-tasks diagnostic audit for surfacing top long tasks ([#10736](https://github.com/GoogleChrome/lighthouse/pull/10736))
+* crawlable-anchors: add an anchor-href audit for seo ([#10662](https://github.com/GoogleChrome/lighthouse/pull/10662))
+
+## Core
+
+* add source-maps gatherer to default config ([#10990](https://github.com/GoogleChrome/lighthouse/pull/10990))
+* duplicated-javascript: display transfer size ([#10701](https://github.com/GoogleChrome/lighthouse/pull/10701))
+* emulation: bump chrome versions ([#10787](https://github.com/GoogleChrome/lighthouse/pull/10787))
+* image-size-responsive: quantize DPRs ([#10801](https://github.com/GoogleChrome/lighthouse/pull/10801))
+* layout-shift-elements: surface CLS contribution per shifted element ([#10968](https://github.com/GoogleChrome/lighthouse/pull/10968))
+* legacy-javascript: reduce polyfills, fix core-js import in test ([#10937](https://github.com/GoogleChrome/lighthouse/pull/10937))
+* long-tasks: add startTime property ([#10942](https://github.com/GoogleChrome/lighthouse/pull/10942))
+* improve resilience of nodeId-dependent gatherers ([#10877](https://github.com/GoogleChrome/lighthouse/pull/10877))
+* subRow refactor, rename to subItem ([#10867](https://github.com/GoogleChrome/lighthouse/pull/10867))
+* legacy-javascript: use prescriptive language in title ([#10850](https://github.com/GoogleChrome/lighthouse/pull/10850))
+* legacy-javascript: fix core-js 3 detection ([#10852](https://github.com/GoogleChrome/lighthouse/pull/10852))
+* legacy-javascript: use third-party-web for scoring ([#10849](https://github.com/GoogleChrome/lighthouse/pull/10849))
+* median-run: add computeMedianRun to lib ([#10859](https://github.com/GoogleChrome/lighthouse/pull/10859))
+* preload: ignore cross-frame requests ([#10847](https://github.com/GoogleChrome/lighthouse/pull/10847))
+* unused-javascript: increase threshold to 20KiB ([#10906](https://github.com/GoogleChrome/lighthouse/pull/10906))
+* new inspector issues gatherer for Audit.IssueAdded events ([#10664](https://github.com/GoogleChrome/lighthouse/pull/10664))
+* renderer: fix null Util.i18n in PSI renderer ([#10822](https://github.com/GoogleChrome/lighthouse/pull/10822))
+
+## Deps
+
+* snyk: update snyk snapshot ([#11010](https://github.com/GoogleChrome/lighthouse/pull/11010))
+* remove bundlesize ([#10999](https://github.com/GoogleChrome/lighthouse/pull/10999))
+* axe-core: upgrade to 3.5.5 ([#10986](https://github.com/GoogleChrome/lighthouse/pull/10986))
+* snyk: update snyk snapshot ([#10980](https://github.com/GoogleChrome/lighthouse/pull/10980))
+* upgrade chrome-launcher@0.13.3 ([#10911](https://github.com/GoogleChrome/lighthouse/pull/10911))
+* snyk: update snyk snapshot ([#10940](https://github.com/GoogleChrome/lighthouse/pull/10940))
+* update to lhci 0.4.0 ([#10828](https://github.com/GoogleChrome/lighthouse/pull/10828))
+* snyk: update snyk snapshot ([#10840](https://github.com/GoogleChrome/lighthouse/pull/10840))
+
+## Report
+
+* don't dim disclaimer anchor links ([#10981](https://github.com/GoogleChrome/lighthouse/pull/10981))
+* use acronyms and round metrics for shorter calc url ([#10954](https://github.com/GoogleChrome/lighthouse/pull/10954))
+* fix zebra styling, sub item rows for 3p filter ([#10978](https://github.com/GoogleChrome/lighthouse/pull/10978))
+* update link for budgets audit ([#10944](https://github.com/GoogleChrome/lighthouse/pull/10944))
+* add trailing slash to web.dev links ([#10967](https://github.com/GoogleChrome/lighthouse/pull/10967))
+* use KiB instead of KB ([#10870](https://github.com/GoogleChrome/lighthouse/pull/10870))
+* metrics: use css grid so metrics are aligned ([#10789](https://github.com/GoogleChrome/lighthouse/pull/10789))
+* updated method signature typing to remove focusevent cast ([#10858](https://github.com/GoogleChrome/lighthouse/pull/10858))
+* fix the width of the 3-dots menu in topbar ([#10855](https://github.com/GoogleChrome/lighthouse/pull/10855))
+
+## Clients
+
+* psi: show disclaimer and calclink ([#10936](https://github.com/GoogleChrome/lighthouse/pull/10936))
+
+## I18n
+
+* adjust LCP element description ([#11018](https://github.com/GoogleChrome/lighthouse/pull/11018))
+
+## Docs
+
+* add note about git repo required for @lhci/cli usage ([#11006](https://github.com/GoogleChrome/lighthouse/pull/11006))
+* contributing: add tips for audit and gatherer PRs ([#10690](https://github.com/GoogleChrome/lighthouse/pull/10690))
+* readme: adding cypress-audit to the related projects ([#10838](https://github.com/GoogleChrome/lighthouse/pull/10838))
+* readme: update programmatic usage recipe ([#10878](https://github.com/GoogleChrome/lighthouse/pull/10878))
+* readme: add PageWatch to the integrations section ([#10901](https://github.com/GoogleChrome/lighthouse/pull/10901))
+* readme: update integrations section ([#10826](https://github.com/GoogleChrome/lighthouse/pull/10826))
+* readme: update PageSpeed Green description ([#10818](https://github.com/GoogleChrome/lighthouse/pull/10818))
+
+## Tests
+
+* move proto roundtrip json to .tmp/ ([#10995](https://github.com/GoogleChrome/lighthouse/pull/10995))
+* add heading key tests ([#10746](https://github.com/GoogleChrome/lighthouse/pull/10746))
+* run ToT and stable Chrome for smoke tests in github workflow ([#10989](https://github.com/GoogleChrome/lighthouse/pull/10989))
+* legacy-javascript: exit code 1 on failure ([#10946](https://github.com/GoogleChrome/lighthouse/pull/10946))
+* smoke: use --debug in github action ([#10919](https://github.com/GoogleChrome/lighthouse/pull/10919))
+* smokehouse: do not assert on flaky node path ([#10827](https://github.com/GoogleChrome/lighthouse/pull/10827))
+
+## Misc
+
+* fix merge error for subHeading -> subItemsHeading rename ([#10983](https://github.com/GoogleChrome/lighthouse/pull/10983))
+* rename subHeading to subItemsHeading ([#10979](https://github.com/GoogleChrome/lighthouse/pull/10979))
+* viewer: expose LHR as __LIGHTHOUSE_JSON__ ([#10879](https://github.com/GoogleChrome/lighthouse/pull/10879))
+* use more inclusive and descriptive language ([#10949](https://github.com/GoogleChrome/lighthouse/pull/10949))
+* changelog: add missing 6.0.0 new contributors ([#10821](https://github.com/GoogleChrome/lighthouse/pull/10821))
+* update changelog for v6.0.0 ([#10807](https://github.com/GoogleChrome/lighthouse/pull/10807))
+
 <a name="6.0.0"></a>
 # 6.0.0 (2020-05-19)
 [Raw commit changelog](https://github.com/GoogleChrome/lighthouse/compare/v5.6.0...v6.0.0)
