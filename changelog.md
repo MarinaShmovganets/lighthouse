@@ -35,7 +35,7 @@ Peter Marshall @psmarshall
 * median-run: add computeMedianRun to lib ([#10859](https://github.com/GoogleChrome/lighthouse/pull/10859))
 * preload: ignore cross-frame requests ([#10847](https://github.com/GoogleChrome/lighthouse/pull/10847))
 * new inspector issues gatherer for Audit.IssueAdded events ([#10664](https://github.com/GoogleChrome/lighthouse/pull/10664))
-* subRow refactor, rename to subItem ([#10867](https://github.com/GoogleChrome/lighthouse/pull/10867))
+* subRow refactor, rename to subItem ([#10867](https://github.com/GoogleChrome/lighthouse/pull/10867), [#10978](https://github.com/GoogleChrome/lighthouse/pull/10978))
 
 ## Experimental
 
@@ -63,13 +63,9 @@ Features hidden behind the `--preset=experimental` flag.
 * update link for budgets audit ([#10944](https://github.com/GoogleChrome/lighthouse/pull/10944))
 * add trailing slash to web.dev links ([#10967](https://github.com/GoogleChrome/lighthouse/pull/10967))
 * fix the width of the 3-dots menu in topbar ([#10855](https://github.com/GoogleChrome/lighthouse/pull/10855))
-* fix zebra styling, sub item rows for 3p filter ([#10978](https://github.com/GoogleChrome/lighthouse/pull/10978))
 * updated method signature typing to remove focusevent cast ([#10858](https://github.com/GoogleChrome/lighthouse/pull/10858))
 * adjust LCP element description ([#11018](https://github.com/GoogleChrome/lighthouse/pull/11018))
 * renderer: fix null Util.i18n in PSI renderer ([#10822](https://github.com/GoogleChrome/lighthouse/pull/10822))
-
-## Clients
-
 * psi: show disclaimer and calclink ([#10936](https://github.com/GoogleChrome/lighthouse/pull/10936))
 
 ## Docs
