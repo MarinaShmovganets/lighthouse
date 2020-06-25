@@ -19,8 +19,8 @@ Peter Marshall @psmarshall
 
 ## New Audits
 
-* long-tasks: diagnostic audit for surfacing top long tasks ([#10736](https://github.com/GoogleChrome/lighthouse/pull/10736))
-* crawlable-anchors: add an anchor-href audit for seo ([#10662](https://github.com/GoogleChrome/lighthouse/pull/10662))
+* long-tasks: a new performance diagnostic that shows the longest main-thread-blocking tasks during load ([#10736](https://github.com/GoogleChrome/lighthouse/pull/10736))
+* crawlable-anchors: a new SEO audit that checks that anchors link to resolvable URLs ([#10662](https://github.com/GoogleChrome/lighthouse/pull/10662))
 
 ## Core
 
@@ -76,11 +76,8 @@ Features hidden behind the `--preset=experimental` flag.
 
 * add note about git repo required for @lhci/cli usage ([#11006](https://github.com/GoogleChrome/lighthouse/pull/11006))
 * contributing: add tips for audit and gatherer PRs ([#10690](https://github.com/GoogleChrome/lighthouse/pull/10690))
-* readme: adding cypress-audit to the related projects ([#10838](https://github.com/GoogleChrome/lighthouse/pull/10838))
 * readme: update programmatic usage recipe ([#10878](https://github.com/GoogleChrome/lighthouse/pull/10878))
-* readme: add PageWatch to the integrations section ([#10901](https://github.com/GoogleChrome/lighthouse/pull/10901))
-* readme: update integrations section ([#10826](https://github.com/GoogleChrome/lighthouse/pull/10826))
-* readme: update PageSpeed Green description ([#10818](https://github.com/GoogleChrome/lighthouse/pull/10818))
+* readme: add new and updated integrations ([#10838](https://github.com/GoogleChrome/lighthouse/pull/10838), [#10901](https://github.com/GoogleChrome/lighthouse/pull/10901), [#10826](https://github.com/GoogleChrome/lighthouse/pull/10826), [#10818](https://github.com/GoogleChrome/lighthouse/pull/10818))
 
 ## Tests
 
@@ -96,8 +93,7 @@ Features hidden behind the `--preset=experimental` flag.
 * rename subHeading to subItemsHeading ([#10979](https://github.com/GoogleChrome/lighthouse/pull/10979), [#10983](https://github.com/GoogleChrome/lighthouse/pull/10983))
 * viewer: expose LHR as `__LIGHTHOUSE_JSON__` ([#10879](https://github.com/GoogleChrome/lighthouse/pull/10879))
 * use more inclusive and descriptive language ([#10949](https://github.com/GoogleChrome/lighthouse/pull/10949))
-* changelog: add missing 6.0.0 new contributors ([#10821](https://github.com/GoogleChrome/lighthouse/pull/10821))
-* update changelog for v6.0.0 ([#10807](https://github.com/GoogleChrome/lighthouse/pull/10807))
+* update changelog for v6.0.0 ([#10821](https://github.com/GoogleChrome/lighthouse/pull/10821), [#10807](https://github.com/GoogleChrome/lighthouse/pull/10807))
 
 <a name="6.0.0"></a>
 # 6.0.0 (2020-05-19)
