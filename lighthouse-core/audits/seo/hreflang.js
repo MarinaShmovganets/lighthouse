@@ -19,6 +19,10 @@ const UIStrings = {
   description: 'hreflang links tell search engines what version of a page they should ' +
     'list in search results for a given language or region. [Learn more]' +
     '(https://web.dev/hreflang/).',
+  /** A failure reason for the `hreflang` Lighthouse audit. This failure reason is shown when the hreflang language code is unexpected. */
+  unexpectedLanguage: 'Unexpected language code',
+  /** A failure reason for the `hreflang` Lighthouse audit. This failure reason is shown when the `href` is not fully-qualified. */
+  notFullyQualified: 'Relative href value',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -45,10 +49,18 @@ function importValidLangs() {
 }
 
 /**
+ * @param {string} href
+ * @returns {boolean}
+ */
+function isFullyQualified(href) {
+  return href.startsWith('http:') || href.startsWith('https:');
+}
+
+/**
  * @param {string} hreflang
  * @returns {boolean}
  */
-function isValidHreflang(hreflang) {
+function isExpectedLanguageCode(hreflang) {
   if (hreflang.toLowerCase() === NO_LANGUAGE) {
     return true;
   }
@@ -76,25 +88,45 @@ class Hreflang extends Audit {
    * @param {LH.Artifacts} artifacts
    * @return {LH.Audit.Product}
    */
-  static audit(artifacts) {
-    /** @type {Array<{source: string|{type: 'node', snippet: string}}>} */
+  static audit({LinkElements}) {
+    /** @type {Array<{source: string|{type: 'node', snippet: string}, reason: string}>} */
     const invalidHreflangs = [];
 
-    for (const link of artifacts.LinkElements) {
-      if (link.rel !== 'alternate') continue;
-      if (!link.hreflang || isValidHreflang(link.hreflang)) continue;
-      if (link.source === 'body') continue;
+    const auditableLinkElements = LinkElements.filter(linkElement => {
+      const isAlternate = linkElement.rel === 'alternate';
+      const hasHreflang = linkElement.hreflang;
+      const isInBody = linkElement.source === 'body';
+
+      return isAlternate && hasHreflang && !isInBody;
+    });
+
+    for (const link of auditableLinkElements) {
+      const reasons = [];
+      let source;
+
+      if (!isExpectedLanguageCode(link.hreflang)) {
+        reasons.push(UIStrings.unexpectedLanguage);
+      }
+
+      if (!isFullyQualified(link.hrefRaw.toLowerCase())) {
+        reasons.push(UIStrings.notFullyQualified);
+      }
 
       if (link.source === 'head') {
-        invalidHreflangs.push({
-          source: {
-            type: 'node',
-            snippet: `<link rel="alternate" hreflang="${link.hreflang}" href="${link.href}" />`,
-          },
-        });
+        source = {
+          type: 'node',
+          snippet: `<link rel="alternate" hreflang="${link.hreflang}" href="${link.hrefRaw}" />`,
+        };
       } else if (link.source === 'headers') {
+        source = `Link: <${link.hrefRaw}>; rel="alternate"; hreflang="${link.hreflang}"`;
+      }
+
+      if (!source || !reasons.length) continue;
+
+      for (const reason of reasons) {
         invalidHreflangs.push({
-          source: `Link: <${link.href}>; rel="alternate"; hreflang="${link.hreflang}"`,
+          source,
+          reason,
         });
       }
     }
@@ -102,7 +134,9 @@ class Hreflang extends Audit {
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'source', itemType: 'code', text: 'Source'},
+      {key: 'reason', itemType: 'text', text: 'Reason'},
     ];
+
     const details = Audit.makeTableDetails(headings, invalidHreflangs);
 
     return {

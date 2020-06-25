@@ -11,14 +11,14 @@ const HreflangAudit = require('../../../audits/seo/hreflang.js');
 /* eslint-env jest */
 
 describe('SEO: Document has valid hreflang code', () => {
-  it('fails when language code provided in hreflang via link element is invalid', () => {
+  it('fails when the language code provided in hreflang via link element is invalid', () => {
     const artifacts = {
       LinkElements: [
-        {rel: 'alternate', hreflang: 'xx1', href: 'http://example.com/', source: 'headers'},
-        {rel: 'alternate', hreflang: 'XX-be', href: 'http://example.com/', source: 'headers'},
-        {rel: 'alternate', hreflang: 'XX-be-Hans', href: 'http://example.com/', source: 'head'},
-        {rel: 'alternate', hreflang: '  es', href: 'http://example.com/', source: 'head'},
-        {rel: 'alternate', hreflang: '  es', href: 'http://example.com/', source: 'headers'},
+        {rel: 'alternate', hreflang: 'xx1', hrefRaw: 'http://example.com/', source: 'headers'},
+        {rel: 'alternate', hreflang: 'XX-be', hrefRaw: 'http://example.com/', source: 'headers'},
+        {rel: 'alternate', hreflang: 'XX-be-Hans', hrefRaw: 'http://example.com/', source: 'head'},
+        {rel: 'alternate', hreflang: '  es', hrefRaw: 'http://example.com/', source: 'head'},
+        {rel: 'alternate', hreflang: '  es', hrefRaw: 'http://example.com/', source: 'headers'},
       ],
     };
 
@@ -27,7 +27,7 @@ describe('SEO: Document has valid hreflang code', () => {
     assert.equal(auditResult.details.items.length, 5);
   });
 
-  it('succeeds when language code provided in hreflang via body is invalid', () => {
+  it('succeeds when the language code provided in hreflang via body is invalid', () => {
     const hreflangValues = ['xx', 'XX-be', 'XX-be-Hans', '', '  es'];
 
     for (const hreflangValue of hreflangValues) {
@@ -58,7 +58,7 @@ describe('SEO: Document has valid hreflang code', () => {
             source: inHead ? 'head' : 'headers',
             rel: 'alternate',
             hreflang: hreflangValue,
-            href: 'https://example.com',
+            hrefRaw: 'https://example.com',
           },
         ],
       };
@@ -76,15 +76,42 @@ describe('SEO: Document has valid hreflang code', () => {
   it('returns all failing items', () => {
     const artifacts = {
       LinkElements: [
-        {rel: 'alternate', hreflang: 'xx1', href: 'http://xx1.example.com/', source: 'headers'},
-        {rel: 'alternate', hreflang: 'xx2', href: 'http://xx2.example.com/', source: 'headers'},
-        {rel: 'alternate', hreflang: 'xx3', href: 'http://xx3.example.com/', source: 'head'},
-        {rel: 'alternate', hreflang: 'xx4', href: 'http://xx4.example.com/', source: 'head'},
+        {rel: 'alternate', hreflang: 'xx1', hrefRaw: 'http://xx1.example.com/', source: 'headers'},
+        {rel: 'alternate', hreflang: 'xx2', hrefRaw: 'http://xx2.example.com/', source: 'headers'},
+        {rel: 'alternate', hreflang: 'xx3', hrefRaw: 'http://xx3.example.com/', source: 'head'},
+        {rel: 'alternate', hreflang: 'xx4', hrefRaw: 'http://xx4.example.com/', source: 'head'},
       ],
     };
 
     const auditResult = HreflangAudit.audit(artifacts);
     assert.equal(auditResult.score, 0);
+    assert.equal(auditResult.details.items.length, 4);
+  });
+
+  it('fails when the hreflang url is not fully-qualified', () => {
+    const artifacts = {
+      LinkElements: [
+        {rel: 'alternate', hreflang: 'es', hrefRaw: 'example.com', source: 'head'},
+        {rel: 'alternate', hreflang: 'es', hrefRaw: '//example.com', source: 'headers'},
+      ],
+    };
+
+    const auditResult = HreflangAudit.audit(artifacts);
+    assert.equal(auditResult.score, 0);
+    assert.equal(auditResult.details.items.length, 2);
+  });
+
+  it('fails with an invalid language code and a href which is not fully-qualified ', () => {
+    const artifacts = {
+      LinkElements: [
+        {rel: 'alternate', hreflang: ' es', hrefRaw: 'example.com', source: 'head'},
+        {rel: 'alternate', hreflang: 'xx1', hrefRaw: '//example.com', source: 'headers'},
+      ],
+    };
+
+    const auditResult = HreflangAudit.audit(artifacts);
+    assert.equal(auditResult.score, 0);
+    // 2 items, with two failure reasons, equals 4 items to report on
     assert.equal(auditResult.details.items.length, 4);
   });
 });
