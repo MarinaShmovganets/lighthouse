@@ -328,7 +328,6 @@ class CategoryRenderer {
     const tmpl = this.dom.cloneTemplate('#tmpl-lh-gauge', this.templateContext);
     const wrapper = /** @type {HTMLAnchorElement} */ (this.dom.find('.lh-gauge__wrapper', tmpl));
     wrapper.href = `#${category.id}`;
-    wrapper.classList.add(`lh-gauge__wrapper--${Util.calculateRating(category.score)}`);
 
     if (Util.isPluginCategory(category.id)) {
       wrapper.classList.add('lh-gauge__wrapper--plugin');
@@ -350,8 +349,31 @@ class CategoryRenderer {
       percentageEl.title = Util.i18n.strings.errorLabel;
     }
 
+    if (this.hasApplicableAudits(category)) {
+      wrapper.classList.add(`lh-gauge__wrapper--${Util.calculateRating(category.score)}`);
+    } else {
+      // render gray n/a for entirely non-applicable categories
+      percentageEl.textContent = 'n/a';
+      percentageEl.style.color = '#757575';
+      percentageEl.title = Util.i18n.strings.notApplicableAuditsGroupTitle;
+    }
+
     this.dom.find('.lh-gauge__label', tmpl).textContent = category.title;
     return tmpl;
+  }
+
+  /**
+   * Returns true if an LH category has any non-"notApplicable" audits.
+   * @param {LH.ReportResult.Category} category
+   * @return {Boolean}
+   */
+  hasApplicableAudits(category) {
+    for (const auditRef of category.auditRefs) {
+      if (auditRef.result.scoreDisplayMode !== 'notApplicable') {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
