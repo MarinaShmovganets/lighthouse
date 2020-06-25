@@ -70,7 +70,6 @@ class LargestContentfulPaint extends Audit {
    */
   static async audit(artifacts, context) {
     const milestone = Number((artifacts.HostUserAgent.match(/Chrome\/(\d+)/) || [])[1]);
-    console.log(milestone);
     if (milestone < 79) {
       throw new Error('LCP metric not supported in this version of Chrome.');
     }
