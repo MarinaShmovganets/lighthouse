@@ -2,7 +2,7 @@
 # 6.1.0 (2020-06-25)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.0.0...v6.1.0)
 
-We expect this release to ship in the DevTools of [Chrome 85](https://chromiumdash.appspot.com/schedule).
+We expect this release to ship to DevTools in [Chrome 85](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
 ## New Contributors
 
@@ -66,14 +66,11 @@ Features hidden behind the `--preset=experimental` flag.
 * fix the width of the 3-dots menu in topbar ([#10855](https://github.com/GoogleChrome/lighthouse/pull/10855))
 * fix zebra styling, sub item rows for 3p filter ([#10978](https://github.com/GoogleChrome/lighthouse/pull/10978))
 * updated method signature typing to remove focusevent cast ([#10858](https://github.com/GoogleChrome/lighthouse/pull/10858))
+* adjust LCP element description ([#11018](https://github.com/GoogleChrome/lighthouse/pull/11018))
 
 ## Clients
 
 * psi: show disclaimer and calclink ([#10936](https://github.com/GoogleChrome/lighthouse/pull/10936))
-
-## I18n
-
-* adjust LCP element description ([#11018](https://github.com/GoogleChrome/lighthouse/pull/11018))
 
 ## Docs
 
