@@ -128,16 +128,15 @@ function computeAndLogReviewResponseStats(label, issues) {
     }`
   );
   console.log('  By User');
+  /** @type {Record<string, Record<string, string | number>>} */
+  const byUser = {};
   reviewsByLogin.forEach(requests => {
     const user = requests[0].assignee;
     const reviews = requests.filter(r => r.firstCommentByAssignee);
     const medianResponseTime = requests[Math.floor(reviews.length / 2)].reviewTimeInHours;
-    console.log(
-      `    ${user} - ${requests.length} requests, ${
-        reviews.length
-      } reviews, ${medianResponseTime.toFixed(1)} hours`
-    );
+    byUser[user] = {reviews: reviews.length, medianResponse: `${medianResponseTime.toFixed(1)} h`};
   });
+  console.table(byUser);
 }
 
 /**
@@ -219,12 +218,17 @@ function computeAndLogIssueResponseStats(label, issues) {
     `  Median response time of ${log.bold}${medianResponseTime.toFixed(1)} hours${log.reset}`
   );
   console.log('  By User');
+  /** @type {Record<string, Record<string, string | number>>} */
+  const byUser = {};
   responsesByLogin.forEach(responses => {
     const user = responses[0].firstResponse.login;
-    const count = responses.length;
     const medianResponseTime = responses[Math.floor(responses.length / 2)].firstResponseTimeInHours;
-    console.log(`    ${user} - ${count} responses, ${medianResponseTime.toFixed(1)} hours`);
+    byUser[user] = {
+      responses: responses.length,
+      medianResponseTime: `${medianResponseTime.toFixed(1)} hours`,
+    };
   });
+  console.table(byUser);
 }
 
 const PRS = _ISSUES_SINCE.filter(issue => issue.pull_request);
