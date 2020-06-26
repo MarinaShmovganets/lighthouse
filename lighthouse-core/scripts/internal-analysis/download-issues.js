@@ -5,9 +5,13 @@
  */
 'use strict';
 
+/* eslint-disable no-console */
+
 /**
  * @fileoverview Used in conjunction with `./analyze-issues.js` to analyze our Issue and PR response times
  * as a team. This file downloads GitHub data to `.tmp/_issues.json` for analysis.
+ * _issues.json holds data on all issues for the last DAY_FILTER (90) days.
+ * Any comments and events are then fetched separately and added to their parent issue's object.
  *
  * Usage
  *
@@ -68,7 +72,7 @@ async function fetchAndInjectComments(issue) {
   const comments = await response.json();
   issue.comments = comments;
   if (!Array.isArray(issue.comments)) {
-    console.warn('Comments was not an array', issue.comments); // eslint-disable-line no-console
+    console.warn('Comments was not an array', issue.comments);
     issue.comments = [];
   }
 
@@ -110,12 +114,12 @@ async function downloadIssues(urlToStartAt) {
   for (const issue of issues) {
     await Promise.all([
       fetchAndInjectEvents(issue).catch(async err => {
-        console.error('Events failed! Trying again', err); // eslint-disable-line no-console
+        console.error('Events failed! Trying again', err);
         await wait(60 * 1000);
         return fetchAndInjectEvents(issue);
       }),
       fetchAndInjectComments(issue).catch(async err => {
-        console.error('Comments failed! Trying again', err); // eslint-disable-line no-console
+        console.error('Comments failed! Trying again', err);
         await wait(60 * 1000);
         return fetchAndInjectComments(issue);
       }),
