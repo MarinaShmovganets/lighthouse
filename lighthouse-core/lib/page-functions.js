@@ -114,6 +114,7 @@ function getElementsInDocument(selector) {
 /* istanbul ignore next */
 function getOuterHTMLSnippet(element, ignoreAttrs = []) {
   const ATTRIBUTE_CHAR_LIMIT = 75;
+  const SNIPPET_CHAR_LIMIT = 500;
   try {
     // ShadowRoots are sometimes passed in; use their hosts' outerHTML.
     if (element instanceof ShadowRoot) {
@@ -124,16 +125,25 @@ function getOuterHTMLSnippet(element, ignoreAttrs = []) {
     ignoreAttrs.forEach(attribute =>{
       clone.removeAttribute(attribute);
     });
+    let charCount = 0;
     for (const attributeName of clone.getAttributeNames()) {
-      let attributeValue = clone.getAttribute(attributeName);
-      if (attributeValue.length > ATTRIBUTE_CHAR_LIMIT) {
-        attributeValue = attributeValue.slice(0, ATTRIBUTE_CHAR_LIMIT - 1) + '…';
-        clone.setAttribute(attributeName, attributeValue);
+      if (charCount >= SNIPPET_CHAR_LIMIT) {
+        clone.removeAttribute(attributeName);
+      } else {
+        let attributeValue = clone.getAttribute(attributeName);
+        if (attributeValue.length > ATTRIBUTE_CHAR_LIMIT) {
+          attributeValue = attributeValue.slice(0, ATTRIBUTE_CHAR_LIMIT - 1) + '…';
+          clone.setAttribute(attributeName, attributeValue);
+        }
+        charCount += attributeName.length + attributeValue.length;
       }
     }
 
     const reOpeningTag = /^[\s\S]*?>/;
     const match = clone.outerHTML.match(reOpeningTag);
+    if (match && match[0] && charCount > SNIPPET_CHAR_LIMIT) {
+      return match[0].slice(0, match[0].length - 1) + '…>';
+    }
     return (match && match[0]) || '';
   } catch (_) {
     // As a last resort, fall back to localName.
