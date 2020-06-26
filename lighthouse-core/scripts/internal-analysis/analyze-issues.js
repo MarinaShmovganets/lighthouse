@@ -33,6 +33,14 @@ const RESPONSE_LOGINS = new Set([
   'paulirish',
 ]);
 
+const RESPONSE_EVENTS = new Set(['labeled', 'assigned', 'renamed', 'closed']);
+
+// Refilter the issues for what's been *created* in the last 90 days
+// The API will be returning everything that's been touched.
+const HOUR_IN_MS = 60 * 60 * 1000;
+const DAY_FILTER = 90;
+const START_AT = new Date(new Date().getTime() - DAY_FILTER * 24 * HOUR_IN_MS).getTime();
+
 /**
  * @param {AugmentedGitHubIssue} issue
  * @return {AugmentedGitHubIssue}
@@ -41,12 +49,10 @@ function normalizeIssue(issue) {
   if (!Array.isArray(issue.comments)) issue.comments = [];
   if (!Array.isArray(issue.events)) issue.events = [];
   issue.comments = issue.comments.sort(
-    (a, b) =>
-      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
   );
   issue.events = issue.events.sort(
-    (a, b) =>
-      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
   );
 
   issue.comments.forEach(comment => {
@@ -56,22 +62,10 @@ function normalizeIssue(issue) {
   return issue;
 }
 
-const RESPONSE_EVENTS = new Set(['labeled', 'assigned', 'renamed', 'closed']);
-
-const HOUR_IN_MS = 60 * 60 * 1000;
-const DAY_FILTER = 90;
-const START_AT = new Date(
-  new Date().getTime() - DAY_FILTER * 24 * HOUR_IN_MS
-).getTime();
-
 const ISSUES_PATH = path.join(__dirname, '../../../.tmp', '_issues.json');
 /** @type {Array<AugmentedGitHubIssue>} */
-const _ISSUES = JSON.parse(fs.readFileSync(ISSUES_PATH, 'utf8')).map(
-  normalizeIssue
-);
-const _ISSUES_SINCE = _ISSUES.filter(
-  issue => new Date(issue.created_at).getTime() > START_AT
-);
+const _ISSUES = JSON.parse(fs.readFileSync(ISSUES_PATH, 'utf8')).map(normalizeIssue);
+const _ISSUES_SINCE = _ISSUES.filter(issue => new Date(issue.created_at).getTime() > START_AT);
 const ISSUES = _ISSUES_SINCE.filter(issue => !issue.pull_request);
 
 /** @param {number} n */
@@ -85,12 +79,8 @@ const percent = n => `${(n * 100).toFixed(1)}%`;
 function computeAndLogReviewResponseStats(label, issues) {
   const initialReviewRequests = issues
     .map(issue => {
-      const assignEvent = issue.events.find(
-        event => event.event === 'assigned'
-      );
-      const assignee =
-        (assignEvent && assignEvent.assignee && assignEvent.assignee.login) ||
-        '';
+      const assignEvent = issue.events.find(event => event.event === 'assigned');
+      const assignee = (assignEvent && assignEvent.assignee && assignEvent.assignee.login) || '';
       const firstCommentByAssignee = issue.comments.find(
         comment => comment.user.login === assignee
       );
@@ -110,9 +100,7 @@ function computeAndLogReviewResponseStats(label, issues) {
     .filter(review => review.assignee)
     .sort((a, b) => a.reviewTimeInHours - b.reviewTimeInHours);
 
-  const reviews = initialReviewRequests.filter(
-    review => review.firstCommentByAssignee
-  );
+  const reviews = initialReviewRequests.filter(review => review.firstCommentByAssignee);
   const reviewsByLogin = Object.values(
     initialReviewRequests.reduce(
       (map, view) => {
@@ -126,23 +114,18 @@ function computeAndLogReviewResponseStats(label, issues) {
   ).sort((a, b) => b.length - a.length);
 
   const responseTimeInHours = initialReviewRequests.map(r => r.reviewTimeInHours);
-  const medianResponseTime =
-    responseTimeInHours[Math.floor(reviews.length / 2)];
+  const medianResponseTime = responseTimeInHours[Math.floor(reviews.length / 2)];
   console.log(`${log.bold}${label}${log.reset}`);
   console.log(
-    `  ${percent(
-      initialReviewRequests.length / issues.length
-    )} of PRs requested a review`
+    `  ${percent(initialReviewRequests.length / issues.length)} of PRs requested a review`
   );
   console.log(
-    `  ${percent(
-      reviews.length / initialReviewRequests.length
-    )} of requests received a review`
+    `  ${percent(reviews.length / initialReviewRequests.length)} of requests received a review`
   );
   console.log(
-    `  Median initial response time of ${log.bold}${medianResponseTime.toFixed(
-      1
-    )} hours${log.reset}`
+    `  Median initial response time of ${log.bold}${medianResponseTime.toFixed(1)} hours${
+      log.reset
+    }`
   );
   console.log('  By User');
   reviewsByLogin.forEach(requests => {
@@ -175,20 +158,17 @@ function computeAndLogIssueResponseStats(label, issues) {
   const isCommentResponse = issue => c =>
     RESPONSE_LOGINS.has(c.user.login) && c.user.login !== issue.user.login;
   const withResponse = issues.filter(
-    i =>
-      i.events.some(isEventResponse(i)) || i.comments.some(isCommentResponse(i))
+    i => i.events.some(isEventResponse(i)) || i.comments.some(isCommentResponse(i))
   );
 
   const firstResponses = withResponse
     .map(issue => {
       const labelResponse = issue.events.find(isEventResponse(issue));
       const labelResponseTs =
-        (labelResponse && new Date(labelResponse.created_at).getTime()) ||
-        Infinity;
+        (labelResponse && new Date(labelResponse.created_at).getTime()) || Infinity;
       const commentResponse = issue.comments.find(isCommentResponse(issue));
       const commentResponseTs =
-        (commentResponse && new Date(commentResponse.created_at).getTime()) ||
-        Infinity;
+        (commentResponse && new Date(commentResponse.created_at).getTime()) || Infinity;
 
       let firstResponse = {login: '', created_at: ''};
       if (labelResponse && labelResponseTs < commentResponseTs) {
@@ -198,9 +178,7 @@ function computeAndLogIssueResponseStats(label, issues) {
         };
       } else {
         if (!commentResponse) {
-          throw new Error(
-            `Issue did not have a response:\n${JSON.stringify(issue, null, 2)}`
-          );
+          throw new Error(`Issue did not have a response:\n${JSON.stringify(issue, null, 2)}`);
         }
         firstResponse = {
           login: commentResponse.user.login,
@@ -214,18 +192,14 @@ function computeAndLogIssueResponseStats(label, issues) {
         commentResponse,
         firstResponse,
         firstResponseTimeInHours:
-          (new Date(firstResponse.created_at).getTime() -
-            new Date(issue.created_at).getTime()) /
+          (new Date(firstResponse.created_at).getTime() - new Date(issue.created_at).getTime()) /
           HOUR_IN_MS,
       };
     })
     .sort((a, b) => a.firstResponseTimeInHours - b.firstResponseTimeInHours);
 
-  const responseTimeInHours = firstResponses.map(
-    r => r.firstResponseTimeInHours
-  );
-  const medianResponseTime =
-    responseTimeInHours[Math.floor(withResponse.length / 2)];
+  const responseTimeInHours = firstResponses.map(r => r.firstResponseTimeInHours);
+  const medianResponseTime = responseTimeInHours[Math.floor(withResponse.length / 2)];
 
   const responsesByLogin = Object.values(
     firstResponses.reduce(
@@ -240,35 +214,22 @@ function computeAndLogIssueResponseStats(label, issues) {
   ).sort((a, b) => b.length - a.length);
 
   console.log(`${log.bold}${label}${log.reset}`);
+  console.log(`  ${percent(withResponse.length / issues.length)} of issues received a response`);
   console.log(
-    `  ${percent(
-      withResponse.length / issues.length
-    )} of issues received a response`
-  );
-  console.log(
-    `  Median response time of ${log.bold}${medianResponseTime.toFixed(
-      1
-    )} hours${log.reset}`
+    `  Median response time of ${log.bold}${medianResponseTime.toFixed(1)} hours${log.reset}`
   );
   console.log('  By User');
   responsesByLogin.forEach(responses => {
     const user = responses[0].firstResponse.login;
     const count = responses.length;
-    const medianResponseTime =
-      responses[Math.floor(responses.length / 2)].firstResponseTimeInHours;
-    console.log(
-      `    ${user} - ${count} responses, ${medianResponseTime.toFixed(1)} hours`
-    );
+    const medianResponseTime = responses[Math.floor(responses.length / 2)].firstResponseTimeInHours;
+    console.log(`    ${user} - ${count} responses, ${medianResponseTime.toFixed(1)} hours`);
   });
 }
 
 const PRS = _ISSUES_SINCE.filter(issue => issue.pull_request);
-const EXTERNAL_ISSUES = ISSUES.filter(
-  issue => !RESPONSE_LOGINS.has(issue.user.login)
-);
-const INTERNAL_ISSUES = ISSUES.filter(issue =>
-  RESPONSE_LOGINS.has(issue.user.login)
-);
+const EXTERNAL_ISSUES = ISSUES.filter(issue => !RESPONSE_LOGINS.has(issue.user.login));
+const INTERNAL_ISSUES = ISSUES.filter(issue => RESPONSE_LOGINS.has(issue.user.login));
 
 computeAndLogReviewResponseStats('PRs', PRS);
 computeAndLogIssueResponseStats('External Issues', EXTERNAL_ISSUES);
