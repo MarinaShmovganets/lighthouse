@@ -322,9 +322,9 @@ function wrapRequestIdleCallback() {
         return 'function timeRemaining() { [native code] }';
       };
       cb(deadline, timeout);
-    }
+    };
     return nativeRequestIdleCallback(cbWrap);
-  }
+  };
   window.requestIdleCallback.toString = () => {
     return 'function requestIdleCallback() { [native code] }';
   };
