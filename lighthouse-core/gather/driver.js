@@ -1472,6 +1472,8 @@ class Driver {
   }
 
   /**
+   * Use a RequestIdleCallback shim for tests run with simulated throttling, so that the deadline can be used without
+   * a penalty
    * @param {LH.Config.Settings} settings
    * @return {Promise<void>}
    */

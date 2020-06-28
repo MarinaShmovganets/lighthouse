@@ -1,0 +1,40 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<body>
+Request Idle Callback Shim Smoke Test
+<script>
+  let count = 0;
+  const iterations = 40;
+
+  if (window.location.search.includes('short')) {
+    window.ricTaskDuration = 1;
+  }
+  if (window.location.search.includes('long')) {
+    window.ricTaskDuration = 50;
+  }
+
+  function sleep(milliseconds = 0) {
+    const timeStart = Date.now();
+    while (true) {
+      let elapsedTime = Date.now() - timeStart;
+      if (elapsedTime > milliseconds) {
+        break;
+      }
+    }
+  }
+
+  function task(deadline) {
+    while (deadline.timeRemaining() > 0) {
+      sleep(window.ricTaskDuration);
+    }
+
+    if (count < iterations - 1) {
+      count++;
+      requestIdleCallback(task);
+    }
+  }
+
+  requestIdleCallback(task);
+</script>
+</body>
+</html>

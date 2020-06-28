@@ -98,4 +98,32 @@ module.exports = [
       },
     },
   },
+  {
+    lhr: {
+      requestedUrl: 'http://localhost:10200/ric-shim.html?short',
+      finalUrl: 'http://localhost:10200/ric-shim.html?short',
+      audits: {
+        'interactive': {
+          // Even without the shim 1ms tasks would probably block less than their 50ms counterparts, therefore we can't
+          // just use <8000, these expectations though will fail without the shim and should always pass with the shim
+          // in place
+          numericValue: '<4000',
+          score: '>=0.90',
+        },
+      },
+    },
+  },
+  {
+    lhr: {
+      requestedUrl: 'http://localhost:10200/ric-shim.html?long',
+      finalUrl: 'http://localhost:10200/ric-shim.html?long',
+      audits: {
+        'interactive': {
+          // The tasks scheduled by request idle callback should at least block the main thread for 50ms each
+          // There are 40 iterations in total and lantern has a 4x multiplier, so 8s minimum
+          numericValue: '>8000',
+        },
+      },
+    },
+  },
 ];
