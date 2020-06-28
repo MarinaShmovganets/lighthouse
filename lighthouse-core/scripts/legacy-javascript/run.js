@@ -25,6 +25,7 @@ const hash = crypto
   .update(fs.readFileSync(`${__dirname}/yarn.lock`, 'utf8'))
   .update(fs.readFileSync(`${__dirname}/run.js`, 'utf8'))
   .update(fs.readFileSync(`${__dirname}/main.js`, 'utf8'))
+  .update(fs.readFileSync(require.resolve('../../audits/legacy-javascript.js'), 'utf8'))
   .digest('hex');
 const VARIANT_DIR = `${__dirname}/variants/${hash}`;
 
@@ -34,7 +35,7 @@ const STAGE = process.env.STAGE || 'all';
 const mainCode = fs.readFileSync(`${__dirname}/main.js`, 'utf-8');
 
 const plugins = LegacyJavascript.getTransformPatterns().map(pattern => pattern.name);
-const polyfills = LegacyJavascript.getPolyfillData().map(d => d.module);
+const polyfills = LegacyJavascript.getPolyfillData();
 
 /**
  * @param {string} command
@@ -95,6 +96,7 @@ async function createVariant(options) {
       `${dir}/main.transpiled.js`,
       '-o', `${dir}/main.bundle.js`,
       '--debug', // source maps
+      '--full-paths=false',
     ]);
 
     // Minify.
@@ -172,13 +174,17 @@ function makeSummary(legacyJavascriptFilename) {
   let totalSignals = 0;
   const variants = [];
   for (const dir of glob.sync('*/*', {cwd: VARIANT_DIR})) {
-    /** @type {Array<{signals: string[]}>} */
+    /** @type {import('../../audits/legacy-javascript.js').Item[]} */
     const legacyJavascriptItems = require(`${VARIANT_DIR}/${dir}/${legacyJavascriptFilename}`);
-    const signals = legacyJavascriptItems.reduce((acc, cur) => {
-      totalSignals += cur.signals.length;
-      return acc.concat(cur.signals);
-    }, /** @type {string[]} */ ([])).join(', ');
-    variants.push({name: dir, signals});
+
+    const signals = [];
+    for (const item of legacyJavascriptItems) {
+      for (const subItem of item.subItems.items) {
+        signals.push(subItem.signal);
+      }
+    }
+    totalSignals += signals.length;
+    variants.push({name: dir, signals: signals.join(', ')});
   }
   return {
     totalSignals,
@@ -217,14 +223,25 @@ function createSummarySizes() {
   fs.writeFileSync(`${__dirname}/summary-sizes.txt`, lines.join('\n'));
 }
 
+/**
+ * @param {string} module
+ */
+function makeRequireCodeForPolyfill(module) {
+  return `require("../../../../node_modules/core-js/modules/${module}")`;
+}
+
 async function main() {
-  for (const plugin of plugins) {
+  const pluginGroups = [
+    ...plugins.map(plugin => [plugin]),
+    ['@babel/plugin-transform-regenerator', '@babel/transform-async-to-generator'],
+  ];
+  for (const pluginGroup of pluginGroups) {
     await createVariant({
       group: 'only-plugin',
-      name: plugin,
+      name: pluginGroup.join('_'),
       code: mainCode,
       babelrc: {
-        plugins: [plugin],
+        plugins: pluginGroup,
       },
     });
   }
@@ -233,11 +250,17 @@ async function main() {
     removeCoreJs();
     installCoreJs(coreJsVersion);
 
-    for (const esmodules of [true, false]) {
+    const moduleOptions = [
+      {esmodules: false},
+      // Output: https://gist.github.com/connorjclark/515d05094ffd1fc038894a77156bf226
+      {esmodules: true},
+      {esmodules: true, bugfixes: true},
+    ];
+    for (const {esmodules, bugfixes} of moduleOptions) {
       await createVariant({
         group: `core-js-${coreJsVersion}-preset-env-esmodules`,
-        name: String(esmodules),
-        code: mainCode,
+        name: String(esmodules) + (bugfixes ? '_and_bugfixes' : ''),
+        code: `require('core-js');\n${mainCode}`,
         babelrc: {
           presets: [
             [
@@ -246,6 +269,7 @@ async function main() {
                 targets: {esmodules},
                 useBuiltIns: 'entry',
                 corejs: coreJsVersion,
+                bugfixes,
               },
             ],
           ],
@@ -254,12 +278,23 @@ async function main() {
     }
 
     for (const polyfill of polyfills) {
+      const module = coreJsVersion === 2 ? polyfill.coreJs2Module : polyfill.coreJs3Module;
       await createVariant({
         group: `core-js-${coreJsVersion}-only-polyfill`,
-        name: polyfill,
-        code: `require("core-js/modules/${polyfill}")`,
+        name: module,
+        code: makeRequireCodeForPolyfill(module),
       });
     }
+
+    const allPolyfillCode = polyfills.map(polyfill => {
+      const module = coreJsVersion === 2 ? polyfill.coreJs2Module : polyfill.coreJs3Module;
+      return makeRequireCodeForPolyfill(module);
+    }).join('\n');
+    await createVariant({
+      group: 'all-legacy-polyfills',
+      name: `all-legacy-polyfills-core-js-${coreJsVersion}`,
+      code: allPolyfillCode,
+    });
   }
 
   removeCoreJs();
@@ -269,17 +304,24 @@ async function main() {
   // Summary of using source maps and pattern matching.
   summary = makeSummary('legacy-javascript.json');
   fs.writeFileSync(`${__dirname}/summary-signals.json`, JSON.stringify(summary, null, 2));
-  console.log({
-    totalSignals: summary.totalSignals,
-    variantsMissingSignals: summary.variantsMissingSignals,
-  });
-  console.table(summary.variants);
 
   // Summary of using only pattern matching.
   summary = makeSummary('legacy-javascript-nomaps.json');
   fs.writeFileSync(`${__dirname}/summary-signals-nomaps.json`, JSON.stringify(summary, null, 2));
+  console.log({
+    totalSignals: summary.totalSignals,
+    variantsMissingSignals: summary.variantsMissingSignals,
+  });
+  console.table(summary.variants.filter(variant => {
+    // Too many signals, break layout.
+    if (variant.name.includes('all-legacy-polyfills')) return false;
+    return true;
+  }));
 
   createSummarySizes();
 }
 
-main();
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
+});

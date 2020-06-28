@@ -19,7 +19,7 @@ const createArtifacts = (scripts) => {
     url,
   }));
   return {
-    URL: {finalUrl: '', requestedUrl: ''},
+    URL: {finalUrl: 'https://www.example.com', requestedUrl: 'https://www.example.com'},
     devtoolsLogs: {defaultPass: networkRecordsToDevtoolsLog(networkRecords)},
     ScriptElements: scripts.map(({url, code}, index) => {
       return {
@@ -83,6 +83,18 @@ describe('LegacyJavaScript audit', () => {
     assert.equal(result.extendedInfo.signalCount, 0);
   });
 
+  it('passes code with a legacy polyfill in third party resource', async () => {
+    const artifacts = createArtifacts([
+      {
+        code: 'String.prototype.repeat = function() {}',
+        url: 'https://www.googletagmanager.com/a.js',
+      },
+    ]);
+    const result = await LegacyJavascript.audit(artifacts, {computedCache: new Map()});
+    assert.equal(result.score, 1);
+    assert.equal(result.extendedInfo.signalCount, 1);
+  });
+
   it('fails code with a legacy polyfill', async () => {
     const artifacts = createArtifacts([
       {
@@ -93,13 +105,13 @@ describe('LegacyJavaScript audit', () => {
     const result = await LegacyJavascript.audit(artifacts, {computedCache: new Map()});
     assert.equal(result.score, 0);
     assert.equal(result.extendedInfo.signalCount, 1);
-    expect(result.details.items[0].signals).toEqual(['String.prototype.repeat']);
+    expect(result.details.items[0].subItems.items[0].signal).toEqual('String.prototype.repeat');
   });
 
   it('fails code with multiple legacy polyfills', async () => {
     const artifacts = createArtifacts([
       {
-        code: 'String.prototype.repeat = function() {}; String.prototype.includes = function() {}',
+        code: 'String.prototype.repeat = function() {}; Array.prototype.includes = function() {}',
         url: 'https://www.example.com/a.js',
       },
     ]);
@@ -132,12 +144,13 @@ describe('LegacyJavaScript audit', () => {
       'String.prototype[\'repeat\'] = function() {}',
       'Object.defineProperty(String.prototype, "repeat", function() {})',
       'Object.defineProperty(String.prototype, \'repeat\', function() {})',
-      'Object.defineProperty(window, \'WeakMap\', function() {})',
       '$export($export.S,"Object",{values:function values(t){return i(t)}})',
-      'WeakMap = function() {}',
-      'window.WeakMap = function() {}',
-      'function WeakMap() {}',
       'String.raw = function() {}',
+      // Currently are no polyfills that declare a class. Maybe in the future.
+      // 'Object.defineProperty(window, \'WeakMap\', function() {})',
+      // 'WeakMap = function() {}',
+      // 'window.WeakMap = function() {}',
+      // 'function WeakMap() {}',
     ];
     const variants = createVariants(codeSnippets);
     const scripts = variants.map((code, i) => {
@@ -184,8 +197,12 @@ describe('LegacyJavaScript audit', () => {
     const artifacts = createArtifacts([script]);
 
     const result = await LegacyJavascript.audit(artifacts, {computedCache: new Map()});
-    expect(result.details.items[0].signals).toEqual(['String.prototype.repeat']);
-    expect(result.details.items[0].locations).toMatchObject([{line: 0, column: 0}]);
+    expect(result.details.items[0].subItems.items).toMatchObject([
+      {
+        signal: 'String.prototype.repeat',
+        location: {line: 0, column: 0},
+      },
+    ]);
   });
 
   it('uses location from pattern matching over source map', async () => {
@@ -203,8 +220,12 @@ describe('LegacyJavaScript audit', () => {
     const artifacts = createArtifacts([script]);
 
     const result = await LegacyJavascript.audit(artifacts, {computedCache: new Map()});
-    expect(result.details.items[0].signals).toEqual(['String.prototype.repeat']);
-    expect(result.details.items[0].locations).toMatchObject([{line: 1, column: 0}]);
+    expect(result.details.items[0].subItems.items).toMatchObject([
+      {
+        signal: 'String.prototype.repeat',
+        location: {line: 1, column: 0},
+      },
+    ]);
   });
 });
 
@@ -215,6 +236,8 @@ describe('LegacyJavaScript signals', () => {
       const expectedMissingSignals = [
         'core-js-2-preset-env-esmodules/true',
         'core-js-3-preset-env-esmodules/true',
+        'core-js-2-preset-env-esmodules/true-and-bugfixes',
+        'core-js-3-preset-env-esmodules/true-and-bugfixes',
       ];
       for (const expectedVariant of expectedMissingSignals) {
         expect(signalSummary.variantsMissingSignals).toContain(expectedVariant);
