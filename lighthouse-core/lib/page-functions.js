@@ -304,10 +304,13 @@ function getNodeLabel(node) {
 }
 
 /**
+ * RequestIdleCallback shim that calculates the remaining deadline time in order to avoid a potential lighthouse
+ * penalty for tests run with simulated throttling. As the throttling factor is x4 the maximum remaining time is
+ * reduced to approximately 50/4 => ~12
  * @return {null}
  */
 function wrapRequestIdleCallback() {
-  const nativeRequestIdleCallback = requestIdleCallback;
+  const nativeRequestIdleCallback = window.requestIdleCallback;
   window.requestIdleCallback = (cb) => {
     const cbWrap = (deadline, timeout) => {
       const start = Date.now();
@@ -315,12 +318,16 @@ function wrapRequestIdleCallback() {
       deadline.timeRemaining = () => {
         return Math.min(deadline.__timeRemaining(), Math.max(0, 12 - (Date.now() - start)));
       };
-      deadline.timeRemaining.toString = () => { return 'function timeRemaining() { [native code] }' };
+      deadline.timeRemaining.toString = () => {
+        return 'function timeRemaining() { [native code] }';
+      };
       cb(deadline, timeout);
     }
     return nativeRequestIdleCallback(cbWrap);
   }
-  window.requestIdleCallback.toString = () => { return 'function requestIdleCallback() { [native code] }'; }
+  window.requestIdleCallback.toString = () => {
+    return 'function requestIdleCallback() { [native code] }';
+  };
 }
 
 module.exports = {
