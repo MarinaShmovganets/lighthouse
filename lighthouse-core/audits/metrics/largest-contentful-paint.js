@@ -78,7 +78,9 @@ class LargestContentfulPaint extends Audit {
     try {
       metricResult = await ComputedLcp.request(metricComputationData, context);
     } catch (err) {
-      const milestone = Number((artifacts.HostUserAgent.match(/Chrome\/(\d+)/) || [])[1]);
+      const match = artifacts.HostUserAgent.match(/Chrome\/(\d+)/);
+      if (!match) throw err;
+      const milestone = Number(match[1]);
       if (milestone < 79 && err.code === 'NO_LCP') {
         throw new LHError(LHError.errors.NO_LCP_OLD_CHROME);
       }
