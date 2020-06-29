@@ -309,27 +309,26 @@ function getNodeLabel(node) {
  * reduced to approximately 50/4 => ~12
  * @return {null}
  */
+/* istanbul ignore next */
 function wrapRequestIdleCallback() {
-  if ('requestIdleCallback' in window) {
-    const nativeRequestIdleCallback = window.requestIdleCallback;
-    window.requestIdleCallback = (cb) => {
-      const cbWrap = (deadline, timeout) => {
-        const start = Date.now();
-        deadline.__timeRemaining = deadline.timeRemaining;
-        deadline.timeRemaining = () => {
-          return Math.min(deadline.__timeRemaining(), Math.max(0, 12 - (Date.now() - start)));
-        };
-        deadline.timeRemaining.toString = () => {
-          return 'function timeRemaining() { [native code] }';
-        };
-        cb(deadline, timeout);
+  const nativeRequestIdleCallback = window.requestIdleCallback;
+  window.requestIdleCallback = (cb) => {
+    const cbWrap = (deadline, timeout) => {
+      const start = Date.now();
+      deadline.__timeRemaining = deadline.timeRemaining;
+      deadline.timeRemaining = () => {
+        return Math.min(deadline.__timeRemaining(), Math.max(0, 12 - (Date.now() - start)));
       };
-      return nativeRequestIdleCallback(cbWrap);
+      deadline.timeRemaining.toString = () => {
+        return 'function timeRemaining() { [native code] }';
+      };
+      cb(deadline, timeout);
     };
-    window.requestIdleCallback.toString = () => {
-      return 'function requestIdleCallback() { [native code] }';
-    };
-  }
+    return nativeRequestIdleCallback(cbWrap);
+  };
+  window.requestIdleCallback.toString = () => {
+    return 'function requestIdleCallback() { [native code] }';
+  };
 }
 
 module.exports = {
