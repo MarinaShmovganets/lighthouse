@@ -1521,7 +1521,8 @@ class Driver {
    */
   async registerRequestIdleCallbackWrap(settings) {
     if (settings.throttlingMethod === 'simulate') {
-      const scriptStr = `(${pageFunctions.wrapRequestIdleCallbackString})()`;
+      const scriptStr = `(${pageFunctions.wrapRequestIdleCallbackString})
+        (${settings.throttling.cpuSlowdownMultiplier})`;
       await this.evaluateScriptOnNewDocument(scriptStr);
     }
   }

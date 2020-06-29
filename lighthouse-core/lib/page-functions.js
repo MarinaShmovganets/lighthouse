@@ -305,19 +305,24 @@ function getNodeLabel(node) {
 
 /**
  * RequestIdleCallback shim that calculates the remaining deadline time in order to avoid a potential lighthouse
- * penalty for tests run with simulated throttling. As the throttling factor is x4 the maximum remaining time is
- * reduced to approximately 50/4 => ~12
+ * penalty for tests run with simulated throttling. Reduces the deadline time to (50 - safetyAllowance) / cpuSlowdownMultiplier to
+ * ensure a long task is very unlikely if using the API correctly.
+ * @param {number} cpuSlowdownMultiplier
  * @return {null}
  */
 /* istanbul ignore next */
-function wrapRequestIdleCallback() {
+function wrapRequestIdleCallback(cpuSlowdownMultiplier) {
+  const safetyAllowanceMs = 10;
+  const maxExecutionTimeMs = Math.floor((50 - safetyAllowanceMs) / cpuSlowdownMultiplier);
   const nativeRequestIdleCallback = window.requestIdleCallback;
   window.requestIdleCallback = (cb) => {
     const cbWrap = (deadline, timeout) => {
       const start = Date.now();
       deadline.__timeRemaining = deadline.timeRemaining;
       deadline.timeRemaining = () => {
-        return Math.min(deadline.__timeRemaining(), Math.max(0, 12 - (Date.now() - start)));
+        return Math.min(
+          deadline.__timeRemaining(), Math.max(0, maxExecutionTimeMs - (Date.now() - start))
+        );
       };
       deadline.timeRemaining.toString = () => {
         return 'function timeRemaining() { [native code] }';

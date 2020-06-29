@@ -103,12 +103,10 @@ module.exports = [
       requestedUrl: 'http://localhost:10200/ric-shim.html?short',
       finalUrl: 'http://localhost:10200/ric-shim.html?short',
       audits: {
-        'interactive': {
-          // Even without the shim 1ms tasks would probably block less than their 50ms counterparts, therefore we can't
-          // just use <8000, these expectations though will fail without the shim and should always pass with the shim
-          // in place
-          numericValue: '<4000',
-          score: '>=0.90',
+        'total-blocking-time': {
+          // With the requestIdleCallback shim in place 1ms tasks should not block at all and should max add up to
+          // 12.5 ms each, which would result in 50ms under a 4x simulated throttling multiplier and therefore in 0 tbt
+          numericValue: '<=0',
         },
       },
     },
@@ -118,10 +116,11 @@ module.exports = [
       requestedUrl: 'http://localhost:10200/ric-shim.html?long',
       finalUrl: 'http://localhost:10200/ric-shim.html?long',
       audits: {
-        'interactive': {
-          // The tasks scheduled by request idle callback should at least block the main thread for 50ms each
-          // There are 40 iterations in total and lantern has a 4x multiplier, so 8s minimum
-          numericValue: '>8000',
+        'total-blocking-time': {
+          // With a 4x throttling multiplier in place each 50ms task takes 200ms, which results in 150ms blocking time
+          // each. As there are 40 iterations this add up to a total blocking time of 6s, with the consideration of
+          // a slight variance there should be at least a tbt of 5.5s
+          numericValue: '>5500',
         },
       },
     },
