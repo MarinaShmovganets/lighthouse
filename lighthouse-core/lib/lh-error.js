@@ -73,9 +73,10 @@ const UIStrings = {
   erroredRequiredArtifact: 'Required {artifactName} gatherer encountered an error: {errorMessage}',
 
   /**
-   * @description Error message explaining that the LCP metric is unavailable due to an old version of Chrome.
+   * @description Error message explaining that a feature is unavailable due to an old version of Chrome. "featureName" will be replaced by the name of the feature which is not supported.
+   * @example {Largest Contentful Paint} featureName
    * */
-  oldChromeDoesNotSupportLCP: 'LCP metric not supported in this version of Chrome.',
+  oldChromeDoesNotSupportFeature: 'This version of Chrome is too old to support \'{featureName}\'. Use a newer version to see full results.',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -259,9 +260,9 @@ const ERRORS = {
     code: 'NO_LCP',
     message: UIStrings.badTraceRecording,
   },
-  NO_LCP_OLD_CHROME: {
-    code: 'NO_LCP_OLD_CHROME',
-    message: UIStrings.oldChromeDoesNotSupportLCP,
+  UNSUPPORTED_OLD_CHROME: {
+    code: 'UNSUPPORTED_OLD_CHROME',
+    message: UIStrings.oldChromeDoesNotSupportFeature,
   },
   /** Layout Shift trace events are found but without data */
   LAYOUT_SHIFT_MISSING_DATA: {

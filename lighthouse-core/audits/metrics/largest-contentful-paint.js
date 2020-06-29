@@ -85,7 +85,10 @@ class LargestContentfulPaint extends Audit {
       // m79 is the minimum version which supports LCP
       // https://chromium.googlesource.com/chromium/src/+/master/docs/speed/metrics_changelog/lcp.md
       if (milestone < 79 && err.code === 'NO_LCP') {
-        throw new LHError(LHError.errors.NO_LCP_OLD_CHROME);
+        throw new LHError(
+          LHError.errors.UNSUPPORTED_OLD_CHROME,
+          {featureName: 'Largest Contentful Paint'}
+        );
       }
       throw err;
     }
