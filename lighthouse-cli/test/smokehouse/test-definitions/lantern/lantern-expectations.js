@@ -106,7 +106,7 @@ module.exports = [
         'total-blocking-time': {
           // With the requestIdleCallback shim in place 1ms tasks should not block at all and should max add up to
           // 12.5 ms each, which would result in 50ms under a 4x simulated throttling multiplier and therefore in 0 tbt
-          numericValue: '<=0',
+          numericValue: '<=100',
         },
       },
     },
@@ -118,7 +118,7 @@ module.exports = [
       audits: {
         'total-blocking-time': {
           // With a 4x throttling multiplier in place each 50ms task takes 200ms, which results in 150ms blocking time
-          // each. As there are 40 iterations this add up to a total blocking time of 6s, with the consideration of
+          // each. As there are 40 iterations this adds up to a total blocking time of 6s, with the consideration of
           // a slight variance there should be at least a tbt of 5.5s
           numericValue: '>5500',
         },
