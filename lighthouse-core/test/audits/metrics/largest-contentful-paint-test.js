@@ -11,11 +11,12 @@ const defaultOptions = LCPAudit.defaultOptions;
 const trace = require('../../fixtures/traces/lcp-m78.json');
 const devtoolsLog = require('../../fixtures/traces/lcp-m78.devtools.log.json');
 
-function generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice}) {
+function generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice, HostUserAgent}) {
   return {
     traces: {[LCPAudit.DEFAULT_PASS]: trace},
     devtoolsLogs: {[LCPAudit.DEFAULT_PASS]: devtoolsLog},
     TestedAsMobileDevice,
+    HostUserAgent,
   };
 }
 
@@ -27,7 +28,7 @@ function generateContext({throttlingMethod}) {
 
 describe('Performance: largest-contentful-paint audit', () => {
   it('adjusts scoring based on form factor', async () => {
-    const artifactsMobile = generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice: true});
+    const artifactsMobile = generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice: true, HostUserAgent: 'Chrome/78.0.3904.70'});
     const contextMobile = generateContext({throttlingMethod: 'provided'});
 
     const outputMobile = await LCPAudit.audit(artifactsMobile, contextMobile);
@@ -35,12 +36,37 @@ describe('Performance: largest-contentful-paint audit', () => {
     expect(outputMobile.score).toBe(1);
     expect(outputMobile.displayValue).toBeDisplayString('1.1\xa0s');
 
-    const artifactsDesktop = generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice: false});
+    const artifactsDesktop = generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice: false, HostUserAgent: 'Chrome/78.0.3904.70'});
     const contextDesktop = generateContext({throttlingMethod: 'provided'});
 
     const outputDesktop = await LCPAudit.audit(artifactsDesktop, contextDesktop);
     expect(outputDesktop.numericValue).toBeCloseTo(1121.711, 1);
     expect(outputDesktop.score).toBe(0.92);
     expect(outputDesktop.displayValue).toBeDisplayString('1.1\xa0s');
+  });
+
+  it('throws error when old Chrome does not support LCP', async () => {
+    const preLcpTrace = require('../../fixtures/traces/progressive-app-m60.json');
+    const preLcpDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
+
+    const artifactsOldChrome = generateArtifacts({
+      preLcpTrace,
+      preLcpDevtoolsLog,
+      TestedAsMobileDevice: true,
+      HostUserAgent: 'Chrome/60.0.3112.78',
+    });
+    const contextOldChrome = generateContext({throttlingMethod: 'provided'});
+
+    expect(await LCPAudit.audit(artifactsOldChrome, contextOldChrome)).toThrow(/NO_LCP_OLD_CHROME/);
+
+    const artifactsNewChrome = generateArtifacts({
+      preLcpTrace,
+      preLcpDevtoolsLog,
+      TestedAsMobileDevice: true,
+      HostUserAgent: 'Chrome/83.0.4103.116',
+    });
+    const contextNewChrome = generateContext({throttlingMethod: 'provided'});
+
+    expect(await LCPAudit.audit(artifactsNewChrome, contextNewChrome)).toThrow(/NO_LCP/);
   });
 });
