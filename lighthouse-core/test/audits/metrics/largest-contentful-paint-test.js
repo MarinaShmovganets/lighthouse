@@ -35,7 +35,9 @@ describe('Performance: largest-contentful-paint audit', () => {
       trace,
       devtoolsLog,
       TestedAsMobileDevice: true,
-      HostUserAgent: 'Chrome/78.0.3904.70',
+      HostUserAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) ' +
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 ' +
+        'Mobile Safari/537.36 Chrome-Lighthouse',
     });
     const contextMobile = generateContext({throttlingMethod: 'provided'});
 
@@ -48,7 +50,9 @@ describe('Performance: largest-contentful-paint audit', () => {
       trace,
       devtoolsLog,
       TestedAsMobileDevice: false,
-      HostUserAgent: 'Chrome/78.0.3904.70',
+      HostUserAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) ' +
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 ' +
+        'Mobile Safari/537.36 Chrome-Lighthouse',
     });
     const contextDesktop = generateContext({throttlingMethod: 'provided'});
 
@@ -63,7 +67,9 @@ describe('Performance: largest-contentful-paint audit', () => {
       trace: preLcpTrace,
       devtoolsLog: preLcpDevtoolsLog,
       TestedAsMobileDevice: true,
-      HostUserAgent: 'Chrome/60.0.3112.78',
+      HostUserAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) ' +
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 ' +
+        'Mobile Safari/537.36 Chrome-Lighthouse',
     });
     const contextOldChrome = generateContext({throttlingMethod: 'provided'});
 
@@ -74,7 +80,9 @@ describe('Performance: largest-contentful-paint audit', () => {
       trace: preLcpTrace,
       devtoolsLog: preLcpDevtoolsLog,
       TestedAsMobileDevice: true,
-      HostUserAgent: 'Chrome/83.0.4103.116',
+      HostUserAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) ' +
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 ' +
+        'Mobile Safari/537.36 Chrome-Lighthouse',
     });
     const contextNewChrome = generateContext({throttlingMethod: 'provided'});
 
