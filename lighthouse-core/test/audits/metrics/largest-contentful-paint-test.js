@@ -50,23 +50,23 @@ describe('Performance: largest-contentful-paint audit', () => {
     const preLcpDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 
     const artifactsOldChrome = generateArtifacts({
-      preLcpTrace,
-      preLcpDevtoolsLog,
+      trace: preLcpTrace,
+      devtoolsLog: preLcpDevtoolsLog,
       TestedAsMobileDevice: true,
       HostUserAgent: 'Chrome/60.0.3112.78',
     });
     const contextOldChrome = generateContext({throttlingMethod: 'provided'});
 
-    expect(await LCPAudit.audit(artifactsOldChrome, contextOldChrome)).toThrow(/NO_LCP_OLD_CHROME/);
+    await expect(LCPAudit.audit(artifactsOldChrome, contextOldChrome)).rejects.toThrow(/NO_LCP_OLD_CHROME/);
 
     const artifactsNewChrome = generateArtifacts({
-      preLcpTrace,
-      preLcpDevtoolsLog,
+      trace: preLcpTrace,
+      devtoolsLog: preLcpDevtoolsLog,
       TestedAsMobileDevice: true,
       HostUserAgent: 'Chrome/83.0.4103.116',
     });
     const contextNewChrome = generateContext({throttlingMethod: 'provided'});
 
-    expect(await LCPAudit.audit(artifactsNewChrome, contextNewChrome)).toThrow(/NO_LCP/);
+    await expect(LCPAudit.audit(artifactsNewChrome, contextNewChrome)).rejects.toThrow(/NO_LCP/);
   });
 });
