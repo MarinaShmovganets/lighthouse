@@ -81,6 +81,9 @@ class LargestContentfulPaint extends Audit {
       const match = artifacts.HostUserAgent.match(/Chrome\/(\d+)/);
       if (!match) throw err;
       const milestone = Number(match[1]);
+
+      // m79 is the minimum version which supports LCP
+      // https://chromium.googlesource.com/chromium/src/+/master/docs/speed/metrics_changelog/lcp.md
       if (milestone < 79 && err.code === 'NO_LCP') {
         throw new LHError(LHError.errors.NO_LCP_OLD_CHROME);
       }
