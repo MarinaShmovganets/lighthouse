@@ -7,8 +7,7 @@ name: 💡🏠
 on:
   push:
     branches: [master]
-  pull_request:
-    branches: [master]
+  pull_request: # run on all PRs, not just PRs to a particular branch
 
 jobs:
   # `basics` includes all non-smoke CI, except for unit and proto
