@@ -71,6 +71,11 @@ const UIStrings = {
    * @example {Manifest invalid} errorMessage
    * */
   erroredRequiredArtifact: 'Required {artifactName} gatherer encountered an error: {errorMessage}',
+
+  /**
+   * @description Error message explaining that the LCP metric is unavailable due to an old version of Chrome.
+   * */
+  oldChromeDoesNotSupportLCP: 'LCP metric not supported in this version of Chrome.',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -253,6 +258,10 @@ const ERRORS = {
   NO_LCP: {
     code: 'NO_LCP',
     message: UIStrings.badTraceRecording,
+  },
+  NO_LCP_OLD_CHROME: {
+    code: 'NO_LCP_OLD_CHROME',
+    message: UIStrings.oldChromeDoesNotSupportLCP,
   },
   /** Layout Shift trace events are found but without data */
   LAYOUT_SHIFT_MISSING_DATA: {

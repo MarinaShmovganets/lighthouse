@@ -8,6 +8,7 @@
 const Audit = require('../audit.js');
 const i18n = require('../../lib/i18n/i18n.js');
 const ComputedLcp = require('../../computed/metrics/largest-contentful-paint.js');
+const LHError = require('../../lib/lh-error.js');
 
 const UIStrings = {
   /** Description of the Largest Contentful Paint (LCP) metric, which marks the time at which the largest text or image is painted by the browser. This is displayed within a tooltip when the user hovers on the metric name to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
@@ -79,7 +80,7 @@ class LargestContentfulPaint extends Audit {
     } catch (err) {
       const milestone = Number((artifacts.HostUserAgent.match(/Chrome\/(\d+)/) || [])[1]);
       if (milestone < 79 && err.code === 'NO_LCP') {
-        throw new Error('LCP metric not supported in this version of Chrome.');
+        throw new LHError(LHError.errors.NO_LCP_OLD_CHROME);
       }
       throw err;
     }
