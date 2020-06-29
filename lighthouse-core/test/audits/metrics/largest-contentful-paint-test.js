@@ -78,6 +78,6 @@ describe('Performance: largest-contentful-paint audit', () => {
     });
     const contextNewChrome = generateContext({throttlingMethod: 'provided'});
 
-    await expect(LCPAudit.audit(artifactsNewChrome, contextNewChrome)).rejects.toThrow(/NO_LCP/);
+    await expect(LCPAudit.audit(artifactsNewChrome, contextNewChrome)).rejects.toThrow(/^NO_LCP$/);
   });
 });
