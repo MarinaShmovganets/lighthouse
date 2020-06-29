@@ -102,6 +102,9 @@ class EmulationDriver extends Driver {
   clearDataForOrigin() {
     return Promise.resolve();
   }
+  registerRequestIdleCallbackWrap() {
+    return Promise.resolve();
+  }
 }
 
 const fakeDriver = require('./fake-driver.js');
