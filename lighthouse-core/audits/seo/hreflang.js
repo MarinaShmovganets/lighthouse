@@ -105,11 +105,11 @@ class Hreflang extends Audit {
       let source;
 
       if (!isExpectedLanguageCode(link.hreflang)) {
-        reasons.push(UIStrings.unexpectedLanguage);
+        reasons.push(str_(UIStrings.unexpectedLanguage));
       }
 
       if (!isFullyQualified(link.hrefRaw.toLowerCase())) {
-        reasons.push(UIStrings.notFullyQualified);
+        reasons.push(str_(UIStrings.notFullyQualified));
       }
 
       if (link.source === 'head') {
@@ -124,6 +124,7 @@ class Hreflang extends Audit {
       if (!source || !reasons.length) continue;
 
       invalidHreflangs.push({
+        // @ts-ignore
         source,
         subItems: {
           type: 'subitems',
