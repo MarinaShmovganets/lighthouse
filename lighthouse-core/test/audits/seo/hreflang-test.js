@@ -128,6 +128,8 @@ describe('SEO: Document has valid hreflang code', () => {
     assert.equal(items.length, 3);
     assert.equal(items[0].subItems.items.length, 2);
     assert.equal(items[1].subItems.items.length, 1);
-    assert.equal(items[1].subItems.items.length, 1);
+
+    expect(items[0].subItems.items[0].reason).toBeDisplayString('Unexpected language code');
+    expect(items[0].subItems.items[1].reason).toBeDisplayString('Relative href value');
   });
 });

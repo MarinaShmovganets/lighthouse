@@ -5,6 +5,10 @@
  */
 'use strict';
 
+/** @typedef {string|LH.Audit.Details.NodeValue|undefined} Source */
+/** @typedef {{source: Source, subItems: {type: 'subitems', items: SubItem[]}}} InvalidHreflang */
+/** @typedef {{reason: string}} SubItem */
+
 const Audit = require('../audit.js');
 const VALID_LANGS = importValidLangs();
 const NO_LANGUAGE = 'x-default';
@@ -19,9 +23,9 @@ const UIStrings = {
   description: 'hreflang links tell search engines what version of a page they should ' +
     'list in search results for a given language or region. [Learn more]' +
     '(https://web.dev/hreflang/).',
-  /** A failure reason for the `hreflang` Lighthouse audit. This failure reason is shown when the hreflang language code is unexpected. */
+  /** A failure reason for a Lighthouse audit that flags incorrect use of the `hreflang` attribute on `link` elements. This failure reason is shown when the hreflang language code is unexpected. */
   unexpectedLanguage: 'Unexpected language code',
-  /** A failure reason for the `hreflang` Lighthouse audit. This failure reason is shown when the `href` is not fully-qualified. */
+  /** A failure reason for a Lighthouse audit that flags incorrect use of the `hreflang` attribute on `link` elements. This failure reason is shown when the `href` attribute value is not fully-qualified. */
   notFullyQualified: 'Relative href value',
 };
 
@@ -89,7 +93,7 @@ class Hreflang extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit({LinkElements}) {
-    /** @type {Array<{source: string|{type: 'node', snippet: string}, reason: string}>} */
+    /** @type {InvalidHreflang[]} */
     const invalidHreflangs = [];
 
     const auditableLinkElements = LinkElements.filter(linkElement => {
@@ -102,6 +106,7 @@ class Hreflang extends Audit {
 
     for (const link of auditableLinkElements) {
       const reasons = [];
+      /** @type {Source} */
       let source;
 
       if (!isExpectedLanguageCode(link.hreflang)) {
@@ -124,7 +129,6 @@ class Hreflang extends Audit {
       if (!source || !reasons.length) continue;
 
       invalidHreflangs.push({
-        // @ts-ignore
         source,
         subItems: {
           type: 'subitems',

@@ -12,7 +12,6 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 * Marvin Frachet @mfrachet
 * Matt Hobbs @Nooshu
 * Peter Marshall @psmarshall
-* Umar Hansa @umaar
 
 ## Notable Changes
 
