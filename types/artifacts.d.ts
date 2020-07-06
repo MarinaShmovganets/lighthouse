@@ -240,6 +240,8 @@ declare global {
         crossOrigin: string | null
         /** Where the link was found, either in the DOM or in the headers of the main document */
         source: 'head'|'body'|'headers'
+        /** Path that uniquely identifies the node in the DOM */
+        devtoolsNodePath?: string
       }
 
       export interface ScriptElement {
