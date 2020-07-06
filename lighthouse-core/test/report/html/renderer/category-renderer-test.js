@@ -245,11 +245,7 @@ describe('CategoryRenderer', () => {
       const categoryDOM = renderer.render(a11yCategory, sampleResults.categoryGroups);
       const percentageEl = categoryDOM.querySelectorAll('[title="Not applicable"]');
 
-      assert.equal(
-        percentageEl[0].textContent,
-        'n/a',
-        'score shows n/a'
-      );
+      assert.equal(percentageEl[0].textContent, 'n/a', 'score shows n/a');
     });
 
     it('renders a non-n/a score if the category contains at least 1 applicable audit', () => {
@@ -261,11 +257,7 @@ describe('CategoryRenderer', () => {
       const categoryDOM = renderer.render(a11yCategory, sampleResults.categoryGroups);
       const percentageEl = categoryDOM.querySelectorAll('.lh-gauge__percentage');
 
-      assert.equal(
-        percentageEl[0].textContent,
-        '65',
-        'score shows a non-n/a value'
-      );
+      assert.equal(percentageEl[0].textContent, '65', 'score shows a non-n/a value');
     });
   });
 

@@ -352,7 +352,7 @@ class CategoryRenderer {
     if (this.hasApplicableAudits(category)) {
       wrapper.classList.add(`lh-gauge__wrapper--${Util.calculateRating(category.score)}`);
     } else {
-      // render gray n/a for entirely non-applicable categories
+      // Render gray n/a for entirely non-applicable categories.
       percentageEl.textContent = 'n/a';
       percentageEl.style.color = '#757575';
       percentageEl.title = Util.i18n.strings.notApplicableAuditsGroupTitle;
@@ -365,15 +365,10 @@ class CategoryRenderer {
   /**
    * Returns true if an LH category has any non-"notApplicable" audits.
    * @param {LH.ReportResult.Category} category
-   * @return {Boolean}
+   * @return {boolean}
    */
   hasApplicableAudits(category) {
-    for (const auditRef of category.auditRefs) {
-      if (auditRef.result.scoreDisplayMode !== 'notApplicable') {
-        return true;
-      }
-    }
-    return false;
+    return category.auditRefs.some(ref => ref.result.scoreDisplayMode !== 'notApplicable');
   }
 
   /**
