@@ -353,6 +353,7 @@ class CategoryRenderer {
       wrapper.classList.add(`lh-gauge__wrapper--${Util.calculateRating(category.score)}`);
     } else {
       // Render gray n/a for entirely non-applicable categories.
+      wrapper.classList.add(`lh-gauge__wrapper--notapplicable`);
       percentageEl.textContent = 'n/a';
       percentageEl.style.color = '#757575';
       percentageEl.title = Util.i18n.strings.notApplicableAuditsGroupTitle;
