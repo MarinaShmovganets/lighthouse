@@ -1,3 +1,19 @@
+ <a name="6.1.1"></a>
+# 6.1.1 (2020-07-07)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.1.0...v6.1.1)
+
+~~ TODO: https://chromiumdash.appspot.com/schedule ~~
+We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed
+Insights within 2 weeks.
+
+## Notable Changes
+~~ TODO: Move notable changes here ~~
+
+
+## Core
+
+* fetcher: ensure fetch doesn't cause unhandled promise ([#11036](https://github.com/GoogleChrome/lighthouse/pull/11036))
+
 <a name="6.1.0"></a>
 # 6.1.0 (2020-06-25)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.0.0...v6.1.0)
