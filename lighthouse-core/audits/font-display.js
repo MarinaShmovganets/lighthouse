@@ -25,11 +25,13 @@ const UIStrings = {
     'webfonts are loading. ' +
     '[Learn more](https://web.dev/font-display/).',
   /**
-   * @description A warning message that is shown when Lighthouse couldn't automatically check some of the page's fonts and that the user will need to manually check it.
-   * @example {https://font.cdn.com/} fontURL
+   * @description [ICU Syntax] A warning message that is shown when Lighthouse couldn't automatically check some of the page's fonts, telling the user that they will need to manually check them.
+   * @example {https://font.cdn.com/} fontOrigin
    */
-  undeclaredFontURLWarning: 'Lighthouse was unable to automatically check the font-display value ' +
-    'for the following URL: {fontURL}.',
+  undeclaredFontOriginWarning:
+    'Lighthouse was unable to automatically check the {fontCountForOrigin, plural, ' +
+    '=1 {`font-display` value for the following origin: {fontOrigin}.} ' +
+    'other {`font-display` values for the following origin: {fontOrigin}.}}',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -108,6 +110,28 @@ class FontDisplay extends Audit {
   }
 
   /**
+   * Some pages load many fonts we can't check, so dedupe on origin.
+   * @param {Array<string>} warningUrls
+   * @return {Array<string>}
+   */
+  static getWarningsForFontUrls(warningUrls) {
+    /** @type {Map<string, number>} */
+    const warningCountByOrigin = new Map();
+    for (const warningUrl of warningUrls) {
+      const origin = URL.getOrigin(warningUrl);
+      if (!origin) continue;
+
+      const count = warningCountByOrigin.get(origin) || 0;
+      warningCountByOrigin.set(origin, count + 1);
+    }
+
+    const warnings = [...warningCountByOrigin].map(([fontOrigin, fontCountForOrigin]) => {
+      return str_(UIStrings.undeclaredFontOriginWarning, {fontCountForOrigin, fontOrigin});
+    });
+    return warnings;
+  }
+
+  /**
    * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
    * @return {Promise<LH.Audit.Product>}
@@ -155,7 +179,7 @@ class FontDisplay extends Audit {
     return {
       score: Number(results.length === 0),
       details,
-      warnings: warningURLs.map(fontURL => str_(UIStrings.undeclaredFontURLWarning, {fontURL})),
+      warnings: FontDisplay.getWarningsForFontUrls(warningURLs),
     };
   }
 }
