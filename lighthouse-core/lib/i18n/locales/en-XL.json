@@ -810,7 +810,7 @@
     "message": "Ûśêś ĤT́T̂ṔŜ"
   },
   "lighthouse-core/audits/largest-contentful-paint-element.js | description": {
-    "message": "T̂h́îś îś t̂h́ê él̂ém̂én̂t́ t̂h́ât́ ŵáŝ íd̂én̂t́îf́îéd̂ áŝ t́ĥé L̂ár̂ǵêśt̂ Ćôńt̂én̂t́f̂úl̂ Ṕâín̂t́. [L̂éâŕn̂ Ḿôŕê](https://web.dev/lighthouse-largest-contentful-paint/)"
+    "message": "T̂h́îś îś t̂h́ê ĺâŕĝéŝt́ ĉón̂t́êńt̂f́ûĺ êĺêḿêńt̂ ṕâín̂t́êd́ ŵít̂h́îń t̂h́ê v́îéŵṕôŕt̂. [Ĺêár̂ń M̂ór̂é](https://web.dev/lighthouse-largest-contentful-paint/)"
   },
   "lighthouse-core/audits/largest-contentful-paint-element.js | displayValue": {
     "message": "{itemCount, plural,\n    =1 {1 êĺêḿêńt̂ f́ôún̂d́}\n    other {# êĺêḿêńt̂ś f̂óûńd̂}\n    }"
@@ -1052,8 +1052,14 @@
   "lighthouse-core/audits/seo/hreflang.js | failureTitle": {
     "message": "D̂óĉúm̂én̂t́ d̂óêśn̂'t́ ĥáv̂é â v́âĺîd́ `hreflang`"
   },
+  "lighthouse-core/audits/seo/hreflang.js | notFullyQualified": {
+    "message": "R̂él̂át̂ív̂é ĥŕêf́ v̂ál̂úê"
+  },
   "lighthouse-core/audits/seo/hreflang.js | title": {
     "message": "D̂óĉúm̂én̂t́ ĥáŝ á v̂ál̂íd̂ `hreflang`"
+  },
+  "lighthouse-core/audits/seo/hreflang.js | unexpectedLanguage": {
+    "message": "Ûńêx́p̂éĉt́êd́ l̂án̂ǵûáĝé ĉód̂é"
   },
   "lighthouse-core/audits/seo/http-status-code.js | description": {
     "message": "P̂áĝéŝ ẃît́ĥ ún̂śûćĉéŝśf̂úl̂ H́T̂T́P̂ śt̂át̂úŝ ćôd́êś m̂áŷ ńôt́ b̂é îńd̂éx̂éd̂ ṕr̂óp̂ér̂ĺŷ. [Ĺêár̂ń m̂ór̂é](https://web.dev/http-status-code/)."
@@ -1600,6 +1606,9 @@
   },
   "lighthouse-core/lib/lh-error.js | missingRequiredArtifact": {
     "message": "R̂éq̂úîŕêd́ {artifactName} ĝát̂h́êŕêŕ d̂íd̂ ńôt́ r̂ún̂."
+  },
+  "lighthouse-core/lib/lh-error.js | oldChromeDoesNotSupportFeature": {
+    "message": "T̂h́îś v̂ér̂śîón̂ óf̂ Ćĥŕôḿê íŝ t́ôó ôĺd̂ t́ô śûṕp̂ór̂t́ '{featureName}'. Ûśê á n̂éŵér̂ v́êŕŝíôń t̂ó ŝéê f́ûĺl̂ ŕêśûĺt̂ś."
   },
   "lighthouse-core/lib/lh-error.js | pageLoadFailed": {
     "message": "L̂íĝh́t̂h́ôúŝé ŵáŝ ún̂áb̂ĺê t́ô ŕêĺîáb̂ĺŷ ĺôád̂ t́ĥé p̂áĝé ŷóû ŕêq́ûéŝt́êd́. M̂ák̂é ŝúr̂é ŷóû ár̂é t̂éŝt́îńĝ t́ĥé ĉór̂ŕêćt̂ ÚR̂Ĺ âńd̂ t́ĥát̂ t́ĥé ŝér̂v́êŕ îś p̂ŕôṕêŕl̂ý r̂éŝṕôńd̂ín̂ǵ t̂ó âĺl̂ ŕêq́ûéŝt́ŝ."
