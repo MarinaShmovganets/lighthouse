@@ -2,13 +2,7 @@
 # 6.1.1 (2020-07-07)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.1.0...v6.1.1)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed
-Insights within 2 weeks.
-
-## Notable Changes
-~~ TODO: Move notable changes here ~~
-
+This is a patch release to fix an issue that only occured in Node environments. It will only be released to npm.
 
 ## Core
 
