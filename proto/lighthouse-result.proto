@@ -55,7 +55,7 @@ enum LighthouseError {
   DNS_FAILURE = 19;
   // A timeout in the initial connection to the debugger protocol.
   CRI_TIMEOUT = 20;
-  // The page requested was non-HTML. 
+  // The page requested was not HTML. 
   NOT_HTML = 21;
 }
 
