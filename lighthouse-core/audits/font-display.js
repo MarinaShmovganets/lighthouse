@@ -29,9 +29,11 @@ const UIStrings = {
    * @example {https://font.cdn.com/} fontOrigin
    */
   undeclaredFontOriginWarning:
-    'Lighthouse was unable to automatically check the {fontCountForOrigin, plural, ' +
-    '=1 {`font-display` value for the following origin: {fontOrigin}.} ' +
-    'other {`font-display` values for the following origin: {fontOrigin}.}}',
+    '{fontCountForOrigin, plural, ' +
+    // eslint-disable-next-line max-len
+    '=1 {Lighthouse was unable to automatically check the `font-display` value for the following origin: {fontOrigin}.} ' +
+    // eslint-disable-next-line max-len
+    'other {Lighthouse was unable to automatically check the `font-display` values for the following origin: {fontOrigin}.}}',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
