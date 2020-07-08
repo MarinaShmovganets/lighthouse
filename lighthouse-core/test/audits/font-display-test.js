@@ -302,7 +302,7 @@ describe('Performance: Font Display audit', () => {
     expect(result.score).toEqual(1);
     expect(result.warnings).toHaveLength(1);
     expect(result.warnings[0])
-      .toBeDisplayString(/value for the following origin: https:\/\/example\.com\.$/);
+      .toBeDisplayString(/value for the origin https:\/\/example\.com\.$/);
   });
 
   it('should handle mixed content', async () => {
@@ -337,7 +337,7 @@ describe('Performance: Font Display audit', () => {
     expect(result.score).toEqual(0);
     expect(result.warnings).toHaveLength(1);
     expect(result.warnings[0])
-      .toBeDisplayString(/value for the following origin: https:\/\/example\.com\.$/);
+      .toBeDisplayString(/value for the origin https:\/\/example\.com\.$/);
   });
 
   it('should dedupe warnings by origin when there are multiple uncheckable fonts', async () => {
@@ -368,8 +368,8 @@ describe('Performance: Font Display audit', () => {
     expect(result.warnings).toHaveLength(2);
     expect(result.warnings[0])
       // Plural 'values' for multiple fonts.
-      .toBeDisplayString(/values for the following origin: https:\/\/example\.com\.$/);
+      .toBeDisplayString(/values for the origin https:\/\/example\.com\.$/);
     expect(result.warnings[1])
-      .toBeDisplayString(/value for the following origin: https:\/\/fonts\.gstatic\.com\.$/);
+      .toBeDisplayString(/value for the origin https:\/\/fonts\.gstatic\.com\.$/);
   });
 });
