@@ -25,15 +25,15 @@ const UIStrings = {
     'webfonts are loading. ' +
     '[Learn more](https://web.dev/font-display/).',
   /**
-   * @description [ICU Syntax] A warning message that is shown when Lighthouse couldn't automatically check some of the page's fonts, telling the user that they will need to manually check them.
+   * @description [ICU Syntax] A warning message that is shown when Lighthouse couldn't automatically check some of the page's fonts, telling the user that they will need to manually check the fonts coming from a certain URL origin.
    * @example {https://font.cdn.com/} fontOrigin
    */
   undeclaredFontOriginWarning:
     '{fontCountForOrigin, plural, ' +
     // eslint-disable-next-line max-len
-    '=1 {Lighthouse was unable to automatically check the `font-display` value for the following origin: {fontOrigin}.} ' +
+    '=1 {Lighthouse was unable to automatically check the `font-display` value for the origin {fontOrigin}.} ' +
     // eslint-disable-next-line max-len
-    'other {Lighthouse was unable to automatically check the `font-display` values for the following origin: {fontOrigin}.}}',
+    'other {Lighthouse was unable to automatically check the `font-display` values for the origin {fontOrigin}.}}',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
