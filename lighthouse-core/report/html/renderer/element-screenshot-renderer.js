@@ -98,7 +98,7 @@ class ElementScreenshotRenderer {
     // svgEl.setAttributeNS(ns, 'width', '0');
     const defsEl = document.createElementNS(ns, 'defs');
     const clipPathEl = document.createElementNS(ns, 'clipPath');
-    clipPathEl.setAttributeNS(ns, 'clipPathUnits', 'objectBoundingBox');
+    clipPathEl.setAttribute('clipPathUnits', 'objectBoundingBox');
 
     maskEl.append(svgEl);
     svgEl.append(defsEl);
@@ -125,7 +125,7 @@ class ElementScreenshotRenderer {
       // dom.createChildOf(clipPathEl, 'polygon', undefined, {points});
       const polygonEl = document.createElementNS(ns, 'polygon');
       clipPathEl.append(polygonEl);
-      polygonEl.setAttributeNS(ns, 'points', points);
+      polygonEl.setAttribute('points', points);
     }
     // Clip path doesn't work unless you do this ...
     // clipPathEl.innerHTML = clipPathEl.innerHTML;
