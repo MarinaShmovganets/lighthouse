@@ -87,5 +87,33 @@ describe('Render blocking resources audit', () => {
       // Saving 1000 + 1000 + 100ms for TCP handshake + 1 RT savings + server response time
       assert.equal(result, 2100);
     });
+
+    it('computes savings for stylesheets deferred by AMP', () => {
+      const recordSlow = props => {
+        const parsedURL = {host: 'slow.com', securityOrigin: 'http://slow.com'};
+        return Object.assign({parsedURL, requestId: requestId++}, props);
+      };
+      const serverResponseTimeByOrigin = new Map([
+        ['http://example.com', 100],
+        ['http://slow.com', 4000]
+      ]);
+      const Stacks = [{
+        detector: 'js',
+        id: 'amp',
+        name: 'AMP',
+        version: '2006180239003',
+        npm: 'https://www.npmjs.com/org/ampproject'
+      }];
+      const simulator = new Simulator({rtt: 1000, serverResponseTimeByOrigin});
+      const documentNode = new NetworkNode(record({transferSize: 4000}));
+      const styleNode = new NetworkNode(recordSlow({transferSize: 3000, resourceType: NetworkRequest.TYPES.Stylesheet}));
+      const deferredIds = new Set([2]);
+      const wastedBytesMap = new Map();
+
+      documentNode.addDependent(styleNode);
+      const result = estimate(simulator, documentNode, deferredIds, wastedBytesMap, Stacks);
+      // Savings capped at 1000 for AMP stylesheets since they are run async after timeout
+      assert.equal(result, 1000);
+    });
   });
 });
