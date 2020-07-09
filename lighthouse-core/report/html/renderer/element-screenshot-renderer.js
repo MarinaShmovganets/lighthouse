@@ -78,8 +78,8 @@ class ElementScreenshotRenderer {
       elementRectInScreenshotCoords, elementPreviewSizeInScreenshotCoords) {
     const clipId = `clip-${Util.getUniqueSuffix()}`;
 
-    // option a... no works
-    // const clipPathEl = dom.find('clipPath', maskEl);
+    // option a... works now that `document.createElementNS(ns, 'polygon');` is used
+    const clipPathEl = dom.find('clipPath', maskEl);
 
     // option b... (no works)
     let ns = 'http://www.w3.org/2000/svg';
@@ -87,9 +87,9 @@ class ElementScreenshotRenderer {
     // clipPathEl.setAttributeNS(ns, 'clipPathUnits', 'objectBoundingBox');
 
     // option c... (works)
-    const clipPathEl = document.createElementNS(ns, 'clipPath');
-    clipPathEl.setAttribute('clipPathUnits', 'objectBoundingBox');
-    dom.find('defs', maskEl).appendChild(clipPathEl);
+    // const clipPathEl = document.createElementNS(ns, 'clipPath');
+    // clipPathEl.setAttribute('clipPathUnits', 'objectBoundingBox');
+    // dom.find('defs', maskEl).appendChild(clipPathEl);
 
     // option d... (works)
     // dom.find('svg', maskEl).remove(); // just start over.
