@@ -18,11 +18,13 @@ class CumulativeLayoutShift {
   static async compute_(trace, context) {
     const traceOfTab = await TraceOfTab.request(trace, context);
 
-    // Find the last LayoutShift event, if any.
+    // Find the first and last LayoutShift event, if any.
+    let firstLayoutShift;
     let finalLayoutShift;
     for (let i = traceOfTab.mainThreadEvents.length - 1; i >= 0; i--) {
       const evt = traceOfTab.mainThreadEvents[i];
       if (evt.name === 'LayoutShift' && evt.args && evt.args.data && evt.args.data.is_main_frame) {
+        if (!firstLayoutShift) firstLayoutShift = evt;
         finalLayoutShift = evt;
         break;
       }
@@ -31,7 +33,7 @@ class CumulativeLayoutShift {
     const finalLayoutShiftTraceEventFound = !!finalLayoutShift;
     // tdresser sez: In about 10% of cases, layout instability is 0, and there will be no trace events.
     // TODO: Validate that. http://crbug.com/1003459
-    if (!finalLayoutShift) {
+    if (!firstLayoutShift || !finalLayoutShift) {
       return {
         value: 0,
         debugInfo: {
@@ -40,13 +42,23 @@ class CumulativeLayoutShift {
       };
     }
 
-    const cumulativeLayoutShift =
+    let cumulativeLayoutShift =
       finalLayoutShift.args &&
       finalLayoutShift.args.data &&
       finalLayoutShift.args.data.cumulative_score;
 
     if (cumulativeLayoutShift === undefined) {
       throw new LHError(LHError.errors.LAYOUT_SHIFT_MISSING_DATA);
+    }
+
+    // Chromium will set `had_recent_input` if there was recent user input, which
+    // skips shift events from contributing to CLS. This flag is also set when Lighthouse changes
+    // the emulation size. This consistently results in the first shift event always being ignored
+    // for CLS. Since we don't expect any user input, conditionally add the first shift event to
+    // CLS if it was ignored.
+    // See https://bugs.chromium.org/p/chromium/issues/detail?id=1094974.
+    if (firstLayoutShift.args.data && firstLayoutShift.args.data.had_recent_input) {
+      cumulativeLayoutShift += Number(firstLayoutShift.args.data.score);
     }
 
     return {
