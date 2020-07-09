@@ -28,8 +28,6 @@ class CumulativeLayoutShift {
       }
     }
 
-    console.log(traceOfTab.mainThreadEvents.filter(evt => evt.name === 'LayoutShift').map(evt => evt.args.data));
-
     const finalLayoutShiftTraceEventFound = !!finalLayoutShift;
     // tdresser sez: In about 10% of cases, layout instability is 0, and there will be no trace events.
     // TODO: Validate that. http://crbug.com/1003459
