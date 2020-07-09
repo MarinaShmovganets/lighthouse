@@ -10,6 +10,7 @@
  * against the results actually collected from Lighthouse.
  */
 
+const cloneDeep = require('lodash.clonedeep');
 const log = require('lighthouse-logger');
 const LocalConsole = require('./lib/local-console.js');
 
@@ -177,17 +178,24 @@ function pruneExpectations(localConsole, lhr, expected) {
   function pruneNewerChromeExpectations(obj) {
     for (const key of Object.keys(obj)) {
       const value = obj[key];
-      if (!value || typeof value !== 'object') continue;
-      else if (failsChromeVersionCheck(value)) {
+      if (!value || typeof value !== 'object') {
+        continue;
+      }
+
+      if (failsChromeVersionCheck(value)) {
         localConsole.log(`[${key}] failed chrome version check, pruning expectation: ${
           JSON.stringify(value, null, 2)}`);
         delete obj[key];
-      } else pruneNewerChromeExpectations(value);
+      } else {
+        pruneNewerChromeExpectations(value);
+      }
     }
     delete obj._minChromiumMilestone;
   }
 
-  pruneNewerChromeExpectations(expected);
+  const cloned = cloneDeep(expected);
+  pruneNewerChromeExpectations(cloned);
+  return cloned;
 }
 
 /**
@@ -325,7 +333,7 @@ function assertLogString(count) {
 function report(actual, expected, reportOptions = {}) {
   const localConsole = new LocalConsole();
 
-  pruneExpectations(localConsole, actual.lhr, expected);
+  expected = pruneExpectations(localConsole, actual.lhr, expected);
   const comparisons = collateResults(localConsole, actual, expected);
 
   let correctCount = 0;
