@@ -198,6 +198,8 @@ class ReportRenderer {
     const detailsRenderer = new DetailsRenderer(this._dom, {
       fullPageScreenshot,
     });
+    const fullPageScreenshotStyleEl = fullPageScreenshot &&
+      ElementScreenshotRenderer.createBackgroundImageStyle(this._dom, fullPageScreenshot);
 
     const categoryRenderer = new CategoryRenderer(this._dom, detailsRenderer);
     categoryRenderer.setTemplateContext(this._templateContext);
@@ -256,12 +258,8 @@ class ReportRenderer {
     reportFragment.appendChild(reportContainer);
     reportContainer.appendChild(headerContainer);
     reportContainer.appendChild(reportSection);
+    fullPageScreenshotStyleEl && reportContainer.appendChild(fullPageScreenshotStyleEl);
     reportSection.appendChild(this._renderReportFooter(report));
-
-    if (fullPageScreenshot) {
-      reportContainer.appendChild(
-        ElementScreenshotRenderer.createBackgroundImageStyle(this._dom, fullPageScreenshot));
-    }
 
     return reportFragment;
   }

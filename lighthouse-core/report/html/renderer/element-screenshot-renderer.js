@@ -69,12 +69,12 @@ class ElementScreenshotRenderer {
 
   /**
    * @param {DOM} dom
-   * @param {HTMLElement} mask
+   * @param {HTMLElement} maskEl
    * @param {{left: number, top: number}} positionClip
    * @param {LH.Artifacts.Rect} elementRectInScreenshotCoords
    * @param {Size} elementPreviewSizeInScreenshotCoords
    */
-  static renderClipPath(dom, mask, positionClip,
+  static renderClipPath(dom, maskEl, positionClip,
       elementRectInScreenshotCoords, elementPreviewSizeInScreenshotCoords) {
     // Normalize values between 0-1.
     const top = positionClip.top / elementPreviewSizeInScreenshotCoords.height;
@@ -85,20 +85,21 @@ class ElementScreenshotRenderer {
       left + elementRectInScreenshotCoords.width / elementPreviewSizeInScreenshotCoords.width;
 
     const clipId = `clip-${top}-${bottom}-${left}-${right}`;
-    const clipPathSvg = dom.createElement('div');
-    clipPathSvg.innerHTML = `<svg height="0" width="0">
-        <defs>
-          <clipPath id='${clipId}' clipPathUnits='objectBoundingBox'>
-            <polygon points="0,0  1,0  1,${top} 0,${top}" ></polygon>
-            <polygon points="0,${bottom} 1,${bottom} 1,1 0,1" ></polygon>
-            <polygon points="0,${top} ${left},${top} ${left},${bottom} 0,${bottom}" ></polygon>
-            <polygon points="${right},${top} 1,${top} 1,${bottom} ${right},${bottom}" ></polygon>
-          </clipPath>
-        </defs>
-      </svg>`;
+    const clipPathEl = dom.find('clipPath', maskEl);
+    clipPathEl.id = clipId;
+    maskEl.style.clipPath = `url(#${clipId})`;
 
-    mask.style.clipPath = 'url(#' + clipId + ')';
-    mask.appendChild(clipPathSvg);
+    const polygonsPoints = [
+      `0,0  1,0  1,${top} 0,${top}`,
+      `0,${bottom} 1,${bottom} 1,1 0,1`,
+      `0,${top} ${left},${top} ${left},${bottom} 0,${bottom}`,
+      `${right},${top} 1,${top} 1,${bottom} ${right},${bottom}`,
+    ];
+    for (const points of polygonsPoints) {
+      dom.createChildOf(clipPathEl, 'polygon', undefined, {points});
+    }
+    // Clip path doesn't work unless you do this ...
+    clipPathEl.innerHTML = clipPathEl.innerHTML;
   }
 
   /**
@@ -219,26 +220,26 @@ class ElementScreenshotRenderer {
     const contentEl = dom.find('.lh-element-screenshot__content', containerEl);
     contentEl.style.top = `-${elementPreviewSizeInDisplayCoords.height}px`;
 
-    const image = dom.find('.lh-element-screenshot__image', containerEl);
-    image.style.width = elementPreviewSizeInDisplayCoords.width + 'px';
-    image.style.height = elementPreviewSizeInDisplayCoords.height + 'px';
+    const imageEl = dom.find('.lh-element-screenshot__image', containerEl);
+    imageEl.style.width = elementPreviewSizeInDisplayCoords.width + 'px';
+    imageEl.style.height = elementPreviewSizeInDisplayCoords.height + 'px';
 
-    image.style.backgroundPositionY = -(positions.screenshot.top * zoomFactor) + 'px';
-    image.style.backgroundPositionX = -(positions.screenshot.left * zoomFactor) + 'px';
-    image.style.backgroundSize =
+    imageEl.style.backgroundPositionY = -(positions.screenshot.top * zoomFactor) + 'px';
+    imageEl.style.backgroundPositionX = -(positions.screenshot.left * zoomFactor) + 'px';
+    imageEl.style.backgroundSize =
       `${fullPageScreenshot.width * zoomFactor}px ${fullPageScreenshot.height * zoomFactor}px`;
 
-    const elMarker = dom.find('.lh-element-screenshot__element-marker', containerEl);
-    elMarker.style.width = elementRectInScreenshotCoords.width * zoomFactor + 'px';
-    elMarker.style.height = elementRectInScreenshotCoords.height * zoomFactor + 'px';
-    elMarker.style.left = positions.clip.left * zoomFactor + 'px';
-    elMarker.style.top = positions.clip.top * zoomFactor + 'px';
+    const markerEl = dom.find('.lh-element-screenshot__element-marker', containerEl);
+    markerEl.style.width = elementRectInScreenshotCoords.width * zoomFactor + 'px';
+    markerEl.style.height = elementRectInScreenshotCoords.height * zoomFactor + 'px';
+    markerEl.style.left = positions.clip.left * zoomFactor + 'px';
+    markerEl.style.top = positions.clip.top * zoomFactor + 'px';
 
-    const mask = dom.find('.lh-element-screenshot__mask', containerEl);
-    mask.style.width = elementPreviewSizeInDisplayCoords.width + 'px';
-    mask.style.height = elementPreviewSizeInDisplayCoords.height + 'px';
+    const maskEl = dom.find('.lh-element-screenshot__mask', containerEl);
+    maskEl.style.width = elementPreviewSizeInDisplayCoords.width + 'px';
+    maskEl.style.height = elementPreviewSizeInDisplayCoords.height + 'px';
 
-    ElementScreenshotRenderer.renderClipPath(dom, mask, positions.clip,
+    ElementScreenshotRenderer.renderClipPath(dom, maskEl, positions.clip,
       elementRectInScreenshotCoords, elementPreviewSizeInScreenshotCoords);
 
     return containerEl;
