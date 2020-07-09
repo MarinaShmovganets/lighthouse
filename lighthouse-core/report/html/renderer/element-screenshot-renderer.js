@@ -78,31 +78,31 @@ class ElementScreenshotRenderer {
       elementRectInScreenshotCoords, elementPreviewSizeInScreenshotCoords) {
     const clipId = `clip-${Util.getUniqueSuffix()}`;
 
-    // option a...
+    // option a... no works
     // const clipPathEl = dom.find('clipPath', maskEl);
 
-    // option b...
+    // option b... (no works)
     let ns = 'http://www.w3.org/2000/svg';
     // const clipPathEl = dom.createChildOf(dom.find('defs', maskEl), 'clipPath');
     // clipPathEl.setAttributeNS(ns, 'clipPathUnits', 'objectBoundingBox');
 
-    // option c...
-    // const clipPathEl = document.createElementNS(ns, 'clipPath');
-    // clipPathEl.setAttributeNS(ns, 'clipPathUnits', 'objectBoundingBox');
-    // dom.find('defs', maskEl).appendChild(clipPathEl);
-
-    // option d...
-    dom.find('svg', maskEl).remove(); // just start over.
-    const svgEl = document.createElementNS(ns, 'svg');
-    // svgEl.setAttributeNS(ns, 'height', '0');
-    // svgEl.setAttributeNS(ns, 'width', '0');
-    const defsEl = document.createElementNS(ns, 'defs');
+    // option c... (works)
     const clipPathEl = document.createElementNS(ns, 'clipPath');
     clipPathEl.setAttribute('clipPathUnits', 'objectBoundingBox');
+    dom.find('defs', maskEl).appendChild(clipPathEl);
 
-    maskEl.append(svgEl);
-    svgEl.append(defsEl);
-    defsEl.append(clipPathEl);
+    // option d... (works)
+    // dom.find('svg', maskEl).remove(); // just start over.
+    // const svgEl = document.createElementNS(ns, 'svg');
+    // // svgEl.setAttributeNS(ns, 'height', '0');
+    // // svgEl.setAttributeNS(ns, 'width', '0');
+    // const defsEl = document.createElementNS(ns, 'defs');
+    // const clipPathEl = document.createElementNS(ns, 'clipPath');
+    // clipPathEl.setAttribute('clipPathUnits', 'objectBoundingBox');
+
+    // maskEl.append(svgEl);
+    // svgEl.append(defsEl);
+    // defsEl.append(clipPathEl);
 
     clipPathEl.id = clipId;
     maskEl.style.clipPath = `url(#${clipId})`;
