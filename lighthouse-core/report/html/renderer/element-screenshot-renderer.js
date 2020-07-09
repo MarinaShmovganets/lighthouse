@@ -12,6 +12,16 @@
 /** @typedef {{width: number, height: number}} Size */
 
 /**
+ * An always-increasing counter for making unique SVG ID suffixes.
+ */
+const getUniqueSuffix2 = (() => {
+  let svgSuffix = 0;
+  return function() {
+    return svgSuffix++;
+  };
+})();
+
+/**
  * @param {number} value
  * @param {number} min
  * @param {number} max
@@ -76,6 +86,11 @@ class ElementScreenshotRenderer {
    */
   static renderClipPath(dom, maskEl, positionClip,
       elementRectInScreenshotCoords, elementPreviewSizeInScreenshotCoords) {
+    const clipId = `clip-${getUniqueSuffix2()}`;
+    const clipPathEl = dom.find('clipPath', maskEl);
+    clipPathEl.id = clipId;
+    maskEl.style.clipPath = `url(#${clipId})`;
+
     // Normalize values between 0-1.
     const top = positionClip.top / elementPreviewSizeInScreenshotCoords.height;
     const bottom =
@@ -83,11 +98,6 @@ class ElementScreenshotRenderer {
     const left = positionClip.left / elementPreviewSizeInScreenshotCoords.width;
     const right =
       left + elementRectInScreenshotCoords.width / elementPreviewSizeInScreenshotCoords.width;
-
-    const clipId = `clip-${top}-${bottom}-${left}-${right}`;
-    const clipPathEl = dom.find('clipPath', maskEl);
-    clipPathEl.id = clipId;
-    maskEl.style.clipPath = `url(#${clipId})`;
 
     const polygonsPoints = [
       `0,0  1,0  1,${top} 0,${top}`,
