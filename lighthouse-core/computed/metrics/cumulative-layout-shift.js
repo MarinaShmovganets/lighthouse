@@ -18,8 +18,7 @@ class CumulativeLayoutShift {
   static async compute_(trace, context) {
     const traceOfTab = await TraceOfTab.request(trace, context);
 
-    // Find the first and last LayoutShift event, if any.
-    let firstLayoutShift = traceOfTab.mainThreadEvents.find(evt => evt.name === 'LayoutShift');
+    // Find the last LayoutShift event, if any.
     let finalLayoutShift;
     for (let i = traceOfTab.mainThreadEvents.length - 1; i >= 0; i--) {
       const evt = traceOfTab.mainThreadEvents[i];
@@ -29,16 +28,16 @@ class CumulativeLayoutShift {
       }
     }
 
-    const layoutShiftTraceEventFound = !!firstLayoutShift;
+    console.log(traceOfTab.mainThreadEvents.filter(evt => evt.name === 'LayoutShift').map(evt => evt.args.data));
+
+    const finalLayoutShiftTraceEventFound = !!finalLayoutShift;
     // tdresser sez: In about 10% of cases, layout instability is 0, and there will be no trace events.
     // TODO: Validate that. http://crbug.com/1003459
-    if (!firstLayoutShift || !finalLayoutShift) {
+    if (!finalLayoutShift) {
       return {
         value: 0,
         debugInfo: {
-          layoutShiftTraceEventFound,
-          // Historical.
-          finalLayoutShiftTraceEventFound: layoutShiftTraceEventFound,
+          finalLayoutShiftTraceEventFound,
         },
       };
     }
@@ -58,16 +57,18 @@ class CumulativeLayoutShift {
     // for CLS. Since we don't expect any user input, conditionally add the first shift event to
     // CLS if it was ignored.
     // See https://bugs.chromium.org/p/chromium/issues/detail?id=1094974.
-    if (firstLayoutShift.args.data && firstLayoutShift.args.data.had_recent_input) {
-      cumulativeLayoutShift += Number(firstLayoutShift.args.data.score);
+    for (let i = 0; i < traceOfTab.mainThreadEvents.length; i++) {
+      const evt = traceOfTab.mainThreadEvents[i];
+      if (evt.name === 'LayoutShift' && evt.args && evt.args.data && evt.args.data.is_main_frame) {
+        if (!evt.args.data.had_recent_input) break;
+        cumulativeLayoutShift += Number(evt.args.data.score);
+      }
     }
 
     return {
       value: cumulativeLayoutShift,
       debugInfo: {
-        layoutShiftTraceEventFound,
-        // Historical.
-        finalLayoutShiftTraceEventFound: layoutShiftTraceEventFound,
+        finalLayoutShiftTraceEventFound,
       },
     };
   }
