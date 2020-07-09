@@ -120,7 +120,7 @@ class HTTPS extends Audit {
       // (localhost is a secure context), but we still identify `http` requests
       // as an "Allowed" insecure URL.
       for (const item of items) {
-        if (!item.resolution) item.resolution = UIStrings.allowed;
+        if (!item.resolution) item.resolution = str_(UIStrings.allowed);
       }
 
       let displayValue = '';
