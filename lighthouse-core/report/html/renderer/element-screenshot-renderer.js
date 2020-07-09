@@ -5,21 +5,11 @@
  */
 'use strict';
 
-/* globals self */
+/* globals self Util */
 
 /** @typedef {import('./dom.js')} DOM */
 /** @typedef {LH.Artifacts.Rect} Rect */
 /** @typedef {{width: number, height: number}} Size */
-
-/**
- * An always-increasing counter for making unique SVG ID suffixes.
- */
-const getUniqueSuffix2 = (() => {
-  let svgSuffix = 0;
-  return function() {
-    return svgSuffix++;
-  };
-})();
 
 /**
  * @param {number} value
@@ -86,7 +76,7 @@ class ElementScreenshotRenderer {
    */
   static renderClipPath(dom, maskEl, positionClip,
       elementRectInScreenshotCoords, elementPreviewSizeInScreenshotCoords) {
-    const clipId = `clip-${getUniqueSuffix2()}`;
+    const clipId = `clip-${Util.getUniqueSuffix()}`;
     const clipPathEl = dom.find('clipPath', maskEl);
     clipPathEl.id = clipId;
     maskEl.style.clipPath = `url(#${clipId})`;
