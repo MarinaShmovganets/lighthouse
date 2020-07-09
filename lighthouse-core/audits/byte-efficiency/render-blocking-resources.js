@@ -194,6 +194,7 @@ class RenderBlockingResources extends Audit {
           const stackSpecificTiming = computeStackSpecificTiming(node, nodeTiming, Stacks);
           const difference = nodeTiming.duration - stackSpecificTiming.duration;
           if (difference) {
+            // Adjust timing of all dependent nodes
             node.traverse(node => {
               const oldTiming = nodeTimings.get(node);
               if (oldTiming) {
@@ -222,6 +223,7 @@ class RenderBlockingResources extends Audit {
       return !canDeferRequest;
     }));
 
+    // Recaulculate estimated time
     const stackSpecificEstimate = Math.max(...Array.from(
       Array.from(stackSpecificTimings).map(timing => timing[1].endTime)
     ));
