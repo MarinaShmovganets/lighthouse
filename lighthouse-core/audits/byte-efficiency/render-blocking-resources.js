@@ -180,15 +180,14 @@ class RenderBlockingResources extends Audit {
    * @return {number}
    */
   static estimateSavingsWithGraphs(simulator, fcpGraph, deferredIds, wastedCssBytesByUrl, Stacks) {
-    const originalEstimate = simulator.simulate(fcpGraph, {label: 'rbr-estimate'}).timeInMs;
-    const originalNodeTimings = Simulator.ALL_NODE_TIMINGS.get('rbr-estimate');
+    const { timeInMs, nodeTimings } = simulator.simulate(fcpGraph);
 
-    let stackSpecificEstimate = originalEstimate;
+    let stackSpecificEstimate = timeInMs;
 
     let totalChildNetworkBytes = 0;
     const minimalFCPGraph = /** @type {NetworkNode} */ (fcpGraph.cloneWithRelationships(node => {
-      if (originalNodeTimings) {
-        const nodeTiming = originalNodeTimings.get(node);
+      if (nodeTimings) {
+        const nodeTiming = nodeTimings.get(node);
         if (nodeTiming) {
           const stackSpecificTiming = computeStackSpecificTiming(node, nodeTiming, Stacks);
           stackSpecificEstimate -= nodeTiming.duration - stackSpecificTiming.duration;
