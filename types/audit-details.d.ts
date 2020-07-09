@@ -13,6 +13,7 @@ declare global {
       Details.List |
       Details.Opportunity |
       Details.Screenshot |
+      Details.ScreenshotWithSize |
       Details.Table;
 
     // Details namespace.
@@ -59,6 +60,13 @@ declare global {
         timing: number;
         timestamp: number;
         data: string;
+      }
+
+      export interface ScreenshotWithSize {
+        type: 'screenshot-with-size';
+        data: string;
+        width: number;
+        height: number;
       }
 
       export interface Table {

@@ -33,9 +33,7 @@ class FullPageScreenshot extends Audit {
     return {
       score: 1,
       details: {
-        type: 'screenshot',
-        timing: 0,
-        timestamp: 0,
+        type: 'screenshot-with-size',
         ...artifacts.FullPageScreenshot,
       },
     };
