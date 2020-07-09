@@ -53,14 +53,15 @@ class CumulativeLayoutShift {
 
     // Chromium will set `had_recent_input` if there was recent user input, which
     // skips shift events from contributing to CLS. This flag is also set when Lighthouse changes
-    // the emulation size. This consistently results in the first shift event always being ignored
-    // for CLS. Since we don't expect any user input, conditionally add the first shift event to
-    // CLS if it was ignored.
+    // the emulation size. This consistently results in the first few shift event always being
+    // ignored for CLS. Since we don't expect any user input, we add the score of these
+    // shift events to CLS.
     // See https://bugs.chromium.org/p/chromium/issues/detail?id=1094974.
     for (let i = 0; i < traceOfTab.mainThreadEvents.length; i++) {
       const evt = traceOfTab.mainThreadEvents[i];
       if (evt.name === 'LayoutShift' && evt.args && evt.args.data && evt.args.data.is_main_frame) {
         if (!evt.args.data.had_recent_input) break;
+        if (evt.ts - traceOfTab.navigationStartEvt.ts > 500) break;
         cumulativeLayoutShift += Number(evt.args.data.score);
       }
     }
