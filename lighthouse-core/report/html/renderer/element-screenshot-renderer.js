@@ -76,34 +76,8 @@ class ElementScreenshotRenderer {
    */
   static renderClipPath(dom, maskEl, positionClip,
       elementRectInScreenshotCoords, elementPreviewSizeInScreenshotCoords) {
+    const clipPathEl = dom.find('clipPath', maskEl);    
     const clipId = `clip-${Util.getUniqueSuffix()}`;
-
-    // option a... works now that `document.createElementNS(ns, 'polygon');` is used
-    const clipPathEl = dom.find('clipPath', maskEl);
-
-    // option b... (no works)
-    let ns = 'http://www.w3.org/2000/svg';
-    // const clipPathEl = dom.createChildOf(dom.find('defs', maskEl), 'clipPath');
-    // clipPathEl.setAttributeNS(ns, 'clipPathUnits', 'objectBoundingBox');
-
-    // option c... (works)
-    // const clipPathEl = document.createElementNS(ns, 'clipPath');
-    // clipPathEl.setAttribute('clipPathUnits', 'objectBoundingBox');
-    // dom.find('defs', maskEl).appendChild(clipPathEl);
-
-    // option d... (works)
-    // dom.find('svg', maskEl).remove(); // just start over.
-    // const svgEl = document.createElementNS(ns, 'svg');
-    // // svgEl.setAttributeNS(ns, 'height', '0');
-    // // svgEl.setAttributeNS(ns, 'width', '0');
-    // const defsEl = document.createElementNS(ns, 'defs');
-    // const clipPathEl = document.createElementNS(ns, 'clipPath');
-    // clipPathEl.setAttribute('clipPathUnits', 'objectBoundingBox');
-
-    // maskEl.append(svgEl);
-    // svgEl.append(defsEl);
-    // defsEl.append(clipPathEl);
-
     clipPathEl.id = clipId;
     maskEl.style.clipPath = `url(#${clipId})`;
 
@@ -122,13 +96,11 @@ class ElementScreenshotRenderer {
       `${right},${top} 1,${top}       1,${bottom}       ${right},${bottom}`,
     ];
     for (const points of polygonsPoints) {
-      // dom.createChildOf(clipPathEl, 'polygon', undefined, {points});
-      const polygonEl = document.createElementNS(ns, 'polygon');
+      // TODO: dom.createElementNS ?
+      const polygonEl = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
       clipPathEl.append(polygonEl);
       polygonEl.setAttribute('points', points);
     }
-    // Clip path doesn't work unless you do this ...
-    // clipPathEl.innerHTML = clipPathEl.innerHTML;
   }
 
   /**
