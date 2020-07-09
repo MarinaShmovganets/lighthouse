@@ -107,10 +107,12 @@ describe('Render blocking resources audit', () => {
       const simulator = new Simulator({rtt: 1000, serverResponseTimeByOrigin});
       const documentNode = new NetworkNode(record({transferSize: 4000}));
       const styleNode = new NetworkNode(recordSlow({transferSize: 3000, resourceType: NetworkRequest.TYPES.Stylesheet}));
-      const deferredIds = new Set([2]);
+      const styleNode2 = new NetworkNode(recordSlow({transferSize: 3000, resourceType: NetworkRequest.TYPES.Stylesheet}));
+      const deferredIds = new Set([2, 3]);
       const wastedBytesMap = new Map();
 
       documentNode.addDependent(styleNode);
+      documentNode.addDependent(styleNode2);
       const result = estimate(simulator, documentNode, deferredIds, wastedBytesMap, Stacks);
       // Savings capped at 2100 for AMP stylesheets since they are run async after timeout
       assert.equal(result, 2100);
