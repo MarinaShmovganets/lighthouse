@@ -19,12 +19,11 @@ class CumulativeLayoutShift {
     const traceOfTab = await TraceOfTab.request(trace, context);
 
     // Find the first and last LayoutShift event, if any.
-    let firstLayoutShift;
+    let firstLayoutShift = traceOfTab.mainThreadEvents.find(evt => evt.name === 'LayoutShift');
     let finalLayoutShift;
     for (let i = traceOfTab.mainThreadEvents.length - 1; i >= 0; i--) {
       const evt = traceOfTab.mainThreadEvents[i];
       if (evt.name === 'LayoutShift' && evt.args && evt.args.data && evt.args.data.is_main_frame) {
-        if (!firstLayoutShift) firstLayoutShift = evt;
         finalLayoutShift = evt;
         break;
       }
