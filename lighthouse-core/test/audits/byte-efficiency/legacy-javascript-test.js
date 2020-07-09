@@ -83,6 +83,7 @@ describe('LegacyJavaScript audit', () => {
       },
     ]);
     expect(result.items).toHaveLength(0);
+    expect(result.wastedBytesByUrl).toMatchInlineSnapshot(`Map {}`);
   });
 
   it('legacy polyfill in third party resource does not contribute to wasted bytes', async () => {
