@@ -112,8 +112,8 @@ describe('Render blocking resources audit', () => {
 
       documentNode.addDependent(styleNode);
       const result = estimate(simulator, documentNode, deferredIds, wastedBytesMap, Stacks);
-      // Savings capped at 1000 for AMP stylesheets since they are run async after timeout
-      assert.equal(result, 1000);
+      // Savings capped at 2100 for AMP stylesheets since they are run async after timeout
+      assert.equal(result, 2100);
     });
   });
 });

@@ -70,14 +70,14 @@ function computeStackSpecificTiming(node, nodeTiming, Stacks) {
   const stackSpecificTiming = Object.assign({}, nodeTiming);
   if (!Stacks) return stackSpecificTiming;
   if (Stacks.some(stack => stack.id === 'amp')) {
-    // AMP will load a linked stylesheet asynchronously if it has not been loaded after 1 second [https://github.com/ampproject/amphtml/blob/master/src/font-stylesheet-timeout.js]
-    // Any potential savings for AMP stylesheet nodes must therefore be capped at 1 second.
+    // AMP will load a linked stylesheet asynchronously if it has not been loaded after 2.1 seconds [https://github.com/ampproject/amphtml/blob/master/src/font-stylesheet-timeout.js]
+    // Any potential savings for AMP stylesheet nodes must therefore be capped at 2.1 seconds.
     // https://github.com/GoogleChrome/lighthouse/issues/2832#issuecomment-591066081
     if (node.type === 'network' &&
         node.record.resourceType === NetworkRequest.TYPES.Stylesheet &&
-        nodeTiming.duration > 1000) {
-      stackSpecificTiming.endTime = nodeTiming.startTime + 1000;
-      stackSpecificTiming.duration = 1000;
+        nodeTiming.duration > 2100) {
+      stackSpecificTiming.endTime = nodeTiming.startTime + 2100;
+      stackSpecificTiming.duration = 2100;
     }
   }
   return stackSpecificTiming;
