@@ -183,8 +183,11 @@ function pruneExpectations(localConsole, lhr, expected) {
       }
 
       if (failsChromeVersionCheck(value)) {
-        localConsole.log(`[${key}] failed chrome version check, pruning expectation: ${
-          JSON.stringify(value, null, 2)}`);
+        localConsole.log([
+          `[${key}] failed chrome version check, pruning expectation:`,
+          JSON.stringify(value, null, 2),
+          `Actual Chromium version: ${actualChromeVersion}`,
+        ].join(' '));
         delete obj[key];
       } else {
         pruneNewerChromeExpectations(value);
