@@ -62,17 +62,20 @@ function getNodesAndTimingByUrl(nodeTimings) {
 }
 
 /**
+ * Any stack specific timing overrides should go in this function.
+ * https://github.com/GoogleChrome/lighthouse/issues/2832#issuecomment-591066081
+ *
  * @param {Node} node
  * @param {LH.Gatherer.Simulation.NodeTiming} nodeTiming
  * @param {LH.Artifacts.DetectedStack[]} Stacks
  */
 function computeStackSpecificTiming(node, nodeTiming, Stacks) {
-  const stackSpecificTiming = Object.assign({}, nodeTiming);
+  const stackSpecificTiming = {...nodeTiming};
   if (!Stacks) return stackSpecificTiming;
   if (Stacks.some(stack => stack.id === 'amp')) {
-    // AMP will load a linked stylesheet asynchronously if it has not been loaded after 2.1 seconds [https://github.com/ampproject/amphtml/blob/master/src/font-stylesheet-timeout.js]
+    // AMP will load a linked stylesheet asynchronously if it has not been loaded after 2.1 seconds:
+    // https://github.com/ampproject/amphtml/blob/8e03ac2f315774070651584a7e046ff24212c9b1/src/font-stylesheet-timeout.js#L54-L59
     // Any potential savings for AMP stylesheet nodes must therefore be capped at 2.1 seconds.
-    // https://github.com/GoogleChrome/lighthouse/issues/2832#issuecomment-591066081
     if (node.type === 'network' &&
         node.record.resourceType === NetworkRequest.TYPES.Stylesheet &&
         nodeTiming.duration > 2100) {
