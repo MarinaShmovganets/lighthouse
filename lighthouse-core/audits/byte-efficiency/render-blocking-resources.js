@@ -12,7 +12,6 @@
 const Audit = require('../audit.js');
 const i18n = require('../../lib/i18n/i18n.js');
 const BaseNode = require('../../lib/dependency-graph/base-node.js');
-const Simulator = require('../../lib/dependency-graph/simulator/simulator.js');
 const ByteEfficiencyAudit = require('./byte-efficiency-audit.js');
 const UnusedCSS = require('../../computed/unused-css.js');
 const NetworkRequest = require('../../lib/network-request.js');
@@ -183,7 +182,7 @@ class RenderBlockingResources extends Audit {
    * @return {number}
    */
   static estimateSavingsWithGraphs(simulator, fcpGraph, deferredIds, wastedCssBytesByUrl, Stacks) {
-    const { nodeTimings } = simulator.simulate(fcpGraph);
+    const {nodeTimings} = simulator.simulate(fcpGraph);
     const stackSpecificTimings = new Map(nodeTimings);
 
     let totalChildNetworkBytes = 0;
@@ -201,10 +200,10 @@ class RenderBlockingResources extends Audit {
                 stackSpecificTimings.set(node, {
                   startTime: oldTiming.startTime - difference,
                   endTime: oldTiming.endTime - difference,
-                  duration: oldTiming.duration
+                  duration: oldTiming.duration,
                 });
               }
-            })
+            });
             stackSpecificTimings.set(node, stackSpecificTiming);
           }
         }

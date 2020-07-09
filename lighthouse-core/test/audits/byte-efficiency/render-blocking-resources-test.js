@@ -95,19 +95,25 @@ describe('Render blocking resources audit', () => {
       };
       const serverResponseTimeByOrigin = new Map([
         ['http://example.com', 100],
-        ['http://slow.com', 4000]
+        ['http://slow.com', 4000],
       ]);
       const Stacks = [{
         detector: 'js',
         id: 'amp',
         name: 'AMP',
         version: '2006180239003',
-        npm: 'https://www.npmjs.com/org/ampproject'
+        npm: 'https://www.npmjs.com/org/ampproject',
       }];
       const simulator = new Simulator({rtt: 1000, serverResponseTimeByOrigin});
       const documentNode = new NetworkNode(record({transferSize: 4000}));
-      const styleNode = new NetworkNode(recordSlow({transferSize: 3000, resourceType: NetworkRequest.TYPES.Stylesheet}));
-      const styleNode2 = new NetworkNode(recordSlow({transferSize: 3000, resourceType: NetworkRequest.TYPES.Stylesheet}));
+      const styleNode = new NetworkNode(recordSlow({
+        transferSize: 3000,
+        resourceType: NetworkRequest.TYPES.Stylesheet,
+      }));
+      const styleNode2 = new NetworkNode(recordSlow({
+        transferSize: 3000,
+        resourceType: NetworkRequest.TYPES.Stylesheet,
+      }));
       const deferredIds = new Set([2, 3]);
       const wastedBytesMap = new Map();
 
