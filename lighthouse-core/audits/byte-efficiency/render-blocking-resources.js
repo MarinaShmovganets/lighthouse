@@ -61,6 +61,35 @@ function getNodesAndTimingByUrl(nodeTimings) {
 }
 
 /**
+ * Adjust the timing of a node and it's dependencies to account for stack specific overrides.
+ * @param {Map<Node, LH.Gatherer.Simulation.NodeTiming>} adjustedNodeTimings
+ * @param {Node} node
+ * @param {Map<Node, LH.Gatherer.Simulation.NodeTiming>} nodeTimings
+ * @param {LH.Artifacts.DetectedStack[]} Stacks
+ */
+function adjustNodeTimings(adjustedNodeTimings, node, nodeTimings, Stacks) {
+  const nodeTiming = nodeTimings.get(node);
+  if (nodeTiming) {
+    const stackSpecificTiming = computeStackSpecificTiming(node, nodeTiming, Stacks);
+    const difference = nodeTiming.duration - stackSpecificTiming.duration;
+    if (difference) {
+      // Adjust timing of all dependent nodes
+      node.traverse(node => {
+        const oldTiming = nodeTimings.get(node);
+        if (oldTiming) {
+          adjustedNodeTimings.set(node, {
+            startTime: oldTiming.startTime - difference,
+            endTime: oldTiming.endTime - difference,
+            duration: oldTiming.duration,
+          });
+        }
+      });
+      adjustedNodeTimings.set(node, stackSpecificTiming);
+    }
+  }
+}
+
+/**
  * Any stack specific timing overrides should go in this function.
  * https://github.com/GoogleChrome/lighthouse/issues/2832#issuecomment-591066081
  *
@@ -183,31 +212,12 @@ class RenderBlockingResources extends Audit {
    */
   static estimateSavingsWithGraphs(simulator, fcpGraph, deferredIds, wastedCssBytesByUrl, Stacks) {
     const {nodeTimings} = simulator.simulate(fcpGraph);
-    const stackSpecificTimings = new Map(nodeTimings);
+    const adjustedNodeTimings = new Map(nodeTimings);
 
     let totalChildNetworkBytes = 0;
     const minimalFCPGraph = /** @type {NetworkNode} */ (fcpGraph.cloneWithRelationships(node => {
-      if (nodeTimings) {
-        const nodeTiming = nodeTimings.get(node);
-        if (nodeTiming) {
-          const stackSpecificTiming = computeStackSpecificTiming(node, nodeTiming, Stacks);
-          const difference = nodeTiming.duration - stackSpecificTiming.duration;
-          if (difference) {
-            // Adjust timing of all dependent nodes
-            node.traverse(node => {
-              const oldTiming = nodeTimings.get(node);
-              if (oldTiming) {
-                stackSpecificTimings.set(node, {
-                  startTime: oldTiming.startTime - difference,
-                  endTime: oldTiming.endTime - difference,
-                  duration: oldTiming.duration,
-                });
-              }
-            });
-            stackSpecificTimings.set(node, stackSpecificTiming);
-          }
-        }
-      }
+      adjustNodeTimings(adjustedNodeTimings, node, nodeTimings, Stacks);
+
       // If a node can be deferred, exclude it from the new FCP graph
       const canDeferRequest = deferredIds.has(node.id);
       if (node.type !== BaseNode.TYPES.NETWORK) return !canDeferRequest;
@@ -222,9 +232,9 @@ class RenderBlockingResources extends Audit {
       return !canDeferRequest;
     }));
 
-    // Recaulculate estimated time
+    // Recalculate the "before" time based on our adjusted node timings.
     const stackSpecificEstimate = Math.max(...Array.from(
-      Array.from(stackSpecificTimings).map(timing => timing[1].endTime)
+      Array.from(adjustedNodeTimings).map(timing => timing[1].endTime)
     ));
 
     // Add the inlined bytes to the HTML response
