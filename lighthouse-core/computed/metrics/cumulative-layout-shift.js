@@ -30,14 +30,16 @@ class CumulativeLayoutShift {
       }
     }
 
-    const finalLayoutShiftTraceEventFound = !!finalLayoutShift;
+    const layoutShiftTraceEventFound = !!firstLayoutShift;
     // tdresser sez: In about 10% of cases, layout instability is 0, and there will be no trace events.
     // TODO: Validate that. http://crbug.com/1003459
     if (!firstLayoutShift || !finalLayoutShift) {
       return {
         value: 0,
         debugInfo: {
-          finalLayoutShiftTraceEventFound,
+          layoutShiftTraceEventFound,
+          // Historical.
+          finalLayoutShiftTraceEventFound: layoutShiftTraceEventFound,
         },
       };
     }
@@ -64,7 +66,9 @@ class CumulativeLayoutShift {
     return {
       value: cumulativeLayoutShift,
       debugInfo: {
-        finalLayoutShiftTraceEventFound,
+        layoutShiftTraceEventFound,
+        // Historical.
+        finalLayoutShiftTraceEventFound: layoutShiftTraceEventFound,
       },
     };
   }
