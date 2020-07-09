@@ -77,7 +77,33 @@ class ElementScreenshotRenderer {
   static renderClipPath(dom, maskEl, positionClip,
       elementRectInScreenshotCoords, elementPreviewSizeInScreenshotCoords) {
     const clipId = `clip-${Util.getUniqueSuffix()}`;
-    const clipPathEl = dom.find('clipPath', maskEl);
+
+    // option a...
+    // const clipPathEl = dom.find('clipPath', maskEl);
+
+    // option b...
+    let ns = 'http://www.w3.org/2000/svg';
+    // const clipPathEl = dom.createChildOf(dom.find('defs', maskEl), 'clipPath');
+    // clipPathEl.setAttributeNS(ns, 'clipPathUnits', 'objectBoundingBox');
+
+    // option c...
+    // const clipPathEl = document.createElementNS(ns, 'clipPath');
+    // clipPathEl.setAttributeNS(ns, 'clipPathUnits', 'objectBoundingBox');
+    // dom.find('defs', maskEl).appendChild(clipPathEl);
+
+    // option d...
+    dom.find('svg', maskEl).remove(); // just start over.
+    const svgEl = document.createElementNS(ns, 'svg');
+    // svgEl.setAttributeNS(ns, 'height', '0');
+    // svgEl.setAttributeNS(ns, 'width', '0');
+    const defsEl = document.createElementNS(ns, 'defs');
+    const clipPathEl = document.createElementNS(ns, 'clipPath');
+    clipPathEl.setAttributeNS(ns, 'clipPathUnits', 'objectBoundingBox');
+
+    maskEl.append(svgEl);
+    svgEl.append(defsEl);
+    defsEl.append(clipPathEl);
+
     clipPathEl.id = clipId;
     maskEl.style.clipPath = `url(#${clipId})`;
 
@@ -90,16 +116,19 @@ class ElementScreenshotRenderer {
       left + elementRectInScreenshotCoords.width / elementPreviewSizeInScreenshotCoords.width;
 
     const polygonsPoints = [
-      `0,0  1,0  1,${top} 0,${top}`,
-      `0,${bottom} 1,${bottom} 1,1 0,1`,
-      `0,${top} ${left},${top} ${left},${bottom} 0,${bottom}`,
-      `${right},${top} 1,${top} 1,${bottom} ${right},${bottom}`,
+      `0,0             1,0            1,${top}          0,${top}`,
+      `0,${bottom}     1,${bottom}    1,1               0,1`,
+      `0,${top}        ${left},${top} ${left},${bottom} 0,${bottom}`,
+      `${right},${top} 1,${top}       1,${bottom}       ${right},${bottom}`,
     ];
     for (const points of polygonsPoints) {
-      dom.createChildOf(clipPathEl, 'polygon', undefined, {points});
+      // dom.createChildOf(clipPathEl, 'polygon', undefined, {points});
+      const polygonEl = document.createElementNS(ns, 'polygon');
+      clipPathEl.append(polygonEl);
+      polygonEl.setAttributeNS(ns, 'points', points);
     }
     // Clip path doesn't work unless you do this ...
-    clipPathEl.innerHTML = clipPathEl.innerHTML;
+    // clipPathEl.innerHTML = clipPathEl.innerHTML;
   }
 
   /**
