@@ -69,6 +69,7 @@ function getNodesAndTimingByUrl(nodeTimings) {
  */
 function adjustNodeTimings(adjustedNodeTimings, node, nodeTimings, Stacks) {
   const nodeTiming = nodeTimings.get(node);
+  console.log(nodeTiming);
   if (nodeTiming) {
     const stackSpecificTiming = computeStackSpecificTiming(node, nodeTiming, Stacks);
     const difference = nodeTiming.duration - stackSpecificTiming.duration;
@@ -103,12 +104,12 @@ function computeStackSpecificTiming(node, nodeTiming, Stacks) {
   if (Stacks.some(stack => stack.id === 'amp')) {
     // AMP will load a linked stylesheet asynchronously if it has not been loaded after 2.1 seconds:
     // https://github.com/ampproject/amphtml/blob/8e03ac2f315774070651584a7e046ff24212c9b1/src/font-stylesheet-timeout.js#L54-L59
-    // Any potential savings for AMP stylesheet nodes must therefore be capped at 2.1 seconds.
+    // Any potential savings must only include time spent on AMP stylesheet nodes before 2.1 seconds.
     if (node.type === 'network' &&
         node.record.resourceType === NetworkRequest.TYPES.Stylesheet &&
-        nodeTiming.duration > 2100) {
-      stackSpecificTiming.endTime = nodeTiming.startTime + 2100;
-      stackSpecificTiming.duration = 2100;
+        nodeTiming.endTime > 2100) {
+      stackSpecificTiming.endTime = Math.max(nodeTiming.startTime, 2100);
+      stackSpecificTiming.duration = 2100 - nodeTiming.startTime;
     }
   }
   return stackSpecificTiming;

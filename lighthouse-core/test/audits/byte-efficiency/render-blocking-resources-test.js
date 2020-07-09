@@ -44,11 +44,16 @@ describe('Render blocking resources audit', () => {
 
     let requestId;
     let record;
+    let recordSlow;
 
     beforeEach(() => {
       requestId = 1;
       record = props => {
         const parsedURL = {host: 'example.com', securityOrigin: 'http://example.com'};
+        return Object.assign({parsedURL, requestId: requestId++}, props);
+      };
+      recordSlow = props => {
+        const parsedURL = {host: 'slow.com', securityOrigin: 'http://slow.com'};
         return Object.assign({parsedURL, requestId: requestId++}, props);
       };
     });
@@ -89,10 +94,6 @@ describe('Render blocking resources audit', () => {
     });
 
     it('computes savings for stylesheets deferred by AMP', () => {
-      const recordSlow = props => {
-        const parsedURL = {host: 'slow.com', securityOrigin: 'http://slow.com'};
-        return Object.assign({parsedURL, requestId: requestId++}, props);
-      };
       const serverResponseTimeByOrigin = new Map([
         ['http://example.com', 100],
         ['http://slow.com', 4000],
@@ -125,8 +126,47 @@ describe('Render blocking resources audit', () => {
       documentNode.addDependent(styleNode2);
       documentNode.addDependent(styleNode3);
       const result = estimate(simulator, documentNode, deferredIds, wastedBytesMap, Stacks);
-      // Savings capped at 2100 for AMP stylesheets since they are run async after timeout
-      assert.equal(result, 2100);
+      // 1000 + 100 + 1000 for TCP handshake + server response + request
+      // The style nodes are loaded async after 2100 so the potential savings are 0
+      assert.equal(result, 0);
+    });
+
+    it('computes savings for stylesheets partially deferred by AMP', () => {
+      const serverResponseTimeByOrigin = new Map([
+        ['http://example.com', 100],
+        ['http://slow.com', 4000],
+      ]);
+      const Stacks = [{
+        detector: 'js',
+        id: 'amp',
+        name: 'AMP',
+        version: '2006180239003',
+        npm: 'https://www.npmjs.com/org/ampproject',
+      }];
+      const simulator = new Simulator({rtt: 100, serverResponseTimeByOrigin});
+      const documentNode = new NetworkNode(record({transferSize: 4000}));
+      const styleNode = new NetworkNode(recordSlow({
+        transferSize: 3000,
+        resourceType: NetworkRequest.TYPES.Stylesheet,
+      }));
+      const styleNode2 = new NetworkNode(recordSlow({
+        transferSize: 3000,
+        resourceType: NetworkRequest.TYPES.Stylesheet,
+      }));
+      const styleNode3 = new NetworkNode(recordSlow({
+        transferSize: 3000,
+        resourceType: NetworkRequest.TYPES.Stylesheet,
+      }));
+      const deferredIds = new Set([2, 3, 4]);
+      const wastedBytesMap = new Map();
+
+      documentNode.addDependent(styleNode);
+      documentNode.addDependent(styleNode2);
+      documentNode.addDependent(styleNode3);
+      const result = estimate(simulator, documentNode, deferredIds, wastedBytesMap, Stacks);
+      // 4 rtt + example.com server response = 500 ms non deferrable
+      // Remaining 1600 ms can be saved before 2100 AMP stylesheet deadline
+      assert.equal(result, 1600);
     });
   });
 });
