@@ -1,7 +1,3 @@
-# The Travis CI is our full-fledged CI, but this Github workflow
-# runs the same tests. The GH workflow UI makes it simpler to hone
-# in on the step that failed.
-
 name: 💡🏠
 
 on:
@@ -115,10 +111,6 @@ jobs:
         include:
           - os: windows-latest
             chrome-channel: 'stable'
-            smoke-test-invert: false
-          - os: windows-latest
-            chrome-channel: 'stable'
-            smoke-test-invert: true
       # e.g. if smoke 0 fails, continue with smoke 1 anyway
       fail-fast: false
     env:
@@ -154,5 +146,5 @@ jobs:
       run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2 --invert-match ${{ matrix.smoke-test-invert }} $SMOKE_GROUP_1
       if: matrix.os == 'ubuntu-latest'
     - name: Run smoke tests
-      run: yarn smoke --debug -j=1 --retries=2 --invert-match ${{ matrix.smoke-test-invert }} $SMOKE_GROUP_1
+      run: yarn smoke --debug -j=1 --retries=2 dbw
       if: matrix.os == 'windows-latest'
