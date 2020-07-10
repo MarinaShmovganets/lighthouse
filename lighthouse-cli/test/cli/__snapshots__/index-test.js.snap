@@ -1332,6 +1332,9 @@ Object {
           "path": "main-document-content",
         },
         Object {
+          "path": "global-listeners",
+        },
+        Object {
           "path": "dobetterweb/appcache",
         },
         Object {
@@ -1375,9 +1378,6 @@ Object {
         },
         Object {
           "path": "source-maps",
-        },
-        Object {
-          "path": "unload-listeners",
         },
       ],
       "loadFailureMode": "fatal",

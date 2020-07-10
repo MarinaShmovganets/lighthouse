@@ -112,12 +112,14 @@ declare global {
       FontSize: Artifacts.FontSize;
       /** Screenshot of the entire page (rather than just the above the fold content). */
       FullPageScreenshot: Artifacts.FullPageScreenshot | null;
-      /** The issues surfaced in the devtools Issues panel */
-      InspectorIssues: Artifacts.InspectorIssues;
+      /** Information about event listeners registered on the global object. */
+      GlobalListeners: Array<Artifacts.GlobalListener>;
       /** The page's document body innerText if loaded with JavaScript disabled. */
       HTMLWithoutJavaScript: {bodyText: string, hasNoScript: boolean};
       /** Whether the page ended up on an HTTPS page after attempting to load the HTTP version. */
       HTTPRedirect: {value: boolean};
+      /** The issues surfaced in the devtools Issues panel */
+      InspectorIssues: Artifacts.InspectorIssues;
       /** JS coverage information for code used during page load. Keyed by URL. */
       JsUsage: Record<string, Crdp.Profiler.ScriptCoverage[]>;
       /** Parsed version of the page's Web App Manifest, or null if none found. */
@@ -146,8 +148,6 @@ declare global {
       TapTargets: Artifacts.TapTarget[];
       /** Elements associated with metrics (ie: Largest Contentful Paint element). */
       TraceElements: Artifacts.TraceElement[];
-      /** Information about the event handlers that were registered to listen for when the page is unloaded. */
-      UnloadListeners: Array<Artifacts.UnloadListener>;
     }
 
     module Artifacts {
@@ -698,9 +698,9 @@ declare global {
         observedSpeedIndexTs: number;
       }
 
-      /** Information on a listener for an event that happens on or around page unload. */
-      export interface UnloadListener {
-        /** Event listener type. */
+      /** Information about an event listener registered on the global object. */
+      export interface GlobalListener {
+        /** Event listener type, limited to those events currently of interest. */
         type: 'pagehide'|'unload'|'visibilitychange';
         /** The DevTools protocol script identifier. */
         scriptId: string;
