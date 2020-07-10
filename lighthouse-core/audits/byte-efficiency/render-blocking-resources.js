@@ -64,30 +64,26 @@ function getNodesAndTimingByUrl(nodeTimings) {
  * Adjust the timing of a node and it's dependencies to account for stack specific overrides.
  * @param {Map<Node, LH.Gatherer.Simulation.NodeTiming>} adjustedNodeTimings
  * @param {Node} node
- * @param {Map<Node, LH.Gatherer.Simulation.NodeTiming>} nodeTimings
  * @param {LH.Artifacts.DetectedStack[]} Stacks
  */
-function adjustNodeTimings(adjustedNodeTimings, node, nodeTimings, Stacks) {
-  const nodeTiming = nodeTimings.get(node);
-  console.log(nodeTiming);
-  if (nodeTiming) {
-    const stackSpecificTiming = computeStackSpecificTiming(node, nodeTiming, Stacks);
-    const difference = nodeTiming.duration - stackSpecificTiming.duration;
-    if (difference) {
-      // Adjust timing of all dependent nodes
-      node.traverse(node => {
-        const oldTiming = nodeTimings.get(node);
-        if (oldTiming) {
-          adjustedNodeTimings.set(node, {
-            startTime: oldTiming.startTime - difference,
-            endTime: oldTiming.endTime - difference,
-            duration: oldTiming.duration,
-          });
-        }
-      });
-      adjustedNodeTimings.set(node, stackSpecificTiming);
-    }
-  }
+function adjustNodeTimings(adjustedNodeTimings, node, Stacks) {
+  const nodeTiming = adjustedNodeTimings.get(node);
+  if (!nodeTiming) return;
+  const stackSpecificTiming = computeStackSpecificTiming(node, nodeTiming, Stacks);
+  const difference = nodeTiming.duration - stackSpecificTiming.duration;
+  if (!difference) return;
+
+  // Adjust timing of all dependent nodes
+  node.traverse(node => {
+    const oldTiming = adjustedNodeTimings.get(node);
+    if (!oldTiming) return;
+    adjustedNodeTimings.set(node, {
+      startTime: oldTiming.startTime - difference,
+      endTime: oldTiming.endTime - difference,
+      duration: oldTiming.duration,
+    });
+  });
+  adjustedNodeTimings.set(node, stackSpecificTiming);
 }
 
 /**
@@ -108,7 +104,7 @@ function computeStackSpecificTiming(node, nodeTiming, Stacks) {
         node.record.resourceType === NetworkRequest.TYPES.Stylesheet &&
         nodeTiming.endTime > 2100) {
       stackSpecificTiming.endTime = Math.max(nodeTiming.startTime, 2100);
-      stackSpecificTiming.duration = 2100 - nodeTiming.startTime;
+      stackSpecificTiming.duration = stackSpecificTiming.endTime - stackSpecificTiming.startTime;
     }
   }
   return stackSpecificTiming;
@@ -216,7 +212,7 @@ class RenderBlockingResources extends Audit {
 
     let totalChildNetworkBytes = 0;
     const minimalFCPGraph = /** @type {NetworkNode} */ (fcpGraph.cloneWithRelationships(node => {
-      adjustNodeTimings(adjustedNodeTimings, node, nodeTimings, Stacks);
+      adjustNodeTimings(adjustedNodeTimings, node, Stacks);
 
       // If a node can be deferred, exclude it from the new FCP graph
       const canDeferRequest = deferredIds.has(node.id);
