@@ -125,7 +125,7 @@ describe('Render blocking resources audit', () => {
       const wastedBytesMap = new Map();
 
       documentNode.addDependent(styleNode);
-      documentNode.addDependent(styleNode2);
+      styleNode.addDependent(styleNode2);
       documentNode.addDependent(styleNode3);
       const result = estimate(simulator, documentNode, deferredIds, wastedBytesMap, Stacks);
       // Document node: 2000 + 1000 + 100 + 1000 = 4100 for dns + TCP handshake + server response + requests
