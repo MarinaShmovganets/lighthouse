@@ -706,6 +706,8 @@ declare global {
         scriptId: string;
         /** Line number in the script (0-based). */
         lineNumber: number;
+        /** Column number in the script (0-based). */
+        columnNumber: number;
       }
     }
   }

@@ -2414,7 +2414,8 @@
     {
       "type": "unload",
       "scriptId": "23",
-      "lineNumber": 386
+      "lineNumber": 386,
+      "columnNumber": 36
     }
   ]
 }
