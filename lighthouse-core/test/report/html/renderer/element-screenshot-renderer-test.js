@@ -9,8 +9,7 @@
 
 const fs = require('fs');
 const jsdom = require('jsdom');
-const ElementScreenshotRenderer =
-  require('../../../../report/html/renderer/element-screenshot-renderer.js');
+const ElementScreenshotRenderer = require('../../../../report/html/renderer/element-screenshot-renderer.js');
 const RectHelpers = require('../../../../../lighthouse-core/lib/rect-helpers.js');
 const Util = require('../../../../report/html/renderer/util.js');
 const I18n = require('../../../../report/html/renderer/i18n.js');
@@ -65,16 +64,14 @@ describe('ElementScreenshotRenderer', () => {
     expect(el.innerHTML).toMatchInlineSnapshot(`
       "
           <div class=\\"lh-element-screenshot__content\\" style=\\"top: -500px;\\">
-            <div class=\\"lh-element-screenshot__mask\\" style=\\"width: 500px; height: 500px; clip-path: url(#clip-0.1-0.7-0.1-0.5);\\"><div><svg height=\\"0\\" width=\\"0\\">
-              <defs>
-                <clipPath id=\\"clip-0.1-0.7-0.1-0.5\\" clipPathUnits=\\"objectBoundingBox\\">
-                  <polygon points=\\"0,0  1,0  1,0.1 0,0.1\\"></polygon>
-                  <polygon points=\\"0,0.7 1,0.7 1,1 0,1\\"></polygon>
-                  <polygon points=\\"0,0.1 0.1,0.1 0.1,0.7 0,0.7\\"></polygon>
-                  <polygon points=\\"0.5,0.1 1,0.1 1,0.7 0.5,0.7\\"></polygon>
-                </clipPath>
-              </defs>
-            </svg></div></div>
+            <div class=\\"lh-element-screenshot__mask\\" style=\\"width: 500px; height: 500px; clip-path: url(#clip-0);\\">
+              <svg xmlns=\\"http://www.w3.org/2000/svg\\" height=\\"0\\" width=\\"0\\">
+                <defs>
+                  <clipPath clipPathUnits=\\"objectBoundingBox\\" id=\\"clip-0\\"><polygon points=\\"0,0             1,0            1,0.1          0,0.1\\"></polygon><polygon points=\\"0,0.7     1,0.7    1,1               0,1\\"></polygon><polygon points=\\"0,0.1        0.1,0.1 0.1,0.7 0,0.7\\"></polygon><polygon points=\\"0.5,0.1 1,0.1       1,0.7       0.5,0.7\\"></polygon></clipPath>
+                  <!-- clipPath filled by ElementScreenshotRenderer.renderClipPath -->
+                </defs>
+              </svg>
+            </div>
             <div class=\\"lh-element-screenshot__image\\" style=\\"width: 500px; height: 500px; background-position-y: 0px; background-position-x: 0px; background-size: 1000px 1000px;\\"></div>
             <div class=\\"lh-element-screenshot__element-marker\\" style=\\"width: 200px; height: 300px; left: 50px; top: 50px;\\"></div>
           </div>

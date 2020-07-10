@@ -12,7 +12,7 @@ const expectations = [
   {
     artifacts: {
       FullPageScreenshot: {
-        data: /data:image\/jpeg;base64,.{520000,530000}$/,
+        data: /data:image\/jpeg;base64,.{10000,}$/,
         width: 1350,
         height: 956,
       },
@@ -30,7 +30,7 @@ const expectations = [
     lhr: {
       requestedUrl: 'http://localhost:10200/screenshot.html?height=1000vh',
       finalUrl: 'http://localhost:10200/screenshot.html?height=1000vh',
-      runWarnings: ['Full page screenshot is too big.'],
+      runWarnings: [/Full page screenshot is too big/],
       audits: {},
     },
   },
