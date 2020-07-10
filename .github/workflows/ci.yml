@@ -63,7 +63,10 @@ jobs:
 
   # `unit` includes just unit and proto tests.
   unit:
-    runs-on: [ubuntu-latest, windows-latest]
+    matrix:
+      os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    name: unit_${{ matrix.os }}
 
     steps:
     - name: git clone
@@ -101,7 +104,6 @@ jobs:
   #  * The smoketest groups are split across two runners, to parallelize.
   #  * Then, those are run with both Chrome stable and ToT Chromium, in parallel
   smoke:
-    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         chrome-channel: ['stable', 'ToT']
@@ -112,6 +114,7 @@ jobs:
             chrome-channel: 'stable'
       # e.g. if smoke 0 fails, continue with smoke 1 anyway
       fail-fast: false
+    runs-on: ${{ matrix.os }}
     env:
       # The smokehouse tests run by job `smoke_0`. `smoke_1` will run the rest.
       SMOKE_GROUP_1: a11y oopif pwa pwa2 pwa3 dbw redirects errors offline
