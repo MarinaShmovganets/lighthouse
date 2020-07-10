@@ -76,7 +76,7 @@ class ElementScreenshotRenderer {
    */
   static renderClipPath(dom, maskEl, positionClip,
       elementRectInScreenshotCoords, elementPreviewSizeInScreenshotCoords) {
-    const clipPathEl = dom.find('clipPath', maskEl);    
+    const clipPathEl = dom.find('clipPath', maskEl);
     const clipId = `clip-${Util.getUniqueSuffix()}`;
     clipPathEl.id = clipId;
     maskEl.style.clipPath = `url(#${clipId})`;
@@ -96,10 +96,8 @@ class ElementScreenshotRenderer {
       `${right},${top} 1,${top}       1,${bottom}       ${right},${bottom}`,
     ];
     for (const points of polygonsPoints) {
-      // TODO: dom.createElementNS ?
-      const polygonEl = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-      clipPathEl.append(polygonEl);
-      polygonEl.setAttribute('points', points);
+      clipPathEl.append(dom.createElementNS(
+        'http://www.w3.org/2000/svg', 'polygon', undefined, {points}));
     }
   }
 
