@@ -63,7 +63,7 @@ jobs:
 
   # `unit` includes just unit and proto tests.
   unit:
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, windows-latest]
 
     steps:
     - name: git clone
