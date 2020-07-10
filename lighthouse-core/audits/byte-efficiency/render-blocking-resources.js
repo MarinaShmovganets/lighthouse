@@ -100,7 +100,6 @@ function adjustNodeTimings(adjustedNodeTimings, node, nodeTimings, Stacks) {
  */
 function computeStackSpecificTiming(node, nodeTiming, Stacks) {
   const stackSpecificTiming = {...nodeTiming};
-  if (!Stacks) return stackSpecificTiming;
   if (Stacks.some(stack => stack.id === 'amp')) {
     // AMP will load a linked stylesheet asynchronously if it has not been loaded after 2.1 seconds:
     // https://github.com/ampproject/amphtml/blob/8e03ac2f315774070651584a7e046ff24212c9b1/src/font-stylesheet-timeout.js#L54-L59

@@ -67,11 +67,12 @@ describe('Render blocking resources audit', () => {
       const scriptExecution = new CPUNode({tid: 1, ts: 1, dur: 50 * 1000}, []);
       const deferredIds = new Set([2, 3]);
       const wastedBytesMap = new Map();
+      const Stacks = [];
 
       documentNode.addDependent(scriptNode);
       documentNode.addDependent(styleNode);
       documentNode.addDependent(scriptExecution);
-      const result = estimate(simulator, documentNode, deferredIds, wastedBytesMap);
+      const result = estimate(simulator, documentNode, deferredIds, wastedBytesMap, Stacks);
       // Saving 1000 + 1000 + 100ms for TCP handshake + request/response + server response time
       // -200 ms for the CPU task that becomes new bottleneck
       assert.equal(result, 1900);
@@ -86,9 +87,10 @@ describe('Render blocking resources audit', () => {
       ); // pushes document over 14KB
       const deferredIds = new Set([2]);
       const wastedBytesMap = new Map([[undefined, 18 * 1000]]);
+      const Stacks = [];
       documentNode.addDependent(styleNode);
 
-      const result = estimate(simulator, documentNode, deferredIds, wastedBytesMap);
+      const result = estimate(simulator, documentNode, deferredIds, wastedBytesMap, Stacks);
       // Saving 1000 + 1000 + 100ms for TCP handshake + 1 RT savings + server response time
       assert.equal(result, 2100);
     });
