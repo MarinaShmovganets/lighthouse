@@ -72,12 +72,13 @@ describe('Metrics: CLS', () => {
   it('should not count later shift events if input it true', async () => {
     const context = {computedCache: new Map()};
     const trace = makeTrace([
+      {score: 1, had_recent_input: true},
       {score: 1, had_recent_input: false},
       {score: 1, had_recent_input: false},
       {score: 1, had_recent_input: true},
       {score: 1, had_recent_input: true},
     ]);
     const result = await CumulativeLayoutShift.request(trace, context);
-    expect(result.value).toBe(2);
+    expect(result.value).toBe(3);
   });
 });
