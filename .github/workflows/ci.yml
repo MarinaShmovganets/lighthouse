@@ -63,8 +63,9 @@ jobs:
 
   # `unit` includes just unit and proto tests.
   unit:
-    matrix:
-      os: [ubuntu-latest, windows-latest]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     name: unit_${{ matrix.os }}
 
