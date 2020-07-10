@@ -128,7 +128,7 @@ describe('Render blocking resources audit', () => {
       documentNode.addDependent(styleNode2);
       documentNode.addDependent(styleNode3);
       const result = estimate(simulator, documentNode, deferredIds, wastedBytesMap, Stacks);
-      // Document node: 1000 + 100 + 1000 + 2000 = 4100 for TCP handshake + server response + request + dns
+      // Document node: 2000 + 1000 + 100 + 1000 = 4100 for dns + TCP handshake + server response + requests
       // The style nodes are loaded async after 2100 so the potential savings are 0
       assert.equal(result, 0);
     });
@@ -166,7 +166,7 @@ describe('Render blocking resources audit', () => {
       documentNode.addDependent(styleNode2);
       documentNode.addDependent(styleNode3);
       const result = estimate(simulator, documentNode, deferredIds, wastedBytesMap, Stacks);
-      // Document node: 100 + 100 + 100 + 200 = 500 for TCP handshake + server response + request + dns
+      // Document node: 200 + 100 + 100 + 100 = 500 for dns + TCP handshake + server response + request
       // Remaining 1600 ms can be saved before 2100 AMP stylesheet deadline
       assert.equal(result, 1600);
     });
