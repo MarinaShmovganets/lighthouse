@@ -12,6 +12,7 @@
 const expectations = [
   {
     artifacts: {
+      HostUserAgent: /Chrome\/83/,
       HostFormFactor: 'desktop',
       TestedAsMobileDevice: true,
       Stacks: [{
