@@ -59,7 +59,8 @@ class CumulativeLayoutShift {
       const evt = traceOfTab.mainThreadEvents[i];
       if (evt.name === 'LayoutShift' && evt.args && evt.args.data && evt.args.data.is_main_frame) {
         if (!evt.args.data.had_recent_input) break;
-        cumulativeLayoutShift += Number(evt.args.data.score);
+        if (typeof evt.args.data.score !== 'number') continue;
+        cumulativeLayoutShift += evt.args.data.score;
       }
     }
 
