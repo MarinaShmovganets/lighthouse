@@ -105,11 +105,15 @@ jobs:
   #  * The smoketest groups are split across two runners, to parallelize.
   #  * Then, those are run with both Chrome stable and ToT Chromium, in parallel
   smoke:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         chrome-channel: ['stable', 'ToT']
         smoke-test-invert: [false, true]
+        os: [ubuntu-latest]
+        include:
+          - os: windows-latest
+            chrome-channel: 'stable'
       # e.g. if smoke 0 fails, continue with smoke 1 anyway
       fail-fast: false
     env:
