@@ -115,7 +115,10 @@ jobs:
         include:
           - os: windows-latest
             chrome-channel: 'stable'
-            smoke-test-invert: [false, true]
+            smoke-test-invert: false
+          - os: windows-latest
+            chrome-channel: 'stable'
+            smoke-test-invert: true
       # e.g. if smoke 0 fails, continue with smoke 1 anyway
       fail-fast: false
     env:
