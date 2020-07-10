@@ -19,8 +19,8 @@ if [ x"$CHROME_PATH" == x ]; then
   exit 1
 fi
 
-# if [ -e "$CHROME_PATH" ]; then
-#   echo "cached chrome found"
-# else
+if [ -e "$CHROME_PATH" ]; then
+  echo "cached chrome found"
+else
   wget "$url" --no-check-certificate -q -O chrome.zip && unzip -q chrome.zip
-# fi
+fi
