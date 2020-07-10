@@ -827,12 +827,6 @@
   "lighthouse-core/audits/layout-shift-elements.js | title": {
     "message": "تجنُّب متغيّرات التصميم الكبيرة"
   },
-  "lighthouse-core/audits/legacy-javascript.js | description": {
-    "message": "يساعد الملء التلقائي وعمليات التحويل المتصفّحات القديمة في استخدام ميزات JavaScript الجديدة. ولكن العديد منها غير ضروري للمتصفّحات الحديثة. وبالنسبة إلى حِزم JavaScript، يمكنك استخدام استراتيجية حديثة لنشر النص البرمجي باستخدام ميزة الكشف عن الميزات \"module/nomodule\" لتقليل عدد الرموز البرمجية التي يتم نقلها للمتصفّحات الحديثة مع استمرار اعتماد المتصفّحات القديمة. [مزيد من المعلومات](https://philipwalton.com/articles/deploying-es2015-code-in-production-today/)"
-  },
-  "lighthouse-core/audits/legacy-javascript.js | title": {
-    "message": "Avoid serving legacy JavaScript to modern browsers"
-  },
   "lighthouse-core/audits/load-fast-enough-for-pwa.js | description": {
     "message": "إنّ تحميل الصفحات بشكل سريع عبر شبكة الجوّال يضمن توفير تجربة استخدام عالية الجودة. [مزيد من المعلومات](https://web.dev/load-fast-enough-for-pwa/)"
   },
