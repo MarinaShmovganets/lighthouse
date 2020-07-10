@@ -746,9 +746,6 @@
   "lighthouse-core/audits/font-display.js | title": {
     "message": "Sav tekst ostaje vidljiv tokom učitavanja veb-fontova"
   },
-  "lighthouse-core/audits/font-display.js | undeclaredFontURLWarning": {
-    "message": "Lighthouse nije uspeo da automatski proveri vrednost za prikaz fontova za sledeći URL: {fontURL}."
-  },
   "lighthouse-core/audits/image-aspect-ratio.js | columnActual": {
     "message": "Razmera (stvarna)"
   },
@@ -808,12 +805,6 @@
   },
   "lighthouse-core/audits/is-on-https.js | title": {
     "message": "Koristi HTTPS"
-  },
-  "lighthouse-core/audits/legacy-javascript.js | description": {
-    "message": "Polifili i transformacije omogućavaju da stare verzije pregledača koriste nove funkcije JavaScript-a. Međutim, mnogi nisu neophodni za moderne pregledače. Za JavaScript pakete koristite modernu strategiju primene skripte pomoću otkrivanja funkcija modulom/bez modula da biste smanjili količinu koda koji se šalje modernim pregledačima, pritom zadržavajući podršku za stare verzije pregledača. [Saznajte više](https://philipwalton.com/articles/deploying-es2015-code-in-production-today/)"
-  },
-  "lighthouse-core/audits/legacy-javascript.js | title": {
-    "message": "Stara verzija JavaScript-a"
   },
   "lighthouse-core/audits/load-fast-enough-for-pwa.js | description": {
     "message": "Brzo učitavanje stranice preko mobilne mreže obezbeđuje dobar doživljaj korisnicima mobilnih uređaja. [Saznajte više](https://web.dev/load-fast-enough-for-pwa)."

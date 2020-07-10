@@ -746,9 +746,6 @@
   "lighthouse-core/audits/font-display.js | title": {
     "message": "‏‮All‬‏ ‏‮text‬‏ ‏‮remains‬‏ ‏‮visible‬‏ ‏‮during‬‏ ‏‮webfont‬‏ ‏‮loads‬‏"
   },
-  "lighthouse-core/audits/font-display.js | undeclaredFontURLWarning": {
-    "message": "‏‮Lighthouse‬‏ ‏‮was‬‏ ‏‮unable‬‏ ‏‮to‬‏ ‏‮automatically‬‏ ‏‮check‬‏ ‏‮the‬‏ ‏‮font‬‏-‏‮display‬‏ ‏‮value‬‏ ‏‮for‬‏ ‏‮the‬‏ ‏‮following‬‏ ‏‮URL‬‏: {fontURL}."
-  },
   "lighthouse-core/audits/image-aspect-ratio.js | columnActual": {
     "message": "‏‮Aspect‬‏ ‏‮Ratio‬‏ (‏‮Actual‬‏)"
   },
@@ -808,12 +805,6 @@
   },
   "lighthouse-core/audits/is-on-https.js | title": {
     "message": "‏‮Uses‬‏ ‏‮HTTPS‬‏"
-  },
-  "lighthouse-core/audits/legacy-javascript.js | description": {
-    "message": "‏‮Polyfills‬‏ ‏‮and‬‏ ‏‮transforms‬‏ ‏‮enable‬‏ ‏‮legacy‬‏ ‏‮browsers‬‏ ‏‮to‬‏ ‏‮use‬‏ ‏‮new‬‏ ‏‮JavaScript‬‏ ‏‮features‬‏. ‏‮However‬‏, ‏‮many‬‏ ‏‮aren‬‏'‏‮t‬‏ ‏‮necessary‬‏ ‏‮for‬‏ ‏‮modern‬‏ ‏‮browsers‬‏. ‏‮For‬‏ ‏‮your‬‏ ‏‮bundled‬‏ ‏‮JavaScript‬‏, ‏‮adopt‬‏ ‏‮a‬‏ ‏‮modern‬‏ ‏‮script‬‏ ‏‮deployment‬‏ ‏‮strategy‬‏ ‏‮using‬‏ ‏‮module‬‏/‏‮nomodule‬‏ ‏‮feature‬‏ ‏‮detection‬‏ ‏‮to‬‏ ‏‮reduce‬‏ ‏‮the‬‏ ‏‮amount‬‏ ‏‮of‬‏ ‏‮code‬‏ ‏‮shipped‬‏ ‏‮to‬‏ ‏‮modern‬‏ ‏‮browsers‬‏, ‏‮while‬‏ ‏‮retaining‬‏ ‏‮support‬‏ ‏‮for‬‏ ‏‮legacy‬‏ ‏‮browsers‬‏. [‏‮Learn‬‏ ‏‮More‬‏](https://philipwalton.com/articles/deploying-es2015-code-in-production-today/)"
-  },
-  "lighthouse-core/audits/legacy-javascript.js | title": {
-    "message": "‏‮Legacy‬‏ ‏‮JavaScript‬‏"
   },
   "lighthouse-core/audits/load-fast-enough-for-pwa.js | description": {
     "message": "‏‮A‬‏ ‏‮fast‬‏ ‏‮page‬‏ ‏‮load‬‏ ‏‮over‬‏ ‏‮a‬‏ ‏‮cellular‬‏ ‏‮network‬‏ ‏‮ensures‬‏ ‏‮a‬‏ ‏‮good‬‏ ‏‮mobile‬‏ ‏‮user‬‏ ‏‮experience‬‏. [‏‮Learn‬‏ ‏‮more‬‏](https://web.dev/load-fast-enough-for-pwa)."

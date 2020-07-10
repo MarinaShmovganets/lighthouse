@@ -746,9 +746,6 @@
   "lighthouse-core/audits/font-display.js | title": {
     "message": "Todo o texto permanece visível durante os carregamentos de tipos de letra para Websites"
   },
-  "lighthouse-core/audits/font-display.js | undeclaredFontURLWarning": {
-    "message": "O Lighthouse não conseguiu verificar automaticamente o valor de apresentação de tipos de letra para o seguinte URL: {fontURL}."
-  },
   "lighthouse-core/audits/image-aspect-ratio.js | columnActual": {
     "message": "Proporção (atual)"
   },
@@ -808,12 +805,6 @@
   },
   "lighthouse-core/audits/is-on-https.js | title": {
     "message": "Utiliza HTTPS"
-  },
-  "lighthouse-core/audits/legacy-javascript.js | description": {
-    "message": "Os polyfills e as transformações permitem que os navegadores antigos utilizem novas funcionalidades de JavaScript. No entanto, muitos não são necessários para os navegadores modernos. Para o seu JavaScript integrado, adote uma estratégia de implementação de scripts moderna através da deteção da funcionalidade module/nomodule para reduzir a quantidade de código enviado para os navegadores modernos, mantendo ao mesmo tempo a compatibilidade com os navegadores antigos. [Saber mais](https://philipwalton.com/articles/deploying-es2015-code-in-production-today/)"
-  },
-  "lighthouse-core/audits/legacy-javascript.js | title": {
-    "message": "JavaScript antigo"
   },
   "lighthouse-core/audits/load-fast-enough-for-pwa.js | description": {
     "message": "Um rápido carregamento da página numa rede móvel assegura uma boa experiência do utilizador móvel. [Saiba mais](https://web.dev/load-fast-enough-for-pwa)."
