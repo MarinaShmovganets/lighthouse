@@ -100,6 +100,9 @@ function computeStackSpecificTiming(node, nodeTiming, Stacks) {
     // AMP will load a linked stylesheet asynchronously if it has not been loaded after 2.1 seconds:
     // https://github.com/ampproject/amphtml/blob/8e03ac2f315774070651584a7e046ff24212c9b1/src/font-stylesheet-timeout.js#L54-L59
     // Any potential savings must only include time spent on AMP stylesheet nodes before 2.1 seconds.
+    if (node.type === BaseNode.TYPES.NETWORK) {
+      console.log('AMP request!!!', node.record.url, nodeTiming);
+    }
     if (node.type === BaseNode.TYPES.NETWORK &&
         node.record.resourceType === NetworkRequest.TYPES.Stylesheet &&
         nodeTiming.endTime > 2100) {
