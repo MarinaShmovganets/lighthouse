@@ -126,8 +126,8 @@ class ElementScreenshotRenderer {
     const reportEl = dom.find('.lh-report', dom.document());
     reportEl.classList.add('lh-feature-screenshot-overlay');
     const renderContainerSizeInDisplayCoords = {
-      width: dom.document().documentElement.clientWidth - reportEl.getBoundingClientRect().left,
-      height: dom.document().documentElement.clientHeight - reportEl.getBoundingClientRect().top,
+      width: dom.document().documentElement.clientWidth,
+      height: dom.document().documentElement.clientHeight * 0.75,
     };
     for (const el of dom.document().querySelectorAll('.lh-element-screenshot')) {
       el.addEventListener('click', () => {
