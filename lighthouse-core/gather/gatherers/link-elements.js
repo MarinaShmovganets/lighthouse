@@ -5,11 +5,16 @@
  */
 'use strict';
 
-const Gatherer = require('./gatherer.js');
-const URL = require('../../lib/url-shim.js').URL;
-const NetworkAnalyzer = require('../../lib/dependency-graph/simulator/network-analyzer.js');
 const LinkHeader = require('http-link-header');
-const {getElementsInDocumentString, getNodePathString} = require('../../lib/page-functions.js');
+const Gatherer = require('./gatherer.js');
+const {URL} = require('../../lib/url-shim.js');
+const NetworkAnalyzer = require('../../lib/dependency-graph/simulator/network-analyzer.js');
+const {
+  getElementsInDocumentString,
+  getNodePathString,
+  getNodeSelectorString,
+  getNodeLabelString,
+} = require('../../lib/page-functions.js');
 
 /* globals HTMLLinkElement */
 
@@ -61,6 +66,11 @@ function getLinkElementsInDOM() {
 
     // @ts-ignore - put into scope via stringification
     const nodePath = getNodePath(link); // eslint-disable-line no-undef
+    // @ts-ignore - getNodeSelector put into scope via stringification
+    const selector = getNodeSelector(link); // eslint-disable-line no-undef
+    // @ts-ignore - getNodeLabel put into scope via stringification
+    const nodeLabel = getNodeLabel(link); // eslint-disable-line no-undef
+
     const hrefRaw = link.getAttribute('href') || '';
     const source = link.closest('head') ? 'head' : 'body';
 
@@ -73,6 +83,8 @@ function getLinkElementsInDOM() {
       devtoolsNodePath: nodePath,
       hrefRaw,
       source,
+      selector,
+      nodeLabel,
     });
   }
 
@@ -91,6 +103,8 @@ class LinkElements extends Gatherer {
       ${getElementsInDocumentString};
       ${getLinkElementsInDOM};
       ${getNodePathString};
+      ${getNodeSelectorString};
+      ${getNodeLabelString};
 
       return getLinkElementsInDOM();
     })()`, {useIsolation: true});

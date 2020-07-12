@@ -242,6 +242,10 @@ declare global {
         source: 'head'|'body'|'headers'
         /** Path that uniquely identifies the node in the DOM. This is not defined when `source` is 'headers' */
         devtoolsNodePath?: string
+        /** Selector for the DOM node. This is not defined when `source` is 'headers' */
+        selector?: string
+        /** Human readable label for the element. This is not defined when `source` is 'headers' */
+        nodeLabel?: string
       }
 
       export interface ScriptElement {
