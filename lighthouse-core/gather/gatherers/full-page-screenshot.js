@@ -44,9 +44,6 @@ class FullPageScreenshot extends Gatherer {
       deviceScaleFactor,
     });
 
-    // Allow some time to browser to do layout.
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
     // TODO: elements collected earlier in gathering are likely to have been shifted by now.
     // The lower in the page, the more likely (footer elements especially).
     // Possible fix: somehow iterate all the elements we gathered w/ bounding rects
