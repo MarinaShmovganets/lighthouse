@@ -16,8 +16,7 @@
 <body>
   <script>
     const params = new URLSearchParams(document.location.search);
-    document.body.style.width = params.get('width') || '100vw';
-    document.body.style.height = params.get('height') || '100vh';
+    if (params.has('height')) document.body.style.height = params.get('height');
   </script>
   
   <p>Screenshot tester.</p>

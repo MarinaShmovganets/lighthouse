@@ -13,13 +13,13 @@ const expectations = [
     artifacts: {
       FullPageScreenshot: {
         width: 1350,
-        height: 956,
+        height: '>1000',
         data: /data:image\/jpeg;base64,.{10000,}$/,
       },
     },
     lhr: {
-      requestedUrl: 'http://localhost:10200/screenshot.html',
-      finalUrl: 'http://localhost:10200/screenshot.html',
+      requestedUrl: 'http://localhost:10200/screenshot.html?height=1000px',
+      finalUrl: 'http://localhost:10200/screenshot.html?height=1000px',
       audits: {},
     },
   },
@@ -28,8 +28,8 @@ const expectations = [
       FullPageScreenshot: null,
     },
     lhr: {
-      requestedUrl: 'http://localhost:10200/screenshot.html?width=1000vw&height=1000vh',
-      finalUrl: 'http://localhost:10200/screenshot.html?width=1000vw&height=1000vh',
+      requestedUrl: 'http://localhost:10200/screenshot.html?height=5000px',
+      finalUrl: 'http://localhost:10200/screenshot.html?height=5000px',
       runWarnings: [/Full page screenshot is too big/],
       audits: {},
     },
