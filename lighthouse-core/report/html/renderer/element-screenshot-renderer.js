@@ -129,32 +129,36 @@ class ElementScreenshotRenderer {
       width: dom.document().documentElement.clientWidth,
       height: dom.document().documentElement.clientHeight * 0.75,
     };
-    for (const el of dom.document().querySelectorAll('.lh-element-screenshot')) {
-      el.addEventListener('click', () => {
-        const overlay = dom.createElement('div');
-        overlay.classList.add('lh-element-screenshot__overlay');
-        const elementRectInScreenshotCoords = {
-          width: Number(el.getAttribute('rectWidth')),
-          height: Number(el.getAttribute('rectHeight')),
-          left: Number(el.getAttribute('rectLeft')),
-          right: Number(el.getAttribute('rectLeft')) + Number(el.getAttribute('rectWidth')),
-          top: Number(el.getAttribute('rectTop')),
-          bottom: Number(el.getAttribute('rectTop')) + Number(el.getAttribute('rectHeight')),
-        };
-        overlay.appendChild(ElementScreenshotRenderer.render(
-          dom,
-          templateContext,
-          fullPageScreenshot,
-          elementRectInScreenshotCoords,
-          renderContainerSizeInDisplayCoords
-        ));
-        overlay.addEventListener('click', () => {
-          overlay.remove();
-        });
 
-        reportEl.appendChild(overlay);
+    dom.document().addEventListener('click', e => {
+      const target = /** @type {?Element} */ (e.target);
+      if (!target) return;
+      const el = target.closest('.lh-element-screenshot');
+      if (!el) return;
+
+      const overlay = dom.createElement('div');
+      overlay.classList.add('lh-element-screenshot__overlay');
+      const elementRectInScreenshotCoords = {
+        width: Number(el.getAttribute('rectWidth')),
+        height: Number(el.getAttribute('rectHeight')),
+        left: Number(el.getAttribute('rectLeft')),
+        right: Number(el.getAttribute('rectLeft')) + Number(el.getAttribute('rectWidth')),
+        top: Number(el.getAttribute('rectTop')),
+        bottom: Number(el.getAttribute('rectTop')) + Number(el.getAttribute('rectHeight')),
+      };
+      overlay.appendChild(ElementScreenshotRenderer.render(
+        dom,
+        templateContext,
+        fullPageScreenshot,
+        elementRectInScreenshotCoords,
+        renderContainerSizeInDisplayCoords
+      ));
+      overlay.addEventListener('click', () => {
+        overlay.remove();
       });
-    }
+
+      reportEl.appendChild(overlay);
+    });
   }
 
   /**
