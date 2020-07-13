@@ -61,7 +61,7 @@ function getNodesAndTimingByUrl(nodeTimings) {
 }
 
 /**
- * Adjust the timing of a node and it's dependencies to account for stack specific overrides.
+ * Adjust the timing of a node and its dependencies to account for stack specific overrides.
  * @param {Map<Node, LH.Gatherer.Simulation.NodeTiming>} adjustedNodeTimings
  * @param {Node} node
  * @param {LH.Artifacts.DetectedStack[]} Stacks
@@ -82,7 +82,7 @@ function adjustNodeTimings(adjustedNodeTimings, node, Stacks) {
 
 /**
  * Any stack specific timing overrides should go in this function.
- * https://github.com/GoogleChrome/lighthouse/issues/2832#issuecomment-591066081
+ * @see https://github.com/GoogleChrome/lighthouse/issues/2832#issuecomment-591066081
  *
  * @param {Node} node
  * @param {LH.Gatherer.Simulation.NodeTiming} nodeTiming
@@ -223,7 +223,7 @@ class RenderBlockingResources extends Audit {
     }));
 
     // Recalculate the "before" time based on our adjusted node timings.
-    const stackSpecificEstimate = Math.max(...Array.from(
+    const estimateBeforeInline = Math.max(...Array.from(
       Array.from(adjustedNodeTimings).map(timing => timing[1].endTime)
     ));
 
@@ -233,7 +233,7 @@ class RenderBlockingResources extends Audit {
     minimalFCPGraph.record.transferSize = safeTransferSize + totalChildNetworkBytes;
     const estimateAfterInline = simulator.simulate(minimalFCPGraph).timeInMs;
     minimalFCPGraph.record.transferSize = originalTransferSize;
-    return Math.round(Math.max(stackSpecificEstimate - estimateAfterInline, 0));
+    return Math.round(Math.max(estimateBeforeInline - estimateAfterInline, 0));
   }
 
   /**

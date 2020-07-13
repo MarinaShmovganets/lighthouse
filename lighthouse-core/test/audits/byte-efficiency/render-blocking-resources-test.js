@@ -144,7 +144,7 @@ describe('Render blocking resources audit', () => {
       assert.equal(result, 2100);
     });
 
-    it('computes savings for stylesheets deferred by AMP', () => {
+    it('does not report savings from AMP-stack when document already exceeds 2.1s', () => {
       const serverResponseTimeByOrigin = new Map([
         ['http://example.com', 100],
         ['http://slow.com', 4000],
@@ -190,7 +190,7 @@ describe('Render blocking resources audit', () => {
       assert.equal(result, 0);
     });
 
-    it('computes savings for stylesheets partially deferred by AMP', () => {
+    it('computes savings for AMP stylesheets loaded partially before 2.1s', () => {
       const serverResponseTimeByOrigin = new Map([
         ['http://example.com', 100],
         ['http://slow.com', 4000],
