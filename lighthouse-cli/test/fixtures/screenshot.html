@@ -16,6 +16,7 @@
 <body>
   <script>
     const params = new URLSearchParams(document.location.search);
+    if (params.has('width')) document.body.style.width = params.get('width');
     if (params.has('height')) document.body.style.height = params.get('height');
   </script>
   

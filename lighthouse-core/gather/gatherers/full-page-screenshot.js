@@ -31,8 +31,8 @@ class FullPageScreenshot extends Gatherer {
   async _takeScreenshot(passContext, maxScreenshotHeight) {
     const driver = passContext.driver;
     const metrics = await driver.sendCommand('Page.getLayoutMetrics');
-    const width = await driver.evaluateAsync('window.innerWidth');
     const deviceScaleFactor = await driver.evaluateAsync('window.devicePixelRatio');
+    const width = Math.min(metrics.contentSize.width, maxScreenshotHeight);
     const height = Math.min(metrics.contentSize.height, maxScreenshotHeight);
 
     await driver.sendCommand('Emulation.setDeviceMetricsOverride', {

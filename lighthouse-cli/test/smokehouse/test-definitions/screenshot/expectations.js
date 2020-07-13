@@ -18,8 +18,8 @@ const expectations = [
       },
     },
     lhr: {
-      requestedUrl: 'http://localhost:10200/screenshot.html?height=1000px',
-      finalUrl: 'http://localhost:10200/screenshot.html?height=1000px',
+      requestedUrl: 'http://localhost:10200/screenshot.html?width=1000px&height=1000px',
+      finalUrl: 'http://localhost:10200/screenshot.html?width=1000px&height=1000px',
       audits: {},
     },
   },
@@ -28,8 +28,8 @@ const expectations = [
       FullPageScreenshot: null,
     },
     lhr: {
-      requestedUrl: 'http://localhost:10200/screenshot.html?height=5000px',
-      finalUrl: 'http://localhost:10200/screenshot.html?height=5000px',
+      requestedUrl: 'http://localhost:10200/screenshot.html?width=5000px&height=5000px',
+      finalUrl: 'http://localhost:10200/screenshot.html?width=5000px&height=5000px',
       runWarnings: [/Full page screenshot is too big/],
       audits: {},
     },
