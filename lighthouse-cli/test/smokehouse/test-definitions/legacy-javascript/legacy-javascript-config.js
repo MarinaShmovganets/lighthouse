@@ -19,5 +19,5 @@ module.exports = {
     ],
   },
   // Not in default yet.
-  audits: ['legacy-javascript'],
+  audits: ['byte-efficiency/legacy-javascript'],
 };
