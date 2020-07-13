@@ -17,6 +17,9 @@ const assert = require('assert').strict;
 const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 
+const ampTrace = require('../../fixtures/traces/amp-m86.trace.json');
+const ampDevtoolsLog = require('../../fixtures/traces/amp-m86.devtoolslog.json');
+
 /* eslint-env jest */
 
 describe('Render blocking resources audit', () => {
@@ -37,6 +40,41 @@ describe('Render blocking resources audit', () => {
     const result = await RenderBlockingResourcesAudit.audit(artifacts, {settings, computedCache});
     assert.equal(result.score, 1);
     assert.equal(result.numericValue, 0);
+  });
+
+  it('evaluates amp page correctly', async () => {
+    const artifacts = {
+      traces: {defaultPass: ampTrace},
+      devtoolsLogs: {defaultPass: ampDevtoolsLog},
+      TagsBlockingFirstPaint: [
+        {
+          tag: {
+            url:
+              'https://fonts.googleapis.com/css?family=Fira+Sans+Condensed%3A400%2C400i%2C600%2C600i&subset=latin%2Clatin-ext&display=swap',
+          },
+          transferSize: 621,
+        },
+        {
+          tag: {url: 'https://fonts.googleapis.com/css?family=Montserrat'},
+          transferSize: 621,
+        },
+      ],
+      Stacks: [
+        {
+          detector: 'js',
+          id: 'amp',
+          name: 'AMP',
+          version: '2006180239003',
+          npm: 'https://www.npmjs.com/org/ampproject',
+        },
+      ],
+    };
+
+    const settings = {throttlingMethod: 'simulate', throttling: mobileSlow4G};
+    const computedCache = new Map();
+    const result = await RenderBlockingResourcesAudit.audit(artifacts, {settings, computedCache});
+    expect(result.numericValue).toMatchInlineSnapshot(`450`);
+    expect(result.details.items).toMatchObject([]);
   });
 
   describe('#estimateSavingsWithGraphs', () => {
@@ -100,27 +138,35 @@ describe('Render blocking resources audit', () => {
         ['http://example.com', 100],
         ['http://slow.com', 4000],
       ]);
-      const Stacks = [{
-        detector: 'js',
-        id: 'amp',
-        name: 'AMP',
-        version: '2006180239003',
-        npm: 'https://www.npmjs.com/org/ampproject',
-      }];
+      const Stacks = [
+        {
+          detector: 'js',
+          id: 'amp',
+          name: 'AMP',
+          version: '2006180239003',
+          npm: 'https://www.npmjs.com/org/ampproject',
+        },
+      ];
       const simulator = new Simulator({rtt: 1000, serverResponseTimeByOrigin});
       const documentNode = new NetworkNode(record({transferSize: 4000}));
-      const styleNode = new NetworkNode(recordSlow({
-        transferSize: 3000,
-        resourceType: NetworkRequest.TYPES.Stylesheet,
-      }));
-      const styleNode2 = new NetworkNode(recordSlow({
-        transferSize: 3000,
-        resourceType: NetworkRequest.TYPES.Stylesheet,
-      }));
-      const styleNode3 = new NetworkNode(recordSlow({
-        transferSize: 3000,
-        resourceType: NetworkRequest.TYPES.Stylesheet,
-      }));
+      const styleNode = new NetworkNode(
+        recordSlow({
+          transferSize: 3000,
+          resourceType: NetworkRequest.TYPES.Stylesheet,
+        })
+      );
+      const styleNode2 = new NetworkNode(
+        recordSlow({
+          transferSize: 3000,
+          resourceType: NetworkRequest.TYPES.Stylesheet,
+        })
+      );
+      const styleNode3 = new NetworkNode(
+        recordSlow({
+          transferSize: 3000,
+          resourceType: NetworkRequest.TYPES.Stylesheet,
+        })
+      );
       const deferredIds = new Set([2, 3, 4]);
       const wastedBytesMap = new Map();
 
@@ -138,27 +184,35 @@ describe('Render blocking resources audit', () => {
         ['http://example.com', 100],
         ['http://slow.com', 4000],
       ]);
-      const Stacks = [{
-        detector: 'js',
-        id: 'amp',
-        name: 'AMP',
-        version: '2006180239003',
-        npm: 'https://www.npmjs.com/org/ampproject',
-      }];
+      const Stacks = [
+        {
+          detector: 'js',
+          id: 'amp',
+          name: 'AMP',
+          version: '2006180239003',
+          npm: 'https://www.npmjs.com/org/ampproject',
+        },
+      ];
       const simulator = new Simulator({rtt: 100, serverResponseTimeByOrigin});
       const documentNode = new NetworkNode(record({transferSize: 4000}));
-      const styleNode = new NetworkNode(recordSlow({
-        transferSize: 3000,
-        resourceType: NetworkRequest.TYPES.Stylesheet,
-      }));
-      const styleNode2 = new NetworkNode(recordSlow({
-        transferSize: 3000,
-        resourceType: NetworkRequest.TYPES.Stylesheet,
-      }));
-      const styleNode3 = new NetworkNode(recordSlow({
-        transferSize: 3000,
-        resourceType: NetworkRequest.TYPES.Stylesheet,
-      }));
+      const styleNode = new NetworkNode(
+        recordSlow({
+          transferSize: 3000,
+          resourceType: NetworkRequest.TYPES.Stylesheet,
+        })
+      );
+      const styleNode2 = new NetworkNode(
+        recordSlow({
+          transferSize: 3000,
+          resourceType: NetworkRequest.TYPES.Stylesheet,
+        })
+      );
+      const styleNode3 = new NetworkNode(
+        recordSlow({
+          transferSize: 3000,
+          resourceType: NetworkRequest.TYPES.Stylesheet,
+        })
+      );
       const deferredIds = new Set([2, 3, 4]);
       const wastedBytesMap = new Map();
 
