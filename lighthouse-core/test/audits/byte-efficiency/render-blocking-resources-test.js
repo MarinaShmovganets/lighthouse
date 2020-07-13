@@ -76,14 +76,14 @@ describe('Render blocking resources audit', () => {
     expect(result.numericValue).toMatchInlineSnapshot(`450`);
     expect(result.details.items).toMatchObject([
       {
-        "totalBytes": 621,
-        "url": "https://fonts.googleapis.com/css?family=Fira+Sans+Condensed%3A400%2C400i%2C600%2C600i&subset=latin%2Clatin-ext&display=swap",
-        "wastedMs": 440,
+        'totalBytes': 621,
+        'url': 'https://fonts.googleapis.com/css?family=Fira+Sans+Condensed%3A400%2C400i%2C600%2C600i&subset=latin%2Clatin-ext&display=swap',
+        'wastedMs': 440,
       },
       {
-        "totalBytes": 621,
-        "url": "https://fonts.googleapis.com/css?family=Montserrat",
-        "wastedMs": 440,
+        'totalBytes': 621,
+        'url': 'https://fonts.googleapis.com/css?family=Montserrat',
+        'wastedMs': 440,
       },
     ]);
   });
