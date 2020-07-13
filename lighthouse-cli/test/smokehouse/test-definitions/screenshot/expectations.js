@@ -12,7 +12,7 @@ const expectations = [
   {
     artifacts: {
       FullPageScreenshot: {
-        width: 1350,
+        width: '>1000',
         height: '>1000',
         data: /data:image\/jpeg;base64,.{10000,}$/,
       },
