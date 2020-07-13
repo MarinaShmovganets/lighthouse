@@ -73,9 +73,9 @@ function adjustNodeTimings(adjustedNodeTimings, node, Stacks) {
   const difference = nodeTiming.duration - stackSpecificTiming.duration;
   if (!difference) return;
 
-  // Adjust timing of all dependent nodes
-  node.traverse(node => {
-    adjustedNodeTimings.delete(node);
+  // AMP's method of removal of stylesheets effectively removes all dependent nodes from the FCP graph
+  node.traverse(childNode => {
+    adjustedNodeTimings.delete(childNode);
   });
   adjustedNodeTimings.set(node, stackSpecificTiming);
 }
