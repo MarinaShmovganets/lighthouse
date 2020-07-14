@@ -512,14 +512,13 @@ class DetailsRenderer {
       return element;
     }
 
-    const fullPageScreenshot = this._fullPageScreenshot;
-
+    const thumbnailSize = {width: 147, height: 100};
     const elementScreenshot = ElementScreenshotRenderer.render(
       this._dom,
       this._templateContext,
-      fullPageScreenshot,
+      this._fullPageScreenshot,
       item.boundingRect,
-      {width: 147, height: 100}
+      thumbnailSize
     );
     element.prepend(elementScreenshot);
 
