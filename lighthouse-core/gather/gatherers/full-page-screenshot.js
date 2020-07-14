@@ -42,6 +42,10 @@ class FullPageScreenshot extends Gatherer {
       width,
       screenWidth: width,
       deviceScaleFactor,
+      scale: 1,
+      positionX: 0,
+      positionY: 0,
+      screenOrientation: {angle: 0, type: 'portraitPrimary'},
     });
 
     // TODO: elements collected earlier in gathering are likely to have been shifted by now.
