@@ -131,20 +131,20 @@ class ElementScreenshotRenderer {
     };
 
     dom.document().addEventListener('click', e => {
-      const target = /** @type {?Element} */ (e.target);
+      const target = /** @type {?HTMLElement} */ (e.target);
       if (!target) return;
-      const el = target.closest('.lh-element-screenshot');
+      const el = /** @type {?HTMLElement} */ (target.closest('.lh-element-screenshot'));
       if (!el) return;
 
       const overlay = dom.createElement('div');
       overlay.classList.add('lh-element-screenshot__overlay');
       const elementRectInScreenshotCoords = {
-        width: Number(el.getAttribute('rectWidth')),
-        height: Number(el.getAttribute('rectHeight')),
-        left: Number(el.getAttribute('rectLeft')),
-        right: Number(el.getAttribute('rectLeft')) + Number(el.getAttribute('rectWidth')),
-        top: Number(el.getAttribute('rectTop')),
-        bottom: Number(el.getAttribute('rectTop')) + Number(el.getAttribute('rectHeight')),
+        width: Number(el.dataset['rectWidth']),
+        height: Number(el.dataset['rectHeight']),
+        left: Number(el.dataset['rectLeft']),
+        right: Number(el.dataset['rectLeft']) + Number(el.dataset['rectWidth']),
+        top: Number(el.dataset['rectTop']),
+        bottom: Number(el.dataset['rectTop']) + Number(el.dataset['rectHeight']),
       };
       overlay.appendChild(ElementScreenshotRenderer.render(
         dom,
@@ -193,10 +193,10 @@ class ElementScreenshotRenderer {
     const tmpl = dom.cloneTemplate('#tmpl-lh-element-screenshot', templateContext);
     const containerEl = dom.find('.lh-element-screenshot', tmpl);
 
-    containerEl.setAttribute('rectWidth', elementRectInScreenshotCoords.width.toString());
-    containerEl.setAttribute('rectHeight', elementRectInScreenshotCoords.height.toString());
-    containerEl.setAttribute('rectLeft', elementRectInScreenshotCoords.left.toString());
-    containerEl.setAttribute('rectTop', elementRectInScreenshotCoords.top.toString());
+    containerEl.dataset['rectWidth'] = elementRectInScreenshotCoords.width.toString();
+    containerEl.dataset['rectHeight'] = elementRectInScreenshotCoords.height.toString();
+    containerEl.dataset['rectLeft'] = elementRectInScreenshotCoords.left.toString();
+    containerEl.dataset['rectTop'] = elementRectInScreenshotCoords.top.toString();
 
     // Zoom out when highlighted region takes up most of the viewport.
     // This provides more context for where on the page this element is.
