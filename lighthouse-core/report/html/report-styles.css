@@ -51,6 +51,7 @@
   --color-gray: #000000;
   --color-green-700: #018642;
   --color-green: #0CCE6B;
+  --color-lime-400: #D3E156;
   --color-orange-50: #FFF3E0;
   --color-orange-700: #D04900;
   --color-orange: #FFA400;
@@ -1562,7 +1563,7 @@
 }
 .lh-element-screenshot__element-marker {
   position: absolute;
-  outline: 2px solid rgb(211, 232, 75);
+  outline: 2px solid var(--color-lime-400);
 }
 .lh-element-screenshot__overlay {
   position: fixed;
