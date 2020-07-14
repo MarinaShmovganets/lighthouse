@@ -139,11 +139,11 @@ function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 
     }
 
     const reOpeningTag = /^[\s\S]*?>/;
-    const match = clone.outerHTML.match(reOpeningTag);
-    if (match && match[0] && charCount > snippetCharacterLimit) {
-      return match[0].slice(0, match[0].length - 1) + ' …>';
+    const [match] = clone.outerHTML.match(reOpeningTag) || [];
+    if (match && charCount > snippetCharacterLimit) {
+      return match.slice(0, match.length - 1) + ' …>';
     }
-    return (match && match[0]) || '';
+    return match || '';
   } catch (_) {
     // As a last resort, fall back to localName.
     return `<${element.localName}>`;
