@@ -71,7 +71,9 @@ class FullPageScreenshot extends Gatherer {
    * @return {Promise<LH.Artifacts.FullPageScreenshot | null>}
    */
   async afterPass_(passContext) {
-    let screenshot = await this._takeScreenshot(passContext, MAX_SCREENSHOT_HEIGHT);
+    const deviceScaleFactor = await passContext.driver.evaluateAsync('window.devicePixelRatio');
+    const maxScreenshotHeight = Math.floor(MAX_SCREENSHOT_HEIGHT / deviceScaleFactor);
+    let screenshot = await this._takeScreenshot(passContext, maxScreenshotHeight);
 
     if (screenshot.data.length > MAX_DATA_URL_SIZE) {
       // Hitting the data URL size limit is rare, it only happens for pages on tall
