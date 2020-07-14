@@ -389,7 +389,7 @@ declare global {
 
       export interface ImageElement {
         src: string;
-        /** The srcset attribtue value. @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/srcset */
+        /** The srcset attribute value. @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/srcset */
         srcset: string;
         /** The displayed width of the image, uses img.width when available falling back to clientWidth. See https://codepen.io/patrickhulce/pen/PXvQbM for examples. */
         displayedWidth: number;

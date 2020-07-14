@@ -224,13 +224,12 @@ const expectations = [
         // Checks that images aren't TOO SMALL.
         'image-size-responsive': {
           details: {
-            items: {
+            items: [
               // One of these two is the ?duplicate variant but sort order isn't guaranteed
               // since the pixel diff is equivalent for identical images.
-              0: {url: /lighthouse-320x212-poor.jpg/},
-              1: {url: /lighthouse-320x212-poor.jpg/},
-              length: 2,
-            },
+              {url: /lighthouse-320x212-poor.jpg/},
+              {url: /lighthouse-320x212-poor.jpg/},
+            ],
           },
         },
       },
