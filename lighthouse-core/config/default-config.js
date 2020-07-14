@@ -162,7 +162,6 @@ const defaultConfig = {
       'trace-elements',
       'inspector-issues',
       'source-maps',
-      'full-page-screenshot',
     ],
   },
   {
@@ -198,7 +197,6 @@ const defaultConfig = {
     'metrics/speed-index',
     'screenshot-thumbnails',
     'final-screenshot',
-    'full-page-screenshot',
     'metrics/estimated-input-latency',
     'metrics/total-blocking-time',
     'metrics/max-potential-fid',

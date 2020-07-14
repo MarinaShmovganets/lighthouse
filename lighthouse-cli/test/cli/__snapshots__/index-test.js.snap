@@ -43,9 +43,6 @@ Object {
       "path": "final-screenshot",
     },
     Object {
-      "path": "full-page-screenshot",
-    },
-    Object {
       "path": "metrics/estimated-input-latency",
     },
     Object {
@@ -1354,9 +1351,6 @@ Object {
         },
         Object {
           "path": "source-maps",
-        },
-        Object {
-          "path": "full-page-screenshot",
         },
       ],
       "loadFailureMode": "fatal",

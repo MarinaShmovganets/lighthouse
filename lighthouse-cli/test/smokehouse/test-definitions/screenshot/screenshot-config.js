@@ -5,9 +5,11 @@
  */
 'use strict';
 
+const experimentalConfig = require('../../../../../lighthouse-core/config/experimental-config.js');
+
 /** @type {LH.Config.Json} */
 module.exports = {
-  extends: 'lighthouse:default',
+  ...experimentalConfig,
   settings: {
     onlyAudits: ['full-page-screenshot'],
     emulatedFormFactor: 'desktop',
