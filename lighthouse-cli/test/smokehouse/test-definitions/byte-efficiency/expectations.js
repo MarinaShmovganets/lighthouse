@@ -208,6 +208,7 @@ const expectations = [
             },
           },
         },
+        // Check that images aren't TOO BIG.
         'uses-responsive-images': {
           details: {
             overallSavingsBytes: '108000 +/- 5000',
@@ -217,6 +218,18 @@ const expectations = [
               2: {wastedPercent: '56 +/- 5', url: /lighthouse-480x320.webp/},
               3: {wastedPercent: '20 +/- 5', url: /lighthouse-480x320.jpg/},
               length: 4,
+            },
+          },
+        },
+        // Checks that images aren't TOO SMALL.
+        'image-size-responsive': {
+          details: {
+            items: {
+              // One of these two is the ?duplicate variant but sort order isn't guaranteed
+              // since the pixel diff is equivalent for identical images.
+              0: {url: /lighthouse-320x212-poor.jpg/},
+              1: {url: /lighthouse-320x212-poor.jpg/},
+              length: 2,
             },
           },
         },
