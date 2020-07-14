@@ -33,7 +33,7 @@ class FullPageScreenshot extends Audit {
     return {
       score: 1,
       details: {
-        type: 'screenshot-with-size',
+        type: 'full-page-screenshot',
         ...artifacts.FullPageScreenshot,
       },
     };
