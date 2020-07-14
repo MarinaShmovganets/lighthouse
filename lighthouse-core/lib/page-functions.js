@@ -126,7 +126,7 @@ function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 
     });
     let charCount = 0;
     for (const attributeName of clone.getAttributeNames()) {
-      if (charCount >= snippetCharacterLimit) {
+      if (charCount > snippetCharacterLimit) {
         clone.removeAttribute(attributeName);
       } else {
         let attributeValue = clone.getAttribute(attributeName);
