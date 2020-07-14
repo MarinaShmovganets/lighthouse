@@ -69,6 +69,20 @@ describe('Page Functions', () => {
         dom.createElement('div', '', {class: longClass})), `<div class="${truncatedExpectation}">`
       );
     });
+
+    it('removes attributes if the length of the attribute name + value is too long', () => {
+      const longValue = 'a'.repeat(200);
+      const truncatedValue = 'a'.repeat(74) + '…';
+      const element = dom.createElement('div', '', {
+        class: longValue,
+        id: longValue,
+        att1: 'shouldn\'t see this',
+        att2: 'shouldn\'t see this either',
+      });
+      const snippet = pageFunctions.getOuterHTMLSnippet(element, [], 150);
+      assert.equal(snippet, `<div class="${truncatedValue}" id="${truncatedValue}" …>`
+      );
+    });
   });
 
   describe('getNodeSelector', () => {

@@ -112,9 +112,8 @@ function getElementsInDocument(selector) {
  * @return {string}
  */
 /* istanbul ignore next */
-function getOuterHTMLSnippet(element, ignoreAttrs = []) {
+function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 500) {
   const ATTRIBUTE_CHAR_LIMIT = 75;
-  const SNIPPET_CHAR_LIMIT = 500;
   try {
     // ShadowRoots are sometimes passed in; use their hosts' outerHTML.
     if (element instanceof ShadowRoot) {
@@ -127,7 +126,7 @@ function getOuterHTMLSnippet(element, ignoreAttrs = []) {
     });
     let charCount = 0;
     for (const attributeName of clone.getAttributeNames()) {
-      if (charCount >= SNIPPET_CHAR_LIMIT) {
+      if (charCount >= snippetCharacterLimit) {
         clone.removeAttribute(attributeName);
       } else {
         let attributeValue = clone.getAttribute(attributeName);
@@ -141,8 +140,8 @@ function getOuterHTMLSnippet(element, ignoreAttrs = []) {
 
     const reOpeningTag = /^[\s\S]*?>/;
     const match = clone.outerHTML.match(reOpeningTag);
-    if (match && match[0] && charCount > SNIPPET_CHAR_LIMIT) {
-      return match[0].slice(0, match[0].length - 1) + '…>';
+    if (match && match[0] && charCount > snippetCharacterLimit) {
+      return match[0].slice(0, match[0].length - 1) + ' …>';
     }
     return (match && match[0]) || '';
   } catch (_) {
