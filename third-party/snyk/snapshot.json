@@ -101,7 +101,7 @@
       {"id":"npm:knockout:20130701","severity":"medium","semver":{"vulnerable":[">=2.1.0-pre <3.0.0"]}}
     ],
     "lodash":[
-      {"id":"SNYK-JS-LODASH-567746","severity":"medium","semver":{"vulnerable":["<=4.17.15"]}},
+      {"id":"SNYK-JS-LODASH-567746","severity":"medium","semver":{"vulnerable":["<4.17.16"]}},
       {"id":"SNYK-JS-LODASH-450202","severity":"high","semver":{"vulnerable":["<4.17.12"]}},
       {"id":"SNYK-JS-LODASH-73639","severity":"medium","semver":{"vulnerable":["<4.17.11"]}},
       {"id":"SNYK-JS-LODASH-73638","severity":"high","semver":{"vulnerable":["<4.17.11"]}},
