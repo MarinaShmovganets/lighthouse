@@ -45,6 +45,7 @@
   --color-gray-50: #FAFAFA;
   --color-gray-500: #9E9E9E;
   --color-gray-600: #757575;
+  --color-gray-700: #616161;
   --color-gray-800: #424242;
   --color-gray-900: #212121;
   --color-gray: #000000;
@@ -97,7 +98,7 @@
   --header-line-height: 24px;
   --highlighter-background-color: var(--report-text-color);
   --icon-square-size: calc(var(--score-icon-size) * 0.88);
-  --metric-description-padding: 0 0 2px calc(var(--score-icon-margin-left) + var(--score-icon-size) + var(--score-icon-margin-right));
+  --image-preview-size: 48px;
   --metric-toggle-lines-fill: #7F7F7F;
   --metrics-toggle-background-color: var(--color-gray-200);
   --plugin-badge-background-color: var(--color-white);
@@ -216,6 +217,7 @@
     --gauge-percentage-font-size: 26px;
     --gauge-wrapper-width: 112px;
     --header-padding: 16px 0 16px 0;
+    --image-preview-size: 24px;
     --plugin-icon-size: 75%;
     --pwa-icon-margin: 0 7px 0 -3px;
     --report-font-size: 14px;
@@ -442,7 +444,8 @@
 .lh-audit--fail .lh-audit__display-text {
   color: var(--color-fail-secondary);
 }
-.lh-audit--fail .lh-audit__score-icon {
+.lh-audit--fail .lh-audit__score-icon,
+.lh-audit--error .lh-audit__score-icon {
   border-left: calc(var(--score-icon-size) / 2) solid transparent;
   border-right: calc(var(--score-icon-size) / 2) solid transparent;
   border-bottom: var(--score-icon-size) solid var(--color-fail);
@@ -456,10 +459,6 @@
 .lh-audit--notapplicable .lh-audit__score-icon {
   border-radius: 100%;
   background: var(--color-gray-400);
-}
-
-.lh-audit--error .lh-audit__score-icon {
-  display: none;
 }
 
 .lh-audit--informative .lh-audit__display-text {
@@ -584,10 +583,9 @@
 }
 
 .lh-metric__innerwrap {
-  display: flex;
+  display: grid;
+  grid-template-columns: var(--audit-description-padding-left) 10fr 3fr;
   align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-between;
   padding: 10px 0;
 }
 
@@ -604,16 +602,21 @@
   color: var(--color-gray-600);
   margin: var(--section-padding-vertical) 0;
 }
+.lh-metrics__disclaimer a {
+  color: var(--color-gray-700);
+}
 
 .lh-metric__description {
   display: none;
+  grid-column-start: 2;
+  grid-column-end: 3;
   color: var(--report-text-color-secondary);
-  padding: var(--metric-description-padding);
 }
 
 .lh-metric__value {
   white-space: nowrap; /* No wrapping between metric value and the icon */
   font-weight: 500;
+  justify-self: end;
 }
 
 /* No-JS toggle switch */
@@ -709,7 +712,8 @@
 .lh-metric--fail .lh-metric__value {
   color: var(--color-fail-secondary);
 }
-.lh-metric--fail .lh-metric__innerwrap::before {
+.lh-metric--fail .lh-metric__innerwrap::before,
+.lh-metric--error .lh-metric__innerwrap::before {
   border-left: calc(var(--score-icon-size) / 2) solid transparent;
   border-right: calc(var(--score-icon-size) / 2) solid transparent;
   border-bottom: var(--score-icon-size) solid var(--color-fail);
@@ -718,11 +722,6 @@
 .lh-metric--error .lh-metric__value,
 .lh-metric--error .lh-metric__description {
   color: var(--color-fail-secondary);
-}
-
-/* Hide icon if there was an error */
-.lh-metric--error .lh-metric__innerwrap::before {
-  display: none;
 }
 
 /* Perf load opportunity */
@@ -966,8 +965,9 @@
 }
 
 .lh-audit-explanation {
-  margin: var(--audit-padding-vertical) 0 calc(var(--audit-padding-vertical) / 2);
+  margin: var(--audit-padding-vertical) 0 calc(var(--audit-padding-vertical) / 2) var(--audit-margin-horizontal);
   line-height: var(--audit-explanation-line-height);
+  display: inline-block;
 }
 
 .lh-audit--fail .lh-audit-explanation {
@@ -1319,7 +1319,6 @@
 }
 
 .lh-table {
-  --image-preview-size: 24px;
   border-collapse: collapse;
   /* Can't assign padding to table, so shorten the width instead. */
   width: calc(100% - var(--audit-description-padding-left));
@@ -1366,8 +1365,10 @@
 }
 
 
-.lh-table-column--thumbnail {
-  width: calc(var(--image-preview-size) * 2);
+
+.lh-table .lh-table-column--thumbnail {
+  width: var(--image-preview-size);
+  padding: 0;
 }
 
 .lh-table-column--url {
@@ -1384,12 +1385,8 @@
   width: 12%;
 }
 
-.lh-text__url:hover {
-  text-decoration: underline dotted #999;
-  text-decoration-skip-ink: auto;
-}
 
-.lh-text__url > .lh-text, .lh-text__url-host {
+.lh-text__url-host {
   display: inline;
 }
 
@@ -1400,9 +1397,19 @@
 }
 
 .lh-thumbnail {
-  height: var(--image-preview-size);
+  object-fit: cover;
   width: var(--image-preview-size);
-  object-fit: contain;
+  height: var(--image-preview-size);
+  display: block;
+}
+
+.lh-text__url > a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.lh-text__url > a:hover {
+  text-decoration: underline dotted #999;
 }
 
 /* Chevron

@@ -34,10 +34,10 @@ limitations under the License.
 
 <!-- Toggle arrow chevron -->
 <template id="tmpl-lh-chevron">
-  <svg class="lh-chevron" title="See audits" xmlns="http://www.w3.org/2000/svg"  viewbox="0 0 100 100">
+  <svg class="lh-chevron" title="See audits" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 100">
     <g class="lh-chevron__lines">
-      <path class="lh-chevron__line lh-chevron__line-left" d="M10 50h40" stroke="#707173"></path>
-      <path class="lh-chevron__line lh-chevron__line-right" d="M90 50H50" stroke="#707173"></path>
+      <path class="lh-chevron__line lh-chevron__line-left" d="M10 50h40"></path>
+      <path class="lh-chevron__line lh-chevron__line-right" d="M90 50H50"></path>
     </g>
   </svg>
 </template>
@@ -45,7 +45,7 @@ limitations under the License.
 <!-- Lighthouse category header -->
 <template id="tmpl-lh-category-header">
   <div class="lh-category-header">
-    <div class="lh-score__gauge"></div>
+    <div class="lh-score__gauge" role="heading" aria-level="2"></div>
     <div class="lh-category-header__description"></div>
   </div>
 </template>
@@ -246,6 +246,7 @@ limitations under the License.
       width: var(--topbar-logo-size);
       height: var(--topbar-logo-size);
       user-select: none;
+      flex: none;
     }
     .lh-topbar__logo .shape {
       fill: var(--report-text-color);
@@ -255,6 +256,9 @@ limitations under the License.
       margin: var(--topbar-padding);
       text-decoration: none;
       color: var(--report-text-color);
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     .lh-tools {
@@ -367,22 +371,22 @@ limitations under the License.
     <a href="" class="lh-topbar__url" target="_blank" rel="noopener"></a>
 
     <div class="lh-tools">
-      <button class="report-icon report-icon--share lh-tools__button" title="Tools menu" aria-label="Toggle report tools menu">
+      <button id="lh-tools-button" class="report-icon report-icon--share lh-tools__button" title="Tools menu" aria-label="Toggle report tools menu" aria-haspopup="menu" aria-expanded="false" aria-controls="lh-tools-dropdown">
         <svg width="100%" height="100%" viewBox="0 0 24 24">
             <path d="M0 0h24v24H0z" fill="none"/>
             <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
         </svg>
       </button>
-      <div class="lh-tools__dropdown">
+      <div id="lh-tools-dropdown" role="menu" class="lh-tools__dropdown" aria-labelledby="lh-tools-button">
          <!-- TODO(i18n): localize tools dropdown -->
-        <a href="#" class="report-icon report-icon--print" data-action="print-summary">Print Summary</a>
-        <a href="#" class="report-icon report-icon--print" data-action="print-expanded">Print Expanded</a>
-        <a href="#" class="report-icon report-icon--copy" data-action="copy">Copy JSON</a>
-        <a href="#" class="report-icon report-icon--download" data-action="save-html">Save as HTML</a>
-        <a href="#" class="report-icon report-icon--download" data-action="save-json">Save as JSON</a>
-        <a href="#" class="report-icon report-icon--open lh-tools--viewer" data-action="open-viewer">Open in Viewer</a>
-        <a href="#" class="report-icon report-icon--open lh-tools--gist" data-action="save-gist">Save as Gist</a>
-        <a href="#" class="report-icon report-icon--dark" data-action="toggle-dark">Toggle Dark Theme</a>
+        <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--print" data-action="print-summary">Print Summary</a>
+        <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--print" data-action="print-expanded">Print Expanded</a>
+        <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--copy" data-action="copy">Copy JSON</a>
+        <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--download" data-action="save-html">Save as HTML</a>
+        <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--download" data-action="save-json">Save as JSON</a>
+        <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--open lh-tools--viewer" data-action="open-viewer">Open in Viewer</a>
+        <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--open lh-tools--gist" data-action="save-gist">Save as Gist</a>
+        <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--dark" data-action="toggle-dark">Toggle Dark Theme</a>
       </div>
     </div>
   </div>
@@ -743,11 +747,11 @@ limitations under the License.
       .lh-crc .crc-node__tree-value {
         margin-left: 10px;
       }
+      .lh-crc .crc-node__tree-value div {
+        display: inline;
+      }
       .lh-crc .crc-node__chain-duration {
         font-weight: 700;
-      }
-      .lh-crc .crc-node__tree-hostname {
-        color: #595959;
       }
       .lh-crc .crc-initial-nav {
         color: #595959;
@@ -771,8 +775,6 @@ limitations under the License.
 
           </span>
           <span class="crc-node__tree-value">
-            <span class="crc-node__tree-file"><!-- fill me: node.request.url.file --></span>
-            <span class="crc-node__tree-hostname">(<!-- fill me: node.request.url.host -->)</span>
 
           </span>
         </div>
@@ -790,9 +792,11 @@ limitations under the License.
       padding: 6px;
     }
     .lh-3p-filter-label, .lh-3p-filter-input {
-      cursor: pointer;
       vertical-align: middle;
       user-select: none;
+    }
+    .lh-3p-filter-input:disabled + .lh-3p-ui-string {
+      text-decoration: line-through;
     }
   </style>
   <div class="lh-3p-filter">

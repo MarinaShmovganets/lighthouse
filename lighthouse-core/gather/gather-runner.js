@@ -12,6 +12,7 @@ const LHError = require('../lib/lh-error.js');
 const URL = require('../lib/url-shim.js');
 const NetworkRecorder = require('../lib/network-recorder.js');
 const constants = require('../config/constants.js');
+const i18n = require('../lib/i18n/i18n.js');
 
 /** @typedef {import('../gather/driver.js')} Driver */
 
@@ -424,11 +425,11 @@ class GatherRunner {
     for (const [gathererName, phaseResultsPromises] of resultsEntries) {
       try {
         const phaseResults = await Promise.all(phaseResultsPromises);
-        // Take last defined pass result as artifact.
+        // Take the last defined pass result as artifact. If none are defined, the undefined check below handles it.
         const definedResults = phaseResults.filter(element => element !== undefined);
         const artifact = definedResults[definedResults.length - 1];
-        // Typecast pretends artifact always provided here, but checked below for top-level `throw`.
-        gathererArtifacts[gathererName] = /** @type {NonVoid<PhaseResult>} */ (artifact);
+        // @ts-ignore tsc can't yet express that gathererName is only a single type in each iteration, not a union of types.
+        gathererArtifacts[gathererName] = artifact;
       } catch (err) {
         // Return error to runner to handle turning it into an error audit.
         gathererArtifacts[gathererName] = err;
@@ -646,7 +647,10 @@ class GatherRunner {
     // In case of load error, save log and trace with an error prefix, return no artifacts for this pass.
     const pageLoadError = GatherRunner.getPageLoadError(passContext, loadData, possibleNavError);
     if (pageLoadError) {
-      log.error('GatherRunner', pageLoadError.friendlyMessage, passContext.url);
+      const localizedMessage = i18n.getFormatted(pageLoadError.friendlyMessage,
+          passContext.settings.locale);
+      log.error('GatherRunner', localizedMessage, passContext.url);
+
       passContext.LighthouseRunWarnings.push(pageLoadError.friendlyMessage);
       GatherRunner._addLoadDataToBaseArtifacts(passContext, loadData,
           `pageLoadError-${passConfig.passName}`);

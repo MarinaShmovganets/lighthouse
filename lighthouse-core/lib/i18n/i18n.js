@@ -64,6 +64,8 @@ const UIStrings = {
   columnRequests: 'Requests',
   /** Label for a column in a data table; entries will be the number of kilobytes transferred to load a set of files. */
   columnTransferSize: 'Transfer Size',
+  /** Label for a column in a data table; entries will be the names of arbitrary objects, e.g. the name of a Javascript library, or the name of a user defined timing event. */
+  columnName: 'Name',
   /** Label for a row in a data table; entries will be the total number and byte size of all resources loaded by a web page. */
   totalResourceType: 'Total',
   /** Label for a row in a data table; entries will be the total number and byte size of all 'Document' resources loaded by a web page. */
@@ -125,11 +127,9 @@ function lookupLocale(locale) {
 
 /**
  * @param {string} icuMessage
- * @param {Record<string, *>} [values]
+ * @param {Record<string, string | number>} [values]
  */
-function _preprocessMessageValues(icuMessage, values) {
-  if (!values) return;
-
+function _preprocessMessageValues(icuMessage, values = {}) {
   const clonedValues = JSON.parse(JSON.stringify(values));
   const parsed = MessageParser.parse(icuMessage);
   // Throw an error if a message's value isn't provided
@@ -137,7 +137,7 @@ function _preprocessMessageValues(icuMessage, values) {
     .filter(el => el.type === 'argumentElement')
     .forEach(el => {
       if (el.id && (el.id in values) === false) {
-        throw new Error('ICU Message contains a value reference that wasn\'t provided');
+        throw new Error(`ICU Message contains a value reference ("${el.id}") that wasn't provided`);
       }
     });
 
@@ -166,7 +166,7 @@ function _preprocessMessageValues(icuMessage, values) {
  * @typedef IcuMessageInstance
  * @prop {string} icuMessageId
  * @prop {string} icuMessage
- * @prop {*} [values]
+ * @prop {Record<string, string | number>|undefined} [values]
  */
 
 /** @type {Map<string, IcuMessageInstance[]>} */
@@ -177,26 +177,41 @@ const _ICUMsgNotFoundMsg = 'ICU message not found in destination locale';
  *
  * @param {LH.Locale} locale
  * @param {string} icuMessageId
- * @param {string=} fallbackMessage
- * @param {*} [values]
+ * @param {string=} uiStringMessage The original string given in 'UIStrings', used as a backup if no locale message can be found
+ * @param {Record<string, string | number>} [values]
  * @return {{formattedString: string, icuMessage: string}}
  */
-function _formatIcuMessage(locale, icuMessageId, fallbackMessage, values) {
+function _formatIcuMessage(locale, icuMessageId, uiStringMessage, values) {
   const localeMessages = LOCALES[locale];
-  const localeMessage = localeMessages[icuMessageId] && localeMessages[icuMessageId].message;
+  if (!localeMessages) throw new Error(`Unsupported locale '${locale}'`);
+  let localeMessage = localeMessages[icuMessageId] && localeMessages[icuMessageId].message;
+
   // fallback to the original english message if we couldn't find a message in the specified locale
   // better to have an english message than no message at all, in some number cases it won't even matter
-  const messageForMessageFormat = localeMessage || fallbackMessage;
-  if (messageForMessageFormat === undefined) throw new Error(_ICUMsgNotFoundMsg);
+  if (!localeMessage && uiStringMessage) {
+    // Try to use the original uiStringMessage
+    localeMessage = uiStringMessage;
+
+    // Warn the user that the UIString message != the `en` message ∴ they should update the strings
+    if (!LOCALES.en[icuMessageId] || localeMessage !== LOCALES.en[icuMessageId].message) {
+      log.warn('i18n', `Message "${icuMessageId}" does not match its 'en' counterpart. ` +
+        `Run 'i18n' to update.`);
+    }
+  }
+  // At this point, there is no reasonable string to show to the user, so throw.
+  if (!localeMessage) {
+    throw new Error(_ICUMsgNotFoundMsg);
+  }
+
   // when using accented english, force the use of a different locale for number formatting
   const localeForMessageFormat = (locale === 'en-XA' || locale === 'en-XL') ? 'de-DE' : locale;
   // pre-process values for the message format like KB and milliseconds
-  const valuesForMessageFormat = _preprocessMessageValues(messageForMessageFormat, values);
+  const valuesForMessageFormat = _preprocessMessageValues(localeMessage, values);
 
-  const formatter = new MessageFormat(messageForMessageFormat, localeForMessageFormat, formats);
+  const formatter = new MessageFormat(localeMessage, localeForMessageFormat, formats);
   const formattedString = formatter.format(valuesForMessageFormat);
 
-  return {formattedString, icuMessage: messageForMessageFormat};
+  return {formattedString, icuMessage: localeMessage};
 }
 
 /** @param {string[]} pathInLHR */
@@ -220,19 +235,25 @@ function _formatPathAsString(pathInLHR) {
  * @return {LH.I18NRendererStrings}
  */
 function getRendererFormattedStrings(locale) {
-  const icuMessageIds = Object.keys(LOCALES[locale]).filter(f => f.includes('core/report/html/'));
+  const localeMessages = LOCALES[locale];
+  if (!localeMessages) throw new Error(`Unsupported locale '${locale}'`);
+
+  const icuMessageIds = Object.keys(localeMessages).filter(f => f.includes('core/report/html/'));
   /** @type {LH.I18NRendererStrings} */
   const strings = {};
   for (const icuMessageId of icuMessageIds) {
     const [filename, varName] = icuMessageId.split(' | ');
     if (!filename.endsWith('util.js')) throw new Error(`Unexpected message: ${icuMessageId}`);
-    strings[varName] = LOCALES[locale][icuMessageId].message;
+    strings[varName] = localeMessages[icuMessageId].message;
   }
 
   return strings;
 }
 
 /**
+ * Register a file's UIStrings with i18n, return function to
+ * generate the string ids.
+ *
  * @param {string} filename
  * @param {Record<string, string>} fileStrings
  */
@@ -240,7 +261,13 @@ function createMessageInstanceIdFn(filename, fileStrings) {
   /** @type {Record<string, string>} */
   const mergedStrings = {...UIStrings, ...fileStrings};
 
-  /** @param {string} icuMessage @param {*} [values] */
+  /**
+   * Convert a message string & replacement values into an
+   * indexed id value in the form '{messageid} | # {index}'.
+   *
+   * @param {string} icuMessage
+   * @param {Record<string, string | number>} [values]
+   * */
   const getMessageInstanceIdFn = (icuMessage, values) => {
     const keyname = Object.keys(mergedStrings).find(key => mergedStrings[key] === icuMessage);
     if (!keyname) throw new Error(`Could not locate: ${icuMessage}`);
@@ -290,7 +317,7 @@ function getFormatted(icuMessageIdOrRawString, locale) {
 /**
  * @param {LH.Locale} locale
  * @param {string} icuMessageId
- * @param {*} [values]
+ * @param {Record<string, string | number>} [values]
  * @return {string}
  */
 function getFormattedFromIdAndValues(locale, icuMessageId, values) {
