@@ -227,7 +227,7 @@ function collateResults(localConsole, actual, expected) {
     artifactAssertions = artifactNames.map(artifactName => {
       if (!(artifactName in actualArtifacts)) {
         localConsole.log(log.redify('Error: ') +
-        `Config run did not generate artifact ${artifactName}`);
+          `Config run did not generate artifact ${artifactName}`);
       }
 
       const actualResult = actualArtifacts[artifactName];

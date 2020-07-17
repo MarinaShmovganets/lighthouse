@@ -103,7 +103,7 @@ class ElementScreenshotRenderer {
 
   /**
    * @param {DOM} dom
-   * @param {LH.Artifacts.FullPageScreenshot} fullPageScreenshot
+   * @param {LH.Audit.Details.FullPageScreenshot} fullPageScreenshot
    */
   static createBackgroundImageStyle(dom, fullPageScreenshot) {
     const styleEl = dom.createElement('style');
@@ -120,7 +120,7 @@ class ElementScreenshotRenderer {
    * Should only be called exactly once per report render.
    * @param {DOM} dom
    * @param {ParentNode} templateContext
-   * @param {LH.Artifacts.FullPageScreenshot} fullPageScreenshot
+   * @param {LH.Audit.Details.FullPageScreenshot} fullPageScreenshot
    */
   static installOverlayFeature(dom, templateContext, fullPageScreenshot) {
     const reportEl = dom.find('.lh-report', dom.document());
@@ -183,7 +183,7 @@ class ElementScreenshotRenderer {
    * Used to render both the thumbnail preview in details tables and the full-page screenshot in the lightbox.
    * @param {DOM} dom
    * @param {ParentNode} templateContext
-   * @param {LH.Artifacts.FullPageScreenshot} fullPageScreenshot
+   * @param {LH.Audit.Details.FullPageScreenshot} fullPageScreenshot
    * @param {LH.Artifacts.Rect} elementRectInScreenshotCoords Region of screenshot to highlight.
    * @param {Size} renderContainerSizeInDisplayCoords
    * @return {Element}

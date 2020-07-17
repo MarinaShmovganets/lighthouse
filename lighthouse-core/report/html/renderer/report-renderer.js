@@ -193,7 +193,7 @@ class ReportRenderer {
     Util.i18n = i18n;
     Util.reportJson = report;
 
-    const fullPageScreenshot = /** @type {LH.Artifacts.FullPageScreenshot | undefined} */ (
+    const fullPageScreenshot = /** @type {LH.Audit.Details.FullPageScreenshot | undefined} */ (
       report.audits['full-page-screenshot'] && report.audits['full-page-screenshot'].details);
     const detailsRenderer = new DetailsRenderer(this._dom, {
       fullPageScreenshot,

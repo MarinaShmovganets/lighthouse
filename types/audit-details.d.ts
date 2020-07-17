@@ -62,6 +62,10 @@ declare global {
         data: string;
       }
 
+      /**
+       * A screenshot of the entire page, including width and height information.
+       * Used for element screenshots.
+       */
       export interface FullPageScreenshot {
         type: 'full-page-screenshot';
         data: string;
