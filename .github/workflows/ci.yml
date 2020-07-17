@@ -115,17 +115,13 @@ jobs:
       matrix:
         chrome-channel: ['stable', 'ToT']
         smoke-test-invert: [false, true]
-        os: [ubuntu-latest]
-        include:
-          - os: windows-latest
-            chrome-channel: 'stable'
       # e.g. if smoke 0 fails, continue with smoke 1 anyway
       fail-fast: false
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     env:
       # The smokehouse tests run by job `smoke_0`. `smoke_1` will run the rest.
       SMOKE_GROUP_1: a11y oopif pwa pwa2 pwa3 dbw redirects errors offline
-    name: smoke_${{ strategy.job-index }}_${{ matrix.chrome-channel }}_${{ matrix.os }}
+    name: smoke_${{ strategy.job-index }}_${{ matrix.chrome-channel }}
 
     steps:
     - name: git clone
@@ -149,11 +145,32 @@ jobs:
     - run: yarn --frozen-lockfile
 
     - run: sudo apt-get install xvfb
-      if: matrix.os == 'ubuntu-latest'
-
     - name: Run smoke tests
       run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2 --invert-match ${{ matrix.smoke-test-invert }} $SMOKE_GROUP_1
-      if: matrix.os == 'ubuntu-latest'
+  
+  # Only run smoke tests for windows against stable chrome.
+  smoke-windows:
+    strategy:
+      matrix:
+        smoke-test-invert: [false, true]
+      # e.g. if smoke 0 fails, continue with smoke 1 anyway
+      fail-fast: false
+    runs-on: windows-latest
+    env:
+      # The smokehouse tests run by job `smoke_0`. `smoke_1` will run the rest.
+      SMOKE_GROUP_1: a11y oopif pwa pwa2 pwa3 dbw redirects errors offline
+    name: smoke_${{ strategy.job-index }}_stable_windows
+
+    steps:
+    - name: git clone
+      uses: actions/checkout@v2
+
+    - name: Use Node.js 10.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.x
+
+    - run: yarn --frozen-lockfile
+
     - name: Run smoke tests
       run: yarn smoke --debug -j=1 --retries=2 dbw
-      if: matrix.os == 'windows-latest'
