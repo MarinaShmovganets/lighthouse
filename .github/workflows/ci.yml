@@ -103,8 +103,12 @@ jobs:
     - name: yarn unit
       run: xvfb-run --auto-servernum yarn unit
       if: matrix.os == 'ubuntu-latest'
+
+    # For windows, just test the potentially platform-specifc code.
     - name: yarn unit
-      run: yarn unit
+      run: yarn unit-cli
+      if: matrix.os == 'windows-latest'
+    - run: yarn diff:sample-json
       if: matrix.os == 'windows-latest'
 
   # `smoke` runs as a matrix across 4 jobs:
