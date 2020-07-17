@@ -25,7 +25,7 @@ const URL_PREFIXES = ['http://', 'https://', 'data:'];
 class DetailsRenderer {
   /**
    * @param {DOM} dom
-   * @param {{fullPageScreenshot?: LH.Artifacts.FullPageScreenshot}} [options]
+   * @param {{fullPageScreenshot?: LH.Audit.Details.FullPageScreenshot}} [options]
    */
   constructor(dom, options = {}) {
     this._dom = dom;

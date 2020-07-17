@@ -299,8 +299,10 @@ class ReportUIFeatures {
 
   _setupElementScreenshotOverlay() {
     const json = this.json;
-    const fullPageScreenshot = /** @type {LH.Audit.Details.FullPageScreenshot | undefined} */ (
-      json.audits['full-page-screenshot'] && json.audits['full-page-screenshot'].details);
+    const fullPageScreenshot =
+      json.audits['full-page-screenshot'] && json.audits['full-page-screenshot'].details &&
+      json.audits['full-page-screenshot'].details.type === 'full-page-screenshot' ?
+      json.audits['full-page-screenshot'].details : undefined;
     if (!fullPageScreenshot) return;
 
     ElementScreenshotRenderer.installOverlayFeature(
