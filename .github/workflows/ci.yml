@@ -158,9 +158,6 @@ jobs:
       # e.g. if smoke 0 fails, continue with smoke 1 anyway
       fail-fast: false
     runs-on: windows-latest
-    env:
-      # The smokehouse tests run by job `smoke_0`. `smoke_1` will run the rest.
-      SMOKE_GROUP_1: a11y oopif pwa pwa2 pwa3 dbw redirects errors offline
     name: smoke_stable_windows
 
     steps:
