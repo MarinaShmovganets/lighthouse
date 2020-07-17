@@ -102,6 +102,7 @@ class ElementScreenshotRenderer {
   }
 
   /**
+   * Called externally and must be injected to the report in order to use this renderer.
    * @param {DOM} dom
    * @param {LH.Audit.Details.FullPageScreenshot} fullPageScreenshot
    */
