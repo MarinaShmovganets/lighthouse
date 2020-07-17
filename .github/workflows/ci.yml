@@ -177,4 +177,4 @@ jobs:
     - run: yarn --frozen-lockfile
 
     - name: Run smoke tests
-      run: yarn smoke --debug -j=1 --retries=2 dbw
+      run: yarn smoke --debug -j=1 --retries=2 --invert-match ${{ matrix.smoke-test-invert }} $SMOKE_GROUP_1
