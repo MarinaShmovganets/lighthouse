@@ -8,7 +8,6 @@
 const makeComputedArtifact = require('../computed-artifact.js');
 const ComputedMetric = require('./metric.js');
 const LanternSpeedIndex = require('./lantern-speed-index.js');
-const TraceOfTab = require('../trace-of-tab.js');
 const Speedline = require('../speedline.js');
 
 class SpeedIndex extends ComputedMetric {
@@ -28,9 +27,7 @@ class SpeedIndex extends ComputedMetric {
    */
   static async computeObservedMetric(data, context) {
     const speedline = await Speedline.request(data.trace, context);
-    const traceOfTab = await TraceOfTab.request(data.trace, context);
-    const firstPaint = traceOfTab.timings.firstPaint || 0;
-    const timing = Math.max(Math.round(speedline.speedIndex), firstPaint);
+    const timing = Math.round(speedline.speedIndex);
     const timestamp = (timing + speedline.beginning) * 1000;
     return Promise.resolve({timing, timestamp});
   }
