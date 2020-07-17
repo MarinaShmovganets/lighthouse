@@ -50,8 +50,7 @@ class FullPageScreenshot extends Gatherer {
 
     // TODO: elements collected earlier in gathering are likely to have been shifted by now.
     // The lower in the page, the more likely (footer elements especially).
-    // Possible fix: somehow iterate all the elements we gathered w/ bounding rects
-    // and do a last-call on their position.
+    // https://github.com/GoogleChrome/lighthouse/issues/11118
 
     const result = await driver.sendCommand('Page.captureScreenshot', {
       format: 'jpeg',
@@ -115,6 +114,7 @@ class FullPageScreenshot extends Gatherer {
         // about scripted puppeteer usages? Better to introduce a "setEmulation" callback
         // in the LH runner api, which for ex. puppeteer consumers would setup puppeteer emulation,
         // and then just call that to reset?
+        // https://github.com/GoogleChrome/lighthouse/issues/11122
         const observedDeviceMetrics = await driver.evaluateAsync(`(function() {
           return {
             width: document.documentElement.clientWidth,

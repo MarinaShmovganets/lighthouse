@@ -117,14 +117,16 @@ class ElementScreenshotRenderer {
 
   /**
    * Installs the lightbox elements and wires up click listeners to all .lh-element-screenshot elements.
-   * Should only be called exactly once per report render.
    * @param {DOM} dom
    * @param {ParentNode} templateContext
    * @param {LH.Audit.Details.FullPageScreenshot} fullPageScreenshot
    */
   static installOverlayFeature(dom, templateContext, fullPageScreenshot) {
     const reportEl = dom.find('.lh-report', dom.document());
-    reportEl.classList.add('lh-feature-screenshot-overlay');
+    const screenshotOverlayClass = 'lh-feature-screenshot-overlay';
+    if (reportEl.classList.contains(screenshotOverlayClass)) return;
+    reportEl.classList.add(screenshotOverlayClass);
+
     const renderContainerSizeInDisplayCoords = {
       width: dom.document().documentElement.clientWidth,
       height: dom.document().documentElement.clientHeight * 0.75,
