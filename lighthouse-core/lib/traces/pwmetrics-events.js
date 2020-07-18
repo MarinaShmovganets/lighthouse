@@ -126,17 +126,16 @@ class Metrics {
   /**
    * Get the trace event data for our timeOrigin
    * @param {Array<{ts: number, id: string, name: string}>} metrics
-   * @return {{pid: number, tid: number, ts: number} | undefined}
+   * @return {{pid: number, tid: number, ts: number} | {errorMessage: string}}
    */
   getTimeOriginEvt(metrics) {
     const timeOriginMetric = metrics.find(e => e.id === 'timeorigin');
-    if (!timeOriginMetric) return;
+    if (!timeOriginMetric) return {errorMessage: 'timeorigin Metric not found in definitions'};
     try {
       const frameIds = TraceProcessor.findMainFrameIds(this._traceEvents);
       return {pid: frameIds.pid, tid: frameIds.tid, ts: timeOriginMetric.ts};
     } catch (err) {
-      log.error('pwmetrics-events', 'failed to find time origin', err.message);
-      return undefined;
+      return {errorMessage: err.message};
     }
   }
 
@@ -181,8 +180,8 @@ class Metrics {
     }
 
     const timeOriginEvt = this.getTimeOriginEvt(metrics);
-    if (!timeOriginEvt) {
-      log.error('pwmetrics-events', 'Reference timeOrigin not found');
+    if ('errorMessage' in timeOriginEvt) {
+      log.error('pwmetrics-events', `Reference timeOrigin error: ${timeOriginEvt.errorMessage}`);
       return [];
     }
 

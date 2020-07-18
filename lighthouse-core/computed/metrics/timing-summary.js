@@ -80,6 +80,8 @@ class TimingSummary {
       // Include all timestamps of interest from trace of tab
       observedTimeOrigin: traceOfTab.timings.timeOrigin,
       observedTimeOriginTs: traceOfTab.timestamps.timeOrigin,
+      // For now, navigationStart is always timeOrigin.
+      // These properties might be undefined in a future major version, but preserve them for now.
       observedNavigationStart: traceOfTab.timings.timeOrigin,
       observedNavigationStartTs: traceOfTab.timestamps.timeOrigin,
       observedFirstPaint: traceOfTab.timings.firstPaint,

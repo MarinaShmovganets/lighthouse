@@ -387,7 +387,7 @@ Object {
         assert.ok(trace.lcpInvalidated);
       });
 
-      it('ignores candidates before navstart', () => {
+      it('ignores candidates before timeOrigin', () => {
         const testTrace = createTestTrace({timeOrigin: 1100, traceEnd: 2000});
         const frame = testTrace.traceEvents[0].args.frame;
         const args = {frame};
@@ -599,7 +599,7 @@ Object {
     });
 
 
-    it('throws on traces missing a timeOrigin', () => {
+    it('throws on traces missing a navigationStart', () => {
       expect(() => TraceProcessor.computeTraceOfTab(noNavStartTrace))
         .toThrowError('navigationStart');
     });
