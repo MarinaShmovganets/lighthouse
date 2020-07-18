@@ -109,7 +109,7 @@ class ElementScreenshotRenderer {
   static createBackgroundImageStyle(dom, fullPageScreenshot) {
     const styleEl = dom.createElement('style');
     styleEl.id = 'full-page-screenshot-style';
-    styleEl.innerText = `
+    styleEl.textContent = `
       .lh-element-screenshot__image {
         background-image: url(${fullPageScreenshot.data})
       }`;
