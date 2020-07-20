@@ -11,6 +11,13 @@
 /** @typedef {LH.Artifacts.Rect} Rect */
 /** @typedef {{width: number, height: number}} Size */
 
+
+/**
+ * @overview These functions define {Rect}s and {Size}s using two different coordinate spaces:
+ *   1. Screenshot coords: where 0,0 is the top left of the screenshot image
+ *   2. Display coords: that match the CSS pixel coordinate space of the LH report's page.
+ */
+ 
 /**
  * @param {number} value
  * @param {number} min
@@ -110,7 +117,7 @@ class ElementScreenshotRenderer {
   static createBackgroundImageStyle(dom, fullPageScreenshot) {
     const styleEl = dom.createElement('style');
     styleEl.id = 'full-page-screenshot-style';
-    styleEl.innerText = `
+    styleEl.textContent = `
       .lh-element-screenshot__image {
         background-image: url(${fullPageScreenshot.data})
       }`;
@@ -213,6 +220,7 @@ class ElementScreenshotRenderer {
     };
     elementPreviewSizeInScreenshotCoords.width =
       Math.min(fullPageScreenshot.width, elementPreviewSizeInScreenshotCoords.width);
+    /* This preview size is either the size of the thumbnail or size of the Lightbox */
     const elementPreviewSizeInDisplayCoords = {
       width: elementPreviewSizeInScreenshotCoords.width * zoomFactor,
       height: elementPreviewSizeInScreenshotCoords.height * zoomFactor,
