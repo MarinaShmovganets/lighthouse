@@ -172,4 +172,4 @@ jobs:
     - run: yarn --frozen-lockfile
 
     - name: Run smoke tests
-      run: yarn smoke --debug -j=1 --retries=2 dbw a11y errors oopif redirects seo offline lantern metrics
+      run: yarn smoke --debug -j=1 --retries=2 dbw a11y oopif redirects seo offline lantern metrics
