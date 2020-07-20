@@ -104,8 +104,8 @@ jobs:
       run: xvfb-run --auto-servernum yarn unit
       if: matrix.os == 'ubuntu-latest'
 
-    # For windows, just test the potentially platform-specifc code.
-    - name: yarn unit
+    # For windows, just test the potentially platform-specific code.
+    - name: yarn unit-cli
       run: yarn unit-cli
       if: matrix.os == 'windows-latest'
     - run: yarn diff:sample-json
@@ -169,4 +169,4 @@ jobs:
     - run: yarn --frozen-lockfile
 
     - name: Run smoke tests
-      run: yarn smoke --debug -j=1 --retries=2 dbw a11y oopif redirects seo offline lantern metrics
+      run: yarn smoke --debug -j=1 --retries=2 dbw oopif offline lantern metrics
