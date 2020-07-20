@@ -154,9 +154,6 @@ jobs:
   
   # Only run smoke tests for windows against stable chrome.
   smoke-windows:
-    strategy:
-      # e.g. if smoke 0 fails, continue with smoke 1 anyway
-      fail-fast: false
     runs-on: windows-latest
     name: smoke_stable_windows
 
