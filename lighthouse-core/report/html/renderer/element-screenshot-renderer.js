@@ -5,18 +5,17 @@
  */
 'use strict';
 
+/**
+ * @fileoverview These functions define {Rect}s and {Size}s using two different coordinate spaces:
+ *   1. Screenshot coords: where 0,0 is the top left of the screenshot image
+ *   2. Display coords: that match the CSS pixel coordinate space of the LH report's page.
+ */
+
 /* globals self Util */
 
 /** @typedef {import('./dom.js')} DOM */
 /** @typedef {LH.Artifacts.Rect} Rect */
 /** @typedef {{width: number, height: number}} Size */
-
-
-/**
- * @overview These functions define {Rect}s and {Size}s using two different coordinate spaces:
- *   1. Screenshot coords: where 0,0 is the top left of the screenshot image
- *   2. Display coords: that match the CSS pixel coordinate space of the LH report's page.
- */
 
 /**
  * @param {number} value
