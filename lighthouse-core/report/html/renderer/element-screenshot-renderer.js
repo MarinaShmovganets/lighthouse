@@ -17,7 +17,7 @@
  *   1. Screenshot coords: where 0,0 is the top left of the screenshot image
  *   2. Display coords: that match the CSS pixel coordinate space of the LH report's page.
  */
- 
+
 /**
  * @param {number} value
  * @param {number} min
