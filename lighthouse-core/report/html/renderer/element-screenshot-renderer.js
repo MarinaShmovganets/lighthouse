@@ -68,26 +68,27 @@ class ElementScreenshotRenderer {
   }
 
   /**
+   * Render a clipPath SVG element to assist marking the element's rect.
+   * The elementRect and previewSize are in screenshot coordinate scale.
    * @param {DOM} dom
    * @param {HTMLElement} maskEl
    * @param {{left: number, top: number}} positionClip
-   * @param {LH.Artifacts.Rect} elementRectInScreenshotCoords
-   * @param {Size} elementPreviewSizeInScreenshotCoords
+   * @param {LH.Artifacts.Rect} elementRect
+   * @param {Size} elementPreviewSize
    */
-  static renderClipPath(dom, maskEl, positionClip,
-      elementRectInScreenshotCoords, elementPreviewSizeInScreenshotCoords) {
+  static renderClipPathInScreenshot(dom, maskEl, positionClip, elementRect, elementPreviewSize) {
     const clipPathEl = dom.find('clipPath', maskEl);
     const clipId = `clip-${Util.getUniqueSuffix()}`;
     clipPathEl.id = clipId;
     maskEl.style.clipPath = `url(#${clipId})`;
 
     // Normalize values between 0-1.
-    const top = positionClip.top / elementPreviewSizeInScreenshotCoords.height;
+    const top = positionClip.top / elementPreviewSize.height;
     const bottom =
-      top + elementRectInScreenshotCoords.height / elementPreviewSizeInScreenshotCoords.height;
-    const left = positionClip.left / elementPreviewSizeInScreenshotCoords.width;
+      top + elementRect.height / elementPreviewSize.height;
+    const left = positionClip.left / elementPreviewSize.width;
     const right =
-      left + elementRectInScreenshotCoords.width / elementPreviewSizeInScreenshotCoords.width;
+      left + elementRect.width / elementPreviewSize.width;
 
     const polygonsPoints = [
       `0,0             1,0            1,${top}          0,${top}`,
@@ -128,7 +129,7 @@ class ElementScreenshotRenderer {
     if (reportEl.classList.contains(screenshotOverlayClass)) return;
     reportEl.classList.add(screenshotOverlayClass);
 
-    const renderContainerSizeInDisplayCoords = {
+    const maxLightboxSize = {
       width: dom.document().documentElement.clientWidth,
       height: dom.document().documentElement.clientHeight * 0.75,
     };
@@ -154,7 +155,7 @@ class ElementScreenshotRenderer {
         templateContext,
         fullPageScreenshot,
         elementRectInScreenshotCoords,
-        renderContainerSizeInDisplayCoords
+        maxLightboxSize
       ));
       overlay.addEventListener('click', () => {
         overlay.remove();
@@ -188,11 +189,11 @@ class ElementScreenshotRenderer {
    * @param {ParentNode} templateContext
    * @param {LH.Audit.Details.FullPageScreenshot} fullPageScreenshot
    * @param {LH.Artifacts.Rect} elementRectInScreenshotCoords Region of screenshot to highlight.
-   * @param {Size} renderContainerSizeInDisplayCoords
+   * @param {Size} maxRenderSizeInDisplayCoords e.g. maxThumbnailSize or maxLightboxSize.
    * @return {Element}
    */
   static render(dom, templateContext, fullPageScreenshot, elementRectInScreenshotCoords,
-      renderContainerSizeInDisplayCoords) {
+      maxRenderSizeInDisplayCoords) {
     const tmpl = dom.cloneTemplate('#tmpl-lh-element-screenshot', templateContext);
     const containerEl = dom.find('.lh-element-screenshot', tmpl);
 
@@ -204,11 +205,11 @@ class ElementScreenshotRenderer {
     // Zoom out when highlighted region takes up most of the viewport.
     // This provides more context for where on the page this element is.
     const zoomFactor =
-      this._computeZoomFactor(elementRectInScreenshotCoords, renderContainerSizeInDisplayCoords);
+      this._computeZoomFactor(elementRectInScreenshotCoords, maxRenderSizeInDisplayCoords);
 
     const elementPreviewSizeInScreenshotCoords = {
-      width: renderContainerSizeInDisplayCoords.width / zoomFactor,
-      height: renderContainerSizeInDisplayCoords.height / zoomFactor,
+      width: maxRenderSizeInDisplayCoords.width / zoomFactor,
+      height: maxRenderSizeInDisplayCoords.height / zoomFactor,
     };
     elementPreviewSizeInScreenshotCoords.width =
       Math.min(fullPageScreenshot.width, elementPreviewSizeInScreenshotCoords.width);
@@ -245,7 +246,7 @@ class ElementScreenshotRenderer {
     maskEl.style.width = elementPreviewSizeInDisplayCoords.width + 'px';
     maskEl.style.height = elementPreviewSizeInDisplayCoords.height + 'px';
 
-    ElementScreenshotRenderer.renderClipPath(dom, maskEl, positions.clip,
+    ElementScreenshotRenderer.renderClipPathInScreenshot(dom, maskEl, positions.clip,
       elementRectInScreenshotCoords, elementPreviewSizeInScreenshotCoords);
 
     return containerEl;

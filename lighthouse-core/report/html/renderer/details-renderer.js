@@ -512,13 +512,13 @@ class DetailsRenderer {
       return element;
     }
 
-    const thumbnailSize = {width: 147, height: 100};
+    const maxThumbnailSize = {width: 147, height: 100};
     const elementScreenshot = ElementScreenshotRenderer.render(
       this._dom,
       this._templateContext,
       this._fullPageScreenshot,
       item.boundingRect,
-      thumbnailSize
+      maxThumbnailSize
     );
     element.prepend(elementScreenshot);
 
