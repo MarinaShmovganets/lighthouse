@@ -32,24 +32,24 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
   function makeAnimationTraceEvent(id, nodeId) {
     return {
       args: {
-          data: {
-              id,
-              name: "",
-              nodeId,
-              nodeName: "DIV",
-              state: "running"
-          }
+        data: {
+          id,
+          name: '',
+          nodeId,
+          nodeName: 'DIV',
+          state: 'running',
+        },
       },
-      cat: "blink.animations,devtools.timeline,benchmark,rail",
+      cat: 'blink.animations,devtools.timeline,benchmark,rail',
       id2: {
-          local: "0x363db876c8"
+        local: '0x363db876c8',
       },
-      name: "Animation",
-      ph: "b",
+      name: 'Animation',
+      ph: 'b',
       pid: 34054,
-      scope: "blink.animations,devtools.timeline,benchmark,rail",
+      scope: 'blink.animations,devtools.timeline,benchmark,rail',
       tid: 775,
-      ts: 35506271512
+      ts: 35506271512,
     };
   }
 
@@ -295,15 +295,15 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
 
   it('gets animated node ids without duplicates', () => {
     const traceEvents = [
-      makeAnimationTraceEvent("1", 5),
-      makeAnimationTraceEvent("2", 5),
-      makeAnimationTraceEvent("3", 6),
-    ]
+      makeAnimationTraceEvent('1', 5),
+      makeAnimationTraceEvent('2', 5),
+      makeAnimationTraceEvent('3', 6),
+    ];
 
     const result = TraceElementsGatherer.getAnimatedElements(traceEvents);
     expect(result).toEqual([
       {nodeId: 5},
       {nodeId: 6},
-    ])
+    ]);
   });
 });

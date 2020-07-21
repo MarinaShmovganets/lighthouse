@@ -151,7 +151,7 @@ class TraceElements extends Gatherer {
     const animatedElementData = [];
     for (const nodeId of animatedElementIds) {
       if (nodeId !== undefined) {
-        animatedElementData.push({nodeId})
+        animatedElementData.push({nodeId});
       }
     }
     return animatedElementData;
@@ -170,8 +170,6 @@ class TraceElements extends Gatherer {
 
     const {largestContentfulPaintEvt, mainThreadEvents} =
       TraceProcessor.computeTraceOfTab(loadData.trace);
-    /** @type {Array<TraceElementData>} */
-    const backendNodeData = [];
 
     const lcpNodeId = TraceElements.getNodeIDFromTraceEvent(largestContentfulPaintEvt);
     const clsNodeData = TraceElements.getTopLayoutShiftElements(mainThreadEvents);
