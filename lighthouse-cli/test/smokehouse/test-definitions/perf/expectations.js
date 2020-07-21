@@ -11,6 +11,59 @@
  */
 module.exports = [
   {
+    artifacts: {
+      TraceElements: [
+        {
+          "metricName": "largest-contentful-paint",
+          "devtoolsNodePath": "0,HTML,1,BODY",
+          "selector": "body",
+          "nodeLabel": "body",
+          "snippet": "<body>",
+          "boundingRect": {
+            "top": 8,
+            "bottom": 632,
+            "left": 8,
+            "right": 352,
+            "width": 344,
+            "height": 624
+          },
+          "nodeId": 5
+        },
+        {
+          "metricName": "cumulative-layout-shift",
+          "devtoolsNodePath": "0,HTML,1,BODY,1,SPAN",
+          "selector": "body > span",
+          "nodeLabel": "Lobster Two!",
+          "snippet": "<span style=\"font-family: 'Lobster Two'\">",
+          "boundingRect": {
+            "top": 28,
+            "bottom": 48,
+            "left": 189,
+            "right": 263,
+            "width": 74,
+            "height": 20
+          },
+          "score": 0.0008036024305555555,
+          "nodeId": 6
+        },
+        {
+          "metricName": "CLS/non-composited-animations",
+          "devtoolsNodePath": "0,HTML,1,BODY,8,DIV",
+          "selector": "body > div#animate-me",
+          "nodeLabel": "div",
+          "snippet": "<div id=\"animate-me\">",
+          "boundingRect": {
+            "top": 68,
+            "bottom": 168,
+            "left": 8,
+            "right": 108,
+            "width": 100,
+            "height": 100
+          },
+          "nodeId": 8
+        },
+      ]
+    },
     lhr: {
       requestedUrl: 'http://localhost:10200/preload.html',
       finalUrl: 'http://localhost:10200/preload.html',
