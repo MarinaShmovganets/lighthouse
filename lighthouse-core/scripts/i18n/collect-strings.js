@@ -186,7 +186,7 @@ function _lhlValidityChecks(lhlMessage) {
         throw new Error(`Content cannot appear outside plural or select ICU messages. Instead, repeat that content in each option (message: '${lhlMessage}')`);
       }
 
-      // Each option value must also be valid lhlMessages.
+      // Each option value must also be a valid lhlMessage.
       for (const option of element.format.options) {
         const optionStr = lhlMessage.slice(option.value.location.start.offset, option.value.location.end.offset);
         _lhlValidityChecks(optionStr);
