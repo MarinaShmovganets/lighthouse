@@ -10,7 +10,7 @@
 const TraceElementsGatherer = require('../../../gather/gatherers/trace-elements.js');
 
 describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
-  function makeTraceEvent(score, impactedNodes, had_recent_input = false) {
+  function makeLayoutShiftTraceEvent(score, impactedNodes, had_recent_input = false) {
     return {
       name: 'LayoutShift',
       cat: 'loading',
@@ -26,6 +26,30 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
         },
         frame: '3C4CBF06AF1ED5B9EAA59BECA70111F4',
       },
+    };
+  }
+
+  function makeAnimationTraceEvent(id, nodeId) {
+    return {
+      args: {
+          data: {
+              id,
+              name: "",
+              nodeId,
+              nodeName: "DIV",
+              state: "running"
+          }
+      },
+      cat: "blink.animations,devtools.timeline,benchmark,rail",
+      id2: {
+          local: "0x363db876c8"
+      },
+      name: "Animation",
+      ph: "b",
+      pid: 34054,
+      scope: "blink.animations,devtools.timeline,benchmark,rail",
+      tid: 775,
+      ts: 35506271512
     };
   }
 
@@ -45,7 +69,7 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
 
   it('returns layout shift data sorted by impact area', () => {
     const traceEvents = [
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 60,
@@ -70,14 +94,14 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
 
   it('does not ignore initial trace events with input', () => {
     const traceEvents = [
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 1,
           old_rect: [0, 0, 200, 100],
         },
       ], true),
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 2,
@@ -95,14 +119,14 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
 
   it('does ignore later trace events with input', () => {
     const traceEvents = [
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 1,
           old_rect: [0, 0, 200, 100],
         },
       ]),
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 2,
@@ -119,49 +143,49 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
 
   it('correctly ignores trace events with input (complex)', () => {
     const traceEvents = [
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 1,
           old_rect: [0, 0, 200, 100],
         },
       ], true),
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 2,
           old_rect: [0, 0, 200, 100],
         },
       ], true),
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 3,
           old_rect: [0, 0, 200, 100],
         },
       ]),
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 4,
           old_rect: [0, 0, 200, 100],
         },
       ]),
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 5,
           old_rect: [0, 0, 200, 100],
         },
       ], true),
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 6,
           old_rect: [0, 0, 200, 100],
         },
       ], true),
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 7,
@@ -182,7 +206,7 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
 
   it('combines scores for the same nodeId accross multiple shift events', () => {
     const traceEvents = [
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
           node_id: 60,
@@ -194,7 +218,7 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
           old_rect: [0, 100, 200, 100],
         },
       ]),
-      makeTraceEvent(0.3, [
+      makeLayoutShiftTraceEvent(0.3, [
         {
           new_rect: [0, 100, 200, 200],
           node_id: 60,
@@ -214,7 +238,7 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
 
   it('returns only the top five values', () => {
     const traceEvents = [
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 100, 100, 100],
           node_id: 1,
@@ -226,14 +250,14 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
           old_rect: [0, 100, 100, 100],
         },
       ]),
-      makeTraceEvent(1, [
+      makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 100, 200, 200],
           node_id: 3,
           old_rect: [0, 100, 200, 200],
         },
       ]),
-      makeTraceEvent(0.75, [
+      makeLayoutShiftTraceEvent(0.75, [
         {
           new_rect: [0, 0, 100, 50],
           node_id: 4,
@@ -267,5 +291,19 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
     ]);
     const total = sumScores(result);
     expectEqualFloat(total, 2.5);
+  });
+
+  it('gets animated node ids without duplicates', () => {
+    const traceEvents = [
+      makeAnimationTraceEvent("1", 5),
+      makeAnimationTraceEvent("2", 5),
+      makeAnimationTraceEvent("3", 6),
+    ]
+
+    const result = TraceElementsGatherer.getAnimatedElements(traceEvents);
+    expect(result).toEqual([
+      {nodeId: 5},
+      {nodeId: 6},
+    ])
   });
 });

@@ -497,6 +497,7 @@ declare global {
         snippet?: string;
         score?: number;
         boundingRect: Rect;
+        nodeId: number;
       }
 
       export interface ViewportDimensions {
