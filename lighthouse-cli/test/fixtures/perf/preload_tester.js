@@ -8,7 +8,6 @@
 
 document.write('<script src="/perf/level-2.js?delay=500"></script>');
 document.write('<script src="/perf/level-2.js?warning&delay=500"></script>');
-document.write('<div id="animate-me"></div>')
 
 // delay our preconnect-candidates so that they're not assumed to be working already
 setTimeout(() => {

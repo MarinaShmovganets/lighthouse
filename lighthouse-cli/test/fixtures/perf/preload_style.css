@@ -6,16 +6,3 @@
  body {
    font-family: "Lobster";
  }
-
- #animate-me {
-   width: 100px;
-   height: 100px;
-   background-color: red;
-   animation-name: anim;
-   animation-duration: 1s;
- }
-
- @keyframes anim {
-   from {background-color: red;}
-   from {background-color: blue;}
- }
