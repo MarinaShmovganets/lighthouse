@@ -143,17 +143,17 @@ class TraceElements extends Gatherer {
    * @return {Array<TraceElementData>}
    */
   static getAnimatedElements(mainThreadEvents) {
-    const animatedElementIds = [...new Set(mainThreadEvents
+    const animatedElementIds = new Set(mainThreadEvents
       .filter(e => e.name === 'Animation' && e.ph === 'b')
-      .map(e => this.getNodeIDFromTraceEvent(e)))];
+      .map(e => this.getNodeIDFromTraceEvent(e)));
 
     /** @type Array<TraceElementData> */
     const animatedElementData = [];
-    animatedElementIds.forEach(nodeId => {
+    for (const nodeId of animatedElementIds) {
       if (nodeId !== undefined) {
         animatedElementData.push({nodeId})
       }
-    })
+    }
     return animatedElementData;
   }
 
@@ -179,8 +179,8 @@ class TraceElements extends Gatherer {
 
     const backendNodeDataMap = new Map([
       ['largest-contentful-paint', lcpNodeId ? [{nodeId: lcpNodeId}] : []],
-      ['cumulative-layout-shift', [...clsNodeData]],
-      ['CLS/non-composited-animations', [...animatedElementData]],
+      ['cumulative-layout-shift', clsNodeData],
+      ['CLS/non-composited-animations', animatedElementData],
     ]);
 
     const traceElements = [];
