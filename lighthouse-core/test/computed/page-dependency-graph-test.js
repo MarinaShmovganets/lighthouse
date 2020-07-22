@@ -534,6 +534,35 @@ describe('PageDependencyGraph computed artifact:', () => {
       assert.deepEqual(nodes[3].getDependencies(), [nodes[2]]);
     });
 
+    it('should not link up script initiators with circular dependencies', () => {
+      const rootRequest = createRequest(1, 'a.com', 0);
+      const jsRequest1 = createRequest(2, 'a.com/js1', 1);
+      const jsRequest2 = createRequest(3, 'a.com/js2', 1);
+      jsRequest1.initiator = {
+        type: 'script',
+        stack: {callFrames: [{url: 'a.com/js2'}]},
+      };
+      jsRequest2.initiator = {
+        type: 'script',
+        stack: {callFrames: [{url: 'a.com/js1'}]},
+      };
+      const networkRecords = [rootRequest, jsRequest1, jsRequest2];
+
+      addTaskEvents(0, 0, []);
+
+      const graph = PageDependencyGraph.createGraph(traceOfTab, networkRecords);
+      const nodes = [];
+      graph.traverse(node => nodes.push(node));
+      nodes.sort((a, b) => a.id - b.id);
+
+      assert.equal(nodes.length, 3);
+      assert.deepEqual(nodes.map(node => node.id), [1, 2, 3]);
+      assert.deepEqual(nodes[0].getDependencies(), []);
+      assert.deepEqual(nodes[1].getDependencies(), [nodes[2]]);
+      assert.deepEqual(nodes[2].getDependencies(), [nodes[0]]);
+    });
+
+
     it('should throw when root node is not related to main document', () => {
       const request1 = createRequest(1, '1', 0, null, NetworkRequest.TYPES.Other);
       const request2 = createRequest(2, '2', 5, null, NetworkRequest.TYPES.Document);

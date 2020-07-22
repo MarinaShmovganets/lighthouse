@@ -151,8 +151,10 @@ class PageDependencyGraph {
       if (initiators.length) {
         initiators.forEach(initiator => {
           const parentCandidates = networkNodeOutput.urlToNodeMap.get(initiator) || [];
-          // Only add the edge if the parent is unambiguous with valid timing.
-          if (parentCandidates.length === 1 && parentCandidates[0].startTime <= node.startTime) {
+          // Only add the edge if the parent is unambiguous with valid timing and isn't circular.
+          if (parentCandidates.length === 1 &&
+              parentCandidates[0].startTime <= node.startTime &&
+              !parentCandidates[0].isDependentOn(node)) {
             node.addDependency(parentCandidates[0]);
           } else {
             directInitiatorNode.addDependent(node);
