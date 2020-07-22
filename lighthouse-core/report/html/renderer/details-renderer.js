@@ -16,7 +16,7 @@
  */
 'use strict';
 
-/* globals self CriticalRequestChainRenderer SnippetRenderer Util URL */
+/* globals self CriticalRequestChainRenderer SnippetRenderer ElementScreenshotRenderer Util URL */
 
 /** @typedef {import('./dom.js')} DOM */
 
@@ -25,9 +25,12 @@ const URL_PREFIXES = ['http://', 'https://', 'data:'];
 class DetailsRenderer {
   /**
    * @param {DOM} dom
+   * @param {{fullPageScreenshot?: LH.Audit.Details.FullPageScreenshot}} [options]
    */
-  constructor(dom) {
+  constructor(dom, options = {}) {
     this._dom = dom;
+    this._fullPageScreenshot = options.fullPageScreenshot;
+
     /** @type {ParentNode} */
     this._templateContext; // eslint-disable-line no-unused-expressions
   }
@@ -167,14 +170,13 @@ class DetailsRenderer {
   }
 
   /**
-   * @param {string} text
+   * @param {{value: number, granularity?: number}} details
    * @return {Element}
    */
-  _renderNumeric(text) {
-    // TODO: this should probably accept a number and call `formatNumber` instead of being identical
-    // to _renderText.
+  _renderNumeric(details) {
+    const value = Util.i18n.formatNumber(details.value, details.granularity);
     const element = this._dom.createElement('div', 'lh-numeric');
-    element.textContent = text;
+    element.textContent = value;
     return element;
   }
 
@@ -265,8 +267,8 @@ class DetailsRenderer {
         return this._renderMilliseconds(msValue);
       }
       case 'numeric': {
-        const strValue = String(value);
-        return this._renderNumeric(strValue);
+        const numValue = Number(value);
+        return this._renderNumeric({value: numValue, granularity: heading.granularity});
       }
       case 'text': {
         const strValue = String(value);
@@ -505,6 +507,20 @@ class DetailsRenderer {
     if (item.path) element.setAttribute('data-path', item.path);
     if (item.selector) element.setAttribute('data-selector', item.selector);
     if (item.snippet) element.setAttribute('data-snippet', item.snippet);
+
+    if (!item.boundingRect || !this._fullPageScreenshot) {
+      return element;
+    }
+
+    const maxThumbnailSize = {width: 147, height: 100};
+    const elementScreenshot = ElementScreenshotRenderer.render(
+      this._dom,
+      this._templateContext,
+      this._fullPageScreenshot,
+      item.boundingRect,
+      maxThumbnailSize
+    );
+    element.prepend(elementScreenshot);
 
     return element;
   }

@@ -15,7 +15,7 @@ const UIStrings = {
   title: 'Remove unused JavaScript',
   /** Description of a Lighthouse audit that tells the user *why* they should remove JavaScript that is never needed/evaluated by the browser. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Remove unused JavaScript to reduce bytes consumed by network activity. ' +
-    '[Learn more](https://web.dev/remove-unused-code/).',
+    '[Learn more](https://web.dev/unused-javascript/).',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -67,8 +67,7 @@ class UnusedJavaScript extends ByteEfficiencyAudit {
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['JsUsage', 'ScriptElements', 'devtoolsLogs', 'traces'],
-      __internalOptionalArtifacts: ['SourceMaps'],
+      requiredArtifacts: ['JsUsage', 'ScriptElements', 'SourceMaps', 'devtoolsLogs', 'traces'],
     };
   }
 
@@ -79,7 +78,7 @@ class UnusedJavaScript extends ByteEfficiencyAudit {
    * @return {Promise<ByteEfficiencyAudit.ByteEfficiencyProduct>}
    */
   static async audit_(artifacts, networkRecords, context) {
-    const bundles = artifacts.SourceMaps ? await JsBundles.request(artifacts, context) : [];
+    const bundles = await JsBundles.request(artifacts, context);
     const {
       unusedThreshold = IGNORE_THRESHOLD_IN_BYTES,
       bundleSourceUnusedThreshold = IGNORE_BUNDLE_SOURCE_THRESHOLD_IN_BYTES,
