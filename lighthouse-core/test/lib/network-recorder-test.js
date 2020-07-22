@@ -543,6 +543,82 @@ describe('network recorder', function() {
     expect(initiated.initiatorRequest).toBe(initiator2);
   });
 
+  it('should give higher precedence to document initiators', () => {
+    const logs = [
+      { // initiator (Document)
+        'method': 'Network.requestWillBeSent',
+        'params': {
+          'requestId': '1',
+          'frameId': '1',
+          'loaderId': '1',
+          'documentURL': 'https://www.example.com/home',
+          'request': {
+            'url': 'https://www.example.com/initiator',
+            'method': 'GET',
+            'mixedContentType': 'none',
+            'initialPriority': 'VeryHigh',
+          },
+          'timestamp': 107988.912007,
+          'wallTime': 1466620735.21187,
+          'initiator': {
+            'type': 'other',
+          },
+          'type': 'Document',
+        },
+      },
+      { // initiator (XHR)
+        'method': 'Network.requestWillBeSent',
+        'params': {
+          'requestId': '2',
+          'frameId': '1',
+          'loaderId': '1',
+          'documentURL': 'https://www.example.com/home',
+          'request': {
+            'url': 'https://www.example.com/initiator',
+            'method': 'GET',
+            'mixedContentType': 'none',
+            'initialPriority': 'VeryHigh',
+          },
+          'timestamp': 108088.912007,
+          'wallTime': 1466620835.21187,
+          'initiator': {
+            'type': 'other',
+          },
+          'type': 'XHR',
+        },
+      },
+      { // initiated
+        'method': 'Network.requestWillBeSent',
+        'params': {
+          'requestId': '3',
+          'frameId': '1',
+          'loaderId': '1',
+          'documentURL': 'https://www.example.com/home',
+          'request': {
+            'url': 'https://www.example.com/initiated',
+            'method': 'GET',
+            'mixedContentType': 'none',
+            'initialPriority': 'VeryHigh',
+          },
+          'timestamp': 108188.912007,
+          'wallTime': 1466620935.21187,
+          'initiator': {
+            'type': 'parser',
+            'url': 'https://www.example.com/initiator',
+          },
+          'type': 'Script',
+        },
+      },
+    ];
+    const records = NetworkRecorder.recordsFromLogs(logs);
+    expect(records).toHaveLength(3);
+
+    const [initiator1, initiator2, initiated] = records;
+    expect(initiator1.initiatorRequest).toBe(undefined);
+    expect(initiator2.initiatorRequest).toBe(undefined);
+    expect(initiated.initiatorRequest).toBe(initiator1);
+  });
+
   it('should give higher precedence to same-frame initiators unless timing is invalid', () => {
     // Note that the followings are contrived for testing purposes and are
     // unlikely to occur in practice. In particular, the initiator's timestamp

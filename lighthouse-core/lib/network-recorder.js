@@ -344,7 +344,7 @@ class NetworkRecorder extends EventEmitter {
     // The initiator must come before the initiated request.
     candidates = candidates.filter(cand => cand.responseReceivedTime <= record.startTime);
     if (candidates.length > 1) {
-      // Disambiguate based on resource type. Prefetch requests have type 'Other' and cannot
+      // Disambiguate based on prefetch. Prefetch requests have type 'Other' and cannot
       // initiate requests, so we drop them here.
       const nonPrefetchCandidates = candidates.filter(
           cand => cand.resourceType !== NetworkRequest.TYPES.Other);
@@ -357,6 +357,14 @@ class NetworkRecorder extends EventEmitter {
       const sameFrameCandidates = candidates.filter(cand => cand.frameId === record.frameId);
       if (sameFrameCandidates.length) {
         candidates = sameFrameCandidates;
+      }
+    }
+    if (candidates.length > 1 && record.initiator.type === 'parser') {
+      // Filter to just Documents when initiator type is parser.
+      const documentCandidates = candidates.filter(cand =>
+        cand.resourceType === NetworkRequest.TYPES.Document);
+      if (documentCandidates.length) {
+        candidates = documentCandidates;
       }
     }
 
