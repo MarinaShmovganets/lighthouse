@@ -171,7 +171,6 @@ module.exports = [
             "width": 480,
             "height": 318
           },
-          "nodeId": 11
         },
         {
           "traceEventType": "cumulative-layout-shift",
@@ -187,7 +186,6 @@ module.exports = [
             "height": 37
           },
           "score": 0.05873307291666667,
-          "nodeId": 6
         },
         {
           "traceEventType": "cumulative-layout-shift",
@@ -203,7 +201,6 @@ module.exports = [
             "height": 18
           },
           "score": 0.00318310546875,
-          "nodeId": 10
         },
         {
           "traceEventType": "animation",
@@ -218,7 +215,6 @@ module.exports = [
             "width": 100,
             "height": 100
           },
-          "nodeId": 4
         },
       ],
     },
