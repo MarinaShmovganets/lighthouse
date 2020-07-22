@@ -20,16 +20,16 @@ const RectHelpers = require('../../lib/rect-helpers.js');
 
 /**
  * @this {HTMLElement}
- * @param {string} metricName
+ * @param {LH.Artifacts.TraceEventType} traceEventType
  * @return {LH.Artifacts.TraceElement | undefined}
  */
 /* istanbul ignore next */
-function setAttributeMarker(metricName) {
+function setAttributeMarker(traceEventType) {
   const elem = this.nodeType === document.ELEMENT_NODE ? this : this.parentElement; // eslint-disable-line no-undef
   let traceElement;
   if (elem) {
     traceElement = {
-      metricName,
+      traceEventType,
       // @ts-ignore - put into scope via stringification
       devtoolsNodePath: getNodePath(elem), // eslint-disable-line no-undef
       // @ts-ignore - put into scope via stringification
@@ -175,14 +175,15 @@ class TraceElements extends Gatherer {
     const clsNodeData = TraceElements.getTopLayoutShiftElements(mainThreadEvents);
     const animatedElementData = TraceElements.getAnimatedElements(mainThreadEvents);
 
+    /** @type Map<LH.Artifacts.TraceEventType, {nodeId: number, score?: number}[]> */
     const backendNodeDataMap = new Map([
       ['largest-contentful-paint', lcpNodeId ? [{nodeId: lcpNodeId}] : []],
       ['cumulative-layout-shift', clsNodeData],
-      ['CLS/non-composited-animations', animatedElementData],
+      ['animation', animatedElementData],
     ]);
 
     const traceElements = [];
-    for (const [metricName, backendNodeData] of backendNodeDataMap) {
+    for (const [traceEventType, backendNodeData] of backendNodeDataMap) {
       for (let i = 0; i < backendNodeData.length; i++) {
         const backendNodeId = backendNodeData[i].nodeId;
         const objectId = await driver.resolveNodeIdToObjectId(backendNodeId);
@@ -196,7 +197,7 @@ class TraceElements extends Gatherer {
             ${pageFunctions.getNodeLabelString};
             ${pageFunctions.getOuterHTMLSnippetString};
             ${pageFunctions.getBoundingClientRectString};
-            return setAttributeMarker.call(this, '${metricName}');
+            return setAttributeMarker.call(this, '${traceEventType}');
           }`,
           returnByValue: true,
           awaitPromise: true,
