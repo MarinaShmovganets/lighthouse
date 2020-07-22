@@ -43,8 +43,8 @@ class LayoutShiftElements extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit(artifacts) {
-    const clsElements =
-      artifacts.TraceElements.filter(element => element.traceEventType === 'cumulative-layout-shift');
+    const clsElements = artifacts.TraceElements
+      .filter(element => element.traceEventType === 'cumulative-layout-shift');
 
     const clsElementData = clsElements.map(element => {
       return {
