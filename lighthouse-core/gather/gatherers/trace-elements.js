@@ -150,9 +150,7 @@ class TraceElements extends Gatherer {
     /** @type Array<TraceElementData> */
     const animatedElementData = [];
     for (const nodeId of animatedElementIds) {
-      if (nodeId !== undefined) {
-        animatedElementData.push({nodeId});
-      }
+      nodeId && animatedElementData.push({nodeId});
     }
     return animatedElementData;
   }
