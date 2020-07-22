@@ -482,7 +482,7 @@ describe('Runner', () => {
     return Runner.run({}, {config}).then(results => {
       const audits = results.lhr.audits;
       assert.equal(audits['critical-request-chains'].displayValue, '5 chains found');
-      assert.equal(audits['critical-request-chains'].details.longestChain.transferSize, 2468);
+      assert.equal(audits['critical-request-chains'].details.longestChain.transferSize, 66455);
     });
   });
 
