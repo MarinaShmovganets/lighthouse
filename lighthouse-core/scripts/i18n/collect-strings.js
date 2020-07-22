@@ -16,6 +16,7 @@ const tsc = require('typescript');
 const Util = require('../../report/html/renderer/util.js');
 const {collectAndBakeCtcStrings} = require('./bake-ctc-to-lhl.js');
 const {pruneObsoleteLhlMessages} = require('./prune-obsolete-lhl-messages.js');
+const {countTranslatedMessages} = require('./count-translated.js');
 
 const LH_ROOT = path.join(__dirname, '../../../');
 const UISTRINGS_REGEX = /UIStrings = .*?\};\n/s;
@@ -590,6 +591,17 @@ if (require.main === module) {
   // Remove any obsolete strings in existing LHL files.
   console.log('Checking for out-of-date LHL messages...');
   pruneObsoleteLhlMessages();
+
+  // Report on translation progress.
+  const progress = countTranslatedMessages();
+  console.log(`  ${progress.localeCount} translated locale files`);
+  console.log(`  ${progress.translatedCount}/${progress.messageCount} fully translated messages`);
+  if (progress.partiallyTranslatedCount) {
+    console.log(`  ${progress.partiallyTranslatedCount}/${progress.messageCount} partially translated messages`);
+  }
+  console.log(`  ${progress.notTranslatedCount}/${progress.messageCount} untranslated messages`);
+
+  console.log('✨ Complete!');
 }
 
 module.exports = {
