@@ -112,12 +112,14 @@ declare global {
       FontSize: Artifacts.FontSize;
       /** Screenshot of the entire page (rather than just the above the fold content). */
       FullPageScreenshot: Artifacts.FullPageScreenshot | null;
-      /** The issues surfaced in the devtools Issues panel */
-      InspectorIssues: Artifacts.InspectorIssues;
+      /** Information about event listeners registered on the global object. */
+      GlobalListeners: Array<Artifacts.GlobalListener>;
       /** The page's document body innerText if loaded with JavaScript disabled. */
       HTMLWithoutJavaScript: {bodyText: string, hasNoScript: boolean};
       /** Whether the page ended up on an HTTPS page after attempting to load the HTTP version. */
       HTTPRedirect: {value: boolean};
+      /** The issues surfaced in the devtools Issues panel */
+      InspectorIssues: Artifacts.InspectorIssues;
       /** JS coverage information for code used during page load. Keyed by URL. */
       JsUsage: Record<string, Crdp.Profiler.ScriptCoverage[]>;
       /** Parsed version of the page's Web App Manifest, or null if none found. */
@@ -233,7 +235,7 @@ declare global {
         rel: 'alternate'|'canonical'|'dns-prefetch'|'preconnect'|'preload'|'stylesheet'|string;
         /** The `href` attribute of the link or `null` if it was invalid in the header. */
         href: string | null
-        /** The raw value of the `href` attribute. Only different from `href` when source is 'header' */
+        /** The raw value of the `href` attribute. Only different from `href` when source is 'headers' */
         hrefRaw: string
         /** The `hreflang` attribute of the link */
         hreflang: string
@@ -243,6 +245,12 @@ declare global {
         crossOrigin: string | null
         /** Where the link was found, either in the DOM or in the headers of the main document */
         source: 'head'|'body'|'headers'
+        /** Path that uniquely identifies the node in the DOM. This is not defined when `source` is 'headers' */
+        devtoolsNodePath?: string
+        /** Selector for the DOM node. This is not defined when `source` is 'headers' */
+        selector?: string
+        /** Human readable label for the element. This is not defined when `source` is 'headers' */
+        nodeLabel?: string
       }
 
       export interface ScriptElement {
@@ -688,6 +696,18 @@ declare global {
         observedLastVisualChangeTs: number;
         observedSpeedIndex: number;
         observedSpeedIndexTs: number;
+      }
+
+      /** Information about an event listener registered on the global object. */
+      export interface GlobalListener {
+        /** Event listener type, limited to those events currently of interest. */
+        type: 'pagehide'|'unload'|'visibilitychange';
+        /** The DevTools protocol script identifier. */
+        scriptId: string;
+        /** Line number in the script (0-based). */
+        lineNumber: number;
+        /** Column number in the script (0-based). */
+        columnNumber: number;
       }
     }
   }
