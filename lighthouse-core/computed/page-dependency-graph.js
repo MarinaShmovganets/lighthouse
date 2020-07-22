@@ -156,13 +156,16 @@ class PageDependencyGraph {
               parentCandidates[0].startTime <= node.startTime &&
               !parentCandidates[0].isDependentOn(node)) {
             node.addDependency(parentCandidates[0]);
-          } else {
+          } else if (!directInitiatorNode.isDependentOn(node)) {
             directInitiatorNode.addDependent(node);
           }
         });
-      } else if (node !== directInitiatorNode) {
+      } else if (!directInitiatorNode.isDependentOn(node)) {
         directInitiatorNode.addDependent(node);
       }
+
+      // Make sure the nodes are attached to the graph if the initiator information was invalid.
+      if (node !== rootNode && node.getDependencies().length === 0) node.addDependency(rootNode);
 
       if (!node.record.redirects) return;
 

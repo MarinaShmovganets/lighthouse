@@ -360,7 +360,8 @@ class NetworkRecorder extends EventEmitter {
       }
     }
 
-    return candidates.length ? candidates[0] : null;
+    // Only return an initiator if the result is unambiguous.
+    return candidates.length === 1 ? candidates[0] : null;
   }
 
   /**
