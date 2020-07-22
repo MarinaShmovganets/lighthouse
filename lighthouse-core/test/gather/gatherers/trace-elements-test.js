@@ -8,6 +8,10 @@
 /* eslint-env jest */
 
 const TraceElementsGatherer = require('../../../gather/gatherers/trace-elements.js');
+const Driver = require('../../../gather/driver.js');
+const Connection = require('../../../gather/connections/connection.js');
+const createTestTrace = require('../../create-test-trace.js');
+const {createMockSendCommandFn} = require('../mock-commands.js');
 
 describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
   function makeLayoutShiftTraceEvent(score, impactedNodes, had_recent_input = false) {
@@ -15,9 +19,9 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
       name: 'LayoutShift',
       cat: 'loading',
       ph: 'I',
-      pid: 4998,
-      tid: 775,
-      ts: 308559814315,
+      pid: 1111,
+      tid: 222,
+      ts: 1200,
       args: {
         data: {
           had_recent_input,
@@ -46,10 +50,32 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
       },
       name: 'Animation',
       ph: 'b',
-      pid: 34054,
+      pid: 1111,
       scope: 'blink.animations,devtools.timeline,benchmark,rail',
-      tid: 775,
-      ts: 35506271512,
+      tid: 222,
+      ts: 1300,
+    };
+  }
+
+  function makeLCPTraceEvent(nodeId) {
+    return {
+      args: {
+        data: {
+          candidateIndex: 1,
+          isMainFrame: true,
+          navigationId: 'AB3DB6ED51813821034CE7325C0BAC6B',
+          nodeId,
+          size: 1212,
+          type: 'text',
+        },
+        frame: '3EFC2700D7BC3F4734CAF2F726EFB78C',
+      },
+      cat: 'loading,rail,devtools.timeline',
+      name: 'largestContentfulPaint::Candidate',
+      ph: 'R',
+      pid: 1111,
+      tid: 222,
+      ts: 1400,
     };
   }
 
@@ -304,6 +330,95 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
     expect(result).toEqual([
       {nodeId: 5},
       {nodeId: 6},
+    ]);
+  });
+
+  it('properly resolves all node id types', async () => {
+    const layoutShiftNodeData = {
+      traceEventType: 'cumulative-layout-shift',
+      devtoolsNodePath: '1,HTML,1,BODY,1,DIV',
+      selector: 'body > div#shift',
+      nodeLabel: 'div',
+      snippet: '<div id="shift">',
+      boundingRect: {
+        'top': 50,
+        'bottom': 200,
+        'left': 50,
+        'right': 100,
+        'width': 50,
+        'height': 150,
+      },
+    };
+    const animationNodeData = {
+      traceEventType: 'animation',
+      devtoolsNodePath: '1,HTML,1,BODY,1,DIV',
+      selector: 'body > div#animated',
+      nodeLabel: 'div',
+      snippet: '<div id="animated">',
+      boundingRect: {
+        'top': 60,
+        'bottom': 200,
+        'left': 60,
+        'right': 100,
+        'width': 40,
+        'height': 140,
+      },
+    };
+    const LCPNodeData = {
+      traceEventType: 'largest-contentful-paint',
+      devtoolsNodePath: '1,HTML,1,BODY,1,DIV',
+      selector: 'body > div#lcp',
+      nodeLabel: 'div',
+      snippet: '<div id="lcp">',
+      boundingRect: {
+        'top': 70,
+        'bottom': 200,
+        'left': 70,
+        'right': 100,
+        'width': 30,
+        'height': 130,
+      },
+    };
+    const connectionStub = new Connection();
+    connectionStub.sendCommand = createMockSendCommandFn()
+      .mockResponse('DOM.resolveNode', {object: {objectId: 1}})
+      .mockResponse('Runtime.callFunctionOn', {result: {value: LCPNodeData}})
+      .mockResponse('DOM.resolveNode', {object: {objectId: 2}})
+      .mockResponse('Runtime.callFunctionOn', {result: {value: layoutShiftNodeData}})
+      .mockResponse('DOM.resolveNode', {object: {objectId: 3}})
+      .mockResponse('Runtime.callFunctionOn', {result: {value: animationNodeData}});
+    const driver = new Driver(connectionStub);
+
+    const trace = createTestTrace({timeOrigin: 0, traceEnd: 2000});
+    trace.traceEvents.push(
+      makeLayoutShiftTraceEvent(1, [
+        {
+          new_rect: [0, 100, 200, 200],
+          node_id: 4,
+          old_rect: [0, 100, 200, 200],
+        },
+      ])
+    );
+    trace.traceEvents.push(makeAnimationTraceEvent('1', 5));
+    trace.traceEvents.push(makeLCPTraceEvent(6));
+
+    const gatherer = new TraceElementsGatherer();
+    const result = await gatherer.afterPass({driver}, {trace});
+
+    expect(result).toEqual([
+      {
+        ...LCPNodeData,
+        nodeId: 6,
+      },
+      {
+        ...layoutShiftNodeData,
+        score: 1,
+        nodeId: 4,
+      },
+      {
+        ...animationNodeData,
+        nodeId: 5,
+      },
     ]);
   });
 });
