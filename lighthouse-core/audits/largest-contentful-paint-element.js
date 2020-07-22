@@ -43,7 +43,7 @@ class LargestContentfulPaintElement extends Audit {
    */
   static audit(artifacts) {
     const lcpElement =
-      artifacts.TraceElements.find(element => element.metricName === 'largest-contentful-paint');
+      artifacts.TraceElements.find(element => element.traceEventType === 'largest-contentful-paint');
     const lcpElementDetails = [];
     if (lcpElement) {
       lcpElementDetails.push({
