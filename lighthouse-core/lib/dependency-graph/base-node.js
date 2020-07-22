@@ -169,6 +169,7 @@ class BaseNode {
   /**
    * Computes whether the given node is anywhere in the dependency graph of this node.
    * While this method can prevent cycles, it walks the graph and should be used sparingly.
+   * Nodes are always considered dependent on themselves for the purposes of cycle detection.
    * @param {BaseNode} node
    * @return {boolean}
    */
