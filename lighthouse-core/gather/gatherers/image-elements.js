@@ -30,9 +30,9 @@ function getClientRect(element) {
 }
 
 /**
-* @param {Array<Element>} allElements
-* @return {Array<LH.Artifacts.ImageElement>}
-*/
+ * @param {Array<Element>} allElements
+ * @return {Array<LH.Artifacts.ImageElement>}
+ */
 /* istanbul ignore next */
 function getHTMLImages(allElements) {
   const allImageElements = /** @type {Array<HTMLImageElement>} */ (allElements.filter(element => {
@@ -79,9 +79,9 @@ function getHTMLImages(allElements) {
 }
 
 /**
-* @param {Array<Element>} allElements
-* @return {Array<LH.Artifacts.ImageElement>}
-*/
+ * @param {Array<Element>} allElements
+ * @return {Array<LH.Artifacts.ImageElement>}
+ */
 /* istanbul ignore next */
 function getCSSImages(allElements) {
   // Chrome normalizes background image style from getComputedStyle to be an absolute URL in quotes.
@@ -143,9 +143,9 @@ function collectImageElementInfo() {
 }
 
 /**
-* @param {string} url
-* @return {Promise<{naturalWidth: number, naturalHeight: number}>}
-*/
+ * @param {string} url
+ * @return {Promise<{naturalWidth: number, naturalHeight: number}>}
+ */
 /* istanbul ignore next */
 function determineNaturalSize(url) {
   return new Promise((resolve, reject) => {
@@ -170,10 +170,10 @@ class ImageElements extends Gatherer {
   }
 
   /**
-  * @param {Driver} driver
-  * @param {LH.Artifacts.ImageElement} element
-  * @return {Promise<LH.Artifacts.ImageElement>}
-  */
+   * @param {Driver} driver
+   * @param {LH.Artifacts.ImageElement} element
+   * @return {Promise<LH.Artifacts.ImageElement>}
+   */
   async fetchElementWithSizeInformation(driver, element) {
     const url = JSON.stringify(element.src);
     if (this._naturalSizeCache.has(url)) {
@@ -194,10 +194,10 @@ class ImageElements extends Gatherer {
   }
 
   /**
-  * @param {LH.Gatherer.PassContext} passContext
-  * @param {LH.Gatherer.LoadData} loadData
-  * @return {Promise<LH.Artifacts['ImageElements']>}
-  */
+   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.LoadData} loadData
+   * @return {Promise<LH.Artifacts['ImageElements']>}
+   */
   async afterPass(passContext, loadData) {
     const driver = passContext.driver;
     const indexedNetworkRecords = loadData.networkRecords.reduce((map, record) => {
@@ -220,6 +220,7 @@ class ImageElements extends Gatherer {
       ${getHTMLImages.toString()};
       ${getCSSImages.toString()};
       ${collectImageElementInfo.toString()};
+
       return collectImageElementInfo();
     })()`;
 
