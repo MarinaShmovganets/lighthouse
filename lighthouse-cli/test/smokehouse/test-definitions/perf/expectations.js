@@ -198,7 +198,7 @@ module.exports = [
             left: 8,
             right: 49,
             width: 41,
-            height: 18,
+            height: '18 +/- 1',
           },
           score: 0.00318310546875,
         },
