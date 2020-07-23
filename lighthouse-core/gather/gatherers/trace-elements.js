@@ -20,7 +20,7 @@ const RectHelpers = require('../../lib/rect-helpers.js');
 
 /**
  * @this {HTMLElement}
- * @param {LH.Artifacts.TraceEventType} traceEventType
+ * @param {'largest-contentful-paint'|'cumulative-layout-shift'|'animation'} traceEventType
  * @return {LH.Artifacts.TraceElement | undefined}
  */
 /* istanbul ignore next */
@@ -173,7 +173,7 @@ class TraceElements extends Gatherer {
     const clsNodeData = TraceElements.getTopLayoutShiftElements(mainThreadEvents);
     const animatedElementData = TraceElements.getAnimatedElements(mainThreadEvents);
 
-    /** @type Map<LH.Artifacts.TraceEventType, {nodeId: number, score?: number}[]> */
+    /** @type Map<string, {nodeId: number, score?: number}[]> */
     const backendNodeDataMap = new Map([
       ['largest-contentful-paint', lcpNodeId ? [{nodeId: lcpNodeId}] : []],
       ['cumulative-layout-shift', clsNodeData],

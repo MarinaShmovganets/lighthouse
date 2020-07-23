@@ -489,10 +489,8 @@ declare global {
         boundingRect: Rect;
       }
 
-      export type TraceEventType = 'largest-contentful-paint'|'cumulative-layout-shift'|'animation';
-
       export interface TraceElement {
-        traceEventType: TraceEventType;
+        traceEventType: 'largest-contentful-paint'|'cumulative-layout-shift'|'animation';
         selector: string;
         nodeLabel?: string;
         devtoolsNodePath: string;
