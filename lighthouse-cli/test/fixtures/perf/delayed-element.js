@@ -30,10 +30,10 @@ setTimeout(() => {
   imgEl.src = '../dobetterweb/lighthouse-480x318.jpg';
   const textEl = document.createElement('span');
   textEl.textContent = 'Sorry!';
+  textEl.style.height = '18px' // this height can be flaky so we set it manually
   const top = document.getElementById('late-content');
   top.appendChild(imgEl);
   top.appendChild(textEl);
-  top.setAttribute('height', 18); // height can be flaky so we set it manually
 
   // layout-shift-elements: ensure we can handle missing shift elements
   if (window.location.href.includes('?missing')) {

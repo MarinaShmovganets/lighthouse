@@ -191,7 +191,7 @@ module.exports = [
           traceEventType: 'layout-shift',
           selector: 'body > div#late-content > span',
           nodeLabel: 'Sorry!',
-          snippet: '<span>',
+          snippet: '<span style=\"height: 18px;\">',
           boundingRect: {
             top: 426,
             bottom: 444,
