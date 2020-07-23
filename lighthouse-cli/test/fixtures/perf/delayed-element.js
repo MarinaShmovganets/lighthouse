@@ -31,6 +31,7 @@ setTimeout(() => {
   const textEl = document.createElement('span');
   textEl.textContent = 'Sorry!';
   const top = document.getElementById('late-content');
+  top.setAttribute('height', 18) // height can be flaky so we set it manually
   top.appendChild(imgEl);
   top.appendChild(textEl);
 

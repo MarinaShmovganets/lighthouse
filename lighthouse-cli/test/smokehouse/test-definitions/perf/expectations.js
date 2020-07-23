@@ -194,11 +194,11 @@ module.exports = [
           snippet: '<span>',
           boundingRect: {
             top: 426,
-            bottom: '444 +/- 1',
+            bottom: 444,
             left: 8,
             right: 49,
             width: 41,
-            height: '18 +/- 1',
+            height: 18,
           },
           score: 0.00318310546875,
         },
