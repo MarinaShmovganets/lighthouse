@@ -173,7 +173,7 @@ module.exports = [
           },
         },
         {
-          traceEventType: 'cumulative-layout-shift',
+          traceEventType: 'layout-shift',
           selector: 'body > h1',
           nodeLabel: 'Please don\'t move me',
           snippet: '<h1>',
@@ -188,7 +188,7 @@ module.exports = [
           score: '0.058 +/- 0.01',
         },
         {
-          traceEventType: 'cumulative-layout-shift',
+          traceEventType: 'layout-shift',
           selector: 'body > div#late-content > span',
           nodeLabel: 'Sorry!',
           snippet: '<span>',

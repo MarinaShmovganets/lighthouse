@@ -173,7 +173,7 @@ class TraceElements extends Gatherer {
     /** @type Map<string, {nodeId: number, score?: number}[]> */
     const backendNodeDataMap = new Map([
       ['largest-contentful-paint', lcpNodeId ? [{nodeId: lcpNodeId}] : []],
-      ['cumulative-layout-shift', clsNodeData],
+      ['layout-shift', clsNodeData],
       ['animation', animatedElementData],
     ]);
 

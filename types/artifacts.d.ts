@@ -490,7 +490,7 @@ declare global {
       }
 
       export interface TraceElement {
-        traceEventType: 'largest-contentful-paint'|'cumulative-layout-shift'|'animation';
+        traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation';
         selector: string;
         nodeLabel?: string;
         devtoolsNodePath: string;

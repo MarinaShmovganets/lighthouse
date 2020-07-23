@@ -335,7 +335,7 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
 
   it('properly resolves all node id types', async () => {
     const layoutShiftNodeData = {
-      traceEventType: 'cumulative-layout-shift',
+      traceEventType: 'layout-shift',
       devtoolsNodePath: '1,HTML,1,BODY,1,DIV',
       selector: 'body > div#shift',
       nodeLabel: 'div',
