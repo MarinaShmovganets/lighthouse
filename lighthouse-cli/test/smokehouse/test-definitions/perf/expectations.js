@@ -200,6 +200,7 @@ module.exports = [
             'width': 41,
             'height': 18,
           },
+          "score": 0.00318310546875,
         },
         {
           'traceEventType': 'animation',
