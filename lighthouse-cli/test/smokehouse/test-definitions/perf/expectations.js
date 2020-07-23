@@ -185,7 +185,7 @@ module.exports = [
             width: 344,
             height: 37,
           },
-          score: 0.05873307291666667,
+          score: '0.058 +/- 0.01',
         },
         {
           traceEventType: 'cumulative-layout-shift',
@@ -200,7 +200,7 @@ module.exports = [
             width: 41,
             height: 18,
           },
-          score: 0.00318310546875,
+          score: '0.0031 +/- 0.001',
         },
         {
           traceEventType: 'animation',
