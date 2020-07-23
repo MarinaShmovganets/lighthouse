@@ -20,16 +20,13 @@ const RectHelpers = require('../../lib/rect-helpers.js');
 
 /**
  * @this {HTMLElement}
- * @param {'largest-contentful-paint'|'cumulative-layout-shift'|'animation'} traceEventType
- * @return {LH.Artifacts.TraceElement | undefined}
  */
 /* istanbul ignore next */
-function setAttributeMarker(traceEventType) {
+function getNodeDetailsData() {
   const elem = this.nodeType === document.ELEMENT_NODE ? this : this.parentElement; // eslint-disable-line no-undef
   let traceElement;
   if (elem) {
     traceElement = {
-      traceEventType,
       // @ts-ignore - put into scope via stringification
       devtoolsNodePath: getNodePath(elem), // eslint-disable-line no-undef
       // @ts-ignore - put into scope via stringification
@@ -189,13 +186,13 @@ class TraceElements extends Gatherer {
         const response = await driver.sendCommand('Runtime.callFunctionOn', {
           objectId,
           functionDeclaration: `function () {
-            ${setAttributeMarker.toString()};
+            ${getNodeDetailsData.toString()};
             ${pageFunctions.getNodePathString};
             ${pageFunctions.getNodeSelectorString};
             ${pageFunctions.getNodeLabelString};
             ${pageFunctions.getOuterHTMLSnippetString};
             ${pageFunctions.getBoundingClientRectString};
-            return setAttributeMarker.call(this, '${traceEventType}');
+            return getNodeDetailsData.call(this);
           }`,
           returnByValue: true,
           awaitPromise: true,
@@ -203,6 +200,7 @@ class TraceElements extends Gatherer {
 
         if (response && response.result && response.result.value) {
           traceElements.push({
+            traceEventType,
             ...response.result.value,
             score: backendNodeData[i].score,
             nodeId: backendNodeId,
