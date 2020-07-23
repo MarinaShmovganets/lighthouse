@@ -162,3 +162,21 @@ describe('Size attribute validity check', () => {
     expect(UnSizedImagesAudit.isValidAttr('4000000')).toEqual(true);
   });
 });
+
+describe('CSS size property validity check', () => {
+  it('fails if it was never defined', () => {
+    expect(UnSizedImagesAudit.isValidCss(undefined)).toEqual(false);
+  });
+
+  it('fails if it is empty', () => {
+    expect(UnSizedImagesAudit.isValidCss('')).toEqual(false);
+  });
+
+  it('fails if it is auto', () => {
+    expect(UnSizedImagesAudit.isValidCss('auto')).toEqual(false);
+  });
+
+  it('passes if it is defined and not auto', () => {
+    expect(UnSizedImagesAudit.isValidCss('200')).toEqual(true);
+  });
+});
