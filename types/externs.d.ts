@@ -50,6 +50,11 @@ declare global {
     [P in K]: P;
   };
 
+  /** Make all properties in T nullable. */
+  type Nullable<T> = {
+    [K in keyof T]: T[K] | null;
+  }
+
   /** Make optional all properties on T and any properties on object properties of T. */
   type RecursivePartial<T> = {
     [P in keyof T]+?:
