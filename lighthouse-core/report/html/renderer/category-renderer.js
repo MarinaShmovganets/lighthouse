@@ -352,9 +352,9 @@ class CategoryRenderer {
     if (this.hasApplicableAudits(category)) {
       wrapper.classList.add(`lh-gauge__wrapper--${Util.calculateRating(category.score)}`);
     } else {
-      // Render gray n/a for entirely non-applicable categories.
+      // Render gray dash for entirely non-applicable categories.
       wrapper.classList.add(`lh-gauge__wrapper--notapplicable`);
-      percentageEl.textContent = 'n/a';
+      percentageEl.textContent = '-';
       percentageEl.style.color = '#757575';
       percentageEl.title = Util.i18n.strings.notApplicableAuditsGroupTitle;
     }

@@ -237,7 +237,7 @@ describe('CategoryRenderer', () => {
       assert.ok(!categoryDOM2.querySelector('.lh-clump--notapplicable'));
     });
 
-    it('renders an n/a score if the category contains 0 applicable audits', () => {
+    it('renders a dash score if the category contains 0 applicable audits', () => {
       for (const auditRef of a11yCategory.auditRefs) {
         auditRef.result.scoreDisplayMode = 'notApplicable';
       }
@@ -245,10 +245,10 @@ describe('CategoryRenderer', () => {
       const categoryDOM = renderer.render(a11yCategory, sampleResults.categoryGroups);
       const percentageEl = categoryDOM.querySelectorAll('[title="Not applicable"]');
 
-      assert.equal(percentageEl[0].textContent, 'n/a', 'score shows n/a');
+      assert.equal(percentageEl[0].textContent, '-', 'score shows a dash');
     });
 
-    it('renders a non-n/a score if the category contains at least 1 applicable audit', () => {
+    it('renders a non-dash score if the category contains at least 1 applicable audit', () => {
       for (const auditRef of a11yCategory.auditRefs) {
         auditRef.result.scoreDisplayMode = 'notApplicable';
       }
@@ -257,7 +257,7 @@ describe('CategoryRenderer', () => {
       const categoryDOM = renderer.render(a11yCategory, sampleResults.categoryGroups);
       const percentageEl = categoryDOM.querySelectorAll('.lh-gauge__percentage');
 
-      assert.equal(percentageEl[0].textContent, '65', 'score shows a non-n/a value');
+      assert.equal(percentageEl[0].textContent, '65', 'score shows a non-dash value');
     });
   });
 
