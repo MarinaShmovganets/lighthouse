@@ -57,7 +57,7 @@ class SizedImages extends Audit {
    */
   static isValidCss(property) {
     // an img css size property is valid for preventing CLS
-    // if it is defined and not equal to 'auto'
+    // if it is defined, not empty, and not equal to 'auto'
     // `undefined` and `''` are implicitly rejected as invalid
     // because of their falsy short-circuit of && in isUnsizedImage
     if (!property) return false;

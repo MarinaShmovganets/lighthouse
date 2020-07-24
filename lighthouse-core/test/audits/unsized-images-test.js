@@ -36,41 +36,185 @@ describe('Sized images audit', () => {
       isCss: true,
       attributeWidth: '',
       attributeHeight: '',
+      cssWidth: '',
+      cssHeight: '',
     },
   });
 
-  describe('has empty', () => {
-    testImage('has empty width attribute', {
+  describe('has empty width', () => {
+    testImage('only has attribute height', {
       score: 0,
       props: {
         attributeWidth: '',
         attributeHeight: '100',
+        cssWidth: '',
+        cssHeight: '',
       },
     });
 
-    testImage('has empty height attribute', {
-      score: 0,
-      props: {
-        attributeWidth: '100',
-        attributeHeight: '',
-      },
-    });
-
-    testImage('has empty width and height attributes', {
+    testImage('only has css height', {
       score: 0,
       props: {
         attributeWidth: '',
         attributeHeight: '',
+        cssWidth: '',
+        cssHeight: '100',
+      },
+    });
+
+    testImage('only has attribute height & css height', {
+      score: 0,
+      props: {
+        attributeWidth: '',
+        attributeHeight: '100',
+        cssWidth: '',
+        cssHeight: '100',
       },
     });
   });
 
-  describe('has invalid', () => {
+  describe('has empty height', () => {
+    testImage('only has attribute width', {
+      score: 0,
+      props: {
+        attributeWidth: '100',
+        attributeHeight: '',
+        cssWidth: '',
+        cssHeight: '',
+      },
+    });
+
+    testImage('only has css width', {
+      score: 0,
+      props: {
+        attributeWidth: '',
+        attributeHeight: '',
+        cssWidth: '100',
+        cssHeight: '',
+      },
+    });
+
+    testImage('only has attribute width & css width', {
+      score: 0,
+      props: {
+        attributeWidth: '100',
+        attributeHeight: '',
+        cssWidth: '100',
+        cssHeight: '',
+      },
+    });
+  });
+
+  testImage('has empty width and height', {
+    score: 0,
+    props: {
+      attributeWidth: '',
+      attributeHeight: '',
+      cssWidth: '',
+      cssHeight: '',
+    },
+  });
+
+  describe('has valid width and height', () => {
+    testImage('has attribute width and css height', {
+      score: 1,
+      props: {
+        attributeWidth: '100',
+        attributeHeight: '',
+        cssWidth: '',
+        cssHeight: '100',
+      },
+    });
+
+    testImage('has attribute width and attribute height', {
+      score: 1,
+      props: {
+        attributeWidth: '100',
+        attributeHeight: '100',
+        cssWidth: '',
+        cssHeight: '',
+      },
+    });
+
+    testImage('has css width and attribute height', {
+      score: 1,
+      props: {
+        attributeWidth: '',
+        attributeHeight: '100',
+        cssWidth: '100',
+        cssHeight: '',
+      },
+    });
+
+    testImage('has css width and css height', {
+      score: 1,
+      props: {
+        attributeWidth: '',
+        attributeHeight: '',
+        cssWidth: '100',
+        cssHeight: '100',
+      },
+    });
+
+    testImage('has css & attribute width and css height', {
+      score: 1,
+      props: {
+        attributeWidth: '100',
+        attributeHeight: '',
+        cssWidth: '100',
+        cssHeight: '100',
+      },
+    });
+
+    testImage('has css & attribute width and attribute height', {
+      score: 1,
+      props: {
+        attributeWidth: '100',
+        attributeHeight: '100',
+        cssWidth: '100',
+        cssHeight: '',
+      },
+    });
+
+    testImage('has css & attribute height and css width', {
+      score: 1,
+      props: {
+        attributeWidth: '',
+        attributeHeight: '100',
+        cssWidth: '100',
+        cssHeight: '100',
+      },
+    });
+
+    testImage('has css & attribute height and attribute width', {
+      score: 1,
+      props: {
+        attributeWidth: '100',
+        attributeHeight: '100',
+        cssWidth: '',
+        cssHeight: '100',
+      },
+    });
+
+    testImage('has css & attribute height and css & attribute width', {
+      score: 1,
+      props: {
+        attributeWidth: '100',
+        attributeHeight: '100',
+        cssWidth: '100',
+        cssHeight: '100',
+      },
+    });
+  });
+
+  describe('has invalid width', () => {
     testImage('has invalid width attribute', {
       score: 0,
       props: {
         attributeWidth: '-200',
         attributeHeight: '100',
+        cssWidth: '',
+        cssHeight: '',
       },
     });
 
@@ -78,25 +222,101 @@ describe('Sized images audit', () => {
       score: 0,
       props: {
         attributeWidth: '100',
-        attributeHeight: '300.5',
+        attributeHeight: '-200',
+        cssWidth: '',
+        cssHeight: '',
       },
     });
 
-    testImage('has invalid width and height attributes', {
+    testImage('has invalid css width', {
       score: 0,
       props: {
-        attributeWidth: '0',
-        attributeHeight: '100/2',
+        attributeWidth: '',
+        attributeHeight: '',
+        cssWidth: 'auto',
+        cssHeight: '100',
       },
     });
-  });
 
-  testImage('has valid width and height attributes', {
-    score: 1,
-    props: {
-      attributeWidth: '100',
-      attributeHeight: '100',
-    },
+    testImage('has invalid css height', {
+      score: 0,
+      props: {
+        attributeWidth: '',
+        attributeHeight: '',
+        cssWidth: '100',
+        cssHeight: 'auto',
+      },
+    });
+
+    testImage('has invalid width attribute, and valid css width', {
+      score: 1,
+      props: {
+        attributeWidth: '-200',
+        attributeHeight: '100',
+        cssWidth: '100',
+        cssHeight: '',
+      },
+    });
+
+    testImage('has invalid height attribute, and valid css height', {
+      score: 1,
+      props: {
+        attributeWidth: '100',
+        attributeHeight: '-200',
+        cssWidth: '',
+        cssHeight: '100',
+      },
+    });
+
+    testImage('has invalid css width, and valid attribute width', {
+      score: 1,
+      props: {
+        attributeWidth: '100',
+        attributeHeight: '',
+        cssWidth: 'auto',
+        cssHeight: '100',
+      },
+    });
+
+    testImage('has invalid css height, and valid attribute height', {
+      score: 1,
+      props: {
+        attributeWidth: '',
+        attributeHeight: '100',
+        cssWidth: '100',
+        cssHeight: 'auto',
+      },
+    });
+
+    testImage('has invalid css width & height, and valid attribute width & height', {
+      score: 1,
+      props: {
+        attributeWidth: '100',
+        attributeHeight: '100',
+        cssWidth: 'auto',
+        cssHeight: 'auto',
+      },
+    });
+
+    testImage('has invalid attribute width & height, and valid css width & height', {
+      score: 1,
+      props: {
+        attributeWidth: '-200',
+        attributeHeight: '-200',
+        cssWidth: '100',
+        cssHeight: '100',
+      },
+    });
+
+    testImage('has invalid attribute width & height, and invalid css width & height', {
+      score: 0,
+      props: {
+        attributeWidth: '-200',
+        attributeHeight: '-200',
+        cssWidth: 'auto',
+        cssHeight: 'auto',
+      },
+    });
   });
 
   it('is not applicable when there are no images', async () => {
@@ -114,6 +334,8 @@ describe('Sized images audit', () => {
           {
             attributeWidth: '',
             attributeHeight: '',
+            cssWidth: '',
+            cssHeight: '',
           },
           'image1.png'
         ),
@@ -128,6 +350,8 @@ describe('Sized images audit', () => {
           {
             attributeWidth: '',
             attributeHeight: '',
+            cssWidth: '',
+            cssHeight: '',
           },
           'image3.png'
         ),
@@ -141,6 +365,10 @@ describe('Sized images audit', () => {
 });
 
 describe('Size attribute validity check', () => {
+  it('fails if it is empty', () => {
+    expect(UnSizedImagesAudit.isValidAttr('')).toEqual(false);
+  });
+
   it('fails on non-numeric characters', () => {
     expect(UnSizedImagesAudit.isValidAttr('zero')).toEqual(false);
     expect(UnSizedImagesAudit.isValidAttr('1002$')).toEqual(false);
@@ -178,5 +406,15 @@ describe('CSS size property validity check', () => {
 
   it('passes if it is defined and not auto', () => {
     expect(UnSizedImagesAudit.isValidCss('200')).toEqual(true);
+    expect(UnSizedImagesAudit.isValidCss('300.5')).toEqual(true);
+    expect(UnSizedImagesAudit.isValidCss('150px')).toEqual(true);
+    expect(UnSizedImagesAudit.isValidCss('80%')).toEqual(true);
+    expect(UnSizedImagesAudit.isValidCss('5cm')).toEqual(true);
+    expect(UnSizedImagesAudit.isValidCss('20rem')).toEqual(true);
+    expect(UnSizedImagesAudit.isValidCss('7vw')).toEqual(true);
+    expect(UnSizedImagesAudit.isValidCss('-20')).toEqual(true);
+    expect(UnSizedImagesAudit.isValidCss('0')).toEqual(true);
+    expect(UnSizedImagesAudit.isValidCss('three')).toEqual(true);
+    expect(UnSizedImagesAudit.isValidCss('-20')).toEqual(true);
   });
 });
