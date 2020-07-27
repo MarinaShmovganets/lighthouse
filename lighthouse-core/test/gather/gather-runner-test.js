@@ -27,7 +27,7 @@ jest.mock('../../lib/stack-collector.js', () => () => Promise.resolve([]));
  * @param {(...args: TParams) => TReturn} fn
  */
 function makeParamsOptional(fn) {
-  return /** @type {(...args: Nullable<RecursivePartial<TParams>>) => TReturn} */ (fn);
+  return /** @type {(...args: RecursivePartial<TParams>) => TReturn} */ (fn);
 }
 
 const GatherRunner = {
@@ -54,7 +54,13 @@ const GatherRunner = {
  */
 function makeConfig(json) {
   // @ts-expect-error: allow recursive partial.
-  return new Config(json);
+  const config = new Config(json);
+
+  // Since the config is for `gather-runner`, ensure it has `passes`.
+  if (!config.passes) {
+    throw new Error('gather-runner test configs must have `passes`');
+  }
+  return /** @type {Config & {passes: Array<LH.Config.Pass>}} */ (config);
 }
 
 const LoadFailureMode = {
