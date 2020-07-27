@@ -162,7 +162,7 @@ class TraceElements extends Gatherer {
         };
       })
       .forEach(({nodeId, animationId}) => {
-        if (!nodeId || ! animationId) return;
+        if (!nodeId || !animationId) return;
         const animationIds = elementAnimations.get(nodeId);
         if (animationIds) {
           animationIds.push(animationId);
