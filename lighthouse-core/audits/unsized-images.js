@@ -22,7 +22,7 @@ const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 /**
  * @fileoverview
- * Audit that checks whether all images have width and height attributes.
+ * Audit that checks whether all images have explicit width and height.
  */
 
 class SizedImages extends Audit {
@@ -44,8 +44,8 @@ class SizedImages extends Audit {
    * @return {boolean}
    */
   static isValidAttr(attr) {
-    // an img size attribute is valid for preventing CLS
-    // if it is a non-negative, non-zero integer
+    // An img size attribute is valid for preventing CLS
+    // if it is a non-negative, non-zero integer.
     const NON_NEGATIVE_INT_REGEX = /^\d+$/;
     const ZERO_REGEX = /^0+$/;
     return NON_NEGATIVE_INT_REGEX.test(attr) && !ZERO_REGEX.test(attr);
@@ -56,10 +56,10 @@ class SizedImages extends Audit {
    * @return {boolean}
    */
   static isValidCss(property) {
-    // an img css size property is valid for preventing CLS
-    // if it is defined, not empty, and not equal to 'auto'
+    // An img css size property is valid for preventing CLS
+    // if it is defined, not empty, and not equal to 'auto'.
     // `undefined` and `''` are implicitly rejected as invalid
-    // because of their falsy short-circuit of && in isUnsizedImage
+    // because of their falsy short-circuit of && in isUnsizedImage.
     if (!property) return false;
     return property !== 'auto';
   }
@@ -69,7 +69,7 @@ class SizedImages extends Audit {
    * @return {boolean}
    */
   static isUnsizedImage(image) {
-    // images are considered sized if they have defined & valid values
+    // Images are considered sized if they have defined & valid values.
     const attrWidth = image.attributeWidth;
     const attrHeight = image.attributeHeight;
     const cssWidth = image.cssWidth;
@@ -88,7 +88,7 @@ class SizedImages extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts) {
-    // CSS background-images are ignored for this audit
+    // CSS background-images are ignored for this audit.
     const images = artifacts.ImageElements.filter(el => !el.isCss);
     const unsizedImages = [];
 
