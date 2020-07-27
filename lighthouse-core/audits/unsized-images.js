@@ -3,6 +3,11 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
+/**
+ * @fileoverview
+ * Audit that checks whether all images have explicit width and height.
+ */
+
 'use strict';
 
 const Audit = require('./audit.js');
@@ -20,11 +25,6 @@ const UIStrings = {
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
-/**
- * @fileoverview
- * Audit that checks whether all images have explicit width and height.
- */
-
 class SizedImages extends Audit {
   /**
    * @return {LH.Audit.Meta}
@@ -40,44 +40,42 @@ class SizedImages extends Audit {
   }
 
   /**
+   * An img size attribute is valid for preventing CLS
+   * if it is a non-negative, non-zero integer.
    * @param {string} attr
    * @return {boolean}
    */
   static isValidAttr(attr) {
-    // An img size attribute is valid for preventing CLS
-    // if it is a non-negative, non-zero integer.
     const NON_NEGATIVE_INT_REGEX = /^\d+$/;
     const ZERO_REGEX = /^0+$/;
     return NON_NEGATIVE_INT_REGEX.test(attr) && !ZERO_REGEX.test(attr);
   }
 
   /**
-   * @param {string} property
+   * An img css size property is valid for preventing CLS
+   * if it is defined, not empty, and not equal to 'auto'.
+   * @param {string | undefined} property
    * @return {boolean}
    */
   static isValidCss(property) {
-    // An img css size property is valid for preventing CLS
-    // if it is defined, not empty, and not equal to 'auto'.
-    // `undefined` and `''` are implicitly rejected as invalid
-    // because of their falsy short-circuit of && in isUnsizedImage.
     if (!property) return false;
     return property !== 'auto';
   }
 
   /**
+   * Images are considered sized if they have defined & valid values.
    * @param {LH.Artifacts.ImageElement} image
    * @return {boolean}
    */
   static isUnsizedImage(image) {
-    // Images are considered sized if they have defined & valid values.
     const attrWidth = image.attributeWidth;
     const attrHeight = image.attributeHeight;
     const cssWidth = image.cssWidth;
     const cssHeight = image.cssHeight;
-    const widthIsValidAttribute = attrWidth && SizedImages.isValidAttr(attrWidth);
-    const widthIsValidCss = cssWidth && SizedImages.isValidCss(cssWidth);
-    const heightIsValidAttribute = attrHeight && SizedImages.isValidAttr(attrHeight);
-    const heightIsValidCss = cssHeight && SizedImages.isValidCss(cssHeight);
+    const widthIsValidAttribute = SizedImages.isValidAttr(attrWidth);
+    const widthIsValidCss = SizedImages.isValidCss(cssWidth);
+    const heightIsValidAttribute = SizedImages.isValidAttr(attrHeight);
+    const heightIsValidCss = SizedImages.isValidCss(cssHeight);
     const validWidth = widthIsValidAttribute || widthIsValidCss;
     const validHeight = heightIsValidAttribute || heightIsValidCss;
     return !validWidth || !validHeight;
@@ -93,19 +91,18 @@ class SizedImages extends Audit {
     const unsizedImages = [];
 
     for (const image of images) {
-      if (SizedImages.isUnsizedImage(image)) {
-        const url = URL.elideDataURI(image.src);
-        unsizedImages.push({
-          url,
-          node: /** @type {LH.Audit.Details.NodeValue} */ ({
-            type: 'node',
-            path: image.devtoolsNodePath,
-            selector: image.selector,
-            nodeLabel: image.nodeLabel,
-            snippet: image.snippet,
-          }),
-        });
-      }
+      if (!SizedImages.isUnsizedImage(image)) continue;
+      const url = URL.elideDataURI(image.src);
+      unsizedImages.push({
+        url,
+        node: /** @type {LH.Audit.Details.NodeValue} */ ({
+          type: 'node',
+          path: image.devtoolsNodePath,
+          selector: image.selector,
+          nodeLabel: image.nodeLabel,
+          snippet: image.snippet,
+        }),
+      });
     }
 
     /** @type {LH.Audit.Details.Table['headings']} */
