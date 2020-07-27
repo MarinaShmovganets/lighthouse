@@ -341,12 +341,12 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
       nodeLabel: 'div',
       snippet: '<div id="shift">',
       boundingRect: {
-        'top': 50,
-        'bottom': 200,
-        'left': 50,
-        'right': 100,
-        'width': 50,
-        'height': 150,
+        top: 50,
+        bottom: 200,
+        left: 50,
+        right: 100,
+        width: 50,
+        height: 150,
       },
     };
     const animationNodeData = {
@@ -356,12 +356,12 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
       nodeLabel: 'div',
       snippet: '<div id="animated">',
       boundingRect: {
-        'top': 60,
-        'bottom': 200,
-        'left': 60,
-        'right': 100,
-        'width': 40,
-        'height': 140,
+        top: 60,
+        bottom: 200,
+        left: 60,
+        right: 100,
+        width: 40,
+        height: 140,
       },
     };
     const LCPNodeData = {
@@ -371,12 +371,12 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
       nodeLabel: 'div',
       snippet: '<div id="lcp">',
       boundingRect: {
-        'top': 70,
-        'bottom': 200,
-        'left': 70,
-        'right': 100,
-        'width': 30,
-        'height': 130,
+        top: 70,
+        bottom: 200,
+        left: 70,
+        right: 100,
+        width: 30,
+        height: 130,
       },
     };
     const connectionStub = new Connection();
