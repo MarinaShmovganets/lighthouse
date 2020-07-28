@@ -152,7 +152,7 @@ class TraceElements extends Gatherer {
   static async getAnimatedElements(passContext, mainThreadEvents) {
     const driver = passContext.driver;
 
-    /** @type Map<number, string[]> */
+    /** @type Map<number, Set<string>> */
     const elementAnimations = new Map();
     mainThreadEvents.filter(e => e.name === 'Animation' && e.ph === 'b')
       .map(e => {
@@ -165,9 +165,9 @@ class TraceElements extends Gatherer {
         if (!nodeId || !animationId) return;
         const animationIds = elementAnimations.get(nodeId);
         if (animationIds) {
-          animationIds.push(animationId);
+          animationIds.add(animationId);
         } else {
-          elementAnimations.set(nodeId, [animationId]);
+          elementAnimations.set(nodeId, new Set([animationId]));
         }
       });
 
