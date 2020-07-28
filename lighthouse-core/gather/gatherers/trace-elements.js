@@ -194,8 +194,8 @@ class TraceElements extends Gatherer {
   /**
    * @param {LH.Gatherer.PassContext} passContext
    */
-  beforePass(passContext) {
-    passContext.driver.sendCommand('Animation.enable');
+  async beforePass(passContext) {
+    await passContext.driver.sendCommand('Animation.enable');
   }
 
   /**
@@ -257,7 +257,7 @@ class TraceElements extends Gatherer {
       }
     }
 
-    driver.sendCommand('Animation.disable');
+    await driver.sendCommand('Animation.disable');
 
     return traceElements;
   }
