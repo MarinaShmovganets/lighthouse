@@ -16,7 +16,7 @@ const pageFunctions = require('../../lib/page-functions.js');
 const TraceProcessor = require('../../lib/tracehouse/trace-processor.js');
 const RectHelpers = require('../../lib/rect-helpers.js');
 
-/** @typedef {{nodeId: number, score?: number, animations?: {id: string, name: string}[]}} TraceElementData */
+/** @typedef {{nodeId: number, score?: number, animations?: {id: string, name?: string}[]}} TraceElementData */
 
 /**
  * @this {HTMLElement}
@@ -73,6 +73,29 @@ class TraceElements extends Gatherer {
       height: rect[3],
     };
     return RectHelpers.addRectTopAndBottom(rectArgs);
+  }
+
+  /**
+   * @param {LH.Gatherer.PassContext} passContext
+   * @param {string} animationId 
+   * @return {Promise<string | undefined>}
+   */
+  static async resolveAnimationName(passContext, animationId) {
+    const driver = passContext.driver;
+    try {
+      const result = await driver.sendCommand('Animation.resolveAnimation', {animationId});
+      const objectId = result.remoteObject.objectId;
+      if (!objectId) return undefined;
+      const response = await driver.sendCommand('Runtime.getProperties', {
+        objectId,
+      });
+      const nameProperty = response.result.find((property) => property.name === 'animationName');
+      const animationName = nameProperty && nameProperty.value && nameProperty.value.value;
+      return animationName;
+    }
+    catch (err) {
+      return undefined;
+    }
   }
 
   /**
@@ -176,14 +199,7 @@ class TraceElements extends Gatherer {
     for (const [nodeId, animationIds] of elementAnimations) {
       const animations = [];
       for (const animationId of animationIds) {
-        const result = await driver.sendCommand('Animation.resolveAnimation', {animationId});
-        const objectId = result.remoteObject.objectId;
-        if (!objectId) continue;
-        const response = await driver.sendCommand('Runtime.getProperties', {
-          objectId,
-        });
-        const nameProperty = response.result.find((property) => property.name === 'animationName');
-        const animationName = nameProperty && nameProperty.value && nameProperty.value.value;
+        const animationName = await this.resolveAnimationName(passContext, animationId);
         animations.push({id: animationId, name: animationName});
       }
       animatedElementData.push({nodeId, animations});
