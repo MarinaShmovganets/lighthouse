@@ -186,12 +186,9 @@ class TraceElements extends Gatherer {
       })
       .forEach(({nodeId, animationId}) => {
         if (!nodeId || !animationId) return;
-        const animationIds = elementAnimations.get(nodeId);
-        if (animationIds) {
-          animationIds.add(animationId);
-        } else {
-          elementAnimations.set(nodeId, new Set([animationId]));
-        }
+        const animationIds = elementAnimations.get(nodeId) || new Set();
+        animationIds.add(animationId);
+        elementAnimations.set(nodeId, animationIds);
       });
 
     /** @type Array<TraceElementData> */
