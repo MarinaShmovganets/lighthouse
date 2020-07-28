@@ -77,7 +77,7 @@ class TraceElements extends Gatherer {
 
   /**
    * @param {LH.Gatherer.PassContext} passContext
-   * @param {string} animationId 
+   * @param {string} animationId
    * @return {Promise<string | undefined>}
    */
   static async resolveAnimationName(passContext, animationId) {
@@ -92,8 +92,7 @@ class TraceElements extends Gatherer {
       const nameProperty = response.result.find((property) => property.name === 'animationName');
       const animationName = nameProperty && nameProperty.value && nameProperty.value.value;
       return animationName;
-    }
-    catch (err) {
+    } catch (err) {
       return undefined;
     }
   }
@@ -173,8 +172,6 @@ class TraceElements extends Gatherer {
    * @return {Promise<Array<TraceElementData>>}
    */
   static async getAnimatedElements(passContext, mainThreadEvents) {
-    const driver = passContext.driver;
-
     /** @type Map<number, Set<string>> */
     const elementAnimations = new Map();
     mainThreadEvents.filter(e => e.name === 'Animation' && e.ph === 'b')
