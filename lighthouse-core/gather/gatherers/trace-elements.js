@@ -93,6 +93,7 @@ class TraceElements extends Gatherer {
       const animationName = nameProperty && nameProperty.value && nameProperty.value.value;
       return animationName;
     } catch (err) {
+      // Animation name is not mission critical information and can be evicted, so don't throw fatally if we can't find it.
       return undefined;
     }
   }
