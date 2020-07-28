@@ -505,13 +505,14 @@ declare global {
       }
 
       export interface TraceElement {
-        metricName: string;
+        traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation';
         selector: string;
         nodeLabel?: string;
         devtoolsNodePath: string;
         snippet?: string;
         score?: number;
         boundingRect: Rect;
+        nodeId?: number;
       }
 
       export interface ViewportDimensions {
