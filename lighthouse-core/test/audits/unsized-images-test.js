@@ -16,306 +16,306 @@ function generateImage(props, src = 'https://google.com/logo.png', isCss = false
 }
 
 describe('Sized images audit', () => {
-  function testImage(condition, data) {
-    const description = `handles when an image ${condition}`;
-    it(description, async () => {
-      const result = await UnSizedImagesAudit.audit({
-        ImageElements: [
-          generateImage(
-            data.props
-          ),
-        ],
-      });
-      expect(result.score).toEqual(data.score);
+  function runAudit(props) {
+    const result = UnSizedImagesAudit.audit({
+      ImageElements: [
+        generateImage(
+          props
+        ),
+      ],
     });
+    return result;
   }
 
-  testImage('is a css image', {
-    score: 1,
-    props: {
+  it('passes when an image is a css image', async () => {
+    const result = await runAudit({
       isCss: true,
       attributeWidth: '',
       attributeHeight: '',
       cssWidth: '',
       cssHeight: '',
-    },
+    });
+    expect(result.score).toEqual(1);
   });
 
   describe('has empty width', () => {
-    testImage('only has attribute height', {
-      score: 0,
-      props: {
+    it('fails when an image only has attribute height', async () => {
+      const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '100',
         cssWidth: '',
         cssHeight: '',
-      },
+      });
+      expect(result.score).toEqual(0);
     });
 
-    testImage('only has css height', {
-      score: 0,
-      props: {
+    it('fails when an image only has css height', async () => {
+      const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '',
         cssWidth: '',
         cssHeight: '100',
-      },
+      });
+      expect(result.score).toEqual(0);
     });
 
-    testImage('only has attribute height & css height', {
-      score: 0,
-      props: {
+    it('fails when an image only has attribute height & css height', async () => {
+      const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '100',
         cssWidth: '',
         cssHeight: '100',
-      },
+      });
+      expect(result.score).toEqual(0);
     });
   });
 
   describe('has empty height', () => {
-    testImage('only has attribute width', {
-      score: 0,
-      props: {
+    it('fails when an image only has attribute width', async () => {
+      const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '',
         cssWidth: '',
         cssHeight: '',
-      },
+      });
+      expect(result.score).toEqual(0);
     });
 
-    testImage('only has css width', {
-      score: 0,
-      props: {
+    it('fails when an image only has css width', async () => {
+      const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '',
         cssWidth: '100',
         cssHeight: '',
-      },
+      });
+      expect(result.score).toEqual(0);
     });
 
-    testImage('only has attribute width & css width', {
-      score: 0,
-      props: {
+    it('fails when an image only has attribute width & css width', async () => {
+      const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '',
         cssWidth: '100',
         cssHeight: '',
-      },
+      });
+      expect(result.score).toEqual(0);
     });
   });
 
-  testImage('has empty width and height', {
-    score: 0,
-    props: {
+  it('fails when an image has empty width and height', async () => {
+    const result = await runAudit({
       attributeWidth: '',
       attributeHeight: '',
       cssWidth: '',
       cssHeight: '',
-    },
+    });
+    expect(result.score).toEqual(0);
   });
 
   describe('has valid width and height', () => {
-    testImage('has attribute width and css height', {
-      score: 1,
-      props: {
+    it('passes when an image has attribute width and css height', async () => {
+      const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '',
         cssWidth: '',
         cssHeight: '100',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has attribute width and attribute height', {
-      score: 1,
-      props: {
+    it('passes when an image has attribute width and attribute height', async () => {
+      const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '100',
         cssWidth: '',
         cssHeight: '',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has css width and attribute height', {
-      score: 1,
-      props: {
+    it('passes when an image has css width and attribute height', async () => {
+      const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '100',
         cssWidth: '100',
         cssHeight: '',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has css width and css height', {
-      score: 1,
-      props: {
+    it('passes when an image has css width and css height', async () => {
+      const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '',
         cssWidth: '100',
         cssHeight: '100',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has css & attribute width and css height', {
-      score: 1,
-      props: {
+    it('passes when an image has css & attribute width and css height', async () => {
+      const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '',
         cssWidth: '100',
         cssHeight: '100',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has css & attribute width and attribute height', {
-      score: 1,
-      props: {
+    it('passes when an image has css & attribute width and attribute height', async () => {
+      const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '100',
         cssWidth: '100',
         cssHeight: '',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has css & attribute height and css width', {
-      score: 1,
-      props: {
+    it('passes when an image has css & attribute height and css width', async () => {
+      const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '100',
         cssWidth: '100',
         cssHeight: '100',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has css & attribute height and attribute width', {
-      score: 1,
-      props: {
+    it('passes when an image has css & attribute height and attribute width', async () => {
+      const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '100',
         cssWidth: '',
         cssHeight: '100',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has css & attribute height and css & attribute width', {
-      score: 1,
-      props: {
+    it('passes when an image has css & attribute height and css & attribute width', async () => {
+      const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '100',
         cssWidth: '100',
         cssHeight: '100',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
   });
 
   describe('has invalid width', () => {
-    testImage('has invalid width attribute', {
-      score: 0,
-      props: {
+    it('fails when an image has invalid width attribute', async () => {
+      const result = await runAudit({
         attributeWidth: '-200',
         attributeHeight: '100',
         cssWidth: '',
         cssHeight: '',
-      },
+      });
+      expect(result.score).toEqual(0);
     });
 
-    testImage('has invalid height attribute', {
-      score: 0,
-      props: {
+    it('fails when an image has invalid height attribute', async () => {
+      const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '-200',
         cssWidth: '',
         cssHeight: '',
-      },
+      });
+      expect(result.score).toEqual(0);
     });
 
-    testImage('has invalid css width', {
-      score: 0,
-      props: {
+    it('fails when an image has invalid css width', async () => {
+      const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '',
         cssWidth: 'auto',
         cssHeight: '100',
-      },
+      });
+      expect(result.score).toEqual(0);
     });
 
-    testImage('has invalid css height', {
-      score: 0,
-      props: {
+    it('fails when an image has invalid css height', async () => {
+      const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '',
         cssWidth: '100',
         cssHeight: 'auto',
-      },
+      });
+      expect(result.score).toEqual(0);
     });
 
-    testImage('has invalid width attribute, and valid css width', {
-      score: 1,
-      props: {
+    it('passes when an image has invalid width attribute, and valid css width', async () => {
+      const result = await runAudit({
         attributeWidth: '-200',
         attributeHeight: '100',
         cssWidth: '100',
         cssHeight: '',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has invalid height attribute, and valid css height', {
-      score: 1,
-      props: {
+    it('passes when an image has invalid height attribute, and valid css height', async () => {
+      const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '-200',
         cssWidth: '',
         cssHeight: '100',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has invalid css width, and valid attribute width', {
-      score: 1,
-      props: {
+    it('passes when an image has invalid css width, and valid attribute width', async () => {
+      const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '',
         cssWidth: 'auto',
         cssHeight: '100',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has invalid css height, and valid attribute height', {
-      score: 1,
-      props: {
+    it('passes when an image has invalid css height, and valid attribute height', async () => {
+      const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '100',
         cssWidth: '100',
         cssHeight: 'auto',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has invalid css width & height, and valid attribute width & height', {
-      score: 1,
-      props: {
+    it('passes when an image has invalid css width & height, and valid attribute width & height',
+    async () => {
+      const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '100',
         cssWidth: 'auto',
         cssHeight: 'auto',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has invalid attribute width & height, and valid css width & height', {
-      score: 1,
-      props: {
+    it('passes when an image has invalid attribute width & height, and valid css width & height',
+    async () => {
+      const result = await runAudit({
         attributeWidth: '-200',
         attributeHeight: '-200',
         cssWidth: '100',
         cssHeight: '100',
-      },
+      });
+      expect(result.score).toEqual(1);
     });
 
-    testImage('has invalid attribute width & height, and invalid css width & height', {
-      score: 0,
-      props: {
+    it('fails when an image has invalid attribute width & height, and invalid css width & height',
+    async () => {
+      const result = await runAudit({
         attributeWidth: '-200',
         attributeHeight: '-200',
         cssWidth: 'auto',
         cssHeight: 'auto',
-      },
+      });
+      expect(result.score).toEqual(0);
     });
   });
 
