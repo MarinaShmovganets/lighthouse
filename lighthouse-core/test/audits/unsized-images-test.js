@@ -19,9 +19,7 @@ describe('Sized images audit', () => {
   function runAudit(props) {
     const result = UnSizedImagesAudit.audit({
       ImageElements: [
-        generateImage(
-          props
-        ),
+        generateImage(props),
       ],
     });
     return result;
