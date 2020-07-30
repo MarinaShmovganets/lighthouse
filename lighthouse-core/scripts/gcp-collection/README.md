@@ -5,7 +5,7 @@
    1. (Optional) Run `export TARGET_GIT_REF=<a lighthouse git ref that has been pushed> ` if wanting to run on anything but master.
    1. (Optional) Run `export TARGET_RUNS=<a number> ` if needing more than 1 run per URL.
    1. (Optional) Run `export LIGHTHOUSE_COLLECTION_GCLOUD_PROJECT=<project name> ` to set your GCloud project.
-   1. Run `bash run.sh`
+   1. Run `bash lighthouse-core/scripts/gcp-collection/run.sh` from the repo root.
 1. Check status of collection, download data, and kill machines on completion.
    1. Run one of the two commands printed by `run.sh` depending on which dataset you'd like to download.
    1. Run the delete command printed by `run.sh` after data has been downloaded.
