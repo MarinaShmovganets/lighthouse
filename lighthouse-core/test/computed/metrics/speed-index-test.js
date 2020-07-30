@@ -10,8 +10,8 @@ const assert = require('assert').strict;
 const SpeedIndex = require('../../../computed/metrics/speed-index.js');
 const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
-const traceNaN = require('../../fixtures/traces/speedindex-nan-m84.trace.json');
-const devtoolsLogNaN = require('../../fixtures/traces/speedindex-nan-m84.devtoolslog.json');
+const trace1msLayout = require('../../fixtures/traces/speedindex-1ms-layout-m84.trace.json');
+const devtoolsLog1msLayout = require('../../fixtures/traces/speedindex-1ms-layout-m84.devtoolslog.json'); // eslint-disable-line max-len
 
 /* eslint-env jest */
 
@@ -34,7 +34,7 @@ describe('Metrics: Speed Index', () => {
     `);
   });
 
-  it('should compute a simulated value on a trace on desktop with 0 durations', async () => {
+  it('should compute a simulated value on a trace on desktop with 1ms durations', async () => {
     const settings = {
       throttlingMethod: 'simulate',
       throttling: {
@@ -47,8 +47,8 @@ describe('Metrics: Speed Index', () => {
     const context = {settings, computedCache: new Map()};
     const result = await SpeedIndex.request(
       {
-        trace: traceNaN,
-        devtoolsLog: devtoolsLogNaN,
+        trace: trace1msLayout,
+        devtoolsLog: devtoolsLog1msLayout,
         settings,
       },
       context
