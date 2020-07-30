@@ -9,6 +9,7 @@ set -euxo pipefail
 ##
 
 DIRNAME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+LH_ROOT="$DIRNAME/../../.."
 cd $DIRNAME
 
 INSTANCE_SUFFIX=${1:-instance0}
@@ -51,10 +52,19 @@ echo "Collection has started."
 echo "Check-in on progress anytime by running..."
 echo "  $ gcloud --project="$CLOUDSDK_CORE_PROJECT" compute ssh lighthouse@$INSTANCE_NAME --command='tail -f collect.log' --zone=$ZONE"
 
+TRACE_COPY_COMMAND="gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp $INSTANCE_NAME:/home/lighthouse/trace-data.tar.gz ./trace-data.tar.gz --zone=$ZONE"
+LHR_COPY_COMMAND="gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp $INSTANCE_NAME:/home/lighthouse/lhr-data.tar.gz ./lhr-data.tar.gz --zone=$ZONE"
+DELETE_INSTANCE_COMMAND="gcloud --project="$CLOUDSDK_CORE_PROJECT" compute instances delete $INSTANCE_NAME --zone=$ZONE"
 echo "When complete run..."
 echo "  For LHR + trace data for -A replication"
-echo "  $ gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp $INSTANCE_NAME:/home/lighthouse/trace-data.tar.gz ./trace-data.tar.gz --zone=$ZONE"
+echo "  $ bash .tmp/gcp/copy-traces.sh"
 echo "  For LHR data for smaller transfer sizes replication"
-echo "  $ gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp $INSTANCE_NAME:/home/lighthouse/lhr-data.tar.gz ./lhr-data.tar.gz --zone=$ZONE"
+echo "  $ bash .tmp/gcp/copy-lhrs.sh"
 echo "  To delete the instance"
-echo "  $ gcloud --project="$CLOUDSDK_CORE_PROJECT" compute instances delete $INSTANCE_NAME --zone=$ZONE"
+echo "  $ bash .tmp/gcp/delete-instance.sh"
+
+cd $LH_ROOT
+mkdir -p .tmp/gcp/
+echo "$TRACE_COPY_COMMAND" > .tmp/gcp/copy-traces.sh
+echo "$LHR_COPY_COMMAND" > .tmp/gcp/copy-lhrs.sh
+echo "$DELETE_INSTANCE_COMMAND" > .tmp/gcp/delete-instance.sh
