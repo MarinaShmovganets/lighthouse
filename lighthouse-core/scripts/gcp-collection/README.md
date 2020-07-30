@@ -14,6 +14,7 @@
 
 ## Future Work
 
+- Collect a more comprehensive URL set for `urls.txt`
 - Add a fleet creation script to automatically create and distribute large URL sets (similar to [`fleet-create.sh`](https://github.com/patrickhulce/dzl-lighthouse/blob/60447f652dc15cacfa603fdf7c88b1add4229d1d/cwv/collection/fleet-create.sh))
 - Add a polling status script to automatically download and delete (similar to [`fleet-status.sh`](https://github.com/patrickhulce/dzl-lighthouse/blob/60447f652dc15cacfa603fdf7c88b1add4229d1d/cwv/collection/fleet-status.sh))
 - Add analysis scripts (similar to [`preprocess.sh`](https://github.com/patrickhulce/dzl-lighthouse/blob/60447f652dc15cacfa603fdf7c88b1add4229d1d/cwv/analyze/preprocess.sh) and [`analyze-ab-test.js`](https://github.com/patrickhulce/dzl-lighthouse/blob/60447f652dc15cacfa603fdf7c88b1add4229d1d/cwv/analyze/analyze-ab-test.js))
