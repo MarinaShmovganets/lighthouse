@@ -214,9 +214,8 @@ describe('minification estimator', () => {
       assert.equal(computeJSTokenLength(js), 9);
     });
 
-<<<<<<< HEAD
     it('should handle large, real, unminified javscript files', () => {
-      assert.equal(angularJs.length, 1371888);
+      assert.equal(angularJs.length, 1374505);
       const minificationPct = 1 - computeJSTokenLength(angularJs) / angularJs.length;
       // Unminified source script. estimated 75.3% smaller minified
       expect(minificationPct).toBeCloseTo(0.753);
@@ -227,12 +226,6 @@ describe('minification estimator', () => {
       const minificationPct = 1 - computeJSTokenLength(courseheroJs) / courseheroJs.length;
       // Already-minified source script. estimated 1% smaller minified
       expect(minificationPct).toBeCloseTo(0.01);
-=======
-    it('should handle large, real javscript files', () => {
-      assert.equal(angularFullScript.length, 1374505);
-      // 1 - 338528 / 1374505 = estimated 75.3% smaller minified
-      assert.equal(computeJSTokenLength(angularFullScript), 338528);
->>>>>>> master
     });
   });
 });
