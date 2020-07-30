@@ -53,8 +53,8 @@ echo "  $ gcloud --project="$CLOUDSDK_CORE_PROJECT" compute ssh lighthouse@$INST
 
 echo "When complete run..."
 echo "  For LHR + trace data for -A replication"
-echo "  $ gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp $INSTANCE_NAME:/home/lighthouse/trace-data.tar.gz ./trace-data.tar.gz"
+echo "  $ gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp $INSTANCE_NAME:/home/lighthouse/trace-data.tar.gz ./trace-data.tar.gz --zone=$ZONE"
 echo "  For LHR data for smaller transfer sizes replication"
-echo "  $ gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp $INSTANCE_NAME:/home/lighthouse/lhr-data.tar.gz ./lhr-data.tar.gz"
+echo "  $ gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp $INSTANCE_NAME:/home/lighthouse/lhr-data.tar.gz ./lhr-data.tar.gz --zone=$ZONE"
 echo "  To delete the instance"
-echo "  $ gcloud --project="$CLOUDSDK_CORE_PROJECT" compute instances delete $INSTANCE_NAME"
+echo "  $ gcloud --project="$CLOUDSDK_CORE_PROJECT" compute instances delete $INSTANCE_NAME --zone=$ZONE"
