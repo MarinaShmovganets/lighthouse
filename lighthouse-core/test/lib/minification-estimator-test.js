@@ -9,9 +9,9 @@ const fs = require('fs');
 const assert = require('assert').strict;
 const {computeCSSTokenLength, computeJSTokenLength} = require('../../lib/minification-estimator.js'); // eslint-disable-line max-len
 
-const angularFullScript = fs.readFileSync(require.resolve('angular/angular.js'), 'utf8');
-const zoneFullScript = fs.readFileSync(`${__dirname}/../../../lighthouse-cli/test/fixtures/dobetterweb/third_party/aggressive-promise-polyfill.js`, 'utf8');
-
+const angularJs = fs.readFileSync(require.resolve('angular/angular.js'), 'utf8');
+const courseheroFilename = `${__dirname}/../../test/fixtures/source-maps/coursehero-bundle-2.js`;
+const courseheroBundle = fs.readFileSync(courseheroFilename, 'utf8');
 /* eslint-env jest */
 
 describe('minification estimator', () => {
@@ -214,16 +214,18 @@ describe('minification estimator', () => {
       assert.equal(computeJSTokenLength(js), 9);
     });
 
-    it('should handle large, real javscript files', () => {
-      assert.equal(angularFullScript.length, 1374505);
-      // 1 - 338528 / 1374505 = estimated 75.3% smaller minified
-      assert.equal(computeJSTokenLength(angularFullScript), 338528);
+    it('should handle large, real, unminified javscript files', () => {
+      assert.equal(angularJs.length, 1371888);
+      const minificationPct = 1 - computeJSTokenLength(angularJs) / angularJs.length;
+      // Unminified source script. estimated 75.3% smaller minified
+      expect(minificationPct).toBeCloseTo(0.753);
     });
 
-    it('should handle real already-minified javscript files', () => {
-      assert.equal(zoneFullScript.length, 25073);
-      // 1 - 24119 / 25073 = estimated 3.8% smaller minified
-      assert.equal(computeJSTokenLength(zoneFullScript), 24119);
+    it('should handle large, real, already-minified javscript files', () => {
+      assert.equal(courseheroBundle.length, 439832);
+      const minificationPct = 1 - computeJSTokenLength(courseheroBundle) / courseheroBundle.length;
+      // Already-minified source script. estimated 1% smaller minified
+      expect(minificationPct).toBeCloseTo(0.01);
     });
   });
 });
