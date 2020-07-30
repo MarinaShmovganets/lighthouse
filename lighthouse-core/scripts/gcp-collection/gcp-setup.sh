@@ -30,6 +30,6 @@ sudo mv /tmp/lhenv /home/lighthouse/.env
 sudo mv /tmp/urls.txt /home/lighthouse/urls.txt
 sudo mv /tmp/run.sh /home/lighthouse/run.sh
 sudo mv /tmp/run-on-url.sh /home/lighthouse/run-on-url.sh
-sudo chown lighthouse.lighthouse /home/lighthouse/*
+sudo chown lighthouse.lighthouse /home/lighthouse/.env /home/lighthouse/*
 sudo chmod +x /home/lighthouse/run.sh
 sudo chmod +x /home/lighthouse/run-on-url.sh
