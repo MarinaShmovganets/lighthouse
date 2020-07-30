@@ -11,7 +11,7 @@ const {computeCSSTokenLength, computeJSTokenLength} = require('../../lib/minific
 
 const angularJs = fs.readFileSync(require.resolve('angular/angular.js'), 'utf8');
 const courseheroFilename = `${__dirname}/../../test/fixtures/source-maps/coursehero-bundle-2.js`;
-const courseheroBundle = fs.readFileSync(courseheroFilename, 'utf8');
+const courseheroJs = fs.readFileSync(courseheroFilename, 'utf8');
 /* eslint-env jest */
 
 describe('minification estimator', () => {
@@ -222,8 +222,8 @@ describe('minification estimator', () => {
     });
 
     it('should handle large, real, already-minified javscript files', () => {
-      assert.equal(courseheroBundle.length, 439832);
-      const minificationPct = 1 - computeJSTokenLength(courseheroBundle) / courseheroBundle.length;
+      assert.equal(courseheroJs.length, 439832);
+      const minificationPct = 1 - computeJSTokenLength(courseheroJs) / courseheroJs.length;
       // Already-minified source script. estimated 1% smaller minified
       expect(minificationPct).toBeCloseTo(0.01);
     });
