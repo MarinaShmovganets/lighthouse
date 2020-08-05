@@ -215,7 +215,6 @@ const defaultConfig = {
     'themed-omnibox',
     'maskable-icon',
     'content-width',
-    'unsized-images',
     'image-aspect-ratio',
     'image-size-responsive',
     'deprecations',
@@ -238,6 +237,7 @@ const defaultConfig = {
     'largest-contentful-paint-element',
     'layout-shift-elements',
     'long-tasks',
+    'unsized-images',
     'no-unload-listeners',
     'manual/pwa-cross-browser',
     'manual/pwa-page-transitions',
@@ -468,6 +468,7 @@ const defaultConfig = {
         {id: 'uses-passive-event-listeners', weight: 0, group: 'diagnostics'},
         {id: 'no-document-write', weight: 0, group: 'diagnostics'},
         {id: 'long-tasks', weight: 0, group: 'diagnostics'},
+        {id: 'unsized-images', weight: 0, group: 'diagnostics'},
         // Audits past this point don't belong to a group and will not be shown automatically
         {id: 'network-requests', weight: 0},
         {id: 'network-rtt', weight: 0},
@@ -553,7 +554,6 @@ const defaultConfig = {
         {id: 'no-vulnerable-libraries', weight: 1, group: 'best-practices-trust-safety'},
         // User Experience
         {id: 'password-inputs-can-be-pasted-into', weight: 1, group: 'best-practices-ux'},
-        {id: 'unsized-images', weight: 1, group: 'best-practices-ux'},
         {id: 'image-aspect-ratio', weight: 1, group: 'best-practices-ux'},
         {id: 'image-size-responsive', weight: 1, group: 'best-practices-ux'},
         // Browser Compatibility
