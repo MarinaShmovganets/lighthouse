@@ -1848,41 +1848,6 @@
         ]
       }
     },
-    "unsized-images": {
-      "id": "unsized-images",
-      "title": "Image elements do not have explicit `width` and `height`",
-      "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn more](https://web.dev/optimize-cls/#images-without-dimensions)",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "details": {
-        "type": "table",
-        "headings": [
-          {
-            "key": "url",
-            "itemType": "thumbnail",
-            "text": ""
-          },
-          {
-            "key": "url",
-            "itemType": "url",
-            "text": "URL"
-          },
-          {
-            "key": "node",
-            "itemType": "node",
-            "text": "Failing Elements"
-          }
-        ],
-        "items": [
-          {
-            "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
-            "node": {
-              "type": "node"
-            }
-          }
-        ]
-      }
-    },
     "no-unload-listeners": {
       "id": "no-unload-listeners",
       "title": "Registers an `unload` listener",
@@ -1917,6 +1882,41 @@
       "description": "Animations which are not composited can be janky and contribute to CLS. [Learn more](https://developers.google.com/web/fundamentals/performance/rendering/stick-to-compositor-only-properties-and-manage-layer-count)",
       "score": null,
       "scoreDisplayMode": "notApplicable"
+    },
+    "unsized-images": {
+      "id": "unsized-images",
+      "title": "Image elements do not have explicit `width` and `height`",
+      "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn more](https://web.dev/optimize-cls/#images-without-dimensions)",
+      "score": 0,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "url",
+            "itemType": "thumbnail",
+            "text": ""
+          },
+          {
+            "key": "url",
+            "itemType": "url",
+            "text": "URL"
+          },
+          {
+            "key": "node",
+            "itemType": "node",
+            "text": "Failing Elements"
+          }
+        ],
+        "items": [
+          {
+            "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
+            "node": {
+              "type": "node"
+            }
+          }
+        ]
+      }
     },
     "pwa-cross-browser": {
       "id": "pwa-cross-browser",
@@ -5555,12 +5555,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:unsized-images",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:no-unload-listeners",
         "duration": 100,
         "entryType": "measure"
@@ -5568,6 +5562,12 @@
       {
         "startTime": 0,
         "name": "lh:audit:non-composited-animations",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:unsized-images",
         "duration": 100,
         "entryType": "measure"
       },
@@ -6432,8 +6432,8 @@
         "audits[network-rtt].details.headings[0].text",
         "audits[network-server-latency].details.headings[0].text",
         "audits[long-tasks].details.headings[0].text",
-        "audits[unsized-images].details.headings[1].text",
         "audits[no-unload-listeners].details.headings[0].text",
+        "audits[unsized-images].details.headings[1].text",
         "audits[uses-long-cache-ttl].details.headings[0].text",
         "audits[total-byte-weight].details.headings[0].text",
         "audits[render-blocking-resources].details.headings[0].label",
@@ -6842,6 +6842,18 @@
       "lighthouse-core/lib/i18n/i18n.js | columnDuration": [
         "audits[long-tasks].details.headings[2].text"
       ],
+      "lighthouse-core/audits/no-unload-listeners.js | failureTitle": [
+        "audits[no-unload-listeners].title"
+      ],
+      "lighthouse-core/audits/no-unload-listeners.js | description": [
+        "audits[no-unload-listeners].description"
+      ],
+      "lighthouse-core/audits/non-composited-animations.js | title": [
+        "audits[non-composited-animations].title"
+      ],
+      "lighthouse-core/audits/non-composited-animations.js | description": [
+        "audits[non-composited-animations].description"
+      ],
       "lighthouse-core/audits/unsized-images.js | failureTitle": [
         "audits[unsized-images].title"
       ],
@@ -6857,18 +6869,6 @@
         "audits[link-name].details.headings[0].text",
         "audits[object-alt].details.headings[0].text",
         "audits[password-inputs-can-be-pasted-into].details.headings[0].text"
-      ],
-      "lighthouse-core/audits/no-unload-listeners.js | failureTitle": [
-        "audits[no-unload-listeners].title"
-      ],
-      "lighthouse-core/audits/no-unload-listeners.js | description": [
-        "audits[no-unload-listeners].description"
-      ],
-      "lighthouse-core/audits/non-composited-animations.js | title": [
-        "audits[non-composited-animations].title"
-      ],
-      "lighthouse-core/audits/non-composited-animations.js | description": [
-        "audits[non-composited-animations].description"
       ],
       "lighthouse-core/audits/manual/pwa-cross-browser.js | title": [
         "audits[pwa-cross-browser].title"
