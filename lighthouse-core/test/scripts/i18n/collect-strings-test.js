@@ -540,8 +540,12 @@ describe('Convert Message to Placeholder', () => {
   });
 
   it('pass when double dollar is part of a message', () => {
-    const message = '$ICU_0$$ICU_1$';
-    expect(() => collect.convertMessageToCtc(message)).not.toThrow();
+    const message = '$$';
+    expect(() => collect.convertMessageToCtc(message)).toThrow();
+    const message2 = '$ICU_0$$ICU_1$';
+    expect(() => collect.convertMessageToCtc(message2)).not.toThrow();
+    const message3 = '$ICU_0$$';
+    expect(() => collect.convertMessageToCtc(message3)).not.toThrow();
   });
 });
 
