@@ -1,28 +1,28 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Adam Raine <6752989+adamraine@users.noreply.github.com>
-David Gilman <davidgilman1@gmail.com>
-Emilio Garza <emilio@dev-e.com>
-George Makunde Martin <34068912+gMakunde@users.noreply.github.com>
-LukasAuerMstage <45487962+LukasAuerMstage@users.noreply.github.com>
-Mustafa Aydemir <mustafa@aydemir.im>
-Pramod Mali <pramodmaali@gmail.com>
-Robin Tom <31811117+robintom@users.noreply.github.com>
-Saavan Nanavati <66381097+saavan-google-intern@users.noreply.github.com>
-Stacey Tay <staceytay@users.noreply.github.com>
-Wojciech Maj <kontakt@wojtekmaj.pl>
-lemcardenas <32499374+lemcardenas@users.noreply.github.com>
-moli <phpmoli@users.noreply.github.com>
-Муравьёв Семён <s01@ngs.ru>
- <a name="6.2.0"></a>
+<a name="6.2.0"></a>
 # 6.2.0 (2020-08-06)
-[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.1.0...v6.2.0)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.1.1...v6.2.0)
 
 We expect this release to ship in the DevTools of [Chrome 86](https://chromiumdash.appspot.com/schedule), and to PageSpeed
 Insights within 2 weeks.
 
-## Notable Changes
-~~ TODO: Move notable changes here ~~
+## New Contributors
 
+Thanks to our new contributors 👽🐷🐰🐯🐻! 
+
+* Adam Raine @adamraine 
+* Saavan Nanavati @saavannanavati
+* lemcardenas @lemcardenas
+* George Makunde Martin @gMakunde
+* David Gilman @dgilman
+* Emilio Garza @emiliogarza
+* LukasAuerMstage @LukasAuerMstage
+* Mustafa Aydemir @mstfydmr
+* Pramod Mali @malipramod
+* Robin Tom @robintom
+* Stacey Tay @staceytay
+* Wojciech Maj @wojtekmaj
+* moli @phpmoli
+* Муравьёв Семён @Zulcom
 
 ## New Audits
 
@@ -55,7 +55,6 @@ Insights within 2 weeks.
 * tracehouse: expose navigationStart only as timeOrigin ([#11034](https://github.com/GoogleChrome/lighthouse/pull/11034))
 * add cap to amp stylesheet links for simulated throttling ([#11069](https://github.com/GoogleChrome/lighthouse/pull/11069))
 * remove uses of deprecated extendedInfo field ([#10779](https://github.com/GoogleChrome/lighthouse/pull/10779))
-* fetcher: ensure fetch doesn't cause unhandled promise ([#11036](https://github.com/GoogleChrome/lighthouse/pull/11036))
 * config: remove typo in a11y tables lists group ([#11099](https://github.com/GoogleChrome/lighthouse/pull/11099))
 * unused-javascript: update "learn more" link ([#10985](https://github.com/GoogleChrome/lighthouse/pull/10985))
 
@@ -64,6 +63,13 @@ Insights within 2 weeks.
 * clearTimeout for faster exit ([#11170](https://github.com/GoogleChrome/lighthouse/pull/11170))
 * warn if Chrome died on its own instead of exit ([#11139](https://github.com/GoogleChrome/lighthouse/pull/11139))
 
+## Report
+
+* correctly display CLS in budget table ([#11209](https://github.com/GoogleChrome/lighthouse/pull/11209))
+* add full-page-screenshot to experimental config ([#10716](https://github.com/GoogleChrome/lighthouse/pull/10716))
+* vertically center thumbnails ([#11220](https://github.com/GoogleChrome/lighthouse/pull/11220))
+* truncate long attribute values in HTML snippets ([#10984](https://github.com/GoogleChrome/lighthouse/pull/10984))
+
 ## Deps
 
 * snyk: update script to prune <0.0.0 and update snapshot ([#11223](https://github.com/GoogleChrome/lighthouse/pull/11223))
@@ -71,13 +77,6 @@ Insights within 2 weeks.
 * update dot-prop secondary dependency ([#11198](https://github.com/GoogleChrome/lighthouse/pull/11198))
 * update jpeg-js to 0.4.x ([#11167](https://github.com/GoogleChrome/lighthouse/pull/11167))
 * update third-party-web ([#11137](https://github.com/GoogleChrome/lighthouse/pull/11137))
-
-## Report
-
-* correctly display CLS in budget table ([#11209](https://github.com/GoogleChrome/lighthouse/pull/11209))
-* add full-page-screenshot to experimental config ([#10716](https://github.com/GoogleChrome/lighthouse/pull/10716))
-* vertically center thumbnails ([#11220](https://github.com/GoogleChrome/lighthouse/pull/11220))
-* truncate long attribute values in HTML snippets ([#10984](https://github.com/GoogleChrome/lighthouse/pull/10984))
 
 ## I18n
 
@@ -110,7 +109,7 @@ Insights within 2 weeks.
 * relax requestIdleCallback smoke expectation ([#11041](https://github.com/GoogleChrome/lighthouse/pull/11041))
 * parallelize all the tests ([#11009](https://github.com/GoogleChrome/lighthouse/pull/11009))
 * upgrade codecov to 3.7.0 ([#11039](https://github.com/GoogleChrome/lighthouse/pull/11039))
-* angular: update minor version of angular fixture redux ([#11192](https://github.com/GoogleChrome/lighthouse/pull/11192))
+* update minor version of angular fixture redux ([#11192](https://github.com/GoogleChrome/lighthouse/pull/11192))
 
 ## Misc
 
@@ -126,6 +125,16 @@ Insights within 2 weeks.
 * add tools to track issue response time ([#11020](https://github.com/GoogleChrome/lighthouse/pull/11020))
 * run GitHub Actions on master and PRs ([#11035](https://github.com/GoogleChrome/lighthouse/pull/11035))
 * tweak naming in element-screenshot renderer ([#11152](https://github.com/GoogleChrome/lighthouse/pull/11152))
+
+<a name="6.1.1"></a>
+# 6.1.1 (2020-07-07)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.1.0...v6.1.1)
+
+This is a patch release to fix an issue that only occurred in 6.1.0 for Node environments. It will only be released to npm.
+
+## Core
+
+* fetcher: ensure fetch doesn't cause unhandled promise ([#11036](https://github.com/GoogleChrome/lighthouse/pull/11036))
 
 <a name="6.1.0"></a>
 # 6.1.0 (2020-06-25)
