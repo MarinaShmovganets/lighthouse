@@ -27,7 +27,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 ## New Audits
 
 * move duplicated-javascript and legacy-javascript to default config ([#10881](https://github.com/GoogleChrome/lighthouse/pull/10881), [#11103](https://github.com/GoogleChrome/lighthouse/pull/11103))
-* report animations not run on compositor ([#11105](https://github.com/GoogleChrome/lighthouse/pull/11105))
+* report animations not run on compositor ([#11138](https://github.com/GoogleChrome/lighthouse/pull/11138), [#11168](https://github.com/GoogleChrome/lighthouse/pull/11168), [#11105](https://github.com/GoogleChrome/lighthouse/pull/11105))
 * add unsized-images to experimental config ([#11188](https://github.com/GoogleChrome/lighthouse/pull/11188), [#11115](https://github.com/GoogleChrome/lighthouse/pull/11115), [#11217](https://github.com/GoogleChrome/lighthouse/pull/11217))
 * add no-unload-listeners audit ([#11085](https://github.com/GoogleChrome/lighthouse/pull/11085))
 
@@ -37,8 +37,6 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 * lantern: fallback to FCP in 0-weight SI situations ([#11174](https://github.com/GoogleChrome/lighthouse/pull/11174))
 * stacks: timeout stack detection ([#11172](https://github.com/GoogleChrome/lighthouse/pull/11172))
 * add FormElements gatherer ([#11062](https://github.com/GoogleChrome/lighthouse/pull/11062))
-* resolve animation name in TraceElements gatherer ([#11168](https://github.com/GoogleChrome/lighthouse/pull/11168))
-* generalize TraceElements gatherer and add animated elements ([#11138](https://github.com/GoogleChrome/lighthouse/pull/11138))
 * cls: add back early shift events if they were ignored ([#11079](https://github.com/GoogleChrome/lighthouse/pull/11079))
 * critical-request-chains: prune requests without an initiator ([#11151](https://github.com/GoogleChrome/lighthouse/pull/11151))
 * error if chrome version does not support lcp metric ([#11016](https://github.com/GoogleChrome/lighthouse/pull/11016))
@@ -56,7 +54,6 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 * add cap to amp stylesheet links for simulated throttling ([#11069](https://github.com/GoogleChrome/lighthouse/pull/11069))
 * remove uses of deprecated extendedInfo field ([#10779](https://github.com/GoogleChrome/lighthouse/pull/10779))
 * config: remove typo in a11y tables lists group ([#11099](https://github.com/GoogleChrome/lighthouse/pull/11099))
-* unused-javascript: update "learn more" link ([#10985](https://github.com/GoogleChrome/lighthouse/pull/10985))
 
 ## CLI
 
@@ -69,6 +66,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 * add full-page-screenshot to experimental config ([#10716](https://github.com/GoogleChrome/lighthouse/pull/10716))
 * vertically center thumbnails ([#11220](https://github.com/GoogleChrome/lighthouse/pull/11220))
 * truncate long attribute values in HTML snippets ([#10984](https://github.com/GoogleChrome/lighthouse/pull/10984))
+* unused-javascript: update "learn more" link ([#10985](https://github.com/GoogleChrome/lighthouse/pull/10985))
 
 ## Deps
 
