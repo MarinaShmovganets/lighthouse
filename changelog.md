@@ -26,9 +26,9 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ## New Audits
 
-* move duplicated-javascript and legacy-javascript to default config ([#10881](https://github.com/GoogleChrome/lighthouse/pull/10881), [#11103](https://github.com/GoogleChrome/lighthouse/pull/11103))
+* move duplicated-javascript and legacy-javascript audits to default config ([#10881](https://github.com/GoogleChrome/lighthouse/pull/10881), [#11103](https://github.com/GoogleChrome/lighthouse/pull/11103))
 * report animations not run on compositor ([#11138](https://github.com/GoogleChrome/lighthouse/pull/11138), [#11168](https://github.com/GoogleChrome/lighthouse/pull/11168), [#11105](https://github.com/GoogleChrome/lighthouse/pull/11105))
-* add unsized-images to experimental config ([#11188](https://github.com/GoogleChrome/lighthouse/pull/11188), [#11115](https://github.com/GoogleChrome/lighthouse/pull/11115), [#11217](https://github.com/GoogleChrome/lighthouse/pull/11217))
+* add unsized-images audit ([#11188](https://github.com/GoogleChrome/lighthouse/pull/11188), [#11115](https://github.com/GoogleChrome/lighthouse/pull/11115), [#11217](https://github.com/GoogleChrome/lighthouse/pull/11217))
 * add no-unload-listeners audit ([#11085](https://github.com/GoogleChrome/lighthouse/pull/11085))
 
 ## Core
