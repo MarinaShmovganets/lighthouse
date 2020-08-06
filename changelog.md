@@ -86,40 +86,40 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 ## Docs
 
 * configuration: updates and tweaks ([#11141](https://github.com/GoogleChrome/lighthouse/pull/11141))
+* update architecture.md ([#11040](https://github.com/GoogleChrome/lighthouse/pull/11040), [#11089](https://github.com/GoogleChrome/lighthouse/pull/11089))
 * readme: add Screpy to list of integrations ([#11126](https://github.com/GoogleChrome/lighthouse/pull/11126))
 * readme: fix logging in programmatic use code example ([#11116](https://github.com/GoogleChrome/lighthouse/pull/11116))
 * update devtools screenshot ([#11092](https://github.com/GoogleChrome/lighthouse/pull/11092))
 * fix typo in viewer readme for loading json from url ([#11080](https://github.com/GoogleChrome/lighthouse/pull/11080))
 * readme: update Foo integration ([#11050](https://github.com/GoogleChrome/lighthouse/pull/11050))
-* update architecture.md ([#11040](https://github.com/GoogleChrome/lighthouse/pull/11040), [#11089](https://github.com/GoogleChrome/lighthouse/pull/11089))
 
 ## Tests
 
 * istanbul ignore inpage function ([#11229](https://github.com/GoogleChrome/lighthouse/pull/11229))
 * update chromestatus expecatations ([#11221](https://github.com/GoogleChrome/lighthouse/pull/11221))
 * minification-est: add testcase with pre-minified bundle ([#11191](https://github.com/GoogleChrome/lighthouse/pull/11191))
-* run test-viewer in github actions ([#11195](https://github.com/GoogleChrome/lighthouse/pull/11195))
 * update to typescript 3.9.7 ([#11158](https://github.com/GoogleChrome/lighthouse/pull/11158))
-* add windows to GitHub actions CI ([#11087](https://github.com/GoogleChrome/lighthouse/pull/11087))
 * smoke: skip expectation with _chromeMajorVersion ([#10976](https://github.com/GoogleChrome/lighthouse/pull/10976))
-* use latest windows image on appveyor ([#11083](https://github.com/GoogleChrome/lighthouse/pull/11083))
 * smoke: use caltrainschedule instead of polymer shop ([#11052](https://github.com/GoogleChrome/lighthouse/pull/11052))
 * relax requestIdleCallback smoke expectation ([#11041](https://github.com/GoogleChrome/lighthouse/pull/11041))
 * parallelize all the tests ([#11009](https://github.com/GoogleChrome/lighthouse/pull/11009))
 * upgrade codecov to 3.7.0 ([#11039](https://github.com/GoogleChrome/lighthouse/pull/11039))
 * update minor version of angular fixture redux ([#11192](https://github.com/GoogleChrome/lighthouse/pull/11192))
+* run GitHub Actions on master and PRs ([#11035](https://github.com/GoogleChrome/lighthouse/pull/11035))
+* run test-viewer in github actions ([#11195](https://github.com/GoogleChrome/lighthouse/pull/11195))
+* add windows to GitHub actions CI ([#11087](https://github.com/GoogleChrome/lighthouse/pull/11087))
+* use latest windows image on appveyor ([#11083](https://github.com/GoogleChrome/lighthouse/pull/11083))
+* remove appveyor ([#11171](https://github.com/GoogleChrome/lighthouse/pull/11171))
 
 ## Misc
 
 * remove last extendedInfo in LH.Audit.Product ([#11067](https://github.com/GoogleChrome/lighthouse/pull/11067))
 * add GCP collection scripts ([#11189](https://github.com/GoogleChrome/lighthouse/pull/11189))
-* remove all appveyor references ([#11171](https://github.com/GoogleChrome/lighthouse/pull/11171))
 * tighten RecursivePartial type ([#11175](https://github.com/GoogleChrome/lighthouse/pull/11175))
 * release: tweaks ([#11021](https://github.com/GoogleChrome/lighthouse/pull/11021))
 * compare-runs: fix error when no lh-flags arg passed ([#11015](https://github.com/GoogleChrome/lighthouse/pull/11015))
 * annotate version-specific logic with COMPAT comments ([#11019](https://github.com/GoogleChrome/lighthouse/pull/11019))
 * add tools to track issue response time ([#11020](https://github.com/GoogleChrome/lighthouse/pull/11020))
-* run GitHub Actions on master and PRs ([#11035](https://github.com/GoogleChrome/lighthouse/pull/11035))
 * tweak naming in element-screenshot renderer ([#11152](https://github.com/GoogleChrome/lighthouse/pull/11152))
 * ignore coverage of page-functions ([#11136](https://github.com/GoogleChrome/lighthouse/pull/11136))
 
