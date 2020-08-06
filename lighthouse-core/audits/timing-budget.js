@@ -111,7 +111,8 @@ class TimingBudget extends Audit {
       return (b.overBudget || 0) - (a.overBudget || 0);
     });
 
-    // CLS requires a different granularity.
+    // CLS requires a different granularity and should be a numeric type.
+    // Defining type here overrides the column setting so that it doesn't receive ms units.
     const clsItem = items.find(item => item.metric === 'cumulative-layout-shift');
     if (clsItem) {
       if (typeof clsItem.measurement !== 'object') {
