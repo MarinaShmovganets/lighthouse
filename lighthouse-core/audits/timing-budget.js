@@ -90,47 +90,47 @@ class TimingBudget extends Audit {
    */
   static tableItems(budget, summary) {
     /** @type {Array<BudgetItem>} */
-    const items = [];
+    let items = [];
     if (!budget.timings) {
       return items;
     }
 
-    for (const timingBudget of budget.timings) {
+    items = budget.timings.map((timingBudget) => {
       const metricName = timingBudget.metric;
       const label = this.getRowLabel(metricName);
       const measurement = this.getMeasurement(metricName, summary);
       const overBudget = measurement && (measurement > timingBudget.budget)
         ? (measurement - timingBudget.budget) : undefined;
+      return {
+        metric: metricName,
+        label,
+        measurement,
+        overBudget,
+      };
+    }).sort((a, b) => {
+      return (b.overBudget || 0) - (a.overBudget || 0);
+    });
 
-      if (metricName === 'cumulative-layout-shift') {
-        items.push({
-          metric: metricName,
-          label,
-          measurement: {
-            type: 'numeric',
-            value: Number(measurement),
-            granularity: 0.01,
-          },
-          overBudget: {
-            type: 'numeric',
-            value: Number(overBudget),
-            granularity: 0.01,
-          },
-        });
-      } else {
-        items.push({
-          metric: metricName,
-          label,
-          measurement,
-          overBudget,
-        });
+    // CLS requires a different granularity.
+    const clsItem = items.find(item => item.metric === 'cumulative-layout-shift');
+    if (clsItem) {
+      if (typeof clsItem.measurement !== 'object') {
+        clsItem.measurement = {
+          type: 'numeric',
+          value: Number(clsItem.measurement),
+          granularity: 0.01,
+        };
+      }
+      if (typeof clsItem.overBudget !== 'object') {
+        clsItem.overBudget = {
+          type: 'numeric',
+          value: Number(clsItem.overBudget),
+          granularity: 0.01,
+        };
       }
     }
-    return items.sort((a, b) => {
-      const aVal = typeof a.overBudget === 'object' ? a.overBudget.value : a.overBudget;
-      const bVal = typeof b.overBudget === 'object' ? b.overBudget.value : b.overBudget;
-      return (bVal || 0) - (aVal || 0);
-    });
+
+    return items;
   }
 
   /**
