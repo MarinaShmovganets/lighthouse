@@ -17,8 +17,7 @@ moli <phpmoli@users.noreply.github.com>
 # 6.2.0 (2020-08-06)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.1.0...v6.2.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed
+We expect this release to ship in the DevTools of [Chrome 86](https://chromiumdash.appspot.com/schedule), and to PageSpeed
 Insights within 2 weeks.
 
 ## Notable Changes
@@ -27,41 +26,38 @@ Insights within 2 weeks.
 
 ## New Audits
 
+* move duplicated-javascript and legacy-javascript to default config ([#10881](https://github.com/GoogleChrome/lighthouse/pull/10881), [#11103](https://github.com/GoogleChrome/lighthouse/pull/11103))
 * report animations not run on compositor ([#11105](https://github.com/GoogleChrome/lighthouse/pull/11105))
-* add sized-images to experimental config ([#11115](https://github.com/GoogleChrome/lighthouse/pull/11115))
+* add unsized-images to experimental config ([#11188](https://github.com/GoogleChrome/lighthouse/pull/11188), [#11115](https://github.com/GoogleChrome/lighthouse/pull/11115), [#11217](https://github.com/GoogleChrome/lighthouse/pull/11217))
 * add no-unload-listeners audit ([#11085](https://github.com/GoogleChrome/lighthouse/pull/11085))
 
 ## Core
 
-* config: unsized-images to default ([#11217](https://github.com/GoogleChrome/lighthouse/pull/11217))
-* image-elements: collect CSS sizing, ShadowRoot, & position ([#11188](https://github.com/GoogleChrome/lighthouse/pull/11188))
+* uses-http2: convert into opportunity ([#10626](https://github.com/GoogleChrome/lighthouse/pull/10626))
 * lantern: fallback to FCP in 0-weight SI situations ([#11174](https://github.com/GoogleChrome/lighthouse/pull/11174))
 * stacks: timeout stack detection ([#11172](https://github.com/GoogleChrome/lighthouse/pull/11172))
 * add FormElements gatherer ([#11062](https://github.com/GoogleChrome/lighthouse/pull/11062))
 * resolve animation name in TraceElements gatherer ([#11168](https://github.com/GoogleChrome/lighthouse/pull/11168))
 * generalize TraceElements gatherer and add animated elements ([#11138](https://github.com/GoogleChrome/lighthouse/pull/11138))
 * cls: add back early shift events if they were ignored ([#11079](https://github.com/GoogleChrome/lighthouse/pull/11079))
-* config: move duplicated-javascript and legacy-javascript to default ([#11103](https://github.com/GoogleChrome/lighthouse/pull/11103))
-* config: remove typo in a11y tables lists group ([#11099](https://github.com/GoogleChrome/lighthouse/pull/11099))
 * critical-request-chains: prune requests without an initiator ([#11151](https://github.com/GoogleChrome/lighthouse/pull/11151))
-* fetcher: ensure fetch doesn't cause unhandled promise ([#11036](https://github.com/GoogleChrome/lighthouse/pull/11036))
+* error if chrome version does not support lcp metric ([#11016](https://github.com/GoogleChrome/lighthouse/pull/11016))
 * font-display: dedupe warnings by font origin ([#11068](https://github.com/GoogleChrome/lighthouse/pull/11068))
 * gather-runner: error on non-HTML ([#11042](https://github.com/GoogleChrome/lighthouse/pull/11042))
 * hreflang: assert that the href is fully qualified ([#11022](https://github.com/GoogleChrome/lighthouse/pull/11022))
 * image-elements: gather correct natural size for srcset ([#11101](https://github.com/GoogleChrome/lighthouse/pull/11101))
 * is-on-https: add mixed-content resolution ([#10975](https://github.com/GoogleChrome/lighthouse/pull/10975))
 * lantern: ignore circular initiators ([#11148](https://github.com/GoogleChrome/lighthouse/pull/11148))
-* legacy-javascript: make opportunity ([#10881](https://github.com/GoogleChrome/lighthouse/pull/10881))
 * link-elements: add devtoolsNodePath ([#11061](https://github.com/GoogleChrome/lighthouse/pull/11061))
 * link-text: removing inicio from blocklist resolves #11026 ([#11073](https://github.com/GoogleChrome/lighthouse/pull/11073))
 * page-functions: expose simulated throttling requestIdleCallback shim ([#11032](https://github.com/GoogleChrome/lighthouse/pull/11032))
 * redirects: surface client-side redirects ([#11027](https://github.com/GoogleChrome/lighthouse/pull/11027))
 * tracehouse: expose navigationStart only as timeOrigin ([#11034](https://github.com/GoogleChrome/lighthouse/pull/11034))
-* unused-javascript: update "learn more" link ([#10985](https://github.com/GoogleChrome/lighthouse/pull/10985))
-* uses-http2: convert into opportunity ([#10626](https://github.com/GoogleChrome/lighthouse/pull/10626))
 * add cap to amp stylesheet links for simulated throttling ([#11069](https://github.com/GoogleChrome/lighthouse/pull/11069))
-* error if chrome version does not support lcp metric ([#11016](https://github.com/GoogleChrome/lighthouse/pull/11016))
 * remove uses of deprecated extendedInfo field ([#10779](https://github.com/GoogleChrome/lighthouse/pull/10779))
+* fetcher: ensure fetch doesn't cause unhandled promise ([#11036](https://github.com/GoogleChrome/lighthouse/pull/11036))
+* config: remove typo in a11y tables lists group ([#11099](https://github.com/GoogleChrome/lighthouse/pull/11099))
+* unused-javascript: update "learn more" link ([#10985](https://github.com/GoogleChrome/lighthouse/pull/10985))
 
 ## CLI
 
@@ -71,28 +67,24 @@ Insights within 2 weeks.
 ## Deps
 
 * snyk: update script to prune <0.0.0 and update snapshot ([#11223](https://github.com/GoogleChrome/lighthouse/pull/11223))
+* snyk: update snyk snapshot ([#11046](https://github.com/GoogleChrome/lighthouse/pull/11046))
 * update dot-prop secondary dependency ([#11198](https://github.com/GoogleChrome/lighthouse/pull/11198))
-* angular: update minor version of angular fixture redux ([#11192](https://github.com/GoogleChrome/lighthouse/pull/11192))
 * update jpeg-js to 0.4.x ([#11167](https://github.com/GoogleChrome/lighthouse/pull/11167))
 * update third-party-web ([#11137](https://github.com/GoogleChrome/lighthouse/pull/11137))
-* snyk: update snyk snapshot ([#11046](https://github.com/GoogleChrome/lighthouse/pull/11046))
-* upgrade codecov to 3.7.0 ([#11039](https://github.com/GoogleChrome/lighthouse/pull/11039))
 
 ## Report
 
 * correctly display CLS in budget table ([#11209](https://github.com/GoogleChrome/lighthouse/pull/11209))
-* vertically center thumbnails ([#11220](https://github.com/GoogleChrome/lighthouse/pull/11220))
-* tweak naming in element-screenshot renderer ([#11152](https://github.com/GoogleChrome/lighthouse/pull/11152))
 * add full-page-screenshot to experimental config ([#10716](https://github.com/GoogleChrome/lighthouse/pull/10716))
+* vertically center thumbnails ([#11220](https://github.com/GoogleChrome/lighthouse/pull/11220))
 * truncate long attribute values in HTML snippets ([#10984](https://github.com/GoogleChrome/lighthouse/pull/10984))
 
 ## I18n
 
-* import ([#11225](https://github.com/GoogleChrome/lighthouse/pull/11225))
-* log the percentage of translated messages ([#11149](https://github.com/GoogleChrome/lighthouse/pull/11149))
+* import strings ([#11082](https://github.com/GoogleChrome/lighthouse/pull/11082), [#11225](https://github.com/GoogleChrome/lighthouse/pull/11225))
 * disallow invalid text outside complex ICU arguments ([#11135](https://github.com/GoogleChrome/lighthouse/pull/11135))
 * update AMP Optimizer URLs ([#11088](https://github.com/GoogleChrome/lighthouse/pull/11088))
-* import: new audit strings, KiB, and updated urls for 6.1 ([#11082](https://github.com/GoogleChrome/lighthouse/pull/11082))
+* log the percentage of translated messages ([#11149](https://github.com/GoogleChrome/lighthouse/pull/11149))
 
 ## Docs
 
@@ -117,6 +109,8 @@ Insights within 2 weeks.
 * smoke: use caltrainschedule instead of polymer shop ([#11052](https://github.com/GoogleChrome/lighthouse/pull/11052))
 * relax requestIdleCallback smoke expectation ([#11041](https://github.com/GoogleChrome/lighthouse/pull/11041))
 * parallelize all the tests ([#11009](https://github.com/GoogleChrome/lighthouse/pull/11009))
+* upgrade codecov to 3.7.0 ([#11039](https://github.com/GoogleChrome/lighthouse/pull/11039))
+* angular: update minor version of angular fixture redux ([#11192](https://github.com/GoogleChrome/lighthouse/pull/11192))
 
 ## Misc
 
@@ -131,6 +125,7 @@ Insights within 2 weeks.
 * annotate version-specific logic with COMPAT comments ([#11019](https://github.com/GoogleChrome/lighthouse/pull/11019))
 * add tools to track issue response time ([#11020](https://github.com/GoogleChrome/lighthouse/pull/11020))
 * run GitHub Actions on master and PRs ([#11035](https://github.com/GoogleChrome/lighthouse/pull/11035))
+* tweak naming in element-screenshot renderer ([#11152](https://github.com/GoogleChrome/lighthouse/pull/11152))
 
 <a name="6.1.0"></a>
 # 6.1.0 (2020-06-25)
