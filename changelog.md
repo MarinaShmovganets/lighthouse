@@ -93,7 +93,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 * update devtools screenshot ([#11092](https://github.com/GoogleChrome/lighthouse/pull/11092))
 * fix typo in viewer readme for loading json from url ([#11080](https://github.com/GoogleChrome/lighthouse/pull/11080))
 * readme: update Foo integration ([#11050](https://github.com/GoogleChrome/lighthouse/pull/11050))
-* update architecture.md ([#11040](https://github.com/GoogleChrome/lighthouse/pull/11040))
+* update architecture.md ([#11040](https://github.com/GoogleChrome/lighthouse/pull/11040), [#11089](https://github.com/GoogleChrome/lighthouse/pull/11089))
 
 ## Tests
 
@@ -113,18 +113,17 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ## Misc
 
+* remove last extendedInfo in LH.Audit.Product ([#11067](https://github.com/GoogleChrome/lighthouse/pull/11067))
 * add GCP collection scripts ([#11189](https://github.com/GoogleChrome/lighthouse/pull/11189))
 * remove all appveyor references ([#11171](https://github.com/GoogleChrome/lighthouse/pull/11171))
 * tighten RecursivePartial type ([#11175](https://github.com/GoogleChrome/lighthouse/pull/11175))
-* ignore coverage of page-functions ([#11136](https://github.com/GoogleChrome/lighthouse/pull/11136))
-* docs (architecture): correct link to description guidelines ([#11089](https://github.com/GoogleChrome/lighthouse/pull/11089))
 * release: tweaks ([#11021](https://github.com/GoogleChrome/lighthouse/pull/11021))
-* remove last extendedInfo in LH.Audit.Product ([#11067](https://github.com/GoogleChrome/lighthouse/pull/11067))
 * compare-runs: fix error when no lh-flags arg passed ([#11015](https://github.com/GoogleChrome/lighthouse/pull/11015))
 * annotate version-specific logic with COMPAT comments ([#11019](https://github.com/GoogleChrome/lighthouse/pull/11019))
 * add tools to track issue response time ([#11020](https://github.com/GoogleChrome/lighthouse/pull/11020))
 * run GitHub Actions on master and PRs ([#11035](https://github.com/GoogleChrome/lighthouse/pull/11035))
 * tweak naming in element-screenshot renderer ([#11152](https://github.com/GoogleChrome/lighthouse/pull/11152))
+* ignore coverage of page-functions ([#11136](https://github.com/GoogleChrome/lighthouse/pull/11136))
 
 <a name="6.1.1"></a>
 # 6.1.1 (2020-07-07)
