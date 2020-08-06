@@ -559,7 +559,6 @@ class DetailsRenderer {
     return element;
   }
 
-
   /**
    * @param {LH.Audit.Details.Filmstrip} details
    * @return {Element}
