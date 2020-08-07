@@ -355,7 +355,6 @@ class CategoryRenderer {
       // Render a gray dash for entirely non-applicable categories.
       wrapper.classList.add(`lh-gauge__wrapper--notapplicable`);
       percentageEl.textContent = '-';
-      percentageEl.style.color = '#757575';
       percentageEl.title = Util.i18n.strings.notApplicableAuditsGroupTitle;
     }
 
