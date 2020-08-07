@@ -32,7 +32,7 @@ export BASE_LIGHTHOUSE_FLAGS="--max-wait-for-load=90000"
 EOF
 
 # Instance needs time to start up.
-until gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp ./.tmp_env $INSTANCE_NAME:/tmp/lhenv --zone="$ZONE"
+until gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp ./.tmp_env $INSTANCE_NAME:/tmp/lhenv --zone="$ZONE" --scp-flag="-o ConnectTimeout=5"
 do
   echo "Waiting for start up ..."
   sleep 10
