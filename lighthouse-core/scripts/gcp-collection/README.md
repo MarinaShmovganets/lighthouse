@@ -1,5 +1,7 @@
 # Usage
 
+By default, the instance will be called `lighthouse-collection-$gcloudusername-instance0` but you can replace `instance0` by supplying an arg to `run.sh`.
+
 1. Googlers: [do this](go/lighthouse-ssh-gcloud-readme).
 1. Spin up machines and start the collection.
    1. (Prerequiste) Install GCloud SDK and authenticate locally, Run `brew cask install google-cloud-sdk && gcloud auth login`
