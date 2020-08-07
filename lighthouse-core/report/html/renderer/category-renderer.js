@@ -353,7 +353,7 @@ class CategoryRenderer {
       wrapper.classList.add(`lh-gauge__wrapper--${Util.calculateRating(category.score)}`);
     } else {
       // Render a gray dash for entirely non-applicable categories.
-      wrapper.classList.add(`lh-gauge__wrapper--notapplicable`);
+      wrapper.classList.add(`lh-gauge__wrapper--not-applicable`);
       percentageEl.textContent = '-';
       percentageEl.title = Util.i18n.strings.notApplicableAuditsGroupTitle;
     }
