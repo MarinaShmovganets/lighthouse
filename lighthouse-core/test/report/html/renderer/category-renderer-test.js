@@ -261,7 +261,6 @@ describe('CategoryRenderer', () => {
     });
   });
 
-
   describe('category with groups', () => {
     let category;
 
