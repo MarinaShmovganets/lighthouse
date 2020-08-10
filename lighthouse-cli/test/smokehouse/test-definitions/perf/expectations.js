@@ -169,7 +169,8 @@ module.exports = [
                 node: {
                   type: 'node',
                   nodeLabel: 'img',
-                  selector: 'body > div#late-content > img',
+                  selector: 'section > img',
+                  path: '0,HTML,1,BODY,0,DIV,a,#document-fragment,0,SECTION,0,IMG',
                 },
               },
             ],

@@ -163,14 +163,25 @@ function ultradumbBenchmark() {
 
 /**
  * Adapted from DevTools' SDK.DOMNode.prototype.path
- *   https://github.com/ChromeDevTools/devtools-frontend/blob/7a2e162ddefd/front_end/sdk/DOMModel.js#L530-L552
- * TODO: Doesn't handle frames or shadow roots...
+ *   https://github.com/ChromeDevTools/devtools-frontend/blob/4fff931bb/front_end/sdk/DOMModel.js#L625-L647
+ * Backend: https://source.chromium.org/search?q=f:node.cc%20symbol:PrintNodePathTo&sq=&ss=chromium%2Fchromium%2Fsrc
+ *
+ * TODO: DevTools nodePath handling doesn't currently support iframes, but probably could.
  * @param {Node} node
  */
 /* istanbul ignore next */
 function getNodePath(node) {
+  // For our purposes, there's no worthwhile difference between shadow root and document fragment
+  // We can consider them entirely synonymous.
+  const isShadowRoot = node => node.nodeType === Node.DOCUMENT_FRAGMENT_NODE;
+  const getNodeParent = node => isShadowRoot(node) ? node.host : node.parentNode;
+
   /** @param {Node} node */
   function getNodeIndex(node) {
+    if (isShadowRoot(node)) {
+      // User-agent shadow roots get 'u'. Non-UA shadow roots get 'a'.
+      return 'a';
+    }
     let index = 0;
     let prevNode;
     while (prevNode = node.previousSibling) {
@@ -183,15 +194,10 @@ function getNodePath(node) {
   }
 
   const path = [];
-  while (node && node.parentNode) {
+  while (node && !!getNodeParent(node)) {
     const index = getNodeIndex(node);
     path.push([index, node.nodeName]);
-    if (node.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-      path.push([0, node.parentNode.nodeName]);
-      node = node.parentNode.host;
-    } else {
-      node = node.parentNode;
-    }
+    node = getNodeParent(node);
   }
   path.reverse();
   return path.join(',');
