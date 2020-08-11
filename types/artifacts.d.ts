@@ -393,17 +393,6 @@ declare global {
         }>
       }
 
-      export module FontSize {
-        export interface DomNodeWithParent extends Crdp.DOM.Node {
-          parentId: number;
-          parentNode: DomNodeWithParent;
-        }
-
-        export interface DomNodeMaybeWithParent extends Crdp.DOM.Node {
-          parentNode?: DomNodeMaybeWithParent;
-        }
-      }
-
       // TODO(bckenny): real type for parsed manifest.
       export type Manifest = ReturnType<typeof parseManifest>;
 

@@ -24,7 +24,6 @@ const MAX_NODES_SOURCE_RULE_FETCHED = 50; // number of nodes to fetch the source
 
 /** @typedef {import('../../driver.js')} Driver */
 /** @typedef {LH.Artifacts.FontSize['analyzedFailingNodesData'][0]} NodeFontData */
-/** @typedef {LH.Artifacts.FontSize.DomNodeMaybeWithParent} DomNodeMaybeWithParent*/
 /** @typedef {Map<number, {fontSize: number, textLength: number}>} BackendIdsToFontData */
 
 /**
