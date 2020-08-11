@@ -38,7 +38,7 @@ function getUniqueFailingRules(fontSizeArtifact) {
 
   fontSizeArtifact.forEach((failingNodeData) => {
     const {nodeId, cssRule, fontSize, textLength, parentNode} = failingNodeData;
-    const artifactId = getFontArtifactId(cssRule, parentNode, nodeId);
+    const artifactId = getFontArtifactId(cssRule, nodeId);
     const failingRule = failingRules.get(artifactId);
 
     if (!failingRule) {
@@ -78,11 +78,11 @@ function getAttributeMap(attributes = []) {
 
 /**
  * TODO: return unique selector, like axe-core does, instead of just id/class/name of a single node
- * @param {FailingNodeData['parentNode']} node
+ * @param {FailingNodeData['parentNode']} parentNode
  * @returns {string}
  */
-function getSelector(node) {
-  const attributeMap = getAttributeMap(node.attributes);
+function getSelector(parentNode) {
+  const attributeMap = getAttributeMap(parentNode.attributes);
 
   if (attributeMap.has('id')) {
     return '#' + attributeMap.get('id');
@@ -93,40 +93,40 @@ function getSelector(node) {
     }
   }
 
-  return node.nodeName.toLowerCase();
+  return parentNode.nodeName.toLowerCase();
 }
 
 /**
- * @param {FailingNodeData['parentNode']} node
+ * @param {FailingNodeData['parentNode']} parentNode
  * @return {LH.Audit.Details.NodeValue}
  */
-function nodeToTableNode(node) {
-  const attributes = node.attributes || [];
+function nodeToTableNode(parentNode) {
+  const attributes = parentNode.attributes || [];
   const attributesString = attributes.map((value, idx) =>
     (idx % 2 === 0) ? ` ${value}` : `="${value}"`
   ).join('');
 
   return {
     type: 'node',
-    selector: node.parentNode ? getSelector(node.parentNode) : '',
-    snippet: `<${node.nodeName.toLowerCase()}${attributesString}>`,
+    selector: parentNode.parentNode ? getSelector(parentNode.parentNode) : '',
+    snippet: `<${parentNode.nodeName.toLowerCase()}${attributesString}>`,
   };
 }
 
 /**
  * @param {string} baseURL
  * @param {FailingNodeData['cssRule']} styleDeclaration
- * @param {FailingNodeData['parentNode']} node
+ * @param {FailingNodeData['parentNode']} parentNode
  * @returns {{source: LH.Audit.Details.UrlValue | LH.Audit.Details.SourceLocationValue | LH.Audit.Details.CodeValue, selector: string | LH.Audit.Details.NodeValue}}
  */
-function findStyleRuleSource(baseURL, styleDeclaration, node) {
+function findStyleRuleSource(baseURL, styleDeclaration, parentNode) {
   if (!styleDeclaration ||
     styleDeclaration.type === 'Attributes' ||
     styleDeclaration.type === 'Inline'
   ) {
     return {
       source: {type: 'url', value: baseURL},
-      selector: nodeToTableNode(node),
+      selector: nodeToTableNode(parentNode),
     };
   }
 
@@ -200,11 +200,10 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
 
 /**
  * @param {FailingNodeData['cssRule']} styleDeclaration
- * @param {FailingNodeData['parentNode']} node
  * @param {number} textNodeId
  * @return {string}
  */
-function getFontArtifactId(styleDeclaration, node, textNodeId) {
+function getFontArtifactId(styleDeclaration, textNodeId) {
   if (styleDeclaration && styleDeclaration.type === 'Regular') {
     const startLine = styleDeclaration.range ? styleDeclaration.range.startLine : 0;
     const startColumn = styleDeclaration.range ? styleDeclaration.range.startColumn : 0;
