@@ -220,17 +220,18 @@ class FontSize extends Gatherer {
   }
 
   /**
-   * Iterates on the TextNodes in a DOM Snapshot.
+   * Returns the TextNodes in a DOM Snapshot.
    * Every entry is associated with a TextNode in the layout tree (not display: none).
    * @param {LH.Crdp.DOMSnapshot.CaptureSnapshotResponse} snapshot
    */
-  * iterateTextNodesInLayoutFromSnapshot(snapshot) {
+  getTextNodesInLayoutFromSnapshot(snapshot) {
     const strings = snapshot.strings;
     /** @param {number} index */
     const getString = (index) => strings[index];
     /** @param {number} index */
     const getFloat = (index) => parseFloat(strings[index]);
 
+    const textNodesData = [];
     for (let j = 0; j < snapshot.documents.length; j++) {
       // `doc` is a flattened property list describing all the Nodes in a document, with all string
       // values deduped in the `strings` array.
@@ -264,18 +265,20 @@ class FontSize extends Gatherer {
         const grandParentNode =
           grandParentIndex !== undefined ? getParentData(grandParentIndex) : undefined;
 
-        yield {
+        textNodesData.push({
           nodeIndex,
           backendNodeId: nodes.backendNodeId[nodeIndex],
           fontSize,
-          text,
+          textLength: getTextLength(text),
           parentNode: {
             ...parentNode,
             parentNode: grandParentNode,
           },
-        };
+        });
       }
     }
+
+    return textNodesData;
   }
 
   /**
@@ -288,17 +291,16 @@ class FontSize extends Gatherer {
     let totalTextLength = 0;
     let failingTextLength = 0;
 
-    for (const nodeData of this.iterateTextNodesInLayoutFromSnapshot(snapshot)) {
-      const textLength = getTextLength(nodeData.text);
-      totalTextLength += textLength;
-      if (nodeData.fontSize < MINIMAL_LEGIBLE_FONT_SIZE_PX) {
+    for (const textNodeData of this.getTextNodesInLayoutFromSnapshot(snapshot)) {
+      totalTextLength += textNodeData.textLength;
+      if (textNodeData.fontSize < MINIMAL_LEGIBLE_FONT_SIZE_PX) {
         // Once a bad TextNode is identified, its parent Node is needed.
-        failingTextLength += textLength;
+        failingTextLength += textNodeData.textLength;
         failingNodes.push({
           nodeId: 0, // Set later in fetchFailingNodeSourceRules.
-          parentNode: nodeData.parentNode,
-          textLength,
-          fontSize: nodeData.fontSize,
+          parentNode: textNodeData.parentNode,
+          textLength: textNodeData.textLength,
+          fontSize: textNodeData.fontSize,
         });
       }
     }
