@@ -27,7 +27,7 @@ fs.mkdirSync(TMP_DIR);
 
 const MACHINE_BASE_INDEX = 0;
 const URL_START_INDEX = 0;
-const URLS_PER_MACHINE = 50;
+const URLS_PER_MACHINE = 100;
 
 const allUrls = fs
   .readFileSync(URLS_LIST, 'utf8')

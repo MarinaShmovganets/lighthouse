@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -euo pipefail
 
 ##
 # @license Copyright 2020 The Lighthouse Authors. All Rights Reserved.
