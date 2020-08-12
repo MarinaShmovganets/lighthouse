@@ -268,6 +268,8 @@ function getNodePath(node) {
 /**
  * @param {Element} node
  * @return {string}
+ *
+ * Note: if the node resides within shadow DOM, the selector only starts from the root
  */
 /* istanbul ignore next */
 function getNodeSelector(node) {

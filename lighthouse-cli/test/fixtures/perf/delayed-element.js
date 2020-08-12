@@ -36,7 +36,7 @@ setTimeout(() => {
   // Use shadow DOM to verify devtoolsNodePath resolves through it
   const shadowRoot = top.attachShadow({mode: 'open'});
   const sectionEl = document.createElement('section');
-  sectionEl.append(imgEl);
+  sectionEl.append(imgEl, textEl);
   shadowRoot.append(sectionEl);
 
   // layout-shift-elements: ensure we can handle missing shift elements
