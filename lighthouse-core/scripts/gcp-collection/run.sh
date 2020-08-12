@@ -12,7 +12,7 @@ DIRNAME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT="$DIRNAME/../../.."
 cd $DIRNAME
 
-GCLOUD_USER=$(gcloud config get-value account | awk -F '@' '{print $1}')
+GCLOUD_USER=$(gcloud config get-value account | awk -F '@' '{gsub("[^a-z]","",$1); print $1}')
 INSTANCE_SUFFIX=${1:-instance0}
 INSTANCE_NAME="lighthouse-collection-$GCLOUD_USER-$INSTANCE_SUFFIX"
 CLOUDSDK_CORE_PROJECT=${LIGHTHOUSE_COLLECTION_GCLOUD_PROJECT:-lighthouse-lantern-collect}
