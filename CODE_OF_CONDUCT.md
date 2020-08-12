@@ -1,5 +1,3 @@
-# Code of Conduct
-
 <section>
 <h1 id="contributor-covenant-code-of-conduct">Code of Conduct</h1>
 <h2 id="our-pledge">Our Pledge</h2>
