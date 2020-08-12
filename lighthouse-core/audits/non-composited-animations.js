@@ -31,13 +31,12 @@ const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 /**
  * Each failure reason is represented by a bit flag. The bit shift operator '<<' is used to define which bit corresponds to each failure reason.
  * https://source.chromium.org/search?q=f:compositor_animations.h%20%22enum%20FailureReason%22
- * @type {{flag: number, text: string, needsUnsupportedProperties?: boolean}[]}
+ * @type {{flag: number, text: string}[]}
  */
 const ACTIONABLE_FAILURE_REASONS = [
   {
     flag: 1 << 13,
     text: UIStrings.unsupportedCSSProperty,
-    needsUnsupportedProperties: true,
   },
 ];
 
@@ -53,7 +52,7 @@ function getActionableFailureReasons(failureCode, unsupportedProperties) {
   return ACTIONABLE_FAILURE_REASONS
     .filter(reason => failureCode & reason.flag)
     .map(reason => {
-      if (reason.needsUnsupportedProperties) {
+      if (reason.text === UIStrings.unsupportedCSSProperty) {
         return str_(reason.text, {properties: unsupportedProperties.join(', ')});
       }
       return str_(reason.text);
