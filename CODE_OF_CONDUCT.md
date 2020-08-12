@@ -1,87 +1,93 @@
-# Chromium Code of Conduct
+# Code of Conduct
 
-Google and the Chromium team are committed to preserving and fostering a
-diverse, welcoming community. Below is our community code of conduct, which
-applies to our repos and organizations, issue trackers, mailing lists,
-blog content, and any other Chromium-supported communication group, as
-well as any private communication initiated in the context of these
-spaces. This code of conduct must be followed by everyone contributing to
-the Chromium project, regardless of affiliation or position.
+## Our Pledge
 
-Simply put, community discussions should be
+In the interest of fostering an open and welcoming environment, we as
+contributors and maintainers pledge to making participation in our project and
+our community a harassment-free experience for everyone, regardless of age, body
+size, disability, ethnicity, gender identity and expression, level of
+experience, education, socio-economic status, nationality, personal appearance,
+race, religion, or sexual identity and orientation.
 
- * respectful and kind;
- * about Chromium;
- * about features and code, not the individuals involved.
+## Our Standards
 
-## Be respectful and constructive.
+Examples of behavior that contributes to creating a positive environment
+include:
 
-Treat everyone with respect. Build on each other's ideas. Each of us has the
-right to enjoy our experience and participate without fear of harassment,
-discrimination, or condescension, whether blatant or subtle. Remember that
-Chromium is a geographically distributed team and that you may not be
-communicating with someone in their primary language. We all get frustrated
-when working on hard problems, but we cannot allow that frustration to turn
-into personal attacks.
+*   Using welcoming and inclusive language
+*   Being respectful of differing viewpoints and experiences
+*   Gracefully accepting constructive criticism
+*   Focusing on what is best for the community
+*   Showing empathy towards other community members
 
-## Speak up if you see or hear something.
+Examples of unacceptable behavior by participants include:
 
-You are empowered to politely engage when you feel that you or others are
-disrespected. The person making you feel uncomfortable may not be aware of what
-they are doing - politely bringing their behavior to their attention is
-encouraged.
+*   The use of sexualized language or imagery and unwelcome sexual attention or
+    advances
+*   Trolling, insulting/derogatory comments, and personal or political attacks
+*   Public or private harassment
+*   Publishing others' private information, such as a physical or electronic
+    address, without explicit permission
+*   Other conduct which could reasonably be considered inappropriate in a
+    professional setting
 
-If you are uncomfortable speaking up, or feel that your concerns are not being
-duly considered, you can email community@chromium.org, dpranke@chromium.org, or
-groby@chromium.org to request involvement from a community manager. All
-concerns shared with community managers will be kept confidential, but you may
-also submit an anonymous report [here](https://docs.google.com/a/google.com/forms/d/e/1FAIpQLSe-LDjW9eIJ-TpI2poZxnGtU-SvUWkFZc8x0aiKGY1s7NKPdA/viewform?c=0&w=1).
-Please note that without a way to contact you, an anonymous report may be
-difficult to act on. You may also create a throwaway account to report. In
-cases where a public response is deemed necessary, the identities of victims
-and reporters will remain confidential unless those individuals instruct us
-otherwise.
+## Our Responsibilities
 
-While all reports will be taken seriously, the Chromium community managers may
-not act on complaints that they feel are not violations of this code of
-conduct.
+Project maintainers are responsible for clarifying the standards of acceptable
+behavior and are expected to take appropriate and fair corrective action in
+response to any instances of unacceptable behavior.
 
-## We will not tolerate harassment of any kind, including but not limited to:
+Project maintainers have the right and responsibility to remove, edit, or reject
+comments, commits, code, wiki edits, issues, and other contributions that are
+not aligned to this Code of Conduct, or to ban temporarily or permanently any
+contributor for other behaviors that they deem inappropriate, threatening,
+offensive, or harmful.
 
- * Harassing comments
- * Intimidation
- * Encouraging a person to engage in self-harm.
- * Sustained disruption or derailing of threads, channels, lists, etc.
- * Offensive or violent comments, jokes or otherwise
- * Inappropriate sexual content
- * Unwelcome sexual or otherwise aggressive attention
- * Continued one-on-one communication after requests to cease
- * Distribution or threat of distribution of people's personally identifying
-   information, AKA “doxing”
+## Scope
 
-## Consequences for failing to comply with this policy
+This Code of Conduct applies both within project spaces and in public spaces
+when an individual is representing the project or its community. Examples of
+representing a project or community include using an official project e-mail
+address, posting via an official social media account, or acting as an appointed
+representative at an online or offline event. Representation of a project may be
+further defined and clarified by project maintainers.
 
-Consequences for failing to comply with this policy may include, at the sole
-discretion of the Chromium community managers:
+This Code of Conduct also applies outside the project spaces when the Project
+Steward has a reasonable belief that an individual's behavior may have a
+negative impact on the project or its community.
 
- * a request for an apology;
- * a private or public warning or reprimand;
- * a temporary ban from the mailing list, blog, Chromium repository or
-   organization, or other Chromium-supported communication group, including
-   loss of committer status;
- * a permanent ban from any of the above, or from all current and future
-   Chromium-supported or Google-supported communities, including loss of
-   committer status.
+## Conflict Resolution
 
-Participants warned to stop any harassing behavior are expected to comply
-immediately; failure to do so will result in an escalation of consequences.
+We do not believe that all conflict is bad; healthy debate and disagreement
+often yield positive results. However, it is never okay to be disrespectful or
+to engage in behavior that violates the project’s code of conduct.
 
-## Acknowledgements
+If you see someone violating the code of conduct, you are encouraged to address
+the behavior directly with those involved. Many issues can be resolved quickly
+and easily, and this gives people more control over the outcome of their
+dispute. If you are unable to resolve the matter for any reason, or if the
+behavior is threatening or harassing, report it. We are dedicated to providing
+an environment where participants feel welcome and safe.
 
-This Code of Conduct is based on the Geek Feminism Code of Conduct, the Django
-Code of Conduct and the Geek Feminism Wiki "Effective codes of conduct" guide.
+Reports should be directed to *[PROJECT STEWARD NAME(Brendan Kenny) AND EMAIL(bckenny@google.com)]*, the
+Project Steward(s) for *[Lighthouse]*. It is the Project Steward’s duty to
+receive and address reported violations of the code of conduct. They will then
+work with a committee consisting of representatives from the Open Source
+Programs Office and the Google Open Source Strategy team. If for any reason you
+are uncomfortable reaching out to the Project Steward, please email
+opensource@google.com.
 
-## License
+We will investigate every complaint, but you may not receive a direct response.
+We will use our discretion in determining when and how to follow up on reported
+incidents, which may range from not taking action to permanent expulsion from
+the project and project-sponsored spaces. We will notify the accused of the
+report and provide them an opportunity to discuss it before any action is taken.
+The identity of the reporter will be omitted from the details of the report
+supplied to the accused. In potentially harmful situations, such as ongoing
+harassment or threats to anyone's safety, we may take action without notice.
 
-This Code of Conduct is available for reuse under the Creative Commons Zero
-(CC0) license.
+## Attribution
+
+This Code of Conduct is adapted from the Contributor Covenant, version 1.4,
+available at
+https://www.contributor-covenant.org/version/1/4/code-of-conduct.html
