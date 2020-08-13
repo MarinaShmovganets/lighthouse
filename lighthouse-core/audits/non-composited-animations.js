@@ -14,7 +14,7 @@ const UIStrings = {
   /** Description of a diagnostic LH audit that shows the user animations that are not composited. */
   description: 'Animations which are not composited can be janky and contribute to CLS. ' +
     '[Learn more](https://developers.google.com/web/fundamentals/performance/rendering/stick-to-compositor-only-properties-and-manage-layer-count)',
-  /** [ICU Syntax] Label identifying the number of animations that are not composited. */
+  /** [ICU Syntax] Label identifying the number of animated elements that are not composited. */
   displayValue: `{itemCount, plural,
   =1 {# animated element found}
   other {# animated elements found}
@@ -95,7 +95,7 @@ class NonCompositedAnimations extends Audit {
 
     /** @type LH.Audit.Details.TableItem[] */
     const results = [];
-    let hasDisplayNames = false;
+    let shouldAddAnimationNameColumn = false;
     artifacts.TraceElements.forEach(element => {
       if (element.traceEventType !== 'animation') return;
       /** @type LH.Audit.Details.NodeValue */
@@ -115,7 +115,7 @@ class NonCompositedAnimations extends Audit {
           getActionableFailureReasons(failureReasonsMask, unsupportedProperties || []);
         for (const failureReason of failureReasons) {
           if (name) {
-            hasDisplayNames = true;
+            shouldAddAnimationNameColumn = true;
           }
           const reasons = animationReasons.get(name) || new Set();
           reasons.add(failureReason);
@@ -150,7 +150,7 @@ class NonCompositedAnimations extends Audit {
       /* eslint-enable max-len */
     ];
 
-    if (hasDisplayNames) {
+    if (shouldAddAnimationNameColumn) {
       headings.push(
         /* eslint-disable max-len */
         {key: null, itemType: 'text', subItemsHeading: {key: 'animation', itemType: 'text'}, text: str_(i18n.UIStrings.columnName)}
