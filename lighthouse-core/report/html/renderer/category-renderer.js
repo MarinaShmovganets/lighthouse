@@ -349,10 +349,10 @@ class CategoryRenderer {
       percentageEl.title = Util.i18n.strings.errorLabel;
     }
 
-    if (this.hasApplicableAudits(category)) {
+    // Render a numerical score if the category has applicable audits, or no audits whatsoever.
+    if (category.auditRefs.length === 0 || this.hasApplicableAudits(category)) {
       wrapper.classList.add(`lh-gauge__wrapper--${Util.calculateRating(category.score)}`);
     } else {
-      // Render a gray dash for entirely non-applicable categories.
       wrapper.classList.add(`lh-gauge__wrapper--not-applicable`);
       percentageEl.textContent = '-';
       percentageEl.title = Util.i18n.strings.notApplicableAuditsGroupTitle;
