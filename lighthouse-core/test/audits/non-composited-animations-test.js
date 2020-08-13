@@ -48,11 +48,11 @@ describe('Non-composited animations audit', () => {
     expect(auditResult.details.items[0].subItems.items[0].animation)
       .toBeUndefined();
     expect(auditResult.details.items[0].subItems.items[1].failureReason)
-      .toBeDisplayString('Unsupported CSS Properties: color');
+      .toBeDisplayString('Unsupported CSS Property: color');
     expect(auditResult.details.items[0].subItems.items[1].animation)
       .toEqual('alpha');
     expect(auditResult.details.items[0].subItems.items[2].failureReason)
-      .toBeDisplayString('Unsupported CSS Properties: top');
+      .toBeDisplayString('Unsupported CSS Property: top');
     expect(auditResult.details.items[0].subItems.items[2].animation)
       .toEqual('beta');
   });
@@ -108,11 +108,11 @@ describe('Non-composited animations audit', () => {
       snippet: '<div id="animated-2">',
     });
     expect(auditResult.details.items[0].subItems.items[0].failureReason)
-      .toBeDisplayString('Unsupported CSS Properties: height');
+      .toBeDisplayString('Unsupported CSS Property: height');
     expect(auditResult.details.items[0].subItems.items[0].animation)
       .toBeUndefined();
     expect(auditResult.details.items[1].subItems.items[0].failureReason)
-      .toBeDisplayString('Unsupported CSS Properties: height');
+      .toBeDisplayString('Unsupported CSS Property: height');
     expect(auditResult.details.items[1].subItems.items[0].animation)
       .toBeUndefined();
   });

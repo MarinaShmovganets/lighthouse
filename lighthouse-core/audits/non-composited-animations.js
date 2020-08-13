@@ -20,10 +20,13 @@ const UIStrings = {
   other {# animated elements found}
   }`,
   /**
-   * @description Name of a compositor failure reason where the CSS property being animated is not supported on the compositor.
+   * @description [ICU Syntax] Name of a compositor failure reason where the CSS property being animated is not supported on the compositor.
    * @example {height, width} properties
    */
-  unsupportedCSSProperty: 'Unsupported CSS Properties: {properties}',
+  unsupportedCSSProperty: `{propertyCount, plural,
+    =1 {Unsupported CSS Property: {properties}}
+    other {Unsupported CSS Properties: {properties}}
+  }`,
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -53,7 +56,10 @@ function getActionableFailureReasons(failureCode, unsupportedProperties) {
     .filter(reason => failureCode & reason.flag)
     .map(reason => {
       if (reason.text === UIStrings.unsupportedCSSProperty) {
-        return str_(reason.text, {properties: unsupportedProperties.join(', ')});
+        return str_(reason.text, {
+          propertyCount: unsupportedProperties.length,
+          properties: unsupportedProperties.join(', '),
+        });
       }
       return str_(reason.text);
     });
