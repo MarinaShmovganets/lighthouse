@@ -88,7 +88,7 @@ class LargeJavascriptLibraries extends Audit {
       /** @type {Array<{name: string, repository: string, gzip: number}>} */
       const smallerSuggestions = [];
       for (const suggestion of suggestions) {
-        if (libStats[suggestion].versions['latest'].gzip > originalLib.gzip) continue;
+        if (libStats[suggestion].versions['latest'].gzip >= originalLib.gzip) continue;
 
         smallerSuggestions.push({
           name: suggestion,
