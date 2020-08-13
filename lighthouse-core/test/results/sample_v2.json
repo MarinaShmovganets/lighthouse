@@ -1920,7 +1920,7 @@
     },
     "large-javascript-libraries": {
       "id": "large-javascript-libraries",
-      "title": "Avoids unnecessarily large JavaScript libraries",
+      "title": "Avoids large JavaScript libraries with smaller alternatives",
       "description": "Large JavaScript libraries can lead to poor performance. Prefer smaller, functionally equivalent libraries to reduce your bundle size. [Learn more](https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size#optimize_dependencies).",
       "score": 1,
       "scoreDisplayMode": "binary",

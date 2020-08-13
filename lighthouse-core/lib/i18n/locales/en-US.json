@@ -837,7 +837,7 @@
     "message": "Replace unnecessarily large JavaScript libraries"
   },
   "lighthouse-core/audits/large-javascript-libraries.js | title": {
-    "message": "Avoids unnecessarily large JavaScript libraries"
+    "message": "Avoids large JavaScript libraries with smaller alternatives"
   },
   "lighthouse-core/audits/largest-contentful-paint-element.js | description": {
     "message": "This is the largest contentful element painted within the viewport. [Learn More](https://web.dev/lighthouse-largest-contentful-paint/)"
