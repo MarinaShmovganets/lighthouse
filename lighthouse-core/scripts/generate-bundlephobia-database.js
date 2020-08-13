@@ -116,19 +116,23 @@ async function collectLibraryStats(library, index, numVersionsToFetchLimit) {
       };
     }
 
-    database[library.name] = {
-      ...database[library.name],
-      versions: {
-        ...database[library.name].versions,
-        [library.version]: {
-          gzip: library.gzip,
+    if (index === 0 ||
+      Math.abs(library.gzip - database[library.name].versions['latest'].gzip) > 512) {
+      database[library.name] = {
+        ...database[library.name],
+        versions: {
+          ...database[library.name].versions,
+          [library.version]: {
+            gzip: library.gzip,
+          },
         },
-      },
-    };
+      };
+    }
 
     if (index === 0) {
       database[library.name].versions['latest'] =
           database[library.name].versions[library.version];
+      delete database[library.name].versions[library.version];
     }
 
     if (lastScraped === 'Error') {
@@ -152,7 +156,7 @@ async function collectLibraryStats(library, index, numVersionsToFetchLimit) {
     try {
       await collectLibraryStats(largeLibraries[i], i + 1, 10);
     } catch (err) {
-      console.log(`Exiting early...\n | {err}`);
+      console.log(`Exiting early...\n | ${err}`);
       foundError = true;
       break;
     }
@@ -165,7 +169,7 @@ async function collectLibraryStats(library, index, numVersionsToFetchLimit) {
         const index = i + 1 + largeLibraries.length;
         await collectLibraryStats(suggestedLibraries[i], index, 1);
       } catch (err) {
-        console.log(`Exiting early...\n | {err}`);
+        console.log(`Exiting early...\n | ${err}`);
         break;
       }
     }
