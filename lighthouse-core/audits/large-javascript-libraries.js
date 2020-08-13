@@ -98,16 +98,16 @@ class LargeJavascriptLibraries extends Audit {
       }
 
       smallerSuggestions.sort((a, b) => a.gzip - b.gzip);
-      if (smallerSuggestions.length) {
-        libraryPairings.push({
-          original: {
-            gzip: originalLib.gzip,
-            name: detectedLib.npm,
-            repository: libStats[detectedLib.npm].repository,
-          },
-          suggestions: smallerSuggestions,
-        });
-      }
+      if (!smallerSuggestions.length) continue;
+
+      libraryPairings.push({
+        original: {
+          gzip: originalLib.gzip,
+          name: detectedLib.npm,
+          repository: libStats[detectedLib.npm].repository,
+        },
+        suggestions: smallerSuggestions,
+      });
     }
 
     /** @type {LH.Audit.Details.Table['items']} */
@@ -145,7 +145,7 @@ class LargeJavascriptLibraries extends Audit {
       /* eslint-disable max-len */
       {key: 'name', itemType: 'text', subItemsHeading: {key: 'suggestion'}, text: str_(UIStrings.columnLibraryName)},
       {key: 'transferSize', itemType: 'bytes', subItemsHeading: {key: 'transferSize'}, text: str_(i18n.UIStrings.columnTransferSize)},
-      {key: 'wastedBytes', itemType: 'bytes', subItemsHeading: {key: 'wastedBytes'}, text: str_(i18n.UIStrings.columnWastedBytes)},
+      {key: null, itemType: 'bytes', subItemsHeading: {key: 'wastedBytes'}, text: str_(i18n.UIStrings.columnWastedBytes)},
       /* eslint-enable max-len */
     ];
 
