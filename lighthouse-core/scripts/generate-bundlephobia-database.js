@@ -117,6 +117,7 @@ async function collectLibraryStats(library, index, numVersionsToFetchLimit) {
     }
 
     if (index === 0 ||
+      // Only include the version information if it's sufficiently different from latest.
       Math.abs(library.gzip - database[library.name].versions['latest'].gzip) > 512) {
       database[library.name] = {
         ...database[library.name],
