@@ -117,9 +117,9 @@ class LargeJavascriptLibraries extends Audit {
       const suggestionItems = suggestions.map(suggestion => {
         return {
           suggestion: /** @type {LH.Audit.Details.LinkValue} */ ({
+            type: 'link',
             text: suggestion.name,
             url: suggestion.repository,
-            type: 'link',
           }),
           transferSize: suggestion.gzip,
           wastedBytes: original.gzip - suggestion.gzip,
@@ -128,12 +128,11 @@ class LargeJavascriptLibraries extends Audit {
 
       return {
         name: /** @type {LH.Audit.Details.TableItem} */ {
+          type: 'link',
           text: original.name,
           url: original.repository,
-          type: 'link',
         },
         transferSize: original.gzip,
-        wastedBytes: 0,
         subItems: /** @type {LH.Audit.Details.TableSubItems} */ ({
           type: 'subitems',
           items: suggestionItems,
