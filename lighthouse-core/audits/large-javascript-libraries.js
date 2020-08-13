@@ -11,6 +11,7 @@
 
 'use strict';
 /** @typedef {{repository: string, lastScraped: number|'Error', versions: Record<string, {gzip: number}>}} BundlePhobiaLibrary */
+
 /** @typedef {{gzip: number, name: string, repository: string}} MinifiedBundlePhobiaLibrary */
 
 /** @type {Record<string, BundlePhobiaLibrary>} */
