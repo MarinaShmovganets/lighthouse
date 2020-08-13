@@ -28,7 +28,6 @@ const databasePath = path.join(__dirname,
 const suggestionsJSON = require('../lib/large-javascript-libraries/library-suggestions.js')
   .suggestions;
 
-
 /** @type {string[]} */
 const largeLibraries = Object.keys(suggestionsJSON);
 
