@@ -324,14 +324,14 @@ module.exports = [
                   items: [
                     {
                       // From JavaScript `.animate` which has no animation display name
-                      failureReason: 'Unsupported CSS Properties: width',
+                      failureReason: 'Unsupported CSS Property: width',
                     },
                     {
-                      failureReason: 'Unsupported CSS Properties: height',
+                      failureReason: 'Unsupported CSS Property: height',
                       animation: 'alpha',
                     },
                     {
-                      failureReason: 'Unsupported CSS Properties: background-color',
+                      failureReason: 'Unsupported CSS Property: background-color',
                       animation: 'beta',
                     },
                   ],
