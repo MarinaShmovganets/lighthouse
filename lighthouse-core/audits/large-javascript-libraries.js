@@ -26,7 +26,7 @@ const i18n = require('../lib/i18n/i18n.js');
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on large Javascript libraries that are used on the page that have better alternatives. This descriptive title is shown when to users when no known unnecessarily large libraries are detected on the page.*/
-  title: 'Avoids unnecessarily large JavaScript libraries',
+  title: 'Avoids large JavaScript libraries with smaller alternatives',
   /** Title of a Lighthouse audit that provides detail on large Javascript libraries that are used on the page that have better alternatives. This descriptive title is shown when to users when some known unnecessarily large libraries are detected on the page.*/
   failureTitle: 'Replace unnecessarily large JavaScript libraries',
   /** Description of a Lighthouse audit that tells the user why they should care about the large Javascript libraries that have better alternatives. This is displayed after a user expands the section to see more. No character length limits. */
@@ -65,7 +65,7 @@ class LargeJavascriptLibraries extends Audit {
   static audit(artifacts) {
     /** @type {Array<{original: MinifiedBundlePhobiaLibrary, suggestions: MinifiedBundlePhobiaLibrary[]}>} */
     const libraryPairings = [];
-    const detectedLibs = artifacts.Stacks.filter(stack => stack.detector === 'js');
+    const detectedLibs = artifacts.Stacks;
 
     const seenLibraries = new Set();
 
