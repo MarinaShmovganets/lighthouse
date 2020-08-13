@@ -5,7 +5,7 @@
     "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3358.0 Safari/537.36",
     "benchmarkIndex": 1000
   },
-  "lighthouseVersion": "6.1.0",
+  "lighthouseVersion": "6.2.0",
   "fetchTime": "2018-03-13T00:55:45.840Z",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -470,21 +470,12 @@
                 }
               }
             }
-          },
-          "75994.33": {
-            "request": {
-              "url": "http://localhost:10200/favicon.ico",
-              "startTime": 185608.288594,
-              "endTime": 185608.857719,
-              "responseReceivedTime": 185608.85586200003,
-              "transferSize": 221
-            }
           }
         },
         "longestChain": {
-          "duration": 5536.498000001302,
-          "length": 1,
-          "transferSize": 221
+          "duration": 4796.288000012282,
+          "length": 2,
+          "transferSize": 30174
         }
       }
     },
@@ -1880,6 +1871,48 @@
               "urlProvider": "network",
               "line": 386,
               "column": 36
+            }
+          }
+        ]
+      }
+    },
+    "non-composited-animations": {
+      "id": "non-composited-animations",
+      "title": "Avoid non-composited animations",
+      "description": "Animations which are not composited can be janky and contribute to CLS. [Learn more](https://developers.google.com/web/fundamentals/performance/rendering/stick-to-compositor-only-properties-and-manage-layer-count)",
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
+    },
+    "unsized-images": {
+      "id": "unsized-images",
+      "title": "Image elements do not have explicit `width` and `height`",
+      "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn more](https://web.dev/optimize-cls/#images-without-dimensions)",
+      "score": 0,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "url",
+            "itemType": "thumbnail",
+            "text": ""
+          },
+          {
+            "key": "url",
+            "itemType": "url",
+            "text": "URL"
+          },
+          {
+            "key": "node",
+            "itemType": "node",
+            "text": "Failing Elements"
+          }
+        ],
+        "items": [
+          {
+            "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
+            "node": {
+              "type": "node"
             }
           }
         ]
@@ -3631,23 +3664,25 @@
     },
     "uses-http2": {
       "id": "uses-http2",
-      "title": "Does not use HTTP/2 for all of its resources",
+      "title": "Use HTTP/2",
       "description": "HTTP/2 offers many benefits over HTTP/1.1, including binary headers, multiplexing, and server push. [Learn more](https://web.dev/uses-http2/).",
-      "score": 0,
+      "score": 0.41,
       "scoreDisplayMode": "binary",
+      "numericValue": 1550,
+      "numericUnit": "millisecond",
       "displayValue": "15 requests not served via HTTP/2",
       "details": {
-        "type": "table",
+        "type": "opportunity",
         "headings": [
           {
             "key": "url",
-            "itemType": "url",
-            "text": "URL"
+            "valueType": "url",
+            "label": "URL"
           },
           {
             "key": "protocol",
-            "itemType": "text",
-            "text": "Protocol"
+            "valueType": "text",
+            "label": "Protocol"
           }
         ],
         "items": [
@@ -3711,7 +3746,8 @@
             "protocol": "http/1.1",
             "url": "http://localhost:10200/favicon.ico"
           }
-        ]
+        ],
+        "overallSavingsMs": 1550
       }
     },
     "uses-passive-event-listeners": {
@@ -4238,6 +4274,11 @@
           "group": "load-opportunities"
         },
         {
+          "id": "uses-http2",
+          "weight": 0,
+          "group": "load-opportunities"
+        },
+        {
           "id": "efficient-animated-content",
           "weight": 0,
           "group": "load-opportunities"
@@ -4323,11 +4364,6 @@
           "group": "diagnostics"
         },
         {
-          "id": "uses-http2",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
           "id": "uses-passive-event-listeners",
           "weight": 0,
           "group": "diagnostics"
@@ -4339,6 +4375,16 @@
         },
         {
           "id": "long-tasks",
+          "weight": 0,
+          "group": "diagnostics"
+        },
+        {
+          "id": "non-composited-animations",
+          "weight": 0,
+          "group": "diagnostics"
+        },
+        {
+          "id": "unsized-images",
           "weight": 0,
           "group": "diagnostics"
         },
@@ -5515,6 +5561,18 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:non-composited-animations",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:unsized-images",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:pwa-cross-browser",
         "duration": 100,
         "entryType": "measure"
@@ -6375,6 +6433,7 @@
         "audits[network-server-latency].details.headings[0].text",
         "audits[long-tasks].details.headings[0].text",
         "audits[no-unload-listeners].details.headings[0].text",
+        "audits[unsized-images].details.headings[1].text",
         "audits[uses-long-cache-ttl].details.headings[0].text",
         "audits[total-byte-weight].details.headings[0].text",
         "audits[render-blocking-resources].details.headings[0].label",
@@ -6385,7 +6444,7 @@
         "audits[geolocation-on-start].details.headings[0].text",
         "audits[no-document-write].details.headings[0].text",
         "audits[notification-on-start].details.headings[0].text",
-        "audits[uses-http2].details.headings[0].text",
+        "audits[uses-http2].details.headings[0].label",
         "audits[uses-passive-event-listeners].details.headings[0].text"
       ],
       "lighthouse-core/audits/errors-in-console.js | columnDesc": [
@@ -6789,6 +6848,28 @@
       "lighthouse-core/audits/no-unload-listeners.js | description": [
         "audits[no-unload-listeners].description"
       ],
+      "lighthouse-core/audits/non-composited-animations.js | title": [
+        "audits[non-composited-animations].title"
+      ],
+      "lighthouse-core/audits/non-composited-animations.js | description": [
+        "audits[non-composited-animations].description"
+      ],
+      "lighthouse-core/audits/unsized-images.js | failureTitle": [
+        "audits[unsized-images].title"
+      ],
+      "lighthouse-core/audits/unsized-images.js | description": [
+        "audits[unsized-images].description"
+      ],
+      "lighthouse-core/lib/i18n/i18n.js | columnFailingElem": [
+        "audits[unsized-images].details.headings[2].text",
+        "audits[color-contrast].details.headings[0].text",
+        "audits[html-has-lang].details.headings[0].text",
+        "audits[image-alt].details.headings[0].text",
+        "audits.label.details.headings[0].text",
+        "audits[link-name].details.headings[0].text",
+        "audits[object-alt].details.headings[0].text",
+        "audits[password-inputs-can-be-pasted-into].details.headings[0].text"
+      ],
       "lighthouse-core/audits/manual/pwa-cross-browser.js | title": [
         "audits[pwa-cross-browser].title"
       ],
@@ -6896,14 +6977,6 @@
       ],
       "lighthouse-core/audits/accessibility/color-contrast.js | description": [
         "audits[color-contrast].description"
-      ],
-      "lighthouse-core/audits/accessibility/axe-audit.js | failingElementsHeader": [
-        "audits[color-contrast].details.headings[0].text",
-        "audits[html-has-lang].details.headings[0].text",
-        "audits[image-alt].details.headings[0].text",
-        "audits.label.details.headings[0].text",
-        "audits[link-name].details.headings[0].text",
-        "audits[object-alt].details.headings[0].text"
       ],
       "lighthouse-core/audits/accessibility/definition-list.js | title": [
         "audits[definition-list].title"
@@ -7354,10 +7427,7 @@
       "lighthouse-core/audits/dobetterweb/password-inputs-can-be-pasted-into.js | description": [
         "audits[password-inputs-can-be-pasted-into].description"
       ],
-      "lighthouse-core/audits/dobetterweb/password-inputs-can-be-pasted-into.js | columnFailingElem": [
-        "audits[password-inputs-can-be-pasted-into].details.headings[0].text"
-      ],
-      "lighthouse-core/audits/dobetterweb/uses-http2.js | failureTitle": [
+      "lighthouse-core/audits/dobetterweb/uses-http2.js | title": [
         "audits[uses-http2].title"
       ],
       "lighthouse-core/audits/dobetterweb/uses-http2.js | description": [
@@ -7372,7 +7442,7 @@
         }
       ],
       "lighthouse-core/audits/dobetterweb/uses-http2.js | columnProtocol": [
-        "audits[uses-http2].details.headings[1].text"
+        "audits[uses-http2].details.headings[1].label"
       ],
       "lighthouse-core/audits/dobetterweb/uses-passive-event-listeners.js | failureTitle": [
         "audits[uses-passive-event-listeners].title"

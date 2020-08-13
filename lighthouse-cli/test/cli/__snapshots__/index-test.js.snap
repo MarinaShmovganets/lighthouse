@@ -163,6 +163,12 @@ Object {
       "path": "no-unload-listeners",
     },
     Object {
+      "path": "non-composited-animations",
+    },
+    Object {
+      "path": "unsized-images",
+    },
+    Object {
       "path": "manual/pwa-cross-browser",
     },
     Object {
@@ -898,6 +904,11 @@ Object {
         },
         Object {
           "group": "load-opportunities",
+          "id": "uses-http2",
+          "weight": 0,
+        },
+        Object {
+          "group": "load-opportunities",
           "id": "efficient-animated-content",
           "weight": 0,
         },
@@ -983,11 +994,6 @@ Object {
         },
         Object {
           "group": "diagnostics",
-          "id": "uses-http2",
-          "weight": 0,
-        },
-        Object {
-          "group": "diagnostics",
           "id": "uses-passive-event-listeners",
           "weight": 0,
         },
@@ -999,6 +1005,16 @@ Object {
         Object {
           "group": "diagnostics",
           "id": "long-tasks",
+          "weight": 0,
+        },
+        Object {
+          "group": "diagnostics",
+          "id": "non-composited-animations",
+          "weight": 0,
+        },
+        Object {
+          "group": "diagnostics",
+          "id": "unsized-images",
           "weight": 0,
         },
         Object {
@@ -1327,6 +1343,9 @@ Object {
         },
         Object {
           "path": "iframe-elements",
+        },
+        Object {
+          "path": "form-elements",
         },
         Object {
           "path": "main-document-content",
