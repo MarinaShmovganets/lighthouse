@@ -2444,6 +2444,37 @@
       "selector": "div.blog-index > article > div.entry-content > p",
       "nodeLabel": "Aside from that, I’ve been busy working on Lighthouse, performance metrics, too…",
       "snippet": "<p>"
+    },
+    {
+      "traceEventType": "animation",
+      "devtoolsNodePath": "1,HTML,1,BODY,0,DIV",
+      "selector": "body > div#animated-boi",
+      "nodeLabel": "div",
+      "snippet": "<div id=\"animated-boi\">",
+      "animations": [
+        {
+          "failureReasonsMask": 8224,
+          "unsupportedProperties": [
+            "width"
+          ]
+        },
+        {
+          "name": "alpha",
+          "failureReasonsMask": 8224,
+          "unsupportedProperties": [
+            "height",
+            "left"
+          ]
+        },
+        {
+          "name": "beta",
+          "failureReasonsMask": 8224,
+          "unsupportedProperties": [
+            "background-color"
+          ]
+        }
+      ],
+      "nodeId": 4
     }
   ],
   "ServiceWorker": {
