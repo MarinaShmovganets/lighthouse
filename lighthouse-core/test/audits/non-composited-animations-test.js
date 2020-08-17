@@ -202,11 +202,11 @@ describe('Non-composited animations audit', () => {
     expect(auditResult.details.items[0].subItems.items[0].animation)
       .toBeUndefined();
     expect(auditResult.details.items[0].subItems.items[1].failureReason)
-      .toBeDisplayString('Transform related property depends on box size');
+      .toBeDisplayString('Transform-related property depends on box size');
     expect(auditResult.details.items[0].subItems.items[1].animation)
       .toBeUndefined();
     expect(auditResult.details.items[0].subItems.items[2].failureReason)
-      .toBeDisplayString('Filter related property may move pixels');
+      .toBeDisplayString('Filter-related property may move pixels');
     expect(auditResult.details.items[0].subItems.items[2].animation)
       .toBeUndefined();
     expect(auditResult.details.items[0].subItems.items[3].failureReason)
@@ -214,7 +214,7 @@ describe('Non-composited animations audit', () => {
     expect(auditResult.details.items[0].subItems.items[3].animation)
       .toBeUndefined();
     expect(auditResult.details.items[0].subItems.items[4].failureReason)
-      .toBeDisplayString('Target has an incompatible animation');
+      .toBeDisplayString('Target has another animation which is incompatible');
     expect(auditResult.details.items[0].subItems.items[4].animation)
       .toBeUndefined();
     expect(auditResult.details.items[0].subItems.items[5].failureReason)
