@@ -28,7 +28,7 @@ const UIStrings = {
     other {Unsupported CSS Properties: {properties}}
   }`,
   /** Name of a compositor failure reason where the transform being animated depends on the box size. */
-  transformDependsBoxSize: 'Transform related property depends on box size',
+  transformDependsBoxSize: 'Transform-related property depends on box size',
   /** Name of a compositor failure reason where the filter being animated may move pixels. */
   filterMayMovePixels: 'Filter related property may move pixels',
   /** Name of a compositor failure reason where the effect has a composite mode which is not replace. */
