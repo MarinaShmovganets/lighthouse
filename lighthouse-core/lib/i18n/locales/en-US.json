@@ -984,10 +984,10 @@
     "message": "{itemCount, plural,\n  =1 {# animated element found}\n  other {# animated elements found}\n  }"
   },
   "lighthouse-core/audits/non-composited-animations.js | filterMayMovePixels": {
-    "message": "Filter related property may move pixels"
+    "message": "Filter-related property may move pixels"
   },
   "lighthouse-core/audits/non-composited-animations.js | incompatibleAnimations": {
-    "message": "Target has an incompatible animation"
+    "message": "Target has another animation which is incompatible"
   },
   "lighthouse-core/audits/non-composited-animations.js | nonReplaceCompositeMode": {
     "message": "Effect has composite mode other than \"replace\""
@@ -996,7 +996,7 @@
     "message": "Avoid non-composited animations"
   },
   "lighthouse-core/audits/non-composited-animations.js | transformDependsBoxSize": {
-    "message": "Transform related property depends on box size"
+    "message": "Transform-related property depends on box size"
   },
   "lighthouse-core/audits/non-composited-animations.js | unsupportedCSSProperty": {
     "message": "{propertyCount, plural,\n    =1 {Unsupported CSS Property: {properties}}\n    other {Unsupported CSS Properties: {properties}}\n  }"
