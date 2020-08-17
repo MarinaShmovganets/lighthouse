@@ -5,6 +5,12 @@
  */
 'use strict';
 
+/**
+ * @fileoverview Audit which reports all animations that failed to composite along
+ * with the failure reasons. Failure reasons are only reported if they are actionable.
+ * https://docs.google.com/document/d/1XKcJP2CKmNKfOcDsVvliAQ-e1H9C1nf2H-pzTdyafAA/edit?usp=sharing
+ */
+
 const Audit = require('./audit.js');
 const i18n = require('../lib/i18n/i18n.js');
 
