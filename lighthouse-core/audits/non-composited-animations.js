@@ -20,22 +20,22 @@ const UIStrings = {
   other {# animated elements found}
   }`,
   /**
-   * @description [ICU Syntax] Name of a compositor failure reason where the CSS property being animated is not supported on the compositor.
+   * @description [ICU Syntax] Descriptive reason for why a user-provided animation failed to be optimized by the browser due to the animated CSS property not being supported on the compositor. Shown in a table with a list of other potential failure reasons.
    * @example {height, width} properties
    */
   unsupportedCSSProperty: `{propertyCount, plural,
     =1 {Unsupported CSS Property: {properties}}
     other {Unsupported CSS Properties: {properties}}
   }`,
-  /** Name of a compositor failure reason where the transform being animated depends on the box size. */
+  /** Descriptive reason for why a user-provided animation failed to be optimized by the browser due to a `transform` property being dependent on the size of the element itself. Shown in a table with a list of other potential failure reasons.  */
   transformDependsBoxSize: 'Transform-related property depends on box size',
-  /** Name of a compositor failure reason where the filter being animated may move pixels. */
+  /** Descriptive reason for why a user-provided animation failed to be optimized by the browser due to a `filter` property possibly moving pixels. Shown in a table with a list of other potential failure reasons.  */
   filterMayMovePixels: 'Filter-related property may move pixels',
-  /** Name of a compositor failure reason where the effect has a composite mode which is not replace. */
+  /** Descriptive reason for why a user-provided animation failed to be optimized by the browser due to an effect having a composite mode which is not `replace`. Shown in a table with a list of other potential failure reasons.  */
   nonReplaceCompositeMode: 'Effect has composite mode other than "replace"',
-  /** Name of a compositor failure reason where the element already has an incompatible animation. */
-  incompatibleAnimations: 'Target has an incompatible animation',
-  /** Name of a compositor failure reason where the effect has unsupported timing parameters. */
+  /** Descriptive reason for why a user-provided animation failed to be optimized by the browser due to another animation on the same target being incompatible. Shown in a table with a list of other potential failure reasons.  */
+  incompatibleAnimations: 'Target has another animation which is incompatible',
+  /** Descriptive reason for why a user-provided animation failed to be optimized by the browser due to an effect having unsupported timing parameters. Shown in a table with a list of other potential failure reasons.  */
   unsupportedTimingParameters: 'Effect has unsupported timing parameters',
 };
 
