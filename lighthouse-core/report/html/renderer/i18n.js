@@ -84,13 +84,13 @@ class I18n {
     // Force UTC if runtime timezone could not be detected.
     // See https://github.com/GoogleChrome/lighthouse/issues/1056
     // and https://github.com/GoogleChrome/lighthouse/pull/9822
+    let formatter;
     try {
-      (new Date()).toLocaleTimeString();
+      formatter = new Intl.DateTimeFormat(this._numberDateLocale, options);
     } catch (err) {
       options.timeZone = 'UTC';
     }
 
-    const formatter = new Intl.DateTimeFormat(this._numberDateLocale, options);
     return formatter.format(new Date(date));
   }
 
