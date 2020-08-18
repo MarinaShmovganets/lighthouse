@@ -89,6 +89,7 @@ class I18n {
       formatter = new Intl.DateTimeFormat(this._numberDateLocale, options);
     } catch (err) {
       options.timeZone = 'UTC';
+      formatter = new Intl.DateTimeFormat(this._numberDateLocale, options);
     }
 
     return formatter.format(new Date(date));
