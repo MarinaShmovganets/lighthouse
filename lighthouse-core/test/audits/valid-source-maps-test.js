@@ -6,30 +6,94 @@
 'use strict';
 
 /* eslint-env jest */
-const ValidSourceMaps = require('../../audits/valid-source-maps.js');
-const fs = require('fs');
-const JSBundles = require('../../computed/js-bundles.js');
-
 function load(name) {
   const mapJson = fs.readFileSync(`${__dirname}/../fixtures/source-maps/${name}.js.map`, 'utf-8');
   const content = fs.readFileSync(`${__dirname}/../fixtures/source-maps/${name}.js`, 'utf-8');
   return {map: JSON.parse(mapJson), content};
 }
 
-describe('valid-source-maps', () => {
-  let artifacts;
-  let context;
-  let bundles;
+const ValidSourceMaps = require('../../audits/valid-source-maps.js');
+const fs = require('fs');
+const largeBundle = load('coursehero-bundle-1');
+const smallBundle = load('coursehero-bundle-2');
 
-  beforeEach(async ()=> {
-    const {map, content} = load('squoosh');
-    artifacts = {
-      SourceMaps: [{scriptUrl: 'https://example.com/sourcemap.min.js', map}],
-      ScriptElements: [{src: 'https://example.com/sourcemap.min.js', content}],
+
+describe('Valid source maps audit', () => {
+  it('passes when no script elements or source maps are provided', async () => {
+    const artifacts = {
+      URL: {finalUrl: 'https://example.com'},
+      ScriptElements: [],
+      SourceMaps: [],
     };
 
-    context = {computedCache: new Map()};
-    bundles = await JSBundles.request(artifacts, context);
+    const auditResult = await ValidSourceMaps.audit(artifacts);
+    expect(auditResult.score).toEqual(1);
   });
 
+  it('passes when all large, first-party JS have corresponding source maps', async () => {
+    const artifacts = {
+      URL: {finalUrl: 'https://example.com'},
+      ScriptElements: [
+        {src: 'https://example.com/script1.min.js', content: largeBundle.content},
+        {src: 'https://example.com/script2.min.js', content: largeBundle.content},
+      ],
+      SourceMaps: [
+        {scriptUrl: 'https://example.com/script1.min.js', map: largeBundle.map},
+        {scriptUrl: 'https://example.com/script2.min.js', map: largeBundle.map},
+      ],
+    };
+
+    const auditResult = await ValidSourceMaps.audit(artifacts);
+    expect(auditResult.score).toEqual(1);
+  });
+
+  it('fails when any large, first-party JS has no corresponding source map', async () => {
+    const artifacts = {
+      URL: {finalUrl: 'https://example.com'},
+      ScriptElements: [
+        {src: 'https://example.com/script1.min.js', content: largeBundle.content},
+        {src: 'https://example.com/script2.min.js', content: largeBundle.content},
+      ],
+      SourceMaps: [
+        {scriptUrl: 'https://example.com/script1.min.js', map: largeBundle.map},
+        //  Missing corresponding source map for large, first-party JS (script2.min.js)
+      ],
+    };
+
+    const auditResult = await ValidSourceMaps.audit(artifacts);
+    expect(auditResult.score).toEqual(0);
+  });
+
+  it('passes when small, first-party JS have no corresponding source maps', async () => {
+    const artifacts = {
+      URL: {finalUrl: 'https://example.com'},
+      ScriptElements: [
+        {src: 'https://example.com/script1.min.js', content: largeBundle.content},
+        {src: 'https://example.com/script2.min.js', content: smallBundle.content},
+      ],
+      SourceMaps: [
+        {scriptUrl: 'https://example.com/script1.min.js', map: largeBundle.map},
+        //  Missing corresponding source map for small, first-party JS (script2.min.js)
+      ],
+    };
+
+    const auditResult = await ValidSourceMaps.audit(artifacts);
+    expect(auditResult.score).toEqual(1);
+  });
+
+  it('passes when large, third-party JS have no corresponding source maps', async () => {
+    const artifacts = {
+      URL: {finalUrl: 'https://example.com'},
+      ScriptElements: [
+        {src: 'https://example.com/script1.min.js', content: largeBundle.content},
+        {src: 'https://d36mpcpuzc4ztk.cloudfront.net/script2.js', content: largeBundle.content},
+      ],
+      SourceMaps: [
+        {scriptUrl: 'https://example.com/script1.min.js', map: largeBundle.map},
+      ],
+    };
+
+    const auditResult = await ValidSourceMaps.audit(artifacts);
+    expect(auditResult.score).toEqual(1);
+  });
 });
