@@ -1352,8 +1352,8 @@
   "lighthouse-core/audits/valid-source-maps.js | missingSourceMapErrorMessage": {
     "message": "Large JavaScript file is missing a source map"
   },
-  "lighthouse-core/audits/valid-source-maps.js | missingSourceMapItemsErrorMesssage": {
-    "message": "{missingItems, plural,\n    =1 {Missing 1 item in `.sourcesContent`}\n    other {Missing # items in `.sourcesContent`}\n    }"
+  "lighthouse-core/audits/valid-source-maps.js | missingSourceMapItemsWarningMesssage": {
+    "message": "{missingItems, plural,\n    =1 {Warning: missing 1 item in `.sourcesContent`}\n    other {Warning: missing # items in `.sourcesContent`}\n    }"
   },
   "lighthouse-core/audits/valid-source-maps.js | title": {
     "message": "Page has valid source maps"

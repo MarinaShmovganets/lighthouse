@@ -1352,8 +1352,8 @@
   "lighthouse-core/audits/valid-source-maps.js | missingSourceMapErrorMessage": {
     "message": "L̂ár̂ǵê J́âv́âŚĉŕîṕt̂ f́îĺê íŝ ḿîśŝín̂ǵ â śôúr̂ćê ḿâṕ"
   },
-  "lighthouse-core/audits/valid-source-maps.js | missingSourceMapItemsErrorMesssage": {
-    "message": "{missingItems, plural,\n    =1 {M̂íŝśîńĝ 1 ít̂ém̂ ín̂ `.sourcesContent`}\n    other {Ḿîśŝín̂ǵ # ît́êḿŝ ín̂ `.sourcesContent`}\n    }"
+  "lighthouse-core/audits/valid-source-maps.js | missingSourceMapItemsWarningMesssage": {
+    "message": "{missingItems, plural,\n    =1 {Ŵár̂ńîńĝ: ḿîśŝín̂ǵ 1 ît́êḿ îń `.sourcesContent`}\n    other {Ŵár̂ńîńĝ: ḿîśŝín̂ǵ # ît́êḿŝ ín̂ `.sourcesContent`}\n    }"
   },
   "lighthouse-core/audits/valid-source-maps.js | title": {
     "message": "P̂áĝé ĥáŝ v́âĺîd́ ŝóûŕĉé m̂áp̂ś"

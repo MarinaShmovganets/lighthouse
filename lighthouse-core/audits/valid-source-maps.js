@@ -25,9 +25,9 @@ const UIStrings = {
   /** Label for a possible error message indicating that a source map for a large, first-party JavaScript script is missing. */
   missingSourceMapErrorMessage: 'Large JavaScript file is missing a source map',
   /** Label for a possible error message indicating that the content of a source map is invalid because it is missing items in the sourcesContent attribute. */
-  missingSourceMapItemsErrorMesssage: `{missingItems, plural,
-    =1 {Missing 1 item in \`.sourcesContent\`}
-    other {Missing # items in \`.sourcesContent\`}
+  missingSourceMapItemsWarningMesssage: `{missingItems, plural,
+    =1 {Warning: missing 1 item in \`.sourcesContent\`}
+    other {Warning: missing # items in \`.sourcesContent\`}
     }`,
 };
 
@@ -101,7 +101,7 @@ class ValidSourceMaps extends Audit {
           if (sourcesContent.length < i || !sourcesContent[i]) missingSourcesContentCount += 1;
         }
         if (missingSourcesContentCount > 0) {
-          errors.push({error: str_(UIStrings.missingSourceMapItemsErrorMesssage,
+          errors.push({error: str_(UIStrings.missingSourceMapItemsWarningMesssage,
               {missingItems: missingSourcesContentCount})});
         }
       }
