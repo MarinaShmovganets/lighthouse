@@ -16,7 +16,17 @@ const ValidSourceMaps = require('../../audits/valid-source-maps.js');
 const fs = require('fs');
 const largeBundle = load('coursehero-bundle-1');
 const smallBundle = load('coursehero-bundle-2');
+const LARGE_JS_BYTE_THRESHOLD = 500 * 1024;
 
+if (largeBundle.content.length < LARGE_JS_BYTE_THRESHOLD) {
+  const error = {message: 'largeBundle is not large enough'};
+  throw error;
+}
+
+if (smallBundle.content.length >= LARGE_JS_BYTE_THRESHOLD) {
+  const error = {message: 'smallBundle is not small enough'};
+  throw error;
+}
 
 describe('Valid source maps audit', () => {
   it('passes when no script elements or source maps are provided', async () => {
