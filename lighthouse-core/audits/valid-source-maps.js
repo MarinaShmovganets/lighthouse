@@ -9,7 +9,6 @@ const thirdPartyWeb = require('../lib/third-party-web.js');
 const Audit = require('./audit.js');
 const i18n = require('../lib/i18n/i18n.js');
 
-// TODO: web.dev docs, write description
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on HTTP to HTTPS redirects. This descriptive title is shown to users when HTTP traffic is redirected to HTTPS. */
   title: 'Page has valid source maps',
