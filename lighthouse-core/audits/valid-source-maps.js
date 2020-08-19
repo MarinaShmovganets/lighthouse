@@ -127,7 +127,7 @@ class ValidSourceMaps extends Audit {
         subItemsHeading: {key: 'error'},
         text: str_(i18n.UIStrings.columnURL),
       },
-      {key: 'sourceMapUrl', itemType: 'url', text: 'Map URL'}, // TODO uistring
+      {key: 'sourceMapUrl', itemType: 'url', text: str_(UIStrings.columnMapURL)},
       /* eslint-enable max-len */
     ];
 
