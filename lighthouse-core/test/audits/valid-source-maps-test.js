@@ -71,6 +71,9 @@ describe('Valid source maps audit', () => {
     };
 
     const auditResult = await ValidSourceMaps.audit(artifacts);
+    expect(auditResult.details.items[0].subItems.items.length).toEqual(1);
+    expect(auditResult.details.items[0].subItems.items[0].error).toEqual(
+      'lighthouse-core/audits/valid-source-maps.js | missingSourceMapErrorMessage # 0');
     expect(auditResult.score).toEqual(0);
   });
 
@@ -105,5 +108,66 @@ describe('Valid source maps audit', () => {
 
     const auditResult = await ValidSourceMaps.audit(artifacts);
     expect(auditResult.score).toEqual(1);
+  });
+
+  it('discovers missing source map contents while passing', async () => {
+    const bundleNormal = load('squoosh');
+    const bundleWithMissingContent = load('squoosh');
+    delete bundleWithMissingContent.map.sourcesContent[0];
+
+    const artifacts = {
+      URL: {finalUrl: 'https://example.com'},
+      ScriptElements: [
+        {src: 'https://example.com/script1.min.js', content: bundleNormal.content},
+        {src: 'https://example.com/script2.min.js', content: bundleWithMissingContent.content},
+      ],
+      SourceMaps: [
+        {scriptUrl: 'https://example.com/script1.min.js', map: bundleNormal.map},
+        {scriptUrl: 'https://example.com/script2.min.js', map: bundleWithMissingContent.map},
+      ],
+    };
+
+    const auditResult = await ValidSourceMaps.audit(artifacts);
+
+    // The first result should warn there's a missing source map item
+    expect(auditResult.details.items[0].subItems.items.length).toEqual(1);
+    expect(auditResult.details.items[0].subItems.items[0].error).toEqual(
+      'lighthouse-core/audits/valid-source-maps.js | missingSourceMapItemsWarningMesssage # 1');
+
+    // The second result should have no warnings
+    expect(auditResult.details.items[1].subItems.items.length).toEqual(0);
+
+    // The audit should pass because these warnings don't affect your score
+    expect(auditResult.score).toEqual(1);
+  });
+
+  it('discovers missing source map contents while failing', async () => {
+    const bundleWithMissingContent = load('squoosh');
+    delete bundleWithMissingContent.map.sourcesContent[0];
+
+    const artifacts = {
+      URL: {finalUrl: 'https://example.com'},
+      ScriptElements: [
+        {src: 'https://example.com/script1.min.js', content: bundleWithMissingContent.content},
+        {src: 'https://example.com/script2.min.js', content: largeBundle.content},
+      ],
+      SourceMaps: [
+        {scriptUrl: 'https://example.com/script1.min.js', map: bundleWithMissingContent.map},
+      ],
+    };
+
+    const auditResult = await ValidSourceMaps.audit(artifacts);
+
+    // The first result should be the one that fails the audit
+    expect(auditResult.details.items[0].subItems.items.length).toEqual(1);
+    expect(auditResult.details.items[0].subItems.items[0].error).toEqual(
+      'lighthouse-core/audits/valid-source-maps.js | missingSourceMapErrorMessage # 0');
+
+    // The second result should warn there's a missing source map item
+    expect(auditResult.details.items[1].subItems.items.length).toEqual(1);
+    expect(auditResult.details.items[1].subItems.items[0].error).toEqual(
+      'lighthouse-core/audits/valid-source-maps.js | missingSourceMapItemsWarningMesssage # 1');
+
+    expect(auditResult.score).toEqual(0);
   });
 });
