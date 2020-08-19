@@ -72,8 +72,8 @@ describe('Valid source maps audit', () => {
 
     const auditResult = await ValidSourceMaps.audit(artifacts);
     expect(auditResult.details.items[0].subItems.items.length).toEqual(1);
-    expect(auditResult.details.items[0].subItems.items[0].error).toEqual(
-      'lighthouse-core/audits/valid-source-maps.js | missingSourceMapErrorMessage # 0');
+    expect(auditResult.details.items[0].subItems.items[0].error).toBeDisplayString(
+      'Large JavaScript file is missing a source map');
     expect(auditResult.score).toEqual(0);
   });
 
@@ -131,8 +131,8 @@ describe('Valid source maps audit', () => {
 
     // The first result should warn there's a missing source map item
     expect(auditResult.details.items[0].subItems.items.length).toEqual(1);
-    expect(auditResult.details.items[0].subItems.items[0].error).toEqual(
-      'lighthouse-core/audits/valid-source-maps.js | missingSourceMapItemsWarningMesssage # 1');
+    expect(auditResult.details.items[0].subItems.items[0].error).toBeDisplayString(
+      'Warning: missing 1 item in `.sourcesContent`');
 
     // The second result should have no warnings
     expect(auditResult.details.items[1].subItems.items.length).toEqual(0);
@@ -160,13 +160,13 @@ describe('Valid source maps audit', () => {
 
     // The first result should be the one that fails the audit
     expect(auditResult.details.items[0].subItems.items.length).toEqual(1);
-    expect(auditResult.details.items[0].subItems.items[0].error).toEqual(
-      'lighthouse-core/audits/valid-source-maps.js | missingSourceMapErrorMessage # 0');
+    expect(auditResult.details.items[0].subItems.items[0].error).toBeDisplayString(
+      'Large JavaScript file is missing a source map');
 
     // The second result should warn there's a missing source map item
     expect(auditResult.details.items[1].subItems.items.length).toEqual(1);
-    expect(auditResult.details.items[1].subItems.items[0].error).toEqual(
-      'lighthouse-core/audits/valid-source-maps.js | missingSourceMapItemsWarningMesssage # 1');
+    expect(auditResult.details.items[1].subItems.items[0].error).toBeDisplayString(
+      'Warning: missing 1 item in `.sourcesContent`');
 
     expect(auditResult.score).toEqual(0);
   });
