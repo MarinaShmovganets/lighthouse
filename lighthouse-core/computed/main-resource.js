@@ -11,7 +11,7 @@ const NetworkRecords = require('./network-records.js');
 
 /**
  * @fileoverview This artifact identifies the main resource on the page. Current solution assumes
- * that the main resource is the first non-rediected one.
+ * that the main resource is the first non-redirected one.
  */
 class MainResource {
   /**
