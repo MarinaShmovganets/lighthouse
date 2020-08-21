@@ -275,22 +275,27 @@ class TraceElements extends Gatherer {
     for (const [traceEventType, backendNodeData] of backendNodeDataMap) {
       for (let i = 0; i < backendNodeData.length; i++) {
         const backendNodeId = backendNodeData[i].nodeId;
-        const objectId = await driver.resolveNodeIdToObjectId(backendNodeId);
-        if (!objectId) continue;
-        const response = await driver.sendCommand('Runtime.callFunctionOn', {
-          objectId,
-          functionDeclaration: `function () {
-            ${getNodeDetailsData.toString()};
-            ${pageFunctions.getNodePathString};
-            ${pageFunctions.getNodeSelectorString};
-            ${pageFunctions.getNodeLabelString};
-            ${pageFunctions.getOuterHTMLSnippetString};
-            ${pageFunctions.getBoundingClientRectString};
-            return getNodeDetailsData.call(this);
-          }`,
-          returnByValue: true,
-          awaitPromise: true,
-        });
+        let response;
+        try {
+          const objectId = await driver.resolveNodeIdToObjectId(backendNodeId);
+          if (!objectId) continue;
+          response = await driver.sendCommand('Runtime.callFunctionOn', {
+            objectId,
+            functionDeclaration: `function () {
+              ${getNodeDetailsData.toString()};
+              ${pageFunctions.getNodePathString};
+              ${pageFunctions.getNodeSelectorString};
+              ${pageFunctions.getNodeLabelString};
+              ${pageFunctions.getOuterHTMLSnippetString};
+              ${pageFunctions.getBoundingClientRectString};
+              return getNodeDetailsData.call(this);
+            }`,
+            returnByValue: true,
+            awaitPromise: true,
+          });
+        } catch (err) {
+          continue;
+        }
 
         if (response && response.result && response.result.value) {
           traceElements.push({
