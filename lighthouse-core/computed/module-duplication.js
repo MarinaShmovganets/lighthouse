@@ -46,35 +46,28 @@ class ModuleDuplication {
    * @param {Map<string, Array<{scriptUrl: string, resourceSize: number}>>} moduleNameToSourceData
    */
   static _normalizeAggregatedData(moduleNameToSourceData) {
-    // Sort by resource size.
-    for (const sourceData of moduleNameToSourceData.values()) {
+    for (let [key, sourceData] of moduleNameToSourceData.entries()) {
+      // Sort by resource size.
       sourceData.sort((a, b) => b.resourceSize - a.resourceSize);
-    }
 
-    // Remove modules smaller than a % size of largest.
-    for (const [key, sourceData] of moduleNameToSourceData.entries()) {
-      if (sourceData.length === 1) continue;
+      // Remove modules smaller than a % size of largest.
+      if (sourceData.length > 1) {
+        const largestResourceSize = sourceData[0].resourceSize;
+        sourceData = sourceData.filter(data => {
+          const percentSize = data.resourceSize / largestResourceSize;
+          return percentSize >= RELATIVE_SIZE_THRESHOLD;
+        });
+      }
 
-      const largestResourceSize = sourceData[0].resourceSize;
-      const filteredSourceData = sourceData.filter(data => {
-        const percentSize = data.resourceSize / largestResourceSize;
-        return percentSize >= RELATIVE_SIZE_THRESHOLD;
-      });
-      moduleNameToSourceData.set(key, filteredSourceData);
-    }
+      // Remove modules smaller than an absolute theshold.
+      sourceData = sourceData.filter(data => data.resourceSize >= ABSOLUTE_SIZE_THRESHOLD_BYTES);
 
-    // Remove modules smaller than an absolute theshold.
-    for (const [key, sourceData] of moduleNameToSourceData.entries()) {
-      if (sourceData.length === 1) continue;
-
-      const filteredSourceData =
-        sourceData.filter(data => data.resourceSize >= ABSOLUTE_SIZE_THRESHOLD_BYTES);
-      moduleNameToSourceData.set(key, filteredSourceData);
-    }
-
-    // Delete source datas with only one value (no duplicates).
-    for (const [key, sourceData] of moduleNameToSourceData.entries()) {
-      if (sourceData.length === 1) moduleNameToSourceData.delete(key);
+      // Delete source datas with only one value (no duplicates).
+      if (sourceData.length > 1) {
+        moduleNameToSourceData.set(key, sourceData);
+      } else {
+        moduleNameToSourceData.delete(key);
+      }
     }
   }
 

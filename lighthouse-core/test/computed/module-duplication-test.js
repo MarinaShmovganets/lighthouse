@@ -31,13 +31,7 @@ describe('ModuleDuplication computed artifact', () => {
       ],
     };
     const results = await ModuleDuplication.request(artifacts, context);
-    expect(results).toMatchInlineSnapshot(`
-      Map {
-        "node_modules/browser-pack/_prelude.js" => Array [],
-        "src/bar.js" => Array [],
-        "src/foo.js" => Array [],
-      }
-    `);
+    expect(results).toMatchInlineSnapshot(`Map {}`);
   });
 
   it('works (complex)', async () => {
@@ -77,10 +71,6 @@ describe('ModuleDuplication computed artifact', () => {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
           },
         ],
-        "node_modules/@babel/runtime/helpers/classCallCheck.js" => Array [],
-        "node_modules/@babel/runtime/helpers/assertThisInitialized.js" => Array [],
-        "node_modules/@babel/runtime/helpers/possibleConstructorReturn.js" => Array [],
-        "node_modules/@babel/runtime/helpers/getPrototypeOf.js" => Array [],
         "node_modules/@babel/runtime/helpers/inherits.js" => Array [
           Object {
             "resourceSize": 528,
@@ -91,8 +81,6 @@ describe('ModuleDuplication computed artifact', () => {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
           },
         ],
-        "node_modules/@babel/runtime/helpers/defineProperty.js" => Array [],
-        "node_modules/@babel/runtime/helpers/extends.js" => Array [],
         "node_modules/@babel/runtime/helpers/typeof.js" => Array [
           Object {
             "resourceSize": 992,
@@ -103,8 +91,6 @@ describe('ModuleDuplication computed artifact', () => {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
           },
         ],
-        "node_modules/@babel/runtime/helpers/setPrototypeOf.js" => Array [],
-        "js/src/common/base-component.ts" => Array [],
         "js/src/utils/service/amplitude-service.ts" => Array [
           Object {
             "resourceSize": 1348,
@@ -115,9 +101,6 @@ describe('ModuleDuplication computed artifact', () => {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
           },
         ],
-        "js/src/aged-beef.ts" => Array [],
-        "js/src/utils/service/api-service.ts" => Array [],
-        "js/src/common/decorators/throttle.ts" => Array [],
         "js/src/utils/service/gsa-inmeta-tags.ts" => Array [
           Object {
             "resourceSize": 591,
@@ -128,7 +111,6 @@ describe('ModuleDuplication computed artifact', () => {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
           },
         ],
-        "js/src/utils/service/global-service.ts" => Array [],
         "js/src/search/results/store/filter-actions.ts" => Array [
           Object {
             "resourceSize": 956,
@@ -149,7 +131,6 @@ describe('ModuleDuplication computed artifact', () => {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
           },
         ],
-        "js/src/common/input/keycode.ts" => Array [],
         "js/src/search/results/store/filter-store.ts" => Array [
           Object {
             "resourceSize": 12717,
@@ -230,22 +211,6 @@ describe('ModuleDuplication computed artifact', () => {
             "scriptUrl": "https://example.com/coursehero-bundle-1.js",
           },
         ],
-        "node_modules/lodash-es/_freeGlobal.js" => Array [],
-        "node_modules/lodash-es/_root.js" => Array [],
-        "node_modules/lodash-es/_Symbol.js" => Array [],
-        "node_modules/lodash-es/_arrayMap.js" => Array [],
-        "node_modules/lodash-es/isArray.js" => Array [],
-        "node_modules/lodash-es/_getRawTag.js" => Array [],
-        "node_modules/lodash-es/_objectToString.js" => Array [],
-        "node_modules/lodash-es/_baseGetTag.js" => Array [],
-        "node_modules/lodash-es/isObjectLike.js" => Array [],
-        "node_modules/lodash-es/isSymbol.js" => Array [],
-        "node_modules/lodash-es/_baseToString.js" => Array [],
-        "node_modules/lodash-es/isObject.js" => Array [],
-        "node_modules/lodash-es/toNumber.js" => Array [],
-        "node_modules/lodash-es/toFinite.js" => Array [],
-        "node_modules/lodash-es/toInteger.js" => Array [],
-        "node_modules/lodash-es/toString.js" => Array [],
       }
     `);
   });
@@ -279,12 +244,7 @@ describe('ModuleDuplication computed artifact', () => {
         ['b.js', [{resourceSize: 200}, {resourceSize: 250}]],
       ]);
       ModuleDuplication._normalizeAggregatedData(data);
-      expect(data).toMatchInlineSnapshot(`
-        Map {
-          "a.js" => Array [],
-          "b.js" => Array [],
-        }
-      `);
+      expect(data).toMatchInlineSnapshot(`Map {}`);
     });
 
     it('removes data if size is much smaller than the largest', () => {
@@ -293,11 +253,7 @@ describe('ModuleDuplication computed artifact', () => {
         ['b.js', [{resourceSize: 250}, {resourceSize: 1}]],
       ]);
       ModuleDuplication._normalizeAggregatedData(data);
-      expect(data).toMatchInlineSnapshot(`
-        Map {
-          "a.js" => Array [],
-        }
-      `);
+      expect(data).toMatchInlineSnapshot(`Map {}`);
     });
   });
 });
