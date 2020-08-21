@@ -7,7 +7,7 @@ on:
 
 jobs:
   smoke-devtools:
-    runs-on: macos-latest
+    runs-on: macos-latest # while macbots are much slower, linux reliably crashes running this
 
     steps:
     - name: Set $DEPOT_TOOLS_PATH
