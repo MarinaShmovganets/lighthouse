@@ -418,10 +418,10 @@ describe('DetailsRenderer', () => {
       assert.equal(sourceLocationEl.getAttribute('data-source-column'), `${sourceLocation.column}`);
     });
 
-    it('renders source-location with lh-link class for invalid urls', () => {
+    it('renders source-location with lh-link class for relative url', () => {
       const sourceLocation = {
         type: 'source-location',
-        url: 'invalid-url://www.example.com/script.js',
+        url: '/root-relative-url/script.js',
         urlProvider: 'network',
         line: 0,
         column: 0,
@@ -437,7 +437,32 @@ describe('DetailsRenderer', () => {
       const anchorEl = sourceLocationEl.querySelector('.lh-link');
       assert.ok(anchorEl);
       assert.strictEqual(sourceLocationEl.localName, 'div');
-      assert.equal(sourceLocationEl.textContent, '/script.js:1:0(www.example.com)');
+      assert.equal(sourceLocationEl.textContent, '/root-relative-url/script.js:1:0');
+      assert.equal(sourceLocationEl.getAttribute('data-source-url'), sourceLocation.url);
+      assert.equal(sourceLocationEl.getAttribute('data-source-line'), `${sourceLocation.line}`);
+      assert.equal(sourceLocationEl.getAttribute('data-source-column'), `${sourceLocation.column}`);
+    });
+
+    it('renders source-location with lh-link class for invalid urls', () => {
+      const sourceLocation = {
+        type: 'source-location',
+        url: 'thisisclearlynotavalidurl',
+        urlProvider: 'network',
+        line: 0,
+        column: 0,
+      };
+      const details = {
+        type: 'table',
+        headings: [{key: 'content', itemType: 'source-location', text: 'Heading'}],
+        items: [{content: sourceLocation}],
+      };
+
+      const el = renderer.render(details);
+      const sourceLocationEl = el.querySelector('.lh-source-location');
+      const anchorEl = sourceLocationEl.querySelector('.lh-link');
+      assert.ok(anchorEl);
+      assert.strictEqual(sourceLocationEl.localName, 'div');
+      assert.equal(sourceLocationEl.textContent, 'thisisclearlynotavalidurl:1:0');
       assert.equal(sourceLocationEl.getAttribute('data-source-url'), sourceLocation.url);
       assert.equal(sourceLocationEl.getAttribute('data-source-line'), `${sourceLocation.line}`);
       assert.equal(sourceLocationEl.getAttribute('data-source-column'), `${sourceLocation.column}`);
