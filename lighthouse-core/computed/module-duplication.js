@@ -64,7 +64,7 @@ class ModuleDuplication {
     for (const [key, sourceData] of moduleNameToSourceData.entries()) {
       if (sourceData.length === 1) continue;
 
-      const filteredSourceData = sourceData.filter(data => data.resourceSize < 1024);
+      const filteredSourceData = sourceData.filter(data => data.resourceSize >= 1024);
       moduleNameToSourceData.set(key, filteredSourceData);
     }
 
