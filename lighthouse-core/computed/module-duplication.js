@@ -48,14 +48,14 @@ class ModuleDuplication {
       sourceData.sort((a, b) => b.resourceSize - a.resourceSize);
     }
 
-    // Remove modules smaller than 90% size of largest.
+    // Remove modules smaller than 10% size of largest.
     for (const [key, sourceData] of moduleNameToSourceData.entries()) {
       if (sourceData.length === 1) continue;
 
       const largestResourceSize = sourceData[0].resourceSize;
       const filteredSourceData = sourceData.filter(data => {
         const diff = largestResourceSize - data.resourceSize;
-        return diff / largestResourceSize < 0.9;
+        return 1 - diff / largestResourceSize >= 0.1;
       });
       moduleNameToSourceData.set(key, filteredSourceData);
     }
