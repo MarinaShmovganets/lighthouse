@@ -6,7 +6,7 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 ##
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT="$SCRIPT_DIR/../../.."
@@ -16,7 +16,9 @@ TEST_DIR="$LH_ROOT/.tmp/chromium-web-tests"
 export DEPOT_TOOLS="$TEST_DIR/depot-tools"
 export DEVTOOLS_PATH="$TEST_DIR/devtools/devtools-frontend"
 export BLINK_TOOLS_PATH="$TEST_DIR/blink_tools"
-export PATH=$DEPOT_TOOLS_PATH:$PATH
+export PATH=$DEPOT_TOOLS:$PATH
+
+set -x
 
 bash "$SCRIPT_DIR/download-depot-tools.sh"
 bash "$SCRIPT_DIR/download-devtools.sh"
