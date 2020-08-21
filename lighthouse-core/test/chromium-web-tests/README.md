@@ -12,6 +12,7 @@ bash lighthouse-core/test/chromium-web-tests/test-locally.sh
 
 # Reset the results.
 bash lighthouse-core/test/chromium-web-tests/test-locally.sh --reset-results
+# or yarn update:webtests
 ```
 
 ## How it works
