@@ -54,8 +54,8 @@ class ModuleDuplication {
 
       const largestResourceSize = sourceData[0].resourceSize;
       const filteredSourceData = sourceData.filter(data => {
-        const diff = largestResourceSize - data.resourceSize;
-        return 1 - diff / largestResourceSize >= 0.1;
+        const percentSize = data.resourceSize / largestResourceSize;
+        return percentSize >= 0.1;
       });
       moduleNameToSourceData.set(key, filteredSourceData);
     }
