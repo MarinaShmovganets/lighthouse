@@ -45,7 +45,7 @@ class ModuleDuplication {
   static _normalizeAggregatedData(moduleNameToSourceData) {
     // Sort by resource size.
     for (const sourceData of moduleNameToSourceData.values()) {
-      if (sourceData.length > 1) sourceData.sort((a, b) => b.resourceSize - a.resourceSize);
+      sourceData.sort((a, b) => b.resourceSize - a.resourceSize);
     }
 
     // Remove modules smaller than 90% size of largest.
