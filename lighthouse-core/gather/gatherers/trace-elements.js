@@ -15,6 +15,7 @@ const Gatherer = require('./gatherer.js');
 const pageFunctions = require('../../lib/page-functions.js');
 const TraceProcessor = require('../../lib/tracehouse/trace-processor.js');
 const RectHelpers = require('../../lib/rect-helpers.js');
+const Sentry = require('../../lib/sentry.js');
 
 /** @typedef {{nodeId: number, score?: number, animations?: {name?: string, failureReasonsMask?: number, unsupportedProperties?: string[]}[]}} TraceElementData */
 
@@ -113,6 +114,10 @@ class TraceElements extends Gatherer {
       return animationName;
     } catch (err) {
       // Animation name is not mission critical information and can be evicted, so don't throw fatally if we can't find it.
+      Sentry.captureException(err, {
+        tags: {gatherer: TraceElements.name},
+        level: 'error',
+      });
       return undefined;
     }
   }
@@ -294,6 +299,10 @@ class TraceElements extends Gatherer {
             awaitPromise: true,
           });
         } catch (err) {
+          Sentry.captureException(err, {
+            tags: {gatherer: this.name},
+            level: 'error',
+          });
           continue;
         }
 
