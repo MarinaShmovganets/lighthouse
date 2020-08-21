@@ -40,29 +40,37 @@ class ModuleDuplication {
   }
 
   /**
-   * @param {Map<string, Array<{scriptUrl: string, resourceSize: number}>>} sourceDataAggregated
+   * @param {Map<string, Array<{scriptUrl: string, resourceSize: number}>>} moduleNameToSourceData
    */
-  static _normalizeAggregatedData(sourceDataAggregated) {
+  static _normalizeAggregatedData(moduleNameToSourceData) {
     // Sort by resource size.
-    for (const sourceData of sourceDataAggregated.values()) {
+    for (const sourceData of moduleNameToSourceData.values()) {
       if (sourceData.length > 1) sourceData.sort((a, b) => b.resourceSize - a.resourceSize);
     }
 
-    // Remove modules smaller than 50% size of largest.
-    for (const [key, sourceData] of sourceDataAggregated.entries()) {
+    // Remove modules smaller than 90% size of largest.
+    for (const [key, sourceData] of moduleNameToSourceData.entries()) {
       if (sourceData.length === 1) continue;
 
       const largestResourceSize = sourceData[0].resourceSize;
       const filteredSourceData = sourceData.filter(data => {
         const diff = largestResourceSize - data.resourceSize;
-        return diff / largestResourceSize < 0.5;
+        return diff / largestResourceSize < 0.9;
       });
-      sourceDataAggregated.set(key, filteredSourceData);
+      moduleNameToSourceData.set(key, filteredSourceData);
+    }
+
+    // Remove modules smaller than 1KiB.
+    for (const [key, sourceData] of moduleNameToSourceData.entries()) {
+      if (sourceData.length === 1) continue;
+
+      const filteredSourceData = sourceData.filter(data => data.resourceSize < 1024);
+      moduleNameToSourceData.set(key, filteredSourceData);
     }
 
     // Delete source datas with only one value (no duplicates).
-    for (const [key, sourceData] of sourceDataAggregated.entries()) {
-      if (sourceData.length === 1) sourceDataAggregated.delete(key);
+    for (const [key, sourceData] of moduleNameToSourceData.entries()) {
+      if (sourceData.length === 1) moduleNameToSourceData.delete(key);
     }
   }
 
@@ -101,16 +109,16 @@ class ModuleDuplication {
     }
 
     /** @type {Map<string, Array<{scriptUrl: string, resourceSize: number}>>} */
-    const sourceDataAggregated = new Map();
+    const moduleNameToSourceData = new Map();
     for (const {rawMap, script} of bundles) {
       const sourceDataArray = sourceDatasMap.get(rawMap);
       if (!sourceDataArray) continue;
 
       for (const sourceData of sourceDataArray) {
-        let data = sourceDataAggregated.get(sourceData.source);
+        let data = moduleNameToSourceData.get(sourceData.source);
         if (!data) {
           data = [];
-          sourceDataAggregated.set(sourceData.source, data);
+          moduleNameToSourceData.set(sourceData.source, data);
         }
         data.push({
           scriptUrl: script.src || '',
@@ -119,8 +127,8 @@ class ModuleDuplication {
       }
     }
 
-    this._normalizeAggregatedData(sourceDataAggregated);
-    return sourceDataAggregated;
+    this._normalizeAggregatedData(moduleNameToSourceData);
+    return moduleNameToSourceData;
   }
 }
 

@@ -131,11 +131,11 @@ describe('DuplicatedJavascript computed artifact', () => {
             "subItems": Object {
               "items": Array [
                 Object {
-                  "sourceTransferBytes": 1348,
+                  "sourceTransferBytes": 1804,
                   "url": "https://example.com/coursehero-bundle-1.js",
                 },
                 Object {
-                  "sourceTransferBytes": 1227,
+                  "sourceTransferBytes": 1455,
                   "url": "https://example.com/coursehero-bundle-2.js",
                 },
               ],
@@ -143,7 +143,7 @@ describe('DuplicatedJavascript computed artifact', () => {
             },
             "totalBytes": 0,
             "url": "",
-            "wastedBytes": 1227,
+            "wastedBytes": 1455,
           },
           Object {
             "source": "js/src/utils/service/amplitude-service.ts",
@@ -350,11 +350,11 @@ describe('DuplicatedJavascript computed artifact', () => {
             },
             "totalBytes": 0,
             "url": "",
-            "wastedBytes": 761,
+            "wastedBytes": 905,
           },
         ],
         "wastedBytesByUrl": Map {
-          "https://example.com/coursehero-bundle-2.js" => 28869,
+          "https://example.com/coursehero-bundle-2.js" => 29241,
           "https://example.com/coursehero-bundle-1.js" => 3184,
         },
       }

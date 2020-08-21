@@ -134,6 +134,16 @@ describe('ModuleDuplication computed artifact', () => {
             "scriptUrl": "https://example.com/coursehero-bundle-1.js",
           },
         ],
+        "node_modules/@babel/runtime/helpers/applyDecoratedDescriptor.js" => Array [
+          Object {
+            "resourceSize": 892,
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+          Object {
+            "resourceSize": 446,
+            "scriptUrl": "https://example.com/coursehero-bundle-2.js",
+          },
+        ],
         "node_modules/@babel/runtime/helpers/possibleConstructorReturn.js" => Array [
           Object {
             "resourceSize": 230,
@@ -174,6 +184,16 @@ describe('ModuleDuplication computed artifact', () => {
             "scriptUrl": "https://example.com/coursehero-bundle-1.js",
           },
         ],
+        "node_modules/@babel/runtime/helpers/extends.js" => Array [
+          Object {
+            "resourceSize": 490,
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+          Object {
+            "resourceSize": 245,
+            "scriptUrl": "https://example.com/coursehero-bundle-2.js",
+          },
+        ],
         "node_modules/@babel/runtime/helpers/typeof.js" => Array [
           Object {
             "resourceSize": 992,
@@ -192,6 +212,16 @@ describe('ModuleDuplication computed artifact', () => {
           Object {
             "resourceSize": 260,
             "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+        ],
+        "js/src/common/base-component.ts" => Array [
+          Object {
+            "resourceSize": 459,
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+          Object {
+            "resourceSize": 216,
+            "scriptUrl": "https://example.com/coursehero-bundle-2.js",
           },
         ],
         "js/src/utils/service/amplitude-service.ts" => Array [
@@ -214,6 +244,16 @@ describe('ModuleDuplication computed artifact', () => {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
           },
         ],
+        "js/src/utils/service/api-service.ts" => Array [
+          Object {
+            "resourceSize": 116,
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+          Object {
+            "resourceSize": 54,
+            "scriptUrl": "https://example.com/coursehero-bundle-2.js",
+          },
+        ],
         "js/src/common/decorators/throttle.ts" => Array [
           Object {
             "resourceSize": 251,
@@ -231,6 +271,16 @@ describe('ModuleDuplication computed artifact', () => {
           },
           Object {
             "resourceSize": 563,
+            "scriptUrl": "https://example.com/coursehero-bundle-2.js",
+          },
+        ],
+        "js/src/utils/service/global-service.ts" => Array [
+          Object {
+            "resourceSize": 336,
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+          Object {
+            "resourceSize": 167,
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
           },
         ],
