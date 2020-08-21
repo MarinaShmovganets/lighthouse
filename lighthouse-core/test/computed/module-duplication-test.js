@@ -78,15 +78,31 @@ describe('ModuleDuplication computed artifact', () => {
           },
         ],
         "node_modules/@babel/runtime/helpers/classCallCheck.js" => Array [],
-        "node_modules/@babel/runtime/helpers/createClass.js" => Array [],
         "node_modules/@babel/runtime/helpers/assertThisInitialized.js" => Array [],
-        "node_modules/@babel/runtime/helpers/applyDecoratedDescriptor.js" => Array [],
         "node_modules/@babel/runtime/helpers/possibleConstructorReturn.js" => Array [],
         "node_modules/@babel/runtime/helpers/getPrototypeOf.js" => Array [],
-        "node_modules/@babel/runtime/helpers/inherits.js" => Array [],
+        "node_modules/@babel/runtime/helpers/inherits.js" => Array [
+          Object {
+            "resourceSize": 528,
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+          Object {
+            "resourceSize": 528,
+            "scriptUrl": "https://example.com/coursehero-bundle-2.js",
+          },
+        ],
         "node_modules/@babel/runtime/helpers/defineProperty.js" => Array [],
         "node_modules/@babel/runtime/helpers/extends.js" => Array [],
-        "node_modules/@babel/runtime/helpers/typeof.js" => Array [],
+        "node_modules/@babel/runtime/helpers/typeof.js" => Array [
+          Object {
+            "resourceSize": 992,
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+          Object {
+            "resourceSize": 992,
+            "scriptUrl": "https://example.com/coursehero-bundle-2.js",
+          },
+        ],
         "node_modules/@babel/runtime/helpers/setPrototypeOf.js" => Array [],
         "js/src/common/base-component.ts" => Array [],
         "js/src/utils/service/amplitude-service.ts" => Array [
@@ -102,10 +118,37 @@ describe('ModuleDuplication computed artifact', () => {
         "js/src/aged-beef.ts" => Array [],
         "js/src/utils/service/api-service.ts" => Array [],
         "js/src/common/decorators/throttle.ts" => Array [],
-        "js/src/utils/service/gsa-inmeta-tags.ts" => Array [],
+        "js/src/utils/service/gsa-inmeta-tags.ts" => Array [
+          Object {
+            "resourceSize": 591,
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+          Object {
+            "resourceSize": 563,
+            "scriptUrl": "https://example.com/coursehero-bundle-2.js",
+          },
+        ],
         "js/src/utils/service/global-service.ts" => Array [],
-        "js/src/search/results/store/filter-actions.ts" => Array [],
-        "js/src/search/results/store/item/resource-types.ts" => Array [],
+        "js/src/search/results/store/filter-actions.ts" => Array [
+          Object {
+            "resourceSize": 956,
+            "scriptUrl": "https://example.com/coursehero-bundle-2.js",
+          },
+          Object {
+            "resourceSize": 946,
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+        ],
+        "js/src/search/results/store/item/resource-types.ts" => Array [
+          Object {
+            "resourceSize": 783,
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+          Object {
+            "resourceSize": 775,
+            "scriptUrl": "https://example.com/coursehero-bundle-2.js",
+          },
+        ],
         "js/src/common/input/keycode.ts" => Array [],
         "js/src/search/results/store/filter-store.ts" => Array [
           Object {
@@ -147,7 +190,16 @@ describe('ModuleDuplication computed artifact', () => {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
           },
         ],
-        "js/src/search/results/service/api/filter-api-service.ts" => Array [],
+        "js/src/search/results/service/api/filter-api-service.ts" => Array [
+          Object {
+            "resourceSize": 554,
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+          Object {
+            "resourceSize": 534,
+            "scriptUrl": "https://example.com/coursehero-bundle-2.js",
+          },
+        ],
         "js/src/common/component/school-search.tsx" => Array [
           Object {
             "resourceSize": 5840,
@@ -168,7 +220,16 @@ describe('ModuleDuplication computed artifact', () => {
             "scriptUrl": "https://example.com/coursehero-bundle-2.js",
           },
         ],
-        "js/src/common/component/search/course-search.tsx" => Array [],
+        "js/src/common/component/search/course-search.tsx" => Array [
+          Object {
+            "resourceSize": 545,
+            "scriptUrl": "https://example.com/coursehero-bundle-2.js",
+          },
+          Object {
+            "resourceSize": 544,
+            "scriptUrl": "https://example.com/coursehero-bundle-1.js",
+          },
+        ],
         "node_modules/lodash-es/_freeGlobal.js" => Array [],
         "node_modules/lodash-es/_root.js" => Array [],
         "node_modules/lodash-es/_Symbol.js" => Array [],

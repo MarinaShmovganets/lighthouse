@@ -60,11 +60,11 @@ class ModuleDuplication {
       moduleNameToSourceData.set(key, filteredSourceData);
     }
 
-    // Remove modules smaller than 1KiB.
+    // Remove modules smaller than 0.5 KiB.
     for (const [key, sourceData] of moduleNameToSourceData.entries()) {
       if (sourceData.length === 1) continue;
 
-      const filteredSourceData = sourceData.filter(data => data.resourceSize >= 1024);
+      const filteredSourceData = sourceData.filter(data => data.resourceSize >= 0.5 * 1024);
       moduleNameToSourceData.set(key, filteredSourceData);
     }
 

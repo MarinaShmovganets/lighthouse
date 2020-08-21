@@ -107,6 +107,25 @@ describe('DuplicatedJavascript computed artifact', () => {
             "wastedBytes": 3015,
           },
           Object {
+            "source": "node_modules/@babel/runtime",
+            "subItems": Object {
+              "items": Array [
+                Object {
+                  "sourceTransferBytes": 502,
+                  "url": "https://example.com/coursehero-bundle-1.js",
+                },
+                Object {
+                  "sourceTransferBytes": 502,
+                  "url": "https://example.com/coursehero-bundle-2.js",
+                },
+              ],
+              "type": "subitems",
+            },
+            "totalBytes": 0,
+            "url": "",
+            "wastedBytes": 502,
+          },
+          Object {
             "source": "js/src/utils/service/amplitude-service.ts",
             "subItems": Object {
               "items": Array [
@@ -124,6 +143,44 @@ describe('DuplicatedJavascript computed artifact', () => {
             "totalBytes": 0,
             "url": "",
             "wastedBytes": 437,
+          },
+          Object {
+            "source": "js/src/search/results/store/filter-actions.ts",
+            "subItems": Object {
+              "items": Array [
+                Object {
+                  "sourceTransferBytes": 315,
+                  "url": "https://example.com/coursehero-bundle-2.js",
+                },
+                Object {
+                  "sourceTransferBytes": 312,
+                  "url": "https://example.com/coursehero-bundle-1.js",
+                },
+              ],
+              "type": "subitems",
+            },
+            "totalBytes": 0,
+            "url": "",
+            "wastedBytes": 312,
+          },
+          Object {
+            "source": "js/src/search/results/store/item/resource-types.ts",
+            "subItems": Object {
+              "items": Array [
+                Object {
+                  "sourceTransferBytes": 258,
+                  "url": "https://example.com/coursehero-bundle-1.js",
+                },
+                Object {
+                  "sourceTransferBytes": 256,
+                  "url": "https://example.com/coursehero-bundle-2.js",
+                },
+              ],
+              "type": "subitems",
+            },
+            "totalBytes": 0,
+            "url": "",
+            "wastedBytes": 256,
           },
           Object {
             "source": "js/src/search/results/store/filter-store.ts",
@@ -239,10 +296,27 @@ describe('DuplicatedJavascript computed artifact', () => {
             "url": "",
             "wastedBytes": 1022,
           },
+          Object {
+            "source": "Other",
+            "subItems": Object {
+              "items": Array [
+                Object {
+                  "url": "https://example.com/coursehero-bundle-1.js",
+                },
+                Object {
+                  "url": "https://example.com/coursehero-bundle-2.js",
+                },
+              ],
+              "type": "subitems",
+            },
+            "totalBytes": 0,
+            "url": "",
+            "wastedBytes": 542,
+          },
         ],
         "wastedBytesByUrl": Map {
-          "https://example.com/coursehero-bundle-2.js" => 26805,
-          "https://example.com/coursehero-bundle-1.js" => 2128,
+          "https://example.com/coursehero-bundle-2.js" => 27925,
+          "https://example.com/coursehero-bundle-1.js" => 2620,
         },
       }
     `);
