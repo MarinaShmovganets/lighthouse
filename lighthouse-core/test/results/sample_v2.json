@@ -1867,7 +1867,7 @@
           {
             "source": {
               "type": "source-location",
-              "url": "thisisnotaurl",
+              "url": "http://localhost:58599/dobetterweb/dbw_tester.html",
               "urlProvider": "network",
               "line": 386,
               "column": 36
