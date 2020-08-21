@@ -8,6 +8,9 @@
 const makeComputedArtifact = require('./computed-artifact.js');
 const JsBundles = require('./js-bundles.js');
 
+const RELATIVE_SIZE_THRESHOLD = 0.1;
+const ABSOLUTE_SIZE_THRESHOLD_BYTES = 1024 * 0.5;
+
 class ModuleDuplication {
   /**
    * @param {string} source
@@ -48,23 +51,24 @@ class ModuleDuplication {
       sourceData.sort((a, b) => b.resourceSize - a.resourceSize);
     }
 
-    // Remove modules smaller than 10% size of largest.
+    // Remove modules smaller than a % size of largest.
     for (const [key, sourceData] of moduleNameToSourceData.entries()) {
       if (sourceData.length === 1) continue;
 
       const largestResourceSize = sourceData[0].resourceSize;
       const filteredSourceData = sourceData.filter(data => {
         const percentSize = data.resourceSize / largestResourceSize;
-        return percentSize >= 0.1;
+        return percentSize >= RELATIVE_SIZE_THRESHOLD;
       });
       moduleNameToSourceData.set(key, filteredSourceData);
     }
 
-    // Remove modules smaller than 0.5 KiB.
+    // Remove modules smaller than an absolute theshold.
     for (const [key, sourceData] of moduleNameToSourceData.entries()) {
       if (sourceData.length === 1) continue;
 
-      const filteredSourceData = sourceData.filter(data => data.resourceSize >= 0.5 * 1024);
+      const filteredSourceData =
+        sourceData.filter(data => data.resourceSize >= ABSOLUTE_SIZE_THRESHOLD_BYTES);
       moduleNameToSourceData.set(key, filteredSourceData);
     }
 
