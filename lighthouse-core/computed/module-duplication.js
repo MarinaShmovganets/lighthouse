@@ -46,7 +46,9 @@ class ModuleDuplication {
    * @param {Map<string, Array<{scriptUrl: string, resourceSize: number}>>} moduleNameToSourceData
    */
   static _normalizeAggregatedData(moduleNameToSourceData) {
-    for (let [key, sourceData] of moduleNameToSourceData.entries()) {
+    for (const [key, originalSourceData] of moduleNameToSourceData.entries()) {
+      let sourceData = originalSourceData;
+
       // Sort by resource size.
       sourceData.sort((a, b) => b.resourceSize - a.resourceSize);
 
