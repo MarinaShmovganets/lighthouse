@@ -156,7 +156,7 @@ function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 
  * @see https://github.com/GoogleChrome/lighthouse/issues/9085
  * @see https://docs.google.com/spreadsheets/d/1E0gZwKsxegudkjJl8Fki_sOwHKpqgXwt8aBAfuUaB8A/edit?usp=sharing
  *
- * Historically, this benchmark created a string of length 100,000 in a loop, and returned
+ * Historically (until LH 6.3), this benchmark created a string of length 100,000 in a loop, and returned
  * the number of times per second the string can be created.
  *
  * Changes to v8 in 8.6.106 changed this number and also made Chrome more variable w.r.t GC interupts.
