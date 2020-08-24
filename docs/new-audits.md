@@ -41,7 +41,9 @@ An audit can return a number of different [detail types](https://github.com/Goog
 
 ### Audit ID
 
-The audit ID and filename should be based on the noun of the subject matter that it surfaces to the user. 
+The audit ID should be based on the noun of the subject matter that it surfaces to the user.
+
+The filename should match the audit ID.
 
 **Policy**
 
