@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 'use strict';
 
-/* -disable no-console */
+/* eslint-disable no-console */
 
 // Grabbed from https://github.com/ChromeDevTools/devtools-frontend/commit/26bb5ad91b147e9c918819711542ec2337d6b268
 
