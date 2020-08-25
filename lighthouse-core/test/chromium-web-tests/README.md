@@ -19,7 +19,7 @@ bash lighthouse-core/test/chromium-web-tests/test-locally.sh --reset-results
 
 Normally, running these webtests requires a full Chromium checkout. However, that takes much too long, so it wouldn't be feasible for daily development or CI. Instead, we:
 
-1) Grab just the source files we need from the Chromium repos
+1) **Grab just the source files we need from the Chromium repos**
 
 `download-blink-tools.sh` downloads just the code needed to run `third_party/blink/tools/run_web_tests.py`. This includes
 
@@ -27,17 +27,20 @@ Normally, running these webtests requires a full Chromium checkout. However, tha
 * `third_party/blink/web_tests/fast/harness`
 * [`third_party/catapult/third_party/typ`](https://source.chromium.org/chromium/chromium/src/+/master:third_party/catapult/third_party/typ/)–necessary third party Python library
 
+
+2) **Apply a few custom patches**
+
 `run_web_tests.py` normally uses Apache to host the webtest resources while the tests run. However, Apache is a very heavy dependency, and doesn't work well in GitHub actions. The majority of how Apache is configured is unnecessary for our layout tests, so instead `npx http-server` is used. How the web server is launched is not configurable in `run_web_tests.py`, so instead we apply a small patch to skip its usage.
 
 `run_web_tests.py` also verifies that `image_diff` has been built from the Chromium checkout. We don't need that in our tests, so we skip that check. It's only for screenshot tests.
 
 `run_web_tests.py` requires a content shell binary. Instead of building it, we download it.
 
-2) Download a prebuilt content shell (barebones Chromium that is used by webtests)
+3) **Download a prebuilt content shell** (barebones Chromium that is used by webtests)
 
 DevTools had a script for this, but it was removed. `download-content-shell.js` is from the old script, but with only the content shell downloading code and with a couple of minor changes.
 
-3) Checkout DevTools frontend, roll Lighthouse, build, and extract inspector resources
+4) **Check out DevTools frontend, roll Lighthouse, build, and extract inspector resources**
 
 To run the devtools webtests, `run_web_tests.py` requires the inspector resources (the output of the frontend build process). These files are actually included in the content shell download from before, but instead we want to build the currently checked out Lighthouse, roll to DevTools, build DevTools, and use the newly created inspector files.
 
