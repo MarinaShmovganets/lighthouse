@@ -244,6 +244,7 @@ Auditing: Avoids `unload` event listeners
 Auditing: Avoid non-composited animations
 Auditing: Image elements have explicit `width` and `height`
 Auditing: Avoids large JavaScript libraries with smaller alternatives
+Auditing: Page has valid source maps
 Auditing: Site works cross-browser
 Auditing: Page transitions don't feel like they block on the network
 Auditing: Each page has a URL
@@ -503,6 +504,7 @@ uses-responsive-images: flaky
 uses-text-compression: flaky
 uses-webp-images: flaky
 valid-lang: notApplicable
+valid-source-maps: pass
 video-caption: notApplicable
 video-description: notApplicable
 viewport: fail
@@ -510,5 +512,5 @@ visual-order-follows-dom: manual
 without-javascript: pass
 works-offline: fail
 
-# of .lh-audit divs: 134
+# of .lh-audit divs: 135
 
