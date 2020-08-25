@@ -70,7 +70,7 @@ rm -rf "$latest_content_shell/out/Release/layout-test-results"
 # Add typ to python path. The regular method assumes there is a Chromium checkout.
 export PYTHONPATH="${PYTHONPATH}:$BLINK_TOOLS_PATH/latest/third_party/typ"
 
-set -o xtrace
+set -x
 python \
   "$BLINK_TOOLS_PATH/latest/third_party/blink/tools/run_web_tests.py" \
   --layout-tests-directory="$DEVTOOLS_PATH/test/webtests" \
@@ -78,7 +78,7 @@ python \
   $* \
   http/tests/devtools/lighthouse
 status=$?
-set +o xtrace
+set +x
 
 rm -rf "$LH_ROOT/.tmp/layout-test-results"
 cp -r "$latest_content_shell/out/Release/layout-test-results" "$LH_ROOT/.tmp/layout-test-results"
