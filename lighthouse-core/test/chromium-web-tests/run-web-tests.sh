@@ -6,6 +6,8 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 ##
 
+set -eo pipefail
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT="$SCRIPT_DIR/../../.."
 
@@ -70,7 +72,11 @@ rm -rf "$latest_content_shell/out/Release/layout-test-results"
 # Add typ to python path. The regular method assumes there is a Chromium checkout.
 export PYTHONPATH="${PYTHONPATH}:$BLINK_TOOLS_PATH/latest/third_party/typ"
 
+# Don't quit if the python command fails.
+set +e
+# Print the python command.
 set -x
+
 python \
   "$BLINK_TOOLS_PATH/latest/third_party/blink/tools/run_web_tests.py" \
   --layout-tests-directory="$DEVTOOLS_PATH/test/webtests" \
@@ -78,11 +84,13 @@ python \
   $* \
   http/tests/devtools/lighthouse
 status=$?
+
 set +x
+set -e
 
 rm -rf "$LH_ROOT/.tmp/layout-test-results"
 cp -r "$latest_content_shell/out/Release/layout-test-results" "$LH_ROOT/.tmp/layout-test-results"
-cp "$DEVTOOLS_PATH/test/webtests/http/tests/devtools/lighthouse/"*-expected.txt "$SCRIPT_DIR/webtests/http/tests/devtools/lighthouse"
+cp "$DEVTOOLS_PATH/test/webtests/http/tests/devtools/lighthouse/"*-expected.txt "$LH_ROOT/third-party/chromium-webtests/webtests/http/tests/devtools/lighthouse"
 
 if [ ! $status -eq 0 ]; then
   # Print failure diffs to stdout.

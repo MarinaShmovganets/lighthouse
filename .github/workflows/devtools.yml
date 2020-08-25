@@ -76,7 +76,7 @@ jobs:
     #   uses: EndBug/add-and-commit@v4
     #   with:
     #     cwd: ${{ github.workspace }}/lighthouse
-    #     add: lighthouse-core/test/chromium-web-tests/webtests
+    #     add: third-party/chromium-webtests/webtests
     #     message: update webtest expectations
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

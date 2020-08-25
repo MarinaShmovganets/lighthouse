@@ -2,7 +2,7 @@
 
 This runs the Chromium webtests using the devtools integration tester.
 
-`webtests/` contains all of our Lighthouse webtests.
+`third-party/chromium-web-tests/webtests` contains all of our Lighthouse webtests.
 
 ## Run
 
@@ -49,6 +49,24 @@ To run the devtools webtests, `run_web_tests.py` requires the inspector resource
 * Keep LighthouseTestRunner here too.
 * Implement `findMostRecentChromiumCommit` in `download-content-shell.js`
 * Run smoke tests (started awhile ago [here](https://chromium-review.googlesource.com/c/chromium/src/+/1739566/3/third_party/blink/web_tests/http/tests/devtools/audits/audits-smoke-run.js)).
+* auto commit rebaseline in CI [1]
+
+[1] The following would work for the core members, but not external contributors.
+```
+# TODO: Must create a new token so external contributors can use.
+# - name: Reset Results
+#   if: failure() && github.actor != 'patrickhulce' && github.actor != 'brendankenny'
+#   run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/run-web-tests.sh --reset-results
+# - name: Commit new expectations
+#   if: failure() && github.actor != 'patrickhulce' && github.actor != 'brendankenny'
+#   uses: EndBug/add-and-commit@v4
+#   with:
+#     cwd: ${{ github.workspace }}/lighthouse
+#     add: third-party/chromium-webtests/webtests
+#     message: update webtest expectations
+#   env:
+#     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
 
 ### FAQ
 
