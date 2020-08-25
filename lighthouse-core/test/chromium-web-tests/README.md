@@ -8,11 +8,10 @@ This runs the Chromium webtests using the devtools integration tester.
 
 ```sh
 yarn build-devtools
-bash lighthouse-core/test/chromium-web-tests/test-locally.sh
+yarn webtests
 
 # Reset the results.
-bash lighthouse-core/test/chromium-web-tests/test-locally.sh --reset-results
-# or yarn update:webtests
+yarn update:webtests
 ```
 
 ## How it works
@@ -26,7 +25,6 @@ Normally, running these webtests requires a full Chromium checkout. However, tha
 * `third_party/blink/tools`.
 * `third_party/blink/web_tests/fast/harness`
 * [`third_party/catapult/third_party/typ`](https://source.chromium.org/chromium/chromium/src/+/master:third_party/catapult/third_party/typ/)–necessary third party Python library
-
 
 2) **Apply a few custom patches**
 

@@ -70,6 +70,7 @@ function getPlatform() {
 }
 
 function findMostRecentChromiumCommit() {
+  // TODO: this code works only if there is a full chromium checkout present.
   // const commitMessage = shell('git log --max-count=1 --grep="Cr-Commit-Position"').toString().trim();
   // const commitPosition = commitMessage.match(/Cr-Commit-Position: refs\/heads\/master@\{#([0-9]+)\}/)[1];
   // return commitPosition;
@@ -161,12 +162,6 @@ function extractContentShell(contentShellZipPath) {
   const newDirPath = path.resolve(dest, TARGET);
   fs.renameSync(originalDirPath, newDirPath);
   fs.chmodSync(getContentShellBinaryPath(newDirPath), '755');
-  // if (process.platform === 'darwin') {
-  //   const helperPath = path.resolve(
-  //       newDirPath, 'Content Shell.app', 'Contents', 'Frameworks', 'Content Shell Helper.app', 'Contents', 'MacOS',
-  //       'Content Shell Helper');
-  //   fs.chmodSync(helperPath, '755');
-  // }
   return dest;
 }
 
