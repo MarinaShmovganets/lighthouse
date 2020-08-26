@@ -8,10 +8,10 @@ This runs the Chromium webtests using the devtools integration tester.
 
 ```sh
 yarn build-devtools
-yarn webtests
+yarn test-devtools
 
 # Reset the results.
-yarn update:webtests
+yarn update:test-devtools
 ```
 
 ## How it works
