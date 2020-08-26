@@ -1798,8 +1798,9 @@ describe('GatherRunner', function() {
         .mockResponse('Page.getInstallabilityErrors', {installabilityErrors: []});
 
       const result = await GatherRunner.getWebAppManifest(passContext);
-      expect(result).toHaveProperty('raw', JSON.stringify(manifest));
-      expect(result && result.value).toMatchObject({
+      const parsedManifest = result ? result.parsedManifest : null;
+      expect(parsedManifest).toHaveProperty('raw', JSON.stringify(manifest));
+      expect(parsedManifest && parsedManifest.value).toMatchObject({
         name: {value: 'App', raw: 'App'},
         start_url: {value: passContext.url, raw: undefined},
       });

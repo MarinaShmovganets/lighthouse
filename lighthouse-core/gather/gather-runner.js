@@ -584,7 +584,9 @@ class GatherRunner {
     }
 
     // Fetch the manifest, if it exists.
-    baseArtifacts.WebAppManifest = await GatherRunner.getWebAppManifest(passContext);
+    const manifestResult = await GatherRunner.getWebAppManifest(passContext);
+    // manifestResult could be null
+    baseArtifacts.WebAppManifest = manifestResult ? manifestResult.parsedManifest : null;
 
     if (baseArtifacts.WebAppManifest) {
       baseArtifacts.InstallabilityErrors = await GatherRunner.getInstallabilityErrors(passContext);
@@ -626,12 +628,15 @@ class GatherRunner {
    * will have the reason. See manifest-parser.js for more information.
    *
    * @param {LH.Gatherer.PassContext} passContext
-   * @return {Promise<LH.Artifacts.Manifest|null>}
+   * @return {Promise<{parsedManifest: LH.Artifacts.Manifest|null, manifestUrl: string|null} | null>}
    */
   static async getWebAppManifest(passContext) {
     const response = await passContext.driver.getAppManifest();
     if (!response) return null;
-    return manifestParser(response.data, response.url, passContext.url);
+    const parsedManifest = manifestParser(response.data, response.url, passContext.url);
+    const manifestUrl = response.url;
+    const manifestResult = {parsedManifest, manifestUrl};
+    return manifestResult;
   }
 
   /**

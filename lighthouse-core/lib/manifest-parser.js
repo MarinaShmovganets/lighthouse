@@ -505,6 +505,7 @@ function parse(string, manifestUrl, documentUrl) {
     raw: string,
     value: manifest,
     warning: manifestUrlWarning,
+    manifestUrl: manifestUrl,
   };
 }
 
