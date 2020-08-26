@@ -27,7 +27,7 @@ fi
 
 if [[ -n "$(git status --porcelain)" ]]; then
   echo "Repo has changes to the files! Commit or stash the changes to continue."
-  # exit 1
+  exit 1
 fi
 
 # Checkout a new branch for the version commit
