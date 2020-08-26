@@ -24,9 +24,9 @@ const UIStrings = {
   /** Explanatory message stating that there was a failure in an audit caused by a missing page viewport meta tag configuration. "viewport" and "meta" are HTML terms and should not be translated. */
   explanationViewport: 'Text is illegible because there\'s no viewport meta tag optimized ' +
     'for mobile screens.',
-  /** Label for the table row which summarizes all failing nodes that were not fully analyzed. This text overrides the source location field. "Add'l" is shorthand for "Additional" */
+  /** Label for the table row which summarizes all failing nodes that were not fully analyzed. "Add'l" is shorthand for "Additional" */
   additionalIllegibleText: 'Add\'l illegible text',
-  /** Label for the table row which displays the percentage of nodes that have proper font size. This text overrides the source location field. */
+  /** Label for the table row which displays the percentage of nodes that have proper font size. */
   legibleText: 'Legible text',
 };
 
