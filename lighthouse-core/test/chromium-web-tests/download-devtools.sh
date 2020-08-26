@@ -18,8 +18,13 @@ fi
 echo "Downloading DevTools frontend at $DEVTOOLS_PATH"
 mkdir -p `dirname $DEVTOOLS_PATH`
 cd `dirname $DEVTOOLS_PATH`
+
+set -x
+
 fetch --nohooks --no-history devtools-frontend
 cd devtools-frontend
 
 gclient sync
 gn gen out/Default
+
+set +x
