@@ -8,7 +8,7 @@ We expect this release to ship in the DevTools of [Chrome 87](https://chromiumda
 
 Thanks to our new contributors 👽🐷🐰🐯🐻!
 
-* adrianaixba @adrianaixba
+* Adriana Ixba @adrianaixba
 * Daniel Hollas @danielhollas
 * Danilo Velasquez Urrutia @dvelasquez
 * Jivthesh M R @jivthesh
