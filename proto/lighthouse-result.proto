@@ -448,7 +448,7 @@ message I18n {
     string calculator_link = 45;
 
     // Label for a row in a table that shows the version of the Axe library used
-    string runtimeSettingsAxeVersion = 46;
+    string runtime_settings_axe_version = 46;
   }
 
   // The message holding all formatted strings
