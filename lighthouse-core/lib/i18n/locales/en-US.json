@@ -1791,7 +1791,7 @@
     "message": "No emulation"
   },
   "lighthouse-core/report/html/renderer/util.js | runtimeSettingsAxeVersion": {
-    "message": "Axe Version"
+    "message": "Axe version"
   },
   "lighthouse-core/report/html/renderer/util.js | runtimeSettingsBenchmark": {
     "message": "CPU/Memory Power"
