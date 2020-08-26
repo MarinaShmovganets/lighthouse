@@ -169,6 +169,10 @@ Otherwise, you can land it immediately.
 git checkout vx.x.x # Checkout the specific version.
 yarn build-devtools
 yarn devtools ~/src/devtools/devtools-frontend
+
+cd ~/src/devtools/devtools-frontend
+git new-branch rls
+git commit -am "[Lighthouse] Roll Lighthouse x.x.x\n\nBug: 772558"
 git cl upload --bypass-hooks
 ```
 
