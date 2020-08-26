@@ -27,6 +27,10 @@ class JsUsage extends Gatherer {
     const driver = passContext.driver;
     const finalUrl = passContext.baseArtifacts.URL.finalUrl;
 
+    const devtoolsLog = passContext.baseArtifacts.devtoolsLogs[passContext.passConfig.passName];
+
+    devtoolsLog[0]
+
     const coverageResponse = await driver.sendCommand('Profiler.takePreciseCoverage');
     const scriptUsages = coverageResponse.result;
     await driver.sendCommand('Profiler.stopPreciseCoverage');
@@ -39,9 +43,16 @@ class JsUsage extends Gatherer {
       // We shouldn't analyze ourselves, so skip.
       if (scriptUsage.url === '') continue;
 
+      // `ScriptCoverage.url` can be overridden by a magic sourceURL comment.
+      // Lookup the url via the scriptId, if possible.
+      let scriptUsageUrl = scriptUsage.url;
+
+      // ...
+      // TODO how to map script id to url ...
+
       // `scriptUsage.url` can sometimes be relative to the final url, so normalize to an absolute
       // url by using the URL ctor.
-      const url = new URL(scriptUsage.url, finalUrl).href;
+      const url = new URL(scriptUsageUrl, finalUrl).href;
       const scripts = usageByUrl[url] || [];
       scripts.push(scriptUsage);
       usageByUrl[url] = scripts;
