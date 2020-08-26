@@ -6,20 +6,10 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 ##
 
-set -eo pipefail
+set -euo pipefail
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT="$SCRIPT_DIR/../../.."
-
-if [ x"$BLINK_TOOLS_PATH" == x ]; then
-  echo "Error: Environment variable BLINK_TOOLS_PATH not set"
-  exit 1
-fi
-
-if [ x"$DEVTOOLS_PATH" == x ]; then
-  echo "Error: Environment variable DEVTOOLS_PATH not set"
-  exit 1
-fi
 
 unset -v latest_content_shell
 for file in "$LH_ROOT/.tmp/chromium-web-tests/content-shells"/*/; do
