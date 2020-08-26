@@ -216,6 +216,7 @@ Auditing: Manifest has a maskable icon
 Auditing: Content is sized correctly for the viewport
 Auditing: Displays images with correct aspect ratio
 Auditing: Serves images with appropriate resolution
+Auditing: Fonts with `font-display: optional` are preloaded
 Auditing: Avoids deprecated APIs
 Auditing: Minimizes main-thread work
 Computing artifact: MainThreadTasks
@@ -464,6 +465,7 @@ offscreen-images: flaky
 password-inputs-can-be-pasted-into: pass
 performance-budget: notApplicable
 plugins: pass
+preload-fonts: notApplicable
 pwa-cross-browser: manual
 pwa-each-page-has-url: manual
 pwa-page-transitions: manual
@@ -512,5 +514,5 @@ visual-order-follows-dom: manual
 without-javascript: pass
 works-offline: fail
 
-# of .lh-audit divs: 135
+# of .lh-audit divs: 136
 
