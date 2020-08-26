@@ -105,22 +105,22 @@ Below is a table of various device classes and their approximate ranges of `benc
 | -                                   | High-End Desktop | Low-End Desktop | High-End Mobile | Mid-Tier Mobile | Low-End Mobile    |
 | ----------------------------------- | ---------------- | --------------- | --------------- | --------------- | ----------------- |
 | Example Device                      | 16" Macbook Pro  | Intel NUC i3    | Samsung S10     | Moto G4         | Samsung Galaxy J2 |
-| Lighthouse BenchmarkIndex           | 1500-2200        | 1000-1500       | 800-1200        | 125-800         | <125              |
+| Lighthouse BenchmarkIndex           | 1500-2000        | 1000-1500       | 800-1200        | 125-800         | <125              |
 | Octane 2.0                          | 30000-45000      | 20000-35000     | 15000-25000     | 2000-20000      | <2000             |
 | Speedometer 2.0                     | 90-200           | 50-90           | 20-50           | 10-20           | <10               |
 | JavaScript Execution of a News Site | 2-4s             | 4-8s            | 4-8s            | 8-20s           | 20-40s            |
 
 The amount of variation in each class is quite high. Even the same device can be purchased with multiple different processors and memory options. Lighthouse uses a constant 4x CPU multiplier by default which moves a typical run in the high-end desktop bracket somewhere into the mid-tier mobile bracket. If you notice your benchmarkIndex is in a different range though, you may want to adjust the CPU throttling settings accordingly.
 
-Below is a table of the range of `cpuSlowdownMultipliers` you might want to use to target different devices. If your device's BenchmarkIndex falls on the *higher* end of its bracket, use a *higher* multiplier from the range in the table below. If your device's BenchmarkIndex falls on the *lower* end of its bracket, use a *lower* multiplier from the range in the table below.
+Below is a table of the various `cpuSlowdownMultipliers` you might want to use to target different devices along with the possible range. If your device's BenchmarkIndex falls on the _higher_ end of its bracket, use a _higher_ multiplier from the range in the table below. If your device's BenchmarkIndex falls on the _lower_ end of its bracket, use a _lower_ multiplier from the range in the table below. If it's somewhere in the middle, use the suggested multiplier.
 
 | -                | High-End Desktop | Low-End Desktop | High-End Mobile | Mid-Tier Mobile | Low-End Mobile |
 | ---------------- | ---------------- | --------------- | --------------- | --------------- | -------------- |
-| High-End Desktop | 1                | 2-4             | 2-4             | 2-10            | 5-20           |
-| Low-End Desktop  | -                | 1               | 1               | 1-5             | 3-10           |
-| High-End Mobile  | -                | -               | 1               | 1-5             | 3-10           |
-| Mid-Tier Mobile  | -                | -               | -               | 1               | 1-5            |
-| Low-End Mobile   | -                | -               | -               | -               | 1              |
+| High-End Desktop | 1x               | 2x (1-4)        | 2x (1-4)        | 4x (2-10)       | 10x (5-20)     |
+| Low-End Desktop  | -                | 1x              | 1x              | 2x (1-5)        | 5x (3-10)      |
+| High-End Mobile  | -                | -               | 1x              | 2x (1-5)        | 5x (3-10)      |
+| Mid-Tier Mobile  | -                | -               | -               | 1x              | 2x (1-5)       |
+| Low-End Mobile   | -                | -               | -               | -               | 1x             |
 
 ## Using Lighthouse with a custom multiplier
 
