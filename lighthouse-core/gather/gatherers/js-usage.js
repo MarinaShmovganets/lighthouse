@@ -17,6 +17,10 @@ class JsUsage extends Gatherer {
   async beforePass(passContext) {
     await passContext.driver.sendCommand('Profiler.enable');
     await passContext.driver.sendCommand('Profiler.startPreciseCoverage', {detailed: false});
+
+    // passContext.driver.on('Debugger.scriptParsed', (e) => {
+    //   console.log({url: e.url, embedderName: e.embedderName});
+    // });
   }
 
   /**
