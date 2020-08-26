@@ -66,17 +66,3 @@ jobs:
       with:
         name: results
         path: ${{ github.workspace }}/lighthouse/.tmp/layout-test-results
-
-    # TODO: Must create a new token so external contributors can use.
-    # - name: Reset Results
-    #   if: failure() && github.actor != 'patrickhulce' && github.actor != 'brendankenny'
-    #   run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/run-web-tests.sh --reset-results
-    # - name: Commit new expectations
-    #   if: failure() && github.actor != 'patrickhulce' && github.actor != 'brendankenny'
-    #   uses: EndBug/add-and-commit@v4
-    #   with:
-    #     cwd: ${{ github.workspace }}/lighthouse
-    #     add: third-party/chromium-webtests/webtests
-    #     message: update webtest expectations
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
