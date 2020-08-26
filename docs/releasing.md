@@ -113,7 +113,9 @@ Now that the integrations are confirmed to work, go back to `lighthouse` folder.
 # Prepare the commit, replace x.x.x with the desired version
 bash ./lighthouse-core/scripts/release/prepare-commit.sh x.x.x
 
-# Open the PR and await merge...
+# Fix-up the CHANGELOG.
+
+# Open PR with title `vx.x.x` and await merge...
 echo "It's been merged! 🎉"
 
 # One last test (this script uses origin/master, so we also get the commit with the new changelog - that commit should be HEAD).
