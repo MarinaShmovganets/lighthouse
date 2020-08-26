@@ -26,13 +26,12 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 ## New Audits
 
 * add preload-fonts audit ([#11255](https://github.com/GoogleChrome/lighthouse/pull/11255))
-* add autocomplete to experimental config ([#11186](https://github.com/GoogleChrome/lighthouse/pull/11186))
-* add valid-source-maps audit ([#11236](https://github.com/GoogleChrome/lighthouse/pull/11236))
 * add large-javascript-libraries audit ([#11096](https://github.com/GoogleChrome/lighthouse/pull/11096))
+* add valid-source-maps audit ([#11236](https://github.com/GoogleChrome/lighthouse/pull/11236))
+* add autocomplete to experimental config ([#11186](https://github.com/GoogleChrome/lighthouse/pull/11186))
 
 ## Core
 
-* font-size: remove deprecated DOM.getFlattenedDocument ([#11248](https://github.com/GoogleChrome/lighthouse/pull/11248))
 * global-listeners: dedupe duplicate events in GlobalListener gatherer ([#11303](https://github.com/GoogleChrome/lighthouse/pull/11303))
 * module-duplication: ignore smaller modules ([#11277](https://github.com/GoogleChrome/lighthouse/pull/11277))
 * non-composited-animations: add unsupported css properties ([#11246](https://github.com/GoogleChrome/lighthouse/pull/11246))
@@ -41,6 +40,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 * renderer: improve the unknown timezone checks in util.js ([#9822](https://github.com/GoogleChrome/lighthouse/pull/9822))
 * response-time: add time spent to details ([#11307](https://github.com/GoogleChrome/lighthouse/pull/11307))
 * trace-elements: do not break on unresolvable node id ([#11298](https://github.com/GoogleChrome/lighthouse/pull/11298))
+* font-size: remove deprecated DOM.getFlattenedDocument ([#11248](https://github.com/GoogleChrome/lighthouse/pull/11248))
 
 ## Report
 
