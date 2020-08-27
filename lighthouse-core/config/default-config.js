@@ -218,6 +218,7 @@ const defaultConfig = {
     'content-width',
     'image-aspect-ratio',
     'image-size-responsive',
+    'preload-fonts',
     'deprecations',
     'mainthread-work-breakdown',
     'bootup-time',
@@ -240,7 +241,6 @@ const defaultConfig = {
     'long-tasks',
     'no-unload-listeners',
     'non-composited-animations',
-    'unsized-images',
     'large-javascript-libraries',
     'valid-source-maps',
     'manual/pwa-cross-browser',
@@ -473,7 +473,6 @@ const defaultConfig = {
         {id: 'no-document-write', weight: 0, group: 'diagnostics'},
         {id: 'long-tasks', weight: 0, group: 'diagnostics'},
         {id: 'non-composited-animations', weight: 0, group: 'diagnostics'},
-        {id: 'unsized-images', weight: 0, group: 'diagnostics'},
         {id: 'large-javascript-libraries', weight: 0, group: 'diagnostics'},
         // Audits past this point don't belong to a group and will not be shown automatically
         {id: 'network-requests', weight: 0},
@@ -562,6 +561,7 @@ const defaultConfig = {
         {id: 'password-inputs-can-be-pasted-into', weight: 1, group: 'best-practices-ux'},
         {id: 'image-aspect-ratio', weight: 1, group: 'best-practices-ux'},
         {id: 'image-size-responsive', weight: 1, group: 'best-practices-ux'},
+        {id: 'preload-fonts', weight: 1, group: 'best-practices-ux'},
         // Browser Compatibility
         {id: 'doctype', weight: 1, group: 'best-practices-browser-compat'},
         {id: 'charset', weight: 1, group: 'best-practices-browser-compat'},

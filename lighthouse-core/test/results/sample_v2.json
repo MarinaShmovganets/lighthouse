@@ -3,9 +3,12 @@
   "environment": {
     "networkUserAgent": "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) AppleWebKit/537.36(KHTML, like Gecko) Chrome/66.0.3359.30 Mobile Safari/537.36",
     "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4232.0 Safari/537.36",
-    "benchmarkIndex": 1000
+    "benchmarkIndex": 1000,
+    "credits": {
+      "axe-core": "2.1.1"
+    }
   },
-  "lighthouseVersion": "6.2.0",
+  "lighthouseVersion": "6.3.0",
   "fetchTime": "2018-03-13T00:55:45.840Z",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -305,9 +308,25 @@
       "displayValue": "Root document took 570 ms",
       "details": {
         "type": "opportunity",
-        "overallSavingsMs": -29.436999999999898,
-        "headings": [],
-        "items": []
+        "headings": [
+          {
+            "key": "url",
+            "valueType": "url",
+            "label": "URL"
+          },
+          {
+            "key": "responseTime",
+            "valueType": "timespanMs",
+            "label": "Time Spent"
+          }
+        ],
+        "items": [
+          {
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
+            "responseTime": 570.5630000000001
+          }
+        ],
+        "overallSavingsMs": 470.5630000000001
       }
     },
     "first-cpu-idle": {
@@ -666,6 +685,28 @@
             "actualPixels": 152640,
             "expectedSize": "1260 x 835",
             "expectedPixels": 1052100
+          }
+        ]
+      }
+    },
+    "preload-fonts": {
+      "id": "preload-fonts",
+      "title": "Fonts with `font-display: optional` are not preloaded",
+      "description": "Preload `optional` fonts so first-time visitors may use them. [Learn More](https://web.dev/preload-optional-fonts/)",
+      "score": 0,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "url",
+            "itemType": "url",
+            "text": "URL"
+          }
+        ],
+        "items": [
+          {
+            "url": "http://localhost:10503/perf/lobster-two-v10-latin-700.woff2?cors=true"
           }
         ]
       }
@@ -1900,7 +1941,7 @@
     "non-composited-animations": {
       "id": "non-composited-animations",
       "title": "Avoid non-composited animations",
-      "description": "Animations which are not composited can be janky and contribute to CLS. [Learn more](https://developers.google.com/web/fundamentals/performance/rendering/stick-to-compositor-only-properties-and-manage-layer-count)",
+      "description": "Animations which are not composited can be janky and increase CLS. [Learn more](https://web.dev/non-composited-animations)",
       "score": null,
       "scoreDisplayMode": "informative",
       "displayValue": "1 animated element found",
@@ -1950,41 +1991,6 @@
                   "animation": "beta"
                 }
               ]
-            }
-          }
-        ]
-      }
-    },
-    "unsized-images": {
-      "id": "unsized-images",
-      "title": "Image elements do not have explicit `width` and `height`",
-      "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn more](https://web.dev/optimize-cls/#images-without-dimensions)",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "details": {
-        "type": "table",
-        "headings": [
-          {
-            "key": "url",
-            "itemType": "thumbnail",
-            "text": ""
-          },
-          {
-            "key": "url",
-            "itemType": "url",
-            "text": "URL"
-          },
-          {
-            "key": "node",
-            "itemType": "node",
-            "text": "Failing Elements"
-          }
-        ],
-        "items": [
-          {
-            "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
-            "node": {
-              "type": "node"
             }
           }
         ]
@@ -4482,11 +4488,6 @@
           "group": "diagnostics"
         },
         {
-          "id": "unsized-images",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
           "id": "large-javascript-libraries",
           "weight": 0,
           "group": "diagnostics"
@@ -4821,6 +4822,11 @@
         },
         {
           "id": "image-size-responsive",
+          "weight": 1,
+          "group": "best-practices-ux"
+        },
+        {
+          "id": "preload-fonts",
           "weight": 1,
           "group": "best-practices-ux"
         },
@@ -5519,6 +5525,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:preload-fonts",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:deprecations",
         "duration": 100,
         "entryType": "measure"
@@ -5670,12 +5682,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:non-composited-animations",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:unsized-images",
         "duration": 100,
         "entryType": "measure"
       },
@@ -6327,6 +6333,7 @@
       "runtimeDesktopEmulation": "Emulated Desktop",
       "runtimeMobileEmulation": "Emulated Moto G4",
       "runtimeNoEmulation": "No emulation",
+      "runtimeSettingsAxeVersion": "Axe version",
       "runtimeSettingsBenchmark": "CPU/Memory Power",
       "runtimeSettingsChannel": "Channel",
       "runtimeSettingsCPUThrottling": "CPU throttling",
@@ -6545,15 +6552,16 @@
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnURL": [
         "audits[errors-in-console].details.headings[0].text",
+        "audits[server-response-time].details.headings[0].label",
         "audits[image-aspect-ratio].details.headings[1].text",
         "audits[image-size-responsive].details.headings[1].text",
+        "audits[preload-fonts].details.headings[0].text",
         "audits.deprecations.details.headings[1].text",
         "audits[bootup-time].details.headings[0].text",
         "audits[network-rtt].details.headings[0].text",
         "audits[network-server-latency].details.headings[0].text",
         "audits[long-tasks].details.headings[0].text",
         "audits[no-unload-listeners].details.headings[0].text",
-        "audits[unsized-images].details.headings[1].text",
         "audits[uses-long-cache-ttl].details.headings[0].text",
         "audits[total-byte-weight].details.headings[0].text",
         "audits[render-blocking-resources].details.headings[0].label",
@@ -6583,6 +6591,12 @@
           },
           "path": "audits[server-response-time].displayValue"
         }
+      ],
+      "lighthouse-core/lib/i18n/i18n.js | columnTimeSpent": [
+        "audits[server-response-time].details.headings[1].label",
+        "audits[mainthread-work-breakdown].details.headings[1].text",
+        "audits[network-rtt].details.headings[1].text",
+        "audits[network-server-latency].details.headings[1].text"
       ],
       "lighthouse-core/lib/i18n/i18n.js | firstCPUIdleMetric": [
         "audits[first-cpu-idle].title",
@@ -6687,6 +6701,12 @@
       "lighthouse-core/audits/image-size-responsive.js | columnExpected": [
         "audits[image-size-responsive].details.headings[4].text"
       ],
+      "lighthouse-core/audits/preload-fonts.js | failureTitle": [
+        "audits[preload-fonts].title"
+      ],
+      "lighthouse-core/audits/preload-fonts.js | description": [
+        "audits[preload-fonts].description"
+      ],
       "lighthouse-core/audits/deprecations.js | failureTitle": [
         "audits.deprecations.title"
       ],
@@ -6712,11 +6732,6 @@
       ],
       "lighthouse-core/audits/mainthread-work-breakdown.js | columnCategory": [
         "audits[mainthread-work-breakdown].details.headings[0].text"
-      ],
-      "lighthouse-core/lib/i18n/i18n.js | columnTimeSpent": [
-        "audits[mainthread-work-breakdown].details.headings[1].text",
-        "audits[network-rtt].details.headings[1].text",
-        "audits[network-server-latency].details.headings[1].text"
       ],
       "lighthouse-core/audits/bootup-time.js | title": [
         "audits[bootup-time].title"
@@ -7008,22 +7023,6 @@
           "path": "audits[non-composited-animations].details.items[0].subItems.items[2].failureReason"
         }
       ],
-      "lighthouse-core/audits/unsized-images.js | failureTitle": [
-        "audits[unsized-images].title"
-      ],
-      "lighthouse-core/audits/unsized-images.js | description": [
-        "audits[unsized-images].description"
-      ],
-      "lighthouse-core/lib/i18n/i18n.js | columnFailingElem": [
-        "audits[unsized-images].details.headings[2].text",
-        "audits[color-contrast].details.headings[0].text",
-        "audits[html-has-lang].details.headings[0].text",
-        "audits[image-alt].details.headings[0].text",
-        "audits.label.details.headings[0].text",
-        "audits[link-name].details.headings[0].text",
-        "audits[object-alt].details.headings[0].text",
-        "audits[password-inputs-can-be-pasted-into].details.headings[0].text"
-      ],
       "lighthouse-core/audits/large-javascript-libraries.js | title": [
         "audits[large-javascript-libraries].title"
       ],
@@ -7151,6 +7150,15 @@
       ],
       "lighthouse-core/audits/accessibility/color-contrast.js | description": [
         "audits[color-contrast].description"
+      ],
+      "lighthouse-core/lib/i18n/i18n.js | columnFailingElem": [
+        "audits[color-contrast].details.headings[0].text",
+        "audits[html-has-lang].details.headings[0].text",
+        "audits[image-alt].details.headings[0].text",
+        "audits.label.details.headings[0].text",
+        "audits[link-name].details.headings[0].text",
+        "audits[object-alt].details.headings[0].text",
+        "audits[password-inputs-can-be-pasted-into].details.headings[0].text"
       ],
       "lighthouse-core/audits/accessibility/definition-list.js | title": [
         "audits[definition-list].title"
@@ -7646,6 +7654,9 @@
           },
           "path": "audits[font-size].displayValue"
         }
+      ],
+      "lighthouse-core/audits/seo/font-size.js | legibleText": [
+        "audits[font-size].details.items[0].source.value"
       ],
       "lighthouse-core/audits/seo/link-text.js | title": [
         "audits[link-text].title"
