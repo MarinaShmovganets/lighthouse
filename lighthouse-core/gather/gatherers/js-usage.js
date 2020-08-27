@@ -11,16 +11,28 @@ const Gatherer = require('./gatherer.js');
  * @fileoverview Tracks unused JavaScript
  */
 class JsUsage extends Gatherer {
+  constructor() {
+    super();
+    /** @type {LH.Crdp.Debugger.ScriptParsedEvent[]} */
+    this._scriptParsedEvents = [];
+    this.onScriptParsed = this.onScriptParsed.bind(this);
+  }
+
+  /**
+   * @param {LH.Crdp.Debugger.ScriptParsedEvent} event
+   */
+  onScriptParsed(event) {
+    if (event.sourceMapURL) {
+      this._scriptParsedEvents.push(event);
+    }
+  }
+
   /**
    * @param {LH.Gatherer.PassContext} passContext
    */
   async beforePass(passContext) {
     await passContext.driver.sendCommand('Profiler.enable');
     await passContext.driver.sendCommand('Profiler.startPreciseCoverage', {detailed: false});
-
-    // passContext.driver.on('Debugger.scriptParsed', (e) => {
-    //   console.log({url: e.url, embedderName: e.embedderName});
-    // });
   }
 
   /**
@@ -48,15 +60,14 @@ class JsUsage extends Gatherer {
       if (scriptUsage.url === '') continue;
 
       // `ScriptCoverage.url` can be overridden by a magic sourceURL comment.
-      // Lookup the url via the scriptId, if possible.
-      let scriptUsageUrl = scriptUsage.url;
+      // Get the associated ScriptParsedEvent and use embedderName, which is the original url.
+      let url = scriptUsage.url;
+      const scriptParsedEvent =
+        this._scriptParsedEvents.find(e => e.scriptId === scriptUsage.scriptId);
+      if (scriptParsedEvent && scriptParsedEvent.embedderName) {
+        url = scriptParsedEvent.embedderName;
+      }
 
-      // ...
-      // TODO how to map script id to url ...
-
-      // `scriptUsage.url` can sometimes be relative to the final url, so normalize to an absolute
-      // url by using the URL ctor.
-      const url = new URL(scriptUsageUrl, finalUrl).href;
       const scripts = usageByUrl[url] || [];
       scripts.push(scriptUsage);
       usageByUrl[url] = scripts;
