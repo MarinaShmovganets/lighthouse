@@ -96,7 +96,9 @@ Within web performance testing, there are two typical styles of CPU throttling:
 
 Unlike network throttling where objective criteria like RTT and throughput allow targeting of a specific environment, CPU throttling is expressed relative to the performance of the host device. This poses challenges to [variability in results across devices](./variability.md), so it's important to calibrate your device before attempting to compare different reports.
 
-Lighthouse computes and saves a `benchmarkIndex` as a rough approximation of the host device's CPU performance with every report. You can find this value under the title "CPU/Memory Power" at the bottom of every Lighthouse report.
+Lighthouse computes and saves a `benchmarkIndex` as a rough approximation of the host device's CPU performance with every report. You can find this value under the title "CPU/Memory Power" at the bottom of the Lighthouse report.
+
+**NOTE:** In Lighthouse 6.3 BenchmarkIndex changed its definition to better align with changes in Chrome 86. Benchmark index values prior to 6.3 and Chrome 86 may differ.
 
 <img src="https://user-images.githubusercontent.com/2301202/91339533-3c409000-e79c-11ea-97a1-5da33bd3da18.png" alt="Screenshot of CPU/Memory Power in Lighthouse report" />
 
