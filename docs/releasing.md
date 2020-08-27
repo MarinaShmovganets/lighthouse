@@ -115,6 +115,9 @@ bash ./lighthouse-core/scripts/release/prepare-commit.sh x.x.x
 
 # Fix-up the CHANGELOG.
 
+# Rebaseline DevTools tests one more time (only version number should change).
+yarn update:test-devtools
+
 # Open PR with title `vx.x.x` and await merge...
 echo "It's been merged! 🎉"
 

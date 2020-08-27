@@ -73,7 +73,8 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ## Misc
 
-* benchmark: update BenchmarkIndex for m86 changes ([#11304](https://github.com/GoogleChrome/lighthouse/pull/11304), [#11247](https://github.com/GoogleChrome/lighthouse/pull/11247))
+* benchmark: update BenchmarkIndex for m86 changes ([#11304](https://github.com/GoogleChrome/lighthouse/pull/11304))
+* add benchmark script with octane and speedometer ([#11247](https://github.com/GoogleChrome/lighthouse/pull/11247))
 * add gcp fleet creation scripts ([#11257](https://github.com/GoogleChrome/lighthouse/pull/11257), [#11233](https://github.com/GoogleChrome/lighthouse/pull/11233))
 * rephrase comments to be more inclusive ([#11228](https://github.com/GoogleChrome/lighthouse/pull/11228))
 * fix types in duplicated-javascript ([#11278](https://github.com/GoogleChrome/lighthouse/pull/11278))
