@@ -22,7 +22,7 @@ class JsUsage extends Gatherer {
    * @param {LH.Crdp.Debugger.ScriptParsedEvent} event
    */
   onScriptParsed(event) {
-    if (event.sourceMapURL) {
+    if (event.embedderName) {
       this._scriptParsedEvents.push(event);
     }
   }
@@ -33,6 +33,7 @@ class JsUsage extends Gatherer {
   async beforePass(passContext) {
     await passContext.driver.sendCommand('Profiler.enable');
     await passContext.driver.sendCommand('Profiler.startPreciseCoverage', {detailed: false});
+    await passContext.driver.on('Debugger.scriptParsed', this.onScriptParsed);
   }
 
   /**
@@ -46,6 +47,8 @@ class JsUsage extends Gatherer {
     const scriptUsages = coverageResponse.result;
     await driver.sendCommand('Profiler.stopPreciseCoverage');
     await driver.sendCommand('Profiler.disable');
+
+    console.log(this._scriptParsedEvents);
 
     /** @type {Record<string, Array<LH.Crdp.Profiler.ScriptCoverage>>} */
     const usageByUrl = {};
