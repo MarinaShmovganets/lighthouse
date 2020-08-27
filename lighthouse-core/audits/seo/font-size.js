@@ -28,7 +28,7 @@ const UIStrings = {
   additionalIllegibleText: 'Add\'l illegible text',
   /** Label for the table row which displays the percentage of nodes that have proper font size. */
   legibleText: 'Legible text',
-  /** Label for a column in a data table; entries will be style rule selectors. */
+  /** Label for a column in a data table; entries will be css style rule selectors. */
   columnSelector: 'Selector',
   /** Label for a column in a data table; entries will be the percent of page text a specific CSS rule applies to. */
   columnPercentPageText: '% of Page Text',
