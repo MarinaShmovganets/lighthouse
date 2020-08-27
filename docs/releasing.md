@@ -39,7 +39,7 @@ Note: actively undergoing changes by @exterkamp and @egsweeny.
 1. Release mgr copies changelog to a new [Releases](https://github.com/GoogleChrome/lighthouse/releases). Tags and ships it.
 1. Release mgr tells the _LH public_ Hangout chat about the new version.
 1. V & Kayce write and publish the [/updates](https://developers.google.com/web/updates/) blog post
-1. Paul writes the tweet (linking the /updates post) and sends it on [@____lighthouse](https://twitter.com/____lighthouse).
+1. Addy writes the tweet (linking the /updates post) and sends it on [@____lighthouse](https://twitter.com/____lighthouse).
 
 ### Versioning
 
