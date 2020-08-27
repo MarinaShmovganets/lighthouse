@@ -48,8 +48,6 @@ class JsUsage extends Gatherer {
     await driver.sendCommand('Profiler.stopPreciseCoverage');
     await driver.sendCommand('Profiler.disable');
 
-    console.log(this._scriptParsedEvents);
-
     /** @type {Record<string, Array<LH.Crdp.Profiler.ScriptCoverage>>} */
     const usageByUrl = {};
     for (const scriptUsage of scriptUsages) {
