@@ -77,7 +77,7 @@ class UnusedJavascriptSummary {
     const wastedBytes = Math.round(lengths.content * wastedRatio);
 
     return {
-      url: url,
+      url,
       totalBytes: lengths.content,
       wastedBytes,
       wastedPercent: 100 * wastedRatio,

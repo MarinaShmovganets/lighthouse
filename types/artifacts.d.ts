@@ -122,7 +122,7 @@ declare global {
       HTTPRedirect: {value: boolean};
       /** The issues surfaced in the devtools Issues panel */
       InspectorIssues: Artifacts.InspectorIssues;
-      /** JS coverage information for code used during page load. Keyed by URL. */
+      /** JS coverage information for code used during page load. Keyed by network URL. */
       JsUsage: Record<string, Crdp.Profiler.ScriptCoverage[]>;
       /** Parsed version of the page's Web App Manifest, or null if none found. */
       Manifest: Artifacts.Manifest | null;

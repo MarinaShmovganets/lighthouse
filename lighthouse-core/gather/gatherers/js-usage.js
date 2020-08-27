@@ -33,6 +33,8 @@ class JsUsage extends Gatherer {
   async beforePass(passContext) {
     await passContext.driver.sendCommand('Profiler.enable');
     await passContext.driver.sendCommand('Profiler.startPreciseCoverage', {detailed: false});
+
+    await passContext.driver.sendCommand('Debugger.enable');
     await passContext.driver.on('Debugger.scriptParsed', this.onScriptParsed);
   }
 
@@ -48,13 +50,11 @@ class JsUsage extends Gatherer {
     await driver.sendCommand('Profiler.stopPreciseCoverage');
     await driver.sendCommand('Profiler.disable');
 
+    await passContext.driver.sendCommand('Debugger.disable');
+
     /** @type {Record<string, Array<LH.Crdp.Profiler.ScriptCoverage>>} */
     const usageByUrl = {};
     for (const scriptUsage of scriptUsages) {
-      // ScriptCoverages without a URL are from code we run over the protocol.
-      // We shouldn't analyze ourselves, so skip.
-      if (scriptUsage.url === '') continue;
-
       // `ScriptCoverage.url` can be overridden by a magic sourceURL comment.
       // Get the associated ScriptParsedEvent and use embedderName, which is the original url.
       let url = scriptUsage.url;
@@ -62,6 +62,15 @@ class JsUsage extends Gatherer {
         this._scriptParsedEvents.find(e => e.scriptId === scriptUsage.scriptId);
       if (scriptParsedEvent && scriptParsedEvent.embedderName) {
         url = scriptParsedEvent.embedderName;
+      }
+
+      // If `url` is blank, that means the script was anonymous (eval, new Function, onload, ...).
+      // Or, it's because it was code Lighthouse over the protocol via `Runtime.evaluate`.
+      // We currently don't consider coverage of anonymous scripts, and we defintelty don't want
+      // coverage of code Lighthouse ran to inspect the page, so we ignore this ScriptCoverage if
+      // url is blank.
+      if (scriptUsage.url === '' || (scriptParsedEvent && scriptParsedEvent.embedderName === '')) {
+        continue;
       }
 
       const scripts = usageByUrl[url] || [];

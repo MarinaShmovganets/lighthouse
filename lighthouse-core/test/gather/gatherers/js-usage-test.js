@@ -16,11 +16,8 @@ const {createMockSendCommandFn, createMockOnFn} = require('../mock-commands.js')
 
 describe('JsUsage gatherer', () => {
   /**
-   * `scriptParsedEvent` mocks the `sourceMapURL` and `url` seen from the protocol.
-   * `map` mocks the (JSON) of the source maps that `Runtime.evaluate` returns.
-   * `resolvedSourceMapUrl` is used to assert that the SourceMaps gatherer is using the expected
-   *                        url to fetch the source map.
-   * `fetchError` mocks an error that happens in the page. Only fetch error message make sense.
+   * `scriptParsedEvents` mocks the `Debugger.scriptParsed` events.
+   * `coverage` mocks the result of `Profiler.takePreciseCoverage`.
    * @param {{coverage: LH.Crdp.Profiler.ScriptCoverage[], scriptParsedEvents: LH.Crdp.Debugger.ScriptParsedEvent[]}} _
    * @return {Promise<LH.Artifacts['JsUsage']>}
    */
@@ -29,6 +26,8 @@ describe('JsUsage gatherer', () => {
     const sendCommandMock = createMockSendCommandFn()
       .mockResponse('Profiler.enable', {})
       .mockResponse('Profiler.disable', {})
+      .mockResponse('Debugger.enable', {})
+      .mockResponse('Debugger.disable', {})
       .mockResponse('Profiler.startPreciseCoverage', {})
       .mockResponse('Profiler.takePreciseCoverage', {result: coverage})
       .mockResponse('Profiler.stopPreciseCoverage', {});

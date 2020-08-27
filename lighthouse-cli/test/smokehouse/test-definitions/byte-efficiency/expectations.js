@@ -79,6 +79,21 @@ const expectations = [
           content: /Unused block #1/,
         },
       ],
+      JsUsage: {
+        'http://localhost:10200/byte-efficiency/tester.html': [
+          {url: 'http://localhost:10200/byte-efficiency/tester.html'},
+          {url: 'http://localhost:10200/byte-efficiency/tester.html'},
+          {url: 'http://localhost:10200/byte-efficiency/tester.html'},
+          {url: 'http://localhost:10200/byte-efficiency/tester.html'},
+          {url: '/some-custom-url.js'},
+        ],
+        'http://localhost:10200/byte-efficiency/script.js': [
+          {url: 'http://localhost:10200/byte-efficiency/script.js'},
+        ],
+        'http://localhost:10200/byte-efficiency/bundle.js': [
+          {url: 'http://localhost:10200/byte-efficiency/bundle.js'},
+        ],
+      },
     },
     lhr: {
       requestedUrl: 'http://localhost:10200/byte-efficiency/tester.html',
