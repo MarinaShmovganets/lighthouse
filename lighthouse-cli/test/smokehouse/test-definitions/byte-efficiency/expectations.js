@@ -116,7 +116,7 @@ const expectations = [
               },
               {
                 url: 'inline: \n  function unusedFunction() {\n    // Un...',
-                wastedBytes: '6581 +/- 100',
+                wastedBytes: '6700 +/- 100',
                 wastedPercent: '99.6 +/- 0.1',
               },
               {
