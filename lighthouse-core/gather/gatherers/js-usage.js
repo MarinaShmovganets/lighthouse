@@ -41,11 +41,6 @@ class JsUsage extends Gatherer {
    */
   async afterPass(passContext) {
     const driver = passContext.driver;
-    const finalUrl = passContext.baseArtifacts.URL.finalUrl;
-
-    const devtoolsLog = passContext.baseArtifacts.devtoolsLogs[passContext.passConfig.passName];
-
-    devtoolsLog[0]
 
     const coverageResponse = await driver.sendCommand('Profiler.takePreciseCoverage');
     const scriptUsages = coverageResponse.result;
