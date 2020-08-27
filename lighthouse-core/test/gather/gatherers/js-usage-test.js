@@ -46,6 +46,7 @@ describe('JsUsage gatherer', () => {
 
     const gatherer = new JsUsage();
     await gatherer.beforePass({driver});
+    // Needed for protocol events to emit.
     jest.advanceTimersByTime(1);
     return gatherer.afterPass({driver});
   }

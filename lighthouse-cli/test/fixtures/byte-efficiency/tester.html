@@ -210,8 +210,6 @@ generateInlineStyleWithSize(12000, '.kinda-unused { background: none; }\n');
 generateInlineStyleWithSize(30000, '.definitely-unused { background: none; }\n');
 </script>
 
-<!-- Ensure the page takes at least 8 seconds and we don't exit before the lazily loaded image -->
-<script src="delay-complete.js?delay=8000" async></script>
 <script>
   // Used block #1
   // FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES -- FILLER DATA JUST TO OCCUPY BYTES
@@ -233,6 +231,9 @@ generateInlineStyleWithSize(30000, '.definitely-unused { background: none; }\n')
   // This should effectively be ignored by JsUsage artifact.
   //# sourceURL=/some-custom-url.js
 </script>
+
+<!-- Ensure the page takes at least 8 seconds and we don't exit before the lazily loaded image -->
+<script src="delay-complete.js?delay=8000" async></script>
 
 </body>
 </html>

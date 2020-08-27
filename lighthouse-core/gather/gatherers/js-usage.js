@@ -57,6 +57,7 @@ class JsUsage extends Gatherer {
     for (const scriptUsage of scriptUsages) {
       // `ScriptCoverage.url` can be overridden by a magic sourceURL comment.
       // Get the associated ScriptParsedEvent and use embedderName, which is the original url.
+      // See https://chromium-review.googlesource.com/c/v8/v8/+/2317310
       let url = scriptUsage.url;
       const scriptParsedEvent =
         this._scriptParsedEvents.find(e => e.scriptId === scriptUsage.scriptId);

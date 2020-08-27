@@ -17,7 +17,7 @@ const makeComputedArtifact = require('./computed-artifact.js');
 /**
  * @typedef ComputeInput
  * @property {string} url
- * @property {LH.Crdp.Profiler.ScriptCoverage[]} scriptCoverages
+ * @property {Array<Omit<LH.Crdp.Profiler.ScriptCoverage, 'url'>>} scriptCoverages
  * @property {LH.Artifacts.Bundle=} bundle
  */
 
@@ -33,7 +33,7 @@ const makeComputedArtifact = require('./computed-artifact.js');
 
 class UnusedJavascriptSummary {
   /**
-   * @param {LH.Crdp.Profiler.ScriptCoverage} scriptCoverage
+   * @param {Omit<LH.Crdp.Profiler.ScriptCoverage, 'url'>} scriptCoverage
    * @return {WasteData}
    */
   static computeWaste(scriptCoverage) {

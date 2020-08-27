@@ -57,13 +57,6 @@ const expectations = [
         },
         {
           type: null,
-          src: 'http://localhost:10200/byte-efficiency/delay-complete.js?delay=8000',
-          async: true,
-          defer: false,
-          source: 'body',
-        },
-        {
-          type: null,
           src: null,
           async: false,
           defer: false,
@@ -77,6 +70,13 @@ const expectations = [
           defer: false,
           source: 'body',
           content: /Unused block #1/,
+        },
+        {
+          type: null,
+          src: 'http://localhost:10200/byte-efficiency/delay-complete.js?delay=8000',
+          async: true,
+          defer: false,
+          source: 'body',
         },
       ],
       JsUsage: {
