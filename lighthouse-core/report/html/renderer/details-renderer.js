@@ -16,7 +16,7 @@
  */
 'use strict';
 
-/* globals self CriticalRequestChainRenderer SnippetRenderer Util URL */
+/* globals self CriticalRequestChainRenderer SnippetRenderer ElementScreenshotRenderer Util URL */
 
 /** @typedef {import('./dom.js')} DOM */
 
@@ -25,9 +25,12 @@ const URL_PREFIXES = ['http://', 'https://', 'data:'];
 class DetailsRenderer {
   /**
    * @param {DOM} dom
+   * @param {{fullPageScreenshot?: LH.Audit.Details.FullPageScreenshot}} [options]
    */
-  constructor(dom) {
+  constructor(dom, options = {}) {
     this._dom = dom;
+    this._fullPageScreenshot = options.fullPageScreenshot;
+
     /** @type {ParentNode} */
     this._templateContext; // eslint-disable-line no-unused-expressions
   }
@@ -59,10 +62,11 @@ class DetailsRenderer {
       // Internal-only details, not for rendering.
       case 'screenshot':
       case 'debugdata':
+      case 'full-page-screenshot':
         return null;
 
       default: {
-        // @ts-ignore tsc thinks this is unreachable, but be forward compatible
+        // @ts-expect-error tsc thinks this is unreachable, but be forward compatible
         // with new unexpected detail types.
         return this._renderUnknown(details.type, details);
       }
@@ -108,7 +112,7 @@ class DetailsRenderer {
     try {
       const parsed = Util.parseURL(url);
       displayedPath = parsed.file === '/' ? parsed.origin : parsed.file;
-      displayedHost = parsed.file === '/' ? '' : `(${parsed.hostname})`;
+      displayedHost = parsed.file === '/' || parsed.hostname === '' ? '' : `(${parsed.hostname})`;
       title = url;
     } catch (e) {
       displayedPath = url;
@@ -144,7 +148,9 @@ class DetailsRenderer {
 
     if (!url || !allowedProtocols.includes(url.protocol)) {
       // Fall back to just the link text if invalid or protocol not allowed.
-      return this._renderText(details.text);
+      const element = this._renderText(details.text);
+      element.classList.add('lh-link');
+      return element;
     }
 
     const a = this._dom.createElement('a');
@@ -152,7 +158,7 @@ class DetailsRenderer {
     a.target = '_blank';
     a.textContent = details.text;
     a.href = url.href;
-
+    a.classList.add('lh-link');
     return a;
   }
 
@@ -232,6 +238,9 @@ class DetailsRenderer {
         }
         case 'node': {
           return this.renderNode(value);
+        }
+        case 'numeric': {
+          return this._renderNumeric(value);
         }
         case 'source-location': {
           return this.renderSourceLocation(value);
@@ -505,6 +514,20 @@ class DetailsRenderer {
     if (item.selector) element.setAttribute('data-selector', item.selector);
     if (item.snippet) element.setAttribute('data-snippet', item.snippet);
 
+    if (!item.boundingRect || !this._fullPageScreenshot) {
+      return element;
+    }
+
+    const maxThumbnailSize = {width: 147, height: 100};
+    const elementScreenshot = ElementScreenshotRenderer.render(
+      this._dom,
+      this._templateContext,
+      this._fullPageScreenshot,
+      item.boundingRect,
+      maxThumbnailSize
+    );
+    element.prepend(elementScreenshot);
+
     return element;
   }
 
@@ -525,7 +548,7 @@ class DetailsRenderer {
     let element;
     if (item.urlProvider === 'network') {
       element = this.renderTextURL(item.url);
-      this._dom.find('a', element).textContent += `:${line}:${column}`;
+      this._dom.find('.lh-link', element).textContent += `:${line}:${column}`;
     } else {
       element = this._renderText(`${item.url}:${line}:${column} (from sourceURL)`);
     }
