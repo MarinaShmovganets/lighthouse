@@ -1798,12 +1798,12 @@ describe('GatherRunner', function() {
         .mockResponse('Page.getInstallabilityErrors', {installabilityErrors: []});
 
       const result = await GatherRunner.getWebAppManifest(passContext);
-      const parsedManifest = result ? result.parsedManifest : null;
-      expect(parsedManifest).toHaveProperty('raw', JSON.stringify(manifest));
-      expect(parsedManifest && parsedManifest.value).toMatchObject({
+      expect(result).toHaveProperty('raw', JSON.stringify(manifest));
+      expect(result && result.value).toMatchObject({
         name: {value: 'App', raw: 'App'},
         start_url: {value: passContext.url, raw: undefined},
       });
+      expect(result && result.url).toMatch(MANIFEST_URL);
     });
   });
 });

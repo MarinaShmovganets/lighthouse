@@ -89,20 +89,20 @@ class InstallableManifest extends MultiCheckAudit {
   /**
    * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
-   * @return {Promise<{failures: Array<string>, manifestValues: LH.Artifacts.ManifestValues, manifestUrl: string | undefined}>}
+   * @return {Promise<{failures: Array<string>, manifestValues: LH.Artifacts.ManifestValues, url: string | null}>}
    */
   static async audit_(artifacts, context) {
     const manifestValues = await ManifestValues.request(artifacts, context);
     const manifestFailures = InstallableManifest.assessManifest(manifestValues);
 
-    const manifestUrl = artifacts.WebAppManifest ? artifacts.WebAppManifest.manifestUrl : undefined;
+    const manifestUrl = artifacts.WebAppManifest ? artifacts.WebAppManifest.url : null;
 
     return {
       failures: [
         ...manifestFailures,
       ],
       manifestValues,
-      manifestUrl,
+      url: manifestUrl,
     };
   }
 }
