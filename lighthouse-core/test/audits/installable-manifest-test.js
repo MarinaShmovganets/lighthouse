@@ -50,7 +50,7 @@ describe('PWA: webapp install banner audit', () => {
 
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(artifacts.WebAppManifest.url, EXAMPLE_MANIFEST_URL);
-        assert.strictEqual(result.details.items[0].url, EXAMPLE_MANIFEST_URL);
+        assert.strictEqual(result.details.items[0].manifestUrl, EXAMPLE_MANIFEST_URL);
       });
     });
 
