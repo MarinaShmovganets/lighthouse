@@ -77,7 +77,7 @@ class ServiceWorker extends Audit {
    */
   static getControllingServiceWorker(matchingSWVersions, registrations, pageUrl) {
     // Find the normalized scope URLs of possibly-controlling SWs.
-    /** @type {Array<{ scopeUrl: string; scriptUrl: string;}>} */
+    /** @type {Array<{scopeUrl: string; scriptUrl: string}>} */
     const scriptByScopeUrlList = [];
 
     // Populate serviceWorkerUrls map with the scriptURLs and scopeUrls of matchingSWVersions and registrations
@@ -95,8 +95,8 @@ class ServiceWorker extends Audit {
     // Find most-specific applicable scope, the one controlling the page.
     // See https://w3c.github.io/ServiceWorker/v1/#scope-match-algorithm
     const pageControllingUrls = scriptByScopeUrlList
-      .filter(urlPair => pageUrl.href.startsWith(urlPair.scopeUrl.toString()))
-      .sort((scopeA, scopeB) => scopeA.scopeUrl.length - scopeB.scopeUrl.length)
+      .filter(ss => pageUrl.href.startsWith(ss.scopeUrl))
+      .sort((ssA, ssB) => ssA.scopeUrl.length - ssB.scopeUrl.length)
       .pop();
 
     return pageControllingUrls;
