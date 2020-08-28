@@ -233,6 +233,7 @@ declare global {
       [futureProps: string]: any;
     }
 
+    /** The type of the Profile & ProfileChunk event in Chromium traces. Note that this is subtly different from Crdp.Profiler.Profile. */
     export interface TraceCpuProfile {
       nodes?: Array<{id: number, callFrame: {functionName: string, url?: string}, parent?: number}>
       samples?: Array<number>

@@ -21,6 +21,8 @@
  *    samples: [node with id 2, node with id 1, ...]
  *    timeDeltas: [4125μs since last sample, 121μs since last sample, ...]
  *
+ * Note that this is subtly different from the protocol-based Crdp.Profiler.Profile type.
+ *
  * Helpful prior art:
  * @see https://cs.chromium.org/chromium/src/third_party/devtools-frontend/src/front_end/sdk/CPUProfileDataModel.js?sq=package:chromium&g=0&l=42
  * @see https://github.com/v8/v8/blob/99ca333b0efba3236954b823101315aefeac51ab/tools/profile.js
