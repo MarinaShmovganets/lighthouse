@@ -77,8 +77,8 @@ describe('Offline: service worker audit', () => {
 
     const output = ServiceWorker.audit(createArtifacts(swOpts, finalUrl, manifest));
     assert.deepStrictEqual(output.score, 1);
-    assert.deepStrictEqual(output.details.items[0].scopeURL, 'https://example.com/');
-    assert.deepStrictEqual(output.details.items[0].scriptURL, 'https://example.com/sw.js');
+    assert.deepStrictEqual(output.details.items[0].scopeUrl, 'https://example.com/');
+    assert.deepStrictEqual(output.details.items[0].scriptUrl, 'https://example.com/sw.js');
   });
 
   it('fails when controlling service worker is not activated', () => {
@@ -198,8 +198,8 @@ describe('Offline: service worker audit', () => {
 
     const output = ServiceWorker.audit(createArtifacts(swOpts, finalUrl, manifest));
     assert.deepStrictEqual(output.score, 1);
-    assert.deepStrictEqual(output.details.items[0].scopeURL, 'https://example.com/project/');
-    assert.deepStrictEqual(output.details.items[0].scriptURL, 'https://example.com/project/sw.js');
+    assert.deepStrictEqual(output.details.items[0].scopeUrl, 'https://example.com/project/');
+    assert.deepStrictEqual(output.details.items[0].scriptUrl, 'https://example.com/project/sw.js');
   });
 
   it('passes when multiple SWs control the origin but only one is in scope', () => {
@@ -221,8 +221,8 @@ describe('Offline: service worker audit', () => {
 
     const output = ServiceWorker.audit(createArtifacts(swOpts, finalUrl, manifest));
     assert.deepStrictEqual(output.score, 1);
-    assert.deepStrictEqual(output.details.items[0].scopeURL, 'https://example.com/');
-    assert.deepStrictEqual(output.details.items[0].scriptURL, 'https://example.com/project/subproject/sw.js');
+    assert.deepStrictEqual(output.details.items[0].scopeUrl, 'https://example.com/');
+    assert.deepStrictEqual(output.details.items[0].scriptUrl, 'https://example.com/project/subproject/sw.js');
   });
 
   it('fails when multiple SWs control the origin but are all out of scope', () => {
