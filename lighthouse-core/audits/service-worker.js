@@ -82,7 +82,9 @@ class ServiceWorker extends Audit {
 
     // Populate serviceWorkerUrls map with the scriptURLs and scopeUrls of matchingSWVersions and registrations
     matchingSWVersions.forEach(function(version) {
-      const matchedRegistration = registrations.find(r => r.registrationId === version.registrationId);
+      const matchedRegistration = registrations
+        .find(r => r.registrationId === version.registrationId);
+
       if (matchedRegistration) {
         const scopeUrl = new URL(matchedRegistration.scopeURL).href;
         const scriptUrl = new URL(version.scriptURL).href;
