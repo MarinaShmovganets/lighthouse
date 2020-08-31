@@ -158,16 +158,20 @@ const formats = {
  * - exact match
  * - progressively shorter prefixes (`de-CH-1996` -> `de-CH` -> `de`)
  *
- * If `locale` isn't provided or one could not be found, undefined is returned.
- * @param {string=} locale
- * @return {LH.Locale|undefined}
+ * If `locale` isn't provided or one could not be found, en is returned.
+ * @param {string[]} locales
+ * @return {LH.Locale}
  */
-function lookupLocale(locale) {
-  // TODO: could do more work to sniff out default locale
-  const canonicalLocale = Intl.getCanonicalLocales(locale)[0];
+function lookupLocale(locales) {
+  for (const locale of locales) {
+    // TODO: could do more work to sniff out default locale
+    const canonicalLocale = Intl.getCanonicalLocales(locale)[0];
+  
+    const closestLocale = lookupClosestLocale(canonicalLocale, LOCALES);
+    if (closestLocale) return closestLocale;
+  }
 
-  const closestLocale = lookupClosestLocale(canonicalLocale, LOCALES);
-  return closestLocale;
+  return 'en';
 }
 
 /**

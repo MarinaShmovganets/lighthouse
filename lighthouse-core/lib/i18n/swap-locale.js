@@ -48,7 +48,7 @@ function swapLocale(lhr, requestedLocale) {
   // Copy LHR to avoid mutating provided LHR.
   lhr = JSON.parse(JSON.stringify(lhr));
 
-  const locale = i18n.lookupLocale(requestedLocale) || 'en';
+  const locale = i18n.lookupLocale([requestedLocale]);
   const {icuMessagePaths} = lhr.i18n;
   /** @type {string[]} */
   const missingIcuMessageIds = [];
