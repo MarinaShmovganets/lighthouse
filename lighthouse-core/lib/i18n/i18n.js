@@ -157,18 +157,17 @@ const formats = {
  * Look up the best available locale for the requested language through these fall backs:
  * - exact match
  * - progressively shorter prefixes (`de-CH-1996` -> `de-CH` -> `de`)
- * - the default locale ('en') if no match is found
  *
- * If `locale` isn't provided, the default is used.
+ * If `locale` isn't provided or one could not be found, undefined is returned.
  * @param {string=} locale
- * @return {LH.Locale}
+ * @return {LH.Locale|undefined}
  */
 function lookupLocale(locale) {
   // TODO: could do more work to sniff out default locale
   const canonicalLocale = Intl.getCanonicalLocales(locale)[0];
 
   const closestLocale = lookupClosestLocale(canonicalLocale, LOCALES);
-  return closestLocale || 'en';
+  return closestLocale;
 }
 
 /**
