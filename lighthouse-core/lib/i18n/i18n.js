@@ -165,18 +165,11 @@ const formats = {
  * @return {LH.Locale}
  */
 function lookupLocale(locales) {
-  if (!locales) return DEFAULT_LOCALE;
-  if (!Array.isArray(locales)) locales = [locales];
+  // TODO: could do more work to sniff out default locale
+  const canonicalLocales = Intl.getCanonicalLocales(locales);
 
-  for (const locale of locales) {
-    // TODO: could do more work to sniff out default locale
-    const canonicalLocale = Intl.getCanonicalLocales(locale)[0];
-
-    const closestLocale = lookupClosestLocale(canonicalLocale, LOCALES);
-    if (closestLocale) return closestLocale;
-  }
-
-  return DEFAULT_LOCALE;
+  const closestLocale = lookupClosestLocale(canonicalLocales, LOCALES);
+  return closestLocale || DEFAULT_LOCALE;
 }
 
 /**
