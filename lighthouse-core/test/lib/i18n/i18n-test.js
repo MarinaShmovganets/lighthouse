@@ -135,7 +135,7 @@ describe('i18n', () => {
     });
 
     it('falls back to root tag prefix if specific locale not available', () => {
-      expect(i18n.lookupLocale('en-JKJK')).toEqual('en');
+      expect(i18n.lookupLocale('es-JKJK')).toEqual('es');
     });
 
     it('falls back to en if no match is available', () => {
