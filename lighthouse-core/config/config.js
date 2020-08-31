@@ -473,9 +473,7 @@ class Config {
     // If a locale is requested in flags or settings, use it. A typical CLI run will not have one,
     // however `lookupLocale` will always determine which of our supported locales to use (falling
     // back if necessary).
-    const providedLocale = (flags && flags.locale) || settingsJson.locale;
-    const possibleLocales = providedLocale ? [providedLocale] : [];
-    const locale = i18n.lookupLocale(possibleLocales);
+    const locale = i18n.lookupLocale((flags && flags.locale) || settingsJson.locale);
 
     // Fill in missing settings with defaults
     const {defaultSettings} = constants;

@@ -807,7 +807,7 @@ describe('Config', () => {
       // Don't assert specific locale so it isn't tied to where tests are run, but
       // check that it's valid and available.
       assert.ok(config.settings.locale);
-      assert.strictEqual(config.settings.locale, i18n.lookupLocale([config.settings.locale]));
+      assert.strictEqual(config.settings.locale, i18n.lookupLocale(config.settings.locale));
     });
 
     it('uses config setting for locale if set', () => {
