@@ -170,7 +170,7 @@ describe('Accessibility: axe-audit', () => {
     });
   });
 
-  it("prefers our getOuterHTMLSnippet() string over axe's html string", () => {
+  it('prefers our getOuterHTMLSnippet() string over axe\'s html string', () => {
     class FakeA11yAudit extends AxeAudit {
       static get meta() {
         return {
