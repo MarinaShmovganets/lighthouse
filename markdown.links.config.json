@@ -1,0 +1,10 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^http://www.tmeter.ru"
+    },
+    {
+      "pattern": "https://sites.google.com/a/chromium.org/chromedriver/capabilities#TOC-perfLoggingPrefs-object"
+    }
+  ]
+}
