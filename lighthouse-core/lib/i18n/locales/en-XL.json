@@ -1106,6 +1106,15 @@
   "lighthouse-core/audits/seo/font-size.js | additionalIllegibleText": {
     "message": "Âd́d̂'ĺ îĺl̂éĝíb̂ĺê t́êx́t̂"
   },
+  "lighthouse-core/audits/seo/font-size.js | columnFontSize": {
+    "message": "F̂ón̂t́ Ŝíẑé"
+  },
+  "lighthouse-core/audits/seo/font-size.js | columnPercentPageText": {
+    "message": "% ôf́ P̂áĝé T̂éx̂t́"
+  },
+  "lighthouse-core/audits/seo/font-size.js | columnSelector": {
+    "message": "Ŝél̂éĉt́ôŕ"
+  },
   "lighthouse-core/audits/seo/font-size.js | description": {
     "message": "F̂ón̂t́ ŝíẑéŝ ĺêśŝ t́ĥán̂ 12ṕx̂ ár̂é t̂óô śm̂ál̂ĺ t̂ó b̂é l̂éĝíb̂ĺê án̂d́ r̂éq̂úîŕê ḿôb́îĺê v́îśît́ôŕŝ t́ô “ṕîńĉh́ t̂ó ẑóôḿ” îń ôŕd̂ér̂ t́ô ŕêád̂. Śt̂ŕîv́ê t́ô h́âv́ê >60% óf̂ ṕâǵê t́êx́t̂ ≥12ṕx̂. [Ĺêár̂ń m̂ór̂é](https://web.dev/font-size/)."
   },
@@ -1320,7 +1329,7 @@
     "message": "T̂ím̂ín̂ǵ b̂úd̂ǵêt́"
   },
   "lighthouse-core/audits/unsized-images.js | description": {
-    "message": "Âĺŵáŷś îńĉĺûd́ê éx̂ṕl̂íĉít̂ ẃîd́t̂h́ âńd̂ h́êíĝh́t̂ ón̂ ím̂áĝé êĺêḿêńt̂ś t̂ó r̂éd̂úĉé l̂áŷóût́ ŝh́îf́t̂ś âńd̂ ím̂ṕr̂óv̂é ĈĹŜ. [Ĺêár̂ń m̂ór̂é](https://web.dev/optimize-cls/#images-without-dimensions)"
+    "message": "Ŝét̂ án̂ éx̂ṕl̂íĉít̂ ẃîd́t̂h́ âńd̂ h́êíĝh́t̂ ón̂ ím̂áĝé êĺêḿêńt̂ś t̂ó r̂éd̂úĉé l̂áŷóût́ ŝh́îf́t̂ś âńd̂ ím̂ṕr̂óv̂é ĈĹŜ. [Ĺêár̂ń m̂ór̂é](https://web.dev/optimize-cls/#images-without-dimensions)"
   },
   "lighthouse-core/audits/unsized-images.js | failureTitle": {
     "message": "Îḿâǵê él̂ém̂én̂t́ŝ d́ô ńôt́ ĥáv̂é êx́p̂ĺîćît́ `width` âńd̂ `height`"
@@ -1351,6 +1360,9 @@
   },
   "lighthouse-core/audits/uses-rel-preconnect.js | tooManyPreconnectLinksWarning": {
     "message": "M̂ór̂é t̂h́âń 2 p̂ŕêćôńn̂éĉt́ l̂ín̂ḱŝ ẃêŕê f́ôún̂d́. P̂ŕêćôńn̂éĉt́ l̂ín̂ḱŝ śĥóûĺd̂ b́ê úŝéd̂ śp̂ár̂ín̂ǵl̂ý âńd̂ ón̂ĺŷ t́ô t́ĥé m̂óŝt́ îḿp̂ór̂t́âńt̂ ór̂íĝín̂ś."
+  },
+  "lighthouse-core/audits/uses-rel-preconnect.js | unusedWarning": {
+    "message": "Â ṕr̂éĉón̂ńêćt̂ <ĺîńk̂> ẃâś f̂óûńd̂ f́ôŕ \"{securityOrigin}\" b̂út̂ ẃâś n̂ót̂ úŝéd̂ b́ŷ t́ĥé b̂ŕôẃŝér̂. Ón̂ĺŷ ṕr̂éĉón̂ńêćt̂ t́ô ím̂ṕôŕt̂án̂t́ ôŕîǵîńŝ t́ĥát̂ t́ĥé p̂áĝé ŵíl̂ĺ ĉér̂t́âín̂ĺŷ ŕêq́ûéŝt́."
   },
   "lighthouse-core/audits/uses-rel-preload.js | crossoriginWarning": {
     "message": "Â ṕr̂él̂óâd́ <l̂ín̂ḱ> ŵáŝ f́ôún̂d́ f̂ór̂ \"{preloadURL}\" b́ût́ ŵáŝ ńôt́ ûśêd́ b̂ý t̂h́ê b́r̂óŵśêŕ. Ĉh́êćk̂ t́ĥát̂ ýôú âŕê úŝín̂ǵ t̂h́ê `crossorigin` át̂t́r̂íb̂út̂é p̂ŕôṕêŕl̂ý."
