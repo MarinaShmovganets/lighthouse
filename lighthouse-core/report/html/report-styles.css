@@ -1369,7 +1369,7 @@
 }
 
 .lh-table-column--code {
-  width: 80%;
+  min-width: 100px;
 }
 
 .lh-table-column--bytes,
