@@ -5,11 +5,12 @@
  */
 'use strict';
 
-const assert = require('assert');
+const assert = require('assert').strict;
 const fs = require('fs');
 
 const jsdom = require('jsdom');
 
+const testUtils = require('../../../test-utils.js');
 const prepareLabData = require('../../../../report/html/renderer/psi.js');
 const Util = require('../../../../report/html/renderer/util.js');
 const I18n = require('../../../../report/html/renderer/i18n.js');
@@ -19,11 +20,8 @@ const DetailsRenderer = require('../../../../report/html/renderer/details-render
 const CriticalRequestChainRenderer =
     require('../../../../report/html/renderer/crc-details-renderer.js');
 
+const {itIfProtoExists, sampleResultsRoundtripStr} = testUtils.getProtoRoundTrip();
 const sampleResultsStr = fs.readFileSync(__dirname + '/../../../results/sample_v2.json', 'utf-8');
-const sampleResultsRoundtripStr = fs.readFileSync(
-  __dirname + '/../../../../../proto/sample_v2_round_trip.json',
-  'utf-8'
-);
 
 const TEMPLATE_FILE = fs.readFileSync(
   __dirname + '/../../../../report/html/templates.html',
@@ -36,7 +34,7 @@ describe('DOM', () => {
   let document;
   beforeAll(() => {
     global.Util = Util;
-    global.Util.i18n = new I18n('en', {...Util.UIStrings});
+    global.I18n = I18n;
 
     global.DOM = DOM;
     global.CategoryRenderer = CategoryRenderer;
@@ -53,7 +51,7 @@ describe('DOM', () => {
   });
 
   afterAll(() => {
-    global.Util.i18n = undefined;
+    global.I18n = undefined;
     global.Util = undefined;
     global.DOM = undefined;
     global.CategoryRenderer = undefined;
@@ -64,11 +62,11 @@ describe('DOM', () => {
 
   describe('psi prepareLabData helpers', () => {
     describe('prepareLabData', () => {
-      it('succeeds with LHResult object (roundtrip) input', () => {
+      itIfProtoExists('succeeds with LHResult object (roundtrip) input', () => {
         const roundTripLHResult = /** @type {LH.Result} */ JSON.parse(sampleResultsRoundtripStr);
         const result = prepareLabData(roundTripLHResult, document);
 
-        // sanity check that the report exists and has some content
+        // Check that the report exists and has some content.
         assert.ok(result.perfCategoryEl instanceof document.defaultView.Element);
         assert.ok(result.perfCategoryEl.outerHTML.length > 50000, 'perfCategory HTML is populated');
         assert.ok(!result.perfCategoryEl.outerHTML.includes('lh-permalink'),

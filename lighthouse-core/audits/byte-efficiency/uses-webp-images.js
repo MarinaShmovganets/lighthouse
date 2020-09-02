@@ -18,7 +18,7 @@ const UIStrings = {
   /** Description of a Lighthouse audit that tells the user *why* they should use newer and more efficient image formats. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Image formats like JPEG 2000, JPEG XR, and WebP often provide better ' +
     'compression than PNG or JPEG, which means faster downloads and less data consumption. ' +
-    '[Learn more](https://web.dev/uses-webp-images).',
+    '[Learn more](https://web.dev/uses-webp-images/).',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -118,7 +118,7 @@ class UsesWebPImages extends ByteEfficiencyAudit {
     const headings = [
       {key: 'url', valueType: 'thumbnail', label: ''},
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
-      {key: 'totalBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnSize)},
+      {key: 'totalBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnResourceSize)},
       {key: 'wastedBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnWastedBytes)},
     ];
 

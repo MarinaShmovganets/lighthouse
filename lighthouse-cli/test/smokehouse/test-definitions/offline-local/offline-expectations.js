@@ -20,9 +20,6 @@ module.exports = [
         'is-on-https': {
           score: 1,
         },
-        'uses-http2': {
-          score: 0,
-        },
         'external-anchors-use-rel-noopener': {
           score: 1,
         },
@@ -33,12 +30,6 @@ module.exports = [
           score: 1,
         },
         'render-blocking-resources': {
-          score: 1,
-        },
-        'no-document-write': {
-          score: 1,
-        },
-        'uses-passive-event-listeners': {
           score: 1,
         },
         'password-inputs-can-be-pasted-into': {
@@ -133,6 +124,10 @@ module.exports = [
         },
         'service-worker': {
           score: 1,
+          details: {
+            scriptUrl: 'http://localhost:10503/offline-ready-sw.js',
+            scopeUrl: 'http://localhost:10503/',
+          },
         },
         'works-offline': {
           score: 1,
@@ -191,6 +186,10 @@ module.exports = [
       audits: {
         'service-worker': {
           score: 1,
+          details: {
+            scriptUrl: 'http://localhost:10503/offline-ready-sw.js?delay=5000&slow',
+            scopeUrl: 'http://localhost:10503/',
+          },
         },
         'works-offline': {
           score: 1,

@@ -13,7 +13,7 @@ const acceptableTrace = require('../../fixtures/traces/progressive-app-m60.json'
 const acceptableDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json'); // eslint-disable-line max-len
 const redirectTrace = require('../../fixtures/traces/site-with-redirect.json');
 
-const assert = require('assert');
+const assert = require('assert').strict;
 
 /* eslint-env jest */
 describe('FirstInteractive computed artifact:', () => {
@@ -95,7 +95,7 @@ describe('FirstInteractive computed artifact:', () => {
           traceEnd: 4500,
         },
         timestamps: {
-          navigationStart: 0,
+          timeOrigin: 0,
         },
       })).rejects.toThrow(/FMP_TOO_LATE/);
     });
@@ -110,7 +110,7 @@ describe('FirstInteractive computed artifact:', () => {
           traceEnd: 12000,
         },
         timestamps: {
-          navigationStart: 600 * 1000,
+          timeOrigin: 600 * 1000,
         },
       });
 
@@ -128,7 +128,7 @@ describe('FirstInteractive computed artifact:', () => {
           traceEnd: 12000,
         },
         timestamps: {
-          navigationStart: 0,
+          timeOrigin: 0,
         },
       });
 
@@ -145,7 +145,7 @@ describe('FirstInteractive computed artifact:', () => {
           traceEnd: 12000,
         },
         timestamps: {
-          navigationStart: 0,
+          timeOrigin: 0,
         },
       });
 
@@ -164,7 +164,7 @@ describe('FirstInteractive computed artifact:', () => {
           traceEnd: 12000,
         },
         timestamps: {
-          navigationStart: 0,
+          timeOrigin: 0,
         },
       });
 
@@ -185,7 +185,7 @@ describe('FirstInteractive computed artifact:', () => {
           traceEnd: 24000,
         },
         timestamps: {
-          navigationStart: 0,
+          timeOrigin: 0,
         },
       });
 

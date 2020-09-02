@@ -7,7 +7,7 @@
 
 const PasswordInputsCanBePastedIntoAudit =
   require('../../../audits/dobetterweb/password-inputs-can-be-pasted-into.js');
-const assert = require('assert');
+const assert = require('assert').strict;
 
 /* eslint-env jest */
 
@@ -17,7 +17,6 @@ describe('Password inputs can be pasted into', () => {
       PasswordInputsWithPreventedPaste: [],
     });
     assert.equal(auditResult.score, 1);
-    assert.equal(auditResult.extendedInfo.value.length, 0);
     assert.equal(auditResult.details.items.length, 0);
   });
 
@@ -26,7 +25,6 @@ describe('Password inputs can be pasted into', () => {
       PasswordInputsWithPreventedPaste: [{snippet: ''}, {snippet: ''}],
     });
     assert.equal(auditResult.score, 0);
-    assert.equal(auditResult.extendedInfo.value.length, 2);
     assert.equal(auditResult.details.items.length, 2);
   });
 });

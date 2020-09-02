@@ -34,7 +34,7 @@ function makeFakeDriver({protocolGetVersionResponse}) {
     },
     /** @param {string} url */
     gotoURL(url) {
-      return Promise.resolve(url);
+      return Promise.resolve({finalUrl: url, timedOut: false});
     },
     beginEmulation() {
       return Promise.resolve();
@@ -97,6 +97,9 @@ function makeFakeDriver({protocolGetVersionResponse}) {
       return Promise.resolve();
     },
     setExtraHTTPHeaders() {
+      return Promise.resolve();
+    },
+    registerRequestIdleCallbackWrap() {
       return Promise.resolve();
     },
   };

@@ -20,7 +20,7 @@ const UIStrings = {
   /** Description of a Lighthouse audit that tells the user that they should reduce the amount of time spent executing javascript and one method of doing so. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Consider reducing the time spent parsing, compiling, and executing JS. ' +
     'You may find delivering smaller JS payloads helps with this. [Learn ' +
-    'more](https://web.dev/bootup-time).',
+    'more](https://web.dev/bootup-time/).',
   /** Label for the total time column in a data table; entries will be the number of milliseconds spent executing per resource loaded by the page. */
   columnTotal: 'Total CPU Time',
   /** Label for a time column in a data table; entries will be the number of milliseconds spent evaluating script for every script loaded by the page. */
@@ -66,10 +66,10 @@ class BootupTime extends Audit {
    */
   static get defaultOptions() {
     return {
-      // see https://www.desmos.com/calculator/rkphawothk
-      // <500ms ~= 100, >2s is yellow, >3.5s is red
-      scorePODR: 600,
-      scoreMedian: 3500,
+      // see https://www.desmos.com/calculator/ynl8fzh1wd
+      // <500ms ~= 100, >1.3s is yellow, >3.5s is red
+      p10: 1282,
+      median: 3500,
       thresholdInMs: 50,
     };
   }
@@ -181,8 +181,9 @@ class BootupTime extends Audit {
 
 
     // TODO: consider moving this to core gathering so you don't need to run the audit for warning
+    let runWarnings;
     if (hadExcessiveChromeExtension) {
-      context.LighthouseRunWarnings.push(str_(UIStrings.chromeExtensionsWarning));
+      runWarnings = [str_(UIStrings.chromeExtensionsWarning)];
     }
 
     const summary = {wastedMs: totalBootupTime};
@@ -199,9 +200,8 @@ class BootupTime extends Audit {
     const details = BootupTime.makeTableDetails(headings, results, summary);
 
     const score = Audit.computeLogNormalScore(
-      totalBootupTime,
-      context.options.scorePODR,
-      context.options.scoreMedian
+      {p10: context.options.p10, median: context.options.median},
+      totalBootupTime
     );
 
     return {
@@ -211,6 +211,7 @@ class BootupTime extends Audit {
       displayValue: totalBootupTime > 0 ?
         str_(i18n.UIStrings.seconds, {timeInMs: totalBootupTime}) : '',
       details,
+      runWarnings,
     };
   }
 }

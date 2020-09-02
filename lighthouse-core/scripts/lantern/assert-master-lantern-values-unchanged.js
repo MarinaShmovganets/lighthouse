@@ -9,7 +9,7 @@
 /* eslint-disable no-console */
 
 const fs = require('fs');
-const assert = require('assert');
+const assert = require('assert').strict;
 const path = require('path');
 const constants = require('./constants.js');
 const chalk = require('chalk').default;
@@ -29,7 +29,7 @@ const expectedResults = require(MASTER_PATH);
 /** @type {Array<{url: string, maxDiff: number, diffsForSite: Array<DiffForSite>}>} */
 const diffs = [];
 for (const entry of computedResults.sites) {
-  // @ts-ignore - over-aggressive implicit any on candidate
+  // @ts-expect-error - over-aggressive implicit any on candidate
   const expectedLantern = expectedResults.sites.find(candidate => entry.url === candidate.url);
   const actualLantern = entry.lantern;
 

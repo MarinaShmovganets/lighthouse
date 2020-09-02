@@ -74,10 +74,13 @@ class LanternSpeedIndex extends LanternMetric {
 
   /**
    * @param {LH.Gatherer.Simulation.Result} simulationResult
-   * @param {Object} extras
+   * @param {import('./lantern-metric.js').Extras} extras
    * @return {LH.Gatherer.Simulation.Result}
    */
   static getEstimateFromSimulation(simulationResult, extras) {
+    if (!extras.fcpResult) throw new Error('missing fcpResult');
+    if (!extras.speedline) throw new Error('missing speedline');
+
     const fcpTimeInMs = extras.fcpResult.pessimisticEstimate.timeInMs;
     const estimate = extras.optimistic
       ? extras.speedline.speedIndex
@@ -131,14 +134,12 @@ class LanternSpeedIndex extends LanternMetric {
       }
     }
 
-    if (!layoutWeights.length) {
-      return fcpTimeInMs;
-    }
-
     const totalWeightedTime = layoutWeights
       .map(evt => evt.weight * Math.max(evt.time, fcpTimeInMs))
       .reduce((a, b) => a + b, 0);
     const totalWeight = layoutWeights.map(evt => evt.weight).reduce((a, b) => a + b, 0);
+
+    if (!totalWeight) return fcpTimeInMs;
     return totalWeightedTime / totalWeight;
   }
 }

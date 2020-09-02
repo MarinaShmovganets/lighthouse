@@ -8,7 +8,7 @@
 const BaseNode = require('../../../lib/dependency-graph/base-node.js');
 const NetworkNode = require('../../../lib/dependency-graph/network-node.js');
 
-const assert = require('assert');
+const assert = require('assert').strict;
 
 function sortedById(nodeArray) {
   return nodeArray.sort((node1, node2) => node1.id.localeCompare(node2.id));
@@ -84,6 +84,30 @@ describe('DependencyGraph/Node', () => {
     it('throw when trying to add a dependency on itself', () => {
       const nodeA = new BaseNode(1);
       expect(() => nodeA.addDependency(nodeA)).toThrow();
+    });
+  });
+
+  describe('.isDependentOn', () => {
+    it('should identify the dependency relationships', () => {
+      const graph = createComplexGraph();
+      const nodes = Object.values(graph);
+      const {nodeA, nodeB, nodeD, nodeF, nodeH} = graph;
+
+      for (const node of nodes) {
+        expect(nodeA.isDependentOn(node)).toBe(node === nodeA);
+        expect(nodeB.isDependentOn(node)).toBe(node === nodeA || node === nodeB);
+        expect(nodeH.isDependentOn(node)).toBe(node !== nodeF);
+      }
+
+      expect(nodeD.isDependentOn(nodeA)).toBe(true);
+      expect(nodeD.isDependentOn(nodeB)).toBe(true);
+      expect(nodeD.isDependentOn(nodeD)).toBe(true);
+
+      expect(nodeD.isDependentOn(nodeH)).toBe(false);
+      expect(nodeH.isDependentOn(nodeD)).toBe(true);
+
+      expect(nodeF.isDependentOn(nodeH)).toBe(false);
+      expect(nodeH.isDependentOn(nodeF)).toBe(false);
     });
   });
 

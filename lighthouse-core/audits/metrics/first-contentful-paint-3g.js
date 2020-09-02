@@ -29,10 +29,12 @@ class FirstContentfulPaint3G extends Audit {
    */
   static get defaultOptions() {
     return {
-      // 75th and 95th percentiles HTTPArchive on Fast 3G -> multiply by 1.5 for RTT differential -> median and PODR
+      // 25th and 5th percentiles HTTPArchive on Fast 3G -> multiply by 1.5 for RTT differential -> median and PODR
+      // p10 is then derived from them.
       // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
-      scorePODR: 3000,
-      scoreMedian: 6000,
+      // https://www.desmos.com/calculator/fflcrsn9sj
+      p10: 3504,
+      median: 6000,
     };
   }
 
@@ -44,16 +46,15 @@ class FirstContentfulPaint3G extends Audit {
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
-    /** @type {LH.Config.Settings} */
+    /** @type {Immutable<LH.Config.Settings>} */
     const settings = {...context.settings, throttlingMethod: 'simulate', throttling: regular3G};
     const metricComputationData = {trace, devtoolsLog, settings};
     const metricResult = await ComputedFcp.request(metricComputationData, context);
 
     return {
       score: Audit.computeLogNormalScore(
-        metricResult.timing,
-        context.options.scorePODR,
-        context.options.scoreMedian
+        {p10: context.options.p10, median: context.options.median},
+        metricResult.timing
       ),
       numericValue: metricResult.timing,
       numericUnit: 'millisecond',

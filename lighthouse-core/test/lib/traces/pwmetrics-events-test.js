@@ -6,7 +6,7 @@
 'use strict';
 
 const Metrics = require('../../../lib/traces/pwmetrics-events.js');
-const assert = require('assert');
+const assert = require('assert').strict;
 
 const dbwTrace = require('../../results/artifacts/defaultPass.trace.json');
 const dbwResults = require('../../results/sample_v2.json');
@@ -20,12 +20,12 @@ describe('metrics events class', () => {
   it('generates fake trace events', () => {
     const evts = new Metrics(dbwTrace.traceEvents, dbwResults.audits).generateFakeEvents();
 
-    const metricsWithoutNavstart = Metrics.metricsDefinitions.length - 1;
+    const metricsMinusTimeOrigin = Metrics.metricsDefinitions.length - 1;
     // The trace events must come in pairs, thus the `2 * n`
-    assert.equal(evts.length, 2 * metricsWithoutNavstart, 'All expected fake events not created');
+    assert.equal(evts.length, 2 * metricsMinusTimeOrigin, 'All expected fake events not created');
 
     const definitionsWithoutEvents = Metrics.metricsDefinitions
-        .filter(metric => metric.id !== 'navstart')
+        .filter(metric => metric.id !== 'timeorigin')
         .filter(metric => !evts.find(e => e.name === metric.name));
     assert.strictEqual(definitionsWithoutEvents.length, 0, 'metrics are missing fake events');
 

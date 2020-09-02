@@ -6,7 +6,7 @@
 'use strict';
 
 const AxeAudit = require('../../../audits/accessibility/axe-audit.js');
-const assert = require('assert');
+const assert = require('assert').strict;
 
 /* eslint-env jest */
 
@@ -60,8 +60,33 @@ describe('Accessibility: axe-audit', () => {
         },
       };
 
+      const {errorMessage} = FakeA11yAudit.audit(artifacts);
+      assert.equal(errorMessage, 'axe-core Error: Feature is not supported on your platform');
+    });
+
+    it('returns axe error message to the caller when errored without a message', () => {
+      class FakeA11yAudit extends AxeAudit {
+        static get meta() {
+          return {
+            id: 'fake-incomplete-error',
+            title: 'Example title',
+            requiredArtifacts: ['Accessibility'],
+          };
+        }
+      }
+      const artifacts = {
+        Accessibility: {
+          incomplete: [{
+            id: 'fake-incomplete-error',
+            nodes: [],
+            help: 'http://example.com/',
+            error: {},
+          }],
+        },
+      };
+
       const output = FakeA11yAudit.audit(artifacts);
-      assert.equal(output.errorMessage, 'Feature is not supported on your platform');
+      assert.equal(output.errorMessage, 'axe-core Error: Unknown error');
     });
 
     it('considers passing axe result as not applicable for informative audit', () => {
@@ -143,5 +168,32 @@ describe('Accessibility: axe-audit', () => {
       const output = FakeA11yAudit.audit(artifacts);
       assert.equal(output.score, 0);
     });
+  });
+
+  it('prefers our getOuterHTMLSnippet() string over axe\'s html string', () => {
+    class FakeA11yAudit extends AxeAudit {
+      static get meta() {
+        return {
+          id: 'fake-axe-snippet-case',
+          title: 'Example title',
+          scoreDisplayMode: 'informative',
+          requiredArtifacts: ['Accessibility'],
+        };
+      }
+    }
+    const artifacts = {
+      Accessibility: {
+        violations: [
+          {
+            id: 'fake-axe-snippet-case',
+            nodes: [{html: '<input id="axes-source" />', snippet: '<input id="snippet"/>'}],
+            help: 'http://example.com/',
+          },
+        ],
+      },
+    };
+
+    const output = FakeA11yAudit.audit(artifacts);
+    expect(output.details.items[0].node.snippet).toMatch(`<input id="snippet"/>`);
   });
 });

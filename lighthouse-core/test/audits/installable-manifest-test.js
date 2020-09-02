@@ -6,7 +6,7 @@
 'use strict';
 
 const InstallableManifestAudit = require('../../audits/installable-manifest.js');
-const assert = require('assert');
+const assert = require('assert').strict;
 const manifestParser = require('../../lib/manifest-parser.js');
 
 const manifestSrc = JSON.stringify(require('../fixtures/manifest.json'));
@@ -41,6 +41,16 @@ describe('PWA: webapp install banner audit', () => {
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.score, 0);
         assert.ok(result.explanation.includes('No manifest was fetched'), result.explanation);
+      });
+    });
+
+    it('passes when manifest url matches', () => {
+      const artifacts = generateMockArtifacts();
+      const context = generateMockAuditContext();
+
+      return InstallableManifestAudit.audit(artifacts, context).then(result => {
+        assert.strictEqual(artifacts.WebAppManifest.url, EXAMPLE_MANIFEST_URL);
+        assert.strictEqual(result.details.items[0].manifestUrl, EXAMPLE_MANIFEST_URL);
       });
     });
 

@@ -7,7 +7,7 @@
 
 const FastPWAAudit = require('../../audits/load-fast-enough-for-pwa.js');
 const mobileSlow4GThrottling = require('../../config/constants.js').throttling.mobileSlow4G;
-const assert = require('assert');
+const assert = require('assert').strict;
 const createTestTrace = require('../create-test-trace.js');
 const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 
@@ -25,7 +25,7 @@ describe('PWA: load-fast-enough-for-pwa audit', () => {
 
     const settings = {throttlingMethod: 'devtools', throttling: mobileSlow4GThrottling};
     return FastPWAAudit.audit(artifacts, {settings, computedCache: new Map()}).then(result => {
-      assert.equal(result.score, true, 'fixture trace is not passing audit');
+      assert.equal(result.score, 1, 'fixture trace is not passing audit');
       assert.equal(result.numericValue, 1582.189);
     });
   });
@@ -39,7 +39,7 @@ describe('PWA: load-fast-enough-for-pwa audit', () => {
       {ts: 12000, duration: 100},
       {ts: 14900, duration: 100},
     ];
-    const longTrace = createTestTrace({navigationStart: 0, traceEnd: 20000, topLevelTasks});
+    const longTrace = createTestTrace({timeOrigin: 0, traceEnd: 20000, topLevelTasks});
     const devtoolsLog = networkRecordsToDevtoolsLog([{url: 'https://example.com'}]);
 
     const artifacts = {
@@ -49,7 +49,7 @@ describe('PWA: load-fast-enough-for-pwa audit', () => {
 
     const settings = {throttlingMethod: 'devtools', throttling: mobileSlow4GThrottling};
     return FastPWAAudit.audit(artifacts, {settings, computedCache: new Map()}).then(result => {
-      assert.equal(result.score, false, 'not failing a long TTI value');
+      assert.equal(result.score, 0, 'not failing a long TTI value');
       assert.equal(result.numericValue, 15000);
       expect(result.displayValue).toBeDisplayString('Interactive at 15.0\xa0s');
       assert.ok(result.explanation);
@@ -99,7 +99,7 @@ describe('PWA: load-fast-enough-for-pwa audit', () => {
       {ts: 12000, duration: 1000},
       {ts: 14900, duration: 1000},
     ];
-    const longTrace = createTestTrace({navigationStart: 0, traceEnd: 20000, topLevelTasks});
+    const longTrace = createTestTrace({timeOrigin: 0, traceEnd: 20000, topLevelTasks});
 
     const artifacts = {
       traces: {defaultPass: longTrace},

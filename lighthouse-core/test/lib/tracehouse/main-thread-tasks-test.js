@@ -13,7 +13,7 @@ const taskGroups = require('../../../lib/tracehouse/task-groups.js').taskGroups;
 const pwaTrace = require('../../fixtures/traces/progressive-app.json');
 const noTracingStartedTrace = require('../../fixtures/traces/no-tracingstarted-m74.json');
 const TracingProcessor = require('../../../lib/tracehouse/trace-processor.js');
-const assert = require('assert');
+const assert = require('assert').strict;
 
 describe('Main Thread Tasks', () => {
   const pid = 1;
@@ -42,7 +42,7 @@ describe('Main Thread Tasks', () => {
     assert.equal(tasks.length, 2305);
     assert.equal(toplevelTasks.length, 296);
 
-    // Sanity check the reachability of tasks and summation of selfTime
+    // Check the reachability of tasks and summation of selfTime.
     const allTasks = [];
     const queue = toplevelTasks;
     let totalTime = 0;

@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const assert = require('assert');
+const assert = require('assert').strict;
 const jsdom = require('jsdom');
 const DOM = require('../../report/html/renderer/dom.js');
 const pageFunctions = require('../../lib/page-functions.js');
@@ -60,6 +60,28 @@ describe('Page Functions', () => {
     it('works if attribute values contain line breaks', () => {
       assert.equal(pageFunctions.getOuterHTMLSnippet(
         dom.createElement('div', '', {style: 'style1\nstyle2'})), '<div style="style1\nstyle2">');
+    });
+
+    it('truncates attribute values that are too long', () => {
+      const longClass = 'a'.repeat(200);
+      const truncatedExpectation = 'a'.repeat(74) + '…';
+      assert.equal(pageFunctions.getOuterHTMLSnippet(
+        dom.createElement('div', '', {class: longClass})), `<div class="${truncatedExpectation}">`
+      );
+    });
+
+    it('removes attributes if the length of the attribute name + value is too long', () => {
+      const longValue = 'a'.repeat(200);
+      const truncatedValue = 'a'.repeat(74) + '…';
+      const element = dom.createElement('div', '', {
+        class: longValue,
+        id: longValue,
+        att1: 'shouldn\'t see this',
+        att2: 'shouldn\'t see this either',
+      });
+      const snippet = pageFunctions.getOuterHTMLSnippet(element, [], 150);
+      assert.equal(snippet, `<div class="${truncatedValue}" id="${truncatedValue}" …>`
+      );
     });
   });
 
