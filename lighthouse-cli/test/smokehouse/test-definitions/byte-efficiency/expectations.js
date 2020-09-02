@@ -80,14 +80,16 @@ const expectations = [
         },
       ],
       JsUsage: {
+        // ScriptParsedEvent.embedderName wasn't added to the protocol until M86,
+        // and `some-custom-url.js` won't show without it.
+        // https://chromiumdash.appspot.com/commit/52ed57138d0b83e8afd9de25e60655c6ace7527c
+        _minChromiumMilestone: 86,
         'http://localhost:10200/byte-efficiency/tester.html': [
           {url: 'http://localhost:10200/byte-efficiency/tester.html'},
           {url: 'http://localhost:10200/byte-efficiency/tester.html'},
           {url: 'http://localhost:10200/byte-efficiency/tester.html'},
           {url: 'http://localhost:10200/byte-efficiency/tester.html'},
-          // ScriptParsedEvent.embedderName wasn't added to the protocol until M86.
-          // https://chromiumdash.appspot.com/commit/52ed57138d0b83e8afd9de25e60655c6ace7527c
-          {_minChromiumMilestone: 86, url: '/some-custom-url.js'},
+          {url: '/some-custom-url.js'},
         ],
         'http://localhost:10200/byte-efficiency/script.js': [
           {url: 'http://localhost:10200/byte-efficiency/script.js'},

@@ -188,14 +188,7 @@ function pruneExpectations(localConsole, lhr, expected) {
           JSON.stringify(value, null, 2),
           `Actual Chromium version: ${actualChromeVersion}`,
         ].join(' '));
-        // Remove property from object. If object is an array, use `splice`
-        // so that the array length will change (otherwise the assertion checker will
-        // fail the implicit array length expectation).
-        if (Array.isArray(obj)) {
-          obj.splice(Number(key), 1);
-        } else {
-          delete obj[key];
-        }
+        delete obj[key];
       } else {
         pruneNewerChromeExpectations(value);
       }
