@@ -65,7 +65,7 @@ function getStackPacks(pageStacks) {
       continue;
     }
 
-    // Grab the full pack definition
+    // Grab the full pack definition.
     const matchedPack = stackPacks.find(pack => pack.id === stackPackToIncl.packId);
     if (!matchedPack) {
       log.warn('StackPacks',
@@ -73,7 +73,7 @@ function getStackPacks(pageStacks) {
       continue;
     }
 
-    // create i18n handler to get translated strings
+    // Create i18n handler to get translated strings.
     const str_ = i18n.createMessageInstanceIdFn(
       resolve(`lighthouse-stack-packs/packs/${matchedPack.id}`),
       matchedPack.UIStrings
@@ -84,7 +84,7 @@ function getStackPacks(pageStacks) {
     /** @type {Record<string, string>} */
     const UIStrings = matchedPack.UIStrings;
 
-    // convert all strings into the correct translation
+    // Convert all strings into the correct translation.
     for (const key in UIStrings) {
       if (UIStrings[key]) {
         descriptions[key] = str_(UIStrings[key]);

@@ -26,6 +26,11 @@ const UISTRINGS_REGEX = /UIStrings = .*?\};\n/s;
 /** @typedef {Required<Pick<CtcMessage, 'message'|'placeholders'>>} IncrementalCtc */
 /** @typedef {{message: string, description: string, examples: Record<string, string>}} ParsedUIString */
 
+const foldersWithStrings = [
+  `${LH_ROOT}/lighthouse-core`,
+  path.dirname(require.resolve('lighthouse-stack-packs')) + '/packs',
+];
+
 const ignoredPathComponents = [
   '**/.git/**',
   '**/scripts/**',
@@ -614,19 +619,20 @@ function writeStringsToCtcFiles(locale, strings) {
 
 // @ts-expect-error Test if called from the CLI or as a module.
 if (require.main === module) {
-  const coreStrings = collectAllStringsInDir(path.join(LH_ROOT, 'lighthouse-core'));
-  console.log('Collected from LH core!');
+  /** @type {Record<string, CtcMessage>} */
+  const strings = {};
 
-  const stackPacksRoot = path.join(path.dirname(require.resolve('lighthouse-stack-packs')), 'packs');
-  const stackPackStrings = collectAllStringsInDir(stackPacksRoot);
-  console.log('Collected from Stack Packs!');
+  for (const folderWithStrings of foldersWithStrings) {
+    console.log(`\n====\nCollecting strings from ${folderWithStrings}\n====`);
+    const moreStrings = collectAllStringsInDir(folderWithStrings);
+    Object.assign(strings, moreStrings);
+  }
 
-  if ((collisions) > 0) {
+  if (collisions > 0) {
     console.log(`MEANING COLLISION: ${collisions} string(s) have the same content.`);
     assert.equal(collisions, 16, `The number of duplicate strings have changed, update this assertion if that is expected, or reword strings. Collisions: ${collisionStrings}`);
   }
 
-  const strings = {...coreStrings, ...stackPackStrings};
   writeStringsToCtcFiles('en-US', strings);
   console.log('Written to disk!', 'en-US.ctc.json');
   // Generate local pseudolocalized files for debugging while translating
