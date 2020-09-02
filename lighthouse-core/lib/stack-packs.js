@@ -24,7 +24,7 @@ function resolve(module) {
 /**
  * Pairs consisting of a stack pack's ID and the set of stacks needed to be
  * detected in a page to display that pack's advice.
- * @type {Array<{packId: string, requiredStacks: Array<string>}>}
+ * @type {Array<{packId: string, requiredStacks: string[]}>}
  */
 const stackPacksToInclude = [
   {
