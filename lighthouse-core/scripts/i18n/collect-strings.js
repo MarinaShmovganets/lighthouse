@@ -34,7 +34,6 @@ const foldersWithStrings = [
 const ignoredPathComponents = [
   '**/.git/**',
   '**/scripts/**',
-  // allow lighthouse stack package npm package
   '**/node_modules/!(lighthouse-stack-packs)/**',
   '**/lighthouse-core/lib/stack-packs.js',
   '**/test/**',
