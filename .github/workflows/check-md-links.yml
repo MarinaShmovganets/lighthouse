@@ -18,13 +18,13 @@ jobs:
           folder-path: 'docs/'
           file-path: './readme.md'
 
-    check-root-readme:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@master
-        - uses: gaurav-nelson/github-action-markdown-link-check@v1
-          with:
-            use-quiet-mode: 'yes'
-            use-verbose-mode: 'yes'
-            config-file: 'markdown.links.config.json'
-            file-path: './readme.md'
+  check-root-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          use-verbose-mode: 'yes'
+          config-file: 'markdown.links.config.json'
+          file-path: './readme.md'
