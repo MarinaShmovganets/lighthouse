@@ -34,7 +34,7 @@ const foldersWithStrings = [
 const ignoredPathComponents = [
   '**/.git/**',
   '**/scripts/**',
-  '**/node_modules/!(lighthouse-stack-packs)/**',
+  '**/node_modules/!(lighthouse-stack-packs)/**', // ignore all node modules *except* stack packs
   '**/lighthouse-core/lib/stack-packs.js',
   '**/test/**',
   '**/*-test.js',
