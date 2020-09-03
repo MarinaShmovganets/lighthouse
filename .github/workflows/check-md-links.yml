@@ -1,4 +1,4 @@
-name: markdown-links-check
+name: Markdown Links Check
 
 on:
   pull_request: # run on all PRs, not just PRs to a particular branch
@@ -14,7 +14,6 @@ jobs:
           use-verbose-mode: 'yes'
           config-file: 'markdown.links.config.json'
           folder-path: 'docs/'
-          file-path: './readme.md'
       - uses: actions/checkout@master
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
