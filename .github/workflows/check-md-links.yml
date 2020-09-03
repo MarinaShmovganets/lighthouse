@@ -4,7 +4,7 @@ on:
   pull_request: # run on all PRs, not just PRs to a particular branch
 
 jobs:
-  check-docs:
+  check-links:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -15,11 +15,6 @@ jobs:
           config-file: 'markdown.links.config.json'
           folder-path: 'docs/'
           file-path: './readme.md'
-
-  check-root-readme:
-    if: success()
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@master
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
