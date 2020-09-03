@@ -1,8 +1,6 @@
 name: markdown-links-check
 
 on:
-  push:
-    branches: [master]
   pull_request: # run on all PRs, not just PRs to a particular branch
 
 jobs:
@@ -19,6 +17,7 @@ jobs:
           file-path: './readme.md'
 
   check-root-readme:
+    if: success()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
