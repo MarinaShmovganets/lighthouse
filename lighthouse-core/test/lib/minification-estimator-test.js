@@ -227,5 +227,12 @@ describe('minification estimator', () => {
       // Already-minified source script. estimated 1% smaller minified
       expect(minificationPct).toBeCloseTo(0.01);
     });
+
+    it('should handle nested template literals', () => {
+      const nestedTemplates = 'window.myString=`foo${` bar ${` baz ${` bam `} `} `} `';
+      expect(computeJSTokenLength(nestedTemplates)).toEqual(nestedTemplates.length);
+      const nestedTemplatesBrace = 'window.myString=`foo${` }bar ${` baz ${` bam `} `} `} `';
+      expect(computeJSTokenLength(nestedTemplatesBrace)).toEqual(nestedTemplatesBrace.length);
+    });
   });
 });
