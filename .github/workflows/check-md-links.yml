@@ -18,8 +18,8 @@ jobs:
           config-file: 'markdown.links.config.json'
           folder-path: 'docs/'
       - uses: jakejarvis/wait-action@master
-          with:
-            time: '60s'
+        with:
+          time: '60s'
       - uses: actions/checkout@master
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
