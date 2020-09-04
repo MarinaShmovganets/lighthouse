@@ -1,7 +1,8 @@
 name: Markdown Links Check
 
 on:
-  pull_request: # run on all PRs, not just PRs to a particular branch
+  push:
+#  pull_request: # run on all PRs, not just PRs to a particular branch
 #  schedule:
 #    - cron: "0 9 * * 1" # run each monday at 9 am
 
