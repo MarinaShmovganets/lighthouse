@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        # check all markdown files from /docs and subfolders
         with:
           use-quiet-mode: 'yes'
           use-verbose-mode: 'yes'
@@ -19,9 +20,9 @@ jobs:
           folder-path: 'docs/'
       - uses: actions/checkout@master
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        # check all markdown files from root but ignore subfolders
         with:
           use-quiet-mode: 'yes'
           use-verbose-mode: 'yes'
           config-file: 'markdown.links.config.json'
           max-depth: 0
-          file-path: './readme.md'
