@@ -1,5 +1,5 @@
 name: Markdown Links Check
-# runs each monday at 9 am
+# runs every monday at 9 am
 on:
   schedule:
     - cron: "0 9 * * 1"
@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
-        # check all markdown files from /docs and subfolders
+        # checks all markdown files from /docs including all subfolders
         with:
           use-quiet-mode: 'yes'
           use-verbose-mode: 'yes'
@@ -18,7 +18,7 @@ jobs:
           folder-path: 'docs/'
       - uses: actions/checkout@master
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
-        # check all markdown files from root but ignore subfolders
+        # checks all markdown files from root but ignores subfolders
         with:
           use-quiet-mode: 'yes'
           use-verbose-mode: 'yes'
