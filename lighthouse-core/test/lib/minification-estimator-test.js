@@ -229,14 +229,16 @@ describe('minification estimator', () => {
     });
 
     it('should handle nested template literals', () => {
+      // Basic nested literals
       const nestedTemplates = 'window.myString=`foo${` bar ${` baz ${` bam `} `} `} `';
       expect(computeJSTokenLength(nestedTemplates)).toEqual(nestedTemplates.length);
 
-      // Can get rid of 5 spaces
+      // Can get rid of 5 spaces after normal code braces
       const nestedWithCode = 'window.myString=`foo${` bar ${{}     }`}`';
       expect(computeJSTokenLength(nestedWithCode)).toEqual(nestedWithCode.length - 5);
 
-      const nestedTemplatesBrace = 'window.myString=`foo${` }bar ${` baz ${` bam `} `} `} `';
+      // Ignore braces in string
+      const nestedTemplatesBrace = 'window.myString=`{foo${` }bar ${` baz ${` bam `} `} `} `';
       expect(computeJSTokenLength(nestedTemplatesBrace)).toEqual(nestedTemplatesBrace.length);
     });
   });
