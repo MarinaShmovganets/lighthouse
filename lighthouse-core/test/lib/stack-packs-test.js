@@ -11,6 +11,7 @@ const lighthouseStackPacks = require('lighthouse-stack-packs');
 
 describe('stack packs', () => {
   it('returns the detected stacks', async () => {
+    /* eslint-disable max-len */
     expect(lighthouseStackPacks).toMatchInlineSnapshot(`
       Array [
         Object {
@@ -117,5 +118,6 @@ describe('stack packs', () => {
         },
       ]
     `);
+    /* eslint-enable max-len */
   });
 });
