@@ -8,9 +8,16 @@
 /* eslint-env jest */
 
 const lighthouseStackPacks = require('lighthouse-stack-packs');
+const defaultConfig = require('../../config/default-config.js');
+const Config = require('../../config/config.js');
 
-describe('stack packs', () => {
-  it('returns the detected stacks', async () => {
+function getAuditIds() {
+  const config = new Config(defaultConfig);
+  return config.audits.map(a => a.implementation.meta.id);
+}
+
+describe('lighthouse-stack-packs', () => {
+  it('snapshot all strings', () => {
     /* eslint-disable max-len */
     expect(lighthouseStackPacks).toMatchInlineSnapshot(`
       Array [
@@ -119,5 +126,24 @@ describe('stack packs', () => {
       ]
     `);
     /* eslint-enable max-len */
+  });
+
+  it('snapshot unrecognized keys', () => {
+    const auditIds = getAuditIds();
+
+    const unrecognizedKeys = new Set();
+    for (const pack of lighthouseStackPacks) {
+      for (const key in pack.UIStrings) {
+        if (!auditIds.includes(key)) unrecognizedKeys.add(key);
+      }
+    }
+
+    expect([...unrecognizedKeys]).toMatchInlineSnapshot(`
+      Array [
+        "time-to-first-byte",
+        "unminified-warning",
+        "disable-bundling",
+      ]
+    `);
   });
 });
