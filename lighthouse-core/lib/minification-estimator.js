@@ -51,8 +51,8 @@ function computeTokenLength(content, features) {
   let stringOpenChar = null;
 
   /**
-   * Acts as stack for brace tracking.  Entries are true when innermost brace is template literal.
-   * @type {boolean[]}
+   * Acts as stack for brace tracking.
+   * @type {('templateBrace'|'normalBrace')[]}
    */
   const templateLiteralDepth = [];
 
@@ -86,7 +86,7 @@ function computeTokenLength(content, features) {
 
       if (stringOpenChar === '`' && twoChars === '${') {
         // Start new template literal
-        templateLiteralDepth.push(true);
+        templateLiteralDepth.push('templateBrace');
         isInString = false;
         totalTokenLength++;
         i++;
@@ -141,13 +141,13 @@ function computeTokenLength(content, features) {
         isInRegex = true;
         // Regex characters count
         totalTokenLength++;
-      } else if (char === '{' && templateLiteralDepth) {
+      } else if (char === '{' && templateLiteralDepth.length) {
         // Start normal code brace if inside a template literal
-        templateLiteralDepth.push(false);
+        templateLiteralDepth.push('normalBrace');
         totalTokenLength++;
-      } else if (char === '}' && templateLiteralDepth) {
+      } else if (char === '}' && templateLiteralDepth.length) {
         // End one template literal if closing brace is for a template literal
-        if (templateLiteralDepth[templateLiteralDepth.length - 1]) {
+        if (templateLiteralDepth[templateLiteralDepth.length - 1] === 'templateBrace') {
           isInString = true;
           stringOpenChar = '`';
         }
