@@ -49,7 +49,7 @@ function computeTokenLength(content, features) {
   let isInRegex = false;
   let isInRegexCharacterClass = false;
   let stringOpenChar = null;
-  let templateLiteralDepth = 0;
+  const templateLiteralDepth = [];
 
   for (let i = 0; i < content.length; i++) {
     const twoChars = content.substr(i, 2);
@@ -81,7 +81,7 @@ function computeTokenLength(content, features) {
 
       if (stringOpenChar === '`' && twoChars === '${') {
         // Start new template literal
-        templateLiteralDepth++;
+        templateLiteralDepth.push(true);
         isInString = false;
         totalTokenLength++;
         i++;
@@ -136,11 +136,16 @@ function computeTokenLength(content, features) {
         isInRegex = true;
         // Regex characters count
         totalTokenLength++;
+      } else if (char === '{' && templateLiteralDepth) {
+        templateLiteralDepth.push(false);
+        totalTokenLength++;
       } else if (char === '}' && templateLiteralDepth) {
         // End one template literal if closing brace in normal code
-        templateLiteralDepth--;
-        isInString = true;
-        stringOpenChar = '`';
+        if (templateLiteralDepth[templateLiteralDepth.length - 1]) {
+          isInString = true;
+          stringOpenChar = '`';
+        }
+        templateLiteralDepth.pop();
         totalTokenLength++;
       } else if (isAStringOpenChar) {
         // Start the string
