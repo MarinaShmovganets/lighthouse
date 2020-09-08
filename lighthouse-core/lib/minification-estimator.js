@@ -52,7 +52,7 @@ function computeTokenLength(content, features) {
 
   /**
    * Acts as stack for brace tracking.  Entries are true when innermost brace is template literal.
-   * @type boolean[]
+   * @type {boolean[]}
    */
   const templateLiteralDepth = [];
 
