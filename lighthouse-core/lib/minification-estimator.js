@@ -49,6 +49,11 @@ function computeTokenLength(content, features) {
   let isInRegex = false;
   let isInRegexCharacterClass = false;
   let stringOpenChar = null;
+
+  /**
+   * Acts as stack for brace tracking.  Entries are true when innermost brace is template literal.
+   * @type boolean[]
+   */
   const templateLiteralDepth = [];
 
   for (let i = 0; i < content.length; i++) {
