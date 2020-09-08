@@ -142,10 +142,11 @@ function computeTokenLength(content, features) {
         // Regex characters count
         totalTokenLength++;
       } else if (char === '{' && templateLiteralDepth) {
+        // Start normal code brace if inside a template literal
         templateLiteralDepth.push(false);
         totalTokenLength++;
       } else if (char === '}' && templateLiteralDepth) {
-        // End one template literal if closing brace in normal code
+        // End one template literal if closing brace is for a template literal
         if (templateLiteralDepth[templateLiteralDepth.length - 1]) {
           isInString = true;
           stringOpenChar = '`';
