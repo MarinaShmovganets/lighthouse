@@ -71,11 +71,13 @@ class ReportGenerator {
 
     // Possible TODO: tightly couple headers and row values
     const header = ['requestedUrl', 'finalUrl', 'category', 'name', 'title', 'type', 'score'];
-    const table = Object.values(lhr.categories).map(category => {
+    const table = Object.keys(lhr.categories).map(categoryId => {
       const rows = [];
+      const category = lhr.categories[categoryId];
       const overallCategoryScore = category.score === null ? -1 : category.score;
       rows.push(rowFormatter([lhr.requestedUrl, lhr.finalUrl, category.title,
-        'overall-category-score', 'Overall Category Score', 'numeric', overallCategoryScore]));
+        `${categoryId}-score`, `Overall ${category.title} Category Score`, 'numeric',
+        overallCategoryScore]));
       return rows.concat(category.auditRefs.map(auditRef => {
         const audit = lhr.audits[auditRef.id];
         // CSV validator wants all scores to be numeric, use -1 for now
