@@ -104,7 +104,7 @@ describe('ReportGenerator', () => {
       expect(lines.length).toBeGreaterThan(100);
       expect(lines.slice(0, 2).join('\n')).toMatchInlineSnapshot(`
         "requestedUrl,finalUrl,category,name,title,type,score
-        \\"http://localhost:10200/dobetterweb/dbw_tester.html\\",\\"http://localhost:10200/dobetterweb/dbw_tester.html\\",\\"Performance\\",\\"first-contentful-paint\\",\\"First Contentful Paint\\",\\"numeric\\",\\"0.51\\"
+        \\"http://localhost:10200/dobetterweb/dbw_tester.html\\",\\"http://localhost:10200/dobetterweb/dbw_tester.html\\",\\"Performance\\",\\"overall-category-score\\",\\"Overall Category Score\\",\\"numeric\\",\\"0.64\\"
         "
       `);
 
@@ -115,6 +115,12 @@ describe('ReportGenerator', () => {
       } finally {
         fs.unlinkSync(path);
       }
+    });
+
+    it('creates CSV for results including overall category scores', async () => {
+      const csvOutput = ReportGenerator.generateReport(sampleResults, 'csv');
+      const count = (csvOutput.match(/overall-category-score/g) || []).length;
+      expect(count).toBe(5);
     });
 
     it('writes extended info', () => {
