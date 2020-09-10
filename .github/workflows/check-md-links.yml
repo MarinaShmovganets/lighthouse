@@ -3,6 +3,7 @@ name: Markdown Links Check
 on:
   schedule:
     - cron: "0 9 * * 1"
+  push:
 
 jobs:
   check-links:
@@ -14,7 +15,7 @@ jobs:
         with:
           use-quiet-mode: 'yes'
           use-verbose-mode: 'yes'
-          config-file: 'markdown.links.config.json'
+          config-file: '.github/workflows/markdown.links.config.json'
           folder-path: 'docs/'
       - uses: actions/checkout@master
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
@@ -22,5 +23,5 @@ jobs:
         with:
           use-quiet-mode: 'yes'
           use-verbose-mode: 'yes'
-          config-file: 'markdown.links.config.json'
+          config-file: '.github/workflows/markdown.links.config.json'
           max-depth: 0
