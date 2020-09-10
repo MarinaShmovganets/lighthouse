@@ -104,4 +104,5 @@ function getStackPacks(pageStacks) {
 
 module.exports = {
   getStackPacks,
+  stackPacksToInclude,
 };
