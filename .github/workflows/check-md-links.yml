@@ -3,7 +3,6 @@ name: Markdown Links Check
 on:
   schedule:
     - cron: "0 9 * * 1"
-  push:
 
 jobs:
   check-links:
