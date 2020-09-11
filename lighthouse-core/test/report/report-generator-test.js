@@ -118,13 +118,13 @@ describe('ReportGenerator', () => {
       }
     });
 
-    it('creates CSV for results including overall category scores', async () => {
+    it('creates CSV for results including overall category scores', () => {
       const csvOutput = ReportGenerator.generateReport(sampleResults, 'csv');
-      csvOutput.includes('performance-score');
-      csvOutput.includes('accessibility-score');
-      csvOutput.includes('best-practices-score');
-      csvOutput.includes('seo-score');
-      csvOutput.includes('pwa-score');
+      expect(csvOutput).toContain('performance-score');
+      expect(csvOutput).toContain('accessibility-score');
+      expect(csvOutput).toContain('best-practices-score');
+      expect(csvOutput).toContain('seo-score');
+      expect(csvOutput).toContain('pwa-score');
     });
 
     it('writes extended info', () => {
