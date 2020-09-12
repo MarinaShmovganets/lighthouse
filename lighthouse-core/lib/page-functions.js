@@ -228,7 +228,7 @@ function computeBenchmarkIndex() {
  *   https://github.com/ChromeDevTools/devtools-frontend/blob/4fff931bb/front_end/sdk/DOMModel.js#L625-L647
  * Backend: https://source.chromium.org/search?q=f:node.cc%20symbol:PrintNodePathTo&sq=&ss=chromium%2Fchromium%2Fsrc
  *
- * TODO: DevTools nodePath handling doesn't currently support iframes, but probably could.
+ * TODO: DevTools nodePath handling doesn't support iframes, but probably could. https://crbug.com/1127635
  * @param {Node} node
  */
 /* istanbul ignore next */
@@ -269,7 +269,13 @@ function getNodePath(node) {
  * @param {Element} node
  * @return {string}
  *
- * Note: if the node resides within shadow DOM, the selector only starts from the root
+ * Note: CSS Selectors having no standard mechanism to describe shadow DOM piercing. So we can't.
+ *
+ * If the node resides within shadow DOM, the selector *only* starts from the shadow root.
+ * For example, consider this img within a <section> within a shadow root..
+ *  - DOM: <html> <body> <div> #shadow-root <section> <img/>
+ *  - nodePath: 0,HTML,1,BODY,1,DIV,a,#document-fragment,0,SECTION,0,IMG
+ *  - nodeSelector: section > img
  */
 /* istanbul ignore next */
 function getNodeSelector(node) {
