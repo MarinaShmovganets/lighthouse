@@ -256,7 +256,7 @@ function getNodePath(node) {
   }
 
   const path = [];
-  while (node && !!getNodeParent(node)) {
+  while (node && getNodeParent(node)) {
     const index = getNodeIndex(node);
     path.push([index, node.nodeName]);
     node = getNodeParent(node);
