@@ -41,11 +41,11 @@ describe('lighthouse-stack-packs dep', () => {
     `);
   });
 
-  // Keys should only be added, not removed.
   it('snapshot keys for each pack', () => {
     const result = lighthouseStackPacksDep.map(p => {
       return {id: p.id, keys: Object.keys(p.UIStrings)};
     });
+    // Keys should only be added, not removed.
     expect(result).toMatchInlineSnapshot(`
       Array [
         Object {
