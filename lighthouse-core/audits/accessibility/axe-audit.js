@@ -77,9 +77,7 @@ class AxeAudit extends Audit {
       items = rule.nodes.map(node => ({
         node: /** @type {LH.Audit.Details.NodeValue} */ ({
           type: 'node',
-          // This selector represents the aXe css selectors
-          // Node selector can be accessed with node.selector
-          selector: Array.isArray(node.target) ? node.target.join(' ') : '',
+          selector: node.selector,
           path: node.devtoolsNodePath,
           snippet: node.snippet,
           boundingRect: node.boundingRect,
