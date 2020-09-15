@@ -174,7 +174,7 @@ declare global {
         id: string;
         impact: string;
         tags: Array<string>;
-        nodes: Array< NodeDetails & {
+        nodes: Array<NodeDetails & {
           html: string;
           target: Array<string>;
           failureSummary?: string;

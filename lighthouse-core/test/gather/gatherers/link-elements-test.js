@@ -8,13 +8,6 @@
 /* eslint-env jest */
 
 const LinkElements = require('../../../gather/gatherers/link-elements.js');
-const emptyNodeDetails = {
-  devtoolsNodePath: '',
-  nodeLabel: '',
-  snippet: '',
-  boundingRect: null,
-  selector: '',
-};
 
 describe('Link Elements gatherer', () => {
   /**
@@ -30,7 +23,13 @@ describe('Link Elements gatherer', () => {
       hreflang: '',
       as: '',
       crossOrigin: null,
+      devtoolsNodePath: '',
+      nodeLabel: '',
+      snippet: '',
+      boundingRect: null,
+      selector: '',
       ...overrides,
+
     };
   }
 
@@ -67,11 +66,11 @@ describe('Link Elements gatherer', () => {
 
     const result = await new LinkElements().afterPass(...getPassData({headers}));
     expect(result).toEqual([
-      link({source: 'headers', rel: 'prefetch', href: 'https://example.com/', as: 'image', ...emptyNodeDetails}),
-      link({source: 'headers', rel: 'preconnect', href: 'https://example.com/', crossOrigin: 'anonymous', ...emptyNodeDetails}), // eslint-disable-line max-len
-      link({source: 'headers', rel: 'preload', href: 'https://example.com/style.css', ...emptyNodeDetails}),
-      link({source: 'headers', rel: 'canonical', href: 'https://example.com/', hrefRaw: '/', ...emptyNodeDetails}),
-      link({source: 'headers', rel: 'alternate', href: 'https://example.com/', hreflang: 'xx', ...emptyNodeDetails}),
+      link({source: 'headers', rel: 'prefetch', href: 'https://example.com/', as: 'image'}),
+      link({source: 'headers', rel: 'preconnect', href: 'https://example.com/', crossOrigin: 'anonymous'}), // eslint-disable-line max-len
+      link({source: 'headers', rel: 'preload', href: 'https://example.com/style.css'}),
+      link({source: 'headers', rel: 'canonical', href: 'https://example.com/', hrefRaw: '/'}),
+      link({source: 'headers', rel: 'alternate', href: 'https://example.com/', hreflang: 'xx'}),
     ]);
   });
 
@@ -89,7 +88,7 @@ describe('Link Elements gatherer', () => {
     expect(result).toEqual([
       link({source: 'head', rel: 'stylesheet', href: 'https://example.com/a.css'}),
       link({source: 'body', rel: 'icon', href: 'https://example.com/a.png'}),
-      link({source: 'headers', rel: 'prefetch', href: 'https://example.com/', as: 'image', ...emptyNodeDetails}),
+      link({source: 'headers', rel: 'prefetch', href: 'https://example.com/', as: 'image'}),
     ]);
   });
 });
