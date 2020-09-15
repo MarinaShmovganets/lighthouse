@@ -282,12 +282,12 @@ function _preformatValues(messageFormatter, values, lhlMessage) {
  * @return {string}
  */
 function _formatMessage(message, values = {}, locale) {
-  // when using accented english, force the use of a different locale for number formatting
+  // When using accented english, force the use of a different locale for number formatting.
   const localeForMessageFormat = (locale === 'en-XA' || locale === 'en-XL') ? 'de-DE' : locale;
 
   const formatter = new MessageFormat(message, localeForMessageFormat, formats);
 
-  // preformat values for the message format like KB and milliseconds
+  // Preformat values for the message format like KB and milliseconds.
   const valuesForMessageFormat = _preformatValues(formatter, values, message);
 
   return formatter.format(valuesForMessageFormat);
@@ -359,7 +359,7 @@ function getRendererFormattedStrings(locale) {
  * @param {string} filename
  * @param {Record<string, string>} fileStrings
  */
-function createMessageInstanceIdFn(filename, fileStrings) {
+function createIcuMessageFn(filename, fileStrings) {
   /**
    * Combined so fn can access both caller's strings and i18n.UIStrings shared across LH.
    * @type {Record<string, string>}
@@ -427,6 +427,11 @@ function isIcuMessage(icuMessageOrNot) {
 }
 
 /**
+ * Get the localized and formatted form of `icuMessageOrRawString` if it's an
+ * LH.IcuMessage, or get it back directly if it's already a string.
+ * Warning: this function throws if `icuMessageOrRawString` is not the expected
+ * type (use function from `createIcuMessageFn` to create a valid LH.IcuMessage)
+ * or `locale` isn't supported (use `lookupLocale` to find a valid locale).
  * @param {LH.IcuMessage | string} icuMessageOrRawString
  * @param {LH.Locale} locale
  * @return {string}
@@ -511,10 +516,12 @@ module.exports = {
   UIStrings,
   lookupLocale,
   getRendererFormattedStrings,
-  createMessageInstanceIdFn,
+  createIcuMessageFn,
   getFormatted,
   replaceIcuMessages,
   isIcuMessage,
   collectAllCustomElementsFromICU,
   registerLocaleData,
+  // TODO: exported for backwards compatibility. Consider removing on future breaking change.
+  createMessageInstanceIdFn: createIcuMessageFn,
 };

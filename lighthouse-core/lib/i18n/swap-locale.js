@@ -56,7 +56,7 @@ function swapLocale(lhr, requestedLocale) {
 
   for (const [i18nId, icuMessagePath] of Object.entries(icuMessagePaths)) {
     for (const instance of icuMessagePath) {
-      // The path that _formatPathAsString() generated
+      // The path that _formatPathAsString() generated.
       let path;
       let values;
       if (typeof instance === 'string') {
@@ -68,9 +68,9 @@ function swapLocale(lhr, requestedLocale) {
       }
 
       // If the path isn't valid or the value isn't a string, there's no point in trying to replace it.
+      /** @type {unknown} */
       const originalString = _get(lhr, path);
       if (typeof originalString !== 'string') {
-        // TODO(bckenny): what to do in this case? Ignore?
         continue;
       }
 
@@ -81,7 +81,6 @@ function swapLocale(lhr, requestedLocale) {
         formattedDefault: originalString,
       };
       // Get new formatted strings in revised locale.
-      // TODO(bckenny): need to catch mis-matched arguments from updated strings here too?
       const relocalizedString = i18n.getFormatted(icuMessage, locale);
 
       // If we couldn't find a new replacement message, keep things as is.

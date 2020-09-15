@@ -118,6 +118,19 @@ describe('i18n', () => {
 
       expect(replacements).toEqual(replacementsClone);
     });
+
+    it('returns a message that is already a string unchanged', () => {
+      const testString = 'kind of looks like it needs ({formatting})';
+      const formattedStr = i18n.getFormatted(testString, 'pl');
+      expect(formattedStr).toBe(testString);
+    });
+
+    it('throws an error if formatting something other than IcuMessages or strings', () => {
+      expect(_ => i18n.getFormatted(15, 'lt'))
+        .toThrow(`Attempted to format invalid icuMessage type`);
+      expect(_ => i18n.getFormatted(new Date(), 'sr-Latn'))
+        .toThrow(`Attempted to format invalid icuMessage type`);
+    });
   });
 
   describe('#lookupLocale', () => {
@@ -196,6 +209,68 @@ describe('i18n', () => {
       moduleLocales['es-419'] = clonedLocales['es-419'];
       const title = i18n.getFormatted(str_(UIStrings.title), 'es-419');
       expect(title).toEqual('Usa HTTPS');
+    });
+  });
+
+  describe('#isIcuMessage', () => {
+    const icuMessage = {
+      i18nId: 'lighthouse-core/test/lib/i18n/fake-file.js | title',
+      values: {x: 1},
+      formattedDefault: 'a default',
+    };
+
+    it('passes a valid LH.IcuMessage', () => {
+      expect(i18n.isIcuMessage(icuMessage)).toBe(true);
+    });
+
+    it('fails non-objects', () => {
+      expect(i18n.isIcuMessage(undefined)).toBe(false);
+      expect(i18n.isIcuMessage(null)).toBe(false);
+      expect(i18n.isIcuMessage('ICU!')).toBe(false);
+      expect(i18n.isIcuMessage(55)).toBe(false);
+      expect(i18n.isIcuMessage([
+        icuMessage,
+        icuMessage,
+      ])).toBe(false);
+    });
+
+    it('fails invalid or missing i18nIds', () => {
+      const badIdMessage = {...icuMessage, i18nId: 0};
+      expect(i18n.isIcuMessage(badIdMessage)).toBe(false);
+
+      const noIdMessage = {...icuMessage};
+      delete noIdMessage.i18nId;
+      expect(i18n.isIcuMessage(noIdMessage)).toBe(false);
+    });
+
+    it('fails invalid or missing formattedDefault', () => {
+      const badDefaultMessage = {...icuMessage, formattedDefault: -0};
+      expect(i18n.isIcuMessage(badDefaultMessage)).toBe(false);
+
+      const noDefaultMessage = {...icuMessage};
+      delete noDefaultMessage.formattedDefault;
+      expect(i18n.isIcuMessage(noDefaultMessage)).toBe(false);
+    });
+
+    it('passes missing values', () => {
+      const emptyValuesMessage = {...icuMessage, values: {}};
+      expect(i18n.isIcuMessage(emptyValuesMessage)).toBe(true);
+
+      const noValuesMessage = {...icuMessage};
+      delete noValuesMessage.values;
+      expect(i18n.isIcuMessage(noValuesMessage)).toBe(true);
+    });
+
+    it('fails invalid values types', () => {
+      const badValuesMessage = {...icuMessage, values: NaN};
+      expect(i18n.isIcuMessage(badValuesMessage)).toBe(false);
+      const nullValuesMessage = {...icuMessage, values: null};
+      expect(i18n.isIcuMessage(nullValuesMessage)).toBe(false);
+    });
+
+    it(`fails invalid values' values types`, () => {
+      const badValuesValuesMessage = {...icuMessage, values: {a: false}};
+      expect(i18n.isIcuMessage(badValuesValuesMessage)).toBe(false);
     });
   });
 
