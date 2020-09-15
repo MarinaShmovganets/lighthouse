@@ -29,7 +29,6 @@ describe('Link Elements gatherer', () => {
       boundingRect: null,
       selector: '',
       ...overrides,
-
     };
   }
 
