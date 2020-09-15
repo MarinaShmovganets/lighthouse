@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global document, window, getComputedStyle, getElementsInDocument, Node, getNodeInfo */
+/* global document, window, getComputedStyle, getElementsInDocument, Node, getNodeDetails */
 
 const Gatherer = require('../gatherer.js');
 const pageFunctions = require('../../../lib/page-functions.js');
@@ -142,19 +142,6 @@ function elementIsInTextBlock(element) {
 }
 
 /**
- * @param {string} str
- * @param {number} maxLength
- * @return {string}
- */
-/* istanbul ignore next */
-function truncate(str, maxLength) {
-  if (str.length <= maxLength) {
-    return str;
-  }
-  return str.slice(0, maxLength - 1) + '…';
-}
-
-/**
  * @param {Element} el
  * @param {{x: number, y: number}} elCenterPoint
  */
@@ -284,8 +271,8 @@ function gatherTapTargets() {
     targets.push({
       clientRects: visibleClientRects,
       href: /** @type {HTMLAnchorElement} */(tapTargetElement)['href'] || '',
-      // @ts-expect-error - getNodeInfo put into scope via stringification
-      ...getNodeInfo(tapTargetElement),
+      // @ts-expect-error - getNodeDetails put into scope via stringification
+      ...getNodeDetails(tapTargetElement),
     });
   }
 
@@ -307,7 +294,6 @@ class TapTargets extends Gatherer {
       ${elementIsVisible.toString()};
       ${elementHasAncestorTapTarget.toString()};
       ${elementCenterIsAtZAxisTop.toString()}
-      ${truncate.toString()};
       ${getClientRects.toString()};
       ${hasTextNodeSiblingsFormingTextBlock.toString()};
       ${elementIsInTextBlock.toString()};
@@ -315,7 +301,7 @@ class TapTargets extends Gatherer {
       ${getLargestRect.toString()};
       ${getRectCenterPoint.toString()};
       ${rectContains.toString()};
-      ${pageFunctions.getNodeInfoString};
+      ${pageFunctions.getNodeDetailsString};
       ${gatherTapTargets.toString()};
 
       return gatherTapTargets();

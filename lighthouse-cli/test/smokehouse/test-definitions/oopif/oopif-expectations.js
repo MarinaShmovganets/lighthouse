@@ -33,7 +33,7 @@ module.exports = [
         {
           id: 'oopif',
           src: 'https://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/',
-          boundingRect: {
+          clientRect: {
             width: '>0',
             height: '>0',
           },
@@ -42,7 +42,7 @@ module.exports = [
         {
           id: 'outer-iframe',
           src: 'http://localhost:10200/online-only.html',
-          boundingRect: {
+          clientRect: {
             width: '>0',
             height: '>0',
           },

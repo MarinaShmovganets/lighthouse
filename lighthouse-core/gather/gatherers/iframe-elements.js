@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global getNodeInfo */
+/* global getNodeDetails */
 
 const Gatherer = require('./gatherer.js');
 const pageFunctions = require('../../lib/page-functions.js');
@@ -28,8 +28,8 @@ function collectIFrameElements() {
       clientRect: {top, bottom, left, right, width, height},
       // @ts-expect-error - put into scope via stringification
       isPositionFixed: isPositionFixed(node), // eslint-disable-line no-undef
-      // @ts-expect-error - getNodeInfo put into scope via stringification
-      ...getNodeInfo(node),
+      // @ts-expect-error - getNodeDetails put into scope via stringification
+      ...getNodeDetails(node),
     };
   });
 }
@@ -46,7 +46,7 @@ class IFrameElements extends Gatherer {
     const expression = `(() => {
       ${pageFunctions.getElementsInDocumentString};
       ${pageFunctions.isPositionFixedString};
-      ${pageFunctions.getNodeInfoString};
+      ${pageFunctions.getNodeDetailsString};
       return (${collectIFrameElements})();
     })()`;
 

@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global getNodeInfo */
+/* global getNodeDetails */
 
 const Gatherer = require('./gatherer.js');
 const pageFunctions = require('../../lib/page-functions.js');
@@ -43,6 +43,8 @@ function collectAnchorElements() {
   const anchorElements = getElementsInDocument('a'); // eslint-disable-line no-undef
 
   return anchorElements.map(node => {
+    // @ts-expect-error - getNodeDetails put into scope via stringification
+    const nodeInfo = getNodeDetails(node);
     if (node instanceof HTMLAnchorElement) {
       return {
         href: node.href,
@@ -53,8 +55,7 @@ function collectAnchorElements() {
         text: node.innerText, // we don't want to return hidden text, so use innerText
         rel: node.rel,
         target: node.target,
-        // @ts-expect-error - getNodeInfo put into scope via stringification
-        ...getNodeInfo(node),
+        ...nodeInfo,
       };
     }
 
@@ -66,8 +67,7 @@ function collectAnchorElements() {
       text: node.textContent || '',
       rel: '',
       target: node.target.baseVal || '',
-      // @ts-expect-error - getNodeInfo put into scope via stringification
-      ...getNodeInfo(node),
+      ...nodeInfo,
     };
   });
 }
@@ -97,7 +97,7 @@ class AnchorElements extends Gatherer {
     const driver = passContext.driver;
     const expression = `(() => {
       ${pageFunctions.getElementsInDocumentString};
-      ${pageFunctions.getNodeInfoString};
+      ${pageFunctions.getNodeDetailsString};
 
       return (${collectAnchorElements})();
     })()`;

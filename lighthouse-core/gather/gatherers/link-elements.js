@@ -9,12 +9,9 @@ const LinkHeader = require('http-link-header');
 const Gatherer = require('./gatherer.js');
 const {URL} = require('../../lib/url-shim.js');
 const NetworkAnalyzer = require('../../lib/dependency-graph/simulator/network-analyzer.js');
-const {
-  getElementsInDocumentString,
-  getNodeInfoString,
-} = require('../../lib/page-functions.js');
+const {getElementsInDocumentString, getNodeDetailsString} = require('../../lib/page-functions.js');
 
-/* globals HTMLLinkElement getNodeInfo */
+/* globals HTMLLinkElement getNodeDetails */
 
 /**
  * @fileoverview
@@ -74,7 +71,7 @@ function getLinkElementsInDOM() {
       hrefRaw,
       source,
       // @ts-expect-error - put into scope via stringification
-      ...getNodeInfo(link),
+      ...getNodeDetails(link),
     });
   }
 
@@ -92,7 +89,7 @@ class LinkElements extends Gatherer {
     return passContext.driver.evaluateAsync(`(() => {
       ${getElementsInDocumentString};
       ${getLinkElementsInDOM};
-      ${getNodeInfoString};
+      ${getNodeDetailsString};
 
       return getLinkElementsInDOM();
     })()`, {useIsolation: true});
@@ -123,6 +120,11 @@ class LinkElements extends Gatherer {
           as: link.as || '',
           crossOrigin: getCrossoriginFromHeader(link.crossorigin),
           source: 'headers',
+          devtoolsNodePath: '',
+          selector: '',
+          nodeLabel: '',
+          boundingRect: null,
+          snippet: '',
         });
       }
     }

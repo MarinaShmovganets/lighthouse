@@ -14,7 +14,7 @@ const pageFunctions = require('../../lib/page-functions.js');
 const Driver = require('../driver.js'); // eslint-disable-line no-unused-vars
 const FontSize = require('./seo/font-size.js');
 
-/* global window, getElementsInDocument, Image, getNodeInfo, ShadowRoot */
+/* global window, getElementsInDocument, Image, getNodeDetails, ShadowRoot */
 
 
 /** @param {Element} element */
@@ -86,8 +86,8 @@ function getHTMLImages(allElements) {
       isInShadowDOM: element.getRootNode() instanceof ShadowRoot,
       // https://html.spec.whatwg.org/multipage/images.html#pixel-density-descriptor
       usesSrcSetDensityDescriptor: / \d+(\.\d+)?x/.test(element.srcset),
-      // @ts-expect-error - getNodeInfo put into scope via stringification
-      ...getNodeInfo(element),
+      // @ts-expect-error - getNodeDetails put into scope via stringification
+      ...getNodeDetails(element),
     };
   });
 }
@@ -137,8 +137,8 @@ function getCSSImages(allElements) {
       ),
       usesSrcSetDensityDescriptor: false,
       resourceSize: 0, // this will get overwritten below
-      // @ts-expect-error - getNodeInfo put into scope via stringification
-      ...getNodeInfo(element),
+      // @ts-expect-error - getNodeDetails put into scope via stringification
+      ...getNodeDetails(element),
     });
   }
 
@@ -301,7 +301,7 @@ class ImageElements extends Gatherer {
     const expression = `(function() {
       ${pageFunctions.getElementsInDocumentString}; // define function on page
       ${pageFunctions.getBoundingClientRectString};
-      ${pageFunctions.getNodeInfoString};
+      ${pageFunctions.getNodeDetailsString};
       ${getClientRect.toString()};
       ${getPosition.toString()};
       ${getHTMLImages.toString()};

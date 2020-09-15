@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global document ClipboardEvent getNodeInfo */
+/* global document ClipboardEvent getNodeDetails */
 
 const Gatherer = require('../gatherer.js');
 const pageFunctions = require('../../../lib/page-functions.js');
@@ -22,10 +22,10 @@ function findPasswordInputsWithPreventedPaste() {
         new ClipboardEvent('paste', {cancelable: true})
       )
     )
-    .map(passwordInput => ({
-      // @ts-expect-error - getNodeInfo put into scope via stringification
-      ...getNodeInfo(passwordInput),
-    }));
+    .map(passwordInput => (
+      // @ts-expect-error - getNodeDetails put into scope via stringification
+      getNodeDetails(passwordInput)
+    ));
 }
 
 class PasswordInputsWithPreventedPaste extends Gatherer {
@@ -35,7 +35,7 @@ class PasswordInputsWithPreventedPaste extends Gatherer {
    */
   afterPass(passContext) {
     const expression = `(() => {
-      ${pageFunctions.getNodeInfoString};
+      ${pageFunctions.getNodeDetailsString};
       return (${findPasswordInputsWithPreventedPaste.toString()}());
     })()`;
 

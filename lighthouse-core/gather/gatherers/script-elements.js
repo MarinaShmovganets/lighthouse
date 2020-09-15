@@ -11,7 +11,7 @@ const NetworkRequest = require('../../lib/network-request.js');
 const getElementsInDocumentString = require('../../lib/page-functions.js').getElementsInDocumentString; // eslint-disable-line max-len
 const pageFunctions = require('../../lib/page-functions.js');
 
-/* global getNodeInfo */
+/* global getNodeDetails */
 
 /**
  * @return {LH.Artifacts['ScriptElements']}
@@ -30,8 +30,8 @@ function collectAllScriptElements() {
       async: script.async,
       defer: script.defer,
       source: /** @type {'head'|'body'} */ (script.closest('head') ? 'head' : 'body'),
-      // @ts-expect-error - getNodeInfo put into scope via stringification
-      ...getNodeInfo(script),
+      // @ts-expect-error - getNodeDetails put into scope via stringification
+      ...getNodeDetails(script),
       content: script.src ? null : script.text,
       requestId: null,
     };
@@ -75,7 +75,7 @@ class ScriptElements extends Gatherer {
     /** @type {LH.Artifacts['ScriptElements']} */
     const scripts = await driver.evaluateAsync(`(() => {
       ${getElementsInDocumentString}
-      ${pageFunctions.getNodeInfoString};
+      ${pageFunctions.getNodeDetailsString};
       return (${collectAllScriptElements.toString()})();
     })()`, {useIsolation: true});
 
@@ -111,6 +111,7 @@ class ScriptElements extends Gatherer {
           snippet: '',
           selector: '',
           nodeLabel: '',
+          boundingRect: null,
           type: null,
           src: record.url,
           id: null,

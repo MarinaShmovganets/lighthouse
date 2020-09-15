@@ -5,7 +5,7 @@
  */
 'use strict';
 
-/* global getNodeInfo */
+/* global getNodeDetails */
 
 const Gatherer = require('./gatherer.js');
 const pageFunctions = require('../../lib/page-functions.js');
@@ -39,8 +39,8 @@ function collectFormElements() {
           id: parentFormElement.id,
           name: parentFormElement.name,
           autocomplete: parentFormElement.autocomplete,
-          // @ts-expect-error - getNodeInfo put into scope via stringification
-          ...getNodeInfo(parentFormElement),
+          // @ts-expect-error - getNodeDetails put into scope via stringification
+          ...getNodeDetails(parentFormElement),
         },
         inputs: [],
         labels: [],
@@ -55,16 +55,20 @@ function collectFormElements() {
         id: child.id,
         name: child.name,
         placeholder: child instanceof HTMLSelectElement ? undefined : child.placeholder,
-        autocomplete: child.autocomplete,
-        // @ts-expect-error - getNodeInfo put into scope via stringification
-        ...getNodeInfo(child),
+        autocomplete: {
+          property: child.autocomplete,
+          attribute: child.getAttribute('autocomplete'),
+          prediction: child.getAttribute('autofill-prediction'),
+        },
+        // @ts-expect-error - getNodeDetails put into scope via stringification
+        ...getNodeDetails(child),
       });
     }
     if (child instanceof HTMLLabelElement) {
       formObj.labels.push({
         for: child.htmlFor,
-        // @ts-expect-error - getNodeInfo put into scope via stringification
-        ...getNodeInfo(child),
+        // @ts-expect-error - getNodeDetails put into scope via stringification
+        ...getNodeDetails(child),
       });
     }
   }
@@ -88,7 +92,7 @@ class FormElements extends Gatherer {
 
     const expression = `(() => {
       ${pageFunctions.getElementsInDocumentString};
-      ${pageFunctions.getNodeInfoString};
+      ${pageFunctions.getNodeDetailsString};
       return (${collectFormElements})();
     })()`;
 
