@@ -32,17 +32,17 @@ declare global {
      * Heavy handed and requires more type checks, so prefer explicitly setting
      * properties to include `LH.IcuMessage` over this helper if possible.
      */
-    type Icu<T> = T extends IcuMessage ? T :
+    type RawIcu<T> = T extends IcuMessage ? T :
       // Check `string extends T` so LH.IcuMessage isn't added to union of string literals.
       string extends T ? (T|IcuMessage) :
       // Otherwise recurse into any properties and repeat.
-      {[K in keyof T]: Icu<T[K]>};
+      {[K in keyof T]: RawIcu<T[K]>};
 
     /**
      * A helper to represent the localization process, recursively finding all
      * `LH.IcuMessage` properties in `T` and replacing them with `string`.
      *
-     * Essentially undoes `LH.Icu<T>`, but as with that type, prefer using types
+     * Essentially undoes `LH.RawIcu<T>`, but as with that type, prefer using types
      * with explicit `string` properties over this helper if possible.
      */
     type FormattedIcu<T> = T extends IcuMessage ?

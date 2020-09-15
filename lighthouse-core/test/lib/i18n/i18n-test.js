@@ -32,7 +32,7 @@ describe('i18n', () => {
   });
 
   describe('#createMessageInstanceIdFn', () => {
-    it('returns a IcuMessage reference', () => {
+    it('returns an IcuMessage reference', () => {
       const fakeFile = path.join(__dirname, 'fake-file.js');
       const templates = {daString: 'use {x} me!'};
       const formatter = i18n.createMessageInstanceIdFn(fakeFile, templates);

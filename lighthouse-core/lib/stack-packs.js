@@ -56,10 +56,10 @@ const stackPacksToInclude = [
 /**
  * Returns all packs that match the stacks found in the page.
  * @param {LH.Artifacts['Stacks']} pageStacks
- * @return {LH.Icu<Array<LH.Result.StackPack>>}
+ * @return {LH.RawIcu<Array<LH.Result.StackPack>>}
  */
 function getStackPacks(pageStacks) {
-  /** @type {LH.Icu<Array<LH.Result.StackPack>>} */
+  /** @type {LH.RawIcu<Array<LH.Result.StackPack>>} */
   const packs = [];
 
   for (const pageStack of pageStacks) {

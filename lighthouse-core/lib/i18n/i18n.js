@@ -207,14 +207,14 @@ function collectAllCustomElementsFromICU(icuElements, seenElementsById = new Map
 
 /**
  * Returns a copy of the `values` object, with the values formatted based on how
- * they will be used in the `icuMessage`, e.g. KB or milliseconds. The original
+ * they will be used in their icuMessage, e.g. KB or milliseconds. The original
  * object is unchanged.
  * @param {MessageFormat} messageFormatter
  * @param {Readonly<Record<string, string | number>>} values
- * @param {string} icuMessage Used for clear error logging.
+ * @param {string} lhlMessage Used for clear error logging.
  * @return {Record<string, string | number>}
  */
-function _preformatValues(messageFormatter, values, icuMessage) {
+function _preformatValues(messageFormatter, values, lhlMessage) {
   const elementMap = collectAllCustomElementsFromICU(messageFormatter.getAst().elements);
   const argumentElements = [...elementMap.values()];
 
@@ -224,7 +224,7 @@ function _preformatValues(messageFormatter, values, icuMessage) {
   for (const {id, format} of argumentElements) {
     // Throw an error if a message's value isn't provided
     if (id && (id in values) === false) {
-      throw new Error(`ICU Message "${icuMessage}" contains a value reference ("${id}") ` +
+      throw new Error(`ICU Message "${lhlMessage}" contains a value reference ("${id}") ` +
         `that wasn't provided`);
     }
 
@@ -237,7 +237,7 @@ function _preformatValues(messageFormatter, values, icuMessage) {
     }
 
     if (typeof value !== 'number') {
-      throw new Error(`ICU Message "${icuMessage}" contains a numeric reference ("${id}") ` +
+      throw new Error(`ICU Message "${lhlMessage}" contains a numeric reference ("${id}") ` +
         'but provided value was not a number');
     }
 
@@ -268,7 +268,7 @@ function _preformatValues(messageFormatter, values, icuMessage) {
     }
 
     throw new Error(`Provided value "${valueId}" does not match any placeholder in ` +
-      `ICU message "${icuMessage}"`);
+      `ICU message "${lhlMessage}"`);
   }
 
   return formattedValues;

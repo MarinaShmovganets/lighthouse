@@ -114,7 +114,7 @@ class Runner {
         'axe-core': axeVersion,
       };
 
-      /** @type {Record<string, LH.Icu<LH.Result.Category>>} */
+      /** @type {Record<string, LH.RawIcu<LH.Result.Category>>} */
       let categories = {};
       if (runOpts.config.categories) {
         categories = ReportScoring.scoreAllCategories(runOpts.config.categories, auditResultsById);
@@ -123,7 +123,7 @@ class Runner {
       log.timeEnd(resultsStatus);
       log.timeEnd(runnerStatus);
 
-      /** @type {LH.Icu<LH.Result>} */
+      /** @type {LH.RawIcu<LH.Result>} */
       const i18nLhr = {
         userAgent: artifacts.HostUserAgent,
         environment: {
@@ -229,7 +229,7 @@ class Runner {
    * @param {Array<LH.Config.AuditDefn>} audits
    * @param {LH.Artifacts} artifacts
    * @param {Array<string | LH.IcuMessage>} runWarnings
-   * @return {Promise<Record<string, LH.Icu<LH.Audit.Result>>>}
+   * @return {Promise<Record<string, LH.RawIcu<LH.Audit.Result>>>}
    */
   static async _runAudits(settings, audits, artifacts, runWarnings) {
     const status = {msg: 'Analyzing and running audits...', id: 'lh:runner:auditing'};
@@ -259,7 +259,7 @@ class Runner {
     };
 
     // Run each audit sequentially
-    /** @type {Record<string, LH.Icu<LH.Audit.Result>>} */
+    /** @type {Record<string, LH.RawIcu<LH.Audit.Result>>} */
     const auditResultsById = {};
     for (const auditDefn of audits) {
       const auditId = auditDefn.implementation.meta.id;
@@ -279,7 +279,7 @@ class Runner {
    * @param {LH.Artifacts} artifacts
    * @param {Pick<LH.Audit.Context, 'settings'|'computedCache'>} sharedAuditContext
    * @param {Array<string | LH.IcuMessage>} runWarnings
-   * @return {Promise<LH.Icu<LH.Audit.Result>>}
+   * @return {Promise<LH.RawIcu<LH.Audit.Result>>}
    * @private
    */
   static async _runAudit(auditDefn, artifacts, sharedAuditContext, runWarnings) {
@@ -374,7 +374,7 @@ class Runner {
    * Searches a pass's artifacts for any `lhrRuntimeError` error artifacts.
    * Returns the first one found or `null` if none found.
    * @param {LH.Artifacts} artifacts
-   * @return {LH.Icu<LH.Result['runtimeError']>|undefined}
+   * @return {LH.RawIcu<LH.Result['runtimeError']>|undefined}
    */
   static getArtifactRuntimeError(artifacts) {
     const possibleErrorArtifacts = [
