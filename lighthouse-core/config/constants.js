@@ -1,5 +1,5 @@
 /**
- * @license Copyright 2018 Google Inc. All Rights Reserved.
+ * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
@@ -30,7 +30,7 @@ const throttling = {
   // These values partially align with WebPageTest's definition of "Regular 3G".
   // These values are meant to roughly align with Chrome UX report's 3G definition which are based
   // on HTTP RTT of 300-1400ms and downlink throughput of <700kbps.
-  mobileRegluar3G: {
+  mobileRegular3G: {
     rttMs: 300,
     throughputKbps: 700,
     requestLatencyMs: 300 * DEVTOOLS_RTT_ADJUSTMENT_FACTOR,
@@ -83,6 +83,7 @@ const defaultPassConfig = {
   loadFailureMode: 'fatal',
   recordTrace: false,
   useThrottling: false,
+  pauseAfterFcpMs: 0,
   pauseAfterLoadMs: 0,
   networkQuietThresholdMs: 0,
   cpuQuietThresholdMs: 0,
@@ -92,6 +93,7 @@ const defaultPassConfig = {
 };
 
 const nonSimulatedPassConfigOverrides = {
+  pauseAfterFcpMs: 5250,
   pauseAfterLoadMs: 5250,
   networkQuietThresholdMs: 5250,
   cpuQuietThresholdMs: 5250,
