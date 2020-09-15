@@ -2372,6 +2372,7 @@
             "node": {
               "type": "node",
               "selector": "html",
+              "path": "3,HTML",
               "snippet": "<html manifest=\"clock.appcache\">",
               "boundingRect": {
                 "width": 412,
@@ -2424,6 +2425,7 @@
             "node": {
               "type": "node",
               "selector": "img[height=\"\\35 7\"]",
+              "path": "3,HTML,1,BODY,10,IMG",
               "snippet": "<img src=\"lighthouse-480x318.jpg\" width=\"480\" height=\"57\">",
               "boundingRect": {
                 "width": 480,
@@ -2441,6 +2443,7 @@
             "node": {
               "type": "node",
               "selector": "img[height=\"\\33 18\"]",
+              "path": "3,HTML,1,BODY,12,IMG",
               "snippet": "<img src=\"lighthouse-480x318.jpg\" width=\"480\" height=\"318\">",
               "boundingRect": {
                 "width": 480,
@@ -2458,6 +2461,7 @@
             "node": {
               "type": "node",
               "selector": "img[src$=\"lighthouse-rotating\\.gif\"]",
+              "path": "3,HTML,1,BODY,14,IMG",
               "snippet": "<img src=\"lighthouse-rotating.gif\" width=\"811\" height=\"462\">",
               "boundingRect": {
                 "width": 811,
@@ -2475,6 +2479,7 @@
             "node": {
               "type": "node",
               "selector": "img:nth-child(30)",
+              "path": "3,HTML,1,BODY,53,IMG",
               "snippet": "<img src=\"blob:http://localhost:54759/41e77cc6-8eb2-49d5-a819-7edf852531be\">",
               "boundingRect": {
                 "width": 16,
@@ -2529,6 +2534,7 @@
             "node": {
               "type": "node",
               "selector": "input[onpaste=\"event\\.preventDefault\\(\\)\\;\"]",
+              "path": "3,HTML,1,BODY,48,INPUT",
               "snippet": "<input type=\"password\" onpaste=\"event.preventDefault();\">",
               "boundingRect": {
                 "width": 131,
@@ -2546,6 +2552,7 @@
             "node": {
               "type": "node",
               "selector": "input:nth-child(28)",
+              "path": "3,HTML,1,BODY,50,INPUT",
               "snippet": "<input type=\"password\">",
               "boundingRect": {
                 "width": 131,
@@ -2563,6 +2570,7 @@
             "node": {
               "type": "node",
               "selector": "input[onpaste=\"return\\ false\\;\"]",
+              "path": "3,HTML,1,BODY,52,INPUT",
               "snippet": "<input type=\"password\" onpaste=\"return false;\">",
               "boundingRect": {
                 "width": 131,
@@ -3517,7 +3525,7 @@
       "score": 0,
       "scoreDisplayMode": "binary",
       "warnings": [
-        "Unable to determine the destination for anchor (). If not used as a hyperlink, consider removing target=_blank."
+        "Unable to determine the destination for anchor (<a target=\"_blank\">). If not used as a hyperlink, consider removing target=_blank."
       ],
       "details": {
         "type": "table",
@@ -3535,12 +3543,12 @@
               "path": "3,HTML,1,BODY,36,A",
               "selector": "body > a",
               "nodeLabel": "external link",
-              "snippet": ""
+              "snippet": "<a href=\"https://www.google.com/\" target=\"_blank\">"
             },
             "href": "https://www.google.com/",
             "target": "_blank",
             "rel": "",
-            "outerHTML": ""
+            "outerHTML": "<a href=\"https://www.google.com/\" target=\"_blank\">"
           },
           {
             "node": {
@@ -3548,12 +3556,12 @@
               "path": "3,HTML,1,BODY,38,A",
               "selector": "body > a",
               "nodeLabel": "external link",
-              "snippet": ""
+              "snippet": "<a target=\"_blank\">"
             },
             "href": "Unknown",
             "target": "_blank",
             "rel": "",
-            "outerHTML": ""
+            "outerHTML": "<a target=\"_blank\">"
           },
           {
             "node": {
@@ -3561,12 +3569,12 @@
               "path": "3,HTML,1,BODY,40,A",
               "selector": "body > a",
               "nodeLabel": "external link",
-              "snippet": ""
+              "snippet": "<a href=\"https://www.google.com/\" target=\"_blank\" rel=\"nofollow\">"
             },
             "href": "https://www.google.com/",
             "target": "_blank",
             "rel": "nofollow",
-            "outerHTML": ""
+            "outerHTML": "<a href=\"https://www.google.com/\" target=\"_blank\" rel=\"nofollow\">"
           },
           {
             "node": {
@@ -3574,12 +3582,12 @@
               "path": "3,HTML,1,BODY,52,A",
               "selector": "body > a",
               "nodeLabel": "internal link is ok",
-              "snippet": ""
+              "snippet": "<a href=\"./doesnotexist\" target=\"_blank\">"
             },
             "href": "http://localhost:53522/dobetterweb/doesnotexist",
             "target": "_blank",
             "rel": "",
-            "outerHTML": ""
+            "outerHTML": "<a href=\"./doesnotexist\" target=\"_blank\">"
           }
         ]
       }
@@ -4081,6 +4089,7 @@
             "tapTarget": {
               "type": "node",
               "snippet": "<button class=\"small-button\">Do something</button>",
+              "path": "3,HTML,1,BODY,17,BUTTON",
               "selector": "body > button.small-button",
               "boundingRect": {
                 "left": 8,
@@ -4095,6 +4104,7 @@
             "overlappingTarget": {
               "type": "node",
               "snippet": "<button class=\"small-button\">Do something else</button>",
+              "path": "3,HTML,1,BODY,18,BUTTON",
               "selector": "body > button.small-button",
               "boundingRect": {
                 "left": 8,
@@ -7585,7 +7595,9 @@
       ],
       "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | warning": [
         {
-          "values": {},
+          "values": {
+            "anchorHTML": "<a target=\"_blank\">"
+          },
           "path": "audits[external-anchors-use-rel-noopener].warnings[0]"
         }
       ],
