@@ -120,6 +120,11 @@ class LinkElements extends Gatherer {
           as: link.as || '',
           crossOrigin: getCrossoriginFromHeader(link.crossorigin),
           source: 'headers',
+          devtoolsNodePath: '',
+          selector: '',
+          nodeLabel: '',
+          boundingRect: null,
+          snippet: '',
         });
       }
     }
