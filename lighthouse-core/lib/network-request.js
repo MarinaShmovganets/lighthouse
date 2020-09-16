@@ -376,9 +376,9 @@ class NetworkRequest {
     // Bail if we aren't in Lightrider.
     if (!global.isLightrider) return;
 
-    if (!this.responseHeaders.some(item => item.name === HEADER_PROTOCOL_IS_H2)) return;
-
-    this.protocol = 'h2';
+    if (this.responseHeaders.some(item => item.name === HEADER_PROTOCOL_IS_H2)) {
+      this.protocol = 'h2';
+    }
   }
 
   /**
