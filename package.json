@@ -185,7 +185,7 @@
     "chrome",
     "devtools"
   ],
-  "author": "Google Inc.",
+  "author": "The Lighthouse Authors",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/GoogleChrome/lighthouse/issues"
