@@ -5,5 +5,3 @@
 @homepage <%= pkg.homepage %>
 @author   <%= pkg.author %>
 @license  <%= pkg.license %>
-
-@ts-nocheck - Prevent tsc stepping into any required bundles.
