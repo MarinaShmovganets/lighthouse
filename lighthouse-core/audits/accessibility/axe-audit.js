@@ -78,8 +78,8 @@ class AxeAudit extends Audit {
         node: /** @type {LH.Audit.Details.NodeValue} */ ({
           type: 'node',
           selector: Array.isArray(node.target) ? node.target.join(' ') : '',
-          path: node.path,
-          snippet: node.html || node.snippet,
+          path: node.devtoolsNodePath,
+          snippet: node.snippet,
           boundingRect: node.boundingRect,
           explanation: node.failureSummary,
           nodeLabel: node.nodeLabel,
