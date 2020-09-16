@@ -196,6 +196,7 @@ class NetworkRequest {
    */
   onResponseReceived(data) {
     this._onResponse(data.response, data.timestamp, data.type);
+    this._updateProtocolForLightrider();
     this.frameId = data.frameId;
   }
 
@@ -224,7 +225,6 @@ class NetworkRequest {
 
     this._updateResponseReceivedTimeIfNecessary();
     this._updateTransferSizeForLightrider();
-    this._updateProtocolForLightrider();
     this._updateTimingsForLightrider();
   }
 
@@ -244,7 +244,6 @@ class NetworkRequest {
 
     this._updateResponseReceivedTimeIfNecessary();
     this._updateTransferSizeForLightrider();
-    this._updateProtocolForLightrider();
     this._updateTimingsForLightrider();
   }
 
