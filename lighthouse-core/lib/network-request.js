@@ -476,5 +476,6 @@ NetworkRequest.HEADER_REQ = HEADER_REQ;
 NetworkRequest.HEADER_RES = HEADER_RES;
 NetworkRequest.HEADER_TOTAL = HEADER_TOTAL;
 NetworkRequest.HEADER_FETCHED_SIZE = HEADER_FETCHED_SIZE;
+NetworkRequest.HEADER_PROTOCOL_IS_H2 = HEADER_PROTOCOL_IS_H2;
 
 module.exports = NetworkRequest;
