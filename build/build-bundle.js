@@ -44,6 +44,9 @@ const isDevtools = file =>
 /** @param {string} file */
 const isLightrider = file => path.basename(file).includes('lightrider');
 
+// Set to true for source maps.
+const DEBUG = true;
+
 /**
  * Browserify starting at the file at entryPath. Contains entry-point-specific
  * ignores (e.g. for DevTools or the extension) to trim the bundle depending on
@@ -53,7 +56,7 @@ const isLightrider = file => path.basename(file).includes('lightrider');
  * @return {Promise<void>}
  */
 async function browserifyFile(entryPath, distPath) {
-  let bundle = browserify(entryPath, {debug: true});
+  let bundle = browserify(entryPath, {debug: DEBUG});
 
   bundle
     .plugin('browserify-banner', {
@@ -114,7 +117,7 @@ async function browserifyFile(entryPath, distPath) {
   const pathToURLShim = require.resolve('../lighthouse-core/lib/url-shim.js');
   bundle = bundle.require(pathToURLShim, {expose: 'url'});
 
-  const bundleStream = bundle.bundle();
+  let bundleStream = bundle.bundle();
 
   // Make sure path exists.
   await mkdir(path.dirname(distPath), {recursive: true});
@@ -123,10 +126,9 @@ async function browserifyFile(entryPath, distPath) {
     writeStream.on('finish', resolve);
     writeStream.on('error', reject);
 
-    bundleStream
-      // Extract the inline source map to an external file.
-      .pipe(exorcist(`${distPath}.map`))
-      .pipe(writeStream);
+    // Extract the inline source map to an external file.
+    if (DEBUG) bundleStream = bundleStream.pipe(exorcist(`${distPath}.map`));
+    bundleStream.pipe(writeStream);
   });
 }
 
@@ -145,7 +147,7 @@ function minifyScript(filePath) {
     keep_classnames: true,
     // Runtime.evaluate errors if function names are elided.
     keep_fnames: true,
-    sourceMap: {
+    sourceMap: DEBUG && {
       content: JSON.parse(fs.readFileSync(`${filePath}.map`, 'utf-8')),
       url: path.basename(`${filePath}.map`),
     },
@@ -155,8 +157,6 @@ function minifyScript(filePath) {
   }
 
   // Add the banner and modify globals for DevTools if necessary.
-  // This will mess up the source map for the first line, but we don't ship
-  // the map to DevTools, so that's fine.
   if (isDevtools(filePath) && result.code) {
     assert.ok(result.code.includes('\nrequire='), 'missing browserify require stub');
     result.code = result.code.replace('\nrequire=', '\nglobalThis.require=');
@@ -164,7 +164,7 @@ function minifyScript(filePath) {
   }
 
   fs.writeFileSync(filePath, result.code);
-  fs.writeFileSync(`${filePath}.map`, result.map);
+  if (DEBUG) fs.writeFileSync(`${filePath}.map`, result.map);
 }
 
 /**
