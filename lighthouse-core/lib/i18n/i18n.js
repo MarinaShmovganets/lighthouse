@@ -511,6 +511,15 @@ function registerLocaleData(locale, lhlMessages) {
   LOCALES[locale] = lhlMessages;
 }
 
+/**
+ * Returns true if the given value is a string or an LH.IcuMessage.
+ * @param {unknown} value
+ * @return {value is string|LH.IcuMessage}
+ */
+function isStringOrIcuMessage(value) {
+  return typeof value === 'string' || isIcuMessage(value);
+}
+
 module.exports = {
   _formatPathAsString,
   UIStrings,
@@ -522,6 +531,7 @@ module.exports = {
   isIcuMessage,
   collectAllCustomElementsFromICU,
   registerLocaleData,
+  isStringOrIcuMessage,
   // TODO: exported for backwards compatibility. Consider removing on future breaking change.
   createMessageInstanceIdFn: createIcuMessageFn,
 };

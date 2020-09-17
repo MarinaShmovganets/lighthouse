@@ -36,14 +36,6 @@ const mergeOptionsOfItems = function(items) {
 };
 
 /**
- * @param {unknown} value
- * @return {value is string|LH.IcuMessage}
- */
-function isStringOrIcuMessage(value) {
-  return typeof value === 'string' || i18n.isIcuMessage(value);
-}
-
-/**
  * Throws an error if the provided object does not implement the required properties of an audit
  * definition.
  * @param {LH.Config.AuditDefn} auditDefinition
@@ -62,19 +54,19 @@ function assertValidAudit(auditDefinition) {
     throw new Error(`${auditName} has no meta.id property, or the property is not a string.`);
   }
 
-  if (!isStringOrIcuMessage(implementation.meta.title)) {
+  if (!i18n.isStringOrIcuMessage(implementation.meta.title)) {
     throw new Error(`${auditName} has no meta.title property, or the property is not a string.`);
   }
 
   // If it'll have a ✔ or ✖ displayed alongside the result, it should have failureTitle
   if (
-    !isStringOrIcuMessage(implementation.meta.failureTitle) &&
+    !i18n.isStringOrIcuMessage(implementation.meta.failureTitle) &&
     implementation.meta.scoreDisplayMode === Audit.SCORING_MODES.BINARY
   ) {
     throw new Error(`${auditName} has no failureTitle and should.`);
   }
 
-  if (!isStringOrIcuMessage(implementation.meta.description)) {
+  if (!i18n.isStringOrIcuMessage(implementation.meta.description)) {
     throw new Error(
       `${auditName} has no meta.description property, or the property is not a string.`
     );
