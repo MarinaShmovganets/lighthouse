@@ -22,8 +22,8 @@ if (typeof globalThis === 'undefined') {
 }
 
 // Load bundle, which creates a `global.runBundledLighthouse`.
-// @ts-ignore - file exists if `yarn build-all` is run, but not used for types anyways.
-require('../../../../dist/lighthouse-dt-bundle.js'); // eslint-disable-line
+// Don't use static string so we can circumvent typescript.
+require('' + '../../../../dist/lighthouse-dt-bundle.js'); // eslint-disable-line
 
 // @ts-expect-error - `require` isn't on `global` in the node typedefs.
 global.require = originalRequire;
