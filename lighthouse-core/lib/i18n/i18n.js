@@ -308,7 +308,7 @@ function _localizeIcuMessage(icuMessage, locale) {
   // Fall back to the default (usually the original english message) if we couldn't find a
   // message in the specified locale. This could be because of string drift between
   // Lighthouse versions or because new strings haven't been updated yet. Better to have
-  // an english message than no message at all; in some number cases it won't even matter.
+  // an english message than no message at all; in some cases it won't even matter.
   if (!localeMessage) {
     return icuMessage.formattedDefault;
   }
