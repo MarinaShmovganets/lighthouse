@@ -158,6 +158,10 @@ function minifyScript(filePath) {
 
   // Add the banner and modify globals for DevTools if necessary.
   if (isDevtools(filePath) && result.code) {
+    // See lighthouse-cli/test/smokehouse/lighthouse-runners/bundle.js
+    result.code =
+      '// @ts-nocheck - Prevent tsc stepping into any required bundles.\n' + result.code;
+
     assert.ok(result.code.includes('\nrequire='), 'missing browserify require stub');
     result.code = result.code.replace('\nrequire=', '\nglobalThis.require=');
     assert.ok(!result.code.includes('\nrequire='), 'contained unexpected browserify require stub');
