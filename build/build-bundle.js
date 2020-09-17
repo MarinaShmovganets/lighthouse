@@ -158,9 +158,12 @@ function minifyScript(filePath) {
 
   // Add the banner and modify globals for DevTools if necessary.
   if (isDevtools(filePath) && result.code) {
+    // Add a comment for TypeScript, but not if in DEBUG mode so that source maps are not affected.
     // See lighthouse-cli/test/smokehouse/lighthouse-runners/bundle.js
-    result.code =
-      '// @ts-nocheck - Prevent tsc stepping into any required bundles.\n' + result.code;
+    if (!DEBUG) {
+      result.code =
+        '// @ts-nocheck - Prevent tsc stepping into any required bundles.\n' + result.code;
+    }
 
     assert.ok(result.code.includes('\nrequire='), 'missing browserify require stub');
     result.code = result.code.replace('\nrequire=', '\nglobalThis.require=');
