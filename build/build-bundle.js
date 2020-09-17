@@ -45,7 +45,7 @@ const isDevtools = file =>
 const isLightrider = file => path.basename(file).includes('lightrider');
 
 // Set to true for source maps.
-const DEBUG = true;
+const DEBUG = false;
 
 /**
  * Browserify starting at the file at entryPath. Contains entry-point-specific
