@@ -37,6 +37,7 @@ function minifyFileTransform(file) {
 
       if (result.code) {
         const saved = code.length - result.code.length;
+        // eslint-disable-next-line no-console
         console.log(`minifying ${file} saved ${saved / 1000} KB`);
         this.push(result.code);
       }
