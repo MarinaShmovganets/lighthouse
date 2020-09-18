@@ -14,8 +14,8 @@ const terser = require('terser');
  * @param {string} file
  */
 function minifyFileTransform(file) {
+  // Don't transform files that aren't javascript.
   if (!file.endsWith('.js')) {
-    //  Don't transform files that aren't javascript.
     return new stream.Transform({
       transform(chunk, enc, next) {
         this.push(chunk);
