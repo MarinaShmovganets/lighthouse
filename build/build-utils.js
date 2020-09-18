@@ -36,8 +36,8 @@ function minifyFileTransform(file) {
       }
 
       if (result.code) {
-        // const saved = code.length - result.code.length;
-        // console.log(`minifying ${file} saved ${saved / 1000} KB`);
+        const saved = code.length - result.code.length;
+        console.log(`minifying ${file} saved ${saved / 1000} KB`);
         this.push(result.code);
       }
 
