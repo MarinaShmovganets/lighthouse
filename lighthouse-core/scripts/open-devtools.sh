@@ -27,6 +27,15 @@ if [ ! -d $DEVTOOLS_PATH ]; then
   exit 1
 fi
 
+if ! which gn ; then
+  # If the contributor doesn't have a separate depot tools in their path, use the tmp copy.
+  DEPOT_TOOLS_PATH="$TEST_DIR/depot-tools"
+  BLINK_TOOLS_PATH="$TEST_DIR/blink_tools"
+  export PATH=$DEPOT_TOOLS_PATH:$PATH
+  # Add typ to python path. The regular method assumes there is a Chromium checkout.
+  export PYTHONPATH="${PYTHONPATH:-}:$BLINK_TOOLS_PATH/latest/third_party/typ"
+fi
+
 yarn build-devtools
 yarn devtools "$DEVTOOLS_PATH"
 
