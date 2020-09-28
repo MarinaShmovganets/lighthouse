@@ -343,5 +343,30 @@ describe('JsBundles computed artifact', () => {
         }
       `);
     });
+
+    it('5', async () => {
+      const newMappings = map.mappings.split(',');
+      expect(newMappings[1]).toBe('SAAAA');
+      // Make the line offset very big, force out of bounds.
+      // See https://www.mattzeunert.com/2016/02/14/how-do-source-maps-work.html
+      newMappings[1] = 'kDAAAA';
+      map.mappings = newMappings.join(',');
+      expect(await test()).toMatchInlineSnapshot(`
+        Object {
+          "entry": SourceMapEntry {
+            "columnNumber": 642,
+            "lastColumnNumber": 651,
+            "lineNumber": 0,
+            "name": undefined,
+            "sourceColumnNumber": 18,
+            "sourceLineNumber": 1,
+            "sourceURL": "src/foo.js",
+          },
+          "sizes": Object {
+            "error": "compiled.js.map mapping for last column out of bounds: 1:685",
+          },
+        }
+      `);
+    });
   });
 });
