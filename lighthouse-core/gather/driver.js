@@ -1511,6 +1511,7 @@ class Driver {
       .map(usage => storageTypeNames[usage.storageType] || '')
       .filter(Boolean);
     if (locations.length) {
+      // TODO: Use Intl.ListFormat with Node 12
       LighthouseRunWarnings.push(str_(
         UIStrings.warningData,
         {locations: locations.join(', '), locationCount: locations.length}
