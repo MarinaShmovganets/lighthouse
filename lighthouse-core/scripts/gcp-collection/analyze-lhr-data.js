@@ -8,10 +8,10 @@
 'use strict';
 
 /**
- * @fileoverview This script takes the directory (of extracted batch LHR data) along with an audit name and generates
+ * @fileoverview This script takes the directory (of extracted batch LHR data) along with an audit id and generates
  * a JSON file with aggregated data for that audit.
  *
- * USAGE: node lighthouse-core/scripts/gcp-collection/analyze-lhr-data.js [<directory of lhr data>] [<audit name>]
+ * USAGE: node lighthouse-core/scripts/gcp-collection/analyze-lhr-data.js [<directory of lhr data>] [<audit id>]
  */
 
 /* eslint-disable no-console */
@@ -22,7 +22,7 @@ const directory = process.argv[2];
 const audit = process.argv[3];
 if (!directory) throw new Error('No directory provided\nUsage: $0 <lhr directory> <audit id>');
 
-if (!audit) throw new Error('No audit provided');
+if (!audit) throw new Error('No audit provided\nUsage: $0 <lhr directory> <audit id>');
 
 const urlDirs = readdirSync(directory, {withFileTypes: true})
 .filter(dirent => dirent.isDirectory());
@@ -43,7 +43,7 @@ for (const dir of urlDirs) {
   for (const run of runs) {
     if (run.name === '.DS_Store') continue;
 
-    if (!run.isDirectory()) throw new Error(`Unexpected directory "${run.name}" encountered`);
+    if (!run.isDirectory()) throw new Error(`Unexpected file "${run.name}" encountered`);
 
     const lhrPath = join(path, run.name, 'lhr.json');
     const data = readFileSync(lhrPath, 'utf8');
