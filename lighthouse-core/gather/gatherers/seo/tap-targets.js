@@ -294,10 +294,7 @@ class TapTargets extends Gatherer {
       ${getClientRects.toString()};
       ${hasTextNodeSiblingsFormingTextBlock.toString()};
       ${elementIsInTextBlock.toString()};
-      ${RectHelpers.getRectArea.toString()};
-      ${RectHelpers.getLargestRect.toString()};
       ${RectHelpers.getRectCenterPoint.toString()};
-      ${RectHelpers.rectContains.toString()};
       ${pageFunctions.getNodeDetailsString};
       ${gatherTapTargets.toString()};
 
