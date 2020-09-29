@@ -1514,7 +1514,7 @@ class Driver {
       .map(usage => storageTypeNames[usage.storageType] || '')
       .filter(Boolean);
     if (locations.length) {
-      // TODO: Use Intl.ListFormat with Node 12
+      // TODO(#11495): Use Intl.ListFormat with Node 12
       return str_(
         UIStrings.warningData,
         {locations: locations.join(', '), locationCount: locations.length}
