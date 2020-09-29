@@ -63,7 +63,7 @@ function makeFakeDriver({protocolGetVersionResponse}) {
     cleanBrowserCaches() {},
     clearDataForOrigin() {},
     getImportantStorageWarning() {
-      return Promise.resolve();
+      return Promise.resolve(undefined);
     },
     cacheNatives() {
       return Promise.resolve();

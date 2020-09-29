@@ -112,7 +112,7 @@ class EmulationDriver extends Driver {
     return Promise.resolve();
   }
   getImportantStorageWarning() {
-    return Promise.resolve();
+    return Promise.resolve(undefined);
   }
 }
 
