@@ -39,8 +39,8 @@ describe('util helpers', () => {
   it('formats bytes', () => {
     const i18n = new I18n('en', {...Util.UIStrings});
     assert.equal(i18n.formatBytesToKiB(100), `0.1${NBSP}KiB`);
-    assert.equal(i18n.formatBytesToKiB(2000), `2${NBSP}KiB`);
-    assert.equal(i18n.formatBytesToKiB(1014 * 1024), `1,014${NBSP}KiB`);
+    assert.equal(i18n.formatBytesToKiB(2000), `2.0${NBSP}KiB`);
+    assert.equal(i18n.formatBytesToKiB(1014 * 1024), `1,014.0${NBSP}KiB`);
   });
 
   it('formats ms', () => {
