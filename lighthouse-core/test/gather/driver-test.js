@@ -944,13 +944,12 @@ describe('.getImportantDataWarning', () => {
         {storageType: 'service_workers', usage: 5},
         {storageType: 'cache_storage', usage: 0},
       ]});
-    /** @type {(LH.IcuMessage | string)[]} */
-    const LighthouseRunWarnings = [];
-    await driver.getImportantStorageWarning('https://example.com', LighthouseRunWarnings);
-    expect(LighthouseRunWarnings).toHaveLength(1);
-    expect(LighthouseRunWarnings[0]).toBeDisplayString(
-      'There may be important data in these locations: Local Storage, IndexedDB. ' +
-      'Audit this page in an incognito window to prevent the resources from affecting your scores.'
+    const warning = await driver.getImportantStorageWarning('https://example.com');
+    expect(warning).toBeDisplayString(
+      'There may be stored data affecting loading performance in ' +
+      'these locations: Local Storage, IndexedDB. ' +
+      'Audit this page in an incognito window to prevent those resources ' +
+      'from affecting your scores.'
     );
   });
 
@@ -967,10 +966,8 @@ describe('.getImportantDataWarning', () => {
         {storageType: 'service_workers', usage: 5},
         {storageType: 'cache_storage', usage: 5},
       ]});
-    /** @type {(LH.IcuMessage | string)[]} */
-    const LighthouseRunWarnings = [];
-    await driver.getImportantStorageWarning('https://example.com', LighthouseRunWarnings);
-    expect(LighthouseRunWarnings).toHaveLength(0);
+    const warning = await driver.getImportantStorageWarning('https://example.com');
+    expect(warning).toBeUndefined();
   });
 });
 

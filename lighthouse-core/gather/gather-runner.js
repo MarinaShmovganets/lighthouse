@@ -121,7 +121,10 @@ class GatherRunner {
     await driver.dismissJavaScriptDialogs();
     await driver.registerRequestIdleCallbackWrap(options.settings);
     if (resetStorage) {
-      await driver.getImportantStorageWarning(options.requestedUrl, LighthouseRunWarnings);
+      const warning = await driver.getImportantStorageWarning(options.requestedUrl);
+      if (warning) {
+        LighthouseRunWarnings.push(warning);
+      }
       await driver.clearDataForOrigin(options.requestedUrl);
     }
     log.timeEnd(status);

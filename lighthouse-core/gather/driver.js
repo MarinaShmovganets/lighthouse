@@ -27,14 +27,17 @@ const Connection = require('./connections/connection.js');
 
 const UIStrings = {
   /**
-   * @description Warning that important data was not cleared but may have affected the scores of this run.
+   * @description A warning that previously-saved data may have affected the measured performance and instructions on how to avoid the problem. "locations" will be a list of possible types of data storage locations, e.g. "IndexedDB",  "Local Storage", or "Web SQL".
    * @example {IndexedDB, Local Storage} locations
    */
   warningData: `{locationCount, plural,
-    =1 {There may be important data in this location: {locations}. ` +
-      `Audit this page in an incognito window to prevent the resources from affecting your scores.}
-    other {There may be important data in these locations: {locations}. ` +
-      `Audit this page in an incognito window to prevent the resources from affecting your scores.}
+    =1 {There may be stored data affecting loading performance in this location: {locations}. ` +
+      `Audit this page in an incognito window to prevent those resources ` +
+      `from affecting your scores.}
+    other {There may be stored data affecting loading ` +
+      `performance in these locations: {locations}. ` +
+      `Audit this page in an incognito window to prevent those resources ` +
+      `from affecting your scores.}
   }`,
 };
 
@@ -1494,9 +1497,9 @@ class Driver {
 
   /**
    * @param {string} url
-   * @param {(LH.IcuMessage | string)[]} LighthouseRunWarnings
+   * @return {Promise<LH.IcuMessage | undefined>}
    */
-  async getImportantStorageWarning(url, LighthouseRunWarnings) {
+  async getImportantStorageWarning(url) {
     const usageData = await this.sendCommand('Storage.getUsageAndQuota', {
       origin: url,
     });
@@ -1512,10 +1515,10 @@ class Driver {
       .filter(Boolean);
     if (locations.length) {
       // TODO: Use Intl.ListFormat with Node 12
-      LighthouseRunWarnings.push(str_(
+      return str_(
         UIStrings.warningData,
         {locations: locations.join(', '), locationCount: locations.length}
-      ));
+      );
     }
   }
 
