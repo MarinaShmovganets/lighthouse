@@ -73,6 +73,7 @@ class I18n {
       numberOfFractionDigits = -Math.floor(Math.log10(granularity));
     }
     return new Intl.NumberFormat(this._numberDateLocale, {
+      ...this._numberDateLocale.resolvedOptions(),
       maximumFractionDigits: numberOfFractionDigits,
       minimumFractionDigits: numberOfFractionDigits,
     });
