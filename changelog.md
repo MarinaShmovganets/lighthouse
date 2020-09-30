@@ -1,23 +1,22 @@
 Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Denis Seleznev <hcodes@users.noreply.github.com>
-Irfan Maulana <mazipanneh@gmail.com>
-James Garbutt <43081j@users.noreply.github.com>
-Matt Hobbs <matt@nooshu.com>
-Mohammed J. Razem <m.razem@vardot.com>
-Pujitha.E <pujitha98.e@gmail.com>
-Quentin <wrightq00@gmail.com>
-adrianaixba <aixba@google.com>
-andreizet <zuica.andrei@gmail.com>
+Denis Seleznev @hcodes
+Irfan Maulana @mazipan
+James Garbutt @43081j
+Matt Hobbs @Nooshu
+Mohammed J. Razem @moerazem
+Pujitha.E @pujitha7
+Quentin @qwright10
+Adriana Ixba @adrianaixba
+andreizet @andreizet
  <a name="6.4.0"></a>
 # 6.4.0 (2020-09-30)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.3.0...v6.4.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 88](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
 
+* large-javascript-libraries: move to experimental ([#11484](https://github.com/GoogleChrome/lighthouse/pull/11484))
 
 ## New Audits
 
@@ -35,7 +34,6 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 * is-on-https: add missing space in description ([#11466](https://github.com/GoogleChrome/lighthouse/pull/11466))
 * is-on-https: remove <M84 codepaths ([#11373](https://github.com/GoogleChrome/lighthouse/pull/11373))
 * js-usage: normalize url key ([#11302](https://github.com/GoogleChrome/lighthouse/pull/11302))
-* large-javascript-libraries: move to experimental ([#11484](https://github.com/GoogleChrome/lighthouse/pull/11484))
 * password-inputs-can-be-pasted-into: add devtoolsNodePath ([#11416](https://github.com/GoogleChrome/lighthouse/pull/11416))
 * normalize node information in gathering ([#11405](https://github.com/GoogleChrome/lighthouse/pull/11405))
 * traverse shadow hosts in getNodePath ([#10956](https://github.com/GoogleChrome/lighthouse/pull/10956))
