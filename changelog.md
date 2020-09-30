@@ -1,4 +1,13 @@
+ <a name="6.4.0"></a>
+# 6.4.0 (2020-09-30)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.3.0...v6.4.0)
+
+We expect this release to ship in the DevTools of [Chrome 88](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## New Contributors
+
 Thanks to our new contributors 👽🐷🐰🐯🐻! 
+
 Denis Seleznev @hcodes
 Irfan Maulana @mazipan
 James Garbutt @43081j
@@ -6,13 +15,7 @@ Matt Hobbs @Nooshu
 Mohammed J. Razem @moerazem
 Pujitha.E @pujitha7
 Quentin @qwright10
-Adriana Ixba @adrianaixba
 andreizet @andreizet
- <a name="6.4.0"></a>
-# 6.4.0 (2020-09-30)
-[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.3.0...v6.4.0)
-
-We expect this release to ship in the DevTools of [Chrome 88](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
 ## Notable Changes
 
@@ -24,11 +27,13 @@ We expect this release to ship in the DevTools of [Chrome 88](https://chromiumda
 
 ## Core
 
-* autocomplete: add chrome suggestions, invalid warning ([#11342](https://github.com/GoogleChrome/lighthouse/pull/11342))
+* tracehouse: add CPU trace profiler model ([#11072](https://github.com/GoogleChrome/lighthouse/pull/11072))
+* stack-packs: add Drupal pack ([#10522](https://github.com/GoogleChrome/lighthouse/pull/10522))
+* stack-packs: move to lighthouse-stack-packs npm package ([#11370](https://github.com/GoogleChrome/lighthouse/pull/11370))
 * axe: use our html snippet rather than axe's ([#11362](https://github.com/GoogleChrome/lighthouse/pull/11362))
+* driver: don't clear indexedb, websql, or localstorage before run ([#11438](https://github.com/GoogleChrome/lighthouse/pull/11438))
 * benchmarkindex: add workaround for Intel microcode fixes ([#11483](https://github.com/GoogleChrome/lighthouse/pull/11483))
 * config: correct typo on throttling profile name ([#11355](https://github.com/GoogleChrome/lighthouse/pull/11355))
-* driver: don't clear indexedb, websql, or localstorage before run ([#11438](https://github.com/GoogleChrome/lighthouse/pull/11438))
 * image-elements: do not set untrusted natural dimensions ([#11457](https://github.com/GoogleChrome/lighthouse/pull/11457))
 * installable-manifest: expose app manifest url ([#11330](https://github.com/GoogleChrome/lighthouse/pull/11330))
 * is-on-https: add missing space in description ([#11466](https://github.com/GoogleChrome/lighthouse/pull/11466))
@@ -38,11 +43,9 @@ We expect this release to ship in the DevTools of [Chrome 88](https://chromiumda
 * normalize node information in gathering ([#11405](https://github.com/GoogleChrome/lighthouse/pull/11405))
 * traverse shadow hosts in getNodePath ([#10956](https://github.com/GoogleChrome/lighthouse/pull/10956))
 * minification-estimator: minify nested template literals in JavaScript ([#11395](https://github.com/GoogleChrome/lighthouse/pull/11395))
-* stack-packs: add Drupal pack ([#10522](https://github.com/GoogleChrome/lighthouse/pull/10522))
-* stack-packs: move to lighthouse-stack-packs npm package ([#11370](https://github.com/GoogleChrome/lighthouse/pull/11370))
 * expose service worker url on service worker audit ([#11329](https://github.com/GoogleChrome/lighthouse/pull/11329))
 * preconnect: ignore unimportant origins ([#11306](https://github.com/GoogleChrome/lighthouse/pull/11306))
-* tracehouse: add CPU trace profiler model ([#11072](https://github.com/GoogleChrome/lighthouse/pull/11072))
+* autocomplete: add chrome suggestions, invalid warning ([#11342](https://github.com/GoogleChrome/lighthouse/pull/11342))
 
 ## Report
 
