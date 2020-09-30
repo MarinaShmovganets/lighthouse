@@ -89,4 +89,31 @@ describe('util helpers', () => {
       timestamp.includes('Apr 29, 2017')
     );
   });
+
+  describe('_byteFormatterForGranularity', () => {
+    it('returns a formatter that outputs a consistent number of fractional digits', () => {
+      const i18n = new I18n('en', {...Util.UIStrings});
+
+      const formatterTen = i18n._byteFormatterForGranularity(10);
+      const formatterOne = i18n._byteFormatterForGranularity(1);
+      const formatterHalf = i18n._byteFormatterForGranularity(0.5);
+      const formatterTenth = i18n._byteFormatterForGranularity(0.1);
+      const formatterHundredth = i18n._byteFormatterForGranularity(0.01);
+
+      assert.strictEqual(formatterTen.format(15.0), '15');
+      assert.strictEqual(formatterTen.format(15.12345), '15');
+
+      assert.strictEqual(formatterOne.format(15.0), '15');
+      assert.strictEqual(formatterOne.format(15.12345), '15');
+
+      assert.strictEqual(formatterHalf.format(15.0), '15.0');
+      assert.strictEqual(formatterHalf.format(15.12345), '15.1');
+
+      assert.strictEqual(formatterTenth.format(15.0), '15.0');
+      assert.strictEqual(formatterTenth.format(15.12345), '15.1');
+
+      assert.strictEqual(formatterHundredth.format(15.0), '15.00');
+      assert.strictEqual(formatterHundredth.format(15.12345), '15.12');
+    });
+  });
 });

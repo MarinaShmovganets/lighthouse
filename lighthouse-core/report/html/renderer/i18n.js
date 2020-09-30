@@ -67,10 +67,11 @@ class I18n {
    * @return {Intl.NumberFormat}
    */
   _byteFormatterForGranularity(granularity) {
-    if (granularity >= 1) {
-      return this._numberFormatter;
+    let numberOfFractionDigits = 0;
+    if (granularity < 1) {
+      // assumes granularities above 1 will not contain fractional parts, i.e. will never be 1.5
+      numberOfFractionDigits = -Math.floor(Math.log10(granularity));
     }
-    const numberOfFractionDigits = -Math.floor(Math.log10(granularity));
     return new Intl.NumberFormat(this._numberDateLocale, {
       maximumFractionDigits: numberOfFractionDigits,
       minimumFractionDigits: numberOfFractionDigits,
