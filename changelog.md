@@ -24,7 +24,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ## New Audits
 
-* unsized-images reland ([#11340](https://github.com/GoogleChrome/lighthouse/pull/11340))
+* unsized-images reland ([#11340](https://github.com/GoogleChrome/lighthouse/pull/11340)): This audit confirms users' images are explicitly sized; ultimately preventing layout shift and improving CLS.
 
 ## Core
 
