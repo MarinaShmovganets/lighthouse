@@ -8,18 +8,19 @@ We expect this release to ship in the DevTools of [Chrome 88](https://chromiumda
 
 Thanks to our new contributors 👽🐷🐰🐯🐻! 
 
-Denis Seleznev @hcodes
-Irfan Maulana @mazipan
-James Garbutt @43081j
-Matt Hobbs @Nooshu
-Mohammed J. Razem @moerazem
-Pujitha.E @pujitha7
-Quentin @qwright10
-andreizet @andreizet
+- Denis Seleznev @hcodes
+- Irfan Maulana @mazipan
+- James Garbutt @43081j
+- Matt Hobbs @Nooshu
+- Mohammed J. Razem @moerazem
+- Pujitha.E @pujitha7
+- Quentin @qwright10
+- andreizet @andreizet
 
 ## Notable Changes
 
 * large-javascript-libraries: move to experimental ([#11484](https://github.com/GoogleChrome/lighthouse/pull/11484))
+* driver: don't clear indexedb, websql, or localstorage before run ([#11438](https://github.com/GoogleChrome/lighthouse/pull/11438))
 
 ## New Audits
 
@@ -31,7 +32,6 @@ andreizet @andreizet
 * stack-packs: add Drupal pack ([#10522](https://github.com/GoogleChrome/lighthouse/pull/10522))
 * stack-packs: move to lighthouse-stack-packs npm package ([#11370](https://github.com/GoogleChrome/lighthouse/pull/11370))
 * axe: use our html snippet rather than axe's ([#11362](https://github.com/GoogleChrome/lighthouse/pull/11362))
-* driver: don't clear indexedb, websql, or localstorage before run ([#11438](https://github.com/GoogleChrome/lighthouse/pull/11438))
 * benchmarkindex: add workaround for Intel microcode fixes ([#11483](https://github.com/GoogleChrome/lighthouse/pull/11483))
 * config: correct typo on throttling profile name ([#11355](https://github.com/GoogleChrome/lighthouse/pull/11355))
 * image-elements: do not set untrusted natural dimensions ([#11457](https://github.com/GoogleChrome/lighthouse/pull/11457))
