@@ -108,7 +108,7 @@ class UnusedJavaScript extends ByteEfficiencyAudit {
 
       // If there was an error calculating the bundle sizes, we can't
       // create any sub-items.
-      if (!bundle || 'error' in bundle.sizes) continue;
+      if (!bundle || 'errorMessage' in bundle.sizes) continue;
       const sizes = bundle.sizes;
 
       // Augment with bundle data.
