@@ -106,7 +106,7 @@ class UnusedJavaScript extends ByteEfficiencyAudit {
       if (item.wastedBytes <= unusedThreshold) continue;
       items.push(item);
 
-      // If there was an error calculated the bundle sizes, we can't
+      // If there was an error calculating the bundle sizes, we can't
       // create any sub-items.
       if (!bundle || 'error' in bundle.sizes) continue;
       const sizes = bundle.sizes;
