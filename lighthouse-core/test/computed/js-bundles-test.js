@@ -344,12 +344,12 @@ describe('JsBundles computed artifact', () => {
       `);
     });
 
-    it('5', async () => {
+    it('emits error when column out of bounds', async () => {
       const newMappings = map.mappings.split(',');
       expect(newMappings[1]).toBe('SAAAA');
-      // Make the line offset very big, force out of bounds.
+      // Make the column offset very big, force out of bounds.
       // See https://www.mattzeunert.com/2016/02/14/how-do-source-maps-work.html
-      newMappings[1] = 'kDAAAA';
+      newMappings[1] = 'kD' + 'AAAA';
       map.mappings = newMappings.join(',');
       expect(await test()).toMatchInlineSnapshot(`
         Object {
@@ -364,6 +364,22 @@ describe('JsBundles computed artifact', () => {
           },
           "sizes": Object {
             "error": "compiled.js.map mapping for last column out of bounds: 1:685",
+          },
+        }
+      `);
+    });
+
+    it('emits error when line out of bounds', async () => {
+      const newMappings = map.mappings.split(',');
+      expect(newMappings[1]).toBe('SAAAA');
+      // Make the line offset very big, force out of bounds.
+      // See https://sourcemaps.info/spec.html#:~:text=broken%20down%20as%20follows
+      map.mappings = ';'.repeat(10) + map.mappings;
+      expect(await test()).toMatchInlineSnapshot(`
+        Object {
+          "entry": null,
+          "sizes": Object {
+            "error": "compiled.js.map mapping for line out of bounds: 11",
           },
         }
       `);

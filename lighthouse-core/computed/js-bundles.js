@@ -39,25 +39,27 @@ function computeGeneratedFileSizes(map, content) {
     // Lines and columns are zero-based indices. Visually, lines are shown as a 1-based index.
 
     const line = lines[lineNum];
-    if (line === null) {
-      const error = `${map.url()} mapping for line out of bounds: ${lineNum + 1}`;
-      log.error('JSBundles', error);
-      return {error};
+    if (line === null || line === undefined) {
+      const errorMessage = `${map.url()} mapping for line out of bounds: ${lineNum + 1}`;
+      log.error('JSBundles', errorMessage);
+      return {errorMessage};
     }
 
     if (colNum > line.length) {
-      const error = `${map.url()} mapping for column out of bounds: ${lineNum + 1}:${colNum}`;
-      log.error('JSBundles', error);
-      return {error};
+      const errorMessage =
+        `${map.url()} mapping for column out of bounds: ${lineNum + 1}:${colNum}`;
+      log.error('JSBundles', errorMessage);
+      return {errorMessage};
     }
 
     let mappingLength = 0;
     if (lastColNum !== undefined) {
       if (lastColNum > line.length) {
         // eslint-disable-next-line max-len
-        const error = `${map.url()} mapping for last column out of bounds: ${lineNum + 1}:${lastColNum}`;
-        log.error('JSBundles', error);
-        return {error};
+        const errorMessage =
+          `${map.url()} mapping for last column out of bounds: ${lineNum + 1}:${lastColNum}`;
+        log.error('JSBundles', errorMessage);
+        return {errorMessage};
       }
       mappingLength = lastColNum - colNum;
     } else {
