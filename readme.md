@@ -38,7 +38,7 @@ Lighthouse is integrated directly into the Chrome DevTools, under the "Lighthous
 
 **Run it**: open Chrome DevTools, select the Lighthouse panel, and hit "Generate report".
 
-<img src="https://raw.githubusercontent.com/GoogleChrome/lighthouse/4dbab6bf5466e7220980bccd2f5883f4ad661725/assets/example_dev_tools.png" alt="Lighthouse integration in Chrome DevTools" width="500px">
+<p align= "center"><img src="https://raw.githubusercontent.com/GoogleChrome/lighthouse/4dbab6bf5466e7220980bccd2f5883f4ad661725/assets/example_dev_tools.png" alt="Lighthouse integration in Chrome DevTools" width="500px"></p>
 
 ## Using the Chrome extension
 
@@ -210,7 +210,7 @@ Lighthouse can produce a report as JSON or HTML.
 
 HTML report:
 
-<img src="https://raw.githubusercontent.com/GoogleChrome/lighthouse/443ff2c8a297dfd2297dfaca86c4966a87c8574a/assets/example_audit.png" alt="Lighthouse example audit" width="500px">
+<p align= "center"><img src="https://raw.githubusercontent.com/GoogleChrome/lighthouse/443ff2c8a297dfd2297dfaca86c4966a87c8574a/assets/example_audit.png" alt="Lighthouse example audit" width="500px"></p>
 
 ### Online Viewer
 
@@ -250,12 +250,12 @@ Useful documentation, examples, and recipes to get you started.
 
 The session from Google I/O 2018 covers the new performance engine, upcoming Lighthouse REST API, and using the Chrome UX report to evaluate real-user data.
 
-[![Lighthouse @ Google I/O 2018](https://img.youtube.com/vi/UvK9zAsSM8Q/0.jpg)](https://www.youtube.com/watch?v=UvK9zAsSM8Q)
+<p align= "center">[![Lighthouse @ Google I/O 2018](https://img.youtube.com/vi/UvK9zAsSM8Q/0.jpg)](https://www.youtube.com/watch?v=UvK9zAsSM8Q)</p>
 
 The session from Google I/O 2017 covers architecture, writing custom audits,
 GitHub/Travis/CI integration, headless Chrome, and more:
 
-[![Lighthouse @ Google I/O 2017](https://img.youtube.com/vi/NoRYn6gOtVo/0.jpg)](https://www.youtube.com/watch?v=NoRYn6gOtVo)
+<p align= "center">[![Lighthouse @ Google I/O 2017](https://img.youtube.com/vi/NoRYn6gOtVo/0.jpg)](https://www.youtube.com/watch?v=NoRYn6gOtVo)</p>
 
 _click to watch the video_
 
