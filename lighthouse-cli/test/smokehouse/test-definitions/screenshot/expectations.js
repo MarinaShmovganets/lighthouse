@@ -23,17 +23,6 @@ const expectations = [
       audits: {},
     },
   },
-  {
-    artifacts: {
-      FullPageScreenshot: null,
-    },
-    lhr: {
-      requestedUrl: 'http://localhost:10200/screenshot.html?width=1320px&height=15000px',
-      finalUrl: 'http://localhost:10200/screenshot.html?width=1320px&height=15000px',
-      runWarnings: [/Full page screenshot is too big/],
-      audits: {},
-    },
-  },
 ];
 
 module.exports = expectations;
