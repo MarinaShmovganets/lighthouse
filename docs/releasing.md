@@ -95,8 +95,8 @@ bash ./lighthouse-core/scripts/release/prepare-commit.sh x.x.x
 yarn update:test-devtools
 ```
 
-1. Edit the CHANGELOG before opening the PR
-1. Open the PR with title `vx.y.z`
+1. Edit changelog.md before opening the PR
+1. Open the PR with title `vx.x.x`
 1. Hold until approved and merged
 
 ### Cut the release
@@ -158,6 +158,6 @@ yarn devtools ~/src/devtools/devtools-frontend
 
 cd ~/src/devtools/devtools-frontend
 git new-branch rls
-git commit -am "[Lighthouse] Roll Lighthouse x.x.x\n\nBug: 772558"
-git cl upload --bypass-hooks
+git commit -am "[Lighthouse] Roll Lighthouse x.x.x"
+git cl upload -b 772558
 ```
