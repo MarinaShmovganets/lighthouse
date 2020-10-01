@@ -125,6 +125,9 @@ function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 
     }
 
     const clone = element.cloneNode();
+    // prevent any potential side-effects by appending to a template element
+    const template = element.ownerDocument.createElement('template');
+    template.content.append(clone);
     ignoreAttrs.concat(autoFillIgnoreAttrs).forEach(attribute =>{
       clone.removeAttribute(attribute);
     });
