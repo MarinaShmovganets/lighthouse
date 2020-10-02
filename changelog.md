@@ -4,6 +4,12 @@
 
 This is a minor release to fix an issue in the npm package where v6.4.0 was published as ~15GB.
 
+## New Contributors
+
+Thanks to our new contributor 👽🐷🐰🐯🐻! 
+
+- Csaba Palfi @csabapalfi
+
 ## Core
 
 * prevent attribute truncation side-effects ([#11503](https://github.com/GoogleChrome/lighthouse/pull/11503))
