@@ -173,6 +173,7 @@ jobs:
 
   smoke-bundle:
     runs-on: ubuntu-latest
+    name: smoke_bundle
 
     steps:
     - name: git clone
