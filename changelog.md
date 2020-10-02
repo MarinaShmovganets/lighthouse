@@ -13,6 +13,7 @@ Thanks to our new contributor 👽🐷🐰🐯🐻!
 ## Core
 
 * prevent attribute truncation side-effects ([#11503](https://github.com/GoogleChrome/lighthouse/pull/11503))
+* save lhr on -A ([#11509](https://github.com/GoogleChrome/lighthouse/pull/11509))
 
 ## Tests
 
