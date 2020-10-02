@@ -51,7 +51,7 @@ class Runner {
 
       // User can run -G solo, -A solo, or -GA together
       // -G and -A will run partial lighthouse pipelines,
-      // and -GA will run everything plus save artifacts to disk
+      // and -GA will run everything plus save artifacts and lhr to disk.
 
       // Gather phase
       // Either load saved artifacts off disk or from the browser
