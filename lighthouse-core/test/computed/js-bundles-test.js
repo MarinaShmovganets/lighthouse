@@ -292,7 +292,7 @@ describe('JsBundles computed artifact', () => {
             "sourceURL": "src/foo.js",
           },
           "sizes": Object {
-            "error": "compiled.js.map mapping for last column out of bounds: 1:14",
+            "errorMessage": "compiled.js.map mapping for last column out of bounds: 1:14",
           },
         }
       `);
@@ -312,7 +312,7 @@ describe('JsBundles computed artifact', () => {
             "sourceURL": "src/foo.js",
           },
           "sizes": Object {
-            "error": "compiled.js.map mapping for column out of bounds: 1:1",
+            "errorMessage": "compiled.js.map mapping for column out of bounds: 1:1",
           },
         }
       `);
@@ -363,7 +363,7 @@ describe('JsBundles computed artifact', () => {
             "sourceURL": "src/foo.js",
           },
           "sizes": Object {
-            "error": "compiled.js.map mapping for last column out of bounds: 1:685",
+            "errorMessage": "compiled.js.map mapping for last column out of bounds: 1:685",
           },
         }
       `);
@@ -379,7 +379,7 @@ describe('JsBundles computed artifact', () => {
         Object {
           "entry": null,
           "sizes": Object {
-            "error": "compiled.js.map mapping for line out of bounds: 11",
+            "errorMessage": "compiled.js.map mapping for line out of bounds: 11",
           },
         }
       `);
