@@ -1,13 +1,8 @@
- <a name="6.4.1"></a>
+<a name="6.4.1"></a>
 # 6.4.1 (2020-10-02)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.4.0...v6.4.1)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
-
-## Notable Changes
-~~ TODO: Move notable changes here ~~
-
+This is a minor release to fix an issue in the npm package where v6.4.0 was published as ~15GB.
 
 ## Core
 
@@ -21,7 +16,7 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 
 * add chromium webtests to npmignore ([#11512](https://github.com/GoogleChrome/lighthouse/pull/11512))
 
- <a name="6.4.0"></a>
+<a name="6.4.0"></a>
 # 6.4.0 (2020-09-30)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.3.0...v6.4.0)
 
