@@ -43,6 +43,53 @@ describe('util helpers', () => {
     assert.equal(i18n.formatBytesToKiB(1014 * 1024), `1,014.0${NBSP}KiB`);
   });
 
+  it('formats bytes with different granularities', () => {
+    const i18n = new I18n('en', {...Util.UIStrings});
+
+    let granularity = 10;
+    assert.strictEqual(i18n.formatBytes(15.0, granularity), `20${NBSP}bytes`);
+    assert.strictEqual(i18n.formatBytes(15.12345, granularity), `20${NBSP}bytes`);
+    assert.strictEqual(i18n.formatBytes(14.99999, granularity), `10${NBSP}bytes`);
+
+    granularity = 1;
+    assert.strictEqual(i18n.formatBytes(15.0, granularity), `15${NBSP}bytes`);
+    assert.strictEqual(i18n.formatBytes(15.12345, granularity), `15${NBSP}bytes`);
+    assert.strictEqual(i18n.formatBytes(15.54321, granularity), `16${NBSP}bytes`);
+
+    granularity = 0.5;
+    assert.strictEqual(i18n.formatBytes(15.0, granularity), `15.0${NBSP}bytes`);
+    assert.strictEqual(i18n.formatBytes(15.12345, granularity), `15.0${NBSP}bytes`);
+    assert.strictEqual(i18n.formatBytes(15.54321, granularity), `15.5${NBSP}bytes`);
+
+    granularity = 0.1;
+    assert.strictEqual(i18n.formatBytes(15.0, granularity), `15.0${NBSP}bytes`);
+    assert.strictEqual(i18n.formatBytes(15.12345, granularity), `15.1${NBSP}bytes`);
+    assert.strictEqual(i18n.formatBytes(15.19999, granularity), `15.2${NBSP}bytes`);
+
+    granularity = 0.01;
+    assert.strictEqual(i18n.formatBytes(15.0, granularity), `15.00${NBSP}bytes`);
+    assert.strictEqual(i18n.formatBytes(15.12345, granularity), `15.12${NBSP}bytes`);
+    assert.strictEqual(i18n.formatBytes(15.19999, granularity), `15.20${NBSP}bytes`);
+  });
+
+  it('formats kibibytes with different granularities', () => {
+    const i18n = new I18n('en', {...Util.UIStrings});
+
+    let granularity = 10;
+    assert.strictEqual(i18n.formatBytesToKiB(5 * 1024, granularity), `10${NBSP}KiB`);
+    assert.strictEqual(i18n.formatBytesToKiB(4 * 1024, granularity), `0${NBSP}KiB`);
+
+    granularity = 1;
+    assert.strictEqual(i18n.formatBytesToKiB(5 * 1024, granularity), `5${NBSP}KiB`);
+    assert.strictEqual(i18n.formatBytesToKiB(4 * 1024 + 512, granularity), `5${NBSP}KiB`);
+    assert.strictEqual(i18n.formatBytesToKiB(4 * 1024 + 511, granularity), `4${NBSP}KiB`);
+
+    granularity = 0.01;
+    assert.strictEqual(i18n.formatBytesToKiB(5 * 1024, granularity), `5.00${NBSP}KiB`);
+    assert.strictEqual(i18n.formatBytesToKiB(5 * 1024 - 5, granularity), `5.00${NBSP}KiB`);
+    assert.strictEqual(i18n.formatBytesToKiB(5 * 1024 - 6, granularity), `4.99${NBSP}KiB`);
+  });
+
   it('formats ms', () => {
     const i18n = new I18n('en', {...Util.UIStrings});
     assert.equal(i18n.formatMilliseconds(123), `120${NBSP}ms`);
@@ -88,32 +135,5 @@ describe('util helpers', () => {
       timestamp.includes('Apr 28, 2017') ||
       timestamp.includes('Apr 29, 2017')
     );
-  });
-
-  describe('_byteFormatterForGranularity', () => {
-    it('returns a formatter that outputs a consistent number of fractional digits', () => {
-      const i18n = new I18n('en', {...Util.UIStrings});
-
-      const formatterTen = i18n._byteFormatterForGranularity(10);
-      const formatterOne = i18n._byteFormatterForGranularity(1);
-      const formatterHalf = i18n._byteFormatterForGranularity(0.5);
-      const formatterTenth = i18n._byteFormatterForGranularity(0.1);
-      const formatterHundredth = i18n._byteFormatterForGranularity(0.01);
-
-      assert.strictEqual(formatterTen.format(15.0), '15');
-      assert.strictEqual(formatterTen.format(15.12345), '15');
-
-      assert.strictEqual(formatterOne.format(15.0), '15');
-      assert.strictEqual(formatterOne.format(15.12345), '15');
-
-      assert.strictEqual(formatterHalf.format(15.0), '15.0');
-      assert.strictEqual(formatterHalf.format(15.12345), '15.1');
-
-      assert.strictEqual(formatterTenth.format(15.0), '15.0');
-      assert.strictEqual(formatterTenth.format(15.12345), '15.1');
-
-      assert.strictEqual(formatterHundredth.format(15.0), '15.00');
-      assert.strictEqual(formatterHundredth.format(15.12345), '15.12');
-    });
   });
 });
