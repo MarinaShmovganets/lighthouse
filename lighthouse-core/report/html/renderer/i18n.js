@@ -67,13 +67,14 @@ class I18n {
    * @return {Intl.NumberFormat}
    */
   _byteFormatterForGranularity(granularity) {
+    // assume any granularity above 1 will not contain fractional parts, i.e. will never be 1.5
     let numberOfFractionDigits = 0;
     if (granularity < 1) {
-      // assumes granularities above 1 will not contain fractional parts, i.e. will never be 1.5
       numberOfFractionDigits = -Math.floor(Math.log10(granularity));
     }
+
     return new Intl.NumberFormat(this._numberDateLocale, {
-      ...this._numberDateLocale.resolvedOptions(),
+      ...this._numberFormatter.resolvedOptions(),
       maximumFractionDigits: numberOfFractionDigits,
       minimumFractionDigits: numberOfFractionDigits,
     });
