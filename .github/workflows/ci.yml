@@ -111,6 +111,9 @@ jobs:
     - run: yarn diff:sample-json
       if: matrix.os == 'windows-latest'
 
+    # Fail if any changes were written to source files (ex, from -GA).
+    - run: git diff --exit-code
+
   # `smoke` runs as a matrix across 4 jobs:
   #  * The smoketest groups are split across two runners, to parallelize.
   #  * Then, those are run with both Chrome stable and ToT Chromium, in parallel

@@ -37,7 +37,7 @@ describe('Runner', () => {
 
   beforeEach(() => {
     saveArtifactsSpy = jest.spyOn(assetSaver, 'saveArtifacts');
-    saveLhrSpy = jest.spyOn(assetSaver, 'saveLhr');
+    saveLhrSpy = jest.spyOn(assetSaver, 'saveLhr').mockImplementation(() => {});
     loadArtifactsSpy = jest.spyOn(assetSaver, 'loadArtifacts');
     gatherRunnerRunSpy = jest.spyOn(GatherRunner, 'run');
     runAuditSpy = jest.spyOn(Runner, '_runAudit');
