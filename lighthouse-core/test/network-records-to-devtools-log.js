@@ -190,10 +190,11 @@ function addRedirectResponseIfNeeded(networkRecords, record) {
   // populate `redirectResponse` with original's data, more or less.
   const originalResponse = getResponseReceivedEvent(originalRecord).params.response;
   originalResponse.status = originalRecord.statusCode || 302;
-  return Object.assign({}, record, {
+  return {
+    ...record,
     redirectResponseTimestamp: originalRecord.endTime,
     redirectResponse: originalResponse,
-  });
+  };
 }
 
 /**
