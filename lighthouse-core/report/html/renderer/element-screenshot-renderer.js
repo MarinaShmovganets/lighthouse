@@ -18,19 +18,15 @@
 /** @typedef {{width: number, height: number}} Size */
 
 /**
- * Returns whether rect2 is contained entirely within rect1;
- * @param {LH.Artifacts.Rect} rect1
- * @param {LH.Artifacts.Rect} rect2
+ * @param {LH.Audit.Details.FullPageScreenshot} fullPageScreenshot
+ * @param {LH.Artifacts.Rect} rect
  * @return {boolean}
  */
-// We sometimes run this as a part of a gatherer script injected into the page, so prevent
-// renaming the function for code coverage.
-/* istanbul ignore next */
-function rectContains(rect1, rect2) {
-  return rect2.top >= rect1.top &&
-    rect2.right <= rect1.right &&
-    rect2.bottom <= rect1.bottom &&
-    rect2.left >= rect1.left;
+function screenshotContainsRect(fullPageScreenshot, rect) {
+  return rect.top >= 0 &&
+    rect.right <= fullPageScreenshot.width &&
+    rect.bottom <= fullPageScreenshot.height &&
+    rect.left >= 0;
 }
 
 /**
@@ -216,16 +212,7 @@ class ElementScreenshotRenderer {
    * @return {Element|null}
    */
   static render(dom, templateContext, fullPageScreenshot, elementRectSC, maxRenderSizeDC) {
-    const fullPageScreenshotRect = {
-      left: 0,
-      top: 0,
-      right: fullPageScreenshot.width,
-      bottom: fullPageScreenshot.height,
-      width: fullPageScreenshot.width,
-      height: fullPageScreenshot.height,
-    };
-    if (!rectContains(fullPageScreenshotRect, elementRectSC)) {
-      // Element is out of bounds of screenshot.
+    if (!screenshotContainsRect(fullPageScreenshot, elementRectSC)) {
       return null;
     }
 

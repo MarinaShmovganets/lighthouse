@@ -50,7 +50,7 @@ describe('ElementScreenshotRenderer', () => {
     global.Util = undefined;
   });
 
-  it.only('renders screenshot', () => {
+  it('renders screenshot', () => {
     const fullPageScreenshot = {
       width: 1000,
       height: 1000,
