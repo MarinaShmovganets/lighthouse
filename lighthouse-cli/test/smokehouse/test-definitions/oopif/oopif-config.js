@@ -6,6 +6,7 @@
 'use strict';
 
 /**
+ * @type {LH.Config.Json}
  * Config file for running the OOPIF tests
  */
 module.exports = {
@@ -19,6 +20,9 @@ module.exports = {
   passes: [
     // CI machines are pretty weak which lead to many more long tasks than normal.
     // Reduce our requirement for CPU quiet.
-    {cpuQuietThresholdMs: 500},
+    {
+      passName: 'defaultPass',
+      cpuQuietThresholdMs: 500,
+    },
   ],
 };
