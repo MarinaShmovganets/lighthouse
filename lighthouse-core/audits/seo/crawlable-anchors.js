@@ -53,6 +53,7 @@ class CrawlableAnchors extends Audit {
       role = role.trim();
 
       if (role.length > 0) return;
+      if (rawHref.startsWith('mailto:')) return;
 
       const windowLocationRegExp = /window\.location=/;
       const windowOpenRegExp = /window\.open\(/;

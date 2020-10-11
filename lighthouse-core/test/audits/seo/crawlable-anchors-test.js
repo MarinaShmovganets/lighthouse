@@ -153,7 +153,7 @@ describe('SEO: Crawlable anchors audit', () => {
     }
   });
 
-  it('handles window.open in an onclick attribute and mailto: in href attribute', () => {
+  it('handles window.open in an onclick attribute and mailto: in a href attribute', () => {
     assert.equal(
         runAudit({rawHref: 'mailto:name@example.com', onclick: 'window.open()'}),
         1,
