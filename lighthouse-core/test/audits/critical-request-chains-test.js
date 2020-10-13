@@ -103,7 +103,7 @@ describe('Performance: critical-request-chains audit', () => {
     });
   });
 
-  it('calculates the correct chain result for a real trace', () => {
+  it('calculates the correct chain result for a real devtools log', () => {
     const artifacts = {
       traces: {defaultPass: createTestTrace({topLevelTasks: [{ts: 0}]})},
       devtoolsLogs: {defaultPass: redditDevtoolsLog},
