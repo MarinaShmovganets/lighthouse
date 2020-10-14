@@ -13,7 +13,6 @@
 'use strict';
 
 const Audit = require('../audit.js');
-const I18n = require('../../report/html/renderer/i18n.js');
 const i18n_ = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
@@ -92,15 +91,12 @@ class DOMSize extends Audit {
       {key: 'value', itemType: 'numeric', text: str_(UIStrings.columnValue)},
     ];
 
-    const i18n = new I18n(context.settings.locale);
-
     /** @type {LH.Audit.Details.Table['items']} */
     const items = [
       {
         statistic: str_(UIStrings.statisticDOMElements),
         element: '',
-        // TODO: these values should be numbers once `_renderNumeric` in details-renderer can handle them
-        value: i18n.formatNumber(stats.totalBodyElements),
+        value: stats.totalBodyElements,
       },
       {
         statistic: str_(UIStrings.statisticDOMDepth),
@@ -108,7 +104,7 @@ class DOMSize extends Audit {
           type: 'code',
           value: stats.depth.snippet,
         },
-        value: i18n.formatNumber(stats.depth.max),
+        value: stats.depth.max,
       },
       {
         statistic: str_(UIStrings.statisticDOMWidth),
@@ -116,7 +112,7 @@ class DOMSize extends Audit {
           type: 'code',
           value: stats.width.snippet,
         },
-        value: i18n.formatNumber(stats.width.max),
+        value: stats.width.max,
       },
     ];
 
