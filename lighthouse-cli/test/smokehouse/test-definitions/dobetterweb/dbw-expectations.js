@@ -434,7 +434,7 @@ const expectations = [
         mixedContent: [
           {
             resourceType: 'Image',
-            resolutionStatus: 'MixedContentWarning',
+            resolutionStatus: 'MixedContentAutomaticallyUpgraded',
             insecureURL: 'http://www.mixedcontentexamples.com/Content/Test/steveholt.jpg',
             mainResourceURL: 'https://www.mixedcontentexamples.com/Test/NonSecureImage',
             request: {
