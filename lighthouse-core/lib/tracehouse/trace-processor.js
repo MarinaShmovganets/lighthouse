@@ -571,8 +571,7 @@ class TraceProcessor {
         if (!fetchStart) throw this.createNoResourceSendRequestError();
         return fetchStart;
       }
-      case 'lastNavigationStart':
-      default: {
+      case 'lastNavigationStart': {
         // Our time origin will be the last frame navigation in the trace
         const frameEvents = traceEventSubsets.frameEvents;
         const navigationStart = frameEvents.filter(this._isNavigationStartOfInterest).pop();
