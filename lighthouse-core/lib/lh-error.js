@@ -242,6 +242,11 @@ const ERRORS = {
     message: UIStrings.badTraceRecording,
     lhrRuntimeError: true,
   },
+  NO_RESOURCE_SEND: {
+    code: 'NO_RESOURCE_SEND',
+    message: UIStrings.badTraceRecording,
+    lhrRuntimeError: true,
+  },
   NO_NAVSTART: {
     code: 'NO_NAVSTART',
     message: UIStrings.badTraceRecording,

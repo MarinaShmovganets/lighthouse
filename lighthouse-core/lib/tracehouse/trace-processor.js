@@ -527,13 +527,46 @@ class TraceProcessor {
         return Boolean(data && data.frame && data.url);
       });
 
-    const traceOfTab = {...frameTimings, frames, mainThreadEvents, processEvents, mainFrameIds};
-
-    // Update our traceEnd to reflect all page activity.
+    // Ensure our traceEnd reflects all page activity.
     const traceEnd = this.computeTraceEnd(trace.traceEvents, timeOriginEvt);
-    traceOfTab.timings.traceEnd = traceEnd.timing;
-    traceOfTab.timestamps.traceEnd = traceEnd.timestamp;
-    return traceOfTab;
+
+    // This could be much more concise with object spread, but the consensus is that explicitness is
+    // preferred over .
+    return {
+      frames,
+      mainThreadEvents,
+      processEvents,
+      mainFrameIds,
+      timings: {
+        timeOrigin: frameTimings.timings.timeOrigin,
+        firstPaint: frameTimings.timings.firstPaint,
+        firstContentfulPaint: frameTimings.timings.firstContentfulPaint,
+        firstMeaningfulPaint: frameTimings.timings.firstMeaningfulPaint,
+        largestContentfulPaint: frameTimings.timings.largestContentfulPaint,
+        traceEnd: traceEnd.timing,
+        load: frameTimings.timings.load,
+        domContentLoaded: frameTimings.timings.domContentLoaded,
+      },
+      timestamps: {
+        timeOrigin: frameTimings.timestamps.timeOrigin,
+        firstPaint: frameTimings.timestamps.firstPaint,
+        firstContentfulPaint: frameTimings.timestamps.firstContentfulPaint,
+        firstMeaningfulPaint: frameTimings.timestamps.firstMeaningfulPaint,
+        largestContentfulPaint: frameTimings.timestamps.largestContentfulPaint,
+        traceEnd: traceEnd.timestamp,
+        load: frameTimings.timestamps.load,
+        domContentLoaded: frameTimings.timestamps.domContentLoaded,
+      },
+      timeOriginEvt: frameTimings.timeOriginEvt,
+      firstPaintEvt: frameTimings.firstPaintEvt,
+      firstContentfulPaintEvt: frameTimings.firstContentfulPaintEvt,
+      firstMeaningfulPaintEvt: frameTimings.firstMeaningfulPaintEvt,
+      largestContentfulPaintEvt: frameTimings.largestContentfulPaintEvt,
+      loadEvt: frameTimings.loadEvt,
+      domContentLoadedEvt: frameTimings.domContentLoadedEvt,
+      fmpFellBack: frameTimings.fmpFellBack,
+      lcpInvalidated: frameTimings.lcpInvalidated,
+    };
   }
 
   /**
@@ -554,6 +587,20 @@ class TraceProcessor {
 
   /**
    * Computes the time origin using the specified method.
+   *
+   *    - firstResourceSendRequest
+   *      Uses the time that the very first network request is sent in the main frame.
+   *      Eventually should be used in place of lastNavigationStart as the default for navigations.
+   *      This method includes the cost of all redirects when evaluating a navigation (which matches lantern behavior).
+   *      The only difference between firstResourceSendRequest and the first `navigationStart` is
+   *      the unload time of `about:blank` (which is a Lighthouse implementation detail and shouldn't be included).
+   *
+   *    - lastNavigationStart
+   *      Uses the time of the last `navigationStart` event in the main frame.
+   *      The historical time origin of Lighthouse from 2016-Present.
+   *      This method excludes the cost of client-side redirects when evaluating a navigation.
+   *      Can also be skewed by several hundred milliseconds or even seconds when the browser takes a long
+   *      time to unload `about:blank`.
    *
    * @param {{keyEvents: Array<LH.TraceEvent>, frameEvents: Array<LH.TraceEvent>, mainFrameIds: {frameId: string}}} traceEventSubsets
    * @param {TimeOriginDeterminationMethod} method
@@ -648,6 +695,7 @@ class TraceProcessor {
       e => e.name === 'domContentLoadedEventEnd' && e.ts > timeOriginEvt.ts
     );
 
+    const traceEndEvt = this.computeTraceEnd(frameEvents, timeOriginEvt);
     /** @param {{ts: number}=} event */
     const getTimestamp = (event) => event && event.ts;
     /** @type {TraceTimesWithoutFCP} */
@@ -657,15 +705,13 @@ class TraceProcessor {
       firstContentfulPaint: getTimestamp(firstContentfulPaint),
       firstMeaningfulPaint: getTimestamp(firstMeaningfulPaint),
       largestContentfulPaint: getTimestamp(largestContentfulPaint),
-      traceEnd: this.computeTraceEnd(frameEvents, timeOriginEvt).timestamp,
+      traceEnd: traceEndEvt.timestamp,
       load: getTimestamp(load),
       domContentLoaded: getTimestamp(domContentLoaded),
     };
 
-    /** @param {number} ts */
-    const getTiming = (ts) => (ts - timeOriginEvt.ts) / 1000;
     /** @param {number=} ts */
-    const maybeGetTiming = (ts) => ts === undefined ? undefined : getTiming(ts);
+    const maybeGetTiming = (ts) => ts === undefined ? undefined : (ts - timeOriginEvt.ts) / 1000;
     /** @type {TraceTimesWithoutFCP} */
     const timings = {
       timeOrigin: 0,
@@ -673,7 +719,7 @@ class TraceProcessor {
       firstContentfulPaint: maybeGetTiming(timestamps.firstContentfulPaint),
       firstMeaningfulPaint: maybeGetTiming(timestamps.firstMeaningfulPaint),
       largestContentfulPaint: maybeGetTiming(timestamps.largestContentfulPaint),
-      traceEnd: getTiming(timestamps.traceEnd),
+      traceEnd: traceEndEvt.timing,
       load: maybeGetTiming(timestamps.load),
       domContentLoaded: maybeGetTiming(timestamps.domContentLoaded),
     };

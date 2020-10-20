@@ -20,6 +20,15 @@ class LHTraceProcessor extends TraceProcessor {
   }
 
   /**
+   * This isn't ever actually used, but might one day be.
+   * @see https://github.com/GoogleChrome/lighthouse/pull/11253#discussion_r507985527
+   * @return {Error}
+   */
+  static createNoResourceSendRequestError() {
+    return new LHError(LHError.errors.NO_RESOURCE_SEND);
+  }
+
+  /**
    * @return {Error}
    */
   static createNoTracingStartedError() {
