@@ -531,7 +531,7 @@ class TraceProcessor {
     const traceEnd = this.computeTraceEnd(trace.traceEvents, timeOriginEvt);
 
     // This could be much more concise with object spread, but the consensus is that explicitness is
-    // preferred over .
+    // preferred over brevity here.
     return {
       frames,
       mainThreadEvents,
