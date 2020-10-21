@@ -434,6 +434,7 @@ const expectations = [
         mixedContent: [
           {
             resourceType: 'Image',
+            _minChromiumMilestone: 88, # We went from Warning to AutoUpgrade in https://chromium-review.googlesource.com/c/chromium/src/+/2480817
             resolutionStatus: 'MixedContentAutomaticallyUpgraded',
             insecureURL: 'http://www.mixedcontentexamples.com/Content/Test/steveholt.jpg',
             mainResourceURL: 'https://www.mixedcontentexamples.com/Test/NonSecureImage',
