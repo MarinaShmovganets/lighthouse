@@ -58,7 +58,7 @@ enum LighthouseError {
   // The page requested was not HTML. 
   NOT_HTML = 21;
   // The trace did not contain a ResourceSendRequest event.
-  NO_RESOURCE_SEND = 22;
+  NO_RESOURCE_REQUEST = 22;
 }
 
 // The overarching Lighthouse Response object (LHR)

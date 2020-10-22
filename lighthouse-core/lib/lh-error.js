@@ -242,8 +242,8 @@ const ERRORS = {
     message: UIStrings.badTraceRecording,
     lhrRuntimeError: true,
   },
-  NO_RESOURCE_SEND: {
-    code: 'NO_RESOURCE_SEND',
+  NO_RESOURCE_REQUEST: {
+    code: 'NO_RESOURCE_REQUEST',
     message: UIStrings.badTraceRecording,
     lhrRuntimeError: true,
   },

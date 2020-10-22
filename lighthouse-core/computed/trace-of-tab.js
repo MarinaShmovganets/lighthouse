@@ -26,7 +26,7 @@ class LHTraceProcessor extends TraceProcessor {
    * @return {Error}
    */
   static createNoResourceSendRequestError() {
-    return new LHError(LHError.errors.NO_RESOURCE_SEND);
+    return new LHError(LHError.errors.NO_RESOURCE_REQUEST);
   }
 
   /**
