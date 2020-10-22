@@ -401,11 +401,11 @@ const expectations = [
           numericValue: 148,
           details: {
             items: [
-              {statistic: 'Total DOM Elements', value: '148'},
-              {statistic: 'Maximum DOM Depth', value: '4'},
+              {statistic: 'Total DOM Elements', value: 148},
+              {statistic: 'Maximum DOM Depth', value: 4},
               {
                 statistic: 'Maximum Child Elements',
-                value: '100',
+                value: 100,
                 element: {value: '<div id="shadow-root-container">'},
               },
             ],
@@ -431,13 +431,11 @@ const expectations = [
   {
     artifacts: {
       InspectorIssues: {
-        // Mixed Content issues weren't added to the protocol until M84.
-        // https://chromiumdash.appspot.com/commit/52ed57138d0b83e8afd9de25e60655c6ace7527c
-        _minChromiumMilestone: 84,
         mixedContent: [
           {
+            _minChromiumMilestone: 88, // We went from Warning to AutoUpgrade in https://chromium-review.googlesource.com/c/chromium/src/+/2480817
             resourceType: 'Image',
-            resolutionStatus: 'MixedContentWarning',
+            resolutionStatus: 'MixedContentAutomaticallyUpgraded',
             insecureURL: 'http://www.mixedcontentexamples.com/Content/Test/steveholt.jpg',
             mainResourceURL: 'https://www.mixedcontentexamples.com/Test/NonSecureImage',
             request: {
