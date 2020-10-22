@@ -638,6 +638,17 @@ Object {
         .toThrowError('navigationStart');
     });
 
+    it('throws on traces missing a ResourceSendRequest', () => {
+      const traceWithoutResourceSend = {
+        traceEvents: pwaTrace.filter(e => e.name !== 'ResourceSendRequest'),
+      };
+
+      expect(() => TraceProcessor.computeTraceOfTab(traceWithoutResourceSend, {
+        timeOriginDeterminationMethod: 'firstResourceSendRequest',
+      }))
+        .toThrowError('ResourceSendRequest');
+    });
+
     it('does not throw on traces missing an FCP', () => {
       expect(() => TraceProcessor.computeTraceOfTab(noFCPtrace)).not.toThrow();
     });
