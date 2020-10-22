@@ -17,8 +17,8 @@
  */
 
 /** @typedef {Omit<LH.Artifacts.TraceTimes, 'firstContentfulPaint'> & {firstContentfulPaint?: number}} TraceTimesWithoutFCP */
+/** @typedef {Omit<TraceTimesWithoutFCP, 'traceEnd'>} TraceTimesWithoutFCPAndTraceEnd */
 /** @typedef {Omit<LH.Artifacts.TraceOfTab, 'firstContentfulPaintEvt'|'timings'|'timestamps'> & {timings: TraceTimesWithoutFCP, timestamps: TraceTimesWithoutFCP, firstContentfulPaintEvt?: LH.Artifacts.TraceOfTab['firstContentfulPaintEvt']}} TraceOfTabWithoutFCP */
-/** @typedef {Omit<TraceOfTabWithoutFCP, 'frames'|'processEvents'|'mainThreadEvents'|'mainFrameIds'>} FrameTimings */
 /** @typedef {'lastNavigationStart'|'firstResourceSendRequest'} TimeOriginDeterminationMethod */
 
 const log = require('lighthouse-logger');
@@ -633,7 +633,6 @@ class TraceProcessor {
    * in addition to the standard microsecond monotonic timestamps.
    * @param {Array<LH.TraceEvent>} frameEvents
    * @param {{timeOriginEvt: LH.TraceEvent}} options
-   * @return {FrameTimings}
   */
   static computeKeyTimingsForFrame(frameEvents, options) {
     const {timeOriginEvt} = options;
@@ -695,31 +694,28 @@ class TraceProcessor {
       e => e.name === 'domContentLoadedEventEnd' && e.ts > timeOriginEvt.ts
     );
 
-    const traceEndEvt = this.computeTraceEnd(frameEvents, timeOriginEvt);
     /** @param {{ts: number}=} event */
     const getTimestamp = (event) => event && event.ts;
-    /** @type {TraceTimesWithoutFCP} */
+    /** @type {TraceTimesWithoutFCPAndTraceEnd} */
     const timestamps = {
       timeOrigin: timeOriginEvt.ts,
       firstPaint: getTimestamp(firstPaint),
       firstContentfulPaint: getTimestamp(firstContentfulPaint),
       firstMeaningfulPaint: getTimestamp(firstMeaningfulPaint),
       largestContentfulPaint: getTimestamp(largestContentfulPaint),
-      traceEnd: traceEndEvt.timestamp,
       load: getTimestamp(load),
       domContentLoaded: getTimestamp(domContentLoaded),
     };
 
     /** @param {number=} ts */
     const maybeGetTiming = (ts) => ts === undefined ? undefined : (ts - timeOriginEvt.ts) / 1000;
-    /** @type {TraceTimesWithoutFCP} */
+    /** @type {TraceTimesWithoutFCPAndTraceEnd} */
     const timings = {
       timeOrigin: 0,
       firstPaint: maybeGetTiming(timestamps.firstPaint),
       firstContentfulPaint: maybeGetTiming(timestamps.firstContentfulPaint),
       firstMeaningfulPaint: maybeGetTiming(timestamps.firstMeaningfulPaint),
       largestContentfulPaint: maybeGetTiming(timestamps.largestContentfulPaint),
-      traceEnd: traceEndEvt.timing,
       load: maybeGetTiming(timestamps.load),
       domContentLoaded: maybeGetTiming(timestamps.domContentLoaded),
     };
