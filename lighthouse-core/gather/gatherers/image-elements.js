@@ -177,14 +177,14 @@ function determineNaturalSize(url) {
 }
 
 /**
- * @param {Partial<Pick<LH.Crdp.CSS.CSSStyle, 'cssProperties'>>|undefined} style
+ * @param {Partial<Pick<LH.Crdp.CSS.CSSStyle, 'cssProperties'>>|undefined} rule
  * @param {string} property
  * @return {string | undefined}
  */
-function findSizeDeclaration(style, property) {
-  if (!style || !style.cssProperties) return;
+function findSizeDeclaration(rule, property) {
+  if (!rule || !rule.cssProperties) return;
 
-  const definedProp = style.cssProperties.find(({name}) => name === property);
+  const definedProp = rule.cssProperties.find(({name}) => name === property);
   if (!definedProp) return;
 
   return definedProp.value;
