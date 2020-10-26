@@ -398,6 +398,7 @@ function getNodeLabel(node) {
 
 /**
  * @param {HTMLElement} element
+ * @return {LH.Artifacts.Rect}
  */
 /* istanbul ignore next */
 function getBoundingClientRect(element) {
