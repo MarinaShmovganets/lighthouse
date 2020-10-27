@@ -152,6 +152,24 @@ const formats = {
 };
 
 /**
+ * Function to augment a given locale with additional messages.
+ * @param {LH.Locale} locale
+ * @param {LH.LocaleMessages} messages
+ * @param {string=} dir Optional absolute path to be appended to message keys.
+ */
+function augmentLocale(locale, messages, dir) {
+  if (dir) {
+    for (const [key, message] of Object.entries(messages)) {
+      delete messages[key];
+      const [filename, varName] = key.split(' | ');
+      const relativeDir = path.relative(LH_ROOT, dir).replace(/\\/g, '/');
+      messages[`${path.join(relativeDir, filename)} | ${varName}`] = message;
+    }
+  }
+  LOCALES[locale] = Object.assign(LOCALES[locale], messages);
+}
+
+/**
  * Look up the best available locale for the requested language through these fall backs:
  * - exact match
  * - progressively shorter prefixes (`de-CH-1996` -> `de-CH` -> `de`)
@@ -522,6 +540,7 @@ function isStringOrIcuMessage(value) {
 
 module.exports = {
   _formatPathAsString,
+  augmentLocale,
   UIStrings,
   lookupLocale,
   getRendererFormattedStrings,

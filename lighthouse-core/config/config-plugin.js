@@ -190,6 +190,28 @@ class ConfigPlugin {
   }
 
   /**
+   * Extract and validate locales JSON added by the plugin.
+   * @param {unknown} localesJson
+   * @param {string} pluginName
+   */
+  static _validateLocales(localesJson, pluginName) {
+    if (localesJson === undefined) {
+      return undefined;
+    }
+
+    if (!isObjectOfUnknownProperties(localesJson)) {
+      throw new Error(`${pluginName} locales json is not defined as an object.`);
+    }
+
+    for (const [locale, messages] of Object.entries(localesJson)) {
+      if (!(typeof locale === 'string')) {
+        throw new Error(`${pluginName} contains non-string locale key.`);
+      }
+      // TODO(jburger): Include new assertions to ensure proper syntax and valid languages.
+    }
+  }
+
+  /**
    * Extracts and validates a ConfigJson from the provided plugin input, throwing
    * if it deviates from the expected object shape.
    * @param {unknown} pluginJson
@@ -207,10 +229,14 @@ class ConfigPlugin {
       audits: pluginAuditsJson,
       category: pluginCategoryJson,
       groups: pluginGroupsJson,
+      locales: pluginLocalesJson,
       ...invalidRest
     } = pluginJson;
 
     assertNoExcessProperties(invalidRest, pluginName);
+
+    // Not part of Config.Json, only validated.
+    ConfigPlugin._validateLocales(pluginLocalesJson, pluginName);
 
     return {
       audits: ConfigPlugin._parseAuditsList(pluginAuditsJson, pluginName),

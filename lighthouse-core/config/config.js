@@ -331,10 +331,10 @@ class Config {
     // The directory of the config path, if one was provided.
     const configDir = configPath ? path.dirname(configPath) : undefined;
 
-    // Validate and merge in plugins (if any).
-    configJSON = Config.mergePlugins(configJSON, flags, configDir);
-
     const settings = Config.initSettings(configJSON.settings, flags);
+
+    // Validate and merge in plugins (if any).
+    configJSON = Config.mergePlugins(configJSON, flags, configDir, settings.locale);
 
     // Augment passes with necessary defaults and require gatherers.
     const passesWithDefaults = Config.augmentPassesWithDefaults(configJSON.passes);
@@ -428,9 +428,10 @@ class Config {
    * @param {LH.Config.Json} configJSON
    * @param {LH.Flags=} flags
    * @param {string=} configDir
+   * @param {LH.Locale=} locale
    * @return {LH.Config.Json}
    */
-  static mergePlugins(configJSON, flags, configDir) {
+  static mergePlugins(configJSON, flags, configDir, locale) {
     const configPlugins = configJSON.plugins || [];
     const flagPlugins = (flags && flags.plugins) || [];
     const pluginNames = new Set([...configPlugins, ...flagPlugins]);
@@ -444,6 +445,13 @@ class Config {
         resolveModule(pluginName, configDir, 'plugin');
       const rawPluginJson = require(pluginPath);
       const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
+      if (rawPluginJson['locales'] && locale) {
+        /** @type {LH.LocaleConfig} */
+        const locales = rawPluginJson['locales'];
+        if (locales[locale]) {
+          i18n.augmentLocale(locale, locales[locale], path.dirname(pluginPath));
+        }
+      }
 
       configJSON = Config.extendConfigJSON(configJSON, pluginJson);
     }
