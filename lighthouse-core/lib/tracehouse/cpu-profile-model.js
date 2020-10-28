@@ -5,6 +5,8 @@
  */
 'use strict';
 
+const MainThreadTasks = require('./main-thread-tasks.js');
+
 /**
  * @fileoverview
  *
@@ -108,22 +110,28 @@ class CpuProfilerModel {
 
   /**
    * Generates the necessary B/E-style trace events for a single transition from stack A to stack B
-   * at the given timestamp.
+   * at the given latest timestamp (includes possible range in event.args.data).
    *
    * Example:
    *
-   *    timestamp 1234
+   *    latestPossibleTimestamp 1234
    *    previousNodeIds 1,2,3
    *    currentNodeIds 1,2,4
    *
    *    yields [end 3 at ts 1234, begin 4 at ts 1234]
    *
-   * @param {number} timestamp
+   * @param {number} earliestPossibleTimestamp
+   * @param {number} latestPossibleTimestamp
    * @param {Array<number>} previousNodeIds
    * @param {Array<number>} currentNodeIds
    * @return {Array<LH.TraceEvent>}
    */
-  _synthesizeTraceEventsForTransition(timestamp, previousNodeIds, currentNodeIds) {
+  _synthesizeTraceEventsForTransition(
+      earliestPossibleTimestamp,
+      latestPossibleTimestamp,
+      previousNodeIds,
+      currentNodeIds
+  ) {
     const startNodes = currentNodeIds
       .filter(id => !previousNodeIds.includes(id))
       .map(id => this._nodesById.get(id))
@@ -135,7 +143,9 @@ class CpuProfilerModel {
 
     /** @param {CpuProfile['nodes'][0]} node @return {LH.TraceEvent} */
     const createSyntheticEvent = node => ({
-      ts: timestamp,
+      ts: Number.isFinite(latestPossibleTimestamp)
+        ? latestPossibleTimestamp
+        : earliestPossibleTimestamp,
       pid: this._profile.pid,
       tid: this._profile.tid,
       dur: 0,
@@ -144,13 +154,19 @@ class CpuProfilerModel {
       // Attribution logic in main-thread-tasks.js special cases this event.
       name: 'FunctionCall-SynthesizedByProfilerModel',
       cat: 'lighthouse',
-      args: {data: {callFrame: node.callFrame}},
+      args: {
+        data: {
+          callFrame: node.callFrame,
+          _syntheticProfilerRange: {earliestPossibleTimestamp, latestPossibleTimestamp},
+        },
+      },
     });
 
     /** @type {Array<LH.TraceEvent>} */
     const startEvents = startNodes.map(createSyntheticEvent).map(evt => ({...evt, ph: 'B'}));
     /** @type {Array<LH.TraceEvent>} */
     const endEvents = endNodes.map(createSyntheticEvent).map(evt => ({...evt, ph: 'E'}));
+    // Ensure we put end events in first to finish prior tasks before starting new ones.
     return [...endEvents.reverse(), ...startEvents];
   }
 
@@ -165,9 +181,17 @@ class CpuProfilerModel {
   static _getTasksInRange(knownTasks, options) {
     const {type, initialIndex, earliestPossibleTimestamp, latestPossibleTimestamp} = options;
 
+    // We may have overshot a little from last time, so back up to find the real starting index.
+    let startIndex = initialIndex;
+    while (startIndex > 0) {
+      const task = knownTasks[startIndex];
+      if (task && task[type] < earliestPossibleTimestamp) break;
+      startIndex--;
+    }
+
     /** @type {Array<{startTime: number, endTime: number}>} */
     const matchingTasks = [];
-    for (let i = initialIndex; i < knownTasks.length; i++) {
+    for (let i = startIndex; i < knownTasks.length; i++) {
       const task = knownTasks[i];
       // Task is before our range of interest, keep looping.
       if (task[type] < earliestPossibleTimestamp) continue;
@@ -181,7 +205,15 @@ class CpuProfilerModel {
       matchingTasks.push(task);
     }
 
-    return {tasks: matchingTasks, lastIndex: knownTasks.length};
+    // We went through all tasks before reaching the end of our range.
+    return {tasks: matchingTasks, lastIndex: knownTasks.length - 1};
+  }
+
+  /** @param {LH.TraceEvent} event */
+  static _getTimestampRange(event) {
+    const profilerRange = event.args.data && event.args.data._syntheticProfilerRange;
+    if (!profilerRange) throw new Error('Impossible - all synthetic events have range');
+    return profilerRange;
   }
 
   /**
@@ -193,26 +225,34 @@ class CpuProfilerModel {
    * range. For example, if we know that a function ended between 800ms and 810ms, we can use the
    * knowledge that a toplevel task ended at 807ms to use 807ms as the correct endtime for this function.
    *
-   * @param {{earliestPossibleTimestamp: number, latestPossibleTimestamp: number, knownTaskStartTimeIndex: number, knownTaskEndTimeIndex: number, knownTasksByStartTime: Array<{startTime: number, endTime: number}>, knownTasksByEndTime: Array<{startTime: number, endTime: number}>}} data
+   * @param {{syntheticTask: LH.Artifacts.TaskNode, eventType: 'start'|'end', allEventsAtTs: {naive: Array<LH.TraceEvent>, refined: Array<LH.TraceEvent>}, knownTaskStartTimeIndex: number, knownTaskEndTimeIndex: number, knownTasksByStartTime: Array<{startTime: number, endTime: number}>, knownTasksByEndTime: Array<{startTime: number, endTime: number}>}} data
    * @return {{timestamp: number, lastStartTimeIndex: number, lastEndTimeIndex: number}}
    */
   static _findEffectiveTimestamp(data) {
     const {
-      earliestPossibleTimestamp,
-      latestPossibleTimestamp,
+      eventType,
+      syntheticTask,
+      allEventsAtTs,
       knownTasksByStartTime,
       knownTaskStartTimeIndex,
       knownTasksByEndTime,
       knownTaskEndTimeIndex,
     } = data;
 
+    const targetEvent = eventType === 'start' ? syntheticTask.event : syntheticTask.endEvent;
+    const pairEvent = eventType === 'start' ? syntheticTask.endEvent : syntheticTask.event;
+    if (!targetEvent || !pairEvent) throw new Error('Impossible - synthetic tasks are B/E pair');
+
+    const timeRange = CpuProfilerModel._getTimestampRange(targetEvent);
+    const pairTimeRange = CpuProfilerModel._getTimestampRange(pairEvent);
+
     const {tasks: knownTasksStarting, lastIndex: lastStartTimeIndex} = this._getTasksInRange(
       knownTasksByStartTime,
       {
         type: 'startTime',
         initialIndex: knownTaskStartTimeIndex,
-        earliestPossibleTimestamp,
-        latestPossibleTimestamp,
+        earliestPossibleTimestamp: timeRange.earliestPossibleTimestamp,
+        latestPossibleTimestamp: timeRange.latestPossibleTimestamp,
       }
     );
 
@@ -221,8 +261,8 @@ class CpuProfilerModel {
       {
         type: 'endTime',
         initialIndex: knownTaskEndTimeIndex,
-        earliestPossibleTimestamp,
-        latestPossibleTimestamp,
+        earliestPossibleTimestamp: timeRange.earliestPossibleTimestamp,
+        latestPossibleTimestamp: timeRange.latestPossibleTimestamp,
       }
     );
 
@@ -232,44 +272,102 @@ class CpuProfilerModel {
     const knownTasksEndingNotContained = knownTasksEnding
       .filter(t => !knownTasksStarting.includes(t));
 
-    let effectiveTimestamp = latestPossibleTimestamp;
-    if (knownTasksStartingNotContained.length) {
-      // Tasks that started but did not finish take priority. Use the earliest of their timestamps.
-      effectiveTimestamp = Math.min(...knownTasksStartingNotContained.map(t => t.startTime));
-    } else if (knownTasksEndingNotContained.length) {
-      // Tasks that ended but did not start take next priority. Use the latest of their timestamps.
-      effectiveTimestamp = Math.max(...knownTasksEndingNotContained.map(t => t.endTime));
-    }
+    // Each one of these spanning tasks can be in one of three situations:
+    //    - Task is a parent of the sample.
+    //    - Task is a child of the sample.
+    //    - Task has no overlap with the sample.
+
+    // Parent tasks must satisfy...
+    //     knownTask.startTime <= syntheticTask.startTime
+    //                         AND
+    //     syntheticTask.endTime <= knownTask.endTime
+    const parentTasks =
+      eventType === 'start'
+        ? knownTasksStartingNotContained.filter(
+            t => t.endTime >= pairTimeRange.earliestPossibleTimestamp
+          )
+        : knownTasksEndingNotContained.filter(
+            t => t.startTime <= pairTimeRange.latestPossibleTimestamp
+          );
+
+    // Child tasks must satisfy...
+    //     syntheticTask.startTime <= knownTask.startTime
+    //                         AND
+    //     knownTask.endTime <= syntheticTask.endTime
+    const childTasks =
+      eventType === 'start'
+        ? knownTasksStartingNotContained.filter(
+            t => t.endTime < pairTimeRange.earliestPossibleTimestamp
+          )
+        : knownTasksEndingNotContained.filter(
+            t => t.startTime > pairTimeRange.latestPossibleTimestamp
+          );
+
+    // Unrelated tasks must satisfy...
+    //     knownTask.endTime <= syntheticTask.startTime
+    //                       OR
+    //     syntheticTask.endTime <= knownTask.startTime
+    const unrelatedTasks =
+          eventType === 'start' ? knownTasksEndingNotContained : knownTasksStartingNotContained;
+
+    // Now we narrow our allowable range using the three types of tasks and the other events
+    // that we've already refined.
+    const minimumTs = Math.max(
+      // Sampled event couldn't be earlier than this to begin with.
+      timeRange.earliestPossibleTimestamp,
+      // Sampled start event can't be before its parent started.
+      // Sampled end event can't be before its child ended.
+      ...(eventType === 'start'
+        ? parentTasks.map(t => t.startTime)
+        : childTasks.map(t => t.endTime)),
+      // Sampled start event can't be before unrelated tasks ended.
+      ...(eventType === 'start' ? unrelatedTasks.map(t => t.endTime) : []),
+      // Sampled start event can't be before the other `E` events at its same timestamp.
+      ...(eventType === 'start'
+        ? allEventsAtTs.refined.filter(e => e.ph === 'E').map(e => e.ts)
+        : [])
+    );
+
+    const maximumTs = Math.min(
+      // Sampled event couldn't be later than this to begin with.
+      timeRange.latestPossibleTimestamp,
+      // Sampled start event can't be after its child started.
+      // Sampled end event can't be after its parent ended.
+      ...(eventType === 'start'
+        ? childTasks.map(t => t.startTime)
+        : parentTasks.map(t => t.endTime)),
+      // Sampled end event can't be after unrelated tasks started.
+      ...(eventType === 'start' ? [] : unrelatedTasks.map(t => t.startTime))
+    );
+
+    // We want to maximize the size of the sampling tasks within our constraints, so we'll pick
+    // the _earliest_ possible time for start events and the _latest_ possible time for end events.
+    const effectiveTimestamp =
+      (eventType === 'start' && Number.isFinite(minimumTs)) || !Number.isFinite(maximumTs)
+        ? minimumTs
+        : maximumTs;
 
     return {timestamp: effectiveTimestamp, lastStartTimeIndex, lastEndTimeIndex};
   }
 
   /**
-   * Creates B/E-style trace events from a CpuProfile object created by `collectProfileEvents()`.
-   * An optional set of tasks can be passed in to refine the start/end times.
+   * Creates the B/E-style trace events using only data from the profile itself. Each B/E event will
+   * include the actual _range_ the timestamp could have been in its metadata that is used for
+   * refinement later.
    *
-   * With the sampling profiler we know that a function started/ended *sometime between* two points,
-   * but not exactly when. Using the information from other tasks gives us more information to be
-   * more precise with timings and allows us to create a valid task tree later on.
-   *
-   * @param {Array<LH.Artifacts.TaskNode>} [knownTasks]
    * @return {Array<LH.TraceEvent>}
    */
-  synthesizeTraceEvents(knownTasks = []) {
+  _synthesizeNaiveTraceEvents() {
     const profile = this._profile;
     const length = profile.samples.length;
     if (profile.timeDeltas.length !== length) throw new Error(`Invalid CPU profile length`);
-
-    const knownTasksByStartTime = knownTasks.slice().sort((a, b) => a.startTime - b.startTime);
-    const knownTasksByEndTime = knownTasks.slice().sort((a, b) => a.endTime - b.endTime);
 
     /** @type {Array<LH.TraceEvent>} */
     const events = [];
 
     let currentProfilerTimestamp = profile.startTime;
-    let lastEffectiveTimestamp = currentProfilerTimestamp;
-    let knownTaskStartTimeIndex = 0;
-    let knownTaskEndTimeIndex = 0;
+    let earliestPossibleTimestamp = -Infinity;
+
     /** @type {Array<number>} */
     let lastActiveNodeIds = [];
     for (let i = 0; i < profile.samples.length; i++) {
@@ -278,40 +376,135 @@ class CpuProfilerModel {
       const node = this._nodesById.get(nodeId);
       if (!node) throw new Error(`Missing node ${nodeId}`);
 
-      const {
-        timestamp: effectiveTimestamp,
-        lastStartTimeIndex,
-        lastEndTimeIndex,
-      } = CpuProfilerModel._findEffectiveTimestamp({
-        earliestPossibleTimestamp: lastEffectiveTimestamp,
-        latestPossibleTimestamp: currentProfilerTimestamp + timeDelta,
+      currentProfilerTimestamp += timeDelta;
+
+      const activeNodeIds = this._getActiveNodeIds(nodeId);
+      events.push(
+        ...this._synthesizeTraceEventsForTransition(
+          earliestPossibleTimestamp,
+          currentProfilerTimestamp,
+          lastActiveNodeIds,
+          activeNodeIds
+        )
+      );
+
+      earliestPossibleTimestamp = currentProfilerTimestamp;
+      lastActiveNodeIds = activeNodeIds;
+    }
+
+    events.push(
+      ...this._synthesizeTraceEventsForTransition(
+        currentProfilerTimestamp,
+        Infinity,
+        lastActiveNodeIds,
+        []
+      )
+    );
+
+    return events;
+  }
+
+  /**
+   * Creates a copy of B/E-style trace events with refined timestamps using knowledge from the
+   * tasks that have definitive timestamps.
+   *
+   * With the sampling profiler we know that a function started/ended _sometime between_ two points,
+   * but not exactly when. Using the information from other tasks gives us more information to be
+   * more precise with timings and allows us to create a valid task tree later on.
+   *
+   * @param {Array<{startTime: number, endTime: number}>} knownTasks
+   * @param {Array<LH.Artifacts.TaskNode>} syntheticTasks
+   * @param {Array<LH.TraceEvent>} syntheticEvents
+   * @return {Array<LH.TraceEvent>}
+   */
+  _refineTraceEventsWithTasks(knownTasks, syntheticTasks, syntheticEvents) {
+    /** @type {Array<LH.TraceEvent>} */
+    const refinedEvents = [];
+
+    /** @type {Map<number, {naive: Array<LH.TraceEvent>, refined: Array<LH.TraceEvent>}>} */
+    const syntheticEventsByTs = new Map();
+    for (const event of syntheticEvents) {
+      const group = syntheticEventsByTs.get(event.ts) || {naive: [], refined: []};
+      group.naive.push(event);
+      syntheticEventsByTs.set(event.ts, group);
+    }
+
+    /** @type {Map<LH.TraceEvent, LH.Artifacts.TaskNode>} */
+    const syntheticTasksByEvent = new Map();
+    for (const task of syntheticTasks) {
+      if (!task.endEvent) throw new Error(`Impossible - all synthethic events are B/E`);
+      syntheticTasksByEvent.set(task.event, task);
+      syntheticTasksByEvent.set(task.endEvent, task);
+    }
+
+    const knownTasksByStartTime = knownTasks.slice().sort((a, b) => a.startTime - b.startTime);
+    const knownTasksByEndTime = knownTasks.slice().sort((a, b) => a.endTime - b.endTime);
+
+    let knownTaskStartTimeIndex = 0;
+    let knownTaskEndTimeIndex = 0;
+
+    for (const event of syntheticEvents) {
+      const syntheticTask = syntheticTasksByEvent.get(event);
+      if (!syntheticTask) throw new Error('Impossible - all events have a task');
+      const allEventsAtTs = syntheticEventsByTs.get(event.ts);
+      if (!allEventsAtTs) throw new Error('Impossible - we just mapped every event');
+
+      const effectiveTimestampData = CpuProfilerModel._findEffectiveTimestamp({
+        eventType: event.ph === 'B' ? 'start' : 'end',
+        syntheticTask,
+        allEventsAtTs,
         knownTaskStartTimeIndex,
         knownTaskEndTimeIndex,
         knownTasksByStartTime,
         knownTasksByEndTime,
       });
 
-      currentProfilerTimestamp += timeDelta;
-      lastEffectiveTimestamp = effectiveTimestamp;
-      knownTaskStartTimeIndex = lastStartTimeIndex;
-      knownTaskEndTimeIndex = lastEndTimeIndex;
+      knownTaskStartTimeIndex = effectiveTimestampData.lastStartTimeIndex;
+      knownTaskEndTimeIndex = effectiveTimestampData.lastEndTimeIndex;
 
-      const activeNodeIds = this._getActiveNodeIds(nodeId);
-      events.push(
-        ...this._synthesizeTraceEventsForTransition(
-          effectiveTimestamp,
-          lastActiveNodeIds,
-          activeNodeIds
-        )
-      );
-      lastActiveNodeIds = activeNodeIds;
+      const refinedEvent = {...event, ts: effectiveTimestampData.timestamp};
+      refinedEvents.push(refinedEvent);
+      allEventsAtTs.refined.push(refinedEvent);
     }
 
-    events.push(
-      ...this._synthesizeTraceEventsForTransition(currentProfilerTimestamp, lastActiveNodeIds, [])
-    );
+    return refinedEvents;
+  }
 
-    return events;
+  /**
+   * Creates B/E-style trace events from a CpuProfile object created by `collectProfileEvents()`.
+   * An optional set of tasks can be passed in to refine the start/end times.
+   *
+   * @param {Array<LH.Artifacts.TaskNode>} [knownTaskNodes]
+   * @return {Array<LH.TraceEvent>}
+   */
+  synthesizeTraceEvents(knownTaskNodes = []) {
+    const naiveEvents = this._synthesizeNaiveTraceEvents();
+    if (!naiveEvents.length) return [];
+
+    let finalEvents = naiveEvents;
+    if (knownTaskNodes.length) {
+      // If we have task information, put the times back into raw trace event ts scale.
+      /** @type {(baseTs: number) => (node: LH.Artifacts.TaskNode) => LH.Artifacts.TaskNode} */
+      const rebaseTaskTime = baseTs => node => ({
+        ...node,
+        startTime: baseTs + node.startTime * 1000,
+        endTime: baseTs + node.endTime * 1000,
+        duration: node.duration * 1000,
+      });
+
+      // The first task node might not be time 0, so recompute the baseTs.
+      const baseTs = knownTaskNodes[0].event.ts - knownTaskNodes[0].startTime * 1000;
+      const knownTasks = knownTaskNodes.map(rebaseTaskTime(baseTs));
+
+      // We'll also create tasks for our naive events so we have the B/E pairs readily available.
+      const naiveProfilerTasks = MainThreadTasks.getMainThreadTasks(naiveEvents, [], Infinity).map(
+        rebaseTaskTime(naiveEvents[0].ts)
+      );
+
+      finalEvents = this._refineTraceEventsWithTasks(knownTasks, naiveProfilerTasks, naiveEvents);
+    }
+
+    return finalEvents;
   }
 
   /**
