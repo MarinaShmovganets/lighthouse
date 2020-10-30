@@ -369,6 +369,11 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
+"@tusbar/cache-control@^0.3.1":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@tusbar/cache-control/-/cache-control-0.3.2.tgz#6b59cd0ba8fe376fc472012cecde556f667ae4a1"
+  integrity sha512-69QNun7QkjTAXwvO4J/dvBW19M5q/mcqAnMawPseAEv7DNEAr7flhlW3I9Cp3N4MO0RY/StZYXBq+xkik6Z+VA==
+
 "@types/archiver@^2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@types/archiver/-/archiver-2.1.2.tgz#e84960d4872570d7c826589cd57f2c076bf198c5"
@@ -2952,7 +2957,7 @@ esprima@^3.1.3:
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-3.1.3.tgz#fdca51cee6133895e3c88d535ce49dbff62a4633"
   integrity sha1-/cpRzuYTOJXjyI1TXOSdv/YqRjM=
 
-esprima@^4.0.0:
+esprima@^4.0.0, esprima@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
@@ -4042,7 +4047,7 @@ intl-messageformat-parser@^1.8.1:
   resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-1.8.1.tgz#0eb14c5618333be4c95c409457b66c8c33ddcc01"
   integrity sha512-IMSCKVf0USrM/959vj3xac7s8f87sc+80Y/ipBzdKy4ifBv5Gsj2tZ41EAaURVg01QU71fYr77uA8Meh6kELbg==
 
-intl-messageformat@^4.4.0:
+intl-messageformat@^4.1.2, intl-messageformat@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-4.4.0.tgz#aa196a4d04b573f4090bc417f982d81de4f74fad"
   integrity sha512-z+Bj2rS3LZSYU4+sNitdHrwnBhr0wO80ZJSW8EzKDBowwUe3Q/UsvgCGjrwa+HPzoGCLEb9HAjfJgo4j2Sac8w==
@@ -5143,6 +5148,14 @@ lighthouse-logger@^1.0.0, lighthouse-logger@^1.2.0:
   dependencies:
     debug "^2.6.8"
     marky "^1.2.0"
+
+"lighthouse-plugin-publisher-ads@file:../publisher-ads-lighthouse-plugin/lighthouse-plugin-publisher-ads":
+  version "1.2.0"
+  dependencies:
+    "@tusbar/cache-control" "^0.3.1"
+    esprima "^4.0.1"
+    intl-messageformat "^4.1.2"
+    yargs "^13.3.0"
 
 lighthouse-stack-packs@^1.2.1:
   version "1.2.1"

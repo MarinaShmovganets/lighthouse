@@ -149,9 +149,8 @@ class Runner {
         },
         stackPacks: stackPacks.getStackPacks(artifacts.Stacks),
       };
-
       // Replace ICU message references with localized strings; save replaced paths in lhr.
-      i18nLhr.i18n.icuMessagePaths = i18n.replaceIcuMessages(i18nLhr, settings.locale);
+      i18nLhr.i18n.icuMessagePaths = i18n.replaceIcuMessages(i18nLhr, settings.locale, runOpts.config.pluginLocales);
 
       // LHR has now been localized.
       const lhr = /** @type {LH.Result} */ (i18nLhr);
@@ -169,7 +168,7 @@ class Runner {
     } catch (err) {
       // i18n LighthouseError strings.
       if (err.friendlyMessage) {
-        err.friendlyMessage = i18n.getFormatted(err.friendlyMessage, settings.locale);
+        err.friendlyMessage = i18n.getFormatted(err.friendlyMessage, settings.locale, runOpts.config.pluginLocales);
       }
       await Sentry.captureException(err, {level: 'fatal'});
       throw err;

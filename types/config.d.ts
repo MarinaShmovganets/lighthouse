@@ -21,6 +21,7 @@ declare global {
         categories?: Record<string, CategoryJson> | null;
         groups?: Record<string, Config.GroupJson> | null;
         plugins?: Array<string>,
+        pluginLocales?: LH.LocaleConfig | null
       }
 
       export interface PassJson {

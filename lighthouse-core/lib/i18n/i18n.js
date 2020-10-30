@@ -152,24 +152,6 @@ const formats = {
 };
 
 /**
- * Function to augment a given locale with additional messages.
- * @param {LH.Locale} locale
- * @param {LH.LocaleMessages} messages
- * @param {string=} dir Optional absolute path to be appended to message keys.
- */
-function augmentLocale(locale, messages, dir) {
-  if (dir) {
-    for (const [key, message] of Object.entries(messages)) {
-      delete messages[key];
-      const [filename, varName] = key.split(' | ');
-      const relativeDir = path.relative(LH_ROOT, dir).replace(/\\/g, '/');
-      messages[`${path.join(relativeDir, filename)} | ${varName}`] = message;
-    }
-  }
-  LOCALES[locale] = Object.assign(LOCALES[locale], messages);
-}
-
-/**
  * Look up the best available locale for the requested language through these fall backs:
  * - exact match
  * - progressively shorter prefixes (`de-CH-1996` -> `de-CH` -> `de`)
@@ -316,10 +298,12 @@ function _formatMessage(message, values = {}, locale) {
  * value replacements.
  * @param {LH.IcuMessage} icuMessage
  * @param {LH.Locale} locale
+ * @param {?LH.LocaleConfig} pluginLocales
  * @return {string}
  */
-function _localizeIcuMessage(icuMessage, locale) {
-  const localeMessages = LOCALES[locale];
+function _localizeIcuMessage(icuMessage, locale, pluginLocales) {
+  const localeMessages = 
+    Object.assign(LOCALES[locale], pluginLocales && pluginLocales[locale]);
   if (!localeMessages) throw new Error(`Unsupported locale '${locale}'`);
   const localeMessage = localeMessages[icuMessage.i18nId];
 
@@ -395,8 +379,7 @@ function createIcuMessageFn(filename, fileStrings) {
     if (!keyname) throw new Error(`Could not locate: ${message}`);
 
     const filenameToLookup = keyname in fileStrings ? filename : __filename;
-    const unixStyleFilename = path.relative(LH_ROOT, filenameToLookup).replace(/\\/g, '/');
-    const i18nId = `${unixStyleFilename} | ${keyname}`;
+    const i18nId = createI18nId(filenameToLookup, keyname);
 
     return {
       i18nId,
@@ -406,6 +389,16 @@ function createIcuMessageFn(filename, fileStrings) {
   };
 
   return getIcuMessageFn;
+}
+
+  /**
+   * @param {string} filename
+   * @param {string} keyname
+   * @return {string} i18nId
+   */
+function createI18nId(filename, keyname) {
+  const unixStyleFilename = path.relative(LH_ROOT, filename).replace(/\\/g, '/');
+  return `${unixStyleFilename} | ${keyname}`;
 }
 
 /**
@@ -452,11 +445,12 @@ function isIcuMessage(icuMessageOrNot) {
  * or `locale` isn't supported (use `lookupLocale` to find a valid locale).
  * @param {LH.IcuMessage | string} icuMessageOrRawString
  * @param {LH.Locale} locale
+ * @param {?LH.LocaleConfig=} pluginLocales
  * @return {string}
  */
-function getFormatted(icuMessageOrRawString, locale) {
+function getFormatted(icuMessageOrRawString, locale, pluginLocales = null) {
   if (isIcuMessage(icuMessageOrRawString)) {
-    return _localizeIcuMessage(icuMessageOrRawString, locale);
+    return _localizeIcuMessage(icuMessageOrRawString, locale, pluginLocales);
   }
 
   if (typeof icuMessageOrRawString === 'string') {
@@ -475,9 +469,10 @@ function getFormatted(icuMessageOrRawString, locale) {
  * that location.
  * @param {unknown} inputObject
  * @param {LH.Locale} locale
+ * @param {?LH.LocaleConfig} pluginLocales
  * @return {LH.IcuMessagePaths}
  */
-function replaceIcuMessages(inputObject, locale) {
+function replaceIcuMessages(inputObject, locale, pluginLocales) {
   /**
    * @param {unknown} subObject
    * @param {LH.IcuMessagePaths} icuMessagePaths
@@ -491,7 +486,7 @@ function replaceIcuMessages(inputObject, locale) {
 
       // Replace any IcuMessages with a localized string.
       if (isIcuMessage(possibleIcuMessage)) {
-        const formattedString = _localizeIcuMessage(possibleIcuMessage, locale);
+        const formattedString = _localizeIcuMessage(possibleIcuMessage, locale, pluginLocales);
         const messageInstancesInLHR = icuMessagePaths[possibleIcuMessage.i18nId] || [];
         const currentPathAsString = _formatPathAsString(currentPathInLHR);
 
@@ -540,10 +535,10 @@ function isStringOrIcuMessage(value) {
 
 module.exports = {
   _formatPathAsString,
-  augmentLocale,
   UIStrings,
   lookupLocale,
   getRendererFormattedStrings,
+  createI18nId,
   createIcuMessageFn,
   getFormatted,
   replaceIcuMessages,

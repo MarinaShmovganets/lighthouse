@@ -351,6 +351,8 @@ class Config {
     this.categories = configJSON.categories || null;
     /** @type {?Record<string, LH.Config.Group>} */
     this.groups = configJSON.groups || null;
+    /** @type {?LH.LocaleConfig} */
+    this.pluginLocales = configJSON.pluginLocales || null;
 
     Config.filterConfigIfNeeded(this);
 
@@ -394,7 +396,7 @@ class Config {
     }
 
     // Printed config is more useful with localized strings.
-    i18n.replaceIcuMessages(jsonConfig, jsonConfig.settings.locale);
+    i18n.replaceIcuMessages(jsonConfig, jsonConfig.settings.locale, jsonConfig.pluginLocales);
 
     return JSON.stringify(jsonConfig, null, 2);
   }
@@ -444,14 +446,7 @@ class Config {
         pluginName :
         resolveModule(pluginName, configDir, 'plugin');
       const rawPluginJson = require(pluginPath);
-      const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
-      if (rawPluginJson['locales'] && locale) {
-        /** @type {LH.LocaleConfig} */
-        const locales = rawPluginJson['locales'];
-        if (locales[locale]) {
-          i18n.augmentLocale(locale, locales[locale], path.dirname(pluginPath));
-        }
-      }
+      const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName, pluginPath);
 
       configJSON = Config.extendConfigJSON(configJSON, pluginJson);
     }
