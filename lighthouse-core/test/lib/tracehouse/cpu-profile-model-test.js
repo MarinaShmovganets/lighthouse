@@ -221,7 +221,7 @@ describe('CPU Profiler Model', () => {
 
       const ts = x => profile.startTime + x;
 
-      // With the sampling profiler we know that Foo switched to Bar but not when.
+      // With the sampling profiler we know that Foo switched to Bar, but we don't know when.
       // Create a set of tasks that force large changes.
       const tasks = [
         // The RunTask at the toplevel, parent of Foo execution
