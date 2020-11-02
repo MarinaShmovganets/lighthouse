@@ -259,10 +259,8 @@ class GatherRunner {
       mainRecord = NetworkAnalyzer.findMainDocument(networkRecords, passContext.url);
     } catch (_) {}
 
-    let finalRecord;
-    try {
-      finalRecord = NetworkAnalyzer.findFinalDocument(mainRecord);
-    } catch (_) {}
+    // MIME Type is only set on the final redirected document request. Use this for the HTML check instead of root.
+    const finalRecord = NetworkAnalyzer.resolveRedirects(mainRecord);
 
     const networkError = GatherRunner.getNetworkError(mainRecord);
     const interstitialError = GatherRunner.getInterstitialError(mainRecord, networkRecords);

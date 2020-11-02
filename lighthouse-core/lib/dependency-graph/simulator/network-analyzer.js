@@ -454,23 +454,16 @@ class NetworkAnalyzer {
   }
 
   /**
-   * Finds the final document in a redirect chain given a main document.
+   * Resolves redirect chain given a main document.
    * See: {@link NetworkAnalyzer.findMainDocument}) for how to retrieve main document.
    *
-   * @param {LH.Artifacts.NetworkRequest|undefined} mainDocument
-   * @returns {LH.Artifacts.NetworkRequest}
+   * @param {LH.Artifacts.NetworkRequest|undefined} request
+   * @returns {LH.Artifacts.NetworkRequest|undefined}
    */
-  static findFinalDocument(mainDocument) {
-    const documentRequests = [];
-
-    while (mainDocument) {
-      documentRequests.push(mainDocument);
-      mainDocument = mainDocument.redirectDestination;
-    }
-
-    if (!documentRequests.length) throw new Error('Unable to identify the final resource');
-
-    return documentRequests[documentRequests.length - 1];
+  static resolveRedirects(request) {
+    if (!request) return undefined;
+    while (request.redirectDestination) request = request.redirectDestination;
+    return request;
   }
 }
 

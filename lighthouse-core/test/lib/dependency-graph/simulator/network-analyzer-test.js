@@ -389,23 +389,23 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
     });
   });
 
-  describe('#findFinalDocument', () => {
-    it('should find the final document without redirects', async () => {
+  describe('#resolveRedirects', () => {
+    it('should resolve to the same document when no redirect', async () => {
       const records = await NetworkRecords.request(devtoolsLog, {computedCache: new Map()});
 
       const mainDocument = NetworkAnalyzer.findMainDocument(records, 'https://pwa.rocks/');
-      const finalDocument = NetworkAnalyzer.findFinalDocument(mainDocument);
+      const finalDocument = NetworkAnalyzer.resolveRedirects(mainDocument);
       assert.equal(mainDocument.url, finalDocument.url);
       assert.equal(finalDocument.url, 'https://pwa.rocks/');
     });
 
-    it('should find the final document with redirects', async () => {
+    it('should resolve to the final document with redirects', async () => {
       const records = await NetworkRecords.request(devtoolsLogWithRedirect, {
         computedCache: new Map(),
       });
 
       const mainDocument = NetworkAnalyzer.findMainDocument(records, 'http://www.vkontakte.ru/');
-      const finalDocument = NetworkAnalyzer.findFinalDocument(mainDocument);
+      const finalDocument = NetworkAnalyzer.resolveRedirects(mainDocument);
       assert.notEqual(mainDocument.url, finalDocument.url);
       assert.equal(finalDocument.url, 'https://m.vk.com/');
     });
