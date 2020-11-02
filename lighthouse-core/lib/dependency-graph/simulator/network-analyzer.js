@@ -452,6 +452,26 @@ class NetworkAnalyzer {
     // The main document is the earliest document request, using position in networkRecords array to break ties.
     return documentRequests.reduce((min, r) => (r.startTime < min.startTime ? r : min));
   }
+
+  /**
+   * Finds the final document in a redirect chain given a main document.
+   * See: {@link NetworkAnalyzer.findMainDocument}) for how to retrieve main document.
+   *
+   * @param {LH.Artifacts.NetworkRequest|undefined} mainDocument
+   * @returns {LH.Artifacts.NetworkRequest}
+   */
+  static findFinalDocument(mainDocument) {
+    const documentRequests = [];
+
+    while (mainDocument) {
+      documentRequests.push(mainDocument);
+      mainDocument = mainDocument.redirectDestination;
+    }
+
+    if (!documentRequests.length) throw new Error('Unable to identify the final resource');
+
+    return documentRequests[documentRequests.length - 1];
+  }
 }
 
 module.exports = NetworkAnalyzer;
