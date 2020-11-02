@@ -203,7 +203,8 @@ describe('CPU Profiler Model', () => {
         ███████Task███████  ██████Task██████ █
          ██████Eval██████   ██████Eval██████
          ██████Foo███████   ██████Bar██████
-          █Fn█  █Fn█
+          █Fn█
+          █Fn█
       */
       profile = {
         id: '0x1',
