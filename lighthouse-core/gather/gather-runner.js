@@ -225,6 +225,7 @@ class GatherRunner {
 
   /**
    * Returns an error if we try to load a non-HTML page.
+   * Expects a network request with all redirects resolved, otherwise the MIME type may be incorrect.
    * @param {LH.Artifacts.NetworkRequest|undefined} finalRecord
    * @return {LH.LighthouseError|undefined}
    */
