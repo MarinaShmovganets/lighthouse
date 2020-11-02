@@ -409,5 +409,9 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
       assert.notEqual(mainDocument.url, finalDocument.url);
       assert.equal(finalDocument.url, 'https://m.vk.com/');
     });
+
+    it('should return undefined if not given a request', () => {
+      assert.equal(NetworkAnalyzer.resolveRedirects(), undefined);
+    });
   });
 });
