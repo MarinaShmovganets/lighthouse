@@ -457,11 +457,10 @@ class NetworkAnalyzer {
    * Resolves redirect chain given a main document.
    * See: {@link NetworkAnalyzer.findMainDocument}) for how to retrieve main document.
    *
-   * @param {LH.Artifacts.NetworkRequest|undefined} request
-   * @returns {LH.Artifacts.NetworkRequest|undefined}
+   * @param {LH.Artifacts.NetworkRequest} request
+   * @returns {LH.Artifacts.NetworkRequest}
    */
   static resolveRedirects(request) {
-    if (!request) return undefined;
     while (request.redirectDestination) request = request.redirectDestination;
     return request;
   }
