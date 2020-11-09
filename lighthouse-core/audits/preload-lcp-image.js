@@ -123,8 +123,9 @@ class PreloadLCPImageAudit extends Audit {
     let modifiedLCPNode = null;
     /** @type {LH.Gatherer.Simulation.GraphNode|null} */
     let mainDocumentNode = null;
-    modifiedGraph.traverse(node => {
-      if (node.type !== 'network') return;
+
+    for (const {node} of modifiedGraph.traverseGenerator()) {
+      if (node.type !== 'network') continue;
 
       const networkNode = /** @type {LH.Gatherer.Simulation.GraphNetworkNode} */ (node);
       if (node.isMainDocument()) {
@@ -132,7 +133,7 @@ class PreloadLCPImageAudit extends Audit {
       } else if (networkNode.id === lcpNode.id) {
         modifiedLCPNode = networkNode;
       }
-    });
+    }
 
     if (!mainDocumentNode) {
       // Should always find the main document node
