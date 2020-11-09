@@ -146,7 +146,9 @@ class PreloadLCPImageAudit extends Audit {
 
     // Preload will request the resource as soon as its discovered in the main document.
     // Reflect this change in the dependencies in our modified graph.
+    // @ts-ignore - tsc doesn't like that modifiedLCPNode's value is set inside of the traverse function's callback
     modifiedLCPNode.removeAllDependencies();
+    // @ts-ignore - tsc doesn't like that modifiedLCPNode's value is set inside of the traverse function's callback
     modifiedLCPNode.addDependency(mainDocumentNode);
 
     const simulationBeforeChanges = simulator.simulate(graph, {flexibleOrdering: true});
