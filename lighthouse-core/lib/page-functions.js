@@ -452,13 +452,13 @@ const getNodeDetailsString = `function getNodeDetails(elem) {
   ${getBoundingClientRect.toString()};
   ${getOuterHTMLSnippet.toString()};
   ${getNodeLabel.toString()};
-  const shadowRootElem = elem instanceof ShadowRoot ? elem.host : elem;
+  const htmlElem = elem instanceof ShadowRoot ? elem.host : elem;
   return {
     devtoolsNodePath: getNodePath(elem),
-    selector: getNodeSelector(shadowRootElem),
-    boundingRect: getBoundingClientRect(shadowRootElem),
+    selector: getNodeSelector(htmlElem),
+    boundingRect: getBoundingClientRect(htmlElem),
     snippet: getOuterHTMLSnippet(elem),
-    nodeLabel: getNodeLabel(shadowRootElem),
+    nodeLabel: getNodeLabel(htmlElem),
   };
 }`;
 
