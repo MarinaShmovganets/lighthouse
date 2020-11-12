@@ -96,8 +96,8 @@ describe('Performance: preload-lcp audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const results = await PreloadLCPImage.audit(artifacts, context);
     expect(results.score).toEqual(1);
-    expect(results.notApplicable).toBeTruthy();
-    expect(results.details).toBeUndefined();
+    expect(results.details.overallSavingsMs).toEqual(0);
+    expect(results.details.items).toHaveLength(0);
   });
 
   it('shouldn\'t be applicable if the lcp is already preloaded', async () => {
@@ -107,8 +107,8 @@ describe('Performance: preload-lcp audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const results = await PreloadLCPImage.audit(artifacts, context);
     expect(results.score).toEqual(1);
-    expect(results.notApplicable).toBeTruthy();
-    expect(results.details).toBeUndefined();
+    expect(results.details.overallSavingsMs).toEqual(0);
+    expect(results.details.items).toHaveLength(0);
   });
 
   it('shouldn\'t be applicable if the lcp request is not from over the network', async () => {
@@ -118,8 +118,8 @@ describe('Performance: preload-lcp audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const results = await PreloadLCPImage.audit(artifacts, context);
     expect(results.score).toEqual(1);
-    expect(results.notApplicable).toBeTruthy();
-    expect(results.details).toBeUndefined();
+    expect(results.details.overallSavingsMs).toEqual(0);
+    expect(results.details.items).toHaveLength(0);
   });
 
   it('should suggest preloading a lcp image if all criteria is met', async () => {

@@ -104,12 +104,19 @@ class PreloadLCPImageAudit extends Audit {
 
   /**
    * Computes the estimated effect of preloading the LCP image.
-   * @param {LH.Gatherer.Simulation.GraphNetworkNode} lcpNode
+   * @param {LH.Gatherer.Simulation.GraphNetworkNode|undefined} lcpNode
    * @param {LH.Gatherer.Simulation.GraphNode} graph
    * @param {LH.Gatherer.Simulation.Simulator} simulator
    * @return {{wastedMs: number, results: Array<{url: string, wastedMs: number}>}}
    */
   static computeWasteWithGraph(lcpNode, graph, simulator) {
+    if (!lcpNode) {
+      return {
+        wastedMs: 0,
+        results: [],
+      };
+    }
+
     const modifiedGraph = graph.cloneWithRelationships();
 
     // Store the IDs of the LCP Node's dependencies for later
@@ -205,12 +212,6 @@ class PreloadLCPImageAudit extends Audit {
     const graph = lanternLCP.pessimisticGraph;
     // eslint-disable-next-line max-len
     const lcpNode = PreloadLCPImageAudit.getLCPNodeToPreload(mainResource, graph, lcpElement, artifacts.ImageElements);
-    if (!lcpNode) {
-      return {
-        score: 1,
-        notApplicable: true,
-      };
-    }
 
     const {results, wastedMs} =
       PreloadLCPImageAudit.computeWasteWithGraph(lcpNode, graph, simulator);
