@@ -248,9 +248,6 @@ Auditing: Avoids `unload` event listeners
 Auditing: Avoid non-composited animations
 Auditing: Image elements have explicit `width` and `height`
 Auditing: Page has valid source maps
-Auditing: Preload Largest Contentful Paint image
-Computing artifact: LanternLargestContentfulPaint
-Computing artifact: LanternFirstContentfulPaint
 Auditing: Site works cross-browser
 Auditing: Page transitions don't feel like they block on the network
 Auditing: Each page has a URL
@@ -515,7 +512,6 @@ password-inputs-can-be-pasted-into: pass
 performance-budget: notApplicable
 plugins: pass
 preload-fonts: notApplicable
-preload-lcp-image: numeric
 pwa-cross-browser: manual
 pwa-each-page-has-url: manual
 pwa-page-transitions: manual
@@ -568,5 +564,5 @@ visual-order-follows-dom: manual
 without-javascript: pass
 works-offline: fail
 
-# of .lh-audit divs: 156
+# of .lh-audit divs: 155
 
