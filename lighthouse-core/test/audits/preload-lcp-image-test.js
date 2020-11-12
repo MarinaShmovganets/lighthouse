@@ -132,4 +132,28 @@ describe('Performance: preload-lcp audit', () => {
     expect(results.details.items[0].url).toEqual(imageUrl);
     expect(results.details.items[0].wastedMs).toEqual(180);
   });
+
+  it('should suggest preloading when LCP is waiting on the image', async () => {
+    const networkRecords = mockNetworkRecords();
+    networkRecords[3].transferSize = 5 * 1000 * 1000;
+    const artifacts = mockArtifacts(networkRecords, mainDocumentNodeUrl, imageUrl);
+    const context = {settings: {}, computedCache: new Map()};
+    const results = await PreloadLCPImage.audit(artifacts, context);
+    expect(results.numericValue).toEqual(30);
+    expect(results.details.overallSavingsMs).toEqual(30);
+    expect(results.details.items[0].url).toEqual(imageUrl);
+    expect(results.details.items[0].wastedMs).toEqual(30);
+  });
+
+  it('should suggest preloading when LCP is waiting on a dependency', async () => {
+    const networkRecords = mockNetworkRecords();
+    networkRecords[2].transferSize = 2 * 1000 * 1000;
+    const artifacts = mockArtifacts(networkRecords, mainDocumentNodeUrl, imageUrl);
+    const context = {settings: {}, computedCache: new Map()};
+    const results = await PreloadLCPImage.audit(artifacts, context);
+    expect(results.numericValue).toEqual(30);
+    expect(results.details.overallSavingsMs).toEqual(30);
+    expect(results.details.items[0].url).toEqual(imageUrl);
+    expect(results.details.items[0].wastedMs).toEqual(30);
+  });
 });
