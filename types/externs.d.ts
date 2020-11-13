@@ -316,5 +316,27 @@ declare global {
       url: string;
       webSocketDebuggerUrl: string;
     }
+
+    module Treemap {
+      interface Options {
+        lhr: LH.Result;
+      }
+
+      interface RootNodeContainer {
+        /** Arbitrary name identifier. Usually a script url. */
+        name: string;
+        node: Node;
+      }
+
+      interface Node {
+        /** Arbitrary name identifier. Usually a path component from a source map. */
+        name: string;
+        resourceBytes: number;
+        unusedBytes?: number;
+        /** If present, this module is a duplicate. String is normalized source path. See ModuleDuplication.normalizeSource */
+        duplicatedNormalizedModuleName?: string;
+        children?: Node[];
+      }
+    }
   }
 }

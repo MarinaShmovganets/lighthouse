@@ -12,11 +12,11 @@
 
 /**
  * Ex: https://gist.github.com/connorjclark/0ef1099ae994c075e36d65fecb4d26a7
- * @typedef {Treemap.RootNodeContainer[]} TreemapData
+ * @typedef {LH.Treemap.RootNodeContainer[]} TreemapData
  */
 
 /**
- * @typedef {Omit<Treemap.Node, 'name'|'children'>} SourceData
+ * @typedef {Omit<LH.Treemap.Node, 'name'|'children'>} SourceData
  */
 
 const Audit = require('./audit.js');
@@ -46,12 +46,12 @@ class ScriptTreemapDataAudit extends Audit {
    * same data as the sum of all descendant leaf nodes.
    * @param {string} sourceRoot
    * @param {Record<string, SourceData>} sourcesData
-   * @return {Treemap.Node}
+   * @return {LH.Treemap.Node}
    */
   static prepareTreemapNodes(sourceRoot, sourcesData) {
     /**
      * @param {string} name
-     * @return {Treemap.Node}
+     * @return {LH.Treemap.Node}
      */
     function newNode(name) {
       return {
@@ -109,7 +109,7 @@ class ScriptTreemapDataAudit extends Audit {
 
     /**
      * Collapse nodes that have only one child.
-     * @param {Treemap.Node} node
+     * @param {LH.Treemap.Node} node
      */
     function collapseAll(node) {
       while (node.children && node.children.length === 1) {
@@ -136,7 +136,7 @@ class ScriptTreemapDataAudit extends Audit {
    * @return {Promise<TreemapData>}
    */
   static async makeRootNodes(artifacts, context) {
-    /** @type {Treemap.RootNodeContainer[]} */
+    /** @type {LH.Treemap.RootNodeContainer[]} */
     const rootNodeContainers = [];
 
     let inlineScriptLength = 0;
@@ -184,7 +184,7 @@ class ScriptTreemapDataAudit extends Audit {
       const unusedJavascriptSummary = await UnusedJavaScriptSummary.request(
         {url: scriptElement.src, scriptCoverages, bundle}, context);
 
-      /** @type {Treemap.Node} */
+      /** @type {LH.Treemap.Node} */
       let node;
       if (unusedJavascriptSummary.sourcesWastedBytes && !('errorMessage' in bundle.sizes)) {
         // Create nodes for each module in a bundle.

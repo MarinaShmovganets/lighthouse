@@ -11,7 +11,7 @@
 
 /**
  * Allows for saving the document and loading with data intact.
- * @param {Treemap.Options} options
+ * @param {LH.Treemap.Options} options
  */
 function injectOptions(options) {
   if (window.__treemapOptions) return;
@@ -24,7 +24,7 @@ function injectOptions(options) {
 }
 
 /**
- * @param {Treemap.Options} options
+ * @param {LH.Treemap.Options} options
  */
 function init(options) {
   // ==== temporary
@@ -63,7 +63,7 @@ async function main() {
     window.addEventListener('message', e => {
       if (e.source !== self.opener) return;
 
-      /** @type {Treemap.Options} */
+      /** @type {LH.Treemap.Options} */
       const options = e.data;
       const {lhr} = options;
       if (!lhr) return showError('Error: Invalid options');
