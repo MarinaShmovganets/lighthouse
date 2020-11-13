@@ -33,7 +33,7 @@ const APPS_ORIGIN = (() => {
   if (IS_VERCEL) return `${window.location.host}/gh-pages`;
   if (IS_DEV) return 'http://localhost:8000';
   return 'https://googlechrome.github.io/lighthouse';
-});
+})();
 const VIEWER_URL = `${APPS_ORIGIN}/viewer/`;
 const TREEMAP_URL = `${APPS_ORIGIN}/treemap/`;
 
