@@ -27,4 +27,5 @@ module.exports = {
     '**/clients/test/**/*-test.js',
     '**/docs/**/*.test.js',
   ],
+  transform: {},
 };
