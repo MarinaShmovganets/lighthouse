@@ -27,8 +27,13 @@
 
 /** @typedef {import('./dom')} DOM */
 
-const IS_DEV = new URLSearchParams(window.location.search).has('dev');
-const APPS_ORIGIN = IS_DEV ? 'http://localhost:8000' : 'https://googlechrome.github.io/lighthouse';
+const APPS_ORIGIN = (() => {
+  const IS_VERCEL = window.location.host.endsWith('.vercel.app');
+  const IS_DEV = new URLSearchParams(window.location.search).has('dev');
+  if (IS_VERCEL) return `${window.location.host}/gh-pages`;
+  if (IS_DEV) return 'http://localhost:8000';
+  return 'https://googlechrome.github.io/lighthouse';
+});
 const VIEWER_URL = `${APPS_ORIGIN}/viewer/`;
 const TREEMAP_URL = `${APPS_ORIGIN}/treemap/`;
 
