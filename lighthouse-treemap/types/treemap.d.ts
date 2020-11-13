@@ -1,8 +1,3 @@
-import '../../types/treemap';
-// import '../../types/artifacts';
-// import '../../types/audit';
-// import '../../types/audit-details';
-// import '../../types/lhr';
 import _TreemapUtil = require('../app/src/util.js');
 
 declare global {
