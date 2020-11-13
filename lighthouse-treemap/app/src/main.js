@@ -35,12 +35,6 @@ function init(options) {
 
   injectOptions(options);
 
-  if (window.ga) {
-    // TODO what are these?
-    // window.ga('send', 'event', 'treemap', 'open in viewer');
-    window.ga('send', 'event', 'report', 'open in viewer');
-  }
-
   // eslint-disable-next-line no-console
   console.log('window.__treemapOptions', window.__treemapOptions);
 }
