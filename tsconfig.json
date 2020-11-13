@@ -18,7 +18,6 @@
     "clients/**/*.js",
     "build/**/*.js",
     "./types/**/*.d.ts",
-    "./lighthouse-treemap/types/**/*.d.ts",
     "eslint-local-rules.js",
   ],
   "exclude": [
