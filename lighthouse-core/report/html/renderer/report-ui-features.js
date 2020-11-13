@@ -30,7 +30,7 @@
 const APPS_ORIGIN = (() => {
   const IS_VERCEL = window.location.host.endsWith('.vercel.app');
   const IS_DEV = new URLSearchParams(window.location.search).has('dev');
-  if (IS_VERCEL) return `${window.location.host}/gh-pages`;
+  if (IS_VERCEL) return `https://${window.location.host}/gh-pages`;
   if (IS_DEV) return 'http://localhost:8000';
   return 'https://googlechrome.github.io/lighthouse';
 })();
