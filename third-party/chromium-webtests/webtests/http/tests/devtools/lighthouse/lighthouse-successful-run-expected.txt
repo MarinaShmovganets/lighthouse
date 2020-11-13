@@ -371,7 +371,7 @@ Auditing: Latency of first ad render
 Computing artifact: AdRenderTime
 Computing artifact: LanternAdRenderTime
 Auditing: GPT and bids loaded in parallel
-Auditing: GPT tag is loaded an official source
+Auditing: GPT tag is loaded from an official source
 Auditing: Ad tag is loaded over HTTPS
 Auditing: Ad scripts are loaded statically
 Auditing: Header bidding is parallelized
