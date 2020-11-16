@@ -487,19 +487,6 @@ class ReportUIFeatures {
     self.print();
   }
 
-  _openTreemap() {
-    const treemapDebugData = /** @type {LH.Audit.Details.DebugData} */ (
-      this.json.audits['script-treemap-data'].details);
-    if (!treemapDebugData) return;
-
-    const windowName = `treemap-${this.json.requestedUrl}`;
-    /** @type {LH.Treemap.Options} */
-    const treemapOptions = {
-      lhr: this.json,
-    };
-    ReportUIFeatures.openTabAndSendData(treemapOptions, TREEMAP_URL, windowName);
-  }
-
   /**
    * Keyup handler for the document.
    * @param {KeyboardEvent} e
@@ -523,7 +510,24 @@ class ReportUIFeatures {
     const fallbackFetchTime = /** @type {string} */ (json.generatedTime);
     const fetchTime = json.fetchTime || fallbackFetchTime;
     const windowName = `${json.lighthouseVersion}-${json.requestedUrl}-${fetchTime}`;
-    ReportUIFeatures.openTabAndSendData(json, VIEWER_URL, windowName);
+    ReportUIFeatures.openTabAndSendData({lhr: json}, VIEWER_URL, windowName);
+  }
+
+  /**
+   * Opens a new tab to the treemap app and sends the JSON results using postMessage.
+   * @param {LH.Result} json
+   */
+  static openTreemap(json) {
+    const treemapDebugData = /** @type {LH.Audit.Details.DebugData} */ (
+      json.audits['script-treemap-data'].details);
+    if (!treemapDebugData) return;
+
+    const windowName = `treemap-${json.requestedUrl}`;
+    /** @type {LH.Treemap.Options} */
+    const treemapOptions = {
+      lhr: json,
+    };
+    ReportUIFeatures.openTabAndSendData(treemapOptions, TREEMAP_URL, windowName);
   }
 
   /**
