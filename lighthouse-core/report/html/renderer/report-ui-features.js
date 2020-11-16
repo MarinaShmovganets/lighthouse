@@ -520,7 +520,9 @@ class ReportUIFeatures {
   static openTreemap(json) {
     const treemapDebugData = /** @type {LH.Audit.Details.DebugData} */ (
       json.audits['script-treemap-data'].details);
-    if (!treemapDebugData) return;
+    if (!treemapDebugData) {
+      throw new Error('no script treemap data found');
+    }
 
     const windowName = `treemap-${json.requestedUrl}`;
     /** @type {LH.Treemap.Options} */
