@@ -9,7 +9,7 @@
 set -euo pipefail
 
 # Overview:
-# - build-tracker relies on a common commit that's shared between HEAD and master.
+# - build-tracker (https://lh-build-tracker.herokuapp.com/) relies on a common commit that's shared between HEAD and master.
 # - Lighthouse runs on pull_request, not push, so the checkout is not the branch with shared history, but the result of a merge.
 # - checkout@v2 uses a merge remote (eg. remotes/pull/9605/merge) that often has just a single commit.
 # - This script creates a new branch that matches the current checkout, but does have a shared history.
