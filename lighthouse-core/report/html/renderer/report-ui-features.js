@@ -532,7 +532,7 @@ class ReportUIFeatures {
 
   /**
    * Opens a new tab to an external page and sends data using postMessage.
-   * @param {Object} data
+   * @param {{lhr: LH.Result} | LH.Treemap.Options} data
    * @param {string} url
    * @param {string} windowName
    * @protected
