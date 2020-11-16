@@ -339,7 +339,7 @@ This section details services that have integrated Lighthouse data. If you're wo
 
 * **[Foo](https://www.foo.software/lighthouse)** - Lighthouse-as-a-service offering free and premium plans. Provides monitoring and historical reporting of Lighthouse audits with CircleCI, GitHub, and other integrations. Features include Slack notifications, PR comment reporting and more.
 
-* **[Apdex](https://apdex.co/performance)** - Apdex is website performance service. Provides historical Lighthouse reports visializations, global regions, mobile/desktop option, custom headers and alerts. It's also all-in-one solution, providing website uptime monitoring and more. Apdex is paid product with free 30-day trial and flexible plans.
+* **[Apdex](https://apdex.co)** - Apdex is a website performance service. The main features are historical Lighthouse reports visualizations, mobile/desktop options, alerts, uptime monitoring, and more. There are flexible plans and a 30-day free trial.
 
 ## Lighthouse Integrations in non-Web Perf services
 
