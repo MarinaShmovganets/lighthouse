@@ -147,6 +147,8 @@ describe('.getRequestContent', () => {
 });
 
 describe('.evaluateAsync', () => {
+  // Most of the logic here is tested by lighthouse-core/test/fraggle-rock/gather/runtime-controller-test.js
+  // Just exercise a bit of the plumbing here to ensure we delegate correctly.
   it('evaluates an expression', async () => {
     connectionStub.sendCommand = createMockSendCommandFn()
       .mockResponse('Runtime.evaluate', {result: {value: 2}});
@@ -154,21 +156,6 @@ describe('.evaluateAsync', () => {
     const value = await driver.evaluateAsync('1 + 1');
     expect(value).toEqual(2);
     connectionStub.sendCommand.findInvocation('Runtime.evaluate');
-  });
-
-  it('uses a high default timeout', async () => {
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('Runtime.evaluate', {result: {value: 2}}, 65000);
-
-    const evaluatePromise = makePromiseInspectable(driver.evaluateAsync('1 + 1'));
-    jest.advanceTimersByTime(30000);
-    await flushAllTimersAndMicrotasks();
-    expect(evaluatePromise).not.toBeDone();
-
-    jest.advanceTimersByTime(30000);
-    await flushAllTimersAndMicrotasks();
-    expect(evaluatePromise).toBeDone();
-    await expect(evaluatePromise).rejects.toBeTruthy();
   });
 
   it('uses the specific timeout given', async () => {
@@ -182,47 +169,6 @@ describe('.evaluateAsync', () => {
     await flushAllTimersAndMicrotasks();
     expect(evaluatePromise).toBeDone();
     await expect(evaluatePromise).rejects.toBeTruthy();
-  });
-
-  it('evaluates an expression in isolation', async () => {
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
-      .mockResponse('Page.createIsolatedWorld', {executionContextId: 1})
-      .mockResponse('Runtime.evaluate', {result: {value: 2}});
-
-    const value = await driver.evaluateAsync('1 + 1', {useIsolation: true});
-    expect(value).toEqual(2);
-
-    // Check that we used the correct frame when creating the isolated context
-    const createWorldArgs = connectionStub.sendCommand.findInvocation('Page.createIsolatedWorld');
-    expect(createWorldArgs).toMatchObject({frameId: '1337'});
-
-    // Check that we used the isolated context when evaluating
-    const evaluateArgs = connectionStub.sendCommand.findInvocation('Runtime.evaluate');
-    expect(evaluateArgs).toMatchObject({contextId: 1});
-
-    // Make sure we cached the isolated context from last time
-    connectionStub.sendCommand = createMockSendCommandFn().mockResponse('Runtime.evaluate',
-      {result: {value: 2}}
-    );
-    await driver.evaluateAsync('1 + 1', {useIsolation: true});
-    expect(connectionStub.sendCommand).not.toHaveBeenCalledWith(
-      'Page.createIsolatedWorld',
-      expect.anything()
-    );
-  });
-
-  it('recovers from isolation failures', async () => {
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
-      .mockResponse('Page.createIsolatedWorld', {executionContextId: 9001})
-      .mockResponse('Runtime.evaluate', Promise.reject(new Error('Cannot find context')))
-      .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
-      .mockResponse('Page.createIsolatedWorld', {executionContextId: 9002})
-      .mockResponse('Runtime.evaluate', {result: {value: 'mocked value'}});
-
-    const value = await driver.evaluateAsync('"magic"', {useIsolation: true});
-    expect(value).toEqual('mocked value');
   });
 });
 

@@ -43,7 +43,6 @@ describe('RuntimeController', () => {
         .mockResponse('Runtime.evaluate', {result: {value: 2}});
 
       await controller.evaluateAsync('1 + 1', {useIsolation: true});
-      expect(controller.getContextId()).toEqual(executionContextId);
     };
   });
 
