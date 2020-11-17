@@ -27,22 +27,21 @@
 
 /** @typedef {import('./dom')} DOM */
 
-const APPS_ORIGIN = (() => {
-  const IS_VERCEL = window.location.host.endsWith('.vercel.app');
-  const IS_DEV = new URLSearchParams(window.location.search).has('dev');
-  if (IS_VERCEL) return `https://${window.location.host}/gh-pages`;
-  if (IS_DEV) return 'http://localhost:8000';
-  return 'https://googlechrome.github.io/lighthouse';
-})();
-const VIEWER_URL = `${APPS_ORIGIN}/viewer/`;
-const TREEMAP_URL = `${APPS_ORIGIN}/treemap/`;
-
 /**
  * @param {HTMLTableElement} tableEl
  * @return {Array<HTMLElement>}
  */
 function getTableRows(tableEl) {
   return Array.from(tableEl.tBodies[0].rows);
+}
+
+function getAppsOrigin() {
+  const isVercel = window.location.host.endsWith('.vercel.app');
+  const isDev = new URLSearchParams(window.location.search).has('dev');
+
+  if (isVercel) return `https://${window.location.host}/gh-pages`;
+  if (isDev) return 'http://localhost:8000';
+  return 'https://googlechrome.github.io/lighthouse';
 }
 
 class ReportUIFeatures {
@@ -510,7 +509,8 @@ class ReportUIFeatures {
     const fallbackFetchTime = /** @type {string} */ (json.generatedTime);
     const fetchTime = json.fetchTime || fallbackFetchTime;
     const windowName = `${json.lighthouseVersion}-${json.requestedUrl}-${fetchTime}`;
-    ReportUIFeatures.openTabAndSendData({lhr: json}, VIEWER_URL, windowName);
+    const url = getAppsOrigin() + '/viewer/';
+    ReportUIFeatures.openTabAndSendData({lhr: json}, url, windowName);
   }
 
   /**
@@ -529,7 +529,8 @@ class ReportUIFeatures {
     const treemapOptions = {
       lhr: json,
     };
-    ReportUIFeatures.openTabAndSendData(treemapOptions, TREEMAP_URL, windowName);
+    const url = getAppsOrigin() + '/treemap/';
+    ReportUIFeatures.openTabAndSendData(treemapOptions, url, windowName);
   }
 
   /**

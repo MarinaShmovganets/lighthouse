@@ -39,7 +39,6 @@ const ignoredPathComponents = [
   '**/test/**',
   '**/*-test.js',
   '**/*-renderer.js',
-  '**/lighthouse-core/report/**/!(util.js)', // ignore all report files except util.js
 ];
 
 /**
