@@ -128,6 +128,8 @@
   --score-icon-margin: 0 var(--score-icon-margin-right) 0 var(--score-icon-margin-left);
   --score-icon-size: 12px;
   --scores-container-padding: 20px 0 20px 0;
+  --error-icon-size: 28px;
+  --error-icon-min-width: 10px;
   --scorescale-height: 6px;
   --scorescale-width: 18px;
   --section-padding-vertical: 12px;
@@ -197,7 +199,7 @@
     --topbar-background-color: var(--color-gray);
   	--toplevel-warning-background-color: #544B40;
   	--toplevel-warning-message-text-color: var(--color-orange-700);
-	--toplevel-warning-text-color: var(--color-gray-100);
+	  --toplevel-warning-text-color: var(--color-gray-100);
 
     /* SVGs */
     --plugin-icon-url: var(--plugin-icon-url-dark);
@@ -231,6 +233,8 @@
     --score-icon-size: 10px;
     --topbar-height: 28px;
     --topbar-logo-size: 20px;
+    --error-icon-size: 28px;
+    --error-icon-min-width: 10px;
   }
 
   /* Not enough space to adequately show the relative savings bars. */
@@ -269,6 +273,8 @@
   --score-icon-margin-left: 2px;
   --score-icon-size: 10px;
   --section-padding-vertical: 8px;
+  --error-icon-size: 28px;
+  --error-icon-min-width: 10px;
 }
 
 .lh-devtools.lh-root {
@@ -467,8 +473,9 @@
   border-bottom: var(--score-icon-size) solid var(--color-fail);
 }
 
-.lh-audit--error .lh-audit__score-icon{
-  height:28px;
+.lh-audit--error .lh-audit__score-icon {
+  height: var(--error-icon-size);
+  min-width: var(--error-icon-min-width);
   background-image: url("data:image/svg+xml,%3Csvg width='18' height='28' viewBox='0 0 18 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.5 22H10.5V19H7.5V22Z' fill='%23FF4E42'/%3E%3Cpath d='M7.5 16H10.5V7H7.5V16Z' fill='%23FF4E42'/%3E%3C/svg%3E");
 }
 
@@ -729,8 +736,9 @@
   border-bottom: var(--score-icon-size) solid var(--color-fail);
 }
 
-.lh-metric--error .lh-metric__innerwrap::before{
-  height:28px;
+.lh-metric--error .lh-metric__innerwrap::before {
+  height: var(--error-icon-size);
+  min-width: var(--error-icon-min-width);
   background-image: url("data:image/svg+xml,%3Csvg width='18' height='28' viewBox='0 0 18 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.5 22H10.5V19H7.5V22Z' fill='%23FF4E42'/%3E%3Cpath d='M7.5 16H10.5V7H7.5V16Z' fill='%23FF4E42'/%3E%3C/svg%3E");
 }
 
@@ -1113,6 +1121,16 @@
 }
 .lh-category .lh-gauge__svg-wrapper {
   --gauge-circle-size: var(--gauge-circle-size-big);
+}
+
+.lh-sticky-header--visible > .lh-gauge__wrapper--fail > .lh-gauge__svg-wrapper {
+  background-image: url("data:image/svg+xml,%3Csvg width='36' height='36' viewBox='0 0 36 36' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17 26H20V23H17V26Z' fill='%23FF4E42'/%3E%3Cpath d='M17 20H20V11H17V20Z' fill='%23FF4E42'/%3E%3C/svg%3E");
+  height: 36px;
+  width:36px;
+}
+
+.lh-category-header .lh-gauge__wrapper--fail  .lh-gauge__svg-wrapper{
+  background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M56 80H64V72.0001H56V80Z' fill='%23FF4E42'/%3E%3Cpath d='M56 64H64V41H56V64Z' fill='%23FF4E42'/%3E%3C/svg%3E%0A");
 }
 
 /* The plugin badge overlay */
