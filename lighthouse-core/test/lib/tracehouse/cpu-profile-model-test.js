@@ -44,75 +44,120 @@ describe('CPU Profiler Model', () => {
     };
   });
 
-  // TODO: re-enable these before landing, if structure looks good
-  describe.skip('#_findEffectiveTimestamp', () => {
-    it('should default to the latest possible timestamp when no task data available', () => {
-      const result = CpuProfilerModel._findEffectiveTimestamp({
-        earliestPossibleTimestamp: 0,
-        latestPossibleTimestamp: 1000,
+  describe('#_findEffectiveTimestamp', () => {
+    const findTimestamp = CpuProfilerModel._findEffectiveTimestamp.bind(CpuProfilerModel);
+    let defaultData;
+
+    function createTask(startProfilerRange, endProfilerRange) {
+      return {
+        event: {args: {data: {_syntheticProfilerRange: startProfilerRange}}},
+        endEvent: {args: {data: {_syntheticProfilerRange: endProfilerRange}}},
+      };
+    }
+
+    beforeEach(() => {
+      defaultData = {
+        syntheticTask: createTask(
+          {earliestPossibleTimestamp: 100, latestPossibleTimestamp: 1000},
+          {earliestPossibleTimestamp: 1000, latestPossibleTimestamp: 2000}
+        ),
+        allEventsAtTs: {naive: [], refined: []},
         knownTasksByStartTime: [],
         knownTaskStartTimeIndex: 0,
         knownTasksByEndTime: [],
         knownTaskEndTimeIndex: 0,
-      });
-
-      expect(result).toEqual({timestamp: 1000, lastStartTimeIndex: 0, lastEndTimeIndex: 0});
+      };
     });
 
-    it('should use the latest possible timestamp when tasks fully include range', () => {
-      const tasks = [{startTime: 500, endTime: 2500}];
-      const result = CpuProfilerModel._findEffectiveTimestamp({
-        earliestPossibleTimestamp: 1000,
-        latestPossibleTimestamp: 2000,
-        knownTasksByStartTime: tasks,
-        knownTaskStartTimeIndex: 0,
-        knownTasksByEndTime: tasks,
-        knownTaskEndTimeIndex: 0,
-      });
-
-      expect(result).toEqual({timestamp: 2000, lastStartTimeIndex: 1, lastEndTimeIndex: 0});
+    it('should default to the longest possible timestamps when no task data available', () => {
+      const startResult = findTimestamp({...defaultData, eventType: 'start'});
+      const endResult = findTimestamp({...defaultData, eventType: 'end'});
+      expect(startResult).toEqual({timestamp: 100, lastStartTimeIndex: 0, lastEndTimeIndex: 0});
+      expect(endResult).toEqual({timestamp: 2000, lastStartTimeIndex: 0, lastEndTimeIndex: 0});
     });
 
-    it('should use the latest possible timestamp when tasks are fully contained in range', () => {
-      const tasks = [{startTime: 250, endTime: 750}];
-      const result = CpuProfilerModel._findEffectiveTimestamp({
-        earliestPossibleTimestamp: 0,
-        latestPossibleTimestamp: 1000,
-        knownTasksByStartTime: tasks,
-        knownTaskStartTimeIndex: 0,
-        knownTasksByEndTime: tasks,
-        knownTaskEndTimeIndex: 0,
-      });
+    it('should use the longest possible timestamps when tasks fully include range', () => {
+      // Cases tested:
+      //  - eventType=start,task=parent
+      //  - eventType=end,task=parent
+      const tasks = [{startTime: 0, endTime: 2500}];
+      const data = {...defaultData, knownTasksByStartTime: tasks, knownTasksByEndTime: tasks};
+      const startResult = findTimestamp({...data, eventType: 'start'});
+      const endResult = findTimestamp({...data, eventType: 'end', knownTaskStartTimeIndex: 1});
 
-      expect(result).toEqual({timestamp: 1000, lastStartTimeIndex: 1, lastEndTimeIndex: 1});
+      expect(startResult).toEqual({timestamp: 100, lastStartTimeIndex: 1, lastEndTimeIndex: 0});
+      expect(endResult).toEqual({timestamp: 2000, lastStartTimeIndex: 1, lastEndTimeIndex: 0});
     });
 
-    it('should use earliest of the start task timestamps when tasks started in range', () => {
-      const tasks = [{startTime: 250, endTime: 2000}];
-      const result = CpuProfilerModel._findEffectiveTimestamp({
-        earliestPossibleTimestamp: 0,
-        latestPossibleTimestamp: 1000,
-        knownTasksByStartTime: tasks,
-        knownTaskStartTimeIndex: 0,
-        knownTasksByEndTime: tasks,
-        knownTaskEndTimeIndex: 0,
+    it('should use the longest possible timestamps when tasks are fully contained in range', () => {
+      // Cases tested:
+      //  - eventType=start,task=child
+      //  - eventType=end,task=child
+      const tasks = [{startTime: 250, endTime: 750}, {startTime: 1250, endTime: 1750}];
+      const data = {...defaultData, knownTasksByStartTime: tasks, knownTasksByEndTime: tasks};
+      const startResult = findTimestamp({...data, eventType: 'start'});
+      const endResult = findTimestamp({
+        ...data,
+        eventType: 'end',
+        knownTaskStartTimeIndex: 1,
+        knownTaskEndTimeIndex: 1,
       });
 
-      expect(result).toEqual({timestamp: 250, lastStartTimeIndex: 1, lastEndTimeIndex: 0});
+      expect(startResult).toEqual({timestamp: 100, lastStartTimeIndex: 1, lastEndTimeIndex: 1});
+      expect(endResult).toEqual({timestamp: 2000, lastStartTimeIndex: 2, lastEndTimeIndex: 2});
     });
 
-    it('should use latest of the end task timestamps when tasks ended in range', () => {
-      const tasks = [{startTime: 250, endTime: 1500}];
-      const result = CpuProfilerModel._findEffectiveTimestamp({
-        earliestPossibleTimestamp: 1000,
-        latestPossibleTimestamp: 2000,
-        knownTasksByStartTime: tasks,
-        knownTaskStartTimeIndex: 0,
-        knownTasksByEndTime: tasks,
-        knownTaskEndTimeIndex: 0,
+    it('should use the earliest possible timestamp when tasks started in range', () => {
+      // Cases tested:
+      //  - eventType=start,task=parent,minTs
+      //  - eventType=end,task=unrelated,maxTs
+      const tasks = [{startTime: 250, endTime: 3000}, {startTime: 1500, endTime: 3000}];
+      const data = {...defaultData, knownTasksByStartTime: tasks, knownTasksByEndTime: tasks};
+      const startResult = findTimestamp({...data, eventType: 'start'});
+      const endResult = findTimestamp({
+        ...data,
+        eventType: 'end',
+        knownTaskStartTimeIndex: 1,
       });
 
-      expect(result).toEqual({timestamp: 1500, lastStartTimeIndex: 1, lastEndTimeIndex: 1});
+      expect(startResult).toEqual({timestamp: 250, lastStartTimeIndex: 1, lastEndTimeIndex: 0});
+      expect(endResult).toEqual({timestamp: 1500, lastStartTimeIndex: 2, lastEndTimeIndex: 0});
+    });
+
+    it('should use the latest possible timestamp when tasks ended in range', () => {
+      // Cases tested:
+      //  - eventType=start,task=unrelated,minTs
+      //  - eventType=end,task=parent,maxTs
+      const tasks = [{startTime: 0, endTime: 500}, {startTime: 0, endTime: 1500}];
+      const data = {...defaultData, knownTasksByStartTime: tasks, knownTasksByEndTime: tasks};
+      const startResult = findTimestamp({...data, eventType: 'start'});
+      const endResult = findTimestamp({
+        ...data,
+        eventType: 'end',
+        knownTaskStartTimeIndex: 1,
+      });
+
+      expect(startResult).toEqual({timestamp: 500, lastStartTimeIndex: 2, lastEndTimeIndex: 1});
+      expect(endResult).toEqual({timestamp: 1500, lastStartTimeIndex: 2, lastEndTimeIndex: 2});
+    });
+
+    it('should consider the other refined timestamps at the same range', () => {
+      // Cases tested:
+      //  - eventType=start,allEventsAtTs=[late E],minTs
+      //  - eventType=end,allEventsAtTs=[early B],maxTs
+      const startResult = findTimestamp({
+        ...defaultData,
+        eventType: 'start',
+        allEventsAtTs: {refined: [{ph: 'E', ts: 1000}]},
+      });
+      const endResult = findTimestamp({
+        ...defaultData,
+        eventType: 'end',
+        allEventsAtTs: {refined: [{ph: 'B', ts: 1100}]},
+      });
+
+      expect(startResult).toEqual({timestamp: 1000, lastStartTimeIndex: 0, lastEndTimeIndex: 0});
+      expect(endResult).toEqual({timestamp: 1100, lastStartTimeIndex: 0, lastEndTimeIndex: 0});
     });
 
     it('should handle multiple tasks', () => {
@@ -125,19 +170,30 @@ describe('CPU Profiler Model', () => {
         {startTime: 1925, endTime: 1975},
       ];
 
-      // TODO: eventually, this should split the start and end effective timestamps.
-      // For now it assumes both are the same timestamp which forces this to choose the latest option.
-      // Eventually the endTimestamp should be 1500 and the startTimestamp should be 1900.
-      const result = CpuProfilerModel._findEffectiveTimestamp({
-        earliestPossibleTimestamp: 1000,
-        latestPossibleTimestamp: 2000,
+      const data = {
+        ...defaultData,
         knownTasksByStartTime: tasks,
-        knownTaskStartTimeIndex: 0,
         knownTasksByEndTime: tasks.slice().sort((a, b) => a.endTime - b.endTime),
-        knownTaskEndTimeIndex: 0,
+      };
+      const startResult = findTimestamp({
+        ...data,
+        eventType: 'start',
+        syntheticTask: createTask(
+          {earliestPossibleTimestamp: 1000, latestPossibleTimestamp: 2000},
+          {earliestPossibleTimestamp: 2000, latestPossibleTimestamp: 3000}
+        ),
+      });
+      const endResult = findTimestamp({
+        ...data,
+        eventType: 'end',
+        syntheticTask: createTask(
+          {earliestPossibleTimestamp: 100, latestPossibleTimestamp: 1000},
+          {earliestPossibleTimestamp: 1000, latestPossibleTimestamp: 2000}
+        ),
       });
 
-      expect(result).toEqual({timestamp: 1900, lastStartTimeIndex: 6, lastEndTimeIndex: 5});
+      expect(startResult).toEqual({timestamp: 1900, lastStartTimeIndex: 6, lastEndTimeIndex: 5});
+      expect(endResult).toEqual({timestamp: 1400, lastStartTimeIndex: 6, lastEndTimeIndex: 5});
     });
   });
 
@@ -250,6 +306,49 @@ describe('CPU Profiler Model', () => {
         {ph: 'B', ts: ts(55e3), args: {data: {callFrame: {functionName: 'Bar'}}}},
         {ph: 'E', ts: ts(85e3), args: {data: {callFrame: {functionName: 'Bar'}}}},
         {ph: 'E', ts: ts(103e3), args: {data: {callFrame: {functionName: '(root)'}}}},
+      ]);
+    });
+
+    it('should handle multiple roots', () => {
+      /*
+        An artistic rendering of the below profile with tasks:
+        ███(rootA)███ ███(rootB)███ ███(rootC)███
+        ███Task███     ███Task███    ███Task███
+      */
+      profile = {
+        id: '0x1',
+        pid: 1,
+        tid: 1,
+        startTime: 9e6,
+        nodes: [
+          {id: 0, callFrame: {functionName: '(rootA)'}},
+          {id: 1, callFrame: {functionName: 'Task'}, parent: 0},
+          {id: 2, callFrame: {functionName: '(rootB)'}},
+          {id: 3, callFrame: {functionName: 'Task'}, parent: 2},
+          {id: 4, callFrame: {functionName: '(rootC)'}},
+          {id: 5, callFrame: {functionName: 'Task'}, parent: 4},
+        ],
+        samples: [0, 1, 3, 3, 5, 4],
+        timeDeltas: [0.5e3, 19.5e3, 20e3, 20e3, 20e3, 20e3],
+      };
+
+      const ts = x => profile.startTime + x;
+
+      const events = CpuProfilerModel.synthesizeTraceEvents(profile, []);
+
+      expect(events).toMatchObject([
+        {ph: 'B', ts: ts(0.5e3), args: {data: {callFrame: {functionName: '(rootA)'}}}},
+        {ph: 'B', ts: ts(20e3), args: {data: {callFrame: {functionName: 'Task'}}}},
+        {ph: 'E', ts: ts(40e3), args: {data: {callFrame: {functionName: 'Task'}}}},
+        {ph: 'E', ts: ts(40e3), args: {data: {callFrame: {functionName: '(rootA)'}}}},
+        {ph: 'B', ts: ts(40e3), args: {data: {callFrame: {functionName: '(rootB)'}}}},
+        {ph: 'B', ts: ts(40e3), args: {data: {callFrame: {functionName: 'Task'}}}},
+        {ph: 'E', ts: ts(80e3), args: {data: {callFrame: {functionName: 'Task'}}}},
+        {ph: 'E', ts: ts(80e3), args: {data: {callFrame: {functionName: '(rootB)'}}}},
+        {ph: 'B', ts: ts(80e3), args: {data: {callFrame: {functionName: '(rootC)'}}}},
+        {ph: 'B', ts: ts(80e3), args: {data: {callFrame: {functionName: 'Task'}}}},
+        {ph: 'E', ts: ts(100e3), args: {data: {callFrame: {functionName: 'Task'}}}},
+        {ph: 'E', ts: ts(100e3), args: {data: {callFrame: {functionName: '(rootC)'}}}},
       ]);
     });
 

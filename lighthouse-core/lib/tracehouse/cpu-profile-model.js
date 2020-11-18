@@ -360,7 +360,8 @@ class CpuProfilerModel {
       // Sampled end event can't be after unrelated tasks started.
       ...(eventType === 'start' ? [] : unrelatedTasks.map(t => t.startTime)),
       // Sampled end event can't be after the other `B` events at its same timestamp.
-      // This isn't _currently_ necessary, but it's an non-obvious observation and case to account for.
+      // This is _currently_ only possible in contrived scenarios due to the sorted order of processing,
+      // but it's a non-obvious observation and case to account for.
       ...(eventType === 'start'
         ? []
         : allEventsAtTs.refined.filter(e => e.ph === 'B').map(e => e.ts))
