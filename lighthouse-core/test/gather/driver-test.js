@@ -147,7 +147,7 @@ describe('.getRequestContent', () => {
 });
 
 describe('.evaluateAsync', () => {
-  // Most of the logic here is tested by lighthouse-core/test/fraggle-rock/gather/runtime-controller-test.js
+  // Most of the logic here is tested by lighthouse-core/test/gather/driver/execution-context-test.js
   // Just exercise a bit of the plumbing here to ensure we delegate correctly.
   it('evaluates an expression', async () => {
     connectionStub.sendCommand = createMockSendCommandFn()

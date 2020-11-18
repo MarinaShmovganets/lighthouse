@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const RuntimeController = require('../../../fraggle-rock/gather/runtime-controller.js');
+const ExecutionContext = require('../../../gather/driver/execution-context.js');
 const {
   createMockSendCommandFn: createMockSendCommandFn_,
   makePromiseInspectable,
@@ -27,67 +27,67 @@ function createMockSession() {
   return session;
 }
 
-describe('RuntimeController', () => {
+describe('ExecutionContext', () => {
   /** @type {LH.Gatherer.FRProtocolSession} */
   let sessionMock;
-  /** @type {(controller: RuntimeController, id: number) => Promise<void>} */
+  /** @type {(executionContext: ExecutionContext, id: number) => Promise<void>} */
   let forceNewContextId;
 
   beforeEach(() => {
     sessionMock = createMockSession();
 
-    forceNewContextId = async (controller, executionContextId) => {
-      controller._session.sendCommand = createMockSendCommandFn()
+    forceNewContextId = async (executionContext, executionContextId) => {
+      executionContext._session.sendCommand = createMockSendCommandFn()
         .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
         .mockResponse('Page.createIsolatedWorld', {executionContextId})
         .mockResponse('Runtime.evaluate', {result: {value: 2}});
 
-      await controller.evaluateAsync('1 + 1', {useIsolation: true});
+      await executionContext.evaluateAsync('1 + 1', {useIsolation: true});
     };
   });
 
   it('should clear context on frame navigations', async () => {
     const onMock = sessionMock.on = jest.fn();
 
-    const controller = new RuntimeController(sessionMock);
+    const executionContext = new ExecutionContext(sessionMock);
 
     const frameListener = onMock.mock.calls.find(call => call[0] === 'Page.frameNavigated');
     expect(frameListener).toBeDefined();
 
-    await forceNewContextId(controller, 42);
-    expect(controller.getContextId()).toEqual(42);
+    await forceNewContextId(executionContext, 42);
+    expect(executionContext.getContextId()).toEqual(42);
     frameListener[1]();
-    expect(controller.getContextId()).toEqual(undefined);
+    expect(executionContext.getContextId()).toEqual(undefined);
   });
 
   it('should clear context on execution context destroyed', async () => {
     const onMock = sessionMock.on = jest.fn();
 
-    const controller = new RuntimeController(sessionMock);
+    const executionContext = new ExecutionContext(sessionMock);
 
     const executionDestroyed = onMock.mock.calls
       .find(call => call[0] === 'Runtime.executionContextDestroyed');
     expect(executionDestroyed).toBeDefined();
 
-    await forceNewContextId(controller, 42);
-    expect(controller.getContextId()).toEqual(42);
+    await forceNewContextId(executionContext, 42);
+    expect(executionContext.getContextId()).toEqual(42);
     executionDestroyed[1]({executionContextId: 51});
-    expect(controller.getContextId()).toEqual(42);
+    expect(executionContext.getContextId()).toEqual(42);
     executionDestroyed[1]({executionContextId: 42});
-    expect(controller.getContextId()).toEqual(undefined);
+    expect(executionContext.getContextId()).toEqual(undefined);
   });
 });
 
 describe('.evaluateAsync', () => {
   /** @type {LH.Gatherer.FRProtocolSession} */
   let sessionMock;
-  /** @type {RuntimeController} */
-  let runtimeController;
+  /** @type {ExecutionContext} */
+  let executionContext;
 
   beforeEach(() => {
     sessionMock = createMockSession();
     sessionMock.on = jest.fn();
-    runtimeController = new RuntimeController(sessionMock);
+    executionContext = new ExecutionContext(sessionMock);
   });
 
   it('evaluates an expression', async () => {
@@ -96,7 +96,7 @@ describe('.evaluateAsync', () => {
       {result: {value: 2}}
     ));
 
-    const value = await runtimeController.evaluateAsync('1 + 1');
+    const value = await executionContext.evaluateAsync('1 + 1');
     expect(value).toEqual(2);
     sendCommand.findInvocation('Runtime.evaluate');
   });
@@ -106,7 +106,7 @@ describe('.evaluateAsync', () => {
     sessionMock.hasNextProtocolTimeout = jest.fn().mockReturnValue(false);
     sessionMock.sendCommand = createMockSendCommandFn().mockRejectedValue(new Error('Timeout'));
 
-    const evaluatePromise = makePromiseInspectable(runtimeController.evaluateAsync('1 + 1'));
+    const evaluatePromise = makePromiseInspectable(executionContext.evaluateAsync('1 + 1'));
 
     await flushAllTimersAndMicrotasks();
     expect(setNextProtocolTimeout).toHaveBeenCalledWith(60000);
@@ -121,7 +121,7 @@ describe('.evaluateAsync', () => {
     sessionMock.getNextProtocolTimeout = jest.fn().mockReturnValue(expectedTimeout);
     sessionMock.sendCommand = createMockSendCommandFn().mockRejectedValue(new Error('Timeout'));
 
-    const evaluatePromise = makePromiseInspectable(runtimeController.evaluateAsync('1 + 1'));
+    const evaluatePromise = makePromiseInspectable(executionContext.evaluateAsync('1 + 1'));
 
     await flushAllTimersAndMicrotasks();
     expect(setNextProtocolTimeout).toHaveBeenCalledWith(expectedTimeout);
@@ -135,7 +135,7 @@ describe('.evaluateAsync', () => {
       .mockResponse('Page.createIsolatedWorld', {executionContextId: 1})
       .mockResponse('Runtime.evaluate', {result: {value: 2}}));
 
-    const value = await runtimeController.evaluateAsync('1 + 1', {useIsolation: true});
+    const value = await executionContext.evaluateAsync('1 + 1', {useIsolation: true});
     expect(value).toEqual(2);
 
     // Check that we used the correct frame when creating the isolated context
@@ -151,7 +151,7 @@ describe('.evaluateAsync', () => {
       'Runtime.evaluate',
       {result: {value: 2}}
     );
-    await runtimeController.evaluateAsync('1 + 1', {useIsolation: true});
+    await executionContext.evaluateAsync('1 + 1', {useIsolation: true});
     expect(sessionMock.sendCommand).not.toHaveBeenCalledWith(
       'Page.createIsolatedWorld',
       expect.anything()
@@ -167,7 +167,7 @@ describe('.evaluateAsync', () => {
       .mockResponse('Page.createIsolatedWorld', {executionContextId: 9002})
       .mockResponse('Runtime.evaluate', {result: {value: 'mocked value'}});
 
-    const value = await runtimeController.evaluateAsync('"magic"', {useIsolation: true});
+    const value = await executionContext.evaluateAsync('"magic"', {useIsolation: true});
     expect(value).toEqual('mocked value');
   });
 });

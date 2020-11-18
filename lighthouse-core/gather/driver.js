@@ -6,7 +6,7 @@
 'use strict';
 
 const Fetcher = require('./fetcher.js');
-const RuntimeController = require('../fraggle-rock/gather/runtime-controller.js');
+const ExecutionContext = require('./driver/execution-context.js');
 const NetworkRecorder = require('../lib/network-recorder.js');
 const emulation = require('../lib/emulation.js');
 const LHElement = require('../lib/lh-element.js');
@@ -117,7 +117,7 @@ class Driver {
     /** @type {Fetcher} */
     this.fetcher = new Fetcher(this);
 
-    this._runtimeController = new RuntimeController(this);
+    this._executionContext = new ExecutionContext(this);
   }
 
   static get traceCategories() {
@@ -452,7 +452,7 @@ class Driver {
    * @return {Promise<*>}
    */
   evaluateAsync(expression, options) {
-    return this._runtimeController.evaluateAsync(expression, options);
+    return this._executionContext.evaluateAsync(expression, options);
   }
 
   /**
@@ -1020,7 +1020,7 @@ class Driver {
     }
 
     await this._beginNetworkStatusMonitoring(url);
-    await this._runtimeController.clearContextId();
+    await this._executionContext.clearContextId();
 
     // Enable auto-attaching to subtargets so we receive iframe information
     await this.sendCommand('Target.setAutoAttach', {

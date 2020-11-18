@@ -7,7 +7,7 @@
 
 const pageFunctions = require('../../lib/page-functions.js');
 
-class RuntimeController {
+class ExecutionContext {
   /** @param {LH.Gatherer.FRProtocolSession} session */
   constructor(session) {
     this._session = session;
@@ -150,4 +150,4 @@ class RuntimeController {
   }
 }
 
-module.exports = RuntimeController;
+module.exports = ExecutionContext;
