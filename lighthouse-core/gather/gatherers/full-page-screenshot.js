@@ -44,13 +44,9 @@ class FullPageScreenshot extends Gatherer {
     await driver.sendCommand('Emulation.setDeviceMetricsOverride', {
       mobile: passContext.baseArtifacts.TestedAsMobileDevice,
       height,
-      screenHeight: height,
       width,
-      screenWidth: width,
       deviceScaleFactor: 1,
       scale: 1,
-      positionX: 0,
-      positionY: 0,
       screenOrientation: {angle: 0, type: 'portraitPrimary'},
     });
 
