@@ -29,12 +29,12 @@ jobs:
     - run: sudo apt-get install xvfb
     - name: yarn test-clients
       run: xvfb-run --auto-servernum yarn test-clients
-    - name: yarn test-bundle
-      run: xvfb-run --auto-servernum yarn test-bundle
     - name: yarn test-docs
       run: xvfb-run --auto-servernum yarn test-docs
     - name: yarn test-viewer
       run: xvfb-run --auto-servernum yarn test-viewer
+    - name: yarn test-treemap
+      run: xvfb-run --auto-servernum yarn test-treemap
 
     - run: yarn diff:sample-json
     - run: yarn type-check
@@ -43,6 +43,9 @@ jobs:
     - run: yarn test-legacy-javascript
     - run: yarn i18n:checks
     - run: yarn dogfood-lhci
+
+    # Fail if any changes were written to any source files or generated untracked files (ex, from: build/build-cdt-lib.js).
+    - run: git add -A && git diff --cached --exit-code
 
     # buildtracker needs history and a common merge commit.
     - name: Fixup git history (for buildtracker)
@@ -59,9 +62,6 @@ jobs:
       with:
         name: dist
         path: dist/
-
-    # Fail if any changes were written to source files (ex, from: build/build-cdt-lib.js).
-    - run: git diff --exit-code
 
   # `unit` includes just unit and proto tests.
   unit:
@@ -81,7 +81,9 @@ jobs:
         node-version: 10.x
 
     - name: Set up protoc
-      uses: arduino/setup-protoc@7ad700d
+      # TODO: switch back to arduino/setup-protoc after the pagination fix lands:
+      # https://github.com/arduino/setup-protoc/pull/9
+      uses: solo-io/setup-protoc@1f5d8b5
       with:
         version: '3.7.1'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -112,6 +114,9 @@ jobs:
       if: matrix.os == 'windows-latest'
     - run: yarn diff:sample-json
       if: matrix.os == 'windows-latest'
+
+    # Fail if any changes were written to any source files or generated untracked files (ex, from -GA).
+    - run: git add -A && git diff --cached --exit-code
 
   # `smoke` runs as a matrix across 4 jobs:
   #  * The smoketest groups are split across two runners, to parallelize.
@@ -154,6 +159,9 @@ jobs:
     - name: Run smoke tests
       run: xvfb-run --auto-servernum yarn smoke --debug -j=1 --retries=2 --invert-match ${{ matrix.smoke-test-invert }} $SMOKE_GROUP_1
 
+    # Fail if any changes were written to source files.
+    - run: git diff --exit-code
+
   # Only run smoke tests for windows against stable chrome.
   smoke-windows:
     runs-on: windows-latest
@@ -172,3 +180,26 @@ jobs:
 
     - name: Run smoke tests
       run: yarn smoke --debug -j=1 --retries=2 dbw oopif offline lantern metrics
+
+  smoke-bundle:
+    runs-on: ubuntu-latest
+    name: smoke_bundle
+
+    steps:
+    - name: git clone
+      uses: actions/checkout@v2
+
+    - name: Use Node.js 10.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.x
+
+    - run: yarn --frozen-lockfile
+    - run: yarn build-devtools
+
+    - run: sudo apt-get install xvfb
+    - name: yarn test-bundle
+      run: xvfb-run --auto-servernum yarn test-bundle
+
+    # Fail if any changes were written to source files.
+    - run: git diff --exit-code

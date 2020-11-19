@@ -172,10 +172,10 @@ Object {
       "path": "unsized-images",
     },
     Object {
-      "path": "large-javascript-libraries",
+      "path": "valid-source-maps",
     },
     Object {
-      "path": "valid-source-maps",
+      "path": "preload-lcp-image",
     },
     Object {
       "path": "manual/pwa-cross-browser",
@@ -942,6 +942,11 @@ Object {
           "weight": 0,
         },
         Object {
+          "group": "load-opportunities",
+          "id": "preload-lcp-image",
+          "weight": 0,
+        },
+        Object {
           "group": "diagnostics",
           "id": "total-byte-weight",
           "weight": 0,
@@ -1034,11 +1039,6 @@ Object {
         Object {
           "group": "diagnostics",
           "id": "unsized-images",
-          "weight": 0,
-        },
-        Object {
-          "group": "diagnostics",
-          "id": "large-javascript-libraries",
           "weight": 0,
         },
         Object {
