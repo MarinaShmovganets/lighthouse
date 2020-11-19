@@ -56,8 +56,9 @@ git checkout --progress --force "$lsremote_hash"
 mergebranch_name="_bt_mergebranch-$pr_num"
 git checkout -b "$mergebranch_name"
 
-
-git merge --no-verify -m "Merge remote-tracking branch 'origin/master' into $mergebranch_name" origin/master
+# Merge 'n commit
+git -c "user.name=LH GH Action bot" -c "user.email=ghbot@lighthouse.repo" merge --no-verify \
+    -m "Merge remote-tracking branch 'origin/master' into $mergebranch_name" origin/master
 
 # If there's a diff aginst where we started.. we fucked up
 if git --no-pager diff --color=always --exit-code "$checkout_name" > /dev/null; then
