@@ -408,7 +408,6 @@ async function waitForFullyLoaded(session, networkMonitor, options) {
   return cleanupFn();
 }
 
-
 module.exports = {
   waitForNothing,
   waitForFrameNavigated,
