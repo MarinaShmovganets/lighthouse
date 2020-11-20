@@ -8,7 +8,6 @@
 /* eslint-env jest */
 
 const FullPageScreenshotGatherer = require('../../../gather/gatherers/full-page-screenshot.js');
-const MAX_SCREENSHOT_HEIGHT = 16384;
 
 /**
  * @param {{contentSize: {width: number, height: number}, screenSize: {width?: number, height?: number, dpr: number}, screenshotData: string[]}}
@@ -182,5 +181,4 @@ describe('Full-page screenshot gatherer', () => {
       })
     );
   });
-
-  });
+});

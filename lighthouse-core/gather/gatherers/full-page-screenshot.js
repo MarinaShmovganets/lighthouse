@@ -69,7 +69,7 @@ class FullPageScreenshot extends Gatherer {
    * @return {Promise<LH.Artifacts.FullPageScreenshot | null>}
    */
   async afterPass_(passContext) {
-    let screenshot = await this._takeScreenshot(passContext);
+    const screenshot = await this._takeScreenshot(passContext);
     return screenshot;
   }
 
