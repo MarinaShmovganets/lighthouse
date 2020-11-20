@@ -6,7 +6,7 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 ##
 
-set -euo pipefail
+set -euxo pipefail
 
 # Overview:
 # - build-tracker (https://lh-build-tracker.herokuapp.com/) relies on a common commit that's shared between HEAD and master.
