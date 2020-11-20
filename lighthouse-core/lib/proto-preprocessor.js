@@ -70,6 +70,7 @@ function processForProto(lhr) {
 
   // Drop the i18n icuMessagePaths. Painful in proto, and low priority to expose currently.
   if (reportJson.i18n && reportJson.i18n.icuMessagePaths) {
+    // @ts-expect-error
     delete reportJson.i18n.icuMessagePaths;
   }
 

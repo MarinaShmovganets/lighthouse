@@ -621,6 +621,7 @@ class Driver {
       throw new Error('_waitForFcp.cancel() called before it was defined');
     };
 
+    /** @type {Promise<void>} */
     const promise = new Promise((resolve, reject) => {
       const maxWaitTimeout = setTimeout(() => {
         reject(new LHError(LHError.errors.NO_FCP));
@@ -680,6 +681,7 @@ class Driver {
     }
     const networkStatusMonitor = this._networkStatusMonitor;
 
+    /** @type {Promise<void>} */
     const promise = new Promise((resolve, reject) => {
       const onIdle = () => {
         // eslint-disable-next-line no-use-before-define
@@ -791,6 +793,7 @@ class Driver {
     let cancel = () => {
       throw new Error('_waitForCPUIdle.cancel() called before it was defined');
     };
+    /** @type {Promise<void>} */
     const promise = new Promise((resolve, reject) => {
       checkForQuiet(this, resolve).catch(reject);
       cancel = () => {
