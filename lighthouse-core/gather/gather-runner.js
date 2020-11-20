@@ -588,7 +588,7 @@ class GatherRunner {
    * @param {LH.Gatherer.PassContext} passContext
    */
   static async populateBaseArtifacts(passContext) {
-    const status = {msg: 'Populate base artifacts', id: 'lh:gather:popBaseArtifacts'};
+    const status = {msg: 'Populate base artifacts', id: 'lh:gather:populateBaseArtifacts'};
     log.time(status);
     const baseArtifacts = passContext.baseArtifacts;
 
