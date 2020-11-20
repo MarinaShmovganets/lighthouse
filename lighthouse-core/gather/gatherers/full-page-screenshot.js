@@ -66,15 +66,6 @@ class FullPageScreenshot extends Gatherer {
 
   /**
    * @param {LH.Gatherer.PassContext} passContext
-   * @return {Promise<LH.Artifacts.FullPageScreenshot | null>}
-   */
-  async afterPass_(passContext) {
-    const screenshot = await this._takeScreenshot(passContext);
-    return screenshot;
-  }
-
-  /**
-   * @param {LH.Gatherer.PassContext} passContext
    * @return {Promise<LH.Artifacts['FullPageScreenshot']>}
    */
   async afterPass(passContext) {
@@ -86,7 +77,8 @@ class FullPageScreenshot extends Gatherer {
       !passContext.settings.internalDisableDeviceScreenEmulation;
 
     try {
-      return await this.afterPass_(passContext);
+      const screenshot = await this._takeScreenshot(passContext);
+      return screenshot;
     } finally {
       // Revert resized page.
       if (lighthouseControlsEmulation) {
