@@ -551,7 +551,10 @@ class GatherRunner {
    * @return {Promise<LH.Artifacts.InstallabilityErrors>}
    */
   static async getInstallabilityErrors(passContext) {
-    const status = {msg: 'Get webapp installability errors', id: 'lh:gather:getInstallabilityErrors'};
+    const status = {
+      msg: 'Get webapp installability errors',
+      id: 'lh:gather:getInstallabilityErrors'
+    };
     log.time(status);
     const response =
       await passContext.driver.sendCommand('Page.getInstallabilityErrors');
