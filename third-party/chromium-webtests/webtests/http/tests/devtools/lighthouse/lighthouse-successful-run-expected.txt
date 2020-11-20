@@ -248,6 +248,9 @@ Auditing: Avoids `unload` event listeners
 Auditing: Avoid non-composited animations
 Auditing: Image elements have explicit `width` and `height`
 Auditing: Page has valid source maps
+Auditing: Preload Largest Contentful Paint image
+Computing artifact: LanternLargestContentfulPaint
+Computing artifact: LanternFirstContentfulPaint
 Auditing: Site works cross-browser
 Auditing: Page transitions don't feel like they block on the network
 Auditing: Each page has a URL
@@ -368,14 +371,14 @@ Auditing: Latency of first ad render
 Computing artifact: AdRenderTime
 Computing artifact: LanternAdRenderTime
 Auditing: GPT and bids loaded in parallel
-Auditing: GPT tag is loaded from recommended host
+Auditing: GPT tag is loaded from an official source
 Auditing: Ad tag is loaded over HTTPS
 Auditing: Ad scripts are loaded statically
 Auditing: Header bidding is parallelized
 Auditing: Tag load time
 Computing artifact: TagLoadTime
 Computing artifact: LanternTagLoadTime
-Auditing: Ad density in initial viewport is within recommended range
+Auditing: Ad density is within recommended range
 Auditing: Cumulative ad shift
 Generating results...
 
@@ -484,7 +487,7 @@ list: notApplicable
 listitem: notApplicable
 load-fast-enough-for-pwa: flaky
 loads-ad-tag-over-https: notApplicable
-loads-gpt-from-sgdn: notApplicable
+loads-gpt-from-official-source: notApplicable
 logical-tab-order: manual
 long-tasks: flaky
 main-thread-tasks: informative
@@ -512,6 +515,7 @@ password-inputs-can-be-pasted-into: pass
 performance-budget: notApplicable
 plugins: pass
 preload-fonts: notApplicable
+preload-lcp-image: numeric
 pwa-cross-browser: manual
 pwa-each-page-has-url: manual
 pwa-page-transitions: manual
@@ -564,5 +568,5 @@ visual-order-follows-dom: manual
 without-javascript: pass
 works-offline: fail
 
-# of .lh-audit divs: 155
+# of .lh-audit divs: 156
 
