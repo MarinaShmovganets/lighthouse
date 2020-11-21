@@ -553,7 +553,7 @@ class GatherRunner {
   static async getInstallabilityErrors(passContext) {
     const status = {
       msg: 'Get webapp installability errors',
-      id: 'lh:gather:getInstallabilityErrors'
+      id: 'lh:gather:getInstallabilityErrors',
     };
     log.time(status);
     const response =
