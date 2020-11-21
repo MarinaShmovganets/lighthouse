@@ -18,9 +18,6 @@ function createMockDriver({contentSize, screenSize, screenshotData}) {
       if (code === 'window.innerWidth') {
         return contentSize.width;
       }
-      if (code === 'window.devicePixelRatio') {
-        return screenSize ? screenSize.dpr : 2;
-      }
       if (code.includes('document.documentElement.clientWidth')) {
         return {
           width: screenSize.width,
