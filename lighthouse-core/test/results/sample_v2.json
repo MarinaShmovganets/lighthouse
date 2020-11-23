@@ -1432,6 +1432,8 @@
             "firstMeaningfulPaintTs": 185607289048,
             "largestContentfulPaint": 4927,
             "largestContentfulPaintTs": 185608247190,
+            "largestContentfulPaintAllFrames": 4927,
+            "largestContentfulPaintAllFramesTs": 185608247190,
             "firstCPUIdle": 4927,
             "firstCPUIdleTs": 185608247190,
             "interactive": 4927,
@@ -1469,7 +1471,8 @@
             "observedSpeedIndexTs": 185607736763
           },
           {
-            "lcpInvalidated": false
+            "lcpInvalidated": false,
+            "lcpAllFramesInvalidated": false
           }
         ]
       }
@@ -5812,6 +5815,12 @@
       {
         "startTime": 0,
         "name": "lh:computed:TimingSummary",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:computed:LargestContentfulPaintAllFrames",
         "duration": 100,
         "entryType": "measure"
       },
