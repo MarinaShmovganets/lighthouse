@@ -375,7 +375,7 @@ function getNodeLabel(node) {
     if (str.length <= maxLength) {
       return str;
     }
-    return str.slice(0, maxLength - 1) + '…';
+    return Array.from(str).slice(0, maxLength - 1).join('') + '…';
   }
   const tagName = node.tagName.toLowerCase();
   // html and body content is too broad to be useful, since they contain all page content
