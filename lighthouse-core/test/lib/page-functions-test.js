@@ -118,6 +118,8 @@ describe('Page Functions', () => {
 
     it('Truncates long text containing unicode surrogate pairs', () => {
       const el = dom.createElement('div');
+      // `getNodeLabel` truncates to 80 characters internally. 
+      // We want to test a unicode character on the boundary.
       el.innerText = Array(78).fill('a').join('') + '💡💡💡';
       assert.equal(pageFunctions.getNodeLabel(el), Array(78).fill('a').join('') + '💡…');
     });
