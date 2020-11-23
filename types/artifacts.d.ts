@@ -593,6 +593,7 @@ declare global {
         firstContentfulPaint: number;
         firstMeaningfulPaint?: number;
         largestContentfulPaint?: number;
+        largestContentfulPaintAllFrames?: number;
         traceEnd: number;
         load?: number;
         domContentLoaded?: number;
@@ -621,6 +622,8 @@ declare global {
         firstMeaningfulPaintEvt?: TraceEvent;
         /** The trace event marking largestContentfulPaint, if it was found. */
         largestContentfulPaintEvt?: TraceEvent;
+        /** The trace event marking largestContentfulPaint from all frames, if it was found. */
+        largestContentfulPaintAllFramesEvt?: TraceEvent;
         /** The trace event marking loadEventEnd, if it was found. */
         loadEvt?: TraceEvent;
         /** The trace event marking domContentLoadedEventEnd, if it was found. */
@@ -632,6 +635,8 @@ declare global {
         fmpFellBack: boolean;
         /** Whether LCP was invalidated without a new candidate. */
         lcpInvalidated: boolean;
+        /** Whether LCP from all frames was invalidated without a new candidate. */
+        lcpAllFramesInvalidated: boolean;
       }
 
       /** Information on a tech stack (e.g. a JS library) used by the page. */
@@ -662,6 +667,8 @@ declare global {
         firstMeaningfulPaintTs: number | undefined;
         largestContentfulPaint: number | undefined;
         largestContentfulPaintTs: number | undefined;
+        largestContentfulPaintAllFrames: number | undefined;
+        largestContentfulPaintAllFramesTs: number | undefined;
         firstCPUIdle: number | undefined;
         firstCPUIdleTs: number | undefined;
         interactive: number | undefined;
@@ -686,6 +693,8 @@ declare global {
         observedFirstMeaningfulPaintTs: number | undefined;
         observedLargestContentfulPaint: number | undefined;
         observedLargestContentfulPaintTs: number | undefined;
+        observedLargestContentfulPaintAllFrames: number | undefined;
+        observedLargestContentfulPaintAllFramesTs: number | undefined;
         observedTraceEnd: number | undefined;
         observedTraceEndTs: number | undefined;
         observedLoad: number | undefined;

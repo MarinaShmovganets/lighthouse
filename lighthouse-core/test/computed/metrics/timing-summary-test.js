@@ -7,59 +7,63 @@
 
 const TimingSummary = require('../../../computed/metrics/timing-summary.js');
 
-const trace = require('../../fixtures/traces/progressive-app-m60.json');
-const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
+const trace = require('../../fixtures/traces/lcp-all-frames-m89.json');
+const devtoolsLog = require('../../fixtures/traces/lcp-all-frames-m89.devtools.log.json');
 
 /* eslint-env jest */
 describe('Timing summary', () => {
   it('contains the correct data', async () => {
-    const context = {settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
+    const context = {settings: {throttlingMethod: 'devtools'}, computedCache: new Map()};
     const result = await TimingSummary.request({trace, devtoolsLog}, context);
 
     expect(result.metrics).toMatchInlineSnapshot(`
       Object {
         "cumulativeLayoutShift": 0,
-        "estimatedInputLatency": 77.79999999999995,
+        "estimatedInputLatency": 375.30033333333495,
         "estimatedInputLatencyTs": undefined,
-        "firstCPUIdle": 3351.3320000492963,
-        "firstCPUIdleTs": undefined,
-        "firstContentfulPaint": 1336.6100000208244,
-        "firstContentfulPaintTs": undefined,
-        "firstMeaningfulPaint": 1553.2040000472914,
-        "firstMeaningfulPaintTs": undefined,
-        "interactive": 3426.8545000551967,
-        "interactiveTs": undefined,
-        "largestContentfulPaint": undefined,
-        "largestContentfulPaintTs": undefined,
-        "maxPotentialFID": 396.0000000000001,
+        "firstCPUIdle": 26580.768,
+        "firstCPUIdleTs": 176404642571,
+        "firstContentfulPaint": 7729.266,
+        "firstContentfulPaintTs": 176385791069,
+        "firstMeaningfulPaint": 7729.266,
+        "firstMeaningfulPaintTs": 176385791069,
+        "interactive": 33916.311,
+        "interactiveTs": 176411978114,
+        "largestContentfulPaint": 10790.357,
+        "largestContentfulPaintAllFrames": 41281.798,
+        "largestContentfulPaintAllFramesTs": 176419343601,
+        "largestContentfulPaintTs": 176388852160,
+        "maxPotentialFID": 755.583,
         "observedCumulativeLayoutShift": 0,
-        "observedDomContentLoaded": 560.294,
-        "observedDomContentLoadedTs": 225414732309,
-        "observedFirstContentfulPaint": 498.87,
-        "observedFirstContentfulPaintTs": 225414670885,
-        "observedFirstMeaningfulPaint": 783.328,
-        "observedFirstMeaningfulPaintTs": 225414955343,
-        "observedFirstPaint": 498.853,
-        "observedFirstPaintTs": 225414670868,
-        "observedFirstVisualChange": 520,
-        "observedFirstVisualChangeTs": 225414692015,
-        "observedLargestContentfulPaint": undefined,
-        "observedLargestContentfulPaintTs": undefined,
-        "observedLastVisualChange": 818,
-        "observedLastVisualChangeTs": 225414990015,
-        "observedLoad": 2198.898,
-        "observedLoadTs": 225416370913,
+        "observedDomContentLoaded": 7502.177,
+        "observedDomContentLoadedTs": 176385563980,
+        "observedFirstContentfulPaint": 7729.266,
+        "observedFirstContentfulPaintTs": 176385791069,
+        "observedFirstMeaningfulPaint": 7729.266,
+        "observedFirstMeaningfulPaintTs": 176385791069,
+        "observedFirstPaint": 4369.614,
+        "observedFirstPaintTs": 176382431417,
+        "observedFirstVisualChange": 4347,
+        "observedFirstVisualChangeTs": 176382408803,
+        "observedLargestContentfulPaint": 10790.357,
+        "observedLargestContentfulPaintAllFrames": 41281.798,
+        "observedLargestContentfulPaintAllFramesTs": 176419343601,
+        "observedLargestContentfulPaintTs": 176388852160,
+        "observedLastVisualChange": 26349,
+        "observedLastVisualChangeTs": 176404410803,
+        "observedLoad": 25241.594,
+        "observedLoadTs": 176403303397,
         "observedNavigationStart": 0,
-        "observedNavigationStartTs": 225414172015,
-        "observedSpeedIndex": 604.7093900063634,
-        "observedSpeedIndexTs": 225414776724.39,
+        "observedNavigationStartTs": 176378061803,
+        "observedSpeedIndex": 10039.849689989984,
+        "observedSpeedIndexTs": 176388101652.69,
         "observedTimeOrigin": 0,
-        "observedTimeOriginTs": 225414172015,
-        "observedTraceEnd": 12539.872,
-        "observedTraceEndTs": 225426711887,
-        "speedIndex": 1676.1335047609864,
-        "speedIndexTs": undefined,
-        "totalBlockingTime": 726.4774999940994,
+        "observedTimeOriginTs": 176378061803,
+        "observedTraceEnd": 43238.817,
+        "observedTraceEndTs": 176421300620,
+        "speedIndex": 10040,
+        "speedIndexTs": 176388101803,
+        "totalBlockingTime": 3747.2890000000007,
       }
     `);
     // Includes performance metrics
@@ -69,6 +73,6 @@ describe('Timing summary', () => {
     // Includs visual metrics from Speedline
     expect(result.metrics.observedFirstVisualChange).toBeDefined();
 
-    expect(result.debugInfo).toEqual({lcpInvalidated: false});
+    expect(result.debugInfo).toEqual({lcpInvalidated: false, lcpAllFramesInvalidated: false});
   });
 });
