@@ -452,16 +452,16 @@ Object {
           'timings.largestContentfulPaintAllFrames': trace.timings.largestContentfulPaintAllFrames,
         }).toMatchInlineSnapshot(`
           Object {
-            "firstContentfulPaintEvt.ts": 176385791069,
-            "largestContentfulPaintEvt.ts": 176388852160,
-            "mainFrameIds.frameId": "8E2C712282472761000C449E116DA5EC",
-            "timeOriginEvt.ts": 176378061803,
-            "timestamps.firstContentfulPaint": 176385791069,
-            "timestamps.largestContentfulPaint": 176388852160,
-            "timestamps.largestContentfulPaintAllFrames": 176419343601,
-            "timings.firstContentfulPaint": 7729.266,
-            "timings.largestContentfulPaint": 10790.357,
-            "timings.largestContentfulPaintAllFrames": 41281.798,
+            "firstContentfulPaintEvt.ts": 10238937930,
+            "largestContentfulPaintEvt.ts": 10238937930,
+            "mainFrameIds.frameId": "4249F84F135F1AC71BD734840955AFAD",
+            "timeOriginEvt.ts": 10238269760,
+            "timestamps.firstContentfulPaint": 10238937930,
+            "timestamps.largestContentfulPaint": 10238937930,
+            "timestamps.largestContentfulPaintAllFrames": 10240528038,
+            "timings.firstContentfulPaint": 668.17,
+            "timings.largestContentfulPaint": 668.17,
+            "timings.largestContentfulPaintAllFrames": 2258.278,
           }
         `);
       });

@@ -32,8 +32,8 @@ describe('Metrics: LCP from all frames', () => {
     const context = {settings, computedCache: new Map()};
     const result = await LargestContentfulPaintAllFrames.request({trace: traceAllFrames, devtoolsLog: devtoolsLogAllFrames, settings}, context); // eslint-disable-line max-len
 
-    assert.equal(Math.round(result.timing), 41282);
-    assert.equal(result.timestamp, 176419343601);
+    assert.equal(Math.round(result.timing), 2258);
+    assert.equal(result.timestamp, 10240528038);
   });
 
   it('should fail to compute an observed value for old trace', async () => {
