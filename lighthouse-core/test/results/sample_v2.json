@@ -2071,6 +2071,22 @@
         "items": []
       }
     },
+    "preload-lcp-image": {
+      "id": "preload-lcp-image",
+      "title": "Preload Largest Contentful Paint image",
+      "description": "Preload the image used by the LCP element in order to improve your LCP time. [Learn more](https://web.dev/optimize-lcp/#preload-important-resources).",
+      "score": 1,
+      "scoreDisplayMode": "numeric",
+      "numericValue": 0,
+      "numericUnit": "millisecond",
+      "displayValue": "",
+      "details": {
+        "type": "opportunity",
+        "headings": [],
+        "items": [],
+        "overallSavingsMs": 0
+      }
+    },
     "pwa-cross-browser": {
       "id": "pwa-cross-browser",
       "title": "Site works cross-browser",
@@ -3758,6 +3774,14 @@
         ]
       }
     },
+    "has-inspector-issues": {
+      "id": "has-inspector-issues",
+      "title": "No issues in the `Issues` panel in Chrome Devtools",
+      "description": "Issues logged to the `Issues` panel in Chrome Devtools indicate unresolved problems. They can come from network request failures, insufficient security controls, and other browser concerns. Open up the Issues panel in Chrome DevTools for more details on each issue.",
+      "score": null,
+      "scoreDisplayMode": "error",
+      "errorMessage": "Cannot read property 'length' of undefined"
+    },
     "no-document-write": {
       "id": "no-document-write",
       "title": "Avoid `document.write()`",
@@ -4573,6 +4597,11 @@
           "group": "load-opportunities"
         },
         {
+          "id": "preload-lcp-image",
+          "weight": 0,
+          "group": "load-opportunities"
+        },
+        {
           "id": "total-byte-weight",
           "weight": 0,
           "group": "diagnostics"
@@ -5044,10 +5073,15 @@
           "id": "valid-source-maps",
           "weight": 0,
           "group": "best-practices-general"
+        },
+        {
+          "id": "has-inspector-issues",
+          "weight": 1,
+          "group": "best-practices-general"
         }
       ],
       "id": "best-practices",
-      "score": 0.07
+      "score": null
     },
     "seo": {
       "title": "SEO",
@@ -5874,6 +5908,24 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:preload-lcp-image",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:computed:LanternLargestContentfulPaint",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:computed:LanternFirstContentfulPaint",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:pwa-cross-browser",
         "duration": 100,
         "entryType": "measure"
@@ -6360,6 +6412,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:has-inspector-issues",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:no-document-write",
         "duration": 100,
         "entryType": "measure"
@@ -6754,7 +6812,7 @@
         "audits[uses-http2].details.headings[0].label",
         "audits[uses-passive-event-listeners].details.headings[0].text"
       ],
-      "lighthouse-core/audits/errors-in-console.js | columnDesc": [
+      "lighthouse-core/lib/i18n/i18n.js | columnDescription": [
         "audits[errors-in-console].details.headings[1].text"
       ],
       "lighthouse-core/audits/server-response-time.js | title": [
@@ -7223,6 +7281,12 @@
       ],
       "lighthouse-core/audits/valid-source-maps.js | description": [
         "audits[valid-source-maps].description"
+      ],
+      "lighthouse-core/audits/preload-lcp-image.js | title": [
+        "audits[preload-lcp-image].title"
+      ],
+      "lighthouse-core/audits/preload-lcp-image.js | description": [
+        "audits[preload-lcp-image].description"
       ],
       "lighthouse-core/audits/manual/pwa-cross-browser.js | title": [
         "audits[pwa-cross-browser].title"
@@ -7724,6 +7788,12 @@
         "audits[no-document-write].details.headings[1].text",
         "audits[notification-on-start].details.headings[1].text",
         "audits[uses-passive-event-listeners].details.headings[1].text"
+      ],
+      "lighthouse-core/audits/dobetterweb/has-inspector-issues.js | title": [
+        "audits[has-inspector-issues].title"
+      ],
+      "lighthouse-core/audits/dobetterweb/has-inspector-issues.js | description": [
+        "audits[has-inspector-issues].description"
       ],
       "lighthouse-core/audits/dobetterweb/no-document-write.js | failureTitle": [
         "audits[no-document-write].title"
