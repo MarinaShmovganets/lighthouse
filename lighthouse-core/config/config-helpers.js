@@ -176,7 +176,7 @@ function requireAudits(audits, configDir) {
  * @throws {Error}
  */
 function resolveModule(moduleIdentifier, configDir, category) {
-  // node modules/
+  // node_modules/
   // |                                | Lighthouse globally installed | Lighthouse locally installed |
   // |--------------------------------|-------------------------------|------------------------------|
   // | in global                      |   1.                          |   1.                         |
