@@ -43,18 +43,16 @@ describe('Metrics: LCP from all frames', () => {
       {trace: invalidTrace, devtoolsLog: invalidDevtoolsLog, settings},
       context
     );
-    await expect(resultPromise).rejects.toThrow('NO_LCP');
+    await expect(resultPromise).rejects.toThrow('NO_LCP_ALL_FRAMES');
   });
 
-  it('should fall back to main frame LCP if all frames LCP unavailable', async () => {
+  it('should fail if even if main frame LCP is available', async () => {
     const settings = {throttlingMethod: 'provided'};
     const context = {settings, computedCache: new Map()};
-    const result = await LargestContentfulPaintAllFrames.request(
+    const resultPromise = LargestContentfulPaintAllFrames.request(
       {trace: traceMainFrame, devtoolsLog: devtoolsLogMainFrame, settings},
       context
     );
-
-    assert.equal(Math.round(result.timing), 1122);
-    assert.equal(result.timestamp, 713038144775);
+    await expect(resultPromise).rejects.toThrow('NO_LCP_ALL_FRAMES');
   });
 });
