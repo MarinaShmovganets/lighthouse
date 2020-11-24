@@ -302,7 +302,7 @@ function _formatMessage(message, values = {}, locale) {
  * @return {string}
  */
 function _localizeIcuMessage(icuMessage, locale, pluginLocales) {
-  const localeMessages = 
+  const localeMessages =
     Object.assign(LOCALES[locale], pluginLocales && pluginLocales[locale]);
   if (!localeMessages) throw new Error(`Unsupported locale '${locale}'`);
   const localeMessage = localeMessages[icuMessage.i18nId];
@@ -391,7 +391,7 @@ function createIcuMessageFn(filename, fileStrings) {
   return getIcuMessageFn;
 }
 
-  /**
+/**
    * @param {string} filename
    * @param {string} keyname
    * @return {string} i18nId

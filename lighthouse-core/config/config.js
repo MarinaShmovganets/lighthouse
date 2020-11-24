@@ -430,10 +430,9 @@ class Config {
    * @param {LH.Config.Json} configJSON
    * @param {LH.Flags=} flags
    * @param {string=} configDir
-   * @param {LH.Locale=} locale
    * @return {LH.Config.Json}
    */
-  static mergePlugins(configJSON, flags, configDir, locale) {
+  static mergePlugins(configJSON, flags, configDir) {
     const configPlugins = configJSON.plugins || [];
     const flagPlugins = (flags && flags.plugins) || [];
     const pluginNames = new Set([...configPlugins, ...flagPlugins]);

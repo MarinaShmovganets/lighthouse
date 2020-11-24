@@ -6,10 +6,8 @@
 'use strict';
 
 const i18n = require('../lib/i18n/i18n.js');
-const coreLocales = require('../lib/i18n/locales.js')
+const coreLocales = require('../lib/i18n/locales.js');
 const path = require('path');
-
-const LH_ROOT = '../..';
 
 /**
  * @param {unknown} arr
@@ -218,7 +216,7 @@ class ConfigPlugin {
 
     Object.keys(localesJson).forEach((locale) => {
       if (!validLocales.has(locale)) {
-        throw new Error (`${pluginName} contains unsupported locale: '${locale}'.`);
+        throw new Error(`${pluginName} contains unsupported locale: '${locale}'.`);
       }
 
       const localeMessages = localesJson[locale];
@@ -234,12 +232,12 @@ class ConfigPlugin {
         assertNoExcessProperties(invalidRest, pluginName);
 
         const [filename, keyname] = key.split(' | ');
-        
+
         const i18nId = i18n.createI18nId(path.join(pluginDir, filename), keyname);
         parsedLocalesJson[locale] = parsedLocalesJson[locale] || {};
-        parsedLocalesJson[locale][i18nId] = messageObj;
-      })
-    })
+        parsedLocalesJson[locale][i18nId] = {message};
+      });
+    });
 
     return /** @type LH.LocaleConfig */ (parsedLocalesJson);
   }
