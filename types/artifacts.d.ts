@@ -205,8 +205,8 @@ declare global {
       export interface DOMStats {
         /** The total number of elements found within the page's body. */
         totalBodyElements: number;
-        width: {max: number, pathToElement: Array<string>, snippet: string};
-        depth: {max: number, pathToElement: Array<string>, snippet: string};
+        width: NodeDetails & {max: number;};
+        depth: NodeDetails & {max: number;};
       }
 
       export interface EmbeddedContentInfo {
@@ -513,6 +513,10 @@ declare global {
 
       export interface InspectorIssues {
         mixedContent: Crdp.Audits.MixedContentIssueDetails[];
+        sameSiteCookies: Crdp.Audits.SameSiteCookieIssueDetails[];
+        blockedByResponse: Crdp.Audits.BlockedByResponseIssueDetails[];
+        heavyAds: Crdp.Audits.HeavyAdIssueDetails[];
+        contentSecurityPolicy: Crdp.Audits.ContentSecurityPolicyIssueDetails[];
       }
 
       // Computed artifact types below.

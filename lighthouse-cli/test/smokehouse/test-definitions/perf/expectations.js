@@ -284,12 +284,17 @@ module.exports = [
   },
   {
     lhr: {
-      requestedUrl: 'http://localhost:10200/perf/trace-elements.html?missing',
-      finalUrl: 'http://localhost:10200/perf/trace-elements.html?missing',
+      requestedUrl: 'http://localhost:10200/perf/trace-elements.html?evicted',
+      finalUrl: 'http://localhost:10200/perf/trace-elements.html?evicted',
       audits: {
         'largest-contentful-paint-element': {
           score: null,
+          scoreDisplayMode: /(notApplicable|informative)/,
           details: {
+            // LCP in m88 was changed to allow selection of removed nodes.
+            // When this happens we aren't able to identify the LCP element anymore.
+            // https://chromiumdash.appspot.com/commit/a5484e6310a38223fde757b6f094a673ce032cc0
+            _maxChromiumMilestone: 87,
             items: [
               {
                 node: {
