@@ -571,7 +571,7 @@ class TraceProcessor {
     // Ensure our traceEnd reflects all page activity.
     const traceEnd = this.computeTraceEnd(trace.traceEvents, timeOriginEvt);
 
-    /** @param {number=} ts */
+    /** @param {number|undefined} ts */
     const maybeGetTiming = (ts) => ts === undefined ? undefined : (ts - timeOriginEvt.ts) / 1000;
     // This could be much more concise with object spread, but the consensus is that explicitness is
     // preferred over brevity here.
