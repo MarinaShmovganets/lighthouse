@@ -12,6 +12,8 @@ const Gatherer = require('./gatherer.js');
 const FULL_PAGE_SCREENSHOT_QUALITY = 30;
 // Maximum screenshot height in Chrome https://bugs.chromium.org/p/chromium/issues/detail?id=770769
 const MAX_SCREENSHOT_HEIGHT = 16384;
+// Maximum data URL size in Chrome https://bugs.chromium.org/p/chromium/issues/detail?id=69227
+const MAX_DATA_URL_SIZE = 2 * 1024 * 1024 - 1;
 
 /**
  * @param {string} str
@@ -23,9 +25,10 @@ function snakeCaseToCamelCase(str) {
 class FullPageScreenshot extends Gatherer {
   /**
    * @param {LH.Gatherer.PassContext} passContext
+   * @param {number} maxScreenshotHeight
    * @return {Promise<LH.Artifacts.FullPageScreenshot>}
    */
-  async _takeScreenshot(passContext) {
+  async _takeScreenshot(passContext, maxScreenshotHeight) {
     const driver = passContext.driver;
     const metrics = await driver.sendCommand('Page.getLayoutMetrics');
 
@@ -35,8 +38,8 @@ class FullPageScreenshot extends Gatherer {
     // Note: If the page is zoomed, many assumptions fail.
     //
     // Height should be as tall as the content. So we use contentSize.height
-    const width = Math.min(metrics.layoutViewport.clientWidth, MAX_SCREENSHOT_HEIGHT);
-    const height = Math.min(metrics.contentSize.height, MAX_SCREENSHOT_HEIGHT);
+    const width = Math.min(metrics.layoutViewport.clientWidth, maxScreenshotHeight);
+    const height = Math.min(metrics.contentSize.height, maxScreenshotHeight);
 
     await driver.sendCommand('Emulation.setDeviceMetricsOverride', {
       mobile: passContext.baseArtifacts.TestedAsMobileDevice,
@@ -66,6 +69,28 @@ class FullPageScreenshot extends Gatherer {
 
   /**
    * @param {LH.Gatherer.PassContext} passContext
+   * @return {Promise<LH.Artifacts.FullPageScreenshot | null>}
+   */
+  async afterPass_(passContext) {
+    let screenshot = await this._takeScreenshot(passContext, MAX_SCREENSHOT_HEIGHT);
+
+    if (screenshot.data.length > MAX_DATA_URL_SIZE) {
+      // Hitting the data URL size limit is rare, it only happens for pages on tall
+      // desktop sites with lots of images.
+      // So just cutting down the height a bit usually fixes the issue.
+      screenshot = await this._takeScreenshot(passContext, 5000);
+      if (screenshot.data.length > MAX_DATA_URL_SIZE) {
+        passContext.LighthouseRunWarnings.push(
+          'Full page screenshot is too big–report won\'t show element screenshots.');
+        return null;
+      }
+    }
+
+    return screenshot;
+  }
+
+  /**
+   * @param {LH.Gatherer.PassContext} passContext
    * @return {Promise<LH.Artifacts['FullPageScreenshot']>}
    */
   async afterPass(passContext) {
@@ -77,8 +102,7 @@ class FullPageScreenshot extends Gatherer {
       !passContext.settings.internalDisableDeviceScreenEmulation;
 
     try {
-      const screenshot = await this._takeScreenshot(passContext);
-      return screenshot;
+      return await this.afterPass_(passContext);
     } finally {
       // Revert resized page.
       if (lighthouseControlsEmulation) {
