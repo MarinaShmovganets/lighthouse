@@ -17,6 +17,9 @@ const lcpDevtoolsLog = require('../fixtures/traces/lcp-m78.devtools.log.json');
 const lcpAllFramesTrace = require('../fixtures/traces/lcp-all-frames-m89.json');
 const lcpAllFramesDevtoolsLog = require('../fixtures/traces/lcp-all-frames-m89.devtools.log.json');
 
+const clsAllFramesTrace = require('../fixtures/traces/frame-metrics-m89.json');
+const clsAllFramesDevtoolsLog = require('../fixtures/traces/frame-metrics-m89.devtools.log.json');
+
 const artifactsTrace = require('../results/artifacts/defaultPass.trace.json');
 const artifactsDevtoolsLog = require('../results/artifacts/defaultPass.devtoolslog.json');
 
@@ -97,6 +100,30 @@ describe('Performance: metrics', () => {
     const {details} = await MetricsAudit.audit(artifacts, context);
     expect(details.items[0].cumulativeLayoutShift).toMatchInlineSnapshot(`0.42`);
     expect(details.items[0].observedCumulativeLayoutShift).toMatchInlineSnapshot(`0.42`);
+  });
+
+  it('evaluates valid input (with CLS from all frames) correctly', async () => {
+    const artifacts = {
+      traces: {
+        [MetricsAudit.DEFAULT_PASS]: clsAllFramesTrace,
+      },
+      devtoolsLogs: {
+        [MetricsAudit.DEFAULT_PASS]: clsAllFramesDevtoolsLog,
+      },
+    };
+
+    const context = {settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
+    const {details} = await MetricsAudit.audit(artifacts, context);
+    expect(details.items[0].cumulativeLayoutShift).toMatchInlineSnapshot(`0.0011656245471340055`);
+    expect(details.items[0].observedCumulativeLayoutShift).toMatchInlineSnapshot(
+      `0.0011656245471340055`
+    );
+    expect(details.items[0].cumulativeLayoutShiftAllFrames).toMatchInlineSnapshot(
+      `0.11460607666664936`
+    );
+    expect(details.items[0].observedCumulativeLayoutShiftAllFrames).toMatchInlineSnapshot(
+      `0.11460607666664936`
+    );
   });
 
   it('does not fail the entire audit when TTI errors', async () => {
