@@ -16,7 +16,7 @@ describe('Metrics: CLS All Frames', () => {
   it('should compute value', async () => {
     const context = {computedCache: new Map()};
     const result = await CumulativeLayoutShiftAllFrames.request(trace, context);
-    expect(result.value).toBeCloseTo(0.11);
+    expect(result.value).toBeCloseTo(0.54);
   });
 
   it('should fail to compute a value for old trace', async () => {
