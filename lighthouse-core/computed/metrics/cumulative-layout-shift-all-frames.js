@@ -14,9 +14,15 @@ class CumulativeLayoutShiftAllFrames {
    */
   static async compute_(trace) {
     const cumulativeShift = trace.traceEvents
-      .filter(e => e.name === 'LayoutShift' && e.args && e.args.data && e.args.data.score)
+      .filter(e =>
+        e.name === 'LayoutShift' &&
+        e.args &&
+        e.args.data &&
+        e.args.data.score &&
+        !e.args.data.had_recent_input
+      )
       .map(e => {
-        // @ts-ignore Events without score are filtered out.
+        // @ts-expect-error Events without score are filtered out.
         return /** @type {number} */ (e.args.data.score);
       })
       .reduce((sum, score) => sum + score, 0);

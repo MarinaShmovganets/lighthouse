@@ -59,8 +59,7 @@ class TimingSummary {
     const cumulativeLayoutShiftValue = cumulativeLayoutShift &&
       cumulativeLayoutShift.value !== null ?
       cumulativeLayoutShift.value : undefined;
-    const cumulativeLayoutShiftAllFramesValue = cumulativeLayoutShiftAllFrames &&
-      cumulativeLayoutShiftAllFrames.value !== null ?
+    const cumulativeLayoutShiftAllFramesValue = cumulativeLayoutShiftAllFrames ?
       cumulativeLayoutShiftAllFrames.value : undefined;
 
     /** @type {LH.Artifacts.TimingSummary} */
