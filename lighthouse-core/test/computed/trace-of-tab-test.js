@@ -76,7 +76,6 @@ describe('TraceOfTabComputed', () => {
       },
       fmpFellBack: false,
       lcpInvalidated: false,
-      lcpAllFramesInvalidated: false,
       loadEvt: {
         args: {
           frame: '0x25a638821e30',

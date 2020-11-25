@@ -1469,8 +1469,7 @@
             "observedSpeedIndexTs": 185607736763
           },
           {
-            "lcpInvalidated": false,
-            "lcpAllFramesInvalidated": false
+            "lcpInvalidated": false
           }
         ]
       }

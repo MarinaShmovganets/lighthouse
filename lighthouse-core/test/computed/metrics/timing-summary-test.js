@@ -73,6 +73,6 @@ describe('Timing summary', () => {
     // Includs visual metrics from Speedline
     expect(result.metrics.observedFirstVisualChange).toBeDefined();
 
-    expect(result.debugInfo).toEqual({lcpInvalidated: false, lcpAllFramesInvalidated: false});
+    expect(result.debugInfo).toEqual({lcpInvalidated: false});
   });
 });

@@ -485,7 +485,6 @@ Object {
         assert.equal(trace.timestamps.largestContentfulPaint, 1400);
         assert.equal(trace.timestamps.largestContentfulPaintAllFrames, 1500);
         assert.ok(!trace.lcpInvalidated);
-        assert.ok(!trace.lcpAllFramesInvalidated);
       });
 
       it('invalidates even if main frame LCP is available', () => {
@@ -506,7 +505,6 @@ Object {
         assert.equal(trace.timestamps.largestContentfulPaint, 1400);
         assert.equal(trace.timestamps.largestContentfulPaintAllFrames, undefined);
         assert.ok(!trace.lcpInvalidated);
-        assert.ok(trace.lcpAllFramesInvalidated);
       });
     });
 
