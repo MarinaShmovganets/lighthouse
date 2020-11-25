@@ -95,8 +95,6 @@ class FullPageScreenshot extends Gatherer {
           return {
             width: document.documentElement.clientWidth,
             height: document.documentElement.clientHeight,
-            screenWidth: window.screen.width,
-            screenHeight: window.screen.height,
             screenOrientation: {
               type: window.screen.orientation.type,
               angle: window.screen.orientation.angle,
