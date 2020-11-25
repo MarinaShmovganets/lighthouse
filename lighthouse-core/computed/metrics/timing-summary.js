@@ -115,10 +115,7 @@ class TimingSummary {
       observedSpeedIndexTs: (speedline.speedIndex + speedline.beginning) * 1000,
     };
     /** @type {Record<string,boolean>} */
-    const debugInfo = {
-      lcpInvalidated: traceOfTab.lcpInvalidated,
-      lcpAllFramesInvalidated: traceOfTab.lcpAllFramesInvalidated,
-    };
+    const debugInfo = {lcpInvalidated: traceOfTab.lcpInvalidated};
 
     return {metrics, debugInfo};
   }

@@ -546,14 +546,12 @@ class TraceProcessor {
     const frameTimings = this.computeKeyTimingsForFrame(frameEvents, {timeOriginEvt});
 
     // Compute LCP for all frames.
-    const lcpAllFramesResult = this.computeValidLCP({
+    const lcpAllFramesEvt = this.computeValidLCP({
       candidateEventName: 'NavStartToLargestContentfulPaint::Candidate::AllFrames::UKM',
       invalidateEventName: 'NavStartToLargestContentfulPaint::Invalidate::AllFrames::UKM',
       events: keyEvents,
       timeOriginEvt,
-    });
-    const lcpAllFrames = lcpAllFramesResult.lcp;
-    const lcpAllFramesInvalidated = lcpAllFramesResult.invalidated;
+    }).lcp;
 
     // Subset all trace events to just our tab's process (incl threads other than main)
     // stable-sort events to keep them correctly nested.
@@ -588,7 +586,7 @@ class TraceProcessor {
         firstContentfulPaint: frameTimings.timings.firstContentfulPaint,
         firstMeaningfulPaint: frameTimings.timings.firstMeaningfulPaint,
         largestContentfulPaint: frameTimings.timings.largestContentfulPaint,
-        largestContentfulPaintAllFrames: maybeGetTiming(lcpAllFrames && lcpAllFrames.ts),
+        largestContentfulPaintAllFrames: maybeGetTiming(lcpAllFramesEvt && lcpAllFramesEvt.ts),
         traceEnd: traceEnd.timing,
         load: frameTimings.timings.load,
         domContentLoaded: frameTimings.timings.domContentLoaded,
@@ -599,7 +597,7 @@ class TraceProcessor {
         firstContentfulPaint: frameTimings.timestamps.firstContentfulPaint,
         firstMeaningfulPaint: frameTimings.timestamps.firstMeaningfulPaint,
         largestContentfulPaint: frameTimings.timestamps.largestContentfulPaint,
-        largestContentfulPaintAllFrames: lcpAllFrames && lcpAllFrames.ts,
+        largestContentfulPaintAllFrames: lcpAllFramesEvt && lcpAllFramesEvt.ts,
         traceEnd: traceEnd.timestamp,
         load: frameTimings.timestamps.load,
         domContentLoaded: frameTimings.timestamps.domContentLoaded,
@@ -609,12 +607,11 @@ class TraceProcessor {
       firstContentfulPaintEvt: frameTimings.firstContentfulPaintEvt,
       firstMeaningfulPaintEvt: frameTimings.firstMeaningfulPaintEvt,
       largestContentfulPaintEvt: frameTimings.largestContentfulPaintEvt,
-      largestContentfulPaintAllFramesEvt: lcpAllFrames,
+      largestContentfulPaintAllFramesEvt: lcpAllFramesEvt,
       loadEvt: frameTimings.loadEvt,
       domContentLoadedEvt: frameTimings.domContentLoadedEvt,
       fmpFellBack: frameTimings.fmpFellBack,
       lcpInvalidated: frameTimings.lcpInvalidated,
-      lcpAllFramesInvalidated: lcpAllFramesInvalidated,
     };
   }
 

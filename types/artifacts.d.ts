@@ -639,8 +639,6 @@ declare global {
         fmpFellBack: boolean;
         /** Whether LCP was invalidated without a new candidate. */
         lcpInvalidated: boolean;
-        /** Whether LCP from all frames was invalidated without a new candidate. */
-        lcpAllFramesInvalidated: boolean;
       }
 
       /** Information on a tech stack (e.g. a JS library) used by the page. */
