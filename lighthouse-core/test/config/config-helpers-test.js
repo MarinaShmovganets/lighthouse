@@ -23,11 +23,14 @@ describe('resolveModule', () => {
   });
 
   describe('plugin paths to a file', () => {
-    const configFixturePath = path.resolve(__dirname, '../fixtures/config-helpers');
+    const configFixturePath = path.resolve(__dirname, '../fixtures/config');
+
+    beforeEach(() => {
+      process.cwd = jest.fn(() => configFixturePath);
+    });
 
     it('relative to the current working directory', () => {
       const pluginName = 'lighthouse-plugin-config-helper';
-      process.cwd = jest.fn(() => configFixturePath);
       const pathToPlugin = resolveModule(pluginName, null, 'plugin');
       assert.equal(pathToPlugin, require.resolve(path.resolve(configFixturePath, pluginName)));
     });
@@ -39,16 +42,16 @@ describe('resolveModule', () => {
     });
   });
 
-  describe('globally lighthouse and plugins are installed by npm', () => {
-    const pluginsDirectory = path.resolve(__dirname, '../fixtures/config-helpers/');
+  describe('lighthouse and plugins are installed by npm', () => {
+    const pluginsDirectory = path.resolve(__dirname, '../fixtures/config/');
 
     // working directory/
     //   |-- node_modules/
     //   |-- package.json
     it('in current working directory', () => {
       const pluginName = 'plugin-in-working-directory';
-      const pluginDir = path.join(pluginsDirectory, 'node_modules', 'plugin-in-working-directory');
-      process.cwd = jest.fn(() => pluginDir);
+      const pluginDir = `${pluginsDirectory}/node_modules/plugin-in-working-directory`;
+      process.cwd = jest.fn(() => pluginsDirectory);
 
       const pathToPlugin = resolveModule(pluginName, null, 'plugin');
 
@@ -62,9 +65,8 @@ describe('resolveModule', () => {
     //     |-- package.json
     it('relative to the config path', () => {
       const pluginName = 'plugin-in-config-directory';
-      const pluginDir = path.join(pluginsDirectory, 'config', 'node_modules', 'plugin-in-config-directory');
+      const configDirectory = `${pluginsDirectory}/config`;
       process.cwd = jest.fn(() => '/usr/bin/node');
-      const configDirectory = path.resolve(pluginDir, '../../');
 
       const pathToPlugin = resolveModule(pluginName, configDirectory, 'plugin');
 
