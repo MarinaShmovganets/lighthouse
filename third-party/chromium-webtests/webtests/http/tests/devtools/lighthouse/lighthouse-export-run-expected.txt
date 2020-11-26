@@ -1,6 +1,7 @@
 Tests that exporting works.
 
 ++++++++ testExportHtml
+<<<<<<< HEAD
 TEST ENDED IN ERROR: TypeError: Cannot read property 'get' of undefined
     at Object.get REPORT_JAVASCRIPT [as REPORT_JAVASCRIPT] (http://localhost:8000/inspector-sources/third_party/lighthouse/report-assets/report-generator.js:29:28)
     at Function.generateReportHtml (http://localhost:8000/inspector-sources/third_party/lighthouse/report-assets/report-generator.js:79:50)
@@ -8,4 +9,14 @@ TEST ENDED IN ERROR: TypeError: Cannot read property 'get' of undefined
     at LighthouseReportUIFeatures.onDropDownMenuClick (http://localhost:8000/inspector-sources/third_party/lighthouse/report-assets/report.js:3116:30)
     at testExportHtml (http://127.0.0.1:8000/devtools/lighthouse/lighthouse-export-run.js:27:58)
     at http://127.0.0.1:8000/devtools/lighthouse/lighthouse-export-run.js:51:9
+=======
+
+# of .lh-audit divs (original): 137
+
+# of .lh-audit divs (exported html): 137
+
+++++++++ testExportJson
+
+# of audits (json): 153
+>>>>>>> master
 
