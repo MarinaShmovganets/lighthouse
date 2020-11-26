@@ -11,6 +11,5 @@ Tests that Lighthouse panel displays a warning when important data may affect pe
 [x] Clear storage
 [x] Simulated throttling
 Generate report: enabled visible
-PROMISE FAILURE: TypeError: Lighthouse.LighthousePanel.getEvents is not a function
-    at http://127.0.0.1:8000/devtools/lighthouse/lighthouse-clear-data-warning.js:26:45
+Warning Text: There may be stored data affecting loading performance in these locations: Web SQL, IndexedDB. Audit this page in an incognito window to prevent those resources from affecting your scores.
 
