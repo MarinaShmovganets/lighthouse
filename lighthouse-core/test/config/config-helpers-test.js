@@ -16,6 +16,12 @@ jest.mock('process', () => ({
 }));
 
 describe('resolveModule', () => {
+  const configFixturePath = path.resolve(__dirname, '../fixtures/config');
+
+  beforeEach(() => {
+    process.cwd = jest.fn(() => configFixturePath);
+  });
+
   it('lighthouse and plugins are installed in the same path', () => {
     const pluginName = 'chrome-launcher';
     const pathToPlugin = resolveModule(pluginName, null, 'plugin');
@@ -23,12 +29,6 @@ describe('resolveModule', () => {
   });
 
   describe('plugin paths to a file', () => {
-    const configFixturePath = path.resolve(__dirname, '../fixtures/config');
-
-    beforeEach(() => {
-      process.cwd = jest.fn(() => configFixturePath);
-    });
-
     it('relative to the current working directory', () => {
       const pluginName = 'lighthouse-plugin-config-helper';
       const pathToPlugin = resolveModule(pluginName, null, 'plugin');
