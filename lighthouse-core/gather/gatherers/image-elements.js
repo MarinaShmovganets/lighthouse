@@ -332,13 +332,6 @@ class ImageElements extends Gatherer {
       // Pull some of our information directly off the network record.
       const networkRecord = indexedNetworkRecords[element.src] || {};
       element.mimeType = networkRecord.mimeType;
-      // Resource size is almost always the right one to be using because of the below:
-      //     transferSize = resourceSize + headers.length
-      // HOWEVER, there are some cases where an image is compressed again over the network and transfer size
-      // is smaller (see https://github.com/GoogleChrome/lighthouse/pull/4968).
-      // Use the min of the two numbers to be safe.
-      const {resourceSize = 0, transferSize = 0} = networkRecord;
-      element.resourceSize = Math.min(resourceSize, transferSize);
 
       if (!element.isInShadowDOM && !element.isCss) {
         await this.fetchSourceRules(driver, element.devtoolsNodePath, element);

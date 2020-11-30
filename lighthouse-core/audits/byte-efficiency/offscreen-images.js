@@ -80,7 +80,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
   static computeWaste(image, viewportDimensions, networkRecords) {
     const networkRecord = networkRecords.find(record => record.url === image.src);
     // If we don't know how big it was, we can't really report savings, treat it as passed.
-    if (!image.resourceSize || !networkRecord) return null;
+    if (!networkRecord) return null;
     // If the image had its loading behavior explicitly controlled already, treat it as passed.
     if (image.loading === 'lazy' || image.loading === 'eager') return null;
 
@@ -89,7 +89,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
     const visiblePixels = this.computeVisiblePixels(image.clientRect, viewportDimensions);
     // Treat images with 0 area as if they're offscreen. See https://github.com/GoogleChrome/lighthouse/issues/1914
     const wastedRatio = totalPixels === 0 ? 1 : 1 - visiblePixels / totalPixels;
-    const totalBytes = image.resourceSize;
+    const totalBytes = networkRecord.resourceSize;
     const wastedBytes = Math.round(totalBytes * wastedRatio);
 
     if (!Number.isFinite(wastedRatio)) {
