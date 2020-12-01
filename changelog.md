@@ -16,8 +16,8 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ## New Audits
 
-* preload-lcp-image ([#11486](https://github.com/GoogleChrome/lighthouse/pull/11486))
-* issues logged in the Issues panel in DevTools ([#11409](https://github.com/GoogleChrome/lighthouse/pull/11409), [#11710](https://github.com/GoogleChrome/lighthouse/pull/11710))
+* preload an image if it is the LCP element ([#11486](https://github.com/GoogleChrome/lighthouse/pull/11486))
+* issues logged in the Devtools Issues panel ([#11409](https://github.com/GoogleChrome/lighthouse/pull/11409), [#11710](https://github.com/GoogleChrome/lighthouse/pull/11710))
 
 ## Core
 
