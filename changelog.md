@@ -1,5 +1,5 @@
 <a name="6.5.0"></a>
-# 6.5.0 (2020-12-01)
+# 6.5.0 (2020-11-30)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v6.4.1...v6.5.0)
 
 We expect this release to ship in the DevTools of [Chrome 89](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
