@@ -77,7 +77,6 @@ function getHTMLImages(allElements) {
       isCss: false,
       isPicture,
       loading: element.loading,
-      resourceSize: 0, // this will get overwritten below
       usesObjectFit: ['cover', 'contain', 'scale-down', 'none'].includes(
         computedStyle.getPropertyValue('object-fit')
       ),
@@ -137,7 +136,6 @@ function getCSSImages(allElements) {
         style.getPropertyValue('image-rendering')
       ),
       usesSrcSetDensityDescriptor: false,
-      resourceSize: 0, // this will get overwritten below
       // @ts-expect-error - getNodeDetails put into scope via stringification
       ...getNodeDetails(element),
     });
