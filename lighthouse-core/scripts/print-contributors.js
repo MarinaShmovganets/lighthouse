@@ -19,23 +19,25 @@ const startingHash = process.argv[2];
 const endingHash = process.argv[3];
 
 async function main() {
+  // '!!' is used as a delimeter because it is unlikey that will show in a name,
+  // and because two special characters in a row is invalid in email addresses.
   const previousAuthors = execFileSync('git', [
     '--no-pager',
     'log',
-    '--format=%ae %aN',
+    '--format=%ae!!%aN',
     `v2.3.0..${startingHash}`,
   ], {encoding: 'utf8'}).trim().split('\n').map(line => {
-    const [email, name] = line.split(' ');
+    const [email, name] = line.split('!!');
     return {email, name};
   });
 
   const commits = execFileSync('git', [
     '--no-pager',
     'log',
-    '--format=%h %ae %aN',
+    '--format=%h!!%ae!!%aN',
     `${startingHash}..${endingHash}`,
   ], {encoding: 'utf8'}).trim().split('\n').map(line => {
-    const [hash, email, name] = line.split(' ');
+    const [hash, email, name] = line.split('!!');
     return {hash, email, name};
   });
 
