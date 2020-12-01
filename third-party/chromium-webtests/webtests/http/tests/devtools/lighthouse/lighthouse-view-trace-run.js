@@ -33,8 +33,7 @@
   });
   const viewTraceButton = LighthouseTestRunner.getResultsElement().querySelector('.view-trace');
   TestRunner.addResult(`\nView Trace Button Text: "${viewTraceButton.textContent}"`);
-  const tooltip = UI.Tooltip.getContent(viewTraceButton);
-  TestRunner.addResult(`View Trace Button Title: "${tooltip}"`);
+  TestRunner.addResult(`View Trace Button Title: "${UI.Tooltip.getContent(viewTraceButton)}"`);
   viewTraceButton.click();
   const viewShown = await waitForShowView;
   TestRunner.addResult(`\nShowing view: ${viewShown}`);
