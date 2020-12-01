@@ -120,6 +120,8 @@ class Driver {
     this.fetcher = new Fetcher(this);
 
     this._executionContext = new ExecutionContext(this);
+    // Compat with new FR paradigm of session-aware protocol interaction.
+    this.defaultSession = this;
   }
 
   static get traceCategories() {
