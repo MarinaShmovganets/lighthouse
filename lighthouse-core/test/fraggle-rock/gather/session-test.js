@@ -9,7 +9,7 @@ const ProtocolSession = require('../../../fraggle-rock/gather/session.js');
 
 /* eslint-env jest */
 
-describe('.sendCommand', () => {
+describe('ProtocolSession', () => {
   /** @type {import('puppeteer').CDPSession} */
   let puppeteerSession;
   /** @type {ProtocolSession} */
@@ -21,11 +21,27 @@ describe('.sendCommand', () => {
     session = new ProtocolSession(puppeteerSession);
   });
 
-  it('delegates to puppeteer', async () => {
-    const send = puppeteerSession.send = jest.fn().mockResolvedValue(123);
+  /** @type {Array<'on'|'off'|'once'>} */
+  const delegateMethods = ['on', 'once', 'off'];
+  for (const method of delegateMethods) {
+    describe(`.${method}`, () => {
+      it('delegates to puppeteer', async () => {
+        const puppeteerFn = puppeteerSession[method] = jest.fn();
+        const callback = () => undefined;
 
-    const result = await session.sendCommand('Page.navigate', {url: 'foo'});
-    expect(result).toEqual(123);
-    expect(send).toHaveBeenCalledWith('Page.navigate', {url: 'foo'});
+        session[method]('Page.frameNavigated', callback);
+        expect(puppeteerFn).toHaveBeenCalledWith('Page.frameNavigated', callback);
+      });
+    });
+  }
+
+  describe('.sendCommand', () => {
+    it('delegates to puppeteer', async () => {
+      const send = puppeteerSession.send = jest.fn().mockResolvedValue(123);
+
+      const result = await session.sendCommand('Page.navigate', {url: 'foo'});
+      expect(result).toEqual(123);
+      expect(send).toHaveBeenCalledWith('Page.navigate', {url: 'foo'});
+    });
   });
 });

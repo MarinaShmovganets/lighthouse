@@ -8,29 +8,19 @@
 const ProtocolSession = require('./session.js');
 const ExecutionContext = require('../../gather/driver/execution-context.js');
 
+const throwNotConnectedFn = () => {
+  throw new Error('Session not connected');
+};
+
 /** @type {LH.Gatherer.FRProtocolSession} */
 const defaultSession = {
-  hasNextProtocolTimeout: () => {
-    throw new Error('Session not connected');
-  },
-  getNextProtocolTimeout: () => {
-    throw new Error('Session not connected');
-  },
-  setNextProtocolTimeout: () => {
-    throw new Error('Session not connected');
-  },
-  on: () => {
-    throw new Error('Session not connected');
-  },
-  once: () => {
-    throw new Error('Session not connected');
-  },
-  off: () => {
-    throw new Error('Session not connected');
-  },
-  sendCommand: () => {
-    throw new Error('Session not connected');
-  },
+  hasNextProtocolTimeout: throwNotConnectedFn,
+  getNextProtocolTimeout: throwNotConnectedFn,
+  setNextProtocolTimeout: throwNotConnectedFn,
+  on: throwNotConnectedFn,
+  once: throwNotConnectedFn,
+  off: throwNotConnectedFn,
+  sendCommand: throwNotConnectedFn,
 };
 
 /** @implements {LH.Gatherer.FRTransitionalDriver} */

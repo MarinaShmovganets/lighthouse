@@ -42,9 +42,7 @@ class ProtocolSession {
    * @param {(...args: LH.CrdpEvents[E]) => void} callback
    */
   on(eventName, callback) {
-    /** @type {*} */
-    const callbackAsAny = callback;
-    this._session.on(eventName, callbackAsAny);
+    this._session.on(eventName, /** @type {*} */ (callback));
   }
 
   /**
@@ -54,9 +52,7 @@ class ProtocolSession {
    * @param {(...args: LH.CrdpEvents[E]) => void} callback
    */
   once(eventName, callback) {
-    /** @type {*} */
-    const callbackAsAny = callback;
-    this._session.once(eventName, callbackAsAny);
+    this._session.once(eventName, /** @type {*} */ (callback));
   }
 
   /**
@@ -66,9 +62,7 @@ class ProtocolSession {
    * @param {(...args: LH.CrdpEvents[E]) => void} callback
    */
   off(eventName, callback) {
-    /** @type {*} */
-    const callbackAsAny = callback;
-    this._session.off(eventName, callbackAsAny);
+    this._session.off(eventName, /** @type {*} */ (callback));
   }
 
   /**

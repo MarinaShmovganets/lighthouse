@@ -38,9 +38,7 @@ beforeEach(() => {
   driver = new Driver(page);
 });
 
-for (const fnName_ of DELEGATED_FUNCTIONS) {
-  const fnName = /** @type {keyof LH.Gatherer.FRProtocolSession} */ (fnName_);
-
+for (const fnName of DELEGATED_FUNCTIONS) {
   describe(fnName, () => {
     it('should fail if called before connect', () => {
       expect(driver.defaultSession[fnName]).toThrow(/not connected/);
