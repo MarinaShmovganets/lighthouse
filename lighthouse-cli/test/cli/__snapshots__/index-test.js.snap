@@ -178,6 +178,9 @@ Object {
       "path": "valid-source-maps",
     },
     Object {
+      "path": "preload-lcp-image",
+    },
+    Object {
       "path": "manual/pwa-cross-browser",
     },
     Object {
@@ -401,6 +404,9 @@ Object {
     },
     Object {
       "path": "dobetterweb/geolocation-on-start",
+    },
+    Object {
+      "path": "dobetterweb/inspector-issues",
     },
     Object {
       "path": "dobetterweb/no-document-write",
@@ -800,6 +806,11 @@ Object {
           "id": "valid-source-maps",
           "weight": 0,
         },
+        Object {
+          "group": "best-practices-general",
+          "id": "inspector-issues",
+          "weight": 1,
+        },
       ],
       "title": "Best Practices",
     },
@@ -939,6 +950,11 @@ Object {
         Object {
           "group": "load-opportunities",
           "id": "legacy-javascript",
+          "weight": 0,
+        },
+        Object {
+          "group": "load-opportunities",
+          "id": "preload-lcp-image",
           "weight": 0,
         },
         Object {
