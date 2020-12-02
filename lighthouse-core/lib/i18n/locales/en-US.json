@@ -1350,7 +1350,7 @@
     "message": "Product"
   },
   "lighthouse-core/audits/third-party-facades.js | description": {
-    "message": "Some third-party embeds can be lazy loaded. Consider replacing them with a facade until they are required. [Learn more](https://web.dev/efficiently-load-third-party-javascript/)."
+    "message": "Some third-party embeds can be lazy loaded. Consider replacing them with a facade until they are required. [Learn more](https://web.dev/third-party-facades/)."
   },
   "lighthouse-core/audits/third-party-facades.js | displayValue": {
     "message": "{itemCount, plural,\n  =1 {# facade alternative available}\n  other {# facade alternatives available}\n  }"
