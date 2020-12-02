@@ -41,11 +41,10 @@ class LayoutShiftElements extends Audit {
     const clsElements = artifacts.TraceElements
       .filter(element => element.traceEventType === 'layout-shift');
 
-    /** @type {Array<{node: LH.Audit.Details.NodeValue, score?: number}>} */
     const clsElementData = clsElements.map(element => {
       return {
         node: {
-          type: 'node',
+          type: /** @type {'node'} */ ('node'),
           lhId: element.lhId,
           path: element.devtoolsNodePath,
           selector: element.selector,
