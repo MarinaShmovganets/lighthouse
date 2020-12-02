@@ -73,7 +73,7 @@ class Simulator {
 
     // Properties reset on every `.simulate` call but duplicated here for type checking
     this._flexibleOrdering = false;
-    /** @type {Map<Node, NodeTimingIntermediate>} */
+    /** @type {Map<Node, NodeTimingData>} */
     this._nodeTimings = new Map();
     /** @type {Map<string, number>} */
     this._numberInProgressByType = new Map();
@@ -133,23 +133,155 @@ class Simulator {
 
   /**
    * @param {Node} node
-   * @param {NodeTimingIntermediate} values
+   * @param {{queuedTime: number}} values
    */
-  _setTimingData(node, values) {
-    const timingData = this._nodeTimings.get(node) || {};
-    Object.assign(timingData, values);
-    this._nodeTimings.set(node, timingData);
+  _setTimingDataReadyToStart(node, values) {
+    this._nodeTimings.set(node, values);
   }
 
   /**
    * @param {Node} node
-   * @return {Required<NodeTimingIntermediate>}
+   * @param {{startTime: number}} values
    */
-  _getTimingData(node) {
-    const timingData = this._nodeTimings.get(node);
-    if (!timingData) throw new Error(`Unable to get timing data for node ${node.id}`);
-    // @ts-expect-error - Allow consumers to assume all values are defined.
-    return timingData;
+  _setTimingDataInProgress(node, values) {
+    const nodeTiming = {
+      ...this._getTimingDataQueued(node),
+      startTime: values.startTime,
+      timeElapsed: 0,
+    };
+
+    this._nodeTimings.set(
+      node,
+      node.type === BaseNode.TYPES.NETWORK
+        ? {...nodeTiming, timeElapsedOvershoot: 0, bytesDownloaded: 0}
+        : nodeTiming
+    );
+  }
+
+  /**
+   * @param {Node} node
+   * @param {{endTime: number}} values
+   */
+  _setTimingDataCompleted(node, values) {
+    const nodeTiming = {
+      ...this._getTimingDataInProgress(node),
+      endTime: values.endTime,
+    };
+
+    this._nodeTimings.set(node, nodeTiming);
+  }
+
+  /**
+   * @param {CpuNode} node
+   * @param {{timeElapsed: number}} values
+   */
+  _setCpuTimingData(node, values) {
+    const nodeTiming = {
+      ...this._getCpuTimingDataStarted(node),
+      timeElapsed: values.timeElapsed,
+    };
+
+    this._nodeTimings.set(node, nodeTiming);
+  }
+
+  /**
+   * @param {CpuNode} node
+   * @param {{estimatedTimeElapsed: number}} values
+   */
+  _setCpuEstimatedTimingData(node, values) {
+    const nodeTiming = {
+      ...this._getCpuTimingDataStarted(node),
+      estimatedTimeElapsed: values.estimatedTimeElapsed,
+    };
+
+    this._nodeTimings.set(node, nodeTiming);
+  }
+
+  /**
+   * @param {NetworkNode} node
+   * @param {{timeElapsed: number, timeElapsedOvershoot: number, bytesDownloaded: number}} values
+   */
+  _setNetworkTimingData(node, values) {
+    const nodeTiming = {
+      ...this._getNetworkTimingDataStarted(node),
+      timeElapsed: values.timeElapsed,
+      timeElapsedOvershoot: values.timeElapsedOvershoot,
+      bytesDownloaded: values.bytesDownloaded,
+    };
+
+    this._nodeTimings.set(node, nodeTiming);
+  }
+
+  /**
+   * @param {NetworkNode} node
+   * @param {{estimatedTimeElapsed: number}} values
+   */
+  _setNetworkEstimatedTimingData(node, values) {
+    const nodeTiming = {
+      ...this._getNetworkTimingDataStarted(node),
+      estimatedTimeElapsed: values.estimatedTimeElapsed,
+    };
+
+    this._nodeTimings.set(node, nodeTiming);
+  }
+
+  /**
+   * @param {Node} node
+   * @return {NodeTimingQueued}
+   */
+  _getTimingDataQueued(node) {
+    const timing = this._nodeTimings.get(node);
+    if (!timing) throw new Error(`Node ${node.id} not yet queued`);
+    return timing;
+  }
+
+  /**
+   * @param {CpuNode} node
+   * @return {CpuNodeTimingStarted}
+   */
+  _getCpuTimingDataStarted(node) {
+    const timing = this._nodeTimings.get(node);
+    if (!timing) throw new Error(`Node ${node.id} not yet queued`);
+    if (!('startTime' in timing)) throw new Error(`Node ${node.id} not yet started`);
+    if ('bytesDownloaded' in timing) throw new Error(`Node ${node.id} timing not valid`);
+    return timing;
+  }
+
+  /**
+   * @param {NetworkNode} node
+   * @return {NetworkNodeTimingStarted}
+   */
+  _getNetworkTimingDataStarted(node) {
+    const timing = this._nodeTimings.get(node);
+    if (!timing) throw new Error(`Node ${node.id} not yet queued`);
+    if (!('startTime' in timing)) throw new Error(`Node ${node.id} not yet started`);
+    if (!('bytesDownloaded' in timing)) throw new Error(`Node ${node.id} timing not valid`);
+    return timing;
+  }
+
+  /**
+   * @param {Node} node
+   * @return {CpuNodeTimingInProgress | NetworkNodeTimingInProgress}
+   */
+  _getTimingDataInProgress(node) {
+    const timing = this._nodeTimings.get(node);
+    if (!timing) throw new Error(`Node ${node.id} not yet queued`);
+    if (!('startTime' in timing)) throw new Error(`Node ${node.id} not yet started`);
+    if (!('estimatedTimeElapsed' in timing)) throw new Error(`Node ${node.id} not yet in progress`);
+    return timing;
+  }
+
+  /**
+   * @param {Node} node
+   * @return {CpuNodeTimingComplete | NetworkNodeTimingComplete}
+   */
+  _getTimingDataCompleted(node) {
+    const timing = this._nodeTimings.get(node);
+    if (!timing) throw new Error(`Node ${node.id} not yet queued`);
+    if (!('startTime' in timing)) throw new Error(`Node ${node.id} not yet started`);
+    if (!('estimatedTimeElapsed' in timing)) throw new Error(`Node ${node.id} not yet in progress`);
+    if (!('endTime' in timing)) throw new Error(`Node ${node.id} not yet completed`);
+    return timing;
   }
 
   /**
@@ -166,7 +298,7 @@ class Simulator {
 
     this._nodes[NodeState.ReadyToStart].add(node);
     this._nodes[NodeState.NotReadyToStart].delete(node);
-    this._setTimingData(node, {queuedTime});
+    this._setTimingDataReadyToStart(node, {queuedTime});
   }
 
   /**
@@ -180,7 +312,7 @@ class Simulator {
     this._nodes[NodeState.InProgress].add(node);
     this._nodes[NodeState.ReadyToStart].delete(node);
     this._numberInProgressByType.set(node.type, this._numberInProgress(node.type) + 1);
-    this._setTimingData(node, {startTime});
+    this._setTimingDataInProgress(node, {startTime});
   }
 
   /**
@@ -191,7 +323,7 @@ class Simulator {
     this._nodes[NodeState.Complete].add(node);
     this._nodes[NodeState.InProgress].delete(node);
     this._numberInProgressByType.set(node.type, this._numberInProgress(node.type) - 1);
-    this._setTimingData(node, {endTime});
+    this._setTimingDataCompleted(node, {endTime});
 
     // Try to add all its dependents to the queue
     for (const dependent of node.getDependents()) {
@@ -231,7 +363,6 @@ class Simulator {
       // Start a CPU task if there's no other CPU task in process
       if (this._numberInProgress(node.type) === 0) {
         this._markNodeAsInProgress(node, totalElapsedTime);
-        this._setTimingData(node, {timeElapsed: 0});
       }
 
       return;
@@ -249,11 +380,6 @@ class Simulator {
     }
 
     this._markNodeAsInProgress(node, totalElapsedTime);
-    this._setTimingData(node, {
-      timeElapsed: 0,
-      timeElapsedOvershoot: 0,
-      bytesDownloaded: 0,
-    });
   }
 
   /**
@@ -286,7 +412,7 @@ class Simulator {
    * @return {number}
    */
   _estimateCPUTimeRemaining(cpuNode) {
-    const timingData = this._getTimingData(cpuNode);
+    const timingData = this._getCpuTimingDataStarted(cpuNode);
     const multiplier = cpuNode.didPerformLayout()
       ? this._layoutTaskMultiplier
       : this._cpuSlowdownMultiplier;
@@ -295,7 +421,7 @@ class Simulator {
       DEFAULT_MAXIMUM_CPU_TASK_DURATION
     );
     const estimatedTimeElapsed = totalDuration - timingData.timeElapsed;
-    this._setTimingData(cpuNode, {estimatedTimeElapsed});
+    this._setCpuEstimatedTimingData(cpuNode, {estimatedTimeElapsed});
     return estimatedTimeElapsed;
   }
 
@@ -305,7 +431,7 @@ class Simulator {
    */
   _estimateNetworkTimeRemaining(networkNode) {
     const record = networkNode.record;
-    const timingData = this._getTimingData(networkNode);
+    const timingData = this._getNetworkTimingDataStarted(networkNode);
 
     let timeElapsed = 0;
     if (networkNode.fromDiskCache) {
@@ -336,7 +462,7 @@ class Simulator {
     }
 
     const estimatedTimeElapsed = timeElapsed + timingData.timeElapsedOvershoot;
-    this._setTimingData(networkNode, {estimatedTimeElapsed});
+    this._setNetworkEstimatedTimingData(networkNode, {estimatedTimeElapsed});
     return estimatedTimeElapsed;
   }
 
@@ -360,7 +486,7 @@ class Simulator {
    * @param {number} totalElapsedTime
    */
   _updateProgressMadeInTimePeriod(node, timePeriodLength, totalElapsedTime) {
-    const timingData = this._getTimingData(node);
+    const timingData = this._getTimingDataInProgress(node);
     const isFinished = timingData.estimatedTimeElapsed === timePeriodLength;
 
     if (node.type === BaseNode.TYPES.CPU || node.isConnectionless) {
@@ -370,6 +496,7 @@ class Simulator {
     }
 
     if (node.type !== BaseNode.TYPES.NETWORK) throw new Error('Unsupported');
+    if (!('bytesDownloaded' in timingData)) throw new Error('Invalid timing data');
 
     const record = node.record;
     const connection = this._connectionPool.acquireActiveConnectionFromRecord(record);
@@ -407,7 +534,7 @@ class Simulator {
     /** @type {Array<[Node, LH.Gatherer.Simulation.NodeTiming]>} */
     const nodeTimingEntries = [];
     for (const node of this._nodeTimings.keys()) {
-      const timing = this._getTimingData(node);
+      const timing = this._getTimingDataCompleted(node);
       nodeTimingEntries.push([node, {
         startTime: timing.startTime,
         endTime: timing.endTime,
@@ -531,12 +658,25 @@ class Simulator {
 module.exports = Simulator;
 
 /**
- * @typedef NodeTimingIntermediate
- * @property {number} [startTime]
- * @property {number} [endTime]
- * @property {number} [queuedTime] Helpful for debugging.
- * @property {number} [estimatedTimeElapsed]
- * @property {number} [timeElapsed]
- * @property {number} [timeElapsedOvershoot]
- * @property {number} [bytesDownloaded]
+ * @typedef NodeTimingComplete
+ * @property {number} startTime
+ * @property {number} endTime
+ * @property {number} queuedTime Helpful for debugging.
+ * @property {number} estimatedTimeElapsed
+ * @property {number} timeElapsed
+ * @property {number} timeElapsedOvershoot
+ * @property {number} bytesDownloaded
  */
+
+/** @typedef {Pick<NodeTimingComplete, 'queuedTime'>} NodeTimingQueued */
+
+/** @typedef {NodeTimingQueued & Pick<NodeTimingComplete, 'startTime'|'timeElapsed'>} CpuNodeTimingStarted */
+/** @typedef {CpuNodeTimingStarted & Pick<NodeTimingComplete, 'timeElapsedOvershoot'|'bytesDownloaded'>} NetworkNodeTimingStarted */
+
+/** @typedef {CpuNodeTimingStarted & Pick<NodeTimingComplete, 'estimatedTimeElapsed'>} CpuNodeTimingInProgress */
+/** @typedef {NetworkNodeTimingStarted & Pick<NodeTimingComplete, 'estimatedTimeElapsed'>} NetworkNodeTimingInProgress */
+
+/** @typedef {CpuNodeTimingInProgress & Pick<NodeTimingComplete, 'endTime'>} CpuNodeTimingComplete */
+/** @typedef {NetworkNodeTimingInProgress & Pick<NodeTimingComplete, 'endTime'>} NetworkNodeTimingComplete */
+
+/** @typedef {NodeTimingQueued | CpuNodeTimingStarted | NetworkNodeTimingStarted | CpuNodeTimingInProgress | NetworkNodeTimingInProgress | CpuNodeTimingComplete | NetworkNodeTimingComplete} NodeTimingData */
