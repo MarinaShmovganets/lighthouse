@@ -9,6 +9,7 @@ const Driver = require('../../../fraggle-rock/gather/driver.js');
 
 /* eslint-env jest */
 
+/** @type {Array<keyof LH.Gatherer.FRProtocolSession>} */
 const DELEGATED_FUNCTIONS = [
   'hasNextProtocolTimeout',
   'getNextProtocolTimeout',
