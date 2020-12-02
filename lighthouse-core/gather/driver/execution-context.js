@@ -83,9 +83,9 @@ class ExecutionContext {
       // 3. Ensure that errors captured in the Promise are converted into plain-old JS Objects
       //    so that they can be serialized properly b/c JSON.stringify(new Error('foo')) === '{}'
       expression: `(function wrapInNativePromise() {
-        const __nativePromise = window.__nativePromise || Promise;
-        const URL = window.__nativeURL || window.URL;
-        window.__lighthouseExecutionContextId = ${contextId};
+        const __nativePromise = globalThis.__nativePromise || Promise;
+        const URL = globalThis.__nativeURL || globalThis.URL;
+        globalThis.__lighthouseExecutionContextId = ${contextId};
         return new __nativePromise(function (resolve) {
           return __nativePromise.resolve()
             .then(_ => ${expression})
