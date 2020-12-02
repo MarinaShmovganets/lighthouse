@@ -798,7 +798,7 @@ class Config {
         }
       });
 
-      // De-dupe gatherers by artifact name.
+      // De-dupe gatherers by artifact name because artifact IDs must be unique at runtime.
       const mergedDefns = Array.from(
         new Map(gathererDefns.map(defn => [defn.instance.name, defn])).values()
       );

@@ -66,6 +66,7 @@ describe('Config', () => {
       }
 
       get name() {
+        // Use unique artifact name per instance so gatherers aren't deduplicated.
         return `MyGatherer${this.secret}`;
       }
     }
@@ -1210,7 +1211,7 @@ describe('Config', () => {
   });
 
   describe('#requireGatherers', () => {
-    it('should merge gatherers', () => {
+    it('should deduplicate gatherers', () => {
       const gatherers = [
         'viewport-dimensions',
         {path: 'viewport-dimensions'},
