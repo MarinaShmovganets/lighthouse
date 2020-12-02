@@ -8,7 +8,7 @@
       "axe-core": "3.5.5"
     }
   },
-  "lighthouseVersion": "6.4.1",
+  "lighthouseVersion": "6.5.0",
   "fetchTime": "2018-03-13T00:55:45.840Z",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -1442,6 +1442,7 @@
             "totalBlockingTime": 117,
             "maxPotentialFID": 123,
             "cumulativeLayoutShift": 0.42,
+            "cumulativeLayoutShiftAllFrames": 0,
             "observedTimeOrigin": 0,
             "observedTimeOriginTs": 185603319912,
             "observedNavigationStart": 0,
@@ -1461,6 +1462,7 @@
             "observedDomContentLoaded": 4901,
             "observedDomContentLoadedTs": 185608220734,
             "observedCumulativeLayoutShift": 0.42,
+            "observedCumulativeLayoutShiftAllFrames": 0,
             "observedFirstVisualChange": 3969,
             "observedFirstVisualChangeTs": 185607288912,
             "observedLastVisualChange": 4791,
@@ -3774,8 +3776,8 @@
         ]
       }
     },
-    "has-inspector-issues": {
-      "id": "has-inspector-issues",
+    "inspector-issues": {
+      "id": "inspector-issues",
       "title": "No issues in the `Issues` panel in Chrome Devtools",
       "description": "Issues logged to the `Issues` panel in Chrome Devtools indicate unresolved problems. They can come from network request failures, insufficient security controls, and other browser concerns. Open up the Issues panel in Chrome DevTools for more details on each issue.",
       "score": null,
@@ -5075,7 +5077,7 @@
           "group": "best-practices-general"
         },
         {
-          "id": "has-inspector-issues",
+          "id": "inspector-issues",
           "weight": 1,
           "group": "best-practices-general"
         }
@@ -5830,6 +5832,18 @@
       },
       {
         "startTime": 0,
+        "name": "lh:computed:LargestContentfulPaintAllFrames",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:computed:CumulativeLayoutShiftAllFrames",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:offline-start-url",
         "duration": 100,
         "entryType": "measure"
@@ -6412,7 +6426,7 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:has-inspector-issues",
+        "name": "lh:audit:inspector-issues",
         "duration": 100,
         "entryType": "measure"
       },
@@ -7789,11 +7803,11 @@
         "audits[notification-on-start].details.headings[1].text",
         "audits[uses-passive-event-listeners].details.headings[1].text"
       ],
-      "lighthouse-core/audits/dobetterweb/has-inspector-issues.js | title": [
-        "audits[has-inspector-issues].title"
+      "lighthouse-core/audits/dobetterweb/inspector-issues.js | title": [
+        "audits[inspector-issues].title"
       ],
-      "lighthouse-core/audits/dobetterweb/has-inspector-issues.js | description": [
-        "audits[has-inspector-issues].description"
+      "lighthouse-core/audits/dobetterweb/inspector-issues.js | description": [
+        "audits[inspector-issues].description"
       ],
       "lighthouse-core/audits/dobetterweb/no-document-write.js | failureTitle": [
         "audits[no-document-write].title"
